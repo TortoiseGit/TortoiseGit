@@ -95,25 +95,9 @@ All user/site specific configuration is stored in doc.build.user.
 		<mkdir dir="output"/>
 		<call target="prepare.custom" if="${target::exists('prepare.custom')}"/>
 
-		<!-- find the path to the fonts -->
-		<script language="C#">			
-			<code>
-				<![CDATA[
-					public static void ScriptMain(Project project)
-					{
-						string linuxPath = "/usr/share/fonts/truetype/";
-						if (Directory.Exists(linuxPath)) {
-							project.Properties.Add("fontpath", linuxPath);
-							return;
-						}
-						string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-						string fontsPath = Path.GetDirectoryName(systemPath) + Path.DirectorySeparatorChar + "FONTS";
-						fontsPath = fontsPath.Replace('\\','/');
-						project.Properties.Add("fontpath", fontsPath );
-					}
-				]]>
-			</code>
-		</script>
+		<property name="fontpath" value="/usr/share/fonts/truetype/" if="${platform::is-unix() and not property::exists('fontpath')}"/>
+		<property name="fontpath" value="${string::replace(environment::get-variable('windir'), '\', '/')}/Fonts/" if="${platform::is-windows() and not property::exists('fontpath')}"/>
+		<fail unless="${directory::exists(fontpath)}">fontpath '${fontpath}' does not exist</fail>
 
 		<!-- ensure "Version" translation invariant -->
 		<copy file="source/${lang.base}/Version.in" tofile="source/${lang.base}/version.xml" overwrite="true"/>
