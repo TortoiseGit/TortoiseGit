@@ -69,9 +69,9 @@ All user/site specific configuration is stored in doc.build.user.
 				<call target="UpdateVersionInfo"/>
 
 				<call target="spellcheck" if="${property::exists('spellcheck') and spellcheck=='true'}"/>
-				<call target="copyimages"/>
 
 				<property name="xslt.source" value="${doc.target.source}"/>
+				<call target="copyimages"/>
 				<foreach item="String" in="${docformats}" delim="," property="docformat">
 					<call target="${docformat}"/>
 				</foreach>
@@ -95,25 +95,9 @@ All user/site specific configuration is stored in doc.build.user.
 		<mkdir dir="output"/>
 		<call target="prepare.custom" if="${target::exists('prepare.custom')}"/>
 
-		<!-- find the path to the fonts -->
-		<script language="C#">			
-			<code>
-				<![CDATA[
-					public static void ScriptMain(Project project)
-					{
-						string linuxPath = "/usr/share/fonts/truetype/";
-						if (Directory.Exists(linuxPath)) {
-							project.Properties.Add("fontpath", linuxPath);
-							return;
-						}
-						string systemPath = Environment.GetFolderPath(Environment.SpecialFolder.System);
-						string fontsPath = Path.GetDirectoryName(systemPath) + Path.DirectorySeparatorChar + "FONTS";
-						fontsPath = fontsPath.Replace('\\','/');
-						project.Properties.Add("fontpath", fontsPath );
-					}
-				]]>
-			</code>
-		</script>
+		<property name="fontpath" value="/usr/share/fonts/truetype/" if="${platform::is-unix() and not property::exists('fontpath')}"/>
+		<property name="fontpath" value="${string::replace(environment::get-variable('windir'), '\', '/')}/Fonts/" if="${platform::is-windows() and not property::exists('fontpath')}"/>
+		<fail unless="${directory::exists(fontpath)}">fontpath '${fontpath}' does not exist</fail>
 
 		<!-- ensure "Version" translation invariant -->
 		<copy file="source/${lang.base}/Version.in" tofile="source/${lang.base}/version.xml" overwrite="true"/>
@@ -136,19 +120,31 @@ All user/site specific configuration is stored in doc.build.user.
 		<delete dir="${doc.target.work}/images" failonerror="false"/>
 		<mkdir dir="${doc.target.work}/images"/>
 		<mkdir dir="${doc.target.work}/images/callouts"/>
+
+		<property name="xslt.params" value="${xsl.pdf.params}"/>
+		<property name="xslt.target" value="${path::get-temp-file-name()}"/>
+		<exec program="xsltproc"
+					commandline="${xslt.params} --output ${xslt.target} images/extract-images.xsl ${xslt.source}"
+					basedir="${path.bin}"
+					verbose="false"/>
+		<foreach item="Line" in="${xslt.target}" property="filename" trim="Both">
+			<property name="destname" value="${doc.target.work}/images/${filename}"/>
+			<copy file="images/${lang.target}/${filename}" tofile="${destname}" if="${file::exists(path::combine('images', path::combine(lang.target, filename)))}"/>
+			<copy file="images/${lang.base}/${filename}" tofile="${destname}" unless="${file::exists(destname)}"/>
+		</foreach>
+
 		<copy todir="${doc.target.work}/images">
 			<fileset basedir="images/${lang.base}">
-				<include name="*"/>
-			</fileset>
-		</copy>
-		<copy todir="${doc.target.work}/images/callouts">
-			<fileset basedir="images/${lang.base}/callouts">
-				<include name="*"/>
+				<include name="caution.png"/>
+				<include name="warning.png"/>
+				<include name="important.png"/>
+				<include name="tip.png"/>
+				<include name="link.png"/>
 			</fileset>
 		</copy>
 
-		<copy todir="${doc.target.work}/images" unless="${lang.base==lang.target}" overwrite="true">
-			<fileset basedir="images/${lang.target}">
+		<copy todir="${doc.target.work}/images/callouts">
+			<fileset basedir="images/${lang.base}/callouts">
 				<include name="*"/>
 			</fileset>
 		</copy>
@@ -191,10 +187,16 @@ All user/site specific configuration is stored in doc.build.user.
 
 		<echo message="Stylesheet: ${xslt.file}" />
 		<echo message="Parameters: ${xslt.params}" />
+		<property name="xslt.output.file" value="${path::get-temp-file-name()}"/>
 		<exec program="xsltproc"
 					commandline="${xslt.params} --output ${xslt.target} ${xslt.file} ${xslt.source}"
 					basedir="${path.bin}"
+					output="${xslt.output.file}"
 					verbose="false"/>
+		<loadfile file="${xslt.output.file}" property="xsltproc.output" />
+		<fail if="${string::contains(xsltproc.output, ': parser error :')}">"Parser error" found</fail>
+		<fail if="${string::contains(xsltproc.output, 'Error: no ID for constraint linkend:')}">"Error: no ID for constraint linkend:" found</fail>
+		<fail if="${string::contains(xsltproc.output, 'ERROR: xref linking to ')}">"ERROR: xref linking to" found</fail>
 	</target>
 	
 <!-- ====================================================================== -->

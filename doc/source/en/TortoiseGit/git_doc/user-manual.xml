@@ -1187,7 +1187,7 @@ view real errors.</simpara>
 </section>
 <section id="Git User Manual_recovering-lost-changes">
 <title>Recovering lost changes</title>
-<section id="reflogs">
+<section id="Git User Manual_reflogs">
 <title>Reflogs</title>
 <simpara>Say you modify a branch with <link linkend="Git User Manual_fixing-mistakes"><emphasis>git reset --hard</emphasis></link>,
 and then realize that the branch was the only reference you had to
@@ -1218,7 +1218,7 @@ While normal history is shared by every repository that works on the
 same project, the reflog history is not shared: it tells you only about
 how the branches in your local repository have changed over time.</simpara>
 </section>
-<section id="dangling-object-recovery">
+<section id="Git User Manual_dangling-object-recovery">
 <title>Examining dangling objects</title>
 <simpara>In some situations the reflog may not be able to save you.  For example,
 suppose you delete a branch, then realize you need the history it
