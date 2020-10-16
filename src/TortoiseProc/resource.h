@@ -1668,6 +1668,8 @@
 #define IDS_MENUREFRESH                 2150
 #define IDC_RADIO_SVN_COMMIT            2152
 #define IDC_RADIO_GIT_COMMIT            2153
+#define IDC_NOPROXYLIST                 2160
+#define IDC_PROXYLABEL7                 2161
 #define IDS_LOG_COMPAREWITHBASE         2200
 #define IDS_PROC_CLEANUP                2304
 #define IDS_PROC_REMOVEFORCE            2305

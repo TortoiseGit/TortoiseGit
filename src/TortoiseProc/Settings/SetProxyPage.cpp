@@ -37,6 +37,7 @@ CSetProxyPage::CSetProxyPage()
 	m_regServerport = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port", L"");
 	m_regUsername = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username", L"");
 	m_regPassword = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password", L"");
+	m_regNoProxyList = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-ignore", L"");
 	m_regSSHClient = CRegString(L"Software\\TortoiseGit\\SSH");
 	m_SSHClient = m_regSSHClient;
 }
@@ -53,6 +54,7 @@ void CSetProxyPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_SERVERPORT, m_serverport);
 	DDX_Text(pDX, IDC_USERNAME, m_username);
 	DDX_Text(pDX, IDC_PASSWORD, m_password);
+	DDX_Text(pDX, IDC_NOPROXYLIST, m_noproxylist);
 	DDX_Check(pDX, IDC_ENABLE, m_isEnabled);
 	DDX_Text(pDX, IDC_SSHCLIENT, m_SSHClient);
 	DDX_Control(pDX, IDC_SSHCLIENT, m_cSSHClientEdit);
@@ -65,6 +67,7 @@ BEGIN_MESSAGE_MAP(CSetProxyPage, ISettingsPropPage)
 	ON_EN_CHANGE(IDC_SERVERPORT, OnChange)
 	ON_EN_CHANGE(IDC_USERNAME, OnChange)
 	ON_EN_CHANGE(IDC_PASSWORD, OnChange)
+	ON_EN_CHANGE(IDC_NOPROXYLIST, OnChange)
 	ON_EN_CHANGE(IDC_SSHCLIENT, OnChange)
 	ON_BN_CLICKED(IDC_ENABLE, OnBnClickedEnable)
 	ON_BN_CLICKED(IDC_SSHBROWSE, OnBnClickedSshbrowse)
@@ -141,6 +144,8 @@ BOOL CSetProxyPage::OnInitDialog()
 	m_ServerTypeCombo.AddString(L"socks4a");
 	m_ServerTypeCombo.AddString(L"socks5");
 	m_ServerTypeCombo.AddString(L"socks5h");
+
+	m_noproxylist = m_regNoProxyList;
 
 	if (proxy.IsEmpty())
 	{
@@ -242,11 +247,13 @@ void CSetProxyPage::EnableGroup(BOOL b)
 	GetDlgItem(IDC_SERVERPORT)->EnableWindow(b);
 	GetDlgItem(IDC_USERNAME)->EnableWindow(b);
 	GetDlgItem(IDC_PASSWORD)->EnableWindow(b);
+	GetDlgItem(IDC_NOPROXYLIST)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL0)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL1)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL2)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL3)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL6)->EnableWindow(b);
+	GetDlgItem(IDC_PROXYLABEL7)->EnableWindow(b);
 }
 
 void CSetProxyPage::OnModifiedServerTypeCombo()
@@ -274,6 +281,7 @@ BOOL CSetProxyPage::OnApply()
 	Store(temp, m_regServerport);
 	Store(m_username, m_regUsername);
 	Store(m_password, m_regPassword);
+	Store(m_noproxylist, m_regNoProxyList);
 
 
 	CString http_proxy;

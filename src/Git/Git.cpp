@@ -2291,6 +2291,14 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 #endif
 
+	CString proxy = GetConfigValue(L"http.proxy");
+	if (!proxy.IsEmpty()) {
+		CString no_proxy = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-ignore", L"");
+		if (!no_proxy.IsEmpty()) {
+			m_Environment.SetEnv(L"NO_PROXY", no_proxy);
+		}
+	}
+
 	m_bInitialized = TRUE;
 	return true;
 }

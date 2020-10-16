@@ -67,6 +67,8 @@ private:
 	CRegString		m_regUsername;
 	CString			m_password;
 	CRegString		m_regPassword;
+	CString			m_noproxylist;
+	CRegString		m_regNoProxyList;
 	BOOL			m_isEnabled;
 	CRegDWORD		m_regProxyEnable;
 	CRegString		m_regSSHClient;
