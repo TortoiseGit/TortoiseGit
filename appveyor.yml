@@ -24,6 +24,9 @@ configuration:
 matrix:
   exclude:
     - image: Visual Studio 2017
+      configuration: Debug
+    - image: Visual Studio 2017
+      platform: Win32
       configuration: Release
 init:
 - git version
@@ -42,21 +45,12 @@ for:
   -
     matrix:
       only:
-        - platform: Win32
-          configuration: Debug
-          image: Visual Studio 2017
-    test_script:
-    - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
-    - bin\Debug\bin\tests.exe
-  -
-    matrix:
-      only:
         - platform: x64
-          configuration: Debug
+          configuration: Release
           image: Visual Studio 2017
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
-    - bin\Debug64\bin\tests.exe
+    - bin\Release64\bin\tests.exe
   -
     matrix:
       only:
