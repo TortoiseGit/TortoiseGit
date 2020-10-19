@@ -1,0 +1,23 @@
+# General info: https://docs.gitlab.com/ee/ci/yaml/
+
+doc:
+  image: ubuntu:focal
+  before_script:
+    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0KInstall packages"
+    - apt-get update -qq
+    - apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant
+    - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
+  script:
+    - mv doc/doc.build.user.linux.templ doc/doc.build.user
+    - cd doc
+    - nant
+  except:
+    refs:
+      - tags
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - doc/images/en/**/*
+      - doc/source/**/*
+      - doc/xsl/**/*
+      - doc/doc.build*
