@@ -467,3 +467,26 @@ char *registry_get_string(HKEY root, const char *path, const char *leaf)
     sfree(str);
     return toret;
 }
+
+DWORD registry_get_dword(HKEY root, const char *path, const char *leaf, DWORD def)
+{
+    HKEY key = root;
+    bool need_close_key = false;
+    DWORD toret = def;
+    LSTATUS rc = -1;
+
+    if (path) {
+        rc = RegCreateKey(key, path, &key);
+        if (rc != ERROR_SUCCESS)
+            goto out;
+        need_close_key = true;
+    }
+    DWORD type = REG_DWORD;
+    DWORD size = sizeof(DWORD);
+    rc = RegQueryValueEx(key, leaf, 0, &type, &toret, &size);
+
+out:
+    if (need_close_key)
+        RegCloseKey(key);
+    return (rc == ERROR_SUCCESS) ? toret : def;
+}
