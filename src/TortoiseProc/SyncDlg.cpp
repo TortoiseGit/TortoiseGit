@@ -853,7 +853,7 @@ void CSyncDlg::ShowProgressCtrl(bool bShow)
 	this->m_ctrlProgress.ShowWindow(b);
 	this->m_ctrlProgLabel.ShowWindow(b);
 	this->m_ctrlAnimate.Open(IDR_DOWNLOAD);
-	if(b == SW_NORMAL)
+	if (b == SW_NORMAL && CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 		this->m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 	else
 		this->m_ctrlAnimate.Stop();
@@ -1404,7 +1404,8 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
 		m_BufStart = 0;
-		m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
+		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
+			m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 		this->m_ctrlProgress.SetPos(0);
 		if (m_pTaskbarList)
 		{

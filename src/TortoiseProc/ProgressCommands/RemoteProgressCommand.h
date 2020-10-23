@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2019 - TortoiseGit
+// Copyright (C) 2013-2014, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,8 @@ public:
 		if (m_pAnimate)
 		{
 			m_pAnimate->ShowWindow(SW_SHOW);
-			m_pAnimate->Play(0, INT_MAX, INT_MAX);
+			if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
+				m_pAnimate->Play(0, INT_MAX, INT_MAX);
 		}
 	}
 	~CSmartAnimation()

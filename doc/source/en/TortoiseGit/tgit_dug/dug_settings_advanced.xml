@@ -150,6 +150,18 @@
 		</varlistentry>
 -->
 		<varlistentry>
+			<term condition="pot">DownloadAnimation</term>
+			<listitem>
+				<para>
+					When performing git.exe or remote operations TortoiseGit dialogs
+					play an animation with a flying turtle.
+					This setting allows to disable the playing of the animation by
+					setting it to <literal>false</literal>.
+					The default value is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">FullRowSelect</term>
 			<listitem>
 				<para>
