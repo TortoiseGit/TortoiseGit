@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011 - TortoiseSVN
+// Copyright (C) 2006, 2011, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -103,6 +103,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 	void		CopyRowAndColInfo();
+	void		OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rect) override;
 private:
 	BOOL		m_bBarLocked;	///< is the splitter bar locked?
 	int			m_nHiddenCol;	///< Index of the hidden column.

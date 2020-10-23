@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006, 2011, 2016 - TortoiseSVN
+// Copyright (C) 2006, 2011, 2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "XSplitter.h"
+#include "Theme.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -299,4 +300,48 @@ void CXSplitter::CopyRowAndColInfo()
 		for (int i = 0; i < m_nRows; ++i)
 			m_pRowOldSize[i] = m_pRowInfo[i].nCurSize;
 	}
+}
+
+void CXSplitter::OnDrawSplitter(CDC* pDC, ESplitType nType, const CRect& rectArg)
+{
+	if (!CTheme::Instance().IsDarkTheme())
+		return __super::OnDrawSplitter(pDC, nType, rectArg);
+	// if pDC == NULL, then just invalidate
+	if (pDC == NULL)
+	{
+		RedrawWindow(rectArg, NULL, RDW_INVALIDATE | RDW_NOCHILDREN);
+		return;
+	}
+	ASSERT_VALID(pDC);
+
+	// otherwise, actually draw
+	CRect rect = rectArg;
+	switch (nType)
+	{
+	case splitBorder:
+		pDC->Draw3dRect(rect, CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNSHADOW)), CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNHILIGHT)));
+		rect.InflateRect(-AFX_CX_BORDER, -AFX_CY_BORDER);
+		pDC->Draw3dRect(rect, CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOWFRAME)), CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNFACE)));
+		return;
+
+	case splitIntersection:
+		break;
+
+	case splitBox:
+		pDC->Draw3dRect(rect, CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNFACE)), CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOWFRAME)));
+		rect.InflateRect(-AFX_CX_BORDER, -AFX_CY_BORDER);
+		pDC->Draw3dRect(rect, CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNHIGHLIGHT)), CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNSHADOW)));
+		rect.InflateRect(-AFX_CX_BORDER, -AFX_CY_BORDER);
+		break;
+
+	case splitBar:
+		break;
+
+	default:
+		ASSERT(FALSE); // unknown splitter type
+	}
+
+	// fill the middle
+	COLORREF clr = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNFACE));
+	pDC->FillSolidRect(rect, clr);
 }
