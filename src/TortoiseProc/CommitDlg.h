@@ -165,6 +165,7 @@ protected:
 	bool RunStartCommitHook();
 	void CreatePatchViewDlg();
 	void DestroyPatchViewDlgIfOpen();
+	void PrepareStagingSupport();
 
 	DECLARE_MESSAGE_MAP()
 

@@ -477,6 +477,25 @@ BOOL CCommitDlg::OnInitDialog()
 			m_pathwatcher.AddPath(m_pathList[i]);
 	}*/
 
+	this->m_ctrlShowPatch.SetURL(CString());
+	this->m_ctrlPartialStaging.SetURL(CString());
+	this->m_ctrlPartialUnstaging.SetURL(CString());
+	ShowPartialStagingTextAndUpdateFlag(true);
+	ShowPartialUnstagingTextAndUpdateFlag(true);
+	if (g_Git.GetConfigValueBool(L"tgit.commitstagingsupport"))
+	{
+		m_bStagingSupport = true;
+		UpdateData(false);
+		PrepareStagingSupport();
+	}
+	if (g_Git.GetConfigValueBool(L"tgit.commitshowpatch"))
+	{
+		if (m_bStagingSupport)
+			OnStnClickedPartialStaging();
+		else
+			OnStnClickedViewPatch();
+	}
+
 	StartStatusThread();
 	CRegDWORD err = CRegDWORD(L"Software\\TortoiseGit\\ErrorOccurred", FALSE);
 	CRegDWORD historyhint = CRegDWORD(L"Software\\TortoiseGit\\HistoryHintShown", FALSE);
@@ -486,14 +505,6 @@ BOOL CCommitDlg::OnInitDialog()
 //		ShowBalloon(IDC_HISTORY, IDS_COMMITDLG_HISTORYHINT_TT, IDI_INFORMATION);
 	}
 	err = FALSE;
-
-	this->m_ctrlShowPatch.SetURL(CString());
-	this->m_ctrlPartialStaging.SetURL(CString());
-	this->m_ctrlPartialUnstaging.SetURL(CString());
-	ShowPartialStagingTextAndUpdateFlag(true);
-	ShowPartialUnstagingTextAndUpdateFlag(true);
-	if (g_Git.GetConfigValueBool(L"tgit.commitshowpatch"))
-		OnStnClickedViewPatch();
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 	{
@@ -3017,12 +3028,11 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
 }
 
-void CCommitDlg::OnBnClickedStagingSupport()
+void CCommitDlg::PrepareStagingSupport()
 {
-	UpdateData();
 	DestroyPatchViewDlgIfOpen();
+	g_Git.SetConfigValue(L"tgit.commitstagingsupport", m_bStagingSupport ? L"true" : L"false");
 	m_ListCtrl.EnableThreeStateCheckboxes(m_bStagingSupport);
-	Refresh();
 	if (m_bStagingSupport)
 	{
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_TIPSTAGINGMODE, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, L"HintStagingMode", IDS_MSGBOX_DONOTSHOWAGAIN);
@@ -3039,6 +3049,13 @@ void CCommitDlg::OnBnClickedStagingSupport()
 		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_HIDE);
 	}
+}
+
+void CCommitDlg::OnBnClickedStagingSupport()
+{
+	UpdateData();
+	PrepareStagingSupport();
+	Refresh();
 }
 
 bool CCommitDlg::RunStartCommitHook()
