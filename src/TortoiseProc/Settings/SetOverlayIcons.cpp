@@ -136,8 +136,8 @@ void CSetOverlayIcons::ShowIconSet(bool bSmallIcons)
 	int smallIconHeight = GetSystemMetrics(SM_CYSMICON);
 	int normalIconWidth = GetSystemMetrics(SM_CXICON);
 	int normalIconHeight = GetSystemMetrics(SM_CYICON);
-	m_ImageList.Create(smallIconWidth, smallIconHeight, ILC_COLOR32 | ILC_MASK, 20, 10);
-	m_ImageListBig.Create(normalIconWidth, normalIconHeight, ILC_COLOR32 | ILC_MASK, 20, 10);
+	m_ImageList.Create(smallIconWidth, smallIconHeight, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 20, 10);
+	m_ImageListBig.Create(normalIconWidth, normalIconHeight, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 20, 10);
 	m_cIconList.SetImageList(&m_ImageList, LVSIL_SMALL);
 	m_cIconList.SetImageList(&m_ImageListBig, LVSIL_NORMAL);
 

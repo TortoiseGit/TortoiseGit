@@ -182,7 +182,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 		auto rgb = static_cast<RGBTRIPLE*>(bmBitmap.bmBits);
 		COLORREF	rgbMask = RGB(rgb[0].rgbtRed, rgb[0].rgbtGreen, rgb[0].rgbtBlue);
 
-		cImageList.Create(CDPIAware::Instance().ScaleX(20), cSize.cy, ILC_COLOR32 | ILC_MASK, nNbBtn, 0);
+		cImageList.Create(CDPIAware::Instance().ScaleX(20), cSize.cy, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, nNbBtn, 0);
 		cImageList.Add(&cBitmap, rgbMask);
 		// set the sizes of the button and images:
 		// note: buttonX must be 7 pixels more than imageX, and buttonY must be 6 pixels more than imageY.

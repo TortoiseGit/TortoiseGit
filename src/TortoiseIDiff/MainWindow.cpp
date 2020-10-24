@@ -1281,7 +1281,7 @@ bool CMainWindow::CreateToolbar()
     // create an imagelist containing the icons for the toolbar
     auto imgSizeX = CDPIAware::Instance().ScaleX(24);
     auto imgSizeY = CDPIAware::Instance().ScaleY(24);
-    hToolbarImgList = ImageList_Create(imgSizeX, imgSizeY, ILC_COLOR32 | ILC_MASK, 12, 4);
+    hToolbarImgList = ImageList_Create(imgSizeX, imgSizeY, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 12, 4);
     if (!hToolbarImgList)
         return false;
     int index = 0;

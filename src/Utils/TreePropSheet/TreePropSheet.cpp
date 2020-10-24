@@ -758,10 +758,10 @@ BOOL CTreePropSheet::OnInitDialog()
 			m_DefaultImages.GetImageInfo(0, &ii);
 			if (ii.hbmImage) DeleteObject(ii.hbmImage);
 			if (ii.hbmMask) DeleteObject(ii.hbmMask);
-			m_Images.Create(ii.rcImage.right-ii.rcImage.left, ii.rcImage.bottom-ii.rcImage.top, ILC_COLOR32|ILC_MASK, 0, 1);
+			m_Images.Create(ii.rcImage.right - ii.rcImage.left, ii.rcImage.bottom - ii.rcImage.top, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 0, 1);
 		}
 		else
-			m_Images.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 0, 1);
+			m_Images.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 0, 1);
 	}
 
 	// perform default implementation

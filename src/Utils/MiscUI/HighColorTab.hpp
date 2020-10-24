@@ -45,7 +45,7 @@ namespace HighColorTab
 			return std::unique_ptr<CImageList>();
 		}
 
-		if (0 == apILNew->Create(w, h, ILC_COLOR32 | ILC_MASK, 0, 1))
+		if (0 == apILNew->Create(w, h, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 0, 1))
 		{
 			// ASSERT: The image list (Win32) creation failed.
 			ASSERT( FALSE );

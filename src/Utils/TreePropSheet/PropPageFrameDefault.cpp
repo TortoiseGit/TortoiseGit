@@ -95,7 +95,7 @@ void CPropPageFrameDefault::SetCaption(LPCTSTR lpszCaption, HICON hIcon /*= null
 		BITMAP	bm;
 		bmMask.GetBitmap(&bm);
 
-		if (!m_Images.Create(bm.bmWidth, bm.bmHeight, ILC_COLOR32|ILC_MASK, 0, 1))
+		if (!m_Images.Create(bm.bmWidth, bm.bmHeight, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 0, 1))
 			return;
 
 		if (m_Images.Add(hIcon) == -1)

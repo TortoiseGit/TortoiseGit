@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014-2017, 2019-2020 - TortoiseGit
-// Copyright (C) 2003-2006, 2008-2010, 2017 - TortoiseSVN
+// Copyright (C) 2003-2006, 2008-2010, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ CSysImageList::CSysImageList()
 
 	int cx, cy;
 	ImageList_GetIconSize(hSystemImageList, &cx, &cy);
-	auto emptyImageList = ImageList_Create(cx, cy, ILC_COLOR32 | ILC_MASK, ImageList_GetImageCount(hSystemImageList), 10);
+	auto emptyImageList = ImageList_Create(cx, cy, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, ImageList_GetImageCount(hSystemImageList), 10);
 	Attach(emptyImageList);
 
 	m_dirIconIndex = GetFileIcon(L"Doesn't matter", FILE_ATTRIBUTE_DIRECTORY, 0);
