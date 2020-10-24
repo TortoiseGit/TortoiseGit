@@ -6,6 +6,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working
+ * Fixed issue #3652: Clone: Auto fill from clipboard with URLs with quotes fails
 
 = Release 2.11.0 =
 Released: 2020-10-10
