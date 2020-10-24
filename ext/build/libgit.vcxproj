@@ -47,6 +47,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\apply.c" />
+    <ClCompile Include="..\tgit\bloom.c" />
     <ClCompile Include="..\tgit\chdir-notify.c" />
     <ClCompile Include="..\tgit\commit-graph.c" />
     <ClCompile Include="..\tgit\commit-reach.c" />
@@ -76,7 +77,6 @@
     <ClCompile Include="..\tgit\archive-tar.c" />
     <ClCompile Include="..\tgit\archive-zip.c" />
     <ClCompile Include="..\tgit\archive.c" />
-    <ClCompile Include="..\tgit\argv-array.c" />
     <ClCompile Include="..\tgit\attr.c" />
     <ClCompile Include="..\tgit\base85.c" />
     <ClCompile Include="..\tgit\bisect.c" />
@@ -136,7 +136,6 @@
     <ClCompile Include="..\tgit\help.c" />
     <ClCompile Include="..\tgit\hex.c" />
     <ClCompile Include="..\tgit\ident.c" />
-    <ClCompile Include="..\tgit\interdiff.c" />
     <ClCompile Include="..\tgit\json-writer.c" />
     <ClCompile Include="..\tgit\kwset.c" />
     <ClCompile Include="..\tgit\levenshtein.c" />
@@ -165,6 +164,7 @@
     <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
     <ClCompile Include="..\tgit\object.c" />
+    <ClCompile Include="..\tgit\oid-array.c" />
     <ClCompile Include="..\tgit\oidmap.c" />
     <ClCompile Include="..\tgit\oidset.c" />
     <ClCompile Include="..\tgit\pack-bitmap-write.c" />
@@ -197,6 +197,7 @@
     <ClCompile Include="..\tgit\reflog-walk.c" />
     <ClCompile Include="..\tgit\refs.c" />
     <ClCompile Include="..\tgit\refspec.c" />
+    <ClCompile Include="..\tgit\refs\debug.c" />
     <ClCompile Include="..\tgit\refs\files-backend.c" />
     <ClCompile Include="..\tgit\refs\iterator.c" />
     <ClCompile Include="..\tgit\refs\packed-backend.c" />
@@ -206,6 +207,7 @@
     <ClCompile Include="..\tgit\repo-settings.c" />
     <ClCompile Include="..\tgit\repository.c" />
     <ClCompile Include="..\tgit\rerere.c" />
+    <ClCompile Include="..\tgit\reset.c" />
     <ClCompile Include="..\tgit\resolve-undo.c" />
     <ClCompile Include="..\tgit\revision.c" />
     <ClCompile Include="..\tgit\run-command.c" />
@@ -213,7 +215,6 @@
     <ClCompile Include="..\tgit\sequencer.c" />
     <ClCompile Include="..\tgit\server-info.c" />
     <ClCompile Include="..\tgit\setup.c" />
-    <ClCompile Include="..\tgit\sha1-array.c" />
     <ClCompile Include="..\tgit\sha1-file.c" />
     <ClCompile Include="..\tgit\sha1-lookup.c" />
     <ClCompile Include="..\tgit\sha1-name.c" />
@@ -227,6 +228,7 @@
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
+    <ClCompile Include="..\tgit\strvec.c" />
     <ClCompile Include="..\tgit\sub-process.c" />
     <ClCompile Include="..\tgit\submodule-config.c" />
     <ClCompile Include="..\tgit\submodule.c" />
@@ -288,13 +290,13 @@
   <ItemGroup>
     <ClInclude Include="..\tgit\apply.h" />
     <ClInclude Include="..\tgit\banned.h" />
+    <ClInclude Include="..\tgit\bloom.h" />
     <ClInclude Include="..\tgit\chdir-notify.h" />
     <ClInclude Include="..\tgit\commit-graph.h" />
     <ClInclude Include="..\tgit\commit-reach.h" />
     <ClInclude Include="..\tgit\commit-slab.h" />
     <ClInclude Include="..\tgit\compat\msvc.h" />
     <ClInclude Include="..\tgit\archive.h" />
-    <ClInclude Include="..\tgit\argv-array.h" />
     <ClInclude Include="..\tgit\attr.h" />
     <ClInclude Include="..\tgit\blob.h" />
     <ClInclude Include="..\tgit\branch.h" />
@@ -330,7 +332,6 @@
     <ClInclude Include="..\tgit\ewah\ewok_rlw.h" />
     <ClInclude Include="..\tgit\exec-cmd.h" />
     <ClInclude Include="..\tgit\fetch-negotiator.h" />
-    <ClInclude Include="..\tgit\fetch-object.h" />
     <ClInclude Include="..\tgit\fetch-pack.h" />
     <ClInclude Include="..\tgit\fsck.h" />
     <ClInclude Include="..\tgit\fsmonitor.h" />
@@ -342,7 +343,6 @@
     <ClInclude Include="..\tgit\hash.h" />
     <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
-    <ClInclude Include="..\tgit\interdiff.h" />
     <ClInclude Include="..\tgit\iterator.h" />
     <ClInclude Include="..\tgit\json-writer.h" />
     <ClInclude Include="..\tgit\kwset.h" />
@@ -368,6 +368,7 @@
     <ClInclude Include="..\tgit\notes-utils.h" />
     <ClInclude Include="..\tgit\notes.h" />
     <ClInclude Include="..\tgit\object.h" />
+    <ClInclude Include="..\tgit\oid-array.h" />
     <ClInclude Include="..\tgit\oidmap.h" />
     <ClInclude Include="..\tgit\oidset.h" />
     <ClInclude Include="..\tgit\pack-bitmap.h" />
@@ -398,11 +399,11 @@
     <ClInclude Include="..\tgit\replace-object.h" />
     <ClInclude Include="..\tgit\repository.h" />
     <ClInclude Include="..\tgit\rerere.h" />
+    <ClInclude Include="..\tgit\reset.h" />
     <ClInclude Include="..\tgit\revision.h" />
     <ClInclude Include="..\tgit\run-command.h" />
     <ClInclude Include="..\tgit\send-pack.h" />
     <ClInclude Include="..\tgit\sequencer.h" />
-    <ClInclude Include="..\tgit\sha1-array.h" />
     <ClInclude Include="..\tgit\sha1-lookup.h" />
     <ClInclude Include="..\tgit\sha1dc_git.h" />
     <ClInclude Include="..\tgit\shortlog.h" />
@@ -412,6 +413,7 @@
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />
     <ClInclude Include="..\tgit\string-list.h" />
+    <ClInclude Include="..\tgit\strvec.h" />
     <ClInclude Include="..\tgit\sub-process.h" />
     <ClInclude Include="..\tgit\submodule-config.h" />
     <ClInclude Include="..\tgit\tag.h" />

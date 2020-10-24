@@ -534,7 +534,6 @@ int git_diff_flush(GIT_DIFF diff)
 
 int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat)
 {
-	int ret;
 	struct object_id oid;
 	struct rev_info *p_Rev;
 	struct diff_queue_struct *q = &diff_queued_diff;
@@ -543,10 +542,7 @@ int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count
 
 	hashcpy(oid.hash, hash);
 
-	ret = diff_root_tree_oid(&oid, "", &p_Rev->diffopt);
-
-	if(ret)
-		return ret;
+	diff_root_tree_oid(&oid, "", &p_Rev->diffopt);
 
 	if(isstat)
 	{
@@ -571,8 +567,7 @@ int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count
 int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat)
 {
 	struct rev_info *p_Rev;
-	int ret;
-	struct object_id oid1, oid2;
+		struct object_id oid1, oid2;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
@@ -580,12 +575,7 @@ int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_F
 	hashcpy(oid1.hash, hash1);
 	hashcpy(oid2.hash, hash2);
 
-	ret = diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
-	if( ret )
-	{
-		free_all_pack();
-		return ret;
-	}
+	diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
 
 	if(isstat)
 	{

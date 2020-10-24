@@ -128,9 +128,6 @@
     <ClCompile Include="..\tgit\archive.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\argv-array.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\attr.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -372,9 +369,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\setup.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\sha1-array.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\sha1-lookup.c">
@@ -701,9 +695,6 @@
     <ClCompile Include="..\tgit\delta-islands.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\interdiff.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\midx.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -770,15 +761,27 @@
     <ClCompile Include="..\tgit\repo-settings.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\strvec.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\bloom.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\oid-array.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reset.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\debug.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\archive.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\argv-array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\attr.h">
@@ -935,9 +938,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\sequencer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\sha1-array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\sha1-lookup.h">
@@ -1172,9 +1172,6 @@
     <ClInclude Include="..\tgit\list-objects-filter-options.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\fetch-object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\commit-graph.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1250,9 +1247,6 @@
     <ClInclude Include="..\tgit\linear-assignment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\interdiff.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\delta-islands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1291,6 +1285,18 @@
     </ClInclude>
     <ClInclude Include="..\tgit\promisor-remote.h">
       <Filter>git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\strvec.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\bloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\oid-array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reset.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
