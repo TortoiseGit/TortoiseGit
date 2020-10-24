@@ -976,6 +976,7 @@ void CMainWindow::SetTheme(bool bDark)
         DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
         DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
     }
+    DarkModeHelper::Instance().RefreshTitleBarThemeColor(*this, bDark);
 
     HMENU hMenu = GetMenu(*this);
     UINT uCheck = MF_BYCOMMAND;

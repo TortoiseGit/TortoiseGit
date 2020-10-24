@@ -103,6 +103,12 @@ BOOL DarkModeHelper::SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONA
 	return FALSE;
 }
 
+ void DarkModeHelper::RefreshTitleBarThemeColor(HWND hWnd, BOOL dark)
+{
+	WINDOWCOMPOSITIONATTRIBDATA data = { WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &dark, sizeof(dark) };
+	SetWindowCompositionAttribute(hWnd, &data);
+}
+
 DarkModeHelper::DarkModeHelper()
 {
 	INITCOMMONCONTROLSEX used = {

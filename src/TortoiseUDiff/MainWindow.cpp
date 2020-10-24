@@ -748,6 +748,7 @@ void CMainWindow::SetTheme(bool bDark)
 	SendEditor(SCI_STYLESETBOLD, STYLE_BRACELIGHT, 1);
 	SendEditor(SCI_STYLESETFORE, STYLE_BRACEBAD, RGB(255, 0, 0));
 	SendEditor(SCI_STYLESETBOLD, STYLE_BRACEBAD, 1);
+	DarkModeHelper::Instance().RefreshTitleBarThemeColor(*this, bDark);
 	if (bDark || CTheme::Instance().IsHighContrastModeDark())
 	{
 		SendEditor(SCI_SETFOLDMARGINCOLOUR, true, UDiffTextColorDark);

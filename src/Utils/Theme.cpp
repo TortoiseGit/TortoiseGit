@@ -151,6 +151,7 @@ bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
 	EnumChildWindows(hWnd, AdjustThemeForChildrenProc, bDark ? TRUE : FALSE);
 	EnumThreadWindows(GetCurrentThreadId(), AdjustThemeForChildrenProc, bDark ? TRUE : FALSE);
 	::RedrawWindow(hWnd, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+	DarkModeHelper::Instance().RefreshTitleBarThemeColor(hWnd, bDark);
 	return true;
 }
 

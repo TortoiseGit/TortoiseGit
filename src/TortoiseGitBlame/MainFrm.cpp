@@ -192,6 +192,7 @@ void CMainFrame::SetTheme(bool bDark)
 		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), bDark);
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+	DarkModeHelper::Instance().RefreshTitleBarThemeColor(*this, bDark);
 }
 
 void CMainFrame::OnDestroy()
