@@ -211,7 +211,7 @@ void CPatchViewDlg::ShowAndAlignToParent()
 	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), rect);
 	rect.left = rect.right - adjust;
 	rect.right = rect.left;
-	int xPos = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth"));
+	int xPos = CDPIAware::Instance().ScaleX(static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth")));
 	if (xPos)
 		rect.right += xPos;
 	else
