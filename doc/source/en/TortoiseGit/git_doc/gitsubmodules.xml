@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="gitsubmodules(7)">
     <title>gitsubmodules(7)</title>
@@ -295,7 +295,8 @@ will not be checked out by default; You can instruct <emphasis>clone</emphasis> 
 into submodules. The <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands of <emphasis>git submodule</emphasis>
 will maintain submodules checked out and at an appropriate revision in
 your working tree. Alternatively you can set <emphasis>submodule.recurse</emphasis> to have
-<emphasis>checkout</emphasis> recursing into submodules.</simpara>
+<emphasis>checkout</emphasis> recursing into submodules (note that <emphasis>submodule.recurse</emphasis> also
+affects other git commands, see <xref linkend="git-config(1)" /> for a complete list).</simpara>
 </simplesect>
 <simplesect id="gitsubmodules(7)__see_also">
 <title>SEE ALSO</title>

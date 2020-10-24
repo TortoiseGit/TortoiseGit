@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-sparse-checkout(1)">
     <title>git-sparse-checkout(1)</title>
@@ -93,6 +93,23 @@ C-style quoted strings.</simpara>
         but they can be read from stdin using the <emphasis>--stdin</emphasis> option. When
         <emphasis>core.sparseCheckoutCone</emphasis> is enabled, the given patterns are interpreted
         as directory names as in the <emphasis>set</emphasis> subcommand.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>reapply</emphasis>
+</term>
+<listitem>
+<simpara>
+        Reapply the sparsity pattern rules to paths in the working tree.
+        Commands like merge or rebase can materialize paths to do their
+        work (e.g. in order to show you a conflict), and other
+        sparse-checkout commands might fail to sparsify an individual file
+        (e.g. because it has unstaged changes or conflicts).  In such
+        cases, it can make sense to run <emphasis>git sparse-checkout reapply</emphasis> later
+        after cleaning up affected paths (e.g. resolving conflicts, undoing
+        or committing changes, etc.).
 </simpara>
 </listitem>
 </varlistentry>
@@ -201,10 +218,30 @@ directory.</simpara>
 </simplesect>
 <simplesect id="git-sparse-checkout(1)__submodules">
 <title>SUBMODULES</title>
-<simpara>If your repository contains one or more submodules, then those submodules will
-appear based on which you initialized with the <emphasis>git submodule</emphasis> command. If
-your sparse-checkout patterns exclude an initialized submodule, then that
-submodule will still appear in your working directory.</simpara>
+<simpara>If your repository contains one or more submodules, then submodules
+are populated based on interactions with the <emphasis>git submodule</emphasis> command.
+Specifically, <emphasis>git submodule init -- &lt;path&gt;</emphasis> will ensure the submodule
+at <emphasis>&lt;path&gt;</emphasis> is present, while <emphasis>git submodule deinit [-f] -- &lt;path&gt;</emphasis>
+will remove the files for the submodule at <emphasis>&lt;path&gt;</emphasis> (including any
+untracked files, uncommitted changes, and unpushed history).  Similar
+to how sparse-checkout removes files from the working tree but still
+leaves entries in the index, deinitialized submodules are removed from
+the working directory but still have an entry in the index.</simpara>
+<simpara>Since submodules may have unpushed changes or untracked files,
+removing them could result in data loss.  Thus, changing sparse
+inclusion/exclusion rules will not cause an already checked out
+submodule to be removed from the working copy.  Said another way, just
+as <emphasis>checkout</emphasis> will not cause submodules to be automatically removed or
+initialized even when switching between branches that remove or add
+submodules, using <emphasis>sparse-checkout</emphasis> to reduce or expand the scope of
+"interesting" files will not cause submodules to be automatically
+deinitialized or initialized either.</simpara>
+<simpara>Further, the above facts mean that there are multiple reasons that
+"tracked" files might not be present in the working copy: sparsity
+pattern application from sparse-checkout, and submodule initialization
+state.  Thus, commands like <emphasis>git grep</emphasis> that work on tracked files in
+the working copy may return results that are limited by either or both
+of these restrictions.</simpara>
 </simplesect>
 <simplesect id="git-sparse-checkout(1)__see_also">
 <title>SEE ALSO</title>

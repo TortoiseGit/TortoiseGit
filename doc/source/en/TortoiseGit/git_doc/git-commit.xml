@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-commit(1)">
     <title>git-commit(1)</title>
@@ -864,7 +864,9 @@ ISO 8601
 <simpara>
         Time and date specified by the ISO 8601 standard, for example
         <emphasis>2005-04-07T22:13:13</emphasis>. The parser accepts a space instead of the
-        <emphasis>T</emphasis> character as well.
+        <emphasis>T</emphasis> character as well. Fractional parts of a second will be ignored,
+        for example <emphasis>2005-04-07T22:13:13.019</emphasis> will be treated as
+        <emphasis>2005-04-07T22:13:13</emphasis>.
 </simpara>
 <note><simpara>In addition, the date part is accepted in the following formats:
 <emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>

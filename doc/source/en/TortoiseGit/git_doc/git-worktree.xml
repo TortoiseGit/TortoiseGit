@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-worktree(1)">
     <title>git-worktree(1)</title>
@@ -173,7 +173,9 @@ Unlock a working tree, allowing it to be pruned, moved or deleted.
         locked working tree path, specify <emphasis>--force</emphasis> twice.
 </simpara>
 <simpara><emphasis>move</emphasis> refuses to move a locked working tree unless <emphasis>--force</emphasis> is specified
-twice.</simpara>
+twice. If the destination is already assigned to some other working tree but is
+missing (for instance, if <emphasis>&lt;new-path&gt;</emphasis> was deleted manually), then <emphasis>--force</emphasis>
+allows the move to proceed; use --force twice if the destination is locked.</simpara>
 <simpara><emphasis>remove</emphasis> refuses to remove an unclean working tree unless <emphasis>--force</emphasis> is used.
 To remove a locked working tree, specify <emphasis>--force</emphasis> twice.</simpara>
 </listitem>

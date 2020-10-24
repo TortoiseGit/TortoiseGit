@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="gitmodules(5)">
     <title>gitmodules(5)</title>
@@ -78,9 +78,9 @@ submodule.&lt;name&gt;.branch
 <listitem>
 <simpara>
         A remote branch name for tracking updates in the upstream submodule.
-        If the option is not specified, it defaults to <emphasis>master</emphasis>.  A special
-        value of <emphasis>.</emphasis> is used to indicate that the name of the branch in the
-        submodule should be the same name as the current branch in the
+        If the option is not specified, it defaults to the remote <emphasis>HEAD</emphasis>.
+        A special value of <emphasis>.</emphasis> is used to indicate that the name of the branch
+        in the submodule should be the same name as the current branch in the
         current repository.  See the <emphasis>--remote</emphasis> documentation in
         <xref linkend="git-submodule(1)" /> for details.
 </simpara>

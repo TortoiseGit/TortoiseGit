@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-ls-files(1)">
     <title>git-ls-files(1)</title>
@@ -386,7 +386,7 @@ other
 </term>
 <listitem>
 <simpara>
-        Recursively calls ls-files on each submodule in the repository.
+        Recursively calls ls-files on each active submodule in the repository.
         Currently there is only support for the --cached mode.
 </simpara>
 </listitem>

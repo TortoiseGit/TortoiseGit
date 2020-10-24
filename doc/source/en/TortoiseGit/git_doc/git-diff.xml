@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-diff(1)">
     <title>git-diff(1)</title>
@@ -15,7 +15,8 @@
 <blockquote>
 <literallayout><emphasis>git diff</emphasis> [&lt;options&gt;] [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [&lt;options&gt;] --cached [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
-<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt; &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt; [&lt;commit&gt;&#8230;] &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt;&#8230;&lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [&lt;options&gt;] &lt;blob&gt; &lt;blob&gt;
 <emphasis>git diff</emphasis> [&lt;options&gt;] --no-index [--] &lt;path&gt; &lt;path&gt;</literallayout>
 </blockquote>
@@ -23,8 +24,9 @@
 <simplesect id="git-diff(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Show changes between the working tree and the index or a tree, changes
-between the index and a tree, changes between two trees, changes between
-two blob objects, or changes between two files on disk.</simpara>
+between the index and a tree, changes between two trees, changes resulting
+from a merge, changes between two blob objects, or changes between two
+files on disk.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -98,11 +100,27 @@ two blob objects, or changes between two files on disk.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt; &lt;commit&gt;&#8230; &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+</term>
+<listitem>
+<simpara>
+        This form is to view the results of a merge commit.  The first
+        listed &lt;commit&gt; must be the merge itself; the remaining two or
+        more commits should be its parents.  A convenient way to produce
+        the desired set of revisions is to use the &#94;@ suffix.
+        For instance, if <emphasis>master</emphasis> names a merge commit, <emphasis>git diff master
+        master^@</emphasis> gives the same combined diff as <emphasis>git show master</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt;..&lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
-        This is synonymous to the previous form.  If &lt;commit&gt; on
+        This is synonymous to the earlier form (without the "..") for
+        viewing the changes between two arbitrary &lt;commit&gt;.  If &lt;commit&gt; on
         one side is omitted, it will have the same effect as
         using HEAD instead.
 </simpara>
@@ -1312,6 +1330,9 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <term>
 --relative[=&lt;path&gt;]
 </term>
+<term>
+--no-relative
+</term>
 <listitem>
 <simpara>
         When run from a subdirectory of the project, it can be
@@ -1320,6 +1341,8 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
         not in a subdirectory (e.g. in a bare repository), you
         can name which subdirectory to make the output relative
         to by giving a &lt;path&gt; as an argument.
+        <emphasis>--no-relative</emphasis> can be used to countermand both <emphasis>diff.relative</emphasis> config
+        option and previous <emphasis>--relative</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2305,7 +2328,8 @@ Output diff in reverse.
 <xref linkend="git-log(1)" />,
 <xref linkend="gitdiffcore(7)" />,
 <xref linkend="git-format-patch(1)" />,
-<xref linkend="git-apply(1)" /></simpara>
+<xref linkend="git-apply(1)" />,
+<xref linkend="git-show(1)" /></simpara>
 </simplesect>
 <simplesect id="git-diff(1)__git">
 <title>GIT</title>

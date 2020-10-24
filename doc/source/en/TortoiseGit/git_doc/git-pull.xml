@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-pull(1)">
     <title>git-pull(1)</title>
@@ -97,8 +97,9 @@ pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        This option controls if new commits of all populated submodules should
-        be fetched and updated, too (see <xref linkend="git-config(1)" /> and
+        This option controls if new commits of populated submodules should
+        be fetched, and if the working trees of active submodules should be
+        updated, too (see <xref linkend="git-fetch(1)" />, <xref linkend="git-config(1)" /> and
         <xref linkend="gitmodules(5)" />).
 </simpara>
 <simpara>If the checkout is done via rebase, local submodule commits are rebased as well.</simpara>
@@ -369,6 +370,23 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--autostash
+</term>
+<term>
+--no-autostash
+</term>
+<listitem>
+<simpara>
+        Automatically create a temporary stash entry before the operation
+        begins, and apply it after the operation ends.  This means
+        that you can run the operation on a dirty worktree.  However, use
+        with care: the final stash application after a successful
+        merge might result in non-trivial conflicts.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --allow-unrelated-histories
 </term>
 <listitem>
@@ -422,23 +440,6 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 <simpara>
         Override earlier --rebase.
 </simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---autostash
-</term>
-<term>
---no-autostash
-</term>
-<listitem>
-<simpara>
-        Before starting rebase, stash local modifications away (see
-        <xref linkend="git-stash(1)" />) if needed, and apply the stash entry when
-        done. <emphasis>--no-autostash</emphasis> is useful to override the <emphasis>rebase.autoStash</emphasis>
-        configuration variable (see <xref linkend="git-config(1)" />).
-</simpara>
-<simpara>This option is only valid when "--rebase" is used.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

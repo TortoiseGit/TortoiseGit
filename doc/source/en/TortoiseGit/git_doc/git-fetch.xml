@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-fetch(1)">
     <title>git-fetch(1)</title>
@@ -349,7 +349,8 @@ documented in <xref linkend="git-config(1)" />.</simpara>
         value. Use <emphasis>on-demand</emphasis> to only recurse into a populated submodule
         when the superproject retrieves a commit that updates the submodule's
         reference to a commit that isn't already in the local submodule
-        clone.
+        clone. By default, <emphasis>on-demand</emphasis> is used, unless
+        <emphasis>fetch.recurseSubmodules</emphasis> is set (see <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -1128,11 +1129,11 @@ refspec.</simpara>
 <simpara>
 Using refspecs explicitly:
 </simpara>
-<screen>$ git fetch origin +pu:pu maint:tmp</screen>
-<simpara>This updates (or creates, as necessary) branches <emphasis>pu</emphasis> and <emphasis>tmp</emphasis> in
+<screen>$ git fetch origin +seen:seen maint:tmp</screen>
+<simpara>This updates (or creates, as necessary) branches <emphasis>seen</emphasis> and <emphasis>tmp</emphasis> in
 the local repository by fetching from the branches (respectively)
-<emphasis>pu</emphasis> and <emphasis>maint</emphasis> from the remote repository.</simpara>
-<simpara>The <emphasis>pu</emphasis> branch will be updated even if it does not fast-forward,
+<emphasis>seen</emphasis> and <emphasis>maint</emphasis> from the remote repository.</simpara>
+<simpara>The <emphasis>seen</emphasis> branch will be updated even if it does not fast-forward,
 because it is prefixed with a plus sign; <emphasis>tmp</emphasis> will not be.</simpara>
 </listitem>
 <listitem>

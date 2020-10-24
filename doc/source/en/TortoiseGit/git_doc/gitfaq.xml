@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="gitfaq(7)">
     <title>gitfaq(7)</title>
@@ -50,7 +50,7 @@ What does <emphasis>http.postBuffer</emphasis> really do?
         transfer encoding since it isn't known ahead of time what the size of
         the pushed data will be.
 </simpara>
-<simpara id="http-postbuffer">Leaving this value at the default size is fine unless you know that either the
+<simpara id="gitfaq(7)_http-postbuffer">Leaving this value at the default size is fine unless you know that either the
 remote server or a proxy in the middle doesn't support HTTP/1.1 (which
 introduced the chunked transfer encoding) or is known to be broken with chunked
 data.  This is often (erroneously) suggested as a solution for generic push
@@ -76,7 +76,7 @@ How do I configure a different editor?
         <emphasis>vi</emphasis>).  Since some people find <emphasis>vi</emphasis> difficult to use or prefer a different
         editor, it may be desirable to change the editor used.
 </simpara>
-<simpara id="configure-editor">If you want to configure a general editor for most programs which need one, you
+<simpara id="gitfaq(7)_configure-editor">If you want to configure a general editor for most programs which need one, you
 can edit your shell configuration (e.g., <emphasis>~/.bashrc</emphasis> or <emphasis>~/.zshenv</emphasis>) to contain
 a line setting the <emphasis>EDITOR</emphasis> or <emphasis>VISUAL</emphasis> environment variable to an appropriate
 value.  For example, if you prefer the editor <emphasis>nano</emphasis>, then you could write the
@@ -136,7 +136,7 @@ How do I read a password or token from an environment variable?
         shell command that produces the credential protocol on standard output.
         This is useful when passing credentials into a container, for example.
 </simpara>
-<simpara id="http-credentials-environment">Such a shell command can be specified by starting the option value with an
+<simpara id="gitfaq(7)_http-credentials-environment">Such a shell command can be specified by starting the option value with an
 exclamation point.  If your password or token were stored in the <emphasis>GIT_TOKEN</emphasis>,
 you could run the following command to set your credential helper:</simpara>
 <screen>$ git config credential.helper \
@@ -192,7 +192,7 @@ How do I use multiple accounts with the same hosting provider using SSH?
         register the public key (in this case, <emphasis>~/.ssh/id_committer.pub</emphasis>; note
         the <emphasis>.pub</emphasis>) with the hosting provider.
 </simpara>
-<simpara id="multiple-accounts-ssh">Most hosting providers use a single SSH account for pushing; that is, all users
+<simpara id="gitfaq(7)_multiple-accounts-ssh">Most hosting providers use a single SSH account for pushing; that is, all users
 push to the <emphasis>git</emphasis> account (e.g., <emphasis>git@git.example.org</emphasis>).  If that's the case for
 your provider, you can set up multiple aliases in SSH to make it clear which key
 pair to use.  For example, you could write something like the following in
@@ -263,7 +263,7 @@ How do I ignore changes to a tracked file?
         whether they are irrelevant and can safely be destroyed.  Therefore, it
         has to take the safe route and always preserve them.
 </simpara>
-<simpara id="ignore-tracked-files">It's tempting to try to use certain features of <emphasis>git update-index</emphasis>, namely the
+<simpara id="gitfaq(7)_ignore-tracked-files">It's tempting to try to use certain features of <emphasis>git update-index</emphasis>, namely the
 assume-unchanged and skip-worktree bits, but these don't work properly for this
 purpose and shouldn't be used this way.</simpara>
 <simpara>If your goal is to modify a configuration file, it can often be helpful to have
@@ -272,9 +272,39 @@ can then be copied alongside and modified as appropriate.  This second, modified
 file is usually ignored to prevent accidentally committing it.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+I asked Git to ignore various files, yet they are still tracked
+</term>
+<listitem>
+<simpara>
+        A <emphasis>gitignore</emphasis> file ensures that certain file(s) which are not
+        tracked by Git remain untracked.  However, sometimes particular
+        file(s) may have been tracked before adding them into the
+        <emphasis>.gitignore</emphasis>, hence they still remain tracked.  To untrack and
+        ignore files/patterns, use <emphasis>git rm --cached &lt;file/pattern&gt;</emphasis>
+        and add a pattern to <emphasis>.gitignore</emphasis> that matches the &lt;file&gt;.
+        See <xref linkend="gitignore(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+How do I know if I want to do a fetch or a pull?
+</term>
+<listitem>
+<simpara>
+        A fetch stores a copy of the latest changes from the remote
+        repository, without modifying the working tree or current branch.
+        You can then at your leisure inspect, merge, rebase on top of, or
+        ignore the upstream changes.  A pull consists of a fetch followed
+        immediately by either a merge or rebase.  See <xref linkend="git-pull(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="gitfaq(7)__hooks">
+<simplesect id="gitfaq(7)_fetching-and-pulling">
 <title>Hooks</title>
 <variablelist id="restrict-with-hooks">
 <varlistentry>
@@ -345,7 +375,7 @@ I'm on Windows and git diff shows my files as having a <emphasis>^M</emphasis> a
         because it is considered to be trailing whitespace.  Git defaults to showing
         trailing whitespace only on new lines, not existing ones.
 </simpara>
-<simpara id="windows-diff-control-m">You can store the files in the repository with Unix line endings and convert
+<simpara id="gitfaq(7)_windows-diff-control-m">You can store the files in the repository with Unix line endings and convert
 them automatically to your platform's line endings.  To do that, set the
 configuration option <emphasis>core.eol</emphasis> to <emphasis>native</emphasis> and see the following entry for
 information about how to configure files as text or binary.</simpara>
@@ -366,7 +396,7 @@ What's the recommended way to store files in Git?
         without BOM) in commit messages.  These are the settings that work best
         across platforms and with tools such as <emphasis>git diff</emphasis> and <emphasis>git merge</emphasis>.
 </simpara>
-<simpara id="recommended-storage-settings">Additionally, if you have a choice between storage formats that are text based
+<simpara id="gitfaq(7)_recommended-storage-settings">Additionally, if you have a choice between storage formats that are text based
 or non-text based, we recommend storing files in the text format and, if
 necessary, transforming them into the other format.  For example, a text-based
 SQL dump with one record per line will work much better for diffing and merging

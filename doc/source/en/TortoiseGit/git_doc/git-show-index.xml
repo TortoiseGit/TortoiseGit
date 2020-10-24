@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-show-index(1)">
     <title>git-show-index(1)</title>
@@ -13,7 +13,7 @@
 <simplesect id="git-show-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-index</emphasis></literallayout>
+<literallayout><emphasis>git show-index</emphasis> [--object-format=&lt;hash-algorithm&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-index(1)__description">
@@ -48,6 +48,24 @@ id.</simpara>
 <simpara>Note that you can get more information on a packfile by calling
 <xref linkend="git-verify-pack(1)" />. However, as this command considers only the
 index file itself, it's both faster and more flexible.</simpara>
+</simplesect>
+<simplesect id="git-show-index(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--object-format=&lt;hash-algorithm&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the given object format (hash algorithm) for the index file.  The
+        valid values are <emphasis>sha1</emphasis> and (if enabled) <emphasis>sha256</emphasis>.  The default is the
+        algorithm for the current repository (set by <emphasis>extensions.objectFormat</emphasis>), or
+        <emphasis>sha1</emphasis> if no value is set or outside a repository..
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-show-index(1)__git">
 <title>GIT</title>

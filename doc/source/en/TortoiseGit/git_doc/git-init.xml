@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-init(1)">
     <title>git-init(1)</title>
@@ -14,7 +14,8 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git init</emphasis> [-q | --quiet] [--bare] [--template=&lt;template_directory&gt;]
-          [--separate-git-dir &lt;git dir&gt;] [--object-format=&lt;format]
+          [--separate-git-dir &lt;git dir&gt;] [--object-format=&lt;format&gt;]
+          [-b &lt;branch-name&gt; | --initial-branch=&lt;branch-name&gt;]
           [--shared[=&lt;permissions&gt;]] [directory]</literallayout>
 </blockquote>
 </simplesect>
@@ -96,6 +97,20 @@ repository.  This file acts as filesystem-agnostic Git symbolic link to the
 repository.
 </simpara>
 <simpara>If this is reinitialization, the repository will be moved to the specified path.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b &lt;branch-name
+</term>
+<term>
+--initial-branch=&lt;branch-name&gt;
+</term>
+<listitem>
+<simpara>
+Use the specified name for the initial branch in the newly created repository.
+If not specified, fall back to the default name: <emphasis>master</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

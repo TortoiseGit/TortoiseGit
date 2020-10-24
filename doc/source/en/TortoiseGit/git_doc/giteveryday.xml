@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="giteveryday(7)">
     <title>giteveryday(7)</title>
@@ -497,13 +497,13 @@ $ git am -3 -i -s ./+to-apply <co id="giteveryday_CO6-4"/>
 $ compile/test
 $ git switch -c hold/linus &amp;&amp; git am -3 -i -s ./+hold-linus <co id="giteveryday_CO6-5"/>
 $ git switch topic/one &amp;&amp; git rebase master <co id="giteveryday_CO6-6"/>
-$ git switch -C pu next <co id="giteveryday_CO6-7"/>
+$ git switch -C seen next <co id="giteveryday_CO6-7"/>
 $ git merge topic/one topic/two &amp;&amp; git merge hold/linus <co id="giteveryday_CO6-8"/>
 $ git switch maint
 $ git cherry-pick master~4 <co id="giteveryday_CO6-9"/>
 $ compile/test
 $ git tag -s -m "GIT 0.99.9x" v0.99.9x <co id="giteveryday_CO6-10"/>
-$ git fetch ko &amp;&amp; for branch in master maint next pu <co id="giteveryday_CO6-11"/>
+$ git fetch ko &amp;&amp; for branch in master maint next seen <co id="giteveryday_CO6-11"/>
     do
         git show-branch ko/$branch $branch <co id="giteveryday_CO6-12"/>
     done
@@ -518,7 +518,7 @@ see what you were in the middle of doing, if anything.
 <para>
 see which branches haven't been merged into <emphasis>master</emphasis> yet.
 Likewise for any other integration branches e.g. <emphasis>maint</emphasis>, <emphasis>next</emphasis>
-and <emphasis>pu</emphasis> (potential updates).
+and <emphasis>seen</emphasis>.
 </para>
 </callout>
 <callout arearefs="giteveryday_CO6-3">
@@ -545,7 +545,7 @@ master or exposed as a part of a stable branch.
 </callout>
 <callout arearefs="giteveryday_CO6-7">
 <para>
-restart <emphasis>pu</emphasis> every time from the next.
+restart <emphasis>seen</emphasis> every time from the next.
 </para>
 </callout>
 <callout arearefs="giteveryday_CO6-8">
@@ -594,7 +594,7 @@ repository at kernel.org, and looks like this:</simpara>
         fetch = refs/heads/*:refs/remotes/ko/*
         push = refs/heads/master
         push = refs/heads/next
-        push = +refs/heads/pu
+        push = +refs/heads/seen
         push = refs/heads/maint</screen>
 </section>
 </simplesect>

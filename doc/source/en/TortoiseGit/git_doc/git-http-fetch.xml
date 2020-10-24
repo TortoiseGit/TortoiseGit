@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-http-fetch(1)">
     <title>git-http-fetch(1)</title>
@@ -13,7 +13,7 @@
 <simplesect id="git-http-fetch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git http-fetch</emphasis> [-c] [-t] [-a] [-d] [-v] [-w filename] [--recover] [--stdin] &lt;commit&gt; &lt;url&gt;</literallayout>
+<literallayout><emphasis>git http-fetch</emphasis> [-c] [-t] [-a] [-d] [-v] [-w filename] [--recover] [--stdin | --packfile=&lt;hash&gt; | &lt;commit&gt;] &lt;url&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-http-fetch(1)__description">
@@ -78,6 +78,20 @@ commit-id
         case), <emphasis>git http-fetch</emphasis> expects lines on stdin in the format
 </simpara>
 <literallayout class="monospaced">&lt;commit-id&gt;['\t'&lt;filename-as-in--w&gt;]</literallayout>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--packfile=&lt;hash&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of a commit id on the command line (which is not expected in
+        this case), <emphasis>git http-fetch</emphasis> fetches the packfile directly at the given
+        URL and uses index-pack to generate corresponding .idx and .keep files.
+        The hash is used to determine the name of the temporary file and is
+        arbitrary. The output of index-pack is printed to stdout.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

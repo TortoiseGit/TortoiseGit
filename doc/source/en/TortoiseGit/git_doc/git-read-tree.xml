@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-read-tree(1)">
     <title>git-read-tree(1)</title>
@@ -216,9 +216,9 @@ when both sides add a path identically.  The resolution
 </term>
 <listitem>
 <simpara>
-        Using --recurse-submodules will update the content of all initialized
+        Using --recurse-submodules will update the content of all active
         submodules according to the commit recorded in the superproject by
-        calling read-tree recursively, also setting the submodules HEAD to be
+        calling read-tree recursively, also setting the submodules' HEAD to be
         detached at that commit.
 </simpara>
 </listitem>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-rebase(1)">
     <title>git-rebase(1)</title>
@@ -362,18 +362,24 @@ the merge base to determine the <emphasis>set of commits</emphasis> which will b
 <simpara>
         Abort the rebase operation but HEAD is not reset back to the
         original branch. The index and working tree are also left
-        unchanged as a result.
+        unchanged as a result. If a temporary stash entry was created
+        using --autostash, it will be saved to the stash list.
 </simpara>
 </listitem>
 </varlistentry>
-</variablelist>
-<simpara>--apply:
+<varlistentry>
+<term>
+--apply
+</term>
+<listitem>
+<simpara>
         Use applying strategies to rebase (calling <emphasis>git-am</emphasis>
         internally).  This option may become a no-op in the future
-        once the merge backend handles everything the apply one does.</simpara>
-<simpara>+
-See also INCOMPATIBLE OPTIONS below.</simpara>
-<variablelist>
+        once the merge backend handles everything the apply one does.
+</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 --empty={drop,keep,ask}
@@ -713,11 +719,12 @@ details).</simpara>
 <emphasis>fork_point</emphasis> is the result of <emphasis>git merge-base --fork-point &lt;upstream&gt;
 &lt;branch&gt;</emphasis> command (see <xref linkend="git-merge-base(1)" />).  If <emphasis>fork_point</emphasis>
 ends up being empty, the &lt;upstream&gt; will be used as a fallback.</simpara>
-<simpara>If either &lt;upstream&gt; or --root is given on the command line, then the
-default is <emphasis>--no-fork-point</emphasis>, otherwise the default is <emphasis>--fork-point</emphasis>.</simpara>
+<simpara>If &lt;upstream&gt; is given on the command line, then the default is
+<emphasis>--no-fork-point</emphasis>, otherwise the default is <emphasis>--fork-point</emphasis>.</simpara>
 <simpara>If your branch was based on &lt;upstream&gt; but &lt;upstream&gt; was rewound and
 your branch contains commits which were dropped, this option can be used
 with <emphasis>--keep-base</emphasis> in order to drop those commits from your branch.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1079,6 +1086,11 @@ used to override and disable this setting.</simpara>
 --keep-base and --root
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+--fork-point and --root
+</simpara>
+</listitem>
 </itemizedlist>
 </simplesect>
 <simplesect id="git-rebase(1)__behavioral_differences">
@@ -1155,9 +1167,17 @@ and thus has no such limitations.</simpara>
 <section id="git-rebase(1)__hooks">
 <title>Hooks</title>
 <simpara>The apply backend has not traditionally called the post-commit hook,
-while the merge backend has.  However, this was by accident of
-implementation rather than by design.  Both backends should have the
-same behavior, though it is not clear which one is correct.</simpara>
+while the merge backend has.  Both have called the post-checkout hook,
+though the merge backend has squelched its output.  Further, both
+backends only call the post-checkout hook with the starting point
+commit of the rebase, not the intermediate commits nor the final
+commit.  In each case, the calling of these hooks was by accident of
+implementation rather than by design (both backends were originally
+implemented as shell scripts and happened to invoke other commands
+like <emphasis>git checkout</emphasis> or <emphasis>git commit</emphasis> that would call the hooks).  Both
+backends should have the same behavior, though it is not entirely
+clear which, if any, is correct.  We will likely make rebase stop
+calling either of these hooks in the future.</simpara>
 </section>
 <section id="git-rebase(1)__interruptability">
 <title>Interruptability</title>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-rev-parse(1)">
     <title>git-rev-parse(1)</title>
@@ -982,7 +982,7 @@ left-to-right.</simpara>
          A</literallayout>
 <literallayout class="monospaced">A =      = A^0
 B = A^   = A^1     = A~1
-C = A^2  = A^2
+C =      = A^2
 D = A^^  = A^1^1   = A~2
 E = B^2  = A^^2
 F = B^3  = A^^3

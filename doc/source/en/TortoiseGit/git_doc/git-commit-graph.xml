@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-commit-graph(1)">
     <title>git-commit-graph(1)</title>
@@ -70,19 +70,36 @@ walking objects only in the specified pack-indexes. (Cannot be combined
 with <emphasis>--stdin-commits</emphasis> or <emphasis>--reachable</emphasis>.)</simpara>
 <simpara>With the <emphasis>--stdin-commits</emphasis> option, generate the new commit graph by
 walking commits starting at the commits specified in stdin as a list
-of OIDs in hex, one OID per line. (Cannot be combined with
-<emphasis>--stdin-packs</emphasis> or <emphasis>--reachable</emphasis>.)</simpara>
+of OIDs in hex, one OID per line. OIDs that resolve to non-commits
+(either directly, or by peeling tags) are silently ignored. OIDs that
+are malformed, or do not exist generate an error. (Cannot be combined
+with <emphasis>--stdin-packs</emphasis> or <emphasis>--reachable</emphasis>.)</simpara>
 <simpara>With the <emphasis>--reachable</emphasis> option, generate the new commit graph by walking
 commits starting at all refs. (Cannot be combined with <emphasis>--stdin-commits</emphasis>
 or <emphasis>--stdin-packs</emphasis>.)</simpara>
 <simpara>With the <emphasis>--append</emphasis> option, include all commits that are present in the
 existing commit-graph file.</simpara>
-<simpara>With the <emphasis>--split</emphasis> option, write the commit-graph as a chain of multiple
-commit-graph files stored in <emphasis>&lt;dir&gt;/info/commit-graphs</emphasis>. The new commits
-not already in the commit-graph are added in a new "tip" file. This file
-is merged with the existing file if the following merge conditions are
-met:</simpara>
+<simpara>With the <emphasis>--changed-paths</emphasis> option, compute and write information about the
+paths changed between a commit and its first parent. This operation can
+take a while on large repositories. It provides significant performance gains
+for getting history of a directory or a file with <emphasis>git log -- &lt;path&gt;</emphasis>.</simpara>
+<simpara>With the <emphasis>--split[=&lt;strategy&gt;]</emphasis> option, write the commit-graph as a
+chain of multiple commit-graph files stored in
+<emphasis>&lt;dir&gt;/info/commit-graphs</emphasis>. Commit-graph layers are merged based on the
+strategy and other splitting options. The new commits not already in the
+commit-graph are added in a new "tip" file. This file is merged with the
+existing file if the following merge conditions are met:</simpara>
 <itemizedlist>
+<listitem>
+<simpara>
+If <emphasis>--split=no-merge</emphasis> is specified, a merge is never performed, and
+the remaining options are ignored. <emphasis>--split=replace</emphasis> overwrites the
+existing chain with a new one. A bare <emphasis>--split</emphasis> defers to the remaining
+options. (Note that merging a chain of commit graphs replaces the
+existing chain with a length-1 chain where the first and only
+incremental holds the entire graph).
+</simpara>
+</listitem>
 <listitem>
 <simpara>
 If <emphasis>--size-multiple=&lt;X&gt;</emphasis> is not specified, let <emphasis>X</emphasis> equal 2. If the new
