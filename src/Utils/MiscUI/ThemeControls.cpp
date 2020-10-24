@@ -144,7 +144,7 @@ void CThemeMFCButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 
 	if ((uiState & ODS_DISABLED) && m_bGrayDisabled)
 	{
-		pDC->SetTextColor(GetGlobalData()->clrBtnHilite);
+		pDC->SetTextColor(CTheme::Instance().GetThemeColor(GetGlobalData()->clrBtnHilite));
 
 		CRect rectShft = rectText;
 		rectShft.OffsetRect(1, 1);
@@ -230,16 +230,25 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 		else
 			pDC->FillSolidRect(rectArrow, RGB(51, 51, 51));
 
-		auto hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(1), RGB(180, 180, 180));
-		auto hOldPen = pDC->SelectObject(hPen);
-
-		auto hBrush = CreateSolidBrush(RGB(255, 255, 255));
-		auto hOldBrush = pDC->SelectObject(hBrush);
-
-		auto vmargin = CDPIAware::Instance().ScaleX(6);
-		auto hmargin = CDPIAware::Instance().ScaleY(3);
 		if (!m_bNoArrow)
 		{
+			HPEN hPen;
+			if ((uiState & ODS_DISABLED) && m_bGrayDisabled)
+				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(1), GetGlobalData()->clrGrayedText);
+			else
+				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(1), RGB(180, 180, 180));
+			auto hOldPen = pDC->SelectObject(hPen);
+
+			HBRUSH hBrush;
+			if ((uiState & ODS_DISABLED) && m_bGrayDisabled)
+				hBrush = CreateSolidBrush(GetGlobalData()->clrGrayedText);
+			else
+				hBrush = CreateSolidBrush(RGB(255, 255, 255));
+			auto hOldBrush = pDC->SelectObject(hBrush);
+
+			auto vmargin = CDPIAware::Instance().ScaleX(6);
+			auto hmargin = CDPIAware::Instance().ScaleY(3);
+
 			if (m_bRightArrow)
 			{
 				POINT vertices[] = { { rectArrow.left + hmargin, rectArrow.bottom - vmargin },
@@ -254,13 +263,13 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 									 { (rectArrow.left + rectArrow.right) / 2, rectArrow.bottom - vmargin } };
 				pDC->Polygon(vertices, _countof(vertices));
 			}
+
+			pDC->SelectObject(hOldBrush);
+			DeleteObject(hBrush);
+
+			pDC->SelectObject(hOldPen);
+			DeleteObject(hPen);
 		}
-
-		pDC->SelectObject(hOldBrush);
-		DeleteObject(hBrush);
-
-		pDC->SelectObject(hOldPen);
-		DeleteObject(hPen);
 	}
 	else
 	{
@@ -274,7 +283,10 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 		// Draw separator:
 		//----------------
 		CRect rectSeparator = rectArrow;
-		rectSeparator.right = rectSeparator.left + 2;
+		if (!CTheme::Instance().IsDarkTheme())
+			rectSeparator.right = rectSeparator.left + 2;
+		else
+			rectSeparator.right = rectSeparator.left + 1;
 		rectSeparator.DeflateRect(0, 2);
 
 		if (!m_bWinXPTheme || m_bDontUseWinXPTheme)
@@ -283,7 +295,10 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 			rectSeparator.top += m_sizePushOffset.cy;
 		}
 
-		pDC->Draw3dRect(rectSeparator, GetGlobalData()->clrBtnDkShadow, GetGlobalData()->clrBtnHilite);
+		if (!CTheme::Instance().IsDarkTheme())
+			pDC->Draw3dRect(rectSeparator, GetGlobalData()->clrBtnDkShadow, GetGlobalData()->clrBtnHilite);
+		else
+			pDC->FillSolidRect(rectSeparator, RGB(155, 155, 155));
 	}
 }
 
@@ -393,7 +408,7 @@ void CThemeMFCMenuButton::OnButtonDraw(CDC* pDC, const CRect& rect, UINT uiState
 
 	if ((uiState & ODS_DISABLED) && m_bGrayDisabled)
 	{
-		pDC->SetTextColor(GetGlobalData()->clrBtnHilite);
+		pDC->SetTextColor(CTheme::Instance().GetThemeColor(GetGlobalData()->clrBtnHilite));
 
 		CRect rectShft = rectText;
 		rectShft.OffsetRect(1, 1);
