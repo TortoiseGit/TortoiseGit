@@ -37,7 +37,7 @@ bool PullCommand::Execute()
 		for (int i = 0; i < orgPathList.GetCount(); ++i)
 		{
 			auto item = orgPathList[i];
-			if (!item.IsWCRoot() || !GitAdminDir::IsBareRepo(item.GetWinPathString()))
+			if (!item.IsWCRoot() && !GitAdminDir::IsBareRepo(item.GetWinPathString()))
 			{
 				retVal = false;
 				continue;

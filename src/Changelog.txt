@@ -4,6 +4,9 @@ Released: unreleased
 == Features ==
  * Fixed issue #3654: Allow to completely disable the turtle animation, added TortoiseGit advanced setting "DownloadAnimation"
 
+== Bug Fixes ==
+ * Fixed issue #3649: "multi-project pull/fetch/push" not working
+
 = Release 2.11.0 =
 Released: 2020-10-10
 
