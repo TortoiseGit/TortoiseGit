@@ -3787,7 +3787,7 @@ void CMainFrame::OnUpdateColumnStatusBar(CCmdUI* pCmdUI)
 			column = m_pwndRightView->GetCaretPosition().x;
 	}
 	CString sColumn;
-	sColumn.Format(IDS_INDICATOR_COLUMN, column);
+	sColumn.Format(IDS_INDICATOR_COLUMN, column + 1);
 	pCmdUI->SetText(sColumn);
 	pCmdUI->Enable(true);
 }

@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #3649: "multi-project pull/fetch/push" not working
  * Fixed issue #3652: Clone: Auto fill from clipboard with URLs with quotes fails
  * Fixed issue #3651: View Patch window shrinks each time it opens with high DPI
+ * TortoiseGitMerge: Make column index 1 based as most editors are 1-based instead of instead of 0 based
 
 = Release 2.11.0 =
 Released: 2020-10-10
