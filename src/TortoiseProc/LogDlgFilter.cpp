@@ -97,7 +97,7 @@ bool CLogDlgFilter::operator()(GitRevLoglist* pRev, CGitLogListBase* loglist, co
 			auto pathList = pRev->GetFiles(loglist);
 			for (int i = 0; i < pathList.GetCount(); ++i)
 			{
-				scratch += pathList[i].GetWinPath();
+				scratch += pathList[i].GetGitPathString();
 				scratch += L'|';
 				scratch += pathList[i].GetGitOldPathString();
 				scratch += L'\n';
