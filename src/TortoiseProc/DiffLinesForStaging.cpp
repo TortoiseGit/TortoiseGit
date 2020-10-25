@@ -27,6 +27,7 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 	int last_i = 0; // beginning of the last line processed
 	int state = 0;
 	int oldCount = 0, newCount = 0;
+	bool fileWasAdded = false, fileWasDeleted = false;
 	DiffLineTypes lastType = DiffLineTypes::DEFAULT; // type of the last line processed, necessary to handle "No newline at end of file" correctly
 
 	for (int i = 0; ;)
@@ -85,29 +86,52 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 			case 3:
 				if (strncmp(line.get(), "@@ ", 3) == 0)
 				{
-					if (GetOldAndNewLinesCountFromHunk(line, &oldCount, &newCount, true)) // oldCount and newCount are not used here
+					if (GetOldAndNewLinesCountFromHunk(line.get(), &oldCount, &newCount, true))
 					{
 						type = DiffLineTypes::POSITION;
+						fileWasAdded = oldCount == 0;
+						fileWasDeleted = newCount == 0;
 						state = 4;
 					}
 				}
 				break;
 			case 4:
 				if (strncmp(line.get(), "+", 1) == 0)
+				{
+					--newCount;
 					type = DiffLineTypes::ADDED;
+				}
 				else if (strncmp(line.get(), "-", 1) == 0)
+				{
+					--oldCount;
 					type = DiffLineTypes::DELETED;
+				}
 				else if (strncmp(line.get(), " ", 1) == 0)
+				{
+					--oldCount;
+					--newCount;
 					type = DiffLineTypes::DEFAULT;
+				}
 				// Regardless of locales, a "\ No newline at end of file" will always begin with "\ " and 10 is a sane minimum length to look for
 				else if (linebuflen - 1 >= 10 && strncmp(line.get(), "\\ ", 2) == 0)
 				{
-					if (lastType == DiffLineTypes::DEFAULT)
-						type = DiffLineTypes::NO_NEWLINE_BOTHFILES;
-					else if (lastType == DiffLineTypes::DELETED)
-						type = DiffLineTypes::NO_NEWLINE_OLDFILE;
-					else if (lastType == DiffLineTypes::ADDED)
+					if (fileWasAdded)
 						type = DiffLineTypes::NO_NEWLINE_NEWFILE;
+					else if (fileWasDeleted)
+						type = DiffLineTypes::NO_NEWLINE_OLDFILE;
+					else if (oldCount == 0 && newCount > 0)
+						type = DiffLineTypes::NO_NEWLINE_OLDFILE;
+					else if (newCount == 0 && oldCount > 0)
+						type = DiffLineTypes::NO_NEWLINE_NEWFILE;
+					else if (oldCount == 0 && newCount == 0)
+					{
+						if (lastType == DiffLineTypes::ADDED)
+							type = DiffLineTypes::NO_NEWLINE_NEWFILE;
+						else if (lastType == DiffLineTypes::DELETED)
+							type = DiffLineTypes::NO_NEWLINE_OLDFILE;
+						else if (lastType == DiffLineTypes::DEFAULT)
+							type = DiffLineTypes::NO_NEWLINE_BOTHFILES;
+					}
 				}
 				else if(strncmp(line.get(), "@@ ", 3) == 0)
 				{
