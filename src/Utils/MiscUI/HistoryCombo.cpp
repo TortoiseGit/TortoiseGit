@@ -133,19 +133,22 @@ int CHistoryCombo::AddString(const CString& str, INT_PTR pos /* = -1*/, BOOL isS
 
 	//search the Combo for another string like this
 	//and do not insert if found
-	int nIndex = m_bCaseSensitive ? FindStringExactCaseSensitive(-1, combostring) : FindStringExact(-1, combostring);
-	if (nIndex != -1)
+	if (m_bCheckDuplicate)
 	{
-		if (nIndex > pos)
+		int nIndex = m_bCaseSensitive ? FindStringExactCaseSensitive(-1, combostring) : FindStringExact(-1, combostring);
+		if (nIndex != -1)
 		{
-			DeleteItem(nIndex);
-			m_arEntries.RemoveAt(nIndex);
-		}
-		else
-		{
-			if(isSel)
-				SetCurSel(nIndex);
-			return nIndex;
+			if (nIndex > pos)
+			{
+				DeleteItem(nIndex);
+				m_arEntries.RemoveAt(nIndex);
+			}
+			else
+			{
+				if(isSel)
+					SetCurSel(nIndex);
+				return nIndex;
+			}
 		}
 	}
 

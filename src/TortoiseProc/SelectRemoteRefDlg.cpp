@@ -63,6 +63,7 @@ BOOL CSelectRemoteRefDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 
 	m_ctrlRefs.SetCaseSensitive(TRUE);
+	m_ctrlRefs.SetCheckDuplicate(FALSE); // assume no duplicates in list, skip checks -> faster
 	m_ctrlRefs.SetMaxHistoryItems(0x7FFFFFFF);
 
 	GetDlgItem(IDC_EDIT_REMOTE)->SetWindowText(m_sRemote);
@@ -95,7 +96,7 @@ void CSelectRemoteRefDlg::Refresh()
 
 	for (int i = 0; i < static_cast<int>(refs.size()); ++i)
 	{
-		m_ctrlRefs.AddString(refs[i].name);
+		m_ctrlRefs.AddString(refs[i].name, -1, 0);
 	}
 
 	if (m_ctrlRefs.GetCount() > 0)

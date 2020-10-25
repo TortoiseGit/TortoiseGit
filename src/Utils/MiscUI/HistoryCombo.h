@@ -149,6 +149,7 @@ public:
 	void DisableTrimming() { m_bTrim = false; }
 
 	void SetCaseSensitive(BOOL bCaseSensitive) { m_bCaseSensitive = bCaseSensitive; }
+	void SetCheckDuplicate(BOOL bCheckDuplicate) { m_bCheckDuplicate = bCheckDuplicate; }
 
 	int FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind);
 
@@ -179,6 +180,7 @@ protected:
 	BOOL			m_bDyn;
 	BOOL			m_bTrim;
 	BOOL			m_bCaseSensitive;
+	BOOL			m_bCheckDuplicate;
 };
 
 class CCustomAutoCompleteSource : public IEnumString
