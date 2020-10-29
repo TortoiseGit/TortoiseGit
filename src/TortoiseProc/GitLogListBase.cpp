@@ -440,7 +440,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 	GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(Index);
 	HBRUSH brush = nullptr;
 
-	if (!(rItem.state & LVIS_SELECTED))
+	if (pLogEntry && !(rItem.state & LVIS_SELECTED))
 	{
 		int action = pLogEntry->GetRebaseAction();
 		if (action & LOGACTIONS_REBASE_SQUASH)
