@@ -5589,7 +5589,7 @@ msgid "Invalid revision number!"
 msgstr ""
 
 #. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
-msgid "Invalid selection.\n\nIf this is a file that has been added or deleted or is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+msgid "Invalid selection.\n\nIf this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)

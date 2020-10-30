@@ -5100,7 +5100,7 @@ BEGIN
     IDS_PROC_COMMIT_PARTIAL_STAGING "Partial Staging>>"
     IDS_TIPSTAGINGMODE      "While in this mode, the checkbox for each file reflects its staging status:\n- Checked means all the changes for the file are staged\n- Unchecked means all the changes for the file are unstaged\n- A gray square means that only some changes for the file are staged\n\nClicking the checkboxes immediately stages or unstages the whole file.\n\nYou can also click ""Partial Staging"" or ""Partial Unstaging"". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them."
     IDS_ERROR_PARTIALSTAGING 
-                            "Invalid selection.\n\nIf this is a file that has been added or deleted or is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+                            "Invalid selection.\n\nIf this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
     IDS_PROC_COMMIT_HIDE_UNSTAGING "Hide Unstaging<<"
     IDS_PROC_COMMIT_PARTIAL_UNSTAGING "Partial Unstaging>>"
     IDS_PROC_COMMIT_HIDE_STAGING "Hide Staging<<"

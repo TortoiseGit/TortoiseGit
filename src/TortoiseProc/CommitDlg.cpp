@@ -2418,6 +2418,17 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 				if (m_bStagingSupport)
 				{
 					// This will only work if called after ShowPartialStagingTextAndUpdateFlag (or Unstaging)
+
+					if (!(p->m_Action & CTGitPath::LOGACTIONS_ADDED) && !(p->m_Action & CTGitPath::LOGACTIONS_DELETED) && !(p->m_Action & CTGitPath::LOGACTIONS_MISSING) && !(p->m_Action & CTGitPath::LOGACTIONS_UNMERGED) && !(p->IsDirectory()))
+					{
+						if (!m_bPartialStagingTextCurrentlyIsShow)
+							m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
+						else
+							m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
+					}
+					else
+						m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
+
 					if (!p->GetGitOldPathString().IsEmpty())
 						cmd.Format(L"git.exe diff%s -- \"%s\" \"%s\"", m_bPartialStagingTextCurrentlyIsShow ? L" --cached" : L"", static_cast<LPCTSTR>(p->GetGitOldPathString()), static_cast<LPCTSTR>(p->GetGitPathString()));
 					else
@@ -2435,6 +2446,8 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 				}
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
+			else
+				m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
 			if (m_bStagingSupport)
 				break; // only one file at a time (the hunk staging code supports many files at once, so it's possible to relax this restriction for that case)
 		}
@@ -2819,7 +2832,6 @@ void CCommitDlg::OnStnClickedPartialStaging()
 	if (m_bPartialStagingTextCurrentlyIsShow) // clicked Partial Staging, either with the patch window closed or open in Unstaging mode
 	{
 		CreatePatchViewDlg();
-		m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
 		ShowPartialStagingTextAndUpdateFlag(false); // change "Partial Staging" to "Hide Staging"
 		ShowPartialUnstagingTextAndUpdateFlag(true); // show "Partial Unstaging"
 		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
@@ -2837,7 +2849,6 @@ void CCommitDlg::OnStnClickedPartialUnstaging()
 	if (m_bPartialUnstagingTextCurrentlyIsShow) // clicked Partial Unstaging, either with the patch window closed or open in Staging mode
 	{
 		CreatePatchViewDlg();
-		m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
 		ShowPartialUnstagingTextAndUpdateFlag(false); // change "Partial Unstaging" to "Hide Unstaging"
 		ShowPartialStagingTextAndUpdateFlag(true); // show "Partial Staging"
 		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
