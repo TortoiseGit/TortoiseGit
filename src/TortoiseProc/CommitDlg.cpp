@@ -1523,8 +1523,11 @@ UINT CCommitDlg::StatusThread()
 				GitRev headRevision;
 				if (headRevision.GetParentFromHash(hash))
 					MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-				// do not allow to show diff to "last" revision if it has more that one parent
-				if (headRevision.ParentsCount() != 1)
+				// Allow only to show diff to "last" revision if it has more than one parent or staging support is enabled.
+				// For staging support, this is needed because when doing an amend and staging support is enabled, "Show diff to last commit" must stay checked and grayed out
+				// (staging and unstaging wouldn't make sense with it unchecked), and without this code, "show diff to last commit" would not be grayed out
+				// unless the commit being amended were a merge commit. It will have no effect unless "amend last commit" is checked.
+				if (headRevision.ParentsCount() != 1 || m_bStagingSupport)
 				{
 					m_bAmendDiffToLastCommit = TRUE;
 					SendMessage(WM_UPDATEDATAFALSE);
@@ -2704,6 +2707,12 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+		if (m_bStagingSupport)
+		{
+			m_bAmendDiffToLastCommit = true;
+			UpdateData(false);
+			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
+		}
 		if (m_bSetCommitDateTime)
 			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
 	}
@@ -3035,6 +3044,12 @@ void CCommitDlg::PrepareStagingSupport()
 	m_ListCtrl.EnableThreeStateCheckboxes(m_bStagingSupport);
 	if (m_bStagingSupport)
 	{
+		if (m_bCommitAmend)
+		{
+			m_bAmendDiffToLastCommit = true;
+			UpdateData(false);
+			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
+		}
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_TIPSTAGINGMODE, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, L"HintStagingMode", IDS_MSGBOX_DONOTSHOWAGAIN);
 		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_HIDE);
 		ShowPartialStagingTextAndUpdateFlag(true);
