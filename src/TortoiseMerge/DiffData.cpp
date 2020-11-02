@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2017 - TortoiseSVN
+// Copyright (C) 2006-2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -418,8 +418,8 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 					if (changedWS || dwIgnoreWS == 0)
 					{
 						// one-pane view: two lines, one 'removed' and one 'added'
-						m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVEDWHITESPACE, yourline, endingBase, HIDESTATE_SHOWN, -1);
-						m_YourBaseBoth.AddData(sCurrentYourLine, DIFFSTATE_ADDEDWHITESPACE, yourline, endingYours, HIDESTATE_SHOWN, -1);
+						m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVEDWHITESPACE, yourline, endingBase, changedWS && dwIgnoreWS ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
+						m_YourBaseBoth.AddData(sCurrentYourLine, DIFFSTATE_ADDEDWHITESPACE, yourline, endingYours, changedWS && dwIgnoreWS ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
 					}
 					else
 					{
@@ -528,8 +528,8 @@ CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourFilena
 						ds = DIFFSTATE_FILTEREDDIFF;
 					}
 
-					m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, HIDESTATE_SHOWN, -1);
-					m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, HIDESTATE_SHOWN, -1);
+					m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, (ds == DIFFSTATE_NORMAL) && dwIgnoreWS ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
+					m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, (ds == DIFFSTATE_NORMAL) && dwIgnoreWS ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
 				}
 				else
 				{
