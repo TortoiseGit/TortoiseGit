@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2013 - TortoiseSVN
+// Copyright (C) 2010-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -149,28 +149,28 @@ void AdjustExistingAndTail(svn_diff_t * tempdiff, tsvn_svn_diff_t_extension *& e
 	}
 }
 
-CString GetTrimmedString(const CString& s1, DWORD dwIgnoreWS)
+CString GetTrimmedString(const CString& s1, IgnoreWS ignoreWs)
 {
-	if(dwIgnoreWS == 1)
+	if (ignoreWs == IgnoreWS::AllWhiteSpaces)
 	{
 		CString s2 = s1;
 		s2.Remove(' ');
 		s2.Remove('\t');
 		return s2;
 	}
-	else if(dwIgnoreWS == 2)
+	else if (ignoreWs == IgnoreWS::WhiteSpaces)
 		return CString(s1).TrimLeft(L" \t");
 	return CString(s1).TrimRight(L" \t");
 }
 
-EquivalencyGroup * ExtractGroup(const LineToGroupMap & map, const CString & line, DWORD dwIgnoreWS)
+EquivalencyGroup* ExtractGroup(const LineToGroupMap& map, const CString& line, IgnoreWS ignoreWS)
 {
-	if (dwIgnoreWS)
-		return map.find(GetTrimmedString(line, dwIgnoreWS));
+	if (ignoreWS != IgnoreWS::None)
+		return map.find(GetTrimmedString(line, ignoreWS));
 	return map.find(line);
 }
 
-tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBase, DWORD dwIgnoreWS, apr_pool_t * pool)
+tsvn_svn_diff_t_extension* CDiffData::MovedBlocksDetect(svn_diff_t* diffYourBase, IgnoreWS ignoreWs, apr_pool_t* pool)
 {
 	LineToGroupMap map;
 	tsvn_svn_diff_t_extension* head = nullptr;
@@ -189,8 +189,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		for(int i = 0; i < tempdiff->original_length; ++i, ++baseLine)
 		{
 			const CString &sCurrentBaseLine = m_arBaseFile.GetAt(baseLine);
-			if (dwIgnoreWS)
-				map.Add(baseLine, GetTrimmedString(sCurrentBaseLine, dwIgnoreWS), 0);
+			if (ignoreWs != IgnoreWS::None)
+				map.Add(baseLine, GetTrimmedString(sCurrentBaseLine, ignoreWs), 0);
 			else
 				map.Add(baseLine, sCurrentBaseLine, 0);
 		}
@@ -200,8 +200,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		for(int i = 0; i < tempdiff->modified_length; ++i, ++yourLine)
 		{
 			const CString &sCurrentYourLine = m_arYourFile.GetAt(yourLine);
-			if(dwIgnoreWS)
-				map.Add(yourLine, GetTrimmedString(sCurrentYourLine, dwIgnoreWS), 1);
+			if (ignoreWs != IgnoreWS::None)
+				map.Add(yourLine, GetTrimmedString(sCurrentYourLine, ignoreWs), 1);
 			else
 				map.Add(yourLine, sCurrentYourLine, 1);
 		}
@@ -219,7 +219,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		int i;
 		for(i = static_cast<int>(tempdiff->original_start); (i - tempdiff->original_start)< tempdiff->original_length; ++i)
 		{
-			EquivalencyGroup * group = ExtractGroup(map, m_arBaseFile.GetAt(i), dwIgnoreWS);
+			EquivalencyGroup* group = ExtractGroup(map, m_arBaseFile.GetAt(i), ignoreWs);
 			if(group->IsPerfectMatch())
 			{
 				pGroup = group;
@@ -237,8 +237,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		int j1 = j - 1;
 		for(; (i1 >= tempdiff->original_start) && (j1>=0) && (i1>=0); --i1, --j1)
 		{
-			EquivalencyGroup * pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i1), dwIgnoreWS);
-			EquivalencyGroup * pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j1), dwIgnoreWS);
+			EquivalencyGroup* pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i1), ignoreWs);
+			EquivalencyGroup* pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j1), ignoreWs);
 			if(pGroup1 != pGroup0)
 				break;
 			pGroup0->m_LinesLeft.Remove(i1);
@@ -256,8 +256,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		{
 			if(i2 >= m_arBaseFile.GetCount() || j2 >= m_arYourFile.GetCount())
 				break;
-			EquivalencyGroup * pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i2), dwIgnoreWS);
-			EquivalencyGroup * pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j2), dwIgnoreWS);
+			EquivalencyGroup* pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i2), ignoreWs);
+			EquivalencyGroup* pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j2), ignoreWs);
 			if(pGroup1 != pGroup0)
 				break;
 			pGroup0->m_LinesLeft.Remove(i2);
@@ -344,7 +344,7 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		int j = 0;
 		for(j = static_cast<int>(tempdiff->modified_start); (j - tempdiff->modified_start) < tempdiff->modified_length; ++j)
 		{
-			EquivalencyGroup * group = ExtractGroup(map, m_arYourFile.GetAt(j), dwIgnoreWS);
+			EquivalencyGroup* group = ExtractGroup(map, m_arYourFile.GetAt(j), ignoreWs);
 			if(group->IsPerfectMatch())
 			{
 				pGroup = group;
@@ -370,8 +370,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		int j1 = j-1;
 		for ( ; (j1>=tempdiff->modified_start) && (j1>=0) && (i1>=0); --i1, --j1)
 		{
-			EquivalencyGroup * pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i1), dwIgnoreWS);
-			EquivalencyGroup * pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j1), dwIgnoreWS);
+			EquivalencyGroup* pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i1), ignoreWs);
+			EquivalencyGroup* pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j1), ignoreWs);
 			if (pGroup0 != pGroup1)
 				break;
 			pGroup0->m_LinesLeft.Remove(i1);
@@ -388,8 +388,8 @@ tsvn_svn_diff_t_extension * CDiffData::MovedBlocksDetect(svn_diff_t * diffYourBa
 		{
 			if(i2 >= m_arBaseFile.GetCount() || j2 >= m_arYourFile.GetCount())
 				break;
-			EquivalencyGroup * pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i2), dwIgnoreWS);
-			EquivalencyGroup * pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j2), dwIgnoreWS);
+			EquivalencyGroup* pGroup0 = ExtractGroup(map, m_arBaseFile.GetAt(i2), ignoreWs);
+			EquivalencyGroup* pGroup1 = ExtractGroup(map, m_arYourFile.GetAt(j2), ignoreWs);
 			if (pGroup0 != pGroup1)
 				break;
 			pGroup0->m_LinesLeft.Remove(i2);

@@ -2972,15 +2972,15 @@ void CMainFrame::OnViewComparewhitespaces()
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	regIgnoreWS = 0;
+	regIgnoreWS = static_cast<int>(IgnoreWS::None);
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewComparewhitespaces(CCmdUI *pCmdUI)
 {
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	DWORD dwIgnoreWS = regIgnoreWS;
-	pCmdUI->SetCheck(dwIgnoreWS == 0);
+	IgnoreWS ignoreWs = static_cast<IgnoreWS>(static_cast<DWORD>(regIgnoreWS));
+	pCmdUI->SetCheck(ignoreWs == IgnoreWS::None);
 }
 
 void CMainFrame::OnViewIgnorewhitespacechanges()
@@ -2988,15 +2988,15 @@ void CMainFrame::OnViewIgnorewhitespacechanges()
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	regIgnoreWS = 2;
+	regIgnoreWS = static_cast<int>(IgnoreWS::WhiteSpaces);
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewIgnorewhitespacechanges(CCmdUI *pCmdUI)
 {
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	DWORD dwIgnoreWS = regIgnoreWS;
-	pCmdUI->SetCheck(dwIgnoreWS == 2);
+	IgnoreWS ignoreWs = static_cast<IgnoreWS>(static_cast<DWORD>(regIgnoreWS));
+	pCmdUI->SetCheck(ignoreWs == IgnoreWS::WhiteSpaces);
 }
 
 void CMainFrame::OnViewIgnoreallwhitespacechanges()
@@ -3004,15 +3004,15 @@ void CMainFrame::OnViewIgnoreallwhitespacechanges()
 	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	regIgnoreWS = 1;
+	regIgnoreWS = static_cast<int>(IgnoreWS::AllWhiteSpaces);
 	LoadViews(-1);
 }
 
 void CMainFrame::OnUpdateViewIgnoreallwhitespacechanges(CCmdUI *pCmdUI)
 {
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
-	DWORD dwIgnoreWS = regIgnoreWS;
-	pCmdUI->SetCheck(dwIgnoreWS == 1);
+	IgnoreWS ignoreWs = static_cast<IgnoreWS>(static_cast<DWORD>(regIgnoreWS));
+	pCmdUI->SetCheck(ignoreWs == IgnoreWS::AllWhiteSpaces);
 }
 
 void CMainFrame::OnViewMovedBlocks()
