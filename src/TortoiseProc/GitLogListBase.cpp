@@ -2180,7 +2180,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 			}
 
-			if ((m_ContextMenuMask & GetContextMenuBit(ID_COMPARETWOCOMMITCHANGES)) && selectedCount == 2 && !IsSelectionContinuous())
+			if ((m_ContextMenuMask & GetContextMenuBit(ID_COMPARETWOCOMMITCHANGES)) && selectedCount == 2)
 			{
 				bAddSeparator = true;
 				popup.AppendMenuIcon(ID_COMPARETWOCOMMITCHANGES, IDS_LOG_POPUP_COMPARECHANGESET, IDI_DIFF);
