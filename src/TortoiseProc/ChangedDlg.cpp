@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2020 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ CChangedDlg::~CChangedDlg()
 void CChangedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CResizableStandAloneDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BRANCH, m_BranchLink);
 	DDX_Control(pDX, IDC_CHANGEDLIST, m_FileListCtrl);
 	DDX_Control(pDX, IDC_BUTTON_STASH, m_ctrlStash);
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
@@ -73,6 +74,7 @@ BEGIN_MESSAGE_MAP(CChangedDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_SHOWLOCALCHANGESIGNORED, &CChangedDlg::OnBnClickedShowlocalchangesignored)
 	ON_BN_CLICKED(IDC_WHOLE_PROJECT, OnBnClickedWholeProject)
 	ON_BN_CLICKED(IDC_SHOWSTAGED, OnBnClickedShowStaged)
+	ON_NOTIFY(NM_CLICK, IDC_BRANCH, &CChangedDlg::OnNMClickBranchLink)
 END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
@@ -110,6 +112,7 @@ BOOL CChangedDlg::OnInitDialog()
 	AdjustControlSize(IDC_WHOLE_PROJECT);
 	AdjustControlSize(IDC_SHOWSTAGED);
 
+	AddAnchor(IDC_BRANCH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_CHANGEDLIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SUMMARYTEXT, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SHOWUNVERSIONED, BOTTOM_LEFT);
@@ -156,6 +159,8 @@ UINT CChangedDlg::ChangedStatusThread()
 	DialogEnableWindow(IDC_SHOWLOCALCHANGESIGNORED, FALSE);
 	DialogEnableWindow(IDC_SHOWSTAGED, FALSE);
 
+	m_BranchLink.SetWindowText(L"");
+
 	g_Git.RefreshGitIndex();
 
 	m_FileListCtrl.StoreScrollPos();
@@ -179,6 +184,7 @@ UINT CChangedDlg::ChangedStatusThread()
 	if (m_pathList.GetCount() == 1)
 		bIsDirectory = m_pathList[0].IsDirectory() || m_pathList[0].IsEmpty(); // if it is empty it is g_Git.m_CurrentDir which is a directory
 
+	m_BranchLink.SetWindowText(L"<a>" + g_Git.GetCurrentBranch() + L"</a>");
 	SetDlgItemText(IDOK, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)));
 	DialogEnableWindow(IDC_REFRESH, TRUE);
 	DialogEnableWindow(IDC_SHOWUNVERSIONED, bIsDirectory);
@@ -313,6 +319,13 @@ LRESULT CChangedDlg::OnSVNStatusListCtrlItemCountChanged(WPARAM, LPARAM)
 {
 	UpdateStatistics();
 	return 0;
+}
+
+void CChangedDlg::OnNMClickBranchLink(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+{
+	if (CAppUtils::Switch(GetSafeHwnd()))
+		OnBnClickedRefresh();
+	*pResult = 0;
 }
 
 BOOL CChangedDlg::PreTranslateMessage(MSG* pMsg)
