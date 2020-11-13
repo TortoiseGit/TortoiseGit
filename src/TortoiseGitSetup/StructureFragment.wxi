@@ -501,6 +501,9 @@
 						<?if $(var.PlatformToolsetVersion) >= 142 ?>
 						<File Id="F__msvcp140_codecvt_ids" Name="msvcp140_codecvt_ids.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_codecvt_ids.dll" />
 						<?endif ?>
+						<?if $(var.VCToolsRedistVersionCheck) >= 1428 ?>
+						<File Id="F__msvcp140_atomic_wait" Name="msvcp140_atomic_wait.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_atomic_wait.dll" />
+						<?endif ?>
 						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
 						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
 						<?if $(var.Platform) = "x64" and $(var.PlatformToolsetVersion) >= 142 ?>

@@ -31,6 +31,11 @@
 		<DefineConstants Condition="'$(Win10SDKVer)' != ''">Win10SDKVer=$(Win10SDKVer).0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup>
+		<VCToolsRedistVersionCheck Condition="$(VCToolsRedistVersion.Substring(0, 5)) >= 14.28">1428</VCToolsRedistVersionCheck>
+		<VCToolsRedistVersionCheck Condition="$(VCToolsRedistVersionCheck) == ''">0</VCToolsRedistVersionCheck>
+		<DefineConstants>VCToolsRedistVersionCheck=$(VCToolsRedistVersionCheck);$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup>
 		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
 		<IntermediateOutputPath Condition="'$(Platform)'=='x86'">..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
@@ -45,7 +50,7 @@
 		</BuildDependsOn>
 	</PropertyGroup>
 	<Target Name="CheckVCRedistVersion">
-		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files." Condition="$(VCToolsRedistVersion.Substring(0, 5)) > 14.27" />
+		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files and adjust 'VCToolsRedistVersionCheck'." Condition="$(VCToolsRedistVersion.Substring(0, 5)) > 14.28" />
 		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) > 18362" />
 	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
