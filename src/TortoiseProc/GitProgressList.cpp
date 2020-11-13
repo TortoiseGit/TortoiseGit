@@ -536,15 +536,25 @@ UINT CGitProgressList::ProgressThread()
 	if (!m_bFinishedItemAdded)
 	{
 		CString log, str;
+		COLORREF color;
 		if (bSuccess)
+		{
 			str.LoadString(IDS_SUCCESS);
+			if (CTheme::Instance().IsHighContrastMode())
+				color = ::GetSysColor(COLOR_WINDOWTEXT);
+			else
+				color = CTheme::Instance().IsDarkTheme() ? RGB(0, 178, 255) : RGB(0, 0, 255);
+		}
 		else
+		{
 			str.LoadString(IDS_FAIL);
+			color = CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0);
+		}
 		log.Format(L"%s (%lu ms @ %s)", static_cast<LPCTSTR>(str), time, static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false)));
 
 		// there's no "finished: xxx" line at the end. We add one here to make
 		// sure the user sees that the command is actually finished.
-		ReportString(log, CString(MAKEINTRESOURCE(IDS_PROGRS_FINISHED)), bSuccess? RGB(0,0,255) : RGB(255,0,0));
+		ReportString(log, CString(MAKEINTRESOURCE(IDS_PROGRS_FINISHED)), !(CTheme::Instance().IsHighContrastMode() && bSuccess), color);
 	}
 
 	int count = GetItemCount();

@@ -89,7 +89,7 @@ public:
 	{
 	public:
 		NotificationData()
-		: color(CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT))
+		: color(::GetSysColor(COLOR_WINDOWTEXT))
 		, colorIsDirect(false)
 		, bAuxItem(false)
 		{};
