@@ -83,6 +83,7 @@
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\StringUtils.cpp" />
     <ClCompile Include="..\Utils\SysImageList.cpp" />
+    <ClCompile Include="..\Utils\SysInfo.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
     <ClCompile Include="..\Utils\TempFile.cpp" />
     <ClCompile Include="..\Utils\Theme.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\StringUtils.h" />
     <ClInclude Include="..\Utils\SysImageList.h" />
+    <ClInclude Include="..\Utils\SysInfo.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
     <ClInclude Include="..\Utils\TempFile.h" />
     <ClInclude Include="..\Utils\Theme.h" />

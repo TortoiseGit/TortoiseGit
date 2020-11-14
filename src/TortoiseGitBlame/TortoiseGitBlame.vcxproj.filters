@@ -198,6 +198,9 @@
     <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp">
       <Filter>Utils\MiscUI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\SysInfo.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -397,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h">
       <Filter>Utils\MiscUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
