@@ -73,6 +73,6 @@ TEST(ProjectPropertiesTest, ReplaceBugIDPlaceholder)
 	ASSERT_STREQ(L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=123&bla=%25#anchor", url);
 
 	url = L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%BUGID%&bla=%25#anchor";
-	ProjectProperties::ReplaceBugIDPlaceholder(url, L"Äbf%def#g<hi j/kl+mn&o=,?");
-	ASSERT_STREQ(L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%C3%84bf%25def%23g%3Chi%20j%2Fkl%2Bmn%26o%3D,%3F&bla=%25#anchor", url);
+	ProjectProperties::ReplaceBugIDPlaceholder(url, L"Äbf%def#g<hi j/kl+mn&o=,?!*'();:@&=+$,/?%#[]");
+	ASSERT_STREQ(L"http://tortoisesvn.tigris.org/issues/show_bug.cgi?id=%C3%84bf%25def%23g%3Chi%20j%2Fkl%2Bmn%26o%3D%2C%3F%21%2A%27%28%29%3B%3A%40%26%3D%2B%24%2C%2F%3F%25%23%5B%5D&bla=%25#anchor", url);
 }
