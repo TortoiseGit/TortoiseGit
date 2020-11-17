@@ -1,4 +1,4 @@
-personal_ws-1.1 $LANG$ 0
+personal_ws-1.1 $LANG$ 0 utf-8
 API
 APPDATA
 Araxis
@@ -45,12 +45,12 @@ IIS
 IP
 KDiff
 keygen
-Küng
+KÃ¼ng
 LDAP
 LF
 LibreOffice
 Logemann
-Lübbe
+LÃ¼bbe
 mailmap
 MAPI
 MFC
@@ -59,7 +59,7 @@ MSDN
 msi
 msysGit
 MUA
-Müller
+MÃ¼ller
 NotePad
 NTLM
 Onken

@@ -3,6 +3,9 @@
 <project name="doc.build.user">
 	<property name="docformats" value="html" />
 
+	<!-- and set the path to aspell -->
+	<property name="path.spellcheck" value="aspell"/>
+
 	<!-- On a Debian based system you need the following packages: xsltproc docbook-xsl nant fop fonts-freefont-ttf -->
 	<property name="path.bin" value="${path::get-full-path('/usr/bin')}" unless="${property::exists('path.bin')}" />
 	<property name="path.fop" value="/usr/bin" unless="${property::exists('path.fop')}" />

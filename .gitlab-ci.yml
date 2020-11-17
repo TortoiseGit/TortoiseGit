@@ -5,12 +5,16 @@ doc:
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0KInstall packages"
     - apt-get update -qq
-    - apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant
+    - apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - mv doc/doc.build.user.linux.templ doc/doc.build.user
     - cd doc
-    - nant
+    - nant -D:spellcheck=true
+    - if [[ $(ls -1 Aspell/*.log 2>/dev/null | wc -l) -ge 1 ]]; then
+        echo "!!! Found typos !!!";
+        cat Aspell/*.log;
+      fi
   except:
     refs:
       - tags
@@ -21,3 +25,4 @@ doc:
       - doc/source/**/*
       - doc/xsl/**/*
       - doc/doc.build*
+      - doc/Aspell/*

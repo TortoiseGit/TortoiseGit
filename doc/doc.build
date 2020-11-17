@@ -97,7 +97,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<copy file="source/${lang.base}/Version.in" tofile="source/${lang.base}/version.xml" overwrite="true"/>
 
 		<!-- tune path to xsltproc.exe in aspell.bat -->
-		<copy file="Aspell/aspell.in" tofile="Aspell/aspell.bat" overwrite="true">
+		<copy file="Aspell/aspell.bat.in" tofile="Aspell/aspell.bat" overwrite="true" unless="${platform::is-unix()}">
 			<filterchain>
 				<replacetokens begintoken="$" endtoken="$">
 					<token key="XSLTProcPath" value="${path.bin}" />
@@ -350,38 +350,40 @@ All user/site specific configuration is stored in doc.build.user.
 
 	<target name="spellcheck" description="Run spellchecker on files">
 		<echo message="Spellchecking: '${app} ${lang.target}' This may take a few minutes"/>
-		<property name="spellcheck.log" value="ASpell/${app}_${lang.target}.log"/>
-		<mkdir dir="ASpell/${app}_${lang.target}"/>
+		<property name="spellcheck.log" value="Aspell/${app}_${lang.target}.log"/>
+		<property name="script.extension" value=".bat" if="${platform::is-windows()}"/>
+		<property name="script.extension" value=".sh" if="${platform::is-unix()}"/>
+		<mkdir dir="Aspell/${app}_${lang.target}"/>
 
-		<echo message="--- Spellchecking: '${lang.target}'"
-			file="${spellcheck.log}"
-			failonerror="false"/>
+		<delete dir="${spellcheck.log}" failonerror="false"/>
 
-		<copy file="Aspell/TortoiseGit.tmpl.pws" tofile="Aspell/Temp.pws" overwrite="true">
+		<copy file="Aspell/TortoiseGit.tmpl.pws" tofile="Aspell/Temp.pws" overwrite="true" inputencoding="utf-8" outputencoding="utf-8">
 			<filterchain>
 				<replacetokens begintoken="$" endtoken="$">
 					<token key="LANG" value="${lang.target}" />
 				</replacetokens>
 			</filterchain>
 		</copy>
+		<exec program="sed" commandline=" -i '1s/^\xEF\xBB\xBF//' ./Aspell/Temp.pws" if="${platform::is-unix()}"/> <!-- outputencoding="utf-8" inserts BOM, aspell doesn't like that -->
 
 		<foreach item="File" property="file.base">
 			<in>
 				<items>
+					<exclude name="source/${lang.base}/TortoiseGit/git_doc/*.xml"/>
 					<include name="source/${lang.base}/${app}/**/*.xml"/>
 					<include name="source/${lang.base}/glossary.xml"/>
 					<include name="source/${lang.base}/wishlist.xml"/>
 				</items>
 			</in>
 			<do>
-				<property name="file.target" value="${string::replace(file.base,'\'+lang.base+'\','\'+lang.target+'\')}"/>
-				<property name="file.log" value="ASpell\${app}_${lang.target}\${path::get-file-name(file.target)}.log"/>
+				<property name="file.target" value="${string::replace(file.base, '/' + lang.base + '/', '/' + lang.target + '/')}"/>
+				<property name="file.log" value="Aspell/${app}_${lang.target}/${path::get-file-name(file.target)}.log"/>
 
 				<uptodate property="file.target.uptodate">
 					<sourcefiles>
 						<include name="${file.target}"/>
-						<include name="ASpell/${lang.target}.pws"/>
-						<include name="ASpell/TortoiseGit.tmpl.pws"/>
+						<include name="Aspell/${lang.target}.pws"/>
+						<include name="Aspell/TortoiseGit.tmpl.pws"/>
 					</sourcefiles>
 					<targetfiles>
 						<include name="${file.log}"/>
@@ -390,11 +392,11 @@ All user/site specific configuration is stored in doc.build.user.
 
 				<if test="${not file.target.uptodate}">
 					<echo message="Checking: ${path::get-file-name(file.target)}"/>
-					<exec program="Aspell/aspell.bat"
-						commandline="${path.spellcheck} ${lang.target} ${file.target} ${file.log}"
+					<exec program="Aspell/aspell${script.extension}"
+						commandline="&quot;${path.spellcheck}&quot; &quot;${lang.target}&quot; &quot;${file.target}&quot; &quot;${file.log}&quot;"
 						failonerror="false"/>
 				</if>
-				<exec program="Aspell/append.bat"
+				<exec program="Aspell/append${script.extension}"
 					commandline="${file.log} ${spellcheck.log}"/>
 			</do>
 		</foreach>
