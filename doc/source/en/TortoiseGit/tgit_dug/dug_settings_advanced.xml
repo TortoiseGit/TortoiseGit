@@ -485,7 +485,7 @@
 					This option allows to restrict this behavior for files which do not exceed a specific size (in KiB).
 					The default maximum file size is 10 MiB (i.e., 10 * 1024 KiB = <literal>10240</literal> KiB).
 					Set this to 0 in order to make TGitCache only check the timestamps (as TortoiseGit 1.7.0 up to 1.7.12 did;
-					before TortoiseGit 1.9.0.0 this was controlled by TGitCacheCheckContent).
+					before TortoiseGit 1.9.0.0 this was controlled by <literal>TGitCacheCheckContent</literal>).
 					Disabling checking the file contents can lower disk access and CPU time of the TGitCache process, however, overlay
 					accuracy might not be as accurate as with checking of the file contents enabled.
 				</para>

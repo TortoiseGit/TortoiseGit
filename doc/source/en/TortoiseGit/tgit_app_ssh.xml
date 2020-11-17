@@ -14,7 +14,7 @@
 				One special "session" is the <literal>Default Settings</literal> session, where you can set default values for all new connections (e.g. a key, a default username, enable compression, force SSH version 2 or change the default port and so on).
 			</para>
 			<para>
-				You can also save settings for (single) SSH connections as sessions. Take one server where the SSH server only listens on a different port, then you can set up all settings and save it to e.g. "SERVERNAME". Now you can access this saved settings by starting PuTTY and double clicking "SERVERNAME" in the saved sessions list <emphasis>OR</emphasis>, when using TortoiseGit, plink or other putty applications, the entered servername (e.g. git@<emphasis>SERVERNAME</emphasis>:/test.git) will be matched against the saved sessions list and if found, the settings of the saved session are used.
+				You can also save settings for (single) SSH connections as sessions. Take one server where the SSH server only listens on a different port, then you can set up all settings and save it to e.g. <literal>SERVERNAME</literal>. Now you can access this saved settings by starting PuTTY and double clicking <literal>SERVERNAME</literal> in the saved sessions list <emphasis>OR</emphasis>, when using TortoiseGit, plink or other putty applications, the entered host name/destination (e.g. <literal>git@<emphasis>SERVERNAME</emphasis>:/test.git</literal>) will be matched against the saved sessions list and if found, the settings of the saved session are used.
 			</para>
 			<para>
 				Many people like to use Pageant for storing all their keys.
@@ -52,19 +52,19 @@
 			<sect3 id="tgit-ssh-faq-differentport-wholeserver">
 				<title>All connections to a server should use the different port</title>
 				<para>
-					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and into the <guilabel>Saved Sessions</guilabel> field. Change the port number to the number you need and click on <guibutton>Save</guibutton>. Now, when TortoiseGit/plink uses this servername the port is automatically loaded from the session.
+					Start PuTTY, fill in the remote host name (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and into the <guilabel>Saved Sessions</guilabel> field. Change the port number to the number you need and click on <guibutton>Save</guibutton>. Now, when TortoiseGit/plink uses this host name and the port is automatically loaded from the session.
 				</para>
 			</sect3>
 			<sect3 id="tgit-ssh-faq-differentport-onesession">
 				<title>One special connection should use a different port</title>
 				<para>
-					Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Change the port number to the number you need and click on <guibutton>Save</guibutton>.
+					Start PuTTY, fill in the remote host name (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the remote host name followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Change the port number to the number you need and click on <guibutton>Save</guibutton>.
 				</para>
 				<para>
-					Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and port from the session.
+					Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the remote host name: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the stored remote host name and port from the session.
 				</para>
 				<para>
-					You can create several sessions for a server with different session names, but make sure you do not use the servername (<emphasis>example.com</emphasis> here) as the exact session name, otherwise these settings will be the default ones if you try to connect to the server (<emphasis>example.com</emphasis>).
+					You can create several sessions for a server with different session names, but make sure you do not use the remote host name (<emphasis>example.com</emphasis> here) as the exact session name, otherwise these settings will be the default ones if you try to connect to the server (<emphasis>example.com</emphasis>).
 				</para>
 			</sect3>
 		</sect2>
@@ -72,10 +72,10 @@
 		<sect2 id="tgit-ssh-faq-differentkeys">
 			<title>How to use two different SSH keys for the same user on the same host</title>
 			<para>
-				Start PuTTY, fill in the servername (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the servername followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Go to <guilabel>Connection</guilabel>-><guilabel>SSH</guilabel>-><guilabel>Auth</guilabel> and select the key which should be used for this connection. Now go back to <guilabel>Session</guilabel> and hit <guibutton>Save</guibutton>.
+				Start PuTTY, fill in the remote host name (<emphasis>example.com</emphasis> here) in the <guilabel>Host Name</guilabel>-field and put the remote host name followed by e.g. a number into the <guilabel>Saved Sessions</guilabel> field (e.g. <emphasis>example.com1</emphasis> or whatever you like). Go to <guilabel>Connection</guilabel>-><guilabel>SSH</guilabel>-><guilabel>Auth</guilabel> and select the key which should be used for this connection. Now go back to <guilabel>Session</guilabel> and hit <guibutton>Save</guibutton>.
 			</para>
 			<para>
-				Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the servername: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the correct servername and SSH key from the session.
+				Now, when you want to use this saved session use <emphasis>example.com1</emphasis> as the remote host name: Clone <emphasis>git@example.com1:/test.git</emphasis>. Plink detects that this is a saved session and loads the stored remote host name and SSH key from the session.
 			</para>
 		</sect2>
 	</sect1>

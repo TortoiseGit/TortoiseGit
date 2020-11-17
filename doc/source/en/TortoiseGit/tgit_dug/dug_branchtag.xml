@@ -99,7 +99,7 @@
 					<literal>gpg.program</literal> (e.g., <filename>C:/Program Files (x86)/GNU/GnuPG/pub/gpg.exe</filename>).
 					We tested this with
 					<ulink url="https://www.gpg4win.de/">
-						<citetitle>Gpg4win</citetitle>
+						<citetitle condition="pot">Gpg4win</citetitle>
 					</ulink>
 					(Gpg4win vanilla is sufficient and with version 2.2.x it is also compatible to GPG 1.4 key files).
 				</para>

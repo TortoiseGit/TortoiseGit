@@ -54,10 +54,10 @@
 		</para>
 		<para>
 			TortoiseGit automatically finds <filename>git.exe</filename> if a normal msysGit/Git for Windows installation is on the computer
-			or <filename>git.exe</filename> is on the <emphasis>PATH</emphasis> (and is runnable in a normal <filename>cmd.exe</filename> session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysGit development package).
+			or <filename>git.exe</filename> is on the <literal>PATH</literal> (and is runnable in a normal <filename>cmd.exe</filename> session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <literal>PATH</literal> if you use the msysGit development package).
 		</para>
 		<para>
-			For completely disabling automatic update checking see <emphasis>VersionCheck</emphasis> in <xref linkend="tgit-dug-settings-registry"/>.
+			For completely disabling automatic update checking see <literal>VersionCheck</literal> in <xref linkend="tgit-dug-settings-registry"/>.
 		</para>
 	</sect1>
 	<sect1 id="tgit-admins-upgradecheck">
@@ -84,14 +84,14 @@
 			If you're responsible for a lot of users in your domain, you might want
 			your users to use only versions you have approved and not have them install
 			always the latest version (or to save bandwidth or want to add some further notes for installation). You probably don't want that upgrade dialog
-			to show up so your users don't go and upgrade immediately (to disable update checking at all (e.g. because you use group policies to deploy TortoiseGit, see <xref linkend="tgit-admins-grouppolicies"/> and/or <emphasis>VersionCheck</emphasis> in <xref linkend="tgit-dug-settings-registry"/>).
+			to show up so your users don't go and upgrade immediately (to disable update checking at all (e.g. because you use group policies to deploy TortoiseGit, see <xref linkend="tgit-admins-grouppolicies"/> and/or <literal>VersionCheck</literal> in <xref linkend="tgit-dug-settings-registry"/>).
 		</para>
 		<para>
 			TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
 			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, <filename>HKCU</filename> overrides <filename>HKLM</filename>)
-			to an URL pointing to a text file in your intranet (default is <ulink url="https://versioncheck.tortoisegit.org/version.txt">https://versioncheck.tortoisegit.org/version.txt</ulink>).
-			When the default <filename>version.txt</filename> file is used, it is checked by verifying a digital signature (<ulink url="https://versioncheck.tortoisegit.org/version.txt.rsa.asc">https://versioncheck.tortoisegit.org/version.txt.rsa.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
+			to an URL pointing to a text file in your intranet (default is <ulink url="https://versioncheck.tortoisegit.org/version.txt" condition="pot">https://versioncheck.tortoisegit.org/version.txt</ulink>).
+			When the default <filename>version.txt</filename> file is used, it is checked by verifying a digital signature (<ulink url="https://versioncheck.tortoisegit.org/version.txt.rsa.asc" condition="pot">https://versioncheck.tortoisegit.org/version.txt.rsa.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
 			The check for the digital signature of the <filename>version.txt</filename> file is omitted if the location is overridden in registry.
 			That text file must have the following format:
 <screen>
@@ -104,28 +104,28 @@ baseurl=http://192.168.2.1/downloads/TortoiseGit/
 langs="1029;cs"
 langs="1031;de"
 </screen>
-			The <emphasis>version</emphasis> line in that file is the version string. You must make sure that
+			The <literal>version</literal> line in that file is the version string. You must make sure that
 			it matches the exact version string of the TortoiseGit installation package.
-			The <emphasis>infotext</emphasis> line is a custom text, shown in the upgrade dialog. You can write
+			The <literal>infotext</literal> line is a custom text, shown in the upgrade dialog. You can write
 			there whatever you want (can also be left empty). Just note that the space in the upgrade dialog is
 			limited. Too long messages will get truncated!
-			The <emphasis>infotexturl</emphasis> line is the URL which is opened when
+			The <literal>infotexturl</literal> line is the URL which is opened when
 			when the user clicks on the (custom) message label in the upgrade dialog.
 			The URL is opened with the default web browser, so if you specify a web page,
 			that page is opened and shown to the user.
-			The <emphasis>changelogurl</emphasis> line contains the URL to the changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="https://versioncheck.tortoisegit.org/changelog.txt">https://versioncheck.tortoisegit.org/changelog.txt</ulink>, you can use %1!u!, %2!u! and %3!u! for MAJOR, MINOR and MICRO version numbers of the running TortoiseGit version; %4!s! for Windows platform, %5!s! for Windows version, and %6!s! for servicepack version),
-			The <emphasis>baseurl</emphasis> line is used to override the base path to the installation packages (if empty it defaults to https://updater.download.tortoisegit.org/tgit/X.X.X.X/).
-			The filenames are generated as follows: TortoiseGit-(version)-(32|64)bit.msi for the main installer (if not overridden by <emphasis>mainfilename=TortoiseGit-%1!s!-%2!s!bit.msi</emphasis>)
-			and TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi for the language packs (if not overridden by <emphasis>languagepackfilename=TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi</emphasis>; %4!d! is the four digit country code).
-			Using <emphasis>langs</emphasis> lines, one can advertise language packs (Syntax of one line: Four digit country code;ISO Country code).
-			Using a <emphasis>issuesurl</emphasis> line, it is possible to control the URL to which the issues are linked to (default is https://tortoisegit.org/issue/%BUGID%; can also be empty to disable linking),
+			The <literal>changelogurl</literal> line contains the URL to the changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="https://versioncheck.tortoisegit.org/changelog.txt" condition="pot">https://versioncheck.tortoisegit.org/changelog.txt</ulink>, you can use <literal>%1!u!</literal>, <literal>%2!u!</literal> and <literal>%3!u!</literal> for MAJOR, MINOR and MICRO version numbers of the running TortoiseGit version; <literal>%4!s!</literal> for Windows platform, <literal>%5!s!</literal> for Windows version, and <literal>%6!s!</literal> for service pack version),
+			The <literal>baseurl</literal> line is used to override the base path to the installation packages (if empty it defaults to <literal>https://updater.download.tortoisegit.org/tgit/X.X.X.X/</literal>).
+			The filenames are generated as follows: <literal>TortoiseGit-(version)-(32|64)bit.msi</literal> for the main installer (if not overridden by <literal>mainfilename=TortoiseGit-%1!s!-%2!s!bit.msi</literal>)
+			and <literal>TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi</literal> for the language packs (if not overridden by <literal>languagepackfilename=TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi</literal>; <literal>%4!d!</literal> is the four digit country code).
+			Using <literal>langs</literal> lines, one can advertise language packs (Syntax of one line: Four digit country code;ISO Country code).
+			Using a <literal>issuesurl</literal> line, it is possible to control the URL to which the issues are linked to (default is <literal>https://tortoisegit.org/issue/%BUGID%</literal>; can also be empty to disable linking),
 		</para>
 		<para>
 			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (<filename>filename.asc</filename>) to <filename><ulink url="https://docs.microsoft.com/windows/win32/shell/knownfolderid">FOLDERID_Downloads</ulink></filename>.
 			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
 		</para>
 		<para>
-			If you want to distribute your own modified TortoiseGit packages in your network, you have to put your own GPG key into TortoiseGit and sign the .msi-files with this key or deactivate the signature verification completely.
+			If you want to distribute your own modified TortoiseGit packages in your network, you have to put your own GPG key into TortoiseGit and sign the <filename>.msi</filename>-files with this key or deactivate the signature verification completely.
 		</para>
 	</sect1>
 	<sect1 id="tgit-admins-disablemenus">
@@ -202,7 +202,7 @@ langs="1031;de"
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000000100</entry>
-							<entry>Sendmail</entry>
+							<entry condition="pot">Sendmail</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000000200</entry>
@@ -283,7 +283,7 @@ langs="1031;de"
 						</row>
 						<row>
 							<entry condition="pot">0x0000000010000000</entry>
-							<entry>SVN DCommit</entry>
+							<entry condition="pot">SVN DCommit</entry>
 						</row>
 						<row>
 							<entry condition="pot">0x0000000040000000</entry>
@@ -390,9 +390,9 @@ langs="1031;de"
 			</table>
 		</para>
 		<para>
-			Example: to disable the <quote>Sendmail</quote> the
-			<quote>Rebase</quote>
-			and the <quote>Settings</quote> menu entries, add the values assigned
+			Example: to disable the <literal>Sendmail</literal>, the
+			<literal>Rebase</literal>
+			and the <literal>Settings</literal> menu entries, add the values assigned
 			to the entries like this:
 <screen>
   0x0000000000000100

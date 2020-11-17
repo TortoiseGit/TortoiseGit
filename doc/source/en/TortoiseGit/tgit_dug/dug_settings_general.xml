@@ -92,7 +92,7 @@
 				<para>
 					<tip>
 						<para>
-							In order to debug problems you can open TortoiseGit advanced settings and set "DebugOutputString" to "true" (<xref linkend="tgit-dug-settings-registry"/>). Start capturing the debug output.
+							In order to debug problems you can open TortoiseGit advanced settings and set <literal>DebugOutputString</literal> to "true" (<xref linkend="tgit-dug-settings-registry"/>). Start capturing the debug output.
 							Then start TortoiseGit settings, click on <guilabel>Check now</guilabel> and observe the debug messages.
 						</para>
 					</tip>
@@ -257,11 +257,11 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>apply --topo-order</term>
+				<term>apply <literal>--topo-order</literal></term>
 				<listitem>
 					<para>
 						Normally log entries/commits are ordered in descending order of the commit date.
-						'--topo-order' makes the commits appear in topological order (i.e. descendant
+						<literal>--topo-order</literal> makes the commits appear in topological order (i.e. descendant
 						commits are shown before their parents). Not using this option, might break
 						the graph in the log dialog. However, this option is slower, because all
 						log entries have to be processed before displaying them.

@@ -329,7 +329,7 @@
 				<ulink url="https://mozilla.org">
 					<citetitle>Mozilla</citetitle>
 				</ulink>.
-				TortoiseGit can also use the spell checker shipped with Windows 8+. However, this needs to be enabled manually in advanced settings (key "Win8SpellChecker") at the moment.
+				TortoiseGit can also use the spell checker shipped with Windows 8+. However, this needs to be enabled manually in advanced settings (key <literal>Win8SpellChecker</literal>) at the moment.
 			</para>
 			<para>
 				The installer by default automatically adds the US English dictionary.

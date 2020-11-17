@@ -66,7 +66,7 @@
 						in the git index file.
 						Starting from 1.7.13 TGitCache now also checks the contents of the files by default.
 						If you want to restore the old behavior, you can disable checking the contents
-						via the Settings dialog -> Advanced and set TGitCacheCheckContentMaxSize to "0".
+						via the Settings dialog -> Advanced and set <literal>TGitCacheCheckContentMaxSize</literal> to "0".
 					</para>
 				</listitem>
 			</varlistentry>

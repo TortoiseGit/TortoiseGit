@@ -156,8 +156,8 @@ Don't touch these lines:
 								Additional options can be set:
 								<option>/rev:"SHA1"</option> highlights and automatically scrolls to the specified revision,
 								<option>/endrev:"SHA1/branch"</option>, shows the log of the specified revision,
-								<option>/startrev:"SHA1/branch"</option> (only in combination with endrev), shows the log of the revision range startrev..endrev,
-								<option>/range:"gitrevision"</option>, shows the log of the entered gitrevision (e.g. "branch1...branch2"),
+								<option>/startrev:"SHA1/branch"</option> (only in combination with <literal>endrev</literal>), shows the log of the revision range <literal>startrev..endrev</literal>,
+								<option>/range:"gitrevision"</option>, shows the log of the entered <literal>gitrevision</literal> (e.g. "<literal>branch1...branch2</literal>"),
 								<option>/limit:"N SCALE"</option>, SCALE could be "Commit", "Year", "Month", "Week";
 								it shows last N commit(s), last N year(s), last N month(s), last N week(s).
 								Use <option>/limit:0</option> to disable any default limit.
