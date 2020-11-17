@@ -660,8 +660,8 @@
 			on how to use the regex functions.
 			To invert the results for the entire search expression, start the string with an exclamation mark ('!').
 			You can also find online documentation and a tutorial at
-			<ulink url="http://www.regular-expressions.info/">
-				<citetitle>http://www.regular-expressions.info/</citetitle>
+			<ulink url="https://www.regular-expressions.info/">
+				<citetitle>https://www.regular-expressions.info/</citetitle>
 			</ulink>.
 			The filter works by checking whether your filter string matches
 			the log entries, and then only those entries which <emphasis>match</emphasis>

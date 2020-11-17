@@ -43,7 +43,7 @@
 			<guilabel>EditorConfig</guilabel>
 			when set, it will detect <literal>.editorconfig</literal> files.
 			Currently, it supports indent_style(space/tab) and indent_size properties.
-			See <ulink url="http://editorconfig.org/"><citetitle>EditorConfig</citetitle></ulink> website for more details.
+			See <ulink url="https://editorconfig.org/"><citetitle>EditorConfig</citetitle></ulink> website for more details.
 		</para>
 		<para>
 			<guilabel>Max line length for inline diffs</guilabel>

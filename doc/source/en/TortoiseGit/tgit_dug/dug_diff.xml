@@ -484,7 +484,7 @@
 				<term>WinMerge</term>
 				<listitem>
 					<para>
-						<ulink url="http://winmerge.sourceforge.net/">
+						<ulink url="https://winmerge.org/">
 							<citetitle>WinMerge</citetitle>
 						</ulink>
 						is a great open-source diff tool which can also
@@ -498,7 +498,7 @@
 					<para>
 						Perforce is a commercial RCS, but you can download the
 						diff/merge tool for free. Get more information from
-						<ulink url="http://www.perforce.com/perforce/products/merge.html">
+						<ulink url="https://www.perforce.com/products/helix-core-apps/merge-diff-tool-p4merge">
 							<citetitle>Perforce</citetitle>
 						</ulink>.
 					</para>
@@ -527,7 +527,7 @@
 						capability.
 						In both flavours, version 3.2 and above can handle
 						unicode. You can download them from
-						<ulink url="http://www.prestosoft.com/">
+						<ulink url="https://www.prestosoft.com/">
 							<citetitle>PrestoSoft</citetitle>
 						</ulink>.
 					</para>
@@ -554,7 +554,7 @@
 						both files and folders. It does three-way comparison in merges
 						and has synchronization links to use if you've changed the order
 						of functions. Download it from
-						<ulink url="http://www.araxis.com/merge/index.html">
+						<ulink url="https://www.araxis.com/merge/index.html">
 							<citetitle>Araxis</citetitle>
 						</ulink>.
 					</para>
@@ -566,7 +566,7 @@
 					<para>
 						This text editor includes syntax colouring for unified diffs,
 						making them much easier to read. Download it from
-						<ulink url="http://www.scintilla.org/SciTEDownload.html">
+						<ulink url="https://www.scintilla.org/SciTEDownload.html">
 							<citetitle>Scintilla</citetitle>
 						</ulink>.
 					</para>
@@ -581,7 +581,7 @@
 						open-source edit control. As well as being good for
 						viewing unified diffs, it is much better than the
 						Windows notepad for most jobs. Download it for free
-						<ulink url="http://www.flos-freeware.ch/notepad2.html">
+						<ulink url="https://www.flos-freeware.ch/notepad2.html">
 							<citetitle>here</citetitle>
 						</ulink>.
 					</para>

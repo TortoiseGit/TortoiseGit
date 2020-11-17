@@ -333,7 +333,7 @@ C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %b
 			line-endings. However, a lot of git configuration files do not have
 			a standard CR-LF line-ending. Because of this TortoiseGit uses a free
 			(shipped) Notepad replacement
-			<ulink url="http://www.flos-freeware.ch/notepad2.html">
+			<ulink url="https://www.flos-freeware.ch/notepad2.html">
 				<citetitle>Notepad2</citetitle>
 			</ulink>
 			which displays the line-endings correctly by default.

@@ -98,7 +98,7 @@
 					configure git to use the right gpg.exe. This can be done be setting the configuration variable
 					<literal>gpg.program</literal> (e.g., <filename>C:/Program Files (x86)/GNU/GnuPG/pub/gpg.exe</filename>).
 					We tested this with
-					<ulink url="http://www.gpg4win.de/">
+					<ulink url="https://www.gpg4win.de/">
 						<citetitle>Gpg4win</citetitle>
 					</ulink>
 					(GPG4win vanilla is sufficient and with version 2.2.x it is also compatible to GPG 1.4 key files).

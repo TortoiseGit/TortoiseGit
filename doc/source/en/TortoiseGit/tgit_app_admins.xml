@@ -114,14 +114,14 @@ langs="1031;de"
 			The URL is opened with the default web browser, so if you specify a web page,
 			that page is opened and shown to the user.
 			The <emphasis>changelogurl</emphasis> line contains the URL to the changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="https://versioncheck.tortoisegit.org/changelog.txt">https://versioncheck.tortoisegit.org/changelog.txt</ulink>, you can use %1!u!, %2!u! and %3!u! for MAJOR, MINOR and MICRO version numbers of the running TortoiseGit version; %4!s! for Windows platform, %5!s! for Windows version, and %6!s! for servicepack version),
-			The <emphasis>baseurl</emphasis> line is used to override the base path to the installation packages (if empty it defaults to http://updater.download.tortoisegit.org/tgit/X.X.X.X/).
+			The <emphasis>baseurl</emphasis> line is used to override the base path to the installation packages (if empty it defaults to https://updater.download.tortoisegit.org/tgit/X.X.X.X/).
 			The filenames are generated as follows: TortoiseGit-(version)-(32|64)bit.msi for the main installer (if not overridden by <emphasis>mainfilename=TortoiseGit-%1!s!-%2!s!bit.msi</emphasis>)
 			and TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi for the language packs (if not overridden by <emphasis>languagepackfilename=TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi</emphasis>; %4!d! is the four digit country code).
 			Using <emphasis>langs</emphasis> lines, one can advertise language packs (Syntax of one line: Four digit country code;ISO Country code).
 			Using a <emphasis>issuesurl</emphasis> line, it is possible to control the URL to which the issues are linked to (default is https://tortoisegit.org/issue/%BUGID%; can also be empty to disable linking),
 		</para>
 		<para>
-			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="http://msdn.microsoft.com/en-us/library/windows/desktop/dd378457%28v=vs.85%29.aspx">FOLDERID_Downloads</ulink></filename>.
+			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="https://docs.microsoft.com/windows/win32/shell/knownfolderid">FOLDERID_Downloads</ulink></filename>.
 			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
 		</para>
 		<para>

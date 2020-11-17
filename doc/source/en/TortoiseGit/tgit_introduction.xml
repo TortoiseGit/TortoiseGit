@@ -319,14 +319,14 @@
 				commit log messages. This is especially useful if the project language
 				is not your native language.
 				By default the spell checker uses the same dictionary files as
-				<ulink url="http://libreoffice.org">
+				<ulink url="https://www.libreoffice.org/">
 					<citetitle>LibreOffice</citetitle>
 				</ulink>,
-				<ulink url="http://openoffice.org">
-					<citetitle>OpenOffice</citetitle>
+				<ulink url="https://www.openoffice.org/">
+					<citetitle>OpenOffice.org</citetitle>
 				</ulink>
 				and
-				<ulink url="http://mozilla.org">
+				<ulink url="https://mozilla.org">
 					<citetitle>Mozilla</citetitle>
 				</ulink>.
 				TortoiseGit can also use the spell checker shipped with Windows 8+. However, this needs to be enabled manually in advanced settings (key "Win8SpellChecker") at the moment.
@@ -345,12 +345,12 @@
 				Mozilla installed, you can copy those dictionaries, which are located
 				in the installation folders for those applications.
 				Otherwise, you need to download the required dictionary files from
-				<ulink url="http://cgit.freedesktop.org/libreoffice/dictionaries/">
-					<citetitle>http://cgit.freedesktop.org/libreoffice/dictionaries/</citetitle>
+				<ulink url="https://cgit.freedesktop.org/libreoffice/dictionaries/">
+					<citetitle>https://cgit.freedesktop.org/libreoffice/dictionaries/</citetitle>
 				</ulink>
 				or
-				<ulink url="http://wiki.services.openoffice.org/wiki/Dictionaries">
-					<citetitle>http://wiki.services.openoffice.org/wiki/Dictionaries</citetitle>
+				<ulink url="https://wiki.openoffice.org/wiki/Dictionaries">
+					<citetitle>https://wiki.openoffice.org/wiki/Dictionaries</citetitle>
 				</ulink>
 			</para>
 			<para>
@@ -386,7 +386,7 @@
 						<para>
 						Check the <literal>tgit.projectlanguage</literal> setting. This setting can be set using TortoiseGit Settings <guilabel>Dialogs 3</guilabel> page (<xref linkend="tgit-dug-settings-dialogs3"/>).
 						Refer to <xref linkend="git-config(1)"/> for information
-						about setting properties (use the <literal>LCID Dec</literal> value as <ulink url="http://msdn.microsoft.com/de-de/goglobal/bb964664.aspx">assigned by Microsoft</ulink>).
+						about setting properties (use the <literal>LCID Dec</literal> value as <ulink url="https://docs.microsoft.com/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c">assigned by Microsoft</ulink>).
 						</para>
 					</listitem>
 					<listitem>

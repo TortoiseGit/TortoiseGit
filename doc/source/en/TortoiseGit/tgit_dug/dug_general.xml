@@ -158,7 +158,7 @@
 				command line by executing <literal>set GIT_SSH=PATH_TO_PLINK.EXE"</literal>
 				(<filename>C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe</filename> on default installations)
 				or configure the environment variables
-				<ulink url="http://www.computerhope.com/issues/ch000549.htm">
+				<ulink url="https://www.computerhope.com/issues/ch000549.htm">
 					<citetitle>permanently</citetitle>
 				</ulink>.
 			</para>
