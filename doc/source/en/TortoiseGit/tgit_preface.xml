@@ -113,7 +113,7 @@ and
 		</para>
 		<para>
 			The <xref linkend="git(1)"/> give git official document about
-			command line client <literal>git.exe</literal>.
+			command line client <filename>git.exe</filename>.
 		</para>
 	</sect1>
 	<!-- =================================================================== -->

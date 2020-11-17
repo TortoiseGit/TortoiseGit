@@ -54,7 +54,7 @@
 		</para>
 		<para>
 			TortoiseGit automatically finds <filename>git.exe</filename> if a normal msysGit/Git for Windows installation is on the computer
-			or git.exe is on the <emphasis>PATH</emphasis> (and is runnable in a normal cmd.exe session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysGit development package).
+			or <filename>git.exe</filename> is on the <emphasis>PATH</emphasis> (and is runnable in a normal <filename>cmd.exe</filename> session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysGit development package).
 		</para>
 		<para>
 			For completely disabling automatic update checking see <emphasis>VersionCheck</emphasis> in <xref linkend="tgit-dug-settings-registry"/>.
@@ -89,10 +89,10 @@
 		<para>
 			TortoiseGit allow you to redirect that upgrade
 			check to your intranet server. You can set the registry key
-			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, HKCU overrides HKLM)
+			<filename>HKCU\Software\TortoiseGit\UpdateCheckURL</filename> OR <filename>HKLM\Software\TortoiseGit\UpdateCheckURL</filename> (string value, <filename>HKCU</filename> overrides <filename>HKLM</filename>)
 			to an URL pointing to a text file in your intranet (default is <ulink url="https://versioncheck.tortoisegit.org/version.txt">https://versioncheck.tortoisegit.org/version.txt</ulink>).
-			When the default version.txt file is used, it is checked by verifying a digital signature (<ulink url="https://versioncheck.tortoisegit.org/version.txt.rsa.asc">https://versioncheck.tortoisegit.org/version.txt.rsa.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
-			The check for the digital signature of the version.txt file is omitted if the location is overridden in registry.
+			When the default <filename>version.txt</filename> file is used, it is checked by verifying a digital signature (<ulink url="https://versioncheck.tortoisegit.org/version.txt.rsa.asc">https://versioncheck.tortoisegit.org/version.txt.rsa.asc</ulink>) that it has not been altered (since TortoiseGit 1.8.5).
+			The check for the digital signature of the <filename>version.txt</filename> file is omitted if the location is overridden in registry.
 			That text file must have the following format:
 <screen>
 [TortoiseGit]
@@ -121,7 +121,7 @@ langs="1031;de"
 			Using a <emphasis>issuesurl</emphasis> line, it is possible to control the URL to which the issues are linked to (default is https://tortoisegit.org/issue/%BUGID%; can also be empty to disable linking),
 		</para>
 		<para>
-			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (filename.asc) to <filename><ulink url="https://docs.microsoft.com/windows/win32/shell/knownfolderid">FOLDERID_Downloads</ulink></filename>.
+			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (<filename>filename.asc</filename>) to <filename><ulink url="https://docs.microsoft.com/windows/win32/shell/knownfolderid">FOLDERID_Downloads</ulink></filename>.
 			After downloading the digital signature is verified - the file is only kept if the file is digitally signed and could be verified correctly.
 		</para>
 		<para>

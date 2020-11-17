@@ -301,7 +301,7 @@
 				the team and <ulink url="https://tortoisegit.org/translate">submit your own translation</ulink> ;-)
 			</para>
 			<para>
-				Each language pack is packaged as a <literal>.msi</literal> installer.
+				Each language pack is packaged as a <filename>.msi</filename> installer.
 				Just run the install program after the installation of the main TortoiseGit package and follow the instructions.
 				After the installation finishes, the translation will be available and can be selected in settings dialog (cf. <xref linkend="tgit-dug-settings-main"/>).
 			</para>
@@ -375,7 +375,7 @@
 				TortoiseGit will also search the <filename>Languages</filename> sub-folder of
 				the TortoiseGit installation folder (normally this will be <filename>C:\Program Files\TortoiseGit\Languages</filename>);
 				this is the place where the language packs put their files.
-				However, the %APPDATA%-folder doesn't require administrator privileges and, thus, has higher priority.
+				However, the <filename>%APPDATA%</filename>-folder doesn't require administrator privileges and, thus, has higher priority.
 				The next time you start TortoiseGit, the spell checker will be available.
 			</para>
 			<para>

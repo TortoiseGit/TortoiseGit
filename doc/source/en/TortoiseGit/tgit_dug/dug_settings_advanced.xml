@@ -153,7 +153,7 @@
 			<term condition="pot">DownloadAnimation</term>
 			<listitem>
 				<para>
-					When performing git.exe or remote operations TortoiseGit dialogs
+					When performing <filename>git.exe</filename> or remote operations TortoiseGit dialogs
 					play an animation with a flying turtle.
 					This setting allows to disable the playing of the animation by
 					setting it to <literal>false</literal>.
@@ -341,7 +341,7 @@
 			<term condition="pot">ProgressDlgLinesLimit</term>
 			<listitem>
 				<para>
-					The Git progress dialog shows the output of the executed git.exe commands.
+					The Git progress dialog shows the output of the executed <filename>git.exe</filename> commands.
 					The number of lines are limited for performance reasons. The default is <literal>50000</literal>, minimum is <literal>50</literal>.
 				</para>
 			</listitem>

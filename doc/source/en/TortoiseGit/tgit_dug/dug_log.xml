@@ -933,7 +933,7 @@ Alice -Bob +Eve
 			to control how this is handled.
 		</para>
 		<para>
-			The statistics dialog also honors the .mailmap file
+			The statistics dialog also honors the <filename>.mailmap</filename> file
 			(see <xref linkend="git-blame(1)__mapping_authors"/>).
 		</para>
 		<para>

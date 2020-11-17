@@ -65,19 +65,19 @@
 			<term>Git.exe Path</term>
 			<listitem>
 				<para>
-					TortoiseGit needs to know which <literal>git.exe</literal> to use for it's operations. Enter the full path to <literal>git.exe</literal> here.
+					TortoiseGit needs to know which <filename>git.exe</filename> to use for it's operations. Enter the full path to <filename>git.exe</filename> here.
 				</para>
 				<para>
 					<caution>
 						<para>
-							git.exe must not be marked to be run in elevated mode (i.e. "Run as administrator" or run in any compatibility mode).
+							<filename>git.exe</filename> must not be marked to be run in elevated mode (i.e. <guioption>Run as administrator</guioption> or run in any compatibility mode).
 						</para>
 					</caution>
 					<caution>
 						<para>
 							There is a <ulink url="https://github.com/msysgit/msysgit/issues/103"><citetitle>known issue in msysGit/Git for Windows</citetitle></ulink>:
-							Git for Windows provides two <literal>git.exe</literal>-files (one in a folder named <literal>bin</literal> and one in a folder named <literal>cmd</literal>).
-							Make sure <guilabel>Git.exe Path</guilabel> points to the <literal>bin</literal>-folder within the Git for Windows installation folder.
+							Git for Windows provides two <filename>git.exe</filename>-files (one in a folder named <filename>bin</filename> and one in a folder named <filename>cmd</filename>).
+							Make sure <guilabel>Git.exe Path</guilabel> points to the <filename>bin</filename>-folder within the Git for Windows installation folder.
 						</para>
 					</caution>
 					<caution>
@@ -107,11 +107,11 @@
 					you can enter it here and it will get added to the PATH environment variable automatically when TortoiseGit starts.
 				</para>
 				<para>
-					This is especially needed if you installed the developer version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <literal>msysGit-fullinstall-*.exe</literal>),
-					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path (i.e. entered in the <guilabel>Extra PATH</guilabel> textbox) in order to execute git.exe.
+					This is especially needed if you installed the developer version of msysGit ("Full installer (self-contained) if you want to hack on Git" with the filename <filename>msysGit-fullinstall-*.exe</filename>),
+					in this case it is necessary that the <filename>[MSYSGIT-INSTALL-PATH]\mingw\bin</filename>-folder is on the path (i.e. entered in the <guilabel>Extra PATH</guilabel> textbox) in order to execute <filename>git.exe</filename>.
 				</para>
 				<para>
-					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a message box saying that a DLL is missing.
+					Often you can see if you need this when you start <filename>git.exe</filename> in <filename>[MSYSGIT-INSTALL-PATH]\mingw\bin</filename>-folder and you get a message box saying that a DLL is missing.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -122,10 +122,10 @@
 					As noted above: There is no official support for Cygwin git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
 				</para>
 				<para>
-					1) Select the <literal>[CYGWIN-INSTALL-PATH]\bin</literal>-folder as git.exe folder.
+					1) Select the <filename>[CYGWIN-INSTALL-PATH]\bin</filename>-folder as <filename>git.exe</filename> folder.
 				</para>
 				<para>
-					2) Configure the <literal>HOME</literal> environment variable in Windows, so that Cygwin and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., "C:\Users\USERNAME"). By default, TortoiseGit uses the Windows home directory which is normally located under <literal>c:\Users</literal> and Cygwin uses its own home directories which are located under <literal>[CYGWIN-INSTALL-PATH]\home</literal>.
+					2) Configure the <literal>HOME</literal> environment variable in Windows, so that Cygwin and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., "C:\Users\USERNAME"). By default, TortoiseGit uses the Windows home directory which is normally located under <filename>c:\Users</filename> and Cygwin uses its own home directories which are located under <filename>[CYGWIN-INSTALL-PATH]\home</filename>.
 				</para>
 				<para>
 					3) Configure AutoCrLf, this is necessary as TortoiseGit and Cygwin Git have different defaults. The default in Cygwin Git is <literal>true</literal>.
@@ -145,10 +145,10 @@
 					As noted above: There is no official support for MSYS2 git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
 				</para>
 				<para>
-					1) Select the <literal>[MSYS2-INSTALL-PATH]\usr\bin</literal>-folder as git.exe folder.
+					1) Select the <filename>[MSYS2-INSTALL-PATH]\usr\bin</filename>-folder as <filename>git.exe</filename> folder.
 				</para>
 				<para>
-					2) Configure the <literal>HOME</literal> environment variable in Windows, so that MSYS2 and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., "C:\Users\USERNAME"). By default, TortoiseGit uses the Windows home directory which is normally located under <literal>c:\Users</literal> and MSYS2 uses its own home directories which are located under <literal>[MSYS2-INSTALL-PATH]\home</literal>.
+					2) Configure the <literal>HOME</literal> environment variable in Windows, so that MSYS2 and TortoiseGit are using the same home directory and global git-config. Use the normal Windows notation here (e.g., <filename>C:\Users\USERNAME</filename>). By default, TortoiseGit uses the Windows home directory which is normally located under <filename>c:\Users</filename> and MSYS2 uses its own home directories which are located under <filename>[MSYS2-INSTALL-PATH]\home</filename>.
 				</para>
 				<para>
 					3) Configure AutoCrLf, this is necessary as TortoiseGit and MSYS2 Git might have different defaults.
@@ -181,8 +181,8 @@
 			Most of the time, you won't need the TortoiseGit context menu, apart
 			for folders that are under version control by Git. For non-
 			versioned folders, you only really need the context menu when you
-			want to do a checkout. If you check the option <literal>Hide menus
-			for unversioned paths</literal>, TortoiseGit will not add its entries
+			want to do a checkout. If you check the option <guioption>Hide menus
+			for unversioned paths</guioption>, TortoiseGit will not add its entries
 			to the context menu for unversioned folders. But the entries are
 			added for all items and paths in a versioned folder. And you can
 			get the entries back for unversioned folders by holding the
@@ -285,8 +285,8 @@
 				<term>Abbreviate renamings</term>
 				<listitem>
 					<para>
-						Normally renamed files are listed as "long/path/for/file.txt (from long/path/to/file.txt)".
-						If you check this option renamed files will be listed in a shorter format ("long/path/{to => for}/file.txt"),
+						Normally renamed files are listed as <filename>long/path/for/file.txt (from long/path/to/file.txt)</filename>.
+						If you check this option renamed files will be listed in a shorter format (<filename>long/path/{to => for}/file.txt</filename>),
 						however, this abbreviated format might be harder to understand.
 					</para>
 				</listitem>
@@ -310,7 +310,7 @@
 				<term>Enable log cache</term>
 				<listitem>
 					<para>
-						Load/saves log cache in .git folder (tortoisegit.data, tortoisegit.index) to boost performance of subsequent use of log list.
+						Load/saves log cache in <filename>.git</filename> folder (<filename>tortoisegit.data</filename>, <filename>tortoisegit.index</filename>) to boost performance of subsequent use of log list.
 						If this option is disabled, the cache files are not read or written.
 						Default is enabled.
 					</para>
@@ -459,12 +459,12 @@
 -->
 					<para>
 						<guilabel>Auto-close if no further options are available</guilabel>
-						will close the dialog if git.exe exited cleanly (i.e. no error occurred)
+						will close the dialog if <filename>git.exe</filename> exited cleanly (i.e. no error occurred)
 						and no further options are presented in the progress dialog.
 					</para>
 					<para>
 						<guilabel>Auto-close if no errors</guilabel>
-						always closes the dialog if git.exe exited with 0 error code.
+						always closes the dialog if <filename>git.exe</filename> exited with 0 error code.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -510,10 +510,10 @@
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>Show git.exe execution timings and timestamp</term>
+				<term>Show <filename>git.exe</filename> execution timings and timestamp</term>
 				<listitem>
 					<para>
-						When enabled, git.exe execution timings and timestamp will be appended at the end of progress message.
+						When enabled, <filename>git.exe</filename> execution timings and timestamp will be appended at the end of progress message.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -670,10 +670,10 @@
 						on the taskbar for easier identification when multiple TortoiseGit application instances
 						of different projects are running at the same time.
 						<graphic fileref="../images/TaskbarOverlayIcon.png"/>
-						If icon is not 16x16 px in size, it will be automatically scaled.
-						Supported formats are ico, png, jpg, gif, bmp.
+						If icon is not 16x16 pixels in size, it will be automatically scaled.
+						Supported formats are <filename>.ico</filename>, <filename>.png</filename>, <filename>.jpg</filename>, <filename>.gif</filename>, <filename>.bmp</filename>.
 						If no icon is included by that project, you may find one on you own,
-						put it in .git folder and set the relative path in local config. e.g. <literal>.git/logo.ico</literal>
+						put it in <filename>.git</filename> folder and set the relative path in local config. e.g. <filename>.git/logo.ico</filename>
 						If you want to disable it, you may set <literal>tgit.icon</literal> as an empty string in local config.
 						It will fallback to a color block when disabled or load failed.
 						Note that the advanced option <literal>GroupTaskbarIconsPerRepo</literal> should be 3 or 4 in order to use this function.

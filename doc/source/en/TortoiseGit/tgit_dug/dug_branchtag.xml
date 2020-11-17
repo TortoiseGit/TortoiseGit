@@ -95,7 +95,7 @@
 					When using GPG 1.4 (which is shipped with Git for Windows) this requires a key
 					<emphasis>without</emphasis> a passphrase. GPG &gt;= 2 comes with an agent like pageant
 					and, thus,.also works with passphrase protected keys, however, you might need to
-					configure git to use the right gpg.exe. This can be done be setting the configuration variable
+					configure git to use the right <filename>gpg.exe</filename>. This can be done be setting the configuration variable
 					<literal>gpg.program</literal> (e.g., <filename>C:/Program Files (x86)/GNU/GnuPG/pub/gpg.exe</filename>).
 					We tested this with
 					<ulink url="https://www.gpg4win.de/">

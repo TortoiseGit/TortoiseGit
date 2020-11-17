@@ -8,7 +8,7 @@
 			Git uses the concept of a hierarchical configuration (cf. <xref linkend="git-config(1)"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
 		</para>
 		<para>
-			Select any level (e.g. <guilabel>Local</guilabel> - the current repository settings stored locally in .git/config, <guilabel>Project</guilabel> - settings for the current repository stored within the repository in /.tgitconfig, <guilabel>Global</guilabel> - settings for the current user, <guilabel>System</guilabel> - settings for all users of the system) to see the values stored there.
+			Select any level (e.g. <guilabel>Local</guilabel> - the current repository settings stored locally in <filename>.git/config</filename>, <guilabel>Project</guilabel> - settings for the current repository stored within the repository in <filename>/.tgitconfig</filename>, <guilabel>Global</guilabel> - settings for the current user, <guilabel>System</guilabel> - settings for all users of the system) to see the values stored there.
 		</para>
 		<para>
 			In order to change settings select a level, enter the values, select where to store to and click on <guibutton>Apply</guibutton>.

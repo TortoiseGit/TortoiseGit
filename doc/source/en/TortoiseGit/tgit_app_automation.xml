@@ -49,14 +49,14 @@
 			to add it anymore.
 		</para>
 		<para>
-			The progress dialog which is used for commits, updates and many more git.exe commands
+			The progress dialog which is used for commits, updates and many more <filename>git.exe</filename> commands
 			usually stays open after the command has finished until the user presses
 			the <guibutton>OK</guibutton> button. This can be changed in the settings dialog.
 			You may use <option>/closeonend</option> parameter to override the this setting
 			from your batch file.
 		</para>
 		<para>
-			To close the (git.exe) progress dialog at the end of a command automatically without
+			To close the (<filename>git.exe</filename>) progress dialog at the end of a command automatically without
 			using the permanent setting you can pass the <option>/closeonend</option>
 			parameter.
 			<itemizedlist>
