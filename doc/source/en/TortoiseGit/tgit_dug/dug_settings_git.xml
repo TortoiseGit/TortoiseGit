@@ -76,8 +76,8 @@
 		<para>
 			<guilabel>Push URL</guilabel>
 			The Push URL of the remote.
-			It is for some cases you cannot use the same url to fetch and push
-			(for example, fetch via passwordless git protocol but push via ssh). Otherwise, leave it empty.
+			It is for some cases you cannot use the same URL to fetch and push
+			(for example, fetch via password-less Git protocol but push via ssh). Otherwise, leave it empty.
 			Note: This is not designed for forking workflow. For forking workflow, you should have 2 remotes.
 			The format is the same as URL.
 		</para>
@@ -119,7 +119,7 @@
 		<para>
 			<guilabel>Advanced</guilabel>
 			This is used if the credential helper configuration does not match any simple settings.
-			If you choose other than <option>Advanced</option>, except the corrsponding <literal>credential.helper</literal>, all other config keys <literal>credential.*</literal> or <literal>credential.*.*</literal> are removed.
+			If you choose other than <option>Advanced</option>, except the corresponding <literal>credential.helper</literal>, all other config keys <literal>credential.*</literal> or <literal>credential.*.*</literal> are removed.
 		</para>
 		<para>
 			<guilabel>None</guilabel>

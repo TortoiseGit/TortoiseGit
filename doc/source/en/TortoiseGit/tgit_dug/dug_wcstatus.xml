@@ -282,7 +282,7 @@
 		</para>
 		<para>
 			At the bottom of the dialog you have several options to select which entries to show (such as ignored or untracked/unversioned files).
-			It is also possible to view all files which were marked as "Assume valid" or "Skip worktree" here (using <guilabel>Show ingore local changes flagged files</guilabel>).
+			It is also possible to view all files which were marked as "Assume valid" or "Skip worktree" here (using <guilabel>Show ignore local changes flagged files</guilabel>).
 			Resetting those flags (it's also possible to edit this flag using file properties in explorer on the <guilabel>Git</guilabel> tab).
 		</para>
 		<para>
@@ -292,7 +292,7 @@
 			<guilabel>Stash</guilabel>: Is a drop-down menu for quick access to Git stash (cf. <xref linkend="tgit-dug-stash"/>). This feature allows you to put aside uncommitted changes in order to work on an unrelated issue and get the changes back afterwards easily.
 		</para>
 		<para>
-			<guilabel>Commit</guilabel>: Opens the commit dialog (cf. <xref linkend="tgit-dug-commit"/>) with the very same folder/files the current dialog was opened on. If you want to pre-populate the commit dialog with only a subset of fies, select the files and choose <guimenuitem>Commit...</guimenuitem> in the context menu.
+			<guilabel>Commit</guilabel>: Opens the commit dialog (cf. <xref linkend="tgit-dug-commit"/>) with the very same folder/files the current dialog was opened on. If you want to pre-populate the commit dialog with only a subset of files, select the files and choose <guimenuitem>Commit...</guimenuitem> in the context menu.
 		</para>
 <!--
 		<tip>

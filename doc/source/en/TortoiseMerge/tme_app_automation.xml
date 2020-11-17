@@ -166,14 +166,14 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">/saverequired</entry>
 							<entry>
-								If specified, forces TortoiseMerge to ask to save the file
+								If specified, forces TortoiseGitMerge to ask to save the file
 								before exiting, even if the user does not modify the files.
 							</entry>
 						</row>
 						<row>
 							<entry condition="pot">/saverequiredonconflicts</entry>
 							<entry>
-								If specified, forces TortoiseMerge to ask to save the file
+								If specified, forces TortoiseGitMerge to ask to save the file
 								before exiting if there are conflicts found, even if the user
 								does not modify the files.
 							</entry>

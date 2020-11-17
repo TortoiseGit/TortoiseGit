@@ -185,7 +185,7 @@
 		<para>
 			Pattern matching is case sensitive, which can cause problems
 			on Windows. You can force case insensitivity the hard way
-			by pairing characters, eg. to ignore <literal>*.tmp</literal>
+			by pairing characters, e.g. to ignore <literal>*.tmp</literal>
 			regardless of case, you could use a pattern like
 			<literal>*.[Tt][Mm][Pp]</literal>.
 		</para>

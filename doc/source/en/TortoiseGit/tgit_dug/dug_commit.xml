@@ -144,7 +144,7 @@
 			called <literal>skip-worktree</literal> - then files are treated as
 			unmodified and Git also refuses to merge those on merge/pull
 			(cf. <xref linkend="git-update-index(1)__skip_worktree_bit"/>).
-			As another way to takle cases like this, we have reserved a changelist
+			As another way to tackle cases like this, we have reserved a changelist
 			called <literal>ignore-on-commit</literal>. Any file added to this
 			changelist will automatically be unchecked in the commit dialog.
 			You can still commit changes, but you have to select it manually
@@ -223,7 +223,7 @@
 				<graphic fileref="../images/CommitSpellcheck.png"/>
 			</figure>
 			TortoiseGit includes a spellchecker to help you get your log messages
-			right (cf. <xref linkend="tgit-intro-instalsl-spell"/>). This will highlight any mis-spelled words. Use the context menu
+			right (cf. <xref linkend="tgit-intro-instalsl-spell"/>). This will highlight any misspelled words. Use the context menu
 			to access the suggested corrections. Of course, it doesn't know
 			<emphasis>every</emphasis> technical term that you do, so correctly
 			spelt words will sometimes show up as errors. But don't worry. You can
@@ -269,8 +269,8 @@
 		</para>
 		<para>
 			The log message window also includes a commit message snippet facility.
-			These snippets are shown in the autocomplete dropdown once you type
-			a snippet shortcut, and selecting the snippet in the autocomplete dropdown
+			These snippets are shown in the autocomplete drop-down once you type
+			a snippet shortcut, and selecting the snippet in the autocomplete drop-down
 			then inserts the full text of the snippet.
 			The snippets supplied with TortoiseGit are held in the TortoiseGit
 			installation <filename>bin</filename> folder. You can also define your own
@@ -310,7 +310,7 @@
 			<title>Integration with Bug Tracking Tools</title>
 			<para>
 				If you have activated the bug tracking system, you can set one or more
-				Issues in the <guilabel>Bug-ID / Issue-Nr:</guilabel> text box. Multiple
+				Issues in the <guilabel>Bug-ID / Issue-No:</guilabel> text box. Multiple
 				issues should be comma separated. Alternatively, if you are using
 				regex-based bug tracking support, just add your issue references
 				as part of the log message.
@@ -337,7 +337,7 @@
 				There are the options <guimenuitem>ReCommit</guimenuitem> and <guimenuitem>Commit &amp; push</guimenuitem>.
 				The option <guimenuitem>ReCommit</guimenuitem> commits your changes and leaves the Commit dialog open, so that you can continue committing.
 				The last option <guimenuitem>Commit &amp; push</guimenuitem> will commit your changes and immediately push your changes.
-				If no remote tracking branch is configured for the current active branch, the push dialolg (cf. <xref linkend="tgit-dug-push"/>) is opened.
+				If no remote tracking branch is configured for the current active branch, the push dialog (cf. <xref linkend="tgit-dug-push"/>) is opened.
 			</para>
 		</tip>
 	</sect2>

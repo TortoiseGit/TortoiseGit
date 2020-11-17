@@ -155,7 +155,7 @@
 			The stash has a dark grey rectangle.
 		</para>
 		<para>
-			There are also reactangles to indicate the bad versions (light red) on bisecting, blue for known good and grey for skip.
+			There are also rectangles to indicate the bad versions (light red) on bisecting, blue for known good and grey for skip.
 		</para>
 		<para>
 			The colors are configurable (cf. <xref linkend="tgit-dug-settings-colours2"/>). Also, the labels can be configured to be a the right side of the commit message or the displayed text to contain the whole of the commit message (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
@@ -520,7 +520,7 @@
 					<term>Revert changes to this revision</term>
 					<listitem>
 						<para>
-							Revert chosen files to the satte of this revision.
+							Revert chosen files to the state of this revision.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -772,7 +772,7 @@ Alice -Bob +Eve
 				<guimenu>Walk Behaviour</guimenu>
 				<guimenuitem>First Parent</guimenuitem>
 			</menuchoice>
-			just follow up first parent commit. This will help understand overwhole history.
+			just follow up first parent commit. This will help understand the overall history.
 		</para>
 		<para>
 			<menuchoice>
@@ -810,7 +810,7 @@ Alice -Bob +Eve
 			<primary>log navigation</primary>
 		</indexterm>
 		<para>
-			You can use the dropdown control on the upper right to select a navigation type
+			You can use the drop-down control on the upper right to select a navigation type
 			(e.g. Author Email, Parent 1, Selection history),
 			then use the <guibutton>Up</guibutton>
 			and <guibutton>Down</guibutton> green buttons

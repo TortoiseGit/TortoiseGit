@@ -74,7 +74,7 @@
 						Then select <guimenuitem>Compare revisions</guimenuitem>
 						from the context menu (cf. <xref linkend="tgit-dug-showlog"/>).
 						Then the Compare Revisions dialog appears, showing a list
-						of changed files (maybe with a folder filder pre-applied). Read more in
+						of changed files (maybe with a folder filter pre-applied). Read more in
 						<xref linkend="tgit-dug-compare-revs"/>.
 					</para>
 				</listitem>
@@ -185,7 +185,7 @@
 		<para>
 			<guilabel>Ignore whitespace changes</guilabel>
 			excludes changes which are due solely to a change in the
-			amount or type of whitespace, eg. changing the indentation
+			amount or type of whitespace, e.g. changing the indentation
 			or changing tabs to spaces. Adding whitespace where there
 			was none before, or removing a whitespace completely is still
 			shown as a change.
@@ -299,7 +299,7 @@
 			The built-in diff command of git is available for diffing submodules,
 			but we often find ourselves wanting to see more details how
 			a submodule has changed too. That's why we created Submodule Diff Dialog.
-			The Submodule Diff Dialog is only accessible using the <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs using the <guimenuitem>COmpare with base</guimenuitem> entry in the context menu for a submodule.
+			The Submodule Diff Dialog is only accessible using the <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs using the <guimenuitem>Compare with base</guimenuitem> entry in the context menu for a submodule.
 		</para>
 		<para>
 			<figure id="tgit-dug-submodulediff-dia-1">

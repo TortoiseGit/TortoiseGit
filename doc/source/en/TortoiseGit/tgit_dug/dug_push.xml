@@ -28,7 +28,7 @@
 	<sect2>
 		<title>Branch</title>
 		<para>
-			<guilabel>Local</guilabel>: The source branch which will be pushed to the other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or by using <guilabel>Set upstream/track remote branch</guilabel>. This can be overridden in this dialog by using one of the <guilabel>Always push to the selected remote ...</guilabel> options, so that for pushing a different branch is autoselected as for merging and pulling.
+			<guilabel>Local</guilabel>: The source branch which will be pushed to the other repository. If the current branch or the selected local branch has a remote tracked branch set, the remote branch and remote repository are automatically selected. A remote tracked branch can be set using the reference browser (cf. <xref linkend="tgit-dug-browse-ref"/>) or by using <guilabel>Set upstream/track remote branch</guilabel>. This can be overridden in this dialog by using one of the <guilabel>Always push to the selected remote ...</guilabel> options, so that for pushing a different branch is selected automatically as for merging and pulling.
 		</para>
 		<para>
 			<guilabel>Remote</guilabel>: The remote branch of the other repository.
@@ -77,7 +77,7 @@
 		</tip>
 		<para>
 			<guilabel>Set upstream/track remote branch</guilabel>:
-			After a successful push, the tracking relationship will be set between the pushed local branch and its remote tracking branch. This will autoselect the remote branch automatically for pulling/pushing and merging.
+			After a successful push, the tracking relationship will be set between the pushed local branch and its remote tracking branch. This will select the remote branch automatically for pulling/pushing and merging.
 		</para>
 		<para>
 			<guilabel>Always push to the selected remote archive for this local branch</guilabel>
@@ -88,7 +88,7 @@
 		<para>
 			<guilabel>Recurse submodule</guilabel>
 			<option>None</option>: No checking.
-			<option>Check</option>: Checks if the bounded commits of all submodules are present on the remote repositories. If any of the submodules are not pushed, the superproject push will fail.
+			<option>Check</option>: Checks if the bounded commits of all submodules are present on the remote repositories. If any of the submodules are not pushed, the super project push will fail.
 			<option>On-demand</option>: Checks if the bounded commits of all submodules are present on the remote repositories. If the submodules are not pushed yet, it will try to push them.
 		</para>
 	</sect2>

@@ -113,7 +113,7 @@ langs="1031;de"
 			when the user clicks on the (custom) message label in the upgrade dialog.
 			The URL is opened with the default web browser, so if you specify a web page,
 			that page is opened and shown to the user.
-			The <emphasis>changelogurl</emphasis> line contains the URL to the Changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="https://versioncheck.tortoisegit.org/changelog.txt">https://versioncheck.tortoisegit.org/changelog.txt</ulink>, you can use %1!u!, %2!u! and %3!u! for MAJOR, MINOR and MICRO version numbers of the running TortoiseGit version; %4!s! for Windows platform, %5!s! for Windows version, and %6!s! for servicepack version),
+			The <emphasis>changelogurl</emphasis> line contains the URL to the changelog or release notes which are displayed in the upgrade dialog (if empty it defaults to <ulink url="https://versioncheck.tortoisegit.org/changelog.txt">https://versioncheck.tortoisegit.org/changelog.txt</ulink>, you can use %1!u!, %2!u! and %3!u! for MAJOR, MINOR and MICRO version numbers of the running TortoiseGit version; %4!s! for Windows platform, %5!s! for Windows version, and %6!s! for servicepack version),
 			The <emphasis>baseurl</emphasis> line is used to override the base path to the installation packages (if empty it defaults to http://updater.download.tortoisegit.org/tgit/X.X.X.X/).
 			The filenames are generated as follows: TortoiseGit-(version)-(32|64)bit.msi for the main installer (if not overridden by <emphasis>mainfilename=TortoiseGit-%1!s!-%2!s!bit.msi</emphasis>)
 			and TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi for the language packs (if not overridden by <emphasis>languagepackfilename=TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi</emphasis>; %4!d! is the four digit country code).
@@ -246,7 +246,7 @@ langs="1031;de"
 						</row>
 						<row>
 							<entry condition="pot">0x0000000000080000</entry>
-							<entry>Refence Browse</entry>
+							<entry>Reference Browser</entry>
 						</row>
 
 						<row>

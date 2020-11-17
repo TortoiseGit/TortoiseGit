@@ -11,7 +11,7 @@
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>RefLog</guimenuitem>
-		</menuchoice>, howerver,
+		</menuchoice>, however,
 		you have to hold the <keycap>Shift</keycap> key while right clicking on
 		on a folder in the explorer in order to see this, because it is
 		in the extended context menu by default.

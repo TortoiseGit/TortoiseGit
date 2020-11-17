@@ -12,6 +12,6 @@
 	<para>
 		Remember to save Git's general settings, which you can find in the Git
 		configuration file <literal>.gitconfig</literal> and/or the folder <literal>.config/git</literal>
-		which both are located in your userprofile directory.
+		which both are located in your user profile directory.
 	</para>
 </sect2>

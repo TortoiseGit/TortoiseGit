@@ -123,7 +123,7 @@
 		Next you must specify the command line to execute, starting with the path
 		to the hook script or executable.
 		This could be a batch file, an executable file or any other file which
-		has a valid windows file association, eg. a perl script.
+		has a valid windows file association, e.g. a perl script.
 	</para>
 	<para>
 		The command line includes several parameters which get filled in

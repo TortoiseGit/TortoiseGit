@@ -354,7 +354,7 @@
 					TortoiseGit 1.7.10 added files which were not checked on a commit, were removed from
 					the index and unversioned after the commit. Set this value to <literal>false</literal>
 					to restore the old behavior.
-					Set this value to <literal>true</literal> to readd these files again after the commit (default).
+					Set this value to <literal>true</literal> to re-add these files again after the commit (default).
 				</para>
 			</listitem>
 		</varlistentry>
@@ -496,7 +496,7 @@
 			<listitem>
 				<para>
 					The standard edit controls do not stop on forward slashes
-					like they're found in paths and urls. TortoiseGit uses
+					like they're found in paths and URLs. TortoiseGit uses
 					a custom word break procedure for the edit controls.
 					If you don't want that and use the default instead,
 					set this value to 0. If you only want the default

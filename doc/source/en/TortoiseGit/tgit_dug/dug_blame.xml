@@ -63,14 +63,14 @@
 			changes are, select
 			<menuchoice>
 				<guimenu>View</guimenu>
-				<guimenuitem>Colorise by age, continous</guimenuitem>
+				<guimenuitem>Colorize by age, continuous</guimenuitem>
 			</menuchoice>.
 			Then the background color intensity of the lines is related to its age.
 			This will use a colour gradient to show newer lines in yellow and older lines
 			in white. The default colouring is quite light, but you can change it using the TortoiseGitBlame settings.
 		</para>
 		<para>
-			Please also check out the <guimenuitem>View</guimenuitem> menu. There you can toggle the <guimenuitem>Ignore whitepace</guimenuitem> and also toggle the detection of moved/copied lines from other files and <guimenuitem>Follow renames</guimenuitem>.
+			Please also check out the <guimenuitem>View</guimenuitem> menu. There you can toggle the <guimenuitem>Ignore whitespace</guimenuitem> and also toggle the detection of moved/copied lines from other files and <guimenuitem>Follow renames</guimenuitem>.
 		</para>
 		<para>
 			You can search within the Blame report using
@@ -104,7 +104,7 @@
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>Show changes</guimenuitem>
 			</menuchoice> starts your diff viewer, showing you what changed in
-			the referenced revision of the file. Please note, however, that these two options are only available if this line is not there since the initial comit of the file.
+			the referenced revision of the file. Please note, however, that these two options are only available if this line is not there since the initial commit of the file.
 			<menuchoice>
 				<guimenu>Context menu</guimenu>
 				<guimenuitem>Show log</guimenuitem>
@@ -112,7 +112,7 @@
 			referenced revision.
 		</para>
 		<para>
-			The settings for TortoiseBlame can be accessed using
+			The settings for TortoiseGitBlame can be accessed using
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Settings...</guimenuitem>

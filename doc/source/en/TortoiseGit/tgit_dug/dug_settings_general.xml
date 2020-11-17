@@ -33,7 +33,7 @@
 			<listitem>
 				<para>
 					Selects your user interface language.
-					What else did you expect? Only languages of installed LanguagePacks are listed.
+					What else did you expect? Only languages of installed language packs are listed.
 					You can download language packs on the <ulink url="https://tortoisegit.org/download">TortoiseGit download page</ulink>
 					or <ulink url="https://tortoisegit.org/translate">help translating</ulink>.
 				</para>
@@ -111,7 +111,7 @@
 					in this case it is necessary that the <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder is on the path (i.e. entered in the <guilabel>Extra PATH</guilabel> textbox) in order to execute git.exe.
 				</para>
 				<para>
-					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a messagebox saying that a dll is missing.
+					Often you can see if you need this when you start git.exe in <literal>[MSYSGIT-INSTALL-PATH]\mingw\bin</literal>-folder and you get a message box saying that a DLL is missing.
 				</para>
 			</listitem>
 		</varlistentry>
@@ -131,7 +131,7 @@
 					3) Configure AutoCrLf, this is necessary as TortoiseGit and Cygwin Git have different defaults. The default in Cygwin Git is <literal>true</literal>.
 				</para>
 				<para>
-					4) Go to TortoiseGit <xref linkend="tgit-dug-settings-registry"/> and set <literal>CygwinHack</literal> to <literal>true</literal> in order to activate cygwin workarounds.
+					4) Go to TortoiseGit <xref linkend="tgit-dug-settings-registry"/> and set <literal>CygwinHack</literal> to <literal>true</literal> in order to activate Cygwin workarounds.
 				</para>
 				<para>
 					5) Reboot.
@@ -748,7 +748,7 @@
 				<term>Note node</term>
 				<listitem>
 					<para>
-						A reference which points to git notes, under refs/notes namespace.
+						A reference which points to git notes, under refs/notes name space.
 					</para>
 				</listitem>
 			</varlistentry>

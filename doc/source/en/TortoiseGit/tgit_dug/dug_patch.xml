@@ -68,7 +68,7 @@
 		</para>
 		<para>
 			<guilabel>Since</guilabel> create patch from point. You can click
-			<guibutton>...</guibutton> to launch refbrowse dialog to choose branch or tag.
+			<guibutton>...</guibutton> to launch reference browser dialog to choose branch or tag (cf. <xref linkend="tgit-dug-browse-ref"/>).
 		</para>
 		<para>
 			<guilabel>Number Commits</guilabel> is limited how much patch will created.

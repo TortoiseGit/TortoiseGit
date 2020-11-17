@@ -10,7 +10,7 @@
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>Submodules Add</guimenuitem>
 		</menuchoice>
-		option a foreign repository can be embedded into a dedicated subdirectory of the source tree.
+		option a foreign repository can be embedded into a dedicated sub directory of the source tree.
 		When selecting this option, a dialog pops up:
 		<figure id="tgit-dug-submodules-dia-1">
 			<title>The add submodule dialog</title>

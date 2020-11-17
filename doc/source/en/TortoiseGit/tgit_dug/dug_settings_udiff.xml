@@ -16,7 +16,7 @@
 			<term>Colors</term>
 			<listitem>
 				<para>
-					The default colors used by TortoiseGitUDiff are usually ok, but
+					The default colors used by TortoiseGitUDiff are usually a good choice, but
 					you can configure them here.
 				</para>
 			</listitem>
@@ -41,6 +41,6 @@
 		</varlistentry>
 	</variablelist>
 	<para>
-		To select whether you would like to use the build-in or any alterative diff viewer program go to <xref linkend="tgit-dug-settings-progs"/> preferences section in the leftward tree.
+		To select whether you would like to use the build-in or any alternative diff viewer program go to <xref linkend="tgit-dug-settings-progs"/> preferences section in the leftward tree.
 	</para>
 </sect2>

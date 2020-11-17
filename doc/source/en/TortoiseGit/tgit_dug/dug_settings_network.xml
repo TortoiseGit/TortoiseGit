@@ -96,7 +96,7 @@
 					</para>
 					<important>
 						<para>
-							This might be problematic if your ISP blocks outgoing SMTP connections (port 25) or you have a dialup internet connection.
+							This might be problematic if your ISP blocks outgoing SMTP connections (port 25) or you have a dial-up internet connection.
 							In the ladder case some destination MTAs might not accept your mails or mark them as SPAM.
 						</para>
 					</important>

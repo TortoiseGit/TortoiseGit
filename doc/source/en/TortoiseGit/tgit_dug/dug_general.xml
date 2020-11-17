@@ -154,7 +154,7 @@
 				or configure OpenSSH as SSH client, see next paragraph). If you also want to use
 				TortoiseGitPlink on Git Bash, create an environment variable called <literal>GIT_SSH</literal>
 				with the path to the PuTTY plink.exe or preferably to TortoiseGitPLink.exe. This can be done by
-				re-executing the Git for WIndows installer (there you can choose which SSH client to use), on the
+				re-executing the Git for Windows installer (there you can choose which SSH client to use), on the
 				command line by executing <literal>set GIT_SSH=PATH_TO_PLINK.EXE"</literal>
 				(<filename>C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe</filename> on default installations)
 				or configure the environment variables

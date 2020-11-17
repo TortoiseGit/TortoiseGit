@@ -75,7 +75,7 @@
 				<listitem>
 					<para>
 						Caching is done directly inside the shell extension
-						dll.
+						DLL.
 						Each time you navigate to another folder, the status
 						information is fetched again (recursively).
 					</para>
@@ -98,7 +98,7 @@
 				<listitem>
 					<para>
 						Caching is done directly inside the shell extension
-						dll, but only for the currently visible folder.
+						DLL, but only for the currently visible folder.
 						Each time you navigate to another folder, the status
 						information is fetched again.
 					</para>
@@ -306,7 +306,7 @@ subst T: C:\TortoiseGit\doc
 		<para>
 			Windows explorer can just handle a fixed number different overlay providers (15) and TortoiseGit is using 6 of these
 			(these 6 are handled by TortoiseOverlays and, thus, shared with TortoiseSVN and TortoiseCVS). If the TortoiseGit icons
-			are not correctly displayed this is likely caused by other programs which provide overlays (like Dropbox, Owncloud, BoxSync
+			are not correctly displayed this is likely caused by other programs which provide overlays (like DropBox, Owncloud, BoxSync
 			and various others) and register with a higher priority. Use the <guilabel>Start registry editor</guilabel> button for opening
 			the registry editor at the key where the overlay handlers are registered. Just delete or rename the ones you don't need OR
 			prepend the <literal>Tortoise</literal> ones with a double quote or space characters so that those come first in the list.

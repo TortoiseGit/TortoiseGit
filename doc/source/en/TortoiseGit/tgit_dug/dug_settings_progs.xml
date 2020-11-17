@@ -163,7 +163,7 @@ C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
 				<primary>patch file viewer</primary>
 			</indexterm>
 			<para>
-				Instead of TortoiseUDiff an external viewer program for unified-diff files (GNU diff or patch files) may be used.
+				Instead of TortoiseGitUDiff an external viewer program for unified-diff files (GNU diff or patch files) may be used.
 				Basically, there is no parameter required - the file name if the unified diff file to be opened will be appended automatically.
 				If you need to pass it as a different parameter the substitution <literal>%1</literal> can be used.
 				There also is the parameter substitution <literal>%title</literal> available for passing the title to be shown in the title bar (i.e., meta data of the diff).
@@ -328,11 +328,11 @@ C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %b
 			<graphic fileref="../images/SettingsAlternativeEditor.png"/>
 		</figure>
 		<para>
-			The original Windows NotePad program does not behave
+			The original Windows Notepad program does not behave
 			well on files which do not have standard CR-LF
 			line-endings. However, a lot of git configuration files do not have
 			a standard CR-LF line-ending. Because of this TortoiseGit uses a free
-			(shipped) NotePad replacement
+			(shipped) Notepad replacement
 			<ulink url="http://www.flos-freeware.ch/notepad2.html">
 				<citetitle>Notepad2</citetitle>
 			</ulink>

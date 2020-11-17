@@ -24,7 +24,7 @@
 	</para>
 	<para>
 		You can choose here between a bare and normal git repository. A normal repository has a working tree attached to which files can be checkout out and committed whereas a bare repository only can be pushed to and pulled from.
-		After a (non bare) repository is created a messagebox will be shown:
+		After a (non bare) repository is created a message box will be shown:
 		<figure id="tgit-dug-create-dia-created">
 			<title>Successful repository creation message</title>
 			<graphic fileref="../images/GitCreateMsg.png"/>

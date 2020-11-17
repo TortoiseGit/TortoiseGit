@@ -165,7 +165,7 @@
 						 accessed via the efficient Git protocol (optionally wrapped
 						 in ssh for authentication and security) or simply using
 						 HTTP - you can publish your repository anywhere without
-						 any special webserver configuration required.
+						 any special web server configuration required.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -307,9 +307,9 @@
 			</para>
 		</sect2>
 		<sect2 id="tgit-intro-instalsl-spell">
-			<title>Spellchecker</title>
+			<title>Spell checker</title>
 			<indexterm>
-				<primary>spellchecker</primary>
+				<primary>spell checker</primary>
 			</indexterm>
 			<indexterm>
 				<primary>dictionary</primary>
@@ -341,7 +341,7 @@
 				When using the Windows spell checker, you need to install the dictionary in Windows first.
 			</para>
 			<para>
-				Or you can install the dictionaries yourself. If you have OpenOffice, LibreOffice or
+				Or you can install the dictionaries yourself. If you have OpenOffice.org, LibreOffice or
 				Mozilla installed, you can copy those dictionaries, which are located
 				in the installation folders for those applications.
 				Otherwise, you need to download the required dictionary files from
@@ -398,7 +398,7 @@
 					<listitem>
 						<para>
 						If the exact Windows locale doesn't work, try the
-						<quote>Base</quote> language, eg.
+						<quote>Base</quote> language, e.g.
 						<literal>de_CH</literal> (Swiss-German) falls back to
 						<literal>de_DE</literal> (German).
 						</para>

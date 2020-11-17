@@ -220,10 +220,10 @@ Don't touch these lines:
 								The <option>/url</option> specifies the URL to clone from.
 								The <option>/path</option> specifies the target directory
 								to clone to.
-								If <option>/exactpath</option> is not specfied, the
+								If <option>/exactpath</option> is not specified, the
 								repository name (without trailing .git) will be appended to
 								target directory. This is the default behaviour.
-								If <option>/exactpath</option> is specfied, the
+								If <option>/exactpath</option> is specified, the
 								exact <option>/path</option> is considered the target directory,
 								without appending repository name to it.
 							</entry>
@@ -508,7 +508,7 @@ Don't touch these lines:
 							<entry condition="pot">:stashsave</entry>
 							<entry>
 								Opens the <link linkend="tgit-dug-stash">stash save dialog</link> for the working tree located in
-								<option>/path</option>. A prefilled mesage can be achieved by using the <option>/msg</option> parameter.
+								<option>/path</option>. A pre-filled message can be achieved by using the <option>/msg</option> parameter.
 							</entry>
 						</row>
 						<row>
@@ -549,7 +549,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">:reflog</entry>
 							<entry>
-								Opens the reflog dialog for the repository located in <option>/path</option>.
+								Opens the RefLog dialog for the repository located in <option>/path</option>.
 							</entry>
 						</row>
 						<row>
