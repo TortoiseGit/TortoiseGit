@@ -331,17 +331,7 @@
 				<citetitle>TortoiseGit repository</citetitle>
 			</ulink>.
 			(<xref linkend="tgit-preface-source"/> explains how to access the repository).
-			A summary of the API is also given in <xref linkend="tgit-ibugtraqprovider"/>
-
-			Another (working) example plugin in C# is
-			<ulink url="https://code.google.com/p/gurtle/">
-				<citetitle>Gurtle</citetitle>
-			</ulink>
-			which implements the required COM interface to interact with the
-			<ulink url="https://code.google.com/hosting/">
-				<citetitle>Google Code</citetitle>
-			</ulink>
-			issue tracker.
+			A summary of the API is also given in <xref linkend="tgit-ibugtraqprovider"/>.
 		</para>
 		<para>
 			For illustration purposes, let's suppose that your system administrator
