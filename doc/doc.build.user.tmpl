@@ -11,20 +11,20 @@
 	<!--<property name="docformats" value="chm" />-->
 	<!-- select the languages of the docs -->
 	<!--<property name="languages" value="en" />-->
-	
+
 
 	<!-- if you want to use the spellchecker, enable it here -->
-	<property name="spellcheck" value="false"/> 
+	<property name="spellcheck" value="false"/>
 	<!-- and set the path to aspell. NOTE: avoid spaces in the path here -->
 	<property name="path.spellcheck" value="C:\Progra~1\Aspell\bin\Aspell.exe"/>
 
 	<!-- if you've put the 'Tools' folder not below the TortoiseGit source
 	root, you must set the paths here! -->
-	<property name="path.bin" 
+	<property name="path.bin"
 		value="${path::get-full-path('c:/Tools')}"
 		unless="${property::exists('path.bin')}"
 	/>
-	<property name="path.fop" 
+	<property name="path.fop"
 		value="${path::get-full-path('c:/Tools/fop')}"
 		unless="${property::exists('path.fop')}"
 	/>
@@ -32,11 +32,11 @@
 		value="fop.bat"
 		unless="${property::exists('name.fop')}"
 	/>
-	<property name="path.xsl" 
+	<property name="path.xsl"
 		value="${string::replace(path::get-full-path('c:/Tools/xsl'), '\', '/')}"
 		unless="${property::exists('path.xsl')}"
 	/>
-	<property name="path.gettext" 
+	<property name="path.gettext"
 		value="${path::get-full-path('c:/Tools')}"
 		unless="${property::exists('path.gettext')}"
 	/>

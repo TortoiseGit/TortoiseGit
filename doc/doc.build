@@ -1,11 +1,5 @@
 <?xml version="1.0"?>
 <!--
-============================================================ 
- $Date: 2008-12-14 09:06:16 +0800 (Sun, 14 Dec 2008) $
- $Author: simonlarge $
- $Rev: 14835 $
-============================================================ 
-
 NAnt build script for the TortoiseGit documentation
 
 All project specific configuration is stored in doc.build.include.
@@ -17,7 +11,7 @@ All user/site specific configuration is stored in doc.build.user.
 	<description>
 		Builds the Documentation in all languages and all output formats
 	</description>
-	
+
 	<!-- default: we don't clean first -->
 	<property name="cleanup" value="" overwrite="false" />
 
@@ -27,7 +21,7 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- Loop over all languages                                                -->
 <!-- ====================================================================== -->
 
-	<target name="all" 
+	<target name="all"
 		description="Loop over all languages, output formats and applications and build documentation"
 		depends="prepare" >
 
@@ -41,7 +35,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<call target="doit" failonerror="${critical or lang.base==lang.target}"/>
 		</foreach>
 	</target>
-	
+
 <!-- ====================================================================== -->
 <!-- Loop over all applications and output formats                          -->
 <!-- ====================================================================== -->
@@ -52,7 +46,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<property name="doc.source.file" value="source/${lang.base}/${app}.xml"/>
 			<property name="doc.base.name" value="${app}_${lang.base}"/>
 			<property name="doc.base.work" value="output/${doc.base.name}"/>
-					
+
 			<property name="doc.target.name" value="${app}_${lang.target}"/>
 			<property name="doc.target.work" value="output/${doc.target.name}"/>
 			<property name="doc.target.source" value="source/${lang.target}/${app}/${app}.xml"/>
@@ -78,7 +72,7 @@ All user/site specific configuration is stored in doc.build.user.
 			</if>
 		</foreach>
 	</target>
-	
+
 <!-- ====================================================================== -->
 <!-- ====================================================================== -->
 
@@ -87,7 +81,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<delete dir="output" failonerror="false"/>
 		</if>
 	</target>
-	
+
 <!-- ====================================================================== -->
 <!-- ====================================================================== -->
 
@@ -199,7 +193,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<fail if="${string::contains(xsltproc.output, 'Error: no ID for constraint linkend:')}">"Error: no ID for constraint linkend:" found</fail>
 		<fail if="${string::contains(xsltproc.output, 'ERROR: xref linking to ')}">"ERROR: xref linking to" found</fail>
 	</target>
-	
+
 <!-- ====================================================================== -->
 <!-- Profile source into a single file                                      -->
 <!-- ====================================================================== -->
@@ -231,7 +225,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 	<target name="potfile" description="Create po template from sources">
 		<property name="lang.target" value="${lang.base}"/>
-		
+
 		<!-- ensure "Version" translation invariant -->
 		<copy file="source\${lang.base}\version.in" tofile="source\${lang.base}\version.xml" overwrite="true"/>
 
@@ -272,7 +266,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<property name="lang.pofile" value="po/${app}_${lang.target}.po"/>
 
 		<echo message="Translating: '${app} ${lang.target}' This may take a few minutes"/>
-		
+
 		<exec program="msgfmt"
 					commandline="${lang.pofile} -o ${lang.target}.mo"
 					basedir="${path.gettext}"
@@ -335,7 +329,7 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="UpdateVersionInfo" description="Updates the version file with version info">
 
 		<copy
-			file="source/${lang.target}/Version.in" 
+			file="source/${lang.target}/Version.in"
 			tofile="source/${lang.target}/version.xml"
 			overwrite="true">
 
@@ -358,7 +352,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<echo message="Spellchecking: '${app} ${lang.target}' This may take a few minutes"/>
 		<property name="spellcheck.log" value="ASpell/${app}_${lang.target}.log"/>
 		<mkdir dir="ASpell/${app}_${lang.target}"/>
-		
+
 		<echo message="--- Spellchecking: '${lang.target}'"
 			file="${spellcheck.log}"
 			failonerror="false"/>
@@ -405,13 +399,13 @@ All user/site specific configuration is stored in doc.build.user.
 			</do>
 		</foreach>
 	</target>
-	
+
 <!-- ====================================================================== -->
 <!-- Create PDF documentation                                               -->
 <!-- ====================================================================== -->
 
 	<target name="pdf" description="Create PDF documentation">
-		
+
 		<property name="file.target" value="output/${app}-${docverstring}-${lang.target}.pdf"/>
 		<call target="uptodate"/>
 
@@ -460,7 +454,7 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- ====================================================================== -->
 
 	<target name="chm" description="Create CHM documentation">
-	
+
 		<property name="file.target" value="${doc.target.work}.chm"/>
 		<call target="uptodate"/>
 
@@ -470,7 +464,7 @@ All user/site specific configuration is stored in doc.build.user.
 			<property name="xslt.target" value="${doc.target.work}/${doc.target.name}"/>
 
 			<call target="xsltproc" />
-			
+
 			<!-- The CHM helpcontext target resides in an external build file -->
 			<call target="help.prepare" if="${target::exists('help.prepare')}"/>
 

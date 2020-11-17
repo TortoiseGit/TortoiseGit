@@ -1,11 +1,5 @@
 <?xml version="1.0"?>
 <!--
-============================================================ 
- $Date: 2008-12-16 22:51:06 +0800 (Tue, 16 Dec 2008) $
- $Author: luebbe $
- $Rev: 14867 $
-============================================================ 
-
 Customization layer for build files.
 
 You can override these settings by defining them on the command line or by
@@ -29,19 +23,19 @@ This will only build the english HTML help file for TortoiseGit
   <!-- List of applications, languages and output formats in which  -->
 	<!-- the documentation will be created by default                 -->
 
-	<property name="applications" 
-		value="TortoiseGit,TortoiseMerge" 
+	<property name="applications"
+		value="TortoiseGit,TortoiseMerge"
 		unless="${property::exists('applications')}"
 	/>
-	
+
 	<!-- pdf,chm,html,htmlsingle -->
-	<property name="docformats" 
-		value="chm" 
+	<property name="docformats"
+		value="chm"
 		unless="${property::exists('docformats')}"
 	/>
-	
+
 	<!--,de,es,fa,fi,fr,hr,id,ja,nl,ru,sl,sk,sr_spc,sr_spl,zh_CN" -->
-	<property name="languages" 
+	<property name="languages"
 		value="en"
 		unless="${property::exists('languages')}"
 	/>
@@ -50,7 +44,7 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- Define property so that doc.build alone doesn't fail         -->
 
 	<property name="devrelease"
-		value="" 
+		value=""
 		unless="${property::exists('devrelease')}"
 	/>
 
@@ -58,20 +52,20 @@ This will only build the english HTML help file for TortoiseGit
 
 	<!-- ============================================================ -->
 	<!-- Settings for the translation                                 -->
-	
+
 	<!-- Base language. All other documents are created using this    -->
 	<!-- documents structure                                          -->
 	<property name="lang.base"
 		value="en"
 		unless="${property::exists('lang.base')}"
 	/>
-	
+
 	<!-- ============================================================ -->
 	<!-- Settings for the CHM Help creation                           -->
 	<!-- Attention, this is implemented as a target, because I could  -->
 	<!-- not find a better way to create the property depending on    -->
 	<!-- the app name                                                 -->
-	
+
 	<target name="help.prepare.TortoiseGit">
 	<echo message="help.prepare.TortoiseGit"/>
 		<property name="help.resource.TortoiseGit"
@@ -95,7 +89,7 @@ This will only build the english HTML help file for TortoiseGit
 	<fileset id="files.exclude">
 		<include name="source/${lang.base}/**/version.xml"/>
 	</fileset>
-	
+
 	<fileset id="files.filtered">
 		<include name="source/${lang.base}/TortoiseGit/**/*.xml"/>
 		<include name="source/${lang.base}/**/wishlist.xml"/>
@@ -109,23 +103,23 @@ This will only build the english HTML help file for TortoiseGit
 
 	<!-- ============================================================ -->
 	<!-- Paths to the binaries                                        -->
-	<property name="path.bin" 
+	<property name="path.bin"
 		value="${path::get-full-path('../Tools')}"
 		unless="${property::exists('path.bin')}"
 	/>
-	<property name="path.fop" 
+	<property name="path.fop"
 		value="${path::get-full-path('../Tools/fop')}"
 		unless="${property::exists('path.fop')}"
 	/>
-	<property name="name.fop" 
+	<property name="name.fop"
 		value="fop.bat"
 		unless="${property::exists('name.fop')}"
 	/>
-	<property name="path.xsl" 
+	<property name="path.xsl"
 		value="${string::replace(path::get-full-path('../Tools/xsl'), '\', '/')}"
 		unless="${property::exists('path.xsl')}"
 	/>
-	<property name="path.gettext" 
+	<property name="path.gettext"
 		value="${path::get-full-path('../Tools')}"
 		unless="${property::exists('path.gettext')}"
 	/>
@@ -153,7 +147,7 @@ This will only build the english HTML help file for TortoiseGit
 <!-- Custom target to prepare the build                                     -->
 <!-- ====================================================================== -->
 
-	<target name="prepare.custom" 
+	<target name="prepare.custom"
 		description="Prepare XSL files, create help context file"
 		depends="PrepareVersionInfo">
 
@@ -198,7 +192,7 @@ This will only build the english HTML help file for TortoiseGit
 					<variable name="MinorVersion" value="11" />
 					<variable name="MicroVersion" value="0" />
 				</setenv>
-			</if>                                            
+			</if>
 		</if>
 
 		<property name="docverstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}"/>
@@ -220,7 +214,7 @@ This will only build the english HTML help file for TortoiseGit
 			<loadfile file="${help.resource}" property="header" />
 			<echo file="${headerfile}" message="${header}" />
 			<echo message="header file ${help.resource}" />
-			
+
 			<echo message="// Generated Help Map file.&#13;&#10;" file="${help.context}" />
 			<echo message="" file="${help.context}" append="true"/>
 			<echo message="// Commands (ID_* and IDM_*)&#13;&#10;" file="${help.context}" append="true"/>
