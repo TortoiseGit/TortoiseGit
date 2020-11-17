@@ -17,7 +17,7 @@
 			apply unified diff files, often called <firstterm>patches</firstterm>.
 		</para>
 		<para>
-			While working on text files, e.g. source files in your favourite
+			While working on text files, e.g. source files in your favorite
 			programming language, or HTML/XML files for your documentation or
 			website, you will often have a situation where you need to compare
 			different versions of those files. Sometimes you get a different

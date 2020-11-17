@@ -42,13 +42,13 @@
 			column, all lines with the same revision are shown with a darker
 			background. Lines from other revisions which were changed by the same author
 			are shown with a light background.
-			The colouring may not work as clearly if you have your display set to
-			256 colour mode.
+			The coloring may not work as clearly if you have your display set to
+			256 color mode.
 		</para>
 		<para>
 			If you <action>left click</action>
 			on a line (on the blame info column on the left), all lines with the same revision are highlighted, and lines from
-			other revisions by the same author are highlighted in a lighter colour.
+			other revisions by the same author are highlighted in a lighter color.
 			This highlighting is sticky, allowing you to move the mouse without losing
 			the highlights. Click on that revision again to turn off highlighting.
 		</para>
@@ -66,8 +66,8 @@
 				<guimenuitem>Colorize by age, continuous</guimenuitem>
 			</menuchoice>.
 			Then the background color intensity of the lines is related to its age.
-			This will use a colour gradient to show newer lines in yellow and older lines
-			in white. The default colouring is quite light, but you can change it using the TortoiseGitBlame settings.
+			This will use a color gradient to show newer lines in yellow and older lines
+			in white. The default coloring is quite light, but you can change it using the TortoiseGitBlame settings.
 		</para>
 		<para>
 			Please also check out the <guimenuitem>View</guimenuitem> menu. There you can toggle the <guimenuitem>Ignore whitespace</guimenuitem> and also toggle the detection of moved/copied lines from other files and <guimenuitem>Follow renames</guimenuitem>.

@@ -6,7 +6,7 @@
 		<para>
 			Since all commands for TortoiseGit are controlled through command
 			line parameters, you can automate it with batch scripts or start specific
-			commands and dialogs from other programs (e.g. your favourite text editor).
+			commands and dialogs from other programs (e.g. your favorite text editor).
 		</para>
 		<important>
 		<para>

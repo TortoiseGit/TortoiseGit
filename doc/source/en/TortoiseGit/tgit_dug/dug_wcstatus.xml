@@ -170,7 +170,7 @@
 		</para>
 		-->
 		<para>
-			The dialog uses colour coding to highlight the status.
+			The dialog uses color coding to highlight the status.
 			<variablelist>
 				<varlistentry>
 					<term>Blue</term>
@@ -231,7 +231,7 @@
 			</variablelist>
 		</para>
 		<para>
-			This is the default colour scheme, but you can customise those colours
+			This is the default color scheme, but you can customise those colors
 			using the settings dialog.
 			Read <xref linkend="tgit-dug-settings-colours"/> for more information.
 		</para>

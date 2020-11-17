@@ -40,7 +40,7 @@
 		<para>
 			Each revision graph node represents a revision in the repository
 			where something changed in the tree you are looking at.
-			Different types of nodes can be distinguished by colour which can be configured using
+			Different types of nodes can be distinguished by color which can be configured using
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Settings</guimenuitem>
@@ -53,7 +53,7 @@
 						<para>
 							Items which have been added, or created by copying
 							another file/folder are shown using a rounded rectangle.
-							The default colour is green. Tags and trunks are treated
+							The default color is green. Tags and trunks are treated
 							as a special case and use a different shade, depending
 							on the
 							<menuchoice>
@@ -69,7 +69,7 @@
 						<para>
 							Deleted items e.g. a branch which is no longer required,
 							are shown using an octagon (rectangle with corners cut off).
-							The default colour is red.
+							The default color is red.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -78,7 +78,7 @@
 					<listitem>
 						<para>
 							Renamed items are also shown using an octagon,
-							but the default colour is blue.
+							but the default color is blue.
 						</para>
 					</listitem>
 				</varlistentry>
@@ -306,7 +306,7 @@
 							option then a deleted branch from which tags were taken
 							will still be shown, otherwise the tags would disappear too.
 							The last revision that was tagged will be shown in the
-							colour used for deleted nodes instead of showing a separate
+							color used for deleted nodes instead of showing a separate
 							deletion revision.
 						</para>
 						<para>
@@ -347,7 +347,7 @@
 							If your WC contains local changes, this option draws it
 							as a separate elliptical node, linked back to the node
 							that your WC was last updated to.
-							The default outline colour is red.
+							The default outline color is red.
 							You may need to refresh the graph using
 							<keycap>F5</keycap> to capture recent changes.
 						</para>
@@ -375,7 +375,7 @@
 					<listitem>
 						<para>
 							Where the graph contains several trees, it is sometimes
-							useful to use alternating colours on the background to
+							useful to use alternating colors on the background to
 							help distinguish between trees.
 						</para>
 					</listitem>

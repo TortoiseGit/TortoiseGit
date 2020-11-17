@@ -17,7 +17,7 @@
 		<application>TortoiseGitMerge</application> for viewing differences of
 		text files. For viewing differences of image files, TortoiseGit
 		also has a tool named <application>TortoiseGitIDiff</application>.
-		Of course, you can use your own favourite diff program if you
+		Of course, you can use your own favorite diff program if you
 		like.
 	</para>
 	<sect2 id="tgit-dug-diff-file">
@@ -432,7 +432,7 @@
 		</para>
 		<para>
 			An image info box shows details about the image file, such as the
-			size in pixels, resolution and colour depth. If this box gets in the
+			size in pixels, resolution and color depth. If this box gets in the
 			way, use
 			<menuchoice>
 				<guimenu>View</guimenu>
@@ -461,8 +461,8 @@
 			have the image files for two revisions of a printed circuit board and
 			want to see which tracks have changed. If you disable alpha blend mode,
 			the difference will be shown as an <emphasis>XOR</emphasis> of the pixel
-			colour values. Unchanged areas will be plain white and changes will be
-			coloured.
+			color values. Unchanged areas will be plain white and changes will be
+			colored.
 		</para>
 	</sect2>
 	<sect2 id="tgit-dug-diff-tools">
@@ -476,7 +476,7 @@
 		<para>
 			If the tools we	provide don't do what you need, try one of the many
 			open-source or commercial programs available. Everyone has their own
-			favourites, and this list is by no means complete, but here are a few
+			favorites, and this list is by no means complete, but here are a few
 			that you might consider:
 		</para>
 		<variablelist>
@@ -564,7 +564,7 @@
 				<term>SciTE</term>
 				<listitem>
 					<para>
-						This text editor includes syntax colouring for unified diffs,
+						This text editor includes syntax coloring for unified diffs,
 						making them much easier to read. Download it from
 						<ulink url="https://www.scintilla.org/SciTEDownload.html">
 							<citetitle>Scintilla</citetitle>

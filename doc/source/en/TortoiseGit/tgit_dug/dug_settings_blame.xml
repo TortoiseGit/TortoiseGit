@@ -17,10 +17,10 @@
 			<term>Colors</term>
 			<listitem>
 				<para>
-					TortoiseGitBlame can use the background colour to indicate the age
+					TortoiseGitBlame can use the background color to indicate the age
 					of lines in a file. You set the endpoints by specifying the
-					colours for the newest and oldest revisions, and TortoiseGitBlame
-					uses a linear interpolation between these colours according to
+					colors for the newest and oldest revisions, and TortoiseGitBlame
+					uses a linear interpolation between these colors according to
 					the repository revision indicated for each line.
 				</para>
 			</listitem>

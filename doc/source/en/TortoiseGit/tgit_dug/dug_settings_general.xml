@@ -683,14 +683,14 @@
 		</variablelist>
 	</sect3>
 	<sect3 id="tgit-dug-settings-colours">
-		<title>TortoiseGit Colour Settings</title>
+		<title>TortoiseGit color Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSCOLORS_1"?>
 		<para>
 			<figure id="tgit-dug-settings-dia-colors">
-				<title>The Settings Dialog, Colours Page</title>
+				<title>The Settings Dialog, colors Page</title>
 				<graphic fileref="../images/SettingsColors.png"/>
 			</figure>
-			This dialog allows you to configure the text colours
+			This dialog allows you to configure the text colors
 			used in TortoiseGit's dialogs the way you like them.
 		</para>
 		<variablelist>
@@ -703,7 +703,7 @@
 						the same name as a versioned one.
 					</para>
 					<para>
-						This colour is also used for error messages in the progress dialogs.
+						This color is also used for error messages in the progress dialogs.
 					</para>
 				</listitem>
 			</varlistentry>
@@ -784,26 +784,26 @@
 		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-colours2">
-		<title>TortoiseGit Colour Settings 2</title>
+		<title>TortoiseGit color Settings 2</title>
 		<?dbhh topicname="HIDD_SETTINGSCOLORS_2"?>
 		<para>
 			<figure id="tgit-dug-settings-dia-colors2">
-				<title>The Settings Dialog, Colours Page</title>
+				<title>The Settings Dialog, colors Page</title>
 				<graphic fileref="../images/SettingsColors2.png"/>
 			</figure>
-			This dialog allows you to configure the text colours
+			This dialog allows you to configure the text colors
 			used in TortoiseGit's dialogs the way you like them.
 		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-colours3">
-		<title>TortoiseGit Colour Settings 3</title>
+		<title>TortoiseGit color Settings 3</title>
 		<?dbhh topicname="HIDD_SETTINGSCOLORS_3"?>
 		<para>
 			<figure id="tgit-dug-settings-dia-colors-3">
-				<title>The Settings Dialog, Colours Page</title>
+				<title>The Settings Dialog, colors Page</title>
 				<graphic fileref="../images/SettingsColors3.png"/>
 			</figure>
-			This dialog allows you to configure the line colours, line width and node size
+			This dialog allows you to configure the line colors, line width and node size
 			in the graph column used in TortoiseGit's log dialog the way you like them.
 		</para>
 	</sect3>
