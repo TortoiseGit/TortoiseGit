@@ -65,8 +65,8 @@ All user/site specific configuration is stored in doc.build.user.
 				<call target="spellcheck" if="${property::exists('spellcheck') and spellcheck=='true'}"/>
 
 				<property name="xslt.source" value="${doc.target.source}"/>
-				<call target="copyimages"/>
 				<foreach item="String" in="${docformats}" delim="," property="docformat">
+					<call target="copyimages"/>
 					<call target="${docformat}"/>
 				</foreach>
 			</if>
@@ -113,7 +113,7 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="copyimages" description="Copy images">
 		<delete dir="${doc.target.work}/images" failonerror="false"/>
 		<mkdir dir="${doc.target.work}/images"/>
-		<mkdir dir="${doc.target.work}/images/callouts"/>
+		<mkdir dir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit'}"/>
 
 		<property name="xslt.params" value="${xsl.pdf.params}"/>
 		<property name="xslt.target" value="${path::get-temp-file-name()}"/>
@@ -138,9 +138,10 @@ All user/site specific configuration is stored in doc.build.user.
 			</fileset>
 		</copy>
 
-		<copy todir="${doc.target.work}/images/callouts">
+		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit'}">
 			<fileset basedir="images/${lang.base}/callouts">
-				<include name="*"/>
+				<include name="*.png" unless="${docformat=='pdf'}"/>
+				<include name="*.svg" if="${docformat=='pdf'}"/>
 			</fileset>
 		</copy>
 	</target>
