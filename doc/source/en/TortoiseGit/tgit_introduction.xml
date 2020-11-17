@@ -75,7 +75,7 @@
 		</para>
 		<para>
 			From August 2015, GoogleCode was shut down and the TortoiseGit project established their
-			website tortoisegit.org and migrated the main repository and issue tracker to GitLab.
+			website TortoiseGit.org and migrated the main repository and issue tracker to GitLab.
 		</para>
 		<para>
 			As Git became more stable it attracted more and more users
@@ -163,7 +163,7 @@
 						 development branches, and can be merged in the same way
 						 as a locally developed branch. Repositories can be easily
 						 accessed via the efficient Git protocol (optionally wrapped
-						 in ssh for authentication and security) or simply using
+						 in SSH for authentication and security) or simply using
 						 HTTP - you can publish your repository anywhere without
 						 any special web server configuration required.
 					</para>
@@ -270,7 +270,7 @@
 			</para>
 			<para>
 				One prerequisite of TortoiseGit is that it requires an already installed (command line) Git client which provides a <filename>git.exe</filename>.
-				<ulink url="https://git-for-windows.github.io/">Git for Windows</ulink> is recommended (Cygwin and Msys2 Git also work, see <xref linkend="tgit-dug-settings-main"/> for configuration. Please note that Cygwin and Msys2 Git are not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome).
+				<ulink url="https://git-for-windows.github.io/">Git for Windows</ulink> is recommended (Cygwin and MSYS2 Git also work, see <xref linkend="tgit-dug-settings-main"/> for configuration. Please note that Cygwin and MSYS2 Git are not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome).
 				Installation of Git for Windows can be done with preselected options, however, no need to install the "Windows Explorer integration".
 				If you know about CRLF and LF line endings and you have editors coping with that, you should select "Checkout as-is, commit as-is" in order to prevent automatic translations.
 			</para>

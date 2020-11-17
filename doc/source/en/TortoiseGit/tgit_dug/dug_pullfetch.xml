@@ -74,7 +74,7 @@
 	</para>
 -->
 	<tip>
-		<para>You can find more information about PuTTY and using ssh-keys at <xref linkend="tgit-ssh-howto"/>. There is also explained how you can use several accounts at the same time for a remote.</para>
+		<para>You can find more information about PuTTY and using SSH keys at <xref linkend="tgit-ssh-howto"/>. There is also explained how you can use several accounts at the same time for a remote.</para>
 	</tip>
 	<important>
 		<title>Conflicts</title>

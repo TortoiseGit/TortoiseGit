@@ -153,17 +153,17 @@
 				does not respect <filename>~/.ssh/config</filename> which is OpenSSH specific (see PuTTY tips &amp; tricks
 				or configure OpenSSH as SSH client, see next paragraph). If you also want to use
 				TortoiseGitPlink on Git Bash, create an environment variable called <literal>GIT_SSH</literal>
-				with the path to the PuTTY plink.exe or preferably to TortoiseGitPLink.exe. This can be done by
+				with the path to the PuTTY plink.exe or preferably to TortoiseGitPlink.exe. This can be done by
 				re-executing the Git for Windows installer (there you can choose which SSH client to use), on the
 				command line by executing <literal>set GIT_SSH=PATH_TO_PLINK.EXE"</literal>
-				(<filename>C:\Program Files\TortoiseGit\bin\TortoiseGitPLink.exe</filename> on default installations)
+				(<filename>C:\Program Files\TortoiseGit\bin\TortoiseGitPlink.exe</filename> on default installations)
 				or configure the environment variables
 				<ulink url="https://www.computerhope.com/issues/ch000549.htm">
 					<citetitle>permanently</citetitle>
 				</ulink>.
 			</para>
 			<para>
-				It is also possible to use OpenSSH (shipped with Git for Windows, Cygwin, and Msys2). Just open TortoiseGit
+				It is also possible to use OpenSSH (shipped with Git for Windows, Cygwin, and MSYS2). Just open TortoiseGit
 				settings and open the <guilabel>Network</guilabel> page and enter <filename>ssh.exe</filename> as SSH client,
 				see <xref linkend="tgit-dug-settings-network"/> and
 				<ulink url="https://stackoverflow.com/a/32115724/3906760">

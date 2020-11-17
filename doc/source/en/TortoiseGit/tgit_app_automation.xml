@@ -398,7 +398,7 @@ Don't touch these lines:
 								<para>
 								Depending on revisions to compare and the path, this
 								either shows a unified diff (if the option <option>unified</option> is set),
-								a dialog with a list of files that have changed (filtered by a possibly entered subpath) or if
+								a dialog with a list of files that have changed (filtered by a possibly entered sub path) or if
 								the path point to a file starts the diff viewer for
 								those the file in the different revisions.
 								Use <option>/revision1:xxx</option> and <option>/revision2:xxx</option> to specify the revisions to compare,
@@ -657,7 +657,7 @@ TortoiseGitProc.exe /command:log /path:"c:\git_wc\file1.txt"
 		<para>
 			<tip>
 				<para>
-					When calling TortoiseGit from within the msys environment, you can also use more *nix style command line parameters:
+					When calling TortoiseGit from within the MSYS environment, you can also use more *nix style command line parameters:
 					<screen>
 TortoiseGitProc.exe -command commit
                     -path "d:\git_wc\file1.txt*c:\git_wc\file2.txt"

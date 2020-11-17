@@ -87,7 +87,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">/basereflectedname</entry>
 							<entry>
-								The name to use for editorconfig templates.
+								The name to use for EditorConfig templates.
 							</entry>
 						</row>
 						<row>
@@ -107,7 +107,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">/theirsreflectedname</entry>
 							<entry>
-								The name to use for editorconfig templates.
+								The name to use for EditorConfig templates.
 							</entry>
 						</row>
 						<row>
@@ -128,7 +128,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">/minereflectedname</entry>
 							<entry>
-								The name to use for editorconfig templates.
+								The name to use for EditorConfig templates.
 							</entry>
 						</row>
 						<row>
@@ -151,7 +151,7 @@ Don't touch these lines:
 						<row>
 							<entry condition="pot">/mergedreflectedname</entry>
 							<entry>
-								The name to use for editorconfig templates.
+								The name to use for EditorConfig templates.
 							</entry>
 						</row>
 						<row>

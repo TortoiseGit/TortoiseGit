@@ -228,7 +228,7 @@
 								the setting set to <literal>3</literal> (grouping by application),
 								except that grouping takes place
 								independently of the working tree. This was the default
-								before TGit 1.8.1.2.
+								before TortoiseGit 1.8.1.2.
 							</para>
 						</listitem>
 						<listitem>
@@ -292,8 +292,8 @@
 			<term condition="pot">Msys2Hack</term>
 			<listitem>
 				<para>
-					This enables some workarounds which enables TortoiseGit to be used with Msys2 Git (do not enable this for the Git for Windows package!).
-					Msys2 Git, however, is not officially supported by TortoiseGit.
+					This enables some workarounds which enables TortoiseGit to be used with MSYS2 Git (do not enable this for the Git for Windows package!).
+					MSYS2 Git, however, is not officially supported by TortoiseGit.
 					See <xref linkend="tgit-dug-settings-main"/> for more information.
 					The default is <literal>false</literal>.
 				</para>

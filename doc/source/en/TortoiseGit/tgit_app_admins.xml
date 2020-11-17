@@ -49,12 +49,12 @@
 			computer you want to install TortoiseGit as per user.
 		</para>
 		<para>
-			You can provide a default setting for the ssh client in
+			You can provide a default setting for the SSH client in
 			<filename>HKLM\TortoiseGit\SSH</filename>.
 		</para>
 		<para>
 			TortoiseGit automatically finds <filename>git.exe</filename> if a normal msysGit/Git for Windows installation is on the computer
-			or git.exe is on the <emphasis>PATH</emphasis> (and is runnable in a normal cmd.exe session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysgit development package).
+			or git.exe is on the <emphasis>PATH</emphasis> (and is runnable in a normal cmd.exe session - you might need to also put the <filename>[MSYSGIT INSTALLDIR]\mingw\bin</filename> on the <emphasis>PATH</emphasis> if you use the msysGit development package).
 		</para>
 		<para>
 			For completely disabling automatic update checking see <emphasis>VersionCheck</emphasis> in <xref linkend="tgit-dug-settings-registry"/>.

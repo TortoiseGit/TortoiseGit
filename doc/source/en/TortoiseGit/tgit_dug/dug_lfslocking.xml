@@ -17,7 +17,7 @@
 	<sect2>
 		<title>Setting up the repository</title>
 		<para>To use Git LFS locking you need to set up a repository. Currently this step needs to be done through Git command line.</para>
-		<para>Git has built-in tools for resolving merge conflicts in text files (such as source code, documentation, etc.). The first step to use File Locking is to define what file types need the extra overhead. The Git LFS track command includes a <literal>--lockable</literal> flag. The following command will store JPG files in LFS, and mark them as lockable:</para>
+		<para>Git has built-in tools for resolving merge conflicts in text files (such as source code, documentation, etc.). The first step to use File Locking is to define what file types need the extra overhead. The Git LFS track command includes a <literal>--lockable</literal> flag. The following command will store <filename>*.jpg</filename> files in LFS, and mark them as lockable:</para>
 		<screen>$ git lfs track "*.jpg" --lockable</screen>
 		<para>This adds the following line to your <filename>.gitattributes</filename> file:</para>
 		<screen>*.jpg filter=lfs diff=lfs merge=lfs -text lockable</screen>

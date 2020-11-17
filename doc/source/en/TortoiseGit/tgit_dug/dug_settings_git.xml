@@ -3,7 +3,7 @@
 <sect2 id="tgit-dug-settings-git">
 	<title>Git</title>
 	<sect3 id="tgit-dug-settings-hierarchical">
-		<title>The hierarchical git configuration</title>
+		<title>The hierarchical Git configuration</title>
 		<para>
 			Git uses the concept of a hierarchical configuration (cf. <xref linkend="git-config(1)"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
 		</para>
@@ -30,25 +30,25 @@
 		</para>
 		<para> Set git basic configuration </para>
 		<para><guilabel>Name</guilabel> and <guilabel>Email</guilabel> are required for git to operate correctly.</para>
-		<para> <guilabel>AutoCrlf</guilabel>
+		<para> <guilabel>AutoCrLf</guilabel>
 			If true, makes git convert CRLF at the end of lines in text files
 			to LF when reading from the filesystem, and convert in reverse when
 			writing to the filesystem. The variable can be set to input,
 			in which case the conversion happens only while reading from
 			the filesystem but files are written out with LF at the end of lines.
-			A file is considered "text" (i.e. be subjected to the autocrlf mechanism)
-			based on the file's crlf attribute, or if crlf is unspecified,
+			A file is considered "text" (i.e. be subjected to the AutoCrLf mechanism)
+			based on the file's CRLF attribute, or if CRLF is unspecified,
 			based on the file's contents.
 		</para>
-		<para> <guilabel>SafeCrlf</guilabel>
-			If true, makes git check if converting CRLF as controlled by core.autocrlf is reversible.
+		<para> <guilabel>SafeCrLf</guilabel>
+			If true, makes git check if converting CRLF as controlled by <literal>core.autocrlf</literal> is reversible.
 			Git will verify if a command modifies a file in the work tree either directly or indirectly.
 			For example, committing a file followed by checking out the same file should yield the original file in the work tree.
-			If this is not the case for the current setting of core.autocrlf, git will reject the file.
+			If this is not the case for the current setting of <literal>core.autocrlf</literal>, git will reject the file.
 			The variable can be set to "warn",
 			in which case git will only warn about an irreversible conversion but continue the operation.
 		</para>
-		<para> <guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
+		<para><guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
 		<important>
 			<para>
 				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierarchical"/>.
@@ -64,20 +64,20 @@
 				<graphic fileref="../images/SettingsGitRemote.png"/>
 			</figure>
 		</para>
-		<para> Set git remote configuration </para>
+		<para> Set Git remote configuration </para>
 		<para>
 			<guilabel>Remote</guilabel>
 			The name of the remote, usually the default one is called <literal>origin</literal>.
 		</para>
 		<para>
 			<guilabel>URL</guilabel>
-			The URL of the remote. It can be http / https / ssh / git protocol or local file system.
+			The URL of the remote. It can be HTTP / HTTPS / SSH / Git protocol or local file system.
 		</para>
 		<para>
 			<guilabel>Push URL</guilabel>
 			The Push URL of the remote.
 			It is for some cases you cannot use the same URL to fetch and push
-			(for example, fetch via password-less Git protocol but push via ssh). Otherwise, leave it empty.
+			(for example, fetch via password-less Git protocol but push via SSH). Otherwise, leave it empty.
 			Note: This is not designed for forking workflow. For forking workflow, you should have 2 remotes.
 			The format is the same as URL.
 		</para>

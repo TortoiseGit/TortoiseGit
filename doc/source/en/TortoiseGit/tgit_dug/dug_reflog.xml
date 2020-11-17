@@ -7,7 +7,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_REFLOG"?>
 	<para>
-		The reference log (reflog) displays the history of a reference (i.e., it is displayed to which commits it pointed in the past). In can be opened using
+		The reference log (RefLog) displays the history of a reference (i.e., it is displayed to which commits it pointed in the past). In can be opened using
 		<menuchoice>
 			<guimenu>TortoiseGit</guimenu>
 			<guimenuitem>RefLog</guimenuitem>

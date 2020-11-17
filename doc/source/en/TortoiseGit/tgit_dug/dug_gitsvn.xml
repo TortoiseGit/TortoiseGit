@@ -13,8 +13,8 @@
 		<primary>svn commit</primary>
 	</indexterm>
 	<para>
-		Commit each diff from a specified head directly to the SVN repository,
-		and then rebase or reset (depending on whether or not there is a diff between SVN and head).
+		Commit each diff from a specified HEAD directly to the SVN repository,
+		and then rebase or reset (depending on whether or not there is a diff between SVN and HEAD).
 		This will create a revision in SVN for each commit in git. It is recommended that you run
 		git-svn fetch and rebase (not pull or merge) your commits against the latest changes in
 		the SVN repository.

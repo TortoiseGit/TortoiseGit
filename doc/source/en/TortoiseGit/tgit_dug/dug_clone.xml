@@ -61,7 +61,7 @@
 		Clone will checkout current HEAD to work space automatically.
 	</para>
 	<para>
-		Git clone supports http, git and ssh protocol. <xref linkend="tgit-dug-settings-network"/> shows how to choose SSH client.
+		Git clone supports HTTP, Git and SSH protocol. <xref linkend="tgit-dug-settings-network"/> shows how to choose SSH client.
 		OpenSSH, Plink or TortoiseGitPlink.
 	</para>
 	<para>
