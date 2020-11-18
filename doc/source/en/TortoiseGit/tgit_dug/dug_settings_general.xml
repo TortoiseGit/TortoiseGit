@@ -70,7 +70,7 @@
 				<para>
 					<caution>
 						<para>
-							<filename>git.exe</filename> must not be marked to be run in elevated mode (i.e. <guioption>Run as administrator</guioption> or run in any compatibility mode).
+							<filename>git.exe</filename> must not be marked to be run in elevated mode (i.e. <guilabel>Run as administrator</guilabel> or run in any compatibility mode).
 						</para>
 					</caution>
 					<caution>
@@ -181,8 +181,8 @@
 			Most of the time, you won't need the TortoiseGit context menu, apart
 			for folders that are under version control by Git. For non-
 			versioned folders, you only really need the context menu when you
-			want to do a checkout. If you check the option <guioption>Hide menus
-			for unversioned paths</guioption>, TortoiseGit will not add its entries
+			want to do a checkout. If you check the option <guilabel>Hide menus
+			for unversioned paths</guilabel>, TortoiseGit will not add its entries
 			to the context menu for unversioned folders. But the entries are
 			added for all items and paths in a versioned folder. And you can
 			get the entries back for unversioned folders by holding the

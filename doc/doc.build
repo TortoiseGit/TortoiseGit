@@ -193,6 +193,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<fail if="${string::contains(xsltproc.output, ': parser error :')}">"Parser error" found</fail>
 		<fail if="${string::contains(xsltproc.output, 'Error: no ID for constraint linkend:')}">"Error: no ID for constraint linkend:" found</fail>
 		<fail if="${string::contains(xsltproc.output, 'ERROR: xref linking to ')}">"ERROR: xref linking to" found</fail>
+		<fail if="${string::contains(xsltproc.output, ', but no template matches.')}">unknown element found (look for "Element X encountered in Y, but no template matches.")</fail>
 	</target>
 
 <!-- ====================================================================== -->
