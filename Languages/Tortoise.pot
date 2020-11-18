@@ -3001,7 +3001,7 @@ msgid "Could not find Super-project"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
-msgid "Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\nIf you are using git of the cygwin or msys2 environment you need to enable special hacks.\nFor more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgid "Could not find \"msysgit\" or \"windows\" in version string of git.exe.\nIf you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\nFor more information see the help file for the keyword \"Cygwin Git\" or \"NSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
@@ -4639,11 +4639,11 @@ msgid "Forward %d"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
-msgid "Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+msgid "Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
-msgid "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgid "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n\nIf you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
@@ -8474,7 +8474,7 @@ msgid "Show la&beled commits only"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
+msgid "Show line number&s"
 msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
@@ -9536,7 +9536,7 @@ msgid "TortoiseGitBlame, Version %d.%d.%d.%d"
 msgstr ""
 
 #. Resource IDs: (1)
-msgid "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgid "TortoiseGitBlame\n\nTortoiseGitBlame\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
@@ -9628,7 +9628,7 @@ msgid "Trim right"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)

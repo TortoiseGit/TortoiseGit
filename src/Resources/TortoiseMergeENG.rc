@@ -193,7 +193,7 @@ BEGIN
     CONTROL         "Default to UTF-8 encoding",IDC_UTF8DEFAULT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,45,236,10
     CONTROL         "Use &one-pane view as default for 2-file diff",IDC_ONEPANE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,56,236,10
-    CONTROL         "Show linenumber&s",IDC_LINENUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,67,236,10
+    CONTROL         "Show line number&s",IDC_LINENUMBERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,67,236,10
     CONTROL         "Add new files automatically to Git",IDC_AUTOADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,236,10
     CONTROL         "Use Ribbons",IDC_USERIBBONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,90,109,10
     CONTROL         "Use spaces",IDC_USESPACES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,103,95,10

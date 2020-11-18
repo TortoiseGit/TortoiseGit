@@ -394,7 +394,7 @@ END
 STRINGTABLE
 BEGIN
     IDR_TORTOISE_GIT_BLAME_MAINFRAME 
-                            "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+                            "TortoiseGitBlame\n\nTortoiseGitBlame\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
     IDS_VERSION             "TortoiseGitBlame, Version %d.%d.%d.%d"
     IDS_APPNAME             "TortoiseGitBlame"
     IDS_CANNOTBLAMENOGIT    "Cannot show blame. ""%s"" is not under version control by git."
