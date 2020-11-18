@@ -27,3 +27,31 @@ doc:
       - doc/xsl/**/*
       - doc/doc.build*
       - doc/Aspell/*
+
+spellcheck-pot:
+  image: debian:buster
+  before_script:
+    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0KInstall packages"
+    - apt-get update -qq
+    - apt-get install -qq --no-install-recommends -y aspell aspell-en aspell-de gettext gettext-lint
+    - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
+  script:
+    - perl -pi -e 's|\\r||g' Languages/Tortoise.pot
+    - msginit --no-translator -l en_US -i Languages/Tortoise.pot -o Languages/Tortoise_en.po
+    - perl -pi -e 's|&([^ ])|\1|g' Languages/Tortoise_en.po
+    - cp doc/Aspell/TortoiseGit.tmpl.pws doc/Aspell/Temp.pws
+    - perl -pi -e 's/\$LANG\$/en/g' doc/Aspell/Temp.pws
+    - POFileSpell --command='aspell --encoding=UTF-8 --add-extra-dicts="./doc/Aspell/en.pws" --add-extra-dicts=./doc/Aspell/Temp.pws --add-extra-dicts=./doc/Aspell/TortoisePot.pws --lang=en list' Languages/Tortoise_en.po > spellcheck.log
+    - if [[ $(cat spellcheck.log 2>/dev/null | wc -l) -gt 1 ]]; then
+        echo "!!! Found typos !!!";
+        cat spellcheck.log;
+        exit 1;
+      fi
+  except:
+    refs:
+      - tags
+  only:
+    changes:
+      - .gitlab-ci.yml
+      - Languages/Tortoise.pot
+      - doc/Aspell/*.pws

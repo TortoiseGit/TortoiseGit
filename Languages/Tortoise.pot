@@ -1938,10 +1938,6 @@ msgstr ""
 msgid "Auto CrLf convert"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
 msgstr ""
@@ -1964,6 +1960,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCOMPLETION_TT)
 msgid "Auto-complete suggests words (usually class or member names)\nfrom the files that you have changed as you type a log message."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
@@ -5508,7 +5508,7 @@ msgid "Importing file %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
+msgid "In Changelist"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
@@ -6442,7 +6442,7 @@ msgid "Note that if you choose to recover the auto-saved documents, you must exp
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
-msgid "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+msgid "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -6715,7 +6715,7 @@ msgid "Others"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
+msgid "Out Changelist"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
@@ -7364,12 +7364,16 @@ msgstr ""
 msgid "Ref List"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
+#. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
+msgstr ""
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
@@ -7916,7 +7920,7 @@ msgid "Sa&feCrLf:"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
+msgid "SafeCrLf:"
 msgstr ""
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
@@ -8314,7 +8318,7 @@ msgid "Show"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
+msgid "Show &RefLog"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073, IDS_PROC_LOG_SHOWUNVERSIONED)

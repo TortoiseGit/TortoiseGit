@@ -1809,10 +1809,10 @@ BEGIN
     LTEXT           "Include only the following revision range:",IDC_STATIC,10,7,268,8
     LTEXT           "From:",IDC_STATIC,12,24,30,8
     EDITTEXT        IDC_FROMREV,45,21,178,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "RefBrowse",IDC_REV1BTN1,236,21,57,14
+    PUSHBUTTON      "RefBrowser",IDC_REV1BTN1,236,21,57,14
     LTEXT           "To:",IDC_STATIC,12,46,30,8
     EDITTEXT        IDC_TOREV,46,44,177,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "RefBrowse",IDC_REV1BTN2,236,45,57,14
+    PUSHBUTTON      "RefBrowser",IDC_REV1BTN2,236,45,57,14
     CONTROL         "Only Current Branch",IDC_CURRENT_BRANCH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,70,130,10
     DEFPUSHBUTTON   "&OK",IDOK,103,87,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,157,87,50,14
@@ -2123,7 +2123,7 @@ BEGIN
     COMBOBOX        IDC_FONTSIZES,252,156,32,47,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Tab size:",IDC_STATIC,14,174,92,8
     EDITTEXT        IDC_TABSIZE,252,172,32,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alterative diff viewer program go to ""Diff Viewer"" preferences section in the leftward tree.",IDC_STATIC,7,193,287,46
+    LTEXT           "Note: These settings also apply to the Patch Viewer dialog.\nTo select whether you would like to use the build-in or any alternative diff viewer program go to ""Diff Viewer"" preferences section in the leftward tree.",IDC_STATIC,7,193,287,46
 END
 
 IDD_RESOLVESUBMODULECONFLICT DIALOGEX 0, 0, 381, 209
@@ -3921,7 +3921,7 @@ BEGIN
     IDS_STATUSLIST_CHECKOUTFILEFAILED 
                             "Failed to checkout file ""%1!s!"" of revision %2!s! to ""%3!s!""."
     IDS_STATUSLIST_FILESREVERTED "%1!d! files reverted to %2!s!."
-    IDS_REFBROWSE           "RefBrowse"
+    IDS_REFBROWSE           "Reference Browser"
     IDS_REFLOG              "RefLog"
     IDS_PROGS_TITLE_REVERTCOMMIT "Revert commit"
     IDS_AUTH_USERNAME       "Username:"
@@ -4730,9 +4730,9 @@ BEGIN
     IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH 
                             "Don't know what will push because unknown branch ""%s"""
     IDS_PROC_SYNC_INCOMMITS "In Commits"
-    IDS_PROC_SYNC_INCHANGELIST "In ChangeList"
+    IDS_PROC_SYNC_INCHANGELIST "In Changelist"
     IDS_PROC_SYNC_OUTCOMMITS "Out Commits"
-    IDS_PROC_SYNC_OUTCHANGELIST "Out ChangeList"
+    IDS_PROC_SYNC_OUTCHANGELIST "Out Changelist"
     IDS_PROC_SYNC_PUSH      "Pus&h"
 END
 
