@@ -65,7 +65,7 @@ index 3e4c139..9a4cd1b 100644
 +ifdef::backend-docbook[]
 +[header-declarations]
 +<?xml version="1.0" encoding="{encoding}"?>
-+<!DOCTYPE {doctype-article?sect2}{doctype-book?book}{doctype-manpage?refentry} PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
++<!DOCTYPE {doctype-article?sect2}{doctype-book?book}{doctype-manpage?refentry} SYSTEM "../../../dtd/dblite.dtd">
 +
 +ifdef::doctype-article[]
 +[header]
