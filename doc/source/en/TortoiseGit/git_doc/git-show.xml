@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-show(1)">
     <title>git-show(1)</title>
@@ -298,6 +298,14 @@ From: &lt;author&gt;
 Date: &lt;author date&gt;
 Subject: [PATCH] &lt;title line&gt;</literallayout>
 <literallayout class="monospaced">&lt;full commit message&gt;</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>mboxrd</emphasis>
+</simpara>
+<simpara>Like <emphasis>email</emphasis>, but lines in the commit message starting with "From "
+(preceded by zero or more "&gt;") are quoted with "&gt;" so they aren't
+confused as starting a new commit.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -766,7 +774,7 @@ committer email (respecting .mailmap, see
 </term>
 <listitem>
 <simpara>
-author email local-part (the part before the <emphasis>@</emphasis> sign)
+committer email local-part (the part before the <emphasis>@</emphasis> sign)
 </simpara>
 </listitem>
 </varlistentry>
@@ -776,7 +784,7 @@ author email local-part (the part before the <emphasis>@</emphasis> sign)
 </term>
 <listitem>
 <simpara>
-author local-part (see <emphasis>%cl</emphasis>) respecting .mailmap, see
+committer local-part (see <emphasis>%cl</emphasis>) respecting .mailmap, see
         <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>
@@ -2378,6 +2386,9 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <term>
 --relative[=&lt;path&gt;]
 </term>
+<term>
+--no-relative
+</term>
 <listitem>
 <simpara>
         When run from a subdirectory of the project, it can be
@@ -2386,6 +2397,8 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
         not in a subdirectory (e.g. in a bare repository), you
         can name which subdirectory to make the output relative
         to by giving a &lt;path&gt; as an argument.
+        <emphasis>--no-relative</emphasis> can be used to countermand both <emphasis>diff.relative</emphasis> config
+        option and previous <emphasis>--relative</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

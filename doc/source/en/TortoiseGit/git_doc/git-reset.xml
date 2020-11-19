@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-reset(1)">
     <title>git-reset(1)</title>
@@ -142,6 +142,19 @@ but carries forward unmerged index entries.</simpara>
         different between <emphasis>&lt;commit&gt;</emphasis> and <emphasis>HEAD</emphasis>.
         If a file that is different between <emphasis>&lt;commit&gt;</emphasis> and <emphasis>HEAD</emphasis> has local
         changes, reset is aborted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]recurse-submodules
+</term>
+<listitem>
+<simpara>
+        When the working tree is updated, using --recurse-submodules will
+        also recursively reset the working tree of all active submodules
+        according to the commit recorded in the superproject, also setting
+        the submodules' HEAD to be detached at that commit.
 </simpara>
 </listitem>
 </varlistentry>

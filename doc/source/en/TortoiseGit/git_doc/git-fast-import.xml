@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-fast-import(1)">
     <title>git-fast-import(1)</title>
@@ -422,7 +422,21 @@ organizations have a CVS repository which has only ever been accessed
 by users who are located in the same location and time zone.  In this
 case a reasonable offset from UTC could be assumed.</simpara>
 <simpara>Unlike the <emphasis>rfc2822</emphasis> format, this format is very strict.  Any
-variation in formatting will cause fast-import to reject the value.</simpara>
+variation in formatting will cause fast-import to reject the value,
+and some sanity checks on the numeric values may also be performed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>raw-permissive</emphasis>
+</term>
+<listitem>
+<simpara>
+        This is the same as <emphasis>raw</emphasis> except that no sanity checks on
+        the numeric epoch and local offset are performed.  This can
+        be useful when trying to filter or import an existing history
+        with e.g. bogus timezone values.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

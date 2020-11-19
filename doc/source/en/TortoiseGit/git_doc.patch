@@ -19,10 +19,10 @@ Generating git docbook documentation:
 - take *.xml files
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
-index 15d9d04..ce65248 100644
+index ecd0b34..095810a 100644
 --- a/Documentation/Makefile
 +++ b/Documentation/Makefile
-@@ -231,6 +231,8 @@ all: html man
+@@ -232,6 +232,8 @@ all: html man
  
  html: $(DOC_HTML)
  
@@ -31,7 +31,7 @@ index 15d9d04..ce65248 100644
  man: man1 man5 man7
  man1: $(DOC_MAN1)
  man5: $(DOC_MAN5)
-@@ -356,12 +358,12 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+@@ -357,12 +359,12 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
  
  %.xml : %.txt asciidoc.conf asciidoctor-extensions.rb GIT-ASCIIDOCFLAGS
  	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
@@ -47,7 +47,7 @@ index 15d9d04..ce65248 100644
  
  technical/api-index.txt: technical/api-index-skel.txt \
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
-index 3e4c139..9a4cd1b 100644
+index 3e4c139..7984fe9 100644
 --- a/Documentation/asciidoc.conf
 +++ b/Documentation/asciidoc.conf
 @@ -9,6 +9,7 @@

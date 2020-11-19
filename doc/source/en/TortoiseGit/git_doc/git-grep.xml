@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-grep(1)">
     <title>git-grep(1)</title>
@@ -188,7 +188,7 @@ grep.fallbackToNoIndex
 </term>
 <listitem>
 <simpara>
-        Recursively search in each submodule that has been initialized and
+        Recursively search in each submodule that is active and
         checked out in the repository.  When used in combination with the
         &lt;tree&gt; option the prefix of all submodule output will be the name of
         the parent project's &lt;tree&gt; object. This option has no effect
@@ -476,8 +476,10 @@ providing this option will cause it to die.</simpara>
 </term>
 <listitem>
 <simpara>
-        Output \0 instead of the character that normally follows a
-        file name.
+        Use \0 as the delimiter for pathnames in the output, and print
+        them verbatim. Without this option, pathnames with "unusual"
+        characters are quoted as explained for the configuration
+        variable core.quotePath (see git-config(1)).
 </simpara>
 </listitem>
 </varlistentry>

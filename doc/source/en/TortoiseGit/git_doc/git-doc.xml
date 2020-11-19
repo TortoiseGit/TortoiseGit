@@ -26,6 +26,7 @@
 		<xi:include href="./git-bisect.xml"/>
 		<xi:include href="./git-blame.xml"/>
 		<xi:include href="./git-branch.xml"/>
+		<xi:include href="./git-bugreport.xml"/>
 		<xi:include href="./git-bundle.xml"/>
 		<xi:include href="./git-cat-file.xml"/>
 		<xi:include href="./git-check-attr.xml"/>

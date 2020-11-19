@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-diff-index(1)">
     <title>git-diff-index(1)</title>
@@ -1184,6 +1184,9 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <term>
 --relative[=&lt;path&gt;]
 </term>
+<term>
+--no-relative
+</term>
 <listitem>
 <simpara>
         When run from a subdirectory of the project, it can be
@@ -1192,6 +1195,8 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
         not in a subdirectory (e.g. in a bare repository), you
         can name which subdirectory to make the output relative
         to by giving a &lt;path&gt; as an argument.
+        <emphasis>--no-relative</emphasis> can be used to countermand both <emphasis>diff.relative</emphasis> config
+        option and previous <emphasis>--relative</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

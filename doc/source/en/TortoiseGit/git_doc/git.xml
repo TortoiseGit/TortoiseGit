@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git(1)">
     <title>git(1)</title>
@@ -914,6 +914,16 @@ ancillary user utilities.</simpara>
 <listitem>
 <simpara>
         Show what revision and author last modified each line of a file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-bugreport(1)" />
+</term>
+<listitem>
+<simpara>
+        Collect information for user to file a bug report.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2230,7 +2240,7 @@ double-quotes and respecting backslash escapes. E.g., the value
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>GIT_DEFAULT_HASH_ALGORITHM</emphasis>
+<emphasis>GIT_DEFAULT_HASH</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -2696,8 +2706,6 @@ of clones and fetches.</simpara>
         Enables a curl full trace dump of all incoming and outgoing data,
         including descriptive information, of the git transport protocol.
         This is similar to doing curl <emphasis>--trace-ascii</emphasis> on the command line.
-        This option overrides setting the <emphasis>GIT_CURL_VERBOSE</emphasis> environment
-        variable.
         See <emphasis>GIT_TRACE</emphasis> for available trace output options.
 </simpara>
 </listitem>
@@ -2777,14 +2785,13 @@ for full details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>GIT_REDACT_COOKIES</emphasis>
+<emphasis>GIT_TRACE_REDACT</emphasis>
 </term>
 <listitem>
 <simpara>
-        This can be set to a comma-separated list of strings. When a curl trace
-        is enabled (see <emphasis>GIT_TRACE_CURL</emphasis> above), whenever a "Cookies:" header
-        sent by the client is dumped, values of cookies whose key is in that
-        list (case-sensitive) are redacted.
+        By default, when tracing is activated, Git redacts the values of
+        cookies, the "Authorization:" header, and the "Proxy-Authorization:"
+        header. Set this variable to <emphasis>0</emphasis> to prevent this redaction.
 </simpara>
 </listitem>
 </varlistentry>

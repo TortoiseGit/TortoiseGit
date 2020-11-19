@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-fast-export(1)">
     <title>git-fast-export(1)</title>
@@ -208,6 +208,18 @@ by keeping the marks the same across runs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--anonymize-map=&lt;from&gt;[:&lt;to&gt;]
+</term>
+<listitem>
+<simpara>
+        Convert token <emphasis>&lt;from&gt;</emphasis> to <emphasis>&lt;to&gt;</emphasis> in the anonymized output. If
+        <emphasis>&lt;to&gt;</emphasis> is omitted, map <emphasis>&lt;from&gt;</emphasis> to itself (i.e., do not
+        anonymize it). See the section on <emphasis>ANONYMIZING</emphasis> below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --reference-excluded-parents
 </term>
 <listitem>
@@ -336,6 +348,24 @@ you can peruse it directly before sending. You may also want to try:</simpara>
 collapse "User 0", "User 1", etc into "User X"). This produces a much
 smaller output, and it is usually easy to quickly confirm that there is
 no private data in the stream.</simpara>
+<simpara>Reproducing some bugs may require referencing particular commits or
+paths, which becomes challenging after refnames and paths have been
+anonymized. You can ask for a particular token to be left as-is or
+mapped to a new value. For example, if you have a bug which reproduces
+with <emphasis>git rev-list sensitive -- secret.c</emphasis>, you can run:</simpara>
+<screen>$ git fast-export --anonymize --all \
+      --anonymize-map=sensitive:foo \
+      --anonymize-map=secret.c:bar.c \
+      &gt;stream</screen>
+<simpara>After importing the stream, you can then run <emphasis>git rev-list foo -- bar.c</emphasis>
+in the anonymized repository.</simpara>
+<simpara>Note that paths and refnames are split into tokens at slash boundaries.
+The command above would anonymize <emphasis>subdir/secret.c</emphasis> as something like
+<emphasis>path123/bar.c</emphasis>; you could then search for <emphasis>bar.c</emphasis> in the anonymized
+repository to determine the final pathname.</simpara>
+<simpara>To make referencing the final pathname simpler, you can map each path
+component; so if you also anonymize <emphasis>subdir</emphasis> to <emphasis>publicdir</emphasis>, then the
+final pathname would be <emphasis>publicdir/bar.c</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-fast-export(1)__limitations">
 <title>LIMITATIONS</title>

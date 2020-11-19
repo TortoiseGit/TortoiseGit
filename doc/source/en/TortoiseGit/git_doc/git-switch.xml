@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-switch(1)">
     <title>git-switch(1)</title>
@@ -314,9 +314,9 @@ name, the guessing is aborted.  You can explicitly give a name with
 <listitem>
 <simpara>
         Using <emphasis>--recurse-submodules</emphasis> will update the content of all
-        initialized submodules according to the commit recorded in the
+        active submodules according to the commit recorded in the
         superproject. If nothing (or <emphasis>--no-recurse-submodules</emphasis>) is
-        used, the work trees of submodules will not be updated. Just
+        used, submodules working trees will not be updated. Just
         like <xref linkend="git-submodule(1)" />, this will detach <emphasis>HEAD</emphasis> of the
         submodules.
 </simpara>

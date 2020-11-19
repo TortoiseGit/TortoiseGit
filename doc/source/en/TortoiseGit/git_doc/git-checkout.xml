@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-checkout(1)">
     <title>git-checkout(1)</title>
@@ -458,11 +458,11 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </term>
 <listitem>
 <simpara>
-        Using <emphasis>--recurse-submodules</emphasis> will update the content of all initialized
+        Using <emphasis>--recurse-submodules</emphasis> will update the content of all active
         submodules according to the commit recorded in the superproject. If
         local modifications in a submodule would be overwritten the checkout
         will fail unless <emphasis>-f</emphasis> is used. If nothing (or <emphasis>--no-recurse-submodules</emphasis>)
-        is used, the work trees of submodules will not be updated.
+        is used, submodules working trees will not be updated.
         Just like <xref linkend="git-submodule(1)" />, this will detach <emphasis>HEAD</emphasis> of the
         submodule.
 </simpara>

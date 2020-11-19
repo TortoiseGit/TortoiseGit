@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-branch(1)">
     <title>git-branch(1)</title>
@@ -17,7 +17,7 @@
         [-v [--abbrev=&lt;length&gt; | --no-abbrev]]
         [--column[=&lt;options&gt;] | --no-column] [--sort=&lt;key&gt;]
         [(--merged | --no-merged) [&lt;commit&gt;]]
-        [--contains [&lt;commit]] [--no-contains [&lt;commit&gt;]]
+        [--contains [&lt;commit&gt;]] [--no-contains [&lt;commit&gt;]]
         [--points-at &lt;object&gt;] [--format=&lt;format&gt;]
         [(-r | --remotes) | (-a | --all)]
         [--list] [&lt;pattern&gt;&#8230;]

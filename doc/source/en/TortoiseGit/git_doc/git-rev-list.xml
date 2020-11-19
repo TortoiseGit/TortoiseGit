@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-rev-list(1)">
     <title>git-rev-list(1)</title>
@@ -1057,20 +1057,17 @@ option does. Applied to the <emphasis>D..M</emphasis> range, it results in:</sim
 </variablelist>
 <simpara>Before discussing another option, <emphasis>--show-pulls</emphasis>, we need to
 create a new example history.</simpara>
-<simpara>+
-A common problem users face when looking at simplified history is that a
+<simpara>A common problem users face when looking at simplified history is that a
 commit they know changed a file somehow does not appear in the file's
 simplified history. Let's demonstrate a new example and show how options
 such as <emphasis>--full-history</emphasis> and <emphasis>--simplify-merges</emphasis> works in that case:</simpara>
-<simpara>+</simpara>
 <screen>          .-A---M-----C--N---O---P
          /     / \  \  \/   /   /
         I     B   \  R-'`-Z'   /
          \   /     \/         /
           \ /      /\        /
            `---X--'  `---Y--'</screen>
-<simpara>+
-For this example, suppose <emphasis>I</emphasis> created <emphasis>file.txt</emphasis> which was modified by
+<simpara>For this example, suppose <emphasis>I</emphasis> created <emphasis>file.txt</emphasis> which was modified by
 <emphasis>A</emphasis>, <emphasis>B</emphasis>, and <emphasis>X</emphasis> in different ways. The single-parent commits <emphasis>C</emphasis>, <emphasis>Z</emphasis>,
 and <emphasis>Y</emphasis> do not change <emphasis>file.txt</emphasis>. The merge commit <emphasis>M</emphasis> was created by
 resolving the merge conflict to include both changes from <emphasis>A</emphasis> and <emphasis>B</emphasis>
@@ -1081,57 +1078,47 @@ the contents of <emphasis>file.txt</emphasis> at <emphasis>X</emphasis>. Hence, 
 contents of <emphasis>file.txt</emphasis> at <emphasis>R</emphasis>, so <emphasis>N</emphasis> is TREESAME to <emphasis>R</emphasis> but not <emphasis>C</emphasis>.
 The merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis> are TREESAME to their first parents, but
 not to their second parents, <emphasis>Z</emphasis> and <emphasis>Y</emphasis> respectively.</simpara>
-<simpara>+
-When using the default mode, <emphasis>N</emphasis> and <emphasis>R</emphasis> both have a TREESAME parent, so
+<simpara>When using the default mode, <emphasis>N</emphasis> and <emphasis>R</emphasis> both have a TREESAME parent, so
 those edges are walked and the others are ignored. The resulting history
 graph is:</simpara>
-<simpara>+</simpara>
 <screen>        I---X</screen>
-<simpara>+
-When using <emphasis>--full-history</emphasis>, Git walks every edge. This will discover
+<simpara>When using <emphasis>--full-history</emphasis>, Git walks every edge. This will discover
 the commits <emphasis>A</emphasis> and <emphasis>B</emphasis> and the merge <emphasis>M</emphasis>, but also will reveal the
 merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis>. With parent rewriting, the resulting graph is:</simpara>
-<simpara>+</simpara>
 <screen>          .-A---M--------N---O---P
          /     / \  \  \/   /   /
         I     B   \  R-'`--'   /
          \   /     \/         /
           \ /      /\        /
            `---X--'  `------'</screen>
-<simpara>+
-Here, the merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis> contribute extra noise, as they did
+<simpara>Here, the merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis> contribute extra noise, as they did
 not actually contribute a change to <emphasis>file.txt</emphasis>. They only merged a topic
 that was based on an older version of <emphasis>file.txt</emphasis>. This is a common
 issue in repositories using a workflow where many contributors work in
 parallel and merge their topic branches along a single trunk: manu
 unrelated merges appear in the <emphasis>--full-history</emphasis> results.</simpara>
-<simpara>+
-When using the <emphasis>--simplify-merges</emphasis> option, the commits <emphasis>O</emphasis> and <emphasis>P</emphasis>
+<simpara>When using the <emphasis>--simplify-merges</emphasis> option, the commits <emphasis>O</emphasis> and <emphasis>P</emphasis>
 disappear from the results. This is because the rewritten second parents
 of <emphasis>O</emphasis> and <emphasis>P</emphasis> are reachable from their first parents. Those edges are
 removed and then the commits look like single-parent commits that are
 TREESAME to their parent. This also happens to the commit <emphasis>N</emphasis>, resulting
 in a history view as follows:</simpara>
-<simpara>+</simpara>
 <screen>          .-A---M--.
          /     /    \
         I     B      R
          \   /      /
           \ /      /
            `---X--'</screen>
-<simpara>+
-In this view, we see all of the important single-parent changes from
+<simpara>In this view, we see all of the important single-parent changes from
 <emphasis>A</emphasis>, <emphasis>B</emphasis>, and <emphasis>X</emphasis>. We also see the carefully-resolved merge <emphasis>M</emphasis> and the
 not-so-carefully-resolved merge <emphasis>R</emphasis>. This is usually enough information
 to determine why the commits <emphasis>A</emphasis> and <emphasis>B</emphasis> "disappeared" from history in
 the default view. However, there are a few issues with this approach.</simpara>
-<simpara>+
-The first issue is performance. Unlike any previous option, the
+<simpara>The first issue is performance. Unlike any previous option, the
 <emphasis>--simplify-merges</emphasis> option requires walking the entire commit history
 before returning a single result. This can make the option difficult to
 use for very large repositories.</simpara>
-<simpara>+
-The second issue is one of auditing. When many contributors are working
+<simpara>The second issue is one of auditing. When many contributors are working
 on the same repository, it is important which merge commits introduced
 a change into an important branch. The problematic merge <emphasis>R</emphasis> above is
 not likely to be the merge commit that was used to merge into an
@@ -1139,35 +1126,41 @@ important branch. Instead, the merge <emphasis>N</emphasis> was used to merge <e
 into the important branch. This commit may have information about why
 the change <emphasis>X</emphasis> came to override the changes from <emphasis>A</emphasis> and <emphasis>B</emphasis> in its
 commit message.</simpara>
-<simpara>+
-The <emphasis>--show-pulls</emphasis> option helps with both of these issues by adding more
-merge commits to the history results. If a merge is not TREESAME to its
-first parent but is TREESAME to a later parent, then that merge is
+<variablelist>
+<varlistentry>
+<term>
+--show-pulls
+</term>
+<listitem>
+<simpara>
+        In addition to the commits shown in the default history, show
+        each merge commit that is not TREESAME to its first parent but
+        is TREESAME to a later parent.
+</simpara>
+<simpara>When a merge commit is included by <emphasis>--show-pulls</emphasis>, the merge is
 treated as if it "pulled" the change from another branch. When using
 <emphasis>--show-pulls</emphasis> on this example (and no other options) the resulting
 graph is:</simpara>
-<simpara>+</simpara>
 <screen>        I---X---R---N</screen>
-<simpara>+
-Here, the merge commits <emphasis>R</emphasis> and <emphasis>N</emphasis> are included because they pulled
+<simpara>Here, the merge commits <emphasis>R</emphasis> and <emphasis>N</emphasis> are included because they pulled
 the commits <emphasis>X</emphasis> and <emphasis>R</emphasis> into the base branch, respectively. These
 merges are the reason the commits <emphasis>A</emphasis> and <emphasis>B</emphasis> do not appear in the
 default history.</simpara>
-<simpara>+
-When <emphasis>--show-pulls</emphasis> is paired with <emphasis>--simplify-merges</emphasis>, the
+<simpara>When <emphasis>--show-pulls</emphasis> is paired with <emphasis>--simplify-merges</emphasis>, the
 graph includes all of the necessary information:</simpara>
-<simpara>+</simpara>
 <screen>          .-A---M--.   N
          /     /    \ /
         I     B      R
          \   /      /
           \ /      /
            `---X--'</screen>
-<simpara>+
-Notice that since <emphasis>M</emphasis> is reachable from <emphasis>R</emphasis>, the edge from <emphasis>N</emphasis> to <emphasis>M</emphasis>
+<simpara>Notice that since <emphasis>M</emphasis> is reachable from <emphasis>R</emphasis>, the edge from <emphasis>N</emphasis> to <emphasis>M</emphasis>
 was simplified away. However, <emphasis>N</emphasis> still appears in the history as an
 important commit because it "pulled" the change <emphasis>R</emphasis> into the main
 branch.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <simpara>The <emphasis>--simplify-by-decoration</emphasis> option allows you to view only the
 big picture of the topology of the history, by omitting commits
 that are not referenced by tags.  Commits are marked as !TREESAME
@@ -1956,6 +1949,14 @@ Subject: [PATCH] &lt;title line&gt;</literallayout>
 </listitem>
 <listitem>
 <simpara>
+<emphasis>mboxrd</emphasis>
+</simpara>
+<simpara>Like <emphasis>email</emphasis>, but lines in the commit message starting with "From "
+(preceded by zero or more "&gt;") are quoted with "&gt;" so they aren't
+confused as starting a new commit.</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>raw</emphasis>
 </simpara>
 <simpara>The <emphasis>raw</emphasis> format shows the entire commit exactly as
@@ -2421,7 +2422,7 @@ committer email (respecting .mailmap, see
 </term>
 <listitem>
 <simpara>
-author email local-part (the part before the <emphasis>@</emphasis> sign)
+committer email local-part (the part before the <emphasis>@</emphasis> sign)
 </simpara>
 </listitem>
 </varlistentry>
@@ -2431,7 +2432,7 @@ author email local-part (the part before the <emphasis>@</emphasis> sign)
 </term>
 <listitem>
 <simpara>
-author local-part (see <emphasis>%cl</emphasis>) respecting .mailmap, see
+committer local-part (see <emphasis>%cl</emphasis>) respecting .mailmap, see
         <xref linkend="git-shortlog(1)" /> or <xref linkend="git-blame(1)" />)
 </simpara>
 </listitem>

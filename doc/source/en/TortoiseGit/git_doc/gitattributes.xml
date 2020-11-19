@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="gitattributes(5)">
     <title>gitattributes(5)</title>
@@ -816,6 +816,11 @@ patterns are available:</simpara>
 <listitem>
 <simpara>
 <emphasis>java</emphasis> suitable for source code in the Java language.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>markdown</emphasis> suitable for Markdown documents.
 </simpara>
 </listitem>
 <listitem>

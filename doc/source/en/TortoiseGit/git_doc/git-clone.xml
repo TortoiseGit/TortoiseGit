@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-clone(1)">
     <title>git-clone(1)</title>
@@ -442,7 +442,7 @@ branch of some repository for search indexing.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules[=&lt;pathspec]
+--recurse-submodules[=&lt;pathspec&gt;]
 </term>
 <listitem>
 <simpara>

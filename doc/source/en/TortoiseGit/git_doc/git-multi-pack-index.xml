@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-multi-pack-index(1)">
     <title>git-multi-pack-index(1)</title>
@@ -103,6 +103,8 @@ repack
         new pack-file. A later run of <emphasis>git multi-pack-index expire</emphasis> will
         delete the pack-files that were part of this batch.
 </simpara>
+<simpara>If <emphasis>repack.packKeptObjects</emphasis> is <emphasis>false</emphasis>, then any pack-files with an
+associated <emphasis>.keep</emphasis> file will not be selected for the batch to repack.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="git-submodule(1)">
     <title>git-submodule(1)</title>
@@ -251,7 +251,7 @@ set-branch (-d|--default) [--] &lt;path&gt;
         Sets the default remote tracking branch for the submodule. The
         <emphasis>--branch</emphasis> option allows the remote branch to be specified. The
         <emphasis>--default</emphasis> option removes the submodule.&lt;name&gt;.branch configuration
-        key, which causes the tracking branch to default to <emphasis>master</emphasis>.
+        key, which causes the tracking branch to default to the remote <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -413,7 +413,7 @@ embedded into the superprojects git directory.</simpara>
         <emphasis>.gitmodules</emphasis> for <emphasis>update --remote</emphasis>.  A special value of <emphasis>.</emphasis> is used to
         indicate that the name of the branch in the submodule should be the
         same name as the current branch in the current repository.  If the
-        option is not specified, it defaults to <emphasis>master</emphasis>.
+        option is not specified, it defaults to the remote <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -490,10 +490,10 @@ embedded into the superprojects git directory.</simpara>
         the superproject's recorded SHA-1 to update the submodule, use the
         status of the submodule's remote-tracking branch.  The remote used
         is branch's remote (<emphasis>branch.&lt;name&gt;.remote</emphasis>), defaulting to <emphasis>origin</emphasis>.
-        The remote branch used defaults to <emphasis>master</emphasis>, but the branch name may
-        be overridden by setting the <emphasis>submodule.&lt;name&gt;.branch</emphasis> option in
-        either <emphasis>.gitmodules</emphasis> or <emphasis>.git/config</emphasis> (with <emphasis>.git/config</emphasis> taking
-        precedence).
+        The remote branch used defaults to the remote <emphasis>HEAD</emphasis>, but the branch
+        name may be overridden by setting the <emphasis>submodule.&lt;name&gt;.branch</emphasis>
+        option in either <emphasis>.gitmodules</emphasis> or <emphasis>.git/config</emphasis> (with <emphasis>.git/config</emphasis>
+        taking precedence).
 </simpara>
 <simpara>This works for any of the supported update procedures (<emphasis>--checkout</emphasis>,
 <emphasis>--rebase</emphasis>, etc.).  The only change is the source of the target SHA-1.

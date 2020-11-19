@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE sect2 PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
 <sect2 lang="en" id="githooks(5)">
     <title>githooks(5)</title>
@@ -340,6 +340,41 @@ probably enable this hook.</simpara>
 <simpara>Both standard output and standard error output are forwarded to
 <emphasis>git send-pack</emphasis> on the other end, so you can simply <emphasis>echo</emphasis> messages
 for the user.</simpara>
+</section>
+<section id="githooks(5)__reference_transaction">
+<title>reference-transaction</title>
+<simpara>This hook is invoked by any Git command that performs reference
+updates. It executes whenever a reference transaction is prepared,
+committed or aborted and may thus get called multiple times.</simpara>
+<simpara>The hook takes exactly one argument, which is the current state the
+given reference transaction is in:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"prepared": All reference updates have been queued to the
+      transaction and references were locked on disk.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"committed": The reference transaction was committed and all
+      references now have their respective new value.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"aborted": The reference transaction was aborted, no changes
+      were performed and the locks have been released.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>For each reference update that was added to the transaction, the hook
+receives on standard input a line of the format:</simpara>
+<literallayout class="monospaced">&lt;old-value&gt; SP &lt;new-value&gt; SP &lt;ref-name&gt; LF</literallayout>
+<simpara>The exit status of the hook is ignored for any state except for the
+"prepared" state. In the "prepared" state, a non-zero exit status will
+cause the transaction to be aborted. The hook will not be called with
+"aborted" state in that case.</simpara>
 </section>
 <section id="githooks(5)__push_to_checkout">
 <title>push-to-checkout</title>
