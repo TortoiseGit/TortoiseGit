@@ -111,7 +111,6 @@
     <ClCompile Include="..\libgit2\src\filebuf.c" />
     <ClCompile Include="..\libgit2\src\filter.c" />
     <ClCompile Include="..\libgit2\src\futils.c" />
-    <ClCompile Include="..\libgit2\src\global.c" />
     <ClCompile Include="..\libgit2\src\graph.c" />
     <ClCompile Include="..\libgit2\src\hash.c" />
     <ClCompile Include="..\libgit2\src\hashsig.c" />
@@ -124,11 +123,13 @@
     <ClCompile Include="..\libgit2\src\index.c" />
     <ClCompile Include="..\libgit2\src\indexer.c" />
     <ClCompile Include="..\libgit2\src\iterator.c" />
+    <ClCompile Include="..\libgit2\src\libgit2.c" />
     <ClCompile Include="..\libgit2\src\mailmap.c" />
     <ClCompile Include="..\libgit2\src\merge.c" />
     <ClCompile Include="..\libgit2\src\merge_driver.c" />
     <ClCompile Include="..\libgit2\src\merge_file.c" />
     <ClCompile Include="..\libgit2\src\message.c" />
+    <ClCompile Include="..\libgit2\src\midx.c" />
     <ClCompile Include="..\libgit2\src\mwindow.c" />
     <ClCompile Include="..\libgit2\src\net.c" />
     <ClCompile Include="..\libgit2\src\netops.c" />
@@ -170,7 +171,7 @@
     <ClCompile Include="..\libgit2\src\revert.c" />
     <ClCompile Include="..\libgit2\src\revparse.c" />
     <ClCompile Include="..\libgit2\src\revwalk.c" />
-    <ClCompile Include="..\libgit2\src\settings.c" />
+    <ClCompile Include="..\libgit2\src\runtime.c" />
     <ClCompile Include="..\libgit2\src\signature.c" />
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
@@ -185,6 +186,7 @@
     <ClCompile Include="..\libgit2\src\sysdir.c" />
     <ClCompile Include="..\libgit2\src\tag.c" />
     <ClCompile Include="..\libgit2\src\thread-utils.c" />
+    <ClCompile Include="..\libgit2\src\threadstate.c" />
     <ClCompile Include="..\libgit2\src\trace.c" />
     <ClCompile Include="..\libgit2\src\trailer.c" />
     <ClCompile Include="..\libgit2\src\transaction.c" />
@@ -328,7 +330,6 @@
     <ClInclude Include="..\libgit2\src\filebuf.h" />
     <ClInclude Include="..\libgit2\src\fileops.h" />
     <ClInclude Include="..\libgit2\src\filter.h" />
-    <ClInclude Include="..\libgit2\src\global.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
     <ClInclude Include="..\libgit2\src\hash\sha1.h" />
     <ClInclude Include="..\libgit2\src\hash\sha1\collisiondetect.h" />
@@ -340,11 +341,13 @@
     <ClInclude Include="..\libgit2\src\integer.h" />
     <ClInclude Include="..\libgit2\src\iterator.h" />
     <ClInclude Include="..\libgit2\src\khash.h" />
+    <ClInclude Include="..\libgit2\src\libgit2.h" />
     <ClInclude Include="..\libgit2\src\mailmap.h" />
     <ClInclude Include="..\libgit2\src\map.h" />
     <ClInclude Include="..\libgit2\src\merge.h" />
     <ClInclude Include="..\libgit2\src\merge_driver.h" />
     <ClInclude Include="..\libgit2\src\message.h" />
+    <ClInclude Include="..\libgit2\src\midx.h" />
     <ClInclude Include="..\libgit2\src\mwindow.h" />
     <ClInclude Include="..\libgit2\src\net.h" />
     <ClInclude Include="..\libgit2\src\netops.h" />
@@ -378,6 +381,8 @@
     <ClInclude Include="..\libgit2\src\repo_template.h" />
     <ClInclude Include="..\libgit2\src\repository.h" />
     <ClInclude Include="..\libgit2\src\revwalk.h" />
+    <ClInclude Include="..\libgit2\src\runtime.h" />
+    <ClInclude Include="..\libgit2\src\settings.h" />
     <ClInclude Include="..\libgit2\src\signature.h" />
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
@@ -392,6 +397,7 @@
     <ClInclude Include="..\libgit2\src\sysdir.h" />
     <ClInclude Include="..\libgit2\src\tag.h" />
     <ClInclude Include="..\libgit2\src\thread-utils.h" />
+    <ClInclude Include="..\libgit2\src\threadstate.h" />
     <ClInclude Include="..\libgit2\src\trace.h" />
     <ClInclude Include="..\libgit2\src\transaction.h" />
     <ClInclude Include="..\libgit2\src\transports\auth.h" />

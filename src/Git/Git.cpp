@@ -245,14 +245,11 @@ CGit::~CGit(void)
 
 bool CGit::IsBranchNameValid(const CString& branchname)
 {
-	if (CStringUtils::StartsWith(branchname, L"-")) // branch names starting with a dash are discouraged when used with git.exe, see https://github.com/git/git/commit/6348624010888bd2353e5cebdc2b5329490b0f6d
-		return false;
 	if (branchname.FindOneOf(L"\"|<>") >= 0) // not valid on Windows
 		return false;
-	if (branchname == L"HEAD") // Branch name HEAD is discouraged since Git v2.16.0, see https://github.com/git/git/commit/a625b092cc59940521789fe8a3ff69c8d6b14eb2
-		return false;
-	CStringA branchA = CUnicodeUtils::GetUTF8(L"refs/heads/" + branchname);
-	return !!git_reference_is_valid_name(branchA);
+	int valid = 0;
+	git_branch_name_is_valid(&valid, CUnicodeUtils::GetUTF8(branchname));
+	return valid == 1;
 }
 
 int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
