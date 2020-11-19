@@ -3,7 +3,7 @@
 doc:
   image: ubuntu:focal
   before_script:
-    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0KInstall packages"
+    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
     - apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
@@ -12,7 +12,7 @@ doc:
     - cd doc
     - nant -D:spellcheck=true
     - if [[ $(ls -1 Aspell/*.log 2>/dev/null | wc -l) -ge 1 ]]; then
-        echo "!!! Found typos !!!";
+        echo -e "\e[1;31m!!! Found typos !!!\e[0m";
         cat Aspell/*.log;
         exit 1;
       fi
@@ -31,7 +31,7 @@ doc:
 spellcheck-pot:
   image: debian:buster
   before_script:
-    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0KInstall packages"
+    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
     - apt-get install -qq --no-install-recommends -y aspell aspell-en aspell-de gettext gettext-lint
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
@@ -43,7 +43,7 @@ spellcheck-pot:
     - perl -pi -e 's/\$LANG\$/en/g' doc/Aspell/Temp.pws
     - POFileSpell --command='aspell --encoding=UTF-8 --add-extra-dicts="./doc/Aspell/en.pws" --add-extra-dicts=./doc/Aspell/Temp.pws --add-extra-dicts=./doc/Aspell/TortoisePot.pws --lang=en list' Languages/Tortoise_en.po > spellcheck.log
     - if [[ $(cat spellcheck.log 2>/dev/null | wc -l) -gt 1 ]]; then
-        echo "!!! Found typos !!!";
+        echo -e "\e[1;31m!!! Found typos !!!\e[0m";
         cat spellcheck.log;
         exit 1;
       fi
