@@ -33,7 +33,7 @@ spellcheck-pot:
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - apt-get install -qq --no-install-recommends -y aspell aspell-en aspell-de gettext gettext-lint
+    - apt-get install -qq --no-install-recommends -y aspell aspell-en gettext gettext-lint
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - perl -pi -e 's|\\r||g' Languages/Tortoise.pot
