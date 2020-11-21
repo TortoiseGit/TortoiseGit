@@ -1333,7 +1333,15 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	{
 		CString cmd, out;
 		auto fentry = m_arFilteredList[index];
-		cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+		switch (fentry->m_Action)
+		{
+		case CTGitPath::LOGACTIONS_ADDED:
+			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			break;
+		default:
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			break;
+		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)

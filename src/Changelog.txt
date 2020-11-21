@@ -17,6 +17,7 @@ Released: unreleased
  * TortoiseGitMerge: Make column index 1 based as most editors are 1-based instead of instead of 0 based
  * Fixed issue #3662: LogDlg: The "Compare change sets" command is not shown when two commits are adjacent on the list
  * Fixed issue #3664: revert dialog in dark mode shows file list black
+ * Fixed issue #3668: "Revert to revision" fails for added files
 
 = Release 2.11.0 =
 Released: 2020-10-10
