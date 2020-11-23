@@ -607,12 +607,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		if (!m_bIsBare)
 		{
-			if (!m_rev1.m_CommitHash.IsEmpty())
+			if (!m_rev1.m_CommitHash.IsEmpty() && (m_rev2.m_CommitHash.IsEmpty() || (!m_rev2.m_CommitHash.IsEmpty() && !(m_arFilteredList[firstEntry]->m_Action & CTGitPath::LOGACTIONS_ADDED))))
 			{
 				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCTSTR>(GetCommitTitle(m_rev1)));
 				popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
 			}
-			if (!m_rev2.m_CommitHash.IsEmpty())
+			if (!m_rev2.m_CommitHash.IsEmpty() && (m_rev1.m_CommitHash.IsEmpty() || (!m_rev1.m_CommitHash.IsEmpty() && !(m_arFilteredList[firstEntry]->m_Action & CTGitPath::LOGACTIONS_DELETED))))
 			{
 				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCTSTR>(GetCommitTitle(m_rev2)));
 				popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
