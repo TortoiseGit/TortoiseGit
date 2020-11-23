@@ -1773,6 +1773,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					commitTitle.Truncate(20);
 					commitTitle += L"...";
 				}
+				commitTitle.Replace(L"&", L"&&");
 				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			}
 			else
