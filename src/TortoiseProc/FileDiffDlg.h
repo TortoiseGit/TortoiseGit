@@ -102,7 +102,7 @@ protected:
 
 	void				EnableInputControl(bool b=true);
 
-	int					RevertSelectedItemToVersion(CString rev);
+	int					RevertSelectedItemToVersion(const CString& rev, bool isOldVersion);
 
 	bool				CheckMultipleDiffs();
 

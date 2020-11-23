@@ -669,10 +669,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			break;
 		case ID_REVERT1:
-			RevertSelectedItemToVersion(m_rev1.m_CommitHash.ToString());
+			RevertSelectedItemToVersion(m_rev1.m_CommitHash.ToString(), true);
 			break;
 		case ID_REVERT2:
-			RevertSelectedItemToVersion(m_rev2.m_CommitHash.ToString());
+			RevertSelectedItemToVersion(m_rev2.m_CommitHash.ToString(), false);
 			break;
 		case ID_BLAME:
 			{
@@ -1321,7 +1321,7 @@ void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 	this->m_cFileList.ShowText(L"Wait For input validate version");
 }
 
-int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
+int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVersion)
 {
 	if (rev.IsEmpty() || rev == GIT_REV_ZERO)
 		return 0;
@@ -1333,15 +1333,10 @@ int CFileDiffDlg::RevertSelectedItemToVersion(CString rev)
 	{
 		CString cmd, out;
 		auto fentry = m_arFilteredList[index];
-		switch (fentry->m_Action)
-		{
-		case CTGitPath::LOGACTIONS_ADDED:
+		if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED))
 			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCTSTR>(fentry->GetGitPathString()));
-			break;
-		default:
+		else
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
-			break;
-		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
