@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -190,13 +190,27 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_LogCache.ClearAllParent();
 	this->m_logEntries.ClearAll();
 	CString range;
+	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bShowBranchingsMerges ? CGit::LOG_ORDER_TOPOORDER | CGit::LOG_INFO_SPARSE : 0);
 	if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
 		range.Format(L"%s..%s", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)), static_cast<LPCTSTR>(g_Git.FixBranchName(m_ToRev)));
 	else if (!m_ToRev.IsEmpty())
-		range = m_ToRev;
+		range = g_Git.FixBranchName(m_ToRev);
 	else if (!m_FromRev.IsEmpty())
-		range = m_FromRev;
-	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH) | (m_bShowBranchingsMerges ? CGit::LOG_ORDER_TOPOORDER | CGit::LOG_INFO_SPARSE : 0);
+	{
+		if (m_bCurrentBranch)
+			range.Format(L"^%s HEAD", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)));
+		else
+		{
+			range.Format(L"^%s", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)));
+			if (m_bLocalBranches)
+				infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_LOCAL_BRANCHES;
+			else
+				infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_ALL_BRANCH;
+		}
+	}
+	else if (m_ToRev.IsEmpty() && m_FromRev.IsEmpty())
+		infomask |= m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH;
+
 	m_logEntries.ParserFromLog(nullptr, 0, infomask, &range);
 
 	ReloadHashMap();

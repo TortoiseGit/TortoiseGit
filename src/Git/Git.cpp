@@ -987,7 +987,8 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
 	{
 		param += L" --all";
-		range.Empty();
+		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) != 0)
+			range.Empty();
 	}
 
 	if (mask& CGit::LOG_INFO_BASIC_REFS)
@@ -997,13 +998,15 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 		param += L" --remotes";
 		param += L" --glob=stas[h]"; // require at least one glob operator
 		param += L" --glob=bisect";
-		range.Empty();
+		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) != 0)
+			range.Empty();
 	}
 
 	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
 	{
 		param += L" --branches";
-		range.Empty();
+		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) != 0)
+			range.Empty();
 	}
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)

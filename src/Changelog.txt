@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #3668: "Revert to revision" fails for added files
  * Fixed issue #3678: Remove deprecated git lfs clone option from clone dialog
  * Fixed issue #3674: Missing "Add to ignore list" menu on the "Show Log" dialog
+ * Fixed issue #3517: Revision graph filter does not work
 
 = Release 2.11.0 =
 Released: 2020-10-10
