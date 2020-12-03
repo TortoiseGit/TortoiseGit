@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #3662: LogDlg: The "Compare change sets" command is not shown when two commits are adjacent on the list
  * Fixed issue #3664: revert dialog in dark mode shows file list black
  * Fixed issue #3668: "Revert to revision" fails for added files
+ * Fixed issue #3678: Remove deprecated git lfs clone option from clone dialog
 
 = Release 2.11.0 =
 Released: 2020-10-10

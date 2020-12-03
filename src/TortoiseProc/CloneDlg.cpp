@@ -196,6 +196,8 @@ BOOL CCloneDlg::OnInitDialog()
 
 	EnableSaveRestore(L"CloneDlg");
 
+	DialogEnableWindow(IDC_CHECK_LFS, g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 15, 0));
+
 	OnBnClickedCheckSvn();
 	OnBnClickedCheckDepth();
 	OnBnClickedCheckBranch();
@@ -434,7 +436,7 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(!m_bSVN);
-	this->GetDlgItem(IDC_CHECK_LFS)->EnableWindow(!m_bSVN);
+	this->GetDlgItem(IDC_CHECK_LFS)->EnableWindow(!m_bSVN && g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 15, 0));
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();
