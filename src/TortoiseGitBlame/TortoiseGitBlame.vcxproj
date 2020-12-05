@@ -67,6 +67,7 @@
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\Utils\Hash.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
     <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
+    <ClCompile Include="..\Utils\Monitor.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\PersonalDictionary.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
@@ -130,6 +132,7 @@
     <ClInclude Include="..\Utils\DarkModeHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
+    <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
@@ -147,6 +150,7 @@
     <ClInclude Include="..\Utils\MiscUI\StandAloneDlg.h" />
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
+    <ClInclude Include="..\Utils\Monitor.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\PersonalDictionary.h" />
     <ClInclude Include="..\Utils\registry.h" />

@@ -74,6 +74,7 @@
     <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\Utils\DragDropImpl.cpp" />
     <ClCompile Include="..\Utils\Graphviz.cpp" />
+    <ClCompile Include="..\Utils\Hash.cpp" />
     <ClCompile Include="..\Utils\Hooks.cpp" />
     <ClCompile Include="..\Utils\HwSMTP.cpp" />
     <ClCompile Include="..\Utils\IconExtractor.cpp" />
@@ -104,6 +105,7 @@
     <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
     <ClCompile Include="..\Utils\MiscUI\WaterEffect.cpp" />
+    <ClCompile Include="..\Utils\Monitor.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\PathWatcher.cpp" />
     <ClCompile Include="..\Utils\PersonalDictionary.cpp" />
@@ -364,6 +366,7 @@
     <ClInclude Include="..\Utils\DirFileEnum.h" />
     <ClInclude Include="..\Utils\DragDropImpl.h" />
     <ClInclude Include="..\Utils\Graphviz.h" />
+    <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\Hooks.h" />
     <ClInclude Include="..\Utils\HwSMTP.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
@@ -403,6 +406,7 @@
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\WaterEffect.h" />
+    <ClInclude Include="..\Utils\Monitor.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\PathWatcher.h" />
     <ClInclude Include="..\Utils\PersonalDictionary.h" />

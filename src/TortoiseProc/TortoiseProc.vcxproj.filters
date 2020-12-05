@@ -1016,6 +1016,12 @@
     <ClCompile Include="LFSLocksDlg.cpp">
       <Filter>Commands\LFS</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Hash.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Monitor.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1917,6 +1923,12 @@
     </ClInclude>
     <ClInclude Include="ProgressCommands\LFSSetLockedProgressCommand.h">
       <Filter>Utility Dialogs\ProgressCommands</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Hash.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Monitor.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -212,17 +212,51 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 
 BOOL CTortoiseGitBlameApp::LoadWindowPlacement(CRect& rectNormalPosition, int& nFlags, int& nShowCmd)
 {
-	if (!__super::LoadWindowPlacement(rectNormalPosition, nFlags, nShowCmd))
+	CRegString placement = CRegString(CString(L"Software\\TortoiseGitBlame\\WindowPos_") + GetMonitorSetupHash().c_str());
+	CString sPlacement = placement;
+	if (sPlacement.IsEmpty())
 		return FALSE;
-	CDPIAware::Instance().ScaleRect(&rectNormalPosition);
+	WINDOWPLACEMENT wp = { 0 };
+	auto* pwp = &wp;
+	int nRead = swscanf_s(sPlacement, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",
+		&pwp->flags, &pwp->showCmd,
+		&pwp->ptMinPosition.x, &pwp->ptMinPosition.y,
+		&pwp->ptMaxPosition.x, &pwp->ptMaxPosition.y,
+		&pwp->rcNormalPosition.left, &pwp->rcNormalPosition.top,
+		&pwp->rcNormalPosition.right, &pwp->rcNormalPosition.bottom);
+	if (nRead != 10)
+		return FALSE;
+	pwp->length = sizeof(WINDOWPLACEMENT);
+
+	CDPIAware::Instance().ScaleWindowPlacement(pwp);
+	rectNormalPosition = wp.rcNormalPosition;
+	nFlags = wp.flags;
+	nShowCmd = wp.showCmd;
+
 	return TRUE;
 }
 
 BOOL CTortoiseGitBlameApp::StoreWindowPlacement(const CRect& rectNormalPosition, int nFlags, int nShowCmd)
 {
-	CRect adj = rectNormalPosition;
-	CDPIAware::Instance().UnscaleRect(&adj);
-	return __super::StoreWindowPlacement(adj, nFlags, nShowCmd);
+	CRegString placement(CString(L"Software\\TortoiseGitBlame\\WindowPos_") + GetMonitorSetupHash().c_str());
+
+	WINDOWPLACEMENT wp = { 0 };
+	wp.length = sizeof(wp);
+	wp.flags = nFlags;
+	wp.rcNormalPosition = rectNormalPosition;
+	wp.showCmd = nShowCmd;
+
+	CDPIAware::Instance().UnscaleWindowPlacement(&wp);
+
+	TCHAR szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
+	swprintf_s(szBuffer, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",
+		wp.flags, wp.showCmd,
+		wp.ptMinPosition.x, wp.ptMinPosition.y,
+		wp.ptMaxPosition.x, wp.ptMaxPosition.y,
+		wp.rcNormalPosition.left, wp.rcNormalPosition.top,
+		wp.rcNormalPosition.right, wp.rcNormalPosition.bottom);
+	placement = szBuffer;
+	return TRUE;
 }
 
 // CAboutDlg dialog used for App About

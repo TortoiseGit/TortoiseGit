@@ -69,6 +69,12 @@
     <ClCompile Include="..\Utils\Theme.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Hash.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Monitor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FindBar.h">
@@ -135,6 +141,12 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\Theme.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Hash.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

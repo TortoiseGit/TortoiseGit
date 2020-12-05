@@ -24,6 +24,7 @@
 #include "TaskbarUUID.h"
 #include "registry.h"
 #include "LangDll.h"
+#include "Monitor.h"
 #include "../version.h"
 #include "../Utils/CrashReport.h"
 #include <commctrl.h>
@@ -78,7 +79,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		return -1;
 
 	CMainWindow mainWindow(hResource);
-	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos");
+	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos_" + GetMonitorSetupHash());
 	if (parser.HasVal(L"title"))
 		mainWindow.SetTitle(parser.GetVal(L"title"));
 	else if (parser.HasVal(L"patchfile"))

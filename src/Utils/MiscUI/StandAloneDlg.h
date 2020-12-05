@@ -31,6 +31,8 @@
 #define DIALOG_BLOCKHORIZONTAL 1
 #define DIALOG_BLOCKVERTICAL 2
 
+std::wstring GetMonitorSetupHash();
+
 /**
  * \ingroup TortoiseProc
  *
@@ -270,13 +272,13 @@ protected:
 	{
 		UNREFERENCED_PARAMETER(bHorzResize);
 		UNREFERENCED_PARAMETER(bVertResize);
-		m_sSection = pszSection;
+		m_sSection = CString(pszSection) + L'_' + GetMonitorSetupHash().c_str();
 
 		m_bEnableSaveRestore = true;
 		m_bRectOnly = bRectOnly;
 
 		// restore immediately
-		LoadWindowRect(pszSection, bRectOnly, false, false);
+		LoadWindowRect(m_sSection, bRectOnly, false, false);
 	};
 
 	virtual CWnd* GetResizableWnd() const override
@@ -327,7 +329,8 @@ protected:
 	{
 		// call the base method with the bHorzResize and bVertResize parameters
 		// figured out from the resize block flags.
-		__super::EnableSaveRestore(pszSection, bRectOnly, (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL) == 0, (m_nResizeBlock & DIALOG_BLOCKVERTICAL) == 0);
+		std::wstring monitorSetupSection = std::wstring(pszSection) + L'_' + GetMonitorSetupHash();
+		__super::EnableSaveRestore(monitorSetupSection.c_str(), bRectOnly, (m_nResizeBlock & DIALOG_BLOCKHORIZONTAL) == 0, (m_nResizeBlock & DIALOG_BLOCKVERTICAL) == 0);
 	};
 
 private:

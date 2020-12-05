@@ -2143,7 +2143,7 @@ void CMainFrame::ActivateFrame(int nCmdShow)
 
 BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 {
-	CRegString placement = CRegString(L"Software\\TortoiseGitMerge\\WindowPos");
+	CRegString placement = CRegString(CString(L"Software\\TortoiseGitMerge\\WindowPos_") + GetMonitorSetupHash().c_str());
 	CString sPlacement = placement;
 	if (sPlacement.IsEmpty())
 		return FALSE;
@@ -2164,7 +2164,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 
 void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
-	CRegString placement(L"Software\\TortoiseGitMerge\\WindowPos");
+	CRegString placement(CString(L"Software\\TortoiseGitMerge\\WindowPos_") + GetMonitorSetupHash().c_str());
 	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
 
 	CDPIAware::Instance().UnscaleWindowPlacement(pwp);

@@ -201,6 +201,12 @@
     <ClCompile Include="..\Utils\SysInfo.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\Hash.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Utils\Monitor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -402,6 +408,12 @@
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\SysInfo.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Hash.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

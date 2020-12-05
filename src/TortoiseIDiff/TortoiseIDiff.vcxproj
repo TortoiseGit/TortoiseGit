@@ -46,12 +46,14 @@
   <ItemGroup>
     <ClCompile Include="..\Utils\CmdLineParser.cpp" />
     <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
+    <ClCompile Include="..\Utils\Hash.cpp" />
     <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
     <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
+    <ClCompile Include="..\Utils\Monitor.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
     <ClCompile Include="..\Utils\Registry.cpp" />
     <ClCompile Include="..\Utils\StringUtils.cpp" />
@@ -71,6 +73,7 @@
     <ClInclude Include="..\Utils\CmdLineParser.h" />
     <ClInclude Include="..\Utils\DarkModeHelper.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
+    <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
@@ -80,6 +83,7 @@
     <ClInclude Include="..\Utils\MiscUI\MyMemDC.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />
+    <ClInclude Include="..\Utils\Monitor.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\scope_exit_noexcept.h" />

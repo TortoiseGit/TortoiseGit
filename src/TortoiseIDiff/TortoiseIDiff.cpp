@@ -24,6 +24,7 @@
 #include "LangDll.h"
 #include "TortoiseIDiff.h"
 #include "TaskbarUUID.h"
+#include "Monitor.h"
 #include <Shellapi.h>
 
 #pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -89,7 +90,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     curHandDown = static_cast<HCURSOR>(LoadImage(hInst, MAKEINTRESOURCE(IDC_PANDOWNCUR), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE));
 
     auto mainWindow = std::make_unique<CMainWindow>(hResource);
-    mainWindow->SetRegistryPath(L"Software\\TortoiseGit\\TortoiseIDiffWindowPos");
+    mainWindow->SetRegistryPath(L"Software\\TortoiseGit\\TortoiseIDiffWindowPos_" + GetMonitorSetupHash());
     std::wstring leftfile = parser.HasVal(L"left") ? parser.GetVal(L"left") : L"";
     std::wstring rightfile = parser.HasVal(L"right") ? parser.GetVal(L"right") : L"";
     if ((leftfile.empty()) && (lpCmdLine[0] != 0))

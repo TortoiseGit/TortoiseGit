@@ -60,6 +60,9 @@
     <ClCompile Include="..\Utils\CommonAppUtils.cpp" />
     <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
+    <ClCompile Include="..\Utils\Hash.cpp">
+      <ObjectFileName>$(IntDir)monHash.obj</ObjectFileName>
+    </ClCompile>
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp" />
@@ -68,6 +71,7 @@
     <ClCompile Include="..\Utils\MiscUI\StandAloneDlg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\ThemeMFCVisualManager.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Tooltip.cpp" />
+    <ClCompile Include="..\Utils\Monitor.cpp" />
     <ClCompile Include="..\Utils\ProfilingInfo.cpp" />
     <ClCompile Include="..\Utils\SysImageList.cpp" />
     <ClCompile Include="..\Utils\TaskbarUUID.cpp" />
@@ -330,6 +334,7 @@
     <ClInclude Include="..\Utils\DarkModeHelper.h" />
     <ClInclude Include="..\Utils\DebugOutput.h" />
     <ClInclude Include="..\Utils\DPIAware.h" />
+    <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
@@ -342,6 +347,7 @@
     <ClInclude Include="..\Utils\MiscUI\ThemeMFCVisualManager.h" />
     <ClInclude Include="..\Utils\MiscUI\Tooltip.h" />
     <ClInclude Include="..\Utils\MiscUI\TripleClick.h" />
+    <ClInclude Include="..\Utils\Monitor.h" />
     <ClInclude Include="..\Utils\ProfilingInfo.h" />
     <ClInclude Include="..\Utils\SysImageList.h" />
     <ClInclude Include="..\Utils\TaskbarUUID.h" />
