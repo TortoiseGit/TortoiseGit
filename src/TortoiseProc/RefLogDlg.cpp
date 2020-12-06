@@ -232,7 +232,10 @@ void CRefLogDlg::Refresh()
 void CRefLogDlg::OnFind()
 {
 	if (m_pFindDialog)
+	{
+		m_pFindDialog->SetFocus();
 		return;
+	}
 	m_pFindDialog = new CFindReplaceDialog();
 	m_pFindDialog->Create(TRUE, L"", nullptr, FR_DOWN | FR_HIDEWHOLEWORD | FR_HIDEUPDOWN, this);
 	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());

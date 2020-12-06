@@ -538,6 +538,11 @@ void CRevisionGraphDlg::OnFind()
 		m_pFindDialog = new CFindDlg(this);
 		m_pFindDialog->Create(this);
 	}
+	else
+	{
+		m_pFindDialog->SetFocus();
+		return;
+	}
 }
 
 LRESULT CRevisionGraphDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)

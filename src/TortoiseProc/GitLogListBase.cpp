@@ -3405,6 +3405,11 @@ void CGitLogListBase::OnFind()
 		m_pFindDialog = new CFindDlg(this);
 		m_pFindDialog->Create(this);
 	}
+	else
+	{
+		m_pFindDialog->SetFocus();
+		return;
+	}
 }
 
 LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*/)

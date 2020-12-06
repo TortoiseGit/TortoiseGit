@@ -1029,7 +1029,10 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				if (m_nSearchIndex < 0)
 					m_nSearchIndex = 0;
 				if (m_pFindDialog)
+				{
+					m_pFindDialog->SetFocus();
 					break;
+				}
 				else
 				{
 					m_pFindDialog = new CFindDlg();

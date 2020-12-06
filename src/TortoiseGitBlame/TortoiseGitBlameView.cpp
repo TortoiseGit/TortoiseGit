@@ -1924,7 +1924,10 @@ BOOL CTortoiseGitBlameView::PreTranslateMessage(MSG* pMsg)
 void CTortoiseGitBlameView::OnEditFind()
 {
 	if (m_pFindDialog)
+	{
+		m_pFindDialog->SetFocus();
 		return;
+	}
 
 	m_pFindDialog=new CFindReplaceDialog();
 

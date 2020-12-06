@@ -5403,7 +5403,10 @@ void CBaseView::WrapChanged()
 void CBaseView::OnEditFind()
 {
 	if (m_pFindDialog)
+	{
+		m_pFindDialog->SetFocus();
 		return;
+	}
 
 	int id = 0;
 	if (this == m_pwndLeft)
