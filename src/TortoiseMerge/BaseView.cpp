@@ -113,6 +113,7 @@ CBaseView::CBaseView()
 	, m_bEditorConfigLoaded(2) // 2 = not evaluated
 	, m_bDark(false)
 	, m_themeCallbackId(0)
+	, m_MarkedWordCount(0)
 {
 	m_ptCaretViewPos.x = 0;
 	m_ptCaretViewPos.y = 0;
