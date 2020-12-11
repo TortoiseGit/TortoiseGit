@@ -33,7 +33,6 @@ public:
 		REMOTE_PUTTYKEY	=0x4,
 		REMOTE_TAGOPT	=0x8,
 		REMOTE_PRUNE	=0x10,
-		REMOTE_PRUNEALL	=0x20,
 		REMOTE_PUSHDEFAULT	= 0x40,
 		REMOTE_PUSHURL	=0x80,
 	};
@@ -85,5 +84,4 @@ protected:
 	CComboBox	m_ctrlTagOpt;
 	BOOL		m_bPushDefault;
 	BOOL		m_bPrune;
-	BOOL		m_bPruneAll;
 };

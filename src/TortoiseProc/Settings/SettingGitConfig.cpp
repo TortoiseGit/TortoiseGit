@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ CSettingGitConfig::CSettingGitConfig()
 	: ISettingsPropPage(CSettingGitConfig::IDD)
 	, m_bNeedSave(false)
 	, m_bQuotePath(TRUE)
+	, m_bPrune(FALSE)
 	, m_bInheritUserName(FALSE)
 	, m_bInheritEmail(FALSE)
 	, m_bInheritSigningKey(FALSE)
@@ -50,6 +51,7 @@ void CSettingGitConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_GIT_USEREMAIL, m_UserEmail);
 	DDX_Text(pDX, IDC_GIT_USERESINGNINGKEY, m_UserSigningKey);
 	DDX_Check(pDX, IDC_CHECK_QUOTEPATH, m_bQuotePath);
+	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_NAME, m_bInheritUserName);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_EMAIL, m_bInheritEmail);
 	DDX_Check(pDX, IDC_CHECK_INHERIT_KEYID, m_bInheritSigningKey);
@@ -64,6 +66,7 @@ BEGIN_MESSAGE_MAP(CSettingGitConfig, CPropertyPage)
 	ON_EN_CHANGE(IDC_GIT_USERESINGNINGKEY, &CSettingGitConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_COMBO_AUTOCRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_QUOTEPATH, &CSettingGitConfig::OnChange)
+	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitConfig::OnChange)
 	ON_CBN_SELCHANGE(IDC_COMBO_SAFECRLF, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_NAME, &CSettingGitConfig::OnChange)
 	ON_BN_CLICKED(IDC_CHECK_INHERIT_EMAIL, &CSettingGitConfig::OnChange)
@@ -187,6 +190,14 @@ void CSettingGitConfig::LoadDataImpl(CAutoConfig& config)
 			m_bQuotePath = BST_INDETERMINATE;
 	}
 
+	if (git_config_get_bool(&m_bPrune, config, "fetch.prune") == GIT_ENOTFOUND)
+	{
+		if (m_iConfigSource == CFG_SRC_EFFECTIVE)
+			m_bPrune = BST_UNCHECKED;
+		else
+			m_bPrune = BST_INDETERMINATE;
+	}
+
 	BOOL bSafeCrLf = FALSE;
 	if (git_config_get_bool(&bSafeCrLf, config, "core.safecrlf") == GIT_ENOTFOUND)
 		m_cSafeCrLf.SetCurSel(0);
@@ -215,6 +226,7 @@ void CSettingGitConfig::EnDisableControls()
 	GetDlgItem(IDC_GIT_USERESINGNINGKEY)->SendMessage(EM_SETREADONLY, m_iConfigSource == CFG_SRC_EFFECTIVE, 0);
 	GetDlgItem(IDC_COMBO_AUTOCRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_CHECK_QUOTEPATH)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
+	GetDlgItem(IDC_CHECK_PRUNE)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_COMBO_SAFECRLF)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_COMBO_SETTINGS_SAFETO)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
 	GetDlgItem(IDC_CHECK_INHERIT_NAME)->EnableWindow(m_iConfigSource != CFG_SRC_EFFECTIVE);
@@ -247,6 +259,9 @@ BOOL CSettingGitConfig::SafeDataImpl(CAutoConfig& config)
 		return FALSE;
 
 	if (!Save(config, L"core.quotepath", m_bQuotePath ? L"true" : L"false", m_bQuotePath == BST_INDETERMINATE))
+		return FALSE;
+
+	if (!Save(config, L"fetch.prune", m_bPrune ? L"true" : L"false", m_bPrune == BST_INDETERMINATE))
 		return FALSE;
 
 	{

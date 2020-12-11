@@ -12,6 +12,7 @@ Released: unreleased
  * Update libgit2 to 1.1.0
  * Update Scintilla to 4.4.6
  * Allow multiple ref selection in the Revision Graph Filter
+ * Move prune (all remotes) setting to git config page
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working

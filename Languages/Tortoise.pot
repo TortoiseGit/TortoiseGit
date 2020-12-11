@@ -7121,12 +7121,8 @@ msgstr ""
 msgid "Proxy Settings"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog IDD_SETTINREMOTE: Control id 1603)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id 1603)
 msgid "Prune"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
@@ -10352,6 +10348,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
+msgstr ""
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid "You can configure it for all remotes or global on the Git settings page."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)

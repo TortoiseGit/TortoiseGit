@@ -37,7 +37,6 @@ CSettingGitRemote::CSettingGitRemote()
 	: ISettingsPropPage(CSettingGitRemote::IDD)
 	, m_bNoFetch(false)
 	, m_bPrune(2)
-	, m_bPruneAll(FALSE)
 	, m_bPushDefault(FALSE)
 {
 	m_ChangedMask = 0;
@@ -57,7 +56,6 @@ void CSettingGitRemote::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_PUTTY_KEY, m_strPuttyKeyfile);
 	DDX_Control(pDX, IDC_COMBO_TAGOPT, m_ctrlTagOpt);
 	DDX_Check(pDX, IDC_CHECK_PRUNE, m_bPrune);
-	DDX_Check(pDX, IDC_CHECK_PRUNEALL, m_bPruneAll);
 	DDX_Check(pDX, IDC_CHECK_PUSHDEFAULT, m_bPushDefault);
 }
 
@@ -72,7 +70,6 @@ BEGIN_MESSAGE_MAP(CSettingGitRemote, CPropertyPage)
 	ON_EN_CHANGE(IDC_EDIT_PUTTY_KEY, &CSettingGitRemote::OnEnChangeEditPuttyKey)
 	ON_CBN_SELCHANGE(IDC_COMBO_TAGOPT, &CSettingGitRemote::OnCbnSelchangeComboTagOpt)
 	ON_BN_CLICKED(IDC_CHECK_PRUNE, &CSettingGitRemote::OnBnClickedCheckprune)
-	ON_BN_CLICKED(IDC_CHECK_PRUNEALL, &CSettingGitRemote::OnBnClickedCheckpruneall)
 	ON_BN_CLICKED(IDC_CHECK_PUSHDEFAULT, &CSettingGitRemote::OnBnClickedCheckpushdefault)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitRemote::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_BUTTON_RENAME_REMOTE, &CSettingGitRemote::OnBnClickedButtonRenameRemote)
@@ -97,7 +94,6 @@ BOOL CSettingGitRemote::OnInitDialog()
 	ISettingsPropPage::OnInitDialog();
 
 	AdjustControlSize(IDC_CHECK_PRUNE);
-	AdjustControlSize(IDC_CHECK_PRUNEALL);
 	AdjustControlSize(IDC_CHECK_PUSHDEFAULT);
 
 	STRING_VECTOR remotes;
@@ -111,17 +107,15 @@ BOOL CSettingGitRemote::OnInitDialog()
 	m_ctrlTagOpt.AddString(CString(MAKEINTRESOURCE(IDS_ALL)));
 	m_ctrlTagOpt.SetCurSel(0);
 
-	CString pruneAll = g_Git.GetConfigValue(L"fetch.prune");
-	m_bPruneAll = pruneAll == L"true" ? TRUE : FALSE;
-
 	{
 		CString tmp;
 		tmp.Format(IDS_GITCONFIG_SETTING, L"remote.pushdefault");
 		m_tooltips.AddTool(IDC_CHECK_PUSHDEFAULT, tmp);
 		tmp.Format(IDS_GITCONFIG_SETTING, L"remote.<name>.prune");
+		CString guide;
+		guide.LoadString(IDS_PRUNE_OPTION_GUIDE);
+		tmp += L"\n" + guide;
 		m_tooltips.AddTool(IDC_CHECK_PRUNE, tmp);
-		tmp.Format(IDS_GITCONFIG_SETTING, L"fetch.prune");
-		m_tooltips.AddTool(IDC_CHECK_PRUNEALL, tmp);
 		tmp.Format(IDS_GITCONFIG_SETTING, L"remote<name>.tagopt");
 		m_tooltips.AddTool(IDC_COMBO_TAGOPT, tmp);
 	}
@@ -174,7 +168,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 		return;
 	}
 
-	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PRUNEALL | REMOTE_PUSHDEFAULT | REMOTE_PUSHURL;
+	m_ChangedMask = REMOTE_NAME | REMOTE_URL | REMOTE_PUTTYKEY | REMOTE_TAGOPT | REMOTE_PRUNE | REMOTE_PUSHDEFAULT | REMOTE_PUSHURL;
 	if(IsRemoteExist(m_strRemote))
 	{
 		CString msg;
@@ -290,8 +284,6 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	cmd.Format(L"remote.%s.prune", static_cast<LPCTSTR>(m_strRemote));
 	CString prune = g_Git.GetConfigValue(cmd);
 	m_bPrune = prune == L"true" ? TRUE : prune == L"false" ? FALSE : 2;
-	CString pruneAll = g_Git.GetConfigValue(L"fetch.prune");
-	m_bPruneAll = pruneAll == L"true" ? TRUE : FALSE;
 
 	GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 	GetDlgItem(IDC_BUTTON_REMOVE)->EnableWindow(TRUE);
@@ -360,13 +352,6 @@ void CSettingGitRemote::OnBnClickedCheckprune()
 
 	this->UpdateData();
 	this->SetModified();
-}
-
-void CSettingGitRemote::OnBnClickedCheckpruneall()
-{
-	m_ChangedMask |= REMOTE_PRUNEALL;
-	UpdateData();
-	SetModified();
 }
 
 void CSettingGitRemote::OnBnClickedCheckpushdefault()
@@ -451,13 +436,6 @@ BOOL CSettingGitRemote::OnApply()
 		}
 
 		m_ChangedMask &= ~REMOTE_PUSHDEFAULT;
-	}
-
-	if (m_ChangedMask & REMOTE_PRUNEALL)
-	{
-		if (!SaveGeneral(L"fetch.prune", m_bPruneAll == TRUE ? L"true" : L"false"))
-			return FALSE;
-		m_ChangedMask &= ~REMOTE_PRUNEALL;
 	}
 
 	if (m_ChangedMask && m_strRemote.Trim().IsEmpty())

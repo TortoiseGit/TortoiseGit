@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,5 +66,6 @@ protected:
 	BOOL	m_bInheritSigningKey;
 	CComboBox m_cAutoCrLf;
 	BOOL	m_bQuotePath;
+	BOOL	m_bPrune;
 	CComboBox m_cSafeCrLf;
 };
