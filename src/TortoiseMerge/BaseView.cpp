@@ -32,6 +32,7 @@
 #include "DPIAware.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "ClipboardHelper.h"
 
 // Note about lines:
 // We use three different kind of lines here:
@@ -4141,7 +4142,8 @@ void CBaseView::RemoveSelectedText()
 
 void CBaseView::PasteText()
 {
-	if (!OpenClipboard())
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
 		return;
 
 	CString sClipboardText;
@@ -4159,7 +4161,6 @@ void CBaseView::PasteText()
 		sClipboardText = lpstr;
 		GlobalUnlock(hglb);
 	}
-	CloseClipboard();
 
 	if (sClipboardText.IsEmpty())
 		return;

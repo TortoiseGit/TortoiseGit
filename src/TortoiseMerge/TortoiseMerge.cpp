@@ -33,6 +33,7 @@
 #include "FileDlgEventHandler.h"
 #include "TempFile.h"
 #include "TaskbarUUID.h"
+#include "ClipboardHelper.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -307,7 +308,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 					// check if there's a unified diff on the clipboard and
 					// add a button to the fileopen dialog if there is.
 					UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
-					if ((cFormat) && (OpenClipboard(nullptr)))
+					CClipboardHelper clipboardHelper;
+					if (cFormat && clipboardHelper.Open(nullptr))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
 						if (hglb)
@@ -316,7 +318,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 							hr = pfd->Advise(pEvents, &dwCookie);
 							bAdvised = SUCCEEDED(hr);
 						}
-						CloseClipboard();
 					}
 				}
 			}
@@ -476,7 +477,8 @@ bool CTortoiseMergeApp::HasClipboardPatch()
 	if (cFormat == 0)
 		return false;
 
-	if (OpenClipboard(nullptr) == 0)
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
 		return false;
 
 	bool containsPatch = false;
@@ -488,7 +490,6 @@ bool CTortoiseMergeApp::HasClipboardPatch()
 			containsPatch = true;   // yes, there's a patchfile in the clipboard
 		}
 	} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
-	CloseClipboard();
 
 	return containsPatch;
 }
@@ -500,7 +501,8 @@ bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
 	UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 	if (cFormat == 0)
 		return false;
-	if (OpenClipboard(nullptr) == 0)
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
 		return false;
 
 	HGLOBAL hglb = GetClipboardData(cFormat);
@@ -525,7 +527,6 @@ bool CTortoiseMergeApp::TrySavePatchFromClipboard(std::wstring& resultFile)
 		fclose(outFile);
 	}
 	GlobalUnlock(hglb);
-	CloseClipboard();
 
 	return !resultFile.empty();
 }

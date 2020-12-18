@@ -31,6 +31,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "resource.h"
 #include "LoadIconEx.h"
+#include "ClipboardHelper.h"
 
 #define GetPIDLFolder(pida) reinterpret_cast<LPCITEMIDLIST>(reinterpret_cast<LPBYTE>(pida) + (pida)->aoffset[0])
 #define GetPIDLItem(pida, i) reinterpret_cast<LPCITEMIDLIST>(reinterpret_cast<LPBYTE>(pida) + (pida)->aoffset[i + 1])
@@ -674,14 +675,14 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 
 	if (!IsClipboardFormatAvailable(CF_HDROP))
 		return false;
-	if (!OpenClipboard(nullptr))
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
 		return false;
 
 	HGLOBAL hglb = GetClipboardData(CF_HDROP);
 	SCOPE_EXIT
 	{
 		GlobalUnlock(hglb);
-		CloseClipboard();
 	};
 	auto hDrop = static_cast<HDROP>(GlobalLock(hglb));
 	if (!hDrop)
@@ -1478,7 +1479,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					// if there's a patch file in the clipboard, we save it
 					// to a temporary file and tell TortoiseGitMerge to use that one
 					UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
-					if (cFormat && OpenClipboard(nullptr))
+					CClipboardHelper clipboardHelper;
+					if (cFormat && clipboardHelper.Open(nullptr))
 					{
 						HGLOBAL hglb = GetClipboardData(cFormat);
 						auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
@@ -1505,7 +1507,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 							fclose(outFile);
 						}
 						GlobalUnlock(hglb);
-						CloseClipboard();
 					}
 				}
 				if (itemStates & ITEMIS_PATCHFILE)
@@ -1549,7 +1550,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 					UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
 					if (cPrefDropFormat)
 					{
-						if (OpenClipboard(lpcmi->hwnd))
+						CClipboardHelper clipboardHelper;
+						if (clipboardHelper.Open(lpcmi->hwnd))
 						{
 							HGLOBAL hglb = GetClipboardData(cPrefDropFormat);
 							if (hglb)
@@ -1559,7 +1561,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 									bCopy = false;
 								GlobalUnlock(hglb);
 							}
-							CloseClipboard();
 						}
 					}
 

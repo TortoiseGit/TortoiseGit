@@ -21,6 +21,7 @@
 #include "DPIAware.h"
 #include "LoadIconEx.h"
 #include "Theme.h"
+#include "ClipboardHelper.h"
 
 const UINT CFilterEdit::WM_FILTEREDIT_INFOCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_INFOCLICKED");
 const UINT CFilterEdit::WM_FILTEREDIT_CANCELCLICKED = ::RegisterWindowMessage(L"TGITWM_FILTEREDIT_CANCELCLICKED");
@@ -422,12 +423,12 @@ void CFilterEdit::OnEnSetfocus()
 
 LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 {
-	if (OpenClipboard())
+	CClipboardHelper clipboardHelper;
+	if (clipboardHelper.Open(nullptr))
 	{
 		HANDLE hData = GetClipboardData (CF_TEXT);
 		CString toInsert(static_cast<const char*>(GlobalLock(hData)));
 		GlobalUnlock(hData);
-		CloseClipboard();
 
 		// elimate control chars, especially newlines
 		toInsert.Replace(L'\t', L' ');

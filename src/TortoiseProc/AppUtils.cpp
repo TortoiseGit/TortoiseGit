@@ -69,6 +69,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "DPIAware.h"
 #include "IconExtractor.h"
+#include "ClipboardHelper.h"
 
 static struct last_accepted_cert {
 	BYTE*		data;
@@ -2069,7 +2070,8 @@ bool CAppUtils::IsSSHPutty()
 
 CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCount)
 {
-	if (!OpenClipboard(nullptr))
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
 		return CString();
 
 	CString sClipboardText;
@@ -2085,7 +2087,6 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 		sClipboardText = lpstr;
 		GlobalUnlock(hglb);
 	}
-	CloseClipboard();
 
 	if(!sClipboardText.IsEmpty())
 	{

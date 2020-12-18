@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011, 2014-2016, 2019 - TortoiseGit
+// Copyright (C) 2010-2011, 2014-2016, 2019-2020 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,6 +35,7 @@
 #include "Git.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
+#include "ClipboardHelper.h"
 
 BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
 {
@@ -95,7 +96,8 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 
 bool CAppUtils::HasClipboardFormat(UINT format)
 {
-	if (OpenClipboard(nullptr))
+	CClipboardHelper clipboardHelper;
+	if (clipboardHelper.Open(nullptr))
 	{
 		UINT enumFormat = 0;
 		do
@@ -106,7 +108,6 @@ bool CAppUtils::HasClipboardFormat(UINT format)
 				return true;
 			}
 		} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
-		CloseClipboard();
 	}
 	return false;
 }

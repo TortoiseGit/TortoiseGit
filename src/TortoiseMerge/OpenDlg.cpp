@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012, 2019 - TortoiseGit
+// Copyright (C) 2012, 2019-2020 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include "OpenDlg.h"
 #include "CommonAppUtils.h"
 #include "registry.h"
+#include "ClipboardHelper.h"
 
 // COpenDlg dialog
 
@@ -176,7 +177,7 @@ void COpenDlg::OnOK()
 	UpdateData(TRUE);
 
 	bool bUDiffOnClipboard = false;
-	if (OpenClipboard())
+	if (CClipboardHelper clipboardHelper; clipboardHelper.Open(nullptr))
 	{
 		UINT enumFormat = 0;
 		do
@@ -186,7 +187,6 @@ void COpenDlg::OnOK()
 				bUDiffOnClipboard = true;
 			}
 		} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
-		CloseClipboard();
 	}
 
 	if (GetDlgItem(IDC_BASEFILEEDIT)->IsWindowEnabled())
@@ -220,7 +220,8 @@ void COpenDlg::OnOK()
 
 	if (bUDiffOnClipboard && m_bFromClipboard)
 	{
-		if (OpenClipboard())
+		CClipboardHelper clipboardHelper;
+		if (clipboardHelper.Open(nullptr))
 		{
 			HGLOBAL hglb = GetClipboardData(m_cFormat);
 			auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
@@ -249,7 +250,6 @@ void COpenDlg::OnOK()
 				fclose(outFile);
 			}
 			GlobalUnlock(hglb);
-			CloseClipboard();
 		}
 
 	}
@@ -277,7 +277,8 @@ bool COpenDlg::CheckAndEnableClipboardChecker()
 	bool bUDiffOnClipboard = false;
 	if (radio == IDC_APPLYRADIO)
 	{
-		if (OpenClipboard())
+		CClipboardHelper clipboardHelper;
+		if (clipboardHelper.Open(nullptr))
 		{
 			UINT enumFormat = 0;
 			do
@@ -287,7 +288,6 @@ bool COpenDlg::CheckAndEnableClipboardChecker()
 					bUDiffOnClipboard = true;
 				}
 			} while((enumFormat = EnumClipboardFormats(enumFormat))!=0);
-			CloseClipboard();
 		}
 	}
 
