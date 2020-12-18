@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010 - TortoiseSVN
+// Copyright (C) 2003-2010, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,8 +38,19 @@ inline CClipboardHelper::~CClipboardHelper()
 
 inline bool CClipboardHelper::Open(HWND hOwningWnd)
 {
-	bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
-	return bClipBoardOpen;
+	// OpenClipboard may fail if another application has opened the clipboard.
+	// Try up to 8 times, with an initial delay of 1 ms and an exponential back off
+	// for a maximum total delay of 127 ms (1+2+4+8+16+32+64).
+	const int tries = 8;
+	for (int attempt = 0; attempt < tries; ++attempt)
+	{
+		if (attempt > 0)
+			::Sleep(1 << (attempt - 1));
+		bClipBoardOpen = (OpenClipboard(hOwningWnd) != 0);
+		if (bClipBoardOpen)
+			return true;
+	}
+	return false;
 }
 
 inline HGLOBAL CClipboardHelper::GlobalAlloc(SIZE_T dwBytes)
