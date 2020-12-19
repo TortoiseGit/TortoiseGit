@@ -132,6 +132,8 @@ public:
 	*/
 	BOOL SetTreeWidth(int nWidth);
 
+	void SetParentPage(CPropertyPage* pParentPage, CPropertyPage *pPage);
+
 	/**
 	Specifies the text to be drawn on empty pages (pages for tree view
 	items, that are not related to a page, because they are only
@@ -470,6 +472,8 @@ private:
 
 	/** The frame around the pages */
 	CPropPageFrame *m_pFrame;
+
+	std::map<const CPropertyPage*, CPropertyPage*> parentsMap;
 
 	/**
 	TRUE, if a tree item selection by OnPageTreeSelChanged() is

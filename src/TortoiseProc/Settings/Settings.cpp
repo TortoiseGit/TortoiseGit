@@ -122,20 +122,33 @@ void CSettings::AddPropPages()
 	AddPage(m_pHooksPage);
 	AddPage(m_pOverlayPage);
 	AddPage(m_pOverlaysPage);
+	SetParentPage(m_pOverlayPage, m_pOverlaysPage);
 	AddPage(m_pOverlayHandlersPage);
+	SetParentPage(m_pOverlayPage, m_pOverlayHandlersPage);
 	AddPage(m_pProxyPage);
 	AddPage(m_pSMTPPage);
+	SetParentPage(m_pProxyPage, m_pSMTPPage);
 	AddPage(m_pProgsDiffPage);
 	AddPage(m_pProgsMergePage);
+	SetParentPage(m_pProgsDiffPage, m_pProgsMergePage);
 	AddPage(m_pLookAndFeelPage);
+	SetParentPage(m_pMainPage, m_pLookAndFeelPage);
 	AddPage(m_pExtMenu);
+	SetParentPage(m_pMainPage, m_pExtMenu);
 	AddPage(m_pDialogsPage);
+	SetParentPage(m_pMainPage, m_pDialogsPage);
 	AddPage(m_pDialogsPage2);
+	SetParentPage(m_pMainPage, m_pDialogsPage2);
 	AddPage(m_pDialogsPage3);
+	SetParentPage(m_pMainPage, m_pDialogsPage3);
 	AddPage(m_pColorsPage);
+	SetParentPage(m_pMainPage, m_pColorsPage);
 	AddPage(m_pColorsPage2);
+	SetParentPage(m_pMainPage, m_pColorsPage2);
 	AddPage(m_pColorsPage3);
+	SetParentPage(m_pMainPage, m_pColorsPage3);
 	AddPage(m_pProgsAlternativeEditor);
+	SetParentPage(m_pMainPage, m_pProgsAlternativeEditor);
 	AddPage(m_pSavedPage);
 
 	CString repo = g_Git.m_CurrentDir;
@@ -143,12 +156,16 @@ void CSettings::AddPropPages()
 	if (hasLocalRepo)
 	{
 		AddPage(m_pGitRemote);
+		SetParentPage(m_pGitConfig, m_pGitRemote);
 	}
 	AddPage(m_pGitCredential);
+	SetParentPage(m_pGitConfig, m_pGitCredential);
 	AddPage(m_pBugTraqPage);
+	SetParentPage(m_pHooksPage, m_pBugTraqPage);
 	if (hasLocalRepo)
 	{
 		AddPage(m_pBugtraqConfig);
+		SetParentPage(m_pHooksPage, m_pBugtraqConfig);
 	}
 	AddPage(m_pTBlamePage);
 	AddPage(m_pUDiffPage);
