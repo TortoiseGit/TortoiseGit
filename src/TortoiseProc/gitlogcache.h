@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #define LOG_DATA_MAGIC		0x99BB0FFF
 #define LOG_DATA_ITEM_MAGIC 0x0FCC9ACC
 #define LOG_DATA_FILE_MAGIC 0x19EE9DFF
-#define LOG_INDEX_VERSION	0x11
+#define LOG_INDEX_VERSION	0x12
 
 #pragma pack (1)
 struct SLogCacheIndexHeader
@@ -33,6 +33,7 @@ struct SLogCacheIndexHeader
 	DWORD m_Magic;
 	DWORD m_Version;
 	DWORD m_ItemCount;
+	DWORD m_DiffPercentage;
 };
 
 struct SLogCacheIndexItem
