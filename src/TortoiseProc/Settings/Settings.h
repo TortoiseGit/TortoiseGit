@@ -20,37 +20,37 @@
 #pragma once
 
 #include "StandAloneDlg.h"
-#include "SettingsPropPage.h"
-#include "SetMainPage.h"
-#include "SetProxyPage.h"
-#include "SetOverlayPage.h"
-#include "SetOverlayIcons.h"
-#include "SetOverlayHandlers.h"
-#include "SettingsProgsDiff.h"
-#include "SettingsProgsAlternativeEditor.h"
-#include "SettingsProgsMerge.h"
-#include "SetLookAndFeelPage.h"
-#include "SetDialogs.h"
-#include "SetDialogs2.h"
-#include "SetDialogs3.h"
-#include "SettingsColors.h"
-#include "SettingsColors2.h"
-#include "SettingsColors3.h"
-#include "SetSavedDataPage.h"
-#include "SetHooks.h"
-#include "SetBugTraq.h"
-#include "SettingsTBlame.h"
 #include "TreePropSheet/TreePropSheet.h"
-#include "SettingGitConfig.h"
+#include "TGitPath.h"
+#include "SettingsPropPage.h"
 #include "SettingGitRemote.h"
-#include "SettingGitCredential.h"
-#include "SettingsBugtraqConfig.h"
-#include "SetExtMenu.h"
-#include "SettingsAdvanced.h"
-#include "SettingSMTP.h"
-#include "SettingsTUDiff.h"
 
 using namespace TreePropSheet;
+
+class CSettingsPage
+{
+public:
+	CSettingsPage(ISettingsPropPage* page, CString pageName)
+		: pageName(pageName)
+		, page(page)
+	{
+	}
+	~CSettingsPage()
+	{
+		delete page;
+	}
+	CSettingsPage(const CSettingsPage&) = delete;
+	CSettingsPage(CSettingsPage&& t)
+	{
+		this->pageName = t.pageName;
+		this->page = t.page;
+		t.page = nullptr;
+	};
+
+public:
+	ISettingsPropPage* page;
+	CString pageName;
+};
 
 /**
  * \ingroup TortoiseProc
@@ -75,38 +75,13 @@ private:
 	 */
 	void RemovePropPages();
 
-	void AddPropPage(ISettingsPropPage* page);
-	void AddPropPage(ISettingsPropPage* page, CPropertyPage* parentPage);
+	ISettingsPropPage* AddPropPage(ISettingsPropPage* page, CString pageName);
+	void AddPropPage(ISettingsPropPage* page, CString pageName, CPropertyPage* parentPage);
 
 private:
-	CSetMainPage *						m_pMainPage;
-	CSetProxyPage *						m_pProxyPage;
-	CSettingSMTP *						m_pSMTPPage;
-	CSetOverlayPage *					m_pOverlayPage;
-	CSetOverlayIcons *					m_pOverlaysPage;
-	CSetOverlayHandlers *				m_pOverlayHandlersPage;
-	CSettingsProgsDiff*					m_pProgsDiffPage;
-	CSettingsProgsMerge *				m_pProgsMergePage;
-	CSettingsProgsAlternativeEditor *	m_pProgsAlternativeEditor;
-	CSetLookAndFeelPage *				m_pLookAndFeelPage;
-	CSetDialogs *						m_pDialogsPage;
-	CSetDialogs2 *						m_pDialogsPage2;
-	CSetDialogs3 *						m_pDialogsPage3;
-	CSettingsColors *					m_pColorsPage;
-	CSettingsColors2 *					m_pColorsPage2;
-	CSettingsColors3 *					m_pColorsPage3;
-	CSetSavedDataPage *					m_pSavedPage;
-	CSetHooks *							m_pHooksPage;
-	CSetBugTraq *						m_pBugTraqPage;
-	CSettingsTBlame *					m_pTBlamePage;
-	CSettingGitConfig *					m_pGitConfig;
-	CSettingGitRemote *					m_pGitRemote;
-	CSettingGitCredential *				m_pGitCredential;
-	CSettingsBugtraqConfig *			m_pBugtraqConfig;
-	CSettingsUDiff*						m_pUDiffPage;
-
-	CSetExtMenu	*						m_pExtMenu;
-	CSettingsAdvanced *					m_pAdvanced;
+	std::vector<CSettingsPage> m_pPages;
+	ISettingsPropPage* m_pGitConfig = nullptr;
+	CSettingGitRemote* m_pGitRemote = nullptr;
 
 public:
 	CSettings(UINT nIDCaption, CTGitPath* CmdPath = nullptr, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
@@ -123,5 +98,3 @@ protected:
 	DECLARE_MESSAGE_MAP()
 	virtual BOOL OnInitDialog() override;
 };
-
-
