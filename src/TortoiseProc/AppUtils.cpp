@@ -514,23 +514,19 @@ bool CAppUtils::StartExtDiff(
 {
 	CString viewer;
 
-	CRegDWORD blamediff(L"Software\\TortoiseGit\\DiffBlamesWithTortoiseMerge", FALSE);
-	if (!flags.bBlame || !static_cast<DWORD>(blamediff))
+	viewer = PickDiffTool(file1, file2);
+	// If registry entry for a diff program is commented out, use TortoiseGitMerge.
+	bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
+	if (flags.bAlternativeTool)
 	{
-		viewer = PickDiffTool(file1, file2);
-		// If registry entry for a diff program is commented out, use TortoiseGitMerge.
-		bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
-		if (flags.bAlternativeTool)
-		{
-			// Invert external vs. internal diff tool selection.
-			if (bCommentedOut)
-				viewer.Delete(0); // uncomment
-			else
-				viewer.Empty();
-		}
-		else if (bCommentedOut)
+		// Invert external vs. internal diff tool selection.
+		if (bCommentedOut)
+			viewer.Delete(0); // uncomment
+		else
 			viewer.Empty();
 	}
+	else if (bCommentedOut)
+		viewer.Empty();
 
 	bool bInternal = viewer.IsEmpty();
 	if (bInternal)
@@ -545,8 +541,6 @@ bool CAppUtils::StartExtDiff(
 			viewer += g_sGroupingUUID;
 			viewer += L'"';
 		}
-		if (flags.bBlame)
-			viewer += L" /blame";
 	}
 	// check if the params are set. If not, just add the files to the command line
 	if ((viewer.Find(L"%base") < 0) && (viewer.Find(L"%mine") < 0))

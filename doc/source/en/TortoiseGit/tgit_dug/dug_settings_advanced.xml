@@ -135,20 +135,6 @@
 				</para>
 			</listitem>
 		</varlistentry>
-<!--
-		<varlistentry>
-			<term condition="pot">DiffBlamesWithTortoiseMerge</term>
-			<listitem>
-				<para>
-					TortoiseGit allows you to assign an external diff viewer.
-					Most such viewers, however, are not suited for change blaming
-					(<xref linkend="tgit-dug-blame-diffs"/>),
-					so you might wish to fall back to TortoiseGitMerge in this case.
-					To do so, set this value to <literal>true</literal>.
-				</para>
-			</listitem>
-		</varlistentry>
--->
 		<varlistentry>
 			<term condition="pot">DownloadAnimation</term>
 			<listitem>

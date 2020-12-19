@@ -40,13 +40,11 @@ public:
 	struct DiffFlags
 	{
 		bool bWait;
-		bool bBlame;
 		bool bReadOnly;
 		bool bAlternativeTool; // If true, invert selection of TortoiseGitMerge vs. external diff tool
 
-		DiffFlags(): bWait(false), bBlame(false), bReadOnly(false), bAlternativeTool(false)	{}
+		DiffFlags(): bWait(false), bReadOnly(false), bAlternativeTool(false)	{}
 		DiffFlags& Wait(bool b = true) { bWait = b; return *this; }
-		DiffFlags& Blame(bool b = true) { bBlame = b; return *this; }
 		DiffFlags& ReadOnly(bool b = true) { bReadOnly = b; return *this; }
 		DiffFlags& AlternativeTool(bool b = true) { bAlternativeTool = b; return *this; }
 	};
