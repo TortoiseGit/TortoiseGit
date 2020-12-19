@@ -75,6 +75,9 @@ private:
 	 */
 	void RemovePropPages();
 
+	void AddPropPage(ISettingsPropPage* page);
+	void AddPropPage(ISettingsPropPage* page, CPropertyPage* parentPage);
+
 private:
 	CSetMainPage *						m_pMainPage;
 	CSetProxyPage *						m_pProxyPage;

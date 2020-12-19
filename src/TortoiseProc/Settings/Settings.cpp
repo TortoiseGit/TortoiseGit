@@ -54,6 +54,18 @@ void CSettings::SetTheme(bool bDark)
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
+void CSettings::AddPropPage(ISettingsPropPage* page)
+{
+	AddPage(page);
+	SetPageIcon(page, page->GetIconID());
+}
+
+void CSettings::AddPropPage(ISettingsPropPage* page, CPropertyPage* parentPage)
+{
+	AddPropPage(page);
+	SetParentPage(parentPage, page);
+}
+
 void CSettings::AddPropPages()
 {
 	m_pMainPage = new CSetMainPage();
@@ -86,90 +98,42 @@ void CSettings::AddPropPages()
 	m_pUDiffPage = new CSettingsUDiff();
 	m_pAdvanced = new CSettingsAdvanced();
 
-	SetPageIcon(m_pExtMenu,m_pExtMenu->GetIconID());
-
-	SetPageIcon(m_pMainPage, m_pMainPage->GetIconID());
-	SetPageIcon(m_pOverlayPage, m_pOverlayPage->GetIconID());
-	SetPageIcon(m_pOverlaysPage, m_pOverlaysPage->GetIconID());
-	SetPageIcon(m_pOverlayHandlersPage, m_pOverlayHandlersPage->GetIconID());
-	SetPageIcon(m_pProxyPage, m_pProxyPage->GetIconID());
-	SetPageIcon(m_pSMTPPage, m_pSMTPPage->GetIconID());
-	SetPageIcon(m_pProgsDiffPage, m_pProgsDiffPage->GetIconID());
-	SetPageIcon(m_pProgsMergePage, m_pProgsMergePage->GetIconID());
-	SetPageIcon(m_pProgsAlternativeEditor, m_pProgsAlternativeEditor->GetIconID());
-	SetPageIcon(m_pLookAndFeelPage, m_pLookAndFeelPage->GetIconID());
-	SetPageIcon(m_pDialogsPage, m_pDialogsPage->GetIconID());
-	SetPageIcon(m_pDialogsPage2, m_pDialogsPage2->GetIconID());
-	SetPageIcon(m_pDialogsPage3, m_pDialogsPage3->GetIconID());
-	SetPageIcon(m_pColorsPage, m_pColorsPage->GetIconID());
-	SetPageIcon(m_pColorsPage2, m_pColorsPage2->GetIconID());
-	SetPageIcon(m_pColorsPage3, m_pColorsPage3->GetIconID());
-
-	SetPageIcon(m_pSavedPage, m_pSavedPage->GetIconID());
-	SetPageIcon(m_pHooksPage, m_pHooksPage->GetIconID());
-
-	SetPageIcon(m_pGitConfig, m_pGitConfig->GetIconID());
-	SetPageIcon(m_pGitRemote, m_pGitRemote->GetIconID());
-	SetPageIcon(m_pGitCredential, m_pGitCredential->GetIconID());
-	SetPageIcon(m_pBugTraqPage, m_pBugTraqPage->GetIconID());
-	SetPageIcon(m_pBugtraqConfig, m_pBugtraqConfig->GetIconID());
-	SetPageIcon(m_pTBlamePage, m_pTBlamePage->GetIconID());
-	SetPageIcon(m_pUDiffPage, m_pUDiffPage->GetIconID());
-	SetPageIcon(m_pAdvanced, m_pAdvanced->GetIconID());
-
-	AddPage(m_pMainPage);
-	AddPage(m_pGitConfig);
-	AddPage(m_pHooksPage);
-	AddPage(m_pOverlayPage);
-	AddPage(m_pOverlaysPage);
-	SetParentPage(m_pOverlayPage, m_pOverlaysPage);
-	AddPage(m_pOverlayHandlersPage);
-	SetParentPage(m_pOverlayPage, m_pOverlayHandlersPage);
-	AddPage(m_pProxyPage);
-	AddPage(m_pSMTPPage);
-	SetParentPage(m_pProxyPage, m_pSMTPPage);
-	AddPage(m_pProgsDiffPage);
-	AddPage(m_pProgsMergePage);
-	SetParentPage(m_pProgsDiffPage, m_pProgsMergePage);
-	AddPage(m_pLookAndFeelPage);
-	SetParentPage(m_pMainPage, m_pLookAndFeelPage);
-	AddPage(m_pExtMenu);
-	SetParentPage(m_pMainPage, m_pExtMenu);
-	AddPage(m_pDialogsPage);
-	SetParentPage(m_pMainPage, m_pDialogsPage);
-	AddPage(m_pDialogsPage2);
-	SetParentPage(m_pMainPage, m_pDialogsPage2);
-	AddPage(m_pDialogsPage3);
-	SetParentPage(m_pMainPage, m_pDialogsPage3);
-	AddPage(m_pColorsPage);
-	SetParentPage(m_pMainPage, m_pColorsPage);
-	AddPage(m_pColorsPage2);
-	SetParentPage(m_pMainPage, m_pColorsPage2);
-	AddPage(m_pColorsPage3);
-	SetParentPage(m_pMainPage, m_pColorsPage3);
-	AddPage(m_pProgsAlternativeEditor);
-	SetParentPage(m_pMainPage, m_pProgsAlternativeEditor);
-	AddPage(m_pSavedPage);
+	AddPropPage(m_pMainPage);
+	AddPropPage(m_pGitConfig);
+	AddPropPage(m_pHooksPage);
+	AddPropPage(m_pOverlayPage);
+	AddPropPage(m_pOverlaysPage, m_pOverlayPage);
+	AddPropPage(m_pOverlayHandlersPage, m_pOverlayPage);
+	AddPropPage(m_pProxyPage);
+	AddPropPage(m_pSMTPPage, m_pProxyPage);
+	AddPropPage(m_pProgsDiffPage);
+	AddPropPage(m_pProgsMergePage, m_pProgsDiffPage);
+	AddPropPage(m_pLookAndFeelPage, m_pMainPage);
+	AddPropPage(m_pExtMenu, m_pMainPage);
+	AddPropPage(m_pDialogsPage, m_pMainPage);
+	AddPropPage(m_pDialogsPage2, m_pMainPage);
+	AddPropPage(m_pDialogsPage3, m_pMainPage);
+	AddPropPage(m_pColorsPage, m_pMainPage);
+	AddPropPage(m_pColorsPage2, m_pMainPage);
+	AddPropPage(m_pColorsPage3, m_pMainPage);
+	AddPropPage(m_pProgsAlternativeEditor, m_pMainPage);
+	AddPropPage(m_pSavedPage);
 
 	CString repo = g_Git.m_CurrentDir;
 	bool hasLocalRepo = GitAdminDir::IsWorkingTreeOrBareRepo(repo);
 	if (hasLocalRepo)
 	{
-		AddPage(m_pGitRemote);
-		SetParentPage(m_pGitConfig, m_pGitRemote);
+		AddPropPage(m_pGitRemote, m_pGitConfig);
 	}
-	AddPage(m_pGitCredential);
-	SetParentPage(m_pGitConfig, m_pGitCredential);
-	AddPage(m_pBugTraqPage);
-	SetParentPage(m_pHooksPage, m_pBugTraqPage);
+	AddPropPage(m_pGitCredential, m_pGitConfig);
+	AddPropPage(m_pBugTraqPage, m_pHooksPage);
 	if (hasLocalRepo)
 	{
-		AddPage(m_pBugtraqConfig);
-		SetParentPage(m_pHooksPage, m_pBugtraqConfig);
+		AddPropPage(m_pBugtraqConfig, m_pHooksPage);
 	}
-	AddPage(m_pTBlamePage);
-	AddPage(m_pUDiffPage);
-	AddPage(m_pAdvanced);
+	AddPropPage(m_pTBlamePage);
+	AddPropPage(m_pUDiffPage);
+	AddPropPage(m_pAdvanced);
 }
 
 void CSettings::RemovePropPages()
