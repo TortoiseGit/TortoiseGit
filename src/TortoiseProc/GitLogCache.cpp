@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "GitLogCache.h"
 #include "registry.h"
 #include <intsafe.h>
+#include "Git.h"
 
 int static Compare(const void *p1, const void*p2)
 {
@@ -177,6 +178,9 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			break;
 
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
+			break;
+
+		if (m_pCacheIndex->m_Header.m_DiffPercentage != CGit::ms_iSimilarityIndexThreshold)
 			break;
 
 		if (size_t len; SizeTMult(sizeof(SLogCacheIndexItem), m_pCacheIndex->m_Header.m_ItemCount, &len) != S_OK || SizeTAdd(len, sizeof(SLogCacheIndexHeader), &len) != S_OK || static_cast<size_t>(indexFileSize.QuadPart) != len)
@@ -372,6 +376,7 @@ int CLogCache::RebuildCacheFile()
 	Indexheader.m_Magic = LOG_INDEX_MAGIC;
 	Indexheader.m_Version = LOG_INDEX_VERSION;
 	Indexheader.m_ItemCount =0;
+	Indexheader.m_DiffPercentage = CGit::ms_iSimilarityIndexThreshold;
 
 	SLogCacheDataFileHeader dataheader;
 
@@ -518,6 +523,7 @@ int CLogCache::SaveCache()
 		if (!m_pCacheIndex)
 			break;
 
+		m_pCacheIndex->m_Header.m_DiffPercentage = CGit::ms_iSimilarityIndexThreshold;
 		m_pCacheIndex->m_Header.m_ItemCount = header.m_ItemCount;
 
 		std::qsort(m_pCacheIndex->m_Item, m_pCacheIndex->m_Header.m_ItemCount, sizeof(SLogCacheIndexItem), Compare);
