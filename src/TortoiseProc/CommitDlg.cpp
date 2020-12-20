@@ -1213,6 +1213,12 @@ void CCommitDlg::OnOK()
 					m_History.AddEntry(m_sLogMessage);
 					m_History.Save();
 				}
+				if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
+				{
+					ReloadHistoryEntries();
+					m_History.AddEntry(m_NoAmendStr);
+					m_History.Save();
+				}
 
 				GetCommitTemplate(m_sLogTemplate);
 				m_sLogMessage = m_sLogTemplate;
@@ -1266,6 +1272,12 @@ void CCommitDlg::OnOK()
 	{
 		ReloadHistoryEntries();
 		m_History.AddEntry(m_sLogMessage);
+		m_History.Save();
+	}
+	if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
+	{
+		ReloadHistoryEntries();
+		m_History.AddEntry(m_NoAmendStr);
 		m_History.Save();
 	}
 
@@ -1556,6 +1568,12 @@ void CCommitDlg::OnCancel()
 	{
 		ReloadHistoryEntries();
 		m_History.AddEntry(m_sLogMessage);
+		m_History.Save();
+	}
+	if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
+	{
+		ReloadHistoryEntries();
+		m_History.AddEntry(m_NoAmendStr);
 		m_History.Save();
 	}
 	SaveSplitterPos();
