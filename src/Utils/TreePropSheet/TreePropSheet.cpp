@@ -313,6 +313,12 @@ void CTreePropSheet::MoveChildWindows(int nDx, int nDy)
 	}
 }
 
+void CTreePropSheet::SetParentPage(CPropertyPage* pParentPage, CPropertyPage* pPage)
+{
+	ASSERT(parentsMap.find(pParentPage) == parentsMap.end() && "only level of depth supported right now");
+	ASSERT(pPage != pParentPage && "page can't be its own parent");
+	parentsMap.insert({ pPage, pParentPage });
+}
 
 void CTreePropSheet::RefillPageTree()
 {
@@ -379,7 +385,40 @@ void CTreePropSheet::RefillPageTree()
 		strPagePath.ReleaseBuffer();
 
 		// Create an item in the tree for the page
-		HTREEITEM	hItem = CreatePageTreeItem(ti.pszText);
+		HTREEITEM hItem = nullptr;
+		if (!parentsMap.empty())
+		{
+			HTREEITEM hParent = TVI_ROOT;
+			int parentId = -1;
+			if (auto parent = parentsMap.find(GetPage(nPage)); parent != parentsMap.end())
+			{
+				for (int i = 0; i < nPage; ++i)
+				{
+					if (parent->second == GetPage(i))
+					{
+						parentId = i;
+						break;
+					}
+				}
+				ASSERT(parentId >= 0 && "page should have a parent, but parent not found in tree before current page");
+			}
+
+			HTREEITEM hChild = m_pwndPageTree->GetChildItem(hParent);
+			while (hChild)
+			{
+				if (m_pwndPageTree->GetItemData(hChild) == parentId)
+				{
+					hItem = hChild;
+					break;
+				}
+				hChild = m_pwndPageTree->GetNextItem(hChild, TVGN_NEXT);
+			}
+
+			hItem = m_pwndPageTree->InsertItem(strPagePath, hChild);
+		}
+		else
+			hItem = CreatePageTreeItem(ti.pszText);
+
 		ASSERT(hItem);
 		if (hItem)
 		{
