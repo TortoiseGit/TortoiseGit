@@ -3025,7 +3025,7 @@ msgid "Could not find Super-project"
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
-msgid "Could not find \"msysgit\" or \"windows\" in version string of git.exe.\nIf you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\nFor more information see the help file for the keyword \"Cygwin Git\" or \"NSYS2 Git\"."
+msgid "Could not find \"msysgit\" or \"windows\" in version string of git.exe.\nIf you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\nFor more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)

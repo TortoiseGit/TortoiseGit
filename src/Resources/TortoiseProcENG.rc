@@ -5009,7 +5009,7 @@ BEGIN
     IDS_ERR_GITDLLMISSING   "Could not start git.exe. A dynamic library (dll) is missing.\nYou might need to specify an extra PATH.\nCheck help file for ""Extra PATH""."
     IDS_ERR_GITNOVALIDOUTPUT 
                             "Could not get read version information from git.exe.\nGot: ""%s"""
-    IDS_ERR_GITNEEDHACKS    "Could not find ""msysgit"" or ""windows"" in version string of git.exe.\nIf you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\nFor more information see the help file for the keyword ""Cygwin Git"" or ""NSYS2 Git""."
+    IDS_ERR_GITNEEDHACKS    "Could not find ""msysgit"" or ""windows"" in version string of git.exe.\nIf you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\nFor more information see the help file for the keyword ""Cygwin Git"" or ""MSYS2 Git""."
     IDS_ERR_GITUNNEEDEDHACKS 
                             "Found ""msysgit"" or ""windows"" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\nYou can find more information in the help file for the keyword ""Cygwin Git"" or ""MSYS2 Git""."
     IDS_ERR_GITCALLFAILED   "Calling git.exe failed (exit code: %d). Please check the git.exe path."
