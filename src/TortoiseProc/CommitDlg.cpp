@@ -1524,7 +1524,11 @@ void CCommitDlg::OnCancel()
 			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
 	}
 
-	bool hasChangedMessage = (m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty();
+	bool hasChangedMessage;
+	if (m_bCommitAmend)
+		hasChangedMessage = (m_AmendStr.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty();
+	else
+		hasChangedMessage = (m_sLogTemplate.Compare(m_sLogMessage) != 0) && !m_sLogMessage.IsEmpty();
 
 	CString tmp;
 	tmp.LoadString(IDS_REALLYCANCEL);
