@@ -161,10 +161,20 @@ void CRevGraphFilterDlg::OnBnClickedCurrentBranch()
 	{
 		m_bLocalBranches = FALSE;
 		GetDlgItem(IDC_LOCAL_BRANCHES)->EnableWindow(FALSE);
+		GetDlgItem(IDC_REV1BTN2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_TOREV)->EnableWindow(FALSE);
+		m_sToRev.Empty();
 		UpdateData(FALSE);
 	}
 	else
+	{
 		GetDlgItem(IDC_LOCAL_BRANCHES)->EnableWindow(TRUE);
+		if (!m_bLocalBranches)
+		{
+			GetDlgItem(IDC_REV1BTN2)->EnableWindow(TRUE);
+			GetDlgItem(IDC_TOREV)->EnableWindow(TRUE);
+		}
+	}
 }
 
 void CRevGraphFilterDlg::OnBnClickedLocalBranches()
@@ -174,8 +184,18 @@ void CRevGraphFilterDlg::OnBnClickedLocalBranches()
 	{
 		m_bCurrentBranch = FALSE;
 		GetDlgItem(IDC_CURRENT_BRANCH)->EnableWindow(FALSE);
+		GetDlgItem(IDC_REV1BTN2)->EnableWindow(FALSE);
+		GetDlgItem(IDC_TOREV)->EnableWindow(FALSE);
+		m_sToRev.Empty();
 		UpdateData(FALSE);
 	}
 	else
+	{
 		GetDlgItem(IDC_CURRENT_BRANCH)->EnableWindow(TRUE);
+		if (!m_bCurrentBranch)
+		{
+			GetDlgItem(IDC_REV1BTN2)->EnableWindow(TRUE);
+			GetDlgItem(IDC_TOREV)->EnableWindow(TRUE);
+		}
+	}
 }
