@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -235,12 +235,13 @@ private:
 	CString m_pickedRef;
 	bool	m_bWantPick;
 	bool	m_bPickOne;
+	bool	m_bShowRangeOptionWithTwoRefs;
 	bool	m_bPickedRefSet;
 
 	DWORD	m_DateFormat;		// DATE_SHORTDATE or DATE_LONGDATE
 	bool	m_bRelativeTimes;	// Show relative times
 
 public:
-	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefsOrRange = false);
+	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefs = false, bool showRangeOptionWithTwoRefs = true);
 	static bool		PickRefForCombo(CHistoryCombo& refComboBox, int pickRef_Kind = gPickRef_All, int useShortName = gPickRef_Head);
 };

@@ -228,7 +228,7 @@ END_MESSAGE_MAP()
 
 void CBrowseRefsDlg::OnBnClickedOk()
 {
-	if (m_bPickOne || m_ListRefLeafs.GetSelectedCount() != 2)
+	if (m_bPickOne || !m_bShowRangeOptionWithTwoRefs || m_ListRefLeafs.GetSelectedCount() != 2)
 	{
 		OnOK();
 		return;
@@ -1447,7 +1447,7 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
-CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefsOrRange)
+CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int pickRef_Kind, bool pickMultipleRefs, bool showRangeOptionWithTwoRefs)
 {
 	CBrowseRefsDlg dlg(CString(), nullptr);
 
@@ -1456,7 +1456,8 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 	dlg.m_bWantPick = true;
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;
-	dlg.m_bPickOne = !pickMultipleRefsOrRange;
+	dlg.m_bPickOne = !pickMultipleRefs;
+	dlg.m_bShowRangeOptionWithTwoRefs = showRangeOptionWithTwoRefs;
 
 	if(dlg.DoModal() != IDOK)
 		return CString();
