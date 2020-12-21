@@ -2778,7 +2778,7 @@ int CGitLogListBase::BeginFetchLog()
 
 BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
 {
-	if (pMsg->message == WM_KEYDOWN && pMsg->wParam=='\r')
+	if (pMsg->message == WM_KEYDOWN && pMsg->wParam=='\r' && !(GetAsyncKeyState(VK_CONTROL) & 0x8000))
 	{
 		//if (GetFocus()==GetDlgItem(IDC_LOGLIST))
 		{

@@ -892,7 +892,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 				if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
 				{
 					if (GetDlgItem(IDC_REBASE_CONTINUE)->IsWindowEnabled())
-						GetDlgItem(IDC_REBASE_CONTINUE)->SetFocus();
+						PostMessage(WM_COMMAND, IDC_REBASE_CONTINUE);
 					else if (GetDlgItem(IDC_REBASE_ABORT)->IsWindowEnabled())
 						GetDlgItem(IDC_REBASE_ABORT)->SetFocus();
 					else

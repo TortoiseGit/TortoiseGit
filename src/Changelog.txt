@@ -4,6 +4,7 @@ Released: unreleased
 == Changes ==
  * Fixed issue #3631: Log: filtering commits by file path does not work if slash is used as path separator
    The Log Dialog now uses only the Git path (with slashes) for filtering. This is now consistent with other path filters in TortoiseGit.
+ * Ctrl+Enter is assigned for the default button (Start Rebase, Amend, Commit, or Done) in the Rebase/Cherry-Pick dialog. This is now consistent with the Commit dialog.
 
 == Features ==
  * Fixed issue #3654: Allow to completely disable the turtle animation, added TortoiseGit advanced setting "DownloadAnimation"
