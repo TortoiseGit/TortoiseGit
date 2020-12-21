@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2020 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -356,7 +356,7 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 
 	UINT drivetype = 0;
 	int drivenumber = PathGetDriveNumber(path);
-	if ((drivenumber >= 0) && (drivenumber < 25))
+	if ((drivenumber >= 0) && (drivenumber <= 25))
 	{
 		drivetype = drivetypecache[drivenumber];
 		if ((drivetype == -1) || ((GetTickCount64() - drivetypeticker) > DRIVETYPETIMEOUT))
