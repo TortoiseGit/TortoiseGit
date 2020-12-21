@@ -11,6 +11,7 @@ Released: unreleased
  * Update libgit to 2.29.2 based on Git for Windows sources
  * Update libgit2 to 1.1.0
  * Update Scintilla to 4.4.6
+ * Allow multiple ref selection in the Revision Graph Filter
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working

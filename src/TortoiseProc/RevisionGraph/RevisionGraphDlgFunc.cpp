@@ -26,6 +26,7 @@
 #include "UnicodeUtils.h"
 #include "TGitPath.h"
 #include "DPIAware.h"
+#include <regex>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -191,25 +192,47 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_logEntries.ClearAll();
 	CString range;
 	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bShowBranchingsMerges ? CGit::LOG_ORDER_TOPOORDER | CGit::LOG_INFO_SPARSE : 0);
-	if (!m_ToRev.IsEmpty() && !m_FromRev.IsEmpty())
-		range.Format(L"%s..%s", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)), static_cast<LPCTSTR>(g_Git.FixBranchName(m_ToRev)));
-	else if (!m_ToRev.IsEmpty())
-		range = g_Git.FixBranchName(m_ToRev);
-	else if (!m_FromRev.IsEmpty())
+
+
+	if (!m_FromRev.IsEmpty())
 	{
-		if (m_bCurrentBranch)
-			range.Format(L"^%s HEAD", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)));
-		else
+		// Format string. (Ex. from "branch1 branch2 branch3" to " ^branch1 ^branch2 ^branch3")
+		try
 		{
-			range.Format(L"^%s", static_cast<LPCTSTR>(g_Git.FixBranchName(m_FromRev)));
-			if (m_bLocalBranches)
-				infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_LOCAL_BRANCHES;
-			else
-				infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_ALL_BRANCH;
+			const std::wsregex_iterator end;
+			std::wstring string = m_FromRev;
+			std::wregex regex(L"[^\\s]+");
+			for (std::wsregex_iterator it(string.cbegin(), string.cend(), regex); it != end; ++it)
+			{
+				range += L" ^" + g_Git.FixBranchName(it->str().c_str());
+			}
 		}
+		catch (std::exception&) {}
 	}
-	else if (m_ToRev.IsEmpty() && m_FromRev.IsEmpty())
-		infomask |= m_bCurrentBranch ? 0 : m_bLocalBranches ? CGit::LOG_INFO_LOCAL_BRANCHES : CGit::LOG_INFO_ALL_BRANCH;
+
+	if (!m_bLocalBranches && !m_bCurrentBranch && !m_ToRev.IsEmpty())
+	{
+		try
+		{
+			const std::wsregex_iterator end;
+			std::wstring string = m_ToRev;
+			std::wregex regex(L"[^\\s]+");
+			for (std::wsregex_iterator it(string.cbegin(), string.cend(), regex); it != end; ++it)
+			{
+				range += L' ' + g_Git.FixBranchName(it->str().c_str());
+			}
+		}
+		catch (std::exception&) {}
+	}
+	else
+	{
+		if (m_bLocalBranches)
+			infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_LOCAL_BRANCHES;
+		else if (m_bCurrentBranch)
+			range += L" HEAD";
+		else // all branch
+			infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_ALL_BRANCH;
+	}
 
 	m_logEntries.ParserFromLog(nullptr, 0, infomask, &range);
 
