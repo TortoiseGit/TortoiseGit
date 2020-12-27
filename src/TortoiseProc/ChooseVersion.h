@@ -235,8 +235,15 @@ protected:
 		else
 			SelectRef(m_pendingRefName, m_bNotFullName);
 
-		if (m_bIsFirstTimeToSetFocus && m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
-			m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
+		if (m_bIsFirstTimeToSetFocus)
+		{
+			if (m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->IsWindowEnabled())
+				m_pWin->GetDlgItem(IDC_COMBOBOXEX_BRANCH)->SetFocus();
+			else if (m_pWin->GetDlgItem(IDC_COMBOBOXEX_TAGS)->IsWindowEnabled())
+				m_pWin->GetDlgItem(IDC_COMBOBOXEX_TAGS)->SetFocus();
+			else if (m_pWin->GetDlgItem(IDC_COMBOBOXEX_VERSION)->IsWindowEnabled())
+				m_pWin->GetDlgItem(IDC_COMBOBOXEX_VERSION)->SetFocus();
+		}
 		m_bIsFirstTimeToSetFocus = false;
 		m_pWin->GetDlgItem(IDOK)->EnableWindow(TRUE);
 	}
