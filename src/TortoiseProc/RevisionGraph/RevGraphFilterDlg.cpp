@@ -128,7 +128,7 @@ void CRevGraphFilterDlg::OnOK()
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn1()
 {
-	CString str = CBrowseRefsDlg::PickRef();
+	CString str = CBrowseRefsDlg::PickRef(false, L"", gPickRef_All, true, false);
 	if(str.IsEmpty())
 		return;
 
@@ -137,7 +137,7 @@ void CRevGraphFilterDlg::OnBnClickedRev1btn1()
 
 void CRevGraphFilterDlg::OnBnClickedRev1btn2()
 {
-	CString str = CBrowseRefsDlg::PickRef();
+	CString str = CBrowseRefsDlg::PickRef(false, L"", gPickRef_All, true, false);
 	if(str.IsEmpty())
 		return;
 
