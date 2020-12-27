@@ -248,9 +248,6 @@
     <ClCompile Include="..\libgit2\src\tag.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\thread-utils.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\transport.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -581,6 +578,12 @@
     <ClCompile Include="..\libgit2\src\win32\w32_leakcheck.c">
       <Filter>Source Files\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\thread.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\allocators\failalloc.c">
+      <Filter>Source Files\allocators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -716,9 +719,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\tag.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\thread-utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\tree-cache.h">
@@ -1290,6 +1290,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\win32\w32_leakcheck.h">
       <Filter>Header Files\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\allocators\failalloc.h">
+      <Filter>Header Files\allocators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

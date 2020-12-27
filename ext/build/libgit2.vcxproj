@@ -67,6 +67,7 @@
     <ClCompile Include="..\..\src\libgit2\system-call.c" />
     <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
     <ClCompile Include="..\libgit2\src\alloc.c" />
+    <ClCompile Include="..\libgit2\src\allocators\failalloc.c" />
     <ClCompile Include="..\libgit2\src\allocators\stdalloc.c" />
     <ClCompile Include="..\libgit2\src\annotated_commit.c" />
     <ClCompile Include="..\libgit2\src\apply.c" />
@@ -185,7 +186,7 @@
     <ClCompile Include="..\libgit2\src\submodule.c" />
     <ClCompile Include="..\libgit2\src\sysdir.c" />
     <ClCompile Include="..\libgit2\src\tag.c" />
-    <ClCompile Include="..\libgit2\src\thread-utils.c" />
+    <ClCompile Include="..\libgit2\src\thread.c" />
     <ClCompile Include="..\libgit2\src\threadstate.c" />
     <ClCompile Include="..\libgit2\src\trace.c" />
     <ClCompile Include="..\libgit2\src\trailer.c" />
@@ -214,6 +215,7 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\thread.c">
       <DisableSpecificWarnings>4028</DisableSpecificWarnings>
+      <ObjectFileName>$(IntDir)win32thread.obj</ObjectFileName>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\win32\utf-conv.c" />
     <ClCompile Include="..\libgit2\src\transports\git.c" />
@@ -291,6 +293,7 @@
     <ClInclude Include="..\libgit2\include\git2\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\worktree.h" />
     <ClInclude Include="..\libgit2\src\alloc.h" />
+    <ClInclude Include="..\libgit2\src\allocators\failalloc.h" />
     <ClInclude Include="..\libgit2\src\allocators\stdalloc.h" />
     <ClInclude Include="..\libgit2\src\annotated_commit.h" />
     <ClInclude Include="..\libgit2\src\apply.h" />
@@ -397,7 +400,7 @@
     <ClInclude Include="..\libgit2\src\submodule.h" />
     <ClInclude Include="..\libgit2\src\sysdir.h" />
     <ClInclude Include="..\libgit2\src\tag.h" />
-    <ClInclude Include="..\libgit2\src\thread-utils.h" />
+    <ClInclude Include="..\libgit2\src\thread.h" />
     <ClInclude Include="..\libgit2\src\threadstate.h" />
     <ClInclude Include="..\libgit2\src\trace.h" />
     <ClInclude Include="..\libgit2\src\transaction.h" />
