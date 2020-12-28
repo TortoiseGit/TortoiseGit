@@ -362,28 +362,30 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 		if ((drivetype == -1) || ((GetTickCount64() - drivetypeticker) > DRIVETYPETIMEOUT))
 		{
 			if ((DWORD(drivefloppy) == 0) && ((drivenumber == 0) || (drivenumber == 1)))
-				drivetypecache[drivenumber] = DRIVE_REMOVABLE;
+				drivetype = DRIVE_REMOVABLE;
+			else if (PathIsNetworkPath(path))
+				drivetype = DRIVE_REMOTE;
 			else
 			{
-				drivetypeticker = GetTickCount64();
 				TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
 				wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 				PathStripToRoot(pathbuf);
 				PathAddBackslash(pathbuf);
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": GetDriveType for %s, Drive %d\n", pathbuf, drivenumber);
 				drivetype = GetDriveType(pathbuf);
-				drivetypecache[drivenumber] = drivetype;
 			}
+			drivetypecache[drivenumber] = drivetype;
+			drivetypeticker = GetTickCount64();
 		}
 	}
 	else
 	{
-		TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathIsUNCServer works with partial paths too.
-		wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
-		if (PathIsUNCServer(pathbuf))
+		if (PathIsNetworkPath(path))
 			drivetype = DRIVE_REMOTE;
 		else
 		{
+			TCHAR pathbuf[MAX_PATH + 4] = { 0 }; // MAX_PATH ok here. PathStripToRoot works with partial paths too.
+			wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 			PathStripToRoot(pathbuf);
 			PathAddBackslash(pathbuf);
 			if (wcsncmp(pathbuf, drivetypepathcache, MAX_PATH - 1) == 0) // MAX_PATH ok.

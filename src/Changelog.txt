@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #3674: Missing "Add to ignore list" menu on the "Show Log" dialog
  * Fixed issue #3517: Revision graph filter does not work
  * Fixed issue #3685: The entered message erased by Amend Last Commit checkbox cannot be retrieved
+ * Fixed issue #3686: Explorer hangs on dead network drives
 
 = Release 2.11.0 =
 Released: 2020-10-10
