@@ -1,6 +1,6 @@
 /* This script is a local pre-commit hook script.
  * It's used to check whether the copyright year of modified files has been
- * bumped up to the current (2019) year.
+ * bumped up to the current year.
  *
  * Only *.c, *.cpp, *.h, *.idl and *.pot files are checked
  *
@@ -20,7 +20,8 @@ if (num !== 3)
     WScript.Quit(1);
 }
 
-var re = /^(\/\/|#) Copyright.+(2020)(.*)/;
+var currentyear = new Date().getFullYear();
+var re = new RegExp('^(\\\/\\\/|#) Copyright.+(' + currentyear + ')(.*)');
 var basere = /^(\/\/|#) Copyright(.*)/;
 var filere = /(\.c$)|(\.cpp$)|(\.h$)|(\.idl$)|(\.pot$)/;
 var found = true;
