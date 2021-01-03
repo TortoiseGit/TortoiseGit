@@ -55,3 +55,14 @@ spellcheck-pot:
       - .gitlab-ci.yml
       - Languages/Tortoise.pot
       - doc/Aspell/*.pws
+
+commit-messages:
+  image: debian:buster
+  before_script:
+    - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
+    - apt-get update -qq
+    - apt-get install -qq -y git
+    - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
+  script:
+    - .gitlab-ci/check-commits.sh
+  only: [merge_requests]
