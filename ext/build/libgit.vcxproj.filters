@@ -776,6 +776,15 @@
     <ClCompile Include="..\tgit\refs\debug.c">
       <Filter>git\refs</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\strmap.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\merge-ort-wrappers.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\merge-ort.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1296,6 +1305,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\reset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\strmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\merge-ort-wrappers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\merge-ort.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

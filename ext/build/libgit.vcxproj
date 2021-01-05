@@ -152,6 +152,8 @@
     <ClCompile Include="..\tgit\match-trees.c" />
     <ClCompile Include="..\tgit\mem-pool.c" />
     <ClCompile Include="..\tgit\merge-blobs.c" />
+    <ClCompile Include="..\tgit\merge-ort-wrappers.c" />
+    <ClCompile Include="..\tgit\merge-ort.c" />
     <ClCompile Include="..\tgit\merge-recursive.c" />
     <ClCompile Include="..\tgit\merge.c" />
     <ClCompile Include="..\tgit\mergesort.c" />
@@ -228,6 +230,7 @@
     <ClCompile Include="..\tgit\strbuf.c" />
     <ClCompile Include="..\tgit\streaming.c" />
     <ClCompile Include="..\tgit\string-list.c" />
+    <ClCompile Include="..\tgit\strmap.c" />
     <ClCompile Include="..\tgit\strvec.c" />
     <ClCompile Include="..\tgit\sub-process.c" />
     <ClCompile Include="..\tgit\submodule-config.c" />
@@ -359,6 +362,8 @@
     <ClInclude Include="..\tgit\mailmap.h" />
     <ClInclude Include="..\tgit\mem-pool.h" />
     <ClInclude Include="..\tgit\merge-blobs.h" />
+    <ClInclude Include="..\tgit\merge-ort-wrappers.h" />
+    <ClInclude Include="..\tgit\merge-ort.h" />
     <ClInclude Include="..\tgit\merge-recursive.h" />
     <ClInclude Include="..\tgit\mergesort.h" />
     <ClInclude Include="..\tgit\midx.h" />
@@ -413,6 +418,7 @@
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />
     <ClInclude Include="..\tgit\string-list.h" />
+    <ClInclude Include="..\tgit\strmap.h" />
     <ClInclude Include="..\tgit\strvec.h" />
     <ClInclude Include="..\tgit\sub-process.h" />
     <ClInclude Include="..\tgit\submodule-config.h" />
