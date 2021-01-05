@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "resource.h"
 #include "CreateProcessHelper.h"
 #include <ShlObj.h>
+#include "scope_exit_noexcept.h"
 
 int APIENTRY _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
@@ -38,13 +39,15 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPT
 	} while (i-- > 0);
 
 
-	TCHAR szPathWindows[MAX_PATH];
-	if (FAILED(SHGetFolderPath(nullptr, CSIDL_WINDOWS, nullptr, 0, szPathWindows)))
+	PWSTR pszPathWindows;
+	if (FAILED(SHGetKnownFolderPath(FOLDERID_Windows, 0, nullptr, &pszPathWindows)))
 		return 1;
+
+	SCOPE_EXIT { CoTaskMemFree(pszPathWindows); };
 
 	TCHAR szPathExplorerExe[MAX_PATH];
-	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", szPathWindows) <= 0)
+	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", pszPathWindows) <= 0)
 		return 1;
 
-	return CCreateProcessHelper::CreateProcessDetached(szPathExplorerExe, nullptr, szPathWindows) ? 0 : 1;
+	return CCreateProcessHelper::CreateProcessDetached(szPathExplorerExe, nullptr, pszPathWindows) ? 0 : 1;
 }

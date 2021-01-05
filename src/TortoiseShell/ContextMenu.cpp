@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -853,31 +853,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	if (((uFlags & 0x000f)!=CMF_NORMAL)&&(!(uFlags & CMF_EXPLORE))&&(!(uFlags & CMF_VERBSONLY)))
 		return S_OK;
 
-	int csidlarray[] =
-	{
-		CSIDL_BITBUCKET,
-		CSIDL_CDBURN_AREA,
-		CSIDL_COMMON_FAVORITES,
-		CSIDL_COMMON_STARTMENU,
-		CSIDL_COMPUTERSNEARME,
-		CSIDL_CONNECTIONS,
-		CSIDL_CONTROLS,
-		CSIDL_COOKIES,
-		CSIDL_FAVORITES,
-		CSIDL_FONTS,
-		CSIDL_HISTORY,
-		CSIDL_INTERNET,
-		CSIDL_INTERNET_CACHE,
-		CSIDL_NETHOOD,
-		CSIDL_NETWORK,
-		CSIDL_PRINTERS,
-		CSIDL_PRINTHOOD,
-		CSIDL_RECENT,
-		CSIDL_SENDTO,
-		CSIDL_STARTMENU,
-		0
-	};
-	if (IsIllegalFolder(folder_, csidlarray))
+	if (IsIllegalFolder(folder_))
 		return S_OK;
 
 	if (folder_.empty())
@@ -1871,27 +1847,38 @@ LPCTSTR CShellExt::GetMenuTextFromResource(int id)
 	return nullptr;
 }
 
-bool CShellExt::IsIllegalFolder(const std::wstring& folder, int* cslidarray)
+bool CShellExt::IsIllegalFolder(const std::wstring& folder)
 {
-	int i=0;
-	TCHAR buf[MAX_PATH] = {0};	//MAX_PATH ok, since SHGetSpecialFolderPath doesn't return the required buffer length!
-	LPITEMIDLIST pidl = nullptr;
-	while (cslidarray[i])
+	static const GUID code[] = {
+		FOLDERID_RecycleBinFolder,
+		FOLDERID_CDBurning,
+		FOLDERID_Favorites,
+		FOLDERID_CommonStartMenu,
+		FOLDERID_NetworkFolder,
+		FOLDERID_ConnectionsFolder,
+		FOLDERID_ControlPanelFolder,
+		FOLDERID_Cookies,
+		FOLDERID_Favorites,
+		FOLDERID_Fonts,
+		FOLDERID_History,
+		FOLDERID_InternetFolder,
+		FOLDERID_InternetCache,
+		FOLDERID_NetHood,
+		FOLDERID_NetworkFolder,
+		FOLDERID_PrintersFolder,
+		FOLDERID_PrintHood,
+		FOLDERID_Recent,
+		FOLDERID_SendTo,
+		FOLDERID_StartMenu,
+	};
+	for (int i = 0; i < _countof(code); i++)
 	{
-		++i;
-		pidl = nullptr;
-		if (SHGetFolderLocation(nullptr, cslidarray[i - 1], nullptr, 0, &pidl) != S_OK)
+		CComHeapPtr<WCHAR> pszPath;
+		if (SHGetKnownFolderPath(code[i], 0, nullptr, &pszPath) != S_OK)
 			continue;
-		if (!SHGetPathFromIDList(pidl, buf))
-		{
-			// not a file system path, definitely illegal for our use
-			CoTaskMemFree(pidl);
+		if (!pszPath[0])
 			continue;
-		}
-		CoTaskMemFree(pidl);
-		if (!buf[0])
-			continue;
-		if (wcscmp(buf, folder.c_str()) == 0)
+		if (wcscmp(pszPath, folder.c_str()) == 0)
 			return true;
 	}
 	return false;

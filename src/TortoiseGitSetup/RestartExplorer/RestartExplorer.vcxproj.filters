@@ -35,6 +35,9 @@
     <ClInclude Include="..\..\Utils\CreateProcessHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Utils\scope_exit_noexcept.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RestartExplorer.rc">

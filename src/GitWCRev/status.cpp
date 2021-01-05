@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2020 - TortoiseGit
+// Copyright (C) 2017-2021 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include <fstream>
 #include <ShlObj.h>
 #include "git2/sys/repository.h"
+#include "scope_exit_noexcept.h"
 
 void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 {
@@ -89,8 +90,6 @@ static int is_cygwin_msys2_hack_active()
 
 static std::wstring GetProgramDataConfig()
 {
-	wchar_t wbuffer[MAX_PATH];
-
 	// do not use shared windows-wide system config when cygwin hack is active
 	if (is_cygwin_msys2_hack_active())
 		return {};
@@ -99,12 +98,16 @@ static std::wstring GetProgramDataConfig()
 	if (CRegStdDWORD(L"Software\\TortoiseGit\\git_cached_version", 0) >= (2 << 24 | 24 << 16))
 		return {};
 
-	if (SHGetFolderPathW(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, wbuffer) != S_OK || wcslen(wbuffer) >= MAX_PATH - wcslen(L"\\Git\\config"))
-		return{};
+	PWSTR pszPath;
+	if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) != S_OK)
+		return {};
 
-	wcscat(wbuffer, L"\\Git\\config");
+	SCOPE_EXIT { CoTaskMemFree(pszPath); };
 
-	return wbuffer;
+	if (wcslen(pszPath) >= MAX_PATH - wcslen(L"\\Git\\config"))
+		return {};
+
+	return std::wstring(pszPath) + L"\\Git\\config";
 }
 
 static std::wstring GetSystemGitConfig()

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Utils\CreateProcessHelper.h" />
+    <ClInclude Include="..\..\Utils\scope_exit_noexcept.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

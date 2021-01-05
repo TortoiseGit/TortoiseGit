@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,9 +35,9 @@ static CString GetProgramDataGitConfig()
 {
 	if (!((static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", 0)) >= ConvertVersionToInt(2, 24, 0)) || (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE) || (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE)))
 	{
-		CString programdataConfig;
-		if (SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, CStrBuf(programdataConfig, MAX_PATH)) == S_OK && programdataConfig.GetLength() < MAX_PATH - static_cast<int>(wcslen(L"\\Git\\config")))
-			return programdataConfig + L"\\Git\\config";
+		CComHeapPtr<WCHAR> pszPath;
+		if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) == S_OK && wcslen(pszPath) < MAX_PATH - wcslen(L"\\Git\\config"))
+			return CString(pszPath) + L"\\Git\\config";
 	}
 	return L"";
 }

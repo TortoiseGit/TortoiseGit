@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2020 - TortoiseGit
+// Copyright (C) 2018-2021 - TortoiseGit
 // Copyright (C) 2003-2012, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -110,7 +110,7 @@ private:
 	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly);
 	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
-	bool			IsIllegalFolder(const std::wstring& folder, int* cslidarray);
+	bool			IsIllegalFolder(const std::wstring& folder);
 	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
 
 public:

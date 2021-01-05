@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,13 +42,12 @@ static bool CheckSpecialFolder(CString &folder)
 			return true;
 	}
 
-	TCHAR path[MAX_PATH + 1];
-	int code[] = { CSIDL_DESKTOPDIRECTORY, CSIDL_PROFILE, CSIDL_PERSONAL, CSIDL_WINDOWS, CSIDL_SYSTEM, CSIDL_PROGRAM_FILES, CSIDL_SYSTEMX86, CSIDL_PROGRAM_FILESX86 };
+	static const GUID code[] = { FOLDERID_Desktop, FOLDERID_Profile, FOLDERID_Documents, FOLDERID_Windows, FOLDERID_System, FOLDERID_ProgramFiles, FOLDERID_SystemX86, FOLDERID_ProgramFilesX86 };
 	for (int i = 0; i < _countof(code); i++)
 	{
-		path[0] = L'\0';
-		if (SUCCEEDED(SHGetFolderPath(nullptr, code[i], nullptr, 0, path)))
-			if (folder == path)
+		CComHeapPtr<WCHAR> pszPath;
+		if (SUCCEEDED(SHGetKnownFolderPath(code[i], 0, nullptr, &pszPath)))
+			if (folder == pszPath)
 				return true;
 	}
 
