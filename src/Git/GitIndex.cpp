@@ -33,7 +33,7 @@ CGitAdminDirMap g_AdminDirMap;
 
 static CString GetProgramDataGitConfig()
 {
-	if (!((static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", 0)) >= ConvertVersionToInt(2, 24, 0)) || (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE) || (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE)))
+	if (!((static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", ConvertVersionToInt(2, 24, 0))) >= ConvertVersionToInt(2, 24, 0)) || (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE) || (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE)))
 	{
 		CComHeapPtr<WCHAR> pszPath;
 		if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) == S_OK && wcslen(pszPath) < MAX_PATH - wcslen(L"\\Git\\config"))

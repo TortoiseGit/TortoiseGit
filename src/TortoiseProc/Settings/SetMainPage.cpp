@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -193,7 +193,8 @@ BOOL CSetMainPage::OnApply()
 	{
 		if (HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME); hWnd)
 			::PostMessage(hWnd, WM_CLOSE, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(nullptr));
-		CMessageBox::Show(GetSafeHwnd(), IDS_GITCHANGED_NEEDRESTART, IDS_APPNAME, MB_ICONINFORMATION);
+		if (gitChanged || (g_Git.ms_LastMsysGitVersion != static_cast<int>(m_dwMsysGitVersion) && g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 24, 0)))
+			CMessageBox::Show(GetSafeHwnd(), IDS_GITCHANGED_NEEDRESTART, IDS_APPNAME, MB_ICONINFORMATION);
 	}
 
 	SetModified(FALSE);
