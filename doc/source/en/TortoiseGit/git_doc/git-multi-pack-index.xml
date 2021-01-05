@@ -97,11 +97,12 @@ repack
         multi-pack-index, then divide by the total number of objects in
         the pack and multiply by the pack size. We select packs with
         expected size below the batch size until the set of packs have
-        total expected size at least the batch size. If the total size
-        does not reach the batch size, then do nothing. If a new pack-
-        file is created, rewrite the multi-pack-index to reference the
-        new pack-file. A later run of <emphasis>git multi-pack-index expire</emphasis> will
-        delete the pack-files that were part of this batch.
+        total expected size at least the batch size, or all pack-files
+        are considered. If only one pack-file is selected, then do
+        nothing. If a new pack-file is created, rewrite the
+        multi-pack-index to reference the new pack-file. A later run of
+        <emphasis>git multi-pack-index expire</emphasis> will delete the pack-files that
+        were part of this batch.
 </simpara>
 <simpara>If <emphasis>repack.packKeptObjects</emphasis> is <emphasis>false</emphasis>, then any pack-files with an
 associated <emphasis>.keep</emphasis> file will not be selected for the batch to repack.</simpara>

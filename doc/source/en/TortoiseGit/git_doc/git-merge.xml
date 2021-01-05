@@ -1104,6 +1104,24 @@ merge.log
 </varlistentry>
 <varlistentry>
 <term>
+merge.suppressDest
+</term>
+<listitem>
+<simpara>
+        By adding a glob that matches the names of integration
+        branches to this multi-valued configuration variable, the
+        default merge message computed for merges into these
+        integration branches will omit "into &lt;branch name&gt;" from
+        its title.
+</simpara>
+<simpara>An element with an empty value can be used to clear the list
+of globs accumulated from previous configuration entries.
+When there is no <emphasis>merge.suppressDest</emphasis> variable defined, the
+default value of <emphasis>master</emphasis> is used for backward compatibility.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 merge.renameLimit
 </term>
 <listitem>
@@ -1295,6 +1313,21 @@ kdiff3
 <listitem>
 <simpara>
 meld
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff2
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff3
 </simpara>
 </listitem>
 <listitem>

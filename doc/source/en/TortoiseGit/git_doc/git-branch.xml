@@ -16,7 +16,7 @@
 <literallayout><emphasis>git branch</emphasis> [--color[=&lt;when&gt;] | --no-color] [--show-current]
         [-v [--abbrev=&lt;length&gt; | --no-abbrev]]
         [--column[=&lt;options&gt;] | --no-column] [--sort=&lt;key&gt;]
-        [(--merged | --no-merged) [&lt;commit&gt;]]
+        [--merged [&lt;commit&gt;]] [--no-merged [&lt;commit&gt;]]
         [--contains [&lt;commit&gt;]] [--no-contains [&lt;commit&gt;]]
         [--points-at &lt;object&gt;] [--format=&lt;format&gt;]
         [(-r | --remotes) | (-a | --all)]
@@ -474,8 +474,7 @@ start-point is either a local or remote-tracking branch.</simpara>
 <listitem>
 <simpara>
         Only list branches whose tips are reachable from the
-        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>,
-        incompatible with <emphasis>--no-merged</emphasis>.
+        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -486,8 +485,7 @@ start-point is either a local or remote-tracking branch.</simpara>
 <listitem>
 <simpara>
         Only list branches whose tips are not reachable from the
-        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>,
-        incompatible with <emphasis>--merged</emphasis>.
+        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -692,6 +690,12 @@ serve four related but different purposes:</simpara>
 </simpara>
 </listitem>
 </itemizedlist>
+<simpara>When combining multiple <emphasis>--contains</emphasis> and <emphasis>--no-contains</emphasis> filters, only
+references that contain at least one of the <emphasis>--contains</emphasis> commits and
+contain none of the <emphasis>--no-contains</emphasis> commits are shown.</simpara>
+<simpara>When combining multiple <emphasis>--merged</emphasis> and <emphasis>--no-merged</emphasis> filters, only
+references that are reachable from at least one of the <emphasis>--merged</emphasis>
+commits and from none of the <emphasis>--no-merged</emphasis> commits are shown.</simpara>
 </simplesect>
 <simplesect id="git-branch(1)__see_also">
 <title>SEE ALSO</title>

@@ -305,6 +305,9 @@ branches from there if <emphasis>&lt;branch&gt;</emphasis> is ambiguous but exis
 </varlistentry>
 <varlistentry>
 <term>
+-d
+</term>
+<term>
 --detach
 </term>
 <listitem>

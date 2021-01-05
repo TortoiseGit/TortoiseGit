@@ -16,7 +16,7 @@
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
                    [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]
                    [--points-at=&lt;object&gt;]
-                   (--merged[=&lt;object&gt;] | --no-merged[=&lt;object&gt;])
+                   [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
                    [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]</literallayout>
 </blockquote>
 </simplesect>
@@ -142,8 +142,7 @@ host language allowing their direct evaluation in that language.</simpara>
 <listitem>
 <simpara>
         Only list refs whose tips are reachable from the
-        specified commit (HEAD if not specified),
-        incompatible with <emphasis>--no-merged</emphasis>.
+        specified commit (HEAD if not specified).
 </simpara>
 </listitem>
 </varlistentry>
@@ -154,8 +153,7 @@ host language allowing their direct evaluation in that language.</simpara>
 <listitem>
 <simpara>
         Only list refs whose tips are not reachable from the
-        specified commit (HEAD if not specified),
-        incompatible with <emphasis>--merged</emphasis>.
+        specified commit (HEAD if not specified).
 </simpara>
 </listitem>
 </varlistentry>
@@ -408,21 +406,80 @@ worktreepath
 </variablelist>
 <simpara>In addition to the above, for commit and tag objects, the header
 field names (<emphasis>tree</emphasis>, <emphasis>parent</emphasis>, <emphasis>object</emphasis>, <emphasis>type</emphasis>, and <emphasis>tag</emphasis>) can
-be used to specify the value in the header field.</simpara>
+be used to specify the value in the header field.
+Fields <emphasis>tree</emphasis> and <emphasis>parent</emphasis> can also be used with modifier <emphasis>:short</emphasis> and
+<emphasis>:short=&lt;length&gt;</emphasis> just like <emphasis>objectname</emphasis>.</simpara>
 <simpara>For commit and tag objects, the special <emphasis>creatordate</emphasis> and <emphasis>creator</emphasis>
 fields will correspond to the appropriate date or name-email-date tuple
 from the <emphasis>committer</emphasis> or <emphasis>tagger</emphasis> fields depending on the object type.
 These are intended for working on a mix of annotated and lightweight tags.</simpara>
 <simpara>Fields that have name-email-date tuple as its value (<emphasis>author</emphasis>,
 <emphasis>committer</emphasis>, and <emphasis>tagger</emphasis>) can be suffixed with <emphasis>name</emphasis>, <emphasis>email</emphasis>,
-and <emphasis>date</emphasis> to extract the named component.</simpara>
-<simpara>The complete message in a commit and tag object is <emphasis>contents</emphasis>.
-Its first line is <emphasis>contents:subject</emphasis>, where subject is the concatenation
-of all lines of the commit message up to the first blank line.  The next
-line is <emphasis>contents:body</emphasis>, where body is all of the lines after the first
-blank line.  The optional GPG signature is <emphasis>contents:signature</emphasis>.  The
-first <emphasis>N</emphasis> lines of the message is obtained using <emphasis>contents:lines=N</emphasis>.
-Additionally, the trailers as interpreted by <xref linkend="git-interpret-trailers(1)" />
+and <emphasis>date</emphasis> to extract the named component.  For email fields (<emphasis>authoremail</emphasis>,
+<emphasis>committeremail</emphasis> and <emphasis>taggeremail</emphasis>), <emphasis>:trim</emphasis> can be appended to get the email
+without angle brackets, and <emphasis>:localpart</emphasis> to get the part before the <emphasis>@</emphasis> symbol
+out of the trimmed email.</simpara>
+<simpara>The message in a commit or a tag object is <emphasis>contents</emphasis>, from which
+<emphasis>contents:&lt;part&gt;</emphasis> can be used to extract various parts out of:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+contents:size
+</term>
+<listitem>
+<simpara>
+        The size in bytes of the commit or tag message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+contents:subject
+</term>
+<listitem>
+<simpara>
+        The first paragraph of the message, which typically is a
+        single line, is taken as the "subject" of the commit or the
+        tag message.
+        Instead of <emphasis>contents:subject</emphasis>, field <emphasis>subject</emphasis> can also be used to
+        obtain same results. <emphasis>:sanitize</emphasis> can be appended to <emphasis>subject</emphasis> for
+        subject line suitable for filename.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+contents:body
+</term>
+<listitem>
+<simpara>
+        The remainder of the commit or the tag message that follows
+        the "subject".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+contents:signature
+</term>
+<listitem>
+<simpara>
+        The optional GPG signature of the tag.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+contents:lines=N
+</term>
+<listitem>
+<simpara>
+        The first <emphasis>N</emphasis> lines of the message.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Additionally, the trailers as interpreted by <xref linkend="git-interpret-trailers(1)" />
 are obtained as <emphasis>trailers</emphasis> (or by using the historical alias
 <emphasis>contents:trailers</emphasis>).  Non-trailer lines from the trailer block can be omitted
 with <emphasis>trailers:only</emphasis>. Whitespace-continuations can be removed from trailers so
@@ -537,6 +594,15 @@ and is subject to change during a repack.</simpara>
 <simpara>Note also that multiple copies of an object may be present in the object
 database; in this case, it is undefined which copy's size or delta base
 will be reported.</simpara>
+</simplesect>
+<simplesect id="git-for-each-ref(1)__notes">
+<title>NOTES</title>
+<simpara>When combining multiple <emphasis>--contains</emphasis> and <emphasis>--no-contains</emphasis> filters, only
+references that contain at least one of the <emphasis>--contains</emphasis> commits and
+contain none of the <emphasis>--no-contains</emphasis> commits are shown.</simpara>
+<simpara>When combining multiple <emphasis>--merged</emphasis> and <emphasis>--no-merged</emphasis> filters, only
+references that are reachable from at least one of the <emphasis>--merged</emphasis>
+commits and from none of the <emphasis>--no-merged</emphasis> commits are shown.</simpara>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__see_also">
 <title>SEE ALSO</title>

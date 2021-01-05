@@ -511,10 +511,11 @@ and accumulating child directory counts in the parent directories:
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.  This is
-        independent of the <emphasis>--full-index</emphasis> option above, which controls
-        the diff-patch output format.  Non default number of
-        digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
+        lines, show only a partial prefix.
+        In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
+        precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
+        names will be shown regardless of <emphasis>--abbrev</emphasis>.
+        Non default number of digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

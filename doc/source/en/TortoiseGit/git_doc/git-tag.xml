@@ -19,7 +19,7 @@
 <emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--no-contains &lt;commit&gt;]
         [--points-at &lt;object&gt;] [--column[=&lt;options&gt;] | --no-column]
         [--create-reflog] [--sort=&lt;key&gt;] [--format=&lt;format&gt;]
-        [--[no-]merged [&lt;commit&gt;]] [&lt;pattern&gt;&#8230;]
+        [--merged &lt;commit&gt;] [--no-merged &lt;commit&gt;] [&lt;pattern&gt;&#8230;]
 <emphasis>git tag</emphasis> -v [--format=&lt;format&gt;] &lt;tagname&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
@@ -270,7 +270,7 @@ options for details.</simpara>
 <listitem>
 <simpara>
         Only list tags whose commits are reachable from the specified
-        commit (<emphasis>HEAD</emphasis> if not specified), incompatible with <emphasis>--no-merged</emphasis>.
+        commit (<emphasis>HEAD</emphasis> if not specified).
 </simpara>
 </listitem>
 </varlistentry>
@@ -281,7 +281,7 @@ options for details.</simpara>
 <listitem>
 <simpara>
         Only list tags whose commits are not reachable from the specified
-        commit (<emphasis>HEAD</emphasis> if not specified), incompatible with <emphasis>--merged</emphasis>.
+        commit (<emphasis>HEAD</emphasis> if not specified).
 </simpara>
 </listitem>
 </varlistentry>
@@ -597,6 +597,15 @@ ISO 8601
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-tag(1)__notes">
+<title>NOTES</title>
+<simpara>When combining multiple <emphasis>--contains</emphasis> and <emphasis>--no-contains</emphasis> filters, only
+references that contain at least one of the <emphasis>--contains</emphasis> commits and
+contain none of the <emphasis>--no-contains</emphasis> commits are shown.</simpara>
+<simpara>When combining multiple <emphasis>--merged</emphasis> and <emphasis>--no-merged</emphasis> filters, only
+references that are reachable from at least one of the <emphasis>--merged</emphasis>
+commits and from none of the <emphasis>--no-merged</emphasis> commits are shown.</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__see_also">
 <title>SEE ALSO</title>

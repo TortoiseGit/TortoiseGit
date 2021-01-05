@@ -479,7 +479,7 @@ providing this option will cause it to die.</simpara>
         Use \0 as the delimiter for pathnames in the output, and print
         them verbatim. Without this option, pathnames with "unusual"
         characters are quoted as explained for the configuration
-        variable core.quotePath (see git-config(1)).
+        variable core.quotePath (see <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>

@@ -259,9 +259,9 @@ presence of the .url field.</simpara>
 </simplesect>
 <simplesect id="gitsubmodules(7)__workflow_for_a_third_party_library">
 <title>Workflow for a third party library</title>
-<literallayout class="monospaced"># add a submodule
+<literallayout class="monospaced"># Add a submodule
 git submodule add &lt;url&gt; &lt;path&gt;</literallayout>
-<literallayout class="monospaced"># occasionally update the submodule to a new version:
+<literallayout class="monospaced"># Occasionally update the submodule to a new version:
 git -C &lt;path&gt; checkout &lt;new version&gt;
 git add &lt;path&gt;
 git commit -m "update submodule to new version"</literallayout>
@@ -274,29 +274,30 @@ git submodule status</literallayout>
 <literallayout class="monospaced"># Enable recursion for relevant commands, such that
 # regular commands recurse into submodules by default
 git config --global submodule.recurse true</literallayout>
-<literallayout class="monospaced"># Unlike the other commands below clone still needs
+<literallayout class="monospaced"># Unlike most other commands below, clone still needs
 # its own recurse flag:
 git clone --recurse &lt;URL&gt; &lt;directory&gt;
 cd &lt;directory&gt;</literallayout>
 <literallayout class="monospaced"># Get to know the code:
 git grep foo
-git ls-files</literallayout>
+git ls-files --recurse-submodules</literallayout>
+<note><simpara><emphasis>git ls-files</emphasis> also requires its own <emphasis>--recurse-submodules</emphasis> flag.</simpara></note>
 <literallayout class="monospaced"># Get new code
 git fetch
 git pull --rebase</literallayout>
-<literallayout class="monospaced"># change worktree
+<literallayout class="monospaced"># Change worktree
 git checkout
 git reset</literallayout>
 </simplesect>
 <simplesect id="gitsubmodules(7)__implementation_details">
 <title>Implementation details</title>
 <simpara>When cloning or pulling a repository containing submodules the submodules
-will not be checked out by default; You can instruct <emphasis>clone</emphasis> to recurse
+will not be checked out by default; you can instruct <emphasis>clone</emphasis> to recurse
 into submodules. The <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands of <emphasis>git submodule</emphasis>
 will maintain submodules checked out and at an appropriate revision in
 your working tree. Alternatively you can set <emphasis>submodule.recurse</emphasis> to have
 <emphasis>checkout</emphasis> recursing into submodules (note that <emphasis>submodule.recurse</emphasis> also
-affects other git commands, see <xref linkend="git-config(1)" /> for a complete list).</simpara>
+affects other Git commands, see <xref linkend="git-config(1)" /> for a complete list).</simpara>
 </simplesect>
 <simplesect id="gitsubmodules(7)__see_also">
 <title>SEE ALSO</title>

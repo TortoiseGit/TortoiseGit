@@ -484,13 +484,16 @@ So does <emphasis>git bundle</emphasis> (see <xref linkend="git-bundle(1)" />) w
         This option specifies how missing objects are handled.
 </simpara>
 <simpara>The form <emphasis>--missing=error</emphasis> requests that pack-objects stop with an error if
-a missing object is encountered.  This is the default action.</simpara>
+a missing object is encountered.  If the repository is a partial clone, an
+attempt to fetch missing objects will be made before declaring them missing.
+This is the default action.</simpara>
 <simpara>The form <emphasis>--missing=allow-any</emphasis> will allow object traversal to continue
-if a missing object is encountered.  Missing objects will silently be
-omitted from the results.</simpara>
+if a missing object is encountered.  No fetch of a missing object will occur.
+Missing objects will silently be omitted from the results.</simpara>
 <simpara>The form <emphasis>--missing=allow-promisor</emphasis> is like <emphasis>allow-any</emphasis>, but will only
 allow object traversal to continue for EXPECTED promisor missing objects.
-Unexpected missing object will raise an error.</simpara>
+No fetch of a missing object will occur.  An unexpected missing object will
+raise an error.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

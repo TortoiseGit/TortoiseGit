@@ -1067,7 +1067,7 @@ fast-import will simply ignore this directive, but filter processes
 which operate on and modify the stream before feeding to fast-import
 may have uses for this information</simpara>
 <literallayout class="monospaced">        'original-oid' SP &lt;object-identifier&gt; LF</literallayout>
-<simpara>where <emphasis>&lt;object-identifer&gt;</emphasis> is any string not containing LF.</simpara>
+<simpara>where <emphasis>&lt;object-identifier&gt;</emphasis> is any string not containing LF.</simpara>
 </section>
 <section id="git-fast-import(1)__emphasis_tag_emphasis">
 <title><emphasis>tag</emphasis></title>

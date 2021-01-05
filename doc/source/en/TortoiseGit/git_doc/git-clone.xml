@@ -102,9 +102,9 @@ repository using this option and then delete branches (or use any
 other Git command that makes any existing commit unreferenced) in the
 source repository, some objects may become unreferenced (or dangling).
 These objects may be removed by normal Git operations (such as <emphasis>git commit</emphasis>)
-which automatically call <emphasis>git gc --auto</emphasis>. (See <xref linkend="git-gc(1)" />.)
-If these objects are removed and were referenced by the cloned repository,
-then the cloned repository will become corrupt.</simpara>
+which automatically call <emphasis>git maintenance run --auto</emphasis>. (See
+<xref linkend="git-maintenance(1)" />.) If these objects are removed and were referenced
+by the cloned repository, then the cloned repository will become corrupt.</simpara>
 <simpara>Note that running <emphasis>git repack</emphasis> without the <emphasis>--local</emphasis> option in a repository
 cloned with <emphasis>--shared</emphasis> will copy objects from the source repository into a pack
 in the cloned repository, removing the disk space savings of <emphasis>clone --shared</emphasis>.

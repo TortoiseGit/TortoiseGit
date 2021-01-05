@@ -91,6 +91,7 @@
 		<xi:include href="./git-ls-tree.xml"/>
 		<xi:include href="./git-mailinfo.xml"/>
 		<xi:include href="./git-mailsplit.xml"/>
+		<xi:include href="./git-maintenance.xml"/>
 		<xi:include href="./git-merge-base.xml"/>
 		<xi:include href="./git-merge-file.xml"/>
 		<xi:include href="./git-merge-index.xml"/>
