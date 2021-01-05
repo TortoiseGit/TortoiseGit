@@ -1,6 +1,9 @@
 ﻿= Release 2.13.0 =
 Released: unreleased
 
+== Changes ==
+ * Git (for Windows) 2.24 or newer is now required
+
 == Features ==
  * Update Scintilla and Lexilla to 5.1.0
  * Fixed issue #3744: Update TortoiseGitPlink to PuTTY 0.76 and shipped binaries to PuTTY 0.75

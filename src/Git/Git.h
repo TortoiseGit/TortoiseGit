@@ -239,7 +239,6 @@ public:
 	CString GetGitGlobalXDGConfigPath() const;
 	CString GetGitGlobalXDGConfig() const;
 	CString GetGitSystemConfig() const;
-	CString GetGitProgramDataConfig() const;
 	CAutoRepository GetGitRepository() const;
 	static CStringA GetGitPathStringA(const CString &path);
 	static CString ms_LastMsysGitDir;	// the last msysgitdir added to the path, blank if none

@@ -1102,7 +1102,6 @@ BEGIN
     EDITTEXT        IDC_EDIT_BRANCH,64,86,67,14,ES_AUTOHSCROLL
     CONTROL         "Origin Name",IDC_CHECK_ORIGIN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,88,64,10
     EDITTEXT        IDC_EDIT_ORIGIN,216,86,67,14,ES_AUTOHSCROLL
-    CONTROL         "LFS",IDC_CHECK_LFS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,292,88,47,9
     CONTROL         "Load Putty &Key",IDC_PUTTYKEY_AUTOLOAD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,20,111,82,10
     CONTROL         "",IDC_PUTTYKEYFILE,"ComboBoxEx32",CBS_DROPDOWN | CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,103,110,194,59
     PUSHBUTTON      "...",IDC_PUTTYKEYFILE_BROWSE,304,109,16,15
@@ -3846,7 +3845,6 @@ BEGIN
     IDS_BROWSE_REFS_ONLYMERGED "Only merged (to HEAD)"
     IDS_BROWSE_REFS_ONLYUNMERGED "Only unmerged (to HEAD)"
     IDS_ARCHIVEFILEFILTER   "ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive (*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
-    IDS_PROC_USELFS_TT      "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
     IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
     IDS_FIRSTSTART_HINT1    "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
     IDS_FIRSTSTART_HINT2    "This is the First Start Wizard which will help you configure the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."

@@ -51,7 +51,6 @@ CCloneDlg::CCloneDlg(CWnd* pParent /*=nullptr*/)
 , m_bDepth(BST_UNCHECKED)
 , m_bSaving(false)
 , m_nSVNFrom(0)
-, m_bUseLFS(FALSE)
 , m_regBrowseUrl(L"Software\\TortoiseGit\\TortoiseProc\\CloneBrowse", 0)
 , m_regCloneDir(L"Software\\TortoiseGit\\TortoiseProc\\CloneDir")
 , m_regCloneRecursive(L"Software\\TortoiseGit\\TortoiseProc\\CloneRecursive", FALSE)
@@ -95,7 +94,6 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_ORIGIN, m_bOrigin);
 	DDX_Text(pDX, IDC_EDIT_ORIGIN, m_strOrigin);
 	DDX_Check(pDX,IDC_CHECK_NOCHECKOUT, m_bNoCheckout);
-	DDX_Check(pDX, IDC_CHECK_LFS, m_bUseLFS);
 }
 
 BOOL CCloneDlg::OnInitDialog()
@@ -113,7 +111,6 @@ BOOL CCloneDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_SVN_BRANCH);
 	AdjustControlSize(IDC_CHECK_SVN_FROM);
 	AdjustControlSize(IDC_CHECK_USERNAME);
-	AdjustControlSize(IDC_CHECK_LFS);
 
 	AddAnchor(IDC_URLCOMBO, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_CLONE_BROWSE_URL, TOP_RIGHT);
@@ -140,7 +137,6 @@ BOOL CCloneDlg::OnInitDialog()
 	m_tooltips.AddTool(IDC_EDIT_BRANCH, IDS_CLONE_BRANCH_TT);
 	m_tooltips.AddTool(IDC_CHECK_ORIGIN, IDS_CLONE_ORIGIN_NAME_TT);
 	m_tooltips.AddTool(IDC_EDIT_ORIGIN, IDS_CLONE_ORIGIN_NAME_TT);
-	m_tooltips.AddTool(IDC_CHECK_LFS, IDS_PROC_USELFS_TT);
 
 	this->AddOthersToAnchor();
 
@@ -194,8 +190,6 @@ BOOL CCloneDlg::OnInitDialog()
 	this->GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 
 	EnableSaveRestore(L"CloneDlg");
-
-	DialogEnableWindow(IDC_CHECK_LFS, g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 15, 0));
 
 	OnBnClickedCheckSvn();
 	OnBnClickedCheckDepth();
@@ -425,7 +419,6 @@ void CCloneDlg::OnBnClickedCheckSvn()
 		m_bRecursive = false;
 		m_bBranch = FALSE;
 		m_bNoCheckout = FALSE;
-		m_bUseLFS = FALSE;
 		this->UpdateData(FALSE);
 		OnBnClickedCheckDepth();
 	}
@@ -435,7 +428,6 @@ void CCloneDlg::OnBnClickedCheckSvn()
 	this->GetDlgItem(IDC_CHECK_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(!m_bSVN);
 	this->GetDlgItem(IDC_CHECK_NOCHECKOUT)->EnableWindow(!m_bSVN);
-	this->GetDlgItem(IDC_CHECK_LFS)->EnableWindow(!m_bSVN && g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 15, 0));
 	OnBnClickedCheckSvnTrunk();
 	OnBnClickedCheckSvnTag();
 	OnBnClickedCheckSvnBranch();

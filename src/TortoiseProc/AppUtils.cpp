@@ -114,8 +114,6 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd = L"git.exe stash push";
-		if (!CAppUtils::IsGitVersionNewerOrEqual(hWnd, 2, 14))
-			cmd = L"git.exe stash save";
 
 		if (dlg.m_bIncludeUntracked)
 			cmd += L" --include-untracked";
@@ -126,10 +124,7 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 		{
 			CString message = dlg.m_sMessage;
 			message.Replace(L"\"", L"\"\"");
-			if (CAppUtils::IsGitVersionNewerOrEqual(hWnd, 2, 14))
-				cmd += L" -m \"" + message + L'"';
-			else
-				cmd += L" -- \"" + message + L'"';
+			cmd += L" -m \"" + message + L'"';
 		}
 
 		CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
@@ -3366,7 +3361,7 @@ void CAppUtils::EditNote(HWND hWnd, GitRevLoglist* rev, ProjectProperties* proje
 	}
 }
 
-inline bool CAppUtils::IsGitVersionNewerOrEqual(HWND hWnd, unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build)
+bool CAppUtils::IsGitVersionNewerOrEqual(HWND hWnd, unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build)
 {
 	auto ver = GetMsysgitVersion(hWnd);
 	return ver >= ConvertVersionToInt(major, minor, patchlevel, build);

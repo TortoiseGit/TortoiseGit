@@ -31,17 +31,6 @@
 
 CGitAdminDirMap g_AdminDirMap;
 
-static CString GetProgramDataGitConfig()
-{
-	if (!((static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", ConvertVersionToInt(2, 24, 0))) >= ConvertVersionToInt(2, 24, 0)) || (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALSE) == TRUE) || (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE)))
-	{
-		CComHeapPtr<WCHAR> pszPath;
-		if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) == S_OK && wcslen(pszPath) < MAX_PATH - wcslen(L"\\Git\\config"))
-			return CString(pszPath) + L"\\Git\\config";
-	}
-	return L"";
-}
-
 int CGitIndex::Print()
 {
 	wprintf(L"0x%08X  0x%08X %s %s\n",
@@ -88,7 +77,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CString globalConfig = g_Git.GetGitGlobalConfig();
 	CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
 	CString systemConfig(CRegString(REG_SYSTEM_GITCONFIGPATH, L"", FALSE));
-	CString programDataConfig(GetProgramDataGitConfig());
 
 	CAutoConfig temp { true };
 	git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, repository, FALSE);
@@ -96,8 +84,6 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, repository, FALSE);
 	if (!systemConfig.IsEmpty())
 		git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, repository, FALSE);
-	if (!programDataConfig.IsEmpty())
-		git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(programDataConfig), GIT_CONFIG_LEVEL_PROGRAMDATA, repository, FALSE);
 
 	git_config_snapshot(config.GetPointer(), temp);
 	temp.Free();
@@ -900,8 +886,6 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 
 bool CGitIgnoreList::CheckAndUpdateGitSystemConfigPath(bool force)
 {
-	if (force)
-		m_sGitProgramDataConfigPath = GetProgramDataGitConfig();
 	// recheck every 30 seconds
 	if (GetTickCount64() - m_dGitSystemConfigPathLastChecked > 30000UL || force)
 	{
@@ -927,8 +911,6 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	hasChanged = hasChanged || CheckFileChanged(projectConfig);
 	hasChanged = hasChanged || CheckFileChanged(globalConfig);
 	hasChanged = hasChanged || CheckFileChanged(globalXDGConfig);
-	if (!m_sGitProgramDataConfigPath.IsEmpty())
-		hasChanged = hasChanged || CheckFileChanged(m_sGitProgramDataConfigPath);
 	if (!m_sGitSystemConfigPath.IsEmpty())
 		hasChanged = hasChanged || CheckFileChanged(m_sGitSystemConfigPath);
 
@@ -950,8 +932,6 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 	git_config_add_file_ondisk(config, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, repo, FALSE);
 	if (!m_sGitSystemConfigPath.IsEmpty())
 		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitSystemConfigPath), GIT_CONFIG_LEVEL_SYSTEM, repo, FALSE);
-	if (!m_sGitProgramDataConfigPath.IsEmpty())
-		git_config_add_file_ondisk(config, CGit::GetGitPathStringA(m_sGitProgramDataConfigPath), GIT_CONFIG_LEVEL_PROGRAMDATA, repo, FALSE);
 
 	config.GetString(L"core.excludesfile", excludesFile);
 	if (excludesFile.IsEmpty())
@@ -973,10 +953,6 @@ bool CGitIgnoreList::CheckAndUpdateCoreExcludefile(const CString &adminDir)
 		CGit::GetFileModifyTime(m_sGitSystemConfigPath, &m_Map[m_sGitSystemConfigPath].m_LastModifyTime, nullptr, &m_Map[m_sGitSystemConfigPath].m_LastFileSize);
 	if (m_Map[m_sGitSystemConfigPath].m_LastModifyTime == 0 || m_sGitSystemConfigPath.IsEmpty())
 		m_Map.erase(m_sGitSystemConfigPath);
-	if (!m_sGitProgramDataConfigPath.IsEmpty())
-		CGit::GetFileModifyTime(m_sGitProgramDataConfigPath, &m_Map[m_sGitProgramDataConfigPath].m_LastModifyTime, nullptr, &m_Map[m_sGitProgramDataConfigPath].m_LastFileSize);
-	if (m_Map[m_sGitProgramDataConfigPath].m_LastModifyTime == 0 || m_sGitProgramDataConfigPath.IsEmpty())
-		m_Map.erase(m_sGitProgramDataConfigPath);
 	m_CoreExcludesfiles[adminDir] = excludesFile;
 
 	return true;

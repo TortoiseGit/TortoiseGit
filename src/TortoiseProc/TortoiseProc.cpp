@@ -223,17 +223,8 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		return FALSE;
 	}
-	auto oldGitVersion = static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", 0));
 	if (!CConfigureGitExe::CheckGitVersion(hWndExplorer))
 		return FALSE;
-	// Git < 2.24 also has ProgramData config file location
-	if (CGit::ms_LastMsysGitVersion != oldGitVersion && (oldGitVersion != 0 && oldGitVersion < ConvertVersionToInt(2, 24, 0) && CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 24, 0) || (oldGitVersion == 0 || oldGitVersion >= ConvertVersionToInt(2, 24, 0)) && CGit::ms_LastMsysGitVersion < ConvertVersionToInt(2, 24, 0)))
-	{
-		if (HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME); hWnd)
-			::PostMessage(hWnd, WM_CLOSE, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(nullptr));
-		CMessageBox::Show(hWndExplorer, IDS_GITCHANGED_NEEDRESTART, IDS_APPNAME, MB_ICONINFORMATION);
-		return FALSE;
-	}
 
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Registering Crash Report ...\n");

@@ -835,23 +835,6 @@ static int get_config(const char *key_, const char *value_, void *cb)
 
 }
 
-// wchar_t wrapper for program_data_config()
-const wchar_t* wget_program_data_config(void)
-{
-	static const wchar_t *programdata_git_config = NULL;
-	wchar_t wpointer[MAX_PATH];
-
-	if (programdata_git_config)
-		return programdata_git_config;
-
-	if (xutftowcs_path(wpointer, program_data_config()) < 0)
-		return NULL;
-
-	programdata_git_config = _wcsdup(wpointer);
-
-	return programdata_git_config;
-}
-
 // wchar_t wrapper for git_etc_gitconfig()
 const wchar_t *wget_msysgit_etc(void)
 {
@@ -876,7 +859,7 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size)
 {
-	const char *home, *programdata;
+	const char *home;
 	char* system;
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
@@ -931,13 +914,6 @@ int git_get_config(const char *key, char *buffer, int size)
 		free(system);
 		if (buf.seen)
 			return !buf.seen;
-	}
-
-	programdata = git_program_data_config();
-	if (programdata)
-	{
-		config_source.file = programdata;
-		config_with_options(get_config, &buf, &config_source, &opts);
 	}
 
 	return !buf.seen;

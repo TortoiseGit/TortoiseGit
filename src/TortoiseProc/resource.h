@@ -1282,7 +1282,6 @@
 #define IDC_HANDLERHINT                 1609
 #define IDS_ARCHIVEFILEFILTER           1609
 #define IDC_COMBOBOXEX_URL              1610
-#define IDS_PROC_USELFS_TT              1610
 #define IDC_BUTTON_PULL                 1611
 #define IDS_EXTRAPATH_TT                1611
 #define IDC_BUTTON_PUSH                 1612
@@ -1634,7 +1633,6 @@
 #define IDC_GENERATEPUTTYKEY            1844
 #define IDC_ADVANCEDCONFIGURATION       1845
 #define IDC_FIRSTSTART_SSHHINT          1846
-#define IDC_CHECK_LFS                   1847
 #define IDC_LOCALCHECK                  1848
 #define IDC_CLEARCREDENTIALS            1848
 #define IDC_STORECREDENTIALS            1849

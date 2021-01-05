@@ -306,7 +306,6 @@ private:
 	std::map<CString, CString> m_CoreExcludesfiles;
 	std::map<CString, int> m_IgnoreCase;
 	CString m_sGitSystemConfigPath;
-	CString m_sGitProgramDataConfigPath;
 	ULONGLONG m_dGitSystemConfigPathLastChecked = 0LL;
 	CReaderWriterLock	m_coreExcludefilesSharedMutex;
 	// checks if the msysgit path has changed and return true/false

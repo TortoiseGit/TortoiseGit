@@ -193,7 +193,7 @@ BOOL CSetMainPage::OnApply()
 	{
 		if (HWND hWnd = ::FindWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME); hWnd)
 			::PostMessage(hWnd, WM_CLOSE, reinterpret_cast<WPARAM>(nullptr), reinterpret_cast<LPARAM>(nullptr));
-		if (gitChanged || (g_Git.ms_LastMsysGitVersion != static_cast<int>(m_dwMsysGitVersion) && g_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 24, 0)))
+		if (gitChanged)
 			CMessageBox::Show(GetSafeHwnd(), IDS_GITCHANGED_NEEDRESTART, IDS_APPNAME, MB_ICONINFORMATION);
 	}
 

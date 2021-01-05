@@ -2270,13 +2270,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ms_LastMsysGitDir = %s\n", static_cast<LPCWSTR>(CGit::ms_LastMsysGitDir));
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ms_MsysGitRootDir = %s\n", static_cast<LPCWSTR>(CGit::ms_MsysGitRootDir));
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": System config = %s\n", static_cast<LPCWSTR>(g_Git.GetGitSystemConfig()));
-	if (!ms_bCygwinGit && !ms_bMsys2Git && !g_Git.GetGitProgramDataConfig().IsEmpty())
-	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": ProgramData config = %s\n", static_cast<LPCWSTR>(g_Git.GetGitProgramDataConfig()));
-		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, CTGitPath(g_Git.GetGitProgramDataConfig()).GetContainingDirectory().GetWinPathString());
-	}
-	else
-		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
+	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
 
 	if (ms_bCygwinGit)
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": CygwinHack: true\n");
@@ -2366,12 +2360,6 @@ CString CGit::GetGitGlobalXDGConfigPath() const
 CString CGit::GetGitGlobalXDGConfig() const
 {
 	return g_Git.GetGitGlobalXDGConfigPath() + L"\\config";
-}
-
-CString CGit::GetGitProgramDataConfig() const
-{
-	const wchar_t* programdataConfig = wget_program_data_config();
-	return CString(programdataConfig);
 }
 
 CString CGit::GetGitSystemConfig() const
