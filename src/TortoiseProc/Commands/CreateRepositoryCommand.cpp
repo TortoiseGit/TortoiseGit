@@ -26,29 +26,18 @@
 #include "SmartHandle.h"
 #include "AppUtils.h"
 
-static bool CheckSpecialFolder(CString &folder)
+static bool CheckSpecialFolder(const CString& folder)
 {
-	// Drive root
-	if (folder == "\\" || folder.GetLength() == 2 && folder[1] == ':' || folder.GetLength() == 3 && folder[1] == ':' && folder[2] == '\\')
+	// Drive or UNC root
+	if (PathIsRoot(folder) || PathIsUNCServer(folder))
 		return true;
-
-	// UNC root
-	if (folder.GetLength() > 2 && CStringUtils::StartsWith(folder, L"\\\\"))
-	{
-		int index = folder.Find('\\', 2);
-		if (index < 0)
-			return true;
-		else if (folder.GetLength() == index - 1)
-			return true;
-	}
 
 	static const GUID code[] = { FOLDERID_Desktop, FOLDERID_Profile, FOLDERID_Documents, FOLDERID_Windows, FOLDERID_System, FOLDERID_ProgramFiles, FOLDERID_SystemX86, FOLDERID_ProgramFilesX86 };
 	for (int i = 0; i < _countof(code); i++)
 	{
 		CComHeapPtr<WCHAR> pszPath;
-		if (SUCCEEDED(SHGetKnownFolderPath(code[i], 0, nullptr, &pszPath)))
-			if (folder == pszPath)
-				return true;
+		if (SUCCEEDED(SHGetKnownFolderPath(code[i], 0, nullptr, &pszPath)) && CPathUtils::IsSamePath(folder, CString(pszPath)))
+			return true;
 	}
 
 	return false;
