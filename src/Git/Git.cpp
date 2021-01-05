@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -372,6 +372,8 @@ BOOL CGit::CanParseRev(CString ref)
 {
 	if (ref.IsEmpty())
 		ref = L"HEAD";
+	else if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 30, 0))
+		ref = L"--end-of-options " + ref;
 
 	CString cmdout;
 	if (Run(L"git.exe rev-parse --revs-only " + ref, &cmdout, CP_UTF8))
