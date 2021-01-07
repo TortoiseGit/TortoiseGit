@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-maintenance(1)">
+    <title>git-maintenance(1)</title>
+<indexterm>
+<primary>git-maintenance(1)</primary>
+</indexterm>
+<simplesect id="git-maintenance(1)__name">
+<title>NAME</title>
+<simpara>git-maintenance - Run tasks to optimize Git repository data</simpara>
+</simplesect>
+<simplesect id="git-maintenance(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git maintenance</emphasis> run [&lt;options&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-maintenance(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Run tasks to optimize Git repository data, speeding up other Git commands
+and reducing storage requirements for the repository.</simpara>
+<simpara>Git commands that add repository data, such as <emphasis>git add</emphasis> or <emphasis>git fetch</emphasis>,
+are optimized for a responsive user experience. These commands do not take
+time to optimize the Git data, since such optimizations scale with the full
+size of the repository while these user commands each perform a relatively
+small action.</simpara>
+<simpara>The <emphasis>git maintenance</emphasis> command provides flexibility for how to optimize the
+Git repository.</simpara>
+</simplesect>
+<simplesect id="git-maintenance(1)__subcommands">
+<title>SUBCOMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+run
+</term>
+<listitem>
+<simpara>
+        Run one or more maintenance tasks. If one or more <emphasis>--task</emphasis> options
+        are specified, then those tasks are run in that order. Otherwise,
+        the tasks are determined by which <emphasis>maintenance.&lt;task&gt;.enabled</emphasis>
+        config options are true. By default, only <emphasis>maintenance.gc.enabled</emphasis>
+        is true.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-maintenance(1)__tasks">
+<title>TASKS</title>
+<variablelist>
+<varlistentry>
+<term>
+commit-graph
+</term>
+<listitem>
+<simpara>
+        The <emphasis>commit-graph</emphasis> job updates the <emphasis>commit-graph</emphasis> files incrementally,
+        then verifies that the written data is correct. The incremental
+        write is safe to run alongside concurrent Git processes since it
+        will not expire <emphasis>.graph</emphasis> files that were in the previous
+        <emphasis>commit-graph-chain</emphasis> file. They will be deleted by a later run based
+        on the expiration delay.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc
+</term>
+<listitem>
+<simpara>
+        Clean up unnecessary files and optimize the local repository. "GC"
+        stands for "garbage collection," but this task performs many
+        smaller tasks. This task can be expensive for large repositories,
+        as it repacks all Git objects into a single pack-file. It can also
+        be disruptive in some situations, as it deletes stale data. See
+        <xref linkend="git-gc(1)" /> for more details on garbage collection in Git.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-maintenance(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--auto
+</term>
+<listitem>
+<simpara>
+        When combined with the <emphasis>run</emphasis> subcommand, run maintenance tasks
+        only if certain thresholds are met. For example, the <emphasis>gc</emphasis> task
+        runs when the number of loose objects exceeds the number stored
+        in the <emphasis>gc.auto</emphasis> config setting, or when the number of pack-files
+        exceeds the <emphasis>gc.autoPackLimit</emphasis> config setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Do not report progress or other information over <emphasis>stderr</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--task=&lt;task&gt;
+</term>
+<listitem>
+<simpara>
+        If this option is specified one or more times, then only run the
+        specified tasks in the specified order. If no <emphasis>--task=&lt;task&gt;</emphasis>
+        arguments are specified, then only the tasks with
+        <emphasis>maintenance.&lt;task&gt;.enabled</emphasis> configured as <emphasis>true</emphasis> are considered.
+        See the <emphasis>TASKS</emphasis> section for the list of accepted <emphasis>&lt;task&gt;</emphasis> values.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-maintenance(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

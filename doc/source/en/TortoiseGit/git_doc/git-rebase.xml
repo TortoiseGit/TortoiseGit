@@ -265,6 +265,19 @@ rebase.rescheduleFailedExec
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+sequence.editor
+</term>
+<listitem>
+<simpara>
+        Text editor used by <emphasis>git rebase -i</emphasis> for editing the rebase instruction file.
+        The value is meant to be interpreted by the shell when it is used.
+        It can be overridden by the <emphasis>GIT_SEQUENCE_EDITOR</emphasis> environment variable.
+        When not configured the default commit message editor is used instead.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-rebase(1)__options">
@@ -731,12 +744,30 @@ with <emphasis>--keep-base</emphasis> in order to drop those commits from your b
 <term>
 --ignore-whitespace
 </term>
+<listitem>
+<simpara>
+        Ignore whitespace differences when trying to reconcile
+differences. Currently, each backend implements an approximation of
+this behavior:
+</simpara>
+<simpara>apply backend: When applying a patch, ignore changes in whitespace in
+context lines. Unfortunately, this means that if the "old" lines being
+replaced by the patch differ only in whitespace from the existing
+file, you will get a merge conflict instead of a successful patch
+application.</simpara>
+<simpara>merge backend: Treat lines with only whitespace changes as unchanged
+when merging. Unfortunately, this means that any patch hunks that were
+intended to modify whitespace and nothing else will be dropped, even
+if the other side had no changes that conflicted.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
 <term>
 --whitespace=&lt;option&gt;
 </term>
 <listitem>
 <simpara>
-        These flags are passed to the <emphasis>git apply</emphasis> program
+        This flag is passed to the <emphasis>git apply</emphasis> program
         (see <xref linkend="git-apply(1)" />) that applies the patch.
         Implies --apply.
 </simpara>
@@ -747,13 +778,26 @@ with <emphasis>--keep-base</emphasis> in order to drop those commits from your b
 <term>
 --committer-date-is-author-date
 </term>
+<listitem>
+<simpara>
+        Instead of using the current time as the committer date, use
+        the author date of the commit being rebased as the committer
+        date. This option implies <emphasis>--force-rebase</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
 <term>
 --ignore-date
 </term>
+<term>
+--reset-author-date
+</term>
 <listitem>
 <simpara>
-        These flags are passed to <emphasis>git am</emphasis> to easily change the dates
-        of the rebased commits (see <xref linkend="git-am(1)" />).
+        Instead of using the author date of the original commit, use
+        the current time as the author date of the rebased commit.  This
+        option implies <emphasis>--force-rebase</emphasis>.
 </simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
@@ -957,21 +1001,6 @@ used to override and disable this setting.</simpara>
 </listitem>
 <listitem>
 <simpara>
---committer-date-is-author-date
-</simpara>
-</listitem>
-<listitem>
-<simpara>
---ignore-date
-</simpara>
-</listitem>
-<listitem>
-<simpara>
---ignore-whitespace
-</simpara>
-</listitem>
-<listitem>
-<simpara>
 --whitespace
 </simpara>
 </listitem>
@@ -1074,6 +1103,21 @@ used to override and disable this setting.</simpara>
 <listitem>
 <simpara>
 --preserve-merges and --empty=
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --ignore-whitespace
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --committer-date-is-author-date
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+--preserve-merges and --ignore-date
 </simpara>
 </listitem>
 <listitem>

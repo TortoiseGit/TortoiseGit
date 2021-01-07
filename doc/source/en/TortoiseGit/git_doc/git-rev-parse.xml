@@ -999,6 +999,8 @@ of commits, not just a single commit.</simpara>
 specifying a single revision, using the notation described in the
 previous section, means the set of commits <emphasis>reachable</emphasis> from the given
 commit.</simpara>
+<simpara>Specifying several revisions means the set of commits reachable from
+any of the given commits.</simpara>
 <simpara>A commit's reachable set is the commit itself and the commits in
 its ancestry chain.</simpara>
 <section id="git-rev-parse(1)__commit_exclusions">

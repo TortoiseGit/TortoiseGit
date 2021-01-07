@@ -19,9 +19,33 @@
 <simplesect id="git-log(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Shows the commit logs.</simpara>
-<simpara>The command takes options applicable to the <emphasis>git rev-list</emphasis>
+<simpara>List commits that are reachable by following the <emphasis>parent</emphasis> links from the
+given commit(s), but exclude commits that are reachable from the one(s)
+given with a <emphasis>&#94;</emphasis> in front of them.  The output is given in reverse
+chronological order by default.</simpara>
+<simpara>You can think of this as a set operation. Commits reachable from any of
+the commits given on the command line form a set, and then commits reachable
+from any of the ones given with <emphasis>&#94;</emphasis> in front are subtracted from that
+set.  The remaining commits are what comes out in the command's output.
+Various other options and paths parameters can be used to further limit the
+result.</simpara>
+<simpara>Thus, the following command:</simpara>
+<screen>$ git log foo bar ^baz</screen>
+<simpara>means "list all the commits which are reachable from <emphasis>foo</emphasis> or <emphasis>bar</emphasis>, but
+not from <emphasis>baz</emphasis>".</simpara>
+<simpara>A special notation "<emphasis>&lt;commit1&gt;</emphasis>..<emphasis>&lt;commit2&gt;</emphasis>" can be used as a
+short-hand for "^<emphasis>&lt;commit1&gt;</emphasis> <emphasis>&lt;commit2&gt;</emphasis>". For example, either of
+the following may be used interchangeably:</simpara>
+<screen>$ git log origin..HEAD
+$ git log HEAD ^origin</screen>
+<simpara>Another special notation is "<emphasis>&lt;commit1&gt;</emphasis>&#8230;<emphasis>&lt;commit2&gt;</emphasis>" which is useful
+for merges.  The resulting set of commits is the symmetric difference
+between the two operands.  The following two commands are equivalent:</simpara>
+<screen>$ git log A B --not $(git merge-base --all A B)
+$ git log A...B</screen>
+<simpara>The command takes options applicable to the <xref linkend="git-rev-list(1)" />
 command to control what is shown and how, and options applicable to
-the <emphasis>git diff-*</emphasis> commands to control how the changes
+the <xref linkend="git-diff(1)" /> command to control how the changes
 each commit introduces are shown.</simpara>
 </simplesect>
 <simplesect id="git-log(1)__options">
@@ -490,8 +514,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
         because merges into a topic branch tend to be only about
         adjusting to updated upstream from time to time, and
         this option allows you to ignore the individual commits
-        brought in to your history by such a merge. Cannot be
-        combined with --bisect.
+        brought in to your history by such a merge.
 </simpara>
 </listitem>
 </varlistentry>
@@ -650,7 +673,7 @@ explicitly.</simpara>
         Pretend as if the bad bisection ref <emphasis>refs/bisect/bad</emphasis>
         was listed and as if it was followed by <emphasis>--not</emphasis> and the good
         bisection refs <emphasis>refs/bisect/good-*</emphasis> on the command
-        line. Cannot be combined with --first-parent.
+        line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1445,8 +1468,8 @@ people using 80-column terminals.</simpara>
 <listitem>
 <simpara>
         Show the full 40-byte hexadecimal commit object name. This negates
-        <emphasis>--abbrev-commit</emphasis> and those options which imply it such as
-        "--oneline". It also overrides the <emphasis>log.abbrevCommit</emphasis> variable.
+        <emphasis>--abbrev-commit</emphasis>, either explicit or implied by other options such
+        as "--oneline". It also overrides the <emphasis>log.abbrevCommit</emphasis> variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1734,90 +1757,6 @@ the time zone is omitted when the local time zone is used
         do not belong to a linear branch. This option puts a barrier
         in between them in that case. If <emphasis>&lt;barrier&gt;</emphasis> is specified, it
         is the string that will be shown instead of the default one.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</section>
-<section id="git-log(1)__diff_formatting">
-<title>Diff Formatting</title>
-<simpara>Listed below are options that control the formatting of diff output.
-Some of them are specific to <xref linkend="git-rev-list(1)" />, however other diff
-options may be given. See <xref linkend="git-diff-files(1)" /> for more options.</simpara>
-<variablelist>
-<varlistentry>
-<term>
--c
-</term>
-<listitem>
-<simpara>
-        With this option, diff output for a merge commit
-        shows the differences from each of the parents to the merge result
-        simultaneously instead of showing pairwise diff between a parent
-        and the result one at a time. Furthermore, it lists only files
-        which were modified from all parents.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---cc
-</term>
-<listitem>
-<simpara>
-        This flag implies the <emphasis>-c</emphasis> option and further compresses the
-        patch output by omitting uninteresting hunks whose contents in
-        the parents have only two variants and the merge result picks
-        one of them without modification.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---combined-all-paths
-</term>
-<listitem>
-<simpara>
-        This flag causes combined diffs (used for merge commits) to
-        list the name of the file from all parents.  It thus only has
-        effect when -c or --cc are specified, and is likely only
-        useful if filename changes are detected (i.e. when either
-        rename or copy detection have been requested).
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--m
-</term>
-<listitem>
-<simpara>
-        This flag makes the merge commits show the full diff like
-        regular commits; for each merge parent, a separate log entry
-        and diff is generated. An exception is that only diff against
-        the first parent is shown when <emphasis>--first-parent</emphasis> option is given;
-        in that case, the output represents the changes the merge
-        brought <emphasis>into</emphasis> the then-current branch.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--r
-</term>
-<listitem>
-<simpara>
-        Show recursive diffs.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--t
-</term>
-<listitem>
-<simpara>
-        Show the tree objects in the diff output. This implies <emphasis>-r</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2832,8 +2771,88 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="git-log(1)__common_diff_options">
-<title>COMMON DIFF OPTIONS</title>
+<simplesect id="git-log(1)__diff_formatting">
+<title>DIFF FORMATTING</title>
+<simpara>By default, <emphasis>git log</emphasis> does not generate any diff output. The options
+below can be used to show the changes made by each commit.</simpara>
+<simpara>Note that unless one of <emphasis>-c</emphasis>, <emphasis>--cc</emphasis>, or <emphasis>-m</emphasis> is given, merge commits
+will never show a diff, even if a diff format like <emphasis>--patch</emphasis> is
+selected, nor will they match search options like <emphasis>-S</emphasis>. The exception is
+when <emphasis>--first-parent</emphasis> is in use, in which merges are treated like normal
+single-parent commits (this can be overridden by providing a
+combined-diff option or with <emphasis>--no-diff-merges</emphasis>).</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-c
+</term>
+<listitem>
+<simpara>
+        With this option, diff output for a merge commit
+        shows the differences from each of the parents to the merge result
+        simultaneously instead of showing pairwise diff between a parent
+        and the result one at a time. Furthermore, it lists only files
+        which were modified from all parents.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cc
+</term>
+<listitem>
+<simpara>
+        This flag implies the <emphasis>-c</emphasis> option and further compresses the
+        patch output by omitting uninteresting hunks whose contents in
+        the parents have only two variants and the merge result picks
+        one of them without modification.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--combined-all-paths
+</term>
+<listitem>
+<simpara>
+        This flag causes combined diffs (used for merge commits) to
+        list the name of the file from all parents.  It thus only has
+        effect when -c or --cc are specified, and is likely only
+        useful if filename changes are detected (i.e. when either
+        rename or copy detection have been requested).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<listitem>
+<simpara>
+        This flag makes the merge commits show the full diff like
+        regular commits; for each merge parent, a separate log entry
+        and diff is generated. An exception is that only diff against
+        the first parent is shown when <emphasis>--first-parent</emphasis> option is given;
+        in that case, the output represents the changes the merge
+        brought <emphasis>into</emphasis> the then-current branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=off
+</term>
+<term>
+--no-diff-merges
+</term>
+<listitem>
+<simpara>
+        Disable output of diffs for merge commits (default). Useful to
+        override <emphasis>-m</emphasis>, <emphasis>-c</emphasis>, or <emphasis>--cc</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <variablelist>
 <varlistentry>
 <term>
@@ -2929,6 +2948,16 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 <listitem>
 <simpara>
         Synonym for <emphasis>-p --raw</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-t
+</term>
+<listitem>
+<simpara>
+        Show the tree objects in the diff output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3701,10 +3730,11 @@ override configuration settings.</simpara>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.  This is
-        independent of the <emphasis>--full-index</emphasis> option above, which controls
-        the diff-patch output format.  Non default number of
-        digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
+        lines, show only a partial prefix.
+        In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
+        precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
+        names will be shown regardless of <emphasis>--abbrev</emphasis>.
+        Non default number of digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4245,7 +4275,8 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <xref linkend="git-diff-files(1)" />
 with the <emphasis>-p</emphasis> option produces patch text.
 You can customize the creation of patch text via the
-<emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables.</simpara>
+<emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables
+(see <xref linkend="git(1)" />).</simpara>
 <simpara>What the -p option produces is slightly different from the traditional
 diff format:</simpara>
 <orderedlist numeration="arabic">

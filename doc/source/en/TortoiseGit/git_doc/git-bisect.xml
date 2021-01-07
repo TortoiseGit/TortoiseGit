@@ -20,8 +20,8 @@
 <title>DESCRIPTION</title>
 <simpara>The command takes various subcommands, and different options depending
 on the subcommand:</simpara>
-<literallayout class="monospaced">git bisect start [--term-{old,good}=&lt;term&gt; --term-{new,bad}=&lt;term&gt;]
-                 [--no-checkout] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;paths&gt;...]
+<literallayout class="monospaced">git bisect start [--term-{new,bad}=&lt;term&gt; --term-{old,good}=&lt;term&gt;]
+                 [--no-checkout] [--first-parent] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;paths&gt;...]
 git bisect (bad|new|&lt;term-new&gt;) [&lt;rev&gt;]
 git bisect (good|old|&lt;term-old&gt;) [&lt;rev&gt;...]
 git bisect terms [--term-good | --term-bad]
@@ -249,6 +249,19 @@ it point to the commit that should be tested.</simpara>
 <simpara>This option may be useful when the test you would perform in each step
 does not require a checked out tree.</simpara>
 <simpara>If the repository is bare, <emphasis>--no-checkout</emphasis> is assumed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--first-parent
+</term>
+<listitem>
+<simpara>Follow only the first parent commit upon seeing a merge commit.</simpara>
+<simpara>In detecting regressions introduced through the merging of a branch, the merge
+commit will be identified as introduction of the bug and its ancestors will be
+ignored.</simpara>
+<simpara>This option is particularly useful in avoiding false positives when a merged
+branch contained broken or non-buildable commits, but the merge itself was OK.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

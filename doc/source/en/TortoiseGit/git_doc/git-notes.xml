@@ -412,7 +412,7 @@ are taken from notes refs.  A notes ref is usually a branch which
 contains "files" whose paths are the object names for the objects
 they describe, with some directory separators included for performance
 reasons <footnote><simpara>Permitted pathnames have the form
-<emphasis>ab</emphasis><emphasis>/</emphasis><emphasis>cd</emphasis><emphasis>/</emphasis><emphasis>ef</emphasis><emphasis>/</emphasis><emphasis>&#8230;</emphasis><emphasis>/</emphasis><emphasis>abcdef&#8230;</emphasis>: a sequence of directory
+<emphasis>bf</emphasis><emphasis>/</emphasis><emphasis>fe</emphasis><emphasis>/</emphasis><emphasis>30</emphasis><emphasis>/</emphasis><emphasis>&#8230;</emphasis><emphasis>/</emphasis><emphasis>680d5a&#8230;</emphasis>: a sequence of directory
 names of two hexadecimal digits each followed by a filename with the
 rest of the object ID.</simpara></footnote>.</simpara>
 <simpara>Every notes change creates a new commit at the specified notes ref.

@@ -82,7 +82,16 @@ existing commit-graph file.</simpara>
 <simpara>With the <emphasis>--changed-paths</emphasis> option, compute and write information about the
 paths changed between a commit and its first parent. This operation can
 take a while on large repositories. It provides significant performance gains
-for getting history of a directory or a file with <emphasis>git log -- &lt;path&gt;</emphasis>.</simpara>
+for getting history of a directory or a file with <emphasis>git log -- &lt;path&gt;</emphasis>. If
+this option is given, future commit-graph writes will automatically assume
+that this option was intended. Use <emphasis>--no-changed-paths</emphasis> to stop storing this
+data.</simpara>
+<simpara>With the <emphasis>--max-new-filters=&lt;n&gt;</emphasis> option, generate at most <emphasis>n</emphasis> new Bloom
+filters (if <emphasis>--changed-paths</emphasis> is specified). If <emphasis>n</emphasis> is <emphasis>-1</emphasis>, no limit is
+enforced. Only commits present in the new layer count against this
+limit. To retroactively compute Bloom filters over earlier layers, it is
+advised to use <emphasis>--split=replace</emphasis>.  Overrides the <emphasis>commitGraph.maxNewFilters</emphasis>
+configuration.</simpara>
 <simpara>With the <emphasis>--split[=&lt;strategy&gt;]</emphasis> option, write the commit-graph as a
 chain of multiple commit-graph files stored in
 <emphasis>&lt;dir&gt;/info/commit-graphs</emphasis>. Commit-graph layers are merged based on the

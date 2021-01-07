@@ -72,6 +72,12 @@ current working directory.
 Specify the given object format (hash algorithm) for the repository.  The valid
 values are <emphasis>sha1</emphasis> and (if enabled) <emphasis>sha256</emphasis>.  <emphasis>sha1</emphasis> is the default.
 </simpara>
+<simpara>THIS OPTION IS EXPERIMENTAL! SHA-256 support is experimental and still
+in an early stage.  A SHA-256 repository will in general not be able to
+share work with "regular" SHA-1 repositories.  It should be assumed
+that, e.g., Git internal file formats in relation to SHA-256
+repositories may change in backwards-incompatible ways.  Only use
+<emphasis>--object-format=sha256</emphasis> for testing purposes.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -101,7 +107,7 @@ repository.
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;branch-name
+-b &lt;branch-name&gt;
 </term>
 <term>
 --initial-branch=&lt;branch-name&gt;

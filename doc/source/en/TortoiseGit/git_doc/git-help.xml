@@ -13,7 +13,7 @@
 <simplesect id="git-help(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git help</emphasis> [-a|--all [--[no-]verbose]] [-g|--guide]
+<literallayout><emphasis>git help</emphasis> [-a|--all [--[no-]verbose]] [-g|--guides]
            [-i|--info|-m|--man|-w|--web] [COMMAND|GUIDE]</literallayout>
 </blockquote>
 </simplesect>
@@ -24,8 +24,8 @@ command and a list of the most commonly used Git commands are printed
 on the standard output.</simpara>
 <simpara>If the option <emphasis>--all</emphasis> or <emphasis>-a</emphasis> is given, all available commands are
 printed on the standard output.</simpara>
-<simpara>If the option <emphasis>--guide</emphasis> or <emphasis>-g</emphasis> is given, a list of the useful
-Git guides is also printed on the standard output.</simpara>
+<simpara>If the option <emphasis>--guides</emphasis> or <emphasis>-g</emphasis> is given, a list of the
+Git concept guides is also printed on the standard output.</simpara>
 <simpara>If a command, or a guide, is given, a manual page for that command or
 guide is brought up. The <emphasis>man</emphasis> program is used by default for this
 purpose, but this can be overridden by other options or configuration
@@ -89,7 +89,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints a list of useful guides on the standard output. This
+        Prints a list of the Git concept guides on the standard output. This
         option overrides any given command or guide name.
 </simpara>
 </listitem>

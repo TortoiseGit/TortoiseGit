@@ -181,6 +181,20 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]write-fetch-head
+</term>
+<listitem>
+<simpara>
+        Write the list of remote refs fetched in the <emphasis>FETCH_HEAD</emphasis>
+        file directly under <emphasis>$GIT_DIR</emphasis>.  This is the default.
+        Passing <emphasis>--no-write-fetch-head</emphasis> from the command line tells
+        Git not to write the file.  Under <emphasis>--dry-run</emphasis> option, the
+        file is never written.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -f
 </term>
 <term>
@@ -221,12 +235,16 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]auto-maintenance
+</term>
+<term>
 --[no-]auto-gc
 </term>
 <listitem>
 <simpara>
-        Run <emphasis>git gc --auto</emphasis> at the end to perform garbage collection
-        if needed. This is enabled by default.
+        Run <emphasis>git maintenance run --auto</emphasis> at the end to perform automatic
+        repository maintenance if needed. (<emphasis>--[no-]auto-gc</emphasis> is a synonym.)
+        This is enabled by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -390,7 +408,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </term>
 <listitem>
 <simpara>
-        If the remote is fetched successfully, pull and add upstream
+        If the remote is fetched successfully, add upstream
         (tracking) reference, used by argument-less
         <xref linkend="git-pull(1)" /> and other commands. For more information,
         see <emphasis>branch.&lt;name&gt;.merge</emphasis> and <emphasis>branch.&lt;name&gt;.remote</emphasis> in
@@ -610,6 +628,20 @@ by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
 The colon can be omitted when &lt;dst&gt; is empty.  &lt;src&gt; is
 typically a ref, but it can also be a fully spelled hex object
 name.</simpara>
+<simpara>A &lt;refspec&gt; may contain a <emphasis>*</emphasis> in its &lt;src&gt; to indicate a simple pattern
+match. Such a refspec functions like a glob that matches any ref with the
+same prefix. A pattern &lt;refspec&gt; must have a <emphasis>*</emphasis> in both the &lt;src&gt; and
+&lt;dst&gt;. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
+contents matched from the source.</simpara>
+<simpara>If a refspec is prefixed by <emphasis>^</emphasis>, it will be interpreted as a negative
+refspec. Rather than specifying which refs to fetch or which local refs to
+update, such a refspec will instead specify refs to exclude. A ref will be
+considered to match if it matches at least one positive refspec, and does
+not match any negative refspec. Negative refspecs can be useful to restrict
+the scope of a pattern refspec so that it will not include specific refs.
+Negative refspecs can themselves be pattern refspecs. However, they may only
+contain a &lt;src&gt; and do not specify a &lt;dst&gt;. Fully spelled out hex object
+names are also not supported.</simpara>
 <simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
 it requests fetching everything up to the given tag.</simpara>
 <simpara>The remote ref that matches &lt;src&gt;
@@ -652,6 +684,17 @@ will be needed for such branches.  There is no way to
 determine or declare that a branch will be made available
 in a repository with this behavior; the pulling user simply
 must know this is the expected usage pattern for a branch.</simpara></note>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        Read refspecs, one per line, from stdin in addition to those provided
+        as arguments. The "tag &lt;name&gt;" format is not supported.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

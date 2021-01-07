@@ -570,6 +570,16 @@ ancillary user utilities.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-maintenance(1)" />
+</term>
+<listitem>
+<simpara>
+        Run tasks to optimize Git repository data.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-merge(1)" />
 </term>
 <listitem>
@@ -1914,6 +1924,212 @@ users typically do not use them directly.</simpara>
 </variablelist>
 </section>
 </simplesect>
+<simplesect id="git(1)__guides">
+<title>Guides</title>
+<simpara>The following documentation pages are guides about Git concepts.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<xref linkend="gitattributes(5)" />
+</term>
+<listitem>
+<simpara>
+        Defining attributes per path.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitcli(7)" />
+</term>
+<listitem>
+<simpara>
+        Git command-line interface and conventions.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitcore-tutorial(7)" />
+</term>
+<listitem>
+<simpara>
+        A Git core tutorial for developers.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitcredentials(7)" />
+</term>
+<listitem>
+<simpara>
+        Providing usernames and passwords to Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitcvs-migration(7)" />
+</term>
+<listitem>
+<simpara>
+        Git for CVS users.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitdiffcore(7)" />
+</term>
+<listitem>
+<simpara>
+        Tweaking diff output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="giteveryday(7)" />
+</term>
+<listitem>
+<simpara>
+        A useful minimum set of commands for Everyday Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitfaq(7)" />
+</term>
+<listitem>
+<simpara>
+        Frequently asked questions about using Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitglossary(7)" />
+</term>
+<listitem>
+<simpara>
+        A Git Glossary.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="githooks(5)" />
+</term>
+<listitem>
+<simpara>
+        Hooks used by Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitignore(5)" />
+</term>
+<listitem>
+<simpara>
+        Specifies intentionally untracked files to ignore.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitmodules(5)" />
+</term>
+<listitem>
+<simpara>
+        Defining submodule properties.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitnamespaces(7)" />
+</term>
+<listitem>
+<simpara>
+        Git namespaces.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitremote-helpers(7)" />
+</term>
+<listitem>
+<simpara>
+        Helper programs to interact with remote repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitrepository-layout(5)" />
+</term>
+<listitem>
+<simpara>
+        Git Repository Layout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitrevisions(7)" />
+</term>
+<listitem>
+<simpara>
+        Specifying revisions and ranges for Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitsubmodules(7)" />
+</term>
+<listitem>
+<simpara>
+        Mounting one repository inside another.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gittutorial(7)" />
+</term>
+<listitem>
+<simpara>
+        A tutorial introduction to Git.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gittutorial-2(7)" />
+</term>
+<listitem>
+<simpara>
+        A tutorial introduction to Git: part two.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitworkflows(7)" />
+</term>
+<listitem>
+<simpara>
+        An overview of recommended workflows with Git.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git(1)__configuration_mechanism">
 <title>Configuration Mechanism</title>
 <simpara>Git uses a simple text format to store customizations that are per
@@ -2247,7 +2463,8 @@ double-quotes and respecting backslash escapes. E.g., the value
         If this variable is set, the default hash algorithm for new
         repositories will be set to this value. This value is currently
         ignored when cloning; the setting of the remote repository
-        is used instead. The default is "sha1".
+        is used instead. The default is "sha1". THIS VARIABLE IS
+        EXPERIMENTAL! See <emphasis>--object-format</emphasis> in <xref linkend="git-init(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2362,8 +2579,9 @@ double-quotes and respecting backslash escapes. E.g., the value
 <listitem>
 <simpara>
         When the environment variable <emphasis>GIT_EXTERNAL_DIFF</emphasis> is set, the
-        program named by it is called, instead of the diff invocation
-        described above.  For a path that is added, removed, or modified,
+        program named by it is called to generate diffs, and Git
+        does not use its builtin diff machinery.
+        For a path that is added, removed, or modified,
         <emphasis>GIT_EXTERNAL_DIFF</emphasis> is called with 7 parameters:
 </simpara>
 <literallayout class="monospaced">path old-file old-hex old-mode new-file new-hex new-mode</literallayout>
@@ -2481,6 +2699,19 @@ parameter, &lt;path&gt;.</simpara>
         It is used by several Git commands when, on interactive mode,
         an editor is to be launched. See also <xref linkend="git-var(1)" />
         and the <emphasis>core.editor</emphasis> option in <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_SEQUENCE_EDITOR</emphasis>
+</term>
+<listitem>
+<simpara>
+        This environment variable overrides the configured Git editor
+        when editing the todo list of an interactive rebase. See also
+        linkit::git-rebase[1] and the <emphasis>sequence.editor</emphasis> option in
+        linkit::git-config[1].
 </simpara>
 </listitem>
 </varlistentry>
@@ -2669,6 +2900,17 @@ of clones and fetches.</simpara>
 <simpara>
         Enables performance related trace messages, e.g. total execution
         time of each Git command.
+        See <emphasis>GIT_TRACE</emphasis> for available trace output options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_TRACE_REFS</emphasis>
+</term>
+<listitem>
+<simpara>
+        Enables trace messages for operations on the ref database.
         See <emphasis>GIT_TRACE</emphasis> for available trace output options.
 </simpara>
 </listitem>

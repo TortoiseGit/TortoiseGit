@@ -8,7 +8,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #3654: Allow to completely disable the turtle animation, added TortoiseGit advanced setting "DownloadAnimation"
- * Update libgit to 2.29.2 based on Git for Windows sources
+ * Update libgit to 2.30 based on Git for Windows sources
  * Update libgit2 to 1.1.0
  * Update Scintilla to 4.4.6
  * Allow multiple ref selection in the Revision Graph Filter

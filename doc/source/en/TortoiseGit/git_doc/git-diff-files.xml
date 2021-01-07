@@ -888,10 +888,11 @@ override configuration settings.</simpara>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.  This is
-        independent of the <emphasis>--full-index</emphasis> option above, which controls
-        the diff-patch output format.  Non default number of
-        digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
+        lines, show only a partial prefix.
+        In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
+        precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
+        names will be shown regardless of <emphasis>--abbrev</emphasis>.
+        Non default number of digits can be specified with <emphasis>--abbrev=&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1745,7 +1746,8 @@ all parents.</simpara>
 <xref linkend="git-diff-files(1)" />
 with the <emphasis>-p</emphasis> option produces patch text.
 You can customize the creation of patch text via the
-<emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables.</simpara>
+<emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables
+(see <xref linkend="git(1)" />).</simpara>
 <simpara>What the -p option produces is slightly different from the traditional
 diff format:</simpara>
 <orderedlist numeration="arabic">

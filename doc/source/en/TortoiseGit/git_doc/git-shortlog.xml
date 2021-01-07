@@ -86,6 +86,50 @@ reference to the current repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--group=&lt;type&gt;
+</term>
+<listitem>
+<simpara>
+        Group commits based on <emphasis>&lt;type&gt;</emphasis>. If no <emphasis>--group</emphasis> option is
+        specified, the default is <emphasis>author</emphasis>. <emphasis>&lt;type&gt;</emphasis> is one of:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>author</emphasis>, commits are grouped by author
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>committer</emphasis>, commits are grouped by committer (the same as <emphasis>-c</emphasis>)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>trailer:&lt;field&gt;</emphasis>, the <emphasis>&lt;field&gt;</emphasis> is interpreted as a case-insensitive
+   commit message trailer (see <xref linkend="git-interpret-trailers(1)" />). For
+   example, if your project uses <emphasis>Reviewed-by</emphasis> trailers, you might want
+   to see who has been reviewing with
+   <emphasis>git shortlog -ns --group=trailer:reviewed-by</emphasis>.
+</simpara>
+<simpara>Note that commits that do not include the trailer will not be counted.
+Likewise, commits with multiple trailers (e.g., multiple signoffs) may
+be counted more than once (but only once per unique trailer value in
+that commit).</simpara>
+<simpara>Shortlog will attempt to parse each trailer value as a <emphasis>name &lt;email&gt;</emphasis>
+identity. If successful, the mailmap is applied and the email is omitted
+unless the <emphasis>--email</emphasis> option is specified. If the value cannot be parsed
+as an identity, it will be taken literally and completely.</simpara>
+</listitem>
+</itemizedlist>
+<simpara>If <emphasis>--group</emphasis> is specified multiple times, commits are counted under each
+value (but again, only once per unique value in that commit). For
+example, <emphasis>git shortlog --group=author --group=trailer:co-authored-by</emphasis>
+counts both authors and co-authors.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -c
 </term>
 <term>
@@ -93,7 +137,7 @@ reference to the current repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Collect and show committer identities instead of authors.
+        This is an alias for <emphasis>--group=committer</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -413,8 +457,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
         because merges into a topic branch tend to be only about
         adjusting to updated upstream from time to time, and
         this option allows you to ignore the individual commits
-        brought in to your history by such a merge. Cannot be
-        combined with --bisect.
+        brought in to your history by such a merge.
 </simpara>
 </listitem>
 </varlistentry>
@@ -573,7 +616,7 @@ explicitly.</simpara>
         Pretend as if the bad bisection ref <emphasis>refs/bisect/bad</emphasis>
         was listed and as if it was followed by <emphasis>--not</emphasis> and the good
         bisection refs <emphasis>refs/bisect/good-*</emphasis> on the command
-        line. Cannot be combined with --first-parent.
+        line.
 </simpara>
 </listitem>
 </varlistentry>
