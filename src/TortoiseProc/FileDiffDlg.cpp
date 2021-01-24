@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1246,7 +1246,12 @@ void CFileDiffDlg::Filter(const CString& sFilterText)
 	for (int i=0;i<m_arFileList.GetCount();i++)
 	{
 		if (filter(m_arFileList[i]))
-			m_arFilteredList.push_back(&m_arFileList[i]);
+		{
+			// Git 2.29.0 or later, --numstat doesn't show stats for the files with only ignored changes. This check hides such files.
+			bool showItem = m_arFileList[i].IsDirectory() || !(m_arFileList[i].m_StatAdd.IsEmpty() && m_arFileList[i].m_StatDel.IsEmpty());
+			if (showItem)
+				m_arFilteredList.push_back(&m_arFileList[i]);
+		}
 	}
 	for (const auto path : m_arFilteredList)
 		AddEntry(path);
