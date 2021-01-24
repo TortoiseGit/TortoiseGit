@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -656,15 +656,16 @@ void CLogDlg::EnableOKButton()
 
 bool LookLikeGitHash(const CString& msg, int &pos)
 {
+	static int shortHashLength = std::min(GIT_HASH_SIZE * 2, std::max(3, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength()))));
 	int c = 0;
 	for (; pos < msg.GetLength(); ++pos)
 	{
 		if (msg[pos] >= '0' && msg[pos] <= '9' || msg[pos] >= 'a' && msg[pos] <= 'f')
 			c++;
 		else
-			return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
+			return c >= shortHashLength && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
 	}
-	return c >= g_Git.GetShortHASHLength() && c <= GIT_HASH_SIZE * 2;
+	return c >= shortHashLength && c <= GIT_HASH_SIZE * 2;
 }
 
 std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)

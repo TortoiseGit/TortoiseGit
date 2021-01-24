@@ -408,6 +408,15 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">ShortHashLengthForHyperLinkInLogMessage</term>
+			<listitem>
+				<para>
+					The minimum length of commit hashes that TortoiseGit shows hyper-link for
+					in log messages. Default is <literal>8</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">ShowContextMenuIcons</term>
 			<listitem>
 				<para>

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2020 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include "TortoiseProc.h"
 #include "SettingsAdvanced.h"
 #include "registry.h"
+#include "Git.h"
 
 
 IMPLEMENT_DYNAMIC(CSettingsAdvanced, ISettingsPropPage)
@@ -161,6 +162,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].sName	= L"ShellMenuAccelerators";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b	= true;
+
+	settings[i].sName	= L"ShortHashLengthForHyperLinkInLogMessage";
+	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
+	settings[i++].def.l	= g_Git.GetShortHASHLength();
 
 	settings[i].sName	= L"ShowContextMenuIcons";
 	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;

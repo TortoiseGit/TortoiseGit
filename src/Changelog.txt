@@ -14,6 +14,7 @@ Released: unreleased
  * Allow multiple ref selection in the Revision Graph Filter
  * Move prune (all remotes) setting to git config page
  * Update pcre2 to 10.36
+ * Fixed issue #3693: Make short hash length for hyper-link in log message configurable
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working
