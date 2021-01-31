@@ -85,7 +85,7 @@
 							If you don't use Git for Windows, please see the sections for "Cygwin Git" and "MSYS2 Git" below as special settings are required here.
 						</para>
 						<para>
-							As a general note: There is no official support for Cygwin or MSYS2 git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome.
+							As a general note: There is no official support for Cygwin or MSYS2 Git in TortoiseGit. The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome.
 						</para>
 					</caution>
 				</para>
@@ -119,7 +119,7 @@
 			<term>Cygwin Git</term>
 			<listitem>
 				<para>
-					As noted above: There is no official support for Cygwin git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
+					As noted above: There is no official support for Cygwin Git in TortoiseGit (do not enable this for the "Git for Windows" package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it, here are the steps you have to perform:
 				</para>
 				<para>
 					1) Select the <filename>[CYGWIN-INSTALL-PATH]\bin</filename>-folder as <filename>git.exe</filename> folder.
@@ -142,7 +142,7 @@
 			<term>MSYS2 Git</term>
 			<listitem>
 				<para>
-					As noted above: There is no official support for MSYS2 git in TortoiseGit (do not enable this for the "Git for Windows package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it here are the steps you have to perform:
+					As noted above: There is no official support for MSYS2 Git in TortoiseGit (do not enable this for the "Git for Windows" package!). The TortoiseGit developers only use Git for Windows. Bug reports, however, are welcome. If you really want to use it, here are the steps you have to perform:
 				</para>
 				<para>
 					1) Select the <filename>[MSYS2-INSTALL-PATH]\usr\bin</filename>-folder as <filename>git.exe</filename> folder.
