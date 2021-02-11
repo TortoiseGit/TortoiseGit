@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ BOOL CChangedDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 
-	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, L"ChangedDlg", (GITSLC_POPALL ^ (GITSLC_POPSAVEAS | GITSLC_POPRESTORE | GITSLC_POPPREPAREDIFF | GITSLC_POPCHANGELISTS)), false);
+	m_FileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL | GITSLC_COLMODIFICATIONDATE, L"ChangedDlg", (GITSLC_POPALL ^ (GITSLC_POPSAVEAS | GITSLC_POPRESTORE | GITSLC_POPPREPAREDIFF)), false);
 	m_FileListCtrl.SetCancelBool(&m_bCanceled);
 	m_FileListCtrl.SetBackgroundImage(IDI_CFM_BKG);
 	m_FileListCtrl.SetEmptyString(IDS_REPOSTATUS_EMPTYFILELIST);
