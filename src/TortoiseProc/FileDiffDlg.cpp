@@ -1341,6 +1341,8 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 		auto fentry = m_arFilteredList[index];
 		if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED))
 			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCTSTR>(fentry->GetGitPathString()));
+		else if (isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED)
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitOldPathString()));
 		else
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
