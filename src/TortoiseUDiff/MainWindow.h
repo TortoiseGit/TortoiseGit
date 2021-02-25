@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2016, 2019-2021 - TortoiseGit
 // Copyright (C) 2007, 2009-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -82,5 +82,6 @@ private:
 	std::wstring             m_findtext;
 	std::wstring             m_filename;
 
-	void loadOrSaveFile( bool doLoad, const std::wstring& filename = L"" );
+	bool loadOrSaveFile(bool doLoad, const std::wstring& filename = L"");
+	bool canCloseWhenModified();
 };

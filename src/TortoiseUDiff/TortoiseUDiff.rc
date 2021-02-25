@@ -147,6 +147,7 @@ BEGIN
     IDS_PIPETITLE           "diff from pipe"
     IDC_TORTOISEUDIFF       "TORTOISEGITUDIFF"
     IDS_ERRORSAVE           "Failed to save file ""%s"":\n%s"
+    IDS_MODIFIEDASKSAVE     "The file was modified. Do you want to save the changes?"
 END
 
 #endif    // Englisch (USA) resources

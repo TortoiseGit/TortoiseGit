@@ -9182,6 +9182,10 @@ msgstr ""
 msgid "The file is too large to open."
 msgstr ""
 
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
 msgid "The file\n%s\nalready exists! Do you want to overwrite it?"
