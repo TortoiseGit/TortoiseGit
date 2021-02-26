@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2020 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2020 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2003-2021 - TortoiseSVN
+// Copyright (C) 2011-2012, 2017-2021 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1758,6 +1758,11 @@ void CBaseView::DrawTextLine(
 	ASSERT(nLineIndex < GetLineCount());
 	int nViewLine = GetViewLineForScreen(nLineIndex);
 	ASSERT(m_pViewData && (nViewLine < m_pViewData->GetCount()));
+
+	CRgn rgn;
+	rgn.CreateRectRgn(rc.left, rc.top, rc.right, rc.bottom);
+	pDC->SelectClipRgn(&rgn);
+	SCOPE_EXIT { pDC->SelectClipRgn(nullptr); };
 
 	LineColors lineCols = GetLineColors(nViewLine);
 
