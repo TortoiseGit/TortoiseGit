@@ -47,6 +47,7 @@
 #include "FirstStartWizard.h"
 #include "AnimationManager.h"
 #include "../TGitCache/CacheInterface.h"
+#include "VersioncheckParser.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -68,6 +69,7 @@ CTortoiseProcApp::CTortoiseProcApp()
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Constructor\n");
 	SetDllDirectory(L"");
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": CommandLine: %s\n", GetCommandLine());
 	EnableHtmlHelp();
 	CHooks::Create();
 	git_libgit2_init();
@@ -239,10 +241,30 @@ BOOL CTortoiseProcApp::InitInstance()
 		CString versionString;
 		versionString.Format(L"%X", CGit::ms_LastMsysGitVersion);
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": msysGitVersion: %s\n", static_cast<LPCTSTR>(versionString));
 		if (CGit::ms_bCygwinGit)
 			CCrashReport::Instance().AddUserInfoToReport(L"CygwinHack", L"true");
 		if (CGit::ms_bMsys2Git)
 			CCrashReport::Instance().AddUserInfoToReport(L"Msys2Hack", L"true");
+#if PREVIEW
+		CCrashReport::Instance().AddUserInfoToReport(L"Preview", _T(PREVIEW_INFO));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Preview: %s\n", _T(PREVIEW_INFO));
+#else
+		if (CString hotfix = CPathUtils::GetAppDirectory() + L"hotfix.ini"; PathFileExists(hotfix))
+		{
+			CString err;
+			CVersioncheckParser versionparser;
+			if (versionparser.Load(hotfix, err))
+			{
+				auto version = versionparser.GetTortoiseGitVersion();
+				if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD)
+				{
+					CCrashReport::Instance().AddUserInfoToReport(L"Hotfix", versionparser.GetTortoiseGitVersion().version);
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Hotfix: %s\n", static_cast<LPCTSTR>(versionparser.GetTortoiseGitVersion().version));
+				}
+			}
+		}
+#endif
 	}
 
 	if (parser.HasKey(L"urlhandler"))
@@ -527,7 +549,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(L"Software\\TortoiseGit\\CurrentVersion");
 	CString sVersion = regVersion;
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s\n", static_cast<LPCTSTR>(sVersion));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s vs. last used version %s\n", _T(STRPRODUCTVER), static_cast<LPCTSTR>(sVersion));
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!

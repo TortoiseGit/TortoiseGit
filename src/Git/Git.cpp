@@ -2246,6 +2246,11 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	else
 		SetLibGit2SearchPath(GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
 
+	if (ms_bCygwinGit)
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": CygwinHack: true\n");
+	if (ms_bMsys2Git)
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Msys2Hack: true\n");
+
 	// Configure libgit2 search paths
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_SYSTEM, CTGitPath(g_Git.GetGitSystemConfig()).GetContainingDirectory().GetWinPathString());
 	SetLibGit2SearchPath(GIT_CONFIG_LEVEL_GLOBAL, g_Git.GetHomeDirectory());
