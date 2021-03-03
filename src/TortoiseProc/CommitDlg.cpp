@@ -74,8 +74,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
 	, m_bStagingSupport(FALSE)
-	, m_bPartialStagingTextCurrentlyIsShow(FALSE)
-	, m_bPartialUnstagingTextCurrentlyIsShow(FALSE)
+	, m_stagingDisplayState(SHOW_STAGING | SHOW_UNSTAGING)
 	, m_bCancelled(false)
 	, m_PostCmd(GIT_POSTCOMMIT_CMD_NOTHING)
 	, m_bAmendDiffToLastCommit(FALSE)
@@ -480,8 +479,8 @@ BOOL CCommitDlg::OnInitDialog()
 	this->m_ctrlShowPatch.SetURL(CString());
 	this->m_ctrlPartialStaging.SetURL(CString());
 	this->m_ctrlPartialUnstaging.SetURL(CString());
-	ShowPartialStagingTextAndUpdateFlag(true);
-	ShowPartialUnstagingTextAndUpdateFlag(true);
+	ShowPartialStagingTextAndUpdateDisplayState(true);
+	ShowPartialUnstagingTextAndUpdateDisplayState(true);
 	if (g_Git.GetConfigValueBool(L"tgit.commitstagingsupport"))
 	{
 		m_bStagingSupport = true;
@@ -2417,22 +2416,26 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			{
 				if (m_bStagingSupport)
 				{
-					// This will only work if called after ShowPartialStagingTextAndUpdateFlag (or Unstaging)
+					// This will only work if called after ShowPartialStagingTextAndUpdateDisplayStatus (or Unstaging)
 
 					if (!(p->m_Action & CTGitPath::LOGACTIONS_ADDED) && !(p->m_Action & CTGitPath::LOGACTIONS_DELETED) && !(p->m_Action & CTGitPath::LOGACTIONS_MISSING) && !(p->m_Action & CTGitPath::LOGACTIONS_UNMERGED) && !(p->IsDirectory()))
 					{
-						if (!m_bPartialStagingTextCurrentlyIsShow)
+						if (!(m_stagingDisplayState & SHOW_STAGING))        // link does not currently display show staging, then it's "hide staging", meaning the staging window is open
 							m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
-						else
+						else if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
 							m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
 					}
 					else
 						m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
 
+					bool useCachedParameter = false;
+					if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
+						useCachedParameter = true;
+
 					if (!p->GetGitOldPathString().IsEmpty())
-						cmd.Format(L"git.exe diff%s -- \"%s\" \"%s\"", m_bPartialStagingTextCurrentlyIsShow ? L" --cached" : L"", static_cast<LPCTSTR>(p->GetGitOldPathString()), static_cast<LPCTSTR>(p->GetGitPathString()));
+						cmd.Format(L"git.exe diff%s -- \"%s\" \"%s\"", useCachedParameter ? L" --cached" : L"", static_cast<LPCTSTR>(p->GetGitOldPathString()), static_cast<LPCTSTR>(p->GetGitPathString()));
 					else
-						cmd.Format(L"git.exe diff%s -- \"%s\"", m_bPartialStagingTextCurrentlyIsShow ? L" --cached" : L"", static_cast<LPCTSTR>(p->GetGitPathString()));
+						cmd.Format(L"git.exe diff%s -- \"%s\"", useCachedParameter ? L" --cached" : L"", static_cast<LPCTSTR>(p->GetGitPathString()));
 				}
 				else
 				{
@@ -2829,34 +2832,34 @@ void CCommitDlg::OnStnClickedViewPatch()
 void CCommitDlg::OnStnClickedPartialStaging()
 {
 	DestroyPatchViewDlgIfOpen();
-	if (m_bPartialStagingTextCurrentlyIsShow) // clicked Partial Staging, either with the patch window closed or open in Unstaging mode
+	if (m_stagingDisplayState & SHOW_STAGING) // clicked Partial Staging, either with the patch window closed or open in Unstaging mode
 	{
 		CreatePatchViewDlg();
-		ShowPartialStagingTextAndUpdateFlag(false); // change "Partial Staging" to "Hide Staging"
-		ShowPartialUnstagingTextAndUpdateFlag(true); // show "Partial Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(false); // change "Partial Staging" to "Hide Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // show "Partial Unstaging"
 		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
 	}
 	else // clicked Hide Staging
 	{
-		ShowPartialStagingTextAndUpdateFlag(true); // change "Hide Staging" to "Partial Staging"
-		ShowPartialUnstagingTextAndUpdateFlag(true); // show "Partial Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(true); // change "Hide Staging" to "Partial Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // show "Partial Unstaging"
 	}
 }
 
 void CCommitDlg::OnStnClickedPartialUnstaging()
 {
 	DestroyPatchViewDlgIfOpen();
-	if (m_bPartialUnstagingTextCurrentlyIsShow) // clicked Partial Unstaging, either with the patch window closed or open in Staging mode
+	if (m_stagingDisplayState & SHOW_UNSTAGING) // clicked Partial Unstaging, either with the patch window closed or open in Staging mode
 	{
 		CreatePatchViewDlg();
-		ShowPartialUnstagingTextAndUpdateFlag(false); // change "Partial Unstaging" to "Hide Unstaging"
-		ShowPartialStagingTextAndUpdateFlag(true); // show "Partial Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(false); // change "Partial Unstaging" to "Hide Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(true); // show "Partial Staging"
 		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
 	}
 	else // clicked Hide Unstaging
 	{
-		ShowPartialUnstagingTextAndUpdateFlag(true); // change "Hide Unstaging" to "Partial Unstaging"
-		ShowPartialStagingTextAndUpdateFlag(true); // show "Partial Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // change "Hide Unstaging" to "Partial Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(true); // show "Partial Staging"
 	}
 }
 
@@ -3063,9 +3066,9 @@ void CCommitDlg::PrepareStagingSupport()
 		}
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_TIPSTAGINGMODE, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, L"HintStagingMode", IDS_MSGBOX_DONOTSHOWAGAIN);
 		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_HIDE);
-		ShowPartialStagingTextAndUpdateFlag(true);
+		ShowPartialStagingTextAndUpdateDisplayState(true);
 		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_SHOW);
-		ShowPartialUnstagingTextAndUpdateFlag(true);
+		ShowPartialUnstagingTextAndUpdateDisplayState(true);
 		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_SHOW);
 	}
 	else

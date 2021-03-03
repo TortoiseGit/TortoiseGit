@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,24 +78,32 @@ public:
 
 		m_ctrlShowPatch.Invalidate();
 	}
-	void ShowPartialStagingTextAndUpdateFlag(bool b = true)
+	void ShowPartialStagingTextAndUpdateDisplayState(bool b = true)
 	{
 		if (b)
+		{
 			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_STAGING)));
+			m_stagingDisplayState |= SHOW_STAGING; // set
+		}
 		else
+		{
 			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_STAGING)));
-
-		m_bPartialStagingTextCurrentlyIsShow = b; // we need to keep track of this to figure out whether the user clicked Hide
+			m_stagingDisplayState &= ~SHOW_STAGING; // unset
+		}
 		m_ctrlPartialStaging.Invalidate();
 	}
-	void ShowPartialUnstagingTextAndUpdateFlag(bool b = true)
+	void ShowPartialUnstagingTextAndUpdateDisplayState(bool b = true)
 	{
 		if (b)
+		{
 			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_UNSTAGING)));
+			m_stagingDisplayState |= SHOW_UNSTAGING; // set
+		}
 		else
+		{
 			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_UNSTAGING)));
-
-		m_bPartialUnstagingTextCurrentlyIsShow = b; // we need to keep track of this to figure out whether the user clicked Hide
+			m_stagingDisplayState &= ~SHOW_UNSTAGING; // unset
+		}
 		m_ctrlPartialUnstaging.Invalidate();
 	}
 	void SetAuthor(CString author)
@@ -234,8 +242,6 @@ private:
 	CHyperLink			m_ctrlShowPatch;
 	CHyperLink			m_ctrlPartialStaging;
 	CHyperLink			m_ctrlPartialUnstaging;
-	bool				m_bPartialStagingTextCurrentlyIsShow; // false if currently "Hide Staging"
-	bool				m_bPartialUnstagingTextCurrentlyIsShow; // false if currently "Hide Unstaging"
 	CPatchViewDlg		m_patchViewdlg;
 	BOOL				m_bSetCommitDateTime;
 	CDateTimeCtrl		m_CommitDate;
@@ -258,6 +264,15 @@ private:
 	CBugTraqAssociation	m_bugtraq_association;
 	HACCEL				m_hAccel;
 	bool				RestoreFiles(bool doNotAsk = false, bool allowCancel = true);
+
+	// State of the links "Partial Staging>>" and "Partial Unstaging>>" shown on the commit window
+	enum PartialStagingDisplayState : unsigned char
+	{
+		// both unset should never happen
+		SHOW_STAGING = 0x00000001, // unset when "Hide Staging"
+		SHOW_UNSTAGING = 0x00000002, // unset when "Hide Unstaging"
+	};
+	unsigned char m_stagingDisplayState;
 
 protected:
 	afx_msg void OnBnClickedSignOff();
