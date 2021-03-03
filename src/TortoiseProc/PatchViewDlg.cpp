@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,6 +121,19 @@ void CPatchViewDlg::EnableStaging(EnableStagingTypes enableStagingType)
 	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_STAGING_STAGESELECTEDLINES, enableStagingType == EnableStagingTypes::Staging ? MF_ENABLED : MF_DISABLED);
 	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_UNSTAGING_UNSTAGESELECTEDHUNKS, enableStagingType == EnableStagingTypes::Unstaging ? MF_ENABLED : MF_DISABLED);
 	EnableMenuItem(GetMenu()->GetSafeHmenu(), ID_UNSTAGING_UNSTAGESELECTEDLINES, enableStagingType == EnableStagingTypes::Unstaging ? MF_ENABLED : MF_DISABLED);
+
+	switch (enableStagingType)
+	{
+	case EnableStagingTypes::None:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH)));
+		break;
+	case EnableStagingTypes::Staging:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_INDEX_WORKTREE)));
+		break;
+	case EnableStagingTypes::Unstaging:
+		SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_HEAD_INDEX)));
+		break;
+	}
 
 	m_nEnableStagingType = enableStagingType; // This will be used to determine which context menu items to show
 }

@@ -1953,6 +1953,9 @@
 #define IDS_HOOKFAILED_TASK2            9118
 #define IDS_HOOKFAILED_TASK3            9119
 #define IDS_HOOKFAILED_TASK4            9120
+#define IDS_VIEWPATCH_HEAD_INDEX        9200
+#define IDS_VIEWPATCH_INDEX_WORKTREE    9201
+#define IDS_VIEWPATCH                   9202
 #define IDS_STATUSLIST_COLADD           9603
 #define IDS_STATUSLIST_COLDEL           9604
 #define IDS_B_T_NOTEMPTY                9619

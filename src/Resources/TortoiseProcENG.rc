@@ -5106,6 +5106,14 @@ BEGIN
     IDS_PROC_COMMIT_HIDE_STAGING "Hide Staging<<"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_VIEWPATCH_HEAD_INDEX "View Patch - HEAD to index"
+    IDS_VIEWPATCH_INDEX_WORKTREE 
+                            "View Patch - index to working tree"
+    IDS_VIEWPATCH "View Patch"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
