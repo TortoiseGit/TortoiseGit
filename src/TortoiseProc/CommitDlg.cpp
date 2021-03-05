@@ -772,7 +772,8 @@ void CCommitDlg::OnOK()
 
 	int nchecked = 0;
 
-	CMassiveGitTask mgtReAddAfterCommit(L"add --ignore-errors -f"); // these two commands will not be executed if staging support is enabled
+	// these two commands will not be executed if staging support is enabled and neither will everything else inside PrepareIndexForCommitWithoutStagingSupport()
+	CMassiveGitTask mgtReAddAfterCommit(L"add --ignore-errors -f");
 	CMassiveGitTask mgtReDelAfterCommit(L"rm --cached --ignore-unmatch");
 
 	CString cmd;
@@ -783,239 +784,13 @@ void CCommitDlg::OnOK()
 
 	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 
-	// If staging support is enabled, simply assume the index is up-to-date and skip all the code dealing with it
 	if (!m_bStagingSupport)
 	{
-		//first add all the unversioned files the user selected
-		//and check if all versioned files are selected
-
-		CSysProgressDlg sysProgressDlg;
-		if (nListItems >= 25)
-		{
-			sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
-			sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
-			sysProgressDlg.SetTime(true);
-			sysProgressDlg.SetShowProgressBar(true);
-			sysProgressDlg.ShowModal(this, true);
-		}
-
-		ULONGLONG currentTicks = GetTickCount64();
-
-		if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
-		{
-			bAddSuccess = false;
-			do
-			{
-				CAutoRepository repository(g_Git.GetGitRepository());
-				if (!repository)
-				{
-					CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-					break;
-				}
-
-				CGitHash revHash;
-				CString revRef = L"HEAD";
-				if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-					revRef = L"HEAD~1";
-				if (CGit::GetHash(repository, revHash, revRef))
-				{
-					MessageBox(g_Git.GetLibGit2LastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
-					break;
-				}
-
-				CAutoCommit commit;
-				if (!revHash.IsEmpty() && git_commit_lookup(commit.GetPointer(), repository, revHash))
-				{
-					CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not get last commit."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-					break;
-				}
-
-				CAutoTree tree;
-				if (!revHash.IsEmpty() && git_commit_tree(tree.GetPointer(), commit))
-				{
-					CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not read tree of commit."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-					break;
-				}
-
-				CAutoIndex index;
-				if (git_repository_index(index.GetPointer(), repository))
-				{
-					CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not get the repository index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-					break;
-				}
-
-				CAutoIndex indexOld;
-				if (!revHash.IsEmpty() && (git_index_new(indexOld.GetPointer()) || git_index_read_tree(indexOld, tree)))
-				{
-					CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not read the tree into the index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-					break;
-				}
-
-				bAddSuccess = true;
-
-				for (int j = 0; j < nListItems; ++j)
-				{
-					auto entry = m_ListCtrl.GetListEntry(j);
-
-					if (sysProgressDlg.IsVisible())
-					{
-						if (GetTickCount64() - currentTicks > 1000UL || j == nListItems - 1 || j == 0)
-						{
-							sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
-							sysProgressDlg.SetProgress(j, nListItems);
-							AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
-							currentTicks = GetTickCount64();
-						}
-					}
-
-					CStringA filePathA = CUnicodeUtils::GetUTF8(entry->GetGitPathString()).TrimRight(L'/');
-
-					if (entry->m_Checked && !m_bCommitMessageOnly)
-					{
-						if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-							git_index_remove_bypath(index, filePathA); // ignore error
-						else
-						{
-							if (git_index_add_bypath(index, filePathA))
-							{
-								bAddSuccess = false;
-								CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not add \"" + entry->GetGitPathString() + L"\" to index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-								break;
-							}
-						}
-
-						if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
-							git_index_remove_bypath(index, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString())); // ignore error
-
-						++nchecked;
-					}
-					else
-					{
-						if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-						{
-							git_index_remove_bypath(index, filePathA); // ignore error
-							mgtReAddAfterCommit.AddFile(*entry);
-
-							if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
-							{
-								const git_index_entry* oldIndexEntry = nullptr;
-								if ((oldIndexEntry = git_index_get_bypath(indexOld, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString()), 0)) == nullptr || git_index_add(index, oldIndexEntry))
-								{
-									bAddSuccess = false;
-									CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not reset \"" + entry->GetGitOldPathString() + L"\" to old index entry."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-									break;
-								}
-								mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
-							}
-						}
-						else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
-						{
-							const git_index_entry* oldIndexEntry = nullptr;
-							if ((oldIndexEntry = git_index_get_bypath(indexOld, filePathA, 0)) == nullptr || git_index_add(index, oldIndexEntry))
-							{
-								bAddSuccess = false;
-								CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not reset \"" + entry->GetGitPathString() + L"\" to old index entry."), L"TortoiseGit", MB_OK | MB_ICONERROR);
-								break;
-							}
-							if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
-								mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
-						}
-					}
-
-					if (sysProgressDlg.HasUserCancelled())
-					{
-						bAddSuccess = false;
-						break;
-					}
-				}
-				if (bAddSuccess && git_index_write(index))
-					bAddSuccess = false;
-
-				for (int j = 0; bAddSuccess && j < nListItems; ++j)
-					CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
-			} while (0);
-		}
-		else
-		{
-			// ***************************************************
-			// ATTENTION: Similar code in RebaseDlg.cpp!!!
-			// ***************************************************
-			CMassiveGitTask mgtAdd(L"add -f");
-			CMassiveGitTask mgtUpdateIndexForceRemove(L"update-index --force-remove");
-			CMassiveGitTask mgtUpdateIndex(L"update-index");
-			CMassiveGitTask mgtRm(L"rm --ignore-unmatch");
-			CMassiveGitTask mgtRmFCache(L"rm -f --cache");
-			CString resetCmd = L"reset";
-			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-				resetCmd += L" HEAD~1";
-			CMassiveGitTask mgtReset(resetCmd, TRUE, true);
-			for (int j = 0; j < nListItems; ++j)
-			{
-				auto entry = m_ListCtrl.GetListEntry(j);
-
-				if (entry->m_Checked && !m_bCommitMessageOnly)
-				{
-					if ((entry->m_Action & CTGitPath::LOGACTIONS_UNVER) || (entry->IsDirectory() && !(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)))
-						mgtAdd.AddFile(entry->GetGitPathString());
-					else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
-						mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());
-					else
-						mgtUpdateIndex.AddFile(entry->GetGitPathString());
-
-					if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
-						mgtRm.AddFile(entry->GetGitOldPathString());
-
-					++nchecked;
-				}
-				else
-				{
-					if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					{ //To init git repository, there are not HEAD, so we can use git reset command
-						mgtRmFCache.AddFile(entry->GetGitPathString());
-						mgtReAddAfterCommit.AddFile(*entry);
-
-						if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
-						{
-							mgtReset.AddFile(entry->GetGitOldPathString());
-							mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
-						}
-					}
-					else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
-					{
-						mgtReset.AddFile(entry->GetGitPathString());
-						if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
-							mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
-					}
-				}
-
-				if (sysProgressDlg.HasUserCancelled())
-				{
-					bAddSuccess = false;
-					break;
-				}
-			}
-
-			CMassiveGitTask tasks[] = { mgtAdd, mgtUpdateIndexForceRemove, mgtUpdateIndex, mgtRm, mgtRmFCache, mgtReset };
-			int progress = 0, maxProgress = 0;
-			for (int j = 0; j < _countof(tasks); ++j)
-				maxProgress += tasks[j].GetListCount();
-			for (int j = 0; j < _countof(tasks); ++j)
-				bAddSuccess = bAddSuccess && UpdateIndex(tasks[j], sysProgressDlg, progress += tasks[j].GetListCount(), maxProgress);
-
-			if (sysProgressDlg.HasUserCancelled())
-				bAddSuccess = false;
-
-			for (int j = 0; bAddSuccess && j < nListItems; ++j)
-				CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
-		}
-
-		if (sysProgressDlg.HasUserCancelled())
-			bAddSuccess = false;
-
-		sysProgressDlg.Stop();
+		PrepareIndexForCommitWithoutStagingSupport(nListItems, bAddSuccess, nchecked, mgtReAddAfterCommit, mgtReDelAfterCommit);
 	}
-	else // Staging support enabled
+	else // Staging support is enabled. Simply assume the index is up-to-date and skip all the code dealing with it (inside PrepareIndexForCommitWithoutStagingSupport)
 	{
+		// The code below that deals with the shell icons is also done when staging support is disabled (i.e. inside PrepareIndexForCommitWithoutStagingSupport)
 		for (int j = 0; bAddSuccess && j < nListItems; ++j)
 			CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
 	}
@@ -1334,6 +1109,237 @@ void CCommitDlg::OnOK()
 	}
 
 	CShellUpdater::Instance().Flush();
+}
+
+void CCommitDlg::PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool& bAddSuccess, int& nchecked, CMassiveGitTask& mgtReAddAfterCommit, CMassiveGitTask& mgtReDelAfterCommit)
+{
+	//first add all the unversioned files the user selected
+	//and check if all versioned files are selected
+
+	CSysProgressDlg sysProgressDlg;
+	if (nListItems >= 25)
+	{
+		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PREPARECOMMIT)));
+		sysProgressDlg.SetLine(1, CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_UPDATEINDEX)));
+		sysProgressDlg.SetTime(true);
+		sysProgressDlg.SetShowProgressBar(true);
+		sysProgressDlg.ShowModal(this, true);
+	}
+
+	ULONGLONG currentTicks = GetTickCount64();
+
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
+	{
+		bAddSuccess = false;
+		do
+		{
+			CAutoRepository repository(g_Git.GetGitRepository());
+			if (!repository)
+			{
+				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not open repository."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			CGitHash revHash;
+			CString revRef = L"HEAD";
+			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+				revRef = L"HEAD~1";
+			if (CGit::GetHash(repository, revHash, revRef))
+			{
+				MessageBox(g_Git.GetLibGit2LastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
+				break;
+			}
+
+			CAutoCommit commit;
+			if (!revHash.IsEmpty() && git_commit_lookup(commit.GetPointer(), repository, revHash))
+			{
+				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not get last commit."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			CAutoTree tree;
+			if (!revHash.IsEmpty() && git_commit_tree(tree.GetPointer(), commit))
+			{
+				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not read tree of commit."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			CAutoIndex index;
+			if (git_repository_index(index.GetPointer(), repository))
+			{
+				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not get the repository index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			CAutoIndex indexOld;
+			if (!revHash.IsEmpty() && (git_index_new(indexOld.GetPointer()) || git_index_read_tree(indexOld, tree)))
+			{
+				CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not read the tree into the index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				break;
+			}
+
+			bAddSuccess = true;
+
+			for (int j = 0; j < nListItems; ++j)
+			{
+				auto entry = m_ListCtrl.GetListEntry(j);
+
+				if (sysProgressDlg.IsVisible())
+				{
+					if (GetTickCount64() - currentTicks > 1000UL || j == nListItems - 1 || j == 0)
+					{
+						sysProgressDlg.SetLine(2, entry->GetGitPathString(), true);
+						sysProgressDlg.SetProgress(j, nListItems);
+						AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
+						currentTicks = GetTickCount64();
+					}
+				}
+
+				CStringA filePathA = CUnicodeUtils::GetUTF8(entry->GetGitPathString()).TrimRight(L'/');
+
+				if (entry->m_Checked && !m_bCommitMessageOnly)
+				{
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+						git_index_remove_bypath(index, filePathA); // ignore error
+					else
+					{
+						if (git_index_add_bypath(index, filePathA))
+						{
+							bAddSuccess = false;
+							CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not add \"" + entry->GetGitPathString() + L"\" to index."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+							break;
+						}
+					}
+
+					if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
+						git_index_remove_bypath(index, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString())); // ignore error
+
+					++nchecked;
+				}
+				else
+				{
+					if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					{
+						git_index_remove_bypath(index, filePathA); // ignore error
+						mgtReAddAfterCommit.AddFile(*entry);
+
+						if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+						{
+							const git_index_entry* oldIndexEntry = nullptr;
+							if ((oldIndexEntry = git_index_get_bypath(indexOld, CUnicodeUtils::GetUTF8(entry->GetGitOldPathString()), 0)) == nullptr || git_index_add(index, oldIndexEntry))
+							{
+								bAddSuccess = false;
+								CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not reset \"" + entry->GetGitOldPathString() + L"\" to old index entry."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+								break;
+							}
+							mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+						}
+					}
+					else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+					{
+						const git_index_entry* oldIndexEntry = nullptr;
+						if ((oldIndexEntry = git_index_get_bypath(indexOld, filePathA, 0)) == nullptr || git_index_add(index, oldIndexEntry))
+						{
+							bAddSuccess = false;
+							CMessageBox::Show(GetSafeHwnd(), CGit::GetLibGit2LastErr(L"Could not reset \"" + entry->GetGitPathString() + L"\" to old index entry."), L"TortoiseGit", MB_OK | MB_ICONERROR);
+							break;
+						}
+						if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
+							mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
+					}
+				}
+
+				if (sysProgressDlg.HasUserCancelled())
+				{
+					bAddSuccess = false;
+					break;
+				}
+			}
+			if (bAddSuccess && git_index_write(index))
+				bAddSuccess = false;
+
+			for (int j = 0; bAddSuccess && j < nListItems; ++j)
+				CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
+		} while (0);
+	}
+	else
+	{
+		// ***************************************************
+		// ATTENTION: Similar code in RebaseDlg.cpp!!!
+		// ***************************************************
+		CMassiveGitTask mgtAdd(L"add -f");
+		CMassiveGitTask mgtUpdateIndexForceRemove(L"update-index --force-remove");
+		CMassiveGitTask mgtUpdateIndex(L"update-index");
+		CMassiveGitTask mgtRm(L"rm --ignore-unmatch");
+		CMassiveGitTask mgtRmFCache(L"rm -f --cache");
+		CString resetCmd = L"reset";
+		if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
+			resetCmd += L" HEAD~1";
+		CMassiveGitTask mgtReset(resetCmd, TRUE, true);
+		for (int j = 0; j < nListItems; ++j)
+		{
+			auto entry = m_ListCtrl.GetListEntry(j);
+
+			if (entry->m_Checked && !m_bCommitMessageOnly)
+			{
+				if ((entry->m_Action & CTGitPath::LOGACTIONS_UNVER) || (entry->IsDirectory() && !(entry->m_Action & CTGitPath::LOGACTIONS_DELETED)))
+					mgtAdd.AddFile(entry->GetGitPathString());
+				else if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED)
+					mgtUpdateIndexForceRemove.AddFile(entry->GetGitPathString());
+				else
+					mgtUpdateIndex.AddFile(entry->GetGitPathString());
+
+				if ((entry->m_Action & CTGitPath::LOGACTIONS_REPLACED) && !entry->GetGitOldPathString().IsEmpty())
+					mgtRm.AddFile(entry->GetGitOldPathString());
+
+				++nchecked;
+			}
+			else
+			{
+				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
+				{ //To init git repository, there are not HEAD, so we can use git reset command
+					mgtRmFCache.AddFile(entry->GetGitPathString());
+					mgtReAddAfterCommit.AddFile(*entry);
+
+					if (entry->m_Action & CTGitPath::LOGACTIONS_REPLACED && !entry->GetGitOldPathString().IsEmpty())
+					{
+						mgtReset.AddFile(entry->GetGitOldPathString());
+						mgtReDelAfterCommit.AddFile(entry->GetGitOldPathString());
+					}
+				}
+				else if (!(entry->m_Action & CTGitPath::LOGACTIONS_UNVER))
+				{
+					mgtReset.AddFile(entry->GetGitPathString());
+					if (entry->m_Action & CTGitPath::LOGACTIONS_DELETED && !(entry->m_Action & CTGitPath::LOGACTIONS_MISSING))
+						mgtReDelAfterCommit.AddFile(entry->GetGitPathString());
+				}
+			}
+
+			if (sysProgressDlg.HasUserCancelled())
+			{
+				bAddSuccess = false;
+				break;
+			}
+		}
+
+		CMassiveGitTask tasks[] = { mgtAdd, mgtUpdateIndexForceRemove, mgtUpdateIndex, mgtRm, mgtRmFCache, mgtReset };
+		int progress = 0, maxProgress = 0;
+		for (int j = 0; j < _countof(tasks); ++j)
+			maxProgress += tasks[j].GetListCount();
+		for (int j = 0; j < _countof(tasks); ++j)
+			bAddSuccess = bAddSuccess && UpdateIndex(tasks[j], sysProgressDlg, progress += tasks[j].GetListCount(), maxProgress);
+
+		if (sysProgressDlg.HasUserCancelled())
+			bAddSuccess = false;
+
+		for (int j = 0; bAddSuccess && j < nListItems; ++j)
+			CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
+	}
+
+	if (sysProgressDlg.HasUserCancelled())
+		bAddSuccess = false;
+
+	sysProgressDlg.Stop();
 }
 
 void CCommitDlg::SaveSplitterPos()
