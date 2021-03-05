@@ -34,6 +34,7 @@
 #include "MenuButton.h"
 #include "EnableStagingTypes.h"
 #include <regex>
+#include "MassiveGitTask.h"
 
 #define ENDDIALOGTIMER	100
 #define REFRESHTIMER	101
@@ -137,6 +138,7 @@ protected:
 
 	virtual BOOL OnInitDialog() override;
 	virtual void OnOK() override;
+	void PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool& bAddSuccess, int& nchecked, CMassiveGitTask& mgtReAddAfterCommit, CMassiveGitTask& mgtReDelAfterCommit);
 	virtual void OnCancel() override;
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
