@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,6 +38,8 @@ CGitSwitchDlg::CGitSwitchDlg(CWnd* pParent /*=nullptr*/)
 	, m_bTrack(BST_INDETERMINATE)
 	, m_bForce(BST_UNCHECKED)
 	, m_bBranchOverride(BST_UNCHECKED)
+	, m_regNewBranchForTag(L"Software\\TortoiseGit\\SwitchToTagNewBranch", TRUE)
+	, m_regNewBranchForCommit(L"Software\\TortoiseGit\\SwitchToCommitNewBranch", TRUE)
 {
 }
 
@@ -124,7 +126,7 @@ BOOL CGitSwitchDlg::OnInitDialog()
 void CGitSwitchDlg::OnBnClickedChooseRadioHost()
 {
 	OnBnClickedChooseRadio();
-	SetDefaultName(TRUE);
+	SetDefaultName();
 }
 
 void CGitSwitchDlg::OnBnClickedShow()
@@ -161,12 +163,16 @@ void CGitSwitchDlg::OnBnClickedOk()
 				return;
 		}
 	}
+	if (int radio = GetCheckedRadioButton(IDC_RADIO_BRANCH, IDC_RADIO_VERSION); radio == IDC_RADIO_VERSION)
+		m_regNewBranchForCommit = m_bBranch;
+	else if (radio == IDC_RADIO_TAGS)
+		m_regNewBranchForTag = m_bBranch;
 
 	UpdateRevsionName();
 	//this->m_Version.SaveHistory();
 	OnOK();
 }
-void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
+void CGitSwitchDlg::SetDefaultName()
 {
 	this->UpdateData(TRUE);
 	this->UpdateRevsionName();
@@ -186,8 +192,7 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(TRUE);
 		this->m_NewBranch=version;
 
-		if(isUpdateCreateBranch)
-			this->m_bBranch=TRUE;
+		m_bBranch = TRUE;
 
 		this->m_bTrack = 2;
 	}
@@ -200,17 +205,13 @@ void CGitSwitchDlg::SetDefaultName(BOOL isUpdateCreateBranch)
 		m_NewBranch = L"Branch_" + version;
 		this->GetDlgItem(IDC_CHECK_TRACK)->EnableWindow(FALSE);
 
-		if(isUpdateCreateBranch)
-			this->m_bBranch=FALSE;
+		m_bBranch = FALSE;
 
 		this->m_bTrack=FALSE;
 	}
 
-	if (radio==IDC_RADIO_VERSION)
-	{
-		if(isUpdateCreateBranch)
-			this->m_bBranch=TRUE;
-	}
+	if ((radio == IDC_RADIO_VERSION && m_regNewBranchForCommit) || (radio == IDC_RADIO_TAGS && m_regNewBranchForTag))
+		m_bBranch = TRUE;
 
 	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
 	GetDlgItem(IDC_CHECK_BRANCHOVERRIDE)->EnableWindow(m_bBranch);
@@ -249,7 +250,7 @@ void CGitSwitchDlg::OnEnChangeEditBranch()
 
 void CGitSwitchDlg::OnVersionChanged()
 {
-	SetDefaultName(TRUE);
+	SetDefaultName();
 }
 void CGitSwitchDlg::OnBnClickedCheckBranch()
 {
