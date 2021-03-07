@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -3070,7 +3070,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 	EXPECT_STREQ(L"forconflict", ref);
 
 	// stash
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
+	EXPECT_EQ(1, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb")));
 	EXPECT_STREQ(CString(L"18da7c332dcad0f37f9977d9176dce0b0c66f3eb").Left(m_Git.GetShortHASHLength()), ref);
 
 	// tag only
@@ -3086,7 +3086,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GuessRefForHash)
 	EXPECT_STREQ(L"origin/master", ref);
 
 	// no ref
-	EXPECT_EQ(0, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
+	EXPECT_EQ(1, m_Git.GuessRefForHash(ref, CGitHash::FromHexStr(L"1ce788330fd3a306c8ad37654063ceee13a7f172")));
 	EXPECT_STREQ(CString(L"1ce788330fd3a306c8ad37654063ceee13a7f172").Left(m_Git.GetShortHASHLength()), ref);
 }
 
