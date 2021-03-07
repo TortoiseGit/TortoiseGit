@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,6 +34,7 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=nullptr*/)
 	, m_bForce(FALSE)
 	, CChooseVersion(this)
 	, m_bIsTag(0)
+	, m_regNewBranch(L"Software\\TortoiseGit\\NewBranchSwitchTo", FALSE)
 	, m_bSwitch(BST_UNCHECKED)	// default switch to checkbox not selected
 	, m_bTrack(BST_INDETERMINATE)
 	, m_bSign(BST_UNCHECKED)
@@ -92,6 +93,11 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
 		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_GROUP_MESSAGE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_DESCRIPTION)));
+		if (!!m_regNewBranch)
+		{
+			m_bSwitch = BST_CHECKED;
+			UpdateData(FALSE);
+		}
 	}
 
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
@@ -181,6 +187,8 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_CONTINUEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}
+	if (!m_bIsTag)
+		m_regNewBranch = (m_bSwitch == BST_CHECKED);
 
 	this->UpdateRevsionName();
 	OnOK();

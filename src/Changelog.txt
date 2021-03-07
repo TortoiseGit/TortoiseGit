@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #3705: No "Move to Changelist" option in check for modifications dialog
  * Fixes issue #3695: Keep the current line in the view when resizing with line-wrap on in TortoiseGitMerge
  * Switch dialog: Remember last state of the "Create New branch" checkbox state for switching to a tag or commit
+ * Fixed issue #3181: Branch dialog: Create branch should remember "switch to" state
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working
