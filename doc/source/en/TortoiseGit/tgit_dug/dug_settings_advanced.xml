@@ -92,6 +92,16 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">ConflictDontGuessBranchNames</term>
+			<listitem>
+				<para>
+					When merging a conflict, TortoiseGit tries to find a friendly branch name for the context menu and for the title in TortoiseGitMerge to make merging easier.
+					As Git does only stores the <literal>MERGE_HEAD</literal> as a commit hash, TortoiseGit has to guess the branch name (cf. <ulink url="https://tortoisegit.org/issue/3700"><citetitle>issue #3700</citetitle></ulink>) which might be wrong if a commit has several branches. You can use this option to disable this heuristic.
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">CygwinHack</term>
 			<listitem>
 				<para>

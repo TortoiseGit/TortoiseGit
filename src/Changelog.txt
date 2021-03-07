@@ -19,6 +19,8 @@ Released: unreleased
  * Fixes issue #3695: Keep the current line in the view when resizing with line-wrap on in TortoiseGitMerge
  * Switch dialog: Remember last state of the "Create New branch" checkbox state for switching to a tag or commit
  * Fixed issue #3181: Branch dialog: Create branch should remember "switch to" state
+ * Fixed issue #3700: Resolve the conflicts did not show the merge_head with correct branch name
+   The branch detection heuristic can now be disabled using the advanced setting "ConflictDontGuessBranchNames".
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working

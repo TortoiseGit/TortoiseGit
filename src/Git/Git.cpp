@@ -2065,7 +2065,7 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 	if (it == map.cend())
 	{
 		ref = hash.ToString(GetShortHASHLength());
-		return 0;
+		return 1;
 	}
 
 	const auto& reflist = it->second;
@@ -2080,7 +2080,7 @@ int CGit::GuessRefForHash(CString& ref, const CGitHash& hash)
 	}
 
 	ref = hash.ToString(GetShortHASHLength());
-	return 0;
+	return 1;
 }
 
 int CGit::GetBranchDescriptions(MAP_STRING_STRING& map)

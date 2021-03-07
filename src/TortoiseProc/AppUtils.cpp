@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1731,6 +1731,7 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CGitHash
 {
 	if (baseText)
 		baseText->LoadString(IDS_PROC_DIFF_BASE);
+	static bool guessBranch = (CRegDWORD(L"Software\\TortoiseGit\\ConflictDontGuessBranchNames", FALSE) == FALSE);
 	if (rebaseActive)
 	{
 		CString adminDir;
@@ -1739,8 +1740,11 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CGitHash
 		if (!CStringUtils::ReadStringFromTextFile(adminDir + L"tgitrebase.active\\onto", mineText))
 		{
 			CGitHash hash;
-			if (!g_Git.GetHash(hash, L"rebase-apply/onto"))
-				g_Git.GuessRefForHash(mineText, hash);
+			if (guessBranch && !g_Git.GetHash(hash, L"rebase-apply/onto"))
+			{
+				if (g_Git.GuessRefForHash(mineText, hash) == 0)
+					mineText.AppendFormat(L", %s", static_cast<LPCTSTR>(hash.ToString(g_Git.GetShortHASHLength())));
+			}
 			if (mineHash)
 				*mineHash = hash;
 		}
@@ -1766,10 +1770,13 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CGitHash
 		if (!g_Git.GetHash(hash, infotext.headref))
 		{
 			CString guessedRef;
-			if (!infotext.guessRef)
+			if (!guessBranch || !infotext.guessRef)
 				guessedRef = hash.ToString(g_Git.GetShortHASHLength());
 			else
-				g_Git.GuessRefForHash(guessedRef, hash);
+			{
+				if (g_Git.GuessRefForHash(guessedRef, hash) == 0)
+					guessedRef.AppendFormat(L", %s", static_cast<LPCTSTR>(hash.ToString(g_Git.GetShortHASHLength())));
+			}
 			theirsText.FormatMessage(infotext.theirstext, infotext.headref, static_cast<LPCTSTR>(guessedRef));
 			if (theirsHash)
 				*theirsHash = hash;
