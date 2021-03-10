@@ -134,7 +134,8 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 <listitem>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
-        lines, show only a partial prefix.
+        lines, show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis>
+        hexdigits long that uniquely refers the object.
         Non default number of digits can be specified with --abbrev=&lt;n&gt;.
 </simpara>
 </listitem>

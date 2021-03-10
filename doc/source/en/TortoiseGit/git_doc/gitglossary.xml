@@ -63,7 +63,7 @@
 </term>
 <listitem>
 <simpara>
-        A "branch" is an active line of development.  The most recent
+        A "branch" is a line of development.  The most recent
         <link linkend="gitglossary(7)_def_commit">commit</link> on a branch is referred to as the tip of
         that branch.  The tip of the branch is referenced by a branch
         <link linkend="gitglossary(7)_def_head">head</link>, which moves forward as additional development

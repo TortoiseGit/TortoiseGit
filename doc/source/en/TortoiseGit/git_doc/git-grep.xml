@@ -629,7 +629,9 @@ providing this option will cause it to die.</simpara>
         Show the surrounding text from the previous line containing a
         function name up to the one before the next function name,
         effectively showing the whole function in which the match was
-        found.
+        found. The function names are determined in the same way as
+        <emphasis>git diff</emphasis> works out patch hunk headers (see <emphasis>Defining a
+        custom hunk-header</emphasis> in <xref linkend="gitattributes(5)" />).
 </simpara>
 </listitem>
 </varlistentry>

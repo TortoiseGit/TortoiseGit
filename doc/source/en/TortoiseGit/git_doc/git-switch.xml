@@ -150,6 +150,8 @@ to always checkout remote branches from there if <emphasis>&lt;branch&gt;</empha
 ambiguous but exists on the <emphasis>origin</emphasis> remote. See also
 <emphasis>checkout.defaultRemote</emphasis> in <xref linkend="git-config(1)" />.</simpara>
 <simpara><emphasis>--guess</emphasis> is the default behavior. Use <emphasis>--no-guess</emphasis> to disable it.</simpara>
+<simpara>The default behavior can be set via the <emphasis>checkout.guess</emphasis> configuration
+variable.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

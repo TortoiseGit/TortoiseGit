@@ -88,45 +88,48 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 </term>
 <listitem>
 <simpara>
-        Annotate only the given line range. May be specified multiple times.
-        Overlapping ranges are allowed.
+        Annotate only the line range given by <emphasis>&lt;start&gt;,&lt;end&gt;</emphasis>,
+        or by the function name regex <emphasis>&lt;funcname&gt;</emphasis>.
+        May be specified multiple times. Overlapping ranges are allowed.
 </simpara>
-<simpara>&lt;start&gt; and &lt;end&gt; are optional. -L &lt;start&gt; or -L &lt;start&gt;, spans from
-&lt;start&gt; to end of file. -L ,&lt;end&gt; spans from start of file to &lt;end&gt;.</simpara>
-<simpara>&lt;start&gt; and &lt;end&gt; can take one of these forms:</simpara>
+<simpara><emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis> are optional. <emphasis>-L &lt;start&gt;</emphasis> or <emphasis>-L &lt;start&gt;,</emphasis> spans from
+<emphasis>&lt;start&gt;</emphasis> to end of file. <emphasis>-L ,&lt;end&gt;</emphasis> spans from start of file to <emphasis>&lt;end&gt;</emphasis>.</simpara>
+<simpara><emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis> can take one of these forms:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
 number
 </simpara>
-<simpara>If &lt;start&gt; or &lt;end&gt; is a number, it specifies an
+<simpara>If <emphasis>&lt;start&gt;</emphasis> or <emphasis>&lt;end&gt;</emphasis> is a number, it specifies an
 absolute line number (lines count from 1).</simpara>
 </listitem>
 <listitem>
 <simpara>
-/regex/
+<emphasis>/regex/</emphasis>
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex. If &lt;start&gt; is a regex, it will search from the end of
+POSIX regex. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
 the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
-If &lt;start&gt; is ^/regex/, it will search from the start of file.
-If &lt;end&gt; is a regex, it will search
-starting at the line given by &lt;start&gt;.</simpara>
+If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/regex/</emphasis>, it will search from the start of file.
+If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search
+starting at the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
 +offset or -offset
 </simpara>
-<simpara>This is only valid for &lt;end&gt; and will specify a number
-of lines before or after the line given by &lt;start&gt;.</simpara>
+<simpara>This is only valid for <emphasis>&lt;end&gt;</emphasis> and will specify a number
+of lines before or after the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 </itemizedlist>
-<simpara>If :&lt;funcname&gt; is given in place of &lt;start&gt; and &lt;end&gt;, it is a
+<simpara>If <emphasis>:&lt;funcname&gt;</emphasis> is given in place of <emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis>, it is a
 regular expression that denotes the range from the first funcname line
-that matches &lt;funcname&gt;, up to the next funcname line. :&lt;funcname&gt;
+that matches <emphasis>&lt;funcname&gt;</emphasis>, up to the next funcname line. <emphasis>:&lt;funcname&gt;</emphasis>
 searches from the end of the previous <emphasis>-L</emphasis> range, if any, otherwise
-from the start of file. ^:&lt;funcname&gt; searches from the start of
-file.</simpara>
+from the start of file. <emphasis>^:&lt;funcname&gt;</emphasis> searches from the start of
+file. The function names are determined in the same way as <emphasis>git diff</emphasis>
+works out patch hunk headers (see <emphasis>Defining a custom hunk-header</emphasis>
+in <xref linkend="gitattributes(5)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -464,7 +467,9 @@ take effect.</simpara>
 <listitem>
 <simpara>
         Instead of using the default 7+1 hexadecimal digits as the
-        abbreviated object name, use &lt;n&gt;+1 digits. Note that 1 column
+        abbreviated object name, use &lt;m&gt;+1 digits, where &lt;m&gt; is at
+        least &lt;n&gt; but ensures the commit object names are unique.
+        Note that 1 column
         is used for a caret to mark the boundary commit.
 </simpara>
 </listitem>

@@ -194,6 +194,9 @@ names an existing object that is a commit-ish (i.e. a commit, or an
 annotated tag that points at a commit).  To make sure that <emphasis>$VAR</emphasis>
 names an existing object of any type, <emphasis>git rev-parse "$VAR^{object}"</emphasis>
 can be used.</simpara>
+<simpara>Note that if you are verifying a name from an untrusted source, it is
+wise to use <emphasis>--end-of-options</emphasis> so that the name argument is not mistaken
+for another option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1350,14 +1353,14 @@ Print the object name of the current commit:
 <simpara>
 Print the commit object name from the revision in the $REV shell variable:
 </simpara>
-<screen>$ git rev-parse --verify $REV^{commit}</screen>
+<screen>$ git rev-parse --verify --end-of-options $REV^{commit}</screen>
 <simpara>This will error out if $REV is empty or not a valid revision.</simpara>
 </listitem>
 <listitem>
 <simpara>
 Similar to above:
 </simpara>
-<screen>$ git rev-parse --default master --verify $REV</screen>
+<screen>$ git rev-parse --default master --verify --end-of-options $REV</screen>
 <simpara>but if $REV is empty, the commit object name from master will be printed.</simpara>
 </listitem>
 </itemizedlist>

@@ -67,6 +67,7 @@
 		<xi:include href="./git-filter-branch.xml"/>
 		<xi:include href="./git-fmt-merge-msg.xml"/>
 		<xi:include href="./git-for-each-ref.xml"/>
+		<xi:include href="./git-for-each-repo.xml"/>
 		<xi:include href="./git-format-patch.xml"/>
 		<xi:include href="./git-fsck-objects.xml"/>
 		<xi:include href="./git-fsck.xml"/>

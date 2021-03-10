@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-for-each-repo(1)">
+    <title>git-for-each-repo(1)</title>
+<indexterm>
+<primary>git-for-each-repo(1)</primary>
+</indexterm>
+<simplesect id="git-for-each-repo(1)__name">
+<title>NAME</title>
+<simpara>git-for-each-repo - Run a Git command on a list of repositories</simpara>
+</simplesect>
+<simplesect id="git-for-each-repo(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git for-each-repo</emphasis> --config=&lt;config&gt; [--] &lt;arguments&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-for-each-repo(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Run a Git command on a list of repositories. The arguments after the
+known options or <emphasis>--</emphasis> indicator are used as the arguments for the Git
+subprocess.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
+<simpara>For example, we could run maintenance on each of a list of repositories
+stored in a <emphasis>maintenance.repo</emphasis> config variable using</simpara>
+<screen>git for-each-repo --config=maintenance.repo maintenance run</screen>
+<simpara>This will run <emphasis>git -C &lt;repo&gt; maintenance run</emphasis> for each value <emphasis>&lt;repo&gt;</emphasis>
+in the multi-valued config variable <emphasis>maintenance.repo</emphasis>.</simpara>
+</simplesect>
+<simplesect id="git-for-each-repo(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--config=&lt;config&gt;
+</term>
+<listitem>
+<simpara>
+        Use the given config variable as a multi-valued list storing
+        absolute path names. Iterate on that list of paths to run
+        the given arguments.
+</simpara>
+<simpara>These config values are loaded from system, global, and local Git config,
+as available. If <emphasis>git for-each-repo</emphasis> is run in a directory that is not a
+Git repository, then only the system and global config is used.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-for-each-repo(1)__subprocess_behavior">
+<title>SUBPROCESS BEHAVIOR</title>
+<simpara>If any <emphasis>git -C &lt;repo&gt; &lt;arguments&gt;</emphasis> subprocess returns a non-zero exit code,
+then the <emphasis>git for-each-repo</emphasis> process returns that exit code without running
+more subprocesses.</simpara>
+<simpara>Each <emphasis>git -C &lt;repo&gt; &lt;arguments&gt;</emphasis> subprocess inherits the standard file
+descriptors <emphasis>stdin</emphasis>, <emphasis>stdout</emphasis>, and <emphasis>stderr</emphasis>.</simpara>
+</simplesect>
+<simplesect id="git-for-each-repo(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

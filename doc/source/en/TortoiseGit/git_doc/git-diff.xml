@@ -14,8 +14,8 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git diff</emphasis> [&lt;options&gt;] [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
-<emphasis>git diff</emphasis> [&lt;options&gt;] --cached [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
-<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt; [&lt;commit&gt;&#8230;] &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] --cached [--merge-base] [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] [--merge-base] &lt;commit&gt; [&lt;commit&gt;&#8230;] &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt;&#8230;&lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 <emphasis>git diff</emphasis> [&lt;options&gt;] &lt;blob&gt; &lt;blob&gt;
 <emphasis>git diff</emphasis> [&lt;options&gt;] --no-index [--] &lt;path&gt; &lt;path&gt;</literallayout>
@@ -59,7 +59,7 @@ files on disk.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git diff</emphasis> [&lt;options&gt;] --cached [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] --cached [--merge-base] [&lt;commit&gt;] [--] [&lt;path&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
@@ -71,6 +71,9 @@ files on disk.</simpara>
         &lt;commit&gt; is not given, it shows all staged changes.
         --staged is a synonym of --cached.
 </simpara>
+<simpara>If --merge-base is given, instead of using &lt;commit&gt;, use the merge base
+of &lt;commit&gt; and HEAD.  <emphasis>git diff --merge-base A</emphasis> is equivalent to
+<emphasis>git diff $(git merge-base A HEAD)</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -89,13 +92,16 @@ files on disk.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git diff</emphasis> [&lt;options&gt;] &lt;commit&gt; &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
+<emphasis>git diff</emphasis> [&lt;options&gt;] [--merge-base] &lt;commit&gt; &lt;commit&gt; [--] [&lt;path&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
         This is to view the changes between two arbitrary
         &lt;commit&gt;.
 </simpara>
+<simpara>If --merge-base is given, use the merge base of the two commits for the
+"before" side.  <emphasis>git diff --merge-base A B</emphasis> is equivalent to
+<emphasis>git diff $(git merge-base A B) B</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -107,7 +113,7 @@ files on disk.</simpara>
         This form is to view the results of a merge commit.  The first
         listed &lt;commit&gt; must be the merge itself; the remaining two or
         more commits should be its parents.  A convenient way to produce
-        the desired set of revisions is to use the &#94;@ suffix.
+        the desired set of revisions is to use the <emphasis>^@</emphasis> suffix.
         For instance, if <emphasis>master</emphasis> names a merge commit, <emphasis>git diff master
         master^@</emphasis> gives the same combined diff as <emphasis>git show master</emphasis>.
 </simpara>
@@ -119,7 +125,7 @@ files on disk.</simpara>
 </term>
 <listitem>
 <simpara>
-        This is synonymous to the earlier form (without the "..") for
+        This is synonymous to the earlier form (without the <emphasis>..</emphasis>) for
         viewing the changes between two arbitrary &lt;commit&gt;.  If &lt;commit&gt; on
         one side is omitted, it will have the same effect as
         using HEAD instead.
@@ -134,8 +140,8 @@ files on disk.</simpara>
 <simpara>
         This form is to view the changes on the branch containing
         and up to the second &lt;commit&gt;, starting at a common ancestor
-        of both &lt;commit&gt;.  "git diff A...B" is equivalent to
-        "git diff $(git merge-base A B) B".  You can omit any one
+        of both &lt;commit&gt;.  <emphasis>git diff A...B</emphasis> is equivalent to
+        <emphasis>git diff $(git merge-base A B) B</emphasis>.  You can omit any one
         of &lt;commit&gt;, which has the same effect as using HEAD instead.
 </simpara>
 </listitem>
@@ -143,13 +149,13 @@ files on disk.</simpara>
 </variablelist>
 <simpara>Just in case you are doing something exotic, it should be
 noted that all of the &lt;commit&gt; in the above description, except
-in the last two forms that use ".." notations, can be any
-&lt;tree&gt;.</simpara>
+in the <emphasis>--merge-base</emphasis> case and in the last two forms that use <emphasis>..</emphasis>
+notations, can be any &lt;tree&gt;.</simpara>
 <simpara>For a more complete list of ways to spell &lt;commit&gt;, see
 "SPECIFYING REVISIONS" section in <xref linkend="gitrevisions(7)" />.
 However, "diff" is about comparing two <emphasis>endpoints</emphasis>, not ranges,
-and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
-"&lt;commit&gt;...&lt;commit&gt;") do not mean a range as defined in the
+and the range notations (<emphasis>&lt;commit&gt;..&lt;commit&gt;</emphasis> and
+<emphasis>&lt;commit&gt;...&lt;commit&gt;</emphasis>) do not mean a range as defined in the
 "SPECIFYING RANGES" section in <xref linkend="gitrevisions(7)" />.</simpara>
 <variablelist>
 <varlistentry>
@@ -209,8 +215,8 @@ and the range notations ("&lt;commit&gt;..&lt;commit&gt;" and
 <listitem>
 <simpara>
         Generate diffs with &lt;n&gt; lines of context instead of
-        the usual three. Implies <emphasis>--patch</emphasis>.
-        Implies <emphasis>-p</emphasis>.
+        the usual three.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1023,7 +1029,8 @@ override configuration settings.</simpara>
 <listitem>
 <simpara>
         In addition to <emphasis>--full-index</emphasis>, output a binary diff that
-        can be applied with <emphasis>git-apply</emphasis>. Implies <emphasis>--patch</emphasis>.
+        can be applied with <emphasis>git-apply</emphasis>.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1035,7 +1042,8 @@ override configuration settings.</simpara>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.
+        lines, show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis>
+        hexdigits long that uniquely refers the object.
         In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
         precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
         names will be shown regardless of <emphasis>--abbrev</emphasis>.
@@ -1422,6 +1430,20 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+-I&lt;regex&gt;
+</term>
+<term>
+--ignore-matching-lines=&lt;regex&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose all lines match &lt;regex&gt;.  This option may
+        be specified more than once.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --inter-hunk-context=&lt;lines&gt;
 </term>
 <listitem>
@@ -1442,7 +1464,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </term>
 <listitem>
 <simpara>
-        Show whole surrounding functions of changes.
+        Show whole function as context lines for each change.
+        The function names are determined in the same way as
+        <emphasis>git diff</emphasis> works out patch hunk headers (see <emphasis>Defining a
+        custom hunk-header</emphasis> in <xref linkend="gitattributes(5)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -2200,13 +2225,13 @@ Changes in the working tree not yet staged for the next commit.
 <callout arearefs="git-diff_CO1-2">
 <para>
 Changes between the index and your last commit; what you
-    would be committing if you run "git commit" without "-a" option.
+    would be committing if you run <emphasis>git commit</emphasis> without <emphasis>-a</emphasis> option.
 </para>
 </callout>
 <callout arearefs="git-diff_CO1-3">
 <para>
 Changes in the working tree since your last commit; what you
-    would be committing if you run "git commit -a"
+    would be committing if you run <emphasis>git commit -a</emphasis>
 </para>
 </callout>
 </calloutlist>

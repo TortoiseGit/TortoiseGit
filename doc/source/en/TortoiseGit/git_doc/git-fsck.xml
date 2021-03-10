@@ -304,28 +304,6 @@ using <emphasis>git commit-graph verify</emphasis>. See <xref linkend="git-commi
 <variablelist>
 <varlistentry>
 <term>
-expect dangling commits - potential heads - due to lack of head information
-</term>
-<listitem>
-<simpara>
-        You haven't specified any nodes as heads so it won't be
-        possible to differentiate between un-parented commits and
-        root nodes.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-missing sha1 directory <emphasis>&lt;dir&gt;</emphasis>
-</term>
-<listitem>
-<simpara>
-        The directory holding the sha1 objects is missing.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 unreachable &lt;type&gt; &lt;object&gt;
 </term>
 <listitem>

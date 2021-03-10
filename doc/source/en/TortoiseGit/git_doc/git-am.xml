@@ -53,7 +53,7 @@ current branch.</simpara>
 </term>
 <listitem>
 <simpara>
-        Add a <emphasis>Signed-off-by:</emphasis> line to the commit message, using
+        Add a <emphasis>Signed-off-by</emphasis> trailer to the commit message, using
         the committer identity of yourself.
         See the signoff option in <xref linkend="git-commit(1)" /> for more information.
 </simpara>

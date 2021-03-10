@@ -551,7 +551,7 @@ must be used for each option.</simpara>
 </term>
 <listitem>
 <simpara>
-        If this is set, add emails found in Signed-off-by: or Cc: lines to the
+        If this is set, add emails found in the <emphasis>Signed-off-by</emphasis> trailer or Cc: lines to the
         cc list. Default is the value of <emphasis>sendemail.signedoffbycc</emphasis> configuration
         value; if that is unspecified, default to --signed-off-by-cc.
 </simpara>
@@ -617,7 +617,7 @@ must be used for each option.</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>sob</emphasis> will avoid including anyone mentioned in Signed-off-by lines except
+<emphasis>sob</emphasis> will avoid including anyone mentioned in the Signed-off-by trailers except
   for self (use <emphasis>self</emphasis> for that).
 </simpara>
 </listitem>
@@ -926,9 +926,12 @@ edit ~/.gitconfig to specify your account settings:</simpara>
         smtpServer = smtp.gmail.com
         smtpUser = yourname@gmail.com
         smtpServerPort = 587</screen>
-<simpara>If you have multifactor authentication setup on your gmail account, you will
+<simpara>If you have multi-factor authentication set up on your Gmail account, you will
 need to generate an app-specific password for use with <emphasis>git send-email</emphasis>. Visit
 <ulink url="https://security.google.com/settings/security/apppasswords">https://security.google.com/settings/security/apppasswords</ulink> to create it.</simpara>
+<simpara>If you do not have multi-factor authentication set up on your Gmail account,
+you will need to allow less secure app access. Visit
+<ulink url="https://myaccount.google.com/lesssecureapps">https://myaccount.google.com/lesssecureapps</ulink> to enable it.</simpara>
 <simpara>Once your commits are ready to be sent to the mailing list, run the
 following commands:</simpara>
 <literallayout class="monospaced">$ git format-patch --cover-letter -M origin/master -o outgoing/

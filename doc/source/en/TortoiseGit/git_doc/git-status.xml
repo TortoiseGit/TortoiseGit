@@ -317,11 +317,37 @@ single space. If a filename contains whitespace or other nonprintable
 characters, that field will be quoted in the manner of a C string
 literal: surrounded by ASCII double quote (34) characters, and with
 interior special characters backslash-escaped.</simpara>
-<simpara>For paths with merge conflicts, <emphasis>X</emphasis> and <emphasis>Y</emphasis> show the modification
-states of each side of the merge. For paths that do not have merge
-conflicts, <emphasis>X</emphasis> shows the status of the index, and <emphasis>Y</emphasis> shows the status
-of the work tree.  For untracked paths, <emphasis>XY</emphasis> are <emphasis>??</emphasis>.  Other status
-codes can be interpreted as follows:</simpara>
+<simpara>There are three different types of states that are shown using this format, and
+each one uses the <emphasis>XY</emphasis> syntax differently:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When a merge is occurring and the merge was successful, or outside of a merge
+        situation, <emphasis>X</emphasis> shows the status of the index and <emphasis>Y</emphasis> shows the status of the
+        working tree.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When a merge conflict has occurred and has not yet been resolved, <emphasis>X</emphasis> and <emphasis>Y</emphasis>
+        show the state introduced by each head of the merge, relative to the common
+        ancestor. These paths are said to be <emphasis>unmerged</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When a path is untracked, <emphasis>X</emphasis> and <emphasis>Y</emphasis> are always the same, since they are
+        unknown to the index. <emphasis>??</emphasis> is used for untracked paths. Ignored files are
+        not listed unless <emphasis>--ignored</emphasis> is used; if it is, ignored files are indicated
+        by <emphasis>!!</emphasis>.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Note that the term <emphasis>merge</emphasis> here also includes rebases using the default
+<emphasis>--merge</emphasis> strategy, cherry-picks, and anything else using the merge machinery.</simpara>
+<simpara>In the following table, these three classes are shown in separate sections, and
+these characters are used for <emphasis>X</emphasis> and <emphasis>Y</emphasis> fields for the first two sections that
+show tracked paths:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -359,8 +385,6 @@ codes can be interpreted as follows:</simpara>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>Ignored files are not listed, unless <emphasis>--ignored</emphasis> option is in effect,
-in which case <emphasis>XY</emphasis> are <emphasis>!!</emphasis>.</simpara>
 <literallayout class="monospaced">X          Y     Meaning
 -------------------------------------------------
          [AMD]   not updated

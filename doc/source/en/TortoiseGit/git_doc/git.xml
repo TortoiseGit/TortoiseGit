@@ -1475,6 +1475,16 @@ repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-for-each-repo(1)" />
+</term>
+<listitem>
+<simpara>
+        Run a Git command on a list of repositories.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-get-tar-commit-id(1)" />
 </term>
 <listitem>
@@ -1691,16 +1701,6 @@ typically do not use them directly.</simpara>
 <listitem>
 <simpara>
         Push objects over HTTP/DAV to another repository.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<xref linkend="git-parse-remote(1)" />
-</term>
-<listitem>
-<simpara>
-        Routines to help parsing remote repository access parameters.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2710,8 +2710,8 @@ parameter, &lt;path&gt;.</simpara>
 <simpara>
         This environment variable overrides the configured Git editor
         when editing the todo list of an interactive rebase. See also
-        linkit::git-rebase[1] and the <emphasis>sequence.editor</emphasis> option in
-        linkit::git-config[1].
+        <xref linkend="git-rebase(1)" /> and the <emphasis>sequence.editor</emphasis> option in
+        <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

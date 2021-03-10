@@ -136,7 +136,7 @@ to normalize the message into some project standard format. It
 can also be used to refuse the commit after inspecting the message
 file.</simpara>
 <simpara>The default <emphasis>commit-msg</emphasis> hook, when enabled, detects duplicate
-"Signed-off-by" lines, and aborts the commit if one is found.</simpara>
+<emphasis>Signed-off-by</emphasis> trailers, and aborts the commit if one is found.</simpara>
 </section>
 <section id="githooks(5)__post_commit">
 <title>post-commit</title>
@@ -560,7 +560,7 @@ It takes one parameter, the name of the file that contains the
 changelist text. Exiting with a non-zero status from the script
 will abort the process.</simpara>
 <simpara>The purpose of the hook is to edit the message file in place,
-and it is not supressed by the <emphasis>--no-verify</emphasis> option. This hook
+and it is not suppressed by the <emphasis>--no-verify</emphasis> option. This hook
 is called even if <emphasis>--prepare-p4-only</emphasis> is set.</simpara>
 <simpara>Run <emphasis>git-p4 submit --help</emphasis> for details.</simpara>
 </section>
@@ -568,7 +568,7 @@ is called even if <emphasis>--prepare-p4-only</emphasis> is set.</simpara>
 <title>p4-post-changelist</title>
 <simpara>This hook is invoked by <emphasis>git-p4 submit</emphasis>.</simpara>
 <simpara>The <emphasis>p4-post-changelist</emphasis> hook is invoked after the submit has
-successfully occured in P4. It takes no parameters and is meant
+successfully occurred in P4. It takes no parameters and is meant
 primarily for notification and cannot affect the outcome of the
 git p4 submit action.</simpara>
 <simpara>Run <emphasis>git-p4 submit --help</emphasis> for details.</simpara>

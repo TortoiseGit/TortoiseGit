@@ -17,7 +17,7 @@
            [--repo=&lt;repository&gt;] [-f | --force] [-d | --delete] [--prune] [-v | --verbose]
            [-u | --set-upstream] [-o &lt;string&gt; | --push-option=&lt;string&gt;]
            [--[no-]signed|--signed=(true|false|if-asked)]
-           [--force-with-lease[=&lt;refname&gt;[:&lt;expect&gt;]]]
+           [--force-with-lease[=&lt;refname&gt;[:&lt;expect&gt;]] [--force-if-includes]]
            [--no-verify] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
 </blockquote>
 </simplesect>
@@ -416,6 +416,13 @@ seen and are willing to overwrite, then rewrite history, and finally
 force push changes to <emphasis>master</emphasis> if the remote version is still at
 <emphasis>base</emphasis>, regardless of what your local <emphasis>remotes/origin/master</emphasis> has been
 updated to in the background.</simpara>
+<simpara>Alternatively, specifying <emphasis>--force-if-includes</emphasis> as an ancillary option
+along with <emphasis>--force-with-lease[=&lt;refname&gt;]</emphasis> (i.e., without saying what
+exact commit the ref on the remote side must be pointing at, or which
+refs on the remote side are being protected) at the time of "push" will
+verify if updates from the remote-tracking refs that may have been
+implicitly updated in the background are integrated locally before
+allowing a forced update.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -443,6 +450,26 @@ strictly behind their remote counterpart).  To force a push to only
 one branch, use a <emphasis>+</emphasis> in front of the refspec to push (e.g <emphasis>git push
 origin +master</emphasis> to force a push to the <emphasis>master</emphasis> branch). See the
 <emphasis>&lt;refspec&gt;...</emphasis> section above for details.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]force-if-includes
+</term>
+<listitem>
+<simpara>
+        Force an update only if the tip of the remote-tracking ref
+        has been integrated locally.
+</simpara>
+<simpara>This option enables a check that verifies if the tip of the
+remote-tracking ref is reachable from one of the "reflog" entries of
+the local branch based in it for a rewrite. The check ensures that any
+updates from the remote have been incorporated locally by rejecting the
+forced update if that is not the case.</simpara>
+<simpara>If the option is passed without specifying <emphasis>--force-with-lease</emphasis>, or
+specified along with <emphasis>--force-with-lease=&lt;refname&gt;:&lt;expect&gt;</emphasis>, it is
+a "no-op".</simpara>
+<simpara>Specifying <emphasis>--no-force-if-includes</emphasis> disables this behavior.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

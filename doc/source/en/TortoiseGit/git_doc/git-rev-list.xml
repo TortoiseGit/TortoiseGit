@@ -1565,9 +1565,9 @@ configuration (see <xref linkend="git-config(1)" />).</simpara>
 <listitem>
 <simpara>
         Instead of showing the full 40-byte hexadecimal commit object
-        name, show only a partial prefix.  Non default number of
-        digits can be specified with "--abbrev=&lt;n&gt;" (which also modifies
-        diff output, if it is displayed).
+        name, show a prefix that names the object uniquely.
+        "--abbrev=&lt;n&gt;" (which also modifies diff output, if it is displayed)
+        option can be used to specify the minimum length of the prefix.
 </simpara>
 <simpara>This should make "--pretty=oneline" a whole lot more readable for
 people using 80-column terminals.</simpara>

@@ -66,6 +66,9 @@ repository is specified as a URL, then this flag is ignored (and we
 never use the local optimizations).  Specifying <emphasis>--no-local</emphasis> will
 override the default when <emphasis>/path/to/repo</emphasis> is given, using the regular
 Git transport instead.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: this operation can race with concurrent modification to the
+source repository, similar to running <emphasis>cp -r src dst</emphasis> while modifying
+<emphasis>src</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -295,8 +298,9 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </term>
 <listitem>
 <simpara>
-        Instead of using the remote name <emphasis>origin</emphasis> to keep track
-        of the upstream repository, use <emphasis>&lt;name&gt;</emphasis>.
+        Instead of using the remote name <emphasis>origin</emphasis> to keep track of the upstream
+        repository, use <emphasis>&lt;name&gt;</emphasis>.  Overrides <emphasis>clone.defaultRemoteName</emphasis> from the
+        config.
 </simpara>
 </listitem>
 </varlistentry>

@@ -237,9 +237,9 @@ gc.bigPackThreshold
 <listitem>
 <simpara>
         If non-zero, all packs larger than this limit are kept when
-        <emphasis>git gc</emphasis> is run. This is very similar to <emphasis>--keep-base-pack</emphasis>
+        <emphasis>git gc</emphasis> is run. This is very similar to <emphasis>--keep-largest-pack</emphasis>
         except that all packs that meet the threshold are kept, not
-        just the base pack. Defaults to zero. Common unit suffixes of
+        just the largest pack. Defaults to zero. Common unit suffixes of
         <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.
 </simpara>
 <simpara>Note that if the number of kept packs is more than gc.autoPackLimit,
@@ -249,7 +249,7 @@ gc.autoPackLimit and gc.bigPackThreshold should be respected again.</simpara>
 <simpara>If the amount of memory estimated for <emphasis>git repack</emphasis> to run smoothly is
 not available and <emphasis>gc.bigPackThreshold</emphasis> is not set, the largest pack
 will also be excluded (this is the equivalent of running <emphasis>git gc</emphasis> with
-<emphasis>--keep-base-pack</emphasis>).</simpara>
+<emphasis>--keep-largest-pack</emphasis>).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

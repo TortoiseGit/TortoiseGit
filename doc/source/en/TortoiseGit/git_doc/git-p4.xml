@@ -576,7 +576,7 @@ It takes one parameter, the name of the file that contains the
 changelist text. Exiting with a non-zero status from the script
 will abort the process.</simpara>
 <simpara>The purpose of the hook is to edit the message file in place,
-and it is not supressed by the <emphasis>--no-verify</emphasis> option. This hook
+and it is not suppressed by the <emphasis>--no-verify</emphasis> option. This hook
 is called even if <emphasis>--prepare-p4-only</emphasis> is set.</simpara>
 </section>
 <section id="git-p4(1)__p4_changelist">
@@ -593,7 +593,7 @@ also be used to refuse the Submit after inspect the message file.</simpara>
 <section id="git-p4(1)__p4_post_changelist">
 <title>p4-post-changelist</title>
 <simpara>The <emphasis>p4-post-changelist</emphasis> hook is invoked after the submit has
-successfully occured in P4. It takes no parameters and is meant
+successfully occurred in P4. It takes no parameters and is meant
 primarily for notification and cannot affect the outcome of the
 git p4 submit action.</simpara>
 </section>

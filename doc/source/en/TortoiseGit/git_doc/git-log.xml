@@ -157,58 +157,60 @@ produced by <emphasis>--stat</emphasis>, etc.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--L &lt;start&gt;,&lt;end&gt;:&lt;file&gt;
+-L&lt;start&gt;,&lt;end&gt;:&lt;file&gt;
 </term>
 <term>
--L :&lt;funcname&gt;:&lt;file&gt;
+-L:&lt;funcname&gt;:&lt;file&gt;
 </term>
 <listitem>
 <simpara>
-        Trace the evolution of the line range given by "&lt;start&gt;,&lt;end&gt;"
-        (or the function name regex &lt;funcname&gt;) within the &lt;file&gt;.  You may
+        Trace the evolution of the line range given by <emphasis>&lt;start&gt;,&lt;end&gt;</emphasis>,
+        or by the function name regex <emphasis>&lt;funcname&gt;</emphasis>, within the <emphasis>&lt;file&gt;</emphasis>. You may
         not give any pathspec limiters.  This is currently limited to
         a walk starting from a single revision, i.e., you may only
         give zero or one positive revision arguments, and
-        &lt;start&gt; and &lt;end&gt; (or &lt;funcname&gt;) must exist in the starting revision.
+        <emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis> (or <emphasis>&lt;funcname&gt;</emphasis>) must exist in the starting revision.
         You can specify this option more than once. Implies <emphasis>--patch</emphasis>.
         Patch output can be suppressed using <emphasis>--no-patch</emphasis>, but other diff formats
         (namely <emphasis>--raw</emphasis>, <emphasis>--numstat</emphasis>, <emphasis>--shortstat</emphasis>, <emphasis>--dirstat</emphasis>, <emphasis>--summary</emphasis>,
         <emphasis>--name-only</emphasis>, <emphasis>--name-status</emphasis>, <emphasis>--check</emphasis>) are not currently implemented.
 </simpara>
-<simpara>&lt;start&gt; and &lt;end&gt; can take one of these forms:</simpara>
+<simpara><emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis> can take one of these forms:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
 number
 </simpara>
-<simpara>If &lt;start&gt; or &lt;end&gt; is a number, it specifies an
+<simpara>If <emphasis>&lt;start&gt;</emphasis> or <emphasis>&lt;end&gt;</emphasis> is a number, it specifies an
 absolute line number (lines count from 1).</simpara>
 </listitem>
 <listitem>
 <simpara>
-/regex/
+<emphasis>/regex/</emphasis>
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex. If &lt;start&gt; is a regex, it will search from the end of
+POSIX regex. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
 the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
-If &lt;start&gt; is ^/regex/, it will search from the start of file.
-If &lt;end&gt; is a regex, it will search
-starting at the line given by &lt;start&gt;.</simpara>
+If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/regex/</emphasis>, it will search from the start of file.
+If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search
+starting at the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
 +offset or -offset
 </simpara>
-<simpara>This is only valid for &lt;end&gt; and will specify a number
-of lines before or after the line given by &lt;start&gt;.</simpara>
+<simpara>This is only valid for <emphasis>&lt;end&gt;</emphasis> and will specify a number
+of lines before or after the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 </itemizedlist>
-<simpara>If :&lt;funcname&gt; is given in place of &lt;start&gt; and &lt;end&gt;, it is a
+<simpara>If <emphasis>:&lt;funcname&gt;</emphasis> is given in place of <emphasis>&lt;start&gt;</emphasis> and <emphasis>&lt;end&gt;</emphasis>, it is a
 regular expression that denotes the range from the first funcname line
-that matches &lt;funcname&gt;, up to the next funcname line. :&lt;funcname&gt;
+that matches <emphasis>&lt;funcname&gt;</emphasis>, up to the next funcname line. <emphasis>:&lt;funcname&gt;</emphasis>
 searches from the end of the previous <emphasis>-L</emphasis> range, if any, otherwise
-from the start of file. ^:&lt;funcname&gt; searches from the start of
-file.</simpara>
+from the start of file. <emphasis>^:&lt;funcname&gt;</emphasis> searches from the start of
+file. The function names are determined in the same way as <emphasis>git diff</emphasis>
+works out patch hunk headers (see <emphasis>Defining a custom hunk-header</emphasis>
+in <xref linkend="gitattributes(5)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1453,9 +1455,9 @@ configuration (see <xref linkend="git-config(1)" />).</simpara>
 <listitem>
 <simpara>
         Instead of showing the full 40-byte hexadecimal commit object
-        name, show only a partial prefix.  Non default number of
-        digits can be specified with "--abbrev=&lt;n&gt;" (which also modifies
-        diff output, if it is displayed).
+        name, show a prefix that names the object uniquely.
+        "--abbrev=&lt;n&gt;" (which also modifies diff output, if it is displayed)
+        option can be used to specify the minimum length of the prefix.
 </simpara>
 <simpara>This should make "--pretty=oneline" a whole lot more readable for
 people using 80-column terminals.</simpara>
@@ -2894,8 +2896,8 @@ combined-diff option or with <emphasis>--no-diff-merges</emphasis>).</simpara>
 <listitem>
 <simpara>
         Generate diffs with &lt;n&gt; lines of context instead of
-        the usual three. Implies <emphasis>--patch</emphasis>.
-        Implies <emphasis>-p</emphasis>.
+        the usual three.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3718,7 +3720,8 @@ override configuration settings.</simpara>
 <listitem>
 <simpara>
         In addition to <emphasis>--full-index</emphasis>, output a binary diff that
-        can be applied with <emphasis>git-apply</emphasis>. Implies <emphasis>--patch</emphasis>.
+        can be applied with <emphasis>git-apply</emphasis>.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3730,7 +3733,8 @@ override configuration settings.</simpara>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.
+        lines, show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis>
+        hexdigits long that uniquely refers the object.
         In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
         precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
         names will be shown regardless of <emphasis>--abbrev</emphasis>.
@@ -4119,6 +4123,20 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+-I&lt;regex&gt;
+</term>
+<term>
+--ignore-matching-lines=&lt;regex&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose all lines match &lt;regex&gt;.  This option may
+        be specified more than once.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --inter-hunk-context=&lt;lines&gt;
 </term>
 <listitem>
@@ -4139,7 +4157,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </term>
 <listitem>
 <simpara>
-        Show whole surrounding functions of changes.
+        Show whole function as context lines for each change.
+        The function names are determined in the same way as
+        <emphasis>git diff</emphasis> works out patch hunk headers (see <emphasis>Defining a
+        custom hunk-header</emphasis> in <xref linkend="gitattributes(5)" />).
 </simpara>
 </listitem>
 </varlistentry>

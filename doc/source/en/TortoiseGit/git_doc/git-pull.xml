@@ -244,14 +244,19 @@ actual commits being merged.</simpara>
 </term>
 <listitem>
 <simpara>
-        Add Signed-off-by line by the committer at the end of the commit
-        log message.  The meaning of a signoff depends on the project,
-        but it typically certifies that committer has
-        the rights to submit this work under the same license and
-        agrees to a Developer Certificate of Origin
-        (see <ulink url="http://developercertificate.org/">http://developercertificate.org/</ulink> for more information).
+        Add a <emphasis>Signed-off-by</emphasis> trailer by the committer at the end of the commit
+        log message.  The meaning of a signoff depends on the project
+        to which you're committing.  For example, it may certify that
+        the committer has the rights to submit the work under the
+        project's license or agrees to some contributor representation,
+        such as a Developer Certificate of Origin.
+        (See <ulink url="http://developercertificate.org">http://developercertificate.org</ulink> for the one used by the
+        Linux kernel and Git projects.)  Consult the documentation or
+        leadership of the project to which you're contributing to
+        understand how the signoffs are used in that project.
 </simpara>
-<simpara>With --no-signoff do not add a Signed-off-by line.</simpara>
+<simpara>The --no-signoff option can be used to countermand an earlier --signoff
+option on the command line.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

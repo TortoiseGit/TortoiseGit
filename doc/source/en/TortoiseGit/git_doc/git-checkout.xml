@@ -289,7 +289,9 @@ e.g. <emphasis>checkout.defaultRemote=origin</emphasis> to always checkout remot
 branches from there if <emphasis>&lt;branch&gt;</emphasis> is ambiguous but exists on the
 <emphasis>origin</emphasis> remote. See also <emphasis>checkout.defaultRemote</emphasis> in
 <xref linkend="git-config(1)" />.</simpara>
-<simpara>Use <emphasis>--no-guess</emphasis> to disable this.</simpara>
+<simpara><emphasis>--guess</emphasis> is the default behavior. Use <emphasis>--no-guess</emphasis> to disable it.</simpara>
+<simpara>The default behavior can be set via the <emphasis>checkout.guess</emphasis> configuration
+variable.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -568,6 +570,9 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
         Tree to checkout from (when paths are given). If not specified,
         the index will be used.
 </simpara>
+<simpara>As a special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
+merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

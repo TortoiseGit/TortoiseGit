@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git branch</emphasis> [--color[=&lt;when&gt;] | --no-color] [--show-current]
-        [-v [--abbrev=&lt;length&gt; | --no-abbrev]]
+        [-v [--abbrev=&lt;n&gt; | --no-abbrev]]
         [--column[=&lt;options&gt;] | --no-column] [--sort=&lt;key&gt;]
         [--merged [&lt;commit&gt;]] [--no-merged [&lt;commit&gt;]]
         [--contains [&lt;commit&gt;]] [--no-contains [&lt;commit&gt;]]
@@ -340,11 +340,13 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---abbrev=&lt;length&gt;
+--abbrev=&lt;n&gt;
 </term>
 <listitem>
 <simpara>
-        Alter the sha1's minimum display length in the output listing.
+        In the verbose listing that show the commit object name,
+        show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis> hexdigits
+        long that uniquely refers the object.
         The default value is 7 and can be overridden by the <emphasis>core.abbrev</emphasis>
         config option.
 </simpara>

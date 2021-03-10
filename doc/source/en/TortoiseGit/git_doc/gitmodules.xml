@@ -12,7 +12,7 @@
 </simplesect>
 <simplesect id="gitmodules(5)__synopsis">
 <title>SYNOPSIS</title>
-<simpara>$GIT_WORK_DIR/.gitmodules</simpara>
+<simpara>$GIT_WORK_TREE/.gitmodules</simpara>
 </simplesect>
 <simplesect id="gitmodules(5)__description">
 <title>DESCRIPTION</title>
@@ -34,7 +34,7 @@ submodule.&lt;name&gt;.path
         Defines the path, relative to the top-level directory of the Git
         working tree, where the submodule is expected to be checked out.
         The path name must not end with a <emphasis>/</emphasis>. All submodule paths must
-        be unique within the .gitmodules file.
+        be unique within the <emphasis>.gitmodules</emphasis> file.
 </simpara>
 </listitem>
 </varlistentry>
@@ -46,7 +46,7 @@ submodule.&lt;name&gt;.url
 <simpara>
         Defines a URL from which the submodule repository can be cloned.
         This may be either an absolute URL ready to be passed to
-        <xref linkend="git-clone(1)" /> or (if it begins with ./ or ../) a location
+        <xref linkend="git-clone(1)" /> or (if it begins with <emphasis>./</emphasis> or <emphasis>../</emphasis>) a location
         relative to the superproject's origin repository.
 </simpara>
 </listitem>
@@ -61,7 +61,7 @@ submodule.&lt;name&gt;.update
 <listitem>
 <simpara>
         Defines the default update procedure for the named submodule,
-        i.e. how the submodule is updated by "git submodule update"
+        i.e. how the submodule is updated by the <emphasis>git submodule update</emphasis>
         command in the superproject. This is only used by <emphasis>git
         submodule init</emphasis> to initialize the configuration variable of
         the same name. Allowed values here are <emphasis>checkout</emphasis>, <emphasis>rebase</emphasis>,
@@ -93,11 +93,11 @@ submodule.&lt;name&gt;.fetchRecurseSubmodules
 <listitem>
 <simpara>
         This option can be used to control recursive fetching of this
-        submodule. If this option is also present in the submodules entry in
-        .git/config of the superproject, the setting there will override the
-        one found in .gitmodules.
+        submodule. If this option is also present in the submodule's entry in
+        <emphasis>.git/config</emphasis> of the superproject, the setting there will override the
+        one found in <emphasis>.gitmodules</emphasis>.
         Both settings can be overridden on the command line by using the
-        "--[no-]recurse-submodules" option to "git fetch" and "git pull".
+        <emphasis>--[no-]recurse-submodules</emphasis> option to <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -107,7 +107,7 @@ submodule.&lt;name&gt;.ignore
 </term>
 <listitem>
 <simpara>
-        Defines under what circumstances "git status" and the diff family show
+        Defines under what circumstances <emphasis>git status</emphasis> and the diff family show
         a submodule as modified. The following values are supported:
 </simpara>
 <variablelist>
@@ -130,7 +130,7 @@ dirty
 <listitem>
 <simpara>
 All changes to the submodule's work tree will be ignored, only
-            committed differences between the HEAD of the submodule and its
+            committed differences between the <emphasis>HEAD</emphasis> of the submodule and its
             recorded state in the superproject are taken into account.
 </simpara>
 </listitem>
@@ -160,11 +160,11 @@ No modifications to submodules are ignored, all of committed
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>If this option is also present in the submodules entry in .git/config
+<simpara>If this option is also present in the submodule's entry in <emphasis>.git/config</emphasis>
 of the superproject, the setting there will override the one found in
-.gitmodules.</simpara>
+<emphasis>.gitmodules</emphasis>.</simpara>
 <simpara>Both settings can be overridden on the command line by using the
-"--ignore-submodules" option. The <emphasis>git submodule</emphasis> commands are not
+<emphasis>--ignore-submodules</emphasis> option. The <emphasis>git submodule</emphasis> commands are not
 affected by this setting.</simpara>
 </listitem>
 </varlistentry>
@@ -184,7 +184,7 @@ submodule.&lt;name&gt;.shallow
 </simplesect>
 <simplesect id="gitmodules(5)__examples">
 <title>EXAMPLES</title>
-<simpara>Consider the following .gitmodules file:</simpara>
+<simpara>Consider the following <emphasis>.gitmodules</emphasis> file:</simpara>
 <screen>[submodule "libfoo"]
         path = include/foo
         url = git://foo.com/git/lib.git

@@ -35,9 +35,8 @@
 </simplesect>
 <simplesect id="git-update-index(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Modifies the index or directory cache. Each file mentioned is updated
-into the index and any <emphasis>unmerged</emphasis> or <emphasis>needs updating</emphasis> state is
-cleared.</simpara>
+<simpara>Modifies the index. Each file mentioned is updated into the index and
+any <emphasis>unmerged</emphasis> or <emphasis>needs updating</emphasis> state is cleared.</simpara>
 <simpara>See also <xref linkend="git-add(1)" /> for a more user-friendly way to do some of
 the most common operations on the index.</simpara>
 <simpara>The way <emphasis>git update-index</emphasis> handles files it is told about can be modified

@@ -808,7 +808,7 @@ if the other side had no changes that conflicted.</simpara>
 </term>
 <listitem>
 <simpara>
-        Add a Signed-off-by: trailer to all the rebased commits. Note
+        Add a <emphasis>Signed-off-by</emphasis> trailer to all the rebased commits. Note
         that if <emphasis>--interactive</emphasis> is given then only commits marked to be
         picked, edited or reworded will have the trailer added.
 </simpara>

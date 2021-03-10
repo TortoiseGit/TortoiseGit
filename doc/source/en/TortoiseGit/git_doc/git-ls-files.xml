@@ -23,14 +23,13 @@
                 [--exclude-standard]
                 [--error-unmatch] [--with-tree=&lt;tree-ish&gt;]
                 [--full-name] [--recurse-submodules]
-                [--abbrev] [--] [&lt;file&gt;&#8230;]</literallayout>
+                [--abbrev[=&lt;n&gt;]] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-ls-files(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This merges the file listing in the directory cache index with the
-actual working directory list, and shows different combinations of the
-two.</simpara>
+<simpara>This merges the file listing in the index with the actual working
+directory list, and shows different combinations of the two.</simpara>
 <simpara>One or more of the options below may be used to determine the files
 shown:</simpara>
 </simplesect>
@@ -398,7 +397,8 @@ other
 <listitem>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
-        lines, show only a partial prefix.
+        lines, show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis>
+        hexdigits long that uniquely refers the object.
         Non default number of digits can be specified with --abbrev=&lt;n&gt;.
 </simpara>
 </listitem>

@@ -153,7 +153,8 @@ start
 <simpara>
         Start a transaction. In contrast to a non-transactional session, a
         transaction will automatically abort if the session ends without an
-        explicit commit.
+        explicit commit. This command may create a new empty transaction when
+        the current one has been committed or aborted already.
 </simpara>
 </listitem>
 </varlistentry>

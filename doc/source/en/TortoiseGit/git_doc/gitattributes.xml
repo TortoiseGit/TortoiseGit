@@ -765,6 +765,12 @@ patterns are available:</simpara>
 </listitem>
 <listitem>
 <simpara>
+<emphasis>bash</emphasis> suitable for source code in the Bourne-Again SHell language.
+  Covers a superset of POSIX shell function definitions.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>bibtex</emphasis> suitable for files with BibTeX coded references.
 </simpara>
 </listitem>

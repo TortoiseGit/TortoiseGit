@@ -63,7 +63,9 @@
 </term>
 <listitem>
 <simpara>
-Write a commit-graph file based on the commits found in packfiles.
+Write a commit-graph file based on the commits found in packfiles. If
+the config option <emphasis>core.commitGraph</emphasis> is disabled, then this command will
+output a warning, then return success without writing a commit-graph file.
 </simpara>
 <simpara>With the <emphasis>--stdin-packs</emphasis> option, generate the new commit graph by
 walking objects only in the specified pack-indexes. (Cannot be combined

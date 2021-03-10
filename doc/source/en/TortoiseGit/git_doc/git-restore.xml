@@ -50,6 +50,9 @@ between the three commands.</simpara>
 </simpara>
 <simpara>If not specified, the contents are restored from <emphasis>HEAD</emphasis> if <emphasis>--staged</emphasis> is
 given, otherwise from the index.</simpara>
+<simpara>As a special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
+merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

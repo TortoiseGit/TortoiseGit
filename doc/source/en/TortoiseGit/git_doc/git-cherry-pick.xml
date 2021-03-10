@@ -190,7 +190,7 @@ effect to your index in a row.</simpara>
 </term>
 <listitem>
 <simpara>
-        Add Signed-off-by line at the end of the commit message.
+        Add a <emphasis>Signed-off-by</emphasis> trailer at the end of the commit message.
         See the signoff option in <xref linkend="git-commit(1)" /> for more information.
 </simpara>
 </listitem>

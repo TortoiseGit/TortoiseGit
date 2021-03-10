@@ -23,8 +23,9 @@
 <title>DESCRIPTION</title>
 <simpara>This command creates an empty Git repository - basically a <emphasis>.git</emphasis>
 directory with subdirectories for <emphasis>objects</emphasis>, <emphasis>refs/heads</emphasis>,
-<emphasis>refs/tags</emphasis>, and template files.  An initial <emphasis>HEAD</emphasis> file that
-references the HEAD of the master branch is also created.</simpara>
+<emphasis>refs/tags</emphasis>, and template files.  An initial branch without any
+commits will be created (see the <emphasis>--initial-branch</emphasis> option below
+for its name).</simpara>
 <simpara>If the <emphasis>$GIT_DIR</emphasis> environment variable is set then it specifies a path
 to use instead of <emphasis>./.git</emphasis> for the base of the repository.</simpara>
 <simpara>If the object storage directory is specified via the
@@ -114,8 +115,10 @@ repository.
 </term>
 <listitem>
 <simpara>
-Use the specified name for the initial branch in the newly created repository.
-If not specified, fall back to the default name: <emphasis>master</emphasis>.
+Use the specified name for the initial branch in the newly created
+repository.  If not specified, fall back to the default name (currently
+<emphasis>master</emphasis>, but this is subject to change in the future; the name can be
+customized via the <emphasis>init.defaultBranch</emphasis> configuration variable).
 </simpara>
 </listitem>
 </varlistentry>

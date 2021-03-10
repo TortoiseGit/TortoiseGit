@@ -13,15 +13,15 @@
 <simplesect id="git-config(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] name [value [value_regex]]
+<literallayout><emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--fixed-value] [--show-origin] [--show-scope] [-z|--null] name [value [value-pattern]]
 <emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] --add name value
-<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] --replace-all name value [value_regex]
-<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] --get name [value_regex]
-<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] --get-all name [value_regex]
-<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] [--name-only] --get-regexp name_regex [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--fixed-value] --replace-all name value [value-pattern]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] [--fixed-value] --get name [value-pattern]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] [--fixed-value] --get-all name [value-pattern]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [--show-origin] [--show-scope] [-z|--null] [--fixed-value] [--name-only] --get-regexp name_regex [value-pattern]
 <emphasis>git config</emphasis> [&lt;file-option&gt;] [--type=&lt;type&gt;] [-z|--null] --get-urlmatch name URL
-<emphasis>git config</emphasis> [&lt;file-option&gt;] --unset name [value_regex]
-<emphasis>git config</emphasis> [&lt;file-option&gt;] --unset-all name [value_regex]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--fixed-value] --unset name [value-pattern]
+<emphasis>git config</emphasis> [&lt;file-option&gt;] [--fixed-value] --unset-all name [value-pattern]
 <emphasis>git config</emphasis> [&lt;file-option&gt;] --rename-section old_name new_name
 <emphasis>git config</emphasis> [&lt;file-option&gt;] --remove-section name
 <emphasis>git config</emphasis> [&lt;file-option&gt;] [--show-origin] [--show-scope] [-z|--null] [--name-only] -l | --list
@@ -37,10 +37,13 @@ actually the section and the key separated by a dot, and the value will be
 escaped.</simpara>
 <simpara>Multiple lines can be added to an option by using the <emphasis>--add</emphasis> option.
 If you want to update or unset an option which can occur on multiple
-lines, a POSIX regexp <emphasis>value_regex</emphasis> needs to be given.  Only the
-existing values that match the regexp are updated or unset.  If
-you want to handle the lines that do <emphasis role="strong">not</emphasis> match the regex, just
-prepend a single exclamation mark in front (see also <xref linkend="git-config(1)_EXAMPLES"/>).</simpara>
+lines, a <emphasis>value-pattern</emphasis> (which is an extended regular expression,
+unless the <emphasis>--fixed-value</emphasis> option is given) needs to be given.  Only the
+existing values that match the pattern are updated or unset.  If
+you want to handle the lines that do <emphasis role="strong">not</emphasis> match the pattern, just
+prepend a single exclamation mark in front (see also <xref linkend="git-config(1)_EXAMPLES"/>),
+but note that this only works when the <emphasis>--fixed-value</emphasis> option is not
+in use.</simpara>
 <simpara>The <emphasis>--type=&lt;type&gt;</emphasis> option instructs <emphasis>git config</emphasis> to ensure that incoming and
 outgoing values are canonicalize-able under the given &lt;type&gt;.  If no
 <emphasis>--type=&lt;type&gt;</emphasis> is given, no canonicalization will be performed. Callers may
@@ -106,7 +109,7 @@ you try to use an invalid regexp (ret=6).
 <listitem>
 <simpara>
         Default behavior is to replace at most one line. This replaces
-        all lines matching the key (and optionally the value_regex).
+        all lines matching the key (and optionally the <emphasis>value-pattern</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -117,7 +120,7 @@ you try to use an invalid regexp (ret=6).
 <listitem>
 <simpara>
         Adds a new line to the option without altering any existing
-        values.  This is the same as providing <emphasis>^$</emphasis> as the value_regex
+        values.  This is the same as providing <emphasis>^$</emphasis> as the <emphasis>value-pattern</emphasis>
         in <emphasis>--replace-all</emphasis>.
 </simpara>
 </listitem>
@@ -307,6 +310,19 @@ from all available files.</simpara>
 <listitem>
 <simpara>
         List all variables set in config file, along with their values.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--fixed-value
+</term>
+<listitem>
+<simpara>
+        When used with the <emphasis>value-pattern</emphasis> argument, treat <emphasis>value-pattern</emphasis> as
+        an exact string instead of a regular expression. This will restrict
+        the name/value pairs that are matched to only those where the value
+        is exactly equal to the <emphasis>value-pattern</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -771,7 +787,7 @@ the variable is the boolean "true").
 The variable names are case-insensitive, allow only alphanumeric characters
 and <emphasis>-</emphasis>, and must start with an alphabetic character.</simpara>
 <simpara>A line that defines a value can be continued to the next line by
-ending it with a <emphasis>\</emphasis>; the backquote and the end-of-line are
+ending it with a <emphasis>\</emphasis>; the backslash and the end-of-line are
 stripped.  Leading whitespaces after <emphasis>name =</emphasis>, the remainder of the
 line after the first comment character <emphasis>#</emphasis> or <emphasis>;</emphasis>, and trailing
 whitespaces of the line are discarded unless they are enclosed in
@@ -1037,7 +1053,7 @@ color
 <simpara>The basic colors accepted are <emphasis>normal</emphasis>, <emphasis>black</emphasis>, <emphasis>red</emphasis>, <emphasis>green</emphasis>, <emphasis>yellow</emphasis>,
 <emphasis>blue</emphasis>, <emphasis>magenta</emphasis>, <emphasis>cyan</emphasis> and <emphasis>white</emphasis>.  The first color given is the
 foreground; the second is the background.  All the basic colors except
-<emphasis>normal</emphasis> have a bright variant that can be speficied by prefixing the
+<emphasis>normal</emphasis> have a bright variant that can be specified by prefixing the
 color with <emphasis>bright</emphasis>, like <emphasis>brightred</emphasis>.</simpara>
 <simpara>Colors may also be given as numbers between 0 and 255; these use ANSI
 256-color mode (but note that not all terminals may support this).  If
@@ -1117,9 +1133,8 @@ pushUpdateRejected
 <listitem>
 <simpara>
                 Set this variable to <emphasis>false</emphasis> if you want to disable
-                <emphasis>pushNonFFCurrent</emphasis>,
-                <emphasis>pushNonFFMatching</emphasis>, <emphasis>pushAlreadyExists</emphasis>,
-                <emphasis>pushFetchFirst</emphasis>, and <emphasis>pushNeedsForce</emphasis>
+                <emphasis>pushNonFFCurrent</emphasis>, <emphasis>pushNonFFMatching</emphasis>, <emphasis>pushAlreadyExists</emphasis>,
+                <emphasis>pushFetchFirst</emphasis>, <emphasis>pushNeedsForce</emphasis>, and <emphasis>pushRefNeedsUpdate</emphasis>
                 simultaneously.
 </simpara>
 </listitem>
@@ -1196,6 +1211,18 @@ pushUnqualifiedRefname
                 we can still suggest that the user push to either
                 refs/heads/* or refs/tags/* based on the type of the
                 source object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pushRefNeedsUpdate
+</term>
+<listitem>
+<simpara>
+                Shown when <xref linkend="git-push(1)" /> rejects a forced update of
+                a branch when its remote-tracking ref has updates that we
+                do not have locally.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2415,8 +2442,8 @@ core.multiPackIndex
 <listitem>
 <simpara>
         Use the multi-pack-index file to track multiple packfiles using a
-        single index. See <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/multi-pack-index.html"><citetitle>the
-        multi-pack-index design document</citetitle></ulink>.
+        single index. See <xref linkend="git-multi-pack-index(1)" /> for more
+        information. Defaults to true.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2885,12 +2912,36 @@ commands or functionality in the future.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+checkout.guess
+</term>
+<listitem>
+<simpara>
+        Provides the default value for the <emphasis>--guess</emphasis> or <emphasis>--no-guess</emphasis>
+        option in <emphasis>git checkout</emphasis> and <emphasis>git switch</emphasis>. See
+        <xref linkend="git-switch(1)" /> and <xref linkend="git-checkout(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 clean.requireForce
 </term>
 <listitem>
 <simpara>
         A boolean to make git-clean do nothing unless given -f,
         -i or -n.   Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+clone.defaultRemoteName
+</term>
+<listitem>
+<simpara>
+        The name of the remote to create when cloning a repository.  Defaults to
+        <emphasis>origin</emphasis>, and can be overridden by passing the <emphasis>--origin</emphasis> command-line
+        option to <xref linkend="git-clone(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3642,6 +3693,19 @@ credentialCache.ignoreSIGHUP
 </varlistentry>
 <varlistentry>
 <term>
+credentialStore.lockTimeoutMS
+</term>
+<listitem>
+<simpara>
+        The length of time, in milliseconds, for git-credential-store to retry
+        when trying to lock the credentials file. Value 0 means not to retry at
+        all; -1 means to try indefinitely. Default is 1000 (i.e., retry for
+        1s).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 completion.commands
 </term>
 <listitem>
@@ -4107,6 +4171,11 @@ bc
 <listitem>
 <simpara>
 bc3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+bc4
 </simpara>
 </listitem>
 <listitem>
@@ -4834,7 +4903,7 @@ format.signOff
 <listitem>
 <simpara>
         A boolean value which lets you enable the <emphasis>-s/--signoff</emphasis> option of
-        format-patch by default. <emphasis role="strong">Note:</emphasis> Adding the Signed-off-by: line to a
+        format-patch by default. <emphasis role="strong">Note:</emphasis> Adding the <emphasis>Signed-off-by</emphasis> trailer to a
         patch should be a conscious act and means that you certify you have
         the rights to submit this work under the same open source license.
         Please see the <emphasis>SubmittingPatches</emphasis> document for further discussion.
@@ -4862,6 +4931,18 @@ format.outputDirectory
 <simpara>
         Set a custom directory to store the resulting files instead of the
         current working directory. All directory components will be created.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+format.filenameMaxLength
+</term>
+<listitem>
+<simpara>
+        The maximum length of the output filenames generated by the
+        <emphasis>format-patch</emphasis> command; defaults to 64.  Can be overridden
+        by the <emphasis>--filename-max-length=&lt;n&gt;</emphasis> command line option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -5087,9 +5168,9 @@ gc.bigPackThreshold
 <listitem>
 <simpara>
         If non-zero, all packs larger than this limit are kept when
-        <emphasis>git gc</emphasis> is run. This is very similar to <emphasis>--keep-base-pack</emphasis>
+        <emphasis>git gc</emphasis> is run. This is very similar to <emphasis>--keep-largest-pack</emphasis>
         except that all packs that meet the threshold are kept, not
-        just the base pack. Defaults to zero. Common unit suffixes of
+        just the largest pack. Defaults to zero. Common unit suffixes of
         <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.
 </simpara>
 <simpara>Note that if the number of kept packs is more than gc.autoPackLimit,
@@ -5099,7 +5180,7 @@ gc.autoPackLimit and gc.bigPackThreshold should be respected again.</simpara>
 <simpara>If the amount of memory estimated for <emphasis>git repack</emphasis> to run smoothly is
 not available and <emphasis>gc.bigPackThreshold</emphasis> is not set, the largest pack
 will also be excluded (this is the equivalent of running <emphasis>git gc</emphasis> with
-<emphasis>--keep-base-pack</emphasis>).</simpara>
+<emphasis>--keep-largest-pack</emphasis>).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -5873,13 +5954,14 @@ help.autoCorrect
 </term>
 <listitem>
 <simpara>
-        Automatically correct and execute mistyped commands after
-        waiting for the given number of deciseconds (0.1 sec). If more
-        than one command can be deduced from the entered text, nothing
-        will be executed.  If the value of this option is negative,
-        the corrected command will be executed immediately. If the
-        value is 0 - the command will be just shown but not executed.
-        This is the default.
+        If git detects typos and can identify exactly one valid command similar
+        to the error, git will automatically run the intended command after
+        waiting a duration of time defined by this configuration value in
+        deciseconds (0.1 sec).  If this value is 0, the suggested corrections
+        will be shown, but not executed. If it is a negative integer, or
+        "immediate", the suggested command
+        is run immediately. If "never", suggestions are not shown at all. The
+        default value is zero.
 </simpara>
 </listitem>
 </varlistentry>
@@ -5992,7 +6074,7 @@ http.proxySSLCertPasswordProtected
 <simpara>
         Enable Git's password prompt for the proxy SSL certificate.  Otherwise OpenSSL
         will prompt the user, possibly many times, if the certificate or private key
-        is encrypted. Can be overriden by the <emphasis>GIT_PROXY_SSL_CERT_PASSWORD_PROTECTED</emphasis>
+        is encrypted. Can be overridden by the <emphasis>GIT_PROXY_SSL_CERT_PASSWORD_PROTECTED</emphasis>
         environment variable.
 </simpara>
 </listitem>
@@ -6004,7 +6086,7 @@ http.proxySSLCAInfo
 <listitem>
 <simpara>
         Pathname to the file containing the certificate bundle that should be used to
-        verify the proxy with when using an HTTPS proxy. Can be overriden by the
+        verify the proxy with when using an HTTPS proxy. Can be overridden by the
         <emphasis>GIT_PROXY_SSL_CAINFO</emphasis> environment variable.
 </simpara>
 </listitem>
@@ -6972,6 +7054,49 @@ mailmap.blob
 </varlistentry>
 <varlistentry>
 <term>
+maintenance.auto
+</term>
+<listitem>
+<simpara>
+        This boolean config option controls whether some commands run
+        <emphasis>git maintenance run --auto</emphasis> after doing their normal work. Defaults
+        to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.strategy
+</term>
+<listitem>
+<simpara>
+        This string config option provides a way to specify one of a few
+        recommended schedules for background maintenance. This only affects
+        which tasks are run during <emphasis>git maintenance run --schedule=X</emphasis>
+        commands, provided no <emphasis>--task=&lt;task&gt;</emphasis> arguments are provided.
+        Further, if a <emphasis>maintenance.&lt;task&gt;.schedule</emphasis> config value is set,
+        then that value is used instead of the one provided by
+        <emphasis>maintenance.strategy</emphasis>. The possible strategy strings are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>none</emphasis>: This default setting implies no task are run at any schedule.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>incremental</emphasis>: This setting optimizes for performing small maintenance
+  activities that do not delete any data. This does not schedule the <emphasis>gc</emphasis>
+  task, but runs the <emphasis>prefetch</emphasis> and <emphasis>commit-graph</emphasis> tasks hourly and the
+  <emphasis>loose-objects</emphasis> and <emphasis>incremental-repack</emphasis> tasks daily.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 maintenance.&lt;task&gt;.enabled
 </term>
 <listitem>
@@ -6981,6 +7106,18 @@ maintenance.&lt;task&gt;.enabled
         <emphasis>git maintenance run</emphasis>. These config values are ignored if a
         <emphasis>--task</emphasis> option exists. By default, only <emphasis>maintenance.gc.enabled</emphasis>
         is true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.&lt;task&gt;.schedule
+</term>
+<listitem>
+<simpara>
+        This config option controls whether or not the given <emphasis>&lt;task&gt;</emphasis> runs
+        during a <emphasis>git maintenance run --schedule=&lt;frequency&gt;</emphasis> command. The
+        value must be one of "hourly", "daily", or "weekly".
 </simpara>
 </listitem>
 </varlistentry>
@@ -6998,6 +7135,38 @@ maintenance.commit-graph.auto
         reachable commits that are not in the commit-graph file is at least
         the value of <emphasis>maintenance.commit-graph.auto</emphasis>. The default value is
         100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.loose-objects.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>loose-objects</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>loose-objects</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        loose objects is at least the value of <emphasis>maintenance.loose-objects.auto</emphasis>.
+        The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.incremental-repack.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>incremental-repack</emphasis>
+        task should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero,
+        then the <emphasis>incremental-repack</emphasis> task will not run with the <emphasis>--auto</emphasis>
+        option. A negative value will force the task to run every time.
+        Otherwise, a positive value implies the command should run when the
+        number of pack-files not in the multi-pack-index is at least the value
+        of <emphasis>maintenance.incremental-repack.auto</emphasis>. The default value is 10.
 </simpara>
 </listitem>
 </varlistentry>
@@ -7266,6 +7435,11 @@ bc
 <listitem>
 <simpara>
 bc3
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+bc4
 </simpara>
 </listitem>
 <listitem>
@@ -8283,6 +8457,19 @@ push.recurseSubmodules
         specifying <emphasis>--recurse-submodules=check|on-demand|no</emphasis>.
         If not set, <emphasis>no</emphasis> is used by default, unless <emphasis>submodule.recurse</emphasis> is
         set (in which case a <emphasis>true</emphasis> value means <emphasis>on-demand</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.useForceIfIncludes
+</term>
+<listitem>
+<simpara>
+        If set to "true", it is equivalent to specifying
+        <emphasis>--force-if-includes</emphasis> as an option to <xref linkend="git-push(1)" />
+        in the command line. Adding <emphasis>--no-force-if-includes</emphasis> at the
+        time of push overrides this configuration setting.
 </simpara>
 </listitem>
 </varlistentry>
@@ -9871,7 +10058,7 @@ trace2.envVars
         <emphasis>GIT_HTTP_USER_AGENT,GIT_CONFIG</emphasis> would cause the trace2 output to
         contain events listing the overrides for HTTP user agent and the
         location of the Git configuration file (assuming any are set).  May be
-        overriden by the <emphasis>GIT_TRACE2_ENV_VARS</emphasis> environment variable.  Unset by
+        overridden by the <emphasis>GIT_TRACE2_ENV_VARS</emphasis> environment variable.  Unset by
         default.
 </simpara>
 </listitem>
@@ -9985,6 +10172,17 @@ transfer.unpackLimit
         When <emphasis>fetch.unpackLimit</emphasis> or <emphasis>receive.unpackLimit</emphasis> are
         not set, the value of this variable is used instead.
         The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+transfer.advertiseSID
+</term>
+<listitem>
+<simpara>
+        Boolean. When true, client and server processes will advertise their
+        unique session IDs to their remote counterpart. Defaults to false.
 </simpara>
 </listitem>
 </varlistentry>

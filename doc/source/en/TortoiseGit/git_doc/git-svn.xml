@@ -1307,7 +1307,7 @@ creating the branch or tag.</simpara>
 <listitem>
 <simpara>
         When retrieving svn commits into Git (as part of <emphasis>fetch</emphasis>, <emphasis>rebase</emphasis>, or
-        <emphasis>dcommit</emphasis> operations), look for the first <emphasis>From:</emphasis> or <emphasis>Signed-off-by:</emphasis> line
+        <emphasis>dcommit</emphasis> operations), look for the first <emphasis>From:</emphasis> line or <emphasis>Signed-off-by</emphasis> trailer
         in the log message and use that as the author string.
 </simpara>
 <blockquote>
@@ -1323,7 +1323,7 @@ creating the branch or tag.</simpara>
 <simpara>
         When committing to svn from Git (as part of <emphasis>set-tree</emphasis> or <emphasis>dcommit</emphasis>
         operations), if the existing log message doesn't already have a
-        <emphasis>From:</emphasis> or <emphasis>Signed-off-by:</emphasis> line, append a <emphasis>From:</emphasis> line based on the
+        <emphasis>From:</emphasis> or <emphasis>Signed-off-by</emphasis> trailer, append a <emphasis>From:</emphasis> line based on the
         Git commit's author string.  If you use this, then <emphasis>--use-log-author</emphasis>
         will retrieve a valid author string for all commits.
 </simpara>

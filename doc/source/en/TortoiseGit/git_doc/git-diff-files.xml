@@ -66,8 +66,8 @@ same as for <emphasis>git diff-index</emphasis> and <emphasis>git diff-tree</emp
 <listitem>
 <simpara>
         Generate diffs with &lt;n&gt; lines of context instead of
-        the usual three. Implies <emphasis>--patch</emphasis>.
-        Implies <emphasis>-p</emphasis>.
+        the usual three.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -876,7 +876,8 @@ override configuration settings.</simpara>
 <listitem>
 <simpara>
         In addition to <emphasis>--full-index</emphasis>, output a binary diff that
-        can be applied with <emphasis>git-apply</emphasis>. Implies <emphasis>--patch</emphasis>.
+        can be applied with <emphasis>git-apply</emphasis>.
+        Implies <emphasis>--patch</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -888,7 +889,8 @@ override configuration settings.</simpara>
 <simpara>
         Instead of showing the full 40-byte hexadecimal object
         name in diff-raw format output and diff-tree header
-        lines, show only a partial prefix.
+        lines, show the shortest prefix that is at least <emphasis>&lt;n&gt;</emphasis>
+        hexdigits long that uniquely refers the object.
         In diff-patch output format, <emphasis>--full-index</emphasis> takes higher
         precedence, i.e. if <emphasis>--full-index</emphasis> is specified, full blob
         names will be shown regardless of <emphasis>--abbrev</emphasis>.
@@ -1275,6 +1277,20 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+-I&lt;regex&gt;
+</term>
+<term>
+--ignore-matching-lines=&lt;regex&gt;
+</term>
+<listitem>
+<simpara>
+        Ignore changes whose all lines match &lt;regex&gt;.  This option may
+        be specified more than once.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --inter-hunk-context=&lt;lines&gt;
 </term>
 <listitem>
@@ -1295,7 +1311,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </term>
 <listitem>
 <simpara>
-        Show whole surrounding functions of changes.
+        Show whole function as context lines for each change.
+        The function names are determined in the same way as
+        <emphasis>git diff</emphasis> works out patch hunk headers (see <emphasis>Defining a
+        custom hunk-header</emphasis> in <xref linkend="gitattributes(5)" />).
 </simpara>
 </listitem>
 </varlistentry>
