@@ -37,6 +37,7 @@ Released: unreleased
  * Fixed issue #3686: Explorer hangs on dead network drives
  * Fixed issue #3696: Compare dialog (FileDiffDlg.cpp) should hide files with only ignored changes
  * Fixed issue #3704: Changed Files Dlg: "Revert to revision" fails for renamed files
+ * Fixed issue #3694: No overlay if not all lower case in repo top folder in WSL2 filesystem
 
 = Release 2.11.0 =
 Released: 2020-10-10

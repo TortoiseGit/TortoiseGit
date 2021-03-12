@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -461,16 +461,15 @@ public:
 		{
 			CString adminDir;
 			bool isWorktree = false;
-			GitAdminDir::GetAdminDirPath(thePath, adminDir, &isWorktree);
+			GitAdminDir::GetAdminDirPath(path, adminDir, &isWorktree);
 			if (PathIsDirectory(adminDir))
 			{
-				adminDir = CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(adminDir));
 				(*this)[thePath] = adminDir;
 				if (!isWorktree) // GitAdminDir::GetAdminDirPath returns the commongit dir ("parent/.git") and this would override the lookup path for the main repo
-					m_reverseLookup[adminDir] = thePath;
+					m_reverseLookup[CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(adminDir))] = path;
 				return (*this)[thePath];
 			}
-			return thePath + L".git\\"; // in case of an error stick to old behavior
+			return CPathUtils::BuildPathWithPathDelimiter(path) + L".git\\"; // in case of an error stick to old behavior
 		}
 
 		return lookup->second;
@@ -491,16 +490,15 @@ public:
 		if (lookup == m_WorktreeAdminDirLookup.cend())
 		{
 			CString wtadmindir;
-			GitAdminDir::GetWorktreeAdminDirPath(thePath, wtadmindir);
+			GitAdminDir::GetWorktreeAdminDirPath(path, wtadmindir);
 			if (PathIsDirectory(wtadmindir))
 			{
-				wtadmindir = CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(wtadmindir));
 				m_WorktreeAdminDirLookup[thePath] = wtadmindir;
-				m_reverseLookup[wtadmindir] = thePath;
+				m_reverseLookup[CPathUtils::BuildPathWithPathDelimiter(CPathUtils::NormalizePath(wtadmindir))] = path;
 				return m_WorktreeAdminDirLookup[thePath];
 			}
 			ATLASSERT(false);
-			return thePath + L".git\\"; // we should never get here
+			return CPathUtils::BuildPathWithPathDelimiter(path) + L".git\\"; // we should never get here
 		}
 		return lookup->second;
 	}
