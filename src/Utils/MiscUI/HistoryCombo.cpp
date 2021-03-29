@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2020 - TortoiseSVN
-// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,6 +42,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	, m_bWantReturn(FALSE)
 	, m_bTrim(TRUE)
 	, m_bCaseSensitive(FALSE)
+	, m_bCheckDuplicate(TRUE)
 {
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
