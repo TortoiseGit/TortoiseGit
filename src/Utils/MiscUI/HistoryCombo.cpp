@@ -42,6 +42,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	, m_bWantReturn(FALSE)
 	, m_bTrim(TRUE)
 	, m_bCaseSensitive(FALSE)
+	, m_bCheckDuplicate(TRUE)
 {
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
