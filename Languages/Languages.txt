@@ -28,6 +28,7 @@ ka;	1079;	0;	English;	Georgian;		Georgian
 ko;	1042;	0;	Korean;		Koran;			Korea
 de;	1031;	1;	German;		German;			German
 el;	1032;	0;	Greek;		Greek;			Greek
+he;	1037;	0;	Hebrew;		Hebrew;			Hebrew
 hu;	1038;	0;	Hungarian;	Hungarian;		Hungarian
 id;	1057;	1;	Indonesian;	Indonesian;		Indonesia
 it;	1040;	0;	Italian;	Italian;		Italiano

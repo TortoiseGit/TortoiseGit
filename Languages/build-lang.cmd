@@ -18,6 +18,7 @@ call :nmake 1032 el
 call :nmake 1034 es
 call :nmake 1035 fi
 call :nmake 1036 fr
+call :nmake 1037 he
 call :nmake 1038 hu
 call :nmake 1040 it
 call :nmake 1041 ja
