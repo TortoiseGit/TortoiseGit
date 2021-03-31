@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -155,6 +155,9 @@ public:
 	{
 		if (str == L"-")
 			return -1;
+
+		if (str.IsEmpty())
+			return -2;
 
 		return _wtol(str);
 	}
