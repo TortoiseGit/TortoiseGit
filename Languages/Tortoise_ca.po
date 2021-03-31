@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2020 the TortoiseGit team
+# Copyright (C) 2008-2021 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -9,7 +9,7 @@
 # el_libre como el chaval <el.libre@gmail.com>, 2011
 # Haommin <tfs.msimangu@gmail.com>, 2014
 # Joan Monguillot <jmonguillot@gmail.com>, 2013
-# Joan Monguillot <jmonguillot@gmail.com>, 2013,2016-2018
+# Joan Monguillot <jmonguillot@gmail.com>, 2013,2016-2018,2020-2021
 # el_libre como el chaval <el.libre@gmail.com>, 2011
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2013
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2013
@@ -20,8 +20,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-10-07 09:37+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2021-03-28 10:13+0000\n"
+"Last-Translator: Joan Monguillot <jmonguillot@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/lznuaa/tortoisegit/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -329,7 +329,7 @@ msgstr "&Avorta"
 msgid ""
 "&Abort\n"
 "You can fix the reason the hook script failed first."
-msgstr ""
+msgstr "&Interromp\nPodeu resoldre el motiu pel qual ha fallat l'script hook."
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -482,7 +482,7 @@ msgstr "&Compara revisions"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
 msgid "&Compare with previous revision"
-msgstr ""
+msgstr "&Compara amb revisió anterior"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_COMPRESSED)
 msgid "&Compressed Graph"
@@ -512,11 +512,11 @@ msgstr "&Personalitzat"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode"
-msgstr ""
+msgstr "Mode &fosc"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode\tD"
-msgstr ""
+msgstr "Mode &fosc\tD"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -537,11 +537,11 @@ msgstr "&Suprimir Filtre"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete branch on remote && local remote-tracking branch"
-msgstr ""
+msgstr "&Suprimeix la branca en remot && branca rastrejadora en remot local"
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
-msgstr ""
+msgstr "&Elimina branca/etiqueta"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -583,7 +583,7 @@ msgstr "&No m'ho preguntis més"
 msgid ""
 "&Don't run\n"
 "Do not run the script"
-msgstr ""
+msgstr "&No executar\nNo executar l'script"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
@@ -895,7 +895,7 @@ msgstr "&Fusiona"
 #. Resource IDs: (IDS_LOG_POPUP_MERGEREV)
 #, c-format
 msgid "&Merge to \"%s\"..."
-msgstr ""
+msgstr "&Fusiona cap a \"%s\"..."
 
 #. Resource IDs: (IDS_MERGE_UNRELATED)
 msgid "&Merge unrelated history"
@@ -1051,7 +1051,7 @@ msgstr "&Continua"
 msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
-msgstr ""
+msgstr "&Continua de totes maneres\nIgnora l'script hook i executa l'ordre de totes maneres."
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1161,7 +1161,7 @@ msgstr "Restitueix els canvis fets per aquestes entregues"
 msgid ""
 "&Run\n"
 "Run the hook script"
-msgstr ""
+msgstr "&Executa\nExecuta l'script hook"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
 msgid "&SSH client:"
@@ -1244,7 +1244,7 @@ msgstr "&Barra d'Estat"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
-msgstr ""
+msgstr "&Emmagatzema credencials..."
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
@@ -1332,7 +1332,7 @@ msgstr "&Unitats desconegudes"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
 msgid "&Unlock"
-msgstr ""
+msgstr "Desbloqueja"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -1708,11 +1708,11 @@ msgstr "Voleu afegir una altra entrega?"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
 msgid "Add as Executable (+x)"
-msgstr ""
+msgstr "Afegeix com executable (+x)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
 msgid "Add as Symlink"
-msgstr ""
+msgstr "Afegeix com a Symlink"
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -1850,6 +1850,10 @@ msgstr "Permet crear una entrega buida que només té missatge d'entrega sense f
 msgid "Already up to date."
 msgstr "Ja està al dia"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
+msgid "Alternative editor"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1482)
 msgid "Always push to the selected remote archive for this local branch"
 msgstr "Empeny sempre aquesta branca local a l'arxiu remot seleccionat"
@@ -1960,7 +1964,7 @@ msgstr "Aplicar Comparació unificada"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr ""
+msgstr "Aprova o rebutja l'script hook al costat client"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2005,7 +2009,7 @@ msgstr "Organitza &verticalment\tV"
 
 #. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
 msgid "Arrows point towards merges"
-msgstr ""
+msgstr "Les fletxes apunten cap a les fusions"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2117,13 +2121,9 @@ msgstr "Autors distingint Majusc./minúsc."
 msgid "Auto CrLf convert"
 msgstr "Auto convertir CrLf"
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr "Auto Crlf:"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2146,6 +2146,10 @@ msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
 msgstr "Auto-completa suggereix paraules (normalment noms de classes o membres)\ndels fitxers que heu canviat quan escriviu un text de registre."
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
+msgstr "AutoCrLf:"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2268,7 +2272,7 @@ msgstr "Barreja alpha"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "Bloqueja el TortoiseGit durant l'execució de l'eina de fusió externa"
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2414,7 +2418,7 @@ msgstr "Entrega"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMMIT)
 msgid "C&ommit..."
-msgstr ""
+msgstr "Entrega..."
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
@@ -2706,11 +2710,11 @@ msgstr "Extreu amb fusió"
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
 msgid "Cherr&y Pick selected commits..."
-msgstr ""
+msgstr "Escull entregues seleccionades..."
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSION)
 msgid "Cherr&y Pick this commit..."
-msgstr ""
+msgstr "Escull aquesta entrega..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CHERRYPICK)
 msgid "Cherry Pick"
@@ -2724,7 +2728,7 @@ msgstr "La tria ha fracassat"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Ha fallat la tria (vegeu detalls al registres del diàleg cherry pick/rebase). Ometre aquesta entrega?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2921,10 +2925,22 @@ msgstr "Marca segons l'edat, &continu"
 msgid "Colors"
 msgstr "Colors"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
+msgid "Colors 1"
+msgstr "Colors 1"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
+msgid "Colors 2"
+msgstr "Colors 2"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
+msgid "Colors 3"
+msgstr "Colors 3"
+
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
-msgstr ""
+msgstr "Columna: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -2940,11 +2956,11 @@ msgstr "Comanda"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_COMMANDLINECOL)
 msgid "Command Line"
-msgstr "Línia de comandes"
+msgstr "Línia d'ordre"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1336)
 msgid "Command Line To Execute:"
-msgstr "Comanda a Executar:"
+msgstr "Línia d'ordre a executar:"
 
 #. Resource IDs: (AFX_IDP_COMMAND_FAILURE)
 msgid "Command failed."
@@ -3130,7 +3146,7 @@ msgstr "Configurar Filtres regex"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 236)
 msgid "Configure Hook Scripts"
-msgstr "Configura scripts d'interconnexió"
+msgstr "Configura scripts hook"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 284)
 msgid "Configure Issue Tracker Integration"
@@ -3144,7 +3160,7 @@ msgstr "Configura editor alternatiu. Preferiblement un que permeti l'ús de fina
 
 #. Resource IDs: (IDS_CONFIGUREDEFAULT)
 msgid "Configure default"
-msgstr ""
+msgstr "Configura per defecte"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
@@ -3196,6 +3212,14 @@ msgstr "Conflictes"
 #, c-format
 msgid "Conflicts: %d"
 msgstr "Conflictes: %d"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
+msgid "Context Menu"
+msgstr "Menú contextual"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "Context Menu 2"
+msgstr "Menú contextual 2"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
@@ -3319,10 +3343,10 @@ msgstr "No s'ha pogut trobar el super-projecte"
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
 msgid ""
-"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
-"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
-"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr "No s'ha trobat \"msysgit\" o \"windows\" a la cadena de versió de git.exe.\nSi useu el git del Cygwin o de l'entorn msys2 cal activar uns hacks especials.\nVegeu més informació al fitxer d'ajuda amb la clau \"cygwin git\" o \"msys2 git\"."
+"Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
+"If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
 #, c-format
@@ -3552,6 +3576,10 @@ msgstr "Crea un fitxer diff unificat amb tots els canvis que has fet"
 msgid "Creating pull-request..."
 msgstr "Creant sol·licitud d'estirada"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
+msgid "Credential"
+msgstr "Credencial"
+
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
 msgstr "L'auxiliar de credencials no pot estar buit."
@@ -3630,13 +3658,13 @@ msgstr "Dimoni"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
 msgid "Dark theme"
-msgstr ""
+msgstr "Tema fosc"
 
 #. Resource IDs: (IDS_DARKTHEME_TT)
 msgid ""
 "Dark theme requires at least Win10 1803, and it must be enabled in the "
 "Windows system settings."
-msgstr ""
+msgstr "El tema fosc necessita almenys Win10 1803, i cal activar-lo a la configuració de sistema del Windows."
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -3679,7 +3707,7 @@ msgstr "Elimina %d etiquetes"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCAL)
 msgid "Delete &local remote-tracking branch"
-msgstr ""
+msgstr "Suprimeix la branca rastrejadora en remot &local"
 
 #. Resource IDs: (IDS_REFLOG_DEL)
 msgid "Delete Ref..."
@@ -3870,6 +3898,18 @@ msgstr "Mides i posicions dels formularis"
 msgid "Dialogs"
 msgstr "Diàlegs"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
+msgid "Dialogs 1"
+msgstr "Diàlegs 1"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
+msgid "Dialogs 2"
+msgstr "Diàlegs 2"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
+msgid "Dialogs 3"
+msgstr "Diàlegs 3"
+
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
 msgstr "Diff"
@@ -3885,10 +3925,6 @@ msgstr "Diffs de dues entregues"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
 msgstr "Visor de Diffs"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
-msgid "Diff Viewer::Merge Tool"
-msgstr "Visor de Diffs::Eina de fusió"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -4041,7 +4077,7 @@ msgstr "No em mostris més aquest avís (si prems Ignora)"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK5)
 msgid "Do not ask again for this script"
-msgstr ""
+msgstr "No tornar a preguntar per aquest script"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1407)
 msgid "Do not auto-select \"missing\" files (deleted, but unstaged)"
@@ -4379,7 +4415,7 @@ msgstr "Efectiu"
 msgid "Either the name or IP of the proxy server"
 msgstr "Nom o IP del servidor intermediari"
 
-#. Resource IDs: (IDS_LOG_EMAIL)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321, IDS_LOG_EMAIL)
 msgid "Email"
 msgstr "&Email:"
 
@@ -4981,23 +5017,23 @@ msgstr "Troba"
 
 #. Resource IDs: (cmdFindNext_LabelTitle_RESID)
 msgid "Find Next"
-msgstr ""
+msgstr "Troba el següent"
 
 #. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
 msgid "Find Previous"
-msgstr ""
+msgstr "Troba l'anterior"
 
 #. Resource IDs: (cmdFindPrev)
 msgid ""
 "Find the last occurrence of the selected text\n"
 "Search Previous"
-msgstr ""
+msgstr "Troba la darrera ocurrència del text seleccionat\nCerca l'anterior"
 
 #. Resource IDs: (cmdFindNext)
 msgid ""
 "Find the next occurrence of the selected text\n"
 "Search Next"
-msgstr ""
+msgstr "Troba la següent ocurrència del text seleccionat\nCerca el següent"
 
 #. Resource IDs: (57636, cmdFind)
 msgid ""
@@ -5131,11 +5167,11 @@ msgstr "Força el rebase fins i tot si la branca actual és descendent de l'entr
 
 #. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
 msgid "Force unlock"
-msgstr ""
+msgstr "Forçar desbloqueig"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
 msgid "Force: May discard"
-msgstr "Força: Es pot rebutjar"
+msgstr "Forçar: Potser rebutja"
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
@@ -5153,16 +5189,16 @@ msgstr "Avança %d"
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
 msgid ""
-"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
-"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr "S'ha trobat \"msysgit\" o \"windows\" a la cadena de versió de git.exe, però els hacks del git.exe estan activats. Cal desactivar aquests hacks per a un funcionament correcte del Git del Windows.\nVegeu més informació al fitxer d'ajuda amb la clau \"cygwin git\" o \"msys2 git\"."
+"Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
+msgstr ""
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
-"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
-msgstr "S'ha trobat un fitxer de bloqueig indicant que s'està executant un procés de rebase del TortoiseGit. Això bloqueja aquesta operació.\n\nSi ara mateix no esteu executant un procés de rebase del TortoiseGit, per continuar podeu eliminar el fitxer de bloqueig."
+"If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5264,42 +5300,6 @@ msgstr "Recopilant estadístiques"
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
 msgstr "General"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
-msgid "General::Alternative editor"
-msgstr "General::Editor Alternatiu"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
-msgid "General::Colors 1"
-msgstr "General::Colors 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
-msgid "General::Colors 2"
-msgstr "General::Colors 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
-msgid "General::Colors 3"
-msgstr "General::Colors 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
-msgid "General::Context Menu"
-msgstr "General:: Menú Contextual"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Context Menu 2"
-msgstr "General::Menú Contextual 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
-msgid "General::Dialogs 1"
-msgstr "General::Diàlegs 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
-msgid "General::Dialogs 2"
-msgstr "General::Diàlegs 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
-msgid "General::Dialogs 3"
-msgstr "General::Diàlegs 3"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5428,14 +5428,6 @@ msgid ""
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr "El Git utilitza el concepte de configuració jeràrquica.\nHi ha múltiples nivells; la configuració a nivells superiors modifica els valors a nivells inferiors.\nLa pestanya \"Efectiu\" mostra els valors efectius a l'àmbit l'actual (només lectura).\nSeleccioneu qualsevol nivell per veure-hi els valors desats.\nPer modificar la configuració seleccioneu un nivell, introduïu els valors i seleccioneu on desar-los."
-
-#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
-msgid "Git::Credential"
-msgstr "Git::Credencials"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
-msgid "Git::Remote"
-msgstr "Git::Remot"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1773, Dialog IDD_SETTINGSDIALOGS3:
@@ -5575,7 +5567,7 @@ msgstr "Amaga pedaç<<"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
-msgstr "Amaga el script mentres s'està executant"
+msgstr "Amaga l'script mentre s'està executant"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 65535)
 msgid "Hide the selected items in the context menu:"
@@ -5612,27 +5604,19 @@ msgstr "Consell: Els missatges d'entrega recents estan disponibles amb el menú 
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKS: Control id 103)
 msgid "Hook Scripts"
-msgstr "Scripts d'interconnexió"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
-msgid "Hook Scripts::Issue Tracker Config"
-msgstr "Scripts d'interconnexió::Configuració del rastreig d'incidències"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
-msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "Scripts d'interconnexió::Integració del Seguidor d'Incidències"
+msgstr "Scripts hook"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
-msgstr "Tipus d'interconnexió"
+msgstr "Tipus de hook"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1334)
 msgid "Hook Type:"
-msgstr "Tipus d'interconnexió:"
+msgstr "Tipus de hook:"
 
 #. Resource IDs: (IDS_HOOKFAILED_TASK2)
 msgid "Hook script failed"
-msgstr ""
+msgstr "Ha fallat l'script hook"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
@@ -5734,7 +5718,7 @@ msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
 msgid "ID:32819:V   +D"
-msgstr ""
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5893,12 +5877,8 @@ msgid "Icon Overlays"
 msgstr "Sobreposició d'icones"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
-msgid "Icon Overlays::Icon Set"
-msgstr "Sobreposició d'icones::Conjunt d'icones"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
-msgid "Icon Overlays::Overlay Handlers"
-msgstr "Sobreposició d'icones::Conjunt d'icones"
+msgid "Icon Set"
+msgstr ""
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6128,8 +6108,8 @@ msgid "Importing file %s"
 msgstr "Important arxiu %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
-msgstr "Llista de canvis rebuts"
+msgid "In Changelist"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"
@@ -6137,7 +6117,7 @@ msgstr "Entregues rebudes"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1649)
 msgid "In order to abort a merge progress a reset (to HEAD) is needed."
-msgstr ""
+msgstr "Cal reinicialitzar (a HEAD) per interrompre la fusió en curs"
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid ""
@@ -6201,7 +6181,7 @@ msgstr "Insereix contingut del Porta-retalls\nEnganxa"
 #. Resource IDs: (IDS_CLONE_BRANCH_TT)
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
-"cloned repository’s HEAD, point to specific branch instead."
+"cloned repository's HEAD, point to specific branch instead."
 msgstr ""
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
@@ -6225,6 +6205,14 @@ msgstr "Valor Monetari Incorrecte."
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
 msgstr "El número de revisió no és vàlid!"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
+msgid "Issue Tracker Config"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
+msgid "Issue Tracker Integration"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
@@ -6299,19 +6287,19 @@ msgstr "LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
 msgid "LFS Lock"
-msgstr ""
+msgstr "Bloqueig LFS"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
 msgid "LFS Lock Owner"
-msgstr ""
+msgstr "Propietari bloqueig LFS"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
 msgid "LFS Locks"
-msgstr ""
+msgstr "Bloquejos LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
 msgid "LFS Unlock"
-msgstr ""
+msgstr "Desbloqueig LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6548,11 +6536,11 @@ msgstr "Barra de localització"
 
 #. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
 msgid "Lock"
-msgstr ""
+msgstr "Bloqueig"
 
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
-msgstr ""
+msgstr "Bloqueja un fitxer amb LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
@@ -6705,6 +6693,10 @@ msgstr "Punt de fusió"
 #. Resource IDs: (IDS_PROGRS_TITLE_MERGEREINTEGRATE)
 msgid "Merge Reintegrate"
 msgstr "Fusiona Reintegra"
+
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
+msgid "Merge Tool"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SWITCH_MERGE_TT)
 msgid ""
@@ -6876,10 +6868,6 @@ msgstr "Imbricat"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 102)
 msgid "Network"
 msgstr "Xarxa"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
-msgid "Network::Email"
-msgstr "Xarxa::Correu electrònic"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, IDS_NEW)
 msgid "New"
@@ -7157,7 +7145,7 @@ msgstr "Avis: Si escull recuperar els documents auto-desats, heu de desar-los ex
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid ""
 "Note: These settings also apply to the Patch Viewer dialog.\n"
-"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+"To select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7474,8 +7462,8 @@ msgid "Others"
 msgstr "Altres"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
-msgstr "Canvis a enviar"
+msgid "Out Changelist"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
 msgid "Out Commits"
@@ -7492,6 +7480,10 @@ msgstr "Directori de sortida"
 #. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Sortida.prn"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
+msgid "Overlay Handlers"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7712,13 +7704,13 @@ msgstr "Diagrama de sectors"
 
 #. Resource IDs: (IDS_ERR_NOHOOKCOMMANDPECIFIED)
 msgid "Please enter a hook script to execute."
-msgstr "Introdueix un scripts d'interconnexió per executar."
+msgstr "Introduïu un script hook per executar."
 
 #. Resource IDs: (IDS_ERR_NOHOOKPATHSPECIFIED)
 msgid ""
 "Please enter a path where to apply the hook script to. Use \"*\" for all "
 "paths."
-msgstr "Introduïu un camí on aplicar l'script d'interconnexió. Useu \"*\" per a tots els camins."
+msgstr "Introduïu un camí on aplicar l'script hook. Useu \"*\" per a tots els camins."
 
 #. Resource IDs: (IDS_GITCHANGED_NEEDRESTART)
 msgid "Please restart TortoiseGit for the changes of git.exe to take effect."
@@ -7733,7 +7725,7 @@ msgstr "Vegeu <a id=\"manual\">manual</a> per a consells generals. Per exemple, 
 
 #. Resource IDs: (IDS_ERR_NOHOOKTYPESPECIFIED)
 msgid "Please select a hook type"
-msgstr "Seleccioneu un tipus d'interconnexió"
+msgstr "Seleccioneu un tipus de hook"
 
 #. Resource IDs: (IDS_SELECTBRANCH)
 msgid "Please select branch"
@@ -7774,7 +7766,7 @@ msgstr "Port :"
 
 #. Resource IDs: (IDS_HOOKTYPE_POSTCOMMIT)
 msgid "Post-Commit Hook"
-msgstr "Interconnexió Post-Entrega"
+msgstr "Hook Post-Entrega"
 
 #. Resource IDs: (IDS_HOOKTYPE_POSTPUSH)
 msgid "Post-Push Hook"
@@ -7786,7 +7778,7 @@ msgstr "Pàgina Prè&via"
 
 #. Resource IDs: (IDS_HOOKTYPE_PRECOMMIT)
 msgid "Pre-Commit Hook"
-msgstr "Interconnexió Pre-Entrega"
+msgstr "Hook Pre-Entrega"
 
 #. Resource IDs: (IDS_HOOKTYPE_PREPUSH)
 msgid "Pre-Push Hook"
@@ -7794,7 +7786,7 @@ msgstr "Interconnexió Pre-empenta"
 
 #. Resource IDs: (IDS_HOOKTYPE_PREREBASE)
 msgid "Pre-rebase hook"
-msgstr "Interconnexió Pre-rebase"
+msgstr "Hook Pre-rebase"
 
 #. Resource IDs: (IDS_PROC_COMMIT_PREPARECOMMIT)
 msgid "Preparing commit..."
@@ -7865,7 +7857,7 @@ msgstr "Imprimint"
 
 #. Resource IDs: (IDS_HOOK_FORCEDPROCEED)
 msgid "Proceed anyway"
-msgstr ""
+msgstr "Continua de totes maneres"
 
 #. Resource IDs: (IDS_PROGS_TOOLCOL)
 msgid "Program"
@@ -7917,13 +7909,10 @@ msgid "Proxy Settings"
 msgstr "Configuració proxy"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
-#. IDD_SETTINREMOTE: Control id 1603)
+#. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
+#. 1603)
 msgid "Prune"
 msgstr "Poda"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
-msgstr "Poda (tots els remots)"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
 msgid "Pull"
@@ -8166,13 +8155,17 @@ msgid "Ref List"
 msgstr "Llista de ref"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog
-#. IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
-msgstr "Cerca refs"
+#. IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
 msgstr "RefLog"
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
 msgid "References commit is on"
@@ -8250,7 +8243,8 @@ msgstr "Recorda la selecció (opció \"svn.rmdir\")"
 msgid "Reminder: Commit your change after resolve"
 msgstr "Recordatori: Entrega els canvis després de la resolució"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573, Dialog
+#. IDD_SETTINREMOTE: Control id 4570)
 msgid "Remote"
 msgstr "Remot"
 
@@ -8265,7 +8259,7 @@ msgstr "URL Remota"
 
 #. Resource IDs: (Dialog IDD_SUBMODULE_UPDATE: Control id 1754)
 msgid "Remote &tracking branch"
-msgstr "Branca que segueix una branca remota"
+msgstr "Branca ras&trejadora en remot"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 65535,
 #. IDS_PROC_REMOTEBRANCH)
@@ -8568,7 +8562,7 @@ msgstr "Restitueix entrega %s"
 
 #. Resource IDs: (IDS_REVERTCOMMITS)
 msgid "Revert the selected commit(s)?"
-msgstr ""
+msgstr "Restituir l'entrega o les entregues seleccionades?"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTTOPARENT)
 msgid "Revert to parent revision"
@@ -8676,7 +8670,7 @@ msgstr "Imatge dreta"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1848)
 msgid "Run for this repository"
-msgstr ""
+msgstr "Executa per aquest dipòsit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1335)
 msgid "Run when working tree path is under:"
@@ -8773,8 +8767,8 @@ msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
-msgstr "Safe Crlf:"
+msgid "SafeCrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9058,7 +9052,7 @@ msgstr "Seleccioneu la carpeta a on voleu exportar.\nPotser vulgueu crear una ca
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_SELECTFOLDERPATH)
 msgid "Select folder to run script for"
-msgstr "Selecciona carpeta a on córrer el script"
+msgstr "Selecciona carpeta on executar l'script"
 
 #. Resource IDs: (IDS_LOG_SAVEFOLDERTOHINT)
 msgid "Select folder to save the selected files to"
@@ -9066,7 +9060,7 @@ msgstr "Selecciona carpeta a on desar els fitxers seleccionats"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_SELECTSCRIPTFILE)
 msgid "Select hook script file"
-msgstr "Selecciona fitxer amb l'script d'interconnexió"
+msgstr "Selecciona fitxer amb l'script hook"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1405)
 msgid "Select items automatically"
@@ -9236,8 +9230,8 @@ msgid "Show"
 msgstr "Mostra"
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
-msgstr "Mostra RefLog"
+msgid "Show &RefLog"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
 #. IDS_PROC_LOG_SHOWUNVERSIONED)
@@ -9409,12 +9403,12 @@ msgid "Show la&beled commits only"
 msgstr "Mostra només les entregues etiquetades"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
-msgstr "Mostra número&s de línea"
+msgid "Show line number&s"
+msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
 msgid "Show locked files"
-msgstr ""
+msgstr "Mostra els fitxers bloquejats"
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
@@ -9558,7 +9552,7 @@ msgstr "Mostra representació gràfica de còpies/etiquetes/branques"
 
 #. Resource IDs: (IDS_MENUDESCLFSLOCKS)
 msgid "Shows a list of all files locked using LFS"
-msgstr ""
+msgstr "Mostra una llista de tots els fitxers bloquejats amb LFS"
 
 #. Resource IDs: (IDS_MENUDESCSHOWCHANGED)
 msgid "Shows all files which were changed since the last commit."
@@ -9701,7 +9695,7 @@ msgstr "Inicia la tria"
 
 #. Resource IDs: (IDS_HOOKTYPE_STARTCOMMIT)
 msgid "Start Commit Hook"
-msgstr "Interconnexió d'inici Entrega"
+msgstr "Hook d'inici Entrega"
 
 #. Resource IDs: (IDS_PROC_REBASE_STARTREBASE, IDS_PROC_STARTREBASEBUTTON)
 msgid "Start Rebase"
@@ -10123,7 +10117,7 @@ msgid ""
 "The branch \"%s\" is a remote-tracking branch which locally represents a remote branch.\n"
 "\n"
 "Do you really want to delete it?"
-msgstr ""
+msgstr "La branca \"%s\" és una branca rastrejadora en remot que representa localment una branca remota.\n\nVoleu suprimir-la realment?"
 
 #. Resource IDs: (IDS_ERR_PATCH_CHUNKMISMATCH)
 msgid "The chunk size did not match the number of added/removed lines!"
@@ -10230,6 +10224,10 @@ msgstr "Aquest fitxer és massa gran"
 msgid "The file is too large to open."
 msgstr "El fitxer és massa gran per obrir-lo."
 
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
 msgid ""
@@ -10267,7 +10265,7 @@ msgstr "La carpeta \n%s\nno existeix.\nVoleu crear-la?"
 msgid ""
 "The hook script returned an error:\n"
 "%ls"
-msgstr ""
+msgstr "L'script hook ha retornat un error:\n%ls"
 
 #. Resource IDs: (IDS_ERR_HOOKFAILED)
 #, c-format
@@ -10278,7 +10276,7 @@ msgstr "L'script d'interconnexió ha retornat un error:\n%s"
 
 #. Resource IDs: (IDS_ERR_HOOKNOTAPPROVED)
 msgid "The hook script was not approved to run!"
-msgstr ""
+msgstr "L'script hook no està aprovat per ser executat"
 
 #. Resource IDs: (IDS_INVALIDIMAGEINFO)
 msgid "The image can not be shown."
@@ -10608,7 +10606,7 @@ msgid ""
 "This working copy has a client-side hook script configured. Do you want this script to run?\n"
 "The command line to run is:\n"
 "%ls"
-msgstr ""
+msgstr "Aquesta còpia de treball té un script hook configurat al cantó client. El voleu executar?\nLínia d'ordre a executar:\n%ls"
 
 #. Resource IDs: (IDS_TREE_DIFF)
 msgid "Three way diff"
@@ -10733,12 +10731,12 @@ msgstr "TortoiseGitBlame, Version %d.%d.%d.%d"
 msgid ""
 "TortoiseGitBlame\n"
 "\n"
-"TortoiseGitBlam\n"
+"TortoiseGitBlame\n"
 "\n"
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10859,7 +10857,7 @@ msgid "Trim right"
 msgstr "Retalla espais de la dreta"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
@@ -11015,11 +11013,11 @@ msgstr "Tipus ref desconeguts"
 
 #. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
 msgid "Unlock"
-msgstr ""
+msgstr "Desbloqueja"
 
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
-msgstr ""
+msgstr "Desbloqueja un fitxer amb LFS"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_UNMARKBLOCK)
 msgid "Unmark this block"
@@ -11108,8 +11106,8 @@ msgid "Use .mailmap"
 msgstr "Utilitza .mailmap"
 
 #. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS"
-msgstr "Utilitza Git LFS"
+msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
@@ -11185,7 +11183,7 @@ msgstr "Utilitza el servidor configurat"
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
 msgid "Use dark mode"
-msgstr ""
+msgstr "Utilitza el mode fosc"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11692,6 +11690,11 @@ msgstr "Ja heu provat la darrera versió instal·lada"
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
 msgstr "Heu demanat estirar, però sense especificar cap branca remota."
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid ""
+"You can configure it for all remotes or global on the Git settings page."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid ""

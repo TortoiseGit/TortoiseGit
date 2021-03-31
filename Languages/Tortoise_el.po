@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2020 the TortoiseGit team
+# Copyright (C) 2008-2021 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"PO-Revision-Date: 2021-02-26 18:18+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Greek (http://www.transifex.com/lznuaa/tortoisegit/language/el/)\n"
 "MIME-Version: 1.0\n"
@@ -1844,6 +1844,10 @@ msgstr "Επέτρεψε να γίνετε μια άδεια προσθήκη π
 msgid "Already up to date."
 msgstr "Είναι ήδη ενημερωμένο."
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
+msgid "Alternative editor"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1482)
 msgid "Always push to the selected remote archive for this local branch"
 msgstr "Πάντα σπρώξε στην επιλεγμένη απομακρυσμένη συλλογή αρχείον για αυτόν τον τοπικό κλάδο."
@@ -2111,10 +2115,6 @@ msgstr "Συγγραφείς (γραφή ευαίσθητη σε πεζά/κεφ
 msgid "Auto CrLf convert"
 msgstr "Αυτόματη μετατροπή CrLf "
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr "Auto Crlf:"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
 msgstr ""
@@ -2140,6 +2140,10 @@ msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
 msgstr "Η αυτόματη ολοκλήρωση προτείνει λέξης (συνήθως από κλάσεις η ονόματα μελών)\nαπό τα αρχεία που έχετε αλλάξει καθώς γράφετε το μήνυμα καταγραφής."
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2915,6 +2919,18 @@ msgstr "Χρώμα κατά ηλικία, &συνεχής"
 msgid "Colors"
 msgstr "Χρώματα"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
+msgid "Colors 1"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
+msgid "Colors 2"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
+msgid "Colors 3"
+msgstr ""
+
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
@@ -3191,6 +3207,14 @@ msgstr "Συγκρούσεις "
 msgid "Conflicts: %d"
 msgstr "Διιστάσεις: %d"
 
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
+msgid "Context Menu"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "Context Menu 2"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
 msgstr "Γραμμές πλαισίου για patches"
@@ -3313,10 +3337,10 @@ msgstr "Δεν μπόρεσε να βρεθεί υπερέργο"
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
 msgid ""
-"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
-"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
-"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr "Δεν βρέθηκε \"msysgit\" η \"windows\" στην συμβολοσειρά έκδοσης του git.exe.\nΑν χρησιμοποιείτε το git με περιβάλλον cygwin η msys2 πρέπει να ενεργοποιήσετε ειδικά hacks.\nΓια περισσότερες πληροφορίες ψάξτε στην βοήθεια την λέξη-κλειδί \"cygwin git\" η \"msys2 git\"."
+"Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
+"If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
+msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
 #, c-format
@@ -3545,6 +3569,10 @@ msgstr "Δημιουργία ενός ενοιαίου αρχείου διαφο
 #. Resource IDs: (IDS_PROC_CREATINGPULLREUQEST)
 msgid "Creating pull-request..."
 msgstr "Δημιουργία αιτήματος Pull..."
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
+msgid "Credential"
+msgstr ""
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
@@ -3864,6 +3892,18 @@ msgstr "Θέσεις και μεγέθη διαλόγων"
 msgid "Dialogs"
 msgstr "Διάλογοι"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
+msgid "Dialogs 1"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
+msgid "Dialogs 2"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
+msgid "Dialogs 3"
+msgstr ""
+
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
 msgstr "Διαφορά"
@@ -3879,10 +3919,6 @@ msgstr "Διαφορές ανάμεσα σε δυο Commits"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
 msgstr "Θεατής Διαφορων"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
-msgid "Diff Viewer::Merge Tool"
-msgstr "Θεατής Διαφορων::Εργαλείο Συγχώνευσης"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -4373,7 +4409,7 @@ msgstr "Αποτελεσματικός"
 msgid "Either the name or IP of the proxy server"
 msgstr "Ή το όνομα ή την ΙΡ του πληρεξούσιου διακομηστή"
 
-#. Resource IDs: (IDS_LOG_EMAIL)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321, IDS_LOG_EMAIL)
 msgid "Email"
 msgstr "Ηλεκτρονική διεύθυνση"
 
@@ -5147,16 +5183,16 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
 msgid ""
-"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
-"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+"Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
-"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
-msgstr "Βρέθηκε μια κλειδαριά που υποδεικνύει πως μια διαδικασία TortoiseGit  επαναφορά κλάδου τρέχει. Αυτό μπλοκάρει αυτήν την λειτουργιά\n\nΑν δεν τρέχετε μια διαδικασία TortoiseGit επαναφοράς κλάδου, τότε αφαιρέστε την κλειδαριά για να μπορέσετε να συνεχίσετε."
+"If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5258,42 +5294,6 @@ msgstr ""
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
 msgstr "Γενικά"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
-msgid "General::Alternative editor"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
-msgid "General::Colors 1"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
-msgid "General::Colors 2"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
-msgid "General::Colors 3"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
-msgid "General::Context Menu"
-msgstr "Γενικά::Μενού Πλαίσιο"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Context Menu 2"
-msgstr "Γενικά::Μενού Πλαίσιο 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
-msgid "General::Dialogs 1"
-msgstr "Γενικά::Διαλόγων 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
-msgid "General::Dialogs 2"
-msgstr "Γενικά::Διαλόγων 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
-msgid "General::Dialogs 3"
-msgstr "Γενικά::Διαλόγων 3"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5421,14 +5421,6 @@ msgid ""
 "The \"Effective\" tab shows you the effective values for the current scope (read-only).\n"
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
-msgid "Git::Credential"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
-msgid "Git::Remote"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
@@ -5607,14 +5599,6 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKS: Control id 103)
 msgid "Hook Scripts"
 msgstr "Γάντζωμα αρχείων"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
-msgid "Hook Scripts::Issue Tracker Config"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
-msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "Γάντζωμα αρχείων::Ενσωμάτοση ανίχνευσης σφαλμάτων "
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
@@ -5887,11 +5871,7 @@ msgid "Icon Overlays"
 msgstr "Επικαλύψεις εικονιδίων"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
-msgid "Icon Overlays::Icon Set"
-msgstr "Επικαλύψεις εικονιδίων::Σύνολο εικονιδίων"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
-msgid "Icon Overlays::Overlay Handlers"
+msgid "Icon Set"
 msgstr ""
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
@@ -6122,7 +6102,7 @@ msgid "Importing file %s"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
+msgid "In Changelist"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
@@ -6195,7 +6175,7 @@ msgstr "Εισάγετε τα περιεχόμενα του πίνακα\nΕπι
 #. Resource IDs: (IDS_CLONE_BRANCH_TT)
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
-"cloned repository’s HEAD, point to specific branch instead."
+"cloned repository's HEAD, point to specific branch instead."
 msgstr ""
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
@@ -6218,6 +6198,14 @@ msgstr "Μη έγκυρο νόμισμα."
 
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
+msgid "Issue Tracker Config"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
+msgid "Issue Tracker Integration"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
@@ -6700,6 +6688,10 @@ msgstr ""
 msgid "Merge Reintegrate"
 msgstr "Επανένταξη συγχώνευσης"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
+msgid "Merge Tool"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SWITCH_MERGE_TT)
 msgid ""
 "Merge between original branch, working tree contents, and the branch to "
@@ -6870,10 +6862,6 @@ msgstr "Ένθετα"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 102)
 msgid "Network"
 msgstr "Δικτιο"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
-msgid "Network::Email"
-msgstr ""
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, IDS_NEW)
 msgid "New"
@@ -7151,7 +7139,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid ""
 "Note: These settings also apply to the Patch Viewer dialog.\n"
-"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+"To select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7468,7 +7456,7 @@ msgid "Others"
 msgstr "Άλλοι"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
+msgid "Out Changelist"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
@@ -7486,6 +7474,10 @@ msgstr ""
 #. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
+msgid "Overlay Handlers"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7911,12 +7903,9 @@ msgid "Proxy Settings"
 msgstr "Ρυθμίσεις Proxy"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
-#. IDD_SETTINREMOTE: Control id 1603)
+#. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
+#. 1603)
 msgid "Prune"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
@@ -8160,12 +8149,16 @@ msgid "Ref List"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog
-#. IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
+#. IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
+msgstr ""
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
@@ -8244,7 +8237,8 @@ msgstr ""
 msgid "Reminder: Commit your change after resolve"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573, Dialog
+#. IDD_SETTINREMOTE: Control id 4570)
 msgid "Remote"
 msgstr ""
 
@@ -8767,8 +8761,8 @@ msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
-msgstr "Safe Crlf:"
+msgid "SafeCrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9230,7 +9224,7 @@ msgid "Show"
 msgstr "Επίδειξη"
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
+msgid "Show &RefLog"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
@@ -9403,8 +9397,8 @@ msgid "Show la&beled commits only"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
-msgstr "Επίδειξη &αριθμών γραμμών"
+msgid "Show line number&s"
+msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
 msgid "Show locked files"
@@ -10224,6 +10218,10 @@ msgstr "Το αρχείο είναι πολύ μεγάλο"
 msgid "The file is too large to open."
 msgstr "Το αρχείο είναι πολύ μεγάλο για να ανοιχτεί."
 
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
 msgid ""
@@ -10727,12 +10725,12 @@ msgstr "TortoiseGitBlame, Έκδοση%d.%d.%d.%d"
 msgid ""
 "TortoiseGitBlame\n"
 "\n"
-"TortoiseGitBlam\n"
+"TortoiseGitBlame\n"
 "\n"
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10853,7 +10851,7 @@ msgid "Trim right"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
@@ -11102,7 +11100,7 @@ msgid "Use .mailmap"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS"
+msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11685,6 +11683,11 @@ msgstr "Έχετε ήδη εγκατεστημένη την τελευταία �
 
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
+msgstr ""
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid ""
+"You can configure it for all remotes or global on the Git settings page."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)

@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2020 the TortoiseGit team
+# Copyright (C) 2008-2021 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,6 +10,7 @@
 # Ian Yoon <learder@gmail.com>, 2012
 # jeiea <solum5013@gmail.com>, 2013
 # Jinbaek Lee <jinb92@gmail.com>, 2016
+# Juhee Park <uu7470@gmail.com>, 2020
 # 오준일 <juniri123@gmail.com>, 2018
 # Kim KiHyeon <kmkh12@paran.com>, 2011
 # kim minhyouk <apollo8900@naver.com>, 2015
@@ -21,6 +22,7 @@
 # 이피시소리 <pcsori@gmail.com>, 2014
 # 이피시소리 <pcsori@gmail.com>, 2014
 # Sangjun Jung <spamcoffee+transifex@gmail.com>, 2011
+# sr <simryangdaniel@nate.com>, 2020
 # Sven Strickroth <sstrickroth@googlemail.com>, 2020
 # TaeDong Kim <fly1004@gmail.com>, 2011,2013,2016
 # yang <hebory@gmail.com>, 2013
@@ -32,7 +34,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-10-07 09:37+0000\n"
+"PO-Revision-Date: 2021-02-26 18:18+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/lznuaa/tortoisegit/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -335,13 +337,13 @@ msgstr "&3 way merge"
 
 #. Resource IDs: (IDS_MSGBOX_ABORT)
 msgid "&Abort"
-msgstr "중단(&A)"
+msgstr "중단"
 
 #. Resource IDs: (IDS_HOOKFAILED_TASK3)
 msgid ""
 "&Abort\n"
 "You can fix the reason the hook script failed first."
-msgstr ""
+msgstr "중단\n훅 스크립트가 실패한 이유를 고칠 수 있습니다."
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -477,7 +479,7 @@ msgstr "커밋(&C)"
 
 #. Resource IDs: (IDS_MENUCOMMITSUBMODULE)
 msgid "&Commit submodule..."
-msgstr "&Commit submodule..."
+msgstr "서브모듈 커밋(&C)..."
 
 #. Resource IDs: (IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON)
 msgid "&Commit w/o"
@@ -494,7 +496,7 @@ msgstr "리비전 비교(&C)"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPAREWITHPREVIOUS)
 msgid "&Compare with previous revision"
-msgstr ""
+msgstr "이전 리비전과 비교"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_COMPRESSED)
 msgid "&Compressed Graph"
@@ -516,7 +518,7 @@ msgstr "복사(&C)\tCtrl+C"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id
 #. 65535)
 msgid "&Credential helper:"
-msgstr ""
+msgstr "자격 증명 도움말:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1662)
 msgid "&Custom"
@@ -524,7 +526,7 @@ msgstr "사용자 지정(&C)"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode"
-msgstr ""
+msgstr "다크 모드"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode\tD"
@@ -553,7 +555,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
-msgstr ""
+msgstr "브랜치/태그 삭제(&D)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -595,7 +597,7 @@ msgstr "다시 묻지 않음(&D)"
 msgid ""
 "&Don't run\n"
 "Do not run the script"
-msgstr ""
+msgstr "실행하지 않음\n이 스크립트를 실행하지 않음"
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
@@ -604,7 +606,7 @@ msgstr "이 메시지를 다시 표시하지 않음(&D)"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
 #. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
 msgid "&Don't store these settings now."
-msgstr ""
+msgstr "현재 설정을 저장하지 않음"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
@@ -655,7 +657,7 @@ msgstr "메일(&E):"
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
 #. IDD_SETTINGSHOOKCONFIG: Control id 1023)
 msgid "&Enable"
-msgstr ""
+msgstr "활성화(&E)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
@@ -685,7 +687,7 @@ msgstr "다른 프로그램(&E)"
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535)
 msgid "&Extra PATH:"
-msgstr ""
+msgstr "다른 경로:"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
@@ -750,7 +752,7 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Git"
-msgstr ""
+msgstr "&Git"
 
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -1045,7 +1047,7 @@ msgstr "포트(&P):"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1608)
 msgid "&Preserve merges"
-msgstr ""
+msgstr "병합 방지"
 
 #. Resource IDs: (Dialog AFX_IDD_PREVIEW_TOOLBAR: Control id 58116)
 msgid "&Print..."
@@ -1063,7 +1065,7 @@ msgstr "계속(&P)"
 msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
-msgstr ""
+msgstr "어쨌든 계속(&P)\n훅 스크립트를 무시하고 명령을 실행한다."
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1163,17 +1165,17 @@ msgstr "재시도(&R)"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTREV)
 msgid "&Revert change by this commit"
-msgstr "이 커밋 변경을 취소(&R)"
+msgstr "이 커밋 변경을 되돌리기(&R)"
 
 #. Resource IDs: (IDS_LOG_POPUP_REVERTREVS)
 msgid "&Revert changes by these commits"
-msgstr "이 커밋 변경들을 취소(&R)"
+msgstr "이 커밋 변경들을 되돌리기(&R)"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK3)
 msgid ""
 "&Run\n"
 "Run the hook script"
-msgstr ""
+msgstr "실행\n훅 스크립트를 실행하기"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 65535)
 msgid "&SSH client:"
@@ -1203,7 +1205,7 @@ msgstr "저장(&S)\tCtrl+S"
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1687)
 msgid "&Search..."
-msgstr ""
+msgstr "검색"
 
 #. Resource IDs: (IDS_PROC_SETMSYSGITPATH)
 msgid "&Set Git path"
@@ -1252,7 +1254,7 @@ msgstr "임시 보관(&S)"
 
 #. Resource IDs: (ID_VIEW_STATUS_BAR - Menu)
 msgid "&Status Bar"
-msgstr "&Status Bar"
+msgstr "상태 바(&S)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
@@ -1374,7 +1376,7 @@ msgstr "보기(&V)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
 msgid "&View effective config"
-msgstr ""
+msgstr "효과적인 config 보기"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
@@ -1570,7 +1572,7 @@ msgid ""
 "A newline separated list of paths for which icon overlays are shown.\n"
 "If you add an '?' char at the end of a path, then only this path will be included.\n"
 "If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are included too."
-msgstr ""
+msgstr "아이콘 오버레이를 표시할 경로 목록을 개행문자로 구별합니다.\n각 경로 끝에 '?' 문자를 추가하면 해당 경로만 포함됩니다.\n한 경로의 끝에 '*' 을 붙이거나 아무 문자도 추가하지 않으면 해당 경로의 모든 파일과 하위 폴더도 모두 포함됩니다."
 
 #. Resource IDs: (IDS_SETTINGS_EXCLUDECONTEXTLIST_TT)
 msgid ""
@@ -1585,7 +1587,7 @@ msgid ""
 "If you add an '?' char at the end of a path, then only this path will be excluded.\n"
 "If you add an '*' or no char at all at the end of a path, then all files and subdirs inside that path are excluded too.\n"
 "An empty list will allow overlays on all paths."
-msgstr ""
+msgstr "아이콘 오버레이를 표시하지 않을 경로 목록을 개행문자로 구별합니다.\n각 경로 끝에 '?' 문자를 추가하면 해당 경로만 제외됩니다.\n한 경로의 끝에 '*' 을 붙이거나 아무 문자도 추가하지 않으면 해당 경로의 모든 파일과 하위 폴더도 모두 제외됩니다.\n목록을 비워둘 경우 모든 경로에서 오버레이를 허용합니다."
 
 #. Resource IDs: (AFX_IDS_RESOURCE_EXCEPTION)
 msgid "A required resource was unavailable."
@@ -1625,7 +1627,7 @@ msgstr "파일 이름 바꾼 로그 줄이기"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Abbreviated size"
-msgstr ""
+msgstr "축약된 크기"
 
 #. Resource IDs: (Dialog IDD_GITPROGRESS: Control id 2, Dialog IDD_REBASE:
 #. Control id 1565, Dialog IDD_RESOLVE_CONFLICT: Control id 2)
@@ -1646,7 +1648,7 @@ msgstr "Aborts a running merge."
 
 #. Resource IDs: (cmdAbout_LabelTitle_RESID)
 msgid "Abou&t TortoiseGitMerge"
-msgstr ""
+msgstr "Abou&t TortoiseGitMerge"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 129)
 msgid "About TortoiseGit"
@@ -1662,7 +1664,7 @@ msgstr "TortoiseGitMerge 정보"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 1)
 msgid "Accept certificate"
-msgstr ""
+msgstr "자격 승인"
 
 #. Resource IDs: (AFX_IDP_FILE_ACCESS_DENIED)
 #, c-format
@@ -1720,11 +1722,11 @@ msgstr "다른 커밋을 추가합니까?"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
 msgid "Add as Executable (+x)"
-msgstr ""
+msgstr "실행파일로 추가 (+x)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
 msgid "Add as Symlink"
-msgstr ""
+msgstr "심볼릭 링크를 추가하세요."
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -1828,7 +1830,7 @@ msgstr "모든 로컬 브랜치"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr ""
+msgstr "전부 또는 일부의 옵션이 제한됩니다. 모든 이런 설정을 바꾸기 위해 Administrator 권리가 필요합니다."
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1861,6 +1863,10 @@ msgstr ""
 #. Resource IDs: (IDS_UPTODATE)
 msgid "Already up to date."
 msgstr "이미 최신입니다."
+
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
+msgid "Alternative editor"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1482)
 msgid "Always push to the selected remote archive for this local branch"
@@ -1932,11 +1938,11 @@ msgstr "%1에 접근 중에 알 수 없는 오류가 발생했습니다."
 #. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
 msgid "An unknown line type was found in line %d!"
-msgstr ""
+msgstr "알 수 없는 라인 유형이 발견되었습니다. 라인번호 %d !"
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
-msgstr ""
+msgstr "주석이 달린 태그"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_APPENDRIGHT)
 msgid "Append right block"
@@ -1972,7 +1978,7 @@ msgstr "Unified Diff 적용"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr ""
+msgstr "클라이언트 측 훅 스크립트를 승인 또는 거절"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -1993,7 +1999,7 @@ msgstr "재배치를 정말 중단하겠습니까?"
 
 #. Resource IDs: (IDS_REALLYCANCEL)
 msgid "Are you sure you want to cancel?"
-msgstr ""
+msgstr "정말 취소하시겠습니까?"
 
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -2004,7 +2010,7 @@ msgstr "충돌한 파일들을 해결되었음으로 처리하는 것이 확실�
 msgid ""
 "Are you sure you want to revert %d item(s)? You will lose ALL changes since "
 "the last update!"
-msgstr ""
+msgstr "정말 %d개 항목을 되돌리겠습니까? 마지막 업데이트 이후의 모든 변경사항이 사라집니다!"
 
 #. Resource IDs: (IDS_WARNUSERSAFEDIFFERENT)
 #, c-format
@@ -2087,7 +2093,7 @@ msgstr "인증"
 
 #. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
 msgid "Authentication and credential store"
-msgstr ""
+msgstr "인증 및 자격 저장소 "
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
 msgid "Authentication data"
@@ -2103,15 +2109,15 @@ msgstr "작성자 이메일"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
 msgid "Author email addresses"
-msgstr ""
+msgstr "작성자 이메일 주소"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
 msgid "Author names"
-msgstr ""
+msgstr "작성자 이름"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\tStefan Kueng"
-msgstr ""
+msgstr "작성자:\t\t\t\tStefan Kueng"
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
@@ -2129,13 +2135,9 @@ msgstr "작성자 대소문자 구별함"
 msgid "Auto CrLf convert"
 msgstr "자동 CR/LF 변환"
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr "Auto Crlf:"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2158,6 +2160,10 @@ msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
 msgstr "로그 메시지를 작성하는 중에 수정된 파일에서 단어를 찾아\n자동완성합니다. (클래스명이나 멤버 이름에서)"
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2204,7 +2210,7 @@ msgstr "막대 그래프"
 #. Resource IDs: (Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 1385,
 #. IDS_PROC_DIFF_BASE)
 msgid "Base"
-msgstr ""
+msgstr "기준"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522)
 msgid "Base On"
@@ -2244,7 +2250,7 @@ msgstr "Bisect reset"
 
 #. Resource IDs: (IDS_MENUBISECTSKIP)
 msgid "Bisect skip"
-msgstr ""
+msgstr "이분검색 생략"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574,
 #. IDS_MENUBISECTSTART)
@@ -2280,7 +2286,7 @@ msgstr "알파 혼합"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "외부 병합 툴을 실행하는 동안 TortoiseGit 블럭"
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2329,7 +2335,7 @@ msgstr "브랜치 이름"
 
 #. Resource IDs: (IDS_REV_COUNTER)
 msgid "Branch RevNo"
-msgstr ""
+msgstr "브랜치 리비전 번호"
 
 #. Resource IDs: (IDS_REBASE_FASTFORWARD_FMT)
 #, c-format
@@ -2412,7 +2418,7 @@ msgstr ""
 
 #. Resource IDs: (cmdCopy_Keytip_RESID)
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog
 #. IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id
@@ -2426,7 +2432,7 @@ msgstr "커밋(&o)"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMMIT)
 msgid "C&ommit..."
-msgstr ""
+msgstr "커밋(&o)"
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
@@ -2468,7 +2474,7 @@ msgid ""
 "%1!s!\n"
 "to\n"
 "%2!s!"
-msgstr ""
+msgstr "%1!s!를 %2!s!로 복사할 수 없습니다. "
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
 #. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
@@ -2545,7 +2551,7 @@ msgstr "Cancel\nStay with current settings"
 msgid ""
 "Cannot combine commits now.\n"
 "Make sure you are viewing the log of your current branch and no filters are applied."
-msgstr ""
+msgstr "커밋을 지금 결합할 수 없습니다. \n현재 브랜치의 로그를 보고 있고 필터가 적용되지 않았는지 확인하세요."
 
 #. Resource IDs: (IDS_B_CANNOTFORCECURRENT)
 msgid ""
@@ -2576,7 +2582,7 @@ msgstr "중부 유럽"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Certificate verification failed!"
-msgstr ""
+msgstr "인증서 검증 실패"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1697)
 msgid "Change log"
@@ -2613,12 +2619,12 @@ msgstr "변경된 파일"
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
-msgstr ""
+msgstr "%1!s! 및 %2!s! 사이에 변경된 파일"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
 msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr ""
+msgstr " %1!s!, %2!s!과 %3!s!, %4!s! 사이에 변경된 파일"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -2688,7 +2694,7 @@ msgstr "TortoiseGit 하위 메뉴가 아닌 최상위 컨텍스트 메뉴에서 
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
 "menu (SHIFT + right click)"
-msgstr ""
+msgstr "확장 컨텍스트 메뉴(시프트+우클릭)에서 볼 항목을 체크하세요"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -2706,7 +2712,7 @@ msgstr "체크:"
 msgid ""
 "Checked items will be hidden in the context menu by default and will only be"
 " visible if the shift key is pressed while opening the context menu."
-msgstr ""
+msgstr "확인된 아이템들은 기본적으로 숨겨지고 컨텍스트 메뉴가 열려있는 동안 쉬프트 키가 눌렸을 때에 보일 것 입니다."
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2736,7 +2742,7 @@ msgstr "Cherry Pick failed"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Cherry-pick 실패(자세한 내용은 Cherry chick/rebase 대화 상자의 로그를 참조하십시오.)! 현재 커밋을 생략하시겠습니까?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2882,7 +2888,7 @@ msgstr "기본 저장소로 복제"
 
 #. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
 msgid "Clone into a git repository without the working tree."
-msgstr ""
+msgstr "워킹 트리 없이 깃 저장소로 복제"
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
@@ -2901,13 +2907,13 @@ msgstr "수동으로 닫습니다."
 msgid ""
 "Close print preview mode\n"
 "Cancel Preview"
-msgstr "Close print preview mode\nCancel Preview"
+msgstr "프린트 미리보기 모드 종료\n미리보기 닫기"
 
 #. Resource IDs: (57602)
 msgid ""
 "Close the active document\n"
 "Close"
-msgstr "Close the active document\nClose"
+msgstr "활성화된 문서 닫기\n닫기"
 
 #. Resource IDs: (AFX_IDS_SCCLOSE)
 msgid "Close the active window and prompts to save the documents"
@@ -2933,10 +2939,22 @@ msgstr "Color by age, &continuous"
 msgid "Colors"
 msgstr "색상"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
+msgid "Colors 1"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
+msgid "Colors 2"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
+msgid "Colors 3"
+msgstr ""
+
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
-msgstr ""
+msgstr "열: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3079,7 +3097,7 @@ msgstr "Compare selected refs"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
 msgid "Compare tags"
-msgstr ""
+msgstr "태그 비교"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
@@ -3156,11 +3174,11 @@ msgstr "대체 편집기를 지정합니다. *nix계열의 줄바꿈 문자를 �
 
 #. Resource IDs: (IDS_CONFIGUREDEFAULT)
 msgid "Configure default"
-msgstr ""
+msgstr "기본값 설정"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
-msgstr ""
+msgstr "git.exe 파일 설정"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -3172,7 +3190,7 @@ msgstr "충돌한 파일을 해결하는 프로그램을 설정합니다."
 
 #. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
 msgid "Configure user information"
-msgstr ""
+msgstr "사용자 정보 설정"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3208,6 +3226,14 @@ msgstr "Conflicts"
 #, c-format
 msgid "Conflicts: %d"
 msgstr "충돌: %d"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
+msgid "Context Menu"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "Context Menu 2"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
@@ -3306,7 +3332,7 @@ msgstr "새 버전을 확인할 수 없습니다!"
 #. Resource IDs: (IDS_CHECKNEWER_NETERROR_FORMAT)
 #, c-format
 msgid "Could not check for a newer version! %1!s! (Error code: 0x%2!08X!)"
-msgstr ""
+msgstr "새 버전을 확인할 수 없음! %1!s! (오류 코드: 0x%2!08X!)"
 
 #. Resource IDs: (IDS_ERR_COPYFILES)
 #, c-format
@@ -3331,9 +3357,9 @@ msgstr "Could not find Super-project"
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
 msgid ""
-"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
-"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
-"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+"Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
+"If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
@@ -3461,7 +3487,7 @@ msgstr "개수: %u 일치."
 
 #. Resource IDs: (IDS_MENUBRANCH)
 msgid "Create &Branch..."
-msgstr ""
+msgstr "브랜치 생성(&B)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1683)
 msgid "Create &Library"
@@ -3469,7 +3495,7 @@ msgstr "라이브러리 생성(&L)"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
 msgid "Create &New Branch"
-msgstr ""
+msgstr "새 브랜치 생성(&N)"
 
 #. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
 msgid "Create &Tag at this version..."
@@ -3477,11 +3503,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
-msgstr ""
+msgstr "태그 생성(&T)"
 
 #. Resource IDs: (cmdCreateUnifiedDiff_LabelTitle_RESID)
 msgid "Create &patch file"
-msgstr ""
+msgstr "패치 파일 생성(&p)"
 
 #. Resource IDs: (Dialog IDD_SVNIGNORE: Control id 1641)
 msgid "Create .gitignore file"
@@ -3489,7 +3515,7 @@ msgstr "Create .gitignore file"
 
 #. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
 msgid "Create Br&anch at this version..."
-msgstr ""
+msgstr "이 버전을 기준으로 브랜치 만들기(&a)..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
@@ -3564,6 +3590,10 @@ msgstr "바뀐 모든 부분에 대해 Unified diff를 생성합니다"
 msgid "Creating pull-request..."
 msgstr "Creating pull-request..."
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
+msgid "Credential"
+msgstr ""
+
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
 msgstr "자격 증명 도우미는 빈 칸일 수 없습니다."
@@ -3593,7 +3623,7 @@ msgstr "현재 브랜치:"
 msgid ""
 "Current HEAD is detached, you are working on (no branch).\n"
 "Do you want to create a branch now?"
-msgstr ""
+msgstr "현재 헤드는 분리되었습니다. 당신은 브랜치가 없는 상태로 작업중입니다.\n브랜치를 생성하시겠습니까?"
 
 #. Resource IDs: (IDS_REBASE_UPTODATE_FMT)
 #, c-format
@@ -3642,13 +3672,13 @@ msgstr "공개하기"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
 msgid "Dark theme"
-msgstr ""
+msgstr "다크 테마"
 
 #. Resource IDs: (IDS_DARKTHEME_TT)
 msgid ""
 "Dark theme requires at least Win10 1803, and it must be enabled in the "
 "Windows system settings."
-msgstr ""
+msgstr "다크 테마는 최소한 윈도우10 1803 이상부터 사용 가능합니다. 윈도우 시스템 설정에서 활성화 시켜야 사용할 수 있습니다."
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -3664,7 +3694,7 @@ msgstr "기본"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 65535)
 msgid "Default limitation of log messages:"
-msgstr ""
+msgstr "로그 메시지 제약사항 기본값"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1064)
 msgid "Default to UTF-8 encoding"
@@ -3729,7 +3759,7 @@ msgstr "브랜치 제거"
 
 #. Resource IDs: (IDS_DELETE_LOCALTAG)
 msgid "Delete local tag"
-msgstr ""
+msgstr "지역 태그 삭제"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -3758,7 +3788,7 @@ msgstr "꼬리표 제거"
 
 #. Resource IDs: (IDS_DELETE_REMOTETAG)
 msgid "Delete tag on remote"
-msgstr ""
+msgstr "원격 태그 삭제"
 
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
@@ -3766,7 +3796,7 @@ msgstr "Delete the existing branch or use a different name."
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
 msgid "Delete/modify merge conflict"
-msgstr ""
+msgstr "병합 충돌 삭제/변경"
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid ""
@@ -3882,6 +3912,18 @@ msgstr "대화상자의 크기와 위치"
 msgid "Dialogs"
 msgstr "대화상자"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
+msgid "Dialogs 1"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
+msgid "Dialogs 2"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
+msgid "Dialogs 3"
+msgstr ""
+
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
 msgstr "비교"
@@ -3897,10 +3939,6 @@ msgstr "두 커밋 비교하기"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
 msgstr "수정사항(Diff) 뷰어"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
-msgid "Diff Viewer::Merge Tool"
-msgstr "수정사항(Diff) 뷰어::병합 도구"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -4244,7 +4282,7 @@ msgstr "다운로드"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
 msgid "Download language packs:"
-msgstr ""
+msgstr "언어 팩 다운로드:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1073)
 msgid "Draw tag/branch labels on right side"
@@ -4277,7 +4315,7 @@ msgstr "Dumy Group For locat TabCtr"
 
 #. Resource IDs: (cmdEditEnabled_Keytip_RESID, cmdTabEdit_Keytip_RESID)
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_EDIT)
 msgid "E&dit unselected"
@@ -4391,7 +4429,7 @@ msgstr "결과"
 msgid "Either the name or IP of the proxy server"
 msgstr "프록시 서버 이름이나 IP를 입력하십시오."
 
-#. Resource IDs: (IDS_LOG_EMAIL)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321, IDS_LOG_EMAIL)
 msgid "Email"
 msgstr "이메일"
 
@@ -4688,7 +4726,7 @@ msgstr "외부 프로그램:"
 
 #. Resource IDs: (cmdFind_Keytip_RESID)
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #. Resource IDs: (IDS_MENUFETCH)
 msgid "F&etch..."
@@ -5165,15 +5203,15 @@ msgstr "%d 앞으로"
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
 msgid ""
-"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
-"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+"Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
-"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+"If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
@@ -5241,7 +5279,7 @@ msgstr "대화상자 3에 커밋 대화상자 옵션이 더 있습니다."
 
 #. Resource IDs: (cmdGotoLine_Keytip_RESID)
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #. Resource IDs: (IDS_VIEW_SHOWGRAVATAR)
 msgid "G&ravatar"
@@ -5276,42 +5314,6 @@ msgstr "통계 생성 중"
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
 msgstr "일반"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
-msgid "General::Alternative editor"
-msgstr "일반::대체 편집기"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
-msgid "General::Colors 1"
-msgstr "일반::색상 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
-msgid "General::Colors 2"
-msgstr "일반::색상 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
-msgid "General::Colors 3"
-msgstr "일반::색상 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
-msgid "General::Context Menu"
-msgstr "일반::컨텍스트 메뉴"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Context Menu 2"
-msgstr "일반::컨텍스트 메뉴 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
-msgid "General::Dialogs 1"
-msgstr "일반::대화상자 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
-msgid "General::Dialogs 2"
-msgstr "일반::대화상자 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
-msgid "General::Dialogs 3"
-msgstr "일반::대화상자 3"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5440,14 +5442,6 @@ msgid ""
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr "깃은 계층적 설정 개념을 사용합니다.\n즉, 여러 설정 단계가 있고, 높은 단계의 설정은 낮은 단계의 설정을 덮어씁니다.\n\"결과\" 탭은 현재 범위에 적용된 설정을 보여줍니다. (수정할 수 없습니다)\n어떤 단계의 설정을 보고 싶으면 그 단계를 선택하세요.\n설정을 바꾸려면 단계를 선택하고, 값을 입력한 다음 어디에 저장할지 선택하세요."
-
-#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
-msgid "Git::Credential"
-msgstr "Git::자격 증명"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
-msgid "Git::Remote"
-msgstr "Git::원격"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1773, Dialog IDD_SETTINGSDIALOGS3:
@@ -5626,14 +5620,6 @@ msgstr ""
 msgid "Hook Scripts"
 msgstr "훅 스크립트"
 
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
-msgid "Hook Scripts::Issue Tracker Config"
-msgstr "훅 스크립트::이슈 트래커 설정"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
-msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "훅 스크립트::이슈 트래커 통합"
-
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
 msgstr "훅 종류"
@@ -5668,7 +5654,7 @@ msgstr "ID:220:V C +G"
 
 #. Accelerator Entry for Menu ID:32771; '&Exit\tCtrl+W'
 msgid "ID:32771:V C +W"
-msgstr ""
+msgstr "ID:32771:V C +W"
 
 #. Accelerator Entry for Menu ID:32772; '&Overlay images\tO'
 msgid "ID:32772:V   +O"
@@ -5680,11 +5666,11 @@ msgstr "ID:32773:V C +O"
 
 #. Accelerator Entry for Menu ID:32773; 'Save &as...\tCtrl+Shift+S'
 msgid "ID:32773:V CS+S"
-msgstr ""
+msgstr "ID:32773:V CS+S"
 
 #. Accelerator Entry for Menu ID:32774; '&Open...\tCtrl+O'
 msgid "ID:32774:V C +O"
-msgstr ""
+msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; 'Show Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5697,7 +5683,7 @@ msgstr "ID:32775:V C +D"
 
 #. Accelerator Entry for Menu ID:32776; '&Save\tCtrl+S'
 msgid "ID:32776:V C +S"
-msgstr ""
+msgstr "ID:32776:V C +S"
 
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window\tF'
 msgid "ID:32778:V   +F"
@@ -5709,20 +5695,20 @@ msgstr "ID:32779:V   +S"
 
 #. Accelerator Entry for Menu ID:32782; '&Print...\tCtrl+P'
 msgid "ID:32782:V C +P"
-msgstr ""
+msgstr "ID:32782:V C +P"
 
 #. Accelerator Entry for Menu ID:32787; ''
 #. Accelerator Entry for Menu ID:32787; '&Find\tCtrl+F'
 msgid "ID:32787:V C +F"
-msgstr ""
+msgstr "ID:32787:V C +F"
 
 #. Accelerator Entry for Menu ID:32789; ''
 msgid "ID:32789:VA  +N"
-msgstr ""
+msgstr "ID:32789:VA  +N"
 
 #. Accelerator Entry for Menu ID:32790; ''
 msgid "ID:32790:VA  +P"
-msgstr ""
+msgstr "ID:32790:VA  +P"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical\tV'
 msgid "ID:32793:V C +V"
@@ -5746,7 +5732,7 @@ msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
 msgid "ID:32819:V   +D"
-msgstr ""
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5774,7 +5760,7 @@ msgstr "ID:32870:V C +L"
 
 #. Accelerator Entry for Menu ID:32873; ''
 msgid "ID:32873:V C +E"
-msgstr ""
+msgstr "ID:32873:V C +E"
 
 #. Accelerator Entry for Menu ID:32881; 'Wrap long lines'
 msgid "ID:32881:V C +P"
@@ -5905,12 +5891,8 @@ msgid "Icon Overlays"
 msgstr "아이콘 오버레이"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
-msgid "Icon Overlays::Icon Set"
-msgstr "아이콘 오버레이::아이콘 모음"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
-msgid "Icon Overlays::Overlay Handlers"
-msgstr "아이콘 오버레이::아이콘 핸들"
+msgid "Icon Set"
+msgstr ""
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6140,8 +6122,8 @@ msgid "Importing file %s"
 msgstr "Importing file %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
-msgstr "In ChangeList"
+msgid "In Changelist"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"
@@ -6213,7 +6195,7 @@ msgstr "클립보드 내용을 붙임\n붙여넣기"
 #. Resource IDs: (IDS_CLONE_BRANCH_TT)
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
-"cloned repository’s HEAD, point to specific branch instead."
+"cloned repository's HEAD, point to specific branch instead."
 msgstr ""
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
@@ -6237,6 +6219,14 @@ msgstr "유효하지 않은 단위"
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
 msgstr "Invalid revision number!"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
+msgid "Issue Tracker Config"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
+msgid "Issue Tracker Integration"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
@@ -6303,11 +6293,11 @@ msgstr "한국어"
 
 #. Resource IDs: (cmdViewWrapLines_Keytip_RESID)
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
-msgstr ""
+msgstr "LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
 msgid "LFS Lock"
@@ -6718,11 +6708,15 @@ msgstr "Merge Point"
 msgid "Merge Reintegrate"
 msgstr "재통합 병합"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
+msgid "Merge Tool"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SWITCH_MERGE_TT)
 msgid ""
 "Merge between original branch, working tree contents, and the branch to "
 "switch to"
-msgstr ""
+msgstr "기존 브랜치, 작업 트릐 내용 및 전환할 브랜치를 병합하십시오."
 
 #. Resource IDs: (IDS_PATHACTIONS_MERGED, IDS_SVNACTION_MERGED,
 #. IDS_VIEWTITLE_MERGED)
@@ -6888,10 +6882,6 @@ msgstr "중첩됨"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 102)
 msgid "Network"
 msgstr "네트워크"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
-msgid "Network::Email"
-msgstr "네트워크::이메일"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, IDS_NEW)
 msgid "New"
@@ -7169,7 +7159,7 @@ msgstr "자동으로 저장된 문서를 복구하는 것을 선택했다면, �
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid ""
 "Note: These settings also apply to the Patch Viewer dialog.\n"
-"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+"To select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7486,8 +7476,8 @@ msgid "Others"
 msgstr "기타"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
-msgstr "보낼 변경사항"
+msgid "Out Changelist"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
 msgid "Out Commits"
@@ -7504,6 +7494,10 @@ msgstr "저장할 폴더"
 #. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
+msgid "Overlay Handlers"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7929,13 +7923,10 @@ msgid "Proxy Settings"
 msgstr "프록시 설정"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
-#. IDD_SETTINREMOTE: Control id 1603)
+#. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
+#. 1603)
 msgid "Prune"
 msgstr "제거"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
-msgstr "제거 (모두 원격)"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
 msgid "Pull"
@@ -8026,7 +8017,7 @@ msgstr "인용 경로"
 
 #. Resource IDs: (cmdReload_Keytip_RESID)
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1073)
 msgid "R&AM drives"
@@ -8178,13 +8169,17 @@ msgid "Ref List"
 msgstr "참조 목록"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog
-#. IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
-msgstr "RefBrowse"
+#. IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
 msgstr "참조 기록"
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
 msgid "References commit is on"
@@ -8262,7 +8257,8 @@ msgstr "Remember selection (\"svn.rmdir\" option)"
 msgid "Reminder: Commit your change after resolve"
 msgstr "주의: 충돌을 해결한 후에 커밋해주세요"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573, Dialog
+#. IDD_SETTINREMOTE: Control id 4570)
 msgid "Remote"
 msgstr "원격"
 
@@ -8576,7 +8572,7 @@ msgstr "Revert commit"
 #. Resource IDs: (IDS_PROC_REVERTCOMMIT)
 #, c-format
 msgid "Revert commit %s"
-msgstr "Revert commit %s"
+msgstr " %s 커밋 되돌리기"
 
 #. Resource IDs: (IDS_REVERTCOMMITS)
 msgid "Revert the selected commit(s)?"
@@ -8589,7 +8585,7 @@ msgstr "Revert to parent revision"
 #. Resource IDs: (IDS_FILEDIFF_POPREVERTTOREV)
 #, c-format
 msgid "Revert to revision %s"
-msgstr "Revert to revision %s"
+msgstr " %s리비전으로 되돌리기"
 
 #. Resource IDs: (IDS_SVNACTION_REVERT)
 msgid "Reverted"
@@ -8696,7 +8692,7 @@ msgstr ""
 
 #. Resource IDs: (cmdSave_Keytip_RESID)
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
 #. Control id 1383)
@@ -8785,8 +8781,8 @@ msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
-msgstr "Safe Crlf:"
+msgid "SafeCrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9248,8 +9244,8 @@ msgid "Show"
 msgstr "보기"
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
-msgstr "참조 기록 보기(&R)"
+msgid "Show &RefLog"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
 #. IDS_PROC_LOG_SHOWUNVERSIONED)
@@ -9421,8 +9417,8 @@ msgid "Show la&beled commits only"
 msgstr "이름이 붙은 커밋만 보기(&B)"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
-msgstr "줄 번호 보기(&S)"
+msgid "Show line number&s"
+msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
 msgid "Show locked files"
@@ -10079,7 +10075,7 @@ msgstr "꼬리표 정보"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES)
 msgid "Tag/branch names"
-msgstr ""
+msgstr "태그/브랜치 이름"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1485)
 msgid "Tags"
@@ -10241,6 +10237,10 @@ msgstr "너무 커서 열 수 없습니다."
 #. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "너무 커서 열 수 없습니다."
+
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
@@ -10745,12 +10745,12 @@ msgstr "TortoiseGitBlame, Version %d.%d.%d.%d"
 msgid ""
 "TortoiseGitBlame\n"
 "\n"
-"TortoiseGitBlam\n"
+"TortoiseGitBlame\n"
 "\n"
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10871,7 +10871,7 @@ msgid "Trim right"
 msgstr "Trim right"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
@@ -10953,7 +10953,7 @@ msgid ""
 "This can happen if the file has been renamed.\n"
 "Please start the log dialog on this specific file alone and then revert the changes\n"
 "from the top pane in the log dialog."
-msgstr "Unable to reconstruct working tree path!\nThis can happen if the file has been renamed.\nPlease start the log dialog on this specific file alone and then revert the changes\nfrom the top pane in the log dialog."
+msgstr "작업 트리 경로를 재구성할 수 없습니다!\n파일 이름이 변경된 경우에 생길 수 있는 문제입니다.\n이 파일에 대한 로그 대화창을 실행해서 변경 내역을\n로그 대화창 최상단 영역의 변경 내역을 되돌리세요."
 
 #. Resource IDs: (IDS_ERR_CHANGELIST_SAVE)
 msgid "Unable to save changelists"
@@ -11120,7 +11120,7 @@ msgid "Use .mailmap"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS"
+msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11376,7 +11376,7 @@ msgstr ""
 
 #. Resource IDs: (cmdPaste_Keytip_RESID)
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
@@ -11484,7 +11484,7 @@ msgstr "웹 사이트 방문"
 
 #. Resource IDs: (cmdShowWhitespaces_Keytip_RESID)
 msgid "W"
-msgstr ""
+msgstr "W"
 
 #. Resource IDs: (Dialog IDD_SETTINGS_CONFIG: Control id 65535)
 msgid ""
@@ -11691,7 +11691,7 @@ msgstr "오른쪽 경계를 넘어가는 긴 줄을 줄 바꿈 하기\n긴 줄 �
 
 #. Resource IDs: (cmdRedo_Keytip_RESID)
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #. Resource IDs: (IDS_PROC_YESTOALL)
 msgid "Yes to all"
@@ -11703,6 +11703,11 @@ msgstr "이미 최신버전입니다."
 
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
+msgstr ""
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid ""
+"You can configure it for all remotes or global on the Git settings page."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
@@ -11817,7 +11822,7 @@ msgstr "현재 설치된 버전: %d.%d.%d.%d"
 
 #. Resource IDs: (cmdUndo_Keytip_RESID)
 msgid "Z"
-msgstr ""
+msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
 msgid ""
@@ -11896,14 +11901,14 @@ msgstr ""
 msgid ""
 "\"%s\" contains a git repository. It will not work as a submodule out of the box.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or keep it as a separate repository in a subdirectory?"
-msgstr ""
+msgstr "\"%s\" 은 git 저장소를 포함하고 있습니다. 이 저장소는 박스 밖에서 서브모듈로 동작하지 않을 것입니다.\n.git 영역을 삭제하고 모든 파일을 최상단 저장소에 추가하시겠습니까? 아니면 하위 폴더에 별도의 저장소로 유지하시겠습니까?"
 
 #. Resource IDs: (IDS_PROC_COPY_SUBMODULE)
 #, c-format
 msgid ""
 "\"%s\" contains a git submodule. It is likely that this doesn't work any more on the destination after copying.\n"
 "Do you want to delete the .git-entry and add all files to the top repository or ignore this possible issue and keep it?"
-msgstr ""
+msgstr "\"%s\" 은 git 서브모듈을 포함하고 있습니다. 대상 위치에 복사한 이후에는 동작하지 않을 것입니다.\n.git 영역을 삭제하고 모든 파일을 최상단 저장소에 추가하시겠습니까? 아니면 이러한 문제를 무시하고 그냥 두시겠습니까?"
 
 #. Resource IDs: (IDS_GITEXEERROR_NOMESSAGE)
 #, c-format
@@ -11928,7 +11933,7 @@ msgid ""
 "\"%s\" will be permanently deleted. It can NOT be recovered!\n"
 "\n"
 "Do you really want to continue?"
-msgstr ""
+msgstr "\"%s\" 항목을 완전히 삭제합니다. 지워지면 복구할 수 없습니다!\n\n정말 계속하시겠습니까?"
 
 #. Resource IDs: (IDS_PROC_APPLYPATCH_GITAMACTIVE)
 msgid ""
@@ -12004,7 +12009,7 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYCOL)
 #, c-format
 msgid "column '%ls'"
-msgstr ""
+msgstr "열 '%ls'"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYAUTHORY,
 #. IDS_STATGRAPH_COMMITSBYDATEY)
@@ -12054,7 +12059,7 @@ msgstr "git did not exit cleanly (exit code %d)\n에러가 발생했습니다!!"
 
 #. Resource IDs: (IDS_GITEXEFILEFILTER)
 msgid "git.exe|git.exe||"
-msgstr ""
+msgstr "git.exe|git.exe||"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
@@ -12177,7 +12182,7 @@ msgstr "이 명령에 대한 설명이 없습니다."
 
 #. Resource IDs: (IDS_CONFLICT_NOSUBMODULE)
 msgid "no submodule"
-msgstr ""
+msgstr "서브모듈 없음"
 
 #. Resource IDs: (IDS_STATUSUNVERSIONED)
 msgid "non-versioned"
@@ -12241,7 +12246,7 @@ msgstr "분기"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYRELPATHS)
 msgid "relative paths"
-msgstr ""
+msgstr "상대 경로"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 65535)
 msgid "renamed"

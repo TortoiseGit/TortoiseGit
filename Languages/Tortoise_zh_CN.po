@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2020 the TortoiseGit team
+# Copyright (C) 2008-2021 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -13,7 +13,7 @@
 # Garfield Yao <field977@gmail.com>, 2011
 # Gones <liejie050911@163.com>, 2013
 # Gong Gong <gongong83@gmail.com>, 2013
-# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
+# shuyu liu <liushuyu011@gmail.com>, 2014,2016
 # loveyu <yuht@qq.com>, 2012
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2013
 # lznuaa <lznuaa@gmail.com>, 2013-2014,2017
@@ -25,7 +25,7 @@
 # RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
 # Shengbin Meng <shengbinmeng@gmail.com>, 2013
-# liushuyu011 <liushuyu011@gmail.com>, 2014,2016
+# shuyu liu <liushuyu011@gmail.com>, 2014,2016
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2017-2019
 # szkingrose <1072258106@qq.com>, 2014
 # Verplusor, 2011
@@ -34,7 +34,7 @@
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
 # XY <1642787610@qq.com>, 2020
-# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2020
+# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2021
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016
 # YFdyh000 <yfdyh000@gmail.com>, 2013-2018
 # zhang chuan <zhangchuan.cn@gmail.com>, 2011
@@ -44,8 +44,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-10-07 09:37+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2021-03-19 19:23+0000\n"
+"Last-Translator: YFdyh000 <yfdyh000@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1874,6 +1874,10 @@ msgstr "允许创建只有提交信息而没有文件的空提交（即 git comm
 msgid "Already up to date."
 msgstr "已经最新"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
+msgid "Alternative editor"
+msgstr "替代编辑器"
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1482)
 msgid "Always push to the selected remote archive for this local branch"
 msgstr "总是推送这个本地分支到选择的远端归档"
@@ -2141,10 +2145,6 @@ msgstr "作者区分大小写"
 msgid "Auto CrLf convert"
 msgstr "自动CrLf换行符转换"
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr "自动CrLf转换:"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
 msgstr "自动&CrLf:"
@@ -2170,6 +2170,10 @@ msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
 msgstr "自动完成建议的字符（通常是类名或成员名）\n它来自于您已经更改的文件，作为您输入的日志信息。"
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
+msgstr "自动换行符:"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2945,6 +2949,18 @@ msgstr "依据年龄标记颜色，连续的(&C)"
 msgid "Colors"
 msgstr "颜色"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
+msgid "Colors 1"
+msgstr "颜色一"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
+msgid "Colors 2"
+msgstr "颜色二"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
+msgid "Colors 3"
+msgstr "颜色三"
+
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
@@ -3221,6 +3237,14 @@ msgstr "冲突"
 msgid "Conflicts: %d"
 msgstr "冲突: %d"
 
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
+msgid "Context Menu"
+msgstr "右键菜单"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "Context Menu 2"
+msgstr "右键菜单二"
+
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
 msgstr "补丁的上下文行数"
@@ -3343,10 +3367,10 @@ msgstr "不能找到父工程"
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
 msgid ""
-"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
-"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
-"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr "git.exe 的版本字符串中未找到 \"msysgit\" 或 \"windows\"。\n如果您在使用的为 cygwin 或 msys2 环境的 git，您需要启用特殊处理。\n您可以在帮助文件中查阅 \"cygwin git\" 或 \"msys2 git\" 了解更多信息。"
+"Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
+"If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
+msgstr "git.exe 的版本字符串中未找到 \"msysgit\" 或 \"windows\"。\n如果您在使用的为 Cygwin 或 MSYS2 环境的 git，您需要启用特殊处理。\n您可以在帮助文件中查阅 \"Cygwin git\" 或 \"MSYS2 git\" 了解更多信息。"
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
 #, c-format
@@ -3575,6 +3599,10 @@ msgstr "创建包含有您做出的所有更改的标准差异文件"
 #. Resource IDs: (IDS_PROC_CREATINGPULLREUQEST)
 msgid "Creating pull-request..."
 msgstr "正在创建拉取请求..."
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
+msgid "Credential"
+msgstr "凭证"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
@@ -3894,6 +3922,18 @@ msgstr "窗口大小及位置"
 msgid "Dialogs"
 msgstr "对话框"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
+msgid "Dialogs 1"
+msgstr "对话框组一"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
+msgid "Dialogs 2"
+msgstr "对话框组二"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
+msgid "Dialogs 3"
+msgstr "对话框组三"
+
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
 msgstr "差异"
@@ -3909,10 +3949,6 @@ msgstr "比较两个版本差异"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
 msgstr "差异查看器"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
-msgid "Diff Viewer::Merge Tool"
-msgstr "差异查看器::合并工具"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -4403,7 +4439,7 @@ msgstr "实际生效"
 msgid "Either the name or IP of the proxy server"
 msgstr "代理服务器的名称或 IP 地址"
 
-#. Resource IDs: (IDS_LOG_EMAIL)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321, IDS_LOG_EMAIL)
 msgid "Email"
 msgstr "Email"
 
@@ -5177,16 +5213,16 @@ msgstr "向前 %d"
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
 msgid ""
-"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
-"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
-msgstr "在 git.exe 的版本字符串找到 \"msysgit\" 或 \"windows\"，但您已启用对 git.exe 的特殊处理。这些特殊处理必须禁用才能正确配合 Git for Windows 运作！\n您可以在帮助文件中查阅 \"cygwin git\" 或 \"msys2 git\" 了解更多信息。"
+"Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
+msgstr "在 git.exe 的版本字符串找到 \"msysgit\" 或 \"windows\"，但您已启用对 git.exe 的特殊处理。\n这些特殊处理必须禁用才能正确配合 Git for Windows 运作！\n您可以在帮助文件中查阅 \"Cygwin git\" 或 \"MSYS2 git\" 了解更多信息。"
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
-"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
-msgstr "发现一个锁文件，它表示 TortoiseGit 变基流程正在运行。这阻止了此操作。\n\n如果您并且正在运行 TortoiseGit 变基流程，您可以移除陈旧的锁文件以继续操作。"
+"If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+msgstr "发现一个锁文件，它表示 TortoiseGit 变基流程正在运行。这阻止了此操作。\n\n如果您并无运行 TortoiseGit 变基流程，则可以移除残留的锁文件以继续操作。"
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5288,42 +5324,6 @@ msgstr "正在收集统计信息"
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
 msgstr "常规设置"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
-msgid "General::Alternative editor"
-msgstr "常规设置::编辑器"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
-msgid "General::Colors 1"
-msgstr "常规设置::颜色一"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
-msgid "General::Colors 2"
-msgstr "常规设置::颜色二"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
-msgid "General::Colors 3"
-msgstr "常规设置::颜色三"
-
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
-msgid "General::Context Menu"
-msgstr "常规设置::右键菜单"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Context Menu 2"
-msgstr "常规设置::右键菜单二"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
-msgid "General::Dialogs 1"
-msgstr "常规设置::对话框组一"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
-msgid "General::Dialogs 2"
-msgstr "常规设置::对话框组二"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
-msgid "General::Dialogs 3"
-msgstr "常规设置::对话框组三"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5452,14 +5452,6 @@ msgid ""
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr "Git 采用分层次的配置结构。\n即配置有多个层次，高层次的设置会覆盖低层次的设置。\n“实际生效”选项卡显示了您在当前范围的有效值（只读状态）。\n选择任意层次可查看存储在那里的值。\n选择要更改设置的一个层次，然后输入或选择要存储的值。"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
-msgid "Git::Credential"
-msgstr "Git::凭证"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
-msgid "Git::Remote"
-msgstr "Git::远端"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1773, Dialog IDD_SETTINGSDIALOGS3:
@@ -5637,14 +5629,6 @@ msgstr "提示：最近使用过的提交消息可通过文本框的右键菜单
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKS: Control id 103)
 msgid "Hook Scripts"
 msgstr "Hook 脚本"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
-msgid "Hook Scripts::Issue Tracker Config"
-msgstr "Hook 脚本::问题跟踪器配置"
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
-msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "Hook 脚本::问题跟踪器集成"
 
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
@@ -5917,12 +5901,8 @@ msgid "Icon Overlays"
 msgstr "图标覆盖"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
-msgid "Icon Overlays::Icon Set"
-msgstr "图标覆盖::图标集"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
-msgid "Icon Overlays::Overlay Handlers"
-msgstr "图标覆盖::覆盖处理器"
+msgid "Icon Set"
+msgstr "图标集"
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6152,8 +6132,8 @@ msgid "Importing file %s"
 msgstr "正在导入文件 %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
-msgstr "在修改列表中"
+msgid "In Changelist"
+msgstr "将传入的变更"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"
@@ -6225,7 +6205,7 @@ msgstr "插入剪贴板内容\n粘贴"
 #. Resource IDs: (IDS_CLONE_BRANCH_TT)
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
-"cloned repository’s HEAD, point to specific branch instead."
+"cloned repository's HEAD, point to specific branch instead."
 msgstr "不将新创建的 HEAD 指向所克隆仓库的 HEAD 指向的分支，改为指向特定分支。"
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
@@ -6249,6 +6229,14 @@ msgstr "非法货币。"
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
 msgstr "无效的修订版本号！"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
+msgid "Issue Tracker Config"
+msgstr "问题跟踪器配置"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
+msgid "Issue Tracker Integration"
+msgstr "问题跟踪器集成"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
@@ -6730,6 +6718,10 @@ msgstr "合并点"
 msgid "Merge Reintegrate"
 msgstr "合并复兴分支"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
+msgid "Merge Tool"
+msgstr "合并工具"
+
 #. Resource IDs: (IDS_PROC_SWITCH_MERGE_TT)
 msgid ""
 "Merge between original branch, working tree contents, and the branch to "
@@ -6900,10 +6892,6 @@ msgstr "嵌套"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 102)
 msgid "Network"
 msgstr "网络"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
-msgid "Network::Email"
-msgstr "网络::邮件"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, IDS_NEW)
 msgid "New"
@@ -7181,7 +7169,7 @@ msgstr "如果您选择恢复自动保存的文档，您必须明确地将它们
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid ""
 "Note: These settings also apply to the Patch Viewer dialog.\n"
-"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+"To select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr "注意：这些设置也适用于“补丁查看器”对话框。\n要选择是否要使用内置的或任何其他差异查看器程序，请转到左侧树中的“差异查看器”首选项部分。"
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7498,7 +7486,7 @@ msgid "Others"
 msgstr "对方的"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
+msgid "Out Changelist"
 msgstr "将推送的变更"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
@@ -7516,6 +7504,10 @@ msgstr "输出目录"
 #. Resource IDs: (AFX_IDS_PRINTDEFAULT)
 msgid "Output.prn"
 msgstr "Output.prn"
+
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
+msgid "Overlay Handlers"
+msgstr "覆盖处理器"
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7941,13 +7933,10 @@ msgid "Proxy Settings"
 msgstr "代理服务器设置"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
-#. IDD_SETTINREMOTE: Control id 1603)
+#. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
+#. 1603)
 msgid "Prune"
 msgstr "修剪"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
-msgstr "修剪 (prune)（所有远端）"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
 msgid "Pull"
@@ -8190,13 +8179,17 @@ msgid "Ref List"
 msgstr "引用列表"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog
-#. IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
+#. IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
 msgstr "浏览引用"
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
 msgstr "引用记录"
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
+msgstr "引用浏览器"
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
 msgid "References commit is on"
@@ -8274,7 +8267,8 @@ msgstr "记住选择 (\"svn.rmdir\"选项)"
 msgid "Reminder: Commit your change after resolve"
 msgstr "提醒：请在冲突解决后提交您的变更"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573, Dialog
+#. IDD_SETTINREMOTE: Control id 4570)
 msgid "Remote"
 msgstr "远端"
 
@@ -8797,8 +8791,8 @@ msgid "Sa&feCrLf:"
 msgstr "检查换行符(&F):"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
-msgstr "检查换行符:"
+msgid "SafeCrLf:"
+msgstr "安全换行符:"
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9260,7 +9254,7 @@ msgid "Show"
 msgstr "显示"
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
+msgid "Show &RefLog"
 msgstr "显示引用记录(&R)"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
@@ -9433,7 +9427,7 @@ msgid "Show la&beled commits only"
 msgstr "仅显示有块状标签的提交(&B)"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
+msgid "Show line number&s"
 msgstr "显示行号(&S)"
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
@@ -10254,6 +10248,10 @@ msgstr "文件过大"
 msgid "The file is too large to open."
 msgstr "文件过大，无法打开。"
 
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr "文件已修改，是否保存更改？"
+
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
 msgid ""
@@ -10757,12 +10755,12 @@ msgstr "TortoiseGitBlame，版本 %d.%d.%d.%d"
 msgid ""
 "TortoiseGitBlame\n"
 "\n"
-"TortoiseGitBlam\n"
+"TortoiseGitBlame\n"
 "\n"
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgstr "TortoiseGitBlame\n\nTortoiseGitBlame\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10883,7 +10881,7 @@ msgid "Trim right"
 msgstr "去掉行尾空格"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr "信任并解析外部合并工具的退出码（exitcode）"
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
@@ -11132,8 +11130,8 @@ msgid "Use .mailmap"
 msgstr "使用 .mailmap"
 
 #. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS"
-msgstr "使用 Git LFS"
+msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
+msgstr "使用 Git LFS（仅当 Git < 2.15 且 Git LFS < 2.3 时必须）"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
@@ -11568,7 +11566,7 @@ msgstr "在应用补丁时，如必要，忽略上下文行的空白变更"
 msgid ""
 "When closing a progress dialog with a running git process, ask for "
 "confirmation before killing it"
-msgstr "当关闭一个正在运行 git 进程的进度对话框时，在关闭前要求确认"
+msgstr "关闭一个正在运行 git 进程的进度对话框时，终止前要求确认"
 
 #. Resource IDs: (IDS_SETTINGS_ENABLEDRAGCONTEXTMENU_TT)
 msgid ""
@@ -11716,6 +11714,11 @@ msgstr "您已经安装了最新版本。"
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
 msgstr "您要求拉取，但没有指定远程分支。"
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid ""
+"You can configure it for all remotes or global on the Git settings page."
+msgstr "您可以在 Git 设置页面上针对所有远端或全局配置。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
 msgid ""
@@ -12136,15 +12139,15 @@ msgstr "管理器 - 仅此版本库"
 
 #. Resource IDs: (IDS_SYSTEM_GCMCORE)
 msgid "manager-core - all Windows users"
-msgstr ""
+msgstr "manager-core - Windows 所有用户"
 
 #. Resource IDs: (IDS_GLOBAL_GCMCORE)
 msgid "manager-core - current Windows user"
-msgstr ""
+msgstr "manager-core - Windows 当前用户"
 
 #. Resource IDs: (IDS_LOCAL_GCMCORE)
 msgid "manager-core - this repository only"
-msgstr ""
+msgstr "manager-core - 仅此版本库"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"

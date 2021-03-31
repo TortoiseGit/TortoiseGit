@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2020 the TortoiseGit team
+# Copyright (C) 2008-2021 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -18,19 +18,19 @@
 # mkrawiecki <michal.krawiecki@erlkoenig.pl>, 2011
 # Pablos <pawel.patyk@pabloart.pl>, 2012,2016
 # Pablos <pawel.patyk@pabloart.pl>, 2016
-# Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015-2016
+# Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015-2016,2021
 # StasiekK <2stan2@gmail.com>, 2016
 # StasiekK <2stan2@gmail.com>, 2016
 # Sven Strickroth <sstrickroth@googlemail.com>, 2020
-# taksun <taksun@o2.pl>, 2019-2020
+# taksun <taksun@o2.pl>, 2019-2021
 # taksun <taksun@o2.pl>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2020-10-07 09:37+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2021-03-28 20:07+0000\n"
+"Last-Translator: taksun <taksun@o2.pl>\n"
 "Language-Team: Polish (http://www.transifex.com/lznuaa/tortoisegit/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -546,7 +546,7 @@ msgstr "&Usuń filtr"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete branch on remote && local remote-tracking branch"
-msgstr ""
+msgstr "&Usuń zdalną gałąź && lokalne śledzenie gałęzi"
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
@@ -1341,7 +1341,7 @@ msgstr "&Dyski nieznanych typów"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
 msgid "&Unlock"
-msgstr ""
+msgstr "&Odblokuj"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -1371,7 +1371,7 @@ msgstr "&Widok"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
 msgid "&View effective config"
-msgstr ""
+msgstr "&Wyświetl skuteczną konfigurację"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "&Warn on missing Signed-Off-By on commit"
@@ -1717,11 +1717,11 @@ msgstr "Zatwierdzić inne zmiany?"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_EXE)
 msgid "Add as Executable (+x)"
-msgstr ""
+msgstr "Dodaj jako wykonywalny (+ x)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_ADD_LINK)
 msgid "Add as Symlink"
-msgstr ""
+msgstr "Dodaj jako dowiązanie symboliczne"
 
 #. Resource IDs: (IDS_DLGTITLE_ADD_DIFF_TOOL)
 msgid "Add extension specific diff program"
@@ -1858,6 +1858,10 @@ msgstr "Umożliwia utworzenie pustego zatwierdzenia składającego się jedynie 
 #. Resource IDs: (IDS_UPTODATE)
 msgid "Already up to date."
 msgstr "Już na bieżąco."
+
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
+msgid "Alternative editor"
+msgstr "Alternatywny edytor"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1482)
 msgid "Always push to the selected remote archive for this local branch"
@@ -2126,13 +2130,9 @@ msgstr "Autorzy bez uwzględnienia wielkości liter"
 msgid "Auto CrLf convert"
 msgstr "Automatyczna konwersja CrLf"
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Auto Crlf:"
-msgstr "Auto Crlf:"
-
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Automatyczne&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2155,6 +2155,10 @@ msgid ""
 "Auto-complete suggests words (usually class or member names)\n"
 "from the files that you have changed as you type a log message."
 msgstr "Autouzupełnianie sugeruje słowa (zazwyczaj klasy lub nazwy członków)\nz plików, które zostały zmienione w trakcie pisania wiadomości dziennika."
+
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
+msgid "AutoCrLf:"
+msgstr "Automatyczny CrLf:"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2423,7 +2427,7 @@ msgstr "Z&atwierdź"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMMIT)
 msgid "C&ommit..."
-msgstr ""
+msgstr "Z&atwierdź"
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
@@ -2930,10 +2934,22 @@ msgstr "&Kolorowanie wg wieku"
 msgid "Colors"
 msgstr "Kolory"
 
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
+msgid "Colors 1"
+msgstr "Kolory 1"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
+msgid "Colors 2"
+msgstr "Kolory 2"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
+msgid "Colors 3"
+msgstr "Kolory 3"
+
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
-msgstr ""
+msgstr "Kolumna: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3043,7 +3059,7 @@ msgstr "Zatwierdza twoje zmiany w repozytorium"
 
 #. Resource IDs: (IDS_PROC_LOG_COMMITTEREMAIL)
 msgid "Committer Email"
-msgstr ""
+msgstr "Email zatwierdzającego"
 
 #. Resource IDs: (IDS_COMMITDLG_UNVERSIONEDFOLDERWARNING)
 msgid ""
@@ -3055,7 +3071,7 @@ msgstr "Zatwierdzenie folderu, który nie jest poddany kontroli wersji nie doda 
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Common Name:"
-msgstr ""
+msgstr "Wspólna nazwa:"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMPARECHANGESET)
 msgid "Comp&are change sets"
@@ -3153,11 +3169,11 @@ msgstr "Skonfiguruj alternatywny edytor. Najlepiej taki, który obsługuje zako�
 
 #. Resource IDs: (IDS_CONFIGUREDEFAULT)
 msgid "Configure default"
-msgstr ""
+msgstr "Skonfiguruj domyślnie"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
-msgstr ""
+msgstr "Skonfiguruj git.exe."
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -3169,7 +3185,7 @@ msgstr "Program używany w celu rozwiązywania konfliktów pomiędzy plikami."
 
 #. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
 msgid "Configure user information"
-msgstr ""
+msgstr "Skonfiguruj informacje o użytkowniku"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3205,6 +3221,14 @@ msgstr "Konflikty"
 #, c-format
 msgid "Conflicts: %d"
 msgstr "Konflikty: %d"
+
+#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
+msgid "Context Menu"
+msgstr "Menu kontekstowe"
+
+#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
+msgid "Context Menu 2"
+msgstr "Menu kontekstowe 2"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
@@ -3328,9 +3352,9 @@ msgstr "Nie można znaleźć Super-projektu"
 
 #. Resource IDs: (IDS_ERR_GITNEEDHACKS)
 msgid ""
-"Could not find \"msysgit\" or \"windows\" in versionstring of git.exe.\n"
-"If you are using git of the cygwin or msys2 environment you need to enable special hacks.\n"
-"For more information see the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+"Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
+"If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
+"For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
@@ -3458,7 +3482,7 @@ msgstr "Zliczono: %u dopasowań."
 
 #. Resource IDs: (IDS_MENUBRANCH)
 msgid "Create &Branch..."
-msgstr ""
+msgstr "Stwórz &gałąź..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSMAIN: Control id 1683)
 msgid "Create &Library"
@@ -3466,15 +3490,15 @@ msgstr "Utwórz &bibliotekę"
 
 #. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
 msgid "Create &New Branch"
-msgstr ""
+msgstr "Stwórz &nową gałąź"
 
 #. Resource IDs: (IDS_CREATE_TAG_AT_THIS)
 msgid "Create &Tag at this version..."
-msgstr ""
+msgstr "Utwórz &tag przy tej wersji..."
 
 #. Resource IDs: (IDS_MENUTAG)
 msgid "Create &Tag..."
-msgstr ""
+msgstr "Stwórz &tag..."
 
 #. Resource IDs: (cmdCreateUnifiedDiff_LabelTitle_RESID)
 msgid "Create &patch file"
@@ -3561,6 +3585,10 @@ msgstr "Tworzy plik różnicowy, zawierający wszystkie twoje zmiany"
 msgid "Creating pull-request..."
 msgstr "Tworzenie prośby o połączenie..."
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
+msgid "Credential"
+msgstr "Poświadczenia"
+
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
 msgstr "Pomocnik poświadczeń nie może być pusty."
@@ -3571,7 +3599,7 @@ msgstr "Pomocnik poświadczeń:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 65535)
 msgid "Credentials"
-msgstr ""
+msgstr "Poświadczenia"
 
 #. Resource IDs: (IDS_SCIEDIT_CUT)
 msgid "Cu&t"
@@ -3639,7 +3667,7 @@ msgstr "Demon"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
 msgid "Dark theme"
-msgstr ""
+msgstr "Ciemny temat"
 
 #. Resource IDs: (IDS_DARKTHEME_TT)
 msgid ""
@@ -3653,7 +3681,7 @@ msgstr "Data"
 
 #. Resource IDs: (IDS_DATELASTCOMMIT)
 msgid "Date Last Commit"
-msgstr ""
+msgstr "Data ostatniego zatwierdzenia"
 
 #. Resource IDs: (IDS_DEFAULT)
 msgid "Default"
@@ -3726,7 +3754,7 @@ msgstr "Usuń gałąź"
 
 #. Resource IDs: (IDS_DELETE_LOCALTAG)
 msgid "Delete local tag"
-msgstr ""
+msgstr "Usuń lokalny tag"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -3755,7 +3783,7 @@ msgstr "Usuń tag"
 
 #. Resource IDs: (IDS_DELETE_REMOTETAG)
 msgid "Delete tag on remote"
-msgstr ""
+msgstr "Usuń tag na zdalnym"
 
 #. Resource IDs: (IDS_B_DELETEORDIFFERENTNAME)
 msgid "Delete the existing branch or use a different name."
@@ -3763,7 +3791,7 @@ msgstr "Usuń istniejącą gałąź lub użyj innej nazwy."
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
 msgid "Delete/modify merge conflict"
-msgstr ""
+msgstr "Usuń/modyfikuj scalenie konfliktu"
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid ""
@@ -3879,6 +3907,18 @@ msgstr "Wielkości i położenia okien dialogowych"
 msgid "Dialogs"
 msgstr "Dialogi"
 
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
+msgid "Dialogs 1"
+msgstr "Okno dialogowe 1"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
+msgid "Dialogs 2"
+msgstr "Okno dialogowe 2"
+
+#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
+msgid "Dialogs 3"
+msgstr "Okno dialogowe 3"
+
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
 msgstr "&Porównaj"
@@ -3894,10 +3934,6 @@ msgstr "Porównaj dwa zatwierdzenia"
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 192)
 msgid "Diff Viewer"
 msgstr "Przeglądarka różnic"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
-msgid "Diff Viewer::Merge Tool"
-msgstr "Przeglądarka różnic::Narzędzie scalania"
 
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Diff added lines"
@@ -3986,7 +4022,7 @@ msgstr "Wyłącz tą opcję, jeżeli posiadasz naprawdę duże kopie robocze i w
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKSBUTTON)
 msgid "Disable update checks"
-msgstr ""
+msgstr "Wyłącz kontrole aktualizacji"
 
 #. Resource IDs: (IDS_DETECT_MOVED_OR_COPIED_LINES_DISABLED)
 msgid "Disabled"
@@ -4241,7 +4277,7 @@ msgstr "Pobierz"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
 msgid "Download language packs:"
-msgstr ""
+msgstr "Pobierz pakiety językowe:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1073)
 msgid "Draw tag/branch labels on right side"
@@ -4261,7 +4297,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CLEAN: Control id 1731)
 msgid "Dry run"
-msgstr ""
+msgstr "Próbne uruchomienie"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1279)
 msgid "Dummy Button Form "
@@ -4274,7 +4310,7 @@ msgstr ""
 
 #. Resource IDs: (cmdEditEnabled_Keytip_RESID, cmdTabEdit_Keytip_RESID)
 msgid "E"
-msgstr ""
+msgstr "E"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_EDIT)
 msgid "E&dit unselected"
@@ -4388,7 +4424,7 @@ msgstr ""
 msgid "Either the name or IP of the proxy server"
 msgstr "Nazwa lub adres IP serwera proxy"
 
-#. Resource IDs: (IDS_LOG_EMAIL)
+#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321, IDS_LOG_EMAIL)
 msgid "Email"
 msgstr "E-mail"
 
@@ -4685,7 +4721,7 @@ msgstr "Program zewnętrzny:"
 
 #. Resource IDs: (cmdFind_Keytip_RESID)
 msgid "F"
-msgstr ""
+msgstr "F"
 
 #. Resource IDs: (IDS_MENUFETCH)
 msgid "F&etch..."
@@ -5162,15 +5198,15 @@ msgstr "W przód %d"
 
 #. Resource IDs: (IDS_ERR_GITUNNEEDEDHACKS)
 msgid ""
-"Found \"msysgit\" or \"windows\" in versionstring of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
-"You can find more information in the help file for the keyword \"cygwin git\" or \"msys2 git\"."
+"Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
+"You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
 msgstr ""
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
-"If you are not runnig a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
+"If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
@@ -5238,7 +5274,7 @@ msgstr ""
 
 #. Resource IDs: (cmdGotoLine_Keytip_RESID)
 msgid "G"
-msgstr ""
+msgstr "G"
 
 #. Resource IDs: (IDS_VIEW_SHOWGRAVATAR)
 msgid "G&ravatar"
@@ -5273,42 +5309,6 @@ msgstr "Pobieranie statystyk"
 #. IDD_SETTINGSMAIN: Control id 143)
 msgid "General"
 msgstr "Ogólne"
-
-#. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 333)
-msgid "General::Alternative editor"
-msgstr "Ogólne::Alternatywny edytor"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
-msgid "General::Colors 1"
-msgstr "Ogólne::Kolory 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
-msgid "General::Colors 2"
-msgstr "Ogólne::Kolory 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
-msgid "General::Colors 3"
-msgstr "Ogólne::Kolory 3"
-
-#. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
-msgid "General::Context Menu"
-msgstr "Ogólne::Menu kontekstowe"
-
-#. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
-msgid "General::Context Menu 2"
-msgstr "Ogólne::Menu kontekstowe 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
-msgid "General::Dialogs 1"
-msgstr "Ogólne::Okna dialogowe 1"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
-msgid "General::Dialogs 2"
-msgstr "Ogólne::Okna dialogowe 2"
-
-#. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
-msgid "General::Dialogs 3"
-msgstr "Ogólne::Okna dialogowe 3"
 
 #. Resource IDs: (IDS_LOG_POPUP_GETMERGELOGS)
 msgid "Get merge logs"
@@ -5437,14 +5437,6 @@ msgid ""
 "Select any level to see the values stored there.\n"
 "In order to change settings select a level, enter the values and select where to store to."
 msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
-msgid "Git::Credential"
-msgstr "Git::Poświadczenia"
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 4570)
-msgid "Git::Remote"
-msgstr "Git::Zdalny"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1773, Dialog
 #. IDD_SETTINGSBUGTRAQ_CONFIG: Control id 1773, Dialog IDD_SETTINGSDIALOGS3:
@@ -5623,14 +5615,6 @@ msgstr ""
 msgid "Hook Scripts"
 msgstr "Skrypty przechwytujące"
 
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
-msgid "Hook Scripts::Issue Tracker Config"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
-msgid "Hook Scripts::Issue Tracker Integration"
-msgstr "Skrypty przechwytujące::Integracja z systemami śledzenia błędów"
-
 #. Resource IDs: (IDS_SETTINGS_HOOKS_TYPECOL)
 msgid "Hook Type"
 msgstr "Typ przechwycenia"
@@ -5665,7 +5649,7 @@ msgstr "ID:220:V C +G"
 
 #. Accelerator Entry for Menu ID:32771; '&Exit\tCtrl+W'
 msgid "ID:32771:V C +W"
-msgstr ""
+msgstr "ID:32771:V C +W"
 
 #. Accelerator Entry for Menu ID:32772; '&Overlay images\tO'
 msgid "ID:32772:V   +O"
@@ -5677,11 +5661,11 @@ msgstr "ID:32773:V C +O"
 
 #. Accelerator Entry for Menu ID:32773; 'Save &as...\tCtrl+Shift+S'
 msgid "ID:32773:V CS+S"
-msgstr ""
+msgstr "ID:32773:V CS+S"
 
 #. Accelerator Entry for Menu ID:32774; '&Open...\tCtrl+O'
 msgid "ID:32774:V C +O"
-msgstr ""
+msgstr "ID:32774:V C +O"
 
 #. Accelerator Entry for Menu ID:32774; 'Show Whitespaces'
 msgid "ID:32774:V C +T"
@@ -5694,7 +5678,7 @@ msgstr "ID:32775:V C +D"
 
 #. Accelerator Entry for Menu ID:32776; '&Save\tCtrl+S'
 msgid "ID:32776:V C +S"
-msgstr ""
+msgstr "ID:32776:V C +S"
 
 #. Accelerator Entry for Menu ID:32778; '&Fit images in window\tF'
 msgid "ID:32778:V   +F"
@@ -5706,20 +5690,20 @@ msgstr "ID:32779:V   +S"
 
 #. Accelerator Entry for Menu ID:32782; '&Print...\tCtrl+P'
 msgid "ID:32782:V C +P"
-msgstr ""
+msgstr "ID:32782:V C +P"
 
 #. Accelerator Entry for Menu ID:32787; ''
 #. Accelerator Entry for Menu ID:32787; '&Find\tCtrl+F'
 msgid "ID:32787:V C +F"
-msgstr ""
+msgstr "ID:32787:V C +F"
 
 #. Accelerator Entry for Menu ID:32789; ''
 msgid "ID:32789:VA  +N"
-msgstr ""
+msgstr "ID:32789:VA  +N"
 
 #. Accelerator Entry for Menu ID:32790; ''
 msgid "ID:32790:VA  +P"
-msgstr ""
+msgstr "ID:32790:VA  +P"
 
 #. Accelerator Entry for Menu ID:32793; 'Arrange &vertical\tV'
 msgid "ID:32793:V C +V"
@@ -5743,7 +5727,7 @@ msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
 msgid "ID:32819:V   +D"
-msgstr ""
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5763,7 +5747,7 @@ msgstr "ID:32837:VA  +M"
 
 #. Accelerator Entry for Menu ID:32857; ''
 msgid "ID:32857:VA  +F"
-msgstr ""
+msgstr "ID:32857:VA  +F"
 
 #. Accelerator Entry for Menu ID:32870; 'Collapse'
 msgid "ID:32870:V C +L"
@@ -5771,7 +5755,7 @@ msgstr "ID:32870:V C +L"
 
 #. Accelerator Entry for Menu ID:32873; ''
 msgid "ID:32873:V C +E"
-msgstr ""
+msgstr "ID:32873:V C +E"
 
 #. Accelerator Entry for Menu ID:32881; 'Wrap long lines'
 msgid "ID:32881:V C +P"
@@ -5902,12 +5886,8 @@ msgid "Icon Overlays"
 msgstr "Nakładki ikon"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
-msgid "Icon Overlays::Icon Set"
-msgstr "Nakładki ikon::Zestaw ikon"
-
-#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
-msgid "Icon Overlays::Overlay Handlers"
-msgstr "Nakładki ikon::Uchwyty nakładek"
+msgid "Icon Set"
+msgstr ""
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6137,8 +6117,8 @@ msgid "Importing file %s"
 msgstr "Importuję plik %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
-msgid "In ChangeList"
-msgstr "Na liście zmian"
+msgid "In Changelist"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"
@@ -6210,7 +6190,7 @@ msgstr "Wstaw zawartość schowka\nWklej"
 #. Resource IDs: (IDS_CLONE_BRANCH_TT)
 msgid ""
 "Instead of pointing the newly created HEAD to the branch pointed to by the "
-"cloned repository’s HEAD, point to specific branch instead."
+"cloned repository's HEAD, point to specific branch instead."
 msgstr ""
 
 #. Resource IDs: (IDS_CLONE_ORIGIN_NAME_TT)
@@ -6234,6 +6214,14 @@ msgstr "Niewłaściwa waluta."
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
 msgstr "Błędny numer wersji!"
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
+msgid "Issue Tracker Config"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
+msgid "Issue Tracker Integration"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
@@ -6300,7 +6288,7 @@ msgstr "koreański"
 
 #. Resource IDs: (cmdViewWrapLines_Keytip_RESID)
 msgid "L"
-msgstr ""
+msgstr "L"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
 msgid "LFS"
@@ -6715,6 +6703,10 @@ msgstr ""
 msgid "Merge Reintegrate"
 msgstr "Reintegruj scalanie"
 
+#. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 193)
+msgid "Merge Tool"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_SWITCH_MERGE_TT)
 msgid ""
 "Merge between original branch, working tree contents, and the branch to "
@@ -6849,15 +6841,15 @@ msgstr "Mój plik:"
 
 #. Resource IDs: (cmdNavigateNextConflict_Keytip_RESID)
 msgid "NC"
-msgstr ""
+msgstr "NC"
 
 #. Resource IDs: (cmdNavigateNextDifference_Keytip_RESID)
 msgid "ND"
-msgstr ""
+msgstr "ND"
 
 #. Resource IDs: (cmdNavigateNextInlineDiff_Keytip_RESID)
 msgid "NI"
-msgstr ""
+msgstr "NI"
 
 #. Resource IDs: (59138)
 msgid "NUM"
@@ -6885,10 +6877,6 @@ msgstr "Zagnieżdżony"
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 102)
 msgid "Network"
 msgstr "Sieć"
-
-#. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 321)
-msgid "Network::Email"
-msgstr "Sieć::E-mail"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 30721, IDS_NEW)
 msgid "New"
@@ -7166,7 +7154,7 @@ msgstr "Uwaga, jeśli wybierzesz, żeby automatycznie zapisane dokumenty został
 #. Resource IDs: (Dialog IDD_SETTINGSUDIFF: Control id 65535)
 msgid ""
 "Note: These settings also apply to the Patch Viewer dialog.\n"
-"To select whether you would like to use the build-in or any alterative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
+"To select whether you would like to use the build-in or any alternative diff viewer program go to \"Diff Viewer\" preferences section in the leftward tree."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVERT: Control id 1481)
@@ -7483,7 +7471,7 @@ msgid "Others"
 msgstr "Innych"
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCHANGELIST)
-msgid "Out ChangeList"
+msgid "Out Changelist"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_OUTCOMMITS)
@@ -7502,6 +7490,10 @@ msgstr "Katalog wyjściowy"
 msgid "Output.prn"
 msgstr "Output.prn"
 
+#. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
+msgid "Overlay Handlers"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
 msgstr "Nadpisz"
@@ -7516,15 +7508,15 @@ msgstr ""
 
 #. Resource IDs: (cmdNavigatePreviousConflict_Keytip_RESID)
 msgid "PC"
-msgstr ""
+msgstr "PC"
 
 #. Resource IDs: (cmdNavigatePreviousDifference_Keytip_RESID)
 msgid "PD"
-msgstr ""
+msgstr "PD"
 
 #. Resource IDs: (cmdNavigatePreviousInlineDiff_Keytip_RESID)
 msgid "PI"
-msgstr ""
+msgstr "PI"
 
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
@@ -7926,21 +7918,18 @@ msgid "Proxy Settings"
 msgstr "Ustawienia proxy"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
-#. IDD_SETTINREMOTE: Control id 1603)
+#. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
+#. 1603)
 msgid "Prune"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1785)
-msgid "Prune (All remotes)"
-msgstr ""
+msgstr "Przytnij"
 
 #. Resource IDs: (Dialog IDD_SYNC: Control id 1611, IDS_PROGRS_TITLE_PULL)
 msgid "Pull"
-msgstr ""
+msgstr "&Pobierz"
 
 #. Resource IDs: (IDS_MENUDESCPULL)
 msgid "Pull (fetch and merge) commits from a remote branch."
-msgstr ""
+msgstr "Pobierz (ściągnij i połącz) zatwierdzenia ze zdalnej gałęzi."
 
 #. Resource IDs: (IDS_PROC_SYNC_PULLWRONGBRANCH)
 msgid ""
@@ -7950,11 +7939,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 302)
 msgid "Pull/Fetch"
-msgstr ""
+msgstr "Pobierz/Ściągnij"
 
 #. Resource IDs: (IDS_PROC_PULL_DIFFS)
 msgid "Pulled Diff"
-msgstr ""
+msgstr "Pobrana różnica"
 
 #. Resource IDs: (IDS_PROC_PULL_LOG)
 msgid "Pulled Log"
@@ -7962,40 +7951,40 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH)
 msgid "Pus&h"
-msgstr ""
+msgstr "Wypc&hnij"
 
 #. Resource IDs: (IDS_MENUPUSH)
 msgid "Pus&h..."
-msgstr ""
+msgstr "Wypc&hnij..."
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 303, Dialog IDD_SYNC: Control id
 #. 1612)
 msgid "Push"
-msgstr ""
+msgstr "Wypchnij"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1492)
 msgid "Push &option:"
-msgstr ""
+msgstr "&Opcje wypychania:"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 1786)
 msgid "Push Default"
-msgstr ""
+msgstr "Wypychanie domyślne"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Push URL:"
-msgstr ""
+msgstr "URL wypychania:"
 
 #. Resource IDs: (IDS_MENUDESCPUSH)
 msgid "Push commits to a remote repository."
-msgstr ""
+msgstr "Wypchnij zmiany do zdalnego repozytorium."
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSHNOTES)
 msgid "Push notes"
-msgstr ""
+msgstr "Wypchnij notatki"
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSHTAGS)
 msgid "Push ta&gs"
-msgstr ""
+msgstr "Wypchnij ta&gi"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Putty Key:"
@@ -8019,11 +8008,11 @@ msgstr "Wyjdź\nZakończenie TortoiseGitMerge bez zapisu zmian"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1633)
 msgid "QuotePath"
-msgstr ""
+msgstr "Ścieżka zapytania"
 
 #. Resource IDs: (cmdReload_Keytip_RESID)
 msgid "R"
-msgstr ""
+msgstr "R"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1073)
 msgid "R&AM drives"
@@ -8175,12 +8164,16 @@ msgid "Ref List"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1354, Dialog
-#. IDD_REVGRAPHFILTER: Control id 1729, IDS_REFBROWSE)
-msgid "RefBrowse"
+#. IDD_REVGRAPHFILTER: Control id 1729)
+msgid "RefBrowser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REFLOG: Control id 1588, IDS_REFLOG)
 msgid "RefLog"
+msgstr ""
+
+#. Resource IDs: (IDS_REFBROWSE)
+msgid "Reference Browser"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
@@ -8259,7 +8252,8 @@ msgstr "Zapamiętaj wybór (opcja \"svn.rmdir\")"
 msgid "Reminder: Commit your change after resolve"
 msgstr "Przypomnienie: Zatwierdź zmianę po rozwiązaniu"
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1573, Dialog
+#. IDD_SETTINREMOTE: Control id 4570)
 msgid "Remote"
 msgstr "Zdalny"
 
@@ -8693,7 +8687,7 @@ msgstr ""
 
 #. Resource IDs: (cmdSave_Keytip_RESID)
 msgid "S"
-msgstr ""
+msgstr "S"
 
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
 #. Control id 1383)
@@ -8782,8 +8776,8 @@ msgid "Sa&feCrLf:"
 msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
-msgid "Safe Crlf:"
-msgstr "Safe Crlf:"
+msgid "SafeCrLf:"
+msgstr ""
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9245,7 +9239,7 @@ msgid "Show"
 msgstr "Pokaż"
 
 #. Resource IDs: (IDS_MENUREFLOG)
-msgid "Show &Reflog"
+msgid "Show &RefLog"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
@@ -9418,8 +9412,8 @@ msgid "Show la&beled commits only"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1063)
-msgid "Show linenumber&s"
-msgstr "Pokaż &numery linii"
+msgid "Show line number&s"
+msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
 msgid "Show locked files"
@@ -10068,7 +10062,7 @@ msgstr "Tag"
 
 #. Resource IDs: (IDS_PROC_TAG_FF)
 msgid "Tag (FF)"
-msgstr ""
+msgstr "Tag (FF)"
 
 #. Resource IDs: (IDS_PROC_LOG_TAGINFO)
 msgid "Tag Info"
@@ -10238,6 +10232,10 @@ msgstr "Plik jest zbyt duży"
 #. Resource IDs: (AFX_IDP_FILE_TOO_LARGE)
 msgid "The file is too large to open."
 msgstr "Plik jest zbyt duży, aby go otworzyć."
+
+#. Resource IDs: (IDS_MODIFIEDASKSAVE)
+msgid "The file was modified. Do you want to save the changes?"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_OVERWRITE_CONFIRM)
 #, c-format
@@ -10742,12 +10740,12 @@ msgstr "TortoiseGitBlame, Version %d.%d.%d.%d"
 msgid ""
 "TortoiseGitBlame\n"
 "\n"
-"TortoiseGitBlam\n"
+"TortoiseGitBlame\n"
 "\n"
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr "TortoiseGitBlame\n\nTortoiseGitBlam\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10868,7 +10866,7 @@ msgid "Trim right"
 msgstr "Przytnij z prawej"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1853)
-msgid "Trust the exitcode of the external mege tool for auto resolving"
+msgid "Trust the exitcode of the external merge tool for auto resolving"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNERR_CLEANUPORFRESHCHECKOUT)
@@ -11117,7 +11115,7 @@ msgid "Use .mailmap"
 msgstr "Użyj pliku .mailmap"
 
 #. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS"
+msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11373,7 +11371,7 @@ msgstr "Używa typ pamięci podręcznej statusu 'brak' dla procesów podwyższon
 
 #. Resource IDs: (cmdPaste_Keytip_RESID)
 msgid "V"
-msgstr ""
+msgstr "V"
 
 #. Resource IDs: (IDS_COMMANDLINEHELP)
 msgid ""
@@ -11481,7 +11479,7 @@ msgstr "Odwiedź naszą stronę internetową"
 
 #. Resource IDs: (cmdShowWhitespaces_Keytip_RESID)
 msgid "W"
-msgstr ""
+msgstr "W"
 
 #. Resource IDs: (Dialog IDD_SETTINGS_CONFIG: Control id 65535)
 msgid ""
@@ -11688,7 +11686,7 @@ msgstr "Zawijanie długich linia na prawym brzegu widoku\nZawijaj długie linie"
 
 #. Resource IDs: (cmdRedo_Keytip_RESID)
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #. Resource IDs: (IDS_PROC_YESTOALL)
 msgid "Yes to all"
@@ -11700,6 +11698,11 @@ msgstr "Masz już zainstalowaną najnowszą wersję."
 
 #. Resource IDs: (IDS_PROC_PULL_EMPTYBRANCH)
 msgid "You asked to pull, but did not specify a remote branch."
+msgstr ""
+
+#. Resource IDs: (IDS_PRUNE_OPTION_GUIDE)
+msgid ""
+"You can configure it for all remotes or global on the Git settings page."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 65535)
@@ -11814,7 +11817,7 @@ msgstr "Twoja wersja: %d.%d.%d.%d"
 
 #. Resource IDs: (cmdUndo_Keytip_RESID)
 msgid "Z"
-msgstr ""
+msgstr "Z"
 
 #. Resource IDs: (IDS_ARCHIVEFILEFILTER)
 msgid ""
@@ -12077,7 +12080,7 @@ msgstr "niekompletny"
 #. Control id 1780, Dialog IDD_SETTINGSDIALOGS3: Control id 1781, Dialog
 #. IDD_SETTINGSDIALOGS3: Control id 1782)
 msgid "inherit"
-msgstr ""
+msgstr "dziedziczony"
 
 #. Resource IDs: (IDS_STATUSLIST_KEEPLOCAL)
 msgid "item kept locally"
@@ -12194,11 +12197,11 @@ msgstr "nie znaleziono"
 
 #. Resource IDs: (IDS_CONFLICT_SUBMODULENOTINITIALIZED)
 msgid "not initialized"
-msgstr ""
+msgstr "nie zainicjowany"
 
 #. Resource IDs: (cmdOpen_Keytip_RESID)
 msgid "o1"
-msgstr ""
+msgstr "o1"
 
 #. Resource IDs: (IDS_STATUSOBSTRUCTED)
 msgid "obstructed"
