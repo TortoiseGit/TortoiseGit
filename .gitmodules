@@ -15,7 +15,7 @@
 	url = https://github.com/libgit2/libgit2.git
 [submodule "ext/spell"]
 	path = ext/spell
-	url = http://anongit.freedesktop.org/git/libreoffice/dictionaries.git
+	url = https://github.com/LibreOffice/dictionaries
 [submodule "ext/editorconfig"]
 	path = ext/editorconfig
 	url = https://github.com/editorconfig/editorconfig-core-c.git
