@@ -1,4 +1,6 @@
 ﻿<Include>
-	<File Id='SPELLESAFF' Name='es.aff' DiskId='1' Source='..\ext\spell\es\es_ANY.aff' Vital='no'></File>
-	<File Id='SPELLESDIC' Name='es.dic' DiskId='1' Source='..\ext\spell\es\es_ANY.dic' Vital='no'></File>
+	<File Id='SPELLESESAFF' Name='es_ES.aff' DiskId='1' Source='..\ext\spell\es\es_ES.aff' Vital='no'></File>
+	<File Id='SPELLESESDIC' Name='es_ES.dic' DiskId='1' Source='..\ext\spell\es\es_ES.dic' Vital='no'></File>
+	<File Id='SPELLESAFF' Name='es.aff' DiskId='1' Source='..\ext\spell\es\es.aff' Vital='no'></File>
+	<File Id='SPELLESDIC' Name='es.dic' DiskId='1' Source='..\ext\spell\es\es.dic' Vital='no'></File>
 </Include>

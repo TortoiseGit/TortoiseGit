@@ -39,5 +39,8 @@
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />
 	</ItemGroup>
+	<ItemGroup>
+		<Content Include="spell\1042.wxi" />
+	</ItemGroup>
 	<Import Project="$(WixTargetsPath)" />
 </Project>
