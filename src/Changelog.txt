@@ -1,5 +1,5 @@
 ﻿= Release 2.12.0 =
-Released: unreleased
+Released: 2021-03-31
 
 == Changes ==
  * Fixed issue #3631: Log: filtering commits by file path does not work if slash is used as path separator
