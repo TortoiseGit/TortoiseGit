@@ -406,7 +406,7 @@ void CTreePropSheet::RefillPageTree()
 			HTREEITEM hChild = m_pwndPageTree->GetChildItem(hParent);
 			while (hChild)
 			{
-				if (m_pwndPageTree->GetItemData(hChild) == parentId)
+				if (static_cast<int>(m_pwndPageTree->GetItemData(hChild)) == parentId)
 				{
 					hItem = hChild;
 					break;
