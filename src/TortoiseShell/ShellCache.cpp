@@ -461,25 +461,28 @@ BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDi
 
 void ShellCache::ExcludeContextValid()
 {
-	if (RefreshIfNeeded())
+	// Lock must be taken by caller, which is done by IsContextPathAllowed()
+	RefreshIfNeeded();
+	if (excludecontextstr.compare(nocontextpaths) == 0)
+		return;
+
+	excludecontextstr = nocontextpaths;
+	excontextvector.clear();
+	size_t pos = 0, pos_ant = 0;
+	pos = excludecontextstr.find(L'\n', pos_ant);
+	while (pos != tstring::npos)
 	{
-		Locker lock(m_critSec);
-		if (excludecontextstr.compare(nocontextpaths) == 0)
-			return;
-		excludecontextstr = nocontextpaths;
-		excontextvector.clear();
-		size_t pos = 0, pos_ant = 0;
-		pos = excludecontextstr.find(L'\n', pos_ant);
-		while (pos != tstring::npos)
-		{
-			tstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
+		tstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
+		if (!token.empty())
 			excontextvector.push_back(token);
-			pos_ant = pos + 1;
-			pos = excludecontextstr.find(L'\n', pos_ant);
-		}
-		if (!excludecontextstr.empty())
-			excontextvector.push_back(excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1));
-		excludecontextstr = nocontextpaths;
+		pos_ant = pos + 1;
+		pos = excludecontextstr.find(L'\n', pos_ant);
+	}
+	if (!excludecontextstr.empty())
+	{
+		tstring token = excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1);
+		if (!token.empty())
+			excontextvector.push_back(token);
 	}
 }
 
