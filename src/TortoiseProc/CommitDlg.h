@@ -209,6 +209,7 @@ protected:
 	CString				m_sAuthor;
 	volatile bool		m_bDoNotStoreLastSelectedLine; // true on first start of commit dialog and set on recommit
 	BOOL				m_bStagingSupport;
+	volatile LONG		m_nBlockItemChangeHandler; // used to make sure FillPatch is called only once after a partial staging
 
 	int					CheckHeadDetach();
 

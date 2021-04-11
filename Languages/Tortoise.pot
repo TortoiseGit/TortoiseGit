@@ -10307,7 +10307,7 @@ msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr ""
 
 #. Resource IDs: (IDS_TIPSTAGINGMODE)
-msgid "While in this mode, the checkbox for each file reflects its staging status:\n- Checked means all the changes for the file are staged\n- Unchecked means all the changes for the file are unstaged\n- A gray square means that only some changes for the file are staged\n\nClicking the checkboxes immediately stages or unstages the whole file.\n\nYou can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them."
+msgid "While in this mode, the checkbox for each file reflects its staging status:\n- Checked means all the changes for the file are staged\n- Unchecked means all the changes for the file are unstaged\n- A gray square means that only some changes for the file are staged\n\nClicking the checkboxes immediately stages or unstages the whole file.\n\nYou can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n\nPlease note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
 msgstr ""
 
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)

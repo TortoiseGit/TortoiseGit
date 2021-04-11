@@ -440,7 +440,7 @@ public:
 	int ApplyPatchToIndex(const CString& patchPath, CString* out);
 	int ApplyPatchToIndexReverse(const CString& patchPath, CString* out);
 
-	int RefreshGitIndex(bool really = false);
+	int RefreshGitIndex();
 	int GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile);
 
 	//Example: master -> refs/heads/master
