@@ -892,6 +892,9 @@ private:
 	void			GitStageEntry(CTGitPath* entry);
 	void			GitUnstageEntry(CTGitPath* entry);
 	bool			m_bThreeStateCheckboxes;
+
+public:
+	void UpdateSelectedFileStagingStatus(CTGitPath::StagingStatus newStatus);
 };
 
 class CGitStatusListCtrlDropTarget : public CIDropTarget

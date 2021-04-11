@@ -1017,6 +1017,29 @@ void CGitStatusListCtrl::GitUnstageEntry(CTGitPath* entry)
 	}
 }
 
+void CGitStatusListCtrl::UpdateSelectedFileStagingStatus(CTGitPath::StagingStatus newStatus)
+{
+	CAutoWriteLock locker(m_guard);
+	POSITION pos = GetFirstSelectedItemPosition();
+	if (pos)
+	{
+		int nSelect = GetNextSelectedItem(pos);
+		auto p = GetListEntry(nSelect);
+		p->m_stagingStatus = newStatus;
+		{
+			ScopedInDecrement blocker(m_nBlockItemChangeHandler);
+			if (newStatus == CTGitPath::StagingStatus::PartiallyStaged)
+				ListView_SetItemState(m_hWnd, nSelect, INDEXTOSTATEIMAGEMASK(3), LVIS_STATEIMAGEMASK)
+			else if (newStatus == CTGitPath::StagingStatus::TotallyStaged)
+				SetCheck(nSelect, true);
+			else if (newStatus == CTGitPath::StagingStatus::TotallyUnstaged)
+				SetCheck(nSelect, false);
+		}
+
+		//Invalidate();
+	}
+}
+
 int CGitStatusListCtrl::GetColumnIndex(int mask)
 {
 	for (int i = 0; i < 32; ++i)

@@ -2579,11 +2579,8 @@ unsigned int CGit::Hash2int(const CGitHash &hash)
 	return ret;
 }
 
-int CGit::RefreshGitIndex(bool really /* = false*/)
+int CGit::RefreshGitIndex()
 {
-	if (really)
-		return Run(L"git.exe update-index --really-refresh", nullptr, nullptr, CP_UTF8);
-
 	CString adminDir;
 	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
 	// HACK: don't use internal update-index if we have a git-lfs enabled repository as the libgit version fails when executing the filter, issue #3220

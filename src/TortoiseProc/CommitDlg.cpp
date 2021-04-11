@@ -75,6 +75,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_bSetAuthor(FALSE)
 	, m_bStagingSupport(FALSE)
 	, m_stagingDisplayState(SHOW_STAGING | SHOW_UNSTAGING)
+	, m_nBlockItemChangeHandler(0)
 	, m_bCancelled(false)
 	, m_PostCmd(GIT_POSTCOMMIT_CMD_NOTHING)
 	, m_bAmendDiffToLastCommit(FALSE)
@@ -1396,10 +1397,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_CHECKFILES, false);
 	DialogEnableWindow(IDC_CHECKSUBMODULES, false);
 
-	// If one were to use the partial staging functionality on a file, staging hunks/lines until the file is totally staged, the file would erroneously
-	// be reported as partially staged if git update-index were called with --refresh instead of --really-refresh. Likewise for partial unstaging.
-	// Therefore, if staging support is enabled, --really-refresh is used, to avoid that situation.
-	g_Git.RefreshGitIndex(m_bStagingSupport);
+	g_Git.RefreshGitIndex();
 
 	CString dotGitPath;
 	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
@@ -2464,16 +2462,15 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 }
 LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
 {
-	this->FillPatchView(true);
+	// This handler is blocked during a partial staging, because OnPartialStagingRefreshPatchView itself calls FillPatchView
+	if (!m_nBlockItemChangeHandler)
+		this->FillPatchView(true);
 	return 0;
 }
 
 
 LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 {
-	if (m_bStagingSupport)
-		Refresh(); // FIXME: This is inefficient. Only the needed files should be updated.
-
 	SendMessage(WM_UPDATEOKBUTTON);
 	return 0;
 }
@@ -2524,9 +2521,19 @@ LRESULT CCommitDlg::OnUpdateDataFalse(WPARAM, LPARAM)
 	return 0;
 }
 
-LRESULT CCommitDlg::OnPartialStagingRefreshPatchView(WPARAM, LPARAM)
+LRESULT CCommitDlg::OnPartialStagingRefreshPatchView(WPARAM wParam, LPARAM)
 {
-	Refresh(); // FIXME: This is inefficient. Only the needed files should be updated.
+	m_patchViewdlg.ClearView();
+
+	{
+		// Block the item change handler to make sure FillPatchView is called only once (below)
+		ScopedInDecrement blocker(m_nBlockItemChangeHandler);
+		CTGitPath::StagingStatus newStatus = static_cast<CTGitPath::StagingStatus>(wParam);
+		m_ListCtrl.UpdateSelectedFileStagingStatus(newStatus);
+	}
+
+	FillPatchView();
+	SendMessage(WM_UPDATEOKBUTTON);
 	return 0;
 }
 
