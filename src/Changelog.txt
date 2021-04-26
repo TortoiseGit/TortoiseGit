@@ -1,4 +1,10 @@
-﻿= Release 2.12.0 =
+﻿= Release 2.13.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3736: LFS force unlock not working
+
+= Release 2.12.0 =
 Released: 2021-03-31
 
 == Changes ==

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2020 - TortoiseGit
+// Copyright (C) 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ bool LFSLockCommand::Execute()
 
 bool LFSUnlockCommand::Execute()
 {
-	return setLockedState(false, parser.HasVal(L"force"), pathList);
+	return setLockedState(false, parser.HasKey(L"force"), pathList);
 }
 
 bool LFSLocksCommand::Execute()
