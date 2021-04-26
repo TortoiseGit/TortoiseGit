@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2016-2020 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,6 +45,7 @@ void CLFSLocksDlg::DoDataExchange(CDataExchange* pDX)
 	CResizableStandAloneDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LOCKSLIST, m_LocksList);
 	DDX_Control(pDX, IDC_SELECTALL, m_SelectAll);
+	DDX_Control(pDX, IDC_FORCE, m_Force);
 }
 
 BEGIN_MESSAGE_MAP(CLFSLocksDlg, CResizableStandAloneDialog)
@@ -73,7 +74,8 @@ BOOL CLFSLocksDlg::OnInitDialog()
 	AdjustControlSize(IDC_SELECTALL);
 
 	AddAnchor(IDC_LOCKSLIST, TOP_LEFT, BOTTOM_RIGHT);
-	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT);
+	AddAnchor(IDC_SELECTALL, BOTTOM_LEFT, BOTTOM_CENTER);
+	AddAnchor(IDC_FORCE, BOTTOM_CENTER, BOTTOM_RIGHT);
 	AddAnchor(IDC_LFS_UNLOCK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -97,6 +99,7 @@ UINT CLFSLocksDlg::LocksThreadEntry(LPVOID pVoid)
 
 UINT CLFSLocksDlg::LocksThread()
 {
+	DialogEnableWindow(IDC_FORCE, false);
 	DialogEnableWindow(IDC_LFS_UNLOCK, false);
 	DialogEnableWindow(IDC_SELECTALL, false);
 
@@ -111,6 +114,7 @@ UINT CLFSLocksDlg::LocksThread()
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	RefreshCursor();
 
+	DialogEnableWindow(IDC_FORCE, true);
 	DialogEnableWindow(IDC_SELECTALL, true);
 
 	return 0;
@@ -183,7 +187,7 @@ void CLFSLocksDlg::OnBnClickedUnLock()
 	}
 
 	CGitProgressDlg progDlg(this);
-	LFSSetLockedProgressCommand lfsLockCommand(false, false);
+	LFSSetLockedProgressCommand lfsLockCommand(false, m_Force.GetCheck());
 	progDlg.SetCommand(&lfsLockCommand);
 	progDlg.SetItemCount(selectedPathList.GetCount());
 	lfsLockCommand.SetPathList(selectedPathList);

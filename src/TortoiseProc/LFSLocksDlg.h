@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2020 - TortoiseGit
+// Copyright (C) 2003-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -59,6 +59,7 @@ private:
 	volatile LONG		m_bThreadRunning;
 	CGitStatusListCtrl	m_LocksList;
 	CButton				m_SelectAll;
+	CButton				m_Force;
 	CButton				m_UnLock;
 	CButton				m_Refresh;
 	bool				m_bCancelled;

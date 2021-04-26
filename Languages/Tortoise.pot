@@ -652,7 +652,7 @@ msgstr ""
 msgid "&Font:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC: Control id 1521)
 msgid "&Force"
 msgstr ""
 
