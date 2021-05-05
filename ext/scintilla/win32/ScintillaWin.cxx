@@ -431,6 +431,7 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(SCNotification scn) override;
+	virtual void NotifyParent(SCNotification * scn);
 	void NotifyDoubleClick(Point pt, int modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -2317,6 +2318,13 @@ void ScintillaWin::NotifyParent(SCNotification scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
+}
+
+void ScintillaWin::NotifyParent(SCNotification * scn) {
+	scn->nmhdr.hwndFrom = MainHWND();
+	scn->nmhdr.idFrom = GetCtrlID();
+	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
+		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, int modifiers) {
