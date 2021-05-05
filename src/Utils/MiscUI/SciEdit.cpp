@@ -29,6 +29,7 @@
 #include "LoadIconEx.h"
 #include "Theme.h"
 #include "Lexilla.h"
+#include "DarkModeHelper.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -165,6 +166,11 @@ void CSciEdit::SetColors(bool recolorize)
 		Call(SCI_STYLESETFORE, STYLE_DEFAULT, !IsWindowEnabled() ? ::CTheme::darkDisabledTextColor : CTheme::darkTextColor);
 		Call(SCI_STYLESETBACK, STYLE_DEFAULT, !IsWindowEnabled() ? ::GetSysColor(COLOR_BTNFACE) : CTheme::darkBkColor);
 		Call(SCI_SETCARETFORE, CTheme::darkTextColor);
+
+        Call(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST, RGB(187, 187, 187));
+		Call(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST_BACK, RGB(15, 15, 15));
+		Call(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST_SELECTED, RGB(187, 187, 187));
+		Call(SCI_SETELEMENTCOLOUR, SC_ELEMENT_LIST_SELECTED_BACK, RGB(80, 80, 80));
 	}
 	else
 	{
@@ -172,6 +178,11 @@ void CSciEdit::SetColors(bool recolorize)
 		Call(SCI_STYLESETFORE, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT));
 		Call(SCI_STYLESETBACK, STYLE_DEFAULT, ::GetSysColor(!IsWindowEnabled() ? COLOR_BTNFACE : COLOR_WINDOW));
 		Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
+
+		Call(SCI_RESETELEMENTCOLOUR, SC_ELEMENT_LIST);
+		Call(SCI_RESETELEMENTCOLOUR, SC_ELEMENT_LIST_BACK);
+		Call(SCI_RESETELEMENTCOLOUR, SC_ELEMENT_LIST_SELECTED);
+		Call(SCI_RESETELEMENTCOLOUR, SC_ELEMENT_LIST_SELECTED_BACK);
 	}
 	Call(SCI_SETSELFORE, TRUE, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHTTEXT)));
 	Call(SCI_SETSELBACK, TRUE, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_HIGHLIGHT)));
@@ -786,6 +797,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 	Call(SCI_AUTOCSETTYPESEPARATOR, m_typeSeparator);
 	Call(SCI_AUTOCSETDROPRESTOFWORD, 1);
 	Call(SCI_AUTOCSHOW, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(StringForControl(suggestions))));
+	SetWindowStylesForAutocompletionPopup();
 }
 
 void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
@@ -881,6 +893,7 @@ void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
 	Call(SCI_AUTOCSETTYPESEPARATOR, (m_typeSeparator));
 	auto sForControl = StringForControl(sAutoCompleteList);
 	Call(SCI_AUTOCSHOW, StringForControl(word).GetLength(), reinterpret_cast<LPARAM>(static_cast<LPCSTR>(sForControl)));
+	SetWindowStylesForAutocompletionPopup();
 }
 
 BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult)
@@ -1938,4 +1951,37 @@ void CSciEdit::ClearUndoBuffer()
 {
 	Call(SCI_EMPTYUNDOBUFFER);
 	Call(SCI_SETSAVEPOINT);
+}
+
+void CSciEdit::SetWindowStylesForAutocompletionPopup()
+{
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		EnumThreadWindows(GetCurrentThreadId(), AdjustThemeProc, 0);
+	}
+}
+
+BOOL CSciEdit::AdjustThemeProc(HWND hwnd, LPARAM /*lParam*/)
+{
+	wchar_t szWndClassName[MAX_PATH] = { 0 };
+	GetClassName(hwnd, szWndClassName, _countof(szWndClassName));
+	if ((wcscmp(szWndClassName, L"ListBoxX") == 0) ||
+		(wcscmp(szWndClassName, WC_LISTBOX) == 0))
+	{
+		// in dark mode, the resizing border is visible at the top
+		// of the popup, and it's white and ugly.
+		// this removes the border, but that also means that the
+		// popup is not resizable anymore - which I think is not
+		// really necessary anyway.
+		auto dwCurStyle = static_cast<DWORD>(GetWindowLongPtr(hwnd, GWL_STYLE));
+		dwCurStyle &= ~WS_THICKFRAME;
+		dwCurStyle |= WS_BORDER;
+		SetWindowLongPtr(hwnd, GWL_STYLE, dwCurStyle);
+
+		DarkModeHelper::Instance().AllowDarkModeForWindow(hwnd, TRUE);
+		SetWindowTheme(hwnd, L"Explorer", nullptr);
+		EnumChildWindows(hwnd, AdjustThemeProc, 0);
+	}
+
+	return TRUE;
 }

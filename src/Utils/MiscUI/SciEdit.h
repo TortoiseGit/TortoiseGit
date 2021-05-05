@@ -196,6 +196,9 @@ protected:
 	std::string GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const std::string& sWordA);
 
+	static void SetWindowStylesForAutocompletionPopup();
+	static BOOL CALLBACK AdjustThemeProc(HWND hwnd, LPARAM lParam);
+
 	virtual afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnContextMenu(CWnd* /*pWnd*/, CPoint /*point*/);
 	afx_msg void OnSysColorChange();
