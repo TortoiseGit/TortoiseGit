@@ -165,7 +165,7 @@ doc/*
 							<entry condition="pot">-s</entry>
 							<entry>
 								If this switch is given, GitWCRev will exclude submodules.
-								The default behaviour is to also check submodules.
+								The default behavior is to also check submodules.
 							</entry>
 						</row>
 						<row>

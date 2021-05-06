@@ -36,11 +36,11 @@
 		</para>
 		<para>
 			Some version control systems are also software configuration
-			management (SCM) systems.  These systems are specifically
+			management (SCM) systems. These systems are specifically
 			tailored to manage trees of source code, and have many features
 			that are specific to software development - such as natively
 			understanding programming languages, or supplying tools for
-			building software.  Git, however, is not one of these
+			building software. Git, however, is not one of these
 			systems; it is a general system that can be used to manage
 			<emphasis>any</emphasis> collection of files, including
 			source code.

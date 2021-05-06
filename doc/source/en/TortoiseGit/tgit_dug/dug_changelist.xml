@@ -28,7 +28,7 @@
 		the commit dialog and the check-for-modifications dialog. Let's start
 		in the check-for-modifications dialog after you have worked on several
 		features and many files. When you first open the dialog, all the changed
-		files are listed together. Suppose you now want to organise things and
+		files are listed together. Suppose you now want to organize things and
 		group those files according to feature.
 	</para>
 	<para>
@@ -82,7 +82,7 @@
 		<para>
 			Changelists are purely a local TortoiseGit client feature. Creating and removing
 			changelists will not affect the repository, nor anyone else's working
-			copy. They are simply a convenient way for you to organise your files.
+			copy. They are simply a convenient way for you to organize your files.
 		</para>
 	</tip>
 </sect1>

@@ -11,7 +11,7 @@
 		On the left side of the window is a locator bar. This provides
 		a quick visual reference as to where the changes lie within the
 		file. The bar has three columns. The left column refers to the
-		left pane, the right column to the right pane, and the centre
+		left pane, the right column to the right pane, and the center
 		column to the bottom pane (if present). In one-pane view only
 		the left column is used. The locator bar can also be used as a
 		scroll bar to scroll all the windows simultaneously.

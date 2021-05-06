@@ -26,7 +26,7 @@
 		For open source projects (like this one) everyone has read
 		access to the (main/public) repository, and anyone can make a contribution
 		to the project. So how are those contributions controlled?
-		If just anyone could commit changes this this central repository, the project would be permanently
+		If just anyone could commit changes this central repository, the project would be permanently
 		unstable and probably permanently broken. In this situation the
 		change is managed by submitting a <firstterm>patch</firstterm> file or a <firstterm>pull request</firstterm>
 		to the development team, who do have write access.
@@ -212,7 +212,7 @@
 			repository, you can create a standardized (quite formal) request for other
 			people to pull your changes and integrate them into their repository.
 			The format pull request consists of a list of all commits and provides
-			some statistics about changed files, so that other people can can a quick overview.
+			some statistics about changed files, so that other people can a quick overview.
 		</para>
 		<para>
 			Select <guibutton>Request pull</guibutton> on the progress dialog after pushing your changes.

@@ -261,7 +261,7 @@
 					<term>Exact copy sources</term>
 					<listitem>
 						<para>
-							When a branch/tag is made, the default behaviour is to
+							When a branch/tag is made, the default behavior is to
 							show the branch as taken from the last node where a
 							change was made. Strictly speaking this is inaccurate
 							since the branches are often made from the current HEAD

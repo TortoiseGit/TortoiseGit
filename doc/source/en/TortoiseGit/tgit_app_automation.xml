@@ -222,7 +222,7 @@ Don't touch these lines:
 								to clone to.
 								If <option>/exactpath</option> is not specified, the
 								repository name (without trailing .git) will be appended to
-								target directory. This is the default behaviour.
+								target directory. This is the default behavior.
 								If <option>/exactpath</option> is specified, the
 								exact <option>/path</option> is considered the target directory,
 								without appending repository name to it.

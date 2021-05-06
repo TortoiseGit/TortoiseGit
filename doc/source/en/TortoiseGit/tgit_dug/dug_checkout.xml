@@ -13,7 +13,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_GITSWITCH"?>
 	<para>
-		The Switch/Checkout dialog can be used to checkout a specific version to the working tree  (i.e., all files are updated to match their state of the selected version). Normally, a specific version will be represented by a (local) branch which is set as the current branch (cf. <xref linkend="tgit-dug-branchtag"/> and <xref linkend="Git User Manual_repositories-and-branches"/>).
+		The Switch/Checkout dialog can be used to checkout a specific version to the working tree (i.e., all files are updated to match their state of the selected version). Normally, a specific version will be represented by a (local) branch which is set as the current branch (cf. <xref linkend="tgit-dug-branchtag"/> and <xref linkend="Git User Manual_repositories-and-branches"/>).
 	</para>
 	<para>
 		Select a git repository directory in windows explorer

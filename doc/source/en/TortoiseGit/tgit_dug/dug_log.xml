@@ -152,10 +152,10 @@
 			The boxes with rounded corners for local branches indicate that it has an associated remote tracking. The boxes with rounded corners for remote tracking branches are used to indicate which of (possible several remote branches) is the corresponding remote tracking branch (e.g., master and origin/master).
 		</para>
 		<para>
-			The stash has a dark grey rectangle.
+			The stash has a dark gray rectangle.
 		</para>
 		<para>
-			There are also rectangles to indicate the bad versions (light red) on bisecting, blue for known good and grey for skip.
+			There are also rectangles to indicate the bad versions (light red) on bisecting, blue for known good and gray for skip.
 		</para>
 		<para>
 			The colors are configurable (cf. <xref linkend="tgit-dug-settings-colours2"/>). Also, the labels can be configured to be a the right side of the commit message or the displayed text to contain the whole of the commit message (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
@@ -637,7 +637,7 @@
 		</para>
 		<para>
 			The first element is the branch/revision filter.
-			Clicking on on opens the Reference Browser (see <xref linkend="tgit-dug-browse-ref"/>).
+			Clicking on it opens the Reference Browser (see <xref linkend="tgit-dug-browse-ref"/>).
 			There you can select single or multiple references. If you select exactly two references,
 			you can choose how to combine them (showing especially both A and B "A B"; showing
 			differences "A...B" or all commits between A and B "A..B").
@@ -728,7 +728,7 @@ Alice -Bob +Eve
 			Related paths are those which contain the path used to display
 			the log. If you fetch the log for a folder, that means anything
 			in that folder or below it. For a file it means just that one file.
-			If you want to grey out the unrelated ones, check
+			If you want to gray out the unrelated ones, check
 			<menuchoice>
 				<guimenu>View</guimenu>
 				<guimenuitem>Gray unrelated changed paths</guimenuitem>
@@ -769,21 +769,21 @@ Alice -Bob +Eve
 		</para>
 		<para>
 			<menuchoice>
-				<guimenu>Walk Behaviour</guimenu>
+				<guimenu>Walk Behavior</guimenu>
 				<guimenuitem>First Parent</guimenuitem>
 			</menuchoice>
 			just follow up first parent commit. This will help understand the overall history.
 		</para>
 		<para>
 			<menuchoice>
-				<guimenu>Walk Behaviour</guimenu>
+				<guimenu>Walk Behavior</guimenu>
 				<guimenuitem>No merges</guimenuitem>
 			</menuchoice>
 			Skips all merge points.
 		</para>
 		<para>
 			<menuchoice>
-				<guimenu>Walk Behaviour</guimenu>
+				<guimenu>Walk Behavior</guimenu>
 				<guimenuitem>Follow renames</guimenuitem>
 			</menuchoice>
 			This is available to a single file only, which tracks renames.
@@ -791,15 +791,15 @@ Alice -Bob +Eve
 		</para>
 		<para>
 			<menuchoice>
-				<guimenu>Walk Behaviour</guimenu>
+				<guimenu>Walk Behavior</guimenu>
 				<guimenuitem>Compressed Graph</guimenuitem>
 			</menuchoice>
 			The log graph is simplified to include merge points, commits with references, and possibly other commits.
 		</para>
 		<para>
 			<menuchoice>
-				<guimenu>Walk Behaviour</guimenu>
-				<guimenuitem>Show labelled commits only</guimenuitem>
+				<guimenu>Walk Behavior</guimenu>
+				<guimenuitem>Show labeled commits only</guimenuitem>
 			</menuchoice>
 			The log graph is simplified to include commits with references only.
 		</para>

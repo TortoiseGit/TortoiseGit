@@ -8170,7 +8170,7 @@ msgid "Select remote ref - TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
-msgid "Select the behaviour of the progress dialog at the end of the operation."
+msgid "Select the behavior of the progress dialog at the end of the operation."
 msgstr ""
 
 #. Resource IDs: (57642)
@@ -10190,7 +10190,7 @@ msgid "Waiting for input"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
-msgid "Walk Be&haviour"
+msgid "Walk Be&havior"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_WARNING)

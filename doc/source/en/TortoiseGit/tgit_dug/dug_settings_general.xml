@@ -366,7 +366,7 @@
 				<term>Show describe in log</term>
 				<listitem>
 					<para>
-						Shows describe above commit message in in Log dialog.
+						Shows describe above commit message in the Log dialog.
 						For example, <literal>v0.21.0-589-gdeadc43</literal> refers to the commit
 						<literal>deadc43</literal> that is 589 commits ahead the tag <literal>v0.21.0</literal>.
 						Note: Describe may take longer to run if the commit
@@ -571,7 +571,7 @@
 				<term>Select items automatically</term>
 				<listitem>
 					<para>
-						The normal behaviour in the commit dialog is for all modified
+						The normal behavior in the commit dialog is for all modified
 						(versioned) items to be selected for commit automatically.
 						If you prefer to start with nothing selected and pick the
 						items for commit manually, uncheck this box.

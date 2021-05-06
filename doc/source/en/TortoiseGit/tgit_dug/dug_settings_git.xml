@@ -87,8 +87,8 @@
 		</para>
 		<para>
 			<guilabel>Tag</guilabel>
-			This sets <literal>remote.&lt;name&gt;.tagopt</literal> config, which controls the default tag fetching behaviour of the specified remote.
-			<option>Reachable</option>: Download tags that are reachable from remote branch heads (default behaviour).
+			This sets <literal>remote.&lt;name&gt;.tagopt</literal> config, which controls the default tag fetching behavior of the specified remote.
+			<option>Reachable</option>: Download tags that are reachable from remote branch heads (default behavior).
 			<option>None</option>: No tags are downloaded (<literal>--no-tags</literal>).
 			(git 1.9 and later) <option>All</option>: All tags as well as branches are downloaded (<literal>--tags</literal>).
 			(prior to git 1.9) <option>All tags only</option>: Only all tags are downloaded but no branches are downloaded (<literal>--tags</literal>).

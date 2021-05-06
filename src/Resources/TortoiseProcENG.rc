@@ -220,7 +220,7 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,364,291,50,14
     PUSHBUTTON      "Refresh",IDC_REFRESH,7,310,76,14
     PUSHBUTTON      "S&tatistics",IDC_STATBUTTON,86,310,64,14,WS_DISABLED
-    PUSHBUTTON      "Walk Be&haviour",IDC_WALKBEHAVIOUR,153,310,80,14,BS_CHECKBOX
+    PUSHBUTTON      "Walk Be&havior",IDC_WALKBEHAVIOUR,153,310,80,14,BS_CHECKBOX
     PUSHBUTTON      "&View",IDC_VIEW,236,310,50,14,BS_CHECKBOX
     DEFPUSHBUTTON   "OK",IDOK,305,310,52,14
     PUSHBUTTON      "Cancel",IDCANCEL,364,310,50,14
@@ -3605,7 +3605,7 @@ BEGIN
     IDS_SETTINGS_DIFFVIEWER_TT 
                             "A viewer program for GNU diff files (patch files).\nIf you don't have one use NotePad."
     IDS_SETTINGS_AUTOCLOSE_TT 
-                            "Select the behaviour of the progress dialog at the end of the operation."
+                            "Select the behavior of the progress dialog at the end of the operation."
     IDS_PROC_BROWSEREFS_RENAME "Rename"
     IDS_PROC_BROWSEREFS_MANAGEREMOTES "Manage Remotes"
     IDS_PROC_WARNREVERT     "Are you sure you want to revert %d item(s)? You will lose ALL changes since the last update!"
