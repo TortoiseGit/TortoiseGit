@@ -19,6 +19,7 @@
 //
 #pragma once
 #include "BaseWindow.h"
+#include "ILexer.h"
 #include "SciLexer.h"
 #include "Scintilla.h"
 #include "registry.h"

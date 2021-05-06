@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -42,6 +42,7 @@
 #include "DPIAware.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "Lexilla.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1083,7 +1084,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 void CTortoiseGitBlameView::SetupLexer(CString filename)
 {
 	int start = filename.ReverseFind(L'.');
-	SendEditor(SCI_SETLEXER, SCLEX_NULL);
+	SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(nullptr));
 	if (!m_bLexer)
 		return;
 	if (start > 0)
@@ -1096,7 +1097,7 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 		if ((wcscmp(line, L"py") == 0) ||
 			(wcscmp(line, L"pyw") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_PYTHON);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("python")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"and assert break class continue def del elif \
 else except exec finally for from global if import in is lambda None \
 not or pass print raise return try while yield").GetBuffer()));
@@ -1126,7 +1127,7 @@ not or pass print raise return try while yield").GetBuffer()));
 			(wcscmp(line, L"dlg") == 0) ||
 			(wcscmp(line, L"mak") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"and and_eq asm auto bitand bitor bool break \
 case catch char class compl const const_cast continue \
 default delete do double dynamic_cast else enum explicit export extern false float for \
@@ -1149,7 +1150,7 @@ var verbatim verbinclude version warning weakgroup $ @ \\ & < > # { }").GetBuffe
 		}
 		if (wcscmp(line, L"cs") == 0)
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"abstract as base bool break byte case catch char checked class \
 const continue decimal default delegate do double else enum \
 event explicit extern false finally fixed float for foreach goto if \
@@ -1163,7 +1164,7 @@ unchecked unsafe ushort using virtual void while").GetBuffer()));
 		if ((wcscmp(line, L"rc") == 0) ||
 			(wcscmp(line, L"rc2") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"ACCELERATORS ALT AUTO3STATE AUTOCHECKBOX AUTORADIOBUTTON \
 BEGIN BITMAP BLOCK BUTTON CAPTION CHARACTERISTICS CHECKBOX CLASS \
 COMBOBOX CONTROL CTEXT CURSOR DEFPUSHBUTTON DIALOG DIALOGEX DISCARDABLE \
@@ -1176,7 +1177,7 @@ STRINGTABLE STYLE TEXTINCLUDE VALUE VERSION VERSIONINFO VIRTKEY").GetBuffer()));
 		if ((wcscmp(line, L"idl") == 0) ||
 			(wcscmp(line, L"odl") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"aggregatable allocate appobject arrays async async_uuid \
 auto_handle \
 bindable boolean broadcast byte byte_count \
@@ -1213,7 +1214,7 @@ v1_enum vararg version void wchar_t wire_marshal").GetBuffer()));
 		}
 		if (wcscmp(line, L"java") == 0)
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"abstract assert boolean break byte case catch char class \
 const continue default do double else extends final finally float for future \
 generic goto if implements import inner instanceof int interface long \
@@ -1224,7 +1225,7 @@ transient try var void volatile while").GetBuffer()));
 		}
 		if (wcscmp(line, L"js") == 0)
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"abstract boolean break byte case catch char class \
 const continue debugger default delete do double else enum export extends \
 final finally float for function goto if implements import in instanceof \
@@ -1237,7 +1238,7 @@ transient try typeof var void volatile while with").GetBuffer()));
 			(wcscmp(line, L"dpr") == 0) ||
 			(wcscmp(line, L"pp") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_PASCAL);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("pascal")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"and array as begin case class const constructor \
 destructor div do downto else end except file finally \
 for function goto if implementation in inherited \
@@ -1251,7 +1252,7 @@ until uses var while with xor").GetBuffer()));
 			(wcscmp(line, L"asc") == 0) ||
 			(wcscmp(line, L"jsfl") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_CPP);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"add and break case catch class continue default delete do \
 dynamic else eq extends false finally for function ge get gt if implements import in \
 instanceof interface intrinsic le lt ne new not null or private public return \
@@ -1289,7 +1290,7 @@ targetPath tellTarget toggleHighQuality trace unescape unloadMovie unLoadMovieNu
 			(wcscmp(line, L"htd") == 0) ||
 			(wcscmp(line, L"wxs") == 0))
 		{
-			SendEditor(SCI_SETLEXER, SCLEX_HTML);
+			SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("hypertext")));
 			SendEditor(SCI_SETKEYWORDS, 0, reinterpret_cast<LPARAM>(m_TextView.StringForControl(L"a abbr acronym address applet area b base basefont \
 bdo big blockquote body br button caption center \
 cite code col colgroup dd del dfn dir div dl dt em \
@@ -1467,7 +1468,7 @@ xor virtual while __file__ __line__ __sleep __wakeup").GetBuffer()));
 	}
 	else
 	{
-		SendEditor(SCI_SETLEXER, SCLEX_CPP);
+		SendEditor(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(CreateLexer("cpp")));
 		SetupCppLexer();
 	}
 	SendEditor(SCI_COLOURISE, 0, -1);

@@ -1,6 +1,9 @@
 ﻿= Release 2.13.0 =
 Released: unreleased
 
+== Features ==
+ * Update Scintilla and Lexilla to 5.0.2
+
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
 

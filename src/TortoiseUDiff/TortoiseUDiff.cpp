@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2020 - TortoiseGit
+// Copyright (C) 2011-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -73,10 +73,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		ICC_STANDARD_CLASSES | ICC_BAR_CLASSES
 	};
 	InitCommonControlsEx(&used);
-
-	CAutoLibrary hSciLexerDll = ::LoadLibrary(L"SciLexer_tgit.dll");
-	if (!hSciLexerDll)
-		return -1;
 
 	CMainWindow mainWindow(hResource);
 	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos_" + GetMonitorSetupHash());
