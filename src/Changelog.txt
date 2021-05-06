@@ -6,6 +6,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
+ * Fixed issue #3740: Setting DownloadAnimation=false has no effect, the turtle still flies
 
 = Release 2.12.0 =
 Released: 2021-03-31
