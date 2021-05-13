@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -520,16 +520,20 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, const CRect& r
 	if (IsAppThemed())
 		hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
 
-	SIZE oneSpaceSize;
 	if (m_bTagsBranchesOnRightSide)
 	{
 		HFONT oldFont = static_cast<HFONT>(SelectObject(pLVCD->nmcd.hdc, GetStockObject(DEFAULT_GUI_FONT)));
+		SIZE oneSpaceSize;
 		GetTextExtentPoint32(pLVCD->nmcd.hdc, L" ", 1, &oneSpaceSize);
+		int borderWidth = 0;
+		if (hTheme)
+			GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
 		SelectObject(pLVCD->nmcd.hdc, oldFont);
-		rt.left += oneSpaceSize.cx * 2;
+		rt.left += borderWidth + oneSpaceSize.cx;
 	}
 	else
 	{
+		SIZE oneSpaceSize;
 		GetTextExtentPoint32(pLVCD->nmcd.hdc, L" ", 1, &oneSpaceSize);
 		DrawTagBranch(pLVCD->nmcd.hdc, W_Dc, hTheme, rect, rt, rItem, data, refList);
 		rt.left += oneSpaceSize.cx;
@@ -577,6 +581,9 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, const CRect& r
 
 	if (m_bTagsBranchesOnRightSide)
 	{
+		SIZE oneSpaceSize;
+		GetTextExtentPoint32(pLVCD->nmcd.hdc, L" ", 1, &oneSpaceSize);
+
 		SIZE size;
 		GetTextExtentPoint32(pLVCD->nmcd.hdc, msg, msg.GetLength(), &size);
 
