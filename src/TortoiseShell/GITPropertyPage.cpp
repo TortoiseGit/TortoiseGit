@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -243,7 +243,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	{
 	case IDC_SHOWLOG:
 		{
-			tstring gitCmd = L" /command:";
+			std::wstring gitCmd = L" /command:";
 			gitCmd += L"log /path:\"";
 			gitCmd += filenames.front().c_str();
 			gitCmd += L'"';
@@ -254,7 +254,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		break;
 	case IDC_SHOWSETTINGS:
 		{
-			tstring gitCmd = L" /command:";
+			std::wstring gitCmd = L" /command:";
 			gitCmd += L"settings /path:\"";
 			gitCmd += m_ProjectTopDir;
 			gitCmd += L'"';
@@ -287,9 +287,9 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	}
 }
 
-void CGitPropertyPage::RunCommand(const tstring& command)
+void CGitPropertyPage::RunCommand(const std::wstring& command)
 {
-	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
+	std::wstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
 	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str()))
 	{
 		// process started - exit

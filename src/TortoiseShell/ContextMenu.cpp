@@ -525,7 +525,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (!g_ShellCache.HasShellMenuAccelerators())
 		{
 			// remove the accelerators
-			tstring temp = stringtablebuffer;
+			std::wstring temp = stringtablebuffer;
 			temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
 			wcscpy_s(stringtablebuffer, temp.c_str());
 		}
@@ -1036,7 +1036,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	if (!g_ShellCache.HasShellMenuAccelerators())
 	{
 		// remove the accelerators
-		tstring temp = stringtablebuffer;
+		std::wstring temp = stringtablebuffer;
 		temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
 		wcscpy_s(stringtablebuffer, temp.c_str());
 	}
@@ -1104,7 +1104,7 @@ void CShellExt::TweakMenu(HMENU hMenu)
 	SetMenuInfo(hMenu, &MenuInfo);
 }
 
-void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed)
+void CShellExt::AddPathCommand(std::wstring& gitCmd, LPCTSTR command, bool bFilesAllowed)
 {
 	gitCmd += command;
 	gitCmd += L" /path:\"";
@@ -1115,9 +1115,9 @@ void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllo
 	gitCmd += L'"';
 }
 
-void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly = false)
+void CShellExt::AddPathFileCommand(std::wstring& gitCmd, LPCTSTR command, bool bFoldersOnly = false)
 {
-	tstring tempfile = WriteFileListToTempFile(bFoldersOnly);
+	std::wstring tempfile = WriteFileListToTempFile(bFoldersOnly);
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1125,9 +1125,9 @@ void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFolde
 	gitCmd += L" /deletepathfile";
 }
 
-void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
+void CShellExt::AddPathFileDropCommand(std::wstring& gitCmd, LPCTSTR command)
 {
-	tstring tempfile = WriteFileListToTempFile();
+	std::wstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1164,8 +1164,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			tstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
-			tstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
+			std::wstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
+			std::wstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
 
 			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
@@ -2180,7 +2180,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	return bShowIgnoreMenu;
 }
 
-void CShellExt::RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage)
+void CShellExt::RunCommand(const std::wstring& path, const std::wstring& command, LPCTSTR errorMessage)
 {
 	if (CCreateProcessHelper::CreateProcessDetached(path.c_str(), command.c_str()))
 	{

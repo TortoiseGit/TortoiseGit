@@ -33,11 +33,11 @@
 
 #pragma comment(lib, "comctl32.lib")
 
-tstring CMainWindow::leftpicpath;
-tstring CMainWindow::leftpictitle;
+std::wstring CMainWindow::leftpicpath;
+std::wstring CMainWindow::leftpictitle;
 
-tstring CMainWindow::rightpicpath;
-tstring CMainWindow::rightpictitle;
+std::wstring CMainWindow::rightpicpath;
+std::wstring CMainWindow::rightpictitle;
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 

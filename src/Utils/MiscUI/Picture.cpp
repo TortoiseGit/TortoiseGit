@@ -89,7 +89,7 @@ static FARPROC s_GetProcAddressEx(HMODULE hDll, const char* procName, bool& vali
 	return proc;
 }
 
-tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
+std::wstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 {
 	TCHAR buf[100] = { 0 };
 	if (bAbbrev)
@@ -97,10 +97,10 @@ tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 	else
 		swprintf_s(buf, L"%lu Bytes", m_nSize);
 
-	return tstring(buf);
+	return std::wstring(buf);
 }
 
-bool CPicture::TryLoadIcon(const tstring& sFilePathName)
+bool CPicture::TryLoadIcon(const std::wstring& sFilePathName)
 {
 	// Icon file, get special treatment...
 	CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -163,7 +163,7 @@ bool CPicture::TryLoadIcon(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::TryLoadWIC(const tstring& sFilePathName)
+bool CPicture::TryLoadWIC(const std::wstring& sFilePathName)
 {
 	CComPtr<IWICImagingFactory> pFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
@@ -226,7 +226,7 @@ bool CPicture::TryLoadWIC(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::TryLoadFreeImage(const tstring& sFilePathName)
+bool CPicture::TryLoadFreeImage(const std::wstring& sFilePathName)
 {
 	// Attempt to load the FreeImage library as an optional DLL to support additional formats
 
@@ -325,7 +325,7 @@ bool CPicture::TryLoadFreeImage(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::Load(tstring sFilePathName)
+bool CPicture::Load(std::wstring sFilePathName)
 {
 	bool bResult = false;
 	bIsIcon = false;

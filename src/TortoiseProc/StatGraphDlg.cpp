@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,10 +37,11 @@ using namespace Gdiplus;
 template<class DataType>
 class MoreCommitsThan {
 public:
-	typedef std::map<tstring, DataType> MapType;
+	typedef std::map<std::wstring, DataType> MapType;
 	MoreCommitsThan(MapType &author_commits) : m_authorCommits(author_commits) {}
 
-	bool operator()(const tstring& lhs, const tstring& rhs) {
+	bool operator()(const std::wstring& lhs, const std::wstring& rhs)
+	{
 		return (m_authorCommits)[lhs] > (m_authorCommits)[rhs];
 	}
 
@@ -697,7 +698,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 		CString sAuth = m_parAuthors.GetAt(i);
 		if (!m_bAuthorsCaseSensitive)
 			sAuth = sAuth.MakeLower();
-		tstring author = tstring(sAuth);
+		std::wstring author = std::wstring(sAuth);
 		// Increase total commit count for this author
 		m_commitsPerAuthor[author]++;
 		// Increase the commit count for this author in this week
@@ -745,7 +746,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	LoadListOfAuthors(m_commitsPerAuthor);
 
 	// Calculate percent of Contribution Authors
-	for (std::list<tstring>::iterator it = m_authorNames.begin(); it != m_authorNames.end(); ++it)
+	for (auto it = m_authorNames.begin(); it != m_authorNames.end(); ++it)
 	{
 		m_PercentageOfAuthorship[*it] =  (m_PercentageOfAuthorship[*it] *100)/ AllContributionAuthor;
 	}
@@ -756,8 +757,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 	return 0;
 }
 
-void CStatGraphDlg::FilterSkippedAuthors(std::list<tstring>& included_authors,
-										 std::list<tstring>& skipped_authors)
+void CStatGraphDlg::FilterSkippedAuthors(std::list<std::wstring>& included_authors, std::list<std::wstring>& skipped_authors)
 {
 	included_authors.clear();
 	skipped_authors.clear();
@@ -768,7 +768,7 @@ void CStatGraphDlg::FilterSkippedAuthors(std::list<tstring>& included_authors,
 		++included_authors_count;
 
 	// add the included authors first
-	std::list<tstring>::iterator author_it = m_authorNames.begin();
+	auto author_it = m_authorNames.begin();
 	while (included_authors_count > 0 && author_it != m_authorNames.end())
 	{
 		// Add him/her to the included list
@@ -844,8 +844,8 @@ void CStatGraphDlg::ShowPercentageOfAuthorship()
 	if (!graphData) return;
 
 	// Find out which authors are to be shown and which are to be skipped.
-	std::list<tstring> authors;
-	std::list<tstring> others;
+	std::list<std::wstring> authors;
+	std::list<std::wstring> others;
 
 
 	FilterSkippedAuthors(authors, others);
@@ -855,7 +855,7 @@ void CStatGraphDlg::ShowPercentageOfAuthorship()
 
 	if (!authors.empty())
 	{
-		for (std::list<tstring>::iterator it = authors.begin(); it != authors.end(); ++it)
+		for (auto it = authors.begin(); it != authors.end(); ++it)
 		{
 			int group = m_graph.AppendGroup(it->c_str());
 			graphData->SetData(group,  RollPercentageOfAuthorship(m_PercentageOfAuthorship[*it]));
@@ -879,8 +879,8 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 	if (!graphData) return;
 
 	// Find out which authors are to be shown and which are to be skipped.
-	std::list<tstring> authors;
-	std::list<tstring> others;
+	std::list<std::wstring> authors;
+	std::list<std::wstring> others;
 	FilterSkippedAuthors(authors, others);
 
 	// Loop over all authors in the authors list and
@@ -888,7 +888,7 @@ void CStatGraphDlg::ShowCommitsByAuthor()
 
 	if (!authors.empty())
 	{
-		for (std::list<tstring>::iterator it = authors.begin(); it != authors.end(); ++it)
+		for (auto it = authors.begin(); it != authors.end(); ++it)
 		{
 			int group = m_graph.AppendGroup(it->c_str());
 			graphData->SetData(group, m_commitsPerAuthor[*it]);
@@ -922,17 +922,17 @@ void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 	m_graph.SetXAxisLabel(GetUnitString());
 
 	// Find out which authors are to be shown and which are to be skipped.
-	std::list<tstring> authors;
-	std::list<tstring> others;
+	std::list<std::wstring> authors;
+	std::list<std::wstring> others;
 	FilterSkippedAuthors(authors, others);
 
 	// Add a graph series for each author.
 	AuthorDataMap authorGraphMap;
-	for (std::list<tstring>::iterator it = authors.begin(); it != authors.end(); ++it)
+	for (auto it = authors.begin(); it != authors.end(); ++it)
 		authorGraphMap[*it] = m_graph.AppendGroup(it->c_str());
 	// If we have skipped authors, add a graph series for all those.
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));
-	tstring othersName;
+	std::wstring othersName;
 	if (!others.empty())
 	{
 		sOthers.AppendFormat(L" (%Iu)", others.size());
@@ -950,7 +950,7 @@ void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 		// Collect data for authors listed by name.
 		if (!authors.empty())
 		{
-			for (std::list<tstring>::iterator it = authors.begin(); it != authors.end(); ++it)
+			for (auto it = authors.begin(); it != authors.end(); ++it)
 			{
 				// Do we have some data for the current author in the current interval?
 				AuthorDataMap::const_iterator data_it = data[i].find(*it);
@@ -962,7 +962,7 @@ void CStatGraphDlg::ShowByDate(int stringx, int title, IntervalDataMap &data)
 		// Collect data for all skipped authors.
 		if (!others.empty())
 		{
-			for (std::list<tstring>::iterator it = others.begin(); it != others.end(); ++it)
+			for (auto it = others.begin(); it != others.end(); ++it)
 			{
 				// Do we have some data for the author in the current interval?
 				AuthorDataMap::const_iterator data_it = data[i].find(*it);
@@ -1002,8 +1002,8 @@ void CStatGraphDlg::ShowStats()
 	size_t nAuthors = m_authorNames.size();
 
 	// Find most and least active author names.
-	tstring mostActiveAuthor;
-	tstring leastActiveAuthor;
+	std::wstring mostActiveAuthor;
+	std::wstring leastActiveAuthor;
 	if (nAuthors > 0)
 	{
 		mostActiveAuthor = m_authorNames.front();
@@ -1330,7 +1330,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 		// find the minimum number of commits that the shown authors have
 		int min_commits = 0;
 		included_authors_count = min(included_authors_count, m_authorNames.size());
-		std::list<tstring>::iterator author_it = m_authorNames.begin();
+		auto author_it = m_authorNames.begin();
 		advance(author_it, included_authors_count);
 		if (author_it != m_authorNames.begin())
 			min_commits = m_commitsPerAuthor[ *(--author_it) ];
@@ -1688,10 +1688,10 @@ double CStatGraphDlg::CoeffContribution(int distFromEnd) { return distFromEnd  ?
 
 
 template <class MAP>
-void CStatGraphDlg::DrawOthers(const std::list<tstring> &others, MyGraphSeries *graphData, MAP &map)
+void CStatGraphDlg::DrawOthers(const std::list<std::wstring>& others, MyGraphSeries* graphData, MAP& map)
 {
 	int  nCommits = 0;
-	for (std::list<tstring>::const_iterator it = others.begin(); it != others.end(); ++it)
+	for (auto it = others.cbegin(); it != others.cend(); ++it)
 		nCommits += RollPercentageOfAuthorship(map[*it]);
 
 	CString sOthers(MAKEINTRESOURCE(IDS_STATGRAPH_OTHERGROUP));

@@ -129,12 +129,12 @@ public:
     bool RegisterAndCreateWindow(HWND hParent);
 
     /// Sets the image path and title to show
-    void SetPic(const tstring& path, const tstring& title, bool bFirst);
+    void SetPic(const std::wstring& path, const std::wstring& title, bool bFirst);
     /// Returns the CPicture image object. Used to get an already loaded image
     /// object without having to load it again.
     CPicture * GetPic() {return &picture;}
     /// Sets the path and title of the second image which is alpha blended over the original
-    void SetSecondPic(CPicture* pPicture = nullptr, const tstring& sectit = L"", const tstring& secpath = L"", int hpos = 0, int vpos = 0)
+    void SetSecondPic(CPicture* pPicture = nullptr, const std::wstring& sectit = L"", const std::wstring& secpath = L"", int hpos = 0, int vpos = 0)
     {
         pSecondPic = pPicture;
         pictitle2 = sectit;
@@ -246,8 +246,8 @@ protected:
     /// returns the transparent color, adjusted for theme
     COLORREF            GetTransparentThemedColor();
 
-    tstring             picpath;            ///< the path to the image we show
-    tstring             pictitle;           ///< the string to show in the image view as a title
+    std::wstring        picpath;            ///< the path to the image we show
+    std::wstring        pictitle;           ///< the string to show in the image view as a title
     CPicture            picture;            ///< the picture object of the image
     bool                bValid;             ///< true if the picture object is valid, i.e. if the image could be loaded and can be shown
     int                 picscale;           ///< the scale factor of the image in percent
@@ -262,8 +262,8 @@ protected:
     bool                bOverlap;           ///< true if the overlay mode is active
     bool                bDragging;          ///< indicates an ongoing dragging operation
     BlendType           m_blend;            ///< type of blending to use
-    tstring             pictitle2;          ///< the title of the second picture
-    tstring             picpath2;           ///< the path of the second picture
+    std::wstring        pictitle2;          ///< the title of the second picture
+    std::wstring        picpath2;           ///< the path of the second picture
     float               blendAlpha;         ///<the alpha value for transparency blending
     bool                bShowInfo;          ///< true if the info rectangle of the image should be shown
     TCHAR               m_wszTip[8192];

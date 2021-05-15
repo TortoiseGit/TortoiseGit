@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2011-2013, 2015-2018 - TortoiseGit
+// Copyright (C) 2008, 2011-2013, 2015-2018, 2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,8 +23,6 @@
 #include "MyGraph.h"
 #include "TGitPath.h"
 #include "UnicodeUtils.h"
-
-#include "tstring.h"
 #include "GitLogListBase.h"
 
 /**
@@ -118,13 +116,13 @@ protected:
 
 	//TODO: try substitute map to hash_map
 	/// The mapping type used to store data per interval/week and author.
-	typedef std::map<int, std::map<tstring, LONG> > IntervalDataMap;
+	typedef std::map<int, std::map<std::wstring, LONG>> IntervalDataMap;
 
 	//TODO: try substitute few Maps to one map, that store needs informations about Authors
 	/// The mapping type used to store data per author.
-	typedef std::map<tstring, LONG>                 AuthorDataMap;
+	typedef std::map<std::wstring, LONG> AuthorDataMap;
 	/// The mapping type used to store data per Percentage Of Authorship
-	typedef std::map<tstring, double>                AuthorshipDataMap;
+	typedef std::map<std::wstring, double> AuthorshipDataMap;
 
 	// *** Re-implemented member functions from CDialog
 	virtual void OnOK() override;
@@ -156,7 +154,7 @@ protected:
 	/// Parses the data given to the dialog and generates mappings with statistical data.
 	int GatherData(BOOL fetchdiff = FALSE, BOOL keepFetchedData = FALSE);
 	/// Populates the lists passed as arguments based on the commit threshold set with the skipper.
-	void FilterSkippedAuthors(std::list<tstring>& included_authors, std::list<tstring>& skipped_authors);
+	void FilterSkippedAuthors(std::list<std::wstring>& included_authors, std::list<std::wstring>& skipped_authors);
 	/// Shows the graph Percentage Of Authorship
 	void ShowPercentageOfAuthorship();
 	/// Shows the graph with commit counts per author.
@@ -174,7 +172,7 @@ protected:
 
 	// If we have other authors, count them and their commits.
 	template <class MAP>
-	void DrawOthers(const std::list<tstring> &others, MyGraphSeries *graphData, MAP &map);
+	void DrawOthers(const std::list<std::wstring>& others, MyGraphSeries* graphData, MAP& map);
 
 
 	/// Called when user checks/unchecks the "Authors case sensitive" checkbox.
@@ -277,7 +275,7 @@ protected:
 
 	///	The	list of	author names sorted	based on commit	count
 	///	(author	with most commits is first in list).
-	std::list<tstring>	m_authorNames;
+	std::list<std::wstring> m_authorNames;
 	///	unit names by week/month/quarter
-	std::map<LONG, tstring>	m_unitNames;
+	std::map<LONG, std::wstring> m_unitNames;
 };

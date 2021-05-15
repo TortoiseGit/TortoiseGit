@@ -82,11 +82,11 @@ LPCSHITEMID ItemIDList::get(int index) const
 	return ptr;
 }
 
-tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
+std::wstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 {
 	CComPtr<IShellFolder> shellFolder;
 	CComPtr<IShellFolder> parentFolder;
-	tstring ret;
+	std::wstring ret;
 
 	if (FAILED(::SHGetDesktopFolder(&shellFolder)))
 		return ret;
@@ -125,7 +125,7 @@ tstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 		return ret;
 
 	if (CComHeapPtr<WCHAR> pszName; SUCCEEDED(psiSaveLocation->GetDisplayName(SIGDN_FILESYSPATH, &pszName)))
-		return tstring(pszName);
+		return std::wstring(pszName);
 
 	return ret;
 }

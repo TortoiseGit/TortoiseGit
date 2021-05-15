@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ private:
 		/// node in the lookup tree
 		struct SEntry
 		{
-			tstring path;
+			std::wstring path;
 
 			/// default (path spec did not end a '?').
 			/// if this is not set, the default for all
@@ -142,14 +142,14 @@ private:
 
 		/// registry keys plus cached last content
 		CRegStdString excludelist;
-		tstring excludeliststr;
+		std::wstring excludeliststr;
 
 		CRegStdString includelist;
-		tstring includeliststr;
+		std::wstring includeliststr;
 
 		/// construct \ref data content
-		void AddEntry(const tstring& s, bool include);
-		void AddEntries(const tstring& s, bool include);
+		void AddEntry(const std::wstring& s, bool include);
+		void AddEntries(const std::wstring& s, bool include);
 
 		/// for all paths, have at least one entry in data
 		void PostProcessData();
@@ -178,7 +178,7 @@ private:
 	struct AdminDir_s
 	{
 		BOOL bHasAdminDir;
-		tstring sProjectRoot;
+		std::wstring sProjectRoot;
 		ULONGLONG timeout;
 	};
 
@@ -221,10 +221,10 @@ public:
 	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
 	TCHAR szDecSep[5];
 	TCHAR szThousandsSep[5];
-	std::map<tstring, AdminDir_s> admindircache;
+	std::map<std::wstring, AdminDir_s> admindircache;
 	CRegStdString nocontextpaths;
-	tstring excludecontextstr;
-	std::vector<tstring> excontextvector;
+	std::wstring excludecontextstr;
+	std::vector<std::wstring> excontextvector;
 	CComAutoCriticalSection m_critSec;
 	HANDLE m_registryChangeEvent;
 	HKEY m_hNotifyRegKey;

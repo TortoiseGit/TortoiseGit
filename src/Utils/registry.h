@@ -21,7 +21,6 @@
 #include <string>
 #include <memory>
 #include <Shlwapi.h>
-#include "tstring.h"
 #include "FormatMessageWrapper.h"
 
 #ifndef ASSERT
@@ -221,7 +220,7 @@ public: //methods
  * Base class for STL string type registry classes.
  */
 
-class CRegStdBase : public CRegBaseCommon<tstring>
+class CRegStdBase : public CRegBaseCommon<std::wstring>
 {
 protected:
 
@@ -229,8 +228,8 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const tstring& s) const {return s.c_str();}
-	virtual DWORD GetLength (const tstring& s) const {return static_cast<DWORD>(s.size());}
+	virtual LPCTSTR GetPlainString(const std::wstring& s) const { return s.c_str(); }
+	virtual DWORD GetLength(const std::wstring& s) const { return static_cast<DWORD>(s.size()); }
 
 public: //methods
 
@@ -244,7 +243,7 @@ public: //methods
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 * \param sam
 	 */
-	CRegStdBase(const tstring& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
+	CRegStdBase(const std::wstring& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 };
 
 /**

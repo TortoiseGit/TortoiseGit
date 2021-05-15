@@ -105,7 +105,7 @@ bool CRegHistory::Save() const
 		TCHAR sKey[4096] = {0};
 		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
-		if (static_cast<tstring>(regkey).empty())
+		if (static_cast<std::wstring>(regkey).empty())
 			break;
 		regkey.removeValue(); // remove entry
 	}
