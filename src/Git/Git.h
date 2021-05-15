@@ -261,8 +261,8 @@ public:
 
 	PROCESS_INFORMATION m_CurrentGitPi;
 
-	CGit(void);
-	~CGit(void);
+	CGit();
+	~CGit();
 
 	int Run(CString cmd, CString* output, int code);
 	int Run(CString cmd, CString* output, CString* outputErr, int code);
@@ -296,10 +296,10 @@ public:
 	int SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type = CONFIG_LOCAL);
 	int UnsetConfigValue(const CString& key, CONFIG_TYPE type = CONFIG_LOCAL);
 
-	CString GetUserName(void);
-	CString GetUserEmail(void);
-	CString GetCommitterName(void);
-	CString GetCommitterEmail(void);
+	CString GetUserName();
+	CString GetUserEmail();
+	CString GetCommitterName();
+	CString GetCommitterEmail();
 	CString GetCurrentBranch(bool fallback = false);
 	void GetRemoteTrackedBranch(const CString& localBranch, CString& remote, CString& branch);
 	void GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch);

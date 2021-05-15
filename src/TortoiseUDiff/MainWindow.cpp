@@ -48,7 +48,7 @@ CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = nullptr*/)
 	SetWindowTitle(L"TortoiseGitUDiff");
 }
 
-CMainWindow::~CMainWindow(void)
+CMainWindow::~CMainWindow()
 {
 }
 

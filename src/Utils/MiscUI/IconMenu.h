@@ -32,8 +32,8 @@
 class CIconMenu : public CMenu
 {
 public:
-	CIconMenu(void);
-	~CIconMenu(void);
+	CIconMenu();
+	~CIconMenu();
 
 	BOOL CreateMenu();
 	BOOL CreatePopupMenu();
@@ -46,7 +46,7 @@ public:
 	LONG_PTR GetMenuItemData(UINT_PTR nIDNewItem);
 
 private:
-	BOOL SetMenuStyle(void);
+	BOOL SetMenuStyle();
 
 private:
 	IconBitmapUtils				bitmapUtils;

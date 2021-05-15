@@ -37,7 +37,7 @@ CPOFile::CPOFile()
 {
 }
 
-CPOFile::~CPOFile(void)
+CPOFile::~CPOFile()
 {
 }
 

@@ -27,11 +27,11 @@
 class CTGitPath
 {
 public:
-	CTGitPath(void);
+	CTGitPath();
 #ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
-	virtual ~CTGitPath(void);
+	virtual ~CTGitPath();
 #else
-	~CTGitPath(void);
+	~CTGitPath();
 #endif
 	CTGitPath(const CString& sUnknownPath);
 	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);

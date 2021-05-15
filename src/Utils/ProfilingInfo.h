@@ -167,7 +167,7 @@ private:
 	/// construction / destruction
 
 	CProfilingInfo();
-	~CProfilingInfo(void);
+	~CProfilingInfo();
 	// prevent cloning
 	CProfilingInfo(const CProfilingInfo&) = delete;
 	CProfilingInfo& operator=(const CProfilingInfo&) = delete;

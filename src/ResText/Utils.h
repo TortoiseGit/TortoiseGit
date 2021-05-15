@@ -27,8 +27,8 @@
 class CUtils
 {
 public:
-	CUtils(void);
-	~CUtils(void);
+	CUtils();
+	~CUtils();
 	static void StringExtend(LPTSTR str);
 	static void StringCollapse(LPTSTR str);
 	static void Error();

@@ -45,7 +45,7 @@ class CPOFile : public std::map<std::wstring, RESOURCEENTRY>
 {
 public:
 	CPOFile();
-	~CPOFile(void);
+	~CPOFile();
 
 	BOOL ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs);
 	BOOL SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile);

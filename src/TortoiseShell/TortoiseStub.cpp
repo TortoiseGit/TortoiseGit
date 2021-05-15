@@ -32,7 +32,7 @@ static LPFNCANUNLOADNOW pDllCanUnloadNow = nullptr;
 
 static wchar_t DebugDllPath[MAX_PATH] = { 0 };
 
-static BOOL DebugActive(void)
+static BOOL DebugActive()
 {
 	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
 	static const WCHAR DebugShellValue[] = L"DebugShell";
@@ -92,7 +92,7 @@ static BOOL DebugActive(void)
  * \ingroup TortoiseShell
  * Check whether to load the full TortoiseGit.dll or not.
  */
-static BOOL WantRealVersion(void)
+static BOOL WantRealVersion()
 {
 	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
 	static const WCHAR ExplorerOnlyValue[] = L"LoadDllOnlyInExplorer";
@@ -148,7 +148,7 @@ static BOOL WantRealVersion(void)
 	return bWantReal;
 }
 
-static void LoadRealLibrary(void)
+static void LoadRealLibrary()
 {
 	static const char GetClassObject[] = "DllGetClassObject";
 	static const char CanUnloadNow[] = "DllCanUnloadNow";
@@ -234,7 +234,7 @@ static void LoadRealLibrary(void)
 	}
 }
 
-static void UnloadRealLibrary(void)
+static void UnloadRealLibrary()
 {
 	if (!hTortoiseGit)
 		return;
@@ -315,7 +315,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
 	return pDllGetClassObject(rclsid, riid, ppv);
 }
 
-STDAPI DllCanUnloadNow(void)
+STDAPI DllCanUnloadNow()
 {
 	TRACE(L"DllCanUnloadNow() - Enter\n");
 

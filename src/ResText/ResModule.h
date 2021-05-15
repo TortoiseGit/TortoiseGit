@@ -81,8 +81,8 @@ typedef struct tagMenuEntry
 class CResModule
 {
 public:
-	CResModule(void);
-	~CResModule(void);
+	CResModule();
+	~CResModule();
 
 	BOOL    ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile);
 	BOOL    ExtractResources(const std::vector<std::wstring>& filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile);

@@ -156,7 +156,7 @@ public:
 	//@{
 	STDMETHODIMP	GetClassID(CLSID *pclsid) override;
 	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode) override;
-	STDMETHODIMP	IsDirty(void) override { return S_OK; };
+	STDMETHODIMP	IsDirty() override { return S_OK; };
 	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/)  override { return S_OK; };
 	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) override { return S_OK; };
 	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) override { return S_OK; };

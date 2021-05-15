@@ -82,8 +82,8 @@ public:
 class CViewData
 {
 public:
-	CViewData(void);
-	~CViewData(void);
+	CViewData();
+	~CViewData();
 
 	void			AddData(const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
 	void			AddData(const viewdata& data);

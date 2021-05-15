@@ -22,11 +22,11 @@
 #include "LoglistUtils.h"
 #include "registry.h"
 
-CLoglistUtils::CLoglistUtils(void)
+CLoglistUtils::CLoglistUtils()
 {
 }
 
-CLoglistUtils::~CLoglistUtils(void)
+CLoglistUtils::~CLoglistUtils()
 {
 }
 

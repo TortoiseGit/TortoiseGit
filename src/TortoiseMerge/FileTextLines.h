@@ -81,8 +81,8 @@ typedef CStdArrayD<CFileTextLine> CStdFileLineArray;
 class CFileTextLines  : public CStdFileLineArray
 {
 public:
-	CFileTextLines(void);
-	~CFileTextLines(void);
+	CFileTextLines();
+	~CFileTextLines();
 
 	enum UnicodeType
 	{

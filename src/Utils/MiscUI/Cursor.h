@@ -60,7 +60,7 @@ public:
 		m_bInitialized = FALSE;
 		m_hOldCursor = nullptr;
 	}
-	~CCursor(void)
+	~CCursor()
 	{
 		ASSERT(this);
 		Restore();

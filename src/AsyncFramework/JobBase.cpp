@@ -46,14 +46,14 @@ void CJobBase::OnUnSchedule (CJobScheduler*)
 
 // nothing special during construction / destuction
 
-CJobBase::CJobBase(void)
+CJobBase::CJobBase()
     : waiting (TRUE)
     , terminated (FALSE)
     , scheduled (FALSE)
 {
 }
 
-CJobBase::~CJobBase(void)
+CJobBase::~CJobBase()
 {
     assert (deletable.Test());
 }

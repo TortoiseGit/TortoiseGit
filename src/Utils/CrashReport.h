@@ -27,7 +27,7 @@
 // dummy define, needed only when we use crashrpt instead of this.
 #define CR_AF_MAKE_FILE_COPY 0
 
-__forceinline HMODULE get_my_module_handle(void)
+__forceinline HMODULE get_my_module_handle()
 {
 	static int s_module_marker = 0;
 	MEMORY_BASIC_INFORMATION memory_basic_information;
@@ -45,7 +45,7 @@ __forceinline HMODULE get_my_module_handle(void)
 class CCrashReport
 {
 private:
-	CCrashReport(void)
+	CCrashReport()
 	: m_InitCrashHandler(nullptr)
 	, m_SendReport(nullptr)
 	, m_IsReadyToExit(nullptr)
@@ -58,7 +58,7 @@ private:
 		LoadDll();
 	}
 
-	~CCrashReport(void)
+	~CCrashReport()
 	{
 		if (!m_IsReadyToExit)
 			return;
@@ -79,7 +79,7 @@ public:
 		return instance;
 	}
 
-	int                     Uninstall(void) { return FALSE; }
+	int                     Uninstall() { return FALSE; }
 	int                     AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
 	{
 		return AddFileToReport(pszFile, pszDestFile) ? 1 : 0;

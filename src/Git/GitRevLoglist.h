@@ -35,8 +35,8 @@ class GitRevLoglist : public GitRev
 public:
 	friend class CLogCache;
 
-	GitRevLoglist(void);
-	~GitRevLoglist(void);
+	GitRevLoglist();
+	~GitRevLoglist();
 
 	class GitRevLoglistSharedFiles
 	{

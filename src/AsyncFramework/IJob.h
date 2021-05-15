@@ -54,7 +54,7 @@ public:
 
     /// destruction
 
-    virtual ~IJob(void) {}
+    virtual ~IJob() {}
 
     /// call this to put the job into the scheduler.
     /// If \ref transferOwnership is set, the scheduler must

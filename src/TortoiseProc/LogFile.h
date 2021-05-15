@@ -33,7 +33,7 @@ class CLogFile
 {
 public:
 	CLogFile(const CString& repo);
-	~CLogFile(void);
+	~CLogFile();
 
 	/**
 	 * Opens the log file and reads its contents

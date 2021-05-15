@@ -281,8 +281,8 @@ public:
 
 	static const UINT GITSLNM_ITEMCHANGED;
 
-	CGitStatusListCtrl(void);
-	~CGitStatusListCtrl(void);
+	CGitStatusListCtrl();
+	~CGitStatusListCtrl();
 
 	HWND GetParentHWND();
 

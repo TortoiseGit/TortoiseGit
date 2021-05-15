@@ -53,11 +53,11 @@ CColors::COLOR_DATA CColors::m_ColorArray[]=
 	{ FilterMatch, CRegDWORD(L"Software\\TortoiseGit\\Colors\\FilterMatch", RGB(200, 0, 0)) },
 };
 
-CColors::CColors(void)
+CColors::CColors()
 {
 }
 
-CColors::~CColors(void)
+CColors::~CColors()
 {
 }
 

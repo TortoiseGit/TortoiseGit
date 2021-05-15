@@ -25,7 +25,7 @@ class CFindBar : public CStandAloneDialog
 
 public:
 	CFindBar(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CFindBar(void);
+	virtual ~CFindBar();
 
 	// Dialog Data
 	enum { IDD = IDD_FINDBAR };

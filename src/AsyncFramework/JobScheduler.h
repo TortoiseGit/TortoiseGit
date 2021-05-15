@@ -439,7 +439,7 @@ public:
 
     /// End threads. Job queue must have run empty before calling this.
 
-    ~CJobScheduler(void);
+    ~CJobScheduler();
 
     /// This one will be used for jobs that have not been
     /// assigned to other job schedulers explicitly.

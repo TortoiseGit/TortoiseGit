@@ -37,7 +37,7 @@ int CDiffData::abort_on_pool_failure (int /*retcode*/)
 }
 #pragma warning(pop)
 
-CDiffData::CDiffData(void)
+CDiffData::CDiffData()
 	: m_bViewMovedBlocks(false)
 	, m_bPatchRequired(false)
 {
@@ -50,7 +50,7 @@ CDiffData::CDiffData(void)
 	m_sPatchPatched = L": patched";
 }
 
-CDiffData::~CDiffData(void)
+CDiffData::~CDiffData()
 {
 	apr_terminate();
 }

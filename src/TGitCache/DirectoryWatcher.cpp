@@ -29,7 +29,7 @@
 extern HWND hWndHidden;
 extern CGitAdminDirMap g_AdminDirMap;
 
-CDirectoryWatcher::CDirectoryWatcher(void)
+CDirectoryWatcher::CDirectoryWatcher()
 	: m_bRunning(TRUE)
 	, m_bCleaned(FALSE)
 	, m_FolderCrawler(nullptr)
@@ -62,7 +62,7 @@ CDirectoryWatcher::CDirectoryWatcher(void)
 	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 }
 
-CDirectoryWatcher::~CDirectoryWatcher(void)
+CDirectoryWatcher::~CDirectoryWatcher()
 {
 	Stop();
 	AutoLocker lock(m_critSec);

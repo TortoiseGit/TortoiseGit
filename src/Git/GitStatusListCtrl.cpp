@@ -91,8 +91,8 @@ public:
 
 	// IUnknown methods --------
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void** ppvObject) override { return m_iSF->QueryInterface(riid, ppvObject); }
-	virtual ULONG STDMETHODCALLTYPE AddRef(void) override { return m_iSF->AddRef(); }
-	virtual ULONG STDMETHODCALLTYPE Release(void) override { return m_iSF->Release(); }
+	virtual ULONG STDMETHODCALLTYPE AddRef() override { return m_iSF->AddRef(); }
+	virtual ULONG STDMETHODCALLTYPE Release() override { return m_iSF->Release(); }
 
 	// IShellFolder methods ----
 	virtual HRESULT STDMETHODCALLTYPE GetUIObjectOf(HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT* rgfReserved, void** ppv) override;

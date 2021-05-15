@@ -25,7 +25,7 @@
 #include "TGitCache.h"
 #include <ShlObj.h>
 
-CFolderCrawler::CFolderCrawler(void)
+CFolderCrawler::CFolderCrawler()
 {
 	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
@@ -37,7 +37,7 @@ CFolderCrawler::CFolderCrawler(void)
 	m_blockReleasesAt = 0;
 }
 
-CFolderCrawler::~CFolderCrawler(void)
+CFolderCrawler::~CFolderCrawler()
 {
 	Stop();
 }

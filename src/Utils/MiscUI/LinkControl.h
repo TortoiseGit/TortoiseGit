@@ -22,8 +22,8 @@
 class CLinkControl : public CStatic
 {
 public:
-	CLinkControl(void);
-	virtual ~CLinkControl(void);
+	CLinkControl();
+	virtual ~CLinkControl();
 
 	static const UINT LK_LINKITEMCLICKED;
 

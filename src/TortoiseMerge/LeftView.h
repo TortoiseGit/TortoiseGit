@@ -27,8 +27,8 @@ class CLeftView : public CBaseView
 {
 	DECLARE_DYNCREATE(CLeftView)
 public:
-	CLeftView(void);
-	~CLeftView(void);
+	CLeftView();
+	~CLeftView();
 
 	void	UseBothLeftFirst() override;
 	void	UseBothRightFirst() override;

@@ -26,22 +26,22 @@
 class CHyperLink
 {
 public:
-	CHyperLink(void);
-	virtual ~CHyperLink(void);
+	CHyperLink();
+	virtual ~CHyperLink();
 
 	BOOL ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL);
 	BOOL ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId, LPCTSTR strURL);
 
 	BOOL setURL( LPCTSTR strURL);
-	LPCTSTR getURL(void) const { return m_strURL; }
+	LPCTSTR getURL() const { return m_strURL; }
 
 protected:
 	/*
 	 * Override if you want to perform some action when the link has the focus
 	 * or when the cursor is over the link such as displaying the URL somewhere.
 	 */
-	virtual void OnSelect(void)   {}
-	virtual void OnDeselect(void) {}
+	virtual void OnSelect()   {}
+	virtual void OnDeselect() {}
 
 	LPTSTR   m_strURL;                              // hyperlink URL
 
@@ -55,14 +55,14 @@ private:
 	HFONT    m_StdFont;                             // Standard font
 	WNDPROC  m_pfnOrigCtlProc;
 
-	void createUnderlineFont(void);
-	static void createLinkCursor(void);
-	void createGlobalResources(void)
+	void createUnderlineFont();
+	static void createLinkCursor();
+	void createGlobalResources()
 	{
 		createUnderlineFont();
 		createLinkCursor();
 	}
-	static void destroyGlobalResources(void)
+	static void destroyGlobalResources()
 	{
 		/*
 		 * No need to call DestroyCursor() for cursors acquired through
@@ -73,7 +73,7 @@ private:
 		g_UnderlineFont = nullptr;
 	}
 
-	void Navigate(void);
+	void Navigate();
 
 	static void DrawFocusRect(HWND hwnd);
 	static LRESULT CALLBACK _HyperlinkParentProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);

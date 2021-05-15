@@ -21,7 +21,7 @@
 #include "Dbt.h"
 #include "PathWatcher.h"
 
-CPathWatcher::CPathWatcher(void)
+CPathWatcher::CPathWatcher()
 	: m_hCompPort(nullptr)
 	, m_bRunning(TRUE)
 	, m_bLimitReached(false)
@@ -52,7 +52,7 @@ CPathWatcher::CPathWatcher(void)
 	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 }
 
-CPathWatcher::~CPathWatcher(void)
+CPathWatcher::~CPathWatcher()
 {
 	Stop();
 	AutoLocker lock(m_critSec);

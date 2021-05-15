@@ -75,6 +75,6 @@ private:
 
 	// construction / destruction
 
-	CTempFiles(void);
-	~CTempFiles(void);
+	CTempFiles();
+	~CTempFiles();
 };

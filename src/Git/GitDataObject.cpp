@@ -84,12 +84,12 @@ STDMETHODIMP GitDataObject::QueryInterface(REFIID riid, void** ppvObject)
 	return S_OK;
 }
 
-STDMETHODIMP_(ULONG) GitDataObject::AddRef(void)
+STDMETHODIMP_(ULONG) GitDataObject::AddRef()
 {
 	return ++m_cRefCount;
 }
 
-STDMETHODIMP_(ULONG) GitDataObject::Release(void)
+STDMETHODIMP_(ULONG) GitDataObject::Release()
 {
 	--m_cRefCount;
 	if (m_cRefCount == 0)
@@ -752,12 +752,12 @@ STDMETHODIMP  CGitEnumFormatEtc::QueryInterface(REFIID refiid, void** ppv)
 	return S_OK;
 }
 
-STDMETHODIMP_(ULONG) CGitEnumFormatEtc::AddRef(void)
+STDMETHODIMP_(ULONG) CGitEnumFormatEtc::AddRef()
 {
 	return ++m_cRefCount;
 }
 
-STDMETHODIMP_(ULONG) CGitEnumFormatEtc::Release(void)
+STDMETHODIMP_(ULONG) CGitEnumFormatEtc::Release()
 {
 	--m_cRefCount;
 	if (m_cRefCount == 0)
@@ -808,7 +808,7 @@ STDMETHODIMP CGitEnumFormatEtc::Skip(ULONG celt)
 	return S_OK;
 }
 
-STDMETHODIMP CGitEnumFormatEtc::Reset(void)
+STDMETHODIMP CGitEnumFormatEtc::Reset()
 {
 	m_iCur = 0;
 	return S_OK;

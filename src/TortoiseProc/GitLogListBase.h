@@ -93,7 +93,7 @@ class SelectionHistory
 {
 #define HISTORYLENGTH 50
 public:
-	SelectionHistory(void)
+	SelectionHistory()
 	: location(0)
 	{
 		lastselected.reserve(HISTORYLENGTH);

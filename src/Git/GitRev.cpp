@@ -24,11 +24,11 @@
 #include "gitdll.h"
 #include "UnicodeUtils.h"
 
-GitRev::GitRev(void)
+GitRev::GitRev()
 {
 }
 
-GitRev::~GitRev(void)
+GitRev::~GitRev()
 {
 }
 

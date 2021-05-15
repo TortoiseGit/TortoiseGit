@@ -106,7 +106,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	return 1;	// ok
 }
 
-STDAPI DllCanUnloadNow(void)
+STDAPI DllCanUnloadNow()
 {
 	return (g_cRefThisDll == 0 ? S_OK : S_FALSE);
 }

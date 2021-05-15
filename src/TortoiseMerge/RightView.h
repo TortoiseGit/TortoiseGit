@@ -28,8 +28,8 @@ class CRightView : public CBaseView
 {
 	DECLARE_DYNCREATE(CRightView)
 public:
-	CRightView(void);
-	~CRightView(void);
+	CRightView();
+	~CRightView();
 
 	void	UseBothLeftFirst() override;
 	void	UseBothRightFirst() override;

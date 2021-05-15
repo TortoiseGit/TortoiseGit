@@ -155,8 +155,8 @@ protected:
 	CRegDWORD					m_regDarkForegroundColors[DIFFSTATE_END];
 	CRegDWORD					m_regDarkBackgroundColors[DIFFSTATE_END];
 private:
-	CDiffColors(void);
-	~CDiffColors(void);
+	CDiffColors();
+	~CDiffColors();
 	// prevent cloning
 	CDiffColors(const CDiffColors&) = delete;
 	CDiffColors& operator=(const CDiffColors&) = delete;

@@ -27,7 +27,7 @@
 #include <gdiplus.h>
 #pragma warning(pop)
 
-using ThemeChangeCallback = std::function<void(void)>;
+using ThemeChangeCallback = std::function<void()>;
 
 /**
  * Singleton to handle Theme related methods.

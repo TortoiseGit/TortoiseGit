@@ -56,7 +56,7 @@ CRegStdBase::CRegStdBase (const tstring& key, bool force, HKEY base, REGSAM sam)
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __ATLTYPES_H__   // defines CRect
-CRegRect::CRegRect(void)
+CRegRect::CRegRect()
 	: CRegTypedBase<CRect, CRegBase>(CRect(0,0,0,0))
 {
 }
@@ -94,7 +94,7 @@ void CRegRect::InternalWrite (HKEY hKey, const CRect& value)
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __ATLTYPES_H__   // defines CPoint
-CRegPoint::CRegPoint(void)
+CRegPoint::CRegPoint()
 	: CRegTypedBase<CPoint, CRegBase>(CPoint(0,0))
 {
 }

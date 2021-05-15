@@ -26,7 +26,7 @@
 
 std::shared_ptr<CGitMailmap> GitRevLoglist::s_Mailmap = nullptr;
 
-GitRevLoglist::GitRevLoglist(void) : GitRev()
+GitRevLoglist::GitRevLoglist() : GitRev()
 , m_Action(0)
 , m_RebaseAction(0)
 , m_IsDiffFiles(FALSE)
@@ -37,7 +37,7 @@ GitRevLoglist::GitRevLoglist(void) : GitRev()
 {
 }
 
-GitRevLoglist::~GitRevLoglist(void)
+GitRevLoglist::~GitRevLoglist()
 {
 }
 

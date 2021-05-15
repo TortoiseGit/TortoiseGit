@@ -37,7 +37,7 @@ using json = nlohmann::json;
 
 extern CGit g_Git;
 
-CTGitPath::CTGitPath(void)
+CTGitPath::CTGitPath()
 	: m_bDirectoryKnown(false)
 	, m_bIsDirectory(false)
 	, m_bHasAdminDirKnown(false)
@@ -61,7 +61,7 @@ CTGitPath::CTGitPath(void)
 {
 }
 
-CTGitPath::~CTGitPath(void)
+CTGitPath::~CTGitPath()
 {
 }
 // Create a TGitPath object from an unknown path type (same as using SetFromUnknown)

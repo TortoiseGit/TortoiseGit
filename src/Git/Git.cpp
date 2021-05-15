@@ -210,7 +210,7 @@ int CGit::ms_LastMsysGitVersion = 0;
 CGit g_Git;
 
 
-CGit::CGit(void)
+CGit::CGit()
 {
 	git_libgit2_init();
 	GetCurrentDirectory(MAX_PATH, CStrBuf(m_CurrentDir, MAX_PATH));
@@ -228,7 +228,7 @@ CGit::CGit(void)
 	CheckMsysGitDir();
 }
 
-CGit::~CGit(void)
+CGit::~CGit()
 {
 	if(this->m_GitDiff)
 	{
@@ -615,7 +615,7 @@ int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 	return Run(&call);
 }
 
-CString CGit::GetUserName(void)
+CString CGit::GetUserName()
 {
 	CEnvironment env;
 	env.CopyProcessEnvironment();
@@ -629,7 +629,7 @@ CString CGit::GetUserName(void)
 
 	return GetConfigValue(L"user.name");
 }
-CString CGit::GetUserEmail(void)
+CString CGit::GetUserEmail()
 {
 	CEnvironment env;
 	env.CopyProcessEnvironment();
@@ -644,7 +644,7 @@ CString CGit::GetUserEmail(void)
 	return GetConfigValue(L"user.email");
 }
 
-CString CGit::GetCommitterName(void)
+CString CGit::GetCommitterName()
 {
 	CEnvironment env;
 	env.CopyProcessEnvironment();
@@ -659,7 +659,7 @@ CString CGit::GetCommitterName(void)
 	return GetConfigValue(L"user.name");
 }
 
-CString CGit::GetCommitterEmail(void)
+CString CGit::GetCommitterEmail()
 {
 	CEnvironment env;
 	env.CopyProcessEnvironment();

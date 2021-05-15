@@ -25,14 +25,14 @@
 
 IMPLEMENT_DYNCREATE(CBottomView, CBaseView)
 
-CBottomView::CBottomView(void)
+CBottomView::CBottomView()
 {
 	m_pwndBottom = this;
 	m_pState = &m_AllState.bottom;
 	m_nStatusBarID = ID_INDICATOR_BOTTOMVIEW;
 }
 
-CBottomView::~CBottomView(void)
+CBottomView::~CBottomView()
 {
 }
 

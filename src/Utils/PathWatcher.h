@@ -39,8 +39,8 @@ typedef CComCritSecLock<CComCriticalSection> AutoLocker;
 class CPathWatcher
 {
 public:
-	CPathWatcher(void);
-	~CPathWatcher(void);
+	CPathWatcher();
+	~CPathWatcher();
 
 	/**
 	 * Adds a new path to be watched. The path \b must point to a directory.

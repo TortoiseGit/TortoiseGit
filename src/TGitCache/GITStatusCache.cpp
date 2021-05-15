@@ -218,7 +218,7 @@ void CGitStatusCache::Init()
 	m_shellUpdater.Initialise();
 }
 
-CGitStatusCache::CGitStatusCache(void)
+CGitStatusCache::CGitStatusCache()
 {
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
@@ -233,7 +233,7 @@ CGitStatusCache::CGitStatusCache(void)
 	m_mostRecentExpiresAt = 0;
 }
 
-CGitStatusCache::~CGitStatusCache(void)
+CGitStatusCache::~CGitStatusCache()
 {
 	CAutoWriteLock writeLock(m_guard);
 	ClearCache();

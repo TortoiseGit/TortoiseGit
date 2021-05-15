@@ -23,7 +23,7 @@
 #include "GitAdminDir.h"
 #include "GitStatusCache.h"
 
-CShellUpdater::CShellUpdater(void)
+CShellUpdater::CShellUpdater()
 	: m_bRunning(FALSE)
 	, m_bItemsAddedSinceLastUpdate(false)
 {
@@ -31,7 +31,7 @@ CShellUpdater::CShellUpdater(void)
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 }
 
-CShellUpdater::~CShellUpdater(void)
+CShellUpdater::~CShellUpdater()
 {
 	Stop();
 }
