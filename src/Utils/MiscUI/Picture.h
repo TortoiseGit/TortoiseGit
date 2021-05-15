@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #pragma once
-#include "tstring.h"
 #include <string>
 #include <ocidl.h>
 #pragma warning(push)
@@ -76,7 +75,7 @@ public:
 	 * \param sFilePathName the path of the picture file
 	 * \return TRUE if succeeded.
 	 */
-	bool Load(tstring sFilePathName);
+	bool Load(std::wstring sFilePathName);
 	/**
 	 * draws the loaded picture directly to the given device context.
 	 * \note
@@ -166,7 +165,7 @@ public:
 	void FreePictureData();
 
 	DWORD GetFileSize() const {return m_nSize;}
-	tstring GetFileSizeAsText(bool bAbbrev = true);
+	std::wstring GetFileSizeAsText(bool bAbbrev = true);
 	CPicture();
 	virtual ~CPicture();
 
@@ -177,7 +176,7 @@ public:
 	LONG		m_Width;	///< Width (in pixels)
 	UINT		m_ColorDepth;///< the color depth
 	LONG		m_Weight;	///< Size Of The Image Object In Bytes (File OR Resource)
-	tstring m_Name;			///< The FileName of the Picture as used in Load()
+	std::wstring m_Name;	///< The FileName of the Picture as used in Load()
 
 protected:
 	/**
@@ -189,9 +188,9 @@ protected:
 	bool LoadPictureData(BYTE* pBuffer, int nSize);
 
 private:
-	bool TryLoadIcon(const tstring& sFilePathName);
-	bool TryLoadWIC(const tstring& sFilePathName);
-	bool TryLoadFreeImage(const tstring& sFilePathName);
+	bool TryLoadIcon(const std::wstring& sFilePathName);
+	bool TryLoadWIC(const std::wstring& sFilePathName);
+	bool TryLoadFreeImage(const std::wstring& sFilePathName);
 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR			gdiplusToken;

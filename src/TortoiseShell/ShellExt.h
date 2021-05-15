@@ -106,12 +106,12 @@ private:
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
-	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
-	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly);
-	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
+	void			AddPathCommand(std::wstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
+	void			AddPathFileCommand(std::wstring& gitCmd, LPCTSTR command, bool bFoldersOnly);
+	void			AddPathFileDropCommand(std::wstring& gitCmd, LPCTSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(const std::wstring& folder);
-	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
+	static void		RunCommand(const std::wstring& path, const std::wstring& command, LPCTSTR errorMessage);
 
 public:
 	CShellExt(FileState state);

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2014 - TortoiseSVN
 // Copyright (C) 2008-2014, 2018 - TortoiseGit
@@ -54,7 +54,7 @@ protected:
 	int LogThread();
 	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const;
 	void PageProcOnCommand(WPARAM wParam);
-	void RunCommand(const tstring& command);
+	void RunCommand(const std::wstring& command);
 
 	HWND m_hwnd;
 	std::vector<std::wstring> filenames;

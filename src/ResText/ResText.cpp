@@ -23,8 +23,6 @@
 #include <Shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 
-typedef std::basic_string<TCHAR> tstring;
-
 int wmain(int argc, wchar_t* argv[])
 {
 	bool bShowHelp = true;
@@ -34,18 +32,18 @@ int wmain(int argc, wchar_t* argv[])
 	bool bUseHeader = false;
 	bool bAdjustEOLs = false;
 	//parse the command line
-	std::vector<tstring> arguments;
-	std::vector<tstring> switches;
+	std::vector<std::wstring> arguments;
+	std::vector<std::wstring> switches;
 	for (int i=1; i<argc; ++i)
 	{
 		if ((argv[i][0] == '-')||(argv[i][0] == '/'))
 		{
-			tstring str = tstring(&argv[i][1]);
+			std::wstring str = std::wstring(&argv[i][1]);
 			switches.push_back(str);
 		}
 		else
 		{
-			tstring str = tstring(&argv[i][0]);
+			std::wstring str = std::wstring(&argv[i][0]);
 			arguments.push_back(str);
 		}
 	}
@@ -73,17 +71,17 @@ int wmain(int argc, wchar_t* argv[])
 	{
 		if (wcscmp(arg->c_str(), L"extract")==0)
 		{
-			tstring sPoFile;
-			tstring sHeaderFile;
+			std::wstring sPoFile;
+			std::wstring sHeaderFile;
 			++arg;
 
 			std::vector<std::wstring> filelist = arguments;
 			filelist.erase(filelist.begin());
-			sPoFile = tstring((--filelist.end())->c_str());
+			sPoFile = std::wstring((--filelist.end())->c_str());
 			filelist.erase(--filelist.end());
 			if (bUseHeader)
 			{
-				sHeaderFile = tstring((--filelist.end())->c_str());
+				sHeaderFile = std::wstring((--filelist.end())->c_str());
 				filelist.erase(--filelist.end());
 			}
 
@@ -95,9 +93,9 @@ int wmain(int argc, wchar_t* argv[])
 		}
 		else if (wcscmp(arg->c_str(), L"apply")==0)
 		{
-			tstring sSrcDllFile;
-			tstring sDstDllFile;
-			tstring sPoFile;
+			std::wstring sSrcDllFile;
+			std::wstring sDstDllFile;
+			std::wstring sPoFile;
 			WORD wLang = 0;
 			++arg;
 			if (!PathFileExists(arg->c_str()))
@@ -105,16 +103,16 @@ int wmain(int argc, wchar_t* argv[])
 				fwprintf(stderr, L"the resource dll <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
-			sSrcDllFile = tstring(arg->c_str());
+			sSrcDllFile = std::wstring(arg->c_str());
 			++arg;
-			sDstDllFile = tstring(arg->c_str());
+			sDstDllFile = std::wstring(arg->c_str());
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
 				fwprintf(stderr, L"the po-file <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
-			sPoFile = tstring(arg->c_str());
+			sPoFile = std::wstring(arg->c_str());
 			++arg;
 			if (arg != arguments.end())
 			{

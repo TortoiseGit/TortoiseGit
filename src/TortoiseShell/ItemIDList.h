@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2009, 2013 - TortoiseSVN
 
@@ -32,7 +32,7 @@ public:
 	LPCSHITEMID get(int index) const;
 	virtual ~ItemIDList();
 
-	tstring toString(bool resolveLibraries = true);
+	std::wstring toString(bool resolveLibraries = true);
 
 	PCUITEMID_CHILD operator& ();
 private:

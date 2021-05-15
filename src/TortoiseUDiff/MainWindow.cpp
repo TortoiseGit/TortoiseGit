@@ -286,7 +286,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		break;
 	case ID_FILE_SETTINGS:
 		{
-			tstring gitCmd = L" /command:settings /page:udiff";
+			std::wstring gitCmd = L" /command:settings /page:udiff";
 			RunCommand(gitCmd);
 		}
 		break;
@@ -573,7 +573,7 @@ std::wstring CMainWindow::GetAppDirectory()
 
 void CMainWindow::RunCommand(const std::wstring& command)
 {
-	tstring tortoiseProcPath = GetAppDirectory() + L"TortoiseGitProc.exe";
+	std::wstring tortoiseProcPath = GetAppDirectory() + L"TortoiseGitProc.exe";
 	CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str());
 }
 

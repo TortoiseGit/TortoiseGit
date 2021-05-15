@@ -45,10 +45,10 @@ CRegStdBase::CRegStdBase()
 {
 }
 
-CRegStdBase::CRegStdBase (const tstring& key, bool force, HKEY base, REGSAM sam)
-	: CRegBaseCommon<tstring> (key, force, base, sam)
+CRegStdBase::CRegStdBase(const std::wstring& key, bool force, HKEY base, REGSAM sam)
+	: CRegBaseCommon<std::wstring>(key, force, base, sam)
 {
-	tstring::size_type pos = key.find_last_of(L'\\');
+	std::wstring::size_type pos = key.find_last_of(L'\\');
 	m_path = key.substr(0, pos);
 	m_key = key.substr(pos + 1);
 }
