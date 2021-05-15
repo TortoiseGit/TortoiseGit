@@ -28,7 +28,7 @@
 
 class CShadowFilesTree;
 
-typedef std::map<CString, CShadowFilesTree> TShadowFilesTreeMap;
+using TShadowFilesTreeMap = std::map<CString, CShadowFilesTree>;
 
 class CShadowFilesTree
 {
@@ -70,7 +70,7 @@ public:
 			return m_pParent->GetFullName() + L'/' + m_sName;
 	}
 };
-typedef std::vector<CShadowFilesTree *> TShadowFilesTreeList;
+using TShadowFilesTreeList = std::vector<CShadowFilesTree*>;
 
 class CRepositoryBrowser : public CResizableStandAloneDialog
 {

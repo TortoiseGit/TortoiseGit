@@ -60,7 +60,7 @@ public:
 
 class CBugTraqAssociations
 {
-	typedef std::vector< CBugTraqAssociation * > inner_t;
+	using inner_t = std::vector<CBugTraqAssociation*>;
 	inner_t m_inner;
 
 public:
@@ -75,7 +75,7 @@ public:
 
 	bool FindProvider(const CString &path, CBugTraqAssociation *assoc);
 
-	typedef inner_t::const_iterator const_iterator;
+	using const_iterator = inner_t::const_iterator;
 	const_iterator begin() const { return m_inner.begin(); }
 	const_iterator end() const { return m_inner.end(); }
 

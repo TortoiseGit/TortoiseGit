@@ -19,4 +19,4 @@
 //
 #pragma once
 
-typedef std::function<CString(const int nID, const CString& input)> IInputValidator;
+using IInputValidator = std::function<CString(const int nID, const CString& input)>;

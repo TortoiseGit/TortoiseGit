@@ -73,8 +73,8 @@ protected:
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr) const;
 };
 
-typedef std::shared_ptr<const CGitIndexList> SHARED_INDEX_PTR;
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using SHARED_INDEX_PTR = std::shared_ptr<const CGitIndexList>;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
 {
@@ -185,7 +185,7 @@ private:
 	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base);
 };
 
-typedef std::shared_ptr<const CGitHeadFileList> SHARED_TREE_PTR;
+using SHARED_TREE_PTR = std::shared_ptr<const CGitHeadFileList>;
 class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:

@@ -116,8 +116,8 @@ struct TGitRef
 	operator const CString&() const { return name; }
 };
 
-typedef std::vector<CString> STRING_VECTOR;
-typedef std::unordered_map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
-typedef std::map<CString, CString> MAP_STRING_STRING;
-typedef std::vector<TGitRef> REF_VECTOR;
-typedef CGitByteArray BYTE_VECTOR;
+using STRING_VECTOR = std::vector<CString>;
+using MAP_HASH_NAME = std::unordered_map<CGitHash, STRING_VECTOR>;
+using MAP_STRING_STRING = std::map<CString, CString>;
+using REF_VECTOR = std::vector<TGitRef>;
+using BYTE_VECTOR = CGitByteArray;

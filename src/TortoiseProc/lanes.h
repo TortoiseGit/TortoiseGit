@@ -12,7 +12,7 @@
 
 #define QVector std::vector
 
-typedef std::vector<CGitHash> CGitHashList ;
+using CGitHashList = std::vector<CGitHash>;
 
 class Lanes {
 public:

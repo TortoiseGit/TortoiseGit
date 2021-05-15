@@ -354,7 +354,7 @@ void CGitStatusCache::RemoveCacheForDirectoryChildren(CCachedDirectory* cdir, co
 	// we could have entries versioned and/or stored in our cache which are
 	// children of the specified directory, but not in the m_childDirectories
 	// member
-	CCachedDirectory::ItDir itMap = m_directoryCache.lower_bound(origPath);
+	auto itMap = m_directoryCache.lower_bound(origPath);
 	do
 	{
 		if (itMap != m_directoryCache.end())
@@ -403,10 +403,9 @@ void CGitStatusCache::RemoveCacheForPath(const CTGitPath& path)
 {
 	// Stop the crawler starting on a new folder
 	CCrawlInhibitor crawlInhibit(&m_folderCrawler);
-	CCachedDirectory::ItDir itMap;
 	CCachedDirectory* dirtoremove = nullptr;
 
-	itMap = m_directoryCache.find(path);
+	auto itMap = m_directoryCache.find(path);
 	if ((itMap != m_directoryCache.end())&&(itMap->second))
 		dirtoremove = itMap->second;
 	if (!dirtoremove)
@@ -420,8 +419,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntry(const CTGitPath& path
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
 	CAutoReadLock readLock(m_guardcacheddirectories);
-	CCachedDirectory::ItDir itMap;
-	itMap = m_directoryCache.find(path);
+	auto itMap = m_directoryCache.find(path);
 	if ((itMap != m_directoryCache.end())&&(itMap->second))
 	{
 		// We've found this directory in the cache
@@ -477,8 +475,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 	ATLASSERT(path.IsDirectory() || !PathFileExists(path.GetWinPath()));
 
 	CAutoReadLock readLock(m_guardcacheddirectories);
-	CCachedDirectory::ItDir itMap;
-	itMap = m_directoryCache.find(path);
+	auto itMap = m_directoryCache.find(path);
 	if(itMap != m_directoryCache.end())
 	{
 		// We've found this directory in the cache

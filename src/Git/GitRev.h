@@ -24,7 +24,7 @@
 #include "GitDll.h"
 #include "GitMailmap.h"
 
-typedef std::vector<CGitHash> GIT_REV_LIST;
+using GIT_REV_LIST = std::vector<CGitHash>;
 
 #define LOG_REV_AUTHOR_NAME		L'0'
 #define LOG_REV_AUTHOR_EMAIL	L'1'

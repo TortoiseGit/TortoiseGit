@@ -37,7 +37,7 @@ using namespace Gdiplus;
 template<class DataType>
 class MoreCommitsThan {
 public:
-	typedef std::map<std::wstring, DataType> MapType;
+	using MapType = std::map<std::wstring, DataType>;
 	MoreCommitsThan(MapType &author_commits) : m_authorCommits(author_commits) {}
 
 	bool operator()(const std::wstring& lhs, const std::wstring& rhs)

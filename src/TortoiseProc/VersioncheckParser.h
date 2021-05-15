@@ -58,7 +58,7 @@ public:
 
 		CString m_filename;
 	} LanguagePack;
-	typedef std::vector<LanguagePack> LANGPACK_VECTOR;
+	using LANGPACK_VECTOR = std::vector<LanguagePack>;
 	LANGPACK_VECTOR GetTortoiseGitLanguagePacks();
 
 private:

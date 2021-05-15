@@ -84,7 +84,7 @@ protected:
 			Default();
 	}
 
-	typedef std::function<void(CPoint point)> ContextMenuHandler;
+	using ContextMenuHandler = std::function<void(CPoint point)>;
 	ContextMenuHandler m_ContextMenuHandler;
 
 public:

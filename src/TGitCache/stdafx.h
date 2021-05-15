@@ -44,7 +44,7 @@ using namespace ATL;
 #include "scope_exit_noexcept.h"
 #include "DebugOutput.h"
 
-typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;
+using AutoLocker = CComCritSecLock<CComAutoCriticalSection>;
 
 #ifdef _WIN64
 #	define APP_X64_STRING	"x64"

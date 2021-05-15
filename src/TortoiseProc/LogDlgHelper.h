@@ -31,7 +31,7 @@ class CLogDlg;
  * Instances of CStoreSelection save the selection of the CLogDlg. When the instance
  * is deleted the destructor restores the selection.
  */
-typedef std::unordered_map<CGitHash, size_t> MAP_HASH_REV;
+using MAP_HASH_REV = std::unordered_map<CGitHash, size_t>;
 
 /**
  * \ingroup TortoiseProc

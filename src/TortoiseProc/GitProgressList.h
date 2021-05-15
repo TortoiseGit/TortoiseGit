@@ -78,7 +78,7 @@ public:
 	bool					m_bSetTitle;
 
 public:
-	typedef std::vector<std::function<void()>> ContextMenuActionList;
+	using ContextMenuActionList = std::vector<std::function<void()>>;
 	struct Payload
 	{
 		CGitProgressList* list;
@@ -192,7 +192,7 @@ private:
 	static bool NotificationDataIsAux(const NotificationData* pData);
 
 private:
-	typedef std::vector<NotificationData *> NotificationDataVect;
+	using NotificationDataVect = std::vector<NotificationData*>;
 
 	NotificationDataVect	m_arData;
 

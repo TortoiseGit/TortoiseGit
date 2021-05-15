@@ -81,8 +81,8 @@ typedef struct hookcmd
 	CString			sRegKey;
 } hookcmd;
 
-typedef std::map<hookkey, hookcmd>::iterator hookiterator;
-typedef std::map<hookkey, hookcmd>::const_iterator const_hookiterator;
+using hookiterator = std::map<hookkey, hookcmd>::iterator;
+using const_hookiterator = std::map<hookkey, hookcmd>::const_iterator;
 
 /**
  * \ingroup TortoiseProc

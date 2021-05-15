@@ -23,7 +23,7 @@
 #include <functional>
 
 class GitRevRefBrowser;
-typedef std::map<CString, GitRevRefBrowser> MAP_REF_GITREVREFBROWSER;
+using MAP_REF_GITREVREFBROWSER = std::map<CString, GitRevRefBrowser>;
 
 class GitRevRefBrowser : public GitRev
 {

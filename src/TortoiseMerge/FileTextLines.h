@@ -64,13 +64,13 @@ private:
 	std::deque<T> m_vec;
 };
 
-typedef CStdArrayV<DWORD> CStdDWORDArray;
+using CStdDWORDArray = CStdArrayV<DWORD>;
 
 struct CFileTextLine {
 	CString				sLine;
 	EOL					eEnding;
 };
-typedef CStdArrayD<CFileTextLine> CStdFileLineArray;
+using CStdFileLineArray = CStdArrayD<CFileTextLine>;
 /**
  * \ingroup TortoiseMerge
  *

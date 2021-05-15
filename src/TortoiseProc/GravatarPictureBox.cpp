@@ -27,7 +27,7 @@
 #include <WinCrypt.h>
 #include "SmartHandle.h"
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 static CString CalcMD5(CString text)
 {

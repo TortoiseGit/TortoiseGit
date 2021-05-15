@@ -73,7 +73,7 @@ private:
 	CRegistryKey	m_regToolKey;			///< registry key where the tools are stored
 	CListCtrl		m_ToolListCtrl;			///< list control used for viewing and editing
 
-	typedef std::map<CString,CString> TOOL_MAP;
+	using TOOL_MAP = std::map<CString, CString>;
 	TOOL_MAP		m_Tools;				///< internal storage of all tools
 	bool			m_ToolsValid;			///< true if m_Tools was ever read
 };

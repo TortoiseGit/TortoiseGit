@@ -37,7 +37,7 @@ typedef enum {
 	AUTOCLOSE_IF_NO_ERRORS,
 } GitProgressAutoClose;
 
-typedef std::function<void()> PostCmdAction;
+using PostCmdAction = std::function<void()>;
 
 class PostCmd
 {
@@ -71,9 +71,9 @@ public:
 	PostCmdAction	action;
 };
 
-typedef std::vector<PostCmd> PostCmdList;
-typedef std::function<void(DWORD status, PostCmdList&)> PostCmdCallback;
-typedef std::function<void(DWORD& exitCode, CString& extraMsg)> PostExecCallback;
+using PostCmdList = std::vector<PostCmd>;
+using PostCmdCallback = std::function<void(DWORD status, PostCmdList&)>;
+using PostExecCallback = std::function<void(DWORD& exitCode, CString& extraMsg)>;
 
 class CProgressDlg : public CResizableStandAloneDialog
 {

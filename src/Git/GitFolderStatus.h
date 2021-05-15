@@ -67,7 +67,7 @@ private:
 
 	void				ClearCache();
 
-	typedef std::map<std::wstring, FileStatusCacheEntry> FileStatusMap;
+	using FileStatusMap = std::map<std::wstring, FileStatusCacheEntry>;
 	FileStatusMap			m_cache;
 	ULONGLONG				m_TimeStamp;
 	FileStatusCacheEntry	dirstat;

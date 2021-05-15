@@ -37,7 +37,7 @@
 #include <unordered_set>
 #include "LogDlgFilter.h"
 
-typedef CComCritSecLock<CComCriticalSection> Locker;
+using Locker = CComCritSecLock<CComCriticalSection>;
 
 template < typename Cont, typename Pred>
 void for_each(Cont& c, Pred&& p)

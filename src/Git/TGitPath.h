@@ -424,7 +424,7 @@ public:
 	/** Checks if two CTGitPathLists are the same */
 	bool IsEqual(const CTGitPathList& list);
 
-	typedef std::vector<CTGitPath> PathVector;
+	using PathVector = std::vector<CTGitPath>;
 	PathVector m_paths;
 	// If the list contains just files in one directory, then
 	// this contains the directory name
