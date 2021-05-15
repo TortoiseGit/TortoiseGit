@@ -185,7 +185,7 @@ bool CShellUpdater::RebuildIcons()
 		int iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
 		if (0 == iDefaultIconSize)
 			iDefaultIconSize = 32;
-		_sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%d", iDefaultIconSize);
+		_snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%d", iDefaultIconSize);
 	}
 	else if (lRegResult != ERROR_SUCCESS)
 		return false;
@@ -194,7 +194,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValue = _wtoi(buf);
 	dwRegValueTemp = dwRegValue-1;
 
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 
@@ -203,7 +203,7 @@ bool CShellUpdater::RebuildIcons()
 		0, SMTO_ABORTIFHUNG, 5000, &dwResult);
 
 	// Reset registry value
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 

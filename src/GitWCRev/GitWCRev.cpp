@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019 - TortoiseGit
+// Copyright (C) 2017-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -688,7 +688,7 @@ bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 	return true;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int wmain(int argc, wchar_t* argv[])
 {
 	// we have three parameters
 	const TCHAR* src = nullptr;
@@ -701,7 +701,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GitWCRev_t GitStat;
 
 	SetDllDirectory(L"");
-	CCrashReportTGit crasher(L"GitWCRev " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
+	CCrashReportTGit crasher(L"GitWCRev " TEXT(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 
 	if (argc >= 2 && argc <= 5)
 	{
@@ -715,7 +715,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		dst = argv[3];
 		if (!PathFileExists(src))
 		{
-			_tprintf(L"File '%s' does not exist\n", src);
+			wprintf(L"File '%s' does not exist\n", src);
 			return ERR_FNF; // file does not exist
 		}
 	}
@@ -748,7 +748,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				if (dst && PathFileExists(dst))
 				{
-					_tprintf(L"File '%s' already exists\n", dst);
+					wprintf(L"File '%s' already exists\n", dst);
 					return ERR_OUT_EXISTS;
 				}
 			}
@@ -764,12 +764,12 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (!wc)
 	{
-		_tprintf(L"GitWCRev %d.%d.%d, Build %d - %s\n\n", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, _T(TGIT_PLATFORM));
-		_putts(_T(HelpText1));
-		_putts(_T(HelpText2));
-		_putts(_T(HelpText3));
-		_putts(_T(HelpText4));
-		_putts(_T(HelpText5));
+		wprintf(L"GitWCRev %d.%d.%d, Build %d - %s\n\n", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TEXT(TGIT_PLATFORM));
+		_putws(TEXT(HelpText1));
+		_putws(TEXT(HelpText2));
+		_putws(TEXT(HelpText3));
+		_putws(TEXT(HelpText4));
+		_putws(TEXT(HelpText5));
 		return ERR_SYNTAX;
 	}
 
@@ -836,17 +836,17 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (!PathFileExists(wc))
 	{
-		_tprintf(L"Directory or file '%s' does not exist\n", wc);
+		wprintf(L"Directory or file '%s' does not exist\n", wc);
 		if (wcschr(wc, '\"')) // dir contains a quotation mark
 		{
-			_tprintf(L"The Path contains a quotation mark.\n");
-			_tprintf(L"this indicates a problem when calling GitWCRev from an interpreter which treats\n");
-			_tprintf(L"a backslash char specially.\n");
-			_tprintf(L"Try using double backslashes or insert a dot after the last backslash when\n");
-			_tprintf(L"calling GitWCRev\n");
-			_tprintf(L"Examples:\n");
-			_tprintf(L"GitWCRev \"path to wc\\\\\"\n");
-			_tprintf(L"GitWCRev \"path to wc\\.\"\n");
+			wprintf(L"The Path contains a quotation mark.\n");
+			wprintf(L"this indicates a problem when calling GitWCRev from an interpreter which treats\n");
+			wprintf(L"a backslash char specially.\n");
+			wprintf(L"Try using double backslashes or insert a dot after the last backslash when\n");
+			wprintf(L"calling GitWCRev\n");
+			wprintf(L"Examples:\n");
+			wprintf(L"GitWCRev \"path to wc\\\\\"\n");
+			wprintf(L"GitWCRev \"path to wc\\.\"\n");
 		}
 		return ERR_FNF; // dir does not exist
 	}
@@ -860,30 +860,30 @@ int _tmain(int argc, _TCHAR* argv[])
 		CAutoFile hFile = CreateFile(src, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
 		if (!hFile)
 		{
-			_tprintf(L"Unable to open input file '%s'\n", src);
+			wprintf(L"Unable to open input file '%s'\n", src);
 			return ERR_OPEN; // error opening file
 		}
 		filelength = GetFileSize(hFile, nullptr);
 		if (filelength == INVALID_FILE_SIZE)
 		{
-			_tprintf(L"Could not determine file size of '%s'\n", src);
+			wprintf(L"Could not determine file size of '%s'\n", src);
 			return ERR_READ;
 		}
 		maxlength = filelength + 8192; // We might be increasing file size.
 		pBuf = std::make_unique<char[]>(maxlength);
 		if (!pBuf)
 		{
-			_tprintf(L"Could not allocate enough memory!\n");
+			wprintf(L"Could not allocate enough memory!\n");
 			return ERR_ALLOC;
 		}
 		if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr))
 		{
-			_tprintf(L"Could not read the file '%s'\n", src);
+			wprintf(L"Could not read the file '%s'\n", src);
 			return ERR_READ;
 		}
 		if (readlength != filelength)
 		{
-			_tprintf(L"Could not read the file '%s' to the end!\n", src);
+			wprintf(L"Could not read the file '%s' to the end!\n", src);
 			return ERR_READ;
 		}
 	}
@@ -902,31 +902,31 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		char wcfull_oem[MAX_PATH] = { 0 };
 		CharToOem(wc, wcfull_oem);
-		_tprintf(L"GitWCRev: '%hs'\n", wcfull_oem);
+		wprintf(L"GitWCRev: '%hs'\n", wcfull_oem);
 	}
 
 	if (bErrOnMods && (GitStat.HasMods || GitStat.bHasSubmoduleNewCommits || (bErrResursively && GitStat.bHasSubmoduleMods)))
 	{
 		if (!bQuiet)
-			_tprintf(L"Working tree has uncomitted modifications!\n");
+			wprintf(L"Working tree has uncomitted modifications!\n");
 		return ERR_GIT_MODS;
 	}
 	if (bErrOnUnversioned && (GitStat.HasUnversioned || (bErrResursively && GitStat.bHasSubmoduleUnversioned)))
 	{
 		if (!bQuiet)
-			_tprintf(L"Working tree has unversioned items!\n");
+			wprintf(L"Working tree has unversioned items!\n");
 		return ERR_GIT_UNVER;
 	}
 
 	if (!bQuiet)
 	{
-		_tprintf(L"HEAD is %s\n", CUnicodeUtils::StdGetUnicode(GitStat.HeadHashReadable).c_str());
+		wprintf(L"HEAD is %s\n", CUnicodeUtils::StdGetUnicode(GitStat.HeadHashReadable).c_str());
 
 		if (GitStat.HasMods)
-			_tprintf(L"Uncommitted modifications found\n");
+			wprintf(L"Uncommitted modifications found\n");
 
 		if (GitStat.HasUnversioned)
-			_tprintf(L"Unversioned items found\n");
+			wprintf(L"Unversioned items found\n");
 	}
 
 	if (!dst)
@@ -1065,7 +1065,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	CAutoFile hFile = CreateFile(dst, GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_ALWAYS, 0, 0);
 	if (!hFile)
 	{
-		_tprintf(L"Unable to open output file '%s' for writing\n", dst);
+		wprintf(L"Unable to open output file '%s' for writing\n", dst);
 		return ERR_OPEN;
 	}
 
@@ -1077,12 +1077,12 @@ int _tmain(int argc, _TCHAR* argv[])
 		auto pBufExisting = std::make_unique<char[]>(filelength);
 		if (!ReadFile(hFile, pBufExisting.get(), static_cast<DWORD>(filelengthExisting), &readlengthExisting, nullptr))
 		{
-			_tprintf(L"Could not read the file '%s'\n", dst);
+			wprintf(L"Could not read the file '%s'\n", dst);
 			return ERR_READ;
 		}
 		if (readlengthExisting != filelengthExisting)
 		{
-			_tprintf(L"Could not read the file '%s' to the end!\n", dst);
+			wprintf(L"Could not read the file '%s' to the end!\n", dst);
 			return ERR_READ;
 		}
 		sameFileContent = (memcmp(pBuf.get(), pBufExisting.get(), filelength) == 0);
@@ -1097,13 +1097,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		WriteFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr);
 		if (readlength != filelength)
 		{
-			_tprintf(L"Could not write the file '%s' to the end!\n", dst);
+			wprintf(L"Could not write the file '%s' to the end!\n", dst);
 			return ERR_READ;
 		}
 
 		if (!SetEndOfFile(hFile))
 		{
-			_tprintf(L"Could not truncate the file '%s' to the end!\n", dst);
+			wprintf(L"Could not truncate the file '%s' to the end!\n", dst);
 			return ERR_READ;
 		}
 	}

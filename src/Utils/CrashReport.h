@@ -21,7 +21,6 @@
 #include "../../ext/CrashServer/CrashHandler/CrashHandler/CrashHandler.h"
 #include <time.h>
 #include <string>
-#include <tchar.h>
 #include <DbgHelp.h>
 
 // dummy define, needed only when we use crashrpt instead of this.

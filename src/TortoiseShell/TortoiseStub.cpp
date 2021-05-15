@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2019 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2019, 2021 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
 //
 #include <SDKDDKVer.h>
 #include <Windows.h>
-#include <tchar.h>
 #include "Debug.h"
 
 const HINSTANCE NIL = reinterpret_cast<HINSTANCE>((static_cast<char*>(0)-1));
@@ -255,7 +254,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 	// it.
 
 	BOOL bInShellTest = FALSE;
-	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
+	wchar_t buf[MAX_PATH + 1] = {0}; // MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 
 	if (pathLength >= 14)

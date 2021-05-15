@@ -18,7 +18,6 @@
 //
 #include "stdafx.h"
 #include "NiceTrackbar.h"
-#include <tchar.h>
 #include <CommCtrl.h>
 #include <WindowsX.h>
 

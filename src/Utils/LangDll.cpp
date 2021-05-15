@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
 	TCHAR langpath[MAX_PATH] = {0};
 	TCHAR langdllpath[MAX_PATH] = {0};
 	TCHAR sVer[MAX_PATH] = {0};
-	wcscpy_s(sVer, _T(STRPRODUCTVER));
+	wcscpy_s(sVer, TEXT(STRPRODUCTVER));
 	GetModuleFileName(nullptr, langpath, _countof(langpath));
 	TCHAR* pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)

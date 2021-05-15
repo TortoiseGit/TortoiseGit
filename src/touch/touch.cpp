@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2010-2013, 2016 - TortoiseGit
 
@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "resource.h"
 
-int APIENTRY _tWinMain(HINSTANCE /*hInstance*/,
+int APIENTRY wWinMain(HINSTANCE /*hInstance*/,
 						HINSTANCE /*hPrevInstance*/,
 						LPTSTR lpCmdLine,
 						int /*nCmdShow*/)

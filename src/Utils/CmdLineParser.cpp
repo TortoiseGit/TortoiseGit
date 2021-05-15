@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2019 - TortoiseGit
+// Copyright (C) 2013, 2016-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -50,8 +50,8 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 	m_valueMap.clear();
 	m_sCmdLine = sCmdLine;
 
-	tstring working = sCmdLine;
-	auto sCurrent = working.data();
+	std::wstring working = sCmdLine;
+	LPCTSTR sCurrent = working.data();
 
 	for(;;)
 	{
@@ -63,7 +63,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 		LPCTSTR sArg = wcspbrk(sCurrent, m_sDelims);
 		if(!sArg)
 			break; // no (more) delimiters found
-		sArg = _wcsinc(sArg);
+		++sArg;
 
 		if (!sArg[0])
 			break; // ends with delim
@@ -85,11 +85,11 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 			if (sVal[0])
 			{
 				if (sVal[0] != L' ')
-					sVal = _wcsinc(sVal);
+					++sVal;
 				else
 				{
 					while (sVal[0] == L' ')
-						sVal = _wcsinc(sVal);
+						++sVal;
 				}
 
 				LPCTSTR nextArg = wcspbrk(sVal, m_sDelims);
@@ -114,13 +114,13 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 					if(sQuote == sVal)
 					{
 						// string with quotes (defined in m_sQuotes, e.g. '")
-						sQuote = _wcsinc(sVal);
+						sQuote = sVal + 1;
 						sEndQuote = wcspbrk(sQuote, m_sQuotes);
 
 						// search for double quotes
 						while (sEndQuote)
 						{
-							auto nextQuote = _wcsinc(sEndQuote);
+							auto nextQuote = sEndQuote + 1;
 							if (nextQuote[0] == L'"')
 							{
 								working.erase(working.begin() + (sEndQuote - working.data()));
@@ -156,7 +156,7 @@ BOOL CCmdLineParser::Parse(LPCTSTR sCmdLine)
 					std::wstring csVal(sQuote, static_cast<int>(sEndQuote - sQuote));
 					m_valueMap.insert(CValsMap::value_type(Key, csVal));
 				}
-				sCurrent = _wcsinc(sEndQuote);
+				sCurrent = sEndQuote + 1;
 				continue;
 			}
 		}

@@ -12,7 +12,6 @@
 using std::min;
 using std::max;
 
-#include <tchar.h>
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 #define CSTRING_AVAILABLE
 
