@@ -2,8 +2,6 @@
 
 // heavily based on the code of afxpane.cpp of the Microsoft MFC Framework
 
-#pragma once
-
 #include "stdafx.h"
 #include "DockablePaneUnscaledStoredState.h"
 #include "afxregpath.h"
