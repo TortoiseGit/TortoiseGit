@@ -83,7 +83,7 @@ CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames
 		++m_iStripLength;
 }
 
-CGitPropertyPage::~CGitPropertyPage(void)
+CGitPropertyPage::~CGitPropertyPage()
 {
 }
 

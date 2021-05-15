@@ -38,8 +38,8 @@
 class CGitStatusCache
 {
 private:
-	CGitStatusCache(void);
-	~CGitStatusCache(void);
+	CGitStatusCache();
+	~CGitStatusCache();
 
 public:
 	static CGitStatusCache& Instance();

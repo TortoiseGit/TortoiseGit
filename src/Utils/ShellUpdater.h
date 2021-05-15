@@ -28,8 +28,8 @@
 class CShellUpdater
 {
 private:
-	CShellUpdater(void);
-	~CShellUpdater(void);
+	CShellUpdater();
+	~CShellUpdater();
 	// prevent cloning
 	CShellUpdater(const CShellUpdater&) = delete;
 	CShellUpdater& operator=(const CShellUpdater&) = delete;

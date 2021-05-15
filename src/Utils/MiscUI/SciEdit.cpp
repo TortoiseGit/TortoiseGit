@@ -73,7 +73,7 @@ struct loc_map enc2locale[] = {
 
 IMPLEMENT_DYNAMIC(CSciEdit, CWnd)
 
-CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
+CSciEdit::CSciEdit() : m_DirectFunction(NULL)
 	, m_DirectPointer(NULL)
 	, m_spellcodepage(0)
 	, m_spellCheckerFactory(nullptr)
@@ -90,7 +90,7 @@ CSciEdit::CSciEdit(void) : m_DirectFunction(NULL)
 	m_hModule = ::LoadLibrary(L"SciLexer_tgit.dll");
 }
 
-CSciEdit::~CSciEdit(void)
+CSciEdit::~CSciEdit()
 {
 	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	m_personalDict.Save();

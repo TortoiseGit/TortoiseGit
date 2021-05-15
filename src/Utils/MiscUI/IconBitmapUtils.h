@@ -35,8 +35,8 @@ typedef HRESULT (WINAPI *FN_EndBufferedPaint) (HPAINTBUFFER hBufferedPaint, BOOL
 class IconBitmapUtils
 {
 public:
-	IconBitmapUtils(void);
-	~IconBitmapUtils(void);
+	IconBitmapUtils();
+	~IconBitmapUtils();
 
 	HBITMAP IconToBitmap(HINSTANCE hInst, UINT uIcon);
 	HBITMAP IconToBitmapPARGB32(HICON hIcon, int width, int height);

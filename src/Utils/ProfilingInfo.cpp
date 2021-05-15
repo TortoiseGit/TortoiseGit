@@ -98,7 +98,7 @@ CProfilingInfo::CProfilingInfo()
 {
 }
 
-CProfilingInfo::~CProfilingInfo(void)
+CProfilingInfo::~CProfilingInfo()
 {
 	if (!records.empty())
 	{

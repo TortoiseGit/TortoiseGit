@@ -33,7 +33,7 @@ struct num_compare
 	}
 };
 
-ProjectProperties::ProjectProperties(void)
+ProjectProperties::ProjectProperties()
 	: regExNeedUpdate (true)
 	, nBugIdPos(-1)
 	, bWarnNoSignedOffBy(FALSE)

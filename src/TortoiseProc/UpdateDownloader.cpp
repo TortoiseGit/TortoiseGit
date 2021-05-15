@@ -39,7 +39,7 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, const CString& sVersion, bool fo
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 
-CUpdateDownloader::~CUpdateDownloader(void)
+CUpdateDownloader::~CUpdateDownloader()
 {
 	if (hOpenHandle)
 		InternetCloseHandle(hOpenHandle);

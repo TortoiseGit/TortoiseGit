@@ -40,11 +40,11 @@ public:
 
     /// construction
 
-    CCriticalSection(void);
+    CCriticalSection();
 
     /// destruction
 
-    ~CCriticalSection(void);
+    ~CCriticalSection();
 
     /// Acquire the mutex, i.e. enter the critical section
 

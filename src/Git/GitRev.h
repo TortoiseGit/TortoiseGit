@@ -55,7 +55,7 @@ protected:
 	CString m_sErr;
 
 public:
-	GitRev(void);
+	GitRev();
 	CString GetAuthorName() const
 	{
 		return m_AuthorName;
@@ -96,7 +96,7 @@ public:
 		return m_Body;
 	}
 
-	virtual ~GitRev(void);
+	virtual ~GitRev();
 
 	enum
 	{

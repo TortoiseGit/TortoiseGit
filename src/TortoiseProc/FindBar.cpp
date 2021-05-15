@@ -34,7 +34,7 @@ CFindBar::CFindBar(CWnd* pParent /*=nullptr*/)
 {
 }
 
-CFindBar::~CFindBar(void)
+CFindBar::~CFindBar()
 {
 }
 

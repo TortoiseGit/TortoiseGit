@@ -562,7 +562,7 @@ private:
 
 public:
 
-	CRegDWORDCommon(void);
+	CRegDWORDCommon();
 	/**
 	 * Constructor.
 	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -590,7 +590,7 @@ public:
 // implement CRegDWORDCommon<> methods
 
 template<class Base>
-CRegDWORDCommon<Base>::CRegDWORDCommon(void)
+CRegDWORDCommon<Base>::CRegDWORDCommon()
 	: CRegTypedBase<DWORD, Base>(0)
 {
 }
@@ -702,7 +702,7 @@ public:
 // implement CRegDWORD<> methods
 
 template<class Base>
-CRegStringCommon<Base>::CRegStringCommon(void)
+CRegStringCommon<Base>::CRegStringCommon()
 	: CRegTypedBase<typename Base::StringT, Base>(typename Base::StringT())
 {
 }
@@ -813,7 +813,7 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegRect(const CString& key, const CRect& def = CRect(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegRect(void);
+	~CRegRect();
 
 	CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
 	operator LPCRECT() { return static_cast<const CRect>(*this); }
@@ -899,7 +899,7 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegPoint(const CString& key, const CPoint& def = CPoint(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegPoint(void);
+	~CRegPoint();
 
 	CRegPoint& operator=(const CPoint& rhs) {CRegTypedBase<CPoint, CRegBase>::operator =(rhs); return *this;}
 	CRegPoint& operator+=(CPoint p) { return *this = p + *this; }

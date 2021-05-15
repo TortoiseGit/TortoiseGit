@@ -44,8 +44,8 @@ enum class IgnoreWS : int
 class CDiffData
 {
 public:
-	CDiffData(void);
-	virtual ~CDiffData(void);
+	CDiffData();
+	virtual ~CDiffData();
 
 
 	BOOL						Load();

@@ -21,7 +21,7 @@ class CUpdateDownloader
 {
 public:
 	CUpdateDownloader(HWND hwnd, const CString& sVersion, bool force = false, UINT msg = 0, CEvent* m_eventStop = nullptr);
-	~CUpdateDownloader(void);
+	~CUpdateDownloader();
 
 	DWORD	DownloadFile(const CString &url, const CString& dest, bool showProgress) const;
 

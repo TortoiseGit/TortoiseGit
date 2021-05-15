@@ -32,8 +32,8 @@ class CTGitPath;
 class CRemoteCacheLink
 {
 public:
-	CRemoteCacheLink(void);
-	~CRemoteCacheLink(void);
+	CRemoteCacheLink();
+	~CRemoteCacheLink();
 
 public:
 	bool GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus, bool bRecursive);

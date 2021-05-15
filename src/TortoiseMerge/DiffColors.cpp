@@ -27,12 +27,12 @@ CDiffColors& CDiffColors::GetInstance()
 }
 
 
-CDiffColors::CDiffColors(void)
+CDiffColors::CDiffColors()
 {
 	LoadRegistry();
 }
 
-CDiffColors::~CDiffColors(void)
+CDiffColors::~CDiffColors()
 {
 }
 

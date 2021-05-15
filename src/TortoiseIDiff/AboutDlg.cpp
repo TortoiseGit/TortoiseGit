@@ -33,7 +33,7 @@ CAboutDlg::CAboutDlg(HWND hParent)
 {
 }
 
-CAboutDlg::~CAboutDlg(void)
+CAboutDlg::~CAboutDlg()
 {
 }
 

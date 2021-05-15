@@ -37,7 +37,7 @@ class CMainWindow : public CWindow
 {
 public:
 	CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx = nullptr);
-	~CMainWindow(void);
+	~CMainWindow();
 
 	/**
 	* Registers the window class and creates the window.

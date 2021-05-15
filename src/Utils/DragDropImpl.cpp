@@ -417,12 +417,12 @@ STDMETHODIMP CEnumFormatEtc::QueryInterface(REFIID refiid, void FAR* FAR* ppv)
 	return S_OK;
 }
 
-STDMETHODIMP_(ULONG) CEnumFormatEtc::AddRef(void)
+STDMETHODIMP_(ULONG) CEnumFormatEtc::AddRef()
 {
 	return ++m_cRefCount;
 }
 
-STDMETHODIMP_(ULONG) CEnumFormatEtc::Release(void)
+STDMETHODIMP_(ULONG) CEnumFormatEtc::Release()
 {
 	long nTemp = --m_cRefCount;
 	ATLASSERT(nTemp >= 0);
@@ -466,7 +466,7 @@ STDMETHODIMP CEnumFormatEtc::Skip(ULONG celt)
 	return S_OK;
 }
 
-STDMETHODIMP CEnumFormatEtc::Reset(void)
+STDMETHODIMP CEnumFormatEtc::Reset()
 {
 	m_iCur = 0;
 	return S_OK;

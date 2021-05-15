@@ -52,8 +52,8 @@ public:
 
 	//IUnknown
 	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
-	virtual ULONG STDMETHODCALLTYPE AddRef(void) override;
-	virtual ULONG STDMETHODCALLTYPE Release(void) override;
+	virtual ULONG STDMETHODCALLTYPE AddRef() override;
+	virtual ULONG STDMETHODCALLTYPE Release() override;
 
 	//IDataObject
 	virtual HRESULT STDMETHODCALLTYPE GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium) override;
@@ -103,13 +103,13 @@ public:
 	CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles);
 	//IUnknown members
 	STDMETHOD(QueryInterface)(REFIID, void**) override;
-	STDMETHOD_(ULONG, AddRef)(void) override;
-	STDMETHOD_(ULONG, Release)(void) override;
+	STDMETHOD_(ULONG, AddRef)() override;
+	STDMETHOD_(ULONG, Release)() override;
 
 	//IEnumFORMATETC members
 	STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG*) override;
 	STDMETHOD(Skip)(ULONG) override;
-	STDMETHOD(Reset)(void) override;
+	STDMETHOD(Reset)() override;
 	STDMETHOD(Clone)(IEnumFORMATETC**) override;
 private:
 	void						Init(bool localonly, bool containsExistingFiles);

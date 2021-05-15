@@ -28,7 +28,7 @@
 
 #define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
-CMessageBox::CMessageBox(void)
+CMessageBox::CMessageBox()
 	: m_hIcon(nullptr)
 	, m_uButton1Ret(1)
 	, m_uButton2Ret(2)
@@ -43,7 +43,7 @@ CMessageBox::CMessageBox(void)
 	SecureZeroMemory(&m_LogFont, sizeof(LOGFONT));
 }
 
-CMessageBox::~CMessageBox(void)
+CMessageBox::~CMessageBox()
 {
 	if (m_bDestroyIcon)
 		::DestroyIcon(m_hIcon);

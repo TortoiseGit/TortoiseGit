@@ -85,8 +85,8 @@ class CSciEdit : public CWnd
 {
 	DECLARE_DYNAMIC(CSciEdit)
 public:
-	CSciEdit(void);
-	~CSciEdit(void);
+	CSciEdit();
+	~CSciEdit();
 
 	void				SetAStyle(int style, COLORREF fore, COLORREF back = ::GetSysColor(COLOR_WINDOW), int size = -1, const char* face = nullptr);
 	/**
@@ -122,7 +122,7 @@ public:
 	/**
 	 * Retrieves the text in the scintilla control.
 	 */
-	CString		GetText(void);
+	CString		GetText();
 	/**
 	 * Sets the font for the control.
 	 */
@@ -177,7 +177,7 @@ protected:
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
 	void		CheckSpelling(Sci_Position startpos, Sci_Position endpos);
-	void		SuggestSpellingAlternatives(void);
+	void		SuggestSpellingAlternatives();
 	void		DoAutoCompletion(Sci_Position nMinPrefixLength);
 	BOOL		LoadDictionaries(LONG lLanguageID);
 	ISpellCheckerFactoryPtr m_spellCheckerFactory;

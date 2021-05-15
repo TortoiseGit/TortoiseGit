@@ -26,7 +26,7 @@ class CMassiveGitTaskBase
 {
 public:
 	CMassiveGitTaskBase(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
-	~CMassiveGitTaskBase(void);
+	~CMassiveGitTaskBase();
 
 	void					AddFile(const CString& filename);
 	void					AddFile(const CTGitPath& filename);

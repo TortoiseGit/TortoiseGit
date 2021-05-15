@@ -35,7 +35,7 @@ CSendMail::CSendMail(const CString& To, const CString& CC, bool bAttachment)
 {
 }
 
-CSendMail::~CSendMail(void)
+CSendMail::~CSendMail()
 {
 }
 

@@ -27,8 +27,8 @@ class CBottomView : public CBaseView
 {
 	DECLARE_DYNCREATE(CBottomView)
 public:
-	CBottomView(void);
-	~CBottomView(void);
+	CBottomView();
+	~CBottomView();
 
 	void	UseMyTextBlock() { UseRightBlock(); };
 	void	UseTheirTextBlock() { UseLeftBlock(); };

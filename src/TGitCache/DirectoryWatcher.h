@@ -43,8 +43,8 @@
 class CDirectoryWatcher
 {
 public:
-	CDirectoryWatcher(void);
-	~CDirectoryWatcher(void);
+	CDirectoryWatcher();
+	~CDirectoryWatcher();
 
 	/**
 	 * Adds a new path to be watched. The path \b must point to a directory.

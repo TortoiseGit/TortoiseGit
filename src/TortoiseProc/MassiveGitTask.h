@@ -26,7 +26,7 @@ class CMassiveGitTask : public CMassiveGitTaskBase
 {
 public:
 	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
-	~CMassiveGitTask(void);
+	~CMassiveGitTask();
 
 	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
 

@@ -77,7 +77,7 @@ public:
     /// auto-start thread during construction
 
     CThread (bool (*func)(void *), void* args, bool startSuspended = false);
-    ~CThread(void);
+    ~CThread();
 
     /// thread control
 

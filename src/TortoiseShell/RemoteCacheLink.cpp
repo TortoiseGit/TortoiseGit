@@ -25,13 +25,13 @@
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 
-CRemoteCacheLink::CRemoteCacheLink(void)
+CRemoteCacheLink::CRemoteCacheLink()
 {
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_lastTimeout = 0;
 }
 
-CRemoteCacheLink::~CRemoteCacheLink(void)
+CRemoteCacheLink::~CRemoteCacheLink()
 {
 	ClosePipe();
 	CloseCommandPipe();

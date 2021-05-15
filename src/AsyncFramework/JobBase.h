@@ -69,7 +69,7 @@ protected:
 
     /// base class is not intended for creation
 
-    CJobBase(void);
+    CJobBase();
 
     /// implement this in your job class
 
@@ -77,7 +77,7 @@ protected:
 
     /// asserts that the job is deletable
 
-    virtual ~CJobBase(void);
+    virtual ~CJobBase();
 
 public:
 

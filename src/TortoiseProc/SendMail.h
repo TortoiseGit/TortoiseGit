@@ -42,7 +42,7 @@ protected:
 
 public:
 	CSendMail(const CString& To, const CString& CC, bool m_bAttachment);
-	~CSendMail(void);
+	~CSendMail();
 	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) = 0;
 };
 
@@ -50,7 +50,7 @@ class CSendMailCombineable : public CSendMail
 {
 public:
 	CSendMailCombineable(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine);
-	~CSendMailCombineable(void);
+	~CSendMailCombineable();
 
 	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) override;
 

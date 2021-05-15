@@ -20,11 +20,11 @@
 #include "Utils.h"
 #include "FormatMessageWrapper.h"
 
-CUtils::CUtils(void)
+CUtils::CUtils()
 {
 }
 
-CUtils::~CUtils(void)
+CUtils::~CUtils()
 {
 }
 

@@ -37,8 +37,8 @@ class CMenuButton : public CThemeMFCMenuButton
 public:
 	DECLARE_DYNCREATE(CMenuButton);
 
-	CMenuButton(void);
-	virtual ~CMenuButton(void);
+	CMenuButton();
+	virtual ~CMenuButton();
 
 	/**
 	 * Inserts a text to be shown in the button menu.

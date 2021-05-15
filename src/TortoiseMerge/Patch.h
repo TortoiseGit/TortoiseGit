@@ -34,8 +34,8 @@
 class CPatch
 {
 public:
-	CPatch(void);
-	~CPatch(void);
+	CPatch();
+	~CPatch();
 
 	BOOL		OpenUnifiedDiffFile(const CString& filename);
 	int			PatchFile(const int strip, const int nIndex, const CString& sPath, const CString& sSavePath = L"", const CString& sBaseFile = L"", const bool force = false);

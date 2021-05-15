@@ -33,13 +33,13 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-CPatch::CPatch(void)
+CPatch::CPatch()
 	: m_nStrip(0)
 	, m_UnicodeType(CFileTextLines::AUTOTYPE)
 {
 }
 
-CPatch::~CPatch(void)
+CPatch::~CPatch()
 {
 	FreeMemory();
 }

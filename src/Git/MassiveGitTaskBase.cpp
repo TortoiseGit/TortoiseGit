@@ -30,7 +30,7 @@ CMassiveGitTaskBase::CMassiveGitTaskBase(CString gitParameters, BOOL isPath, boo
 {
 }
 
-CMassiveGitTaskBase::~CMassiveGitTaskBase(void)
+CMassiveGitTaskBase::~CMassiveGitTaskBase()
 {
 }
 

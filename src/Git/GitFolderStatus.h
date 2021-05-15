@@ -52,8 +52,8 @@ typedef struct FileStatusCacheEntry
 class GitFolderStatus
 {
 public:
-	GitFolderStatus(void);
-	~GitFolderStatus(void);
+	GitFolderStatus();
+	~GitFolderStatus();
 	const FileStatusCacheEntry *	GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder);
 	const FileStatusCacheEntry *	GetCachedItem(const CTGitPath& filepath);
 

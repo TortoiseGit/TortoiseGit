@@ -23,11 +23,11 @@
 #include "DirFileEnum.h"
 #include "SmartHandle.h"
 
-CTempFiles::CTempFiles(void)
+CTempFiles::CTempFiles()
 {
 }
 
-CTempFiles::~CTempFiles(void)
+CTempFiles::~CTempFiles()
 {
 	m_TempFileList.DeleteAllFiles(false, false);
 }

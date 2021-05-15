@@ -33,7 +33,7 @@ static char THIS_FILE[]=__FILE__;
 
 IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 
-CMenuButton::CMenuButton(void) : CThemeMFCMenuButton()
+CMenuButton::CMenuButton() : CThemeMFCMenuButton()
 	, m_nDefault(0)
 	, m_bMarkDefault(TRUE)
 	, m_bShowCurrentItem(true)
@@ -48,7 +48,7 @@ CMenuButton::CMenuButton(void) : CThemeMFCMenuButton()
 	m_hMenu = m_btnMenu.GetSafeHmenu();
 }
 
-CMenuButton::~CMenuButton(void)
+CMenuButton::~CMenuButton()
 {
 }
 

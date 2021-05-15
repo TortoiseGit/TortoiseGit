@@ -19,11 +19,11 @@
 #include "stdafx.h"
 #include "SysInfo.h"
 
-SysInfo::SysInfo(void)
+SysInfo::SysInfo()
 {
 }
 
-SysInfo::~SysInfo(void)
+SysInfo::~SysInfo()
 {
 }
 

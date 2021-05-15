@@ -26,12 +26,12 @@ namespace async
 
 // construction / destruction
 
-CCriticalSection::CCriticalSection(void)
+CCriticalSection::CCriticalSection()
 {
     InitializeCriticalSectionAndSpinCount (&section, 5000);
 }
 
-CCriticalSection::~CCriticalSection(void)
+CCriticalSection::~CCriticalSection()
 {
     DeleteCriticalSection (&section);
 }

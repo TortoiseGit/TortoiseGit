@@ -26,8 +26,8 @@
 class CLoglistUtils
 {
 public:
-	CLoglistUtils(void);
-	~CLoglistUtils(void);
+	CLoglistUtils();
+	~CLoglistUtils();
 
 	/**
 	 * FUNCTION    :   FormatDateAndTime

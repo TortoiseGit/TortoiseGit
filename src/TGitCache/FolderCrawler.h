@@ -38,8 +38,8 @@
 class CFolderCrawler
 {
 public:
-	CFolderCrawler(void);
-	~CFolderCrawler(void);
+	CFolderCrawler();
+	~CFolderCrawler();
 
 public:
 	void Initialise();

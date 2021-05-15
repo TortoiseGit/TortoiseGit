@@ -28,7 +28,7 @@ typedef std::map<CString, GitRevRefBrowser> MAP_REF_GITREVREFBROWSER;
 class GitRevRefBrowser : public GitRev
 {
 public:
-	GitRevRefBrowser(void);
+	GitRevRefBrowser();
 
 	CString m_Description;
 	CString m_UpstreamRef;

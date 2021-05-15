@@ -24,12 +24,12 @@
 #include "Git.h"
 #include "SmartHandle.h"
 
-CShellUpdater::CShellUpdater(void)
+CShellUpdater::CShellUpdater()
 {
 	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent");
 }
 
-CShellUpdater::~CShellUpdater(void)
+CShellUpdater::~CShellUpdater()
 {
 	Flush();
 

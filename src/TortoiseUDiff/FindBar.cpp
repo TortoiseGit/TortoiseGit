@@ -32,7 +32,7 @@ CFindBar::CFindBar()
 {
 }
 
-CFindBar::~CFindBar(void)
+CFindBar::~CFindBar()
 {
 	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 }

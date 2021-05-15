@@ -75,12 +75,12 @@ public:
 		return E_NOINTERFACE;
 	}
 
-	virtual ULONG STDMETHODCALLTYPE AddRef(void) override
+	virtual ULONG STDMETHODCALLTYPE AddRef() override
 	{
 		return ++ref;
 	}
 
-	virtual ULONG STDMETHODCALLTYPE Release(void) override
+	virtual ULONG STDMETHODCALLTYPE Release() override
 	{
 		if (--ref == 0)
 		{
@@ -91,12 +91,12 @@ public:
 		return ref;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnPreUpdate(void) override
+	virtual HRESULT STDMETHODCALLTYPE OnPreUpdate() override
 	{
 		return S_OK;
 	}
 
-	virtual HRESULT STDMETHODCALLTYPE OnPostUpdate(void) override
+	virtual HRESULT STDMETHODCALLTYPE OnPostUpdate() override
 	{
 		for (const auto& callback : callbacks)
 			callback.second();
@@ -157,12 +157,12 @@ public:
 		return E_NOINTERFACE;
 	}
 
-	virtual ULONG STDMETHODCALLTYPE AddRef(void) override
+	virtual ULONG STDMETHODCALLTYPE AddRef() override
 	{
 		return ++ref;
 	}
 
-	virtual ULONG STDMETHODCALLTYPE Release(void) override
+	virtual ULONG STDMETHODCALLTYPE Release() override
 	{
 		if (--ref == 0)
 		{

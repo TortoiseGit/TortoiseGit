@@ -33,8 +33,8 @@ public:
 	};
 public:
 	//constructor / deconstructor
-	CBrowseFolder(void);
-	~CBrowseFolder(void);
+	CBrowseFolder();
+	~CBrowseFolder();
 public:
 	DWORD m_style;		///< styles of the dialog.
 	/**

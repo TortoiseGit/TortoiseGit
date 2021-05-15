@@ -54,7 +54,7 @@ std::wstring NumToStr(INT_PTR num)
 	return buf;
 }
 
-CResModule::CResModule(void)
+CResModule::CResModule()
 	: m_bTranslatedStrings(0)
 	, m_bDefaultStrings(0)
 	, m_bTranslatedDialogStrings(0)
@@ -74,7 +74,7 @@ CResModule::CResModule(void)
 {
 }
 
-CResModule::~CResModule(void)
+CResModule::~CResModule()
 {
 }
 

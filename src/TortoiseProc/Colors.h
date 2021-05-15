@@ -27,8 +27,8 @@
 class CColors
 {
 public:
-	CColors(void);
-	~CColors(void);
+	CColors();
+	~CColors();
 
 	enum Colors
 	{

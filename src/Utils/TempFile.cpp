@@ -24,11 +24,11 @@
 #include "SmartHandle.h"
 #include "Git.h"
 
-CTempFiles::CTempFiles(void)
+CTempFiles::CTempFiles()
 {
 }
 
-CTempFiles::~CTempFiles(void)
+CTempFiles::~CTempFiles()
 {
 	m_TempFileList.DeleteAllFiles(false);
 }

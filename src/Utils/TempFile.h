@@ -30,8 +30,8 @@
 class CTempFiles
 {
 private:
-	CTempFiles(void);
-	~CTempFiles(void);
+	CTempFiles();
+	~CTempFiles();
 	// prevent cloning
 	CTempFiles(const CTempFiles&) = delete;
 	CTempFiles& operator=(const CTempFiles&) = delete;

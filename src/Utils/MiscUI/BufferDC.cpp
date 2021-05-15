@@ -42,7 +42,7 @@ CBufferDC::CBufferDC(CWnd* pWnd) : CPaintDC(pWnd)
 	m_bBoundsUpdated = FALSE;
 }
 
-CBufferDC::~CBufferDC(void)
+CBufferDC::~CBufferDC()
 {
 	Flush();
 

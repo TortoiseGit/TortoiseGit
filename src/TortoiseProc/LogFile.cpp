@@ -27,7 +27,7 @@ CLogFile::CLogFile(const CString& repo)
 {
 }
 
-CLogFile::~CLogFile(void)
+CLogFile::~CLogFile()
 {
 }
 

@@ -25,14 +25,14 @@
 #include "GitStatus.h"
 #include <set>
 
-CCachedDirectory::CCachedDirectory(void)
+CCachedDirectory::CCachedDirectory()
 	: m_currentFullStatus(git_wc_status_none)
 	, m_mostImportantFileStatus(git_wc_status_none)
 	, m_bRecursive(true)
 {
 }
 
-CCachedDirectory::~CCachedDirectory(void)
+CCachedDirectory::~CCachedDirectory()
 {
 }
 

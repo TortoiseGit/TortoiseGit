@@ -20,7 +20,7 @@ private:
 
 public:
 	CBufferDC(CWnd* pWnd);
-	~CBufferDC(void);
+	~CBufferDC();
 
 private:
 	void Flush();

@@ -229,8 +229,8 @@
 class CMessageBox : public CDialog
 {
 public:
-	CMessageBox(void);
-	~CMessageBox(void);
+	CMessageBox();
+	~CMessageBox();
 	/**
 	 * Shows a message box. Use this as a replacement for the usual ::MessageBox() calls.
 	 * Most of the flags of the Platform SDK version are supported. See the class descriptions
