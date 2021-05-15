@@ -1,6 +1,7 @@
 typedef struct AuthPolicy AuthPolicy;
 
 struct SshServerConfig {
+    const char *application_name;
     const char *session_starting_dir;
 
     RSAKey *rsa_kex_key;
@@ -16,8 +17,10 @@ struct SshServerConfig {
 
     unsigned long ssh1_cipher_mask;
     bool ssh1_allow_compression;
+    bool bare_connection;
 
     bool stunt_pretend_to_accept_any_pubkey;
+    bool stunt_open_unconditional_agent_socket;
 };
 
 Plug *ssh_server_plug(
@@ -131,3 +134,10 @@ int platform_make_x11_server(Plug *plug, const char *progname, int mindisp,
                              Socket **sockets, Conf *conf);
 
 Conf *make_ssh_server_conf(void);
+
+/* Provided by Unix front end programs to uxsftpserver.c */
+void make_unix_sftp_filehandle_key(void *data, size_t size);
+
+typedef struct agentfwd agentfwd;
+agentfwd *agentfwd_new(ConnectionLayer *cl, char **socketname_out);
+void agentfwd_free(agentfwd *agent);

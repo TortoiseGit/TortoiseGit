@@ -37,7 +37,7 @@ static void c_write(Rlogin *rlogin, const void *buf, size_t len)
     sk_set_frozen(rlogin->s, backlog > RLOGIN_MAX_BACKLOG);
 }
 
-static void rlogin_log(Plug *plug, int type, SockAddr *addr, int port,
+static void rlogin_log(Plug *plug, PlugLogType type, SockAddr *addr, int port,
                        const char *error_msg, int error_code)
 {
     Rlogin *rlogin = container_of(plug, Rlogin, plug);
@@ -139,10 +139,10 @@ static void rlogin_startup(Rlogin *rlogin, const char *ruser)
 }
 
 static const PlugVtable Rlogin_plugvt = {
-    rlogin_log,
-    rlogin_closing,
-    rlogin_receive,
-    rlogin_sent
+    .log = rlogin_log,
+    .closing = rlogin_closing,
+    .receive = rlogin_receive,
+    .sent = rlogin_sent,
 };
 
 /*
@@ -153,10 +153,10 @@ static const PlugVtable Rlogin_plugvt = {
  * Also places the canonical host name into `realhost'. It must be
  * freed by the caller.
  */
-static const char *rlogin_init(Seat *seat, Backend **backend_handle,
-                               LogContext *logctx, Conf *conf,
-                               const char *host, int port, char **realhost,
-                               bool nodelay, bool keepalive)
+static char *rlogin_init(const BackendVtable *vt, Seat *seat,
+                         Backend **backend_handle, LogContext *logctx,
+                         Conf *conf, const char *host, int port,
+                         char **realhost, bool nodelay, bool keepalive)
 {
     SockAddr *addr;
     const char *err;
@@ -167,7 +167,7 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
 
     rlogin = snew(Rlogin);
     rlogin->plug.vt = &Rlogin_plugvt;
-    rlogin->backend.vt = &rlogin_backend;
+    rlogin->backend.vt = vt;
     rlogin->s = NULL;
     rlogin->closed_on_socket_error = false;
     rlogin->seat = seat;
@@ -188,7 +188,7 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
                        rlogin->logctx, "rlogin connection");
     if ((err = sk_addr_error(addr)) != NULL) {
         sk_addr_free(addr);
-        return err;
+        return dupstr(err);
     }
 
     if (port < 0)
@@ -200,7 +200,7 @@ static const char *rlogin_init(Seat *seat, Backend **backend_handle,
     rlogin->s = new_connection(addr, *realhost, port, true, false,
                                nodelay, keepalive, &rlogin->plug, conf);
     if ((err = sk_socket_error(rlogin->s)) != NULL)
-        return err;
+        return dupstr(err);
 
     loghost = conf_get_str(conf, CONF_loghost);
     if (*loghost) {
@@ -405,24 +405,24 @@ static int rlogin_cfg_info(Backend *be)
     return 0;
 }
 
-const struct BackendVtable rlogin_backend = {
-    rlogin_init,
-    rlogin_free,
-    rlogin_reconfig,
-    rlogin_send,
-    rlogin_sendbuffer,
-    rlogin_size,
-    rlogin_special,
-    rlogin_get_specials,
-    rlogin_connected,
-    rlogin_exitcode,
-    rlogin_sendok,
-    rlogin_ldisc,
-    rlogin_provide_ldisc,
-    rlogin_unthrottle,
-    rlogin_cfg_info,
-    NULL /* test_for_upstream */,
-    "rlogin",
-    PROT_RLOGIN,
-    513
+const BackendVtable rlogin_backend = {
+    .init = rlogin_init,
+    .free = rlogin_free,
+    .reconfig = rlogin_reconfig,
+    .send = rlogin_send,
+    .sendbuffer = rlogin_sendbuffer,
+    .size = rlogin_size,
+    .special = rlogin_special,
+    .get_specials = rlogin_get_specials,
+    .connected = rlogin_connected,
+    .exitcode = rlogin_exitcode,
+    .sendok = rlogin_sendok,
+    .ldisc_option_state = rlogin_ldisc,
+    .provide_ldisc = rlogin_provide_ldisc,
+    .unthrottle = rlogin_unthrottle,
+    .cfg_info = rlogin_cfg_info,
+    .id = "rlogin",
+    .displayname = "Rlogin",
+    .protocol = PROT_RLOGIN,
+    .default_port = 513,
 };

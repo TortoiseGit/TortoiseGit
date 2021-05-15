@@ -5,19 +5,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdarg.h>
 
 #include "putty.h"
 #include "storage.h"
 #include "ssh.h"
+#include "console.h"
 
 #include "LoginDialog.h"
 
-bool console_batch_mode = false;
-
-/*
- * Clean up and exit.
- */
 void cleanup_exit(int code)
 {
     /*
@@ -30,101 +25,12 @@ void cleanup_exit(int code)
     exit(code);
 }
 
-/*
- * Various error message and/or fatal exit functions.
- */
-void modalfatalbox(const char *fmt, ...)
-{
-    va_list ap;
-    char *stuff, morestuff[100];
-    va_start(ap, fmt);
-    stuff = dupvprintf(fmt, ap);
-    va_end(ap);
-    sprintf(morestuff, "%.70s Fatal Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-    sfree(stuff);
-    cleanup_exit(1);
-}
-
-void nonfatal(const char *fmt, ...)
-{
-    va_list ap;
-    char *stuff, morestuff[100];
-    va_start(ap, fmt);
-    stuff = dupvprintf(fmt, ap);
-    va_end(ap);
-    sprintf(morestuff, "%.70s Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-    sfree(stuff);
-}
-
-void console_connection_fatal(Seat *seat, const char *msg)
-{
-    char morestuff[100];
-    sprintf(morestuff, "%.70s Fatal Error", appname);
-    MessageBox(GetParentHwnd(), msg, morestuff, MB_SYSTEMMODAL | MB_ICONERROR | MB_OK);
-    cleanup_exit(1);
-}
-
-void timer_change_notify(unsigned long next)
-{
-}
-
 int console_verify_ssh_host_key(
-    Seat *seat, const char *host, int port,
-    const char *keytype, char *keystr, char *fingerprint,
+    Seat *seat, const char *host, int port, const char *keytype,
+    char *keystr, const char *keydisp, char **fingerprints,
     void (*callback)(void *ctx, int result), void *ctx)
 {
     int ret;
-
-    static const char absentmsg_batch[] =
-        "The server's host key is not cached in the registry. You\n"
-        "have no guarantee that the server is the computer you\n"
-        "think it is.\n"
-        "The server's %s key fingerprint is:\n"
-        "%s\n"
-        "Connection abandoned.\n";
-    static const char absentmsg[] =
-        "The server's host key is not cached in the registry. You\n"
-        "have no guarantee that the server is the computer you\n"
-        "think it is.\n"
-        "The server's %s key fingerprint is:\n"
-        "%s\n"
-        "If you trust this host, hit Yes to add the key to\n"
-        "PuTTY's cache and carry on connecting.\n"
-        "If you want to carry on connecting just once, without\n"
-        "adding the key to the cache, hit No.\n"
-        "If you do not trust this host, hit Cancel to abandon the\n"
-        "connection.\n";
-
-    static const char wrongmsg_batch[] =
-        "WARNING - POTENTIAL SECURITY BREACH!\n"
-        "The server's host key does not match the one PuTTY has\n"
-        "cached in the registry. This means that either the\n"
-        "server administrator has changed the host key, or you\n"
-        "have actually connected to another computer pretending\n"
-        "to be the server.\n"
-        "The new %s key fingerprint is:\n"
-        "%s\n"
-        "Connection abandoned.\n";
-    static const char wrongmsg[] =
-        "WARNING - POTENTIAL SECURITY BREACH!\n"
-        "\n"
-        "The server's host key does not match the one PuTTY has\n"
-        "cached in the registry. This means that either the\n"
-        "server administrator has changed the host key, or you\n"
-        "have actually connected to another computer pretending\n"
-        "to be the server.\n"
-        "The new %s key fingerprint is:\n"
-        "%s\n"
-        "If you were expecting this change and trust the new key,\n"
-        "hit Yes to update PuTTY's cache and continue connecting.\n"
-        "If you want to carry on connecting but without updating\n"
-        "the cache, hit No.\n"
-        "If you want to abandon the connection completely, hit\n"
-        "Cancel. Hitting Cancel is the ONLY guaranteed safe choice.\n";
-
-    static const char abandoned[] = "Connection abandoned.\n";
 
     static const char mbtitle[] = "%s Security Alert";
 
@@ -139,7 +45,7 @@ int console_verify_ssh_host_key(
     if (ret == 2) {                    /* key was different */
         int mbret;
         char *message, *title;
-        message = dupprintf(wrongmsg, keytype, fingerprint);
+        message = dupprintf(hk_wrongmsg_common_fmt, keytype, fingerprints[SSH_FPTYPE_SHA256], fingerprints[SSH_FPTYPE_MD5]);
         title = dupprintf(mbtitle, appname);
         mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
         sfree(message);
@@ -156,7 +62,7 @@ int console_verify_ssh_host_key(
     if (ret == 1) {                    /* key was absent */
         int mbret;
         char *message, *title;
-        message = dupprintf(absentmsg, keytype, fingerprint);
+        message = dupprintf(hk_absentmsg_common_fmt, keytype, fingerprints[SSH_FPTYPE_SHA256], fingerprints[SSH_FPTYPE_MD5]);
         title = dupprintf(mbtitle, appname);
         mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
         sfree(message);
@@ -177,21 +83,11 @@ int console_confirm_weak_crypto_primitive(
     Seat *seat, const char *algtype, const char *algname,
     void (*callback)(void *ctx, int result), void *ctx)
 {
-    static const char msg[] =
-        "The first %s supported by the server is\n"
-        "%s, which is below the configured warning threshold.\n"
-        "Continue with connection? (y/n) ";
-    static const char msg_batch[] =
-        "The first %s supported by the server is\n"
-        "%s, which is below the configured warning threshold.\n"
-        "Connection abandoned.\n";
-    static const char abandoned[] = "Connection abandoned.\n";
-
     int mbret;
     char *message, *title;
     static const char mbtitle[] = "%s Security Alert";
 
-    message = dupprintf(msg, algtype, algname);
+    message = dupprintf(weakcrypto_msg_common_fmt, algtype, algname);
     title = dupprintf(mbtitle, appname);
 
     mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
@@ -208,30 +104,11 @@ int console_confirm_weak_cached_hostkey(
     Seat *seat, const char *algname, const char *betteralgs,
     void (*callback)(void *ctx, int result), void *ctx)
 {
-    HANDLE hin;
-    DWORD savemode, i;
-
-    static const char msg[] =
-        "The first host key type we have stored for this server\n"
-        "is %s, which is below the configured warning threshold.\n"
-        "The server also provides the following types of host key\n"
-        "above the threshold, which we do not have stored:\n"
-        "%s\n"
-        "Continue with connection? (y/n) ";
-    static const char msg_batch[] =
-        "The first host key type we have stored for this server\n"
-        "is %s, which is below the configured warning threshold.\n"
-        "The server also provides the following types of host key\n"
-        "above the threshold, which we do not have stored:\n"
-        "%s\n"
-        "Connection abandoned.\n";
-    static const char abandoned[] = "Connection abandoned.\n";
-
     int mbret;
     char *message, *title;
     static const char mbtitle[] = "%s Security Alert";
 
-    message = dupprintf(msg, algname, betteralgs);
+    message = dupprintf(weakhk_msg_common_fmt, algname, betteralgs);
     title = dupprintf(mbtitle, appname);
 
     mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
@@ -277,9 +154,8 @@ bool console_set_trust_status(Seat *seat, bool trusted)
  * Ask whether to wipe a session log file before writing to it.
  * Returns 2 for wipe, 1 for append, 0 for cancel (don't log).
  */
-static int console_askappend(LogPolicy *lp, Filename *filename,
-                             void (*callback)(void *ctx, int result),
-                             void *ctx)
+int console_askappend(LogPolicy *lp, Filename *filename,
+                      void (*callback)(void *ctx, int result), void *ctx)
 {
     HANDLE hin;
     DWORD savemode, i;
@@ -360,7 +236,7 @@ void pgp_fingerprints(void)
           "  " PGP_PREV_MASTER_KEY_FP "\n", stdout);
 }
 
-static void console_logging_error(LogPolicy *lp, const char *string)
+void console_logging_error(LogPolicy *lp, const char *string)
 {
     /* Ordinary Event Log entries are displayed in the same way as
      * logging errors, but only in verbose mode */
@@ -368,11 +244,11 @@ static void console_logging_error(LogPolicy *lp, const char *string)
     fflush(stderr);
 }
 
-static void console_eventlog(LogPolicy *lp, const char *string)
+void console_eventlog(LogPolicy *lp, const char *string)
 {
     /* Ordinary Event Log entries are displayed in the same way as
      * logging errors, but only in verbose mode */
-    if (flags & FLAG_VERBOSE)
+    if (lp_verbose(lp))
         console_logging_error(lp, string);
 }
 
@@ -415,10 +291,3 @@ int console_get_userpass_input(prompts_t *p)
 
     return 1; /* success */
 }
-
-static const LogPolicyVtable default_logpolicy_vt = {
-    console_eventlog,
-    console_askappend,
-    console_logging_error,
-};
-LogPolicy default_logpolicy[1] = {{ &default_logpolicy_vt }};

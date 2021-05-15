@@ -195,14 +195,10 @@ static void named_pipe_connect_callback(void *vps)
  * be asked to write or set_frozen.
  */
 static const SocketVtable NamedPipeServerSocket_sockvt = {
-    sk_namedpipeserver_plug,
-    sk_namedpipeserver_close,
-    NULL /* write */,
-    NULL /* write_oob */,
-    NULL /* write_eof */,
-    NULL /* set_frozen */,
-    sk_namedpipeserver_socket_error,
-    sk_namedpipeserver_peer_info,
+    .plug = sk_namedpipeserver_plug,
+    .close = sk_namedpipeserver_close,
+    .socket_error = sk_namedpipeserver_socket_error,
+    .peer_info = sk_namedpipeserver_peer_info,
 };
 
 Socket *new_named_pipe_listener(const char *pipename, Plug *plug)

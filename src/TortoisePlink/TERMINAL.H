@@ -150,6 +150,7 @@ struct terminal_tag {
     bool seen_disp_event;
     bool big_cursor;
 
+    bool xterm_mouse_forbidden;
     int xterm_mouse;                   /* send mouse messages to host */
     bool xterm_extended_mouse;
     bool urxvt_extended_mouse;
@@ -258,11 +259,17 @@ struct terminal_tag {
     bool in_term_out;
 
     /*
-     * We schedule a window update shortly after receiving terminal
-     * data. This tracks whether one is currently pending.
+     * We don't permit window updates too close together, to avoid CPU
+     * churn pointlessly redrawing the window faster than the user can
+     * read. So after an update, we set window_update_cooldown = true
+     * and schedule a timer to reset it to false. In between those
+     * times, window updates are not performed, and instead we set
+     * window_update_pending = true, which will remind us to perform
+     * the deferred redraw when the cooldown period ends and
+     * window_update_cooldown is reset to false.
      */
-    bool window_update_pending;
-    long next_update;
+    bool window_update_pending, window_update_cooldown;
+    long window_update_cooldown_end;
 
     /*
      * Track pending blinks and tblinks.
@@ -342,6 +349,50 @@ struct terminal_tag {
     int mouse_select_clipboards[N_CLIPBOARDS];
     int n_mouse_select_clipboards;
     int mouse_paste_clipboard;
+
+    char *window_title, *icon_title;
+    bool minimised;
+
+    /* Multi-layered colour palette. The colours from Conf (plus the
+     * default xterm-256 ones that don't have Conf ids at all) have
+     * lowest priority, followed by platform overrides if any,
+     * followed by escape-sequence overrides during the session. */
+    struct term_subpalette {
+        rgb values[OSC4_NCOLOURS];
+        bool present[OSC4_NCOLOURS];
+    } subpalettes[3];
+#define SUBPAL_CONF 0
+#define SUBPAL_PLATFORM 1
+#define SUBPAL_SESSION 2
+
+    /* The composite palette that we make out of the above */
+    rgb palette[OSC4_NCOLOURS];
+
+    unsigned winpos_x, winpos_y, winpixsize_x, winpixsize_y;
+
+    /*
+     * Assorted 'pending' flags for ancillary window changes performed
+     * in term_update. Generally, to trigger one of these operations,
+     * you set the pending flag and/or the parameters here, then call
+     * term_schedule_update.
+     */
+    bool win_move_pending;
+    int win_move_pending_x, win_move_pending_y;
+    bool win_resize_pending;
+    int win_resize_pending_w, win_resize_pending_h;
+    bool win_zorder_pending;
+    bool win_zorder_top;
+    bool win_minimise_pending;
+    bool win_minimise_enable;
+    bool win_maximise_pending;
+    bool win_maximise_enable;
+    bool win_title_pending, win_icon_title_pending;
+    bool win_pointer_shape_pending;
+    bool win_pointer_shape_raw;
+    bool win_refresh_pending;
+    bool win_scrollbar_update_pending;
+    bool win_palette_pending;
+    unsigned win_palette_pending_min, win_palette_pending_limit;
 };
 
 static inline bool in_utf(Terminal *term)

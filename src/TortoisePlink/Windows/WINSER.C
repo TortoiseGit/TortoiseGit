@@ -91,7 +91,7 @@ static void serial_sentdata(struct handle *h, size_t new_backlog, int err)
     }
 }
 
-static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
+static char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
 {
     DCB dcb;
     COMMTIMEOUTS timeouts;
@@ -125,16 +125,19 @@ static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
          * Configurable parameters.
          */
         dcb.BaudRate = conf_get_int(conf, CONF_serspeed);
-        logeventf(serial->logctx, "Configuring baud rate %lu", dcb.BaudRate);
+        logeventf(serial->logctx, "Configuring baud rate %lu",
+                  (unsigned long)dcb.BaudRate);
 
         dcb.ByteSize = conf_get_int(conf, CONF_serdatabits);
-        logeventf(serial->logctx, "Configuring %u data bits", dcb.ByteSize);
+        logeventf(serial->logctx, "Configuring %u data bits",
+                  (unsigned)dcb.ByteSize);
 
         switch (conf_get_int(conf, CONF_serstopbits)) {
           case 2: dcb.StopBits = ONESTOPBIT; str = "1 stop bit"; break;
           case 3: dcb.StopBits = ONE5STOPBITS; str = "1.5 stop bits"; break;
           case 4: dcb.StopBits = TWOSTOPBITS; str = "2 stop bits"; break;
-          default: return "Invalid number of stop bits (need 1, 1.5 or 2)";
+          default: return dupstr("Invalid number of stop bits "
+                                 "(need 1, 1.5 or 2)");
         }
         logeventf(serial->logctx, "Configuring %s", str);
 
@@ -169,7 +172,8 @@ static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
         logeventf(serial->logctx, "Configuring %s flow control", str);
 
         if (!SetCommState(serport, &dcb))
-            return "Unable to configure serial port";
+            return dupprintf("Configuring serial port: %s",
+                             win_strerror(GetLastError()));
 
         timeouts.ReadIntervalTimeout = 1;
         timeouts.ReadTotalTimeoutMultiplier = 0;
@@ -177,7 +181,8 @@ static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
         timeouts.WriteTotalTimeoutMultiplier = 0;
         timeouts.WriteTotalTimeoutConstant = 0;
         if (!SetCommTimeouts(serport, &timeouts))
-            return "Unable to configure serial timeouts";
+            return dupprintf("Configuring serial timeouts: %s",
+                             win_strerror(GetLastError()));
     }
 
     return NULL;
@@ -191,14 +196,14 @@ static const char *serial_configure(Serial *serial, HANDLE serport, Conf *conf)
  * Also places the canonical host name into `realhost'. It must be
  * freed by the caller.
  */
-static const char *serial_init(Seat *seat, Backend **backend_handle,
-                               LogContext *logctx, Conf *conf,
-                               const char *host, int port,
-                               char **realhost, bool nodelay, bool keepalive)
+static char *serial_init(const BackendVtable *vt, Seat *seat,
+                         Backend **backend_handle, LogContext *logctx,
+                         Conf *conf, const char *host, int port,
+                         char **realhost, bool nodelay, bool keepalive)
 {
     Serial *serial;
     HANDLE serport;
-    const char *err;
+    char *err;
     char *serline;
 
     /* No local authentication phase in this protocol */
@@ -209,7 +214,7 @@ static const char *serial_init(Seat *seat, Backend **backend_handle,
     serial->out = serial->in = NULL;
     serial->bufsize = 0;
     serial->break_in_progress = false;
-    serial->backend.vt = &serial_backend;
+    serial->backend.vt = vt;
     *backend_handle = &serial->backend;
 
     serial->seat = seat;
@@ -218,39 +223,41 @@ static const char *serial_init(Seat *seat, Backend **backend_handle,
     serline = conf_get_str(conf, CONF_serline);
     logeventf(serial->logctx, "Opening serial device %s", serline);
 
-    {
-        /*
-         * Munge the string supplied by the user into a Windows filename.
-         *
-         * Windows supports opening a few "legacy" devices (including
-         * COM1-9) by specifying their names verbatim as a filename to
-         * open. (Thus, no files can ever have these names. See
-         * <http://msdn2.microsoft.com/en-us/library/aa365247.aspx>
-         * ("Naming a File") for the complete list of reserved names.)
-         *
-         * However, this doesn't let you get at devices COM10 and above.
-         * For that, you need to specify a filename like "\\.\COM10".
-         * This is also necessary for special serial and serial-like
-         * devices such as \\.\WCEUSBSH001. It also works for the "legacy"
-         * names, so you can do \\.\COM1 (verified as far back as Win95).
-         * See <http://msdn2.microsoft.com/en-us/library/aa363858.aspx>
-         * (CreateFile() docs).
-         *
-         * So, we believe that prepending "\\.\" should always be the
-         * Right Thing. However, just in case someone finds something to
-         * talk to that doesn't exist under there, if the serial line
-         * contains a backslash, we use it verbatim. (This also lets
-         * existing configurations using \\.\ continue working.)
-         */
-        char *serfilename =
-            dupprintf("%s%s", strchr(serline, '\\') ? "" : "\\\\.\\", serline);
-        serport = CreateFile(serfilename, GENERIC_READ | GENERIC_WRITE, 0, NULL,
-                             OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
+    /*
+     * Munge the string supplied by the user into a Windows filename.
+     *
+     * Windows supports opening a few "legacy" devices (including
+     * COM1-9) by specifying their names verbatim as a filename to
+     * open. (Thus, no files can ever have these names. See
+     * <http://msdn2.microsoft.com/en-us/library/aa365247.aspx>
+     * ("Naming a File") for the complete list of reserved names.)
+     *
+     * However, this doesn't let you get at devices COM10 and above.
+     * For that, you need to specify a filename like "\\.\COM10".
+     * This is also necessary for special serial and serial-like
+     * devices such as \\.\WCEUSBSH001. It also works for the "legacy"
+     * names, so you can do \\.\COM1 (verified as far back as Win95).
+     * See <http://msdn2.microsoft.com/en-us/library/aa363858.aspx>
+     * (CreateFile() docs).
+     *
+     * So, we believe that prepending "\\.\" should always be the
+     * Right Thing. However, just in case someone finds something to
+     * talk to that doesn't exist under there, if the serial line
+     * contains a backslash, we use it verbatim. (This also lets
+     * existing configurations using \\.\ continue working.)
+     */
+    char *serfilename =
+        dupprintf("%s%s", strchr(serline, '\\') ? "" : "\\\\.\\", serline);
+    serport = CreateFile(serfilename, GENERIC_READ | GENERIC_WRITE, 0, NULL,
+                         OPEN_EXISTING, FILE_FLAG_OVERLAPPED, NULL);
+    if (serport == INVALID_HANDLE_VALUE) {
+        err = dupprintf("Opening '%s': %s",
+                        serfilename, win_strerror(GetLastError()));
         sfree(serfilename);
+        return err;
     }
 
-    if (serport == INVALID_HANDLE_VALUE)
-        return "Unable to open serial port";
+    sfree(serfilename);
 
     err = serial_configure(serial, serport, conf);
     if (err)
@@ -427,24 +434,32 @@ static int serial_cfg_info(Backend *be)
     return 0;
 }
 
-const struct BackendVtable serial_backend = {
-    serial_init,
-    serial_free,
-    serial_reconfig,
-    serial_send,
-    serial_sendbuffer,
-    serial_size,
-    serial_special,
-    serial_get_specials,
-    serial_connected,
-    serial_exitcode,
-    serial_sendok,
-    serial_ldisc,
-    serial_provide_ldisc,
-    serial_unthrottle,
-    serial_cfg_info,
-    NULL /* test_for_upstream */,
-    "serial",
-    PROT_SERIAL,
-    0
+const BackendVtable serial_backend = {
+    .init = serial_init,
+    .free = serial_free,
+    .reconfig = serial_reconfig,
+    .send = serial_send,
+    .sendbuffer = serial_sendbuffer,
+    .size = serial_size,
+    .special = serial_special,
+    .get_specials = serial_get_specials,
+    .connected = serial_connected,
+    .exitcode = serial_exitcode,
+    .sendok = serial_sendok,
+    .ldisc_option_state = serial_ldisc,
+    .provide_ldisc = serial_provide_ldisc,
+    .unthrottle = serial_unthrottle,
+    .cfg_info = serial_cfg_info,
+    .id = "serial",
+    .displayname = "Serial",
+    .protocol = PROT_SERIAL,
+    .serial_parity_mask = ((1 << SER_PAR_NONE) |
+                           (1 << SER_PAR_ODD) |
+                           (1 << SER_PAR_EVEN) |
+                           (1 << SER_PAR_MARK) |
+                           (1 << SER_PAR_SPACE)),
+    .serial_flow_mask =   ((1 << SER_FLOW_NONE) |
+                           (1 << SER_FLOW_XONXOFF) |
+                           (1 << SER_FLOW_RTSCTS) |
+                           (1 << SER_FLOW_DSRDTR)),
 };

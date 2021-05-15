@@ -15,7 +15,7 @@
 
 #include "winsecur.h"
 
-Socket *new_named_pipe_client(const char *pipename, Plug *plug)
+HANDLE connect_to_named_pipe(const char *pipename, char **err)
 {
     HANDLE pipehandle;
     PSID usersid, pipeowner;
@@ -33,9 +33,10 @@ Socket *new_named_pipe_client(const char *pipename, Plug *plug)
             break;
 
         if (GetLastError() != ERROR_PIPE_BUSY) {
-            return new_error_socket_fmt(
-                plug, "Unable to open named pipe '%s': %s",
+            *err = dupprintf(
+                "Unable to open named pipe '%s': %s",
                 pipename, win_strerror(GetLastError()));
+            return INVALID_HANDLE_VALUE;
         }
 
         /*
@@ -46,16 +47,18 @@ Socket *new_named_pipe_client(const char *pipename, Plug *plug)
          * take excessively long.)
          */
         if (!WaitNamedPipe(pipename, NMPWAIT_USE_DEFAULT_WAIT)) {
-            return new_error_socket_fmt(
-                plug, "Error waiting for named pipe '%s': %s",
+            *err = dupprintf(
+                "Error waiting for named pipe '%s': %s",
                 pipename, win_strerror(GetLastError()));
+            return INVALID_HANDLE_VALUE;
         }
     }
 
     if ((usersid = get_user_sid()) == NULL) {
         CloseHandle(pipehandle);
-        return new_error_socket_fmt(
-            plug, "Unable to get user SID: %s", win_strerror(GetLastError()));
+        *err = dupprintf(
+            "Unable to get user SID: %s", win_strerror(GetLastError()));
+        return INVALID_HANDLE_VALUE;
     }
 
     if (p_GetSecurityInfo(pipehandle, SE_KERNEL_OBJECT,
@@ -63,21 +66,33 @@ Socket *new_named_pipe_client(const char *pipename, Plug *plug)
                           &pipeowner, NULL, NULL, NULL,
                           &psd) != ERROR_SUCCESS) {
         CloseHandle(pipehandle);
-        return new_error_socket_fmt(
-            plug, "Unable to get named pipe security information: %s",
+        *err = dupprintf(
+            "Unable to get named pipe security information: %s",
             win_strerror(GetLastError()));
+        return INVALID_HANDLE_VALUE;
     }
 
     if (!EqualSid(pipeowner, usersid)) {
         CloseHandle(pipehandle);
         LocalFree(psd);
-        return new_error_socket_fmt(
-            plug, "Owner of named pipe '%s' is not us", pipename);
+        *err = dupprintf(
+            "Owner of named pipe '%s' is not us", pipename);
+        return INVALID_HANDLE_VALUE;
     }
 
     LocalFree(psd);
 
-    return make_handle_socket(pipehandle, pipehandle, NULL, plug, true);
+    return pipehandle;
+}
+
+Socket *new_named_pipe_client(const char *pipename, Plug *plug)
+{
+    char *err = NULL;
+    HANDLE pipehandle = connect_to_named_pipe(pipename, &err);
+    if (pipehandle == INVALID_HANDLE_VALUE)
+        return new_error_socket_consume_string(plug, err);
+    else
+        return make_handle_socket(pipehandle, pipehandle, NULL, plug, true);
 }
 
 #endif /* !defined NO_SECURITY */

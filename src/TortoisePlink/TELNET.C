@@ -613,7 +613,7 @@ static void do_telnet_read(Telnet *telnet, const char *buf, size_t len)
     strbuf_free(outbuf);
 }
 
-static void telnet_log(Plug *plug, int type, SockAddr *addr, int port,
+static void telnet_log(Plug *plug, PlugLogType type, SockAddr *addr, int port,
                        const char *error_msg, int error_code)
 {
     Telnet *telnet = container_of(plug, Telnet, plug);
@@ -664,10 +664,10 @@ static void telnet_sent(Plug *plug, size_t bufsize)
 }
 
 static const PlugVtable Telnet_plugvt = {
-    telnet_log,
-    telnet_closing,
-    telnet_receive,
-    telnet_sent
+    .log = telnet_log,
+    .closing = telnet_closing,
+    .receive = telnet_receive,
+    .sent = telnet_sent,
 };
 
 /*
@@ -678,10 +678,10 @@ static const PlugVtable Telnet_plugvt = {
  * Also places the canonical host name into `realhost'. It must be
  * freed by the caller.
  */
-static const char *telnet_init(Seat *seat, Backend **backend_handle,
-                               LogContext *logctx, Conf *conf,
-                               const char *host, int port,
-                               char **realhost, bool nodelay, bool keepalive)
+static char *telnet_init(const BackendVtable *vt, Seat *seat,
+                         Backend **backend_handle, LogContext *logctx,
+                         Conf *conf, const char *host, int port,
+                         char **realhost, bool nodelay, bool keepalive)
 {
     SockAddr *addr;
     const char *err;
@@ -694,7 +694,7 @@ static const char *telnet_init(Seat *seat, Backend **backend_handle,
 
     telnet = snew(Telnet);
     telnet->plug.vt = &Telnet_plugvt;
-    telnet->backend.vt = &telnet_backend;
+    telnet->backend.vt = vt;
     telnet->conf = conf_copy(conf);
     telnet->s = NULL;
     telnet->closed_on_socket_error = false;
@@ -720,7 +720,7 @@ static const char *telnet_init(Seat *seat, Backend **backend_handle,
                        telnet->logctx, "Telnet connection");
     if ((err = sk_addr_error(addr)) != NULL) {
         sk_addr_free(addr);
-        return err;
+        return dupstr(err);
     }
 
     if (port < 0)
@@ -732,7 +732,7 @@ static const char *telnet_init(Seat *seat, Backend **backend_handle,
     telnet->s = new_connection(addr, *realhost, port, false, true, nodelay,
                                keepalive, &telnet->plug, telnet->conf);
     if ((err = sk_socket_error(telnet->s)) != NULL)
-        return err;
+        return dupstr(err);
 
     telnet->pinger = pinger_new(telnet->conf, &telnet->backend);
 
@@ -1047,24 +1047,24 @@ static int telnet_cfg_info(Backend *be)
     return 0;
 }
 
-const struct BackendVtable telnet_backend = {
-    telnet_init,
-    telnet_free,
-    telnet_reconfig,
-    telnet_send,
-    telnet_sendbuffer,
-    telnet_size,
-    telnet_special,
-    telnet_get_specials,
-    telnet_connected,
-    telnet_exitcode,
-    telnet_sendok,
-    telnet_ldisc,
-    telnet_provide_ldisc,
-    telnet_unthrottle,
-    telnet_cfg_info,
-    NULL /* test_for_upstream */,
-    "telnet",
-    PROT_TELNET,
-    23
+const BackendVtable telnet_backend = {
+    .init = telnet_init,
+    .free = telnet_free,
+    .reconfig = telnet_reconfig,
+    .send = telnet_send,
+    .sendbuffer = telnet_sendbuffer,
+    .size = telnet_size,
+    .special = telnet_special,
+    .get_specials = telnet_get_specials,
+    .connected = telnet_connected,
+    .exitcode = telnet_exitcode,
+    .sendok = telnet_sendok,
+    .ldisc_option_state = telnet_ldisc,
+    .provide_ldisc = telnet_provide_ldisc,
+    .unthrottle = telnet_unthrottle,
+    .cfg_info = telnet_cfg_info,
+    .id = "telnet",
+    .displayname = "Telnet",
+    .protocol = PROT_TELNET,
+    .default_port = 23,
 };

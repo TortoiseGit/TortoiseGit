@@ -109,18 +109,6 @@ int cmdline_get_passwd_input(prompts_t *p)
     return 1;
 }
 
-/*
- * Here we have a flags word which describes the capabilities of
- * the particular tool on whose behalf we're running. We will
- * refuse certain command-line options if a particular tool
- * inherently can't do anything sensible. For example, the file
- * transfer tools (psftp, pscp) can't do a great deal with protocol
- * selections (ever tried running scp over telnet?) or with port
- * forwarding (even if it wasn't a hideously bad idea, they don't
- * have the select/poll infrastructure to make them work).
- */
-int cmdline_tooltype = 0;
-
 static bool cmdline_check_unavailable(int flag, const char *p)
 {
     if (cmdline_tooltype & flag) {
@@ -157,6 +145,24 @@ static bool cmdline_check_unavailable(int flag, const char *p)
 
 static bool seen_hostname_argument = false;
 static bool seen_port_argument = false;
+static bool seen_verbose_option = false;
+static bool loaded_session = false;
+bool cmdline_verbose(void) { return seen_verbose_option; }
+bool cmdline_seat_verbose(Seat *seat) { return cmdline_verbose(); }
+bool cmdline_lp_verbose(LogPolicy *lp) { return cmdline_verbose(); }
+bool cmdline_loaded_session(void) { return loaded_session; }
+
+static void set_protocol(Conf *conf, int protocol)
+{
+    settings_set_default_protocol(protocol);
+    conf_set_int(conf, CONF_protocol, protocol);
+}
+
+static void set_port(Conf *conf, int port)
+{
+    settings_set_default_port(port);
+    conf_set_int(conf, CONF_port, port);
+}
 
 int cmdline_process_param(const char *p, char *value,
                           int need_save, Conf *conf)
@@ -275,9 +281,7 @@ int cmdline_process_param(const char *p, char *value,
                             backend_vt_from_name(prefix);
 
                         if (vt) {
-                            default_protocol = vt->protocol;
-                            conf_set_int(conf, CONF_protocol,
-                                         default_protocol);
+                            set_protocol(conf, vt->protocol);
                             port_override = vt->default_port;
                         } else {
                             cmdline_error("unrecognised protocol prefix '%s'",
@@ -399,60 +403,30 @@ int cmdline_process_param(const char *p, char *value,
          * saved. */
         do_defaults(value, conf);
         loaded_session = true;
-        cmdline_session_name = dupstr(value);
         return 2;
     }
-    if (!strcmp(p, "-ssh")) {
-        RETURN(1);
-        UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
-        SAVEABLE(0);
-        default_protocol = PROT_SSH;
-        default_port = 22;
-        conf_set_int(conf, CONF_protocol, default_protocol);
-        conf_set_int(conf, CONF_port, default_port);
-        return 1;
-    }
-    if (!strcmp(p, "-telnet")) {
-        RETURN(1);
-        UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
-        SAVEABLE(0);
-        default_protocol = PROT_TELNET;
-        default_port = 23;
-        conf_set_int(conf, CONF_protocol, default_protocol);
-        conf_set_int(conf, CONF_port, default_port);
-        return 1;
-    }
-    if (!strcmp(p, "-rlogin")) {
-        RETURN(1);
-        UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
-        SAVEABLE(0);
-        default_protocol = PROT_RLOGIN;
-        default_port = 513;
-        conf_set_int(conf, CONF_protocol, default_protocol);
-        conf_set_int(conf, CONF_port, default_port);
-        return 1;
-    }
-    if (!strcmp(p, "-raw")) {
-        RETURN(1);
-        UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
-        SAVEABLE(0);
-        default_protocol = PROT_RAW;
-        conf_set_int(conf, CONF_protocol, default_protocol);
-    }
-    if (!strcmp(p, "-serial")) {
-        RETURN(1);
-        /* Serial is not NONNETWORK in an odd sense of the word */
-        UNAVAILABLE_IN(TOOLTYPE_FILETRANSFER | TOOLTYPE_NONNETWORK);
-        SAVEABLE(0);
-        default_protocol = PROT_SERIAL;
-        conf_set_int(conf, CONF_protocol, default_protocol);
-        /* The host parameter will already be loaded into CONF_host,
-         * so copy it across */
-        conf_set_str(conf, CONF_serline, conf_get_str(conf, CONF_host));
+    for (size_t i = 0; backends[i]; i++) {
+        if (p[0] == '-' && !strcmp(p+1, backends[i]->id)) {
+            RETURN(1);
+            UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+            SAVEABLE(0);
+            set_protocol(conf, backends[i]->protocol);
+            if (backends[i]->default_port)
+                set_port(conf, backends[i]->default_port);
+            if (backends[i]->protocol == PROT_SERIAL) {
+                /* Special handling: the 'where to connect to' argument will
+                 * have been placed into CONF_host, but for this protocol, it
+                 * needs to be in CONF_serline */
+                conf_set_str(conf, CONF_serline,
+                             conf_get_str(conf, CONF_host));
+            }
+            return 1;
+        }
     }
     if (!strcmp(p, "-v")) {
         RETURN(1);
-        flags |= FLAG_VERBOSE;
+        UNAVAILABLE_IN(TOOLTYPE_NO_VERBOSE_OPTION);
+        seen_verbose_option = true;
     }
     if (!strcmp(p, "-l")) {
         RETURN(2);
@@ -589,7 +563,7 @@ int cmdline_process_param(const char *p, char *value,
     if (!strcmp(p, "-P") || !strcmp(p, "-p")) {
         RETURN(2);
         UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
-        SAVEABLE(1);                   /* lower priority than -ssh,-telnet */
+        SAVEABLE(1);            /* lower priority than -ssh, -telnet, etc */
         conf_set_int(conf, CONF_port, atoi(value));
     }
     if (!strcmp(p, "-o")) {
@@ -845,6 +819,20 @@ int cmdline_process_param(const char *p, char *value,
         filename_free(fn);
     }
 
+    if (!strcmp(p, "-logoverwrite")) {
+        RETURN(1);
+        UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+        SAVEABLE(0);
+        conf_set_int(conf, CONF_logxfovr, LGXF_OVR);
+    }
+
+    if (!strcmp(p, "-logappend")) {
+        RETURN(1);
+        UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+        SAVEABLE(0);
+        conf_set_int(conf, CONF_logxfovr, LGXF_APN);
+    }
+
     if (!strcmp(p, "-proxycmd")) {
         RETURN(2);
         UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
@@ -861,7 +849,6 @@ int cmdline_process_param(const char *p, char *value,
         !strcmp(p, "-restrictacl")) {
         RETURN(1);
         restrict_process_acl();
-        restricted_acl = true;
     }
 #endif
 
@@ -870,9 +857,8 @@ int cmdline_process_param(const char *p, char *value,
 
 void cmdline_run_saved(Conf *conf)
 {
-    int pri, i;
-    for (pri = 0; pri < NPRIORITIES; pri++) {
-        for (i = 0; i < saves[pri].nsaved; i++) {
+    for (size_t pri = 0; pri < NPRIORITIES; pri++) {
+        for (size_t i = 0; i < saves[pri].nsaved; i++) {
             cmdline_process_param(saves[pri].params[i].p,
                                   saves[pri].params[i].value, 0, conf);
             sfree(saves[pri].params[i].p);

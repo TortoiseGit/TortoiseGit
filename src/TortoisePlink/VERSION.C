@@ -8,6 +8,9 @@
  * to do here is to drop it into variables of the right names.
  */
 
+#include "putty.h"
+#include "ssh.h"
+
 #ifdef SOURCE_COMMIT
 #include "empty.h"
 #endif

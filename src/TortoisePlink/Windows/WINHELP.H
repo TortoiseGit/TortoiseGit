@@ -52,6 +52,10 @@
 #define WINHELP_CTX_terminal_localecho "config-localecho"
 #define WINHELP_CTX_terminal_localedit "config-localedit"
 #define WINHELP_CTX_terminal_printing "config-printing"
+#define WINHELP_CTX_supdup_location "supdup-location"
+#define WINHELP_CTX_supdup_ascii "supdup-ascii"
+#define WINHELP_CTX_supdup_more "supdup-more"
+#define WINHELP_CTX_supdup_scroll "supdup-scroll"
 #define WINHELP_CTX_bell_style "config-bellstyle"
 #define WINHELP_CTX_bell_taskbar "config-belltaskbar"
 #define WINHELP_CTX_bell_overload "config-bellovl"
@@ -168,6 +172,7 @@
 #define WINHELP_CTX_pageant_keylist "pageant-mainwin-keylist"
 #define WINHELP_CTX_pageant_addkey "pageant-mainwin-addkey"
 #define WINHELP_CTX_pageant_remkey "pageant-mainwin-remkey"
+#define WINHELP_CTX_pageant_deferred "pageant-deferred-decryption"
 #define WINHELP_CTX_pgpfingerprints "pgpkeys"
 #define WINHELP_CTX_puttygen_general "pubkey-puttygen"
 #define WINHELP_CTX_puttygen_keytype "puttygen-keytype"
@@ -181,6 +186,8 @@
 #define WINHELP_CTX_puttygen_pastekey "puttygen-pastekey"
 #define WINHELP_CTX_puttygen_load "puttygen-load"
 #define WINHELP_CTX_puttygen_conversions "puttygen-conversions"
+#define WINHELP_CTX_puttygen_ppkver "puttygen-save-ppk-version"
+#define WINHELP_CTX_puttygen_kdfparam "puttygen-save-passphrase-hashing"
 
 /* These are used in Windows-specific bits of the frontend.
  * We (ab)use "help context identifiers" (dwContextId) to identify them. */
