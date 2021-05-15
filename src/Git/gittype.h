@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -116,8 +116,8 @@ struct TGitRef
 	operator const CString&() const { return name; }
 };
 
-typedef std::vector<CString> STRING_VECTOR;
-typedef std::unordered_map<CGitHash, STRING_VECTOR> MAP_HASH_NAME;
-typedef std::map<CString, CString> MAP_STRING_STRING;
-typedef std::vector<TGitRef> REF_VECTOR;
-typedef CGitByteArray BYTE_VECTOR;
+using STRING_VECTOR = std::vector<CString>;
+using MAP_HASH_NAME = std::unordered_map<CGitHash, STRING_VECTOR>;
+using MAP_STRING_STRING = std::map<CString, CString>;
+using REF_VECTOR = std::vector<TGitRef>;
+using BYTE_VECTOR = CGitByteArray;

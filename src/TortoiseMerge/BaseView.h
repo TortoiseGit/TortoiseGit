@@ -47,7 +47,7 @@ class CBaseView : public CView, public CTripleClick
 	DECLARE_DYNCREATE(CBaseView)
 friend class CLineDiffBar;
 public:
-	typedef CFileTextLines::UnicodeType UnicodeType;
+	using UnicodeType = CFileTextLines::UnicodeType;
 	enum ECharGroup { // ordered by priority low-to-hi
 		CHG_UNKNOWN,
 		CHG_CONTROL, // x00-x08, x0a-x1f

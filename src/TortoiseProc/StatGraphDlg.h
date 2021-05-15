@@ -116,13 +116,13 @@ protected:
 
 	//TODO: try substitute map to hash_map
 	/// The mapping type used to store data per interval/week and author.
-	typedef std::map<int, std::map<std::wstring, LONG>> IntervalDataMap;
+	using IntervalDataMap = std::map<int, std::map<std::wstring, LONG>>;
 
 	//TODO: try substitute few Maps to one map, that store needs informations about Authors
 	/// The mapping type used to store data per author.
-	typedef std::map<std::wstring, LONG> AuthorDataMap;
+	using AuthorDataMap = std::map<std::wstring, LONG>;
 	/// The mapping type used to store data per Percentage Of Authorship
-	typedef std::map<std::wstring, double> AuthorshipDataMap;
+	using AuthorshipDataMap = std::map<std::wstring, double>;
 
 	// *** Re-implemented member functions from CDialog
 	virtual void OnOK() override;

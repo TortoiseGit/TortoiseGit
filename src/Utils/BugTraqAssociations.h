@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2009, 2014, 2016-2017, 2021 - TortoiseGit
 // Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ public:
 
 class CBugTraqAssociations
 {
-	typedef std::vector< CBugTraqAssociation * > inner_t;
+	using inner_t = std::vector<CBugTraqAssociation*>;
 	inner_t m_inner;
 
 public:
@@ -75,7 +75,7 @@ public:
 
 	bool FindProvider(const CString &path, CBugTraqAssociation *assoc);
 
-	typedef inner_t::const_iterator const_iterator;
+	using const_iterator = inner_t::const_iterator;
 	const_iterator begin() const { return m_inner.begin(); }
 	const_iterator end() const { return m_inner.end(); }
 

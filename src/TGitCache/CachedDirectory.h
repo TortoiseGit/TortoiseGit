@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006, 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,8 +32,7 @@
 class CCachedDirectory
 {
 public:
-	typedef std::map<CTGitPath, CCachedDirectory *> CachedDirMap;
-	typedef CachedDirMap::iterator ItDir;
+	using CachedDirMap = std::map<CTGitPath, CCachedDirectory*>;
 
 public:
 
@@ -82,12 +81,12 @@ private:
 	CComAutoCriticalSection m_critSec;
 
 	// The cache of files and directories within this directory
-	typedef std::map<CString, CStatusCacheEntry> CacheEntryMap;
+	using CacheEntryMap = std::map<CString, CStatusCacheEntry>;
 	CacheEntryMap m_entryCache;
 	CacheEntryMap m_entryCache_tmp; // used for updating m_entryCache and removing "removed" entries
 
 	/// A vector if iterators to child directories - used to put-together recursive status
-	typedef std::map<CString, git_wc_status_kind>  ChildDirStatus;
+	using ChildDirStatus = std::map<CString, git_wc_status_kind>;
 	ChildDirStatus m_childDirectories;
 	ChildDirStatus m_childDirectories_tmp; // used for updating m_childDirectories and removing "removed" entries
 

@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -84,7 +84,7 @@ protected:
 			Default();
 	}
 
-	typedef std::function<void(CPoint point)> ContextMenuHandler;
+	using ContextMenuHandler = std::function<void(CPoint point)>;
 	ContextMenuHandler m_ContextMenuHandler;
 
 public:

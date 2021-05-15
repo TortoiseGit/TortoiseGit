@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2019, 2021 - TortoiseGit
 // Copyright (C) 2006-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -81,8 +81,8 @@ typedef struct hookcmd
 	CString			sRegKey;
 } hookcmd;
 
-typedef std::map<hookkey, hookcmd>::iterator hookiterator;
-typedef std::map<hookkey, hookcmd>::const_iterator const_hookiterator;
+using hookiterator = std::map<hookkey, hookcmd>::iterator;
+using const_hookiterator = std::map<hookkey, hookcmd>::const_iterator;
 
 /**
  * \ingroup TortoiseProc

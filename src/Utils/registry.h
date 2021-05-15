@@ -96,7 +96,7 @@ public: //methods
 
 	/// used in subclass templates to specify the correct string type
 
-	typedef S StringT;
+	using StringT = S;
 
 protected:
 
@@ -327,7 +327,7 @@ public:
 	 * Make the value type accessible to others.
 	 */
 
-	typedef T ValueT;
+	using ValueT = T;
 
 	/**
 	 * Constructor.
@@ -966,12 +966,12 @@ private:
 
 	/// per-index defaults
 
-	typedef std::map<int, typename T::ValueT> TDefaults;
+	using TDefaults = std::map<int, typename T::ValueT>;
 	TDefaults defaults;
 
 	/// the indices accessed so far
 
-	typedef std::map<int, T*> TElements;
+	using TElements = std::map<int, T*>;
 	mutable TElements elements;
 
 	/// auto-insert
@@ -1064,19 +1064,19 @@ T& CKeyList<T>::GetAt (int index) const
  */
 
 #ifdef __CSTRINGT_H__
-typedef CRegDWORDCommon<CRegBase> CRegDWORD;
-typedef CRegStringCommon<CRegBase> CRegString;
+using CRegDWORD = CRegDWORDCommon<CRegBase>;
+using CRegString = CRegStringCommon<CRegBase>;
 
 #ifdef _MAP_
-typedef CKeyList<CRegDWORD> CRegDWORDList;
-typedef CKeyList<CRegString> CRegStringList;
+using CRegDWORDList = CKeyList<CRegDWORD>;
+using CRegStringList = CKeyList<CRegString>;
 #endif
 #endif
 
-typedef CRegDWORDCommon<CRegStdBase> CRegStdDWORD;
-typedef CRegStringCommon<CRegStdBase> CRegStdString;
+using CRegStdDWORD = CRegDWORDCommon<CRegStdBase>;
+using CRegStdString = CRegStringCommon<CRegStdBase>;
 
 #ifdef _MAP_
-typedef CKeyList<CRegStdDWORD> CRegStdDWORDList;
-typedef CKeyList<CRegStdString> CRegStdStringList;
+using CRegStdDWORDList = CKeyList<CRegStdDWORD>;
+using CRegStdStringList = CKeyList<CRegStdString>;
 #endif

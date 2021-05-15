@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -154,7 +154,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 }
 #endif
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 typedef struct CGitRepoLists
 {

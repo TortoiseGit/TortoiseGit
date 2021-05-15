@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018, 2020 - TortoiseGit
+// Copyright (C) 2013-2018, 2020-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ public:
 
 		CString m_filename;
 	} LanguagePack;
-	typedef std::vector<LanguagePack> LANGPACK_VECTOR;
+	using LANGPACK_VECTOR = std::vector<LanguagePack>;
 	LANGPACK_VECTOR GetTortoiseGitLanguagePacks();
 
 private:

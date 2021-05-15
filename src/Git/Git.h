@@ -34,7 +34,7 @@
 
 struct git_repository;
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 constexpr static inline int ConvertVersionToInt(unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build = 0)
 {
@@ -89,7 +89,7 @@ private:
 	CString m_Cmd;
 };
 
-typedef std::function<void (const CStringA&)> GitReceiverFunc;
+using GitReceiverFunc = std::function<void (const CStringA&)>;
 
 class CEnvironment : protected std::vector<wchar_t>
 {

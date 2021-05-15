@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017, 2021 - TortoiseGit
 // Copyright (C) 2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,4 +19,4 @@
 //
 #pragma once
 
-typedef std::function<CString(const int nID, const CString& input)> IInputValidator;
+using IInputValidator = std::function<CString(const int nID, const CString& input)>;

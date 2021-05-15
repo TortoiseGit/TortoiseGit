@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ typedef enum {
 	AUTOCLOSE_IF_NO_ERRORS,
 } GitProgressAutoClose;
 
-typedef std::function<void()> PostCmdAction;
+using PostCmdAction = std::function<void()>;
 
 class PostCmd
 {
@@ -71,9 +71,9 @@ public:
 	PostCmdAction	action;
 };
 
-typedef std::vector<PostCmd> PostCmdList;
-typedef std::function<void(DWORD status, PostCmdList&)> PostCmdCallback;
-typedef std::function<void(DWORD& exitCode, CString& extraMsg)> PostExecCallback;
+using PostCmdList = std::vector<PostCmd>;
+using PostCmdCallback = std::function<void(DWORD status, PostCmdList&)>;
+using PostExecCallback = std::function<void(DWORD& exitCode, CString& extraMsg)>;
 
 class CProgressDlg : public CResizableStandAloneDialog
 {

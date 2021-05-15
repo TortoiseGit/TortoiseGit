@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011, 2015 - TortoiseSVN
-// Copyright (C) 2015-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -217,15 +217,15 @@ struct CCloseIcon
 };
 
 // Client code (definitions of standard Windows handles).
-typedef CSmartHandle<HANDLE,	CCloseHandle>											CAutoGeneralHandle;
-typedef CSmartHandle<HKEY,		CCloseRegKey>											CAutoRegKey;
-typedef CSmartHandle<PVOID,		CCloseViewOfFile>										CAutoViewOfFile;
-typedef CSmartHandle<HMODULE,	CCloseLibrary>											CAutoLibrary;
-typedef CSmartHandle<HANDLE,	CCloseHandle, CDefaultHandleInvalid>					CAutoFile;
-typedef CSmartHandle<HANDLE,	CCloseFindFile, CDefaultHandleInvalid>					CAutoFindFile;
-typedef CSmartHandle<FILE*,		CCloseFILE>												CAutoFILE;
-typedef CSmartHandle<HTHEME,	CCloseThemeData>										CAutoThemeData;
-typedef CSmartHandle<HICON,		CCloseIcon>												CAutoIcon;
+using CAutoGeneralHandle	= CSmartHandle<HANDLE,	CCloseHandle>;
+using CAutoRegKey			= CSmartHandle<HKEY,		CCloseRegKey>;
+using CAutoViewOfFile		= CSmartHandle<PVOID,		CCloseViewOfFile>;
+using CAutoLibrary			= CSmartHandle<HMODULE,	CCloseLibrary>;
+using CAutoFile				= CSmartHandle<HANDLE,	CCloseHandle, CDefaultHandleInvalid>;
+using CAutoFindFile			= CSmartHandle<HANDLE,	CCloseFindFile, CDefaultHandleInvalid>;
+using CAutoFILE				= CSmartHandle<FILE*,		CCloseFILE>;
+using CAutoThemeData		= CSmartHandle<HTHEME,	CCloseThemeData>;
+using CAutoIcon				= CSmartHandle<HICON,		CCloseIcon>;
 
 /*
 void CompilerTests()

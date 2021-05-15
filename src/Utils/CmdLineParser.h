@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2021 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -54,8 +54,8 @@ using std::map;
 class CCmdLineParser
 {
 public:
-	typedef map<std::wstring, std::wstring> CValsMap;
-	typedef CValsMap::const_iterator ITERPOS;
+	using CValsMap = map<std::wstring, std::wstring>;
+	using ITERPOS = CValsMap::const_iterator;
 public:
 	/**
 	 * Creates a CCmdLineParser object and parses the parameters in.

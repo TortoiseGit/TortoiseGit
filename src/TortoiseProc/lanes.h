@@ -1,6 +1,6 @@
 ﻿/*
 	Author: Marco Costalba (C) 2005-2007
-	Author: TortoiseGit (C) 2008-2013, 2017
+	Author: TortoiseGit (C) 2008-2013, 2017, 2021
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -12,7 +12,7 @@
 
 #define QVector std::vector
 
-typedef std::vector<CGitHash> CGitHashList ;
+using CGitHashList = std::vector<CGitHash>;
 
 class Lanes {
 public:

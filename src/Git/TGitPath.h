@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -424,7 +424,7 @@ public:
 	/** Checks if two CTGitPathLists are the same */
 	bool IsEqual(const CTGitPathList& list);
 
-	typedef std::vector<CTGitPath> PathVector;
+	using PathVector = std::vector<CTGitPath>;
 	PathVector m_paths;
 	// If the list contains just files in one directory, then
 	// this contains the directory name

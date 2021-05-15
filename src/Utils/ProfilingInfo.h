@@ -161,7 +161,7 @@ class CProfilingInfo
 {
 private:
 
-	typedef std::vector<CProfilingRecord*> TRecords;
+	using TRecords = std::vector<CProfilingRecord*>;
 	TRecords records;
 
 	/// construction / destruction

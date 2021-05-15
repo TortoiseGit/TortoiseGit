@@ -27,7 +27,7 @@
 #define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
 #define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUSTASHAPPLY|MENUSUBSYNC
 
-typedef CComCritSecLock<CComCriticalSection> Locker;
+using Locker = CComCritSecLock<CComCriticalSection>;
 
 typedef enum tristate_t
 {
@@ -137,7 +137,7 @@ private:
 
 	private:
 		/// lookup by path (all entries sorted by path)
-		typedef std::vector<SEntry> TData;
+		using TData = std::vector<SEntry>;
 		TData data;
 
 		/// registry keys plus cached last content
