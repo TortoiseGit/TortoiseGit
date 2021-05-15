@@ -24,7 +24,6 @@ using std::min;
 #include <tuple>
 #include <memory>
 
-#include <tchar.h>
 #include <Shlwapi.h>
 #include <shellapi.h>
 

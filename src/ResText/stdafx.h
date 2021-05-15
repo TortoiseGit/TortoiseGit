@@ -7,6 +7,5 @@
 
 #pragma warning(push)
 #include <iostream>
-#include <tchar.h>
 #include <windows.h>
 #pragma warning(pop)
