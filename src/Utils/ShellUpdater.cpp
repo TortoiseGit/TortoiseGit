@@ -163,7 +163,7 @@ void CShellUpdater::UpdateShell()
 bool CShellUpdater::RebuildIcons()
 {
 	const int BUFFER_SIZE = 1024;
-	TCHAR buf[BUFFER_SIZE] = { 0 };
+	wchar_t buf[BUFFER_SIZE] = { 0 };
 	HKEY hRegKey = nullptr;
 	DWORD dwRegValue;
 	DWORD dwRegValueTemp;
@@ -175,7 +175,7 @@ bool CShellUpdater::RebuildIcons()
 	SCOPE_EXIT { RegCloseKey(hRegKey); };
 
 	// we're going to change the Shell Icon Size value
-	const TCHAR* sRegValueName = L"Shell Icon Size";
+	const wchar_t* sRegValueName = L"Shell Icon Size";
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
@@ -194,7 +194,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValue = _wtoi(buf);
 	dwRegValueTemp = dwRegValue-1;
 
-	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(wchar_t);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 
@@ -203,7 +203,7 @@ bool CShellUpdater::RebuildIcons()
 		0, SMTO_ABORTIFHUNG, 5000, &dwResult);
 
 	// Reset registry value
-	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(wchar_t);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 

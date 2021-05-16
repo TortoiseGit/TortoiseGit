@@ -79,7 +79,7 @@ CTGitPath::CTGitPath(const CString& sUnknownPath, bool bIsDirectory) : CTGitPath
 unsigned int CTGitPath::ParserAction(BYTE action)
 {
 	//action=action.TrimLeft();
-	//TCHAR c=action.GetAt(0);
+	//wchar_t c=action.GetAt(0);
 	if(action == 'M')
 		m_Action|= LOGACTIONS_MODIFIED;
 	if(action == 'R')
@@ -137,7 +137,7 @@ void CTGitPath::SetFromGit(const char* pPath, bool bIsDirectory)
 	m_bIsDirectory = bIsDirectory;
 }
 
-void CTGitPath::SetFromGit(const TCHAR* pPath, bool bIsDirectory)
+void CTGitPath::SetFromGit(const wchar_t* pPath, bool bIsDirectory)
 {
 	Reset();
 	if (pPath)
@@ -304,7 +304,7 @@ bool CTGitPath::Delete(bool bTrash, bool bShowErrorUI) const
 	{
 		if ((bTrash)||(IsDirectory()))
 		{
-			auto buf = std::make_unique<TCHAR[]>(m_sBackslashPath.GetLength() + 2);
+			auto buf = std::make_unique<wchar_t[]>(m_sBackslashPath.GetLength() + 2);
 			wcscpy_s(buf.get(), m_sBackslashPath.GetLength() + 2, m_sBackslashPath);
 			buf[m_sBackslashPath.GetLength()] = L'\0';
 			buf[m_sBackslashPath.GetLength() + 1] = L'\0';
@@ -1435,7 +1435,7 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 	catch (CFileException* pE)
 	{
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
-		TCHAR error[10000] = {0};
+		wchar_t error[10000] = { 0 };
 		pE->GetErrorMessage(error, 10000);
 //		CMessageBox::Show(nullptr, error, L"TortoiseGit", MB_ICONERROR);
 		pE->Delete();

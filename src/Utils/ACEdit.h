@@ -50,7 +50,7 @@ class CACEdit : public CWnd //CEdit
 public:
 	CACEdit();
 	void SetMode(int iMode=_MODE_STANDARD_);
-	void SetSeparator(LPCWSTR lpszString, TCHAR lpszPrefixChar = L'\0')
+	void SetSeparator(LPCWSTR lpszString, wchar_t lpszPrefixChar = L'\0')
 	{
 		m_SeparationStr = lpszString;
 		m_Liste.m_PrefixChar = m_PrefixChar = lpszPrefixChar;
@@ -94,7 +94,7 @@ public:
 	// Generierte Nachrichtenzuordnungsfunktionen
 protected:
 	CString m_EditText, m_SeparationStr,m_LastDirectory;
-	TCHAR m_PrefixChar;
+	wchar_t m_PrefixChar;
 	int m_iMode;
 	//{{AFX_MSG(CACEdit)
 	afx_msg void OnKillfocus();
@@ -117,7 +117,7 @@ protected:
 	int m_iType;
 	CEdit *m_pEdit;
 
-	TCHAR m_szDrive[_MAX_DRIVE], m_szDir[_MAX_DIR],m_szFname[_MAX_FNAME], m_szExt[_MAX_EXT];
+	wchar_t m_szDrive[_MAX_DRIVE], m_szDir[_MAX_DIR], m_szFname[_MAX_FNAME], m_szExt[_MAX_EXT];
 };
 
 /////////////////////////////////////////////////////////////////////////////

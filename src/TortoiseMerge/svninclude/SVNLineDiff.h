@@ -59,7 +59,7 @@ private:
 	static svn_error_t * compare_token(void * baton, void * token1, void * token2, int * compare);
 	static void discard_token(void * baton, void * token);
 	static void discard_all_token(void *baton);
-	static bool IsCharWhiteSpace(TCHAR c);
+	static bool IsCharWhiteSpace(wchar_t c);
 
 	static apr_uint32_t Adler32(apr_uint32_t checksum, const WCHAR *data, apr_size_t len);
 	static void ParseLineWords(

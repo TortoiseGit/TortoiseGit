@@ -59,7 +59,7 @@ static CString Lf2Crlf(const CString& text)
 	if (text.IsEmpty())
 		return s;
 
-	TCHAR c = L'\0';
+	wchar_t c = L'\0';
 	for (int i = 0; i < text.GetLength(); i++)
 	{
 		if (text[i] == L'\n' && c != L'\r')

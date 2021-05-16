@@ -284,7 +284,7 @@ BOOL CSetDialogs3::EnumLocalesProc(LPWSTR lpLocaleString)
 
 void CSetDialogs3::AddLangToCombo(DWORD langID)
 {
-	TCHAR buf[MAX_PATH] = {0};
+	wchar_t buf[MAX_PATH] = { 0 };
 	GetLocaleInfo(langID, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	CString sLang = buf;
 	GetLocaleInfo(langID, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));

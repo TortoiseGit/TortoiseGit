@@ -104,7 +104,7 @@ CProfilingInfo::~CProfilingInfo()
 	{
 		// write profile to file
 
-		TCHAR buffer [MAX_PATH] = {0};
+		wchar_t buffer [MAX_PATH] = { 0 };
 		if (GetModuleFileNameEx(GetCurrentProcess(), nullptr, buffer, _countof(buffer)) > 0)
 			try
 			{

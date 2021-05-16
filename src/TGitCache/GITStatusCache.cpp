@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -97,7 +97,7 @@ void CGitStatusCache::Create()
 					if (value)
 					{
 						CString sKey;
-						if (fread(sKey.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+						if (fread(sKey.GetBuffer(value+1), sizeof(wchar_t), value, pFile) != value)
 						{
 							sKey.ReleaseBuffer(0);
 							goto error;
@@ -178,7 +178,7 @@ bool CGitStatusCache::SaveCache()
 				WRITEVALUETOFILE(value);
 				if (value)
 				{
-					if (fwrite(static_cast<LPCWSTR>(key), sizeof(TCHAR), value, pFile) != value)
+					if (fwrite(static_cast<LPCWSTR>(key), sizeof(wchar_t), value, pFile) != value)
 						goto error;
 					if (!I->second->SaveToDisk(pFile))
 						goto error;

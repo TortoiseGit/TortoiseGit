@@ -91,11 +91,11 @@ private:
 
 typedef std::function<void (const CStringA&)> GitReceiverFunc;
 
-class CEnvironment : protected std::vector<TCHAR>
+class CEnvironment : protected std::vector<wchar_t>
 {
 public:
 	CEnvironment() : baseptr(nullptr) {}
-	CEnvironment(const CEnvironment& env) : std::vector<TCHAR>(env)
+	CEnvironment(const CEnvironment& env) : std::vector<wchar_t>(env)
 	{
 		baseptr = data();
 	}
@@ -109,8 +109,8 @@ public:
 		return *this;
 	}
 	void CopyProcessEnvironment();
-	CString GetEnv(const TCHAR *name);
-	void SetEnv(const TCHAR* name, const TCHAR* value);
+	CString GetEnv(const wchar_t*name);
+	void SetEnv(const wchar_t* name, const wchar_t* value);
 	void AddToPath(CString value);
 	void clear();
 	bool empty();

@@ -43,8 +43,8 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 {
 	DWORD len = GetTortoiseGitTempPath(0, nullptr);
 
-	auto temppath = std::make_unique<TCHAR[]>(len + 1);
-	auto tempF = std::make_unique<TCHAR[]>(len + 50);
+	auto temppath = std::make_unique<wchar_t[]>(len + 1);
+	auto tempF = std::make_unique<wchar_t[]>(len + 50);
 	GetTortoiseGitTempPath(len + 1, temppath.get());
 	CTGitPath tempfile;
 	CString possibletempfile;

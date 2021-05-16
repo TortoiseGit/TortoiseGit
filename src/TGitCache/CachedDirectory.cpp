@@ -64,7 +64,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCWSTR>(key), sizeof(TCHAR), value, pFile) != value)
+			if (fwrite(static_cast<LPCWSTR>(key), sizeof(wchar_t), value, pFile) != value)
 				return false;
 			if (!entry.second.SaveToDisk(pFile))
 				return false;
@@ -79,7 +79,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCWSTR>(path), sizeof(TCHAR), value, pFile) != value)
+			if (fwrite(static_cast<LPCWSTR>(path), sizeof(wchar_t), value, pFile) != value)
 				return false;
 			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);
@@ -89,7 +89,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(value);
 	if (value)
 	{
-		if (fwrite(m_directoryPath.GetWinPath(), sizeof(TCHAR), value, pFile)!=value)
+		if (fwrite(m_directoryPath.GetWinPath(), sizeof(wchar_t), value, pFile) != value)
 			return false;
 	}
 	if (!m_ownStatus.SaveToDisk(pFile))
@@ -119,7 +119,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			if (value)
 			{
 				CString sKey;
-				if (fread(sKey.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+				if (fread(sKey.GetBuffer(value+1), sizeof(wchar_t), value, pFile) != value)
 				{
 					sKey.ReleaseBuffer(0);
 					return false;
@@ -142,7 +142,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			if (value)
 			{
 				CString sPath;
-				if (fread(sPath.GetBuffer(value), sizeof(TCHAR), value, pFile)!=value)
+				if (fread(sPath.GetBuffer(value), sizeof(wchar_t), value, pFile) != value)
 				{
 					sPath.ReleaseBuffer(0);
 					return false;
@@ -159,7 +159,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 		if (value)
 		{
 			CString sPath;
-			if (fread(sPath.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+			if (fread(sPath.GetBuffer(value+1), sizeof(wchar_t), value, pFile) != value)
 			{
 				sPath.ReleaseBuffer(0);
 				return false;

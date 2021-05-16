@@ -30,7 +30,7 @@ CSimpleFileFind::CSimpleFileFind(const CString& sPath, LPCWSTR pPattern)
 	int len = m_sPathPrefix.GetLength();
 	if (len != 0)
 	{
-		TCHAR ch = sPath[len-1];
+		wchar_t ch = sPath[len - 1];
 		if (ch != '\\' && (ch != ':' || len != 2))
 			m_sPathPrefix += "\\";
 	}

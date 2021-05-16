@@ -104,7 +104,7 @@ BOOL CSetProxyPage::OnInitDialog()
 		m_SSHClient = CRegString(L"Software\\TortoiseGit\\SSH", L"", FALSE, HKEY_LOCAL_MACHINE);
 	if (m_SSHClient.IsEmpty())
 	{
-		TCHAR sPlink[MAX_PATH] = {0};
+		wchar_t sPlink[MAX_PATH] = { 0 };
 		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
 		LPWSTR ptr = wcsrchr(sPlink, L'\\');
 		if (ptr)

@@ -916,7 +916,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int linesonscreen = static_cast<int>(SendEditor(SCI_LINESONSCREEN)) + 1;
 	int height = static_cast<int>(SendEditor(SCI_TEXTHEIGHT));
 	int Y = 0;
-	TCHAR buf[MAX_PATH] = {0};
+	wchar_t buf[MAX_PATH] = { 0 };
 	std::fill_n(buf, _countof(buf) - 1, L' ');
 	CGitHash oldHash;
 	CString oldFile;
@@ -1092,7 +1092,7 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 		//wcscpy_s(line, 20, lineptr+1);
 		//_wcslwr_s(line, 20);
 		CString ext=filename.Right(filename.GetLength()-start-1);
-		const TCHAR* line = ext;
+		const wchar_t* line = ext;
 
 		if ((wcscmp(line, L"py") == 0) ||
 			(wcscmp(line, L"pyw") == 0))

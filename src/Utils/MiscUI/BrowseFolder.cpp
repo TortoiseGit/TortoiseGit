@@ -109,7 +109,7 @@ CBrowseFolder::retVal CBrowseFolder::Show(HWND parent, CString& path, const CStr
 		return CANCEL;
 
 	// Set a title
-	TCHAR* nl = wcschr(m_title, L'\n');
+	wchar_t* nl = wcschr(m_title, L'\n');
 	if (nl)
 		*nl = L'\0';
 	pfd->SetTitle(m_title);

@@ -213,7 +213,7 @@ bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
 BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 {
 	DarkModeHelper::Instance().AllowDarkModeForWindow(hwnd, static_cast<BOOL>(lParam));
-	TCHAR szWndClassName[MAX_PATH] = { 0 };
+	wchar_t szWndClassName[MAX_PATH] = { 0 };
 	GetClassName(hwnd, szWndClassName, _countof(szWndClassName));
 	if (lParam)
 	{

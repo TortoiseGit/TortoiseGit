@@ -67,12 +67,12 @@ static LPCWSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 
 static CString FindFileOnPath(const CString& filename, LPCWSTR env, bool wantDirectory = false)
 {
-	TCHAR buf[MAX_PATH] = { 0 };
+	wchar_t buf[MAX_PATH] = { 0 };
 
 	// search in all paths defined in PATH
 	while ((env = nextpath(env, buf, _countof(buf) - 1)) != nullptr && *buf)
 	{
-		TCHAR* pfin = buf + wcslen(buf) - 1;
+		wchar_t* pfin = buf + wcslen(buf) - 1;
 
 		// ensure trailing slash
 		if (*pfin != L'/' && *pfin != L'\\')
@@ -103,7 +103,7 @@ static BOOL FindGitPath()
 	if (!size)
 		return FALSE;
 
-	auto env = std::make_unique<TCHAR[]>(size);
+	auto env = std::make_unique<wchar_t[]>(size);
 	if (!env)
 		return FALSE;
 	_wgetenv_s(&size, env.get(), size, L"PATH");
@@ -1086,7 +1086,7 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 #define BUFSIZE 512
 void GetTempPath(CString &path)
 {
-	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
+	wchar_t lpPathBuffer[BUFSIZE] = { 0 };
 	DWORD dwBufSize=BUFSIZE;
 	DWORD dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
@@ -1095,9 +1095,9 @@ void GetTempPath(CString &path)
 }
 CString GetTempFile()
 {
-	TCHAR lpPathBuffer[BUFSIZE] = { 0 };
+	wchar_t lpPathBuffer[BUFSIZE] = { 0 };
 	DWORD dwBufSize=BUFSIZE;
-	TCHAR szTempName[BUFSIZE] = { 0 };
+	wchar_t szTempName[BUFSIZE] = { 0 };
 
 	auto dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
@@ -2181,7 +2181,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 	else
 	{
-		TCHAR sPlink[MAX_PATH] = {0};
+		wchar_t sPlink[MAX_PATH] = { 0 };
 		GetModuleFileName(nullptr, sPlink, _countof(sPlink));
 		LPWSTR ptr = wcsrchr(sPlink, L'\\');
 		if (ptr) {
@@ -2195,7 +2195,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 
 	{
-		TCHAR sAskPass[MAX_PATH] = {0};
+		wchar_t sAskPass[MAX_PATH] = { 0 };
 		GetModuleFileName(nullptr, sAskPass, _countof(sAskPass));
 		LPWSTR ptr = wcsrchr(sAskPass, L'\\');
 		if (ptr)
@@ -2690,8 +2690,8 @@ void CEnvironment::CopyProcessEnvironment()
 {
 	if (!empty())
 		pop_back();
-	TCHAR *porig = GetEnvironmentStrings();
-	TCHAR *p = porig;
+	wchar_t* porig = GetEnvironmentStrings();
+	wchar_t* p = porig;
 	while(*p !=0 || *(p+1) !=0)
 		this->push_back(*p++);
 
@@ -2702,7 +2702,7 @@ void CEnvironment::CopyProcessEnvironment()
 	FreeEnvironmentStrings(porig);
 }
 
-CString CEnvironment::GetEnv(const TCHAR *name)
+CString CEnvironment::GetEnv(const wchar_t* name)
 {
 	CString str;
 	for (size_t i = 0; i < size(); ++i)
@@ -2717,7 +2717,7 @@ CString CEnvironment::GetEnv(const TCHAR *name)
 	return L"";
 }
 
-void CEnvironment::SetEnv(const TCHAR *name, const TCHAR* value)
+void CEnvironment::SetEnv(const wchar_t* name, const wchar_t* value)
 {
 	unsigned int i;
 	for (i = 0; i < size(); ++i)
@@ -2830,7 +2830,7 @@ CString CGit::GetShortName(const CString& ref, REF_TYPE *out_type)
 		CString bisectGood;
 		CString bisectBad;
 		g_Git.GetBisectTerms(&bisectGood, &bisectBad);
-		TCHAR c;
+		wchar_t c;
 		if (CStringUtils::StartsWith(shortname, bisectGood) && ((c = shortname.GetAt(bisectGood.GetLength())) == '-' || c == '\0'))
 		{
 			type = CGit::BISECT_GOOD;

@@ -129,14 +129,14 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 			nLength += static_cast<int>(it->size());
 			nLength += 1; // '\0' separator
 		}
-		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5)*sizeof(TCHAR));
+		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5) * sizeof(wchar_t));
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
 		df->pFiles = sizeof(DROPFILES);
 		df->fWide = 1;
-		auto pFilenames = reinterpret_cast<TCHAR*>(reinterpret_cast<BYTE*>(pBuffer.get()) + sizeof(DROPFILES));
-		TCHAR* pCurrentFilename = pFilenames;
+		auto pFilenames = reinterpret_cast<wchar_t*>(reinterpret_cast<BYTE*>(pBuffer.get()) + sizeof(DROPFILES));
+		wchar_t* pCurrentFilename = pFilenames;
 
 		for (auto it = sortedpaths.cbegin(); it != sortedpaths.cend(); ++it)
 		{
@@ -1010,7 +1010,7 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 	case 7: // GITSLC_COLSIZE
 		if (!(entry->IsDirectory() || !m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLSIZE))))
 		{
-			TCHAR buf[100] = { 0 };
+			wchar_t buf[100] = { 0 };
 			StrFormatByteSize64(entry->GetFileSize(), buf, 100);
 			return buf;
 		}
@@ -3876,7 +3876,7 @@ bool CGitStatusListCtrl::PrepareGroups(bool bForce /* = false */)
 	RemoveAllGroups();
 	EnableGroupView(bHasGroups);
 
-	TCHAR groupname[1024] = { 0 };
+	wchar_t groupname[1024] = { 0 };
 	int groupindex = 0;
 
 	if(bHasGroups)
@@ -4247,7 +4247,7 @@ bool CGitStatusListCtrlDropTarget::OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium,
 		HDROP hDrop = static_cast<HDROP>(GlobalLock(medium.hGlobal));
 		if (hDrop)
 		{
-			TCHAR szFileName[MAX_PATH] = {0};
+			wchar_t szFileName[MAX_PATH] = { 0 };
 
 			UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 
@@ -4602,7 +4602,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	}
 	filelist += L'|';
 	int len = filelist.GetLength();
-	auto buf = std::make_unique<TCHAR[]>(len + 2);
+	auto buf = std::make_unique<wchar_t[]>(len + 2);
 	wcscpy_s(buf.get(), len + 2, filelist);
 	CStringUtils::PipesToNulls(buf.get(), len + 2);
 	SHFILEOPSTRUCT fileop;

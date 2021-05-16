@@ -383,7 +383,7 @@ void CSciEdit::SetIcon(const std::map<int, UINT> &icons)
 BOOL CSciEdit::LoadDictionaries(LONG lLanguageID)
 {
 	// Setup the spell checker
-	TCHAR buf[6] = { 0 };
+	wchar_t buf[6] = { 0 };
 	CString sFolderUp = CPathUtils::GetAppParentDirectory();
 	CString sFolderAppData = CPathUtils::GetAppDataDirectory();
 	CString sFile;
@@ -567,7 +567,7 @@ void CSciEdit::SetFont(CString sFontName, int iFontSizeInPoints)
 	Call(SCI_SETHOTSPOTACTIVEUNDERLINE, TRUE);
 }
 
-void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separator, TCHAR typeSeparator)
+void CSciEdit::SetAutoCompletionList(std::map<CString, int>&& list, wchar_t separator, wchar_t typeSeparator)
 {
 	//copy the auto completion list.
 

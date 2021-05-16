@@ -198,7 +198,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
-			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
+			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
 				sOrigCWD = originalCurrentDirectory.get();
@@ -382,14 +382,14 @@ BOOL CTortoiseProcApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
-			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
+			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
 				sOrigCWD = originalCurrentDirectory.get();
 				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
 			}
 		}
-		TCHAR pathbuf[MAX_PATH] = {0};
+		wchar_t pathbuf[MAX_PATH] = { 0 };
 		GetTortoiseGitTempPath(_countof(pathbuf), pathbuf);
 		SetCurrentDirectory(pathbuf);
 	}
@@ -502,7 +502,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	// apps might still be needing the recent ones.
 	{
 		DWORD len = GetTortoiseGitTempPath(0, nullptr);
-		auto path = std::make_unique<TCHAR[]>(len + 100);
+		auto path = std::make_unique<wchar_t[]>(len + 100);
 		len = GetTortoiseGitTempPath (len + 100, path.get());
 		if (len != 0)
 		{

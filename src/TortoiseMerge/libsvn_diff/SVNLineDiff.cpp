@@ -162,8 +162,8 @@ svn_error_t * SVNLineDiff::compare_token(void * baton, void * token1, void * tok
 	}
 	else
 	{
-		TCHAR * c1 = (TCHAR *)token1;
-		TCHAR * c2 = (TCHAR *)token2;
+		wchar_t* c1 = (wchar_t*)token1;
+		wchar_t* c2 = (wchar_t*)token2;
 		if (c1 && c2)
 		{
 			if (*c1 == *c2)
@@ -272,7 +272,7 @@ apr_uint32_t SVNLineDiff::Adler32(apr_uint32_t checksum, const WCHAR *data, apr_
 	return ((s2 % ADLER_MOD_BASE) << 16) | (s1 % ADLER_MOD_BASE);
 }
 
-bool SVNLineDiff::IsCharWhiteSpace(TCHAR c)
+bool SVNLineDiff::IsCharWhiteSpace(wchar_t c)
 {
 	return (c == ' ') || (c == '\t');
 }

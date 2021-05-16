@@ -126,7 +126,7 @@ public:
 	 * text in between _ chars is underlined
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
-	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
+	static bool FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end);
 	/**
 	* implements URL searching with the same logic as CSciEdit::StyleURLs
 	*/

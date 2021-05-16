@@ -140,7 +140,7 @@ public:
 	/**
 	 * Returns the accellerator used in the string or \0
 	 */
-	static TCHAR GetAccellerator(const CString& text);
+	static wchar_t GetAccellerator(const CString& text);
 
 	/**
 	 * Writes an ASCII CString to the clipboard in CF_TEXT format
@@ -202,7 +202,7 @@ public:
 	 * Replace all pipe (|) character in the string with a nullptr character. Used
 	 * for passing into Win32 functions that require such representation
 	 */
-	static void PipesToNulls(TCHAR* buffer, size_t length);
-	static void PipesToNulls(TCHAR* buffer);
+	static void PipesToNulls(wchar_t* buffer, size_t length);
+	static void PipesToNulls(wchar_t* buffer);
 };
 

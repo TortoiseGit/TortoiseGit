@@ -36,12 +36,12 @@ CLangDll::~CLangDll()
 
 HINSTANCE CLangDll::Init(LPCWSTR appname, unsigned long langID)
 {
-	TCHAR langpath[MAX_PATH] = {0};
-	TCHAR langdllpath[MAX_PATH] = {0};
-	TCHAR sVer[MAX_PATH] = {0};
+	wchar_t langpath[MAX_PATH] = { 0 };
+	wchar_t langdllpath[MAX_PATH] = { 0 };
+	wchar_t sVer[MAX_PATH] = { 0 };
 	wcscpy_s(sVer, TEXT(STRPRODUCTVER));
 	GetModuleFileName(nullptr, langpath, _countof(langpath));
-	TCHAR* pSlash = wcsrchr(langpath, L'\\');
+	wchar_t* pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
 		return m_hInstance;
 

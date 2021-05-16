@@ -731,7 +731,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 
 	if (LastError == ERROR_SUCCESS)
 	{
-		auto pStr = std::make_unique<TCHAR[]>(size);
+		auto pStr = std::make_unique<wchar_t[]>(size);
 		if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, reinterpret_cast<BYTE*>(pStr.get()), &size)) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
@@ -743,7 +743,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 template<class Base>
 void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::StringT& value)
 {
-	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCWSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (TCHAR));
+	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCWSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (wchar_t));
 }
 
 /**
@@ -1046,7 +1046,7 @@ T& CKeyList<T>::GetAt (int index) const
 	TElements::iterator iter = elements.find (index);
 	if (iter == elements.end())
 	{
-		TCHAR buffer [10];
+		wchar_t buffer [10];
 		_itot_s (index, buffer, 10);
 		typename T::StringT indexKey = key + _T ('\\') + buffer;
 

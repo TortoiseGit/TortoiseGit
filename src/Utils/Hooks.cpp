@@ -589,9 +589,9 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 	error.Empty();
 
 	// Create Temp File for redirection
-	TCHAR szTempPath[MAX_PATH] = {0};
-	TCHAR szOutput[MAX_PATH] = {0};
-	TCHAR szErr[MAX_PATH] = {0};
+	wchar_t szTempPath[MAX_PATH] = { 0 };
+	wchar_t szOutput[MAX_PATH] = { 0 };
+	wchar_t szErr[MAX_PATH] = { 0 };
 	GetTortoiseGitTempPath(_countof(szTempPath), szTempPath);
 	GetTempFileName(szTempPath, L"git", 0, szErr);
 

@@ -208,7 +208,7 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 		pack.m_PackName = L"TortoiseGit Language Pack " + pack.m_LangCode;
 
 		pack.m_LocaleID = _tstoi(langs.Left(4));
-		TCHAR buf[MAX_PATH] = { 0 };
+		wchar_t buf[MAX_PATH] = { 0 };
 		GetLocaleInfo(pack.m_LocaleID, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 		pack.m_LangName = buf;
 		GetLocaleInfo(pack.m_LocaleID, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));

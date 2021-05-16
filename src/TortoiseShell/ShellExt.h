@@ -87,7 +87,7 @@ protected:
 	std::wstring uuidSource;
 	std::wstring uuidTarget;
 	int space;
-	TCHAR stringtablebuffer[255];
+	wchar_t stringtablebuffer[255];
 	std::wstring ignoredprops;
 	CRegStdString		regDiffLater;
 

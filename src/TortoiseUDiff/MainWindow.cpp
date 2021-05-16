@@ -304,7 +304,7 @@ LRESULT CMainWindow::DoCommand(int id)
 		break;
 	case ID_FILE_PAGESETUP:
 		{
-			TCHAR localeInfo[3] = { 0 };
+			wchar_t localeInfo[3] = { 0 };
 			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
 			// Metric system. '1' is US System
 			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
@@ -406,7 +406,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				- GetDeviceCaps(hdc, VERTRES)                       // printable height
 				- rectPhysMargins.top;                              // right unprintable margin
 
-			TCHAR localeInfo[3] = { 0 };
+			wchar_t localeInfo[3] = { 0 };
 			GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE, localeInfo, 3);
 			// Metric system. '1' is US System
 			int defaultMargin = localeInfo[0] == '0' ? 2540 : 1000;
@@ -565,7 +565,7 @@ std::wstring CMainWindow::GetAppDirectory()
 	do
 	{
 		bufferlen += MAX_PATH;		// MAX_PATH is not the limit here!
-		auto pBuf = std::make_unique<TCHAR[]>(bufferlen);
+		auto pBuf = std::make_unique<wchar_t[]>(bufferlen);
 		len = GetModuleFileName(nullptr, pBuf.get(), bufferlen);
 		path = std::wstring(pBuf.get(), len);
 	} while(len == bufferlen);
@@ -864,9 +864,9 @@ bool CMainWindow::SaveFile(LPCWSTR filename)
 	_wfopen_s(&fp, filename, L"w+b");
 	if (!fp)
 	{
-		TCHAR fmt[1024] = { 0 };
+		wchar_t fmt[1024] = { 0 };
 		LoadString(::hResource, IDS_ERRORSAVE, fmt, _countof(fmt));
-		TCHAR error[1024] = { 0 };
+		wchar_t error[1024] = { 0 };
 		_snwprintf_s(error, _countof(error), fmt, filename, static_cast<LPCWSTR>(CFormatMessageWrapper()));
 		MessageBox(*this, error, L"TortoiseGitUDiff", MB_OK);
 		return false;
@@ -886,7 +886,7 @@ bool CMainWindow::SaveFile(LPCWSTR filename)
 void CMainWindow::SetTitle(LPCWSTR title)
 {
 	size_t len = wcslen(title);
-	auto pBuf = std::make_unique<TCHAR[]>(len + 40);
+	auto pBuf = std::make_unique<wchar_t[]>(len + 40);
 	swprintf_s(pBuf.get(), len + 40, L"%s - TortoiseGitUDiff", title);
 	SetWindowTitle(std::wstring(pBuf.get()));
 }
@@ -981,7 +981,7 @@ bool CMainWindow::canCloseWhenModified()
 	if (SendEditor(SCI_GETMODIFY) != TRUE)
 		return true;
 
-	TCHAR question[1024] = { 0 };
+	wchar_t question[1024] = { 0 };
 	LoadString(::hResource, IDS_MODIFIEDASKSAVE, question, _countof(question));
 	switch (MessageBox(m_hwnd, question, L"TortoiseGitUDiff", MB_YESNOCANCEL | MB_ICONQUESTION))
 	{
@@ -997,14 +997,14 @@ bool CMainWindow::canCloseWhenModified()
 bool CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = L"" */)
 {
 	OPENFILENAME ofn = {0};				// common dialog box structure
-	TCHAR szFile[MAX_PATH] = {0};		// buffer for file name
+	wchar_t szFile[MAX_PATH] = {0};		// buffer for file name
 	// Initialize OPENFILENAME
 	ofn.lStructSize = sizeof(OPENFILENAME);
 	ofn.hwndOwner = *this;
 	ofn.lpstrFile = szFile;
-	ofn.nMaxFile = sizeof(szFile)/sizeof(TCHAR);
-	TCHAR filter[1024] = { 0 };
-	LoadString(::hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter)/sizeof(TCHAR));
+	ofn.nMaxFile = sizeof(szFile)/sizeof(wchar_t);
+	wchar_t filter[1024] = { 0 };
+	LoadString(::hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter) / sizeof(wchar_t));
 	CStringUtils::PipesToNulls(filter);
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
@@ -1012,8 +1012,8 @@ bool CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.lpstrDefExt = L"diff";
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = nullptr;
-	TCHAR fileTitle[1024] = { 0 };
-	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle)/sizeof(TCHAR));
+	wchar_t fileTitle[1024] = { 0 };
+	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle) / sizeof(wchar_t));
 	ofn.lpstrTitle = fileTitle;
 	ofn.Flags = OFN_ENABLESIZING | OFN_EXPLORER;
 	if(doLoad)

@@ -72,7 +72,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
 		CString appDir = CPathUtils::GetAppDirectory();
 		if (appDir.GetLength() < MAX_PATH)
 		{
-			TCHAR buf[MAX_PATH] = {0};
+			wchar_t buf[MAX_PATH] = { 0 };
 			PathCanonicalize(buf, static_cast<LPCWSTR>(appDir));
 			appDir = buf;
 		}

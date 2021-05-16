@@ -37,6 +37,6 @@ public:
 	~PreserveChdir();
 
 private:
-	std::unique_ptr<TCHAR[]> m_originalCurrentDirectory;
+	std::unique_ptr<wchar_t[]> m_originalCurrentDirectory;
 };
 

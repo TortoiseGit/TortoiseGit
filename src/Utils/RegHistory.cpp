@@ -75,7 +75,7 @@ size_t CRegHistory::Load(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix)
 	do
 	{
 		//keys are of form <lpszKeyPrefix><entrynumber>
-		TCHAR sKey[4096] = {0};
+		wchar_t sKey[4096] = { 0 };
 		swprintf_s(sKey, L"%s\\%s%d", lpszSection, lpszKeyPrefix, n++);
 		sText = CRegStdString(sKey);
 		if (!sText.empty())
@@ -94,7 +94,7 @@ bool CRegHistory::Save() const
 	int nMax = static_cast<int>(min(m_arEntries.size(), static_cast<size_t>(m_nMaxHistoryItems) + 1));
 	for (int n = 0; n < static_cast<int>(m_arEntries.size()); ++n)
 	{
-		TCHAR sKey[4096] = {0};
+		wchar_t sKey[4096] = { 0 };
 		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
 		regkey = m_arEntries[n];
@@ -102,7 +102,7 @@ bool CRegHistory::Save() const
 	// remove items exceeding the max number of history items
 	for (int n = nMax; ; ++n)
 	{
-		TCHAR sKey[4096] = {0};
+		wchar_t sKey[4096] = { 0 };
 		swprintf_s(sKey, L"%s\\%s%d", m_sSection.c_str(), m_sKeyPrefix.c_str(), n);
 		CRegStdString regkey(sKey);
 		if (static_cast<std::wstring>(regkey).empty())

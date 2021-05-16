@@ -30,13 +30,13 @@ CUtils::~CUtils()
 
 void CUtils::StringExtend(LPWSTR str)
 {
-	TCHAR * cPos = str;
+	wchar_t* cPos = str;
 	do
 	{
 		cPos = wcschr(cPos, '\\');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = '\\';
 			cPos++;
@@ -49,7 +49,7 @@ void CUtils::StringExtend(LPWSTR str)
 		cPos = wcschr(cPos, '\n');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 'n';
 		}
@@ -60,7 +60,7 @@ void CUtils::StringExtend(LPWSTR str)
 		cPos = wcschr(cPos, '\r');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 'r';
 		}
@@ -71,7 +71,7 @@ void CUtils::StringExtend(LPWSTR str)
 		cPos = wcschr(cPos, '\t');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 't';
 		}
@@ -82,7 +82,7 @@ void CUtils::StringExtend(LPWSTR str)
 		cPos = wcschr(cPos, '"');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = '"';
 			cPos++;
@@ -93,7 +93,7 @@ void CUtils::StringExtend(LPWSTR str)
 
 void CUtils::StringCollapse(LPWSTR str)
 {
-	TCHAR * cPos = str;
+	wchar_t* cPos = str;
 	do
 	{
 		cPos = wcschr(cPos, '\\');
@@ -102,27 +102,27 @@ void CUtils::StringCollapse(LPWSTR str)
 			if (*(cPos+1) == 'n')
 			{
 				*cPos = '\n';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) + 1) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == 'r')
 			{
 				*cPos = '\r';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == 't')
 			{
 				*cPos = '\t';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == '"')
 			{
 				*cPos = '"';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == '\\')
 			{
 				*cPos = '\\';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			cPos++;
 		}

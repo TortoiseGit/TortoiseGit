@@ -647,11 +647,11 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	viewer = txtexe;
 
 	DWORD len = ExpandEnvironmentStrings(viewer, nullptr, 0);
-	auto buf = std::make_unique<TCHAR[]>(len + 1);
+	auto buf = std::make_unique<wchar_t[]>(len + 1);
 	ExpandEnvironmentStrings(viewer, buf.get(), len);
 	viewer = buf.get();
 	len = ExpandEnvironmentStrings(file, nullptr, 0);
-	auto buf2 = std::make_unique<TCHAR[]>(len + 1);
+	auto buf2 = std::make_unique<wchar_t[]>(len + 1);
 	ExpandEnvironmentStrings(file, buf2.get(), len);
 	file = buf2.get();
 	file = L'"' + file + L'"';
@@ -839,18 +839,18 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 	return bStyled;
 }
 
-bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end)
+bool CAppUtils::FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end)
 {
 	int i=start;
 	int last = sText.GetLength() - 1;
 	bool bFoundMarker = false;
-	TCHAR c = i == 0 ? L'\0' : sText[i - 1];
-	TCHAR nextChar = i >= last ? L'\0' : sText[i + 1];
+	wchar_t c = i == 0 ? L'\0' : sText[i - 1];
+	wchar_t nextChar = i >= last ? L'\0' : sText[i + 1];
 
 	// find a starting marker
 	while (i < last)
 	{
-		TCHAR prevChar = c;
+		wchar_t prevChar = c;
 		c = nextChar;
 		nextChar = sText[i + 1];
 
@@ -878,7 +878,7 @@ bool CAppUtils::FindStyleChars(const CString& sText, TCHAR stylechar, int& start
 	bFoundMarker = false;
 	while (i <= last)
 	{
-		TCHAR prevChar = c;
+		wchar_t prevChar = c;
 		c = sText[i];
 		if (c == stylechar)
 		{
@@ -1030,7 +1030,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CSt
 	if (hWnd)
 	{
 		sCmd += L" /hwnd:";
-		TCHAR buf[30];
+		wchar_t buf[30];
 		swprintf_s(buf, L"%p", static_cast<void*>(hWnd));
 		sCmd += buf;
 	}
@@ -2232,7 +2232,7 @@ bool CAppUtils::MessageContainsConflictHints(HWND hWnd, const CString& message)
 	CString cleanupMode = g_Git.GetConfigValue(L"core.cleanup", L"default");
 	if (cleanupMode == L"verbatim" || cleanupMode == L"whitespace" || cleanupMode == L"scissors")
 		return false;
-	TCHAR commentChar = L'#';
+	wchar_t commentChar = L'#';
 	CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
 	if (!commentCharValue.IsEmpty())
 		commentChar = commentCharValue[0];
@@ -2261,7 +2261,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(L"i18n.commitencoding"));
 
 		bool stripComments = (CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE) == TRUE);
-		TCHAR commentChar = L'#';
+		wchar_t commentChar = L'#';
 		if (stripComments)
 		{
 			CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
@@ -3945,7 +3945,7 @@ void CAppUtils::SetupBareRepoIcon(const CString& path)
 		{
 			DWORD dwWritten = 0;
 			CString sIni = L"[.ShellClassInfo]\r\nConfirmFileOp=0\r\nIconFile=git.ico\r\nIconIndex=0\r\nInfoTip=Git Repository\r\n";
-			WriteFile(hFile, static_cast<LPCWSTR>(sIni), sIni.GetLength() * sizeof(TCHAR), &dwWritten, nullptr);
+			WriteFile(hFile, static_cast<LPCWSTR>(sIni), sIni.GetLength() * sizeof(wchar_t), &dwWritten, nullptr);
 		}
 		PathMakeSystemFolder(path);
 	}

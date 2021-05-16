@@ -218,9 +218,9 @@ public:
 	ULONGLONG drivetypeticker;
 	ULONGLONG menumaskticker;
 	UINT  drivetypecache[27];
-	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
-	TCHAR szDecSep[5];
-	TCHAR szThousandsSep[5];
+	wchar_t drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
+	wchar_t szDecSep[5];
+	wchar_t szThousandsSep[5];
 	std::map<std::wstring, AdminDir_s> admindircache;
 	CRegStdString nocontextpaths;
 	std::wstring excludecontextstr;

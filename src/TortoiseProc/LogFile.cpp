@@ -126,7 +126,7 @@ bool CLogFile::AddTimeLine()
 	// first add an empty line as a separator
 	m_lines.push_back(sLine);
 	// now add the time string
-	TCHAR datebuf[4096] = {0};
+	wchar_t datebuf[4096] = { 0 };
 	GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, nullptr, nullptr, datebuf, 4096);
 	sLine = datebuf;
 	GetTimeFormat(LOCALE_USER_DEFAULT, 0, nullptr, nullptr, datebuf, 4096);

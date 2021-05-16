@@ -60,7 +60,7 @@ bool				bRestart = false;
 NOTIFYICONDATA		niData;
 HWND				hWndHidden;
 HWND				hTrayWnd;
-TCHAR				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
+wchar_t				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 int					nCurrentCrawledpathIndex = 0;
 CComAutoCriticalSection critSec;
 
@@ -114,9 +114,9 @@ void HandleRestart()
 {
 	if (bRestart)
 	{
-		TCHAR exeName[MAX_PATH] = { 0 };
+		wchar_t exeName[MAX_PATH] = { 0 };
 		::GetModuleFileName(nullptr, exeName, _countof(exeName));
-		TCHAR cmdLine[20] = { 0 };
+		wchar_t cmdLine[20] = { 0 };
 		swprintf_s(cmdLine, L" /kill:%d", GetCurrentProcessId());
 		if (!CCreateProcessHelper::CreateProcessDetached(exeName, cmdLine))
 			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");
@@ -169,7 +169,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	DWORD dwThreadId;
 	MSG msg;
-	TCHAR szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
+	wchar_t szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
 
 	// create a hidden window to receive window messages.
 	WNDCLASSEX wcex = { 0 };
@@ -405,7 +405,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					{
 						if (pVolume->dbcv_unitmask & (1 << i))
 						{
-							TCHAR driveletter = 'A' + i;
+							wchar_t driveletter = 'A' + i;
 							CString drive = CString(driveletter);
 							drive += L":\\";
 							CGitStatusCache::Instance().CloseWatcherHandles(CTGitPath(drive));

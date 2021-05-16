@@ -54,7 +54,7 @@ protected:
 	CSciEdit			m_cLogMessage;
 	ProjectProperties	m_ProjectProperties;
 
-	TCHAR				* m_pDefaultText;
+	wchar_t*			m_pDefaultText;
 	DECLARE_MESSAGE_MAP()
 	CHOOSE_EVENT_RADIO() ;
 

@@ -89,7 +89,7 @@ protected:
 
 			if (nVirtKey == 'A' && (GetKeyState(VK_CONTROL) & 0x8000 ) )
 			{
-				TCHAR buffer[129];
+				wchar_t buffer[129];
 				::GetClassName(pMsg->hwnd, buffer, _countof(buffer) - 1);
 
 				if (_wcsnicmp(buffer, L"EDIT", _countof(buffer) - 1) == 0)

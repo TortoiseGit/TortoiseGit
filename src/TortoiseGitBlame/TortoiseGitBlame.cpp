@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -86,7 +86,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 		DWORD len = GetCurrentDirectory(0, nullptr);
 		if (len)
 		{
-			auto originalCurrentDirectory = std::make_unique<TCHAR[]>(len);
+			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
 			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
 			{
 				sOrigCWD = originalCurrentDirectory.get();
@@ -248,7 +248,7 @@ BOOL CTortoiseGitBlameApp::StoreWindowPlacement(const CRect& rectNormalPosition,
 
 	CDPIAware::Instance().UnscaleWindowPlacement(&wp);
 
-	TCHAR szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
+	wchar_t szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
 	swprintf_s(szBuffer, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",
 		wp.flags, wp.showCmd,
 		wp.ptMinPosition.x, wp.ptMinPosition.y,
@@ -293,8 +293,8 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
 
-	TCHAR verbuf[1024] = {0};
-	TCHAR maskbuf[1024] = {0};
+	wchar_t verbuf[1024] = { 0 };
+	wchar_t maskbuf[1024] = { 0 };
 	::LoadString(GetModuleHandle(nullptr), IDS_VERSION, maskbuf, _countof(maskbuf));
 	swprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
 	SetDlgItemText(IDC_VERSION, verbuf);

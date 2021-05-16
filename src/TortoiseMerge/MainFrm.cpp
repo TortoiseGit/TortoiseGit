@@ -2165,7 +2165,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 {
 	CRegString placement(CString(L"Software\\TortoiseGitMerge\\WindowPos_") + GetMonitorSetupHash().c_str());
-	TCHAR szBuffer[_countof("-32767")*8 + sizeof("65535")*2];
+	wchar_t szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
 
 	CDPIAware::Instance().UnscaleWindowPlacement(pwp);
 

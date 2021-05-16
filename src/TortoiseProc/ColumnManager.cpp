@@ -554,7 +554,7 @@ CString ColumnManager::GetWidthString() const
 	CString result;
 
 	// regular columns
-	TCHAR buf[10] = { 0 };
+	wchar_t buf[10] = { 0 };
 	for (size_t i = 0; i < itemName.size(); ++i)
 	{
 		_stprintf_s(buf, L"%08X", columns[i].adjusted ? CDPIAware::Instance().UnscaleX(columns[i].width) : MAXLONG);
@@ -568,7 +568,7 @@ CString ColumnManager::GetColumnOrderString() const
 {
 	CString result;
 
-	TCHAR buf[3] = { 0 };
+	wchar_t buf[3] = { 0 };
 	for (size_t i = 0, count = columnOrder.size(); i < count; ++i)
 	{
 		_stprintf_s(buf, L"%02X", columnOrder[i]);

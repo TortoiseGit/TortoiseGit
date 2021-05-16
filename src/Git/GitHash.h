@@ -78,7 +78,7 @@ public:
 			{
 				a =a<<4;
 
-				TCHAR ch = str[j];
+				wchar_t ch = str[j];
 				if (ch >= L'0' && ch <= L'9')
 					a |= (ch - L'0') & 0xF;
 				else if (ch >=L'A' && ch <= L'F')

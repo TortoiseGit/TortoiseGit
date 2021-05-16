@@ -113,7 +113,7 @@ void CStringUtils::RemoveAccelerators(CString& text)
 	}
 }
 
-TCHAR CStringUtils::GetAccellerator(const CString& text)
+wchar_t CStringUtils::GetAccellerator(const CString& text)
 {
 	int pos = 0;
 	while ((pos = text.Find('&', pos)) >= 0)
@@ -326,7 +326,7 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 				{
 					if (((!PathIsFileSpec(longline))&&longline.Find(':')<3)||(PathIsURL(longline)))
 					{
-						TCHAR buf[MAX_PATH] = {0};
+						wchar_t buf[MAX_PATH] = { 0 };
 						PathCompactPathEx(buf, longline, limit+1, 0);
 						longline = buf;
 					}
@@ -354,7 +354,7 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 		{
 			if (((!PathIsFileSpec(longline))&&longline.Find(':')<3)||(PathIsURL(longline)))
 			{
-				TCHAR buf[MAX_PATH] = {0};
+				wchar_t buf[MAX_PATH] = { 0 };
 				PathCompactPathEx(buf, longline, limit+1, 0);
 				longline = buf;
 			}
@@ -653,15 +653,15 @@ bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::ws
 	return true;
 }
 
-inline static void PipeToNull(TCHAR* ptr)
+inline static void PipeToNull(wchar_t* ptr)
 {
 	if (*ptr == '|')
 		*ptr = '\0';
 }
 
-void CStringUtils::PipesToNulls(TCHAR* buffer, size_t length)
+void CStringUtils::PipesToNulls(wchar_t* buffer, size_t length)
 {
-	TCHAR* ptr = buffer + length;
+	wchar_t* ptr = buffer + length;
 	while (ptr != buffer)
 	{
 		PipeToNull(ptr);
@@ -669,9 +669,9 @@ void CStringUtils::PipesToNulls(TCHAR* buffer, size_t length)
 	}
 }
 
-void CStringUtils::PipesToNulls(TCHAR* buffer)
+void CStringUtils::PipesToNulls(wchar_t* buffer)
 {
-	TCHAR* ptr = buffer;
+	wchar_t* ptr = buffer;
 	while (*ptr)
 	{
 		PipeToNull(ptr);

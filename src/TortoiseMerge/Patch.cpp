@@ -262,7 +262,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				//this line is either a context line (with a ' ' in front)
 				//a line added (with a '+' in front)
 				//or a removed line (with a '-' in front)
-				TCHAR type;
+				wchar_t type;
 				if (sLine.IsEmpty())
 					type = ' ';
 				else

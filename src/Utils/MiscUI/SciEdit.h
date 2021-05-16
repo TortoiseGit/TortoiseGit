@@ -130,7 +130,7 @@ public:
 	/**
 	 * Adds a list of words for use in auto completion.
 	 */
-	void		SetAutoCompletionList(std::map<CString, int>&& list, TCHAR separator = ';', TCHAR typeSeparator = '?');
+	void		SetAutoCompletionList(std::map<CString, int>&& list, wchar_t separator = ';', wchar_t typeSeparator = '?');
 	/**
 	 * Returns the word located under the cursor.
 	 */
@@ -156,8 +156,8 @@ private:
 	std::unique_ptr<Hunspell>	pChecker;
 	UINT		m_spellcodepage;
 	std::map<CString, int> m_autolist;
-	TCHAR		m_separator;
-	TCHAR		m_typeSeparator;
+	wchar_t		m_separator;
+	wchar_t		m_typeSeparator;
 	CStringA	m_sCommand;
 	CStringA	m_sBugID;
 	CString		m_sUrl;

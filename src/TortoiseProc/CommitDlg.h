@@ -221,7 +221,7 @@ private:
 		int cnt;
 		int wmid;
 	} ACCELLERATOR;
-	std::map<TCHAR, ACCELLERATOR>	m_accellerators;
+	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccelOkButton;
 
 	CBugTraqAssociation	m_bugtraq_association;

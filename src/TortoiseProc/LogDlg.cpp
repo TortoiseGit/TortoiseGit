@@ -676,7 +676,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 	while (offset < msg.GetLength())
 	{
 		old = offset;
-		TCHAR e = msg[offset];
+		wchar_t e = msg[offset];
 		if (e == '\n')
 		{
 			++offset;
@@ -710,7 +710,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 			}
 			if (LookLikeGitHash(msg, offset))
 			{
-				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
+				wchar_t d = offset < msg.GetLength() ? msg[offset] : '\0';
 				if (!((d >= 'A' && d <= 'Z') || (d >= 'a' && d <= 'z') || (d >= '0' && d <= '9')))
 				{
 					CHARRANGE range = { old, offset };
@@ -3069,7 +3069,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 	{
 		// URL is relative to the repository root
 		CString url1 = m_sRepositoryRoot + url.Mid(1);
-		TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
+		wchar_t buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 		DWORD len = url.GetLength();
 		if (UrlCanonicalize(static_cast<LPCWSTR>(url1), buf, &len, 0) == S_OK)
 			return CString(buf, len);
@@ -3085,7 +3085,7 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 		{
 			sHost = m_sRepositoryRoot.Left(m_sRepositoryRoot.Find(L'/', schemepos + 3));
 			CString url1 = sHost + url;
-			TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
+			wchar_t buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 			DWORD len = url.GetLength();
 			if (UrlCanonicalize(static_cast<LPCWSTR>(url), buf, &len, 0) == S_OK)
 				return CString(buf, len);

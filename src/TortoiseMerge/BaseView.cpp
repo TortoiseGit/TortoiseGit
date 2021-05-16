@@ -1813,8 +1813,8 @@ void CBaseView::DrawTextLine(
 	{
 		int nMarkLength = m_sMarkedWord.GetLength();
 		//int nViewLineLength = sViewLine.GetLength();
-		const TCHAR * text = sViewLine;
-		const TCHAR * findText = text;
+		const wchar_t* text = sViewLine;
+		const wchar_t* findText = text;
 		while ((findText = wcsstr(findText, static_cast<LPCWSTR>(m_sMarkedWord))) != 0)
 		{
 			int nMarkStart = static_cast<int>(findText - text);
@@ -2159,7 +2159,7 @@ void CBaseView::ExpandChars(const CString &sLine, int nOffset, int nCount, CStri
 	}
 	else
 	{
-		memcpy(pszBuf, pszChars, sizeof(TCHAR) * nLength);
+		memcpy(pszBuf, pszChars, sizeof(wchar_t) * nLength);
 		nCurPos = nLength;
 	}
 	pszBuf[nCurPos] = 0;

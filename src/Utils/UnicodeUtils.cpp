@@ -26,7 +26,7 @@
 struct CodeMap
 {
 	int m_Code;
-	TCHAR * m_CodeName;
+	wchar_t* m_CodeName;
 };
 int CUnicodeUtils::GetCPCode(const CString &codename)
 {

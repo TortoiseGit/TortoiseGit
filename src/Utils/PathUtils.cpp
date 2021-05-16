@@ -28,9 +28,9 @@
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 {
 	size_t len = wcslen(path) + 10;
-	auto buf = std::make_unique<TCHAR[]>(len);
-	auto internalpathbuf = std::make_unique<TCHAR[]>(len);
-	TCHAR * pPath = internalpathbuf.get();
+	auto buf = std::make_unique<wchar_t[]>(len);
+	auto internalpathbuf = std::make_unique<wchar_t[]>(len);
+	wchar_t* pPath = internalpathbuf.get();
 	SECURITY_ATTRIBUTES attribs = { 0 };
 	attribs.nLength = sizeof(SECURITY_ATTRIBUTES);
 	attribs.bInheritHandle = FALSE;
@@ -38,8 +38,8 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 	ConvertToBackslash(internalpathbuf.get(), path, len);
 	do
 	{
-		SecureZeroMemory(buf.get(), (len)*sizeof(TCHAR));
-		TCHAR* slashpos = wcschr(pPath, L'\\');
+		SecureZeroMemory(buf.get(), (len)*sizeof(wchar_t));
+		wchar_t* slashpos = wcschr(pPath, L'\\');
 		if (slashpos)
 			wcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
 		else
@@ -62,7 +62,7 @@ void CPathUtils::ConvertToSlash(LPWSTR path)
 void CPathUtils::ConvertToBackslash(LPWSTR dest, LPCWSTR src, size_t len)
 {
 	wcscpy_s(dest, len, src);
-	TCHAR * p = dest;
+	wchar_t* p = dest;
 	for (; *p != '\0'; ++p)
 		if (*p == '/')
 			*p = '\\';
@@ -113,7 +113,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 {
 	if (path.IsEmpty())
 		return path;
-	TCHAR pathbufcanonicalized[MAX_PATH] = {0}; // MAX_PATH ok.
+	wchar_t pathbufcanonicalized[MAX_PATH] = { 0 }; // MAX_PATH ok.
 	DWORD ret = 0;
 	CString sRet;
 	if (!PathIsURL(path) && PathIsRelative(path))
@@ -121,7 +121,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = GetFullPathName(path, 0, nullptr, nullptr);
 		if (ret)
 		{
-			auto pathbuf = std::make_unique<TCHAR[]>(ret + 1);
+			auto pathbuf = std::make_unique<wchar_t[]>(ret + 1);
 			if ((ret = GetFullPathName(path, ret, pathbuf.get(), nullptr)) != 0)
 				sRet = CString(pathbuf.get(), ret);
 		}
@@ -131,7 +131,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(pathbufcanonicalized, nullptr, 0);
 		if (ret == 0)
 			return path;
-		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
+		auto pathbuf = std::make_unique<wchar_t[]>(ret + 2);
 		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -140,7 +140,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(path, nullptr, 0);
 		if (ret == 0)
 			return path;
-		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
+		auto pathbuf = std::make_unique<wchar_t[]>(ret + 2);
 		ret = ::GetLongPathName(path, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -341,7 +341,7 @@ std::wstring CPathUtils::GetVersionFromFile(LPCWSTR p_strFilename)
 				&nFixedLength);
 			lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
-			TCHAR strLangProductVersion[MAX_PATH] = { 0 };
+			wchar_t strLangProductVersion[MAX_PATH] = { 0 };
 			swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),

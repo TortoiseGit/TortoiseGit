@@ -254,7 +254,7 @@ void CImportPatchDlg::OnBnClickedButtonAdd()
 {
 	CFileDialog dlg(TRUE, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_ALLOWMULTISELECT, CString(MAKEINTRESOURCE(IDS_PATCHFILEFILTER)));
 	dlg.m_ofn.nMaxFile = 65536;
-	TCHAR path[65536] = { 0 };
+	wchar_t path[65536] = { 0 };
 	dlg.m_ofn.lpstrFile = path;
 	INT_PTR ret = dlg.DoModal();
 	SetCurrentDirectory(g_Git.m_CurrentDir);
@@ -660,7 +660,7 @@ BOOL CImportPatchDlg::PreTranslateMessage(MSG* pMsg)
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
-				TCHAR buff[129];
+				wchar_t buff[129];
 				::GetClassName(pMsg->hwnd, buff, _countof(buff) - 1);
 
 				/* Use MSFTEDIT_CLASS http://msdn.microsoft.com/en-us/library/bb531344.aspx */

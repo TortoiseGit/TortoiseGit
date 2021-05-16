@@ -58,7 +58,7 @@ CString CLoglistUtils::FormatDateAndTime(const CTime& cTime, DWORD option, bool 
 			SYSTEMTIME sysTime;
 			cTime.GetAsSystemTime(sysTime);
 
-			TCHAR buf[100] = { 0 };
+			wchar_t buf[100] = { 0 };
 
 			GetDateFormat(LOCALE_USER_DEFAULT, option, &sysTime, nullptr, buf, _countof(buf) - 1);
 			CString datetime = buf;

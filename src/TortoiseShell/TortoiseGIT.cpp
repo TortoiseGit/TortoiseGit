@@ -60,7 +60,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// it.
 
 	bool bInShellTest = false;
-	TCHAR buf[MAX_PATH + 1] = {0};		// MAX_PATH ok, the test really is for debugging anyway.
+	wchar_t buf[MAX_PATH + 1] = { 0 };		// MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 	if(pathLength >= 14)
 	{

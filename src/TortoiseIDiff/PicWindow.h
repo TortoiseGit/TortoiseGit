@@ -236,7 +236,7 @@ protected:
     /// Moves the alpha slider trackbar to the correct position
     void                PositionTrackBar();
     /// creates the info string used in the info box and the tooltips
-    void                BuildInfoString(TCHAR * buf, int size, bool bTooltip);
+    void                BuildInfoString(wchar_t* buf, int size, bool bTooltip);
     /// adjusts the zoom to fit the specified width
     void                SetZoomToWidth(long width);
     /// adjusts the zoom to fit the specified height
@@ -266,7 +266,7 @@ protected:
     std::wstring        picpath2;           ///< the path of the second picture
     float               blendAlpha;         ///<the alpha value for transparency blending
     bool                bShowInfo;          ///< true if the info rectangle of the image should be shown
-    TCHAR               m_wszTip[8192];
+    wchar_t             m_wszTip[8192];
     char                m_szTip[8192];
     POINT               m_lastTTPos;
     HWND                hwndTT;

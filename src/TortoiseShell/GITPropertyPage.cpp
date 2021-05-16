@@ -299,7 +299,7 @@ void CGitPropertyPage::RunCommand(const std::wstring& command)
 	MessageBox(nullptr, CFormatMessageWrapper(), L"TortoiseGitProc launch failed", MB_OK | MB_ICONERROR);
 }
 
-void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const
+void CGitPropertyPage::Time64ToTimeString(__time64_t time, wchar_t* buf, size_t buflen) const
 {
 	struct tm newtime;
 	SYSTEMTIME systime;
@@ -311,8 +311,8 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	*buf = '\0';
 	if (time)
 	{
-		TCHAR timebuf[MAX_STRING_LENGTH] = { 0 };
-		TCHAR datebuf[MAX_STRING_LENGTH] = { 0 };
+		wchar_t timebuf[MAX_STRING_LENGTH] = { 0 };
+		wchar_t datebuf[MAX_STRING_LENGTH] = { 0 };
 		_localtime64_s(&newtime, &time);
 
 		systime.wDay = static_cast<WORD>(newtime.tm_mday);

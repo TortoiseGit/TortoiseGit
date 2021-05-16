@@ -710,7 +710,7 @@ protected:
 	bool				m_bIncludeBoundaryCommits;
 
 	DWORD				m_dwDefaultColumns;
-	TCHAR               m_wszTip[8192];
+	wchar_t				m_wszTip[8192];
 	char                m_szTip[8192];
 	std::map<CString, CRect> m_RefLabelPosMap; // ref name vs. label position
 	int					m_OldTopIndex;

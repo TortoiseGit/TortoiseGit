@@ -96,7 +96,7 @@ BOOL CSetMainPage::OnInitDialog()
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 
 	// set up the language selecting combobox
-	TCHAR buf[MAX_PATH] = {0};
+	wchar_t buf[MAX_PATH] = { 0 };
 	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	m_LanguageCombo.AddString(buf);
 	m_LanguageCombo.SetItemData(0, 1033);

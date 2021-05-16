@@ -691,9 +691,9 @@ bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 int wmain(int argc, wchar_t* argv[])
 {
 	// we have three parameters
-	const TCHAR* src = nullptr;
-	const TCHAR* dst = nullptr;
-	const TCHAR* wc = nullptr;
+	const wchar_t* src = nullptr;
+	const wchar_t* dst = nullptr;
+	const wchar_t* wc = nullptr;
 	BOOL bErrResursively = FALSE;
 	BOOL bErrOnMods = FALSE;
 	BOOL bErrOnUnversioned = FALSE;
@@ -723,7 +723,7 @@ int wmain(int argc, wchar_t* argv[])
 	{
 		// GitWCRev Path -params
 		// GitWCRev Path Tmpl.in Tmpl.out -params
-		const TCHAR* Params = argv[argc - 1];
+		const wchar_t* Params = argv[argc - 1];
 		if (Params[0] == L'-')
 		{
 			if (wcschr(Params, L'e') != 0)
@@ -774,7 +774,7 @@ int wmain(int argc, wchar_t* argv[])
 	}
 
 	DWORD reqLen = GetFullPathName(wc, 0, nullptr, nullptr);
-	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	auto wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 	GetFullPathName(wc, reqLen, wcfullPath.get(), nullptr);
 	// GetFullPathName() sometimes returns the full path with the wrong
 	// case. This is not a problem on Windows since its filesystem is
@@ -786,48 +786,48 @@ int wmain(int argc, wchar_t* argv[])
 	int shortlen = GetShortPathName(wcfullPath.get(), nullptr, 0);
 	if (shortlen)
 	{
-		auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+		auto shortPath = std::make_unique<wchar_t[]>(shortlen + 1);
 		if (GetShortPathName(wcfullPath.get(), shortPath.get(), shortlen + 1))
 		{
 			reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
-			wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+			wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 			GetLongPathName(shortPath.get(), wcfullPath.get(), reqLen);
 		}
 	}
 	wc = wcfullPath.get();
-	std::unique_ptr<TCHAR[]> dstfullPath;
+	std::unique_ptr<wchar_t[]> dstfullPath;
 	if (dst)
 	{
 		reqLen = GetFullPathName(dst, 0, nullptr, nullptr);
-		dstfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+		dstfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 		GetFullPathName(dst, reqLen, dstfullPath.get(), nullptr);
 		shortlen = GetShortPathName(dstfullPath.get(), nullptr, 0);
 		if (shortlen)
 		{
-			auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+			auto shortPath = std::make_unique<wchar_t[]>(shortlen + 1);
 			if (GetShortPathName(dstfullPath.get(), shortPath.get(), shortlen+1))
 			{
 				reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
-				dstfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+				dstfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 				GetLongPathName(shortPath.get(), dstfullPath.get(), reqLen);
 			}
 		}
 		dst = dstfullPath.get();
 	}
-	std::unique_ptr<TCHAR[]> srcfullPath;
+	std::unique_ptr<wchar_t[]> srcfullPath;
 	if (src)
 	{
 		reqLen = GetFullPathName(src, 0, nullptr, nullptr);
-		srcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+		srcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 		GetFullPathName(src, reqLen, srcfullPath.get(), nullptr);
 		shortlen = GetShortPathName(srcfullPath.get(), nullptr, 0);
 		if (shortlen)
 		{
-			auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+			auto shortPath = std::make_unique<wchar_t[]>(shortlen + 1);
 			if (GetShortPathName(srcfullPath.get(), shortPath.get(), shortlen+1))
 			{
 				reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
-				srcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+				srcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 				GetLongPathName(shortPath.get(), srcfullPath.get(), reqLen);
 			}
 		}

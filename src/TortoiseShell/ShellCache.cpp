@@ -367,7 +367,7 @@ BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 				drivetype = DRIVE_REMOTE;
 			else
 			{
-				TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
+				wchar_t pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
 				wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 				PathStripToRoot(pathbuf);
 				PathAddBackslash(pathbuf);
@@ -384,7 +384,7 @@ BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 			drivetype = DRIVE_REMOTE;
 		else
 		{
-			TCHAR pathbuf[MAX_PATH + 4] = { 0 }; // MAX_PATH ok here. PathStripToRoot works with partial paths too.
+			wchar_t pathbuf[MAX_PATH + 4] = { 0 }; // MAX_PATH ok here. PathStripToRoot works with partial paths too.
 			wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 			PathStripToRoot(pathbuf);
 			PathAddBackslash(pathbuf);
@@ -493,7 +493,7 @@ void ShellCache::CPathFilter::AddEntry(const std::wstring& s, bool include)
 	if (s.empty())
 		return;
 
-	TCHAR lastChar = *s.rbegin();
+	wchar_t lastChar = *s.rbegin();
 
 	SEntry entry;
 	entry.hasSubFolderEntries = false;
