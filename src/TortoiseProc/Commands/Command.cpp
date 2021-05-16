@@ -163,7 +163,7 @@ typedef enum
 static const struct CommandInfo
 {
 	TGitCommand command;
-	LPCTSTR pCommandName;
+	LPCWSTR pCommandName;
 } commandInfo[] =
 {
 	{	cmdAbout,			L"about"			},

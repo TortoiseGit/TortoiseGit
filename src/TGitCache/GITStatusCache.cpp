@@ -178,7 +178,7 @@ bool CGitStatusCache::SaveCache()
 				WRITEVALUETOFILE(value);
 				if (value)
 				{
-					if (fwrite(static_cast<LPCTSTR>(key), sizeof(TCHAR), value, pFile)!=value)
+					if (fwrite(static_cast<LPCWSTR>(key), sizeof(TCHAR), value, pFile) != value)
 						goto error;
 					if (!I->second->SaveToDisk(pFile))
 						goto error;
@@ -186,7 +186,7 @@ bool CGitStatusCache::SaveCache()
 			}
 		}
 	}
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache saved to disk at %s\n", static_cast<LPCTSTR>(path));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": cache saved to disk at %s\n", static_cast<LPCWSTR>(path));
 	return true;
 error:
 	Destroy();

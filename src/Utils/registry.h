@@ -45,7 +45,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const S& s) const = 0;
+	virtual LPCWSTR GetPlainString (const S& s) const = 0;
 	virtual DWORD GetLength (const S& s) const = 0;
 
 public: //methods
@@ -83,7 +83,7 @@ public: //methods
 	virtual S getErrorString()
 	{
 		CFormatMessageWrapper errorMessage(LastError);
-		S result (static_cast<LPCTSTR>(errorMessage));
+		S result (static_cast<LPCWSTR>(errorMessage));
 		return result;
 	}
 
@@ -180,7 +180,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const CString& s) const { return static_cast<LPCTSTR>(s); }
+	virtual LPCWSTR GetPlainString (const CString& s) const { return static_cast<LPCWSTR>(s); }
 	virtual DWORD GetLength (const CString& s) const {return s.GetLength();}
 
 public: //methods
@@ -204,7 +204,7 @@ public: //methods
 		CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
 		CString sTemp;
-		sTemp.FormatMessage(IDS_REG_ERROR, static_cast<LPCTSTR>(m_key), static_cast<LPCTSTR>(error));
+		sTemp.FormatMessage(IDS_REG_ERROR, static_cast<LPCWSTR>(m_key), static_cast<LPCWSTR>(error));
 		return sTemp;
 #else
 		return error;
@@ -228,7 +228,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString(const std::wstring& s) const { return s.c_str(); }
+	virtual LPCWSTR GetPlainString(const std::wstring& s) const { return s.c_str(); }
 	virtual DWORD GetLength(const std::wstring& s) const { return static_cast<DWORD>(s.size()); }
 
 public: //methods
@@ -743,7 +743,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 template<class Base>
 void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::StringT& value)
 {
-	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCTSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (TCHAR));
+	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCWSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (TCHAR));
 }
 
 /**

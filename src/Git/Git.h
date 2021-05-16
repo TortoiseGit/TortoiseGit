@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -114,7 +114,7 @@ public:
 	void AddToPath(CString value);
 	void clear();
 	bool empty();
-	operator LPTSTR();
+	operator LPWSTR();
 	operator LPWSTR*();
 	LPWSTR baseptr;
 	CEnvironment(CEnvironment&& env) = delete;
@@ -461,7 +461,7 @@ public:
 		return filetime_to_time_t(static_cast<__int64>(ft->dwHighDateTime) << 32 | ft->dwLowDateTime);
 	}
 
-	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr, bool* isSymlink = nullptr)
+	static int GetFileModifyTime(LPCWSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr, bool* isSymlink = nullptr)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
@@ -534,6 +534,6 @@ public:
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
-extern DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer);
+extern DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPWSTR lpBuffer);
 
 extern CGit g_Git;

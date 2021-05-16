@@ -79,7 +79,7 @@ public:
 	}
 
 	int                     Uninstall() { return FALSE; }
-	int                     AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
+	int                     AddFile2(LPCWSTR pszFile, LPCWSTR pszDestFile, LPCWSTR /*pszDesc*/, DWORD /*dwFlags*/)
 	{
 		return AddFileToReport(pszFile, pszDestFile) ? 1 : 0;
 	}
@@ -383,7 +383,7 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char* /*buildDate*/, bool bOwnProcess = true)
+	CCrashReportTGit(LPCWSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char* /*buildDate*/, bool bOwnProcess = true)
 	: m_nInstallStatus(0)
 	{
 		ApplicationInfo appInfo = { 0 };

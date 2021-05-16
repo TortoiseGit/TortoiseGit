@@ -55,7 +55,7 @@ public:
 		int pos2 = name.ReverseFind(L'.');
 		CString url = name.Mid(pos1 + 1, pos2 - pos1 - 1);
 		CString display;
-		display.Format(L"%s:%s", static_cast<LPCTSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCTSTR>(url));
+		display.Format(L"%s:%s", static_cast<LPCWSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCWSTR>(url));
 		static_cast<STRING_VECTOR*>(payload)->push_back(display);
 		return 0;
 	}
@@ -74,7 +74,7 @@ public:
 		if (entry->value)
 			value = CUnicodeUtils::GetUnicode(entry->value);
 		CString text;
-		text.Format(L"%s\n%s\n%s", static_cast<LPCTSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCTSTR>(name), static_cast<LPCTSTR>(value));
+		text.Format(L"%s\n%s\n%s", static_cast<LPCWSTR>(ConfigLevelToKey(entry->level)), static_cast<LPCWSTR>(name), static_cast<LPCWSTR>(value));
 		static_cast<STRING_VECTOR*>(payload)->push_back(text);
 		return 0;
 	}

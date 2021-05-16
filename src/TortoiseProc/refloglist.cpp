@@ -108,15 +108,15 @@ void CRefLogList::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case REFLOG_ACTION:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->m_RefAction), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->m_RefAction), pItem->cchTextMax - 1);
 		break;
 	case REFLOG_MESSAGE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetSubject().Trim()), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->GetSubject().Trim()), pItem->cchTextMax - 1);
 		break;
 	case REFLOG_DATE:
 		if (pLogEntry)
-			lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes)), pItem->cchTextMax - 1);
+			lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes)), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -139,7 +139,7 @@ void CRefLogList::OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		return;
 
 	CString cmdline;
-	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCTSTR>(pSelLogEntry->m_CommitHash.ToString()));
+	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmdline);
 }
 
@@ -174,9 +174,9 @@ void CRefLogList::CopySelectionToClipBoard(int toCopy)
 			if (toCopy == ID_COPYCLIPBOARDFULL)
 			{
 				sClipdata.AppendFormat(L"%s: %s\r\n%s: %s\r\n%s: %s%s%s\r\n",
-									static_cast<LPCTSTR>(sRev), static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()),
-									static_cast<LPCTSTR>(sDate), static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes)),
-									static_cast<LPCTSTR>(sMessage), static_cast<LPCTSTR>(pLogEntry->m_RefAction), pLogEntry->m_RefAction.IsEmpty() ? L"" : L": ", static_cast<LPCTSTR>(pLogEntry->GetSubjectBody(true)));
+									static_cast<LPCWSTR>(sRev), static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()),
+									static_cast<LPCWSTR>(sDate), static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetCommitterDate(), m_DateFormat, true, m_bRelativeTimes)),
+									static_cast<LPCWSTR>(sMessage), static_cast<LPCWSTR>(pLogEntry->m_RefAction), pLogEntry->m_RefAction.IsEmpty() ? L"" : L": ", static_cast<LPCWSTR>(pLogEntry->GetSubjectBody(true)));
 			}
 			else if (toCopy == ID_COPYCLIPBOARDMESSAGES)
 			{

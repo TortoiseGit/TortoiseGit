@@ -734,7 +734,7 @@ CRect CRevisionGraphDlg::GetGraphRect()
 void CRevisionGraphDlg::UpdateStatusBar()
 {
 //	CString sFormat;
-//	sFormat.Format(IDS_REVGRAPH_STATUSBARURL, static_cast<LPCTSTR>(m_Graph.m_sPath));
+//	sFormat.Format(IDS_REVGRAPH_STATUSBARURL, static_cast<LPCWSTR>(m_Graph.m_sPath));
 //	m_StatusBar.SetText(sFormat,1,0);
 //	sFormat.Format(IDS_REVGRAPH_STATUSBARNUMNODES, m_Graph.m_state.GetNodeCount());
 //	m_StatusBar.SetText(sFormat,0,0);

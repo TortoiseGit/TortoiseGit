@@ -31,7 +31,7 @@ public:
 	SVNLineDiff();
 	~SVNLineDiff();
 
-	bool Diff(svn_diff_t** diff, LPCTSTR line1, apr_size_t len1, LPCTSTR line2, apr_size_t len2, bool bWordDiff);
+	bool Diff(svn_diff_t** diff, LPCWSTR line1, apr_size_t len1, LPCWSTR line2, apr_size_t len2, bool bWordDiff);
 	/** Checks if we really should show inline diffs.
 	 * Inline diffs are only useful if the two lines are not
 	 * completely different but at least a little bit similar.
@@ -44,9 +44,9 @@ private:
 
 	apr_pool_t *		m_pool;
 	apr_pool_t *		m_subpool;
-	LPCTSTR				m_line1;
+	LPCWSTR				m_line1;
 	apr_size_t			m_line1length;
-	LPCTSTR				m_line2;
+	LPCWSTR				m_line2;
 	apr_size_t			m_line2length;
 	apr_size_t			m_line1pos;
 	apr_size_t			 m_line2pos;
@@ -63,12 +63,12 @@ private:
 
 	static apr_uint32_t Adler32(apr_uint32_t checksum, const WCHAR *data, apr_size_t len);
 	static void ParseLineWords(
-		LPCTSTR line, apr_size_t lineLength, std::vector<std::wstring>& tokens);
+		LPCWSTR line, apr_size_t lineLength, std::vector<std::wstring>& tokens);
 	static void ParseLineChars(
-		LPCTSTR line, apr_size_t lineLength, std::vector<std::wstring>& tokens);
+		LPCWSTR line, apr_size_t lineLength, std::vector<std::wstring>& tokens);
 	static void NextTokenWords(
 		apr_uint32_t* hash, void** token, apr_size_t& linePos, const std::vector<std::wstring>& tokens);
 	static void NextTokenChars(
-		apr_uint32_t* hash, void** token, apr_size_t& linePos, LPCTSTR line, apr_size_t lineLength);
+		apr_uint32_t* hash, void** token, apr_size_t& linePos, LPCWSTR line, apr_size_t lineLength);
 	static const svn_diff_fns2_t SVNLineDiff_vtable;
 };

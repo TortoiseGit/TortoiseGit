@@ -11,7 +11,7 @@
 #define AFX_REG_SECTION_FMT _T("%TsPane-%d")
 #define AFX_REG_SECTION_FMT_EX _T("%TsPane-%d%x")
 
-BOOL CDockablePaneUnscaledStoredState::LoadState(LPCTSTR lpszProfileName, int nIndex, UINT uiID)
+BOOL CDockablePaneUnscaledStoredState::LoadState(LPCWSTR lpszProfileName, int nIndex, UINT uiID)
 {
 	CString strProfileName = ::AFXGetRegPath(AFX_CONTROL_BAR_PROFILE, lpszProfileName);
 
@@ -20,9 +20,9 @@ BOOL CDockablePaneUnscaledStoredState::LoadState(LPCTSTR lpszProfileName, int nI
 
 	CString strSection;
 	if (uiID == (UINT)-1)
-		strSection.Format(AFX_REG_SECTION_FMT, (LPCTSTR)strProfileName, nIndex);
+		strSection.Format(AFX_REG_SECTION_FMT, (LPCWSTR)strProfileName, nIndex);
 	else
-		strSection.Format(AFX_REG_SECTION_FMT_EX, (LPCTSTR)strProfileName, nIndex, uiID);
+		strSection.Format(AFX_REG_SECTION_FMT_EX, (LPCWSTR)strProfileName, nIndex, uiID);
 
 	CSettingsStoreSP regSP;
 	CSettingsStore& reg = regSP.Create(FALSE, TRUE);
@@ -49,7 +49,7 @@ BOOL CDockablePaneUnscaledStoredState::LoadState(LPCTSTR lpszProfileName, int nI
 	return CBasePane::LoadState(lpszProfileName, nIndex, uiID); // skip CDockablePane!
 }
 
-BOOL CDockablePaneUnscaledStoredState::SaveState(LPCTSTR lpszProfileName, int nIndex, UINT uiID)
+BOOL CDockablePaneUnscaledStoredState::SaveState(LPCWSTR lpszProfileName, int nIndex, UINT uiID)
 {
 	CString strProfileName = ::AFXGetRegPath(AFX_CONTROL_BAR_PROFILE, lpszProfileName);
 
@@ -58,9 +58,9 @@ BOOL CDockablePaneUnscaledStoredState::SaveState(LPCTSTR lpszProfileName, int nI
 
 	CString strSection;
 	if (uiID == (UINT)-1)
-		strSection.Format(AFX_REG_SECTION_FMT, (LPCTSTR)strProfileName, nIndex);
+		strSection.Format(AFX_REG_SECTION_FMT, (LPCWSTR)strProfileName, nIndex);
 	else
-		strSection.Format(AFX_REG_SECTION_FMT_EX, (LPCTSTR)strProfileName, nIndex, uiID);
+		strSection.Format(AFX_REG_SECTION_FMT_EX, (LPCWSTR)strProfileName, nIndex, uiID);
 
 	CSettingsStoreSP regSP;
 	CSettingsStore& reg = regSP.Create(FALSE, FALSE);

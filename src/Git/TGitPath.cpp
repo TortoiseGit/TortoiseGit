@@ -163,7 +163,7 @@ void CTGitPath::SetFromGit(const CString& sPath, CString* oldpath, int* bIsDirec
 		m_sOldFwdslashPath = *oldpath;
 }
 
-void CTGitPath::SetFromWin(LPCTSTR pPath)
+void CTGitPath::SetFromWin(LPCWSTR pPath)
 {
 	Reset();
 	m_sBackslashPath = pPath;
@@ -178,7 +178,7 @@ void CTGitPath::SetFromWin(const CString& sPath)
 	m_sBackslashPath.Replace(L"\\\\?\\", L"");
 	SanitizeRootPath(m_sBackslashPath, false);
 }
-void CTGitPath::SetFromWin(LPCTSTR pPath, bool bIsDirectory)
+void CTGitPath::SetFromWin(LPCWSTR pPath, bool bIsDirectory)
 {
 	Reset();
 	m_sBackslashPath = pPath;
@@ -214,7 +214,7 @@ void CTGitPath::UpdateCase()
 	SetFwdslashPath(m_sBackslashPath);
 }
 
-LPCTSTR CTGitPath::GetWinPath() const
+LPCWSTR CTGitPath::GetWinPath() const
 {
 	if(IsEmpty())
 		return L"";
@@ -945,7 +945,7 @@ bool CTGitPath::IsValidOnWindows() const
 		std::wregex rx(sPattern, std::regex_constants::icase | std::regex_constants::ECMAScript);
 		std::wsmatch match;
 
-		std::wstring rmatch = std::wstring(static_cast<LPCTSTR>(sMatch));
+		std::wstring rmatch = std::wstring(static_cast<LPCWSTR>(sMatch));
 		if (std::regex_match(rmatch, match, rx))
 		{
 			if (std::wstring(match[0]).compare(sMatch)==0)
@@ -1052,7 +1052,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		{
 			ATLASSERT(!(*list)[i].GetWinPathString().IsEmpty());
 			cmd.Format(L"git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\"",
-					static_cast<LPCTSTR>(ignored),
+					static_cast<LPCWSTR>(ignored),
 					(*list)[i].GetWinPath());
 		}
 
@@ -1611,11 +1611,11 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 		return;
 	sPaths += '\0';
 	sPaths += '\0';
-	DeleteViaShell(static_cast<LPCTSTR>(sPaths), bTrash, bShowErrorUI);
+	DeleteViaShell(static_cast<LPCWSTR>(sPaths), bTrash, bShowErrorUI);
 	Clear();
 }
 
-bool CTGitPathList::DeleteViaShell(LPCTSTR path, bool bTrash, bool bShowErrorUI)
+bool CTGitPathList::DeleteViaShell(LPCWSTR path, bool bTrash, bool bShowErrorUI)
 {
 	SHFILEOPSTRUCT shop = {0};
 	shop.wFunc = FO_DELETE;
@@ -1762,17 +1762,17 @@ CString CTGitPath::GetAbbreviatedRename() const
 			prefix_length = i + 1;
 	}
 
-	LPCTSTR oldName = static_cast<LPCTSTR>(m_sOldFwdslashPath) + m_sOldFwdslashPath.GetLength();
-	LPCTSTR newName = static_cast<LPCTSTR>(m_sFwdslashPath) + m_sFwdslashPath.GetLength();
+	LPCWSTR oldName = static_cast<LPCWSTR>(m_sOldFwdslashPath) + m_sOldFwdslashPath.GetLength();
+	LPCWSTR newName = static_cast<LPCWSTR>(m_sFwdslashPath) + m_sFwdslashPath.GetLength();
 
 	int suffix_length = 0;
 	int prefix_adjust_for_slash = (prefix_length ? 1 : 0);
-	while (static_cast<LPCTSTR>(m_sOldFwdslashPath) + prefix_length - prefix_adjust_for_slash <= oldName &&
-		   static_cast<LPCTSTR>(m_sFwdslashPath) + prefix_length - prefix_adjust_for_slash <= newName &&
+	while (static_cast<LPCWSTR>(m_sOldFwdslashPath) + prefix_length - prefix_adjust_for_slash <= oldName &&
+		   static_cast<LPCWSTR>(m_sFwdslashPath) + prefix_length - prefix_adjust_for_slash <= newName &&
 		   *oldName == *newName)
 	{
 		if (*oldName == L'/')
-			suffix_length = m_sOldFwdslashPath.GetLength() - static_cast<int>(oldName - static_cast<LPCTSTR>(m_sOldFwdslashPath));
+			suffix_length = m_sOldFwdslashPath.GetLength() - static_cast<int>(oldName - static_cast<LPCWSTR>(m_sOldFwdslashPath));
 		--oldName;
 		--newName;
 	}

@@ -62,7 +62,7 @@ public:
 	/**
 	 * Returns the width of \c szText in pixels for the tooltip control
 	 */
-	LONG GetTextWidth(LPCTSTR szText);
+	LONG GetTextWidth(LPCWSTR szText);
 
 	virtual ~CScrollTool();
 

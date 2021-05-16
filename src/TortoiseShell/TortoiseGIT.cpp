@@ -45,7 +45,7 @@ bool				g_ignoredovlloaded = false;
 bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
-LPCTSTR				g_MenuIDString = L"TortoiseGit";
+LPCWSTR				g_MenuIDString = L"TortoiseGit";
 
 ShellObjects		g_shellObjects;
 

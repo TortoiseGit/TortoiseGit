@@ -336,7 +336,7 @@ BOOL CSetSavedDataPage::OnApply()
 	return ISettingsPropPage::OnApply();
 }
 
-void CSetSavedDataPage::DeleteViaShell(LPCTSTR path, UINT progressText)
+void CSetSavedDataPage::DeleteViaShell(LPCWSTR path, UINT progressText)
 {
 	CString p(path);
 	p += L"||";

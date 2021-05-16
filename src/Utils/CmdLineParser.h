@@ -61,7 +61,7 @@ public:
 	 * Creates a CCmdLineParser object and parses the parameters in.
 	 * \param sCmdLine the command line
 	 */
-	CCmdLineParser(LPCTSTR sCmdLine = nullptr);
+	CCmdLineParser(LPCWSTR sCmdLine = nullptr);
 
 	CCmdLineParser(const CCmdLineParser&) = default;
 	CCmdLineParser& operator=(const CCmdLineParser&) = default;
@@ -71,7 +71,7 @@ public:
 	 * returns the command line string this object was created on.
 	 * \return the command line
 	 */
-	LPCTSTR getCmdLine() const { return m_sCmdLine.c_str(); }
+	LPCWSTR getCmdLine() const { return m_sCmdLine.c_str(); }
 
 	/**
 	 * Starts an iteration over all command line parameters.
@@ -102,21 +102,21 @@ public:
 	 * \param sKey the key to check for
 	 * \return TRUE if the key exists, FALSE if the key is not in command line
 	 */
-	BOOL HasKey(LPCTSTR sKey) const;
+	BOOL HasKey(LPCWSTR sKey) const;
 
 	/**
 	 * Checks if a key also has a value or not.
 	 * \param sKey the key to check for a value
 	 * \return TRUE if the key has a value, FALSE if no value (or no key) was found
 	 */
-	BOOL HasVal(LPCTSTR sKey) const;
+	BOOL HasVal(LPCWSTR sKey) const;
 
 	/**
 	 * Reads the value for a key. If the key has no value then nullptr is returned.
 	 * \param sKey the key to get the value from
 	 * \return the value string of the key
 	 */
-	LPCTSTR GetVal(LPCTSTR sKey) const;
+	LPCWSTR GetVal(LPCWSTR sKey) const;
 
 	/**
 	 * Reads the value for a key as a long. If the value is a string which can't be
@@ -124,13 +124,13 @@ public:
 	 * \param sKey the key to get the value from
 	 * \return the value converted to a long
 	 */
-	LONG GetLongVal(LPCTSTR sKey) const;
+	LONG GetLongVal(LPCWSTR sKey) const;
 
-	__int64 GetLongLongVal(LPCTSTR sKey) const;
+	__int64 GetLongLongVal(LPCWSTR sKey) const;
 
 private:
-	BOOL Parse(LPCTSTR sCmdLine);
-	CValsMap::const_iterator findKey(LPCTSTR sKey) const;
+	BOOL Parse(LPCWSTR sCmdLine);
+	CValsMap::const_iterator findKey(LPCWSTR sKey) const;
 	const CValsMap& getVals() const { return m_valueMap; }
 private:
 	std::wstring	m_sCmdLine;

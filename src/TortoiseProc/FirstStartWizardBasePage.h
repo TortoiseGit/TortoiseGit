@@ -34,7 +34,7 @@ public:
 		: CPropertyPageEx(nIDTemplate, nIDCaption, static_cast<UINT>(0))
 		, CommonDialogFunctions(this)
 		{}
-	explicit CFirstStartWizardBasePage(LPCTSTR lpszTemplateName, UINT nIDCaption = 0)
+	explicit CFirstStartWizardBasePage(LPCWSTR lpszTemplateName, UINT nIDCaption = 0)
 		: CPropertyPageEx(lpszTemplateName, nIDCaption, static_cast<UINT>(0))
 		, CommonDialogFunctions(this)
 		{}

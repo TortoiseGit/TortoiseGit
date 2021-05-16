@@ -126,11 +126,11 @@ BOOL CPullFetchDlg::OnInitDialog()
 
 	m_RemoteReg = CRegString(L"Software\\TortoiseGit\\History\\PullRemote\\" + WorkingDir);
 	CString regkey;
-	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase", static_cast<LPCTSTR>(WorkingDir), m_IsPull);
+	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\rebase", static_cast<LPCWSTR>(WorkingDir), m_IsPull);
 	m_regRebase=CRegDWORD(regkey,false);
-	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\ffonly", static_cast<LPCTSTR>(WorkingDir), m_IsPull);
+	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\ffonly", static_cast<LPCWSTR>(WorkingDir), m_IsPull);
 	m_regFFonly = CRegDWORD(regkey, false);
-	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload", static_cast<LPCTSTR>(WorkingDir), m_IsPull);
+	regkey.Format(L"Software\\TortoiseGit\\TortoiseProc\\PullFetch\\%s_%d\\autoload", static_cast<LPCWSTR>(WorkingDir), m_IsPull);
 
 	m_regAutoLoadPutty = CRegDWORD(regkey,this->m_bAutoLoad);
 	m_bAutoLoad = m_regAutoLoadPutty;
@@ -335,7 +335,7 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	}
 
 	CString key;
-	key.Format(L"remote.%s.tagopt", static_cast<LPCTSTR>(remote));
+	key.Format(L"remote.%s.tagopt", static_cast<LPCWSTR>(remote));
 	CString tagopt = g_Git.GetConfigValue(key);
 	if (tagopt == "--no-tags")
 		tagopt.LoadString(IDS_NONE);
@@ -344,16 +344,16 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	else
 		tagopt.LoadString(IDS_FETCH_REACHABLE);
 	CString value;
-	value.Format(L"%s: %s", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_DEFAULT))), static_cast<LPCTSTR>(tagopt));
+	value.Format(L"%s: %s", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_DEFAULT))), static_cast<LPCWSTR>(tagopt));
 	GetDlgItem(IDC_STATIC_TAGOPT)->SetWindowText(value);
 
-	key.Format(L"remote.%s.prune", static_cast<LPCTSTR>(remote));
+	key.Format(L"remote.%s.prune", static_cast<LPCWSTR>(remote));
 	CString prune = g_Git.GetConfigValue(key);
 	if (prune.IsEmpty())
 		prune = g_Git.GetConfigValue(L"fetch.prune");
 	if (!prune.IsEmpty())
 	{
-		value.Format(L"%s: %s", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_DEFAULT))), static_cast<LPCTSTR>(prune));
+		value.Format(L"%s: %s", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_DEFAULT))), static_cast<LPCWSTR>(prune));
 		GetDlgItem(IDC_STATIC_PRUNE)->SetWindowText(value);
 	}
 	else

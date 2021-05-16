@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2021 - TortoiseGit
 // Copyright (C) 2005-2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
 #include "DirFileEnum.h"
 #include "StringUtils.h"
 
-CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern)
+CSimpleFileFind::CSimpleFileFind(const CString& sPath, LPCWSTR pPattern)
 	: m_dError(ERROR_SUCCESS)
 	, m_bFirst(TRUE)
 	, m_sPathPrefix(sPath)
@@ -35,9 +35,9 @@ CSimpleFileFind::CSimpleFileFind(const CString &sPath, LPCTSTR pPattern)
 			m_sPathPrefix += "\\";
 	}
 	if (len >= 248 && (CStringUtils::StartsWith(m_sPathPrefix, L"\\\\?\\")))
-		m_hFindFile = ::FindFirstFileEx(static_cast<LPCTSTR>(L"\\\\?\\" + m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
+		m_hFindFile = ::FindFirstFileEx(static_cast<LPCWSTR>(L"\\\\?\\" + m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
 	else
-		m_hFindFile = ::FindFirstFileEx(static_cast<LPCTSTR>(m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
+		m_hFindFile = ::FindFirstFileEx(static_cast<LPCWSTR>(m_sPathPrefix + pPattern), FindExInfoBasic, &m_FindFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
 	if (m_hFindFile == INVALID_HANDLE_VALUE) {
 		m_dError = ::GetLastError();
 	}

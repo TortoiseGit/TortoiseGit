@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2012, 2016-2017 - TortoiseGit
+// Copyright (C) 2009, 2011-2012, 2016-2017, 2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@ public:
 	 * sets the title of the progress dialog box.
 	 * \param szTitle pointer to a nullptr-terminated string that contains the dialog box title
 	 */
-	void SetTitle ( LPCTSTR szTitle );
+	void SetTitle(LPCWSTR szTitle);
 	/**
 	* sets the title of the progress dialog box to a string resource value.
 	*/
@@ -53,7 +53,7 @@ public:
 	 * \remark This call should be made *after* the dialog has been shown - this allows
 	 * the system to measure the space available for the text, and do path compaction properly
 	 */
-	void SetLine ( DWORD dwLine, LPCTSTR szText, bool bCompactPath = false );
+	void SetLine(DWORD dwLine, LPCWSTR szText, bool bCompactPath = false);
 
 #ifdef _MFC_VER
 	/**
@@ -64,9 +64,9 @@ public:
 	* the system to measure the space available for the text, and do path compaction properly
 	*/
 	void FormatPathLine ( DWORD dwLine, UINT idFormatText, ...);
-	void FormatPathLine(DWORD dwLine, LPCTSTR FormatText, ...);
+	void FormatPathLine(DWORD dwLine, LPCWSTR FormatText, ...);
 	void FormatNonPathLine ( DWORD dwLine, UINT idFormatText, ...);
-	void FormatNonPathLine(DWORD dwLine, LPCTSTR FormatText, ...);
+	void FormatNonPathLine(DWORD dwLine, LPCWSTR FormatText, ...);
 #endif
 	/**
 	 * Sets a message to be displayed if the user clicks the cancel button.
@@ -81,7 +81,7 @@ public:
 	 * the progress dialog box will be closed shortly. It is typically is set to
 	 * something like "Please wait while ...".
 	 */
-	void SetCancelMsg ( LPCTSTR szMessage );
+	void SetCancelMsg(LPCWSTR szMessage);
 #ifdef _MFC_VER
 	void SetCancelMsg ( UINT idMessage );
 #endif

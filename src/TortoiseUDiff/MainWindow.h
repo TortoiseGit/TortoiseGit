@@ -46,10 +46,10 @@ public:
 
 	LRESULT             SendEditor(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0);
 	HWND                GetHWNDEdit() const { return m_hWndEdit; }
-	bool                LoadFile(LPCTSTR filename);
+	bool                LoadFile(LPCWSTR filename);
 	bool                LoadFile(HANDLE hFile);
-	bool                SaveFile(LPCTSTR filename);
-	void                SetTitle(LPCTSTR title);
+	bool                SaveFile(LPCWSTR filename);
+	void                SetTitle(LPCWSTR title);
 	std::wstring        GetAppDirectory();
 	void                RunCommand(const std::wstring& command);
 

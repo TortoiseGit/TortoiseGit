@@ -336,7 +336,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 	{
 		if (filenamesToPatch[m_arFileDiffs[i]->sFilePath] > 1 && m_arFileDiffs[i]->sFilePath != L"NUL")
 		{
-			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCTSTR>(m_arFileDiffs[i]->sFilePath));
+			m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCWSTR>(m_arFileDiffs[i]->sFilePath));
 			FreeMemory();
 			return FALSE;
 		}
@@ -345,7 +345,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 		{
 			if (filenamesToPatch[m_arFileDiffs[i]->sFilePath2] > 1 && m_arFileDiffs[i]->sFilePath2 != L"NUL")
 			{
-				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCTSTR>(m_arFileDiffs[i]->sFilePath));
+				m_sErrorMessage.Format(IDS_ERR_PATCH_FILENAMENOTUNIQUE, static_cast<LPCWSTR>(m_arFileDiffs[i]->sFilePath));
 				FreeMemory();
 				return FALSE;
 			}
@@ -417,12 +417,12 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 	CString sPath = GetFullPath(sPatchPath, nIndex);
 	if (PathIsDirectory(sPath))
 	{
-		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCTSTR>(sPath));
+		m_sErrorMessage.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCWSTR>(sPath));
 		return FALSE;
 	}
 	if (nIndex < 0)
 	{
-		m_sErrorMessage.Format(IDS_ERR_PATCH_FILENOTINPATCH, static_cast<LPCTSTR>(sPath));
+		m_sErrorMessage.Format(IDS_ERR_PATCH_FILENOTINPATCH, static_cast<LPCWSTR>(sPath));
 		return FALSE;
 	}
 
@@ -472,19 +472,19 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if ((lAddLine > PatchLines.GetCount())||(PatchLines.GetCount()==0))
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCTSTR>(sPatchLine));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCWSTR>(sPatchLine));
 						return FALSE;
 					}
 					if (lAddLine == 0)
 						lAddLine = 1;
 					if ((sPatchLine.Compare(PatchLines.GetAt(lAddLine-1))!=0)&&(!HasExpandedKeyWords(sPatchLine)))
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine-1)));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCWSTR>(sPatchLine), static_cast<LPCWSTR>(PatchLines.GetAt(lAddLine-1)));
 						return FALSE;
 					}
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), L"");
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCWSTR>(sPatchLine), L"");
 						return FALSE;
 					}
 					PatchLines.RemoveAt(lAddLine-1);
@@ -516,7 +516,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 					{
 						if (k >= chunk->arLines.GetCount())
 							k = j;
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine) - 1), static_cast<LPCTSTR>(chunk->arLines.GetAt(k)));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCWSTR>(PatchLines.GetAt(lAddLine) - 1), static_cast<LPCWSTR>(chunk->arLines.GetAt(k)));
 						return FALSE;
 					}
 				}
@@ -525,7 +525,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 				{
 					if (lAddLine > PatchLines.GetCount())
 					{
-						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCTSTR>(sPatchLine));
+						m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, L"", static_cast<LPCWSTR>(sPatchLine));
 						return FALSE;
 					}
 					if (lAddLine == 0)
@@ -545,7 +545,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 							++lRemoveLine;
 						else
 						{
-							m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCTSTR>(sPatchLine), static_cast<LPCTSTR>(PatchLines.GetAt(lAddLine-1)));
+							m_sErrorMessage.FormatMessage(IDS_ERR_PATCH_DOESNOTMATCH, static_cast<LPCWSTR>(sPatchLine), static_cast<LPCWSTR>(PatchLines.GetAt(lAddLine-1)));
 							return FALSE;
 						}
 					}

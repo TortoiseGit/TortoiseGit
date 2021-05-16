@@ -233,7 +233,7 @@ public:
 
 
 	// helper function
-	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);
+	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +280,7 @@ public:
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect) override;
 
 	// helper function
-	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);
+	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert);
 };
 
 class CDragSourceHelper

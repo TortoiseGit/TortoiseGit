@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2020 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include "SmartHandle.h"
 #include <assert.h>
 
-BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
+BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 {
 	size_t len = wcslen(path) + 10;
 	auto buf = std::make_unique<TCHAR[]>(len);
@@ -59,7 +59,7 @@ void CPathUtils::ConvertToSlash(LPWSTR path)
 		*pCH = L'/';
 }
 
-void CPathUtils::ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len)
+void CPathUtils::ConvertToBackslash(LPWSTR dest, LPCWSTR src, size_t len)
 {
 	wcscpy_s(dest, len, src);
 	TCHAR * p = dest;
@@ -247,7 +247,7 @@ CString CPathUtils::GetProgramsDirectory()
 	return CString(pszPath);
 }
 
-int CPathUtils::ReadLink(LPCTSTR filename, CStringA* pTargetA)
+int CPathUtils::ReadLink(LPCWSTR filename, CStringA* pTargetA)
 {
 	CAutoFile handle  = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS, nullptr);
 	if (!handle)
@@ -306,7 +306,7 @@ void CPathUtils::DropPathPrefixes(CString& path)
 #endif
 
 #pragma comment(lib, "Version.lib")
-std::wstring CPathUtils::GetVersionFromFile(LPCTSTR p_strFilename)
+std::wstring CPathUtils::GetVersionFromFile(LPCWSTR p_strFilename)
 {
 	struct TRANSARRAY
 	{
@@ -345,11 +345,11 @@ std::wstring CPathUtils::GetVersionFromFile(LPCTSTR p_strFilename)
 			swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),
-				static_cast<LPCTSTR>(strLangProductVersion),
+				static_cast<LPCWSTR>(strLangProductVersion),
 				reinterpret_cast<LPVOID*>(&lpVersion),
 				&nInfoSize);
 			if (nInfoSize && lpVersion)
-				return reinterpret_cast<LPCTSTR>(lpVersion);
+				return reinterpret_cast<LPCWSTR>(lpVersion);
 		}
 	}
 
@@ -373,7 +373,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 	CString strReturn;
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCTSTR>(path), &dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCWSTR>(path), &dwReserved);
 
 	if (dwBufferSize > 0)
 	{
@@ -381,7 +381,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 		if (pBuffer)
 		{
-			GetFileVersionInfo(static_cast<LPCTSTR>(path),
+			GetFileVersionInfo(static_cast<LPCWSTR>(path),
 				dwReserved,
 				dwBufferSize,
 				pBuffer.get());
@@ -402,8 +402,8 @@ CString CPathUtils::GetCopyrightForSelf()
 			strLangLegalCopyright.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			UINT nInfoSize = 0;
-			LPTSTR lpVersion = nullptr;
-			VerQueryValue(pBuffer.get(), static_cast<LPCTSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
+			LPWSTR lpVersion = nullptr;
+			VerQueryValue(pBuffer.get(), static_cast<LPCWSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
 			if (nInfoSize && lpVersion)
 				strReturn = lpVersion;
 		}
@@ -496,9 +496,9 @@ bool CPathUtils::ArePathStringsEqual(const CString& sP1, const CString& sP2)
 	}
 	// We work from the end of the strings, because path differences
 	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
+	LPCWSTR pP1Start = sP1;
+	LPCWSTR pP1 = pP1Start + (length - 1);
+	LPCWSTR pP2 = static_cast<LPCWSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if (_totlower(*pP1--) != _totlower(*pP2--))
@@ -517,9 +517,9 @@ bool CPathUtils::ArePathStringsEqualWithCase(const CString& sP1, const CString& 
 	}
 	// We work from the end of the strings, because path differences
 	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
+	LPCWSTR pP1Start = sP1;
+	LPCWSTR pP1 = pP1Start + (length - 1);
+	LPCWSTR pP2 = static_cast<LPCWSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if ((*pP1--) != (*pP2--))

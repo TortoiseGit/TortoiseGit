@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2020 - TortoiseGit
+// Copyright (C) 2016-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,8 +32,8 @@ class CPathUtils
 {
 public:
 	CPathUtils() = delete;
-	static BOOL			MakeSureDirectoryPathExists(LPCTSTR path);
-	static void			ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len);
+	static BOOL			MakeSureDirectoryPathExists(LPCWSTR path);
+	static void			ConvertToBackslash(LPWSTR dest, LPCWSTR src, size_t len);
 	static void			ConvertToSlash(LPWSTR path);
 
 	/**
@@ -41,7 +41,7 @@ public:
 	 * \param p_strFilename path to the dll or exe
 	 * \return the version string
 	 */
-	static std::wstring GetVersionFromFile(LPCTSTR p_strFilename);
+	static std::wstring GetVersionFromFile(LPCWSTR p_strFilename);
 
 #ifdef CSTRING_AVAILABLE
 	inline static void	ConvertToBackslash(CString& path);
@@ -105,7 +105,7 @@ public:
 	 */
 	static void DropPathPrefixes(CString& path);
 
-	static int ReadLink(LPCTSTR filename, CStringA* target = nullptr);
+	static int ReadLink(LPCWSTR filename, CStringA* target = nullptr);
 
 	/**
 	* Escapes regexp-specific chars.

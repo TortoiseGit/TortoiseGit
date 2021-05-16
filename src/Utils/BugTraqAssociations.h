@@ -42,7 +42,7 @@ public:
 		 m_provider.clsid = GUID_NULL;
 	}
 
-	CBugTraqAssociation(LPCTSTR szWorkingCopy, const CLSID &provider_clsid, LPCTSTR szProviderName, LPCTSTR szParameters, bool enabled)
+	CBugTraqAssociation(LPCWSTR szWorkingCopy, const CLSID& provider_clsid, LPCWSTR szProviderName, LPCWSTR szParameters, bool enabled)
 		: m_path(szWorkingCopy), m_parameters(szParameters), m_enabled(enabled)
 	{
 		m_provider.clsid = provider_clsid;
@@ -67,7 +67,7 @@ public:
 	CBugTraqAssociations();
 	~CBugTraqAssociations();
 
-	void Load(LPCTSTR uuid = nullptr, LPCTSTR params = nullptr);
+	void Load(LPCWSTR uuid = nullptr, LPCWSTR params = nullptr);
 	void Save() const;
 
 	void Add(const CBugTraqAssociation &assoc);

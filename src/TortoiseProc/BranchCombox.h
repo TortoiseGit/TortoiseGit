@@ -55,7 +55,7 @@ protected:
 		this->SetRemote(pullRemote);
 
 		CString defaultUpstream;
-		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
+		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCWSTR>(pullRemote), static_cast<LPCWSTR>(pullBranch));
 		int found = m_ctrlRemoteBranch.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 			m_ctrlRemoteBranch.SetCurSel(found);
@@ -147,16 +147,16 @@ protected:
 
 		CString tooltip;
 		tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
-						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_REVISION))),
-						static_cast<LPCTSTR>(rev.m_CommitHash.ToString()),
-						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))),
-						static_cast<LPCTSTR>(rev.GetAuthorName()),
-						static_cast<LPCTSTR>(rev.GetAuthorEmail()),
-						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_DATE))),
-						static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE)),
-						static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE))),
-						static_cast<LPCTSTR>(rev.GetSubject()),
-						static_cast<LPCTSTR>(rev.GetBody()));
+						static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_REVISION))),
+						static_cast<LPCWSTR>(rev.m_CommitHash.ToString()),
+						static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))),
+						static_cast<LPCWSTR>(rev.GetAuthorName()),
+						static_cast<LPCWSTR>(rev.GetAuthorEmail()),
+						static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_DATE))),
+						static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE)),
+						static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE))),
+						static_cast<LPCWSTR>(rev.GetSubject()),
+						static_cast<LPCWSTR>(rev.GetBody()));
 
 		if (tooltip.GetLength() > 8000)
 		{

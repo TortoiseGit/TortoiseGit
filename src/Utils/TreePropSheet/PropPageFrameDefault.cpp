@@ -75,7 +75,7 @@ CWnd* CPropPageFrameDefault::GetWnd()
 }
 
 
-void CPropPageFrameDefault::SetCaption(LPCTSTR lpszCaption, HICON hIcon /*= nullptr*/)
+void CPropPageFrameDefault::SetCaption(LPCWSTR lpszCaption, HICON hIcon /*= nullptr*/)
 {
 	CPropPageFrame::SetCaption(lpszCaption, hIcon);
 
@@ -163,7 +163,7 @@ CRect CPropPageFrameDefault::CalcCaptionArea()
 	return rect;
 }
 
-void CPropPageFrameDefault::DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaption, HICON hIcon)
+void CPropPageFrameDefault::DrawCaption(CDC* pDc, CRect rect, LPCWSTR lpszCaption, HICON hIcon)
 {
 	COLORREF	clrLeft = GetSysColor(COLOR_INACTIVECAPTION);
 	COLORREF	clrRight = pDc->GetPixel(rect.right-1, rect.top);

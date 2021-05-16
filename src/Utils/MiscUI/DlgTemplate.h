@@ -26,8 +26,8 @@ public:
 		totalBufferLength = 0;
 		dialogTemplate = 0;
 	};
-	CDlgTemplate(LPCTSTR caption, DWORD style, short x, short y, short w, short h,
-		LPCTSTR font = nullptr, LONG fontSize = 8)
+	CDlgTemplate(LPCWSTR caption, DWORD style, short x, short y, short w, short h,
+		LPCWSTR font = nullptr, LONG fontSize = 8)
 	{
 		usedBufferLength = sizeof(DLGTEMPLATE );
 		totalBufferLength = usedBufferLength;
@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-	void AddComponent(LPCTSTR type, LPCTSTR caption, DWORD style, DWORD exStyle,
+	void AddComponent(LPCWSTR type, LPCWSTR caption, DWORD style, DWORD exStyle,
 		short x, short y, short w, short h, WORD id)
 	{
 		DLGITEMTEMPLATE item;
@@ -89,7 +89,7 @@ public:
 		dialogTemplate->cdit++;
 	}
 
-	void AddButton(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddButton(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0080, caption, style, exStyle, x, y, w, h, id);
@@ -98,7 +98,7 @@ public:
 		AppendData(&creationDataLength, sizeof(WORD));
 	}
 
-	void AddEditBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddEditBox(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0081, caption, style, exStyle, x, y, w, h, id);
@@ -107,7 +107,7 @@ public:
 		AppendData(&creationDataLength, sizeof(WORD));
 	}
 
-	void AddStatic(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddStatic(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0082, caption, style, exStyle, x, y, w, h, id);
@@ -116,7 +116,7 @@ public:
 		AppendData(&creationDataLength, sizeof(WORD));
 	}
 
-	void AddListBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddListBox(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0083, caption, style, exStyle, x, y, w, h, id);
@@ -125,7 +125,7 @@ public:
 		AppendData(&creationDataLength, sizeof(WORD));
 	}
 
-	void AddScrollBar(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddScrollBar(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0084, caption, style, exStyle, x, y, w, h, id);
@@ -134,7 +134,7 @@ public:
 		AppendData(&creationDataLength, sizeof(WORD));
 	}
 
-	void AddComboBox(LPCTSTR caption, DWORD style, DWORD exStyle, short x, short y,
+	void AddComboBox(LPCWSTR caption, DWORD style, DWORD exStyle, short x, short y,
 		short w, short h, WORD id)
 	{
 		AddStandardComponent(0x0085, caption, style, exStyle, x, y, w, h, id);
@@ -161,7 +161,7 @@ public:
 
 protected:
 
-	void AddStandardComponent(WORD type, LPCTSTR caption, DWORD style,
+	void AddStandardComponent(WORD type, LPCWSTR caption, DWORD style,
 		DWORD exStyle, short x, short y, short w, short h, WORD id)
 	{
 		DLGITEMTEMPLATE item;
@@ -204,7 +204,7 @@ protected:
 		}
 	}
 
-	void AppendString(LPCTSTR string)
+	void AppendString(LPCWSTR string)
 	{
 #ifndef _UNICODE
 		int length = MultiByteToWideChar(CP_ACP, 0, string, -1, nullptr, 0);

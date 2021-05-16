@@ -80,9 +80,9 @@ public:
 	/**
 	 * Set the path as UNICODE with backslashes
 	 */
-	void SetFromWin(LPCTSTR pPath);
+	void SetFromWin(LPCWSTR pPath);
 	void SetFromWin(const CString& sPath);
-	void SetFromWin(LPCTSTR pPath, bool bIsDirectory);
+	void SetFromWin(LPCWSTR pPath, bool bIsDirectory);
 	void SetFromWin(const CString& sPath, bool bIsDirectory);
 	/**
 	 * Set the path from an unknown source.
@@ -91,7 +91,7 @@ public:
 	/**
 	 * Returns the path in Windows format, i.e. with backslashes
 	 */
-	LPCTSTR GetWinPath() const;
+	LPCWSTR GetWinPath() const;
 	/**
 	 * Returns the path in Windows format, i.e. with backslashes
 	 */
@@ -407,7 +407,7 @@ public:
 	 * \param bShowErrorUI if true, show error dialog box when error occurs.
 	 */
 	void DeleteAllFiles(bool bTrash, bool bFilesOnly = true, bool bShowErrorUI = false);
-	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin, bool bShowErrorUI);
+	static bool DeleteViaShell(LPCWSTR path, bool useTrashbin, bool bShowErrorUI);
 	/** Remove duplicate entries from the list (sorts the list as a side-effect */
 	void RemoveDuplicates();
 	/** Removes all paths which are on or in a git admin directory */

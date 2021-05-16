@@ -34,7 +34,7 @@ CLangDll::~CLangDll()
 	Close();
 }
 
-HINSTANCE CLangDll::Init(LPCTSTR appname, unsigned long langID)
+HINSTANCE CLangDll::Init(LPCWSTR appname, unsigned long langID)
 {
 	TCHAR langpath[MAX_PATH] = {0};
 	TCHAR langdllpath[MAX_PATH] = {0};
@@ -88,7 +88,7 @@ void CLangDll::Close()
 	m_hInstance = nullptr;
 }
 
-bool CLangDll::DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const
+bool CLangDll::DoVersionStringsMatch(LPCWSTR sVer, LPCWSTR langDll) const
 {
 	return CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), sVer);
 }

@@ -73,7 +73,7 @@ public:
 	 * \param sPath    The path to search in.
 	 * \param pPattern The filename pattern - default all files.
 	 */
-	CSimpleFileFind(const CString& sPath, LPCTSTR pPattern = L"*.*");
+	CSimpleFileFind(const CString& sPath, LPCWSTR pPattern = L"*.*");
 	~CSimpleFileFind();
 
 	/**

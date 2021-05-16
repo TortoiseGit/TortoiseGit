@@ -797,12 +797,12 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             }
 
             CString sTemp;
-            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(selectionResult.c_str())));
+            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), static_cast<LPCWSTR>(CPathUtils::GetFileNameFromPath(selectionResult.c_str())));
             if (MessageBox(m_hwnd, sTemp, L"TortoiseGitMerge", MB_YESNO | MB_ICONQUESTION) != IDYES)
                 break;
 
             CString cmd;
-            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
+            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCWSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
             if (resolveMsgWnd)
                 cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", reinterpret_cast<__int64>(resolveMsgWnd), static_cast<__int64>(resolveMsgWParam), static_cast<__int64>(resolveMsgLParam));
 
@@ -1268,7 +1268,7 @@ bool CMainWindow::CreateToolbar()
 
     hwndTB = CreateWindowEx(TBSTYLE_EX_DOUBLEBUFFER,
                             TOOLBARCLASSNAME,
-                            static_cast<LPCTSTR>(nullptr),
+                            static_cast<LPCWSTR>(nullptr),
                             WS_CHILD | WS_BORDER | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS,
                             0, 0, 0, 0,
                             *this,

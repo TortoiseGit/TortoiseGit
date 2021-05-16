@@ -36,11 +36,11 @@ public:
 	void Init(CWnd *pWnd);
 	bool EnsureVisible(int item,bool m_bWait);
 	bool SelectItem(int item);
-	int FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayOnly = false);
-	int FindStringExact( int nIndexStart, LPCTSTR lpszFind );
-	int SelectString(LPCTSTR lpszString );
+	int FindString(int nStartAfter, LPCWSTR lpszString, bool m_bDisplayOnly = false);
+	int FindStringExact(int nIndexStart, LPCWSTR lpszFind);
+	int SelectString(LPCWSTR lpszString);
 	bool GetText(int item, CString& m_Text);
-	void AddSearchString(LPCTSTR lpszString){m_SearchList.Add(lpszString);}
+	void AddSearchString(LPCWSTR lpszString){ m_SearchList.Add(lpszString); }
 	void RemoveAll(){m_SearchList.RemoveAll(); m_DisplayList.RemoveAll();}
 	CString GetString();
 	CString GetNextString(int m_iChar);
@@ -56,8 +56,8 @@ public:
 	// Operationen
 public:
 	CStringArray m_SearchList;
-	// Überschreibungen
-	// Vom Klassen-Assistenten generierte virtuelle Funktionsüberschreibungen
+	// Ãœberschreibungen
+	// Vom Klassen-Assistenten generierte virtuelle FunktionsÃ¼berschreibungen
 	//{{AFX_VIRTUAL(CACListWnd)
 	//}}AFX_VIRTUAL
 
@@ -116,6 +116,6 @@ public:
 /////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ fügt unmittelbar vor der vorhergehenden Zeile zusätzliche Deklarationen ein.
+// Microsoft Visual C++ fÃ¼gt unmittelbar vor der vorhergehenden Zeile zusÃ¤tzliche Deklarationen ein.
 
 #endif // AFX_ACWND_H__5CED9BF8_C1CB_4A74_B022_ABA25680CC42__INCLUDED_

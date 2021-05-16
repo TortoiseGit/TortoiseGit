@@ -28,9 +28,9 @@ public:
 	CLangDll();
 	~CLangDll();
 
-	HINSTANCE	Init(LPCTSTR appname, unsigned long langID);
+	HINSTANCE	Init(LPCWSTR appname, unsigned long langID);
 	void		Close();
 private:
-	bool		DoVersionStringsMatch(LPCTSTR sVer, LPCTSTR langDll) const;
+	bool		DoVersionStringsMatch(LPCWSTR sVer, LPCWSTR langDll) const;
 	HINSTANCE	m_hInstance;
 };

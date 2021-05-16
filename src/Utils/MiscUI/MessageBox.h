@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017 - TortoiseGit
+// Copyright (C) 2013-2017, 2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -242,7 +242,7 @@ public:
 	 * \param sHelpPath if uType has MB_HELP, the path for the help file
 	 * \return see class descriptions for details
 	 */
-	static UINT Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR sHelpPath = nullptr);
+	static UINT Show(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, UINT uType, LPCWSTR sHelpPath = nullptr);
 	/**
 	 * Shows a message box.
 	 * \param hWnd handle to the parent window or nullptr
@@ -252,7 +252,7 @@ public:
 	 * \param sHelpPath if uType has MB_HELP, this is the path of the help file to use
 	 * \return see class description for details
 	 */
-	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR sHelpPath = nullptr);
+	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCWSTR sHelpPath = nullptr);
 	/**
 	* Shows a message box.
 	* \param hWnd handle to the parent window or nullptr
@@ -280,7 +280,7 @@ public:
 	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return see class description for details
 	 */
-	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, UINT uType, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = nullptr, BOOL *bChecked = nullptr);
+	static UINT ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, UINT uType, LPCWSTR lpRegistry, LPCWSTR lpCheckMessage = nullptr, BOOL* bChecked = nullptr);
 	/**
 	 * Shows a message box with a checkbox. If the user checks it then the next time
 	 * the message box isn't shown anymore - the method simply returns the same value as
@@ -297,7 +297,7 @@ public:
 	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return see class description for details
 	 */
-	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCTSTR lpRegistry, UINT nCheckMessage, BOOL* bChecked = nullptr);
+	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCWSTR lpRegistry, UINT nCheckMessage, BOOL* bChecked = nullptr);
 
 	/**
 	 * Shows a message box with user defined button texts.
@@ -312,7 +312,7 @@ public:
 	 * \param lpButton3 text for the third button
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT Show(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2 = nullptr, LPCTSTR lpButton3 = nullptr);
+	static UINT Show(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef, LPCWSTR icon, LPCWSTR lpButton1, LPCWSTR lpButton2 = nullptr, LPCWSTR lpButton3 = nullptr);
 	/**
 	 * Shows a message box with user defined button texts.
 	 * \param hWnd handle to the parent window or nullptr
@@ -326,7 +326,7 @@ public:
 	 * \param nButton3 resource ID of the text for the third button
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2 = NULL, UINT nButton3 = NULL);
+	static UINT Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2 = NULL, UINT nButton3 = NULL);
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or nullptr
@@ -346,7 +346,7 @@ public:
 	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT ShowCheck(HWND hWnd, LPCTSTR lpMessage, LPCTSTR lpCaption, int nDef, LPCTSTR icon, LPCTSTR lpButton1, LPCTSTR lpButton2, LPCTSTR lpButton3, LPCTSTR lpRegistry, LPCTSTR lpCheckMessage = nullptr, BOOL* bChecked = nullptr);
+	static UINT ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef, LPCWSTR icon, LPCWSTR lpButton1, LPCWSTR lpButton2, LPCWSTR lpButton3, LPCWSTR lpRegistry, LPCWSTR lpCheckMessage = nullptr, BOOL* bChecked = nullptr);
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or nullptr
@@ -365,12 +365,12 @@ public:
 	 * \param bChecked get and set checkbox check state. This is optional.
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
-	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCTSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCTSTR lpRegistry, UINT nCheckMessage = NULL, BOOL* bChecked = nullptr);
+	static UINT ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCWSTR lpRegistry, UINT nCheckMessage = NULL, BOOL* bChecked = nullptr);
 
 	/**
 	 * Removes the registry key
 	 */
-	static bool RemoveRegistryKey(LPCTSTR lpRegistry);
+	static bool RemoveRegistryKey(LPCWSTR lpRegistry);
 
 	/**
 	 * Stores the value in the registry
@@ -411,7 +411,7 @@ protected:
 	 */
 	CSize GetButtonSize();
 
-	void SetHelpPath(LPCTSTR sHelpPath) {m_sHelpPath = sHelpPath;}
+	void SetHelpPath(LPCWSTR sHelpPath) {m_sHelpPath = sHelpPath;}
 
 	LOGFONT	m_LogFont;
 	CCursor m_Cursor;

@@ -46,4 +46,4 @@ public:
 std::string WideToMultibyte(const std::wstring& wide);
 std::wstring MultibyteToWide(const std::string& multibyte);
 
-int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage);
+int LoadStringEx(HINSTANCE hInstance, UINT uID, LPWSTR lpBuffer, int nBufferMax, WORD wLanguage);

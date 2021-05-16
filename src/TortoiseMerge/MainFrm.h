@@ -199,7 +199,7 @@ protected:
 	afx_msg void	OnUpdateEnableIfSelection(CCmdUI* pCmdUI);
 	afx_msg	void	OnRegexNoFilter();
 	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
-	afx_msg void	OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg void	OnSettingChange(UINT uFlags, LPCWSTR lpszSection);
 	afx_msg void	OnSysColorChange();
 	DECLARE_MESSAGE_MAP()
 protected:

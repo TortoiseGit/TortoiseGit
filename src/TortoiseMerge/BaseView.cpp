@@ -497,7 +497,7 @@ CFont* CBaseView::GetFont(BOOL bItalic /*= FALSE*/, BOOL bBold /*= FALSE*/)
 		m_lfBaseFont.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
 		m_lfBaseFont.lfItalic = static_cast<BYTE>(bItalic);
 		m_lfBaseFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGitMerge\\LogFontSize", 10)));
-		wcsncpy_s(m_lfBaseFont.lfFaceName, static_cast<LPCTSTR>(static_cast<CString>(CRegString(L"Software\\TortoiseGitMerge\\LogFontName", L"Consolas"))), _countof(m_lfBaseFont.lfFaceName) - 1);
+		wcsncpy_s(m_lfBaseFont.lfFaceName, static_cast<LPCWSTR>(static_cast<CString>(CRegString(L"Software\\TortoiseGitMerge\\LogFontName", L"Consolas"))), _countof(m_lfBaseFont.lfFaceName) - 1);
 		if (!m_apFonts[nIndex]->CreateFontIndirect(&m_lfBaseFont))
 		{
 			delete m_apFonts[nIndex];
@@ -1815,7 +1815,7 @@ void CBaseView::DrawTextLine(
 		//int nViewLineLength = sViewLine.GetLength();
 		const TCHAR * text = sViewLine;
 		const TCHAR * findText = text;
-		while ((findText = wcsstr(findText, static_cast<LPCTSTR>(m_sMarkedWord)))!=0)
+		while ((findText = wcsstr(findText, static_cast<LPCWSTR>(m_sMarkedWord))) != 0)
 		{
 			int nMarkStart = static_cast<int>(findText - text);
 			int nMarkEnd = nMarkStart + nMarkLength;
@@ -1898,7 +1898,7 @@ void CBaseView::DrawTextLine(
 	CString sLine = GetLineChars(nLineIndex);
 	int nLineLength = sLine.GetLength();
 	CString sLineExp = ExpandChars(sLine);
-	LPCTSTR textExp = sLineExp;
+	LPCWSTR textExp = sLineExp;
 	//int nLineLengthExp = sLineExp.GetLength();
 	int nStartExp = 0;
 	int nLeft = coords.x;
@@ -1920,7 +1920,7 @@ void CBaseView::DrawTextLine(
 			pDC->SetTextColor(second.text);
 			int nEndExp = CountExpandedChars(sLine, nEnd);
 			int nTextLength = nEndExp - nStartExp;
-			LPCTSTR p_zBlockText = textExp + nStartExp;
+			LPCWSTR p_zBlockText = textExp + nStartExp;
 			SIZE Size;
 			GetTextExtentPoint32(pDC->GetSafeHdc(), p_zBlockText, nTextLength, &Size); // falls time-2-tme
 			int nRight = nLeft + Size.cx;
@@ -2047,12 +2047,12 @@ void CBaseView::DrawSingleLine(CDC *pDC, const CRect &rc, int nLineIndex)
 		pDC->FillSolidRect(frect, crBkgnd);
 
 	// draw the whitespace chars
-	auto pszChars = static_cast<LPCTSTR>(sLine);
+	auto pszChars = static_cast<LPCWSTR>(sLine);
 	if (m_bViewWhitespace)
 	{
 		int xpos = 0;
 		int nChars = 0;
-		LPCTSTR pLastSpace = pszChars;
+		LPCWSTR pLastSpace = pszChars;
 		int y = rc.top + (rc.bottom-rc.top)/2;
 		xpos -= m_nOffsetChar * GetCharWidth();
 
@@ -2124,7 +2124,7 @@ void CBaseView::ExpandChars(const CString &sLine, int nOffset, int nCount, CStri
 
 	int nActualOffset = CountExpandedChars(sLine, nOffset);
 
-	auto pszChars = static_cast<LPCTSTR>(sLine);
+	auto pszChars = static_cast<LPCWSTR>(sLine);
 	pszChars += nOffset;
 	int nLength = nCount;
 
@@ -2135,7 +2135,7 @@ void CBaseView::ExpandChars(const CString &sLine, int nOffset, int nCount, CStri
 			nTabCount ++;
 	}
 
-	LPTSTR pszBuf = line.GetBuffer(nLength + nTabCount * (nTabSize - 1) + 1);
+	LPWSTR pszBuf = line.GetBuffer(nLength + nTabCount * (nTabSize - 1) + 1);
 	int nCurPos = 0;
 	if (nTabCount > 0 || m_bViewWhitespace)
 	{
@@ -3420,7 +3420,7 @@ void CBaseView::OnLButtonTrippleClick( UINT /*nFlags*/, CPoint point )
 	{
 		if (!m_sConvertedFilePath.IsEmpty() && (GetKeyState(VK_CONTROL)&0x8000))
 		{
-			PCIDLIST_ABSOLUTE __unaligned pidl = ILCreateFromPath(static_cast<LPCTSTR>(m_sConvertedFilePath));
+			PCIDLIST_ABSOLUTE __unaligned pidl = ILCreateFromPath(static_cast<LPCWSTR>(m_sConvertedFilePath));
 			if (pidl)
 			{
 				SHOpenFolderAndSelectItems(pidl,0,0,0);
@@ -4170,7 +4170,7 @@ void CBaseView::PasteText()
 	hglb = GetClipboardData(CF_UNICODETEXT);
 	if (hglb)
 	{
-		LPCTSTR lpstr = static_cast<LPCTSTR>(GlobalLock(hglb));
+		LPCWSTR lpstr = static_cast<LPCWSTR>(GlobalLock(hglb));
 		sClipboardText = lpstr;
 		GlobalUnlock(hglb);
 	}
@@ -5753,7 +5753,7 @@ bool CBaseView::Search(SearchDirection srchDir, bool useStart, bool flashIfNotFo
 				if (flashIfNotFound)
 				{
 					CString message;
-					message.Format(IDS_FIND_NOTFOUND, static_cast<LPCTSTR>(m_sFindText));
+					message.Format(IDS_FIND_NOTFOUND, static_cast<LPCWSTR>(m_sFindText));
 					if (m_pFindDialog)
 						m_pFindDialog->SetStatusText(message, RGB(255, 0, 0));
 					::MessageBeep(0xFFFFFFFF);

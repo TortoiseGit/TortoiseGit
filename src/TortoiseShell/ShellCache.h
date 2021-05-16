@@ -87,10 +87,10 @@ public:
 	BOOL IsRAM();
 	BOOL IsUnknown();
 
-	BOOL IsContextPathAllowed(LPCTSTR path);
-	BOOL IsPathAllowed(LPCTSTR path);
+	BOOL IsContextPathAllowed(LPCWSTR path);
+	BOOL IsPathAllowed(LPCWSTR path);
 	DWORD GetLangID();
-	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);
+	BOOL HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);
 
 private:
 	void ExcludeContextValid();
@@ -131,8 +131,8 @@ private:
 				return (diff < 0) || ((diff == 0) && recursive && !rhs.recursive);
 			}
 
-			friend bool operator<(const SEntry& rhs, const std::pair<LPCTSTR, size_t>& lhs);
-			friend bool operator<(const std::pair<LPCTSTR, size_t>& lhs, const SEntry& rhs);
+			friend bool operator<(const SEntry& rhs, const std::pair<LPCWSTR, size_t>& lhs);
+			friend bool operator<(const std::pair<LPCWSTR, size_t>& lhs, const SEntry& rhs);
 		};
 
 	private:
@@ -159,7 +159,7 @@ private:
 		/// excluded: C:, C:\some\deep\path
 		/// include: C:\some
 		/// lookup for C:\some\deeper\path
-		tristate_t IsPathAllowed(LPCTSTR path, TData::const_iterator begin, TData::const_iterator end) const;
+		tristate_t IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const;
 
 	public:
 		/// construction
@@ -169,11 +169,11 @@ private:
 		void Refresh();
 
 		/// data access
-		tristate_t IsPathAllowed(LPCTSTR path) const;
+		tristate_t IsPathAllowed(LPCWSTR path) const;
 	};
 
-	friend bool operator< (const CPathFilter::SEntry& rhs, const std::pair<LPCTSTR, size_t>& lhs);
-	friend bool operator< (const std::pair<LPCTSTR, size_t>& lhs, const CPathFilter::SEntry& rhs);
+	friend bool operator< (const CPathFilter::SEntry& rhs, const std::pair<LPCWSTR, size_t>& lhs);
+	friend bool operator< (const std::pair<LPCWSTR, size_t>& lhs, const CPathFilter::SEntry& rhs);
 
 	struct AdminDir_s
 	{
@@ -231,12 +231,12 @@ public:
 	bool isElevated;
 };
 
-inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCTSTR, size_t>& rhs)
+inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCWSTR, size_t>& rhs)
 {
 	return _wcsnicmp(lhs.path.c_str(), rhs.first, rhs.second) < 0;
 }
 
-inline bool operator<(const std::pair<LPCTSTR, size_t>& lhs, const ShellCache::CPathFilter::SEntry& rhs)
+inline bool operator<(const std::pair<LPCWSTR, size_t>& lhs, const ShellCache::CPathFilter::SEntry& rhs)
 {
 	return _wcsnicmp(lhs.first, rhs.path.c_str(), lhs.second) < 0;
 }

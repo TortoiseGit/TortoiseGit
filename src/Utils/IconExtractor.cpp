@@ -27,7 +27,7 @@ CIconExtractor::CIconExtractor()
 {
 }
 
-DWORD CIconExtractor::ExtractIcon(HINSTANCE hResource, LPCTSTR id, LPCTSTR TargetICON)
+DWORD CIconExtractor::ExtractIcon(HINSTANCE hResource, LPCWSTR id, LPCWSTR TargetICON)
 {
 	// Find the group icon resource
 	HRSRC hRsrc = FindResource(hResource, id, RT_GROUP_ICON);
@@ -81,7 +81,7 @@ DWORD CIconExtractor::ExtractIcon(HINSTANCE hResource, LPCTSTR id, LPCTSTR Targe
 	return WriteIconToICOFile(lpIR, TargetICON);
 }
 
-DWORD CIconExtractor::WriteIconToICOFile(LPICONRESOURCE lpIR, LPCTSTR szFileName)
+DWORD CIconExtractor::WriteIconToICOFile(LPICONRESOURCE lpIR, LPCWSTR szFileName)
 {
 	CAutoFile hFile = ::CreateFile(szFileName, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 	// open the file

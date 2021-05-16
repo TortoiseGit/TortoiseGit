@@ -29,11 +29,11 @@ public:
 	CHyperLink();
 	virtual ~CHyperLink();
 
-	BOOL ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL);
-	BOOL ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId, LPCTSTR strURL);
+	BOOL ConvertStaticToHyperlink(HWND hwndCtl, LPCWSTR strURL);
+	BOOL ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId, LPCWSTR strURL);
 
-	BOOL setURL( LPCTSTR strURL);
-	LPCTSTR getURL() const { return m_strURL; }
+	BOOL setURL(LPCWSTR strURL);
+	LPCWSTR getURL() const { return m_strURL; }
 
 protected:
 	/*
@@ -43,7 +43,7 @@ protected:
 	virtual void OnSelect()   {}
 	virtual void OnDeselect() {}
 
-	LPTSTR   m_strURL;                              // hyperlink URL
+	LPWSTR   m_strURL;                              // hyperlink URL
 
 private:
 	static COLORREF g_crLinkColor, g_crVisitedColor;// Hyperlink colors

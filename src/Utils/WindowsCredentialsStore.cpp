@@ -42,8 +42,8 @@ int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CSt
 
 	CREDENTIAL cred = { 0 };
 	cred.Type = CRED_TYPE_GENERIC;
-	cred.TargetName = const_cast<LPTSTR>(static_cast<LPCTSTR>(entryName));
-	cred.UserName = const_cast<LPTSTR>(static_cast<LPCTSTR>(username));
+	cred.TargetName = const_cast<LPWSTR>(static_cast<LPCWSTR>(entryName));
+	cred.UserName = const_cast<LPWSTR>(static_cast<LPCWSTR>(username));
 	cred.CredentialBlob = reinterpret_cast<LPBYTE>(const_cast<TCHAR*>(password));
 	cred.CredentialBlobSize = static_cast<int>(wcslen(password) * sizeof(TCHAR));
 	cred.Persist = CRED_PERSIST_LOCAL_MACHINE;

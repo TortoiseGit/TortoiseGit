@@ -96,12 +96,12 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
 	{
 		CString key;
-		key.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
+		key.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 		key.Replace(L':', L'_');
 		CString lastSelFromDate = CRegString(key);
 		if (lastSelFromDate.GetLength() == 10)
 		{
-			CTime time = CTime(_wtoi(static_cast<LPCTSTR>(lastSelFromDate.Left(4))), _wtoi(static_cast<LPCTSTR>(lastSelFromDate.Mid(5, 2))), _wtoi(static_cast<LPCTSTR>(lastSelFromDate.Mid(8, 2))), 0, 0, 0);
+			CTime time = CTime(_wtoi(static_cast<LPCWSTR>(lastSelFromDate.Left(4))), _wtoi(static_cast<LPCWSTR>(lastSelFromDate.Mid(5, 2))), _wtoi(static_cast<LPCWSTR>(lastSelFromDate.Mid(8, 2))), 0, 0, 0);
 			m_Filter.m_From = static_cast<DWORD>(time.GetTime());
 		}
 	}
@@ -1288,7 +1288,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
 							{
 								CString defaultUpstream;
-								defaultUpstream.Format(L"refs/remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
+								defaultUpstream.Format(L"refs/remotes/%s/%s", static_cast<LPCWSTR>(pullRemote), static_cast<LPCWSTR>(pullBranch));
 								refLabel.hasTracking = true;
 								if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
 								{
@@ -1617,10 +1617,10 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			lstrcpyn(pItem->pszText, temp, pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_MESSAGE: //Message
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(MessageDisplayStr(pLogEntry)), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(MessageDisplayStr(pLogEntry)), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_AUTHOR: //Author
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetAuthorName()), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->GetAuthorName()), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_DATE: //Date
 		if (!pLogEntry->m_CommitHash.IsEmpty())
@@ -1630,15 +1630,15 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 
 	case LOGLIST_EMAIL:
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetAuthorEmail()), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->GetAuthorEmail()), pItem->cchTextMax - 1);
 		break;
 
 	case LOGLIST_COMMIT_NAME: //Commit
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetCommitterName()), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->GetCommitterName()), pItem->cchTextMax - 1);
 		break;
 
 	case LOGLIST_COMMIT_EMAIL: //Commit Email
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(pLogEntry->GetCommitterEmail()), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(pLogEntry->GetCommitterEmail()), pItem->cchTextMax - 1);
 		break;
 
 	case LOGLIST_COMMIT_DATE: //Commit Date
@@ -1648,10 +1648,10 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_BUG: //Bug ID
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(this->m_ProjectProperties.FindBugID(pLogEntry->GetSubjectBody())), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(this->m_ProjectProperties.FindBugID(pLogEntry->GetSubjectBody())), pItem->cchTextMax - 1);
 		break;
 	case LOGLIST_SVNREV: //SVN revision
-		lstrcpyn(pItem->pszText, static_cast<LPCTSTR>(FindSVNRev(pLogEntry->GetSubjectBody())), pItem->cchTextMax - 1);
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(FindSVNRev(pLogEntry->GetSubjectBody())), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -1781,10 +1781,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					commitTitle += L"...";
 				}
 				commitTitle.Replace(L"&", L"&&");
-				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
+				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCWSTR>(commitTitle), static_cast<LPCWSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			}
 			else
-				str.AppendFormat(L" (%s)", static_cast<LPCTSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
+				str.AppendFormat(L" (%s)", static_cast<LPCWSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			parentInfo.push_back(str);
 		}
 
@@ -2026,7 +2026,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_REPOBROWSE))
 					popup.AppendMenuIcon(ID_REPOBROWSE, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
 
-				str.Format(IDS_LOG_POPUP_MERGEREV, static_cast<LPCTSTR>(g_Git.GetCurrentBranch()));
+				str.Format(IDS_LOG_POPUP_MERGEREV, static_cast<LPCWSTR>(g_Git.GetCurrentBranch()));
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_MERGEREV) && !isHeadCommit && m_hasWC && !isMergeActive && !isStash)
 				{
@@ -2038,7 +2038,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 						popup.SetMenuItemData(ID_MERGEREV, reinterpret_cast<LONG_PTR>(&hashMap.find(pSelLogEntry->m_CommitHash)->second[index]));
 				}
 
-				str.Format(IDS_RESET_TO_THIS_FORMAT, static_cast<LPCTSTR>(g_Git.GetCurrentBranch()));
+				str.Format(IDS_RESET_TO_THIS_FORMAT, static_cast<LPCWSTR>(g_Git.GetCurrentBranch()));
 
 				if (m_ContextMenuMask&GetContextMenuBit(ID_RESET) && m_hasWC && !isStash)
 					popup.AppendMenuIcon(ID_RESET, str, IDI_RESET);
@@ -2113,7 +2113,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				if (m_ContextMenuMask&GetContextMenuBit(ID_CREATE_TAG) && !isStash)
 					popup.AppendMenuIcon(ID_CREATE_TAG,IDS_CREATE_TAG_AT_THIS , IDI_TAG);
 
-				str.Format(IDS_REBASE_THIS_FORMAT, static_cast<LPCTSTR>(g_Git.GetCurrentBranch()));
+				str.Format(IDS_REBASE_THIS_FORMAT, static_cast<LPCWSTR>(g_Git.GetCurrentBranch()));
 
 				if (pSelLogEntry->m_CommitHash != headHash && m_hasWC && !isMergeActive && !isStash)
 					if(m_ContextMenuMask&GetContextMenuBit(ID_REBASE_TO_VERSION))
@@ -2180,9 +2180,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					GitRevLoglist* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 					CString lastSelHash = pLastEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength());
 					CString menu;
-					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(lastSelHash + L".." + firstSelHash));
+					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(lastSelHash + L".." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
-					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(lastSelHash + L"..." + firstSelHash));
+					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(lastSelHash + L"..." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
 					bAddSeparator = true;
 				}
@@ -2464,7 +2464,7 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 					if (file.m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !file.GetGitOldPathString().IsEmpty())
 					{
 						sPaths += L' ';
-						sPaths.AppendFormat(from, static_cast<LPCTSTR>(file.GetGitOldPathString()));
+						sPaths.AppendFormat(from, static_cast<LPCWSTR>(file.GetGitOldPathString()));
 					}
 					sPaths += L"\r\n";
 				}
@@ -2491,13 +2491,13 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 				}
 
 				sLogCopyText.Format(L"%s: %s\r\n%s: %s <%s>\r\n%s: %s\r\n%s:\r\n%s\r\n%s%s\r\n",
-					static_cast<LPCTSTR>(sRev), static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()),
-					static_cast<LPCTSTR>(sAuthor), static_cast<LPCTSTR>(pLogEntry->GetAuthorName()), static_cast<LPCTSTR>(pLogEntry->GetAuthorEmail()),
-					static_cast<LPCTSTR>(sDate),
-					static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
-					static_cast<LPCTSTR>(sMessage), static_cast<LPCTSTR>(pLogEntry->GetSubjectBody(true)),
-					static_cast<LPCTSTR>(sNotesTags),
-					static_cast<LPCTSTR>(sPaths));
+					static_cast<LPCWSTR>(sRev), static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()),
+					static_cast<LPCWSTR>(sAuthor), static_cast<LPCWSTR>(pLogEntry->GetAuthorName()), static_cast<LPCWSTR>(pLogEntry->GetAuthorEmail()),
+					static_cast<LPCWSTR>(sDate),
+					static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(pLogEntry->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
+					static_cast<LPCWSTR>(sMessage), static_cast<LPCWSTR>(pLogEntry->GetSubjectBody(true)),
+					static_cast<LPCWSTR>(sNotesTags),
+					static_cast<LPCWSTR>(sPaths));
 				sClipdata +=  sLogCopyText;
 			}
 			else if (toCopy == ID_COPYCLIPBOARDAUTHORSFULL)
@@ -3301,7 +3301,7 @@ CString CGitLogListBase::GetTagInfo(const STRING_VECTOR& refs) const
 			continue;
 
 		CString cmd;
-		cmd.Format(L"git.exe cat-file tag %s", static_cast<LPCTSTR>((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}")))));
+		cmd.Format(L"git.exe cat-file tag %s", static_cast<LPCWSTR>((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}")))));
 		CString output;
 		if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) != 0)
 			continue;
@@ -4111,7 +4111,7 @@ bool CGitLogListBase::DrawListItemWithMatchesIfEnabled(std::shared_ptr<CLogDlgFi
 
 LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD, CColors& colors)
 {
-	CString text = static_cast<LPCTSTR>(listCtrl.GetItemText(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem));
+	CString text = static_cast<LPCWSTR>(listCtrl.GetItemText(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem));
 	if (text.IsEmpty())
 		return CDRF_DODEFAULT;
 

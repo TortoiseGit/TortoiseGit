@@ -31,7 +31,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
 	{
 		CString cmd, out, tempmergefile;
-		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCTSTR>(m_targetPathList[m_itemCount].GetGitPathString()));
+		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(m_targetPathList[m_itemCount].GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			list->ReportError(out);
@@ -53,7 +53,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		postCmdList.emplace_back(IDI_COMMIT, IDS_MENUCOMMIT, []
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:commit /path:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
+			sCmd.Format(L"/command:commit /path:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 		});
 	};

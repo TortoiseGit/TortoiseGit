@@ -112,7 +112,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	FileStatusCacheEntry* ret = nullptr;
 
 	if (wcslen(filepath.GetWinPath()) == 3)
-		ret = &m_cache[static_cast<LPCTSTR>(filepath.GetWinPathString().Left(2))];
+		ret = &m_cache[static_cast<LPCWSTR>(filepath.GetWinPathString().Left(2))];
 	else
 		ret = &m_cache[filepath.GetWinPath()];
 
