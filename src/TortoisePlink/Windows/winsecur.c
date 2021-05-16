@@ -170,17 +170,17 @@ bool make_private_security_descriptor(DWORD permissions,
     ea[0].grfAccessMode = REVOKE_ACCESS;
     ea[0].grfInheritance = NO_INHERITANCE;
     ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-    ea[0].Trustee.ptstrName = (LPTSTR)worldsid;
+    ea[0].Trustee.ptstrName = (LPWSTR)worldsid;
     ea[1].grfAccessPermissions = permissions;
     ea[1].grfAccessMode = GRANT_ACCESS;
     ea[1].grfInheritance = NO_INHERITANCE;
     ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-    ea[1].Trustee.ptstrName = (LPTSTR)usersid;
+    ea[1].Trustee.ptstrName = (LPWSTR)usersid;
     ea[2].grfAccessPermissions = permissions;
     ea[2].grfAccessMode = REVOKE_ACCESS;
     ea[2].grfInheritance = NO_INHERITANCE;
     ea[2].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-    ea[2].Trustee.ptstrName = (LPTSTR)networksid;
+    ea[2].Trustee.ptstrName = (LPWSTR)networksid;
 
     acl_err = p_SetEntriesInAclA(3, ea, NULL, acl);
     if (acl_err != ERROR_SUCCESS || *acl == NULL) {
@@ -261,14 +261,14 @@ static bool really_restrict_process_acl(char **error)
     ea[0].grfAccessMode = DENY_ACCESS;
     ea[0].grfInheritance = SUB_CONTAINERS_AND_OBJECTS_INHERIT;
     ea[0].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-    ea[0].Trustee.ptstrName = (LPTSTR)worldsid;
+    ea[0].Trustee.ptstrName = (LPWSTR)worldsid;
 
     /* User: user ace */
     ea[1].grfAccessPermissions = ~nastyace & 0x1fff;
     ea[1].grfAccessMode = GRANT_ACCESS;
     ea[1].grfInheritance = SUB_CONTAINERS_AND_OBJECTS_INHERIT;
     ea[1].Trustee.TrusteeForm = TRUSTEE_IS_SID;
-    ea[1].Trustee.ptstrName = (LPTSTR)usersid;
+    ea[1].Trustee.ptstrName = (LPWSTR)usersid;
 
     acl_err = p_SetEntriesInAclA(2, ea, NULL, &acl);
 

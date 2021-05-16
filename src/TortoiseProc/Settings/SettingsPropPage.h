@@ -34,12 +34,12 @@ public:
 	// simple construction
 	ISettingsPropPage();
 	explicit ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
-	explicit ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
+	explicit ISettingsPropPage(LPCWSTR lpszTemplateName, UINT nIDCaption = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
 
 	// extended construction
 	ISettingsPropPage(UINT nIDTemplate, UINT nIDCaption,
 		UINT nIDHeaderTitle, UINT nIDHeaderSubTitle = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
-	ISettingsPropPage(LPCTSTR lpszTemplateName, UINT nIDCaption,
+	ISettingsPropPage(LPCWSTR lpszTemplateName, UINT nIDCaption,
 		UINT nIDHeaderTitle, UINT nIDHeaderSubTitle = 0, DWORD dwSize = sizeof(PROPSHEETPAGE));
 
 	virtual ~ISettingsPropPage();

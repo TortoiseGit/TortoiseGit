@@ -72,7 +72,7 @@ public:
         , resolveMsgLParam(0)
         , resolveMsgWParam(0)
     {
-        SetWindowTitle(static_cast<LPCTSTR>(ResString(hResource, IDS_APP_TITLE)));
+        SetWindowTitle(static_cast<LPCWSTR>(ResString(hResource, IDS_APP_TITLE)));
     };
 
     /**

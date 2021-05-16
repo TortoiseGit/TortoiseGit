@@ -550,7 +550,7 @@ bool CACListWnd::SelectItem(int item)
 
 /*********************************************************************/
 
-int CACListWnd::FindStringExact( int nStartAfter, LPCTSTR lpszString )
+int CACListWnd::FindStringExact( int nStartAfter, LPCWSTR lpszString )
 {
 	if(nStartAfter > m_SearchList.GetSize())
 		return -1;
@@ -566,7 +566,7 @@ int CACListWnd::FindStringExact( int nStartAfter, LPCTSTR lpszString )
 ** Vers. 1.1
 * NEW: m_bDisplayOnly
 */
-int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayOnly)
+int CACListWnd::FindString(int nStartAfter, LPCWSTR lpszString, bool m_bDisplayOnly)
 {
 	long m_AktCount = static_cast<long>(m_DisplayList.GetSize());
 
@@ -678,7 +678,7 @@ int CACListWnd::FindString(int nStartAfter, LPCTSTR lpszString, bool m_bDisplayO
 
 /*********************************************************************/
 
-int CACListWnd::SelectString(LPCTSTR lpszString )
+int CACListWnd::SelectString(LPCWSTR lpszString )
 {
 	int item = FindString(-1, lpszString);
 	SelectItem(item);
@@ -909,21 +909,21 @@ void CACListWnd::SortList(CStringArray& list)
 		CStringArray m_Liste1;
 		m_Liste1.Copy(list);
 
-		LPCTSTR* ppSortArray = new LPCTSTR[m_Count+1];
+		LPCWSTR* ppSortArray = new LPCWSTR[m_Count+1];
 
 
 		for (int i = 0; i < m_Count; ++i)
 		{
-			ppSortArray[i] = static_cast<LPCTSTR>(m_Liste1.GetAt(i));
+			ppSortArray[i] = static_cast<LPCWSTR>(m_Liste1.GetAt(i));
 		}
 
 		list.RemoveAll();
 
-		qsort(ppSortArray, m_Count, sizeof(LPCTSTR), CompareString);
+		qsort(ppSortArray, m_Count, sizeof(LPCWSTR), CompareString);
 
 		for (int i = 0; i < m_Count; ++i)
 		{
-			list.Add(static_cast<LPCTSTR>(ppSortArray[i]));
+			list.Add(static_cast<LPCWSTR>(ppSortArray[i]));
 		}
 		m_Liste1.RemoveAll();
 		delete [] ppSortArray;

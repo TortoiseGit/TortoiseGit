@@ -67,29 +67,29 @@ class CHwSMTP
 public:
 	CString GetLastErrorText();
 	BOOL SendEmail (
-		LPCTSTR lpszSmtpSrvHost,
+		LPCWSTR lpszSmtpSrvHost,
 		CCredentials* credentials,
 		BOOL bMustAuth,
-		LPCTSTR lpszAddrFrom,
-		LPCTSTR lpszAddrTo,
-		LPCTSTR lpszSubject,
-		LPCTSTR lpszBody,
+		LPCWSTR lpszAddrFrom,
+		LPCWSTR lpszAddrTo,
+		LPCWSTR lpszSubject,
+		LPCWSTR lpszBody,
 		CStringArray* pStrAryAttach = nullptr,
-		LPCTSTR pStrAryCC = nullptr,
+		LPCWSTR pStrAryCC = nullptr,
 		UINT nSmtpSrvPort=25,
-		LPCTSTR pSend = nullptr,
-		LPCTSTR pToList = nullptr,
+		LPCWSTR pSend = nullptr,
+		LPCWSTR pToList = nullptr,
 		DWORD secLevel = SECURITY_LEVEL::none
 		);
 	BOOL SendSpeedEmail
 		(
-			LPCTSTR lpszAddrFrom,
-			LPCTSTR lpszAddrTo,
-			LPCTSTR lpszSubject,
-			LPCTSTR lpszBody,
+			LPCWSTR lpszAddrFrom,
+			LPCWSTR lpszAddrTo,
+			LPCWSTR lpszSubject,
+			LPCWSTR lpszBody,
 			CStringArray* pStrAryAttach = nullptr,
-			LPCTSTR pStrAryCC = nullptr,
-			LPCTSTR pSend = nullptr
+			LPCWSTR pStrAryCC = nullptr,
+			LPCWSTR pSend = nullptr
 		);
 	CHwSMTP();
 	virtual ~CHwSMTP();
@@ -133,7 +133,7 @@ private:
 	UINT m_nSmtpSrvPort;
 
 	CString m_csLastError;
-	BOOL SendOnAttach(LPCTSTR lpszFileName);
+	BOOL SendOnAttach(LPCWSTR lpszFileName);
 	BOOL SendAttach();
 	BOOL SendBody();
 	CString m_csMIMEContentType;

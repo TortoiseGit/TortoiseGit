@@ -175,12 +175,12 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 		break;
 	case COMMITMONITOR_FINDMSGNEXT:
 		m_bMatchCase = !!wParam;
-		m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+		m_findtext = reinterpret_cast<LPCWSTR>(lParam);
 		DoSearch(false);
 		break;
 	case COMMITMONITOR_FINDMSGPREV:
 		m_bMatchCase = !!wParam;
-		m_findtext = reinterpret_cast<LPCTSTR>(lParam);
+		m_findtext = reinterpret_cast<LPCWSTR>(lParam);
 		DoSearch(true);
 		break;
 	case COMMITMONITOR_FINDEXIT:
@@ -808,7 +808,7 @@ bool CMainWindow::LoadFile(HANDLE hFile)
 	return true;
 }
 
-bool CMainWindow::LoadFile(LPCTSTR filename)
+bool CMainWindow::LoadFile(LPCWSTR filename)
 {
 	InitEditor();
 	FILE* fp = nullptr;
@@ -855,7 +855,7 @@ void CMainWindow::SetupWindow(bool bUTF8)
 	::ShowWindow(m_hWndEdit, SW_SHOW);
 }
 
-bool CMainWindow::SaveFile(LPCTSTR filename)
+bool CMainWindow::SaveFile(LPCWSTR filename)
 {
 	FILE* fp = nullptr;
 	_wfopen_s(&fp, filename, L"w+b");
@@ -864,7 +864,7 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 		TCHAR fmt[1024] = { 0 };
 		LoadString(::hResource, IDS_ERRORSAVE, fmt, _countof(fmt));
 		TCHAR error[1024] = { 0 };
-		_snwprintf_s(error, _countof(error), fmt, filename, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+		_snwprintf_s(error, _countof(error), fmt, filename, static_cast<LPCWSTR>(CFormatMessageWrapper()));
 		MessageBox(*this, error, L"TortoiseGitUDiff", MB_OK);
 		return false;
 	}
@@ -880,7 +880,7 @@ bool CMainWindow::SaveFile(LPCTSTR filename)
 	return true;
 }
 
-void CMainWindow::SetTitle(LPCTSTR title)
+void CMainWindow::SetTitle(LPCWSTR title)
 {
 	size_t len = wcslen(title);
 	auto pBuf = std::make_unique<TCHAR[]>(len + 40);

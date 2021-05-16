@@ -51,7 +51,7 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 				CString tempfilename = CTempFiles::Instance().GetTempFilePath(false).GetWinPathString();
 				VERIFY(m_targetPathList.WriteToFile(tempfilename));
 				CString sCmd;
-				sCmd.Format(L"/command:lfsunlock /force /pathfile:\"%s\" /deletepathfile", static_cast<LPCTSTR>(tempfilename));
+				sCmd.Format(L"/command:lfsunlock /force /pathfile:\"%s\" /deletepathfile", static_cast<LPCWSTR>(tempfilename));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
 		}

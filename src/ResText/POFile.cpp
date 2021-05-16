@@ -46,7 +46,7 @@ static bool StartsWith(const wchar_t* heystacl, const wchar_t* needle)
 	return wcsncmp(heystacl, needle, wcslen(needle)) == 0;
 }
 
-BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
+BOOL CPOFile::ParseFile(LPCWSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 {
 	if (!PathFileExists(szPath))
 		return FALSE;
@@ -187,7 +187,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	return TRUE;
 }
 
-BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
+BOOL CPOFile::SaveFile(LPCWSTR szPath, LPCWSTR lpszHeaderFile)
 {
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte

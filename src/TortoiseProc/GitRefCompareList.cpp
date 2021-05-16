@@ -358,12 +358,12 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	CString logStr;
 	if (!oldHash.IsEmpty())
 	{
-		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(oldHash));
+		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(oldHash));
 		popup.AppendMenuIcon(IDGITRCL_OLDLOG, logStr, IDI_LOG);
 	}
 	if (!newHash.IsEmpty() && oldHash != newHash)
 	{
-		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(newHash));
+		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(newHash));
 		popup.AppendMenuIcon(IDGITRCL_NEWLOG, logStr, IDI_LOG);
 	}
 	if (!oldHash.IsEmpty() && !newHash.IsEmpty() && oldHash != newHash)
@@ -378,14 +378,14 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_NEWLOG:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), cmd == IDGITRCL_OLDLOG ? static_cast<LPCTSTR>(oldHash) : static_cast<LPCTSTR>(newHash));
+			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), cmd == IDGITRCL_OLDLOG ? static_cast<LPCWSTR>(oldHash) : static_cast<LPCWSTR>(newHash));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_COMPARE:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(oldHash), static_cast<LPCTSTR>(newHash));
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(oldHash), static_cast<LPCWSTR>(newHash));
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 			CAppUtils::RunTortoiseGitProc(sCmd);
@@ -394,7 +394,7 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_REFLOG:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:reflog /path:\"%s\" /ref:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(refName));
+			sCmd.Format(L"/command:reflog /path:\"%s\" /ref:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(refName));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}

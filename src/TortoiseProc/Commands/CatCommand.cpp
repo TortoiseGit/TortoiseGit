@@ -92,7 +92,7 @@ bool CatCommand::Execute()
 	}
 
 	CString cmd, output, err;
-	cmd.Format(L"git.exe cat-file -t %s", static_cast<LPCTSTR>(revision));
+	cmd.Format(L"git.exe cat-file -t %s", static_cast<LPCWSTR>(revision));
 
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
@@ -102,9 +102,9 @@ bool CatCommand::Execute()
 	}
 
 	if (CStringUtils::StartsWith(output, L"blob"))
-		cmd.Format(L"git.exe cat-file -p %s", static_cast<LPCTSTR>(revision));
+		cmd.Format(L"git.exe cat-file -p %s", static_cast<LPCWSTR>(revision));
 	else
-		cmd.Format(L"git.exe show %s -- \"%s\"", static_cast<LPCTSTR>(revision), static_cast<LPCTSTR>(this->cmdLinePath.GetWinPathString()));
+		cmd.Format(L"git.exe show %s -- \"%s\"", static_cast<LPCWSTR>(revision), static_cast<LPCWSTR>(this->cmdLinePath.GetWinPathString()));
 
 	if (g_Git.RunLogFile(cmd, savepath, &err))
 	{

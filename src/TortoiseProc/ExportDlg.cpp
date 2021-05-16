@@ -131,7 +131,7 @@ void CExportDlg::OnOK()
 			return;
 		}
 		CString sMessage;
-		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, static_cast<LPCTSTR>(m_strFile));
+		sMessage.Format(IDS_PROC_OVERWRITE_CONFIRM, static_cast<LPCWSTR>(m_strFile));
 		if (CMessageBox::Show(GetSafeHwnd(), sMessage, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION | MB_DEFBUTTON2) != IDYES)
 			return ;
 	}

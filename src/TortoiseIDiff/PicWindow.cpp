@@ -1384,7 +1384,7 @@ bool CPicWindow::CreateButtons()
 
     hwndLeftBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1399,7 +1399,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndLeftBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hLeft)));
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1412,7 +1412,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndRightBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hRight)));
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1426,7 +1426,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hPlay)));
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT | BS_NOTIFY | BS_PUSHLIKE,
                                 0, 0, 0, 0,
                                 *this,

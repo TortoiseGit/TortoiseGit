@@ -123,7 +123,7 @@ int CSysImageList::GetPathIconIndex(const CString& file)
 	return it->second;
 }
 
-int CSysImageList::GetFileIcon(LPCTSTR file, DWORD attributes, UINT extraFlags)
+int CSysImageList::GetFileIcon(LPCWSTR file, DWORD attributes, UINT extraFlags)
 {
 	SHFILEINFO sfi = { 0 };
 

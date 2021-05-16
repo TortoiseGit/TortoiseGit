@@ -49,9 +49,9 @@ public:
 
 // Overrides
 	virtual BOOL OnNewDocument() override;
-	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName) override;
-	BOOL OnOpenDocument(LPCTSTR lpszPathName, CString Rev);
-	virtual void SetPathName(LPCTSTR lpszPathName, BOOL bAddToMRU = TRUE) override;
+	virtual BOOL OnOpenDocument(LPCWSTR lpszPathName) override;
+	BOOL OnOpenDocument(LPCWSTR lpszPathName, CString Rev);
+	virtual void SetPathName(LPCWSTR lpszPathName, BOOL bAddToMRU = TRUE) override;
 
 // Implementation
 	virtual ~CTortoiseGitBlameDoc();

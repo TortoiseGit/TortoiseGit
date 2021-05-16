@@ -123,7 +123,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
 	{
 		if (cmdouterr.IsEmpty())
-			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, static_cast<LPCTSTR>(cmdout));
+			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, static_cast<LPCWSTR>(cmdout));
 		MessageBox(GetExplorerHWND(), cmdouterr, L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}

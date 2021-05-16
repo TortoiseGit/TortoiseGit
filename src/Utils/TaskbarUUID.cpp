@@ -48,7 +48,7 @@ void SetTaskIDPerUUID()
 	}
 }
 
-std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= nullptr */)
+std::wstring GetTaskIDPerUUID(LPCWSTR uuid /*= nullptr */)
 {
 	CRegStdDWORD r = CRegStdDWORD(L"Software\\TortoiseGit\\GroupTaskbarIconsPerRepo", 3);
 	std::wstring id = APPID;

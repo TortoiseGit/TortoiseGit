@@ -22,7 +22,7 @@
 #if defined(_DEBUG) || defined(DEBUG)
 #include <stdarg.h>
 #include <stdio.h>
-void TRACE(LPCTSTR str, ...)
+void TRACE(LPCWSTR str, ...)
 {
 	static wchar_t buf[20*1024];
 
@@ -34,5 +34,5 @@ void TRACE(LPCTSTR str, ...)
 	va_end(ap);
 };
 #else
-void TRACE(LPCTSTR str, ...) {UNREFERENCED_PARAMETER(str);}
+void TRACE(LPCWSTR str, ...) {UNREFERENCED_PARAMETER(str);}
 #endif

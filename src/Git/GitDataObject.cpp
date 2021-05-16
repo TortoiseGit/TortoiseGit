@@ -177,7 +177,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		{
 			CString temp(m_iStripLength > 0 ? it->GetWinPathString().Mid(m_iStripLength + 1) : (m_iStripLength == 0 ? it->GetWinPathString() : it->GetUIFileOrDirectoryName()));
 			if (temp.GetLength() < MAX_PATH)
-				wcscpy_s(files->fgd[index].cFileName, static_cast<LPCTSTR>(temp));
+				wcscpy_s(files->fgd[index].cFileName, static_cast<LPCWSTR>(temp));
 			else
 			{
 				files->cItems--;
@@ -273,7 +273,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		if (pmedium->hGlobal)
 		{
 			auto pMem = static_cast<TCHAR*>(GlobalLock(pmedium->hGlobal));
-			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCTSTR>(text));
+			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCWSTR>(text));
 			GlobalUnlock(pmedium->hGlobal);
 		}
 		pmedium->pUnkForRelease = nullptr;
@@ -605,7 +605,7 @@ HRESULT STDMETHODCALLTYPE GitDataObject::EndOperation(HRESULT /*hResult*/, IBind
 	return S_OK;
 }
 
-HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert)
+HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert)
 {
 	if (!format || !insert)
 		return E_INVALIDARG;

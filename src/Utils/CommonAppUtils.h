@@ -83,7 +83,7 @@ public:
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID);
 	static bool SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width, int height);
 
-	static bool FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner = nullptr, LPCTSTR defaultExt = nullptr, bool handleAsFile = false);
+	static bool FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner = nullptr, LPCWSTR defaultExt = nullptr, bool handleAsFile = false);
 
 	// Wrapper for LoadImage(IMAGE_ICON)
 	static HICON LoadIconEx(UINT resourceId, UINT cx, UINT cy);

@@ -26,7 +26,7 @@
 class CFormatMessageWrapper
 {
 private:
-	LPTSTR buffer;
+	LPWSTR buffer;
 	DWORD result;
 	void release();
 	void obtainMessage() { obtainMessage(::GetLastError()); }
@@ -36,7 +36,7 @@ public:
 	CFormatMessageWrapper() : buffer(0), result(0) {obtainMessage();}
 	CFormatMessageWrapper(DWORD lastError) : buffer(0), result(0) {obtainMessage(lastError);}
 	~CFormatMessageWrapper() { release(); }
-	operator LPCTSTR() const { return buffer; }
+	operator LPCWSTR() const { return buffer; }
 	operator bool() const { return result != 0; }
 	bool operator!() const { return result == 0; }
 };
@@ -52,7 +52,7 @@ inline void CFormatMessageWrapper::obtainMessage(DWORD errorCode)
 							nullptr,
 							errorCode,
 							MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-							reinterpret_cast<LPTSTR>(&buffer),
+							reinterpret_cast<LPWSTR>(&buffer),
 							0,
 							nullptr
 							);

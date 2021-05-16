@@ -31,7 +31,7 @@ CRegHistory::~CRegHistory()
 {
 }
 
-bool CRegHistory::AddEntry(LPCTSTR szText)
+bool CRegHistory::AddEntry(LPCWSTR szText)
 {
 	if (!szText[0])
 		return false;
@@ -60,7 +60,7 @@ void CRegHistory::RemoveEntry(int pos)
 	m_arEntries.erase(m_arEntries.cbegin() + pos);
 }
 
-size_t CRegHistory::Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix)
+size_t CRegHistory::Load(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix)
 {
 	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
 		return size_t(-1);

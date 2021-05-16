@@ -184,7 +184,7 @@ public:
 
 	static bool StartsWith(const wchar_t* heystack, const CString& needle);
 	static bool StartsWithI(const wchar_t* heystack, const CString& needle);
-	static bool WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 = true);
+	static bool WriteStringToTextFile(LPCWSTR path, LPCWSTR text, bool bUTF8 = true);
 	static bool EndsWith(const CString& heystack, const wchar_t* needle);
 	static bool EndsWith(const CString& heystack, const wchar_t needle);
 	static bool EndsWithI(const CString& heystack, const wchar_t* needle);

@@ -85,7 +85,7 @@ private:
 	 * is used to determine the file's icon.
 	 */
 	int GetFileIconIndex(const CString& file);
-	int GetFileIcon(LPCTSTR file, DWORD attributes, UINT extraFlags);
+	int GetFileIcon(LPCWSTR file, DWORD attributes, UINT extraFlags);
 
 	static CSysImageList *instance;
 

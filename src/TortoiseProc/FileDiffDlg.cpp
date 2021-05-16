@@ -260,7 +260,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		if (m_rev1.GetCommit(m_strRev1))
 		{
 			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(m_strRev1));
+			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(m_strRev1));
 			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
 		m_rev1.ApplyMailmap();
@@ -275,7 +275,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 		if (m_rev2.GetCommit(m_strRev2))
 		{
 			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(m_strRev2));
+			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(m_strRev2));
 			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
 		}
 		m_rev2.ApplyMailmap();
@@ -404,7 +404,7 @@ static CString GetFilename(const CTGitPath* entry)
 		CString entryname = entry->GetGitPathString();
 		entryname += L' ';
 		// relative path
-		entryname.AppendFormat(from, static_cast<LPCTSTR>(entry->GetGitOldPathString()));
+		entryname.AppendFormat(from, static_cast<LPCWSTR>(entry->GetGitOldPathString()));
 		return entryname;
 	}
 
@@ -574,7 +574,7 @@ static CString GetCommitTitle(const GitRev& rev)
 		commitTitle += L"...";
 	}
 	commitTitle.Replace(L"&", L"&&");
-	str.AppendFormat(L"%s (%s)", static_cast<LPCTSTR>(rev.m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(commitTitle));
+	str.AppendFormat(L"%s (%s)", static_cast<LPCWSTR>(rev.m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCWSTR>(commitTitle));
 	return str;
 }
 
@@ -610,12 +610,12 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		{
 			if (!m_rev1.m_CommitHash.IsEmpty() && (m_rev2.m_CommitHash.IsEmpty() || (!m_rev2.m_CommitHash.IsEmpty() && !(m_arFilteredList[firstEntry]->m_Action & CTGitPath::LOGACTIONS_ADDED))))
 			{
-				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCTSTR>(GetCommitTitle(m_rev1)));
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCWSTR>(GetCommitTitle(m_rev1)));
 				popup.AppendMenuIcon(ID_REVERT1, menuText, IDI_REVERT);
 			}
 			if (!m_rev2.m_CommitHash.IsEmpty() && (m_rev1.m_CommitHash.IsEmpty() || (!m_rev1.m_CommitHash.IsEmpty() && !(m_arFilteredList[firstEntry]->m_Action & CTGitPath::LOGACTIONS_DELETED))))
 			{
-				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCTSTR>(GetCommitTitle(m_rev2)));
+				menuText.Format(IDS_FILEDIFF_POPREVERTTOREV, static_cast<LPCWSTR>(GetCommitTitle(m_rev2)));
 				popup.AppendMenuIcon(ID_REVERT2, menuText, IDI_REVERT);
 			}
 			popup.AppendMenu(MF_SEPARATOR, NULL);
@@ -734,9 +734,9 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
 						CString temp;
 						if (m_path.IsEmpty())
-							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 						else
-							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, static_cast<LPCTSTR>(m_path.GetGitPathString()), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_path.GetGitPathString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, static_cast<LPCWSTR>(m_path.GetGitPathString()), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_path.GetGitPathString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 						file.WriteString(temp + L"\r\n");
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
@@ -796,7 +796,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							if (g_Git.GetOneFile(m_rev2.m_CommitHash.ToString(), *fd, filename))
 							{
 								CString out;
-								out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, static_cast<LPCTSTR>(fd->GetGitPathString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCTSTR>(filename));
+								out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, static_cast<LPCWSTR>(fd->GetGitPathString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(filename));
 								if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 									return;
 							}
@@ -1198,7 +1198,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		else
 		{
 			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(str));
+			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
 			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
 		}
 
@@ -1213,7 +1213,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		else
 		{
 			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCTSTR>(str));
+			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
 			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
 		}
 
@@ -1340,11 +1340,11 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 		CString cmd, out;
 		auto fentry = m_arFilteredList[index];
 		if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED))
-			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCWSTR>(fentry->GetGitPathString()));
 		else if (isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED)
-			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitOldPathString()));
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
 		else
-			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCTSTR>(rev), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
@@ -1355,7 +1355,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 	}
 
 	CString out;
-	out.FormatMessage(IDS_STATUSLIST_FILESREVERTED, count, static_cast<LPCTSTR>(rev));
+	out.FormatMessage(IDS_STATUSLIST_FILESREVERTED, count, static_cast<LPCWSTR>(rev));
 	CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
 	return 0;
 }
@@ -1423,7 +1423,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 void CFileDiffDlg::OnBnClickedLog()
 {
 	CString cmd;
-	cmd.Format(L"/command:log /range:%s..%s", static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+	cmd.Format(L"/command:log /range:%s..%s", static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
 
@@ -1517,11 +1517,11 @@ void CFileDiffDlg::FillPatchView(bool onlySetTimer)
 	{
 		CString cmd;
 		if (m_rev2.m_CommitHash.IsEmpty())
-			cmd.Format(L"git.exe diff%s --stat -p  %s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()));
+			cmd.Format(L"git.exe diff%s --stat -p  %s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()));
 		else if (m_rev1.m_CommitHash.IsEmpty())
-			cmd.Format(L"git.exe diff%s --stat -Rp %s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+			cmd.Format(L"git.exe diff%s --stat -Rp %s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 		else
-			cmd.Format(L"git.exe diff%s --stat -p %s..%s --", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()));
+			cmd.Format(L"git.exe diff%s --stat -p %s..%s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 		g_Git.Run(cmd, &out, CP_UTF8);
 	}
 	else
@@ -1532,11 +1532,11 @@ void CFileDiffDlg::FillPatchView(bool onlySetTimer)
 			auto fentry = m_arFilteredList[nSelect];
 			CString cmd;
 			if (m_rev2.m_CommitHash.IsEmpty())
-				cmd.Format(L"git.exe diff%s %s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s %s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			else if (m_rev1.m_CommitHash.IsEmpty())
-				cmd.Format(L"git.exe diff%s -R %s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s -R %s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			else
-				cmd.Format(L"git.exe diff%s %s..%s -- \"%s\"", static_cast<LPCTSTR>(ignore), static_cast<LPCTSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCTSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCTSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s %s..%s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			g_Git.Run(cmd, &out, CP_UTF8);
 		}
 	}

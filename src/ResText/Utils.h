@@ -29,8 +29,8 @@ class CUtils
 public:
 	CUtils();
 	~CUtils();
-	static void StringExtend(LPTSTR str);
-	static void StringCollapse(LPTSTR str);
+	static void StringExtend(LPWSTR str);
+	static void StringCollapse(LPWSTR str);
 	static void Error();
 	static void SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith);
 };

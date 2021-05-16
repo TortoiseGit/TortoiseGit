@@ -231,7 +231,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHa
 void CSubmoduleDiffDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(hash));
+	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(hash));
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
@@ -248,7 +248,7 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCTSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCTSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCTSTR>(m_sToHash.ToString()));
+	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
 
 	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 		sCmd += L" /alternative";
@@ -259,6 +259,6 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 void CSubmoduleDiffDlg::OnBnClickedButtonUpdate()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(m_sPath));
+	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(m_sPath));
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

@@ -467,7 +467,7 @@ UINT CImportPatchDlg::PatchThread()
 		else
 		{
 			CString sMessage;
-			sMessage.Format(IDS_PROC_SKIPPATCH, static_cast<LPCTSTR>(m_cList.GetItemText(i, 0)));
+			sMessage.Format(IDS_PROC_SKIPPATCH, static_cast<LPCWSTR>(m_cList.GetItemText(i, 0)));
 			AddLogString(sMessage);
 			m_cList.SetItemData(i, CPatchListCtrl::STATUS_APPLY_SKIP);
 		}

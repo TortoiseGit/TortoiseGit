@@ -37,7 +37,7 @@ public:
 
 	BOOL CreateMenu();
 	BOOL CreatePopupMenu();
-	BOOL AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon = 0, HMENU hsubmenu = nullptr);
+	BOOL AppendMenuIcon(UINT_PTR nIDNewItem, LPCWSTR lpszNewItem, UINT uIcon = 0, HMENU hsubmenu = nullptr);
 	BOOL AppendMenuIcon(UINT_PTR nIDNewItem, UINT_PTR nNewItem, UINT uIcon = 0, HMENU hsubmenu = nullptr);
 	void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);

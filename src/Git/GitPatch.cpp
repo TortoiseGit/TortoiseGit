@@ -136,7 +136,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		pr.path = m_patch.GetFilename(nIndex);
 
 	if (m_pProgDlg)
-		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCTSTR>(pr.path));
+		m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCWSTR>(pr.path));
 
 	//first, do a "dry run" of patching against the file in place...
 	if (!m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile))
@@ -153,20 +153,20 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		{
 			if (sVersion.IsEmpty())
 			{
-				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, static_cast<LPCTSTR>(sFilePath));
+				m_errorStr.Format(IDS_ERR_MAINFRAME_FILECONFLICTNOVERSION, static_cast<LPCWSTR>(sFilePath));
 				return false; // cannot apply patch which does not apply cleanly w/o git information in patch file.
 			}
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 			if (!CAppUtils::GetVersionedFile(sFilePath, sVersion, sBaseFile, m_pProgDlg))
 			{
-				m_errorStr.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, static_cast<LPCTSTR>(sVersion), static_cast<LPCTSTR>(sFilePath));
+				m_errorStr.FormatMessage(IDS_ERR_MAINFRAME_FILEVERSIONNOTFOUND, static_cast<LPCWSTR>(sVersion), static_cast<LPCWSTR>(sFilePath));
 
 				return false;
 			}
 		}
 
 		if (m_pProgDlg)
-			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCTSTR>(pr.path));
+			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCWSTR>(pr.path));
 
 		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
 
@@ -182,13 +182,13 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 			pr.rejectsPath = m_patch.GetErrorMessage();
 		}
 
-		TRACE(L"comparing %s and %s\nagainst the base file %s\n", static_cast<LPCTSTR>(sTempFile), static_cast<LPCTSTR>(sFilePath), static_cast<LPCTSTR>(sBaseFile));
+		TRACE(L"comparing %s and %s\nagainst the base file %s\n", static_cast<LPCWSTR>(sTempFile), static_cast<LPCWSTR>(sFilePath), static_cast<LPCWSTR>(sBaseFile));
 	}
 	else
 	{
 		//"dry run" was successful, so save the patched file somewhere...
 		pr.rejects = 0;
-		TRACE(L"comparing %s\nwith the patched result %s\n", static_cast<LPCTSTR>(sFilePath), static_cast<LPCTSTR>(sTempFile));
+		TRACE(L"comparing %s\nwith the patched result %s\n", static_cast<LPCWSTR>(sFilePath), static_cast<LPCWSTR>(sTempFile));
 	}
 
 	pr.resultPath = sTempFile;

@@ -35,11 +35,11 @@ public:
 	/// \param lpszSection the section in the registry, e.g., "Software\\CompanyName\\History"
 	/// \param lpszKeyPrefix the name of the registry values, e.g., "historyItem"
 	/// \return the number of history items loaded
-	size_t Load(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix);
+	size_t Load(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix);
 	/// Saves the history.
 	bool Save() const;
 	/// Adds a new string to the history list.
-	bool AddEntry(LPCTSTR szText);
+	bool AddEntry(LPCWSTR szText);
 	/// Removes the entry at index \c pos.
 	void RemoveEntry(int pos);
 	/// Sets the maximum number of items in the history. Default is 25.
@@ -48,7 +48,7 @@ public:
 	size_t GetCount() const {return m_arEntries.size(); }
 	bool IsEmpty() const { return m_arEntries.empty(); }
 	/// Returns the entry at index \c pos
-	LPCTSTR GetEntry(size_t pos) {return m_arEntries[pos].c_str();}
+	LPCWSTR GetEntry(size_t pos) {return m_arEntries[pos].c_str();}
 
 private:
 	std::wstring m_sSection;

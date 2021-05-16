@@ -261,7 +261,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (CRegDWORD(L"Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings\\GlobalUserOffline", 0))
 			errorText.LoadString(IDS_OFFLINEMODE); // offline mode enabled
 		else
-			errorText.FormatMessage(IDS_CHECKNEWER_NETERROR_FORMAT, static_cast<LPCTSTR>(GetWinINetError(ret) + L" URL: " + sCheckURL), ret);
+			errorText.FormatMessage(IDS_CHECKNEWER_NETERROR_FORMAT, static_cast<LPCWSTR>(GetWinINetError(ret) + L" URL: " + sCheckURL), ret);
 		SetDlgItemText(IDC_CHECKRESULT, errorText);
 		goto finish;
 	}
@@ -297,10 +297,10 @@ UINT CCheckForUpdatesDlg::CheckThread()
 		if (m_sNewVersionNumber != version.version_for_filename)
 		{
 			CString versionstr = m_sNewVersionNumber + L" (" + version.version_for_filename + L")";
-			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCTSTR>(versionstr));
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCWSTR>(versionstr));
 		}
 		else
-			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCTSTR>(m_sNewVersionNumber));
+			temp.Format(IDS_CHECKNEWER_CURRENTVERSION, static_cast<LPCWSTR>(m_sNewVersionNumber));
 		SetDlgItemText(IDC_CURRENTVERSION, temp);
 
 		if (bNewer)
@@ -469,13 +469,13 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	m_cLogMessage.Init(pp);
 
 	CString sChangelogURL;
-	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), m_myVersion.major, m_myVersion.minor, m_myVersion.micro, static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCTSTR>(m_updateDownloader->m_sWindowsServicePack));
+	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), m_myVersion.major, m_myVersion.minor, m_myVersion.micro, static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsServicePack));
 
 	CString tempchangelogfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false); err != ERROR_SUCCESS)
 	{
 		CString msg = L"Could not load changelog.\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + L")";
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(msg)));
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(msg)));
 		return;
 	}
 	if (official)
@@ -486,7 +486,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 			CString error = L"Could not verify digital signature.";
 			if (err)
 				error += L"\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + SIGNATURE_FILE_ENDING + L")";
-			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(error)));
+			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(error)));
 			DeleteUrlCacheEntry(sChangelogURL);
 			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
 			return;
@@ -504,7 +504,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	}
 	else
 		temp = L"Could not open downloaded changelog file.";
-	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(temp)));
+	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(temp)));
 }
 
 void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
@@ -617,14 +617,14 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 		sFileVer.Trim();
 		if (sFileVer.IsEmpty())
 		{
-			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", static_cast<LPCTSTR>(reportingFilename));
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", static_cast<LPCTSTR>(CFormatMessageWrapper(ret)));
+			m_sErrors.AppendFormat(L"%s: Invalid filetype found (neither executable nor MSI).\r\n", static_cast<LPCWSTR>(reportingFilename));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", static_cast<LPCWSTR>(CFormatMessageWrapper(ret)));
 			return false;
 		}
 		else if (sFileVer == m_sNewVersionNumber)
 			return true;
 
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(m_sNewVersionNumber), static_cast<LPCTSTR>(sFileVer));
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(m_sNewVersionNumber), static_cast<LPCWSTR>(sFileVer));
 		return false;
 	}
 	SCOPE_EXIT{ MsiCloseHandle(hSummary); };
@@ -635,20 +635,20 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 	int intValue;
 	if (MsiSummaryInfoGetProperty(hSummary, PID_SUBJECT, &uiDataType, &intValue, nullptr, CStrBuf(buffer, cchValue + 1), &cchValue))
 	{
-		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(CFormatMessageWrapper(ret)));
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (%s).\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(CFormatMessageWrapper(ret)));
 		return false;
 	}
 
 	if (VT_LPSTR != uiDataType)
 	{
-		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (invalid data type returned).\r\n", static_cast<LPCTSTR>(reportingFilename));
+		m_sErrors.AppendFormat(L"%s: Error obtaining version of MSI file (invalid data type returned).\r\n", static_cast<LPCWSTR>(reportingFilename));
 		return false;
 	}
 
 	CString sFileVer = buffer.Right(m_sNewVersionNumber.GetLength() + 1);
 	if (sFileVer != L"v" + m_sNewVersionNumber)
 	{
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", static_cast<LPCTSTR>(reportingFilename), static_cast<LPCTSTR>(m_sNewVersionNumber), static_cast<LPCTSTR>(sFileVer));
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(m_sNewVersionNumber), static_cast<LPCWSTR>(sFileVer));
 		return false;
 	}
 
@@ -708,12 +708,12 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
 			if (!MoveFile(tempfile, destFilename))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCTSTR>(tempfile), static_cast<LPCTSTR>(destFilename));
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCWSTR>(tempfile), static_cast<LPCWSTR>(destFilename));
 				return false;
 			}
 			if (!MoveFile(signatureTempfile, destFilename + SIGNATURE_FILE_ENDING))
 			{
-				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCTSTR>(signatureTempfile), static_cast<LPCTSTR>(destFilename + SIGNATURE_FILE_ENDING));
+				m_sErrors.AppendFormat(L"Could not move \"%s\" to \"%s\".\r\n", static_cast<LPCWSTR>(signatureTempfile), static_cast<LPCWSTR>(destFilename + SIGNATURE_FILE_ENDING));
 				return false;
 			}
 			return true;
@@ -803,7 +803,7 @@ LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
 {
 	ASSERT(lParam);
 
-	LPCTSTR changelog = reinterpret_cast<LPCTSTR>(lParam);
+	LPCWSTR changelog = reinterpret_cast<LPCWSTR>(lParam);
 	m_cLogMessage.SetText(changelog);
 	m_cLogMessage.Call(SCI_GOTOPOS, 0);
 	m_cLogMessage.Call(SCI_SETWRAPSTARTINDENT, 3);
@@ -855,8 +855,8 @@ CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 	{
 		for (const CString& module : { L"wininet.dll", L"urlmon.dll" })
 		{
-			LPTSTR buffer;
-			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, reinterpret_cast<LPTSTR>(&buffer), 0, nullptr);
+			LPWSTR buffer;
+			FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS | FORMAT_MESSAGE_FROM_HMODULE, GetModuleHandle(module), err, 0, reinterpret_cast<LPWSTR>(&buffer), 0, nullptr);
 			readableError = buffer;
 			LocalFree(buffer);
 			if (!readableError.IsEmpty())

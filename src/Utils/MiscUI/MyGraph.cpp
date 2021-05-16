@@ -238,7 +238,7 @@ CString MyGraphSeries::GetTipText(int nGroup, const CString &unitString) const
 	CString sTip;
 
 	sTip.Format(L"%d %s (%d%%)", m_dwaValues.GetAt(nGroup),
-		static_cast<LPCTSTR>(unitString),
+		static_cast<LPCWSTR>(unitString),
 		GetDataTotal() ? static_cast<int>(100.0 * static_cast<double>(m_dwaValues.GetAt(nGroup)) / static_cast<double>(GetDataTotal())) : 0);
 
 	return sTip;
@@ -405,7 +405,7 @@ CString MyGraph::GetTipText() const
 			int nMaxDataValue = max(GetMaxDataValue(), 1);
 			double barTop = m_ptOrigin.y - static_cast<double>(m_nYAxisHeight) * (average / static_cast<double>(nMaxDataValue));
 			if (pt.y >= barTop - 2 && pt.y <= barTop + 2) {
-				sTip.Format(L"Average: %d %s (%d%%)", average, static_cast<LPCTSTR>(m_sYAxisLabel), nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
+				sTip.Format(L"Average: %d %s (%d%%)", average, static_cast<LPCWSTR>(m_sYAxisLabel), nMaxDataValue ? (100 * average / nMaxDataValue) : 0);
 				return sTip;
 			}
 		}

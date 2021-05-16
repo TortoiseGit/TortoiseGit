@@ -84,7 +84,7 @@ UINT __stdcall SetLanguage(MSIHANDLE hModule)
 UINT __stdcall RestartExplorer(MSIHANDLE /*hModule*/)
 {
 	HMODULE hModule = nullptr;
-	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, reinterpret_cast<LPCTSTR>(RestartExplorer), &hModule) == 0 || !hModule)
+	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, reinterpret_cast<LPCWSTR>(RestartExplorer), &hModule) == 0 || !hModule)
 		return ERROR_SUCCESS;
 
 	HRSRC hRestartExplorerRes = FindResource(hModule, MAKEINTRESOURCE(IDR_RESTARTEXPLORER), RT_RCDATA);

@@ -391,7 +391,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	CString logStr;
 	if (!myHash.IsEmpty())
 	{
-		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(myHash));
+		logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(myHash));
 		popup.AppendMenuIcon(IDGITRCL_MYLOG, logStr, IDI_LOG);
 	}
 
@@ -399,7 +399,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	{
 		if (!theirHash.IsEmpty())
 		{
-			logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCTSTR>(theirHash));
+			logStr.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(theirHash));
 			popup.AppendMenuIcon(IDGITRCL_THEIRLOG, logStr, IDI_LOG);
 		}
 
@@ -430,14 +430,14 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_THEIRLOG:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), cmd == IDGITRCL_MYLOG ? static_cast<LPCTSTR>(myHash) : static_cast<LPCTSTR>(theirHash));
+			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), cmd == IDGITRCL_MYLOG ? static_cast<LPCWSTR>(myHash) : static_cast<LPCWSTR>(theirHash));
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_COMPARE:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), static_cast<LPCTSTR>(myHash), static_cast<LPCTSTR>(theirHash));
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(myHash), static_cast<LPCWSTR>(theirHash));
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 			CAppUtils::RunTortoiseGitProc(sCmd);
@@ -446,7 +446,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_DELETELOCAL:
 		{
 			CString csMessage;
-			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCTSTR>(tag));
+			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCWSTR>(tag));
 			if (MessageBox(csMessage, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) != IDYES)
 				return;
 
@@ -459,7 +459,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_DELETEREMOTE:
 		{
 			CString csMessage;
-			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCTSTR>(tag));
+			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCWSTR>(tag));
 			if (MessageBox(csMessage, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) != IDYES)
 				return;
 			CSysProgressDlg sysProgressDlg;
@@ -491,7 +491,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_PUSH:
 		{
 			CProgressDlg dlg;
-			dlg.m_GitCmd.Format(L"git.exe push --force \"%s\" refs/tags/%s", static_cast<LPCTSTR>(m_remote), static_cast<LPCTSTR>(tag));
+			dlg.m_GitCmd.Format(L"git.exe push --force \"%s\" refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag));
 			dlg.DoModal();
 
 			if (CString err; Fill(m_remote, err))
@@ -502,7 +502,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_FETCH:
 		{
 			CProgressDlg dlg;
-			dlg.m_GitCmd.Format(L"git.exe fetch \"%s\" refs/tags/%s:refs/tags/%s", static_cast<LPCTSTR>(m_remote), static_cast<LPCTSTR>(tag), static_cast<LPCTSTR>(tag));
+			dlg.m_GitCmd.Format(L"git.exe fetch \"%s\" refs/tags/%s:refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag), static_cast<LPCWSTR>(tag));
 			dlg.DoModal();
 
 			if (CString err; Fill(m_remote, err))

@@ -294,7 +294,7 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 bool CRemoteCacheLink::RunTGitCacheProcess()
 {
 	const CString sCachePath = GetTGitCachePath();
-	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, static_cast<LPTSTR>(nullptr)))
+	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, static_cast<LPWSTR>(nullptr)))
 	{
 		// It's not appropriate to do a message box here, because there may be hundreds of calls
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");

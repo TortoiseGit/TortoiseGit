@@ -102,7 +102,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	HINSTANCE hInst = nullptr;
 	do
 	{
-		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
+		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		hInst = LoadLibrary(langDll);
 		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))

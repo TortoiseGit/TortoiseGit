@@ -52,7 +52,7 @@ bool CSysProgressDlg::EnsureValid()
 	return (SUCCEEDED(hr));
 }
 
-void CSysProgressDlg::SetTitle(LPCTSTR szTitle)
+void CSysProgressDlg::SetTitle(LPCWSTR szTitle)
 {
 	USES_CONVERSION;
 	if (IsValid())
@@ -63,7 +63,7 @@ void CSysProgressDlg::SetTitle ( UINT idTitle)
 	SetTitle(CString(MAKEINTRESOURCE(idTitle)));
 }
 
-void CSysProgressDlg::SetLine(DWORD dwLine, LPCTSTR szText, bool bCompactPath /* = false */)
+void CSysProgressDlg::SetLine(DWORD dwLine, LPCWSTR szText, bool bCompactPath /* = false */)
 {
 	USES_CONVERSION;
 	if (IsValid())
@@ -77,7 +77,7 @@ void CSysProgressDlg::SetCancelMsg ( UINT idMessage )
 }
 #endif // _MFC_VER
 
-void CSysProgressDlg::SetCancelMsg(LPCTSTR szMessage)
+void CSysProgressDlg::SetCancelMsg(LPCWSTR szMessage)
 {
 	USES_CONVERSION;
 	if (IsValid())
@@ -126,7 +126,7 @@ void CSysProgressDlg::FormatPathLine ( DWORD dwLine, UINT idFormatText, ...)
 	va_end(args);
 }
 
-void CSysProgressDlg::FormatPathLine(DWORD dwLine, LPCTSTR FormatText, ...)
+void CSysProgressDlg::FormatPathLine(DWORD dwLine, LPCWSTR FormatText, ...)
 {
 	va_list args;
 	va_start(args, FormatText);
@@ -150,7 +150,7 @@ void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, UINT idFormatText, ...)
 	va_end(args);
 }
 
-void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, LPCTSTR FormatText, ...)
+void CSysProgressDlg::FormatNonPathLine(DWORD dwLine, LPCWSTR FormatText, ...)
 {
 	va_list args;
 	va_start(args, FormatText);

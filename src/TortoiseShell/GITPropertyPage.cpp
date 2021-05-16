@@ -560,7 +560,7 @@ void CGitPropertyPage::InitWorkfileView()
 				if (pos > 0)
 				{
 					CString remoteName;
-					remoteName.Format(L"remote.%s.url", static_cast<LPCTSTR>(remotebranch.Left(pos)));
+					remoteName.Format(L"remote.%s.url", static_cast<LPCWSTR>(remotebranch.Left(pos)));
 					config.GetString(remoteName, remoteUrl);
 				}
 			}

@@ -143,7 +143,7 @@ void CDeleteRemoteTagDlg::OnBnClickedOk()
 	{
 		POSITION pos = m_ctrlTags.GetFirstSelectedItemPosition();
 		CString msg;
-		msg.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCTSTR>(m_ctrlTags.GetItemText(m_ctrlTags.GetNextSelectedItem(pos), 0)));
+		msg.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCWSTR>(m_ctrlTags.GetItemText(m_ctrlTags.GetNextSelectedItem(pos), 0)));
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 			return;
 	}

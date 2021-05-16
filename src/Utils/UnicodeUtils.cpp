@@ -357,7 +357,7 @@ struct STRINGRESOURCEIMAGE
 };
 #pragma warning(pop)	// C4200
 
-int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage)
+int LoadStringEx(HINSTANCE hInstance, UINT uID, LPWSTR lpBuffer, int nBufferMax, WORD wLanguage)
 {
 	const STRINGRESOURCEIMAGE* pImage;
 	const STRINGRESOURCEIMAGE* pImageEnd;

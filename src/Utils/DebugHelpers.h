@@ -54,4 +54,4 @@ typedef struct tagTHREADNAME_INFO
  * \param dwThreadID The Thread ID
  * \param szThreadName A name for the thread.
  */
-void SetThreadName(DWORD dwThreadID, LPCTSTR szThreadName);
+void SetThreadName(DWORD dwThreadID, LPCWSTR szThreadName);

@@ -46,7 +46,7 @@ public:
 	/**
 	 * Constructs a CCursor object.
 	 */
-	CCursor(LPCTSTR CursorName)
+	CCursor(LPCWSTR CursorName)
 	{
 		ASSERT(this);
 		m_bInitialized = FALSE;
@@ -70,7 +70,7 @@ public:
 	 * before setting a second cursor the old one is restored and
 	 * then the new one is set.
 	 */
-	HCURSOR SetCursor(LPCTSTR CursorName)
+	HCURSOR SetCursor(LPCWSTR CursorName)
 	{
 		//first restore possible old cursor before setting new one
 		Restore();

@@ -54,7 +54,7 @@ protected:
 	afx_msg void OnBnClickedIconfileBrowse();
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
-	static BOOL CALLBACK EnumLocalesProc(LPTSTR lpLocaleString);
+	static BOOL CALLBACK EnumLocalesProc(LPWSTR lpLocaleString);
 	void AddLangToCombo(DWORD langID);
 
 private:

@@ -161,7 +161,7 @@ protected:
 			if (!set)
 				return CString();
 			CString temp;
-			temp.Format(L"%s <%s>", static_cast<LPCTSTR>(name), static_cast<LPCTSTR>(email));
+			temp.Format(L"%s <%s>", static_cast<LPCWSTR>(name), static_cast<LPCWSTR>(email));
 			return temp;
 		}
 
@@ -175,7 +175,7 @@ protected:
 				date = L"\"now\"";
 
 			CString temp;
-			temp.Format(L"--date=%s --author=\"%s\" ", static_cast<LPCTSTR>(date), static_cast<LPCTSTR>(GetAuthor()));
+			temp.Format(L"--date=%s --author=\"%s\" ", static_cast<LPCWSTR>(date), static_cast<LPCWSTR>(GetAuthor()));
 			return temp;
 		}
 	} m_SquashFirstMetaData;

@@ -37,7 +37,7 @@ HCURSOR   curHandDown;
 
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                        HINSTANCE /*hPrevInstance*/,
-                       LPTSTR    lpCmdLine,
+                       LPWSTR    lpCmdLine,
                        int       /*nCmdShow*/)
 {
     SetDllDirectory(L"");

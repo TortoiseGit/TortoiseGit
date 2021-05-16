@@ -282,7 +282,7 @@ void CHyperLink::SetDefaultCursor()
 	}
 }
 
-HINSTANCE CHyperLink::GotoURL(LPCTSTR url)
+HINSTANCE CHyperLink::GotoURL(LPCWSTR url)
 {
 	return ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_SHOW);
 }

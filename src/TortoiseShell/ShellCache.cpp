@@ -326,7 +326,7 @@ BOOL ShellCache::IsUnknown()
 	return (driveunknown);
 }
 
-BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
+BOOL ShellCache::IsContextPathAllowed(LPCWSTR path)
 {
 	Locker lock(m_critSec);
 	ExcludeContextValid();
@@ -346,7 +346,7 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 	return TRUE;
 }
 
-BOOL ShellCache::IsPathAllowed(LPCTSTR path)
+BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 {
 	RefreshIfNeeded();
 	Locker lock(m_critSec);
@@ -421,7 +421,7 @@ DWORD ShellCache::GetLangID()
 	return (langid);
 }
 
-BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir /*= nullptr*/)
+BOOL ShellCache::HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDir /*= nullptr*/)
 {
 	std::wstring folder(path);
 	if (!bIsDir)
@@ -593,7 +593,7 @@ void ShellCache::CPathFilter::PostProcessData()
 // excluded: C:, C:\some\deep\path
 // include: C:\some
 // lookup for C:\some\deeper\path
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path, TData::const_iterator begin, TData::const_iterator end) const
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const
 {
 	tristate_t result = tristate_unknown;
 
@@ -609,10 +609,10 @@ tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path, TData::const_ite
 	size_t pos = 0;
 	do
 	{
-		LPCTSTR backslash = wcschr(path + pos + 1,L'\\');
+		LPCWSTR backslash = wcschr(path + pos + 1,L'\\');
 		pos = backslash == nullptr ? maxLength : backslash - path;
 
-		std::pair<LPCTSTR, size_t> toFind(path, pos);
+		std::pair<LPCWSTR, size_t> toFind(path, pos);
 		TData::const_iterator iter = std::lower_bound(begin, end, toFind);
 
 		// found a relevant entry?
@@ -675,7 +675,7 @@ void ShellCache::CPathFilter::Refresh()
 }
 
 // data access
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path) const
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path) const
 {
 	if (!path)
 		return tristate_unknown;

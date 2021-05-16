@@ -41,7 +41,7 @@ CBugTraqAssociations::~CBugTraqAssociations()
 		delete pProjectProvider;
 }
 
-void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* = nullptr */)
+void CBugTraqAssociations::Load(LPCWSTR uuid /* = nullptr */, LPCWSTR params /* = nullptr */)
 {
 	HKEY hk;
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, BUGTRAQ_ASSOCIATIONS_REGPATH, 0, KEY_READ, &hk) != ERROR_SUCCESS)
@@ -171,9 +171,9 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	return provider_name;
 }
 
-LSTATUS RegSetValueFromCString(HKEY hKey, LPCTSTR lpValueName, CString str)
+LSTATUS RegSetValueFromCString(HKEY hKey, LPCWSTR lpValueName, CString str)
 {
-	LPCTSTR lpsz = str;
+	LPCWSTR lpsz = str;
 	DWORD cb = (str.GetLength() + 1) * sizeof(TCHAR);
 	return RegSetValueEx(hKey, lpValueName, 0, REG_SZ, reinterpret_cast<const BYTE*>(lpsz), cb);
 }

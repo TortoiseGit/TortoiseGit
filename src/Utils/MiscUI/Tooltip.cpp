@@ -46,7 +46,7 @@ BOOL CToolTips::OnTtnNeedText(NMHDR *pNMHDR, LRESULT *pResult)
 		auto iterFind = toolTextMap.find(static_cast<unsigned int>(nID));
 		if (iterFind != toolTextMap.end())
 		{
-			lpnmtdi->lpszText = const_cast<LPTSTR>(static_cast<LPCTSTR>(iterFind->second));
+			lpnmtdi->lpszText = const_cast<LPWSTR>(static_cast<LPCWSTR>(iterFind->second));
 			lpnmtdi->hinst = AfxGetResourceHandle();
 			*pResult = 0;
 			return TRUE;
@@ -80,7 +80,7 @@ BOOL CToolTips::AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool /* = nullpt
 	return CToolTipCtrl::AddTool(pWnd, LPSTR_TEXTCALLBACK, lpRectTool, nIDTool);
 }
 
-BOOL CToolTips::AddTool(CWnd* pWnd, LPCTSTR lpszText /* = LPSTR_TEXTCALLBACK */, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
+BOOL CToolTips::AddTool(CWnd* pWnd, LPCWSTR lpszText /* = LPSTR_TEXTCALLBACK */, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	if (lpszText != LPSTR_TEXTCALLBACK)
 		toolTextMap[::GetDlgCtrlID(pWnd->GetSafeHwnd())] = CString(lpszText);
@@ -136,7 +136,7 @@ BOOL CToolTips::ShowBalloon(CWnd *pWnd, UINT nIDText, UINT nIDTitle, UINT icon /
 	ti.hwnd = pWnd->GetSafeHwnd();
 	ti.lpszText = sTemp.GetBuffer();
 	::SendMessage(hwndTT, TTM_ADDTOOL, 0, reinterpret_cast<LPARAM>(&ti));
-	::SendMessage(hwndTT, TTM_SETTITLE, icon, reinterpret_cast<LPARAM>(static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(nIDTitle)))));
+	::SendMessage(hwndTT, TTM_SETTITLE, icon, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(nIDTitle)))));
 	::SendMessage(hwndTT, TTM_SETMAXTIPWIDTH, 0, 800);
 
 	// Position the tooltip below the control

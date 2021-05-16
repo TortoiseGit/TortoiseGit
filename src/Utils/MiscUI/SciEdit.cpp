@@ -786,7 +786,7 @@ void CSciEdit::SuggestSpellingAlternatives()
 		if (!wlst.empty())
 		{
 			for (const auto& alternative : wlst)
-				suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(GetWordFromSpellChecker(alternative)), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
+				suggestions.AppendFormat(L"%s%c%d%c", static_cast<LPCWSTR>(GetWordFromSpellChecker(alternative)), m_typeSeparator, AUTOCOMPLETE_SPELLING, m_separator);
 		}
 	}
 
@@ -868,7 +868,7 @@ void CSciEdit::DoAutoCompletion(Sci_Position nMinPrefixLength)
 		}
 
 		for (const auto& w : wordset)
-			sAutoCompleteList.AppendFormat(L"%s%c%d%c", static_cast<LPCTSTR>(w.first), m_typeSeparator, w.second, m_separator);
+			sAutoCompleteList.AppendFormat(L"%s%c%d%c", static_cast<LPCWSTR>(w.first), m_typeSeparator, w.second, m_separator);
 
 		sAutoCompleteList.TrimRight(m_separator);
 
@@ -1177,7 +1177,7 @@ void CSciEdit::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (!bIsReadOnly && (sWord.GetLength() < PDICT_MAX_WORD_LENGTH) && (m_autolist.find(sWord) == m_autolist.end() && IsMisspelled(sWord)) &&
 			(!_istdigit(sWord.GetAt(0))) && (!m_personalDict.FindWord(sWord)))
 		{
-			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, static_cast<LPCTSTR>(sWord));
+			sMenuItemText.Format(IDS_SCIEDIT_ADDWORD, static_cast<LPCWSTR>(sWord));
 			popup.AppendMenu(uEnabledMenu, SCI_ADDWORD, sMenuItemText);
 			// another separator
 			popup.AppendMenu(MF_SEPARATOR);
@@ -1625,7 +1625,7 @@ std::string CSciEdit::GetWordForSpellChecker(const CString& sWord)
 		WideCharToMultiByte(m_spellcodepage, 0, sWord, -1, sWordA.data(), lengthIncTerminator - 1, nullptr, nullptr);
 	}
 	else
-		sWordA = std::string(reinterpret_cast<LPCSTR>(static_cast<LPCTSTR>(sWord)));
+		sWordA = std::string(reinterpret_cast<LPCSTR>(static_cast<LPCWSTR>(sWord)));
 
 	sWordA.erase(sWordA.find_last_not_of("\'\".,") + 1);
 	sWordA.erase(0, sWordA.find_first_not_of("\'\".,"));

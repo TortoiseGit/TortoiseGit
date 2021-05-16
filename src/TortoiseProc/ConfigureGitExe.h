@@ -178,7 +178,7 @@ protected:
 			else if (!CStringUtils::StartsWith(out.Trim(), L"git version "))
 			{
 				CString tmp;
-				tmp.Format(IDS_ERR_GITNOVALIDOUTPUT, static_cast<LPCTSTR>(out.Trim()));
+				tmp.Format(IDS_ERR_GITNOVALIDOUTPUT, static_cast<LPCWSTR>(out.Trim()));
 				tmp.AppendChar(L'\n');
 				tmp.AppendChar(L'\n');
 				tmp.Append(checkhelpHint);

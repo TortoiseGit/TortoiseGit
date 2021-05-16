@@ -64,7 +64,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCTSTR>(key), sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCWSTR>(key), sizeof(TCHAR), value, pFile)!=value)
 				return false;
 			if (!entry.second.SaveToDisk(pFile))
 				return false;
@@ -79,7 +79,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCTSTR>(path), sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCWSTR>(path), sizeof(TCHAR), value, pFile)!=value)
 				return false;
 			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);

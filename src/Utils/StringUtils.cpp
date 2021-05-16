@@ -372,8 +372,8 @@ int CStringUtils::GetMatchingLength (const CString& lhs, const CString& rhs)
 	int rhsLength = rhs.GetLength();
 	int maxResult = min (lhsLength, rhsLength);
 
-	LPCTSTR pLhs = lhs;
-	LPCTSTR pRhs = rhs;
+	LPCWSTR pLhs = lhs;
+	LPCWSTR pRhs = rhs;
 
 	for (int i = 0; i < maxResult; ++i)
 		if (pLhs[i] != pRhs[i])
@@ -586,7 +586,7 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t* needle)
 	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
-	return wcsncmp(static_cast<LPCTSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+	return wcsncmp(static_cast<LPCWSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
 }
 
 bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
@@ -594,7 +594,7 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
 	auto lenHeystack = heystack.GetLength();
 	if (!lenHeystack)
 		return false;
-	return *(static_cast<LPCTSTR>(heystack) + (lenHeystack - 1)) == needle;
+	return *(static_cast<LPCWSTR>(heystack) + (lenHeystack - 1)) == needle;
 }
 
 bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)
@@ -603,7 +603,7 @@ bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)
 	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
-	return _wcsnicmp(static_cast<LPCTSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
+	return _wcsnicmp(static_cast<LPCWSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
 }
 
 bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
@@ -611,7 +611,7 @@ bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
 	return _wcsnicmp(heystack, needle, needle.GetLength()) == 0;
 }
 
-bool CStringUtils::WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 /* = true */)
+bool CStringUtils::WriteStringToTextFile(LPCWSTR path, LPCWSTR text, bool bUTF8 /* = true */)
 {
 	return WriteStringToTextFile(static_cast<const std::wstring&>(path), static_cast<const std::wstring&>(text), bUTF8);
 }

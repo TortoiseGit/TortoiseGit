@@ -122,14 +122,14 @@ BOOL CTortoiseProcApp::InitInstance()
 	langpath += "Languages";
 	do
 	{
-		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCTSTR>(CPathUtils::GetAppParentDirectory()), langId);
+		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
 		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			HINSTANCE hInst = LoadLibrary(langDll);
 			if (hInst)
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", static_cast<LPCTSTR>(langDll));
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", static_cast<LPCWSTR>(langDll));
 				AfxSetResourceHandle(hInst);
 				break;
 			}
@@ -241,7 +241,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		CString versionString;
 		versionString.Format(L"%X", CGit::ms_LastMsysGitVersion);
 		CCrashReport::Instance().AddUserInfoToReport(L"msysGitVersion", versionString);
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": msysGitVersion: %s\n", static_cast<LPCTSTR>(versionString));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": msysGitVersion: %s\n", static_cast<LPCWSTR>(versionString));
 		if (CGit::ms_bCygwinGit)
 			CCrashReport::Instance().AddUserInfoToReport(L"CygwinHack", L"true");
 		if (CGit::ms_bMsys2Git)
@@ -260,7 +260,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD)
 				{
 					CCrashReport::Instance().AddUserInfoToReport(L"Hotfix", versionparser.GetTortoiseGitVersion().version);
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Hotfix: %s\n", static_cast<LPCTSTR>(versionparser.GetTortoiseGitVersion().version));
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Hotfix: %s\n", static_cast<LPCWSTR>(versionparser.GetTortoiseGitVersion().version));
 				}
 			}
 		}
@@ -293,7 +293,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			return FALSE;
 		}
 		CString newCmd;
-		newCmd.Format(L"/command:clone /url:\"%s\" /hasurlhandler", static_cast<LPCTSTR>(url));
+		newCmd.Format(L"/command:clone /url:\"%s\" /hasurlhandler", static_cast<LPCWSTR>(url));
 		parser = CCmdLineParser(newCmd);
 	}
 
@@ -549,7 +549,7 @@ void CTortoiseProcApp::CheckUpgrade()
 {
 	CRegString regVersion = CRegString(L"Software\\TortoiseGit\\CurrentVersion");
 	CString sVersion = regVersion;
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s vs. last used version %s\n", _T(STRPRODUCTVER), static_cast<LPCTSTR>(sVersion));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Current TGit Version %s vs. last used version %s\n", _T(STRPRODUCTVER), static_cast<LPCWSTR>(sVersion));
 	if (sVersion.Compare(_T(STRPRODUCTVER))==0)
 		return;
 	// we're starting the first time with a new version!
@@ -770,14 +770,14 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 	CStringUtils::RemoveAccelerators(sTemp);
 
 	ATL::CComPtr<IShellLink> psl;
-	hr = CreateShellLink(L"/command:settings", static_cast<LPCTSTR>(sTemp), 18, &psl);
+	hr = CreateShellLink(L"/command:settings", static_cast<LPCWSTR>(sTemp), 18, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
 	sTemp = CString(MAKEINTRESOURCE(IDS_MENUHELP));
 	CStringUtils::RemoveAccelerators(sTemp);
 	psl.Release(); // Need to release the object before calling operator&()
-	hr = CreateShellLink(L"/command:help", static_cast<LPCTSTR>(sTemp), 17, &psl);
+	hr = CreateShellLink(L"/command:help", static_cast<LPCWSTR>(sTemp), 17, &psl);
 	if (SUCCEEDED(hr)) {
 		poc->AddObject(psl);
 	}
@@ -785,7 +785,7 @@ void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
 	ATL::CComPtr<IObjectArray> poa;
 	hr = poc.QueryInterface(&poa);
 	if (SUCCEEDED(hr)) {
-		pcdl->AppendCategory(static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_PROC_TASKS))), poa);
+		pcdl->AppendCategory(static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_PROC_TASKS))), poa);
 		pcdl->CommitList();
 	}
 }

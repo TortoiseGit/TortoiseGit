@@ -123,7 +123,7 @@ void CShellUpdater::UpdateShell()
 	for (int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 	{
 		path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", static_cast<LPCTSTR>(path.GetWinPathString()), GetTickCount64());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", static_cast<LPCWSTR>(path.GetWinPathString()), GetTickCount64());
 		if (!path.IsDirectory())
 		{
 			// send notifications to the shell for changed files - folders are updated by the cache itself.

@@ -36,7 +36,7 @@ HINSTANCE hResource; // the resource dll
 
 int APIENTRY wWinMain(HINSTANCE hInstance,
 					 HINSTANCE /*hPrevInstance*/,
-					 LPTSTR    lpCmdLine,
+					 LPWSTR    lpCmdLine,
 					 int       /*nCmdShow*/)
 {
 	SetDllDirectory(L"");

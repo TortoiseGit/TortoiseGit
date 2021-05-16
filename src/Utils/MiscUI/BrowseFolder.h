@@ -40,13 +40,13 @@ public:
 	/**
 	 * Sets the info text of the dialog. Call this method before calling Show().
 	 */
-	void SetInfo(LPCTSTR title);
+	void SetInfo(LPCWSTR title);
 	/*
 	 * Sets the text to show for the checkbox. If this method is not called,
 	 * then no checkbox is added.
 	 */
-	void SetCheckBoxText(LPCTSTR checktext);
-	void SetCheckBoxText2(LPCTSTR checktext);
+	void SetCheckBoxText(LPCWSTR checktext);
+	void SetCheckBoxText2(LPCWSTR checktext);
 	/**
 	 * Shows the Dialog.
 	 * \param parent [in] window handle of the parent window.
@@ -55,7 +55,7 @@ public:
 	 * \return one of CANCEL, NOPATH or OK
 	 */
 	CBrowseFolder::retVal Show(HWND parent, CString& path, const CString& sDefaultPath = CString());
-	CBrowseFolder::retVal Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath = nullptr);
+	CBrowseFolder::retVal Show(HWND parent, LPWSTR path, size_t pathlen, LPCWSTR szDefaultPath = nullptr);
 
 	/**
 	 * If this is set to true, then the second checkbox gets disabled as soon as the first

@@ -28,7 +28,7 @@
 
 
 bool CWindow::RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor, HBRUSH hbrBackground,
-									LPCTSTR lpszMenuName, LPCTSTR lpszClassName, HICON hIconSm)
+									LPCWSTR lpszMenuName, LPCWSTR lpszClassName, HICON hIconSm)
 {
 	WNDCLASSEX wcx;
 
@@ -135,7 +135,7 @@ bool CWindow::Create(DWORD dwStyles, HWND hParent /* = nullptr */, RECT* rect /*
 	return CreateEx(0, dwStyles, hParent, rect);
 }
 
-bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = nullptr */, RECT* rect /* = nullptr */, LPCTSTR classname /* = nullptr */)
+bool CWindow::CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent /* = nullptr */, RECT* rect /* = nullptr */, LPCWSTR classname /* = nullptr */)
 {
 	// send the this pointer as the window creation parameter
 	if (!rect)

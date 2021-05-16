@@ -62,7 +62,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 				if (flags.uiIDErrMessageFormat != 0)
 				{
 					CString temp;
-					temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+					temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCWSTR>(CFormatMessageWrapper()));
 					MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 				}
 				return false;
@@ -88,7 +88,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 			if (flags.uiIDErrMessageFormat != 0)
 			{
 				CString temp;
-				temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+				temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCWSTR>(CFormatMessageWrapper()));
 				MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 			}
 			return false;
@@ -135,7 +135,7 @@ bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const Launc
 		if (flags.uiIDErrMessageFormat)
 		{
 			CString temp;
-			temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCTSTR>(CFormatMessageWrapper()));
+			temp.Format(flags.uiIDErrMessageFormat, static_cast<LPCWSTR>(CFormatMessageWrapper()));
 			MessageBox(nullptr, temp, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 		}
 		return false;
@@ -177,7 +177,7 @@ bool CCommonAppUtils::RunTortoiseGitProc(const CString& sCommandLine, bool uac, 
 {
 	CString pathToExecutable = CPathUtils::GetAppDirectory() + L"TortoiseGitProc.exe";
 	CString sCmd;
-	sCmd.Format(L"\"%s\" %s", static_cast<LPCTSTR>(pathToExecutable), static_cast<LPCTSTR>(sCommandLine));
+	sCmd.Format(L"\"%s\" %s", static_cast<LPCWSTR>(pathToExecutable), static_cast<LPCWSTR>(sCommandLine));
 	if (AfxGetMainWnd()->GetSafeHwnd() && (sCommandLine.Find(L"/hwnd:") < 0))
 		sCmd.AppendFormat(L" /hwnd:%p", static_cast<void*>(AfxGetMainWnd()->GetSafeHwnd()));
 	if (!g_sGroupingUUID.IsEmpty() && includeGroupingUUID)
@@ -233,7 +233,7 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	return true;
 }
 
-bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCTSTR defaultExt, bool handleAsFile)
+bool CCommonAppUtils::FileOpenSave(CString& path, int* filterindex, UINT title, UINT filterId, bool bOpen, HWND hwndOwner, LPCWSTR defaultExt, bool handleAsFile)
 {
 	// Create a new common save file dialog
 	CComPtr<IFileDialog> pfd;
@@ -386,6 +386,6 @@ void CCommonAppUtils::CreateFontForLogs(CFont& fontToCreate)
 	logFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
 	logFont.lfQuality = DRAFT_QUALITY;
 	logFont.lfPitchAndFamily = FF_DONTCARE | FIXED_PITCH;
-	wcsncpy_s(logFont.lfFaceName, static_cast<LPCTSTR>(GetLogFontName()), _TRUNCATE);
+	wcsncpy_s(logFont.lfFaceName, static_cast<LPCWSTR>(GetLogFontName()), _TRUNCATE);
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }

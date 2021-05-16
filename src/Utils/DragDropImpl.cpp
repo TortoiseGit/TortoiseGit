@@ -269,7 +269,7 @@ HRESULT STDMETHODCALLTYPE CIDataObject::EnumDAdvise(
 }
 
 
-HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert)
+HRESULT CIDataObject::SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert)
 {
 	if (!format || !insert)
 		return E_INVALIDARG;
@@ -665,7 +665,7 @@ HRESULT STDMETHODCALLTYPE CIDropTarget::Drop(
 	return S_OK;
 }
 
-HRESULT CIDropTarget::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert)
+HRESULT CIDropTarget::SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert)
 {
 	HRESULT hr = E_OUTOFMEMORY;
 

@@ -159,7 +159,7 @@ void CThemeMFCButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 	if (m_bDelayFullTextTooltipSet)
 	{
 		BOOL bIsFullText = pDC->GetTextExtent(strText).cx <= rectText.Width();
-		SetTooltip(bIsFullText || !bIsSingleLine ? nullptr : static_cast<LPCTSTR>(strText));
+		SetTooltip(bIsFullText || !bIsSingleLine ? nullptr : static_cast<LPCWSTR>(strText));
 		m_bDelayFullTextTooltipSet = FALSE;
 	}
 
@@ -426,7 +426,7 @@ void CThemeMFCMenuButton::OnButtonDraw(CDC* pDC, const CRect& rect, UINT uiState
 	if (m_bDelayFullTextTooltipSet)
 	{
 		BOOL bIsFullText = pDC->GetTextExtent(strText).cx <= rectText.Width();
-		SetTooltip(bIsFullText || !bIsSingleLine ? nullptr : static_cast<LPCTSTR>(strText));
+		SetTooltip(bIsFullText || !bIsSingleLine ? nullptr : static_cast<LPCWSTR>(strText));
 		m_bDelayFullTextTooltipSet = FALSE;
 	}
 

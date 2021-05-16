@@ -648,7 +648,7 @@ int CStatGraphDlg::GatherData(BOOL fetchdiff, BOOL keepFetchedData)
 
 		if (progress.IsVisible() && (GetTickCount64() - starttime > 100UL))
 		{
-			progress.FormatNonPathLine(2, L"%s: %s", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(pLogEntry->GetSubject()));
+			progress.FormatNonPathLine(2, L"%s: %s", static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCWSTR>(pLogEntry->GetSubject()));
 			progress.SetProgress64(i, m_ShowList.size());
 			starttime = GetTickCount64();
 		}
@@ -1087,12 +1087,12 @@ void CStatGraphDlg::ShowStats()
 		nWeeks = 1;
 	// Adjust the labels with the unit type (week, month, ...)
 	CString labelText;
-	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, static_cast<LPCTSTR>(GetUnitString()));
+	labelText.Format(IDS_STATGRAPH_NUMBEROFUNIT, static_cast<LPCWSTR>(GetUnitString()));
 	SetDlgItemText(IDC_NUMWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, static_cast<LPCTSTR>(GetUnitString()));
+	labelText.Format(IDS_STATGRAPH_COMMITSBYUNIT, static_cast<LPCWSTR>(GetUnitString()));
 	SetDlgItemText(IDC_COMMITSEACHWEEK, labelText);
-	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, static_cast<LPCTSTR>(GetUnitString()));
-	SetDlgItemText(IDC_FILECHANGESEACHWEEK, static_cast<LPCTSTR>(labelText));
+	labelText.Format(IDS_STATGRAPH_FILECHANGESBYUNIT, static_cast<LPCWSTR>(GetUnitString()));
+	SetDlgItemText(IDC_FILECHANGESEACHWEEK, static_cast<LPCWSTR>(labelText));
 	// We have now all data we want and we can fill in the labels...
 	CString number;
 	number.Format(L"%d", nWeeks);
@@ -1338,7 +1338,7 @@ void CStatGraphDlg::OnNeedText(NMHDR *pnmh, LRESULT * /*pResult*/)
 		CString string;
 		int percentage = int(min_commits*100.0/(m_nTotalCommits ? m_nTotalCommits : 1));
 		string.FormatMessage(IDS_STATGRAPH_AUTHORSLIDER_TT, m_Skipper.GetPos(), min_commits, percentage);
-		StringCchCopy(pttt->szText, _countof(pttt->szText), static_cast<LPCTSTR>(string));
+		StringCchCopy(pttt->szText, _countof(pttt->szText), static_cast<LPCWSTR>(string));
 	}
 }
 
@@ -1554,7 +1554,7 @@ void CStatGraphDlg::SaveGraph(CString sFilename)
 							bitmap.Save(tfile, &encoderClsid, nullptr);
 						}
 						else
-							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCTSTR>(CPathUtils::GetFileExtFromPath(sFilename)));
+							sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCWSTR>(CPathUtils::GetFileExtFromPath(sFilename)));
 					}
 					else
 						sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);

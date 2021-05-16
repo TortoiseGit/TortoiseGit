@@ -54,7 +54,7 @@ static bool FindGitForWindows(CString& sMsysGitPath)
 			sMsysGitPath += L"\\cmd";
 		else
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Git for Windows installation found, but git.exe not exists in %s\n", static_cast<LPCTSTR>(sMsysGitPath));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Git for Windows installation found, but git.exe not exists in %s\n", static_cast<LPCWSTR>(sMsysGitPath));
 			sMsysGitPath.Empty();
 		}
 	}

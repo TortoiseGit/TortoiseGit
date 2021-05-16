@@ -62,7 +62,7 @@ void CFirstStartWizardAuthentication::OnClickedNoSave()
 	m_ctrlSimpleCredential.EnableWindow(!m_bNoSave);
 }
 
-static bool IsToolBasename(const CString& toolname, LPCTSTR setting)
+static bool IsToolBasename(const CString& toolname, LPCWSTR setting)
 {
 	if (toolname.CompareNoCase(setting) == 0)
 		return true;
@@ -73,7 +73,7 @@ static bool IsToolBasename(const CString& toolname, LPCTSTR setting)
 	return false;
 }
 
-static bool IsTool(const CString& toolname, LPCTSTR setting)
+static bool IsTool(const CString& toolname, LPCWSTR setting)
 {
 	if (IsToolBasename(toolname, setting))
 		return true;

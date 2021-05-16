@@ -131,7 +131,7 @@ bool SVNRebaseCommand::Execute()
 	{
 		CProgressDlg progressReset;
 		CString cmd;
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(out));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(out));
 		progressReset.m_GitCmd = cmd;
 		progressReset.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 

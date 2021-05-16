@@ -66,7 +66,7 @@ void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev
 {
 	ASSERT(pRev);
 	CString  procCmd;
-	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", static_cast<LPCTSTR>(command), static_cast<LPCTSTR>(path), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", static_cast<LPCWSTR>(command), static_cast<LPCWSTR>(path), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
@@ -152,7 +152,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 		case ID_LOG:
 			{
 				CString procCmd;
-				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCTSTR>(static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName()), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName()), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 				CCommonAppUtils::RunTortoiseGitProc(procCmd);
 			}
 			break;

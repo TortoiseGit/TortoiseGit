@@ -47,8 +47,8 @@ int CGitIndex::Print()
 	wprintf(L"0x%08X  0x%08X %s %s\n",
 		static_cast<int>(this->m_ModifyTime),
 		this->m_Flags,
-		static_cast<LPCTSTR>(this->m_IndexHash.ToString()),
-		static_cast<LPCTSTR>(this->m_FileName));
+		static_cast<LPCWSTR>(this->m_IndexHash.ToString()),
+		static_cast<LPCWSTR>(this->m_FileName));
 
 	return 0;
 }
@@ -80,7 +80,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	CAutoRepository repository(repodir);
 	if (!repository)
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s: %s\n", static_cast<LPCTSTR>(dgitdir), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s: %s\n", static_cast<LPCWSTR>(dgitdir), static_cast<LPCWSTR>(CGit::GetLibGit2LastErr()));
 		return -1;
 	}
 
@@ -110,7 +110,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 	if (git_repository_index(index.GetPointer(), repository))
 	{
 		config.Free();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not get index of git repository in %s: %s\n", static_cast<LPCTSTR>(dgitdir), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not get index of git repository in %s: %s\n", static_cast<LPCWSTR>(dgitdir), static_cast<LPCWSTR>(CGit::GetLibGit2LastErr()));
 		return -1;
 	}
 
@@ -155,7 +155,7 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	DoSortFilenametSortVector(*this, IsIgnoreCase());
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", static_cast<LPCTSTR>(dgitdir));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", static_cast<LPCWSTR>(dgitdir));
 
 	return 0;
 }
@@ -218,7 +218,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 
 			if (repository.Open(repodir))
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s for checking file: %s\n", static_cast<LPCTSTR>(gitdir), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s for checking file: %s\n", static_cast<LPCWSTR>(gitdir), static_cast<LPCWSTR>(CGit::GetLibGit2LastErr()));
 				return -1;
 			}
 			git_repository_set_config(repository, config);
@@ -656,7 +656,7 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 	if (!ret)
 	{
 		clear();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s and read HEAD commit %s: %s\n", static_cast<LPCTSTR>(m_Gitdir), static_cast<LPCTSTR>(m_Head.ToString()), static_cast<LPCTSTR>(CGit::GetLibGit2LastErr()));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Could not open git repository in %s and read HEAD commit %s: %s\n", static_cast<LPCWSTR>(m_Gitdir), static_cast<LPCWSTR>(m_Head.ToString()), static_cast<LPCWSTR>(CGit::GetLibGit2LastErr()));
 		m_LastModifyTimeHead = 0;
 		m_LastFileSizeHead = -1;
 		return -1;
@@ -664,7 +664,7 @@ int CGitHeadFileList::ReadTree(bool ignoreCase)
 
 	DoSortFilenametSortVector(*this, ignoreCase);
 
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded HEAD tree (commit is %s) for repo: %s\n", static_cast<LPCTSTR>(m_Head.ToString()), static_cast<LPCTSTR>(m_Gitdir));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded HEAD tree (commit is %s) for repo: %s\n", static_cast<LPCWSTR>(m_Head.ToString()), static_cast<LPCWSTR>(m_Gitdir));
 
 	return 0;
 }

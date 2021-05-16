@@ -39,7 +39,7 @@ inline HRESULT GetDllVersion(
 }
 
 inline HRESULT GetDllVersion(
-	_In_z_ LPCTSTR lpstrDllName,
+	_In_z_ LPCWSTR lpstrDllName,
 	_Out_ DLLVERSIONINFO* pDllVersionInfo)
 {
 	CAutoLibrary hInstDLL = ::LoadLibrary(lpstrDllName);

@@ -55,7 +55,7 @@ protected:
 
 	virtual BOOL OnInitDialog() override;
 	virtual BOOL OnApply() override;
-	void DeleteViaShell(LPCTSTR path, UINT progressText);
+	void DeleteViaShell(LPCWSTR path, UINT progressText);
 
 private:
 	CButton			m_btnUrlHistClear;
