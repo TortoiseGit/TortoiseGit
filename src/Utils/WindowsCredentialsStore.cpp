@@ -30,13 +30,13 @@ int CWindowsCredentialsStore::GetCredential(const CString& entryName, CCredentia
 		return -1;
 
 	credentials.m_username = cred->UserName;
-	wcsncpy_s(credentials.m_password, _countof(credentials.m_password), reinterpret_cast<TCHAR*>(cred->CredentialBlob), cred->CredentialBlobSize / sizeof(TCHAR));
+	wcsncpy_s(credentials.m_password, _countof(credentials.m_password), reinterpret_cast<wchar_t*>(cred->CredentialBlob), cred->CredentialBlobSize / sizeof(wchar_t));
 	SecureZeroMemory(cred->CredentialBlob, cred->CredentialBlobSize);
 	CredFree(cred);
 	return 0;
 }
 
-int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CString& username, const TCHAR* password)
+int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CString& username, const wchar_t* password)
 {
 	ATLASSERT(password);
 
@@ -44,8 +44,8 @@ int CWindowsCredentialsStore::SaveCredential(const CString& entryName, const CSt
 	cred.Type = CRED_TYPE_GENERIC;
 	cred.TargetName = const_cast<LPWSTR>(static_cast<LPCWSTR>(entryName));
 	cred.UserName = const_cast<LPWSTR>(static_cast<LPCWSTR>(username));
-	cred.CredentialBlob = reinterpret_cast<LPBYTE>(const_cast<TCHAR*>(password));
-	cred.CredentialBlobSize = static_cast<int>(wcslen(password) * sizeof(TCHAR));
+	cred.CredentialBlob = reinterpret_cast<LPBYTE>(const_cast<wchar_t*>(password));
+	cred.CredentialBlobSize = static_cast<int>(wcslen(password) * sizeof(wchar_t));
 	cred.Persist = CRED_PERSIST_LOCAL_MACHINE;
 	return CredWrite(&cred, 0) == TRUE ? 0 : -1;
 }

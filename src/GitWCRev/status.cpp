@@ -114,7 +114,7 @@ static std::wstring GetSystemGitConfig()
 {
 	HKEY hKey;
 	DWORD dwType = REG_SZ;
-	TCHAR path[MAX_PATH] = { 0 };
+	wchar_t path[MAX_PATH] = { 0 };
 	DWORD dwSize = _countof(path) - 1;
 	if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\TortoiseGit", 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
 	{
@@ -124,7 +124,7 @@ static std::wstring GetSystemGitConfig()
 	return path;
 }
 
-static int RepoStatus(const TCHAR* path, std::string pathA, git_repository* repo, GitWCRev_t& GitStat)
+static int RepoStatus(const wchar_t* path, std::string pathA, git_repository* repo, GitWCRev_t& GitStat)
 {
 	git_status_options git_status_options = GIT_STATUS_OPTIONS_INIT;
 	git_status_options.flags = GIT_STATUS_OPT_INCLUDE_UNTRACKED | GIT_STATUS_OPT_RECURSE_UNTRACKED_DIRS;
@@ -201,10 +201,10 @@ static int RepoStatus(const TCHAR* path, std::string pathA, git_repository* repo
 	return 0;
 }
 
-int GetStatusUnCleanPath(const TCHAR* wcPath, GitWCRev_t& GitStat)
+int GetStatusUnCleanPath(const wchar_t* wcPath, GitWCRev_t& GitStat)
 {
 	DWORD reqLen = GetFullPathName(wcPath, 0, nullptr, nullptr);
-	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	auto wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 	GetFullPathName(wcPath, reqLen, wcfullPath.get(), nullptr);
 	// GetFullPathName() sometimes returns the full path with the wrong
 	// case. This is not a problem on Windows since its filesystem is
@@ -216,18 +216,18 @@ int GetStatusUnCleanPath(const TCHAR* wcPath, GitWCRev_t& GitStat)
 	int shortlen = GetShortPathName(wcfullPath.get(), nullptr, 0);
 	if (shortlen)
 	{
-		auto shortPath = std::make_unique<TCHAR[]>(shortlen + 1);
+		auto shortPath = std::make_unique<wchar_t[]>(shortlen + 1);
 		if (GetShortPathName(wcfullPath.get(), shortPath.get(), shortlen + 1))
 		{
 			reqLen = GetLongPathName(shortPath.get(), nullptr, 0);
-			wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+			wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 			GetLongPathName(shortPath.get(), wcfullPath.get(), reqLen);
 		}
 	}
 	return GetStatus(wcfullPath.get(), GitStat);
 }
 
-int GetStatus(const TCHAR* path, GitWCRev_t& GitStat)
+int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 {
 	// Configure libgit2 search paths
 	std::wstring systemConfig = GetSystemGitConfig();

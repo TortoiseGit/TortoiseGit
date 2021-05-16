@@ -246,17 +246,17 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 		stat = Rev.m_Files[i].m_StatDel;
 		revfileheader.m_Del = (stat == L"-") ? 0xFFFFFFFF : _wtol(stat);
 
-		if(!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(TCHAR), &num, 0))
+		if(!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(wchar_t), &num, 0))
 			return -1;
 
 		if(!name.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(TCHAR), &num, 0))
+			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(wchar_t), &num, 0))
 				return -1;
 		}
 		if(!oldname.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(TCHAR), &num, 0))
+			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(wchar_t), &num, 0))
 				return -1;
 		}
 
@@ -299,7 +299,7 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 			return -2;
 		}
 
-		auto recordLength = sizeof(SLogCacheRevFileHeader) + fileheader->m_FileNameSize * sizeof(TCHAR) + fileheader->m_OldFileNameSize * sizeof(TCHAR) - sizeof(TCHAR);
+		auto recordLength = sizeof(SLogCacheRevFileHeader) + fileheader->m_FileNameSize * sizeof(wchar_t) + fileheader->m_OldFileNameSize * sizeof(wchar_t) - sizeof(wchar_t);
 		if (!fileheader->m_FileNameSize || offset + recordLength > m_DataFileLength)
 		{
 			Rev.m_Action = 0;

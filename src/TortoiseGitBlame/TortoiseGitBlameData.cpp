@@ -271,8 +271,8 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 				{
 					CString line;
 					int size = static_cast<int>((rawLine.size() - linebomoffset) / 2);
-					TCHAR *buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[linebomoffset], sizeof(TCHAR) * size);
+					wchar_t*buffer = line.GetBuffer(size);
+					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
 					// swap the bytes to little-endian order to get proper strings in wchar_t format
 					wchar_t * pSwapBuf = buffer;
 					for (int i = 0; i < size; ++i)
@@ -294,8 +294,8 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 						linebomoffset = 1;
 					}
 					int size = static_cast<int>((rawLine.size() - linebomoffset) / 2);
-					TCHAR *buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[linebomoffset], sizeof(TCHAR) * size);
+					wchar_t*buffer = line.GetBuffer(size);
+					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
 					line.ReleaseBuffer();
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);

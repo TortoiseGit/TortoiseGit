@@ -41,7 +41,7 @@ protected:
 public:
 	CString m_UserName;
 	CString m_URL;
-	TCHAR m_password[MAX_LENGTH_PASSWORD];
+	wchar_t m_password[MAX_LENGTH_PASSWORD];
 	char m_passwordA[4 * MAX_LENGTH_PASSWORD];
 	virtual BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedOk();

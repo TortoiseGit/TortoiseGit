@@ -29,17 +29,17 @@
 //
 
 // Set the given key and its value.
-BOOL setKeyAndValue(const TCHAR* pszPath, const TCHAR* szSubkey, const TCHAR* szValue);
+BOOL setKeyAndValue(const wchar_t* pszPath, const wchar_t* szSubkey, const wchar_t* szValue);
 
 
-BOOL setValue(const TCHAR* szKey, const TCHAR* szEntry, const TCHAR* szValue);
+BOOL setValue(const wchar_t* szKey, const wchar_t* szEntry, const wchar_t* szValue);
 
 
 // Convert a CLSID into a char string.
-void CLSIDtochar(const CLSID& clsid, TCHAR* szCLSID, int length);
+void CLSIDtochar(const CLSID& clsid, wchar_t* szCLSID, int length);
 
 // Delete szKeyChild and all of its descendants.
-LONG recursiveDeleteKey(HKEY hKeyParent, const TCHAR* szKeyChild);
+LONG recursiveDeleteKey(HKEY hKeyParent, const wchar_t* szKeyChild);
 
 ////////////////////////////////////////////////////////
 //
@@ -59,24 +59,24 @@ const int CLSID_STRING_SIZE = 39;
 //
 HRESULT RegisterServer(HMODULE hModule,            // DLL module handle
 					   const CLSID& clsid,         // Class ID
-					   const TCHAR* szFriendlyName, // Friendly Name
-					   const TCHAR* szVerIndProgID, // Programmatic
-					   const TCHAR* szProgID,
+					   const wchar_t* szFriendlyName, // Friendly Name
+					   const wchar_t* szVerIndProgID, // Programmatic
+					   const wchar_t* szProgID,
 					   const CLSID& libid)       //   Type lib ID
 {
 	// Get server location.
-	TCHAR szModule[1024] = { 0 };
+	wchar_t szModule[1024] = { 0 };
 	::GetModuleFileName(hModule, szModule, _countof(szModule) - 1);
 
 	wcscat_s(szModule, L" /automation");
-	// Convert the CLSID into a TCHAR.
-	TCHAR szCLSID[CLSID_STRING_SIZE];
+	// Convert the CLSID into a wchar_t.
+	wchar_t szCLSID[CLSID_STRING_SIZE];
 	CLSIDtochar(clsid, szCLSID, _countof(szCLSID));
-	TCHAR szLIBID[CLSID_STRING_SIZE];
+	wchar_t szLIBID[CLSID_STRING_SIZE];
 	CLSIDtochar(libid, szLIBID, _countof(szLIBID));
 
 	// Build the key CLSID\\{...}
-	TCHAR szKey[64];
+	wchar_t szKey[64];
 	wcscpy_s(szKey, L"CLSID\\");
 	wcscat_s(szKey, szCLSID);
 
@@ -123,31 +123,31 @@ HRESULT RegisterServer(HMODULE hModule,            // DLL module handle
 
 void RegisterInterface(HMODULE hModule,            // DLL module handle
 					   const CLSID& clsid,         // Class ID
-					   const TCHAR* szFriendlyName, // Friendly Name
+					   const wchar_t* szFriendlyName, // Friendly Name
 					   const CLSID& libid,
 					   const IID& iid)
 {
 	// Get server location.
-	TCHAR szModule[512] = { 0 };
+	wchar_t szModule[512] = { 0 };
 	::GetModuleFileName(hModule, szModule, _countof(szModule) - 1);
 
-	// Convert the CLSID into a TCHAR.
-	TCHAR szCLSID[CLSID_STRING_SIZE];
+	// Convert the CLSID into a wchar_t.
+	wchar_t szCLSID[CLSID_STRING_SIZE];
 	CLSIDtochar(clsid, szCLSID, _countof(szCLSID));
-	TCHAR szLIBID[CLSID_STRING_SIZE];
+	wchar_t szLIBID[CLSID_STRING_SIZE];
 	CLSIDtochar(libid, szLIBID, _countof(szCLSID));
-	TCHAR szIID[CLSID_STRING_SIZE];
+	wchar_t szIID[CLSID_STRING_SIZE];
 	CLSIDtochar(iid, szIID, _countof(szCLSID));
 
 	// Build the key Interface\\{...}
-	TCHAR szKey[64];
+	wchar_t szKey[64];
 	wcscpy_s(szKey, L"Interface\\");
 	wcscat_s(szKey, szIID);
 
 	// Add the value to the registry.
 	setKeyAndValue(szKey, nullptr, szFriendlyName);
 
-	TCHAR szKey2[MAX_PATH] = { 0 };
+	wchar_t szKey2[MAX_PATH] = { 0 };
 	wcscpy_s(szKey2, szKey);
 	wcscat_s(szKey2, L"\\ProxyStubClsID");
 	// Add the server filename subkey under the IID key.
@@ -168,11 +168,11 @@ void RegisterInterface(HMODULE hModule,            // DLL module handle
 
 void UnregisterInterface(const IID& iid)
 {
-	TCHAR szIID[CLSID_STRING_SIZE];
+	wchar_t szIID[CLSID_STRING_SIZE];
 	CLSIDtochar(iid, szIID, _countof(szIID));
 
 	// Build the key Interface\\{...}
-	TCHAR szKey[64];
+	wchar_t szKey[64];
 	wcscpy_s(szKey, L"Interface\\");
 	wcscat_s(szKey, szIID);
 
@@ -183,16 +183,16 @@ void UnregisterInterface(const IID& iid)
 // Remove the component from the registry.
 //
 LONG UnregisterServer(const CLSID& clsid,         // Class ID
-					  const TCHAR* szVerIndProgID, // Programmatic
-					  const TCHAR* szProgID,
+					  const wchar_t* szVerIndProgID, // Programmatic
+					  const wchar_t* szProgID,
 					  const CLSID& libid)       //   Type lib ID
 {
-	// Convert the CLSID into a TCHAR.
-	TCHAR szCLSID[CLSID_STRING_SIZE];
+	// Convert the CLSID into a wchar_t.
+	wchar_t szCLSID[CLSID_STRING_SIZE];
 	CLSIDtochar(clsid, szCLSID, _countof(szCLSID));
 
 	// Build the key CLSID\\{...}
-	TCHAR szKey[64];
+	wchar_t szKey[64];
 	wcscpy_s(szKey, L"CLSID\\");
 	wcscat_s(szKey, szCLSID);
 
@@ -208,7 +208,7 @@ LONG UnregisterServer(const CLSID& clsid,         // Class ID
 	lResult = recursiveDeleteKey(HKEY_CLASSES_ROOT, szProgID);
 	assert((lResult == ERROR_SUCCESS) || (lResult == ERROR_FILE_NOT_FOUND)); // Subkey may not exist.
 
-	TCHAR szLIBID[CLSID_STRING_SIZE];
+	wchar_t szLIBID[CLSID_STRING_SIZE];
 	CLSIDtochar(libid, szLIBID, _countof(szLIBID));
 
 	wcscpy_s(szKey, L"TypeLib\\");
@@ -226,8 +226,8 @@ LONG UnregisterServer(const CLSID& clsid,         // Class ID
 // Internal helper functions
 //
 
-// Convert a CLSID to a TCHAR string.
-void CLSIDtochar(const CLSID& clsid, TCHAR* szCLSID, int length)
+// Convert a CLSID to a wchar_t string.
+void CLSIDtochar(const CLSID& clsid, wchar_t* szCLSID, int length)
 {
 	assert(length >= CLSID_STRING_SIZE);
 	// Get CLSID
@@ -242,7 +242,7 @@ void CLSIDtochar(const CLSID& clsid, TCHAR* szCLSID, int length)
 // Delete a key and all of its descendants.
 //
 LONG recursiveDeleteKey(HKEY hKeyParent,            // Parent of key to delete
-						const TCHAR* lpszKeyChild)  // Key to delete
+						const wchar_t* lpszKeyChild)  // Key to delete
 {
 	// Open the child.
 	HKEY hKeyChild;
@@ -252,7 +252,7 @@ LONG recursiveDeleteKey(HKEY hKeyParent,            // Parent of key to delete
 
 	// Enumerate all of the descendants of this child.
 	FILETIME time;
-	TCHAR szBuffer[256];
+	wchar_t szBuffer[256];
 	DWORD dwSize = _countof(szBuffer);
 	while (RegEnumKeyEx(hKeyChild, 0, szBuffer, &dwSize, nullptr, nullptr, nullptr, &time) == S_OK)
 	{
@@ -279,10 +279,10 @@ LONG recursiveDeleteKey(HKEY hKeyParent,            // Parent of key to delete
 //   - This helper function was borrowed and modified from
 //     Kraig Brockschmidt's book Inside OLE.
 //
-BOOL setKeyAndValue(const TCHAR* szKey, const TCHAR* szSubkey, const TCHAR* szValue)
+BOOL setKeyAndValue(const wchar_t* szKey, const wchar_t* szSubkey, const wchar_t* szValue)
 {
 	HKEY hKey;
-	TCHAR szKeyBuf[1024];
+	wchar_t szKeyBuf[1024];
 
 	// Copy key name into buffer.
 	wcscpy_s(szKeyBuf, szKey);
@@ -301,13 +301,13 @@ BOOL setKeyAndValue(const TCHAR* szKey, const TCHAR* szSubkey, const TCHAR* szVa
 
 	// Set the Value.
 	if (szValue)
-		RegSetValueEx(hKey, nullptr, 0, REG_SZ, reinterpret_cast<BYTE*>(const_cast<TCHAR*>(szValue)), DWORD((1 + wcslen(szValue)) * sizeof(TCHAR)));
+		RegSetValueEx(hKey, nullptr, 0, REG_SZ, reinterpret_cast<BYTE*>(const_cast<wchar_t*>(szValue)), DWORD((1 + wcslen(szValue)) * sizeof(wchar_t)));
 
 	RegCloseKey(hKey);
 	return TRUE;
 }
 
-BOOL setValue(const TCHAR* szKey, const TCHAR* szEntry, const TCHAR* szValue)
+BOOL setValue(const wchar_t* szKey, const wchar_t* szEntry, const wchar_t* szValue)
 {
 	HKEY hKey;
 
@@ -318,7 +318,7 @@ BOOL setValue(const TCHAR* szKey, const TCHAR* szEntry, const TCHAR* szValue)
 
 	// Set the Value.
 	if (szValue)
-		RegSetValueEx(hKey, szEntry, 0, REG_SZ, reinterpret_cast<BYTE*>(const_cast<TCHAR*>(szValue)), DWORD((1 + wcslen(szValue)) * sizeof(TCHAR)));
+		RegSetValueEx(hKey, szEntry, 0, REG_SZ, reinterpret_cast<BYTE*>(const_cast<wchar_t*>(szValue)), DWORD((1 + wcslen(szValue)) * sizeof(wchar_t)));
 
 	RegCloseKey(hKey);
 
@@ -339,7 +339,7 @@ HRESULT LoadTypeLib(HINSTANCE hInstTypeLib, LPCOLESTR lpszIndex, BSTR* pbstrPath
 
 	USES_CONVERSION;
 	ATLASSERT(hInstTypeLib);
-	TCHAR szModule[MAX_PATH+10] = { 0 };
+	wchar_t szModule[MAX_PATH+10] = { 0 };
 
 	DWORD dwFLen = ::GetModuleFileName(hInstTypeLib, szModule, MAX_PATH);
 	if (dwFLen == 0)

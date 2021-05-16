@@ -27,7 +27,7 @@ private:
 
 public:
 	static int GetCredential(const CString& entryName, CCredentials& credentials);
-	static int SaveCredential(const CString& entryName, const CString& username, const TCHAR* password);
+	static int SaveCredential(const CString& entryName, const CString& username, const wchar_t* password);
 	static int DeleteCredential(const CString& entryName);
 	static int ListCredentials(const CString& startsWith, CStringList& result);
 };
@@ -38,7 +38,7 @@ public:
 	~CCredentials();
 
 	CString m_username;
-	TCHAR m_password[256];
+	wchar_t m_password[256];
 
 	friend class CWindowsCredentialsStore;
 

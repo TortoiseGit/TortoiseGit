@@ -37,7 +37,7 @@ CPersonalDictionary::~CPersonalDictionary()
 template<class T>
 static void OpenFileStream(T& file, LONG lLanguage, std::ios_base::openmode openmode = 0)
 {
-	TCHAR path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
+	wchar_t path[MAX_PATH] = { 0 };		//MAX_PATH ok here.
 	swprintf_s(path, L"%s%ld.dic", static_cast<LPCWSTR>(CPathUtils::GetAppDataDirectory()), !lLanguage ? GetUserDefaultLCID() : lLanguage);
 
 	char filepath[MAX_PATH + 1] = { 0 };

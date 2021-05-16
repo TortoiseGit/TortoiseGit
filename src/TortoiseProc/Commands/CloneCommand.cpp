@@ -80,7 +80,7 @@ bool CloneCommand::Execute()
 		{
 			cloneDirectory.SetFromWin(sOrigCWD, true);
 			DWORD len = ::GetTempPath(0, nullptr);
-			auto tszPath = std::make_unique<TCHAR[]>(len);
+			auto tszPath = std::make_unique<wchar_t[]>(len);
 			::GetTempPath(len, tszPath.get());
 			if (_wcsnicmp(cloneDirectory.GetWinPath(), tszPath.get(), len - 2 /* \\ and \0 */) == 0)
 			{

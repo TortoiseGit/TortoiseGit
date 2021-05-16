@@ -26,13 +26,13 @@ public:
 	CSelectFileFilter() {}
 	~CSelectFileFilter() {}
 
-	operator const TCHAR*() { return buffer.get(); }
+	operator const wchar_t*() { return buffer.get(); }
 	void Load(UINT stringId);
 	UINT GetCount() const { return static_cast<UINT>(filternames.size()); }
 	operator const COMDLG_FILTERSPEC*() { return filterspec.get(); }
 
 private:
-	std::unique_ptr<TCHAR[]> buffer;
+	std::unique_ptr<wchar_t[]> buffer;
 	std::unique_ptr<COMDLG_FILTERSPEC[]> filterspec;
 	std::vector<CString> filternames;
 	std::vector<CString> filtermasks;
@@ -51,7 +51,7 @@ inline void CSelectFileFilter::Load(UINT stringId)
 	CString sFilter;
 	sFilter.LoadString(stringId);
 	const int bufferLength = sFilter.GetLength()+4;
-	buffer = std::make_unique<TCHAR[]>(bufferLength);
+	buffer = std::make_unique<wchar_t[]>(bufferLength);
 	wcscpy_s (buffer.get(), bufferLength, sFilter);
 	CStringUtils::PipesToNulls(buffer.get());
 

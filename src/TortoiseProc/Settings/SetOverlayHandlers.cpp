@@ -142,8 +142,8 @@ int CSetOverlayHandlers::GetInstalledOverlays()
 		L"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellIconOverlayIdentifiers",
 		0, KEY_ENUMERATE_SUB_KEYS, &hKey)==ERROR_SUCCESS)
 	{
-		TCHAR value[2048] = { 0 };
-		TCHAR keystring[2048] = { 0 };
+		wchar_t value[2048] = { 0 };
+		wchar_t keystring[2048] = { 0 };
 		for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; i++)
 		{
 			DWORD size = _countof(value);

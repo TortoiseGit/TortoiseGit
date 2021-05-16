@@ -116,7 +116,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 {
 	if (!pwszPath)
 		return E_INVALIDARG;
-	const TCHAR* pPath = pwszPath;
+	const wchar_t* pPath = pwszPath;
 	// the shell sometimes asks overlays for invalid paths, e.g. for network
 	// printers (in that case the path is "0", at least for me here).
 	if (wcslen(pPath) < 2)

@@ -136,8 +136,8 @@ private:
 	std::wstring	m_sCmdLine;
 	CValsMap	m_valueMap;
 
-	static const TCHAR m_sDelims[];
-	static const TCHAR m_sValueSep[];
-	static const TCHAR m_sQuotes[];
+	static const wchar_t m_sDelims[];
+	static const wchar_t m_sValueSep[];
+	static const wchar_t m_sQuotes[];
 };
 

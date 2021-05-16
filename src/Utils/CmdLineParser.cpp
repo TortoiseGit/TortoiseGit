@@ -22,9 +22,9 @@
 #include <locale>
 #include <algorithm>
 
-const TCHAR CCmdLineParser::m_sDelims[] = L"-/";
-const TCHAR CCmdLineParser::m_sQuotes[] = L"\"";
-const TCHAR CCmdLineParser::m_sValueSep[] = L" :"; // don't forget space!!
+const wchar_t CCmdLineParser::m_sDelims[] = L"-/";
+const wchar_t CCmdLineParser::m_sQuotes[] = L"\"";
+const wchar_t CCmdLineParser::m_sValueSep[] = L" :"; // don't forget space!!
 
 
 CCmdLineParser::CCmdLineParser(LPCWSTR sCmdLine)

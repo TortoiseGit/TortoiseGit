@@ -394,7 +394,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 
                 // Specify the resource identifier of the descriptive
                 // text for the given button.
-                TCHAR stringbuf[MAX_PATH] = {0};
+                wchar_t stringbuf[MAX_PATH] = {0};
                 MENUITEMINFO mii;
                 mii.cbSize = sizeof(MENUITEMINFO);
                 mii.fMask = MIIM_TYPE;
@@ -1196,7 +1196,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
         {
         case IDC_LEFTBROWSE:
             {
-                TCHAR path[MAX_PATH] = {0};
+                wchar_t path[MAX_PATH] = {0};
                 if (AskForFile(hwndDlg, path))
                 {
                     SetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path);
@@ -1205,7 +1205,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDC_RIGHTBROWSE:
             {
-                TCHAR path[MAX_PATH] = {0};
+                wchar_t path[MAX_PATH] = {0};
                 if (AskForFile(hwndDlg, path))
                 {
                     SetDlgItemText(hwndDlg, IDC_RIGHTIMAGE, path);
@@ -1214,7 +1214,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDOK:
             {
-                TCHAR path[MAX_PATH] = { 0 };
+                wchar_t path[MAX_PATH] = { 0 };
                 if (!GetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path, _countof(path)))
                     *path = 0;
                 leftpicpath = path;
@@ -1232,7 +1232,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
     return FALSE;
 }
 
-bool CMainWindow::AskForFile(HWND owner, TCHAR * path)
+bool CMainWindow::AskForFile(HWND owner, wchar_t* path)
 {
     OPENFILENAME ofn = {0};         // common dialog box structure
     // Initialize OPENFILENAME
@@ -1244,7 +1244,7 @@ bool CMainWindow::AskForFile(HWND owner, TCHAR * path)
     ofn.lpstrTitle = sTitle;
     ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_EXPLORER;
     ofn.hInstance = ::hResource;
-    TCHAR filters[] = L"Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf;*.webp\0All (*.*)\0*.*\0\0";
+    wchar_t filters[] = L"Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf;*.webp\0All (*.*)\0*.*\0\0";
     ofn.lpstrFilter = filters;
     ofn.nFilterIndex = 1;
     // Display the Open dialog box.

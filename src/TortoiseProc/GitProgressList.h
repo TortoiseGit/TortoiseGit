@@ -201,7 +201,7 @@ private:
 	int						m_options;	// Use values from the ProgressOptions enum
 
 
-	TCHAR					m_columnbuf[MAX_PATH];
+	wchar_t					m_columnbuf[MAX_PATH];
 
 public:
 	volatile BOOL			m_bCancelled;

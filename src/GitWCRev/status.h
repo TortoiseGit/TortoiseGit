@@ -33,5 +33,5 @@
 #define ERR_NOWC		10	// the path is not a working copy or part of one
 #define ERR_GIT_UNVER	11	// Unversioned items found (-uU)
 
-int GetStatus(const TCHAR* wc, GitWCRev_t& GitStat);
-int GetStatusUnCleanPath(const TCHAR* wc, GitWCRev_t& GitStat);
+int GetStatus(const wchar_t* wc, GitWCRev_t& GitStat);
+int GetStatusUnCleanPath(const wchar_t* wc, GitWCRev_t& GitStat);

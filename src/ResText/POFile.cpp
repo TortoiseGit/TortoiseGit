@@ -72,7 +72,7 @@ BOOL CPOFile::ParseFile(LPCWSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 		fwprintf(stderr, L"can't open input file %s\n", szPath);
 		return FALSE;
 	}
-	auto line = std::make_unique<TCHAR[]>(2 * MAX_STRING_LENGTH);
+	auto line = std::make_unique<wchar_t[]>(2 * MAX_STRING_LENGTH);
 	std::vector<std::wstring> entry;
 	do
 	{

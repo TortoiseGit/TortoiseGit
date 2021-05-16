@@ -92,7 +92,7 @@ void CUserPassword::OnBnClickedOk()
 void CUserPassword::OnDestroy()
 {
 	// overwrite password textfield contents with garbage in order to wipe the cache
-	TCHAR gargabe[MAX_LENGTH_PASSWORD];
+	wchar_t gargabe[MAX_LENGTH_PASSWORD];
 	wmemset(gargabe, L'*', _countof(gargabe));
 	gargabe[_countof(gargabe) - 1] = L'\0';
 	GetDlgItem(IDC_USER_PASSWORD)->SetWindowText(gargabe);

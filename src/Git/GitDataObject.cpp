@@ -269,10 +269,10 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			}
 		}
 		pmedium->tymed = TYMED_HGLOBAL;
-		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(TCHAR));
+		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(wchar_t));
 		if (pmedium->hGlobal)
 		{
-			auto pMem = static_cast<TCHAR*>(GlobalLock(pmedium->hGlobal));
+			auto pMem = static_cast<wchar_t*>(GlobalLock(pmedium->hGlobal));
 			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCWSTR>(text));
 			GlobalUnlock(pmedium->hGlobal);
 		}
@@ -292,7 +292,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			nLength += 1; // '\0' separator
 		}
 
-		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(TCHAR);
+		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(wchar_t);
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
@@ -300,8 +300,8 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		df->pFiles = sizeof(DROPFILES);
 		df->fWide = 1;
 
-		auto pFilenames = reinterpret_cast<TCHAR*>(pBuffer.get() + sizeof(DROPFILES));
-		TCHAR* pCurrentFilename = pFilenames;
+		auto pFilenames = reinterpret_cast<wchar_t*>(pBuffer.get() + sizeof(DROPFILES));
+		wchar_t* pCurrentFilename = pFilenames;
 
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{

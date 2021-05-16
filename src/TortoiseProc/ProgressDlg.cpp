@@ -455,7 +455,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 					{
 						++i;
 						m_ctrlPostCmd.AddEntry(entry.label, entry.icon);
-						TCHAR accellerator = CStringUtils::GetAccellerator(entry.label);
+						wchar_t accellerator = CStringUtils::GetAccellerator(entry.label);
 						if (accellerator == L'\0')
 							continue;
 						++m_accellerators[accellerator].cnt;

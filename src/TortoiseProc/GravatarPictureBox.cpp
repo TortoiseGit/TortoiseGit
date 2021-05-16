@@ -289,7 +289,7 @@ resend:
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		DWORD downloaded; // size of the downloaded data
-		auto buff = std::make_unique<TCHAR[]>(size + 1);
+		auto buff = std::make_unique<wchar_t[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 

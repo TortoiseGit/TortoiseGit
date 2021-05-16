@@ -327,7 +327,7 @@ void CGitProgressList::ResizeColumns()
 {
 	SetRedraw(FALSE);
 
-	TCHAR textbuf[MAX_PATH] = {0};
+	wchar_t textbuf[MAX_PATH] = {0};
 
 	auto pHeaderCtrl = GetHeaderCtrl();
 	if (pHeaderCtrl)

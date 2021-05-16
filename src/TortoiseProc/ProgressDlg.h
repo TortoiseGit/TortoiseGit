@@ -184,7 +184,7 @@ private:
 		int cnt;
 		int wmid;
 	} ACCELLERATOR;
-	std::map<TCHAR, ACCELLERATOR>	m_accellerators;
+	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccel;
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 };

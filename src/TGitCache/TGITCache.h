@@ -24,7 +24,7 @@
 #define MAX_CRAWLEDPATHSLEN (MAX_PATH * 2)
 
 extern HWND				hWndHidden;
-extern TCHAR			szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
+extern wchar_t			szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 
 extern int nCurrentCrawledpathIndex;
 extern CComAutoCriticalSection critSec;

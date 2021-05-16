@@ -27,7 +27,7 @@ class CSinglePropSheetDlg : public TreePropSheet::CTreePropSheet
 	DECLARE_DYNAMIC(CSinglePropSheetDlg)
 
 public:
-	CSinglePropSheetDlg(const TCHAR* szCaption, ISettingsPropPage* pThePropPage, CWnd* pParent = nullptr);   // standard constructor
+	CSinglePropSheetDlg(const wchar_t* szCaption, ISettingsPropPage* pThePropPage, CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CSinglePropSheetDlg();
 
 	void AddPropPages();

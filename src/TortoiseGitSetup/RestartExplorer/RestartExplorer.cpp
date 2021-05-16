@@ -45,7 +45,7 @@ int APIENTRY wWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPWS
 
 	SCOPE_EXIT { CoTaskMemFree(pszPathWindows); };
 
-	TCHAR szPathExplorerExe[MAX_PATH];
+	wchar_t szPathExplorerExe[MAX_PATH];
 	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", pszPathWindows) <= 0)
 		return 1;
 

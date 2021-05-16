@@ -98,7 +98,7 @@ std::wstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 		STRRET name;
 		if (FAILED(parentFolder->GetDisplayNameOf(item_, SHGDN_NORMAL | SHGDN_FORPARSING, &name)))
 			return ret;
-		CComHeapPtr<TCHAR> szDisplayName;
+		CComHeapPtr<wchar_t> szDisplayName;
 		if (FAILED(StrRetToStr(&name, item_, &szDisplayName)) || !szDisplayName)
 			return ret;
 		ret = szDisplayName;

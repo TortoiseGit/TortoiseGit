@@ -719,7 +719,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 			RESOURCEENTRY entry = m_StringEntries[wstr];
 			InsertResourceIDs(RT_MENU, 0, entry, id, L" - Menu");
 
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuEntry; ID:%u", id);
 			MENUENTRY menu_entry;
 			menu_entry.wID = id;
@@ -840,7 +840,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			res += 2;
 
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - PopupMenuEx");
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuExPopupEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = static_cast<WORD>(menuId);
@@ -861,7 +861,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			RESOURCEENTRY entry = m_StringEntries[wstr];
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - MenuEx");
 
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuExEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = static_cast<WORD>(menuId);
@@ -1049,7 +1049,7 @@ BOOL CResModule::ExtractAccelerator(LPCWSTR lpszType)
 		std::wstring wstr = std::wstring(buf2);
 		RESOURCEENTRY AKey_entry = m_StringEntries[wstr];
 
-		TCHAR szTempBuf[1024] = { 0 };
+		wchar_t szTempBuf[1024] = { 0 };
 		std::wstring wmenu;
 		pME_iter = m_MenuEntries.find(wID);
 		if (pME_iter != m_MenuEntries.end())
@@ -1255,7 +1255,7 @@ BOOL CResModule::ExtractDialog(LPCWSTR lpszType)
 
 	while (bNumControls-- != 0)
 	{
-		TCHAR szTitle[500] = { 0 };
+		wchar_t szTitle[500] = { 0 };
 		BOOL  bCode;
 
 		lpDlgItem = GetControlInfo(lpDlgItem, &dlgItem, dlg.dialogEx, &bCode);
@@ -2193,7 +2193,7 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 
 	// open the file and read the contents
 	DWORD reqLen = GetFullPathName(filepath.c_str(), 0, nullptr, nullptr);
-	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	auto wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 	GetFullPathName(filepath.c_str(), reqLen, wcfullPath.get(), nullptr);
 	std::wstring fullpath = wcfullPath.get();
 

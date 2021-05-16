@@ -1252,7 +1252,7 @@ BOOL CSyncDlg::PreTranslateMessage(MSG* pMsg)
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
-				TCHAR buff[129];
+				wchar_t buff[129];
 				::GetClassName(pMsg->hwnd, buff, _countof(buff) - 1);
 
 				/* Use MSFTEDIT_CLASS http://msdn.microsoft.com/en-us/library/bb531344.aspx */

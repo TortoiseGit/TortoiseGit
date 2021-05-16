@@ -504,7 +504,7 @@ void CCommitDlg::PrepareOkButton()
 		CString label;
 		label.LoadString(labelId);
 		m_ctrlOkButton.AddEntry(label);
-		TCHAR accellerator = CStringUtils::GetAccellerator(label);
+		wchar_t accellerator = CStringUtils::GetAccellerator(label);
 		if (accellerator == L'\0')
 			continue;
 		++m_accellerators[accellerator].cnt;

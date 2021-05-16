@@ -51,7 +51,7 @@ public:
 public:
 	CListCtrl m_List;
 	CString m_DisplayStr;
-	TCHAR m_PrefixChar;
+	wchar_t m_PrefixChar;
 	long m_lMode;
 	// Operationen
 public:
