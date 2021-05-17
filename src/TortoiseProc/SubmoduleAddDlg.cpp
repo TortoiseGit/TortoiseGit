@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,6 +61,7 @@ BEGIN_MESSAGE_MAP(CSubmoduleAddDlg, CHorizontalResizableStandAloneDialog)
 	ON_COMMAND(IDC_BRANCH_CHECK,		OnBranchCheck)
 	ON_BN_CLICKED(IDC_PUTTYKEYFILE_BROWSE, OnBnClickedPuttykeyfileBrowse)
 	ON_BN_CLICKED(IDC_PUTTYKEY_AUTOLOAD, OnBnClickedPuttykeyAutoload)
+	ON_NOTIFY_EX(CBEN_ENDEDIT, IDC_COMBOBOXEX_REPOSITORY, OnRepoEndEdit)
 END_MESSAGE_MAP()
 
 
@@ -210,4 +211,18 @@ void CSubmoduleAddDlg::OnBnClickedPuttykeyAutoload()
 	UpdateData();
 	GetDlgItem(IDC_PUTTYKEYFILE)->EnableWindow(m_bAutoloadPuttyKeyFile);
 	GetDlgItem(IDC_PUTTYKEYFILE_BROWSE)->EnableWindow(m_bAutoloadPuttyKeyFile);
+}
+
+BOOL CSubmoduleAddDlg::OnRepoEndEdit(UINT, NMHDR*, LRESULT*)
+{
+	CString strUrl;
+	m_Repository.GetWindowTextW(strUrl);
+	CString repoName = CPathUtils::GetFileNameFromPath(strUrl);
+	if (CStringUtils::EndsWith(repoName, L".git"))
+		repoName = repoName.Left(repoName.GetLength() - static_cast<int>(wcslen(L".git")));
+	if (m_strPath.IsEmpty())
+		m_PathCtrl.SetWindowText(repoName);
+	else
+		m_PathCtrl.SetWindowText(m_strPath + L'\\' + repoName);
+	return 0;
 }
