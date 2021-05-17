@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017, 2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017. 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -142,6 +142,15 @@ void CSubmoduleAddDlg::OnPathBrowse()
 	this->m_PathCtrl.GetWindowTextW(strDirectory);
 	if (browseFolder.Show(GetSafeHwnd(), strDirectory,g_Git.m_CurrentDir) == CBrowseFolder::OK)
 	{
+		CString strUrl;
+		m_Repository.GetWindowTextW(strUrl);
+		if (CString repoName = CPathUtils::GetFileNameFromPath(strUrl); !repoName.IsEmpty())
+		{
+			if (CStringUtils::EndsWith(repoName, L".git"))
+				repoName = repoName.Left(repoName.GetLength() - static_cast<int>(wcslen(L".git")));
+			m_PathCtrl.SetWindowTextW(strDirectory + L'\\' + repoName);
+			return;
+		}
 		this->m_PathCtrl.SetWindowTextW(strDirectory);
 	}
 }
