@@ -466,7 +466,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 						, const CString& linestart /*= CString()*/
 						, const CString& blockstart /*= CString()*/
 						, const CString& blockend /*= CString()*/
-						, const std::wregex& rx /*= std::wregex(L"")*/
+						, const std::wregex& rx /*= std::wregex()*/
 						, const std::wstring& replacement /*=L""*/)
 {
 	m_sCommentLine = linestart;
