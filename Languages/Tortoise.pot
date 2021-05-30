@@ -7823,10 +7823,6 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET: Control id 1383)
-msgid "S&how modified files in working tree"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
 msgstr ""
@@ -8504,6 +8500,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBEALWAYSLONG_TT)
 msgid "Show long format even if a tag is exactly on that commit"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET: Control id 1383)
+msgid "Show modified files in &working tree"
 msgstr ""
 
 #. Resource IDs: (25308)
