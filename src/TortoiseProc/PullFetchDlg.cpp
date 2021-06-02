@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -276,6 +276,22 @@ void CPullFetchDlg::Refresh()
 	g_Git.GetRemoteTrackedBranch(currentBranch, pullRemote, pullBranch);
 	m_configPullRemote = pullRemote;
 	m_configPullBranch  = pullBranch;
+
+	if (CString parentRepoDir; CTGitPath(g_Git.m_CurrentDir).IsRegisteredSubmoduleOfParentProject(&parentRepoDir))
+	{
+		if (CAutoRepository parentRepo(parentRepoDir); parentRepo)
+		{
+			auto subModulePath = CUnicodeUtils::GetUTF8(g_Git.m_CurrentDir.Mid(parentRepoDir.GetLength() + 1));
+			subModulePath.Replace('\\', '/');
+
+			if (CAutoSubmodule subModule; !git_submodule_lookup(subModule.GetPointer(), parentRepo, subModulePath))
+			{
+				auto branch = git_submodule_branch(subModule);
+				if (branch)
+					pullBranch = CUnicodeUtils::GetUnicode(branch);
+			}
+		}
+	}
 
 	if (pullBranch.IsEmpty())
 		m_RemoteBranch.AddString(currentBranch);
