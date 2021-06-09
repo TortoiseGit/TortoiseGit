@@ -273,6 +273,14 @@ void CPushDlg::Refresh()
 		m_BranchSource.SetWindowText(m_BranchSourceName);
 
 	GetRemoteBranch(m_BranchSource.GetString());
+	CString trackRemote, trackBranch;
+	g_Git.GetRemoteTrackedBranchForHEAD(trackRemote, trackBranch);
+	if (trackRemote.IsEmpty() && trackBranch.IsEmpty())
+	{
+		// if the local branch is not yet tracked, make that the default
+		m_bSetUpstream = TRUE;
+		UpdateData(FALSE);
+	}
 
 	if (list.size() > 1 && m_bPushAllRemotes)
 		m_Remote.SetCurSel(0);
