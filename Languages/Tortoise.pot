@@ -1295,12 +1295,12 @@ msgstr ""
 msgid "&add \"cherry picked from\""
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
-msgid "&ignore space change"
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
+msgid "&force"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "&known changes"
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
+msgid "&ignore space change"
 msgstr ""
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
@@ -4655,10 +4655,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
 msgid "Force unlock"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
-msgid "Force: May discard"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog IDD_SETTINGSUDIFF: Control id 65535)
@@ -10651,6 +10647,10 @@ msgstr ""
 msgid "file/foldernames"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
 msgstr ""
@@ -10860,10 +10860,6 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_CPYMVPROG2, IDS_SVNPROGRESS_EXPORTINGTO)
 #, c-format
 msgid "to %s"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "u&nknown changes"
 msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXWEEK)

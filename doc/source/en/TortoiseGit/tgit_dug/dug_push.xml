@@ -50,7 +50,7 @@
 	<sect2>
 		<title>Options</title>
 		<para>
-			<guilabel>Force (May discard known changes)</guilabel>
+			<guilabel>force with lease</guilabel>
 			This allows remote repository to accept a safer non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
 			This can prevent from losing unknown changes from other people on the remote.
 			It checks if the server branch points to the same commit as the remote-tracking branch (known changes).
@@ -59,7 +59,7 @@
 			This passes <literal>--force-with-lease</literal> option of <literal>git push</literal> command.
 		</para>
 		<para>
-			<guilabel>Force (May discard unknown changes)</guilabel>
+			<guilabel>force</guilabel>
 			This allows remote repository to accept an unsafe non-fast-forward push. This can cause the remote repository to lose commits; use it with care.
 			This does not check any server commits, so it is possible to lose unknown changes on the remote.
 			Use this option with <guilabel>Include Tags</guilabel> to overwrite tags.
