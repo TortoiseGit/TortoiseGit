@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2020 - TortoiseGit
+// Copyright (C) 2019-2021 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2013, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ void CSplitterControl::OnPaint()
 		Gdiplus::Graphics g(dcreal);
 
 		Gdiplus::Color c1;
-		c1.SetFromCOLORREF(CTheme::Instance().GetThemeColor(GetSysColor(COLOR_3DFACE)));
+		c1.SetFromCOLORREF(CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_3DFACE));
 		Gdiplus::Color c2;
 		c2.SetFromCOLORREF(CTheme::Instance().GetThemeColor(GetSysColor(COLOR_BTNSHADOW)));
 
