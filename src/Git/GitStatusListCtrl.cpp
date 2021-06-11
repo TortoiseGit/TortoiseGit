@@ -51,6 +51,8 @@
 #include "GitAdminDir.h"
 #include "Theme.h"
 
+#include <fstream>
+
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
 const UINT CGitStatusListCtrl::GITSLNM_NEEDSREFRESH
@@ -2188,33 +2190,58 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 			case IDGITLC_GNUDIFF1:
 				{
-					if (!CheckMultipleDiffs())
-						break;
+					int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
+					CString fullTempFile = GetTempFile();
+					std::wofstream outStream(fullTempFile);
+
 					POSITION pos = GetFirstSelectedItemPosition();
 					while (pos)
 					{
 						auto selectedFilepath = GetListEntry(GetNextSelectedItem(pos));
+						auto tempfile = GetTempFile();
 						if (m_CurrentVersion.IsEmpty())
 						{
 							CString fromwhere;
 							if (m_amend)
 								fromwhere = L"~1";
-							CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, GitRev::GetHead() + fromwhere, *selectedFilepath, GitRev::GetWorkingCopy(), bShift);
+							if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetHead() + fromwhere, GitRev::GetWorkingCopy(), tempfile, false, false, diffContext, false))
+							{
+								::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
+								break;
+							}
 						}
 						else
 						{
 							if ((selectedFilepath->m_ParentNo & (PARENT_MASK | MERGE_MASK)) == 0)
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, m_CurrentVersion.ToString() + L"~1", *selectedFilepath, m_CurrentVersion.ToString(), bShift);
+							{
+								if (g_Git.GetUnifiedDiff(*selectedFilepath, m_CurrentVersion.ToString() + L"~1", m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
+								{
+									::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
+									break;
+								}
+							}
 							else
 							{
 								CString str;
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
 									str.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion.ToString(), bShift, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+								if (g_Git.GetUnifiedDiff(*selectedFilepath, str, m_CurrentVersion.ToString(), tempfile, !!(selectedFilepath->m_ParentNo & MERGE_MASK), false, diffContext, false))
+								{
+									::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
+									break;
+								}
 							}
 						}
+						std::wifstream inStream(tempfile);
+						outStream << inStream.rdbuf();
 					}
+					outStream.close();
+					SetFileAttributes(fullTempFile, FILE_ATTRIBUTE_READONLY);
+					if (m_CurrentVersion.IsEmpty())
+						CAppUtils::StartUnifiedDiffViewer(fullTempFile, GitRev::GetHead() + (m_amend ? L"~1" : L""), FALSE, bShift);
+					else
+						CAppUtils::StartUnifiedDiffViewer(fullTempFile, m_CurrentVersion.ToString(), FALSE, bShift);
 				}
 				break;
 
