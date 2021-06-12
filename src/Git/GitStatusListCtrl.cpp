@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2211,7 +2211,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								if (!(selectedFilepath->m_ParentNo & MERGE_MASK))
 									str.Format(L"%s^%d", static_cast<LPCTSTR>(m_CurrentVersion.ToString()), (selectedFilepath->m_ParentNo & PARENT_MASK) + 1);
 
-								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion.ToString(), bShift, false, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
+								CAppUtils::StartShowUnifiedDiff(m_hWnd, *selectedFilepath, str, *selectedFilepath, m_CurrentVersion.ToString(), bShift, false, false, !!(selectedFilepath->m_ParentNo & MERGE_MASK));
 							}
 						}
 					}
