@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -149,7 +149,9 @@ DWORD CRegBaseCommon<S>::removeKey()
 
 	HKEY hKey = nullptr;
 	RegOpenKeyEx (m_base, GetPlainString (m_path), 0, KEY_WRITE|m_sam, &hKey);
-	return SHDeleteKey(m_base, GetPlainString (m_path));
+	auto ret = SHDeleteKey(m_base, GetPlainString (m_path));
+	RegCloseKey(hKey);
+	return ret;
 }
 
 template<class S>
@@ -160,7 +162,9 @@ LONG CRegBaseCommon<S>::removeValue()
 
 	HKEY hKey = nullptr;
 	RegOpenKeyEx(m_base, GetPlainString (m_path), 0, KEY_WRITE|m_sam, &hKey);
-	return RegDeleteValue(hKey, GetPlainString (m_key));
+	auto ret = RegDeleteValue(hKey, GetPlainString (m_key));
+	RegCloseKey(hKey);
+	return ret;
 }
 
 /**
