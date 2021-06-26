@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseSVN
+// Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <optional>
 #pragma warning(push)
 #pragma warning(disable : 4458) // declaration of 'xxx' hides class member
 #include <gdiplus.h>
@@ -44,6 +45,7 @@ public:
 
 	// cf. src/TortoiseUDiff/UDiffColors.h, src/SshAskPass/SshAskPass.cpp and src/TortoiseGitBlame/BlameIndexColors.h
 	static const COLORREF darkBkColor = 0x202020;
+	static const COLORREF darkBkHotColor = 0x404040;
 	static const COLORREF darkTextColor = 0xDDDDDD;
 	static const COLORREF darkDisabledTextColor = 0x808080;
 
@@ -80,6 +82,8 @@ public:
 	static void RGBtoHSL(COLORREF color, float& h, float& s, float& l);
 	static COLORREF HSLtoRGB(float h, float s, float l);
 
+	static std::optional<LRESULT> HandleMenuBar(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 private:
 	void Load();
 	static BOOL CALLBACK AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam);
@@ -99,4 +103,5 @@ private:
 	int m_lastThemeChangeCallbackId;
 	CRegStdDWORD m_regDarkTheme;
 	static HBRUSH s_backBrush;
+	static HBRUSH s_backHotBrush;
 };

@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2015-2019 - TortoiseGit
-// Copyright (C) 2006-2015, 2018, 2020 - TortoiseSVN
+// Copyright (C) 2006-2015, 2018, 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -167,6 +167,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
     {
         SetUUIDOverlayIcon(hwnd);
     }
+    auto optRet = CTheme::HandleMenuBar(hwnd, uMsg, wParam, lParam);
+    if (optRet.has_value())
+        return optRet.value();
     switch (uMsg)
     {
     case WM_CREATE:
