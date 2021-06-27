@@ -35,6 +35,7 @@ Released: 2021-03-31
  * Fixed issue #3181: Branch dialog: Create branch should remember "switch to" state
  * Fixed issue #3700: Resolve the conflicts did not show the merge_head with correct branch name
    The branch detection heuristic can now be disabled using the advanced setting "ConflictDontGuessBranchNames".
+ * Fixed issue #3707: Give visual indicator when violating the 50/72 rule
 
 == Bug Fixes ==
  * Fixed issue #3649: "multi-project pull/fetch/push" not working

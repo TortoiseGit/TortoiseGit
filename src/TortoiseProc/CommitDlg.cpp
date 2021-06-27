@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2704,6 +2704,44 @@ void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	auto pos = static_cast<Sci_Position>(m_cLogMessage.Call(SCI_GETCURRENTPOS));
 	auto line = static_cast<int>(m_cLogMessage.Call(SCI_LINEFROMPOSITION, pos));
 	auto column = static_cast<int>(m_cLogMessage.Call(SCI_GETCOLUMN, pos));
+	auto maxLines = static_cast<int>(m_cLogMessage.Call(SCI_GETLINECOUNT));
+	auto lengthLine1 = static_cast<int>(m_cLogMessage.Call(SCI_LINELENGTH, 0));
+	bool tipShown = false;
+
+	m_cLogMessage.Call(SCI_CALLTIPCANCEL);
+	if (lengthLine1 > 50 + (maxLines > 1 ? 2 : 0))
+	{
+		m_cLogMessage.Call(SCI_INDICSETSTYLE, 0, INDIC_SQUIGGLE);
+		m_cLogMessage.Call(SCI_INDICSETFORE, 0, 0x00FF00);
+		m_cLogMessage.Call(SCI_INDICATORFILLRANGE, 0, 50);
+		m_cLogMessage.Call(SCI_CALLTIPSHOW, 50, reinterpret_cast<LPARAM>("Keep commit titles under 50 characters"));
+		tipShown = true;
+	}
+	else
+	{
+		m_cLogMessage.Call(SCI_INDICATORCLEARRANGE, 0, 50);
+	}
+
+	int currentLength = lengthLine1;
+	for (int i = 2; i <= maxLines; i++)
+	{
+		auto length = static_cast<int>(m_cLogMessage.Call(SCI_LINELENGTH, i - 1));
+		if (length > 72 + (i < maxLines ? 2 : 0))
+		{
+			m_cLogMessage.Call(SCI_INDICSETSTYLE, 0, INDIC_SQUIGGLE);
+			m_cLogMessage.Call(SCI_INDICSETFORE, 0, 0x00FF00);
+			m_cLogMessage.Call(SCI_INDICATORFILLRANGE, currentLength, 72);
+			if (!tipShown)
+			{
+				m_cLogMessage.Call(SCI_CALLTIPSHOW, currentLength + 72, reinterpret_cast<LPARAM>("Keep commit lines under 72 characters"));
+			}
+		}
+		else
+		{
+			m_cLogMessage.Call(SCI_INDICATORCLEARRANGE, currentLength, 72);
+		}
+		currentLength += length;
+	}
 
 	CString str;
 	str.Format(L"%d/%d", line + 1, column + 1);
