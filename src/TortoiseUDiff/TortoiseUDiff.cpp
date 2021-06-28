@@ -27,6 +27,10 @@
 #include "Monitor.h"
 #include "../version.h"
 #include "../Utils/CrashReport.h"
+#pragma warning(push)
+#pragma warning(disable: 4458)
+#include <GdiPlus.h>
+#pragma warning(pop)
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
 
@@ -73,6 +77,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 		ICC_STANDARD_CLASSES | ICC_BAR_CLASSES
 	};
 	InitCommonControlsEx(&used);
+
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	ULONG_PTR gdiplusToken;
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
+
+	SCOPE_EXIT { Gdiplus::GdiplusShutdown(gdiplusToken); };
 
 	CMainWindow mainWindow(hResource);
 	mainWindow.SetRegistryPath(L"Software\\TortoiseGit\\UDiffViewerWindowPos_" + GetMonitorSetupHash());
@@ -134,6 +144,5 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			DispatchMessage(&msg);
 		}
 	}
-
 	return static_cast<int>(msg.wParam);
 }
