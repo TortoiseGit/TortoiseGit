@@ -61,6 +61,7 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "ElapsedPeriod.h"
+#include "Editor.h"
 
 using namespace Scintilla;
 using namespace Scintilla::Internal;
@@ -187,6 +188,7 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
+	editor = nullptr;
 }
 
 EditView::~EditView() = default;
@@ -2200,7 +2202,15 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background colour.
-	const std::optional<ColourRGBA> background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	std::optional<ColourRGBA> background = vsDraw.Background(model.pdoc->GetMark(line), model.caret.active, ll->containsCaret);
+	SCNotification scn = { 0 };
+	scn.nmhdr.code = SCN_GETBKCOLOR;
+	scn.line = line;
+	scn.lParam = -1;
+	if (editor)
+		((Editor*)editor)->NotifyParent(&scn);
+	if (scn.lParam != -1)
+		background = ColourRGBA::FromRGB(static_cast<int>(scn.lParam));
 
 	const Sci::Position posLineStart = model.pdoc->LineStart(line);
 
