@@ -51,12 +51,6 @@
     <ClInclude Include="..\scintilla\src\CellBuffer.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\src\CharacterCategory.h">
-      <Filter>scintilla\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\scintilla\src\CharacterSet.h">
-      <Filter>scintilla\src</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\CharClassify.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
@@ -228,23 +222,32 @@
     <ClInclude Include="..\lexilla\lexlib\LexerNoExceptions.h">
       <Filter>lexlib\lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\src\CharacterCategoryMap.h">
+      <Filter>scintilla\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\src\CharacterType.h">
+      <Filter>scintilla\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\include\ScintillaCall.h">
+      <Filter>scintilla\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\include\ScintillaMessages.h">
+      <Filter>scintilla\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\include\ScintillaStructures.h">
+      <Filter>scintilla\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\include\ScintillaTypes.h">
+      <Filter>scintilla\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\scintilla\include\Scintilla.iface">
-      <Filter>scintilla\include</Filter>
-    </None>
     <None Include="..\scintilla\src\SciTE.properties">
       <Filter>scintilla\src</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\scintilla\src\CellBuffer.cxx">
-      <Filter>scintilla\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\scintilla\src\CharacterCategory.cxx">
-      <Filter>scintilla\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\scintilla\src\CharacterSet.cxx">
       <Filter>scintilla\src</Filter>
     </ClCompile>
     <ClCompile Include="..\scintilla\src\CharClassify.cxx">
@@ -723,6 +726,15 @@
     </ClCompile>
     <ClCompile Include="..\lexilla\src\Lexilla.cxx">
       <Filter>lexlib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexJulia.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\CharacterCategoryMap.cxx">
+      <Filter>scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\CharacterType.cxx">
+      <Filter>scintilla\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

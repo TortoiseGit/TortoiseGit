@@ -76,7 +76,7 @@
 
 #endif
 
-namespace Scintilla {
+namespace Scintilla::Internal {
 
 // Underlying the implementation of the platform classes are platform specific types.
 // Sometimes these need to be passed around by client code so they are defined here
@@ -97,21 +97,21 @@ constexpr const char *localeNameDefault = "en-us";
 struct FontParameters {
 	const char *faceName;
 	XYPOSITION size;
-	int weight;
+	Scintilla::FontWeight weight;
 	bool italic;
-	int extraFontFlag;
-	int technology;
-	int characterSet;
+	Scintilla::FontQuality extraFontFlag;
+	Scintilla::Technology technology;
+	Scintilla::CharacterSet characterSet;
 	const char *localeName;
 
 	constexpr FontParameters(
 		const char *faceName_,
 		XYPOSITION size_=10,
-		int weight_=400,
+		Scintilla::FontWeight weight_= Scintilla::FontWeight::Normal,
 		bool italic_=false,
-		int extraFontFlag_=0,
-		int technology_=0,
-		int characterSet_=0,
+		Scintilla::FontQuality extraFontFlag_= Scintilla::FontQuality::QualityDefault,
+		Scintilla::Technology technology_= Scintilla::Technology::Default,
+		Scintilla::CharacterSet characterSet_= Scintilla::CharacterSet::Ansi,
 		const char *localeName_=localeNameDefault) noexcept :
 
 		faceName(faceName_),
@@ -184,7 +184,7 @@ public:
 	Surface &operator=(const Surface &) = delete;
 	Surface &operator=(Surface &&) = delete;
 	virtual ~Surface() noexcept = default;
-	static std::unique_ptr<Surface> Allocate(int technology);
+	static std::unique_ptr<Surface> Allocate(Scintilla::Technology technology);
 
 	virtual void Init(WindowID wid)=0;
 	virtual void Init(SurfaceID sid, WindowID wid)=0;
@@ -201,7 +201,7 @@ public:
 	};
 
 	virtual void Release() noexcept=0;
-	virtual int Supports(int feature) noexcept=0;
+	virtual int SupportsFeature(Scintilla::Supports feature) noexcept=0;
 	virtual bool Initialised()=0;
 	virtual int LogPixelsY()=0;
 	virtual int PixelDivisions()=0;
@@ -225,15 +225,15 @@ public:
 
 	virtual std::unique_ptr<IScreenLineLayout> Layout(const IScreenLine *screenLine) = 0;
 
-	virtual void DrawTextNoClip(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore, ColourAlpha back) = 0;
-	virtual void DrawTextClipped(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore, ColourAlpha back) = 0;
-	virtual void DrawTextTransparent(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore) = 0;
+	virtual void DrawTextNoClip(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore, ColourRGBA back) = 0;
+	virtual void DrawTextClipped(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore, ColourRGBA back) = 0;
+	virtual void DrawTextTransparent(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore) = 0;
 	virtual void MeasureWidths(const Font *font_, std::string_view text, XYPOSITION *positions) = 0;
 	virtual XYPOSITION WidthText(const Font *font_, std::string_view text) = 0;
 
-	virtual void DrawTextNoClipUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore, ColourAlpha back) = 0;
-	virtual void DrawTextClippedUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore, ColourAlpha back) = 0;
-	virtual void DrawTextTransparentUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourAlpha fore) = 0;
+	virtual void DrawTextNoClipUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore, ColourRGBA back) = 0;
+	virtual void DrawTextClippedUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore, ColourRGBA back) = 0;
+	virtual void DrawTextTransparentUTF8(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, ColourRGBA fore) = 0;
 	virtual void MeasureWidthsUTF8(const Font *font_, std::string_view text, XYPOSITION *positions) = 0;
 	virtual XYPOSITION WidthTextUTF8(const Font *font_, std::string_view text) = 0;
 
@@ -304,10 +304,10 @@ public:
 };
 
 struct ListOptions {
-	std::optional<ColourAlpha> fore;
-	std::optional<ColourAlpha> back;
-	std::optional<ColourAlpha> foreSelected;
-	std::optional<ColourAlpha> backSelected;
+	std::optional<ColourRGBA> fore;
+	std::optional<ColourRGBA> back;
+	std::optional<ColourRGBA> foreSelected;
+	std::optional<ColourRGBA> backSelected;
 };
 
 class ListBox : public Window {
@@ -317,7 +317,7 @@ public:
 	static std::unique_ptr<ListBox> Allocate();
 
 	virtual void SetFont(const Font *font)=0;
-	virtual void Create(Window &parent, int ctrlID, Point location, int lineHeight_, bool unicodeMode_, int technology_)=0;
+	virtual void Create(Window &parent, int ctrlID, Point location, int lineHeight_, bool unicodeMode_, Scintilla::Technology technology_)=0;
 	virtual void SetAverageCharWidth(int width)=0;
 	virtual void SetVisibleRows(int rows)=0;
 	virtual int GetVisibleRows() const=0;
@@ -357,8 +357,8 @@ public:
  */
 namespace Platform {
 
-ColourDesired Chrome();
-ColourDesired ChromeHighlight();
+ColourRGBA Chrome();
+ColourRGBA ChromeHighlight();
 const char *DefaultFont();
 int DefaultFontSize();
 unsigned int DoubleClickTime();
