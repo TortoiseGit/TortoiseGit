@@ -2,7 +2,7 @@
 Released: unreleased
 
 == Features ==
- * Update Scintilla and Lexilla to 5.0.2
+ * Update Scintilla and Lexilla to 5.1.0
  * Fixed issue #3744: Update TortoiseGitPlink and shipped binaries to PuTTY 0.75
  * Fixed issue #2379: "Show changes as unified diff" from Commit window on N files opens N diff windows
 

@@ -74,6 +74,10 @@
     <ClInclude Include="..\scintilla\include\ILexer.h" />
     <ClInclude Include="..\scintilla\include\ILoader.h" />
     <ClInclude Include="..\scintilla\include\Scintilla.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaCall.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaMessages.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaStructures.h" />
+    <ClInclude Include="..\scintilla\include\ScintillaTypes.h" />
     <ClInclude Include="..\scintilla\include\ScintillaWidget.h" />
     <ClInclude Include="..\scintilla\include\Sci_Position.h" />
     <ClInclude Include="..\scintilla\src\AutoComplete.h" />
@@ -81,8 +85,8 @@
     <ClInclude Include="..\scintilla\src\CaseConvert.h" />
     <ClInclude Include="..\scintilla\src\CaseFolder.h" />
     <ClInclude Include="..\scintilla\src\CellBuffer.h" />
-    <ClInclude Include="..\scintilla\src\CharacterCategory.h" />
-    <ClInclude Include="..\scintilla\src\CharacterSet.h" />
+    <ClInclude Include="..\scintilla\src\CharacterCategoryMap.h" />
+    <ClInclude Include="..\scintilla\src\CharacterType.h" />
     <ClInclude Include="..\scintilla\src\CharClassify.h" />
     <ClInclude Include="..\scintilla\src\ContractionState.h" />
     <ClInclude Include="..\scintilla\src\DBCS.h" />
@@ -120,7 +124,6 @@
     <ClInclude Include="..\scintilla\win32\ScintillaWin.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\scintilla\include\Scintilla.iface" />
     <None Include="..\scintilla\src\SciTE.properties" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +178,7 @@
     <ClCompile Include="..\lexilla\lexers\LexIndent.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexInno.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexJSON.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexJulia.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexKix.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexKVIrc.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexLaTeX.cxx" />
@@ -256,12 +260,8 @@
     <ClCompile Include="..\scintilla\src\CaseConvert.cxx" />
     <ClCompile Include="..\scintilla\src\CaseFolder.cxx" />
     <ClCompile Include="..\scintilla\src\CellBuffer.cxx" />
-    <ClCompile Include="..\scintilla\src\CharacterCategory.cxx">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\scintilla\src\CharacterSet.cxx">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\scintilla\src\CharacterCategoryMap.cxx" />
+    <ClCompile Include="..\scintilla\src\CharacterType.cxx" />
     <ClCompile Include="..\scintilla\src\CharClassify.cxx" />
     <ClCompile Include="..\scintilla\src\ContractionState.cxx" />
     <ClCompile Include="..\scintilla\src\DBCS.cxx" />
