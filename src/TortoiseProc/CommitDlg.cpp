@@ -281,9 +281,6 @@ BOOL CCommitDlg::OnInitDialog()
 
 	if (bugtraq_associations.FindProvider(g_Git.m_CurrentDir, &m_bugtraq_association))
 	{
-		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_HIDE);
-
 		CComPtr<IBugTraqProvider> pProvider;
 		HRESULT hr = pProvider.CoCreateInstance(m_bugtraq_association.GetProviderClass());
 		if (SUCCEEDED(hr))
@@ -298,17 +295,18 @@ BOOL CCommitDlg::OnInitDialog()
 				GetDlgItem(IDC_BUGTRAQBUTTON)->ShowWindow(SW_SHOW);
 			}
 		}
-
-		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	}
-	else if (!m_ProjectProperties.sMessage.IsEmpty())
+	else
+	{
+		GetDlgItem(IDC_BUGTRAQBUTTON)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_BUGTRAQBUTTON)->EnableWindow(FALSE);
+	}
+	if (!m_ProjectProperties.sMessage.IsEmpty())
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_SHOW);
 		if (!m_ProjectProperties.sLabel.IsEmpty())
 			SetDlgItemText(IDC_BUGIDLABEL, m_ProjectProperties.sLabel);
-		GetDlgItem(IDC_BUGTRAQBUTTON)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_BUGTRAQBUTTON)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUGID)->SetFocus();
 		CString sBugID = m_ProjectProperties.GetBugIDFromLog(m_sLogMessage);
 		if (!sBugID.IsEmpty())
@@ -320,8 +318,6 @@ BOOL CCommitDlg::OnInitDialog()
 	{
 		GetDlgItem(IDC_BUGID)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_BUGIDLABEL)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_BUGTRAQBUTTON)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_BUGTRAQBUTTON)->EnableWindow(FALSE);
 		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
 	}
 
