@@ -427,6 +427,8 @@ int main(int argc, char **argv)
 
     logctx = log_init(console_cli_logpolicy, conf);
 
+    conf_tgit_proxy(conf);
+
     if (just_test_share_exists) {
         if (!vt->test_for_upstream) {
             fprintf(stderr, "Connection sharing not supported for this "

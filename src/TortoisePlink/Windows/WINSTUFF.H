@@ -692,6 +692,10 @@ char *get_jumplist_registry_entries(void);
 
 /* In winmisc.c */
 char *registry_get_string(HKEY root, const char *path, const char *leaf);
+DWORD registry_get_dword(HKEY root, const char *path, const char *leaf, DWORD def);
+
+/* In winproxy.c */
+int conf_tgit_proxy(Conf * conf);
 
 /* In wincliloop.c */
 typedef bool (*cliloop_pre_t)(void *vctx, const HANDLE **extra_handles,
