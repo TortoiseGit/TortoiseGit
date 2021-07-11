@@ -31,10 +31,13 @@ CSetProxyPage::CSetProxyPage()
 	, m_serverport(0)
 	, m_isEnabled(FALSE)
 {
+	m_regProxyEnable = CRegDWORD(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-enable", 0);
+	m_regServertype = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-type", L"");
 	m_regServeraddress = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-host", L"");
 	m_regServerport = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-port", L"");
 	m_regUsername = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-username", L"");
 	m_regPassword = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-password", L"");
+	m_regNoProxyList = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-ignore", L"");
 	m_regSSHClient = CRegString(L"Software\\TortoiseGit\\SSH");
 	m_SSHClient = m_regSSHClient;
 }
@@ -46,10 +49,12 @@ CSetProxyPage::~CSetProxyPage()
 void CSetProxyPage::DoDataExchange(CDataExchange* pDX)
 {
 	ISettingsPropPage::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_SERVERTYPE, m_ServerTypeCombo);
 	DDX_Text(pDX, IDC_SERVERADDRESS, m_serveraddress);
 	DDX_Text(pDX, IDC_SERVERPORT, m_serverport);
 	DDX_Text(pDX, IDC_USERNAME, m_username);
 	DDX_Text(pDX, IDC_PASSWORD, m_password);
+	DDX_Text(pDX, IDC_NOPROXYLIST, m_noproxylist);
 	DDX_Check(pDX, IDC_ENABLE, m_isEnabled);
 	DDX_Text(pDX, IDC_SSHCLIENT, m_SSHClient);
 	DDX_Control(pDX, IDC_SSHCLIENT, m_cSSHClientEdit);
@@ -57,10 +62,12 @@ void CSetProxyPage::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CSetProxyPage, ISettingsPropPage)
+	ON_CBN_SELCHANGE(IDC_SERVERTYPE, OnModifiedServerTypeCombo)
 	ON_EN_CHANGE(IDC_SERVERADDRESS, OnChange)
 	ON_EN_CHANGE(IDC_SERVERPORT, OnChange)
 	ON_EN_CHANGE(IDC_USERNAME, OnChange)
 	ON_EN_CHANGE(IDC_PASSWORD, OnChange)
+	ON_EN_CHANGE(IDC_NOPROXYLIST, OnChange)
 	ON_EN_CHANGE(IDC_SSHCLIENT, OnChange)
 	ON_BN_CLICKED(IDC_ENABLE, OnBnClickedEnable)
 	ON_BN_CLICKED(IDC_SSHBROWSE, OnBnClickedSshbrowse)
@@ -89,6 +96,25 @@ HRESULT StringUnescape(const CString& str_in, CString* unescaped_string) {
 	return ::UrlUnescape(temp, CStrBuf(*unescaped_string, buf_len), &buf_len, 0);
 }
 
+int CSetProxyPage::GetProxyTypeIdByName(const CString & name)
+{
+	CString iname;
+	int count = m_ServerTypeCombo.GetCount();
+	for (int i = 0; i < count; i++) {
+		m_ServerTypeCombo.GetLBText(i, iname);
+		if (iname.CompareNoCase(name) == 0)
+			return i;
+	}
+	return -1;
+}
+
+BOOL CSetProxyPage::SetProxyType(const CString & name)
+{
+	int id = GetProxyTypeIdByName(name);
+	m_ServerTypeCombo.SetCurSel((id < 0) ? 0 : id);
+	return (id < 0) ? FALSE : TRUE;
+}
+
 BOOL CSetProxyPage::OnInitDialog()
 {
 	ISettingsPropPage::OnInitDialog();
@@ -113,24 +139,42 @@ BOOL CSetProxyPage::OnInitDialog()
 			m_SSHClient = CString(sPlink);
 		}
 	}
-	m_serveraddress = m_regServeraddress;
-	m_serverport = _wtoi(static_cast<LPCTSTR>(static_cast<CString>(m_regServerport)));
-	m_username = m_regUsername;
-	m_password = m_regPassword;
+
+	m_ServerTypeCombo.AddString(L"http");
+	m_ServerTypeCombo.AddString(L"socks4a");
+	m_ServerTypeCombo.AddString(L"socks5");
+	m_ServerTypeCombo.AddString(L"socks5h");
+
+	m_noproxylist = m_regNoProxyList;
 
 	if (proxy.IsEmpty())
 	{
+		/* Load proxy settings from registry */
+		m_servertype = m_regServertype;
+		SetProxyType(m_servertype);
+		m_serveraddress = m_regServeraddress;
+		m_serverport = _wtoi(static_cast<LPCTSTR>(static_cast<CString>(m_regServerport)));
+		m_username = m_regUsername;
+		m_password = m_regPassword;
+
 		m_isEnabled = FALSE;
 		EnableGroup(FALSE);
 	}
 	else
 	{
+		/* Load proxy settings from git config */
 		int start=0;
 		start = proxy.Find(L"://", start);
-		if(start<0)
-			start =0;
+		if (start < 0) {
+			m_servertype = L"http";
+			start = 0;
+		}
 		else
-			start+=3;
+		{
+			m_servertype = proxy.Mid(0, start);
+			start += 3;
+		}
+		SetProxyType(m_servertype);
 
 		int at = proxy.Find(L'@');
 		int port;
@@ -180,6 +224,9 @@ BOOL CSetProxyPage::OnInitDialog()
 
 	UpdateData(FALSE);
 
+	if (m_isEnabled && m_regProxyEnable == 0)
+		this->OnApply();
+
 	return TRUE;
 }
 
@@ -195,14 +242,25 @@ void CSetProxyPage::OnBnClickedEnable()
 
 void CSetProxyPage::EnableGroup(BOOL b)
 {
+	GetDlgItem(IDC_SERVERTYPE)->EnableWindow(b);
 	GetDlgItem(IDC_SERVERADDRESS)->EnableWindow(b);
 	GetDlgItem(IDC_SERVERPORT)->EnableWindow(b);
 	GetDlgItem(IDC_USERNAME)->EnableWindow(b);
 	GetDlgItem(IDC_PASSWORD)->EnableWindow(b);
+	GetDlgItem(IDC_NOPROXYLIST)->EnableWindow(b);
+	GetDlgItem(IDC_PROXYLABEL0)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL1)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL2)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL3)->EnableWindow(b);
 	GetDlgItem(IDC_PROXYLABEL6)->EnableWindow(b);
+	GetDlgItem(IDC_PROXYLABEL7)->EnableWindow(b);
+}
+
+void CSetProxyPage::OnModifiedServerTypeCombo()
+{
+	int id = m_ServerTypeCombo.GetCurSel();
+	m_ServerTypeCombo.GetLBText(id, m_servertype);
+	SetModified();
 }
 
 void CSetProxyPage::OnChange()
@@ -214,19 +272,26 @@ BOOL CSetProxyPage::OnApply()
 {
 	UpdateData();
 
+	/* Save proxy settings for TortoiseGitPlink.exe and other */
 	CString temp;
+	Store(static_cast<DWORD>(m_isEnabled), m_regProxyEnable);
+	Store(m_servertype, m_regServertype);
 	Store(m_serveraddress, m_regServeraddress);
 	temp.Format(L"%u", m_serverport);
 	Store(temp, m_regServerport);
 	Store(m_username, m_regUsername);
 	Store(m_password, m_regPassword);
+	Store(m_noproxylist, m_regNoProxyList);
 
 
 	CString http_proxy;
 	if(!m_serveraddress.IsEmpty())
 	{
-		if (m_serveraddress.Find(L"://") == -1)
-			http_proxy = L"http://";
+		http_proxy = m_servertype.MakeLower();
+		if (http_proxy.IsEmpty())
+			http_proxy = L"http";
+
+		http_proxy.Append(L"://");
 
 		if(!m_username.IsEmpty())
 		{

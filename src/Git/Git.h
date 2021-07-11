@@ -139,6 +139,8 @@ public:
 
 	CEnvironment m_Environment;
 
+	bool GetPreparedEnvironment(CEnvironment & env, bool cmdGitCfg);
+
 	static BOOL GitPathFileExists(const CString &path)
 	{
 		if (path[0] == L'\\' && path[1] == L'\\')

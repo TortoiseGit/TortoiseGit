@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
 
@@ -47,12 +47,18 @@ protected:
 	afx_msg void OnChange();
 	afx_msg void OnBnClickedEnable();
 	afx_msg void OnBnClickedSshbrowse();
+	afx_msg void OnModifiedServerTypeCombo();
 
+	int GetProxyTypeIdByName(const CString & name);
+	BOOL SetProxyType(const CString & name);
 	void EnableGroup(BOOL b);
 
 	DECLARE_MESSAGE_MAP()
 
 private:
+	CComboBox		m_ServerTypeCombo;
+	CString			m_servertype;
+	CRegString		m_regServertype;
 	CString			m_serveraddress;
 	CRegString		m_regServeraddress;
 	UINT			m_serverport;
@@ -61,7 +67,10 @@ private:
 	CRegString		m_regUsername;
 	CString			m_password;
 	CRegString		m_regPassword;
+	CString			m_noproxylist;
+	CRegString		m_regNoProxyList;
 	BOOL			m_isEnabled;
+	CRegDWORD		m_regProxyEnable;
 	CRegString		m_regSSHClient;
 	CString			m_SSHClient;
 	CFileDropEdit	m_cSSHClientEdit;

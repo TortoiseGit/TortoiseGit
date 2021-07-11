@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by d:\TortoiseGit\src\Resources\TortoiseProcENG.rc
 //
@@ -194,6 +194,7 @@
 #define IDC_SAVECHECK                   1023
 #define IDS_B_T_BOTHEMPTY               1023
 #define IDS_LOG_FILTER_SUBJECT          1024
+#define IDC_SERVERTYPE                  1024
 #define IDS_STATUSLIST_SHOWLOGOLDNAME   1025
 #define IDS_APPNAME                     1026
 #define IDC_NAME                        1027
@@ -850,6 +851,7 @@
 #define IDS_WARN_NOVALIDPATH            1407
 #define IDC_NOAUTOSELECTMISSING         1407
 #define IDS_SYSTEM_WINCRED              1408
+#define IDC_PROXYLABEL0                 1408
 #define IDC_PROXYLABEL1                 1409
 #define IDS_DAEMON_SECURITY_WARN        1409
 #define IDC_PROXYLABEL2                 1410
@@ -1667,6 +1669,8 @@
 #define IDS_MENUREFRESH                 2150
 #define IDC_RADIO_SVN_COMMIT            2152
 #define IDC_RADIO_GIT_COMMIT            2153
+#define IDC_NOPROXYLIST                 2160
+#define IDC_PROXYLABEL7                 2161
 #define IDS_LOG_COMPAREWITHBASE         2200
 #define IDS_PROC_CLEANUP                2304
 #define IDS_PROC_REMOVEFORCE            2305

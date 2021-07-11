@@ -256,6 +256,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 {
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr, hWriteIn, hReadIn;
 	CAutoFile hStdioFile;
+	CEnvironment env;
 
 	SECURITY_ATTRIBUTES sa = { 0 };
 	sa.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -298,20 +299,23 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	si.wShowWindow=SW_HIDE;
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
-	LPTSTR pEnv = m_Environment;
+	bool startsWithGit = CStringUtils::StartsWith(cmd, L"git");
+	bool cmdGitCfg = startsWithGit && CStringUtils::StartsWith(cmd, L"git.exe config ");
+	GetPreparedEnvironment(env, cmdGitCfg);
+
+	LPTSTR pEnv = env;
 	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
 	dwFlags |= CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
-	bool startsWithGit = CStringUtils::StartsWith(cmd, L"git");
-	if (ms_bMsys2Git && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
+	if (ms_bMsys2Git && startsWithGit && !cmdGitCfg)
 	{
 		cmd.Replace(L"\\", L"\\\\\\\\");
 		cmd.Replace(L"\"", L"\\\"");
 		cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\bash.exe\" -c \"/usr/bin/" + cmd + L'"';
 	}
-	else if (ms_bCygwinGit && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
+	else if (ms_bCygwinGit && startsWithGit && !cmdGitCfg)
 	{
 		cmd.Replace(L'\\', L'/');
 		cmd.Replace(L"\"", L"\\\"");
@@ -2299,6 +2303,23 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 #endif
 
 	m_bInitialized = TRUE;
+	return m_bInitialized;
+}
+
+bool CGit::GetPreparedEnvironment(CEnvironment & env, bool cmdGitCfg)
+{
+	env = m_Environment;
+
+	if (cmdGitCfg)
+		return true;
+
+	CString proxy = GetConfigValue(L"http.proxy");
+	if (!proxy.IsEmpty()) {
+		CString no_proxy = CRegString(L"Software\\TortoiseGit\\Git\\Servers\\global\\http-proxy-ignore", L"");
+		if (!no_proxy.IsEmpty()) {
+			env.SetEnv(L"NO_PROXY", no_proxy);
+		}
+	}
 	return true;
 }
 
