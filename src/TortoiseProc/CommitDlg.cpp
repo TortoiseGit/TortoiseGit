@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2370,7 +2370,10 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 				CString head = L"HEAD";
 				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
 					head = L"HEAD~1";
-				cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCTSTR>(head), static_cast<LPCTSTR>(p->GetGitPathString()));
+				if (!p->GetGitOldPathString().IsEmpty())
+					cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCTSTR>(head), static_cast<LPCTSTR>(p->GetGitOldPathString()), static_cast<LPCTSTR>(p->GetGitPathString()));
+				else
+					cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCTSTR>(head), static_cast<LPCTSTR>(p->GetGitPathString()));
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
