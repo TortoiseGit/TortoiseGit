@@ -1143,6 +1143,10 @@ msgstr ""
 msgid "&Squash ALL"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Staging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
 msgstr ""
@@ -1241,6 +1245,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
 msgid "&Unlock"
+msgstr ""
+
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Unstaging"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
@@ -4991,6 +4999,14 @@ msgstr ""
 msgid "Hide Patch<<"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
+msgid "Hide Staging<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
+msgid "Hide Unstaging<<"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
 msgstr ""
@@ -5570,6 +5586,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_INVALIDREV)
 msgid "Invalid revision number!"
+msgstr ""
+
+#. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
+msgid "Invalid selection.\n\nIf this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
@@ -6801,6 +6821,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_PARENTS)
 msgid "Parent(s)"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639, IDS_PROC_COMMIT_PARTIAL_STAGING)
+msgid "Partial Staging>>"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638, IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
+msgid "Partial Unstaging>>"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
@@ -8705,6 +8733,18 @@ msgstr ""
 msgid "Stacked Line Graph"
 msgstr ""
 
+#. Resource IDs: (ID_STAGING_STAGESELECTEDHUNKS - Menu)
+msgid "Stage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (ID_STAGING_STAGESELECTEDLINES - Menu)
+msgid "Stage selected &lines"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
+msgid "Staging support (EXPERIMENTAL)"
+msgstr ""
+
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
 msgstr ""
@@ -9777,6 +9817,14 @@ msgstr ""
 msgid "Unset tracked branch"
 msgstr ""
 
+#. Resource IDs: (ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+msgid "Unstage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+msgid "Unstage selected &lines"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr ""
@@ -10141,8 +10189,16 @@ msgstr ""
 msgid "View Bars"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
+#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH, IDS_VIEWPATCH)
 msgid "View Patch"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
+msgid "View Patch - HEAD to index"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
+msgid "View Patch - index to working tree"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES: Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -10248,6 +10304,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_DESCRIBESTRATEGY_TT)
 msgid "Whether to reference only annotated tags, all tags or all refs"
+msgstr ""
+
+#. Resource IDs: (IDS_TIPSTAGINGMODE)
+msgid "While in this mode, the checkbox for each file reflects its staging status:\n- Checked means all the changes for the file are staged\n- Unchecked means all the changes for the file are unstaged\n- A gray square means that only some changes for the file are staged\n\nClicking the checkboxes immediately stages or unstages the whole file.\n\nYou can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n\nPlease note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
 msgstr ""
 
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)

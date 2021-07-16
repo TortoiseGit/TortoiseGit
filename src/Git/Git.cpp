@@ -836,6 +836,20 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 	return 0;
 }
 
+int CGit::ApplyPatchToIndex(const CString& patchPath, CString* out)
+{
+	CString cmd;
+	cmd.Format(L"git.exe apply --cached -- \"%s\"", static_cast<LPCWSTR>(patchPath));
+	return Run(cmd, out, CP_UTF8);
+}
+
+int CGit::ApplyPatchToIndexReverse(const CString& patchPath, CString* out)
+{
+	CString cmd;
+	cmd.Format(L"git.exe apply --cached -R -- \"%s\"", static_cast<LPCWSTR>(patchPath));
+	return Run(cmd, out, CP_UTF8);
+}
+
 CString CGit::GetCurrentBranch(bool fallback)
 {
 	CString output;
@@ -1263,7 +1277,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 	}
 }
 
-int CGit::GetInitAddList(CTGitPathList &outputlist)
+int CGit::GetInitAddList(CTGitPathList& outputlist, bool getStagingStatus)
 {
 	BYTE_VECTOR cmdout;
 
@@ -1276,6 +1290,24 @@ int CGit::GetInitAddList(CTGitPathList &outputlist)
 	for(int i = 0; i < outputlist.GetCount(); ++i)
 		const_cast<CTGitPath&>(outputlist[i]).m_Action = CTGitPath::LOGACTIONS_ADDED;
 
+	if (getStagingStatus)
+	{
+		BYTE_VECTOR cmdunstagedout;
+		for (int i = 0; i < outputlist.GetCount(); ++i)
+			const_cast<CTGitPath&>(outputlist[i]).m_stagingStatus = CTGitPath::StagingStatus::TotallyStaged;
+		if (Run(L"git.exe diff-files --raw --numstat -C -M -z --", &cmdunstagedout))
+			return -1;
+
+		CTGitPathList unstaged;
+		unstaged.ParserFromLog(cmdunstagedout);
+		// File shows up both in the output of ls-files and diff-files: partially staged (typically modified after being added)
+		for (int j = 0; j < unstaged.GetCount(); ++j)
+		{
+			CString path = unstaged[j].GetGitPathString();
+			if (outputlist.LookForGitPath(path))
+				outputlist.UpdateStagingStatusFromPath(path, CTGitPath::StagingStatus::PartiallyStaged); // TODO: This is inefficient
+		}
+	}
 	return 0;
 }
 int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outputlist, bool ignoreSpaceAtEol, bool ignoreSpaceChange, bool ignoreAllSpace , bool ignoreBlankLines)
@@ -3232,10 +3264,10 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 	return true; // load no further files
 }
 
-int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist, bool includedStaged /* = false */)
+int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist, bool includedStaged /* = false */, bool getStagingStatus /* = false */)
 {
 	if (IsInitRepos())
-		return GetInitAddList(result);
+		return GetInitAddList(result, getStagingStatus);
 
 	BYTE_VECTOR out;
 
@@ -3299,6 +3331,61 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		out.append(cmdout, 0);
 	}
 	result.ParserFromLog(out);
+
+	if (getStagingStatus)
+	{
+		for (int i = 0; i < count; ++i)
+		{
+			// This will show staged files regardless of any filterlist, so that it has the same behavior that the commit window has when staging support is disabled
+			BYTE_VECTOR cmdStagedUnfilteredOut, cmdUnstagedFilteredOut, cmdUnstagedUnfilteredOut;
+			CString cmd = L"git.exe diff-index --cached --raw " + head + L" --numstat -C -M -z --";
+			Run(cmd, &cmdStagedUnfilteredOut);
+
+			CTGitPathList stagedUnfiltered;
+			stagedUnfiltered.ParserFromLog(cmdStagedUnfilteredOut);
+
+			cmd = L"git.exe diff-files --raw --numstat -C -M -z --";
+			Run(cmd, &cmdUnstagedUnfilteredOut);
+
+			if (filterlist)
+			{
+				cmd.Format(L"git.exe diff-files --raw --numstat -C -M -z -- \"%s\"", static_cast<LPCTSTR>((*filterlist)[i].GetGitPathString()));
+				Run(cmd, &cmdUnstagedFilteredOut);
+			}
+
+			CTGitPathList unstagedUnfiltered, unstagedFiltered;
+			unstagedUnfiltered.ParserFromLog(cmdUnstagedUnfilteredOut); // Necessary to detect partially staged files outside the filterlist
+			if (filterlist)
+				unstagedFiltered.ParserFromLog(cmdUnstagedFilteredOut);
+
+			// File shows up both in the output of diff-index --cached and diff-files: partially staged
+			// File shows up only in the output of diff-index --cached: totally staged
+			// File shows up only in the output of diff-files: totally unstaged
+			// TODO: This is inefficient. It would be better if ParserFromLog received the output of each command
+			// separately and did this processing there, dropping the new function UpdateStagingStatusFromPath entirely.
+			for (int j = 0; j < stagedUnfiltered.GetCount(); ++j)
+			{
+				CString path = stagedUnfiltered[j].GetGitPathString();
+				if (unstagedUnfiltered.LookForGitPath(path))
+					result.UpdateStagingStatusFromPath(path, CTGitPath::StagingStatus::PartiallyStaged);
+				else
+					result.UpdateStagingStatusFromPath(path, CTGitPath::StagingStatus::TotallyStaged);
+			}
+			const CTGitPathList& unstaged = filterlist ? unstagedFiltered : unstagedUnfiltered;
+			for (int j = 0; j < unstaged.GetCount(); ++j)
+			{
+				CString path = unstaged[j].GetGitPathString();
+				if (!stagedUnfiltered.LookForGitPath(path))
+					result.UpdateStagingStatusFromPath(path, CTGitPath::StagingStatus::TotallyUnstaged);
+			}
+			// make sure conflicted files show up as unstaged instead of partially staged
+			for (int j = 0; j < result.GetCount(); ++j)
+			{
+				if (result[j].m_Action & CTGitPath::LOGACTIONS_UNMERGED)
+					const_cast<CTGitPath&>(result[j]).m_stagingStatus = CTGitPath::StagingStatus::TotallyUnstaged;
+			}
+		}
+	}
 
 	std::map<CString, int> duplicateMap;
 	for (int i = 0; i < result.GetCount(); ++i)

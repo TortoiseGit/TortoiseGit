@@ -58,6 +58,7 @@ CTGitPath::CTGitPath(void)
 	, m_Action(0)
 	, m_ParentNo(0)
 	, m_Stage(0)
+	, m_stagingStatus(StagingStatus::DontCare)
 {
 }
 
@@ -1022,6 +1023,18 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		pos=out.findNextString(pos);
 	}
 	return 0;
+}
+
+void CTGitPathList::UpdateStagingStatusFromPath(const CString& path, CTGitPath::StagingStatus status)
+{
+	for (int i = 0; i < this->GetCount(); ++i)
+	{
+		if (CPathUtils::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
+		{
+			m_paths[i].m_stagingStatus = status;
+			break;
+		}
+	}
 }
 
 int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CString* err)

@@ -367,6 +367,7 @@ void CSetSavedDataPage::OnBnClickedStoreddecisionsclear()
 		L"NothingToCommitShowUnversioned",
 		L"NoJumpNotFoundWarning",
 		L"HintHierarchicalConfig",
+		L"HintStagingMode",
 		L"TagOptNoTagsWarning",
 		L"NoStashIncludeUntrackedWarning",
 		L"CommitMergeHint",

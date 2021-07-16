@@ -136,6 +136,7 @@
     <ClCompile Include="Commands\LFSCommands.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="CreateChangelistDlg.cpp" />
+    <ClCompile Include="DiffLinesForStaging.cpp" />
     <ClCompile Include="FilterHelper.cpp" />
     <ClCompile Include="FindBar.cpp" />
     <ClCompile Include="FirstStartWizard.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="LogDataVector.cpp" />
     <ClCompile Include="LogDlg.cpp" />
     <ClCompile Include="LoglistUtils.cpp" />
+    <ClCompile Include="StagingOperations.cpp" />
     <ClCompile Include="StatGraphDlg.cpp" />
     <ClCompile Include="Commands\RefLogCommand.cpp" />
     <ClCompile Include="RefLogDlg.cpp" />
@@ -443,6 +445,8 @@
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />
     <ClInclude Include="CreateChangelistDlg.h" />
+    <ClInclude Include="EnableStagingTypes.h" />
+    <ClInclude Include="DiffLinesForStaging.h" />
     <ClInclude Include="FilterHelper.h" />
     <ClInclude Include="FindBar.h" />
     <ClInclude Include="FirstStartWizard.h" />
@@ -509,6 +513,7 @@
     <ClInclude Include="LogDlg.h" />
     <ClInclude Include="LogDlgHelper.h" />
     <ClInclude Include="LoglistUtils.h" />
+    <ClInclude Include="StagingOperations.h" />
     <ClInclude Include="StatGraphDlg.h" />
     <ClInclude Include="Commands\RefLogCommand.h" />
     <ClInclude Include="RefLogDlg.h" />
@@ -678,6 +683,7 @@
     <Image Include="..\Resources\hook.ico" />
     <Image Include="..\Resources\iconset.ico" />
     <Image Include="..\Resources\ImportPatchesBackground.ico" />
+    <Image Include="..\Resources\indeterminate.ico" />
     <Image Include="..\Resources\jumpdown.ico" />
     <Image Include="..\Resources\jumpup.ico" />
     <Image Include="..\Resources\Library.ico" />
