@@ -1524,11 +1524,8 @@ UINT CCommitDlg::StatusThread()
 				GitRev headRevision;
 				if (headRevision.GetParentFromHash(hash))
 					MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-				// Allow only to show diff to "last" revision if it has more than one parent or staging support is enabled.
-				// For staging support, this is needed because when doing an amend and staging support is enabled, "Show diff to last commit" must stay checked and grayed out
-				// (staging and unstaging wouldn't make sense with it unchecked), and without this code, "show diff to last commit" would not be grayed out
-				// unless the commit being amended were a merge commit. It will have no effect unless "amend last commit" is checked.
-				if (headRevision.ParentsCount() != 1 || m_bStagingSupport)
+				// do not allow to show diff to "last" revision if it has more that one parent
+				if (headRevision.ParentsCount() != 1)
 				{
 					m_bAmendDiffToLastCommit = TRUE;
 					SendMessage(WM_UPDATEDATAFALSE);
@@ -2410,6 +2407,9 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		CString cmd,out;
 
+		CString head = L"HEAD";
+		if (m_bCommitAmend == TRUE && m_bAmendDiffToLastCommit == FALSE)
+			head = L"HEAD~1";
 		while(pos)
 		{
 			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
@@ -2433,17 +2433,16 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 					bool useCachedParameter = false;
 					if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
 						useCachedParameter = true;
+					else
+						head.Empty();
 
 					if (!p->GetGitOldPathString().IsEmpty())
-						cmd.Format(L"git.exe diff%s -- \"%s\" \"%s\"", useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
+						cmd.Format(L"git.exe diff %s%s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
 					else
-						cmd.Format(L"git.exe diff%s -- \"%s\"", useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitPathString()));
+						cmd.Format(L"git.exe diff %s%s -- \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitPathString()));
 				}
 				else
 				{
-					CString head = L"HEAD";
-					if (m_bCommitAmend == TRUE && m_bAmendDiffToLastCommit == FALSE)
-						head = L"HEAD~1";
 					if (!p->GetGitOldPathString().IsEmpty())
 						cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
 					else
@@ -2736,7 +2735,6 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 		if (m_bStagingSupport)
 		{
-			m_bAmendDiffToLastCommit = true;
 			UpdateData(false);
 			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
 		}
@@ -3079,7 +3077,6 @@ void CCommitDlg::PrepareStagingSupport()
 	{
 		if (m_bCommitAmend)
 		{
-			m_bAmendDiffToLastCommit = true;
 			UpdateData(false);
 			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
 		}
