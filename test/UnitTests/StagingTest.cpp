@@ -218,7 +218,7 @@ inline void ExpectLineIncludedAsIs(const CDiffLinesForStaging& base, const CDiff
 {
 	for (auto match : linemap)
 	{
-		EXPECT_EQ(strcmp(base.GetLineVec()[match.first].sLine.c_str(), temp.GetLineVec()[match.second].sLine.c_str()), 0); // lines are identical?
+		EXPECT_EQ(base.GetLineVec()[match.first].sLine.compare(temp.GetLineVec()[match.second].sLine), 0); // lines are identical?
 		EXPECT_EQ(base.GetLineVec()[match.first].type, temp.GetLineVec()[match.second].type); // for good measure
 	}
 }
@@ -239,7 +239,11 @@ inline void ExpectNewLineTurnedIntoContext(const CDiffLinesForStaging& base, con
 		EXPECT_EQ(base.GetLineVec()[match.first].sLine.length(), temp.GetLineVec()[match.second].sLine.length());
 		EXPECT_TRUE(base.GetLineVec()[match.first].sLine.length() >= 2);
 		// lines are identical ignoring the first character?
-		EXPECT_EQ(strcmp(base.GetLineVec()[match.first].sLine.c_str() + 1, temp.GetLineVec()[match.second].sLine.c_str() + 1), 0);
+		auto first = base.GetLineVec()[match.first].sLine;
+		first.remove_prefix(1);
+		auto second = temp.GetLineVec()[match.second].sLine;
+		second.remove_prefix(1);
+		EXPECT_EQ(first.compare(second), 0);
 		EXPECT_EQ(base.GetLineVec()[match.first].type, DiffLineTypes::ADDED);
 		EXPECT_EQ(temp.GetLineVec()[match.second].type, DiffLineTypes::DEFAULT);
 	}
@@ -252,7 +256,11 @@ inline void ExpectOldLineTurnedIntoContext(const CDiffLinesForStaging& base, con
 		EXPECT_EQ(base.GetLineVec()[match.first].sLine.length(), temp.GetLineVec()[match.second].sLine.length());
 		EXPECT_TRUE(base.GetLineVec()[match.first].sLine.length() >= 2);
 		// lines are identical ignoring the first character?
-		EXPECT_EQ(strcmp(base.GetLineVec()[match.first].sLine.c_str() + 1, temp.GetLineVec()[match.second].sLine.c_str() + 1), 0);
+		auto first = base.GetLineVec()[match.first].sLine;
+		first.remove_prefix(1);
+		auto second = temp.GetLineVec()[match.second].sLine;
+		second.remove_prefix(1);
+		EXPECT_EQ(first.compare(second), 0);
 		EXPECT_EQ(base.GetLineVec()[match.first].type, DiffLineTypes::DELETED);
 		EXPECT_EQ(temp.GetLineVec()[match.second].type, DiffLineTypes::DEFAULT);
 	}
@@ -262,8 +270,8 @@ inline void ExpectPositionLineCountsChanged(const CDiffLinesForStaging& base, co
 {
 	EXPECT_EQ(temp.GetLineVec()[tempPositionLine].type, DiffLineTypes::POSITION);
 	StagingOperations op(&base);
-	auto changedbuf = op.ChangeOldAndNewLinesCount(base.GetLineVec()[basePositionLine].sLine, new_oldCount, new_newCount);
-	EXPECT_EQ(strcmp(changedbuf.c_str(), temp.GetLineVec()[tempPositionLine].sLine.c_str()), 0);
+	auto changedbuf = op.ChangeOldAndNewLinesCount(std::string(base.GetLineVec()[basePositionLine].sLine), new_oldCount, new_newCount);
+	EXPECT_EQ(changedbuf.compare(temp.GetLineVec()[tempPositionLine].sLine), 0);
 }
 
 TEST(StagingOperations, PatchBuffer)

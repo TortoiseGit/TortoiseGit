@@ -34,13 +34,13 @@ enum class DiffLineTypes
 
 struct DiffLineForStaging
 {
-	DiffLineForStaging(std::string&& line, DiffLineTypes theType)
-		: type(theType)
-		, sLine(std::move(line))
+	DiffLineForStaging(std::string_view line, DiffLineTypes theType)
+		: sLine(line)
+		, type(theType)
 	{
 	}
 
-	std::string sLine; // Includes EOL
+	std::string_view sLine; // Includes EOL
 	DiffLineTypes type;
 };
 
@@ -61,14 +61,14 @@ public:
 
 	int GetFirstLineNumberSelected() const;
 	int GetLastLineNumberSelected() const;
-	const std::string& GetFullLineByLineNumber(int line) const;
+	std::string_view GetFullLineByLineNumber(int line) const;
 	std::string GetFullTextOfSelectedLines() const;
 	std::string GetFullTextOfLineRange(int startline, int endline) const;
 	int GetLastDocumentLine() const;
 	DiffLineTypes GetLineType(int line) const;
 	bool IsNoNewlineComment(int line) const;
 
-	static bool GetOldAndNewLinesCountFromHunk(const std::string& hunk, int* oldCount, int* newCount, bool allowSingleLine = false);
+	static bool GetOldAndNewLinesCountFromHunk(std::string_view hunk, int* oldCount, int* newCount, bool allowSingleLine = false);
 
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 public:
