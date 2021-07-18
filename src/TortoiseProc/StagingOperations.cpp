@@ -63,10 +63,10 @@ int StagingOperations::FindHunkEndForwardsFrom(int line, int topBoundaryLine) co
 	int hunkStart = FindHunkStartBackwardsFrom(line, topBoundaryLine);
 	if (hunkStart == -1)
 		return -1;
-	auto strHunkStart = m_lines->GetFullLineByLineNumber(hunkStart);
+	const auto strHunkStart = m_lines->GetFullLineByLineNumber(hunkStart);
 
 	int oldCount, newCount;
-	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strHunkStart.get(), &oldCount, &newCount))
+	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strHunkStart, &oldCount, &newCount))
 		return -1;
 
 	return FindHunkEndGivenHunkStartAndCounts(hunkStart, oldCount, newCount);
@@ -112,7 +112,7 @@ int StagingOperations::FindHunkEndGivenHunkStartAndCounts(int hunkStart, int old
 // From (and including) given line, looks backwards for a line that is neither a hunk header (@@xxxxx@@) nor a
 // context/added/deleted line. From there, it goes on looking backwards for a "diff" line. A buffer is then returned
 // containing those lines and any lines between them, including EOL characters. Returns nullptr if no such sequence is found.
-std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line) const
+std::string StagingOperations::FindFileHeaderBackwardsFrom(int line) const
 {
 	int i = line;
 	for (; i > -1; --i)
@@ -122,7 +122,7 @@ std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line)
 			break;
 	}
 	if (i == -1)
-		return nullptr;
+		return {};
 	int fileHeaderLastLine = i;
 	for (; i > -1; --i)
 	{
@@ -130,7 +130,7 @@ std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line)
 			break;
 	}
 	if (i == -1)
-		return nullptr;
+		return {};
 	int fileHeaderFirstLine = i;
 	return m_lines->GetFullTextOfLineRange(fileHeaderFirstLine, fileHeaderLastLine);
 }
@@ -138,7 +138,7 @@ std::unique_ptr<char[]> StagingOperations::FindFileHeaderBackwardsFrom(int line)
 // According to the user selection, returns a buffer holding a temporary patch which must be written to a temporary
 // file and applied to the index with git apply --cached (for staging) or git apply --cached -R (for unstaging).
 // Even though this feature is intended for single-file diffs only, this code should also work for multi-file diffs.
-std::unique_ptr<char[]> StagingOperations::CreatePatchBufferToStageOrUnstageSelectedHunks() const
+std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedHunks() const
 {
 	// Try to find a hunk backwards up to and including the first line in the patch
 	int startline = FindHunkStartBackwardsFrom(m_lines->GetFirstLineNumberSelected(), 0);
@@ -154,21 +154,20 @@ std::unique_ptr<char[]> StagingOperations::CreatePatchBufferToStageOrUnstageSele
 		// Try to find a hunk forwards up to and including the last line selected
 		startline = FindHunkStartForwardsFrom(m_lines->GetFirstLineNumberSelected(), m_lines->GetLastLineNumberSelected());
 		if (startline == -1)
-			return nullptr; // No part of a hunk is selected, bail
+			return {}; // No part of a hunk is selected, bail
 	}
 	int endline = FindHunkEndForwardsFrom(m_lines->GetLastLineNumberSelected(), startline);
 	if (endline == -1)
-		return nullptr;
+		return {};
 
 	if (endline <= startline) // this should never happen
-		return nullptr;
+		return {};
 	auto hunksWithoutFirstFileHeader = m_lines->GetFullTextOfLineRange(startline, endline);
 	auto firstFileHeader = FindFileHeaderBackwardsFrom(startline);
-	size_t fullTempPatchLen = strlen(firstFileHeader.get()) + strlen(hunksWithoutFirstFileHeader.get()) + 1;
-	auto fullTempPatch = std::make_unique<char[]>(fullTempPatchLen);
-	strcat_s(fullTempPatch.get(), fullTempPatchLen, firstFileHeader.get());
-	strcat_s(fullTempPatch.get(), fullTempPatchLen, hunksWithoutFirstFileHeader.get());
 
+	std::string fullTempPatch;
+	fullTempPatch.append(firstFileHeader);
+	fullTempPatch.append(hunksWithoutFirstFileHeader);
 	return fullTempPatch;
 }
 
@@ -176,7 +175,7 @@ std::unique_ptr<char[]> StagingOperations::CreatePatchBufferToStageOrUnstageSele
 // file and applied to the index with git apply --cached (for staging) or git apply --cached -R (for unstaging).
 // This will not work for multi-file diffs.
 // This needs to take as parameter whether we're doing a staging or an unstaging, since the handling for those is different.
-std::unique_ptr<char[]> StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(StagingType stagingType) const
+std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(StagingType stagingType) const
 {
 	// Try to find a hunk backwards up to and including the first line in the patch
 	int firstHunkStartLine = FindHunkStartBackwardsFrom(m_lines->GetFirstLineNumberSelected(), 0);
@@ -187,95 +186,89 @@ std::unique_ptr<char[]> StagingOperations::CreatePatchBufferToStageOrUnstageSele
 		// Try to find a hunk forwards up to and including the last line selected
 		firstHunkStartLine = FindHunkStartForwardsFrom(m_lines->GetFirstLineNumberSelected(), m_lines->GetLastLineNumberSelected());
 		if (firstHunkStartLine == -1)
-			return nullptr; // No part of a hunk is selected, bail
+			return {}; // No part of a hunk is selected, bail
 	}
 
-	int documentLength = m_lines->GetDocumentLength();
-	auto fullTempPatch = std::make_unique<char[]>(documentLength + 1);
-	auto firstHunkWithoutStartLine = std::make_unique<char[]>(documentLength + 1);
-	auto lastHunkWithoutStartLine = std::make_unique<char[]>(documentLength + 1);
+	std::string fullTempPatch;
+	std::string firstHunkWithoutStartLine;
+	std::string lastHunkWithoutStartLine;
 
-	auto strFirstHunkStartLine = m_lines->GetFullLineByLineNumber(firstHunkStartLine);
+	const auto strFirstHunkStartLine = m_lines->GetFullLineByLineNumber(firstHunkStartLine);
 	int firstHunkOldCount, firstHunkNewCount;
-	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strFirstHunkStartLine.get(), &firstHunkOldCount, &firstHunkNewCount))
-		return nullptr;
+	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strFirstHunkStartLine, &firstHunkOldCount, &firstHunkNewCount))
+		return {};
 	int firstHunkLastLine = FindHunkEndGivenHunkStartAndCounts(firstHunkStartLine, firstHunkOldCount, firstHunkNewCount);
 	if (firstHunkLastLine == -1)
-		return nullptr;
+		return {};
 
 	int firstLineSelected = m_lines->GetFirstLineNumberSelected();
 	int lastLineSelected = m_lines->GetLastLineNumberSelected();
 
-	bool includeFirstHunkAtAll = ParseHunkOnEitherSelectionBoundary(firstHunkWithoutStartLine.get(), documentLength + 1, firstHunkStartLine, firstHunkLastLine, firstLineSelected, lastLineSelected, &firstHunkOldCount, &firstHunkNewCount, stagingType);
+	bool includeFirstHunkAtAll = ParseHunkOnEitherSelectionBoundary(firstHunkWithoutStartLine, firstHunkStartLine, firstHunkLastLine, firstLineSelected, lastLineSelected, &firstHunkOldCount, &firstHunkNewCount, stagingType);
 
 	auto firstFileHeader = FindFileHeaderBackwardsFrom(firstHunkStartLine);
-	strcat_s(fullTempPatch.get(), documentLength + 1, firstFileHeader.get());
+	fullTempPatch.append(firstFileHeader);
 
 	// If no modified line is selected in the first (or the last) hunk, we must discard it entirely or else git would complain
 	// about a corrupt patch (unless we passed --recount to git apply, but that could potentially cause other issues)
 	if (includeFirstHunkAtAll)
 	{
-		auto strHunkStartLineChanged = ChangeOldAndNewLinesCount(strFirstHunkStartLine.get(), firstHunkOldCount, firstHunkNewCount);
+		auto strHunkStartLineChanged = ChangeOldAndNewLinesCount(strFirstHunkStartLine, firstHunkOldCount, firstHunkNewCount);
 
-		strcat_s(fullTempPatch.get(), documentLength + 1, strHunkStartLineChanged.get());
-		strcat_s(fullTempPatch.get(), documentLength + 1, firstHunkWithoutStartLine.get());
+		fullTempPatch.append(strHunkStartLineChanged);
+		fullTempPatch.append(firstHunkWithoutStartLine);
 	}
 
 	int lastHunkStartLine = FindHunkStartBackwardsFrom(lastLineSelected, firstHunkStartLine);// firstHunkLastLine + 1);
 	if (lastHunkStartLine == -1)
-		return nullptr;
+		return {};
 
 	// For line staging, we only support one file at a time, so we just assume the next hunk starts
 	// at the next line from the end of the first hunk and don't bother looking for a file header again
 	auto inBetweenLines = m_lines->GetFullTextOfLineRange(firstHunkLastLine + 1, lastHunkStartLine - 1);
-	if (inBetweenLines)
-		strcat_s(fullTempPatch.get(), documentLength + 1, inBetweenLines.get());
+	if (!inBetweenLines.empty())
+		fullTempPatch.append(inBetweenLines);
 
 	int lastHunkLastLine = FindHunkEndForwardsFrom(lastHunkStartLine, lastHunkStartLine);
 	if (lastHunkLastLine == -1)
-		return nullptr;
+		return {};
 	if (firstHunkStartLine == lastHunkStartLine)
 	{
 		if (includeFirstHunkAtAll)
 			return fullTempPatch;
-		return nullptr;
+		return {};
 	}
 
-	auto strLastHunkStartLine = m_lines->GetFullLineByLineNumber(lastHunkStartLine);
+	const auto strLastHunkStartLine = m_lines->GetFullLineByLineNumber(lastHunkStartLine);
 	int lastHunkOldCount, lastHunkNewCount;
-	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strLastHunkStartLine.get(), &lastHunkOldCount, &lastHunkNewCount))
-		return nullptr;
+	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strLastHunkStartLine, &lastHunkOldCount, &lastHunkNewCount))
+		return {};
 
-	bool includeLastHunkAtAll = ParseHunkOnEitherSelectionBoundary(lastHunkWithoutStartLine.get(), documentLength + 1, lastHunkStartLine, lastHunkLastLine, firstLineSelected, lastLineSelected, &lastHunkOldCount, &lastHunkNewCount, stagingType);
+	bool includeLastHunkAtAll = ParseHunkOnEitherSelectionBoundary(lastHunkWithoutStartLine, lastHunkStartLine, lastHunkLastLine, firstLineSelected, lastLineSelected, &lastHunkOldCount, &lastHunkNewCount, stagingType);
 	if (includeLastHunkAtAll)
 	{
-		auto strHunkStartLineChanged = ChangeOldAndNewLinesCount(strLastHunkStartLine.get(), lastHunkOldCount, lastHunkNewCount);
+		auto strHunkStartLineChanged = ChangeOldAndNewLinesCount(strLastHunkStartLine, lastHunkOldCount, lastHunkNewCount);
 
-		strcat_s(fullTempPatch.get(), documentLength + 1, strHunkStartLineChanged.get());
-		strcat_s(fullTempPatch.get(), documentLength + 1, lastHunkWithoutStartLine.get());
+		fullTempPatch.append(strHunkStartLineChanged);
+		fullTempPatch.append(lastHunkWithoutStartLine);
 	}
 
-	if (!includeFirstHunkAtAll && !inBetweenLines && !includeLastHunkAtAll)
-		return nullptr;
+	if (!includeFirstHunkAtAll && inBetweenLines.empty() && !includeLastHunkAtAll)
+		return {};
 
 	return fullTempPatch;
 }
 
 // Takes a buffer containing the first line of a hunk (@@xxxxxx@@)
 // Returns a new buffer with its old lines count and new lines count changed to the given ones.
-std::unique_ptr<char[]> StagingOperations::ChangeOldAndNewLinesCount(const char* strHunkStart, int oldCount, int newCount) const
+std::string StagingOperations::ChangeOldAndNewLinesCount(const std::string& strHunkStart, int oldCount, int newCount) const
 {
 	std::string pattern = "^@@ -(\\d+?),(\\d+?) \\+(\\d+?),(\\d+?) @@";
 	std::regex rx(pattern, std::regex_constants::ECMAScript);
 
 	auto fmt = std::make_unique<char[]>(1024);
 	sprintf_s(fmt.get(), 1024, "@@ -$1,%d +$3,%d @@", oldCount, newCount);
-	std::string changedLine = std::regex_replace(strHunkStart, rx, fmt.get());
-
-	size_t size = changedLine.length() + 1;
-	auto ret = std::make_unique<char[]>(size);
-	strcpy_s(ret.get(), size, changedLine.c_str());
-	return ret;
+	return std::regex_replace(strHunkStart, rx, fmt.get());
 }
 
 // For line staging/unstaging.
@@ -290,15 +283,15 @@ std::unique_ptr<char[]> StagingOperations::ChangeOldAndNewLinesCount(const char*
 // The given newCount and oldCount are modified accordingly.
 // Returns true if at least one + or - line is within the user selection, false otherwise (meaning the hunk must be discarded entirely)
 // This needs to take as parameter whether we're doing a staging or an unstaging, since the handling for those is different.
-bool StagingOperations::ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStartLine, int hunkWithoutStartLineLen, int hunkStartLine, int hunkLastLine, int firstLineSelected, int lastLineSelected, int* oldCount, int* newCount, StagingType stagingType) const
+bool StagingOperations::ParseHunkOnEitherSelectionBoundary(std::string& hunkWithoutStartLine, int hunkStartLine, int hunkLastLine, int firstLineSelected, int lastLineSelected, int* oldCount, int* newCount, StagingType stagingType) const
 {
 	bool includeHunkAtAll = false;
 	for (int i = hunkStartLine + 1; i <= hunkLastLine; ++i)
 	{
 		DiffLineTypes type = m_lines->GetLineType(i);
-		auto strLine = m_lines->GetFullLineByLineNumber(i);
+		std::string_view strLine = m_lines->GetFullLineByLineNumber(i);
 		if (type == DiffLineTypes::DEFAULT || type == DiffLineTypes::NO_NEWLINE_BOTHFILES)
-			strcat_s(hunkWithoutStartLine, hunkWithoutStartLineLen, strLine.get());
+			hunkWithoutStartLine.append(strLine);
 		else if (type == DiffLineTypes::ADDED || type == DiffLineTypes::NO_NEWLINE_NEWFILE)
 		{
 			if (i < firstLineSelected || i > lastLineSelected) // outside the user selection
@@ -312,17 +305,19 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStar
 				{
 					if (type == DiffLineTypes::ADDED) // hunk counts do not consider "\ No newline at end of file"
 					{
-						strLine.get()[0] = ' '; // Turn it into a context line
+						// Turn it into a context line
+						hunkWithoutStartLine.append(" ");
+						strLine.remove_prefix(1);
 						++(*oldCount);
 					}
-					strcat_s(hunkWithoutStartLine, hunkWithoutStartLineLen, strLine.get());
+					hunkWithoutStartLine.append(strLine);
 				}
 			}
 			else
 			{
 				if (type == DiffLineTypes::ADDED)
 					includeHunkAtAll = true;
-				strcat_s(hunkWithoutStartLine, hunkWithoutStartLineLen, strLine.get());
+				hunkWithoutStartLine.append(strLine);
 			}
 		}
 		else if (type == DiffLineTypes::DELETED || type == DiffLineTypes::NO_NEWLINE_OLDFILE)
@@ -333,10 +328,12 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStar
 				{
 					if (type == DiffLineTypes::DELETED) // hunk counts do not consider "\ No newline at end of file"
 					{
-						strLine.get()[0] = ' '; // Turn it into a context line
+						// Turn it into a context line
+						hunkWithoutStartLine.append(" ");
+						strLine.remove_prefix(1);
 						++(*newCount);
 					}
-					strcat_s(hunkWithoutStartLine, hunkWithoutStartLineLen, strLine.get());
+					hunkWithoutStartLine.append(strLine);
 				}
 				else if (stagingType == StagingType::UnstageLines)
 				{
@@ -348,7 +345,7 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStar
 			{
 				if (type == DiffLineTypes::DELETED)
 					includeHunkAtAll = true;
-				strcat_s(hunkWithoutStartLine, hunkWithoutStartLineLen, strLine.get());
+				hunkWithoutStartLine.append(strLine);
 			}
 		}
 	}
@@ -357,7 +354,7 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStar
 
 // Creates a temporary file and writes to it the given buffer.
 // Returns the path of the created file.
-CString StagingOperations::WritePatchBufferToTemporaryFile(const char* data)
+CString StagingOperations::WritePatchBufferToTemporaryFile(const std::string& data)
 {
 	CString tempFile = ::GetTempFile();
 	FILE* fp = nullptr;
@@ -365,7 +362,7 @@ CString StagingOperations::WritePatchBufferToTemporaryFile(const char* data)
 	if (!fp)
 		return CString();
 
-	fwrite(data, sizeof(char), ::strlen(data), fp);
+	fwrite(data.c_str(), sizeof(char), data.length(), fp);
 	fclose(fp);
 
 	return tempFile;

@@ -34,23 +34,13 @@ enum class DiffLineTypes
 
 struct DiffLineForStaging
 {
-	DiffLineForStaging(const char* line, int size, DiffLineTypes type)
+	DiffLineForStaging(std::string&& line, DiffLineTypes theType)
+		: type(theType)
+		, sLine(std::move(line))
 	{
-		sLine = std::make_unique<char[]>(size + 1);
-		strcpy_s(sLine.get(), size + 1, line);
-		this->size = size;
-		this->type = type;
 	}
 
-	DiffLineForStaging(std::unique_ptr<char[]>&& line, int size, DiffLineTypes type)
-	{
-		sLine = std::move(line);
-		this->size = size;
-		this->type = type;
-	}
-
-	std::unique_ptr<char[]> sLine; // Includes EOL, null-terminated
-	int size; // In bytes, without terminating null
+	std::string sLine; // Includes EOL
 	DiffLineTypes type;
 };
 
@@ -71,15 +61,14 @@ public:
 
 	int GetFirstLineNumberSelected() const;
 	int GetLastLineNumberSelected() const;
-	std::unique_ptr<char[]> GetFullLineByLineNumber(int line) const;
-	std::unique_ptr<char[]> GetFullTextOfSelectedLines() const;
-	std::unique_ptr<char[]> GetFullTextOfLineRange(int startline, int endline) const;
+	const std::string& GetFullLineByLineNumber(int line) const;
+	std::string GetFullTextOfSelectedLines() const;
+	std::string GetFullTextOfLineRange(int startline, int endline) const;
 	int GetLastDocumentLine() const;
 	DiffLineTypes GetLineType(int line) const;
 	bool IsNoNewlineComment(int line) const;
-	int GetDocumentLength() const;
 
-	static bool GetOldAndNewLinesCountFromHunk(const char* strHunkStart, int* oldCount, int* newCount, bool allowSingleLine = false);
+	static bool GetOldAndNewLinesCountFromHunk(const std::string& hunk, int* oldCount, int* newCount, bool allowSingleLine = false);
 
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 public:

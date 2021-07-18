@@ -34,9 +34,9 @@ public:
 		: m_lines(lines)
 	{
 	}
-	std::unique_ptr<char[]> CreatePatchBufferToStageOrUnstageSelectedHunks() const;
-	std::unique_ptr<char[]> CreatePatchBufferToStageOrUnstageSelectedLines(StagingType stagingType) const;
-	static CString WritePatchBufferToTemporaryFile(const char* data);
+	std::string CreatePatchBufferToStageOrUnstageSelectedHunks() const;
+	std::string CreatePatchBufferToStageOrUnstageSelectedLines(StagingType stagingType) const;
+	static CString WritePatchBufferToTemporaryFile(const std::string& data);
 
 private:
 	const CDiffLinesForStaging* m_lines;
@@ -45,12 +45,12 @@ private:
 	int FindHunkStartForwardsFrom(int line, int bottomBoundaryLine) const;
 	int FindHunkEndForwardsFrom(int line, int topBoundaryLine) const;
 	int FindHunkEndGivenHunkStartAndCounts(int hunkStart, int oldCount, int newCount) const;
-	std::unique_ptr<char[]> FindFileHeaderBackwardsFrom(int line) const;
+	std::string FindFileHeaderBackwardsFrom(int line) const;
 #ifdef GTEST_INCLUDE_GTEST_GTEST_H_
 public:
 #endif
-	std::unique_ptr<char[]> ChangeOldAndNewLinesCount(const char* strHunkStart, int oldCount, int newCount) const;
+	std::string ChangeOldAndNewLinesCount(const std::string& strHunkStart, int oldCount, int newCount) const;
 
 private:
-	bool ParseHunkOnEitherSelectionBoundary(char* hunkWithoutStartLine, int hunkWithoutStartLineLen, int hunkStartLine, int hunkLastLine, int firstLineSelected, int lastLineSelected, int* oldCount, int* newCount, StagingType stagingType) const;
+	bool ParseHunkOnEitherSelectionBoundary(std::string& hunkWithoutStartLine, int hunkStartLine, int hunkLastLine, int firstLineSelected, int lastLineSelected, int* oldCount, int* newCount, StagingType stagingType) const;
 };

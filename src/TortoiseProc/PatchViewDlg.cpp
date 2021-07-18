@@ -453,21 +453,21 @@ void CPatchViewDlg::StageOrUnstageSelectedLinesOrHunks(StagingType stagingType)
 
 	CDiffLinesForStaging lines(wholePatchBuf.get(), lineCount, GetFirstLineNumberSelected(), GetLastLineNumberSelected());
 	auto op = StagingOperations(&lines);
-	std::unique_ptr<char[]> strPatch;
+	std::string strPatch;
 	if (stagingType == StagingType::StageLines || stagingType == StagingType::UnstageLines)
 		strPatch = op.CreatePatchBufferToStageOrUnstageSelectedLines(stagingType);
 	else if (stagingType == StagingType::StageHunks || stagingType == StagingType::UnstageHunks)
 		strPatch = op.CreatePatchBufferToStageOrUnstageSelectedHunks();
 	else
 		return; // this should never happen
-	if (!strPatch)
+	if (strPatch.empty())
 	{
 		CMessageBox::Show(GetSafeHwnd(), IDS_ERROR_PARTIALSTAGING, IDS_APPNAME, MB_OK | MB_ICONERROR);
 		return;
 	}
 
 	CTGitPath::StagingStatus newStatus; // this will be sent to the commit dialog so that it can update the file checkbox/status
-	if (strcmp(wholePatchBuf.get(), strPatch.get()) == 0)
+	if (strcmp(wholePatchBuf.get(), strPatch.c_str()) == 0)
 	{
 		if (stagingType == StagingType::StageLines || stagingType == StagingType::StageHunks)
 			newStatus = CTGitPath::StagingStatus::TotallyStaged;
@@ -477,7 +477,7 @@ void CPatchViewDlg::StageOrUnstageSelectedLinesOrHunks(StagingType stagingType)
 	else // if the patch to be applied is different than the whole diff, the file is still partially staged or became partially staged
 		newStatus = CTGitPath::StagingStatus::PartiallyStaged;
 
-	CString tempPatch = StagingOperations::WritePatchBufferToTemporaryFile(strPatch.get());
+	CString tempPatch = StagingOperations::WritePatchBufferToTemporaryFile(strPatch);
 	if (tempPatch.IsEmpty())
 		return;
 
