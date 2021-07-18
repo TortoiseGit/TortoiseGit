@@ -19,12 +19,12 @@
 #include "stdafx.h"
 #include "ViewData.h"
 
-CViewData::CViewData(void)
+CViewData::CViewData()
 	: m_nMarkedBlocks(0)
 {
 }
 
-CViewData::~CViewData(void)
+CViewData::~CViewData()
 {
 }
 

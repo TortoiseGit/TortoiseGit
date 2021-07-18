@@ -58,7 +58,7 @@ struct SLogCacheRevFileHeader
 	DWORD m_IsSubmodule;
 	DWORD m_FileNameSize;
 	DWORD m_OldFileNameSize;
-	TCHAR m_FileName[1];
+	wchar_t m_FileName[1];
 };
 
 struct SLogCacheRevItemHeader

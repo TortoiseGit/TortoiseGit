@@ -100,7 +100,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					UINT len = DragQueryFile(drop, i, nullptr, 0);
 					if (len == 0)
 						continue;
-					auto szFileName = std::make_unique<TCHAR[]>(len + 1);
+					auto szFileName = std::make_unique<wchar_t[]>(len + 1);
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
 					auto str = std::wstring(szFileName.get());
@@ -513,8 +513,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 
 void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT /*uFlags*/)
 {
-	TCHAR menutextbuffer[512] = {0};
-	TCHAR verbsbuffer[255] = {0};
+	wchar_t menutextbuffer[512] = { 0 };
+	wchar_t verbsbuffer[255] = { 0 };
 	MAKESTRING(stringid);
 
 	if (istop)
@@ -525,7 +525,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (!g_ShellCache.HasShellMenuAccelerators())
 		{
 			// remove the accelerators
-			tstring temp = stringtablebuffer;
+			std::wstring temp = stringtablebuffer;
 			temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
 			wcscpy_s(stringtablebuffer, temp.c_str());
 		}
@@ -573,7 +573,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 				sBranchName = sBranchName.Left(64) + L"...";
 
 			// scan to before "..."
-			LPTSTR s = menutextbuffer + wcslen(menutextbuffer)-1;
+			LPWSTR s = menutextbuffer + wcslen(menutextbuffer)-1;
 			if (s > menutextbuffer)
 			{
 				while (s > menutextbuffer)
@@ -656,8 +656,8 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	//for TortoiseGitProc.exe to read out again.
 	DWORD written = 0;
 	DWORD pathlength = GetTortoiseGitTempPath(0, nullptr);
-	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
-	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
+	auto path = std::make_unique<wchar_t[]>(pathlength + 1);
+	auto tempFile = std::make_unique<wchar_t[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength+1, path.get());
 	GetTempFileName(path.get(), L"git", 0, tempFile.get());
 	tempfile = std::wstring(tempFile.get());
@@ -689,13 +689,13 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 		return false;
 	SCOPE_EXIT { GlobalUnlock(hDrop); };
 
-	TCHAR szFileName[MAX_PATH] = {0};
+	wchar_t szFileName[MAX_PATH] = { 0 };
 	UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 	for(UINT i = 0; i < cFiles; ++i)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
 		std::wstring filename = szFileName;
-		::WriteFile (file, filename.c_str(), static_cast<DWORD>(filename.size()) * sizeof(TCHAR), &written, 0);
+		::WriteFile (file, filename.c_str(), static_cast<DWORD>(filename.size()) * sizeof(wchar_t), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
@@ -707,8 +707,8 @@ std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
 	DWORD pathlength = GetTortoiseGitTempPath(0, nullptr);
-	auto path = std::make_unique<TCHAR[]>(pathlength + 1);
-	auto tempFile = std::make_unique<TCHAR[]>(pathlength + 100);
+	auto path = std::make_unique<wchar_t[]>(pathlength + 1);
+	auto tempFile = std::make_unique<wchar_t[]>(pathlength + 100);
 	GetTortoiseGitTempPath(pathlength + 1, path.get());
 	GetTempFileName(path.get(), L"git", 0, tempFile.get());
 	auto retFilePath = std::wstring(tempFile.get());
@@ -730,7 +730,7 @@ std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 	DWORD written = 0;
 	if (files_.empty())
 	{
-		::WriteFile (file, folder_.c_str(), static_cast<DWORD>(folder_.size()) * sizeof(TCHAR), &written, 0);
+		::WriteFile (file, folder_.c_str(), static_cast<DWORD>(folder_.size()) * sizeof(wchar_t), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
@@ -739,7 +739,7 @@ std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 		if (bFoldersOnly && !PathIsDirectory(file_.c_str()))
 			continue;
 
-		::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(TCHAR), &written, 0);
+		::WriteFile(file, file_.c_str(), static_cast<DWORD>(file_.size()) * sizeof(wchar_t), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 	return retFilePath;
@@ -907,7 +907,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	//we check that by iterating through all menu entries and check if
 	//the dwItemData member points to our global ID string. That string is set
 	//by our shell extension when the folder menu is inserted.
-	TCHAR menubuf[MAX_PATH] = {0};
+	wchar_t menubuf[MAX_PATH] = { 0 };
 	int count = GetMenuItemCount(hMenu);
 	for (int i=0; i<count; ++i)
 	{
@@ -1036,7 +1036,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	if (!g_ShellCache.HasShellMenuAccelerators())
 	{
 		// remove the accelerators
-		tstring temp = stringtablebuffer;
+		std::wstring temp = stringtablebuffer;
 		temp.erase(std::remove(temp.begin(), temp.end(), '&'), temp.end());
 		wcscpy_s(stringtablebuffer, temp.c_str());
 	}
@@ -1104,7 +1104,7 @@ void CShellExt::TweakMenu(HMENU hMenu)
 	SetMenuInfo(hMenu, &MenuInfo);
 }
 
-void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed)
+void CShellExt::AddPathCommand(std::wstring& gitCmd, LPCWSTR command, bool bFilesAllowed)
 {
 	gitCmd += command;
 	gitCmd += L" /path:\"";
@@ -1115,9 +1115,9 @@ void CShellExt::AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllo
 	gitCmd += L'"';
 }
 
-void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly = false)
+void CShellExt::AddPathFileCommand(std::wstring& gitCmd, LPCWSTR command, bool bFoldersOnly = false)
 {
-	tstring tempfile = WriteFileListToTempFile(bFoldersOnly);
+	std::wstring tempfile = WriteFileListToTempFile(bFoldersOnly);
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1125,9 +1125,9 @@ void CShellExt::AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFolde
 	gitCmd += L" /deletepathfile";
 }
 
-void CShellExt::AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command)
+void CShellExt::AddPathFileDropCommand(std::wstring& gitCmd, LPCWSTR command)
 {
-	tstring tempfile = WriteFileListToTempFile();
+	std::wstring tempfile = WriteFileListToTempFile();
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1164,8 +1164,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			tstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
-			tstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
+			std::wstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
+			std::wstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
 
 			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
@@ -1181,7 +1181,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 				//#region case
 			case ShellMenuSync:
 				{
-					TCHAR syncSeq[12] = { 0 };
+					wchar_t syncSeq[12] = { 0 };
 					swprintf_s(syncSeq, L"%d", g_syncSeq++);
 					AddPathCommand(gitCmd, L"sync", false);
 					gitCmd += L" /seq:";
@@ -1462,8 +1462,8 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 						auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
 						DWORD len = GetTortoiseGitTempPath(0, nullptr);
-						auto path = std::make_unique<TCHAR[]>(len + 1);
-						auto tempF = std::make_unique<TCHAR[]>(len + 100);
+						auto path = std::make_unique<wchar_t[]>(len + 1);
+						auto tempF = std::make_unique<wchar_t[]>(len + 100);
 						GetTortoiseGitTempPath(len + 1, path.get());
 						GetTempFileName(path.get(), TEXT("git"), 0, tempF.get());
 						std::wstring sTempFile = std::wstring(tempF.get());
@@ -1597,7 +1597,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			if (!gitCmd.empty())
 			{
 				gitCmd += L" /hwnd:";
-				TCHAR buf[30] = { 0 };
+				wchar_t buf[30] = { 0 };
 				swprintf_s(buf, L"%p", static_cast<void*>(lpcmi->hwnd));
 				gitCmd += buf;
 				myIDMap.clear();
@@ -1637,7 +1637,7 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 		menuIndex++;
 	}
 
-	const TCHAR * desc = stringtablebuffer;
+	const wchar_t* desc = stringtablebuffer;
 	switch(uFlags)
 	{
 	case GCS_HELPTEXTA:
@@ -1711,7 +1711,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 		break;
 	case WM_DRAWITEM:
 		{
-			LPCTSTR resource;
+			LPCWSTR resource;
 			auto lpdis = reinterpret_cast<DRAWITEMSTRUCT*>(lParam);
 			if (!lpdis || lpdis->CtlType != ODT_MENU)
 				return S_OK;		//not for a menu
@@ -1733,7 +1733,7 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 		break;
 	case WM_MENUCHAR:
 		{
-			TCHAR *szItem;
+			wchar_t* szItem;
 			if (HIWORD(wParam) != MF_POPUP)
 				return S_OK;
 			int nChar = LOWORD(wParam);
@@ -1744,11 +1744,11 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 			std::vector<UINT_PTR> accmenus;
 			for (auto It = mySubMenuMap.cbegin(); It != mySubMenuMap.cend(); ++It)
 			{
-				LPCTSTR resource = GetMenuTextFromResource(static_cast<int>(mySubMenuMap[It->first]));
+				LPCWSTR resource = GetMenuTextFromResource(static_cast<int>(mySubMenuMap[It->first]));
 				if (!resource)
 					continue;
 				szItem = stringtablebuffer;
-				TCHAR* amp = wcschr(szItem, L'&');
+				wchar_t* amp = wcschr(szItem, L'&');
 				if (!amp)
 					continue;
 				amp++;
@@ -1807,10 +1807,10 @@ STDMETHODIMP CShellExt::HandleMenuMsg2(UINT uMsg, WPARAM wParam, LPARAM lParam, 
 	return S_OK;
 }
 
-LPCTSTR CShellExt::GetMenuTextFromResource(int id)
+LPCWSTR CShellExt::GetMenuTextFromResource(int id)
 {
-	TCHAR textbuf[255] = { 0 };
-	LPCTSTR resource = nullptr;
+	wchar_t textbuf[255] = { 0 };
+	LPCWSTR resource = nullptr;
 	unsigned __int64 layout = g_ShellCache.GetMenuLayout();
 	space = 6;
 
@@ -1945,8 +1945,8 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	HMENU ignoresubmenu = nullptr;
 	int indexignoresub = 0;
 	bool bShowIgnoreMenu = false;
-	TCHAR maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
-	TCHAR ignorepath[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
+	wchar_t maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
+	wchar_t ignorepath[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
 	if (files_.empty())
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
@@ -1963,8 +1963,8 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		const size_t pathLength = wcslen(ignorepath);
 		while ( (p=ignoredprops.find( ignorepath,p )) != -1 )
 		{
-			if ( (p==0 || ignoredprops[p-1]==TCHAR('\n'))
-				&& (p + pathLength == ignoredprops.length() || ignoredprops[p + pathLength + 1] == TCHAR('\n')))
+			if ((p == 0 || ignoredprops[p - 1] == wchar_t('\n'))
+				&& (p + pathLength == ignoredprops.length() || ignoredprops[p + pathLength + 1] == wchar_t('\n')))
 			{
 				break;
 			}
@@ -2180,7 +2180,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	return bShowIgnoreMenu;
 }
 
-void CShellExt::RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage)
+void CShellExt::RunCommand(const std::wstring& path, const std::wstring& command, LPCWSTR errorMessage)
 {
 	if (CCreateProcessHelper::CreateProcessDetached(path.c_str(), command.c_str()))
 	{

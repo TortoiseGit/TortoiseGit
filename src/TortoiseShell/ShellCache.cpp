@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2020 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -326,7 +326,7 @@ BOOL ShellCache::IsUnknown()
 	return (driveunknown);
 }
 
-BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
+BOOL ShellCache::IsContextPathAllowed(LPCWSTR path)
 {
 	Locker lock(m_critSec);
 	ExcludeContextValid();
@@ -336,7 +336,7 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 			continue;
 		if (exPath[exPath.size() - 1] == '*')
 		{
-			tstring str = exPath.substr(0, exPath.size() - 1);
+			std::wstring str = exPath.substr(0, exPath.size() - 1);
 			if (_wcsnicmp(str.c_str(), path, str.size()) == 0)
 				return FALSE;
 		}
@@ -346,7 +346,7 @@ BOOL ShellCache::IsContextPathAllowed(LPCTSTR path)
 	return TRUE;
 }
 
-BOOL ShellCache::IsPathAllowed(LPCTSTR path)
+BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 {
 	RefreshIfNeeded();
 	Locker lock(m_critSec);
@@ -367,7 +367,7 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 				drivetype = DRIVE_REMOTE;
 			else
 			{
-				TCHAR pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
+				wchar_t pathbuf[MAX_PATH + 4] = { 0 };		// MAX_PATH ok here. PathStripToRoot works with partial paths too.
 				wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 				PathStripToRoot(pathbuf);
 				PathAddBackslash(pathbuf);
@@ -384,7 +384,7 @@ BOOL ShellCache::IsPathAllowed(LPCTSTR path)
 			drivetype = DRIVE_REMOTE;
 		else
 		{
-			TCHAR pathbuf[MAX_PATH + 4] = { 0 }; // MAX_PATH ok here. PathStripToRoot works with partial paths too.
+			wchar_t pathbuf[MAX_PATH + 4] = { 0 }; // MAX_PATH ok here. PathStripToRoot works with partial paths too.
 			wcsncpy_s(pathbuf, path, _countof(pathbuf) - 1);
 			PathStripToRoot(pathbuf);
 			PathAddBackslash(pathbuf);
@@ -421,16 +421,16 @@ DWORD ShellCache::GetLangID()
 	return (langid);
 }
 
-BOOL ShellCache::HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir /*= nullptr*/)
+BOOL ShellCache::HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDir /*= nullptr*/)
 {
-	tstring folder(path);
+	std::wstring folder(path);
 	if (!bIsDir)
 	{
 		size_t pos = folder.rfind(L'\\');
-		if (pos != tstring::npos)
+		if (pos != std::wstring::npos)
 			folder.erase(pos);
 	}
-	std::map<tstring, AdminDir_s>::const_iterator iter;
+	std::map<std::wstring, AdminDir_s>::const_iterator iter;
 	if ((iter = admindircache.find(folder)) != admindircache.cend())
 	{
 		Locker lock(m_critSec);
@@ -470,9 +470,9 @@ void ShellCache::ExcludeContextValid()
 	excontextvector.clear();
 	size_t pos = 0, pos_ant = 0;
 	pos = excludecontextstr.find(L'\n', pos_ant);
-	while (pos != tstring::npos)
+	while (pos != std::wstring::npos)
 	{
-		tstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
+		std::wstring token = excludecontextstr.substr(pos_ant, pos - pos_ant);
 		if (!token.empty())
 			excontextvector.push_back(token);
 		pos_ant = pos + 1;
@@ -480,20 +480,20 @@ void ShellCache::ExcludeContextValid()
 	}
 	if (!excludecontextstr.empty())
 	{
-		tstring token = excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1);
+		std::wstring token = excludecontextstr.substr(pos_ant, excludecontextstr.size() - 1);
 		if (!token.empty())
 			excontextvector.push_back(token);
 	}
 }
 
 // construct \ref data content
-void ShellCache::CPathFilter::AddEntry(const tstring& s, bool include)
+void ShellCache::CPathFilter::AddEntry(const std::wstring& s, bool include)
 {
 	static wchar_t pathbuf[MAX_PATH * 4] = { 0 };
 	if (s.empty())
 		return;
 
-	TCHAR lastChar = *s.rbegin();
+	wchar_t lastChar = *s.rbegin();
 
 	SEntry entry;
 	entry.hasSubFolderEntries = false;
@@ -513,11 +513,11 @@ void ShellCache::CPathFilter::AddEntry(const tstring& s, bool include)
 	data.push_back(entry);
 }
 
-void ShellCache::CPathFilter::AddEntries(const tstring& s, bool include)
+void ShellCache::CPathFilter::AddEntries(const std::wstring& s, bool include)
 {
 	size_t pos = 0, pos_ant = 0;
 	pos = s.find(L'\n', pos_ant);
-	while (pos != tstring::npos)
+	while (pos != std::wstring::npos)
 	{
 		AddEntry(s.substr(pos_ant, pos - pos_ant), include);
 		pos_ant = pos + 1;
@@ -593,7 +593,7 @@ void ShellCache::CPathFilter::PostProcessData()
 // excluded: C:, C:\some\deep\path
 // include: C:\some
 // lookup for C:\some\deeper\path
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path, TData::const_iterator begin, TData::const_iterator end) const
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const
 {
 	tristate_t result = tristate_unknown;
 
@@ -609,10 +609,10 @@ tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path, TData::const_ite
 	size_t pos = 0;
 	do
 	{
-		LPCTSTR backslash = wcschr(path + pos + 1,L'\\');
+		LPCWSTR backslash = wcschr(path + pos + 1,L'\\');
 		pos = backslash == nullptr ? maxLength : backslash - path;
 
-		std::pair<LPCTSTR, size_t> toFind(path, pos);
+		std::pair<LPCWSTR, size_t> toFind(path, pos);
 		TData::const_iterator iter = std::lower_bound(begin, end, toFind);
 
 		// found a relevant entry?
@@ -675,7 +675,7 @@ void ShellCache::CPathFilter::Refresh()
 }
 
 // data access
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCTSTR path) const
+tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path) const
 {
 	if (!path)
 		return tristate_unknown;

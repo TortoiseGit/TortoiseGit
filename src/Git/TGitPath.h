@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,11 +27,11 @@
 class CTGitPath
 {
 public:
-	CTGitPath(void);
+	CTGitPath();
 #ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
-	virtual ~CTGitPath(void);
+	virtual ~CTGitPath();
 #else
-	~CTGitPath(void);
+	~CTGitPath();
 #endif
 	CTGitPath(const CString& sUnknownPath);
 	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);
@@ -74,15 +74,15 @@ public:
 	 */
 	void SetFromGit(const char* pPath);
 	void SetFromGit(const char* pPath, bool bIsDirectory);
-	void SetFromGit(const TCHAR* pPath, bool bIsDirectory);
+	void SetFromGit(const wchar_t* pPath, bool bIsDirectory);
 	void SetFromGit(const CString& sPath, CString* oldPath = nullptr, int* bIsDirectory = nullptr);
 
 	/**
 	 * Set the path as UNICODE with backslashes
 	 */
-	void SetFromWin(LPCTSTR pPath);
+	void SetFromWin(LPCWSTR pPath);
 	void SetFromWin(const CString& sPath);
-	void SetFromWin(LPCTSTR pPath, bool bIsDirectory);
+	void SetFromWin(LPCWSTR pPath, bool bIsDirectory);
 	void SetFromWin(const CString& sPath, bool bIsDirectory);
 	/**
 	 * Set the path from an unknown source.
@@ -91,7 +91,7 @@ public:
 	/**
 	 * Returns the path in Windows format, i.e. with backslashes
 	 */
-	LPCTSTR GetWinPath() const;
+	LPCWSTR GetWinPath() const;
 	/**
 	 * Returns the path in Windows format, i.e. with backslashes
 	 */
@@ -407,7 +407,7 @@ public:
 	 * \param bShowErrorUI if true, show error dialog box when error occurs.
 	 */
 	void DeleteAllFiles(bool bTrash, bool bFilesOnly = true, bool bShowErrorUI = false);
-	static bool DeleteViaShell(LPCTSTR path, bool useTrashbin, bool bShowErrorUI);
+	static bool DeleteViaShell(LPCWSTR path, bool useTrashbin, bool bShowErrorUI);
 	/** Remove duplicate entries from the list (sorts the list as a side-effect */
 	void RemoveDuplicates();
 	/** Removes all paths which are on or in a git admin directory */
@@ -424,7 +424,7 @@ public:
 	/** Checks if two CTGitPathLists are the same */
 	bool IsEqual(const CTGitPathList& list);
 
-	typedef std::vector<CTGitPath> PathVector;
+	using PathVector = std::vector<CTGitPath>;
 	PathVector m_paths;
 	// If the list contains just files in one directory, then
 	// this contains the directory name

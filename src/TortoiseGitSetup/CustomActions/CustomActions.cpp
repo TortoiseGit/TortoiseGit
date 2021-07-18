@@ -84,7 +84,7 @@ UINT __stdcall SetLanguage(MSIHANDLE hModule)
 UINT __stdcall RestartExplorer(MSIHANDLE /*hModule*/)
 {
 	HMODULE hModule = nullptr;
-	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, reinterpret_cast<LPCTSTR>(RestartExplorer), &hModule) == 0 || !hModule)
+	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, reinterpret_cast<LPCWSTR>(RestartExplorer), &hModule) == 0 || !hModule)
 		return ERROR_SUCCESS;
 
 	HRSRC hRestartExplorerRes = FindResource(hModule, MAKEINTRESOURCE(IDR_RESTARTEXPLORER), RT_RCDATA);
@@ -95,11 +95,11 @@ UINT __stdcall RestartExplorer(MSIHANDLE /*hModule*/)
 	if (!hRestartExplorerGlobal)
 		return ERROR_SUCCESS;
 
-	TCHAR szTempPath[MAX_PATH];
+	wchar_t szTempPath[MAX_PATH];
 	if (!GetTempPath(_countof(szTempPath) - 15, szTempPath))
 		return ERROR_SUCCESS;
 
-	TCHAR szTempFileName[MAX_PATH + 1];
+	wchar_t szTempFileName[MAX_PATH + 1];
 	if (!GetTempFileName(szTempPath, L"REx", 0, szTempFileName))
 		return ERROR_SUCCESS;
 

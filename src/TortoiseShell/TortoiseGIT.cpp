@@ -45,7 +45,7 @@ bool				g_ignoredovlloaded = false;
 bool				g_unversionedovlloaded = false;
 CComCriticalSection	g_csGlobalCOMGuard;
 
-LPCTSTR				g_MenuIDString = L"TortoiseGit";
+LPCWSTR				g_MenuIDString = L"TortoiseGit";
 
 ShellObjects		g_shellObjects;
 
@@ -60,7 +60,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// it.
 
 	bool bInShellTest = false;
-	TCHAR buf[MAX_PATH + 1] = {0};		// MAX_PATH ok, the test really is for debugging anyway.
+	wchar_t buf[MAX_PATH + 1] = { 0 };		// MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 	if(pathLength >= 14)
 	{
@@ -106,7 +106,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	return 1;	// ok
 }
 
-STDAPI DllCanUnloadNow(void)
+STDAPI DllCanUnloadNow()
 {
 	return (g_cRefThisDll == 0 ? S_OK : S_FALSE);
 }

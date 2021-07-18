@@ -72,7 +72,7 @@ CThread::CThread (bool (*func)(void *), void* args, bool startSuspended)
     thread = _beginthread (&ThreadFunc, 0, this);
 }
 
-CThread::~CThread(void)
+CThread::~CThread()
 {
     if (thread != 0)
         Terminate();

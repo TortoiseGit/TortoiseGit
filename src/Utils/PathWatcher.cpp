@@ -21,18 +21,18 @@
 #include "Dbt.h"
 #include "PathWatcher.h"
 
-CPathWatcher::CPathWatcher(void)
+CPathWatcher::CPathWatcher()
 	: m_hCompPort(nullptr)
 	, m_bRunning(TRUE)
 	, m_bLimitReached(false)
 {
 	// enable the required privileges for this process
-	LPCTSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
+	LPCWSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
 									SE_RESTORE_NAME,
 									SE_CHANGE_NOTIFY_NAME
 								 };
 
-	for (int i=0; i<(sizeof(arPrivelegeNames)/sizeof(LPCTSTR)); ++i)
+	for (int i = 0; i < (sizeof(arPrivelegeNames) / sizeof(LPCWSTR)); ++i)
 	{
 		CAutoGeneralHandle hToken;
 		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, hToken.GetPointer()))
@@ -52,7 +52,7 @@ CPathWatcher::CPathWatcher(void)
 	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 }
 
-CPathWatcher::~CPathWatcher(void)
+CPathWatcher::~CPathWatcher()
 {
 	Stop();
 	AutoLocker lock(m_critSec);
@@ -189,7 +189,7 @@ void CPathWatcher::WorkerThread()
 	CDirWatchInfo* pdi = nullptr;
 	LPOVERLAPPED lpOverlapped;
 	const int bufferSize = MAX_PATH * 4;
-	TCHAR buf[bufferSize] = {0};
+	wchar_t buf[bufferSize] = { 0 };
 	while (m_bRunning)
 	{
 		if (!watchedPaths.IsEmpty())
@@ -287,9 +287,9 @@ void CPathWatcher::WorkerThread()
 					do
 					{
 						nOffset = pnotify->NextEntryOffset;
-						SecureZeroMemory(buf, bufferSize*sizeof(TCHAR));
+						SecureZeroMemory(buf, bufferSize * sizeof(wchar_t));
 						wcsncpy_s(buf, bufferSize, pdi->m_DirPath, bufferSize - 1);
-						errno_t err = wcsncat_s(buf + pdi->m_DirPath.GetLength(), bufferSize - pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize - pdi->m_DirPath.GetLength(), int(pnotify->FileNameLength / sizeof(TCHAR))));
+						errno_t err = wcsncat_s(buf + pdi->m_DirPath.GetLength(), bufferSize - pdi->m_DirPath.GetLength(), pnotify->FileName, min(bufferSize - pdi->m_DirPath.GetLength(), int(pnotify->FileNameLength / sizeof(wchar_t))));
 						if (err == STRUNCATE)
 						{
 							pnotify = reinterpret_cast<PFILE_NOTIFY_INFORMATION>(reinterpret_cast<LPBYTE>(pnotify) + nOffset);

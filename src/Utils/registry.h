@@ -21,7 +21,6 @@
 #include <string>
 #include <memory>
 #include <Shlwapi.h>
-#include "tstring.h"
 #include "FormatMessageWrapper.h"
 
 #ifndef ASSERT
@@ -46,7 +45,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const S& s) const = 0;
+	virtual LPCWSTR GetPlainString (const S& s) const = 0;
 	virtual DWORD GetLength (const S& s) const = 0;
 
 public: //methods
@@ -84,7 +83,7 @@ public: //methods
 	virtual S getErrorString()
 	{
 		CFormatMessageWrapper errorMessage(LastError);
-		S result (static_cast<LPCTSTR>(errorMessage));
+		S result (static_cast<LPCWSTR>(errorMessage));
 		return result;
 	}
 
@@ -97,7 +96,7 @@ public: //methods
 
 	/// used in subclass templates to specify the correct string type
 
-	typedef S StringT;
+	using StringT = S;
 
 protected:
 
@@ -181,7 +180,7 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const CString& s) const { return static_cast<LPCTSTR>(s); }
+	virtual LPCWSTR GetPlainString (const CString& s) const { return static_cast<LPCWSTR>(s); }
 	virtual DWORD GetLength (const CString& s) const {return s.GetLength();}
 
 public: //methods
@@ -205,7 +204,7 @@ public: //methods
 		CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
 		CString sTemp;
-		sTemp.FormatMessage(IDS_REG_ERROR, static_cast<LPCTSTR>(m_key), static_cast<LPCTSTR>(error));
+		sTemp.FormatMessage(IDS_REG_ERROR, static_cast<LPCWSTR>(m_key), static_cast<LPCWSTR>(error));
 		return sTemp;
 #else
 		return error;
@@ -221,7 +220,7 @@ public: //methods
  * Base class for STL string type registry classes.
  */
 
-class CRegStdBase : public CRegBaseCommon<tstring>
+class CRegStdBase : public CRegBaseCommon<std::wstring>
 {
 protected:
 
@@ -229,8 +228,8 @@ protected:
 	 * String type specific operations.
 	 */
 
-	virtual LPCTSTR GetPlainString (const tstring& s) const {return s.c_str();}
-	virtual DWORD GetLength (const tstring& s) const {return static_cast<DWORD>(s.size());}
+	virtual LPCWSTR GetPlainString(const std::wstring& s) const { return s.c_str(); }
+	virtual DWORD GetLength(const std::wstring& s) const { return static_cast<DWORD>(s.size()); }
 
 public: //methods
 
@@ -244,7 +243,7 @@ public: //methods
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 * \param sam
 	 */
-	CRegStdBase(const tstring& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
+	CRegStdBase(const std::wstring& key, bool force, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
 };
 
 /**
@@ -328,7 +327,7 @@ public:
 	 * Make the value type accessible to others.
 	 */
 
-	typedef T ValueT;
+	using ValueT = T;
 
 	/**
 	 * Constructor.
@@ -566,7 +565,7 @@ private:
 
 public:
 
-	CRegDWORDCommon(void);
+	CRegDWORDCommon();
 	/**
 	 * Constructor.
 	 * \param key the path to the key, including the key. example: "Software\\Company\\SubKey\\MyValue"
@@ -594,7 +593,7 @@ public:
 // implement CRegDWORDCommon<> methods
 
 template<class Base>
-CRegDWORDCommon<Base>::CRegDWORDCommon(void)
+CRegDWORDCommon<Base>::CRegDWORDCommon()
 	: CRegTypedBase<DWORD, Base>(0)
 {
 }
@@ -706,7 +705,7 @@ public:
 // implement CRegDWORD<> methods
 
 template<class Base>
-CRegStringCommon<Base>::CRegStringCommon(void)
+CRegStringCommon<Base>::CRegStringCommon()
 	: CRegTypedBase<typename Base::StringT, Base>(typename Base::StringT())
 {
 }
@@ -732,7 +731,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 
 	if (LastError == ERROR_SUCCESS)
 	{
-		auto pStr = std::make_unique<TCHAR[]>(size);
+		auto pStr = std::make_unique<wchar_t[]>(size);
 		if ((LastError = RegQueryValueEx(hKey, GetPlainString(m_key), nullptr, &type, reinterpret_cast<BYTE*>(pStr.get()), &size)) == ERROR_SUCCESS)
 		{
 			ASSERT(type==REG_SZ || type==REG_EXPAND_SZ);
@@ -744,7 +743,7 @@ void CRegStringCommon<Base>::InternalRead (HKEY hKey, typename Base::StringT& va
 template<class Base>
 void CRegStringCommon<Base>::InternalWrite (HKEY hKey, const typename Base::StringT& value)
 {
-	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCTSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (TCHAR));
+	LastError = RegSetValueEx(hKey, GetPlainString(m_key), 0, REG_SZ, reinterpret_cast<const BYTE*>(static_cast<LPCWSTR>(GetPlainString(value))), (GetLength(value) + 1) * sizeof (wchar_t));
 }
 
 /**
@@ -817,7 +816,7 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegRect(const CString& key, const CRect& def = CRect(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegRect(void);
+	~CRegRect();
 
 	CRegRect& operator=(const CRect& rhs) {CRegTypedBase<CRect, CRegBase>::operator =(rhs); return *this;}
 	operator LPCRECT() { return static_cast<const CRect>(*this); }
@@ -903,7 +902,7 @@ public:
 	 * \param base a predefined base key like HKEY_LOCAL_MACHINE. see the SDK documentation for more information.
 	 */
 	CRegPoint(const CString& key, const CPoint& def = CPoint(), bool force = false, HKEY base = HKEY_CURRENT_USER, REGSAM sam = 0);
-	~CRegPoint(void);
+	~CRegPoint();
 
 	CRegPoint& operator=(const CPoint& rhs) {CRegTypedBase<CPoint, CRegBase>::operator =(rhs); return *this;}
 	CRegPoint& operator+=(CPoint p) { return *this = p + *this; }
@@ -967,12 +966,12 @@ private:
 
 	/// per-index defaults
 
-	typedef std::map<int, typename T::ValueT> TDefaults;
+	using TDefaults = std::map<int, typename T::ValueT>;
 	TDefaults defaults;
 
 	/// the indices accessed so far
 
-	typedef std::map<int, T*> TElements;
+	using TElements = std::map<int, T*>;
 	mutable TElements elements;
 
 	/// auto-insert
@@ -1047,7 +1046,7 @@ T& CKeyList<T>::GetAt (int index) const
 	TElements::iterator iter = elements.find (index);
 	if (iter == elements.end())
 	{
-		TCHAR buffer [10];
+		wchar_t buffer [10];
 		_itot_s (index, buffer, 10);
 		typename T::StringT indexKey = key + _T ('\\') + buffer;
 
@@ -1065,19 +1064,19 @@ T& CKeyList<T>::GetAt (int index) const
  */
 
 #ifdef __CSTRINGT_H__
-typedef CRegDWORDCommon<CRegBase> CRegDWORD;
-typedef CRegStringCommon<CRegBase> CRegString;
+using CRegDWORD = CRegDWORDCommon<CRegBase>;
+using CRegString = CRegStringCommon<CRegBase>;
 
 #ifdef _MAP_
-typedef CKeyList<CRegDWORD> CRegDWORDList;
-typedef CKeyList<CRegString> CRegStringList;
+using CRegDWORDList = CKeyList<CRegDWORD>;
+using CRegStringList = CKeyList<CRegString>;
 #endif
 #endif
 
-typedef CRegDWORDCommon<CRegStdBase> CRegStdDWORD;
-typedef CRegStringCommon<CRegStdBase> CRegStdString;
+using CRegStdDWORD = CRegDWORDCommon<CRegStdBase>;
+using CRegStdString = CRegStringCommon<CRegStdBase>;
 
 #ifdef _MAP_
-typedef CKeyList<CRegStdDWORD> CRegStdDWORDList;
-typedef CKeyList<CRegStdString> CRegStdStringList;
+using CRegStdDWORDList = CKeyList<CRegStdDWORD>;
+using CRegStdStringList = CKeyList<CRegStdString>;
 #endif

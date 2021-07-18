@@ -32,7 +32,7 @@ CFindBar::CFindBar()
 {
 }
 
-CFindBar::~CFindBar(void)
+CFindBar::~CFindBar()
 {
 	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 }
@@ -90,7 +90,7 @@ LRESULT CFindBar::DoCommand(int id, int msg)
 void CFindBar::DoFind(bool bFindPrev)
 {
 	int len = ::GetWindowTextLength(GetDlgItem(*this, IDC_FINDTEXT));
-	auto findtext = std::make_unique<TCHAR[]>(len + 1);
+	auto findtext = std::make_unique<wchar_t[]>(len + 1);
 	if (!::GetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findtext.get(), len + 1))
 		return;
 	std::wstring ft = std::wstring(findtext.get());
@@ -104,7 +104,7 @@ void CFindBar::SelectSearchString()
 	SendMessage(GetDlgItem(*this, IDC_FINDTEXT), EM_SETSEL, 0, -1);
 }
 
-void CFindBar::SetSearchString(LPCTSTR findStr)
+void CFindBar::SetSearchString(LPCWSTR findStr)
 {
 	::SetWindowText(GetDlgItem(*this, IDC_FINDTEXT), findStr);
 }

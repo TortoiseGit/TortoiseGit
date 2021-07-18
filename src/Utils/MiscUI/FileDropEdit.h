@@ -121,7 +121,7 @@ public:
 			auto hDrop = static_cast<HDROP>(GlobalLock(medium.hGlobal));
 			if (hDrop)
 			{
-				TCHAR szFileName[MAX_PATH] = {0};
+				wchar_t szFileName[MAX_PATH] = { 0 };
 
 				UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 				for(UINT i = 0; i < cFiles; ++i)

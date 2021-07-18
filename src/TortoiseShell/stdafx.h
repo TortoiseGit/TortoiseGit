@@ -21,7 +21,6 @@ using std::min;
 #include <commctrl.h>
 #include <ShlObj.h>
 #include <Shlwapi.h>
-#include <tchar.h>
 #include <wininet.h>
 #include <Aclapi.h>
 

@@ -41,7 +41,7 @@ CBugTraqAssociations::~CBugTraqAssociations()
 		delete pProjectProvider;
 }
 
-void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* = nullptr */)
+void CBugTraqAssociations::Load(LPCWSTR uuid /* = nullptr */, LPCWSTR params /* = nullptr */)
 {
 	HKEY hk;
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, BUGTRAQ_ASSOCIATIONS_REGPATH, 0, KEY_READ, &hk) != ERROR_SUCCESS)
@@ -55,7 +55,7 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 
 	for (DWORD dwIndex = 0; /* nothing */; ++dwIndex)
 	{
-		TCHAR szSubKey[MAX_PATH] = {0};
+		wchar_t szSubKey[MAX_PATH] = { 0 };
 		DWORD cchSubKey = MAX_PATH;
 		LSTATUS status = RegEnumKeyEx(hk, dwIndex, szSubKey, &cchSubKey, nullptr, nullptr, nullptr, nullptr);
 		if (status != ERROR_SUCCESS)
@@ -64,11 +64,11 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 		HKEY hk2;
 		if (RegOpenKeyEx(hk, szSubKey, 0, KEY_READ, &hk2) == ERROR_SUCCESS)
 		{
-			TCHAR szWorkingCopy[MAX_PATH] = {0};
+			wchar_t szWorkingCopy[MAX_PATH] = { 0 };
 			DWORD cbWorkingCopy = sizeof(szWorkingCopy);
 			RegQueryValueEx(hk2, L"WorkingCopy", nullptr, nullptr, reinterpret_cast<LPBYTE>(szWorkingCopy), &cbWorkingCopy);
 
-			TCHAR szClsid[MAX_PATH] = {0};
+			wchar_t szClsid[MAX_PATH] = { 0 };
 			DWORD cbClsid = sizeof(szClsid);
 			RegQueryValueEx(hk2, L"Provider", nullptr, nullptr, reinterpret_cast<LPBYTE>(szClsid), &cbClsid);
 
@@ -77,7 +77,7 @@ void CBugTraqAssociations::Load(LPCTSTR uuid /* = nullptr */, LPCTSTR params /* 
 
 			DWORD cbParameters = 0;
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, nullptr, &cbParameters);
-			auto szParameters = std::make_unique<TCHAR[]>(cbParameters + 1);
+			auto szParameters = std::make_unique<wchar_t[]>(cbParameters + 1);
 			RegQueryValueEx(hk2, L"Parameters", nullptr, nullptr, reinterpret_cast<LPBYTE>(szParameters.get()), &cbParameters);
 			szParameters[cbParameters] = 0;
 
@@ -151,7 +151,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	OLECHAR szClsid[40] = { 0 };
 	StringFromGUID2(provider_clsid, szClsid, ARRAYSIZE(szClsid));
 
-	TCHAR szSubKey[MAX_PATH] = {0};
+	wchar_t szSubKey[MAX_PATH] = { 0 };
 	swprintf_s(szSubKey, L"CLSID\\%ls", szClsid);
 
 	CString provider_name = CString(szClsid);
@@ -159,7 +159,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	HKEY hk;
 	if (RegOpenKeyEx(HKEY_CLASSES_ROOT, szSubKey, 0, KEY_READ, &hk) == ERROR_SUCCESS)
 	{
-		TCHAR szClassName[MAX_PATH] = {0};
+		wchar_t szClassName[MAX_PATH] = { 0 };
 		DWORD cbClassName = sizeof(szClassName);
 
 		if (RegQueryValueEx(hk, nullptr, nullptr, nullptr, reinterpret_cast<LPBYTE>(szClassName), &cbClassName) == ERROR_SUCCESS)
@@ -171,10 +171,10 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	return provider_name;
 }
 
-LSTATUS RegSetValueFromCString(HKEY hKey, LPCTSTR lpValueName, CString str)
+LSTATUS RegSetValueFromCString(HKEY hKey, LPCWSTR lpValueName, CString str)
 {
-	LPCTSTR lpsz = str;
-	DWORD cb = (str.GetLength() + 1) * sizeof(TCHAR);
+	LPCWSTR lpsz = str;
+	DWORD cb = (str.GetLength() + 1) * sizeof(wchar_t);
 	return RegSetValueEx(hKey, lpValueName, 0, REG_SZ, reinterpret_cast<const BYTE*>(lpsz), cb);
 }
 
@@ -189,7 +189,7 @@ void CBugTraqAssociations::Save() const
 	DWORD dwIndex = 0;
 	for (const_iterator it = begin(); it != end(); ++it)
 	{
-		TCHAR szSubKey[MAX_PATH] = {0};
+		wchar_t szSubKey[MAX_PATH] = { 0 };
 		swprintf_s(szSubKey, L"%lu", dwIndex);
 
 		HKEY hk2;

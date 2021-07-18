@@ -37,7 +37,7 @@ CPOFile::CPOFile()
 {
 }
 
-CPOFile::~CPOFile(void)
+CPOFile::~CPOFile()
 {
 }
 
@@ -46,7 +46,7 @@ static bool StartsWith(const wchar_t* heystacl, const wchar_t* needle)
 	return wcsncmp(heystacl, needle, wcslen(needle)) == 0;
 }
 
-BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
+BOOL CPOFile::ParseFile(LPCWSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 {
 	if (!PathFileExists(szPath))
 		return FALSE;
@@ -54,7 +54,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	m_bAdjustEOLs = bAdjustEOLs;
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"parsing file %s...\n", szPath);
+		fwprintf(stdout, L"parsing file %s...\n", szPath);
 
 	int nEntries = 0;
 	int nDeleted = 0;
@@ -69,10 +69,10 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	File.open(filepath);
 	if (!File.good())
 	{
-		_ftprintf(stderr, L"can't open input file %s\n", szPath);
+		fwprintf(stderr, L"can't open input file %s\n", szPath);
 		return FALSE;
 	}
-	auto line = std::make_unique<TCHAR[]>(2 * MAX_STRING_LENGTH);
+	auto line = std::make_unique<wchar_t[]>(2 * MAX_STRING_LENGTH);
 	std::vector<std::wstring> entry;
 	do
 	{
@@ -183,11 +183,11 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	RESOURCEENTRY emptyentry = {0};
 	(*this)[std::wstring(L"")] = emptyentry;
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%d Entries found, %d were already translated and %d got deleted\n", nEntries, nTranslated, nDeleted);
+		fwprintf(stdout, L"%d Entries found, %d were already translated and %d got deleted\n", nEntries, nTranslated, nDeleted);
 	return TRUE;
 }
 
-BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
+BOOL CPOFile::SaveFile(LPCWSTR szPath, LPCWSTR lpszHeaderFile)
 {
 	//since stream classes still expect the filepath in char and not wchar_t
 	//we need to convert the filepath to multibyte
@@ -288,7 +288,7 @@ BOOL CPOFile::SaveFile(LPCTSTR szPath, LPCTSTR lpszHeaderFile)
 	}
 	File.close();
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"File %s saved, containing %d entries\n", szPath, nEntries);
+		fwprintf(stdout, L"File %s saved, containing %d entries\n", szPath, nEntries);
 	return TRUE;
 }
 

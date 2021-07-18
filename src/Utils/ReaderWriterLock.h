@@ -143,7 +143,7 @@ public:
 protected:
 	CReaderWriterLockNonReentrance m_impl;
 
-	typedef std::map<DWORD,DWORD> CMapThreadToState;
+	using CMapThreadToState = std::map<DWORD,DWORD>;
 	CMapThreadToState m_map;
 };
 
@@ -257,10 +257,10 @@ protected:
 //////////////////////////////////////////////////////////////////
 // Instances of above template helper classes
 
-typedef CAutoReadLockT<CReaderWriterLock> CAutoReadLock;
-typedef CAutoWriteLockT<CReaderWriterLock> CAutoWriteLock;
-typedef CAutoReadWeakLockT<CReaderWriterLock> CAutoReadWeakLock;
-typedef CAutoWriteWeakLockT<CReaderWriterLock> CAutoWriteWeakLock;
+using CAutoReadLock = CAutoReadLockT<CReaderWriterLock>;
+using CAutoWriteLock = CAutoWriteLockT<CReaderWriterLock>;
+using CAutoReadWeakLock = CAutoReadWeakLockT<CReaderWriterLock>;
+using CAutoWriteWeakLock = CAutoWriteWeakLockT<CReaderWriterLock>;
 
 //////////////////////////////////////////////////////////////////
 // Inline methods

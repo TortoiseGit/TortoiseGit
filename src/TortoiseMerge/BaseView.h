@@ -47,7 +47,7 @@ class CBaseView : public CView, public CTripleClick
 	DECLARE_DYNCREATE(CBaseView)
 friend class CLineDiffBar;
 public:
-	typedef CFileTextLines::UnicodeType UnicodeType;
+	using UnicodeType = CFileTextLines::UnicodeType;
 	enum ECharGroup { // ordered by priority low-to-hi
 		CHG_UNKNOWN,
 		CHG_CONTROL, // x00-x08, x0a-x1f
@@ -138,9 +138,9 @@ public: // methods
 	void			SetInlineWordDiff(bool bWord) {m_bInlineWordDiff = bWord;}
 	void			SetInlineDiff(bool bDiff) {m_bShowInlineDiff = bDiff;}
 	void			SetMarkedWord(const CString& word) {m_sMarkedWord = word; BuildMarkedWordArray();}
-	LPCTSTR			GetMarkedWord() const { return static_cast<LPCTSTR>(m_sMarkedWord); }
+	LPCWSTR			GetMarkedWord() const { return static_cast<LPCWSTR>(m_sMarkedWord); }
 	int				GetMarkedWordCount() const { return m_MarkedWordCount; }
-	LPCTSTR			GetFindString() const { return static_cast<LPCTSTR>(m_sFindText); }
+	LPCWSTR			GetFindString() const { return static_cast<LPCWSTR>(m_sFindText); }
 
 	// Selection methods; all public methods dealing with selection go here
 	static void		ClearSelection();

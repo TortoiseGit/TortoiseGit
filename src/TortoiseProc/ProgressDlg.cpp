@@ -184,7 +184,7 @@ redo:
 			goto redo;
 		}
 		else
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Message %d-%d could not be sent (error %d; %s)\n", wParam, lParam, GetLastError(), static_cast<LPCTSTR>(CFormatMessageWrapper()));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Message %d-%d could not be sent (error %d; %s)\n", wParam, lParam, GetLastError(), static_cast<LPCWSTR>(CFormatMessageWrapper()));
 	}
 }
 
@@ -293,19 +293,19 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCTSTR>(cmdlist[i]), *bAbort);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCWSTR>(cmdlist[i]), *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
 
 		DWORD status = 0;
 		if (!GetExitCodeProcess(pi.hProcess, &status) || *bAbort)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n", static_cast<LPCTSTR>(cmdlist[i]), GetLastError(), static_cast<LPCTSTR>(CFormatMessageWrapper()), *bAbort);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished, status code could not be fetched, (error %d; %s), aborted: %d\n", static_cast<LPCWSTR>(cmdlist[i]), GetLastError(), static_cast<LPCWSTR>(CFormatMessageWrapper()), *bAbort);
 
 			EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_FAILED, status);
 			return TGIT_GIT_ERROR_GET_EXIT_CODE;
 		}
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished with code %d\n", static_cast<LPCTSTR>(cmdlist[i]), status);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process %s finished with code %d\n", static_cast<LPCWSTR>(cmdlist[i]), status);
 		ret |= status;
 	}
 
@@ -415,13 +415,13 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
 			CString err;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
-				err.Format(L"\r\n\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCTSTR>(log), tickSpent, static_cast<LPCTSTR>(strEndTime));
+				err.Format(L"\r\n\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCWSTR>(log), tickSpent, static_cast<LPCWSTR>(strEndTime));
 			else
-				err.Format(L"\r\n\r\n%s\r\n", static_cast<LPCTSTR>(log));
+				err.Format(L"\r\n\r\n%s\r\n", static_cast<LPCWSTR>(log));
 			if (!m_GitCmd.IsEmpty() || !m_GitCmdList.empty())
 				InsertColorText(this->m_Log, err, CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0));
 			if (CRegDWORD(L"Software\\TortoiseGit\\NoSounds", FALSE) == FALSE)
-				PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMEXCLAMATION), nullptr, SND_ALIAS_ID | SND_ASYNC);
+				PlaySound(reinterpret_cast<LPCWSTR>(SND_ALIAS_SYSTEMEXCLAMATION), nullptr, SND_ALIAS_ID | SND_ASYNC);
 		}
 		else {
 			if (m_pTaskbarList)
@@ -430,9 +430,9 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			temp.LoadString(IDS_SUCCESS);
 			CString log;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
-				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCTSTR>(temp), tickSpent, static_cast<LPCTSTR>(strEndTime));
+				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCWSTR>(temp), tickSpent, static_cast<LPCWSTR>(strEndTime));
 			else
-				log.Format(L"\r\n%s\r\n", static_cast<LPCTSTR>(temp));
+				log.Format(L"\r\n%s\r\n", static_cast<LPCWSTR>(temp));
 			if (CTheme::Instance().IsHighContrastMode())
 				InsertColorText(this->m_Log, log, ::GetSysColor(COLOR_WINDOWTEXT));
 			else
@@ -455,7 +455,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 					{
 						++i;
 						m_ctrlPostCmd.AddEntry(entry.label, entry.icon);
-						TCHAR accellerator = CStringUtils::GetAccellerator(entry.label);
+						wchar_t accellerator = CStringUtils::GetAccellerator(entry.label);
 						if (accellerator == L'\0')
 							continue;
 						++m_accellerators[accellerator].cnt;
@@ -659,7 +659,7 @@ void CProgressDlg::WriteLog() const
 	{
 		logfile.AddTimeLine();
 		CString text = GetLogText();
-		LPCTSTR psz_string = text;
+		LPCWSTR psz_string = text;
 		while (*psz_string)
 		{
 			size_t i_len = wcscspn(psz_string, L"\r\n");

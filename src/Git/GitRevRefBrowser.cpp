@@ -16,8 +16,6 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
-#pragma once
 #include "stdafx.h"
 #include "gittype.h"
 #include "Git.h"
@@ -54,7 +52,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 	}
 
 	CString cmd;
-	cmd.Format(L"git.exe for-each-ref%s --format=\"%%(refname)%%04 %%(objectname)%%04 %%(upstream)%%04 %%(subject)%%04 %%(authorname)%%04 %%(authoremail)%%04 %%(authordate:raw)%%04 %%(creator)%%04 %%(creatordate:raw)%%03\"", static_cast<LPCTSTR>(args));
+	cmd.Format(L"git.exe for-each-ref%s --format=\"%%(refname)%%04 %%(objectname)%%04 %%(upstream)%%04 %%(subject)%%04 %%(authorname)%%04 %%(authoremail)%%04 %%(authordate:raw)%%04 %%(creator)%%04 %%(creatordate:raw)%%03\"", static_cast<LPCWSTR>(args));
 	CString allRefs;
 	if (g_Git.Run(cmd, &allRefs, &err, CP_UTF8))
 		return -1;

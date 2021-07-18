@@ -54,7 +54,7 @@ public:
 
 	// Look for temporary files left around by TortoiseMerge and
 	// remove them. But only delete 'old' files
-	static void		DeleteOldTempFiles(LPCTSTR wildCard);
+	static void		DeleteOldTempFiles(LPCWSTR wildCard);
 
 	void			AddFileToRemove(const CString& file) { m_TempFileList.AddPath(CTGitPath(file)); }
 
@@ -75,6 +75,6 @@ private:
 
 	// construction / destruction
 
-	CTempFiles(void);
-	~CTempFiles(void);
+	CTempFiles();
+	~CTempFiles();
 };

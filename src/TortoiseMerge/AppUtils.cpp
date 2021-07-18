@@ -83,7 +83,7 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	if (contextsize >= 0)
 		diffContext.Format(L"--unified=%d", contextsize);
 	CString cmd, err;
-	cmd.Format(L"git.exe diff --no-index %s -- \"%s\" \"%s\"", static_cast<LPCTSTR>(diffContext), static_cast<LPCTSTR>(orig), static_cast<LPCTSTR>(modified));
+	cmd.Format(L"git.exe diff --no-index %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(diffContext), static_cast<LPCWSTR>(orig), static_cast<LPCWSTR>(modified));
 
 	int result = g_Git.RunLogFile(cmd, output, &err);
 	if (result != 0 && result != 1 && bShowError)

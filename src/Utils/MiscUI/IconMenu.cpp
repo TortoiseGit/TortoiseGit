@@ -22,12 +22,12 @@
 #include "registry.h"
 #include "LoadIconEx.h"
 
-CIconMenu::CIconMenu(void) : CMenu()
+CIconMenu::CIconMenu() : CMenu()
 {
 	bShowIcons = !!DWORD(CRegDWORD(L"Software\\TortoiseGit\\ShowAppContextMenuIcons", TRUE));
 }
 
-CIconMenu::~CIconMenu(void)
+CIconMenu::~CIconMenu()
 {
 	for (const auto& iconhandle : iconhandles)
 		DestroyIcon(iconhandle.second);
@@ -53,7 +53,7 @@ BOOL CIconMenu::CreatePopupMenu()
 	return TRUE;
 }
 
-BOOL CIconMenu::SetMenuStyle(void)
+BOOL CIconMenu::SetMenuStyle()
 {
 	MENUINFO MenuInfo = { 0 };
 
@@ -66,9 +66,9 @@ BOOL CIconMenu::SetMenuStyle(void)
 	return TRUE;
 }
 
-BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCTSTR lpszNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
+BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCWSTR lpszNewItem, UINT uIcon /* = 0 */, HMENU hsubmenu /* = nullptr */)
 {
-	TCHAR menutextbuffer[255] = {0};
+	wchar_t menutextbuffer[255] = { 0 };
 	wcscpy_s(menutextbuffer, lpszNewItem);
 
 	MENUITEMINFO info = {0};

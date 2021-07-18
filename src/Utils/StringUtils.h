@@ -140,7 +140,7 @@ public:
 	/**
 	 * Returns the accellerator used in the string or \0
 	 */
-	static TCHAR GetAccellerator(const CString& text);
+	static wchar_t GetAccellerator(const CString& text);
 
 	/**
 	 * Writes an ASCII CString to the clipboard in CF_TEXT format
@@ -184,7 +184,7 @@ public:
 
 	static bool StartsWith(const wchar_t* heystack, const CString& needle);
 	static bool StartsWithI(const wchar_t* heystack, const CString& needle);
-	static bool WriteStringToTextFile(LPCTSTR path, LPCTSTR text, bool bUTF8 = true);
+	static bool WriteStringToTextFile(LPCWSTR path, LPCWSTR text, bool bUTF8 = true);
 	static bool EndsWith(const CString& heystack, const wchar_t* needle);
 	static bool EndsWith(const CString& heystack, const wchar_t needle);
 	static bool EndsWithI(const CString& heystack, const wchar_t* needle);
@@ -202,7 +202,7 @@ public:
 	 * Replace all pipe (|) character in the string with a nullptr character. Used
 	 * for passing into Win32 functions that require such representation
 	 */
-	static void PipesToNulls(TCHAR* buffer, size_t length);
-	static void PipesToNulls(TCHAR* buffer);
+	static void PipesToNulls(wchar_t* buffer, size_t length);
+	static void PipesToNulls(wchar_t* buffer);
 };
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2020 - TortoiseGit
+// Copyright (C) 2011-2021 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -69,12 +69,12 @@ void LoadLangDll()
 	{
 		g_langid = g_ShellCache.GetLangID();
 		DWORD langId = g_langid;
-		TCHAR langDll[MAX_PATH*4] = {0};
+		wchar_t langDll[MAX_PATH * 4] = { 0 };
 		HINSTANCE hInst = nullptr;
-		TCHAR langdir[MAX_PATH] = {0};
+		wchar_t langdir[MAX_PATH] = { 0 };
 		if (GetModuleFileName(g_hmodThisDll, langdir, _countof(langdir))==0)
 			return;
-		TCHAR* dirpoint = wcsrchr(langdir, L'\\');
+		wchar_t* dirpoint = wcsrchr(langdir, L'\\');
 		if (dirpoint)
 			*dirpoint = L'\0';
 		dirpoint = wcsrchr(langdir, L'\\');
@@ -185,7 +185,7 @@ STDMETHODIMP CShellExt::Load(LPCOLESTR /*pszFileName*/, DWORD /*dwMode*/)
 }
 
 // ICopyHook member
-UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCTSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCTSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
+UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*/, LPCWSTR pszSrcFile, DWORD /*dwSrcAttribs*/, LPCWSTR /*pszDestFile*/, DWORD /*dwDestAttribs*/)
 {
 	switch (wFunc)
 	{

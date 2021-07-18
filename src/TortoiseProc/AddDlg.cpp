@@ -214,7 +214,7 @@ LRESULT CAddDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
 	CTGitPath path;
-	path.SetFromWin(reinterpret_cast<LPCTSTR>(lParam));
+	path.SetFromWin(reinterpret_cast<LPCWSTR>(lParam));
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;

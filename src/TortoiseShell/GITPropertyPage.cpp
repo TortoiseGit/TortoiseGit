@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames
 		++m_iStripLength;
 }
 
-CGitPropertyPage::~CGitPropertyPage(void)
+CGitPropertyPage::~CGitPropertyPage()
 {
 }
 
@@ -243,7 +243,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	{
 	case IDC_SHOWLOG:
 		{
-			tstring gitCmd = L" /command:";
+			std::wstring gitCmd = L" /command:";
 			gitCmd += L"log /path:\"";
 			gitCmd += filenames.front().c_str();
 			gitCmd += L'"';
@@ -254,7 +254,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 		break;
 	case IDC_SHOWSETTINGS:
 		{
-			tstring gitCmd = L" /command:";
+			std::wstring gitCmd = L" /command:";
 			gitCmd += L"settings /path:\"";
 			gitCmd += m_ProjectTopDir;
 			gitCmd += L'"';
@@ -287,9 +287,9 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 	}
 }
 
-void CGitPropertyPage::RunCommand(const tstring& command)
+void CGitPropertyPage::RunCommand(const std::wstring& command)
 {
-	tstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
+	std::wstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
 	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str()))
 	{
 		// process started - exit
@@ -299,7 +299,7 @@ void CGitPropertyPage::RunCommand(const tstring& command)
 	MessageBox(nullptr, CFormatMessageWrapper(), L"TortoiseGitProc launch failed", MB_OK | MB_ICONERROR);
 }
 
-void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const
+void CGitPropertyPage::Time64ToTimeString(__time64_t time, wchar_t* buf, size_t buflen) const
 {
 	struct tm newtime;
 	SYSTEMTIME systime;
@@ -311,8 +311,8 @@ void CGitPropertyPage::Time64ToTimeString(__time64_t time, TCHAR * buf, size_t b
 	*buf = '\0';
 	if (time)
 	{
-		TCHAR timebuf[MAX_STRING_LENGTH] = { 0 };
-		TCHAR datebuf[MAX_STRING_LENGTH] = { 0 };
+		wchar_t timebuf[MAX_STRING_LENGTH] = { 0 };
+		wchar_t datebuf[MAX_STRING_LENGTH] = { 0 };
 		_localtime64_s(&newtime, &time);
 
 		systime.wDay = static_cast<WORD>(newtime.tm_mday);
@@ -560,7 +560,7 @@ void CGitPropertyPage::InitWorkfileView()
 				if (pos > 0)
 				{
 					CString remoteName;
-					remoteName.Format(L"remote.%s.url", static_cast<LPCTSTR>(remotebranch.Left(pos)));
+					remoteName.Format(L"remote.%s.url", static_cast<LPCWSTR>(remotebranch.Left(pos)));
 					config.GetString(remoteName, remoteUrl);
 				}
 			}

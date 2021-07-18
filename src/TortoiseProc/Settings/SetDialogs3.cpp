@@ -122,7 +122,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 			m_langCombo.SetCurSel(2);
 		else if (!value.IsEmpty())
 		{
-			LPTSTR strEnd;
+			LPWSTR strEnd;
 			long longValue = wcstol(value, &strEnd, 0);
 			if (longValue == 0)
 			{
@@ -275,7 +275,7 @@ BOOL CSetDialogs3::OnApply()
 	return ISettingsPropPage::OnApply();
 }
 
-BOOL CSetDialogs3::EnumLocalesProc(LPTSTR lpLocaleString)
+BOOL CSetDialogs3::EnumLocalesProc(LPWSTR lpLocaleString)
 {
 	DWORD langID = wcstol(lpLocaleString, nullptr, 16);
 	g_langs.push_back(langID);
@@ -284,7 +284,7 @@ BOOL CSetDialogs3::EnumLocalesProc(LPTSTR lpLocaleString)
 
 void CSetDialogs3::AddLangToCombo(DWORD langID)
 {
-	TCHAR buf[MAX_PATH] = {0};
+	wchar_t buf[MAX_PATH] = { 0 };
 	GetLocaleInfo(langID, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
 	CString sLang = buf;
 	GetLocaleInfo(langID, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));

@@ -27,10 +27,10 @@
 class CUtils
 {
 public:
-	CUtils(void);
-	~CUtils(void);
-	static void StringExtend(LPTSTR str);
-	static void StringCollapse(LPTSTR str);
+	CUtils();
+	~CUtils();
+	static void StringExtend(LPWSTR str);
+	static void StringCollapse(LPWSTR str);
 	static void Error();
 	static void SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith);
 };

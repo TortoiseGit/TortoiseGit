@@ -126,7 +126,7 @@ public:
 	 * text in between _ chars is underlined
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
-	static bool FindStyleChars(const CString& sText, TCHAR stylechar, int& start, int& end);
+	static bool FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end);
 	/**
 	* implements URL searching with the same logic as CSciEdit::StyleURLs
 	*/
@@ -149,7 +149,7 @@ public:
 
 	static bool Export(HWND hWnd, const CString* BashHash = nullptr, const CTGitPath* orgPath = nullptr);
 	static bool UpdateBranchDescription(const CString& branch, CString description);
-	static bool CreateBranchTag(HWND hWnd, bool isTag = true, const CString* ref = nullptr, bool switchNewBranch = false, LPCTSTR name = nullptr);
+	static bool CreateBranchTag(HWND hWnd, bool isTag = true, const CString* ref = nullptr, bool switchNewBranch = false, LPCWSTR name = nullptr);
 	static bool Switch(HWND hWnd, const CString& initialRefName = CString());
 	static bool PerformSwitch(HWND hWnd, const CString& ref, bool bForce = false, const CString& sNewBranch = CString(), bool bBranchOverride = false, BOOL bTrack = 2, bool bMerge = false);
 

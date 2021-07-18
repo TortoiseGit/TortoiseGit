@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2019, 2021 - TortoiseGit
 // Copyright (C) 2006-2008, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -81,8 +81,8 @@ typedef struct hookcmd
 	CString			sRegKey;
 } hookcmd;
 
-typedef std::map<hookkey, hookcmd>::iterator hookiterator;
-typedef std::map<hookkey, hookcmd>::const_iterator const_hookiterator;
+using hookiterator = std::map<hookkey, hookcmd>::iterator;
+using const_hookiterator = std::map<hookkey, hookcmd>::const_iterator;
 
 /**
  * \ingroup TortoiseProc
@@ -121,7 +121,7 @@ public:
 	/**
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
-	void				Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd,
+	void				Add(hooktype ht, const CTGitPath& Path, LPCWSTR szCmd,
 							bool bWait, bool bShow, bool bEnabled, bool bLocal);
 
 	/**
@@ -198,7 +198,7 @@ private:
 	 * \param bShow set to true if the process should be started visible.
 	 * \return the exit code of the process if \c bWait is true, zero otherwise.
 	 */
-	static DWORD		RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow);
+	static DWORD		RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bWait, bool bShow);
 	/**
 	 * Find the hook script information for the hook type \c t which matches the
 	 * path in \c workingTree.

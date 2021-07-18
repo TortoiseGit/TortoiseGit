@@ -67,7 +67,7 @@ protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg void OnSettingChange(UINT uFlags, LPCWSTR lpszSection);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 
 	DECLARE_MESSAGE_MAP()

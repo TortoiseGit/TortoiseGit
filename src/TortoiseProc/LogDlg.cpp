@@ -483,11 +483,11 @@ BOOL CLogDlg::OnInitDialog()
 
 	m_History.SetMaxHistoryItems(CRegDWORD(L"Software\\TortoiseGit\\MaxRefHistoryItems", 5));
 	CString reg;
-	reg.Format(L"Software\\TortoiseGit\\History\\log-refs\\%s", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
+	reg.Format(L"Software\\TortoiseGit\\History\\log-refs\\%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 	reg.Replace(L':', L'_');
 	m_History.Load(reg, L"ref");
 
-	reg.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", static_cast<LPCTSTR>(g_Git.m_CurrentDir));
+	reg.Format(L"Software\\TortoiseGit\\History\\LogDlg_Limits\\%s\\FromDate", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 	reg.Replace(L':', L'_');
 	m_regLastSelectedFromDate = CRegString(reg);
 
@@ -676,7 +676,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 	while (offset < msg.GetLength())
 	{
 		old = offset;
-		TCHAR e = msg[offset];
+		wchar_t e = msg[offset];
 		if (e == '\n')
 		{
 			++offset;
@@ -710,7 +710,7 @@ std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
 			}
 			if (LookLikeGitHash(msg, offset))
 			{
-				TCHAR d = offset < msg.GetLength() ? msg[offset] : '\0';
+				wchar_t d = offset < msg.GetLength() ? msg[offset] : '\0';
 				if (!((d >= 'A' && d <= 'Z') || (d >= 'a' && d <= 'z') || (d >= '0' && d <= '9')))
 				{
 					CHARRANGE range = { old, offset };
@@ -1107,9 +1107,9 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 			{
 				CString cmd;
 				if (pLogEntry->m_CommitHash.IsEmpty())
-					cmd.Format(L"git.exe diff HEAD -- \"%s\"", static_cast<LPCTSTR>(p->GetGitPathString()));
+					cmd.Format(L"git.exe diff HEAD -- \"%s\"", static_cast<LPCWSTR>(p->GetGitPathString()));
 				else
-					cmd.Format(L"git.exe diff %s^%d..%s -- \"%s\"", static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCTSTR>(pLogEntry->m_CommitHash.ToString()), static_cast<LPCTSTR>(p->GetGitPathString()));
+					cmd.Format(L"git.exe diff %s^%d..%s -- \"%s\"", static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(p->GetGitPathString()));
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
@@ -1223,12 +1223,12 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 		if (i == static_cast<int>(m_LogList.m_arShownList.size()))
 		{
 			CString msg;
-			msg.Format(IDS_LOG_NOT_VISIBLE, static_cast<LPCTSTR>(gotoHash.ToString()));
+			msg.Format(IDS_LOG_NOT_VISIBLE, static_cast<LPCWSTR>(gotoHash.ToString()));
 			MessageBox(msg, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 			return;
 		}
 	}
-	PlaySound(reinterpret_cast<LPCTSTR>(SND_ALIAS_SYSTEMASTERISK), nullptr, SND_ASYNC | SND_ALIAS_ID);
+	PlaySound(reinterpret_cast<LPCWSTR>(SND_ALIAS_SYSTEMASTERISK), nullptr, SND_ASYNC | SND_ALIAS_ID);
 }
 
 void CLogDlg::OnBnClickedRefresh()
@@ -1361,7 +1361,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		CString head = L"HEAD";
 		CString curBranch = g_Git.GetCurrentBranch();
 		if (!curBranch.IsEmpty())
-			head.AppendFormat(L" -> \"%s\"", static_cast<LPCTSTR>(curBranch));
+			head.AppendFormat(L" -> \"%s\"", static_cast<LPCWSTR>(curBranch));
 		popup.AppendMenuIcon(++cnt, head);
 		CGitHash fetchHead;
 		g_Git.GetHash(fetchHead, g_Git.FixBranchName(L"FETCH_HEAD"));
@@ -1472,7 +1472,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			CString number;
 			number.Format(L"%ld", m_LogList.m_Filter.m_NumberOfLogs);
 			CString item;
-			item.Format(strScale, static_cast<LPCTSTR>(number));
+			item.Format(strScale, static_cast<LPCWSTR>(number));
 			popup.AppendMenuIcon(++cnt, item);
 		}
 
@@ -2381,7 +2381,7 @@ void CLogDlg::SetFilterCueText()
 	m_cFilter.SetCueBanner(temp.TrimRight());
 }
 
-bool CLogDlg::Validate(LPCTSTR string)
+bool CLogDlg::Validate(LPCWSTR string)
 {
 	if (!m_bFilterWithRegex)
 		return true;
@@ -2896,7 +2896,7 @@ void CLogDlg::UpdateLogInfoLabel()
 	CString sTemp;
 	sTemp.FormatMessage(IDS_PROC_LOG_STATS,
 		count - start,
-		static_cast<LPCTSTR>(rev2.ToString(g_Git.GetShortHASHLength())), static_cast<LPCTSTR>(rev1.ToString(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
+		static_cast<LPCWSTR>(rev2.ToString(g_Git.GetShortHASHLength())), static_cast<LPCWSTR>(rev1.ToString(g_Git.GetShortHASHLength())), selectedrevs, selectedfiles);
 
 	if(selectedrevs == 1)
 	{
@@ -3069,9 +3069,9 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 	{
 		// URL is relative to the repository root
 		CString url1 = m_sRepositoryRoot + url.Mid(1);
-		TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
+		wchar_t buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 		DWORD len = url.GetLength();
-		if (UrlCanonicalize(static_cast<LPCTSTR>(url1), buf, &len, 0) == S_OK)
+		if (UrlCanonicalize(static_cast<LPCWSTR>(url1), buf, &len, 0) == S_OK)
 			return CString(buf, len);
 		return url1;
 	}
@@ -3085,9 +3085,9 @@ CString CLogDlg::GetAbsoluteUrlFromRelativeUrl(const CString& url)
 		{
 			sHost = m_sRepositoryRoot.Left(m_sRepositoryRoot.Find(L'/', schemepos + 3));
 			CString url1 = sHost + url;
-			TCHAR buf[INTERNET_MAX_URL_LENGTH] = { 0 };
+			wchar_t buf[INTERNET_MAX_URL_LENGTH] = { 0 };
 			DWORD len = url.GetLength();
-			if (UrlCanonicalize(static_cast<LPCTSTR>(url), buf, &len, 0) == S_OK)
+			if (UrlCanonicalize(static_cast<LPCWSTR>(url), buf, &len, 0) == S_OK)
 				return CString(buf, len);
 			return url1;
 		}

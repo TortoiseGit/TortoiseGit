@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2021 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,8 +52,8 @@ typedef struct FileStatusCacheEntry
 class GitFolderStatus
 {
 public:
-	GitFolderStatus(void);
-	~GitFolderStatus(void);
+	GitFolderStatus();
+	~GitFolderStatus();
 	const FileStatusCacheEntry *	GetFullStatus(const CTGitPath& filepath, BOOL bIsFolder);
 	const FileStatusCacheEntry *	GetCachedItem(const CTGitPath& filepath);
 
@@ -67,7 +67,7 @@ private:
 
 	void				ClearCache();
 
-	typedef std::map<std::wstring, FileStatusCacheEntry> FileStatusMap;
+	using FileStatusMap = std::map<std::wstring, FileStatusCacheEntry>;
 	FileStatusMap			m_cache;
 	ULONGLONG				m_TimeStamp;
 	FileStatusCacheEntry	dirstat;

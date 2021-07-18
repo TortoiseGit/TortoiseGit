@@ -18,9 +18,9 @@
 //
 #pragma once
 
-HRESULT SetAppID(LPCTSTR appID);
+HRESULT SetAppID(LPCWSTR appID);
 HRESULT CreateShellLink(PCWSTR pszArguments, PCWSTR pszTitle, int iconIndex, IShellLink **ppsl);
 HRESULT CreateSeparatorLink(IShellLink **ppsl);
 bool IsItemInArray(IShellItem *psi, IObjectArray *poaRemoved);
-void DeleteJumpList(LPCTSTR appID);
+void DeleteJumpList(LPCWSTR appID);
 

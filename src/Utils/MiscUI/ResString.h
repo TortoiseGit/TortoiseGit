@@ -41,7 +41,7 @@ public:
 				str = buf.get();
 		} while (str.empty());
 	}
-	operator TCHAR const * () const { return str.c_str(); }
+	operator wchar_t const * () const { return str.c_str(); }
 	operator std::wstring () const { return str; }
 
 private:

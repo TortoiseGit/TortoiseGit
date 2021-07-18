@@ -100,7 +100,7 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 		m_sSHA256 = m_sSHA256.Left(57) + L"\r\n" + m_sSHA256.Mid(57);
 
 	CString error;
-	error.Format(IDS_ERR_SSL_VALIDATE, static_cast<LPCTSTR>(m_sHostname));
+	error.Format(IDS_ERR_SSL_VALIDATE, static_cast<LPCWSTR>(m_sHostname));
 	SetDlgItemText(IDC_ERRORDESC, error);
 
 	UpdateData(FALSE);

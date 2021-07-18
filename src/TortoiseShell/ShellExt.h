@@ -49,11 +49,11 @@ extern bool					g_lockedovlloaded;
 extern bool					g_addedovlloaded;
 extern bool					g_ignoredovlloaded;
 extern bool					g_unversionedovlloaded;
-extern LPCTSTR				g_MenuIDString;
+extern LPCWSTR				g_MenuIDString;
 
 extern	void				LoadLangDll();
 extern  CComCriticalSection	g_csGlobalCOMGuard;
-typedef CComCritSecLock<CComCriticalSection> AutoLocker;
+using AutoLocker = CComCritSecLock<CComCriticalSection>;
 
 // The actual OLE Shell context menu handler
 /**
@@ -87,7 +87,7 @@ protected:
 	std::wstring uuidSource;
 	std::wstring uuidTarget;
 	int space;
-	TCHAR stringtablebuffer[255];
+	wchar_t stringtablebuffer[255];
 	std::wstring ignoredprops;
 	CRegStdString		regDiffLater;
 
@@ -102,16 +102,16 @@ private:
 	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
 	std::wstring	WriteFileListToTempFile(bool bFoldersOnly);
 	bool			WriteClipboardPathsToTempFile(std::wstring& tempfile);
-	LPCTSTR			GetMenuTextFromResource(int id);
+	LPCWSTR			GetMenuTextFromResource(int id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
-	void			AddPathCommand(tstring& gitCmd, LPCTSTR command, bool bFilesAllowed);
-	void			AddPathFileCommand(tstring& gitCmd, LPCTSTR command, bool bFoldersOnly);
-	void			AddPathFileDropCommand(tstring& gitCmd, LPCTSTR command);
+	void			AddPathCommand(std::wstring& gitCmd, LPCWSTR command, bool bFilesAllowed);
+	void			AddPathFileCommand(std::wstring& gitCmd, LPCWSTR command, bool bFoldersOnly);
+	void			AddPathFileDropCommand(std::wstring& gitCmd, LPCWSTR command);
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(const std::wstring& folder);
-	static void		RunCommand(const tstring& path, const tstring& command, LPCTSTR errorMessage);
+	static void		RunCommand(const std::wstring& path, const std::wstring& command, LPCWSTR errorMessage);
 
 public:
 	CShellExt(FileState state);
@@ -156,7 +156,7 @@ public:
 	//@{
 	STDMETHODIMP	GetClassID(CLSID *pclsid) override;
 	STDMETHODIMP	Load(LPCOLESTR pszFileName, DWORD dwMode) override;
-	STDMETHODIMP	IsDirty(void) override { return S_OK; };
+	STDMETHODIMP	IsDirty() override { return S_OK; };
 	STDMETHODIMP	Save(LPCOLESTR /*pszFileName*/, BOOL /*fRemember*/)  override { return S_OK; };
 	STDMETHODIMP	SaveCompleted(LPCOLESTR /*pszFileName*/) override { return S_OK; };
 	STDMETHODIMP	GetCurFile(LPOLESTR * /*ppszFileName*/) override { return S_OK; };
@@ -183,6 +183,6 @@ public:
 	 * ICopyHook members
 	 */
 	//@{
-	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCTSTR pszSrcFile, DWORD dwSrcAttribs, LPCTSTR pszDestFile, DWORD dwDestAttribs) override;
+	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCWSTR pszSrcFile, DWORD dwSrcAttribs, LPCWSTR pszDestFile, DWORD dwDestAttribs) override;
 	//@}
 };

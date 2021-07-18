@@ -33,11 +33,11 @@
 
 #pragma comment(lib, "comctl32.lib")
 
-tstring CMainWindow::leftpicpath;
-tstring CMainWindow::leftpictitle;
+std::wstring CMainWindow::leftpicpath;
+std::wstring CMainWindow::leftpictitle;
 
-tstring CMainWindow::rightpicpath;
-tstring CMainWindow::rightpictitle;
+std::wstring CMainWindow::rightpicpath;
+std::wstring CMainWindow::rightpictitle;
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
@@ -397,7 +397,7 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
 
                 // Specify the resource identifier of the descriptive
                 // text for the given button.
-                TCHAR stringbuf[MAX_PATH] = {0};
+                wchar_t stringbuf[MAX_PATH] = { 0 };
                 MENUITEMINFO mii;
                 mii.cbSize = sizeof(MENUITEMINFO);
                 mii.fMask = MIIM_TYPE;
@@ -797,12 +797,12 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             }
 
             CString sTemp;
-            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), static_cast<LPCTSTR>(CPathUtils::GetFileNameFromPath(selectionResult.c_str())));
+            sTemp.Format(ResString(hResource, IDS_MARKASRESOLVED), static_cast<LPCWSTR>(CPathUtils::GetFileNameFromPath(selectionResult.c_str())));
             if (MessageBox(m_hwnd, sTemp, L"TortoiseGitMerge", MB_YESNO | MB_ICONQUESTION) != IDYES)
                 break;
 
             CString cmd;
-            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
+            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCWSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
             if (resolveMsgWnd)
                 cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", reinterpret_cast<__int64>(resolveMsgWnd), static_cast<__int64>(resolveMsgWParam), static_cast<__int64>(resolveMsgLParam));
 
@@ -1199,7 +1199,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
         {
         case IDC_LEFTBROWSE:
             {
-                TCHAR path[MAX_PATH] = {0};
+                wchar_t path[MAX_PATH] = { 0 };
                 if (AskForFile(hwndDlg, path))
                 {
                     SetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path);
@@ -1208,7 +1208,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDC_RIGHTBROWSE:
             {
-                TCHAR path[MAX_PATH] = {0};
+                wchar_t path[MAX_PATH] = { 0 };
                 if (AskForFile(hwndDlg, path))
                 {
                     SetDlgItemText(hwndDlg, IDC_RIGHTIMAGE, path);
@@ -1217,7 +1217,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
             break;
         case IDOK:
             {
-                TCHAR path[MAX_PATH] = { 0 };
+                wchar_t path[MAX_PATH] = { 0 };
                 if (!GetDlgItemText(hwndDlg, IDC_LEFTIMAGE, path, _countof(path)))
                     *path = 0;
                 leftpicpath = path;
@@ -1235,7 +1235,7 @@ BOOL CALLBACK CMainWindow::OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam
     return FALSE;
 }
 
-bool CMainWindow::AskForFile(HWND owner, TCHAR * path)
+bool CMainWindow::AskForFile(HWND owner, wchar_t* path)
 {
     OPENFILENAME ofn = {0};         // common dialog box structure
     // Initialize OPENFILENAME
@@ -1247,7 +1247,7 @@ bool CMainWindow::AskForFile(HWND owner, TCHAR * path)
     ofn.lpstrTitle = sTitle;
     ofn.Flags = OFN_DONTADDTORECENT | OFN_FILEMUSTEXIST | OFN_EXPLORER;
     ofn.hInstance = ::hResource;
-    TCHAR filters[] = L"Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf;*.webp\0All (*.*)\0*.*\0\0";
+    wchar_t filters[] = L"Images\0*.wmf;*.jpg;*jpeg;*.bmp;*.gif;*.png;*.ico;*.dib;*.emf;*.webp\0All (*.*)\0*.*\0\0";
     ofn.lpstrFilter = filters;
     ofn.nFilterIndex = 1;
     // Display the Open dialog box.
@@ -1268,7 +1268,7 @@ bool CMainWindow::CreateToolbar()
 
     hwndTB = CreateWindowEx(TBSTYLE_EX_DOUBLEBUFFER,
                             TOOLBARCLASSNAME,
-                            static_cast<LPCTSTR>(nullptr),
+                            static_cast<LPCWSTR>(nullptr),
                             WS_CHILD | WS_BORDER | WS_VISIBLE | TBSTYLE_FLAT | TBSTYLE_TOOLTIPS,
                             0, 0, 0, 0,
                             *this,

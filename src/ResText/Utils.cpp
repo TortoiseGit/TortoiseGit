@@ -20,23 +20,23 @@
 #include "Utils.h"
 #include "FormatMessageWrapper.h"
 
-CUtils::CUtils(void)
+CUtils::CUtils()
 {
 }
 
-CUtils::~CUtils(void)
+CUtils::~CUtils()
 {
 }
 
-void CUtils::StringExtend(LPTSTR str)
+void CUtils::StringExtend(LPWSTR str)
 {
-	TCHAR * cPos = str;
+	wchar_t* cPos = str;
 	do
 	{
 		cPos = wcschr(cPos, '\\');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = '\\';
 			cPos++;
@@ -49,7 +49,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\n');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 'n';
 		}
@@ -60,7 +60,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\r');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 'r';
 		}
@@ -71,7 +71,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '\t');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = 't';
 		}
@@ -82,7 +82,7 @@ void CUtils::StringExtend(LPTSTR str)
 		cPos = wcschr(cPos, '"');
 		if (cPos)
 		{
-			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(TCHAR));
+			memmove(cPos + 1, cPos, (wcslen(cPos) + 1) * sizeof(wchar_t));
 			*cPos = '\\';
 			*(cPos+1) = '"';
 			cPos++;
@@ -91,9 +91,9 @@ void CUtils::StringExtend(LPTSTR str)
 	} while (cPos);
 }
 
-void CUtils::StringCollapse(LPTSTR str)
+void CUtils::StringCollapse(LPWSTR str)
 {
-	TCHAR * cPos = str;
+	wchar_t* cPos = str;
 	do
 	{
 		cPos = wcschr(cPos, '\\');
@@ -102,27 +102,27 @@ void CUtils::StringCollapse(LPTSTR str)
 			if (*(cPos+1) == 'n')
 			{
 				*cPos = '\n';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) + 1) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == 'r')
 			{
 				*cPos = '\r';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == 't')
 			{
 				*cPos = '\t';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == '"')
 			{
 				*cPos = '"';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			else if (*(cPos+1) == '\\')
 			{
 				*cPos = '\\';
-				memmove(cPos+1, cPos+2, (wcslen(cPos+2)+1)*sizeof(TCHAR));
+				memmove(cPos+1, cPos + 2, (wcslen(cPos + 2) +1 ) * sizeof(wchar_t));
 			}
 			cPos++;
 		}
@@ -133,7 +133,7 @@ void CUtils::Error()
 {
 	CFormatMessageWrapper errorDetails;
 	if (errorDetails)
-		_ftprintf (stderr, L"%s\n", static_cast<LPCTSTR>(errorDetails));
+		fwprintf(stderr, L"%s\n", static_cast<LPCWSTR>(errorDetails));
 }
 
 void CUtils::SearchReplace(std::wstring& str, const std::wstring& toreplace, const std::wstring& replacewith)

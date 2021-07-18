@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,14 +25,14 @@
 #include "GitStatus.h"
 #include <set>
 
-CCachedDirectory::CCachedDirectory(void)
+CCachedDirectory::CCachedDirectory()
 	: m_currentFullStatus(git_wc_status_none)
 	, m_mostImportantFileStatus(git_wc_status_none)
 	, m_bRecursive(true)
 {
 }
 
-CCachedDirectory::~CCachedDirectory(void)
+CCachedDirectory::~CCachedDirectory()
 {
 }
 
@@ -64,7 +64,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCTSTR>(key), sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCWSTR>(key), sizeof(wchar_t), value, pFile) != value)
 				return false;
 			if (!entry.second.SaveToDisk(pFile))
 				return false;
@@ -79,7 +79,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 		WRITEVALUETOFILE(value);
 		if (value)
 		{
-			if (fwrite(static_cast<LPCTSTR>(path), sizeof(TCHAR), value, pFile)!=value)
+			if (fwrite(static_cast<LPCWSTR>(path), sizeof(wchar_t), value, pFile) != value)
 				return false;
 			git_wc_status_kind status = entry.second;
 			WRITEVALUETOFILE(status);
@@ -89,7 +89,7 @@ BOOL CCachedDirectory::SaveToDisk(FILE * pFile)
 	WRITEVALUETOFILE(value);
 	if (value)
 	{
-		if (fwrite(m_directoryPath.GetWinPath(), sizeof(TCHAR), value, pFile)!=value)
+		if (fwrite(m_directoryPath.GetWinPath(), sizeof(wchar_t), value, pFile) != value)
 			return false;
 	}
 	if (!m_ownStatus.SaveToDisk(pFile))
@@ -119,7 +119,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			if (value)
 			{
 				CString sKey;
-				if (fread(sKey.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+				if (fread(sKey.GetBuffer(value+1), sizeof(wchar_t), value, pFile) != value)
 				{
 					sKey.ReleaseBuffer(0);
 					return false;
@@ -142,7 +142,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 			if (value)
 			{
 				CString sPath;
-				if (fread(sPath.GetBuffer(value), sizeof(TCHAR), value, pFile)!=value)
+				if (fread(sPath.GetBuffer(value), sizeof(wchar_t), value, pFile) != value)
 				{
 					sPath.ReleaseBuffer(0);
 					return false;
@@ -159,7 +159,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 		if (value)
 		{
 			CString sPath;
-			if (fread(sPath.GetBuffer(value+1), sizeof(TCHAR), value, pFile)!=value)
+			if (fread(sPath.GetBuffer(value+1), sizeof(wchar_t), value, pFile) != value)
 			{
 				sPath.ReleaseBuffer(0);
 				return false;

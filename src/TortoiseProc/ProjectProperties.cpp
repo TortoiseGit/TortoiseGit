@@ -33,7 +33,7 @@ struct num_compare
 	}
 };
 
-ProjectProperties::ProjectProperties(void)
+ProjectProperties::ProjectProperties()
 	: regExNeedUpdate (true)
 	, nBugIdPos(-1)
 	, bWarnNoSignedOffBy(FALSE)
@@ -117,7 +117,7 @@ int ProjectProperties::ReadProps()
 			lProjectLanguage = -1;
 		if (!val.IsEmpty())
 		{
-			LPTSTR strEnd;
+			LPWSTR strEnd;
 			lProjectLanguage = wcstol(val, &strEnd, 0);
 		}
 	}
@@ -470,7 +470,7 @@ BOOL ProjectProperties::CheckBugID(const CString& sID)
 		int len = sID.GetLength();
 		for (int i=0; i<len; ++i)
 		{
-			TCHAR c = sID.GetAt(i);
+			wchar_t c = sID.GetAt(i);
 			if ((c < '0')&&(c != ',')&&(c != ' '))
 				return FALSE;
 			if (c > '9')
@@ -487,7 +487,7 @@ BOOL ProjectProperties::HasBugID(const CString& sMsg)
 		try
 		{
 			AutoUpdateRegex();
-			return std::regex_search(static_cast<LPCTSTR>(sMsg), regCheck);
+			return std::regex_search(static_cast<LPCWSTR>(sMsg), regCheck);
 		}
 		catch (std::exception&) {}
 	}

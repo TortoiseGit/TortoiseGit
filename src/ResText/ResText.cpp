@@ -23,9 +23,7 @@
 #include <Shlwapi.h>
 #pragma comment(lib, "shlwapi.lib")
 
-typedef std::basic_string<TCHAR> tstring;
-
-int _tmain(int argc, _TCHAR* argv[])
+int wmain(int argc, wchar_t* argv[])
 {
 	bool bShowHelp = true;
 	bool bQuiet = false;
@@ -34,18 +32,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	bool bUseHeader = false;
 	bool bAdjustEOLs = false;
 	//parse the command line
-	std::vector<tstring> arguments;
-	std::vector<tstring> switches;
+	std::vector<std::wstring> arguments;
+	std::vector<std::wstring> switches;
 	for (int i=1; i<argc; ++i)
 	{
 		if ((argv[i][0] == '-')||(argv[i][0] == '/'))
 		{
-			tstring str = tstring(&argv[i][1]);
+			std::wstring str = std::wstring(&argv[i][1]);
 			switches.push_back(str);
 		}
 		else
 		{
-			tstring str = tstring(&argv[i][0]);
+			std::wstring str = std::wstring(&argv[i][0]);
 			arguments.push_back(str);
 		}
 	}
@@ -73,17 +71,17 @@ int _tmain(int argc, _TCHAR* argv[])
 	{
 		if (wcscmp(arg->c_str(), L"extract")==0)
 		{
-			tstring sPoFile;
-			tstring sHeaderFile;
+			std::wstring sPoFile;
+			std::wstring sHeaderFile;
 			++arg;
 
 			std::vector<std::wstring> filelist = arguments;
 			filelist.erase(filelist.begin());
-			sPoFile = tstring((--filelist.end())->c_str());
+			sPoFile = std::wstring((--filelist.end())->c_str());
 			filelist.erase(--filelist.end());
 			if (bUseHeader)
 			{
-				sHeaderFile = tstring((--filelist.end())->c_str());
+				sHeaderFile = std::wstring((--filelist.end())->c_str());
 				filelist.erase(--filelist.end());
 			}
 
@@ -95,26 +93,26 @@ int _tmain(int argc, _TCHAR* argv[])
 		}
 		else if (wcscmp(arg->c_str(), L"apply")==0)
 		{
-			tstring sSrcDllFile;
-			tstring sDstDllFile;
-			tstring sPoFile;
+			std::wstring sSrcDllFile;
+			std::wstring sDstDllFile;
+			std::wstring sPoFile;
 			WORD wLang = 0;
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
-				_ftprintf(stderr, L"the resource dll <%s> does not exist!\n", arg->c_str());
+				fwprintf(stderr, L"the resource dll <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
-			sSrcDllFile = tstring(arg->c_str());
+			sSrcDllFile = std::wstring(arg->c_str());
 			++arg;
-			sDstDllFile = tstring(arg->c_str());
+			sDstDllFile = std::wstring(arg->c_str());
 			++arg;
 			if (!PathFileExists(arg->c_str()))
 			{
-				_ftprintf(stderr, L"the po-file <%s> does not exist!\n", arg->c_str());
+				fwprintf(stderr, L"the po-file <%s> does not exist!\n", arg->c_str());
 				return -1;
 			}
-			sPoFile = tstring(arg->c_str());
+			sPoFile = std::wstring(arg->c_str());
 			++arg;
 			if (arg != arguments.end())
 			{
@@ -133,24 +131,24 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	if (bShowHelp)
 	{
-		_ftprintf(stdout, L"usage:\n");
-		_ftprintf(stdout, L"\n");
-		_ftprintf(stdout, L"ResText extract <resource.dll> [<resource.dll> ...] [-useheaderfile <headerfile>] <po-file> [-quiet] [-noupdate]\n");
-		_ftprintf(stdout, L"Extracts all strings from the resource dll and writes them to the po-file\n");
-		_ftprintf(stdout, L"-useheaderfile: the content of the header file instead of a default header\n");
-		_ftprintf(stdout, L"-quiet: don't print progress messages\n");
-		_ftprintf(stdout, L"-noupdate: overwrite the po-file\n");
-		_ftprintf(stdout, L"\n");
-		_ftprintf(stdout, L"ResText apply <src resource.dll> <dst resource.dll> <po-file> [langID] [-quiet][-rtl]\n");
-		_ftprintf(stdout, L"Replaces all strings in the dst resource.dll with the po-file translations\n");
-		_ftprintf(stdout, L"-quiet: don't print progress messages\n");
-		_ftprintf(stdout, L"-rtl  : change the controls to RTL reading\n");
-		_ftprintf(stdout, L"-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n");
-		_ftprintf(stdout, L"\n");
-		_ftprintf(stdout, L"Note: when extracting resources, C-resource header files can be specified\n");
-		_ftprintf(stdout, L"like this: <resource.dll>*<resource.h>*<resource.h>*...\n");
-		_ftprintf(stdout, L"If a resource header file is specified, the defines are used in the po file\n");
-		_ftprintf(stdout, L"as hints instead of the plain control ID number.\n");
+		fwprintf(stdout, L"usage:\n");
+		fwprintf(stdout, L"\n");
+		fwprintf(stdout, L"ResText extract <resource.dll> [<resource.dll> ...] [-useheaderfile <headerfile>] <po-file> [-quiet] [-noupdate]\n");
+		fwprintf(stdout, L"Extracts all strings from the resource dll and writes them to the po-file\n");
+		fwprintf(stdout, L"-useheaderfile: the content of the header file instead of a default header\n");
+		fwprintf(stdout, L"-quiet: don't print progress messages\n");
+		fwprintf(stdout, L"-noupdate: overwrite the po-file\n");
+		fwprintf(stdout, L"\n");
+		fwprintf(stdout, L"ResText apply <src resource.dll> <dst resource.dll> <po-file> [langID] [-quiet][-rtl]\n");
+		fwprintf(stdout, L"Replaces all strings in the dst resource.dll with the po-file translations\n");
+		fwprintf(stdout, L"-quiet: don't print progress messages\n");
+		fwprintf(stdout, L"-rtl  : change the controls to RTL reading\n");
+		fwprintf(stdout, L"-adjusteols : if the msgid string has \\r\\n eols, enforce those for the translation too.\n");
+		fwprintf(stdout, L"\n");
+		fwprintf(stdout, L"Note: when extracting resources, C-resource header files can be specified\n");
+		fwprintf(stdout, L"like this: <resource.dll>*<resource.h>*<resource.h>*...\n");
+		fwprintf(stdout, L"If a resource header file is specified, the defines are used in the po file\n");
+		fwprintf(stdout, L"as hints instead of the plain control ID number.\n");
 	}
 
 	return 0;

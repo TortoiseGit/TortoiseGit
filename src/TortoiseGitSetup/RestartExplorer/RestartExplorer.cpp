@@ -26,7 +26,7 @@
 #include <ShlObj.h>
 #include "scope_exit_noexcept.h"
 
-int APIENTRY _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPTSTR /*lpCmdLine*/, int /*nCmdShow*/)
+int APIENTRY wWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
 	SetDllDirectory(L"");
 
@@ -45,7 +45,7 @@ int APIENTRY _tWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPT
 
 	SCOPE_EXIT { CoTaskMemFree(pszPathWindows); };
 
-	TCHAR szPathExplorerExe[MAX_PATH];
+	wchar_t szPathExplorerExe[MAX_PATH];
 	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", pszPathWindows) <= 0)
 		return 1;
 

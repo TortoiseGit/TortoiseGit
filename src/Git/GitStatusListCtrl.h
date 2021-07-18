@@ -267,7 +267,7 @@ public:
 
 	/**
 	 * Sent to the parent window (using ::SendMessage) when the user drops
-	 * files on the control. The LPARAM is a pointer to a TCHAR string
+	 * files on the control. The LPARAM is a pointer to a wchar_t string
 	 * containing the dropped path.
 	 */
 	static const UINT GITSLNM_ADDFILE;
@@ -281,8 +281,8 @@ public:
 
 	static const UINT GITSLNM_ITEMCHANGED;
 
-	CGitStatusListCtrl(void);
-	~CGitStatusListCtrl(void);
+	CGitStatusListCtrl();
+	~CGitStatusListCtrl();
 
 	HWND GetParentHWND();
 

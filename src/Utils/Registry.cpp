@@ -45,10 +45,10 @@ CRegStdBase::CRegStdBase()
 {
 }
 
-CRegStdBase::CRegStdBase (const tstring& key, bool force, HKEY base, REGSAM sam)
-	: CRegBaseCommon<tstring> (key, force, base, sam)
+CRegStdBase::CRegStdBase(const std::wstring& key, bool force, HKEY base, REGSAM sam)
+	: CRegBaseCommon<std::wstring>(key, force, base, sam)
 {
-	tstring::size_type pos = key.find_last_of(L'\\');
+	std::wstring::size_type pos = key.find_last_of(L'\\');
 	m_path = key.substr(0, pos);
 	m_key = key.substr(pos + 1);
 }
@@ -56,7 +56,7 @@ CRegStdBase::CRegStdBase (const tstring& key, bool force, HKEY base, REGSAM sam)
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __ATLTYPES_H__   // defines CRect
-CRegRect::CRegRect(void)
+CRegRect::CRegRect()
 	: CRegTypedBase<CRect, CRegBase>(CRect(0,0,0,0))
 {
 }
@@ -94,7 +94,7 @@ void CRegRect::InternalWrite (HKEY hKey, const CRect& value)
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 #ifdef __ATLTYPES_H__   // defines CPoint
-CRegPoint::CRegPoint(void)
+CRegPoint::CRegPoint()
 	: CRegTypedBase<CPoint, CRegBase>(CPoint(0,0))
 {
 }
@@ -158,7 +158,7 @@ DWORD CRegistryKey::createKey()
 DWORD CRegistryKey::removeKey()
 {
 	RegOpenKeyEx(m_base, m_path, 0, KEY_WRITE|m_sam, &m_hKey);
-	return SHDeleteKey(m_base, static_cast<LPCTSTR>(m_path));
+	return SHDeleteKey(m_base, static_cast<LPCWSTR>(m_path));
 }
 
 bool CRegistryKey::getValues(CStringList& values)
@@ -169,7 +169,7 @@ bool CRegistryKey::getValues(CStringList& values)
 	{
 		for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; ++i)
 		{
-			TCHAR value[255] = { 0 };
+			wchar_t value[255] = { 0 };
 			DWORD size = _countof(value);
 			rc = RegEnumValue(m_hKey, i, value, &size, nullptr, nullptr, nullptr, nullptr);
 			if (rc == ERROR_SUCCESS)
@@ -188,7 +188,7 @@ bool CRegistryKey::getSubKeys(CStringList& subkeys)
 	{
 		for (int i = 0, rc = ERROR_SUCCESS; rc == ERROR_SUCCESS; ++i)
 		{
-			TCHAR value[1024] = { 0 };
+			wchar_t value[1024] = { 0 };
 			DWORD size = _countof(value);
 			FILETIME last_write_time;
 			rc = RegEnumKeyEx(m_hKey, i, value, &size, nullptr, nullptr, nullptr, &last_write_time);

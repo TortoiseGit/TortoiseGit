@@ -59,7 +59,7 @@ static CString Lf2Crlf(const CString& text)
 	if (text.IsEmpty())
 		return s;
 
-	TCHAR c = L'\0';
+	wchar_t c = L'\0';
 	for (int i = 0; i < text.GetLength(); i++)
 	{
 		if (text[i] == L'\n' && c != L'\r')
@@ -115,10 +115,10 @@ BOOL CAboutDlg::OnInitDialog()
 	}
 #endif
 	if (!additionalVersionInformation.IsEmpty())
-		tortoisegitprocpath.Format(L"(%s; %s)", static_cast<LPCTSTR>(additionalVersionInformation), static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+		tortoisegitprocpath.Format(L"(%s; %s)", static_cast<LPCWSTR>(additionalVersionInformation), static_cast<LPCWSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
 	else
-		tortoisegitprocpath.Format(L"(%s)", static_cast<LPCTSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
-	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, static_cast<LPCTSTR>(tortoisegitprocpath), static_cast<LPCTSTR>(out));
+		tortoisegitprocpath.Format(L"(%s)", static_cast<LPCWSTR>(CPathUtils::GetAppDirectory().TrimRight(L'\\')));
+	temp.Format(IDS_ABOUTVERSION, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, static_cast<LPCWSTR>(tortoisegitprocpath), static_cast<LPCWSTR>(out));
 	SetDlgItemText(IDC_VERSIONABOUT, Lf2Crlf(temp));
 
 	this->SetWindowText(L"TortoiseGit");

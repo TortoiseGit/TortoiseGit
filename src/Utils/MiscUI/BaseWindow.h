@@ -34,8 +34,8 @@ class CWindow
 {
 public:
 	virtual bool RegisterWindow(UINT style, HICON hIcon, HCURSOR hCursor,
-								HBRUSH hbrBackground, LPCTSTR lpszMenuName,
-								LPCTSTR lpszClassName, HICON hIconSm);
+								HBRUSH hbrBackground, LPCWSTR lpszMenuName,
+								LPCWSTR lpszClassName, HICON hIconSm);
 	virtual bool RegisterWindow(CONST WNDCLASSEX* wcx);
 
 	/// static message handler to put in WNDCLASSEX structure
@@ -64,7 +64,7 @@ public:
 
 	virtual bool Create();
 	virtual bool Create(DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr);
-	virtual bool CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr, LPCTSTR classname = nullptr);
+	virtual bool CreateEx(DWORD dwExStyles, DWORD dwStyles, HWND hParent = nullptr, RECT* rect = nullptr, LPCWSTR classname = nullptr);
 
 	//void MsgLoop();
 	bool IsWindowClosed() const { return bWindowClosed; };

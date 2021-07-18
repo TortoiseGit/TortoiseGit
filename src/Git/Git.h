@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@
 
 struct git_repository;
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 constexpr static inline int ConvertVersionToInt(unsigned __int8 major, unsigned __int8 minor, unsigned __int8 patchlevel, unsigned __int8 build = 0)
 {
@@ -89,13 +89,13 @@ private:
 	CString m_Cmd;
 };
 
-typedef std::function<void (const CStringA&)> GitReceiverFunc;
+using GitReceiverFunc = std::function<void (const CStringA&)>;
 
-class CEnvironment : protected std::vector<TCHAR>
+class CEnvironment : protected std::vector<wchar_t>
 {
 public:
 	CEnvironment() : baseptr(nullptr) {}
-	CEnvironment(const CEnvironment& env) : std::vector<TCHAR>(env)
+	CEnvironment(const CEnvironment& env) : std::vector<wchar_t>(env)
 	{
 		baseptr = data();
 	}
@@ -109,12 +109,12 @@ public:
 		return *this;
 	}
 	void CopyProcessEnvironment();
-	CString GetEnv(const TCHAR *name);
-	void SetEnv(const TCHAR* name, const TCHAR* value);
+	CString GetEnv(const wchar_t*name);
+	void SetEnv(const wchar_t* name, const wchar_t* value);
 	void AddToPath(CString value);
 	void clear();
 	bool empty();
-	operator LPTSTR();
+	operator LPWSTR();
 	operator LPWSTR*();
 	LPWSTR baseptr;
 	CEnvironment(CEnvironment&& env) = delete;
@@ -261,8 +261,8 @@ public:
 
 	PROCESS_INFORMATION m_CurrentGitPi;
 
-	CGit(void);
-	~CGit(void);
+	CGit();
+	~CGit();
 
 	int Run(CString cmd, CString* output, int code);
 	int Run(CString cmd, CString* output, CString* outputErr, int code);
@@ -296,10 +296,10 @@ public:
 	int SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE type = CONFIG_LOCAL);
 	int UnsetConfigValue(const CString& key, CONFIG_TYPE type = CONFIG_LOCAL);
 
-	CString GetUserName(void);
-	CString GetUserEmail(void);
-	CString GetCommitterName(void);
-	CString GetCommitterEmail(void);
+	CString GetUserName();
+	CString GetUserEmail();
+	CString GetCommitterName();
+	CString GetCommitterEmail();
 	CString GetCurrentBranch(bool fallback = false);
 	void GetRemoteTrackedBranch(const CString& localBranch, CString& remote, CString& branch);
 	void GetRemoteTrackedBranchForHEAD(CString& remote, CString& branch);
@@ -461,7 +461,7 @@ public:
 		return filetime_to_time_t(static_cast<__int64>(ft->dwHighDateTime) << 32 | ft->dwLowDateTime);
 	}
 
-	static int GetFileModifyTime(LPCTSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr, bool* isSymlink = nullptr)
+	static int GetFileModifyTime(LPCWSTR filename, __int64* time, bool* isDir = nullptr, __int64* size = nullptr, bool* isSymlink = nullptr)
 	{
 		WIN32_FILE_ATTRIBUTE_DATA fdata;
 		if (GetFileAttributesEx(filename, GetFileExInfoStandard, &fdata))
@@ -534,6 +534,6 @@ public:
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();
-extern DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPTSTR lpBuffer);
+extern DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPWSTR lpBuffer);
 
 extern CGit g_Git;

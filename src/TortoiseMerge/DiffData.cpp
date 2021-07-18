@@ -37,7 +37,7 @@ int CDiffData::abort_on_pool_failure (int /*retcode*/)
 }
 #pragma warning(pop)
 
-CDiffData::CDiffData(void)
+CDiffData::CDiffData()
 	: m_bViewMovedBlocks(false)
 	, m_bPatchRequired(false)
 {
@@ -50,7 +50,7 @@ CDiffData::CDiffData(void)
 	m_sPatchPatched = L": patched";
 }
 
-CDiffData::~CDiffData(void)
+CDiffData::~CDiffData()
 {
 	apr_terminate();
 }
@@ -105,7 +105,7 @@ bool CDiffData::HandleSvnError(svn_error_t * svnerr)
 		sMsg += CStringA(svnerr->message);
 	}
 	CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);
-	m_sError.Format(IDS_ERR_DIFF_DIFF, static_cast<LPCTSTR>(readableMsg));
+	m_sError.Format(IDS_ERR_DIFF_DIFF, static_cast<LPCWSTR>(readableMsg));
 	svn_error_clear(svnerr);
 	return false;
 }

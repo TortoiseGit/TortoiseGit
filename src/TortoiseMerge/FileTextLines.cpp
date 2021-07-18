@@ -51,7 +51,7 @@ UINT64 inline DwordSwapBytes(UINT64 nValue)
 	return nRet;
 }
 
-CFileTextLines::CFileTextLines(void)
+CFileTextLines::CFileTextLines()
 	: m_bNeedsConversion(false)
 	, m_bKeepEncoding(false)
 {
@@ -59,7 +59,7 @@ CFileTextLines::CFileTextLines(void)
 	m_SaveParams.m_LineEndings = EOL_AUTOLINE;
 }
 
-CFileTextLines::~CFileTextLines(void)
+CFileTextLines::~CFileTextLines()
 {
 }
 
@@ -218,7 +218,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 
 	if (PathIsDirectory(sFilePath))
 	{
-		m_sErrorString.Format(IDS_ERR_FILE_NOTAFILE, static_cast<LPCTSTR>(sFilePath));
+		m_sErrorString.Format(IDS_ERR_FILE_NOTAFILE, static_cast<LPCWSTR>(sFilePath));
 		return FALSE;
 	}
 
@@ -288,7 +288,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 		switch (m_SaveParams.m_UnicodeType)
 		{
 		case BINARY:
-			m_sErrorString.Format(IDS_ERR_FILE_BINARY, static_cast<LPCTSTR>(sFilePath));
+			m_sErrorString.Format(IDS_ERR_FILE_BINARY, static_cast<LPCWSTR>(sFilePath));
 			return FALSE;
 		case UTF8:
 		case UTF8BOM:
@@ -491,7 +491,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 		CStdioFile file;			// Hugely faster than CFile for big file writes - because it uses buffering
 		if (!file.Open(sFilePath, CFile::modeCreate | CFile::modeWrite | CFile::typeBinary | CFile::shareDenyNone))
 		{
-			m_sErrorString.Format(IDS_ERR_FILE_OPEN, static_cast<LPCTSTR>(sFilePath));
+			m_sErrorString.Format(IDS_ERR_FILE_OPEN, static_cast<LPCWSTR>(sFilePath));
 			return FALSE;
 		}
 
@@ -722,7 +722,7 @@ bool CFileTextLines::StripComments( CString& sLine, bool bInBlockComment )
 
 void CFileTextLines::LineRegex( CString& sLine, const std::wregex& rx, const std::wstring& replacement ) const
 {
-	std::wstring str = static_cast<LPCTSTR>(sLine);
+	std::wstring str = static_cast<LPCWSTR>(sLine);
 	std::wstring str2 = std::regex_replace(str, rx, replacement);
 	sLine = str2.c_str();
 }
@@ -782,7 +782,7 @@ bool CBaseFilter::Decode(/*in out*/ CBuffer & data)
 const CBuffer& CBaseFilter::Encode(const CString& s)
 {
 	m_oBuffer.SetLength(s.GetLength()*3+1); // set buffer to guessed max size
-	int nConvertedLen = WideCharToMultiByte(m_nCodePage, 0, static_cast<LPCTSTR>(s), s.GetLength(), static_cast<LPSTR>(m_oBuffer), m_oBuffer.GetLength(), nullptr, nullptr);
+	int nConvertedLen = WideCharToMultiByte(m_nCodePage, 0, static_cast<LPCWSTR>(s), s.GetLength(), static_cast<LPSTR>(m_oBuffer), m_oBuffer.GetLength(), nullptr, nullptr);
 	m_oBuffer.SetLength(nConvertedLen); // set buffer to used size
 	return m_oBuffer;
 }
@@ -797,9 +797,9 @@ bool CUtf16leFilter::Decode(/*in out*/ CBuffer & /*data*/)
 
 const CBuffer& CUtf16leFilter::Encode(const CString& s)
 {
-	int nNeedBytes = s.GetLength()*sizeof(TCHAR);
+	int nNeedBytes = s.GetLength() * sizeof(wchar_t);
 	m_oBuffer.SetLength(nNeedBytes);
-	memcpy(static_cast<void*>(m_oBuffer), static_cast<LPCTSTR>(s), nNeedBytes);
+	memcpy(static_cast<void*>(m_oBuffer), static_cast<LPCWSTR>(s), nNeedBytes);
 	return m_oBuffer;
 }
 
@@ -826,10 +826,10 @@ bool CUtf16beFilter::Decode(/*in out*/ CBuffer & data)
 
 const CBuffer& CUtf16beFilter::Encode(const CString& s)
 {
-	int nNeedBytes = s.GetLength()*sizeof(TCHAR);
+	int nNeedBytes = s.GetLength() * sizeof(wchar_t);
 	m_oBuffer.SetLength(nNeedBytes);
 	// copy swaping BYTE order in WORDs
-	auto p_qwIn = reinterpret_cast<const UINT64*>(static_cast<LPCTSTR>(s));
+	auto p_qwIn = reinterpret_cast<const UINT64*>(static_cast<LPCWSTR>(s));
 	auto p_qwOut = static_cast<UINT64*>(static_cast<void*>(m_oBuffer));
 	int nQwords = nNeedBytes/8;
 	for (int nQword = 0; nQword<nQwords; nQword++)
@@ -895,7 +895,7 @@ const CBuffer& CUtf32leFilter::Encode(const CString& s)
 	int nInWords = s.GetLength();
 	m_oBuffer.SetLength(nInWords*2);
 
-	auto p_In = static_cast<LPCTSTR>(s);
+	auto p_In = static_cast<LPCWSTR>(s);
 	auto p_Out = static_cast<UINT32*>(static_cast<void*>(m_oBuffer));
 	int nOutDword = 0;
 	for (int nInWord = 0; nInWord<nInWords; nInWord++, nOutDword++)

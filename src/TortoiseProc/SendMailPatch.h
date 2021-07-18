@@ -25,7 +25,7 @@ class CSendMailPatch : public CSendMailCombineable
 {
 public:
 	CSendMailPatch(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine);
-	~CSendMailPatch(void);
+	~CSendMailPatch();
 
 protected:
 	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance) override;

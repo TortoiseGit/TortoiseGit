@@ -25,13 +25,13 @@
 #include "PathUtils.h"
 #include "CreateProcessHelper.h"
 
-CRemoteCacheLink::CRemoteCacheLink(void)
+CRemoteCacheLink::CRemoteCacheLink()
 {
 	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_lastTimeout = 0;
 }
 
-CRemoteCacheLink::~CRemoteCacheLink(void)
+CRemoteCacheLink::~CRemoteCacheLink()
 {
 	ClosePipe();
 	CloseCommandPipe();
@@ -294,7 +294,7 @@ DWORD CRemoteCacheLink::GetProcessIntegrityLevel() const
 bool CRemoteCacheLink::RunTGitCacheProcess()
 {
 	const CString sCachePath = GetTGitCachePath();
-	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, static_cast<LPTSTR>(nullptr)))
+	if (!CCreateProcessHelper::CreateProcessDetached(sCachePath, static_cast<LPWSTR>(nullptr)))
 	{
 		// It's not appropriate to do a message box here, because there may be hundreds of calls
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Failed to start cache\n");

@@ -504,7 +504,7 @@ void CCommitDlg::PrepareOkButton()
 		CString label;
 		label.LoadString(labelId);
 		m_ctrlOkButton.AddEntry(label);
-		TCHAR accellerator = CStringUtils::GetAccellerator(label);
+		wchar_t accellerator = CStringUtils::GetAccellerator(label);
 		if (accellerator == L'\0')
 			continue;
 		++m_accellerators[accellerator].cnt;
@@ -724,12 +724,12 @@ void CCommitDlg::OnOK()
 		if (dirty)
 		{
 			CString message;
-			message.Format(IDS_COMMITDLG_SUBMODULEDIRTY, static_cast<LPCTSTR>(entry->GetGitPathString()));
+			message.Format(IDS_COMMITDLG_SUBMODULEDIRTY, static_cast<LPCWSTR>(entry->GetGitPathString()));
 			int result = CMessageBox::Show(m_hWnd, message, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 			if (result == 1)
 			{
 				CString cmdCommit;
-				cmdCommit.Format(L"/command:commit /path:\"%s\\%s\"", static_cast<LPCTSTR>(g_Git.m_CurrentDir), entry->GetWinPath());
+				cmdCommit.Format(L"/command:commit /path:\"%s\\%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), entry->GetWinPath());
 				CAppUtils::RunTortoiseGitProc(cmdCommit);
 				return;
 			}
@@ -1036,7 +1036,7 @@ void CCommitDlg::OnOK()
 			{
 				COMError ce(hr);
 				CString sErr;
-				sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCTSTR>(m_bugtraq_association.GetProviderName()), ce.GetMessageAndDescription().c_str());
+				sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), ce.GetMessageAndDescription().c_str());
 				CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 			}
 			else
@@ -1090,14 +1090,14 @@ void CCommitDlg::OnOK()
 			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
 				dateTime = L"--date=\"now\"";
 			else
-				dateTime.Format(L"--date=%sT%s", static_cast<LPCTSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCTSTR>(time.Format(L"%H:%M:%S")));
+				dateTime.Format(L"--date=%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
 		}
 		CString author;
 		if (m_bSetAuthor)
-			author.Format(L"--author=\"%s\"", static_cast<LPCTSTR>(m_sAuthor));
+			author.Format(L"--author=\"%s\"", static_cast<LPCWSTR>(m_sAuthor));
 		CString allowEmpty = m_bCommitMessageOnly ? L"--allow-empty" : L"";
 		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
-		cmd.Format(L"git.exe commit %s %s %s %s -F \"%s\"", static_cast<LPCTSTR>(author), static_cast<LPCTSTR>(dateTime), static_cast<LPCTSTR>(amend), static_cast<LPCTSTR>(allowEmpty), static_cast<LPCTSTR>(tempfile));
+		cmd.Format(L"git.exe commit %s %s %s %s -F \"%s\"", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(tempfile));
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -1188,7 +1188,7 @@ void CCommitDlg::OnOK()
 				if (exitcode)
 				{
 					CString temp;
-					temp.Format(IDS_ERR_HOOKFAILED, static_cast<LPCTSTR>(error));
+					temp.Format(IDS_ERR_HOOKFAILED, static_cast<LPCWSTR>(error));
 					MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
 					bCloseCommitDlg = false;
 				}
@@ -1319,7 +1319,7 @@ UINT CCommitDlg::StatusThreadEntry(LPVOID pVoid)
 void CCommitDlg::ReloadHistoryEntries()
 {
 	CString reg;
-	reg.Format(L"Software\\TortoiseGit\\History\\commit%s", static_cast<LPCTSTR>(m_ListCtrl.m_sUUID));
+	reg.Format(L"Software\\TortoiseGit\\History\\commit%s", static_cast<LPCWSTR>(m_ListCtrl.m_sUUID));
 	reg.Replace(L':', L'_');
 	m_History.Load(reg, L"logmsgs");
 }
@@ -1734,7 +1734,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// but only if it isn't already running - otherwise we
 	// restart the timer.
 	CTGitPath path;
-	path.SetFromWin(reinterpret_cast<LPCTSTR>(lParam));
+	path.SetFromWin(reinterpret_cast<LPCWSTR>(lParam));
 
 	// check whether the dropped file belongs to the very same repository
 	CString projectDir;
@@ -1745,7 +1745,7 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// if the item is versioned, the add will fail but nothing
 	// more will happen.
 	CString cmd;
-	cmd.Format(L"git.exe add -- \"%s\"", static_cast<LPCTSTR>(path.GetWinPathString()));
+	cmd.Format(L"git.exe add -- \"%s\"", static_cast<LPCWSTR>(path.GetWinPathString()));
 	g_Git.Run(cmd, nullptr, CP_UTF8);
 
 	if (!m_ListCtrl.HasPath(path))
@@ -2169,7 +2169,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 				if (m_ProjectProperties.bFileListInEnglish)
 					langID = 1033;
 
-				logmsg.AppendFormat(L"%-10s %s\r\n", static_cast<LPCTSTR>(status), static_cast<LPCTSTR>(m_ListCtrl.GetItemText(i, 0)));
+				logmsg.AppendFormat(L"%-10s %s\r\n", static_cast<LPCWSTR>(status), static_cast<LPCWSTR>(m_ListCtrl.GetItemText(i, 0)));
 			}
 		}
 		pSciEdit->InsertText(logmsg);
@@ -2294,7 +2294,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr = pProvider2->GetCommitMessage2(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, originalMessage, bugID, &bugIDOut, &revPropNames, &revPropValues, &temp)))
 		{
 			CString sErr;
-			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCTSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 		}
 		else
@@ -2305,7 +2305,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 				m_sBugID = bugIDOut;
 				SetDlgItemText(IDC_BUGID, m_sBugID);
 			}
-			m_cLogMessage.SetText(static_cast<LPCTSTR>(temp));
+			m_cLogMessage.SetText(static_cast<LPCWSTR>(temp));
 		}
 	}
 	else
@@ -2316,7 +2316,7 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr))
 		{
 			CString sErr;
-			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCTSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
@@ -2324,11 +2324,11 @@ void CCommitDlg::OnBnClickedBugtraqbutton()
 		if (FAILED(hr = pProvider->GetCommitMessage(GetSafeHwnd(), parameters, commonRoot, pathList, originalMessage, &temp)))
 		{
 			CString sErr;
-			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCTSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
+			sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), _com_error(hr).ErrorMessage());
 			CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
 		}
 		else
-			m_cLogMessage.SetText(static_cast<LPCTSTR>(temp));
+			m_cLogMessage.SetText(static_cast<LPCWSTR>(temp));
 	}
 	m_sLogMessage = m_cLogMessage.GetText();
 	if (!m_ProjectProperties.sMessage.IsEmpty())
@@ -2371,9 +2371,9 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
 					head = L"HEAD~1";
 				if (!p->GetGitOldPathString().IsEmpty())
-					cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCTSTR>(head), static_cast<LPCTSTR>(p->GetGitOldPathString()), static_cast<LPCTSTR>(p->GetGitPathString()));
+					cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
 				else
-					cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCTSTR>(head), static_cast<LPCTSTR>(p->GetGitPathString()));
+					cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitPathString()));
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
@@ -2598,7 +2598,7 @@ CString CCommitDlg::GetSignedOffByLine()
 	username.Remove(L'\n');
 	email.Remove(L'\n');
 
-	str.Format(L"Signed-off-by: %s <%s>", static_cast<LPCTSTR>(username), static_cast<LPCTSTR>(email));
+	str.Format(L"Signed-off-by: %s <%s>", static_cast<LPCWSTR>(username), static_cast<LPCWSTR>(email));
 
 	return str;
 }
@@ -2896,13 +2896,13 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 
 	if (m_bSetAuthor)
 	{
-		m_sAuthor.Format(L"%s <%s>", static_cast<LPCTSTR>(g_Git.GetUserName()), static_cast<LPCTSTR>(g_Git.GetUserEmail()));
+		m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(g_Git.GetUserName()), static_cast<LPCWSTR>(g_Git.GetUserEmail()));
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
 			if (headRevision.GetCommit(L"HEAD"))
 				MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-			m_sAuthor.Format(L"%s <%s>", static_cast<LPCTSTR>(headRevision.GetAuthorName()), static_cast<LPCTSTR>(headRevision.GetAuthorEmail()));
+			m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(headRevision.GetAuthorName()), static_cast<LPCWSTR>(headRevision.GetAuthorEmail()));
 		}
 
 		UpdateData(FALSE);

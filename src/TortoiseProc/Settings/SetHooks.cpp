@@ -122,7 +122,7 @@ void CSetHooks::OnBnClickedRemovebutton()
 		if (m_cHookList.GetItemState(index, LVIS_SELECTED) & LVIS_SELECTED)
 		{
 			hookkey key;
-			key.htype = CHooks::GetHookType(static_cast<LPCTSTR>(m_cHookList.GetItemText(index, 0)));
+			key.htype = CHooks::GetHookType(static_cast<LPCWSTR>(m_cHookList.GetItemText(index, 0)));
 			key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 			key.local = m_cHookList.GetItemText(index, 1).Compare(L"local") == 0;;
 			if (key.local)
@@ -148,7 +148,7 @@ void CSetHooks::OnBnClickedEditbutton()
 	{
 		CSetHooksAdv dlg;
 		int index = m_cHookList.GetNextSelectedItem(pos);
-		dlg.key.htype = CHooks::GetHookType(static_cast<LPCTSTR>(m_cHookList.GetItemText(index, 0)));
+		dlg.key.htype = CHooks::GetHookType(static_cast<LPCWSTR>(m_cHookList.GetItemText(index, 0)));
 		dlg.key.path = CTGitPath(m_cHookList.GetItemText(index, 1));
 		dlg.cmd.bEnabled = m_cHookList.GetCheck(index) == BST_CHECKED;
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
@@ -197,7 +197,7 @@ void CSetHooks::OnLvnItemchangedHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 		return;
 
 	hookkey key;
-	key.htype = CHooks::GetHookType(static_cast<LPCTSTR>(m_cHookList.GetItemText(pNMLV->iItem, 0)));
+	key.htype = CHooks::GetHookType(static_cast<LPCWSTR>(m_cHookList.GetItemText(pNMLV->iItem, 0)));
 	key.path = CTGitPath(m_cHookList.GetItemText(pNMLV->iItem, 1));
 	key.local = m_cHookList.GetItemText(pNMLV->iItem, 1).Compare(L"local") == 0;
 	if (key.local)
@@ -230,7 +230,7 @@ void CSetHooks::OnBnClickedHookcopybutton()
 	{
 		CSetHooksAdv dlg;
 		int index = m_cHookList.GetNextSelectedItem(pos);
-		dlg.key.htype = CHooks::GetHookType(static_cast<LPCTSTR>(m_cHookList.GetItemText(index, 0)));
+		dlg.key.htype = CHooks::GetHookType(static_cast<LPCWSTR>(m_cHookList.GetItemText(index, 0)));
 		dlg.cmd.commandline = m_cHookList.GetItemText(index, 2);
 		dlg.cmd.bWait = (m_cHookList.GetItemText(index, 3).Compare(L"true") == 0);
 		dlg.cmd.bShow = (m_cHookList.GetItemText(index, 4).Compare(L"show") == 0);

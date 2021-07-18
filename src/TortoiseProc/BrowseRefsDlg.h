@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2020 - TortoiseGit
+// Copyright (C) 2009-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ class CBrowseRefsDlgFilter;
 class CShadowTree
 {
 public:
-	typedef std::map<CString,CShadowTree> TShadowTreeMap;
+	using TShadowTreeMap = std::map<CString, CShadowTree>;
 
 	CShadowTree()
 	: m_hTree(nullptr)
@@ -96,7 +96,7 @@ public:
 	TShadowTreeMap	m_ShadowTree;
 	CShadowTree*	m_pParent;
 };
-typedef std::vector<CShadowTree*> VectorPShadowTree;
+using VectorPShadowTree = std::vector<CShadowTree*>;
 
 class CBrowseRefsDlg : public CResizableStandAloneDialog
 {

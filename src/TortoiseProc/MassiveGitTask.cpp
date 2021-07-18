@@ -29,7 +29,7 @@ CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignore
 {
 }
 
-CMassiveGitTask::~CMassiveGitTask(void)
+CMassiveGitTask::~CMassiveGitTask()
 {
 }
 

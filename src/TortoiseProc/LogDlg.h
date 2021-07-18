@@ -95,7 +95,7 @@ public:
 	}
 protected:
 	//implement the virtual methods from Git base class
-	virtual bool Validate(LPCTSTR string) override;
+	virtual bool Validate(LPCWSTR string) override;
 
 	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 

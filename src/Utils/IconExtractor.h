@@ -85,10 +85,10 @@ class CIconExtractor
 public:
 	CIconExtractor();
 
-    DWORD ExtractIcon(HINSTANCE hResource, LPCTSTR id, LPCTSTR TargetICON);
+	DWORD ExtractIcon(HINSTANCE hResource, LPCWSTR id, LPCWSTR TargetICON);
 
 private:
-	DWORD WriteIconToICOFile(LPICONRESOURCE lpIR, LPCTSTR szFileName);
+	DWORD WriteIconToICOFile(LPICONRESOURCE lpIR, LPCWSTR szFileName);
 	BOOL AdjustIconImagePointers(LPICONIMAGE lpImage);
 
 	LPSTR FindDIBBits(LPSTR lpbi);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 #include "GitDll.h"
 #include "GitMailmap.h"
 
-typedef std::vector<CGitHash> GIT_REV_LIST;
+using GIT_REV_LIST = std::vector<CGitHash>;
 
 #define LOG_REV_AUTHOR_NAME		L'0'
 #define LOG_REV_AUTHOR_EMAIL	L'1'
@@ -55,7 +55,7 @@ protected:
 	CString m_sErr;
 
 public:
-	GitRev(void);
+	GitRev();
 	CString GetAuthorName() const
 	{
 		return m_AuthorName;
@@ -96,7 +96,7 @@ public:
 		return m_Body;
 	}
 
-	virtual ~GitRev(void);
+	virtual ~GitRev();
 
 	enum
 	{

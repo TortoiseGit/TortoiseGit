@@ -54,7 +54,7 @@ public:
 	 * \param pos the position in screen coordinates where the tooltip should be shown
 	 * \fmt a format string
 	 */
-	void SetText(LPPOINT pos, const TCHAR * fmt, ...);
+	void SetText(LPPOINT pos, const wchar_t* fmt, ...);
 	/**
 	 * Removes the tooltip control.
 	 */
@@ -62,7 +62,7 @@ public:
 	/**
 	 * Returns the width of \c szText in pixels for the tooltip control
 	 */
-	LONG GetTextWidth(LPCTSTR szText);
+	LONG GetTextWidth(LPCWSTR szText);
 
 	virtual ~CScrollTool();
 

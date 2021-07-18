@@ -24,12 +24,12 @@
 #include "resource.h"
 #include "SmartHandle.h"
 
-CWorkingFile::CWorkingFile(void)
+CWorkingFile::CWorkingFile()
 {
 	ClearStoredAttributes();
 }
 
-CWorkingFile::~CWorkingFile(void)
+CWorkingFile::~CWorkingFile()
 {
 }
 

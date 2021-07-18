@@ -189,7 +189,7 @@ bool CHooks::Remove(const hookkey &key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCTSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
+void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCWSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
 {
 	hookkey key;
 	key.htype = ht;
@@ -555,7 +555,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 						if (cmd.bLocal)
 						{
 							CString temp;
-							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), static_cast<int>(key.htype), static_cast<LPCTSTR>(cmd.commandline));
+							temp.Format(L"%s|%d%s", m_RootPath.GetWinPath(), static_cast<int>(key.htype), static_cast<LPCWSTR>(cmd.commandline));
 
 							cmd.sRegKey = L"Software\\TortoiseGit\\approvedhooks\\" + CalcSHA256(temp);
 							CRegDWORD reg(cmd.sRegKey, 0);
@@ -574,7 +574,7 @@ void CHooks::ParseHookString(CString strhooks, bool bLocal)
 	}
 }
 
-DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bWait, bool bShow)
+DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bWait, bool bShow)
 {
 	DWORD exitcode = 0;
 	SECURITY_ATTRIBUTES sa = { 0 };
@@ -589,9 +589,9 @@ DWORD CHooks::RunScript(CString cmd, LPCTSTR currentDir, CString& error, bool bW
 	error.Empty();
 
 	// Create Temp File for redirection
-	TCHAR szTempPath[MAX_PATH] = {0};
-	TCHAR szOutput[MAX_PATH] = {0};
-	TCHAR szErr[MAX_PATH] = {0};
+	wchar_t szTempPath[MAX_PATH] = { 0 };
+	wchar_t szOutput[MAX_PATH] = { 0 };
+	wchar_t szErr[MAX_PATH] = { 0 };
 	GetTortoiseGitTempPath(_countof(szTempPath), szTempPath);
 	GetTempFileName(szTempPath, L"git", 0, szErr);
 

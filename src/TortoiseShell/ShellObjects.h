@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019 - TortoiseGit
+// Copyright (C) 2019, 2021 - TortoiseGit
 // Copyright (C) 2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 #include "ShellExt.h"
 #include <set>
 
-typedef CComCritSecLock<CComCriticalSection> AutoLocker;
+using AutoLocker = CComCritSecLock<CComCriticalSection>;
 
 class ShellObjects
 {

@@ -355,7 +355,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
     case WM_DROPFILES:
         {
             auto hDrop = reinterpret_cast<HDROP>(wParam);
-            TCHAR szFileName[MAX_PATH] = {0};
+            wchar_t szFileName[MAX_PATH] = { 0 };
             // we only use the first file dropped (if multiple files are dropped)
             if (DragQueryFile(hDrop, 0, szFileName, _countof(szFileName)))
             {
@@ -473,13 +473,13 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 {
                     auto lpttt = reinterpret_cast<LPTOOLTIPTEXT>(lParam);
                     lpttt->hinst = hResource;
-                    TCHAR stringbuf[MAX_PATH] = {0};
+                    wchar_t stringbuf[MAX_PATH] = { 0 };
                     swprintf_s(stringbuf, L"%i%% alpha", static_cast<int>(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
                     wcscpy_s(lpttt->lpszText, 80, stringbuf);
                 }
                 else if (pNMHDR->idFrom == reinterpret_cast<UINT_PTR>(hwndAlphaToggleBtn))
                 {
-                    swprintf_s(m_wszTip, static_cast<const TCHAR*>(ResString(hResource, IDS_ALPHABUTTONTT)), static_cast<int>(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
+                    swprintf_s(m_wszTip, static_cast<const wchar_t*>(ResString(hResource, IDS_ALPHABUTTONTT)), static_cast<int>(SendMessage(m_AlphaSlider.GetWindow(),TBM_GETPOS, 0, 0) / 16.0f * 100.0f));
                     if (pNMHDR->code == TTN_NEEDTEXTW)
                     {
                         auto pTTTW = reinterpret_cast<NMTTDISPINFOW*>(pNMHDR);
@@ -560,7 +560,7 @@ void CPicWindow::Animate(bool bStart)
     }
 }
 
-void CPicWindow::SetPic(const tstring& path, const tstring& title, bool bFirst)
+void CPicWindow::SetPic(const std::wstring& path, const std::wstring& title, bool bFirst)
 {
     bMainPic = bFirst;
     picpath=path;pictitle=title;
@@ -605,18 +605,18 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
     SetTextColor(hDC, crFg);
 
     // use the path if no title is set.
-    tstring * title = pictitle.empty() ? &picpath : &pictitle;
+    std::wstring* title = pictitle.empty() ? &picpath : &pictitle;
 
-    tstring realtitle = *title;
-    tstring imgnumstring;
+    std::wstring realtitle = *title;
+    std::wstring imgnumstring;
 
     if (HasMultipleImages())
     {
-        TCHAR buf[MAX_PATH] = {0};
+        wchar_t buf[MAX_PATH] = { 0 };
         if (nFrames > 1)
-            swprintf_s(buf, static_cast<const TCHAR*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentFrame, nFrames);
+            swprintf_s(buf, static_cast<const wchar_t*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentFrame, nFrames);
         else
-            swprintf_s(buf, static_cast<const TCHAR*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentDimension, nDimensions);
+            swprintf_s(buf, static_cast<const wchar_t*>(ResString(hResource, IDS_DIMENSIONSANDFRAMES)), nCurrentDimension, nDimensions);
         imgnumstring = buf;
     }
 
@@ -1308,7 +1308,7 @@ void CPicWindow::Paint(HWND hwnd)
             SetBkColor(memDC, GetTransparentThemedColor());
             if (bShowInfo)
             {
-                auto infostring = std::make_unique<TCHAR[]>(8192);
+                auto infostring = std::make_unique<wchar_t[]>(8192);
                 BuildInfoString(infostring.get(), 8192, false);
                 // set the font
                 NONCLIENTMETRICS metrics = {0};
@@ -1384,7 +1384,7 @@ bool CPicWindow::CreateButtons()
 
     hwndLeftBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1399,7 +1399,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndLeftBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hLeft)));
     hwndRightBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1412,7 +1412,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndRightBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hRight)));
     hwndPlayBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT,
                                 0, 0, 0, 0,
                                 *this,
@@ -1426,7 +1426,7 @@ bool CPicWindow::CreateButtons()
     SendMessage(hwndPlayBtn, BM_SETIMAGE, IMAGE_ICON, reinterpret_cast<LPARAM>(static_cast<HICON>(hPlay)));
     hwndAlphaToggleBtn = CreateWindowEx(0,
                                 L"BUTTON",
-                                static_cast<LPCTSTR>(nullptr),
+                                static_cast<LPCWSTR>(nullptr),
                                 WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON | BS_ICON | BS_FLAT | BS_NOTIFY | BS_PUSHLIKE,
                                 0, 0, 0, 0,
                                 *this,
@@ -1527,7 +1527,7 @@ void CPicWindow::CreateTrackbar(HWND hwndParent)
     m_AlphaSlider.ConvertTrackbarToNice(hwndTrack);
 }
 
-void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
+void CPicWindow::BuildInfoString(wchar_t* buf, int size, bool bTooltip)
 {
     // Unfortunately, we need two different strings for the tooltip
     // and the info box. Because the tooltips use a different tab size
@@ -1539,7 +1539,7 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
     if (pSecondPic && pTheOtherPic)
     {
         swprintf_s(buf, size,
-            static_cast<const TCHAR*>(ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO)),
+            static_cast<const wchar_t*>(ResString(hResource, bTooltip ? IDS_DUALIMAGEINFOTT : IDS_DUALIMAGEINFO)),
             picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
             picture.m_Width, picture.m_Height,
             picture.GetHorizontalResolution(), picture.GetVerticalResolution(),
@@ -1554,7 +1554,7 @@ void CPicWindow::BuildInfoString(TCHAR * buf, int size, bool bTooltip)
     else
     {
         swprintf_s(buf, size,
-            static_cast<const TCHAR*>(ResString(hResource, bTooltip ? IDS_IMAGEINFOTT : IDS_IMAGEINFO)),
+            static_cast<const wchar_t*>(ResString(hResource, bTooltip ? IDS_IMAGEINFOTT : IDS_IMAGEINFO)),
             picture.GetFileSizeAsText().c_str(), picture.GetFileSizeAsText(false).c_str(),
             picture.m_Width, picture.m_Height,
             picture.GetHorizontalResolution(), picture.GetVerticalResolution(),

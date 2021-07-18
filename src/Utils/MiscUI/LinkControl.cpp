@@ -22,13 +22,13 @@
 
 const UINT CLinkControl::LK_LINKITEMCLICKED = ::RegisterWindowMessage(L"LK_LINKITEMCLICKED");
 
-CLinkControl::CLinkControl(void)
+CLinkControl::CLinkControl()
 	: m_bOverControl(false)
 	, m_hLinkCursor(nullptr)
 {
 }
 
-CLinkControl::~CLinkControl(void)
+CLinkControl::~CLinkControl()
 {
 	/*
 	* No need to call DestroyCursor() for cursors acquired through

@@ -35,11 +35,11 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, const CString& sVersion, bool fo
 		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
 
 	CString userAgent;
-	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", static_cast<LPCTSTR>(sVersion), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsPlatform), static_cast<LPCTSTR>(m_sWindowsVersion), m_sWindowsServicePack.IsEmpty() ? L"" : L" ", static_cast<LPCTSTR>(m_sWindowsServicePack));
+	userAgent.Format(L"TortoiseGit %s; %s; Windows%s%s %s%s%s", static_cast<LPCWSTR>(sVersion), _T(TGIT_PLATFORM), m_sWindowsPlatform.IsEmpty() ? L"" : L" ", static_cast<LPCWSTR>(m_sWindowsPlatform), static_cast<LPCWSTR>(m_sWindowsVersion), m_sWindowsServicePack.IsEmpty() ? L"" : L" ", static_cast<LPCWSTR>(m_sWindowsServicePack));
 	hOpenHandle = InternetOpen(userAgent, INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 }
 
-CUpdateDownloader::~CUpdateDownloader(void)
+CUpdateDownloader::~CUpdateDownloader()
 {
 	if (hOpenHandle)
 		InternetCloseHandle(hOpenHandle);
@@ -99,7 +99,7 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 	if (!hConnectHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetConnect: %d\n", static_cast<LPCTSTR>(url), err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetConnect: %d\n", static_cast<LPCWSTR>(url), err);
 		return err;
 	}
 	SCOPE_EXIT{ InternetCloseHandle(hConnectHandle); };
@@ -107,7 +107,7 @@ DWORD CUpdateDownloader::DownloadFile(const CString& url, const CString& dest, b
 	if (!hResourceHandle)
 	{
 		DWORD err = GetLastError();
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on HttpOpenRequest: %d\n", static_cast<LPCTSTR>(url), err);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on HttpOpenRequest: %d\n", static_cast<LPCWSTR>(url), err);
 		return err;
 	}
 	SCOPE_EXIT{ InternetCloseHandle(hResourceHandle); };
@@ -126,7 +126,7 @@ resend:
 		else if (!httpsendrequest)
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed: %d, %d\n", static_cast<LPCTSTR>(url), httpsendrequest, err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed: %d, %d\n", static_cast<LPCWSTR>(url), httpsendrequest, err);
 			return err;
 		}
 	}
@@ -141,7 +141,7 @@ resend:
 		DWORD length = sizeof(statusCode);
 		if (!HttpQueryInfo(hResourceHandle, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &statusCode, &length, nullptr) || statusCode != 200)
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s returned %d\n", static_cast<LPCTSTR>(url), statusCode);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s returned %d\n", static_cast<LPCWSTR>(url), statusCode);
 			if (statusCode == 404)
 				return ERROR_FILE_NOT_FOUND;
 			else if (statusCode == 403)
@@ -162,7 +162,7 @@ resend:
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetQueryDataAvailable: %d\n", static_cast<LPCTSTR>(url), err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetQueryDataAvailable: %d\n", static_cast<LPCWSTR>(url), err);
 			return err;
 		}
 
@@ -171,7 +171,7 @@ resend:
 		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
 		{
 			DWORD err = GetLastError();
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetReadFile: %d\n", static_cast<LPCTSTR>(url), err);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetReadFile: %d\n", static_cast<LPCWSTR>(url), err);
 			return err;
 		}
 
@@ -210,7 +210,7 @@ resend:
 
 	if (downloadedSum == 0)
 	{
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download size of %s was zero.\n", static_cast<LPCTSTR>(url));
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download size of %s was zero.\n", static_cast<LPCWSTR>(url));
 		return static_cast<DWORD>(INET_E_DOWNLOAD_FAILURE);
 	}
 	return ERROR_SUCCESS;

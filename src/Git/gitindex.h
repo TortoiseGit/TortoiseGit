@@ -73,8 +73,8 @@ protected:
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr) const;
 };
 
-typedef std::shared_ptr<const CGitIndexList> SHARED_INDEX_PTR;
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using SHARED_INDEX_PTR = std::shared_ptr<const CGitIndexList>;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
 {
@@ -185,7 +185,7 @@ private:
 	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base);
 };
 
-typedef std::shared_ptr<const CGitHeadFileList> SHARED_TREE_PTR;
+using SHARED_TREE_PTR = std::shared_ptr<const CGitHeadFileList>;
 class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
 {
 public:
@@ -241,7 +241,7 @@ class CGitFileName
 {
 public:
 	CGitFileName() {}
-	CGitFileName(LPCTSTR filename, __int64 size, __int64 lastmodified)
+	CGitFileName(LPCWSTR filename, __int64 size, __int64 lastmodified)
 	: m_FileName(filename)
 	, m_Size(size)
 	, m_LastModified(lastmodified)
@@ -346,7 +346,7 @@ static_assert(-1 == static_cast<int>(NPOS), "NPOS must equal -1");
 #pragma warning(pop)
 
 template<class T>
-inline int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, bool ignoreCase, size_t* start, size_t* end, size_t pos)
+inline int GetRangeInSortVector(const T& vector, LPCWSTR pstr, size_t len, bool ignoreCase, size_t* start, size_t* end, size_t pos)
 {
 	if (ignoreCase)
 		return GetRangeInSortVector_int(vector, pstr, len, _wcsnicmp, start, end, pos);
@@ -355,7 +355,7 @@ inline int GetRangeInSortVector(const T& vector, LPCTSTR pstr, size_t len, bool 
 }
 
 template<class T, class V>
-int GetRangeInSortVector_int(const T& vector, LPCTSTR pstr, size_t len, V compare, size_t* start, size_t* end, size_t pos)
+int GetRangeInSortVector_int(const T& vector, LPCWSTR pstr, size_t len, V compare, size_t* start, size_t* end, size_t pos)
 {
 	if (pos == NPOS)
 		return -1;
@@ -399,7 +399,7 @@ int GetRangeInSortVector_int(const T& vector, LPCTSTR pstr, size_t len, V compar
 }
 
 template<class T>
-inline size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len, bool ignoreCase)
+inline size_t SearchInSortVector(const T& vector, LPCWSTR pstr, int len, bool ignoreCase)
 {
 	if (ignoreCase)
 	{
@@ -416,7 +416,7 @@ inline size_t SearchInSortVector(const T& vector, LPCTSTR pstr, int len, bool ig
 }
 
 template<class T, class V>
-size_t SearchInSortVector_int(const T& vector, LPCTSTR pstr, V compare)
+size_t SearchInSortVector_int(const T& vector, LPCWSTR pstr, V compare)
 {
 	size_t end = vector.size() - 1;
 	size_t start = 0;

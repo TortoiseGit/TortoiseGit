@@ -84,12 +84,12 @@ STDMETHODIMP GitDataObject::QueryInterface(REFIID riid, void** ppvObject)
 	return S_OK;
 }
 
-STDMETHODIMP_(ULONG) GitDataObject::AddRef(void)
+STDMETHODIMP_(ULONG) GitDataObject::AddRef()
 {
 	return ++m_cRefCount;
 }
 
-STDMETHODIMP_(ULONG) GitDataObject::Release(void)
+STDMETHODIMP_(ULONG) GitDataObject::Release()
 {
 	--m_cRefCount;
 	if (m_cRefCount == 0)
@@ -177,7 +177,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		{
 			CString temp(m_iStripLength > 0 ? it->GetWinPathString().Mid(m_iStripLength + 1) : (m_iStripLength == 0 ? it->GetWinPathString() : it->GetUIFileOrDirectoryName()));
 			if (temp.GetLength() < MAX_PATH)
-				wcscpy_s(files->fgd[index].cFileName, static_cast<LPCTSTR>(temp));
+				wcscpy_s(files->fgd[index].cFileName, static_cast<LPCWSTR>(temp));
 			else
 			{
 				files->cItems--;
@@ -269,11 +269,11 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			}
 		}
 		pmedium->tymed = TYMED_HGLOBAL;
-		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(TCHAR));
+		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(wchar_t));
 		if (pmedium->hGlobal)
 		{
-			auto pMem = static_cast<TCHAR*>(GlobalLock(pmedium->hGlobal));
-			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCTSTR>(text));
+			auto pMem = static_cast<wchar_t*>(GlobalLock(pmedium->hGlobal));
+			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCWSTR>(text));
 			GlobalUnlock(pmedium->hGlobal);
 		}
 		pmedium->pUnkForRelease = nullptr;
@@ -292,7 +292,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			nLength += 1; // '\0' separator
 		}
 
-		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(TCHAR);
+		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(wchar_t);
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
@@ -300,8 +300,8 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 		df->pFiles = sizeof(DROPFILES);
 		df->fWide = 1;
 
-		auto pFilenames = reinterpret_cast<TCHAR*>(pBuffer.get() + sizeof(DROPFILES));
-		TCHAR* pCurrentFilename = pFilenames;
+		auto pFilenames = reinterpret_cast<wchar_t*>(pBuffer.get() + sizeof(DROPFILES));
+		wchar_t* pCurrentFilename = pFilenames;
 
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{
@@ -605,7 +605,7 @@ HRESULT STDMETHODCALLTYPE GitDataObject::EndOperation(HRESULT /*hResult*/, IBind
 	return S_OK;
 }
 
-HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert)
+HRESULT GitDataObject::SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert)
 {
 	if (!format || !insert)
 		return E_INVALIDARG;
@@ -752,12 +752,12 @@ STDMETHODIMP  CGitEnumFormatEtc::QueryInterface(REFIID refiid, void** ppv)
 	return S_OK;
 }
 
-STDMETHODIMP_(ULONG) CGitEnumFormatEtc::AddRef(void)
+STDMETHODIMP_(ULONG) CGitEnumFormatEtc::AddRef()
 {
 	return ++m_cRefCount;
 }
 
-STDMETHODIMP_(ULONG) CGitEnumFormatEtc::Release(void)
+STDMETHODIMP_(ULONG) CGitEnumFormatEtc::Release()
 {
 	--m_cRefCount;
 	if (m_cRefCount == 0)
@@ -808,7 +808,7 @@ STDMETHODIMP CGitEnumFormatEtc::Skip(ULONG celt)
 	return S_OK;
 }
 
-STDMETHODIMP CGitEnumFormatEtc::Reset(void)
+STDMETHODIMP CGitEnumFormatEtc::Reset()
 {
 	m_iCur = 0;
 	return S_OK;

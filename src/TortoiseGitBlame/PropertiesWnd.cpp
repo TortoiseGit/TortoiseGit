@@ -213,7 +213,7 @@ void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
 	m_wndPropList.SetFocus();
 }
 
-void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
+void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCWSTR lpszSection)
 {
 	CDockablePane::OnSettingChange(uFlags, lpszSection);
 	SetPropListFont();
@@ -288,7 +288,7 @@ void CPropertiesWnd::UpdateProperties(GitRevLoglist* pRev)
 			if (it != hashMap.end())
 				parentsubject = it->second.GetSubject();
 
-			str.Format(L"%u - %s\n%s", i, static_cast<LPCTSTR>(pRev->m_ParentHash[i].ToString()), static_cast<LPCTSTR>(parentsubject));
+			str.Format(L"%u - %s\n%s", i, static_cast<LPCWSTR>(pRev->m_ParentHash[i].ToString()), static_cast<LPCWSTR>(parentsubject));
 
 			auto pProperty = new CMFCPropertyGridProperty(pRev->m_ParentHash[i].ToString(g_Git.GetShortHASHLength()), parentsubject, str);
 			pProperty->AllowEdit(FALSE);

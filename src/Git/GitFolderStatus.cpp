@@ -27,7 +27,7 @@
 
 extern ShellCache g_ShellCache;
 
-GitFolderStatus::GitFolderStatus(void)
+GitFolderStatus::GitFolderStatus()
 {
 	m_TimeStamp = 0;
 	invalidstatus.askedcounter = -1;
@@ -45,7 +45,7 @@ GitFolderStatus::GitFolderStatus(void)
 	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent"); // no need to explicitly close m_hInvalidationEvent in ~GitFolderStatus as it is CAutoGeneralHandle
 }
 
-GitFolderStatus::~GitFolderStatus(void)
+GitFolderStatus::~GitFolderStatus()
 {
 }
 
@@ -112,7 +112,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	FileStatusCacheEntry* ret = nullptr;
 
 	if (wcslen(filepath.GetWinPath()) == 3)
-		ret = &m_cache[static_cast<LPCTSTR>(filepath.GetWinPathString().Left(2))];
+		ret = &m_cache[static_cast<LPCWSTR>(filepath.GetWinPathString().Left(2))];
 	else
 		ret = &m_cache[filepath.GetWinPath()];
 

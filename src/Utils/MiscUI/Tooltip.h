@@ -36,7 +36,7 @@ public:
 	virtual ~CToolTips() {}
 
 	BOOL AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
-	BOOL AddTool(CWnd* pWnd, LPCTSTR lpszText = LPSTR_TEXTCALLBACK, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
+	BOOL AddTool(CWnd* pWnd, LPCWSTR lpszText = LPSTR_TEXTCALLBACK, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void DelTool(CWnd* pWnd, UINT_PTR nIDTool = 0);

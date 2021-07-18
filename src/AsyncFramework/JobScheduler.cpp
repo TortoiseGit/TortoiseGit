@@ -442,7 +442,7 @@ CJobScheduler::CJobScheduler
         UseAllCPUs();
 }
 
-CJobScheduler::~CJobScheduler(void)
+CJobScheduler::~CJobScheduler()
 {
     StopStarvation();
     WaitForEmptyQueue();

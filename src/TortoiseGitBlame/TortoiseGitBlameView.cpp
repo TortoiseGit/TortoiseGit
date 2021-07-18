@@ -916,7 +916,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 	int linesonscreen = static_cast<int>(SendEditor(SCI_LINESONSCREEN)) + 1;
 	int height = static_cast<int>(SendEditor(SCI_TEXTHEIGHT));
 	int Y = 0;
-	TCHAR buf[MAX_PATH] = {0};
+	wchar_t buf[MAX_PATH] = { 0 };
 	std::fill_n(buf, _countof(buf) - 1, L' ');
 	CGitHash oldHash;
 	CString oldFile;
@@ -1092,7 +1092,7 @@ void CTortoiseGitBlameView::SetupLexer(CString filename)
 		//wcscpy_s(line, 20, lineptr+1);
 		//_wcslwr_s(line, 20);
 		CString ext=filename.Right(filename.GetLength()-start-1);
-		const TCHAR* line = ext;
+		const wchar_t* line = ext;
 
 		if ((wcscmp(line, L"py") == 0) ||
 			(wcscmp(line, L"pyw") == 0))
@@ -1870,14 +1870,14 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 
 			CString filename;
 			if ((m_bShowCompleteLog && m_bFollowRenames && !m_bOnlyFirstParent) || !BlameIsLimitedToOneFilename(m_dwDetectMovedOrCopiedLines) || m_bBlameOutputContainsOtherFilenames)
-				filename.Format(L"%s: %s\n", static_cast<LPCTSTR>(m_sFileName), static_cast<LPCTSTR>(m_data.GetFilename(line)));
+				filename.Format(L"%s: %s\n", static_cast<LPCWSTR>(m_sFileName), static_cast<LPCWSTR>(m_data.GetFilename(line)));
 
 			CString str;
-			str.Format(L"%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",	static_cast<LPCTSTR>(m_sRev), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCTSTR>(filename),
-																	static_cast<LPCTSTR>(m_sAuthor), static_cast<LPCTSTR>(pRev->GetAuthorName()), static_cast<LPCTSTR>(pRev->GetAuthorEmail()),
-																	static_cast<LPCTSTR>(m_sDate), static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
-																	static_cast<LPCTSTR>(m_sMessage), static_cast<LPCTSTR>(pRev->GetSubject()),
-																	iline <= maxLine ? static_cast<LPCTSTR>(body) : (body.Left(pos) + L"\n..."));
+			str.Format(L"%s: %s\n%s%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",	static_cast<LPCWSTR>(m_sRev), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCWSTR>(filename),
+																	static_cast<LPCWSTR>(m_sAuthor), static_cast<LPCWSTR>(pRev->GetAuthorName()), static_cast<LPCWSTR>(pRev->GetAuthorEmail()),
+																	static_cast<LPCWSTR>(m_sDate), static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
+																	static_cast<LPCWSTR>(m_sMessage), static_cast<LPCWSTR>(pRev->GetSubject()),
+																	iline <= maxLine ? static_cast<LPCWSTR>(body) : (body.Left(pos) + L"\n..."));
 
 			if (str.GetLength() > 8000)
 			{

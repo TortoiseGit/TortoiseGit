@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2020 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,12 +25,12 @@
 #include "SmartHandle.h"
 #include <assert.h>
 
-BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
+BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 {
 	size_t len = wcslen(path) + 10;
-	auto buf = std::make_unique<TCHAR[]>(len);
-	auto internalpathbuf = std::make_unique<TCHAR[]>(len);
-	TCHAR * pPath = internalpathbuf.get();
+	auto buf = std::make_unique<wchar_t[]>(len);
+	auto internalpathbuf = std::make_unique<wchar_t[]>(len);
+	wchar_t* pPath = internalpathbuf.get();
 	SECURITY_ATTRIBUTES attribs = { 0 };
 	attribs.nLength = sizeof(SECURITY_ATTRIBUTES);
 	attribs.bInheritHandle = FALSE;
@@ -38,8 +38,8 @@ BOOL CPathUtils::MakeSureDirectoryPathExists(LPCTSTR path)
 	ConvertToBackslash(internalpathbuf.get(), path, len);
 	do
 	{
-		SecureZeroMemory(buf.get(), (len)*sizeof(TCHAR));
-		TCHAR* slashpos = wcschr(pPath, L'\\');
+		SecureZeroMemory(buf.get(), (len)*sizeof(wchar_t));
+		wchar_t* slashpos = wcschr(pPath, L'\\');
 		if (slashpos)
 			wcsncpy_s(buf.get(), len, internalpathbuf.get(), slashpos - internalpathbuf.get());
 		else
@@ -59,10 +59,10 @@ void CPathUtils::ConvertToSlash(LPWSTR path)
 		*pCH = L'/';
 }
 
-void CPathUtils::ConvertToBackslash(LPTSTR dest, LPCTSTR src, size_t len)
+void CPathUtils::ConvertToBackslash(LPWSTR dest, LPCWSTR src, size_t len)
 {
 	wcscpy_s(dest, len, src);
-	TCHAR * p = dest;
+	wchar_t* p = dest;
 	for (; *p != '\0'; ++p)
 		if (*p == '/')
 			*p = '\\';
@@ -113,7 +113,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 {
 	if (path.IsEmpty())
 		return path;
-	TCHAR pathbufcanonicalized[MAX_PATH] = {0}; // MAX_PATH ok.
+	wchar_t pathbufcanonicalized[MAX_PATH] = { 0 }; // MAX_PATH ok.
 	DWORD ret = 0;
 	CString sRet;
 	if (!PathIsURL(path) && PathIsRelative(path))
@@ -121,7 +121,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = GetFullPathName(path, 0, nullptr, nullptr);
 		if (ret)
 		{
-			auto pathbuf = std::make_unique<TCHAR[]>(ret + 1);
+			auto pathbuf = std::make_unique<wchar_t[]>(ret + 1);
 			if ((ret = GetFullPathName(path, ret, pathbuf.get(), nullptr)) != 0)
 				sRet = CString(pathbuf.get(), ret);
 		}
@@ -131,7 +131,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(pathbufcanonicalized, nullptr, 0);
 		if (ret == 0)
 			return path;
-		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
+		auto pathbuf = std::make_unique<wchar_t[]>(ret + 2);
 		ret = ::GetLongPathName(pathbufcanonicalized, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -140,7 +140,7 @@ CString CPathUtils::GetLongPathname(const CString& path)
 		ret = ::GetLongPathName(path, nullptr, 0);
 		if (ret == 0)
 			return path;
-		auto pathbuf = std::make_unique<TCHAR[]>(ret + 2);
+		auto pathbuf = std::make_unique<wchar_t[]>(ret + 2);
 		ret = ::GetLongPathName(path, pathbuf.get(), ret + 1);
 		sRet = CString(pathbuf.get(), ret);
 	}
@@ -247,7 +247,7 @@ CString CPathUtils::GetProgramsDirectory()
 	return CString(pszPath);
 }
 
-int CPathUtils::ReadLink(LPCTSTR filename, CStringA* pTargetA)
+int CPathUtils::ReadLink(LPCWSTR filename, CStringA* pTargetA)
 {
 	CAutoFile handle  = CreateFileW(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_FLAG_OPEN_REPARSE_POINT | FILE_FLAG_BACKUP_SEMANTICS, nullptr);
 	if (!handle)
@@ -306,7 +306,7 @@ void CPathUtils::DropPathPrefixes(CString& path)
 #endif
 
 #pragma comment(lib, "Version.lib")
-std::wstring CPathUtils::GetVersionFromFile(LPCTSTR p_strFilename)
+std::wstring CPathUtils::GetVersionFromFile(LPCWSTR p_strFilename)
 {
 	struct TRANSARRAY
 	{
@@ -341,15 +341,15 @@ std::wstring CPathUtils::GetVersionFromFile(LPCTSTR p_strFilename)
 				&nFixedLength);
 			lpTransArray = static_cast<TRANSARRAY*>(lpFixedPointer);
 
-			TCHAR strLangProductVersion[MAX_PATH] = { 0 };
+			wchar_t strLangProductVersion[MAX_PATH] = { 0 };
 			swprintf_s(strLangProductVersion, L"\\StringFileInfo\\%04x%04x\\ProductVersion", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			VerQueryValue(pBuffer.get(),
-				static_cast<LPCTSTR>(strLangProductVersion),
+				static_cast<LPCWSTR>(strLangProductVersion),
 				reinterpret_cast<LPVOID*>(&lpVersion),
 				&nInfoSize);
 			if (nInfoSize && lpVersion)
-				return reinterpret_cast<LPCTSTR>(lpVersion);
+				return reinterpret_cast<LPCWSTR>(lpVersion);
 		}
 	}
 
@@ -373,7 +373,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 	CString strReturn;
 	DWORD dwReserved = 0;
-	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCTSTR>(path), &dwReserved);
+	DWORD dwBufferSize = GetFileVersionInfoSize(static_cast<LPCWSTR>(path), &dwReserved);
 
 	if (dwBufferSize > 0)
 	{
@@ -381,7 +381,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 		if (pBuffer)
 		{
-			GetFileVersionInfo(static_cast<LPCTSTR>(path),
+			GetFileVersionInfo(static_cast<LPCWSTR>(path),
 				dwReserved,
 				dwBufferSize,
 				pBuffer.get());
@@ -402,8 +402,8 @@ CString CPathUtils::GetCopyrightForSelf()
 			strLangLegalCopyright.Format(L"\\StringFileInfo\\%04x%04x\\LegalCopyright", lpTransArray[0].wLanguageID, lpTransArray[0].wCharacterSet);
 
 			UINT nInfoSize = 0;
-			LPTSTR lpVersion = nullptr;
-			VerQueryValue(pBuffer.get(), static_cast<LPCTSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
+			LPWSTR lpVersion = nullptr;
+			VerQueryValue(pBuffer.get(), static_cast<LPCWSTR>(strLangLegalCopyright), reinterpret_cast<LPVOID*>(&lpVersion), &nInfoSize);
 			if (nInfoSize && lpVersion)
 				strReturn = lpVersion;
 		}
@@ -496,9 +496,9 @@ bool CPathUtils::ArePathStringsEqual(const CString& sP1, const CString& sP2)
 	}
 	// We work from the end of the strings, because path differences
 	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
+	LPCWSTR pP1Start = sP1;
+	LPCWSTR pP1 = pP1Start + (length - 1);
+	LPCWSTR pP2 = static_cast<LPCWSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if (_totlower(*pP1--) != _totlower(*pP2--))
@@ -517,9 +517,9 @@ bool CPathUtils::ArePathStringsEqualWithCase(const CString& sP1, const CString& 
 	}
 	// We work from the end of the strings, because path differences
 	// are more likely to occur at the far end of a string
-	LPCTSTR pP1Start = sP1;
-	LPCTSTR pP1 = pP1Start + (length - 1);
-	LPCTSTR pP2 = static_cast<LPCTSTR>(sP2) + (length - 1);
+	LPCWSTR pP1Start = sP1;
+	LPCWSTR pP1 = pP1Start + (length - 1);
+	LPCWSTR pP2 = static_cast<LPCWSTR>(sP2) + (length - 1);
 	while (length-- > 0)
 	{
 		if ((*pP1--) != (*pP2--))

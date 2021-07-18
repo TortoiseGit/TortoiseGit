@@ -89,18 +89,18 @@ static FARPROC s_GetProcAddressEx(HMODULE hDll, const char* procName, bool& vali
 	return proc;
 }
 
-tstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
+std::wstring CPicture::GetFileSizeAsText(bool bAbbrev /* = true */)
 {
-	TCHAR buf[100] = { 0 };
+	wchar_t buf[100] = { 0 };
 	if (bAbbrev)
 		StrFormatByteSize(m_nSize, buf, _countof(buf));
 	else
 		swprintf_s(buf, L"%lu Bytes", m_nSize);
 
-	return tstring(buf);
+	return std::wstring(buf);
 }
 
-bool CPicture::TryLoadIcon(const tstring& sFilePathName)
+bool CPicture::TryLoadIcon(const std::wstring& sFilePathName)
 {
 	// Icon file, get special treatment...
 	CAutoFile hFile = CreateFile(sFilePathName.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -163,7 +163,7 @@ bool CPicture::TryLoadIcon(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::TryLoadWIC(const tstring& sFilePathName)
+bool CPicture::TryLoadWIC(const std::wstring& sFilePathName)
 {
 	CComPtr<IWICImagingFactory> pFactory;
 	HRESULT hr = CoCreateInstance(CLSID_WICImagingFactory,
@@ -226,7 +226,7 @@ bool CPicture::TryLoadWIC(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::TryLoadFreeImage(const tstring& sFilePathName)
+bool CPicture::TryLoadFreeImage(const std::wstring& sFilePathName)
 {
 	// Attempt to load the FreeImage library as an optional DLL to support additional formats
 
@@ -236,9 +236,9 @@ bool CPicture::TryLoadFreeImage(const tstring& sFilePathName)
 
 	// FreeImage DLL functions
 	typedef const char*(__stdcall * FreeImage_GetVersion_t)(void);
-	typedef int(__stdcall * FreeImage_GetFileType_t)(const TCHAR* filename, int size);
-	typedef int(__stdcall * FreeImage_GetFIFFromFilename_t)(const TCHAR* filename);
-	typedef void*(__stdcall * FreeImage_Load_t)(int format, const TCHAR* filename, int flags);
+	typedef int(__stdcall * FreeImage_GetFileType_t)(const wchar_t* filename, int size);
+	typedef int(__stdcall * FreeImage_GetFIFFromFilename_t)(const wchar_t* filename);
+	typedef void*(__stdcall * FreeImage_Load_t)(int format, const wchar_t* filename, int flags);
 	typedef void(__stdcall * FreeImage_Unload_t)(void* dib);
 	typedef int(__stdcall * FreeImage_GetColorType_t)(void* dib);
 	typedef unsigned(__stdcall * FreeImage_GetWidth_t)(void* dib);
@@ -325,7 +325,7 @@ bool CPicture::TryLoadFreeImage(const tstring& sFilePathName)
 	return true;
 }
 
-bool CPicture::Load(tstring sFilePathName)
+bool CPicture::Load(std::wstring sFilePathName)
 {
 	bool bResult = false;
 	bIsIcon = false;

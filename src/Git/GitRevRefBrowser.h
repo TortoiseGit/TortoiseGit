@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2017, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,12 +23,12 @@
 #include <functional>
 
 class GitRevRefBrowser;
-typedef std::map<CString, GitRevRefBrowser> MAP_REF_GITREVREFBROWSER;
+using MAP_REF_GITREVREFBROWSER = std::map<CString, GitRevRefBrowser>;
 
 class GitRevRefBrowser : public GitRev
 {
 public:
-	GitRevRefBrowser(void);
+	GitRevRefBrowser();
 
 	CString m_Description;
 	CString m_UpstreamRef;

@@ -17,7 +17,6 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
 #include "stdafx.h"
 #include "TaskbarUUID.h"
 #include "registry.h"
@@ -49,7 +48,7 @@ void SetTaskIDPerUUID()
 	}
 }
 
-std::wstring GetTaskIDPerUUID(LPCTSTR uuid /*= nullptr */)
+std::wstring GetTaskIDPerUUID(LPCWSTR uuid /*= nullptr */)
 {
 	CRegStdDWORD r = CRegStdDWORD(L"Software\\TortoiseGit\\GroupTaskbarIconsPerRepo", 3);
 	std::wstring id = APPID;

@@ -23,7 +23,7 @@
 #include "GitAdminDir.h"
 #include "GitStatusCache.h"
 
-CShellUpdater::CShellUpdater(void)
+CShellUpdater::CShellUpdater()
 	: m_bRunning(FALSE)
 	, m_bItemsAddedSinceLastUpdate(false)
 {
@@ -31,7 +31,7 @@ CShellUpdater::CShellUpdater(void)
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 }
 
-CShellUpdater::~CShellUpdater(void)
+CShellUpdater::~CShellUpdater()
 {
 	Stop();
 }
@@ -143,7 +143,7 @@ void CShellUpdater::WorkerThread()
 				admindir += L'\\';
 				admindir += GitAdminDir::GetAdminDirName();
 				if(::PathFileExists(admindir))
-					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, static_cast<LPCTSTR>(admindir), nullptr);
+					SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, static_cast<LPCWSTR>(admindir), nullptr);
 
 				SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, workingPath.GetWinPath(), nullptr);
 				// Sending an UPDATEDIR notification somehow overwrites/deletes the UPDATEITEM message. And without

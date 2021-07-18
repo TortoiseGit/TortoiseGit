@@ -28,14 +28,14 @@
 
 IMPLEMENT_DYNCREATE(CRightView, CBaseView)
 
-CRightView::CRightView(void)
+CRightView::CRightView()
 {
 	m_pwndRight = this;
 	m_pState = &m_AllState.right;
 	m_nStatusBarID = ID_INDICATOR_RIGHTVIEW;
 }
 
-CRightView::~CRightView(void)
+CRightView::~CRightView()
 {
 }
 

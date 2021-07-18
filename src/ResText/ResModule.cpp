@@ -54,7 +54,7 @@ std::wstring NumToStr(INT_PTR num)
 	return buf;
 }
 
-CResModule::CResModule(void)
+CResModule::CResModule()
 	: m_bTranslatedStrings(0)
 	, m_bDefaultStrings(0)
 	, m_bTranslatedDialogStrings(0)
@@ -74,11 +74,11 @@ CResModule::CResModule(void)
 {
 }
 
-CResModule::~CResModule(void)
+CResModule::~CResModule()
 {
 }
 
-BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPCTSTR lpszPOFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile)
+BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPCWSTR lpszPOFilePath, BOOL bNoUpdate, LPCWSTR lpszHeaderFile)
 {
 	for (auto I = filelist.cbegin(); I != filelist.cend(); ++I)
 	{
@@ -104,36 +104,36 @@ BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPC
 		// fill in the std::map with all translatable entries
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"Extracting StringTable....");
+			fwprintf(stdout, L"Extracting StringTable....");
 		EnumResourceNames(m_hResDll, RT_STRING, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+			fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size() - nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"Extracting Dialogs........");
+			fwprintf(stdout, L"Extracting Dialogs........");
 		EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+			fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size() - nEntries);
 		nEntries = m_StringEntries.size();
 
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"Extracting Menus..........");
+			fwprintf(stdout, L"Extracting Menus..........");
 		EnumResourceNames(m_hResDll, RT_MENU, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+			fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size() - nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"Extracting Accelerators...");
+			fwprintf(stdout, L"Extracting Accelerators...");
 		EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
+			fwprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size() - nEntries);
 		nEntries = m_StringEntries.size();
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"Extracting Ribbons........");
+			fwprintf(stdout, L"Extracting Ribbons........");
 		EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 		if (!m_bQuiet)
-			_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+			fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size() - nEntries);
 		nEntries = m_StringEntries.size();
 
 		// parse a probably existing file and update the translations which are
@@ -147,7 +147,7 @@ BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPC
 	return m_StringEntries.SaveFile(lpszPOFilePath, lpszHeaderFile);
 }
 
-BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFilePath, BOOL bNoUpdate, LPCTSTR lpszHeaderFile)
+BOOL CResModule::ExtractResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR lpszPoFilePath, BOOL bNoUpdate, LPCWSTR lpszHeaderFile)
 {
 	m_hResDll = LoadLibraryEx(lpszSrcLangDllPath, nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
 	if (!m_hResDll)
@@ -157,31 +157,31 @@ BOOL CResModule::ExtractResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszPoFile
 	// fill in the std::map with all translatable entries
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Extracting StringTable....");
+		fwprintf(stdout, L"Extracting StringTable....");
 	EnumResourceNames(m_hResDll, RT_STRING, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size());
+		fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size());
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Extracting Dialogs........");
+		fwprintf(stdout, L"Extracting Dialogs........");
 	EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+		fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size() - nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Extracting Menus..........");
+		fwprintf(stdout, L"Extracting Menus..........");
 	EnumResourceNames(m_hResDll, RT_MENU, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
+		fwprintf(stdout, L"%4Iu Strings\n", m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Extracting Accelerators...");
+		fwprintf(stdout, L"Extracting Accelerators...");
 	EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
+		fwprintf(stdout, L"%4Iu Accelerators\n", m_StringEntries.size()-nEntries);
 	nEntries = m_StringEntries.size();
 
 	// parse a probably existing file and update the translations which are
@@ -202,7 +202,7 @@ DONE_ERROR:
 	return FALSE;
 }
 
-void CResModule::RemoveSignatures(LPCTSTR lpszDestLangDllPath)
+void CResModule::RemoveSignatures(LPCWSTR lpszDestLangDllPath)
 {
 	// Remove any signatures in the file:
 	// if we don't remove it here, the signature will be invalid after
@@ -224,7 +224,7 @@ void CResModule::RemoveSignatures(LPCTSTR lpszDestLangDllPath)
 	CloseHandle(hFile);
 }
 
-BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR lpszDestLangDllPath, LPCTSTR lpszPOFilePath)
+BOOL CResModule::CreateTranslatedResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR lpszDestLangDllPath, LPCWSTR lpszPOFilePath)
 {
 	if (!CopyFile(lpszSrcLangDllPath, lpszDestLangDllPath, FALSE))
 		MYERROR;
@@ -271,34 +271,34 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Translating StringTable...");
+		fwprintf(stdout, L"Translating StringTable...");
 	EnumResourceNames(m_hResDll, RT_STRING, EnumResNameWriteCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedStrings, m_bDefaultStrings);
+		fwprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedStrings, m_bDefaultStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Translating Dialogs.......");
+		fwprintf(stdout, L"Translating Dialogs.......");
 	EnumResourceNames(m_hResDll, RT_DIALOG, EnumResNameWriteCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
+		fwprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedDialogStrings, m_bDefaultDialogStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Translating Menus.........");
+		fwprintf(stdout, L"Translating Menus.........");
 	EnumResourceNames(m_hResDll, RT_MENU, EnumResNameWriteCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
+		fwprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedMenuStrings, m_bDefaultMenuStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Translating Accelerators..");
+		fwprintf(stdout, L"Translating Accelerators..");
 	EnumResourceNames(m_hResDll, RT_ACCELERATOR, EnumResNameWriteCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
+		fwprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedAcceleratorStrings, m_bDefaultAcceleratorStrings);
 
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"Translating Ribbons.......");
+		fwprintf(stdout, L"Translating Ribbons.......");
 	EnumResourceNames(m_hResDll, RT_RIBBON, EnumResNameWriteCallback, reinterpret_cast<LONG_PTR>(this));
 	if (!m_bQuiet)
-		_ftprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
+		fwprintf(stdout, L"%4d translated, %4d not translated\n", m_bTranslatedRibbonTexts, m_bDefaultRibbonTexts);
 	BOOL bRes = TRUE;
 	if (!EndUpdateResource(m_hUpdateRes, !bRes))
 		MYERROR;
@@ -313,7 +313,7 @@ DONE_ERROR:
 	return FALSE;
 }
 
-BOOL CResModule::ExtractString(LPCTSTR lpszType)
+BOOL CResModule::ExtractString(LPCWSTR lpszType)
 {
 	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_STRING);
 	HGLOBAL     hglStringTable;
@@ -366,7 +366,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
+BOOL CResModule::ReplaceString(LPCWSTR lpszType, WORD wLanguage)
 {
 	HRSRC       hrsrc = FindResourceEx(m_hResDll, RT_STRING, lpszType, wLanguage);
 	HGLOBAL     hglStringTable;
@@ -475,7 +475,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-BOOL CResModule::ExtractMenu(LPCTSTR lpszType)
+BOOL CResModule::ExtractMenu(LPCWSTR lpszType)
 {
 	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_MENU);
 	HGLOBAL     hglMenuTemplate;
@@ -546,7 +546,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-BOOL CResModule::ReplaceMenu(LPCTSTR lpszType, WORD wLanguage)
+BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 {
 	HRSRC       hrsrc = FindResourceEx(m_hResDll, RT_MENU, lpszType, wLanguage);
 	HGLOBAL     hglMenuTemplate;
@@ -719,7 +719,7 @@ const WORD* CResModule::ParseMenuResource(const WORD * res)
 			RESOURCEENTRY entry = m_StringEntries[wstr];
 			InsertResourceIDs(RT_MENU, 0, entry, id, L" - Menu");
 
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuEntry; ID:%u", id);
 			MENUENTRY menu_entry;
 			menu_entry.wID = id;
@@ -840,7 +840,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			res += 2;
 
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - PopupMenuEx");
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuExPopupEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = static_cast<WORD>(menuId);
@@ -861,7 +861,7 @@ const WORD* CResModule::ParseMenuExResource(const WORD * res)
 			RESOURCEENTRY entry = m_StringEntries[wstr];
 			InsertResourceIDs(RT_MENU, 0, entry, menuId, L" - MenuEx");
 
-			TCHAR szTempBuf[1024] = { 0 };
+			wchar_t szTempBuf[1024] = { 0 };
 			swprintf_s(szTempBuf, L"#: MenuExEntry; ID:%lu", menuId);
 			MENUENTRY menu_entry;
 			menu_entry.wID = static_cast<WORD>(menuId);
@@ -949,7 +949,7 @@ const WORD* CResModule::CountMemReplaceMenuExResource(const WORD * res, size_t *
 	return res;
 }
 
-BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
+BOOL CResModule::ExtractAccelerator(LPCWSTR lpszType)
 {
 	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_ACCELERATOR);
 	HGLOBAL     hglAccTable;
@@ -1049,7 +1049,7 @@ BOOL CResModule::ExtractAccelerator(LPCTSTR lpszType)
 		std::wstring wstr = std::wstring(buf2);
 		RESOURCEENTRY AKey_entry = m_StringEntries[wstr];
 
-		TCHAR szTempBuf[1024] = { 0 };
+		wchar_t szTempBuf[1024] = { 0 };
 		std::wstring wmenu;
 		pME_iter = m_MenuEntries.find(wID);
 		if (pME_iter != m_MenuEntries.end())
@@ -1072,7 +1072,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-BOOL CResModule::ReplaceAccelerator(LPCTSTR lpszType, WORD wLanguage)
+BOOL CResModule::ReplaceAccelerator(LPCWSTR lpszType, WORD wLanguage)
 {
 	LPACCEL     lpaccelNew;         // pointer to new accelerator table
 	HACCEL      haccelOld;          // handle to old accelerator table
@@ -1213,7 +1213,7 @@ DONE_ERROR:
 	MYERROR;
 }
 
-BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
+BOOL CResModule::ExtractDialog(LPCWSTR lpszType)
 {
 	const WORD* lpDlg;
 	const WORD* lpDlgItem;
@@ -1255,7 +1255,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 
 	while (bNumControls-- != 0)
 	{
-		TCHAR szTitle[500] = { 0 };
+		wchar_t szTitle[500] = { 0 };
 		BOOL  bCode;
 
 		lpDlgItem = GetControlInfo(lpDlgItem, &dlgItem, dlg.dialogEx, &bCode);
@@ -1280,7 +1280,7 @@ BOOL CResModule::ExtractDialog(LPCTSTR lpszType)
 	return (TRUE);
 }
 
-BOOL CResModule::ReplaceDialog(LPCTSTR lpszType, WORD wLanguage)
+BOOL CResModule::ReplaceDialog(LPCWSTR lpszType, WORD wLanguage)
 {
 	const WORD* lpDlg;
 	HRSRC       hrsrc;
@@ -1387,11 +1387,11 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 		p++;
 		break;
 	case 0xffff:
-		lpDlgInfo->menuName = reinterpret_cast<LPCTSTR>(static_cast<WORD>(GET_WORD(p + 1)));
+		lpDlgInfo->menuName = reinterpret_cast<LPCWSTR>(static_cast<WORD>(GET_WORD(p + 1)));
 		p += 2;
 		break;
 	default:
-		lpDlgInfo->menuName = reinterpret_cast<LPCTSTR>(p);
+		lpDlgInfo->menuName = reinterpret_cast<LPCWSTR>(p);
 		p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 		break;
 	}
@@ -1401,22 +1401,22 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 	switch (GET_WORD(p))
 	{
 	case 0x0000:
-		lpDlgInfo->className = static_cast<LPCTSTR>(MAKEINTATOM(32770));
+		lpDlgInfo->className = static_cast<LPCWSTR>(MAKEINTATOM(32770));
 		p++;
 		break;
 	case 0xffff:
-		lpDlgInfo->className = reinterpret_cast<LPCTSTR>(static_cast<WORD>(GET_WORD(p + 1)));
+		lpDlgInfo->className = reinterpret_cast<LPCWSTR>(static_cast<WORD>(GET_WORD(p + 1)));
 		p += 2;
 		break;
 	default:
-		lpDlgInfo->className = reinterpret_cast<LPCTSTR>(p);
-		p += wcslen(reinterpret_cast<LPCTSTR>(p)) + 1;
+		lpDlgInfo->className = reinterpret_cast<LPCWSTR>(p);
+		p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 		break;
 	}
 
 	// Get the window caption
 
-	lpDlgInfo->caption = reinterpret_cast<LPCTSTR>(p);
+	lpDlgInfo->caption = reinterpret_cast<LPCWSTR>(p);
 	p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 
 	// Get the font name
@@ -1439,7 +1439,7 @@ const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlg
 			lpDlgInfo->italic = FALSE;
 		}
 
-		lpDlgInfo->faceName = reinterpret_cast<LPCTSTR>(p);
+		lpDlgInfo->faceName = reinterpret_cast<LPCWSTR>(p);
 		p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 	}
 	// First control is on DWORD boundary
@@ -1500,20 +1500,20 @@ const WORD* CResModule::GetControlInfo(const WORD* p, LPDLGITEMINFO lpDlgItemInf
 	}
 	else
 	{
-		lpDlgItemInfo->className = reinterpret_cast<LPCTSTR>(p);
+		lpDlgItemInfo->className = reinterpret_cast<LPCWSTR>(p);
 		p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 	}
 
 	if (GET_WORD(p) == 0xffff)  // an integer ID?
 	{
 		*bIsID = TRUE;
-		lpDlgItemInfo->windowName = reinterpret_cast<LPCTSTR>(GET_WORD(p + 1));
+		lpDlgItemInfo->windowName = reinterpret_cast<LPCWSTR>(GET_WORD(p + 1));
 		p += 2;
 	}
 	else
 	{
 		*bIsID = FALSE;
-		lpDlgItemInfo->windowName = reinterpret_cast<LPCTSTR>(p);
+		lpDlgItemInfo->windowName = reinterpret_cast<LPCWSTR>(p);
 		p += wcslen(reinterpret_cast<LPCWSTR>(p)) + 1;
 	}
 
@@ -1855,7 +1855,7 @@ const WORD* CResModule::ReplaceControlInfo(const WORD * res, size_t * wordcount,
 	return res;
 }
 
-BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
+BOOL CResModule::ExtractRibbon(LPCWSTR lpszType)
 {
 	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_RIBBON);
 	HGLOBAL     hglRibbonTemplate;
@@ -1920,7 +1920,7 @@ BOOL CResModule::ExtractRibbon(LPCTSTR lpszType)
 	return TRUE;
 }
 
-BOOL CResModule::ReplaceRibbon(LPCTSTR lpszType, WORD wLanguage)
+BOOL CResModule::ReplaceRibbon(LPCWSTR lpszType, WORD wLanguage)
 {
 	HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_RIBBON);
 	HGLOBAL     hglRibbonTemplate;
@@ -2054,7 +2054,7 @@ std::wstring CResModule::ReplaceWithRegex(std::wstring& s)
 	return s;
 }
 
-BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
+BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam)
 {
 	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
 
@@ -2102,13 +2102,13 @@ BOOL CALLBACK CResModule::EnumResNameCallback(HMODULE /*hModule*/, LPCTSTR lpszT
 	return TRUE;
 }
 
-BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE hModule, LPCTSTR lpszType, LPTSTR lpszName, LONG_PTR lParam)
+BOOL CALLBACK CResModule::EnumResNameWriteCallback(HMODULE hModule, LPCWSTR lpszType, LPWSTR lpszName, LONG_PTR lParam)
 {
 	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
 	return EnumResourceLanguages(hModule, lpszType, lpszName, reinterpret_cast<ENUMRESLANGPROC>(&lpResModule->EnumResWriteLangCallback), lParam);
 }
 
-BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCTSTR lpszType, LPTSTR lpszName, WORD wLanguage, LONG_PTR lParam)
+BOOL CALLBACK CResModule::EnumResWriteLangCallback(HMODULE /*hModule*/, LPCWSTR lpszType, LPWSTR lpszName, WORD wLanguage, LONG_PTR lParam)
 {
 	BOOL bRes = FALSE;
 	auto lpResModule = reinterpret_cast<CResModule*>(lParam);
@@ -2193,7 +2193,7 @@ size_t CResModule::ScanHeaderFile(const std::wstring & filepath)
 
 	// open the file and read the contents
 	DWORD reqLen = GetFullPathName(filepath.c_str(), 0, nullptr, nullptr);
-	auto wcfullPath = std::make_unique<TCHAR[]>(reqLen + 1);
+	auto wcfullPath = std::make_unique<wchar_t[]>(reqLen + 1);
 	GetFullPathName(filepath.c_str(), reqLen, wcfullPath.get(), nullptr);
 	std::wstring fullpath = wcfullPath.get();
 

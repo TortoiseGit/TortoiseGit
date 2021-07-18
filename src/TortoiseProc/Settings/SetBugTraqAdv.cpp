@@ -129,7 +129,7 @@ void CSetBugTraqAdv::OnOK()
 
 	if (m_sPath.IsEmpty() || !PathIsDirectory(m_sPath) || PathIsRelative(m_sPath))
 	{
-		ShowEditBalloon(IDC_BUGTRAQPATH, static_cast<LPCTSTR>(CFormatMessageWrapper(ERROR_PATH_NOT_FOUND)), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
+		ShowEditBalloon(IDC_BUGTRAQPATH, static_cast<LPCWSTR>(CFormatMessageWrapper(ERROR_PATH_NOT_FOUND)), CString(MAKEINTRESOURCE(IDS_ERR_ERROR)), TTI_ERROR);
 		return;
 	}
 

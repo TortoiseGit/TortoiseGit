@@ -53,7 +53,7 @@ bool CreateRepositoryCommand::Execute()
 	if (CheckSpecialFolder(folder))
 	{
 		CString message;
-		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, static_cast<LPCTSTR>(folder));
+		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, static_cast<LPCWSTR>(folder));
 		if (CMessageBox::Show(GetExplorerHWND(), message, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
 			return false;
 	}
@@ -63,7 +63,7 @@ bool CreateRepositoryCommand::Execute()
 	if(dlg.DoModal() == IDOK)
 	{
 		CString message;
-		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, static_cast<LPCTSTR>(folder));
+		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, static_cast<LPCWSTR>(folder));
 		if (dlg.m_bBare && PathIsDirectory(folder) && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(GetExplorerHWND(), message, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
 			return false;
 
@@ -83,7 +83,7 @@ bool CreateRepositoryCommand::Execute()
 			CAppUtils::SetupBareRepoIcon(folder);
 
 		CString str;
-		str.Format(IDS_PROC_REPOCREATED, static_cast<LPCTSTR>(folder));
+		str.Format(IDS_PROC_REPOCREATED, static_cast<LPCWSTR>(folder));
 		CMessageBox::Show(GetExplorerHWND(), str, L"TortoiseGit", MB_OK | MB_ICONINFORMATION);
 		return true;
 	}

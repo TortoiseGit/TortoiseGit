@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 #include <WinCrypt.h>
 #include "SmartHandle.h"
 
-typedef CComCritSecLock<CComCriticalSection> CAutoLocker;
+using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 static CString CalcMD5(CString text)
 {
@@ -289,7 +289,7 @@ resend:
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		DWORD downloaded; // size of the downloaded data
-		auto buff = std::make_unique<TCHAR[]>(size + 1);
+		auto buff = std::make_unique<wchar_t[]>(size + 1);
 		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 

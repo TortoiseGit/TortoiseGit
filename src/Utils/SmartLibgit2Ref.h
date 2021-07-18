@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2020 - TortoiseGit
+// Copyright (C) 2014-2021 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,8 +55,8 @@ private:
 	HandleType m_Ref;
 };
 
-typedef CSmartBuffer<git_buf,			git_buf_dispose>					CAutoBuf;
-typedef CSmartBuffer<git_strarray,		git_strarray_dispose>				CAutoStrArray;
+using CAutoBuf		= CSmartBuffer<git_buf,			git_buf_dispose>;
+using CAutoStrArray	= CSmartBuffer<git_strarray,	git_strarray_dispose>;
 
 template <typename ReferenceType, void FreeFunction(ReferenceType*)>
 class CSmartLibgit2Ref
@@ -127,26 +127,26 @@ protected:
 	ReferenceType* m_Ref;
 };
 
-typedef CSmartLibgit2Ref<git_object,				git_object_free>				CAutoObject;
-typedef CSmartLibgit2Ref<git_submodule,				git_submodule_free>				CAutoSubmodule;
-typedef CSmartLibgit2Ref<git_blob,					git_blob_free>					CAutoBlob;
-typedef CSmartLibgit2Ref<git_reference,				git_reference_free>				CAutoReference;
-typedef CSmartLibgit2Ref<git_tag,					git_tag_free>					CAutoTag;
-typedef CSmartLibgit2Ref<git_tree_entry,			git_tree_entry_free>			CAutoTreeEntry;
-typedef CSmartLibgit2Ref<git_diff,					git_diff_free>					CAutoDiff;
-typedef CSmartLibgit2Ref<git_patch,					git_patch_free>					CAutoPatch;
-typedef CSmartLibgit2Ref<git_diff_stats,			git_diff_stats_free>			CAutoDiffStats;
-typedef CSmartLibgit2Ref<git_index,					git_index_free>					CAutoIndex;
-typedef CSmartLibgit2Ref<git_remote,				git_remote_free>				CAutoRemote;
-typedef CSmartLibgit2Ref<git_reflog,				git_reflog_free>				CAutoReflog;
-typedef CSmartLibgit2Ref<git_revwalk,				git_revwalk_free>				CAutoRevwalk;
-typedef CSmartLibgit2Ref<git_branch_iterator,		git_branch_iterator_free>		CAutoBranchIterator;
-typedef CSmartLibgit2Ref<git_reference_iterator,	git_reference_iterator_free>	CAutoReferenceIterator;
-typedef CSmartLibgit2Ref<git_describe_result,		git_describe_result_free>		CAutoDescribeResult;
-typedef CSmartLibgit2Ref<git_status_list,			git_status_list_free>			CAutoStatusList;
-typedef CSmartLibgit2Ref<git_note,					git_note_free>					CAutoNote;
-typedef CSmartLibgit2Ref<git_signature,				git_signature_free>				CAutoSignature;
-typedef CSmartLibgit2Ref<git_mailmap,				git_mailmap_free>				CAutoMailmap;
+using CAutoObject				= CSmartLibgit2Ref<git_object,				git_object_free>;
+using CAutoSubmodule			= CSmartLibgit2Ref<git_submodule,			git_submodule_free>;
+using CAutoBlob					= CSmartLibgit2Ref<git_blob,				git_blob_free>;
+using CAutoReference			= CSmartLibgit2Ref<git_reference,			git_reference_free>;
+using CAutoTag					= CSmartLibgit2Ref<git_tag,					git_tag_free>;
+using CAutoTreeEntry			= CSmartLibgit2Ref<git_tree_entry,			git_tree_entry_free>;
+using CAutoDiff					= CSmartLibgit2Ref<git_diff,				git_diff_free>;
+using CAutoPatch				= CSmartLibgit2Ref<git_patch,				git_patch_free>;
+using CAutoDiffStats			= CSmartLibgit2Ref<git_diff_stats,			git_diff_stats_free>;
+using CAutoIndex				= CSmartLibgit2Ref<git_index,				git_index_free>;
+using CAutoRemote				= CSmartLibgit2Ref<git_remote,				git_remote_free>;
+using CAutoReflog				= CSmartLibgit2Ref<git_reflog,				git_reflog_free>;
+using CAutoRevwalk				= CSmartLibgit2Ref<git_revwalk,				git_revwalk_free>;
+using CAutoBranchIterator		= CSmartLibgit2Ref<git_branch_iterator,		git_branch_iterator_free>;
+using CAutoReferenceIterator	= CSmartLibgit2Ref<git_reference_iterator,	git_reference_iterator_free>;
+using CAutoDescribeResult		= CSmartLibgit2Ref<git_describe_result,		git_describe_result_free>;
+using CAutoStatusList			= CSmartLibgit2Ref<git_status_list,			git_status_list_free>;
+using CAutoNote					= CSmartLibgit2Ref<git_note,				git_note_free>;
+using CAutoSignature			= CSmartLibgit2Ref<git_signature,			git_signature_free>;
+using CAutoMailmap				= CSmartLibgit2Ref<git_mailmap,				git_mailmap_free>;
 
 class CAutoRepository : public CSmartLibgit2Ref<git_repository, git_repository_free>
 {

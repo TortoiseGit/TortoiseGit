@@ -43,8 +43,8 @@
 class CDirectoryWatcher
 {
 public:
-	CDirectoryWatcher(void);
-	~CDirectoryWatcher(void);
+	CDirectoryWatcher();
+	~CDirectoryWatcher();
 
 	/**
 	 * Adds a new path to be watched. The path \b must point to a directory.
@@ -140,7 +140,7 @@ private:
 		HDEVNOTIFY	m_hDevNotify;	///< Notification handle
 	};
 
-	typedef std::map<HANDLE, CDirWatchInfo *> TInfoMap;
+	using TInfoMap = std::map<HANDLE, CDirWatchInfo*>;
 	TInfoMap watchInfoMap;
 
 	HDEVNOTIFY		m_hdev;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@
 extern HWND hWndHidden;
 extern CGitAdminDirMap g_AdminDirMap;
 
-CDirectoryWatcher::CDirectoryWatcher(void)
+CDirectoryWatcher::CDirectoryWatcher()
 	: m_bRunning(TRUE)
 	, m_bCleaned(FALSE)
 	, m_FolderCrawler(nullptr)
@@ -37,12 +37,12 @@ CDirectoryWatcher::CDirectoryWatcher(void)
 {
 	// enable the required privileges for this process
 
-	LPCTSTR arPrivelegeNames[] = {  SE_BACKUP_NAME,
+	LPCWSTR arPrivelegeNames[] = {  SE_BACKUP_NAME,
 									SE_RESTORE_NAME,
 									SE_CHANGE_NOTIFY_NAME
 								 };
 
-	for (int i=0; i<(sizeof(arPrivelegeNames)/sizeof(LPCTSTR)); ++i)
+	for (int i = 0; i < (sizeof(arPrivelegeNames) / sizeof(LPCWSTR)); ++i)
 	{
 		CAutoGeneralHandle hToken;
 		if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, hToken.GetPointer()))
@@ -62,7 +62,7 @@ CDirectoryWatcher::CDirectoryWatcher(void)
 	m_hThread = reinterpret_cast<HANDLE>(_beginthreadex(nullptr, 0, ThreadEntry, this, 0, &threadId));
 }
 
-CDirectoryWatcher::~CDirectoryWatcher(void)
+CDirectoryWatcher::~CDirectoryWatcher()
 {
 	Stop();
 	AutoLocker lock(m_critSec);
@@ -425,15 +425,15 @@ void CDirectoryWatcher::WorkerThread()
 
 							nOffset = pnotify->NextEntryOffset;
 
-							if (pnotify->FileNameLength >= (READ_DIR_CHANGE_BUFFER_SIZE*sizeof(TCHAR)))
+							if (pnotify->FileNameLength >= (READ_DIR_CHANGE_BUFFER_SIZE * sizeof(wchar_t)))
 								continue;
 
-							SecureZeroMemory(buf, READ_DIR_CHANGE_BUFFER_SIZE*sizeof(TCHAR));
+							SecureZeroMemory(buf, READ_DIR_CHANGE_BUFFER_SIZE * sizeof(wchar_t));
 							wcsncpy_s(buf, pdi->m_DirPath, _countof(buf) - 1);
-							errno_t err = wcsncat_s(buf + pdi->m_DirPath.GetLength(), READ_DIR_CHANGE_BUFFER_SIZE - pdi->m_DirPath.GetLength(), pnotify->FileName, min(READ_DIR_CHANGE_BUFFER_SIZE - pdi->m_DirPath.GetLength(), int(pnotify->FileNameLength / sizeof(TCHAR))));
+							errno_t err = wcsncat_s(buf + pdi->m_DirPath.GetLength(), READ_DIR_CHANGE_BUFFER_SIZE - pdi->m_DirPath.GetLength(), pnotify->FileName, min(READ_DIR_CHANGE_BUFFER_SIZE - pdi->m_DirPath.GetLength(), int(pnotify->FileNameLength / sizeof(wchar_t))));
 							if (err == STRUNCATE)
 								continue;
-							buf[(pnotify->FileNameLength / sizeof(TCHAR)) + pdi->m_DirPath.GetLength()] = L'\0';
+							buf[(pnotify->FileNameLength / sizeof(wchar_t)) + pdi->m_DirPath.GetLength()] = L'\0';
 
 							if (m_FolderCrawler)
 							{

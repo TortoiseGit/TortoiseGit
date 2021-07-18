@@ -96,8 +96,8 @@ private:
 		value_t val;
 	};
 
-	typedef std::list<ListItem> ItemsList;
-	typedef std::unordered_map<key_t, typename ItemsList::iterator> ItemsMap;
+	using ItemsList = std::list<ListItem>;
+	using ItemsMap = std::unordered_map<key_t, typename ItemsList::iterator> ;
 
 	size_t maxSize;
 	ItemsMap itemsMap;

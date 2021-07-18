@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2018 - TortoiseGit
+// Copyright (C) 2008-2014, 2018, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -52,9 +52,9 @@ protected:
 	void DisplayCommit(const git_commit* commit, UINT hashLabel, UINT subjectLabel, UINT authorLabel, UINT dateLabel);
 	static void LogThreadEntry(void *param);
 	int LogThread();
-	void Time64ToTimeString(__time64_t time, TCHAR * buf, size_t buflen) const;
+	void Time64ToTimeString(__time64_t time, wchar_t* buf, size_t buflen) const;
 	void PageProcOnCommand(WPARAM wParam);
-	void RunCommand(const tstring& command);
+	void RunCommand(const std::wstring& command);
 
 	HWND m_hwnd;
 	std::vector<std::wstring> filenames;

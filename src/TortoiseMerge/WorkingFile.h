@@ -26,8 +26,8 @@
 class CWorkingFile
 {
 public:
-	CWorkingFile(void);
-	~CWorkingFile(void);
+	CWorkingFile();
+	~CWorkingFile();
 
 public:
 	// Is this file in use?

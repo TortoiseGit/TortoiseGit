@@ -33,20 +33,20 @@ public:
 	};
 public:
 	//constructor / deconstructor
-	CBrowseFolder(void);
-	~CBrowseFolder(void);
+	CBrowseFolder();
+	~CBrowseFolder();
 public:
 	DWORD m_style;		///< styles of the dialog.
 	/**
 	 * Sets the info text of the dialog. Call this method before calling Show().
 	 */
-	void SetInfo(LPCTSTR title);
+	void SetInfo(LPCWSTR title);
 	/*
 	 * Sets the text to show for the checkbox. If this method is not called,
 	 * then no checkbox is added.
 	 */
-	void SetCheckBoxText(LPCTSTR checktext);
-	void SetCheckBoxText2(LPCTSTR checktext);
+	void SetCheckBoxText(LPCWSTR checktext);
+	void SetCheckBoxText2(LPCWSTR checktext);
 	/**
 	 * Shows the Dialog.
 	 * \param parent [in] window handle of the parent window.
@@ -55,7 +55,7 @@ public:
 	 * \return one of CANCEL, NOPATH or OK
 	 */
 	CBrowseFolder::retVal Show(HWND parent, CString& path, const CString& sDefaultPath = CString());
-	CBrowseFolder::retVal Show(HWND parent, LPTSTR path, size_t pathlen, LPCTSTR szDefaultPath = nullptr);
+	CBrowseFolder::retVal Show(HWND parent, LPWSTR path, size_t pathlen, LPCWSTR szDefaultPath = nullptr);
 
 	/**
 	 * If this is set to true, then the second checkbox gets disabled as soon as the first
@@ -68,7 +68,7 @@ public:
 	static BOOL m_bCheck2;
 protected:
 	static CString m_sDefaultPath;
-	TCHAR m_title[200];
+	wchar_t m_title[200];
 	CString m_CheckText;
 	CString m_CheckText2;
 	bool m_DisableCheckbox2WhenCheckbox1IsChecked;

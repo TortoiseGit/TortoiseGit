@@ -26,7 +26,7 @@
 struct CodeMap
 {
 	int m_Code;
-	TCHAR * m_CodeName;
+	wchar_t* m_CodeName;
 };
 int CUnicodeUtils::GetCPCode(const CString &codename)
 {
@@ -357,7 +357,7 @@ struct STRINGRESOURCEIMAGE
 };
 #pragma warning(pop)	// C4200
 
-int LoadStringEx(HINSTANCE hInstance, UINT uID, LPTSTR lpBuffer, int nBufferMax, WORD wLanguage)
+int LoadStringEx(HINSTANCE hInstance, UINT uID, LPWSTR lpBuffer, int nBufferMax, WORD wLanguage)
 {
 	const STRINGRESOURCEIMAGE* pImage;
 	const STRINGRESOURCEIMAGE* pImageEnd;

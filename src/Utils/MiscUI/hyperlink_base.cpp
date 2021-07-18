@@ -46,10 +46,10 @@
 class CGlobalAtom
 {
 public:
-	CGlobalAtom(void)
+	CGlobalAtom()
 	{ atom = GlobalAddAtom(TEXT("_Hyperlink_Object_Pointer_")
 			 TEXT("\\{AFEED740-CC6D-47c5-831D-9848FD916EEF}")); }
-	~CGlobalAtom(void)
+	~CGlobalAtom()
 	{ DeleteAtom(atom); }
 
 	ATOM atom;
@@ -80,7 +80,7 @@ inline void INFLATERECT( PRECT r, int dx, int dy )
 /////////////////////////////////////////////////////////////////////////////
 // CHyperLink
 
-CHyperLink::CHyperLink(void)
+CHyperLink::CHyperLink()
 {
 	m_bOverControl      = FALSE;                // Cursor not yet over control
 	m_bVisited          = FALSE;                // Hasn't been visited yet.
@@ -89,7 +89,7 @@ CHyperLink::CHyperLink(void)
 	m_strURL            = nullptr;
 }
 
-CHyperLink::~CHyperLink(void)
+CHyperLink::~CHyperLink()
 {
 	delete [] m_strURL;
 }
@@ -101,7 +101,7 @@ CHyperLink::~CHyperLink(void)
 /*
  * Function CHyperLink::ConvertStaticToHyperlink
  */
-BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
+BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCWSTR strURL)
 {
 	if( !(setURL(strURL)) )
 		return FALSE;
@@ -146,7 +146,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndCtl, LPCTSTR strURL)
  * Function CHyperLink::ConvertStaticToHyperlink
  */
 BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId,
-										  LPCTSTR strURL)
+										  LPCWSTR strURL)
 {
 	return ConvertStaticToHyperlink(GetDlgItem(hwndParent, uiCtlId), strURL);
 }
@@ -154,10 +154,10 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId,
 /*
  * Function CHyperLink::setURL
  */
-BOOL CHyperLink::setURL(LPCTSTR strURL)
+BOOL CHyperLink::setURL(LPCWSTR strURL)
 {
 	delete[] m_strURL;
-	if ((m_strURL = new TCHAR[lstrlen(strURL) + 1]) == nullptr)
+	if ((m_strURL = new wchar_t[lstrlen(strURL) + 1]) == nullptr)
 		return FALSE;
 
 	lstrcpy(m_strURL, strURL);
@@ -216,7 +216,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkParentProc(HWND hwnd, UINT message,
 /*
  * Function CHyperLink::Navigate
  */
-inline void CHyperLink::Navigate(void)
+inline void CHyperLink::Navigate()
 {
 	SHELLEXECUTEINFO sei = { 0 };
 	sei.cbSize = sizeof( SHELLEXECUTEINFO );		// Set Size
@@ -359,7 +359,7 @@ LRESULT CALLBACK CHyperLink::_HyperlinkProc(HWND hwnd, UINT message,
 /*
  * Function CHyperLink::createUnderlineFont
  */
-void CHyperLink::createUnderlineFont(void)
+void CHyperLink::createUnderlineFont()
 {
 	LOGFONT lf;
 	GetObject(m_StdFont, sizeof(lf), &lf);
@@ -371,7 +371,7 @@ void CHyperLink::createUnderlineFont(void)
 /*
  * Function CHyperLink::createLinkCursor
  */
-void CHyperLink::createLinkCursor(void)
+void CHyperLink::createLinkCursor()
 {
 	g_hLinkCursor = ::LoadCursor(nullptr, IDC_HAND); // Load Windows' hand cursor
 	if( !g_hLinkCursor )    // if not available, use the standard Arrow cursor

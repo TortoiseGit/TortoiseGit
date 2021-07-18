@@ -227,8 +227,8 @@ void COpenDlg::OnOK()
 			auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
 			DWORD len = GetTempPath(0, nullptr);
-			auto path = std::make_unique<TCHAR[]>(len + 1);
-			auto tempF = std::make_unique<TCHAR[]>(len + 100);
+			auto path = std::make_unique<wchar_t[]>(len + 1);
+			auto tempF = std::make_unique<wchar_t[]>(len + 100);
 			GetTempPath (len+1, path.get());
 			GetTempFileName(path.get(), L"tsm", 0, tempF.get());
 			CString sTempFile = CString(tempF.get());
@@ -257,7 +257,7 @@ void COpenDlg::OnOK()
 	if (!sFile.IsEmpty())
 	{
 		CString sErr;
-		sErr.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCTSTR>(sFile));
+		sErr.Format(IDS_ERR_PATCH_INVALIDPATCHFILE, static_cast<LPCWSTR>(sFile));
 		MessageBox(sErr, nullptr, MB_ICONERROR);
 		return;
 	}

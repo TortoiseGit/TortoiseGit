@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2019 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2019, 2021 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
 //
 #include <SDKDDKVer.h>
 #include <Windows.h>
-#include <tchar.h>
 #include "Debug.h"
 
 const HINSTANCE NIL = reinterpret_cast<HINSTANCE>((static_cast<char*>(0)-1));
@@ -32,7 +31,7 @@ static LPFNCANUNLOADNOW pDllCanUnloadNow = nullptr;
 
 static wchar_t DebugDllPath[MAX_PATH] = { 0 };
 
-static BOOL DebugActive(void)
+static BOOL DebugActive()
 {
 	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
 	static const WCHAR DebugShellValue[] = L"DebugShell";
@@ -92,7 +91,7 @@ static BOOL DebugActive(void)
  * \ingroup TortoiseShell
  * Check whether to load the full TortoiseGit.dll or not.
  */
-static BOOL WantRealVersion(void)
+static BOOL WantRealVersion()
 {
 	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
 	static const WCHAR ExplorerOnlyValue[] = L"LoadDllOnlyInExplorer";
@@ -148,7 +147,7 @@ static BOOL WantRealVersion(void)
 	return bWantReal;
 }
 
-static void LoadRealLibrary(void)
+static void LoadRealLibrary()
 {
 	static const char GetClassObject[] = "DllGetClassObject";
 	static const char CanUnloadNow[] = "DllCanUnloadNow";
@@ -234,7 +233,7 @@ static void LoadRealLibrary(void)
 	}
 }
 
-static void UnloadRealLibrary(void)
+static void UnloadRealLibrary()
 {
 	if (!hTortoiseGit)
 		return;
@@ -255,7 +254,7 @@ BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD Reason, LPVOID /*Reserved*/)
 	// it.
 
 	BOOL bInShellTest = FALSE;
-	TCHAR buf[MAX_PATH + 1] = {0};       // MAX_PATH ok, the test really is for debugging anyway.
+	wchar_t buf[MAX_PATH + 1] = {0}; // MAX_PATH ok, the test really is for debugging anyway.
 	DWORD pathLength = GetModuleFileName(nullptr, buf, _countof(buf) - 1);
 
 	if (pathLength >= 14)
@@ -315,7 +314,7 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppv)
 	return pDllGetClassObject(rclsid, riid, ppv);
 }
 
-STDAPI DllCanUnloadNow(void)
+STDAPI DllCanUnloadNow()
 {
 	TRACE(L"DllCanUnloadNow() - Enter\n");
 

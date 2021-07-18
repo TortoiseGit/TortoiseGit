@@ -117,12 +117,12 @@ public:
 	 * \param lpszSection a section name where to put the entries, e.g. "lastloadedfiles"
 	 * \param lpszKeyPrefix a prefix to use for the history entries in registry/inifiles. E.g. "file" or "entry"
 	 */
-	CString LoadHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix);
+	CString LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix);
 
 	/**
 	 * Goes through the stored history in registry and removes a specific entry
 	 */
-	static void RemoveEntryFromHistory(LPCTSTR lpszSection, LPCTSTR lpszKeyPrefix, const CString& entryToRemove);
+	static void RemoveEntryFromHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix, const CString& entryToRemove);
 
 	/**
 	 * Returns the string in the combobox which is either selected or the user has entered.
@@ -151,7 +151,7 @@ public:
 	void SetCaseSensitive(BOOL bCaseSensitive) { m_bCaseSensitive = bCaseSensitive; }
 	void SetCheckDuplicate(BOOL bCheckDuplicate) { m_bCheckDuplicate = bCheckDuplicate; }
 
-	int FindStringExactCaseSensitive(int nIndexStart, LPCTSTR lpszFind);
+	int FindStringExactCaseSensitive(int nIndexStart, LPCWSTR lpszFind);
 
 	static int		m_nGitIconIndex;
 

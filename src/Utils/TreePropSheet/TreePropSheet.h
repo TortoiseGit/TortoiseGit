@@ -82,7 +82,7 @@ class /*AFX_EXT_CLASS*/ CTreePropSheet : public CPropertySheet
 public:
 	CTreePropSheet();
 	CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
-	CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
+	CTreePropSheet(LPCWSTR pszCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
 	virtual ~CTreePropSheet();
 
 // Operations
@@ -142,7 +142,7 @@ public:
 	The specified text can contains a single "%s" placeholder which
 	will be replaced with the title of the empty page.
 	*/
-	void SetEmptyPageText(LPCTSTR lpszEmptyPageText);
+	void SetEmptyPageText(LPCWSTR lpszEmptyPageText);
 
 	/**
 	Allows you to specify, how the empty page message (see
@@ -278,7 +278,7 @@ protected:
 	@param lpszCaption
 		The title of the empty page.
 	*/
-	virtual CString GenerateEmptyPageMessage(LPCTSTR lpszEmptyPageMessage, LPCTSTR lpszCaption);
+	virtual CString GenerateEmptyPageMessage(LPCWSTR lpszEmptyPageMessage, LPCWSTR lpszCaption);
 
 	/**
 	Will be called during creation process, to create the CTreeCtrl
@@ -332,7 +332,7 @@ protected:
 		Handle of the item under which the path should be created or
 		TVI_ROOT to start from the root.
 	*/
-	HTREEITEM CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent = TVI_ROOT);
+	HTREEITEM CreatePageTreeItem(LPCWSTR lpszPath, HTREEITEM hParent = TVI_ROOT);
 
 	/**
 	Splits the given path into the topmost item and the rest. See

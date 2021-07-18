@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016-2019 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include "TGitCache.h"
 #include <ShlObj.h>
 
-CFolderCrawler::CFolderCrawler(void)
+CFolderCrawler::CFolderCrawler()
 {
 	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
@@ -37,7 +37,7 @@ CFolderCrawler::CFolderCrawler(void)
 	m_blockReleasesAt = 0;
 }
 
-CFolderCrawler::~CFolderCrawler(void)
+CFolderCrawler::~CFolderCrawler()
 {
 	Stop();
 }
@@ -283,7 +283,7 @@ void CFolderCrawler::WorkerThread()
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Invalidating and refreshing folder: %s\n", workingPath.GetWinPath());
 					{
 						AutoLocker print(critSec);
-						_sntprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Invalidating and refreshing folder: %s", workingPath.GetWinPath());
+						_snwprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Invalidating and refreshing folder: %s", workingPath.GetWinPath());
 						++nCurrentCrawledpathIndex;
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
@@ -338,7 +338,7 @@ void CFolderCrawler::WorkerThread()
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Updating path: %s\n", workingPath.GetWinPath());
 					{
 						AutoLocker print(critSec);
-						_sntprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Updating path: %s", workingPath.GetWinPath());
+						_snwprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Updating path: %s", workingPath.GetWinPath());
 						++nCurrentCrawledpathIndex;
 						if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 							nCurrentCrawledpathIndex = 0;
@@ -397,7 +397,7 @@ void CFolderCrawler::WorkerThread()
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Crawling folder: %s\n", workingPath.GetWinPath());
 				{
 					AutoLocker print(critSec);
-					_sntprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Crawling folder: %s", workingPath.GetWinPath());
+					_snwprintf_s(szCurrentCrawledPath[nCurrentCrawledpathIndex], MAX_CRAWLEDPATHSLEN, _TRUNCATE, L"Crawling folder: %s", workingPath.GetWinPath());
 					++nCurrentCrawledpathIndex;
 					if (nCurrentCrawledpathIndex >= MAX_CRAWLEDPATHS)
 						nCurrentCrawledpathIndex = 0;

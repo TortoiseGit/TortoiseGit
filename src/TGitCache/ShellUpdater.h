@@ -29,8 +29,8 @@
 class CShellUpdater
 {
 public:
-	CShellUpdater(void);
-	~CShellUpdater(void);
+	CShellUpdater();
+	~CShellUpdater();
 
 public:
 	void Initialise();

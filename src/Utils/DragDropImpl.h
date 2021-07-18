@@ -20,12 +20,12 @@ private:
 
 public:
 
-	CDragSourceNotify(void)
+	CDragSourceNotify()
 	{
 		refCount = 0;
 	}
 
-	~CDragSourceNotify(void)
+	~CDragSourceNotify()
 	{
 	}
 
@@ -48,12 +48,12 @@ public:
 		return S_OK;
 	}
 
-	ULONG STDMETHODCALLTYPE AddRef(void) override
+	ULONG STDMETHODCALLTYPE AddRef() override
 	{
 		return InterlockedIncrement(&refCount);
 	}
 
-	ULONG STDMETHODCALLTYPE Release(void) override
+	ULONG STDMETHODCALLTYPE Release() override
 	{
 		ULONG ret = InterlockedDecrement(&refCount);
 		if(!ret) {
@@ -67,7 +67,7 @@ public:
 		return S_OK;
 	}
 
-	HRESULT STDMETHODCALLTYPE DragLeaveTarget(void) override
+	HRESULT STDMETHODCALLTYPE DragLeaveTarget() override
 	{
 		return S_OK;
 	}
@@ -87,13 +87,13 @@ class CEnumFormatEtc : public IEnumFORMATETC
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC*>& ArrFE);
 	 //IUnknown members
 	 STDMETHOD(QueryInterface)(REFIID, void FAR* FAR*) override;
-	 STDMETHOD_(ULONG, AddRef)(void) override;
-	 STDMETHOD_(ULONG, Release)(void) override;
+	 STDMETHOD_(ULONG, AddRef)() override;
+	 STDMETHOD_(ULONG, Release)() override;
 
 	 //IEnumFORMATETC members
 	 STDMETHOD(Next)(ULONG, LPFORMATETC, ULONG FAR *) override;
 	 STDMETHOD(Skip)(ULONG) override;
-	 STDMETHOD(Reset)(void) override;
+	 STDMETHOD(Reset)() override;
 	 STDMETHOD(Clone)(IEnumFORMATETC FAR* FAR*) override;
 };
 
@@ -233,7 +233,7 @@ public:
 
 
 	// helper function
-	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);
+	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert);
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -280,7 +280,7 @@ public:
 		/* [out][in] */ DWORD __RPC_FAR *pdwEffect) override;
 
 	// helper function
-	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCTSTR format, LPCTSTR insert);
+	HRESULT SetDropDescription(DROPIMAGETYPE image, LPCWSTR format, LPCWSTR insert);
 };
 
 class CDragSourceHelper

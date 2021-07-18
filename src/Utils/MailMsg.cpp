@@ -126,7 +126,7 @@ void CMailMsg::AddAttachment(const CString& sAttachment, CString sTitle)
 BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 {
 	CRegKey regKey;
-	TCHAR buf[1024] = L"";
+	wchar_t buf[1024] = L"";
 	LONG lResult = regKey.Open(HKEY_CURRENT_USER, L"SOFTWARE\\Clients\\Mail", KEY_READ);
 	if(lResult!=ERROR_SUCCESS)
 	{

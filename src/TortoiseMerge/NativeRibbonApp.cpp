@@ -171,7 +171,7 @@ public:
 		m_bCheckChanged = TRUE;
 	}
 
-	virtual void SetText(LPCTSTR lpszText)
+	virtual void SetText(LPCWSTR lpszText)
 	{
 		m_Text = lpszText;
 	}

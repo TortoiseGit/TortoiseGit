@@ -24,12 +24,12 @@
 #include "Git.h"
 #include "SmartHandle.h"
 
-CShellUpdater::CShellUpdater(void)
+CShellUpdater::CShellUpdater()
 {
 	m_hInvalidationEvent = CreateEvent(nullptr, FALSE, FALSE, L"TortoiseGitCacheInvalidationEvent");
 }
 
-CShellUpdater::~CShellUpdater(void)
+CShellUpdater::~CShellUpdater()
 {
 	Flush();
 
@@ -123,7 +123,7 @@ void CShellUpdater::UpdateShell()
 	for (int nPath = 0; nPath < m_pathsForUpdating.GetCount(); ++nPath)
 	{
 		path.SetFromWin(g_Git.CombinePath(m_pathsForUpdating[nPath]));
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", static_cast<LPCTSTR>(path.GetWinPathString()), GetTickCount64());
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Cache Item Update for %s (%I64u)\n", static_cast<LPCWSTR>(path.GetWinPathString()), GetTickCount64());
 		if (!path.IsDirectory())
 		{
 			// send notifications to the shell for changed files - folders are updated by the cache itself.
@@ -163,7 +163,7 @@ void CShellUpdater::UpdateShell()
 bool CShellUpdater::RebuildIcons()
 {
 	const int BUFFER_SIZE = 1024;
-	TCHAR buf[BUFFER_SIZE] = { 0 };
+	wchar_t buf[BUFFER_SIZE] = { 0 };
 	HKEY hRegKey = nullptr;
 	DWORD dwRegValue;
 	DWORD dwRegValueTemp;
@@ -175,7 +175,7 @@ bool CShellUpdater::RebuildIcons()
 	SCOPE_EXIT { RegCloseKey(hRegKey); };
 
 	// we're going to change the Shell Icon Size value
-	const TCHAR* sRegValueName = L"Shell Icon Size";
+	const wchar_t* sRegValueName = L"Shell Icon Size";
 
 	// Read registry value
 	dwSize = BUFFER_SIZE;
@@ -185,7 +185,7 @@ bool CShellUpdater::RebuildIcons()
 		int iDefaultIconSize = ::GetSystemMetrics(SM_CXICON);
 		if (0 == iDefaultIconSize)
 			iDefaultIconSize = 32;
-		_sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%d", iDefaultIconSize);
+		_snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%d", iDefaultIconSize);
 	}
 	else if (lRegResult != ERROR_SUCCESS)
 		return false;
@@ -194,7 +194,7 @@ bool CShellUpdater::RebuildIcons()
 	dwRegValue = _wtoi(buf);
 	dwRegValueTemp = dwRegValue-1;
 
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValueTemp) + sizeof(wchar_t);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 
@@ -203,7 +203,7 @@ bool CShellUpdater::RebuildIcons()
 		0, SMTO_ABORTIFHUNG, 5000, &dwResult);
 
 	// Reset registry value
-	dwSize = _sntprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(TCHAR);
+	dwSize = _snwprintf_s(buf, BUFFER_SIZE, BUFFER_SIZE, L"%lu", dwRegValue) + sizeof(wchar_t);
 	if (RegSetValueEx(hRegKey, sRegValueName, 0, REG_SZ, reinterpret_cast<LPBYTE>(buf), dwSize) != ERROR_SUCCESS)
 		return false;
 

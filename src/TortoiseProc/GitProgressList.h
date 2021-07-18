@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ public:
 	bool					m_bSetTitle;
 
 public:
-	typedef std::vector<std::function<void()>> ContextMenuActionList;
+	using ContextMenuActionList = std::vector<std::function<void()>>;
 	struct Payload
 	{
 		CGitProgressList* list;
@@ -192,7 +192,7 @@ private:
 	static bool NotificationDataIsAux(const NotificationData* pData);
 
 private:
-	typedef std::vector<NotificationData *> NotificationDataVect;
+	using NotificationDataVect = std::vector<NotificationData*>;
 
 	NotificationDataVect	m_arData;
 
@@ -201,7 +201,7 @@ private:
 	int						m_options;	// Use values from the ProgressOptions enum
 
 
-	TCHAR					m_columnbuf[MAX_PATH];
+	wchar_t					m_columnbuf[MAX_PATH];
 
 public:
 	volatile BOOL			m_bCancelled;

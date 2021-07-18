@@ -51,7 +51,7 @@
 #ifndef _MAILMSG_H_
 #define _MAILMSG_H_
 
-typedef std::map<CString, CString> TStrStrMap;
+using TStrStrMap = std::map<CString, CString>;
 
 typedef struct MailAddress
 {

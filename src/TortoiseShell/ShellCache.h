@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 #define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
 #define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUSTASHAPPLY|MENUSUBSYNC
 
-typedef CComCritSecLock<CComCriticalSection> Locker;
+using Locker = CComCritSecLock<CComCriticalSection>;
 
 typedef enum tristate_t
 {
@@ -87,10 +87,10 @@ public:
 	BOOL IsRAM();
 	BOOL IsUnknown();
 
-	BOOL IsContextPathAllowed(LPCTSTR path);
-	BOOL IsPathAllowed(LPCTSTR path);
+	BOOL IsContextPathAllowed(LPCWSTR path);
+	BOOL IsPathAllowed(LPCWSTR path);
 	DWORD GetLangID();
-	BOOL HasGITAdminDir(LPCTSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);
+	BOOL HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);
 
 private:
 	void ExcludeContextValid();
@@ -101,7 +101,7 @@ private:
 		/// node in the lookup tree
 		struct SEntry
 		{
-			tstring path;
+			std::wstring path;
 
 			/// default (path spec did not end a '?').
 			/// if this is not set, the default for all
@@ -131,25 +131,25 @@ private:
 				return (diff < 0) || ((diff == 0) && recursive && !rhs.recursive);
 			}
 
-			friend bool operator<(const SEntry& rhs, const std::pair<LPCTSTR, size_t>& lhs);
-			friend bool operator<(const std::pair<LPCTSTR, size_t>& lhs, const SEntry& rhs);
+			friend bool operator<(const SEntry& rhs, const std::pair<LPCWSTR, size_t>& lhs);
+			friend bool operator<(const std::pair<LPCWSTR, size_t>& lhs, const SEntry& rhs);
 		};
 
 	private:
 		/// lookup by path (all entries sorted by path)
-		typedef std::vector<SEntry> TData;
+		using TData = std::vector<SEntry>;
 		TData data;
 
 		/// registry keys plus cached last content
 		CRegStdString excludelist;
-		tstring excludeliststr;
+		std::wstring excludeliststr;
 
 		CRegStdString includelist;
-		tstring includeliststr;
+		std::wstring includeliststr;
 
 		/// construct \ref data content
-		void AddEntry(const tstring& s, bool include);
-		void AddEntries(const tstring& s, bool include);
+		void AddEntry(const std::wstring& s, bool include);
+		void AddEntries(const std::wstring& s, bool include);
 
 		/// for all paths, have at least one entry in data
 		void PostProcessData();
@@ -159,7 +159,7 @@ private:
 		/// excluded: C:, C:\some\deep\path
 		/// include: C:\some
 		/// lookup for C:\some\deeper\path
-		tristate_t IsPathAllowed(LPCTSTR path, TData::const_iterator begin, TData::const_iterator end) const;
+		tristate_t IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const;
 
 	public:
 		/// construction
@@ -169,16 +169,16 @@ private:
 		void Refresh();
 
 		/// data access
-		tristate_t IsPathAllowed(LPCTSTR path) const;
+		tristate_t IsPathAllowed(LPCWSTR path) const;
 	};
 
-	friend bool operator< (const CPathFilter::SEntry& rhs, const std::pair<LPCTSTR, size_t>& lhs);
-	friend bool operator< (const std::pair<LPCTSTR, size_t>& lhs, const CPathFilter::SEntry& rhs);
+	friend bool operator< (const CPathFilter::SEntry& rhs, const std::pair<LPCWSTR, size_t>& lhs);
+	friend bool operator< (const std::pair<LPCWSTR, size_t>& lhs, const CPathFilter::SEntry& rhs);
 
 	struct AdminDir_s
 	{
 		BOOL bHasAdminDir;
-		tstring sProjectRoot;
+		std::wstring sProjectRoot;
 		ULONGLONG timeout;
 	};
 
@@ -218,25 +218,25 @@ public:
 	ULONGLONG drivetypeticker;
 	ULONGLONG menumaskticker;
 	UINT  drivetypecache[27];
-	TCHAR drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
-	TCHAR szDecSep[5];
-	TCHAR szThousandsSep[5];
-	std::map<tstring, AdminDir_s> admindircache;
+	wchar_t drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
+	wchar_t szDecSep[5];
+	wchar_t szThousandsSep[5];
+	std::map<std::wstring, AdminDir_s> admindircache;
 	CRegStdString nocontextpaths;
-	tstring excludecontextstr;
-	std::vector<tstring> excontextvector;
+	std::wstring excludecontextstr;
+	std::vector<std::wstring> excontextvector;
 	CComAutoCriticalSection m_critSec;
 	HANDLE m_registryChangeEvent;
 	HKEY m_hNotifyRegKey;
 	bool isElevated;
 };
 
-inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCTSTR, size_t>& rhs)
+inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCWSTR, size_t>& rhs)
 {
 	return _wcsnicmp(lhs.path.c_str(), rhs.first, rhs.second) < 0;
 }
 
-inline bool operator<(const std::pair<LPCTSTR, size_t>& lhs, const ShellCache::CPathFilter::SEntry& rhs)
+inline bool operator<(const std::pair<LPCWSTR, size_t>& lhs, const ShellCache::CPathFilter::SEntry& rhs)
 {
 	return _wcsnicmp(lhs.first, rhs.path.c_str(), lhs.second) < 0;
 }

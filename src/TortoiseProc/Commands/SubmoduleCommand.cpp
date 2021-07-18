@@ -50,7 +50,7 @@ bool SubmoduleAddCommand::Execute()
 
 		CString branch;
 		if(dlg.m_bBranch)
-			branch.Format(L" -b %s ", static_cast<LPCTSTR>(dlg.m_strBranch));
+			branch.Format(L" -b %s ", static_cast<LPCWSTR>(dlg.m_strBranch));
 
 		CString force;
 		if (dlg.m_bForce)
@@ -60,8 +60,8 @@ bool SubmoduleAddCommand::Execute()
 		dlg.m_strRepos.Replace(L'\\', L'/');
 
 		cmd.Format(L"git.exe submodule add %s %s -- \"%s\" \"%s\"",
-						static_cast<LPCTSTR>(branch), static_cast<LPCTSTR>(force),
-						static_cast<LPCTSTR>(dlg.m_strRepos), static_cast<LPCTSTR>(dlg.m_strPath));
+						static_cast<LPCWSTR>(branch), static_cast<LPCWSTR>(force),
+						static_cast<LPCWSTR>(dlg.m_strRepos), static_cast<LPCWSTR>(dlg.m_strPath));
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
@@ -162,7 +162,7 @@ bool SubmoduleUpdateCommand::Execute()
 	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
 	{
 		CString str;
-		str.Format(L"git.exe submodule update%s -- \"%s\"", static_cast<LPCTSTR>(params), static_cast<LPCTSTR>(submoduleUpdateDlg.m_PathList[i]));
+		str.Format(L"git.exe submodule update%s -- \"%s\"", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(submoduleUpdateDlg.m_PathList[i]));
 		progress.m_GitCmdList.push_back(str);
 	}
 
@@ -228,7 +228,7 @@ bool SubmoduleSyncCommand::Execute()
 			if (path.IsEmpty())
 				str = L"git.exe submodule sync";
 			else
-				str.Format(L"git.exe submodule sync -- \"%s\"", static_cast<LPCTSTR>(path));
+				str.Format(L"git.exe submodule sync -- \"%s\"", static_cast<LPCWSTR>(path));
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

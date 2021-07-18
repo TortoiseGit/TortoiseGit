@@ -104,7 +104,7 @@ CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPa
 }
 
 
-CTreePropSheet::CTreePropSheet(LPCTSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
+CTreePropSheet::CTreePropSheet(LPCWSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 :	CPropertySheet(pszCaption, pParentWnd, iSelectPage),
 	m_bPageTreeSelChangedActive(FALSE),
 	m_bTreeViewMode(TRUE),
@@ -171,7 +171,7 @@ BOOL CTreePropSheet::SetTreeWidth(int nWidth)
 }
 
 
-void CTreePropSheet::SetEmptyPageText(LPCTSTR lpszEmptyPageText)
+void CTreePropSheet::SetEmptyPageText(LPCWSTR lpszEmptyPageText)
 {
 	m_strEmptyPageMessage = lpszEmptyPageText;
 }
@@ -275,7 +275,7 @@ BOOL CTreePropSheet::DestroyPageIcon(CPropertyPage *pPage)
 /////////////////////////////////////////////////////////////////////
 // Overridable implementation helpers
 
-CString CTreePropSheet::GenerateEmptyPageMessage(LPCTSTR lpszEmptyPageMessage, LPCTSTR lpszCaption)
+CString CTreePropSheet::GenerateEmptyPageMessage(LPCWSTR lpszEmptyPageMessage, LPCWSTR lpszCaption)
 {
 	CString	strMsg;
 	strMsg.Format(lpszEmptyPageMessage, lpszCaption);
@@ -439,7 +439,7 @@ void CTreePropSheet::RefillPageTree()
 }
 
 
-HTREEITEM CTreePropSheet::CreatePageTreeItem(LPCTSTR lpszPath, HTREEITEM hParent /* = TVI_ROOT */)
+HTREEITEM CTreePropSheet::CreatePageTreeItem(LPCWSTR lpszPath, HTREEITEM hParent /* = TVI_ROOT */)
 {
 	CString		strPath(lpszPath);
 	CString		strTopMostItem(SplitPageTreePath(strPath));

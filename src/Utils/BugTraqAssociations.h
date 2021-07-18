@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2009, 2014, 2016-2017, 2021 - TortoiseGit
 // Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,7 @@ public:
 		 m_provider.clsid = GUID_NULL;
 	}
 
-	CBugTraqAssociation(LPCTSTR szWorkingCopy, const CLSID &provider_clsid, LPCTSTR szProviderName, LPCTSTR szParameters, bool enabled)
+	CBugTraqAssociation(LPCWSTR szWorkingCopy, const CLSID& provider_clsid, LPCWSTR szProviderName, LPCWSTR szParameters, bool enabled)
 		: m_path(szWorkingCopy), m_parameters(szParameters), m_enabled(enabled)
 	{
 		m_provider.clsid = provider_clsid;
@@ -60,14 +60,14 @@ public:
 
 class CBugTraqAssociations
 {
-	typedef std::vector< CBugTraqAssociation * > inner_t;
+	using inner_t = std::vector<CBugTraqAssociation*>;
 	inner_t m_inner;
 
 public:
 	CBugTraqAssociations();
 	~CBugTraqAssociations();
 
-	void Load(LPCTSTR uuid = nullptr, LPCTSTR params = nullptr);
+	void Load(LPCWSTR uuid = nullptr, LPCWSTR params = nullptr);
 	void Save() const;
 
 	void Add(const CBugTraqAssociation &assoc);
@@ -75,7 +75,7 @@ public:
 
 	bool FindProvider(const CString &path, CBugTraqAssociation *assoc);
 
-	typedef inner_t::const_iterator const_iterator;
+	using const_iterator = inner_t::const_iterator;
 	const_iterator begin() const { return m_inner.begin(); }
 	const_iterator end() const { return m_inner.end(); }
 

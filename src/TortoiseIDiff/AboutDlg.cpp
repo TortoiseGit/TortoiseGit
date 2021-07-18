@@ -33,7 +33,7 @@ CAboutDlg::CAboutDlg(HWND hParent)
 {
 }
 
-CAboutDlg::~CAboutDlg(void)
+CAboutDlg::~CAboutDlg()
 {
 }
 
@@ -46,8 +46,8 @@ LRESULT CAboutDlg::DlgFunc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
         {
             InitDialog(hwndDlg, IDI_TORTOISEIDIFF);
             // initialize the controls
-            TCHAR verbuf[1024] = {0};
-            TCHAR maskbuf[1024] = {0};
+            wchar_t verbuf[1024] = { 0 };
+            wchar_t maskbuf[1024] = { 0 };
             ::LoadString (hResource, IDS_VERSION, maskbuf, _countof(maskbuf));
             swprintf_s(verbuf, maskbuf, TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD);
             SetDlgItemText(hwndDlg, IDC_ABOUTVERSION, verbuf);

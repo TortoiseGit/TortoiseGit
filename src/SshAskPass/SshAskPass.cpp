@@ -40,17 +40,17 @@
 HINSTANCE hInst;								// current instance
 bool g_darkmode = false;
 
-const TCHAR g_Promptphrase[] = L"Enter your OpenSSH passphrase:";
-const TCHAR* g_Prompt = g_Promptphrase;
+const wchar_t g_Promptphrase[] = L"Enter your OpenSSH passphrase:";
+const wchar_t* g_Prompt = g_Promptphrase;
 
-TCHAR g_PassWord[MAX_LOADSTRING];
+wchar_t g_PassWord[MAX_LOADSTRING];
 
 // Forward declarations of functions included in this code module:
 INT_PTR CALLBACK PasswdDlg(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 					 HINSTANCE		/*hPrevInstance*/,
-					 LPTSTR			lpCmdLine,
+					 LPWSTR			lpCmdLine,
 					 int			/*nCmdShow*/)
 {
 	SetDllDirectory(L"");
@@ -121,7 +121,7 @@ void MarkWindowAsUnpinnable(HWND hWnd)
 	}
 }
 
-static SIZE GetTextSize(HWND hWnd, const TCHAR* str)
+static SIZE GetTextSize(HWND hWnd, const wchar_t* str)
 {
 	HDC hDC = ::GetWindowDC(hWnd);
 	HFONT font = reinterpret_cast<HFONT>(::SendMessage(hWnd, WM_GETFONT, 0, 0));
@@ -270,7 +270,7 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM /*lPar
 				::GetWindowText(password, g_PassWord, MAX_LOADSTRING);
 
 			// overwrite textfield contents with garbage in order to wipe the cache
-			TCHAR gargabe[MAX_LOADSTRING];
+			wchar_t gargabe[MAX_LOADSTRING];
 			wmemset(gargabe, L'*', _countof(gargabe));
 			gargabe[_countof(gargabe) - 1] = L'\0';
 			::SetWindowText(password, gargabe);

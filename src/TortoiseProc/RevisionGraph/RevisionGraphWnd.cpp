@@ -1033,7 +1033,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 						bitmap.Save(tfile, &encoderClsid, nullptr);
 					}
 					else
-						sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCTSTR>(CPathUtils::GetFileExtFromPath(sSavePath)));
+						sErrormessage.Format(IDS_REVGRAPH_ERR_NOENCODER, static_cast<LPCWSTR>(CPathUtils::GetFileExtFromPath(sSavePath)));
 				}
 				else
 					sErrormessage.LoadString(IDS_REVGRAPH_ERR_NOBITMAP);
@@ -1046,7 +1046,7 @@ void CRevisionGraphWnd::SaveGraphAs(CString sSavePath)
 		}
 		catch (CException * pE)
 		{
-			TCHAR szErrorMsg[2048] = { 0 };
+			wchar_t szErrorMsg[2048] = { 0 };
 			pE->GetErrorMessage(szErrorMsg, 2048);
 			pE->Delete();
 			::MessageBox(m_hWnd, szErrorMsg, L"TortoiseGit", MB_ICONERROR);
@@ -1168,13 +1168,13 @@ void CRevisionGraphWnd::DoShowLog()
 
 	if(m_SelectedEntry2)
 		sCmd.Format(L"/command:log %s /startrev:%s /endrev:%s",
-			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCTSTR>(L"/path:\"" + this->m_sPath + L'"'),
-			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()),
-			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry2->index()].ToString()));
+			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCWSTR>(L"/path:\"" + this->m_sPath + L'"'),
+			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()),
+			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry2->index()].ToString()));
 	else
 		sCmd.Format(L"/command:log %s /endrev:%s",
-			static_cast<LPCTSTR>(this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"')),
-			static_cast<LPCTSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()));
+			static_cast<LPCWSTR>(this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"')),
+			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
@@ -1191,8 +1191,8 @@ void CRevisionGraphWnd::DoBrowseRepo()
 
 	CString sCmd;
 	sCmd.Format(L"/command:repobrowser %s /rev:%s",
-		this->m_sPath.IsEmpty() ? L"" : static_cast<LPCTSTR>(L"/path:\"" + this->m_sPath + L'"'),
-		static_cast<LPCTSTR>(GetFriendRefName(m_SelectedEntry1)));
+		this->m_sPath.IsEmpty() ? L"" : static_cast<LPCWSTR>(L"/path:\"" + this->m_sPath + L'"'),
+		static_cast<LPCWSTR>(GetFriendRefName(m_SelectedEntry1)));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
@@ -1249,7 +1249,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 		if (branchNames.size() == 1)
 		{
 			CString text;
-			text.Format(L"%s \"%s\"", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH))), static_cast<LPCTSTR>(branchNames[0]));
+			text.Format(L"%s \"%s\"", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_SWITCH_BRANCH))), static_cast<LPCWSTR>(branchNames[0]));
 			AppendMenu(popup, text, ID_SWITCH, &branchNames[0]);
 		}
 		else if (branchNames.size() > 1)
@@ -1462,7 +1462,7 @@ BOOL CRevisionGraphWnd::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	CRect viewRect = GetViewRect();
 
-	LPTSTR cursorID = IDC_ARROW;
+	LPWSTR cursorID = IDC_ARROW;
 	HINSTANCE resourceHandle = nullptr;
 
 	if ((nHitTest == HTCLIENT)&&(pWnd == this)&&(viewRect.Width())&&(viewRect.Height())&&(message))

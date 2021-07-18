@@ -21,13 +21,12 @@
 #include "../../ext/CrashServer/CrashHandler/CrashHandler/CrashHandler.h"
 #include <time.h>
 #include <string>
-#include <tchar.h>
 #include <DbgHelp.h>
 
 // dummy define, needed only when we use crashrpt instead of this.
 #define CR_AF_MAKE_FILE_COPY 0
 
-__forceinline HMODULE get_my_module_handle(void)
+__forceinline HMODULE get_my_module_handle()
 {
 	static int s_module_marker = 0;
 	MEMORY_BASIC_INFORMATION memory_basic_information;
@@ -45,7 +44,7 @@ __forceinline HMODULE get_my_module_handle(void)
 class CCrashReport
 {
 private:
-	CCrashReport(void)
+	CCrashReport()
 	: m_InitCrashHandler(nullptr)
 	, m_SendReport(nullptr)
 	, m_IsReadyToExit(nullptr)
@@ -58,7 +57,7 @@ private:
 		LoadDll();
 	}
 
-	~CCrashReport(void)
+	~CCrashReport()
 	{
 		if (!m_IsReadyToExit)
 			return;
@@ -79,8 +78,8 @@ public:
 		return instance;
 	}
 
-	int                     Uninstall(void) { return FALSE; }
-	int                     AddFile2(LPCTSTR pszFile,LPCTSTR pszDestFile,LPCTSTR /*pszDesc*/,DWORD /*dwFlags*/)
+	int                     Uninstall() { return FALSE; }
+	int                     AddFile2(LPCWSTR pszFile, LPCWSTR pszDestFile, LPCWSTR /*pszDesc*/, DWORD /*dwFlags*/)
 	{
 		return AddFileToReport(pszFile, pszDestFile) ? 1 : 0;
 	}
@@ -384,7 +383,7 @@ class CCrashReportTGit
 public:
 
 	//! Installs exception handlers to the caller process
-	CCrashReportTGit(LPCTSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char* /*buildDate*/, bool bOwnProcess = true)
+	CCrashReportTGit(LPCWSTR appname, USHORT versionMajor, USHORT versionMinor, USHORT versionMicro, USHORT versionBuild, const char* /*buildDate*/, bool bOwnProcess = true)
 	: m_nInstallStatus(0)
 	{
 		ApplicationInfo appInfo = { 0 };

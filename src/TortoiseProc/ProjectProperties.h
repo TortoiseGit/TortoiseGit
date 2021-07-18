@@ -58,7 +58,7 @@
 class ProjectProperties
 {
 public:
-	ProjectProperties(void);
+	ProjectProperties();
 
 	/**
 	 * Reads the properties from the current working tree

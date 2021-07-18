@@ -50,4 +50,4 @@ using namespace ATL;
 
 #include "DebugOutput.h"
 
-typedef CComCritSecLock<CComAutoCriticalSection> AutoLocker;
+using AutoLocker = CComCritSecLock<CComAutoCriticalSection>;

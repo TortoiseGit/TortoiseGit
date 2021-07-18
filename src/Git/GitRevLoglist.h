@@ -35,8 +35,8 @@ class GitRevLoglist : public GitRev
 public:
 	friend class CLogCache;
 
-	GitRevLoglist(void);
-	~GitRevLoglist(void);
+	GitRevLoglist();
+	~GitRevLoglist();
 
 	class GitRevLoglistSharedFiles
 	{
@@ -90,7 +90,7 @@ protected:
 public:
 	CString m_Notes;
 
-	TCHAR m_Mark;
+	wchar_t m_Mark;
 	CString m_Ref; // for Refloglist
 	CString m_RefAction; // for Refloglist
 

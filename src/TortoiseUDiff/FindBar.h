@@ -30,10 +30,10 @@ class CFindBar : public CDialog
 {
 public:
 	CFindBar();
-	~CFindBar(void);
+	~CFindBar();
 
 	void					SetParent(HWND hParent) {m_hParent = hParent;}
-	void					SetSearchString(LPCTSTR findStr);
+	void					SetSearchString(LPCWSTR findStr);
 	void					SelectSearchString();
 
 protected:

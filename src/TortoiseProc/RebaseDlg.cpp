@@ -514,7 +514,7 @@ void CRebaseDlg::LoadBranchInfo()
 		g_Git.GetRemoteTrackedBranchForHEAD(pullRemote, pullBranch);
 
 		CString defaultUpstream;
-		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCTSTR>(pullRemote), static_cast<LPCTSTR>(pullBranch));
+		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCWSTR>(pullRemote), static_cast<LPCWSTR>(pullBranch));
 		int found = m_UpstreamCtrl.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 			m_UpstreamCtrl.SetCurSel(found);
@@ -571,7 +571,7 @@ void CRebaseDlg::FetchLogList()
 	{
 		m_CommitList.Clear();
 		CString text;
-		text.FormatMessage(IDS_REBASE_EQUAL_FMT, static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(this->m_UpstreamCtrl.GetString()));
+		text.FormatMessage(IDS_REBASE_EQUAL_FMT, static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(this->m_UpstreamCtrl.GetString()));
 
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
@@ -586,8 +586,8 @@ void CRebaseDlg::FetchLogList()
 
 		m_CommitList.Clear();
 		CString text;
-		text.FormatMessage(IDS_REBASE_FASTFORWARD_FMT, static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(this->m_UpstreamCtrl.GetString()),
-						static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(this->m_UpstreamCtrl.GetString()));
+		text.FormatMessage(IDS_REBASE_FASTFORWARD_FMT, static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(this->m_UpstreamCtrl.GetString()),
+						static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(this->m_UpstreamCtrl.GetString()));
 
 		m_CommitList.ShowText(text);
 		this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(true);
@@ -602,7 +602,7 @@ void CRebaseDlg::FetchLogList()
 		{
 			m_CommitList.Clear();
 			CString text;
-			text.Format(IDS_REBASE_UPTODATE_FMT, static_cast<LPCTSTR>(m_BranchCtrl.GetString()));
+			text.Format(IDS_REBASE_UPTODATE_FMT, static_cast<LPCWSTR>(m_BranchCtrl.GetString()));
 			m_CommitList.ShowText(text);
 			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 			SetContinueButtonText();
@@ -616,7 +616,7 @@ void CRebaseDlg::FetchLogList()
 	CString refFrom = g_Git.FixBranchName(m_UpstreamCtrl.GetString());
 	CString refTo   = g_Git.FixBranchName(m_BranchCtrl.GetString());
 	CString range;
-	range.Format(L"%s..%s", static_cast<LPCTSTR>(refFrom), static_cast<LPCTSTR>(refTo));
+	range.Format(L"%s..%s", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 	this->m_CommitList.FillGitLog(nullptr, &range, (m_bPreserveMerges ? 0 : CGit::LOG_INFO_NO_MERGE) | CGit::LOG_ORDER_TOPOORDER);
 
 	if( m_CommitList.GetItemCount() == 0 )
@@ -638,7 +638,7 @@ void CRebaseDlg::FetchLogList()
 			return;
 		}
 		CString mergecmd;
-		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCTSTR>(head.ToString()), static_cast<LPCTSTR>(upstreamHash.ToString()));
+		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCWSTR>(head.ToString()), static_cast<LPCWSTR>(upstreamHash.ToString()));
 		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
 			CGitHash hash = CGitHash::FromHexStr(line);
@@ -670,7 +670,7 @@ void CRebaseDlg::FetchLogList()
 		// Drop already included commits
 		std::vector<CGitHash> nonCherryPicked;
 		CString cherryCmd;
-		cherryCmd.Format(L"git rev-list \"%s...%s\" --left-right --cherry-pick", static_cast<LPCTSTR>(refFrom), static_cast<LPCTSTR>(refTo));
+		cherryCmd.Format(L"git rev-list \"%s...%s\" --left-right --cherry-pick", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
 			if (line.GetLength() < 2)
@@ -734,7 +734,7 @@ void CRebaseDlg::FetchLogList()
 		if (!m_Onto.IsEmpty())
 			refFrom = g_Git.FixBranchName(m_Onto);
 		CString cherryCmd;
-		cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", static_cast<LPCTSTR>(refFrom), static_cast<LPCTSTR>(refTo));
+		cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
 			if (line.GetLength() < 2)
@@ -793,16 +793,16 @@ void CRebaseDlg::AddBranchToolTips(CHistoryCombo& pBranch)
 
 	CString tooltip;
 	tooltip.Format(L"%s: %s\n%s: %s <%s>\n%s: %s\n%s:\n%s\n%s",
-					static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_REVISION))),
-					static_cast<LPCTSTR>(rev.m_CommitHash.ToString()),
-					static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))),
-					static_cast<LPCTSTR>(rev.GetAuthorName()),
-					static_cast<LPCTSTR>(rev.GetAuthorEmail()),
-					static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_DATE))),
-					static_cast<LPCTSTR>(CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE)),
-					static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE))),
-					static_cast<LPCTSTR>(rev.GetSubject()),
-					static_cast<LPCTSTR>(rev.GetBody()));
+					static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_REVISION))),
+					static_cast<LPCWSTR>(rev.m_CommitHash.ToString()),
+					static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_AUTHOR))),
+					static_cast<LPCWSTR>(rev.GetAuthorName()),
+					static_cast<LPCWSTR>(rev.GetAuthorEmail()),
+					static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_DATE))),
+					static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(rev.GetAuthorDate(), DATE_LONGDATE)),
+					static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_LOG_MESSAGE))),
+					static_cast<LPCWSTR>(rev.GetSubject()),
+					static_cast<LPCWSTR>(rev.GetBody()));
 
 	if (tooltip.GetLength() > 8000)
 	{
@@ -905,7 +905,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 		case VK_ESCAPE:
 		case VK_CANCEL:
 			{
-				TCHAR buff[128] = { 0 };
+				wchar_t buff[128] = { 0 };
 				::GetClassName(pMsg->hwnd,buff,128);
 
 
@@ -941,7 +941,7 @@ BOOL CRebaseDlg::PreTranslateMessage(MSG*pMsg)
 
 bool CRebaseDlg::LogListHasFocus(HWND hwnd)
 {
-	TCHAR buff[128] = { 0 };
+	wchar_t buff[128] = { 0 };
 	::GetClassName(hwnd, buff, 128);
 
 	if (_wcsnicmp(buff, L"SysListView32", 128) == 0)
@@ -1058,7 +1058,7 @@ int CRebaseDlg::StartRebase()
 	//git symbolic-ref HEAD > "$DOTEST"/head-name 2> /dev/null ||
 	//		echo "detached HEAD" > "$DOTEST"/head-name
 
-	cmd.Format(L"git.exe update-ref ORIG_HEAD %s", static_cast<LPCTSTR>(m_OrigHEADHash.ToString()));
+	cmd.Format(L"git.exe update-ref ORIG_HEAD %s", static_cast<LPCWSTR>(m_OrigHEADHash.ToString()));
 	if(g_Git.Run(cmd,&out,CP_UTF8))
 	{
 		AddLogString(L"update ORIG_HEAD Fail");
@@ -1076,7 +1076,7 @@ int CRebaseDlg::StartRebase()
 	{
 		if (g_Git.m_IsUseLibGit2)
 			WriteReflog(m_OrigHEADHash, "rebase: start (" + CUnicodeUtils::GetUTF8(m_OrigHEADBranch) + " on " + CUnicodeUtils::GetUTF8(m_OrigUpstreamHash.ToString()) + ")");
-		cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCTSTR>(m_OrigUpstreamHash.ToString()));
+		cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCWSTR>(m_OrigUpstreamHash.ToString()));
 		this->AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
 			return -1;
@@ -1090,10 +1090,10 @@ int CRebaseDlg::StartRebase()
 			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_BranchCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		log.Format(L"%s\r\n", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTREBASE))));
+		log.Format(L"%s\r\n", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTREBASE))));
 	}
 	else
-		log.Format(L"%s\r\n", static_cast<LPCTSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTCHERRYPICK))));
+		log.Format(L"%s\r\n", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTCHERRYPICK))));
 
 	this->AddLogString(log);
 	return 0;
@@ -1160,14 +1160,14 @@ int CRebaseDlg::FinishRebase()
 	if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 	{
 		CString cmd;
-		cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(head.ToString()));
+		cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(head.ToString()));
 		AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
 			return -1;
 	}
 
 	CString cmd;
-	cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(head.ToString()));
+	cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(head.ToString()));
 	AddLogString(cmd);
 	if (RunGitCmdRetryOrAbort(cmd))
 		return -1;
@@ -1209,7 +1209,7 @@ void CRebaseDlg::RewriteNotes()
 	CString pipefile = GetTempFile();
 	pipefile.Replace(L'\\', L'/');
 	CString pipecmd;
-	pipecmd.Format(L"git notes copy --for-rewrite=rebase < %s", static_cast<LPCTSTR>(tmpfile));
+	pipecmd.Format(L"git notes copy --for-rewrite=rebase < %s", static_cast<LPCWSTR>(tmpfile));
 	if (!CStringUtils::WriteStringToTextFile(pipefile, pipecmd))
 		return;
 	SCOPE_EXIT{ ::DeleteFile(pipefile); };
@@ -1264,7 +1264,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			cmd.Format(L"git.exe checkout --no-track -f -B %s %s --", static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(m_UpstreamCtrl.GetString()));
+			cmd.Format(L"git.exe checkout --no-track -f -B %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
 			AddLogString(cmd);
 			if (RunGitCmdRetryOrAbort(cmd))
 			{
@@ -1274,9 +1274,9 @@ void CRebaseDlg::OnBnClickedContinue()
 			AddLogString(out);
 			out.Empty();
 		}
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(g_Git.FixBranchName(this->m_UpstreamCtrl.GetString())));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(g_Git.FixBranchName(this->m_UpstreamCtrl.GetString())));
 		CString log;
-		log.Format(IDS_PROC_REBASE_FFTO, static_cast<LPCTSTR>(m_UpstreamCtrl.GetString()));
+		log.Format(IDS_PROC_REBASE_FFTO, static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
 		this->AddLogString(log);
 
 		AddLogString(cmd);
@@ -1441,7 +1441,7 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		CString out;
 		CString cmd;
-		cmd.Format(L"git.exe commit %s--allow-empty-message -C %s", static_cast<LPCTSTR>(allowempty), static_cast<LPCTSTR>(curRev->m_CommitHash.ToString()));
+		cmd.Format(L"git.exe commit %s--allow-empty-message -C %s", static_cast<LPCWSTR>(allowempty), static_cast<LPCWSTR>(curRev->m_CommitHash.ToString()));
 
 		AddLogString(cmd);
 
@@ -1472,7 +1472,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			}
 
 			out.Empty();
-			cmd.Format(L"git.exe commit --amend -F \"%s\"", static_cast<LPCTSTR>(tempfile));
+			cmd.Format(L"git.exe commit --amend -F \"%s\"", static_cast<LPCWSTR>(tempfile));
 			AddLogString(cmd);
 
 			if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -1626,9 +1626,9 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		if (m_RebaseStage == REBASE_SQUASH_EDIT)
-			cmd.Format(L"git.exe commit %s%s-F \"%s\"", static_cast<LPCTSTR>(options), static_cast<LPCTSTR>(m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2)), static_cast<LPCTSTR>(tempfile));
+			cmd.Format(L"git.exe commit %s%s-F \"%s\"", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2)), static_cast<LPCWSTR>(tempfile));
 		else
-			cmd.Format(L"git.exe commit --amend %s-F \"%s\"", static_cast<LPCTSTR>(options), static_cast<LPCTSTR>(tempfile));
+			cmd.Format(L"git.exe commit --amend %s-F \"%s\"", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(tempfile));
 
 		if (!skipCurrent && g_Git.Run(cmd, &out, CP_UTF8))
 		{
@@ -1939,14 +1939,14 @@ int CRebaseDlg::GetCurrentCommitID()
 int CRebaseDlg::IsCommitEmpty(const CGitHash& hash)
 {
 	CString cmd, tree, ptree;
-	cmd.Format(L"git.exe rev-parse -q --verify %s^{tree}", static_cast<LPCTSTR>(hash.ToString()));
+	cmd.Format(L"git.exe rev-parse -q --verify %s^{tree}", static_cast<LPCWSTR>(hash.ToString()));
 	if (g_Git.Run(cmd, &tree, CP_UTF8))
 	{
 		AddLogString(cmd);
 		AddLogString(tree);
 		return -1;
 	}
-	cmd.Format(L"git.exe rev-parse -q --verify %s^^{tree}", static_cast<LPCTSTR>(hash.ToString()));
+	cmd.Format(L"git.exe rev-parse -q --verify %s^^{tree}", static_cast<LPCWSTR>(hash.ToString()));
 	if (g_Git.Run(cmd, &ptree, CP_UTF8))
 		ptree = L"4b825dc642cb6eb9a060e54bf8d69288fbee4904"; // empty tree
 	return tree == ptree;
@@ -1965,10 +1965,10 @@ static CString GetCommitTitle(const CGitHash& parentHash)
 			commitTitle += L"...";
 		}
 		commitTitle.Replace(L"&", L"&&");
-		str.AppendFormat(L"\n%s (%s)", static_cast<LPCTSTR>(commitTitle), static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n%s (%s)", static_cast<LPCWSTR>(commitTitle), static_cast<LPCWSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	}
 	else
-		str.AppendFormat(L"\n(%s)", static_cast<LPCTSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+		str.AppendFormat(L"\n(%s)", static_cast<LPCWSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	return str;
 }
 
@@ -2024,7 +2024,7 @@ int CRebaseDlg::DoRebase()
 	}
 
 	CString log;
-	log.Format(L"%s %d: %s", static_cast<LPCTSTR>(CGitLogListBase::GetRebaseActionName(mode)), GetCurrentCommitID(), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+	log.Format(L"%s %d: %s", static_cast<LPCWSTR>(CGitLogListBase::GetRebaseActionName(mode)), GetCurrentCommitID(), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 	AddLogString(log);
 	AddLogString(pRev->GetSubject());
 	if (pRev->GetSubject().IsEmpty())
@@ -2054,7 +2054,7 @@ int CRebaseDlg::DoRebase()
 	if (m_IsCherryPick && pRev->m_ParentHash.size() > 1)
 	{
 		CString msg;
-		msg.FormatMessage(IDS_CHERRYPICK_MERGECOMMIT, static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCTSTR>(pRev->GetSubject()));
+		msg.FormatMessage(IDS_CHERRYPICK_MERGECOMMIT, static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCWSTR>(pRev->GetSubject()));
 		CString parent1;
 		parent1.Format(IDS_PARENT, 1);
 		parent1 += GetCommitTitle(pRev->m_ParentHash.at(0));
@@ -2072,7 +2072,7 @@ int CRebaseDlg::DoRebase()
 
 	while (true)
 	{
-		cmd.Format(L"git.exe cherry-pick %s%s %s", static_cast<LPCTSTR>(cherryPickedFrom), static_cast<LPCTSTR>(nocommit), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+		cmd.Format(L"git.exe cherry-pick %s%s %s", static_cast<LPCWSTR>(cherryPickedFrom), static_cast<LPCWSTR>(nocommit), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 		if (m_bPreserveMerges)
 		{
 			bool parentRewritten = false;
@@ -2140,19 +2140,19 @@ int CRebaseDlg::DoRebase()
 					return -1;
 				}
 				if (!parentRewritten && nocommit.IsEmpty())
-					cmd.Format(L"git.exe reset --hard %s", static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+					cmd.Format(L"git.exe reset --hard %s", static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 				else
 				{
 					CString parentString;
 					for (const auto& parent : newParents)
 						parentString += L' ' + parent.ToString();
-					cmd.Format(L"git.exe checkout %s", static_cast<LPCTSTR>(newParents[0].ToString()));
+					cmd.Format(L"git.exe checkout %s", static_cast<LPCWSTR>(newParents[0].ToString()));
 					if (RunGitCmdRetryOrAbort(cmd))
 					{
 						m_RebaseStage = REBASE_ERROR;
 						return -1;
 					}
-					cmd.Format(L"git.exe merge --no-ff%s %s", static_cast<LPCTSTR>(nocommit), static_cast<LPCTSTR>(parentString));
+					cmd.Format(L"git.exe merge --no-ff%s %s", static_cast<LPCWSTR>(nocommit), static_cast<LPCWSTR>(parentString));
 					if (nocommit.IsEmpty())
 					{
 						if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -2180,7 +2180,7 @@ int CRebaseDlg::DoRebase()
 						}
 						// do nothing if already up2date
 						if (currentHeadHash != newHeadHash)
-							cmd.Format(L"git.exe commit --amend -C %s", static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+							cmd.Format(L"git.exe commit --amend -C %s", static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 					}
 				}
 			}
@@ -2188,14 +2188,14 @@ int CRebaseDlg::DoRebase()
 			{
 				if (mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 				{
-					cmd.Format(L"git.exe checkout %s", static_cast<LPCTSTR>(newParents[0].ToString()));
+					cmd.Format(L"git.exe checkout %s", static_cast<LPCWSTR>(newParents[0].ToString()));
 					if (RunGitCmdRetryOrAbort(cmd))
 					{
 						m_RebaseStage = REBASE_ERROR;
 						return -1;
 					}
 				}
-				cmd.Format(L"git.exe cherry-pick %s%s %s", static_cast<LPCTSTR>(cherryPickedFrom), static_cast<LPCTSTR>(nocommit), static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+				cmd.Format(L"git.exe cherry-pick %s%s %s", static_cast<LPCWSTR>(cherryPickedFrom), static_cast<LPCWSTR>(nocommit), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 			}
 		}
 
@@ -2227,7 +2227,7 @@ int CRebaseDlg::DoRebase()
 						return -1;
 					}
 
-					cmd.Format(L"git.exe commit --allow-empty -C %s", static_cast<LPCTSTR>(pRev->m_CommitHash.ToString()));
+					cmd.Format(L"git.exe commit --allow-empty -C %s", static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 					out.Empty();
 					g_Git.Run(cmd, &out, CP_UTF8);
 					m_CurrentCommitEmpty = true;
@@ -2564,7 +2564,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if(this->m_IsFastForward)
 	{
 		CString cmd;
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(this->m_OrigBranchHash.ToString()));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(this->m_OrigBranchHash.ToString()));
 		RunGitCmdRetryOrAbort(cmd);
 		__super::OnCancel();
 		goto end;
@@ -2573,7 +2573,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if (m_IsCherryPick) // there are not "branch" at cherry pick mode
 	{
 		CString cmd;
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(m_OrigUpstreamHash.ToString()));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(m_OrigUpstreamHash.ToString()));
 		RunGitCmdRetryOrAbort(cmd);
 		__super::OnCancel();
 		goto end;
@@ -2583,9 +2583,9 @@ void CRebaseDlg::OnBnClickedAbort()
 	{
 		CString cmd, out;
 		if (g_Git.IsLocalBranch(m_OrigHEADBranch))
-			cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(m_OrigBranchHash.ToString()));
+			cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
 		else
-			cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCTSTR>(m_OrigBranchHash.ToString()));
+			cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			AddLogString(out);
@@ -2594,7 +2594,7 @@ void CRebaseDlg::OnBnClickedAbort()
 			goto end;
 		}
 
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(m_OrigBranchHash.ToString()));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
 		RunGitCmdRetryOrAbort(cmd);
 	}
 	else
@@ -2603,9 +2603,9 @@ void CRebaseDlg::OnBnClickedAbort()
 		if (m_OrigHEADBranch != g_Git.GetCurrentBranch(true))
 		{
 			if (g_Git.IsLocalBranch(m_OrigHEADBranch))
-				cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCTSTR>(m_OrigHEADBranch), static_cast<LPCTSTR>(m_OrigHEADHash.ToString()));
+				cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCWSTR>(m_OrigHEADBranch), static_cast<LPCWSTR>(m_OrigHEADHash.ToString()));
 			else
-				cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCTSTR>(m_OrigHEADHash.ToString()));
+				cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCWSTR>(m_OrigHEADHash.ToString()));
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				AddLogString(out);
@@ -2614,13 +2614,13 @@ void CRebaseDlg::OnBnClickedAbort()
 			}
 		}
 
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCTSTR>(m_OrigHEADHash.ToString()));
+		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(m_OrigHEADHash.ToString()));
 		RunGitCmdRetryOrAbort(cmd);
 
 		// restore moved branch
 		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			cmd.Format(L"git.exe branch -f %s %s --", static_cast<LPCTSTR>(m_BranchCtrl.GetString()), static_cast<LPCTSTR>(m_OrigBranchHash.ToString()));
+			cmd.Format(L"git.exe branch -f %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				AddLogString(out);
@@ -2983,7 +2983,7 @@ int	CRebaseDlg::RunGitCmdRetryOrAbort(const CString& cmd)
 			AddLogString(CString(MAKEINTRESOURCE(IDS_FAIL)));
 			AddLogString(out);
 			CString msg;
-			msg.Format(L"\"%s\" failed.\n%s", static_cast<LPCTSTR>(cmd), static_cast<LPCTSTR>(out));
+			msg.Format(L"\"%s\" failed.\n%s", static_cast<LPCWSTR>(cmd), static_cast<LPCWSTR>(out));
 			if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) != 1)
 				return -1;
 		}

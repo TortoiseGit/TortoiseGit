@@ -72,7 +72,7 @@ public:
         , resolveMsgLParam(0)
         , resolveMsgWParam(0)
     {
-        SetWindowTitle(static_cast<LPCTSTR>(ResString(hResource, IDS_APP_TITLE)));
+        SetWindowTitle(static_cast<LPCWSTR>(ResString(hResource, IDS_APP_TITLE)));
     };
 
     /**
@@ -83,11 +83,19 @@ public:
     /**
      * Sets the image path and title for the left image view.
      */
-    void SetLeft(const tstring& leftpath, const tstring& lefttitle) { leftpicpath = leftpath; leftpictitle = lefttitle; }
+    void SetLeft(const std::wstring& leftpath, const std::wstring& lefttitle)
+    {
+        leftpicpath = leftpath;
+        leftpictitle = lefttitle;
+    }
     /**
      * Sets the image path and the title for the right image view.
      */
-    void SetRight(const tstring& rightpath, const tstring& righttitle) { rightpicpath = rightpath; rightpictitle = righttitle; }
+    void SetRight(const std::wstring& rightpath, const std::wstring& righttitle)
+    {
+        rightpicpath = rightpath;
+        rightpictitle = righttitle;
+    }
 
     /**
      * Sets the image path and title for selection mode. In selection mode, the images
@@ -109,7 +117,7 @@ protected:
     /// Shows the "Open images" dialog where the user can select the images to diff
     bool                                OpenDialog();
     static BOOL CALLBACK                OpenDlgProc(HWND hwndDlg, UINT message, WPARAM wParam, LPARAM lParam);
-    static bool                         AskForFile(HWND owner, TCHAR * path);
+    static bool                         AskForFile(HWND owner, wchar_t* path);
 
     // splitter methods
     void                                DrawXorBar(HDC hdc, int x1, int y1, int width, int height);
@@ -126,11 +134,11 @@ protected:
     HIMAGELIST                          hToolbarImgList;
 
     // command line params
-    static tstring                      leftpicpath;
-    static tstring                      leftpictitle;
+    static std::wstring                 leftpicpath;
+    static std::wstring                 leftpictitle;
 
-    static tstring                      rightpicpath;
-    static tstring                      rightpictitle;
+    static std::wstring                 rightpicpath;
+    static std::wstring                 rightpictitle;
 
     // image data
     CPicWindow                          picWindow1;

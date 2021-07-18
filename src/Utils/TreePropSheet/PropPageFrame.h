@@ -120,7 +120,7 @@ public:
 	@param hIcon
 		Icon to display for the caption.
 	*/
-	virtual void SetCaption(LPCTSTR lpszCaption, HICON hIcon = nullptr);
+	virtual void SetCaption(LPCWSTR lpszCaption, HICON hIcon = nullptr);
 
 	/**
 	Returns the caption, that has been set most recently using the
@@ -143,7 +143,7 @@ public:
 	This default implementation calls the SafeUpdateWindow() method
 	with the message rectangle, to force it to be redrawn.
 	*/
-	virtual void SetMsgText(LPCTSTR lpszMsg);
+	virtual void SetMsgText(LPCWSTR lpszMsg);
 
 	/**
 	Returns the text currently displayed.
@@ -218,7 +218,7 @@ protected:
 		Combination of the DT_* flags, specified by the Win32 function
 		DrawText() to draw the message with.
 	*/
-	virtual void DrawMsg(CDC *pDc, CRect rect, LPCTSTR lpszMsg, DWORD dwFormat);
+	virtual void DrawMsg(CDC* pDc, CRect rect, LPCWSTR lpszMsg, DWORD dwFormat);
 
 	/**
 	Calculates the caption area. The caption area is the rectangular
@@ -256,7 +256,7 @@ protected:
 	@param hIcon
 		Icon to display in the caption.
 	*/
-	virtual void DrawCaption(CDC *pDc, CRect rect, LPCTSTR lpszCaption, HICON hIcon);
+	virtual void DrawCaption(CDC* pDc, CRect rect, LPCWSTR lpszCaption, HICON hIcon);
 
 // Implementation helpers
 protected:

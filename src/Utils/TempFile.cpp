@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2016, 2018-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,11 +24,11 @@
 #include "SmartHandle.h"
 #include "Git.h"
 
-CTempFiles::CTempFiles(void)
+CTempFiles::CTempFiles()
 {
 }
 
-CTempFiles::~CTempFiles(void)
+CTempFiles::~CTempFiles()
 {
 	m_TempFileList.DeleteAllFiles(false);
 }
@@ -43,8 +43,8 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 {
 	DWORD len = GetTortoiseGitTempPath(0, nullptr);
 
-	auto temppath = std::make_unique<TCHAR[]>(len + 1);
-	auto tempF = std::make_unique<TCHAR[]>(len + 50);
+	auto temppath = std::make_unique<wchar_t[]>(len + 1);
+	auto tempF = std::make_unique<wchar_t[]>(len + 50);
 	GetTortoiseGitTempPath(len + 1, temppath.get());
 	CTGitPath tempfile;
 	CString possibletempfile;
@@ -73,9 +73,9 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 			do
 			{
 				if (!hash.IsEmpty())
-					possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), static_cast<LPCTSTR>(filename), static_cast<LPCTSTR>(hash.ToString(g_Git.GetShortHASHLength())), i, static_cast<LPCTSTR>(path.GetFileExtension()));
+					possibletempfile.Format(L"%s%s-%s.%3.3x%s", temppath.get(), static_cast<LPCWSTR>(filename), static_cast<LPCWSTR>(hash.ToString(g_Git.GetShortHASHLength())), i, static_cast<LPCWSTR>(path.GetFileExtension()));
 				else
-					possibletempfile.Format(L"%s%s.%3.3x%s", temppath.get(), static_cast<LPCTSTR>(filename), i, static_cast<LPCTSTR>(path.GetFileExtension()));
+					possibletempfile.Format(L"%s%s.%3.3x%s", temppath.get(), static_cast<LPCWSTR>(filename), i, static_cast<LPCWSTR>(path.GetFileExtension()));
 				tempfile.SetFromWin(possibletempfile);
 				filename.Truncate(std::max(0, filename.GetLength() - 1));
 			} while (filename.GetLength() > 4 && tempfile.GetWinPathString().GetLength() >= MAX_PATH);

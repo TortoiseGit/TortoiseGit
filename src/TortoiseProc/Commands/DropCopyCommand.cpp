@@ -87,7 +87,7 @@ bool DropCopyCommand::Execute()
 			});
 			dlg.m_sBaseDir = fullDropPath.GetContainingDirectory().GetWinPathString();
 			dlg.m_name = fullDropPath.GetFileOrDirectoryName();
-			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, static_cast<LPCTSTR>(sourcePath.GetUIFileOrDirectoryName()));
+			dlg.m_windowtitle.Format(IDS_PROC_NEWNAMECOPY, static_cast<LPCWSTR>(sourcePath.GetUIFileOrDirectoryName()));
 			if (dlg.DoModal() != IDOK)
 				return FALSE;
 			// rebuild the progress dialog

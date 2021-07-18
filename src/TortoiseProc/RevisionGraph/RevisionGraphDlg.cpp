@@ -223,7 +223,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 
 	// fill the combo box
 
-	TCHAR* texts[] = { L"5%"
+	wchar_t* texts[] = { L"5%"
 					 , L"10%"
 					 , L"20%"
 					 , L"40%"
@@ -236,7 +236,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 	COMBOBOXEXITEM cbei = { 0 };
 	cbei.mask = CBEIF_TEXT;
 
-	for (TCHAR** text = texts; *text; ++text)
+	for (wchar_t** text = texts; *text; ++text)
 	{
 		cbei.pszText = *text;
 		m_ToolBar.m_ZoomCombo.InsertItem(&cbei);
@@ -734,7 +734,7 @@ CRect CRevisionGraphDlg::GetGraphRect()
 void CRevisionGraphDlg::UpdateStatusBar()
 {
 //	CString sFormat;
-//	sFormat.Format(IDS_REVGRAPH_STATUSBARURL, static_cast<LPCTSTR>(m_Graph.m_sPath));
+//	sFormat.Format(IDS_REVGRAPH_STATUSBARURL, static_cast<LPCWSTR>(m_Graph.m_sPath));
 //	m_StatusBar.SetText(sFormat,1,0);
 //	sFormat.Format(IDS_REVGRAPH_STATUSBARNUMNODES, m_Graph.m_state.GetNodeCount());
 //	m_StatusBar.SetText(sFormat,0,0);

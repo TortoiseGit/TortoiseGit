@@ -18,22 +18,21 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "Debug.h"
-#include <tchar.h>
 
 #if defined(_DEBUG) || defined(DEBUG)
-#include <stdlib.h>
 #include <stdarg.h>
-void TRACE(LPCTSTR str, ...)
+#include <stdio.h>
+void TRACE(LPCWSTR str, ...)
 {
-	static TCHAR buf[20*1024];
+	static wchar_t buf[20*1024];
 
 	va_list ap;
 	va_start(ap, str);
 
-	_vstprintf_s(buf, str, ap);
+	vswprintf_s(buf, str, ap);
 	OutputDebugString(buf);
 	va_end(ap);
 };
 #else
-void TRACE(LPCTSTR str, ...) {UNREFERENCED_PARAMETER(str);}
+void TRACE(LPCWSTR str, ...) {UNREFERENCED_PARAMETER(str);}
 #endif

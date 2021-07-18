@@ -25,14 +25,14 @@
 
 IMPLEMENT_DYNCREATE(CLeftView, CBaseView)
 
-CLeftView::CLeftView(void)
+CLeftView::CLeftView()
 {
 	m_pwndLeft = this;
 	m_pState = &m_AllState.left;
 	m_nStatusBarID = ID_INDICATOR_LEFTVIEW;
 }
 
-CLeftView::~CLeftView(void)
+CLeftView::~CLeftView()
 {
 }
 
