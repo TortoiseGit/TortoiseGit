@@ -161,6 +161,8 @@ static void usage(void)
     j += sprintf(buf + j, "  -i key    private key file for user authentication\n");
     j += sprintf(buf + j, "  -noagent  disable use of Pageant\n");
     j += sprintf(buf + j, "  -agent    enable use of Pageant\n");
+    j += sprintf(buf + j, "  -no-trivial-auth\n");
+    j += sprintf(buf + j, "            disconnect if SSH authentication succeeds trivially\n");
     j += sprintf(buf + j, "  -noshare  disable use of connection sharing\n");
     j += sprintf(buf + j, "  -share    enable use of connection sharing\n");
     j += sprintf(buf + j, "  -hostkey keyid\n");

@@ -610,6 +610,14 @@ int cmdline_process_param(const char *p, char *value,
         SAVEABLE(0);
         conf_set_bool(conf, CONF_tryagent, false);
     }
+
+    if (!strcmp(p, "-no-trivial-auth")) {
+        RETURN(1);
+        UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+        SAVEABLE(0);
+        conf_set_bool(conf, CONF_ssh_no_trivial_userauth, true);
+    }
+
     if (!strcmp(p, "-share")) {
         RETURN(1);
         UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
