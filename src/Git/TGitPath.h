@@ -28,7 +28,7 @@ class CTGitPath
 {
 public:
 	CTGitPath();
-#ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
+#ifdef GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_H_
 	virtual ~CTGitPath();
 #else
 	~CTGitPath();
@@ -302,7 +302,7 @@ private:
 	 */
 	void SanitizeRootPath(CString& sPath, bool bIsForwardPath) const;
 
-#ifdef GMOCK_INCLUDE_GMOCK_GMOCK_H_
+#ifdef GOOGLEMOCK_INCLUDE_GMOCK_GMOCK_H_
 protected:
 	virtual void UpdateAttributes() const;
 private:
@@ -374,7 +374,7 @@ public:
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 #ifdef TGIT_LFS
 	int FillLFSLocks(unsigned int action, CString* err = nullptr);
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 private:
 #endif
 	int ParserFromLFSLocks(unsigned int action, const CString& output, CString* err = nullptr);

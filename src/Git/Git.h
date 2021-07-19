@@ -127,7 +127,7 @@ private:
 protected:
 	GIT_DIFF m_GitDiff;
 	GIT_DIFF m_GitSimpleListDiff;
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 public:
 #endif
 	bool m_IsGitDllInited;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2019 TortoiseGit
+// Copyright (C) 2014-2019, 2021 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -929,7 +929,7 @@ int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_ke
 	}
 }
 
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 /*
  * download a public key (the last one) from TortoiseGit server, and parse it
  */
@@ -1006,7 +1006,7 @@ int VerifyIntegrity(const CString &filename, const CString &signatureFilename, C
 	if (memcmp(p_sig.issuer_longid, p_pkey.longid, 8) != 0)
 	{
 		public_key_t *p_new_pkey = nullptr;
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 		if (updateDownloader)
 			p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid, updateDownloader);
 #else

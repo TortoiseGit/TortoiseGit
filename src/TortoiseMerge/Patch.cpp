@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2020 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2021 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -362,7 +362,7 @@ errorcleanup:
 
 BOOL CPatch::OpenUnifiedDiffFile(const CString& filename)
 {
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	CCrashReport::Instance().AddFile2(filename, nullptr, L"unified diff file", CR_AF_MAKE_FILE_COPY);
 #endif
 
@@ -434,7 +434,7 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 
 	CString sLine;
 	CString sPatchFile = sBaseFile.IsEmpty() ? sPath : sBaseFile;
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	if (PathFileExists(sPatchFile))
 	{
 		CCrashReport::Instance().AddFile2(sPatchFile, nullptr, L"File to patch", CR_AF_MAKE_FILE_COPY);

@@ -68,7 +68,7 @@ CGitIndexList::~CGitIndexList()
 
 int CGitIndexList::ReadIndex(CString dgitdir)
 {
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	clear(); // HACK to make tests work, until we use CGitIndexList
 #endif
 	ATLASSERT(empty());
@@ -759,7 +759,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 	return 0;
 }
 
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, int& type)
 {
 	int pos = patha.ReverseFind('/');

@@ -46,7 +46,7 @@ private:
 	int FindHunkEndForwardsFrom(int line, int topBoundaryLine) const;
 	int FindHunkEndGivenHunkStartAndCounts(int hunkStart, int oldCount, int newCount) const;
 	std::string FindFileHeaderBackwardsFrom(int line) const;
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 public:
 #endif
 	std::string ChangeOldAndNewLinesCount(const std::string& strHunkStart, int oldCount, int newCount) const;

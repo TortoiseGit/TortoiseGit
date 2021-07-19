@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2014 - TortoiseSVN
-// Copyright (C) 2012-2013, 2018-2019 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013, 2018-2019, 2021 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,7 +94,7 @@ protected:
 	 */
 	int							m_nStrip;
 
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 public:
 	const auto& GetChunks(int index) const { return m_arFileDiffs[index]->chunks; };
 #endif

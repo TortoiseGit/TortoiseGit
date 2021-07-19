@@ -70,7 +70,7 @@ public:
 
 	static bool GetOldAndNewLinesCountFromHunk(std::string_view hunk, int* oldCount, int* newCount, bool allowSingleLine = false);
 
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 public:
 	const auto& GetLineVec() const { return m_linevec; };
 #endif

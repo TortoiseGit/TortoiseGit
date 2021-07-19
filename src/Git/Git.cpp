@@ -158,7 +158,7 @@ static git_transport_certificate_check_cb g_Git2CheckCertificateCallback;
 
 static void GetSortOptions()
 {
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	g_bSortLogical = true;
 	g_bSortLocalBranchesFirst = true;
 	g_bSortTagsReversed = false;
@@ -3482,7 +3482,7 @@ void CGit::GetBisectTerms(CString* good, CString* bad)
 			*good = lastGood;
 	};
 
-#ifndef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	// add some caching here, because this method might be called multiple times in a short time from LogDlg and RevisionGraph
 	// as we only read a small file the performance effects should be negligible
 	if (lastRead + 5000 > GetTickCount64())

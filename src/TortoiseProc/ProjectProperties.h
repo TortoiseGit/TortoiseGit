@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2014, 2018, 2020 - TortoiseGit
+// Copyright (C) 2009, 2011-2014, 2018, 2020-2021 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -234,7 +234,7 @@ private:
 
 	int			nBugIdPos;				///< result	of sMessage.Find(L"%BUGID%");
 
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(ProjectPropertiesTest, ParseBugIDs);
 #endif
 };

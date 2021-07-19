@@ -63,7 +63,7 @@ public:
 	int ReadIndex(CString dotgitdir);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const;
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
@@ -288,7 +288,7 @@ public:
 	* type: DT_DIR or DT_REG
 	*/
 	int IsPathIgnored(const CStringA& patha, const char* base, int& type);
-#ifdef GTEST_INCLUDE_GTEST_GTEST_H_
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	int IsPathIgnored(const CStringA& patha, int& type);
 #endif
 };
