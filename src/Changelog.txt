@@ -9,6 +9,7 @@ Released: unreleased
  * Fixed issue #2299: Better support the git staging process
  * Update libgit2
  * Update pcre2 to 10.37
+ * Update editorconfig to 0.12.5
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
