@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2021 - TortoiseGit
 // Copyright (C) 2007-2016, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -326,11 +326,11 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	int nReadChars=oFile.GetLength()/sizeof(wchar_t);
 	auto pTextBuf = static_cast<wchar_t*>(oFile);
 	wchar_t * pLineStart = pTextBuf;
-	if ((m_SaveParams.m_UnicodeType == UTF8BOM)
+	if (nReadChars && ((m_SaveParams.m_UnicodeType == UTF8BOM)
 		|| (m_SaveParams.m_UnicodeType == UTF16_LEBOM)
 		|| (m_SaveParams.m_UnicodeType == UTF16_BEBOM)
 		|| (m_SaveParams.m_UnicodeType == UTF32_LE)
-		|| (m_SaveParams.m_UnicodeType == UTF32_BE))
+		|| (m_SaveParams.m_UnicodeType == UTF32_BE)))
 	{
 		// ignore the BOM
 		++pTextBuf;
@@ -769,6 +769,8 @@ bool CBaseFilter::Decode(/*in out*/ CBuffer & data)
 	int nFlags = (m_nCodePage==CP_ACP) ? MB_PRECOMPOSED : 0;
 	// dry decode is around 8 times faster then real one, alternatively we can set buffer to max length
 	int nReadChars = MultiByteToWideChar(m_nCodePage, nFlags, static_cast<LPCSTR>(data), data.GetLength(), nullptr, 0);
+	if (!nReadChars)
+		return FALSE;
 	m_oBuffer.SetLength(nReadChars*sizeof(wchar_t));
 	int ret2 = MultiByteToWideChar(m_nCodePage, nFlags, static_cast<LPCSTR>(data), data.GetLength(), static_cast<LPWSTR>(static_cast<void*>(m_oBuffer)), nReadChars);
 	if (ret2 != nReadChars)
