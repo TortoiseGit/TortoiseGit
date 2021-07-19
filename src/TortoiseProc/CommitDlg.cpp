@@ -50,6 +50,7 @@ static char THIS_FILE[] = __FILE__;
 UINT CCommitDlg::WM_AUTOLISTREADY = RegisterWindowMessage(L"TORTOISEGIT_AUTOLISTREADY_MSG");
 UINT CCommitDlg::WM_UPDATEOKBUTTON = RegisterWindowMessage(L"TORTOISEGIT_COMMIT_UPDATEOKBUTTON");
 UINT CCommitDlg::WM_UPDATEDATAFALSE = RegisterWindowMessage(L"TORTOISEGIT_COMMIT_UPDATEDATAFALSE");
+UINT CCommitDlg::WM_PARTIALSTAGINGREFRESHPATCHVIEW = RegisterWindowMessage(L"TORTOISEGIT_COMMIT_PARTIALSTAGINGREFRESHPATCHVIEW"); // same string in PatchViewDlg.cpp!!!
 
 IMPLEMENT_DYNAMIC(CCommitDlg, CResizableStandAloneDialog)
 CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
@@ -72,6 +73,9 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_bForceCommitAmend(false)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
+	, m_bStagingSupport(FALSE)
+	, m_stagingDisplayState(SHOW_STAGING | SHOW_UNSTAGING)
+	, m_nBlockItemChangeHandler(0)
 	, m_bCancelled(false)
 	, m_PostCmd(GIT_POSTCOMMIT_CMD_NOTHING)
 	, m_bAmendDiffToLastCommit(FALSE)
@@ -113,7 +117,10 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_COMMIT_MESSAGEONLY, m_bCommitMessageOnly);
 	DDX_Check(pDX,IDC_COMMIT_AMENDDIFF,m_bAmendDiffToLastCommit);
 	DDX_Check(pDX, IDC_COMMIT_SETAUTHOR, m_bSetAuthor);
+	DDX_Check(pDX, IDC_STAGINGSUPPORT, m_bStagingSupport);
 	DDX_Control(pDX,IDC_VIEW_PATCH,m_ctrlShowPatch);
+	DDX_Control(pDX, IDC_PARTIAL_STAGING, m_ctrlPartialStaging);
+	DDX_Control(pDX, IDC_PARTIAL_UNSTAGING, m_ctrlPartialUnstaging);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
 	DDX_Control(pDX, IDC_COMMIT_AS_COMMIT_DATE, m_AsCommitDateCtrl);
@@ -145,6 +152,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_REGISTERED_MESSAGE(WM_AUTOLISTREADY, OnAutoListReady)
 	ON_REGISTERED_MESSAGE(WM_UPDATEOKBUTTON, OnUpdateOKButton)
 	ON_REGISTERED_MESSAGE(WM_UPDATEDATAFALSE, OnUpdateDataFalse)
+	ON_REGISTERED_MESSAGE(WM_PARTIALSTAGINGREFRESHPATCHVIEW, OnPartialStagingRefreshPatchView)
 	ON_WM_TIMER()
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_SIGNOFF, &CCommitDlg::OnBnClickedSignOff)
@@ -154,6 +162,8 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_FOCUS_MESSAGE,&CCommitDlg::OnFocusMessage)
 	ON_COMMAND(ID_FOCUS_FILELIST, OnFocusFileList)
 	ON_STN_CLICKED(IDC_VIEW_PATCH, &CCommitDlg::OnStnClickedViewPatch)
+	ON_STN_CLICKED(IDC_PARTIAL_STAGING, &CCommitDlg::OnStnClickedPartialStaging)
+	ON_STN_CLICKED(IDC_PARTIAL_UNSTAGING, &CCommitDlg::OnStnClickedPartialUnstaging)
 	ON_WM_MOVE()
 	ON_WM_MOVING()
 	ON_WM_SIZING()
@@ -164,6 +174,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AS_COMMIT_DATE, &CCommitDlg::OnBnClickedCommitAsCommitDate)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
+	ON_BN_CLICKED(IDC_STAGINGSUPPORT, &CCommitDlg::OnBnClickedStagingSupport)
 END_MESSAGE_MAP()
 
 static int GetCommitTemplate(CString &msg)
@@ -392,6 +403,8 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_SIGNOFF, TOP_RIGHT);
 	AddAnchor(IDC_VIEW_PATCH, BOTTOM_RIGHT);
+	AddAnchor(IDC_PARTIAL_STAGING, BOTTOM_RIGHT);
+	AddAnchor(IDC_PARTIAL_UNSTAGING, BOTTOM_RIGHT);
 	AddAnchor(IDC_LISTGROUP, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_SPLITTER, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
@@ -401,6 +414,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
 	AddAnchor(IDC_NOAUTOSELECTSUBMODULES, BOTTOM_LEFT);
+	AddAnchor(IDC_STAGINGSUPPORT, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -463,6 +477,23 @@ BOOL CCommitDlg::OnInitDialog()
 			m_pathwatcher.AddPath(m_pathList[i]);
 	}*/
 
+	this->m_ctrlShowPatch.SetURL(CString());
+	this->m_ctrlPartialStaging.SetURL(CString());
+	this->m_ctrlPartialUnstaging.SetURL(CString());
+	if (g_Git.GetConfigValueBool(L"tgit.commitstagingsupport"))
+	{
+		m_bStagingSupport = true;
+		UpdateData(false);
+		PrepareStagingSupport();
+	}
+	if (g_Git.GetConfigValueBool(L"tgit.commitshowpatch"))
+	{
+		if (m_bStagingSupport)
+			OnStnClickedPartialStaging();
+		else
+			OnStnClickedViewPatch();
+	}
+
 	StartStatusThread();
 	CRegDWORD err = CRegDWORD(L"Software\\TortoiseGit\\ErrorOccurred", FALSE);
 	CRegDWORD historyhint = CRegDWORD(L"Software\\TortoiseGit\\HistoryHintShown", FALSE);
@@ -472,11 +503,6 @@ BOOL CCommitDlg::OnInitDialog()
 //		ShowBalloon(IDC_HISTORY, IDS_COMMITDLG_HISTORYHINT_TT, IDI_INFORMATION);
 	}
 	err = FALSE;
-
-	this->m_ctrlShowPatch.SetURL(CString());
-
-	if (g_Git.GetConfigValueBool(L"tgit.commitshowpatch"))
-		OnStnClickedViewPatch();
 
 	if (CTGitPath(g_Git.m_CurrentDir).IsMergeActive())
 	{
@@ -744,10 +770,10 @@ void CCommitDlg::OnOK()
 		m_ListCtrl.WriteCheckedNamesToPathList(m_selectedPathList);
 	m_pathwatcher.Stop();
 	InterlockedExchange(&m_bBlock, TRUE);
-	//first add all the unversioned files the user selected
-	//and check if all versioned files are selected
+
 	int nchecked = 0;
 
+	// these two commands will not be executed if staging support is enabled and neither will everything else inside PrepareIndexForCommitWithoutStagingSupport()
 	CMassiveGitTask mgtReAddAfterCommit(L"add --ignore-errors -f");
 	CMassiveGitTask mgtReDelAfterCommit(L"rm --cached --ignore-unmatch");
 
@@ -756,6 +782,340 @@ void CCommitDlg::OnOK()
 
 	bool bAddSuccess=true;
 	bool bCloseCommitDlg=false;
+
+	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
+
+	if (!m_bStagingSupport)
+	{
+		PrepareIndexForCommitWithoutStagingSupport(nListItems, bAddSuccess, nchecked, mgtReAddAfterCommit, mgtReDelAfterCommit);
+	}
+	else // Staging support is enabled. Simply assume the index is up-to-date and skip all the code dealing with it (inside PrepareIndexForCommitWithoutStagingSupport)
+	{
+		// The code below that deals with the shell icons is also done when staging support is disabled (i.e. inside PrepareIndexForCommitWithoutStagingSupport)
+		for (int j = 0; bAddSuccess && j < nListItems; ++j)
+			CShellUpdater::Instance().AddPathForUpdate(*m_ListCtrl.GetListEntry(j));
+	}
+
+	if (bAddSuccess && m_bCreateNewBranch)
+	{
+		if (g_Git.Run(L"git.exe branch " + newBranch, &out, CP_UTF8))
+		{
+			MessageBox(L"Creating new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			bAddSuccess = false;
+		}
+		if (g_Git.Run(L"git.exe checkout " + newBranch + L" --", &out, CP_UTF8))
+		{
+			MessageBox(L"Switching to new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			bAddSuccess = false;
+		}
+	}
+
+	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
+		bAddSuccess = false;
+
+	m_sBugID.Trim();
+	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
+	sExistingBugID.Trim();
+	if (!m_sBugID.IsEmpty() && m_sBugID.Compare(sExistingBugID))
+	{
+		m_sBugID.Replace(L", ", L",");
+		m_sBugID.Replace(L" ,", L",");
+		CString sBugID = m_ProjectProperties.sMessage;
+		sBugID.Replace(L"%BUGID%", m_sBugID);
+		if (m_ProjectProperties.bAppend)
+			m_sLogMessage += L'\n' + sBugID + L'\n';
+		else
+			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
+	}
+
+	// now let the bugtraq plugin check the commit message
+	CComPtr<IBugTraqProvider2> pProvider2;
+	if (m_BugTraqProvider)
+	{
+		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
+		if (SUCCEEDED(hr))
+		{
+			ATL::CComBSTR temp;
+			ATL::CComBSTR repositoryRoot(g_Git.m_CurrentDir);
+			ATL::CComBSTR parameters(m_bugtraq_association.GetParameters());
+			ATL::CComBSTR commonRoot(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
+			ATL::CComBSTR commitMessage(m_sLogMessage);
+			CBstrSafeVector pathList(m_selectedPathList.GetCount());
+
+			for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
+				pathList.PutElement(index, m_selectedPathList[index].GetGitPathString());
+
+			if (FAILED(hr = pProvider2->CheckCommit(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, commitMessage, &temp)))
+			{
+				COMError ce(hr);
+				CString sErr;
+				sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), ce.GetMessageAndDescription().c_str());
+				CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
+			}
+			else
+			{
+				CString sError = temp;
+				if (!sError.IsEmpty())
+				{
+					CMessageBox::Show(GetSafeHwnd(), sError, L"TortoiseGit", MB_ICONERROR);
+					InterlockedExchange(&m_bBlock, FALSE);
+					return;
+				}
+			}
+		}
+	}
+
+	if (m_bCommitMessageOnly || bAddSuccess && (nchecked || m_bStagingSupport || m_bCommitAmend || CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
+	{
+		bCloseCommitDlg = true;
+
+		CString tempfile=::GetTempFile();
+
+		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
+		{
+			CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			InterlockedExchange(&m_bBlock, FALSE);
+			return;
+		}
+
+		CTGitPath path=g_Git.m_CurrentDir;
+
+		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
+
+		out.Empty();
+		CString amend;
+		if(this->m_bCommitAmend)
+			amend = L"--amend";
+
+		CString dateTime;
+		if (m_bSetCommitDateTime)
+		{
+			COleDateTime date, time;
+			m_CommitDate.GetTime(date);
+			m_CommitTime.GetTime(time);
+			COleDateTime dateWithTime(date.GetYear(), date.GetMonth(), date.GetDay(), time.GetHour(), time.GetMinute(), time.GetSecond());
+			if (dateWithTime < COleDateTime((time_t)0))
+			{
+				CMessageBox::Show(GetSafeHwnd(), L"Invalid time", L"TortoiseGit", MB_OK | MB_ICONERROR);
+				InterlockedExchange(&m_bBlock, FALSE);
+				return;
+			}
+			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
+				dateTime = L"--date=\"now\"";
+			else
+				dateTime.Format(L"--date=%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
+		}
+		CString author;
+		if (m_bSetAuthor)
+			author.Format(L"--author=\"%s\"", static_cast<LPCWSTR>(m_sAuthor));
+		CString allowEmpty = m_bCommitMessageOnly ? L"--allow-empty" : L"";
+		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
+		cmd.Format(L"git.exe commit %s %s %s %s -F \"%s\"", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(tempfile));
+
+		CCommitProgressDlg progress;
+		progress.m_bBufferAll=true; // improve show speed when there are many file added.
+		progress.m_GitCmd=cmd;
+		progress.m_bShowCommand = FALSE;	// don't show the commit command
+		progress.m_PreText = out;			// show any output already generated in log window
+		if (m_ctrlOkButton.GetCurrentEntry() > 0)
+			progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
+
+		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
+		{
+			if (status || m_bNoPostActions || m_bAutoClose)
+				return;
+
+			if (IsGitSVN)
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; });
+
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; });
+			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; });
+			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; });
+			postCmdList.emplace_back(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; });
+		};
+
+		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
+		progress.DoModal();
+
+		if (!m_bNoPostActions)
+			m_regLastAction = static_cast<int>(m_ctrlOkButton.GetCurrentEntry());
+		if (m_ctrlOkButton.GetCurrentEntry() == 1)
+			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
+
+		::DeleteFile(tempfile);
+
+		if (m_BugTraqProvider && progress.m_GitStatus == 0)
+		{
+			CComPtr<IBugTraqProvider2> pProvider;
+			HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider);
+			if (SUCCEEDED(hr))
+			{
+				ATL::CComBSTR commonRoot(g_Git.m_CurrentDir);
+				CBstrSafeVector pathList(m_selectedPathList.GetCount());
+
+				for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
+					pathList.PutElement(index, m_selectedPathList[index].GetGitPathString());
+
+				ATL::CComBSTR logMessage(m_sLogMessage);
+
+				CGitHash hash;
+				if (g_Git.GetHash(hash, L"HEAD"))
+					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
+				LONG version = g_Git.Hash2int(hash);
+
+				ATL::CComBSTR temp;
+				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(),
+					commonRoot,
+					pathList,
+					logMessage,
+					version,
+					&temp)))
+				{
+					CString sErr = temp;
+					if (!sErr.IsEmpty())
+						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
+					else
+					{
+						COMError ce(hr);
+						sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
+						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
+					}
+				}
+			}
+		}
+		RestoreFiles(progress.m_GitStatus == 0, false);
+		if (!m_bStagingSupport && static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit", TRUE)) == TRUE)
+		{
+			BOOL cancel = FALSE;
+			mgtReAddAfterCommit.Execute(cancel);
+			mgtReDelAfterCommit.Execute(cancel);
+		}
+
+		if (!progress.m_GitStatus)
+		{
+			DWORD exitcode = 0xFFFFFFFF;
+			CString error;
+			CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
+			if (CHooks::Instance().PostCommit(GetSafeHwnd(), g_Git.m_CurrentDir, amend.IsEmpty(), exitcode, error))
+			{
+				if (exitcode)
+				{
+					CString temp;
+					temp.Format(IDS_ERR_HOOKFAILED, static_cast<LPCWSTR>(error));
+					MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
+					bCloseCommitDlg = false;
+				}
+			}
+			CTGitPathList* pList;
+			if (m_bWholeProject || m_bWholeProject2)
+				pList = nullptr;
+			else
+				pList = &m_pathList;
+			m_ListCtrl.PruneChangelists(pList);
+			m_ListCtrl.SaveChangelists();
+		}
+
+		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+		{
+			bCloseCommitDlg = false;
+			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+			{
+				if (!m_sLogMessage.IsEmpty())
+				{
+					ReloadHistoryEntries();
+					m_History.AddEntry(m_sLogMessage);
+					m_History.Save();
+				}
+				if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
+				{
+					ReloadHistoryEntries();
+					m_History.AddEntry(m_NoAmendStr);
+					m_History.Save();
+				}
+
+				GetCommitTemplate(m_sLogTemplate);
+				m_sLogMessage = m_sLogTemplate;
+				m_cLogMessage.SetText(m_sLogMessage);
+				m_cLogMessage.ClearUndoBuffer();
+				if (m_bCreateNewBranch)
+				{
+					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
+					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
+				}
+				m_bCreateNewBranch = FALSE;
+				m_bCommitMessageOnly = FALSE;
+				m_ListCtrl.EnableWindow(TRUE);
+				m_ListCtrl.Clear();
+				if (!RunStartCommitHook())
+					bCloseCommitDlg = true;
+			}
+
+			if (!progress.m_GitStatus)
+			{
+				m_AmendStr.Empty();
+				m_bCommitAmend = FALSE;
+				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+				m_bSetCommitDateTime = FALSE;
+				m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
+				m_AsCommitDateCtrl.SetCheck(FALSE);
+				GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
+				GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
+				m_bSetAuthor = FALSE;
+				GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+			}
+
+			UpdateData(FALSE);
+		}
+	}
+	else if(bAddSuccess)
+	{
+		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
+		bCloseCommitDlg=false;
+	}
+
+	UpdateData();
+	m_regAddBeforeCommit = m_bShowUnversioned;
+	m_regKeepChangelists = m_bKeepChangeList;
+	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
+	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
+		m_bKeepChangeList = FALSE;
+	InterlockedExchange(&m_bBlock, FALSE);
+
+	if (!m_sLogMessage.IsEmpty())
+	{
+		ReloadHistoryEntries();
+		m_History.AddEntry(m_sLogMessage);
+		m_History.Save();
+	}
+	if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
+	{
+		ReloadHistoryEntries();
+		m_History.AddEntry(m_NoAmendStr);
+		m_History.Save();
+	}
+
+	SaveSplitterPos();
+
+	if (bCloseCommitDlg)
+	{
+		if (m_ctrlOkButton.GetCurrentEntry() == 2)
+			DoPush(GetSafeHwnd(), !!m_bCommitAmend);
+		CResizableStandAloneDialog::OnOK();
+	}
+	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+	{
+		m_bDoNotStoreLastSelectedLine = true;
+		this->Refresh();
+		this->BringWindowToTop();
+	}
+
+	CShellUpdater::Instance().Flush();
+}
+
+void CCommitDlg::PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool& bAddSuccess, int& nchecked, CMassiveGitTask& mgtReAddAfterCommit, CMassiveGitTask& mgtReDelAfterCommit)
+{
+	//first add all the unversioned files the user selected
+	//and check if all versioned files are selected
 
 	CSysProgressDlg sysProgressDlg;
 	if (nListItems >= 25)
@@ -767,7 +1127,6 @@ void CCommitDlg::OnOK()
 		sysProgressDlg.ShowModal(this, true);
 	}
 
-	CBlockCacheForPath cacheBlock(g_Git.m_CurrentDir);
 	ULONGLONG currentTicks = GetTickCount64();
 
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_COMMIT_UPDATE_INDEX))
@@ -916,7 +1275,7 @@ void CCommitDlg::OnOK()
 		CMassiveGitTask mgtRmFCache(L"rm -f --cache");
 		CString resetCmd = L"reset";
 		if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-			resetCmd += L" HEAD~1";;
+			resetCmd += L" HEAD~1";
 		CMassiveGitTask mgtReset(resetCmd, TRUE, true);
 		for (int j = 0; j < nListItems; ++j)
 		{
@@ -939,7 +1298,7 @@ void CCommitDlg::OnOK()
 			else
 			{
 				if (entry->m_Action & CTGitPath::LOGACTIONS_ADDED || entry->m_Action & CTGitPath::LOGACTIONS_REPLACED)
-				{	//To init git repository, there are not HEAD, so we can use git reset command
+				{ //To init git repository, there are not HEAD, so we can use git reset command
 					mgtRmFCache.AddFile(entry->GetGitPathString());
 					mgtReAddAfterCommit.AddFile(*entry);
 
@@ -982,321 +1341,6 @@ void CCommitDlg::OnOK()
 		bAddSuccess = false;
 
 	sysProgressDlg.Stop();
-
-	if (bAddSuccess && m_bCreateNewBranch)
-	{
-		if (g_Git.Run(L"git.exe branch " + newBranch, &out, CP_UTF8))
-		{
-			MessageBox(L"Creating new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			bAddSuccess = false;
-		}
-		if (g_Git.Run(L"git.exe checkout " + newBranch + L" --", &out, CP_UTF8))
-		{
-			MessageBox(L"Switching to new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			bAddSuccess = false;
-		}
-	}
-
-	if (bAddSuccess && m_bWarnDetachedHead && CheckHeadDetach())
-		bAddSuccess = false;
-
-	m_sBugID.Trim();
-	CString sExistingBugID = m_ProjectProperties.FindBugID(m_sLogMessage);
-	sExistingBugID.Trim();
-	if (!m_sBugID.IsEmpty() && m_sBugID.Compare(sExistingBugID))
-	{
-		m_sBugID.Replace(L", ", L",");
-		m_sBugID.Replace(L" ,", L",");
-		CString sBugID = m_ProjectProperties.sMessage;
-		sBugID.Replace(L"%BUGID%", m_sBugID);
-		if (m_ProjectProperties.bAppend)
-			m_sLogMessage += L'\n' + sBugID + L'\n';
-		else
-			m_sLogMessage = sBugID + L'\n' + m_sLogMessage;
-	}
-
-	// now let the bugtraq plugin check the commit message
-	CComPtr<IBugTraqProvider2> pProvider2;
-	if (m_BugTraqProvider)
-	{
-		HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider2);
-		if (SUCCEEDED(hr))
-		{
-			ATL::CComBSTR temp;
-			ATL::CComBSTR repositoryRoot(g_Git.m_CurrentDir);
-			ATL::CComBSTR parameters(m_bugtraq_association.GetParameters());
-			ATL::CComBSTR commonRoot(m_pathList.GetCommonRoot().GetDirectory().GetWinPath());
-			ATL::CComBSTR commitMessage(m_sLogMessage);
-			CBstrSafeVector pathList(m_selectedPathList.GetCount());
-
-			for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
-				pathList.PutElement(index, m_selectedPathList[index].GetGitPathString());
-
-			if (FAILED(hr = pProvider2->CheckCommit(GetSafeHwnd(), parameters, repositoryRoot, commonRoot, pathList, commitMessage, &temp)))
-			{
-				COMError ce(hr);
-				CString sErr;
-				sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, static_cast<LPCWSTR>(m_bugtraq_association.GetProviderName()), ce.GetMessageAndDescription().c_str());
-				CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_ICONERROR);
-			}
-			else
-			{
-				CString sError = temp;
-				if (!sError.IsEmpty())
-				{
-					CMessageBox::Show(GetSafeHwnd(), sError, L"TortoiseGit", MB_ICONERROR);
-					InterlockedExchange(&m_bBlock, FALSE);
-					return;
-				}
-			}
-		}
-	}
-
-	if (m_bCommitMessageOnly || bAddSuccess && (nchecked || m_bCommitAmend ||  CTGitPath(g_Git.m_CurrentDir).IsMergeActive()))
-	{
-		bCloseCommitDlg = true;
-
-		CString tempfile=::GetTempFile();
-
-		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
-		{
-			CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
-			InterlockedExchange(&m_bBlock, FALSE);
-			return;
-		}
-
-		CTGitPath path=g_Git.m_CurrentDir;
-
-		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
-
-		out.Empty();
-		CString amend;
-		if(this->m_bCommitAmend)
-			amend = L"--amend";
-
-		CString dateTime;
-		if (m_bSetCommitDateTime)
-		{
-			COleDateTime date, time;
-			m_CommitDate.GetTime(date);
-			m_CommitTime.GetTime(time);
-			COleDateTime dateWithTime(date.GetYear(), date.GetMonth(), date.GetDay(), time.GetHour(), time.GetMinute(), time.GetSecond());
-			if (dateWithTime < COleDateTime((time_t)0))
-			{
-				CMessageBox::Show(GetSafeHwnd(), L"Invalid time", L"TortoiseGit", MB_OK | MB_ICONERROR);
-				InterlockedExchange(&m_bBlock, FALSE);
-				return;
-			}
-			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
-				dateTime = L"--date=\"now\"";
-			else
-				dateTime.Format(L"--date=%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
-		}
-		CString author;
-		if (m_bSetAuthor)
-			author.Format(L"--author=\"%s\"", static_cast<LPCWSTR>(m_sAuthor));
-		CString allowEmpty = m_bCommitMessageOnly ? L"--allow-empty" : L"";
-		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
-		cmd.Format(L"git.exe commit %s %s %s %s -F \"%s\"", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(tempfile));
-
-		CCommitProgressDlg progress;
-		progress.m_bBufferAll=true; // improve show speed when there are many file added.
-		progress.m_GitCmd=cmd;
-		progress.m_bShowCommand = FALSE;	// don't show the commit command
-		progress.m_PreText = out;			// show any output already generated in log window
-		if (m_ctrlOkButton.GetCurrentEntry() > 0)
-			progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
-
-		progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
-		{
-			if (status || m_bNoPostActions || m_bAutoClose)
-				return;
-
-			if (IsGitSVN)
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; });
-
-			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; });
-			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; });
-			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; });
-			postCmdList.emplace_back(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; });
-		};
-
-		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
-		progress.DoModal();
-
-		if (!m_bNoPostActions)
-			m_regLastAction = static_cast<int>(m_ctrlOkButton.GetCurrentEntry());
-		if (m_ctrlOkButton.GetCurrentEntry() == 1)
-			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
-
-		::DeleteFile(tempfile);
-
-		if (m_BugTraqProvider && progress.m_GitStatus == 0)
-		{
-			CComPtr<IBugTraqProvider2> pProvider;
-			HRESULT hr = m_BugTraqProvider.QueryInterface(&pProvider);
-			if (SUCCEEDED(hr))
-			{
-				ATL::CComBSTR commonRoot(g_Git.m_CurrentDir);
-				CBstrSafeVector pathList(m_selectedPathList.GetCount());
-
-				for (LONG index = 0; index < m_selectedPathList.GetCount(); ++index)
-					pathList.PutElement(index, m_selectedPathList[index].GetGitPathString());
-
-				ATL::CComBSTR logMessage(m_sLogMessage);
-
-				CGitHash hash;
-				if (g_Git.GetHash(hash, L"HEAD"))
-					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
-				LONG version = g_Git.Hash2int(hash);
-
-				ATL::CComBSTR temp;
-				if (FAILED(hr = pProvider->OnCommitFinished(GetSafeHwnd(),
-					commonRoot,
-					pathList,
-					logMessage,
-					version,
-					&temp)))
-				{
-					CString sErr = temp;
-					if (!sErr.IsEmpty())
-						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
-					else
-					{
-						COMError ce(hr);
-						sErr.FormatMessage(IDS_ERR_FAILEDISSUETRACKERCOM, ce.GetSource().c_str(), ce.GetMessageAndDescription().c_str());
-						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
-					}
-				}
-			}
-		}
-		RestoreFiles(progress.m_GitStatus == 0, false);
-		if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\ReaddUnselectedAddedFilesAfterCommit", TRUE)) == TRUE)
-		{
-			BOOL cancel = FALSE;
-			mgtReAddAfterCommit.Execute(cancel);
-			mgtReDelAfterCommit.Execute(cancel);
-		}
-
-		if (!progress.m_GitStatus)
-		{
-			DWORD exitcode = 0xFFFFFFFF;
-			CString error;
-			CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
-			if (CHooks::Instance().PostCommit(GetSafeHwnd(), g_Git.m_CurrentDir, amend.IsEmpty(), exitcode, error))
-			{
-				if (exitcode)
-				{
-					CString temp;
-					temp.Format(IDS_ERR_HOOKFAILED, static_cast<LPCWSTR>(error));
-					MessageBox(temp, L"TortoiseGit", MB_ICONERROR);
-					bCloseCommitDlg = false;
-				}
-			}
-			CTGitPathList* pList;
-			if (m_bWholeProject || m_bWholeProject2)
-				pList = nullptr;
-			else
-				pList = &m_pathList;
-			m_ListCtrl.PruneChangelists(pList);
-			m_ListCtrl.SaveChangelists();
-		}
-
-		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
-		{
-			bCloseCommitDlg = false;
-			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
-			{
-				if (!m_sLogMessage.IsEmpty())
-				{
-					ReloadHistoryEntries();
-					m_History.AddEntry(m_sLogMessage);
-					m_History.Save();
-				}
-				if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
-				{
-					ReloadHistoryEntries();
-					m_History.AddEntry(m_NoAmendStr);
-					m_History.Save();
-				}
-
-				GetCommitTemplate(m_sLogTemplate);
-				m_sLogMessage = m_sLogTemplate;
-				m_cLogMessage.SetText(m_sLogMessage);
-				m_cLogMessage.ClearUndoBuffer();
-				if (m_bCreateNewBranch)
-				{
-					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
-					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
-				}
-				m_bCreateNewBranch = FALSE;
-				m_bCommitMessageOnly = FALSE;
-				m_ListCtrl.EnableWindow(TRUE);
-				m_ListCtrl.Clear();
-				if (!RunStartCommitHook())
-					bCloseCommitDlg = true;
-			}
-
-			if (!progress.m_GitStatus)
-			{
-				m_AmendStr.Empty();
-				m_bCommitAmend = FALSE;
-				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
-				m_bSetCommitDateTime = FALSE;
-				m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
-				m_AsCommitDateCtrl.SetCheck(FALSE);
-				GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
-				GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
-				m_bSetAuthor = FALSE;
-				GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
-			}
-
-			UpdateData(FALSE);
-		}
-	}
-	else if(bAddSuccess)
-	{
-		CMessageBox::Show(this->m_hWnd, IDS_ERROR_NOTHING_COMMIT, IDS_COMMIT_FINISH, MB_OK | MB_ICONINFORMATION);
-		bCloseCommitDlg=false;
-	}
-
-	UpdateData();
-	m_regAddBeforeCommit = m_bShowUnversioned;
-	m_regKeepChangelists = m_bKeepChangeList;
-	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
-	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
-		m_bKeepChangeList = FALSE;
-	InterlockedExchange(&m_bBlock, FALSE);
-
-	if (!m_sLogMessage.IsEmpty())
-	{
-		ReloadHistoryEntries();
-		m_History.AddEntry(m_sLogMessage);
-		m_History.Save();
-	}
-	if (m_bCommitAmend && !m_NoAmendStr.IsEmpty() && (m_sLogTemplate.Compare(m_NoAmendStr) != 0))
-	{
-		ReloadHistoryEntries();
-		m_History.AddEntry(m_NoAmendStr);
-		m_History.Save();
-	}
-
-	SaveSplitterPos();
-
-	if (bCloseCommitDlg)
-	{
-		if (m_ctrlOkButton.GetCurrentEntry() == 2)
-			DoPush(GetSafeHwnd(), !!m_bCommitAmend);
-		CResizableStandAloneDialog::OnOK();
-	}
-	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
-	{
-		m_bDoNotStoreLastSelectedLine = true;
-		this->Refresh();
-		this->BringWindowToTop();
-	}
-
-	CShellUpdater::Instance().Flush();
 }
 
 void CCommitDlg::SaveSplitterPos()
@@ -1339,6 +1383,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, false);
 	DialogEnableWindow(IDC_COMMIT_AMEND, FALSE);
 	DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
+	DialogEnableWindow(IDC_STAGINGSUPPORT, false);
 	// read the list of recent log entries before querying the WC for status
 	// -> the user may select one and modify / update it while we are crawling the WC
 
@@ -1378,11 +1423,11 @@ UINT CCommitDlg::StatusThread()
 	else
 		pList = &m_pathList;
 
-	success=m_ListCtrl.GetStatus(pList);
+	success = m_ListCtrl.GetStatus(pList, false, false, false, false, false, m_bStagingSupport);
 
 	//m_ListCtrl.UpdateFileList(git_revnum_t(GIT_REV_ZERO));
 	if(this->m_bShowUnversioned)
-		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER,true,pList);
+		m_ListCtrl.UpdateFileList(CGitStatusListCtrl::FILELIST_UNVER, true, pList, m_bStagingSupport);
 
 	m_ListCtrl.CheckIfChangelistsArePresent(false);
 
@@ -1449,6 +1494,7 @@ UINT CCommitDlg::StatusThread()
 		DialogEnableWindow(IDC_SHOWUNVERSIONED, true);
 		DialogEnableWindow(IDC_WHOLE_PROJECT, !m_bWholeProject2);
 		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
+		DialogEnableWindow(IDC_STAGINGSUPPORT, true);
 		if (m_ListCtrl.HasChangeLists())
 			DialogEnableWindow(IDC_KEEPLISTS, true);
 
@@ -2361,21 +2407,53 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		CString cmd,out;
 
+		CString head = L"HEAD";
+		if (m_bCommitAmend == TRUE && m_bAmendDiffToLastCommit == FALSE)
+			head = L"HEAD~1";
 		while(pos)
 		{
 			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
 			auto p = m_ListCtrl.GetListEntry(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
-				CString head = L"HEAD";
-				if(m_bCommitAmend==TRUE && m_bAmendDiffToLastCommit==FALSE)
-					head = L"HEAD~1";
-				if (!p->GetGitOldPathString().IsEmpty())
-					cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
+				if (m_bStagingSupport)
+				{
+					// This will only work if called after ShowPartialStagingTextAndUpdateDisplayStatus (or Unstaging)
+
+					if (!(p->m_Action & CTGitPath::LOGACTIONS_ADDED) && !(p->m_Action & CTGitPath::LOGACTIONS_DELETED) && !(p->m_Action & CTGitPath::LOGACTIONS_MISSING) && !(p->m_Action & CTGitPath::LOGACTIONS_UNMERGED) && !(p->IsDirectory()))
+					{
+						if (!(m_stagingDisplayState & SHOW_STAGING))        // link does not currently display show staging, then it's "hide staging", meaning the staging window is open
+							m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
+						else if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
+							m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
+					}
+					else
+						m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
+
+					bool useCachedParameter = false;
+					if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
+						useCachedParameter = true;
+					else
+						head.Empty();
+
+					if (!p->GetGitOldPathString().IsEmpty())
+						cmd.Format(L"git.exe diff %s%s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
+					else
+						cmd.Format(L"git.exe diff %s%s -- \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitPathString()));
+				}
 				else
-					cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitPathString()));
+				{
+					if (!p->GetGitOldPathString().IsEmpty())
+						cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
+					else
+						cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitPathString()));
+				}
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
+			else
+				m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
+			if (m_bStagingSupport)
+				break; // only one file at a time (the hunk staging code supports many files at once, so it's possible to relax this restriction for that case)
 		}
 
 		m_patchViewdlg.SetText(out);
@@ -2383,7 +2461,9 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 }
 LRESULT CCommitDlg::OnGitStatusListCtrlItemChanged(WPARAM /*wparam*/, LPARAM /*lparam*/)
 {
-	this->FillPatchView(true);
+	// This handler is blocked during a partial staging, because OnPartialStagingRefreshPatchView itself calls FillPatchView
+	if (!m_nBlockItemChangeHandler)
+		this->FillPatchView(true);
 	return 0;
 }
 
@@ -2437,6 +2517,22 @@ LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 LRESULT CCommitDlg::OnUpdateDataFalse(WPARAM, LPARAM)
 {
 	UpdateData(FALSE);
+	return 0;
+}
+
+LRESULT CCommitDlg::OnPartialStagingRefreshPatchView(WPARAM wParam, LPARAM)
+{
+	m_patchViewdlg.ClearView();
+
+	{
+		// Block the item change handler to make sure FillPatchView is called only once (below)
+		ScopedInDecrement blocker(m_nBlockItemChangeHandler);
+		CTGitPath::StagingStatus newStatus = static_cast<CTGitPath::StagingStatus>(wParam);
+		m_ListCtrl.UpdateSelectedFileStagingStatus(newStatus);
+	}
+
+	FillPatchView();
+	SendMessage(WM_UPDATEOKBUTTON);
 	return 0;
 }
 
@@ -2637,6 +2733,11 @@ void CCommitDlg::OnBnClickedCommitAmend()
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+		if (m_bStagingSupport)
+		{
+			UpdateData(false);
+			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
+		}
 		if (m_bSetCommitDateTime)
 			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
 	}
@@ -2672,9 +2773,9 @@ void CCommitDlg::OnBnClickedWholeProject()
 	if (!m_bBlock)
 	{
 		if (m_bWholeProject || m_bWholeProject2)
-			m_ListCtrl.GetStatus(nullptr, true, false, true);
+			m_ListCtrl.GetStatus(nullptr, true, false, true, false, false, m_bStagingSupport);
 		else
-			m_ListCtrl.GetStatus(&this->m_pathList,true,false,true);
+			m_ListCtrl.GetStatus(&this->m_pathList, true, false, true, false, false, m_bStagingSupport);
 
 		m_regShowWholeProject = m_bWholeProject;
 
@@ -2718,34 +2819,88 @@ void CCommitDlg::OnScnUpdateUI(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 void CCommitDlg::TogglePatchView()
 {
-	OnStnClickedViewPatch();
+	DestroyPatchViewDlgIfOpen();
+	if (m_bStagingSupport)
+	{
+		ShowPartialStagingTextAndUpdateDisplayState(true);
+		ShowPartialUnstagingTextAndUpdateDisplayState(true);
+	}
+	else
+		ShowViewPatchText(true);
 }
 
 void CCommitDlg::OnStnClickedViewPatch()
 {
-	m_patchViewdlg.m_ParentDlg = this;
-	if(!IsWindow(this->m_patchViewdlg.m_hWnd))
+	if (IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
-		BOOL viewPatchEnabled = FALSE;
-		viewPatchEnabled = g_Git.GetConfigValueBool(L"tgit.commitshowpatch");
-		if (viewPatchEnabled == FALSE)
-			g_Git.SetConfigValue(L"tgit.commitshowpatch", L"true");
-		m_patchViewdlg.Create(IDD_PATCH_VIEW,this);
-		m_patchViewdlg.ShowAndAlignToParent();
-
-		GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
-
+		DestroyPatchViewDlgIfOpen();
+		ShowViewPatchText(true);
+	}
+	else
+	{
+		CreatePatchViewDlg();
 		ShowViewPatchText(false);
 		FillPatchView();
 	}
-	else
+}
+
+void CCommitDlg::OnStnClickedPartialStaging()
+{
+	DestroyPatchViewDlgIfOpen();
+	if (m_stagingDisplayState & SHOW_STAGING) // clicked Partial Staging, either with the patch window closed or open in Unstaging mode
+	{
+		CreatePatchViewDlg();
+		m_patchViewdlg.SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_INDEX_WORKTREE)));
+		ShowPartialStagingTextAndUpdateDisplayState(false); // change "Partial Staging" to "Hide Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // show "Partial Unstaging"
+		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
+	}
+	else // clicked Hide Staging
+	{
+		ShowPartialStagingTextAndUpdateDisplayState(true); // change "Hide Staging" to "Partial Staging"
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // show "Partial Unstaging"
+	}
+}
+
+void CCommitDlg::OnStnClickedPartialUnstaging()
+{
+	DestroyPatchViewDlgIfOpen();
+	if (m_stagingDisplayState & SHOW_UNSTAGING) // clicked Partial Unstaging, either with the patch window closed or open in Staging mode
+	{
+		CreatePatchViewDlg();
+		m_patchViewdlg.SetWindowText(CString(MAKEINTRESOURCE(IDS_VIEWPATCH_HEAD_INDEX)));
+		ShowPartialUnstagingTextAndUpdateDisplayState(false); // change "Partial Unstaging" to "Hide Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(true); // show "Partial Staging"
+		FillPatchView(); // this needs to be called after the two calls to ShowPartial..... above
+	}
+	else // clicked Hide Unstaging
+	{
+		ShowPartialUnstagingTextAndUpdateDisplayState(true); // change "Hide Unstaging" to "Partial Unstaging"
+		ShowPartialStagingTextAndUpdateDisplayState(true); // show "Partial Staging"
+	}
+}
+
+void CCommitDlg::CreatePatchViewDlg()
+{
+	m_patchViewdlg.m_ParentDlg = this;
+	BOOL viewPatchEnabled = FALSE;
+	viewPatchEnabled = g_Git.GetConfigValueBool(L"tgit.commitshowpatch");
+	if (viewPatchEnabled == FALSE)
+		g_Git.SetConfigValue(L"tgit.commitshowpatch", L"true");
+	m_patchViewdlg.Create(IDD_PATCH_VIEW, this);
+	m_patchViewdlg.ShowAndAlignToParent();
+
+	GetDlgItem(IDC_LOGMESSAGE)->SetFocus();
+}
+
+void CCommitDlg::DestroyPatchViewDlgIfOpen()
+{
+	if (IsWindow(this->m_patchViewdlg.m_hWnd))
 	{
 		g_Git.SetConfigValue(L"tgit.commitshowpatch", L"false");
 		m_patchViewdlg.ShowWindow(SW_HIDE);
 		m_patchViewdlg.DestroyWindow();
-		ShowViewPatchText(true);
 	}
-	this->m_ctrlShowPatch.Invalidate();
 }
 
 void CCommitDlg::OnMoving(UINT fwSide, LPRECT pRect)
@@ -2911,6 +3066,41 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 	}
 	else
 		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+}
+
+void CCommitDlg::PrepareStagingSupport()
+{
+	DestroyPatchViewDlgIfOpen();
+	g_Git.SetConfigValue(L"tgit.commitstagingsupport", m_bStagingSupport ? L"true" : L"false");
+	m_ListCtrl.EnableThreeStateCheckboxes(m_bStagingSupport);
+	if (m_bStagingSupport)
+	{
+		if (m_bCommitAmend)
+		{
+			UpdateData(false);
+			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
+		}
+		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_TIPSTAGINGMODE, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, L"HintStagingMode", IDS_MSGBOX_DONOTSHOWAGAIN);
+		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_HIDE);
+		ShowPartialStagingTextAndUpdateDisplayState(true);
+		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_SHOW);
+		ShowPartialUnstagingTextAndUpdateDisplayState(true);
+		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		ShowViewPatchText(true);
+		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_HIDE);
+	}
+}
+
+void CCommitDlg::OnBnClickedStagingSupport()
+{
+	UpdateData();
+	PrepareStagingSupport();
+	Refresh();
 }
 
 bool CCommitDlg::RunStartCommitHook()

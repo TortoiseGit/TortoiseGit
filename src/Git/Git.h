@@ -437,6 +437,9 @@ public:
 
 	CGitHash GetSubmodulePointer();
 
+	int ApplyPatchToIndex(const CString& patchPath, CString* out);
+	int ApplyPatchToIndexReverse(const CString& patchPath, CString* out);
+
 	int RefreshGitIndex();
 	int GetOneFile(const CString &Refname, const CTGitPath &path, const CString &outputfile);
 
@@ -446,8 +449,8 @@ public:
 	static CString StripRefName(CString refName);
 
 	int GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outpathlist, bool ignoreSpaceAtEol = false, bool ignoreSpaceChange = false, bool ignoreAllSpace = false, bool ignoreBlankLines = false);
-	int GetInitAddList(CTGitPathList &outpathlist);
-	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr, bool includedStaged = false);
+	int GetInitAddList(CTGitPathList &outpathlist, bool getStagingStatus = false);
+	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr, bool includedStaged = false, bool getStagingStatus = false);
 
 	static __int64 filetime_to_time_t(__int64 winTime)
 	{

@@ -20,6 +20,8 @@
 #include "StandAloneDlg.h"
 #include "SciEdit.h"
 #include "FindBar.h"
+#include "StagingOperations.h"
+#include "EnableStagingTypes.h"
 
 class IHasPatchView
 {
@@ -42,6 +44,7 @@ public:
 	void ShowAndAlignToParent();
 	void ParentOnMoving(HWND parentHWND, LPRECT pRect);
 	void ParentOnSizing(HWND parentHWND, LPRECT pRect);
+	void EnableStaging(EnableStagingTypes enableStagingType);
 
 // Dialog Data
 	enum { IDD = IDD_PATCH_VIEW };
@@ -68,10 +71,15 @@ protected:
 	afx_msg void OnFindReset();
 	afx_msg void OnFindExit();
 	afx_msg void OnEscape();
+	afx_msg void OnStageLines();
+	afx_msg void OnStageHunks();
+	afx_msg void OnUnstageLines();
+	afx_msg void OnUnstageHunks();
 	LRESULT OnFindNextMessage(WPARAM, LPARAM);
 	LRESULT OnFindPrevMessage(WPARAM, LPARAM);
 	LRESULT OnFindResetMessage(WPARAM, LPARAM);
 	LRESULT OnFindExitMessage(WPARAM, LPARAM);
+	static UINT WM_PARTIALSTAGINGREFRESHPATCHVIEW;
 
 	void				DoSearch(bool reverse);
 	CFindBar            m_FindBar;
@@ -79,8 +87,18 @@ protected:
 
 	HACCEL				m_hAccel;
 
+	EnableStagingTypes	m_nEnableStagingType;
+
 	// CSciEditContextMenuInterface
 	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
 	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
 	int					m_nPopupSave;
+	int					m_nStageHunks;
+	int					m_nStageLines;
+	int					m_nUnstageHunks;
+	int					m_nUnstageLines;
+
+	int GetFirstLineNumberSelected();
+	int GetLastLineNumberSelected();
+	void StageOrUnstageSelectedLinesOrHunks(StagingType stagingType);
 };

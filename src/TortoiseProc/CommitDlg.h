@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,8 +32,9 @@
 #include "HyperLink.h"
 #include "PatchViewDlg.h"
 #include "MenuButton.h"
-
+#include "EnableStagingTypes.h"
 #include <regex>
+#include "MassiveGitTask.h"
 
 #define ENDDIALOGTIMER	100
 #define REFRESHTIMER	101
@@ -78,6 +79,34 @@ public:
 
 		m_ctrlShowPatch.Invalidate();
 	}
+	void ShowPartialStagingTextAndUpdateDisplayState(bool b = true)
+	{
+		if (b)
+		{
+			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_STAGING)));
+			m_stagingDisplayState |= SHOW_STAGING; // set
+		}
+		else
+		{
+			this->m_ctrlPartialStaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_STAGING)));
+			m_stagingDisplayState &= ~SHOW_STAGING; // unset
+		}
+		m_ctrlPartialStaging.Invalidate();
+	}
+	void ShowPartialUnstagingTextAndUpdateDisplayState(bool b = true)
+	{
+		if (b)
+		{
+			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_PARTIAL_UNSTAGING)));
+			m_stagingDisplayState |= SHOW_UNSTAGING; // set
+		}
+		else
+		{
+			this->m_ctrlPartialUnstaging.SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_COMMIT_HIDE_UNSTAGING)));
+			m_stagingDisplayState &= ~SHOW_UNSTAGING; // unset
+		}
+		m_ctrlPartialUnstaging.Invalidate();
+	}
 	void SetAuthor(CString author)
 	{
 		m_bSetAuthor = TRUE;
@@ -108,6 +137,7 @@ protected:
 
 	virtual BOOL OnInitDialog() override;
 	virtual void OnOK() override;
+	void PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool& bAddSuccess, int& nchecked, CMassiveGitTask& mgtReAddAfterCommit, CMassiveGitTask& mgtReDelAfterCommit);
 	virtual void OnCancel() override;
 	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
@@ -126,6 +156,7 @@ protected:
 	afx_msg LRESULT OnAutoListReady(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateOKButton(WPARAM, LPARAM);
 	afx_msg LRESULT OnUpdateDataFalse(WPARAM, LPARAM);
+	afx_msg LRESULT OnPartialStagingRefreshPatchView(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
@@ -141,6 +172,9 @@ protected:
 	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex);
 	void ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet);
 	bool RunStartCommitHook();
+	void CreatePatchViewDlg();
+	void DestroyPatchViewDlgIfOpen();
+	void PrepareStagingSupport();
 
 	DECLARE_MESSAGE_MAP()
 
@@ -173,6 +207,8 @@ protected:
 	BOOL				m_bSetAuthor;
 	CString				m_sAuthor;
 	volatile bool		m_bDoNotStoreLastSelectedLine; // true on first start of commit dialog and set on recommit
+	BOOL				m_bStagingSupport;
+	volatile LONG		m_nBlockItemChangeHandler; // used to make sure FillPatch is called only once after a partial staging
 
 	int					CheckHeadDetach();
 
@@ -193,6 +229,7 @@ private:
 	static UINT			WM_AUTOLISTREADY;
 	static UINT			WM_UPDATEOKBUTTON;
 	static UINT			WM_UPDATEDATAFALSE;
+	static UINT			WM_PARTIALSTAGINGREFRESHPATCHVIEW;
 	int					m_nPopupPickCommitHash;
 	int					m_nPopupPickCommitMessage;
 	int					m_nPopupPasteListCmd;
@@ -205,6 +242,8 @@ private:
 	CRect				m_LogMsgOrigRect;
 	CPathWatcher		m_pathwatcher;
 	CHyperLink			m_ctrlShowPatch;
+	CHyperLink			m_ctrlPartialStaging;
+	CHyperLink			m_ctrlPartialUnstaging;
 	CPatchViewDlg		m_patchViewdlg;
 	BOOL				m_bSetCommitDateTime;
 	CDateTimeCtrl		m_CommitDate;
@@ -228,6 +267,15 @@ private:
 	HACCEL				m_hAccel;
 	bool				RestoreFiles(bool doNotAsk = false, bool allowCancel = true);
 
+	// State of the links "Partial Staging>>" and "Partial Unstaging>>" shown on the commit window
+	enum PartialStagingDisplayState : unsigned char
+	{
+		// both unset should never happen
+		SHOW_STAGING = 0x00000001, // unset when "Hide Staging"
+		SHOW_UNSTAGING = 0x00000002, // unset when "Hide Unstaging"
+	};
+	unsigned char m_stagingDisplayState;
+
 protected:
 	afx_msg void OnBnClickedSignOff();
 	afx_msg void OnBnClickedCommitAmend();
@@ -235,6 +283,8 @@ protected:
 	afx_msg void OnBnClickedWholeProject();
 	afx_msg void OnScnUpdateUI(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnStnClickedViewPatch();
+	afx_msg void OnStnClickedPartialUnstaging();
+	afx_msg void OnStnClickedPartialStaging();
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void OnHdnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -244,6 +294,7 @@ protected:
 	afx_msg void OnBnClickedCommitAsCommitDate();
 	afx_msg void OnBnClickedCheckNewBranch();
 	afx_msg void OnBnClickedCommitSetauthor();
+	afx_msg void OnBnClickedStagingSupport();
 
 	CLinkControl		m_CheckAll;
 	CLinkControl		m_CheckNone;
