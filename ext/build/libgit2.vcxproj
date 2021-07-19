@@ -78,7 +78,6 @@
     <ClCompile Include="..\libgit2\src\blame_git.c" />
     <ClCompile Include="..\libgit2\src\blob.c" />
     <ClCompile Include="..\libgit2\src\branch.c" />
-    <ClCompile Include="..\libgit2\src\buf_text.c" />
     <ClCompile Include="..\libgit2\src\buffer.c" />
     <ClCompile Include="..\libgit2\src\cache.c" />
     <ClCompile Include="..\libgit2\src\checkout.c" />
@@ -200,6 +199,7 @@
     <ClCompile Include="..\libgit2\src\tree-cache.c" />
     <ClCompile Include="..\libgit2\src\tree.c" />
     <ClCompile Include="..\libgit2\src\tsort.c" />
+    <ClCompile Include="..\libgit2\src\utf8.c" />
     <ClCompile Include="..\libgit2\src\util.c" />
     <ClCompile Include="..\libgit2\src\varint.c" />
     <ClCompile Include="..\libgit2\src\vector.c" />
@@ -307,7 +307,6 @@
     <ClInclude Include="..\libgit2\src\blame_git.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
-    <ClInclude Include="..\libgit2\src\buf_text.h" />
     <ClInclude Include="..\libgit2\src\buffer.h" />
     <ClInclude Include="..\libgit2\src\cache.h" />
     <ClInclude Include="..\libgit2\src\cc-compat.h" />
@@ -410,6 +409,7 @@
     <ClInclude Include="..\libgit2\src\transports\ssh.h" />
     <ClInclude Include="..\libgit2\src\tree-cache.h" />
     <ClInclude Include="..\libgit2\src\tree.h" />
+    <ClInclude Include="..\libgit2\src\utf8.h" />
     <ClInclude Include="..\libgit2\src\util.h" />
     <ClInclude Include="..\libgit2\src\varint.h" />
     <ClInclude Include="..\libgit2\src\vector.h" />

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2020 TortoiseGit
+// Copyright (C) 2014, 2016-2021 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@
 #include "futils.h"
 #include "hash.h"
 #include "filter.h"
-#include "buf_text.h"
 #include "repository.h"
 
 #include "system-call.h"
@@ -183,7 +182,7 @@ static int filter_apply(
 		// build params for sh.exe
 		git_buf shParams = GIT_BUF_INIT;
 		git_buf_puts(&shParams, " -c \"");
-		git_buf_text_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\");
+		git_buf_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\");
 		git_buf_puts(&shParams, "\"");
 		if (git_buf_oom(&shParams)) {
 			git_buf_dispose(&cmd);

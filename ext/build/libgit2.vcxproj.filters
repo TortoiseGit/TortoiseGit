@@ -89,9 +89,6 @@
     <ClCompile Include="..\libgit2\src\branch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\buf_text.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\buffer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -584,6 +581,9 @@
     <ClCompile Include="..\libgit2\src\allocators\failalloc.c">
       <Filter>Source Files\allocators</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\utf8.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -593,9 +593,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\blob.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\buf_text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\buffer.h">
@@ -1296,6 +1293,9 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\allocators\failalloc.h">
       <Filter>Header Files\allocators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\utf8.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@ Released: unreleased
  * Fixed issue #2379: "Show changes as unified diff" from Commit window on N files opens N diff windows
  * Fixed issue #3738: Added force flag on LFSLocksDlg
  * Fixed issue #2299: Better support the git staging process
+ * Update libgit2
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
