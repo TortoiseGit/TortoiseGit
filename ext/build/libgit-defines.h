@@ -42,4 +42,4 @@
 #define NO_UNIX_SOCKETS
 #define SHA1_DC
 #define NATIVE_CRLF
-
+#define SUPPORTS_SIMPLE_IPC

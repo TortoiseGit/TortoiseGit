@@ -49,6 +49,7 @@
     <ClCompile Include="..\tgit\apply.c" />
     <ClCompile Include="..\tgit\bloom.c" />
     <ClCompile Include="..\tgit\chdir-notify.c" />
+    <ClCompile Include="..\tgit\chunk-format.c" />
     <ClCompile Include="..\tgit\commit-graph.c" />
     <ClCompile Include="..\tgit\commit-reach.c" />
     <ClCompile Include="..\tgit\compat\fileno.c" />
@@ -107,6 +108,7 @@
     <ClCompile Include="..\tgit\delta-islands.c" />
     <ClCompile Include="..\tgit\diff-delta.c" />
     <ClCompile Include="..\tgit\diff-lib.c" />
+    <ClCompile Include="..\tgit\diff-merges.c" />
     <ClCompile Include="..\tgit\diff-no-index.c" />
     <ClCompile Include="..\tgit\diff.c" />
     <ClCompile Include="..\tgit\diffcore-break.c" />
@@ -114,6 +116,7 @@
     <ClCompile Include="..\tgit\diffcore-order.c" />
     <ClCompile Include="..\tgit\diffcore-pickaxe.c" />
     <ClCompile Include="..\tgit\diffcore-rename.c" />
+    <ClCompile Include="..\tgit\diffcore-rotate.c" />
     <ClCompile Include="..\tgit\dir-iterator.c" />
     <ClCompile Include="..\tgit\dir.c" />
     <ClCompile Include="..\tgit\editor.c" />
@@ -127,11 +130,13 @@
     <ClCompile Include="..\tgit\fetch-negotiator.c" />
     <ClCompile Include="..\tgit\fetch-pack.c" />
     <ClCompile Include="..\tgit\fsck.c" />
+    <ClCompile Include="..\tgit\fsmonitor-ipc.c" />
     <ClCompile Include="..\tgit\fsmonitor.c" />
     <ClCompile Include="..\tgit\gettext.c" />
     <ClCompile Include="..\tgit\gpg-interface.c" />
     <ClCompile Include="..\tgit\graph.c" />
     <ClCompile Include="..\tgit\grep.c" />
+    <ClCompile Include="..\tgit\hash-lookup.c" />
     <ClCompile Include="..\tgit\hashmap.c" />
     <ClCompile Include="..\tgit\help.c" />
     <ClCompile Include="..\tgit\hex.c" />
@@ -165,6 +170,8 @@
     <ClCompile Include="..\tgit\notes-merge.c" />
     <ClCompile Include="..\tgit\notes-utils.c" />
     <ClCompile Include="..\tgit\notes.c" />
+    <ClCompile Include="..\tgit\object-file.c" />
+    <ClCompile Include="..\tgit\object-name.c" />
     <ClCompile Include="..\tgit\object.c" />
     <ClCompile Include="..\tgit\oid-array.c" />
     <ClCompile Include="..\tgit\oidmap.c" />
@@ -177,6 +184,7 @@
     <ClCompile Include="..\tgit\pack-write.c" />
     <ClCompile Include="..\tgit\packfile.c" />
     <ClCompile Include="..\tgit\pager.c" />
+    <ClCompile Include="..\tgit\parallel-checkout.c" />
     <ClCompile Include="..\tgit\parse-options-cb.c" />
     <ClCompile Include="..\tgit\parse-options.c" />
     <ClCompile Include="..\tgit\patch-delta.c" />
@@ -217,14 +225,12 @@
     <ClCompile Include="..\tgit\sequencer.c" />
     <ClCompile Include="..\tgit\server-info.c" />
     <ClCompile Include="..\tgit\setup.c" />
-    <ClCompile Include="..\tgit\sha1-file.c" />
-    <ClCompile Include="..\tgit\sha1-lookup.c" />
-    <ClCompile Include="..\tgit\sha1-name.c" />
     <ClCompile Include="..\tgit\sha1dc_git.c" />
     <ClCompile Include="..\tgit\shallow.c" />
     <ClCompile Include="..\tgit\builtin\shortlog.c" />
     <ClCompile Include="..\tgit\sideband.c" />
     <ClCompile Include="..\tgit\sigchain.c" />
+    <ClCompile Include="..\tgit\sparse-index.c" />
     <ClCompile Include="..\tgit\split-index.c" />
     <ClCompile Include="..\tgit\stable-qsort.c" />
     <ClCompile Include="..\tgit\strbuf.c" />
@@ -295,6 +301,7 @@
     <ClInclude Include="..\tgit\banned.h" />
     <ClInclude Include="..\tgit\bloom.h" />
     <ClInclude Include="..\tgit\chdir-notify.h" />
+    <ClInclude Include="..\tgit\chunk-format.h" />
     <ClInclude Include="..\tgit\commit-graph.h" />
     <ClInclude Include="..\tgit\commit-reach.h" />
     <ClInclude Include="..\tgit\commit-slab.h" />
@@ -327,6 +334,7 @@
     <ClInclude Include="..\tgit\decorate.h" />
     <ClInclude Include="..\tgit\delta-islands.h" />
     <ClInclude Include="..\tgit\delta.h" />
+    <ClInclude Include="..\tgit\diff-merges.h" />
     <ClInclude Include="..\tgit\diff.h" />
     <ClInclude Include="..\tgit\diffcore.h" />
     <ClInclude Include="..\tgit\dir-iterator.h" />
@@ -337,12 +345,14 @@
     <ClInclude Include="..\tgit\fetch-negotiator.h" />
     <ClInclude Include="..\tgit\fetch-pack.h" />
     <ClInclude Include="..\tgit\fsck.h" />
+    <ClInclude Include="..\tgit\fsmonitor-ipc.h" />
     <ClInclude Include="..\tgit\fsmonitor.h" />
     <ClInclude Include="..\tgit\gettext.h" />
     <ClInclude Include="..\tgit\git-compat-util.h" />
     <ClInclude Include="..\tgit\gpg-interface.h" />
     <ClInclude Include="..\tgit\graph.h" />
     <ClInclude Include="..\tgit\grep.h" />
+    <ClInclude Include="..\tgit\hash-lookup.h" />
     <ClInclude Include="..\tgit\hash.h" />
     <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
@@ -381,6 +391,7 @@
     <ClInclude Include="..\tgit\pack-revindex.h" />
     <ClInclude Include="..\tgit\pack.h" />
     <ClInclude Include="..\tgit\packfile.h" />
+    <ClInclude Include="..\tgit\parallel-checkout.h" />
     <ClInclude Include="..\tgit\parse-options.h" />
     <ClInclude Include="..\tgit\patch-ids.h" />
     <ClInclude Include="..\tgit\pathspec.h" />
@@ -409,11 +420,12 @@
     <ClInclude Include="..\tgit\run-command.h" />
     <ClInclude Include="..\tgit\send-pack.h" />
     <ClInclude Include="..\tgit\sequencer.h" />
-    <ClInclude Include="..\tgit\sha1-lookup.h" />
     <ClInclude Include="..\tgit\sha1dc_git.h" />
     <ClInclude Include="..\tgit\shortlog.h" />
     <ClInclude Include="..\tgit\sideband.h" />
     <ClInclude Include="..\tgit\sigchain.h" />
+    <ClInclude Include="..\tgit\simple-ipc.h" />
+    <ClInclude Include="..\tgit\sparse-index.h" />
     <ClInclude Include="..\tgit\split-index.h" />
     <ClInclude Include="..\tgit\strbuf.h" />
     <ClInclude Include="..\tgit\streaming.h" />

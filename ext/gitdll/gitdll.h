@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,6 +45,7 @@ typedef unsigned char GIT_HASH[LIBGIT_GIT_HASH_SIZE];
 
 struct GIT_OBJECT_OID {
 	unsigned char hash[LIBGIT_GIT_HASH_SIZE];
+	int algo;
 };
 
 typedef void *  GIT_HANDLE;

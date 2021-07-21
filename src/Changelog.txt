@@ -10,6 +10,7 @@ Released: unreleased
  * Update libgit2
  * Update pcre2 to 10.37
  * Update editorconfig to 0.12.5
+ * Update libgit to 2.32.0 based on Git for Windows sources
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
