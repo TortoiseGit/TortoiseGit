@@ -480,11 +480,9 @@ contents:lines=N
 </varlistentry>
 </variablelist>
 <simpara>Additionally, the trailers as interpreted by <xref linkend="git-interpret-trailers(1)" />
-are obtained as <emphasis>trailers</emphasis> (or by using the historical alias
-<emphasis>contents:trailers</emphasis>).  Non-trailer lines from the trailer block can be omitted
-with <emphasis>trailers:only</emphasis>. Whitespace-continuations can be removed from trailers so
-that each trailer appears on a line by itself with its full content with
-<emphasis>trailers:unfold</emphasis>. Both can be used together as <emphasis>trailers:unfold,only</emphasis>.</simpara>
+are obtained as <emphasis>trailers[:options]</emphasis> (or by using the historical alias
+<emphasis>contents:trailers[:options]</emphasis>). For valid [:option] values see <emphasis>trailers</emphasis>
+section of <xref linkend="git-log(1)" />.</simpara>
 <simpara>For sorting purposes, fields with numeric values sort in numeric order
 (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>creatordate</emphasis>, <emphasis>taggerdate</emphasis>).
 All other fields are used to sort in their byte-value order.</simpara>

@@ -13,8 +13,8 @@
 <simplesect id="git-stash(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git stash</emphasis> list [&lt;options&gt;]
-<emphasis>git stash</emphasis> show [&lt;options&gt;] [&lt;stash&gt;]
+<literallayout><emphasis>git stash</emphasis> list [&lt;log-options&gt;]
+<emphasis>git stash</emphasis> show [-u|--include-untracked|--only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> drop [-q|--quiet] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> ( pop | apply ) [--index] [-q|--quiet] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> branch &lt;branchname&gt; [&lt;stash&gt;]
@@ -83,7 +83,7 @@ save [-p|--patch] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q
 </varlistentry>
 <varlistentry>
 <term>
-list [&lt;options&gt;]
+list [&lt;log-options&gt;]
 </term>
 <listitem>
 <simpara>
@@ -101,7 +101,7 @@ command to control what is shown and how. See <xref linkend="git-log(1)" />.</si
 </varlistentry>
 <varlistentry>
 <term>
-show [&lt;options&gt;] [&lt;stash&gt;]
+show [-u|--include-untracked|--only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
 </term>
 <listitem>
 <simpara>
@@ -111,8 +111,10 @@ show [&lt;options&gt;] [&lt;stash&gt;]
         By default, the command shows the diffstat, but it will accept any
         format known to <emphasis>git diff</emphasis> (e.g., <emphasis>git stash show -p stash@{1}</emphasis>
         to view the second most recent entry in patch form).
-        You can use stash.showStat and/or stash.showPatch config variables
-        to change the default behavior.
+        If no <emphasis>&lt;diff-option&gt;</emphasis> is provided, the default behavior will be given
+        by the <emphasis>stash.showStat</emphasis>, and <emphasis>stash.showPatch</emphasis> config variables. You
+        can also use <emphasis>stash.showIncludeUntracked</emphasis> to set whether
+        <emphasis>--include-untracked</emphasis> is enabled by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -239,12 +241,28 @@ up with <emphasis>git clean</emphasis>.</simpara>
 <term>
 --include-untracked
 </term>
+<term>
+--no-include-untracked
+</term>
 <listitem>
 <simpara>
-        This option is only valid for <emphasis>push</emphasis> and <emphasis>save</emphasis> commands.
+        When used with the <emphasis>push</emphasis> and <emphasis>save</emphasis> commands,
+        all untracked files are also stashed and then cleaned up with
+        <emphasis>git clean</emphasis>.
 </simpara>
-<simpara>All untracked files are also stashed and then cleaned up with
-<emphasis>git clean</emphasis>.</simpara>
+<simpara>When used with the <emphasis>show</emphasis> command, show the untracked files in the stash
+entry as part of the diff.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--only-untracked
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the <emphasis>show</emphasis> command.
+</simpara>
+<simpara>Show only the untracked files in the stash entry as part of the diff.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

@@ -116,7 +116,7 @@ given); <emphasis>template</emphasis> (if a <emphasis>-t</emphasis> option was g
 configuration option <emphasis>commit.template</emphasis> is set); <emphasis>merge</emphasis> (if the
 commit is a merge or a <emphasis>.git/MERGE_MSG</emphasis> file exists); <emphasis>squash</emphasis>
 (if a <emphasis>.git/SQUASH_MSG</emphasis> file exists); or <emphasis>commit</emphasis>, followed by
-a commit SHA-1 (if a <emphasis>-c</emphasis>, <emphasis>-C</emphasis> or <emphasis>--amend</emphasis> option was given).</simpara>
+a commit object name (if a <emphasis>-c</emphasis>, <emphasis>-C</emphasis> or <emphasis>--amend</emphasis> option was given).</simpara>
 <simpara>If the exit status is non-zero, <emphasis>git commit</emphasis> will abort.</simpara>
 <simpara>The purpose of the hook is to edit the message file in place, and
 it is not suppressed by the <emphasis>--no-verify</emphasis> option.  A non-zero exit
@@ -192,16 +192,16 @@ which provide the name and location of the destination remote, if a
 named remote is not being used both values will be the same.</simpara>
 <simpara>Information about what is to be pushed is provided on the hook's standard
 input with lines of the form:</simpara>
-<literallayout class="monospaced">&lt;local ref&gt; SP &lt;local sha1&gt; SP &lt;remote ref&gt; SP &lt;remote sha1&gt; LF</literallayout>
+<literallayout class="monospaced">&lt;local ref&gt; SP &lt;local object name&gt; SP &lt;remote ref&gt; SP &lt;remote object name&gt; LF</literallayout>
 <simpara>For instance, if the command <literal>git push origin master:foreign</literal> were run the
 hook would receive a line like the following:</simpara>
 <literallayout class="monospaced">refs/heads/master 67890 refs/heads/foreign 12345</literallayout>
-<simpara>although the full, 40-character SHA-1s would be supplied.  If the foreign ref
-does not yet exist the <emphasis>&lt;remote SHA-1&gt;</emphasis> will be 40 <emphasis>0</emphasis>.  If a ref is to be
-deleted, the <emphasis>&lt;local ref&gt;</emphasis> will be supplied as <emphasis>(delete)</emphasis> and the <emphasis>&lt;local
-SHA-1&gt;</emphasis> will be 40 <emphasis>0</emphasis>.  If the local commit was specified by something other
-than a name which could be expanded (such as <emphasis>HEAD~</emphasis>, or a SHA-1) it will be
-supplied as it was originally given.</simpara>
+<simpara>although the full object name would be supplied.  If the foreign ref does not
+yet exist the <emphasis>&lt;remote object name&gt;</emphasis> will be the all-zeroes object name.  If a
+ref is to be deleted, the <emphasis>&lt;local ref&gt;</emphasis> will be supplied as <emphasis>(delete)</emphasis> and the
+<emphasis>&lt;local object name&gt;</emphasis> will be the all-zeroes object name.  If the local commit
+was specified by something other than a name which could be expanded (such as
+<emphasis>HEAD~</emphasis>, or an object name) it will be supplied as it was originally given.</simpara>
 <simpara>If this hook exits with a non-zero status, <emphasis>git push</emphasis> will abort without
 pushing anything.  Information about why the push is rejected may be sent
 to the user by writing to standard error.</simpara>
@@ -220,7 +220,7 @@ input a line of the format:</simpara>
 <simpara>where <emphasis>&lt;old-value&gt;</emphasis> is the old object name stored in the ref,
 <emphasis>&lt;new-value&gt;</emphasis> is the new object name to be stored in the ref and
 <emphasis>&lt;ref-name&gt;</emphasis> is the full name of the ref.
-When creating a new ref, <emphasis>&lt;old-value&gt;</emphasis> is 40 <emphasis>0</emphasis>.</simpara>
+When creating a new ref, <emphasis>&lt;old-value&gt;</emphasis> is the all-zeroes object name.</simpara>
 <simpara>If the hook exits with non-zero status, none of the refs will be
 updated. If the hook exits with zero, updating of individual refs can
 still be prevented by the <link linkend="githooks(5)_update"><emphasis>update</emphasis></link> hook.</simpara>
@@ -401,7 +401,8 @@ for the user.</simpara>
 <title>reference-transaction</title>
 <simpara>This hook is invoked by any Git command that performs reference
 updates. It executes whenever a reference transaction is prepared,
-committed or aborted and may thus get called multiple times.</simpara>
+committed or aborted and may thus get called multiple times. The hook
+does not cover symbolic references (but that may change in the future).</simpara>
 <simpara>The hook takes exactly one argument, which is the current state the
 given reference transaction is in:</simpara>
 <itemizedlist>
@@ -427,6 +428,13 @@ given reference transaction is in:</simpara>
 <simpara>For each reference update that was added to the transaction, the hook
 receives on standard input a line of the format:</simpara>
 <literallayout class="monospaced">&lt;old-value&gt; SP &lt;new-value&gt; SP &lt;ref-name&gt; LF</literallayout>
+<simpara>where <emphasis>&lt;old-value&gt;</emphasis> is the old object name passed into the reference
+transaction, <emphasis>&lt;new-value&gt;</emphasis> is the new object name to be stored in the
+ref and <emphasis>&lt;ref-name&gt;</emphasis> is the full name of the ref. When force updating
+the reference regardless of its current value or when the reference is
+to be created anew, <emphasis>&lt;old-value&gt;</emphasis> is the all-zeroes object name. To
+distinguish these cases, you can inspect the current value of
+<emphasis>&lt;ref-name&gt;</emphasis> via <emphasis>git rev-parse</emphasis>.</simpara>
 <simpara>The exit status of the hook is ignored for any state except for the
 "prepared" state. In the "prepared" state, a non-zero exit status will
 cause the transaction to be aborted. The hook will not be called with
@@ -477,7 +485,7 @@ invoked by: currently one of <emphasis>amend</emphasis> or <emphasis>rebase</emp
 command-dependent arguments may be passed in the future.</simpara>
 <simpara>The hook receives a list of the rewritten commits on stdin, in the
 format</simpara>
-<literallayout class="monospaced">&lt;old-sha1&gt; SP &lt;new-sha1&gt; [ SP &lt;extra-info&gt; ] LF</literallayout>
+<literallayout class="monospaced">&lt;old-object-name&gt; SP &lt;new-object-name&gt; [ SP &lt;extra-info&gt; ] LF</literallayout>
 <simpara>The <emphasis>extra-info</emphasis> is again command-dependent.  If it is empty, the
 preceding SP is also omitted.  Currently, no commands pass any
 <emphasis>extra-info</emphasis>.</simpara>
@@ -495,7 +503,7 @@ rebase
         For the <emphasis>squash</emphasis> and <emphasis>fixup</emphasis> operation, all commits that were
         squashed are listed as being rewritten to the squashed commit.
         This means that there will be several lines sharing the same
-        <emphasis>new-sha1</emphasis>.
+        <emphasis>new-object-name</emphasis>.
 </simpara>
 <simpara>The commits are guaranteed to be listed in the order that they were
 processed by rebase.</simpara>

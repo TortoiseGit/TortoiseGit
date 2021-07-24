@@ -1234,4 +1234,8 @@ Each commit imported by <emphasis>git p4</emphasis> has a line at the end of the
 </listitem>
 </itemizedlist>
 </simplesect>
+<simplesect id="git-p4(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
 </sect2>

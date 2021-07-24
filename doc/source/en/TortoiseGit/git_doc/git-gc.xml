@@ -401,12 +401,14 @@ gc.rerereUnresolved
 <simpara><emphasis>git gc</emphasis> tries very hard not to delete objects that are referenced
 anywhere in your repository. In particular, it will keep not only
 objects referenced by your current set of branches and tags, but also
-objects referenced by the index, remote-tracking branches, notes saved
-by <emphasis>git notes</emphasis> under refs/notes/, reflogs (which may reference commits
-in branches that were later amended or rewound), and anything else in
-the refs/* namespace.  If you are expecting some objects to be deleted
-and they aren't, check all of those locations and decide whether it
-makes sense in your case to remove those references.</simpara>
+objects referenced by the index, remote-tracking branches, reflogs
+(which may reference commits in branches that were later amended or
+rewound), and anything else in the refs/* namespace. Note that a note
+(of the kind created by <emphasis>git notes</emphasis>) attached to an object does not
+contribute in keeping the object alive. If you are expecting some
+objects to be deleted and they aren't, check all of those locations
+and decide whether it makes sense in your case to remove those
+references.</simpara>
 <simpara>On the other hand, when <emphasis>git gc</emphasis> runs concurrently with another process,
 there is a risk of it deleting an object that the other process is using
 but hasn't created a reference to. This may just cause the other process

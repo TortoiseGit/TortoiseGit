@@ -871,6 +871,11 @@ patterns are available:</simpara>
 </listitem>
 <listitem>
 <simpara>
+<emphasis>scheme</emphasis> suitable for source code in the Scheme language.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>tex</emphasis> suitable for source code for LaTeX documents.
 </simpara>
 </listitem>
@@ -1228,7 +1233,8 @@ tag then no replacement will be done.  The placeholders are the same
 as those for the option <emphasis>--pretty=format:</emphasis> of <xref linkend="git-log(1)" />,
 except that they need to be wrapped like this: <emphasis>$Format:PLACEHOLDERS$</emphasis>
 in the file.  E.g. the string <emphasis>$Format:%H$</emphasis> will be replaced by the
-commit hash.</simpara>
+commit hash.  However, only one <emphasis>%(describe)</emphasis> placeholder is expanded
+per archive to avoid denial-of-service attacks.</simpara>
 </section>
 </section>
 <section id="gitattributes(5)__packing_objects">
@@ -1279,6 +1285,12 @@ gitattributes files), not in <emphasis>.gitattributes</emphasis> files in workin
 subdirectories.  The built-in macro attribute "binary" is equivalent
 to:</simpara>
 <screen>[attr]binary -diff -merge -text</screen>
+</simplesect>
+<simplesect id="gitattributes(5)__notes">
+<title>NOTES</title>
+<simpara>Git does not follow symbolic links when accessing a <emphasis>.gitattributes</emphasis>
+file in the working tree. This keeps behavior consistent when the file
+is accessed from the index or a tree versus from the filesystem.</simpara>
 </simplesect>
 <simplesect id="gitattributes(5)__examples">
 <title>EXAMPLES</title>

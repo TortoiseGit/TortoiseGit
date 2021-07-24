@@ -213,6 +213,9 @@ those in <emphasis>$GIT_DIR/info/exclude</emphasis>.</simpara>
 not tracked by Git remain untracked.</simpara>
 <simpara>To stop tracking a file that is currently tracked, use
 <emphasis>git rm --cached</emphasis>.</simpara>
+<simpara>Git does not follow symbolic links when accessing a <emphasis>.gitignore</emphasis> file in
+the working tree. This keeps behavior consistent when the file is
+accessed from the index or a tree versus from the filesystem.</simpara>
 </simplesect>
 <simplesect id="gitignore(5)__examples">
 <title>EXAMPLES</title>
@@ -220,7 +223,7 @@ not tracked by Git remain untracked.</simpara>
 <listitem>
 <simpara>
 The pattern <emphasis>hello.*</emphasis> matches any file or folder
-   whose name begins with <emphasis>hello</emphasis>. If one wants to restrict
+   whose name begins with <emphasis>hello.</emphasis>. If one wants to restrict
    this only to the directory and not in its subdirectories,
    one can prepend the pattern with a slash, i.e. <emphasis>/hello.*</emphasis>;
    the pattern now matches <emphasis>hello.txt</emphasis>, <emphasis>hello.c</emphasis> but not

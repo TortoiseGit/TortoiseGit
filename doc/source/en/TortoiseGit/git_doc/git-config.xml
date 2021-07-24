@@ -648,6 +648,20 @@ GIT_CONFIG
 </varlistentry>
 <varlistentry>
 <term>
+GIT_CONFIG_GLOBAL
+</term>
+<term>
+GIT_CONFIG_SYSTEM
+</term>
+<listitem>
+<simpara>
+        Take the configuration from the given files instead from global or
+        system-level configuration. See <xref linkend="git(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 GIT_CONFIG_NOSYSTEM
 </term>
 <listitem>
@@ -659,6 +673,34 @@ GIT_CONFIG_NOSYSTEM
 </varlistentry>
 </variablelist>
 <simpara>See also <xref linkend="git-config(1)_FILES"/>.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+GIT_CONFIG_COUNT
+</term>
+<term>
+GIT_CONFIG_KEY_&lt;n&gt;
+</term>
+<term>
+GIT_CONFIG_VALUE_&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        If GIT_CONFIG_COUNT is set to a positive number, all environment pairs
+        GIT_CONFIG_KEY_&lt;n&gt; and GIT_CONFIG_VALUE_&lt;n&gt; up to that number will be
+        added to the process's runtime configuration. The config pairs are
+        zero-indexed. Any missing key or value is treated as an error. An empty
+        GIT_CONFIG_COUNT is treated the same as GIT_CONFIG_COUNT=0, namely no
+        pairs are processed. These environment variables will override values
+        in configuration files, but will be overridden by any explicit options
+        passed via <emphasis>git -c</emphasis>.
+</simpara>
+<simpara>This is useful for cases where you want to spawn multiple git commands
+with a common configuration but cannot depend on a configuration file,
+for example when writing scripts.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-config(1)_EXAMPLES">
 <title>EXAMPLES</title>
@@ -772,7 +814,7 @@ in the section header, like in the example below:</simpara>
 newline and the null byte. Doublequote <emphasis>"</emphasis> and backslash can be included
 by escaping them as <emphasis>\"</emphasis> and <emphasis>\\</emphasis>, respectively. Backslashes preceding
 other characters are dropped when reading; for example, <emphasis>\t</emphasis> is read as
-<emphasis>t</emphasis> and <emphasis>\0</emphasis> is read as <emphasis>0</emphasis> Section headers cannot span multiple lines.
+<emphasis>t</emphasis> and <emphasis>\0</emphasis> is read as <emphasis>0</emphasis>. Section headers cannot span multiple lines.
 Variables may belong directly to a section or to a given subsection. You
 can have <emphasis>[section]</emphasis> if you have <emphasis>[section "subsection"]</emphasis>, but you don't
 need to.</simpara>
@@ -1450,6 +1492,18 @@ addEmptyPathspec
 <simpara>
                 Advice shown if a user runs the add command without providing
                 the pathspec parameter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+updateSparsePath
+</term>
+<listitem>
+<simpara>
+                Advice shown when either <xref linkend="git-add(1)" /> or <xref linkend="git-rm(1)" />
+                is asked to update index entries outside the current sparse
+                checkout.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2482,6 +2536,8 @@ core.abbrev
         computed based on the approximate number of packed objects
         in your repository, which hopefully is enough for
         abbreviated object names to stay unique for some time.
+        If set to "no", no abbreviation is made and the object names
+        are shown in their full length.
         The minimum length is 4.
 </simpara>
 </listitem>
@@ -2924,6 +2980,40 @@ checkout.guess
 </varlistentry>
 <varlistentry>
 <term>
+checkout.workers
+</term>
+<listitem>
+<simpara>
+        The number of parallel workers to use when updating the working tree.
+        The default is one, i.e. sequential execution. If set to a value less
+        than one, Git will use as many workers as the number of logical cores
+        available. This setting and <emphasis>checkout.thresholdForParallelism</emphasis> affect
+        all commands that perform checkout. E.g. checkout, clone, reset,
+        sparse-checkout, etc.
+</simpara>
+<simpara>Note: parallel checkout usually delivers better performance for repositories
+located on SSDs or over NFS. For repositories on spinning disks and/or machines
+with a small number of cores, the default sequential checkout often performs
+better. The size and compression level of a repository might also influence how
+well the parallel version performs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+checkout.thresholdForParallelism
+</term>
+<listitem>
+<simpara>
+        When running parallel checkout with a small number of files, the cost
+        of subprocess spawning and inter-process communication might outweigh
+        the parallelization gains. This setting allows to define the minimum
+        number of files for which parallel checkout should be attempted. The
+        default is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 clean.requireForce
 </term>
 <listitem>
@@ -2942,6 +3032,17 @@ clone.defaultRemoteName
         The name of the remote to create when cloning a repository.  Defaults to
         <emphasis>origin</emphasis>, and can be overridden by passing the <emphasis>--origin</emphasis> command-line
         option to <xref linkend="git-clone(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+clone.rejectShallow
+</term>
+<listitem>
+<simpara>
+        Reject to clone a repository if it is a shallow one, can be overridden by
+        passing option <emphasis>--reject-shallow</emphasis> in command line. See <xref linkend="git-clone(1)" />
 </simpara>
 </listitem>
 </varlistentry>
@@ -3605,6 +3706,19 @@ commit.verbose
 </varlistentry>
 <varlistentry>
 <term>
+commitGraph.generationVersion
+</term>
+<listitem>
+<simpara>
+        Specifies the type of generation number version to use when writing
+        or reading the commit-graph file. If version 1 is specified, then
+        the corrected commit dates will not be written or read. Defaults to
+        2.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 commitGraph.maxNewFilters
 </term>
 <listitem>
@@ -3891,6 +4005,8 @@ diff.ignoreSubmodules
         and <emphasis>git status</emphasis> when <emphasis>status.submoduleSummary</emphasis> is set unless it is
         overridden by using the --ignore-submodules command-line option.
         The <emphasis>git submodule</emphasis> commands are not affected by this setting.
+        By default this is set to untracked so that any untracked
+        submodules are ignored.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4225,6 +4341,11 @@ gvimdiff
 </listitem>
 <listitem>
 <simpara>
+gvimdiff1
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 gvimdiff2
 </simpara>
 </listitem>
@@ -4251,6 +4372,11 @@ meld
 <listitem>
 <simpara>
 nvimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff1
 </simpara>
 </listitem>
 <listitem>
@@ -4286,6 +4412,11 @@ tkdiff
 <listitem>
 <simpara>
 vimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff1
 </simpara>
 </listitem>
 <listitem>
@@ -6760,6 +6891,18 @@ index.recordOffsetTable
 </varlistentry>
 <varlistentry>
 <term>
+index.sparse
+</term>
+<listitem>
+<simpara>
+        When enabled, write the index using sparse-directory entries. This
+        has no effect unless <emphasis>core.sparseCheckout</emphasis> and
+        <emphasis>core.sparseCheckoutCone</emphasis> are both enabled. Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 index.threads
 </term>
 <listitem>
@@ -6802,7 +6945,7 @@ init.defaultBranch
 <listitem>
 <simpara>
         Allows overriding the default branch name e.g. when initializing
-        a new repository or when cloning an empty repository.
+        a new repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -6950,6 +7093,18 @@ log.excludeDecoration
 </varlistentry>
 <varlistentry>
 <term>
+log.diffMerges
+</term>
+<listitem>
+<simpara>
+        Set default diff format to be used for merge commits. See
+        <emphasis>--diff-merges</emphasis> in <xref linkend="git-log(1)" /> for details.
+        Defaults to <emphasis>separate</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 log.follow
 </term>
 <listitem>
@@ -7005,6 +7160,23 @@ log.mailmap
         If true, makes <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />, and
         <xref linkend="git-whatchanged(1)" /> assume <emphasis>--use-mailmap</emphasis>, otherwise
         assume <emphasis>--no-use-mailmap</emphasis>. True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+lsrefs.unborn
+</term>
+<listitem>
+<simpara>
+        May be "advertise" (the default), "allow", or "ignore". If "advertise",
+        the server will respond to the client sending "unborn" (as described in
+        protocol-v2.txt) and will advertise support for this feature during the
+        protocol v2 capability advertisement. "allow" is the same as
+        "advertise" except that the server will not advertise support for this
+        feature; this is useful for load-balanced servers that cannot be
+        updated atomically (for example), since the administrator could
+        configure "allow", then after a delay, configure "advertise".
 </simpara>
 </listitem>
 </varlistentry>
@@ -7088,8 +7260,9 @@ maintenance.strategy
 <simpara>
 <emphasis>incremental</emphasis>: This setting optimizes for performing small maintenance
   activities that do not delete any data. This does not schedule the <emphasis>gc</emphasis>
-  task, but runs the <emphasis>prefetch</emphasis> and <emphasis>commit-graph</emphasis> tasks hourly and the
-  <emphasis>loose-objects</emphasis> and <emphasis>incremental-repack</emphasis> tasks daily.
+  task, but runs the <emphasis>prefetch</emphasis> and <emphasis>commit-graph</emphasis> tasks hourly, the
+  <emphasis>loose-objects</emphasis> and <emphasis>incremental-repack</emphasis> tasks daily, and the <emphasis>pack-refs</emphasis>
+  task weekly.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -7489,6 +7662,11 @@ gvimdiff
 </listitem>
 <listitem>
 <simpara>
+gvimdiff1
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 gvimdiff2
 </simpara>
 </listitem>
@@ -7510,6 +7688,11 @@ meld
 <listitem>
 <simpara>
 nvimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff1
 </simpara>
 </listitem>
 <listitem>
@@ -7550,6 +7733,11 @@ tortoisemerge
 <listitem>
 <simpara>
 vimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff1
 </simpara>
 </listitem>
 <listitem>
@@ -7655,6 +7843,18 @@ mergetool.&lt;tool&gt;.cmd
 </varlistentry>
 <varlistentry>
 <term>
+mergetool.&lt;tool&gt;.hideResolved
+</term>
+<listitem>
+<simpara>
+        Allows the user to override the global <emphasis>mergetool.hideResolved</emphasis> value
+        for a specific tool. See <emphasis>mergetool.hideResolved</emphasis> for the full
+        description.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 mergetool.&lt;tool&gt;.trustExitCode
 </term>
 <listitem>
@@ -7698,6 +7898,23 @@ mergetool.meld.useAutoMerge
         is supported and will only use <emphasis>--auto-merge</emphasis> when available.  A
         value of <emphasis>false</emphasis> avoids using <emphasis>--auto-merge</emphasis> altogether, and is the
         default value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.hideResolved
+</term>
+<listitem>
+<simpara>
+        During a merge Git will automatically resolve as many conflicts as
+        possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
+        any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
+        represent the versions of the file from before Git's conflict
+        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwriten so
+        that only the unresolved conflicts are presented to the merge tool. Can
+        be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
+        configuration variable. Defaults to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -8070,6 +8287,26 @@ pack.useSparse
 </varlistentry>
 <varlistentry>
 <term>
+pack.preferBitmapTips
+</term>
+<listitem>
+<simpara>
+        When selecting which commits will receive bitmaps, prefer a
+        commit at the tip of any reference that is a suffix of any value
+        of this configuration over any other commits in the "selection
+        window".
+</simpara>
+<simpara>Note that setting this configuration to <emphasis>refs/foo</emphasis> does not mean that
+the commits at the tips of <emphasis>refs/foo/bar</emphasis> and <emphasis>refs/foo/baz</emphasis> will
+necessarily be selected. This is because commits are selected for
+bitmaps from within a series of windows of variable length.</simpara>
+<simpara>If a commit at the tip of any reference which is a suffix of any value
+of this configuration is seen in a window, it is immediately given
+preference over any other commit in that window.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 pack.writeBitmaps (deprecated)
 </term>
 <listitem>
@@ -8091,6 +8328,20 @@ pack.writeBitmapHashCache
         between an older, bitmapped pack and objects that have been
         pushed since the last gc). The downside is that it consumes 4
         bytes per object of disk space. Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.writeReverseIndex
+</term>
+<listitem>
+<simpara>
+        When true, git will write a corresponding .rev file (see:
+        <ulink url="https://www.kernel.org/pub/software/scm/git/docs/../technical/pack-format.html"><citetitle>Documentation/technical/pack-format.txt</citetitle></ulink>)
+        for each new packfile that it writes in all places except for
+        <xref linkend="git-fast-import(1)" /> and in the bulk checkin mechanism.
+        Defaults to false.
 </simpara>
 </listitem>
 </varlistentry>
@@ -8475,15 +8726,15 @@ push.useForceIfIncludes
 </varlistentry>
 <varlistentry>
 <term>
-rebase.useBuiltin
+push.negotiate
 </term>
 <listitem>
 <simpara>
-        Unused configuration variable. Used in Git versions 2.20 and
-        2.21 as an escape hatch to enable the legacy shellscript
-        implementation of rebase. Now the built-in rewrite of it in C
-        is always used. Setting this will emit a warning, to alert any
-        remaining users that setting this now does nothing.
+        If set to "true", attempt to reduce the size of the packfile
+        sent by rounds of negotiation in which the client and the
+        server attempt to find commits in common. If "false", Git will
+        rely solely on the server's ref advertisement to find commits
+        in common.
 </simpara>
 </listitem>
 </varlistentry>
@@ -8596,6 +8847,16 @@ rebase.rescheduleFailedExec
         Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
         sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
         This is the same as specifying the <emphasis>--reschedule-failed-exec</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.forkPoint
+</term>
+<listitem>
+<simpara>
+        If set to false set <emphasis>--no-fork-point</emphasis> option by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -9665,6 +9926,18 @@ stash.useBuiltin
 </varlistentry>
 <varlistentry>
 <term>
+stash.showIncludeUntracked
+</term>
+<listitem>
+<simpara>
+        If this is set to true, the <emphasis>git stash show</emphasis> command will show
+        the untracked files of a stash entry.  Defaults to false. See
+        description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 stash.showPatch
 </term>
 <listitem>
@@ -10314,7 +10587,8 @@ uploadpackfilter.allow
 <listitem>
 <simpara>
         Provides a default value for unspecified object filters (see: the
-        below configuration variable).
+        below configuration variable). If set to <emphasis>true</emphasis>, this will also
+        enable all filters which get added in the future.
         Defaults to <emphasis>true</emphasis>.
 </simpara>
 </listitem>
@@ -10327,9 +10601,9 @@ uploadpackfilter.&lt;filter&gt;.allow
 <simpara>
         Explicitly allow or ban the object filter corresponding to
         <emphasis>&lt;filter&gt;</emphasis>, where <emphasis>&lt;filter&gt;</emphasis> may be one of: <emphasis>blob:none</emphasis>,
-        <emphasis>blob:limit</emphasis>, <emphasis>tree</emphasis>, <emphasis>sparse:oid</emphasis>, or <emphasis>combine</emphasis>. If using
-        combined filters, both <emphasis>combine</emphasis> and all of the nested filter
-        kinds must be allowed. Defaults to <emphasis>uploadpackfilter.allow</emphasis>.
+        <emphasis>blob:limit</emphasis>, <emphasis>object:type</emphasis>, <emphasis>tree</emphasis>, <emphasis>sparse:oid</emphasis>, or <emphasis>combine</emphasis>.
+        If using combined filters, both <emphasis>combine</emphasis> and all of the nested
+        filter kinds must be allowed. Defaults to <emphasis>uploadpackfilter.allow</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

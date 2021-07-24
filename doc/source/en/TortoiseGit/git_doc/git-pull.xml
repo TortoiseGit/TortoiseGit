@@ -479,6 +479,17 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
+--atomic
+</term>
+<listitem>
+<simpara>
+        Use an atomic transaction to update local refs. Either all refs are
+        updated, or on error, no refs are updated.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --depth=&lt;depth&gt;
 </term>
 <listitem>
@@ -613,6 +624,18 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 <listitem>
 <simpara>
         Keep downloaded pack.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prefetch
+</term>
+<listitem>
+<simpara>
+        Modify the configured refspec to place all refs into the
+        <emphasis>refs/prefetch/</emphasis> namespace. See the <emphasis>prefetch</emphasis> task in
+        <xref linkend="git-maintenance(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

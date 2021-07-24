@@ -234,7 +234,7 @@ ignored, then the directory is not shown, but all contents are shown.</simpara>
 <listitem>
 <simpara>
         Display untracked files in columns. See configuration variable
-        column.status for option syntax.<emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
+        <emphasis>column.status</emphasis> for option syntax. <emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
         without options are equivalent to <emphasis>always</emphasis> and <emphasis>never</emphasis>
         respectively.
 </simpara>

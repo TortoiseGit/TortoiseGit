@@ -68,6 +68,28 @@ to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
 </varlistentry>
 <varlistentry>
 <term>
+--rotate-to=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Start showing the diff for the given path,
+        the paths before it will move to end and output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--skip-to=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Start showing the diff for the given path, skipping all
+        the paths before it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -t &lt;tool&gt;
 </term>
 <term>

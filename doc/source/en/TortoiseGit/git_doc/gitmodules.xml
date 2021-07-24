@@ -182,6 +182,14 @@ submodule.&lt;name&gt;.shallow
 </varlistentry>
 </variablelist>
 </simplesect>
+<simplesect id="gitmodules(5)__notes">
+<title>NOTES</title>
+<simpara>Git does not allow the <emphasis>.gitmodules</emphasis> file within a working tree to be a
+symbolic link, and will refuse to check out such a tree entry. This
+keeps behavior consistent when the file is accessed from the index or a
+tree versus from the filesystem, and helps Git reliably enforce security
+checks of the file contents.</simpara>
+</simplesect>
 <simplesect id="gitmodules(5)__examples">
 <title>EXAMPLES</title>
 <simpara>Consider the following <emphasis>.gitmodules</emphasis> file:</simpara>

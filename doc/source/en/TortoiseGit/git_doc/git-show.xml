@@ -728,6 +728,17 @@ author date, short format (<emphasis>YYYY-MM-DD</emphasis>)
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>%ah</emphasis>
+</term>
+<listitem>
+<simpara>
+author date, human style (like the <emphasis>--date=human</emphasis> option of
+        <xref linkend="git-rev-list(1)" />)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>%cn</emphasis>
 </term>
 <listitem>
@@ -861,6 +872,17 @@ committer date, short format (<emphasis>YYYY-MM-DD</emphasis>)
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>%ch</emphasis>
+</term>
+<listitem>
+<simpara>
+committer date, human style (like the <emphasis>--date=human</emphasis> option of
+        <xref linkend="git-rev-list(1)" />)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>%d</emphasis>
 </term>
 <listitem>
@@ -877,6 +899,36 @@ ref names, like the --decorate option of <xref linkend="git-log(1)" />
 <simpara>
 ref names without the " (", ")" wrapping.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%(describe[:options])</emphasis>
+</term>
+<listitem>
+<simpara>
+human-readable name, like
+                          <xref linkend="git-describe(1)" />; empty string for
+                          undescribable commits.  The <emphasis>describe</emphasis> string
+                          may be followed by a colon and zero or more
+                          comma-separated options.  Descriptions can be
+                          inconsistent when tags are added or removed at
+                          the same time.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>match=&lt;pattern&gt;</emphasis>: Only consider tags matching the given
+   <emphasis>glob(7)</emphasis> pattern, excluding the "refs/tags/" prefix.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>exclude=&lt;pattern&gt;</emphasis>: Do not consider tags matching the given
+   <emphasis>glob(7)</emphasis> pattern, excluding the "refs/tags/" prefix.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1116,8 +1168,14 @@ display the trailers of the body as
                           interpreted by
                           <xref linkend="git-interpret-trailers(1)" />. The
                           <emphasis>trailers</emphasis> string may be followed by a colon
-                          and zero or more comma-separated options:
+                          and zero or more comma-separated options.
+                          If any option is provided multiple times the
+                          last occurrence wins.
 </simpara>
+<simpara>The boolean options accept an optional value <emphasis>[=&lt;BOOL&gt;]</emphasis>. The values
+<emphasis>true</emphasis>, <emphasis>false</emphasis>, <emphasis>on</emphasis>, <emphasis>off</emphasis> etc. are all accepted. See the "boolean"
+sub-section in "EXAMPLES" in <xref linkend="git-config(1)" />. If a boolean
+option is given with no value, it's enabled.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -1133,12 +1191,8 @@ display the trailers of the body as
 </listitem>
 <listitem>
 <simpara>
-<emphasis>only[=val]</emphasis>: select whether non-trailer lines from the trailer
-   block should be included. The <emphasis>only</emphasis> keyword may optionally be
-   followed by an equal sign and one of <emphasis>true</emphasis>, <emphasis>on</emphasis>, <emphasis>yes</emphasis> to omit or
-   <emphasis>false</emphasis>, <emphasis>off</emphasis>, <emphasis>no</emphasis> to show the non-trailer lines. If option is
-   given without value it is enabled. If given multiple times the last
-   value is used.
+<emphasis>only[=&lt;BOOL&gt;]</emphasis>: select whether non-trailer lines from the trailer
+   block should be included.
 </simpara>
 </listitem>
 <listitem>
@@ -1148,24 +1202,34 @@ display the trailers of the body as
    terminated with a line feed character. The string SEP may contain
    the literal formatting codes described above. To use comma as
    separator one must use <emphasis>%x2C</emphasis> as it would otherwise be parsed as
-   next option. If separator option is given multiple times only the
-   last one is used. E.g., <emphasis>%(trailers:key=Ticket,separator=%x2C )</emphasis>
+   next option. E.g., <emphasis>%(trailers:key=Ticket,separator=%x2C )</emphasis>
    shows all trailer lines whose key is "Ticket" separated by a comma
    and a space.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>unfold[=val]</emphasis>: make it behave as if interpret-trailer's <emphasis>--unfold</emphasis>
-   option was given. In same way as to for <emphasis>only</emphasis> it can be followed
-   by an equal sign and explicit value. E.g.,
+<emphasis>unfold[=&lt;BOOL&gt;]</emphasis>: make it behave as if interpret-trailer's <emphasis>--unfold</emphasis>
+   option was given. E.g.,
    <emphasis>%(trailers:only,unfold=true)</emphasis> unfolds and shows all trailer lines.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>valueonly[=val]</emphasis>: skip over the key part of the trailer line and only
-   show the value part. Also this optionally allows explicit value.
+<emphasis>keyonly[=&lt;BOOL&gt;]</emphasis>: only show the key part of the trailer.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>valueonly[=&lt;BOOL&gt;]</emphasis>: only show the value part of the trailer.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>key_value_separator=&lt;SEP&gt;</emphasis>: specify a separator inserted between
+   trailer lines. When this option is not given each trailer key-value
+   pair is separated by ": ". Otherwise it shares the same semantics
+   as <emphasis>separator=&lt;SEP&gt;</emphasis> above.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1220,8 +1284,10 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 </listitem>
 </itemizedlist>
 </simplesect>
-<simplesect id="git-show(1)__common_diff_options">
-<title>COMMON DIFF OPTIONS</title>
+<simplesect id="git-show(1)__diff_formatting">
+<title>DIFF FORMATTING</title>
+<simpara>The options below can be used to change the way <emphasis>git show</emphasis> generates
+diff output.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -1250,6 +1316,138 @@ $ git log -2 --pretty=%h 4da45bef</screen>
 <simpara>
         Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
         show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=(off|none|on|first-parent|1|separate|m|combined|c|dense-combined|cc)
+</term>
+<term>
+--no-diff-merges
+</term>
+<listitem>
+<simpara>
+        Specify diff format to be used for merge commits. Default is
+        <emphasis>dense-combined</emphasis> unless <emphasis>--first-parent</emphasis> is in use, in which case
+        <emphasis>first-parent</emphasis> is the default.
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--diff-merges=(off|none)
+</term>
+<term>
+--no-diff-merges
+</term>
+<listitem>
+<simpara>
+        Disable output of diffs for merge commits. Useful to override
+        implied value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=on
+</term>
+<term>
+--diff-merges=m
+</term>
+<term>
+-m
+</term>
+<listitem>
+<simpara>
+        This option makes diff output for merge commits to be shown in
+        the default format. <emphasis>-m</emphasis> will produce the output only if <emphasis>-p</emphasis>
+        is given as well. The default format could be changed using
+        <emphasis>log.diffMerges</emphasis> configuration parameter, which default value
+        is <emphasis>separate</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=first-parent
+</term>
+<term>
+--diff-merges=1
+</term>
+<listitem>
+<simpara>
+        This option makes merge commits show the full diff with
+        respect to the first parent only.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=separate
+</term>
+<listitem>
+<simpara>
+        This makes merge commits show the full diff with respect to
+        each of the parents. Separate log entry and diff is generated
+        for each parent.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=combined
+</term>
+<term>
+--diff-merges=c
+</term>
+<term>
+-c
+</term>
+<listitem>
+<simpara>
+        With this option, diff output for a merge commit shows the
+        differences from each of the parents to the merge result
+        simultaneously instead of showing pairwise diff between a
+        parent and the result one at a time. Furthermore, it lists
+        only files which were modified from all parents. <emphasis>-c</emphasis> implies
+        <emphasis>-p</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=dense-combined
+</term>
+<term>
+--diff-merges=cc
+</term>
+<term>
+--cc
+</term>
+<listitem>
+<simpara>
+        With this option the output produced by
+        <emphasis>--diff-merges=combined</emphasis> is further compressed by omitting
+        uninteresting hunks whose contents in the parents have only
+        two variants and the merge result picks one of them without
+        modification.  <emphasis>--cc</emphasis> implies <emphasis>-p</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--combined-all-paths
+</term>
+<listitem>
+<simpara>
+        This flag causes combined diffs (used for merge commits) to
+        list the name of the file from all parents.  It thus only has
+        effect when <emphasis>--diff-merges=[dense-]combined</emphasis> is in use, and
+        is likely only useful if filename changes are detected (i.e.
+        when either rename or copy detection have been requested).
 </simpara>
 </listitem>
 </varlistentry>
@@ -1673,7 +1871,9 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 </term>
 <listitem>
 <simpara>
-        Show only names of changed files.
+        Show only names of changed files. The file names are often encoded in UTF-8.
+        For more information see the discussion about encoding in the <xref linkend="git-log(1)" />
+        manual page.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1685,6 +1885,7 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 <simpara>
         Show only names and status of changed files. See the description
         of the <emphasis>--diff-filter</emphasis> option on what the status letters mean.
+        Just like <emphasis>--name-only</emphasis> the file names are often encoded in UTF-8.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2386,6 +2587,23 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+--skip-to=&lt;file&gt;
+</term>
+<term>
+--rotate-to=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Discard the files before the named &lt;file&gt; from the output
+        (i.e. <emphasis>skip to</emphasis>), or move them to the end of the output
+        (i.e. <emphasis>rotate to</emphasis>).  These were invented primarily for use
+        of the <emphasis>git difftool</emphasis> command, and may not be very useful
+        otherwise.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -R
 </term>
 <listitem>
@@ -2664,7 +2882,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 with the <emphasis>-p</emphasis> option produces patch text.
 You can customize the creation of patch text via the
 <emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables
-(see <xref linkend="git(1)" />).</simpara>
+(see <xref linkend="git(1)" />), and the <emphasis>diff</emphasis> attribute (see <xref linkend="gitattributes(5)" />).</simpara>
 <simpara>What the -p option produces is slightly different from the traditional
 diff format:</simpara>
 <orderedlist numeration="arabic">
@@ -2729,6 +2947,14 @@ diff --git a/b b/a
 rename from b
 rename to a</literallayout>
 </listitem>
+<listitem>
+<simpara>
+Hunk headers mention the name of the function to which the hunk
+    applies.  See "Defining a custom hunk-header" in
+    <xref linkend="gitattributes(5)" /> for details of how to tailor to this to
+    specific languages.
+</simpara>
+</listitem>
 </orderedlist>
 </simplesect>
 <simplesect id="git-show(1)__combined_diff_format">
@@ -2736,9 +2962,9 @@ rename to a</literallayout>
 <simpara>Any diff-generating command can take the <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
 format when showing merges with <xref linkend="git-diff(1)" /> or
-<xref linkend="git-show(1)" />. Note also that you can give the <emphasis>-m</emphasis> option to any
-of these commands to force generation of diffs with individual parents
-of a merge.</simpara>
+<xref linkend="git-show(1)" />. Note also that you can give suitable
+<emphasis>--diff-merges</emphasis> option to any of these commands to force generation of
+diffs in specific format.</simpara>
 <simpara>A "combined diff" format looks like this:</simpara>
 <screen>diff --combined describe.c
 index fabadb8,cc95eb0..4866510
@@ -2963,7 +3189,7 @@ mind.</simpara>
   a warning if the commit log message given to it does not look
   like a valid UTF-8 string, unless you explicitly say your
   project uses a legacy encoding.  The way to say this is to
-  have i18n.commitencoding in <emphasis>.git/config</emphasis> file, like this:
+  have <emphasis>i18n.commitEncoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
         commitEncoding = ISO-8859-1</screen>

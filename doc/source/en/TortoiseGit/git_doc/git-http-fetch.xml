@@ -86,11 +86,24 @@ commit-id
 </term>
 <listitem>
 <simpara>
-        Instead of a commit id on the command line (which is not expected in
+        For internal use only. Instead of a commit id on the command
+        line (which is not expected in
         this case), <emphasis>git http-fetch</emphasis> fetches the packfile directly at the given
         URL and uses index-pack to generate corresponding .idx and .keep files.
         The hash is used to determine the name of the temporary file and is
-        arbitrary. The output of index-pack is printed to stdout.
+        arbitrary. The output of index-pack is printed to stdout. Requires
+        --index-pack-args.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--index-pack-args=&lt;args&gt;
+</term>
+<listitem>
+<simpara>
+        For internal use only. The command to run on the contents of the
+        downloaded pack. Arguments are URL-encoded separated by spaces.
 </simpara>
 </listitem>
 </varlistentry>

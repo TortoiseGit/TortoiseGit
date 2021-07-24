@@ -111,7 +111,6 @@
 		<xi:include href="./git-pack-objects.xml"/>
 		<xi:include href="./git-pack-redundant.xml"/>
 		<xi:include href="./git-pack-refs.xml"/>
-		<xi:include href="./git-parse-remote.xml"/>
 		<xi:include href="./git-patch-id.xml"/>
 		<xi:include href="./git-prune-packed.xml"/>
 		<xi:include href="./git-prune.xml"/>
@@ -183,6 +182,7 @@
 		<xi:include href="./gitfaq.xml"/>
 		<xi:include href="./githooks.xml"/>
 		<xi:include href="./gitk.xml"/>
+		<xi:include href="./gitmailmap.xml"/>
 		<xi:include href="./gitmodules.xml"/>
 		<xi:include href="./gitnamespaces.xml"/>
 		<xi:include href="./gitremote-helpers.xml"/>

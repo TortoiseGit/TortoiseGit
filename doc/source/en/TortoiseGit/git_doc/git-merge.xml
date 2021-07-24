@@ -1307,6 +1307,11 @@ gvimdiff
 </listitem>
 <listitem>
 <simpara>
+gvimdiff1
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 gvimdiff2
 </simpara>
 </listitem>
@@ -1328,6 +1333,11 @@ meld
 <listitem>
 <simpara>
 nvimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+nvimdiff1
 </simpara>
 </listitem>
 <listitem>
@@ -1368,6 +1378,11 @@ tortoisemerge
 <listitem>
 <simpara>
 vimdiff
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+vimdiff1
 </simpara>
 </listitem>
 <listitem>

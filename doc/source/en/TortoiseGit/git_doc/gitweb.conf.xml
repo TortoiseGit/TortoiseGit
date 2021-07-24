@@ -1014,6 +1014,24 @@ these values.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+email-privacy
+</term>
+<listitem>
+<simpara>
+        Redact e-mail addresses from the generated HTML, etc. content.
+        This obscures e-mail addresses retrieved from the author/committer
+        and comment sections of the Git log.
+        It is meant to hinder web crawlers that harvest and abuse addresses.
+        Such crawlers may not respect robots.txt.
+        Note that users and user tools also see the addresses as redacted.
+        If Gitweb is not the final step in a workflow then subsequent steps
+        may misbehave because of the redacted information they receive.
+        Disabled by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 highlight
 </term>
 <listitem>

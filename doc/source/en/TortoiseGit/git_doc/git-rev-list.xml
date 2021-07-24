@@ -511,6 +511,22 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--disk-usage
+</term>
+<listitem>
+<simpara>
+        Suppress normal output; instead, print the sum of the bytes used
+        for on-disk storage by the selected commits or objects. This is
+        equivalent to piping the output into <emphasis>git cat-file
+        --batch-check='%(objectsize:disk)'</emphasis>, except that it runs much
+        faster (especially with <emphasis>--use-bitmap-index</emphasis>). See the <emphasis>CAVEATS</emphasis>
+        section in <xref linkend="git-cat-file(1)" /> for the limitations of what
+        "on-disk storage" means.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --cherry-mark
 </term>
 <listitem>
@@ -1415,6 +1431,8 @@ together.</simpara>
 or units.  n may be zero.  The suffixes k, m, and g can be used to name
 units in KiB, MiB, or GiB.  For example, <emphasis>blob:limit=1k</emphasis> is the same
 as <emphasis>blob:limit=1024</emphasis>.</simpara>
+<simpara>The form <emphasis>--filter=object:type=(tag|commit|tree|blob)</emphasis> omits all objects
+which are not of the requested type.</simpara>
 <simpara>The form <emphasis>--filter=sparse:oid=&lt;blob-ish&gt;</emphasis> uses a sparse-checkout
 specification contained in the blob (or blob-expression) <emphasis>&lt;blob-ish&gt;</emphasis>
 to omit blobs that would not be not required for a sparse checkout on
@@ -1453,6 +1471,18 @@ equivalent.</simpara>
 <listitem>
 <simpara>
         Turn off any previous <emphasis>--filter=</emphasis> argument.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--filter-provided-objects
+</term>
+<listitem>
+<simpara>
+        Filter the list of explicitly provided objects, which would otherwise
+        always be printed even if they did not match any of the filters. Only
+        useful with <emphasis>--filter=</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2375,6 +2405,17 @@ author date, short format (<emphasis>YYYY-MM-DD</emphasis>)
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>%ah</emphasis>
+</term>
+<listitem>
+<simpara>
+author date, human style (like the <emphasis>--date=human</emphasis> option of
+        <xref linkend="git-rev-list(1)" />)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>%cn</emphasis>
 </term>
 <listitem>
@@ -2508,6 +2549,17 @@ committer date, short format (<emphasis>YYYY-MM-DD</emphasis>)
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>%ch</emphasis>
+</term>
+<listitem>
+<simpara>
+committer date, human style (like the <emphasis>--date=human</emphasis> option of
+        <xref linkend="git-rev-list(1)" />)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>%d</emphasis>
 </term>
 <listitem>
@@ -2524,6 +2576,36 @@ ref names, like the --decorate option of <xref linkend="git-log(1)" />
 <simpara>
 ref names without the " (", ")" wrapping.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%(describe[:options])</emphasis>
+</term>
+<listitem>
+<simpara>
+human-readable name, like
+                          <xref linkend="git-describe(1)" />; empty string for
+                          undescribable commits.  The <emphasis>describe</emphasis> string
+                          may be followed by a colon and zero or more
+                          comma-separated options.  Descriptions can be
+                          inconsistent when tags are added or removed at
+                          the same time.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>match=&lt;pattern&gt;</emphasis>: Only consider tags matching the given
+   <emphasis>glob(7)</emphasis> pattern, excluding the "refs/tags/" prefix.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>exclude=&lt;pattern&gt;</emphasis>: Do not consider tags matching the given
+   <emphasis>glob(7)</emphasis> pattern, excluding the "refs/tags/" prefix.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -2753,8 +2835,14 @@ display the trailers of the body as
                           interpreted by
                           <xref linkend="git-interpret-trailers(1)" />. The
                           <emphasis>trailers</emphasis> string may be followed by a colon
-                          and zero or more comma-separated options:
+                          and zero or more comma-separated options.
+                          If any option is provided multiple times the
+                          last occurrence wins.
 </simpara>
+<simpara>The boolean options accept an optional value <emphasis>[=&lt;BOOL&gt;]</emphasis>. The values
+<emphasis>true</emphasis>, <emphasis>false</emphasis>, <emphasis>on</emphasis>, <emphasis>off</emphasis> etc. are all accepted. See the "boolean"
+sub-section in "EXAMPLES" in <xref linkend="git-config(1)" />. If a boolean
+option is given with no value, it's enabled.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -2770,12 +2858,8 @@ display the trailers of the body as
 </listitem>
 <listitem>
 <simpara>
-<emphasis>only[=val]</emphasis>: select whether non-trailer lines from the trailer
-   block should be included. The <emphasis>only</emphasis> keyword may optionally be
-   followed by an equal sign and one of <emphasis>true</emphasis>, <emphasis>on</emphasis>, <emphasis>yes</emphasis> to omit or
-   <emphasis>false</emphasis>, <emphasis>off</emphasis>, <emphasis>no</emphasis> to show the non-trailer lines. If option is
-   given without value it is enabled. If given multiple times the last
-   value is used.
+<emphasis>only[=&lt;BOOL&gt;]</emphasis>: select whether non-trailer lines from the trailer
+   block should be included.
 </simpara>
 </listitem>
 <listitem>
@@ -2785,24 +2869,34 @@ display the trailers of the body as
    terminated with a line feed character. The string SEP may contain
    the literal formatting codes described above. To use comma as
    separator one must use <emphasis>%x2C</emphasis> as it would otherwise be parsed as
-   next option. If separator option is given multiple times only the
-   last one is used. E.g., <emphasis>%(trailers:key=Ticket,separator=%x2C )</emphasis>
+   next option. E.g., <emphasis>%(trailers:key=Ticket,separator=%x2C )</emphasis>
    shows all trailer lines whose key is "Ticket" separated by a comma
    and a space.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>unfold[=val]</emphasis>: make it behave as if interpret-trailer's <emphasis>--unfold</emphasis>
-   option was given. In same way as to for <emphasis>only</emphasis> it can be followed
-   by an equal sign and explicit value. E.g.,
+<emphasis>unfold[=&lt;BOOL&gt;]</emphasis>: make it behave as if interpret-trailer's <emphasis>--unfold</emphasis>
+   option was given. E.g.,
    <emphasis>%(trailers:only,unfold=true)</emphasis> unfolds and shows all trailer lines.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>valueonly[=val]</emphasis>: skip over the key part of the trailer line and only
-   show the value part. Also this optionally allows explicit value.
+<emphasis>keyonly[=&lt;BOOL&gt;]</emphasis>: only show the key part of the trailer.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>valueonly[=&lt;BOOL&gt;]</emphasis>: only show the value part of the trailer.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>key_value_separator=&lt;SEP&gt;</emphasis>: specify a separator inserted between
+   trailer lines. When this option is not given each trailer key-value
+   pair is separated by ": ". Otherwise it shares the same semantics
+   as <emphasis>separator=&lt;SEP&gt;</emphasis> above.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -2854,6 +2948,101 @@ as if it has <emphasis>tformat:</emphasis> in front of it.  For example, these t
 equivalent:</simpara>
 <screen>$ git log -2 --pretty=tformat:%h 4da45bef
 $ git log -2 --pretty=%h 4da45bef</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-rev-list(1)__examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Print the list of commits reachable from the current branch.
+</simpara>
+<screen>git rev-list HEAD</screen>
+</listitem>
+<listitem>
+<simpara>
+Print the list of commits on this branch, but not present in the
+  upstream branch.
+</simpara>
+<screen>git rev-list @{upstream}..HEAD</screen>
+</listitem>
+<listitem>
+<simpara>
+Format commits with their author and commit message (see also the
+  porcelain <xref linkend="git-log(1)" />).
+</simpara>
+<screen>git rev-list --format=medium HEAD</screen>
+</listitem>
+<listitem>
+<simpara>
+Format commits along with their diffs (see also the porcelain
+  <xref linkend="git-log(1)" />, which can do this in a single process).
+</simpara>
+<screen>git rev-list HEAD |
+git diff-tree --stdin --format=medium -p</screen>
+</listitem>
+<listitem>
+<simpara>
+Print the list of commits on the current branch that touched any
+  file in the <emphasis>Documentation</emphasis> directory.
+</simpara>
+<screen>git rev-list HEAD -- Documentation/</screen>
+</listitem>
+<listitem>
+<simpara>
+Print the list of commits authored by you in the past year, on
+  any branch, tag, or other ref.
+</simpara>
+<screen>git rev-list --author=you@example.com --since=1.year.ago --all</screen>
+</listitem>
+<listitem>
+<simpara>
+Print the list of objects reachable from the current branch (i.e., all
+  commits and the blobs and trees they contain).
+</simpara>
+<screen>git rev-list --objects HEAD</screen>
+</listitem>
+<listitem>
+<simpara>
+Compare the disk size of all reachable objects, versus those
+  reachable from reflogs, versus the total packed size. This can tell
+  you whether running <emphasis>git repack -ad</emphasis> might reduce the repository size
+  (by dropping unreachable objects), and whether expiring reflogs might
+  help.
+</simpara>
+<screen># reachable objects
+git rev-list --disk-usage --objects --all
+# plus reflogs
+git rev-list --disk-usage --objects --all --reflog
+# total disk size used
+du -c .git/objects/pack/*.pack .git/objects/??/*
+# alternative to du: add up "size" and "size-pack" fields
+git count-objects -v</screen>
+</listitem>
+<listitem>
+<simpara>
+Report the disk size of each branch, not including objects used by the
+  current branch. This can find outliers that are contributing to a
+  bloated repository size (e.g., because somebody accidentally committed
+  large build artifacts).
+</simpara>
+<screen>git for-each-ref --format='%(refname)' |
+while read branch
+do
+        size=$(git rev-list --disk-usage --objects HEAD..$branch)
+        echo "$size $branch"
+done |
+sort -n</screen>
+</listitem>
+<listitem>
+<simpara>
+Compare the on-disk size of branches in one group of refs, excluding
+  another. If you co-mingle objects from multiple remotes in a single
+  repository, this can show which remotes are contributing to the
+  repository size (taking the size of <emphasis>origin</emphasis> as a baseline).
+</simpara>
+<screen>git rev-list --disk-usage --objects --remotes=$suspect --not --remotes=origin</screen>
 </listitem>
 </itemizedlist>
 </simplesect>

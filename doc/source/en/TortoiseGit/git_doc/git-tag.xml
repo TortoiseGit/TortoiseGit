@@ -235,7 +235,7 @@ options for details.</simpara>
 <listitem>
 <simpara>
         Display tag listing in columns. See configuration variable
-        column.tag for option syntax.<emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
+        <emphasis>column.tag</emphasis> for option syntax. <emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
         without options are equivalent to <emphasis>always</emphasis> and <emphasis>never</emphasis> respectively.
 </simpara>
 <simpara>This option is only applicable when listing tags without annotation lines.</simpara>
@@ -553,7 +553,7 @@ values; the most common form is "YYYY-MM-DD HH:MM").</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__date_formats">
 <title>DATE FORMATS</title>
-<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis>, <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
+<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis> and <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
 support the following date formats:</simpara>
 <variablelist>
 <varlistentry>

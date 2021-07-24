@@ -26,6 +26,15 @@
 <literallayout><emphasis>git-cvsserver</emphasis> [&lt;options&gt;] [pserver|server] [&lt;directory&gt; &#8230;]</literallayout>
 </blockquote>
 </simplesect>
+<simplesect id="git-cvsserver(1)__description">
+<title>DESCRIPTION</title>
+<simpara>This application is a CVS emulation layer for Git.</simpara>
+<simpara>It is highly functional. However, not all methods are implemented,
+and for those methods that are implemented,
+not all switches are implemented.</simpara>
+<simpara>Testing has been done using both the CLI CVS client, and the Eclipse CVS
+plugin. Most functionality works fine with both of these clients.</simpara>
+</simplesect>
 <simplesect id="git-cvsserver(1)__options">
 <title>OPTIONS</title>
 <simpara>All these options obviously only make sense if enforced by the server side.
@@ -106,15 +115,6 @@ unless <emphasis>--export-all</emphasis> was given, too.
 </listitem>
 </varlistentry>
 </variablelist>
-</simplesect>
-<simplesect id="git-cvsserver(1)__description">
-<title>DESCRIPTION</title>
-<simpara>This application is a CVS emulation layer for Git.</simpara>
-<simpara>It is highly functional. However, not all methods are implemented,
-and for those methods that are implemented,
-not all switches are implemented.</simpara>
-<simpara>Testing has been done using both the CLI CVS client, and the Eclipse CVS
-plugin. Most functionality works fine with both of these clients.</simpara>
 </simplesect>
 <simplesect id="git-cvsserver(1)__limitations">
 <title>LIMITATIONS</title>

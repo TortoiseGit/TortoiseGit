@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git_user-manual">
     <title>Git User Manual</title>
+<preface id="_introduction">
+<title>Introduction</title>
 <simpara>Git is a fast distributed revision control system.</simpara>
 <simpara>This manual is designed to be readable by someone with basic UNIX
 command-line skills, but no previous knowledge of Git.</simpara>
@@ -25,6 +27,7 @@ pages, or <xref linkend="git-help(1)" /> command.  For example, for the command
 without any explanation.</simpara>
 <simpara>Finally, see <xref linkend="Git User Manual_todo"/> for ways that you can help make this manual more
 complete.</simpara>
+</preface>
 <section id="Git User Manual_repositories-and-branches">
 <title>Repositories and Branches</title>
 <section id="Git User Manual_how-to-get-a-git-repository">

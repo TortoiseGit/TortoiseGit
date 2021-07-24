@@ -17,6 +17,7 @@
                 (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
                 (-[c|d|o|i|s|u|k|m])*
                 [--eol]
+                [--deduplicate]
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
                 [-X &lt;file&gt;|--exclude-from=&lt;file&gt;]
                 [--exclude-per-directory=&lt;file&gt;]
@@ -175,6 +176,20 @@ shown:</simpara>
 <simpara>
         \0 line termination on output and do not quote filenames.
         See OUTPUT below for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--deduplicate
+</term>
+<listitem>
+<simpara>
+        When only filenames are shown, suppress duplicates that may
+        come from having multiple stages during a merge, or giving
+        <emphasis>--deleted</emphasis> and <emphasis>--modified</emphasis> option at the same time.
+        When any of the <emphasis>-t</emphasis>, <emphasis>--unmerged</emphasis>, or <emphasis>--stage</emphasis> option is
+        in use, this option has no effect.
 </simpara>
 </listitem>
 </varlistentry>
