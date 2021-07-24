@@ -14,12 +14,13 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git commit</emphasis> [-a | --interactive | --patch] [-s] [-v] [-u&lt;mode&gt;] [--amend]
-           [--dry-run] [(-c | -C | --fixup | --squash) &lt;commit&gt;]
+           [--dry-run] [(-c | -C | --squash) &lt;commit&gt; | --fixup [(amend|reword):]&lt;commit&gt;)]
            [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author] [--allow-empty]
            [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
            [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--[no-]status]
            [-i | -o] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
-           [-S[&lt;keyid&gt;]] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+           [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [-S[&lt;keyid&gt;]]
+           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-commit(1)__description">
@@ -143,15 +144,44 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---fixup=&lt;commit&gt;
+--fixup=[(amend|reword):]&lt;commit&gt;
 </term>
 <listitem>
 <simpara>
-        Construct a commit message for use with <emphasis>rebase --autosquash</emphasis>.
-        The commit message will be the subject line from the specified
-        commit with a prefix of "fixup! ".  See <xref linkend="git-rebase(1)" />
-        for details.
+        Create a new commit which "fixes up" <emphasis>&lt;commit&gt;</emphasis> when applied with
+        <emphasis>git rebase --autosquash</emphasis>. Plain <emphasis>--fixup=&lt;commit&gt;</emphasis> creates a
+        "fixup!" commit which changes the content of <emphasis>&lt;commit&gt;</emphasis> but leaves
+        its log message untouched. <emphasis>--fixup=amend:&lt;commit&gt;</emphasis> is similar but
+        creates an "amend!" commit which also replaces the log message of
+        <emphasis>&lt;commit&gt;</emphasis> with the log message of the "amend!" commit.
+        <emphasis>--fixup=reword:&lt;commit&gt;</emphasis> creates an "amend!" commit which
+        replaces the log message of <emphasis>&lt;commit&gt;</emphasis> with its own log message
+        but makes no changes to the content of <emphasis>&lt;commit&gt;</emphasis>.
 </simpara>
+<simpara>The commit created by plain <emphasis>--fixup=&lt;commit&gt;</emphasis> has a subject
+composed of "fixup!" followed by the subject line from &lt;commit&gt;,
+and is recognized specially by <emphasis>git rebase --autosquash</emphasis>. The <emphasis>-m</emphasis>
+option may be used to supplement the log message of the created
+commit, but the additional commentary will be thrown away once the
+"fixup!" commit is squashed into <emphasis>&lt;commit&gt;</emphasis> by
+<emphasis>git rebase --autosquash</emphasis>.</simpara>
+<simpara>The commit created by <emphasis>--fixup=amend:&lt;commit&gt;</emphasis> is similar but its
+subject is instead prefixed with "amend!". The log message of
+&lt;commit&gt; is copied into the log message of the "amend!" commit and
+opened in an editor so it can be refined. When <emphasis>git rebase
+--autosquash</emphasis> squashes the "amend!" commit into <emphasis>&lt;commit&gt;</emphasis>, the
+log message of <emphasis>&lt;commit&gt;</emphasis> is replaced by the refined log message
+from the "amend!" commit. It is an error for the "amend!" commit's
+log message to be empty unless <emphasis>--allow-empty-message</emphasis> is
+specified.</simpara>
+<simpara><emphasis>--fixup=reword:&lt;commit&gt;</emphasis> is shorthand for <emphasis>--fixup=amend:&lt;commit&gt;
+--only</emphasis>. It creates an "amend!" commit with only a log message
+(ignoring any changes staged in the index). When squashed by <emphasis>git
+rebase --autosquash</emphasis>, it replaces the log message of <emphasis>&lt;commit&gt;</emphasis>
+without making any other changes.</simpara>
+<simpara>Neither "fixup!" nor "amend!" commits change authorship of
+<emphasis>&lt;commit&gt;</emphasis> when applied by <emphasis>git rebase --autosquash</emphasis>.
+See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -342,6 +372,24 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </simpara>
 <simpara>The --no-signoff option can be used to countermand an earlier --signoff
 option on the command line.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+</term>
+<listitem>
+<simpara>
+        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        trailer. (e.g. <emphasis>git commit --trailer "Signed-off-by:C O Mitter \
+        &lt;committer@example.com&gt;" --trailer "Helped-by:C O Mitter \
+        &lt;committer@example.com&gt;"</emphasis> will add the "Signed-off-by" trailer
+        and the "Helped-by" trailer to the commit message.)
+        The <emphasis>trailer.*</emphasis> configuration variables
+        (<xref linkend="git-interpret-trailers(1)" />) can be used to define if
+        a duplicated trailer is omitted, where in the run of trailers
+        each trailer would appear, and other details.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -837,8 +885,7 @@ the other options are provided for more complex use cases.</simpara>
 </simplesect>
 <simplesect id="git-commit(1)__date_formats">
 <title>DATE FORMATS</title>
-<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis>, <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
-and the <emphasis>--date</emphasis> option
+<simpara>The <emphasis>GIT_AUTHOR_DATE</emphasis> and <emphasis>GIT_COMMITTER_DATE</emphasis> environment variables
 support the following date formats:</simpara>
 <variablelist>
 <varlistentry>
@@ -882,6 +929,9 @@ ISO 8601
 </listitem>
 </varlistentry>
 </variablelist>
+<simpara>In addition to recognizing all date formats above, the <emphasis>--date</emphasis> option
+will also try to make sense of other, more human-centric date formats,
+such as relative dates like "yesterday" or "last Friday at noon".</simpara>
 </simplesect>
 <simplesect id="git-commit(1)__discussion">
 <title>DISCUSSION</title>
@@ -943,7 +993,7 @@ mind.</simpara>
   a warning if the commit log message given to it does not look
   like a valid UTF-8 string, unless you explicitly say your
   project uses a legacy encoding.  The way to say this is to
-  have i18n.commitencoding in <emphasis>.git/config</emphasis> file, like this:
+  have <emphasis>i18n.commitEncoding</emphasis> in <emphasis>.git/config</emphasis> file, like this:
 </simpara>
 <screen>[i18n]
         commitEncoding = ISO-8859-1</screen>

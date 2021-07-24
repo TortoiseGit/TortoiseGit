@@ -13,7 +13,9 @@
 <simplesect id="git-mailinfo(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n] [--[no-]scissors] &lt;msg&gt; &lt;patch&gt;</literallayout>
+<literallayout><emphasis>git mailinfo</emphasis> [-k|-b] [-u | --encoding=&lt;encoding&gt; | -n]
+               [--[no-]scissors] [--quoted-cr=&lt;action&gt;]
+               &lt;msg&gt; &lt;patch&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mailinfo(1)__description">
@@ -83,7 +85,7 @@ character.</simpara>
         The commit log message, author name and author email are
         taken from the e-mail, and after minimally decoding MIME
         transfer encoding, re-coded in the charset specified by
-        i18n.commitencoding (defaulting to UTF-8) by transliterating
+        <emphasis>i18n.commitEncoding</emphasis> (defaulting to UTF-8) by transliterating
         them.  This used to be optional but now it is the default.
 </simpara>
 <simpara>Note that the patch is always used as-is without charset
@@ -97,7 +99,7 @@ conversion, even with this flag.</simpara>
 <listitem>
 <simpara>
         Similar to -u.  But when re-coding, the charset specified here is
-        used instead of the one specified by i18n.commitencoding or UTF-8.
+        used instead of the one specified by <emphasis>i18n.commitEncoding</emphasis> or UTF-8.
 </simpara>
 </listitem>
 </varlistentry>
@@ -153,6 +155,39 @@ beginning of the proposed commit log message with a scissors line.</simpara>
 <simpara>
         Ignore scissors lines. Useful for overriding mailinfo.scissors settings.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quoted-cr=&lt;action&gt;
+</term>
+<listitem>
+<simpara>
+        Action when processes email messages sent with base64 or
+        quoted-printable encoding, and the decoded lines end with a CRLF
+        instead of a simple LF.
+</simpara>
+<simpara>The valid actions are:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>nowarn</emphasis>: Git will do nothing when such a CRLF is found.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>warn</emphasis>: Git will issue a warning for each message if such a CRLF is
+        found.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>strip</emphasis>: Git will convert those CRLF to LF.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The default action could be set by configuration option <emphasis>mailinfo.quotedCR</emphasis>.
+If no such configuration option has been set, <emphasis>warn</emphasis> will be used.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

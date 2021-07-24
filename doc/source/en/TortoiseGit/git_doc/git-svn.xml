@@ -1740,22 +1740,6 @@ with different name spaces.  For example:</simpara>
 <literallayout class="monospaced">branches = stable/*:refs/remotes/svn/stable/*
 branches = debug/*:refs/remotes/svn/debug/*</literallayout>
 </simplesect>
-<simplesect id="git-svn(1)__bugs">
-<title>BUGS</title>
-<simpara>We ignore all SVN properties except svn:executable.  Any unhandled
-properties are logged to $GIT_DIR/svn/&lt;refname&gt;/unhandled.log</simpara>
-<simpara>Renamed and copied directories are not detected by Git and hence not
-tracked when committing to SVN.  I do not plan on adding support for
-this as it's quite difficult and time-consuming to get working for all
-the possible corner cases (Git doesn't do it, either).  Committing
-renamed and copied files is fully supported if they're similar enough
-for Git to detect them.</simpara>
-<simpara>In SVN, it is possible (though discouraged) to commit changes to a tag
-(because a tag is just a directory copy, thus technically the same as a
-branch). When cloning an SVN repository, <emphasis>git svn</emphasis> cannot know if such a
-commit to a tag will happen in the future. Thus it acts conservatively
-and imports all SVN tags as branches, prefixing the tag name with <emphasis>tags/</emphasis>.</simpara>
-</simplesect>
 <simplesect id="git-svn(1)__configuration">
 <title>CONFIGURATION</title>
 <simpara><emphasis>git svn</emphasis> stores [svn-remote] configuration information in the
@@ -1827,6 +1811,22 @@ rewinds it.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-svn(1)__bugs">
+<title>BUGS</title>
+<simpara>We ignore all SVN properties except svn:executable.  Any unhandled
+properties are logged to $GIT_DIR/svn/&lt;refname&gt;/unhandled.log</simpara>
+<simpara>Renamed and copied directories are not detected by Git and hence not
+tracked when committing to SVN.  I do not plan on adding support for
+this as it's quite difficult and time-consuming to get working for all
+the possible corner cases (Git doesn't do it, either).  Committing
+renamed and copied files is fully supported if they're similar enough
+for Git to detect them.</simpara>
+<simpara>In SVN, it is possible (though discouraged) to commit changes to a tag
+(because a tag is just a directory copy, thus technically the same as a
+branch). When cloning an SVN repository, <emphasis>git svn</emphasis> cannot know if such a
+commit to a tag will happen in the future. Thus it acts conservatively
+and imports all SVN tags as branches, prefixing the tag name with <emphasis>tags/</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-svn(1)__see_also">
 <title>SEE ALSO</title>

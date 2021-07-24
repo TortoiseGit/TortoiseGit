@@ -42,88 +42,6 @@ registered in the index file, or blobs in given tree objects.  Patterns
 are lists of one or more search expressions separated by newline
 characters.  An empty string as search expression matches all lines.</simpara>
 </simplesect>
-<simplesect id="git-grep(1)__configuration">
-<title>CONFIGURATION</title>
-<variablelist>
-<varlistentry>
-<term>
-grep.lineNumber
-</term>
-<listitem>
-<simpara>
-        If set to true, enable <emphasis>-n</emphasis> option by default.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.column
-</term>
-<listitem>
-<simpara>
-        If set to true, enable the <emphasis>--column</emphasis> option by default.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.patternType
-</term>
-<listitem>
-<simpara>
-        Set the default matching behavior. Using a value of <emphasis>basic</emphasis>, <emphasis>extended</emphasis>,
-        <emphasis>fixed</emphasis>, or <emphasis>perl</emphasis> will enable the <emphasis>--basic-regexp</emphasis>, <emphasis>--extended-regexp</emphasis>,
-        <emphasis>--fixed-strings</emphasis>, or <emphasis>--perl-regexp</emphasis> option accordingly, while the
-        value <emphasis>default</emphasis> will return to the default matching behavior.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.extendedRegexp
-</term>
-<listitem>
-<simpara>
-        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default. This
-        option is ignored when the <emphasis>grep.patternType</emphasis> option is set to a value
-        other than <emphasis>default</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.threads
-</term>
-<listitem>
-<simpara>
-        Number of grep worker threads to use. If unset (or set to 0), Git will
-        use as many threads as the number of logical cores available.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.fullName
-</term>
-<listitem>
-<simpara>
-        If set to true, enable <emphasis>--full-name</emphasis> option by default.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-grep.fallbackToNoIndex
-</term>
-<listitem>
-<simpara>
-        If set to true, fall back to git grep --no-index if git grep
-        is executed outside of a git repository.  Defaults to false.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</simplesect>
 <simplesect id="git-grep(1)__options">
 <title>OPTIONS</title>
 <variablelist>
@@ -823,6 +741,88 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 with multiple threads might perform slower than single threaded if <emphasis>--textconv</emphasis>
 is given and there're too many text conversions. So if you experience low
 performance in this case, it might be desirable to use <emphasis>--threads=1</emphasis>.</simpara>
+</simplesect>
+<simplesect id="git-grep(1)__configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+grep.lineNumber
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>-n</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.column
+</term>
+<listitem>
+<simpara>
+        If set to true, enable the <emphasis>--column</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.patternType
+</term>
+<listitem>
+<simpara>
+        Set the default matching behavior. Using a value of <emphasis>basic</emphasis>, <emphasis>extended</emphasis>,
+        <emphasis>fixed</emphasis>, or <emphasis>perl</emphasis> will enable the <emphasis>--basic-regexp</emphasis>, <emphasis>--extended-regexp</emphasis>,
+        <emphasis>--fixed-strings</emphasis>, or <emphasis>--perl-regexp</emphasis> option accordingly, while the
+        value <emphasis>default</emphasis> will return to the default matching behavior.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.extendedRegexp
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>--extended-regexp</emphasis> option by default. This
+        option is ignored when the <emphasis>grep.patternType</emphasis> option is set to a value
+        other than <emphasis>default</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.threads
+</term>
+<listitem>
+<simpara>
+        Number of grep worker threads to use. If unset (or set to 0), Git will
+        use as many threads as the number of logical cores available.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.fullName
+</term>
+<listitem>
+<simpara>
+        If set to true, enable <emphasis>--full-name</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+grep.fallbackToNoIndex
+</term>
+<listitem>
+<simpara>
+        If set to true, fall back to git grep --no-index if git grep
+        is executed outside of a git repository.  Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-grep(1)__git">
 <title>GIT</title>

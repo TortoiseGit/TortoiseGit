@@ -356,23 +356,42 @@ trailer.&lt;token&gt;.command
 </term>
 <listitem>
 <simpara>
-        This option can be used to specify a shell command that will
-        be called to automatically add or modify a trailer with the
-        specified &lt;token&gt;.
+        This option behaves in the same way as <emphasis>trailer.&lt;token&gt;.cmd</emphasis>, except
+        that it doesn't pass anything as argument to the specified command.
+        Instead the first occurrence of substring $ARG is replaced by the
+        value that would be passed as argument.
 </simpara>
-<simpara>When this option is specified, the behavior is as if a special
-<emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> argument were added at the beginning of the command
-line, where &lt;value&gt; is taken to be the standard output of the
-specified command with any leading and trailing whitespace trimmed
-off.</simpara>
-<simpara>If the command contains the <emphasis>$ARG</emphasis> string, this string will be
-replaced with the &lt;value&gt; part of an existing trailer with the same
-&lt;token&gt;, if any, before the command is launched.</simpara>
-<simpara>If some <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> arguments are also passed on the command
-line, when a <emphasis>trailer.&lt;token&gt;.command</emphasis> is configured, the command will
-also be executed for each of these arguments. And the &lt;value&gt; part of
-these arguments, if any, will be used to replace the <emphasis>$ARG</emphasis> string in
-the command.</simpara>
+<simpara>The <emphasis>trailer.&lt;token&gt;.command</emphasis> option has been deprecated in favor of
+<emphasis>trailer.&lt;token&gt;.cmd</emphasis> due to the fact that $ARG in the user's command is
+only replaced once and that the original way of replacing $ARG is not safe.</simpara>
+<simpara>When both <emphasis>trailer.&lt;token&gt;.cmd</emphasis> and <emphasis>trailer.&lt;token&gt;.command</emphasis> are given
+for the same &lt;token&gt;, <emphasis>trailer.&lt;token&gt;.cmd</emphasis> is used and
+<emphasis>trailer.&lt;token&gt;.command</emphasis> is ignored.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+trailer.&lt;token&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        This option can be used to specify a shell command that will be called:
+        once to automatically add a trailer with the specified &lt;token&gt;, and then
+        each time a <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument to modify the &lt;value&gt; of
+        the trailer that this option would produce.
+</simpara>
+<simpara>When the specified command is first called to add a trailer
+with the specified &lt;token&gt;, the behavior is as if a special
+<emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument was added at the beginning
+of the "git interpret-trailers" command, where &lt;value&gt;
+is taken to be the standard output of the command with any
+leading and trailing whitespace trimmed off.</simpara>
+<simpara>If some <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> arguments are also passed
+on the command line, the command is called again once for each
+of these arguments with the same &lt;token&gt;. And the &lt;value&gt; part
+of these arguments, if any, will be passed to the command as its
+first argument. This way the command can produce a &lt;value&gt; computed
+from the &lt;value&gt; passed in the <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -457,6 +476,55 @@ $ echo "subject" | git interpret-trailers --trailer fix=42
 subject
 
 Fix #42</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a <emphasis>help</emphasis> trailer with a cmd use a script <emphasis>glog-find-author</emphasis>
+  which search specified author identity from git log in git repository
+  and show how it works:
+</simpara>
+<screen>$ cat ~/bin/glog-find-author
+#!/bin/sh
+test -n "$1" &amp;&amp; git log --author="$1" --pretty="%an &lt;%ae&gt;" -1 || true
+$ git config trailer.help.key "Helped-by: "
+$ git config trailer.help.ifExists "addIfDifferentNeighbor"
+$ git config trailer.help.cmd "~/bin/glog-find-author"
+$ git interpret-trailers --trailer="help:Junio" --trailer="help:Couder" &lt;&lt;EOF
+&gt; subject
+&gt;
+&gt; message
+&gt;
+&gt; EOF
+subject
+
+message
+
+Helped-by: Junio C Hamano &lt;gitster@pobox.com&gt;
+Helped-by: Christian Couder &lt;christian.couder@gmail.com&gt;</screen>
+</listitem>
+<listitem>
+<simpara>
+Configure a <emphasis>ref</emphasis> trailer with a cmd use a script <emphasis>glog-grep</emphasis>
+  to grep last relevant commit from git log in the git repository
+  and show how it works:
+</simpara>
+<screen>$ cat ~/bin/glog-grep
+#!/bin/sh
+test -n "$1" &amp;&amp; git log --grep "$1" --pretty=reference -1 || true
+$ git config trailer.ref.key "Reference-to: "
+$ git config trailer.ref.ifExists "replace"
+$ git config trailer.ref.cmd "~/bin/glog-grep"
+$ git interpret-trailers --trailer="ref:Add copyright notices." &lt;&lt;EOF
+&gt; subject
+&gt;
+&gt; message
+&gt;
+&gt; EOF
+subject
+
+message
+
+Reference-to: 8bc9a0c769 (Add copyright notices., 2005-04-07)</screen>
 </listitem>
 <listitem>
 <simpara>

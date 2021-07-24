@@ -19,7 +19,7 @@
           [--dissociate] [--separate-git-dir &lt;git dir&gt;]
           [--depth &lt;depth&gt;] [--[no-]single-branch] [--no-tags]
           [--recurse-submodules[=&lt;pathspec&gt;]] [--[no-]shallow-submodules]
-          [--[no-]remote-submodules] [--jobs &lt;n&gt;] [--sparse]
+          [--[no-]remote-submodules] [--jobs &lt;n&gt;] [--sparse] [--[no-]reject-shallow]
           [--filter=&lt;filter&gt;] [--] &lt;repository&gt;
           [&lt;directory&gt;]</literallayout>
 </blockquote>
@@ -222,6 +222,18 @@ objects from the source repository into a pack in the cloned repository.</simpar
 <listitem>
 <simpara>
         No checkout of HEAD is performed after the clone is complete.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]reject-shallow
+</term>
+<listitem>
+<simpara>
+        Fail if the source repository is a shallow repository.
+        The <emphasis>clone.rejectShallow</emphasis> configuration variable can be used to
+        specify the default.
 </simpara>
 </listitem>
 </varlistentry>

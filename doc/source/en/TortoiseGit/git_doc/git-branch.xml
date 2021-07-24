@@ -75,8 +75,8 @@ If &lt;oldbranch&gt; had a corresponding reflog, it is renamed to match
 renaming. If &lt;newbranch&gt; exists, -M must be used to force the rename
 to happen.</simpara>
 <simpara>The <emphasis>-c</emphasis> and <emphasis>-C</emphasis> options have the exact same semantics as <emphasis>-m</emphasis> and
-<emphasis>-M</emphasis>, except instead of the branch being renamed it along with its
-config and reflog will be copied to a new name.</simpara>
+<emphasis>-M</emphasis>, except instead of the branch being renamed, it will be copied to a
+new name, along with its config and reflog.</simpara>
 <simpara>With a <emphasis>-d</emphasis> or <emphasis>-D</emphasis> option, <emphasis>&lt;branchname&gt;</emphasis> will be deleted.  You may
 specify more than one branch for deletion.  If the branch currently
 has a reflog then the reflog will also be deleted.</simpara>
@@ -242,7 +242,7 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 <listitem>
 <simpara>
         Display branch listing in columns. See configuration variable
-        column.branch for option syntax.<emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
+        <emphasis>column.branch</emphasis> for option syntax. <emphasis>--column</emphasis> and <emphasis>--no-column</emphasis>
         without options are equivalent to <emphasis>always</emphasis> and <emphasis>never</emphasis> respectively.
 </simpara>
 <simpara>This option is only applicable in non-verbose mode.</simpara>

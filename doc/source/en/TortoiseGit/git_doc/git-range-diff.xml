@@ -15,6 +15,7 @@
 <blockquote>
 <literallayout><emphasis>git range-diff</emphasis> [--color=[&lt;when&gt;]] [--no-color] [&lt;diff-options&gt;]
         [--no-dual-color] [--creation-factor=&lt;factor&gt;]
+        [--left-only | --right-only]
         ( &lt;range1&gt; &lt;range2&gt; | &lt;rev1&gt;&#8230;&lt;rev2&gt; | &lt;base&gt; &lt;rev1&gt; &lt;rev2&gt; )</literallayout>
 </blockquote>
 </simplesect>
@@ -30,6 +31,28 @@ patches' size. See ``Algorithm`` below for details.</simpara>
 <simpara>Finally, the list of matching commits is shown in the order of the
 second commit range, with unmatched commits being inserted just after
 all of their ancestors have been shown.</simpara>
+<simpara>There are three ways to specify the commit ranges:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>&lt;range1&gt; &lt;range2&gt;</emphasis>: Either commit range can be of the form
+  <emphasis>&lt;base&gt;..&lt;rev&gt;</emphasis>, <emphasis>&lt;rev&gt;^!</emphasis> or <emphasis>&lt;rev&gt;^-&lt;n&gt;</emphasis>. See <emphasis>SPECIFYING RANGES</emphasis>
+  in <xref linkend="gitrevisions(7)" /> for more details.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>&lt;rev1&gt;...&lt;rev2&gt;</emphasis>. This is equivalent to
+  <emphasis>&lt;rev2&gt;..&lt;rev1&gt; &lt;rev1&gt;..&lt;rev2&gt;</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>&lt;base&gt; &lt;rev1&gt; &lt;rev2&gt;</emphasis>: This is equivalent to <emphasis>&lt;base&gt;..&lt;rev1&gt;
+  &lt;base&gt;..&lt;rev2&gt;</emphasis>.
+</simpara>
+</listitem>
+</itemizedlist>
 </simplesect>
 <simplesect id="git-range-diff(1)__options">
 <title>OPTIONS</title>
@@ -69,6 +92,28 @@ to revert to color all lines according to the outer diff markers
         and addition of another), and a smaller one in the reverse case.
         See the ``Algorithm`` section below for an explanation why this is
         needed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--left-only
+</term>
+<listitem>
+<simpara>
+        Suppress commits that are missing from the first specified range
+        (or the "left range" when using the <emphasis>&lt;rev1&gt;...&lt;rev2&gt;</emphasis> format).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--right-only
+</term>
+<listitem>
+<simpara>
+        Suppress commits that are missing from the second specified range
+        (or the "right range" when using the <emphasis>&lt;rev1&gt;...&lt;rev2&gt;</emphasis> format).
 </simpara>
 </listitem>
 </varlistentry>

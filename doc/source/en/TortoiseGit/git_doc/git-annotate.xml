@@ -35,7 +35,7 @@ familiar command name for people coming from other SCM systems.</simpara>
 <listitem>
 <simpara>
         Show blank SHA-1 for boundary commits.  This can also
-        be controlled via the <emphasis>blame.blankboundary</emphasis> config option.
+        be controlled via the <emphasis>blame.blankBoundary</emphasis> config option.
 </simpara>
 </listitem>
 </varlistentry>

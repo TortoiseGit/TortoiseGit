@@ -13,7 +13,8 @@
 <simplesect id="git-multi-pack-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git multi-pack-index</emphasis> [--object-dir=&lt;dir&gt;] [--[no-]progress] &lt;subcommand&gt;</literallayout>
+<literallayout><emphasis>git multi-pack-index</emphasis> [--object-dir=&lt;dir&gt;] [--[no-]progress]
+        [--preferred-pack=&lt;pack&gt;] &lt;subcommand&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-multi-pack-index(1)__description">
@@ -55,8 +56,24 @@ write
 </term>
 <listitem>
 <simpara>
-        Write a new MIDX file.
+        Write a new MIDX file. The following options are available for
+        the <emphasis>write</emphasis> sub-command:
 </simpara>
+<variablelist>
+<varlistentry>
+<term>
+--preferred-pack=&lt;pack&gt;
+</term>
+<listitem>
+<simpara>
+                Optionally specify the tie-breaking pack used when
+                multiple packs contain the same object. If not given,
+                ties are broken in favor of the pack with the lowest
+                mtime.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>

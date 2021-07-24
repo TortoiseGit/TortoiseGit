@@ -129,6 +129,22 @@ base-name
 </varlistentry>
 <varlistentry>
 <term>
+--stdin-packs
+</term>
+<listitem>
+<simpara>
+        Read the basenames of packfiles (e.g., <emphasis>pack-1234abcd.pack</emphasis>)
+        from the standard input, instead of object names or revision
+        arguments. The resulting pack contains all objects listed in the
+        included packs (those not beginning with <emphasis>^</emphasis>), excluding any
+        objects listed in the excluded packs (beginning with <emphasis>^</emphasis>).
+</simpara>
+<simpara>Incompatible with <emphasis>--revs</emphasis>, or options that imply <emphasis>--revs</emphasis> (such as
+<emphasis>--all</emphasis>), with the exception of <emphasis>--unpacked</emphasis>, which is compatible.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --window=&lt;n&gt;
 </term>
 <term>
@@ -630,6 +646,14 @@ island = refs/virtual/([0-9]+)/(pull)/</screen>
 <simpara>Note that we pick a single island for each regex to go into, using "last
 one wins" ordering (which allows repo-specific config to take precedence
 over user-wide config, and so forth).</simpara>
+</simplesect>
+<simplesect id="git-pack-objects(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Various configuration variables affect packing, see
+<xref linkend="git-config(1)" /> (search for "pack" and "delta").</simpara>
+<simpara>Notably, delta compression is not used on objects larger than the
+<emphasis>core.bigFileThreshold</emphasis> configuration variable and on files with the
+attribute <emphasis>delta</emphasis> set to false.</simpara>
 </simplesect>
 <simplesect id="git-pack-objects(1)__see_also">
 <title>SEE ALSO</title>

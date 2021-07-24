@@ -54,7 +54,7 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 <listitem>
 <simpara>
         Show blank SHA-1 for boundary commits.  This can also
-        be controlled via the <emphasis>blame.blankboundary</emphasis> config option.
+        be controlled via the <emphasis>blame.blankBoundary</emphasis> config option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -620,54 +620,7 @@ commit commentary), a blame viewer will not care.</simpara></note>
 </simplesect>
 <simplesect id="git-blame(1)__mapping_authors">
 <title>MAPPING AUTHORS</title>
-<simpara>If the file <emphasis>.mailmap</emphasis> exists at the toplevel of the repository, or at
-the location pointed to by the mailmap.file or mailmap.blob
-configuration options, it
-is used to map author and committer names and email addresses to
-canonical real names and email addresses.</simpara>
-<simpara>In the simple form, each line in the file consists of the canonical
-real name of an author, whitespace, and an email address used in the
-commit (enclosed by <emphasis>&lt;</emphasis> and <emphasis>&gt;</emphasis>) to map to the name. For example:</simpara>
-<literallayout class="monospaced">Proper Name &lt;commit@email.xx&gt;</literallayout>
-<simpara>The more complex forms are:</simpara>
-<literallayout class="monospaced">&lt;proper@email.xx&gt; &lt;commit@email.xx&gt;</literallayout>
-<simpara>which allows mailmap to replace only the email part of a commit, and:</simpara>
-<literallayout class="monospaced">Proper Name &lt;proper@email.xx&gt; &lt;commit@email.xx&gt;</literallayout>
-<simpara>which allows mailmap to replace both the name and the email of a
-commit matching the specified commit email address, and:</simpara>
-<literallayout class="monospaced">Proper Name &lt;proper@email.xx&gt; Commit Name &lt;commit@email.xx&gt;</literallayout>
-<simpara>which allows mailmap to replace both the name and the email of a
-commit matching both the specified commit name and email address.</simpara>
-<simpara>Example 1: Your history contains commits by two authors, Jane
-and Joe, whose names appear in the repository under several forms:</simpara>
-<screen>Joe Developer &lt;joe@example.com&gt;
-Joe R. Developer &lt;joe@example.com&gt;
-Jane Doe &lt;jane@example.com&gt;
-Jane Doe &lt;jane@laptop.(none)&gt;
-Jane D. &lt;jane@desktop.(none)&gt;</screen>
-<simpara>Now suppose that Joe wants his middle name initial used, and Jane
-prefers her family name fully spelled out. A proper <emphasis>.mailmap</emphasis> file
-would look like:</simpara>
-<screen>Jane Doe         &lt;jane@desktop.(none)&gt;
-Joe R. Developer &lt;joe@example.com&gt;</screen>
-<simpara>Note how there is no need for an entry for <emphasis>&lt;jane@laptop.(none)&gt;</emphasis>, because the
-real name of that author is already correct.</simpara>
-<simpara>Example 2: Your repository contains commits from the following
-authors:</simpara>
-<screen>nick1 &lt;bugs@company.xx&gt;
-nick2 &lt;bugs@company.xx&gt;
-nick2 &lt;nick2@company.xx&gt;
-santa &lt;me@company.xx&gt;
-claus &lt;me@company.xx&gt;
-CTO &lt;cto@coompany.xx&gt;</screen>
-<simpara>Then you might want a <emphasis>.mailmap</emphasis> file that looks like:</simpara>
-<screen>&lt;cto@company.xx&gt;                       &lt;cto@coompany.xx&gt;
-Some Dude &lt;some@dude.xx&gt;         nick1 &lt;bugs@company.xx&gt;
-Other Author &lt;other@author.xx&gt;   nick2 &lt;bugs@company.xx&gt;
-Other Author &lt;other@author.xx&gt;         &lt;nick2@company.xx&gt;
-Santa Claus &lt;santa.claus@northpole.xx&gt; &lt;me@company.xx&gt;</screen>
-<simpara>Use hash <emphasis>#</emphasis> for comments that are either on their own line, or after
-the email address.</simpara>
+<simpara>See <xref linkend="gitmailmap(5)" />.</simpara>
 </simplesect>
 <simplesect id="git-blame(1)__see_also">
 <title>SEE ALSO</title>

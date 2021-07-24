@@ -610,7 +610,9 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 </term>
 <listitem>
 <simpara>
-        Show only names of changed files.
+        Show only names of changed files. The file names are often encoded in UTF-8.
+        For more information see the discussion about encoding in the <xref linkend="git-log(1)" />
+        manual page.
 </simpara>
 </listitem>
 </varlistentry>
@@ -622,6 +624,7 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 <simpara>
         Show only names and status of changed files. See the description
         of the <emphasis>--diff-filter</emphasis> option on what the status letters mean.
+        Just like <emphasis>--name-only</emphasis> the file names are often encoded in UTF-8.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1326,6 +1329,23 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+--skip-to=&lt;file&gt;
+</term>
+<term>
+--rotate-to=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Discard the files before the named &lt;file&gt; from the output
+        (i.e. <emphasis>skip to</emphasis>), or move them to the end of the output
+        (i.e. <emphasis>rotate to</emphasis>).  These were invented primarily for use
+        of the <emphasis>git difftool</emphasis> command, and may not be very useful
+        otherwise.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -R
 </term>
 <listitem>
@@ -1913,7 +1933,7 @@ all parents.</simpara>
 with the <emphasis>-p</emphasis> option produces patch text.
 You can customize the creation of patch text via the
 <emphasis>GIT_EXTERNAL_DIFF</emphasis> and the <emphasis>GIT_DIFF_OPTS</emphasis> environment variables
-(see <xref linkend="git(1)" />).</simpara>
+(see <xref linkend="git(1)" />), and the <emphasis>diff</emphasis> attribute (see <xref linkend="gitattributes(5)" />).</simpara>
 <simpara>What the -p option produces is slightly different from the traditional
 diff format:</simpara>
 <orderedlist numeration="arabic">
@@ -1978,6 +1998,14 @@ diff --git a/b b/a
 rename from b
 rename to a</literallayout>
 </listitem>
+<listitem>
+<simpara>
+Hunk headers mention the name of the function to which the hunk
+    applies.  See "Defining a custom hunk-header" in
+    <xref linkend="gitattributes(5)" /> for details of how to tailor to this to
+    specific languages.
+</simpara>
+</listitem>
 </orderedlist>
 </simplesect>
 <simplesect id="git-diff(1)__combined_diff_format">
@@ -1985,9 +2013,9 @@ rename to a</literallayout>
 <simpara>Any diff-generating command can take the <emphasis>-c</emphasis> or <emphasis>--cc</emphasis> option to
 produce a <emphasis>combined diff</emphasis> when showing a merge. This is the default
 format when showing merges with <xref linkend="git-diff(1)" /> or
-<xref linkend="git-show(1)" />. Note also that you can give the <emphasis>-m</emphasis> option to any
-of these commands to force generation of diffs with individual parents
-of a merge.</simpara>
+<xref linkend="git-show(1)" />. Note also that you can give suitable
+<emphasis>--diff-merges</emphasis> option to any of these commands to force generation of
+diffs in specific format.</simpara>
 <simpara>A "combined diff" format looks like this:</simpara>
 <screen>diff --combined describe.c
 index fabadb8,cc95eb0..4866510

@@ -65,6 +65,17 @@ get_merge_tool_path
 </varlistentry>
 <varlistentry>
 <term>
+initialize_merge_tool
+</term>
+<listitem>
+<simpara>
+        bring merge tool specific functions into scope so they can be used or
+        overridden.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 run_merge_tool
 </term>
 <listitem>

@@ -136,150 +136,6 @@ desired resolution, you can continue the rebasing process with</simpara>
 <simpara>Alternatively, you can undo the <emphasis>git rebase</emphasis> with</simpara>
 <literallayout class="monospaced">git rebase --abort</literallayout>
 </simplesect>
-<simplesect id="git-rebase(1)__configuration">
-<title>CONFIGURATION</title>
-<variablelist>
-<varlistentry>
-<term>
-rebase.useBuiltin
-</term>
-<listitem>
-<simpara>
-        Unused configuration variable. Used in Git versions 2.20 and
-        2.21 as an escape hatch to enable the legacy shellscript
-        implementation of rebase. Now the built-in rewrite of it in C
-        is always used. Setting this will emit a warning, to alert any
-        remaining users that setting this now does nothing.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.backend
-</term>
-<listitem>
-<simpara>
-        Default backend to use for rebasing.  Possible choices are
-        <emphasis>apply</emphasis> or <emphasis>merge</emphasis>.  In the future, if the merge backend gains
-        all remaining capabilities of the apply backend, this setting
-        may become unused.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.stat
-</term>
-<listitem>
-<simpara>
-        Whether to show a diffstat of what changed upstream since the last
-        rebase. False by default.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.autoSquash
-</term>
-<listitem>
-<simpara>
-        If set to true enable <emphasis>--autosquash</emphasis> option by default.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.autoStash
-</term>
-<listitem>
-<simpara>
-        When set to true, automatically create a temporary stash entry
-        before the operation begins, and apply it after the operation
-        ends.  This means that you can run rebase on a dirty worktree.
-        However, use with care: the final stash application after a
-        successful rebase might result in non-trivial conflicts.
-        This option can be overridden by the <emphasis>--no-autostash</emphasis> and
-        <emphasis>--autostash</emphasis> options of <xref linkend="git-rebase(1)" />.
-        Defaults to false.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.missingCommitsCheck
-</term>
-<listitem>
-<simpara>
-        If set to "warn", git rebase -i will print a warning if some
-        commits are removed (e.g. a line was deleted), however the
-        rebase will still proceed. If set to "error", it will print
-        the previous warning and stop the rebase, <emphasis>git rebase
-        --edit-todo</emphasis> can then be used to correct the error. If set to
-        "ignore", no checking is done.
-        To drop a commit without warning or error, use the <emphasis>drop</emphasis>
-        command in the todo list.
-        Defaults to "ignore".
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.instructionFormat
-</term>
-<listitem>
-<simpara>
-        A format string, as specified in <xref linkend="git-log(1)" />, to be used for the
-        todo list during an interactive rebase.  The format will
-        automatically have the long commit hash prepended to the format.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.abbreviateCommands
-</term>
-<listitem>
-<simpara>
-        If set to true, <emphasis>git rebase</emphasis> will use abbreviated command names in the
-        todo list resulting in something like this:
-</simpara>
-<screen>        p deadbee The oneline of the commit
-        p fa1afe1 The oneline of the next commit
-        ...</screen>
-<simpara>instead of:</simpara>
-<screen>        pick deadbee The oneline of the commit
-        pick fa1afe1 The oneline of the next commit
-        ...</screen>
-<simpara>Defaults to false.</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-rebase.rescheduleFailedExec
-</term>
-<listitem>
-<simpara>
-        Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
-        sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
-        This is the same as specifying the <emphasis>--reschedule-failed-exec</emphasis> option.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-sequence.editor
-</term>
-<listitem>
-<simpara>
-        Text editor used by <emphasis>git rebase -i</emphasis> for editing the rebase instruction file.
-        The value is meant to be interpreted by the shell when it is used.
-        It can be overridden by the <emphasis>GIT_SEQUENCE_EDITOR</emphasis> environment variable.
-        When not configured the default commit message editor is used instead.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</simplesect>
 <simplesect id="git-rebase(1)__options">
 <title>OPTIONS</title>
 <variablelist>
@@ -940,16 +796,17 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        When the commit log message begins with "squash! &#8230;" (or
-        "fixup! &#8230;"), and there is already a commit in the todo list that
-        matches the same <emphasis>...</emphasis>, automatically modify the todo list of rebase
-        -i so that the commit marked for squashing comes right after the
-        commit to be modified, and change the action of the moved commit
-        from <emphasis>pick</emphasis> to <emphasis>squash</emphasis> (or <emphasis>fixup</emphasis>).  A commit matches the <emphasis>...</emphasis> if
-        the commit subject matches, or if the <emphasis>...</emphasis> refers to the commit's
-        hash. As a fall-back, partial matches of the commit subject work,
-        too.  The recommended way to create fixup/squash commits is by using
-        the <emphasis>--fixup</emphasis>/<emphasis>--squash</emphasis> options of <xref linkend="git-commit(1)" />.
+        When the commit log message begins with "squash! &#8230;" or "fixup! &#8230;"
+        or "amend! &#8230;", and there is already a commit in the todo list that
+        matches the same <emphasis>...</emphasis>, automatically modify the todo list of
+        <emphasis>rebase -i</emphasis>, so that the commit marked for squashing comes right after
+        the commit to be modified, and change the action of the moved commit
+        from <emphasis>pick</emphasis> to <emphasis>squash</emphasis> or <emphasis>fixup</emphasis> or <emphasis>fixup -C</emphasis> respectively. A commit
+        matches the <emphasis>...</emphasis> if the commit subject matches, or if the <emphasis>...</emphasis> refers
+        to the commit's hash. As a fall-back, partial matches of the commit
+        subject work, too. The recommended way to create fixup/amend/squash
+        commits is by using the <emphasis>--fixup</emphasis>, <emphasis>--fixup=amend:</emphasis> or <emphasis>--fixup=reword:</emphasis>
+        and <emphasis>--squash</emphasis> options respectively of <xref linkend="git-commit(1)" />.
 </simpara>
 <simpara>If the <emphasis>--autosquash</emphasis> option is enabled by default using the
 configuration variable <emphasis>rebase.autoSquash</emphasis>, this option can be
@@ -986,6 +843,13 @@ used to override and disable this setting.</simpara>
         Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
         sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
 </simpara>
+<simpara>Even though this option applies once a rebase is started, it's set for
+the whole rebase at the start based on either the
+<emphasis>rebase.rescheduleFailedExec</emphasis> configuration (see <xref linkend="git-config(1)" />
+or "CONFIGURATION" below) or whether this option is
+provided. Otherwise an explicit <emphasis>--no-reschedule-failed-exec</emphasis> at the
+start would be overridden by the presence of
+<emphasis>rebase.rescheduleFailedExec=true</emphasis> configuration.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -1643,9 +1507,16 @@ delete the matching line.</simpara>
 "pick" for the second and subsequent commits with "squash" or "fixup".
 If the commits had different authors, the folded commit will be
 attributed to the author of the first commit.  The suggested commit
-message for the folded commit is the concatenation of the commit
-messages of the first commit and of those with the "squash" command,
-but omits the commit messages of commits with the "fixup" command.</simpara>
+message for the folded commit is the concatenation of the first
+commit's message with those identified by "squash" commands, omitting the
+messages of commits identified by "fixup" commands, unless "fixup -c"
+is used.  In that case the suggested commit message is only the message
+of the "fixup -c" commit, and an editor is opened allowing you to edit
+the message.  The contents (patch) of the "fixup -c" commit are still
+incorporated into the folded commit. If there is more than one "fixup -c"
+commit, the message from the final one is used.  You can also use
+"fixup -C" to get the same behavior as "fixup -c" except without opening
+an editor.</simpara>
 <simpara><emphasis>git rebase</emphasis> will stop when "pick" has been replaced with "edit" or
 when a command fails due to merge errors. When you are done editing
 and/or resolving conflicts you can continue with <emphasis>git rebase --continue</emphasis>.</simpara>
@@ -1971,6 +1842,146 @@ label cmake
 reset onto
 merge tlsv1.3
 merge cmake</screen>
+</simplesect>
+<simplesect id="git-rebase(1)__configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+rebase.backend
+</term>
+<listitem>
+<simpara>
+        Default backend to use for rebasing.  Possible choices are
+        <emphasis>apply</emphasis> or <emphasis>merge</emphasis>.  In the future, if the merge backend gains
+        all remaining capabilities of the apply backend, this setting
+        may become unused.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.stat
+</term>
+<listitem>
+<simpara>
+        Whether to show a diffstat of what changed upstream since the last
+        rebase. False by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.autoSquash
+</term>
+<listitem>
+<simpara>
+        If set to true enable <emphasis>--autosquash</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.autoStash
+</term>
+<listitem>
+<simpara>
+        When set to true, automatically create a temporary stash entry
+        before the operation begins, and apply it after the operation
+        ends.  This means that you can run rebase on a dirty worktree.
+        However, use with care: the final stash application after a
+        successful rebase might result in non-trivial conflicts.
+        This option can be overridden by the <emphasis>--no-autostash</emphasis> and
+        <emphasis>--autostash</emphasis> options of <xref linkend="git-rebase(1)" />.
+        Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.missingCommitsCheck
+</term>
+<listitem>
+<simpara>
+        If set to "warn", git rebase -i will print a warning if some
+        commits are removed (e.g. a line was deleted), however the
+        rebase will still proceed. If set to "error", it will print
+        the previous warning and stop the rebase, <emphasis>git rebase
+        --edit-todo</emphasis> can then be used to correct the error. If set to
+        "ignore", no checking is done.
+        To drop a commit without warning or error, use the <emphasis>drop</emphasis>
+        command in the todo list.
+        Defaults to "ignore".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.instructionFormat
+</term>
+<listitem>
+<simpara>
+        A format string, as specified in <xref linkend="git-log(1)" />, to be used for the
+        todo list during an interactive rebase.  The format will
+        automatically have the long commit hash prepended to the format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.abbreviateCommands
+</term>
+<listitem>
+<simpara>
+        If set to true, <emphasis>git rebase</emphasis> will use abbreviated command names in the
+        todo list resulting in something like this:
+</simpara>
+<screen>        p deadbee The oneline of the commit
+        p fa1afe1 The oneline of the next commit
+        ...</screen>
+<simpara>instead of:</simpara>
+<screen>        pick deadbee The oneline of the commit
+        pick fa1afe1 The oneline of the next commit
+        ...</screen>
+<simpara>Defaults to false.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.rescheduleFailedExec
+</term>
+<listitem>
+<simpara>
+        Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
+        sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
+        This is the same as specifying the <emphasis>--reschedule-failed-exec</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.forkPoint
+</term>
+<listitem>
+<simpara>
+        If set to false set <emphasis>--no-fork-point</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sequence.editor
+</term>
+<listitem>
+<simpara>
+        Text editor used by <emphasis>git rebase -i</emphasis> for editing the rebase instruction file.
+        The value is meant to be interpreted by the shell when it is used.
+        It can be overridden by the <emphasis>GIT_SEQUENCE_EDITOR</emphasis> environment variable.
+        When not configured the default commit message editor is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-rebase(1)__bugs">
 <title>BUGS</title>

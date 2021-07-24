@@ -17,7 +17,7 @@
     [--exec-path[=&lt;path&gt;]] [--html-path] [--man-path] [--info-path]
     [-p|--paginate|-P|--no-pager] [--no-replace-objects] [--bare]
     [--git-dir=&lt;path&gt;] [--work-tree=&lt;path&gt;] [--namespace=&lt;name&gt;]
-    [--super-prefix=&lt;path&gt;]
+    [--super-prefix=&lt;path&gt;] [--config-env=&lt;name&gt;=&lt;envvar&gt;]
     &lt;command&gt; [&lt;args&gt;]</literallayout>
 </blockquote>
 </simplesect>
@@ -104,6 +104,33 @@ git --git-dir=c/a.git --work-tree=c/b status</literallayout>
 config file). Including the equals but with an empty value (like <emphasis>git -c
 foo.bar= ...</emphasis>) sets <emphasis>foo.bar</emphasis> to the empty string which <emphasis>git config
 --type=bool</emphasis> will convert to <emphasis>false</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--config-env=&lt;name&gt;=&lt;envvar&gt;
+</term>
+<listitem>
+<simpara>
+        Like <emphasis>-c &lt;name&gt;=&lt;value&gt;</emphasis>, give configuration variable
+        <emphasis>&lt;name&gt;</emphasis> a value, where &lt;envvar&gt; is the name of an
+        environment variable from which to retrieve the value. Unlike
+        <emphasis>-c</emphasis> there is no shortcut for directly setting the value to an
+        empty string, instead the environment variable itself must be
+        set to the empty string.  It is an error if the <emphasis>&lt;envvar&gt;</emphasis> does not exist
+        in the environment. <emphasis>&lt;envvar&gt;</emphasis> may not contain an equals sign
+        to avoid ambiguity with <emphasis>&lt;name&gt;</emphasis> containing one.
+</simpara>
+<simpara>This is useful for cases where you want to pass transitory
+configuration options to git, but are doing so on OS's where
+other processes might be able to read your cmdline
+(e.g. <emphasis>/proc/self/cmdline</emphasis>), but not your environ
+(e.g. <emphasis>/proc/self/environ</emphasis>). That behavior is the default on
+Linux, but may not be on your system.</simpara>
+<simpara>Note that this might add security for variables such as
+<emphasis>http.extraHeader</emphasis> where the sensitive information is part of
+the value, but not e.g. <emphasis>url.&lt;base&gt;.insteadOf</emphasis> where the
+sensitive information can be part of the key.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1304,7 +1331,7 @@ repositories.</simpara>
 </term>
 <listitem>
 <simpara>
-        Creates a tag object.
+        Creates a tag object with extra validation.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2035,6 +2062,16 @@ users typically do not use them directly.</simpara>
 <listitem>
 <simpara>
         Specifies intentionally untracked files to ignore.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="gitmailmap(5)" />
+</term>
+<listitem>
+<simpara>
+        Map author/committer names and/or E-Mail addresses.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2776,6 +2813,25 @@ for further details.</simpara>
 <simpara>
         If this environment variable is set to <emphasis>0</emphasis>, git will not prompt
         on the terminal (e.g., when asking for HTTP authentication).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_CONFIG_GLOBAL</emphasis>
+</term>
+<term>
+<emphasis>GIT_CONFIG_SYSTEM</emphasis>
+</term>
+<listitem>
+<simpara>
+        Take the configuration from the given files instead from global or
+        system-level configuration files. If <emphasis>GIT_CONFIG_SYSTEM</emphasis> is set, the
+        system config file defined at build time (usually <emphasis>/etc/gitconfig</emphasis>)
+        will not be read. Likewise, if <emphasis>GIT_CONFIG_GLOBAL</emphasis> is set, neither
+        <emphasis>$HOME/.gitconfig</emphasis> nor <emphasis>$XDG_CONFIG_HOME/git/config</emphasis> will be read. Can
+        be set to <emphasis>/dev/null</emphasis> to skip reading configuration files of the
+        respective level.
 </simpara>
 </listitem>
 </varlistentry>

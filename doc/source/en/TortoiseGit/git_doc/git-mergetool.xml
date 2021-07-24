@@ -156,6 +156,167 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 </variablelist>
 </simplesect>
+<simplesect id="git-mergetool(1)__configuration">
+<title>CONFIGURATION</title>
+<variablelist>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.path
+</term>
+<listitem>
+<simpara>
+        Override the path for the given tool.  This is useful in case
+        your tool is not in the PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified merge tool.  The
+        specified command is evaluated in shell with the following
+        variables available: <emphasis>BASE</emphasis> is the name of a temporary file
+        containing the common base of the files to be merged, if available;
+        <emphasis>LOCAL</emphasis> is the name of a temporary file containing the contents of
+        the file on the current branch; <emphasis>REMOTE</emphasis> is the name of a temporary
+        file containing the contents of the file from the branch being
+        merged; <emphasis>MERGED</emphasis> contains the name of the file to which the merge
+        tool should write the results of a successful merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.hideResolved
+</term>
+<listitem>
+<simpara>
+        Allows the user to override the global <emphasis>mergetool.hideResolved</emphasis> value
+        for a specific tool. See <emphasis>mergetool.hideResolved</emphasis> for the full
+        description.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.&lt;tool&gt;.trustExitCode
+</term>
+<listitem>
+<simpara>
+        For a custom merge command, specify whether the exit code of
+        the merge command can be used to determine whether the merge was
+        successful.  If this is not set to true then the merge target file
+        timestamp is checked and the merge assumed to have been successful
+        if the file has been updated, otherwise the user is prompted to
+        indicate the success of the merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.meld.hasOutput
+</term>
+<listitem>
+<simpara>
+        Older versions of <emphasis>meld</emphasis> do not support the <emphasis>--output</emphasis> option.
+        Git will attempt to detect whether <emphasis>meld</emphasis> supports <emphasis>--output</emphasis>
+        by inspecting the output of <emphasis>meld --help</emphasis>.  Configuring
+        <emphasis>mergetool.meld.hasOutput</emphasis> will make Git skip these checks and
+        use the configured value instead.  Setting <emphasis>mergetool.meld.hasOutput</emphasis>
+        to <emphasis>true</emphasis> tells Git to unconditionally use the <emphasis>--output</emphasis> option,
+        and <emphasis>false</emphasis> avoids using <emphasis>--output</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.meld.useAutoMerge
+</term>
+<listitem>
+<simpara>
+        When the <emphasis>--auto-merge</emphasis> is given, meld will merge all non-conflicting
+        parts automatically, highlight the conflicting parts and wait for
+        user decision.  Setting <emphasis>mergetool.meld.useAutoMerge</emphasis> to <emphasis>true</emphasis> tells
+        Git to unconditionally use the <emphasis>--auto-merge</emphasis> option with <emphasis>meld</emphasis>.
+        Setting this value to <emphasis>auto</emphasis> makes git detect whether <emphasis>--auto-merge</emphasis>
+        is supported and will only use <emphasis>--auto-merge</emphasis> when available.  A
+        value of <emphasis>false</emphasis> avoids using <emphasis>--auto-merge</emphasis> altogether, and is the
+        default value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.hideResolved
+</term>
+<listitem>
+<simpara>
+        During a merge Git will automatically resolve as many conflicts as
+        possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
+        any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
+        represent the versions of the file from before Git's conflict
+        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwriten so
+        that only the unresolved conflicts are presented to the merge tool. Can
+        be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
+        configuration variable. Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.keepBackup
+</term>
+<listitem>
+<simpara>
+        After performing a merge, the original file with conflict markers
+        can be saved as a file with a <emphasis>.orig</emphasis> extension.  If this variable
+        is set to <emphasis>false</emphasis> then this file is not preserved.  Defaults to
+        <emphasis>true</emphasis> (i.e. keep the backup files).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.keepTemporaries
+</term>
+<listitem>
+<simpara>
+        When invoking a custom merge tool, Git uses a set of temporary
+        files to pass to the tool. If the tool returns an error and this
+        variable is set to <emphasis>true</emphasis>, then these temporary files will be
+        preserved, otherwise they will be removed after the tool has
+        exited. Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.writeToTemp
+</term>
+<listitem>
+<simpara>
+        Git writes temporary <emphasis>BASE</emphasis>, <emphasis>LOCAL</emphasis>, and <emphasis>REMOTE</emphasis> versions of
+        conflicting files in the worktree by default.  Git will attempt
+        to use a temporary directory for these files when set <emphasis>true</emphasis>.
+        Defaults to <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.prompt
+</term>
+<listitem>
+<simpara>
+        Prompt before each invocation of the merge resolution program.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-mergetool(1)__temporary_files">
 <title>TEMPORARY FILES</title>
 <simpara><emphasis>git mergetool</emphasis> creates <emphasis>*.orig</emphasis> backup files while resolving merges.

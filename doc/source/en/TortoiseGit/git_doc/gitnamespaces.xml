@@ -94,4 +94,8 @@ As in #1, the attacker chooses an object ID X to steal. The victim sends
 </listitem>
 </orderedlist>
 </simplesect>
+<simplesect id="gitnamespaces(7)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
 </sect2>

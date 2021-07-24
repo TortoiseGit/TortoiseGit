@@ -72,6 +72,17 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
+--atomic
+</term>
+<listitem>
+<simpara>
+        Use an atomic transaction to update local refs. Either all refs are
+        updated, or on error, no refs are updated.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --depth=&lt;depth&gt;
 </term>
 <listitem>
@@ -256,6 +267,18 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 <simpara>
         Write a commit-graph after fetching. This overrides the config
         setting <emphasis>fetch.writeCommitGraph</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--prefetch
+</term>
+<listitem>
+<simpara>
+        Modify the configured refspec to place all refs into the
+        <emphasis>refs/prefetch/</emphasis> namespace. See the <emphasis>prefetch</emphasis> task in
+        <xref linkend="git-maintenance(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

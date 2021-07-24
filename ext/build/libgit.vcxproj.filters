@@ -371,9 +371,6 @@
     <ClCompile Include="..\tgit\setup.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\sha1-lookup.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\shallow.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -623,12 +620,6 @@
     <ClCompile Include="..\tgit\replace-object.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\sha1-file.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\sha1-name.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\fsmonitor.c">
       <Filter>git</Filter>
     </ClCompile>
@@ -783,6 +774,33 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\merge-ort.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\hash-lookup.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\object-file.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\object-name.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\sparse-index.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\chunk-format.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\diff-merges.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\parallel-checkout.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\diffcore-rotate.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fsmonitor-ipc.c">
       <Filter>git</Filter>
     </ClCompile>
   </ItemGroup>
@@ -947,9 +965,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\sequencer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\sha1-lookup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\shortlog.h">
@@ -1314,6 +1329,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\merge-ort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\hash-lookup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\sparse-index.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\chunk-format.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\diff-merges.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\parallel-checkout.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\fsmonitor-ipc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\simple-ipc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

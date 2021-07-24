@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "git-compat-util.h"
 #include "gitdll.h"
 #include "cache.h"
+#include "entry.h"
 #include "commit.h"
 #include "diff.h"
 #include "packfile.h"
@@ -62,7 +63,7 @@ extern void clear_ref_decorations(void);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
-extern int write_entry(struct cache_entry* ce, char* path, const struct checkout* state, int to_tempfile);
+extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca, const struct checkout* state, int to_tempfile);
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
 extern void free_diffstat_info(struct diffstat_t* diffstat);
 static_assert(sizeof(unsigned long long) == sizeof(timestamp_t), "Required for each_reflog_ent_fn definition in gitdll.h");
@@ -226,6 +227,7 @@ int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 	memset(commit,0,sizeof(GIT_COMMIT));
 
 	hashcpy(oid.hash, hash);
+	oid.algo = 0;
 
 	commit->m_pGitCommit = p = lookup_commit(the_repository, &oid);
 
@@ -481,6 +483,8 @@ int git_open_diff(GIT_DIFF* diff, const char* arg)
 		return -1;
 
 	p_Rev = malloc(sizeof(struct rev_info));
+	if (!p_Rev)
+		return -1;
 	memset(p_Rev,0,sizeof(struct rev_info));
 
 	p_Rev->pPrivate = argv;
@@ -534,7 +538,7 @@ int git_diff_flush(GIT_DIFF diff)
 
 int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat)
 {
-	struct object_id oid;
+	struct object_id oid = { 0 };
 	struct rev_info *p_Rev;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
@@ -567,13 +571,15 @@ int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count
 int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat)
 {
 	struct rev_info *p_Rev;
-		struct object_id oid1, oid2;
+	struct object_id oid1, oid2;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
 
 	hashcpy(oid1.hash, hash1);
+	oid1.algo = 0;
 	hashcpy(oid2.hash, hash2);
+	oid2.algo = 0;
 
 	diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
 
@@ -661,6 +667,8 @@ int git_add_exclude(const char *string, const char *base,
 int git_create_exclude_list(EXCLUDE_LIST *which)
 {
 	*which = malloc(sizeof(struct pattern_list));
+	if (!*which)
+		return -1;
 	memset(*which, 0, sizeof(struct pattern_list));
 	return 0;
 }
@@ -693,6 +701,7 @@ int git_get_notes(const GIT_HASH hash, char** p_note)
 	size_t size;
 	strbuf_init(&sb,0);
 	hashcpy(oid.hash, hash);
+	oid.algo = 0;
 	format_display_notes(&oid, &sb, "utf-8", 1);
 	*p_note = strbuf_detach(&sb,&size);
 
@@ -732,12 +741,9 @@ int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_dat
 	return for_each_reflog_ent(ref,fn,cb_data);
 }
 
-static int update_some(const struct object_id* sha1, struct strbuf* base, const char* pathname, unsigned mode, int stage, void* context)
+static int update_some(const struct object_id* sha1, struct strbuf* base, const char* pathname, unsigned mode, void* context)
 {
-	struct cache_entry *ce;
-	UNREFERENCED_PARAMETER(stage);
-
-	ce = (struct cache_entry *)context;
+	struct cache_entry* ce = (struct cache_entry*)context;
 
 	if (S_ISDIR(mode))
 		return READ_TREE_RECURSIVE;
@@ -757,8 +763,9 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	int ret;
 	struct object_id oid;
 	struct tree * root;
-	struct checkout state;
+	struct checkout state = CHECKOUT_INIT;
 	struct pathspec pathspec;
+	struct conv_attrs ca;
 	const char *matchbuf[1];
 	ret = get_oid(ref, &oid);
 	if(ret)
@@ -778,7 +785,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	matchbuf[0] = NULL;
 	parse_pathspec(&pathspec, PATHSPEC_ALL_MAGIC, PATHSPEC_PREFER_CWD, path, matchbuf);
 	pathspec.items[0].nowildcard_len = pathspec.items[0].len;
-	ret = read_tree_recursive(the_repository, root, "", 0, 0, &pathspec, update_some, ce);
+	ret = read_tree(the_repository, root, &pathspec, update_some, ce);
 	clear_pathspec(&pathspec);
 
 	if(ret)
@@ -787,11 +794,12 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 		free(ce);
 		return ret;
 	}
-	memset(&state, 0, sizeof(state));
 	state.force = 1;
 	state.refresh_cache = 0;
 
-	ret = write_entry(ce, outputpath, &state, 0);
+	convert_attrs(state.istate, &ca, path);
+
+	ret = write_entry(ce, outputpath, &ca, &state, 0);
 	free_all_pack();
 	free(ce);
 	return ret;
@@ -853,8 +861,13 @@ const wchar_t *wget_msysgit_etc(void)
 	if (etc_gitconfig)
 		return etc_gitconfig;
 
-	if (xutftowcs_path(wpointer, git_etc_gitconfig()) < 0)
+	char* systemconfig = git_system_config();
+	if (xutftowcs_path(wpointer, systemconfig) < 0)
+	{
+		free(systemconfig);
 		return NULL;
+	}
+	free(systemconfig);
 
 	etc_gitconfig = _wcsdup(wpointer);
 
@@ -863,7 +876,8 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size)
 {
-	const char *home, *system, *programdata;
+	const char *home, *programdata;
+	char* system;
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
 
@@ -909,11 +923,12 @@ int git_get_config(const char *key, char *buffer, int size)
 		}
 	}
 
-	system = git_etc_gitconfig();
+	system = git_system_config();
 	if (system)
 	{
 		config_source.file = system;
 		config_with_options(get_config, &buf, &config_source, &opts);
+		free(system);
 		if (buf.seen)
 			return !buf.seen;
 	}
@@ -1043,7 +1058,7 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 	if ((map = (struct string_list *)calloc(1, sizeof(struct string_list))) == NULL)
 		return -1;
 
-	if ((result = read_mailmap(map, NULL)) != 0)
+	if ((result = read_mailmap(map)) != 0)
 	{
 		clear_mailmap(map);
 		free(map);
