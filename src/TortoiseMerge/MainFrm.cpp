@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -1027,7 +1027,7 @@ bool CMainFrame::LoadViews(int line)
 		if (n >= 0)
 		{
 			n = m_pwndRightView->m_pViewData->FindLineNumber(n);
-			if (m_bCollapsed)
+			if (m_bCollapsed && line >= 0)
 			{
 				// adjust the goto-line position if we're collapsed
 				int step = m_pwndRightView->m_nTopLine > n ? -1 : 1;
