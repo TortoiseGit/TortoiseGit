@@ -2629,6 +2629,10 @@ msgstr ""
 msgid "Collapse"
 msgstr ""
 
+#. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
+msgid "Collapse revisions"
+msgstr ""
+
 #. Resource IDs: (cmdViewCollapsed)
 msgid "Collapse unchanged sections\nCollapse"
 msgstr ""
@@ -4227,6 +4231,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_AUTOTEXTTESTDLG: Control id 2)
 msgid "Exit"
+msgstr ""
+
+#. Resource IDs: (IDS_LOG_POPUP_EXPAND)
+msgid "Expand collapsed revisions"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)

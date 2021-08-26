@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -378,6 +378,7 @@ public:
 	ID_BISECTSKIP,
 	ID_SVNDCOMMIT,
 	ID_COMPARETWOCOMMITCHANGES,
+	ID_TOGGLE_ROLLUP,
 	// the following can be >= 64 as those are not used for GetContextMenuBit(), all others must be < 64 in order to fit into __int64
 	ID_COPYCLIPBOARDFULL,
 	ID_COPYCLIPBOARDFULLNOPATHS,
@@ -424,6 +425,9 @@ public:
 protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);
 	bool ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren, const MAP_HASH_NAME& hashMap);
+	bool ShouldShowAnyFilter();
+	bool ShouldShowRefsFilter(GitRevLoglist* pRev, const MAP_HASH_NAME& hashMap);
+	bool ShouldShowMergePointsFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren);
 public:
 	void ShowGraphColumn(bool bShow);
 	CString	GetTagInfo(GitRev* pLogEntry) const;
@@ -450,6 +454,14 @@ public:
 
 	std::shared_ptr<CLogDlgFilter> m_LogFilter;
 	CFilterData			m_Filter;
+
+	enum class RollUpState
+	{
+		Expand,			// Parents of the node should be shown even in a compressed graph
+		Collapse,		// Parents of the node should be hidden
+	};
+	using RollUpStateMap = std::unordered_map<CGitHash, RollUpState>;
+	std::shared_ptr<RollUpStateMap> m_RollUpStates;
 
 	CTGitPath			m_Path;
 	int					m_ShowMask;
@@ -603,7 +615,7 @@ public:
 	static LRESULT DrawListItemWithMatches(CFilterHelper* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD, CColors& colors);
 
 protected:
-	void paintGraphLane(HDC hdc,int laneHeight, int type, int x1, int x2,
+	void paintGraphLane(HDC hdc,int laneHeight, int type, bool rolledUp, int x1, int x2,
 									  const COLORREF& col,const COLORREF& activeColor, int top) ;
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){ ::MoveToEx(hdc, x1, y1, nullptr); ::LineTo(hdc, x2, y2); }
 	/**

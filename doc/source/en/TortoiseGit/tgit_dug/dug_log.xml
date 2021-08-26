@@ -294,6 +294,37 @@
 					</listitem>
 				</varlistentry>
 				<varlistentry>
+					<term>Collapse revisions</term>
+					<listitem>
+						<para>
+							Do not show parent commits up to a merge or branch point or a commit
+							marked with a branch or tag. This is similar to
+							<menuchoice>
+								<guimenu>Walk Behavior</guimenu>
+								<guimenuitem>Compressed Graph</guimenuitem>
+							</menuchoice>,
+							but only for selected revisions.
+						</para>
+						<para>
+							Collapsed items are displayed in the graph with hollow circles and squares.
+							In the following screenshot the commits of the merged branch in which issue 3764 was fixed and also all commits starting from the libgit2 update commit until the next merge commit were collapsed.
+							<figure id="tgit-dug-showlog-collapsed-dia-1">
+								<title>Collapsed revisions</title>
+								<graphic fileref="../images/LogCollapsedRevs.png"/>
+							</figure>
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
+					<term>Expand hidden revisions</term>
+					<listitem>
+						<para>
+							This is shown for collapsed items instead of <guilabel>Collapse revisions</guilabel>
+							and reverts the action.
+						</para>
+					</listitem>
+				</varlistentry>
+				<varlistentry>
 					<term>Cherry Pick this commit</term>
 					<listitem>
 						<para>

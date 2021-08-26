@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -76,6 +76,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	, m_nDropMarkerLastHot(-1)
 	, m_LogFilter(std::make_shared<CLogDlgFilter>())
 	, m_HashMap(std::make_shared<MAP_HASH_NAME>())
+	, m_RollUpStates(std::make_shared<RollUpStateMap>())
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -735,7 +736,7 @@ Gdiplus::Color GetGdiColor(COLORREF col)
 {
 	return Gdiplus::Color(GetRValue(col),GetGValue(col),GetBValue(col));
 }
-void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, int x2,
+void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool rolledUp, int x1, int x2,
 										const COLORREF& col,const COLORREF& activeColor, int top
 										)
 {
@@ -744,12 +745,16 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	int r = (x2 - x1) * m_NodeSize / 30;
 	int d =  2 * r;
 
-	#define P_CENTER	m , h+top
-	#define P_0			x2, h+top
-	#define P_90		m , 0+top-1
-	#define P_180		x1, h+top
-	#define P_270		m , 2 * h+top +1
-	#define R_CENTER	m - r, h - r+top, d, d
+	#define P_CENTER		m , h+top
+	#define P_CENTER_0		m+r, h+top
+	#define P_CENTER_90		m,  h-r+top
+	#define P_CENTER_180	m-r, h+top
+	#define P_CENTER_270	m,  h+r+top
+	#define P_0				x2, h+top
+	#define P_90			m , 0+top-1
+	#define P_180			x1, h+top
+	#define P_270			m , 2 * h+top +1
+	#define R_CENTER		m - r, h - r+top, d, d
 
 
 	#define DELTA_UR_B 2*(x1 - m), 2*h +top
@@ -856,10 +861,17 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	// vertical line
 	switch (type) {
 	case Lanes::ACTIVE:
-	case Lanes::NOT_ACTIVE:
 	case Lanes::MERGE_FORK:
 	case Lanes::MERGE_FORK_R:
 	case Lanes::MERGE_FORK_L:
+		if (rolledUp)
+		{
+			graphics.DrawLine(&myPen, P_90, P_CENTER_90);
+			graphics.DrawLine(&myPen, P_CENTER_270, P_270);
+			break;
+		}
+		[[fallthrough]];
+	case Lanes::NOT_ACTIVE:
 	case Lanes::JOIN:
 	case Lanes::JOIN_R:
 	case Lanes::JOIN_L:
@@ -868,19 +880,31 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		graphics.DrawLine(&myPen,P_90,P_270);
 		//p->drawLine(P_90, P_270);
 		break;
-	case Lanes::HEAD_L:
 	case Lanes::BRANCH:
+		if (rolledUp)
+		{
+			graphics.DrawLine(&myPen, P_CENTER_270, P_270);
+			break;
+		}
+		[[fallthrough]];
+	case Lanes::HEAD_L:
 		//DrawLine(hdc,P_CENTER,P_270);
 		graphics.DrawLine(&myPen,P_CENTER,P_270);
 		//p->drawLine(P_CENTER, P_270);
 		break;
-	case Lanes::TAIL_L:
 	case Lanes::INITIAL:
 	case Lanes::MERGE_FORK_L_INITIAL:
 	case Lanes::BOUNDARY:
 	case Lanes::BOUNDARY_C:
 	case Lanes::BOUNDARY_R:
 	case Lanes::BOUNDARY_L:
+		if (rolledUp)
+		{
+			graphics.DrawLine(&myPen, P_90, P_CENTER_90);
+			break;
+		}
+		[[fallthrough]];
+	case Lanes::TAIL_L:
 		//DrawLine(hdc,P_90, P_CENTER);
 		graphics.DrawLine(&myPen,P_90,P_CENTER);
 		//p->drawLine(P_90, P_CENTER);
@@ -894,12 +918,19 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	// horizontal line
 	switch (type) {
 	case Lanes::MERGE_FORK:
+	case Lanes::BOUNDARY_C:
+		if (rolledUp)
+		{
+			graphics.DrawLine(&myPen, P_180, P_CENTER_180);
+			graphics.DrawLine(&myPen, P_CENTER_0, P_0);
+			break;
+		}
+		[[fallthrough]];
 	case Lanes::JOIN:
 	case Lanes::HEAD:
 	case Lanes::TAIL:
 	case Lanes::CROSS:
 	case Lanes::CROSS_EMPTY:
-	case Lanes::BOUNDARY_C:
 		//DrawLine(hdc,P_180,P_0);
 		graphics.DrawLine(&myPen,P_180,P_0);
 		//p->drawLine(P_180, P_0);
@@ -907,14 +938,23 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	case Lanes::MERGE_FORK_R:
 	case Lanes::BOUNDARY_R:
 		//DrawLine(hdc,P_180,P_CENTER);
-		graphics.DrawLine(&myPen,P_180,P_CENTER);
+		if (rolledUp)
+			graphics.DrawLine(&myPen, P_180, P_CENTER_180);
+		else
+			graphics.DrawLine(&myPen, P_180, P_CENTER);
 		//p->drawLine(P_180, P_CENTER);
 		break;
 	case Lanes::MERGE_FORK_L:
 	case Lanes::MERGE_FORK_L_INITIAL:
+	case Lanes::BOUNDARY_L:
+		if (rolledUp)
+		{
+			graphics.DrawLine(&myPen, P_CENTER_0, P_0);
+			break;
+		}
+		[[fallthrough]];
 	case Lanes::HEAD_L:
 	case Lanes::TAIL_L:
-	case Lanes::BOUNDARY_L:
 		//DrawLine(hdc,P_CENTER,P_0);
 		graphics.DrawLine(&myPen,P_CENTER,P_0);
 		//p->drawLine(P_CENTER, P_0);
@@ -930,6 +970,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	HBRUSH oldbrush = static_cast<HBRUSH>(::SelectObject(hdc, brush));
 
 	Gdiplus::SolidBrush myBrush(GetGdiColor(col));
+	Gdiplus::Pen myPen1(GetGdiColor(col), 1);
 	// center symbol, e.g. rect or ellipse
 	switch (type) {
 	case Lanes::ACTIVE:
@@ -939,7 +980,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
-		graphics.FillEllipse(&myBrush, R_CENTER);
+		if (rolledUp)
+			graphics.DrawEllipse(&myPen1, R_CENTER);
+		else
+			graphics.FillEllipse(&myBrush, R_CENTER);
 		//p->drawEllipse(R_CENTER);
 		break;
 	case Lanes::MERGE_FORK:
@@ -950,7 +994,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
-		graphics.FillRectangle(&myBrush, R_CENTER);
+		if (rolledUp)
+			graphics.DrawRectangle(&myPen1, R_CENTER);
+		else
+			graphics.FillRectangle(&myBrush, R_CENTER);
 		break;
 	case Lanes::UNAPPLIED:
 		// Red minus sign
@@ -982,7 +1029,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 		//p->setBrush(back);
 		//p->drawRect(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
-		graphics.FillRectangle(&myBrush,R_CENTER);
+		if (rolledUp)
+			graphics.DrawRectangle(&myPen1, R_CENTER);
+		else
+			graphics.FillRectangle(&myBrush, R_CENTER);
 		break;
 	default:
 		break;
@@ -991,6 +1041,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, int x1, i
 	::SelectObject(hdc,oldpen);
 	::SelectObject(hdc,oldbrush);
 	#undef P_CENTER
+	#undef P_CENTER_0
+	#undef P_CENTER_90
+	#undef P_CENTER_180
+	#undef P_CENTER_270
 	#undef P_0
 	#undef P_90
 	#undef P_180
@@ -1043,7 +1097,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 			continue;
 
 		COLORREF color = i == activeLane ? activeColor : CTheme::Instance().GetThemeColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1 + (i % Lanes::COLORS_NUM))), true);
-		paintGraphLane(hdc, rect.Height(),ln, x1+rect.left, x2+rect.left, color,activeColor, rect.top);
+		paintGraphLane(hdc, rect.Height(), ln, data->m_RolledUp, x1 + rect.left, x2 + rect.left, color,activeColor, rect.top);
 	}
 
 #if 0
@@ -2348,6 +2402,13 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			} // m_ContextMenuMask &GetContextMenuBit(ID_DELETE)
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
+
+			if ((m_ContextMenuMask & GetContextMenuBit(ID_TOGGLE_ROLLUP)) && (m_ShowFilter & FILTERSHOW_MERGEPOINTS) && !m_LogFilter->IsFilterActive())
+			{
+				popup.AppendMenuIcon(ID_TOGGLE_ROLLUP, pSelLogEntry->m_RolledUp ? IDS_LOG_POPUP_EXPAND : IDS_LOG_POPUP_COLLAPSE);
+				popup.AppendMenu(MF_SEPARATOR, NULL);
+			}
+
 		} // selectedCount == 1
 
 		CIconMenu clipSubMenu;
@@ -2960,6 +3021,10 @@ UINT CGitLogListBase::LogThread()
 		auto hashMapSharedPtr = m_HashMap;
 		const auto& hashMap = *hashMapSharedPtr;
 
+		auto rollUpStatesSharedPtr = m_RollUpStates;
+		const auto &rollUpStates = *rollUpStatesSharedPtr;
+		std::unordered_set<CGitHash> collapsedNodes, expandedNodes;
+
 		GIT_COMMIT commit;
 		t2 = t1 = GetTickCount64();
 		int oldprecentage = 0;
@@ -3050,9 +3115,44 @@ UINT CGitLogListBase::LogThread()
 #ifdef DEBUG
 			//pRev->DbgPrint();
 #endif
+			bool visible;
+			if (rollUpStates.empty() || !(m_ShowFilter & FILTERSHOW_MERGEPOINTS))
+			{
+				visible = ShouldShowFilter(pRev, commitChildren, hashMap);
+				pRev->m_RolledUp = !ShouldShowAnyFilter();
+				pRev->m_RolledUpIsForced = false;
+			}
+			else // !(rollUpStates.empty())
+			{
+				auto itChildren = commitChildren.find(pRev->m_CommitHash);
+				bool hasChildren = itChildren != commitChildren.end();
+				bool isFork = hasChildren && (itChildren->second.size() > 1);
+				bool isChildExpanded = hasChildren && !isFork && expandedNodes.count(*itChildren->second.begin());
+				bool isChildCollapsed = hasChildren && !isFork && !isChildExpanded && collapsedNodes.count(*itChildren->second.begin());
 
-			bool visible = filter(pRev, this, hashMap);
-			if (visible && !ShouldShowFilter(pRev, commitChildren, hashMap))
+				auto itForcedState = rollUpStates.find(pRev->m_CommitHash);
+				bool hasForcedState = itForcedState != rollUpStates.end();
+				bool forcedRollUp = hasForcedState && (itForcedState->second == RollUpState::Collapse);
+
+				bool shouldShowAny = ShouldShowAnyFilter();
+				bool shouldShowSpecial = ShouldShowRefsFilter(pRev, hashMap) || ShouldShowMergePointsFilter(pRev, commitChildren);
+
+				bool isSpecial = isFork || shouldShowSpecial;
+				bool isRegular = !isSpecial;
+
+				visible = isSpecial || isChildExpanded || (shouldShowAny && !isChildCollapsed);
+
+				bool rolledUpByDefault = (isSpecial && !shouldShowAny) || (isRegular && isChildCollapsed);
+				pRev->m_RolledUp = (visible && hasForcedState) ? forcedRollUp : rolledUpByDefault;
+				pRev->m_RolledUpIsForced = (pRev->m_RolledUp != rolledUpByDefault);
+
+				if (pRev->m_RolledUp)
+					collapsedNodes.insert(pRev->m_CommitHash);
+				else
+					expandedNodes.insert(pRev->m_CommitHash);
+			}
+
+			if (visible && !filter(pRev, this, hashMap))
 				visible = false;
 			this->m_critSec.Lock();
 			m_logEntries.append(hash, visible);
@@ -3213,62 +3313,76 @@ void CGitLogListBase::StartLoadingThread()
 	m_LoadingThread->ResumeThread();
 }
 
-bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren, const MAP_HASH_NAME& hashMap)
+bool CGitLogListBase::ShouldShowAnyFilter()
 {
-	if (m_ShowFilter & FILTERSHOW_ANYCOMMIT)
+	return m_ShowFilter & FILTERSHOW_ANYCOMMIT;
+}
+
+bool CGitLogListBase::ShouldShowRefsFilter(GitRevLoglist* pRev, const MAP_HASH_NAME& hashMap)
+{
+	if (!(m_ShowFilter & FILTERSHOW_REFS))
+		return false;
+
+	// Keep the head.
+	if (pRev->m_CommitHash == m_HeadHash)
 		return true;
 
-	if ((m_ShowFilter & FILTERSHOW_REFS) && hashMap.find(pRev->m_CommitHash) != hashMap.cend())
+	// Keep all refs.
+	auto refsIt = hashMap.find(pRev->m_CommitHash);
+	if (refsIt == hashMap.cend())
+		return false;
+	const auto& refList = refsIt->second;
+	for (const CString &str : refList)
 	{
-		// Keep all refs.
-		const auto& refList = hashMap.find(pRev->m_CommitHash)->second;
-		for (size_t i = 0; i < refList.size(); ++i)
+		if (CStringUtils::StartsWith(str, L"refs/heads/"))
 		{
-			const CString &str = refList[i];
-			if (CStringUtils::StartsWith(str, L"refs/heads/"))
-			{
-				if (m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES)
-					return true;
-			}
-			else if (CStringUtils::StartsWith(str, L"refs/remotes/"))
-			{
-				if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
-					return true;
-			}
-			else if (CStringUtils::StartsWith(str, L"refs/tags/"))
-			{
-				if (m_ShowRefMask & LOGLIST_SHOWTAGS)
-					return true;
-			}
-			else if (CStringUtils::StartsWith(str, L"refs/stash"))
-			{
-				if (m_ShowRefMask & LOGLIST_SHOWSTASH)
-					return true;
-			}
-			else if (CStringUtils::StartsWith(str, L"refs/bisect/"))
-			{
-				if (m_ShowRefMask & LOGLIST_SHOWBISECT)
-					return true;
-			}
+			if (m_ShowRefMask & LOGLIST_SHOWLOCALBRANCHES)
+				return true;
 		}
-		// Keep the head too.
-		if (pRev->m_CommitHash == m_HeadHash)
-			return true;
-	}
-
-	if (m_ShowFilter & FILTERSHOW_MERGEPOINTS)
-	{
-		if (pRev->ParentsCount() > 1)
-			return true;
-		auto childrenIt = commitChildren.find(pRev->m_CommitHash);
-		if (childrenIt != commitChildren.end())
+		else if (CStringUtils::StartsWith(str, L"refs/remotes/"))
 		{
-			const std::unordered_set<CGitHash> &children = childrenIt->second;
-			if (children.size() > 1)
+			if (m_ShowRefMask & LOGLIST_SHOWREMOTEBRANCHES)
+				return true;
+		}
+		else if (CStringUtils::StartsWith(str, L"refs/tags/"))
+		{
+			if (m_ShowRefMask & LOGLIST_SHOWTAGS)
+				return true;
+		}
+		else if (CStringUtils::StartsWith(str, L"refs/stash"))
+		{
+			if (m_ShowRefMask & LOGLIST_SHOWSTASH)
+				return true;
+		}
+		else if (CStringUtils::StartsWith(str, L"refs/bisect/"))
+		{
+			if (m_ShowRefMask & LOGLIST_SHOWBISECT)
 				return true;
 		}
 	}
 	return false;
+}
+
+bool CGitLogListBase::ShouldShowMergePointsFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren)
+{
+	if (!(m_ShowFilter & FILTERSHOW_MERGEPOINTS))
+		return false;
+
+	if (pRev->ParentsCount() > 1)
+		return true;
+
+	if (auto childrenIt = commitChildren.find(pRev->m_CommitHash); childrenIt != commitChildren.end())
+	{
+		const std::unordered_set<CGitHash> &children = childrenIt->second;
+		if (children.size() > 1)
+			return true;
+	}
+	return false;
+}
+
+bool CGitLogListBase::ShouldShowFilter(GitRevLoglist* pRev, const std::unordered_map<CGitHash, std::unordered_set<CGitHash>>& commitChildren, const MAP_HASH_NAME& hashMap)
+{
+	return ShouldShowAnyFilter() || ShouldShowRefsFilter(pRev, hashMap) || ShouldShowMergePointsFilter(pRev, commitChildren);
 }
 
 void CGitLogListBase::ShowGraphColumn(bool bShow)

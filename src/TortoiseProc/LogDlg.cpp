@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -3218,7 +3218,7 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	else
 		m_LogList.m_ShowRefMask &= ~flag;
 
-	if ((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT))
+	if (((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT)) || !m_LogList.m_RollUpStates->empty())
 	{
 		// Remove commits where labels are not shown.
 		OnRefresh();

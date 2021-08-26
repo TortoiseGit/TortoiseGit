@@ -105,6 +105,8 @@ BEGIN
     IDS_SWITCH_BRANCH       "&Switch/Checkout to"
     IDS_NOTFOUND            "not found"
     IDS_LOG_POPUP_COMPARECHANGESET "Comp&are change sets"
+    IDS_LOG_POPUP_COLLAPSE  "Collapse revisions"
+    IDS_LOG_POPUP_EXPAND    "Expand collapsed revisions"
 END 
 
 

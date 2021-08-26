@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,6 +91,8 @@ public:
 	CString m_Notes;
 
 	wchar_t m_Mark;
+	bool m_RolledUp; // Parent commits up to the next merge, fork or ref are not shown
+	bool m_RolledUpIsForced; // for CGitLogList::ContextMenuAction()/ID_TOGGLE_ROLLUP
 	CString m_Ref; // for Refloglist
 	CString m_RefAction; // for Refloglist
 
