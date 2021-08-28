@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+  <msix xmlns="urn:schemas-microsoft-com:msix.v1"
+        publisher="E=mail@cs-ware.de, CN=&quot;Open Source Developer, Sven Strickroth&quot;, O=Open Source Developer, S=Bavaria, C=DE"
+        packageName="0BF99681-825C-4B2A-A14F-2AC01DB9B70E"
+        applicationId="TortoiseGit"
+  />
+</assembly>
