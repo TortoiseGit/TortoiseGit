@@ -18,6 +18,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
+#include <comutil.h>
+#include <winrt/base.h>
+#include <wrl/client.h>
 #include "ShellExt.h"
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
@@ -517,7 +520,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	wchar_t verbsbuffer[255] = { 0 };
 	MAKESTRING(stringid);
 
-	if (istop)
+	if (istop && menu)
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
@@ -622,8 +625,10 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
 	}
 	menuiteminfo.wID = static_cast<UINT>(id);
-	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
-
+	if (menu)
+		InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
+	else
+		m_explorerCommands.push_back(CExplorerCommand(menutextbuffer, icon, com, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 	if (istop)
 	{
 		//menu entry for the top context menu, so append an "Git " before
@@ -903,29 +908,32 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		}
 	}
 
-	//check if we already added our menu entry for a folder.
-	//we check that by iterating through all menu entries and check if
-	//the dwItemData member points to our global ID string. That string is set
-	//by our shell extension when the folder menu is inserted.
-	wchar_t menubuf[MAX_PATH] = { 0 };
-	int count = GetMenuItemCount(hMenu);
-	for (int i=0; i<count; ++i)
+	if (hMenu)
 	{
-		MENUITEMINFO miif = { 0 };
-		miif.cbSize = sizeof(MENUITEMINFO);
-		miif.fMask = MIIM_DATA;
-		miif.dwTypeData = menubuf;
-		miif.cch = _countof(menubuf);
-		GetMenuItemInfo(hMenu, i, TRUE, &miif);
-		if (miif.dwItemData == reinterpret_cast<ULONG_PTR>(g_MenuIDString))
-			return S_OK;
+		//check if we already added our menu entry for a folder.
+		//we check that by iterating through all menu entries and check if
+		//the dwItemData member points to our global ID string. That string is set
+		//by our shell extension when the folder menu is inserted.
+		wchar_t menubuf[MAX_PATH] = { 0 };
+		int count = GetMenuItemCount(hMenu);
+		for (int i=0; i<count; ++i)
+		{
+			MENUITEMINFO miif = { 0 };
+			miif.cbSize = sizeof(MENUITEMINFO);
+			miif.fMask = MIIM_DATA;
+			miif.dwTypeData = menubuf;
+			miif.cch = _countof(menubuf);
+			GetMenuItemInfo(hMenu, i, TRUE, &miif);
+			if (miif.dwItemData == reinterpret_cast<ULONG_PTR>(g_MenuIDString))
+				return S_OK;
+		}
 	}
 
 	LoadLangDll();
 	UINT idCmd = idCmdFirst;
 
 	//create the sub menu
-	HMENU subMenu = CreateMenu();
+	HMENU subMenu = hMenu ? CreateMenu() : nullptr;
 	int indexSubMenu = 0;
 
 	unsigned __int64 topmenu = g_ShellCache.GetMenuLayout();
@@ -936,8 +944,11 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	bool bAddSeparator = false;
 	bool bMenuEntryAdded = false;
 	bool bMenuEmpty = true;
-	// insert separator at start
-	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+	if (hMenu)
+	{
+		// insert separator at start
+		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+	}
 	bool bShowIcons = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\ShowContextMenuIcons", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
@@ -973,7 +984,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 					{
 						bAddSeparator = false;
 						bMenuEntryAdded = false;
-						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, nullptr);
+						if (subMenu)
+							InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr);
+						else
+							m_explorerCommands.push_back(CExplorerCommand(L"", 0, 0, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 						idCmd++;
 					}
 
@@ -1020,10 +1034,13 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	{
 		if (idCmd - idCmdFirst > 0)
 		{
-			//separator after
-			InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+			if (hMenu)
+			{
+				//separator after
+				InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+				TweakMenu(hMenu);
+			}
 		}
-		TweakMenu(hMenu);
 
 		//return number of menu items added
 		return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, static_cast<USHORT>(idCmd - idCmdFirst)));
@@ -1172,7 +1189,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
 			//* pathfile is a path to a temporary file which contains a list of file paths
 
-			InvokeCommand(id_it->second,
+			InvokeCommand(static_cast<int>(id_it->second),
 						  static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)),
 						  uuidSource,
 						  lpcmi->hwnd,
@@ -1619,7 +1636,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		wchar_t buf[30] = { 0 };
 		swprintf_s(buf, L"%p", static_cast<void*>(hParent));
 		gitCmd += buf;
-		RunCommand(appDir + L"TortoiseGitProc.exe", gitCmd, L"TortoiseProc launch failed");
+		RunCommand(appDir + L"TortoiseGitProc.exe", gitCmd, L"TortoiseGitProc launch failed");
 	}
 }
 
@@ -1916,7 +1933,7 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	if (!PathFileExists(adminDir + L"lfs"))
 		return false;
 
-	HMENU lfssubmenu = CreateMenu();
+	HMENU lfssubmenu = hMenu ? CreateMenu() : nullptr;
 	int indexlfssub = 0;
 	bool anyMenu = false;
 
@@ -1945,7 +1962,8 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	menuiteminfo.dwTypeData = stringtablebuffer;
 	menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
-	InsertMenuItem((topmenu & MENULFS) ? hMenu : subMenu, (topmenu & MENULFS) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+	if (hMenu)
+		InsertMenuItem((topmenu & MENULFS) ? hMenu : subMenu, (topmenu & MENULFS) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 	myIDMap[idCmd - idCmdFirst] = ShellMenuLFSMenu;
 	myIDMap[idCmd++] = ShellMenuLFSMenu;
 
@@ -1959,6 +1977,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	bool bShowIgnoreMenu = false;
 	wchar_t maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
 	wchar_t ignorepath[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
+	std::vector<CExplorerCommand> exCmds;
 	if (files_.empty())
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
@@ -1984,8 +2003,11 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		}
 		if (p!=-1)
 		{
-			ignoresubmenu = CreateMenu();
-			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+			ignoresubmenu = hMenu ? CreateMenu() : nullptr;
+			if (hMenu)
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+			else
+				exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuUnIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 			auto verb = std::wstring(ignorepath);
 			myVerbsMap[verb] = idCmd - idCmdFirst;
 			myVerbsMap[verb] = idCmd;
@@ -2005,8 +2027,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			{
 				if (!ignoresubmenu)
 					ignoresubmenu = CreateMenu();
-
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+				else
+					exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuUnIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(maskbuf);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2026,7 +2050,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			if (itemStates & ITEMIS_INGIT)
 			{
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
 				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
 
@@ -2034,7 +2061,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
 					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
-					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					if (hMenu)
+						InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					else
+						exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuDeleteIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
@@ -2046,7 +2076,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			}
 			else
 			{
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
 				myIDMap[idCmd++] = ShellMenuIgnore;
 
@@ -2054,7 +2087,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
 					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
-					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					if (hMenu)
+						InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, maskbuf);
+					else
+						exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
@@ -2083,7 +2119,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2102,7 +2141,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLEMASK);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2123,7 +2165,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUIGNOREMULTIPLE);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2142,7 +2187,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUIGNOREMULTIPLEMASK);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2177,7 +2225,22 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		menuiteminfo.dwTypeData = stringtablebuffer;
 		menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
-		InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+		if (hMenu)
+			InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+		else
+		{
+			m_explorerCommands.push_back(CExplorerCommand(L"", 0, ShellSeparator, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
+			for (const auto& cmd : exCmds)
+			{
+				m_explorerCommands.push_back(cmd);
+				std::wstring prep = stringtablebuffer;
+				prep += L": ";
+				m_explorerCommands.back().PrependTitleWith(prep);
+			}
+			// currently, explorer does not support subcommands which their own subcommands. Once it does,
+			// use the line below instead of the ones above
+			//m_explorerCommands.push_back(CExplorerCommand(stringTableBuffer, icon, ShellMenuUnIgnoreSub, GetAppDirectory(), uuidSource, itemStates, itemStatesFolder, m_files, exCmds));
+		}
 		if (itemStates & ITEMIS_IGNORED)
 		{
 			myIDMap[idCmd - idCmdFirst] = ShellMenuUnIgnoreSub;
@@ -2221,4 +2284,205 @@ bool CShellExt::ShouldEnableMenu(const YesNoPair& pair) const
 	else if ((pair.no) && ((pair.no & (~itemStates)) == pair.no))
 		return true;
 	return false;
+}
+
+// IExplorerCommand
+HRESULT __stdcall CShellExt::GetTitle(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszName)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetTitle\n");
+	SHStrDupW(L"TortoiseGit", ppszName);
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetIcon(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszIcon)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetIcon\n");
+	std::wstring iconPath = static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll));
+	iconPath += L"TortoiseGitProc.exe,-";
+	iconPath += std::to_wstring(IDI_APP);
+	SHStrDupW(iconPath.c_str(), ppszIcon);
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetToolTip(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszInfotip)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetToolTip\n");
+	*ppszInfotip = nullptr;
+	return E_NOTIMPL;
+}
+
+HRESULT __stdcall CShellExt::GetCanonicalName(GUID* pguidCommandName)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetCanonicalName\n");
+	*pguidCommandName = GUID_NULL;
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToBeSlow, EXPCMDSTATE* pCmdState)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState\n");
+	*pCmdState = ECS_ENABLED;
+	if (m_site)
+	{
+		Microsoft::WRL::ComPtr<IOleWindow> oleWindow;
+		m_site.As(&oleWindow);
+		if (oleWindow)
+		{
+			// in Win11, the "main" context menu does not provide an IOleWindow,
+			// so this is for the old context menu, and there we don't show this menu
+			*pCmdState = ECS_HIDDEN;
+			return S_OK;
+		}
+	}
+
+	if (!fOkToBeSlow)
+		return E_PENDING;
+
+	Initialize(nullptr, nullptr, nullptr);
+	Microsoft::WRL::ComPtr<IShellItemArray> itemArray;
+	if (!psiItemArray)
+	{
+		// context menu for a folder background (no selection),
+		// so try to get the current path of the explorer window instead
+		auto path = ExplorerViewPath();
+		if (path.empty())
+		{
+			*pCmdState = ECS_HIDDEN;
+			return S_OK;
+		}
+		PIDLIST_ABSOLUTE pidl{};
+		if (SUCCEEDED(SHParseDisplayName(path.c_str(), nullptr, &pidl, 0, nullptr)))
+		{
+			if (SUCCEEDED(SHCreateShellItemArrayFromIDLists(1, const_cast<LPCITEMIDLIST*>(&pidl), itemArray.GetAddressOf())))
+			{
+				if (itemArray)
+				{
+					psiItemArray = itemArray.Get();
+				}
+			}
+		}
+	}
+	if (psiItemArray)
+	{
+		IDataObject* pDataObj = nullptr;
+		if (SUCCEEDED(psiItemArray->BindToHandler(nullptr, BHID_DataObject, IID_IDataObject, reinterpret_cast<void**>(&pDataObj))))
+		{
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize from GetState()\n");
+
+			Initialize(nullptr, pDataObj, nullptr);
+			pDataObj->Release();
+			pDataObj = nullptr;
+		}
+		else
+			*pCmdState = ECS_HIDDEN;
+	}
+
+	if (g_ShellCache.HideMenusForUnversionedItems() && (GetKeyState(VK_SHIFT) & 0x8000) == 0)
+	{
+		if ((itemStates & (ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER | ITEMIS_FOLDERINGIT)) == 0)
+			*pCmdState = ECS_HIDDEN;
+	}
+
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::Invoke(IShellItemArray* /*psiItemArray*/, IBindCtx* /*pbc*/)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT __stdcall CShellExt::GetFlags(EXPCMDFLAGS* pFlags)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetFlags\n");
+	*pFlags = ECF_HASSUBCOMMANDS;
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::EnumSubCommands(IEnumExplorerCommand** ppEnum)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: EnumSubCommands\n");
+	m_explorerCommands.clear();
+	QueryContextMenu(nullptr, 0, 0, 0, CMF_EXTENDEDVERBS | CMF_NORMAL);
+	*ppEnum = new CExplorerCommandEnum(m_explorerCommands);
+	(*ppEnum)->AddRef();
+	return S_OK;
+}
+
+std::wstring CShellExt::ExplorerViewPath()
+{
+	std::wstring path;
+	HRESULT hr = NOERROR;
+
+	// the top context menu in Win11 does not
+	// provide an IOleWindow with the SetSite() object,
+	// so we have to use a trick to get it: since the
+	// context menu must always be the top window, we
+	// just grab the foreground window and assume that
+	// this is the explorer window.
+	auto hwnd = ::GetForegroundWindow();
+	if (!hwnd)
+		return path;
+
+	wchar_t szName[1024] = { 0 };
+	::GetClassName(hwnd, szName, _countof(szName));
+	if (StrCmp(szName, L"WorkerW") == 0 || StrCmp(szName, L"Progman") == 0)
+	{
+		//special folder: desktop
+		hr = ::SHGetFolderPath(nullptr, CSIDL_DESKTOP, nullptr, SHGFP_TYPE_CURRENT, szName);
+		if (FAILED(hr))
+			return path;
+
+		path = szName;
+		return path;
+	}
+
+	if (StrCmp(szName, L"CabinetWClass") != 0)
+		return path;
+
+	// get the shell windows object to enumerate all active explorer
+	// instances. We use those to compare the foreground hwnd to it.
+	Microsoft::WRL::ComPtr<IShellWindows> shell;
+	if (FAILED(CoCreateInstance(CLSID_ShellWindows, nullptr, CLSCTX_ALL, IID_IShellWindows, reinterpret_cast<LPVOID*>(shell.GetAddressOf()))))
+		return path;
+
+	if (!shell)
+		return path;
+
+	Microsoft::WRL::ComPtr<IDispatch> disp;
+	VARIANT variant{};
+	variant.vt = VT_I4;
+
+	Microsoft::WRL::ComPtr<IWebBrowserApp> browser;
+	// look for correct explorer window
+	for (variant.intVal = 0; shell->Item(variant, disp.GetAddressOf()) == S_OK; variant.intVal++)
+	{
+		Microsoft::WRL::ComPtr<IWebBrowserApp> tmp;
+		if (FAILED(disp->QueryInterface(tmp.GetAddressOf())))
+			continue;
+
+		HWND tmpHwnd = nullptr;
+		hr = tmp->get_HWND(reinterpret_cast<SHANDLE_PTR*>(&tmpHwnd));
+		if (hwnd == tmpHwnd)
+		{
+			browser = tmp;
+			break; // found it!
+		}
+	}
+
+	if (browser != nullptr)
+	{
+		BSTR url;
+		hr = browser->get_LocationURL(&url);
+		if (FAILED(hr))
+			return path;
+
+		std::wstring sUrl(url, SysStringLen(url));
+		SysFreeString(url);
+		DWORD size = _countof(szName);
+		hr = ::PathCreateFromUrl(sUrl.c_str(), szName, &size, NULL);
+		if (SUCCEEDED(hr))
+			path = szName;
+	}
+
+	return path;
 }

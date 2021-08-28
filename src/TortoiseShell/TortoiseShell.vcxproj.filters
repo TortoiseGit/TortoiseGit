@@ -120,6 +120,9 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ExplorerCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">
@@ -243,6 +246,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\SmartHandle.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplorerCommand.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

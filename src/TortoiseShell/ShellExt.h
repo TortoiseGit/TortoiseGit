@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2018-2021 - TortoiseGit
-// Copyright (C) 2003-2012, 2014 - TortoiseSVN
+// Copyright (C) 2003-2012, 2014, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-
+#include <wrl/client.h>
 #include "Globals.h"
 #include "registry.h"
 #include "resource.h"
@@ -28,7 +28,9 @@
 #include "GitFolderStatus.h"
 #include "IconBitmapUtils.h"
 #include "MenuInfo.h"
+#include "ExplorerCommand.h"
 
+class CExplorerCommand;
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
 extern	HINSTANCE			g_hmodThisDll;			// Instance handle for this DLL
 extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
@@ -68,9 +70,12 @@ class CShellExt : public IContextMenu3,
 							IShellExtInit,
 							IShellIconOverlayIdentifier,
 							IShellPropSheetExt,
-							ICopyHookW
-
+							ICopyHookW,
+							IExplorerCommand,
+							IObjectWithSite
 {
+	friend class CExplorerCommand;
+
 protected:
 
 	FileState m_State;
@@ -94,6 +99,8 @@ protected:
 	GitFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
+	Microsoft::WRL::ComPtr<IUnknown> m_site;
+	std::vector<CExplorerCommand> m_explorerCommands;
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), static_cast<WORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT))))
 private:
@@ -113,7 +120,7 @@ private:
 	bool			IsIllegalFolder(const std::wstring& folder);
 	static void		RunCommand(const std::wstring& path, const std::wstring& command, LPCWSTR errorMessage);
 	static void InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater);
-
+	static std::wstring ExplorerViewPath();
 public:
 	CShellExt(FileState state);
 	virtual ~CShellExt();
@@ -185,5 +192,27 @@ public:
 	 */
 	//@{
 	STDMETHODIMP_(UINT) CopyCallback(HWND hWnd, UINT wFunc, UINT wFlags, LPCWSTR pszSrcFile, DWORD dwSrcAttribs, LPCWSTR pszDestFile, DWORD dwDestAttribs) override;
+	//@}
+
+	/** \name IExplorerCommand
+	 * IExplorerCommand members
+	 */
+	//@{
+	HRESULT STDMETHODCALLTYPE GetTitle(IShellItemArray* psiItemArray, LPWSTR* ppszName) override;
+	HRESULT STDMETHODCALLTYPE GetIcon(IShellItemArray* psiItemArray, LPWSTR* ppszIcon) override;
+	HRESULT STDMETHODCALLTYPE GetToolTip(IShellItemArray* psiItemArray, LPWSTR* ppszInfotip) override;
+	HRESULT STDMETHODCALLTYPE GetCanonicalName(GUID* pguidCommandName) override;
+	HRESULT STDMETHODCALLTYPE GetState(IShellItemArray* psiItemArray, BOOL fOkToBeSlow, EXPCMDSTATE* pCmdState) override;
+	HRESULT STDMETHODCALLTYPE Invoke(IShellItemArray* psiItemArray, IBindCtx* pbc) override;
+	HRESULT STDMETHODCALLTYPE GetFlags(EXPCMDFLAGS* pFlags) override;
+	HRESULT STDMETHODCALLTYPE EnumSubCommands(IEnumExplorerCommand** ppEnum) override;
+	//@}
+
+	/** \name IObjectWithSite
+	 * IObjectWithSite members
+	 */
+	//@{
+	HRESULT STDMETHODCALLTYPE SetSite(IUnknown* pUnkSite) override;
+	HRESULT STDMETHODCALLTYPE GetSite(REFIID riid, void** ppvSite) override;
 	//@}
 };
