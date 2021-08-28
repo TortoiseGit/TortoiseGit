@@ -62,6 +62,12 @@
 		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
 		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
 		<CustomAction Id="RestartExplorer" BinaryKey="CustomActionsDLL" DllEntry="RestartExplorer" />
+		<?if $(var.Platform) = "x64" ?>
+		<!-- only needed for Windows 11; there is no x86 version -->
+		<Binary Id="CustomActionsDLL11" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions11.dll" />
+		<CustomAction Id="RegisterSparsePackage" BinaryKey="CustomActionsDLL11" DllEntry="RegisterSparsePackage"/>
+		<CustomAction Id="UnregisterSparsePackage" BinaryKey="CustomActionsDLL11" DllEntry="UnregisterSparsePackage"/>
+		<?endif ?>
 
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
 		<Property Id="VSDUIANDADVERTISED" Secure="yes">This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic.</Property>
@@ -84,6 +90,22 @@
 			<RegistrySearch Key="SOFTWARE\[Manufacturer]" Root="HKLM" Type="raw" Id="LANGUAGEFOLDER_REGSEARCH" Name="LanguageFolderPath" Win64="$(var.Win64YesNo)"/>
 		</Property>
 
+		<?if $(var.Platform) = "x64" ?>
+		<!-- only needed for Windows 11; there is no x86 version -->
+		<!-- msiexec does not have a manifest, so it always reports the version of system dlls as
+			 for Win7 (6.3.x.x). So we check for 6.3 but use the build number to actually check
+			 for Win11 -->
+		<Property Id="WIN11FOUND" Secure="yes">
+			<DirectorySearch Id="searchSystem" Path="[System64Folder]" AssignToProperty="yes">
+				<FileSearch Id="searchFile" Name="shell32.dll" MinVersion="6.3.21999.0"/>
+			</DirectorySearch>
+		</Property>
+
+		<!-- properties for the custom actions to (un)register the sparse package -->
+		<Property Id="SPARSEPACKAGEFILE" Value="package.msix"  Secure="yes"/>
+		<Property Id="SPARSEPACKAGENAME" Value="0BF99681-825C-4B2A-A14F-2AC01DB9B70E"  Secure="yes"/>
+		<?endif ?>
+
 		<?include FeaturesFragment.wxi?>
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
@@ -105,6 +127,11 @@
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
 			<Custom Action="KillCache" After="ValidateProductID">Installed OR REMOVE OR CLOSETGITCACHE</Custom>
+			<?if $(var.Platform) = "x64" ?>
+			<!-- only needed for Windows 11; there is no x86 version -->
+			<Custom Action="RegisterSparsePackage" After="InstallFinalize">NOT (REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>
+			<Custom Action="UnregisterSparsePackage" Before="RemoveFiles">(REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>
+			<?endif ?>
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->

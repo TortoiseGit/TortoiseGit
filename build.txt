@@ -24,7 +24,7 @@ First, you need to install the compiler package:
    * VC++ 2017 v141 toolset (x86,x64) (checked by default)
    * Visual C++ ATL-support (x86 and x64)
    * Visual C++ MFC support (x86 and x64)
-   * Windows 10 SDK
+   * Windows 10 SDK (>= 10.0.19041.0 for building the installer for the Windows 11 start menu extension)
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
    * optional: GoogleTestAdapter (if you want to run the tests from within VS or use the package described below)
 

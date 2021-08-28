@@ -71,7 +71,7 @@
 		<Content Include="ProtocolSupport.wxi" />
 	</ItemGroup>
 	<PropertyGroup>
-		<PreBuildEvent>"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackage -p ..\..\Release64\bin\package.msix /nv
+		<PreBuildEvent Condition="'$(Platform)'=='x64'">"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackage -p ..\..\Release64\bin\package.msix /nv
 "$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /I "Certum Code Signing CA SHA2" /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https:/tortoisegit.org/" /q ..\..\Release64\bin\package.msix</PreBuildEvent>
 	</PropertyGroup>
 </Project>
