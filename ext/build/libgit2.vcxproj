@@ -84,6 +84,7 @@
     <ClCompile Include="..\libgit2\src\cherrypick.c" />
     <ClCompile Include="..\libgit2\src\clone.c" />
     <ClCompile Include="..\libgit2\src\commit.c" />
+    <ClCompile Include="..\libgit2\src\commit_graph.c" />
     <ClCompile Include="..\libgit2\src\commit_list.c" />
     <ClCompile Include="..\libgit2\src\config.c" />
     <ClCompile Include="..\libgit2\src\config_cache.c" />
@@ -271,7 +272,9 @@
     <ClInclude Include="..\libgit2\include\git2\submodule.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\alloc.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\commit.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\commit_graph.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\config.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\cred.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\credential.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\diff.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\filter.h" />
@@ -279,6 +282,7 @@
     <ClInclude Include="..\libgit2\include\git2\sys\index.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\mempack.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\merge.h" />
+    <ClInclude Include="..\libgit2\include\git2\sys\midx.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\odb_backend.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\openssl.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\path.h" />
@@ -313,6 +317,7 @@
     <ClInclude Include="..\libgit2\src\checkout.h" />
     <ClInclude Include="..\libgit2\src\clone.h" />
     <ClInclude Include="..\libgit2\src\commit.h" />
+    <ClInclude Include="..\libgit2\src\commit_graph.h" />
     <ClInclude Include="..\libgit2\src\commit_list.h" />
     <ClInclude Include="..\libgit2\src\common.h" />
     <ClInclude Include="..\libgit2\src\config.h" />

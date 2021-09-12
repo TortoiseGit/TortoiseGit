@@ -262,8 +262,8 @@ int CPathUtils::ReadLink(LPCWSTR filename, CStringA* pTargetA)
 	if (reparse_buf->ReparseTag != IO_REPARSE_TAG_SYMLINK)
 		return -1;
 
-	wchar_t* target = reparse_buf->SymbolicLinkReparseBuffer.PathBuffer + (reparse_buf->SymbolicLinkReparseBuffer.SubstituteNameOffset / sizeof(WCHAR));
-	int target_len = reparse_buf->SymbolicLinkReparseBuffer.SubstituteNameLength / sizeof(WCHAR);
+	wchar_t* target = reparse_buf->ReparseBuffer.SymbolicLink.PathBuffer + (reparse_buf->ReparseBuffer.SymbolicLink.SubstituteNameOffset / sizeof(WCHAR));
+	int target_len = reparse_buf->ReparseBuffer.SymbolicLink.SubstituteNameLength / sizeof(WCHAR);
 	if (!target_len)
 		return -1;
 

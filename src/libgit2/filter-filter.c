@@ -285,6 +285,16 @@ static void filter_free(git_filter *self)
 	git__free(self);
 }
 
+static int filter_stream(
+	git_writestream			**out,
+	git_filter				*self,
+	void					**payload,
+	const git_filter_source	*src,
+	git_writestream			*next)
+{
+	return git_filter_buffered_stream_new(out, self, filter_apply, NULL, payload, src, next);
+}
+
 git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv)
 {
 	struct filter_filter *f = git__calloc(1, sizeof(struct filter_filter));
@@ -296,7 +306,7 @@ git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv)
 	f->f.initialize	= NULL;
 	f->f.shutdown	= filter_free;
 	f->f.check		= filter_check;
-	f->f.apply		= filter_apply;
+	f->f.stream		= filter_stream;
 	f->f.cleanup	= filter_cleanup;
 	f->shexepath	= NULL;
 	if (shexepath && shexepath[0])
