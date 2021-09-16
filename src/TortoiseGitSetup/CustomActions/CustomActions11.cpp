@@ -64,7 +64,16 @@ UINT __stdcall RegisterSparsePackage(MSIHANDLE hModule)
 	if (!SUCCEEDED(deployResult.ExtendedErrorCode()))
 	{
 		// Deployment failed
-		return deployResult.ExtendedErrorCode();
+		PMSIHANDLE hRecord = MsiCreateRecord(0);
+		std::wstring error = L"AddPackageByUriAsync failed (Errorcode: ";
+		error += std::to_wstring(deployResult.ExtendedErrorCode());
+		error += L"):\n";
+		error += deployResult.ErrorText();
+		MsiRecordSetStringW(hRecord, 0, error.c_str());
+		MsiProcessMessage(hModule, INSTALLMESSAGE_ERROR, hRecord);
+		MsiCloseHandle(hRecord);
+
+		return ERROR_INSTALL_FAILURE;
 	}
 	return ERROR_SUCCESS;
 }
@@ -85,7 +94,16 @@ UINT __stdcall UnregisterSparsePackage(MSIHANDLE hModule)
 	}
 	catch (winrt::hresult_error const& ex)
 	{
-		return ex.code().value;
+		PMSIHANDLE hRecord = MsiCreateRecord(0);
+		std::wstring error = L"FindPackagesForUser failed (Errorcode: ";
+		error += std::to_wstring(ex.code().value);
+		error += L"):\n";
+		error += ex.message();
+		MsiRecordSetStringW(hRecord, 0, error.c_str());
+		MsiProcessMessage(hModule, INSTALLMESSAGE_ERROR, hRecord);
+		MsiCloseHandle(hRecord);
+
+		return ERROR_INSTALL_FAILURE;
 	}
 
 	for (const auto& package : packages)
@@ -100,7 +118,16 @@ UINT __stdcall UnregisterSparsePackage(MSIHANDLE hModule)
 			break;
 
 		// Undeployment failed
-		return deployResult.ExtendedErrorCode();
+		PMSIHANDLE hRecord = MsiCreateRecord(0);
+		std::wstring error = L"RemovePackageAsync failed (Errorcode: ";
+		error += std::to_wstring(deployResult.ExtendedErrorCode());
+		error += L"):\n";
+		error += deployResult.ErrorText();
+		MsiRecordSetStringW(hRecord, 0, error.c_str());
+		MsiProcessMessage(hModule, INSTALLMESSAGE_ERROR, hRecord);
+		MsiCloseHandle(hRecord);
+
+		return ERROR_INSTALL_FAILURE;
 	}
 
 	return ERROR_SUCCESS;
