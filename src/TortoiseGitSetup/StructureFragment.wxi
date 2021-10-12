@@ -381,6 +381,8 @@
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
 						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
+						<?endif ?>
+						<?if $(var.Platform) = "x64" AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 						<File Id="F__packagemsix" Name="package.msix" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\package.msix" />
 						<?endif ?>
 					</Component>
