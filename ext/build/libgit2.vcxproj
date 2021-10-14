@@ -106,6 +106,7 @@
     <ClCompile Include="..\libgit2\src\diff_stats.c" />
     <ClCompile Include="..\libgit2\src\diff_tform.c" />
     <ClCompile Include="..\libgit2\src\diff_xdiff.c" />
+    <ClCompile Include="..\libgit2\src\email.c" />
     <ClCompile Include="..\libgit2\src\errors.c" />
     <ClCompile Include="..\libgit2\src\fetch.c" />
     <ClCompile Include="..\libgit2\src\fetchhead.c" />
@@ -253,6 +254,7 @@
     <ClInclude Include="..\libgit2\include\git2\cred_helpers.h" />
     <ClInclude Include="..\libgit2\include\git2\deprecated.h" />
     <ClInclude Include="..\libgit2\include\git2\describe.h" />
+    <ClInclude Include="..\libgit2\include\git2\email.h" />
     <ClInclude Include="..\libgit2\include\git2\filter.h" />
     <ClInclude Include="..\libgit2\include\git2\global.h" />
     <ClInclude Include="..\libgit2\include\git2\graph.h" />
@@ -332,6 +334,7 @@
     <ClInclude Include="..\libgit2\src\diff_parse.h" />
     <ClInclude Include="..\libgit2\src\diff_tform.h" />
     <ClInclude Include="..\libgit2\src\diff_xdiff.h" />
+    <ClInclude Include="..\libgit2\src\email.h" />
     <ClInclude Include="..\libgit2\src\errors.h" />
     <ClInclude Include="..\libgit2\src\fetch.h" />
     <ClInclude Include="..\libgit2\src\fetchhead.h" />

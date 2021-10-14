@@ -10,7 +10,7 @@ Released: unreleased
  * Fixed issue #2379: "Show changes as unified diff" from Commit window on N files opens N diff windows
  * Fixed issue #3738: Added force flag on LFSLocksDlg
  * Fixed issue #2299: Better support the git staging process
- * Update libgit2 to 1.2.0
+ * Update libgit2 to 1.3.0
  * Update pcre2 to 10.37
  * Update editorconfig to 0.12.5
  * Update libgit to 2.32.0 based on Git for Windows sources
