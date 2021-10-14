@@ -23,8 +23,8 @@ You will also need to have a Java Runtime Environment version 1.3.x or above.
     tools\xsl\		- the docbook xsl files from sourceforge
     tools\			- xsl processor, hhc.exe, ...
 
-you can download all the required tools as a 7-Zip package from our website:
-http://code.google.com/p/tortoisesvn/downloads/list
+you can download all the required tools as a 7-Zip package from the TortoiseSVN project:
+<https://osdn.net/projects/tortoisesvn/storage/build%20tools/>
 Use 7-zip extract the tools-*.7z file to e.g. \TortoiseGit\Tools. You might want to
 place your tools directory somewhere else on your harddisk, if you want to use it
 to build other docs too. This will, however, require tweaking the build scripts.
