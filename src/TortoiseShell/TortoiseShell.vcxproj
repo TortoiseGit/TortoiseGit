@@ -68,6 +68,7 @@
     <ClCompile Include="..\Git\GitAdminDir.cpp" />
     <ClCompile Include="..\Git\GitFolderStatus.cpp" />
     <ClCompile Include="..\Git\GitIndex.cpp" />
+    <ClCompile Include="ExplorerCommand.cpp" />
     <ClCompile Include="GITPropertyPage.cpp" />
     <ClCompile Include="..\Git\GitStatus.cpp" />
     <ClCompile Include="IconOverlay.cpp" />
@@ -115,6 +116,7 @@
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
     <ClInclude Include="..\Utils\SmartHandle.h" />
+    <ClInclude Include="ExplorerCommand.h" />
     <ClInclude Include="GITPropertyPage.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Guids.h" />
@@ -210,6 +212,9 @@
       <Project>{4f0a55de-dafd-4a0b-a03d-2c14cb77e08f}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\identity.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

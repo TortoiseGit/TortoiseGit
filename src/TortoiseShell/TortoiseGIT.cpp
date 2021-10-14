@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010, 2012 - TortoiseSVN
+// Copyright (C) 2003-2010, 2012, 2021 - TortoiseSVN
 // Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -140,6 +140,8 @@ STDAPI DllGetClassObject(REFCLSID rclsid, REFIID riid, LPVOID *ppvOut)
 		state = FileStateIgnoredOverlay;
 	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_UNVERSIONED))
 		state = FileStateUnversionedOverlay;
+	else if (IsEqualIID(rclsid, CLSID_Tortoisegit_EXPLORERCOMMAND))
+		state = FileStateVersioned;
 
 	if (state != FileStateInvalid)
 	{

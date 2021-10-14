@@ -18,6 +18,9 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
+#include <comutil.h>
+#include <winrt/base.h>
+#include <wrl/client.h>
 #include "ShellExt.h"
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
@@ -517,7 +520,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	wchar_t verbsbuffer[255] = { 0 };
 	MAKESTRING(stringid);
 
-	if (istop)
+	if (istop && menu)
 	{
 		//menu entry for the top context menu, so append an "Git " before
 		//the menu text to indicate where the entry comes from
@@ -622,8 +625,10 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
 	}
 	menuiteminfo.wID = static_cast<UINT>(id);
-	InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
-
+	if (menu)
+		InsertMenuItem(menu, pos, TRUE, &menuiteminfo);
+	else
+		m_explorerCommands.push_back(CExplorerCommand(menutextbuffer, icon, com, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 	if (istop)
 	{
 		//menu entry for the top context menu, so append an "Git " before
@@ -702,7 +707,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	return true;
 }
 
-std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
+std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly, const std::vector<std::wstring>& files, const std::wstring folder)
 {
 	//write all selected files and paths to a temporary file
 	//for TortoiseGitProc.exe to read out again.
@@ -728,13 +733,13 @@ std::wstring CShellExt::WriteFileListToTempFile(bool bFoldersOnly = false)
 	}
 
 	DWORD written = 0;
-	if (files_.empty())
+	if (files.empty())
 	{
-		::WriteFile (file, folder_.c_str(), static_cast<DWORD>(folder_.size()) * sizeof(wchar_t), &written, 0);
+		::WriteFile (file, folder.c_str(), static_cast<DWORD>(folder.size()) * sizeof(wchar_t), &written, 0);
 		::WriteFile(file, L"\n", 2, &written, 0);
 	}
 
-	for (const auto& file_ : files_)
+	for (const auto& file_ : files)
 	{
 		if (bFoldersOnly && !PathIsDirectory(file_.c_str()))
 			continue;
@@ -903,29 +908,32 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		}
 	}
 
-	//check if we already added our menu entry for a folder.
-	//we check that by iterating through all menu entries and check if
-	//the dwItemData member points to our global ID string. That string is set
-	//by our shell extension when the folder menu is inserted.
-	wchar_t menubuf[MAX_PATH] = { 0 };
-	int count = GetMenuItemCount(hMenu);
-	for (int i=0; i<count; ++i)
+	if (hMenu)
 	{
-		MENUITEMINFO miif = { 0 };
-		miif.cbSize = sizeof(MENUITEMINFO);
-		miif.fMask = MIIM_DATA;
-		miif.dwTypeData = menubuf;
-		miif.cch = _countof(menubuf);
-		GetMenuItemInfo(hMenu, i, TRUE, &miif);
-		if (miif.dwItemData == reinterpret_cast<ULONG_PTR>(g_MenuIDString))
-			return S_OK;
+		//check if we already added our menu entry for a folder.
+		//we check that by iterating through all menu entries and check if
+		//the dwItemData member points to our global ID string. That string is set
+		//by our shell extension when the folder menu is inserted.
+		wchar_t menubuf[MAX_PATH] = { 0 };
+		int count = GetMenuItemCount(hMenu);
+		for (int i=0; i<count; ++i)
+		{
+			MENUITEMINFO miif = { 0 };
+			miif.cbSize = sizeof(MENUITEMINFO);
+			miif.fMask = MIIM_DATA;
+			miif.dwTypeData = menubuf;
+			miif.cch = _countof(menubuf);
+			GetMenuItemInfo(hMenu, i, TRUE, &miif);
+			if (miif.dwItemData == reinterpret_cast<ULONG_PTR>(g_MenuIDString))
+				return S_OK;
+		}
 	}
 
 	LoadLangDll();
 	UINT idCmd = idCmdFirst;
 
 	//create the sub menu
-	HMENU subMenu = CreateMenu();
+	HMENU subMenu = hMenu ? CreateMenu() : nullptr;
 	int indexSubMenu = 0;
 
 	unsigned __int64 topmenu = g_ShellCache.GetMenuLayout();
@@ -936,8 +944,11 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	bool bAddSeparator = false;
 	bool bMenuEntryAdded = false;
 	bool bMenuEmpty = true;
-	// insert separator at start
-	InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+	if (hMenu)
+	{
+		// insert separator at start
+		InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+	}
 	bool bShowIcons = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\ShowContextMenuIcons", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
 	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
@@ -973,7 +984,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 					{
 						bAddSeparator = false;
 						bMenuEntryAdded = false;
-						InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR|MF_BYPOSITION, 0, nullptr);
+						if (subMenu)
+							InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr);
+						else
+							m_explorerCommands.push_back(CExplorerCommand(L"", 0, 0, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 						idCmd++;
 					}
 
@@ -1020,10 +1034,13 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	{
 		if (idCmd - idCmdFirst > 0)
 		{
-			//separator after
-			InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+			if (hMenu)
+			{
+				//separator after
+				InsertMenu(hMenu, indexMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr); idCmd++;
+				TweakMenu(hMenu);
+			}
 		}
-		TweakMenu(hMenu);
 
 		//return number of menu items added
 		return ResultFromScode(MAKE_SCODE(SEVERITY_SUCCESS, 0, static_cast<USHORT>(idCmd - idCmdFirst)));
@@ -1104,20 +1121,20 @@ void CShellExt::TweakMenu(HMENU hMenu)
 	SetMenuInfo(hMenu, &MenuInfo);
 }
 
-void CShellExt::AddPathCommand(std::wstring& gitCmd, LPCWSTR command, bool bFilesAllowed)
+void CShellExt::AddPathCommand(std::wstring& gitCmd, LPCWSTR command, bool bFilesAllowed, const std::vector<std::wstring>& files, const std::wstring folder)
 {
 	gitCmd += command;
 	gitCmd += L" /path:\"";
-	if ((bFilesAllowed) && !files_.empty())
-		gitCmd += files_.front();
+	if ((bFilesAllowed) && !files.empty())
+		gitCmd += files.front();
 	else
-		gitCmd += folder_;
+		gitCmd += folder;
 	gitCmd += L'"';
 }
 
-void CShellExt::AddPathFileCommand(std::wstring& gitCmd, LPCWSTR command, bool bFoldersOnly = false)
+void CShellExt::AddPathFileCommand(std::wstring& gitCmd, LPCWSTR command, const std::vector<std::wstring>& files, const std::wstring folder, bool bFoldersOnly = false)
 {
-	std::wstring tempfile = WriteFileListToTempFile(bFoldersOnly);
+	std::wstring tempfile = WriteFileListToTempFile(bFoldersOnly, files, folder);
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
@@ -1125,16 +1142,16 @@ void CShellExt::AddPathFileCommand(std::wstring& gitCmd, LPCWSTR command, bool b
 	gitCmd += L" /deletepathfile";
 }
 
-void CShellExt::AddPathFileDropCommand(std::wstring& gitCmd, LPCWSTR command)
+void CShellExt::AddPathFileDropCommand(std::wstring& gitCmd, LPCWSTR command, const std::vector<std::wstring>& files, const std::wstring folder)
 {
-	std::wstring tempfile = WriteFileListToTempFile();
+	std::wstring tempfile = WriteFileListToTempFile(false, files, folder);
 	gitCmd += command;
 	gitCmd += L" /pathfile:\"";
 	gitCmd += tempfile;
 	gitCmd += L'"';
 	gitCmd += L" /deletepathfile";
 	gitCmd += L" /droptarget:\"";
-	gitCmd += folder_;
+	gitCmd += folder;
 	gitCmd += L'"';
 }
 
@@ -1164,9 +1181,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			std::wstring tortoiseProcPath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe");
-			std::wstring tortoiseMergePath(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitMerge.exe");
-
 			//TortoiseGitProc expects a command line of the form:
 			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
 			// or
@@ -1174,441 +1188,456 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 			//
 			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
 			//* pathfile is a path to a temporary file which contains a list of file paths
-			std::wstring gitCmd = L" /command:";
-			std::wstring tempfile;
-			switch (id_it->second)
-			{
-				//#region case
-			case ShellMenuSync:
-				{
-					wchar_t syncSeq[12] = { 0 };
-					swprintf_s(syncSeq, L"%d", g_syncSeq++);
-					AddPathCommand(gitCmd, L"sync", false);
-					gitCmd += L" /seq:";
-					gitCmd += syncSeq;
-				}
-				break;
-			case ShellMenuSubSync:
-				AddPathFileCommand(gitCmd, L"subsync");
-				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
-				{
-					gitCmd += L" /bkpath:\"";
-					gitCmd += folder_;
-					gitCmd += L'"';
-				}
-				break;
-			case ShellMenuUpdateExt:
-				AddPathFileCommand(gitCmd, L"subupdate");
-				if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
-				{
-					gitCmd += L" /bkpath:\"";
-					gitCmd += folder_;
-					gitCmd += L'"';
-				}
-				break;
-			case ShellMenuCommit:
-				AddPathFileCommand(gitCmd, L"commit");
-				break;
-			case ShellMenuAdd:
-				AddPathFileCommand(gitCmd, L"add");
-				break;
-			case ShellMenuIgnore:
-				AddPathFileCommand(gitCmd, L"ignore");
-				break;
-			case ShellMenuIgnoreCaseSensitive:
-				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += L" /onlymask";
-				break;
-			case ShellMenuDeleteIgnore:
-				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += L" /delete";
-				break;
-			case ShellMenuDeleteIgnoreCaseSensitive:
-				AddPathFileCommand(gitCmd, L"ignore");
-				gitCmd += L" /delete /onlymask";
-				break;
-			case ShellMenuUnIgnore:
-				AddPathFileCommand(gitCmd, L"unignore");
-				break;
-			case ShellMenuUnIgnoreCaseSensitive:
-				AddPathFileCommand(gitCmd, L"unignore");
-				gitCmd += L" /onlymask";
-				break;
-			case ShellMenuMergeAbort:
-				AddPathCommand(gitCmd, L"merge", true);
-				gitCmd += L" /abort";
-				break;
-			case ShellMenuRevert:
-				AddPathFileCommand(gitCmd, L"revert");
-				break;
-			case ShellMenuCleanup:
-				AddPathFileCommand(gitCmd, L"cleanup");
-				break;
-			case ShellMenuSendMail:
-				AddPathFileCommand(gitCmd, L"sendmail");
-				break;
-			case ShellMenuResolve:
-				AddPathFileCommand(gitCmd, L"resolve");
-				break;
-			case ShellMenuSwitch:
-				AddPathCommand(gitCmd, L"switch", false);
-				break;
-			case ShellMenuExport:
-				AddPathCommand(gitCmd, L"export", false);
-				break;
-			case ShellMenuAbout:
-				gitCmd += L"about";
-				break;
-			case ShellMenuCreateRepos:
-				AddPathCommand(gitCmd, L"repocreate", false);
-				break;
-			case ShellMenuMerge:
-				AddPathCommand(gitCmd, L"merge", false);
-				break;
-			case ShellMenuCopy:
-				AddPathCommand(gitCmd, L"copy", true);
-				break;
-			case ShellMenuSettings:
-				AddPathCommand(gitCmd, L"settings", true);
-				break;
-			case ShellMenuHelp:
-				gitCmd += L"help";
-				break;
-			case ShellMenuRename:
-				AddPathCommand(gitCmd, L"rename", true);
-				break;
-			case ShellMenuRemove:
-				AddPathFileCommand(gitCmd, L"remove");
-				if (itemStates & ITEMIS_SUBMODULE)
-					gitCmd += L" /submodule";
-				break;
-			case ShellMenuRemoveKeep:
-				AddPathFileCommand(gitCmd, L"remove");
-				gitCmd += L" /keep";
-				break;
-			case ShellMenuDiff:
-				gitCmd += L"diff /path:\"";
-				if (files_.size() == 1)
-					gitCmd += files_.front();
-				else if (files_.size() == 2)
-				{
-					auto I = files_.cbegin();
-					gitCmd += *I;
-					++I;
-					gitCmd += L"\" /path2:\"";
-					gitCmd += *I;
-				}
-				else
-					gitCmd += folder_;
-				gitCmd += L'"';
-				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					gitCmd += L" /alternative";
-				break;
-			case ShellMenuDiffLater:
-				if (lpcmi->fMask & CMIC_MASK_CONTROL_DOWN)
-				{
-					gitCmd.clear();
-					regDiffLater.removeValue();
-				}
-				else if (files_.size() == 1)
-				{
-					if (std::wstring(regDiffLater).empty())
-					{
-						gitCmd.clear();
-						regDiffLater = files_[0];
-					}
-					else
-					{
-						AddPathCommand(gitCmd, L"diff", true);
-						gitCmd += L" /path2:\"";
-						gitCmd += std::wstring(regDiffLater);
-						gitCmd += L'"';
-						if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-							gitCmd += L" /alternative";
-						regDiffLater.removeValue();
-					}
-				}
-				else
-					gitCmd.clear();
-				break;
-			case ShellMenuPrevDiff:
-				AddPathCommand(gitCmd, L"prevdiff", true);
-				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					gitCmd += L" /alternative";
-				break;
-			case ShellMenuDiffTwo:
-				AddPathCommand(gitCmd, L"diffcommits", true);
-				break;
-			case ShellMenuDropCopyAdd:
-				AddPathFileDropCommand(gitCmd, L"dropcopyadd");
-				break;
-			case ShellMenuDropCopy:
-				AddPathFileDropCommand(gitCmd, L"dropcopy");
-				break;
-			case ShellMenuDropCopyRename:
-				AddPathFileDropCommand(gitCmd, L"dropcopy");
-				gitCmd += L" /rename";
-				break;
-			case ShellMenuDropMove:
-				AddPathFileDropCommand(gitCmd, L"dropmove");
-				break;
-			case ShellMenuDropMoveRename:
-				AddPathFileDropCommand(gitCmd, L"dropmove");
-				gitCmd += L" /rename";
-				break;
-			case ShellMenuDropExport:
-				AddPathFileDropCommand(gitCmd, L"dropexport");
-				break;
-			case ShellMenuDropExportExtended:
-				AddPathFileDropCommand(gitCmd, L"dropexport");
-				gitCmd += L" /extended";
-				break;
-			case ShellMenuLog:
-			case ShellMenuLogSubmoduleFolder:
-				AddPathCommand(gitCmd, L"log", true);
-				if (id_it->second == ShellMenuLogSubmoduleFolder)
-					gitCmd += L" /submodule";
-				break;
-			case ShellMenuDaemon:
-				AddPathCommand(gitCmd, L"daemon", true);
-				break;
-			case ShellMenuRevisionGraph:
-				AddPathCommand(gitCmd, L"revisiongraph", true);
-				break;
-			case ShellMenuConflictEditor:
-				AddPathCommand(gitCmd, L"conflicteditor", true);
-				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
-					gitCmd += L" /alternative";
-				break;
-			case ShellMenuGitSVNRebase:
-				AddPathCommand(gitCmd, L"svnrebase", false);
-				break;
-			case ShellMenuGitSVNDCommit:
-				AddPathCommand(gitCmd, L"svndcommit", true);
-				break;
-			case ShellMenuGitSVNDFetch:
-				AddPathCommand(gitCmd, L"svnfetch", false);
-				break;
-			case ShellMenuGitSVNIgnore:
-				AddPathCommand(gitCmd, L"svnignore", false);
-				break;
-			case ShellMenuRebase:
-				AddPathCommand(gitCmd, L"rebase", false);
-				break;
-			case ShellMenuShowChanged:
-				if (files_.size() > 1)
-					AddPathFileCommand(gitCmd, L"repostatus");
-				else
-					AddPathCommand(gitCmd, L"repostatus", true);
-				break;
-			case ShellMenuRepoBrowse:
-				AddPathCommand(gitCmd, L"repobrowser", false);
-				break;
-			case ShellMenuRefBrowse:
-				AddPathCommand(gitCmd, L"refbrowse", false);
-				break;
-			case ShellMenuRefLog:
-				AddPathCommand(gitCmd, L"reflog", false);
-				break;
-			case ShellMenuStashSave:
-				AddPathCommand(gitCmd, L"stashsave", true);
-				break;
-			case ShellMenuStashApply:
-				AddPathCommand(gitCmd, L"stashapply", false);
-				break;
-			case ShellMenuStashPop:
-				AddPathCommand(gitCmd, L"stashpop", false);
-				break;
-			case ShellMenuStashList:
-				AddPathCommand(gitCmd, L"reflog", false);
-				gitCmd += L" /ref:refs/stash";
-				break;
-			case ShellMenuBisectStart:
-				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L" /start";
-				break;
-			case ShellMenuBisectGood:
-				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L" /good";
-				break;
-			case ShellMenuBisectBad:
-				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L" /bad";
-				break;
-			case ShellMenuBisectSkip:
-				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L" /skip";
-				break;
-			case ShellMenuBisectReset:
-				AddPathCommand(gitCmd, L"bisect", false);
-				gitCmd += L" /reset";
-				break;
-			case ShellMenuSubAdd:
-				AddPathCommand(gitCmd, L"subadd", false);
-				break;
-			case ShellMenuBlame:
-				AddPathCommand(gitCmd, L"blame", true);
-				break;
-			case ShellMenuApplyPatch:
-				if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
-				{
-					// if there's a patch file in the clipboard, we save it
-					// to a temporary file and tell TortoiseGitMerge to use that one
-					UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
-					CClipboardHelper clipboardHelper;
-					if (cFormat && clipboardHelper.Open(nullptr))
-					{
-						HGLOBAL hglb = GetClipboardData(cFormat);
-						auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
 
-						DWORD len = GetTortoiseGitTempPath(0, nullptr);
-						auto path = std::make_unique<wchar_t[]>(len + 1);
-						auto tempF = std::make_unique<wchar_t[]>(len + 100);
-						GetTortoiseGitTempPath(len + 1, path.get());
-						GetTempFileName(path.get(), TEXT("git"), 0, tempF.get());
-						std::wstring sTempFile = std::wstring(tempF.get());
+			InvokeCommand(static_cast<int>(id_it->second),
+						  static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)),
+						  uuidSource,
+						  lpcmi->hwnd,
+						  itemStates,
+						  itemStatesFolder,
+						  files_,
+						  folder_,
+						  regDiffLater);
+			myIDMap.clear();
+			myVerbsIDMap.clear();
+			myVerbsMap.clear();
 
-						FILE * outFile;
-						size_t patchlen = strlen(lpstr);
-						_wfopen_s(&outFile, sTempFile.c_str(), L"wb");
-						if(outFile)
-						{
-							size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
-							if (size == patchlen)
-							{
-								itemStates |= ITEMIS_PATCHFILE;
-								files_.clear();
-								files_.push_back(sTempFile);
-							}
-							fclose(outFile);
-						}
-						GlobalUnlock(hglb);
-					}
-				}
-				if (itemStates & ITEMIS_PATCHFILE)
-				{
-					gitCmd = L" /diff:\"";
-					if (!files_.empty())
-					{
-						gitCmd += files_.front();
-						if (itemStatesFolder & ITEMIS_FOLDERINGIT)
-						{
-							gitCmd += L"\" /patchpath:\"";
-							gitCmd += folder_;
-						}
-					}
-					else
-						gitCmd += folder_;
-					if (itemStates & ITEMIS_INVERSIONEDFOLDER)
-						gitCmd += L"\" /wc";
-					else
-						gitCmd += L'"';
-				}
-				else
-				{
-					gitCmd = L" /patchpath:\"";
-					if (!files_.empty())
-						gitCmd += files_.front();
-					else
-						gitCmd += folder_;
-					gitCmd += L'"';
-				}
-				myIDMap.clear();
-				myVerbsIDMap.clear();
-				myVerbsMap.clear();
-				RunCommand(tortoiseMergePath, gitCmd, L"TortoiseGitMerge launch failed");
-				return S_OK;
-				break;
-			case ShellMenuClipPaste:
-				if (WriteClipboardPathsToTempFile(tempfile))
-				{
-					bool bCopy = true;
-					UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
-					if (cPrefDropFormat)
-					{
-						CClipboardHelper clipboardHelper;
-						if (clipboardHelper.Open(lpcmi->hwnd))
-						{
-							HGLOBAL hglb = GetClipboardData(cPrefDropFormat);
-							if (hglb)
-							{
-								auto effect = static_cast<DWORD*>(GlobalLock(hglb));
-								if (*effect == DROPEFFECT_MOVE)
-									bCopy = false;
-								GlobalUnlock(hglb);
-							}
-						}
-					}
-
-					if (bCopy)
-						gitCmd += L"pastecopy /pathfile:\"";
-					else
-						gitCmd += L"pastemove /pathfile:\"";
-					gitCmd += tempfile;
-					gitCmd += L'"';
-					gitCmd += L" /deletepathfile";
-					gitCmd += L" /droptarget:\"";
-					gitCmd += folder_;
-					gitCmd += L'"';
-				}
-				else return S_OK;
-				break;
-			case ShellMenuClone:
-				AddPathCommand(gitCmd, L"clone", false);
-				break;
-			case ShellMenuPull:
-				AddPathFileCommand(gitCmd, L"pull", true);
-				break;
-			case ShellMenuPush:
-				AddPathFileCommand(gitCmd, L"push", true);
-				break;
-			case ShellMenuBranch:
-				AddPathCommand(gitCmd, L"branch", false);
-				break;
-			case ShellMenuTag:
-				AddPathCommand(gitCmd, L"tag", false);
-				break;
-			case ShellMenuFormatPatch:
-				AddPathCommand(gitCmd, L"formatpatch", false);
-				break;
-			case ShellMenuImportPatch:
-				AddPathFileCommand(gitCmd, L"importpatch");
-				break;
-			case ShellMenuImportPatchDrop:
-				AddPathFileDropCommand(gitCmd, L"importpatch");
-				break;
-			case ShellMenuFetch:
-				AddPathFileCommand(gitCmd, L"fetch", true);
-				break;
-			case ShellMenuLFSLocks:
-				AddPathFileCommand(gitCmd, L"lfslocks");
-				break;
-			case ShellMenuLFSLock:
-				AddPathFileCommand(gitCmd, L"lfslock");
-				break;
-			case ShellMenuLFSUnlock:
-				AddPathFileCommand(gitCmd, L"lfsunlock");
-				break;
-
-			default:
-				break;
-				//#endregion
-			} // switch (id_it->second)
-			if (!gitCmd.empty())
-			{
-				gitCmd += L" /hwnd:";
-				wchar_t buf[30] = { 0 };
-				swprintf_s(buf, L"%p", static_cast<void*>(lpcmi->hwnd));
-				gitCmd += buf;
-				myIDMap.clear();
-				myVerbsIDMap.clear();
-				myVerbsMap.clear();
-				RunCommand(tortoiseProcPath, gitCmd, L"TortoiseProc launch failed");
-			}
 			hr = S_OK;
 		} // if (id_it != myIDMap.end() && id_it->first == idCmd)
 	} // if (files_.empty() || folder_.empty())
 	return hr;
+}
+
+void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater)
+{
+	std::wstring gitCmd = L" /command:";
+	std::wstring tempfile;
+	switch (cmd)
+	{
+		//#region case
+	case ShellMenuSync:
+	{
+		wchar_t syncSeq[12] = { 0 };
+		swprintf_s(syncSeq, L"%d", g_syncSeq++);
+		AddPathCommand(gitCmd, L"sync", false, paths, folder);
+		gitCmd += L" /seq:";
+		gitCmd += syncSeq;
+	}
+	break;
+	case ShellMenuSubSync:
+		AddPathFileCommand(gitCmd, L"subsync", paths, folder);
+		if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
+		{
+			gitCmd += L" /bkpath:\"";
+			gitCmd += folder;
+			gitCmd += L'"';
+		}
+		break;
+	case ShellMenuUpdateExt:
+		AddPathFileCommand(gitCmd, L"subupdate", paths, folder);
+		if (itemStatesFolder & ITEMIS_SUBMODULECONTAINER || (itemStates & ITEMIS_SUBMODULECONTAINER && itemStates & ITEMIS_WCROOT && itemStates & ITEMIS_ONLYONE))
+		{
+			gitCmd += L" /bkpath:\"";
+			gitCmd += folder;
+			gitCmd += L'"';
+		}
+		break;
+	case ShellMenuCommit:
+		AddPathFileCommand(gitCmd, L"commit", paths, folder);
+		break;
+	case ShellMenuAdd:
+		AddPathFileCommand(gitCmd, L"add", paths, folder);
+		break;
+	case ShellMenuIgnore:
+		AddPathFileCommand(gitCmd, L"ignore", paths, folder);
+		break;
+	case ShellMenuIgnoreCaseSensitive:
+		AddPathFileCommand(gitCmd, L"ignore", paths, folder);
+		gitCmd += L" /onlymask";
+		break;
+	case ShellMenuDeleteIgnore:
+		AddPathFileCommand(gitCmd, L"ignore", paths, folder);
+		gitCmd += L" /delete";
+		break;
+	case ShellMenuDeleteIgnoreCaseSensitive:
+		AddPathFileCommand(gitCmd, L"ignore", paths, folder);
+		gitCmd += L" /delete /onlymask";
+		break;
+	case ShellMenuUnIgnore:
+		AddPathFileCommand(gitCmd, L"unignore", paths, folder);
+		break;
+	case ShellMenuUnIgnoreCaseSensitive:
+		AddPathFileCommand(gitCmd, L"unignore", paths, folder);
+		gitCmd += L" /onlymask";
+		break;
+	case ShellMenuMergeAbort:
+		AddPathCommand(gitCmd, L"merge", true, paths, folder);
+		gitCmd += L" /abort";
+		break;
+	case ShellMenuRevert:
+		AddPathFileCommand(gitCmd, L"revert", paths, folder);
+		break;
+	case ShellMenuCleanup:
+		AddPathFileCommand(gitCmd, L"cleanup", paths, folder);
+		break;
+	case ShellMenuSendMail:
+		AddPathFileCommand(gitCmd, L"sendmail", paths, folder);
+		break;
+	case ShellMenuResolve:
+		AddPathFileCommand(gitCmd, L"resolve", paths, folder);
+		break;
+	case ShellMenuSwitch:
+		AddPathCommand(gitCmd, L"switch", false, paths, folder);
+		break;
+	case ShellMenuExport:
+		AddPathCommand(gitCmd, L"export", false, paths, folder);
+		break;
+	case ShellMenuAbout:
+		gitCmd += L"about";
+		break;
+	case ShellMenuCreateRepos:
+		AddPathCommand(gitCmd, L"repocreate", false, paths, folder);
+		break;
+	case ShellMenuMerge:
+		AddPathCommand(gitCmd, L"merge", false, paths, folder);
+		break;
+	case ShellMenuCopy:
+		AddPathCommand(gitCmd, L"copy", true, paths, folder);
+		break;
+	case ShellMenuSettings:
+		AddPathCommand(gitCmd, L"settings", true, paths, folder);
+		break;
+	case ShellMenuHelp:
+		gitCmd += L"help";
+		break;
+	case ShellMenuRename:
+		AddPathCommand(gitCmd, L"rename", true, paths, folder);
+		break;
+	case ShellMenuRemove:
+		AddPathFileCommand(gitCmd, L"remove", paths, folder);
+		if (itemStates & ITEMIS_SUBMODULE)
+			gitCmd += L" /submodule";
+		break;
+	case ShellMenuRemoveKeep:
+		AddPathFileCommand(gitCmd, L"remove", paths, folder);
+		gitCmd += L" /keep";
+		break;
+	case ShellMenuDiff:
+		gitCmd += L"diff /path:\"";
+		if (paths.size() == 1)
+			gitCmd += paths.front();
+		else if (paths.size() == 2)
+		{
+			auto I = paths.cbegin();
+			gitCmd += *I;
+			++I;
+			gitCmd += L"\" /path2:\"";
+			gitCmd += *I;
+		}
+		else
+			gitCmd += folder;
+		gitCmd += L'"';
+		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+			gitCmd += L" /alternative";
+		break;
+	case ShellMenuDiffLater:
+		if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
+		{
+			gitCmd.clear();
+			regDiffLater.removeValue();
+		}
+		else if (paths.size() == 1)
+		{
+			if (std::wstring(regDiffLater).empty())
+			{
+				gitCmd.clear();
+				regDiffLater = paths[0];
+			}
+			else
+			{
+				AddPathCommand(gitCmd, L"diff", true, paths, folder);
+				gitCmd += L" /path2:\"";
+				gitCmd += std::wstring(regDiffLater);
+				gitCmd += L'"';
+				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+					gitCmd += L" /alternative";
+				regDiffLater.removeValue();
+			}
+		}
+		else
+			gitCmd.clear();
+		break;
+	case ShellMenuPrevDiff:
+		AddPathCommand(gitCmd, L"prevdiff", true, paths, folder);
+		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+			gitCmd += L" /alternative";
+		break;
+	case ShellMenuDiffTwo:
+		AddPathCommand(gitCmd, L"diffcommits", true, paths, folder);
+		break;
+	case ShellMenuDropCopyAdd:
+		AddPathFileDropCommand(gitCmd, L"dropcopyadd", paths, folder);
+		break;
+	case ShellMenuDropCopy:
+		AddPathFileDropCommand(gitCmd, L"dropcopy", paths, folder);
+		break;
+	case ShellMenuDropCopyRename:
+		AddPathFileDropCommand(gitCmd, L"dropcopy", paths, folder);
+		gitCmd += L" /rename";
+		break;
+	case ShellMenuDropMove:
+		AddPathFileDropCommand(gitCmd, L"dropmove", paths, folder);
+		break;
+	case ShellMenuDropMoveRename:
+		AddPathFileDropCommand(gitCmd, L"dropmove", paths, folder);
+		gitCmd += L" /rename";
+		break;
+	case ShellMenuDropExport:
+		AddPathFileDropCommand(gitCmd, L"dropexport", paths, folder);
+		break;
+	case ShellMenuDropExportExtended:
+		AddPathFileDropCommand(gitCmd, L"dropexport", paths, folder);
+		gitCmd += L" /extended";
+		break;
+	case ShellMenuLog:
+	case ShellMenuLogSubmoduleFolder:
+		AddPathCommand(gitCmd, L"log", true, paths, folder);
+		if (cmd == ShellMenuLogSubmoduleFolder)
+			gitCmd += L" /submodule";
+		break;
+	case ShellMenuDaemon:
+		AddPathCommand(gitCmd, L"daemon", true, paths, folder);
+		break;
+	case ShellMenuRevisionGraph:
+		AddPathCommand(gitCmd, L"revisiongraph", true, paths, folder);
+		break;
+	case ShellMenuConflictEditor:
+		AddPathCommand(gitCmd, L"conflicteditor", true, paths, folder);
+		if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
+			gitCmd += L" /alternative";
+		break;
+	case ShellMenuGitSVNRebase:
+		AddPathCommand(gitCmd, L"svnrebase", false, paths, folder);
+		break;
+	case ShellMenuGitSVNDCommit:
+		AddPathCommand(gitCmd, L"svndcommit", true, paths, folder);
+		break;
+	case ShellMenuGitSVNDFetch:
+		AddPathCommand(gitCmd, L"svnfetch", false, paths, folder);
+		break;
+	case ShellMenuGitSVNIgnore:
+		AddPathCommand(gitCmd, L"svnignore", false, paths, folder);
+		break;
+	case ShellMenuRebase:
+		AddPathCommand(gitCmd, L"rebase", false, paths, folder);
+		break;
+	case ShellMenuShowChanged:
+		if (paths.size() > 1)
+			AddPathFileCommand(gitCmd, L"repostatus", paths, folder);
+		else
+			AddPathCommand(gitCmd, L"repostatus", true, paths, folder);
+		break;
+	case ShellMenuRepoBrowse:
+		AddPathCommand(gitCmd, L"repobrowser", false, paths, folder);
+		break;
+	case ShellMenuRefBrowse:
+		AddPathCommand(gitCmd, L"refbrowse", false, paths, folder);
+		break;
+	case ShellMenuRefLog:
+		AddPathCommand(gitCmd, L"reflog", false, paths, folder);
+		break;
+	case ShellMenuStashSave:
+		AddPathCommand(gitCmd, L"stashsave", true, paths, folder);
+		break;
+	case ShellMenuStashApply:
+		AddPathCommand(gitCmd, L"stashapply", false, paths, folder);
+		break;
+	case ShellMenuStashPop:
+		AddPathCommand(gitCmd, L"stashpop", false, paths, folder);
+		break;
+	case ShellMenuStashList:
+		AddPathCommand(gitCmd, L"reflog", false, paths, folder);
+		gitCmd += L" /ref:refs/stash";
+		break;
+	case ShellMenuBisectStart:
+		AddPathCommand(gitCmd, L"bisect", false, paths, folder);
+		gitCmd += L" /start";
+		break;
+	case ShellMenuBisectGood:
+		AddPathCommand(gitCmd, L"bisect", false, paths, folder);
+		gitCmd += L" /good";
+		break;
+	case ShellMenuBisectBad:
+		AddPathCommand(gitCmd, L"bisect", false, paths, folder);
+		gitCmd += L" /bad";
+		break;
+	case ShellMenuBisectSkip:
+		AddPathCommand(gitCmd, L"bisect", false, paths, folder);
+		gitCmd += L" /skip";
+		break;
+	case ShellMenuBisectReset:
+		AddPathCommand(gitCmd, L"bisect", false, paths, folder);
+		gitCmd += L" /reset";
+		break;
+	case ShellMenuSubAdd:
+		AddPathCommand(gitCmd, L"subadd", false, paths, folder);
+		break;
+	case ShellMenuBlame:
+		AddPathCommand(gitCmd, L"blame", true, paths, folder);
+		break;
+	case ShellMenuApplyPatch:
+	{
+		auto localPaths = paths;
+		if ((itemStates & ITEMIS_PATCHINCLIPBOARD) && ((~itemStates) & ITEMIS_PATCHFILE))
+		{
+			// if there's a patch file in the clipboard, we save it
+			// to a temporary file and tell TortoiseGitMerge to use that one
+			UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
+			CClipboardHelper clipboardHelper;
+			if (cFormat && clipboardHelper.Open(nullptr))
+			{
+				HGLOBAL hglb = GetClipboardData(cFormat);
+				auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
+
+				DWORD len = GetTortoiseGitTempPath(0, nullptr);
+				auto path = std::make_unique<wchar_t[]>(len + 1);
+				auto tempF = std::make_unique<wchar_t[]>(len + 100);
+				GetTortoiseGitTempPath(len + 1, path.get());
+				GetTempFileName(path.get(), TEXT("git"), 0, tempF.get());
+				std::wstring sTempFile = std::wstring(tempF.get());
+
+				FILE* outFile;
+				size_t patchlen = strlen(lpstr);
+				_wfopen_s(&outFile, sTempFile.c_str(), L"wb");
+				if (outFile)
+				{
+					size_t size = fwrite(lpstr, sizeof(char), patchlen, outFile);
+					if (size == patchlen)
+					{
+						itemStates |= ITEMIS_PATCHFILE;
+						localPaths.clear();
+						localPaths.push_back(sTempFile);
+					}
+					fclose(outFile);
+				}
+				GlobalUnlock(hglb);
+			}
+		}
+		if (itemStates & ITEMIS_PATCHFILE)
+		{
+			gitCmd = L" /diff:\"";
+			if (!localPaths.empty())
+			{
+				gitCmd += localPaths.front();
+				if (itemStatesFolder & ITEMIS_FOLDERINGIT)
+				{
+					gitCmd += L"\" /patchpath:\"";
+					gitCmd += folder;
+				}
+			}
+			else
+				gitCmd += folder;
+			if (itemStates & ITEMIS_INVERSIONEDFOLDER)
+				gitCmd += L"\" /wc";
+			else
+				gitCmd += L'"';
+		}
+		else
+		{
+			gitCmd = L" /patchpath:\"";
+			if (!localPaths.empty())
+				gitCmd += localPaths.front();
+			else
+				gitCmd += folder;
+			gitCmd += L'"';
+		}
+		RunCommand(appDir + L"TortoiseGitMerge.exe", gitCmd, L"TortoiseGitMerge launch failed");
+	}
+		return;
+	case ShellMenuClipPaste:
+		if (WriteClipboardPathsToTempFile(tempfile))
+		{
+			bool bCopy = true;
+			UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
+			if (cPrefDropFormat)
+			{
+				CClipboardHelper clipboardHelper;
+				if (clipboardHelper.Open(hParent))
+				{
+					HGLOBAL hglb = GetClipboardData(cPrefDropFormat);
+					if (hglb)
+					{
+						auto effect = static_cast<DWORD*>(GlobalLock(hglb));
+						if (*effect == DROPEFFECT_MOVE)
+							bCopy = false;
+						GlobalUnlock(hglb);
+					}
+				}
+			}
+
+			if (bCopy)
+				gitCmd += L"pastecopy /pathfile:\"";
+			else
+				gitCmd += L"pastemove /pathfile:\"";
+			gitCmd += tempfile;
+			gitCmd += L'"';
+			gitCmd += L" /deletepathfile";
+			gitCmd += L" /droptarget:\"";
+			gitCmd += folder;
+			gitCmd += L'"';
+		}
+		else
+			return;
+		break;
+	case ShellMenuClone:
+		AddPathCommand(gitCmd, L"clone", false, paths, folder);
+		break;
+	case ShellMenuPull:
+		AddPathFileCommand(gitCmd, L"pull", paths, folder, true);
+		break;
+	case ShellMenuPush:
+		AddPathFileCommand(gitCmd, L"push", paths, folder, true);
+		break;
+	case ShellMenuBranch:
+		AddPathCommand(gitCmd, L"branch", false, paths, folder);
+		break;
+	case ShellMenuTag:
+		AddPathCommand(gitCmd, L"tag", false, paths, folder);
+		break;
+	case ShellMenuFormatPatch:
+		AddPathCommand(gitCmd, L"formatpatch", false, paths, folder);
+		break;
+	case ShellMenuImportPatch:
+		AddPathFileCommand(gitCmd, L"importpatch", paths, folder);
+		break;
+	case ShellMenuImportPatchDrop:
+		AddPathFileDropCommand(gitCmd, L"importpatch", paths, folder);
+		break;
+	case ShellMenuFetch:
+		AddPathFileCommand(gitCmd, L"fetch", paths, folder, true);
+		break;
+	case ShellMenuLFSLocks:
+		AddPathFileCommand(gitCmd, L"lfslocks", paths, folder);
+		break;
+	case ShellMenuLFSLock:
+		AddPathFileCommand(gitCmd, L"lfslock", paths, folder);
+		break;
+	case ShellMenuLFSUnlock:
+		AddPathFileCommand(gitCmd, L"lfsunlock", paths, folder);
+		break;
+
+	default:
+		break;
+		//#endregion
+	} // switch (id_it->second)
+	if (!gitCmd.empty())
+	{
+		gitCmd += L" /hwnd:";
+		wchar_t buf[30] = { 0 };
+		swprintf_s(buf, L"%p", static_cast<void*>(hParent));
+		gitCmd += buf;
+		RunCommand(appDir + L"TortoiseGitProc.exe", gitCmd, L"TortoiseGitProc launch failed");
+	}
 }
 
 // This is for the status bar and things like that:
@@ -1904,7 +1933,7 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	if (!PathFileExists(adminDir + L"lfs"))
 		return false;
 
-	HMENU lfssubmenu = CreateMenu();
+	HMENU lfssubmenu = hMenu ? CreateMenu() : nullptr;
 	int indexlfssub = 0;
 	bool anyMenu = false;
 
@@ -1933,7 +1962,8 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	menuiteminfo.dwTypeData = stringtablebuffer;
 	menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
-	InsertMenuItem((topmenu & MENULFS) ? hMenu : subMenu, (topmenu & MENULFS) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+	if (hMenu)
+		InsertMenuItem((topmenu & MENULFS) ? hMenu : subMenu, (topmenu & MENULFS) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 	myIDMap[idCmd - idCmdFirst] = ShellMenuLFSMenu;
 	myIDMap[idCmd++] = ShellMenuLFSMenu;
 
@@ -1947,6 +1977,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	bool bShowIgnoreMenu = false;
 	wchar_t maskbuf[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
 	wchar_t ignorepath[MAX_PATH] = {0};		// MAX_PATH is ok, since this only holds a filename
+	std::vector<CExplorerCommand> exCmds;
 	if (files_.empty())
 		return false;
 	UINT icon = bShowIcons ? IDI_IGNORE : 0;
@@ -1972,8 +2003,11 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		}
 		if (p!=-1)
 		{
-			ignoresubmenu = CreateMenu();
-			InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+			ignoresubmenu = hMenu ? CreateMenu() : nullptr;
+			if (hMenu)
+				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+			else
+				exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuUnIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 			auto verb = std::wstring(ignorepath);
 			myVerbsMap[verb] = idCmd - idCmdFirst;
 			myVerbsMap[verb] = idCmd;
@@ -1993,8 +2027,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			{
 				if (!ignoresubmenu)
 					ignoresubmenu = CreateMenu();
-
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+				else
+					exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuUnIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(maskbuf);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2014,7 +2050,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		{
 			if (itemStates & ITEMIS_INGIT)
 			{
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				myIDMap[idCmd - idCmdFirst] = ShellMenuDeleteIgnore;
 				myIDMap[idCmd++] = ShellMenuDeleteIgnore;
 
@@ -2022,7 +2061,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
 					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
-					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					if (hMenu)
+						InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					else
+						exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuDeleteIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
@@ -2034,7 +2076,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 			}
 			else
 			{
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				myIDMap[idCmd - idCmdFirst] = ShellMenuIgnore;
 				myIDMap[idCmd++] = ShellMenuIgnore;
 
@@ -2042,7 +2087,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 				if (!(itemStates & ITEMIS_FOLDER) && wcsrchr(ignorepath, L'.'))
 				{
 					wcscat_s(maskbuf, wcsrchr(ignorepath, L'.'));
-					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, maskbuf);
+					if (hMenu)
+						InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING, idCmd, maskbuf);
+					else
+						exCmds.push_back(CExplorerCommand(maskbuf, 0, ShellMenuIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 					auto verb = std::wstring(maskbuf);
 					myVerbsMap[verb] = idCmd - idCmdFirst;
 					myVerbsMap[verb] = idCmd;
@@ -2071,7 +2119,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLE);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2090,7 +2141,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUDELETEIGNOREMULTIPLEMASK);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuDeleteIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2111,7 +2165,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUIGNOREMULTIPLE);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnore, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				auto verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2130,7 +2187,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 					MAKESTRING(IDS_MENUIGNOREMULTIPLEMASK);
 					swprintf_s(ignorepath, stringtablebuffer, files_.size());
 				}
-				InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				if (hMenu)
+					InsertMenu(ignoresubmenu, indexignoresub++, MF_BYPOSITION | MF_STRING , idCmd, ignorepath);
+				else
+					exCmds.push_back(CExplorerCommand(ignorepath, 0, ShellMenuIgnoreCaseSensitive, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
 				verb = std::wstring(ignorepath);
 				myVerbsMap[verb] = idCmd - idCmdFirst;
 				myVerbsMap[verb] = idCmd;
@@ -2165,7 +2225,22 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		menuiteminfo.dwTypeData = stringtablebuffer;
 		menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
-		InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+		if (hMenu)
+			InsertMenuItem((topmenu & MENUIGNORE) ? hMenu : subMenu, (topmenu & MENUIGNORE) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+		else
+		{
+			m_explorerCommands.push_back(CExplorerCommand(L"", 0, ShellSeparator, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, {}));
+			for (const auto& cmd : exCmds)
+			{
+				m_explorerCommands.push_back(cmd);
+				std::wstring prep = stringtablebuffer;
+				prep += L": ";
+				m_explorerCommands.back().PrependTitleWith(prep);
+			}
+			// currently, explorer does not support subcommands which their own subcommands. Once it does,
+			// use the line below instead of the ones above
+			//m_explorerCommands.push_back(CExplorerCommand(stringTableBuffer, icon, ShellMenuUnIgnoreSub, GetAppDirectory(), uuidSource, itemStates, itemStatesFolder, m_files, exCmds));
+		}
 		if (itemStates & ITEMIS_IGNORED)
 		{
 			myIDMap[idCmd - idCmdFirst] = ShellMenuUnIgnoreSub;
@@ -2209,4 +2284,205 @@ bool CShellExt::ShouldEnableMenu(const YesNoPair& pair) const
 	else if ((pair.no) && ((pair.no & (~itemStates)) == pair.no))
 		return true;
 	return false;
+}
+
+// IExplorerCommand
+HRESULT __stdcall CShellExt::GetTitle(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszName)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetTitle\n");
+	SHStrDupW(L"TortoiseGit", ppszName);
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetIcon(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszIcon)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetIcon\n");
+	std::wstring iconPath = static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll));
+	iconPath += L"TortoiseGitProc.exe,-";
+	iconPath += std::to_wstring(IDI_APP);
+	SHStrDupW(iconPath.c_str(), ppszIcon);
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetToolTip(IShellItemArray* /*psiItemArray*/, LPWSTR* ppszInfotip)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetToolTip\n");
+	*ppszInfotip = nullptr;
+	return E_NOTIMPL;
+}
+
+HRESULT __stdcall CShellExt::GetCanonicalName(GUID* pguidCommandName)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetCanonicalName\n");
+	*pguidCommandName = GUID_NULL;
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToBeSlow, EXPCMDSTATE* pCmdState)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState\n");
+	*pCmdState = ECS_ENABLED;
+	if (m_site)
+	{
+		Microsoft::WRL::ComPtr<IOleWindow> oleWindow;
+		m_site.As(&oleWindow);
+		if (oleWindow)
+		{
+			// in Win11, the "main" context menu does not provide an IOleWindow,
+			// so this is for the old context menu, and there we don't show this menu
+			*pCmdState = ECS_HIDDEN;
+			return S_OK;
+		}
+	}
+
+	if (!fOkToBeSlow)
+		return E_PENDING;
+
+	Initialize(nullptr, nullptr, nullptr);
+	Microsoft::WRL::ComPtr<IShellItemArray> itemArray;
+	if (!psiItemArray)
+	{
+		// context menu for a folder background (no selection),
+		// so try to get the current path of the explorer window instead
+		auto path = ExplorerViewPath();
+		if (path.empty())
+		{
+			*pCmdState = ECS_HIDDEN;
+			return S_OK;
+		}
+		PIDLIST_ABSOLUTE pidl{};
+		if (SUCCEEDED(SHParseDisplayName(path.c_str(), nullptr, &pidl, 0, nullptr)))
+		{
+			if (SUCCEEDED(SHCreateShellItemArrayFromIDLists(1, const_cast<LPCITEMIDLIST*>(&pidl), itemArray.GetAddressOf())))
+			{
+				if (itemArray)
+				{
+					psiItemArray = itemArray.Get();
+				}
+			}
+		}
+	}
+	if (psiItemArray)
+	{
+		IDataObject* pDataObj = nullptr;
+		if (SUCCEEDED(psiItemArray->BindToHandler(nullptr, BHID_DataObject, IID_IDataObject, reinterpret_cast<void**>(&pDataObj))))
+		{
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: Initialize from GetState()\n");
+
+			Initialize(nullptr, pDataObj, nullptr);
+			pDataObj->Release();
+			pDataObj = nullptr;
+		}
+		else
+			*pCmdState = ECS_HIDDEN;
+	}
+
+	if (g_ShellCache.HideMenusForUnversionedItems() && (GetKeyState(VK_SHIFT) & 0x8000) == 0)
+	{
+		if ((itemStates & (ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER | ITEMIS_FOLDERINGIT)) == 0)
+			*pCmdState = ECS_HIDDEN;
+	}
+
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::Invoke(IShellItemArray* /*psiItemArray*/, IBindCtx* /*pbc*/)
+{
+	return E_NOTIMPL;
+}
+
+HRESULT __stdcall CShellExt::GetFlags(EXPCMDFLAGS* pFlags)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetFlags\n");
+	*pFlags = ECF_HASSUBCOMMANDS;
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::EnumSubCommands(IEnumExplorerCommand** ppEnum)
+{
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: EnumSubCommands\n");
+	m_explorerCommands.clear();
+	QueryContextMenu(nullptr, 0, 0, 0, CMF_EXTENDEDVERBS | CMF_NORMAL);
+	*ppEnum = new CExplorerCommandEnum(m_explorerCommands);
+	(*ppEnum)->AddRef();
+	return S_OK;
+}
+
+std::wstring CShellExt::ExplorerViewPath()
+{
+	std::wstring path;
+	HRESULT hr = NOERROR;
+
+	// the top context menu in Win11 does not
+	// provide an IOleWindow with the SetSite() object,
+	// so we have to use a trick to get it: since the
+	// context menu must always be the top window, we
+	// just grab the foreground window and assume that
+	// this is the explorer window.
+	auto hwnd = ::GetForegroundWindow();
+	if (!hwnd)
+		return path;
+
+	wchar_t szName[1024] = { 0 };
+	::GetClassName(hwnd, szName, _countof(szName));
+	if (StrCmp(szName, L"WorkerW") == 0 || StrCmp(szName, L"Progman") == 0)
+	{
+		//special folder: desktop
+		hr = ::SHGetFolderPath(nullptr, CSIDL_DESKTOP, nullptr, SHGFP_TYPE_CURRENT, szName);
+		if (FAILED(hr))
+			return path;
+
+		path = szName;
+		return path;
+	}
+
+	if (StrCmp(szName, L"CabinetWClass") != 0)
+		return path;
+
+	// get the shell windows object to enumerate all active explorer
+	// instances. We use those to compare the foreground hwnd to it.
+	Microsoft::WRL::ComPtr<IShellWindows> shell;
+	if (FAILED(CoCreateInstance(CLSID_ShellWindows, nullptr, CLSCTX_ALL, IID_IShellWindows, reinterpret_cast<LPVOID*>(shell.GetAddressOf()))))
+		return path;
+
+	if (!shell)
+		return path;
+
+	Microsoft::WRL::ComPtr<IDispatch> disp;
+	VARIANT variant{};
+	variant.vt = VT_I4;
+
+	Microsoft::WRL::ComPtr<IWebBrowserApp> browser;
+	// look for correct explorer window
+	for (variant.intVal = 0; shell->Item(variant, disp.GetAddressOf()) == S_OK; variant.intVal++)
+	{
+		Microsoft::WRL::ComPtr<IWebBrowserApp> tmp;
+		if (FAILED(disp->QueryInterface(tmp.GetAddressOf())))
+			continue;
+
+		HWND tmpHwnd = nullptr;
+		hr = tmp->get_HWND(reinterpret_cast<SHANDLE_PTR*>(&tmpHwnd));
+		if (hwnd == tmpHwnd)
+		{
+			browser = tmp;
+			break; // found it!
+		}
+	}
+
+	if (browser != nullptr)
+	{
+		BSTR url;
+		hr = browser->get_LocationURL(&url);
+		if (FAILED(hr))
+			return path;
+
+		std::wstring sUrl(url, SysStringLen(url));
+		SysFreeString(url);
+		DWORD size = _countof(szName);
+		hr = ::PathCreateFromUrl(sUrl.c_str(), szName, &size, NULL);
+		if (SUCCEEDED(hr))
+			path = szName;
+	}
+
+	return path;
 }

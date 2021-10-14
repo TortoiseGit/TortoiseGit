@@ -18,6 +18,10 @@
 		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.common.props" />
+	<Import Project="$(SolutionDir)TortoiseGit.settings.props" />
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+		<DefineConstants>BuildWindows11ContextmenuExtension=$(BuildWindows11ContextmenuExtension);$(DefineConstants)</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup>
 		<!-- for shipping CRT/MFC library -->
 		<DefineConstants>VCInstallDir=$(VCInstallDir);VCToolsRedistVersion=$(VCToolsRedistVersion);PlatformToolsetVersion=$(PlatformToolsetVersion);$(DefineConstants)</DefineConstants>
@@ -51,7 +55,7 @@
 	</PropertyGroup>
 	<Target Name="CheckVCRedistVersion">
 		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files and adjust 'VCToolsRedistVersionCheck'." Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt; 14.29" />
-		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) &gt; 18362" />
+		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) &gt; 19041" />
 	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
 		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
@@ -70,4 +74,8 @@
 		<Content Include="Win7LibraryAndExplorerToolbarActions.wxi" />
 		<Content Include="ProtocolSupport.wxi" />
 	</ItemGroup>
+	<PropertyGroup>
+		<PreBuildEvent Condition="'$(Platform)'=='x64' AND '$(BuildWindows11ContextmenuExtension)'=='1'">"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackage -p ..\..\Release64\bin\package.msix /nv
+"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /I "Certum Code Signing CA SHA2" /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https:/tortoisegit.org/" /q ..\..\Release64\bin\package.msix</PreBuildEvent>
+	</PropertyGroup>
 </Project>

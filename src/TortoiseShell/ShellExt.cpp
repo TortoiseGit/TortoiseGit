@@ -148,6 +148,10 @@ STDMETHODIMP CShellExt::QueryInterface(REFIID riid, LPVOID FAR *ppv)
 		*ppv = static_cast<LPSHELLPROPSHEETEXT>(this);
 	else if (IsEqualIID(riid, IID_IShellCopyHook))
 		*ppv = static_cast<ICopyHook*>(this);
+	else if (IsEqualIID(riid, IID_IExplorerCommand))
+		*ppv = static_cast<IExplorerCommand*>(this);
+	else if (IsEqualIID(riid, IID_IObjectWithSite))
+		*ppv = static_cast<IObjectWithSite*>(this);
 	else
 		return E_NOINTERFACE;
 
@@ -222,4 +226,16 @@ UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*
 	// if it first fails. So if the cache hasn't released the handle yet, the explorer
 	// will retry anyway, so we just leave here immediately.
 	return IDYES;
+}
+
+// IObjectWithSite
+HRESULT __stdcall CShellExt::SetSite(IUnknown* pUnkSite)
+{
+	m_site = pUnkSite;
+	return S_OK;
+}
+
+HRESULT __stdcall CShellExt::GetSite(REFIID riid, void** ppvSite)
+{
+	return m_site.CopyTo(riid, ppvSite);
 }

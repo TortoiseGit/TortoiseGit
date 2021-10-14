@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2008 - Stefan Kueng
+// Copyright (C) 2003-2008, 2021 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -87,3 +87,6 @@ DEFINE_GUID(CLSID_Tortoisegit_IGNORED,
 DEFINE_GUID(CLSID_Tortoisegit_UNVERSIONED,
 0x18BF1135, 0x6EA2, 0x405f, 0xA7, 0x1E, 0x16, 0xEE, 0xE7, 0xF7, 0x1F, 0x8B);
 
+// {A4FEC38E-C9F5-489A-ADAB-28DA10F523A3}
+DEFINE_GUID(CLSID_Tortoisegit_EXPLORERCOMMAND,
+0xa4fec38e, 0xc9f5, 0x489a, 0xad, 0xab, 0x28, 0xda, 0x10, 0xf5, 0x23, 0xa3);

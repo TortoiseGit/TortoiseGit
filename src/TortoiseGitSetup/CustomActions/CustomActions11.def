@@ -1,0 +1,8 @@
+; CustomActions11.def
+;
+; defines the exported functions which will be available to the MSI engine
+;
+LIBRARY "CustomActions11"
+EXPORTS
+	RegisterSparsePackage
+	UnregisterSparsePackage
