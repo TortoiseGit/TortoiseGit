@@ -19,7 +19,7 @@
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.common.props" />
 	<Import Project="$(SolutionDir)TortoiseGit.settings.props" />
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+	<PropertyGroup>
 		<DefineConstants>BuildWindows11ContextmenuExtension=$(BuildWindows11ContextmenuExtension);$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup>
