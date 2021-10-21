@@ -2133,7 +2133,7 @@ void printer_finish_job(printer_job *);
  * zero out password arguments in the hope of not having them show up
  * avoidably in Unix 'ps'.
  */
-int cmdline_process_param(const char *, char *, int, Conf *);
+int cmdline_process_param(const char *, char *, int, Conf *, bool ignoreFurtherParameters);
 void cmdline_run_saved(Conf *);
 void cmdline_cleanup(void);
 int cmdline_get_passwd_input(prompts_t *p);

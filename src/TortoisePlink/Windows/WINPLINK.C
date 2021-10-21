@@ -309,10 +309,15 @@ int main(int argc, char **argv)
     errors = false;
     conf_set_bool(conf, CONF_agentfwd, FALSE);
     conf_set_bool(conf, CONF_x11_forward, FALSE);
+    bool skipFurtherParameters = false;
     while (--argc) {
         char *p = *++argv;
+        if (p && !strcmp(p, "--")) {
+            skipFurtherParameters = true;
+            continue;
+        }
         int ret = cmdline_process_param(p, (argc > 1 ? argv[1] : NULL),
-                                        1, conf);
+                                        1, conf, skipFurtherParameters);
         if (ret == -2) {
             fprintf(stderr,
                     "TortoiseGitPlink: option \"%s\" requires an argument\n", p);
@@ -321,35 +326,35 @@ int main(int argc, char **argv)
             --argc, ++argv;
         } else if (ret == 1) {
             continue;
-        } else if (!strcmp(p, "-batch")) {
+        } else if (!strcmp(p, "-batch") && !skipFurtherParameters) {
             // ignore and do not print an error message
-        } else if (!strcmp(p, "-s")) {
+        } else if (!strcmp(p, "-s") && !skipFurtherParameters) {
             /* Save status to write to conf later. */
             use_subsystem = true;
-        } else if (!strcmp(p, "-V") || !strcmp(p, "--version")) {
+        } else if ((!strcmp(p, "-V") || !strcmp(p, "--version")) && !skipFurtherParameters) {
             version();
-        } else if (!strcmp(p, "--help")) {
+        } else if (!strcmp(p, "--help") && !skipFurtherParameters) {
             usage();
-        } else if (!strcmp(p, "-pgpfp")) {
+        } else if (!strcmp(p, "-pgpfp") && !skipFurtherParameters) {
             pgp_fingerprints();
             exit(1);
-        } else if (!strcmp(p, "-shareexists")) {
+        } else if (!strcmp(p, "-shareexists") && !skipFurtherParameters) {
             just_test_share_exists = true;
-        } else if (!strcmp(p, "-sanitise-stdout") ||
-                   !strcmp(p, "-sanitize-stdout")) {
+        } else if ((!strcmp(p, "-sanitise-stdout") ||
+                   !strcmp(p, "-sanitize-stdout")) && !skipFurtherParameters) {
             sanitise_stdout = FORCE_ON;
-        } else if (!strcmp(p, "-no-sanitise-stdout") ||
-                   !strcmp(p, "-no-sanitize-stdout")) {
+        } else if ((!strcmp(p, "-no-sanitise-stdout") ||
+                   !strcmp(p, "-no-sanitize-stdout"))  && !skipFurtherParameters) {
             sanitise_stdout = FORCE_OFF;
-        } else if (!strcmp(p, "-sanitise-stderr") ||
-                   !strcmp(p, "-sanitize-stderr")) {
+        } else if ((!strcmp(p, "-sanitise-stderr") ||
+                   !strcmp(p, "-sanitize-stderr")) && !skipFurtherParameters) {
             sanitise_stderr = FORCE_ON;
-        } else if (!strcmp(p, "-no-sanitise-stderr") ||
-                   !strcmp(p, "-no-sanitize-stderr")) {
+        } else if ((!strcmp(p, "-no-sanitise-stderr") ||
+                   !strcmp(p, "-no-sanitize-stderr")) && !skipFurtherParameters) {
             sanitise_stderr = FORCE_OFF;
-        } else if (!strcmp(p, "-no-antispoof")) {
+        } else if (!strcmp(p, "-no-antispoof") && !skipFurtherParameters) {
             console_antispoof_prompt = false;
-        } else if (*p != '-') {
+        } else if (*p != '-' || skipFurtherParameters) {
             strbuf *cmdbuf = strbuf_new();
 
             while (argc > 0) {

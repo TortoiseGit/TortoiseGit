@@ -165,11 +165,11 @@ static void set_port(Conf *conf, int port)
 }
 
 int cmdline_process_param(const char *p, char *value,
-                          int need_save, Conf *conf)
+                          int need_save, Conf *conf, bool ignoreFurtherParameters)
 {
     int ret = 0;
 
-    if (p[0] != '-') {
+    if (p[0] != '-' || ignoreFurtherParameters) {
         if (need_save < 0)
             return 0;
 
@@ -383,7 +383,7 @@ int cmdline_process_param(const char *p, char *value,
              * deferred until it's a good moment to run it.
              */
             char *dup = dupstr(p);     /* 'value' is not a const char * */
-            int retd = cmdline_process_param("-P", dup, 1, conf);
+            int retd = cmdline_process_param("-P", dup, 1, conf, false);
             sfree(dup);
             assert(retd == 2);
             seen_port_argument = true;
@@ -396,6 +396,9 @@ int cmdline_process_param(const char *p, char *value,
             return 0;
         }
     }
+
+    if (ignoreFurtherParameters)
+        return ret;
 
     if (!strcmp(p, "-load")) {
         RETURN(2);
@@ -868,7 +871,7 @@ void cmdline_run_saved(Conf *conf)
     for (size_t pri = 0; pri < NPRIORITIES; pri++) {
         for (size_t i = 0; i < saves[pri].nsaved; i++) {
             cmdline_process_param(saves[pri].params[i].p,
-                                  saves[pri].params[i].value, 0, conf);
+                                  saves[pri].params[i].value, 0, conf, false);
             sfree(saves[pri].params[i].p);
             sfree(saves[pri].params[i].value);
         }
