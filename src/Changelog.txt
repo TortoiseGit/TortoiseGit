@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #3781: TortoiseGitMerge Redo is not recorded as change
  * Fixed issue #3794: "Submodules" option is truncated in the "Clean up" dialog
  * Fixed issue #3813: Filter is checking for '%' incorrectly
+ * Fixed issue #3779: "Show branches this commit is on" ("References commit is on" window) takes a very long time to find branches and tags
 
 = Release 2.12.0 =
 Released: 2021-03-31

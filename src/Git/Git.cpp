@@ -1679,7 +1679,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 		return 0;
 
 	size_t prevCount = list.size();
-	if (m_IsUseLibGit2)
+	if (UsingLibGit2(GIT_CMD_BRANCH_CONTAINS))
 	{
 		CAutoRepository repo(GetGitRepository());
 		if (!repo)
