@@ -226,7 +226,9 @@ public:
 		GIT_CMD_GET_COMMIT,
 		GIT_CMD_LOGLISTDIFF,
 		GIT_CMD_BRANCH_CONTAINS,
+		LAST_VALUE,
 	} LIBGIT2_CMD;
+	static_assert(LIBGIT2_CMD::LAST_VALUE < sizeof(DWORD) * 8, "too many flags for storing them in a DWORD bitfield");
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 	/**
 	 * callback type should be git_cred_acquire_cb
