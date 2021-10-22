@@ -71,7 +71,7 @@ static int filter_check(
 static int expandPerCentF(git_buf *buf, const char *replaceWith)
 {
 	ssize_t foundPercentage = git_buf_find(buf, '%');
-	if (foundPercentage) {
+	if (foundPercentage >= 0) {
 		git_buf expanded = GIT_BUF_INIT;
 		const char *end = buf->ptr + buf->size;
 		const char *lastPercentage = buf->ptr;

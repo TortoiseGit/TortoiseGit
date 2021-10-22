@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #3750: Dramatic speedup saving of large files from TortoiseMerge
  * Fixed issue #3781: TortoiseGitMerge Redo is not recorded as change
  * Fixed issue #3794: "Submodules" option is truncated in the "Clean up" dialog
+ * Fixed issue #3813: Filter is checking for '%' incorrectly
 
 = Release 2.12.0 =
 Released: 2021-03-31
