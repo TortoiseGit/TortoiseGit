@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2007-2008, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -602,7 +602,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 
 	if (!hErr)
 	{
-		error = CFormatMessageWrapper();
+		error = static_cast<LPCWSTR>(CFormatMessageWrapper());
 		return DWORD(-1);
 	}
 
@@ -610,7 +610,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 
 	if (!hRedir)
 	{
-		error = CFormatMessageWrapper();
+		error = static_cast<LPCWSTR>(CFormatMessageWrapper());
 		return DWORD(-1);
 	}
 
@@ -619,7 +619,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 
 	if (!hOut)
 	{
-		error = CFormatMessageWrapper();
+		error = static_cast<LPCWSTR>(CFormatMessageWrapper());
 		return DWORD(-1);
 	}
 
@@ -636,7 +636,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 	if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, CREATE_UNICODE_ENVIRONMENT, nullptr, currentDir, &si, &pi))
 	{
 		const DWORD err = GetLastError();  // preserve the CreateProcess error
-		error = CFormatMessageWrapper(err);
+		error = static_cast<LPCWSTR>(CFormatMessageWrapper(err));
 		SetLastError(err);
 		cmd.ReleaseBuffer();
 		return DWORD(-1);

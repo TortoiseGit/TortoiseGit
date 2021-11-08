@@ -1405,7 +1405,7 @@ void DrawRect(LPRECT prc, HDC hdcPaint, Gdiplus::DashStyle dashStyle, Gdiplus::C
 	myPen->SetDashStyle(dashStyle);
 	auto myGraphics = std::make_unique<Gdiplus::Graphics>(hdcPaint);
 
-	myGraphics->DrawRectangle(myPen.get(), prc->left, prc->top, prc->right - 1 - prc->left, prc->bottom - 1 - prc->top);
+	myGraphics->DrawRectangle(myPen.get(), static_cast<INT>(prc->left), static_cast<INT>(prc->top), static_cast<INT>(prc->right - 1 - prc->left), static_cast<INT>(prc->bottom - 1 - prc->top));
 }
 
 void DrawFocusRect(LPRECT prcFocus, HDC hdcPaint)

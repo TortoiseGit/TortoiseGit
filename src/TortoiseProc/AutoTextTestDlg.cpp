@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2009, 2011, 2013-2014 - TortoiseSVN
+// Copyright (C) 2009, 2011, 2013-2014, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,7 +74,7 @@ void CAutoTextTestDlg::OnBnClickedAutotextscan()
 		try
 		{
 			std::set<CString> autolist;
-			std::wstring s = m_sContent;
+			std::wstring s = static_cast<LPCWSTR>(m_sContent);
 			CHighResClock timer;
 
 			std::wregex regCheck;

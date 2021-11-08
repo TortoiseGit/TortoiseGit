@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2012, 2018 - TortoiseSVN
+// Copyright (C) 2003-2012, 2018, 2021 - TortoiseSVN
 // Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -223,7 +223,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 
 	// fill the combo box
 
-	wchar_t* texts[] = { L"5%"
+	const wchar_t* texts[] = { L"5%"
 					 , L"10%"
 					 , L"20%"
 					 , L"40%"
@@ -236,9 +236,9 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 	COMBOBOXEXITEM cbei = { 0 };
 	cbei.mask = CBEIF_TEXT;
 
-	for (wchar_t** text = texts; *text; ++text)
+	for (const wchar_t** text = texts; *text; ++text)
 	{
-		cbei.pszText = *text;
+		cbei.pszText = const_cast<wchar_t*>(*text);
 		m_ToolBar.m_ZoomCombo.InsertItem(&cbei);
 	}
 
