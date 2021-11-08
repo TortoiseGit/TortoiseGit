@@ -978,13 +978,13 @@ bool CTheme::IsDarkModeAllowed()
 	// because on earlier versions it would look really, really ugly!
 	m_bDarkModeIsAllowed = false;
 	auto version = CPathUtils::GetVersionFromFile(L"uiribbon.dll");
-	std::vector<std::wstring> tokens;
+	std::vector<long> tokens;
 	stringtok(tokens, version, false, L".");
 	if (tokens.size() == 4)
 	{
-		auto major = std::stol(tokens[0]);
-		auto minor = std::stol(tokens[1]);
-		auto micro = std::stol(tokens[2]);
+		auto major = tokens[0];
+		auto minor = tokens[1];
+		auto micro = tokens[2];
 
 		// the windows 10 update 1809 has the version
 		// number as 10.0.17763.1
