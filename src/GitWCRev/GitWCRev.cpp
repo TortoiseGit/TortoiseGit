@@ -123,7 +123,7 @@ $WCBRANCH$      Current branch name, SHA - 1 if head is detached\n"
 // Value for apr_time_t to signify "now"
 #define USE_TIME_NOW    -2 // 0 and -1 might already be significant.
 
-bool FindPlaceholder(char* def, char* pBuf, size_t& index, size_t filelength)
+bool FindPlaceholder(const char* def, char* pBuf, size_t& index, size_t filelength)
 {
 	size_t deflen = strlen(def);
 	while (index + deflen <= filelength)
@@ -134,7 +134,7 @@ bool FindPlaceholder(char* def, char* pBuf, size_t& index, size_t filelength)
 	}
 	return false;
 }
-bool FindPlaceholderW(wchar_t *def, wchar_t *pBuf, size_t & index, size_t filelength)
+bool FindPlaceholderW(const wchar_t *def, wchar_t *pBuf, size_t & index, size_t filelength)
 {
 	size_t deflen = wcslen(def);
 	while ((index + deflen) * sizeof(wchar_t) <= filelength)
@@ -147,7 +147,7 @@ bool FindPlaceholderW(wchar_t *def, wchar_t *pBuf, size_t & index, size_t filele
 	return false;
 }
 
-bool InsertRevision(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, GitWCRev_t* GitStat)
+bool InsertRevision(const char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, GitWCRev_t* GitStat)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholder(def, pBuf, index, filelength))
@@ -193,7 +193,7 @@ bool InsertRevision(char* def, char* pBuf, size_t& index, size_t& filelength, si
 	filelength += Expansion;
 	return true;
 }
-bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, GitWCRev_t* GitStat)
+bool InsertRevisionW(const wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, GitWCRev_t* GitStat)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholderW(def, pBuf, index, filelength))
@@ -241,7 +241,7 @@ bool InsertRevisionW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelen
 	return true;
 }
 
-bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
+bool InsertNumber(const char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholder(def, pBuf, index, filelength))
@@ -304,7 +304,7 @@ bool InsertNumber(char* def, char* pBuf, size_t& index, size_t& filelength, size
 	filelength += Expansion;
 	return true;
 }
-bool InsertNumberW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
+bool InsertNumberW(const wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, size_t Value)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholderW(def, pBuf, index, filelength))
@@ -380,7 +380,7 @@ void _invalid_parameter_donothing(
 	// do nothing
 }
 
-bool InsertDate(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, __time64_t ttime)
+bool InsertDate(const char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, __time64_t ttime)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholder(def, pBuf, index, filelength))
@@ -457,7 +457,7 @@ bool InsertDate(char* def, char* pBuf, size_t& index, size_t& filelength, size_t
 	filelength += Expansion;
 	return true;
 }
-bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, __time64_t ttime)
+bool InsertDateW(const wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, __time64_t ttime)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholderW(def, pBuf, index, filelength))
@@ -537,7 +537,7 @@ bool InsertDateW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength,
 	return true;
 }
 
-int InsertBoolean(char* def, char* pBuf, size_t& index, size_t& filelength, BOOL isTrue)
+int InsertBoolean(const char* def, char* pBuf, size_t& index, size_t& filelength, BOOL isTrue)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholder(def, pBuf, index, filelength))
@@ -587,7 +587,7 @@ int InsertBoolean(char* def, char* pBuf, size_t& index, size_t& filelength, BOOL
 	}
 	return true;
 }
-bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, BOOL isTrue)
+bool InsertBooleanW(const wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, BOOL isTrue)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholderW(def, pBuf, index, filelength))
@@ -638,7 +638,7 @@ bool InsertBooleanW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& fileleng
 	return true;
 }
 
-bool InsertText(char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+bool InsertText(const char* def, char* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholder(def, pBuf, index, filelength))
@@ -662,7 +662,7 @@ bool InsertText(char* def, char* pBuf, size_t& index, size_t& filelength, size_t
 	filelength += Expansion;
 	return true;
 }
-bool InsertTextW(wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
+bool InsertTextW(const wchar_t* def, wchar_t* pBuf, size_t& index, size_t& filelength, size_t maxlength, const std::string& Value)
 {
 	// Search for first occurrence of def in the buffer, starting at index.
 	if (!FindPlaceholderW(def, pBuf, index, filelength))
