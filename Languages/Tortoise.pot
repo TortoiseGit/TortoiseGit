@@ -9583,7 +9583,7 @@ msgstr ""
 msgid "TortoiseGitIDiff: the image diff viewer for TortoiseSVN\n\nAvailable command line parameters are:\n/left:\"path to left picture\"\n/lefttitle:\"title to show for the left picture\"\n/right:\"path to right picture\"\n/righttitle:\"title to show for the right picture\"\n/overlay\t\tto enable overlay mode\n/fit\t\tto fit the images sizes\n/showinfo\t\tto show the image info boxes"
 msgstr ""
 
-#. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id 130, IDS_APPNAME)
+#. Resource IDs: (1, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr ""
 
