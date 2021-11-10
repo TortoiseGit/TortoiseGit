@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2017, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "stdafx.h"
+#include "scope_exit_noexcept.h"
 #include "Utils.h"
 #include "UnicodeUtils.h"
 #include "ResModule.h"
@@ -99,6 +100,11 @@ BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPC
 		m_hResDll = LoadLibraryEx(filepath.c_str(), nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
 		if (!m_hResDll)
 			MYERROR;
+		SCOPE_EXIT
+		{
+			if (m_hResDll)
+				FreeLibrary(m_hResDll);
+		};
 
 		size_t nEntries = m_StringEntries.size();
 		// fill in the std::map with all translatable entries
@@ -139,8 +145,6 @@ BOOL CResModule::ExtractResources(const std::vector<std::wstring>& filelist, LPC
 		// parse a probably existing file and update the translations which are
 		// already done
 		m_StringEntries.ParseFile(lpszPOFilePath, !bNoUpdate, m_bAdjustEOLs);
-
-		FreeLibrary(m_hResDll);
 	}
 
 	// at last, save the new file
@@ -152,6 +156,11 @@ BOOL CResModule::ExtractResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR lpszPoFile
 	m_hResDll = LoadLibraryEx(lpszSrcLangDllPath, nullptr, LOAD_LIBRARY_AS_IMAGE_RESOURCE | LOAD_LIBRARY_AS_DATAFILE);
 	if (!m_hResDll)
 		MYERROR;
+	SCOPE_EXIT
+	{
+		if (m_hResDll)
+			FreeLibrary(m_hResDll);
+	};
 
 	size_t nEntries = 0;
 	// fill in the std::map with all translatable entries
@@ -190,16 +199,9 @@ BOOL CResModule::ExtractResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR lpszPoFile
 
 	// at last, save the new file
 	if (!m_StringEntries.SaveFile(lpszPoFilePath, lpszHeaderFile))
-		goto DONE_ERROR;
-
-	FreeLibrary(m_hResDll);
+		return FALSE;
 
 	return TRUE;
-
-DONE_ERROR:
-	if (m_hResDll)
-		FreeLibrary(m_hResDll);
-	return FALSE;
 }
 
 void CResModule::RemoveSignatures(LPCWSTR lpszDestLangDllPath)
@@ -242,12 +244,17 @@ BOOL CResModule::CreateTranslatedResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR l
 
 	if (!m_hResDll)
 		MYERROR;
+	SCOPE_EXIT
+	{
+		if (m_hResDll)
+			FreeLibrary(m_hResDll);
+	};
 
 	sDestFile = std::wstring(lpszDestLangDllPath);
 
 	// get all translated strings
 	if (!m_StringEntries.ParseFile(lpszPOFilePath, FALSE, m_bAdjustEOLs))
-		goto DONE_ERROR;
+		MYERROR;
 	m_bTranslatedStrings = 0;
 	m_bDefaultStrings = 0;
 	m_bTranslatedDialogStrings = 0;
@@ -268,7 +275,6 @@ BOOL CResModule::CreateTranslatedResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR l
 
 	if (!m_hUpdateRes)
 		MYERROR;
-
 
 	if (!m_bQuiet)
 		fwprintf(stdout, L"Translating StringTable...");
@@ -305,12 +311,7 @@ BOOL CResModule::CreateTranslatedResources(LPCWSTR lpszSrcLangDllPath, LPCWSTR l
 
 	AdjustCheckSum(sDestFile);
 
-	FreeLibrary(m_hResDll);
 	return TRUE;
-DONE_ERROR:
-	if (m_hResDll)
-		FreeLibrary(m_hResDll);
-	return FALSE;
 }
 
 BOOL CResModule::ExtractString(LPCWSTR lpszType)
@@ -324,11 +325,13 @@ BOOL CResModule::ExtractString(LPCWSTR lpszType)
 	hglStringTable = LoadResource(m_hResDll, hrsrc);
 
 	if (!hglStringTable)
-		goto DONE_ERROR;
+		MYERROR;
+	SCOPE_EXIT { FreeResource(hglStringTable); };
 	p = static_cast<LPWSTR>(LockResource(hglStringTable));
 
 	if (!p)
-		goto DONE_ERROR;
+		MYERROR;
+	SCOPE_EXIT { UnlockResource(hglStringTable); };
 	/*  [Block of 16 strings.  The strings are Pascal style with a WORD
 	length preceding the string.  16 strings are always written, even
 	if not all slots are full.  Any slots in the block with no string
@@ -357,13 +360,7 @@ BOOL CResModule::ExtractString(LPCWSTR lpszType)
 		}
 		pp += len;
 	}
-	UnlockResource(hglStringTable);
-	FreeResource(hglStringTable);
 	return TRUE;
-DONE_ERROR:
-	UnlockResource(hglStringTable);
-	FreeResource(hglStringTable);
-	MYERROR;
 }
 
 BOOL CResModule::ReplaceString(LPCWSTR lpszType, WORD wLanguage)
@@ -377,12 +374,14 @@ BOOL CResModule::ReplaceString(LPCWSTR lpszType, WORD wLanguage)
 	hglStringTable = LoadResource(m_hResDll, hrsrc);
 
 	if (!hglStringTable)
-		goto DONE_ERROR;
+		MYERROR;
+	SCOPE_EXIT { FreeResource(hglStringTable); };
 	p = static_cast<LPWSTR>(LockResource(hglStringTable));
 
 	if (!p)
-		goto DONE_ERROR;
-/*  [Block of 16 strings.  The strings are Pascal style with a WORD
+		MYERROR;
+	SCOPE_EXIT { UnlockResource(hglStringTable); };
+	/*  [Block of 16 strings.  The strings are Pascal style with a WORD
 	length preceding the string.  16 strings are always written, even
 	if not all slots are full.  Any slots in the block with no string
 	have a zero WORD for the length.]
@@ -457,22 +456,16 @@ BOOL CResModule::ReplaceString(LPCWSTR lpszType, WORD wLanguage)
 	if (!UpdateResource(m_hUpdateRes, RT_STRING, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), newTable, static_cast<DWORD>(nMem + (nMem % 2))*2))
 	{
 		delete [] newTable;
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
 	if (m_wTargetLang && (!UpdateResource(m_hUpdateRes, RT_STRING, lpszType, wLanguage, nullptr, 0)))
 	{
 		delete [] newTable;
-		goto DONE_ERROR;
+		MYERROR;
 	}
 	delete [] newTable;
-	UnlockResource(hglStringTable);
-	FreeResource(hglStringTable);
 	return TRUE;
-DONE_ERROR:
-	UnlockResource(hglStringTable);
-	FreeResource(hglStringTable);
-	MYERROR;
 }
 
 BOOL CResModule::ExtractMenu(LPCWSTR lpszType)
@@ -489,12 +482,13 @@ BOOL CResModule::ExtractMenu(LPCWSTR lpszType)
 
 	if (!hglMenuTemplate)
 		MYERROR;
+	SCOPE_EXIT { FreeResource(hglMenuTemplate); };
 
 	p = static_cast<const WORD*>(LockResource(hglMenuTemplate));
 
 	if (!p)
 		MYERROR;
-
+	SCOPE_EXIT { UnlockResource(hglMenuTemplate); };
 	// Standard MENU resource
 	//struct MenuHeader {
 	//  WORD   wVersion;           // Currently zero
@@ -520,7 +514,7 @@ BOOL CResModule::ExtractMenu(LPCWSTR lpszType)
 			p += offset;
 			p++;
 			if (!ParseMenuResource(p))
-				goto DONE_ERROR;
+				MYERROR;
 		}
 		break;
 	case 1:
@@ -529,21 +523,14 @@ BOOL CResModule::ExtractMenu(LPCWSTR lpszType)
 			p++;
 			//dwHelpId = GET_DWORD(p);
 			if (!ParseMenuExResource(p0 + offset))
-				goto DONE_ERROR;
+				MYERROR;
 		}
 		break;
 	default:
-		goto DONE_ERROR;
+			MYERROR;
 	}
 
-	UnlockResource(hglMenuTemplate);
-	FreeResource(hglMenuTemplate);
 	return TRUE;
-
-DONE_ERROR:
-	UnlockResource(hglMenuTemplate);
-	FreeResource(hglMenuTemplate);
-	MYERROR;
 }
 
 BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
@@ -561,12 +548,13 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 
 	if (!hglMenuTemplate)
 		MYERROR;
+	SCOPE_EXIT { FreeResource(hglMenuTemplate); };
 
 	p = static_cast<LPWSTR>(LockResource(hglMenuTemplate));
 
 	if (!p)
 		MYERROR;
-
+	SCOPE_EXIT { UnlockResource(hglMenuTemplate); };
 	//struct MenuHeader {
 	//  WORD   wVersion;           // Currently zero
 	//  WORD   cbHeaderSize;       // Also zero
@@ -592,26 +580,26 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 			p++;
 			size_t nMem = 0;
 			if (!CountMemReplaceMenuResource(reinterpret_cast<WORD*>(p), &nMem, nullptr))
-				goto DONE_ERROR;
+				MYERROR;
 			WORD * newMenu = new WORD[nMem + (nMem % 2)+2];
 			SecureZeroMemory(newMenu, (nMem + (nMem % 2)+2)*2);
 			size_t index = 2;       // MenuHeader has 2 WORDs zero
 			if (!CountMemReplaceMenuResource(reinterpret_cast<WORD*>(p), &index, newMenu))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 
 			if (!UpdateResource(m_hUpdateRes, RT_MENU, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), newMenu, static_cast<DWORD>(nMem + (nMem % 2)+2)*2))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 
 			if (m_wTargetLang && (!UpdateResource(m_hUpdateRes, RT_MENU, lpszType, wLanguage, nullptr, 0)))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 			delete [] newMenu;
 		}
@@ -623,7 +611,7 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 			//dwHelpId = GET_DWORD(p);
 			size_t nMem = 0;
 			if (!CountMemReplaceMenuExResource(reinterpret_cast<WORD*>(p0 + offset), &nMem, nullptr))
-				goto DONE_ERROR;
+				MYERROR;
 			WORD * newMenu = new WORD[nMem + (nMem % 2) + 4];
 			SecureZeroMemory(newMenu, (nMem + (nMem % 2) + 4) * 2);
 			CopyMemory(newMenu, p0, 2 * sizeof(WORD) + sizeof(DWORD));
@@ -631,35 +619,28 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 			if (!CountMemReplaceMenuExResource(reinterpret_cast<WORD*>(p0 + offset), &index, newMenu))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 
 			if (!UpdateResource(m_hUpdateRes, RT_MENU, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), newMenu, static_cast<DWORD>(nMem + (nMem % 2) + 4) * 2))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 
 			if (m_wTargetLang && (!UpdateResource(m_hUpdateRes, RT_MENU, lpszType, wLanguage, nullptr, 0)))
 			{
 				delete [] newMenu;
-				goto DONE_ERROR;
+				MYERROR;
 			}
 			delete [] newMenu;
 		}
 		break;
 	default:
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
-	UnlockResource(hglMenuTemplate);
-	FreeResource(hglMenuTemplate);
 	return TRUE;
-
-DONE_ERROR:
-	UnlockResource(hglMenuTemplate);
-	FreeResource(hglMenuTemplate);
-	MYERROR;
 }
 
 const WORD* CResModule::ParseMenuResource(const WORD * res)
@@ -963,13 +944,14 @@ BOOL CResModule::ExtractAccelerator(LPCWSTR lpszType)
 	hglAccTable = LoadResource(m_hResDll, hrsrc);
 
 	if (!hglAccTable)
-		goto DONE_ERROR;
+		MYERROR;
+	SCOPE_EXIT { FreeResource(hglAccTable); };
 
 	p = static_cast<const WORD*>(LockResource(hglAccTable));
 
 	if (!p)
 		MYERROR;
-
+	SCOPE_EXIT { UnlockResource(hglAccTable); };
 	/*
 	struct ACCELTABLEENTRY
 	{
@@ -1062,14 +1044,7 @@ BOOL CResModule::ExtractAccelerator(LPCWSTR lpszType)
 		m_StringEntries[wstr] = AKey_entry;
 	} while (!bEnd);
 
-	UnlockResource(hglAccTable);
-	FreeResource(hglAccTable);
 	return TRUE;
-
-DONE_ERROR:
-	UnlockResource(hglAccTable);
-	FreeResource(hglAccTable);
-	MYERROR;
 }
 
 BOOL CResModule::ReplaceAccelerator(LPCWSTR lpszType, WORD wLanguage)
@@ -1092,6 +1067,7 @@ BOOL CResModule::ReplaceAccelerator(LPCWSTR lpszType, WORD wLanguage)
 
 	if (!lpaccelNew)
 		MYERROR;
+	SCOPE_EXIT { LocalFree(lpaccelNew); };
 
 	CopyAcceleratorTable(haccelOld, lpaccelNew, cAccelerators);
 
@@ -1178,7 +1154,8 @@ BOOL CResModule::ReplaceAccelerator(LPCWSTR lpszType, WORD wLanguage)
 	// Create the new accelerator table
 	hglAccTableNew = LocalAlloc(LPTR, cAccelerators * 4 * sizeof(WORD));
 	if (!hglAccTableNew)
-		goto DONE_ERROR;
+		MYERROR;
+	SCOPE_EXIT { LocalFree(hglAccTableNew); };
 	p = static_cast<WORD*>(hglAccTableNew);
 	lpaccelNew[cAccelerators-1].fVirt |= 0x80;
 	for (i = 0; i < cAccelerators; i++)
@@ -1195,22 +1172,15 @@ BOOL CResModule::ReplaceAccelerator(LPCWSTR lpszType, WORD wLanguage)
 	if (!UpdateResource(m_hUpdateRes, RT_ACCELERATOR, lpszType,
 		(m_wTargetLang ? m_wTargetLang : wLanguage), hglAccTableNew /* haccelNew*/, cAccelerators * 4 * sizeof(WORD)))
 	{
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
 	if (m_wTargetLang && (!UpdateResource(m_hUpdateRes, RT_ACCELERATOR, lpszType, wLanguage, nullptr, 0)))
 	{
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
-	LocalFree(hglAccTableNew);
-	LocalFree(lpaccelNew);
 	return TRUE;
-
-DONE_ERROR:
-	LocalFree(hglAccTableNew);
-	LocalFree(lpaccelNew);
-	MYERROR;
 }
 
 BOOL CResModule::ExtractDialog(LPCWSTR lpszType)
@@ -1231,11 +1201,12 @@ BOOL CResModule::ExtractDialog(LPCWSTR lpszType)
 	hGlblDlgTemplate = LoadResource(m_hResDll, hrsrc);
 	if (!hGlblDlgTemplate)
 		MYERROR;
-
+	SCOPE_EXIT { FreeResource(hGlblDlgTemplate); };
 	lpDlg = static_cast<const WORD*>(LockResource(hGlblDlgTemplate));
 
 	if (!lpDlg)
 		MYERROR;
+	SCOPE_EXIT { UnlockResource(hGlblDlgTemplate); };
 
 	lpDlgItem = GetDialogInfo(lpDlg, &dlg);
 	bNumControls = dlg.nbItems;
@@ -1275,9 +1246,7 @@ BOOL CResModule::ExtractDialog(LPCWSTR lpszType)
 		}
 	}
 
-	UnlockResource(hGlblDlgTemplate);
-	FreeResource(hGlblDlgTemplate);
-	return (TRUE);
+	return TRUE;
 }
 
 BOOL CResModule::ReplaceDialog(LPCWSTR lpszType, WORD wLanguage)
@@ -1295,16 +1264,18 @@ BOOL CResModule::ReplaceDialog(LPCWSTR lpszType, WORD wLanguage)
 
 	if (!hGlblDlgTemplate)
 		MYERROR;
+	SCOPE_EXIT { FreeResource(hGlblDlgTemplate); };
 
 	lpDlg = static_cast<WORD*>(LockResource(hGlblDlgTemplate));
 
 	if (!lpDlg)
 		MYERROR;
+	SCOPE_EXIT { UnlockResource(hGlblDlgTemplate); };
 
 	size_t nMem = 0;
 	const WORD * p = lpDlg;
 	if (!CountMemReplaceDialogResource(p, &nMem, nullptr))
-		goto DONE_ERROR;
+		MYERROR;
 	WORD * newDialog = new WORD[nMem + (nMem % 2)];
 	SecureZeroMemory(newDialog, (nMem + (nMem % 2))*2);
 
@@ -1312,30 +1283,23 @@ BOOL CResModule::ReplaceDialog(LPCWSTR lpszType, WORD wLanguage)
 	if (!CountMemReplaceDialogResource(lpDlg, &index, newDialog))
 	{
 		delete [] newDialog;
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
 	if (!UpdateResource(m_hUpdateRes, RT_DIALOG, lpszType, (m_wTargetLang ? m_wTargetLang : wLanguage), newDialog, static_cast<DWORD>(nMem + (nMem % 2))*2))
 	{
 		delete [] newDialog;
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
 	if (m_wTargetLang && (!UpdateResource(m_hUpdateRes, RT_DIALOG, lpszType, wLanguage, nullptr, 0)))
 	{
 		delete [] newDialog;
-		goto DONE_ERROR;
+		MYERROR;
 	}
 
 	delete [] newDialog;
-	UnlockResource(hGlblDlgTemplate);
-	FreeResource(hGlblDlgTemplate);
 	return TRUE;
-
-DONE_ERROR:
-	UnlockResource(hGlblDlgTemplate);
-	FreeResource(hGlblDlgTemplate);
-	MYERROR;
 }
 
 const WORD* CResModule::GetDialogInfo(const WORD * pTemplate, LPDIALOGINFO lpDlgInfo) const
