@@ -936,6 +936,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	HMENU subMenu = hMenu ? CreateMenu() : nullptr;
 	int indexSubMenu = 0;
 
+	unsigned __int64 topMenu11 = g_ShellCache.GetMenuLayout11();
 	unsigned __int64 topmenu = g_ShellCache.GetMenuLayout();
 	unsigned __int64 menumask = g_ShellCache.GetMenuMask();
 	unsigned __int64 menuex = g_ShellCache.GetMenuExt();
@@ -991,11 +992,15 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 						idCmd++;
 					}
 
+					bool isMenu11 = ((topMenu11 & menuInfo[menuIndex].menuID) != 0);
 					// handle special cases (sub menus)
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
-						if(InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
-							bMenuEntryAdded = true;
+						if (hMenu || isMenu11)
+						{
+							if (InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
+								bMenuEntryAdded = true;
+						}
 					}
 					else if (menuInfo[menuIndex].command == ShellMenuLFSMenu)
 					{
@@ -1006,21 +1011,24 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 					{
 						bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
 
-						// insert the menu entry
-						InsertGitMenu(	bIsTop,
-										bIsTop ? hMenu : subMenu,
-										bIsTop ? indexMenu++ : indexSubMenu++,
-										idCmd++,
-										menuInfo[menuIndex].menuTextID,
-										bShowIcons ? menuInfo[menuIndex].iconID : 0,
-										idCmdFirst,
-										menuInfo[menuIndex].command,
-										uFlags);
-						if (!bIsTop)
+						if (hMenu || isMenu11)
 						{
-							bMenuEntryAdded = true;
-							bMenuEmpty = false;
-							bAddSeparator = false;
+							// insert the menu entry
+							InsertGitMenu(bIsTop,
+										  bIsTop ? hMenu : subMenu,
+										  bIsTop ? indexMenu++ : indexSubMenu++,
+										  idCmd++,
+										  menuInfo[menuIndex].menuTextID,
+										  bShowIcons ? menuInfo[menuIndex].iconID : 0,
+										  idCmdFirst,
+										  menuInfo[menuIndex].command,
+										  uFlags);
+							if (!bIsTop)
+							{
+								bMenuEntryAdded = true;
+								bMenuEmpty = false;
+								bAddSeparator = false;
+							}
 						}
 					}
 				}

@@ -2270,6 +2270,18 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,227,45,59,14
 END
 
+IDD_SETTINGSWIN11CONTEXTMENU DIALOGEX 0, 0, 300, 225
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "Windows 11 Context Menu"
+FONT 9, "Segoe UI", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Top context menu on Windows 11",IDC_STATIC,7,7,286,210
+    LTEXT           "Unchecked items are not shown in the top menu but only in the original menu",IDC_STATIC,12,16,274,18,SS_CENTERIMAGE
+    CONTROL         "",IDC_MENULIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,12,37,274,153
+    CONTROL         "Select/deselect &all",IDC_SELECTALL,"Button",BS_AUTO3STATE | WS_TABSTOP,12,198,106,14
+    PUSHBUTTON      "Restore Default",IDC_RESTORE,204,198,82,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3254,6 +3266,16 @@ BEGIN
         VERTGUIDE, 104
         TOPMARGIN, 7
         BOTTOMMARGIN, 59
+    END
+
+    IDD_SETTINGSWIN11CONTEXTMENU, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 294
+        VERTGUIDE, 12
+        VERTGUIDE, 286
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 218
     END
 END
 #endif    // APSTUDIO_INVOKED

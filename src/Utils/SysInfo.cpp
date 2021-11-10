@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2021 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,9 +19,25 @@
 //
 #include "stdafx.h"
 #include "SysInfo.h"
+#include "PathUtils.h"
+#include "StringUtils.h"
+
+static bool InitializeIsWin11OrLater()
+{
+	PWSTR pszPath = nullptr;
+	if (SHGetKnownFolderPath(FOLDERID_System, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
+		return false;
+	CString sysPath{ pszPath };
+	CoTaskMemFree(pszPath);
+	auto explorerVersion = CPathUtils::GetVersionFromFile(sysPath + L"\\shell32.dll");
+	std::vector<int> versions;
+	stringtok(versions, explorerVersion, true, L".");
+	return versions.size() > 3 && versions[2] >= 22000;
+}
 
 SysInfo::SysInfo()
 {
+	m_bIsWindows11OrLater = InitializeIsWin11OrLater();
 }
 
 SysInfo::~SysInfo()

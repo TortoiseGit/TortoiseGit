@@ -44,6 +44,8 @@ ShellCache::ShellCache()
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	drivetypeticker = 0;
 
+	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", DEFAULTWIN11MENUTOPENTRIES, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+
 	unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
 	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
@@ -142,6 +144,7 @@ bool ShellCache::RefreshIfNeeded()
 	showignoredoverlay.read();
 	excludedasnormal.read();
 	hidemenusforunversioneditems.read();
+	menuLayout11.read();
 	menulayoutlow.read();
 	menulayouthigh.read();
 	langid.read();
@@ -183,6 +186,12 @@ DWORD ShellCache::BlockStatus()
 {
 	RefreshIfNeeded();
 	return (blockstatus);
+}
+
+unsigned __int64 ShellCache::GetMenuLayout11()
+{
+	RefreshIfNeeded();
+	return menuLayout11;
 }
 
 unsigned __int64 ShellCache::GetMenuLayout()

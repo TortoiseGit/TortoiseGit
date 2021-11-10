@@ -24,6 +24,7 @@
 #define ADMINDIRTIMEOUT 10000
 #define DRIVETYPETIMEOUT 300000		// 5 min
 
+#define DEFAULTWIN11MENUTOPENTRIES MENUSYNC|MENUCOMMIT|MENUSWITCH|MENUREVERT|MENUCONFLICTEDITOR|MENUDIFF|MENUPULL|MENUPUSH|MENUREPOBROWSE|MENULOG|MENUBLAME|MENUCLONE|MENUMERGE|MENUSTASHSAVE|MENUSETTINGS
 #define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
 #define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUSTASHAPPLY|MENUSUBSYNC
 
@@ -63,6 +64,7 @@ public:
 	CacheType GetCacheType();
 	DWORD BlockStatus();
 	unsigned __int64 GetMenuLayout();
+	unsigned __int64 GetMenuLayout11();
 	unsigned __int64 GetMenuExt();
 	unsigned __int64 GetMenuMask();
 
@@ -196,6 +198,7 @@ public:
 	CRegStdDWORD drivefloppy;
 	CRegStdDWORD driveram;
 	CRegStdDWORD driveunknown;
+	CRegStdQWORD menuLayout11;
 	CRegStdDWORD menulayoutlow; /* Fist level mask */
 	CRegStdDWORD menulayouthigh;
 	CRegStdDWORD shellmenuaccelerators;

@@ -1951,6 +1951,9 @@
     <ClInclude Include="DiffLinesForStaging.h">
       <Filter>Commands\Commit</Filter>
     </ClInclude>
+    <ClInclude Include="Settings\SetWin11ContextMenu.h">
+      <Filter>Commands\setting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

@@ -491,6 +491,7 @@
     <ClInclude Include="Settings\SettingsProgsDiff.h" />
     <ClInclude Include="Settings\SettingsProgsMerge.h" />
     <ClInclude Include="Settings\SettingsTUDiff.h" />
+    <ClInclude Include="Settings\SetWin11ContextMenu.h" />
     <ClInclude Include="SinglePropSheetDlg.h" />
     <ClInclude Include="DeleteConflictDlg.h" />
     <ClInclude Include="HistoryDlg.h" />

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018, 2020 - TortoiseGit
+// Copyright (C) 2008-2018, 2020-2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,9 +50,11 @@
 #include "SettingGitCredential.h"
 #include "SettingsBugtraqConfig.h"
 #include "SetExtMenu.h"
+#include "SetWin11ContextMenu.h"
 #include "SettingsAdvanced.h"
 #include "SettingSMTP.h"
 #include "SettingsTUDiff.h"
+#include "SysInfo.h"
 
 IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
 CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
@@ -100,6 +102,8 @@ void CSettings::AddPropPages()
 	auto pMainPage = AddPropPage(new CSetMainPage(), L"main");
 	AddPropPage(new CSetLookAndFeelPage(), L"look", pMainPage);
 	AddPropPage(new CSetExtMenu(), L"extmenu", pMainPage);
+	if (SysInfo::Instance().IsWin11OrLater())
+		AddPropPage(new CSetWin11ContextMenu(), L"win11menu", pMainPage);
 	AddPropPage(new CSetDialogs(), L"dialog", pMainPage);
 	AddPropPage(new CSetDialogs2(), L"dialog2", pMainPage);
 	AddPropPage(new CSetDialogs3(), L"dialog3", pMainPage);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -412,6 +412,120 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 }
 
 void CSetExtMenu::OnChange()
+{
+	SetModified();
+}
+
+// Set Win11 top menu class
+#include "SetWin11ContextMenu.h"
+
+IMPLEMENT_DYNAMIC(CSetWin11ContextMenu, ISettingsPropPage)
+CSetWin11ContextMenu::CSetWin11ContextMenu()
+	: ISettingsPropPage(CSetWin11ContextMenu::IDD)
+{
+	ShellCache shell;
+
+	m_regtopMenu = shell.menuLayout11;
+	m_topMenu = m_regtopMenu;
+}
+
+CSetWin11ContextMenu::~CSetWin11ContextMenu()
+{
+}
+
+void CSetWin11ContextMenu::DoDataExchange(CDataExchange* pDX)
+{
+	ISettingsPropPage::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_MENULIST, m_cMenuList);
+}
+
+BEGIN_MESSAGE_MAP(CSetWin11ContextMenu, ISettingsPropPage)
+	ON_NOTIFY(LVN_ITEMCHANGED, IDC_MENULIST, OnLvnItemchangedMenulist)
+	ON_BN_CLICKED(IDC_SELECTALL, OnBnClickedSelectall)
+	ON_BN_CLICKED(IDC_RESTORE, OnBnClickedRestoreDefaults)
+END_MESSAGE_MAP()
+
+BOOL CSetWin11ContextMenu::OnInitDialog()
+{
+	ISettingsPropPage::OnInitDialog();
+
+	AdjustControlSize(IDC_SELECTALL);
+
+	m_cMenuList.SetExtendedStyle(LVS_EX_CHECKBOXES | (CRegDWORD(L"Software\\TortoiseGit\\FullRowSelect", TRUE) ? LVS_EX_FULLROWSELECT : 0) | LVS_EX_DOUBLEBUFFER);
+
+	m_cMenuList.DeleteAllItems();
+	int c = m_cMenuList.GetHeaderCtrl()->GetItemCount() - 1;
+	while (c >= 0)
+		m_cMenuList.DeleteColumn(c--);
+	m_cMenuList.InsertColumn(0, L"");
+
+	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", nullptr);
+
+	m_cMenuList.SetRedraw(false);
+
+	int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	m_imgList.Create(iconWidth, iconHeight, ILC_COLOR32 | ILC_MASK, 4, 1);
+
+	m_bBlock = true;
+
+	InsertMenuItemToList(&m_cMenuList, &m_imgList);
+	SetMenuItemCheck(&m_cMenuList, m_topMenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+
+	m_bBlock = false;
+
+	m_cMenuList.SetImageList(&m_imgList, LVSIL_SMALL);
+	for (int col = 0, maxcol = m_cMenuList.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
+		m_cMenuList.SetColumnWidth(col, LVSCW_AUTOSIZE_USEHEADER);
+	m_cMenuList.SetRedraw(true);
+
+	UpdateData(FALSE);
+
+	return TRUE;
+}
+
+BOOL CSetWin11ContextMenu::OnApply()
+{
+	UpdateData();
+
+	m_regtopMenu = m_topMenu;
+
+	SetModified(FALSE);
+	return ISettingsPropPage::OnApply();
+}
+
+void CSetWin11ContextMenu::OnBnClickedRestoreDefaults()
+{
+	SetModified(TRUE);
+	m_topMenu = DEFAULTWIN11MENUTOPENTRIES;
+	m_bBlock = true;
+	SetMenuItemCheck(&m_cMenuList, m_topMenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+	m_bBlock = false;
+}
+
+void CSetWin11ContextMenu::OnBnClickedSelectall()
+{
+	if (m_bBlock)
+		return;
+
+	SetModified(TRUE);
+	m_bBlock = true;
+	m_topMenu = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+	m_bBlock = false;
+}
+
+void CSetWin11ContextMenu::OnLvnItemchangedMenulist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
+{
+	if (m_bBlock)
+		return;
+
+	SetModified(TRUE);
+	if (m_cMenuList.GetItemCount() > 0)
+		m_topMenu = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+	*pResult = 0;
+}
+
+void CSetWin11ContextMenu::OnChange()
 {
 	SetModified();
 }

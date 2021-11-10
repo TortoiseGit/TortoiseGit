@@ -7702,7 +7702,7 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1097, Dialog IDD_SETTINGSCOLORS_1: Control id 1254, Dialog IDD_SETTINGSCOLORS_2: Control id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog IDD_SETTINGSUDIFF: Control id 1254)
+#. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1097, Dialog IDD_SETTINGSCOLORS_1: Control id 1254, Dialog IDD_SETTINGSCOLORS_2: Control id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog IDD_SETTINGSUDIFF: Control id 1254, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1254)
 msgid "Restore Default"
 msgstr ""
 
@@ -8217,7 +8217,7 @@ msgstr ""
 msgid "Select what file you want to save as\nNote: There is unresolved conflict!"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG: Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Resource IDs: (Dialog IDD_ADD: Control id 1067, Dialog IDD_DELETEREMOTETAG: Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE: Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL: Control id 1067, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -9504,6 +9504,10 @@ msgstr ""
 msgid "Toggle filters"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Top context menu on Windows 11"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
 msgid "TortoiseGit"
 msgstr ""
@@ -9751,6 +9755,10 @@ msgstr ""
 
 #. Resource IDs: (AFX_IDS_CHECKLISTBOX_UNCHECK)
 msgid "Uncheck"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Unchecked items are not shown in the top menu but only in the original menu"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
@@ -10320,6 +10328,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
+msgid "Windows 11 Context Menu"
 msgstr ""
 
 #. Resource IDs: (5020 - Menu)
