@@ -15,6 +15,7 @@ Released: unreleased
  * Update editorconfig to 0.12.5
  * Update libgit to 2.32.0 based on Git for Windows sources
  * Fixed issue #3764: Add TortoiseGit menu to the right click menu in Windows 11
+ * Fixed issue #3818: Change icon image for Cherry-Pick
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
