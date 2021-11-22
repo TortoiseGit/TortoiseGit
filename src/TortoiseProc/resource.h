@@ -152,6 +152,7 @@
 #define IDI_NOTEPAD                     362
 #define IDR_STAGING                     364
 #define IDI_INDETERMINATE               368
+#define IDI_CHERRYPICK                  369
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -2116,7 +2117,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        369
+#define _APS_NEXT_RESOURCE_VALUE        370
 #define _APS_NEXT_COMMAND_VALUE         32881
 #define _APS_NEXT_CONTROL_VALUE         1856
 #define _APS_NEXT_SYMED_VALUE           201

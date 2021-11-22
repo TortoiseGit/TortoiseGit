@@ -660,6 +660,7 @@
     <Image Include="..\Resources\certcheck.ico" />
     <Image Include="..\Resources\CFMBackground.ico" />
     <Image Include="..\Resources\checkout.ico" />
+    <Image Include="..\Resources\cherry-pick.ico" />
     <Image Include="..\Resources\clippaste.ico" />
     <Image Include="..\Resources\code.ico" />
     <Image Include="..\Resources\CommitBackground.ico" />

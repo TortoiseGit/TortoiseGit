@@ -2292,6 +2292,9 @@
     <Image Include="..\Resources\indeterminate.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\cherry-pick.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

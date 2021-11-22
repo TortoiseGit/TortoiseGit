@@ -101,6 +101,7 @@ IDI_GITFOLDER           ICON                    "gitfolder.ico"
 IDI_LOCK_BKG            ICON                    "LockBackground.ico"
 IDI_UNLOCK_BKG          ICON                    "UnlockBackground.ico"
 IDI_INDETERMINATE       ICON                    "indeterminate.ico"
+IDI_CHERRYPICK          ICON                    "cherry-pick.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //

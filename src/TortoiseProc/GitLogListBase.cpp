@@ -2242,9 +2242,9 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			if (m_ContextMenuMask&GetContextMenuBit(ID_CHERRY_PICK) && !isHeadCommit && m_hasWC && !isMergeActive) {
 				if (selectedCount >= 2)
-					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_PICK);
+					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSIONS, IDI_CHERRYPICK);
 				else
-					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_PICK);
+					popup.AppendMenuIcon(ID_CHERRY_PICK, IDS_CHERRY_PICK_VERSION, IDI_CHERRYPICK);
 				bAddSeparator = true;
 			}
 
