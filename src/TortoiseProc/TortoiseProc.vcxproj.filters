@@ -1022,9 +1022,6 @@
     <ClCompile Include="..\Utils\Monitor.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
-    <ClCompile Include="FileTextLinesFromScintilla.cpp">
-      <Filter>Commands\Commit</Filter>
-    </ClCompile>
     <ClCompile Include="StagingOperations.cpp">
       <Filter>Commands\Commit</Filter>
     </ClCompile>
@@ -1938,9 +1935,6 @@
     </ClInclude>
     <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils\General</Filter>
-    </ClInclude>
-    <ClInclude Include="FileTextLinesFromScintilla.h">
-      <Filter>Commands\Commit</Filter>
     </ClInclude>
     <ClInclude Include="StagingOperations.h">
       <Filter>Commands\Commit</Filter>
