@@ -11,7 +11,7 @@ Released: unreleased
  * Fixed issue #3738: Added force flag on LFSLocksDlg
  * Fixed issue #2299: Better support the git staging process
  * Update libgit2 to 1.3.0
- * Update pcre2 to 10.37
+ * Update pcre2 to 10.39
  * Update editorconfig to 0.12.5
  * Update libgit to 2.32.0 based on Git for Windows sources
  * Fixed issue #3764: Add TortoiseGit menu to the right click menu in Windows 11
