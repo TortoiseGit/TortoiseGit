@@ -170,10 +170,10 @@ index 3e4c139..7984fe9 100644
  </literallayout><simpara></simpara>
  {title#}</example>
 diff --git a/Documentation/user-manual.conf b/Documentation/user-manual.conf
-index 0148f12..1417544 100644
+index 0148f12..d10b762 100644
 --- a/Documentation/user-manual.conf
 +++ b/Documentation/user-manual.conf
-@@ -7,5 +7,57 @@ startsb=&#91;
+@@ -7,5 +7,63 @@ startsb=&#91;
  endsb=&#93;
  tilde=&#126;
  
@@ -197,6 +197,12 @@ index 0148f12..1417544 100644
 +[xref2-inlinemacro]
 +<link linkend="{doctitle}_{1}">{2}</link>
 +{2%}<xref linkend="{doctitle}_{1}"/>
++
++[preface]
++<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
 +
 +[sect1]
 +<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
