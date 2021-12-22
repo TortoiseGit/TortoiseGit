@@ -1713,13 +1713,13 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	switch (m_ctrlSubmodule.GetCurrentEntry())
 	{
 	case 0:
-		cmd = L"git.exe submodule update --init";
+		cmd = L"git.exe submodule update --init --recursive";
 		break;
 	case 1:
 		cmd = L"git.exe submodule init";
 		break;
 	case 2:
-		cmd = L"git.exe submodule sync";
+		cmd = L"git.exe submodule sync --recursive";
 		break;
 	}
 
