@@ -2336,10 +2336,23 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 		m_site.As(&oleWindow);
 		if (oleWindow)
 		{
-			// in Win11, the "main" context menu does not provide an IOleWindow,
-			// so this is for the old context menu, and there we don't show this menu
-			*pCmdState = ECS_HIDDEN;
-			return S_OK;
+			// We don't want to show the menu on the classic context menu.
+			// The classic menu provides an IOleWindow, but the main context
+			// menu of the left treeview in explorer does too.
+			// So we check the window class name: if it's "NamespaceTreeControl",
+			// then we're dealing with the main context menu of the tree view.
+			// If it's not, then we're dealing with the classic context menu
+			// and there we hide this menu entry.
+			HWND hWnd = nullptr;
+			oleWindow->GetWindow(&hWnd);
+			wchar_t szWndClassName[MAX_PATH] = { 0 };
+			GetClassName(hWnd, szWndClassName, _countof(szWndClassName));
+			if (wcscmp(szWndClassName, L"NamespaceTreeControl"))
+			{
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState - hidden\n");
+				*pCmdState = ECS_HIDDEN;
+				return S_OK;
+			}
 		}
 	}
 
