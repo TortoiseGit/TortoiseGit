@@ -4,6 +4,7 @@
 	<title>TortoiseGit Daily Use Guide</title>
 	<?dbhh topicname="HIDD_URL"?>
 	<?dbhh topicname="HIDD_SVNPROGRESS"?>
+	<?dbhh topicname="HIDD_GITPROGRESS"?>
 	<simplesect>
 		<para>
 			This document describes day to day usage of the TortoiseGit client.

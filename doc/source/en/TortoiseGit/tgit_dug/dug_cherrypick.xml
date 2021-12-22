@@ -2,7 +2,6 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-cherrypick">
 	<title>Cherry picking</title>
-	<?dbhh topicname="HIDD_REBASECHERRYPICK"?>
 	<indexterm>
 		<primary>Cherry pick</primary>
 	</indexterm>

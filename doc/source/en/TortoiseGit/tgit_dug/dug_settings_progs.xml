@@ -306,6 +306,7 @@ C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %b
 	<sect3 id="tgit-dug-settings-Progs-Adv">
 		<title>Diff/Merge Advanced Settings</title>
 		<?dbhh topicname="HIDD_SETTINGSPROGSADV"?>
+		<?dbhh topicname="HIDD_TOOLASSOC"?>
 		<para>
 			<figure id="tgit-dug-settings-dia-6">
 				<title>The Settings Dialog, Diff/Merge Advanced Dialog</title>

@@ -3,6 +3,7 @@
 <sect1 id="tgit-dug-browse-ref">
 	<title>Browse All Refs</title>
 	<?dbhh topicname="HIDD_BROWSE_REFS"?>
+	<?dbhh topicname="HIDD_DELETEREMOTETAG"?>
 	<indexterm>
 		<primary>Browse All Refs</primary>
 	</indexterm>

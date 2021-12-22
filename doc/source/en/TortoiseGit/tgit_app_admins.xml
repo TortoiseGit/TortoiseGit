@@ -62,6 +62,7 @@
 	</sect1>
 	<sect1 id="tgit-admins-upgradecheck">
 		<title>Redirect the upgrade check</title>
+		<?dbhh topicname="HIDD_CHECKFORUPDATES"?>
 		<indexterm>
 			<primary>upgrade check</primary>
 		</indexterm>

@@ -22,6 +22,7 @@
 	<sect3 id="tgit-dug-settings-config">
 		<title>Git Config</title>
 		<?dbhh topicname="HIDD_SETTINGIT_CONFIG"?>
+		<?dbhh topicname="HIDD_FIRSTSTARTWIZARD_USER"?>
 		<para>
 			<figure id="tgit-dug-settings-git-config">
 				<title>The Settings Dialog, Git</title>
@@ -58,6 +59,7 @@
 	<sect3 id="tgit-dug-settings-remote">
 		<title>Remote</title>
 		<?dbhh topicname="HIDD_SETTINREMOTE"?>
+		<?dbhh topicname="HIDD_ADD_REMOTE"?>
 		<para>
 			<figure id="tgit-dug-settings-git-remote">
 				<title>The Settings Dialog, Git, Remote</title>
@@ -108,7 +110,7 @@
 	</sect3>
 	<sect3 id="tgit-dug-settings-credential">
 		<title>Credential</title>
-		<?dbhh topicname="HIDD_SETTINCREDENTIAL"?>
+		<?dbhh topicname="HIDD_SETTINGSCREDENTIAL"?>
 		<para>
 			<figure id="tgit-dug-settings-git-credential">
 				<title>The Settings Dialog, Git, Credential</title>

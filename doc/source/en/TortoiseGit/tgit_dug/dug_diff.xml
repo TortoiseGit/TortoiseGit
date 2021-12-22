@@ -292,6 +292,7 @@
 	</sect2>
 	<sect2 id="tgit-dug-submodulediff">
 		<title>Diffing submodules using Submodule Diff Dialog</title>
+		<?dbhh topicname="HIDD_DIFFSUBMODULE"?>
 		<indexterm>
 			<primary>Submodule Diff Dialog</primary>
 		</indexterm>

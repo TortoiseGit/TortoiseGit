@@ -201,6 +201,8 @@
 	</sect2>
 	<sect2 id="tgit-dug-commit-log">
 		<title>Commit Log Messages</title>
+		<?dbhh topicname="HIDD_AUTOTEXTTESTDLG"?>
+		<?dbhh topicname="HIDD_HISTORYDLG"?>
 		<para>
 			Be sure to enter a log message which describes the changes you are
 			committing. This will help you to see what happened and when, as you

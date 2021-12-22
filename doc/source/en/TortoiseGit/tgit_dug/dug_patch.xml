@@ -19,7 +19,6 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_FORMAT_PATCH"?>
 	<?dbhh topicname="HIDD_APPLY_PATCH_LIST"?>
-	<?dbhh topicname="HIDD_CREATEPATCH"?>
 	<?dbhh topicname="HIDD_REQUESTPULL"?>
 	<?dbhh topicname="HIDD_SENDMAIL"?>
 	<para>

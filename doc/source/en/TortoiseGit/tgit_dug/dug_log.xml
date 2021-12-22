@@ -18,6 +18,7 @@
 		<primary>revision log dialog</primary>
 	</indexterm>
 	<?dbhh topicname="HIDD_LOGMESSAGE"?>
+	<?dbhh topicname="HIDD_LOGORDERING"?>
 	<para>
 		For every change you make and commit, you should provide
 		a log message for that change. That way you can later find out

@@ -2,6 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-changelists">
 	<title>Change Lists</title>
+	<?dbhh topicname="HIDD_CREATECHANGELIST"?>
 	<indexterm>
 		<primary>changelist</primary>
 	</indexterm>

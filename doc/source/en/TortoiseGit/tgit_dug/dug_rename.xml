@@ -164,7 +164,6 @@
 		<indexterm>
 			<primary>case change</primary>
 		</indexterm>
-		<?dbhh topicname="HIDD_RENAMEINCASE"?>
 		<para>
 			Making case-only changes to a filename needs special attention,
 			because Windows does not honor the filename casing by default.

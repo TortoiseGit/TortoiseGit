@@ -11,7 +11,6 @@
 	<indexterm>
 		<primary>praise</primary>
 	</indexterm>
-	<?dbhh topicname="HIDD_BLAME"?>
 	<para>
 		Sometimes you need to know not only what lines have changed, but also
 		who exactly changed specific lines in a file. That's when the

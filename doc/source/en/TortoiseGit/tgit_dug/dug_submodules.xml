@@ -2,6 +2,7 @@
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
 <sect1 id="tgit-dug-submodules">
 	<?dbhh topicname="HIDD_SUBMODULE_ADD"?>
+	<?dbhh topicname="HIDD_SUBMODULE_UPDATE"?>
 	<title>Submodules</title>
 	<para>
 		When you want to embed foreign repositories into a working tree/git repository, this is called a submodule.
