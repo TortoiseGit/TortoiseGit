@@ -3868,6 +3868,7 @@ BEGIN
     IDS_BROWSE_REFS_ONLYMERGED "Only merged (to HEAD)"
     IDS_BROWSE_REFS_ONLYUNMERGED "Only unmerged (to HEAD)"
     IDS_ARCHIVEFILEFILTER   "ZIP archive (*.zip)|*.zip|TAR archive (*.tar)|*.tar|TAR GZIP archive (*.tar.gz)|*.tar.gz|All Files (*.*)|*.*||"
+    IDS_WALKBEHAVIOUR_FULLHISTORY "Full history"
     IDS_EXTRAPATH_TT        "If your git installation needs an extra entry in the PATH environment variable, you can enter it here and it will get appended to %PATH% automatically when TortoiseGit starts."
     IDS_FIRSTSTART_HINT1    "TortoiseGit is designed as a Shell Extension. Therefore the main interaction with TortoiseGit will be using the context menu of the Windows shell such as the Windows Explorer."
     IDS_FIRSTSTART_HINT2    "This is the First Start Wizard which will help you configure the basic settings. TortoiseGit is highly configurable, so it is advisable that you have a look into its settings dialog. The settings dialog is reachable using the start menu or the context menu of the Windows Explorer: TortoiseGit -> Settings."

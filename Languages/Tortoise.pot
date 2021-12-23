@@ -4734,6 +4734,10 @@ msgstr ""
 msgid "Full data"
 msgstr ""
 
+#. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
+msgid "Full history"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
 msgstr ""

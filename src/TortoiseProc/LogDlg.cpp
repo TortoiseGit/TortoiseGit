@@ -98,7 +98,8 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
 	m_regbShowOtherRefs = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\ShowOtherRefs\\" + str, TRUE);
 	m_bShowOtherRefs = !!m_regbShowOtherRefs;
-
+	m_regbFullHistory = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\FullHistory", FALSE);
+	m_bFullHistory = !!m_regbFullHistory;
 
 	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
 	m_bShowUnversioned = !!m_regAddBeforeCommit;
@@ -374,6 +375,9 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_ShowMask |= CGit::LOG_INFO_BASIC_REFS;
 	else
 		m_LogList.m_ShowMask&=~CGit::LOG_INFO_ALL_BRANCH;
+
+	if (m_bFullHistory)
+		m_LogList.m_ShowMask |= CGit::LOG_INFO_FULL_HISTORY;
 
 	HandleShowLabels(m_bShowTags, LOGLIST_SHOWTAGS);
 	HandleShowLabels(m_bShowLocalBranches, LOGLIST_SHOWLOCALBRANCHES);
@@ -3326,6 +3330,7 @@ static void AppendMenuChecked(CMenu &menu, UINT nTextID, UINT_PTR nItemID, BOOL 
 #define WALKBEHAVIOUR_COMPRESSEDGRAPH		3
 #define WALKBEHAVIOUR_LABELEDCOMMITS		4
 #define WALKBEHAVIOUR_NOMERGES				5
+#define WALKBEHAVIOUR_FULLHISTORY			6
 
 void CLogDlg::OnBnClickedWalkBehaviour()
 {
@@ -3336,6 +3341,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FIRSTPARENT, WALKBEHAVIOUR_FIRSTPARENT, m_bFirstParent);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_NOMERGES, WALKBEHAVIOUR_NOMERGES, m_bNoMerges);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FOLLOWRENAMES, WALKBEHAVIOUR_FOLLOWRENAMES, m_bFollowRenames, !(m_path.IsEmpty() || m_path.IsDirectory()));
+		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_FULLHISTORY, WALKBEHAVIOUR_FULLHISTORY, m_bFullHistory);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_COMPRESSED, WALKBEHAVIOUR_COMPRESSEDGRAPH, m_iCompressedGraph == 1);
 		AppendMenuChecked(popup, IDS_WALKBEHAVIOUR_LABELEDCOMMITS, WALKBEHAVIOUR_LABELEDCOMMITS, m_iCompressedGraph == 2);
@@ -3356,6 +3362,14 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		case WALKBEHAVIOUR_NOMERGES:
 			m_bNoMerges = !m_bNoMerges;
 			OnBnClickedFirstParent(); // OnBnClickedFirstParent handles both cases: m_bFirstParent and m_bNoMerges
+			break;
+		case WALKBEHAVIOUR_FULLHISTORY:
+			m_regbFullHistory = m_bFullHistory = !m_bFullHistory;
+			if (m_bFullHistory)
+				m_LogList.m_ShowMask |= CGit::LOG_INFO_FULL_HISTORY;
+			else
+				m_LogList.m_ShowMask &= ~CGit::LOG_INFO_FULL_HISTORY;
+			OnRefresh();
 			break;
 		case WALKBEHAVIOUR_FOLLOWRENAMES:
 			m_bFollowRenames = !m_bFollowRenames;

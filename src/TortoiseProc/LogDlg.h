@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -168,6 +168,7 @@ protected:
 private:
 	CRegDWORD m_regbAllBranch;
 	CRegDWORD m_regbShowTags;
+	CRegDWORD m_regbFullHistory;
 	CRegDWORD m_regbShowLocalBranches;
 	CRegDWORD m_regbShowRemoteBranches;
 	CRegDWORD m_regbShowOtherRefs;
@@ -239,6 +240,7 @@ private:
 
 	BOOL				m_iHidePaths;
 	bool				m_bFirstParent;
+	bool				m_bFullHistory = false;
 	BOOL				m_bAllBranch;		// variable for checkbox only
 	AllBranchType		m_AllBranchType;	// variable for actual branch type
 	BOOL				m_bWholeProject;

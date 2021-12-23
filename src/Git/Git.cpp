@@ -1037,6 +1037,9 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if(mask& CGit::LOG_INFO_NO_MERGE )
 		param += L" --no-merges";
 
+	if (mask & CGit::LOG_INFO_FULL_HISTORY)
+		param += " --full-history";
+
 	if(mask& CGit::LOG_INFO_FOLLOW)
 		param += L" --follow";
 
