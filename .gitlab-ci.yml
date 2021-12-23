@@ -5,7 +5,7 @@ doc:
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en python3
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - mv doc/doc.build.user.linux.templ doc/doc.build.user
@@ -16,6 +16,8 @@ doc:
         cat Aspell/*.log;
         exit 1;
       fi
+    - python3 scripts/chkidd.py source/en/TortoiseGit ../src/Resources/TortoiseProcENG.rc scripts/TortoiseProcENG.ignore
+    - python3 scripts/chkidd.py source/en/TortoiseMerge ../src/Resources/TortoiseMergeENG.rc scripts/TortoiseMergeENG.ignore
   except:
     refs:
       - tags
@@ -27,6 +29,11 @@ doc:
       - doc/xsl/**/*
       - doc/doc.build*
       - doc/Aspell/*
+      - src/Resources/*.rc
+  artifacts:
+    paths:
+    - doc/output/
+    expire_in: 1 week
 
 spellcheck-pot:
   image: debian:buster

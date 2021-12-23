@@ -14,8 +14,10 @@
 *.zip
 /doc/Aspell/aspell.bat
 /doc/Aspell/Temp.pws
+/doc/IDD_Errors.txt
 /doc/images/8bit.tmp
 /doc/output
+/doc/scripts/__pycache__
 /doc/source/*.h
 /doc/source/en/pubdate.xml
 /doc/source/en/version.xml
