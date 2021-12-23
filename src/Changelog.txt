@@ -28,6 +28,7 @@ Released: unreleased
  * Fixed issue #3779: "Show branches this commit is on" ("References commit is on" window) takes a very long time to find branches and tags
  * Fixed issue #3808: LFS stopped working (maybe related to major upgrade of git-lfs 3.x)
  * Fixed issue #3822: Crash (0xc0000409) in TortoiseGitProc.exe when invoking git log
+ * Fixes issue #3826: Help links to TortoiseGit site don't open in a sensible browser
 
 = Release 2.12.0 =
 Released: 2021-03-31

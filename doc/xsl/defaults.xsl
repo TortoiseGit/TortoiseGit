@@ -8,6 +8,8 @@
   <xsl:param name="generate.index" select="1" />
   <xsl:param name="glossary.sort" select="1" />
 
+  <xsl:param name="ulink.target">_blank</xsl:param>
+
   <xsl:param name="body.start.indent">0pt</xsl:param>
   <xsl:param name="title.margin.left">-0.5in</xsl:param>
   
