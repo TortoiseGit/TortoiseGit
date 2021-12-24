@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2020 TortoiseGit
+// Copyright (C) 2014, 2016-2021 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -19,7 +19,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 
-#include "buffer.h"
+#include "str.h"
 #include "netops.h"
 #include "http_parser.h"
 #include "../../ext/libgit2/src/transports/smart.h"
@@ -55,7 +55,7 @@ typedef struct {
  *
  * For example: git-upload-pack '/libgit2/libgit2'
  */
-static int gen_proto(git_buf *request, const char *cmd, const char *url)
+static int gen_proto(git_str *request, const char *cmd, const char *url)
 {
 	const char *repo;
 
@@ -82,9 +82,9 @@ done:
 		return -1;
 	}
 
-	git_buf_printf(request, "\"%s '%s'\"", cmd, repo);
+	git_str_printf(request, "\"%s '%s'\"", cmd, repo);
 
-	if (git_buf_oom(request)) {
+	if (git_str_oom(request)) {
 		git_error_set_oom();
 		return -1;
 	}
@@ -127,12 +127,12 @@ static void ssh_stream_free(git_smart_subtransport_stream *stream)
 	DWORD exitcode = command_close(&s->commandHandle);
 	if (s->commandHandle.errBuf) {
 		if (exitcode && exitcode != MAXDWORD) {
-			if (!git_buf_oom(s->commandHandle.errBuf) && git_buf_len(s->commandHandle.errBuf))
+			if (!git_str_oom(s->commandHandle.errBuf) && git_str_len(s->commandHandle.errBuf))
 				git_error_set(GIT_ERROR_SSH, "Command exited non-zero (%ld) and returned:\n%s", exitcode, s->commandHandle.errBuf->ptr);
 			else
 				git_error_set(GIT_ERROR_SSH, "Command exited non-zero: %ld", exitcode);
 		}
-		git_buf_dispose(s->commandHandle.errBuf);
+		git_str_dispose(s->commandHandle.errBuf);
 		git__free(s->commandHandle.errBuf);
 	}
 
@@ -149,7 +149,7 @@ static int ssh_stream_alloc(
 	git_smart_subtransport_stream **stream)
 {
 	ssh_stream *s;
-	git_buf *errBuf;
+	git_str *errBuf;
 
 	assert(stream);
 
@@ -335,7 +335,7 @@ static int _git_ssh_setup_tunnel(
 	wchar_t *ssh = t->sshtoolpath;
 	wchar_t *wideParams = NULL;
 	wchar_t *cmd = NULL;
-	git_buf params = GIT_BUF_INIT;
+	git_str params = GIT_STR_INIT;
 	int isPutty;
 	size_t length;
 
@@ -370,20 +370,20 @@ post_extract:
 	isPutty = wcstristr(ssh, L"plink");
 	if (port) {
 		if (isPutty)
-			git_buf_printf(&params, " -P %s", port);
+			git_str_printf(&params, " -P %s", port);
 		else
-			git_buf_printf(&params, " -p %s", port);
+			git_str_printf(&params, " -p %s", port);
 	}
 	if (isPutty && !wcstristr(ssh, L"tortoiseplink")) {
-		git_buf_puts(&params, " -batch");
+		git_str_puts(&params, " -batch");
 	}
 	if (user)
-		git_buf_printf(&params, " %s@%s ", user, host);
+		git_str_printf(&params, " %s@%s ", user, host);
 	else
-		git_buf_printf(&params, " %s ", host);
+		git_str_printf(&params, " %s ", host);
 	if (gen_proto(&params, s->cmd, s->url))
 		goto on_error;
-	if (git_buf_oom(&params)) {
+	if (git_str_oom(&params)) {
 		git_error_set_oom();
 		goto on_error;
 	}
@@ -392,7 +392,7 @@ post_extract:
 		git_error_set_oom();
 		goto on_error;
 	}
-	git_buf_dispose(&params);
+	git_str_dispose(&params);
 
 	length = wcslen(ssh) + wcslen(wideParams) + 3;
 	cmd = git__calloc(length, sizeof(wchar_t));
@@ -426,7 +426,7 @@ on_error:
 	if (*stream)
 		ssh_stream_free(*stream);
 
-	git_buf_dispose(&params);
+	git_str_dispose(&params);
 
 	git__free(wideParams);
 

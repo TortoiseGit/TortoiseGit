@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 TortoiseGit
+// Copyright (C) 2014, 2021 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,8 +25,8 @@ typedef struct {
 	HANDLE out;
 	HANDLE err;
 	bool running;
-	git_buf *outBuf;
-	git_buf *errBuf;
+	git_str *outBuf;
+	git_str *errBuf;
 	HANDLE asyncReadOutThread;
 	HANDLE asyncReadErrorThread;
 } COMMAND_HANDLE;
@@ -38,6 +38,6 @@ void command_close_stdin(COMMAND_HANDLE *commandHandle);
 DWORD command_close(COMMAND_HANDLE *commandHandle);
 int command_read_stdout(COMMAND_HANDLE *commandHandle, char *buffer, size_t buf_size, size_t *bytes_read);
 int command_write(COMMAND_HANDLE *commandHandle, const char *buffer, size_t len);
-int command_write_gitbuf(COMMAND_HANDLE *commandHandle, const git_buf *buf);
-int commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_buf *dest);
+int command_write_gitbuf(COMMAND_HANDLE *commandHandle, const git_str *buf);
+int commmand_start_stdout_reading_thread(COMMAND_HANDLE *commandHandle, git_str *dest);
 int command_wait_stdout_reading_thread(COMMAND_HANDLE *commandHandle);

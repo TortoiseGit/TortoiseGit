@@ -78,7 +78,7 @@
     <ClCompile Include="..\libgit2\src\blame_git.c" />
     <ClCompile Include="..\libgit2\src\blob.c" />
     <ClCompile Include="..\libgit2\src\branch.c" />
-    <ClCompile Include="..\libgit2\src\buffer.c" />
+    <ClCompile Include="..\libgit2\src\buf.c" />
     <ClCompile Include="..\libgit2\src\cache.c" />
     <ClCompile Include="..\libgit2\src\checkout.c" />
     <ClCompile Include="..\libgit2\src\cherrypick.c" />
@@ -112,6 +112,7 @@
     <ClCompile Include="..\libgit2\src\fetchhead.c" />
     <ClCompile Include="..\libgit2\src\filebuf.c" />
     <ClCompile Include="..\libgit2\src\filter.c" />
+    <ClCompile Include="..\libgit2\src\fs_path.c" />
     <ClCompile Include="..\libgit2\src\futils.c" />
     <ClCompile Include="..\libgit2\src\graph.c" />
     <ClCompile Include="..\libgit2\src\hash.c" />
@@ -178,6 +179,7 @@
     <ClCompile Include="..\libgit2\src\sortedcache.c" />
     <ClCompile Include="..\libgit2\src\stash.c" />
     <ClCompile Include="..\libgit2\src\status.c" />
+    <ClCompile Include="..\libgit2\src\str.c" />
     <ClCompile Include="..\libgit2\src\strarray.c" />
     <ClCompile Include="..\libgit2\src\streams\mbedtls.c" />
     <ClCompile Include="..\libgit2\src\streams\openssl.c" />
@@ -313,7 +315,7 @@
     <ClInclude Include="..\libgit2\src\blame_git.h" />
     <ClInclude Include="..\libgit2\src\blob.h" />
     <ClInclude Include="..\libgit2\src\branch.h" />
-    <ClInclude Include="..\libgit2\src\buffer.h" />
+    <ClInclude Include="..\libgit2\src\buf.h" />
     <ClInclude Include="..\libgit2\src\cache.h" />
     <ClInclude Include="..\libgit2\src\cc-compat.h" />
     <ClInclude Include="..\libgit2\src\checkout.h" />
@@ -326,12 +328,14 @@
     <ClInclude Include="..\libgit2\src\config_backend.h" />
     <ClInclude Include="..\libgit2\src\config_entries.h" />
     <ClInclude Include="..\libgit2\src\config_parse.h" />
+    <ClInclude Include="..\libgit2\src\date.h" />
     <ClInclude Include="..\libgit2\src\delta.h" />
     <ClInclude Include="..\libgit2\src\diff.h" />
     <ClInclude Include="..\libgit2\src\diff_driver.h" />
     <ClInclude Include="..\libgit2\src\diff_file.h" />
     <ClInclude Include="..\libgit2\src\diff_generate.h" />
     <ClInclude Include="..\libgit2\src\diff_parse.h" />
+    <ClInclude Include="..\libgit2\src\diff_stats.h" />
     <ClInclude Include="..\libgit2\src\diff_tform.h" />
     <ClInclude Include="..\libgit2\src\diff_xdiff.h" />
     <ClInclude Include="..\libgit2\src\email.h" />
@@ -341,6 +345,7 @@
     <ClInclude Include="..\libgit2\src\filebuf.h" />
     <ClInclude Include="..\libgit2\src\fileops.h" />
     <ClInclude Include="..\libgit2\src\filter.h" />
+    <ClInclude Include="..\libgit2\src\fs_path.h" />
     <ClInclude Include="..\libgit2\src\hash.h" />
     <ClInclude Include="..\libgit2\src\hash\sha1.h" />
     <ClInclude Include="..\libgit2\src\hash\sha1\collisiondetect.h" />
@@ -357,7 +362,6 @@
     <ClInclude Include="..\libgit2\src\map.h" />
     <ClInclude Include="..\libgit2\src\merge.h" />
     <ClInclude Include="..\libgit2\src\merge_driver.h" />
-    <ClInclude Include="..\libgit2\src\message.h" />
     <ClInclude Include="..\libgit2\src\midx.h" />
     <ClInclude Include="..\libgit2\src\mwindow.h" />
     <ClInclude Include="..\libgit2\src\net.h" />
@@ -397,6 +401,7 @@
     <ClInclude Include="..\libgit2\src\signature.h" />
     <ClInclude Include="..\libgit2\src\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\status.h" />
+    <ClInclude Include="..\libgit2\src\str.h" />
     <ClInclude Include="..\libgit2\src\stream.h" />
     <ClInclude Include="..\libgit2\src\streams\mbedtls.h" />
     <ClInclude Include="..\libgit2\src\streams\openssl.h" />
