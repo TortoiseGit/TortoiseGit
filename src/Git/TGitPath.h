@@ -295,6 +295,11 @@ public:
 	 * Used while diffing commits where a submodule changed to a file
 	 */
 	void UnsetDirectoryStatus() { m_bIsDirectory = false; }
+	/**
+	 * Marks a path as a directory by setting the cached IsDirectory status
+	 * Used while diffing commits where a file changed to a submodule
+	 */
+	void SetDirectoryStatus() { m_bIsDirectory = true; }
 
 private:
 	/**

@@ -1283,6 +1283,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				// reset submodule/folder status if a staged entry is not a folder
 				if (p.IsDirectory() && ((modeold && !(modeold & S_IFDIR)) || (modenew && !(modenew & S_IFDIR))))
 					p.UnsetDirectoryStatus();
+				else if (!p.IsDirectory() && (modenew && (modenew & S_IFDIR)))
+					p.SetDirectoryStatus();
 
 				if(merged)
 					p.m_Action |= CTGitPath::LOGACTIONS_MERGED;

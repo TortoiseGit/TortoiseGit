@@ -2763,8 +2763,15 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
-	EXPECT_FALSE(list[0].IsDirectory()); // neither file nor directory is in filesystem
+	if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0)) {
+		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MISSING, list[0].m_Action);
+		EXPECT_FALSE(list[0].IsDirectory()); // neither file nor directory is in filesystem
+	}
+	else
+	{
+		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
+		EXPECT_TRUE(list[0].IsDirectory()); // now a directory is in filesystem
+	}
 
 	// test for merge conflict submodule/file (local submodule, remote file)
 	output.Empty();
@@ -2776,18 +2783,30 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_EQ(1, m_Git.Run(L"git.exe merge file", &output, CP_UTF8));
 	EXPECT_STRNE(L"", output);
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
-	ASSERT_EQ(1, list.GetCount());
+	if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0))
+		ASSERT_EQ(1, list.GetCount());
+	else
+		ASSERT_EQ(2, list.GetCount());
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
-	if (m_Git.ms_bCygwinGit || m_Git.ms_bMsys2Git)
+	if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0) && (m_Git.ms_bCygwinGit || m_Git.ms_bMsys2Git))
 	{
 		EXPECT_TRUE(output.Find(L"error: failed to create path") > 0);
 		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
 		EXPECT_TRUE(list[0].IsDirectory()); // folder is in filesystem
 	}
-	else
+	else if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0))
 	{
 		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 		EXPECT_FALSE(list[0].IsDirectory()); // file is in filesystem
+	}
+	else
+	{
+		EXPECT_STREQ(L"something", list[0].GetGitPathString());
+		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, list[0].m_Action);
+		EXPECT_TRUE(list[0].IsDirectory()); // directory is in filesystem
+		EXPECT_STREQ(L"something~file", list[1].GetGitPathString());
+		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
+		EXPECT_FALSE(list[1].IsDirectory()); // alternative file is in filesystem
 	}
 
 	// test for merge conflict submodule/file (remote submodule, local file)
@@ -2800,10 +2819,21 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetWorkingTreeChanges_Submodules
 	EXPECT_EQ(1, m_Git.Run(L"git.exe merge branch1", &output, CP_UTF8));
 	EXPECT_STRNE(L"", output);
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
-	ASSERT_EQ(1, list.GetCount());
+	if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0))
+		ASSERT_EQ(1, list.GetCount());
+	else
+		ASSERT_EQ(2, list.GetCount());
 	EXPECT_STREQ(L"something", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
-	EXPECT_FALSE(list[0].IsDirectory()); // file is in filesystem
+	if (m_Git.ms_LastMsysGitVersion < ConvertVersionToInt(2, 34, 0))
+		EXPECT_FALSE(list[0].IsDirectory()); // file is in filesystem
+	else
+	{
+		EXPECT_TRUE(list[0].IsDirectory()); // directory is in filesystem
+		EXPECT_STREQ(L"something~HEAD", list[1].GetGitPathString());
+		EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action);
+		EXPECT_FALSE(list[1].IsDirectory()); // alternative file is in filesystem
+	}
 
 	// test for simple merge conflict
 	DeleteFile(submoduleDir);
