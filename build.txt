@@ -18,26 +18,24 @@ First, you need to install the compiler package:
 
 *  You need at least Visual Studio 2017 for
    building the full TortoiseGit package.
-   The TortoiseGit teams uses VS2017 Community Edition which is free for open-source
+   The TortoiseGit teams uses VS2022 Community Edition which is free for open-source
    projects (https://www.visualstudio.com/downloads/).
    Make sure you select the workload "Desktop development with C++" and the following components:
-   * VC++ 2017 v141 toolset (x86,x64) (checked by default)
+   * VC++ 2022 v143 toolset (x86,x64) (checked by default)
    * Visual C++ ATL-support (x86 and x64)
    * Visual C++ MFC support (x86 and x64)
    * Windows 10 SDK (>= 10.0.19041.0 for building the installer for the Windows 11 start menu extension)
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
-   * optional: GoogleTestAdapter (if you want to run the tests from within VS or use the package described below)
+   * optional: GoogleTestAdapter (if you want to run the tests from within VS)
    * optional: CodeSigning certificate (for Windows 11 start menu extension)
 
 Next you might need to install some utilities/programs:
 *  If you want to build the MSI installer you need WiX 3.11 (http://wixtoolset.org/releases/)
-   and the VS2017 extension (https://marketplace.visualstudio.com/vsgallery/2eb3402e-ea6d-4dcd-8340-c88435e54ea9).
+   and the VS2022 extension (https://github.com/wixtoolset/VisualStudioExtension/releases).
 *  If you want to build the installer you need to update the PuTTY binaries by running ext/putty/download.bat
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
    https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
    See doc/readme.txt for more details on building the docs.
-*  If you want to execute the unit tests from within VisualStudio the GoogleTestAdaper extension is recommended
-   (https://marketplace.visualstudio.com/items?itemName=VisualCPPTeam.TestAdapterforGoogleTest).
 
 In order to not build the Windows 11 start menu extension you need to adjust the following settings:
 * Set BuildWindows11ContextmenuExtension to 0 in src/TortoiseGit.settings.props
