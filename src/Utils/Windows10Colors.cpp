@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2021 - TortoiseGit
 // Copyright (C) 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
+#include "SysInfo.h"
 #include "Windows10Colors.h"
 
 #pragma comment(lib, "dwmapi.lib")
@@ -65,6 +67,8 @@ Win10Colors::Win10Colors()
 	if (!modules_loaded)
 	{
 		modules_loaded = true;
+		if (!SysInfo::Instance().IsWin8OrLater())
+			return;
 		winrt = LoadLibraryW(L"api-ms-win-core-winrt-l1-1-0.dll");
 		if (winrt)
 			pRoActivateInstance = reinterpret_cast<pfnRoActivateInstance>(GetProcAddress(winrt, "RoActivateInstance"));
