@@ -13,8 +13,8 @@ skip_commits:
     - '**/.editorconfig'
     - '**/.clang.format'
 image:
-  - Visual Studio 2017
   - Visual Studio 2019
+  - Visual Studio 2022
 platform:
   - Win32
   - x64
@@ -23,9 +23,9 @@ configuration:
   - Release
 matrix:
   exclude:
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       configuration: Debug
-    - image: Visual Studio 2017
+    - image: Visual Studio 2019
       platform: Win32
       configuration: Release
 init:
@@ -47,7 +47,7 @@ for:
       only:
         - platform: x64
           configuration: Release
-          image: Visual Studio 2017
+          image: Visual Studio 2019
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release64\bin\tests.exe
@@ -59,7 +59,7 @@ for:
       only:
         - platform: Win32
           configuration: Debug
-          image: Visual Studio 2019
+          image: Visual Studio 2022
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Debug\bin\tests.exe
@@ -82,7 +82,7 @@ for:
       only:
         - platform: x64
           configuration: Debug
-          image: Visual Studio 2019
+          image: Visual Studio 2022
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Debug64\bin\tests.exe
@@ -105,7 +105,7 @@ for:
       only:
         - platform: Win32
           configuration: Release
-          image: Visual Studio 2019
+          image: Visual Studio 2022
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release\bin\tests.exe
@@ -117,7 +117,7 @@ for:
       only:
         - platform: x64
           configuration: Release
-          image: Visual Studio 2019
+          image: Visual Studio 2022
     test_script:
     - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
     - bin\Release64\bin\tests.exe
