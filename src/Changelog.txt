@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #3764: Add TortoiseGit menu to the right click menu in Windows 11
  * Fixed issue #3818: Change icon image for Cherry-Pick
  * Fixed issue #3728: Log Browser: Add an option to switch on full history (--full-history)
+ * Fixed issue #2562: Automatically track remote when pushing untracked branch
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
