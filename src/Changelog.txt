@@ -33,6 +33,7 @@ Released: unreleased
  * Fixes issue #3826: Help links to TortoiseGit site don't open in a sensible browser
  * Fixed issue #3815: TortoiseGitMerge crashes on Windows 7 on startup when winrt libraries are installed
  * Fixed issue #3831: TortoiseGitMerge omits text after null byte when word wrap is enabled
+ * Fixed issue #3799: Display of Long lines with Chinese characters is truncated in TortoiseGitMerge dialog
 
 = Release 2.12.0 =
 Released: 2021-03-31
