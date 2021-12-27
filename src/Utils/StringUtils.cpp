@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019 - TortoiseGit
+// Copyright (C) 2011-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -366,6 +366,46 @@ CString CStringUtils::WordWrap(const CString& longstring, int limit, bool bCompa
 
 	return retString;
 }
+
+std::vector<CString> CStringUtils::WordWrap(const CString& longstring, int limit, int tabSize)
+{
+	int nLength = longstring.GetLength();
+	std::vector<CString> retVec;
+
+	if (limit < 0)
+		limit = 0;
+
+	int nLineStart = 0;
+	int nLineEnd = 0;
+	int tabOffset = 0;
+	for (int i = 0; i < nLength; ++i)
+	{
+		if (i - nLineStart + tabOffset >= limit)
+		{
+			if (nLineEnd == nLineStart)
+				nLineEnd = i;
+
+			auto sMid = longstring.Mid(nLineStart, nLineEnd - nLineStart);
+			retVec.push_back(sMid);
+
+			tabOffset = 0;
+			nLineStart = nLineEnd;
+		}
+		if (longstring[i] == ' ')
+			nLineEnd = i;
+		if (longstring[i] == '\t')
+		{
+			tabOffset += (tabSize - i % tabSize);
+			nLineEnd = i;
+		}
+	}
+
+	auto sMid = longstring.Mid(nLineStart);
+	retVec.push_back(sMid);
+
+	return retVec;
+}
+
 int CStringUtils::GetMatchingLength (const CString& lhs, const CString& rhs)
 {
 	int lhsLength = lhs.GetLength();

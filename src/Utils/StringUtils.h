@@ -19,6 +19,7 @@
 //
 #pragma once
 #include <string>
+#include <vector>
 
 #ifdef UNICODE
 #define wcswildcmp wcswildcmp
@@ -184,6 +185,7 @@ public:
 	static BOOL WildCardMatch(const CString& wildcard, const CString& string);
 	static CString LinesWrap(const CString& longstring, int limit = 80, bool bCompactPaths = false);
 	static CString WordWrap(const CString& longstring, int limit, bool bCompactPaths, bool bForceWrap, int tabSize);
+	static std::vector<CString> WordWrap(const CString& longstring, int limit, int tabSize);
 	/**
 	 * Find and return the number n of starting characters equal between
 	 * \ref lhs and \ref rhs. (max n: lhs.Left(n) == rhs.Left(n))
