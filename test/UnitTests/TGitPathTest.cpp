@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -111,42 +111,42 @@ TEST(CTGitPath, SortTest)
 	testList.SortByPathname();
 
 	EXPECT_EQ(4, testList.GetCount());
-	EXPECT_EQ(L"c:\\a", testList[0].GetWinPathString());
-	EXPECT_EQ(L"c:\\B", testList[1].GetWinPathString());
-	EXPECT_EQ(L"c:\\Test", testList[2].GetWinPathString());
-	EXPECT_EQ(L"c:\\Z",testList[3].GetWinPathString());
+	EXPECT_STREQ(L"c:\\a", testList[0].GetWinPathString());
+	EXPECT_STREQ(L"c:\\B", testList[1].GetWinPathString());
+	EXPECT_STREQ(L"c:\\Test", testList[2].GetWinPathString());
+	EXPECT_STREQ(L"c:\\Z",testList[3].GetWinPathString());
 }
 
 TEST(CTGitPath, RawAppendTest)
 {
 	CTGitPath testPath(L"c:/test/");
 	testPath.AppendRawString(L"/Hello");
-	EXPECT_EQ(L"c:\\test\\Hello", testPath.GetWinPathString());
+	EXPECT_STREQ(L"c:\\test\\Hello", testPath.GetWinPathString());
 
 	testPath.AppendRawString(L"\\T2");
-	EXPECT_EQ(L"c:\\test\\Hello\\T2", testPath.GetWinPathString());
+	EXPECT_STREQ(L"c:\\test\\Hello\\T2", testPath.GetWinPathString());
 
 	CTGitPath testFilePath(L"C:\\windows\\win.ini");
 	CTGitPath testBasePath(L"c:/temp/myfile.txt");
 	testBasePath.AppendRawString(testFilePath.GetFileExtension());
-	EXPECT_EQ(L"c:\\temp\\myfile.txt.ini", testBasePath.GetWinPathString());
+	EXPECT_STREQ(L"c:\\temp\\myfile.txt.ini", testBasePath.GetWinPathString());
 }
 
 TEST(CTGitPath, PathAppendTest)
 {
 	CTGitPath testPath(L"c:/test/");
 	testPath.AppendPathString(L"/Hello");
-	EXPECT_EQ(L"c:\\test\\Hello", testPath.GetWinPathString());
+	EXPECT_STREQ(L"c:\\test\\Hello", testPath.GetWinPathString());
 
 	testPath.AppendPathString(L"T2");
-	EXPECT_EQ(L"c:\\test\\Hello\\T2", testPath.GetWinPathString());
+	EXPECT_STREQ(L"c:\\test\\Hello\\T2", testPath.GetWinPathString());
 
 	CTGitPath testFilePath(L"C:\\windows\\win.ini");
 	CTGitPath testBasePath(L"c:/temp/myfile.txt");
 	// You wouldn't want to do this in real life - you'd use append-raw
 	testBasePath.AppendPathString(testFilePath.GetFileExtension());
-	EXPECT_EQ(L"c:\\temp\\myfile.txt\\.ini", testBasePath.GetWinPathString());
-	EXPECT_EQ(L"c:/temp/myfile.txt/.ini", testBasePath.GetGitPathString());
+	EXPECT_STREQ(L"c:\\temp\\myfile.txt\\.ini", testBasePath.GetWinPathString());
+	EXPECT_STREQ(L"c:/temp/myfile.txt/.ini", testBasePath.GetGitPathString());
 }
 
 TEST(CTGitPath, RemoveDuplicatesTest)
