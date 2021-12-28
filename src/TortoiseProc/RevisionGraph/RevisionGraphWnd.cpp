@@ -146,32 +146,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_ArrowCos = cos(pi/8);
 	m_ArrowSin = sin(pi/8);
 	this->m_ArrowSize = 8;
-#if 0
-	ogdf::node one = this->m_Graph.newNode();
-	ogdf::node two = this->m_Graph.newNode();
-	ogdf::node three = this->m_Graph.newNode();
-	ogdf::node four = this->m_Graph.newNode();
 
-
-	m_GraphAttr.width(one)=100;
-	m_GraphAttr.height(one)=200;
-	m_GraphAttr.width(two)=100;
-	m_GraphAttr.height(two)=100;
-	m_GraphAttr.width(three)=100;
-	m_GraphAttr.height(three)=20;
-	m_GraphAttr.width(four)=100;
-	m_GraphAttr.height(four)=20;
-
-	m_GraphAttr.labelNode(one)="One";
-	m_GraphAttr.labelNode(two)="Two";
-	m_GraphAttr.labelNode(three)="three";
-
-	this->m_Graph.newEdge(one, two);
-	this->m_Graph.newEdge(one, three);
-	this->m_Graph.newEdge(two, four);
-	this->m_Graph.newEdge(three, four);
-
-#endif
 	auto pOHL = ::new ogdf::FastHierarchyLayout;
 	//It will auto delte when m_SugiyamLayout destroy
 
@@ -179,60 +154,6 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	pOHL->nodeDistance(25.0);
 
 	m_SugiyamLayout.setLayout(pOHL);
-
-#if 0
-	//this->m_OHL.layerDistance(30.0);
-	//this->m_OHL.nodeDistance(25.0);
-	//this->m_OHL.weightBalancing(0.8);
-	m_SugiyamLayout.setLayout(&m_OHL);
-	m_SugiyamLayout.call(m_GraphAttr);
-#endif
-#if 0
-	PlanarizationLayout pl;
-
-	FastPlanarSubgraph *ps = ::new FastPlanarSubgraph;
-	ps->runs(100);
-	VariableEmbeddingInserter *ves = ::new VariableEmbeddingInserter;
-	ves->removeReinsert(EdgeInsertionModule::rrAll);
-	pl.setSubgraph(ps);
-	pl.setInserter(ves);
-
-	EmbedderMinDepthMaxFaceLayers *emb = ::new EmbedderMinDepthMaxFaceLayers;
-	pl.setEmbedder(emb);
-
-	OrthoLayout *ol =::new OrthoLayout;
-	ol->separation(20.0);
-	ol->cOverhang(0.4);
-	ol->setOptions(2+4);
-	ol->preferedDir(OrthoDir::odEast);
-	pl.setPlanarLayouter(ol);
-
-	pl.call(m_GraphAttr);
-
-	node v;
-	forall_nodes(v,m_Graph) {
-		TRACE(L"node  x %f y %f %f %f\n",/* m_GraphAttr.idNode(v), */
-			m_GraphAttr.x(v),
-			m_GraphAttr.y(v),
-			m_GraphAttr.width(v),
-			m_GraphAttr.height(v)
-		);
-	}
-
-	edge e;
-	forall_edges(e, m_Graph)
-	{
-		// get connection and point position
-		const DPolyline &dpl = this->m_GraphAttr.bends(e);
-
-		ListConstIterator<DPoint> it;
-		for(it = dpl.begin(); it.valid(); ++it)
-		{
-			TRACE(L"edge %f %f\n", (*it).m_x, (*it).m_y);
-		}
-	}
-	m_GraphAttr.writeGML("test.gml");
-#endif
 }
 
 CRevisionGraphWnd::~CRevisionGraphWnd()
