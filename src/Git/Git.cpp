@@ -1730,7 +1730,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 			}
 			else if (git_reference_is_branch(ref))
 			{
-				if (!includeBranches || !(type & GIT_BRANCH_LOCAL))
+				if (!includeBranches || !(type & BRANCH_LOCAL))
 					continue;
 			}
 			else
