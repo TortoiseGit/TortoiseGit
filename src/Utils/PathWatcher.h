@@ -111,7 +111,7 @@ private:
 		CDirWatchInfo();	// private & not implemented
 		CDirWatchInfo & operator=(const CDirWatchInfo & rhs);//so that they're aren't accidentally used. -- you'll get a linker error
 	public:
-		CDirWatchInfo(HANDLE hDir, const CTGitPath& DirectoryName);
+		CDirWatchInfo(CAutoFile&& hDir, const CTGitPath& DirectoryName);
 		~CDirWatchInfo();
 
 	protected:
@@ -119,10 +119,10 @@ private:
 		bool		CloseDirectoryHandle();
 
 		CAutoFile	m_hDir;			///< handle to the directory that we're watching
-		CTGitPath	m_DirName;		///< the directory that we're watching
-		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
-		OVERLAPPED  m_Overlapped;
-		CString		m_DirPath;		///< the directory name we're watching with a backslash at the end
+		CTGitPath	m_dirName;		///< the directory that we're watching
+		CHAR		m_buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
+		OVERLAPPED  m_overlapped;
+		CString		m_dirPath;		///< the directory name we're watching with a backslash at the end
 		//HDEVNOTIFY	m_hDevNotify;	///< Notification handle
 	};
 
