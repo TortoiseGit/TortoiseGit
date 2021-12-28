@@ -1707,7 +1707,7 @@ void CStatGraphDlg::LoadListOfAuthors (MAP &map, bool reloadSkiper/*= false*/,  
 	m_authorNames.clear();
 	if (!map.empty())
 	{
-		for (MAP::const_iterator it = map.begin(); it != map.end(); ++it)
+		for (auto it = map.begin(); it != map.end(); ++it)
 		{
 			if ((compare && RollPercentageOfAuthorship(map[it->first]) != 0) || !compare)
 				m_authorNames.push_back(it->first);

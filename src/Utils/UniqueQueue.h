@@ -75,7 +75,7 @@ UniqueQueue<T>::~UniqueQueue()
 template <class T>
 size_t UniqueQueue<T>::Push(const T &value)
 {
-	std::map<T, size_t>::iterator it = m_QueueTMap.find(value);
+	auto it = m_QueueTMap.find(value);
 	if (it != m_QueueTMap.end())
 	{
 		// value is already in the queue: we don't allow duplicates
@@ -142,7 +142,7 @@ T UniqueQueue<T>::Pop()
 template <class T>
 size_t UniqueQueue<T>::erase(const T &value)
 {
-	std::map<T, size_t>::iterator it = m_QueueTMap.find(value);
+	auto it = m_QueueTMap.find(value);
 	if (it != m_QueueTMap.end())
 	{
 		for (auto qIt = m_Queue.cbegin(); qIt != m_Queue.cend(); ++qIt)

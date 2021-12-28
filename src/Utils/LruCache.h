@@ -33,12 +33,12 @@ public:
 
 	void insert_or_assign(const key_t & key, const value_t & val)
 	{
-		ItemsMap::iterator mapIt = itemsMap.find(key);
+		auto mapIt = itemsMap.find(key);
 		if (mapIt == itemsMap.end())
 		{
 			evict(maxSize - 1);
 
-			ItemsList::iterator listIt = itemsList.insert(itemsList.cend(), ListItem(key, val));
+			auto listIt = itemsList.insert(itemsList.cend(), ListItem(key, val));
 			itemsMap.insert(std::make_pair(key, listIt));
 		}
 		else
@@ -49,7 +49,7 @@ public:
 
 	const value_t * try_get(const key_t & key)
 	{
-		ItemsMap::const_iterator it = itemsMap.find(key);
+		auto it = itemsMap.find(key);
 		if (it == itemsMap.end())
 			return nullptr;
 
@@ -76,7 +76,7 @@ public:
 protected:
 	void evict(size_t itemsToKeep)
 	{
-		for(ItemsList::iterator it = itemsList.begin();
+		for (auto it = itemsList.begin();
 			itemsList.size() > itemsToKeep && it != itemsList.end();)
 		{
 			itemsMap.erase(it->key);
