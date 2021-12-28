@@ -649,7 +649,7 @@ void CRevisionGraphDlg::OnViewCompareheadrevisions()
 
 void CRevisionGraphDlg::OnViewComparerevisions()
 {
-	m_Graph.CompareRevs(false);
+	m_Graph.CompareRevs(L"");
 }
 
 void CRevisionGraphDlg::OnViewUnifieddiff()

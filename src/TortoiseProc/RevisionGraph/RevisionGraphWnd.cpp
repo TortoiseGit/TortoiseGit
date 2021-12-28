@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1328,7 +1328,7 @@ void CRevisionGraphWnd::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	{
 	case ID_COMPAREREVS:
 		if (m_SelectedEntry1)
-			CompareRevs(false);
+			CompareRevs(L"");
 		break;
 	case ID_UNIDIFFREVS:
 		if (m_SelectedEntry1)
