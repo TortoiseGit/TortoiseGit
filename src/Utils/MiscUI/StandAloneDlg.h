@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2020 - TortoiseGit
+// Copyright (C) 2015-2016, 2020-2021 - TortoiseGit
 // Copyright (C) 2003-2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,10 +46,10 @@ std::wstring GetMonitorSetupHash();
 template <typename BaseType> class CStandAloneDialogTmpl : public BaseType, protected CommonDialogFunctions<BaseType>
 {
 protected:
-	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = nullptr) : BaseType(nIDTemplate, pParentWnd), CommonDialogFunctions(this)
+	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = nullptr) : BaseType(nIDTemplate, pParentWnd), CommonDialogFunctions<BaseType>(this)
 		, m_themeCallbackId(0)
 	{
-		m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+		m_hIcon = AfxGetApp()->LoadIcon(1); // IDR_MAINFRAME; use the magic value here, because we cannot include resource.h here
 	}
 
 
@@ -66,16 +66,16 @@ protected:
 
 		// Set the icon for this dialog.  The framework does this automatically
 		//  when the application's main window is not a dialog
-		SetIcon(m_hIcon, TRUE);			// Set big icon
-		SetIcon(m_hIcon, FALSE);		// Set small icon
+		BaseType::SetIcon(m_hIcon, TRUE); // Set big icon
+		BaseType::SetIcon(m_hIcon, FALSE); // Set small icon
 
-		EnableToolTips();
+		BaseType::EnableToolTips();
 		m_tooltips.Create(this);
 		SetTheme(CTheme::Instance().IsDarkTheme());
 
 		auto CustomBreak = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\UseCustomWordBreak", 2));
 		if (CustomBreak)
-			SetUrlWordBreakProcToChildWindows(GetSafeHwnd(), CustomBreak == 2);
+			SetUrlWordBreakProcToChildWindows(BaseType::GetSafeHwnd(), CustomBreak == 2);
 
 		return FALSE;
 	}
@@ -105,17 +105,17 @@ protected:
 	}
 	afx_msg void OnPaint()
 	{
-		if (IsIconic())
+		if (BaseType::IsIconic())
 		{
 			CPaintDC dc(this); // device context for painting
 
-			SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+			BaseType::SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
 
 			// Center icon in client rectangle
 			int cxIcon = GetSystemMetrics(SM_CXICON);
 			int cyIcon = GetSystemMetrics(SM_CYICON);
 			CRect rect;
-			GetClientRect(&rect);
+			BaseType::GetClientRect(&rect);
 			int x = (rect.Width() - cxIcon + 1) / 2;
 			int y = (rect.Height() - cyIcon + 1) / 2;
 
@@ -132,14 +132,14 @@ protected:
 	 */
 	BOOL DialogEnableWindow(UINT nID, BOOL bEnable)
 	{
-		CWnd * pwndDlgItem = GetDlgItem(nID);
+		CWnd* pwndDlgItem = BaseType::GetDlgItem(nID);
 		if (!pwndDlgItem)
 			return FALSE;
 		if (bEnable)
 			return pwndDlgItem->EnableWindow(bEnable);
-		if (GetFocus() == pwndDlgItem)
+		if (BaseType::GetFocus() == pwndDlgItem)
 		{
-			SendMessage(WM_NEXTDLGCTL, 0, FALSE);
+			BaseType::SendMessage(WM_NEXTDLGCTL, 0, FALSE);
 		}
 		return pwndDlgItem->EnableWindow(bEnable);
 	}
@@ -178,33 +178,33 @@ protected:
 		if (bDark)
 		{
 			DarkModeHelper::Instance().AllowDarkModeForApp(TRUE);
-			DarkModeHelper::Instance().AllowDarkModeForWindow(GetSafeHwnd(), TRUE);
+			DarkModeHelper::Instance().AllowDarkModeForWindow(BaseType::GetSafeHwnd(), TRUE);
 			DarkModeHelper::Instance().AllowDarkModeForWindow(m_tooltips.GetSafeHwnd(), TRUE);
 			SetWindowTheme(m_tooltips.GetSafeHwnd(), L"Explorer", nullptr);
-			SetClassLongPtr(GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
+			SetClassLongPtr(BaseType::GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
 			BOOL darkFlag = TRUE;
 			DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
-			DarkModeHelper::Instance().SetWindowCompositionAttribute(GetSafeHwnd(), &data);
+			DarkModeHelper::Instance().SetWindowCompositionAttribute(BaseType::GetSafeHwnd(), &data);
 			DarkModeHelper::Instance().FlushMenuThemes();
 			DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
 			BOOL dark = TRUE;
-			DwmSetWindowAttribute(GetSafeHwnd(), 19, &dark, sizeof(dark));
+			DwmSetWindowAttribute(BaseType::GetSafeHwnd(), 19, &dark, sizeof(dark));
 		}
 		else
 		{
-			DarkModeHelper::Instance().AllowDarkModeForWindow(GetSafeHwnd(), FALSE);
+			DarkModeHelper::Instance().AllowDarkModeForWindow(BaseType::GetSafeHwnd(), FALSE);
 			DarkModeHelper::Instance().AllowDarkModeForWindow(m_tooltips.GetSafeHwnd(), FALSE);
 			SetWindowTheme(m_tooltips.GetSafeHwnd(), L"Explorer", nullptr);
 			BOOL darkFlag = FALSE;
 			DarkModeHelper::WINDOWCOMPOSITIONATTRIBDATA data = { DarkModeHelper::WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &darkFlag, sizeof(darkFlag) };
-			DarkModeHelper::Instance().SetWindowCompositionAttribute(GetSafeHwnd(), &data);
+			DarkModeHelper::Instance().SetWindowCompositionAttribute(BaseType::GetSafeHwnd(), &data);
 			DarkModeHelper::Instance().FlushMenuThemes();
 			DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
 			DarkModeHelper::Instance().AllowDarkModeForApp(FALSE);
-			SetClassLongPtr(GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
+			SetClassLongPtr(BaseType::GetSafeHwnd(), GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
 		}
-		CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), bDark);
-		::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+		CTheme::Instance().SetThemeForDialog(BaseType::GetSafeHwnd(), bDark);
+		::RedrawWindow(BaseType::GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 	}
 
 protected:
@@ -219,9 +219,9 @@ protected:
 
 		CWaitCursor wait;
 
-		PrepareForHelp();
+		BaseType::PrepareForHelp();
 		// run the HTML Help engine
-		if (!::HtmlHelp(m_hWnd, pApp->m_pszHelpFilePath, nCmd, dwData))
+		if (!::HtmlHelp(BaseType::m_hWnd, pApp->m_pszHelpFilePath, nCmd, dwData))
 		{
 			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
 		}
@@ -229,7 +229,7 @@ protected:
 
 	afx_msg LRESULT OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
-		SetUUIDOverlayIcon(m_hWnd);
+		SetUUIDOverlayIcon(BaseType::m_hWnd);
 		return 0;
 	}
 

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016, 2021 - TortoiseGit
 
@@ -55,17 +55,17 @@ protected:
 	{
 		m_ColumnManager.OnColumnMoved(pNMHDR, pResult);
 
-		Invalidate(FALSE);
+		BaseType::Invalidate(FALSE);
 	}
 
 	void OnContextMenuHeader(CWnd* pWnd, CPoint point)
 	{
-		m_ColumnManager.OnContextMenuHeader(pWnd, point, !!IsGroupViewEnabled());
+		m_ColumnManager.OnContextMenuHeader(pWnd, point, !!BaseType::IsGroupViewEnabled());
 	}
 
 	void OnContextMenu(CWnd* pWnd, CPoint point)
 	{
-		if (pWnd == GetHeaderCtrl() && m_bAllowHiding)
+		if (pWnd == BaseType::GetHeaderCtrl() && m_bAllowHiding)
 			OnContextMenuHeader(pWnd, point);
 		else if (pWnd == this && m_ContextMenuHandler)
 			m_ContextMenuHandler(point);
@@ -81,7 +81,7 @@ protected:
 	void OnHdnItemchanging(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 		if (!m_ColumnManager.OnHdnItemchanging(pNMHDR, pResult))
-			Default();
+			BaseType::Default();
 	}
 
 	using ContextMenuHandler = std::function<void(CPoint point)>;
@@ -94,7 +94,7 @@ public:
 		DWORD exStyle = LVS_EX_HEADERDRAGDROP;
 		if (DWORD(regFullRowSelect))
 			exStyle |= LVS_EX_FULLROWSELECT;
-		SetExtendedStyle(GetExtendedStyle() | exStyle);
+		BaseType::SetExtendedStyle(BaseType::GetExtendedStyle() | exStyle);
 	}
 
 	void SetListContextMenuHandler(ContextMenuHandler pContextMenuHandler)
@@ -104,16 +104,16 @@ public:
 
 	void AdjustColumnWidths()
 	{
-		auto header = GetHeaderCtrl();
+		auto header = BaseType::GetHeaderCtrl();
 		if (!header)
 			return;
 		int maxcol = header->GetItemCount() - 1;
 		for (int col = 0; col <= maxcol; col++)
-			SetColumnWidth(col, m_ColumnManager.GetWidth(col, true));
+			BaseType::SetColumnWidth(col, m_ColumnManager.GetWidth(col, true));
 	}
 	virtual void SaveColumnWidths()
 	{
-		auto header = GetHeaderCtrl();
+		auto header = BaseType::GetHeaderCtrl();
 		if (!header)
 			return;
 		int maxcol = header->GetItemCount() - 1;

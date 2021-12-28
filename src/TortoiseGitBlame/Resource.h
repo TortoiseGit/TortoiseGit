@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by d:\TortoiseGit\src\Resources\TortoiseGitBlameENG.rc
 //
@@ -28,7 +28,6 @@
 #define ID_EDIT_GOTO                    220
 #define IDD_GOTODLG                     221
 #define IDC_LINENUMBER                  222
-#define IDR_MAINFRAME                   223
 #define IDI_BLAME_POPUP_LOG             224
 #define IDI_BLAME_POPUP_COPY            225
 #define IDC_VERSION                     1000

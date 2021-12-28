@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019-2021 - TortoiseGit
 // Copyright (C) 2011, 2013, 2015, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,15 +46,15 @@ public:
 	void ShowText(const CString& sText, bool forceupdate = false)
 	{
 		m_sText = sText;
-		Invalidate();
+		BaseType::Invalidate();
 		if (forceupdate)
-			UpdateWindow();
+			BaseType::UpdateWindow();
 	}
 
 	void ClearText()
 	{
 		m_sText.Empty();
-		Invalidate();
+		BaseType::Invalidate();
 	}
 
 	bool HasText() const {return !m_sText.IsEmpty();}
@@ -64,18 +64,18 @@ public:
 protected:
 	afx_msg void OnPaint()
 	{
-		LRESULT defres = Default();
+		LRESULT defres = BaseType::Default();
 		if (!m_sText.IsEmpty())
 		{
 			COLORREF clrText = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : ::GetSysColor(COLOR_WINDOWTEXT);
 			COLORREF clrTextBk;
-			if (IsWindowEnabled())
+			if (BaseType::IsWindowEnabled())
 				clrTextBk = CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : ::GetSysColor(COLOR_WINDOW);
 			else
 				clrTextBk = CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_3DFACE));
 
 			CRect rc;
-			GetClientRect(&rc);
+			BaseType::GetClientRect(&rc);
 			bool bIsEmpty = false;
 			CListCtrl * pListCtrl = dynamic_cast<CListCtrl*>(this);
 			if (pListCtrl)
@@ -91,7 +91,7 @@ protected:
 				}
 				bIsEmpty = pListCtrl->GetItemCount() == 0;
 			}
-			CDC* pDC = GetDC();
+			CDC* pDC = BaseType::GetDC();
 			{
 				pDC->SetBkMode(TRANSPARENT);
 				pDC->SetTextColor(clrText);
@@ -111,7 +111,7 @@ protected:
 					DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
 				memDC.SelectObject(oldfont);
 			}
-			ReleaseDC(pDC);
+			BaseType::ReleaseDC(pDC);
 		}
 		if (defres)
 		{
@@ -119,9 +119,9 @@ protected:
 			// Validate the update region ourselves to avoid
 			// an endless loop repainting
 			CRect rc;
-			GetUpdateRect(&rc, FALSE);
+			BaseType::GetUpdateRect(&rc, FALSE);
 			if (!rc.IsRectEmpty())
-				ValidateRect(rc);
+				BaseType::ValidateRect(rc);
 		}
 	}
 
