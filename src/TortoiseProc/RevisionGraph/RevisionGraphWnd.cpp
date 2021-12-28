@@ -135,9 +135,7 @@ CRevisionGraphWnd::CRevisionGraphWnd()
 	m_szTip[0] = '\0';
 	m_wszTip[0] = L'\0';
 
-	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics |
-		ogdf::GraphAttributes::nodeLabel | ogdf::GraphAttributes::edgeStyle |
-		ogdf::GraphAttributes::nodeStyle | ogdf::GraphAttributes::nodeTemplate);
+	m_GraphAttr.init(this->m_Graph, ogdf::GraphAttributes::nodeGraphics | ogdf::GraphAttributes::edgeGraphics);
 
 	m_SugiyamLayout.setRanking(::new ogdf::OptimalRanking());
 	m_SugiyamLayout.setCrossMin(::new ogdf::MedianHeuristic());
