@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019-2021 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 struct CodeMap
 {
 	int m_Code;
-	wchar_t* m_CodeName;
+	const wchar_t* m_CodeName;
 };
 int CUnicodeUtils::GetCPCode(const CString &codename)
 {

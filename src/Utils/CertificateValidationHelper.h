@@ -25,7 +25,7 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	if (pServerCert == nullptr || pwszServerName == nullptr)
 		return static_cast<DWORD>(SEC_E_WRONG_PRINCIPAL);
 
-	LPSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
+	LPCSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
 	DWORD cUsages = sizeof(rgszUsages) / sizeof(LPSTR);
 
 	// Build certificate chain.
@@ -33,7 +33,7 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	ChainPara.cbSize = sizeof(ChainPara);
 	ChainPara.RequestedUsage.dwType = USAGE_MATCH_TYPE_OR;
 	ChainPara.RequestedUsage.Usage.cUsageIdentifier = cUsages;
-	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = rgszUsages;
+	ChainPara.RequestedUsage.Usage.rgpszUsageIdentifier = const_cast<LPSTR*>(rgszUsages);
 
 	PCCERT_CHAIN_CONTEXT pChainContext = nullptr;
 	if (!CertGetCertificateChain(nullptr, pServerCert, nullptr, pServerCert->hCertStore, &ChainPara, CERT_CHAIN_REVOCATION_CHECK_CHAIN_EXCLUDE_ROOT, nullptr, &pChainContext))

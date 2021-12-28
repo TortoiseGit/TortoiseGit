@@ -196,7 +196,7 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 struct EncodingUnit
 {
 	int id;
-	char *name;
+	const char* name;
 };
 
 static EncodingUnit	encodings[]	= {
