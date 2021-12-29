@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009-2012, 2015-2016, 2018-2019, 2021 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,12 +31,16 @@ bool RebaseCommand::Execute()
 		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
+	CString upstream = parser.GetVal(L"upstream");
 	while(1)
 	{
 		CRebaseDlg dlg;
+		dlg.m_Upstream = upstream;
+		dlg.m_bForce = parser.HasKey(L"force");
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENULOG)));
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_PROC_RESTARTREBASE)));
 		INT_PTR ret = dlg.DoModal();
+		upstream.Empty();
 		if (ret == IDOK)
 			return true;
 		if (ret == IDCANCEL)

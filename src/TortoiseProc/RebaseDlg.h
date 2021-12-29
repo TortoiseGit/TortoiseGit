@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -200,7 +200,6 @@ protected:
 	CProgressCtrl		m_ProgressBar;
 	CStatic				m_CtrlStatusText;
 
-	BOOL				m_bForce;
 	BOOL				m_bAddCherryPickedFrom;
 	BOOL				m_bAutoSkipFailedCommit;
 	bool				m_bRebaseAutoEnd;
@@ -216,6 +215,7 @@ public:
 	BOOL				m_IsCherryPick;
 	bool				m_bRebaseAutoStart;
 	BOOL				m_bPreserveMerges;
+	BOOL				m_bForce;
 protected:
 	CSplitterControl	m_wndSplitter;
 	CMFCTabCtrl			m_ctrlTabCtrl;
