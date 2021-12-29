@@ -759,7 +759,7 @@ bool CTGitPath::IsRegisteredSubmoduleOfParentProject(CString* parentProjectRoot 
 	relativePath.Replace(L'\\', L'/');
 	relativePath.Trim(L'/');
 	CStringA submodulePath = CUnicodeUtils::GetUTF8(relativePath);
-	if (git_config_foreach_match(config, "submodule\\..*\\.path", [](const git_config_entry* entry, void* data) { return entry->value == *static_cast<CStringA*>(data) ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
+	if (git_config_foreach_match(config, "submodule\\..*\\.path", [](const git_config_entry* entry, void* data) { return static_cast<CStringA*>(data)->Compare(entry->value) == 0 ? GIT_EUSER : 0; }, &submodulePath) == GIT_EUSER)
 		return true;
 	return false;
 }
