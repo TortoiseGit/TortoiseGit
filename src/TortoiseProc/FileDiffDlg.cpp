@@ -1197,6 +1197,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 		else
 		{
+			m_cFileList.DeleteAllItems();
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
 			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
@@ -1212,6 +1213,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		}
 		else
 		{
+			m_cFileList.DeleteAllItems();
 			CString msg;
 			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
 			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
