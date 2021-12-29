@@ -113,6 +113,9 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 	dlg.m_sMessage = msg;
 	if (dlg.DoModal() == IDOK)
 	{
+		CGitHash oldStash;
+		g_Git.GetHash(oldStash, L"refs/stash");
+
 		CString cmd = L"git.exe stash push";
 
 		if (dlg.m_bIncludeUntracked)
@@ -138,6 +141,10 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ CAppUtils::Pull(hWnd, pullShowPush, true); });
 			if (showMerge)
 				postCmdList.emplace_back(IDI_MERGE, IDS_MENUMERGE, [&]{ CAppUtils::Merge(hWnd, &mergeRev, true); });
+			CGitHash newStash;
+			g_Git.GetHash(newStash, L"refs/stash");
+			if (newStash == oldStash)
+				return;
 			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd] { CAppUtils::StashPop(hWnd); });
 			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHAPPLY, [&hWnd] { CAppUtils::StashApply(hWnd, L""); });
 		};

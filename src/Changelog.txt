@@ -19,6 +19,7 @@ Released: unreleased
  * Fixed issue #3728: Log Browser: Add an option to switch on full history (--full-history)
  * Fixed issue #2562: Automatically track remote when pushing untracked branch
  * Add support for Ctrl+A in BrowseRefsDlg and RepositoryBrowser
+ * Fixed issue #3820: "Stash changes" should not offer stash pop/apply after no changes were stashed
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
