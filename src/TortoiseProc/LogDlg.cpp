@@ -1707,6 +1707,7 @@ void CLogDlg::OnPasteGitHash()
 	auto pStr = static_cast<char*>(GlobalLock(hClipboardData));
 	CString str(pStr);
 	GlobalUnlock(hClipboardData);
+	str = str.Trim();
 	if (str.IsEmpty())
 		return;
 
