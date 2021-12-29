@@ -3780,11 +3780,11 @@ void CMainFrame::OnUpdateColumnStatusBar(CCmdUI* pCmdUI)
 	if (pWndWithFocus)
 	{
 		if (pWndWithFocus == m_pwndBottomView)
-			column = m_pwndBottomView->GetCaretPosition().x;
+			column = m_pwndBottomView->GetCaretViewPosition().x;
 		if (pWndWithFocus == m_pwndLeftView)
-			column = m_pwndLeftView->GetCaretPosition().x;
+			column = m_pwndLeftView->GetCaretViewPosition().x;
 		if (pWndWithFocus == m_pwndRightView)
-			column = m_pwndRightView->GetCaretPosition().x;
+			column = m_pwndRightView->GetCaretViewPosition().x;
 	}
 	CString sColumn;
 	sColumn.Format(IDS_INDICATOR_COLUMN, column + 1);
