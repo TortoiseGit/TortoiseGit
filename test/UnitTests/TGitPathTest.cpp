@@ -1862,3 +1862,51 @@ TEST(CTGitPath, ParseFromLFSLocks)
 	EXPECT_EQ(-1, locks.ParserFromLFSLocks(0, L"invalid", &err));
 	EXPECT_STRNE(L"", err);
 }
+
+TEST(CTGitPath, IsRegisteredSubmoduleOfParentProject)
+{
+	CAutoTempDir tmp;
+	CAutoRepository repo;
+	EXPECT_EQ(0, git_repository_init(repo.GetPointer(), CUnicodeUtils::GetUTF8(tmp.GetTempDir()), false));
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\ext", nullptr));
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\ext\\libgit2", nullptr));
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\ext\\spell", nullptr));
+	EXPECT_TRUE(CreateDirectory(tmp.GetTempDir() + L"\\ext\\something", nullptr));
+	{
+		CString topPath;
+		CTGitPath path { tmp.GetTempDir() + L"\\ext\\libgit2" };
+		EXPECT_FALSE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(tmp.GetTempDir() + L"\\.gitmodules", L"[submodule \"libgit2-ext\"]\n	path = ext/libgit2\n	url = https://github.com/libgit2/libgit2.git\n[submodule \"ext/spell\"]\n	path = ext/spell\n	url = https://github.com/LibreOffice/dictionaries"));
+	{
+		CString topPath;
+		CTGitPath path { tmp.GetTempDir() + L"\\ext\\libgit2" };
+		EXPECT_TRUE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+	{
+		CString topPath;
+		CTGitPath path{ tmp.GetTempDir() + L"\\ext\\spell" };
+		EXPECT_TRUE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+	{
+		CString topPath;
+		CTGitPath path{ tmp.GetTempDir() + L"\\ext\\spELL" };
+		EXPECT_FALSE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+	{
+		CString topPath;
+		CTGitPath path{ tmp.GetTempDir() + L"\\ext\\something" };
+		EXPECT_FALSE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+	{
+		CString topPath;
+		CTGitPath path{ tmp.GetTempDir() + L"\\ext" };
+		EXPECT_FALSE(path.IsRegisteredSubmoduleOfParentProject(&topPath));
+		EXPECT_STREQ(tmp.GetTempDir(), topPath);
+	}
+}
