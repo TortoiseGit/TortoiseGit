@@ -1373,6 +1373,15 @@ BOOL CBrowseRefsDlg::PreTranslateMessage(MSG* pMsg)
 				}
 			}
 			break;
+		case L'A':
+			if (pMsg->hwnd == m_ListRefLeafs.m_hWnd && (GetAsyncKeyState(VK_CONTROL) & 0x8000))
+			{
+				// select all entries
+				for (int i = 0; i < m_ListRefLeafs.GetItemCount(); ++i)
+					m_ListRefLeafs.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				return TRUE;
+			}
+			break;
 		case VK_ESCAPE:
 			if (GetFocus() == GetDlgItem(IDC_BROWSEREFS_EDIT_FILTER) && m_ctrlFilter.GetWindowTextLength())
 			{

@@ -943,6 +943,15 @@ BOOL CRepositoryBrowser::PreTranslateMessage(MSG* pMsg)
 				Refresh();
 			}
 			break;
+		case L'A':
+			if (pMsg->hwnd == m_RepoList.m_hWnd && (GetAsyncKeyState(VK_CONTROL) & 0x8000))
+			{
+				// select all entries
+				for (int i = 0; i < m_RepoList.GetItemCount(); ++i)
+					m_RepoList.SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+				return TRUE;
+			}
+			break;
 		}
 	}
 
