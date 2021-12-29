@@ -377,6 +377,7 @@ void CPullFetchDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_REMOTE_RD,IDC_OTHER_RD) == IDC_OTHER_RD)
 	{
+		// similar code in PushDlg::OnBnClickedRd
 		CString clippath = CAppUtils::GetClipboardLink(m_IsPull ? L"git pull" : L"git fetch", 1);
 		if (clippath.IsEmpty())
 			clippath = CAppUtils::GetClipboardLink(!m_IsPull ? L"git pull" : L"git fetch", 1);
@@ -388,11 +389,11 @@ void CPullFetchDlg::OnBnClickedRd()
 			if (argSeparator > 1 && clippath.GetLength() > argSeparator + 2)
 			{
 				CString url = clippath.Left(argSeparator);
-				if (url.GetLength() > 2 && url[0] == L'"' && url[url.GetLength() - 1] == L'"')
+				if (url.GetLength() > 2 && (url[0] == L'"' && url[url.GetLength() - 1] == L'"' || url[0] == L'\'' && url[url.GetLength() - 1] == L'\''))
 					url = url.Mid(1, url.GetLength() - 2);
 				m_Other.SetWindowText(url);
 				CString branch = clippath.Mid(argSeparator + 1);
-				if (branch.GetLength() > 2 && branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"')
+				if (branch.GetLength() > 2 && (branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"' || branch[0] == L'\'' && branch[branch.GetLength() - 1] == L'\''))
 					branch = branch.Mid(1, branch.GetLength() - 2);
 				m_RemoteBranch.SetWindowText(branch);
 			}

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -368,6 +368,7 @@ void CPushDlg::OnBnClickedRd()
 	}
 	if( GetCheckedRadioButton(IDC_RD_REMOTE,IDC_RD_URL) == IDC_RD_URL)
 	{
+		// similar code in PullFetchDlg::OnBnClickedRd
 		CString clippath = CAppUtils::GetClipboardLink(L"git pull", 1);
 		if (clippath.IsEmpty())
 			clippath = CAppUtils::GetClipboardLink(L"git fetch", 1);
@@ -379,11 +380,11 @@ void CPushDlg::OnBnClickedRd()
 			if (argSeparator > 1 && clippath.GetLength() > argSeparator + 2)
 			{
 				CString url = clippath.Left(argSeparator);
-				if (url.GetLength() > 2 && url[0] == L'"' && url[url.GetLength() - 1] == L'"')
+				if (url.GetLength() > 2 && (url[0] == L'"' && url[url.GetLength() - 1] == L'"' || url[0] == L'\'' && url[url.GetLength() - 1] == L'\''))
 					url = url.Mid(1, url.GetLength() - 2);
 				m_RemoteURL.SetWindowText(url);
 				CString branch = clippath.Mid(argSeparator + 1);
-				if (branch.GetLength() > 2 && branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"')
+				if (branch.GetLength() > 2 && (branch[0] == L'"' && branch[branch.GetLength() - 1] == L'"' || branch[0] == L'\'' && branch[branch.GetLength() - 1] == L'\''))
 					branch = branch.Mid(1, branch.GetLength() - 2);
 				m_BranchRemote.SetWindowText(branch);
 			}

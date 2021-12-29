@@ -163,7 +163,7 @@ BOOL CCloneDlg::OnInitDialog()
 	{
 		CString str = CAppUtils::GetClipboardLink(L"git clone ");
 		str.Trim();
-		if (str.GetLength() > 2 && str[0] == L'"' && str[str.GetLength() - 1] == L'"')
+		if (str.GetLength() > 2 && (str[0] == L'"' && str[str.GetLength() - 1] == L'"' || str[0] == L'\'' && str[str.GetLength() - 1] == L'\''))
 			str = str.Mid(1, str.GetLength() - 2);
 		if(str.IsEmpty())
 			m_URLCombo.SetCurSel(0);
