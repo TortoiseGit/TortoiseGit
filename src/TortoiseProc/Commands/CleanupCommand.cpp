@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2020 - TortoiseGit
+// Copyright (C) 2009, 2011-2021 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -222,7 +222,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 			}
 			else
 				progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? L"" : (L" -- \"" + path + L'"')));
+			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? CString() : (L" -- \"" + path + L'"')));
 		}
 
 		for (CString dir : submoduleList)

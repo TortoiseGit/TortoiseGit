@@ -854,7 +854,7 @@ void CCommitDlg::OnOK()
 			}
 			else
 			{
-				CString sError = temp;
+				CString sError { static_cast<LPCWSTR>(temp) };
 				if (!sError.IsEmpty())
 				{
 					CMessageBox::Show(GetSafeHwnd(), sError, L"TortoiseGit", MB_ICONERROR);
@@ -971,7 +971,7 @@ void CCommitDlg::OnOK()
 					version,
 					&temp)))
 				{
-					CString sErr = temp;
+					CString sErr { static_cast<LPCWSTR>(temp) };
 					if (!sErr.IsEmpty())
 						CMessageBox::Show(GetSafeHwnd(), sErr, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					else

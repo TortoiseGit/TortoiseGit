@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2012, 2015-2016, 2018-2019, 2021 - TortoiseGit
 // Copyright (C) 2010-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ void EnsureGitLibrary(bool bCreate /* = true*/)
 		return;
 
 	CComPtr<IShellLibrary> pLibrary;
-	if (FAILED(OpenShellLibrary(L"Git", &pLibrary)))
+	if (FAILED(OpenShellLibrary(const_cast<LPWSTR>(L"Git"), &pLibrary)))
 	{
 		if (!bCreate)
 			return;

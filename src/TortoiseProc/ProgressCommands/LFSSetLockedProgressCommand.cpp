@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2020 - TortoiseGit
+// Copyright (C) 2019-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,7 +60,7 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
 		CString out;
-		CString cmd = cmdBase + m_targetPathList[i].GetGitPathString() + "\"";
+		CString cmd = cmdBase + m_targetPathList[i].GetGitPathString() + L"\"";
 
 		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[i], notifyAction));
 

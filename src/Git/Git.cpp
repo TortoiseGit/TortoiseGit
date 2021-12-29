@@ -262,19 +262,19 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	sa.bInheritHandle=TRUE;
 	if (!CreatePipe(hReadIn.GetPointer(), hWriteIn.GetPointer(), &sa, 0))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stdin pipe: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 	if (!CreatePipe(hRead.GetPointer(), hWrite.GetPointer(), &sa, 0))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stdout pipe: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
 	if (hErrReadOut && !CreatePipe(hReadErr.GetPointer(), hWriteErr.GetPointer(), &sa, 0))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not open stderr pipe: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_OPEN_PIP;
 	}
@@ -329,7 +329,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": executing %s\n", static_cast<LPCWSTR>(cmd));
 	if(!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, TRUE, dwFlags, pEnv, m_CurrentDir.GetBuffer(), &si, &pi))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": error while executing command: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 	}
@@ -469,7 +469,7 @@ int CGit::Run(CGitCall* pcall)
 
 	if(!GetExitCodeProcess(pi.hProcess,&exitcode))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not get exit code: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}
@@ -1186,7 +1186,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	DWORD exitcode = 0;
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
 	{
-		CString err = CFormatMessageWrapper();
+		CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": could not get exit code: %s\n", static_cast<LPCWSTR>(err.Trim()));
 		return TGIT_GIT_ERROR_GET_EXIT_CODE;
 	}

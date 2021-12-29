@@ -749,7 +749,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 int CGitIgnoreItem::IsPathIgnored(const CStringA& patha, int& type)
 {
 	int pos = patha.ReverseFind('/');
-	const char* base = (pos >= 0) ? (static_cast<const char*>(patha) + pos + 1) : patha;
+	const char* base = (pos >= 0) ? (static_cast<const char*>(patha) + pos + 1) : static_cast<const char*>(patha);
 
 	return IsPathIgnored(patha, base, type);
 }
@@ -1018,7 +1018,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	}
 
 	int pos = patha.ReverseFind('/');
-	const char* base = (pos >= 0) ? (static_cast<const char*>(patha) + pos + 1) : patha;
+	const char* base = (pos >= 0) ? (static_cast<const char*>(patha) + pos + 1) : static_cast<const char*>(patha);
 
 
 	CAutoReadLock lock(m_SharedMutex);

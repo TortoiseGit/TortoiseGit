@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019 - TortoiseGit
+// Copyright (C) 2016-2019, 2021 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -99,7 +99,7 @@ void CSetHooks::RebuildHookList()
 		{
 			int pos = m_cHookList.InsertItem(m_cHookList.GetItemCount(), CHooks::Instance().GetHookTypeString(it->first.htype));
 			m_cHookList.SetCheck(pos, it->second.bEnabled);
-			m_cHookList.SetItemText(pos, 1, it->second.bLocal ? L"local" : it->first.path.GetWinPathString());
+			m_cHookList.SetItemText(pos, 1, it->second.bLocal ? CString("local") : it->first.path.GetWinPathString());
 			m_cHookList.SetItemText(pos, 2, it->second.commandline);
 			m_cHookList.SetItemText(pos, 3, (it->second.bWait ? L"true" : L"false"));
 			m_cHookList.SetItemText(pos, 4, (it->second.bShow ? L"show" : L"hide"));

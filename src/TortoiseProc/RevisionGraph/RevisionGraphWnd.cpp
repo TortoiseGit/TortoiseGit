@@ -1092,7 +1092,7 @@ void CRevisionGraphWnd::DoShowLog()
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry2->index()].ToString()));
 	else
 		sCmd.Format(L"/command:log %s /endrev:%s",
-			static_cast<LPCWSTR>(this->m_sPath.IsEmpty() ? L"" : (L"/path:\"" + this->m_sPath + L'"')),
+			static_cast<LPCWSTR>(this->m_sPath.IsEmpty() ? CString() : (L"/path:\"" + this->m_sPath + L'"')),
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);

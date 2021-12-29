@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009, 2011-2016, 2018-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,7 +76,7 @@ bool CatCommand::Execute()
 			if (fwrite(buf->ptr, sizeof(char), buf->size, file) != buf->size)
 			{
 				::DeleteFile(savepath);
-				CString err = CFormatMessageWrapper();
+				CString err { static_cast<LPCWSTR>(CFormatMessageWrapper()) };
 				CMessageBox::Show(GetExplorerHWND(), L"Could not write to file: " + err, L"TortoiseGit", MB_ICONERROR);
 				return false;
 			}

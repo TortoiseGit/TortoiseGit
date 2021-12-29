@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2020 - TortoiseGit
+// Copyright (C) 2012-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -199,7 +199,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		try
 		{
 			const std::wsregex_iterator end;
-			std::wstring string = m_FromRev;
+			std::wstring string { static_cast<LPCWSTR>(m_FromRev) };
 			std::wregex regex(L"[^\\s]+");
 			for (std::wsregex_iterator it(string.cbegin(), string.cend(), regex); it != end; ++it)
 			{
@@ -214,7 +214,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		try
 		{
 			const std::wsregex_iterator end;
-			std::wstring string = m_ToRev;
+			std::wstring string { static_cast<LPCWSTR>(m_ToRev) };
 			std::wregex regex(L"[^\\s]+");
 			for (std::wsregex_iterator it(string.cbegin(), string.cend(), regex); it != end; ++it)
 			{
@@ -463,7 +463,7 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
-		bHead ? L"HEAD" : GetFriendRefName(m_SelectedEntry2),
+		bHead ? CString("HEAD") : GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
 }
 

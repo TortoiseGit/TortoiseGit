@@ -1521,7 +1521,7 @@ CString FindSVNRev(const CString& msg)
 	try
 	{
 		const std::wsregex_iterator end;
-		std::wstring s = msg;
+		std::wstring s { static_cast<LPCWSTR>(msg) };
 		std::wregex regex1(L"^\\s*git-svn-id:\\s+(.*)\\@(\\d+)\\s([a-f\\d\\-]+)$");
 		for (std::wsregex_iterator it(s.cbegin(), s.cend(), regex1); it != end; ++it)
 		{

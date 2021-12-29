@@ -251,7 +251,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	if (bShift && (CurrentEntry == 0 || CurrentEntry == 1))
 	{
 		if (CurrentEntry == 1 || CurrentEntry == 2 || CurrentEntry == 3)
-			CAppUtils::Fetch(GetSafeHwnd(), !IsURL() ? m_strURL : L"");
+			CAppUtils::Fetch(GetSafeHwnd(), !IsURL() ? m_strURL : CString());
 		else
 			CAppUtils::Pull(GetSafeHwnd());
 

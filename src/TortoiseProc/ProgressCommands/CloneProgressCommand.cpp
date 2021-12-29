@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015, 2019 - TortoiseGit
+// Copyright (C) 2013-2015, 2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,7 +80,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 		return 0;
 	};
 	remote_cb_payload remote_cb_payloadData;
-	remote_cb_payloadData.remoteName = m_remote.IsEmpty() ? "origin" : CUnicodeUtils::GetUTF8(m_remote);
+	remote_cb_payloadData.remoteName = m_remote.IsEmpty() ? CStringA("origin") : CUnicodeUtils::GetUTF8(m_remote);
 	cloneOpts.remote_cb_payload = &remote_cb_payloadData;
 
 	CStringA checkout_branch = CUnicodeUtils::GetUTF8(m_RefSpec);

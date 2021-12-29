@@ -604,7 +604,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 
 void CFileTextLines::SetErrorString()
 {
-	m_sErrorString = CFormatMessageWrapper();
+	m_sErrorString = static_cast<LPCWSTR>(CFormatMessageWrapper());
 }
 
 void CFileTextLines::CopySettings(CFileTextLines * pFileToCopySettingsTo) const

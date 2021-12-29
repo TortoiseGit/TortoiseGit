@@ -1877,7 +1877,7 @@ void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
 																	static_cast<LPCWSTR>(m_sAuthor), static_cast<LPCWSTR>(pRev->GetAuthorName()), static_cast<LPCWSTR>(pRev->GetAuthorEmail()),
 																	static_cast<LPCWSTR>(m_sDate), static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(pRev->GetAuthorDate(), m_DateFormat, true, m_bRelativeTimes)),
 																	static_cast<LPCWSTR>(m_sMessage), static_cast<LPCWSTR>(pRev->GetSubject()),
-																	iline <= maxLine ? static_cast<LPCWSTR>(body) : (body.Left(pos) + L"\n..."));
+																	iline <= maxLine ? static_cast<LPCWSTR>(body) : static_cast<LPCWSTR>((body.Left(pos) + L"\n...")));
 
 			if (str.GetLength() > 8000)
 			{

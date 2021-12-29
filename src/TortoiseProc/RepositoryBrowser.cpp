@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2020 - TortoiseGit
+// Copyright (C) 2009-2021 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -377,7 +377,7 @@ void CRepositoryBrowser::Refresh()
 	tvinsert.hParent = TVI_ROOT;
 	tvinsert.hInsertAfter = TVI_ROOT;
 	tvinsert.itemex.mask = TVIF_DI_SETITEM | TVIF_PARAM | TVIF_TEXT | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE;
-	tvinsert.itemex.pszText = L"/";
+	tvinsert.itemex.pszText = const_cast<LPWSTR>(L"/");
 	tvinsert.itemex.lParam = reinterpret_cast<LPARAM>(&m_TreeRoot);
 	tvinsert.itemex.iImage = m_nIconFolder;
 	tvinsert.itemex.iSelectedImage = m_nOpenIconFolder;
@@ -1426,7 +1426,7 @@ void CRepositoryBrowser::OnTvnBegindragRepotree(NMHDR* pNMHDR, LRESULT* pResult)
 	CTGitPathList toExport;
 	RecursivelyAdd(toExport, pTree);
 
-	BeginDrag(m_RepoTree, toExport, pTree->m_pParent ? pTree->m_pParent->GetFullName() : L"", pNMTreeView->ptDrag);
+	BeginDrag(m_RepoTree, toExport, pTree->m_pParent ? pTree->m_pParent->GetFullName() : CString(), pNMTreeView->ptDrag);
 }
 
 void CRepositoryBrowser::BeginDrag(const CWnd& window, CTGitPathList& files, const CString& root, POINT& point)

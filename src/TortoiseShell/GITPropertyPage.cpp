@@ -289,7 +289,7 @@ void CGitPropertyPage::PageProcOnCommand(WPARAM wParam)
 
 void CGitPropertyPage::RunCommand(const std::wstring& command)
 {
-	std::wstring tortoiseProcPath = CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe";
+	std::wstring tortoiseProcPath { static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll) + L"TortoiseGitProc.exe") };
 	if (CCreateProcessHelper::CreateProcessDetached(tortoiseProcPath.c_str(), command.c_str()))
 	{
 		// process started - exit

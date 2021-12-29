@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -815,7 +815,7 @@ CString CCheckForUpdatesDlg::GetDownloadsDirectory()
 {
 	if (CComHeapPtr<WCHAR> wcharPtr; SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Downloads, KF_FLAG_CREATE, nullptr, &wcharPtr)))
 	{
-		CString folder = wcharPtr;
+		CString folder { static_cast<LPCWSTR>(wcharPtr) };
 		return folder.TrimRight(L'\\') + L'\\';
 	}
 
@@ -850,7 +850,7 @@ LRESULT CCheckForUpdatesDlg::OnTaskbarBtnCreated(WPARAM /*wParam*/, LPARAM /*lPa
 
 CString CCheckForUpdatesDlg::GetWinINetError(DWORD err)
 {
-	CString readableError = CFormatMessageWrapper(err);
+	CString readableError { static_cast<LPCWSTR>(CFormatMessageWrapper(err)) };
 	if (readableError.IsEmpty())
 	{
 		for (const CString& module : { L"wininet.dll", L"urlmon.dll" })

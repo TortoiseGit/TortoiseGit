@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019, 2021 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ bool DropCopyCommand::Execute()
 		renDlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 		{
 			if (PathFileExists(sDroppath + L'\\' + input))
-				return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+				return CString(static_cast<LPCWSTR>(CFormatMessageWrapper(ERROR_FILE_EXISTS)));
 
 			return{};
 		});
@@ -81,7 +81,7 @@ bool DropCopyCommand::Execute()
 				CTGitPath newPath(sDroppath);
 				newPath.AppendPathString(input);
 				if (newPath.Exists())
-					return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+					return CString(static_cast<LPCWSTR>(CFormatMessageWrapper(ERROR_FILE_EXISTS)));
 
 				return{};
 			});
@@ -133,7 +133,7 @@ bool DropCopyCommand::Execute()
 			str += L"\" to \"";
 			str += fullDropPath.GetWinPath();
 			str += L"\" failed:\n";
-			str += CFormatMessageWrapper();
+			str += static_cast<LPCWSTR>(CFormatMessageWrapper());
 
 			MessageBox(GetExplorerHWND(), str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}

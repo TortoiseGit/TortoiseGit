@@ -264,7 +264,7 @@ void CSettingGitCredential::OnLbnSelchangeListUrl()
 	int pos = text.Find(L':');
 	CString prefix = pos >= 0 ? text.Left(pos) : text.Left(1);
 	m_ctrlConfigType.SetCurSel((prefix == L"S" || prefix == L"P") ? ConfigType::System : prefix == L"X" ? ConfigType::Global : prefix == L"G" ? ConfigType::Global : ConfigType::Local);
-	m_strUrl = pos >= 0 ? text.Mid(pos + 1) : L"";
+	m_strUrl = pos >= 0 ? text.Mid(pos + 1) : CString();
 
 	m_strHelper = Load(L"helper");
 	m_strUsername = Load(L"username");
@@ -815,7 +815,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 			CAutoRepository repo(g_Git.GetGitRepository());
 			int pos = str.Find(L':');
 			CString prefix = pos >= 0 ? str.Left(pos) : str;
-			CString url = pos >= 0 ? str.Mid(pos + 1) : L"";
+			CString url = pos >= 0 ? str.Mid(pos + 1) : CString();
 			CONFIG_TYPE configLevel = CONFIG_LOCAL;
 			switch (prefix[0])
 			{
@@ -849,7 +849,7 @@ void CSettingGitCredential::OnBnClickedButtonRemove()
 
 			STRING_VECTOR list;
 			CStringA urlA = CUnicodeUtils::GetUTF8(url);
-			CStringA pattern = urlA.IsEmpty() ? "^credential\\.[^.]+$" : ("credential\\." + RegexEscape(urlA) + "\\..*");
+			CStringA pattern = urlA.IsEmpty() ? CStringA("^credential\\.[^.]+$") : ("credential\\." + RegexEscape(urlA) + "\\..*");
 			git_config_foreach_match(config, pattern, GetCredentialEntryCallback, &list);
 			for (size_t i = 0; i < list.size(); ++i)
 				g_Git.UnsetConfigValue(list[i], configLevel);

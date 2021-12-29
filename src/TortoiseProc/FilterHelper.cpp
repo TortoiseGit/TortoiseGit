@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2020 - TortoiseGit
+// Copyright (C) 2018-2021 - TortoiseGit
 // Copyright (C) 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -175,7 +175,7 @@ void CFilterHelper::AddSubString(CString token, Prefix prefix)
 		token.MakeLower();
 
 	// add condition to list
-	SCondition condition = { token, prefix, 0 };
+	SCondition condition = { static_cast<LPCWSTR>(token), prefix, 0 };
 	subStringConditions.push_back(condition);
 
 	// update previous conditions

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2019 - TortoiseGit
+// Copyright (C) 2009, 2011-2019, 2021 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ bool DropMoveCommand::Execute()
 		renDlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 		{
 			if (PathFileExists(g_Git.CombinePath(droppath + L'\\' + input)))
-				return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+				return CString(static_cast<LPCWSTR>(CFormatMessageWrapper(ERROR_FILE_EXISTS)));
 
 			return{};
 		});
@@ -93,7 +93,7 @@ bool DropMoveCommand::Execute()
 			dlg.SetInputValidator([&](const int /*nID*/, const CString& input) -> CString
 			{
 				if (PathFileExists(g_Git.CombinePath(droppath + L'\\' + input)))
-					return CString(CFormatMessageWrapper(ERROR_FILE_EXISTS));
+					return CString(static_cast<LPCWSTR>(CFormatMessageWrapper(ERROR_FILE_EXISTS)));
 
 				return{};
 			});

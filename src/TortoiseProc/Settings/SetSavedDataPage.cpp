@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019-2020 - TortoiseGit
+// Copyright (C) 2012-2019-2021 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -123,7 +123,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 
 	if (CComHeapPtr<WCHAR> pszPath; SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
-		CString path = pszPath;
+		CString path { static_cast<LPCWSTR>(pszPath) };
 		path += L"\\Subversion\\auth\\";
 
 		CString sSimple = path + L"svn.simple";
@@ -247,7 +247,7 @@ void CSetSavedDataPage::OnBnClickedAuthhistclear()
 	auth.removeKey();
 	if (CComHeapPtr<WCHAR> pszPath; SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
-		CString path = pszPath;
+		CString path { static_cast<LPCWSTR>(pszPath) };
 		path += L"\\Subversion\\auth\\";
 		DeleteViaShell(path, IDS_SETTINGS_DELFILE);
 	}

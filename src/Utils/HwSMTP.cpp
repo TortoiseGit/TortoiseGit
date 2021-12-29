@@ -502,7 +502,7 @@ static SECURITY_STATUS CreateCredentials(PCredHandle phCreds)
 
 	// Create an SSPI credential.
 	Status = g_pSSPI->AcquireCredentialsHandle(nullptr,                // Name of principal
-												 UNISP_NAME,           // Name of package
+												 const_cast<SEC_WCHAR*>(UNISP_NAME),           // Name of package
 												 SECPKG_CRED_OUTBOUND, // Flags indicating use
 												 nullptr,              // Pointer to logon ID
 												 &SchannelCred,        // Package specific data
@@ -871,7 +871,7 @@ BOOL CHwSMTP::SendEmail (
 		Status = CreateCredentials(hCreds);
 		if (Status != SEC_E_OK)
 		{
-			m_csLastError = CFormatMessageWrapper(Status);
+			m_csLastError = static_cast<LPCWSTR>(CFormatMessageWrapper(Status));
 			return FALSE;
 		}
 
@@ -879,7 +879,7 @@ BOOL CHwSMTP::SendEmail (
 		Status = PerformClientHandshake(&m_SendSock, hCreds, m_csSmtpSrvHost.GetBuffer(), hContext, &ExtraData);
 		if (Status != SEC_E_OK)
 		{
-			m_csLastError = CFormatMessageWrapper(Status);
+			m_csLastError = static_cast<LPCWSTR>(CFormatMessageWrapper(Status));
 			return FALSE;
 		}
 
@@ -888,7 +888,7 @@ BOOL CHwSMTP::SendEmail (
 		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_REMOTE_CERT_CONTEXT, static_cast<PVOID>(&pRemoteCertContext));
 		if (Status)
 		{
-			m_csLastError = CFormatMessageWrapper(Status);
+			m_csLastError = static_cast<LPCWSTR>(CFormatMessageWrapper(Status));
 			goto cleanup;
 		}
 
@@ -908,7 +908,7 @@ BOOL CHwSMTP::SendEmail (
 		Status = g_pSSPI->QueryContextAttributes(hContext, SECPKG_ATTR_STREAM_SIZES, &Sizes);
 		if (Status)
 		{
-			m_csLastError = CFormatMessageWrapper(Status);
+			m_csLastError = static_cast<LPCWSTR>(CFormatMessageWrapper(Status));
 			goto cleanup;
 		}
 

@@ -1451,7 +1451,7 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 			const std::regex regCheck(m_sCommand);
 			const std::regex regBugID(m_sBugID);
 			const std::sregex_iterator end;
-			std::string s = msg;
+			std::string s { static_cast<LPCSTR>(msg) };
 			LONG pos = 0;
 			// note:
 			// if start_pos is 0, we're styling from the beginning and let the ^ char match the beginning of the line
@@ -1494,7 +1494,7 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 		{
 			const std::regex regCheck(m_sCommand);
 			const std::sregex_iterator end;
-			std::string s = msg;
+			std::string s { static_cast<LPCSTR>(msg) };
 			LONG pos = 0;
 			for (std::sregex_iterator it(s.cbegin(), s.cend(), regCheck); it != end; ++it)
 			{

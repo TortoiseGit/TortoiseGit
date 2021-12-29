@@ -206,7 +206,7 @@ CString CPathUtils::GetAppDataDirectory()
 	if (SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
 
-	CString path = pszPath;
+	CString path { static_cast<LPCWSTR>(pszPath) };
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);
@@ -220,7 +220,7 @@ CString CPathUtils::GetLocalAppDataDirectory()
 	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_CREATE, nullptr, &pszPath) != S_OK)
 		return CString();
-	CString path = pszPath;
+	CString path { static_cast<LPCWSTR>(pszPath) };
 	path += L"\\TortoiseGit";
 	if (!PathIsDirectory(path))
 		CreateDirectory(path, nullptr);

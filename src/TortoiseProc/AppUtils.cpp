@@ -1437,7 +1437,7 @@ bool CAppUtils::OpenIgnoreFile(HWND hWnd, CIgnoreFile &file, const CString& file
 		file.SeekToEnd();
 		if (lastchar[0] != '\n')
 		{
-			CStringA eol = CStringA(file.m_eol.IsEmpty() ? L"\n" : file.m_eol);
+			CStringA eol = CStringA(file.m_eol.IsEmpty() ? CString("\n") : file.m_eol);
 			file.Write(eol, eol.GetLength());
 		}
 	}
@@ -1517,7 +1517,7 @@ bool CAppUtils::IgnoreFile(HWND hWnd, const CTGitPathList& path,bool IsMask)
 				if (!found)
 				{
 					file.m_Items.push_back(ignorePattern);
-					ignorePattern += file.m_eol.IsEmpty() ? L"\n" : file.m_eol;
+					ignorePattern += file.m_eol.IsEmpty() ? CString("\n") : file.m_eol;
 					CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
 					file.Write(ignorePatternA, ignorePatternA.GetLength());
 				}
@@ -2865,7 +2865,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 			if (rejected)
 			{
 				postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&hWnd]{ Pull(hWnd, true); });
-				postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? L"" : remote, allRemotes); });
+				postCmdList.emplace_back(IDI_UPDATE, IDS_MENUFETCH, [&]{ Fetch(hWnd, allRemotes ? CString() : remote, allRemotes); });
 			}
 			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ Push(hWnd, localBranch); });
 			return;
@@ -3609,7 +3609,7 @@ int CAppUtils::Git2CertificateCheck(git_cert* base_cert, int /*valid*/, const ch
 		dlg.m_sCertificateCN = servernameInCert;
 		dlg.m_sCertificateIssuer = issuer;
 		dlg.m_sHostname = CUnicodeUtils::GetUnicode(host);
-		dlg.m_sError = CFormatMessageWrapper(verificationError);
+		dlg.m_sError = static_cast<LPCWSTR>(CFormatMessageWrapper(verificationError));
 		if (dlg.DoModal() == IDOK)
 		{
 			last_accepted_cert.set(cert);
