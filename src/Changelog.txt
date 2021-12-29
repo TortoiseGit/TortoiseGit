@@ -38,6 +38,7 @@ Released: unreleased
  * Fixed issue #3799: Display of Long lines with Chinese characters is truncated in TortoiseGitMerge dialog
  * Fixed issue #3836: TortoiseGitMerge: With line wrapping enabled, show the current column as in the wrapped line, not as the visible column
  * Fixed issue #3837: TortoiseGitMerge support link is outdated
+ * Fixed issue #3834: Log window hangs on pasting wrong SHA-1 into commit log list when "working tree changes" are selected
 
 = Release 2.12.0 =
 Released: 2021-03-31

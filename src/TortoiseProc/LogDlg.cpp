@@ -1729,7 +1729,10 @@ void CLogDlg::JumpToGitHash(CString hash)
 	for (int i = currentPos + 1; i != currentPos; ++i)
 	{
 		if (i >= cnt)
-			i = 0;
+		{
+			i = -1;
+			continue;
+		}
 
 		GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 		if (!rev) continue;
