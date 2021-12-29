@@ -168,7 +168,6 @@ protected:
 private:
 	CRegDWORD m_regbAllBranch;
 	CRegDWORD m_regbShowTags;
-	CRegDWORD m_regbFullHistory;
 	CRegDWORD m_regbShowLocalBranches;
 	CRegDWORD m_regbShowRemoteBranches;
 	CRegDWORD m_regbShowOtherRefs;

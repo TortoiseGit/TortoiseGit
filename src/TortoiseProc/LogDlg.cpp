@@ -98,8 +98,6 @@ CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	m_bShowRemoteBranches = !!m_regbShowRemoteBranches;
 	m_regbShowOtherRefs = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\ShowOtherRefs\\" + str, TRUE);
 	m_bShowOtherRefs = !!m_regbShowOtherRefs;
-	m_regbFullHistory = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\FullHistory", FALSE);
-	m_bFullHistory = !!m_regbFullHistory;
 
 	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
 	m_bShowUnversioned = !!m_regAddBeforeCommit;
@@ -3368,7 +3366,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 			OnBnClickedFirstParent(); // OnBnClickedFirstParent handles both cases: m_bFirstParent and m_bNoMerges
 			break;
 		case WALKBEHAVIOUR_FULLHISTORY:
-			m_regbFullHistory = m_bFullHistory = !m_bFullHistory;
+			m_bFullHistory = !m_bFullHistory;
 			if (m_bFullHistory)
 				m_LogList.m_ShowMask |= CGit::LOG_INFO_FULL_HISTORY;
 			else
@@ -3390,7 +3388,7 @@ void CLogDlg::OnBnClickedWalkBehaviour()
 		default:
 			break;
 		}
-		m_ctrlWalkBehavior.SetCheck((m_bFirstParent || m_bNoMerges || m_bFollowRenames || m_iCompressedGraph) ? BST_CHECKED : BST_UNCHECKED);
+		m_ctrlWalkBehavior.SetCheck((m_bFirstParent || m_bNoMerges || m_bFollowRenames || m_iCompressedGraph || m_bFullHistory) ? BST_CHECKED : BST_UNCHECKED);
 	}
 }
 
