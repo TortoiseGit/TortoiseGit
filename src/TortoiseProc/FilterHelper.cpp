@@ -40,10 +40,10 @@ bool CFilterHelper::Match(std::wstring& text) const
 			bool found = text.find(condition.subString) != std::wstring::npos;
 			switch (condition.prefix)
 			{
-			case and_not:
+			case AndNot:
 				found = !found;
 				[[fallthrough]];
-			case and:
+			case And:
 				if (!found)
 				{
 					// not a match, so skip to the next "+"-prefixed item
@@ -55,7 +55,7 @@ bool CFilterHelper::Match(std::wstring& text) const
 				}
 				break;
 
-			case or:
+			case Or:
 				current_value |= found;
 				if (!current_value)
 				{
@@ -97,7 +97,7 @@ void CFilterHelper::GetMatchRanges(std::vector<CHARRANGE>& ranges, CString textU
 		auto toScan = static_cast<LPCWSTR>(textUTF16);
 		for (auto iter = subStringConditions.cbegin(), end = subStringConditions.cend(); iter != end; ++iter)
 		{
-			if (iter->prefix == and_not)
+			if (iter->prefix == AndNot)
 				continue;
 
 			auto toFind = iter->subString.c_str();
@@ -180,7 +180,7 @@ void CFilterHelper::AddSubString(CString token, Prefix prefix)
 
 	// update previous conditions
 	size_t newPos = subStringConditions.size() - 1;
-	if (prefix == or)
+	if (prefix == Or)
 	{
 		for (size_t i = newPos; i > 0; --i)
 		{
@@ -238,18 +238,18 @@ CFilterHelper::CFilterHelper(const CString& filter, bool filterWithRegex, DWORD 
 			}
 
 			// has it a prefix?
-			Prefix prefix = and;
+			Prefix prefix = And;
 			if (curPos < length)
 			{
 				switch (filterText[curPos])
 				{
 				case L'-':
-					prefix = and_not;
+					prefix = AndNot;
 					++curPos;
 					break;
 
 				case L'+':
-					prefix = or ;
+					prefix = Or;
 					++curPos;
 					break;
 				}
