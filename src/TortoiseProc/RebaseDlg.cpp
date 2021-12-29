@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -2661,6 +2661,8 @@ void CRebaseDlg::OnBnClickedRebaseCheckForce()
 
 void CRebaseDlg::OnBnClickedRebasePostButton()
 {
+	CheckRestoreStash();
+
 	this->m_Upstream=this->m_UpstreamCtrl.GetString();
 	this->m_Branch=this->m_BranchCtrl.GetString();
 
