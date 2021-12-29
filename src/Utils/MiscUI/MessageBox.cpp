@@ -676,7 +676,7 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 #endif
 	DWORD disp;
 	HKEY hKey;
-	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, L"", REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, &disp) != ERROR_SUCCESS)
+	if (RegCreateKeyEx(HKEY_CURRENT_USER, path, 0, nullptr, REG_OPTION_NON_VOLATILE, KEY_WRITE, nullptr, &hKey, &disp) != ERROR_SUCCESS)
 	{
 		return;
 	}
