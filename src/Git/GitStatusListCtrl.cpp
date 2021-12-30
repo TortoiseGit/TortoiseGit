@@ -291,6 +291,9 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 		{
 			OnColumnVisibilityChanged(column, visible);
 		});
+
+	m_regKeepChangeLists = CRegDWORD(L"Software\\TortoiseGit\\KeepChangeLists", FALSE);
+	m_bKeepChangeLists = m_regKeepChangeLists;
 }
 
 CGitStatusListCtrl::~CGitStatusListCtrl()
@@ -2080,6 +2083,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						}
 						temp.LoadString(IDS_STATUSLIST_CONTEXT_MOVETOCS);
 						popup.AppendMenu(MF_POPUP|MF_STRING, reinterpret_cast<UINT_PTR>(changelistSubMenu.GetSafeHmenu()), temp);
+						temp.LoadString(IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS);
+						popup.AppendMenu(MF_STRING | (m_bKeepChangeLists ? MF_CHECKED : 0), IDGITLC_KEEPCHANGELISTS, temp);
 					}
 				}
 			}
@@ -2771,6 +2776,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				}
 			}
 				break;
+			case IDGITLC_KEEPCHANGELISTS:
+					m_regKeepChangeLists = m_bKeepChangeLists = !m_bKeepChangeLists;
 			default:
 				{
 					if (cmd < IDGITLC_MOVETOCS)

@@ -212,6 +212,7 @@ public:
 		IDGITLC_REMOVEFROMCS	,
 		IDGITLC_CREATECS		,
 		IDGITLC_CREATEIGNORECS	,
+		IDGITLC_KEEPCHANGELISTS	,
 		IDGITLC_CHECKGROUP		,
 		IDGITLC_UNCHECKGROUP	,
 		/** Compare current version and working tree */
@@ -720,6 +721,7 @@ private:
 public:
 	void SaveChangelists();
 	void PruneChangelists(const CTGitPathList* root);
+	bool KeepChangeList() const { return m_bKeepChangeLists; };
 
 private:
 	int GetChangeListIdForPath(const CTGitPath* pGitPath);
@@ -775,6 +777,8 @@ private:
 	bool						m_bUnversionedLast;
 	BOOL						m_bHasUnversionedItems;
 	bool						m_bHasChangeLists;
+	bool						m_bKeepChangeLists;
+	CRegDWORD					m_regKeepChangeLists;
 	//typedef std::vector<FileEntry*> FileEntryVector;
 	//FileEntryVector				m_arStatusArray;
 	std::vector<const CTGitPath*>	m_arStatusArray;

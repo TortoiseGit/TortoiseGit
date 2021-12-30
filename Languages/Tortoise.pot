@@ -5640,7 +5640,7 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1126)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS)
 msgid "Keep changelists"
 msgstr ""
 

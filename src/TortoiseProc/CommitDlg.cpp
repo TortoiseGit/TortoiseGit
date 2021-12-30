@@ -62,7 +62,6 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_pThread(nullptr)
 	, m_bWholeProject(FALSE)
 	, m_bWholeProject2(FALSE)
-	, m_bKeepChangeList(TRUE)
 	, m_bDoNotAutoselectSubmodules(FALSE)
 	, m_itemsCount(0)
 	, m_bSelectFilesForCommit(TRUE)
@@ -111,7 +110,6 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_COMMIT_AUTHORDATA, m_sAuthor);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
 	DDX_Control(pDX, IDC_SPLITTER, m_wndSplitter);
-	DDX_Check(pDX, IDC_KEEPLISTS, m_bKeepChangeList);
 	DDX_Check(pDX, IDC_NOAUTOSELECTSUBMODULES, m_bDoNotAutoselectSubmodules);
 	DDX_Check(pDX,IDC_COMMIT_AMEND,m_bCommitAmend);
 	DDX_Check(pDX, IDC_COMMIT_MESSAGEONLY, m_bCommitMessageOnly);
@@ -246,9 +244,6 @@ BOOL CCommitDlg::OnInitDialog()
 
 	m_History.SetMaxHistoryItems(CRegDWORD(L"Software\\TortoiseGit\\MaxHistoryItems", 25));
 
-	m_regKeepChangelists = CRegDWORD(L"Software\\TortoiseGit\\KeepChangeLists", FALSE);
-	m_bKeepChangeList = m_regKeepChangelists;
-
 	m_regDoNotAutoselectSubmodules = CRegDWORD(L"Software\\TortoiseGit\\DoNotAutoselectSubmodules", FALSE);
 	m_bDoNotAutoselectSubmodules = m_regDoNotAutoselectSubmodules;
 
@@ -371,7 +366,6 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_COMMIT_SETDATETIME);
 	AdjustControlSize(IDC_COMMIT_SETAUTHOR);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
-	AdjustControlSize(IDC_KEEPLISTS);
 	AdjustControlSize(IDC_COMMIT_AS_COMMIT_DATE);
 
 	// line up all controls and adjust their sizes.
@@ -412,7 +406,6 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_STATISTICS, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_TEXT_INFO, TOP_RIGHT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
-	AddAnchor(IDC_KEEPLISTS, BOTTOM_LEFT);
 	AddAnchor(IDC_NOAUTOSELECTSUBMODULES, BOTTOM_LEFT);
 	AddAnchor(IDC_STAGINGSUPPORT, BOTTOM_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
@@ -1011,8 +1004,11 @@ void CCommitDlg::OnOK()
 				pList = nullptr;
 			else
 				pList = &m_pathList;
-			m_ListCtrl.PruneChangelists(pList);
-			m_ListCtrl.SaveChangelists();
+			if (!m_ListCtrl.KeepChangeList())
+			{
+				m_ListCtrl.PruneChangelists(pList);
+				m_ListCtrl.SaveChangelists();
+			}
 		}
 
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
@@ -1076,10 +1072,7 @@ void CCommitDlg::OnOK()
 
 	UpdateData();
 	m_regAddBeforeCommit = m_bShowUnversioned;
-	m_regKeepChangelists = m_bKeepChangeList;
 	m_regDoNotAutoselectSubmodules = m_bDoNotAutoselectSubmodules;
-	if (!GetDlgItem(IDC_KEEPLISTS)->IsWindowEnabled())
-		m_bKeepChangeList = FALSE;
 	InterlockedExchange(&m_bBlock, FALSE);
 
 	if (!m_sLogMessage.IsEmpty())
@@ -1496,8 +1489,6 @@ UINT CCommitDlg::StatusThread()
 		DialogEnableWindow(IDC_WHOLE_PROJECT, !m_bWholeProject2);
 		DialogEnableWindow(IDC_NOAUTOSELECTSUBMODULES, true);
 		DialogEnableWindow(IDC_STAGINGSUPPORT, true);
-		if (m_ListCtrl.HasChangeLists())
-			DialogEnableWindow(IDC_KEEPLISTS, true);
 
 		// activate amend checkbox (if necessary)
 		if (g_Git.IsInitRepos())
