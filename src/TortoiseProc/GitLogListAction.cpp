@@ -788,6 +788,19 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 		case ID_REFLOG_DEL:
 			{
+				// security measure, make sure the view is still up2date before deleting any refs, see issue #3782
+				std::vector<GitRevLoglist> cache;
+				if (CString err; GitRevLoglist::GetRefLog(m_CurrentBranch, cache, err))
+				{
+					MessageBox(L"Error while loading reflog.\n" + err, L"TortoiseGit", MB_ICONERROR);
+					break;
+				}
+				if (cache.size() != m_arShownList.size() || !cache.empty() && (cache.at(0).GetCommitterDate() != m_arShownList.SafeGetAt(0)->GetCommitterDate() || cache.at(0).m_CommitHash != m_arShownList.SafeGetAt(0)->m_CommitHash || cache.at(cache.size() - 1).m_CommitHash != m_arShownList.SafeGetAt(m_arShownList.size() - 1)->m_CommitHash))
+				{
+					MessageBox(L"The current view seems to be out of date. Please refresh, e.g. by pressing F5 and recheck the selection.", L"TortoiseGit", MB_ICONERROR);
+					break;
+				}
+
 				CString str;
 				if (GetSelectedCount() > 1)
 					str.Format(IDS_PROC_DELETENREFS, GetSelectedCount());

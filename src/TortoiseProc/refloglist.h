@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2015-2017, 2020 - TortoiseGit
+// Copyright (C) 2009-2011, 2015-2017, 2020-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,6 +37,7 @@ public:
 	};
 
 	std::vector<GitRevLoglist> m_RevCache;
+	using CGitLogListBase::m_CurrentBranch;
 
 protected:
 	virtual void OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult) override;
