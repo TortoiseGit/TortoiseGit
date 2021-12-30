@@ -213,6 +213,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// create and load the frame with its resources
 	if (!pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, nullptr, nullptr))
 		return FALSE;
+	if (pFrame->InitRibbon())
+		return FALSE;
 
 	// Fill in the command line options
 	pFrame->m_Data.m_baseFile.SetFileName(parser.GetVal(L"base"));

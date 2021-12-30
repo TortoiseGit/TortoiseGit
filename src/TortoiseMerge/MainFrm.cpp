@@ -251,95 +251,96 @@ LRESULT CMainFrame::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	return 0;
 }
 
+int CMainFrame::InitRibbon()
+{
+	if (!m_bUseRibbons)
+		return 0;
+
+	if (HRESULT hr = m_pRibbonFramework.CoCreateInstance(__uuidof(UIRibbonFramework)); FAILED(hr))
+	{
+		TRACE(L"Failed to create ribbon framework (%08x)\n", hr);
+		return -1; // fail to create
+	}
+
+	m_pRibbonApp.reset(new CNativeRibbonApp(this, m_pRibbonFramework));
+	m_pRibbonApp->SetSettingsFileName(CPathUtils::GetAppDataDirectory() + L"TortoiseGitMerge-RibbonSettings");
+
+	if (HRESULT hr = m_pRibbonFramework->Initialize(m_hWnd, m_pRibbonApp.get()); FAILED(hr))
+	{
+		TRACE(L"Failed to initialize ribbon framework (%08x)\n", hr);
+		return -1; // fail to create
+	}
+
+	if (HRESULT hr = m_pRibbonFramework->LoadUI(AfxGetResourceHandle(), L"TORTOISEGITMERGERIBBON_RIBBON"); FAILED(hr))
+	{
+		TRACE(L"Failed to load ribbon UI (%08x)\n", hr);
+		return -1; // fail to create
+	}
+
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	SetTheme(CTheme::Instance().IsDarkTheme());
+
+	BuildRegexSubitems();
+	if (!m_wndRibbonStatusBar.Create(this))
+	{
+		TRACE0("Failed to create ribbon status bar\n");
+		return -1; // fail to create
+	}
+
+	// column info
+	CString sColumn;
+	sColumn.Format(IDS_INDICATOR_COLUMN, 0);
+	auto columnPane = new CMFCRibbonStatusBarPane(ID_INDICATOR_COLUMN, sColumn, FALSE);
+	m_wndRibbonStatusBar.AddElement(columnPane, L"");
+	sColumn.Format(IDS_INDICATOR_COLUMN, 999999);
+	columnPane->SetAlmostLargeText(sColumn);
+	// marked word counter
+	auto columnPaneMW = new CMFCRibbonStatusBarPane(ID_INDICATOR_MARKEDWORDS, L"", FALSE);
+	m_wndRibbonStatusBar.AddElement(columnPaneMW, L"");
+	columnPaneMW->SetAlmostLargeText(L"Marked words: l: XXXX | r: XXXX | b: XXXX");
+
+	CString sTooltip(MAKEINTRESOURCE(IDS_ENCODING_COMBO_TOOLTIP));
+	auto apBtnGroupLeft = std::make_unique<CMFCRibbonButtonsGroup>();
+	apBtnGroupLeft->SetID(ID_INDICATOR_LEFTVIEW);
+	apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR, CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW)), TRUE));
+	CMFCRibbonButton* pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOENCODING, L"");
+	pButton->SetToolTipText(sTooltip);
+	FillEncodingButton(pButton, ID_INDICATOR_LEFTENCODINGSTART);
+	apBtnGroupLeft->AddButton(pButton);
+	pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOEOL, L"");
+	FillEOLButton(pButton, ID_INDICATOR_LEFTEOLSTART);
+	apBtnGroupLeft->AddButton(pButton);
+	pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOTABMODE, L"");
+	FillTabModeButton(pButton, ID_INDICATOR_LEFTTABMODESTART);
+	apBtnGroupLeft->AddButton(pButton);
+	apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_LEFTVIEW, L"", TRUE));
+	m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupLeft.release(), L"");
+
+	auto apBtnGroupRight = std::make_unique<CMFCRibbonButtonsGroup>();
+	apBtnGroupRight->SetID(ID_INDICATOR_RIGHTVIEW);
+	apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR, CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW)), TRUE));
+	pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, L"");
+	pButton->SetToolTipText(sTooltip);
+	FillEncodingButton(pButton, ID_INDICATOR_RIGHTENCODINGSTART);
+	apBtnGroupRight->AddButton(pButton);
+	pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOEOL, L"");
+	FillEOLButton(pButton, ID_INDICATOR_RIGHTEOLSTART);
+	apBtnGroupRight->AddButton(pButton);
+	pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOTABMODE, L"");
+	FillTabModeButton(pButton, ID_INDICATOR_RIGHTTABMODESTART);
+	apBtnGroupRight->AddButton(pButton);
+	apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_RIGHTVIEW, L"", TRUE));
+	m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupRight.release(), L"");
+
+	return 0;
+}
 
 int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	if (m_bUseRibbons)
-	{
-		HRESULT hr;
-		hr = m_pRibbonFramework.CoCreateInstance(__uuidof(UIRibbonFramework));
-		if (FAILED(hr))
-		{
-			TRACE(L"Failed to create ribbon framework (%08x)\n", hr);
-			return -1; // fail to create
-		}
-
-		m_pRibbonApp.reset(new CNativeRibbonApp(this, m_pRibbonFramework));
-		m_pRibbonApp->SetSettingsFileName(CPathUtils::GetAppDataDirectory() + L"TortoiseGitMerge-RibbonSettings");
-
-		hr = m_pRibbonFramework->Initialize(m_hWnd, m_pRibbonApp.get());
-		if (FAILED(hr))
-		{
-			TRACE(L"Failed to initialize ribbon framework (%08x)\n", hr);
-			return -1; // fail to create
-		}
-
-		hr = m_pRibbonFramework->LoadUI(AfxGetResourceHandle(), L"TORTOISEGITMERGERIBBON_RIBBON");
-		if (FAILED(hr))
-		{
-			TRACE(L"Failed to load ribbon UI (%08x)\n", hr);
-			return -1; // fail to create
-		}
-
-		m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
-		SetTheme(CTheme::Instance().IsDarkTheme());
-
-		BuildRegexSubitems();
-		if (!m_wndRibbonStatusBar.Create(this))
-		{
-			TRACE0("Failed to create ribbon status bar\n");
-			return -1; // fail to create
-		}
-
-		// column info
-		CString sColumn;
-		sColumn.Format(IDS_INDICATOR_COLUMN, 0);
-		auto columnPane = new CMFCRibbonStatusBarPane(ID_INDICATOR_COLUMN, sColumn, FALSE);
-		m_wndRibbonStatusBar.AddElement(columnPane, L"");
-		sColumn.Format(IDS_INDICATOR_COLUMN, 999999);
-		columnPane->SetAlmostLargeText(sColumn);
-		// marked word counter
-		auto columnPaneMW = new CMFCRibbonStatusBarPane(ID_INDICATOR_MARKEDWORDS, L"", FALSE);
-		m_wndRibbonStatusBar.AddElement(columnPaneMW, L"");
-		columnPaneMW->SetAlmostLargeText(L"Marked words: l: XXXX | r: XXXX | b: XXXX");
-
-		CString sTooltip(MAKEINTRESOURCE(IDS_ENCODING_COMBO_TOOLTIP));
-		auto apBtnGroupLeft = std::make_unique<CMFCRibbonButtonsGroup>();
-		apBtnGroupLeft->SetID(ID_INDICATOR_LEFTVIEW);
-		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_LEFTVIEW)), TRUE));
-		CMFCRibbonButton * pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOENCODING, L"");
-		pButton->SetToolTipText(sTooltip);
-		FillEncodingButton(pButton, ID_INDICATOR_LEFTENCODINGSTART);
-		apBtnGroupLeft->AddButton(pButton);
-		pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOEOL, L"");
-		FillEOLButton(pButton, ID_INDICATOR_LEFTEOLSTART);
-		apBtnGroupLeft->AddButton(pButton);
-		pButton = new CMFCRibbonButton(ID_INDICATOR_LEFTVIEWCOMBOTABMODE, L"");
-		FillTabModeButton(pButton, ID_INDICATOR_LEFTTABMODESTART);
-		apBtnGroupLeft->AddButton(pButton);
-		apBtnGroupLeft->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_LEFTVIEW,   L"", TRUE));
-		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupLeft.release(), L"");
-
-		auto apBtnGroupRight = std::make_unique<CMFCRibbonButtonsGroup>();
-		apBtnGroupRight->SetID(ID_INDICATOR_RIGHTVIEW);
-		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_SEPARATOR,   CString(MAKEINTRESOURCE(IDS_STATUSBAR_RIGHTVIEW)), TRUE));
-		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOENCODING, L"");
-		pButton->SetToolTipText(sTooltip);
-		FillEncodingButton(pButton, ID_INDICATOR_RIGHTENCODINGSTART);
-		apBtnGroupRight->AddButton(pButton);
-		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOEOL, L"");
-		FillEOLButton(pButton, ID_INDICATOR_RIGHTEOLSTART);
-		apBtnGroupRight->AddButton(pButton);
-		pButton = new CMFCRibbonButton(ID_INDICATOR_RIGHTVIEWCOMBOTABMODE, L"");
-		FillTabModeButton(pButton, ID_INDICATOR_RIGHTTABMODESTART);
-		apBtnGroupRight->AddButton(pButton);
-		apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_RIGHTVIEW,  L"", TRUE));
-		m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupRight.release(), L"");
-	}
-	else
+	if (!m_bUseRibbons)
 	{
 		if (!m_wndMenuBar.Create(this))
 		{

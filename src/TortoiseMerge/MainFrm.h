@@ -57,6 +57,8 @@ public:
 	CMainFrame();
 	virtual ~CMainFrame();
 
+	int InitRibbon();
+
 	void			ShowDiffBar(bool bShow);
 	void			DiffLeftToBase();
 	void			DiffRightToBase();
