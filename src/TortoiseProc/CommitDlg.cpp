@@ -1018,7 +1018,14 @@ void CCommitDlg::OnOK()
 		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 		{
 			bCloseCommitDlg = false;
-			if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+			if (m_bCreateNewBranch)
+			{
+				SetDlgItemText(IDC_COMMIT_TO, g_Git.GetCurrentBranch()); // issue #3625
+				GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
+				GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
+			}
+			m_bCreateNewBranch = FALSE;
+			if (!progress.m_GitStatus && m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
 			{
 				if (!m_sLogMessage.IsEmpty())
 				{
@@ -1037,12 +1044,6 @@ void CCommitDlg::OnOK()
 				m_sLogMessage = m_sLogTemplate;
 				m_cLogMessage.SetText(m_sLogMessage);
 				m_cLogMessage.ClearUndoBuffer();
-				if (m_bCreateNewBranch)
-				{
-					GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
-					GetDlgItem(IDC_NEWBRANCH)->ShowWindow(SW_HIDE);
-				}
-				m_bCreateNewBranch = FALSE;
 				m_bCommitMessageOnly = FALSE;
 				m_ListCtrl.EnableWindow(TRUE);
 				m_ListCtrl.Clear();

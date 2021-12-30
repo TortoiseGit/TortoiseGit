@@ -43,6 +43,7 @@ Released: unreleased
  * Fixed issue #3834: Log window hangs on pasting wrong SHA-1 into commit log list when "working tree changes" are selected
  * Fixed issue #3793: "Diff with previous version" dialog does not clear files list during validation / for invalid version
  * Fixed issue #3784: Rebase dialog does not ask to pop stash when post rebase options in the lower left are used
+ * Fixed issue #3625: Commit dialog shows wrong branch after committing failed when new branch was specified
 
 = Release 2.12.0 =
 Released: 2021-03-31
