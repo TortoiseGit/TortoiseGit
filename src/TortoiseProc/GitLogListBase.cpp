@@ -2248,7 +2248,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 				bAddSeparator = true;
 			}
 
-			if (selectedCount <= 2 || (IsSelectionContinuous() && !isStash))
+			if (!isStash && (selectedCount <= 2 || IsSelectionContinuous()))
 				if(m_ContextMenuMask&GetContextMenuBit(ID_CREATE_PATCH)) {
 					popup.AppendMenuIcon(ID_CREATE_PATCH, IDS_CREATE_PATCH, IDI_PATCH);
 					bAddSeparator = true;
