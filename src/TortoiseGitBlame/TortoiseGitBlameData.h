@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -122,7 +122,7 @@ public:
 
 private:
 	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, const CGitMailmap* mailmap, CString* err = nullptr);
-	static CString UnquoteFilename(CStringA& s);
+	static CString UnquoteFilename(const CStringA& s);
 
 	std::vector<CGitHash>		m_Hash;
 	std::vector<CString>		m_Dates;

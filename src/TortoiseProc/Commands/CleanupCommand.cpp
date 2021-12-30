@@ -27,24 +27,6 @@
 #include "../Utils/UnicodeUtils.h"
 #include "SysProgressDlg.h"
 
-static CString UnescapeQuotePath(CString s)
-{
-	CStringA t;
-	for (int i = 0; i < s.GetLength(); ++i)
-	{
-		if (s[i] == '\\' && i + 3 < s.GetLength())
-		{
-			char c = static_cast<char>((s[i + 1] - '0') * 64 + (s[i + 2] - '0') * 8 + (s[i + 3] - '0'));
-			t += c;
-			i += 3;
-		}
-		else
-			t += s[i];
-	}
-
-	return CUnicodeUtils::GetUnicode(t);
-}
-
 struct SubmodulePayload
 {
 	STRING_VECTOR &list;
@@ -142,7 +124,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 		{
 			CString tempPath = token.Mid(static_cast<int>(wcslen(L"Would remove "))).TrimRight();
 			if (quotepath)
-				tempPath = UnescapeQuotePath(tempPath.Trim(L'"'));
+				tempPath = CStringUtils::UnescapeGitQuotePath(tempPath.Trim(L'"'));
 			delList.AddPath(pGit->CombinePath(tempPath));
 		}
 

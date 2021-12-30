@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017 - TortoiseGit
+// Copyright (C) 2015-2017, 2021 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -335,4 +335,17 @@ TEST(CStringUtils, EndsWithI)
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"someteSte"));
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"text"));
 	EXPECT_FALSE(CStringUtils::EndsWithI(heystack, L"xt"));
+}
+
+TEST(CStringUtils, UnescapeGitQuotePath)
+{
+	EXPECT_STREQ(L"", CStringUtils::UnescapeGitQuotePath(L""));
+
+	EXPECT_STREQ(L"ascii.txt", CStringUtils::UnescapeGitQuotePath(L"ascii.txt"));
+	EXPECT_STREQ(L"ümlauts.txt", CStringUtils::UnescapeGitQuotePath(L"\\303\\274mlauts.txt")); 
+	EXPECT_STREQ(L"umläütß", CStringUtils::UnescapeGitQuotePath(L"uml\\303\\244\\303\\274t\\303\\237"));
+
+	// taken from Git tests:
+	EXPECT_STREQ(L"\u6FF1\u91CE/file", CStringUtils::UnescapeGitQuotePath(L"\\346\\277\\261\\351\\207\\216/file"));
+	EXPECT_STREQ(L"\u6FF1\u91CE\u7D14", CStringUtils::UnescapeGitQuotePath(L"\\346\\277\\261\\351\\207\\216\\347\\264\\224"));
 }

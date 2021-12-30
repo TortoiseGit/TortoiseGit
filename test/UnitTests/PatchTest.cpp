@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2018-2019, 2021 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -283,5 +283,34 @@ TEST(CPatch, Parse_GitDiffPatch_SingleLineChange)
 		ASSERT_EQ(2, chunk->arLinesStates.GetCount());
 		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_REMOVED), chunk->arLinesStates.GetAt(0));
 		ASSERT_EQ(static_cast<DWORD>(PATCHSTATE_ADDED), chunk->arLinesStates.GetAt(1));
+	}
+}
+
+TEST(CPatch, Parse_QuotedFilename)
+{
+	CString resourceDir;
+	ASSERT_TRUE(GetResourcesDir(resourceDir));
+
+	CPatch patch;
+	EXPECT_TRUE(patch.OpenUnifiedDiffFile(resourceDir + L"\\patches\\quoted-filename.patch"));
+	EXPECT_STREQ(L"", patch.GetErrorMessage());
+	EXPECT_EQ(1, patch.GetNumberOfFiles());
+
+	EXPECT_STREQ(L"ödp.txt", patch.GetFilename(0));
+	EXPECT_STREQ(L"ödp.txt", patch.GetFilename2(0));
+	EXPECT_STREQ(L"279294a", patch.GetRevision(0));
+	EXPECT_STREQ(L"1c7369e", patch.GetRevision2(0));
+
+	// internals
+	{
+		// changed file
+		auto& chunks = patch.GetChunks(0);
+		ASSERT_EQ(size_t(1), chunks.size());
+		auto chunk = chunks[0].get();
+		EXPECT_EQ(8, chunk->arLines.GetCount());
+		EXPECT_EQ(6, chunk->lAddLength);
+		EXPECT_EQ(6, chunk->lRemoveLength);
+		EXPECT_EQ(1, chunk->lAddStart);
+		EXPECT_EQ(1, chunk->lRemoveStart);
 	}
 }

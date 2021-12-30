@@ -139,7 +139,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					if (chunks->sFilePath.Find('\t')>=0)
 						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && CStringUtils::EndsWith(chunks->sFilePath, L'"'))
-						chunks->sFilePath=chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 2);
+						chunks->sFilePath = CStringUtils::UnescapeGitQuotePath(chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 1));
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
 						chunks->sFilePath=chunks->sFilePath.Mid(static_cast<int>(wcslen(L"a/")));
 
@@ -195,7 +195,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				if (chunks->sFilePath2.Find('\t')>=0)
 					chunks->sFilePath2 = chunks->sFilePath2.Left(chunks->sFilePath2.Find('\t'));
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"\"") && chunks->sFilePath2.ReverseFind(L'"') == chunks->sFilePath2.GetLength() - 1)
-					chunks->sFilePath2=chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 2);
+					chunks->sFilePath2 = CStringUtils::UnescapeGitQuotePath(chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 1));
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"a/"))
 					chunks->sFilePath2=chunks->sFilePath2.Mid(static_cast<int>(wcslen(L"a/")));
 

@@ -491,6 +491,46 @@ static void cleanup_space(CString& string)
 	}
 }
 
+// similar code in CTortoiseGitBlameData::UnquoteFilename
+CString CStringUtils::UnescapeGitQuotePath(const CString& s)
+{
+	CStringA t;
+	int i_size = s.GetLength();
+	bool isEscaped = false;
+	for (int i = 0; i < i_size; ++i)
+	{
+		wchar_t c = s[i];
+		if (isEscaped)
+		{
+			if (c >= '0' && c <= '3')
+			{
+				if (i + 2 < i_size)
+				{
+					c = (((c - L'0') & 03) << 6) | (((s[i + 1] - L'0') & 07) << 3) | ((s[i + 2] - L'0') & 07);
+					i += 2;
+					t += c;
+				}
+			}
+			else
+			{
+				// we're on purpose not supporting all possible abbreviations such as \n, \r, \t here as these filenames are invalid on Windows anaway
+				t += c;
+			}
+			isEscaped = false;
+		}
+		else
+		{
+			if (c == L'\\')
+				isEscaped = true;
+			else if (c == L'"')
+				break;
+			else
+				t += c;
+		}
+	}
+	return CUnicodeUtils::GetUnicode(t);
+}
+
 static void get_sane_name(CString* out, const CString* name, const CString& email)
 {
 	const CString* src = name;

@@ -480,7 +480,8 @@ GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, cons
 	return &(it->second);
 }
 
-CString CTortoiseGitBlameData::UnquoteFilename(CStringA& s)
+// similar code in CStringUtils::UnescapeGitQuotePath
+CString CTortoiseGitBlameData::UnquoteFilename(const CStringA& s)
 {
 	if (s[0] == '"')
 	{
