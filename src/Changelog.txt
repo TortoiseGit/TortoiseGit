@@ -21,6 +21,7 @@ Released: unreleased
  * Add support for Ctrl+A in BrowseRefsDlg and RepositoryBrowser
  * Fixed issue #3820: "Stash changes" should not offer stash pop/apply after no changes were stashed
  * Fixed issue #3812: Extend `:rebase` command with additional parameters
+ * Fixed issue #3702: "Push all branches" should be unchecked when Push command is issued with a specific branch
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working

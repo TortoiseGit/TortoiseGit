@@ -168,7 +168,8 @@ BOOL CPushDlg::OnInitDialog()
 	m_regPushAllRemotes = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + WorkingDir + L"\\AllRemotes", FALSE);
 	m_bPushAllRemotes = m_regPushAllRemotes;
 	m_regPushAllBranches = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + WorkingDir + L"\\AllBranches", FALSE);
-	m_bPushAllBranches = m_regPushAllBranches;
+	if (m_BranchSourceName.IsEmpty())
+		m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(L"Software\\TortoiseGit\\History\\PushURLS\\" + WorkingDir, L"url");
 	m_RemoteURL.EnableWindow(FALSE);
 	m_PushOption.LoadHistory(L"Software\\TortoiseGit\\History\\PushOption\\" + WorkingDir, L"option");
