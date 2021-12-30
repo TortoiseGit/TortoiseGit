@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #3812: Extend `:rebase` command with additional parameters
  * Fixed issue #3702: "Push all branches" should be unchecked when Push command is issued with a specific branch
  * Allow to keep changelists after committing
+ * Fixed issue #3602: Make it possible to select multiple old commit messages from log history
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working

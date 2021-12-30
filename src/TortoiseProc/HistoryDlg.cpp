@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2021 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,10 +51,17 @@ END_MESSAGE_MAP()
 
 void CHistoryDlg::OnBnClickedOk()
 {
-	int pos = m_List.GetCurSel();
-	if (pos != LB_ERR)
+	int selCount = m_List.GetSelCount();
+	if (selCount > 0)
 	{
-		m_SelectedText = m_history->GetEntry(pos);
+		auto selectedIndexes = std::make_unique<int[]>(selCount);
+		m_List.GetSelItems(selCount, selectedIndexes.get());
+		for (int i = 0; i < selCount; ++i)
+		{
+			if (i > 0)
+				m_SelectedText += L"\n\n";
+			m_SelectedText += m_history->GetEntry(selectedIndexes.get()[i]);
+		}
 	}
 	else
 		m_SelectedText.Empty();
