@@ -685,6 +685,9 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 		return -1;
 	}
 
+	if (!p_pkey->psz_username)
+		return -1;
+
 	CryptHashChar(hHash, 0x99);
 
 	CryptHashChar(hHash, (i_size >> 8) & 0xff);
