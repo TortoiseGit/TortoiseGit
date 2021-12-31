@@ -474,7 +474,7 @@ int CTortoiseMergeApp::ExitInstance()
 	return m_hasConflicts ? 1 : 0;
 }
 
-void CTortoiseMergeApp::OnClosingMainFrame(CFrameImpl* pFrameImpl)
+void CTortoiseMergeApp::OnClosingMainFrame(CFrameImpl* /*pFrameImpl*/)
 {
 	if (auto pFrame = dynamic_cast<CMainFrame*>(m_pMainWnd))
 	{
