@@ -52,6 +52,8 @@ Released: unreleased
  * Fixed issue #3658: Cannot "format-patch" from from stash
  * Fixed issue #3791: TortoiseGitMerge: Ensure the line has an EOL unless it's the end of the document
  * Fixed issue #3790: TortoiseGitMerge: Prevent calling "mark as resolved" twice
+ * Fixed issue #6765: TortoiseGitMerge crashes with files larger than 1GB
+ * Fixed issue #3826: Help links to TortoiseGit site don't open in a sensible browser
 
 = Release 2.12.0 =
 Released: 2021-03-31
