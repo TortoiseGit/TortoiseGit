@@ -466,6 +466,12 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		MessageBox(L"Get refs failed:" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	}
 
+
+	STRING_VECTOR remoteBranches;
+	if (g_Git.GetBranchList(remoteBranches, nullptr, CGit::BRANCH_REMOTE))
+		MessageBox(L"Loading remote tracking branches failed.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+	std::sort(remoteBranches.begin(), remoteBranches.end());
+
 	//Populate ref tree
 	for (auto iterRefMap = refMap.cbegin(); iterRefMap != refMap.cend(); ++iterRefMap)
 	{
@@ -473,8 +479,11 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		GitRevRefBrowser ref = iterRefMap->second;
 
 		treeLeaf.m_csRefHash = ref.m_CommitHash.ToString();
+		CGit::GetShortName(ref.m_UpstreamRef, ref.m_UpstreamRef, L"refs/");
 		treeLeaf.m_csUpstream = ref.m_UpstreamRef;
-		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"refs/remotes/");
+		CGit::GetShortName(treeLeaf.m_csUpstream, treeLeaf.m_csUpstream, L"remotes/");
+		if (!ref.m_UpstreamRef.IsEmpty() && !std::binary_search(remoteBranches.cbegin(), remoteBranches.cend(), ref.m_UpstreamRef))
+			treeLeaf.m_csUpstream = L"(gone: " + treeLeaf.m_csUpstream + L")";
 		treeLeaf.m_csSubject = ref.GetSubject();
 		treeLeaf.m_csAuthor = ref.GetAuthorName();
 		treeLeaf.m_csDate = ref.GetAuthorDate();
