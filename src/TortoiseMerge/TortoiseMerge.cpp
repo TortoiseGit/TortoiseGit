@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2021 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -68,6 +68,7 @@ public:
 
 
 CTortoiseMergeApp::CTortoiseMergeApp()
+	: m_hasConflicts(false)
 {
 	EnableHtmlHelp();
 	git_libgit2_init();
@@ -467,7 +468,17 @@ int CTortoiseMergeApp::ExitInstance()
 	// remove them. But only delete 'old' files
 	CTempFiles::DeleteOldTempFiles(L"*tsm*.*");
 
-	return CWinAppEx::ExitInstance();
+	CWinAppEx::ExitInstance();
+	return m_hasConflicts ? 1 : 0;
+}
+
+void CTortoiseMergeApp::OnClosingMainFrame(CFrameImpl* pFrameImpl)
+{
+	if (auto pFrame = dynamic_cast<CMainFrame*>(m_pMainWnd))
+	{
+		if (pFrame->CheckResolved() >= 0)
+			m_hasConflicts = true;
+	}
 }
 
 bool CTortoiseMergeApp::HasClipboardPatch()

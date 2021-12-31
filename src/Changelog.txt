@@ -25,6 +25,7 @@ Released: unreleased
  * Allow to keep changelists after committing
  * Fixed issue #3602: Make it possible to select multiple old commit messages from log history
  * Fixed issue #3782: Stash window may operate on unwanted stash under some circumstances when view is not refreshed
+ * Fixed issue #3661: Exit code of TortoiseGitMerge should be based on success of a merge resolution
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working

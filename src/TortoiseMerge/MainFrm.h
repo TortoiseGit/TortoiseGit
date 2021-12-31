@@ -60,6 +60,7 @@ public:
 	void			ShowDiffBar(bool bShow);
 	void			DiffLeftToBase();
 	void			DiffRightToBase();
+	int				CheckResolved();
 
 #ifdef _DEBUG
 	virtual void	AssertValid() const;
@@ -206,7 +207,6 @@ protected:
 	void			UpdateLayout();
 	virtual	BOOL	PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch) override;
 	virtual BOOL	DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2) override;
-	int				CheckResolved();
 	BOOL			MarkAsResolved();
 	int				SaveFile(const CString& sFilePath);
 	void			WriteWindowPlacement(WINDOWPLACEMENT * pwp);
