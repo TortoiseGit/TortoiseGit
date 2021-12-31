@@ -206,6 +206,7 @@ CMainFrame::CMainFrame()
 	: m_bInitSplitter(FALSE)
 	, m_bReversedPatch(FALSE)
 	, m_bHasConflicts(false)
+	, m_bMarkedAsResolvedWasDone(false)
 	, m_bInlineWordDiff(true)
 	, m_bLineDiff(true)
 	, m_bLocatorBar(true)
@@ -686,6 +687,7 @@ void CMainFrame::OnFileOpen(bool fillyours)
 	{
 		return;
 	}
+	m_bMarkedAsResolvedWasDone = false;
 	m_dlgFilePatches.ShowWindow(SW_HIDE);
 	m_dlgFilePatches.Init(nullptr, nullptr, CString(), nullptr);
 	TRACE(L"got the files:\n   %s\n   %s\n   %s\n   %s\n   %s\n", static_cast<LPCWSTR>(dlg.m_sBaseFile), static_cast<LPCWSTR>(dlg.m_sTheirFile), static_cast<LPCWSTR>(dlg.m_sYourFile),
@@ -2187,7 +2189,7 @@ void CMainFrame::OnUpdateMergeMarkasresolved(CCmdUI *pCmdUI)
 	{
 		if (IsViewGood(m_pwndBottomView)&&(m_pwndBottomView->m_pViewData))
 		{
-			bEnable = TRUE;
+			bEnable = !m_bMarkedAsResolvedWasDone;
 		}
 	}
 	pCmdUI->Enable(bEnable);
@@ -2217,6 +2219,8 @@ BOOL CMainFrame::MarkAsResolved()
 		return FALSE;
 	if (!IsViewGood(m_pwndBottomView))
 		return FALSE;
+	if (m_bMarkedAsResolvedWasDone)
+		return FALSE;
 
 	CString cmd = L"/command:resolve /path:\"";
 	cmd += m_Data.m_mergedFile.GetFilename();
@@ -2230,6 +2234,7 @@ BOOL CMainFrame::MarkAsResolved()
 	if(!CAppUtils::RunTortoiseGitProc(cmd))
 		return FALSE;
 	m_bSaveRequired = false;
+	m_bMarkedAsResolvedWasDone = true;
 	return TRUE;
 }
 

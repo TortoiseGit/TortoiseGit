@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2021 - TortoiseGit
 // Copyright (C) 2006-2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -270,6 +270,7 @@ protected:
 	bool			m_bCheckReload;
 
 	bool			m_bHasConflicts;
+	bool			m_bMarkedAsResolvedWasDone;
 
 	bool			m_bInlineWordDiff;
 	bool			m_bInlineDiff;
