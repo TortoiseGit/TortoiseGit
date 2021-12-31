@@ -102,7 +102,7 @@ static size_t b64_decode_binary_to_buffer(uint8_t *p_dst, size_t i_dst, const ch
 #define CRC24_INIT 0xB704CEL
 #define CRC24_POLY 0x1864CFBL
 
-static long crc_octets(uint8_t *octets, size_t len)
+static long crc_octets(const uint8_t* octets, size_t len)
 {
 	long crc = CRC24_INIT;
 	while (len--)
@@ -615,7 +615,7 @@ static void CryptHashChar(HCRYPTHASH hHash, const int c)
 }
 
 /* final part of the hash */
-static int hash_finish(HCRYPTHASH hHash, signature_packet_t *p_sig)
+static int hash_finish(HCRYPTHASH hHash, const signature_packet_t* p_sig)
 {
 	if (p_sig->version == 4)
 	{
@@ -649,7 +649,7 @@ static int hash_finish(HCRYPTHASH hHash, signature_packet_t *p_sig)
  * Generate a hash on a public key, to verify a signature made on that hash
  * Note that we need the signature (v4) to compute the hash
  */
-static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
+static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
 {
 	if (p_pkey->sig.version != 4)
 		return -1;
@@ -708,14 +708,14 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 		break;
 #endif
 	case PUBLIC_KEY_ALGO_RSA:
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
 		break;
 	}
 
 	CryptHashChar(hHash, 0xb4);
 
-	size_t i_len = strlen(reinterpret_cast<char*>(p_pkey->psz_username));
+	size_t i_len = strlen(reinterpret_cast<const char*>(p_pkey->psz_username));
 
 	CryptHashChar(hHash, (i_len >> 24) & 0xff);
 	CryptHashChar(hHash, (i_len >> 16) & 0xff);
@@ -727,7 +727,7 @@ static int hash_from_public_key(HCRYPTHASH hHash, public_key_t* p_pkey)
 	return hash_finish(hHash, &p_pkey->sig);
 }
 
-static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t* p_sig)
+static int hash_from_file(HCRYPTHASH hHash, const CString& filename, const signature_packet_t* p_sig)
 {
 	CAutoFILE pFile = _wfsopen(filename, L"rb", SH_DENYWR);
 	if (!pFile)
@@ -801,7 +801,7 @@ static int hash_from_file(HCRYPTHASH hHash, CString filename, signature_packet_t
 	return hash_finish(hHash, p_sig);
 }
 
-static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
+static int check_hash(HCRYPTHASH hHash, const signature_packet_t *p_sig)
 {
 	DWORD hashLen;
 	DWORD hashLenLen = sizeof(DWORD);
@@ -820,7 +820,7 @@ static int check_hash(HCRYPTHASH hHash, signature_packet_t *p_sig)
 /*
 * Verify an OpenPGP signature made with some RSA public key
 */
-static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_pkey, signature_packet_t& p_sig)
+static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
 {
 	int i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), static_cast<int>(sizeof(p_pkey.key.sig.rsa.n)) - 2);
 	int i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), static_cast<int>(sizeof(p_sig.algo_specific.rsa.s)) - 2);
@@ -863,7 +863,7 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 /*
 * Verify an OpenPGP signature made with some DSA public key
 */
-static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_pkey, signature_packet_t& p_sig)
+static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
 {
 	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
 		return -1;
@@ -917,7 +917,7 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_
 /*
 * Verify an OpenPGP signature made with some public key
 */
-int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, public_key_t& p_key, signature_packet_t& sign)
+int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_key, const signature_packet_t& sign)
 {
 	switch (sign.public_key_algo)
 	{
