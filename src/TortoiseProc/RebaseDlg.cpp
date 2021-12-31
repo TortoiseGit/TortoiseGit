@@ -2689,6 +2689,7 @@ void CRebaseDlg::Refresh()
 	if(this->m_RebaseStage == CHOOSE_BRANCH )
 	{
 		this->UpdateData();
+		this->LoadBranchInfo();
 		this->FetchLogList();
 	}
 }
