@@ -9890,22 +9890,6 @@ msgstr ""
 msgid "Use &other text block"
 msgstr ""
 
-#. Resource IDs: (cmdUseMineBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block"
-msgstr ""
-
-#. Resource IDs: (cmdUseMineThenTheirsBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr ""
-
-#. Resource IDs: (cmdUseTheirsBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block"
-msgstr ""
-
-#. Resource IDs: (cmdUseTheirsThenMineBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr ""
@@ -9986,11 +9970,11 @@ msgstr ""
 msgid "Use left file"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu, cmdUseTheirsBlock_LabelTitle_RESID)
 msgid "Use left text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu, cmdUseTheirsThenMineBlock_LabelTitle_RESID)
 msgid "Use left text block then right"
 msgstr ""
 
@@ -10010,11 +9994,11 @@ msgstr ""
 msgid "Use right block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, cmdUseMineBlock_LabelTitle_RESID)
 msgid "Use right text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu, cmdUseMineThenTheirsBlock_LabelTitle_RESID)
 msgid "Use right text block then left"
 msgstr ""
 
