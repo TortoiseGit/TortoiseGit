@@ -4118,7 +4118,7 @@ void CBaseView::RemoveSelectedText()
 	viewdata oFirstLine = GetViewData(m_ptSelectionViewPosStart.y);
 	viewdata oLastLine = GetViewData(m_ptSelectionViewPosEnd.y);
 	oFirstLine.sLine = oFirstLine.sLine.Left(m_ptSelectionViewPosStart.x) + oLastLine.sLine.Mid(m_ptSelectionViewPosEnd.x);
-	oFirstLine.ending = oLastLine.ending;
+	oFirstLine.ending = (oLastLine.ending != EOL::EOL_NOENDING || m_ptSelectionViewPosEnd.y == (GetLineCount() - 1)) ? oLastLine.ending : oFirstLine.ending;
 	oFirstLine.state = DIFFSTATE_EDITED;
 	SetViewData(m_ptSelectionViewPosStart.y, oFirstLine);
 

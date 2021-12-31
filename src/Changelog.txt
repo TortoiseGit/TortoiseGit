@@ -48,6 +48,7 @@ Released: unreleased
  * Fixed issue #3784: Rebase dialog does not ask to pop stash when post rebase options in the lower left are used
  * Fixed issue #3625: Commit dialog shows wrong branch after committing failed when new branch was specified
  * Fixed issue #3658: Cannot "format-patch" from from stash
+ * Fixed issue #3791: TortoiseGitMerge: Ensure the line has an EOL unless it's the end of the document
 
 = Release 2.12.0 =
 Released: 2021-03-31
