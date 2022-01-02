@@ -288,6 +288,13 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				{
 					//a removed line
 					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"-")))));
+					if (chunk->lRemoveStart == 1 && nRemoveLineCount == 0)
+					{
+						if (HasUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"-")))))
+							chunks->oldHasBom = 1;
+						else
+							chunks->oldHasBom = 0;
+					}
 					chunk->arLinesStates.Add(PATCHSTATE_REMOVED);
 					chunk->arEOLs.push_back(ending);
 					++nRemoveLineCount;
@@ -296,6 +303,13 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				{
 					//an added line
 					chunk->arLines.Add(RemoveUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"+")))));
+					if (chunk->lAddStart == 1 && nAddLineCount == 0)
+					{
+						if (HasUnicodeBOM(sLine.Mid(static_cast<int>(wcslen(L"-")))))
+							chunks->newHasBom = 1;
+						else
+							chunks->newHasBom = 0;
+					}
 					chunk->arLinesStates.Add(PATCHSTATE_ADDED);
 					chunk->arEOLs.push_back(ending);
 					++nAddLineCount;
@@ -551,7 +565,19 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 			} // switch (nPatchState)
 		} // for (j=0; j<chunk->arLines.GetCount(); j++)
 	} // for (int i=0; i<chunks->chunks.GetCount(); i++)
-	if (!sSavePath.IsEmpty())
+	if ((chunks->oldHasBom == 0 || (chunks->chunks.size() == 1 && chunks->chunks.at(0).get()->lRemoveStart == 0 && chunks->chunks.at(0).get()->lRemoveLength == 0)) && chunks->newHasBom == 1 && PatchLines.GetUnicodeType() != CFileTextLines::UTF8BOM)
+	{
+		auto saveParams = PatchLines.GetSaveParams();
+		saveParams.m_UnicodeType = CFileTextLines::UTF8BOM;
+		PatchLines.SetSaveParams(saveParams);
+	}
+	else if (chunks->oldHasBom == 1 && chunks->newHasBom == 0 && PatchLines.GetUnicodeType() == CFileTextLines::UTF8BOM)
+	{
+		auto saveParams = PatchLines.GetSaveParams();
+		saveParams.m_UnicodeType = CFileTextLines::UTF8;
+		PatchLines.SetSaveParams(saveParams);
+	}
+		if (!sSavePath.IsEmpty())
 	{
 		PatchLines.Save(sSavePath, false);
 	}
@@ -700,6 +726,15 @@ CString CPatch::GetFullPath(const CString& sPath, int nIndex, int fileno /* = 0*
 	}
 
 	return temp;
+}
+
+bool CPatch::HasUnicodeBOM(const CString& str) const
+{
+	if (str.IsEmpty())
+		return false;
+	if (str[0] == 0xFEFF)
+		return true;
+	return false;
 }
 
 CString CPatch::RemoveUnicodeBOM(const CString& str) const

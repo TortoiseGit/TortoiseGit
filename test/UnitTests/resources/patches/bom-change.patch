@@ -1,0 +1,48 @@
+diff --git a/NewFileWithBOM.txt b/NewFileWithBOM.txt
+new file mode 100644
+index 0000000..72748e2
+--- /dev/null
++++ b/NewFileWithBOM.txt
+@@ -0,0 +1,2 @@
++﻿With BOM
++äöü
+diff --git a/ansitoBOM.txt b/ansitoBOM.txt
+index 96bcb78..ef8623d 100644
+--- a/ansitoBOM.txt
++++ b/ansitoBOM.txt
+@@ -1,6 +1,6 @@
+-dsfds
+-ä
++ï»¿dsfds
++Ã¤
+ dsf
+-ädsf
++Ã¤dsf
+ dsf
+ sdf
+\ No newline at end of file
+diff --git a/utf8-add-bom.txt b/utf8-add-bom.txt
+index 279294a..aeca290 100644
+--- a/utf8-add-bom.txt
++++ b/utf8-add-bom.txt
+@@ -1,5 +1,5 @@
+-dsfds
+-ä
++﻿dsfds
++pöldä
+ dsf
+ ädsf
+ dsf
+diff --git a/drop-bom.txt b/drop-bom.txt
+index ef8623d..279294a 100644
+--- a/drop-bom.txt
++++ b/drop-bom.txt
+@@ -1,4 +1,4 @@
+-﻿dsfds
++dsfds
+ ä
+ dsf
+ ädsf
+-- 
+2.34.0.windows.1
+

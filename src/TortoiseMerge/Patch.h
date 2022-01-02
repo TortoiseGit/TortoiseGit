@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2008, 2014 - TortoiseSVN
-// Copyright (C) 2012-2013, 2018-2019, 2021 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012-2013, 2018-2019, 2021-2022 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,6 +54,7 @@ protected:
 	int			CountMatches(const CString& path);
 	int			CountDirMatches(const CString& path);
 	CString		RemoveUnicodeBOM(const CString& str) const;
+	bool		HasUnicodeBOM(const CString& str) const;
 
 	BOOL		ParsePatchFile(CFileTextLines &PatchLines);
 
@@ -79,6 +80,8 @@ protected:
 		CString					sFilePath2;
 		CString					sRevision2;
 		std::vector<std::unique_ptr<Chunk>>	chunks;
+		int						oldHasBom = -1;
+		int						newHasBom = -1;
 	};
 
 	std::vector<std::unique_ptr<Chunks>>	m_arFileDiffs;

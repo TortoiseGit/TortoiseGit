@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #3782: Stash window may operate on unwanted stash under some circumstances when view is not refreshed
  * Fixed issue #3661: Exit code of TortoiseGitMerge should be based on success of a merge resolution
  * Fixed issue #3741: In `Browse Refs` show `gone` for branches tracking remote branches that have been deleted
+ * TortoiseGitMerge: Correctly handle BOM changes to files when applying patches
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
