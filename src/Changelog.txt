@@ -54,6 +54,7 @@ Released: unreleased
  * Fixed issue #3790: TortoiseGitMerge: Prevent calling "mark as resolved" twice
  * Fixed issue #6765: TortoiseGitMerge crashes with files larger than 1GB
  * Fixed issue #3826: Help links to TortoiseGit site don't open in a sensible browser
+ * Fixed issue #3770: TortoiseGitMerge can't apply NonANSI (e.g., UTF-8) patch
 
 = Release 2.12.0 =
 Released: 2021-03-31

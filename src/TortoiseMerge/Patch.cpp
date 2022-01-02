@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2021 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2022 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -457,14 +457,6 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 		{
 			CString sPatchLine = chunk->arLines.GetAt(j);
 			EOL ending = chunk->arEOLs[j];
-			if ((m_UnicodeType != CFileTextLines::UTF8)&&(m_UnicodeType != CFileTextLines::UTF8BOM))
-			{
-				if ((PatchLines.GetUnicodeType()==CFileTextLines::UTF8)||(m_UnicodeType == CFileTextLines::UTF8BOM))
-				{
-					// convert the UTF-8 contents in CString sPatchLine into a CStringA
-					sPatchLine = CUnicodeUtils::GetUnicode(CStringA(sPatchLine));
-				}
-			}
 			int nPatchState = static_cast<int>(chunk->arLinesStates.GetAt(j));
 			switch (nPatchState)
 			{

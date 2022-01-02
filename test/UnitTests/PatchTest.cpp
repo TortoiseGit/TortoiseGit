@@ -395,3 +395,29 @@ TEST(CPatch, PatchFile)
 		EXPECT_STREQ(patch.GetRevision2(2), hashAfter.ToString(patch.GetRevision2(2).GetLength()));
 	}
 }
+
+TEST(CPatch, PatchFile_UTF8)
+{
+	CString resourceDir;
+	ASSERT_TRUE(GetResourcesDir(resourceDir));
+
+	CAutoTempDir tempDir;
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\input", nullptr));
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\output", nullptr));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tempDir.GetTempDir() + L"\\input\\ödp.txt", L"dsfds\r\nä\r\ndsf\r\nädsf\r\ndsf\r\nsdf", true));
+
+	CPatch patch;
+	EXPECT_TRUE(patch.OpenUnifiedDiffFile(resourceDir + L"\\patches\\patch-utf8.patch"));
+	EXPECT_STREQ(L"", patch.GetErrorMessage());
+	EXPECT_EQ(1, patch.GetNumberOfFiles());
+
+	git_oid oid1 = { 0 };
+	EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(0)), GIT_OBJECT_BLOB));
+	CGitHash hashBefore = oid1;
+	EXPECT_STREQ(patch.GetRevision(0), hashBefore.ToString(patch.GetRevision(0).GetLength()));
+	EXPECT_EQ(TRUE, patch.PatchFile(0, 0, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0), L"", false));
+	git_oid oid2 = { 0 };
+	EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0)), GIT_OBJECT_BLOB));
+	CGitHash hashAfter = oid2;
+	EXPECT_STREQ(patch.GetRevision2(0), hashAfter.ToString(patch.GetRevision2(0).GetLength()));
+}
