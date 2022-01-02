@@ -1,0 +1,26 @@
+From a6e39d29230cfe975a0095bec47f55a7484a0960 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Thu, 30 Dec 2021 01:18:01 +0100
+Subject: [PATCH] step 2
+
+---
+ ödp.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ödp.txt b/ödp.txt
+index 279294a..1c7369e 100644
+--- a/ödp.txt
++++ b/ödp.txt
+@@ -1,6 +1,6 @@
+ dsfds
+-ä
++ääößjfjdf
+ dsf
+-ädsf
++fddsfk38rä##ädsf
+ dsf
+ sdf
+\ No newline at end of file
+-- 
+2.34.0.windows.1
+

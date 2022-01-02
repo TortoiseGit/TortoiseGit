@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019, 2021 - TortoiseGit
+// Copyright (C) 2018-2019, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -312,5 +312,86 @@ TEST(CPatch, Parse_QuotedFilename)
 		EXPECT_EQ(6, chunk->lRemoveLength);
 		EXPECT_EQ(1, chunk->lAddStart);
 		EXPECT_EQ(1, chunk->lRemoveStart);
+	}
+}
+
+TEST(CPatch, Parse_UnquotedFilenameUTF8)
+{
+	CString resourceDir;
+	ASSERT_TRUE(GetResourcesDir(resourceDir));
+
+	CPatch patch;
+	EXPECT_TRUE(patch.OpenUnifiedDiffFile(resourceDir + L"\\patches\\patch-utf8.patch"));
+	EXPECT_STREQ(L"", patch.GetErrorMessage());
+	EXPECT_EQ(1, patch.GetNumberOfFiles());
+
+	EXPECT_STREQ(L"ödp.txt", patch.GetFilename(0));
+	EXPECT_STREQ(L"ödp.txt", patch.GetFilename2(0));
+	EXPECT_STREQ(L"279294a", patch.GetRevision(0));
+	EXPECT_STREQ(L"1c7369e", patch.GetRevision2(0));
+
+	// internals
+	{
+		// changed file
+		auto& chunks = patch.GetChunks(0);
+		ASSERT_EQ(size_t(1), chunks.size());
+		auto chunk = chunks[0].get();
+		EXPECT_EQ(8, chunk->arLines.GetCount());
+		EXPECT_EQ(6, chunk->lAddLength);
+		EXPECT_EQ(6, chunk->lRemoveLength);
+		EXPECT_EQ(1, chunk->lAddStart);
+		EXPECT_EQ(1, chunk->lRemoveStart);
+	}
+}
+
+TEST(CPatch, PatchFile)
+{
+	CString resourceDir;
+	ASSERT_TRUE(GetResourcesDir(resourceDir));
+
+	CAutoTempDir tempDir;
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\input", nullptr));
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\input\\src", nullptr));
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\input\\src\\TortoiseMerge", nullptr));
+	ASSERT_TRUE(::CreateDirectory(tempDir.GetTempDir() + L"\\output", nullptr));
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tempDir.GetTempDir() + L"\\input\\appveyor.yml", L"version: '{branch}.{build}'\nskip_tags: true\nimage: Visual Studio 2017\ninit:\n- git version\nbuild_script:\n- git submodule update --init -- ext/googletest ext/libgit2 ext/simpleini ext/tgit ext/zlib\n- cd ext\\libgit2\n- git config --global user.email \"dummy@example.com\"\n- git config --global user.name \"Dummy Name\"\n- for %%G in (..\\libgit2-*.patch) do ( type %%G | git am )\n- git config --unset --global user.email\n- git config --unset --global user.name\n- cd ..\\..\n- msbuild \"src\\TortoiseGit.sln\" /t:\"test\\UnitTests\" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=x64 /maxcpucount /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\"\n- msbuild \"src\\TortoiseGit.sln\" /t:\"test\\UnitTests\" /m /verbosity:minimal /p:Configuration=Debug /p:PlatformToolset=v141 /p:Platform=Win32 /maxcpucount /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\"\ntest_script:\n- bin\\Debug\\bin\\tests.exe\n- bin\\Debug64\\bin\\tests.exe\n- reg add HKCU\\Software\\TortoiseGit /v CygwinHack /t REG_DWORD /f /d 1\n- reg add HKCU\\Software\\TortoiseGit /v MSysGit /t REG_SZ /f /d \"c:\\cygwin\\bin\"\n- set HOME=%USERPROFILE%\n- c:\\cygwin\\bin\\git version\n- bin\\Debug\\bin\\tests.exe\n- bin\\Debug64\\bin\\tests.exe\n- reg delete HKCU\\Software\\TortoiseGit /v CygwinHack /f\n- reg delete HKCU\\Software\\TortoiseGit /v MSysGit /f\n- msbuild \"src\\TortoiseGit.sln\" /t:\"GitWCRev\" /t:\"GitWCRevCom\" /t:\"TortoiseGitSetup\\CustomActions\" /t:\"TortoiseGitSetup\\RestartExplorer\" /t:\"ext\\Crash-Server\\CrashServerSDK\\CrashHandler\" /t:\"ext\\Crash-Server\\CrashServerSDK\\SendRpt\" /m /verbosity:minimal /p:Configuration=Release /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\"\n- git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/pcre\n- msbuild \"src\\TortoiseGit.sln\" /t:\"TGitCache\" /t:\"TortoiseGitBlame\" /t:\"TortoiseGitIDiff\" /t:\"TortoiseGitMerge\" /t:\"TortoiseGitPlink\" /t:\"TortoiseGitProc\" /t:\"TortoiseGitStub\" /t:\"TortoiseGitUDiff\" /t:\"TortoiseShell\" /t:\"SshAskPass\" /t:\"tgittouch\" /t:\"GitWCRev\" /t:\"GitWCRevCom\" /m /verbosity:minimal /p:Configuration=Debug /p:Platform=x64 /maxcpucount /p:PlatformToolset=v141 /logger:\"C:\\Program Files\\AppVeyor\\BuildAgent\\Appveyor.MSBuildLogger.dll\"", true));
+	ASSERT_TRUE(CopyFile(resourceDir + L"\\patches\\git-diff-Patch.cpp", tempDir.GetTempDir() + L"\\input\\src\\TortoiseMerge\\Patch.cpp", true));
+
+	CPatch patch;
+	EXPECT_TRUE(patch.OpenUnifiedDiffFile(resourceDir + L"\\patches\\git-diff.patch"));
+	EXPECT_STREQ(L"", patch.GetErrorMessage());
+	EXPECT_EQ(6, patch.GetNumberOfFiles());
+
+	// delete file
+	{
+		EXPECT_TRUE(patch.PatchFile(0, 0, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename(0), L"", false)); // use old filename here on purpose as NUL is not allowed
+		struct _stat64 stat = { 0 };
+		EXPECT_EQ(0, _wstat64(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename(0), &stat));
+		EXPECT_EQ(0, stat.st_size);
+	}
+
+	// add file
+	{
+		EXPECT_TRUE(patch.PatchFile(0, 5, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5), L"", false));
+		CString text;
+		EXPECT_EQ(TRUE, CStringUtils::ReadStringFromTextFile(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5), text));
+		EXPECT_STREQ(L"new file\r\ndfkdsf#dsf\r\n\r\n\r\ndsf\r\n", text);
+		git_oid oid2 = { 0 };
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5)), GIT_OBJECT_BLOB));
+		CGitHash hashAfter = oid2;
+		EXPECT_STREQ(patch.GetRevision2(5), hashAfter.ToString(patch.GetRevision2(5).GetLength()));
+	}
+
+	// modify file
+	{
+		git_oid oid1 = { 0 };
+		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(2)), GIT_OBJECT_BLOB));
+		CGitHash hashBefore = oid1;
+		EXPECT_STREQ(patch.GetRevision(2), hashBefore.ToString(patch.GetRevision(2).GetLength()));
+		EXPECT_TRUE(patch.PatchFile(0, 2, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2), L"", false));
+		git_oid oid2 = { 0 };
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2)), GIT_OBJECT_BLOB));
+		CGitHash hashAfter = oid2;
+		EXPECT_STREQ(patch.GetRevision2(2), hashAfter.ToString(patch.GetRevision2(2).GetLength()));
 	}
 }
