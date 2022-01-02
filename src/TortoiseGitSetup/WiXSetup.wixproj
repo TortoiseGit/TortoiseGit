@@ -11,9 +11,12 @@
 		<WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
 		<CompilerAdditionalOptions>-ext WixUtilExtension</CompilerAdditionalOptions>
 		<LinkerAdditionalOptions>-ext WixUtilExtension</LinkerAdditionalOptions>
+    <SuppressIces>ICE67</SuppressIces>
+    <RunWixToolsOutOfProc Condition=" '$(PROCESSOR_ARCHITECTURE)'!='x86' ">true</RunWixToolsOutOfProc>
 	</PropertyGroup>
 	<PropertyGroup>
 		<DefineConstants>DictionaryENGB=1;DictionaryENUS=1</DefineConstants>
+    <DefineConstants>HarvestPath=..\..\doc\output\;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Release' AND '$(Platform)'!='ARM64'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
 		<DefineConstants Condition="'$(Configuration)'=='Debug' OR '$(Platform)'=='ARM64'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
@@ -61,12 +64,16 @@
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
 		<Error Text="The WiX Toolset v3.11 (or newer) build tools must be installed to build this project. To download the WiX Toolset, see https://wixtoolset.org/releases/" />
 	</Target>
+  <Target Name="BeforeBuild">
+    <HeatDirectory Directory="..\..\doc\output" PreprocessorVariable="var.HarvestPath" OutputFile="HeatGeneratedFileList.wxi" ComponentGroupName="C__HTMLHelpFiles_en" DirectoryRefId="D_HELPFOLDER" GenerateGuidsNow="true" ToolPath="$(WixToolPath)" RunAsSeparateProcess="$(RunWixToolsOutOfProc)" SuppressFragments="true" SuppressRegistry="true" SuppressRootDirectory="true" />
+  </Target>
 	<ItemGroup>
 		<Compile Include="TortoiseGIT.wxs" />
 		<Compile Include="WixUI_Simplest.wxs" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Include="FeaturesFragment.wxi" />
+    <Compile Include="HeatGeneratedFileList.wxi" />
 		<Content Include="Includes.wxi" />
 		<Content Include="StructureFragment.wxi" />
 		<Content Include="TortoiseUDiff.wxi" />
@@ -85,4 +92,7 @@
 			"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https://tortoisegit.org/" /q ..\..\ReleaseARM64\bin\package.msix
 		</PreBuildEvent>
 	</PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <SuppressValidation>False</SuppressValidation>
+  </PropertyGroup>
 </Project>

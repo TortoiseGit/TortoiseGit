@@ -4,6 +4,7 @@
 		<ComponentRef Id="C__infofiles" />
 
 		<ComponentRef Id="C__help_en" />
+		<ComponentGroupRef Id="C__HTMLHelpFiles_en" />
 		<ComponentRef Id="C__gitlibs" />
 		<ComponentRef Id="C__TortoiseShell" />
 		<ComponentRef Id="C__TortoiseGitTools" />
