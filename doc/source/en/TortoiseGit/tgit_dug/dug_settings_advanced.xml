@@ -276,6 +276,15 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">LogTooManyItemsThreshold</term>
+			<listitem>
+				<para>
+					In order to prevent delays displaying the files on a revision on the log dialog there is a maximum of items to be displayed enfored.
+					The default is <literal>1000</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">MaxRefHistoryItems</term>
 			<listitem>
 				<para>

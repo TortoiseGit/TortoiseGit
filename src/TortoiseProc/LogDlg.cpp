@@ -328,6 +328,7 @@ BOOL CLogDlg::OnInitDialog()
 		m_LogList.m_Path.Reset();
 
 	m_ChangedFileListCtrl.Init(GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL, L"LogDlg", (GITSLC_POPALL ^ (GITSLC_POPRESTORE | GITSLC_POPCHANGELISTS)), false, m_LogList.m_hasWC, GITSLC_COLEXT | GITSLC_COLSTATUS | GITSLC_COLADD | GITSLC_COLDEL);
+	m_ChangedFileListCtrl.SetHideTooManyItems(true);
 
 	GetDlgItem(IDC_LOGLIST)->UpdateData(FALSE);
 

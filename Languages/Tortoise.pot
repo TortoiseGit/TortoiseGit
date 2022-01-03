@@ -9516,6 +9516,10 @@ msgstr ""
 msgid "Toggle filters"
 msgstr ""
 
+#. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
+msgid "Too many files to display."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
 msgid "Top context menu on Windows 11"
 msgstr ""

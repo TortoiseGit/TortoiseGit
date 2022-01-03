@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -278,6 +278,9 @@ CGitStatusListCtrl::CGitStatusListCtrl() : CResizableColumnsListCtrl<CListCtrl>(
 	, m_bIncludedStaged(false)
 	, m_bEnableDblClick(true)
 	, m_bThreeStateCheckboxes(false)
+	, m_bTooManyItems(false)
+	, m_bHideTooManyItems(false)
+	, m_nTooManyItemsThreshold(CRegDWORD(L"Software\\TortoiseGit\\LogTooManyItemsThreshold", 1000))
 {
 	m_bNoAutoselectMissing = CRegDWORD(L"Software\\TortoiseGit\\AutoselectMissingFiles", FALSE) == TRUE;
 
@@ -706,6 +709,24 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 
 			AppendLFSLocks(false);
 		}
+
+		m_bTooManyItems = (m_bHideTooManyItems && m_arStatusArray.size() > m_nTooManyItemsThreshold);
+		if (m_bTooManyItems)
+		{
+			m_arListArray.clear();
+			RemoveAllGroups();
+
+			RestoreScrollPos();
+
+			m_bWaitCursor = false;
+			m_bBusy = false;
+			m_bEmpty = true;
+			Invalidate();
+
+			BuildStatistics();
+			return;
+		}
+
 		PrepareGroups();
 		m_arListArray.clear();
 		m_arListArray.reserve(m_arStatusArray.size());
@@ -3741,7 +3762,7 @@ void CGitStatusListCtrl::PreSubclassWindow()
 void CGitStatusListCtrl::OnPaint()
 {
 	LRESULT defres = Default();
-	if ((m_bBusy) || (m_bEmpty))
+	if (m_bBusy || m_bEmpty || m_bTooManyItems)
 	{
 		CString str;
 		if (m_bBusy)
@@ -3750,6 +3771,12 @@ void CGitStatusListCtrl::OnPaint()
 				str.LoadString(IDS_STATUSLIST_BUSYMSG);
 			else
 				str = m_sBusy;
+		}
+		else if (m_bTooManyItems)
+		{
+			if (m_sTooManyItems.IsEmpty())
+				m_sTooManyItems.LoadString(IDS_STATUSLIST_TOOMANYITEMS);
+			str = m_sTooManyItems;
 		}
 		else
 		{

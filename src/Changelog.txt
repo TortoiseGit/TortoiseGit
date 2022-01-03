@@ -57,6 +57,7 @@ Released: unreleased
  * Fixed issue #6765: TortoiseGitMerge crashes with files larger than 1GB
  * Fixed issue #3826: Help links to TortoiseGit site don't open in a sensible browser
  * Fixed issue #3770: TortoiseGitMerge can't apply NonANSI (e.g., UTF-8) patch
+ * Fixed issue #3708: Log window becomes unresponsive when selecting commit with large file list
 
 = Release 2.12.0 =
 Released: 2021-03-31

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -658,6 +658,8 @@ public:
 		SetExtendedStyle(exStyle);
 	}
 
+	void SetHideTooManyItems(bool b) { m_bHideTooManyItems = b; Invalidate(); }
+
 private:
 	CString GetCellText(int listIndex, int column);    ///< get the text for a certain grid cell
 	//void AddEntry(FileEntry * entry, WORD langID, int listIndex);	///< add an entry to the control
@@ -817,6 +819,8 @@ private:
 	DWORD						m_dwShow;
 	bool						m_bShowFolders;
 	bool						m_bShowIgnores;
+	bool						m_bHideTooManyItems;
+	bool						m_bTooManyItems;
 	bool						m_bUpdate;
 	unsigned __int64			m_dwContextMenus;
 	bool						m_bBusy;
@@ -837,6 +841,9 @@ private:
 
 	CString						m_sEmpty;
 	CString						m_sBusy;
+	CString						m_sTooManyItems;
+
+	DWORD						m_nTooManyItemsThreshold;
 
 	bool						m_bCheckChildrenWithParent;
 	std::unique_ptr<CGitStatusListCtrlDropTarget> m_pDropTarget;
