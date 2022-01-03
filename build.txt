@@ -32,6 +32,7 @@ First, you need to install the compiler package:
 Next you might need to install some utilities/programs:
 *  If you want to build the MSI installer you need WiX 3.11 (http://wixtoolset.org/releases/)
    and the VS2017 extension (https://marketplace.visualstudio.com/vsgallery/2eb3402e-ea6d-4dcd-8340-c88435e54ea9).
+*  If you want to build the installer you need to update the PuTTY binaries by running ext/putty/download.bat
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
    https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
    See doc/readme.txt for more details on building the docs.

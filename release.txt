@@ -24,6 +24,8 @@ This article documents some of the main steps for releasing a new version.
 
 * Update changelog
 
+* Update PuTTY binaries (run ext/putty/download.bat)
+
 * Build TortoiseGit
 
 * Upload release

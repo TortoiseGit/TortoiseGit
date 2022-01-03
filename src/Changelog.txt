@@ -6,7 +6,7 @@ Released: unreleased
 
 == Features ==
  * Update Scintilla and Lexilla to 5.1.0
- * Fixed issue #3744: Update TortoiseGitPlink to PuTTY 0.76 and shipped binaries to PuTTY 0.75
+ * Fixed issue #3744: Update TortoiseGitPlink to PuTTY 0.76 and shipped binaries to PuTTY 0.76
  * Fixed issue #2379: "Show changes as unified diff" from Commit window on N files opens N diff windows
  * Fixed issue #3738: Added force flag on LFSLocksDlg
  * Fixed issue #2299: Better support the git staging process
@@ -29,6 +29,7 @@ Released: unreleased
  * Fixed issue #3741: In `Browse Refs` show `gone` for branches tracking remote branches that have been deleted
  * TortoiseGitMerge: Correctly handle BOM changes to files when applying patches
  * Fixed issue #3787: Implement expanding/collapsing nodes in the log tree on demand
+ * Fixed issue #3692: 64-bit version should bundle 64-bit pageant (and maybe other PuTTY binaries)
 
 == Bug Fixes ==
  * Fixed issue #3736: LFS force unlock not working
