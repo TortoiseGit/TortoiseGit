@@ -96,11 +96,7 @@ void CFirstStartWizardStart::OnClickedLink(NMHDR* pNMHDR, LRESULT* pResult)
 	ATLASSERT(pNMHDR && pResult);
 	auto pNMLink = reinterpret_cast<PNMLINK>(pNMHDR);
 	if (wcscmp(pNMLink->item.szID, L"manual") == 0)
-	{
-		CString helppath(theApp.m_pszHelpFilePath);
-		helppath += L"::/tgit-dug.html#tgit-dug-general";
-		::HtmlHelp(GetSafeHwnd(), helppath, HH_DISPLAY_TOPIC, 0);
-	}
+		CAppUtils::StartHtmlHelp(0, L"tgit-dug.html#tgit-dug-general");
 	else if (wcscmp(pNMLink->item.szID, L"support") == 0)
 		ShellExecute(GetSafeHwnd(), L"open", L"https://tortoisegit.org/support/", nullptr, nullptr, SW_SHOWNORMAL);
 	*pResult = 0;

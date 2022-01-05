@@ -252,12 +252,8 @@ void CFirstStartWizardAuthentication::OnClickedLink(NMHDR* pNMHDR, LRESULT* pRes
 	ATLASSERT(pNMHDR && pResult);
 	auto pNMLink = reinterpret_cast<PNMLINK>(pNMHDR);
 	if (wcscmp(pNMLink->item.szID, L"manual") == 0)
-		HtmlHelp(0x20000 + IDD_FIRSTSTARTWIZARD_AUTHENTICATION);
+		CAppUtils::StartHtmlHelp(0x20000 + IDD_FIRSTSTARTWIZARD_AUTHENTICATION);
 	else if (wcscmp(pNMLink->item.szID, L"sshfaq") == 0)
-	{
-		CString helppath(theApp.m_pszHelpFilePath);
-		helppath += L"::/tgit-ssh-howto.html";
-		::HtmlHelp(GetSafeHwnd(), helppath, HH_DISPLAY_TOPIC, 0);
-	}
+		CAppUtils::StartHtmlHelp(0, L"tgit-ssh-howto.html");
 	*pResult = 0;
 }
