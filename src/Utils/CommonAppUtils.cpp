@@ -18,7 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "../Resources/LoglistCommonResource.h"
+#include "resource.h"
 #include "CommonAppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
@@ -391,6 +391,20 @@ void CCommonAppUtils::CreateFontForLogs(HWND hWnd, CFont& fontToCreate)
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
 }
 
+const char* CCommonAppUtils::GetResourceData(const wchar_t* resName, int id, DWORD& resLen)
+{
+	resLen = 0;
+	auto hResource = FindResource(nullptr, MAKEINTRESOURCE(id), resName);
+	if (!hResource)
+		return nullptr;
+	auto hResourceLoaded = LoadResource(nullptr, hResource);
+	if (!hResourceLoaded)
+		return nullptr;
+	auto lpResLock = static_cast<const char*>(LockResource(hResourceLoaded));
+	resLen = SizeofResource(nullptr, hResource);
+	return lpResLock;
+}
+
 bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html" */)
 {
 	ATLASSERT(page == "index.html" || id == 0);
@@ -401,7 +415,78 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 	CString helpFile{ pApp->m_pszHelpFilePath };
 
 	if (helpFile.IsEmpty() || !PathFileExists(helpFile))
+	{
+#if defined(IDR_HELPCONTEXT) && defined(IDR_HELPALIAS) && defined(IDS_APPNAME)
+		static std::map<DWORD_PTR, std::wstring> idMap;
+
+		if (idMap.empty())
+		{
+			std::map<std::string, DWORD_PTR> contextMap;
+			DWORD resSize = 0;
+			const char* resData = GetResourceData(L"help", IDR_HELPCONTEXT, resSize);
+			if (resData)
+			{
+				auto resString = std::string(resData, resSize);
+				std::vector<std::string> lines;
+				stringtok(lines, resString, true, "\r\n");
+				for (const auto& line : lines)
+				{
+					if (line._Starts_with("//"))
+						continue;
+					if (line.empty())
+						continue;
+					std::vector<std::string> lineParts;
+					stringtok(lineParts, line, true, " ");
+					if (lineParts.size() == 3)
+						contextMap[lineParts[1]] = std::stoi(lineParts[2], nullptr, 0);
+				}
+			}
+			std::map<std::string, std::string> aliasMap;
+			resSize = 0;
+			resData = GetResourceData(L"help", IDR_HELPALIAS, resSize);
+			if (resData)
+			{
+				auto resString = std::string(resData, resSize);
+				std::vector<std::string> lines;
+				stringtok(lines, resString, true, "\r\n");
+				for (const auto& line : lines)
+				{
+					if (line.empty())
+						continue;
+					std::vector<std::string> lineParts;
+					stringtok(lineParts, line, true, "=");
+					if (lineParts.size() == 2)
+						aliasMap[lineParts[0]] = lineParts[1];
+				}
+			}
+			for (const auto& [textId, link] : aliasMap)
+			{
+				if (contextMap.find(textId) != contextMap.end())
+				{
+					auto numId = contextMap.find(textId)->second;
+					idMap[numId] = CUnicodeUtils::StdGetUnicode(link);
+				}
+			}
+		}
+
+		std::wstring baseUrl{ L"https://tortoisegit.org/docs/" };
+		CString appName(MAKEINTRESOURCE(IDS_APPNAME));
+
+		if (idMap.find(id) != idMap.end())
+		{
+			page = idMap[id].c_str();
+			page.Replace(L"@", L"%40");
+		}
+
+		baseUrl += appName.MakeLower();
+		baseUrl += L'/';
+		baseUrl += page;
+
+		return reinterpret_cast<INT_PTR>(ShellExecute(nullptr, L"open", baseUrl.c_str(), nullptr, nullptr, SW_SHOWNORMAL)) > 32;
+#else
 		return false;
+#endif
+	}
 
 	CString mapID;
 	if (id)
