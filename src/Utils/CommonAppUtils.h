@@ -111,6 +111,8 @@ public:
 	 */
 	static void CreateFontForLogs(HWND hWnd, CFont& fontToCreate);
 
+	static const char* GetResourceData(const wchar_t* resName, int id, DWORD& resLen);
+
 	static bool StartHtmlHelp(DWORD_PTR id, CString page = L"index.html");
 
 	CCommonAppUtils() = delete;

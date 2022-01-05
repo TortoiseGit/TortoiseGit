@@ -629,6 +629,12 @@
     <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Resources\TGitMergeHelpAlias.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resources\TGitMergeHelpContext.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\lineadded.ico">

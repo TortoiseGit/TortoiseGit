@@ -486,6 +486,15 @@ All user/site specific configuration is stored in doc.build.user.
 						timeout="600000" />
 
 			<copy file="${doc.target.work}/htmlhelp.chm" tofile="${file.target}"/>
+
+			<if test="${doc.target.name == 'TortoiseGit_en'}">
+				<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitHelpAlias.h" />
+				<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitHelpContext.h" />
+			</if>
+			<if test="${doc.target.name == 'TortoiseMerge_en'}">
+				<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitMergeHelpAlias.h" />
+				<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitMergeHelpContext.h" />
+			</if>
 		</if>
 		<!--
 		<delete>

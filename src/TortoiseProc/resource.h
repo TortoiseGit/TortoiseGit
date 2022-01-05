@@ -155,6 +155,8 @@
 #define IDI_CHERRYPICK                  369
 #define IDR_TGITLOGO                    370
 #define IDI_ACTIONERROR                 371
+#define IDR_HELPALIAS                   372
+#define IDR_HELPCONTEXT                 373
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -2146,7 +2148,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        372
+#define _APS_NEXT_RESOURCE_VALUE        374
 #define _APS_NEXT_COMMAND_VALUE         32881
 #define _APS_NEXT_CONTROL_VALUE         1860
 #define _APS_NEXT_SYMED_VALUE           201
