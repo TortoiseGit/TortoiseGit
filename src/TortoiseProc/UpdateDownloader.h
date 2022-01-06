@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2020 - TortoiseGit
+// Copyright (C) 2014, 2020-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@ public:
 	CString m_sWindowsServicePack;
 
 private:
+	static bool GetTrueWindowsVersion(OSVERSIONINFOEX& osVersionInfo);
 	static void BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo);
 
 	HINTERNET hOpenHandle;

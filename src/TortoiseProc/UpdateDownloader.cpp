@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,10 +27,14 @@ CUpdateDownloader::CUpdateDownloader(HWND hwnd, const CString& sVersion, bool fo
 , m_eventStop(eventStop)
 {
 	OSVERSIONINFOEX inf = {0};
-	BruteforceGetWindowsVersionNumber(inf);
+	if (!GetTrueWindowsVersion(inf))
+		BruteforceGetWindowsVersionNumber(inf);
 
 	m_sWindowsPlatform = (inf.dwPlatformId == VER_PLATFORM_WIN32_NT) ? L"NT" : L"";
-	m_sWindowsVersion.Format(L"%ld.%ld", inf.dwMajorVersion, inf.dwMinorVersion);
+	if (inf.dwBuildNumber && inf.dwMajorVersion >= 10)
+		m_sWindowsVersion.Format(L"%ld.%ld.%ld", inf.dwMajorVersion, inf.dwMinorVersion, inf.dwBuildNumber);
+	else
+		m_sWindowsVersion.Format(L"%ld.%ld", inf.dwMajorVersion, inf.dwMinorVersion);
 	if (inf.wServicePackMajor)
 		m_sWindowsServicePack.Format(L"SP%ld", inf.wServicePackMajor);
 
@@ -43,6 +47,21 @@ CUpdateDownloader::~CUpdateDownloader()
 {
 	if (hOpenHandle)
 		InternetCloseHandle(hOpenHandle);
+}
+
+bool CUpdateDownloader::GetTrueWindowsVersion(OSVERSIONINFOEX& pOSversion)
+{
+	typedef LONG(WINAPI * RtlGetVersion_FUNC)(OSVERSIONINFOEXW*);
+
+	CAutoLibrary hNTdllDll = ::LoadLibrary(L"ntdll.dll");
+	if (!hNTdllDll)
+		return false;
+
+	RtlGetVersion_FUNC pRtlGetVersion = (RtlGetVersion_FUNC)::GetProcAddress(hNTdllDll, "RtlGetVersion");
+	if (!pRtlGetVersion)
+		return false;
+
+	return pRtlGetVersion(&pOSversion) == 0;
 }
 
 void CUpdateDownloader::BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo)
