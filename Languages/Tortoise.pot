@@ -8745,11 +8745,11 @@ msgstr ""
 msgid "Stacked Line Graph"
 msgstr ""
 
-#. Resource IDs: (ID_STAGING_STAGESELECTEDHUNKS - Menu)
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS - Menu)
 msgid "Stage selected &hunks"
 msgstr ""
 
-#. Resource IDs: (ID_STAGING_STAGESELECTEDLINES - Menu)
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES - Menu)
 msgid "Stage selected &lines"
 msgstr ""
 
@@ -9841,11 +9841,11 @@ msgstr ""
 msgid "Unset tracked branch"
 msgstr ""
 
-#. Resource IDs: (ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS, ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
 msgid "Unstage selected &hunks"
 msgstr ""
 
-#. Resource IDs: (ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES, ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
 msgid "Unstage selected &lines"
 msgstr ""
 

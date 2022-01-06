@@ -1455,10 +1455,14 @@
 #define IDC_GROUP_IGNORE_FILE           1692
 #define IDS_STATUSLIST_TOOMANYITEMS     1692
 #define IDC_CHECK_SUBMODULE_INIT        1693
+#define IDS_PROC_STAGE_SELECTED_HUNKS   1693
 #define IDC_CHECK_SUBMODULE_RECURSIVE   1694
+#define IDS_PROC_STAGE_SELECTED_LINES   1694
 #define IDC_LOG2                        1695
+#define IDS_PROC_UNSTAGE_SELECTED_HUNKS 1695
 #define IDC_LIST_TAGS                   1696
 #define IDC_SHOW_DIFF                   1696
+#define IDS_PROC_UNSTAGE_SELECTED_LINES 1696
 #define IDC_GROUP_CHANGELOG             1697
 #define IDC_GROUP_DOWNLOADS             1698
 #define IDC_LOG3                        1698

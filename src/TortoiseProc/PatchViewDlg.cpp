@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -522,19 +522,23 @@ void CPatchViewDlg::InsertMenuItems(CMenu& mPopup, int& nCmd)
 		mPopup.AppendMenu(MF_SEPARATOR);
 	if (m_nEnableStagingType == EnableStagingTypes::Staging)
 	{
+		sMenuItemText.LoadString(IDS_PROC_STAGE_SELECTED_HUNKS);
 		m_nStageHunks = nCmd++;
-		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageHunks, _T("Stage selected &hunks"));
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageHunks, sMenuItemText);
 
+		sMenuItemText.LoadString(IDS_PROC_STAGE_SELECTED_LINES);
 		m_nStageLines = nCmd++;
-		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageLines, _T("Stage selected &lines"));
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nStageLines, sMenuItemText);
 	}
 	if (m_nEnableStagingType == EnableStagingTypes::Unstaging)
 	{
+		sMenuItemText.LoadString(IDS_PROC_UNSTAGE_SELECTED_HUNKS);
 		m_nUnstageHunks = nCmd++;
-		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageHunks, _T("Unstage selected &hunks"));
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageHunks, sMenuItemText);
 
+		sMenuItemText.LoadString(IDS_PROC_UNSTAGE_SELECTED_LINES);
 		m_nUnstageLines = nCmd++;
-		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageLines, _T("Unstage selected &lines"));
+		mPopup.AppendMenu(MF_STRING | MF_ENABLED, m_nUnstageLines, sMenuItemText);
 	}
 }
 
