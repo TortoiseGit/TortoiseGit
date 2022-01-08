@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2021 - TortoiseGit
+// Copyright (C) 2015-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2017, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -415,7 +415,6 @@ BOOL CResModule::ReplaceString(LPCWSTR lpszType, WORD wLanguage)
 	}
 
 	auto newTable = std::make_unique<WORD[]>(nMem + (nMem % 2));
-	ZeroMemory(newTable.get(), (nMem + (nMem % 2)) * sizeof(WORD));
 
 	size_t index = 0;
 	for (int i=0; i<16; ++i)
@@ -576,7 +575,6 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 			if (!CountMemReplaceMenuResource(reinterpret_cast<WORD*>(p), &nMem, nullptr))
 				MYERROR;
 			auto newMenu = std::make_unique<WORD[]>(nMem + (nMem % 2) + 2);
-			ZeroMemory(newMenu.get(), (nMem + (nMem % 2) + 2) * sizeof(WORD));
 			size_t index = 2;       // MenuHeader has 2 WORDs zero
 			if (!CountMemReplaceMenuResource(reinterpret_cast<WORD*>(p), &index, newMenu.get()))
 				MYERROR;
@@ -597,7 +595,6 @@ BOOL CResModule::ReplaceMenu(LPCWSTR lpszType, WORD wLanguage)
 			if (!CountMemReplaceMenuExResource(reinterpret_cast<WORD*>(p0 + offset), &nMem, nullptr))
 				MYERROR;
 			auto newMenu = std::make_unique<WORD[]>(nMem + (nMem % 2) + 4);
-			ZeroMemory(newMenu.get(), (nMem + (nMem % 2) + 4) * sizeof(WORD));
 			CopyMemory(newMenu.get(), p0, 2 * sizeof(WORD) + sizeof(DWORD));
 			size_t index = 4;       // MenuExHeader has 2 x WORD + 1 x DWORD
 			if (!CountMemReplaceMenuExResource(reinterpret_cast<WORD*>(p0 + offset), &index, newMenu.get()))
@@ -1251,7 +1248,6 @@ BOOL CResModule::ReplaceDialog(LPCWSTR lpszType, WORD wLanguage)
 	if (!CountMemReplaceDialogResource(p, &nMem, nullptr))
 		MYERROR;
 	auto newDialog = std::make_unique<WORD[]>(nMem + (nMem % 2));
-	ZeroMemory(newDialog.get(), (nMem + (nMem % 2)) * sizeof(WORD));
 
 	size_t index = 0;
 	if (!CountMemReplaceDialogResource(lpDlg, &index, newDialog.get()))

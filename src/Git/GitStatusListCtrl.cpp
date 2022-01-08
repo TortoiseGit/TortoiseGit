@@ -131,7 +131,6 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 		}
 		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5) * sizeof(wchar_t));
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
-		SecureZeroMemory(pBuffer.get(), nBufferSize);
 		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
 		df->pFiles = sizeof(DROPFILES);
 		df->fWide = 1;

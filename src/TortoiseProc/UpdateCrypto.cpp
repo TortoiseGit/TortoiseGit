@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2019, 2021 TortoiseGit
+// Copyright (C) 2014-2019, 2021-2022 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -850,7 +850,6 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 	 * but do not copy/reverse NULs at the end of p_sig.algo_specific.rsa.s into pSig
 	 */
 	auto pSig = std::make_unique<BYTE[]>(i_n_len);
-	SecureZeroMemory(pSig.get(), i_n_len);
 	memcpy(pSig.get(), p_sig.algo_specific.rsa.s + 2, i_s_len);
 	std::reverse(pSig.get(), pSig.get() + i_s_len);
 	if (!CryptVerifySignature(hHash, pSig.get(), i_n_len, hPubKey, nullptr, 0))

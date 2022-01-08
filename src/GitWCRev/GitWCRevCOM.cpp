@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019 - TortoiseGit
+// Copyright (C) 2017-2019, 2021-2022 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -233,7 +233,6 @@ HRESULT GitWCRev::Utf8StringToVariant(const char* string, VARIANT* result )
 	result->vt = VT_BSTR;
 	const size_t len = strlen(string);
 	auto buf = std::make_unique<WCHAR[]>(len * 4 + 1);
-	SecureZeroMemory(buf.get(), (len * 4 + 1) * sizeof(WCHAR));
 	MultiByteToWideChar(CP_UTF8, 0, string, -1, buf.get(), static_cast<int>(len) * 4);
 	result->bstrVal = SysAllocString(buf.get());
 	return S_OK;

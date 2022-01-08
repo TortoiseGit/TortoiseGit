@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019 - TortoiseGit
+// Copyright (C) 2016-2019, 2021-2022 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -294,7 +294,6 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 
 		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(wchar_t);
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
-		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
 		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
 		df->pFiles = sizeof(DROPFILES);
@@ -331,7 +330,6 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	{
 		int nBufferSize = sizeof(FILE_ATTRIBUTES_ARRAY) + m_gitPaths.GetCount() * sizeof(DWORD);
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
-		SecureZeroMemory(pBuffer.get(), nBufferSize);
 
 		auto cf = reinterpret_cast<FILE_ATTRIBUTES_ARRAY*>(pBuffer.get());
 		cf->cItems = m_gitPaths.GetCount();

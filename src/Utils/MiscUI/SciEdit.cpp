@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021 - TortoiseGit
+// Copyright (C) 2009-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -702,7 +702,6 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 		}
 		ATLASSERT(textrange.chrg.cpMax >= textrange.chrg.cpMin);
 		auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
-		SecureZeroMemory(textbuffer.get(), textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
 		textrange.lpstrText = textbuffer.get();
 		textrange.chrg.cpMax++;
 		Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
@@ -725,7 +724,6 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 			twoWords.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE));
 			auto twoWordsBuffer = std::make_unique<char[]>(twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
 			twoWords.lpstrText = twoWordsBuffer.get();
-			SecureZeroMemory(twoWords.lpstrText, twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
 			Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&twoWords));
 			CString sWord = StringFromControl(twoWords.lpstrText);
 			if (m_autolist.find(sWord) != m_autolist.end())
