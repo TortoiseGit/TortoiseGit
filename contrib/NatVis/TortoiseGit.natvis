@@ -11,6 +11,38 @@
   <Type Name="object_id">
     <DisplayString Condition="algo == 0">SHA1: {hash[0],nvoxb}{hash[1],nvoxb}{hash[2],nvoxb}{hash[3],nvoxb}{hash[4],nvoxb}{hash[5],nvoxb}{hash[6],nvoxb}{hash[7],nvoxb}{hash[8],nvoxb}{hash[9],nvoxb}{hash[10],nvoxb}{hash[11],nvoxb}{hash[12],nvoxb}{hash[13],nvoxb}{hash[14],nvoxb}{hash[15],nvoxb}{hash[16],nvoxb}{hash[17],nvoxb}{hash[18],nvoxb}{hash[19],nvoxb}</DisplayString>
   </Type>
+
+  <Type Name="git_strarray">
+    <DisplayString>{{ size={count} }}</DisplayString>
+    <Expand>
+      <Item Name="[count]">count</Item>
+      <ArrayItems>
+          <Size>count</Size>
+          <ValuePointer>strings</ValuePointer>
+      </ArrayItems>
+    </Expand>
+  </Type>
+
+  <Type Name="CSmartBuffer&lt;*,*&gt;">
+    <DisplayString>CSmartBuffer({&quot;$T1&quot;,s8b}): {m_Ref}</DisplayString>
+  </Type>
+
+  <Type Name="CSmartLibgit2Ref&lt;*,*&gt;">
+    <DisplayString Condition="m_Ref == 0">empty</DisplayString>
+    <DisplayString>CSmartLibgit2Ref({&quot;$T1&quot;,s8b}): {m_Ref}</DisplayString>
+    <Expand>
+      <Item Condition="m_Ref != 0" Name="[ptr]">m_Ref</Item>
+    </Expand>
+  </Type>
+
+  <Type Name="CSmartHandle&lt;*,*&gt;">
+    <DisplayString Condition="m_Handle == 0">empty</DisplayString>
+    <DisplayString>CSmartHandle({&quot;$T1&quot;,s8b}): {m_Handle}</DisplayString>
+    <Expand>
+      <Item Condition="m_Ref != 0" Name="[ptr]">m_Ref</Item>
+    </Expand>
+  </Type>
+
   <Type Name="CTGitPath">
     <DisplayString Condition="(m_sFwdslashPath.m_pszData == 0 || m_sFwdslashPath.m_pszData[0] == 0) &amp;&amp; (m_sBackslashPath.m_pszData == 0 || m_sBackslashPath.m_pszData[0] == 0)">empty</DisplayString>
     <DisplayString Condition="m_sFwdslashPath.m_pszData != 0 &amp;&amp; m_sFwdslashPath.m_pszData[0] != 0">{m_sFwdslashPath.m_pszData,su}</DisplayString>
