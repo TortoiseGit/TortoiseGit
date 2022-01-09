@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1334,6 +1334,8 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 	if (rev.IsEmpty() || rev == GIT_REV_ZERO)
 		return 0;
 
+	bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
+
 	POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 	int index;
 	int count = 0;
@@ -1342,11 +1344,23 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 		CString cmd, out;
 		auto fentry = m_arFilteredList[index];
 		if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED))
+		{
 			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCWSTR>(fentry->GetGitPathString()));
+			if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED && m_rev2.m_CommitHash.IsEmpty()) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED && m_rev1.m_CommitHash.IsEmpty()))
+				CTGitPath(g_Git.CombinePath(fentry->GetGitPathString())).Delete(useRecycleBin, true);
+		}
 		else if (isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED)
+		{
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
+			if (m_rev2.m_CommitHash.IsEmpty())
+				CTGitPath(g_Git.CombinePath(fentry->GetGitPathString())).Delete(useRecycleBin, true);
+		}
 		else
+		{
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitPathString()));
+			if (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED && m_rev1.m_CommitHash.IsEmpty())
+				CTGitPath(g_Git.CombinePath(fentry->GetGitOldPathString())).Delete(useRecycleBin, true);
+		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
