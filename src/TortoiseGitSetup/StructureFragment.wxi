@@ -7,7 +7,7 @@
 	<?if $(var.Platform) = "x86" ?>
 	<?define cf="CommonFilesFolder" ?>
 	<?endif ?>
-	<?if $(var.Platform) = "x64" ?>
+	<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 	<?define cf="CommonFiles64Folder" ?>
 	<?endif ?>
 <!--
@@ -26,6 +26,10 @@
 				<?if $(var.Platform) = "x64" ?>
 				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-x64.msm" DiskId="1" />
 				<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
+				<?endif ?>
+
+				<?if $(var.Platform) = "ARM64" ?>
+				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-arm64.msm" DiskId="1" />
 				<?endif ?>
 
 				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
@@ -92,7 +96,7 @@
 					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<?endif ?>
-					<?if $(var.Platform) = "x64" ?>
+					<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -296,7 +300,7 @@
 						<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
 						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
+						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes" />
 						<File Id="F__zlib" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
 						<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
@@ -318,10 +322,16 @@
 						<File Id="F__PuttyGenx86" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x86.exe" />
 						<File Id="F__pageantx86" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x86.exe" />
 						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
+						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__notepad2x64" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
+						<?endif ?>
+						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__PuttyGenx64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x64.exe" />
 						<File Id="F__pageantx64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x64.exe" />
+						<?endif ?>
+						<?if $(var.Platform) = "ARM64" ?>
+						<File Id="F__PuttyGenarm64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-arm64.exe" />
+						<File Id="F__pageantarm64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-arm64.exe" />
 						<?endif ?>
 						<File Id="F__askpass" Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
 					</Component>
@@ -381,11 +391,11 @@
 						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
 						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
 						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
+						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
 						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
 						<?endif ?>
-						<?if $(var.Platform) = "x64" AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 						<File Id="F__packagemsix" Name="package.msix" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\package.msix" />
 						<?endif ?>
 					</Component>
@@ -456,6 +466,7 @@
 						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
 					</Component>
 
+					<?if $(var.Platform) = "x86" or $(var.Platform) = "x64" ?>
 					<Component Id="C__ucrt" Guid="$(var.GuidUCRT)" Win64="$(var.Win64YesNo)">
 						<File Id="F__ucrtdll1" Name="api-ms-win-core-console-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-console-l1-1-0.dll" />
 						<File Id="F__ucrtdll2" Name="api-ms-win-core-console-l1-2-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-core-console-l1-2-0.dll" />
@@ -503,6 +514,8 @@
 						<File Id="F__ucrtdll42" Name="api-ms-win-crt-utility-l1-1-0.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\api-ms-win-crt-utility-l1-1-0.dll" />
 						<File Id="F__ucrtdll43" Name="ucrtbase.dll" DiskId="1" Source="$(var.WindowsSdkDir_10)Redist\$(var.Win10SDKVer)\ucrt\DLLs\$(var.PackagePlatforms)\ucrtbase.dll" />
 					</Component>
+					<?endif ?>
+
 					<Component Id="C__crtmfc" Guid="$(var.GuidCRTMFC)" Win64="$(var.Win64YesNo)">
 						<File Id="F__concrt140" Name="concrt140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\concrt140.dll" />
 						<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140.dll" />
@@ -516,11 +529,13 @@
 						<?endif ?>
 						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
 						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
-						<?if $(var.Platform) = "x64" and $(var.PlatformToolsetVersion) >= 142 ?>
+						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") and $(var.PlatformToolsetVersion) >= 142 ?>
 						<File Id="F__vcruntime140_1" Name="vcruntime140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_1.dll" />
 						<?endif ?>
 						<File Id="F__mfc140u" Name="mfc140u.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFC\mfc140u.dll" />
+						<?if $(var.Platform) != "ARM64" ?>
 						<File Id="F__mfcm140u" Name="mfcm140u.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFC\mfcm140u.dll" />
+						<?endif ?>
 						<File Id="F__mfc140chs" Name="mfc140chs.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140chs.dll" />
 						<File Id="F__mfc140cht" Name="mfc140cht.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140cht.dll" />
 						<File Id="F__mfc140deu" Name="mfc140deu.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140deu.dll" />

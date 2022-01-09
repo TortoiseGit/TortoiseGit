@@ -14,8 +14,8 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<DefineConstants>DictionaryENGB=1;DictionaryENUS=1</DefineConstants>
-		<DefineConstants Condition="'$(Configuration)'=='Release'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
-		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
+		<DefineConstants Condition="'$(Configuration)'=='Release' AND '$(Platform)'!='ARM64'">IncludeCrashReportDll=1;$(DefineConstants)</DefineConstants>
+		<DefineConstants Condition="'$(Configuration)'=='Debug' OR '$(Platform)'=='ARM64'">Debug;IncludeCrashReportDll=0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
 	<Import Project="$(VCTargetsPath)\Microsoft.Cpp.common.props" />
 	<Import Project="$(SolutionDir)TortoiseGit.settings.props" />
@@ -44,6 +44,7 @@
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
 		<IntermediateOutputPath Condition="'$(Platform)'=='x86'">..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
 		<IntermediateOutputPath Condition="'$(Platform)'=='x64'">..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='ARM64'">..\..\obj\TortoiseGitSetup\$(Configuration)ARM64\</IntermediateOutputPath>
 	</PropertyGroup>
 	<Import Project="$(WixTargetsPath)" Condition=" '$(WixTargetsPath)' != '' " />
 	<Import Project="$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets" Condition=" '$(WixTargetsPath)' == '' AND Exists('$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets') " />
@@ -75,7 +76,13 @@
 		<Content Include="ProtocolSupport.wxi" />
 	</ItemGroup>
 	<PropertyGroup>
-		<PreBuildEvent Condition="'$(Platform)'=='x64' AND '$(BuildWindows11ContextmenuExtension)'=='1'">"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackage -p ..\..\Release64\bin\package.msix /nv
-"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https://tortoisegit.org/" /q ..\..\Release64\bin\package.msix</PreBuildEvent>
+		<PreBuildEvent Condition="'$(Platform)'=='x64' AND '$(BuildWindows11ContextmenuExtension)'=='1'">
+			"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackage -p ..\..\Release64\bin\package.msix /nv
+			"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https://tortoisegit.org/" /q ..\..\Release64\bin\package.msix
+		</PreBuildEvent>
+		<PreBuildEvent Condition="'$(Platform)'=='ARM64' AND '$(BuildWindows11ContextmenuExtension)'=='1'">
+			"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\MakeAppX.exe" pack /o /d $(ProjectDir)SparsePackageARM64 -p ..\..\ReleaseARM64\bin\package.msix /nv
+			"$(WindowsSdkDir_10)bin\$(Win10SDKVer).0\x64\signtool.exe" sign /fd SHA256 /a /t "http://time.certum.pl/" /d "TortoiseGit" /du "https://tortoisegit.org/" /q ..\..\ReleaseARM64\bin\package.msix
+		</PreBuildEvent>
 	</PropertyGroup>
 </Project>

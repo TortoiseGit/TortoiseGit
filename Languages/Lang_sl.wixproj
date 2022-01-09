@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 	<PropertyGroup>
 		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -34,6 +34,15 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
 		<OutputPath>..\bin\setup\x64\</OutputPath>
 		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM64' ">
+		<OutputPath>bin\$(Configuration)64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64a\</IntermediateOutputPath>
+		<DefineConstants>Debug</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM64' ">
+		<OutputPath>..\bin\setup\ARM64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64a\</IntermediateOutputPath>
 	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />

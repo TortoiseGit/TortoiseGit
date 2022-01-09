@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019 - TortoiseGit
+// Copyright (C) 2013-2019, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -162,12 +162,14 @@ bool CVersioncheckParser::GetTortoiseGitIsHotfix()
 	return m_versioncheckfile.GetBoolValue(L"tortoisegit", L"hotfix", false);
 }
 
-static inline CString x86x64()
+static inline CString architecture()
 {
-#if WIN64
-	return L"64";
+#if _M_ARM64
+	return L"arm64";
+#elif WIN64
+	return L"64bit";
 #else
-	return L"32";
+	return L"32bit";
 #endif
 }
 
@@ -176,8 +178,9 @@ CString CVersioncheckParser::GetTortoiseGitMainfilename()
 	CString mainfilenametemplate = GetStringValue(L"tortoisegit", L"mainfilename");
 	if (mainfilenametemplate.IsEmpty())
 		mainfilenametemplate = L"TortoiseGit-%1!s!-%2!s!bit.msi";
+	mainfilenametemplate.Replace(L"%2!s!bit", L"%2!s!");
 	CString mainfilename;
-	mainfilename.FormatMessage(mainfilenametemplate, static_cast<LPCWSTR>(m_version.version_for_filename), static_cast<LPCWSTR>(x86x64()));
+	mainfilename.FormatMessage(mainfilenametemplate, static_cast<LPCWSTR>(m_version.version_for_filename), static_cast<LPCWSTR>(architecture()));
 	return mainfilename;
 }
 
@@ -186,6 +189,7 @@ CString CVersioncheckParser::GetTortoiseGitLanguagepackFilenameTemplate()
 	CString languagepackfilenametemplate = GetStringValue(L"tortoisegit", L"languagepackfilename");
 	if (languagepackfilenametemplate.IsEmpty())
 		languagepackfilenametemplate = L"TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi";
+	languagepackfilenametemplate.Replace(L"%2!s!bit", L"%2!s!");
 	return languagepackfilenametemplate;
 }
 
@@ -219,7 +223,7 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 			pack.m_LangName += L')';
 		}
 
-		pack.m_filename.FormatMessage(languagepackfilenametemplate, static_cast<LPCWSTR>(m_version.version_for_filename), static_cast<LPCWSTR>(x86x64()), static_cast<LPCWSTR>(pack.m_LangCode), pack.m_LocaleID);
+		pack.m_filename.FormatMessage(languagepackfilenametemplate, static_cast<LPCWSTR>(m_version.version_for_filename), static_cast<LPCWSTR>(architecture()), static_cast<LPCWSTR>(pack.m_LangCode), pack.m_LocaleID);
 
 		vec.push_back(pack);
 	}

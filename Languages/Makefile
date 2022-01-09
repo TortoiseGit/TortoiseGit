@@ -7,6 +7,9 @@
 !ifndef outdir
 !ERROR The outdir variable has to be set!
 !endif
+!ifndef exedir
+!ERROR The exedir variable has to be set!
+!endif
 !ifndef ISO
 !ERROR The ISO variable has to be set!
 !endif
@@ -14,7 +17,7 @@
 !ERROR The LANGID variable has to be set!
 !endif
 
-RESTEXT		= "$(outdir)\ResText.exe"
+RESTEXT		= "$(exedir)\ResText.exe"
 APPLY		= apply
 LANGDLLS	=	"$(outdir)\TortoiseProc$(LANGID).dll" \
 				"$(outdir)\TortoiseMerge$(LANGID).dll" \

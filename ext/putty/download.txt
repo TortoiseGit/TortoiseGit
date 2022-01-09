@@ -2,5 +2,7 @@
 ; Always make sure the signatures are verified before changing this file!
 https://the.earth.li/~sgtatham/putty/0.78/w32/pageant.exe	pageant-x86.exe	f26749f8e2835fb875241cdc8fddc708016062256435ef42689a2a28465ecdf7
 https://the.earth.li/~sgtatham/putty/0.78/w64/pageant.exe	pageant-x64.exe	58d070cf471435a1c4d34085048c8306d986ae660da8bae27d863f10d0474d64
+https://the.earth.li/~sgtatham/putty/0.78/wa64/pageant.exe	pageant-arm64.exe	4951e1d3315d40e05047983ead81a298d5380f3b6b41a02184142915c3eca1fb
 https://the.earth.li/~sgtatham/putty/0.78/w32/puttygen.exe	puttygen-x86.exe	7640d580f4bad2a24ad19ff674ea318e09fe91a096ee10f86ff91823feaa1f2a
 https://the.earth.li/~sgtatham/putty/0.78/w64/puttygen.exe	puttygen-x64.exe	2339389cd0ab813d97300b8bb2f5757f82a18e5e1bb112c698d87ce6fcce7277
+https://the.earth.li/~sgtatham/putty/0.78/wa64/puttygen.exe	puttygen-arm64.exe	6138824859fc7abdc87c15db24e8619fa3191a3c37341e69f6a6a0ed65bf44e8

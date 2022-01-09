@@ -35,6 +35,15 @@
 		<OutputPath>..\bin\setup\x64\</OutputPath>
 		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
 	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|ARM64' ">
+		<OutputPath>bin\$(Configuration)64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64a\</IntermediateOutputPath>
+		<DefineConstants>Debug</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|ARM64' ">
+		<OutputPath>..\bin\setup\ARM64\</OutputPath>
+		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64a\</IntermediateOutputPath>
+	</PropertyGroup>
 	<ItemGroup>
 		<Compile Include="LanguagePack.wxs" />
 		<Compile Include="WixUI_LanguagePacks.wxs" />

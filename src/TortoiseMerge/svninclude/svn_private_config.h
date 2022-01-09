@@ -1,4 +1,4 @@
-/*
+﻿/*
  * svn_private_config.hw : Template for svn_private_config.h on Win32.
  *
  * ====================================================================
@@ -39,8 +39,9 @@
 #define SVN_BUILD_TARGET "ia64-microsoft-windows"
 #elif defined( _M_IX86)
 #define SVN_BUILD_TARGET "x86-microsoft-windows"
-#else
-#error Unsupported build target.
+#elif defined(_M_ARM64)
+#define SVN_BUILD_TARGET "arm64-microsoft-windows"
+#else #error Unsupported build target.
 #endif
 
 /* The minimal version of Berkeley DB we want */

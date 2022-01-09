@@ -20,7 +20,14 @@ using std::min;
 
 #include <windows.h>
 #include <Commdlg.h>
+#if (defined(_M_IX86) || defined(_M_X64))
 #include <emmintrin.h>
+#elif defined(_M_ARM64)
+//#include ".\sse2neon\emmintrin.h"
+#elif
+/#   error Unsupported architecture
+#endif
+
 
 #define COMMITMONITOR_FINDMSGPREV		(WM_APP+1)
 #define COMMITMONITOR_FINDMSGNEXT		(WM_APP+2)

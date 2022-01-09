@@ -28,6 +28,10 @@ First, you need to install the compiler package:
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
    * optional: GoogleTestAdapter (if you want to run the tests from within VS)
    * optional: CodeSigning certificate (for Windows 11 start menu extension)
+   * For building ARM64 binaries (optional, also requires WiX >= 3.14):
+     * VC++ 2022 v143 toolset ARM64 (newest)
+     * Visual C++ ATL-support ARM64 (newest)
+     * Visual C++ MFC support ARM64 (newest)
 
 Next you might need to install some utilities/programs:
 *  If you want to build the MSI installer you need WiX 3.11 (http://wixtoolset.org/releases/)

@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -33,14 +34,14 @@
 
 CRecordProfileEvent::CRecordProfileEvent (CProfilingRecord* aRecord)
 	: record (aRecord)
-	, start (__rdtsc())
+	, start(ReadTimeStampCounter())
 {
 }
 
 CRecordProfileEvent::~CRecordProfileEvent()
 {
 	if (record)
-		record->Add (__rdtsc() - start);
+		record->Add(ReadTimeStampCounter() - start);
 }
 
 #endif

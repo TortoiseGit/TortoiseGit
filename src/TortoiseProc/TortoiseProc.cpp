@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -98,7 +98,7 @@ HWND GetExplorerHWND()
 	return theApp.GetExplorerHWND();
 }
 
-#if ENABLE_CRASHHANLDER
+#if ENABLE_CRASHHANLDER && !_M_ARM64
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif
 

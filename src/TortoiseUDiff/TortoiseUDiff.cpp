@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2021 - TortoiseGit
+// Copyright (C) 2011-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2010-2012, 2014-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ int APIENTRY wWinMain(HINSTANCE hInstance,
 	MSG msg;
 	HACCEL hAccelTable;
 
-#if ENABLE_CRASHHANLDER
+#if ENABLE_CRASHHANLDER && !_M_ARM64
 	CCrashReportTGit crasher(L"TortoiseGitUDiff " TEXT(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 #endif

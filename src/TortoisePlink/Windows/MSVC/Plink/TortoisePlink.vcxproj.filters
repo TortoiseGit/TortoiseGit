@@ -720,6 +720,18 @@
     <ClCompile Include="..\..\..\stubs\null-opener.c">
       <Filter>Source Files\stubs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\crypto\sha256-neon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\crypto\sha512-neon.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\crypto\aes-neon.c">
+      <Filter>Source Files\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\crypto\sha1-neon.c">
+      <Filter>Source Files\crypto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\logindialog.h">

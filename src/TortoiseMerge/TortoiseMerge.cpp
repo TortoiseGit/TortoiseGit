@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ CTortoiseMergeApp::~CTortoiseMergeApp()
 // The one and only CTortoiseMergeApp object
 CTortoiseMergeApp theApp;
 CString sOrigCWD;
-#if ENABLE_CRASHHANLDER
+#if ENABLE_CRASHHANLDER && !_M_ARM64
 CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif
 

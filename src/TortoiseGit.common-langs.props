@@ -4,6 +4,7 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\bin\$(Configuration)\Languages\</OutDir>
     <OutDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\bin\$(Configuration)64\Languages\</OutDir>
+    <OutDir Condition="'$(Platform)'=='ARM64'">$(SolutionDir)..\bin\$(Configuration)ARM64\Languages\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -17,7 +18,7 @@
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <NoEntryPoint>true</NoEntryPoint>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <RandomizedBaseAddress Condition="'$(Platform)'!='ARM64'">false</RandomizedBaseAddress>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>

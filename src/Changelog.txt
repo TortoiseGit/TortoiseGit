@@ -29,6 +29,7 @@ Released: unreleased
  * Improved parsing Git URLs/branch names from clipboard for push/pull/fetch dialgos
  * CommitDlg: Allow to see diff to previous commit also for merge commits
  * Add special environment variable "TGIT_INITIATED_CALL" to indicate that a git.exe call was issued from TortoiseGit
+ * Add initial support for ARM64 (with separate MSI installer)
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,7 +56,7 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 {
 	SetDllDirectory(L"");
 	SetTaskIDPerUUID();
-#if ENABLE_CRASHHANLDER
+#if ENABLE_CRASHHANLDER && !_M_ARM64
 	CCrashReportTGit crasher(L"TortoiseGitBlame " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 #endif

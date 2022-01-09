@@ -63,7 +63,7 @@
 		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
 		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
 		<CustomAction Id="RestartExplorer" BinaryKey="CustomActionsDLL" DllEntry="RestartExplorer" />
-		<?if $(var.Platform) = "x64" AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+		<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 		<!-- only needed for Windows 11; there is no x86 version -->
 		<Binary Id="CustomActionsDLL11" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions11.dll" />
 		<CustomAction Id="RegisterSparsePackage" BinaryKey="CustomActionsDLL11" DllEntry="RegisterSparsePackage"/>
@@ -75,7 +75,7 @@
 		<CustomAction Id="ERRCA_UIANDADVERTISED" Error="[VSDUIANDADVERTISED]" />
 
 		<!-- Figure out where a previous installation was, if any ................................................................ -->
-		<?if $(var.Platform) = "x64" ?>
+		<?if $(var.Platform) = "x64" OR $(var.Platform) = "ARM64" ?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFiles64Folder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR" Secure="yes">
 			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
@@ -91,7 +91,7 @@
 			<RegistrySearch Key="SOFTWARE\[Manufacturer]" Root="HKLM" Type="raw" Id="LANGUAGEFOLDER_REGSEARCH" Name="LanguageFolderPath" Win64="$(var.Win64YesNo)"/>
 		</Property>
 
-		<?if $(var.Platform) = "x64" AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+		<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 		<!-- only needed for Windows 11; there is no x86 version -->
 		<!-- msiexec does not have a manifest, so it always reports the version of system dlls as
 			 for Win7 (6.3.x.x). So we check for 6.3 but use the build number to actually check
@@ -110,7 +110,9 @@
 		<?include FeaturesFragment.wxi?>
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
+		<?if $(var.Platform) != "ARM64" ?>
 		<?include Win7LibraryAndExplorerToolbarActions.wxi?>
+		<?endif ?>
 		<?include ProtocolSupport.wxi?>
 		<?include TortoiseUDiff.wxi?>
 
@@ -128,7 +130,7 @@
 			<LaunchConditions After="AppSearch" />
 			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
 			<Custom Action="KillCache" After="ValidateProductID">Installed OR REMOVE OR CLOSETGITCACHE</Custom>
-			<?if $(var.Platform) = "x64" AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+			<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 			<!-- only needed for Windows 11; there is no x86 version -->
 			<Custom Action="RegisterSparsePackage" After="InstallFinalize">NOT (REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>
 			<Custom Action="UnregisterSparsePackage" Before="RemoveFiles">(REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>

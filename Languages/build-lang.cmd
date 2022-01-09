@@ -1,11 +1,18 @@
 @echo off
 if [%1] == [] goto missingparam
+if [%2] == [] goto missingparam
+
 rem strip quotes
 set OUTDIR=%~1
 rem strip trailing baskslash
 if %OUTDIR:~-1%==\ set OUTDIR=%OUTDIR:~0,-1%
+set EXEDIR=%~2
+rem strip trailing baskslash
+if %EXEDIR:~-1%==\ set EXEDIR=%EXEDIR:~0,-1%
+
 set CLEAN=
 if [%2]==[clean] set CLEAN="clean"
+if [%3]==[clean] set CLEAN="clean"
 
 call :nmake 0130 oc
 call :nmake 1026 bg
@@ -45,7 +52,7 @@ call :nmake 3098 sr@Cyrl
 goto :eof
 
 :nmake
-nmake /nologo /f Makefile %CLEAN% "outdir=%OUTDIR%" LANGID=%1 ISO=%2
+nmake /nologo /f Makefile %CLEAN% "outdir=%OUTDIR%" "exedir=%EXEDIR%" LANGID=%1 ISO=%2
 goto :eof
 
 :missingparam

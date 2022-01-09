@@ -38,14 +38,18 @@
 
 		<ComponentRef Id="C__approveshellcomponents" />
 
+		<?if $(var.Platform) != "ARM64" ?>
 		<ComponentRef Id="C__win7library" />
+		<?endif ?>
 
 		<ComponentRef Id="C__ProgramMenuFolder" />
 		<ComponentRef Id="C__DiffScripts" />
 		<ComponentRef Id="C_LanguagePacks" />
 		<ComponentRef Id="C__touch" />
 
+		<?if $(var.Platform) != "ARM64" ?>
 		<ComponentRef Id="C__ucrt" />
+		<?endif ?>
 		<ComponentRef Id="C__crtmfc" />
 
 		<Feature Id="F_OVL" Level="1" Title="Tortoise Overlay handler" Description="The overlay handler for all Tortoise clients" TypicalDefault="install" Display="hidden">

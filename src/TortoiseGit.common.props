@@ -7,6 +7,8 @@
     <OutDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\bin\$(Configuration)\bin\</OutDir>
     <IntDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)64\</IntDir>
     <OutDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\bin\$(Configuration)64\bin\</OutDir>
+    <IntDir Condition="'$(Platform)'=='ARM64'">$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)ARM64\</IntDir>
+    <OutDir Condition="'$(Platform)'=='ARM64'">$(SolutionDir)..\bin\$(Configuration)ARM64\bin\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -18,6 +20,7 @@
       <PreprocessorDefinitions>_WINDOWS;WINDOWS;GIT_DEPRECATE_HARD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">_WIN64;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">_WIN64;WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level4</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
