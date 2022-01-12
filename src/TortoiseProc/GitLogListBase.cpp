@@ -2403,7 +2403,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if (bAddSeparator)
 				popup.AppendMenu(MF_SEPARATOR, NULL);
 
-			if ((m_ContextMenuMask & GetContextMenuBit(ID_TOGGLE_ROLLUP)) && (m_ShowFilter & FILTERSHOW_MERGEPOINTS) && !m_LogFilter->IsFilterActive())
+			if ((m_ContextMenuMask & GetContextMenuBit(ID_TOGGLE_ROLLUP)) && (m_ShowFilter & FILTERSHOW_MERGEPOINTS) && !m_LogFilter->IsFilterActive() && !pSelLogEntry->m_CommitHash.IsEmpty())
 			{
 				popup.AppendMenuIcon(ID_TOGGLE_ROLLUP, pSelLogEntry->m_RolledUp ? IDS_LOG_POPUP_EXPAND : IDS_LOG_POPUP_COLLAPSE);
 				popup.AppendMenu(MF_SEPARATOR, NULL);
