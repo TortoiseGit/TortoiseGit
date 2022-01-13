@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1039,6 +1039,8 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 
 	if (mask & CGit::LOG_INFO_FULL_HISTORY)
 		param += " --full-history";
+	else
+		param += " --parents"; // cf. issue #3728
 
 	if(mask& CGit::LOG_INFO_FOLLOW)
 		param += L" --follow";
@@ -1096,7 +1098,7 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if (path)
 		file.Format(L" \"%s\"", static_cast<LPCWSTR>(path->GetGitPathString()));
 	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
-	cmd.Format(L"-z%s %s --parents --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
+	cmd.Format(L"-z%s %s --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
 
 	return cmd;
 }
