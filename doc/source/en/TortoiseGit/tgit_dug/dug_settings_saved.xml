@@ -98,6 +98,9 @@
 				<para>
 					From here you can view the log file content, and also clear it.
 				</para>
+				<para>
+					The log file is located at <filename>%LOCALAPPDATA%\TortoiseGit\logfile.txt</filename>.
+				</para>
 			</listitem>
 		</varlistentry>
 	</variablelist>
