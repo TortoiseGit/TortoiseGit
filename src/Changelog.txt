@@ -61,6 +61,7 @@ Released: unreleased
  * Fixed issue #3708: Log window becomes unresponsive when selecting commit with large file list
  * Fixed issue #3833: LogDlg: Access violation in gitdll when multi-pack-index exists
  * Fixed issue #3846: ScanFile hangs commit dialog (fixed regex backtracking)
+ * Fixed issue #3848: "Git Sync..." > "Compare tags" does not properly clear state from previous actions
 
 = Release 2.12.0 =
 Released: 2021-03-31

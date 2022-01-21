@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -207,7 +207,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	if (CurrentEntry == 6)
 	{
 		SwitchToRun();
-		m_ctrlTabCtrl.ShowTab(IDC_LOG - 1, false);
+		m_ctrlTabCtrl.ShowTab(IDC_CMD_LOG - 1, false);
 		m_ctrlTabCtrl.ShowTab(IDC_REFLIST - 1, false);
 		m_ctrlTabCtrl.ShowTab(IDC_OUT_LOGLIST - 1, false);
 		m_ctrlTabCtrl.ShowTab(IDC_OUT_CHANGELIST - 1, false);
@@ -215,6 +215,9 @@ void CSyncDlg::OnBnClickedButtonPull()
 		m_ctrlTabCtrl.ShowTab(IDC_IN_CHANGELIST - 1, false);
 		m_ctrlTabCtrl.ShowTab(IDC_IN_CONFLICT - 1, false);
 		m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, true);
+
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_INDETERMINATE);
 
 		CSysProgressDlg sysProgressDlg;
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -226,7 +229,19 @@ void CSyncDlg::OnBnClickedButtonPull()
 		auto ret = m_tagCompareList.Fill(m_strURL, err);
 		sysProgressDlg.Stop();
 		if (ret)
+		{
+			if (m_pTaskbarList)
+			{
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+				m_pTaskbarList->SetProgressValue(m_hWnd, 100, 100);
+			}
 			MessageBox(err, L"TortoiseGit", MB_ICONERROR);
+		}
+		else
+		{
+			if (m_pTaskbarList)
+				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+		}
 
 		BringWindowToTop();
 		SwitchToInput();
