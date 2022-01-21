@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include <comutil.h>
 #include <winrt/base.h>
 #include <wrl/client.h>
+#include <windowsx.h>
 #include "ShellExt.h"
 #include "ItemIDList.h"
 #include "PreserveChdir.h"
@@ -2330,6 +2331,7 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState\n");
 	*pCmdState = ECS_ENABLED;
+	Microsoft::WRL::ComPtr<IShellItemArray> ownItemArray;
 	if (m_site)
 	{
 		Microsoft::WRL::ComPtr<IOleWindow> oleWindow;
@@ -2338,7 +2340,7 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 		{
 			// We don't want to show the menu on the classic context menu.
 			// The classic menu provides an IOleWindow, but the main context
-			// menu of the left treeview in explorer does too.
+			// menu in Win11 does not, except on the left tree view.
 			// So we check the window class name: if it's "NamespaceTreeControl",
 			// then we're dealing with the main context menu of the tree view.
 			// If it's not, then we're dealing with the classic context menu
@@ -2352,6 +2354,52 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState - hidden\n");
 				*pCmdState = ECS_HIDDEN;
 				return S_OK;
+			}
+			else
+			{
+				// tree view
+				if (!psiItemArray)
+				{
+					// the shell disables dpi awareness for extensions, so enable them explicitly
+					auto context = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+					Microsoft::WRL::ComPtr<INameSpaceTreeControl> nameSpaceTreeCtrl;
+					oleWindow.As(&nameSpaceTreeCtrl);
+					if (nameSpaceTreeCtrl)
+					{
+						// we do a hit test on the tree view to get the right-clicked item.
+						// however this only works if the menu shows up due to a right-click.
+						// if the menu is shown because of a key press (right windows key),
+						// then this will get the wrong item if the mouse pointer is somewhere
+						// over the tree view while the key is clicked!
+						// if the mouse pointer is NOT over the tree view when the menu is brought up
+						// via keyboard, then this works fine.
+						auto msgPos = GetMessagePos();
+						POINT msgPoint{};
+						msgPoint.x = GET_X_LPARAM(msgPos);
+						msgPoint.y = GET_Y_LPARAM(msgPos);
+						POINT pt = msgPoint;
+						ScreenToClient(hWnd, &pt);
+						Microsoft::WRL::ComPtr<IShellItem> shellItem;
+
+						if (!psiItemArray)
+						{
+							nameSpaceTreeCtrl->HitTest(&pt, &shellItem);
+							if (shellItem)
+								SHCreateShellItemArrayFromShellItem(shellItem.Get(), IID_IShellItemArray, &ownItemArray);
+							else
+								nameSpaceTreeCtrl->GetSelectedItems(&ownItemArray);
+						}
+					}
+					SetThreadDpiAwarenessContext(context);
+					if (!ownItemArray)
+					{
+						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState - hidden\n");
+						*pCmdState = ECS_HIDDEN;
+						return S_OK;
+					}
+					else
+						psiItemArray = ownItemArray.Get();
+				}
 			}
 		}
 	}
