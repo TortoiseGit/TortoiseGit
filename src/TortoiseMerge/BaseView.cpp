@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2021 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2021 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011-2012, 2017-2022 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -3071,7 +3071,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			POINT ptCaretPos = GetCaretPosition();
 			ptCaretPos.y -= GetScreenLines();
 			ptCaretPos.y = max(ptCaretPos.y, 0l);
-			ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos);
+			ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos, false);
 			SetCaretPosition(ptCaretPos);
 			OnCaretMove(MOVELEFT, bShift);
 			ShowDiffLines(ptCaretPos.y);
@@ -3083,7 +3083,7 @@ void CBaseView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			ptCaretPos.y += GetScreenLines();
 			if (ptCaretPos.y >= GetLineCount())
 				ptCaretPos.y = GetLineCount()-1;
-			ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos);
+			ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos, false);
 			SetCaretPosition(ptCaretPos);
 			OnCaretMove(MOVERIGHT, bShift);
 			ShowDiffLines(ptCaretPos.y);
@@ -3228,7 +3228,7 @@ void CBaseView::OnLButtonDown(UINT nFlags, CPoint point)
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
 		int xpos2 = CalcColFromPoint(point.x, nClickedLine);
-		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, xpos2);
+		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, xpos2, false);
 		SetCaretAndGoalPosition(ptCaretPos);
 
 		if (nFlags & MK_SHIFT)
@@ -3333,7 +3333,7 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	{
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
-		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth(), false);
 		SetCaretPosition(ptCaretPos);
 		ClearSelection();
 
@@ -3431,7 +3431,7 @@ void CBaseView::OnLButtonTrippleClick( UINT /*nFlags*/, CPoint point )
 	}
 	POINT ptCaretPos;
 	ptCaretPos.y = nClickedLine;
-	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth(), false);
 	SetCaretAndGoalPosition(ptCaretPos);
 	m_sMarkedWord = m_sPreviousMarkedWord;     // recall previous Marked word
 	if (m_pwndLeft)
@@ -3485,7 +3485,7 @@ void CBaseView::OnMouseMove(UINT nFlags, CPoint point)
 		if (saveMouseLine < 0)
 			return;
 		int col = CalcColFromPoint(point.x, saveMouseLine);
-		int charIndex = CalculateCharIndex(saveMouseLine, col);
+		int charIndex = CalculateCharIndex(saveMouseLine, col, true);
 		if (HasSelection() &&
 			((nMouseLine >= m_nTopLine)&&(nMouseLine < GetLineCount())))
 		{
@@ -3549,7 +3549,7 @@ void CBaseView::OnTimer(UINT_PTR nIDEvent)
 		{
 			int saveMouseLine = nMouseLine >= 0 ? nMouseLine : 0;
 			saveMouseLine = saveMouseLine < GetLineCount() ? saveMouseLine : GetLineCount() - 1;
-			int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth());
+			int charIndex = CalculateCharIndex(saveMouseLine, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth(), false);
 			if (nMouseLine < m_nTopLine)
 			{
 				ScrollAllToLine(m_nTopLine-1, TRUE);
@@ -3745,11 +3745,11 @@ int CBaseView::CalculateActualOffset(const POINT& point)
 	return CountExpandedChars(sLine, min(nCharIndex, nLineLength));
 }
 
-int CBaseView::CalculateCharIndex(int nLineIndex, int nActualOffset)
+int CBaseView::CalculateCharIndex(int nLineIndex, int nActualOffset, bool allowEOL)
 {
 	int nLength = GetLineLength(nLineIndex);
 	int nSubLine = GetSubLineOffset(nLineIndex);
-	if (nSubLine>=0)
+	if (!allowEOL && nSubLine >= 0)
 	{
 		int nViewLine = GetViewLineForScreen(nLineIndex);
 		if (nViewLine >= 0 && nViewLine < static_cast<int>(m_ScreenedViewLine.size()))
@@ -4211,7 +4211,7 @@ void CBaseView::OnCaretDown()
 		}
 	}
 	ptCaretPos.y = nNextLine;
-	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos);
+	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos, false);
 	SetCaretPosition(ptCaretPos);
 	OnCaretMove(MOVELEFT);
 	ShowDiffLines(ptCaretPos.y);
@@ -4317,7 +4317,7 @@ void CBaseView::OnCaretUp()
 		}
 	}
 	ptCaretPos.y = nPrevLine;
-	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos);
+	ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nCaretGoalPos, false);
 	SetCaretPosition(ptCaretPos);
 	OnCaretMove(MOVELEFT);
 	ShowDiffLines(ptCaretPos.y);

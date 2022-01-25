@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2022 - TortoiseGit
 // Copyright (C) 2003-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -413,7 +413,7 @@ protected:  // methods
 	static bool		IsBottomViewGood() {return IsViewGood(m_pwndBottom);}
 
 	int				CalculateActualOffset(const POINT& point);
-	int				CalculateCharIndex(int nLineIndex, int nActualOffset);
+	int				CalculateCharIndex(int nLineIndex, int nActualOffset, bool allowEOL);
 	int				CalcColFromPoint(int xpos, int lineIndex);
 	POINT			TextToClient(const POINT& point);
 	void			DrawTextLine(CDC * pDC, const CRect &rc, int nLineIndex, POINT& coords);
