@@ -1,4 +1,4 @@
-This article documents some of the main steps for releasing a new version.
+﻿This article documents some of the main steps for releasing a new version.
 
 * Upgrade version number in (for preview releases don't commit):
   * doc/doc.build.include
@@ -10,10 +10,10 @@ This article documents some of the main steps for releasing a new version.
 
 * Sync Transifex translations (for stable releases)
 * Check translations for:
-  * fix ?
-  * fix ?
-  * fix ?
-  * fix �
+  * fix ⇥
+  * fix ⏎
+  * fix ↩
+  * fix »
   * fix <span
 
 * Create new DrDump.com version (for stable releases)
