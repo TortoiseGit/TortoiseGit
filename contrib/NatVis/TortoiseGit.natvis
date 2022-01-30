@@ -64,4 +64,26 @@
       <Item Name="Checked">m_Checked</Item>
     </Expand>
   </Type>
+
+  <Type Name="HKEY__">
+    <DisplayString Condition="(( HKEY ) (ULONG_PTR)((LONG)0x80000000) )==this">HKCR</DisplayString>
+    <DisplayString Condition="(( HKEY ) (ULONG_PTR)((LONG)0x80000001) )==this">HKCU</DisplayString>
+    <DisplayString Condition="(( HKEY ) (ULONG_PTR)((LONG)0x80000002) )==this">HKLM</DisplayString>
+    <DisplayString Condition="(( HKEY ) (ULONG_PTR)((LONG)0x80000003) )==this">HKU</DisplayString>
+    <DisplayString>{(INT_PTR)this,h}</DisplayString>
+  </Type>
+  <Type Name="CRegTypedBase&lt;*,*&gt;">
+    <DisplayString Condition="m_read">{{Base={(HKEY__*)m_base,na} Path={m_path} Key={m_key} Value={m_value}}}</DisplayString>
+    <DisplayString Condition="m_read &amp;&amp; !m_exists">{{Base={(HKEY__*)m_base,na} Path={m_path} Key={m_key} Default value={m_defaultvalue}}}</DisplayString>
+    <DisplayString>{{Base={(HKEY__*)m_base,na} Path={m_path} Key={m_key}}}</DisplayString>
+    <Expand>
+      <Item Name="HKey">m_base,na</Item>
+      <Item Name="Path">m_path</Item>
+      <Item Name="Key">m_key</Item>
+      <Item Name="Value" Condition="m_read">m_value</Item>
+      <Item Name="Default value" Condition="!m_exists">m_defaultvalue</Item>
+      <Item Name="Read">m_read</Item>
+      <Item Name="Exists">m_exists</Item>
+    </Expand>
+  </Type>
 </AutoVisualizer>
