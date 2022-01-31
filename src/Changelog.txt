@@ -63,6 +63,7 @@ Released: unreleased
  * Fixed issue #3846: ScanFile hangs commit dialog (fixed regex backtracking)
  * Fixed issue #3848: "Git Sync..." > "Compare tags" does not properly clear state from previous actions
  * Fixed issue #3849: TortoiseGitMerge cannot drag mouse to select last character of wrapped line
+ * Fixed issue #3854: Ampersand in branch label underlines next character
 
 = Release 2.12.0 =
 Released: 2021-03-31

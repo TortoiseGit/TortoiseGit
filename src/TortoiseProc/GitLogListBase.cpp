@@ -692,7 +692,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, const CRe
 				opts.dwSize = sizeof(opts);
 				opts.crText = GetSysColor(COLOR_WINDOWTEXT);
 				opts.dwFlags = DTT_TEXTCOLOR;
-				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
+				DrawThemeTextEx(hTheme, hdc, LVP_LISTITEM, txtState, shortname, -1, textpos | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER, &textRect, &opts);
 			}
 			else
 			{
@@ -701,13 +701,13 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, const CRe
 				{
 					COLORREF clrNew = ::GetSysColor(COLOR_HIGHLIGHTTEXT);
 					COLORREF clrOld = ::SetTextColor(hdc,clrNew);
-					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc,clrOld);
 				}
 				else
 				{
 					COLORREF clrOld = ::SetTextColor(hdc, CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : GetSysColor(COLOR_WINDOWTEXT));
-					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_SINGLELINE | DT_VCENTER);
+					::DrawText(hdc, shortname, shortname.GetLength(), &textRect, textpos | DT_NOPREFIX | DT_SINGLELINE | DT_VCENTER);
 					::SetTextColor(hdc, clrOld);
 				}
 			}
