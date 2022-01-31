@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2021 the TortoiseGit team
+# Copyright (C) 2008-2022 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -11,7 +11,7 @@
 # LordDaimos <karl.sjogren@gmail.com>, 2011
 # Kim Svensson <ks6g10@soton.ac.uk>, 2011
 # Kim Svensson <ks@linux.com>, 2011
-# Kristoffer Malmström <mitod1@gmail.com>, 2016
+# 3a10d72403233f483718c552de58fc40_a94374c <bcf17b6a34e8dfadf7625d5255d7eb77_38249>, 2016
 # LordDaimos <karl.sjogren@gmail.com>, 2011
 # Magnus Österlund, 2013
 # Pär <intmurr@gmail.com>, 2013
@@ -19,14 +19,14 @@
 #   <pojk3n@gmail.com>, 2011
 # xt00r <q@xnq.me>, 2012
 # Stig Nordlander <stig@nordlander.eu>, 2013
-# Sven Strickroth <sstrickroth@googlemail.com>, 2013,2015,2020
+# Sven Strickroth <sstrickroth@googlemail.com>, 2013,2015,2020-2021
 # xt00r <q@xnq.me>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-02-26 18:18+0000\n"
+"PO-Revision-Date: 2022-01-03 14:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/lznuaa/tortoisegit/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -720,9 +720,10 @@ msgstr "&Font för loggmeddelanden:"
 msgid "&Font:"
 msgstr "&Font:"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id
-#. 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
+#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
+#. Control id 1521)
 msgid "&Force"
 msgstr "&Tvinga"
 
@@ -744,7 +745,7 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Git"
-msgstr ""
+msgstr "&Git"
 
 #. Resource IDs: (Dialog IDD_SVNDCOMMITTYPE: Control id 2153)
 msgid "&Git Style Commit (--rmdir)"
@@ -1236,6 +1237,10 @@ msgstr "&Squasha"
 msgid "&Squash ALL"
 msgstr "&Squasha ALLA"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Staging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
 msgstr "&Starta"
@@ -1340,6 +1345,10 @@ msgstr "&Okända enheter"
 msgid "&Unlock"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Unstaging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "&Upp"
@@ -1395,13 +1404,13 @@ msgstr "&Ja"
 msgid "&add \"cherry picked from\""
 msgstr "&lägg till \"cherry picked från\""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
+msgid "&force"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
 msgstr "&Ignorera ändrat tomrum"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "&known changes"
-msgstr "&kända ändringar"
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
 msgid "(TortoiseGit default)"
@@ -2129,7 +2138,7 @@ msgstr "Automatisk CrLf konvertering"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2155,7 +2164,7 @@ msgstr "Automatisk ifyllning föreslår ord (vanligtvis klass- eller medlemsnamn
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "AutoCrLf:"
-msgstr ""
+msgstr "AutoCrLf:"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2915,6 +2924,10 @@ msgstr "Stäng aktivt fönster och fråga om spara dokument"
 msgid "Collapse"
 msgstr "Fäll ihop"
 
+#. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
+msgid "Collapse revisions"
+msgstr ""
+
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
 "Collapse unchanged sections\n"
@@ -2933,15 +2946,15 @@ msgstr "Färger"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
 msgid "Colors 1"
-msgstr ""
+msgstr "Färger 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
 msgid "Colors 2"
-msgstr ""
+msgstr "Färger 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
 msgid "Colors 3"
-msgstr ""
+msgstr "Färger 3"
 
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
@@ -3221,11 +3234,11 @@ msgstr "Konflikter: %d"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
 msgid "Context Menu"
-msgstr ""
+msgstr "Snabbmeny"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "Context Menu 2"
-msgstr ""
+msgstr "Snabbmeny 2"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
@@ -3584,7 +3597,7 @@ msgstr "Skapar Pull-begäran"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
 msgid "Credential"
-msgstr ""
+msgstr "Inloggningshanterare"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
@@ -3906,15 +3919,15 @@ msgstr "Dialoger"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "Dialogs 1"
-msgstr ""
+msgstr "Dialoger 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
 msgid "Dialogs 2"
-msgstr ""
+msgstr "Dialoger 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "Dialogs 3"
-msgstr ""
+msgstr "Dialoger 3"
 
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
@@ -4658,6 +4671,10 @@ msgstr "Exekverbar (+x)"
 msgid "Exit"
 msgstr "Avsluta"
 
+#. Resource IDs: (IDS_LOG_POPUP_EXPAND)
+msgid "Expand collapsed revisions"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Utforska till"
@@ -5175,10 +5192,6 @@ msgstr "Tvinga en ombasering (rebase) även om nuvarande gren är en ättling ti
 msgid "Force unlock"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
-msgid "Force: May discard"
-msgstr "Tvinga: Kan överge"
-
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
@@ -5260,6 +5273,10 @@ msgstr ""
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
 msgid "Full data"
 msgstr "All information"
+
+#. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
+msgid "Full history"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
@@ -5570,6 +5587,14 @@ msgstr "Dölj menyer för icke versionshanterade sökvägar"
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
 msgstr "Göm Patch<<"
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
+msgid "Hide Staging<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
+msgid "Hide Unstaging<<"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -6212,13 +6237,20 @@ msgstr "Ogiltig valuta. "
 msgid "Invalid revision number!"
 msgstr "Ogiltigt revisionsnummer!"
 
+#. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
+msgid ""
+"Invalid selection.\n"
+"\n"
+"If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
-msgstr ""
+msgstr "Konfiguration av ärendespårning"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ: Control id 283)
 msgid "Issue Tracker Integration"
-msgstr ""
+msgstr "Ärendespårningsintegration"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
@@ -6265,7 +6297,7 @@ msgstr "KOI8-U"
 msgid "Keep"
 msgstr "Behåll"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1126)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS)
 msgid "Keep changelists"
 msgstr "Behåll ändringslistor"
 
@@ -6287,7 +6319,7 @@ msgstr "Koreanska"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
+#. Resource IDs: (IDS_MENULFS)
 msgid "LFS"
 msgstr ""
 
@@ -7574,6 +7606,16 @@ msgstr ""
 msgid "Parent(s)"
 msgstr "Föräld(er/rar)"
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
+#. IDS_PROC_COMMIT_PARTIAL_STAGING)
+msgid "Partial Staging>>"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
+#. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
+msgid "Partial Unstaging>>"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
 msgstr "Lösenord"
@@ -8532,7 +8574,8 @@ msgstr "Återställ"
 #. id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL:
 #. Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog
-#. IDD_SETTINGSUDIFF: Control id 1254)
+#. IDD_SETTINGSUDIFF: Control id 1254, Dialog IDD_SETTINGSWIN11CONTEXTMENU:
+#. Control id 1254)
 msgid "Restore Default"
 msgstr "Återställ till standard"
 
@@ -8686,11 +8729,6 @@ msgstr ""
 msgid "S"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "S&how modified files in working tree"
-msgstr ""
-
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
 msgstr ""
@@ -8774,7 +8812,7 @@ msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "SafeCrLf:"
-msgstr ""
+msgstr "SafeCrLf:"
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9086,8 +9124,8 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
-"Select the behaviour of the progress dialog at the end of the operation."
-msgstr "Välj dialogrutans beteende efter avklarad operation."
+"Select the behavior of the progress dialog at the end of the operation."
+msgstr ""
 
 #. Resource IDs: (57642)
 msgid ""
@@ -9123,7 +9161,8 @@ msgstr "Välj vilken fil du vill spara som\nNotera: Det finns olösta konflikter
 #. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
 #. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
-#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Control id 1067, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1067,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "Markera/Avmarkera &alla"
 
@@ -9456,6 +9495,11 @@ msgstr "Visa historik..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "Show modified files in &working tree"
+msgstr ""
+
 #. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
@@ -9686,6 +9730,20 @@ msgstr "Staplat stapeldiagram"
 #. Resource IDs: (IDS_STATGRAPH_LINESTACKEDBUTTON_TT)
 msgid "Stacked Line Graph"
 msgstr "Staplat linjediagram"
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS
+#. - Menu)
+msgid "Stage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
+#. - Menu)
+msgid "Stage selected &lines"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
+msgid "Staging support (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
@@ -10647,6 +10705,14 @@ msgstr "Till:"
 msgid "Toggle filters"
 msgstr "Växla filter"
 
+#. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
+msgid "Too many files to display."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Top context menu on Windows 11"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
 msgid "TortoiseGit"
@@ -10742,7 +10808,7 @@ msgid ""
 "\n"
 "TortoiseGitBlame.Document\n"
 "TortoiseGitBlame.Document"
-msgstr ""
+msgstr "TortoiseGitBlame\n\nTortoiseGitBlame\n\n\nTortoiseGitBlame.Document\nTortoiseGitBlame.Document"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 153, IDS_APP_TITLE)
 msgid "TortoiseGitIDiff"
@@ -10766,8 +10832,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: visar skillnader mellan bilder för TortoiseSVN\n\nFöljande kommandoradsparametrar är tillgängliga:\n/left:\"sökväg till den vänstra bilden\"\n/lefttitle:\"titel för den vänstra bilden\"\n/right:\"sökväg till den högra bilden\"\n/righttitle:\"titel för den högra bilden\"\n/overlay\t\tslår på överlagrinsläget\n/fit\t\tanpassa bildstorlekarna\n/showinfo\t\tvisa bildinformation"
 
-#. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control
-#. id 130, IDS_APPNAME)
+#. Resource IDs: (1, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id
+#. 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -10964,6 +11030,11 @@ msgstr "Kan inte skriva till %1, filen är markerad för endast läsning eller �
 msgid "Uncheck"
 msgstr "Avmarkera"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid ""
+"Unchecked items are not shown in the top menu but only in the original menu"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
 "Unchecked items will appear in the TortoiseGit submenu, checked items "
@@ -11037,6 +11108,16 @@ msgstr "Olöst konflikt!"
 msgid "Unset tracked branch"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
+#. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+msgid "Unstage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
+#. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+msgid "Unstage selected &lines"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Namnlös"
@@ -11091,28 +11172,8 @@ msgstr "Använd &enkel vy som standard för 2-fils skillnader."
 msgid "Use &other text block"
 msgstr "Använd det &andra textblocket"
 
-#. Resource IDs: (cmdUseMineBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block"
-msgstr "Använd \"mitt\" textblock"
-
-#. Resource IDs: (cmdUseMineThenTheirsBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "Använd först \"mitt\" textblock och sedan \"deras\""
-
-#. Resource IDs: (cmdUseTheirsBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block"
-msgstr "Använd \"deras\" textblock"
-
-#. Resource IDs: (cmdUseTheirsThenMineBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "Använd först \"deras\" textblock och sedan \"mitt\""
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11200,11 +11261,13 @@ msgstr "Använd vänster block"
 msgid "Use left file"
 msgstr "Använd den vänstra filen"
 
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu,
+#. cmdUseTheirsBlock_LabelTitle_RESID)
 msgid "Use left text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. cmdUseTheirsThenMineBlock_LabelTitle_RESID)
 msgid "Use left text block then right"
 msgstr ""
 
@@ -11224,11 +11287,12 @@ msgstr "Använd reguljära uttryck"
 msgid "Use right block"
 msgstr "Använd höger block"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, cmdUseMineBlock_LabelTitle_RESID)
 msgid "Use right text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. cmdUseMineThenTheirsBlock_LabelTitle_RESID)
 msgid "Use right text block then left"
 msgstr ""
 
@@ -11449,9 +11513,18 @@ msgstr "Visa .tgitconfig"
 msgid "View Bars"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
+#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH,
+#. IDS_VIEWPATCH)
 msgid "View Patch"
 msgstr "Visa Patch"
+
+#. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
+msgid "View Patch - HEAD to index"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
+msgid "View Patch - index to working tree"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
 #. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -11498,8 +11571,8 @@ msgid "Waiting for input"
 msgstr "Väntar på inmatning"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
-msgid "Walk Be&haviour"
-msgstr "Listalternativ"
+msgid "Walk Be&havior"
+msgstr ""
 
 #. Resource IDs: (IDS_WARN_WARNING)
 msgid "Warning"
@@ -11585,6 +11658,20 @@ msgstr "När du skriver in en URL så kommer fjärrnamnet automatiskt att sätta
 msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr ""
 
+#. Resource IDs: (IDS_TIPSTAGINGMODE)
+msgid ""
+"While in this mode, the checkbox for each file reflects its staging status:\n"
+"- Checked means all the changes for the file are staged\n"
+"- Unchecked means all the changes for the file are unstaged\n"
+"- A gray square means that only some changes for the file are staged\n"
+"\n"
+"Clicking the checkboxes immediately stages or unstages the whole file.\n"
+"\n"
+"You can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n"
+"\n"
+"Please note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
+msgstr ""
+
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
 "While merging, i.e. integrating changes of another (remote) branch into your local branch, a conflict in at least one file occurred. This means that you need to resolve this manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
@@ -11610,6 +11697,10 @@ msgstr "Tomrumsändringar (tabbar, mellanslag)"
 #. cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
 msgstr "Tomrum"
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
+msgid "Windows 11 Context Menu"
+msgstr ""
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -12040,6 +12131,10 @@ msgstr ""
 msgid "file/foldernames"
 msgstr "fil/mappnamn"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
 msgstr "fulla sökvägar"
@@ -12051,7 +12146,7 @@ msgstr "git avslutades inte korrekt (kod %d)"
 
 #. Resource IDs: (IDS_GITEXEFILEFILTER)
 msgid "git.exe|git.exe||"
-msgstr ""
+msgstr "git.exe|git.exe||"
 
 #. Resource IDs: (IDS_STATUSIGNORED)
 msgid "ignored"
@@ -12109,27 +12204,27 @@ msgstr "rader: %d(+) %d(-) filer: %s = %ld\n%s = %ld\n%s = %ld\n%s = %ld\n%s = %
 
 #. Resource IDs: (IDS_SYSTEM_GCM)
 msgid "manager - all Windows users"
-msgstr ""
+msgstr "manager - alla Windows användare"
 
 #. Resource IDs: (IDS_GLOBAL_GCM)
 msgid "manager - current Windows user"
-msgstr ""
+msgstr "manager - nuvarande Windows användare"
 
 #. Resource IDs: (IDS_LOCAL_GCM)
 msgid "manager - this repository only"
-msgstr ""
+msgstr "manager - endast detta arkiv"
 
 #. Resource IDs: (IDS_SYSTEM_GCMCORE)
 msgid "manager-core - all Windows users"
-msgstr ""
+msgstr "manager-core - alla Windows användare"
 
 #. Resource IDs: (IDS_GLOBAL_GCMCORE)
 msgid "manager-core - current Windows user"
-msgstr ""
+msgstr "manager-core - nuvarande Windows användare"
 
 #. Resource IDs: (IDS_LOCAL_GCMCORE)
 msgid "manager-core - this repository only"
-msgstr ""
+msgstr "manager-core - endast detta arkiv"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1494)
 msgid "master"
@@ -12276,10 +12371,6 @@ msgstr "till %1"
 #, c-format
 msgid "to %s"
 msgstr "till %s"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "u&nknown changes"
-msgstr "okä&nda ändringar"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXWEEK)
 msgid "week"

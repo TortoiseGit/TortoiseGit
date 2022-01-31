@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2021 the TortoiseGit team
+# Copyright (C) 2008-2022 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-02-26 18:18+0000\n"
+"PO-Revision-Date: 2022-01-03 14:09+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Hungarian (http://www.transifex.com/lznuaa/tortoisegit/language/hu/)\n"
 "MIME-Version: 1.0\n"
@@ -717,9 +717,10 @@ msgstr "&Megjegyzések betűtípusa:"
 msgid "&Font:"
 msgstr "&Betűtípus:"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id
-#. 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
+#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
+#. Control id 1521)
 msgid "&Force"
 msgstr ""
 
@@ -1233,6 +1234,10 @@ msgstr ""
 msgid "&Squash ALL"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Staging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
 msgstr "&Indítás"
@@ -1337,6 +1342,10 @@ msgstr "&Ismeretlen meghajtók"
 msgid "&Unlock"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Unstaging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "&Fel"
@@ -1392,12 +1401,12 @@ msgstr "&Igen"
 msgid "&add \"cherry picked from\""
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
-msgid "&ignore space change"
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
+msgid "&force"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "&known changes"
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
+msgid "&ignore space change"
 msgstr ""
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
@@ -2911,6 +2920,10 @@ msgstr "Bezárja az aktív ablakot és megkérdezi, hogy elmentse-e a dokumentum
 #. Resource IDs: (ID_VIEW_COLLAPSED - Menu, cmdViewCollapsed_LabelTitle_RESID)
 msgid "Collapse"
 msgstr "Összecsukás"
+
+#. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
+msgid "Collapse revisions"
+msgstr ""
 
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
@@ -4655,6 +4668,10 @@ msgstr ""
 msgid "Exit"
 msgstr "Kilépés"
 
+#. Resource IDs: (IDS_LOG_POPUP_EXPAND)
+msgid "Expand collapsed revisions"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Mappa megnyitása"
@@ -5172,10 +5189,6 @@ msgstr ""
 msgid "Force unlock"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
-msgid "Force: May discard"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
@@ -5256,6 +5269,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
 msgid "Full data"
+msgstr ""
+
+#. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
+msgid "Full history"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
@@ -5566,6 +5583,14 @@ msgstr "Menü elrejtése a nem verziókezelt útvonalaknál"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
+msgid "Hide Staging<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
+msgid "Hide Unstaging<<"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
@@ -6209,6 +6234,13 @@ msgstr "Rossz pénznem."
 msgid "Invalid revision number!"
 msgstr "Érvénytelen verziószám!"
 
+#. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
+msgid ""
+"Invalid selection.\n"
+"\n"
+"If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
 msgstr ""
@@ -6262,7 +6294,7 @@ msgstr "KOI8-U"
 msgid "Keep"
 msgstr "Megtartás"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1126)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS)
 msgid "Keep changelists"
 msgstr "Változáslisták megtartása"
 
@@ -6284,7 +6316,7 @@ msgstr ""
 msgid "L"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
+#. Resource IDs: (IDS_MENULFS)
 msgid "LFS"
 msgstr ""
 
@@ -7571,6 +7603,16 @@ msgstr ""
 msgid "Parent(s)"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
+#. IDS_PROC_COMMIT_PARTIAL_STAGING)
+msgid "Partial Staging>>"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
+#. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
+msgid "Partial Unstaging>>"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
 msgstr ""
@@ -8529,7 +8571,8 @@ msgstr ""
 #. id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL:
 #. Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog
-#. IDD_SETTINGSUDIFF: Control id 1254)
+#. IDD_SETTINGSUDIFF: Control id 1254, Dialog IDD_SETTINGSWIN11CONTEXTMENU:
+#. Control id 1254)
 msgid "Restore Default"
 msgstr "Alapértelmezett"
 
@@ -8681,11 +8724,6 @@ msgstr ""
 
 #. Resource IDs: (cmdSave_Keytip_RESID)
 msgid "S"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "S&how modified files in working tree"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
@@ -9083,8 +9121,8 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
-"Select the behaviour of the progress dialog at the end of the operation."
-msgstr "Mit tegyen a folyamatjelző ablak a feladat végén"
+"Select the behavior of the progress dialog at the end of the operation."
+msgstr ""
 
 #. Resource IDs: (57642)
 msgid ""
@@ -9120,7 +9158,8 @@ msgstr ""
 #. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
 #. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
-#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Control id 1067, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1067,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr ""
 
@@ -9453,6 +9492,11 @@ msgstr "Napló megtekintése..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "Show modified files in &working tree"
+msgstr ""
+
 #. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
@@ -9683,6 +9727,20 @@ msgstr "Halmozott oszlopdiagram"
 #. Resource IDs: (IDS_STATGRAPH_LINESTACKEDBUTTON_TT)
 msgid "Stacked Line Graph"
 msgstr "Halmozott vonaldiagram"
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS
+#. - Menu)
+msgid "Stage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
+#. - Menu)
+msgid "Stage selected &lines"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
+msgid "Staging support (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
@@ -10644,6 +10702,14 @@ msgstr "Eddig:"
 msgid "Toggle filters"
 msgstr ""
 
+#. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
+msgid "Too many files to display."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Top context menu on Windows 11"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
 msgid "TortoiseGit"
@@ -10763,8 +10829,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: a TortoiseSVN különbség-megjelenítője képek számára\n\nA használható paraméterek:\n/left: \"a bal oldali kép útvonala\"\n/lefttitle: \"a bal oldali kép címe (a címsorban)\"\n/right: \"a jobb oldali kép útvonala\"\n/righttitle: \"a jobb oldali kép címe (a címsorban)\"\n/overlay Átfedés engedélyezése\n/fit Képek méreteinek egyeztetése\n/showinfo Információ megjelenítése a képekről"
 
-#. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control
-#. id 130, IDS_APPNAME)
+#. Resource IDs: (1, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id
+#. 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -10961,6 +11027,11 @@ msgstr "Nem írható a %1 fájl, már már megnyitotta vagy írásvédett."
 msgid "Uncheck"
 msgstr "Kijelölést megszüntet"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid ""
+"Unchecked items are not shown in the top menu but only in the original menu"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
 "Unchecked items will appear in the TortoiseGit submenu, checked items "
@@ -11034,6 +11105,16 @@ msgstr ""
 msgid "Unset tracked branch"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
+#. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+msgid "Unstage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
+#. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+msgid "Unstage selected &lines"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Névtelen"
@@ -11088,28 +11169,8 @@ msgstr "&Egypaneles nézet az alapértelmezett"
 msgid "Use &other text block"
 msgstr "Másik &szövegblokk használata"
 
-#. Resource IDs: (cmdUseMineBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block"
-msgstr "'Saját' szövegblokk használata"
-
-#. Resource IDs: (cmdUseMineThenTheirsBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "A 'Saját' majd a 'Másik' szövegblokk használata"
-
-#. Resource IDs: (cmdUseTheirsBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block"
-msgstr "'Másik' szövegblokk használata"
-
-#. Resource IDs: (cmdUseTheirsThenMineBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "A 'Másik' majd a 'Saját' szövegblokk használata"
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
@@ -11197,11 +11258,13 @@ msgstr "Bal oldali blokk használata"
 msgid "Use left file"
 msgstr "Bal oldali fájl használata"
 
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu,
+#. cmdUseTheirsBlock_LabelTitle_RESID)
 msgid "Use left text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. cmdUseTheirsThenMineBlock_LabelTitle_RESID)
 msgid "Use left text block then right"
 msgstr ""
 
@@ -11221,11 +11284,12 @@ msgstr "Regex használata"
 msgid "Use right block"
 msgstr "Jobb oldali blokk használata"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, cmdUseMineBlock_LabelTitle_RESID)
 msgid "Use right text block"
 msgstr ""
 
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. cmdUseMineThenTheirsBlock_LabelTitle_RESID)
 msgid "Use right text block then left"
 msgstr ""
 
@@ -11446,8 +11510,17 @@ msgstr ""
 msgid "View Bars"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
+#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH,
+#. IDS_VIEWPATCH)
 msgid "View Patch"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
+msgid "View Patch - HEAD to index"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
+msgid "View Patch - index to working tree"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
@@ -11495,7 +11568,7 @@ msgid "Waiting for input"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
-msgid "Walk Be&haviour"
+msgid "Walk Be&havior"
 msgstr ""
 
 #. Resource IDs: (IDS_WARN_WARNING)
@@ -11582,6 +11655,20 @@ msgstr ""
 msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr ""
 
+#. Resource IDs: (IDS_TIPSTAGINGMODE)
+msgid ""
+"While in this mode, the checkbox for each file reflects its staging status:\n"
+"- Checked means all the changes for the file are staged\n"
+"- Unchecked means all the changes for the file are unstaged\n"
+"- A gray square means that only some changes for the file are staged\n"
+"\n"
+"Clicking the checkboxes immediately stages or unstages the whole file.\n"
+"\n"
+"You can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n"
+"\n"
+"Please note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
+msgstr ""
+
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
 "While merging, i.e. integrating changes of another (remote) branch into your local branch, a conflict in at least one file occurred. This means that you need to resolve this manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
@@ -11607,6 +11694,10 @@ msgstr ""
 #. cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
 msgstr "Láthatatlan karakterek"
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
+msgid "Windows 11 Context Menu"
+msgstr ""
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -12037,6 +12128,10 @@ msgstr ""
 msgid "file/foldernames"
 msgstr "fájl-/könyvtárnevek"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
 msgstr "teljes útvonalak"
@@ -12273,10 +12368,6 @@ msgstr "%1-hez"
 #, c-format
 msgid "to %s"
 msgstr "%s-be"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "u&nknown changes"
-msgstr ""
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXWEEK)
 msgid "week"

@@ -1,11 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2021 the TortoiseGit team
+# Copyright (C) 2008-2022 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # ABE Tsunehiko, 2015
-# carrotsoft <www.carrotsoft@gmail.com>, 2012
+# b8b89a28076decde757efbd7cbc96056_a4e3beb, 2012
 # Diego Búrigo Zacarão <diegobz@indifex.com>, 2011
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
 # fshin, 2019
@@ -16,7 +16,7 @@
 # Joseph Ting <josephting90@gmail.com>, 2017
 #  Koto <>, 2012
 # Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
-# 藤本理弘 <mfujimot@gmail.com>, 2015
+# Masahiro FUJIMOTO <mfujimot@gmail.com>, 2015
 # Nozomu Kaneko <nozom.kaneko@gmail.com>, 2013
 # Osamu NAKAMURA, 2013
 # Ratnadeep Debnath <rtnpro@transifex.com>, 2012
@@ -34,19 +34,19 @@
 # Tetsuya Morimoto <tetsuya.morimoto@gmail.com>, 2011
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013
-# YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2015
+# YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2015,2021
 # hirose y <yh1224@gmail.com>, 2012
 # Yoshitaka Yamashita <drum@magic-touch.org>, 2013
 # youten, 2011
 # Tsuyoshi Okawa <tu44okawa3@gmail.com>, 2016
-# 藤本理弘 <mfujimot@gmail.com>, 2013,2015,2017,2019-2021
+# Masahiro FUJIMOTO <mfujimot@gmail.com>, 2013,2015,2017,2019-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-03-14 03:31+0000\n"
-"Last-Translator: 藤本理弘 <mfujimot@gmail.com>\n"
+"PO-Revision-Date: 2022-01-03 14:09+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/lznuaa/tortoisegit/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -739,9 +739,10 @@ msgstr "ログメッセージのフォント(&F):"
 msgid "&Font:"
 msgstr "フォント(&F):"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id
-#. 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
+#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
+#. Control id 1521)
 msgid "&Force"
 msgstr "強制(&F)"
 
@@ -1255,6 +1256,10 @@ msgstr "融合(&S)"
 msgid "&Squash ALL"
 msgstr "すべて融合(&S)"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Staging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
 msgstr "開始(&S)"
@@ -1359,6 +1364,10 @@ msgstr "その他/判定に失敗(&U)"
 msgid "&Unlock"
 msgstr "ロック解除(&U)"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Unstaging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "上へ(&U)"
@@ -1414,13 +1423,13 @@ msgstr "はい(&Y)"
 msgid "&add \"cherry picked from\""
 msgstr "\"cherry picked from\" を追加(&A)"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
+msgid "&force"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
 msgstr "空白の変更を無視(&I)"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "&known changes"
-msgstr "把握している変更(&K)"
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
 msgid "(TortoiseGit default)"
@@ -2933,6 +2942,10 @@ msgstr "ドキュメントを保存するために、アクティブなウィン
 #. Resource IDs: (ID_VIEW_COLLAPSED - Menu, cmdViewCollapsed_LabelTitle_RESID)
 msgid "Collapse"
 msgstr "折りたたむ"
+
+#. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
+msgid "Collapse revisions"
+msgstr ""
 
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
@@ -4677,6 +4690,10 @@ msgstr "実行可能 (+x)"
 msgid "Exit"
 msgstr "終了"
 
+#. Resource IDs: (IDS_LOG_POPUP_EXPAND)
+msgid "Expand collapsed revisions"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "エクスプローラーで開く"
@@ -5194,10 +5211,6 @@ msgstr "現在のブランチが、接続しようとしているコミットの
 msgid "Force unlock"
 msgstr "強制ロック解除"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
-msgid "Force: May discard"
-msgstr "強制: 以下を失う可能性がある"
-
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
@@ -5279,6 +5292,10 @@ msgstr "変更されたパスを除く全てのコミットデータ"
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
 msgid "Full data"
 msgstr "全データ"
+
+#. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
+msgid "Full history"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
@@ -5589,6 +5606,14 @@ msgstr "バージョン管理外のパスではメニューを表示しない"
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
 msgstr "パッチを隠す<<"
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
+msgid "Hide Staging<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
+msgid "Hide Unstaging<<"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -6231,6 +6256,13 @@ msgstr "無効な通貨です。"
 msgid "Invalid revision number!"
 msgstr "不正なリビジョン番号！"
 
+#. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
+msgid ""
+"Invalid selection.\n"
+"\n"
+"If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
 msgstr "課題追跡システムの設定"
@@ -6284,7 +6316,7 @@ msgstr "KOI8-U"
 msgid "Keep"
 msgstr "維持"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1126)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS)
 msgid "Keep changelists"
 msgstr "変更リストを保持する"
 
@@ -6306,7 +6338,7 @@ msgstr "朝鮮語"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
+#. Resource IDs: (IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
 
@@ -7593,6 +7625,16 @@ msgstr "%2!s! の親"
 msgid "Parent(s)"
 msgstr "親"
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
+#. IDS_PROC_COMMIT_PARTIAL_STAGING)
+msgid "Partial Staging>>"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
+#. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
+msgid "Partial Unstaging>>"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
 msgstr "パスワード"
@@ -8551,7 +8593,8 @@ msgstr "復元"
 #. id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL:
 #. Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog
-#. IDD_SETTINGSUDIFF: Control id 1254)
+#. IDD_SETTINGSUDIFF: Control id 1254, Dialog IDD_SETTINGSWIN11CONTEXTMENU:
+#. Control id 1254)
 msgid "Restore Default"
 msgstr "デフォルトを復元"
 
@@ -8704,11 +8747,6 @@ msgstr "作業ツリーが以下のパスの下にあるときに実行:"
 #. Resource IDs: (cmdSave_Keytip_RESID)
 msgid "S"
 msgstr "S"
-
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "S&how modified files in working tree"
-msgstr "作業ツリーにおいて変更されたファイルを表示(&H)"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
@@ -9105,7 +9143,7 @@ msgstr "リモートのrefを選択"
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
-"Select the behaviour of the progress dialog at the end of the operation."
+"Select the behavior of the progress dialog at the end of the operation."
 msgstr "処理終了時の進行状況ダイアログの動作を選択します。"
 
 #. Resource IDs: (57642)
@@ -9142,7 +9180,8 @@ msgstr "どのファイルを名前を付けて保存するか選択してくだ
 #. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
 #. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
-#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Control id 1067, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1067,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "すべてを選択/解除(&A)"
 
@@ -9475,6 +9514,11 @@ msgstr "ログを表示..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr "該当コミットにタグがあっても、長いフォーマットで表示する"
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "Show modified files in &working tree"
+msgstr "作業ツリーにおいて変更されたファイルを表示(&W)"
+
 #. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
@@ -9705,6 +9749,20 @@ msgstr "積み重ね棒グラフ"
 #. Resource IDs: (IDS_STATGRAPH_LINESTACKEDBUTTON_TT)
 msgid "Stacked Line Graph"
 msgstr "積み重ね面グラフ"
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS
+#. - Menu)
+msgid "Stage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
+#. - Menu)
+msgid "Stage selected &lines"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
+msgid "Staging support (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
@@ -10666,6 +10724,14 @@ msgstr "To:"
 msgid "Toggle filters"
 msgstr "フィルターを反転"
 
+#. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
+msgid "Too many files to display."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Top context menu on Windows 11"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
 msgid "TortoiseGit"
@@ -10785,8 +10851,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseGitIDiff: TortoiseSVNの画像差分ビューア\n\n利用可能なコマンドラインパラメーター:\n/left:\"左の画像のパス\"\n/lefttitle:\"左の画像のタイトル\"\n/right:\"右の画像のパス\"\n/righttitle:\"右の画像のタイトル\"\n/overlay\t\tオーバーレイモードを有効\n/fit\t\tイメージサイズに合わせる\n/showinfo\t\t画像の情報ボックスを表示"
 
-#. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control
-#. id 130, IDS_APPNAME)
+#. Resource IDs: (1, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id
+#. 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -10983,6 +11049,11 @@ msgstr "%1 に書き込めません。読み取り専用か、他の誰かが開
 msgid "Uncheck"
 msgstr "未チェック"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid ""
+"Unchecked items are not shown in the top menu but only in the original menu"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
 "Unchecked items will appear in the TortoiseGit submenu, checked items "
@@ -11056,6 +11127,16 @@ msgstr "未解決の競合!"
 msgid "Unset tracked branch"
 msgstr "ブランチを追跡しない"
 
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
+#. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+msgid "Unstage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
+#. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+msgid "Unstage selected &lines"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "未タイトル"
@@ -11110,29 +11191,9 @@ msgstr "2つのファイルの差分に、デフォルトで1画面表示を使�
 msgid "Use &other text block"
 msgstr "他のテキストブロックを使用(&O)"
 
-#. Resource IDs: (cmdUseMineBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block"
-msgstr "「こちら側」のテキストブロックを使う"
-
-#. Resource IDs: (cmdUseMineThenTheirsBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "「こちら側」のテキストブロックを使用してから、「あちら側」を使用"
-
-#. Resource IDs: (cmdUseTheirsBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block"
-msgstr "「あちら側」のテキストブロックを使用"
-
-#. Resource IDs: (cmdUseTheirsThenMineBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "「あちら側」のテキストブロックを使用してから、「こちら側」を使用"
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr ".mailmap を使用"
-
-#. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
-msgstr "Git LFS を使用 (Git 2.15 未満と Git LFS 2.3 未満のみ必要)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
@@ -11219,11 +11280,13 @@ msgstr "左ブロックを使用"
 msgid "Use left file"
 msgstr "左のファイルを使用"
 
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu,
+#. cmdUseTheirsBlock_LabelTitle_RESID)
 msgid "Use left text block"
 msgstr "左のテキストブロックを使用"
 
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. cmdUseTheirsThenMineBlock_LabelTitle_RESID)
 msgid "Use left text block then right"
 msgstr "左→右の順でテキストブロックを使用"
 
@@ -11243,11 +11306,12 @@ msgstr "正規表現を使用する"
 msgid "Use right block"
 msgstr "右ブロックを使用"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, cmdUseMineBlock_LabelTitle_RESID)
 msgid "Use right text block"
 msgstr "右のテキストブロックを使用"
 
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. cmdUseMineThenTheirsBlock_LabelTitle_RESID)
 msgid "Use right text block then left"
 msgstr "右→左の順でテキストブロックを使用"
 
@@ -11468,9 +11532,18 @@ msgstr " .tgitconfigを表示"
 msgid "View Bars"
 msgstr "バーを表示"
 
-#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
+#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH,
+#. IDS_VIEWPATCH)
 msgid "View Patch"
 msgstr "パッチを表示"
+
+#. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
+msgid "View Patch - HEAD to index"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
+msgid "View Patch - index to working tree"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
 #. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -11517,7 +11590,7 @@ msgid "Waiting for input"
 msgstr "入力待ち"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
-msgid "Walk Be&haviour"
+msgid "Walk Be&havior"
 msgstr "ツリーの探索(&H)"
 
 #. Resource IDs: (IDS_WARN_WARNING)
@@ -11604,6 +11677,20 @@ msgstr "URLを入力すると、リモート名が空ならば自動的に \"ori
 msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr "「注釈付きタグ (annotated tag)」「すべてのタグ」「すべてのRef」のどれを参照するか指定します。"
 
+#. Resource IDs: (IDS_TIPSTAGINGMODE)
+msgid ""
+"While in this mode, the checkbox for each file reflects its staging status:\n"
+"- Checked means all the changes for the file are staged\n"
+"- Unchecked means all the changes for the file are unstaged\n"
+"- A gray square means that only some changes for the file are staged\n"
+"\n"
+"Clicking the checkboxes immediately stages or unstages the whole file.\n"
+"\n"
+"You can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n"
+"\n"
+"Please note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
+msgstr ""
+
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
 "While merging, i.e. integrating changes of another (remote) branch into your local branch, a conflict in at least one file occurred. This means that you need to resolve this manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
@@ -11629,6 +11716,10 @@ msgstr "ホワイトスペースの変更(タブ,スペース)"
 #. cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
 msgstr "ホワイトスペース"
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
+msgid "Windows 11 Context Menu"
+msgstr ""
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -12059,6 +12150,10 @@ msgstr "サブモジュールでないファイル"
 msgid "file/foldernames"
 msgstr "ファイル/フォルダ名"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
 msgstr "フルパス"
@@ -12295,10 +12390,6 @@ msgstr "to %1"
 #, c-format
 msgid "to %s"
 msgstr "%s へ"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "u&nknown changes"
-msgstr "把握外の変更(&N)"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXWEEK)
 msgid "week"

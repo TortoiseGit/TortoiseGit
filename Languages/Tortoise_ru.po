@@ -1,12 +1,12 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2021 the TortoiseGit team
+# Copyright (C) 2008-2022 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # ad loud <fogy.ad@gmail.com>, 2017
 # Alexander Shchekaturov <shcham@gmail.com>, 2013-2016
-# Andrei Stepanov <adem4ik@gmail.com>, 2014-2017
+# Andrei Stepanov, 2014-2017
 # Arioch <the_Arioch@nm.ru>, 2012-2013
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
@@ -29,13 +29,13 @@
 # 82f4f02557fd4886d250a2aa0aecb530_0f90749 <0cd40767d55b0248271195f29db18a8d_208365>, 2014
 # Sergey Kuznetsov <votkinsk@gmail.com>, 2021
 # Alexander Shchekaturov <shcham@gmail.com>, 2013
-# Stanislav Kroter <krotersv@gmail.com>, 2016-2021
+# Stanislav Kroter <krotersv@gmail.com>, 2016-2022
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2020-2021
 # Дмитрий Сытьков <sytkov@gmail.com>, 2011
 # Arioch <the_Arioch@nm.ru>, 2013
 # Arioch <the_Arioch@nm.ru>, 2012
 # Vladimir.Serykh <Vladimir.Serykh@extenza-studio.ru>, 2015
-# Антон Бауткин <bautkin@gmail.com>, 2018
+# Антон Бауткин <bautkin@gmail.com>, 2018,2021
 # Виталий Переславцев <pstracker@mail.ru>, 2013
 # Вячеслав Третьяков <tret2003@gmail.com>, 2012-2013
 # Герман Борисов <borisov.german@gmail.com>, 2017-2018
@@ -48,7 +48,7 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-03-16 15:09+0000\n"
+"PO-Revision-Date: 2022-01-21 10:59+0000\n"
 "Last-Translator: Stanislav Kroter <krotersv@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/lznuaa/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -742,9 +742,10 @@ msgstr "&Шрифт журнала:"
 msgid "&Font:"
 msgstr "&Шрифт:"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog
-#. IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id
-#. 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
+#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
+#. Control id 1521)
 msgid "&Force"
 msgstr "&Принудительно"
 
@@ -1258,6 +1259,10 @@ msgstr "&Объединить"
 msgid "&Squash ALL"
 msgstr "&Объединить ВСЕ"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Staging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
 msgstr "&Начать"
@@ -1362,6 +1367,10 @@ msgstr "&Неизвестные носители"
 msgid "&Unlock"
 msgstr "&Разблокировать"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "&Unstaging"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
 msgstr "&Вверх"
@@ -1417,13 +1426,13 @@ msgstr "&Да"
 msgid "&add \"cherry picked from\""
 msgstr "&добавить \"пересмотрено вручную из\""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
+msgid "&force"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
 msgstr "&Игнорировать изменения пробелов"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "&known changes"
-msgstr "&известные изменения"
 
 #. Resource IDs: (IDS_TORTOISEGITDEFAULT)
 msgid "(TortoiseGit default)"
@@ -2937,6 +2946,10 @@ msgstr "Закрывает активное окно и приглашает с�
 msgid "Collapse"
 msgstr "Свернуть"
 
+#. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
+msgid "Collapse revisions"
+msgstr ""
+
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
 "Collapse unchanged sections\n"
@@ -3374,7 +3387,7 @@ msgid ""
 "Could not find \"msysgit\" or \"windows\" in version string of git.exe.\n"
 "If you are using git of the Cygwin or MSYS2 environment you need to enable special hacks.\n"
 "For more information see the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
-msgstr ""
+msgstr "Не получилось найти \"msysgit\" или \"windows\" в строке версий git.exe.\nЕсли вы используете git окружения Cygwin или MSYS2, то вам нужно задействовать специальные временные программные решения.\nБолее подробную информацию смотрите в справке по ключевому слову \"Cygwin Git\" или \"MSYS2 Git\"."
 
 #. Resource IDs: (IDS_ERR_GITNOVALIDOUTPUT)
 #, c-format
@@ -3606,7 +3619,7 @@ msgstr "Создаю запрос-получение..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 4591)
 msgid "Credential"
-msgstr ""
+msgstr "Полномочия"
 
 #. Resource IDs: (IDS_GITCREDENTIAL_HELPEREMPTY)
 msgid "Credential helper must not be empty."
@@ -4680,6 +4693,10 @@ msgstr "Выполняемый (+x)"
 msgid "Exit"
 msgstr "Выход"
 
+#. Resource IDs: (IDS_LOG_POPUP_EXPAND)
+msgid "Expand collapsed revisions"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Открыть в Проводнике"
@@ -5197,10 +5214,6 @@ msgstr "Принудительно переместить, даже если т�
 msgid "Force unlock"
 msgstr "Разблокировать принудительно"
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1796)
-msgid "Force: May discard"
-msgstr "Принудительно: можно потерять изменения"
-
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
 msgid "Foreground"
@@ -5219,14 +5232,14 @@ msgstr "Вперёд %d"
 msgid ""
 "Found \"msysgit\" or \"windows\" in version string of git.exe, however, you have git.exe hacks enabled. These hacks must be disabled for proper operation with Git for Windows!\n"
 "You can find more information in the help file for the keyword \"Cygwin Git\" or \"MSYS2 Git\"."
-msgstr ""
+msgstr "Найдено \"msysgit\" или \"windows\" в строке версии git.exe, однако вы включили временные решения git.exe. Эти временные решения должны быть отключены для правильной работы с Git для Windows!\nБольше информации вы можете найти в файле справки для ключевого слова \"Cygwin Git\" или \"MSYS2 Git\"."
 
 #. Resource IDs: (IDS_REBASELOCKFILEFOUND)
 msgid ""
 "Found a lock file indicating that a TortoiseGit rebase process is running. This blocks this operation.\n"
 "\n"
 "If you are not running a TortoiseGit rebase process right now, you can remove the stale lock file in order to continue."
-msgstr ""
+msgstr "Обнаружен блокирующий файл, указывающий, что идёт процесс перебазирования TortoiseGit. Это блокирует эту операцию.\n\nЕсли вы не запускали процесс перебазирования TortoiseGit прямо сейчас, то вы можете удалить устаревший блокирующий файл, чтобы продолжить."
 
 #. Resource IDs: (IDS_PROC_REBASE_EMPTYCOMMITMSG)
 msgid ""
@@ -5282,6 +5295,10 @@ msgstr "Полные данные фиксации без изменённых �
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_FULL)
 msgid "Full data"
 msgstr "Полные данные"
+
+#. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
+msgid "Full history"
+msgstr "Полная история"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
@@ -5592,6 +5609,14 @@ msgstr "Скрыть меню для неверсированных папок"
 #. Resource IDs: (IDS_PROC_COMMIT_HIDEPATCH)
 msgid "Hide Patch<<"
 msgstr "Скрыть заплатку<<"
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
+msgid "Hide Staging<<"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
+msgid "Hide Unstaging<<"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -6234,6 +6259,13 @@ msgstr "Неправильное денежное значение."
 msgid "Invalid revision number!"
 msgstr "Неверный номер ревизии!"
 
+#. Resource IDs: (IDS_ERROR_PARTIALSTAGING)
+msgid ""
+"Invalid selection.\n"
+"\n"
+"If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
 msgstr "Файл настроек системы отслеживания ошибок"
@@ -6287,7 +6319,7 @@ msgstr "KOI8-U"
 msgid "Keep"
 msgstr "Сохранить"
 
-#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1126)
+#. Resource IDs: (IDS_STATUSLIST_CONTEXT_KEEPCHANGELISTS)
 msgid "Keep changelists"
 msgstr "Сохранить группы изменений"
 
@@ -6309,13 +6341,13 @@ msgstr "Корейский"
 msgid "L"
 msgstr "L"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1847, IDS_MENULFS)
+#. Resource IDs: (IDS_MENULFS)
 msgid "LFS"
 msgstr "LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
 msgid "LFS Lock"
-msgstr ""
+msgstr "Блокировка LFS"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
 msgid "LFS Lock Owner"
@@ -6323,11 +6355,11 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
 msgid "LFS Locks"
-msgstr ""
+msgstr "Блокировки LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
 msgid "LFS Unlock"
-msgstr ""
+msgstr "Разблокировка LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -6568,7 +6600,7 @@ msgstr "Заблокировать"
 
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
-msgstr ""
+msgstr "Заблокировать файл, используя LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSTBLAME: Control id 65535, IDS_LOG)
 msgid "Log"
@@ -7511,7 +7543,7 @@ msgstr "Output.prn"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 338)
 msgid "Overlay Handlers"
-msgstr ""
+msgstr "Обработчики наложений"
 
 #. Resource IDs: (IDS_PROC_OVERWRITEEXPORT_OVERWRITE)
 msgid "Overwrite"
@@ -7595,6 +7627,16 @@ msgstr "Предок %2!s!"
 #. Resource IDs: (IDS_PARENTS)
 msgid "Parent(s)"
 msgstr "Предок(и)"
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
+#. IDS_PROC_COMMIT_PARTIAL_STAGING)
+msgid "Partial Staging>>"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
+#. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
+msgid "Partial Unstaging>>"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
@@ -8554,7 +8596,8 @@ msgstr "Восстановить"
 #. id 1254, Dialog IDD_SETTINGSCOLORS_3: Control id 1254, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1254, Dialog IDD_SETTINGSLOOKANDFEEL:
 #. Control id 1254, Dialog IDD_SETTINGSTBLAME: Control id 1254, Dialog
-#. IDD_SETTINGSUDIFF: Control id 1254)
+#. IDD_SETTINGSUDIFF: Control id 1254, Dialog IDD_SETTINGSWIN11CONTEXTMENU:
+#. Control id 1254)
 msgid "Restore Default"
 msgstr "Сбросить на исходные"
 
@@ -8708,11 +8751,6 @@ msgstr "Запустить, когда рабочая копия находит�
 msgid "S"
 msgstr "S"
 
-#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
-#. Control id 1383)
-msgid "S&how modified files in working tree"
-msgstr "Показать изменённые файлы в рабочей копии"
-
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_SKIP)
 msgid "S&kip unselected"
 msgstr "Пр&опустить невыбранное"
@@ -8796,7 +8834,7 @@ msgstr "Sa&feCrLf:"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "SafeCrLf:"
-msgstr ""
+msgstr "SafeCrLf:"
 
 #. Resource IDs: (IDS_SAME, IDS_TAGCOMPARE_SAME)
 msgid "Same"
@@ -9108,8 +9146,8 @@ msgstr ""
 
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
-"Select the behaviour of the progress dialog at the end of the operation."
-msgstr "Выберите поведение окна выполнения по окончанию операции."
+"Select the behavior of the progress dialog at the end of the operation."
+msgstr "Выбрать поведение диалога прогресса в конце операции."
 
 #. Resource IDs: (57642)
 msgid ""
@@ -9145,7 +9183,8 @@ msgstr "Выберите файл, который вы хотите сохран
 #. Control id 1067, Dialog IDD_LFS_LOCKS: Control id 1067, Dialog IDD_RESOLVE:
 #. Control id 1067, Dialog IDD_REVERT: Control id 1067, Dialog
 #. IDD_SETTINGSEXTMENU: Control id 1067, Dialog IDD_SETTINGSLOOKANDFEEL:
-#. Control id 1067, Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
+#. Control id 1067, Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1067,
+#. Dialog IDD_SUBMODULE_UPDATE: Control id 1067)
 msgid "Select/deselect &all"
 msgstr "Выбрать/снять &все"
 
@@ -9478,6 +9517,11 @@ msgstr "Показать журнал..."
 msgid "Show long format even if a tag is exactly on that commit"
 msgstr "Показывать длинный формат даже если метка стоит именно на этой фиксации"
 
+#. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
+#. Control id 1383)
+msgid "Show modified files in &working tree"
+msgstr "Показать изменённые файлы в  &рабочей копии"
+
 #. Resource IDs: (25308)
 msgid ""
 "Show next change of selected commit\n"
@@ -9708,6 +9752,20 @@ msgstr "Гистограмма стопкой"
 #. Resource IDs: (IDS_STATGRAPH_LINESTACKEDBUTTON_TT)
 msgid "Stacked Line Graph"
 msgstr "График стопкой"
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS
+#. - Menu)
+msgid "Stage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
+#. - Menu)
+msgid "Stage selected &lines"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
+msgid "Staging support (EXPERIMENTAL)"
+msgstr ""
 
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
@@ -10669,6 +10727,14 @@ msgstr "По:"
 msgid "Toggle filters"
 msgstr "Переключить фильтры"
 
+#. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
+msgid "Too many files to display."
+msgstr "Слишком много файлов, чтобы отобразить."
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid "Top context menu on Windows 11"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
 msgid "TortoiseGit"
@@ -10788,8 +10854,8 @@ msgid ""
 "/showinfo\t\tto show the image info boxes"
 msgstr "TortoiseIDiff: программа для просмотра различий в изображениях для TortoiseSVN\n\nДоступные параметры командной строки:\n/left:\"путь до левой картинки\"\n/lefttitle:\"заголовок для левой картинки\"\n/right:\"путь до правой картинки\"\n/righttitle:\"заголовок для правой картинки\"\n/overlay\t\tдля включения режима наложения\n/fit\t\tдля подгона размеров изображений\n/showinfo\t\tдля показа окон информации об изображениях"
 
-#. Resource IDs: (100, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control
-#. id 130, IDS_APPNAME)
+#. Resource IDs: (1, 32897, AFX_IDS_APP_TITLE, Dialog IDD_OPENDLG: Control id
+#. 130, IDS_APPNAME)
 msgid "TortoiseGitMerge"
 msgstr "TortoiseGitMerge"
 
@@ -10986,6 +11052,11 @@ msgstr "Невозможно записать в %1: он только-для-ч
 msgid "Uncheck"
 msgstr "Снять"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
+msgid ""
+"Unchecked items are not shown in the top menu but only in the original menu"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
 "Unchecked items will appear in the TortoiseGit submenu, checked items "
@@ -11059,6 +11130,16 @@ msgstr "Неулаженные конфликты!"
 msgid "Unset tracked branch"
 msgstr "Отозвать отслеживаемую ветвь"
 
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
+#. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
+msgid "Unstage selected &hunks"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
+#. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
+msgid "Unstage selected &lines"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
 msgstr "Неназванный"
@@ -11113,29 +11194,9 @@ msgstr "&Однопанельный вид по умолчанию для дву
 msgid "Use &other text block"
 msgstr "Использовать &другой текстовый блок"
 
-#. Resource IDs: (cmdUseMineBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block"
-msgstr "Использовать 'мой' текстовый блок"
-
-#. Resource IDs: (cmdUseMineThenTheirsBlock_LabelTitle_RESID)
-msgid "Use 'mine' text block then 'theirs'"
-msgstr "Использовать 'мой' текстовый блок затем 'их'"
-
-#. Resource IDs: (cmdUseTheirsBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block"
-msgstr "Использовать 'их' текстовый блок"
-
-#. Resource IDs: (cmdUseTheirsThenMineBlock_LabelTitle_RESID)
-msgid "Use 'theirs' text block then 'mine'"
-msgstr "Использовать 'их' текстовый блок затем 'мой'"
-
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1911)
 msgid "Use .mailmap"
 msgstr "Использовать .mailmap"
-
-#. Resource IDs: (IDS_PROC_USELFS_TT)
-msgid "Use Git LFS (only required for Git < 2.15 and Git LFS < 2.3)"
-msgstr "Использовать Git LFS (требуется только для Git < 2.15 и Git LFS < 2.3)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1761)
 msgid "Use HTTP path component"
@@ -11222,11 +11283,13 @@ msgstr "Использовать левый блок"
 msgid "Use left file"
 msgstr "Использовать левый файл"
 
-#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRBLOCK - Menu,
+#. cmdUseTheirsBlock_LabelTitle_RESID)
 msgid "Use left text block"
 msgstr "Использовать левый текстовый блок"
 
-#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USETHEIRTHENMYBLOCK - Menu,
+#. cmdUseTheirsThenMineBlock_LabelTitle_RESID)
 msgid "Use left text block then right"
 msgstr "Использовать левый текстовый блок перед правым"
 
@@ -11246,11 +11309,12 @@ msgstr "Регулярное выражение"
 msgid "Use right block"
 msgstr "Использовать правый блок"
 
-#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMYBLOCK - Menu, cmdUseMineBlock_LabelTitle_RESID)
 msgid "Use right text block"
 msgstr "Использовать правый текстовый блок"
 
-#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu)
+#. Resource IDs: (ID_EDIT_USEMINETHENTHEIRBLOCK - Menu,
+#. cmdUseMineThenTheirsBlock_LabelTitle_RESID)
 msgid "Use right text block then left"
 msgstr "Использовать правый текстовый блок перед левым"
 
@@ -11471,9 +11535,18 @@ msgstr "Просмотреть .tgitconfig"
 msgid "View Bars"
 msgstr "Отображать Полосы"
 
-#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH)
+#. Resource IDs: (Dialog IDD_PATCH_VIEW: Control id 328, IDS_MENU_VIEWPATCH,
+#. IDS_VIEWPATCH)
 msgid "View Patch"
 msgstr "Посмотреть заплатку"
+
+#. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
+msgid "View Patch - HEAD to index"
+msgstr ""
+
+#. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
+msgid "View Patch - index to working tree"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
 #. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -11520,8 +11593,8 @@ msgid "Waiting for input"
 msgstr "Ожидаю ввода"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
-msgid "Walk Be&haviour"
-msgstr "Поведение"
+msgid "Walk Be&havior"
+msgstr ""
 
 #. Resource IDs: (IDS_WARN_WARNING)
 msgid "Warning"
@@ -11607,6 +11680,20 @@ msgstr "При вводе URL, если вы не указали внешнее 
 msgid "Whether to reference only annotated tags, all tags or all refs"
 msgstr "Ссылаться ли только на аннотированные метки, все метки или все ссылки"
 
+#. Resource IDs: (IDS_TIPSTAGINGMODE)
+msgid ""
+"While in this mode, the checkbox for each file reflects its staging status:\n"
+"- Checked means all the changes for the file are staged\n"
+"- Unchecked means all the changes for the file are unstaged\n"
+"- A gray square means that only some changes for the file are staged\n"
+"\n"
+"Clicking the checkboxes immediately stages or unstages the whole file.\n"
+"\n"
+"You can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n"
+"\n"
+"Please note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
+msgstr ""
+
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
 "While merging, i.e. integrating changes of another (remote) branch into your local branch, a conflict in at least one file occurred. This means that you need to resolve this manually (i.e., you need to integrate your changes into a file which was also modified on another branch).\n"
@@ -11632,6 +11719,10 @@ msgstr "Изменения непечатаемых знаков (символы
 #. cmdGroupWhitespaces_LabelTitle_RESID)
 msgid "Whitespaces"
 msgstr "Непечатаемые знаки"
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
+msgid "Windows 11 Context Menu"
+msgstr "Контекстное меню Windows 11"
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -12062,6 +12153,10 @@ msgstr "файл, не подмодуль"
 msgid "file/foldernames"
 msgstr "имена файлов/каталогов"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
 msgstr "полные пути"
@@ -12298,10 +12393,6 @@ msgstr "до %1"
 #, c-format
 msgid "to %s"
 msgstr "в %s"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "u&nknown changes"
-msgstr "н&еизвестные изменения"
 
 #. Resource IDs: (IDS_STATGRAPH_COMMITSBYDATEXWEEK)
 msgid "week"
