@@ -1,5 +1,5 @@
 ﻿= Release 2.13.0 =
-Released: unreleased
+Released: 2022-01-31
 
 == Changes ==
  * Git (for Windows) 2.24 or newer is now required
