@@ -794,7 +794,7 @@ Released: 2015-08-02
  * Fixed issue #2490: BrowseRefsDlg: Allow to configure tracked branches
  * Fixed issue #2469: Support reviewing merge commits (git show merge-commit)
  * Add full support for Git for Windows 2.x and windows-wide system config
-   (https://git-for-windows.github.io)
+   (https://gitforwindows.org)
  * Fixed issue #2232: Change Show Log to display all lines of multiline commit comments in the message column
  * Fixed issue #1930: Navigate directly to a commit in "Show log" by pasting its hash
  * Fixed issue #2280: Ability to use Msys2 git instead of Git for Windows

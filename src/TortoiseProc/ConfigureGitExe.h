@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 
-#define GIT_FOR_WINDOWS_URL L"https://git-for-windows.github.io/"
+#define GIT_FOR_WINDOWS_URL L"https://gitforwindows.org/"
 
 class CConfigureGitExe
 {
