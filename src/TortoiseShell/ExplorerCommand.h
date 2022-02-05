@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021 - TortoiseSVN
+// Copyright (C) 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,8 @@ public:
 								DWORD itemStates,
 								DWORD itemStatesFolder,
 								std::vector<std::wstring> paths,
-								std::vector<CExplorerCommand> subItems);
+								std::vector<CExplorerCommand> subItems,
+								Microsoft::WRL::ComPtr<IUnknown> site);
 
 	virtual ~CExplorerCommand() = default;
 	void PrependTitleWith(const std::wstring& prep) { m_title = prep + m_title; }
@@ -94,4 +95,5 @@ private:
 	std::vector<std::wstring>		m_paths;
 	std::vector<CExplorerCommand>	m_subItems;
 	CRegStdString					m_regDiffLater;
+	Microsoft::WRL::ComPtr<IUnknown>	m_site;
 };
