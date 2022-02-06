@@ -144,7 +144,10 @@ bool RemoveCommand::Execute()
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
-				return FALSE;
+			{
+				bRet = FALSE;
+				break;
+			}
 		}
 		else
 			++pathsHandled;
