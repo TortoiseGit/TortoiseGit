@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -927,6 +927,44 @@ namespace {
 		}
 		return false;
 	}
+}
+
+BOOL CAppUtils::StyleWarningsErrors(const CString& text, CRichEditCtrl* edit)
+{
+	ASSERT(edit);
+
+	if (text.IsEmpty())
+		return FALSE;
+	const auto fnFindMatchAtLineStart = [&](const wchar_t* const needle, int idxStart, std::vector<CHARRANGE>& vRange) -> void {
+		const int idxEnd{ idxStart + static_cast<int>(wcslen(needle)) };
+		if (idxEnd > text.GetLength())
+			return;
+
+		if (CStringUtils::StartsWith(static_cast<LPCWSTR>(text) + idxStart, needle))
+		{
+			const CHARRANGE range{ idxStart, idxEnd };
+			vRange.push_back(range);
+		}
+	};
+
+	std::vector<CHARRANGE> rangeErrors;
+	std::vector<CHARRANGE> rangeWarnings;
+	int idxStart = 0;
+	do
+	{
+		fnFindMatchAtLineStart(L"fatal: ", idxStart, rangeErrors);
+		fnFindMatchAtLineStart(L"error: ", idxStart, rangeErrors);
+		fnFindMatchAtLineStart(L"warning: ", idxStart, rangeWarnings);
+	} while ((idxStart = text.Find('\n', idxStart) + 1) > 0 && idxStart < text.GetLength());
+
+	const COLORREF colorError{CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0)};
+	CAppUtils::SetCharFormat(edit, CFM_BOLD, CFE_BOLD, rangeErrors);
+	CAppUtils::SetCharFormat(edit, CFM_COLOR, colorError, rangeErrors);
+	const COLORREF colorWarning{CTheme::Instance().IsDarkTheme() ? RGB(185, 185, 0) : RGB(160, 160, 0)};
+	CAppUtils::SetCharFormat(edit, CFM_BOLD, CFE_BOLD, rangeWarnings);
+	CAppUtils::SetCharFormat(edit, CFM_COLOR, colorWarning, rangeWarnings);
+
+	return (rangeErrors.empty() && rangeWarnings.empty() ? FALSE : TRUE);
 }
 
 BOOL CAppUtils::StyleURLs(const CString& msg, CWnd* pWnd)

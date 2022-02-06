@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -395,6 +395,8 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			CString text;
 			m_Log.GetWindowText(text);
 			text.Remove('\r');
+			if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleGitOutput", TRUE)) == TRUE)
+				CAppUtils::StyleWarningsErrors(text, &m_Log);
 			CAppUtils::StyleURLs(text, &m_Log);
 		}
 

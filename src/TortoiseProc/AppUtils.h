@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -127,6 +127,10 @@ public:
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
 	static bool FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end);
+	/**
+	* highlight warnings and errors returned by git command in rich edit control colored in bold 
+	*/
+	static BOOL StyleWarningsErrors(const CString& text, CRichEditCtrl* edit);
 	/**
 	* implements URL searching with the same logic as CSciEdit::StyleURLs
 	*/

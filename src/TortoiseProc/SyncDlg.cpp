@@ -1448,6 +1448,8 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			CString text;
 			m_ctrlCmdOut.GetWindowText(text);
 			text.Remove('\r');
+			if (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\StyleGitOutput", TRUE)) == TRUE)
+				CAppUtils::StyleWarningsErrors(text, &m_ctrlCmdOut);
 			CAppUtils::StyleURLs(text, &m_ctrlCmdOut);
 		}
 

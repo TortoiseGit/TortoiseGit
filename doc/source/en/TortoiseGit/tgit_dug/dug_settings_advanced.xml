@@ -491,6 +491,17 @@
 		  </listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">StyleGitOutput</term>
+				<listitem>
+					<para>
+					The Git.exe progress dialogs shows the output of a Git.exe
+					process and use colors to highlights errors and warnings.
+					If you don't want to do this, set the value to
+					<literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">TGitCacheCheckContentMaxSize</term>
 			<listitem>
 				<para>
