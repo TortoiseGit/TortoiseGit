@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007, 2009, 2011-2015, 2017-2020 - TortoiseSVN
+// Copyright (C) 2007, 2009, 2011-2015, 2017-2020, 2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -426,9 +426,21 @@ LRESULT CFilterEdit::OnPaste(WPARAM, LPARAM)
 	CClipboardHelper clipboardHelper;
 	if (clipboardHelper.Open(nullptr))
 	{
-		HANDLE hData = GetClipboardData (CF_TEXT);
-		CString toInsert(static_cast<const char*>(GlobalLock(hData)));
-		GlobalUnlock(hData);
+		CString toInsert;
+		HGLOBAL hglb = GetClipboardData(CF_TEXT);
+		if (hglb)
+		{
+			LPCSTR lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
+			toInsert = CString(lpstr);
+			GlobalUnlock(hglb);
+		}
+		hglb = GetClipboardData(CF_UNICODETEXT);
+		if (hglb)
+		{
+			LPCWSTR lpstr = static_cast<LPCWSTR>(GlobalLock(hglb));
+			toInsert = lpstr;
+			GlobalUnlock(hglb);
+		}
 
 		// elimate control chars, especially newlines
 		toInsert.Replace(L'\t', L' ');
