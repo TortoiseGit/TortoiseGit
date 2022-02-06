@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2018-2021 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2022 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,11 +20,11 @@
 #include "stdafx.h"
 #include "resource.h"			//if you defined some IDS_MSGBOX_xxxx this include is needed!
 #include "messagebox.h"
-#include "ClipboardHelper.h"
 #include "SmartHandle.h"
 #include <afxtaskdialog.h>
 #include "DPIAware.h"
 #include "LoadIconEx.h"
+#include "StringUtils.h"
 
 #define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
@@ -1142,18 +1142,7 @@ BOOL CMessageBox::PreTranslateMessage(MSG* pMsg)
 			{
 				if (GetAsyncKeyState(VK_CONTROL)&0x8000)
 				{
-					CClipboardHelper clipboardHelper;
-					if(clipboardHelper.Open(GetSafeHwnd()))
-					{
-						EmptyClipboard();
-						CStringA sClipboard = CStringA(m_sMessage);
-						HGLOBAL hClipboardData = CClipboardHelper::GlobalAlloc(sClipboard.GetLength()+1);
-						auto pchData = static_cast<char*>(GlobalLock(hClipboardData));
-						if (pchData)
-							strcpy_s(pchData, sClipboard.GetLength() + 1, static_cast<LPCSTR>(sClipboard));
-						GlobalUnlock(hClipboardData);
-						SetClipboardData(CF_TEXT,hClipboardData);
-					}
+					CStringUtils::WriteAsciiStringToClipboard(m_sMessage, GetSafeHwnd());
 					return TRUE;
 				}
 			}
