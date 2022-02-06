@@ -501,7 +501,7 @@ Don't touch these lines:
 							<entry condition="pot">:rebase</entry>
 							<entry>
 								Opens the <link linkend="tgit-dug-rebase">rebase dialog</link> for the working tree located in
-								<option>/path</option>. To select the upstream branch/commit use the <option>/uptream:rev</option> option.
+								<option>/path</option>. To select the upstream branch/commit use the <option>/upstream</option> option.
 								For activating the force option use <option>/force</option>. 
 							</entry>
 						</row>
