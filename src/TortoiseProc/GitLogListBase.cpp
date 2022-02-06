@@ -3498,7 +3498,8 @@ LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM /*lParam*/)
 void CGitLogListBase::SaveColumnWidths()
 {
 	// HACK that graph column is always shown
-	SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
+	if (m_ColumnManager.GetColumnCount() > 0)
+		SetColumnWidth(0, m_ColumnManager.GetWidth(0, false));
 
 	__super::SaveColumnWidths();
 }
