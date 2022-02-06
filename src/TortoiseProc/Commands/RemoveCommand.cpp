@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019, 2022 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -135,8 +135,8 @@ bool RemoveCommand::Execute()
 	else
 		format = L"git.exe rm -r -f -- \"%s\"";
 
-	int nPath;
-	for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
+	int pathsHandled = 0;
+	for (int nPath = 0; nPath < pathList.GetCount(); ++nPath)
 	{
 		CString cmd;
 		CString output;
@@ -146,10 +146,12 @@ bool RemoveCommand::Execute()
 			if (CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return FALSE;
 		}
+		else
+			++pathsHandled;
 	}
 
 	CString output;
-	output.Format(IDS_PROC_FILESREMOVED, nPath);
+	output.Format(IDS_PROC_FILESREMOVED, pathsHandled);
 
 	CShellUpdater::Instance().AddPathsForUpdate(pathList);
 
