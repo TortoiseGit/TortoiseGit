@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019, 2021 - TortoiseGit
+// Copyright (C) 2011-2019, 2021-2022 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,8 +97,7 @@ int wcswildcmp(const wchar_t *wild, const wchar_t *string)
 	return !*wild;
 }
 
-#ifdef _MFC_VER
-
+#if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
 void CStringUtils::RemoveAccelerators(CString& text)
 {
 	int pos = 0;
@@ -111,6 +110,12 @@ void CStringUtils::RemoveAccelerators(CString& text)
 		}
 		++pos;
 	}
+}
+
+CString CStringUtils::EscapeAccellerators(CString& text)
+{
+	text.Replace(L"&", L"&&");
+	return text;
 }
 
 wchar_t CStringUtils::GetAccellerator(const CString& text)
@@ -127,7 +132,8 @@ wchar_t CStringUtils::GetAccellerator(const CString& text)
 	}
 	return L'\0';
 }
-
+#endif
+#ifdef _MFC_VER
 bool CStringUtils::WriteAsciiStringToClipboard(const CStringA& sClipdata, LCID lcid, HWND hOwningWnd)
 {
 	CClipboardHelper clipboardHelper;
@@ -229,7 +235,9 @@ bool CStringUtils::WriteDiffToClipboard(const CStringA& sClipdata, HWND hOwningW
 
 	return true;
 }
+#endif
 
+#ifdef _MFC_VER
 bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 {
 	if (!PathFileExists(path))

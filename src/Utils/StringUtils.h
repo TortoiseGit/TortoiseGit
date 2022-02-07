@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010, 2020-2021 - TortoiseSVN
+// Copyright (C) 2003-2010, 2020-2022 - TortoiseSVN
 // Copyright (C) 2015-2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -148,7 +148,7 @@ class CStringUtils
 {
 public:
 	CStringUtils() = delete;
-#ifdef _MFC_VER
+#if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
 
 	/**
 	 * Removes all '&' chars from a string.
@@ -160,6 +160,13 @@ public:
 	 */
 	static wchar_t GetAccellerator(const CString& text);
 
+	/**
+	 * Escapes all '&' chars from a string with another '&'.
+	 */
+	static CString EscapeAccellerators(CString& text);
+#endif
+
+#ifdef _MFC_VER
 	/**
 	 * Writes an ASCII CString to the clipboard in CF_TEXT format
 	 */
