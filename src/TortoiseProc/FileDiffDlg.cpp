@@ -573,8 +573,7 @@ static CString GetCommitTitle(const GitRev& rev)
 		commitTitle.Truncate(20);
 		commitTitle += L"...";
 	}
-	commitTitle.Replace(L"&", L"&&");
-	str.AppendFormat(L"%s (%s)", static_cast<LPCWSTR>(rev.m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCWSTR>(commitTitle));
+	str.AppendFormat(L"%s (%s)", static_cast<LPCWSTR>(rev.m_CommitHash.ToString(g_Git.GetShortHASHLength())), static_cast<LPCWSTR>(CStringUtils::EscapeAccellerators(commitTitle)));
 	return str;
 }
 

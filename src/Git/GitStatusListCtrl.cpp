@@ -4636,8 +4636,7 @@ bool CGitStatusListCtrl::GetParentCommitInfo(const CGitHash& hash, const int par
 			commitTitle.Truncate(20);
 			commitTitle += L"...";
 		}
-		commitTitle.Replace(L"&", L"&&");
-		title.Format(L"\"%s\" (%s)", static_cast<LPCWSTR>(commitTitle), static_cast<LPCWSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
+		title.Format(L"\"%s\" (%s)", static_cast<LPCWSTR>(CStringUtils::EscapeAccellerators(commitTitle)), static_cast<LPCWSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));
 	}
 	else
 		title.Format(L"(%s)", static_cast<LPCWSTR>(parentHash.ToString(g_Git.GetShortHASHLength())));

@@ -1834,8 +1834,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					commitTitle.Truncate(20);
 					commitTitle += L"...";
 				}
-				commitTitle.Replace(L"&", L"&&");
-				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCWSTR>(commitTitle), static_cast<LPCWSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
+				str.AppendFormat(L": \"%s\" (%s)", static_cast<LPCWSTR>(CStringUtils::EscapeAccellerators(commitTitle)), static_cast<LPCWSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
 			}
 			else
 				str.AppendFormat(L" (%s)", static_cast<LPCWSTR>(parentHash[i].ToString(g_Git.GetShortHASHLength())));
