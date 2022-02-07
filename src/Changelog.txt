@@ -1,5 +1,5 @@
-﻿= Release 2.14.0 =
-Released: unreleased
+﻿= Release 2.13.0.1 =
+Released: 2022-02-06
 
 == Bug Fixes ==
  * Fixed issue #3856: Documentation Problem - Rebase needs more info and accurate info for setting upstream from CLI
