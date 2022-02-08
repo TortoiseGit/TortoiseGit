@@ -70,7 +70,7 @@ Released: 2022-01-31
  * Fixed issue #3658: Cannot "format-patch" from from stash
  * Fixed issue #3791: TortoiseGitMerge: Ensure the line has an EOL unless it's the end of the document
  * Fixed issue #3790: TortoiseGitMerge: Prevent calling "mark as resolved" twice
- * Fixed issue #6765: TortoiseGitMerge crashes with files larger than 1GB
+ * Fixed issue #3765: TortoiseGitMerge crashes with files larger than 1GB
  * Fixed issue #3826: Help links to TortoiseGit site don't open in a sensible browser
  * Fixed issue #3770: TortoiseGitMerge can't apply NonANSI (e.g., UTF-8) patch
  * Fixed issue #3708: Log window becomes unresponsive when selecting commit with large file list
