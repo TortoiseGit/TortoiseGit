@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2021 - TortoiseGit
+// Copyright (C) 2014-2022 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -158,7 +158,7 @@ public:
 		m_Ref = h;
 	}
 
-	CAutoRepository(CAutoRepository&& that)
+	CAutoRepository(CAutoRepository&& that) noexcept
 	{
 		m_Ref = that.Detach();
 	}
