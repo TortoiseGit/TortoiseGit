@@ -2384,7 +2384,7 @@ void CMainFrame::OnUpdateEditPaste(CCmdUI *pCmdUI)
 		bWritable = TRUE;
 	else if ((m_pwndLeftView)&&(m_pwndLeftView->IsWritable()))
 		bWritable = TRUE;
-	pCmdUI->Enable(bWritable && ::IsClipboardFormatAvailable(CF_TEXT));
+	pCmdUI->Enable(bWritable && (::IsClipboardFormatAvailable(CF_TEXT) || ::IsClipboardFormatAvailable(CF_UNICODETEXT)));
 }
 
 void CMainFrame::OnViewSwitchleft()
