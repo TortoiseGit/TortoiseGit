@@ -703,8 +703,8 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
 		std::wstring filename = szFileName;
-		::WriteFile (file, filename.c_str(), static_cast<DWORD>(filename.size()) * sizeof(wchar_t), &written, 0);
-		::WriteFile(file, L"\n", 2, &written, 0);
+		::WriteFile (file, filename.c_str(), static_cast<DWORD>(filename.size()) * sizeof(wchar_t), &written, nullptr);
+		::WriteFile(file, L"\n", 2, &written, nullptr);
 	}
 
 	return true;
