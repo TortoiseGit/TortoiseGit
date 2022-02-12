@@ -26,6 +26,7 @@
 #include "TGitPath.h"
 #include "Git.h"
 #include "UnicodeUtils.h"
+#ifndef TGIT_TESTS_ONLY
 #include "ExportDlg.h"
 #include "ProgressDlg.h"
 #include "GitAdminDir.h"
@@ -43,7 +44,7 @@
 #include "MergeDlg.h"
 #include "MergeAbortDlg.h"
 #include "Hooks.h"
-#include "../Settings/Settings.h"
+#include "Settings/Settings.h"
 #include "InputDlg.h"
 #include "SVNDCommitDlg.h"
 #include "requestpulldlg.h"
@@ -70,7 +71,9 @@
 #include "DPIAware.h"
 #include "IconExtractor.h"
 #include "ClipboardHelper.h"
+#endif
 
+#ifndef TGIT_TESTS_ONLY
 static struct last_accepted_cert {
 	BYTE*		data;
 	size_t		len;
@@ -828,6 +831,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 	} while(nNewlinePos>=0);
 	return bStyled;
 }
+#endif
 
 bool CAppUtils::FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end)
 {
@@ -917,10 +921,8 @@ namespace {
 	}
 }
 
-BOOL CAppUtils::StyleWarningsErrors(const CString& text, CRichEditCtrl* edit)
+bool CAppUtils::FindWarningsErrors(const CString& text, std::vector<CHARRANGE>& rangeErrors, std::vector<CHARRANGE>& rangeWarnings)
 {
-	ASSERT(edit);
-
 	if (text.IsEmpty())
 		return FALSE;
 	const auto fnFindMatchAtLineStart = [&](const wchar_t* const needle, int idxStart, std::vector<CHARRANGE>& vRange) -> void {
@@ -935,8 +937,6 @@ BOOL CAppUtils::StyleWarningsErrors(const CString& text, CRichEditCtrl* edit)
 		}
 	};
 
-	std::vector<CHARRANGE> rangeErrors;
-	std::vector<CHARRANGE> rangeWarnings;
 	int idxStart = 0;
 	do
 	{
@@ -945,14 +945,27 @@ BOOL CAppUtils::StyleWarningsErrors(const CString& text, CRichEditCtrl* edit)
 		fnFindMatchAtLineStart(L"warning: ", idxStart, rangeWarnings);
 	} while ((idxStart = text.Find('\n', idxStart) + 1) > 0 && idxStart < text.GetLength());
 
-	const COLORREF colorError{CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0)};
+	return !rangeErrors.empty() || !rangeWarnings.empty();
+}
+
+#ifndef TGIT_TESTS_ONLY
+BOOL CAppUtils::StyleWarningsErrors(const CString& text, CRichEditCtrl* edit)
+{
+	ASSERT(edit);
+
+	std::vector<CHARRANGE> rangeErrors;
+	std::vector<CHARRANGE> rangeWarnings;
+	if (!FindWarningsErrors(text, rangeErrors, rangeWarnings))
+		return FALSE;
+
+	const COLORREF colorError{ CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0) };
 	CAppUtils::SetCharFormat(edit, CFM_BOLD, CFE_BOLD, rangeErrors);
 	CAppUtils::SetCharFormat(edit, CFM_COLOR, colorError, rangeErrors);
-	const COLORREF colorWarning{CTheme::Instance().IsDarkTheme() ? RGB(185, 185, 0) : RGB(160, 160, 0)};
+	const COLORREF colorWarning{ CTheme::Instance().IsDarkTheme() ? RGB(185, 185, 0) : RGB(160, 160, 0) };
 	CAppUtils::SetCharFormat(edit, CFM_BOLD, CFE_BOLD, rangeWarnings);
 	CAppUtils::SetCharFormat(edit, CFM_COLOR, colorWarning, rangeWarnings);
 
-	return (rangeErrors.empty() && rangeWarnings.empty() ? FALSE : TRUE);
+	return TRUE;
 }
 
 BOOL CAppUtils::StyleURLs(const CString& msg, CWnd* pWnd)
@@ -962,6 +975,7 @@ BOOL CAppUtils::StyleURLs(const CString& msg, CWnd* pWnd)
 
 	return positions.empty() ? FALSE : TRUE;
 }
+#endif
 
 /**
 * implements URL searching with the same logic as CSciEdit::StyleURLs
@@ -1015,6 +1029,7 @@ std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
 	return result;
 }
 
+#ifndef TGIT_TESTS_ONLY
 bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CString& rev1,
 												const CTGitPath& /*url2*/, const CString& rev2,
 												//const GitRev& peg /* = GitRev */, const GitRev& headpeg /* = GitRev */,
@@ -3978,3 +3993,4 @@ void CAppUtils::SetupBareRepoIcon(const CString& path)
 		PathMakeSystemFolder(path);
 	}
 }
+#endif

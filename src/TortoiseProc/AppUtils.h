@@ -52,6 +52,7 @@ public:
 	CAppUtils() = delete;
 
 public:
+#ifndef TGIT_TESTS_ONLY
 	/**
 	 * Launches the external merge program if there is one.
 	 * \return TRUE if the program could be started
@@ -120,7 +121,10 @@ public:
 	 * text in between _ chars is underlined
 	 */
 	static bool FormatTextInRichEditControl(CWnd * pWnd);
+#endif
 	static bool FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end);
+	static bool FindWarningsErrors(const CString& text, std::vector<CHARRANGE>& rangeErrors, std::vector<CHARRANGE>& rangeWarnings);
+#ifndef TGIT_TESTS_ONLY
 	/**
 	* highlight warnings and errors returned by git command in rich edit control colored in bold 
 	*/
@@ -128,7 +132,9 @@ public:
 	/**
 	* implements URL searching with the same logic as CSciEdit::StyleURLs
 	*/
+#endif
 	static std::vector<CHARRANGE> FindURLMatches(const CString& msg);
+#ifndef TGIT_TESTS_ONLY
 	static BOOL StyleURLs(const CString& msg, CWnd* pWnd);
 
 	/**
@@ -241,4 +247,5 @@ private:
 	static bool OpenIgnoreFile(HWND hWnd, CIgnoreFile& file, const CString& filename);
 
 	static void DescribeConflictFile(bool mode, bool base,CString &descript);
+#endif
 };

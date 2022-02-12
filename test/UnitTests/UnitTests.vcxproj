@@ -52,8 +52,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\ext\scintilla\include;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\json\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\GitWCRev;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GTEST_HAS_STD_TUPLE_;GTEST_HAS_TR1_TUPLE=0;TGIT_LFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\json\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\GitWCRev;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TGIT_TESTS_ONLY;GTEST_HAS_STD_TUPLE_;GTEST_HAS_TR1_TUPLE=0;TGIT_LFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
       <AdditionalOptions>/Zm110 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -78,6 +78,7 @@
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\Patch.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\AppUtils.h" />
     <ClInclude Include="..\..\src\TortoiseProc\DiffLinesForStaging.h" />
     <ClInclude Include="..\..\src\TortoiseProc\gitlogcache.h" />
     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
@@ -132,6 +133,7 @@
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\AppUtils.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\DiffLinesForStaging.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\GitLogCache.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
@@ -159,6 +161,7 @@
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
     <ClCompile Include="..\..\src\Utils\WindowsCredentialsStore.cpp" />
     <ClCompile Include="AutoTempDir.cpp" />
+    <ClCompile Include="AppUtilsTest.cpp" />
     <ClCompile Include="CmdLineParserTest.cpp" />
     <ClCompile Include="FileTextLinesTest.cpp" />
     <ClCompile Include="GitAdminDirTest.cpp" />
