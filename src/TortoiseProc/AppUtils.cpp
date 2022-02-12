@@ -672,18 +672,6 @@ BOOL CAppUtils::StartTextViewer(CString file)
 	return TRUE;
 }
 
-BOOL CAppUtils::CheckForEmptyDiff(const CTGitPath& sDiffPath)
-{
-	DWORD length = 0;
-	CAutoFile hFile = ::CreateFile(sDiffPath.GetWinPath(), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
-	if (!hFile)
-		return TRUE;
-	length = ::GetFileSize(hFile, nullptr);
-	if (length < 4)
-		return TRUE;
-	return FALSE;
-}
-
 bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* pRemote)
 {
 	CString key,remote;

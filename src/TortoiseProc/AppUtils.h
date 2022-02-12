@@ -98,12 +98,6 @@ public:
 	static BOOL StartTextViewer(CString file);
 
 	/**
-	 * Checks if the given file has a size of less than four, which means
-	 * an 'empty' file or just newlines, i.e. an empty diff.
-	 */
-	static BOOL CheckForEmptyDiff(const CTGitPath& sDiffPath);
-
-	/**
 	* Launch the external blame viewer
 	*/
 	static bool LaunchTortoiseBlame(
