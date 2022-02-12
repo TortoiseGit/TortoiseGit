@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2021 - TortoiseGit
+// Copyright (C) 2015-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1673,7 +1673,7 @@ public:
 	{
 		ON_CALL(*this, UpdateAttributes()).WillByDefault(testing::Invoke(this, &MockCTGitPath::UpdateAttributes_Real));
 	}
-	MOCK_CONST_METHOD0(UpdateAttributes, void());
+	MOCK_METHOD(void, UpdateAttributes, (), (const));
 
 private:
 	void UpdateAttributes_Real() { CTGitPath::UpdateAttributes(); }
