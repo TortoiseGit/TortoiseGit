@@ -55,6 +55,7 @@
 #include "UniConversion.h"
 #include "DBCS.h"
 
+#include "WinTypes.h"
 #include "PlatWin.h"
 
 #ifndef SPI_GETFONTSMOOTHINGCONTRAST
@@ -214,7 +215,7 @@ void LoadDpiForWindow() noexcept {
 
 HINSTANCE hinstPlatformRes {};
 
-const Supports SupportsGDI[] = {
+constexpr Supports SupportsGDI[] = {
 	Supports::PixelModification,
 };
 
@@ -368,6 +369,22 @@ struct FontDirectWrite : public FontWin {
 		lf.lfHeight = -static_cast<int>(pTextFormat->GetFontSize());
 		return ::CreateFontIndirectW(&lf);
 	}
+
+	int CodePageText(int codePage) const noexcept {
+		if (!(codePage == CpUtf8) && (characterSet != CharacterSet::Ansi)) {
+			codePage = CodePageFromCharSet(characterSet, codePage);
+		}
+		return codePage;
+	}
+
+	static const FontDirectWrite *Cast(const Font *font_) {
+		const FontDirectWrite *pfm = dynamic_cast<const FontDirectWrite *>(font_);
+		PLATFORM_ASSERT(pfm);
+		if (!pfm) {
+			throw std::runtime_error("SurfaceD2D::SetFont: wrong Font type.");
+		}
+		return pfm;
+	}
 };
 #endif
 
@@ -467,9 +484,9 @@ class SurfaceGDI : public Surface {
 
 	int logPixelsY = USER_DEFAULT_SCREEN_DPI;
 
-	int maxWidthMeasure = INT_MAX;
+	static constexpr int maxWidthMeasure = INT_MAX;
 	// There appears to be a 16 bit string length limit in GDI on NT.
-	int maxLenText = 65535;
+	static constexpr int maxLenText = 65535;
 
 	void PenColour(ColourRGBA fore, XYPOSITION widthStroke) noexcept;
 
@@ -865,18 +882,6 @@ void DIBSection::SetSymmetric(LONG x, LONG y, DWORD value) noexcept {
 	SetPixel(xSymmetric, ySymmetric, value);
 }
 
-constexpr unsigned int Proportional(unsigned char a, unsigned char b, XYPOSITION t) noexcept {
-	return static_cast<unsigned int>(a + t * (b - a));
-}
-
-ColourRGBA Proportional(ColourRGBA a, ColourRGBA b, XYPOSITION t) noexcept {
-	return ColourRGBA(
-		Proportional(a.GetRed(), b.GetRed(), t),
-		Proportional(a.GetGreen(), b.GetGreen(), t),
-		Proportional(a.GetBlue(), b.GetBlue(), t),
-		Proportional(a.GetAlpha(), b.GetAlpha(), t));
-}
-
 ColourRGBA GradientValue(const std::vector<ColourStop> &stops, XYPOSITION proportion) noexcept {
 	for (size_t stop = 0; stop < stops.size() - 1; stop++) {
 		// Loop through each pair of stops
@@ -885,7 +890,7 @@ ColourRGBA GradientValue(const std::vector<ColourStop> &stops, XYPOSITION propor
 		if ((proportion >= positionStart) && (proportion <= positionEnd)) {
 			const XYPOSITION proportionInPair = (proportion - positionStart) /
 				(positionEnd - positionStart);
-			return Proportional(stops[stop].colour, stops[stop + 1].colour, proportionInPair);
+			return stops[stop].colour.MixedWith(stops[stop + 1].colour, proportionInPair);
 		}
 	}
 	// Loop should always find a value
@@ -1272,11 +1277,12 @@ constexpr D2D1_POINT_2F DPointFromPoint(Point point) noexcept {
 	return { static_cast<FLOAT>(point.x), static_cast<FLOAT>(point.y) };
 }
 
-const Supports SupportsD2D[] = {
+constexpr Supports SupportsD2D[] = {
 	Supports::LineDrawsFinal,
 	Supports::FractionalStrokeWidth,
 	Supports::TranslucentStroke,
 	Supports::PixelModification,
+	Supports::ThreadSafeMeasureWidths,
 };
 
 constexpr D2D_COLOR_F ColorFromColourAlpha(ColourRGBA colour) noexcept {
@@ -1303,24 +1309,18 @@ class BlobInline;
 class SurfaceD2D : public Surface {
 	SurfaceMode mode;
 
-	int codePageText = 0;
-
 	ID2D1RenderTarget *pRenderTarget = nullptr;
 	ID2D1BitmapRenderTarget *pBitmapRenderTarget = nullptr;
 	bool ownRenderTarget = false;
 	int clipsActive = 0;
 
-	IDWriteTextFormat *pTextFormat = nullptr;
-	FLOAT yAscent = 2;
-	FLOAT yDescent = 1;
-	FLOAT yInternalLeading = 0;
-
 	ID2D1SolidColorBrush *pBrush = nullptr;
 
+	FontQuality fontQuality = FontQuality::QualityMask;
 	int logPixelsY = USER_DEFAULT_SCREEN_DPI;
 
 	void Clear() noexcept;
-	void SetFont(const Font *font_);
+	void SetFontQuality(FontQuality extraFontFlag);
 	HRESULT GetBitmap(ID2D1Bitmap **ppBitmap);
 
 public:
@@ -1442,6 +1442,7 @@ void SurfaceD2D::Release() noexcept {
 }
 
 void SurfaceD2D::SetScale(WindowID wid) noexcept {
+	fontQuality = FontQuality::QualityMask;
 	logPixelsY = DpiForWindow(wid);
 }
 
@@ -1495,23 +1496,10 @@ void SurfaceD2D::D2DPenColourAlpha(ColourRGBA fore) noexcept {
 	}
 }
 
-void SurfaceD2D::SetFont(const Font *font_) {
-	const FontDirectWrite *pfm = dynamic_cast<const FontDirectWrite *>(font_);
-	PLATFORM_ASSERT(pfm);
-	if (!pfm) {
-		throw std::runtime_error("SurfaceD2D::SetFont: wrong Font type.");
-	}
-	pTextFormat = pfm->pTextFormat;
-	yAscent = pfm->yAscent;
-	yDescent = pfm->yDescent;
-	yInternalLeading = pfm->yInternalLeading;
-	codePageText = mode.codePage;
-	if (!(mode.codePage == CpUtf8) && (pfm->characterSet != CharacterSet::Ansi)) {
-		codePageText = CodePageFromCharSet(pfm->characterSet, mode.codePage);
-	}
-	if (pRenderTarget) {
-		D2D1_TEXT_ANTIALIAS_MODE aaMode;
-		aaMode = DWriteMapFontQuality(pfm->extraFontFlag);
+void SurfaceD2D::SetFontQuality(FontQuality extraFontFlag) {
+	if (fontQuality != extraFontFlag) {
+		fontQuality = extraFontFlag;
+		const D2D1_TEXT_ANTIALIAS_MODE aaMode = DWriteMapFontQuality(extraFontFlag);
 
 		if (aaMode == D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE && customClearTypeRenderingParams)
 			pRenderTarget->SetTextRenderingParams(customClearTypeRenderingParams);
@@ -1916,7 +1904,7 @@ void SurfaceD2D::Copy(PRectangle rc, Point from, Surface &surfaceSource) {
 	const HRESULT hr = surfOther.GetBitmap(&pBitmap);
 	if (SUCCEEDED(hr) && pBitmap) {
 		const D2D1_RECT_F rcDestination = RectangleFromPRectangle(rc);
-		D2D1_RECT_F rcSource = RectangleFromPRectangle(PRectangle(
+		const D2D1_RECT_F rcSource = RectangleFromPRectangle(PRectangle(
 			from.x, from.y, from.x + rc.Width(), from.y + rc.Height()));
 		pRenderTarget->DrawBitmap(pBitmap, rcDestination, 1.0f,
 			D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR, rcSource);
@@ -2154,9 +2142,8 @@ ScreenLineLayout::ScreenLineLayout(const IScreenLine *screenLine) {
 	text = screenLine->Text();
 
 	// Get textFormat
-	const FontDirectWrite *pfm = dynamic_cast<const FontDirectWrite *>(screenLine->FontOfPosition(0));
-
-	if (!pIDWriteFactory || !pfm || !pfm->pTextFormat) {
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(screenLine->FontOfPosition(0));
+	if (!pfm->pTextFormat) {
 		return;
 	}
 
@@ -2326,12 +2313,13 @@ std::unique_ptr<IScreenLineLayout> SurfaceD2D::Layout(const IScreenLine *screenL
 }
 
 void SurfaceD2D::DrawTextCommon(PRectangle rc, const Font *font_, XYPOSITION ybase, std::string_view text, int codePageOverride, UINT fuOptions) {
-	SetFont(font_);
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (pfm->pTextFormat && pRenderTarget && pBrush) {
+		// Use Unicode calls
+		const int codePageDraw = codePageOverride ? codePageOverride : pfm->CodePageText(mode.codePage);
+		const TextWide tbuf(text, codePageDraw);
 
-	// Use Unicode calls
-	const int codePageDraw = codePageOverride ? codePageOverride : codePageText;
-	const TextWide tbuf(text, codePageDraw);
-	if (pRenderTarget && pTextFormat && pBrush) {
+		SetFontQuality(pfm->extraFontFlag);
 		if (fuOptions & ETO_CLIPPED) {
 			const D2D1_RECT_F rcClip = RectangleFromPRectangle(rc);
 			pRenderTarget->PushAxisAlignedClip(rcClip, D2D1_ANTIALIAS_MODE_ALIASED);
@@ -2342,12 +2330,12 @@ void SurfaceD2D::DrawTextCommon(PRectangle rc, const Font *font_, XYPOSITION yba
 		const HRESULT hr = pIDWriteFactory->CreateTextLayout(
 				tbuf.buffer,
 				tbuf.tlen,
-				pTextFormat,
+				pfm->pTextFormat,
 				static_cast<FLOAT>(rc.Width()),
 				static_cast<FLOAT>(rc.Height()),
 				&pTextLayout);
 		if (SUCCEEDED(hr)) {
-			D2D1_POINT_2F origin = DPointFromPoint(Point(rc.left, ybase-yAscent));
+			const D2D1_POINT_2F origin = DPointFromPoint(Point(rc.left, ybase - pfm->yAscent));
 			pRenderTarget->DrawTextLayout(origin, pTextLayout, pBrush, d2dDrawTextOptions);
 			ReleaseUnknown(pTextLayout);
 		}
@@ -2391,18 +2379,19 @@ void SurfaceD2D::DrawTextTransparent(PRectangle rc, const Font *font_, XYPOSITIO
 }
 
 void SurfaceD2D::MeasureWidths(const Font *font_, std::string_view text, XYPOSITION *positions) {
-	SetFont(font_);
-	if (!pIDWriteFactory || !pTextFormat) {
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (!pfm->pTextFormat) {
 		// SetFont failed or no access to DirectWrite so give up.
 		return;
 	}
+	const int codePageText = pfm->CodePageText(mode.codePage);
 	const TextWide tbuf(text, codePageText);
 	TextPositions poses(tbuf.tlen);
 	// Initialize poses for safety.
 	std::fill(poses.buffer, poses.buffer + tbuf.tlen, 0.0f);
 	// Create a layout
 	IDWriteTextLayout *pTextLayout = nullptr;
-	const HRESULT hrCreate = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pTextFormat, 10000.0, 1000.0, &pTextLayout);
+	const HRESULT hrCreate = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pfm->pTextFormat, 10000.0, 1000.0, &pTextLayout);
 	if (!SUCCEEDED(hrCreate) || !pTextLayout) {
 		return;
 	}
@@ -2424,7 +2413,7 @@ void SurfaceD2D::MeasureWidths(const Font *font_, std::string_view text, XYPOSIT
 		position += clusterMetrics[ci].width;
 	}
 	PLATFORM_ASSERT(ti == tbuf.tlen);
-	if (mode.codePage == CpUtf8) {
+	if (codePageText == CpUtf8) {
 		// Map the widths given for UTF-16 characters back onto the UTF-8 input string
 		size_t i = 0;
 		for (int ui = 0; ui < tbuf.tlen; ui++) {
@@ -2469,12 +2458,12 @@ void SurfaceD2D::MeasureWidths(const Font *font_, std::string_view text, XYPOSIT
 
 XYPOSITION SurfaceD2D::WidthText(const Font *font_, std::string_view text) {
 	FLOAT width = 1.0;
-	SetFont(font_);
-	const TextWide tbuf(text, codePageText);
-	if (pIDWriteFactory && pTextFormat) {
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (pfm->pTextFormat) {
+		const TextWide tbuf(text, pfm->CodePageText(mode.codePage));
 		// Create a layout
 		IDWriteTextLayout *pTextLayout = nullptr;
-		const HRESULT hr = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pTextFormat, 1000.0, 1000.0, &pTextLayout);
+		const HRESULT hr = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pfm->pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr) && pTextLayout) {
 			DWRITE_TEXT_METRICS textMetrics;
 			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
@@ -2518,9 +2507,8 @@ void SurfaceD2D::DrawTextTransparentUTF8(PRectangle rc, const Font *font_, XYPOS
 }
 
 void SurfaceD2D::MeasureWidthsUTF8(const Font *font_, std::string_view text, XYPOSITION *positions) {
-	SetFont(font_);
-	if (!pIDWriteFactory || !pTextFormat) {
-		// SetFont failed or no access to DirectWrite so give up.
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (!pfm->pTextFormat) {
 		return;
 	}
 	const TextWide tbuf(text, CpUtf8);
@@ -2529,7 +2517,7 @@ void SurfaceD2D::MeasureWidthsUTF8(const Font *font_, std::string_view text, XYP
 	std::fill(poses.buffer, poses.buffer + tbuf.tlen, 0.0f);
 	// Create a layout
 	IDWriteTextLayout *pTextLayout = nullptr;
-	const HRESULT hrCreate = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pTextFormat, 10000.0, 1000.0, &pTextLayout);
+	const HRESULT hrCreate = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pfm->pTextFormat, 10000.0, 1000.0, &pTextLayout);
 	if (!SUCCEEDED(hrCreate) || !pTextLayout) {
 		return;
 	}
@@ -2572,12 +2560,12 @@ void SurfaceD2D::MeasureWidthsUTF8(const Font *font_, std::string_view text, XYP
 
 XYPOSITION SurfaceD2D::WidthTextUTF8(const Font * font_, std::string_view text) {
 	FLOAT width = 1.0;
-	SetFont(font_);
-	const TextWide tbuf(text, CpUtf8);
-	if (pIDWriteFactory && pTextFormat) {
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (pfm->pTextFormat) {
+		const TextWide tbuf(text, CpUtf8);
 		// Create a layout
 		IDWriteTextLayout *pTextLayout = nullptr;
-		const HRESULT hr = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pTextFormat, 1000.0, 1000.0, &pTextLayout);
+		const HRESULT hr = pIDWriteFactory->CreateTextLayout(tbuf.buffer, tbuf.tlen, pfm->pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr)) {
 			DWRITE_TEXT_METRICS textMetrics;
 			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
@@ -2589,34 +2577,35 @@ XYPOSITION SurfaceD2D::WidthTextUTF8(const Font * font_, std::string_view text) 
 }
 
 XYPOSITION SurfaceD2D::Ascent(const Font *font_) {
-	SetFont(font_);
-	return std::ceil(yAscent);
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	return std::ceil(pfm->yAscent);
 }
 
 XYPOSITION SurfaceD2D::Descent(const Font *font_) {
-	SetFont(font_);
-	return std::ceil(yDescent);
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	return std::ceil(pfm->yDescent);
 }
 
 XYPOSITION SurfaceD2D::InternalLeading(const Font *font_) {
-	SetFont(font_);
-	return std::floor(yInternalLeading);
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	return std::floor(pfm->yInternalLeading);
 }
 
 XYPOSITION SurfaceD2D::Height(const Font *font_) {
-	return Ascent(font_) + Descent(font_);
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	return std::ceil(pfm->yAscent) + std::ceil(pfm->yDescent);
 }
 
 XYPOSITION SurfaceD2D::AverageCharWidth(const Font *font_) {
 	FLOAT width = 1.0;
-	SetFont(font_);
-	if (pIDWriteFactory && pTextFormat) {
+	const FontDirectWrite *pfm = FontDirectWrite::Cast(font_);
+	if (pfm->pTextFormat) {
 		// Create a layout
 		IDWriteTextLayout *pTextLayout = nullptr;
-		static const WCHAR wszAllAlpha[] = L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		static constexpr WCHAR wszAllAlpha[] = L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		const size_t lenAllAlpha = wcslen(wszAllAlpha);
 		const HRESULT hr = pIDWriteFactory->CreateTextLayout(wszAllAlpha, static_cast<UINT32>(lenAllAlpha),
-			pTextFormat, 1000.0, 1000.0, &pTextLayout);
+			pfm->pTextFormat, 1000.0, 1000.0, &pTextLayout);
 		if (SUCCEEDED(hr) && pTextLayout) {
 			DWRITE_TEXT_METRICS textMetrics;
 			if (SUCCEEDED(pTextLayout->GetMetrics(&textMetrics)))
@@ -2688,7 +2677,7 @@ void Window::SetPosition(PRectangle rc) {
 
 namespace {
 
-static RECT RectFromMonitor(HMONITOR hMonitor) noexcept {
+RECT RectFromMonitor(HMONITOR hMonitor) noexcept {
 	MONITORINFO mi = {};
 	mi.cbSize = sizeof(mi);
 	if (GetMonitorInfo(hMonitor, &mi)) {
@@ -2932,10 +2921,11 @@ class ListBoxX : public ListBox {
 	Point location;	// Caret location at which the list is opened
 	int wheelDelta; // mouse wheel residue
 	ListOptions options;
+	DWORD frameStyle = WS_THICKFRAME;
 
 	HWND GetHWND() const noexcept;
 	void AppendListItem(const char *text, const char *numword);
-	static void AdjustWindowRect(PRectangle *rc, UINT dpi) noexcept;
+	void AdjustWindowRect(PRectangle *rc, UINT dpiAdjust) const noexcept;
 	int ItemHeight() const;
 	int MinClientWidth() const noexcept;
 	int TextOffset() const;
@@ -3014,7 +3004,7 @@ void ListBoxX::Create(Window &parent_, int ctrlID_, Point location_, int lineHei
 	// Window created as popup so not clipped within parent client area
 	wid = ::CreateWindowEx(
 		WS_EX_WINDOWEDGE, ListBoxX_ClassName, TEXT(""),
-		WS_POPUP | WS_THICKFRAME,
+		WS_POPUP | frameStyle,
 		100,100, 150,80, hwndParent,
 		NULL,
 		hinstanceParent,
@@ -3318,14 +3308,15 @@ void ListBoxX::SetList(const char *list, char separator, char typesep) {
 
 void ListBoxX::SetOptions(ListOptions options_) {
 	options = options_;
+	frameStyle = FlagSet(options.options, AutoCompleteOption::FixedSize) ? WS_BORDER : WS_THICKFRAME;
 }
 
-void ListBoxX::AdjustWindowRect(PRectangle *rc, UINT dpi) noexcept {
+void ListBoxX::AdjustWindowRect(PRectangle *rc, UINT dpiAdjust) const noexcept {
 	RECT rcw = RectFromPRectangle(*rc);
 	if (fnAdjustWindowRectExForDpi) {
-		fnAdjustWindowRectExForDpi(&rcw, WS_THICKFRAME, false, WS_EX_WINDOWEDGE, dpi);
+		fnAdjustWindowRectExForDpi(&rcw, frameStyle, false, WS_EX_WINDOWEDGE, dpiAdjust);
 	} else {
-		::AdjustWindowRectEx(&rcw, WS_THICKFRAME, false, WS_EX_WINDOWEDGE);
+		::AdjustWindowRectEx(&rcw, frameStyle, false, WS_EX_WINDOWEDGE);
 	}
 	*rc = PRectangle::FromInts(rcw.left, rcw.top, rcw.right, rcw.bottom);
 }
@@ -3584,9 +3575,8 @@ LRESULT PASCAL ListBoxX::ControlWndProc(HWND hWnd, UINT iMessage, WPARAM wParam,
 				// We must take control of selection to prevent the ListBox activating
 				// the popup
 				const LRESULT lResult = ::SendMessage(hWnd, LB_ITEMFROMPOINT, 0, lParam);
-				const int item = LOWORD(lResult);
-				if (HIWORD(lResult) == 0 && item >= 0) {
-					ListBox_SetCurSel(hWnd, item);
+				if (HIWORD(lResult) == 0) {
+					ListBox_SetCurSel(hWnd, LOWORD(lResult));
 					if (lbx) {
 						lbx->OnSelChange();
 					}
@@ -3724,13 +3714,7 @@ LRESULT ListBoxX::WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
 		wheelDelta -= GET_WHEEL_DELTA_WPARAM(wParam);
 		if (std::abs(wheelDelta) >= WHEEL_DELTA) {
 			const int nRows = GetVisibleRows();
-			int linesToScroll = 1;
-			if (nRows > 1) {
-				linesToScroll = nRows - 1;
-			}
-			if (linesToScroll > 3) {
-				linesToScroll = 3;
-			}
+			int linesToScroll = std::clamp(nRows - 1, 1, 3);
 			linesToScroll *= (wheelDelta / WHEEL_DELTA);
 			int top = ListBox_GetTopIndex(lb) + linesToScroll;
 			if (top < 0) {

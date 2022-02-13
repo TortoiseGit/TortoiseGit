@@ -25,6 +25,7 @@ public:
 
 	bool ignoreCase;
 	bool chooseSingle;
+	AutoCompleteOption options;
 	std::unique_ptr<ListBox> lb;
 	Sci::Position posStart;
 	Sci::Position startLen;
@@ -42,6 +43,11 @@ public:
 	Scintilla::Ordering autoSort;
 
 	AutoComplete();
+	// Deleted so AutoComplete objects can not be copied.
+	AutoComplete(const AutoComplete &) = delete;
+	AutoComplete(AutoComplete &&) = delete;
+	AutoComplete &operator=(const AutoComplete &) = delete;
+	AutoComplete &operator=(AutoComplete &&) = delete;
 	~AutoComplete();
 
 	/// Is the auto completion list displayed?
@@ -49,7 +55,8 @@ public:
 
 	/// Display the auto completion list positioned to be near a character position
 	void Start(Window &parent, int ctrlID, Sci::Position position, Point location,
-		Sci::Position startLen_, int lineHeight, bool unicodeMode, Scintilla::Technology technology);
+		Sci::Position startLen_, int lineHeight, bool unicodeMode, Scintilla::Technology technology,
+		ListOptions listOptions);
 
 	/// The stop chars are characters which, when typed, cause the auto completion list to disappear
 	void SetStopChars(const char *stopChars_);
@@ -77,7 +84,7 @@ public:
 	std::string GetValue(int item) const;
 
 	void Show(bool show);
-	void Cancel();
+	void Cancel() noexcept;
 
 	/// Move the current list element by delta, scrolling appropriately
 	void Move(int delta);

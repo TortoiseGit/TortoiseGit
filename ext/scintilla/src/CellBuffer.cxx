@@ -37,7 +37,7 @@ struct CountWidths {
 	// from the Base Multilingual Plane and those from other planes.
 	Sci::Position countBasePlane;
 	Sci::Position countOtherPlanes;
-	CountWidths(Sci::Position countBasePlane_=0, Sci::Position countOtherPlanes_=0) noexcept :
+	explicit CountWidths(Sci::Position countBasePlane_=0, Sci::Position countOtherPlanes_=0) noexcept :
 		countBasePlane(countBasePlane_),
 		countOtherPlanes(countOtherPlanes_) {
 	}
@@ -71,6 +71,7 @@ public:
 	virtual void SetLineStart(Sci::Line line, Sci::Position position) noexcept = 0;
 	virtual void RemoveLine(Sci::Line line) = 0;
 	virtual Sci::Line Lines() const noexcept = 0;
+	virtual void AllocateLines(Sci::Line lines) = 0;
 	virtual Sci::Line LineFromPosition(Sci::Position pos) const noexcept = 0;
 	virtual Sci::Position LineStart(Sci::Line line) const noexcept = 0;
 	virtual void InsertCharacters(Sci::Line line, CountWidths delta) noexcept = 0;
@@ -131,6 +132,11 @@ public:
 	void SetLineWidth(Sci::Line line, Sci::Position width) noexcept {
 		const Sci::Position widthCurrent = LineWidth(line);
 		starts.InsertText(static_cast<POS>(line), static_cast<POS>(width - widthCurrent));
+	}
+	void AllocateLines(Sci::Line lines) {
+		if (lines > starts.Partitions()) {
+			starts.ReAllocate(lines);
+		}
 	}
 	void InsertLines(Sci::Line line, Sci::Line lines) {
 		// Insert multiple lines with each temporarily 1 character wide.
@@ -236,6 +242,17 @@ public:
 	}
 	Sci::Line Lines() const noexcept override {
 		return static_cast<Sci::Line>(starts.Partitions());
+	}
+	void AllocateLines(Sci::Line lines) override {
+		if (lines > Lines()) {
+			starts.ReAllocate(lines);
+			if (FlagSet(activeIndices, LineCharacterIndexType::Utf32)) {
+				startsUTF32.AllocateLines(lines);
+			}
+			if (FlagSet(activeIndices, LineCharacterIndexType::Utf16)) {
+				startsUTF16.AllocateLines(lines);
+			}
+		}
 	}
 	Sci::Line LineFromPosition(Sci::Position pos) const noexcept override {
 		return static_cast<Sci::Line>(starts.PartitionFromPosition(static_cast<POS>(pos)));
@@ -506,7 +523,7 @@ void UndoHistory::TentativeCommit() {
 }
 
 bool UndoHistory::TentativeActive() const noexcept {
-	return tentativePoint >= 0; 
+	return tentativePoint >= 0;
 }
 
 int UndoHistory::TentativeSteps() noexcept {
@@ -642,6 +659,21 @@ Sci::Position CellBuffer::GapPosition() const noexcept {
 	return substance.GapPosition();
 }
 
+SplitView CellBuffer::AllView() const noexcept {
+	const size_t length = substance.Length();
+	size_t length1 = substance.GapPosition();
+	if (length1 == 0) {
+		// Assign segment2 to segment1 / length1 to avoid useless test against 0 length1
+		length1 = length;
+	}
+	return SplitView {
+		substance.ElementPointer(0),
+		length1,
+		substance.ElementPointer(length1) - length1,
+		length
+	};
+}
+
 // The char* returned is to an allocation owned by the undo history
 const char *CellBuffer::InsertString(Sci::Position position, const char *s, Sci::Position insertLength, bool &startSequence) {
 	// InsertString and DeleteChars are the bottleneck though which all changes occur
@@ -774,6 +806,10 @@ Sci::Line CellBuffer::Lines() const noexcept {
 	return plv->Lines();
 }
 
+void CellBuffer::AllocateLines(Sci::Line lines) {
+	plv->AllocateLines(lines);
+}
+
 Sci::Position CellBuffer::LineStart(Sci::Line line) const noexcept {
 	if (line < 0)
 		return 0;
@@ -888,7 +924,9 @@ bool CellBuffer::UTF8IsCharacterBoundary(Sci::Position position) const {
 
 void CellBuffer::ResetLineEnds() {
 	// Reinitialize line data -- too much work to preserve
+	const Sci::Line lines = plv->Lines();
 	plv->Init();
+	plv->AllocateLines(lines);
 
 	constexpr Sci::Position position = 0;
 	const Sci::Position length = Length();
@@ -1248,7 +1286,7 @@ void CellBuffer::EndUndoAction() {
 }
 
 void CellBuffer::AddUndoAction(Sci::Position token, bool mayCoalesce) {
-	bool startSequence;
+	bool startSequence = false;
 	uh.AppendAction(ActionType::container, token, nullptr, 0, startSequence, mayCoalesce);
 }
 

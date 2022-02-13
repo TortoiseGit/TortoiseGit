@@ -39,6 +39,7 @@ AutoComplete::AutoComplete() :
 	typesep('?'),
 	ignoreCase(false),
 	chooseSingle(false),
+	options(AutoCompleteOption::Normal),
 	posStart(0),
 	startLen(0),
 	cancelAtStartPos(true),
@@ -63,10 +64,11 @@ bool AutoComplete::Active() const noexcept {
 
 void AutoComplete::Start(Window &parent, int ctrlID,
 	Sci::Position position, Point location, Sci::Position startLen_,
-	int lineHeight, bool unicodeMode, Technology technology) {
+	int lineHeight, bool unicodeMode, Technology technology, ListOptions listOptions) {
 	if (active) {
 		Cancel();
 	}
+	lb->SetOptions(listOptions);
 	lb->Create(parent, ctrlID, location, lineHeight, unicodeMode, technology);
 	lb->Clear();
 	active = true;
@@ -113,6 +115,11 @@ struct Sorter {
 
 	Sorter(AutoComplete *ac_, const char *list_) : ac(ac_), list(list_) {
 		int i = 0;
+		if (!list[i]) {
+			// Empty list has a single empty member
+			indices.push_back(i); // word start
+			indices.push_back(i); // word end
+		}
 		while (list[i]) {
 			indices.push_back(i); // word start
 			while (list[i] != ac->GetTypesep() && list[i] != ac->GetSeparator() && list[i])
@@ -209,7 +216,7 @@ void AutoComplete::Show(bool show) {
 		lb->Select(0);
 }
 
-void AutoComplete::Cancel() {
+void AutoComplete::Cancel() noexcept {
 	if (lb->Created()) {
 		lb->Clear();
 		lb->Destroy();
@@ -270,7 +277,7 @@ void AutoComplete::Select(const char *word) {
 			}
 		} else if (cond < 0) {
 			end = pivot - 1;
-		} else if (cond > 0) {
+		} else { // cond > 0
 			start = pivot + 1;
 		}
 	}

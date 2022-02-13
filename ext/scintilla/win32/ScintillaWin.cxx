@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstdint>
 #include <cassert>
 #include <cstring>
 #include <cstdio>
@@ -92,6 +93,7 @@
 #include "AutoComplete.h"
 #include "ScintillaBase.h"
 
+#include "WinTypes.h"
 #include "PlatWin.h"
 #include "HanjaDic.h"
 #include "ScintillaWin.h"
@@ -331,6 +333,7 @@ class ScintillaWin :
 	UINT dpi = USER_DEFAULT_SCREEN_DPI;
 	ReverseArrowCursor reverseArrowCursor;
 
+	PRectangle rectangleClient;
 	HRGN hRgnUpdate;
 
 	bool hasOKText;
@@ -436,7 +439,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -457,13 +459,16 @@ class ScintillaWin :
 	bool IsCompatibleDC(HDC hOtherDC) noexcept;
 	DWORD EffectFromState(DWORD grfKeyState) const noexcept;
 
+	bool IsVisible() const noexcept;
 	int SetScrollInfo(int nBar, LPCSCROLLINFO lpsi, BOOL bRedraw) noexcept;
 	bool GetScrollInfo(int nBar, LPSCROLLINFO lpsi) noexcept;
+	bool ChangeScrollRange(int nBar, int nMin, int nMax, UINT nPage) noexcept;
 	void ChangeScrollPos(int barType, Sci::Position pos);
 	sptr_t GetTextLength();
 	sptr_t GetText(uptr_t wParam, sptr_t lParam);
 	Window::Cursor ContextCursor(Point pt);
 	sptr_t ShowContextMenu(unsigned int iMessage, uptr_t wParam, sptr_t lParam);
+	PRectangle GetClientRectangle() const override;
 	void SizeWindow();
 	sptr_t MouseMessage(unsigned int iMessage, uptr_t wParam, sptr_t lParam);
 	sptr_t KeyMessage(unsigned int iMessage, uptr_t wParam, sptr_t lParam);
@@ -614,7 +619,7 @@ void ScintillaWin::EnsureRenderTarget(HDC hdc) {
 		DropRenderTarget();
 		renderTargetValid = true;
 	}
-	if (pD2DFactory && !pRenderTarget) {
+	if (!pRenderTarget) {
 		HWND hw = MainHWND();
 		RECT rc;
 		::GetClientRect(hw, &rc);
@@ -753,8 +758,7 @@ int InputCodePage() noexcept {
 }
 
 /** Map the key codes to their equivalent Keys:: form. */
-Keys KeyTranslate(int keyIn) noexcept {
-//PLATFORM_ASSERT(!keyIn);
+Keys KeyTranslate(uptr_t keyIn) noexcept {
 	switch (keyIn) {
 	case VK_DOWN:		return Keys::Down;
 		case VK_UP:		return Keys::Up;
@@ -1052,10 +1056,10 @@ void ScintillaWin::SelectionToHangul() {
 		pdoc->GetCharRange(&documentStr[0], selStart, documentStrLen);
 
 		std::wstring uniStr = StringDecode(documentStr, CodePageOfDocument());
-		const int converted = HanjaDict::GetHangulOfHanja(&uniStr[0]);
-		documentStr = StringEncode(uniStr, CodePageOfDocument());
+		const bool converted = HanjaDict::GetHangulOfHanja(uniStr);
 
-		if (converted > 0) {
+		if (converted) {
+			documentStr = StringEncode(uniStr, CodePageOfDocument());
 			pdoc->BeginUndoAction();
 			ClearSelection();
 			InsertPaste(&documentStr[0], documentStr.size());
@@ -1329,12 +1333,28 @@ std::string ScintillaWin::EncodeWString(std::wstring_view wsv) {
 }
 
 sptr_t ScintillaWin::GetTextLength() {
-	return pdoc->CountUTF16(0, pdoc->Length());
+	if (pdoc->dbcsCodePage == 0 || pdoc->dbcsCodePage == CpUtf8) {
+		return pdoc->CountUTF16(0, pdoc->Length());
+	} else {
+		// Count the number of UTF-16 code units line by line
+		const UINT cpSrc = CodePageOfDocument();
+		const Sci::Line lines = pdoc->LinesTotal();
+		Sci::Position codeUnits = 0;
+		std::string lineBytes;
+		for (Sci::Line line = 0; line < lines; line++) {
+			const Sci::Position start = pdoc->LineStart(line);
+			const Sci::Position width = pdoc->LineStart(line+1) - start;
+			lineBytes.resize(width);
+			pdoc->GetCharRange(lineBytes.data(), start, width);
+			codeUnits += WideCharLenFromMultiByte(cpSrc, lineBytes);
+		}
+		return codeUnits;
+	}
 }
 
 sptr_t ScintillaWin::GetText(uptr_t wParam, sptr_t lParam) {
 	if (lParam == 0) {
-		return pdoc->CountUTF16(0, pdoc->Length());
+		return GetTextLength();
 	}
 	if (wParam == 0) {
 		return 0;
@@ -1345,27 +1365,41 @@ sptr_t ScintillaWin::GetText(uptr_t wParam, sptr_t lParam) {
 		return 0;
 	}
 	const Sci::Position lengthWanted = wParam - 1;
-	Sci::Position sizeRequestedRange = pdoc->GetRelativePositionUTF16(0, lengthWanted);
-	if (sizeRequestedRange < 0) {
-		// Requested more text than there is in the document.
-		sizeRequestedRange = pdoc->Length();
-	}
-	std::string docBytes(sizeRequestedRange, '\0');
-	pdoc->GetCharRange(&docBytes[0], 0, sizeRequestedRange);
 	if (IsUnicodeMode()) {
+		Sci::Position sizeRequestedRange = pdoc->GetRelativePositionUTF16(0, lengthWanted);
+		if (sizeRequestedRange < 0) {
+			// Requested more text than there is in the document.
+			sizeRequestedRange = pdoc->Length();
+		}
+		std::string docBytes(sizeRequestedRange, '\0');
+		pdoc->GetCharRange(&docBytes[0], 0, sizeRequestedRange);
 		const size_t uLen = UTF16FromUTF8(docBytes, ptr, lengthWanted);
 		ptr[uLen] = L'\0';
 		return uLen;
 	} else {
 		// Not Unicode mode
 		// Convert to Unicode using the current Scintilla code page
+		// Retrieve as UTF-16 line by line
 		const UINT cpSrc = CodePageOfDocument();
-		int lengthUTF16 = WideCharLenFromMultiByte(cpSrc, docBytes);
-		if (lengthUTF16 > lengthWanted)
-			lengthUTF16 = static_cast<int>(lengthWanted);
-		WideCharFromMultiByte(cpSrc, docBytes, ptr, lengthUTF16);
-		ptr[lengthUTF16] = L'\0';
-		return lengthUTF16;
+		const Sci::Line lines = pdoc->LinesTotal();
+		Sci::Position codeUnits = 0;
+		std::string lineBytes;
+		std::wstring lineAsUTF16;
+		for (Sci::Line line = 0; line < lines && codeUnits < lengthWanted; line++) {
+			const Sci::Position start = pdoc->LineStart(line);
+			const Sci::Position width = pdoc->LineStart(line + 1) - start;
+			lineBytes.resize(width);
+			pdoc->GetCharRange(lineBytes.data(), start, width);
+			const Sci::Position codeUnitsLine = WideCharLenFromMultiByte(cpSrc, lineBytes);
+			lineAsUTF16.resize(codeUnitsLine);
+			const Sci::Position lengthLeft = lengthWanted - codeUnits;
+			WideCharFromMultiByte(cpSrc, lineBytes, lineAsUTF16.data(), lineAsUTF16.length());
+			const Sci::Position lengthToCopy = std::min(lengthLeft, codeUnitsLine);
+			lineAsUTF16.copy(ptr + codeUnits, lengthToCopy);
+			codeUnits += lengthToCopy;
+		}
+		ptr[codeUnits] = L'\0';
+		return codeUnits;
 	}
 }
 
@@ -1409,6 +1443,10 @@ sptr_t ScintillaWin::ShowContextMenu(unsigned int iMessage, uptr_t wParam, sptr_
 	return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 }
 
+PRectangle ScintillaWin::GetClientRectangle() const {
+	return rectangleClient;
+}
+
 void ScintillaWin::SizeWindow() {
 #if defined(USE_D2D)
 	if (paintState == PaintState::notPainting) {
@@ -1418,6 +1456,7 @@ void ScintillaWin::SizeWindow() {
 	}
 #endif
 	//Platform::DebugPrintf("Scintilla WM_SIZE %d %d\n", LOWORD(lParam), HIWORD(lParam));
+	rectangleClient = wMain.GetClientPosition();
 	ChangeSize();
 }
 
@@ -1551,7 +1590,7 @@ sptr_t ScintillaWin::KeyMessage(unsigned int iMessage, uptr_t wParam, sptr_t lPa
 				return ::DefWindowProc(MainHWND(), iMessage, wParam, lParam);
 			}
 			const int ret = KeyDownWithModifiers(
-								 static_cast<Keys>(KeyTranslate(static_cast<int>(wParam))),
+								 KeyTranslate(wParam),
 							     ModifierFlags(KeyboardIsKeyDown(VK_SHIFT),
 									     KeyboardIsKeyDown(VK_CONTROL),
 									     altDown),
@@ -1833,6 +1872,7 @@ sptr_t ScintillaWin::SciMessage(Message iMessage, uptr_t wParam, sptr_t lParam) 
 				}
 				DropRenderTarget();
 				technology = technologyNew;
+				view.bufferedDraw = technologyNew == Technology::Default;
 				// Invalidate all cached information including layout.
 				DropGraphics();
 				InvalidateStyleRedraw();
@@ -1857,7 +1897,7 @@ sptr_t ScintillaWin::SciMessage(Message iMessage, uptr_t wParam, sptr_t lParam) 
 	case Message::EncodedFromUTF8:
 		return EncodedFromUTF8(ConstCharPtrFromUPtr(wParam),
 			CharPtrFromSPtr(lParam));
-	
+
 	default:
 		break;
 
@@ -1989,6 +2029,15 @@ sptr_t ScintillaWin::WndProc(Message iMessage, uptr_t wParam, sptr_t lParam) {
 
 		case WM_ERASEBKGND:
 			return 1;   // Avoid any background erasure as whole window painted.
+
+		case WM_SETREDRAW:
+			::DefWindowProc(MainHWND(), msg, wParam, lParam);
+			if (wParam) {
+				SetScrollBars();
+				SetVerticalScrollPos();
+				SetHorizontalScrollPos();
+			}
+			return 0;
 
 		case WM_CAPTURECHANGED:
 			capturedMouse = false;
@@ -2225,6 +2274,10 @@ void ScintillaWin::UpdateSystemCaret() {
 	}
 }
 
+bool ScintillaWin::IsVisible() const noexcept {
+	return GetWindowStyle(MainHWND()) & WS_VISIBLE;
+}
+
 int ScintillaWin::SetScrollInfo(int nBar, LPCSCROLLINFO lpsi, BOOL bRedraw) noexcept {
 	return ::SetScrollInfo(MainHWND(), nBar, lpsi, bRedraw);
 }
@@ -2235,6 +2288,10 @@ bool ScintillaWin::GetScrollInfo(int nBar, LPSCROLLINFO lpsi) noexcept {
 
 // Change the scroll position but avoid repaint if changing to same value
 void ScintillaWin::ChangeScrollPos(int barType, Sci::Position pos) {
+	if (!IsVisible()) {
+		return;
+	}
+
 	SCROLLINFO sci = {
 		sizeof(sci), 0, 0, 0, 0, 0, 0
 	};
@@ -2255,55 +2312,44 @@ void ScintillaWin::SetHorizontalScrollPos() {
 	ChangeScrollPos(SB_HORZ, xOffset);
 }
 
+bool ScintillaWin::ChangeScrollRange(int nBar, int nMin, int nMax, UINT nPage) noexcept {
+	SCROLLINFO sci = { sizeof(sci), SIF_PAGE | SIF_RANGE, 0, 0, 0, 0, 0 };
+	GetScrollInfo(nBar, &sci);
+	if ((sci.nMin != nMin) || (sci.nMax != nMax) ||	(sci.nPage != nPage)) {
+		sci.nMin = nMin;
+		sci.nMax = nMax;
+		sci.nPage = nPage;
+		SetScrollInfo(nBar, &sci, TRUE);
+		return true;
+	}
+	return false;
+}
+
 bool ScintillaWin::ModifyScrollBars(Sci::Line nMax, Sci::Line nPage) {
+	if (!IsVisible()) {
+		return false;
+	}
+
 	bool modified = false;
-	SCROLLINFO sci = {
-		sizeof(sci), 0, 0, 0, 0, 0, 0
-	};
-	sci.fMask = SIF_PAGE | SIF_RANGE;
-	GetScrollInfo(SB_VERT, &sci);
 	const Sci::Line vertEndPreferred = nMax;
 	if (!verticalScrollBarVisible)
 		nPage = vertEndPreferred + 1;
-	if ((sci.nMin != 0) ||
-		(sci.nMax != vertEndPreferred) ||
-	        (sci.nPage != static_cast<unsigned int>(nPage)) ||
-	        (sci.nPos != 0)) {
-		sci.fMask = SIF_PAGE | SIF_RANGE;
-		sci.nMin = 0;
-		sci.nMax = static_cast<int>(vertEndPreferred);
-		sci.nPage = static_cast<UINT>(nPage);
-		sci.nPos = 0;
-		sci.nTrackPos = 1;
-		SetScrollInfo(SB_VERT, &sci, TRUE);
+	if (ChangeScrollRange(SB_VERT, 0, static_cast<int>(vertEndPreferred), static_cast<unsigned int>(nPage))) {
 		modified = true;
 	}
 
 	const PRectangle rcText = GetTextRectangle();
-	int horizEndPreferred = scrollWidth;
-	if (horizEndPreferred < 0)
-		horizEndPreferred = 0;
 	int pageWidth = static_cast<int>(rcText.Width());
+	const int horizEndPreferred = std::max({scrollWidth, pageWidth - 1, 0});
 	if (!horizontalScrollBarVisible || Wrapping())
 		pageWidth = horizEndPreferred + 1;
-	sci.fMask = SIF_PAGE | SIF_RANGE;
-	GetScrollInfo(SB_HORZ, &sci);
-	if ((sci.nMin != 0) ||
-		(sci.nMax != horizEndPreferred) ||
-		(sci.nPage != static_cast<unsigned int>(pageWidth)) ||
-	        (sci.nPos != 0)) {
-		sci.fMask = SIF_PAGE | SIF_RANGE;
-		sci.nMin = 0;
-		sci.nMax = horizEndPreferred;
-		sci.nPage = pageWidth;
-		sci.nPos = 0;
-		sci.nTrackPos = 1;
-		SetScrollInfo(SB_HORZ, &sci, TRUE);
+	if (ChangeScrollRange(SB_HORZ, 0, horizEndPreferred, pageWidth)) {
 		modified = true;
 		if (scrollWidth < pageWidth) {
 			HorizontalScrollTo(0);
 		}
 	}
+
 	return modified;
 }
 
@@ -2337,13 +2383,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
 }
 
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
-}
-
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
 	//Platform::DebugPrintf("ScintillaWin Double click 0\n");
 	ScintillaBase::NotifyDoubleClick(pt, modifiers);
@@ -2353,6 +2392,8 @@ void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
 			  FlagSet(modifiers, KeyMod::Shift) ? MK_SHIFT : 0,
 			  MAKELPARAM(pt.x, pt.y));
 }
+
+namespace {
 
 class CaseFolderDBCS : public CaseFolderTable {
 	// Allocate the expandable storage here so that it does not need to be reallocated
@@ -2412,6 +2453,8 @@ public:
 		}
 	}
 };
+
+}
 
 std::unique_ptr<CaseFolder> ScintillaWin::CaseFolderForEncoding() {
 	const UINT cpDest = CodePageOfDocument();

@@ -97,7 +97,6 @@
     <ClInclude Include="..\scintilla\src\Editor.h" />
     <ClInclude Include="..\scintilla\src\EditView.h" />
     <ClInclude Include="..\scintilla\src\ElapsedPeriod.h" />
-    <ClInclude Include="..\scintilla\src\FontQuality.h" />
     <ClInclude Include="..\scintilla\src\Geometry.h" />
     <ClInclude Include="..\scintilla\src\Indicator.h" />
     <ClInclude Include="..\scintilla\src\KeyMap.h" />
@@ -122,6 +121,7 @@
     <ClInclude Include="..\scintilla\win32\HanjaDic.h" />
     <ClInclude Include="..\scintilla\win32\PlatWin.h" />
     <ClInclude Include="..\scintilla\win32\ScintillaWin.h" />
+    <ClInclude Include="..\scintilla\win32\WinTypes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\scintilla\src\SciTE.properties" />

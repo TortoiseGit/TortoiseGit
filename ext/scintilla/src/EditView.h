@@ -40,6 +40,7 @@ void DrawTextNoClipPhase(Surface *surface, PRectangle rc, const Style &style, XY
 	std::string_view text, DrawPhase phase);
 void DrawStyledText(Surface *surface, const ViewStyle &vs, int styleOffset, PRectangle rcText,
 	const StyledText &st, size_t start, size_t length, DrawPhase phase);
+void Hexits(char *hexits, int ch) noexcept;
 
 typedef void (*DrawTabArrowFn)(Surface *surface, PRectangle rcTab, int ymid,
 	const ViewStyle &vsDraw, Stroke stroke);
@@ -78,10 +79,12 @@ public:
 	std::unique_ptr<Surface> pixmapLine;
 	std::unique_ptr<Surface> pixmapIndentGuide;
 	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
-	void *editor;
 
 	LineLayoutCache llc;
-	PositionCache posCache;
+	std::unique_ptr<IPositionCache> posCache;
+
+	unsigned int maxLayoutThreads;
+	static constexpr int bytesPerLayoutThread = 1000;
 
 	int tabArrowHeight; // draw arrow heads this many pixels above/below line midpoint
 	/** Some platforms, notably PLAT_CURSES, do not support Scintilla's native
@@ -103,6 +106,9 @@ public:
 	bool SetPhasesDraw(int phases) noexcept;
 	bool LinesOverlap() const noexcept;
 
+	void SetLayoutThreads(unsigned int threads) noexcept;
+	unsigned int GetLayoutThreads() const noexcept;
+
 	void ClearAllTabstops() noexcept;
 	XYPOSITION NextTabstopPos(Sci::Line line, XYPOSITION x, XYPOSITION tabWidth) const noexcept;
 	bool ClearTabstops(Sci::Line line) noexcept;
@@ -115,7 +121,7 @@ public:
 
 	std::shared_ptr<LineLayout> RetrieveLineLayout(Sci::Line lineNumber, const EditModel &model);
 	void LayoutLine(const EditModel &model, Surface *surface, const ViewStyle &vstyle,
-		LineLayout *ll, int width = LineLayout::wrapWidthInfinite);
+		LineLayout *ll, int width);
 
 	static void UpdateBidiData(const EditModel &model, const ViewStyle &vstyle, LineLayout *ll);
 

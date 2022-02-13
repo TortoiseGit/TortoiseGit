@@ -196,6 +196,8 @@ public:
 	Scintilla::FontWeight StyleGetWeight(int style);
 	void StyleSetCharacterSet(int style, Scintilla::CharacterSet characterSet);
 	void StyleSetHotSpot(int style, bool hotspot);
+	void StyleSetCheckMonospaced(int style, bool checkMonospaced);
+	bool StyleGetCheckMonospaced(int style);
 	void SetElementColour(Scintilla::Element element, ColourAlpha colourElement);
 	ColourAlpha ElementColour(Scintilla::Element element);
 	void ResetElementColour(Scintilla::Element element);
@@ -212,6 +214,8 @@ public:
 	void SetSelectionLayer(Scintilla::Layer layer);
 	Scintilla::Layer CaretLineLayer();
 	void SetCaretLineLayer(Scintilla::Layer layer);
+	bool CaretLineHighlightSubLine();
+	void SetCaretLineHighlightSubLine(bool subLine);
 	void SetCaretFore(Colour fore);
 	void AssignCmdKey(int keyDefinition, int sciCommand);
 	void ClearCmdKey(int keyDefinition);
@@ -274,6 +278,8 @@ public:
 	void UserListShow(int listType, const char *itemList);
 	void AutoCSetAutoHide(bool autoHide);
 	bool AutoCGetAutoHide();
+	void AutoCSetOptions(Scintilla::AutoCompleteOption options);
+	Scintilla::AutoCompleteOption AutoCGetOptions();
 	void AutoCSetDropRestOfWord(bool dropRestOfWord);
 	bool AutoCGetDropRestOfWord();
 	void RegisterImage(int type, const char *xpmData);
@@ -320,6 +326,7 @@ public:
 	Position GetLine(Line line, char *text);
 	std::string GetLine(Line line);
 	Line LineCount();
+	void AllocateLines(Line lines);
 	void SetMarginLeft(int pixelWidth);
 	int MarginLeft();
 	void SetMarginRight(int pixelWidth);
@@ -675,6 +682,8 @@ public:
 	Position IndicatorEnd(int indicator, Position pos);
 	void SetPositionCache(int size);
 	int PositionCache();
+	void SetLayoutThreads(int threads);
+	int LayoutThreads();
 	void CopyAllowLine();
 	void *CharacterPointer();
 	void *RangePointer(Position start, Position lengthRange);
@@ -847,7 +856,7 @@ public:
 	std::string DescribeProperty(const char *name);
 	int DescribeKeyWordSets(char *descriptions);
 	std::string DescribeKeyWordSets();
-	int LineEndTypesSupported();
+	Scintilla::LineEndType LineEndTypesSupported();
 	int AllocateSubStyles(int styleBase, int numberStyles);
 	int SubStylesStart(int styleBase);
 	int SubStylesLength(int styleBase);
