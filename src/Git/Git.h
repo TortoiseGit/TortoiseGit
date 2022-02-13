@@ -449,7 +449,27 @@ public:
 	void GetBisectTerms(CString* good, CString* bad);
 	int GetRefList(STRING_VECTOR &list);
 
-	CGitHash GetSubmodulePointer();
+	class SubmoduleInfo
+	{
+	public:
+		CGitHash superProjectHash;
+		CGitHash mergeconflictMineHash;
+		CGitHash mergeconflictTheirsHash;
+		CString mineLabel;
+		CString theirsLabel;
+
+		bool AnyMatches(const CGitHash& hash) const
+		{
+			return !superProjectHash.IsEmpty() && superProjectHash == hash || !mergeconflictMineHash.IsEmpty() && mergeconflictMineHash == hash || !mergeconflictTheirsHash.IsEmpty() && mergeconflictTheirsHash == hash;
+		}
+		void Empty()
+		{
+			superProjectHash.Empty();
+			mergeconflictMineHash.Empty();
+			mergeconflictTheirsHash.Empty();
+		}
+	};
+	int GetSubmodulePointer(SubmoduleInfo& mergeInfo) const;
 
 	int ApplyPatchToIndex(const CString& patchPath, CString* out);
 	int ApplyPatchToIndexReverse(const CString& patchPath, CString* out);

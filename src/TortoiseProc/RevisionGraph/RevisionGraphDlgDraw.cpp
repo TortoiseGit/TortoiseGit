@@ -513,7 +513,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 		bool hasRefs = refsIt != m_HashMap.end();
 
 		size_t lines = (hasRefs ? refsIt->second.size() : 1);
-		if (hash == m_superProjectHash)
+		if (m_submoduleInfo.AnyMatches(hash))
 			++lines;
 		double height = noderect.Height / lines;
 		size_t line = 0;
@@ -524,11 +524,16 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 			graphics.pGraphviz->BeginDrawTableNode(id, fontname, m_nFontSize, static_cast<int>(noderect.Height));
 		}
 
-		if (hash == m_superProjectHash)
-		{
-			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.SuperProjectPointer, font, fontname, height, noderect, L"super-project-pointer", line, lines);
+		const auto fnDrawSuperRepoHash = [&](const CGitHash& superRepoHash, const CString& label) {
+			if (hash != superRepoHash)
+				return;
+
+			DrawNode(graphics, colorsAndBrushes, &colorsAndBrushes.SuperProjectPointer, font, fontname, height, noderect, label, line, lines);
 			++line;
-		}
+		};
+		fnDrawSuperRepoHash(m_submoduleInfo.superProjectHash, L"super-project-pointer");
+		fnDrawSuperRepoHash(m_submoduleInfo.mergeconflictMineHash, m_submoduleInfo.mineLabel);
+		fnDrawSuperRepoHash(m_submoduleInfo.mergeconflictTheirsHash, m_submoduleInfo.theirsLabel);
 
 		if (!hasRefs)
 		{
@@ -699,12 +704,17 @@ void CRevisionGraphWnd::SetNodeRect(GraphicsDevice& graphics, Gdiplus::Font& fon
 		if (graphics.graphics)
 			std::for_each((*it).second.cbegin(), (*it).second.cend(), [&](const auto& refName) { MeasureTextLength(graphics, font, CGit::GetShortName(refName, nullptr), xmax, ymax); });
 	}
-	if (rev == m_superProjectHash)
-	{
+	const auto fnMeasureSuperRepoText = [&](const CGitHash& superRepoHash, const CString& label) {
+		if (rev != superRepoHash)
+			return;
+
 		if (graphics.graphics)
-			MeasureTextLength(graphics, font, L"super-project-pointer", xmax, ymax);
+			MeasureTextLength(graphics, font, label, xmax, ymax);
 		++lines;
-	}
+	};
+	fnMeasureSuperRepoText(m_submoduleInfo.superProjectHash, L"super-project-pointer");
+	fnMeasureSuperRepoText(m_submoduleInfo.mergeconflictMineHash, m_submoduleInfo.mineLabel);
+	fnMeasureSuperRepoText(m_submoduleInfo.mergeconflictTheirsHash, m_submoduleInfo.theirsLabel);
 	m_GraphAttr.width(*pnode) = GetLeftRightMargin() * 2 + xmax;
 	m_GraphAttr.height(*pnode) = (GetTopBottomMargin() * 2 + ymax) * lines;
 }

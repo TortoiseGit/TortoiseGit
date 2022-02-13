@@ -471,20 +471,13 @@ public:
 	int					m_ShowRefMask;
 
 protected:
-	CGitHash			m_superProjectHash;
+	CGit::SubmoduleInfo	m_submoduleInfo;
 
 public:
 	void				GetTimeRange(CTime &oldest,CTime &latest);
 protected:
 	virtual void GetParentHashes(GitRev* pRev, GIT_REV_LIST& parentHash);
 	virtual void ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CMenu* menu, const MAP_HASH_NAME& hashMap) = 0;
-	void UpdateSubmodulePointer()
-	{
-		m_superProjectHash.Empty();
-		if (CRegDWORD(L"Software\\TortoiseGit\\LogShowSuperProjectSubmodulePointer", TRUE) != TRUE)
-			return;
-		m_superProjectHash = g_Git.GetSubmodulePointer();
-	}
 	void ReloadHashMap()
 	{
 		m_RefLabelPosMap.clear();
@@ -507,7 +500,7 @@ protected:
 		FetchRemoteList();
 		FetchTrackingBranchList();
 
-		UpdateSubmodulePointer();
+		g_Git.GetSubmodulePointer(m_submoduleInfo);
 	}
 	void StartAsyncDiffThread();
 	void StartLoadingThread();

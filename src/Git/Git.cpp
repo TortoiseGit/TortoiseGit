@@ -3578,22 +3578,26 @@ int CGit::SetGitNotes(const CGitHash& hash, const CString& notes)
 	return 0;
 }
 
-CGitHash CGit::GetSubmodulePointer()
+int CGit::GetSubmodulePointer(SubmoduleInfo& submoduleinfo) const
 {
-	CGitHash hash;
+	submoduleinfo.Empty();
+
+	if (CRegDWORD(L"Software\\TortoiseGit\\LogShowSuperProjectSubmodulePointer", TRUE) != TRUE)
+		return 0;
+
 	if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
-		return {};
+		return -1;
 	CString superprojectRoot;
 	GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, false, &superprojectRoot);
 	if (superprojectRoot.IsEmpty())
-		return {};
+		return -1;
 
 	CAutoRepository repo(superprojectRoot);
 	if (!repo)
-		return {};
+		return -1;
 	CAutoIndex index;
 	if (git_repository_index(index.GetPointer(), repo))
-		return {};
+		return -1;
 
 	CString submodulePath;
 	if (superprojectRoot[superprojectRoot.GetLength() - 1] == L'\\')
@@ -3601,9 +3605,37 @@ CGitHash CGit::GetSubmodulePointer()
 	else
 		submodulePath = g_Git.m_CurrentDir.Right(g_Git.m_CurrentDir.GetLength() - superprojectRoot.GetLength() - 1);
 	submodulePath.Replace(L'\\', L'/');
+
+	// if current submodule is in conflict state, return the relevant hashes
+	const git_index_entry* ancestor{};
+	const git_index_entry* our{};
+	const git_index_entry* their{};
+	if (!git_index_conflict_get(&ancestor, &our, &their, index, CUnicodeUtils::GetUTF8(submodulePath)))
+	{
+		if (our)
+			submoduleinfo.mergeconflictMineHash = our->id;
+		if (their)
+			submoduleinfo.mergeconflictTheirsHash = their->id;
+
+		CTGitPath superProject{superprojectRoot};
+		if (superProject.IsRebaseActive())
+		{
+			submoduleinfo.mineLabel = L"super-project-rebase-head";
+			submoduleinfo.theirsLabel = L"super-project-head";
+		}
+		else
+		{
+			submoduleinfo.mineLabel = L"super-project-head";
+			submoduleinfo.theirsLabel = L"super-project-merge-head";
+		}
+		return 0;
+	}
+
+	// determine hash of submodule
 	const git_index_entry* entry = git_index_get_bypath(index, CUnicodeUtils::GetUTF8(submodulePath), 0);
 	if (!entry)
-		return {};
+		return -1;
 
-	return entry->id;
+	submoduleinfo.superProjectHash = entry->id;
+	return 0;
 }

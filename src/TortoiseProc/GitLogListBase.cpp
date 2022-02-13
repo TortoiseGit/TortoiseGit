@@ -1243,7 +1243,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 				auto hashMapSharedPtr = m_HashMap;
 				const auto& hashMap = *hashMapSharedPtr;
-				if ((hashMap.find(data->m_CommitHash) != hashMap.cend() || (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
+				if ((hashMap.find(data->m_CommitHash) != hashMap.cend() || m_submoduleInfo.AnyMatches(data->m_CommitHash)) && !(data->GetRebaseAction() & LOGACTIONS_REBASE_DONE))
 				{
 					CRect rect;
 					GetSubItemRect(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem, LVIR_BOUNDS, rect);
@@ -1451,17 +1451,23 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						}
 						refsToShow.push_back(refLabel);
 					}
-					if (!m_superProjectHash.IsEmpty() && data->m_CommitHash == m_superProjectHash)
-					{
+
+					const auto fnAddSuperProjectHash = [&](const CGitHash& hash, const CString& label) {
+						if (hash.IsEmpty() || data->m_CommitHash != hash)
+							return;
+
 						REFLABEL refLabel;
 						refLabel.color = CTheme::Instance().GetThemeColor(RGB(246, 153, 253), true);
 						refLabel.singleRemote = false;
 						refLabel.hasTracking = false;
 						refLabel.sameName = false;
-						refLabel.name = L"super-project-pointer";
+						refLabel.name = label;
 						refLabel.fullName = "";
 						refsToShow.push_back(refLabel);
-					}
+					};
+					fnAddSuperProjectHash(m_submoduleInfo.superProjectHash, L"super-project-pointer");
+					fnAddSuperProjectHash(m_submoduleInfo.mergeconflictMineHash, m_submoduleInfo.mineLabel);
+					fnAddSuperProjectHash(m_submoduleInfo.mergeconflictTheirsHash, m_submoduleInfo.theirsLabel);
 
 					if (refsToShow.empty())
 					{
@@ -3840,7 +3846,7 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		if (pLogEntry == nullptr)
 			return CString();
 		auto hashMap = m_HashMap;
-		if (hashMap->find(pLogEntry->m_CommitHash) == hashMap->cend() && (m_superProjectHash.IsEmpty() || pLogEntry->m_CommitHash != m_superProjectHash))
+		if (hashMap->find(pLogEntry->m_CommitHash) == hashMap->cend() && !m_submoduleInfo.AnyMatches(pLogEntry->m_CommitHash))
 			return CString();
 		return pLogEntry->GetSubject();
 	}

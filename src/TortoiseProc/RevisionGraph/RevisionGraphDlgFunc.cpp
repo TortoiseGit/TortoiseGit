@@ -238,9 +238,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	ReloadHashMap();
 	this->m_Graph.clear();
 
-	m_superProjectHash.Empty();
-	if (CRegDWORD(L"Software\\TortoiseGit\\LogShowSuperProjectSubmodulePointer", TRUE) != FALSE)
-		m_superProjectHash = g_Git.GetSubmodulePointer();
+	g_Git.GetSubmodulePointer(m_submoduleInfo);
 
 	// build child graph
 	if (!m_bShowAllTags || m_bShowBranchingsMerges)
@@ -259,10 +257,11 @@ bool CRevisionGraphWnd::FetchRevisionData
 			auto& rev = m_logEntries.GetGitRevAt(i);
 
 			// keep labeled commits
-			if (auto foundNames = m_HashMap.find(rev.m_CommitHash); foundNames != m_HashMap.cend() || rev.m_CommitHash == m_superProjectHash)
+			const bool isSuperRepoHash = m_submoduleInfo.AnyMatches(rev.m_CommitHash);
+			if (auto foundNames = m_HashMap.find(rev.m_CommitHash); foundNames != m_HashMap.cend() || isSuperRepoHash)
 			{
 				// by default any label is enough to keep this commit visible
-				if (m_bShowAllTags || rev.m_CommitHash == m_superProjectHash)
+				if (m_bShowAllTags || isSuperRepoHash)
 					continue;
 
 				// if hiding tags, check if there are any branch names for this commit

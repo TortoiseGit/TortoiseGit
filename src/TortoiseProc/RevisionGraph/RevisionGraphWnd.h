@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -144,7 +144,7 @@ public:
 	MAP_HASH_NAME		m_HashMap;
 	CString				m_CurrentBranch;
 	CGitHash			m_HeadHash;
-	CGitHash			m_superProjectHash;
+	CGit::SubmoduleInfo	m_submoduleInfo;
 
 	BOOL		m_bCurrentBranch;
 	BOOL		m_bLocalBranches;

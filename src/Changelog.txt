@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #3937: Support worktree operations (Add, remove, lock, unlock, prune) and worktree list
    Worktrees can also be created by drag'n'drop of a repository root directory
  * Fixed issue #3903: Wrong (empty) icon in Windows 11 taskbar
+ * Fixed issue #3867: GitLog does not show super project pointers in conflicted submodule
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu
