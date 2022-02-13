@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2021 - TortoiseGit
+// Copyright (C) 2012-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -364,10 +364,9 @@ bool CRevisionGraphWnd::FetchRevisionData
 
 	m_SugiyamLayout.call(m_GraphAttr);
 
-	ogdf::node v;
 	double xmax = 0;
 	double ymax = 0;
-	forall_nodes(v,m_Graph)
+	for (auto v : m_Graph.nodes)
 	{
 		double x = m_GraphAttr.x(v) + m_GraphAttr.width(v)/2;
 		double y = m_GraphAttr.y(v) + m_GraphAttr.height(v)/2;
@@ -376,7 +375,6 @@ bool CRevisionGraphWnd::FetchRevisionData
 		if(y>ymax)
 			ymax = y;
 	}
-
 	this->m_GraphRect.top=m_GraphRect.left=0;
 	m_GraphRect.bottom = static_cast<LONG>(ymax);
 	m_GraphRect.right = static_cast<LONG>(xmax);

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2021 - TortoiseGit
+// Copyright (C) 2012-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@
 #pragma warning(disable: 4100) // unreferenced formal parameter
 #include <ogdf/planarity/PlanarizationLayout.h>
 #include <ogdf/planarity/VariableEmbeddingInserter.h>
-#include <ogdf/planarity/FastPlanarSubgraph.h>
+#include <ogdf/planarity/planar_subgraph_fast/PlanarSubgraphPQTree.h>
 #include <ogdf/orthogonal/OrthoLayout.h>
 #include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
 #pragma warning(pop)
@@ -246,8 +246,7 @@ ogdf::node CRevisionGraphWnd::GetHitNode(CPoint point, CSize /*border*/) const
 	return nodeList->GetAt (GetLogCoordinates (point), border);
 #endif
 
-	ogdf::node v;
-	forall_nodes(v,m_Graph)
+	for (auto v : m_Graph.nodes)
 	{
 		 RectF noderect (GetNodeRect (v, CPoint(GetScrollPos(SB_HORZ),  GetScrollPos(SB_VERT))));
 		 if(point.x>noderect.X && point.x <(noderect.X+noderect.Width) &&
@@ -1465,17 +1464,16 @@ ULONG CRevisionGraphWnd::GetGestureStatus(CPoint /*ptTouch*/)
 
 void CRevisionGraphWnd::ScrollTo(int i, bool select)
 {
-	bool found = false;
-	ogdf::node v;
-	forall_nodes(v, m_Graph)
+	ogdf::node v = nullptr;
+	for (auto vIT : m_Graph.nodes)
 	{
-		if (v->index() == i)
+		if (vIT->index() == i)
 		{
-			found = true;
+			v = vIT;
 			break;
 		}
 	}
-	if (!found)
+	if (!v)
 		return;
 
 	SCROLLINFO sinfo = { 0 };

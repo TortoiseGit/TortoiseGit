@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2020 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -294,8 +294,7 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 	Gdiplus::Pen pen(CTheme::Instance().GetThemeColor(GetColorFromSysColor(COLOR_WINDOWTEXT)), penwidth);
 
 	// iterate over all visible lines
-	ogdf::edge e;
-	forall_edges(e, m_Graph)
+	for (auto e : m_Graph.edges)
 	{
 		// get connection and point position
 		const auto& dpl = this->m_GraphAttr.bends(e);
@@ -502,8 +501,7 @@ void CRevisionGraphWnd::DrawTexts (GraphicsDevice& graphics, const CRect& /*logR
 	Gdiplus::Font font(fontname, static_cast<REAL>(m_nFontSize), FontStyleRegular);
 	auto colorsAndBrushes = SetupColorsAndBrushes(m_Colors);
 
-	ogdf::node v;
-	forall_nodes(v,m_Graph)
+	for (auto v : m_Graph.nodes)
 	{
 		// get node and position
 		RectF noderect (GetNodeRect (v, offset));
