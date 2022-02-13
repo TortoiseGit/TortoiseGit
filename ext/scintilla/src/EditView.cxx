@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <cstdlib>
+#include <cstdint>
 #include <cassert>
 #include <cstring>
 #include <cstdio>
@@ -24,6 +25,9 @@
 #include <iterator>
 #include <memory>
 #include <chrono>
+#include <atomic>
+#include <thread>
+#include <future>
 
 #include "ScintillaTypes.h"
 #include "ScintillaMessages.h"
@@ -171,6 +175,13 @@ void DrawStyledText(Surface *surface, const ViewStyle &vs, int styleOffset, PRec
 	}
 }
 
+void Hexits(char *hexits, int ch) noexcept {
+	hexits[0] = 'x';
+	hexits[1] = "0123456789ABCDEF"[ch / 0x10];
+	hexits[2] = "0123456789ABCDEF"[ch % 0x10];
+	hexits[3] = 0;
+}
+
 }
 
 EditView::EditView() {
@@ -184,7 +195,9 @@ EditView::EditView() {
 	additionalCaretsVisible = true;
 	imeCaretBlockOverride = false;
 	llc.SetLevel(LineCache::Caret);
-	posCache.SetSize(0x400);
+	posCache = CreatePositionCache();
+	posCache->SetSize(0x400);
+	maxLayoutThreads = 1;
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
@@ -209,6 +222,14 @@ bool EditView::SetPhasesDraw(int phases) noexcept {
 
 bool EditView::LinesOverlap() const noexcept {
 	return phasesDraw == PhasesDraw::Multiple;
+}
+
+void EditView::SetLayoutThreads(unsigned int threads) noexcept {
+	maxLayoutThreads = std::clamp(threads, 1U, std::thread::hardware_concurrency());
+}
+
+unsigned int EditView::GetLayoutThreads() const noexcept {
+	return maxLayoutThreads;
 }
 
 void EditView::ClearAllTabstops() noexcept {
@@ -362,14 +383,63 @@ inline char CaseForce(Style::CaseForce caseForce, char chDoc, char chPrevious) n
 	}
 }
 
-constexpr bool IsControlCharacter(int ch) noexcept {
-	// iscntrl returns true for lots of chars > 127 which are displayable,
-	// currently only check C0 control characters.
-	return (ch >= 0 && ch < ' ') || (ch == 127);
-}
-
 bool ViewIsASCII(std::string_view text) {
 	return std::all_of(text.cbegin(), text.cend(), IsASCII);
+}
+
+void LayoutSegments(IPositionCache *pCache,
+	Surface *surface,
+	const ViewStyle &vstyle,
+	LineLayout *ll, 
+	const std::vector<TextSegment> &segments,
+	std::atomic<uint32_t> &nextIndex,
+	const bool textUnicode,
+	const bool multiThreaded) {
+	while (true) {
+		const uint32_t i = nextIndex.fetch_add(1, std::memory_order_acq_rel);
+		if (i >= segments.size()) {
+			break;
+		}
+		const TextSegment &ts = segments[i];
+		if (vstyle.styles[ll->styles[ts.start]].visible) {
+			if (ts.representation) {
+				XYPOSITION representationWidth = vstyle.controlCharWidth;
+				if (ll->chars[ts.start] == '\t') {
+					// Tab is a special case of representation, taking a variable amount of space
+					// which will be filled in later.
+					representationWidth = 0;
+				} else {
+					if (representationWidth <= 0.0) {
+						assert(ts.representation->stringRep.length() <= Representation::maxLength);
+						XYPOSITION positionsRepr[Representation::maxLength + 1];
+						// ts.representation->stringRep is UTF-8 which only matches cache if document is UTF-8
+						// or it only contains ASCII which is a subset of all currently supported encodings.
+						if (textUnicode || ViewIsASCII(ts.representation->stringRep)) {
+							pCache->MeasureWidths(surface, vstyle, StyleControlChar, ts.representation->stringRep,
+								positionsRepr, multiThreaded);
+						} else {
+							surface->MeasureWidthsUTF8(vstyle.styles[StyleControlChar].font.get(), ts.representation->stringRep, positionsRepr);
+						}
+						representationWidth = positionsRepr[ts.representation->stringRep.length() - 1];
+						if (FlagSet(ts.representation->appearance, RepresentationAppearance::Blob)) {
+							representationWidth += vstyle.ctrlCharPadding;
+						}
+					}
+				}
+				for (int ii = 0; ii < ts.length; ii++) {
+					ll->positions[ts.start + 1 + ii] = representationWidth;
+				}
+			} else {
+				if ((ts.length == 1) && (' ' == ll->chars[ts.start])) {
+					// Over half the segments are single characters and of these about half are space characters.
+					ll->positions[ts.start + 1] = vstyle.styles[ll->styles[ts.start]].spaceWidth;
+				} else {
+					pCache->MeasureWidths(surface, vstyle, ll->styles[ts.start],
+						std::string_view(&ll->chars[ts.start], ts.length), &ll->positions[ts.start + 1], multiThreaded);
+				}
+			}
+		}
+	}
 }
 
 }
@@ -382,7 +452,6 @@ bool ViewIsASCII(std::string_view text) {
 void EditView::LayoutLine(const EditModel &model, Surface *surface, const ViewStyle &vstyle, LineLayout *ll, int width) {
 	if (!ll)
 		return;
-
 	const Sci::Line line = ll->LineNumber();
 	PLATFORM_ASSERT(line < model.pdoc->LinesTotal());
 	PLATFORM_ASSERT(ll->chars);
@@ -464,54 +533,69 @@ void EditView::LayoutLine(const EditModel &model, Surface *surface, const ViewSt
 		ll->positions[0] = 0;
 		bool lastSegItalics = false;
 
-		BreakFinder bfLayout(ll, nullptr, Range(0, numCharsInLine), posLineStart, 0, false, model.pdoc, &model.reprs, nullptr);
+		std::vector<TextSegment> segments;
+		BreakFinder bfLayout(ll, nullptr, Range(0, numCharsInLine), posLineStart, 0, BreakFinder::BreakFor::Text, model.pdoc, &model.reprs, nullptr);
 		while (bfLayout.More()) {
+			segments.push_back(bfLayout.Next());
+		}
 
-			const TextSegment ts = bfLayout.Next();
+		std::fill(&ll->positions[0], &ll->positions[numCharsInLine], 0.0f);
 
-			std::fill(&ll->positions[ts.start + 1], &ll->positions[ts.end() + 1], 0.0f);
-			if (vstyle.styles[ll->styles[ts.start]].visible) {
-				if (ts.representation) {
-					XYPOSITION representationWidth = vstyle.controlCharWidth;
-					if (ll->chars[ts.start] == '\t') {
-						// Tab is a special case of representation, taking a variable amount of space
-						const XYPOSITION x = ll->positions[ts.start];
-						representationWidth = NextTabstopPos(line, x, vstyle.tabWidth) - ll->positions[ts.start];
-					} else {
-						if (representationWidth <= 0.0) {
-							assert(ts.representation->stringRep.length() <= Representation::maxLength);
-							XYPOSITION positionsRepr[Representation::maxLength+1];
-							// ts.representation->stringRep is UTF-8 which only matches cache if document is UTF-8
-							// or it only contains ASCII which is a subset of all currently supported encodings.
-							if ((CpUtf8 == model.pdoc->dbcsCodePage) || ViewIsASCII(ts.representation->stringRep)) {
-								posCache.MeasureWidths(surface, vstyle, StyleControlChar, ts.representation->stringRep,
-									positionsRepr);
-							} else {
-								surface->MeasureWidthsUTF8(vstyle.styles[StyleControlChar].font.get(), ts.representation->stringRep, positionsRepr);
-							}
-							representationWidth = positionsRepr[ts.representation->stringRep.length() - 1];
-							if (FlagSet(ts.representation->appearance, RepresentationAppearance::Blob)) {
-								representationWidth += vstyle.ctrlCharPadding;
-							}
-						}
-					}
-					for (int ii = 0; ii < ts.length; ii++)
-						ll->positions[ts.start + 1 + ii] = representationWidth;
-				} else {
-					if ((ts.length == 1) && (' ' == ll->chars[ts.start])) {
-						// Over half the segments are single characters and of these about half are space characters.
-						ll->positions[ts.start + 1] = vstyle.styles[ll->styles[ts.start]].spaceWidth;
-					} else {
-						posCache.MeasureWidths(surface, vstyle, ll->styles[ts.start],
-							std::string_view(&ll->chars[ts.start], ts.length), &ll->positions[ts.start + 1]);
-					}
-				}
-				lastSegItalics = (!ts.representation) && ((ll->chars[ts.end() - 1] != ' ') && vstyle.styles[ll->styles[ts.start]].italic);
+		if (!segments.empty()) {
+
+			const size_t threadsForLength = std::max(1, numCharsInLine / bytesPerLayoutThread);
+			size_t threads = std::min<size_t>({ segments.size(), threadsForLength, maxLayoutThreads });
+			if (!surface->SupportsFeature(Supports::ThreadSafeMeasureWidths)) {
+				threads = 1;
 			}
 
-			for (Sci::Position posToIncrease = ts.start + 1; posToIncrease <= ts.end(); posToIncrease++) {
-				ll->positions[posToIncrease] += ll->positions[ts.start];
+			std::atomic<uint32_t> nextIndex = 0;
+
+			const bool textUnicode = CpUtf8 == model.pdoc->dbcsCodePage;
+			const bool multiThreaded = threads > 1;
+			IPositionCache *pCache = posCache.get();
+
+			// If only 1 thread needed then use the main thread, else spin up multiple
+			const std::launch policy = (multiThreaded) ? std::launch::async : std::launch::deferred;
+
+			std::vector<std::future<void>> futures;
+			for (size_t th = 0; th < threads; th++) {
+				// Find relative positions of everything except for tabs
+				std::future<void> fut = std::async(policy,
+					[pCache, surface, &vstyle, &ll, &segments, &nextIndex, textUnicode, multiThreaded]() {
+					LayoutSegments(pCache, surface, vstyle, ll, segments, nextIndex, textUnicode, multiThreaded);
+				});
+				futures.push_back(std::move(fut));
 			}
+			for (const std::future<void> &f : futures) {
+				f.wait();
+			}
+		}
+
+		// Accumulate absolute positions from relative positions within segments and expand tabs
+		XYPOSITION xPosition = 0.0;
+		size_t iByte = 0;
+		ll->positions[iByte++] = xPosition;
+		for (const TextSegment &ts : segments) {
+			if (vstyle.styles[ll->styles[ts.start]].visible &&
+				ts.representation &&
+				(ll->chars[ts.start] == '\t')) {
+				// Simple visible tab, go to next tab stop
+				const XYPOSITION startTab = ll->positions[ts.start];
+				const XYPOSITION nextTab = NextTabstopPos(line, startTab, vstyle.tabWidth);
+				xPosition += nextTab - startTab;
+			}
+			const XYPOSITION xBeginSegment = xPosition;
+			for (int i = 0; i < ts.length; i++) {
+				xPosition = ll->positions[iByte] + xBeginSegment;
+				ll->positions[iByte++] = xPosition;
+			}
+		}
+
+		if (!segments.empty()) {
+			// Not quite the same as before which would effectively ignore trailing invisible segments
+			const TextSegment &ts = segments.back();
+			lastSegItalics = (!ts.representation) && ((ll->chars[ts.end() - 1] != ' ') && vstyle.styles[ll->styles[ts.start]].italic);
 		}
 
 		// Small hack to make lines that end with italics not cut off the edge of the last character
@@ -564,46 +648,55 @@ void EditView::LayoutLine(const EditModel &model, Surface *surface, const ViewSt
 				ll->wrapIndent = vstyle.aveCharWidth; // Indent to show start visual
 			ll->lines = 0;
 			// Calculate line start positions based upon width.
-			Sci::Position lastGoodBreak = 0;
 			Sci::Position lastLineStart = 0;
-			XYACCUMULATOR startOffset = 0;
+			XYACCUMULATOR startOffset = width;
 			Sci::Position p = 0;
-			while (p < ll->numCharsInLine) {
-				if ((ll->positions[p + 1] - startOffset) >= width) {
+			const Wrap wrapState = vstyle.wrap.state;
+			const Sci::Position numCharsInLine = ll->numCharsInLine;
+			while (p < numCharsInLine) {
+				while (p < numCharsInLine && ll->positions[p + 1] < startOffset) {
+					p++;
+				}
+				if (p < numCharsInLine) {
+					// backtrack to find lastGoodBreak
+					Sci::Position lastGoodBreak = p;
+					if (p > 0) {
+						lastGoodBreak = model.pdoc->MovePositionOutsideChar(p + posLineStart, -1) - posLineStart;
+					}
+					if (wrapState != Wrap::Char) {
+						Sci::Position pos = lastGoodBreak;
+						while (pos > lastLineStart) {
+							// style boundary and space
+							if (wrapState != Wrap::WhiteSpace && (ll->styles[pos - 1] != ll->styles[pos])) {
+								break;
+							}
+							if (IsBreakSpace(ll->chars[pos - 1]) && !IsBreakSpace(ll->chars[pos])) {
+								break;
+							}
+							pos = model.pdoc->MovePositionOutsideChar(pos + posLineStart - 1, -1) - posLineStart;
+						}
+						if (pos > lastLineStart) {
+							lastGoodBreak = pos;
+						}
+					}
 					if (lastGoodBreak == lastLineStart) {
 						// Try moving to start of last character
 						if (p > 0) {
-							lastGoodBreak = model.pdoc->MovePositionOutsideChar(p + posLineStart, -1)
-								- posLineStart;
+							lastGoodBreak = model.pdoc->MovePositionOutsideChar(p + posLineStart, -1) - posLineStart;
 						}
 						if (lastGoodBreak == lastLineStart) {
 							// Ensure at least one character on line.
-							lastGoodBreak = model.pdoc->MovePositionOutsideChar(lastGoodBreak + posLineStart + 1, 1)
-								- posLineStart;
+							lastGoodBreak = model.pdoc->MovePositionOutsideChar(lastGoodBreak + posLineStart + 1, 1) - posLineStart;
 						}
 					}
 					lastLineStart = lastGoodBreak;
 					ll->lines++;
-					ll->SetLineStart(ll->lines, static_cast<int>(lastGoodBreak));
-					startOffset = ll->positions[lastGoodBreak];
+					ll->SetLineStart(ll->lines, static_cast<int>(lastLineStart));
+					startOffset = ll->positions[lastLineStart];
 					// take into account the space for start wrap mark and indent
-					startOffset -= ll->wrapIndent;
-					p = lastGoodBreak + 1;
-					continue;
+					startOffset += width - ll->wrapIndent;
+					p = lastLineStart + 1;
 				}
-				if (p > 0) {
-					if (vstyle.wrap.state == Wrap::Char) {
-						lastGoodBreak = model.pdoc->MovePositionOutsideChar(p + posLineStart, -1)
-							- posLineStart;
-						p = model.pdoc->MovePositionOutsideChar(p + 1 + posLineStart, 1) - posLineStart;
-						continue;
-					} else if ((vstyle.wrap.state == Wrap::Word) && (ll->styles[p] != ll->styles[p - 1])) {
-						lastGoodBreak = p;
-					} else if (IsSpaceOrTab(ll->chars[p - 1]) && !IsSpaceOrTab(ll->chars[p])) {
-						lastGoodBreak = p;
-					}
-				}
-				p++;
 			}
 			ll->lines++;
 		}
@@ -946,19 +1039,19 @@ static void DrawCaretLineFramed(Surface *surface, const ViewStyle &vsDraw, const
 	// Avoid double drawing the corners by removing the left and right sides when drawing top and bottom borders
 	const PRectangle rcWithoutLeftRight = rcLine.Inset(Point(width, 0.0));
 
-	if (subLine == 0 || ll->wrapIndent == 0 || vsDraw.caretLine.layer != Layer::Base) {
+	if (subLine == 0 || ll->wrapIndent == 0 || vsDraw.caretLine.layer != Layer::Base || vsDraw.caretLine.subLine) {
 		// Left
 		surface->FillRectangleAligned(Side(rcLine, Edge::left, width), colourFrame);
 	}
-	if (subLine == 0) {
+	if (subLine == 0 || vsDraw.caretLine.subLine) {
 		// Top
 		surface->FillRectangleAligned(Side(rcWithoutLeftRight, Edge::top, width), colourFrame);
 	}
-	if (subLine == ll->lines - 1 || vsDraw.caretLine.layer != Layer::Base) {
+	if (subLine == ll->lines - 1 || vsDraw.caretLine.layer != Layer::Base || vsDraw.caretLine.subLine) {
 		// Right
 		surface->FillRectangleAligned(Side(rcLine, Edge::right, width), colourFrame);
 	}
-	if (subLine == ll->lines - 1) {
+	if (subLine == ll->lines - 1 || vsDraw.caretLine.subLine) {
 		// Bottom
 		surface->FillRectangleAligned(Side(rcWithoutLeftRight, Edge::bottom, width), colourFrame);
 	}
@@ -1042,7 +1135,7 @@ void EditView::DrawEOL(Surface *surface, const EditModel &model, const ViewStyle
 				if (UTF8IsAscii(chEOL)) {
 					ctrlChar = ControlCharacterString(chEOL);
 				} else {
-					sprintf(hexits, "x%2X", chEOL);
+					Hexits(hexits, chEOL);
 					ctrlChar = hexits;
 				}
 			}
@@ -1453,7 +1546,7 @@ void EditView::DrawEOLAnnotationText(Surface *surface, const EditModel &model, c
 		}
 	}
 
-	// For multi-phase drawing draw the text last as transparent over any box 
+	// For multi-phase drawing draw the text last as transparent over any box
 	if (FlagSet(phase, DrawPhase::text)) {
 		if (phasesDraw != PhasesDraw::One) {
 			surface->DrawTextTransparentUTF8(rcText, fontText,
@@ -1598,7 +1691,7 @@ void EditView::DrawCarets(Surface *surface, const EditModel &model, const ViewSt
 	for (size_t r = 0; (r<model.sel.Count()) || drawDrag; r++) {
 		const bool mainCaret = r == model.sel.Main();
 		SelectionPosition posCaret = (drawDrag ? model.posDrag : model.sel.Range(r).caret);
-		if ((vsDraw.DrawCaretInsideSelection(model.inOverstrike, imeCaretBlockOverride)) && 
+		if ((vsDraw.DrawCaretInsideSelection(model.inOverstrike, imeCaretBlockOverride)) &&
 			!drawDrag &&
 			posCaret > model.sel.Range(r).anchor) {
 			if (posCaret.VirtualSpace() > 0)
@@ -1630,7 +1723,7 @@ void EditView::DrawCarets(Surface *surface, const EditModel &model, const ViewSt
 			}
 			const bool caretBlinkState = (model.caret.active && model.caret.on) || (!additionalCaretsBlink && !mainCaret);
 			const bool caretVisibleState = additionalCaretsVisible || mainCaret;
-			if ((xposCaret >= 0) && vsDraw.IsCaretVisible() &&
+			if ((xposCaret >= 0) && vsDraw.IsCaretVisible(mainCaret) &&
 				(drawDrag || (caretBlinkState && caretVisibleState))) {
 				bool canDrawBlockCaret = true;
 				bool drawBlockCaret = false;
@@ -1654,7 +1747,8 @@ void EditView::DrawCarets(Surface *surface, const EditModel &model, const ViewSt
 				if (xposCaret > 0)
 					caretWidthOffset = 0.51f;	// Move back so overlaps both character cells.
 				xposCaret += xStart;
-				const ViewStyle::CaretShape caretShape = drawDrag ? ViewStyle::CaretShape::line : vsDraw.CaretShapeForMode(model.inOverstrike);
+				const ViewStyle::CaretShape caretShape = drawDrag ? ViewStyle::CaretShape::line :
+					vsDraw.CaretShapeForMode(model.inOverstrike, mainCaret);
 				if (drawDrag) {
 					/* Dragging text, use a line caret */
 					rcCaret.left = std::round(xposCaret - caretWidthOffset);
@@ -1667,7 +1761,7 @@ void EditView::DrawCarets(Surface *surface, const EditModel &model, const ViewSt
 				} else if ((caretShape == ViewStyle::CaretShape::block) || imeCaretBlockOverride) {
 					/* Block caret */
 					rcCaret.left = xposCaret;
-					if (canDrawBlockCaret && !(IsControlCharacter(ll->chars[offset]))) {
+					if (canDrawBlockCaret && !(IsControl(ll->chars[offset]))) {
 						drawBlockCaret = true;
 						rcCaret.right = xposCaret + widthOverstrikeCaret;
 					} else {
@@ -1727,6 +1821,21 @@ static void DrawWrapIndentAndMarker(Surface *surface, const ViewStyle &vsDraw, c
 	}
 }
 
+// On the curses platform, the terminal is drawing its own caret, so if the caret is within
+// the main selection, do not draw the selection at that position.
+// Use iDoc from DrawBackground and DrawForeground here because TextSegment has been adjusted
+// such that, if the caret is inside the main selection, the beginning or end of that selection
+// is at the end of a text segment.
+// This function should only be called if iDoc is within the main selection.
+static InSelection CharacterInCursesSelection(Sci::Position iDoc, const EditModel &model, const ViewStyle &vsDraw) {
+	const SelectionPosition &posCaret = model.sel.RangeMain().caret;
+	const bool caretAtStart = posCaret < model.sel.RangeMain().anchor && posCaret.Position() == iDoc;
+	const bool caretAtEnd = posCaret > model.sel.RangeMain().anchor &&
+		vsDraw.DrawCaretInsideSelection(false, false) &&
+		model.pdoc->MovePositionOutsideChar(posCaret.Position() - 1, -1) == iDoc;
+	return (caretAtStart || caretAtEnd) ? InSelection::inNone : InSelection::inMain;
+}
+
 void EditView::DrawBackground(Surface *surface, const EditModel &model, const ViewStyle &vsDraw, const LineLayout *ll,
 	PRectangle rcLine, Range lineRange, Sci::Position posLineStart, int xStart,
 	int subLine, std::optional<ColourRGBA> background) const {
@@ -1737,7 +1846,8 @@ void EditView::DrawBackground(Surface *surface, const EditModel &model, const Vi
 	// Does not take margin into account but not significant
 	const XYPOSITION xStartVisible = static_cast<XYPOSITION>(subLineStart-xStart);
 
-	BreakFinder bfBack(ll, &model.sel, lineRange, posLineStart, xStartVisible, selBackDrawn, model.pdoc, &model.reprs, nullptr);
+	const BreakFinder::BreakFor breakFor = selBackDrawn ? BreakFinder::BreakFor::Selection : BreakFinder::BreakFor::Text;
+	BreakFinder bfBack(ll, &model.sel, lineRange, posLineStart, xStartVisible, breakFor, model.pdoc, &model.reprs, &vsDraw);
 
 	const bool drawWhitespaceBackground = vsDraw.WhitespaceBackgroundDrawn() && !background;
 
@@ -1760,8 +1870,10 @@ void EditView::DrawBackground(Surface *surface, const EditModel &model, const Vi
 			if (rcSegment.right > rcLine.right)
 				rcSegment.right = rcLine.right;
 
-			const InSelection inSelection = hideSelection ? InSelection::inNone : model.sel.CharacterInSelection(iDoc);
-			const bool inHotspot = (ll->hotspot.Valid()) && ll->hotspot.ContainsCharacter(iDoc);
+			InSelection inSelection = hideSelection ? InSelection::inNone : model.sel.CharacterInSelection(iDoc);
+			if (FlagSet(vsDraw.caret.style, CaretStyle::Curses) && (inSelection == InSelection::inMain))
+				inSelection = CharacterInCursesSelection(iDoc, model, vsDraw);
+			const bool inHotspot = model.hotspot.Valid() && model.hotspot.ContainsCharacter(iDoc);
 			ColourRGBA textBack = TextBackground(model, vsDraw, ll, background, inSelection,
 				inHotspot, ll->styles[i], i);
 			if (ts.representation) {
@@ -1953,8 +2065,9 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 	const XYPOSITION xStartVisible = static_cast<XYPOSITION>(subLineStart-xStart);
 
 	// Foreground drawing loop
-	BreakFinder bfFore(ll, &model.sel, lineRange, posLineStart, xStartVisible,
-		(((phasesDraw == PhasesDraw::One) && selBackDrawn) || vsDraw.SelectionTextDrawn()), model.pdoc, &model.reprs, &vsDraw);
+	const BreakFinder::BreakFor breakFor = (((phasesDraw == PhasesDraw::One) && selBackDrawn) || vsDraw.SelectionTextDrawn())
+		? BreakFinder::BreakFor::ForegroundAndSelection : BreakFinder::BreakFor::Foreground;
+	BreakFinder bfFore(ll, &model.sel, lineRange, posLineStart, xStartVisible, breakFor, model.pdoc, &model.reprs, &vsDraw);
 
 	while (bfFore.More()) {
 
@@ -1972,7 +2085,7 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 			ColourRGBA textFore = vsDraw.styles[styleMain].fore;
 			const Font *textFont = vsDraw.styles[styleMain].font.get();
 			// Hot-spot foreground
-			const bool inHotspot = (ll->hotspot.Valid()) && ll->hotspot.ContainsCharacter(iDoc);
+			const bool inHotspot = model.hotspot.Valid() && model.hotspot.ContainsCharacter(iDoc);
 			if (inHotspot) {
 				if (vsDraw.ElementColour(Element::HotSpotActive))
 					textFore = *vsDraw.ElementColour(Element::HotSpotActive);
@@ -2004,7 +2117,9 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 					}
 				}
 			}
-			const InSelection inSelection = hideSelection ? InSelection::inNone : model.sel.CharacterInSelection(iDoc);
+			InSelection inSelection = hideSelection ? InSelection::inNone : model.sel.CharacterInSelection(iDoc);
+			if (FlagSet(vsDraw.caret.style, CaretStyle::Curses) && (inSelection == InSelection::inMain))
+				inSelection = CharacterInCursesSelection(iDoc, model, vsDraw);
 			const std::optional<ColourRGBA> selectionFore = SelectionForeground(model, vsDraw, inSelection);
 			if (selectionFore) {
 				textFore = *selectionFore;
@@ -2119,7 +2234,7 @@ void EditView::DrawForeground(Surface *surface, const EditModel &model, const Vi
 					}
 				}
 			}
-			if (ll->hotspot.Valid() && vsDraw.hotspotUnderline && ll->hotspot.ContainsCharacter(iDoc)) {
+			if (inHotspot && vsDraw.hotspotUnderline) {
 				PRectangle rcUL = rcSegment;
 				rcUL.top = rcUL.top + vsDraw.maxAscent + 1;
 				rcUL.bottom = rcUL.top + 1;
@@ -2284,27 +2399,40 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 }
 
-static void DrawFoldLines(Surface *surface, const EditModel &model, const ViewStyle &vsDraw, Sci::Line line, PRectangle rcLine) {
+static void DrawFoldLines(Surface *surface, const EditModel &model, const ViewStyle &vsDraw, const LineLayout *ll,
+	Sci::Line line, PRectangle rcLine, int subLine) {
+	const bool lastSubLine = subLine == (ll->lines - 1);
 	const bool expanded = model.pcs->GetExpanded(line);
 	const FoldLevel level = model.pdoc->GetFoldLevel(line);
 	const FoldLevel levelNext = model.pdoc->GetFoldLevel(line + 1);
 	if (LevelIsHeader(level) &&
 		(LevelNumber(level) < LevelNumber(levelNext))) {
+		const ColourRGBA foldLineColour = vsDraw.ElementColour(Element::FoldLine).value_or(
+			vsDraw.styles[StyleDefault].fore);
 		// Paint the line above the fold
-		if ((expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeExpanded)))
+		if ((subLine == 0) &&
+			((expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeExpanded)))
 			||
-			(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeContracted)))) {
-			PRectangle rcFoldLine = rcLine;
-			rcFoldLine.bottom = rcFoldLine.top + 1;
-			surface->FillRectangleAligned(rcFoldLine, Fill(vsDraw.styles[StyleDefault].fore));
+			(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeContracted))))) {
+			surface->FillRectangleAligned(Side(rcLine, Edge::top, 1.0), foldLineColour);
 		}
 		// Paint the line below the fold
-		if ((expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterExpanded)))
+		if (lastSubLine &&
+			((expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterExpanded)))
 			||
-			(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterContracted)))) {
-			PRectangle rcFoldLine = rcLine;
-			rcFoldLine.top = rcFoldLine.bottom - 1;
-			surface->FillRectangleAligned(rcFoldLine, Fill(vsDraw.styles[StyleDefault].fore));
+			(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterContracted))))) {
+			surface->FillRectangleAligned(Side(rcLine, Edge::bottom, 1.0), foldLineColour);
+			// If contracted fold line drawn then don't overwrite with hidden line
+			// as fold lines are more specific then hidden lines.
+			if (!expanded) {
+				return;
+			}
+		}
+	}
+	if (lastSubLine && model.pcs->GetVisible(line) && !model.pcs->GetVisible(line + 1)) {
+		std::optional<ColourRGBA> hiddenLineColour = vsDraw.ElementColour(Element::HiddenLine);
+		if (hiddenLineColour) {
+			surface->FillRectangleAligned(Side(rcLine, Edge::bottom, 1.0), *hiddenLineColour);
 		}
 	}
 }
@@ -2330,10 +2458,9 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, PRectan
 		const int screenLinePaintFirst = static_cast<int>(rcArea.top) / vsDraw.lineHeight;
 		const int xStart = vsDraw.textStart - model.xOffset + static_cast<int>(ptOrigin.x);
 
-		SelectionPosition posCaret = model.sel.RangeMain().caret;
-		if (model.posDrag.IsValid())
-			posCaret = model.posDrag;
+		const SelectionPosition posCaret = model.posDrag.IsValid() ? model.posDrag : model.sel.RangeMain().caret;
 		const Sci::Line lineCaret = model.pdoc->SciLineFromPosition(posCaret.Position());
+		const int caretOffset = static_cast<int>(posCaret.Position() - model.pdoc->LineStart(lineCaret));
 
 		PRectangle rcTextArea = rcClient;
 		if (vsDraw.marginInside) {
@@ -2400,8 +2527,8 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, PRectan
 				durLayout += ep.Duration(true);
 #endif
 				if (ll) {
-					ll->containsCaret = !hideSelection && (lineDoc == lineCaret);
-					ll->hotspot = model.GetHotSpotRange();
+					ll->containsCaret = !hideSelection && (lineDoc == lineCaret)
+						&& (ll->lines == 1 || !vsDraw.caretLine.subLine || ll->InLine(caretOffset, subLine));
 
 					PRectangle rcLine = rcTextArea;
 					rcLine.top = static_cast<XYPOSITION>(ypos);
@@ -2435,7 +2562,7 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, PRectan
 					ll->RestoreBracesHighlight(rangeLine, model.braces, bracesIgnoreStyle);
 
 					if (FlagSet(phase, DrawPhase::foldLines)) {
-						DrawFoldLines(surface, model, vsDraw, lineDoc, rcLine);
+						DrawFoldLines(surface, model, vsDraw, ll.get(), lineDoc, rcLine, subLine);
 					}
 
 					if (FlagSet(phase, DrawPhase::carets)) {
@@ -2552,7 +2679,7 @@ static ColourRGBA InvertedLight(ColourRGBA orig) noexcept {
 Sci::Position EditView::FormatRange(bool draw, const RangeToFormat *pfr, Surface *surface, Surface *surfaceMeasure,
 	const EditModel &model, const ViewStyle &vs) {
 	// Can't use measurements cached for screen
-	posCache.Clear();
+	posCache->Clear();
 
 	ViewStyle vsPrint(vs);
 	vsPrint.technology = Technology::Default;
@@ -2581,24 +2708,24 @@ Sci::Position EditView::FormatRange(bool draw, const RangeToFormat *pfr, Surface
 	vsPrint.braceBadLightIndicatorSet = false;
 
 	// Set colours for printing according to users settings
-	for (size_t sty = 0; sty < vsPrint.styles.size(); sty++) {
-		if (printParameters.colourMode == PrintOption::InvertLight) {
-			vsPrint.styles[sty].fore = InvertedLight(vsPrint.styles[sty].fore);
-			vsPrint.styles[sty].back = InvertedLight(vsPrint.styles[sty].back);
-		} else if (printParameters.colourMode == PrintOption::BlackOnWhite) {
-			vsPrint.styles[sty].fore = ColourRGBA(0, 0, 0);
-			vsPrint.styles[sty].back = ColourRGBA(0xff, 0xff, 0xff);
-		} else if (printParameters.colourMode == PrintOption::ColourOnWhite) {
-			vsPrint.styles[sty].back = ColourRGBA(0xff, 0xff, 0xff);
-		} else if (printParameters.colourMode == PrintOption::ColourOnWhiteDefaultBG) {
-			if (sty <= StyleDefault) {
-				vsPrint.styles[sty].back = ColourRGBA(0xff, 0xff, 0xff);
-			}
+	const PrintOption colourMode = printParameters.colourMode;
+	const std::vector<Style>::iterator endStyles = (colourMode == PrintOption::ColourOnWhiteDefaultBG) ?
+		vsPrint.styles.begin() + StyleLineNumber : vsPrint.styles.end();
+	for (std::vector<Style>::iterator it = vsPrint.styles.begin(); it != endStyles; ++it) {
+		if (colourMode == PrintOption::InvertLight) {
+			it->fore = InvertedLight(it->fore);
+			it->back = InvertedLight(it->back);
+		} else if (colourMode == PrintOption::BlackOnWhite) {
+			it->fore = ColourRGBA(0, 0, 0);
+			it->back = ColourRGBA(0xff, 0xff, 0xff);
+		} else if (colourMode == PrintOption::ColourOnWhite || colourMode == PrintOption::ColourOnWhiteDefaultBG) {
+			it->back = ColourRGBA(0xff, 0xff, 0xff);
 		}
 	}
 	// White background for the line numbers if PrintOption::ScreenColours isn't used
-	if (printParameters.colourMode != PrintOption::ScreenColours)
+	if (colourMode != PrintOption::ScreenColours) {
 		vsPrint.styles[StyleLineNumber].back = ColourRGBA(0xff, 0xff, 0xff);
+	}
 
 	// Printing uses different margins, so reset screen margins
 	vsPrint.leftMarginWidth = 0;
@@ -2691,7 +2818,7 @@ Sci::Position EditView::FormatRange(bool draw, const RangeToFormat *pfr, Surface
 				vsPrint.styles[StyleLineNumber].font.get(), number);
 			surface->FlushCachedState();
 			surface->DrawTextNoClip(rcNumber, vsPrint.styles[StyleLineNumber].font.get(),
-				static_cast<XYPOSITION>(ypos + vsPrint.maxAscent), number,
+				ypos + vsPrint.maxAscent, number,
 				vsPrint.styles[StyleLineNumber].fore,
 				vsPrint.styles[StyleLineNumber].back);
 		}
@@ -2721,7 +2848,7 @@ Sci::Position EditView::FormatRange(bool draw, const RangeToFormat *pfr, Surface
 	}
 
 	// Clear cache so measurements are not used for screen
-	posCache.Clear();
+	posCache->Clear();
 
 	return nPrintPos;
 }

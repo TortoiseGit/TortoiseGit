@@ -81,9 +81,6 @@
     <ClInclude Include="..\scintilla\src\ElapsedPeriod.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
-    <ClInclude Include="..\scintilla\src\FontQuality.h">
-      <Filter>scintilla\src</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\Geometry.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
@@ -239,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="..\scintilla\include\ScintillaTypes.h">
       <Filter>scintilla\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\WinTypes.h">
+      <Filter>scintilla\win32</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -735,6 +735,15 @@
     </ClCompile>
     <ClCompile Include="..\scintilla\src\CharacterType.cxx">
       <Filter>scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexAsciidoc.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexGDScript.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx">
+      <Filter>lexlib\lexlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -180,6 +180,8 @@ enum class Element {
 	WhiteSpaceBack = 61,
 	HotSpotActive = 70,
 	HotSpotActiveBack = 71,
+	FoldLine = 80,
+	HiddenLine = 81,
 };
 
 enum class Layer {
@@ -228,6 +230,11 @@ enum class IndicValue {
 enum class IndicFlag {
 	None = 0,
 	ValueFore = 1,
+};
+
+enum class AutoCompleteOption {
+	Normal = 0,
+	FixedSize = 1,
 };
 
 enum class IndentView {
@@ -432,6 +439,7 @@ enum class CaretStyle {
 	Block = 2,
 	OverstrikeBar = 0,
 	OverstrikeBlock = 0x10,
+	Curses = 0x20,
 	InsMask = 0xF,
 	BlockAfter = 0x100,
 };
@@ -499,6 +507,7 @@ enum class Supports {
 	FractionalStrokeWidth = 2,
 	TranslucentStroke = 3,
 	PixelModification = 4,
+	ThreadSafeMeasureWidths = 5,
 };
 
 enum class LineCharacterIndexType {
