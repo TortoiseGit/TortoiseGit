@@ -941,10 +941,17 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			break;
 		case ID_PUSH:
 			{
+				CString workingDir = g_Git.m_CurrentDir;
+				workingDir.Replace(L':', L'_');
+				bool pushAllBranches = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + workingDir + L"\\AllBranches", FALSE) == TRUE;
+
 				CString guessAssociatedBranch = pSelLogEntry->m_CommitHash.ToString();
 				auto branch = popmenu ? reinterpret_cast<const CString*>(static_cast<CIconMenu*>(popmenu)->GetMenuItemData(cmd)) : nullptr;
 				if (branch && !CStringUtils::StartsWith(*branch, L"refs/remotes/"))
+				{
 					guessAssociatedBranch = *branch;
+					pushAllBranches = false;
+				}
 				else if (auto refList = hashMap.find(pSelLogEntry->m_CommitHash); refList != hashMap.cend())
 				{
 					if (!GetFirstEntryStartingWith(refList->second, L"refs/heads/", guessAssociatedBranch))
@@ -954,7 +961,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				if (CStringUtils::EndsWith(guessAssociatedBranch, L"^{}"))
 					guessAssociatedBranch.Truncate(guessAssociatedBranch.GetLength() - static_cast<int>(wcslen(L"^{}")));
 
-				if (CAppUtils::Push(GetParentHWND(), guessAssociatedBranch))
+				if (CAppUtils::Push(GetParentHWND(), guessAssociatedBranch, pushAllBranches))
 					Refresh();
 			}
 			break;

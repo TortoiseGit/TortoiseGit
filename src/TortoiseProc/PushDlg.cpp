@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -168,7 +168,7 @@ BOOL CPushDlg::OnInitDialog()
 	m_regPushAllRemotes = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + WorkingDir + L"\\AllRemotes", FALSE);
 	m_bPushAllRemotes = m_regPushAllRemotes;
 	m_regPushAllBranches = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\Push\\" + WorkingDir + L"\\AllBranches", FALSE);
-	if (m_BranchSourceName.IsEmpty())
+	if (m_BranchSourceName.IsEmpty()) // attention for GitLogListAction ID_PUSH
 		m_bPushAllBranches = m_regPushAllBranches;
 	m_RemoteURL.LoadHistory(L"Software\\TortoiseGit\\History\\PushURLS\\" + WorkingDir, L"url");
 	m_RemoteURL.EnableWindow(FALSE);

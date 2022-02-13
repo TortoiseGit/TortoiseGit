@@ -2937,10 +2937,12 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 	return ret == IDOK;
 }
 
-bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch)
+bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch, int pushAll /* = BST_INETERMINATE */)
 {
 	CPushDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	dlg.m_BranchSourceName = selectLocalBranch;
+	if (pushAll == BST_CHECKED)
+		dlg.m_bPushAllBranches = pushAll;
 
 	if (dlg.DoModal() == IDOK)
 		return DoPush(hWnd, !!dlg.m_bAutoLoad, !!dlg.m_bTags, !!dlg.m_bPushAllRemotes, !!dlg.m_bPushAllBranches, !!dlg.m_bForce, !!dlg.m_bForceWithLease, dlg.m_BranchSourceName, dlg.m_URL, dlg.m_BranchRemoteName, !!dlg.m_bSetUpstream, dlg.m_RecurseSubmodules, dlg.m_sPushOption);

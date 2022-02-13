@@ -7,6 +7,7 @@ Released: unreleased
 == Bug Fixes ==
 * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu
 * Fixed issue #3868: 2.13 has bug for clone without checkout
+* Fixed issue #3863: "Push..." menu item in the log window context menu does not honor last selection of pushing all branches
 
 = Release 2.13.0.1 =
 Released: 2022-02-06
