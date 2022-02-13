@@ -736,6 +736,15 @@
     <ClCompile Include="..\scintilla\src\CharacterType.cxx">
       <Filter>scintilla\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexAsciidoc.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexGDScript.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx">
+      <Filter>lexlib\lexlib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">

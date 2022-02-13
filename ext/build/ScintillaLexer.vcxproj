@@ -131,6 +131,7 @@
     <ClCompile Include="..\lexilla\lexers\LexAbaqus.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexAda.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexAPDL.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexAsciidoc.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexAsm.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexAsn1.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexASY.cxx" />
@@ -170,6 +171,7 @@
     <ClCompile Include="..\lexilla\lexers\LexFortran.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexFSharp.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexGAP.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexGDScript.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexGui4Cli.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexHaskell.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexHex.cxx" />
@@ -247,6 +249,7 @@
     <ClCompile Include="..\lexilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\lexilla\lexlib\CharacterSet.cxx" />
     <ClCompile Include="..\lexilla\lexlib\DefaultLexer.cxx" />
+    <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerBase.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerModule.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerNoExceptions.cxx" />
