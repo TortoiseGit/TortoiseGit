@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -861,6 +861,16 @@ bool CTGitPath::IsBisectActive() const
 	GitAdminDir::GetWorktreeAdminDirPath(m_sProjectRoot, dotGitPath);
 
 	return !!PathFileExists(dotGitPath + L"BISECT_START");
+}
+bool CTGitPath::IsCherryPickActive() const
+{
+	if (!HasAdminDir())
+		return false;
+
+	CString dotGitPath;
+	GitAdminDir::GetWorktreeAdminDirPath(m_sProjectRoot, dotGitPath);
+
+	return !!PathFileExists(dotGitPath + L"CHERRY_PICK_HEAD");
 }
 bool CTGitPath::IsMergeActive() const
 {

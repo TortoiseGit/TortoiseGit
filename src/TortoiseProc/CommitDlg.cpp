@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1393,9 +1393,8 @@ UINT CCommitDlg::StatusThread()
 
 	g_Git.RefreshGitIndex();
 
-	CString dotGitPath;
-	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
-	if (PathFileExists(dotGitPath + L"CHERRY_PICK_HEAD"))
+	CTGitPath repoRoot { g_Git.m_CurrentDir };
+	if (repoRoot.IsCherryPickActive())
 	{
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
 		m_bCommitAmend = FALSE;
@@ -1451,8 +1450,7 @@ UINT CCommitDlg::StatusThread()
 	}
 	m_bDoNotStoreLastSelectedLine = false;
 
-	if ((m_ListCtrl.GetItemCount()==0)&&(m_ListCtrl.HasUnversionedItems())
-		 && !PathFileExists(dotGitPath + L"MERGE_HEAD"))
+	if (m_ListCtrl.GetItemCount() == 0 && m_ListCtrl.HasUnversionedItems() && !repoRoot.IsMergeActive())
 	{
 		CString temp;
 		temp.LoadString(IDS_COMMITDLG_NOTHINGTOCOMMITUNVERSIONED);
@@ -1466,7 +1464,7 @@ UINT CCommitDlg::StatusThread()
 		}
 	}
 
-	GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(PathFileExists(dotGitPath + L"MERGE_HEAD") ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_MERGEACTIVE)->ShowWindow(repoRoot.IsMergeActive() ? SW_SHOW : SW_HIDE);
 
 	SetDlgTitle();
 
@@ -1504,7 +1502,7 @@ UINT CCommitDlg::StatusThread()
 				SendMessage(WM_UPDATEDATAFALSE);
 			}
 			else
-				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(!PathFileExists(dotGitPath + L"CHERRY_PICK_HEAD"));
+				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(!repoRoot.IsCherryPickActive());
 
 			CGitHash hash;
 			if (g_Git.GetHash(hash, L"HEAD"))
