@@ -9,7 +9,8 @@
     <DisplayString>SHA1: {id[0],nvoxb}{id[1],nvoxb}{id[2],nvoxb}{id[3],nvoxb}{id[4],nvoxb}{id[5],nvoxb}{id[6],nvoxb}{id[7],nvoxb}{id[8],nvoxb}{id[9],nvoxb}{id[10],nvoxb}{id[11],nvoxb}{id[12],nvoxb}{id[13],nvoxb}{id[14],nvoxb}{id[15],nvoxb}{id[16],nvoxb}{id[17],nvoxb}{id[18],nvoxb}{id[19],nvoxb}</DisplayString>
   </Type>
   <Type Name="object_id">
-    <DisplayString Condition="algo == 0">SHA1: {hash[0],nvoxb}{hash[1],nvoxb}{hash[2],nvoxb}{hash[3],nvoxb}{hash[4],nvoxb}{hash[5],nvoxb}{hash[6],nvoxb}{hash[7],nvoxb}{hash[8],nvoxb}{hash[9],nvoxb}{hash[10],nvoxb}{hash[11],nvoxb}{hash[12],nvoxb}{hash[13],nvoxb}{hash[14],nvoxb}{hash[15],nvoxb}{hash[16],nvoxb}{hash[17],nvoxb}{hash[18],nvoxb}{hash[19],nvoxb}</DisplayString>
+    <DisplayString Condition="algo == 0">unknown hash</DisplayString>
+    <DisplayString Condition="algo == 1">SHA1: {hash[0],nvoxb}{hash[1],nvoxb}{hash[2],nvoxb}{hash[3],nvoxb}{hash[4],nvoxb}{hash[5],nvoxb}{hash[6],nvoxb}{hash[7],nvoxb}{hash[8],nvoxb}{hash[9],nvoxb}{hash[10],nvoxb}{hash[11],nvoxb}{hash[12],nvoxb}{hash[13],nvoxb}{hash[14],nvoxb}{hash[15],nvoxb}{hash[16],nvoxb}{hash[17],nvoxb}{hash[18],nvoxb}{hash[19],nvoxb}</DisplayString>
   </Type>
 
   <Type Name="git_strarray">
