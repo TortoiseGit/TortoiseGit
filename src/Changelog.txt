@@ -7,6 +7,7 @@ Released: unreleased
  * Allow to see diff to previous commit on commit dialog for merge commits
  * Update libgit2 to 1.4.0
  * Update OGDF to version 2022.02
+ * Fixed issue #3873: Submodule Add Dialog does not automatically grab the Git Clone link from the clipboard
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

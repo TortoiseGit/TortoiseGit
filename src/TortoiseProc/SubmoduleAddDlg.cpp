@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017. 2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -105,7 +105,15 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	m_Repository.LoadHistory(L"Software\\TortoiseGit\\History\\SubModuleRepoURLS", L"url");
 	m_PathCtrl.LoadHistory(L"Software\\TortoiseGit\\History\\SubModulePath", L"url");
 	m_PathCtrl.SetWindowText(m_strPath);
-	m_Repository.SetCurSel(0);
+
+	CString str = CAppUtils::GetClipboardLink(L"git clone ");
+	str.Trim();
+	if (str.GetLength() > 2 && (str[0] == L'"' && str[str.GetLength() - 1] == L'"' || str[0] == L'\'' && str[str.GetLength() - 1] == L'\''))
+		str = str.Mid(1, str.GetLength() - 2);
+	if (!str.IsEmpty())
+		m_Repository.SetWindowText(str);
+	else
+		m_Repository.SetCurSel(0);
 
 	m_PuttyKeyCombo.SetPathHistory(TRUE);
 	m_PuttyKeyCombo.LoadHistory(L"Software\\TortoiseGit\\History\\puttykey", L"key");
