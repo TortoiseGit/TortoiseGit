@@ -3590,10 +3590,14 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
-		if (status)
-			return;
-
 		CTGitPath path = g_Git.m_CurrentDir;
+		if (status)
+		{
+			if (path.IsBisectActive())
+				postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+			return;
+		}
+
 		if (path.HasSubmodules())
 		{
 			postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, []
