@@ -160,6 +160,7 @@
     <ClCompile Include="..\libgit2\src\pqueue.c" />
     <ClCompile Include="..\libgit2\src\proxy.c" />
     <ClCompile Include="..\libgit2\src\push.c" />
+    <ClCompile Include="..\libgit2\src\rand.c" />
     <ClCompile Include="..\libgit2\src\reader.c" />
     <ClCompile Include="..\libgit2\src\rebase.c" />
     <ClCompile Include="..\libgit2\src\refdb.c" />
@@ -386,6 +387,7 @@
     <ClInclude Include="..\libgit2\src\pqueue.h" />
     <ClInclude Include="..\libgit2\src\proxy.h" />
     <ClInclude Include="..\libgit2\src\push.h" />
+    <ClInclude Include="..\libgit2\src\rand.h" />
     <ClInclude Include="..\libgit2\src\reader.h" />
     <ClInclude Include="..\libgit2\src\refdb.h" />
     <ClInclude Include="..\libgit2\src\reflog.h" />
@@ -442,6 +444,7 @@
     <ClInclude Include="..\libgit2\src\win32\w32_util.h" />
     <ClInclude Include="..\libgit2\src\win32\win32-compat.h" />
     <ClInclude Include="..\libgit2\src\worktree.h" />
+    <ClInclude Include="..\libgit2\src\xdiff\git-xdiff.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiff.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xdiffi.h" />
     <ClInclude Include="..\libgit2\src\xdiff\xemit.h" />

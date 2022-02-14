@@ -5,6 +5,7 @@ Released: unreleased
  * Fixed issue #3860: Highlight keywords, such as error, fatal and warning in output of git commands
  * Update Scintilla to 5.2.0 and Lexilla to 5.1.5
  * Allow to see diff to previous commit on commit dialog for merge commits
+ * Update libgit2 to 1.4.0
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

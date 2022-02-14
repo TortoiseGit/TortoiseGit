@@ -596,6 +596,9 @@
     <ClCompile Include="..\libgit2\src\str.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\rand.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\attr.h">
@@ -1335,6 +1338,12 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\diff_stats.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\rand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\xdiff\git-xdiff.h">
+      <Filter>Header Files\xdiff</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
