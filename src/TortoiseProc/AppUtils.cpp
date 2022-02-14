@@ -3604,11 +3604,12 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 			});
 		}
 
+		if (!path.IsBisectActive())
+			return;
 		postCmdList.emplace_back(IDI_THUMB_UP, IDS_MENUBISECTGOOD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /good"); });
 		postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
 		postCmdList.emplace_back(IDI_BISECT, IDS_MENUBISECTSKIP, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /skip"); });
-		if (op != L"reset")
-			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, []{ CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+		postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
 	};
 
 	INT_PTR ret = progress.DoModal();
