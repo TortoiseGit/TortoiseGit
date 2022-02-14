@@ -32,50 +32,50 @@ TEST(CAppUtils, FindWarningsErrors)
 		std::vector<CHARRANGE> rangeErrors;
 		std::vector<CHARRANGE> rangeWarnings;
 		EXPECT_TRUE(CAppUtils::FindWarningsErrors(L"warning: something", rangeErrors, rangeWarnings));
-		ASSERT_EQ(0, rangeErrors.size());
-		ASSERT_EQ(1, rangeWarnings.size());
+		ASSERT_EQ(0u, rangeErrors.size());
+		ASSERT_EQ(1u, rangeWarnings.size());
 
 		EXPECT_EQ(0, rangeWarnings[0].cpMin);
-		EXPECT_EQ(wcslen(L"warning: "), rangeWarnings[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"warning: ")), rangeWarnings[0].cpMax);
 	}
 
 	{
 		std::vector<CHARRANGE> rangeErrors;
 		std::vector<CHARRANGE> rangeWarnings;
 		EXPECT_TRUE(CAppUtils::FindWarningsErrors(L"\nwarning: something", rangeErrors, rangeWarnings));
-		ASSERT_EQ(0, rangeErrors.size());
-		ASSERT_EQ(1, rangeWarnings.size());
+		ASSERT_EQ(0u, rangeErrors.size());
+		ASSERT_EQ(1u, rangeWarnings.size());
 
 		EXPECT_EQ(1, rangeWarnings[0].cpMin);
-		EXPECT_EQ(wcslen(L"warning: ") + 1, rangeWarnings[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"warning: ") + 1), rangeWarnings[0].cpMax);
 	}
 
 	{
 		std::vector<CHARRANGE> rangeErrors;
 		std::vector<CHARRANGE> rangeWarnings;
 		EXPECT_TRUE(CAppUtils::FindWarningsErrors(L"\nwarning: something\n error: fjfjf\nerror: \n", rangeErrors, rangeWarnings));
-		ASSERT_EQ(1, rangeErrors.size());
-		ASSERT_EQ(1, rangeWarnings.size());
+		ASSERT_EQ(1u, rangeErrors.size());
+		ASSERT_EQ(1u, rangeWarnings.size());
 
 		EXPECT_EQ(1, rangeWarnings[0].cpMin);
-		EXPECT_EQ(wcslen(L"warning: ") + 1, rangeWarnings[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"warning: ") + 1), rangeWarnings[0].cpMax);
 
 		EXPECT_EQ(34, rangeErrors[0].cpMin);
-		EXPECT_EQ(wcslen(L"error: ") + 34, rangeErrors[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"error: ") + 34), rangeErrors[0].cpMax);
 	}
 
 	{
 		std::vector<CHARRANGE> rangeErrors;
 		std::vector<CHARRANGE> rangeWarnings;
 		EXPECT_TRUE(CAppUtils::FindWarningsErrors(L"\n\nfatal: something\nwarning: ", rangeErrors, rangeWarnings));
-		ASSERT_EQ(1, rangeErrors.size());
-		ASSERT_EQ(1, rangeWarnings.size());
+		ASSERT_EQ(1u, rangeErrors.size());
+		ASSERT_EQ(1u, rangeWarnings.size());
 
 		EXPECT_EQ(19, rangeWarnings[0].cpMin);
-		EXPECT_EQ(wcslen(L"warning: ") + 19, rangeWarnings[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"warning: ") + 19), rangeWarnings[0].cpMax);
 
 		EXPECT_EQ(2, rangeErrors[0].cpMin);
-		EXPECT_EQ(wcslen(L"fatal: ") + 2, rangeErrors[0].cpMax);
+		EXPECT_EQ(static_cast<int>(wcslen(L"fatal: ") + 2), rangeErrors[0].cpMax);
 	}
 }
 
@@ -88,7 +88,7 @@ TEST(CAppUtils, FindURLMatches)
 
 	{
 		auto ranges = CAppUtils::FindURLMatches(L"https://tortoisegit.org");
-		ASSERT_EQ(1, ranges.size());
+		ASSERT_EQ(1u, ranges.size());
 
 		EXPECT_EQ(0, ranges[0].cpMin);
 		EXPECT_EQ(23, ranges[0].cpMax);
@@ -97,7 +97,7 @@ TEST(CAppUtils, FindURLMatches)
 	{
 		CString text = L"here https://user:pw@tortoisegit.org/~user/file_name-123.html?param=val+ue&another=val%20ue2#anchor more http:// text mailto:local_part@sub-domain.example.com text mail@example.com separator text file://c:some/path text";
 		auto ranges = CAppUtils::FindURLMatches(text);
-		ASSERT_EQ(4, ranges.size());
+		ASSERT_EQ(4u, ranges.size());
 
 		EXPECT_EQ(5, ranges[0].cpMin);
 		EXPECT_EQ(99, ranges[0].cpMax);
@@ -119,7 +119,7 @@ TEST(CAppUtils, FindURLMatches)
 	{
 		CString text = L"here <https://tortoisegit.org?param=val ue> text http://tortoisegit.org? text <http://tortoisegit.org?> text https://example.com/;sesionid=747re7fucbd text ftp://example.com/some!string text \\\\unc\\path\\somewhere text";
 		auto ranges = CAppUtils::FindURLMatches(text);
-		ASSERT_EQ(5, ranges.size());
+		ASSERT_EQ(5u, ranges.size());
 
 		EXPECT_EQ(6, ranges[0].cpMin);
 		EXPECT_EQ(42, ranges[0].cpMax);
