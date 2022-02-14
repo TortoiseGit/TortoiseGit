@@ -1515,7 +1515,7 @@ UINT CCommitDlg::StatusThread()
 				if (headRevision.GetParentFromHash(hash))
 					MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 				// do not allow to show diff to "last" revision if it has more that one parent
-				if (headRevision.ParentsCount() != 1)
+				if (headRevision.ParentsCount() < 1)
 				{
 					m_bAmendDiffToLastCommit = TRUE;
 					SendMessage(WM_UPDATEDATAFALSE);
