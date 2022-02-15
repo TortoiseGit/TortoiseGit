@@ -14,6 +14,7 @@ Released: unreleased
  * Fixed issue #3868: 2.13 has bug for clone without checkout
  * Fixed issue #3863: "Push..." menu item in the log window context menu does not honor last selection of pushing all branches
  * Fixed issue #3870: Dialog after "Bisect reset" offers bisect step options
+ * Removed right anchor from "Staging Support" checkbox on commit dialog
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

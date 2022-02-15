@@ -367,6 +367,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_COMMIT_SETAUTHOR);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
 	AdjustControlSize(IDC_COMMIT_AS_COMMIT_DATE);
+	AdjustControlSize(IDC_STAGINGSUPPORT);
 
 	// line up all controls and adjust their sizes.
 #define LINKSPACING 9
@@ -407,7 +408,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_TEXT_INFO, TOP_RIGHT);
 	AddAnchor(IDC_WHOLE_PROJECT, BOTTOM_LEFT);
 	AddAnchor(IDC_NOAUTOSELECTSUBMODULES, BOTTOM_LEFT);
-	AddAnchor(IDC_STAGINGSUPPORT, BOTTOM_LEFT, BOTTOM_RIGHT);
+	AddAnchor(IDC_STAGINGSUPPORT, BOTTOM_LEFT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
