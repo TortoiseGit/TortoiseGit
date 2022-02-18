@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006, 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016-2017, 2021 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ public:
 	CCachedDirectory(const CTGitPath& directoryPath);
 	~CCachedDirectory();
 	CStatusCacheEntry GetStatusForMember(const CTGitPath& path, bool bRecursive, bool bFetch = true);
+	CString GetProjectRoot() const;
 
 private:
 	CStatusCacheEntry GetCacheStatusForMember(const CTGitPath& path);

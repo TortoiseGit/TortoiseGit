@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2020 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,11 +30,14 @@
 #include <Dbt.h>
 #include <InitGuid.h>
 #include <Ioevent.h>
+#include <wrl/client.h>
+
 #include "../version.h"
 #include "SmartHandle.h"
 #include "CreateProcessHelper.h"
 #include "gitindex.h"
 #include "LoadIconEx.h"
+#include "../Git/Git.h"
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        static_cast<int>(static_cast<short>(LOWORD(lp)))
@@ -50,6 +53,7 @@
 CCrashReportTGit crasher(L"TGitCache " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif
 
+DWORD WINAPI		ExplorerMonitorThread(LPVOID);
 DWORD WINAPI 		InstanceThread(LPVOID);
 DWORD WINAPI		PipeThread(LPVOID);
 DWORD WINAPI		CommandWaitThread(LPVOID);
@@ -63,6 +67,7 @@ HWND				hTrayWnd;
 wchar_t				szCurrentCrawledPath[MAX_CRAWLEDPATHS][MAX_CRAWLEDPATHSLEN];
 int					nCurrentCrawledpathIndex = 0;
 CComAutoCriticalSection critSec;
+extern CGitIndexFileMap g_IndexFileMap;
 
 // must put this before any global variables that auto free git objects,
 // so this destructor is called after freeing git objects
@@ -207,6 +212,11 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 		&dwThreadId);      // returns thread ID
 
 	if (!hCommandWaitThread)
+		return 0;
+
+	// create a thread that monitors explorer windows
+	CAutoGeneralHandle hExplorerMonitorThread = CreateThread(nullptr, 0, ExplorerMonitorThread, &bRun, 0, &dwThreadId);
+	if (!hExplorerMonitorThread)
 		return 0;
 
 	AddSystrayIcon();
@@ -459,6 +469,123 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 		CStatusCacheEntry entry;
 		entry.BuildCacheResponse(*pReply, *pResponseLength);
 	}
+}
+
+DWORD WINAPI ExplorerMonitorThread(LPVOID lpvParam)
+{
+	auto bThreadRun = static_cast<bool*>(lpvParam);
+	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+
+	Microsoft::WRL::ComPtr<IShellWindows> shellWindows;
+	if (FAILED(CoCreateInstance(CLSID_ShellWindows, nullptr, CLSCTX_ALL, IID_IShellWindows, reinterpret_cast<void**>(shellWindows.GetAddressOf()))))
+		return 1;
+
+	auto titleTextBuf = std::make_unique<wchar_t[]>(MAX_PATH);
+	int titleTextBufLength = MAX_PATH;
+	while (*bThreadRun)
+	{
+		Sleep(500);
+
+		if (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != TRUE)
+		{
+			Sleep(60000);
+			continue;
+		}
+
+		VARIANT v{};
+		V_VT(&v) = VT_I4;
+		long shellCount = 0;
+		if (shellWindows->get_Count(&shellCount) != S_OK)
+			continue;
+
+		for (long i = 0; i < shellCount; ++i)
+		{
+			v.lVal = i;
+			Microsoft::WRL::ComPtr<IDispatch> disp;
+			shellWindows->Item(v, disp.GetAddressOf());
+			if (!disp)
+				continue;
+			Microsoft::WRL::ComPtr<IWebBrowserApp> webBrowserApp;
+			if (FAILED(disp->QueryInterface(webBrowserApp.GetAddressOf())))
+				continue;
+			HWND hwndWba = nullptr;
+			if (FAILED(webBrowserApp->get_HWND(reinterpret_cast<LONG_PTR*>(&hwndWba))))
+				continue;
+			Microsoft::WRL::ComPtr<IServiceProvider> serviceProvider;
+			if (FAILED(webBrowserApp->QueryInterface(serviceProvider.GetAddressOf())))
+				continue;
+			Microsoft::WRL::ComPtr<IShellBrowser> shellBrowser;
+			if (FAILED(serviceProvider->QueryService(SID_STopLevelBrowser, shellBrowser.GetAddressOf())))
+				continue;
+			Microsoft::WRL::ComPtr<IShellView> psv;
+			if (FAILED(shellBrowser->QueryActiveShellView(psv.GetAddressOf())))
+				continue;
+			Microsoft::WRL::ComPtr<IFolderView> pfv;
+			if (FAILED(psv->QueryInterface(pfv.GetAddressOf())))
+				continue;
+			Microsoft::WRL::ComPtr<IPersistFolder2> ppf2;
+			if (FAILED(pfv->GetFolder(IID_IPersistFolder2, &ppf2)))
+				continue;
+			CComHeapPtr<ITEMIDLIST> pidlFolder;
+			if (FAILED(ppf2->GetCurFolder(&pidlFolder)))
+				continue;
+			wchar_t szPath[MAX_PATH]{};
+			if (!SHGetPathFromIDList(pidlFolder, szPath))
+				continue;
+
+			CTGitPath path;
+			path.SetFromWin(szPath);
+
+			CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
+			auto pCachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
+			if (!pCachedDir)
+				continue;
+
+			auto gitDir = pCachedDir->GetProjectRoot();
+			if (gitDir.IsEmpty())
+				continue;
+
+			auto sharedIndex = g_IndexFileMap.SafeGet(gitDir);
+			if (!sharedIndex)
+				continue;
+
+			auto textLen = GetWindowTextLength(hwndWba);
+			textLen += sharedIndex->m_branch.GetLength() + 40;
+			if (titleTextBufLength < textLen)
+			{
+				titleTextBufLength = textLen;
+				titleTextBuf = std::make_unique<wchar_t[]>(titleTextBufLength);
+			}
+			GetWindowText(hwndWba, titleTextBuf.get(), titleTextBufLength);
+			std::wstring sWindowText = titleTextBuf.get();
+			if (auto foundPos = sWindowText.find(L" ["); foundPos != std::wstring::npos)
+				sWindowText = sWindowText.substr(0, foundPos);
+
+			if (!sharedIndex->m_branch.IsEmpty())
+			{
+				sWindowText += L" [ ";
+				sWindowText += sharedIndex->m_branch;
+				if (sharedIndex->m_outgoing != static_cast<size_t>(-1))
+				{
+					// upstream branch available
+					CString inOut;
+					inOut.Format(L" \u2193%lld \u2191%lld", sharedIndex->m_incoming, sharedIndex->m_outgoing);
+					sWindowText += inOut;
+				}
+				else
+					sWindowText += L" \u2302";
+				if (sharedIndex->m_stashCount)
+				{
+					CString sStash;
+					sStash.Format(L" \u205E%lld", sharedIndex->m_stashCount);
+					sWindowText += sStash;
+				}
+				sWindowText += L" ]";
+			}
+			SetWindowText(hwndWba, sWindowText.c_str());
+		}
+	}
+	return 0;
 }
 
 DWORD WINAPI PipeThread(LPVOID lpvParam)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -55,12 +55,17 @@ public:
 	__time64_t  m_LastModifyTime;
 	__int64		m_LastFileSize;
 	BOOL		m_bHasConflicts;
+	CString		m_branch;
+	size_t		m_incoming;
+	size_t		m_outgoing;
+	size_t		m_stashCount;
 	inline bool IsIgnoreCase() const { return m_iIndexCaps & GIT_INDEX_CAPABILITY_IGNORE_CASE; }
 
 	CGitIndexList();
 	~CGitIndexList();
 
 	int ReadIndex(CString dotgitdir);
+	int ReadIncomingOutgoing(git_repository* repo);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const;
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
@@ -69,6 +74,7 @@ public:
 protected:
 	int		m_iIndexCaps;
 	__int64 m_iMaxCheckSize;
+	bool	m_bCalculateIncomingOutgoing;
 	CAutoConfig config;
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr) const;
 };

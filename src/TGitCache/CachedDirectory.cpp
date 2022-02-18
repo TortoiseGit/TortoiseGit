@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -351,6 +351,13 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	{
 		return GetStatusFromCache(path, bRecursive);
 	}
+}
+
+CString CCachedDirectory::GetProjectRoot() const
+{
+	CString sProjectRoot;
+	m_directoryPath.HasAdminDir(&sProjectRoot, false);
+	return sProjectRoot;
 }
 
 CStatusCacheEntry CCachedDirectory::GetCacheStatusForMember(const CTGitPath& path)

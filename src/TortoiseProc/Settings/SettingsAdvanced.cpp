@@ -123,6 +123,10 @@ CSettingsAdvanced::CSettingsAdvanced()
 	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
 	settings[i++].def.l	= 5;
 
+	settings[i].sName	= L"ModifyExplorerTitle";
+	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
+	settings[i++].def.b	= true;
+
 	settings[i].sName   = L"Msys2Hack";
 	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
 	settings[i++].def.b = false;

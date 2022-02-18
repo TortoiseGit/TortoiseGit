@@ -294,6 +294,17 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">ModifyExplorerTitle</term>
+			<listitem>
+				<para>
+					When using the status cache, the title bar of explorer windows are modified to include
+					the branch name, stash count and if an upstream is set also the outgoing and incoming commits.
+					Set this to <literal>false</literal> if you don't want this or if you have other tools which already do that.
+					The default is <literal>true</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">Msys2Hack</term>
 			<listitem>
 				<para>

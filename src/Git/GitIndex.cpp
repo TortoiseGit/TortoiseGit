@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,8 +47,12 @@ CGitIndexList::CGitIndexList()
 , m_LastModifyTime(0)
 , m_LastFileSize(-1)
 , m_iIndexCaps(GIT_INDEX_CAPABILITY_IGNORE_CASE | GIT_INDEX_CAPABILITY_NO_SYMLINKS)
+, m_incoming(static_cast<size_t>(-1))
+, m_outgoing(static_cast<size_t>(-1))
+, m_stashCount(0)
 {
 	m_iMaxCheckSize = static_cast<__int64>(CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024)) * 1024; // stored in KiB
+	m_bCalculateIncomingOutgoing= (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != TRUE);
 }
 
 CGitIndexList::~CGitIndexList()
@@ -141,7 +145,60 @@ int CGitIndexList::ReadIndex(CString dgitdir)
 
 	DoSortFilenametSortVector(*this, IsIgnoreCase());
 
+	ReadIncomingOutgoing(repository);
+
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Reloaded index for repo: %s\n", static_cast<LPCWSTR>(dgitdir));
+
+	return 0;
+}
+
+int CGitIndexList::ReadIncomingOutgoing(git_repository* repository)
+{
+	ATLASSERT(m_stashCount == 0 && m_outgoing == static_cast<size_t>(-1) && m_incoming == static_cast<size_t>(-1) && m_branch.IsEmpty());
+
+	if (!m_bCalculateIncomingOutgoing)
+		return 0;
+
+	if (git_stash_foreach(repository, [](size_t, const char*, const git_oid*, void* payload) -> int {
+		auto stashCount = static_cast<size_t*>(payload);
+		++(*stashCount);
+		return 0;
+		}, &m_stashCount) < 0)
+		return -1;
+
+	if (int detachedhead = git_repository_head_detached(repository); detachedhead == 1)
+	{
+		m_branch = L"detached HEAD";
+		return 0;
+	}
+	else if (detachedhead < 0)
+		return -1;
+
+	CAutoReference head;
+	if (int unborn = git_repository_head_unborn(repository); unborn < 0)
+		return -1;
+	else if (unborn == 1)
+	{
+		if (git_reference_lookup(head.GetPointer(), repository, "HEAD") < 0)
+			return -1;
+
+		m_branch = CGit::StripRefName(CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head)));
+		return 0;
+	}
+
+	if (git_repository_head(head.GetPointer(), repository) < 0)
+		return -1;
+
+	m_branch = CUnicodeUtils::GetUnicode(git_reference_shorthand(head));
+
+	CAutoBuf upstreambranchname;
+	git_oid upstream{};
+	// check whether there is an upstream branch
+	if (git_branch_upstream_name(upstreambranchname, repository, git_reference_name(head)) != 0 || git_reference_name_to_id(&upstream, repository, upstreambranchname->ptr) != 0)
+		return 0; // we don't have an upstream branch
+
+	if (git_graph_ahead_behind(&m_outgoing, &m_incoming, repository, git_reference_target(head), &upstream) < 0)
+		return -1;
 
 	return 0;
 }
