@@ -71,7 +71,7 @@ public:
 	bool isFork(const CGitHash& sha, bool& isDiscontinuity);
 	void setBoundary(bool isBoundary, bool isInitial);
 	void setFork(const CGitHash& sha);
-	void setMerge(const CGitHashList& parents);
+	void setMerge(const CGitHashList& parents, bool onlyFirstParent);
 	void setInitial();
 	void setApplied();
 	void changeActiveLane(const CGitHash& sha);

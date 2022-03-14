@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,9 +75,9 @@ public:
 	// Log order: LOG_ORDER_CHRONOLOGIALREVERSED, LOG_ORDER_TOPOORDER, LOG_ORDER_DATEORDER
 	int m_logOrderBy;
 	MAP_HASH_REV m_HashMap;
-	void updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha);
-	void setLane(const CGitHash& sha);
-	void append(CGitHash& sha, bool storeInVector);
+	void updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha, bool onlyFirstParent);
+	void setLane(const CGitHash& sha, bool onlyFirstParent);
+	void append(CGitHash& sha, bool storeInVector, bool onlyFirstParent);
 
 #if 0
 	/// Ascending date sorting.

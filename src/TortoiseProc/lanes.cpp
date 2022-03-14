@@ -2,7 +2,7 @@
 	Description: history graph computation
 
 	Author: Marco Costalba (C) 2005-2007
-	Copyright (C) 2008-2015-2017 - TortoiseGit
+	Copyright (C) 2008-2015-2017, 2022 - TortoiseGit
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -94,7 +94,7 @@ void Lanes::setFork(const CGitHash& sha) {
 	}
 }
 
-void Lanes::setMerge(const CGitHashList& parents) {
+void Lanes::setMerge(const CGitHashList& parents, bool onlyFirstParent) {
 // setFork() must be called before setMerge()
 
 	if (boundary)
@@ -110,25 +110,27 @@ void Lanes::setMerge(const CGitHashList& parents) {
 	t = NODE;
 
 	int rangeStart = activeLane, rangeEnd = activeLane;
-	CGitHashList::const_iterator it(parents.cbegin());
-	for (++it; it != parents.cend(); ++it) { // skip first parent
+	if (!onlyFirstParent) {
+		CGitHashList::const_iterator it(parents.cbegin());
+		for (++it; it != parents.cend(); ++it) { // skip first parent
 
-		int idx = findNextSha(*it, 0);
-		if (idx != -1) {
-			if (idx > rangeEnd) {
-				rangeEnd = idx;
-				endJoinWasACross = typeVec[idx] == CROSS;
+			int idx = findNextSha(*it, 0);
+			if (idx != -1) {
+				if (idx > rangeEnd) {
+					rangeEnd = idx;
+					endJoinWasACross = typeVec[idx] == CROSS;
+				}
+
+				if (idx < rangeStart) {
+					rangeStart = idx;
+					startJoinWasACross = typeVec[idx] == CROSS;
+				}
+
+				typeVec[idx] = JOIN;
 			}
-
-			if (idx < rangeStart) {
-				rangeStart = idx;
-				startJoinWasACross = typeVec[idx] == CROSS;
-			}
-
-			typeVec[idx] = JOIN;
+			else
+				rangeEnd = add(HEAD, *it, rangeEnd + 1, endWasEmptyCross);
 		}
-		else
-			rangeEnd = add(HEAD, *it, rangeEnd + 1, endWasEmptyCross);
 	}
 	int& startT = typeVec[rangeStart];
 	int& endT = typeVec[rangeEnd];

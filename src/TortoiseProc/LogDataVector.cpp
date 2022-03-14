@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2020 - TortoiseGit
+// Copyright (C) 2009-2022 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -242,16 +242,16 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 	return 0;
 }
 
-void CLogDataVector::append(CGitHash& sha, bool storeInVector)
+void CLogDataVector::append(CGitHash& sha, bool storeInVector, bool onlyFirstParent)
 {
 	if (storeInVector)
 		this->push_back(sha);
 
 	GitRevLoglist* r = &m_pLogCache->m_HashMap[sha];
-	updateLanes(*r, this->m_Lns, sha);
+	updateLanes(*r, this->m_Lns, sha, onlyFirstParent);
 }
 
-void CLogDataVector::setLane(const CGitHash& sha)
+void CLogDataVector::setLane(const CGitHash& sha, bool onlyFirstParent)
 {
 	Lanes* l = &(this->m_Lns);
 	int i = m_FirstFreeLane;
@@ -265,7 +265,7 @@ void CLogDataVector::setLane(const CGitHash& sha)
 		CGitHash curSha=r->m_CommitHash;
 
 		if (r->m_Lanes.empty())
-			updateLanes(*r, *l, curSha);
+			updateLanes(*r, *l, curSha, onlyFirstParent);
 
 		if (curSha == sha)
 			break;
@@ -293,7 +293,7 @@ void CLogDataVector::setLane(const CGitHash& sha)
 #endif
 }
 
-void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha)
+void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha, bool onlyFirstParent)
 {
 // we could get third argument from c.sha(), but we are in fast path here
 // and c.sha() involves a deep copy, so we accept a little redundancy
@@ -315,7 +315,7 @@ void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& s
 	if (isFork)
 		lns.setFork(sha);
 	if (isMerge)
-		lns.setMerge(c.m_ParentHash);
+		lns.setMerge(c.m_ParentHash, onlyFirstParent);
 	//if (c.isApplied)
 	//	lns.setApplied();
 	if (isInitial)

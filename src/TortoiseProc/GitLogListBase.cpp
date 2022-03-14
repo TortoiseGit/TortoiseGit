@@ -1070,7 +1070,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 //	p->translate(QPoint(opt.rect.left(), opt.rect.top()));
 
 	if (data->m_Lanes.empty())
-		m_logEntries.setLane(data->m_CommitHash);
+		m_logEntries.setLane(data->m_CommitHash, m_ShowMask & CGit::LOG_INFO_FIRST_PARENT);
 
 	std::vector<int>& lanes=data->m_Lanes;
 	size_t laneNum = lanes.size();
@@ -3154,7 +3154,7 @@ UINT CGitLogListBase::LogThread()
 			if (visible && !filter(pRev, this, hashMap))
 				visible = false;
 			this->m_critSec.Lock();
-			m_logEntries.append(hash, visible);
+			m_logEntries.append(hash, visible, m_ShowMask & CGit::LOG_INFO_FIRST_PARENT);
 			if (visible)
 				m_arShownList.push_back(pRev); // push_back is ok here, because we use the very same lock, otherwise use SafeAdd
 			this->m_critSec.Unlock();
