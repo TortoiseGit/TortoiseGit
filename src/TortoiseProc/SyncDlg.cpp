@@ -334,7 +334,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				{
 					CString value;
 					config.GetString(L"pull.rebase", value);
-					if (value == L"preserve")
+					if (value == L"merges")
 					{
 						m_iPullRebase = 2;
 						break;
@@ -345,7 +345,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 			{
 				CString value;
 				config.GetString(L"branch." + g_Git.GetCurrentBranch() + L".rebase", value);
-				if (value == L"preserve")
+				if (value == L"merges")
 				{
 					m_iPullRebase = 2;
 					break;
