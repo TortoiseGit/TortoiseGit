@@ -5154,7 +5154,7 @@ void CBaseView::SetTheme(bool bDark)
 			SetWindowTheme(GetSafeHwnd(), L"Explorer", nullptr);
 		Invalidate();
 	}
-	m_WhiteSpaceFg = CRegDWORD(L"Software\\TortoiseMerge\\Colors\\Whitespace", CTheme::Instance().GetThemeColor(GetSysColor(COLOR_3DSHADOW)));
+	m_WhiteSpaceFg = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", CTheme::Instance().GetThemeColor(GetSysColor(COLOR_3DSHADOW)));
 }
 
 void CBaseView::InsertViewData( int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline )
