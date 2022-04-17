@@ -15,6 +15,7 @@
 
 #include <SDKDDKVer.h>
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define NOMINMAX
 #include <algorithm>
 using std::max;
@@ -58,6 +59,9 @@ using std::min;
 #include <fstream>
 #include <set>
 #include <functional>
+#include <iostream>
+#include <fstream>
+#include <codecvt>
 
 #define USE_GDI_GRADIENT
 #define HISTORYCOMBO_WITH_SYSIMAGELIST

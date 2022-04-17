@@ -2675,7 +2675,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CString revertToCommit = L"HEAD";
 						if (m_amend)
 							revertToCommit = L"HEAD~1";
-						if (CString err; g_Git.Revert(revertToCommit, targetList, err))
+						if (CString err; g_Git.Revert(revertToCommit, targetList, [](const CTGitPathList& path) { return true; }, err))
 							MessageBox(L"Revert failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 						else
 						{

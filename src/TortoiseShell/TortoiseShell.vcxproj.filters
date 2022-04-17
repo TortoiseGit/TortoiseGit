@@ -123,6 +123,9 @@
     <ClCompile Include="ExplorerCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\TempFile.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def">
@@ -249,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="ExplorerCommand.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TempFile.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

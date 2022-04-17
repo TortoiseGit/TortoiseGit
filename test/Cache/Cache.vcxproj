@@ -58,6 +58,7 @@
     <ClCompile Include="..\..\src\Utils\StringUtils.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
     <ClCompile Include="..\..\src\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="..\..\src\Utils\TempFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Git\Git.h" />
@@ -77,6 +78,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\..\src\Utils\StringUtils.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
+    <ClInclude Include="..\..\src\Utils\TempFile.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Cache.ico" />

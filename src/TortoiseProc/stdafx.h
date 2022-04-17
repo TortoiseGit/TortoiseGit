@@ -10,6 +10,7 @@
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// some CString constructors will be explicit
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define NOMINMAX
 #include <algorithm>
 using std::max;
@@ -48,6 +49,9 @@ using std::min;
 #include <map>
 #include <set>
 #include <functional>
+#include <iostream>
+#include <fstream>
+#include <codecvt>
 
 #include <vfw.h>
 #include <shlobj.h>

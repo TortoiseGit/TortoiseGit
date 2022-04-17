@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -147,9 +147,9 @@ svn_wc_conflict_choice_t CGitProgressList::ConflictResolveCallback(const svn_wc_
 #endif
 void CGitProgressList::AddItemToList()
 {
-	int totalcount = GetItemCount();
+	int totalcount = m_arData.size();
 
-	SetItemCountEx(totalcount+1, LVSICF_NOSCROLL|LVSICF_NOINVALIDATEALL);
+	SetItemCountEx(totalcount, LVSICF_NOSCROLL|LVSICF_NOINVALIDATEALL);
 	// make columns width fit
 	if (iFirstResized < 30)
 	{
@@ -491,6 +491,9 @@ UINT CGitProgressList::ProgressThread()
 	KillTimer(TRANSFERTIMER);
 	KillTimer(VISIBLETIMER);
 
+	if (nEnsureVisibleCount)
+		EnsureVisible(GetItemCount() - 1, false);
+
 	if (m_pTaskbarList && m_pPostWnd)
 	{
 		if (DidErrorsOccur())
@@ -710,6 +713,18 @@ bool CGitProgressList::NotificationDataIsAux(const NotificationData* pData)
 	return pData->bAuxItem;
 }
 
+void CGitProgressList::AddNotify(NotificationData** data, int count, CColors::Colors color)
+{
+	if (count == 0)
+		return;
+
+	for (int i = 0; i < count - 1; i++)
+	{
+		m_arData.push_back(data[i]);
+	}
+
+	this->AddNotify(data[count - 1], color);
+}
 void CGitProgressList::AddNotify(NotificationData* data, CColors::Colors color)
 {
 	if (color != CColors::COLOR_END)

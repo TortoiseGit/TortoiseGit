@@ -7,6 +7,7 @@
 
 #include <SDKDDKVer.h>
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define NOMINMAX
 #include <algorithm>
 using std::min;
@@ -41,6 +42,9 @@ using std::max;
 #include <deque>
 #include <set>
 #include <functional>
+#include <iostream>
+#include <fstream>
+#include <codecvt>
 
 #define __WIN32__
 

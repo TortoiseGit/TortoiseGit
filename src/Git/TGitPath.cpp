@@ -1438,32 +1438,29 @@ bool CTGitPathList::IsAnyAncestorOf(const CTGitPath& possibleDescendant) const
 	return std::any_of(m_paths.cbegin(), m_paths.cend(), [&possibleDescendant](auto& path) { return path.IsAncestorOf(possibleDescendant); });
 }
 
-#if defined(_MFC_VER)
-
 bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 {
 	Clear();
 	try
 	{
-		CString strLine;
-		CStdioFile file(filename.GetWinPath(), CFile::typeBinary | CFile::modeRead | CFile::shareDenyWrite);
+		std::wstring strLine;
+		std::wifstream file;
+		file.imbue(std::locale(file.getloc(), new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
+		file.exceptions(std::wifstream::badbit);
+		file.open(filename.GetWinPath(), std::wifstream::in | std::wifstream::binary);
 
 		// for every selected file/folder
 		CTGitPath path;
-		while (file.ReadString(strLine))
+		while (std::getline(file, strLine))
 		{
-			path.SetFromUnknown(strLine);
+			path.SetFromUnknown(strLine.c_str());
 			AddPath(path);
 		}
-		file.Close();
+		file.close();
 	}
-	catch (CFileException* pE)
+	catch (std::ios_base::failure e)
 	{
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
-		wchar_t error[10000] = { 0 };
-		pE->GetErrorMessage(error, 10000);
-//		CMessageBox::Show(nullptr, error, L"TortoiseGit", MB_ICONERROR);
-		pE->Delete();
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": failure loading target file list\n");
 		return false;
 	}
 	return true;
@@ -1473,28 +1470,24 @@ bool CTGitPathList::WriteToFile(const CString& sFilename, bool bUTF8 /* = false 
 {
 	try
 	{
+		std::wofstream file;
 		if (bUTF8)
 		{
-			CStdioFile file(sFilename, CFile::typeText | CFile::modeReadWrite | CFile::modeCreate);
-			for (const auto& path : m_paths)
-			{
-				CStringA line = CStringA(path.GetGitPathString()) + '\n';
-				file.Write(line, line.GetLength());
-			}
-			file.Close();
+			file.imbue(std::locale(file.getloc(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::little_endian>));
 		}
 		else
 		{
-			CStdioFile file(sFilename, CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
-			for (const auto& path : m_paths)
-				file.WriteString(path.GetGitPathString() + L'\n');
-			file.Close();
+			file.imbue(std::locale(file.getloc(), new std::codecvt_utf16<wchar_t, 0x10ffff, std::little_endian>));
 		}
+		file.exceptions(std::wofstream::failbit | std::wofstream::badbit);
+		file.open(sFilename, std::wofstream::out | std::wofstream::trunc);
+		for (const auto& path : m_paths)
+			file << std::wstring(path.GetGitPathString()) << L'\n';
+		file.close();
 	}
-	catch (CFileException* pE)
+	catch (std::ios_base::failure e)
 	{
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException in writing temp file\n");
-		pE->Delete();
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": failure loading target file list\n");
 		return false;
 	}
 	return true;
@@ -1524,7 +1517,6 @@ CString CTGitPathList::CreateAsteriskSeparatedString() const
 	}
 	return sRet;
 }
-#endif // _MFC_VER
 
 bool
 CTGitPathList::AreAllPathsFilesInOneDirectory() const

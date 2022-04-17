@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,21 +45,34 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		delList.DeleteAllFiles(true);
 
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
-	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
-	{
-		if (CString err; g_Git.Revert(L"HEAD", m_targetPathList[i], err))
+
+	auto progress = [&list, &m_itemCount](const CTGitPathList& pathList) {
+
+		auto count = pathList.GetCount();
+		auto notificationData = new CGitProgressList::NotificationData*[count];
+
+		for (int i = 0; i < count; ++i)
 		{
-			list->ReportError(L"Revert failed:\n" + err);
-			return false;
+			notificationData[i] = new CGitProgressList::WC_File_NotificationData{ pathList[i], CGitProgressList::WC_File_NotificationData::git_wc_notify_revert };
+			++m_itemCount;
 		}
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[i], CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
-		++m_itemCount;
+
+		list->AddNotify(notificationData, count);
+
+		delete[] notificationData;
 
 		if (list->IsCancelled() == TRUE)
 		{
 			list->ReportUserCanceled();
 			return false;
 		}
+		return true;
+	};
+
+	if (CString err; g_Git.Revert(L"HEAD", m_targetPathList, progress, err))
+	{
+		list->ReportError(L"Revert failed:\n" + err);
+		return false;
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);

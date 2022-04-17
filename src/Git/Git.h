@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,15 @@ constexpr static inline int ConvertVersionToInt(unsigned __int8 major, unsigned 
 {
 	return (major << 24) + (minor << 16) + (patchlevel << 8) + build;
 }
+
+class CTGitRevertBatch
+{
+public:
+	CTGitPathList m_moveList;
+	CTGitPathList m_removeList;
+	CTGitPathList m_checkoutList;
+	CTGitPathList m_addList;
+};
 
 class CFilterData
 {
@@ -282,6 +291,7 @@ private:
 		CGitCall* pcall;
 	} ASYNCREADSTDERRTHREADARGS, *PASYNCREADSTDERRTHREADARGS;
 	CString GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
+	int PrepareRevertOp(const CString& commit, const CTGitPathList& list, CTGitRevertBatch& batch, CString& err);
 
 public:
 #ifdef _MFC_VER
@@ -313,7 +323,7 @@ public:
 	*/
 	BOOL CheckCleanWorkTree(bool stagedOk = false);
 	BOOL IsResultingCommitBecomeEmpty(bool amend = false);
-	int Revert(const CString& commit, const CTGitPathList &list, CString& err);
+	int Revert(const CString& commit, const CTGitPathList& list, std::function<bool(const CTGitPathList&)> progress, CString& err);
 	int Revert(const CString& commit, const CTGitPath &path, CString& err);
 	int DeleteRef(const CString& reference);
 	/**

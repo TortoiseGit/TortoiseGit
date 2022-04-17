@@ -33,6 +33,7 @@
 #include "git2/sys/transport.h"
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
+#include "TempFile.h"
 
 static int CalculateDiffSimilarityIndexThreshold(DWORD index)
 {
@@ -2417,15 +2418,147 @@ BOOL CGit::IsResultingCommitBecomeEmpty(bool amend /* = false */)
 	return Run(cmd, nullptr, nullptr, CP_UTF8) == 0;
 }
 
-int CGit::Revert(const CString& commit, const CTGitPathList &list, CString& err)
+int CGit::Revert(const CString& commit, const CTGitPathList& list, std::function<bool(const CTGitPathList&)> progress, CString& err)
 {
-	for (int i = 0; i < list.GetCount(); ++i)
+	CTGitRevertBatch batch;
+	if (PrepareRevertOp(commit, list, batch, err))
+		return -1;
+
+	CTempFiles files;
+	CString tempfilename = files.GetTempFilePath(true).GetWinPathString();
+
+	CString cmd;
+	if (batch.m_removeList.GetCount() > 0)
 	{
-		if (Revert(commit, list[i], err))
+		if (!batch.m_removeList.WriteToFile(tempfilename, true))
+		{
+			err = L"Error handling temp file";
 			return -1;
+		}
+
+		cmd.Format(L"git.exe rm -f --cached --pathspec-from-file \"%s\"", static_cast<LPCWSTR>(tempfilename));
+		if (Run(cmd, &err, CP_UTF8))
+			return -1;
+
+
+		CTGitPathList evtList;
+		for (int i = 0; i < batch.m_removeList.GetCount(); i++)
+		{
+			auto& path = batch.m_removeList[i];
+			if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) == 0)
+			{
+				evtList.AddPath(path);
+			}
+		}
+		if (!progress(evtList))
+		{
+			return 0;
+		}
+	}
+
+	if (batch.m_checkoutList.GetCount() > 0)
+	{
+		if (!batch.m_checkoutList.WriteToFile(tempfilename, true))
+		{
+			err = L"Error handling temp file";
+			return -1;
+		}
+
+		cmd.Format(L"git.exe checkout %s -f --pathspec-from-file \"%s\"", static_cast<LPCWSTR>(commit), static_cast<LPCWSTR>(tempfilename));
+		if (Run(cmd, &err, CP_UTF8))
+			return -1;
+
+		CTGitPathList evtList;
+		for (int i = 0; i < batch.m_checkoutList.GetCount(); i++)
+		{
+			auto& path = batch.m_checkoutList[i];
+			if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) == 0)
+			{
+				evtList.AddPath(path);
+			}
+		}
+		if (!progress(evtList))
+		{
+			return 0;
+		}
+	}
+
+	if (batch.m_addList.GetCount() > 0)
+	{
+		if (!batch.m_addList.WriteToFile(tempfilename, true))
+		{
+			err = L"Error handling temp file";
+			return -1;
+		}
+
+		CString cmd;
+		cmd.Format(L"git.exe add -f --pathspec-from-file \"%s\"", static_cast<LPCWSTR>(tempfilename));
+		if (Run(cmd, &err, CP_UTF8))
+			return -1;
+
+		if (!progress(batch.m_addList))
+		{
+			return 0;
+		}
+	}
+
+	for (int i = 0; i < batch.m_moveList.GetCount(); ++i)
+	{
+		if (Revert(commit, batch.m_moveList[i], err))
+			return -1;
+
+		CTGitPathList list{ batch.m_moveList[i] };
+		if (!progress(list))
+		{
+			return 0;
+		}
 	}
 	return 0;
 }
+
+int CGit::PrepareRevertOp(const CString& commit, const CTGitPathList& list, CTGitRevertBatch& batch, CString& err)
+{
+	for (int i = 0; i < list.GetCount(); ++i)
+	{
+		auto& path = list[i];
+		if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
+		{
+			if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
+			{
+				err.Format(L"Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists.", static_cast<LPCWSTR>(path.GetGitPathString()), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+				return -1;
+			}
+			if (path.Exists())
+			{
+				batch.m_moveList.AddPath(path);
+			}
+			else
+			{
+				batch.m_removeList.AddPath(path);
+			}
+
+			batch.m_checkoutList.AddPath(path);
+		}
+		else if (path.m_Action & CTGitPath::LOGACTIONS_ADDED)
+		{ // To init git repository, there are not HEAD, so we can use git reset command
+
+			batch.m_removeList.AddPath(path);
+		}
+		else
+		{
+			batch.m_checkoutList.AddPath(path);
+		}
+
+		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
+		{
+			batch.m_addList.AddPath(path);
+		}
+	}
+
+
+	return 0;
+}
+
 int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 {
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())

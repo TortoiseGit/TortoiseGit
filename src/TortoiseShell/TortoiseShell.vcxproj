@@ -94,6 +94,7 @@
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="TortoiseGIT.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="..\Utils\TempFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ShellExt.def" />
@@ -119,6 +120,7 @@
     <ClInclude Include="..\Utils\MiscUI\IconBitmapUtils.h" />
     <ClInclude Include="..\Utils\ReaderWriterLock.h" />
     <ClInclude Include="..\Utils\SmartHandle.h" />
+    <ClInclude Include="..\Utils\TempFile.h" />
     <ClInclude Include="ExplorerCommand.h" />
     <ClInclude Include="GITPropertyPage.h" />
     <ClInclude Include="Globals.h" />

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -139,6 +139,7 @@ public:
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
+	void AddNotify(NotificationData** data, int count, CColors::Colors color = CColors::COLOR_END);
 	int UpdateProgress(const git_indexer_progress* stat);
 
 	void SetProgressLabelText(const CString& str);

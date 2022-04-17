@@ -75,6 +75,7 @@
     <ClCompile Include="TGITCache.cpp" />
     <ClCompile Include="..\Git\TGitPath.cpp" />
     <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
+    <ClCompile Include="..\Utils\TempFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Git\Git.h" />
@@ -110,6 +111,7 @@
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\Utils\UniqueQueue.h" />
+    <ClInclude Include="..\Utils\TempFile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TGitCache.rc" />

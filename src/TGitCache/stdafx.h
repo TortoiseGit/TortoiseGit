@@ -7,6 +7,7 @@
 
 #include <SDKDDKVer.h>
 
+#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #define NOMINMAX
 #include <algorithm>
 using std::min;
@@ -37,6 +38,9 @@ using namespace ATL;
 #include <set>
 #include <deque>
 #include <functional>
+#include <iostream>
+#include <fstream>
+#include <codecvt>
 
 #include "git2.h"
 #include "SmartLibgit2Ref.h"

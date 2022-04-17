@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2012-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008, 2012-2013, 2015-2022 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,9 +29,11 @@
 */
 class CTempFiles
 {
-private:
+public:
 	CTempFiles();
 	~CTempFiles();
+
+private:
 	// prevent cloning
 	CTempFiles(const CTempFiles&) = delete;
 	CTempFiles& operator=(const CTempFiles&) = delete;

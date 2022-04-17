@@ -102,6 +102,9 @@
     <ClCompile Include="..\Git\GitMailmap.cpp">
       <Filter>Git</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\TempFile.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CachedDirectory.h">
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\Git\GitMailmap.h">
       <Filter>Git</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\TempFile.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
