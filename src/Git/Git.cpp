@@ -2426,15 +2426,109 @@ BOOL CGit::IsResultingCommitBecomeEmpty(bool amend /* = false */)
 	return Run(cmd, nullptr, nullptr, CP_UTF8) == 0;
 }
 
-int CGit::Revert(const CString& commit, const CTGitPathList &list, CString& err)
+int CGit::Revert(const CString& commit, const CTGitPathList& list, std::function<bool(const CTGitPathList&)> progress, CString& err)
 {
+	CTGitPathList moveList;
+	CTGitPathList unstageList;
+	CTGitPathList checkoutList;
+	CTGitPathList addList;
+
+	// prepare mass revert operation
 	for (int i = 0; i < list.GetCount(); ++i)
 	{
-		if (Revert(commit, list[i], err))
+		auto& path = list[i];
+		if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
+		{
+			if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
+			{
+				err.Format(L"Cannot revert renaming of \"%s\". A directory with the old name \"%s\" exists.", static_cast<LPCWSTR>(path.GetGitPathString()), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+				return -1;
+			}
+			if (path.Exists())
+				moveList.AddPath(path); // needs special handling, e.g. only casing might have changed, call old "slow" Revert method
+			else
+			{
+				unstageList.AddPath(path);
+				checkoutList.AddPath(path.GetGitPathString());
+			}
+		}
+		else if (path.m_Action & CTGitPath::LOGACTIONS_ADDED)
+			unstageList.AddPath(path);
+		else
+			checkoutList.AddPath(path);
+
+		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
+			addList.AddPath(path);
+	}
+
+	BOOL cancel = FALSE;
+	if (!unstageList.IsEmpty())
+	{
+		CMassiveGitTaskBase removeTask{ L"rm -f --cached" };
+		for (int i = 0; i < unstageList.GetCount(); ++i)
+			removeTask.AddFile(unstageList[i]);
+		if (!removeTask.Execute(cancel))
 			return -1;
+
+		if (progress)
+		{
+			CTGitPathList evtList;
+			for (int i = 0; i < unstageList.GetCount(); ++i)
+			{
+				auto& path = unstageList[i];
+				if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) == 0)
+					evtList.AddPath(path);
+			}
+			if (!progress(evtList))
+				return 0;
+		}
+	}
+
+	if (!checkoutList.IsEmpty())
+	{
+		CMassiveGitTaskBase checkoutTask{ L"checkout " + commit + L" -f" };
+		for (int i = 0; i < checkoutList.GetCount(); ++i)
+			checkoutTask.AddFile(checkoutList[i]);
+		if (!checkoutTask.Execute(cancel))
+			return -1;
+
+		if (progress)
+		{
+			CTGitPathList evtList;
+			for (int i = 0; i < checkoutList.GetCount(); ++i)
+			{
+				auto& path = checkoutList[i];
+				if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) == 0)
+					evtList.AddPath(path);
+			}
+			if (!progress(evtList))
+				return 0;
+		}
+	}
+
+	if (!addList.IsEmpty())
+	{
+		CMassiveGitTaskBase addTask{ L"add -f" };
+		for (int i = 0; i < addList.GetCount(); ++i)
+			addTask.AddFile(addList[i]);
+		if (!addTask.Execute(cancel))
+			return -1;
+
+		if (progress && !progress(addList))
+			return 0;
+	}
+
+	for (int i = 0; i < moveList.GetCount(); ++i)
+	{
+		if (Revert(commit, moveList[i], err))
+			return -1;
+
+		if (progress && !progress(CTGitPathList{ moveList[i] }))
+			return 0;
 	}
 	return 0;
 }
+
 int CGit::Revert(const CString& commit, const CTGitPath &path, CString& err)
 {
 	if(path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
