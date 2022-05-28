@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed issue #3870: Dialog after "Bisect reset" offers bisect step options
  * Removed right anchor from "Staging Support" checkbox on commit dialog
  * Fixed issue #3905: TortoiseGitMerge doesn't apply Settings/Colors/Misc/Whitespaces
+ * Fixed issue #3900: Adjust min. height of Log Message dialog
 
 = Release 2.13.0.1 =
 Released: 2022-02-06
