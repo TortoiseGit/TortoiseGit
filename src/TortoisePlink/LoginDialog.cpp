@@ -41,7 +41,7 @@ private:
 	char myPassword[MAX_LENGTH_PASSWORD];
 	std::string myPrompt;
 
-	void CreateModule();
+	void CreateModule(void);
 	void RetrieveValues();
 	void PurgeValues();
 
@@ -105,7 +105,7 @@ LoginDialog::~LoginDialog()
 	SecureZeroMemory(&myPassword, sizeof(myPassword));
 }
 
-void LoginDialog::CreateModule()
+void LoginDialog::CreateModule(void)
 {
 	DialogBoxParam(g_hmodThisDll, MAKEINTRESOURCE(IDD_LOGIN), g_hwndMain, (DLGPROC)(LoginDialogProc), reinterpret_cast<LPARAM>(this));
 }

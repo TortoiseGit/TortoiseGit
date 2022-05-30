@@ -1,6 +1,6 @@
 
-#define RELEASE 0.76
-#define TEXTVER "Release 0.76"
-#define SSHVER "TortoiseGitPlink-Release-0.76"
-#define BINARY_VERSION 0,76,0,0
-#define SOURCE_COMMIT "1fd7baa7344bb38d62a024e5dba3a720c67d05cf"
+#define RELEASE 0.77
+#define TEXTVER "Release 0.77"
+#define SSHVER "TortoiseGitPlink-Release-0.77"
+#define BINARY_VERSION 0,77,0,0
+#define SOURCE_COMMIT "61ab33efe48cfd1cea77e249e5598a89f3387fa3"

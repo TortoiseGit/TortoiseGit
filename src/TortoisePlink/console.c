@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Common pieces between the platform console frontend modules.
  */
 
@@ -11,35 +11,56 @@
 
 #include "LoginDialog.h"
 
-const char hk_absentmsg_common_fmt[] =
-    "The server's host key is not cached. You have no guarantee\n"
-    "that the server is the computer you think it is.\n"
-    "The server's %s key fingerprint is:\n"
-    "%s\n"
-    "%s\n\n"
-    "If you trust this host, hit Yes to add the key to\n"
+
+char *hk_absentmsg_common(const char *host, int port,
+                          const char *keytype, const char *fingerprint)
+{
+    return dupprintf(
+        "The host key is not cached for this server:\n"
+        "  %s (port %d)\n"
+        "You have no guarantee that the server is the computer\n"
+        "you think it is.\n"
+        "The server's %s key fingerprint is:\n"
+        "  %s\n", host, port, keytype, fingerprint);
+}
+
+const char hk_absentmsg_interactive_intro[] =
+    "If you trust this host, enter \"y\" to add the key to\n"
     "PuTTY's cache and carry on connecting.\n"
     "If you want to carry on connecting just once, without\n"
     "adding the key to the cache, hit No.\n"
     "If you do not trust this host, hit Cancel to abandon the\n"
     "connection.\n";
+const char hk_absentmsg_interactive_prompt[] =
+    "Store key in cache? (y/n, Return cancels connection, "
+    "i for more info) ";
 
-const char hk_wrongmsg_common_fmt[] =
-    "WARNING - POTENTIAL SECURITY BREACH!\n"
-    "\n"
-    "The server's host key does not match the one PuTTY has\n"
-    "cached. This means that either the server administrator\n"
-    "has changed the host key, or you have actually connected\n"
-    "to another computer pretending to be the server.\n"
-    "The new %s key fingerprint is:\n"
-    "%s\n"
-    "%s\n\n"
+char *hk_wrongmsg_common(const char *host, int port,
+                         const char *keytype, const char *fingerprint)
+{
+    return dupprintf(
+        "WARNING - POTENTIAL SECURITY BREACH!\n"
+        "The host key does not match the one PuTTY has cached\n"
+        "for this server:\n"
+        "  %s (port %d)\n"
+        "This means that either the server administrator has\n"
+        "changed the host key, or you have actually connected\n"
+        "to another computer pretending to be the server.\n"
+        "The new %s key fingerprint is:\n"
+        "  %s\n", host, port, keytype, fingerprint);
+}
+
+const char hk_wrongmsg_interactive_intro[] =
     "If you were expecting this change and trust the new key,\n"
     "hit Yes to update PuTTY's cache and continue connecting.\n"
     "If you want to carry on connecting but without updating\n"
     "the cache, hit No.\n"
     "If you want to abandon the connection completely, hit\n"
-    "Cancel. Hitting Cancel is the ONLY guaranteed safe choice.\n";
+    "Cancel. Hitting Cancel is the ONLY guaranteed\n"
+    "safe choice.\n";
+//const char hk_wrongmsg_interactive_prompt[] =
+//    "Update cached key? (y/n, Return cancels connection, "
+//    "i for more info) ";
 
 const char weakcrypto_msg_common_fmt[] =
     "The first %s supported by the server is\n"
