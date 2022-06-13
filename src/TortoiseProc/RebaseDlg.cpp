@@ -324,6 +324,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_UpstreamCtrl.AddString(L"HEAD");
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
+		m_bAddCherryPickedFrom = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CherrypickAddCherryPickedFrom", 0) != 0;
+		UpdateData(FALSE);
 		// fill shown list
 		for (DWORD i = 0; i < m_CommitList.m_logEntries.size(); ++i)
 			m_CommitList.m_arShownList.SafeAdd(&m_CommitList.m_logEntries.GetGitRevAt(i));
@@ -2883,6 +2885,8 @@ void CRebaseDlg::OnRefreshFilelist()
 void CRebaseDlg::OnBnClickedCheckCherryPickedFrom()
 {
 	UpdateData();
+	auto reg = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CherrypickAddCherryPickedFrom");
+	reg = m_bAddCherryPickedFrom;
 }
 
 LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
