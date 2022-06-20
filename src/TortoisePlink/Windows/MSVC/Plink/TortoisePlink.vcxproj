@@ -39,7 +39,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\;..\..\..\charset\;..\..\..\windows\;..\..\..\terminal\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>HAVE_AES_NI;HAVE_SHA_NI;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>SSH;HAVE_AES_NI;HAVE_SHA_NI;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
