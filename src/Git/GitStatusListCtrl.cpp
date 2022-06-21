@@ -3006,6 +3006,15 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pNMLV->iItem < 0 || !m_bEnableDblClick)
 		return;
 
+	if (m_bHasCheckboxes)
+	{
+		CPoint point(pNMLV->ptAction);
+		UINT uFlags = 0;
+		HitTest(point, &uFlags);
+		if (uFlags == LVHT_ONITEMSTATEICON)
+			return;
+	}
+
 	auto file = GetListEntry(pNMLV->iItem);
 
 	if (file->m_Action & (CTGitPath::LOGACTIONS_UNVER | CTGitPath::LOGACTIONS_IGNORE)) {

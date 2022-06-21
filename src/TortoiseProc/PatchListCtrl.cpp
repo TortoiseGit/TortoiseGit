@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,14 +68,19 @@ END_MESSAGE_MAP()
 void CPatchListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	*pResult = 0;
+
+	CPoint point(pNMItemActivate->ptAction);
+	UINT uFlags = 0;
+	HitTest(point, &uFlags);
+	if (uFlags == LVHT_ONITEMSTATEICON)
+		return;
 
 	CString path=GetItemText(pNMItemActivate->iItem,0);
 	CTGitPath gitpath;
 	gitpath.SetFromWin(path);
 
 	CAppUtils::StartUnifiedDiffViewer(path, gitpath.GetFilename(), 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
-
-	*pResult = 0;
 }
 
 void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)

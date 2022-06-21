@@ -22,6 +22,7 @@ Released: unreleased
  * Removed right anchor from "Staging Support" checkbox on commit dialog
  * Fixed issue #3905: TortoiseGitMerge doesn't apply Settings/Colors/Misc/Whitespaces
  * Fixed issue #3900: Adjust min. height of Log Message dialog
+ * Fixed issue #3929: commit window handles double-click strangely
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

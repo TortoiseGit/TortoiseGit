@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019, 2021 - TortoiseGit
+// Copyright (C) 2016-2019, 2021-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -206,10 +206,18 @@ void CSetHooks::OnLvnItemchangedHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 		SetModified();
 }
 
-void CSetHooks::OnNMDblclkHooklist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
+void CSetHooks::OnNMDblclkHooklist(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	OnBnClickedEditbutton();
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 	*pResult = 0;
+
+	CPoint point(pNMItemActivate->ptAction);
+	UINT uFlags = 0;
+	m_cHookList.HitTest(point, &uFlags);
+	if (uFlags == LVHT_ONITEMSTATEICON)
+		return;
+
+	OnBnClickedEditbutton();
 }
 
 BOOL CSetHooks::OnApply()
