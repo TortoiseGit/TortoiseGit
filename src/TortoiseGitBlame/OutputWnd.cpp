@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2018-2020, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_SIZE()
 	ON_NOTIFY(LVN_ITEMCHANGED, IDC_LOG, OnLvnItemchangedLoglist)
 	ON_WM_SYSCOLORCHANGE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 void COutputWnd::OnSysColorChange()
@@ -211,4 +212,13 @@ void COutputList::OnViewOutput()
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
 	}
+}
+
+BOOL COutputWnd::OnEraseBkgnd(CDC* pDC)
+{
+	RECT rc{};
+	GetClientRect(&rc);
+	CBrush brush = CBrush(CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : GetSysColor(COLOR_WINDOW));
+	pDC->FillRect(&rc, &brush);
+	return CDockablePaneUnscaledStoredState::OnEraseBkgnd(pDC);
 }
