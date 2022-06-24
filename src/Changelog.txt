@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #3905: TortoiseGitMerge doesn't apply Settings/Colors/Misc/Whitespaces
  * Fixed issue #3900: Adjust min. height of Log Message dialog
  * Fixed issue #3929: commit window handles double-click strangely
+ * Fixed issue #3926: TortoiseGitMerge undo/redo can cause window to become unresponsive
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

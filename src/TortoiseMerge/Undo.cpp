@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2010-2011, 2013,2015, 2021 - TortoiseSVN
+// Copyright (C) 2006-2007, 2010-2011, 2013,2015, 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -164,7 +164,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (pLeft)
 		{
 			bool bModified = (m_originalstateLeft == static_cast<size_t>(-1));
-			if (!bModified)
+			if (!bModified && !m_viewstates.empty())
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
 				std::advance(i, m_originalstateLeft);
@@ -188,7 +188,7 @@ bool CUndo::Undo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (pRight)
 		{
 			bool bModified = (m_originalstateRight == static_cast<size_t>(-1));
-			if (!bModified)
+			if (!bModified && !m_viewstates.empty())
 			{
 				std::list<allviewstate>::iterator i = m_viewstates.begin();
 				std::advance(i, m_originalstateRight);
