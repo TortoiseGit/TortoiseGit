@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015, 2020 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017, 2019-2020 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2012, 2016-2017, 2019-2020-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -399,18 +399,50 @@ void CFilePatchesDlg::OnNcLButtonDblClk(UINT nHitTest, CPoint point)
 	CResizableStandAloneDialog::OnNcLButtonDblClk(nHitTest, point);
 }
 
+static int GetBorderAjustment(HWND parentHWND, const RECT& parentRect)
+{
+	CRect recta{ 0, 0, 0, 0 };
+	if (SUCCEEDED(::DwmGetWindowAttribute(parentHWND, DWMWA_EXTENDED_FRAME_BOUNDS, &recta, sizeof(recta))))
+		return 2 * (recta.left - parentRect.left) + 1;
+
+	return 0;
+}
+
 void CFilePatchesDlg::OnMoving(UINT fwSide, LPRECT pRect)
 {
 	RECT parentRect;
 	m_pMainFrame->GetWindowRect(&parentRect);
 	const int stickySize = 5;
-	if (abs(parentRect.left - pRect->right) < stickySize)
+	int adjust = GetBorderAjustment(m_pMainFrame->GetSafeHwnd(), parentRect);
+	if (abs(parentRect.left - pRect->right + adjust) < stickySize)
 	{
 		int width = pRect->right - pRect->left;
-		pRect->right = parentRect.left;
+		pRect->right = parentRect.left + adjust;
 		pRect->left = pRect->right - width;
 	}
 	CResizableStandAloneDialog::OnMoving(fwSide, pRect);
+}
+
+void CFilePatchesDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
+{
+	if (!::IsWindow(m_hWnd))
+		return;
+
+	if (!::IsWindow(parentHWND))
+		return;
+
+	RECT patchrect;
+	GetWindowRect(&patchrect);
+
+	RECT parentRect;
+	::GetWindowRect(parentHWND, &parentRect);
+
+	if (patchrect.left - (parentRect.left - pRect->left) <= 0)
+		return;
+
+	int adjust = GetBorderAjustment(parentHWND, parentRect);
+	if (patchrect.right == parentRect.left + adjust)
+		SetWindowPos(nullptr, patchrect.left - (parentRect.left - pRect->left), patchrect.top - (parentRect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 }
 
 void CFilePatchesDlg::OnOK()

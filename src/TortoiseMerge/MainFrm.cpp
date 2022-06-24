@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -2343,23 +2343,7 @@ bool CMainFrame::HasPrevInlineDiff(CBaseView* view)
 
 void CMainFrame::OnMoving(UINT fwSide, LPRECT pRect)
 {
-	// if the pathfilelist dialog is attached to the mainframe,
-	// move it along with the mainframe
-	if (::IsWindow(m_dlgFilePatches.m_hWnd))
-	{
-		RECT patchrect;
-		m_dlgFilePatches.GetWindowRect(&patchrect);
-		if (::IsWindow(m_hWnd))
-		{
-			RECT thisrect;
-			GetWindowRect(&thisrect);
-			if (patchrect.right == thisrect.left)
-			{
-				m_dlgFilePatches.SetWindowPos(nullptr, patchrect.left - (thisrect.left - pRect->left), patchrect.top - (thisrect.top - pRect->top),
-					0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
-			}
-		}
-	}
+	m_dlgFilePatches.ParentOnMoving(m_hWnd, pRect);
 	__super::OnMoving(fwSide, pRect);
 }
 

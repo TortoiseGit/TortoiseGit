@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2022 - TortoiseGit
 // Copyright (C) 2006, 2008, 2010-2011, 2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,6 +76,8 @@ class CFilePatchesDlg : public CResizableStandAloneDialog
 public:
 	CFilePatchesDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFilePatchesDlg();
+
+	void ParentOnMoving(HWND parentHWND, LPRECT pRect);
 
 	/**
 	 * Call this method to initialize the dialog.
