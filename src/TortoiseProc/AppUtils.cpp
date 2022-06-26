@@ -34,6 +34,7 @@
 #include "BrowseFolder.h"
 #include "DirFileEnum.h"
 #include "CreateBranchTagDlg.h"
+#include "CreateWorktreeDlg.h"
 #include "GitSwitchDlg.h"
 #include "ResetDlg.h"
 #include "DeleteConflictDlg.h"
@@ -1302,6 +1303,34 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 		return TRUE;
 	}
 	return FALSE;
+}
+
+bool CAppUtils::CreateWorktree(HWND hWnd)
+{
+	CCreateWorktreeDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (dlg.DoModal() != IDOK)
+		return FALSE;
+
+	CString params;
+	if (!dlg.m_bCheckout)
+		params += L" --no-checkout"; // git defaults to --checkout
+	if (dlg.m_bForce)
+		params += L" --force";
+	if (dlg.m_bDetach)
+		params += L" --detach";
+	if (dlg.m_VersionName == L"HEAD")
+		dlg.m_VersionName.Empty();
+
+	CString cmd;
+	cmd.Format(L"git.exe worktree add%s -- %s %s",
+				static_cast<LPCWSTR>(params),
+				static_cast<LPCWSTR>(dlg.m_sWorktreePath),
+				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName)));
+
+	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	progress.m_GitCmd = cmd;
+
+	return progress.DoModal() == IDOK;
 }
 
 bool CAppUtils::Switch(HWND hWnd, const CString& initialRefName)

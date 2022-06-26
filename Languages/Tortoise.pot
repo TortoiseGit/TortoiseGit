@@ -372,7 +372,7 @@ msgstr ""
 msgid "&Border:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH: Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512, Dialog IDD_WORKTREE_CREATE: Control id 1512)
 msgid "&Branch"
 msgstr ""
 
@@ -396,6 +396,10 @@ msgstr ""
 msgid "&Cancel"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
+msgid "&Checkout"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
 msgstr ""
@@ -412,7 +416,7 @@ msgstr ""
 msgid "&Close"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH: Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog IDD_SYNC: Control id 1625)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH: Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514, Dialog IDD_SYNC: Control id 1625, Dialog IDD_WORKTREE_CREATE: Control id 1514)
 msgid "&Commit"
 msgstr ""
 
@@ -490,6 +494,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
+msgid "&Detach"
 msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
@@ -652,7 +660,7 @@ msgstr ""
 msgid "&Font:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC: Control id 1521)
+#. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr ""
 
@@ -692,7 +700,7 @@ msgstr ""
 msgid "&Gray Unrelated Changed Paths"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog IDD_NEW_BRANCH_TAG: Control id 1511)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog IDD_NEW_BRANCH_TAG: Control id 1511, Dialog IDD_WORKTREE_CREATE: Control id 1511)
 msgid "&HEAD"
 msgstr ""
 
@@ -812,6 +820,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1504)
 msgid "&Local:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
+msgid "&Location"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
@@ -1179,7 +1191,7 @@ msgstr ""
 msgid "&Tab size:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH: Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
+#. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH: Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513, Dialog IDD_WORKTREE_CREATE: Control id 1513)
 msgid "&Tag"
 msgstr ""
 
@@ -1358,7 +1370,7 @@ msgstr ""
 msgid "--&all"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog IDD_EXPORT: Control id 1483, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1551, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF: Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD: Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
+#. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1383, Dialog IDD_BISECTSTART: Control id 1672, Dialog IDD_CLONE: Control id 1384, Dialog IDD_EXPORT: Control id 1036, Dialog IDD_EXPORT: Control id 1382, Dialog IDD_EXPORT: Control id 1483, Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1551, Dialog IDD_FORMAT_PATCH: Control id 1383, Dialog IDD_FORMAT_PATCH: Control id 1384, Dialog IDD_FORMAT_PATCH: Control id 1541, Dialog IDD_FORMAT_PATCH: Control id 1542, Dialog IDD_GITSWITCH: Control id 1382, Dialog IDD_GITSWITCH: Control id 1483, Dialog IDD_MERGE: Control id 1382, Dialog IDD_MERGE: Control id 1483, Dialog IDD_NEW_BRANCH_TAG: Control id 1382, Dialog IDD_NEW_BRANCH_TAG: Control id 1483, Dialog IDD_OPEN: Control id 1002, Dialog IDD_OPEN: Control id 1003, Dialog IDD_PULLFETCH: Control id 1483, Dialog IDD_PUSH: Control id 1484, Dialog IDD_REBASE: Control id 1483, Dialog IDD_REQUESTPULL: Control id 1382, Dialog IDD_RESET: Control id 1382, Dialog IDD_RESET: Control id 1483, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1474, Dialog IDD_SETTINGSDIALOGS3: Control id 1778, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1324, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1333, Dialog IDD_SETTINGSMAIN: Control id 1551, Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1664, Dialog IDD_SETTINGSPROGSDIFF: Control id 1021, Dialog IDD_SETTINGSPROGSDIFF: Control id 1089, Dialog IDD_SETTINGSPROGSMERGE: Control id 1022, Dialog IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD: Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control id 1383, Dialog IDD_TOOLASSOC: Control id 1104, Dialog IDD_WORKTREE_CREATE: Control id 1382, Dialog IDD_WORKTREE_CREATE: Control id 1483)
 msgid "..."
 msgstr ""
 
@@ -2022,7 +2034,7 @@ msgstr ""
 msgid "Base"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522)
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522, Dialog IDD_WORKTREE_CREATE: Control id 1522)
 msgid "Base On"
 msgstr ""
 
@@ -2155,7 +2167,7 @@ msgstr ""
 msgid "Branch:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1383, Dialog IDD_WORKTREE_CREATE: Control id 1384)
 msgid "Bro&wse..."
 msgstr ""
 
@@ -2265,7 +2277,7 @@ msgstr ""
 msgid "Can't copy \n%1!s!\nto\n%2!s!"
 msgstr ""
 
-#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog IDD_ADD_REMOTE: Control id 2, Dialog IDD_BISECTSTART: Control id 2, Dialog IDD_BROWSE_REFS: Control id 2, Dialog IDD_BUGTRAQREGEXTESTER: Control id 2, Dialog IDD_CERTCHECK: Control id 2, Dialog IDD_CLEAN: Control id 2, Dialog IDD_CLONE: Control id 2, Dialog IDD_COMMITDLG: Control id 2, Dialog IDD_CREATECHANGELIST: Control id 2, Dialog IDD_CREATEREPO: Control id 2, Dialog IDD_ENCODING: Control id 2, Dialog IDD_EXPORT: Control id 2, Dialog IDD_FIND: Control id 2, Dialog IDD_FORMAT_PATCH: Control id 2, Dialog IDD_GITSWITCH: Control id 2, Dialog IDD_GOTO: Control id 2, Dialog IDD_GOTODLG: Control id 2, Dialog IDD_HISTORYDLG: Control id 2, Dialog IDD_IGNORE: Control id 2, Dialog IDD_INPUTDLG: Control id 2, Dialog IDD_LFS_LOCKS: Control id 2, Dialog IDD_LOGMESSAGE: Control id 2, Dialog IDD_LOGORDERING: Control id 2, Dialog IDD_MERGE: Control id 2, Dialog IDD_MERGEABORT: Control id 2, Dialog IDD_NEW_BRANCH_TAG: Control id 2, Dialog IDD_OPEN: Control id 2, Dialog IDD_OPENDLG: Control id 2, Dialog IDD_PROMPT: Control id 2, Dialog IDD_PULLFETCH: Control id 2, Dialog IDD_PUSH: Control id 2, Dialog IDD_REFLOG: Control id 2, Dialog IDD_REGEXFILTER: Control id 2, Dialog IDD_REGEXFILTERS: Control id 2, Dialog IDD_RENAME: Control id 2, Dialog IDD_REPOSITORY_BROWSER: Control id 2, Dialog IDD_REQUESTPULL: Control id 2, Dialog IDD_RESET: Control id 2, Dialog IDD_RESOLVE: Control id 2, Dialog IDD_REVERT: Control id 2, Dialog IDD_REVGRAPHFILTER: Control id 2, Dialog IDD_SELECTREMOTEREF: Control id 2, Dialog IDD_SENDMAIL: Control id 2, Dialog IDD_SETTINGSBUGTRAQADV: Control id 2, Dialog IDD_SETTINGSHOOKCONFIG: Control id 2, Dialog IDD_SETTINGSPROGSADV: Control id 2, Dialog IDD_SIMPLEPROMPT: Control id 2, Dialog IDD_STASH: Control id 2, Dialog IDD_SUBMODULE_ADD: Control id 2, Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE: Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS: Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control id 2, Dialog IDD_USER_PASSWD: Control id 2, Dialog IDD_WORKTREE_CREATE: Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr ""
 
@@ -3630,7 +3642,7 @@ msgstr ""
 msgid "Diffs two any commits"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog IDD_OPENDLG: Control id 65535)
+#. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog IDD_OPENDLG: Control id 65535, Dialog IDD_WORKTREE_CREATE: Control id 1518)
 msgid "Directory:"
 msgstr ""
 
@@ -4991,7 +5003,7 @@ msgstr ""
 msgid "Hebrew"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, IDS_MSGBOX_HELP)
+#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog IDD_WORKTREE_CREATE: Control id 9, IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr ""
 
@@ -6230,6 +6242,10 @@ msgstr ""
 msgid "New Branch/Tag"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
+msgid "New Worktree"
+msgstr ""
+
 #. Resource IDs: (IDS_NEWHASH)
 msgid "New hash"
 msgstr ""
@@ -6574,7 +6590,7 @@ msgstr ""
 msgid "OEM-US"
 msgstr ""
 
-#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1, IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1, Dialog IDD_WORKTREE_CREATE: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr ""
 
@@ -6710,7 +6726,7 @@ msgstr ""
 msgid "Option"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517)
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog IDD_STASH: Control id 1517, Dialog IDD_WORKTREE_CREATE: Control id 1517)
 msgid "Options"
 msgstr ""
 

@@ -228,6 +228,8 @@
     <ClCompile Include="Commands\BranchCommand.cpp" />
     <ClCompile Include="CreateBranchTagDlg.cpp" />
     <ClCompile Include="Commands\TagCommand.cpp" />
+    <ClCompile Include="Commands\WorktreeCommand.cpp" />
+    <ClCompile Include="CreateWorktreeDlg.cpp" />
     <ClCompile Include="Commands\ExportCommand.cpp" />
     <ClCompile Include="ExportDlg.cpp" />
     <ClCompile Include="Commands\AddCommand.cpp" />
@@ -541,6 +543,8 @@
     <ClInclude Include="Commands\BranchCommand.h" />
     <ClInclude Include="CreateBranchTagDlg.h" />
     <ClInclude Include="Commands\TagCommand.h" />
+    <ClInclude Include="Commands\WorktreeCommand.h" />
+    <ClInclude Include="CreateWorktreeDlg.h" />
     <ClInclude Include="Commands\ExportCommand.h" />
     <ClInclude Include="ExportDlg.h" />
     <ClInclude Include="Commands\AddCommand.h" />

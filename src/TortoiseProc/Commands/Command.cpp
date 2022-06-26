@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,6 +39,7 @@
 #include "FetchCommand.h"
 #include "PushCommand.h"
 #include "BranchCommand.h"
+#include "WorktreeCommand.h"
 #include "TagCommand.h"
 #include "MergeCommand.h"
 #include "SwitchCommand.h"
@@ -158,6 +159,7 @@ typedef enum
 	cmdLFSLocks,
 	cmdLFSLock,
 	cmdLFSUnlock,
+	cmdWorktreeCreate,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -234,6 +236,7 @@ static const struct CommandInfo
 	{	cmdLFSLocks,		L"lfslocks"			},
 	{	cmdLFSLock,			L"lfslock"			},
 	{	cmdLFSUnlock,		L"lfsunlock"		},
+	{	cmdWorktreeCreate,	L"newworktree"		},
 };
 
 
@@ -384,6 +387,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new LFSLockCommand;
 	case cmdLFSUnlock:
 		return new LFSUnlockCommand;
+	case cmdWorktreeCreate:
+		return new WorktreeCreateCommand;
 	case cmdRTFM:
 		return new RTFMCommand;
 #if 0
