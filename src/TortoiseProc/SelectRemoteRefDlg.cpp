@@ -24,7 +24,6 @@
 #include "TortoiseProc.h"
 #include "SelectRemoteRefDlg.h"
 #include "MessageBox.h"
-#include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
 
 IMPLEMENT_DYNAMIC(CSelectRemoteRefDlg, CHorizontalResizableStandAloneDialog)
