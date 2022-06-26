@@ -2330,7 +2330,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CString sCmd;
 						if (m_CurrentVersion.IsEmpty())
-							sCmd.Format(L"/command:diff /path:\"%s\" /endrev:%s /path2:\"%s\" /startrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", reinterpret_cast<void*>(m_hWnd));
+							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", reinterpret_cast<void*>(m_hWnd));
 						else
 							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), reinterpret_cast<void*>(m_hWnd));
 						if (bShift)
