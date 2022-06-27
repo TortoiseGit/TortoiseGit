@@ -255,6 +255,10 @@ int CMainFrame::InitRibbon()
 {
 	if (!m_bUseRibbons)
 		return 0;
+	if (CTheme::Instance().IsDarkTheme())
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+	else
+		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 
 	if (HRESULT hr = m_pRibbonFramework.CoCreateInstance(__uuidof(UIRibbonFramework)); FAILED(hr))
 	{
@@ -277,7 +281,13 @@ int CMainFrame::InitRibbon()
 		return -1; // fail to create
 	}
 
-	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
+	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]()
+	{
+		if (CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark())
+			CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+		else
+			CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+		SetTheme(CTheme::Instance().IsDarkTheme());});
 	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	BuildRegexSubitems();
@@ -366,7 +376,14 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		}
 		m_wndStatusBar.EnablePaneDoubleClick();
 
-		m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme());});
+		m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]()
+		{
+			if (CTheme::Instance().IsDarkTheme() || CTheme::Instance().IsHighContrastModeDark())
+				CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
+			else
+				CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
+			SetTheme(CTheme::Instance().IsDarkTheme());
+		});
 		SetTheme(CTheme::Instance().IsDarkTheme());
 	}
 
@@ -1346,10 +1363,7 @@ void CMainFrame::SetTheme(bool bDark)
 		DarkModeHelper::Instance().SetWindowCompositionAttribute(*this, &data);
 		DarkModeHelper::Instance().FlushMenuThemes();
 		DarkModeHelper::Instance().RefreshImmersiveColorPolicyState();
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CMFCVisualManagerWindows));
 	}
-	if (bDark || CTheme::Instance().IsHighContrastModeDark())
-		CMFCVisualManager::SetDefaultManager(RUNTIME_CLASS(CThemeMFCVisualManager));
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 

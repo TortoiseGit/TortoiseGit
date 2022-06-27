@@ -26,6 +26,7 @@ Released: unreleased
  * Fixed issue #3926: TortoiseGitMerge undo/redo can cause window to become unresponsive
  * Fixed issue #3930: TortoiseGitMerge optimized docking PatchFileView
  * Fixed issue #3927: Support deleted files for "Compare two files"
+ * Fixed issue #3911: TortoiseGitMerge: "The text is identical ..." dialog causes display issues
 
 = Release 2.13.0.1 =
 Released: 2022-02-06
