@@ -304,7 +304,7 @@ bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (pLeft)
 		{
 			bool bModified = (m_originalstateLeft != static_cast<size_t>(-1));
-			if (!bModified)
+			if (!bModified && !m_redoviewstates.empty())
 			{
 				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
 				std::advance(i, m_originalstateLeft);
@@ -328,7 +328,7 @@ bool CUndo::Redo(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom)
 		if (pRight)
 		{
 			bool bModified = (m_originalstateRight != static_cast<size_t>(-1));
-			if (!bModified)
+			if (!bModified && !m_redoviewstates.empty())
 			{
 				std::list<allviewstate>::iterator i = m_redoviewstates.begin();
 				std::advance(i, m_originalstateRight);
