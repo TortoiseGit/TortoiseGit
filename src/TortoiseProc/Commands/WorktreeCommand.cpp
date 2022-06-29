@@ -18,6 +18,7 @@
 //
 #include "stdafx.h"
 #include "WorktreeCommand.h"
+#include "WorktreeListDlg.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 
@@ -30,4 +31,17 @@ bool WorktreeCreateCommand::Execute()
 	}
 
 	return CAppUtils::CreateWorktree(GetExplorerHWND());
+}
+
+bool WorktreeListCommand::Execute()
+{
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
+	CWorktreeListDlg dlg;
+	theApp.m_pMainWnd = &dlg;
+	return dlg.DoModal() == IDOK;
 }

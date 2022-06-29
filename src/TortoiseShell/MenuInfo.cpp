@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -197,6 +197,9 @@ MenuInfo menuInfo[] =
 //		{ITEMIS_IGNORED, 0}, {0, 0}, {0, 0}, {0, 0} },
 
 	{ ShellSeparator, 0, 0, 0, 0, {0, 0}, {0, 0}, {0, 0}, {0, 0} },
+
+	{ ShellMenuWorktree,					MENUWORKTREE,		IDI_COPY,				IDS_MENUWORKTREE,			IDS_MENUDESCWORKTREE,
+		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0 }, {ITEMIS_BAREREPO, 0}, {0, 0}, {0, 0} },
 
 	{ ShellMenuSubAdd,						MENUSUBADD,			IDI_ADD,				IDS_MENUSUBADD,				IDS_MENUSUBADD,
 		{ITEMIS_FOLDERINGIT|ITEMIS_ONLYONE, 0}, {0, 0}, {0, 0}, {0, 0} },

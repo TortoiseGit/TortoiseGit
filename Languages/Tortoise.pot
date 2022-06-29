@@ -304,7 +304,7 @@ msgstr ""
 msgid "&About TortoiseGitMerge..."
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog IDD_REBASE: Control id 1382)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog IDD_REBASE: Control id 1382, Dialog IDD_WORKTREE_LIST: Control id 1382)
 msgid "&Add"
 msgstr ""
 
@@ -985,6 +985,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_HOOKFAILED_TASK4)
 msgid "&Proceed anyway\nIgnore the hook script and run the command anyway."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
+msgid "&Prune"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
@@ -3742,6 +3746,10 @@ msgstr ""
 msgid "Do you really want to delete \"%s\"?"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_DELETE_WORKTREE)
+msgid "Do you really want to delete the selected worktree(s)?"
+msgstr ""
+
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid "Do you really want to disable automatic update checks for TortoiseGit?\n\nAutomatic update checks can be re-enabled in TortoiseGit settings on the General page."
 msgstr ""
@@ -5003,7 +5011,7 @@ msgstr ""
 msgid "Hebrew"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog IDD_WORKTREE_CREATE: Control id 9, IDS_MSGBOX_HELP)
+#. Resource IDs: (Dialog IDD_ADD: Control id 9, Dialog IDD_ADD_REMOTE: Control id 9, Dialog IDD_APPLY_PATCH_LIST: Control id 9, Dialog IDD_BISECTSTART: Control id 9, Dialog IDD_BROWSE_REFS: Control id 9, Dialog IDD_CLEAN: Control id 9, Dialog IDD_CLONE: Control id 9, Dialog IDD_COMMITDLG: Control id 9, Dialog IDD_CREATEREPO: Control id 9, Dialog IDD_EXPORT: Control id 9, Dialog IDD_FORMAT_PATCH: Control id 9, Dialog IDD_GITSWITCH: Control id 9, Dialog IDD_IGNORE: Control id 9, Dialog IDD_LFS_LOCKS: Control id 9, Dialog IDD_LOGMESSAGE: Control id 9, Dialog IDD_MERGE: Control id 9, Dialog IDD_MERGEABORT: Control id 9, Dialog IDD_NEW_BRANCH_TAG: Control id 9, Dialog IDD_OPENDLG: Control id 9, Dialog IDD_PULLFETCH: Control id 9, Dialog IDD_PUSH: Control id 9, Dialog IDD_REBASE: Control id 9, Dialog IDD_REFLOG: Control id 9, Dialog IDD_REPOSITORY_BROWSER: Control id 9, Dialog IDD_REQUESTPULL: Control id 9, Dialog IDD_RESET: Control id 9, Dialog IDD_RESOLVE: Control id 9, Dialog IDD_RESOLVESUBMODULECONFLICT: Control id 9, Dialog IDD_RESOLVE_CONFLICT: Control id 9, Dialog IDD_REVERT: Control id 9, Dialog IDD_SENDMAIL: Control id 9, Dialog IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG: Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD: Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog IDD_WORKTREE_CREATE: Control id 9, Dialog IDD_WORKTREE_LIST: Control id 9, IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr ""
 
@@ -5919,6 +5927,15 @@ msgstr ""
 msgid "Lock"
 msgstr ""
 
+#. Resource IDs: (IDS_LOCKED)
+msgid "Locked"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_LOCKED_WORKTREES)
+#, c-format
+msgid "Locked %d worktree(s)."
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
 msgstr ""
@@ -5997,6 +6014,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1382, IDS_PROC_BROWSEREFS_MANAGEREMOTES)
 msgid "Manage Remotes"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCWORKTREE)
+msgid "Manages the worktrees of a repository"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED - Menu, cmdMarkResolved_LabelTitle_RESID)
@@ -6590,7 +6611,7 @@ msgstr ""
 msgid "OEM-US"
 msgstr ""
 
-#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1, Dialog IDD_WORKTREE_CREATE: Control id 1, IDS_MSGBOX_OK)
+#. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 1, Dialog IDD_ABOUT: Control id 1, Dialog IDD_ABOUTBOX: Control id 1, Dialog IDD_ADD: Control id 1, Dialog IDD_ADD_REMOTE: Control id 1, Dialog IDD_BISECTSTART: Control id 1, Dialog IDD_BROWSE_REFS: Control id 1, Dialog IDD_BUGTRAQREGEXTESTER: Control id 1, Dialog IDD_CHANGEDFILES: Control id 1, Dialog IDD_CLEAN: Control id 1, Dialog IDD_CLONE: Control id 1, Dialog IDD_CREATECHANGELIST: Control id 1, Dialog IDD_CREATEREPO: Control id 1, Dialog IDD_ENCODING: Control id 1, Dialog IDD_EXPORT: Control id 1, Dialog IDD_FORMAT_PATCH: Control id 1, Dialog IDD_GITSWITCH: Control id 1, Dialog IDD_GOTO: Control id 1, Dialog IDD_GOTODLG: Control id 1, Dialog IDD_HISTORYDLG: Control id 1, Dialog IDD_IGNORE: Control id 1, Dialog IDD_INPUTDLG: Control id 1, Dialog IDD_LOGMESSAGE: Control id 1, Dialog IDD_LOGORDERING: Control id 1, Dialog IDD_MERGE: Control id 1, Dialog IDD_MERGEABORT: Control id 1, Dialog IDD_NEW_BRANCH_TAG: Control id 1, Dialog IDD_OPEN: Control id 1, Dialog IDD_OPENDLG: Control id 1, Dialog IDD_PROMPT: Control id 1, Dialog IDD_PULLFETCH: Control id 1, Dialog IDD_PUSH: Control id 1, Dialog IDD_REFLOG: Control id 1, Dialog IDD_REGEXFILTER: Control id 1, Dialog IDD_REGEXFILTERS: Control id 1, Dialog IDD_RENAME: Control id 1, Dialog IDD_REPOSITORY_BROWSER: Control id 1, Dialog IDD_REQUESTPULL: Control id 1, Dialog IDD_RESET: Control id 1, Dialog IDD_RESOLVE: Control id 1, Dialog IDD_RESOLVE_CONFLICT: Control id 4569, Dialog IDD_REVERT: Control id 1, Dialog IDD_SELECTREMOTEREF: Control id 1, Dialog IDD_SETTINGSBUGTRAQADV: Control id 1, Dialog IDD_SETTINGSHOOKCONFIG: Control id 1, Dialog IDD_SETTINGSPROGSADV: Control id 1, Dialog IDD_SIMPLEPROMPT: Control id 1, Dialog IDD_STASH: Control id 1, Dialog IDD_STATGRAPH: Control id 1, Dialog IDD_SUBMODULE_ADD: Control id 1, Dialog IDD_SUBMODULE_UPDATE: Control id 1, Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1, Dialog IDD_WORKTREE_CREATE: Control id 1, Dialog IDD_WORKTREE_LIST: Control id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr ""
 
@@ -7173,7 +7194,7 @@ msgstr ""
 msgid "Proxy Settings"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id 1603)
+#. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id 1603, IDS_PRUNE)
 msgid "Prune"
 msgstr ""
 
@@ -7328,6 +7349,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENUDESCHELP)
 msgid "Read the 'Daily Use Guide' before you are stuck..."
+msgstr ""
+
+#. Resource IDs: (IDS_REASON)
+msgid "Reason"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 318)
@@ -8994,6 +9019,11 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_UNLOCKED_WORKTREES)
+#, c-format
+msgid "Successfully unlocked %d worktree(s)."
+msgstr ""
+
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
 msgstr ""
@@ -9841,6 +9871,10 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
+#. Resource IDs: (IDS_UNLOCKED)
+msgid "Unlocked"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
 msgstr ""
@@ -10404,6 +10438,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
 msgid "Working tree changes"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 4604)
+msgid "Worktree List"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUWORKTREE)
+msgid "Worktrees"
 msgstr ""
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)

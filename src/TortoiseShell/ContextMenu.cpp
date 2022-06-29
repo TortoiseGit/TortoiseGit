@@ -1639,6 +1639,9 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 	case ShellMenuLFSUnlock:
 		AddPathFileCommand(gitCmd, L"lfsunlock", paths, folder);
 		break;
+	case ShellMenuWorktree:
+		AddPathCommand(gitCmd, L"worktreelist", false, paths, folder);
+		break;
 
 	default:
 		break;

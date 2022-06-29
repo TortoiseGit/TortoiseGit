@@ -146,6 +146,7 @@ using CAutoStatusList			= CSmartLibgit2Ref<git_status_list,			git_status_list_fr
 using CAutoNote					= CSmartLibgit2Ref<git_note,				git_note_free>;
 using CAutoSignature			= CSmartLibgit2Ref<git_signature,			git_signature_free>;
 using CAutoMailmap				= CSmartLibgit2Ref<git_mailmap,				git_mailmap_free>;
+using CAutoWorktree				= CSmartLibgit2Ref<git_worktree,			git_worktree_free>;
 
 class CAutoRepository : public CSmartLibgit2Ref<git_repository, git_repository_free>
 {
@@ -178,16 +179,14 @@ public:
 		return Open(CUnicodeUtils::GetUTF8(gitDir));
 	}
 #endif
-
-private:
-	CAutoRepository(const CAutoRepository&) = delete;
-	CAutoRepository& operator=(const CAutoRepository&) = delete;
-
-protected:
 	int Open(const char* gitDirA)
 	{
 		return git_repository_open(GetPointer(), gitDirA);
 	}
+
+private:
+	CAutoRepository(const CAutoRepository&) = delete;
+	CAutoRepository& operator=(const CAutoRepository&) = delete;
 };
 
 class CAutoCommit : public CSmartLibgit2Ref<git_commit, git_commit_free>

@@ -160,6 +160,7 @@ typedef enum
 	cmdLFSLock,
 	cmdLFSUnlock,
 	cmdWorktreeCreate,
+	cmdWorktreeList,
 } TGitCommand;
 
 static const struct CommandInfo
@@ -237,6 +238,7 @@ static const struct CommandInfo
 	{	cmdLFSLock,			L"lfslock"			},
 	{	cmdLFSUnlock,		L"lfsunlock"		},
 	{	cmdWorktreeCreate,	L"newworktree"		},
+	{	cmdWorktreeList,	L"worktreelist"		},
 };
 
 
@@ -389,6 +391,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		return new LFSUnlockCommand;
 	case cmdWorktreeCreate:
 		return new WorktreeCreateCommand;
+	case cmdWorktreeList:
+		return new WorktreeListCommand;
 	case cmdRTFM:
 		return new RTFMCommand;
 #if 0

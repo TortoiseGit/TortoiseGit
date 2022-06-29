@@ -195,6 +195,8 @@
 #define IDS_MENUDELETEIGNORE            353
 #define IDS_MENUDESCDELETEIGNORE        354
 #define IDS_MENUCOMMITSUBMODULE         355
+#define IDS_MENUWORKTREE                356
+#define IDS_MENUDESCWORKTREE            357
 #define IDI_REVISIONGRAPH               366
 #define IDS_MENUREVISIONGRAPH           367
 #define IDS_MENUDESCREVISIONGRAPH       368

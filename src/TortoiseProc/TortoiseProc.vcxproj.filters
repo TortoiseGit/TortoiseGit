@@ -1037,6 +1037,9 @@
     <ClCompile Include="DiffLinesForStaging.cpp">
       <Filter>Commands\Commit</Filter>
     </ClCompile>
+    <ClCompile Include="WorktreeListDlg.cpp">
+      <Filter>Commands\worktree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1961,6 +1964,9 @@
       <Filter>Commands\worktree</Filter>
     </ClInclude>
     <ClInclude Include="Commands\WorktreeCommand.h">
+      <Filter>Commands\worktree</Filter>
+    </ClInclude>
+    <ClInclude Include="WorktreeListDlg.h">
       <Filter>Commands\worktree</Filter>
     </ClInclude>
   </ItemGroup>

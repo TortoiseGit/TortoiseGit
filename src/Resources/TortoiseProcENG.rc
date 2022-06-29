@@ -2310,6 +2310,18 @@ BEGIN
     PUSHBUTTON      "Help",IDHELP,239,148,50,14
 END
 
+IDD_WORKTREE_LIST DIALOGEX 0, 0, 350, 134
+STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Worktree List"
+FONT 9, "Segoe UI", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_WORKTREE_LIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,336,102,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "&Add",IDC_BUTTON_ADD,7,113,50,14
+    PUSHBUTTON      "&Prune",IDC_BUTTON_PRUNE,62,113,50,14
+    DEFPUSHBUTTON   "OK",IDOK,237,113,50,14
+    PUSHBUTTON      "Help",IDHELP,293,113,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -3315,6 +3327,14 @@ BEGIN
         BOTTOMMARGIN, 162
         HORZGUIDE, 137
     END
+
+    IDD_WORKTREE_LIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 127
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -3964,8 +3984,16 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROC_UNSTAGE_SELECTED_LINES "Unstage selected &lines"
+    IDS_LOCKED              "Locked"
+    IDS_UNLOCKED            "Unlocked"
     IDS_ABOUTVERSION        "TortoiseGit %d.%d.%d.%d %s\n%s\n"
     IDS_ABOUTVERSIONBOX     "TortoiseGit %d.%d.%d, Build %d - %s, %s"
+    IDS_REASON              "Reason"
+    IDS_PRUNE               "Prune"
+    IDS_PROC_DELETE_WORKTREE 
+                            "Do you really want to delete the selected worktree(s)?"
+    IDS_PROC_LOCKED_WORKTREES "Locked %d worktree(s)."
+    IDS_PROC_UNLOCKED_WORKTREES "Successfully unlocked %d worktree(s)."
 END
 
 STRINGTABLE

@@ -314,6 +314,7 @@
     <ClCompile Include="BisectStartDlg.cpp" />
     <ClCompile Include="RepositoryBrowser.cpp" />
     <ClCompile Include="Commands\RepositoryBrowserCommand.cpp" />
+    <ClCompile Include="WorktreeListDlg.cpp" />
     <ClCompile Include="RevisionGraph\RevGraphFilterDlg.cpp" />
     <ClCompile Include="Commands\RevisionGraphCommand.cpp" />
     <ClCompile Include="RevisionGraph\RevisionGraphDlg.cpp" />
@@ -626,6 +627,7 @@
     <ClInclude Include="BisectStartDlg.h" />
     <ClInclude Include="RepositoryBrowser.h" />
     <ClInclude Include="Commands\RepositoryBrowserCommand.h" />
+    <ClInclude Include="WorktreeListDlg.h" />
     <ClInclude Include="RevisionGraph\RevGraphFilterDlg.h" />
     <ClInclude Include="Commands\RevisionGraphCommand.h" />
     <ClInclude Include="RevisionGraph\RevisionGraphDlg.h" />
