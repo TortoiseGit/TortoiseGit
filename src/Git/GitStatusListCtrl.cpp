@@ -965,7 +965,7 @@ void CGitStatusListCtrl::AppendLFSLocks(bool onlyExisting)
 void CGitStatusListCtrl::StoreScrollPos()
 {
 	m_sScrollPos.enabled = true;
-	m_sScrollPos.nTopIndex = GetTopIndex();
+	GetOrigin(&m_sScrollPos.coordOrigin);
 	m_sScrollPos.selMark = GetSelectionMark();
 	POSITION posSelectedEntry = GetFirstSelectedItemPosition();
 	m_sScrollPos.nSelectedEntry = 0;
@@ -979,19 +979,12 @@ void CGitStatusListCtrl::RestoreScrollPos()
 		return;
 
 	if (m_sScrollPos.nSelectedEntry)
-	{
 		SetItemState(m_sScrollPos.nSelectedEntry, LVIS_SELECTED, LVIS_SELECTED);
-		EnsureVisible(m_sScrollPos.nSelectedEntry, false);
-	}
-	else
-	{
-		// Restore the item at the top of the list.
-		for (int i = 0; GetTopIndex() != m_sScrollPos.nTopIndex; ++i)
-		{
-			if (!EnsureVisible(m_sScrollPos.nTopIndex + i, false))
-				break;
-		}
-	}
+
+	// Restore the item at the top of the list.
+	const CSize scrollSize{m_sScrollPos.coordOrigin.x, m_sScrollPos.coordOrigin.y};
+	Scroll(scrollSize);
+
 	if (m_sScrollPos.selMark >= 0)
 	{
 		SetSelectionMark(m_sScrollPos.selMark);

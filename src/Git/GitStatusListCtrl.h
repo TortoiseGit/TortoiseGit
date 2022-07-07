@@ -895,9 +895,9 @@ private:
 	struct ScrollPos
 	{
 		bool enabled = false;
-		int nTopIndex;
 		int selMark;
 		int nSelectedEntry;
+		POINT coordOrigin{0, 0};
 	} m_sScrollPos;
 
 	void			GitStageEntry(CTGitPath* entry);
