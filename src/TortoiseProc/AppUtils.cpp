@@ -2696,6 +2696,8 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 
 		if (!runRebase && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 			postCmdList.emplace_back(IDI_REBASE, IDS_MENUREBASE, [&]{ runRebase = false; CAppUtils::RebaseAfterFetch(hWnd); });
+
+		postCmdList.emplace_back(IDI_SWITCH, IDS_MENUSWITCH, [&hWnd] { CAppUtils::Switch(hWnd); });
 	};
 
 	progress.m_GitCmd = cmd;
