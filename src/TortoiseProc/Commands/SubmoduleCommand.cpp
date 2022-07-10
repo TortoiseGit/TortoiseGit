@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2016, 2018-2019, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
 #include "AppUtils.h"
+#include <MassiveGitTask.h>
 
 bool SubmoduleAddCommand::Execute()
 {
@@ -159,12 +160,17 @@ bool SubmoduleUpdateCommand::Execute()
 	if (submoduleUpdateDlg.m_bRemote)
 		params += L" --remote";
 
-	for (size_t i = 0; i < submoduleUpdateDlg.m_PathList.size(); ++i)
+
+	CString cmd;
+	cmd.Format(L"submodule update%s", static_cast<LPCWSTR>(params));
+	if (!submoduleUpdateDlg.m_bAllSubmodulesSelected)
 	{
-		CString str;
-		str.Format(L"git.exe submodule update%s -- \"%s\"", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(submoduleUpdateDlg.m_PathList[i]));
-		progress.m_GitCmdList.push_back(str);
+		// If not all submodules are selected, let CMassiveGitTaskBase create the list of commands.
+		// Otherwise, there is no need to specify any submodule.
+		CMassiveGitTaskBase::ConvertToCmdList(cmd, submoduleUpdateDlg.m_PathList, progress.m_GitCmdList);
 	}
+	else
+		progress.m_GitCmdList.push_back(L"git.exe " + cmd);
 
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{

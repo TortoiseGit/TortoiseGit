@@ -14,6 +14,7 @@ Released: unreleased
  * Update TortoiseGitPlink to PuTTY Plink 0.77
  * Fixed issue #3932: RebaseDlg: Remember last selection of 'add "cherry picked from"'
  * Fixed issue #3938: Add Switch/Checkout... option after fetch
+ * Fixed issue #3935: Submodule update is slow for repositories with several submodules
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

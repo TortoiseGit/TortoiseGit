@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016 - TortoiseGit
+// Copyright (C) 2012-2016, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -60,6 +60,7 @@ public:
 	BOOL m_bRemote;
 	STRING_VECTOR m_PathFilterList;
 	STRING_VECTOR m_PathList;
+	bool m_bAllSubmodulesSelected;
 
 protected:
 	CRegDWORD		m_regInit;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2011-2016, 2019-2020, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -141,4 +141,31 @@ bool CMassiveGitTaskBase::IsListEmpty() const
 CString CMassiveGitTaskBase::GetListItem(int index) const
 {
 	return m_bIsPath ? m_pathList[index].GetGitPathString() : m_itemList[index];
+}
+
+void CMassiveGitTaskBase::ConvertToCmdList(CString params, const STRING_VECTOR& pathList, STRING_VECTOR& cmdList)
+{
+	if (pathList.empty())
+		return;
+
+	// see issue https://tortoisegit.org/issue/3542
+	const int max_command_line_length{ (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) ? 3500 : 30000 };
+	const int quotes_length{ (CGit::ms_bCygwinGit || CGit::ms_bMsys2Git) ? 4 : 2 };
+
+	CString cmd;
+	cmd.Format(L"git.exe %s --", static_cast<LPCWSTR>(params));
+
+	bool noCmdYet{ true };
+	for (const auto& filename : pathList)
+	{
+		// add new command if no command yet or last command will exceed max length
+		if (noCmdYet || (cmdList.back().GetLength() + 1 + quotes_length + filename.GetLength()) > max_command_line_length)
+		{
+			noCmdYet = false;
+			cmdList.push_back(cmd);
+		}
+
+		// update last commmand of list
+		cmdList.back().AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(filename));
+	}
 }

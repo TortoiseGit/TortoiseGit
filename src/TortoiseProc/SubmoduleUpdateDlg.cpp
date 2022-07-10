@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,6 +37,7 @@ CSubmoduleUpdateDlg::CSubmoduleUpdateDlg(CWnd* pParent /*=nullptr*/)
 	, m_bRebase(FALSE)
 	, m_bRemote(FALSE)
 	, m_bWholeProject(FALSE)
+	, m_bAllSubmodulesSelected(false)
 {
 	s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (s_bSortLogical)
@@ -206,6 +207,7 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 			selected.Append(text);
 		}
 	}
+	m_bAllSubmodulesSelected = (m_PathListBox.GetCount() == m_PathList.size());
 	m_regPath = selected;
 
 	m_regInit = m_bInit;
