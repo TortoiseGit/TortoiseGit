@@ -277,6 +277,8 @@ void CPullFetchDlg::Refresh()
 	m_configPullRemote = pullRemote;
 	m_configPullBranch  = pullBranch;
 
+	// determine default remote tracking branch of submodule to remote branch selection
+	CString defaultRemoteTrackingBranch;
 	if (CString parentRepoDir; CTGitPath(g_Git.m_CurrentDir).IsRegisteredSubmoduleOfParentProject(&parentRepoDir))
 	{
 		if (CAutoRepository parentRepo(parentRepoDir); parentRepo)
@@ -288,15 +290,20 @@ void CPullFetchDlg::Refresh()
 			{
 				auto branch = git_submodule_branch(subModule);
 				if (branch)
-					pullBranch = CUnicodeUtils::GetUnicode(branch);
+					defaultRemoteTrackingBranch = CUnicodeUtils::GetUnicode(branch);
 			}
 		}
 	}
 
-	if (pullBranch.IsEmpty())
-		m_RemoteBranch.AddString(currentBranch);
-	else
+	// If both pullBranch and currentBranch are empty (i.e. detached HEAD) nothing
+	// will be added to the combo box. If pullBranch is empty and it is a submodule,
+	// its default remote tracking branch will be added.
+	if (!pullBranch.IsEmpty())
 		m_RemoteBranch.AddString(pullBranch);
+	else if (!defaultRemoteTrackingBranch.IsEmpty())
+		m_RemoteBranch.AddString(defaultRemoteTrackingBranch);
+	else
+		m_RemoteBranch.AddString(currentBranch);
 
 	if(pullRemote.IsEmpty())
 		pullRemote = m_RemoteReg;
