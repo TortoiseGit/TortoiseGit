@@ -74,7 +74,7 @@
 	</para>
 -->
 	<para>
-		In order to delete remote tags, use the context menu on a remote on he left and select <guimenuitem>Delete remote tags...</guimenuitem>. Then the following dialog will come up. There you can delete multiple remote tags at once.
+		In order to delete remote tags, use the context menu on a remote on the left side and select <guimenuitem>Delete remote tags...</guimenuitem>. Then the following dialog will come up. There you can delete multiple remote tags at once.
 		<figure id="tgit-dug-browse-ref-dia-delremotetags">
 			<title>Delete remote tags dialog</title>
 			<graphic fileref="../images/DeleteRemoteTag.png"/>
