@@ -54,7 +54,7 @@
 		</BuildDependsOn>
 	</PropertyGroup>
 	<Target Name="CheckVCRedistVersion">
-		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files and adjust 'VCToolsRedistVersionCheck'." Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt; 14.30" />
+		<Warning Text="CRT/MFC RedistFiles: $(VCToolsRedistVersion) is newer than the last known version. Check '$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\$(PackagePlatforms)' for new files and adjust 'VCToolsRedistVersionCheck'." Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt; 14.32" />
 		<Warning Text="UCRT RedistFiles: $(Win10SDKVer) is newer than the last known version. Check '$(WindowsSdkDir_10)Redist\$(Win10SDKVer)\ucrt\DLLs\$(PackagePlatforms)\' for new files." Condition="$(Win10SDKVer.Substring(5)) &gt; 19041" />
 	</Target>
 	<Target Name="EnsureWixToolsetInstalled" Condition=" '$(WixTargetsImported)' != 'true' ">
