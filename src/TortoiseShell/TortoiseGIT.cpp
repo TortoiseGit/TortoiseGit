@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010, 2012, 2021 - TortoiseSVN
+// Copyright (C) 2003-2010, 2012, 2021-2022 - TortoiseSVN
 // Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -85,6 +85,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /* lpReserved */)
 	// behavior and even may create dependency loops in the dll load order.
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
+		DisableThreadLibraryCalls(hInstance);
 		if (!g_hmodThisDll)
 			g_csGlobalCOMGuard.Init();
 
