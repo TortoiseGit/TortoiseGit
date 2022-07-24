@@ -35,7 +35,7 @@
 		<DefineConstants Condition="'$(Win10SDKVer)' != ''">Win10SDKVer=$(Win10SDKVer).0;$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup>
-		<VCToolsRedistVersionCheck Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt;= 14.29">1429</VCToolsRedistVersionCheck>
+		<VCToolsRedistVersionCheck Condition="$(VCToolsRedistVersion.Substring(0, 5)) &gt;= 14.28">1428</VCToolsRedistVersionCheck>
 		<VCToolsRedistVersionCheck Condition="$(VCToolsRedistVersionCheck) == ''">0</VCToolsRedistVersionCheck>
 		<DefineConstants>VCToolsRedistVersionCheck=$(VCToolsRedistVersionCheck);$(DefineConstants)</DefineConstants>
 	</PropertyGroup>
