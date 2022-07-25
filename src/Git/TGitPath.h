@@ -253,6 +253,7 @@ public:
 	bool IsMergeActive() const;
 	bool HasStashDir() const;
 	bool HasRebaseApply() const;
+	bool HasLFS() const;
 
 	bool IsWCRoot() const;
 

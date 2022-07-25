@@ -369,9 +369,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 			, IDS_STATUSLIST_COLLFSLOCK
 			};
 
-	CString adminDir;
-	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
-	if (!PathFileExists(adminDir + L"lfs"))
+	if (!CTGitPath(g_Git.m_CurrentDir).HasLFS())
 		allowedColumns &= ~GITSLC_COLLFSLOCK;
 
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
@@ -445,9 +443,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	m_bWaitCursor = true;
 	Invalidate();
 
-	CString adminDir;
-	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
-	bool hasLFS = PathFileExists(adminDir + L"lfs");
+	bool hasLFS = CTGitPath(g_Git.m_CurrentDir).HasLFS();
 
 	m_bIsRevertTheirMy = g_Git.IsRebaseRunning() > 0;
 
@@ -2837,9 +2833,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 void CGitStatusListCtrl::AppendLocksMenuItems(CIconMenu& popup)
 {
-	CString adminDir;
-	GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir);
-	if (!PathFileExists(adminDir + L"lfs"))
+	if (!CTGitPath(g_Git.m_CurrentDir).HasLFS())
 		return;
 
 	if (!m_ColumnManager.IsVisible(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK)))

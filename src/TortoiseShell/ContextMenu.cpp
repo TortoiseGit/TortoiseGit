@@ -1938,11 +1938,7 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 
 	CTGitPath askedpath;
 	askedpath.SetFromWin(folder_.empty() ? files_.front().c_str() : folder_.c_str());
-	CString workTreePath;
-	askedpath.HasAdminDir(&workTreePath);
-	CString adminDir;
-	GitAdminDir::GetAdminDirPath(workTreePath, adminDir);
-	if (!PathFileExists(adminDir + L"lfs"))
+	if (!askedpath.HasLFS())
 		return false;
 
 	HMENU lfssubmenu = hMenu ? CreateMenu() : nullptr;
