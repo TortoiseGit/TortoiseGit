@@ -3448,17 +3448,6 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 	return 0;
 }
 
-int CGit::IsRebaseRunning()
-{
-	CString adminDir;
-	if (!GitAdminDir::GetAdminDirPath(g_Git.m_CurrentDir, adminDir))
-		return -1;
-
-	if (PathIsDirectory(adminDir + L"rebase-apply") || PathIsDirectory(adminDir + L"tgitrebase.active"))
-		return 1;
-	return 0;
-}
-
 void CGit::GetBisectTerms(CString* good, CString* bad)
 {
 	static CString lastGood;

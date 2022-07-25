@@ -443,9 +443,9 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 	m_bWaitCursor = true;
 	Invalidate();
 
-	bool hasLFS = CTGitPath(g_Git.m_CurrentDir).HasLFS();
-
-	m_bIsRevertTheirMy = g_Git.IsRebaseRunning() > 0;
+	CTGitPath repo{ g_Git.m_CurrentDir };
+	bool hasLFS = repo.HasLFS();
+	m_bIsRevertTheirMy = repo.IsRebaseActive();
 
 	int mask= CGitStatusListCtrl::FILELIST_MODIFY;
 	if(bShowIgnores)

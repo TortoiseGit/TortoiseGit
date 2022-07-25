@@ -862,6 +862,16 @@ bool CTGitPath::IsBisectActive() const
 
 	return !!PathFileExists(dotGitPath + L"BISECT_START");
 }
+bool CTGitPath::IsRebaseActive() const
+{
+	if (!HasAdminDir())
+		return false;
+
+	CString dotGitPath;
+	GitAdminDir::GetWorktreeAdminDirPath(m_sProjectRoot, dotGitPath);
+
+	return PathIsDirectory(dotGitPath + L"rebase-apply") == TRUE || PathIsDirectory(dotGitPath + L"tgitrebase.active") == TRUE;
+}
 bool CTGitPath::IsCherryPickActive() const
 {
 	if (!HasAdminDir())
