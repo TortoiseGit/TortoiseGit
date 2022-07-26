@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2021 - TortoiseGit
+// Copyright (C) 2017-2022 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,7 @@
 #include <fstream>
 #include <ShlObj.h>
 #include "git2/sys/repository.h"
-#include "scope_exit_noexcept.h"
+#include <atlbase.h>
 
 void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 {
@@ -98,11 +98,9 @@ static std::wstring GetProgramDataConfig()
 	if (CRegStdDWORD(L"Software\\TortoiseGit\\git_cached_version", (2 << 24 | 24 << 16)) >= (2 << 24 | 24 << 16))
 		return {};
 
-	PWSTR pszPath;
+	CComHeapPtr<WCHAR> pszPath;
 	if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) != S_OK)
 		return {};
-
-	SCOPE_EXIT { CoTaskMemFree(pszPath); };
 
 	if (wcslen(pszPath) >= MAX_PATH - wcslen(L"\\Git\\config"))
 		return {};

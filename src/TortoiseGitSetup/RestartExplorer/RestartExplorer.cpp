@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2021 - TortoiseGit
+// Copyright (C) 2016, 2021-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@
 #include "resource.h"
 #include "CreateProcessHelper.h"
 #include <ShlObj.h>
-#include "scope_exit_noexcept.h"
+#include <atlbase.h>
 
 int APIENTRY wWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPWSTR /*lpCmdLine*/, int /*nCmdShow*/)
 {
@@ -39,14 +39,12 @@ int APIENTRY wWinMain(HINSTANCE /*hInstance*/, HINSTANCE /*hPrevInstance*/, LPWS
 	} while (i-- > 0);
 
 
-	PWSTR pszPathWindows;
+	CComHeapPtr<WCHAR> pszPathWindows;
 	if (FAILED(SHGetKnownFolderPath(FOLDERID_Windows, 0, nullptr, &pszPathWindows)))
 		return 1;
 
-	SCOPE_EXIT { CoTaskMemFree(pszPathWindows); };
-
 	wchar_t szPathExplorerExe[MAX_PATH];
-	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", pszPathWindows) <= 0)
+	if (_snwprintf_s(szPathExplorerExe, _countof(szPathExplorerExe) - 1, L"%s\\explorer.exe", static_cast<PWSTR>(pszPathWindows)) <= 0)
 		return 1;
 
 	return CCreateProcessHelper::CreateProcessDetached(szPathExplorerExe, nullptr, pszPathWindows) ? 0 : 1;
