@@ -167,11 +167,17 @@ public:
 
 	inline void ForceReInitDll()
 	{
+#ifdef TGITCACHE
+		ATLASSERT("we should never get here");
+#endif
 		m_IsGitDllInited = false;
 		CheckAndInitDll();
 	}
 	void CheckAndInitDll()
 	{
+#ifdef TGITCACHE
+		ATLASSERT("we should never get here");
+#endif
 		if(!m_IsGitDllInited)
 		{
 			git_init();
@@ -181,6 +187,9 @@ public:
 
 	GIT_DIFF GetGitDiff()
 	{
+#ifdef TGITCACHE
+		ATLASSERT("we should never get here");
+#endif
 		if(m_GitDiff)
 			return m_GitDiff;
 		else
@@ -195,6 +204,9 @@ public:
 
 	GIT_DIFF GetGitSimpleListDiff()
 	{
+#ifdef TGITCACHE
+		ATLASSERT("we should never get here");
+#endif
 		if(m_GitSimpleListDiff)
 			return m_GitSimpleListDiff;
 		else
