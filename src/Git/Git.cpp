@@ -1978,8 +1978,9 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 	return 0;
 }
 
-int libgit2_addto_list_each_ref_fn(git_reference *ref, void *payload)
+int libgit2_addto_list_each_ref_fn(git_reference* rawref, void* payload)
 {
+	CAutoReference ref{ std::move(rawref) };
 	auto list = static_cast<STRING_VECTOR*>(payload);
 	list->push_back(CUnicodeUtils::GetUnicode(git_reference_name(ref)));
 	return 0;
@@ -2025,8 +2026,9 @@ typedef struct map_each_ref_payload {
 	MAP_HASH_NAME * map;
 } map_each_ref_payload;
 
-int libgit2_addto_map_each_ref_fn(git_reference *ref, void *payload)
+int libgit2_addto_map_each_ref_fn(git_reference* rawref, void* payload)
 {
+	CAutoReference ref{ std::move(rawref) };
 	auto payloadContent = static_cast<map_each_ref_payload*>(payload);
 
 	CString str = CUnicodeUtils::GetUnicode(git_reference_name(ref));

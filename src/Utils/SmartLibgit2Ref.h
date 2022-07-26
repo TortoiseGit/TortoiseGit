@@ -130,7 +130,6 @@ protected:
 using CAutoObject				= CSmartLibgit2Ref<git_object,				git_object_free>;
 using CAutoSubmodule			= CSmartLibgit2Ref<git_submodule,			git_submodule_free>;
 using CAutoBlob					= CSmartLibgit2Ref<git_blob,				git_blob_free>;
-using CAutoReference			= CSmartLibgit2Ref<git_reference,			git_reference_free>;
 using CAutoTag					= CSmartLibgit2Ref<git_tag,					git_tag_free>;
 using CAutoTreeEntry			= CSmartLibgit2Ref<git_tree_entry,			git_tree_entry_free>;
 using CAutoDiff					= CSmartLibgit2Ref<git_diff,				git_diff_free>;
@@ -204,6 +203,21 @@ public:
 private:
 	CAutoCommit(const CAutoCommit&) = delete;
 	CAutoCommit& operator=(const CAutoCommit&) = delete;
+};
+
+class CAutoReference : public CSmartLibgit2Ref<git_reference, git_reference_free>
+{
+public:
+	CAutoReference() {}
+
+	explicit CAutoReference(git_reference*&& h)
+	{
+		m_Ref = h;
+	}
+
+private:
+	CAutoReference(const CAutoReference&) = delete;
+	CAutoReference& operator=(const CAutoReference&) = delete;
 };
 
 class CAutoTree : public CSmartLibgit2Ref<git_tree, git_tree_free>
