@@ -2137,6 +2137,14 @@ CString CAppUtils::GetClipboardLink(const CString &skipGitPrefix, int paramsCoun
 		if (sClipboardText[0] == L'"' && sClipboardText[sClipboardText.GetLength() - 1] == L'"')
 			sClipboardText=sClipboardText.Mid(1,sClipboardText.GetLength()-2);
 
+		if (int newlinepos = sClipboardText.Find(L"\n"); newlinepos >= 0)
+		{
+			sClipboardText.Truncate(newlinepos);
+			sClipboardText.TrimRight();
+		}
+		if (sClipboardText.IsEmpty())
+			return CString();
+
 		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ssh://", L"git@" })
 		{
 			if (CStringUtils::StartsWith(sClipboardText, prefix) && sClipboardText.GetLength() != prefix.GetLength())
