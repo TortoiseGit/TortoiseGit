@@ -45,7 +45,7 @@ private:
 	size_t m_iCur = 0;
 };
 
-class CExplorerCommand : public IExplorerCommand, IObjectWithSite
+class __declspec(uuid("A4FEC38E-C9F5-489A-ADAB-28DA10F523A3")) CExplorerCommand : public IExplorerCommand, IObjectWithSite
 {
 	friend class CExplorerCommandEnum;
 
