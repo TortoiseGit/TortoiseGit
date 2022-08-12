@@ -1224,7 +1224,6 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__);
 	std::wstring gitCmd = L" /command:";
-	std::wstring tempfile;
 	switch (cmd)
 	{
 		//#region case
@@ -1568,6 +1567,8 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 	}
 		return;
 	case ShellMenuClipPaste:
+	{
+		std::wstring tempfile;
 		if (WriteClipboardPathsToTempFile(tempfile))
 		{
 			bool bCopy = true;
@@ -1602,6 +1603,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		else
 			return;
 		break;
+	}
 	case ShellMenuClone:
 		AddPathCommand(gitCmd, L"clone", false, paths, folder);
 		break;
