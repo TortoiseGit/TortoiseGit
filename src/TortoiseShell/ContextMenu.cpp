@@ -1222,6 +1222,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 
 void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site)
 {
+	CTraceToOutputDebugString::Instance()(__FUNCTION__);
 	std::wstring gitCmd = L" /command:";
 	std::wstring tempfile;
 	switch (cmd)
