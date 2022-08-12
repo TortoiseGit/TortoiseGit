@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 
 /* also see gitdll.c */
 static_assert(GIT_HASH_SIZE == GIT_OID_RAWSZ, "hash size needs to be the same as in libgit2");
+static_assert(sizeof(git_oid) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
 static_assert(sizeof(git_oid::id) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
 
 #define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"

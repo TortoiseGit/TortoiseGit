@@ -5,7 +5,7 @@ Released: unreleased
  * Fixed issue #3860: Highlight keywords, such as error, fatal and warning in output of git commands
  * Update Scintilla to 5.2.0 and Lexilla to 5.1.5
  * Allow to see diff to previous commit on commit dialog for merge commits
- * Update libgit2 to 1.4.0
+ * Update libgit2 to 1.5.0
  * Update OGDF to version 2022.02
  * Fixed issue #3873: Submodule Add Dialog does not automatically grab the Git Clone link from the clipboard
  * Update zlib to 1.2.12

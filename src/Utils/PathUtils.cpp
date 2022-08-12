@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021 - TortoiseGit
+// Copyright (C) 2012-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 #include "PathUtils.h"
 #include <memory>
 #include "StringUtils.h"
-#include "../../ext/libgit2/src/win32/reparse.h"
+#include "../../ext/libgit2/src/util/win32/reparse.h"
 #include "SmartHandle.h"
 #include <assert.h>
 

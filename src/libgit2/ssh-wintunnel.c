@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2021 TortoiseGit
+// Copyright (C) 2014, 2016-2022 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -22,7 +22,7 @@
 #include "str.h"
 #include "netops.h"
 #include "http_parser.h"
-#include "../../ext/libgit2/src/transports/smart.h"
+#include "../../ext/libgit2/src/libgit2/transports/smart.h"
 #include "system-call.h"
 #include "ssh-wintunnel.h"
 
