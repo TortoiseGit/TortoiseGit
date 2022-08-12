@@ -1192,14 +1192,6 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 		std::map<UINT_PTR, UINT_PTR>::const_iterator id_it = myIDMap.lower_bound(idCmd);
 		if (id_it != myIDMap.end() && id_it->first == idCmd)
 		{
-			//TortoiseGitProc expects a command line of the form:
-			//"/command:<commandname> /pathfile:<path> /startrev:<startrevision> /endrev:<endrevision> /deletepathfile
-			// or
-			//"/command:<commandname> /path:<path> /startrev:<startrevision> /endrev:<endrevision>
-			//
-			//* path is a path to a single file/directory for commands which only act on single items (log, checkout, ...)
-			//* pathfile is a path to a temporary file which contains a list of file paths
-
 			InvokeCommand(static_cast<int>(id_it->second),
 						  static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)),
 						  uuidSource,
@@ -1222,6 +1214,13 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 
 void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site)
 {
+	// TortoiseGitProc expects a command line of the form:
+	//"/command:<commandname> /pathfile:<path> [/deletepathfile] ...
+	//  or
+	//"/command:<commandname> /path:<path> ...
+	//
+	//* path is a path to a single file/directory for commands which only act on single items (log, sync, ...)
+	//* pathfile is a path to a temporary file which contains a list of file paths
 	CTraceToOutputDebugString::Instance()(__FUNCTION__);
 	std::wstring gitCmd = L" /command:";
 	switch (cmd)
