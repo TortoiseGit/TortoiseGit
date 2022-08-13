@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -461,6 +461,7 @@ int git_close_log(GIT_LOG handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
+		diff_free(&p_Rev->diffopt);
 		free(p_Rev->pPrivate);
 		free(handle);
 	}
