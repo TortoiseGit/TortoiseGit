@@ -1057,54 +1057,32 @@ int git_read_mailmap(GIT_MAILMAP *mailmap)
 int git_lookup_mailmap(GIT_MAILMAP mailmap, const char** email1, const char** name1, const char* email2, void* payload, const char *(*author2_cb)(void*))
 {
 	struct string_list *map;
-	int imax, imin = 0;
+	struct string_list_item* si;
+	struct mailmap_entry* me;
 
 	if (!mailmap)
 		return -1;
 
 	map = (struct string_list *)mailmap;
-	imax = map->nr - 1;
-	while (imax >= imin)
+	si = string_list_lookup(map, email2);
+	if (!si)
+		return -1;
+
+	me = (struct mailmap_entry*)si->util;
+	if (me->namemap.nr)
 	{
-		int i = imin + ((imax - imin) / 2);
-		struct string_list_item *si = (struct string_list_item *)&map->items[i];
-		struct mailmap_entry *me = (struct mailmap_entry *)si->util;
-		int comp = map->cmp(si->string, email2);
-
-		if (!comp)
-		{
-			if (me->namemap.nr)
-			{
-				const char *author2 = author2_cb(payload);
-				for (unsigned int j = 0; j < me->namemap.nr; ++j)
-				{
-					struct string_list_item *sj = (struct string_list_item *)&me->namemap.items[j];
-					struct mailmap_info *mi = (struct mailmap_info *)sj->util;
-
-					if (!map->cmp(sj->string, author2))
-					{
-						if (email1)
-							*email1 = mi->email;
-						if (name1)
-							*name1 = mi->name;
-						return 0;
-					}
-				}
-			}
-
-			if (email1)
-				*email1 = me->email;
-			if (name1)
-				*name1 = me->name;
-			return 0;
-		}
-		else if (comp < 0)
-			imin = i + 1;
-		else
-			imax = i - 1;
+		/* The item has multiple items */
+		const char* author2 = author2_cb(payload);
+		struct string_list_item* subitem = string_list_lookup(&me->namemap, author2);
+		if (subitem)
+			me = (struct mailmap_entry*)subitem->util;
 	}
 
-	return -1;
+	if (email1)
+		*email1 = me->email;
+	if (name1)
+		*name1 = me->name;
+	return 0;
 }
 
 void git_free_mailmap(GIT_MAILMAP mailmap)

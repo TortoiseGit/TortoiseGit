@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2020 - TortoiseGit
+// Copyright (C) 2016-2020, 2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,7 +113,7 @@ TEST(libgit, Mailmap)
 	EXPECT_STREQ("Sven Strickroth", author1);
 
 	git_free_mailmap(mailmap);
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L"<sven@tortoisegit.org> <email@cs-ware.de>\nSven S. <sven@tortoisegit.org> Sven Strickroth <email@cs-ware.de>"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(mailmapFile, L"<sven@tortoisegit.org> <email@cs-ware.de>\nSven S. <sven@tortoisegit.org> Sven Strickroth <email@cs-ware.de>\n<another@example.com> S. Strickroth <email@cs-ware.de>\n"));
 	git_read_mailmap(&mailmap);
 	EXPECT_NE(nullptr, mailmap);
 	email1 = nullptr;
@@ -129,6 +129,11 @@ TEST(libgit, Mailmap)
 	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "Sven Strickroth"; }));
 	EXPECT_STREQ("sven@tortoisegit.org", email1);
 	EXPECT_STREQ("Sven S.", author1);
+	email1 = nullptr;
+	author1 = nullptr;
+	EXPECT_EQ(0, git_lookup_mailmap(mailmap, &email1, &author1, "email@cs-ware.de", nullptr, [](void*) { return "S. Strickroth"; }));
+	EXPECT_STREQ("another@example.com", email1);
+	EXPECT_STREQ(nullptr, author1);
 }
 
 TEST(libgit, MkDir)
