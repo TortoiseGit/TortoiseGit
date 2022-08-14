@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -516,7 +516,10 @@ void CGitPropertyPage::InitWorkfileView()
 
 	CAutoRepository repository(CUnicodeUtils::GetUTF8(m_ProjectTopDir));
 	if (!repository)
+	{
+		SetDlgItemText(m_hwnd, IDC_SHELL_CURRENT_BRANCH, CGit::GetLibGit2LastErr());
 		return;
+	}
 
 	CString username;
 	CString useremail;
@@ -535,24 +538,27 @@ void CGitPropertyPage::InitWorkfileView()
 	CString branch;
 	CString remotebranch;
 	CString remoteUrl;
-	if (!git_repository_head_detached(repository))
+	int err = 0;
+	if (err = git_repository_head_detached(repository); err == 1)
+		branch = L"detached HEAD";
+	else if (err == 0)
 	{
 		CAutoReference head;
-		if (git_repository_head_unborn(repository))
+		if ((err = git_repository_head_unborn(repository)) == 1)
 		{
-			git_reference_lookup(head.GetPointer(), repository, "HEAD");
+			err = git_reference_lookup(head.GetPointer(), repository, "HEAD");
 			branch = CUnicodeUtils::GetUnicode(git_reference_symbolic_target(head));
 			if (CStringUtils::StartsWith(branch, L"refs/heads/"))
 				branch = branch.Mid(static_cast<int>(wcslen(L"refs/heads/")));
 		}
-		else if (!git_repository_head(head.GetPointer(), repository))
+		else if (err == 0 && (err = git_repository_head(head.GetPointer(), repository)) == 0)
 		{
 			const char * branchChar = git_reference_shorthand(head);
 			branch = CUnicodeUtils::GetUnicode(branchChar);
 
 			const char * branchFullChar = git_reference_name(head);
 			CAutoBuf upstreambranchname;
-			if (!git_branch_upstream_name(upstreambranchname, repository, branchFullChar))
+			if (int ret = git_branch_upstream_name(upstreambranchname, repository, branchFullChar); ret == 0)
 			{
 				remotebranch = CUnicodeUtils::GetUnicodeLength(upstreambranchname->ptr, static_cast<int>(upstreambranchname->size));
 				remotebranch = remotebranch.Mid(static_cast<int>(wcslen(L"refs/remotes/")));
@@ -564,10 +570,12 @@ void CGitPropertyPage::InitWorkfileView()
 					config.GetString(remoteName, remoteUrl);
 				}
 			}
+			else if (ret == 1)
+				remotebranch = CGit::GetLibGit2LastErr();
 		}
 	}
-	else
-		branch = L"detached HEAD";
+	if (err < 0)
+		branch = CGit::GetLibGit2LastErr();
 
 	if (autocrlf.Trim().IsEmpty())
 		autocrlf = L"false";

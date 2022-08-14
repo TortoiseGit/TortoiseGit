@@ -254,7 +254,9 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 	if (git_repository_is_bare(repo))
 		return ERR_NOWC;
 
-	if (git_repository_head_unborn(repo))
+	if (int ret = git_repository_head_unborn(repo); ret < 0)
+		return ERR_GIT_ERR;
+	else if (ret == 1)
 	{
 		memset(GitStat.HeadHash, 0, sizeof(GitStat.HeadHash));
 		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
