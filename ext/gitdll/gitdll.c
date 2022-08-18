@@ -287,6 +287,7 @@ int git_free_commit(GIT_COMMIT *commit)
 	if (p->maybe_tree)
 		free_tree_buffer(p->maybe_tree);
 
+	free_commit_buffer(the_repository->parsed_objects, p);
 	free((void*)commit->buffer);
 
 	p->object.parsed = 0;
@@ -461,6 +462,11 @@ int git_close_log(GIT_LOG handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
+		clear_pathspec(&p_Rev->prune_data);
+		for (int i = 0; i < p_Rev->cmdline.nr; ++i)
+			free(p_Rev->cmdline.rev[i].name);
+		free(p_Rev->cmdline.rev);
+		p_Rev->diffopt.no_free = 0;
 		diff_free(&p_Rev->diffopt);
 		free(p_Rev->pPrivate);
 		free(handle);
