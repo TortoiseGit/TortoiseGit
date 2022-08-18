@@ -63,7 +63,7 @@ extern void clear_ref_decorations(void);
 extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
-extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca, const struct checkout* state, int to_tempfile);
+extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca, const struct checkout* state, int to_tempfile, int* nr_checkouts);
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
 extern void free_diffstat_info(struct diffstat_t* diffstat);
 static_assert(sizeof(unsigned long long) == sizeof(timestamp_t), "Required for each_reflog_ent_fn definition in gitdll.h");
@@ -441,10 +441,15 @@ int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow)
 	if( commit->m_pGitCommit == NULL)
 		return -2;
 
-	if (follow && !log_tree_commit(handle, commit->m_pGitCommit))
+	if (follow)
 	{
-		commit->m_ignore = 1;
-		return 0;
+		struct rev_info* p_Rev = (struct rev_info*)handle;
+		p_Rev->diffopt.no_free = 1;
+		if (!log_tree_commit(handle, commit->m_pGitCommit))
+		{
+			commit->m_ignore = 1;
+			return 0;
+		}
 	}
 	commit->m_ignore = 0;
 
@@ -462,11 +467,8 @@ int git_close_log(GIT_LOG handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
-		clear_pathspec(&p_Rev->prune_data);
-		for (unsigned int i = 0; i < p_Rev->cmdline.nr; ++i)
-			free((void*)p_Rev->cmdline.rev[i].name);
-		free(p_Rev->cmdline.rev);
 		p_Rev->diffopt.no_free = 0;
+		release_revisions(p_Rev);
 		diff_free(&p_Rev->diffopt);
 		free(p_Rev->pPrivate);
 		free(handle);
@@ -806,7 +808,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 
 	convert_attrs(state.istate, &ca, path);
 
-	ret = write_entry(ce, outputpath, &ca, &state, 0);
+	ret = write_entry(ce, outputpath, &ca, &state, 0, NULL);
 	free_all_pack();
 	free(ce);
 	return ret;
