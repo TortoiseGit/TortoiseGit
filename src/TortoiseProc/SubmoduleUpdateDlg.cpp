@@ -207,7 +207,7 @@ void CSubmoduleUpdateDlg::OnBnClickedOk()
 			selected.Append(text);
 		}
 	}
-	m_bAllSubmodulesSelected = (m_PathListBox.GetCount() == m_PathList.size());
+	m_bAllSubmodulesSelected = (static_cast<size_t>(m_PathListBox.GetCount()) == m_PathList.size());
 	m_regPath = selected;
 
 	m_regInit = m_bInit;
