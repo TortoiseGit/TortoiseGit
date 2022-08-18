@@ -32,6 +32,7 @@ Released: unreleased
  * Fixed issue #3911: TortoiseGitMerge: "The text is identical ..." dialog causes display issues
  * Fixed issue #3940: restore scroll position of list
  * Fixed issue #3906: Pull dialog always defaults to the wrong branch in submodules
+ * Fixed issue #3897: Bisect refs are incorrect when working with worktrees
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

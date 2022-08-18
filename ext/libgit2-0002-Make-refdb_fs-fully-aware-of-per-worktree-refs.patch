@@ -1,0 +1,167 @@
+From 4b289c190b6ba434541081d8ca2844c7a03b0384 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Thu, 18 Aug 2022 15:08:23 +0200
+Subject: [PATCH 2/2] Make refdb_fs fully aware of per worktree refs
+
+Fixes issue isse #5492.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/libgit2/refdb_fs.c        | 45 ++++++++++++++++++++++
+ tests/libgit2/worktree/refs.c | 70 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 114 insertions(+), 1 deletion(-)
+
+diff --git a/src/libgit2/refdb_fs.c b/src/libgit2/refdb_fs.c
+index 586d2561a..4628e01dc 100644
+--- a/src/libgit2/refdb_fs.c
++++ b/src/libgit2/refdb_fs.c
+@@ -853,6 +853,8 @@ static int iter_load_loose_paths(refdb_fs_backend *backend, refdb_fs_iter *iter)
+ 		git_str_truncate(&path, ref_prefix_len);
+ 		git_str_puts(&path, entry->path);
+ 		ref_name = git_str_cstr(&path);
++		if (git_repository_is_worktree(backend->repo) == 1 && is_per_worktree_ref(ref_name))
++			continue;
+ 
+ 		if (git__suffixcmp(ref_name, ".lock") == 0 ||
+ 			(iter->glob && wildmatch(iter->glob, ref_name, 0) != 0))
+@@ -865,6 +867,49 @@ static int iter_load_loose_paths(refdb_fs_backend *backend, refdb_fs_iter *iter)
+ 			error = git_vector_insert(&iter->loose, ref_dup);
+ 	}
+ 
++	if (!error && git_repository_is_worktree(backend->repo) == 1) {
++		git_iterator_free(fsit);
++		git_str_clear(&path);
++		if ((error = git_str_puts(&path, backend->gitpath)) < 0 ||
++		    (error = git_str_put(&path, ref_prefix, ref_prefix_len)) < 0 ||
++		    !git_fs_path_exists(git_str_cstr(&path))) {
++			git_str_dispose(&path);
++			return error;
++		}
++
++		if ((error = git_iterator_for_filesystem(
++		             &fsit, path.ptr, &fsit_opts)) < 0) {
++			git_str_dispose(&path);
++			return (iter->glob && error == GIT_ENOTFOUND) ? 0 : error;
++		}
++
++		error = git_str_sets(&path, ref_prefix);
++
++		while (!error && !git_iterator_advance(&entry, fsit)) {
++			const char *ref_name;
++			char *ref_dup;
++
++			git_str_truncate(&path, ref_prefix_len);
++			git_str_puts(&path, entry->path);
++			ref_name = git_str_cstr(&path);
++
++			if (!is_per_worktree_ref(ref_name))
++				continue;
++
++			if (git__suffixcmp(ref_name, ".lock") == 0 ||
++			    (iter->glob &&
++			     wildmatch(iter->glob, ref_name, 0) != 0))
++				continue;
++
++			ref_dup = git_pool_strdup(&iter->pool, ref_name);
++			if (!ref_dup)
++				error = -1;
++			else
++				error = git_vector_insert(
++				        &iter->loose, ref_dup);
++		}
++	}
++
+ 	git_iterator_free(fsit);
+ 	git_str_dispose(&path);
+ 
+diff --git a/tests/libgit2/worktree/refs.c b/tests/libgit2/worktree/refs.c
+index 557726aaf..6bcf7aa9d 100644
+--- a/tests/libgit2/worktree/refs.c
++++ b/tests/libgit2/worktree/refs.c
+@@ -20,7 +20,7 @@ void test_worktree_refs__cleanup(void)
+ 	cleanup_fixture_worktree(&fixture);
+ }
+ 
+-void test_worktree_refs__list(void)
++void test_worktree_refs__list_no_difference_in_worktree(void)
+ {
+ 	git_strarray refs, wtrefs;
+ 	unsigned i, j;
+@@ -61,6 +61,74 @@ exit:
+ 	cl_git_pass(error);
+ }
+ 
++void test_worktree_refs__list_worktree_specific(void)
++{
++	git_strarray refs, wtrefs;
++	git_reference *ref, *new_branch;
++	int error = 0;
++	git_oid oid;
++
++	cl_git_pass(git_reference_name_to_id(&oid, fixture.repo, "refs/heads/dir"));
++	cl_git_fail(git_reference_lookup(&ref, fixture.repo, "refs/bisect/a-bisect-ref"));
++	cl_git_pass(git_reference_create(
++	        &new_branch, fixture.worktree, "refs/bisect/a-bisect-ref", &oid,
++	        0, "test"));
++
++	cl_git_fail(git_reference_lookup(&ref, fixture.repo, "refs/bisect/a-bisect-ref"));
++	cl_git_pass(git_reference_lookup(&ref, fixture.worktree, "refs/bisect/a-bisect-ref"));
++
++	cl_git_pass(git_reference_list(&refs, fixture.repo));
++	cl_git_pass(git_reference_list(&wtrefs, fixture.worktree));
++
++	if (refs.count + 1 != wtrefs.count) {
++		error = GIT_ERROR;
++		goto exit;
++	}
++
++exit:
++	git_reference_free(ref);
++	git_reference_free(new_branch);
++	git_strarray_dispose(&refs);
++	git_strarray_dispose(&wtrefs);
++	cl_git_pass(error);
++}
++
++void test_worktree_refs__list_worktree_specific_hidden_in_main_repo(void)
++{
++	git_strarray refs, wtrefs;
++	git_reference *ref, *new_branch;
++	int error = 0;
++	git_oid oid;
++
++	cl_git_pass(
++	        git_reference_name_to_id(&oid, fixture.repo, "refs/heads/dir"));
++	cl_git_fail(git_reference_lookup(
++	        &ref, fixture.worktree, "refs/bisect/a-bisect-ref"));
++	cl_git_pass(git_reference_create(
++	        &new_branch, fixture.repo, "refs/bisect/a-bisect-ref", &oid,
++	        0, "test"));
++
++	cl_git_fail(git_reference_lookup(
++	        &ref, fixture.worktree, "refs/bisect/a-bisect-ref"));
++	cl_git_pass(git_reference_lookup(
++	        &ref, fixture.repo, "refs/bisect/a-bisect-ref"));
++
++	cl_git_pass(git_reference_list(&refs, fixture.repo));
++	cl_git_pass(git_reference_list(&wtrefs, fixture.worktree));
++
++	if (refs.count != wtrefs.count + 1) {
++		error = GIT_ERROR;
++		goto exit;
++	}
++
++exit:
++	git_reference_free(ref);
++	git_reference_free(new_branch);
++	git_strarray_dispose(&refs);
++	git_strarray_dispose(&wtrefs);
++	cl_git_pass(error);
++}
++
+ void test_worktree_refs__read_head(void)
+ {
+ 	git_reference *head;
+-- 
+2.37.2.windows.2
+
