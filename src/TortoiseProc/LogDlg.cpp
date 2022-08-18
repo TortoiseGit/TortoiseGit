@@ -226,6 +226,8 @@ LRESULT CLogDlg::OnResetWcRev(WPARAM, LPARAM)
 	if (m_LogList.m_hasWC && m_ChangedFileListCtrl.m_CurrentVersion.IsEmpty())
 		m_ChangedFileListCtrl.Clear();
 
+	ShowStartRef();
+
 	return 0;
 }
 
