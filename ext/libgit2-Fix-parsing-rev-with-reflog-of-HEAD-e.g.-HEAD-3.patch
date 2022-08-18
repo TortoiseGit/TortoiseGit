@@ -1,0 +1,47 @@
+From 143812f3a8b1411e0bedf2567b9d366f1b49dc93 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Thu, 18 Aug 2022 14:51:31 +0200
+Subject: [PATCH] Fix parsing rev with reflog of HEAD (e.g., HEAD@{3})
+
+Fixes issue #6156.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/libgit2/revparse.c        | 5 ++++-
+ tests/libgit2/refs/revparse.c | 7 +++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/src/libgit2/revparse.c b/src/libgit2/revparse.c
+index 9bc28e9fc..2fa426f48 100644
+--- a/src/libgit2/revparse.c
++++ b/src/libgit2/revparse.c
+@@ -268,7 +268,10 @@ static int retrieve_revobject_from_reflog(git_object **out, git_reference **base
+ 	int error = -1;
+ 
+ 	if (*base_ref == NULL) {
+-		if ((error = git_reference_dwim(&ref, repo, identifier)) < 0)
++		if (position > 0 && !strcmp(identifier, "HEAD")) {
++			if ((error = git_reference_lookup(&ref, repo, identifier)) < 0)
++				return error;
++		} else if ((error = git_reference_dwim(&ref, repo, identifier)) < 0)
+ 			return error;
+ 	} else {
+ 		ref = *base_ref;
+diff --git a/tests/libgit2/refs/revparse.c b/tests/libgit2/refs/revparse.c
+index 56af3c939..4f38f4022 100644
+--- a/tests/libgit2/refs/revparse.c
++++ b/tests/libgit2/refs/revparse.c
+@@ -886,3 +886,10 @@ void test_refs_revparse__parses_at_head(void)
+ 	test_id("@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
+ 	test_id("@", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
+ }
++
++void test_refs_revparse__reflog(void)
++{
++	test_id("HEAD@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
++	test_id("HEAD@{4}", "5b5b025afb0b4c913b4c338a42934a3863bf3644", NULL, GIT_REVSPEC_SINGLE);
++	test_id("master@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
++}
+-- 
+2.37.2.windows.2
+
