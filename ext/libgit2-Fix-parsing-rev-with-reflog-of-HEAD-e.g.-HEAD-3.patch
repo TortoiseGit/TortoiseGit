@@ -1,47 +1,54 @@
-From 143812f3a8b1411e0bedf2567b9d366f1b49dc93 Mon Sep 17 00:00:00 2001
+From f17ca96a6522ef9c04913403fd00b5d851253a0a Mon Sep 17 00:00:00 2001
 From: Sven Strickroth <email@cs-ware.de>
 Date: Thu, 18 Aug 2022 14:51:31 +0200
 Subject: [PATCH] Fix parsing rev with reflog of HEAD (e.g., HEAD@{3})
 
-Fixes issue #6156.
+Fixes issue #6156 and also fixes broken test data.
 
 Signed-off-by: Sven Strickroth <email@cs-ware.de>
 ---
- src/libgit2/revparse.c        | 5 ++++-
- tests/libgit2/refs/revparse.c | 7 +++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ src/libgit2/revparse.c        | 6 +++++-
+ tests/libgit2/refs/revparse.c | 8 ++++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/src/libgit2/revparse.c b/src/libgit2/revparse.c
-index 9bc28e9fc..2fa426f48 100644
+index 9bc28e9fc..9ebe897c8 100644
 --- a/src/libgit2/revparse.c
 +++ b/src/libgit2/revparse.c
-@@ -268,7 +268,10 @@ static int retrieve_revobject_from_reflog(git_object **out, git_reference **base
+@@ -268,7 +268,11 @@ static int retrieve_revobject_from_reflog(git_object **out, git_reference **base
  	int error = -1;
  
  	if (*base_ref == NULL) {
 -		if ((error = git_reference_dwim(&ref, repo, identifier)) < 0)
-+		if (position > 0 && !strcmp(identifier, "HEAD")) {
-+			if ((error = git_reference_lookup(&ref, repo, identifier)) < 0)
++		if (position > 0 &&
++		    (!strcmp(identifier, "HEAD") || !strcmp(identifier, ""))) {
++			if ((error = git_reference_lookup(&ref, repo, "HEAD")) < 0)
 +				return error;
 +		} else if ((error = git_reference_dwim(&ref, repo, identifier)) < 0)
  			return error;
  	} else {
  		ref = *base_ref;
 diff --git a/tests/libgit2/refs/revparse.c b/tests/libgit2/refs/revparse.c
-index 56af3c939..4f38f4022 100644
+index 56af3c939..a7e415212 100644
 --- a/tests/libgit2/refs/revparse.c
 +++ b/tests/libgit2/refs/revparse.c
-@@ -886,3 +886,10 @@ void test_refs_revparse__parses_at_head(void)
- 	test_id("@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
- 	test_id("@", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
- }
+@@ -299,10 +299,14 @@ void test_refs_revparse__ordinal(void)
+ 	test_object("nope@{0}", NULL);
+ 	test_object("master@{31415}", NULL);
+ 	test_object("@{1000}", NULL);
+-	test_object("@{2}", NULL);
++	test_object("@{7}", NULL);
+ 
+ 	test_object("@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750");
+-	test_object("@{1}", "be3563ae3f795b2b4353bcce3a527ad0a4f7f644");
++	test_object("@{1}", "a4a7dce85cf63874e984719f4fdd239f5145052f");
++	test_object("@{4}", "5b5b025afb0b4c913b4c338a42934a3863bf3644");
 +
-+void test_refs_revparse__reflog(void)
-+{
-+	test_id("HEAD@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
-+	test_id("HEAD@{4}", "5b5b025afb0b4c913b4c338a42934a3863bf3644", NULL, GIT_REVSPEC_SINGLE);
-+	test_id("master@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750", NULL, GIT_REVSPEC_SINGLE);
-+}
++	test_object("HEAD@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750");
++	test_object("HEAD@{4}", "5b5b025afb0b4c913b4c338a42934a3863bf3644");
+ 
+ 	test_object("master@{0}", "a65fedf39aefe402d3bb6e24df4d4f5fe4547750");
+ 	test_object("master@{1}", "be3563ae3f795b2b4353bcce3a527ad0a4f7f644");
 -- 
 2.37.2.windows.2
 
