@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2020 - TortoiseGit
+// Copyright (C) 2008-2014, 2020-2022 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoioseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -106,6 +106,11 @@ public:
 	 */
 	void SetMaxHistoryItems(int nMaxItems);
 	/**
+	 * Allows to configure whether entries can be deleted by the user by opening the
+	 * drop-down box, selecting an item by mouse over, and pressing SHIFT+DEL.
+	 */
+	void SetAllowDelete(bool allowDelete) { m_bAllowDelete = allowDelete; }
+	 /**
 	 * Saves the history to the registry/inifile.
 	 * \remark if you haven't called LoadHistory() before this method
 	 * does nothing!
@@ -117,7 +122,7 @@ public:
 	 * \param lpszSection a section name where to put the entries, e.g. "lastloadedfiles"
 	 * \param lpszKeyPrefix a prefix to use for the history entries in registry/inifiles. E.g. "file" or "entry"
 	 */
-	CString LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix);
+	CString LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix, bool allowUserDelete = true);
 
 	/**
 	 * Goes through the stored history in registry and removes a specific entry
@@ -181,6 +186,7 @@ protected:
 	BOOL			m_bTrim;
 	BOOL			m_bCaseSensitive;
 	BOOL			m_bCheckDuplicate;
+	bool			m_bAllowDelete;
 };
 
 class CCustomAutoCompleteSource : public IEnumString

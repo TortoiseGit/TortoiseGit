@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2020 - TortoiseSVN
-// Copyright (C) 2013-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,6 +43,7 @@ CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	, m_bTrim(TRUE)
 	, m_bCaseSensitive(FALSE)
 	, m_bCheckDuplicate(TRUE)
+	, m_bAllowDelete(FALSE)
 {
 	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
@@ -79,6 +80,8 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 		}
 		else if (nVirtKey == VK_DELETE && bShift && GetDroppedState() )
 		{
+			if (!m_bAllowDelete)
+				return TRUE;
 			RemoveSelectedItem();
 			return TRUE;
 		}
@@ -234,13 +237,14 @@ void CHistoryCombo::SetList(const STRING_VECTOR& list)
 	}
 }
 
-CString CHistoryCombo::LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix)
+CString CHistoryCombo::LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix, bool allowUserDelete /* =true */)
 {
 	if (!lpszSection || !lpszKeyPrefix || *lpszSection == '\0')
 		return L"";
 
 	m_sSection = lpszSection;
 	m_sKeyPrefix = lpszKeyPrefix;
+	m_bAllowDelete = allowUserDelete;
 
 	int n = 0;
 	CString sText;
