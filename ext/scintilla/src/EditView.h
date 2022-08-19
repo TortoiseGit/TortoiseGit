@@ -79,7 +79,6 @@ public:
 	std::unique_ptr<Surface> pixmapLine;
 	std::unique_ptr<Surface> pixmapIndentGuide;
 	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
-	void *editor;
 
 	LineLayoutCache llc;
 	std::unique_ptr<IPositionCache> posCache;
@@ -161,7 +160,7 @@ public:
 		const ViewStyle &vsDraw);
 	void FillLineRemainder(Surface *surface, const EditModel &model, const ViewStyle &vsDraw, const LineLayout *ll,
 		Sci::Line line, PRectangle rcArea, int subLine) const;
-	Sci::Position FormatRange(bool draw, const Scintilla::RangeToFormat *pfr, Surface *surface, Surface *surfaceMeasure,
+	Sci::Position FormatRange(bool draw, CharacterRangeFull chrg, Rectangle rc, Surface *surface, Surface *surfaceMeasure,
 		const EditModel &model, const ViewStyle &vs);
 };
 
