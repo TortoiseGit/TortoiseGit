@@ -336,7 +336,9 @@ BOOL CSettingsAdvanced::OnApply()
 		case SettingTypeNumber:
 			{
 				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
-				if (DWORD(_wtol(sValue)) != DWORD(s))
+				if (sValue.IsEmpty())
+					s.removeValue();
+				else if (DWORD(_wtol(sValue)) != DWORD(s))
 					s = _wtol(sValue);
 			}
 			break;
