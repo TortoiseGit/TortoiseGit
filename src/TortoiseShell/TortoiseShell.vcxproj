@@ -179,12 +179,14 @@
     <Image Include="..\Resources\menurevisiongraph.ico" />
     <Image Include="..\Resources\menusendmail.ico" />
     <Image Include="..\Resources\menusettings.ico" />
+    <Image Include="..\Resources\menushelve.ico" />
     <Image Include="..\Resources\menushowchanged.ico" />
     <Image Include="..\Resources\menuskip.ico" />
     <Image Include="..\Resources\menusquash.ico" />
     <Image Include="..\Resources\menuswitch.ico" />
     <Image Include="..\Resources\menusync.ico" />
     <Image Include="..\Resources\menuunlock.ico" />
+    <Image Include="..\Resources\menuunshelve.ico" />
     <Image Include="..\Resources\menuupdate.ico" />
     <Image Include="..\Resources\pull1.ico" />
     <Image Include="..\Resources\Push.ico" />
@@ -193,6 +195,7 @@
     <Image Include="..\Resources\thumb_down.ico" />
     <Image Include="..\Resources\thumb_up.ico" />
     <Image Include="..\Resources\Tortoise.ico" />
+    <Image Include="..\Resources\TortoiseGitBlame.ico" />
     <Image Include="..\Resources\TortoiseSmall.ico" />
     <Image Include="..\Resources\tsvnmenufile.ico" />
     <Image Include="..\Resources\tsvnmenufolder.ico" />
