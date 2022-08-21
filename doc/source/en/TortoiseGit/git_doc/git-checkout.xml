@@ -16,7 +16,7 @@
 <literallayout><emphasis>git checkout</emphasis> [-q] [-f] [-m] [&lt;branch&gt;]
 <emphasis>git checkout</emphasis> [-q] [-f] [-m] --detach [&lt;branch&gt;]
 <emphasis>git checkout</emphasis> [-q] [-f] [-m] [--detach] &lt;commit&gt;
-<emphasis>git checkout</emphasis> [-q] [-f] [-m] [[-b|-B|--orphan] &lt;new_branch&gt;] [&lt;start_point&gt;]
+<emphasis>git checkout</emphasis> [-q] [-f] [-m] [[-b|-B|--orphan] &lt;new-branch&gt;] [&lt;start-point&gt;]
 <emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;&#8230;
 <emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
 <emphasis>git checkout</emphasis> (-p|--patch) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
@@ -53,7 +53,7 @@ if exists, for the current branch.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> -b|-B &lt;new_branch&gt; [&lt;start point&gt;]
+<emphasis>git checkout</emphasis> -b|-B &lt;new-branch&gt; [&lt;start-point&gt;]
 </term>
 <listitem>
 <simpara>
@@ -64,9 +64,9 @@ if exists, for the current branch.</simpara>
         <emphasis>--track</emphasis> without <emphasis>-b</emphasis> implies branch creation; see the
         description of <emphasis>--track</emphasis> below.
 </simpara>
-<simpara>If <emphasis>-B</emphasis> is given, <emphasis>&lt;new_branch&gt;</emphasis> is created if it doesn't exist; otherwise, it
+<simpara>If <emphasis>-B</emphasis> is given, <emphasis>&lt;new-branch&gt;</emphasis> is created if it doesn't exist; otherwise, it
 is reset. This is the transactional equivalent of</simpara>
-<screen>$ git branch -f &lt;branch&gt; [&lt;start point&gt;]
+<screen>$ git branch -f &lt;branch&gt; [&lt;start-point&gt;]
 $ git checkout &lt;branch&gt;</screen>
 <simpara>that is to say, the branch is not reset/created unless "git checkout" is
 successful.</simpara>
@@ -175,8 +175,9 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 <listitem>
 <simpara>
         When switching branches, proceed even if the index or the
-        working tree differs from <emphasis>HEAD</emphasis>.  This is used to throw away
-        local changes.
+        working tree differs from <emphasis>HEAD</emphasis>, and even if there are untracked
+        files in the way.  This is used to throw away local changes and
+        any untracked files or directories that are in the way.
 </simpara>
 <simpara>When checking out paths from the index, do not fail upon unmerged
 entries; instead, unmerged entries are ignored.</simpara>
@@ -211,23 +212,23 @@ of it").</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;new_branch&gt;
+-b &lt;new-branch&gt;
 </term>
 <listitem>
 <simpara>
-        Create a new branch named <emphasis>&lt;new_branch&gt;</emphasis> and start it at
-        <emphasis>&lt;start_point&gt;</emphasis>; see <xref linkend="git-branch(1)" /> for details.
+        Create a new branch named <emphasis>&lt;new-branch&gt;</emphasis> and start it at
+        <emphasis>&lt;start-point&gt;</emphasis>; see <xref linkend="git-branch(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--B &lt;new_branch&gt;
+-B &lt;new-branch&gt;
 </term>
 <listitem>
 <simpara>
-        Creates the branch <emphasis>&lt;new_branch&gt;</emphasis> and start it at <emphasis>&lt;start_point&gt;</emphasis>;
-        if it already exists, then reset it to <emphasis>&lt;start_point&gt;</emphasis>. This is
+        Creates the branch <emphasis>&lt;new-branch&gt;</emphasis> and start it at <emphasis>&lt;start-point&gt;</emphasis>;
+        if it already exists, then reset it to <emphasis>&lt;start-point&gt;</emphasis>. This is
         equivalent to running "git branch" with "-f"; see
         <xref linkend="git-branch(1)" /> for details.
 </simpara>
@@ -238,7 +239,7 @@ of it").</simpara>
 -t
 </term>
 <term>
---track
+--track[=(direct|inherit)]
 </term>
 <listitem>
 <simpara>
@@ -324,19 +325,19 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---orphan &lt;new_branch&gt;
+--orphan &lt;new-branch&gt;
 </term>
 <listitem>
 <simpara>
-        Create a new <emphasis>orphan</emphasis> branch, named <emphasis>&lt;new_branch&gt;</emphasis>, started from
-        <emphasis>&lt;start_point&gt;</emphasis> and switch to it.  The first commit made on this
+        Create a new <emphasis>orphan</emphasis> branch, named <emphasis>&lt;new-branch&gt;</emphasis>, started from
+        <emphasis>&lt;start-point&gt;</emphasis> and switch to it.  The first commit made on this
         new branch will have no parents and it will be the root of a new
         history totally disconnected from all the other branches and
         commits.
 </simpara>
 <simpara>The index and the working tree are adjusted as if you had previously run
-<emphasis>git checkout &lt;start_point&gt;</emphasis>.  This allows you to start a new history
-that records a set of paths similar to <emphasis>&lt;start_point&gt;</emphasis> by easily running
+<emphasis>git checkout &lt;start-point&gt;</emphasis>.  This allows you to start a new history
+that records a set of paths similar to <emphasis>&lt;start-point&gt;</emphasis> by easily running
 <emphasis>git commit -a</emphasis> to make the root commit.</simpara>
 <simpara>This can be useful when you want to publish the tree from a commit
 without exposing its full history. You might want to do this to publish
@@ -344,7 +345,7 @@ an open source branch of a project whose current tree is "clean", but
 whose full history contains proprietary or otherwise encumbered bits of
 code.</simpara>
 <simpara>If you want to start a disconnected history that records a set of paths
-that is totally different from the one of <emphasis>&lt;start_point&gt;</emphasis>, then you should
+that is totally different from the one of <emphasis>&lt;start-point&gt;</emphasis>, then you should
 clear the index and the working tree right after creating the orphan
 branch by running <emphasis>git rm -rf .</emphasis> from the top level of the working tree.
 Afterwards you will be ready to prepare your new files, repopulating the
@@ -400,8 +401,7 @@ the conflicted merge in the specified paths.</simpara>
         The same as <emphasis>--merge</emphasis> option above, but changes the way the
         conflicting hunks are presented, overriding the
         <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values are
-        "merge" (default) and "diff3" (in addition to what is shown by
-        "merge" style, shows the original contents).
+        "merge" (default), "diff3", and "zdiff3".
 </simpara>
 </listitem>
 </varlistentry>
@@ -539,7 +539,7 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
 </varlistentry>
 <varlistentry>
 <term>
-&lt;new_branch&gt;
+&lt;new-branch&gt;
 </term>
 <listitem>
 <simpara>
@@ -549,7 +549,7 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
 </varlistentry>
 <varlistentry>
 <term>
-&lt;start_point&gt;
+&lt;start-point&gt;
 </term>
 <listitem>
 <simpara>

@@ -13,14 +13,14 @@
 <simplesect id="git-clone(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git clone</emphasis> [--template=&lt;template_directory&gt;]
+<literallayout><emphasis>git clone</emphasis> [--template=&lt;template-directory&gt;]
           [-l] [-s] [--no-hardlinks] [-q] [-n] [--bare] [--mirror]
           [-o &lt;name&gt;] [-b &lt;name&gt;] [-u &lt;upload-pack&gt;] [--reference &lt;repository&gt;]
-          [--dissociate] [--separate-git-dir &lt;git dir&gt;]
+          [--dissociate] [--separate-git-dir &lt;git-dir&gt;]
           [--depth &lt;depth&gt;] [--[no-]single-branch] [--no-tags]
           [--recurse-submodules[=&lt;pathspec&gt;]] [--[no-]shallow-submodules]
           [--[no-]remote-submodules] [--jobs &lt;n&gt;] [--sparse] [--[no-]reject-shallow]
-          [--filter=&lt;filter&gt;] [--] &lt;repository&gt;
+          [--filter=&lt;filter&gt; [--also-filter-submodules]] [--] &lt;repository&gt;
           [&lt;directory&gt;]</literallayout>
 </blockquote>
 </simplesect>
@@ -262,10 +262,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </term>
 <listitem>
 <simpara>
-        Initialize the sparse-checkout file so the working
-        directory starts with only the files in the root
-        of the repository. The sparse-checkout file can be
-        modified to grow the working directory as needed.
+        Employ a sparse-checkout, with only files in the toplevel
+        directory initially being present.  The
+        <xref linkend="git-sparse-checkout(1)" /> command can be used to grow the
+        working directory as needed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -283,6 +283,18 @@ objects from the source repository into a pack in the cloned repository.</simpar
         <emphasis>--filter=blob:limit=&lt;size&gt;</emphasis> will filter out all blobs of size
         at least <emphasis>&lt;size&gt;</emphasis>. For more details on filter specifications, see
         the <emphasis>--filter</emphasis> option in <xref linkend="git-rev-list(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--also-filter-submodules
+</term>
+<listitem>
+<simpara>
+        Also apply the partial clone filter to any submodules in the repository.
+        Requires <emphasis>--filter</emphasis> and <emphasis>--recurse-submodules</emphasis>. This can be turned on by
+        default by setting the <emphasis>clone.filterSubmodules</emphasis> config option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -351,7 +363,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---template=&lt;template_directory&gt;
+--template=&lt;template-directory&gt;
 </term>
 <listitem>
 <simpara>
@@ -503,7 +515,7 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---separate-git-dir=&lt;git dir&gt;
+--separate-git-dir=&lt;git-dir&gt;
 </term>
 <listitem>
 <simpara>

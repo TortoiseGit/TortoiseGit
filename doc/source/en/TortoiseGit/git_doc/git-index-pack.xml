@@ -151,6 +151,18 @@ the objects/pack/ directory of a Git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--progress-title
+</term>
+<listitem>
+<simpara>
+        For internal use only.
+</simpara>
+<simpara>Set the title of the progress bar. The title is "Receiving objects" by
+default and "Indexing objects" when <emphasis>--stdin</emphasis> is specified.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --check-self-contained-and-connected
 </term>
 <listitem>
@@ -218,6 +230,21 @@ share work with "regular" SHA-1 repositories.  It should be assumed
 that, e.g., Git internal file formats in relation to SHA-256
 repositories may change in backwards-incompatible ways.  Only use
 <emphasis>--object-format=sha256</emphasis> for testing purposes.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--promisor[=&lt;message&gt;]
+</term>
+<listitem>
+<simpara>
+        Before committing the pack-index, create a .promisor file for this
+        pack. Particularly helpful when writing a promisor pack with --fix-thin
+        since the name of the pack is not final until the pack has been fully
+        written. If a <emphasis>&lt;message&gt;</emphasis> is provided, then that content will be
+        written to the .promisor file for future reference. See
+        <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/partial-clone.html"><citetitle>partial clone</citetitle></ulink> for more information.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

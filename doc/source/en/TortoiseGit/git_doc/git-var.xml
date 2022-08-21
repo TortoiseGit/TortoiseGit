@@ -96,6 +96,16 @@ GIT_PAGER
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+GIT_DEFAULT_BRANCH
+</term>
+<listitem>
+<simpara>
+    The name of the first branch created in newly initialized repositories.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-var(1)__see_also">

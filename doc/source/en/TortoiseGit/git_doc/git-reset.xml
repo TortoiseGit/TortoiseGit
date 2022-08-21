@@ -111,7 +111,8 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 <listitem>
 <simpara>
         Resets the index and working tree. Any changes to tracked files in the
-        working tree since <emphasis>&lt;commit&gt;</emphasis> are discarded.
+        working tree since <emphasis>&lt;commit&gt;</emphasis> are discarded.  Any untracked files or
+        directories in the way of writing any tracked files are simply deleted.
 </simpara>
 </listitem>
 </varlistentry>
@@ -175,14 +176,22 @@ between the three commands.</simpara>
 <term>
 --quiet
 </term>
+<listitem>
+<simpara>
+        Be quiet, only report errors.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
 <term>
---no-quiet
+--refresh
+</term>
+<term>
+--no-refresh
 </term>
 <listitem>
 <simpara>
-        Be quiet, only report errors. The default behavior is set by the
-        <emphasis>reset.quiet</emphasis> config option. <emphasis>--quiet</emphasis> and <emphasis>--no-quiet</emphasis> will
-        override the default behavior.
+        Refresh the index after a mixed reset. Enabled by default.
 </simpara>
 </listitem>
 </varlistentry>

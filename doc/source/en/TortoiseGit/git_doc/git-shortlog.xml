@@ -13,7 +13,7 @@
 <simplesect id="git-shortlog(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git shortlog</emphasis> [&lt;options&gt;] [&lt;revision range&gt;] [[--] &lt;path&gt;&#8230;]
+<literallayout><emphasis>git shortlog</emphasis> [&lt;options&gt;] [&lt;revision-range&gt;] [[--] &lt;path&gt;&#8230;]
 git log --pretty=short | <emphasis>git shortlog</emphasis> [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
@@ -158,16 +158,16 @@ them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;revision range&gt;
+&lt;revision-range&gt;
 </term>
 <listitem>
 <simpara>
         Show only commits in the specified revision range.  When no
-        &lt;revision range&gt; is specified, it defaults to <emphasis>HEAD</emphasis> (i.e. the
+        &lt;revision-range&gt; is specified, it defaults to <emphasis>HEAD</emphasis> (i.e. the
         whole history leading to the current commit).  <emphasis>origin..HEAD</emphasis>
         specifies all the commits reachable from the current commit
         (i.e. <emphasis>HEAD</emphasis>), but not from <emphasis>origin</emphasis>. For a complete list of
-        ways to spell &lt;revision range&gt;, see the "Specifying Ranges"
+        ways to spell &lt;revision-range&gt;, see the "Specifying Ranges"
         section of <xref linkend="gitrevisions(7)" />.
 </simpara>
 </listitem>
@@ -234,6 +234,18 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <listitem>
 <simpara>
         Show commits more recent than a specific date.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--since-as-filter=&lt;date&gt;
+</term>
+<listitem>
+<simpara>
+        Show all commits more recent than a specific date. This visits
+        all commits in the range, rather than stopping at the first commit which
+        is older than a specific date.
 </simpara>
 </listitem>
 </varlistentry>
@@ -451,13 +463,28 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </term>
 <listitem>
 <simpara>
-        Follow only the first parent commit upon seeing a merge
-        commit.  This option can give a better overview when
-        viewing the evolution of a particular topic branch,
-        because merges into a topic branch tend to be only about
-        adjusting to updated upstream from time to time, and
-        this option allows you to ignore the individual commits
-        brought in to your history by such a merge.
+        When finding commits to include, follow only the first
+        parent commit upon seeing a merge commit.  This option
+        can give a better overview when viewing the evolution of
+        a particular topic branch, because merges into a topic
+        branch tend to be only about adjusting to updated upstream
+        from time to time, and this option allows you to ignore
+        the individual commits brought in to your history by such
+        a merge.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude-first-parent-only
+</term>
+<listitem>
+<simpara>
+        When finding commits to exclude (with a <emphasis>&#94;</emphasis>), follow only
+        the first parent commit upon seeing a merge commit.
+        This can be used to find the set of changes in a topic branch
+        from the point where it diverged from the remote branch, given
+        that arbitrary merges can be valid topic branch changes.
 </simpara>
 </listitem>
 </varlistentry>

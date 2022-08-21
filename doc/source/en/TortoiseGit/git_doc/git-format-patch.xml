@@ -22,7 +22,7 @@
                    [-n | --numbered | -N | --no-numbered]
                    [--start-number &lt;n&gt;] [--numbered-files]
                    [--in-reply-to=&lt;message id&gt;] [--suffix=.&lt;sfx&gt;]
-                   [--ignore-if-in-upstream]
+                   [--ignore-if-in-upstream] [--always]
                    [--cover-from-description=&lt;mode&gt;]
                    [--rfc] [--subject-prefix=&lt;subject prefix&gt;]
                    [(--reroll-count|-v) &lt;n&gt;]
@@ -656,11 +656,17 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        The <emphasis>-M</emphasis> and <emphasis>-C</emphasis> options require O(n^2) processing time where n
-        is the number of potential rename/copy targets.  This
-        option prevents rename/copy detection from running if
-        the number of rename/copy targets exceeds the specified
-        number.
+        The <emphasis>-M</emphasis> and <emphasis>-C</emphasis> options involve some preliminary steps that
+        can detect subsets of renames/copies cheaply, followed by an
+        exhaustive fallback portion that compares all remaining
+        unpaired destinations to all relevant sources.  (For renames,
+        only remaining unpaired sources are relevant; for copies, all
+        original sources are relevant.)  For N sources and
+        destinations, this exhaustive check is O(N^2).  This option
+        prevents the exhaustive portion of rename/copy detection from
+        running if the number of source/destination files involved
+        exceeds the specified number.  Defaults to diff.renameLimit.
+        Note that a value of 0 is treated as unlimited.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1184,6 +1190,17 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
         from &lt;since&gt; but not from &lt;until&gt; and compare them with the
         patches being generated, and any patch that matches is
         ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--always
+</term>
+<listitem>
+<simpara>
+        Include patches for commits that do not introduce any change,
+        which are omitted by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1881,10 +1898,10 @@ prerequisite-patch-id: Z</screen>
 <simpara>You can also use <emphasis>git format-patch --base=P -3 C</emphasis> to generate patches
 for A, B and C, and the identifiers for P, X, Y, Z are appended at the
 end of the first message.</simpara>
-<simpara>If set <emphasis>--base=auto</emphasis> in cmdline, it will track base commit automatically,
-the base commit will be the merge base of tip commit of the remote-tracking
+<simpara>If set <emphasis>--base=auto</emphasis> in cmdline, it will automatically compute
+the base commit as the merge base of tip commit of the remote-tracking
 branch and revision-range specified in cmdline.
-For a local branch, you need to track a remote branch by <emphasis>git branch
+For a local branch, you need to make it to track a remote branch by <emphasis>git branch
 --set-upstream-to</emphasis> before using this option.</simpara>
 </simplesect>
 <simplesect id="git-format-patch(1)__examples">

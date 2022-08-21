@@ -13,7 +13,7 @@
 <simplesect id="git-diff-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git diff-index</emphasis> [-m] [--cached] [--merge-base] [&lt;common diff options&gt;] &lt;tree-ish&gt; [&lt;path&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git diff-index</emphasis> [-m] [--cached] [--merge-base] [&lt;common-diff-options&gt;] &lt;tree-ish&gt; [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-diff-index(1)__description">
@@ -1011,11 +1011,17 @@ of a delete/create pair.</simpara>
 </term>
 <listitem>
 <simpara>
-        The <emphasis>-M</emphasis> and <emphasis>-C</emphasis> options require O(n^2) processing time where n
-        is the number of potential rename/copy targets.  This
-        option prevents rename/copy detection from running if
-        the number of rename/copy targets exceeds the specified
-        number.
+        The <emphasis>-M</emphasis> and <emphasis>-C</emphasis> options involve some preliminary steps that
+        can detect subsets of renames/copies cheaply, followed by an
+        exhaustive fallback portion that compares all remaining
+        unpaired destinations to all relevant sources.  (For renames,
+        only remaining unpaired sources are relevant; for copies, all
+        original sources are relevant.)  For N sources and
+        destinations, this exhaustive check is O(N^2).  This option
+        prevents the exhaustive portion of rename/copy detection from
+        running if the number of source/destination files involved
+        exceeds the specified number.  Defaults to diff.renameLimit.
+        Note that a value of 0 is treated as unlimited.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1038,11 +1044,8 @@ of a delete/create pair.</simpara>
 </simpara>
 <simpara>Also, these upper-case letters can be downcased to exclude.  E.g.
 <emphasis>--diff-filter=ad</emphasis> excludes added and deleted paths.</simpara>
-<simpara>Note that not all diffs can feature all types. For instance, diffs
-from the index to the working tree can never have Added entries
-(because the set of paths included in the diff is limited by what is in
-the index).  Similarly, copied and renamed entries cannot appear if
-detection for those types is disabled.</simpara>
+<simpara>Note that not all diffs can feature all types. For instance, copied and
+renamed entries cannot appear if detection for those types is disabled.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1626,7 +1629,7 @@ a space.
 </listitem>
 <listitem>
 <simpara>
-sha1 for "dst"; 0{40} if creation, unmerged or "look at work tree".
+sha1 for "dst"; 0{40} if deletion, unmerged or "work tree out of sync with the index".
 </simpara>
 </listitem>
 <listitem>
@@ -1694,7 +1697,7 @@ R: renaming of a file
 </listitem>
 <listitem>
 <simpara>
-T: change in the type of the file
+T: change in the type of the file (regular file, symbolic link or submodule)
 </simpara>
 </listitem>
 <listitem>
@@ -1713,8 +1716,8 @@ X: "unknown" change type (most probably a bug, please report it)
 percentage of similarity between the source and target of the move or
 copy).  Status letter M may be followed by a score (denoting the
 percentage of dissimilarity) for file rewrites.</simpara>
-<simpara>&lt;sha1&gt; is shown as all 0's if a file is new on the filesystem
-and it is out of sync with the index.</simpara>
+<simpara>The sha1 for "dst" is shown as all 0's if a file on the filesystem
+is out of sync with the index.</simpara>
 <simpara>Example:</simpara>
 <screen>:100644 100644 5be4a4a 0000000 M file.c</screen>
 <simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
@@ -2104,8 +2107,8 @@ done an <emphasis>update-index</emphasis> to make that effective in the index fi
 <emphasis>git diff-files</emphasis> wouldn't show anything at all, since the index file
 matches my working directory. But doing a <emphasis>git diff-index</emphasis> does:</simpara>
 <literallayout class="monospaced">torvalds@ppc970:~/git&gt; git diff-index --cached HEAD
--100644 blob    4161aecc6700a2eb579e842af0b7f22b98443f74        commit.c
-+100644 blob    4161aecc6700a2eb579e842af0b7f22b98443f74        git-commit.c</literallayout>
+:100644 000000 4161aecc6700a2eb579e842af0b7f22b98443f74 0000000000000000000000000000000000000000 D    commit.c
+:000000 100644 0000000000000000000000000000000000000000 4161aecc6700a2eb579e842af0b7f22b98443f74 A    git-commit.c</literallayout>
 <simpara>You can see easily that the above is a rename.</simpara>
 <simpara>In fact, <emphasis>git diff-index --cached</emphasis> <emphasis role="strong">should</emphasis> always be entirely equivalent to
 actually doing a <emphasis>git write-tree</emphasis> and comparing that. Except this one is much
@@ -2131,7 +2134,7 @@ show that. So let's say that you have edited <emphasis>kernel/sched.c</emphasis>
 have not actually done a <emphasis>git update-index</emphasis> on it yet - there is no
 "object" associated with the new state, and you get:</simpara>
 <literallayout class="monospaced">torvalds@ppc970:~/v2.6/linux&gt; git diff-index --abbrev HEAD
-:100644 100664 7476bb... 000000...      kernel/sched.c</literallayout>
+:100644 100644 7476bb5ba 000000000 M  kernel/sched.c</literallayout>
 <simpara>i.e., it shows that the tree has changed, and that <emphasis>kernel/sched.c</emphasis> is
 not up to date and may contain new stuff. The all-zero sha1 means that to
 get the real diff, you need to look at the object in the working directory

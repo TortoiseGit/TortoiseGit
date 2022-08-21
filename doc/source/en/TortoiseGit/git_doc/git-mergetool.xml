@@ -250,6 +250,19 @@ mergetool.meld.useAutoMerge
 </varlistentry>
 <varlistentry>
 <term>
+mergetool.vimdiff.layout
+</term>
+<listitem>
+<simpara>
+        The vimdiff backend uses this variable to control how its split
+        windows look like. Applies even if you are using Neovim (<emphasis>nvim</emphasis>) or
+        gVim (<emphasis>gvim</emphasis>) as the merge tool. See BACKEND SPECIFIC HINTS section
+        for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 mergetool.hideResolved
 </term>
 <listitem>
@@ -325,6 +338,224 @@ These are safe to remove once a file has been merged and its
 <simpara>Setting the <emphasis>mergetool.keepBackup</emphasis> configuration variable to <emphasis>false</emphasis>
 causes <emphasis>git mergetool</emphasis> to automatically remove the backup as files
 are successfully merged.</simpara>
+</simplesect>
+<simplesect id="git-mergetool(1)__backend_specific_hints">
+<title>BACKEND SPECIFIC HINTS</title>
+<section id="git-mergetool(1)__vimdiff">
+<title>vimdiff</title>
+<section id="git-mergetool(1)__description_2">
+<title>Description</title>
+<simpara>When specifying <emphasis>--tool=vimdiff</emphasis> in <emphasis>git mergetool</emphasis> Git will open Vim with a 4
+windows layout distributed in the following way:</simpara>
+<literallayout class="monospaced">------------------------------------------
+|             |           |              |
+|   LOCAL     |   BASE    |   REMOTE     |
+|             |           |              |
+------------------------------------------
+|                                        |
+|                MERGED                  |
+|                                        |
+------------------------------------------</literallayout>
+<simpara><emphasis>LOCAL</emphasis>, <emphasis>BASE</emphasis> and <emphasis>REMOTE</emphasis> are read-only buffers showing the contents of the
+conflicting file in specific commits ("commit you are merging into", "common
+ancestor commit" and "commit you are merging from" respectively)</simpara>
+<simpara><emphasis>MERGED</emphasis> is a writable buffer where you have to resolve the conflicts (using the
+other read-only buffers as a reference). Once you are done, save and exit Vim as
+usual (<emphasis>:wq</emphasis>) or, if you want to abort, exit using <emphasis>:cq</emphasis>.</simpara>
+</section>
+<section id="git-mergetool(1)__layout_configuration">
+<title>Layout configuration</title>
+<simpara>You can change the windows layout used by Vim by setting configuration variable
+<emphasis>mergetool.vimdiff.layout</emphasis> which accepts a string where the following separators
+have special meaning:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>+</emphasis> is used to "open a new tab"
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>,</emphasis> is used to "open a new vertical split"
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>/</emphasis> is used to "open a new horizontal split"
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>@</emphasis> is used to indicate which is the file containing the final version after
+    solving the conflicts. If not present, <emphasis>MERGED</emphasis> will be used by default.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The precedence of the operators is this one (you can use parentheses to change
+it):</simpara>
+<literallayout class="monospaced">`@` &gt; `+` &gt; `/` &gt; `,`</literallayout>
+<simpara>Let's see some examples to understand how it works:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>layout = "(LOCAL,BASE,REMOTE)/MERGED"</emphasis>
+</simpara>
+<simpara>This is exactly the same as the default layout we have already seen.</simpara>
+<simpara>Note that <emphasis>/</emphasis> has precedence over <emphasis>,</emphasis> and thus the parenthesis are not
+needed in this case. The next layout definition is equivalent:</simpara>
+<literallayout class="monospaced">layout = "LOCAL,BASE,REMOTE / MERGED"</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>layout = "LOCAL,MERGED,REMOTE"</emphasis>
+</simpara>
+<simpara>If, for some reason, we are not interested in the <emphasis>BASE</emphasis> buffer.</simpara>
+<literallayout class="monospaced">------------------------------------------
+|             |           |              |
+|             |           |              |
+|   LOCAL     |   MERGED  |   REMOTE     |
+|             |           |              |
+|             |           |              |
+------------------------------------------</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>layout = "MERGED"</emphasis>
+</simpara>
+<simpara>Only the <emphasis>MERGED</emphasis> buffer will be shown. Note, however, that all the other
+ones are still loaded in vim, and you can access them with the "buffers"
+command.</simpara>
+<literallayout class="monospaced">------------------------------------------
+|                                        |
+|                                        |
+|                 MERGED                 |
+|                                        |
+|                                        |
+------------------------------------------</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>layout = "@LOCAL,REMOTE"</emphasis>
+</simpara>
+<simpara>When <emphasis>MERGED</emphasis> is not present in the layout, you must "mark" one of the
+buffers with an asterisk. That will become the buffer you need to edit and
+save after resolving the conflicts.</simpara>
+<literallayout class="monospaced">------------------------------------------
+|                   |                    |
+|                   |                    |
+|                   |                    |
+|     LOCAL         |    REMOTE          |
+|                   |                    |
+|                   |                    |
+|                   |                    |
+------------------------------------------</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>layout = "LOCAL,BASE,REMOTE / MERGED + BASE,LOCAL + BASE,REMOTE"</emphasis>
+</simpara>
+<simpara>Three tabs will open: the first one is a copy of the default layout, while
+the other two only show the differences between (<emphasis>BASE</emphasis> and <emphasis>LOCAL</emphasis>) and
+(<emphasis>BASE</emphasis> and <emphasis>REMOTE</emphasis>) respectively.</simpara>
+<literallayout class="monospaced">------------------------------------------
+| &lt;TAB #1&gt; |  TAB #2  |  TAB #3  |       |
+------------------------------------------
+|             |           |              |
+|   LOCAL     |   BASE    |   REMOTE     |
+|             |           |              |
+------------------------------------------
+|                                        |
+|                MERGED                  |
+|                                        |
+------------------------------------------</literallayout>
+<literallayout class="monospaced">------------------------------------------
+|  TAB #1  | &lt;TAB #2&gt; |  TAB #3  |       |
+------------------------------------------
+|                   |                    |
+|                   |                    |
+|                   |                    |
+|     BASE          |    LOCAL           |
+|                   |                    |
+|                   |                    |
+|                   |                    |
+------------------------------------------</literallayout>
+<literallayout class="monospaced">------------------------------------------
+|  TAB #1  |  TAB #2  | &lt;TAB #3&gt; |       |
+------------------------------------------
+|                   |                    |
+|                   |                    |
+|                   |                    |
+|     BASE          |    REMOTE          |
+|                   |                    |
+|                   |                    |
+|                   |                    |
+------------------------------------------</literallayout>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>layout = "LOCAL,BASE,REMOTE / MERGED + BASE,LOCAL + BASE,REMOTE + (LOCAL/BASE/REMOTE),MERGED"</emphasis>
+</simpara>
+<simpara>Same as the previous example, but adds a fourth tab with the same
+information as the first tab, with a different layout.</simpara>
+<literallayout class="monospaced">---------------------------------------------
+|  TAB #1  |  TAB #2  |  TAB #3  | &lt;TAB #4&gt; |
+---------------------------------------------
+|       LOCAL         |                     |
+|---------------------|                     |
+|       BASE          |        MERGED       |
+|---------------------|                     |
+|       REMOTE        |                     |
+---------------------------------------------</literallayout>
+<simpara>Note how in the third tab definition we need to use parenthesis to make <emphasis>,</emphasis>
+have precedence over <emphasis>/</emphasis>.</simpara>
+</listitem>
+</itemizedlist>
+</section>
+<section id="git-mergetool(1)__variants">
+<title>Variants</title>
+<simpara>Instead of <emphasis>--tool=vimdiff</emphasis>, you can also use one of these other variants:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>--tool=gvimdiff</emphasis>, to open gVim instead of Vim.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>--tool=nvimdiff</emphasis>, to open Neovim instead of Vim.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>When using these variants, in order to specify a custom layout you will have to
+set configuration variables <emphasis>mergetool.gvimdiff.layout</emphasis> and
+<emphasis>mergetool.nvimdiff.layout</emphasis> instead of <emphasis>mergetool.vimdiff.layout</emphasis></simpara>
+<simpara>In addition, for backwards compatibility with previous Git versions, you can
+also append <emphasis>1</emphasis>, <emphasis>2</emphasis> or <emphasis>3</emphasis> to either <emphasis>vimdiff</emphasis> or any of the variants (ex:
+<emphasis>vimdiff3</emphasis>, <emphasis>nvimdiff1</emphasis>, etc&#8230;) to use a predefined layout.
+In other words, using <emphasis>--tool=[g,n,]vimdiffx</emphasis> is the same as using
+<emphasis>--tool=[g,n,]vimdiff</emphasis> and setting configuration variable
+<emphasis>mergetool.[g,n,]vimdiff.layout</emphasis> to&#8230;</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>x=1</emphasis>: <emphasis>"@LOCAL, REMOTE"</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>x=2</emphasis>: <emphasis>"LOCAL, MERGED, REMOTE"</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>x=3</emphasis>: <emphasis>"MERGED"</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Example: using <emphasis>--tool=gvimdiff2</emphasis> will open <emphasis>gvim</emphasis> with three columns (LOCAL,
+MERGED and REMOTE).</simpara>
+</section>
+</section>
 </simplesect>
 <simplesect id="git-mergetool(1)__git">
 <title>GIT</title>

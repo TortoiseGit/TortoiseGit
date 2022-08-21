@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-fsmonitor&#45;&#45;daemon(1)">
+    <title>git-fsmonitor&#45;&#45;daemon(1)</title>
+<indexterm>
+<primary>git-fsmonitor&#45;&#45;daemon(1)</primary>
+</indexterm>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__name">
+<title>NAME</title>
+<simpara>git-fsmonitor--daemon - A Built-in File System Monitor</simpara>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git fsmonitor&#45;&#45;daemon</emphasis> start
+<emphasis>git fsmonitor&#45;&#45;daemon</emphasis> run
+<emphasis>git fsmonitor&#45;&#45;daemon</emphasis> stop
+<emphasis>git fsmonitor&#45;&#45;daemon</emphasis> status</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__description">
+<title>DESCRIPTION</title>
+<simpara>A daemon to watch the working directory for file and directory
+changes using platform-specific file system notification facilities.</simpara>
+<simpara>This daemon communicates directly with commands like <emphasis>git status</emphasis>
+using the <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/api-simple-ipc.html"><citetitle>simple IPC</citetitle></ulink> interface
+instead of the slower <xref linkend="githooks(5)" /> interface.</simpara>
+<simpara>This daemon is built into Git so that no third-party tools are
+required.</simpara>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+start
+</term>
+<listitem>
+<simpara>
+        Starts a daemon in the background.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+run
+</term>
+<listitem>
+<simpara>
+        Runs a daemon in the foreground.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+stop
+</term>
+<listitem>
+<simpara>
+        Stops the daemon running in the current working
+        directory, if present.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status
+</term>
+<listitem>
+<simpara>
+        Exits with zero status if a daemon is watching the
+        current working directory.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__remarks">
+<title>REMARKS</title>
+<simpara>This daemon is a long running process used to watch a single working
+directory and maintain a list of the recently changed files and
+directories.  Performance of commands such as <emphasis>git status</emphasis> can be
+increased if they just ask for a summary of changes to the working
+directory and can avoid scanning the disk.</simpara>
+<simpara>When <emphasis>core.fsmonitor</emphasis> is set to <emphasis>true</emphasis> (see <xref linkend="git-config(1)" />)
+commands, such as <emphasis>git status</emphasis>, will ask the daemon for changes and
+automatically start it (if necessary).</simpara>
+<simpara>For more information see the "File System Monitor" section in
+<xref linkend="git-update-index(1)" />.</simpara>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__caveats">
+<title>CAVEATS</title>
+<simpara>The fsmonitor daemon does not currently know about submodules and does
+not know to filter out file system events that happen within a
+submodule.  If fsmonitor daemon is watching a super repo and a file is
+modified within the working directory of a submodule, it will report
+the change (as happening against the super repo).  However, the client
+will properly ignore these extra events, so performance may be affected
+but it will not cause an incorrect result.</simpara>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

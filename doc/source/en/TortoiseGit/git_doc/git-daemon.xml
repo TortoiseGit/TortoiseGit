@@ -37,8 +37,8 @@ that service if it is enabled.</simpara>
 <simpara>It verifies that the directory has the magic file "git-daemon-export-ok", and
 it will refuse to export any Git directory that hasn't explicitly been marked
 for export this way (unless the <emphasis>--export-all</emphasis> parameter is specified). If you
-pass some directory paths as <emphasis>git daemon</emphasis> arguments, you can further restrict
-the offers to a whitelist comprising of those.</simpara>
+pass some directory paths as <emphasis>git daemon</emphasis> arguments, the offers are limited to
+repositories within those directories.</simpara>
 <simpara>By default, only <emphasis>upload-pack</emphasis> service is enabled, which serves
 <emphasis>git fetch-pack</emphasis> and <emphasis>git ls-remote</emphasis> clients, which are invoked
 from <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis>, and <emphasis>git clone</emphasis>.</simpara>
@@ -58,7 +58,7 @@ Git repositories.</simpara>
         Match paths exactly (i.e. don't allow "/foo/repo" when the real path is
         "/foo/repo.git" or "/foo/repo/.git") and don't do user-relative paths.
         <emphasis>git daemon</emphasis> will refuse to start when this option is enabled and no
-        whitelist is specified.
+        directory arguments are provided.
 </simpara>
 </listitem>
 </varlistentry>
@@ -102,7 +102,7 @@ Git repositories.</simpara>
         %IP for the server's IP address, %P for the port number,
         and %D for the absolute path of the named repository.
         After interpolation, the path is validated against the directory
-        whitelist.
+        list.
 </simpara>
 </listitem>
 </varlistentry>
@@ -414,9 +414,11 @@ it declines the service.</simpara>
 </term>
 <listitem>
 <simpara>
-        A directory to add to the whitelist of allowed directories. Unless
-        --strict-paths is specified this will also include subdirectories
-        of each named directory.
+        The remaining arguments provide a list of directories. If any
+        directories are specified, then the <emphasis>git-daemon</emphasis> process will
+        serve a requested directory only if it is contained in one of
+        these directories. If <emphasis>--strict-paths</emphasis> is specified, then the
+        requested directory must match one of these directories exactly.
 </simpara>
 </listitem>
 </varlistentry>
@@ -494,9 +496,8 @@ git             9418/tcp                # Git Version Control System</screen>
 <listitem>
 <simpara>
         To set up <emphasis>git daemon</emphasis> as an inetd service that handles any
-        repository under the whitelisted set of directories, /pub/foo
-        and /pub/bar, place an entry like the following into
-        /etc/inetd all on one line:
+        repository within <emphasis>/pub/foo</emphasis> or <emphasis>/pub/bar</emphasis>, place an entry like
+        the following into <emphasis>/etc/inetd</emphasis> all on one line:
 </simpara>
 <screen>        git stream tcp nowait nobody  /usr/bin/git
                 git daemon --inetd --verbose --export-all

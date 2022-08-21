@@ -193,6 +193,17 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--refetch
+</term>
+<listitem>
+<simpara>
+        Skips negotiating commits with the server in order to fetch all matching
+        objects. Use to reapply a new partial clone blob/tree filter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --no-progress
 </term>
 <listitem>

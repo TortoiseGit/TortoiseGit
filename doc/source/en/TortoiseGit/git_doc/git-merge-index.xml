@@ -13,7 +13,7 @@
 <simplesect id="git-merge-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git merge-index</emphasis> [-o] [-q] &lt;merge-program&gt; (-a | [--] &lt;file&gt;*)</literallayout>
+<literallayout><emphasis>git merge-index</emphasis> [-o] [-q] &lt;merge-program&gt; (-a | ( [--] &lt;file&gt;&#8230;) )</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-merge-index(1)__description">

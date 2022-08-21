@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-tree</emphasis> [-d] [-r] [-t] [-l] [-z]
-            [--name-only] [--name-status] [--full-name] [--full-tree] [--abbrev[=&lt;n&gt;]]
+            [--name-only] [--name-status] [--object-only] [--full-name] [--full-tree] [--abbrev[=&lt;n&gt;]] [--format=&lt;format&gt;]
             &lt;tree-ish&gt; [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -124,6 +124,22 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 <listitem>
 <simpara>
         List only filenames (instead of the "long" output), one per line.
+        Cannot be combined with <emphasis>--object-only</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--object-only
+</term>
+<listitem>
+<simpara>
+        List only names of the objects, one per line. Cannot be combined
+        with <emphasis>--name-only</emphasis> or <emphasis>--name-status</emphasis>.
+        This is equivalent to specifying <emphasis>--format='%(objectname)'</emphasis>, but
+        for both this option and that exact format the command takes a
+        hand-optimized codepath instead of going through the generic
+        formatting mechanism.
 </simpara>
 </listitem>
 </varlistentry>
@@ -164,6 +180,23 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 </varlistentry>
 <varlistentry>
 <term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from the result
+        being shown. It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and
+        <emphasis>%xx</emphasis> where <emphasis>xx</emphasis> are hex digits interpolates to character
+        with hex code <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis> interpolates to
+        <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
+        When specified, <emphasis>--format</emphasis> cannot be combined with other
+        format-altering options, including <emphasis>--long</emphasis>, <emphasis>--name-only</emphasis>
+        and <emphasis>--object-only</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 [&lt;path&gt;&#8230;]
 </term>
 <listitem>
@@ -178,18 +211,92 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 </simplesect>
 <simplesect id="git-ls-tree(1)__output_format">
 <title>Output Format</title>
-<literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; TAB &lt;file&gt;</literallayout>
+<simpara>The output format of <emphasis>ls-tree</emphasis> is determined by either the <emphasis>--format</emphasis>
+option, or other format-altering options such as <emphasis>--name-only</emphasis> etc.
+(see <emphasis>--format</emphasis> above).</simpara>
+<simpara>The use of certain <emphasis>--format</emphasis> directives is equivalent to using those
+options, but invoking the full formatting machinery can be slower than
+using an appropriate formatting option.</simpara>
+<simpara>In cases where the <emphasis>--format</emphasis> would exactly map to an existing option
+<emphasis>ls-tree</emphasis> will use the appropriate faster path. Thus the default format
+is equivalent to:</simpara>
+<literallayout class="monospaced">%(objectmode) %(objecttype) %(objectname)%x09%(path)</literallayout>
 <simpara>This output format is compatible with what <emphasis>--index-info --stdin</emphasis> of
 <emphasis>git update-index</emphasis> expects.</simpara>
 <simpara>When the <emphasis>-l</emphasis> option is used, format changes to</simpara>
-<literallayout class="monospaced">&lt;mode&gt; SP &lt;type&gt; SP &lt;object&gt; SP &lt;object size&gt; TAB &lt;file&gt;</literallayout>
-<simpara>Object size identified by &lt;object&gt; is given in bytes, and right-justified
+<literallayout class="monospaced">%(objectmode) %(objecttype) %(objectname) %(objectsize:padded)%x09%(path)</literallayout>
+<simpara>Object size identified by &lt;objectname&gt; is given in bytes, and right-justified
 with minimum width of 7 characters.  Object size is given only for blobs
 (file) entries; for other entries <emphasis>-</emphasis> character is used in place of size.</simpara>
 <simpara>Without the <emphasis>-z</emphasis> option, pathnames with "unusual" characters are
 quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
 (see <xref linkend="git-config(1)" />).  Using <emphasis>-z</emphasis> the filename is output
 verbatim and the line is terminated by a NUL byte.</simpara>
+<simpara>Customized format:</simpara>
+<simpara>It is possible to print in a custom format by using the <emphasis>--format</emphasis> option,
+which is able to interpolate different fields using a <emphasis>%(fieldname)</emphasis> notation.
+For example, if you only care about the "objectname" and "path" fields, you
+can execute with a specific "--format" like</simpara>
+<literallayout class="monospaced">git ls-tree --format='%(objectname) %(path)' &lt;tree-ish&gt;</literallayout>
+</simplesect>
+<simplesect id="git-ls-tree(1)__field_names">
+<title>FIELD NAMES</title>
+<simpara>Various values from structured fields can be used to interpolate
+into the resulting output. For each outputing line, the following
+names can be used:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+objectmode
+</term>
+<listitem>
+<simpara>
+        The mode of the object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objecttype
+</term>
+<listitem>
+<simpara>
+        The type of the object (<emphasis>commit</emphasis>, <emphasis>blob</emphasis> or <emphasis>tree</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectname
+</term>
+<listitem>
+<simpara>
+        The name of the object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectsize[:padded]
+</term>
+<listitem>
+<simpara>
+        The size of a <emphasis>blob</emphasis> object ("-" if it's a <emphasis>commit</emphasis> or <emphasis>tree</emphasis>).
+        It also supports a padded format of size with "%(objectsize:padded)".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+path
+</term>
+<listitem>
+<simpara>
+        The pathname of the object.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-ls-tree(1)__git">
 <title>GIT</title>

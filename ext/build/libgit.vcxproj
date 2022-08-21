@@ -43,11 +43,13 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <ForcedIncludeFiles>libgit-defines.h</ForcedIncludeFiles>
+      <LanguageStandard_C>stdc11</LanguageStandard_C>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\apply.c" />
     <ClCompile Include="..\tgit\bloom.c" />
+    <ClCompile Include="..\tgit\cbtree.c" />
     <ClCompile Include="..\tgit\chdir-notify.c" />
     <ClCompile Include="..\tgit\chunk-format.c" />
     <ClCompile Include="..\tgit\commit-graph.c" />
@@ -56,6 +58,7 @@
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
     <ClCompile Include="..\tgit\compat\qsort_s.c" />
+    <ClCompile Include="..\tgit\compat\terminal.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
     <ClCompile Include="..\tgit\compat\fopen.c" />
     <ClCompile Include="..\tgit\compat\memmem.c" />
@@ -90,6 +93,7 @@
     <ClCompile Include="..\tgit\column.c" />
     <ClCompile Include="..\tgit\combine-diff.c" />
     <ClCompile Include="..\tgit\commit.c" />
+    <ClCompile Include="..\tgit\compat\win32\flush.c" />
     <ClCompile Include="..\tgit\compat\win32\fscache.c" />
     <ClCompile Include="..\tgit\compat\win32\path-utils.c" />
     <ClCompile Include="..\tgit\compat\win32\pthread.c" />
@@ -101,6 +105,7 @@
     <ClCompile Include="..\tgit\connected.c" />
     <ClCompile Include="..\tgit\convert.c" />
     <ClCompile Include="..\tgit\copy.c" />
+    <ClCompile Include="..\tgit\credential.c" />
     <ClCompile Include="..\tgit\csum-file.c" />
     <ClCompile Include="..\tgit\ctype.c" />
     <ClCompile Include="..\tgit\date.c" />
@@ -131,6 +136,7 @@
     <ClCompile Include="..\tgit\fetch-pack.c" />
     <ClCompile Include="..\tgit\fsck.c" />
     <ClCompile Include="..\tgit\fsmonitor-ipc.c" />
+    <ClCompile Include="..\tgit\fsmonitor-settings.c" />
     <ClCompile Include="..\tgit\fsmonitor.c" />
     <ClCompile Include="..\tgit\gettext.c" />
     <ClCompile Include="..\tgit\gpg-interface.c" />
@@ -140,6 +146,7 @@
     <ClCompile Include="..\tgit\hashmap.c" />
     <ClCompile Include="..\tgit\help.c" />
     <ClCompile Include="..\tgit\hex.c" />
+    <ClCompile Include="..\tgit\hook.c" />
     <ClCompile Include="..\tgit\ident.c" />
     <ClCompile Include="..\tgit\json-writer.c" />
     <ClCompile Include="..\tgit\kwset.c" />
@@ -165,6 +172,7 @@
     <ClCompile Include="..\tgit\midx.c" />
     <ClCompile Include="..\tgit\name-hash.c" />
     <ClCompile Include="..\tgit\negotiator\default.c" />
+    <ClCompile Include="..\tgit\negotiator\noop.c" />
     <ClCompile Include="..\tgit\negotiator\skipping.c" />
     <ClCompile Include="..\tgit\notes-cache.c" />
     <ClCompile Include="..\tgit\notes-merge.c" />
@@ -176,6 +184,7 @@
     <ClCompile Include="..\tgit\oid-array.c" />
     <ClCompile Include="..\tgit\oidmap.c" />
     <ClCompile Include="..\tgit\oidset.c" />
+    <ClCompile Include="..\tgit\oidtree.c" />
     <ClCompile Include="..\tgit\pack-bitmap-write.c" />
     <ClCompile Include="..\tgit\pack-bitmap.c" />
     <ClCompile Include="..\tgit\pack-check.c" />
@@ -197,6 +206,7 @@
     <ClCompile Include="..\tgit\prio-queue.c" />
     <ClCompile Include="..\tgit\progress.c" />
     <ClCompile Include="..\tgit\promisor-remote.c" />
+    <ClCompile Include="..\tgit\prompt.c" />
     <ClCompile Include="..\tgit\protocol.c" />
     <ClCompile Include="..\tgit\quote.c" />
     <ClCompile Include="..\tgit\range-diff.c" />
@@ -300,6 +310,7 @@
     <ClInclude Include="..\tgit\apply.h" />
     <ClInclude Include="..\tgit\banned.h" />
     <ClInclude Include="..\tgit\bloom.h" />
+    <ClInclude Include="..\tgit\cbtree.h" />
     <ClInclude Include="..\tgit\chdir-notify.h" />
     <ClInclude Include="..\tgit\chunk-format.h" />
     <ClInclude Include="..\tgit\commit-graph.h" />
@@ -318,6 +329,7 @@
     <ClInclude Include="..\tgit\color.h" />
     <ClInclude Include="..\tgit\column.h" />
     <ClInclude Include="..\tgit\commit.h" />
+    <ClInclude Include="..\tgit\compat\terminal.h" />
     <ClInclude Include="..\tgit\compat\win32\alloca.h" />
     <ClInclude Include="..\tgit\compat\win32\dirent.h" />
     <ClInclude Include="..\tgit\compat\win32\exit-process.h" />
@@ -330,7 +342,9 @@
     <ClInclude Include="..\tgit\config.h" />
     <ClInclude Include="..\tgit\connect.h" />
     <ClInclude Include="..\tgit\connected.h" />
+    <ClInclude Include="..\tgit\credential.h" />
     <ClInclude Include="..\tgit\csum-file.h" />
+    <ClInclude Include="..\tgit\date.h" />
     <ClInclude Include="..\tgit\decorate.h" />
     <ClInclude Include="..\tgit\delta-islands.h" />
     <ClInclude Include="..\tgit\delta.h" />
@@ -346,6 +360,7 @@
     <ClInclude Include="..\tgit\fetch-pack.h" />
     <ClInclude Include="..\tgit\fsck.h" />
     <ClInclude Include="..\tgit\fsmonitor-ipc.h" />
+    <ClInclude Include="..\tgit\fsmonitor-settings.h" />
     <ClInclude Include="..\tgit\fsmonitor.h" />
     <ClInclude Include="..\tgit\gettext.h" />
     <ClInclude Include="..\tgit\git-compat-util.h" />
@@ -356,6 +371,7 @@
     <ClInclude Include="..\tgit\hash.h" />
     <ClInclude Include="..\tgit\hashmap.h" />
     <ClInclude Include="..\tgit\help.h" />
+    <ClInclude Include="..\tgit\hook.h" />
     <ClInclude Include="..\tgit\iterator.h" />
     <ClInclude Include="..\tgit\json-writer.h" />
     <ClInclude Include="..\tgit\kwset.h" />
@@ -378,6 +394,7 @@
     <ClInclude Include="..\tgit\mergesort.h" />
     <ClInclude Include="..\tgit\midx.h" />
     <ClInclude Include="..\tgit\negotiator\default.h" />
+    <ClInclude Include="..\tgit\negotiator\noop.h" />
     <ClInclude Include="..\tgit\negotiator\skipping.h" />
     <ClInclude Include="..\tgit\notes-merge.h" />
     <ClInclude Include="..\tgit\notes-utils.h" />
@@ -386,6 +403,7 @@
     <ClInclude Include="..\tgit\oid-array.h" />
     <ClInclude Include="..\tgit\oidmap.h" />
     <ClInclude Include="..\tgit\oidset.h" />
+    <ClInclude Include="..\tgit\oidtree.h" />
     <ClInclude Include="..\tgit\pack-bitmap.h" />
     <ClInclude Include="..\tgit\pack-objects.h" />
     <ClInclude Include="..\tgit\pack-revindex.h" />
@@ -399,6 +417,7 @@
     <ClInclude Include="..\tgit\prio-queue.h" />
     <ClInclude Include="..\tgit\progress.h" />
     <ClInclude Include="..\tgit\promisor-remote.h" />
+    <ClInclude Include="..\tgit\prompt.h" />
     <ClInclude Include="..\tgit\protocol.h" />
     <ClInclude Include="..\tgit\quote.h" />
     <ClInclude Include="..\tgit\range-diff.h" />

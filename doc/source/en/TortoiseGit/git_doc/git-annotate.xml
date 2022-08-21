@@ -343,6 +343,31 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--color-lines
+</term>
+<listitem>
+<simpara>
+        Color line annotations in the default format differently if they come from
+        the same commit as the preceding line. This makes it easier to distinguish
+        code blocks introduced by different commits. The color defaults to cyan and
+        can be adjusted using the <emphasis>color.blame.repeatedLines</emphasis> config option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color-by-age
+</term>
+<listitem>
+<simpara>
+        Color line annotations depending on the age of the line in the default format.
+        The <emphasis>color.blame.highlightRecent</emphasis> config option controls what color is used for
+        each range of age.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -h
 </term>
 <listitem>

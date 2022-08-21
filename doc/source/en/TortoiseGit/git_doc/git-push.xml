@@ -355,8 +355,8 @@ remote ref is the expected value.  "git push" fails otherwise.</simpara>
 You will have to bypass the "must fast-forward" rule in order to
 replace the history you originally published with the rebased history.
 If somebody else built on top of your original history while you are
-rebasing, the tip of the branch at the remote may advance with her
-commit, and blindly pushing with <emphasis>--force</emphasis> will lose her work.</simpara>
+rebasing, the tip of the branch at the remote may advance with their
+commit, and blindly pushing with <emphasis>--force</emphasis> will lose their work.</simpara>
 <simpara>This option allows you to say that you expect the history you are
 updating is what you rebased and want to replace. If the remote ref
 still points at the commit you specified, you can be sure that no
@@ -772,12 +772,12 @@ of this remote will be used by default when you do
 not provide a refspec on the command line.  The entry in the
 config file would appear like this:</simpara>
 <screen>        [remote "&lt;name&gt;"]
-                url = &lt;url&gt;
+                url = &lt;URL&gt;
                 pushurl = &lt;pushurl&gt;
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;url&gt;</emphasis>.</simpara>
+to <emphasis>&lt;URL&gt;</emphasis>.</simpara>
 </section>
 <section id="git-push(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
@@ -801,8 +801,8 @@ be specified for additional branch mappings.</simpara>
 file in <emphasis>$GIT_DIR/branches</emphasis>.
 The URL in this file will be used to access the repository.
 This file should have the following format:</simpara>
-<screen>        &lt;url&gt;#&lt;head&gt;</screen>
-<simpara><emphasis>&lt;url&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
+<screen>        &lt;URL&gt;#&lt;head&gt;</screen>
+<simpara><emphasis>&lt;URL&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
 <simpara>Depending on the operation, git will use one of the following
 refspecs, if you don't provide one on the command line.
 <emphasis>&lt;branch&gt;</emphasis> is the name of this file in <emphasis>$GIT_DIR/branches</emphasis> and

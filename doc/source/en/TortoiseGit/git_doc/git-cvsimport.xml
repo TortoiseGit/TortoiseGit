@@ -15,9 +15,9 @@
 <blockquote>
 <literallayout><emphasis>git cvsimport</emphasis> [-o &lt;branch-for-HEAD&gt;] [-h] [-v] [-d &lt;CVSROOT&gt;]
               [-A &lt;author-conv-file&gt;] [-p &lt;options-for-cvsps&gt;] [-P &lt;file&gt;]
-              [-C &lt;git_repository&gt;] [-z &lt;fuzz&gt;] [-i] [-k] [-u] [-s &lt;subst&gt;]
-              [-a] [-m] [-M &lt;regex&gt;] [-S &lt;regex&gt;] [-L &lt;commitlimit&gt;]
-              [-r &lt;remote&gt;] [-R] [&lt;CVS_module&gt;]</literallayout>
+              [-C &lt;git-repository&gt;] [-z &lt;fuzz&gt;] [-i] [-k] [-u] [-s &lt;subst&gt;]
+              [-a] [-m] [-M &lt;regex&gt;] [-S &lt;regex&gt;] [-L &lt;commit-limit&gt;]
+              [-r &lt;remote&gt;] [-R] [&lt;CVS-module&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cvsimport(1)__description">
@@ -74,7 +74,7 @@ See <xref linkend="gitcvs-migration(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;CVS_module&gt;
+&lt;CVS-module&gt;
 </term>
 <listitem>
 <simpara>

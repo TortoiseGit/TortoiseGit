@@ -1090,7 +1090,7 @@ future <emphasis>dcommit</emphasis>!</simpara>
 --shared[=(false|true|umask|group|all|world|everybody)]
 </term>
 <term>
---template=&lt;template_directory&gt;
+--template=&lt;template-directory&gt;
 </term>
 <listitem>
 <simpara>
@@ -1267,9 +1267,6 @@ not found, it is searched like any other command in <emphasis>$PATH</emphasis>.<
 </term>
 <term>
 --rebase-merges
-</term>
-<term>
---preserve-merges (DEPRECATED)
 </term>
 <listitem>
 <simpara>

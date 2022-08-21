@@ -18,7 +18,7 @@
 <emphasis>git stash</emphasis> drop [-q|--quiet] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> ( pop | apply ) [--index] [-q|--quiet] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> branch &lt;branchname&gt; [&lt;stash&gt;]
-<emphasis>git stash</emphasis> [push [-p|--patch] [-k|--[no-]keep-index] [-q|--quiet]
+<emphasis>git stash</emphasis> [push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-q|--quiet]
              [-u|--include-untracked] [-a|--all] [-m|--message &lt;message&gt;]
              [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
              [--] [&lt;pathspec&gt;&#8230;]]
@@ -52,7 +52,7 @@ stash index (e.g. the integer <emphasis>n</emphasis> is equivalent to <emphasis>
 <variablelist>
 <varlistentry>
 <term>
-push [-p|--patch] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [-m|--message &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;&#8230;]
+push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [-m|--message &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
@@ -70,7 +70,7 @@ which are allowed after a double hyphen <emphasis>--</emphasis> for disambiguati
 </varlistentry>
 <varlistentry>
 <term>
-save [-p|--patch] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [&lt;message&gt;]
+save [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [&lt;message&gt;]
 </term>
 <listitem>
 <simpara>
@@ -320,6 +320,23 @@ to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-S
+</term>
+<term>
+--staged
+</term>
+<listitem>
+<simpara>
+        This option is only valid for <emphasis>push</emphasis> and <emphasis>save</emphasis> commands.
+</simpara>
+<simpara>Stash only the changes that are currently staged. This is similar to
+basic <emphasis>git commit</emphasis> except the state is committed to the stash instead
+of current branch.</simpara>
+<simpara>The <emphasis>--patch</emphasis> option has priority over this one.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --pathspec-from-file=&lt;file&gt;
 </term>
 <listitem>
@@ -491,6 +508,27 @@ $ git stash pop                  # prepare to work on all other changes
 # ... repeat above five steps until one commit remains ...
 $ edit/build/test remaining parts
 $ git commit foo -m 'Remaining parts'</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Saving unrelated changes for future use
+</term>
+<listitem>
+<simpara>
+When you are in the middle of massive changes and you find some
+unrelated issue that you don't want to forget to fix, you can do the
+change(s), stage them, and use <emphasis>git stash push --staged</emphasis> to stash them
+out for future use. This is similar to committing the staged changes,
+only the commit ends-up being in the stash and not on the current branch.
+</simpara>
+<screen># ... hack hack hack ...
+$ git add --patch foo           # add unrelated changes to the index
+$ git stash push --staged       # save these changes to the stash
+# ... hack hack hack, finish curent changes ...
+$ git commit -m 'Massive'       # commit fully tested changes
+$ git switch fixup-branch       # switch to another branch
+$ git stash pop                 # to finish work on the saved changes</screen>
 </listitem>
 </varlistentry>
 <varlistentry>

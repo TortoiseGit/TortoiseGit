@@ -17,8 +17,9 @@
         [--no-reuse-delta] [--delta-base-offset] [--non-empty]
         [--local] [--incremental] [--window=&lt;n&gt;] [--depth=&lt;n&gt;]
         [--revs [--unpacked | --all]] [--keep-pack=&lt;pack-name&gt;]
-        [--stdout [--filter=&lt;filter-spec&gt;] | base-name]
-        [--shallow] [--keep-true-parents] [--[no-]sparse] &lt; object-list</literallayout>
+        [--cruft] [--cruft-expiration=&lt;time&gt;]
+        [--stdout [--filter=&lt;filter-spec&gt;] | &lt;base-name&gt;]
+        [--shallow] [--keep-true-parents] [--[no-]sparse] &lt; &lt;object-list&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pack-objects(1)__description">
@@ -145,6 +146,47 @@ base-name
 </varlistentry>
 <varlistentry>
 <term>
+--cruft
+</term>
+<listitem>
+<simpara>
+        Packs unreachable objects into a separate "cruft" pack, denoted
+        by the existence of a <emphasis>.mtimes</emphasis> file. Typically used by <emphasis>git
+        repack --cruft</emphasis>. Callers provide a list of pack names and
+        indicate which packs will remain in the repository, along with
+        which packs will be deleted (indicated by the <emphasis>-</emphasis> prefix). The
+        contents of the cruft pack are all objects not contained in the
+        surviving packs which have not exceeded the grace period (see
+        <emphasis>--cruft-expiration</emphasis> below), or which have exceeded the grace
+        period, but are reachable from an other object which hasn't.
+</simpara>
+<simpara>When the input lists a pack containing all reachable objects (and lists
+all other packs as pending deletion), the corresponding cruft pack will
+contain all unreachable objects (with mtime newer than the
+<emphasis>--cruft-expiration</emphasis>) along with any unreachable objects whose mtime is
+older than the <emphasis>--cruft-expiration</emphasis>, but are reachable from an
+unreachable object whose mtime is newer than the <emphasis>--cruft-expiration</emphasis>).</simpara>
+<simpara>Incompatible with <emphasis>--unpack-unreachable</emphasis>, <emphasis>--keep-unreachable</emphasis>,
+<emphasis>--pack-loose-unreachable</emphasis>, <emphasis>--stdin-packs</emphasis>, as well as any other
+options which imply <emphasis>--revs</emphasis>. Also incompatible with <emphasis>--max-pack-size</emphasis>;
+when this option is set, the maximum pack size is not inferred from
+<emphasis>pack.packSizeLimit</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cruft-expiration=&lt;approxidate&gt;
+</term>
+<listitem>
+<simpara>
+        If specified, objects are eliminated from the cruft pack if they
+        have an mtime older than <emphasis>&lt;approxidate&gt;</emphasis>. If unspecified (and
+        given <emphasis>--cruft</emphasis>), then no objects are eliminated.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --window=&lt;n&gt;
 </term>
 <term>
@@ -196,10 +238,10 @@ depth is 4095.</simpara>
         into multiple independent packfiles, each not larger than the
         given size. The size can be suffixed with
         "k", "m", or "g". The minimum size allowed is limited to 1 MiB.
-        This option
-        prevents the creation of a bitmap index.
         The default is unlimited, unless the config variable
-        <emphasis>pack.packSizeLimit</emphasis> is set.
+        <emphasis>pack.packSizeLimit</emphasis> is set. Note that this option may result in
+        a larger and slower repository; see the discussion in
+        <emphasis>pack.packSizeLimit</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

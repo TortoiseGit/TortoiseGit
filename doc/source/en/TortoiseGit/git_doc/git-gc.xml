@@ -70,6 +70,17 @@ be performed as well.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--cruft
+</term>
+<listitem>
+<simpara>
+        When expiring unreachable objects, pack them separately into a
+        cruft pack instead of storing them as loose objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --prune=&lt;date&gt;
 </term>
 <listitem>
@@ -297,17 +308,31 @@ gc.packRefs
 </varlistentry>
 <varlistentry>
 <term>
+gc.cruftPacks
+</term>
+<listitem>
+<simpara>
+        Store unreachable objects in a cruft pack (see
+        <xref linkend="git-repack(1)" />) instead of as loose objects. The default
+        is <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 gc.pruneExpire
 </term>
 <listitem>
 <simpara>
-        When <emphasis>git gc</emphasis> is run, it will call <emphasis>prune --expire 2.weeks.ago</emphasis>.
-        Override the grace period with this config variable.  The value
-        "now" may be used to disable this grace period and always prune
-        unreachable objects immediately, or "never" may be used to
-        suppress pruning.  This feature helps prevent corruption when
-        <emphasis>git gc</emphasis> runs concurrently with another process writing to the
-        repository; see the "NOTES" section of <xref linkend="git-gc(1)" />.
+        When <emphasis>git gc</emphasis> is run, it will call <emphasis>prune --expire 2.weeks.ago</emphasis>
+        (and <emphasis>repack --cruft --cruft-expiration 2.weeks.ago</emphasis> if using
+        cruft packs via <emphasis>gc.cruftPacks</emphasis> or <emphasis>--cruft</emphasis>).  Override the
+        grace period with this config variable.  The value "now" may be
+        used to disable this grace period and always prune unreachable
+        objects immediately, or "never" may be used to suppress pruning.
+        This feature helps prevent corruption when <emphasis>git gc</emphasis> runs
+        concurrently with another process writing to the repository; see
+        the "NOTES" section of <xref linkend="git-gc(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

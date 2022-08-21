@@ -13,8 +13,14 @@
 <simplesect id="git-cat-file(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cat-file</emphasis> (-t [--allow-unknown-type]| -s [--allow-unknown-type]| -e | -p | &lt;type&gt; | --textconv | --filters ) [--path=&lt;path&gt;] &lt;object&gt;
-<emphasis>git cat-file</emphasis> (--batch[=&lt;format&gt;] | --batch-check[=&lt;format&gt;]) [ --textconv | --filters ] [--follow-symlinks]</literallayout>
+<literallayout><emphasis>git cat-file</emphasis> &lt;type&gt; &lt;object&gt;
+<emphasis>git cat-file</emphasis> (-e | -p) &lt;object&gt;
+<emphasis>git cat-file</emphasis> (-t | -s) [--allow-unknown-type] &lt;object&gt;
+<emphasis>git cat-file</emphasis> (--batch | --batch-check | --batch-command) [--batch-all-objects]
+             [--buffer] [--follow-symlinks] [--unordered]
+             [--textconv | --filters]
+<emphasis>git cat-file</emphasis> (--textconv | --filters)
+             [&lt;rev&gt;:&lt;path|tree-ish&gt; | --path=&lt;path|tree-ish&gt; &lt;rev&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cat-file(1)__description">
@@ -178,6 +184,61 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--batch-command
+</term>
+<term>
+--batch-command=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Enter a command mode that reads commands and arguments from stdin. May
+        only be combined with <emphasis>--buffer</emphasis>, <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>. In the
+        case of <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, the input lines also need to specify
+        the path, separated by whitespace. See the section <emphasis>BATCH OUTPUT</emphasis> below
+        for details.
+</simpara>
+<simpara><emphasis>--batch-command</emphasis> recognizes the following commands:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+contents &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Print object contents for object reference <emphasis>&lt;object&gt;</emphasis>. This corresponds to
+        the output of <emphasis>--batch</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+info &lt;object&gt;
+</term>
+<listitem>
+<simpara>
+        Print object info for object reference <emphasis>&lt;object&gt;</emphasis>. This corresponds to the
+        output of <emphasis>--batch-check</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+flush
+</term>
+<listitem>
+<simpara>
+        Used with <emphasis>--buffer</emphasis> to execute all preceding commands that were issued
+        since the beginning or since the last flush was issued. When <emphasis>--buffer</emphasis>
+        is used, no output will come until a <emphasis>flush</emphasis> is issued. When <emphasis>--buffer</emphasis>
+        is not used, commands are flushed each time without issuing <emphasis>flush</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --batch-all-objects
 </term>
 <listitem>
@@ -185,8 +246,10 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
         Instead of reading a list of objects on stdin, perform the
         requested batch operation on all objects in the repository and
         any alternate object stores (not just reachable objects).
-        Requires <emphasis>--batch</emphasis> or <emphasis>--batch-check</emphasis> be specified. Note that
-        the objects are visited in order sorted by their hashes.
+        Requires <emphasis>--batch</emphasis> or <emphasis>--batch-check</emphasis> be specified. By default,
+        the objects are visited in order sorted by their hashes; see
+        also <emphasis>--unordered</emphasis> below. Objects are presented as-is, without
+        respecting the "replace" mechanism of <xref linkend="git-replace(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -200,7 +263,7 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
         that a process can interactively read and write from
         <emphasis>cat-file</emphasis>. With this option, the output uses normal stdio
         buffering; this is much more efficient when invoking
-        <emphasis>--batch-check</emphasis> on a large number of objects.
+        <emphasis>--batch-check</emphasis> or <emphasis>--batch-command</emphasis> on a large number of objects.
 </simpara>
 </listitem>
 </varlistentry>
@@ -290,6 +353,12 @@ will be returned.</simpara>
 from stdin, one per line, and print information about them. By default,
 the whole line is considered as an object, as if it were fed to
 <xref linkend="git-rev-parse(1)" />.</simpara>
+<simpara>When <emphasis>--batch-command</emphasis> is given, <emphasis>cat-file</emphasis> will read commands from stdin,
+one per line, and print information based on the command given. With
+<emphasis>--batch-command</emphasis>, the <emphasis>info</emphasis> command followed by an object will print
+information about the object the same way <emphasis>--batch-check</emphasis> would, and the
+<emphasis>contents</emphasis> command followed by an object prints contents in the same way
+<emphasis>--batch</emphasis> would.</simpara>
 <simpara>You can specify the information shown for each object by using a custom
 <emphasis>&lt;format&gt;</emphasis>. The <emphasis>&lt;format&gt;</emphasis> is copied literally to stdout for each
 object, with placeholders of the form <emphasis>%(atom)</emphasis> expanded, followed by a
@@ -367,9 +436,9 @@ newline. The available atoms are:</simpara>
 </variablelist>
 <simpara>If no format is specified, the default format is <emphasis>%(objectname)
 %(objecttype) %(objectsize)</emphasis>.</simpara>
-<simpara>If <emphasis>--batch</emphasis> is specified, the object information is followed by the
-object contents (consisting of <emphasis>%(objectsize)</emphasis> bytes), followed by a
-newline.</simpara>
+<simpara>If <emphasis>--batch</emphasis> is specified, or if <emphasis>--batch-command</emphasis> is used with the <emphasis>contents</emphasis>
+command, the object information is followed by the object contents (consisting
+of <emphasis>%(objectsize)</emphasis> bytes), followed by a newline.</simpara>
 <simpara>For example, <emphasis>--batch</emphasis> without a custom format would produce:</simpara>
 <screen>&lt;oid&gt; SP &lt;type&gt; SP &lt;size&gt; LF
 &lt;contents&gt; LF</screen>

@@ -377,12 +377,12 @@ explained earlier.</simpara>
 branches to the integration branches, they will typically send a
 request to do so by mail.  Such a request looks like</simpara>
 <screen>Please pull from
-    &lt;url&gt; &lt;branch&gt;</screen>
+    &lt;URL&gt; &lt;branch&gt;</screen>
 <simpara>In that case, <emphasis>git pull</emphasis> can do the fetch and merge in one go, as
 follows.</simpara>
 <example>
 <title>Push/pull: Merging remote topics</title>
-<simpara><emphasis>git pull &lt;url&gt; &lt;branch&gt;</emphasis></simpara>
+<simpara><emphasis>git pull &lt;URL&gt; &lt;branch&gt;</emphasis></simpara>
 </example>
 <simpara>Occasionally, the maintainer may get merge conflicts when they try to
 pull changes from downstream.  In this case, they can ask downstream to
@@ -420,7 +420,7 @@ current upstream, you will have to rebase your topic (you cannot use a
 merge because you cannot format-patch merges):</simpara>
 <example>
 <title>format-patch/am: Keeping topics up to date</title>
-<simpara><emphasis>git pull --rebase &lt;url&gt; &lt;branch&gt;</emphasis></simpara>
+<simpara><emphasis>git pull --rebase &lt;URL&gt; &lt;branch&gt;</emphasis></simpara>
 </example>
 <simpara>You can then fix the conflicts during the rebase.  Presumably you have
 not published your topic other than by mail, so rebasing it is not a

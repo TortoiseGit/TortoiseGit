@@ -130,6 +130,19 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--sparse
+</term>
+<listitem>
+<simpara>
+        Allow updating index entries outside of the sparse-checkout cone.
+        Normally, <emphasis>git rm</emphasis> refuses to update index entries whose paths do
+        not fit within the sparse-checkout cone. See
+        <xref linkend="git-sparse-checkout(1)" /> for more.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -q
 </term>
 <term>

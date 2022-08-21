@@ -19,10 +19,10 @@ Generating git docbook documentation:
 - take *.xml files
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
-index ecd0b34..095810a 100644
+index 4f801f4..7b9fbf1 100644
 --- a/Documentation/Makefile
 +++ b/Documentation/Makefile
-@@ -232,6 +232,8 @@ all: html man
+@@ -225,6 +225,8 @@ all: html man
  
  html: $(DOC_HTML)
  
@@ -31,21 +31,28 @@ index ecd0b34..095810a 100644
  man: man1 man5 man7
  man1: $(DOC_MAN1)
  man5: $(DOC_MAN5)
-@@ -357,12 +359,12 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+@@ -335,7 +337,7 @@ clean:
+ 	$(RM) GIT-ASCIIDOCFLAGS
  
- %.xml : %.txt asciidoc.conf asciidoctor-extensions.rb GIT-ASCIIDOCFLAGS
- 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
--	$(TXT_TO_XML) -d manpage -o $@+ $< && \
-+	$(TXT_TO_XML) -d article -o $@+ $< && \
- 	mv $@+ $@
+ $(MAN_HTML): %.html : %.txt $(ASCIIDOC_DEPS)
+-	$(QUIET_ASCIIDOC)$(TXT_TO_HTML) -d manpage -o $@ $<
++	$(QUIET_ASCIIDOC)$(TXT_TO_HTML) -d article -o $@ $<
+ 
+ $(OBSOLETE_HTML): %.html : %.txto $(ASCIIDOC_DEPS)
+ 	$(QUIET_ASCIIDOC)$(TXT_TO_HTML) -o $@ $<
+@@ -347,10 +349,10 @@ manpage-base-url.xsl: manpage-base-url.xsl.in
+ 	$(QUIET_XMLTO)$(XMLTO) -m $(MANPAGE_XSL) $(XMLTO_EXTRA) man $<
+ 
+ %.xml : %.txt $(ASCIIDOC_DEPS)
+-	$(QUIET_ASCIIDOC)$(TXT_TO_XML) -d manpage -o $@ $<
++	$(QUIET_ASCIIDOC)$(TXT_TO_XML) -d article -o $@ $<
  
  user-manual.xml: user-manual.txt user-manual.conf asciidoctor-extensions.rb GIT-ASCIIDOCFLAGS
- 	$(QUIET_ASCIIDOC)$(RM) $@+ $@ && \
--	$(TXT_TO_XML) -d book -o $@+ $< && \
-+	$(TXT_TO_XML) -d article -o $@+ $< && \
- 	mv $@+ $@
+-	$(QUIET_ASCIIDOC)$(TXT_TO_XML) -d book -o $@ $<
++	$(QUIET_ASCIIDOC)$(TXT_TO_XML) -d article -o $@ $<
  
  technical/api-index.txt: technical/api-index-skel.txt \
+ 	technical/api-index.sh $(patsubst %,%.txt,$(API_DOCS))
 diff --git a/Documentation/asciidoc.conf b/Documentation/asciidoc.conf
 index 3e4c139..7984fe9 100644
 --- a/Documentation/asciidoc.conf

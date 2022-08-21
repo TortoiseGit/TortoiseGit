@@ -13,7 +13,7 @@
 <simplesect id="git(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git</emphasis> [--version] [--help] [-C &lt;path&gt;] [-c &lt;name&gt;=&lt;value&gt;]
+<literallayout><emphasis>git</emphasis> [-v | --version] [-h | --help] [-C &lt;path&gt;] [-c &lt;name&gt;=&lt;value&gt;]
     [--exec-path[=&lt;path&gt;]] [--html-path] [--man-path] [--info-path]
     [-p|--paginate|-P|--no-pager] [--no-replace-objects] [--bare]
     [--git-dir=&lt;path&gt;] [--work-tree=&lt;path&gt;] [--namespace=&lt;name&gt;]
@@ -43,15 +43,24 @@ or <ulink url="https://git-scm.com/docs">https://git-scm.com/docs</ulink>.</simp
 <variablelist>
 <varlistentry>
 <term>
+-v
+</term>
+<term>
 --version
 </term>
 <listitem>
 <simpara>
         Prints the Git suite version that the <emphasis>git</emphasis> program came from.
 </simpara>
+<simpara>This option is internally converted to <emphasis>git version ...</emphasis> and accepts
+the same options as the <xref linkend="git-version(1)" /> command. If <emphasis>--help</emphasis> is
+also given, it takes precedence over <emphasis>--version</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
+<term>
+-h
+</term>
 <term>
 --help
 </term>
@@ -741,7 +750,7 @@ ancillary user utilities.</simpara>
 </term>
 <listitem>
 <simpara>
-        Initialize and modify the sparse-checkout.
+        Reduce your working tree to a subset of tracked files.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1865,6 +1874,16 @@ users typically do not use them directly.</simpara>
 <listitem>
 <simpara>
         Produce a merge commit message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-hook(1)" />
+</term>
+<listitem>
+<simpara>
+        Run git hooks.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3088,8 +3107,9 @@ for full details.</simpara>
 <listitem>
 <simpara>
         By default, when tracing is activated, Git redacts the values of
-        cookies, the "Authorization:" header, and the "Proxy-Authorization:"
-        header. Set this variable to <emphasis>0</emphasis> to prevent this redaction.
+        cookies, the "Authorization:" header, the "Proxy-Authorization:"
+        header and packfile URIs. Set this variable to <emphasis>0</emphasis> to prevent this
+        redaction.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3165,15 +3185,16 @@ for full details.</simpara>
 </term>
 <listitem>
 <simpara>
-        If set to <emphasis>1</emphasis>, include broken or badly named refs when iterating
-        over lists of refs. In a normal, non-corrupted repository, this
-        does nothing. However, enabling it may help git to detect and
-        abort some operations in the presence of broken refs. Git sets
-        this variable automatically when performing destructive
-        operations like <xref linkend="git-prune(1)" />. You should not need to set
-        it yourself unless you want to be paranoid about making sure
-        an operation has touched every ref (e.g., because you are
-        cloning a repository to make a backup).
+        If set to <emphasis>0</emphasis>, ignore broken or badly named refs when iterating
+        over lists of refs. Normally Git will try to include any such
+        refs, which may cause some operations to fail. This is usually
+        preferable, as potentially destructive operations (e.g.,
+        <xref linkend="git-prune(1)" />) are better off aborting rather than
+        ignoring broken refs (and thus considering the history they
+        point to as not worth saving). The default value is <emphasis>1</emphasis> (i.e.,
+        be paranoid about detecting and aborting all operations). You
+        should not normally need to set this to <emphasis>0</emphasis>, but it may be
+        useful when trying to salvage data from a corrupted repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3186,9 +3207,7 @@ for full details.</simpara>
         If set to a colon-separated list of protocols, behave as if
         <emphasis>protocol.allow</emphasis> is set to <emphasis>never</emphasis>, and each of the listed
         protocols has <emphasis>protocol.&lt;name&gt;.allow</emphasis> set to <emphasis>always</emphasis>
-        (overriding any existing configuration). In other words, any
-        protocol not mentioned will be disallowed (i.e., this is a
-        whitelist, not a blacklist). See the description of
+        (overriding any existing configuration). See the description of
         <emphasis>protocol.allow</emphasis> in <xref linkend="git-config(1)" /> for more details.
 </simpara>
 </listitem>
@@ -3218,6 +3237,19 @@ for full details.</simpara>
         <emphasis>key[=value]</emphasis>.  Presence of unknown keys and values must be
         ignored.
 </simpara>
+<simpara>Note that servers may need to be configured to allow this variable to
+pass over some transports. It will be propagated automatically when
+accessing local repositories (i.e., <emphasis>file://</emphasis> or a filesystem path), as
+well as over the <emphasis>git://</emphasis> protocol. For git-over-http, it should work
+automatically in most configurations, but see the discussion in
+<xref linkend="git-http-backend(1)" />. For git-over-ssh, the ssh server may need
+to be configured to allow clients to pass this variable (e.g., by using
+<emphasis>AcceptEnv GIT_PROTOCOL</emphasis> with OpenSSH).</simpara>
+<simpara>This configuration is optional. If the variable is not propagated, then
+clients will fall back to the original "v0" protocol (but may miss out
+on some performance improvements or features). This variable currently
+only affects clones and fetches; it is not yet used for pushes (but may
+be in the future).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

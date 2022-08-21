@@ -603,6 +603,10 @@ and "0" meaning they were not.</simpara>
 running passing "1", "1" should not be possible.</simpara>
 </section>
 </simplesect>
+<simplesect id="githooks(5)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-hook(1)" /></simpara>
+</simplesect>
 <simplesect id="githooks(5)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>

@@ -98,6 +98,16 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 </varlistentry>
 <varlistentry>
 <term>
+--zdiff3
+</term>
+<listitem>
+<simpara>
+        Show conflicts in "zdiff3" style.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --ours
 </term>
 <term>

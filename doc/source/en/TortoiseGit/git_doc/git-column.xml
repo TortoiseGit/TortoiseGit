@@ -83,7 +83,7 @@ columns.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---nl=&lt;N&gt;
+--nl=&lt;string&gt;
 </term>
 <listitem>
 <simpara>

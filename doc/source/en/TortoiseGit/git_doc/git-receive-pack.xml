@@ -49,6 +49,18 @@ its behavior, see <xref linkend="git-config(1)" />.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--http-backend-info-refs
+</term>
+<listitem>
+<simpara>
+        Used by <xref linkend="git-http-backend(1)" /> to serve up
+        <emphasis>$GIT_URL/info/refs?service=git-receive-pack</emphasis> requests. See
+        <emphasis>--http-backend-info-refs</emphasis> in <xref linkend="git-upload-pack(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-receive-pack(1)__pre_receive_hook">

@@ -35,12 +35,11 @@ Patterns read from the command line for those commands that support
 <listitem>
 <simpara>
 Patterns read from a <emphasis>.gitignore</emphasis> file in the same directory
-   as the path, or in any parent directory, with patterns in the
-   higher level files (up to the toplevel of the work tree) being overridden
-   by those in lower level files down to the directory containing the file.
-   These patterns match relative to the location of the
-   <emphasis>.gitignore</emphasis> file.  A project normally includes such
-   <emphasis>.gitignore</emphasis> files in its repository, containing patterns for
+   as the path, or in any parent directory (up to the top-level of the working
+   tree), with patterns in the higher level files being overridden by those in
+   lower level files down to the directory containing the file. These patterns
+   match relative to the location of the <emphasis>.gitignore</emphasis> file.  A project normally
+   includes such <emphasis>.gitignore</emphasis> files in its repository, containing patterns for
    files generated as part of the project build.
 </simpara>
 </listitem>
@@ -222,7 +221,7 @@ accessed from the index or a tree versus from the filesystem.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-The pattern <emphasis>hello.*</emphasis> matches any file or folder
+The pattern <emphasis>hello.*</emphasis> matches any file or directory
    whose name begins with <emphasis>hello.</emphasis>. If one wants to restrict
    this only to the directory and not in its subdirectories,
    one can prepend the pattern with a slash, i.e. <emphasis>/hello.*</emphasis>;

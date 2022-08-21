@@ -562,9 +562,9 @@ Git internal format
 </term>
 <listitem>
 <simpara>
-        It is <emphasis>&lt;unix timestamp&gt; &lt;time zone offset&gt;</emphasis>, where <emphasis>&lt;unix
-        timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
-        <emphasis>&lt;time zone offset&gt;</emphasis> is a positive or negative offset from UTC.
+        It is <emphasis>&lt;unix-timestamp&gt; &lt;time-zone-offset&gt;</emphasis>, where
+        <emphasis>&lt;unix-timestamp&gt;</emphasis> is the number of seconds since the UNIX epoch.
+        <emphasis>&lt;time-zone-offset&gt;</emphasis> is a positive or negative offset from UTC.
         For example CET (which is 1 hour ahead of UTC) is <emphasis>+0100</emphasis>.
 </simpara>
 </listitem>

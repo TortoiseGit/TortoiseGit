@@ -803,6 +803,33 @@
     <ClCompile Include="..\tgit\fsmonitor-ipc.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\cbtree.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\hook.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\oidtree.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\fsmonitor-settings.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\win32\flush.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\terminal.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\credential.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\negotiator\noop.c">
+      <Filter>git\negotiator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\prompt.c">
+      <Filter>git</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1350,6 +1377,33 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\simple-ipc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\cbtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\hook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\oidtree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\fsmonitor-settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\terminal.h">
+      <Filter>compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\credential.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\negotiator\noop.h">
+      <Filter>Header Files\negotiator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\prompt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

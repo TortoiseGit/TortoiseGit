@@ -16,6 +16,7 @@
 <literallayout><emphasis>git checkout-index</emphasis> [-u] [-q] [-a] [-f] [-n] [--prefix=&lt;string&gt;]
                    [--stage=&lt;number&gt;|all]
                    [--temp]
+                   [--ignore-skip-worktree-bits]
                    [-z] [--stdin]
                    [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
@@ -77,8 +78,9 @@
 </term>
 <listitem>
 <simpara>
-        checks out all files in the index.  Cannot be used
-        together with explicit filenames.
+        checks out all files in the index except for those with the
+        skip-worktree bit set (see <emphasis>--ignore-skip-worktree-bits</emphasis>).
+        Cannot be used together with explicit filenames.
 </simpara>
 </listitem>
 </varlistentry>
@@ -128,6 +130,17 @@
         Instead of copying the files to the working directory
         write the content to temporary files.  The temporary name
         associations will be written to stdout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--ignore-skip-worktree-bits
+</term>
+<listitem>
+<simpara>
+        Check out all files, including those with the skip-worktree bit
+        set.
 </simpara>
 </listitem>
 </varlistentry>
