@@ -361,6 +361,11 @@ show tracked paths:</simpara>
 </listitem>
 <listitem>
 <simpara>
+<emphasis>T</emphasis> = file type changed (regular file, symbolic link or submodule)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 <emphasis>A</emphasis> = added
 </simpara>
 </listitem>
@@ -376,7 +381,7 @@ show tracked paths:</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>C</emphasis> = copied
+<emphasis>C</emphasis> = copied (if config option status.renames is set to "copies")
 </simpara>
 </listitem>
 <listitem>
@@ -388,16 +393,18 @@ show tracked paths:</simpara>
 <literallayout class="monospaced">X          Y     Meaning
 -------------------------------------------------
          [AMD]   not updated
-M        [ MD]   updated in index
-A        [ MD]   added to index
+M        [ MTD]  updated in index
+T        [ MTD]  type changed in index
+A        [ MTD]  added to index
 D                deleted from index
-R        [ MD]   renamed in index
-C        [ MD]   copied in index
-[MARC]           index and work tree matches
-[ MARC]     M    work tree changed since index
-[ MARC]     D    deleted in work tree
-[ D]        R    renamed in work tree
-[ D]        C    copied in work tree
+R        [ MTD]  renamed in index
+C        [ MTD]  copied in index
+[MTARC]          index and work tree matches
+[ MTARC]    M    work tree changed since index
+[ MTARC]    T    type changed in work tree since index
+[ MTARC]    D    deleted in work tree
+            R    renamed in work tree
+            C    copied in work tree
 -------------------------------------------------
 D           D    unmerged, both deleted
 A           U    unmerged, added by us
@@ -475,6 +482,12 @@ information about the current branch.</simpara>
                                          the commit is present.
 ------------------------------------------------------------</literallayout>
 </section>
+<section id="git-status(1)__stash_information">
+<title>Stash Information</title>
+<simpara>If <emphasis>--show-stash</emphasis> is given, one line is printed showing the number of stash
+entries if non-zero:</simpara>
+<literallayout class="monospaced"># stash &lt;N&gt;</literallayout>
+</section>
 <section id="git-status(1)__changed_tracked_entries">
 <title>Changed Tracked Entries</title>
 <simpara>Following the headers, a series of lines are printed for tracked
@@ -517,7 +530,7 @@ line types in any order.</simpara>
 --------------------------------------------------------</literallayout>
 <simpara>Unmerged entries have the following format; the first character is
 a "u" to distinguish from ordinary changed entries.</simpara>
-<literallayout class="monospaced">u &lt;xy&gt; &lt;sub&gt; &lt;m1&gt; &lt;m2&gt; &lt;m3&gt; &lt;mW&gt; &lt;h1&gt; &lt;h2&gt; &lt;h3&gt; &lt;path&gt;</literallayout>
+<literallayout class="monospaced">u &lt;XY&gt; &lt;sub&gt; &lt;m1&gt; &lt;m2&gt; &lt;m3&gt; &lt;mW&gt; &lt;h1&gt; &lt;h2&gt; &lt;h3&gt; &lt;path&gt;</literallayout>
 <literallayout class="monospaced">Field       Meaning
 --------------------------------------------------------
 &lt;XY&gt;        A 2 character field describing the conflict type

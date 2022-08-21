@@ -20,7 +20,7 @@
           [--ignore-space-change | --ignore-whitespace]
           [--whitespace=(nowarn|warn|fix|error|error-all)]
           [--exclude=&lt;path&gt;] [--include=&lt;path&gt;] [--directory=&lt;root&gt;]
-          [--verbose] [--unsafe-paths] [&lt;patch&gt;&#8230;]</literallayout>
+          [--verbose | --quiet] [--unsafe-paths] [--allow-empty] [&lt;patch&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-apply(1)__description">
@@ -435,6 +435,20 @@ behavior:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-q
+</term>
+<term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Suppress stderr output. Messages about patch status and progress
+        will not be printed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --recount
 </term>
 <listitem>
@@ -473,6 +487,17 @@ running <emphasis>git apply --directory=modules/git-gui</emphasis>.</simpara>
 <simpara>When <emphasis>git apply</emphasis> is used as a "better GNU patch", the user can pass
 the <emphasis>--unsafe-paths</emphasis> option to override this safety check.  This option
 has no effect when <emphasis>--index</emphasis> or <emphasis>--cached</emphasis> is in use.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--allow-empty
+</term>
+<listitem>
+<simpara>
+        Don't return error for patches containing no diff. This includes
+        empty patches and patches with commit text only.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -23,6 +23,18 @@ arguments.  Here are the rules:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
+Options come first and then args.
+    A subcommand may take dashed options (which may take their own
+    arguments, e.g. "--max-parents 2") and arguments.  You SHOULD
+    give dashed options first and then arguments.  Some commands may
+    accept dashed options after you have already gave non-option
+    arguments (which may make the command ambiguous), but you should
+    not rely on it (because eventually we may find a way to fix
+    these ambiguity by enforcing the "options then args" rule).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 Revisions come first and then paths.
    E.g. in <emphasis>git diff v1.0 v2.0 arch/x86 include/asm-x86</emphasis>,
    <emphasis>v1.0</emphasis> and <emphasis>v2.0</emphasis> are revisions and <emphasis>arch/x86</emphasis> and <emphasis>include/asm-x86</emphasis>
@@ -90,19 +102,19 @@ scripting Git:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-it's preferred to use the non-dashed form of Git commands, which means that
+It's preferred to use the non-dashed form of Git commands, which means that
    you should prefer <emphasis>git foo</emphasis> to <emphasis>git-foo</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-splitting short options to separate words (prefer <emphasis>git foo -a -b</emphasis>
+Splitting short options to separate words (prefer <emphasis>git foo -a -b</emphasis>
    to <emphasis>git foo -ab</emphasis>, the latter may not even work).
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-when a command-line option takes an argument, use the <emphasis>stuck</emphasis> form.  In
+When a command-line option takes an argument, use the <emphasis>stuck</emphasis> form.  In
    other words, write <emphasis>git foo -oArg</emphasis> instead of <emphasis>git foo -o Arg</emphasis> for short
    options, and <emphasis>git foo --long-opt=Arg</emphasis> instead of <emphasis>git foo --long-opt Arg</emphasis>
    for long options.  An option that takes optional option-argument must be
@@ -111,7 +123,7 @@ when a command-line option takes an argument, use the <emphasis>stuck</emphasis>
 </listitem>
 <listitem>
 <simpara>
-when you give a revision parameter to a command, make sure the parameter is
+When you give a revision parameter to a command, make sure the parameter is
    not ambiguous with a name of a file in the work tree.  E.g. do not write
    <emphasis>git log -1 HEAD</emphasis> but write <emphasis>git log -1 HEAD --</emphasis>; the former will not work
    if you happen to have a file called <emphasis>HEAD</emphasis> in the work tree.
@@ -119,7 +131,7 @@ when you give a revision parameter to a command, make sure the parameter is
 </listitem>
 <listitem>
 <simpara>
-many commands allow a long option <emphasis>--option</emphasis> to be abbreviated
+Many commands allow a long option <emphasis>--option</emphasis> to be abbreviated
    only to their unique prefix (e.g. if there is no other option
    whose name begins with <emphasis>opt</emphasis>, you may be able to spell <emphasis>--opt</emphasis> to
    invoke the <emphasis>--option</emphasis> flag), but you should fully spell them out

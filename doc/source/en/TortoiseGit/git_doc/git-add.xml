@@ -14,7 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git add</emphasis> [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--patch | -p]
-          [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]]
+          [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]] [--sparse]
           [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing] [--renormalize]
           [--chmod=(+|-)x] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
@@ -110,6 +110,20 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 <listitem>
 <simpara>
         Allow adding otherwise ignored files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--sparse
+</term>
+<listitem>
+<simpara>
+        Allow updating index entries outside of the sparse-checkout cone.
+        Normally, <emphasis>git add</emphasis> refuses to update index entries whose paths do
+        not fit within the sparse-checkout cone, since those files might
+        be removed from the working tree without warning. See
+        <xref linkend="git-sparse-checkout(1)" /> for more details.
 </simpara>
 </listitem>
 </varlistentry>

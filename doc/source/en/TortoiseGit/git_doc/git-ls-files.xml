@@ -14,9 +14,9 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v] [-f]
-                (--[cached|deleted|others|ignored|stage|unmerged|killed|modified])*
-                (-[c|d|o|i|s|u|k|m])*
-                [--eol]
+                [-c|--cached] [-d|--deleted] [-o|--others] [-i|--|ignored]
+                [-s|--stage] [-u|--unmerged] [-k|--|killed] [-m|--modified]
+                [--directory [--no-empty-directory]] [--eol]
                 [--deduplicate]
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
                 [-X &lt;file&gt;|--exclude-from=&lt;file&gt;]
@@ -401,7 +401,7 @@ other
 <listitem>
 <simpara>
         Recursively calls ls-files on each active submodule in the repository.
-        Currently there is only support for the --cached mode.
+        Currently there is only support for the --cached and --stage modes.
 </simpara>
 </listitem>
 </varlistentry>
@@ -450,6 +450,18 @@ Since Git 2.10 "text=auto eol=lf" and "text=auto eol=crlf" are supported.</simpa
 <simpara>Both the &lt;eolinfo&gt; in the index ("i/&lt;eolinfo&gt;")
 and in the working tree ("w/&lt;eolinfo&gt;") are shown for regular files,
 followed by the  ("attr/&lt;eolattr&gt;").</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--sparse
+</term>
+<listitem>
+<simpara>
+        If the index is sparse, show the sparse directories without expanding
+        to the contained files. Sparse directories will be shown with a
+        trailing slash, such as "x/" for a sparse directory "x".
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

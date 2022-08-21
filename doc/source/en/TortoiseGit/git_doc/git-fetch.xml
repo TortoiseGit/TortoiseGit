@@ -176,8 +176,24 @@ commits reachable from any of the given commits.</simpara>
 <simpara>The argument to this option may be a glob on ref names, a ref, or the (possibly
 abbreviated) SHA-1 of a commit. Specifying a glob is equivalent to specifying
 this option multiple times, one for each matching ref name.</simpara>
-<simpara>See also the <emphasis>fetch.negotiationAlgorithm</emphasis> configuration variable
-documented in <xref linkend="git-config(1)" />.</simpara>
+<simpara>See also the <emphasis>fetch.negotiationAlgorithm</emphasis> and <emphasis>push.negotiate</emphasis>
+configuration variables documented in <xref linkend="git-config(1)" />, and the
+<emphasis>--negotiate-only</emphasis> option below.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--negotiate-only
+</term>
+<listitem>
+<simpara>
+        Do not fetch anything from the server, and instead print the
+        ancestors of the provided <emphasis>--negotiation-tip=*</emphasis> arguments,
+        which we have in common with the server.
+</simpara>
+<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis>.
+Internally this is used to implement the <emphasis>push.negotiate</emphasis> option, see
+<xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -342,6 +358,21 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--refetch
+</term>
+<listitem>
+<simpara>
+        Instead of negotiating with the server to avoid transferring commits and
+        associated objects that are already present locally, this option fetches
+        all objects as a fresh clone would. Use this to reapply a partial clone
+        filter from configuration or using <emphasis>--filter=</emphasis> when the filter
+        definition has changed. Automatic post-fetch maintenance will perform
+        object database pack consolidation to remove any duplicate objects.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --refmap=&lt;refspec&gt;
 </term>
 <listitem>
@@ -383,16 +414,22 @@ documented in <xref linkend="git-config(1)" />.</simpara>
 <listitem>
 <simpara>
         This option controls if and under what conditions new commits of
-        populated submodules should be fetched too. It can be used as a
-        boolean option to completely disable recursion when set to <emphasis>no</emphasis> or to
-        unconditionally recurse into all populated submodules when set to
-        <emphasis>yes</emphasis>, which is the default when this option is used without any
-        value. Use <emphasis>on-demand</emphasis> to only recurse into a populated submodule
-        when the superproject retrieves a commit that updates the submodule's
-        reference to a commit that isn't already in the local submodule
-        clone. By default, <emphasis>on-demand</emphasis> is used, unless
-        <emphasis>fetch.recurseSubmodules</emphasis> is set (see <xref linkend="git-config(1)" />).
+        submodules should be fetched too. When recursing through submodules,
+        <emphasis>git fetch</emphasis> always attempts to fetch "changed" submodules, that is, a
+        submodule that has commits that are referenced by a newly fetched
+        superproject commit but are missing in the local submodule clone. A
+        changed submodule can be fetched as long as it is present locally e.g.
+        in <emphasis>$GIT_DIR/modules/</emphasis> (see <xref linkend="gitsubmodules(7)" />); if the upstream
+        adds a new submodule, that submodule cannot be fetched until it is
+        cloned e.g. by <emphasis>git submodule update</emphasis>.
 </simpara>
+<simpara>When set to <emphasis>on-demand</emphasis>, only changed submodules are fetched. When set
+to <emphasis>yes</emphasis>, all populated submodules are fetched and submodules that are
+both unpopulated and changed are fetched. When set to <emphasis>no</emphasis>, submodules
+are never fetched.</simpara>
+<simpara>When unspecified, this uses the value of <emphasis>fetch.recurseSubmodules</emphasis> if it
+is set (see <xref linkend="git-config(1)" />), defaulting to <emphasis>on-demand</emphasis> if unset.
+When this option is used without any value, it defaults to <emphasis>yes</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -876,12 +913,12 @@ of this remote will be used by default when you do
 not provide a refspec on the command line.  The entry in the
 config file would appear like this:</simpara>
 <screen>        [remote "&lt;name&gt;"]
-                url = &lt;url&gt;
+                url = &lt;URL&gt;
                 pushurl = &lt;pushurl&gt;
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;url&gt;</emphasis>.</simpara>
+to <emphasis>&lt;URL&gt;</emphasis>.</simpara>
 </section>
 <section id="git-fetch(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
@@ -905,8 +942,8 @@ be specified for additional branch mappings.</simpara>
 file in <emphasis>$GIT_DIR/branches</emphasis>.
 The URL in this file will be used to access the repository.
 This file should have the following format:</simpara>
-<screen>        &lt;url&gt;#&lt;head&gt;</screen>
-<simpara><emphasis>&lt;url&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
+<screen>        &lt;URL&gt;#&lt;head&gt;</screen>
+<simpara><emphasis>&lt;URL&gt;</emphasis> is required; <emphasis>#&lt;head&gt;</emphasis> is optional.</simpara>
 <simpara>Depending on the operation, git will use one of the following
 refspecs, if you don't provide one on the command line.
 <emphasis>&lt;branch&gt;</emphasis> is the name of this file in <emphasis>$GIT_DIR/branches</emphasis> and
@@ -988,7 +1025,7 @@ remember to run that, set <emphasis>fetch.prune</emphasis> globally, or
 <emphasis>remote.&lt;name&gt;.prune</emphasis> per-remote in the config. See
 <xref linkend="git-config(1)" />.</simpara>
 <simpara>Here's where things get tricky and more specific. The pruning feature
-doesn't actually care about branches, instead it'll prune local &lt;&#8594;
+doesn't actually care about branches, instead it'll prune local &#8592;&#8594;
 remote-references as a function of the refspec of the remote (see
 <emphasis>&lt;refspec&gt;</emphasis> and <link linkend="git-fetch(1)_CRTB">CONFIGURED REMOTE-TRACKING BRANCHES</link> above).</simpara>
 <simpara>Therefore if the refspec for the remote includes
@@ -1257,12 +1294,10 @@ As in #1, the attacker chooses an object ID X to steal. The victim sends
 </simplesect>
 <simplesect id="git-fetch(1)__bugs">
 <title>BUGS</title>
-<simpara>Using --recurse-submodules can only fetch new commits in already checked
-out submodules right now. When e.g. upstream added a new submodule in the
-just fetched commits of the superproject the submodule itself cannot be
-fetched, making it impossible to check out that submodule later without
-having to do a fetch again. This is expected to be fixed in a future Git
-version.</simpara>
+<simpara>Using --recurse-submodules can only fetch new commits in submodules that are
+present locally e.g. in <emphasis>$GIT_DIR/modules/</emphasis>. If the upstream adds a new
+submodule, that submodule cannot be fetched until it is cloned e.g. by <emphasis>git
+submodule update</emphasis>. This is expected to be fixed in a future Git version.</simpara>
 </simplesect>
 <simplesect id="git-fetch(1)__see_also">
 <title>SEE ALSO</title>

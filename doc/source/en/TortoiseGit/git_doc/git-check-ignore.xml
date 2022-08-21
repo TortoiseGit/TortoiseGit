@@ -49,7 +49,7 @@ subject to exclude rules; but see --no-index.</simpara>
         Instead of printing the paths that are excluded, for each path
         that matches an exclude pattern, print the exclude pattern
         together with the path.  (Matching an exclude pattern usually
-        means the path is excluded, but if the pattern begins with <emphasis>!</emphasis>
+        means the path is excluded, but if the pattern begins with "<emphasis>!</emphasis>"
         then it is a negated pattern and matching it means the path is
         NOT excluded.)
 </simpara>
@@ -120,7 +120,7 @@ ignored.</simpara>
 <simpara>&lt;pathname&gt; is the path of a file being queried, &lt;pattern&gt; is the
 matching pattern, &lt;source&gt; is the pattern's source file, and &lt;linenum&gt;
 is the line number of the pattern within that source.  If the pattern
-contained a <emphasis>!</emphasis> prefix or <emphasis>/</emphasis> suffix, it will be preserved in the
+contained a "<emphasis>!</emphasis>" prefix or "<emphasis>/</emphasis>" suffix, it will be preserved in the
 output.  &lt;source&gt; will be an absolute path when referring to the file
 configured by <emphasis>core.excludesFile</emphasis>, or relative to the repository root
 when referring to <emphasis>.git/info/exclude</emphasis> or a per-directory exclude file.</simpara>

@@ -211,6 +211,21 @@ effect to your index in a row.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--reference
+</term>
+<listitem>
+<simpara>
+        Instead of starting the body of the log message with "This
+        reverts &lt;full object name of the commit being reverted&gt;.",
+        refer to the commit using "--pretty=reference" format
+        (cf. <xref linkend="git-log(1)" />).  The <emphasis>revert.reference</emphasis>
+        configuration variable can be used to enable this option by
+        default.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-revert(1)__sequencer_subcommands">

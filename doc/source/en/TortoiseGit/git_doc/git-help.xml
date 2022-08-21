@@ -13,13 +13,15 @@
 <simplesect id="git-help(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git help</emphasis> [-a|--all [--[no-]verbose]] [-g|--guides]
-           [-i|--info|-m|--man|-w|--web] [COMMAND|GUIDE]</literallayout>
+<literallayout><emphasis>git help</emphasis> [-a|--all] [--[no-]verbose] [--[no-]external-commands] [--[no-]aliases]
+<emphasis>git help</emphasis> [[-i|--info] [-m|--man] [-w|--web]] [&lt;command&gt;|&lt;guide&gt;]
+<emphasis>git help</emphasis> [-g|--guides]
+<emphasis>git help</emphasis> [-c|--config]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-help(1)__description">
 <title>DESCRIPTION</title>
-<simpara>With no options and no COMMAND or GUIDE given, the synopsis of the <emphasis>git</emphasis>
+<simpara>With no options and no <emphasis>&lt;command&gt;</emphasis> or <emphasis>&lt;guide&gt;</emphasis> given, the synopsis of the <emphasis>git</emphasis>
 command and a list of the most commonly used Git commands are printed
 on the standard output.</simpara>
 <simpara>If the option <emphasis>--all</emphasis> or <emphasis>-a</emphasis> is given, all available commands are
@@ -32,7 +34,7 @@ purpose, but this can be overridden by other options or configuration
 variables.</simpara>
 <simpara>If an alias is given, git shows the definition of the alias on
 standard output. To get the manual page for the aliased command, use
-<emphasis>git COMMAND --help</emphasis>.</simpara>
+<emphasis>git &lt;command&gt; --help</emphasis>.</simpara>
 <simpara>Note that <emphasis>git --help ...</emphasis> is identical to <emphasis>git help ...</emphasis> because the
 former is internally converted into the latter.</simpara>
 <simpara>To display the <xref linkend="git(1)" /> man page, use <emphasis>git help git</emphasis>.</simpara>
@@ -50,8 +52,29 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints all the available commands on the standard output. This
-        option overrides any given command or guide name.
+        Prints all the available commands on the standard output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-external-commands
+</term>
+<listitem>
+<simpara>
+        When used with <emphasis>--all</emphasis>, exclude the listing of external "git-*"
+        commands found in the <emphasis>$PATH</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-aliases
+</term>
+<listitem>
+<simpara>
+        When used with <emphasis>--all</emphasis>, exclude the listing of configured
+        aliases.
 </simpara>
 </listitem>
 </varlistentry>
@@ -89,8 +112,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints a list of the Git concept guides on the standard output. This
-        option overrides any given command or guide name.
+        Prints a list of the Git concept guides on the standard output.
 </simpara>
 </listitem>
 </varlistentry>

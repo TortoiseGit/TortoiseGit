@@ -13,7 +13,8 @@
 <simplesect id="git-send-email(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;file|directory|rev-list options&gt;&#8230;
+<literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;file|directory&gt;&#8230;
+<emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;format-patch options&gt;
 <emphasis>git send-email</emphasis> --dump-aliases</literallayout>
 </blockquote>
 </simplesect>
@@ -23,7 +24,8 @@
 Patches can be specified as files, directories (which will send all
 files in the directory), or directly as a revision list.  In the
 last case, any format accepted by <xref linkend="git-format-patch(1)" /> can
-be passed to git send-email.</simpara>
+be passed to git send-email, as well as options understood by
+<xref linkend="git-format-patch(1)" />.</simpara>
 <simpara>The header of the email is configurable via command-line options.  If not
 specified on the command line, the user will be prompted with a ReadLine
 enabled interface to provide the necessary information.</simpara>
@@ -266,6 +268,21 @@ value; if that is unspecified, default to <emphasis>auto</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--sendmail-cmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a command to run to send the email. The command should
+        be sendmail-like; specifically, it must support the <emphasis>-i</emphasis> option.
+        The command will be executed in the shell if necessary.  Default
+        is the value of <emphasis>sendemail.sendmailcmd</emphasis>.  If unspecified, and if
+        --smtp-server is also unspecified, git-send-email will search
+        for <emphasis>sendmail</emphasis> in <emphasis>/usr/sbin</emphasis>, <emphasis>/usr/lib</emphasis> and $PATH.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --smtp-encryption=&lt;encryption&gt;
 </term>
 <listitem>
@@ -343,14 +360,16 @@ a password is obtained using <emphasis>git-credential</emphasis>.</simpara>
 <listitem>
 <simpara>
         If set, specifies the outgoing SMTP server to use (e.g.
-        <emphasis>smtp.example.com</emphasis> or a raw IP address).  Alternatively it can
-        specify a full pathname of a sendmail-like program instead;
-        the program must support the <emphasis>-i</emphasis> option.  Default value can
-        be specified by the <emphasis>sendemail.smtpServer</emphasis> configuration
-        option; the built-in default is to search for <emphasis>sendmail</emphasis> in
-        <emphasis>/usr/sbin</emphasis>, <emphasis>/usr/lib</emphasis> and $PATH if such program is
-        available, falling back to <emphasis>localhost</emphasis> otherwise.
+        <emphasis>smtp.example.com</emphasis> or a raw IP address).  If unspecified, and if
+        <emphasis>--sendmail-cmd</emphasis> is also unspecified, the default is to search
+        for <emphasis>sendmail</emphasis> in <emphasis>/usr/sbin</emphasis>, <emphasis>/usr/lib</emphasis> and $PATH if such a
+        program is available, falling back to <emphasis>localhost</emphasis> otherwise.
 </simpara>
+<simpara>For backward compatibility, this option can also specify a full pathname
+of a sendmail-like program instead; the program must support the <emphasis>-i</emphasis>
+option.  This method does not support passing arguments or using plain
+command names.  For those use cases, consider using <emphasis>--sendmail-cmd</emphasis>
+instead.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

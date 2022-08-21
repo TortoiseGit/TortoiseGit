@@ -13,7 +13,7 @@
 <simplesect id="git-http-fetch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git http-fetch</emphasis> [-c] [-t] [-a] [-d] [-v] [-w filename] [--recover] [--stdin | --packfile=&lt;hash&gt; | &lt;commit&gt;] &lt;url&gt;</literallayout>
+<literallayout><emphasis>git http-fetch</emphasis> [-c] [-t] [-a] [-d] [-v] [-w &lt;filename&gt;] [--recover] [--stdin | --packfile=&lt;hash&gt; | &lt;commit&gt;] &lt;URL&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-http-fetch(1)__description">

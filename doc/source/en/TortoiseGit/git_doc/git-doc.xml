@@ -71,12 +71,14 @@
 		<xi:include href="./git-format-patch.xml"/>
 		<xi:include href="./git-fsck-objects.xml"/>
 		<xi:include href="./git-fsck.xml"/>
+		<xi:include href="./git-fsmonitor--daemon.xml"/>
 		<xi:include href="./git-gc.xml"/>
 		<xi:include href="./git-get-tar-commit-id.xml"/>
 		<xi:include href="./git-grep.xml"/>
 		<xi:include href="./git-gui.xml"/>
 		<xi:include href="./git-hash-object.xml"/>
 		<xi:include href="./git-help.xml"/>
+		<xi:include href="./git-hook.xml"/>
 		<xi:include href="./git-http-backend.xml"/>
 		<xi:include href="./git-http-fetch.xml"/>
 		<xi:include href="./git-http-push.xml"/>
@@ -167,6 +169,7 @@
 		<xi:include href="./git-verify-commit.xml"/>
 		<xi:include href="./git-verify-pack.xml"/>
 		<xi:include href="./git-verify-tag.xml"/>
+		<xi:include href="./git-version.xml"/>
 		<xi:include href="./git-web--browse.xml"/>
 		<xi:include href="./git-whatchanged.xml"/>
 		<xi:include href="./git-worktree.xml"/>

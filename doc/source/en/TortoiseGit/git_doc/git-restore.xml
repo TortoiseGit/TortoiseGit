@@ -163,8 +163,7 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
         The same as <emphasis>--merge</emphasis> option above, but changes the way the
         conflicting hunks are presented, overriding the
         <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values
-        are "merge" (default) and "diff3" (in addition to what is
-        shown by "merge" style, shows the original contents).
+        are "merge" (default), "diff3", and "zdiff3".
 </simpara>
 </listitem>
 </varlistentry>

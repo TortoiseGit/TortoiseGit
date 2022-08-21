@@ -13,7 +13,7 @@
 <simplesect id="git-http-push(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git http-push</emphasis> [--all] [--dry-run] [--force] [--verbose] &lt;url&gt; &lt;ref&gt; [&lt;ref&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git http-push</emphasis> [--all] [--dry-run] [--force] [--verbose] &lt;URL&gt; &lt;ref&gt; [&lt;ref&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-http-push(1)__description">
@@ -124,21 +124,20 @@ Specified branch is an ancestor of the remote HEAD
 of such patterns separated by a colon ":" (this means that a ref name
 cannot have a colon in it).  A single pattern <emphasis>&lt;name&gt;</emphasis> is just a
 shorthand for <emphasis>&lt;name&gt;:&lt;name&gt;</emphasis>.</simpara>
-<simpara>Each pattern pair consists of the source side (before the colon)
-and the destination side (after the colon).  The ref to be
-pushed is determined by finding a match that matches the source
-side, and where it is pushed is determined by using the
-destination side.</simpara>
+<simpara>Each pattern pair <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> consists of the source side (before
+the colon) and the destination side (after the colon).  The ref to be
+pushed is determined by finding a match that matches the source side,
+and where it is pushed is determined by using the destination side.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-It is an error if &lt;src&gt; does not match exactly one of the
+It is an error if <emphasis>&lt;src&gt;</emphasis> does not match exactly one of the
    local refs.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-If &lt;dst&gt; does not match any remote ref, either
+If <emphasis>&lt;dst&gt;</emphasis> does not match any remote ref, either
 </simpara>
 <itemizedlist>
 <listitem>

@@ -2091,7 +2091,7 @@ commit.  Git calls this process a <link linkend="Git User Manual_fast-forwards">
             o--o--o &lt;-- new head of the branch</literallayout>
 <simpara>In some cases it is possible that the new head will <emphasis role="strong">not</emphasis> actually be
 a descendant of the old head.  For example, the developer may have
-realized she made a serious mistake, and decided to backtrack,
+realized a serious mistake was made and decided to backtrack,
 resulting in a situation like:</simpara>
 <literallayout class="monospaced"> o--o--o--o--a--b &lt;-- old head of the branch
            \
@@ -2441,7 +2441,7 @@ bigger picture, you changed something else in that file and committed
 that <emphasis role="strong">updated</emphasis> thing--the old state that you added originally ends up
 not being pointed to by any commit or tree, so it's now a dangling blob
 object.</simpara>
-<simpara>Similarly, when the "recursive" merge strategy runs, and finds that
+<simpara>Similarly, when the "ort" merge strategy runs, and finds that
 there are criss-cross merges and thus more than one merge base (which is
 fairly unusual, but it does happen), it will generate one temporary
 midway tree (or possibly even more, if you had lots of criss-crossing
@@ -3579,8 +3579,8 @@ current branch integrates with) obviously do not work, as there is no
         <link linkend="Git User Manual_def_revision">revision</link> and you are "merging" another
         <link linkend="Git User Manual_def_branch">branch</link>'s changes that happen to be a descendant of what
         you have. In such a case, you do not make a new <link linkend="Git User Manual_def_merge">merge</link>
-        <link linkend="Git User Manual_def_commit">commit</link> but instead just update to his
-        revision. This will happen frequently on a
+        <link linkend="Git User Manual_def_commit">commit</link> but instead just update your branch to point at the same
+        revision as the branch you are merging. This will happen frequently on a
         <link linkend="Git User Manual_def_remote_tracking_branch">remote-tracking branch</link> of a remote
         <link linkend="Git User Manual_def_repository">repository</link>.
 </simpara>
@@ -3917,7 +3917,7 @@ This commit is referred to as a "merge commit", or sometimes just a
 ls-tree", "git add", "git grep", "git diff", "git checkout",
 and many other commands to
 limit the scope of operations to some subset of the tree or
-worktree.  See the documentation of each command for whether
+working tree.  See the documentation of each command for whether
 paths are relative to the current directory or toplevel.  The
 pathspec syntax is as follows:</simpara>
 <itemizedlist>
@@ -4156,7 +4156,7 @@ exclude
 </term>
 <listitem>
 <simpara>
-        Refs that are per-<link linkend="Git User Manual_def_working_tree">worktree</link>, rather than
+        Refs that are per-<link linkend="Git User Manual_def_worktree">worktree</link>, rather than
         global.  This is presently only <link linkend="Git User Manual_def_HEAD">HEAD</link> and any refs
         that start with <emphasis>refs/bisect/</emphasis>, but might later include other
         unusual refs.
@@ -4599,6 +4599,22 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
         The tree of actual checked out files.  The working tree normally
         contains the contents of the <link linkend="Git User Manual_def_HEAD">HEAD</link> commit's tree,
         plus any local changes that you have made but not yet committed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="Git User Manual_def_worktree" xreflabel="[def_worktree]"/>worktree
+</term>
+<listitem>
+<simpara>
+        A repository can have zero (i.e. bare repository) or one or
+        more worktrees attached to it. One "worktree" consists of a
+        "working tree" and repository metadata, most of which are
+        shared among other worktrees of a single repository, and
+        some of which are maintained separately per worktree
+        (e.g. the index, HEAD and pseudorefs like MERGE_HEAD,
+        per-worktree refs and per-worktree configuration file).
 </simpara>
 </listitem>
 </varlistentry>

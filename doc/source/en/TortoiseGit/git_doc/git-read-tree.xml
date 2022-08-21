@@ -14,8 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git read-tree</emphasis> [[-m [--trivial] [--aggressive] | --reset | --prefix=&lt;prefix&gt;]
-                [-u [--exclude-per-directory=&lt;gitignore&gt;] | -i]]
-                [--index-output=&lt;file&gt;] [--no-sparse-checkout]
+                [-u | -i]] [--index-output=&lt;file&gt;] [--no-sparse-checkout]
                 (--empty | &lt;tree-ish1&gt; [&lt;tree-ish2&gt; [&lt;tree-ish3&gt;]])</literallayout>
 </blockquote>
 </simplesect>
@@ -54,8 +53,9 @@ will be in unmerged state when <emphasis>git read-tree</emphasis> returns.</simp
 <listitem>
 <simpara>
         Same as -m, except that unmerged entries are discarded instead
-        of failing. When used with <emphasis>-u</emphasis>, updates leading to loss of
-        working tree changes will not abort the operation.
+        of failing.  When used with <emphasis>-u</emphasis>, updates leading to loss of
+        working tree changes or untracked files or directories will not
+        abort the operation.
 </simpara>
 </listitem>
 </varlistentry>
@@ -166,28 +166,6 @@ when both sides add a path identically.  The resolution
         of the named tree-ish under the directory at <emphasis>&lt;prefix&gt;</emphasis>.
         The command will refuse to overwrite entries that already
         existed in the original index file.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---exclude-per-directory=&lt;gitignore&gt;
-</term>
-<listitem>
-<simpara>
-        When running the command with <emphasis>-u</emphasis> and <emphasis>-m</emphasis> options, the
-        merge result may need to overwrite paths that are not
-        tracked in the current branch.  The command usually
-        refuses to proceed with the merge to avoid losing such a
-        path.  However this safety valve sometimes gets in the
-        way.  For example, it often happens that the other
-        branch added a file that used to be a generated file in
-        your branch, and the safety valve triggers when you try
-        to switch to that branch after you ran <emphasis>make</emphasis> but before
-        running <emphasis>make clean</emphasis> to remove the generated file.  This
-        option tells the command to read per-directory exclude
-        file (usually <emphasis>.gitignore</emphasis>) and allows such an untracked
-        but explicitly ignored file to be overwritten.
 </simpara>
 </listitem>
 </varlistentry>
@@ -522,16 +500,24 @@ have finished your work-in-progress), attempt the merge again.</simpara>
 </simplesect>
 <simplesect id="git-read-tree(1)__sparse_checkout">
 <title>SPARSE CHECKOUT</title>
+<simpara>Note: The skip-worktree capabilities in <xref linkend="git-update-index(1)" />
+and <emphasis>read-tree</emphasis> predated the introduction of
+<xref linkend="git-sparse-checkout(1)" />.  Users are encouraged to use the
+<emphasis>sparse-checkout</emphasis> command in preference to these plumbing commands for
+sparse-checkout/skip-worktree related needs.  However, the information
+below might be useful to users trying to understand the pattern style
+used in non-cone mode of the <emphasis>sparse-checkout</emphasis> command.</simpara>
 <simpara>"Sparse checkout" allows populating the working directory sparsely.
-It uses the skip-worktree bit (see <xref linkend="git-update-index(1)" />) to tell
-Git whether a file in the working directory is worth looking at.</simpara>
+It uses the skip-worktree bit (see <xref linkend="git-update-index(1)" />) to
+tell Git whether a file in the working directory is worth looking at.</simpara>
 <simpara><emphasis>git read-tree</emphasis> and other merge-based commands (<emphasis>git merge</emphasis>, <emphasis>git
 checkout</emphasis>&#8230;) can help maintaining the skip-worktree bitmap and working
 directory update. <emphasis>$GIT_DIR/info/sparse-checkout</emphasis> is used to
 define the skip-worktree reference bitmap. When <emphasis>git read-tree</emphasis> needs
 to update the working directory, it resets the skip-worktree bit in the index
 based on this file, which uses the same syntax as .gitignore files.
-If an entry matches a pattern in this file, skip-worktree will not be
+If an entry matches a pattern in this file, or the entry corresponds to
+a file present in the working tree, then skip-worktree will not be
 set on that entry. Otherwise, skip-worktree will be set.</simpara>
 <simpara>Then it compares the new skip-worktree value with the previous one. If
 skip-worktree turns from set to unset, it will add the corresponding
@@ -555,8 +541,8 @@ support.</simpara>
 </simplesect>
 <simplesect id="git-read-tree(1)__see_also">
 <title>SEE ALSO</title>
-<simpara><xref linkend="git-write-tree(1)" />; <xref linkend="git-ls-files(1)" />;
-<xref linkend="gitignore(5)" />; <xref linkend="git-sparse-checkout(1)" />;</simpara>
+<simpara><xref linkend="git-write-tree(1)" />, <xref linkend="git-ls-files(1)" />,
+<xref linkend="gitignore(5)" />, <xref linkend="git-sparse-checkout(1)" /></simpara>
 </simplesect>
 <simplesect id="git-read-tree(1)__git">
 <title>GIT</title>

@@ -13,7 +13,7 @@
 <simplesect id="git-cherry-pick(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m parent-number] [-s] [-x] [--ff]
+<literallayout><emphasis>git cherry-pick</emphasis> [--edit] [-n] [-m &lt;parent-number&gt;] [-s] [-x] [--ff]
                   [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
 <emphasis>git cherry-pick</emphasis> (--continue | --skip | --abort | --quit)</literallayout>
 </blockquote>
@@ -145,10 +145,10 @@ conflicts.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--m parent-number
+-m &lt;parent-number&gt;
 </term>
 <term>
---mainline parent-number
+--mainline &lt;parent-number&gt;
 </term>
 <listitem>
 <simpara>

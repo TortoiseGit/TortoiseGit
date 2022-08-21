@@ -16,8 +16,8 @@
 <literallayout><emphasis>git blame</emphasis> [-c] [-b] [-l] [--root] [-t] [-f] [-n] [-s] [-e] [-p] [-w] [--incremental]
             [-L &lt;range&gt;] [-S &lt;revs-file&gt;] [-M] [-C] [-C] [-C] [--since=&lt;date&gt;]
             [--ignore-rev &lt;rev&gt;] [--ignore-revs-file &lt;file&gt;]
-            [--progress] [--abbrev=&lt;n&gt;] [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;..&lt;rev&gt;]
-            [--] &lt;file&gt;</literallayout>
+            [--color-lines] [--color-by-age] [--progress] [--abbrev=&lt;n&gt;]
+            [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;..&lt;rev&gt;] [--] &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-blame(1)__description">
@@ -362,6 +362,31 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--color-lines
+</term>
+<listitem>
+<simpara>
+        Color line annotations in the default format differently if they come from
+        the same commit as the preceding line. This makes it easier to distinguish
+        code blocks introduced by different commits. The color defaults to cyan and
+        can be adjusted using the <emphasis>color.blame.repeatedLines</emphasis> config option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--color-by-age
+</term>
+<listitem>
+<simpara>
+        Color line annotations depending on the age of the line in the default format.
+        The <emphasis>color.blame.highlightRecent</emphasis> config option controls what color is used for
+        each range of age.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -h
 </term>
 <listitem>
@@ -475,6 +500,30 @@ take effect.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-blame(1)__the_default_format">
+<title>THE DEFAULT FORMAT</title>
+<simpara>When neither <emphasis>--porcelain</emphasis> nor <emphasis>--incremental</emphasis> option is specified,
+<emphasis>git blame</emphasis> will output annotation for each line with:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+abbreviated object name for the commit the line came from;
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+author ident (by default author name and date, unless <emphasis>-s</emphasis> or <emphasis>-e</emphasis>
+  is specified); and
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+line number
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>before the line contents.</simpara>
 </simplesect>
 <simplesect id="git-blame(1)__the_porcelain_format">
 <title>THE PORCELAIN FORMAT</title>

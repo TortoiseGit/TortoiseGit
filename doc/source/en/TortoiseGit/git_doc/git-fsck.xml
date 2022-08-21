@@ -16,7 +16,7 @@
 <literallayout><emphasis>git fsck</emphasis> [--tags] [--root] [--unreachable] [--cache] [--no-reflogs]
          [--[no-]full] [--strict] [--verbose] [--lost-found]
          [--[no-]dangling] [--[no-]progress] [--connectivity-only]
-         [--[no-]name-objects] [&lt;object&gt;*]</literallayout>
+         [--[no-]name-objects] [&lt;object&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fsck(1)__description">

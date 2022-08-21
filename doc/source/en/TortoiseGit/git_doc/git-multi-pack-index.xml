@@ -13,8 +13,7 @@
 <simplesect id="git-multi-pack-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git multi-pack-index</emphasis> [--object-dir=&lt;dir&gt;] [--[no-]progress]
-        [--preferred-pack=&lt;pack&gt;] &lt;subcommand&gt;</literallayout>
+<literallayout><emphasis>git multi-pack-index</emphasis> [--object-dir=&lt;dir&gt;] [--[no-]bitmap] &lt;sub-command&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-multi-pack-index(1)__description">
@@ -34,6 +33,7 @@
         <emphasis>&lt;dir&gt;/packs/multi-pack-index</emphasis> for the current MIDX file, and
         <emphasis>&lt;dir&gt;/packs</emphasis> for the pack-files to index.
 </simpara>
+<simpara><emphasis>&lt;dir&gt;</emphasis> must be an alternate of the current repository.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -43,7 +43,8 @@
 <listitem>
 <simpara>
         Turn progress on/off explicitly. If neither is specified, progress is
-        shown if standard error is connected to a terminal.
+        shown if standard error is connected to a terminal. Supported by
+        sub-commands <emphasis>write</emphasis>, <emphasis>verify</emphasis>, <emphasis>expire</emphasis>, and `repack.
 </simpara>
 </listitem>
 </varlistentry>
@@ -67,10 +68,51 @@ write
 <listitem>
 <simpara>
                 Optionally specify the tie-breaking pack used when
-                multiple packs contain the same object. If not given,
-                ties are broken in favor of the pack with the lowest
-                mtime.
+                multiple packs contain the same object. <emphasis>&lt;pack&gt;</emphasis> must
+                contain at least one object. If not given, ties are
+                broken in favor of the pack with the lowest mtime.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]bitmap
+</term>
+<listitem>
+<simpara>
+                Control whether or not a multi-pack bitmap is written.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin-packs
+</term>
+<listitem>
+<simpara>
+                Write a multi-pack index containing only the set of
+                line-delimited pack index basenames provided over stdin.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--refs-snapshot=&lt;path&gt;
+</term>
+<listitem>
+<simpara>
+                With <emphasis>--bitmap</emphasis>, optionally specify a file which
+                contains a "refs snapshot" taken prior to repacking.
+</simpara>
+<simpara>A reference snapshot is composed of line-delimited OIDs corresponding to
+the reference tips, usually taken by <emphasis>git repack</emphasis> prior to generating a
+new pack. A line may optionally start with a <emphasis>+</emphasis> character to indicate
+that the reference which corresponds to that OID is "preferred" (see
+<xref linkend="git-config(1)" />'s <emphasis>pack.preferBitmapTips</emphasis>.)</simpara>
+<simpara>The file given at <emphasis>&lt;path&gt;</emphasis> is expected to be readable, and can contain
+duplicates. (If a given OID is given more than once, it is marked as
+preferred if at least one instance of it begins with the special <emphasis>+</emphasis>
+marker).</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -132,9 +174,16 @@ associated <emphasis>.keep</emphasis> file will not be selected for the batch to
 <itemizedlist>
 <listitem>
 <simpara>
-Write a MIDX file for the packfiles in the current .git folder.
+Write a MIDX file for the packfiles in the current <emphasis>.git</emphasis> directory.
 </simpara>
 <screen>$ git multi-pack-index write</screen>
+</listitem>
+<listitem>
+<simpara>
+Write a MIDX file for the packfiles in the current <emphasis>.git</emphasis> directory with a
+corresponding bitmap.
+</simpara>
+<screen>$ git multi-pack-index write --preferred-pack=&lt;pack&gt; --bitmap</screen>
 </listitem>
 <listitem>
 <simpara>
@@ -144,7 +193,7 @@ Write a MIDX file for the packfiles in an alternate object store.
 </listitem>
 <listitem>
 <simpara>
-Verify the MIDX file for the packfiles in the current .git folder.
+Verify the MIDX file for the packfiles in the current <emphasis>.git</emphasis> directory.
 </simpara>
 <screen>$ git multi-pack-index verify</screen>
 </listitem>

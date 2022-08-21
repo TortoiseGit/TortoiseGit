@@ -21,7 +21,8 @@
         [--points-at &lt;object&gt;] [--format=&lt;format&gt;]
         [(-r | --remotes) | (-a | --all)]
         [--list] [&lt;pattern&gt;&#8230;]
-<emphasis>git branch</emphasis> [--track | --no-track] [-f] &lt;branchname&gt; [&lt;start-point&gt;]
+<emphasis>git branch</emphasis> [--track[=(direct|inherit)] | --no-track] [-f]
+        [--recurse-submodules] &lt;branchname&gt; [&lt;start-point&gt;]
 <emphasis>git branch</emphasis> (--set-upstream-to=&lt;upstream&gt; | -u &lt;upstream&gt;) [&lt;branchname&gt;]
 <emphasis>git branch</emphasis> --unset-upstream [&lt;branchname&gt;]
 <emphasis>git branch</emphasis> (-m | -M) [&lt;oldbranch&gt;] &lt;newbranch&gt;
@@ -143,7 +144,8 @@ way to clean up all obsolete remote-tracking branches.</simpara>
         Reset &lt;branchname&gt; to &lt;startpoint&gt;, even if &lt;branchname&gt; exists
         already. Without <emphasis>-f</emphasis>, <emphasis>git branch</emphasis> refuses to change an existing branch.
         In combination with <emphasis>-d</emphasis> (or <emphasis>--delete</emphasis>), allow deleting the
-        branch irrespective of its merged status. In combination with
+        branch irrespective of its merged status, or whether it even
+        points to a valid commit. In combination with
         <emphasis>-m</emphasis> (or <emphasis>--move</emphasis>), allow renaming the branch even if the new
         branch name already exists, the same applies for <emphasis>-c</emphasis> (or <emphasis>--copy</emphasis>).
 </simpara>
@@ -158,7 +160,7 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </term>
 <listitem>
 <simpara>
-        Move/rename a branch and the corresponding reflog.
+        Move/rename a branch, together with its config and reflog.
 </simpara>
 </listitem>
 </varlistentry>
@@ -181,7 +183,7 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </term>
 <listitem>
 <simpara>
-        Copy a branch and the corresponding reflog.
+        Copy a branch, together with its config and reflog.
 </simpara>
 </listitem>
 </varlistentry>
@@ -367,23 +369,34 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 -t
 </term>
 <term>
---track
+--track[=(direct|inherit)]
 </term>
 <listitem>
 <simpara>
         When creating a new branch, set up <emphasis>branch.&lt;name&gt;.remote</emphasis> and
-        <emphasis>branch.&lt;name&gt;.merge</emphasis> configuration entries to mark the
-        start-point branch as "upstream" from the new branch. This
+        <emphasis>branch.&lt;name&gt;.merge</emphasis> configuration entries to set "upstream" tracking
+        configuration for the new branch. This
         configuration will tell git to show the relationship between the
         two branches in <emphasis>git status</emphasis> and <emphasis>git branch -v</emphasis>. Furthermore,
         it directs <emphasis>git pull</emphasis> without arguments to pull from the
         upstream when the new branch is checked out.
 </simpara>
-<simpara>This behavior is the default when the start point is a remote-tracking branch.
-Set the branch.autoSetupMerge configuration variable to <emphasis>false</emphasis> if you
-want <emphasis>git switch</emphasis>, <emphasis>git checkout</emphasis> and <emphasis>git branch</emphasis> to always behave as if <emphasis>--no-track</emphasis>
-were given. Set it to <emphasis>always</emphasis> if you want this behavior when the
-start-point is either a local or remote-tracking branch.</simpara>
+<simpara>The exact upstream branch is chosen depending on the optional argument:
+<emphasis>-t</emphasis>, <emphasis>--track</emphasis>, or <emphasis>--track=direct</emphasis> means to use the start-point branch
+itself as the upstream; <emphasis>--track=inherit</emphasis> means to copy the upstream
+configuration of the start-point branch.</simpara>
+<simpara>The branch.autoSetupMerge configuration variable specifies how <emphasis>git switch</emphasis>,
+<emphasis>git checkout</emphasis> and <emphasis>git branch</emphasis> should behave when neither <emphasis>--track</emphasis> nor
+<emphasis>--no-track</emphasis> are specified:</simpara>
+<simpara>The default option, <emphasis>true</emphasis>, behaves as though <emphasis>--track=direct</emphasis>
+were given whenever the start-point is a remote-tracking branch.
+<emphasis>false</emphasis> behaves as if <emphasis>--no-track</emphasis> were given. <emphasis>always</emphasis> behaves as though
+<emphasis>--track=direct</emphasis> were given. <emphasis>inherit</emphasis> behaves as though <emphasis>--track=inherit</emphasis>
+were given. <emphasis>simple</emphasis> behaves as though <emphasis>--track=direct</emphasis> were given only when
+the start-point is a remote-tracking branch and the new branch has the same
+name as the remote branch.</simpara>
+<simpara>See <xref linkend="git-pull(1)" /> and <xref linkend="git-config(1)" /> for additional discussion on
+how the <emphasis>branch.&lt;name&gt;.remote</emphasis> and <emphasis>branch.&lt;name&gt;.merge</emphasis> options are used.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -393,8 +406,30 @@ start-point is either a local or remote-tracking branch.</simpara>
 <listitem>
 <simpara>
         Do not set up "upstream" configuration, even if the
-        branch.autoSetupMerge configuration variable is true.
+        branch.autoSetupMerge configuration variable is set.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--recurse-submodules
+</term>
+<listitem>
+<simpara>
+        THIS OPTION IS EXPERIMENTAL! Causes the current command to
+        recurse into submodules if <emphasis>submodule.propagateBranches</emphasis> is
+        enabled. See <emphasis>submodule.propagateBranches</emphasis> in
+        <xref linkend="git-config(1)" />. Currently, only branch creation is
+        supported.
+</simpara>
+<simpara>When used in branch creation, a new branch &lt;branchname&gt; will be created
+in the superproject and all of the submodules in the superproject's
+&lt;start-point&gt;. In submodules, the branch will point to the submodule
+commit in the superproject's &lt;start-point&gt; but the branch's tracking
+information will be set up based on the submodule's branches and remotes
+e.g. <emphasis>git branch --recurse-submodules topic origin/main</emphasis> will create the
+submodule branch "topic" that points to the submodule commit in the
+superproject's "origin/main", but tracks the submodule's "origin/main".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

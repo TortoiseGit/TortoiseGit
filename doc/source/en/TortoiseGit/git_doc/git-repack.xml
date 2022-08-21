@@ -13,7 +13,7 @@
 <simplesect id="git-repack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]</literallayout>
+<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m] [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;] [--write-midx]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-repack(1)__description">
@@ -86,6 +86,31 @@ to the new separate pack will be written.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--cruft
+</term>
+<listitem>
+<simpara>
+        Same as <emphasis>-a</emphasis>, unless <emphasis>-d</emphasis> is used. Then any unreachable objects
+        are packed into a separate cruft pack. Unreachable objects can
+        be pruned using the normal expiry rules with the next <emphasis>git gc</emphasis>
+        invocation (see <xref linkend="git-gc(1)" />). Incompatible with <emphasis>-k</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--cruft-expiration=&lt;approxidate&gt;
+</term>
+<listitem>
+<simpara>
+        Expire unreachable objects older than <emphasis>&lt;approxidate&gt;</emphasis>
+        immediately instead of waiting for the next <emphasis>git gc</emphasis> invocation.
+        Only useful with <emphasis>--cruft -d</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -l
 </term>
 <listitem>
@@ -121,10 +146,13 @@ to the new separate pack will be written.</simpara>
 <term>
 -q
 </term>
+<term>
+--quiet
+</term>
 <listitem>
 <simpara>
-        Pass the <emphasis>-q</emphasis> option to <emphasis>git pack-objects</emphasis>. See
-        <xref linkend="git-pack-objects(1)" />.
+        Show no progress over the standard error stream and pass the <emphasis>-q</emphasis>
+        option to <emphasis>git pack-objects</emphasis>. See <xref linkend="git-pack-objects(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -204,7 +232,9 @@ depth is 4095.</simpara>
         If specified, multiple packfiles may be created, which also
         prevents the creation of a bitmap index.
         The default is unlimited, unless the config variable
-        <emphasis>pack.packSizeLimit</emphasis> is set.
+        <emphasis>pack.packSizeLimit</emphasis> is set. Note that this option may result in
+        a larger and slower repository; see the discussion in
+        <emphasis>pack.packSizeLimit</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -218,10 +248,11 @@ depth is 4095.</simpara>
 <listitem>
 <simpara>
         Write a reachability bitmap index as part of the repack. This
-        only makes sense when used with <emphasis>-a</emphasis> or <emphasis>-A</emphasis>, as the bitmaps
+        only makes sense when used with <emphasis>-a</emphasis>, <emphasis>-A</emphasis> or <emphasis>-m</emphasis>, as the bitmaps
         must be able to refer to all reachable objects. This option
-        overrides the setting of <emphasis>repack.writeBitmaps</emphasis>.  This option
-        has no effect if multiple packfiles are created.
+        overrides the setting of <emphasis>repack.writeBitmaps</emphasis>. This option
+        has no effect if multiple packfiles are created, unless writing a
+        MIDX (in which case a multi-pack bitmap is created).
 </simpara>
 </listitem>
 </varlistentry>
@@ -325,6 +356,23 @@ this "roll-up", without respect to their reachability. This is subject
 to change in the future. This option (implying a drastically different
 repack mode) is not guaranteed to work with all other combinations of
 option to <emphasis>git repack</emphasis>.</simpara>
+<simpara>When writing a multi-pack bitmap, <emphasis>git repack</emphasis> selects the largest resulting
+pack as the preferred pack for object selection by the MIDX (see
+<xref linkend="git-multi-pack-index(1)" />).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-m
+</term>
+<term>
+--write-midx
+</term>
+<listitem>
+<simpara>
+        Write a multi-pack index (see <xref linkend="git-multi-pack-index(1)" />)
+        containing the non-redundant packs.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

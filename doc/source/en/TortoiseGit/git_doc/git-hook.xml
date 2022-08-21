@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-hook(1)">
+    <title>git-hook(1)</title>
+<indexterm>
+<primary>git-hook(1)</primary>
+</indexterm>
+<simplesect id="git-hook(1)__name">
+<title>NAME</title>
+<simpara>git-hook - Run git hooks</simpara>
+</simplesect>
+<simplesect id="git-hook(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git hook</emphasis> run [--ignore-missing] &lt;hook-name&gt; [-- &lt;hook-args&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-hook(1)__description">
+<title>DESCRIPTION</title>
+<simpara>A command interface to running git hooks (see <xref linkend="githooks(5)" />),
+for use by other scripted git commands.</simpara>
+</simplesect>
+<simplesect id="git-hook(1)__subcommands">
+<title>SUBCOMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+run
+</term>
+<listitem>
+<simpara>
+        Run the <emphasis>&lt;hook-name&gt;</emphasis> hook. See <xref linkend="githooks(5)" /> for
+        supported hook names.
+</simpara>
+<simpara>Any positional arguments to the hook should be passed after a
+mandatory <emphasis>--</emphasis> (or <emphasis>--end-of-options</emphasis>, see <xref linkend="gitcli(7)" />). See
+<xref linkend="githooks(5)" /> for arguments hooks might expect (if any).</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-hook(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+--ignore-missing
+</term>
+<listitem>
+<simpara>
+        Ignore any missing hook by quietly returning zero. Used for
+        tools that want to do a blind one-shot run of a hook that may
+        or may not be present.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-hook(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="githooks(5)" /></simpara>
+</simplesect>
+<simplesect id="git-hook(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

@@ -260,7 +260,7 @@ presence of the .url field.</simpara>
 <simplesect id="gitsubmodules(7)__workflow_for_a_third_party_library">
 <title>Workflow for a third party library</title>
 <literallayout class="monospaced"># Add a submodule
-git submodule add &lt;url&gt; &lt;path&gt;</literallayout>
+git submodule add &lt;URL&gt; &lt;path&gt;</literallayout>
 <literallayout class="monospaced"># Occasionally update the submodule to a new version:
 git -C &lt;path&gt; checkout &lt;new version&gt;
 git add &lt;path&gt;

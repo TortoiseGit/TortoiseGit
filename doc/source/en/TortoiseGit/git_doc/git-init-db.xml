@@ -13,7 +13,7 @@
 <simplesect id="git-init-db(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git init-db</emphasis> [-q | --quiet] [--bare] [--template=&lt;template_directory&gt;] [--separate-git-dir &lt;git dir&gt;] [--shared[=&lt;permissions&gt;]]</literallayout>
+<literallayout><emphasis>git init-db</emphasis> [-q | --quiet] [--bare] [--template=&lt;template-directory&gt;] [--separate-git-dir &lt;git-dir&gt;] [--shared[=&lt;permissions&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-init-db(1)__description">

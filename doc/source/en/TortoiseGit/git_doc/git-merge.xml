@@ -16,7 +16,8 @@
 <literallayout><emphasis>git merge</emphasis> [-n] [--stat] [--no-commit] [--squash] [--[no-]edit]
         [--no-verify] [-s &lt;strategy&gt;] [-X &lt;strategy-option&gt;] [-S[&lt;keyid&gt;]]
         [--[no-]allow-unrelated-histories]
-        [--[no-]rerere-autoupdate] [-m &lt;msg&gt;] [-F &lt;file&gt;] [&lt;commit&gt;&#8230;]
+        [--[no-]rerere-autoupdate] [-m &lt;msg&gt;] [-F &lt;file&gt;]
+        [--into-name &lt;branch&gt;] [&lt;commit&gt;&#8230;]
 <emphasis>git merge</emphasis> (--continue | --abort | --quit)</literallayout>
 </blockquote>
 </simplesect>
@@ -251,11 +252,12 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-verify
+--[no-]verify
 </term>
 <listitem>
 <simpara>
-        This option bypasses the pre-merge and commit-msg hooks.
+        By default, the pre-merge and commit-msg hooks are run.
+        When <emphasis>--no-verify</emphasis> is given, these are bypassed.
         See also <xref linkend="githooks(5)" />.
 </simpara>
 </listitem>
@@ -272,8 +274,8 @@ option can be used to override --squash.</simpara>
         Use the given merge strategy; can be supplied more than
         once to specify them in the order they should be tried.
         If there is no <emphasis>-s</emphasis> option, a built-in list of strategies
-        is used instead (<emphasis>git merge-recursive</emphasis> when merging a single
-        head, <emphasis>git merge-octopus</emphasis> otherwise).
+        is used instead (<emphasis>ort</emphasis> when merging a single head,
+        <emphasis>octopus</emphasis> otherwise).
 </simpara>
 </listitem>
 </varlistentry>
@@ -374,7 +376,8 @@ option can be used to override --squash.</simpara>
 <listitem>
 <simpara>
         Automatically create a temporary stash entry before the operation
-        begins, and apply it after the operation ends.  This means
+        begins, record it in the special ref <emphasis>MERGE_AUTOSTASH</emphasis>
+        and apply it after the operation ends.  This means
         that you can run the operation on a dirty worktree.  However, use
         with care: the final stash application after a successful
         merge might result in non-trivial conflicts.
@@ -410,6 +413,18 @@ will be appended to the specified message.</simpara>
 <simpara>The <emphasis>git fmt-merge-msg</emphasis> command can be
 used to give a good default for automated <emphasis>git merge</emphasis>
 invocations. The automated message can include the branch description.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--into-name &lt;branch&gt;
+</term>
+<listitem>
+<simpara>
+        Prepare the default merge message as if merging to the branch
+        <emphasis>&lt;branch&gt;</emphasis>, instead of the name of the real branch to which
+        the merge is made.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -628,7 +643,8 @@ resolve it by leaving what both sides did to that area.</simpara>
 <simpara>By default, Git uses the same style as the one used by the "merge" program
 from the RCS suite to present such a conflicted hunk, like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
-ancestor, or cleanly resolved because only one side changed.
+ancestor, or cleanly resolved because only one side changed,
+or cleanly resolved because both sides changed the same way.
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; yours:sample.txt
 Conflict resolution is hard;
 let's go shopping.
@@ -645,14 +661,31 @@ Barbie's remark on your side.  The only thing you can tell is that your
 side wants to say it is hard and you'd prefer to go shopping, while the
 other side wants to claim it is easy.</simpara>
 <simpara>An alternative style can be used by setting the "merge.conflictStyle"
-configuration variable to "diff3".  In "diff3" style, the above conflict
-may look like this:</simpara>
+configuration variable to either "diff3" or "zdiff3".  In "diff3"
+style, the above conflict may look like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
-ancestor, or cleanly resolved because only one side changed.
+ancestor, or cleanly resolved because only one side changed,
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; yours:sample.txt
+or cleanly resolved because both sides changed the same way.
+Conflict resolution is hard;
+let's go shopping.
+||||||| base:sample.txt
+or cleanly resolved because both sides changed identically.
+Conflict resolution is hard.
+=======
+or cleanly resolved because both sides changed the same way.
+Git makes conflict resolution easy.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; theirs:sample.txt
+And here is another line that is cleanly resolved or unmodified.</screen>
+<simpara>while in "zdiff3" style, it may look like this:</simpara>
+<screen>Here are lines that are either unchanged from the common
+ancestor, or cleanly resolved because only one side changed,
+or cleanly resolved because both sides changed the same way.
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; yours:sample.txt
 Conflict resolution is hard;
 let's go shopping.
-|||||||
+||||||| base:sample.txt
+or cleanly resolved because both sides changed identically.
 Conflict resolution is hard.
 =======
 Git makes conflict resolution easy.
@@ -760,38 +793,26 @@ arguments to <emphasis>git merge</emphasis> and/or <emphasis>git pull</emphasis>
 <variablelist>
 <varlistentry>
 <term>
-resolve
+ort
 </term>
 <listitem>
 <simpara>
-        This can only resolve two heads (i.e. the current branch
-        and another branch you pulled from) using a 3-way merge
-        algorithm.  It tries to carefully detect criss-cross
-        merge ambiguities and is considered generally safe and
-        fast.
+        This is the default merge strategy when pulling or merging one
+        branch.  This strategy can only resolve two heads using a
+        3-way merge algorithm.  When there is more than one common
+        ancestor that can be used for 3-way merge, it creates a merged
+        tree of the common ancestors and uses that as the reference
+        tree for the 3-way merge.  This has been reported to result in
+        fewer merge conflicts without causing mismerges by tests done
+        on actual merge commits taken from Linux 2.6 kernel
+        development history.  Additionally this strategy can detect
+        and handle merges involving renames.  It does not make use of
+        detected copies.  The name for this algorithm is an acronym
+        ("Ostensibly Recursive's Twin") and came from the fact that it
+        was written as a replacement for the previous default
+        algorithm, <emphasis>recursive</emphasis>.
 </simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-recursive
-</term>
-<listitem>
-<simpara>
-        This can only resolve two heads using a 3-way merge
-        algorithm.  When there is more than one common
-        ancestor that can be used for 3-way merge, it creates a
-        merged tree of the common ancestors and uses that as
-        the reference tree for the 3-way merge.  This has been
-        reported to result in fewer merge conflicts without
-        causing mismerges by tests done on actual merge commits
-        taken from Linux 2.6 kernel development history.
-        Additionally this can detect and handle merges involving
-        renames, but currently cannot make use of detected
-        copies.  This is the default merge strategy when pulling
-        or merging one branch.
-</simpara>
-<simpara>The <emphasis>recursive</emphasis> strategy can take the following options:</simpara>
+<simpara>The <emphasis>ort</emphasis> strategy can take the following options:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -817,33 +838,6 @@ theirs
 <simpara>
         This is the opposite of <emphasis>ours</emphasis>; note that, unlike <emphasis>ours</emphasis>, there is
         no <emphasis>theirs</emphasis> merge strategy to confuse this merge option with.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-patience
-</term>
-<listitem>
-<simpara>
-        With this option, <emphasis>merge-recursive</emphasis> spends a little extra time
-        to avoid mismerges that sometimes occur due to unimportant
-        matching lines (e.g., braces from distinct functions).  Use
-        this when the branches to be merged have diverged wildly.
-        See also <xref linkend="git-diff(1)" /> <emphasis>--patience</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-diff-algorithm=[patience|minimal|histogram|myers]
-</term>
-<listitem>
-<simpara>
-        Tells <emphasis>merge-recursive</emphasis> to use a different diff algorithm, which
-        can help avoid mismerges that occur due to unimportant matching
-        lines (such as braces from distinct functions).  See also
-        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -917,18 +911,6 @@ no-renormalize
 </varlistentry>
 <varlistentry>
 <term>
-no-renames
-</term>
-<listitem>
-<simpara>
-        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
-        configuration variable.
-        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 find-renames[=&lt;n&gt;]
 </term>
 <listitem>
@@ -969,6 +951,82 @@ subtree[=&lt;path&gt;]
 </varlistentry>
 <varlistentry>
 <term>
+recursive
+</term>
+<listitem>
+<simpara>
+        This can only resolve two heads using a 3-way merge
+        algorithm.  When there is more than one common
+        ancestor that can be used for 3-way merge, it creates a
+        merged tree of the common ancestors and uses that as
+        the reference tree for the 3-way merge.  This has been
+        reported to result in fewer merge conflicts without
+        causing mismerges by tests done on actual merge commits
+        taken from Linux 2.6 kernel development history.
+        Additionally this can detect and handle merges involving
+        renames.  It does not make use of detected copies.  This was
+        the default strategy for resolving two heads from Git v0.99.9k
+        until v2.33.0.
+</simpara>
+<simpara>The <emphasis>recursive</emphasis> strategy takes the same options as <emphasis>ort</emphasis>.  However,
+there are three additional options that <emphasis>ort</emphasis> ignores (not documented
+above) that are potentially useful with the <emphasis>recursive</emphasis> strategy:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+patience
+</term>
+<listitem>
+<simpara>
+        Deprecated synonym for <emphasis>diff-algorithm=patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff-algorithm=[patience|minimal|histogram|myers]
+</term>
+<listitem>
+<simpara>
+        Use a different diff algorithm while merging, which can help
+        avoid mismerges that occur due to unimportant matching lines
+        (such as braces from distinct functions).  See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.  Note that <emphasis>ort</emphasis>
+        specifically uses <emphasis>diff-algorithm=histogram</emphasis>, while <emphasis>recursive</emphasis>
+        defaults to the <emphasis>diff.algorithm</emphasis> config setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+no-renames
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
+        configuration variable.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+resolve
+</term>
+<listitem>
+<simpara>
+        This can only resolve two heads (i.e. the current branch
+        and another branch you pulled from) using a 3-way merge
+        algorithm.  It tries to carefully detect criss-cross
+        merge ambiguities.  It does not handle renames.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 octopus
 </term>
 <listitem>
@@ -1002,7 +1060,7 @@ subtree
 </term>
 <listitem>
 <simpara>
-        This is a modified recursive strategy. When merging trees A and
+        This is a modified <emphasis>ort</emphasis> strategy. When merging trees A and
         B, if B corresponds to a subtree of A, B is first adjusted to
         match the tree structure of A, instead of reading the trees at
         the same level. This adjustment is also done to the common
@@ -1011,7 +1069,7 @@ subtree
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>With the strategies that use 3-way merge (including the default, <emphasis>recursive</emphasis>),
+<simpara>With the strategies that use 3-way merge (including the default, <emphasis>ort</emphasis>),
 if a change is made on both branches, but later reverted on one of the
 branches, that change will be present in the merged result; some people find
 this behavior confusing.  It occurs because only the heads and the merge base
@@ -1033,7 +1091,14 @@ merge.conflictStyle
         shows a <emphasis>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</emphasis> conflict marker, changes made by one side,
         a <emphasis>=======</emphasis> marker, changes made by the other side, and then
         a <emphasis>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</emphasis> marker.  An alternate style, "diff3", adds a <emphasis>|||||||</emphasis>
-        marker and the original text before the <emphasis>=======</emphasis> marker.
+        marker and the original text before the <emphasis>=======</emphasis> marker.  The
+        "merge" style tends to produce smaller conflict regions than diff3,
+        both because of the exclusion of the original text, and because
+        when a subset of lines match on the two sides they are just pulled
+        out of the conflict region.  Another alternate style, "zdiff3", is
+        similar to diff3 but removes matching lines on the two sides from
+        the conflict region when those matching lines appear near either
+        the beginning or end of a conflict region.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1050,7 +1115,7 @@ merge.defaultToUpstream
         branches at the remote named by <emphasis>branch.&lt;current branch&gt;.remote</emphasis>
         are consulted, and then they are mapped via <emphasis>remote.&lt;remote&gt;.fetch</emphasis>
         to their corresponding remote-tracking branches, and the tips of
-        these tracking branches are merged.
+        these tracking branches are merged. Defaults to true.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1131,10 +1196,12 @@ merge.renameLimit
 </term>
 <listitem>
 <simpara>
-        The number of files to consider when performing rename detection
-        during a merge; if not specified, defaults to the value of
-        diff.renameLimit. This setting has no effect if rename detection
-        is turned off.
+        The number of files to consider in the exhaustive portion of
+        rename detection during a merge.  If not specified, defaults
+        to the value of diff.renameLimit.  If neither
+        merge.renameLimit nor diff.renameLimit are specified,
+        currently defaults to 7000.  This setting has no effect if
+        rename detection is turned off.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1239,173 +1306,338 @@ merge.guitool
         Any other value is treated as a custom merge tool and requires that a
         corresponding mergetool.&lt;guitool&gt;.cmd variable is defined.
 </simpara>
-<itemizedlist>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>araxis</emphasis>
+</term>
 <listitem>
 <simpara>
-araxis
+Use Araxis Merge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc</emphasis>
+</term>
 <listitem>
 <simpara>
-bc
+Use Beyond Compare (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc3</emphasis>
+</term>
 <listitem>
 <simpara>
-bc3
+Use Beyond Compare (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc4</emphasis>
+</term>
 <listitem>
 <simpara>
-bc4
+Use Beyond Compare (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>codecompare</emphasis>
+</term>
 <listitem>
 <simpara>
-codecompare
+Use Code Compare (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>deltawalker</emphasis>
+</term>
 <listitem>
 <simpara>
-deltawalker
+Use DeltaWalker (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffmerge</emphasis>
+</term>
 <listitem>
 <simpara>
-diffmerge
+Use DiffMerge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffuse</emphasis>
+</term>
 <listitem>
 <simpara>
-diffuse
+Use Diffuse (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>ecmerge</emphasis>
+</term>
 <listitem>
 <simpara>
-ecmerge
+Use ECMerge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>emerge</emphasis>
+</term>
 <listitem>
 <simpara>
-emerge
+Use Emacs' Emerge
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>examdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-examdiff
+Use ExamDiff Pro (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>guiffy</emphasis>
+</term>
 <listitem>
 <simpara>
-guiffy
+Use Guiffy's Diff Tool (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-gvimdiff
+Use gVim (requires a graphical session) with a custom layout (see <emphasis>git help mergetool</emphasis>'s <emphasis>BACKEND SPECIFIC HINTS</emphasis> section)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff1</emphasis>
+</term>
 <listitem>
 <simpara>
-gvimdiff1
+Use gVim (requires a graphical session) with a 2 panes layout (LOCAL and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff2</emphasis>
+</term>
 <listitem>
 <simpara>
-gvimdiff2
+Use gVim (requires a graphical session) with a 3 panes layout (LOCAL, MERGED and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff3</emphasis>
+</term>
 <listitem>
 <simpara>
-gvimdiff3
+Use gVim (requires a graphical session) where only the MERGED file is shown
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>kdiff3</emphasis>
+</term>
 <listitem>
 <simpara>
-kdiff3
+Use KDiff3 (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>meld</emphasis>
+</term>
 <listitem>
 <simpara>
-meld
+Use Meld (requires a graphical session) with optional <emphasis>auto merge</emphasis> (see <emphasis>git help mergetool</emphasis>'s <emphasis>CONFIGURATION</emphasis> section)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-nvimdiff
+Use Neovim with a custom layout (see <emphasis>git help mergetool</emphasis>'s <emphasis>BACKEND SPECIFIC HINTS</emphasis> section)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff1</emphasis>
+</term>
 <listitem>
 <simpara>
-nvimdiff1
+Use Neovim with a 2 panes layout (LOCAL and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff2</emphasis>
+</term>
 <listitem>
 <simpara>
-nvimdiff2
+Use Neovim with a 3 panes layout (LOCAL, MERGED and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff3</emphasis>
+</term>
 <listitem>
 <simpara>
-nvimdiff3
+Use Neovim where only the MERGED file is shown
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>opendiff</emphasis>
+</term>
 <listitem>
 <simpara>
-opendiff
+Use FileMerge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>p4merge</emphasis>
+</term>
 <listitem>
 <simpara>
-p4merge
+Use HelixCore P4Merge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>smerge</emphasis>
+</term>
 <listitem>
 <simpara>
-smerge
+Use Sublime Merge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tkdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-tkdiff
+Use TkDiff (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tortoisemerge</emphasis>
+</term>
 <listitem>
 <simpara>
-tortoisemerge
+Use TortoiseMerge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-vimdiff
+Use Vim with a custom layout (see <emphasis>git help mergetool</emphasis>'s <emphasis>BACKEND SPECIFIC HINTS</emphasis> section)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff1</emphasis>
+</term>
 <listitem>
 <simpara>
-vimdiff1
+Use Vim with a 2 panes layout (LOCAL and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff2</emphasis>
+</term>
 <listitem>
 <simpara>
-vimdiff2
+Use Vim with a 3 panes layout (LOCAL, MERGED and REMOTE)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff3</emphasis>
+</term>
 <listitem>
 <simpara>
-vimdiff3
+Use Vim where only the MERGED file is shown
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>winmerge</emphasis>
+</term>
 <listitem>
 <simpara>
-winmerge
+Use WinMerge (requires a graphical session)
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>xxdiff</emphasis>
+</term>
 <listitem>
 <simpara>
-xxdiff
+Use xxdiff (requires a graphical session)
 </simpara>
 </listitem>
-</itemizedlist>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>

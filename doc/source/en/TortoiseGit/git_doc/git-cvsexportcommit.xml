@@ -13,8 +13,8 @@
 <simplesect id="git-cvsexportcommit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git cvsexportcommit</emphasis> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d cvsroot]
-        [-w cvsworkdir] [-W] [-f] [-m msgprefix] [PARENTCOMMIT] COMMITID</literallayout>
+<literallayout><emphasis>git cvsexportcommit</emphasis> [-h] [-u] [-v] [-c] [-P] [-p] [-a] [-d &lt;cvsroot&gt;]
+        [-w &lt;cvs-workdir&gt;] [-W] [-f] [-m &lt;msgprefix&gt;] [&lt;parent-commit&gt;] &lt;commit-id&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-cvsexportcommit(1)__description">

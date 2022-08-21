@@ -85,8 +85,8 @@ the kind of information listed above when manually asking for help.</simpara>
 </term>
 <listitem>
 <simpara>
-        Place the resulting bug report file in <emphasis>&lt;path&gt;</emphasis> instead of the root of
-        the Git repository.
+        Place the resulting bug report file in <emphasis>&lt;path&gt;</emphasis> instead of the current
+        directory.
 </simpara>
 </listitem>
 </varlistentry>

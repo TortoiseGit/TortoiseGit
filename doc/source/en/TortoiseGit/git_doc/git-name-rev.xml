@@ -76,14 +76,43 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stdin
+--annotate-stdin
 </term>
 <listitem>
 <simpara>
         Transform stdin by substituting all the 40-character SHA-1
         hexes (say $hex) with "$hex ($rev_name)".  When used with
         --name-only, substitute with "$rev_name", omitting $hex
-        altogether.  Intended for the scripter's use.
+        altogether.
+</simpara>
+<simpara>For example:</simpara>
+<screen>$ cat sample.txt
+
+An abbreviated revision 2ae0a9cb82 will not be substituted.
+The full name after substitution is 2ae0a9cb8298185a94e5998086f380a355dd8907,
+while its tree object is 70d105cc79e63b81cfdcb08a15297c23e60b07ad
+
+$ git name-rev --annotate-stdin &lt;sample.txt
+
+An abbreviated revision 2ae0a9cb82 will not be substituted.
+The full name after substitution is 2ae0a9cb8298185a94e5998086f380a355dd8907 (master),
+while its tree object is 70d105cc79e63b81cfdcb08a15297c23e60b07ad
+
+$ git name-rev --name-only --annotate-stdin &lt;sample.txt
+
+An abbreviated revision 2ae0a9cb82 will not be substituted.
+The full name after substitution is master,
+while its tree object is 70d105cc79e63b81cfdcb08a15297c23e60b07ad</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        This option is deprecated in favor of <emphasis>git name-rev --annotate-stdin</emphasis>.
+        They are functionally equivalent.
 </simpara>
 </listitem>
 </varlistentry>

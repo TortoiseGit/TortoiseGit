@@ -419,6 +419,22 @@ and <emphasis>date</emphasis> to extract the named component.  For email fields 
 <emphasis>committeremail</emphasis> and <emphasis>taggeremail</emphasis>), <emphasis>:trim</emphasis> can be appended to get the email
 without angle brackets, and <emphasis>:localpart</emphasis> to get the part before the <emphasis>@</emphasis> symbol
 out of the trimmed email.</simpara>
+<simpara>The raw data in an object is <emphasis>raw</emphasis>.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+raw:size
+</term>
+<listitem>
+<simpara>
+        The raw data size of the object.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Note that <emphasis>--format=%(raw)</emphasis> can not be used with <emphasis>--python</emphasis>, <emphasis>--shell</emphasis>, <emphasis>--tcl</emphasis>,
+because such language may not support arbitrary binary data in their string
+variable type.</simpara>
 <simpara>The message in a commit or a tag object is <emphasis>contents</emphasis>, from which
 <emphasis>contents:&lt;part&gt;</emphasis> can be used to extract various parts out of:</simpara>
 <variablelist>

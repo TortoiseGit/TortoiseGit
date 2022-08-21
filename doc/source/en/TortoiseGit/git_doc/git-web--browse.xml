@@ -13,7 +13,7 @@
 <simplesect id="git-web&#45;&#45;browse(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git web&#45;&#45;browse</emphasis> [&lt;options&gt;] &lt;url|file&gt;&#8230;</literallayout>
+<literallayout><emphasis>git web&#45;&#45;browse</emphasis> [&lt;options&gt;] (&lt;URL&gt;|&lt;file&gt;)&#8230;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-web&#45;&#45;browse(1)__description">
