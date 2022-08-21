@@ -45,3 +45,23 @@ bool WorktreeListCommand::Execute()
 	theApp.m_pMainWnd = &dlg;
 	return dlg.DoModal() == IDOK;
 }
+
+bool DropWorktreeCreateCommand::Execute()
+{
+	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+	{
+		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+		return false;
+	}
+
+	CString target = parser.GetVal(L"droptarget");
+	CPathUtils::EnsureTrailingPathDelimiter(target);
+
+	CString name = CPathUtils::GetFileNameFromPath(g_Git.m_CurrentDir);
+	if (CStringUtils::EndsWith(name, L".git"))
+		name = name.Left(name.GetLength() - static_cast<int>(wcslen(L".git")));
+	if (!CPathUtils::IsSamePath(target + name, g_Git.m_CurrentDir))
+		target += name;
+
+	return CAppUtils::CreateWorktree(GetExplorerHWND(), target);
+}

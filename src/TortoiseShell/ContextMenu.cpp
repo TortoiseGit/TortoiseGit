@@ -126,7 +126,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 							CTGitPath askedpath;
 							askedpath.SetFromWin(str.c_str());
 							CString workTreePath;
-							askedpath.HasAdminDir(&workTreePath);
+							if (!askedpath.HasAdminDir(&workTreePath) && GitAdminDir::IsBareRepo(str.c_str()))
+								itemStates |= ITEMIS_BAREREPO; // TODO: optimize
 							uuidSource = workTreePath;
 							try
 							{
@@ -829,6 +830,9 @@ STDMETHODIMP CShellExt::QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMe
 			InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUAPPLYPATCH, 0, idCmdFirst, ShellMenuApplyPatch, uFlags);
 		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_MENUIMPORTPATCH, 0, idCmdFirst, ShellMenuImportPatchDrop, uFlags);
 	}
+
+	if ((itemStates & ITEMIS_ONLYONE) && (itemStates & (ITEMIS_WCROOT | ITEMIS_BAREREPO)) && !(itemStatesFolder & ITEMIS_INVERSIONEDFOLDER))
+		InsertGitMenu(FALSE, hMenu, indexMenu++, idCmd++, IDS_DROPNEWWORKTREE, 0, idCmdFirst, ShellMenuDropNewWorktree, uFlags);
 
 	// separator
 	if (idCmd != idCmdFirst)
@@ -1641,6 +1645,9 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		break;
 	case ShellMenuWorktree:
 		AddPathCommand(gitCmd, L"worktreelist", false, paths, folder);
+		break;
+	case ShellMenuDropNewWorktree:
+		AddPathFileDropCommand(gitCmd, L"dropnewworktree", paths, folder);
 		break;
 
 	default:

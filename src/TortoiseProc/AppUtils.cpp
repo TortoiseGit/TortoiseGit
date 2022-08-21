@@ -1305,9 +1305,11 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 	return FALSE;
 }
 
-bool CAppUtils::CreateWorktree(HWND hWnd)
+bool CAppUtils::CreateWorktree(HWND hWnd, const CString& target /* CString() */)
 {
 	CCreateWorktreeDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	if (!target.IsEmpty())
+		dlg.m_sWorktreePath = target;
 	if (dlg.DoModal() != IDOK)
 		return FALSE;
 

@@ -36,3 +36,12 @@ public:
 	 */
 	virtual bool Execute() override;
 };
+
+class DropWorktreeCreateCommand : public Command
+{
+public:
+	/**
+	 * Executes the command.
+	 */
+	virtual bool Execute() override;
+};

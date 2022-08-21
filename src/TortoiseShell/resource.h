@@ -145,6 +145,7 @@
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
 #define IDS_DROPCOPYRENAMEMENU          250
+#define IDS_DROPNEWWORKTREE             251
 #define IDS_FILEPROPONFOLDER            253
 #define IDS_PROPSNOTSAVED               254
 #define IDS_DROPMOVERENAMEMENU          256

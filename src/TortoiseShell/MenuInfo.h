@@ -109,6 +109,7 @@ enum GitCommands
 		ShellMenuLFSLock,
 		ShellMenuLFSUnlock,
 		ShellMenuWorktree,
+		ShellMenuDropNewWorktree,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 
