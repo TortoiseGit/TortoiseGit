@@ -640,6 +640,12 @@ Don't touch these lines:
 								More info in <link linkend="tgit-dug-lfslocking">LFS Locking</link>.
 							</entry>
 						</row>
+						<row>
+							<entry condition="pot">:worktreelist</entry>
+							<entry>
+								Opens the <link linkend="tgit-dug-worktrees">Worktree List dialog</link>.
+							</entry>
+						</row>
 					</tbody>
 				</tgroup>
 			</table>

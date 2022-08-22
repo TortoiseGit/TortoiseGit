@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2021 - TortoiseGit
+// Copyright (C) 2016-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ public:
 	static std::wstring GetVersionFromFile(LPCWSTR p_strFilename);
 
 #ifdef CSTRING_AVAILABLE
-	inline static void	ConvertToBackslash(CString& path);
+	static void ConvertToBackslash(CString& path);
 
 	/**
 	 * returns the filename of a full path

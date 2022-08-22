@@ -228,6 +228,8 @@
     <ClCompile Include="Commands\BranchCommand.cpp" />
     <ClCompile Include="CreateBranchTagDlg.cpp" />
     <ClCompile Include="Commands\TagCommand.cpp" />
+    <ClCompile Include="Commands\WorktreeCommand.cpp" />
+    <ClCompile Include="CreateWorktreeDlg.cpp" />
     <ClCompile Include="Commands\ExportCommand.cpp" />
     <ClCompile Include="ExportDlg.cpp" />
     <ClCompile Include="Commands\AddCommand.cpp" />
@@ -312,6 +314,7 @@
     <ClCompile Include="BisectStartDlg.cpp" />
     <ClCompile Include="RepositoryBrowser.cpp" />
     <ClCompile Include="Commands\RepositoryBrowserCommand.cpp" />
+    <ClCompile Include="WorktreeListDlg.cpp" />
     <ClCompile Include="RevisionGraph\RevGraphFilterDlg.cpp" />
     <ClCompile Include="Commands\RevisionGraphCommand.cpp" />
     <ClCompile Include="RevisionGraph\RevisionGraphDlg.cpp" />
@@ -541,6 +544,8 @@
     <ClInclude Include="Commands\BranchCommand.h" />
     <ClInclude Include="CreateBranchTagDlg.h" />
     <ClInclude Include="Commands\TagCommand.h" />
+    <ClInclude Include="Commands\WorktreeCommand.h" />
+    <ClInclude Include="CreateWorktreeDlg.h" />
     <ClInclude Include="Commands\ExportCommand.h" />
     <ClInclude Include="ExportDlg.h" />
     <ClInclude Include="Commands\AddCommand.h" />
@@ -622,6 +627,7 @@
     <ClInclude Include="BisectStartDlg.h" />
     <ClInclude Include="RepositoryBrowser.h" />
     <ClInclude Include="Commands\RepositoryBrowserCommand.h" />
+    <ClInclude Include="WorktreeListDlg.h" />
     <ClInclude Include="RevisionGraph\RevGraphFilterDlg.h" />
     <ClInclude Include="Commands\RevisionGraphCommand.h" />
     <ClInclude Include="RevisionGraph\RevisionGraphDlg.h" />

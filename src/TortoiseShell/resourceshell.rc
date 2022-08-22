@@ -221,6 +221,8 @@ BEGIN
     IDS_MENUDESCDELETEIGNORE 
                             "Deletes and adds the selected file(s) or the filemask to the 'ignore' list"
     IDS_MENUCOMMITSUBMODULE "&Commit submodule..."
+    IDS_MENUWORKTREE        "Worktrees"
+    IDS_MENUDESCWORKTREE    "Manages the worktrees of a repository"
     IDS_MENUREVISIONGRAPH   "Revision &graph"
 END
 
@@ -428,6 +430,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_DROPCOPYRENAMEMENU  "Git Copy and rename versioned item here"
+    IDS_DROPNEWWORKTREE     "Git New worktree..."
     IDS_FILEPROPONFOLDER    "You can't set this property on folders, only on files!\nIf you want to set it on all files within that folder,\nyou must activate the 'recursive' checkbox."
     IDS_PROPSNOTSAVED       "You have modified properties without saving them first.\nDo you want to save them now?"
 END

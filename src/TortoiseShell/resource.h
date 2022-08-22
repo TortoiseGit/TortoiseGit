@@ -145,6 +145,7 @@
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
 #define IDS_DROPCOPYRENAMEMENU          250
+#define IDS_DROPNEWWORKTREE             251
 #define IDS_FILEPROPONFOLDER            253
 #define IDS_PROPSNOTSAVED               254
 #define IDS_DROPMOVERENAMEMENU          256
@@ -195,6 +196,8 @@
 #define IDS_MENUDELETEIGNORE            353
 #define IDS_MENUDESCDELETEIGNORE        354
 #define IDS_MENUCOMMITSUBMODULE         355
+#define IDS_MENUWORKTREE                356
+#define IDS_MENUDESCWORKTREE            357
 #define IDI_REVISIONGRAPH               366
 #define IDS_MENUREVISIONGRAPH           367
 #define IDS_MENUDESCREVISIONGRAPH       368

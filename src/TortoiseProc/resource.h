@@ -814,6 +814,7 @@
 #define IDC_COMMIT                      1383
 #define IDS_GITVER_REQUIRED             1383
 #define IDC_BUTTON_BAD                  1383
+#define IDC_BUTTON_PRUNE                1383
 #define IDC_BUTTON_DIR                  1384
 #define IDC_BUTTON_DOWN                 1384
 #define IDC_PUTTYKEYFILE_BROWSE         1384
@@ -1466,16 +1467,23 @@
 #define IDC_GROUP_CHANGELOG             1697
 #define IDC_GROUP_DOWNLOADS             1698
 #define IDC_LOG3                        1698
+#define IDS_LOCKED                      1698
 #define IDC_DARKTHEME                   1699
+#define IDS_UNLOCKED                    1699
 #define IDC_SELECTLABEL                 1700
 #define IDS_ABOUTVERSION                1700
 #define IDC_CHECKALL                    1701
 #define IDS_ABOUTVERSIONBOX             1701
 #define IDC_CHECKNONE                   1702
+#define IDS_REASON                      1702
 #define IDC_CHECKUNVERSIONED            1703
+#define IDS_PRUNE                       1703
 #define IDC_CHECKVERSIONED              1704
+#define IDS_PROC_DELETE_WORKTREE        1704
 #define IDC_CHECKADDED                  1705
+#define IDS_PROC_LOCKED_WORKTREES       1705
 #define IDC_CHECKMODIFIED               1706
+#define IDS_PROC_UNLOCKED_WORKTREES     1706
 #define IDC_CHECKFILES                  1707
 #define IDC_CHECKSUBMODULES             1708
 #define IDC_CHECKDELETED                1709
@@ -1659,7 +1667,11 @@
 #define IDC_STAGINGSUPPORT              1855
 #define IDS_LOG_FILTER_REGEX            1855
 #define IDS_LOG_FILTER_BUGIDS           1856
+#define IDC_WORKTREE_DIR                1856
+#define IDC_CHECK_DETACH                1857
 #define IDS_LOG_FILTER_CASESENSITIVE    1857
+#define IDC_CHECK_CHECKOUT              1858
+#define IDC_WORKTREE_LIST               1859
 #define IDS_LOG_FILTER_REGEX_TT         1860
 #define IDS_LOG_REVERTTOREV_CONFIRM     1890
 #define IDS_LOG_REVERTREV_ERROR         1891
@@ -1920,6 +1932,8 @@
 #define IDD_FIRSTSTARTWIZARD_LANGUAGE   4600
 #define IDD_SELECTREMOTEREF             4601
 #define IDD_SETTINGSWIN11CONTEXTMENU    4602
+#define IDD_WORKTREE_CREATE             4603
+#define IDD_WORKTREE_LIST               4604
 #define IDC_COMBOBOXEX_LOCAL_BRANCH     5000
 #define IDC_COMBOBOXEX_REMOTE_BRANCH    5001
 #define IDC_COMBOBOXEX_BAD              5001
@@ -2126,7 +2140,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        370
 #define _APS_NEXT_COMMAND_VALUE         32881
-#define _APS_NEXT_CONTROL_VALUE         1856
+#define _APS_NEXT_CONTROL_VALUE         1859
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -18,6 +18,8 @@ Released: unreleased
  * Fixed issue #3938: Add Switch/Checkout... option after fetch
  * Fixed issue #3935: Submodule update is slow for repositories with several submodules
  * Fixed issue #3797: Add additional information to the Windows Explorer title
+ * Fixed issue #3937: Support worktree operations (Add, remove, lock, unlock, prune) and worktree list
+   Worktrees can also be created by drag'n'drop of a repository root directory
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

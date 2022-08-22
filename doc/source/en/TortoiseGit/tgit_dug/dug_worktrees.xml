@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
+<sect1 id="tgit-dug-worktrees" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<?dbhh topicname="HIDD_WORKTREE_LIST"?>
+	<title>Working with worktrees</title>
+	<indexterm>
+		<primary>worktree</primary>
+	</indexterm>
+	<para>
+		A worktree can be seen as an additional checkout of a Git repository (cf. <xref linkend="Git User Manual_def_worktree" />).
+	</para>
+
+	<para>
+		Use the
+		<menuchoice>
+			<guimenu>TortoiseGit</guimenu>
+			<guimenuitem>Worktrees</guimenuitem>
+		</menuchoice>
+		option to manage worktrees.
+		When selecting this option, a dialog pops up where all current worktrees are listed.
+
+		The first entry is the main repository. It cannot be deleted because it contains the <filename>.git</filename>-folder with branches.
+		All other worktrees use that <filename>.git</filename>-folder for book keeping.
+
+		To remove/lock/unlock a worktree, <action>right-click</action> it and select the desired action.
+	</para>
+
+	<sect2 id="tgit-dug-worktree-create">
+	<?dbhh topicname="HIDD_WORKTREE_CREATE"?>
+		<title>Creating a worktree</title>
+		<para>
+			To create a new worktree, specify a folder. By default for the path the main repo path is selected.
+			Modify that to your liking. For example from <filename>C:\Users\jdoe\TortoiseGit</filename> to <filename>C:\Users\jdoe\another-worktree</filename>.
+
+			To specify which revision is checked out, select <guilabel>HEAD</guilabel>, a branch, tag, or a concrete commit.
+
+			A branch can only be checked out at a single worktree.
+			Alternatively use <guilabel>Force</guilabel> to check out the branch twice, but this is not recommended.
+		</para>
+		<para>
+			Check <xref linkend="git-worktree(1)" /> for further details.
+		</para>
+	</sect2>
+</sect1>
