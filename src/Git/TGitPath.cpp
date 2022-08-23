@@ -870,7 +870,7 @@ bool CTGitPath::IsRebaseActive() const
 	CString dotGitPath;
 	GitAdminDir::GetWorktreeAdminDirPath(m_sProjectRoot, dotGitPath);
 
-	return PathIsDirectory(dotGitPath + L"rebase-apply") == TRUE || PathIsDirectory(dotGitPath + L"tgitrebase.active") == TRUE;
+	return PathIsDirectory(dotGitPath + L"rebase-apply") || PathIsDirectory(dotGitPath + L"tgitrebase.active");
 }
 bool CTGitPath::IsCherryPickActive() const
 {
