@@ -189,7 +189,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 			return -1;
 		}
 		CString workDirPath;
-		if (git_repository_is_bare(autoBaseRepo))
+		if (git_repository_is_bare(baseRepo))
 			workDirPath = CUnicodeUtils::GetUnicode(git_repository_commondir(baseRepo));
 		else
 			workDirPath = CUnicodeUtils::GetUnicode(git_repository_workdir(baseRepo));
