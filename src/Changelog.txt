@@ -22,6 +22,7 @@ Released: unreleased
    Worktrees can also be created by drag'n'drop of a repository root directory
  * Fixed issue #3903: Wrong (empty) icon in Windows 11 taskbar
  * Fixed issue #3867: GitLog does not show super project pointers in conflicted submodule
+ * Fixed issue #3789: Commit dialog: Amend Last Commit in Message section unclear
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

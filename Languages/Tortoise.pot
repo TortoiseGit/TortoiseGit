@@ -10142,12 +10142,12 @@ msgstr ""
 msgid "Use this block on left"
 msgstr ""
 
-#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
-msgid "Use whole other &file"
+#. Resource IDs: (IDS_COMMIT_AMEND_TT)
+msgid "Use this to modify/replace the latest checked out commit with a new commit. The message from the original commit is used as the starting point. Attention: This modifies the Git history."
 msgstr ""
 
-#. Resource IDs: (IDS_COMMIT_AMEND_TT)
-msgid "Used to amend the tip of the current branch."
+#. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
+msgid "Use whole other &file"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)

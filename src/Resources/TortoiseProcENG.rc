@@ -3632,7 +3632,7 @@ BEGIN
     IDS_LOG_SAVEFOLDERTOHINT "Select folder to save the selected files to"
     IDS_LOG_MERGETO         "Select merge target"
     IDS_LOG_SHOW_FIRST_PARENT "First Parent Only"
-    IDS_COMMIT_AMEND_TT     "Used to amend the tip of the current branch."
+    IDS_COMMIT_AMEND_TT     "Use this to modify/replace the latest checked out commit with a new commit. The message from the original commit is used as the starting point. Attention: This modifies the Git history."
     IDS_PROGRESSGETFILE     "Getting file %s"
     IDS_PROGRESSREVISION    "Revision %d"
     IDS_PROGRESSWAIT        "Please wait..."
