@@ -661,6 +661,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				dlg.m_bWholeProject=true;
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bForceCommitAmend=true;
+				dlg.m_bCommitAmend = TRUE;
 				int squashDate = CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
 				if (squashDate == 1)
 					dlg.SetTime(m_arShownList.SafeGetAt(FirstSelect)->GetAuthorDate());
