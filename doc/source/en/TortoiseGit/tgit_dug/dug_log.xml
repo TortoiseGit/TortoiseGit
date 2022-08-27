@@ -159,6 +159,9 @@
 			There are also rectangles to indicate the bad versions (light red) on bisecting, blue for known good and gray for skip.
 		</para>
 		<para>
+			Depending on what branch/tag label you open the context menu, it is optimized for that ref it was opened on (e.g., a local branch offers directly to switch to it and to push it whereas a remote branch has no push option).
+		</para>
+		<para>
 			The colors are configurable (cf. <xref linkend="tgit-dug-settings-colours2"/>). Also, the labels can be configured to be a the right side of the commit message or the displayed text to contain the whole of the commit message (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
 		</para>
 	</sect2>
