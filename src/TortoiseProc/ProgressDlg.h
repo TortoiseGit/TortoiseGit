@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ public:
 
 using PostCmdList = std::vector<PostCmd>;
 using PostCmdCallback = std::function<void(DWORD status, PostCmdList&)>;
-using PostExecCallback = std::function<void(DWORD& exitCode, CString& extraMsg)>;
+using PostExecCallback = std::function<void(HWND hWnd, DWORD& exitCode, CString& extraMsg)>;
 
 class CProgressDlg : public CResizableStandAloneDialog
 {

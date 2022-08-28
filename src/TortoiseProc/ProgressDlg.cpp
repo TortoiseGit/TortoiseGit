@@ -383,7 +383,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		if (m_PostExecCallback)
 		{
 			CString extraMsg;
-			m_PostExecCallback(m_GitStatus, extraMsg);
+			m_PostExecCallback(GetSafeHwnd(), m_GitStatus, extraMsg);
 			if (!extraMsg.IsEmpty())
 			{
 				int start = m_Log.GetTextLength();

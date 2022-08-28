@@ -1438,7 +1438,7 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 				postCmdList.emplace_back(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(hWnd, ref, bForce, sNewBranch, bBranchOverride, bTrack, true); });
 		}
 	};
-	progress.m_PostExecCallback = [&](DWORD& exitCode, CString& extraMsg)
+	progress.m_PostExecCallback = [&](HWND /* hWnd */, DWORD& exitCode, CString& extraMsg)
 	{
 		if (bMerge && !exitCode && g_Git.HasWorkingTreeConflicts() > 0)
 		{
@@ -2756,7 +2756,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 		return gitdlg.DoModal() == IDOK;
 	}
 
-	progress.m_PostExecCallback = [&](DWORD& exitCode, CString&)
+	progress.m_PostExecCallback = [&](HWND hWnd, DWORD& exitCode, CString&)
 	{
 		if (exitCode || !runRebase)
 			return;
@@ -2781,7 +2781,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 				return;
 			if (ret == 1)
 			{
-				CProgressDlg mergeProgress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+				CProgressDlg mergeProgress(CWnd::FromHandle(hWnd));
 				mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
 				mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
 				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)

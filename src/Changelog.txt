@@ -43,6 +43,7 @@ Released: unreleased
  * Fixed issue #3952: Log window wrong branch after cherry pick if switched after log window brought up
  * Fixed issue #3953: Disabling ShowListFullPathTooltip doesn't hide tooltips in Changed Files dialog
  * Fixed issue #3945: "Combine to one commit" sometimes broken
+ * Fixed issue #3663: Wrong window has focus after pull
 
 = Release 2.13.0.1 =
 Released: 2022-02-06
