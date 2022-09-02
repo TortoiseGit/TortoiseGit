@@ -115,8 +115,7 @@
 		<para>
 			For example, with ExamDiff Pro:
 <screen>
-C:\Path-To\ExamDiff.exe %base %mine --left_display_name:%bname
-    --right_display_name:%yname
+C:\Path-To\ExamDiff.exe %base %mine --left_display_name:%bname --right_display_name:%yname
 </screen>
 			or with KDiff3:
 <screen>
@@ -128,8 +127,7 @@ C:\Path-To\WinMerge.exe -e -ub -dl %bname -dr %yname %base %mine
 </screen>
 			or with Araxis:
 <screen>
-C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname
-    %base %mine
+C:\Path-To\compare.exe /max /wait /title1:%bname /title2:%yname %base %mine
 </screen>
 		</para>
 <!--
@@ -281,13 +279,11 @@ C:\Path-To\P4Merge.exe %base %theirs %mine %merged
 </screen>
 			or with KDiff3:
 <screen>
-C:\Path-To\kdiff3.exe %base %mine %theirs -o %merged
-    --L1 %bname --L2 %yname --L3 %tname
+C:\Path-To\kdiff3.exe %base %mine %theirs -o %merged --L1 %bname --L2 %yname --L3 %tname
 </screen>
 			or with Araxis:
 <screen>
-C:\Path-To\compare.exe /max /wait /3 /title1:%tname /title2:%bname
-    /title3:%yname %theirs %base %mine %merged /a2
+C:\Path-To\compare.exe /max /wait /3 /title1:%tname /title2:%bname /title3:%yname %theirs %base %mine %merged /a2
 </screen>
 			or with WinMerge (2.12 or later):
 <screen>
