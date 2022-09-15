@@ -486,7 +486,7 @@ DWORD WINAPI ExplorerMonitorThread(LPVOID lpvParam)
 	{
 		Sleep(500);
 
-		if (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != TRUE)
+		if (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) == FALSE)
 		{
 			Sleep(60000);
 			continue;

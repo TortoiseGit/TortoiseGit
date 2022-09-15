@@ -53,7 +53,7 @@ CGitIndexList::CGitIndexList()
 {
 #ifndef TGIT_TESTS_ONLY
 	m_iMaxCheckSize = static_cast<__int64>(CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024)) * 1024; // stored in KiB
-	m_bCalculateIncomingOutgoing= (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != TRUE);
+	m_bCalculateIncomingOutgoing = (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != FALSE);
 #else
 	m_iMaxCheckSize = 10 * 1024 * 1024;
 	m_bCalculateIncomingOutgoing = true;
