@@ -758,6 +758,7 @@
 				<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="EnableRollback" Value="False"><![CDATA[OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"]]></Publish>
 				<Publish Event="SpawnDialog" Value="OutOfDiskDlg"><![CDATA[(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")]]></Publish>
+				<Publish Event="DoAction" Value="RemoveAllUserSettings">REMOVESETTINGS</Publish>
 			</Control>
 			<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Default="yes" Text="[ButtonText_Back]">
 				<Publish Event="NewDialog" Value="MaintenanceTypeDlg">1</Publish>
@@ -775,6 +776,9 @@
 			<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
 			<Control Id="DialogDescription" Type="Text" X="75" Y="23" Width="280" Height="15" Transparent="yes" NoPrefix="yes" RightAligned="yes">
 				<Text>You have chosen to remove the program from your computer.</Text>
+			</Control>
+			<Control Id="RemoveSettings" Type="CheckBox" X="25" Y="110" Width="200" Height="12" Property='REMOVESETTINGS' CheckBoxValue='0'>
+				<Text>Remove TortoiseGit settings stored in registry.</Text>
 			</Control>
 			<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 		</Dialog>

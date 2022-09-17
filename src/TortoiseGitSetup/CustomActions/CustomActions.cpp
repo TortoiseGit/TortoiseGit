@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2012, 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2011, 2012, 2015-2017, 2019, 2021-2022 - TortoiseGit
 // Copyright (C) 2003-2008, 2012, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,8 @@
 #include "resource.h"
 #include <shlwapi.h>
 #include <shellapi.h>
+#include <memory>
+#include <string>
 #pragma comment(lib, "shlwapi")
 #pragma comment(lib, "shell32")
 
@@ -125,5 +127,13 @@ UINT __stdcall RestartExplorer(MSIHANDLE /*hModule*/)
 
 	ShellExecute(nullptr, L"open", szTempFileName, nullptr, nullptr, SW_SHOW);
 
+	return ERROR_SUCCESS;
+}
+
+UINT __stdcall RemoveAllUserSettings(MSIHANDLE /*hModule*/)
+{
+	SHDeleteKeyW(HKEY_CURRENT_USER, L"Software\\TortoiseGit");
+	SHDeleteKeyW(HKEY_CURRENT_USER, L"Software\\TortoiseGitBlame");
+	SHDeleteKeyW(HKEY_CURRENT_USER, L"Software\\TortoiseGitMerge");
 	return ERROR_SUCCESS;
 }

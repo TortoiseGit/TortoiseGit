@@ -58,6 +58,7 @@
 		<CustomAction Id="FirstStartWizardAction" Directory="D__Bin" ExeCommand="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:firststart" Return="asyncNoWait" />
 
 		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
+		<CustomAction Id="RemoveAllUserSettings" BinaryKey="CustomActionsDLL" DllEntry="RemoveAllUserSettings" />
 
 		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
 		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
