@@ -20,12 +20,12 @@
 			<Directory Id="INSTALLDIR" Name="TortoiseGit">
 
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm" DiskId="1" />
+				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
 				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-x64.msm" DiskId="1" />
-				<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.4.26626-win32.msm" DiskId="1" />
+				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-x64.msm" DiskId="1" />
+				<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
 				<?endif ?>
 
 				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
