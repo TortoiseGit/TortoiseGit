@@ -65,6 +65,10 @@ protected:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg LRESULT OnPaste(WPARAM, LPARAM);
+
+	static WNDPROC lpfnEditWndProc;
+	static LRESULT CALLBACK SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 	void CreateToolTip();
 
@@ -73,6 +77,7 @@ private:
 	 * Inserts an entry into the combobox
 	 */
 	int InsertEntry(const CString& combostring, INT_PTR pos);
+	void SetEditWndProc();
 
 // Implementation
 public:

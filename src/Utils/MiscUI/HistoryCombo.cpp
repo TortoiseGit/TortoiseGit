@@ -22,6 +22,7 @@
 #include "../registry.h"
 #include "DPIAware.h"
 #include "Theme.h"
+#include "ClipboardHelper.h"
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 #include "../SysImageList.h"
@@ -30,6 +31,7 @@
 #define MAX_HISTORY_ITEMS 25
 
 int CHistoryCombo::m_nGitIconIndex = 0;
+WNDPROC CHistoryCombo::lpfnEditWndProc = nullptr;
 
 CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	: m_nMaxHistoryItems ( MAX_HISTORY_ITEMS)
@@ -113,10 +115,40 @@ BOOL CHistoryCombo::PreTranslateMessage(MSG* pMsg)
 	return CComboBoxEx::PreTranslateMessage(pMsg);
 }
 
+LRESULT CALLBACK CHistoryCombo::SubClassProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if (msg == WM_PASTE)
+	{
+		auto parent = ::GetParent(::GetParent(hwnd));
+		::SendMessage(parent, WM_PASTE,0,0);
+		return 0;
+	}
+
+	// Call the original window procedure
+	return CallWindowProc(lpfnEditWndProc, hwnd, msg, wParam, lParam);
+}
+
+void CHistoryCombo::SetEditWndProc()
+{
+	CEdit* edit = GetEditCtrl();
+	if (!edit)
+		return;
+
+	if (m_bURLHistory || m_bPathHistory)
+	{
+		auto lpfnEditWndProcLocal = reinterpret_cast<WNDPROC>(SetWindowLongPtr(edit->GetSafeHwnd(), GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(static_cast<WNDPROC>(SubClassProc))));
+		if (!lpfnEditWndProc)
+			lpfnEditWndProc = lpfnEditWndProcLocal;
+	}
+	else if (lpfnEditWndProc)
+		SetWindowLongPtr(edit->GetSafeHwnd(), GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(lpfnEditWndProc));
+}
+
 BEGIN_MESSAGE_MAP(CHistoryCombo, CComboBoxEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
 	ON_WM_CREATE()
+	ON_MESSAGE(WM_PASTE, OnPaste)
 END_MESSAGE_MAP()
 
 int CHistoryCombo::AddString(const CString& str, INT_PTR pos /* = -1*/, BOOL isSel /* = TRUE */)
@@ -387,6 +419,7 @@ void CHistoryCombo::SetURLHistory(BOOL bURLHistory)
 		if (hwndEdit)
 			SHAutoComplete(hwndEdit, SHACF_URLALL);
 	}
+	SetEditWndProc();
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 	SetImageList(&SYS_IMAGE_LIST());
@@ -410,6 +443,7 @@ void CHistoryCombo::SetPathHistory(BOOL bPathHistory)
 		if (hwndEdit)
 			SHAutoComplete(hwndEdit, SHACF_FILESYSTEM);
 	}
+	SetEditWndProc();
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
 	SetImageList(&SYS_IMAGE_LIST());
@@ -726,6 +760,59 @@ int CHistoryCombo::FindStringExactCaseSensitive(int nIndexStart, LPCWSTR lpszFin
 		}
 	}
 	return -1;
+}
+
+LRESULT CHistoryCombo::OnPaste(WPARAM, LPARAM)
+{
+	CClipboardHelper clipboardHelper;
+	if (!clipboardHelper.Open(nullptr))
+		return 0;
+
+	CString toInsert;
+	HGLOBAL hglb = GetClipboardData(CF_TEXT);
+	if (hglb)
+	{
+		LPCSTR lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
+		toInsert = CString(lpstr);
+		GlobalUnlock(hglb);
+	}
+	hglb = GetClipboardData(CF_UNICODETEXT);
+	if (hglb)
+	{
+		LPCWSTR lpstr = static_cast<LPCWSTR>(GlobalLock(hglb));
+		toInsert = lpstr;
+		GlobalUnlock(hglb);
+	}
+
+	// elimate control chars, especially newlines
+	toInsert.Replace(L'\t', L' ');
+
+	// only insert first line
+	toInsert.Replace(L'\r', L'\n');
+	int pos = 0;
+	toInsert = toInsert.Tokenize(L"\n", pos);
+	toInsert.Trim();
+	toInsert.Trim(L'"');
+
+	// get the current text
+	CString text;
+	GetWindowText(text);
+
+	// construct the new text
+	int from, to;
+	GetEditCtrl()->GetSel(from, to);
+	text.Delete(from, to - from);
+	text.Insert(from, toInsert);
+	from += toInsert.GetLength();
+
+	// update & notify controls
+	SetWindowText(text);
+	GetEditCtrl()->SetSel(from, from, FALSE);
+	GetEditCtrl()->SetModify(TRUE);
+
+	GetEditCtrl()->GetParent()->SendMessage(WM_COMMAND, MAKEWPARAM(GetDlgCtrlID(), EN_CHANGE), reinterpret_cast<LPARAM>(GetEditCtrl()->GetSafeHwnd()));
+
+	return 0;
 }
 
 CCustomAutoCompleteSource::CCustomAutoCompleteSource(const CStringArray& pData)
