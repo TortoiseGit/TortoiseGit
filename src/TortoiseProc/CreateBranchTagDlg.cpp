@@ -91,7 +91,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	{
 		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATEBRANCH));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
-		this->GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE); // deactivated by default
 		GetDlgItem(IDC_GROUP_MESSAGE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_DESCRIPTION)));
 		if (!!m_regNewBranch)
 		{
@@ -103,7 +103,9 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
 
 	// show the switch checkbox if we are a create branch dialog
-	this->GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow(!m_bIsTag && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir));
+	bool canSwitch = !m_bIsTag && !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
+	GetDlgItem(IDC_CHECK_SWITCH)->ShowWindow(canSwitch ? SW_SHOW : SW_HIDE);
+	DialogEnableWindow(IDC_CHECK_SWITCH, canSwitch);
 	CWnd* pHead = GetDlgItem(IDC_RADIO_HEAD);
 	CString HeadText;
 	pHead->GetWindowText( HeadText );

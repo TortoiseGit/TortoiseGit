@@ -66,6 +66,7 @@ BOOL CPromptDlg::OnInitDialog()
 	{
 		m_pass.SetPasswordChar('\0');
 		GetDlgItem(IDC_SAVECHECK)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_SAVECHECK, FALSE);
 	}
 
 	m_pass.SetFocus();

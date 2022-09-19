@@ -461,7 +461,10 @@ BOOL CCommitDlg::OnInitDialog()
 	SetSplitterRange();
 
 	if (m_bForceCommitAmend || m_bCommitAmend)
+	{
+		DialogEnableWindow(IDC_COMMIT_AMENDDIFF, TRUE);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
+	}
 
 	// add all directories to the watcher
 	/*
@@ -1053,9 +1056,11 @@ void CCommitDlg::OnOK()
 				m_AmendStr.Empty();
 				m_bCommitAmend = FALSE;
 				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+				DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 				m_bSetCommitDateTime = FALSE;
 				m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
 				m_AsCommitDateCtrl.SetCheck(FALSE);
+				m_AsCommitDateCtrl.EnableWindow(FALSE);
 				GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 				GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
 				m_bSetAuthor = FALSE;
@@ -1398,6 +1403,7 @@ UINT CCommitDlg::StatusThread()
 	if (repoRoot.IsCherryPickActive())
 	{
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 		m_bCommitAmend = FALSE;
 		SendMessage(WM_UPDATEDATAFALSE);
 	}
@@ -2723,22 +2729,25 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	{
 		this->m_NoAmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_AmendStr);
+		DialogEnableWindow(IDC_COMMIT_AMENDDIFF, m_bStagingSupport);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_SHOW);
 		if (m_bStagingSupport)
-		{
-			UpdateData(false);
-			DialogEnableWindow(IDC_COMMIT_AMENDDIFF, false);
-		}
+			UpdateData(FALSE);
 		if (m_bSetCommitDateTime)
+		{
+			m_AsCommitDateCtrl.EnableWindow(TRUE);
 			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
+		}
 	}
 	else
 	{
 		this->m_AmendStr=this->m_cLogMessage.GetText();
 		m_cLogMessage.SetText(m_NoAmendStr);
 		GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 		m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
 		m_AsCommitDateCtrl.SetCheck(FALSE);
+		m_AsCommitDateCtrl.EnableWindow(FALSE);
 		OnBnClickedCommitAsCommitDate();
 	}
 
@@ -2890,6 +2899,7 @@ void CCommitDlg::DestroyPatchViewDlgIfOpen()
 	{
 		g_Git.SetConfigValue(L"tgit.commitshowpatch", L"false");
 		m_patchViewdlg.ShowWindow(SW_HIDE);
+		m_patchViewdlg.EnableWindow(FALSE);
 		m_patchViewdlg.DestroyWindow();
 	}
 }
@@ -2956,6 +2966,7 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 			if (headRevision.GetCommit(L"HEAD"))
 				MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			authordate = headRevision.GetAuthorDate();
+			m_AsCommitDateCtrl.EnableWindow(TRUE);
 			m_AsCommitDateCtrl.ShowWindow(SW_SHOW);
 		}
 
@@ -2970,6 +2981,7 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 		GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
 		m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
+		m_AsCommitDateCtrl.EnableWindow(FALSE);
 		m_AsCommitDateCtrl.SetCheck(FALSE);
 		OnBnClickedCommitAsCommitDate();
 	}
@@ -3073,17 +3085,23 @@ void CCommitDlg::PrepareStagingSupport()
 		}
 		CMessageBox::ShowCheck(GetSafeHwnd(), IDS_TIPSTAGINGMODE, IDS_APPNAME, MB_ICONINFORMATION | MB_OK, L"HintStagingMode", IDS_MSGBOX_DONOTSHOWAGAIN);
 		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_VIEW_PATCH, FALSE);
 		ShowPartialStagingTextAndUpdateDisplayState(true);
+		DialogEnableWindow(IDC_PARTIAL_STAGING, TRUE);
 		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_SHOW);
 		ShowPartialUnstagingTextAndUpdateDisplayState(true);
+		DialogEnableWindow(IDC_PARTIAL_UNSTAGING, TRUE);
 		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_SHOW);
 	}
 	else
 	{
 		ShowViewPatchText(true);
+		DialogEnableWindow(IDC_VIEW_PATCH, TRUE);
 		GetDlgItem(IDC_VIEW_PATCH)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_PARTIAL_STAGING)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_PARTIAL_STAGING, FALSE);
 		GetDlgItem(IDC_PARTIAL_UNSTAGING)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_PARTIAL_UNSTAGING, FALSE);
 	}
 }
 

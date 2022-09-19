@@ -300,6 +300,7 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			}
 			m_hAccel = CreateAcceleratorTable(lpaccelNew, static_cast<int>(m_accellerators.size()));
 		}
+		m_cMenuButton.EnableWindow(TRUE);
 		m_cMenuButton.ShowWindow(SW_SHOW);
 	}
 

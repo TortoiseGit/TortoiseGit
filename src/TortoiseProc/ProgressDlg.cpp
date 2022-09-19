@@ -132,6 +132,7 @@ BOOL CProgressDlg::OnInitDialog()
 	AddAnchor(IDC_CURRENT, TOP_LEFT);
 
 	this->GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_HIDE);
+	DialogEnableWindow(IDC_PROGRESS_BUTTON1, FALSE);
 	m_Animate.Open(IDR_DOWNLOAD);
 
 	SetupLogMessageViewControl();
@@ -482,6 +483,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 						}
 						m_hAccel = CreateAcceleratorTable(lpaccelNew, static_cast<int>(m_accellerators.size()));
 					}
+					DialogEnableWindow(IDC_PROGRESS_BUTTON1, TRUE);
 					GetDlgItem(IDC_PROGRESS_BUTTON1)->ShowWindow(SW_SHOW);
 				}
 			}

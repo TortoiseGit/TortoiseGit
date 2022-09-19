@@ -348,6 +348,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				rectDoNotAskAgainButton.top = rectOKButton.top;
 				rectDoNotAskAgainButton.bottom = rectOKButton.bottom;
 				GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
+				GetDlgItem(IDC_DONOTASKAGAIN)->EnableWindow(TRUE);
 				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
 				rectOKButton.left += CDPIAware::Instance().ScaleX(60);
 				temp.LoadString(IDS_REMINDMELATER);

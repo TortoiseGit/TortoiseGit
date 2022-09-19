@@ -457,6 +457,7 @@ BOOL CLogDlg::OnInitDialog()
 		GetDlgItemText(IDOK, temp);
 		SetDlgItemText(IDCANCEL, temp);
 		GetDlgItem(IDOK)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDOK, FALSE);
 	}
 
 	// first start a thread to obtain the log messages without
@@ -560,7 +561,7 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 		GetDlgItem(IDC_WALKBEHAVIOUR)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_VIEW)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_STATBUTTON)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_PROGRESS)->ShowWindow(TRUE);
+		GetDlgItem(IDC_PROGRESS)->ShowWindow(SW_SHOW);
 
 		DialogEnableWindow(IDC_WALKBEHAVIOUR, FALSE);
 		DialogEnableWindow(IDC_STATBUTTON, FALSE);

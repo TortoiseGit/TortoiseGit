@@ -176,7 +176,10 @@ void CRefLogDlg::OnCbnSelchangeRef()
 			GetDlgItem(IDOK)->SetFocus();
 	}
 	else
+	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->EnableWindow(FALSE);
+	}
 }
 
 BOOL CRefLogDlg::PreTranslateMessage(MSG* pMsg)

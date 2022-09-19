@@ -879,12 +879,17 @@ void CSyncDlg::ShowInputCtrl(bool bShow)
 	this->m_ctrlURL.ShowWindow(b);
 	this->m_ctrlLocalBranch.ShowWindow(b);
 	this->m_ctrlRemoteBranch.ShowWindow(b);
+	GetDlgItem(IDC_BUTTON_LOCAL_BRANCH)->EnableWindow(bShow);
 	this->GetDlgItem(IDC_BUTTON_LOCAL_BRANCH)->ShowWindow(b);
+	GetDlgItem(IDC_BUTTON_REMOTE_BRANCH)->EnableWindow(bShow);
 	this->GetDlgItem(IDC_BUTTON_REMOTE_BRANCH)->ShowWindow(b);
 	this->GetDlgItem(IDC_STATIC_LOCAL_BRANCH)->ShowWindow(b);
 	this->GetDlgItem(IDC_STATIC_REMOTE_BRANCH)->ShowWindow(b);
+	GetDlgItem(IDC_BUTTON_MANAGE)->EnableWindow(bShow);
 	this->GetDlgItem(IDC_BUTTON_MANAGE)->ShowWindow(b);
+	GetDlgItem(IDC_CHECK_PUTTY_KEY)->EnableWindow(bShow);
 	this->GetDlgItem(IDC_CHECK_PUTTY_KEY)->ShowWindow(b);
+	GetDlgItem(IDC_CHECK_FORCE)->EnableWindow(bShow);
 	this->GetDlgItem(IDC_CHECK_FORCE)->ShowWindow(b);
 	this->GetDlgItem(IDC_STATIC_REMOTE_URL)->ShowWindow(b);
 }

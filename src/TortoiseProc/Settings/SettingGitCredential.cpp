@@ -151,6 +151,7 @@ BOOL CSettingGitCredential::OnInitDialog()
 	if (!CAppUtils::IsAdminLogin())
 	{
 		reinterpret_cast<CButton*>(GetDlgItem(IDC_OPENSETTINGSELEVATED))->SetShield(TRUE);
+		GetDlgItem(IDC_OPENSETTINGSELEVATED)->EnableWindow(TRUE);
 		GetDlgItem(IDC_OPENSETTINGSELEVATED)->ShowWindow(SW_SHOW);
 		GetDlgItem(IDC_STATICELEVATIONNEEDED)->ShowWindow(SW_SHOW);
 	}

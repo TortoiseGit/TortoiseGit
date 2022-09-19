@@ -128,6 +128,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	}
 
 	GetDlgItem(IDC_BUTTON_UPDATE)->ShowWindow(!m_bFromOK || !m_bToOK || m_bToIsWorkingCopy ? SW_SHOW : SW_HIDE);
+	DialogEnableWindow(IDC_BUTTON_UPDATE, !m_bFromOK || !m_bToOK || m_bToIsWorkingCopy);
 
 	return FALSE;
 }

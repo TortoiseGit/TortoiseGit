@@ -124,11 +124,15 @@ BOOL CSettingGitConfig::OnInitDialog()
 	if (!CAppUtils::IsAdminLogin())
 	{
 		static_cast<CButton*>(this->GetDlgItem(IDC_EDITSYSTEMGITCONFIG))->SetShield(TRUE);
+		GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->ShowWindow(SW_SHOW);
 	}
 
 	if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
+	{
+		GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->ShowWindow(SW_SHOW);
+	}
 
 	this->UpdateData(FALSE);
 

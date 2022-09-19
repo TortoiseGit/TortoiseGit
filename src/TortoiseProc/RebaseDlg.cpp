@@ -317,7 +317,9 @@ BOOL CRebaseDlg::OnInitDialog()
 		this->m_BranchCtrl.SetCurSel(-1);
 		this->m_BranchCtrl.EnableWindow(FALSE);
 		GetDlgItem(IDC_REBASE_CHECK_FORCE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REBASE_CHECK_FORCE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_REBASE_CHECK_PRESERVEMERGES)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_ONTO)->EnableWindow(FALSE);
@@ -335,6 +337,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	{
 		static_cast<CButton*>(GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->EnableWindow(FALSE);
 		int iconWidth = GetSystemMetrics(SM_CXSMICON);
 		int iconHeight = GetSystemMetrics(SM_CYSMICON);
 		static_cast<CButton*>(GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon(CCommonAppUtils::LoadIconEx(IDI_SWITCHLEFTRIGHT, iconWidth, iconHeight));
@@ -1834,6 +1837,7 @@ void CRebaseDlg::SetControlEnable()
 		if( m_RebaseStage == REBASE_DONE && (this->m_PostButtonTexts.GetCount() != 0) )
 		{
 			this->GetDlgItem(IDC_STATUS_STATIC)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_REBASE_POST_BUTTON)->EnableWindow(TRUE);
 			this->GetDlgItem(IDC_REBASE_POST_BUTTON)->ShowWindow(SW_SHOWNORMAL);
 			this->m_PostButton.RemoveAll();
 			this->m_PostButton.AddEntries(m_PostButtonTexts);
@@ -1842,7 +1846,9 @@ void CRebaseDlg::SetControlEnable()
 		break;
 	}
 
-	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->ShowWindow((m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_SQUASH_EDIT) ? SW_SHOW : SW_HIDE);
+	bool canSplitCommit = m_RebaseStage == REBASE_EDIT || m_RebaseStage == REBASE_SQUASH_EDIT;
+	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->ShowWindow(canSplitCommit ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->EnableWindow(canSplitCommit);
 
 	if(m_bThreadRunning)
 	{

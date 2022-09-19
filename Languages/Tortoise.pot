@@ -532,10 +532,6 @@ msgstr ""
 msgid "&Do the same for the rest"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
-msgid "&Don't ask me again"
-msgstr ""
-
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
 msgid "&Don't run\nDo not run the script"
 msgstr ""
@@ -3844,6 +3840,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
+msgid "Don't ask me &again"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)

@@ -684,6 +684,8 @@ void CGitPropertyPage::InitWorkfileView()
 		{
 			ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 			ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), FALSE);
+			EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), FALSE);
 		}
 	}
 	else
@@ -693,6 +695,10 @@ void CGitPropertyPage::InitWorkfileView()
 		ShowWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), SW_HIDE);
 		ShowWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), SW_HIDE);
 		ShowWindow(GetDlgItem(m_hwnd, IDC_SYMLINK), SW_HIDE);
+		EnableWindow(GetDlgItem(m_hwnd, IDC_ASSUMEVALID), FALSE);
+		EnableWindow(GetDlgItem(m_hwnd, IDC_SKIPWORKTREE), FALSE);
+		EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), FALSE);
+		EnableWindow(GetDlgItem(m_hwnd, IDC_EXECUTABLE), FALSE);
 	}
 
 	if (filenames.size() == 1 && m_fileStats.allAreVersionedItems)

@@ -238,7 +238,9 @@ BOOL CPullFetchDlg::OnInitDialog()
 	else
 	{
 		GetDlgItem(IDC_CHECK_DEPTH)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_CHECK_DEPTH, FALSE);
 		GetDlgItem(IDC_EDIT_DEPTH)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_EDIT_DEPTH, FALSE);
 	}
 	OnBnClickedCheckDepth();
 

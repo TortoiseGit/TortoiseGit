@@ -71,16 +71,28 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	{
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_SVNACTION_MODIFIED)));
 		if (m_bDiffMine)
+		{
+			DialogEnableWindow(IDC_SHOWDIFF, TRUE);
 			GetDlgItem(IDC_SHOWDIFF)->ShowWindow(SW_SHOW);
+		}
 		else
+		{
+			DialogEnableWindow(IDC_SHOWDIFF2, TRUE);
 			GetDlgItem(IDC_SHOWDIFF2)->ShowWindow(SW_SHOW);
+		}
 	}
 	else
 		this->GetDlgItem(IDC_MODIFY)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_CREATED)));
 	if (m_LocalRef.IsEmpty())
+	{
 		GetDlgItem(IDC_LOG)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_LOG, FALSE);
+	}
 	if (m_RemoteRef.IsEmpty())
+	{
 		GetDlgItem(IDC_LOG2)->ShowWindow(SW_HIDE);
+		DialogEnableWindow(IDC_LOG2, FALSE);
+	}
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);

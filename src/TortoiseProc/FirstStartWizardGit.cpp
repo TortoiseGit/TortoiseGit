@@ -115,9 +115,12 @@ void CFirstStartWizardGit::ShowWorkarounds(bool show)
 	if (!(CGit::ms_bCygwinGit || CGit::ms_bMsys2Git || show))
 		return;
 
+	GetDlgItem(IDC_WORKAROUNDS)->EnableWindow(TRUE);
 	GetDlgItem(IDC_WORKAROUNDS)->ShowWindow(SW_SHOW);
 
+	GetDlgItem(IDC_GITHACKS1)->EnableWindow(m_bEnableHacks);
 	GetDlgItem(IDC_GITHACKS1)->ShowWindow(m_bEnableHacks ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_GITHACKS2)->EnableWindow(m_bEnableHacks);
 	GetDlgItem(IDC_GITHACKS2)->ShowWindow(m_bEnableHacks ? SW_SHOW : SW_HIDE);
 
 	if (CGit::ms_bCygwinGit)
