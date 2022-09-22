@@ -8,7 +8,7 @@ General
 -------
 The TortoiseGit project uses the web-based Transifex platform for
 managing translations:
-https://www.transifex.com/projects/p/tortoisegit/
+https://explore.transifex.com/lznuaa/tortoisegit/
 
 This should make it easier for new translators to get started. If you
 want to help to translate TortoiseGit, please register an account a
