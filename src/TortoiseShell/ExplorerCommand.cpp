@@ -146,7 +146,6 @@ CExplorerCommand::CExplorerCommand(const std::wstring &title, UINT iconId,
 	, m_itemStatesFolder(itemStatesFolder)
 	, m_paths(paths)
 	, m_subItems(subItems)
-	, m_regDiffLater(L"Software\\TortoiseGitMerge\\DiffLater", L"")
 	, m_site(site)
 {
 }
@@ -251,10 +250,11 @@ HRESULT __stdcall CExplorerCommand::Invoke(IShellItemArray * /*psiItemArray*/, I
 		}
 	}
 
+	CRegStdString regDiffLater{ L"Software\\TortoiseGitMerge\\DiffLater", L"" };
 	CShellExt::InvokeCommand(m_cmd, m_appDir, m_uuidSource,
 							 GetForegroundWindow(), m_itemStates, m_itemStatesFolder, m_paths,
 							 m_paths.empty() ? L"" : m_paths[0],
-							 m_regDiffLater, m_site);
+							 regDiffLater, m_site);
 	return S_OK;
 }
 

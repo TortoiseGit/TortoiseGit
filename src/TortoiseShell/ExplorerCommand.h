@@ -94,6 +94,5 @@ private:
 	DWORD							m_itemStatesFolder = 0;
 	std::vector<std::wstring>		m_paths;
 	std::vector<CExplorerCommand>	m_subItems;
-	CRegStdString					m_regDiffLater;
 	Microsoft::WRL::ComPtr<IUnknown>	m_site;
 };
