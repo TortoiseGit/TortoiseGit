@@ -120,7 +120,7 @@ private:
 	bool			IsIllegalFolder(const std::wstring& folder);
 	static void RunCommand(const std::wstring& path, const std::wstring& command, LPCWSTR errorMessage, Microsoft::WRL::ComPtr<IUnknown> site);
 	static void InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site);
-	static std::wstring ExplorerViewPath();
+	static std::wstring ExplorerViewPath(const Microsoft::WRL::ComPtr<IUnknown>& site);
 public:
 	CShellExt(FileState state);
 	virtual ~CShellExt();

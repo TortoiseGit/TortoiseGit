@@ -2476,7 +2476,7 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 	{
 		// context menu for a folder background (no selection),
 		// so try to get the current path of the explorer window instead
-		auto path = ExplorerViewPath();
+		auto path = ExplorerViewPath(m_site);
 		if (path.empty())
 		{
 			*pCmdState = ECS_HIDDEN;
@@ -2547,80 +2547,51 @@ HRESULT __stdcall CShellExt::EnumSubCommands(IEnumExplorerCommand** ppEnum)
 	return S_OK;
 }
 
-std::wstring CShellExt::ExplorerViewPath()
+std::wstring CShellExt::ExplorerViewPath(const Microsoft::WRL::ComPtr<IUnknown>& site)
 {
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ "\n");
 	std::wstring path;
-	HRESULT hr = NOERROR;
-
-	// the top context menu in Win11 does not
-	// provide an IOleWindow with the SetSite() object,
-	// so we have to use a trick to get it: since the
-	// context menu must always be the top window, we
-	// just grab the foreground window and assume that
-	// this is the explorer window.
-	auto hwnd = ::GetForegroundWindow();
-	if (!hwnd)
-		return path;
-
-	wchar_t szName[1024] = { 0 };
-	::GetClassName(hwnd, szName, _countof(szName));
-	if (StrCmp(szName, L"WorkerW") == 0 || StrCmp(szName, L"Progman") == 0)
+	if (site)
 	{
-		//special folder: desktop
-		hr = ::SHGetFolderPath(nullptr, CSIDL_DESKTOP, nullptr, SHGFP_TYPE_CURRENT, szName);
-		if (FAILED(hr))
-			return path;
-
-		path = szName;
-		return path;
-	}
-
-	if (StrCmp(szName, L"CabinetWClass") != 0)
-		return path;
-
-	// get the shell windows object to enumerate all active explorer
-	// instances. We use those to compare the foreground hwnd to it.
-	Microsoft::WRL::ComPtr<IShellWindows> shell;
-	if (FAILED(CoCreateInstance(CLSID_ShellWindows, nullptr, CLSCTX_ALL, IID_IShellWindows, reinterpret_cast<LPVOID*>(shell.GetAddressOf()))))
-		return path;
-
-	if (!shell)
-		return path;
-
-	Microsoft::WRL::ComPtr<IDispatch> disp;
-	VARIANT variant{};
-	variant.vt = VT_I4;
-
-	Microsoft::WRL::ComPtr<IWebBrowserApp> browser;
-	// look for correct explorer window
-	for (variant.intVal = 0; shell->Item(variant, disp.GetAddressOf()) == S_OK; variant.intVal++)
-	{
-		Microsoft::WRL::ComPtr<IWebBrowserApp> tmp;
-		if (FAILED(disp->QueryInterface(tmp.GetAddressOf())))
-			continue;
-
-		HWND tmpHwnd = nullptr;
-		hr = tmp->get_HWND(reinterpret_cast<SHANDLE_PTR*>(&tmpHwnd));
-		if (hwnd == tmpHwnd)
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got site\n");
+		Microsoft::WRL::ComPtr<IServiceProvider> serviceProvider;
+		if (SUCCEEDED(site.As(&serviceProvider)))
 		{
-			browser = tmp;
-			break; // found it!
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IServiceProvider\n");
+			Microsoft::WRL::ComPtr<IShellBrowser> shellBrowser;
+			if (SUCCEEDED(serviceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, &shellBrowser)))
+			{
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellBrowser\n");
+				Microsoft::WRL::ComPtr<IShellView> shellView;
+				if (SUCCEEDED(shellBrowser->QueryActiveShellView(&shellView)))
+				{
+					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellView\n");
+					Microsoft::WRL::ComPtr<IFolderView> folderView;
+					if (SUCCEEDED(shellView.As(&folderView)))
+					{
+						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IFolderView\n");
+						Microsoft::WRL::ComPtr<IPersistFolder2> persistFolder;
+						if (SUCCEEDED(folderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&persistFolder)))
+						{
+							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IPersistFolder2\n");
+							PIDLIST_ABSOLUTE curFolder;
+							if (SUCCEEDED(persistFolder->GetCurFolder(&curFolder)))
+							{
+								CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got GetCurFolder\n");
+								wchar_t buf[MAX_PATH] = { 0 };
+								// find the path of the folder
+								if (SHGetPathFromIDList(curFolder, buf))
+								{
+									CTraceToOutputDebugString::Instance()(__FUNCTION__ L": got SHGetPathFromIDList : %s\n", buf);
+									path = buf;
+								}
+								CoTaskMemFree(curFolder);
+							}
+						}
+					}
+				}
+			}
 		}
-	}
-
-	if (browser != nullptr)
-	{
-		BSTR url;
-		hr = browser->get_LocationURL(&url);
-		if (FAILED(hr))
-			return path;
-
-		std::wstring sUrl(url, SysStringLen(url));
-		SysFreeString(url);
-		DWORD size = _countof(szName);
-		hr = ::PathCreateFromUrl(sUrl.c_str(), szName, &size, NULL);
-		if (SUCCEEDED(hr))
-			path = szName;
 	}
 
 	return path;
