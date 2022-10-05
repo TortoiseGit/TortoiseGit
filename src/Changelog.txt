@@ -25,6 +25,8 @@ Released: unreleased
  * Fixed issue #3867: GitLog does not show super project pointers in conflicted submodule
  * Fixed issue #3789: Commit dialog: Amend Last Commit in Message section unclear
  * Fixed issue #3958: Pasting a path in the input box should automatically trim the quotes
+ * Improved parsing Git URLs/branch names from clipboard for push/pull/fetch dialgos
+ * CommitDlg: Allow to see diff to previous commit also for merge commits
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu
@@ -47,6 +49,9 @@ Released: unreleased
  * Fixed issue #3945: "Combine to one commit" sometimes broken
  * Fixed issue #3663: Wrong window has focus after pull
  * Fixed issue #3956: Sometimes rebase contains wrong list of files
+ * LogDlg: Prevent the graph from drawing an unfinished line for each ignored parent on first-parent only walk
+ * Start TGit processes without identity from the shell extension
+   Related issues: issue #3889, issue #3949
 
 = Release 2.13.0.1 =
 Released: 2022-02-06
