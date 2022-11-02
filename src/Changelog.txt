@@ -54,6 +54,7 @@ Released: unreleased
  * LogDlg: Prevent the graph from drawing an unfinished line for each ignored parent on first-parent only walk
  * Start TGit processes without identity from the shell extension
    Related issues: issue #3889, issue #3949
+ * Fixed issue #3967: Show log for submodule from compare revisions dialog
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

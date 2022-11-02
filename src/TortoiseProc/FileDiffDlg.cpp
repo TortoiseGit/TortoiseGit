@@ -709,10 +709,11 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					CString sCmd = L"/command:log";
-					if (sCmd == ID_LOGSUBMODULE)
+					if (cmd == ID_LOGSUBMODULE && m_arFilteredList[index]->IsDirectory())
 						sCmd += L" /submodule";
-					sCmd += L" /path:\"" + m_arFilteredList[index]->GetWinPathString() + L"\" ";
-					sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
+					sCmd += L" /path:\"" + g_Git.CombinePath(m_arFilteredList[index]->GetWinPathString()) + L"\" ";
+					if (cmd == ID_LOGSUBMODULE)
+						sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			}
