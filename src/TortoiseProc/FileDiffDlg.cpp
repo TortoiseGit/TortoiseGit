@@ -630,7 +630,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			popup.AppendMenuIcon(ID_EXPORT, IDS_FILEDIFF_POPEXPORT, IDI_EXPORT);
 		}
 		else if (firstEntry >= 0)
-			popup.AppendMenuIcon(ID_LOGSUBMODULE, IDS_MENULOGSUBMODULE, IDI_LOG);
+			popup.AppendMenuIcon(ID_LOGSUBMODULE, IDS_LOG_SUBMODULE, IDI_LOG);
 		popup.AppendMenu(MF_SEPARATOR, NULL);
 		popup.AppendMenuIcon(ID_SAVEAS, IDS_FILEDIFF_POPSAVELIST, IDI_SAVEAS);
 		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
@@ -709,10 +709,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				{
 					int index = m_cFileList.GetNextSelectedItem(pos);
 					CString sCmd = L"/command:log";
-					if (cmd == ID_LOGSUBMODULE && m_arFilteredList[index]->IsDirectory())
+					if (cmd == ID_LOG && m_arFilteredList[index]->IsDirectory())
 						sCmd += L" /submodule";
 					sCmd += L" /path:\"" + g_Git.CombinePath(m_arFilteredList[index]->GetWinPathString()) + L"\" ";
-					if (cmd == ID_LOGSUBMODULE)
+					if (cmd == ID_LOG)
 						sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}

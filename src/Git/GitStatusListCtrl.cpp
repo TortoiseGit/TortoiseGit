@@ -2443,10 +2443,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CString sCmd;
 					sCmd.Format(L"/command:log /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(filepath)));
-					if (cmd == IDGITLC_LOG && filepath->IsDirectory())
-						sCmd += L" /submodule";
-					if (!m_sDisplayedBranch.IsEmpty())
-						sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
+					if (cmd == IDGITLC_LOG)
+					{
+						if (filepath->IsDirectory())
+							sCmd += L" /submodule";
+						if (!m_sDisplayedBranch.IsEmpty())
+							sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
+						else
+							sCmd += L" /endrev:\"" + m_CurrentVersion.ToString() + '"';
+					}
 					CAppUtils::RunTortoiseGitProc(sCmd, false, !(cmd == IDGITLC_LOGSUBMODULE));
 				}
 				break;

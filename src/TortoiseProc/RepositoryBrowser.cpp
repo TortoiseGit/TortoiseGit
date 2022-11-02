@@ -778,7 +778,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		popupMenu.AppendMenuIcon(eCmd_ViewLog, temp, IDI_LOG);
 		if (selectedLeafs[0]->m_bSubmodule)
 		{
-			temp.LoadString(IDS_MENULOGSUBMODULE);
+			temp.LoadString(IDS_LOG_SUBMODULE);
 			popupMenu.AppendMenuIcon(eCmd_ViewLogSubmodule, temp, IDI_LOG);
 		}
 
