@@ -2193,6 +2193,8 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	this->m_Environment.clear();
 	m_Environment.CopyProcessEnvironment();
 
+	m_Environment.SetEnv(L"TGIT_INITIATED_CALL", L"1");
+
 	// Git for Windows 2.10.1 and 2.10.2 require LC_ALL to be set, see https://tortoisegit.org/issue/2859 and https://github.com/git-for-windows/git/issues/945,
 	// because MSys2 changed the default to "ASCII". SO, make sure we have a proper default set
 	if (m_Environment.GetEnv(L"LC_ALL").IsEmpty())
