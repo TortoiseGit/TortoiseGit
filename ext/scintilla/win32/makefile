@@ -15,7 +15,7 @@ DIR_BIN=../bin
 COMPONENT = $(DIR_BIN)/Scintilla.dll
 LIBSCI = $(DIR_BIN)/libscintilla.a
 
-WARNINGS = -Wpedantic -Wall
+WARNINGS = -Wpedantic -Wall -Wextra
 
 ifdef CLANG
 CXX = clang++
@@ -87,6 +87,7 @@ SRC_OBJS = \
 	$(DIR_O)/CaseConvert.o \
 	$(DIR_O)/CaseFolder.o \
 	$(DIR_O)/CellBuffer.o \
+	$(DIR_O)/ChangeHistory.o \
 	$(DIR_O)/CharacterCategoryMap.o \
 	$(DIR_O)/CharacterType.o \
 	$(DIR_O)/CharClassify.o \

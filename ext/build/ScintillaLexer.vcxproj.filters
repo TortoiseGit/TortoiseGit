@@ -240,6 +240,9 @@
     <ClInclude Include="..\scintilla\win32\WinTypes.h">
       <Filter>scintilla\win32</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\src\ChangeHistory.h">
+      <Filter>scintilla\src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\scintilla\src\SciTE.properties">
@@ -744,6 +747,9 @@
     </ClCompile>
     <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx">
       <Filter>lexlib\lexlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\src\ChangeHistory.cxx">
+      <Filter>scintilla\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
