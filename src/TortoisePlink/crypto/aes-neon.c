@@ -177,6 +177,18 @@ static inline uint8x16_t aes_neon_sdctr_increment(uint8x16_t in)
 }
 
 /*
+ * Much simpler auxiliary routine to increment the counter for GCM
+ * mode. This only has to increment the low word.
+ */
+static inline uint8x16_t aes_neon_gcm_increment(uint8x16_t in)
+{
+    uint32x4_t inw = vreinterpretq_u32_u8(in);
+    uint32x4_t ONE = vcombine_u32(vcreate_u32(0), vcreate_u32(1));
+    inw = vaddq_u32(inw, ONE);
+    return vreinterpretq_u8_u32(inw);
+}
+
+/*
  * The SSH interface and the cipher modes.
  */
 
@@ -211,7 +223,7 @@ static void aes_neon_setkey(ssh_cipher *ciph, const void *vkey)
     const unsigned char *key = (const unsigned char *)vkey;
 
     aes_neon_key_expand(key, ctx->ciph.vt->real_keybits / 32,
-                      ctx->keysched_e, ctx->keysched_d);
+                        ctx->keysched_e, ctx->keysched_d);
 }
 
 static void aes_neon_setiv_cbc(ssh_cipher *ciph, const void *iv)
@@ -225,6 +237,28 @@ static void aes_neon_setiv_sdctr(ssh_cipher *ciph, const void *iv)
     aes_neon_context *ctx = container_of(ciph, aes_neon_context, ciph);
     uint8x16_t counter = vld1q_u8(iv);
     ctx->iv = aes_neon_sdctr_reverse(counter);
+}
+
+static void aes_neon_setiv_gcm(ssh_cipher *ciph, const void *iv)
+{
+    aes_neon_context *ctx = container_of(ciph, aes_neon_context, ciph);
+    uint8x16_t counter = vld1q_u8(iv);
+    ctx->iv = aes_neon_sdctr_reverse(counter);
+    ctx->iv = vreinterpretq_u8_u32(vsetq_lane_u32(
+                                       1, vreinterpretq_u32_u8(ctx->iv), 2));
+}
+
+static void aes_neon_next_message_gcm(ssh_cipher *ciph)
+{
+    aes_neon_context *ctx = container_of(ciph, aes_neon_context, ciph);
+    uint32x4_t iv = vreinterpretq_u32_u8(ctx->iv);
+    uint64_t msg_counter = vgetq_lane_u32(iv, 0);
+    msg_counter = (msg_counter << 32) | vgetq_lane_u32(iv, 3);
+    msg_counter++;
+    iv = vsetq_lane_u32(msg_counter >> 32, iv, 0);
+    iv = vsetq_lane_u32(msg_counter, iv, 3);
+    iv = vsetq_lane_u32(1, iv, 2);
+    ctx->iv = vreinterpretq_u8_u32(iv);
 }
 
 typedef uint8x16_t (*aes_neon_fn)(uint8x16_t v, const uint8x16_t *keysched);
@@ -275,6 +309,31 @@ static inline void aes_sdctr_neon(
     }
 }
 
+static inline void aes_encrypt_ecb_block_neon(
+    ssh_cipher *ciph, void *blk, aes_neon_fn encrypt)
+{
+    aes_neon_context *ctx = container_of(ciph, aes_neon_context, ciph);
+    uint8x16_t plaintext = vld1q_u8(blk);
+    uint8x16_t ciphertext = encrypt(plaintext, ctx->keysched_e);
+    vst1q_u8(blk, ciphertext);
+}
+
+static inline void aes_gcm_neon(
+    ssh_cipher *ciph, void *vblk, int blklen, aes_neon_fn encrypt)
+{
+    aes_neon_context *ctx = container_of(ciph, aes_neon_context, ciph);
+
+    for (uint8_t *blk = (uint8_t *)vblk, *finish = blk + blklen;
+         blk < finish; blk += 16) {
+        uint8x16_t counter = aes_neon_sdctr_reverse(ctx->iv);
+        uint8x16_t keystream = encrypt(counter, ctx->keysched_e);
+        uint8x16_t input = vld1q_u8(blk);
+        uint8x16_t output = veorq_u8(input, keystream);
+        vst1q_u8(blk, output);
+        ctx->iv = aes_neon_gcm_increment(ctx->iv);
+    }
+}
+
 #define NEON_ENC_DEC(len)                                               \
     static void aes##len##_neon_cbc_encrypt(                            \
         ssh_cipher *ciph, void *vblk, int blklen)                       \
@@ -285,6 +344,12 @@ static inline void aes_sdctr_neon(
     static void aes##len##_neon_sdctr(                                  \
         ssh_cipher *ciph, void *vblk, int blklen)                       \
     { aes_sdctr_neon(ciph, vblk, blklen, aes_neon_##len##_e); }         \
+    static void aes##len##_neon_gcm(                                    \
+        ssh_cipher *ciph, void *vblk, int blklen)                       \
+    { aes_gcm_neon(ciph, vblk, blklen, aes_neon_##len##_e); }           \
+    static void aes##len##_neon_encrypt_ecb_block(                      \
+        ssh_cipher *ciph, void *vblk)                                   \
+    { aes_encrypt_ecb_block_neon(ciph, vblk, aes_neon_##len##_e); }
 
 NEON_ENC_DEC(128)
 NEON_ENC_DEC(192)

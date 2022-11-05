@@ -1,4 +1,4 @@
-﻿/*
+/*
  * console.c - various interactive-prompt routines shared between
  * the Windows console PuTTY tools
  */
@@ -27,69 +27,64 @@ void cleanup_exit(int code)
 
 SeatPromptResult console_confirm_ssh_host_key(
     Seat *seat, const char *host, int port, const char *keytype,
-    char *keystr, const char *keydisp, char **fingerprints, bool mismatch,
+    char *keystr, SeatDialogText *text, HelpCtx helpctx,
     void (*callback)(void *ctx, SeatPromptResult result), void *ctx)
 {
-	int ret;
+	int mbret;
+	const char* title = NULL;
 
-	static const char mbtitle[] = "%s Security Alert";
+    strbuf* buf = strbuf_new();
 
-    FingerprintType fptype_default =
-        ssh2_pick_default_fingerprint(fingerprints);
-
-    if (mismatch) {                    /* key was different */
-		int mbret;
-		char *message, *title;
-		message = hk_wrongmsg_common(host, port, keytype, fingerprints[fptype_default]);
-		title = dupprintf(mbtitle, appname);
-		mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-		sfree(message);
-		sfree(title);
-		if (mbret == IDYES)
-		{
-			store_host_key(host, port, keytype, keystr);
-			return SPR_OK;
-		}
-		else if (mbret == IDNO)
-		{
-			return SPR_OK;
-		}
-		else
-		{
-			return SPR_USER_ABORT;
-		}
-    } else {                           /* key was absent */
-		int mbret;
-		char *message, *title;
-		message = hk_absentmsg_common(host, port, keytype, fingerprints[fptype_default]);
-		title = dupprintf(mbtitle, appname);
-		mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-		sfree(message);
-		sfree(title);
-		if (mbret == IDYES)
-		{
-			store_host_key(host, port, keytype, keystr);
-			return SPR_OK;
-		}
-		else if (mbret == IDNO)
-		{
-			return SPR_OK;
-		}
-		else
-		{
-			return SPR_USER_ABORT;
-		}
+    for (SeatDialogTextItem *item = text->items,
+             *end = item+text->nitems; item < end; item++) {
+        switch (item->type) {
+          case SDT_TITLE:
+              title = item->text;
+              break;
+          case SDT_PARA:
+            put_dataz(buf, item->text);
+            put_dataz(buf, "\n");
+            break;
+          case SDT_DISPLAY:
+            put_dataz(buf, "  ");
+            put_dataz(buf, item->text);
+            put_dataz(buf, "\n");
+            break;
+          case SDT_SCARY_HEADING:
+            /* Can't change font size or weight in this context */
+            put_dataz(buf, item->text);
+            put_dataz(buf, "\n");
+            put_dataz(buf, "\n");
+            break;
+          case SDT_BATCH_ABORT:
+            if (console_batch_mode) {
+                return SPR_SW_ABORT("Cannot confirm a host key in batch mode");
+            }
+            break;
+          case SDT_PROMPT:
+              put_dataz(buf, "\n");
+              put_dataz(buf, item->text);
+            break;
+          default:
+            break;
+        }
     }
-/* fprintf(stderr, "Full public key:\n%s\n", keydisp);
-            if (fingerprints[SSH_FPTYPE_SHA256])
-                fprintf(stderr, "SHA256 key fingerprint:\n%s\n",
-                        fingerprints[SSH_FPTYPE_SHA256]);
-            if (fingerprints[SSH_FPTYPE_MD5])
-                fprintf(stderr, "MD5 key fingerprint:\n%s\n",
-                        fingerprints[SSH_FPTYPE_MD5]);
-        }*/
+	assert(title);
 
-    return SPR_USER_ABORT;
+	mbret = MessageBox(GetParentHwnd(), strbuf_to_str(buf), title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+	if (mbret == IDYES)
+	{
+		store_host_key(host, port, keytype, keystr);
+		return SPR_OK;
+	}
+	else if (mbret == IDNO)
+	{
+		return SPR_OK;
+	}
+	else
+	{
+		return SPR_USER_ABORT;
+	}
 }
 
 SeatPromptResult console_confirm_weak_crypto_primitive(

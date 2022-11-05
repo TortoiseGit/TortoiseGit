@@ -13,9 +13,9 @@
 #define IDD_ABOUTBOX     111
 #define IDD_RECONF       112
 #define IDD_LICENCEBOX   113
-#define IDD_HK_ABSENT    114
-#define IDD_HK_WRONG     115
+#define IDD_HOSTKEY      114
 #define IDD_HK_MOREINFO  116
+#define IDD_CA_CONFIG    117
 
 #define IDN_LIST        1001
 #define IDN_COPY        1002
@@ -34,6 +34,7 @@
 
 #define IDC_HK_ICON       98
 #define IDC_HK_TITLE      99
+#define IDC_HK_TEXT      100
 #define IDC_HK_ACCEPT   1001
 #define IDC_HK_ONCE     1000
 #define IDC_HK_HOST     1002

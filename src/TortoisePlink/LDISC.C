@@ -522,7 +522,7 @@ void ldisc_send(Ldisc *ldisc, const void *vbuf, int len, bool interactive)
                 }
                 /* FALLTHROUGH */
               default:                 /* get to this label from ^V handler */
-                default_case:
+              default_case:
                 sgrowarray(ldisc->buf, ldisc->bufsiz, ldisc->buflen);
                 ldisc->buf[ldisc->buflen++] = c;
                 if (ECHOING)

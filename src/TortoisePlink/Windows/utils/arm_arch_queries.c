@@ -4,6 +4,7 @@
  */
 
 #include "putty.h"
+#include "ssh.h"
 
 #if !(defined _M_ARM || defined _M_ARM64)
 /*
@@ -16,6 +17,11 @@
 #endif
 
 bool platform_aes_neon_available(void)
+{
+    return IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE);
+}
+
+bool platform_pmull_neon_available(void)
 {
     return IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE);
 }

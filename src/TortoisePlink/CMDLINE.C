@@ -78,8 +78,8 @@ void cmdline_cleanup(void)
 
 /*
  * Similar interface to seat_get_userpass_input(), except that here a
- * -1 return means that we aren't capable of processing the prompt and
- * someone else should do it.
+ * SPR(K)_INCOMPLETE return means that we aren't capable of processing
+ * the prompt and someone else should do it.
  */
 SeatPromptResult cmdline_get_passwd_input(
     prompts_t *p, cmdline_get_passwd_input_state *state, bool restartable)
@@ -87,9 +87,13 @@ SeatPromptResult cmdline_get_passwd_input(
     /*
      * We only handle prompts which don't echo (which we assume to be
      * passwords), and (currently) we only cope with a password prompt
-     * that comes in a prompt-set on its own.
+     * that comes in a prompt-set on its own. Also, we don't use a
+     * command-line password for any kind of prompt which is destined
+     * for local use rather than to be sent to the server: the idea is
+     * to pre-fill _passwords_, not private-key passphrases (for which
+     * there are better alternatives available).
      */
-    if (p->n_prompts != 1 || p->prompts[0]->echo) {
+    if (p->n_prompts != 1 || p->prompts[0]->echo || !p->to_server) {
         return SPR_INCOMPLETE;
     }
 
@@ -759,6 +763,16 @@ int cmdline_process_param(const char *p, char *value,
         SAVEABLE(0);
         fn = filename_from_str(value);
         conf_set_filename(conf, CONF_keyfile, fn);
+        filename_free(fn);
+    }
+
+    if (!strcmp(p, "-cert")) {
+        Filename *fn;
+        RETURN(2);
+        UNAVAILABLE_IN(TOOLTYPE_NONNETWORK);
+        SAVEABLE(0);
+        fn = filename_from_str(value);
+        conf_set_filename(conf, CONF_detached_cert, fn);
         filename_free(fn);
     }
 

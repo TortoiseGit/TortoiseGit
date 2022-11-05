@@ -4,6 +4,7 @@
  */
 
 #include "putty.h"
+#include "ssh.h"
 
 void *x11_dehexify(ptrlen hexpl, int *outlen)
 {

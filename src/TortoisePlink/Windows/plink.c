@@ -8,6 +8,7 @@
 #include <stdarg.h>
 
 #include "putty.h"
+#include "ssh.h"
 #include "storage.h"
 #include "tree234.h"
 #include "security-api.h"
@@ -112,6 +113,7 @@ static const SeatVtable plink_seat_vt = {
     .confirm_ssh_host_key = console_confirm_ssh_host_key,
     .confirm_weak_crypto_primitive = console_confirm_weak_crypto_primitive,
     .confirm_weak_cached_hostkey = console_confirm_weak_cached_hostkey,
+    .prompt_descriptions = console_prompt_descriptions,
     .is_utf8 = nullseat_is_never_utf8,
     .echoedit_update = plink_echoedit_update,
     .get_x_display = nullseat_get_x_display,

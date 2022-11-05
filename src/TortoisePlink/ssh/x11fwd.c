@@ -495,7 +495,7 @@ static size_t x11_send(
     while (len > 0 &&
            xconn->data_read < 12 + xconn->auth_psize + xconn->auth_dsize)
         xconn->auth_data[xconn->data_read++ - 12 -
-                      xconn->auth_psize] = (unsigned char) (len--, *data++);
+                         xconn->auth_psize] = (unsigned char) (len--, *data++);
     if (xconn->data_read < 12 + xconn->auth_psize + xconn->auth_dsize)
         return 0;
 

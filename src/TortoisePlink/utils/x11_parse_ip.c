@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "putty.h"
+#include "ssh.h"
 
 bool x11_parse_ip(const char *addr_string, unsigned long *ip)
 {

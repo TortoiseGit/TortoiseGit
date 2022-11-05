@@ -4,6 +4,7 @@
  */
 
 #include "putty.h"
+#include "ssh.h"
 
 char *platform_get_x_display(void)
 {

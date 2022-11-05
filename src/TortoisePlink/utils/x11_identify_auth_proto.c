@@ -4,6 +4,7 @@
  */
 
 #include "putty.h"
+#include "ssh.h"
 
 int x11_identify_auth_proto(ptrlen protoname)
 {

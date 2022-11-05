@@ -243,7 +243,7 @@ static void ssh1_login_process_queue(PacketProtocolLayer *ppl)
 
         s->spr = verify_ssh_host_key(
             ppl_get_iseat(&s->ppl), s->conf, s->savedhost, s->savedport, NULL,
-            "rsa", keystr, keydisp, fingerprints,
+            "rsa", keystr, keydisp, fingerprints, 0,
             ssh1_login_dialog_callback, s);
 
         ssh2_free_all_fingerprints(fingerprints);
@@ -521,8 +521,7 @@ static void ssh1_login_process_queue(PacketProtocolLayer *ppl)
                                      RSA_SSH1_EXPONENT_FIRST);
                     const char *blobend = get_ptr(s->asrc);
 
-                    s->agent_keys[i].comment = strbuf_new();
-                    put_datapl(s->agent_keys[i].comment, get_string(s->asrc));
+                    s->agent_keys[i].comment = strbuf_dup(get_string(s->asrc));
 
                     s->agent_keys[i].blob = make_ptrlen(
                         blobstart, blobend - blobstart);
@@ -867,8 +866,8 @@ static void ssh1_login_process_queue(PacketProtocolLayer *ppl)
                 return;
             }
         } else if (conf_get_bool(s->conf, CONF_try_tis_auth) &&
-            (s->supported_auths_mask & (1 << SSH1_AUTH_CCARD)) &&
-            !s->ccard_auth_refused) {
+                   (s->supported_auths_mask & (1 << SSH1_AUTH_CCARD)) &&
+                   !s->ccard_auth_refused) {
             ssh1_login_setup_tis_scc(s);
             s->pwpkt_type = SSH1_CMSG_AUTH_CCARD_RESPONSE;
             ppl_logevent("Requested CryptoCard authentication");

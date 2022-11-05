@@ -77,33 +77,33 @@ static bool create_named_pipe(NamedPipeServerSocket *ps, bool first_instance)
     sa.lpSecurityDescriptor = ps->psd;
     sa.bInheritHandle = false;
 
-    ps->pipehandle = CreateNamedPipe
-        (/* lpName */
-         ps->pipename,
+    ps->pipehandle = CreateNamedPipe(
+        /* lpName */
+        ps->pipename,
 
-         /* dwOpenMode */
-         PIPE_ACCESS_DUPLEX |
-         FILE_FLAG_OVERLAPPED |
-         (first_instance ? FILE_FLAG_FIRST_PIPE_INSTANCE : 0),
+        /* dwOpenMode */
+        PIPE_ACCESS_DUPLEX |
+        FILE_FLAG_OVERLAPPED |
+        (first_instance ? FILE_FLAG_FIRST_PIPE_INSTANCE : 0),
 
-         /* dwPipeMode */
-         PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT
+        /* dwPipeMode */
+        PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT
 #ifdef PIPE_REJECT_REMOTE_CLIENTS
-         | PIPE_REJECT_REMOTE_CLIENTS
+        | PIPE_REJECT_REMOTE_CLIENTS
 #endif
-         ,
+        ,
 
-         /* nMaxInstances */
-         PIPE_UNLIMITED_INSTANCES,
+        /* nMaxInstances */
+        PIPE_UNLIMITED_INSTANCES,
 
-         /* nOutBufferSize, nInBufferSize */
-         4096, 4096,     /* FIXME: think harder about buffer sizes? */
+        /* nOutBufferSize, nInBufferSize */
+        4096, 4096,     /* FIXME: think harder about buffer sizes? */
 
-         /* nDefaultTimeOut */
-         0 /* default timeout */,
+        /* nDefaultTimeOut */
+        0 /* default timeout */,
 
-         /* lpSecurityAttributes */
-         &sa);
+        /* lpSecurityAttributes */
+        &sa);
 
     return ps->pipehandle != INVALID_HANDLE_VALUE;
 }

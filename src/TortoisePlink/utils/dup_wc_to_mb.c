@@ -11,14 +11,14 @@
 #include "misc.h"
 
 char *dup_wc_to_mb_c(int codepage, int flags, const wchar_t *string, int len,
-                     const char *defchr, struct unicode_data *ucsdata)
+                     const char *defchr)
 {
     size_t outsize = len+1;
     char *out = snewn(outsize, char);
 
     while (true) {
         size_t outlen = wc_to_mb(codepage, flags, string, len, out, outsize,
-                                 defchr, ucsdata);
+                                 defchr);
         /* We can only be sure we've consumed the whole input if the
          * output is not within a multibyte-character-length of the
          * end of the buffer! */
@@ -32,8 +32,7 @@ char *dup_wc_to_mb_c(int codepage, int flags, const wchar_t *string, int len,
 }
 
 char *dup_wc_to_mb(int codepage, int flags, const wchar_t *string,
-                   const char *defchr, struct unicode_data *ucsdata)
+                   const char *defchr)
 {
-    return dup_wc_to_mb_c(codepage, flags, string, wcslen(string),
-                          defchr, ucsdata);
+    return dup_wc_to_mb_c(codepage, flags, string, wcslen(string), defchr);
 }

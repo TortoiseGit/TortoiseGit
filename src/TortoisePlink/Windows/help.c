@@ -149,7 +149,7 @@ static bool find_chm_from_installation(void)
     };
 
     for (size_t i = 0; i < lenof(reg_paths); i++) {
-        char *filename = registry_get_string(
+        char *filename = get_reg_sz_simple(
             HKEY_LOCAL_MACHINE, reg_paths[i], NULL);
 
         if (filename) {

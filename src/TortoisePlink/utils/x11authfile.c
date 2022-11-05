@@ -9,7 +9,7 @@
 #include "putty.h"
 #include "ssh.h"
 
-ptrlen BinarySource_get_string_xauth(BinarySource *src)
+static ptrlen BinarySource_get_string_xauth(BinarySource *src)
 {
     size_t len = get_uint16(src);
     return get_data(src, len);
@@ -17,7 +17,7 @@ ptrlen BinarySource_get_string_xauth(BinarySource *src)
 #define get_string_xauth(src) \
     BinarySource_get_string_xauth(BinarySource_UPCAST(src))
 
-void BinarySink_put_stringpl_xauth(BinarySink *bs, ptrlen pl)
+static void BinarySink_put_stringpl_xauth(BinarySink *bs, ptrlen pl)
 {
     assert((pl.len >> 16) == 0);
     put_uint16(bs, pl.len);

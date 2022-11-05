@@ -39,7 +39,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\;..\..\..\charset\;..\..\..\windows\;..\..\..\terminal\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>SSH;HAVE_AES_NI;HAVE_SHA_NI;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>APPNAME=TortoiseGitPlink;SSH;HAVE_AES_NI;HAVE_SHA_NI;HAVE_CLMUL;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -65,6 +65,11 @@
     <ClCompile Include="..\..\..\crypto\aes-ni.c" />
     <ClCompile Include="..\..\..\crypto\aes-select.c" />
     <ClCompile Include="..\..\..\crypto\aes-sw.c" />
+    <ClCompile Include="..\..\..\crypto\aesgcm-clmul.c" />
+    <ClCompile Include="..\..\..\crypto\aesgcm-common.c" />
+    <ClCompile Include="..\..\..\crypto\aesgcm-ref-poly.c" />
+    <ClCompile Include="..\..\..\crypto\aesgcm-select.c" />
+    <ClCompile Include="..\..\..\crypto\aesgcm-sw.c" />
     <ClCompile Include="..\..\..\crypto\arcfour.c" />
     <ClCompile Include="..\..\..\crypto\argon2.c" />
     <ClCompile Include="..\..\..\crypto\bcrypt.c" />
@@ -83,6 +88,8 @@
     <ClCompile Include="..\..\..\crypto\mac_simple.c" />
     <ClCompile Include="..\..\..\crypto\md5.c" />
     <ClCompile Include="..\..\..\crypto\mpint.c" />
+    <ClCompile Include="..\..\..\crypto\ntru.c" />
+    <ClCompile Include="..\..\..\crypto\openssh-certs.c" />
     <ClCompile Include="..\..\..\crypto\prng.c" />
     <ClCompile Include="..\..\..\crypto\pubkey-pem.c" />
     <ClCompile Include="..\..\..\crypto\pubkey-ppk.c" />
@@ -144,16 +151,26 @@
     <ClCompile Include="..\..\..\ssh\verstring.c" />
     <ClCompile Include="..\..\..\ssh\x11fwd.c" />
     <ClCompile Include="..\..\..\ssh\zlib.c" />
-    <ClCompile Include="..\..\..\stubs\noterm.c" />
-    <ClCompile Include="..\..\..\stubs\nullplug.c" />
+    <ClCompile Include="..\..\..\stubs\no-term.c" />
+    <ClCompile Include="..\..\..\stubs\null-cipher.c" />
+    <ClCompile Include="..\..\..\stubs\null-key.c" />
+    <ClCompile Include="..\..\..\stubs\null-lp.c" />
+    <ClCompile Include="..\..\..\stubs\null-mac.c" />
+    <ClCompile Include="..\..\..\stubs\null-opener.c" />
+    <ClCompile Include="..\..\..\stubs\null-plug.c" />
+    <ClCompile Include="..\..\..\stubs\null-seat.c" />
     <ClCompile Include="..\..\..\timing.c" />
     <ClCompile Include="..\..\..\utils\antispoof.c" />
     <ClCompile Include="..\..\..\utils\backend_socket_log.c" />
+    <ClCompile Include="..\..\..\utils\base64_decode.c" />
     <ClCompile Include="..\..\..\utils\base64_decode_atom.c" />
+    <ClCompile Include="..\..\..\utils\base64_encode.c" />
     <ClCompile Include="..\..\..\utils\base64_encode_atom.c" />
+    <ClCompile Include="..\..\..\utils\base64_valid.c" />
     <ClCompile Include="..\..\..\utils\bufchain.c" />
     <ClCompile Include="..\..\..\utils\buildinfo.c" />
     <ClCompile Include="..\..\..\utils\burnstr.c" />
+    <ClCompile Include="..\..\..\utils\cert-expr.c" />
     <ClCompile Include="..\..\..\utils\chomp.c" />
     <ClCompile Include="..\..\..\utils\cmdline_get_passwd_input_state_new.c" />
     <ClCompile Include="..\..\..\utils\conf.c" />
@@ -171,25 +188,28 @@
     <ClCompile Include="..\..\..\utils\encode_utf8.c" />
     <ClCompile Include="..\..\..\utils\encode_wide_string_as_utf8.c" />
     <ClCompile Include="..\..\..\utils\fgetline.c" />
+    <ClCompile Include="..\..\..\utils\host_ca_new_free.c" />
     <ClCompile Include="..\..\..\utils\host_strchr.c" />
     <ClCompile Include="..\..\..\utils\host_strchr_internal.c" />
     <ClCompile Include="..\..\..\utils\host_strcspn.c" />
     <ClCompile Include="..\..\..\utils\host_strduptrim.c" />
     <ClCompile Include="..\..\..\utils\host_strrchr.c" />
+    <ClCompile Include="..\..\..\utils\key_components.c" />
     <ClCompile Include="..\..\..\utils\log_proxy_stderr.c" />
     <ClCompile Include="..\..\..\utils\make_spr_sw_abort_static.c" />
     <ClCompile Include="..\..\..\utils\marshal.c" />
     <ClCompile Include="..\..\..\utils\memory.c" />
     <ClCompile Include="..\..\..\utils\memxor.c" />
-    <ClCompile Include="..\..\..\utils\nullseat.c" />
     <ClCompile Include="..\..\..\utils\nullstrcmp.c" />
-    <ClCompile Include="..\..\..\utils\null_lp.c" />
     <ClCompile Include="..\..\..\utils\out_of_memory.c" />
     <ClCompile Include="..\..\..\utils\parse_blocksize.c" />
+    <ClCompile Include="..\..\..\utils\percent_decode.c" />
+    <ClCompile Include="..\..\..\utils\percent_encode.c" />
     <ClCompile Include="..\..\..\utils\prompts.c" />
     <ClCompile Include="..\..\..\utils\ptrlen.c" />
     <ClCompile Include="..\..\..\utils\read_file_into.c" />
     <ClCompile Include="..\..\..\utils\seat_connection_fatal.c" />
+    <ClCompile Include="..\..\..\utils\seat_dialog_text.c" />
     <ClCompile Include="..\..\..\utils\sessprep.c" />
     <ClCompile Include="..\..\..\utils\sk_free_peer_info.c" />
     <ClCompile Include="..\..\..\utils\smemclr.c" />
@@ -208,6 +228,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\utils\wcwidth.c" />
     <ClCompile Include="..\..\..\utils\wildcard.c" />
+    <ClCompile Include="..\..\..\utils\wordwrap.c" />
     <ClCompile Include="..\..\..\utils\write_c_string_literal.c" />
     <ClCompile Include="..\..\..\utils\x11authfile.c" />
     <ClCompile Include="..\..\..\utils\x11authnames.c" />
@@ -261,7 +282,7 @@
     <ClCompile Include="..\..\utils\make_spr_sw_abort_winerror.c" />
     <ClCompile Include="..\..\utils\open_for_write_would_lose_data.c" />
     <ClCompile Include="..\..\utils\platform_get_x_display.c" />
-    <ClCompile Include="..\..\utils\registry_get_string.c" />
+    <ClCompile Include="..\..\utils\registry.c" />
     <ClCompile Include="..\..\utils\request_file.c" />
     <ClCompile Include="..\..\utils\security.c" />
     <ClCompile Include="..\..\utils\version.c">
