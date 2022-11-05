@@ -1,11 +1,11 @@
 # General info: https://docs.gitlab.com/ee/ci/yaml/
 
 doc:
-  image: ubuntu:focal
+  image: ubuntu:jammy
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - mv doc/doc.build.user.linux.templ doc/doc.build.user
