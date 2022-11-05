@@ -13,7 +13,7 @@ Released: unreleased
  * Update pcre2 to 10.40
  * Update hunspell to 1.7.1
  * LogDlg: Prevent the graph from drawing an unfinished line for each ignored parent on first-parent only walk
- * Update shipped PuTTY binaries to 0.77
+ * Update shipped PuTTY binaries to 0.78
  * Update TortoiseGitPlink to PuTTY Plink 0.78
  * Update TortoiseOverlays to 1.1.5
  * Fixed issue #3932: RebaseDlg: Remember last selection of 'add "cherry picked from"'
