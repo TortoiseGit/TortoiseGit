@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2022 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -467,7 +467,6 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 		pp.SetCheckRe(L"[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+");
 		pp.SetBugIDRe(L"(\\d+)");
 	}
-	m_cLogMessage.Init(pp);
 
 	CString sChangelogURL;
 	sChangelogURL.FormatMessage(versioncheck.GetTortoiseGitChangelogURL(), m_myVersion.major, m_myVersion.minor, m_myVersion.micro, static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsPlatform), static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsVersion), static_cast<LPCWSTR>(m_updateDownloader->m_sWindowsServicePack));
@@ -476,7 +475,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL, tempchangelogfile, false); err != ERROR_SUCCESS)
 	{
 		CString msg = L"Could not load changelog.\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + L")";
-		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(msg)));
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, reinterpret_cast<WPARAM>(&pp), reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(msg)));
 		return;
 	}
 	if (official)
@@ -487,7 +486,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 			CString error = L"Could not verify digital signature.";
 			if (err)
 				error += L"\r\nError: " + GetWinINetError(err) + L" (on " + sChangelogURL + SIGNATURE_FILE_ENDING + L")";
-			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(error)));
+			::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, reinterpret_cast<WPARAM>(&pp), reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(error)));
 			DeleteUrlCacheEntry(sChangelogURL);
 			DeleteUrlCacheEntry(sChangelogURL + SIGNATURE_FILE_ENDING);
 			return;
@@ -505,7 +504,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	}
 	else
 		temp = L"Could not open downloaded changelog file.";
-	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, 0, reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(temp)));
+	::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, reinterpret_cast<WPARAM>(&pp), reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(temp)));
 }
 
 void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
@@ -800,9 +799,11 @@ LRESULT CCheckForUpdatesDlg::OnEndDownload(WPARAM, LPARAM)
 	return 0;
 }
 
-LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM, LPARAM lParam)
+LRESULT CCheckForUpdatesDlg::OnFillChangelog(WPARAM wParam, LPARAM lParam)
 {
-	ASSERT(lParam);
+	ASSERT(wParam && lParam);
+
+	m_cLogMessage.Init(*reinterpret_cast<ProjectProperties*>(wParam));
 
 	LPCWSTR changelog = reinterpret_cast<LPCWSTR>(lParam);
 	m_cLogMessage.SetText(changelog);
