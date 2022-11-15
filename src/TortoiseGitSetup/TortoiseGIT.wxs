@@ -66,8 +66,8 @@
 		<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 		<!-- only needed for Windows 11; there is no x86 version -->
 		<Binary Id="CustomActionsDLL11" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions11.dll" />
-		<CustomAction Id="RegisterSparsePackage" BinaryKey="CustomActionsDLL11" DllEntry="RegisterSparsePackage"/>
-		<CustomAction Id="UnregisterSparsePackage" BinaryKey="CustomActionsDLL11" DllEntry="UnregisterSparsePackage"/>
+		<CustomAction Id="RegisterSparsePackage" Impersonate="yes" BinaryKey="CustomActionsDLL11" DllEntry="RegisterSparsePackage"/>
+		<CustomAction Id="UnregisterSparsePackage" Impersonate="yes" BinaryKey="CustomActionsDLL11" DllEntry="UnregisterSparsePackage"/>
 		<?endif ?>
 
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
