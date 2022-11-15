@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021 - TortoiseGit
+// Copyright (C) 2021-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@ protected:
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
 	afx_msg void OnChange();
+	afx_msg void OnBnClickedRegister();
 
 	DECLARE_MESSAGE_MAP()
 public:

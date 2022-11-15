@@ -8,6 +8,8 @@ Released: unreleased
  * Updated pcre2 to 10.42
  * Updated libgit to 2.40.1 based on Git for Windows sources
  * Updated libgit2 to 1.6.4
+ * Fixed issue #3974: Windows 11 Context Menus only display in single user when has multiple users
+   Added a button to register the win11 context menu for the current user
 
 == Bug Fixes ==
  * Fixed redraw bug in log list

@@ -199,6 +199,12 @@
 			You can uncheck <guibutton>Enable drag context menu</guibutton>
 			to prevent from carelessly clicking the TortoiseGit actions.
 		</para>
+		<para>
+			There's a different settings page for the Windows 11 context menu.
+			That page also has a button to register the TortoiseGit entries in
+			the context menu. You only have to do this if TortoiseGit was installed
+			as a different user.
+		</para>
 	</sect3>
 
 	<sect3 id="tgit-dug-settings-look-feel-extended">

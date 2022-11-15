@@ -6819,6 +6819,10 @@ msgstr ""
 msgid "PI"
 msgstr ""
 
+#. Resource IDs: (IDS_PACKAGE_REGISTERED)
+msgid "Package registered"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
@@ -7471,6 +7475,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Regex:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1859)
+msgid "Register context menu"
 msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
