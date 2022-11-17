@@ -217,7 +217,7 @@ HRESULT __stdcall CExplorerCommand::GetToolTip(IShellItemArray* /*psiItemArray*/
 HRESULT __stdcall CExplorerCommand::GetCanonicalName(GUID *pguidCommandName)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__);
-	*pguidCommandName = __uuidof(this);
+	*pguidCommandName = GUID_NULL;
 	return S_OK;
 }
 
@@ -226,7 +226,7 @@ HRESULT __stdcall CExplorerCommand::GetState(IShellItemArray * /*psiItemArray*/,
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ L": title: %s\n", m_title.c_str());
 	*pCmdState = ECS_ENABLED;
 	if (m_title.empty())
-		return E_FAIL;
+		*pCmdState = ECS_DISABLED;
 	return S_OK;
 }
 
@@ -276,7 +276,7 @@ HRESULT __stdcall CExplorerCommand::EnumSubCommands(IEnumExplorerCommand **ppEnu
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ L": title: %s\n", m_title.c_str());
 	if (m_subItems.empty())
-		return E_INVALIDARG;
+		return E_NOTIMPL;
 	*ppEnum = new CExplorerCommandEnum(m_subItems);
 	(*ppEnum)->AddRef();
 	return S_OK;
