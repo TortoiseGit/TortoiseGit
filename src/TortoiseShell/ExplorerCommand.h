@@ -18,20 +18,17 @@
 //
 #pragma once
 #include <Shobjidl.h>
-#include "ShellExt.h"
+#include <wrl/module.h>
+#include <wrl/implements.h>
+#include <wrl/client.h>
+#include <shobjidl_core.h>
 
 class CExplorerCommand;
 
-class CExplorerCommandEnum : public IEnumExplorerCommand
+class CExplorerCommandEnum : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::WinRtClassicComMix | Microsoft::WRL::InhibitRoOriginateError>, IEnumExplorerCommand>
 {
 public:
-	explicit CExplorerCommandEnum(const std::vector<CExplorerCommand>& vec);
-	virtual ~CExplorerCommandEnum() = default;
-
-	// IUnknown members
-	HRESULT __stdcall QueryInterface(REFIID, void**) override;
-	ULONG __stdcall AddRef() override;
-	ULONG __stdcall Release() override;
+	explicit CExplorerCommandEnum(const std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>>& vec);
 
 	// IEnumExplorerCommand members
 	HRESULT __stdcall Next(ULONG, IExplorerCommand**, ULONG*) override;
@@ -40,12 +37,11 @@ public:
 	HRESULT __stdcall Clone(IEnumExplorerCommand**) override;
 
 private:
-	std::vector<CExplorerCommand> m_vecCommands;
-	ULONG m_cRefCount = 0;
+	std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> m_vecCommands;
 	size_t m_iCur = 0;
 };
 
-class __declspec(uuid("A4FEC38E-C9F5-489A-ADAB-28DA10F523A3")) CExplorerCommand : public IExplorerCommand, IObjectWithSite
+class CExplorerCommand : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::WinRtClassicComMix | Microsoft::WRL::InhibitRoOriginateError>, IExplorerCommand, IObjectWithSite>
 {
 	friend class CExplorerCommandEnum;
 
@@ -57,16 +53,10 @@ public:
 								DWORD itemStates,
 								DWORD itemStatesFolder,
 								std::vector<std::wstring> paths,
-								std::vector<CExplorerCommand> subItems,
+								std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> subItems,
 								Microsoft::WRL::ComPtr<IUnknown> site);
-
-	virtual ~CExplorerCommand() = default;
+	CExplorerCommand() = delete;
 	void PrependTitleWith(const std::wstring& prep) { m_title = prep + m_title; }
-
-	// IUnknown members
-	HRESULT __stdcall QueryInterface(REFIID, void**) override;
-	ULONG __stdcall AddRef() override;
-	ULONG __stdcall Release() override;
 
 	// Inherited via IExplorerCommand
 	HRESULT __stdcall GetTitle(IShellItemArray* psiItemArray, LPWSTR* ppszName) override;
@@ -83,8 +73,6 @@ public:
 	HRESULT __stdcall GetSite(REFIID riid, void** ppvSite) override;
 
 private:
-	ULONG m_cRefCount;
-
 	std::wstring					m_title;
 	UINT							m_iconId = 0;
 	int								m_cmd = 0;
@@ -93,6 +81,6 @@ private:
 	DWORD							m_itemStates = 0;
 	DWORD							m_itemStatesFolder = 0;
 	std::vector<std::wstring>		m_paths;
-	std::vector<CExplorerCommand>	m_subItems;
-	Microsoft::WRL::ComPtr<IUnknown>	m_site;
+	std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> m_subItems;
+	Microsoft::WRL::ComPtr<IUnknown> m_site;
 };

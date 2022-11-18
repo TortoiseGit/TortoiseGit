@@ -56,6 +56,7 @@ Released: unreleased
  * Start TGit processes without identity from the shell extension
    Related issues: issue #3889, issue #3949
  * Fixed issue #3967: Show log for submodule from compare revisions dialog
+ * Fixed issue #3975: Windows 11 context menu not working after Windows 11 upgrade
 
 = Release 2.13.0.1 =
 Released: 2022-02-06

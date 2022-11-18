@@ -100,7 +100,7 @@ protected:
 	CRemoteCacheLink	m_remoteCacheLink;
 	IconBitmapUtils		m_iconBitmapUtils;
 	Microsoft::WRL::ComPtr<IUnknown> m_site;
-	std::vector<CExplorerCommand> m_explorerCommands;
+	std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> m_explorerCommands;
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), static_cast<WORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT))))
 private:
