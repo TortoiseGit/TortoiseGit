@@ -40,6 +40,7 @@ build_script:
 - git config --unset --global user.name
 - cd ..\..
 - msbuild "src\TortoiseGit.sln" /t:"test\UnitTests" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+- git config --global protocol.file.allow always
 
 for:
   -
