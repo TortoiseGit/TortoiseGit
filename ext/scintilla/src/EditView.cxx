@@ -65,7 +65,6 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "ElapsedPeriod.h"
-#include "Editor.h"
 
 using namespace Scintilla;
 using namespace Scintilla::Internal;
@@ -200,7 +199,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
-	editor = nullptr;
 }
 
 EditView::~EditView() = default;
@@ -1573,21 +1571,34 @@ void EditView::DrawEOLAnnotationText(Surface *surface, const EditModel &model, c
 
 	// Draw any box or stadium shape
 	if (FlagSet(phase, DrawPhase::indicatorsBack)) {
-		if (vsDraw.eolAnnotationVisible >= EOLAnnotationVisible::Boxed) {
-			PRectangle rcBox = rcSegment;
-			rcBox.left = std::round(rcSegment.left);
-			rcBox.right = std::round(rcSegment.right);
-			if (vsDraw.eolAnnotationVisible == EOLAnnotationVisible::Boxed) {
-				surface->RectangleFrame(rcBox, Stroke(textFore));
-			} else {
-				if (phasesDraw == PhasesDraw::One) {
-					// Draw an outline around the text
-					surface->Stadium(rcBox, FillStroke(ColourRGBA(textBack, 0), textFore, 1.0), ends);
-				} else {
-					// Draw with a fill to fill the edges of the shape.
-					surface->Stadium(rcBox, FillStroke(textBack, textFore, 1.0), ends);
-				}
+		const PRectangle rcBox = PixelAlign(rcSegment, 1);
+
+		switch (vsDraw.eolAnnotationVisible) {
+		case EOLAnnotationVisible::Standard:
+			if (phasesDraw != PhasesDraw::One) {
+				surface->FillRectangle(rcBox, textBack);
 			}
+			break;
+
+		case EOLAnnotationVisible::Boxed:
+			if (phasesDraw == PhasesDraw::One) {
+				// Draw a rectangular outline around the text
+				surface->RectangleFrame(rcBox, textFore);
+			} else {
+				// Draw with a fill to fill the edges of the rectangle.
+				surface->RectangleDraw(rcBox, FillStroke(textBack, textFore));
+			}
+			break;
+
+		default:
+			if (phasesDraw == PhasesDraw::One) {
+				// Draw an outline around the text
+				surface->Stadium(rcBox, FillStroke(ColourRGBA(textBack, 0), textFore), ends);
+			} else {
+				// Draw with a fill to fill the edges of the shape.
+				surface->Stadium(rcBox, FillStroke(textBack, textFore), ends);
+			}
+			break;
 		}
 	}
 
@@ -2387,15 +2398,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background colour.
-	std::optional<ColourRGBA> background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1)
-		background = ColourRGBA::FromRGB(static_cast<int>(scn.lParam));
+	const std::optional<ColourRGBA> background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
 
 	const Sci::Position posLineStart = model.pdoc->LineStart(line);
 
