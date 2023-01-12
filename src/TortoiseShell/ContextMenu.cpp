@@ -1063,7 +1063,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 
 	//add sub menu to main context menu
 	//don't use InsertMenu because this will lead to multiple menu entries in the explorer file menu.
-	//see http://support.microsoft.com/default.aspx?scid=kb;en-us;214477 for details of that.
+	//see https://web.archive.org/web/20090728090357/http://support.microsoft.com/kb/214477 for details of that.
 	MAKESTRING(IDS_MENUSUBMENU);
 	if (!g_ShellCache.HasShellMenuAccelerators())
 	{
