@@ -127,4 +127,9 @@
   </xsl:attribute>
 </xsl:attribute-set>
 
+<xsl:attribute-set name="monospace.verbatim.properties">
+  <xsl:attribute name="wrap-option">wrap</xsl:attribute>
+  <!-- TODO: set a hyphenation-character, currently unsupported by FOP; http://www.sagehill.net/docbookxsl/FittingText.html#BreakLongLines -->
+</xsl:attribute-set>
+
 </xsl:stylesheet>
