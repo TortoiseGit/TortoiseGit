@@ -37,3 +37,4 @@ Thumbs.db
 bin
 obj
 enc_temp_folder
+*.DS_Store
