@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -97,7 +97,9 @@ BOOL CSettingGitRemote::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_PUSHDEFAULT);
 
 	STRING_VECTOR remotes;
-	g_Git.GetRemoteList(remotes);
+	if (g_Git.GetRemoteList(remotes) != 0)
+		MessageBox(g_Git.GetGitLastErr(L"Could not load remotes."), L"TortoiseGit", MB_ICONERROR);
+
 	m_ctrlRemoteList.ResetContent();
 	for (size_t i = 0; i < remotes.size(); i++)
 		m_ctrlRemoteList.AddString(remotes[i]);
