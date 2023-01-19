@@ -65,6 +65,7 @@
     <ClCompile Include="..\tgit\compat\fileno.c" />
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
+    <ClCompile Include="..\tgit\compat\nonblock.c" />
     <ClCompile Include="..\tgit\compat\qsort_s.c" />
     <ClCompile Include="..\tgit\compat\terminal.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
@@ -337,6 +338,7 @@
     <ClInclude Include="..\tgit\color.h" />
     <ClInclude Include="..\tgit\column.h" />
     <ClInclude Include="..\tgit\commit.h" />
+    <ClInclude Include="..\tgit\compat\nonblock.h" />
     <ClInclude Include="..\tgit\compat\terminal.h" />
     <ClInclude Include="..\tgit\compat\win32\alloca.h" />
     <ClInclude Include="..\tgit\compat\win32\dirent.h" />

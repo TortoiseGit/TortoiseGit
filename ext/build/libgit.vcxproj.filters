@@ -830,6 +830,9 @@
     <ClCompile Include="..\tgit\prompt.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\compat\nonblock.c">
+      <Filter>compat\win32</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1405,6 +1408,9 @@
     </ClInclude>
     <ClInclude Include="..\tgit\prompt.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\compat\nonblock.h">
+      <Filter>compat\win32</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
