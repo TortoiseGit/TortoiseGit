@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1370,12 +1370,13 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	}
 	else
 	{
+		gitLastErr.Empty();
 		int ret = Run(L"git.exe tag -l", [&](const CStringA& lineA)
 		{
 			if (lineA.IsEmpty())
 				return;
 			list.push_back(CUnicodeUtils::GetUnicode(lineA));
-		});
+		}, &gitLastErr);
 		if (!ret)
 			std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 		else if (ret == 1 && IsInitRepos())
@@ -1832,12 +1833,13 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		return 0;
 	}
 
+	gitLastErr.Empty();
 	return Run(L"git.exe remote", [&](const CStringA& lineA)
 	{
 		if (lineA.IsEmpty())
 			return;
 		list.push_back(CUnicodeUtils::GetUnicode(lineA));
-	});
+	}, &gitLastErr);
 }
 
 int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTags, bool includeBranches)
@@ -2003,6 +2005,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 		return 0;
 	}
 
+	gitLastErr.Empty();
 	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		int start = lineA.Find(L' ');
@@ -2013,7 +2016,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 		CString name = CUnicodeUtils::GetUnicode(lineA.Mid(start + 1));
 		if (list.empty() || name != *list.crbegin() + L"^{}")
 			list.push_back(name);
-	});
+	}, &gitLastErr);
 	if (!ret)
 		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
 	else if (ret == 1 && IsInitRepos())
@@ -2078,6 +2081,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		return GetMapHashToFriendName(repo, map);
 	}
 
+	gitLastErr.Empty();
 	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		int start = lineA.Find(L' ');
@@ -2087,7 +2091,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 
 		CGitHash hash = CGitHash::FromHexStr(lineA);
 		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
-	});
+	}, &gitLastErr);
 
 	if (ret == 1 && IsInitRepos())
 		return 0;
