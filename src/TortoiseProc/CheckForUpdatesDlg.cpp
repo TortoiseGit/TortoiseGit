@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -114,20 +114,8 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	if (FAILED(m_pTaskbarList.CoCreateInstance(CLSID_TaskbarList)))
 		m_pTaskbarList = nullptr;
 
-	// hide download controls
-	m_ctrlFiles.ShowWindow(SW_HIDE);
-	GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_HIDE);
-	RECT rectWindow, rectGroupDownloads, rectOKButton;
-	GetWindowRect(&rectWindow);
-	GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
-	GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
-	LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
-	OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
-	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
-	SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
-	MoveWindow(&rectWindow);
-	::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
-	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+	// hide changelog and download controls
+	AdjustSize(false, false, false);
 
 	temp.LoadString(IDS_STATUSLIST_COLFILE);
 	m_ctrlFiles.InsertColumn(0, temp, 0, -1);
@@ -317,56 +305,11 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			SetDlgItemText(IDC_CHECKRESULT, temp);
 
 			FillChangelog(versioncheck, official);
-			FillDownloads(versioncheck);
 
-			RemoveAnchor(IDC_GROUP_CHANGELOG);
-			RemoveAnchor(IDC_LOGMESSAGE);
-			RemoveAnchor(IDC_GROUP_DOWNLOADS);
-			RemoveAnchor(IDC_LIST_DOWNLOADS);
-			RemoveAnchor(IDC_PROGRESSBAR);
-			RemoveAnchor(IDC_DONOTASKAGAIN);
-			RemoveAnchor(IDC_BUTTON_UPDATE);
-			RemoveAnchor(IDOK);
+			if (versioncheck.GetTortoiseGitIsDirectDownloadable())
+				FillDownloads(versioncheck);
 
-			// Show download controls
-			RECT rectWindow, rectProgress, rectGroupDownloads, rectOKButton;
-			GetWindowRect(&rectWindow);
-			m_progress.GetWindowRect(&rectProgress);
-			GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
-			GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
-			LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
-			OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
-			rectWindow.bottom = rectOKButton.bottom + bottomDistance;
-			SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
-			MoveWindow(&rectWindow);
-			::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
-			if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE && !m_bForce && !m_bShowInfo)
-			{
-				RECT rectDoNotAskAgainButton;
-				GetDlgItem(IDC_DONOTASKAGAIN)->GetWindowRect(&rectDoNotAskAgainButton);
-				::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectDoNotAskAgainButton), 2);
-				rectDoNotAskAgainButton.top = rectOKButton.top;
-				rectDoNotAskAgainButton.bottom = rectOKButton.bottom;
-				GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
-				GetDlgItem(IDC_DONOTASKAGAIN)->EnableWindow(TRUE);
-				GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
-				rectOKButton.left += CDPIAware::Instance().ScaleX(60);
-				temp.LoadString(IDS_REMINDMELATER);
-				GetDlgItem(IDOK)->SetWindowText(temp);
-				rectOKButton.right += CDPIAware::Instance().ScaleX(160);
-			}
-			GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
-			AddAnchor(IDC_GROUP_CHANGELOG, TOP_LEFT, BOTTOM_RIGHT);
-			AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, BOTTOM_RIGHT);
-			AddAnchor(IDC_GROUP_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
-			AddAnchor(IDC_LIST_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
-			AddAnchor(IDC_PROGRESSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
-			AddAnchor(IDC_DONOTASKAGAIN, BOTTOM_CENTER);
-			AddAnchor(IDC_BUTTON_UPDATE, BOTTOM_RIGHT);
-			AddAnchor(IDOK, BOTTOM_CENTER);
-			m_ctrlFiles.ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
-			CenterWindow();
+			AdjustSize(versioncheck.GetTortoiseGitHasChangelog(), versioncheck.GetTortoiseGitIsDirectDownloadable());
 			m_bShowInfo = TRUE;
 		}
 		else if (m_bShowInfo)
@@ -374,6 +317,9 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			temp.LoadString(IDS_CHECKNEWER_YOURUPTODATE);
 			SetDlgItemText(IDC_CHECKRESULT, temp);
 			FillChangelog(versioncheck, official);
+
+			// Show changelog controls
+			AdjustSize(versioncheck.GetTortoiseGitHasChangelog(), false);
 		}
 	}
 
@@ -466,6 +412,12 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	{
 		pp.SetCheckRe(L"[Ii]ssues?:?(\\s*(,|and)?\\s*#?\\d+)+");
 		pp.SetBugIDRe(L"(\\d+)");
+	}
+
+	if (!versioncheck.GetTortoiseGitHasChangelog())
+	{
+		::SendMessage(m_hWnd, WM_USER_FILLCHANGELOG, reinterpret_cast<WPARAM>(&pp), reinterpret_cast<LPARAM>(static_cast<LPCWSTR>(L"No changelog provided.")));
+		return;
 	}
 
 	CString sChangelogURL;
@@ -875,4 +827,86 @@ void CCheckForUpdatesDlg::OnBnClickedDonotaskagain()
 		CRegDWORD(L"Software\\TortoiseGit\\VersionCheck") = FALSE;
 		OnOK();
 	}
+}
+
+void CCheckForUpdatesDlg::AdjustSize(bool changelog, bool downloads, bool handleAnchors)
+{
+	if (handleAnchors)
+	{
+		RemoveAnchor(IDC_GROUP_CHANGELOG);
+		RemoveAnchor(IDC_LOGMESSAGE);
+		RemoveAnchor(IDC_GROUP_DOWNLOADS);
+		RemoveAnchor(IDC_LIST_DOWNLOADS);
+		RemoveAnchor(IDC_PROGRESSBAR);
+		RemoveAnchor(IDC_DONOTASKAGAIN);
+		RemoveAnchor(IDC_BUTTON_UPDATE);
+		RemoveAnchor(IDOK);
+	}
+
+	m_ctrlFiles.ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_GROUP_CHANGELOG)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_LOGMESSAGE)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_BUTTON_UPDATE)->ShowWindow(SW_HIDE);
+	GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_HIDE);
+	RECT rectWindow, rectOKButton, rectProgress, rectGroupDownloads, rectChangelog;
+	m_progress.GetWindowRect(&rectProgress);
+	GetDlgItem(IDC_GROUP_CHANGELOG)->GetWindowRect(&rectChangelog);
+	GetWindowRect(&rectWindow);
+	GetDlgItem(IDC_GROUP_DOWNLOADS)->GetWindowRect(&rectGroupDownloads);
+	GetDlgItem(IDOK)->GetWindowRect(&rectOKButton);
+	LONG bottomDistance = rectWindow.bottom - rectOKButton.bottom;
+	if (!changelog && !downloads)
+		OffsetRect(&rectOKButton, 0, rectChangelog.top - rectOKButton.top);
+	else if (changelog && !downloads)
+		OffsetRect(&rectOKButton, 0, rectGroupDownloads.top - rectOKButton.top);
+	else
+		OffsetRect(&rectOKButton, 0, (rectGroupDownloads.bottom + (rectGroupDownloads.bottom - rectProgress.bottom)) - rectOKButton.top);
+	rectWindow.bottom = rectOKButton.bottom + bottomDistance;
+	if (changelog || downloads) // download and no changelog currently not supported
+	{
+		GetDlgItem(IDC_LOGMESSAGE)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_GROUP_CHANGELOG)->ShowWindow(SW_SHOW);
+	}
+	if (downloads)
+	{
+		m_ctrlFiles.ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_GROUP_DOWNLOADS)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_BUTTON_UPDATE)->ShowWindow(SW_SHOW);
+	}
+	SetMinTrackSize(CSize(rectWindow.right - rectWindow.left, rectWindow.bottom - rectWindow.top));
+	MoveWindow(&rectWindow);
+	::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectOKButton), 2);
+	if (downloads)
+	{
+		if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE && !m_bForce && !m_bShowInfo)
+		{
+			RECT rectDoNotAskAgainButton;
+			GetDlgItem(IDC_DONOTASKAGAIN)->GetWindowRect(&rectDoNotAskAgainButton);
+			::MapWindowPoints(nullptr, GetSafeHwnd(), reinterpret_cast<LPPOINT>(&rectDoNotAskAgainButton), 2);
+			rectDoNotAskAgainButton.top = rectOKButton.top;
+			rectDoNotAskAgainButton.bottom = rectOKButton.bottom;
+			GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
+			GetDlgItem(IDC_DONOTASKAGAIN)->EnableWindow(TRUE);
+			GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
+			rectOKButton.left += CDPIAware::Instance().ScaleX(60);
+			CString temp;
+			temp.LoadString(IDS_REMINDMELATER);
+			GetDlgItem(IDOK)->SetWindowText(temp);
+			rectOKButton.right += CDPIAware::Instance().ScaleX(160);
+		}
+	}
+	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);
+
+	if (handleAnchors)
+	{
+		AddAnchor(IDC_GROUP_CHANGELOG, TOP_LEFT, BOTTOM_RIGHT);
+		AddAnchor(IDC_LOGMESSAGE, TOP_LEFT, BOTTOM_RIGHT);
+		AddAnchor(IDC_GROUP_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+		AddAnchor(IDC_LIST_DOWNLOADS, BOTTOM_LEFT, BOTTOM_RIGHT);
+		AddAnchor(IDC_PROGRESSBAR, BOTTOM_LEFT, BOTTOM_RIGHT);
+		AddAnchor(IDC_DONOTASKAGAIN, BOTTOM_CENTER);
+		AddAnchor(IDC_BUTTON_UPDATE, BOTTOM_RIGHT);
+		AddAnchor(IDOK, BOTTOM_CENTER);
+	}
+	CenterWindow();
 }

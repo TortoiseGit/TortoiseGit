@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2017, 2020 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2017, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -85,6 +85,8 @@ private:
 	bool		VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename);
 
 	CUpdateListCtrl	m_ctrlFiles;
+
+	void		AdjustSize(bool changelog, bool downloads, bool handleAnchors = true);
 
 	CVersioncheckParser::Version m_myVersion;
 	CString		m_sUpdateDownloadLink;			///< Where to send a user looking to download a update

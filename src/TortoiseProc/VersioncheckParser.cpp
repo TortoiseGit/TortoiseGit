@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019, 2022 - TortoiseGit
+// Copyright (C) 2013-2019, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -155,6 +155,16 @@ CString CVersioncheckParser::GetTortoiseGitBaseURL()
 	if (baseurl.IsEmpty())
 		baseurl.Format(L"http://updater.download.tortoisegit.org/tgit/%s/", static_cast<LPCWSTR>(m_version.version_for_filename));
 	return baseurl;
+}
+
+bool CVersioncheckParser::GetTortoiseGitIsDirectDownloadable()
+{
+	return m_versioncheckfile.GetBoolValue(L"tortoisegit", L"directdownload", true);
+}
+
+bool CVersioncheckParser::GetTortoiseGitHasChangelog()
+{
+	return m_versioncheckfile.GetBoolValue(L"tortoisegit", L"changelog", true);
 }
 
 bool CVersioncheckParser::GetTortoiseGitIsHotfix()

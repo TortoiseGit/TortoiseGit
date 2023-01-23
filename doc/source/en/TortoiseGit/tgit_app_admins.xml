@@ -119,7 +119,7 @@ langs="1031;de"
 			The filenames are generated as follows: <literal>TortoiseGit-(version)-(32|64)bit.msi</literal> for the main installer (if not overridden by <literal>mainfilename=TortoiseGit-%1!s!-%2!s!bit.msi</literal>)
 			and <literal>TortoiseGit-LanguagePack-(version)-(32|64)bit-(cs|de|...).msi</literal> for the language packs (if not overridden by <literal>languagepackfilename=TortoiseGit-LanguagePack-%1!s!-%2!s!bit-%3!s!.msi</literal>; <literal>%4!d!</literal> is the four digit country code).
 			Using <literal>langs</literal> lines, one can advertise language packs (Syntax of one line: Four digit country code;ISO Country code).
-			Using a <literal>issuesurl</literal> line, it is possible to control the URL to which the issues are linked to (default is <literal>https://tortoisegit.org/issue/%BUGID%</literal>; can also be empty to disable linking),
+			Using a <literal>issuesurl</literal> line, it is possible to control the URL to which the issues are linked to (default is <literal>https://tortoisegit.org/issue/%BUGID%</literal>; can also be empty to disable linking). There are also two boolean options <literal>directdownload</literal> and <literal>changelog</literal> to hide the change log and to disable direct downloads (both default to true).
 		</para>
 		<para>
 			Clicking on <guibutton>Download</guibutton> downloads the selected files as well as their digital signature files (<filename>filename.asc</filename>) to <filename><ulink url="https://docs.microsoft.com/windows/win32/shell/knownfolderid">FOLDERID_Downloads</ulink></filename>.

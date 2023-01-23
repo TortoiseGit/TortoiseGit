@@ -4,6 +4,7 @@ autocomplete
 autolist
 Autoload
 autostart
+boolean
 branchings
 CamelCase
 changelist
