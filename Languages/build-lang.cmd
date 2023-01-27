@@ -45,6 +45,7 @@ call :nmake 1060 sl
 call :nmake 1063 lt
 call :nmake 1065 fa
 call :nmake 1066 vi
+call :nmake 1097 ta_IN
 call :nmake 2052 zh_CN
 call :nmake 2070 pt_PT
 call :nmake 2074 sr@latin

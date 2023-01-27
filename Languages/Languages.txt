@@ -48,6 +48,7 @@ sl;	1060;	1;	Slovenian;	Slovenian;		Slovenian
 sq;	1052;	0;	Albanian;	Albanian;		Albanian;
 sr_spc;	3098;	0;	Serbian cyrillic;	Serbian cyrillic;	Serbian cyrillic
 sr_spl;	2074;	0;	Serbian latin;	Serbian latin;	Serbian latin
+ta_IN;	1097;	0;	Tamil (India);	Tamil (India);	Tamil (India)
 uk;	1058;	0;	Ukrainian;	Ukrainian;		Ukrainian
 es;	1034;	0;	Spanish;	Spanish;		Spanish
 sv;	1053;	0;	Swedish;	Swedish;		Swedish

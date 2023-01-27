@@ -88,6 +88,7 @@
     <None Include="Tortoise_sr%40Cyrl.po" />
     <None Include="Tortoise_sr%40latin.po" />
     <None Include="Tortoise_sv.po" />
+    <None Include="Tortoise_ta_IN.po" />
     <None Include="Tortoise_tr.po" />
     <None Include="Tortoise_uk.po" />
     <None Include="Tortoise_vi.po" />
