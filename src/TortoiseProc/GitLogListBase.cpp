@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -2075,7 +2075,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 
 			if(!pSelLogEntry->m_CommitHash.IsEmpty())
 			{
-				if (m_ContextMenuMask & GetContextMenuBit(ID_LOG))
+				if (m_ContextMenuMask & GetContextMenuBit(ID_LOG) || ((!isStash && hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend()) || showExtendedMenu))
 				{
 					popup.AppendMenuIcon(ID_LOG, IDS_LOG_POPUP_LOG, IDI_LOG);
 					if (m_ColumnRegKey == L"reflog")

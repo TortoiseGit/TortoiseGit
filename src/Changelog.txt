@@ -31,6 +31,7 @@ Released: unreleased
  * Add special environment variable "TGIT_INITIATED_CALL" to indicate that a git.exe call was issued from TortoiseGit
  * Add initial support for ARM64 (with separate MSI installer)
  * Fixed issue #3996: Improve compatibility with Win32-OpenSSH (Git hanging on waiting passphrase from stdin)
+ * Fixed issue #3994: LogDlg: Allow to open new log dialog
 
 == Bug Fixes ==
  * Fixed issue #3865: Ampersand in branch name not shown in Windows context menu

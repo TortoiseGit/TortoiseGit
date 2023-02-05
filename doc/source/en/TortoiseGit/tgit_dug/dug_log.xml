@@ -175,7 +175,7 @@
 			The top pane of the Log dialog has a context menu that allows you to
 			access much more information. <!-- Some of these menu entries appear only
 			when the log is shown for a file, and some only when the log is shown
-			for a folder. --> You can press the <keycap>Shift</keycap> key to see the extended menu with some more options.
+			for a folder. --> You can press the <keycap>Shift</keycap> key to see the extended menu with some more options (e.g., pushing and opening the log from every commit).
 			<variablelist>
 				<varlistentry>
 					<term>Compare with working tree</term>
