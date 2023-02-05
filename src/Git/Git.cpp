@@ -2252,6 +2252,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 			m_Environment.SetEnv(L"SSH_ASKPASS",sAskPass);
 			m_Environment.SetEnv(L"GIT_ASKPASS",sAskPass);
 			m_Environment.SetEnv(L"GIT_ASK_YESNO", sAskPass);
+			m_Environment.SetEnv(L"SSH_ASKPASS_REQUIRE", L"force"); // improve compatibility with Win32-OpenSSH, see issue #3996
 		}
 	}
 
