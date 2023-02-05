@@ -1,0 +1,4 @@
+﻿<Include>
+	<File Id='SPELLFAIRAFF' Name='fa_IR.aff' DiskId='1' Source='..\ext\spell\fa_IR\fa-IR.aff' Vital='no'></File>
+	<File Id='SPELLFAIRDIC' Name='fa_IR.dic' DiskId='1' Source='..\ext\spell\fa_IR\fa-IR.dic' Vital='no'></File>
+</Include>
