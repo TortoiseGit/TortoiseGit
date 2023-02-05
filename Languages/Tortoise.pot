@@ -10388,6 +10388,10 @@ msgstr ""
 msgid "Windows 11 Context Menu"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
+msgid "Windows Credential Manager"
+msgstr ""
+
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
 msgstr ""

@@ -1672,6 +1672,7 @@
 #define IDS_LOG_FILTER_CASESENSITIVE    1857
 #define IDC_CHECK_CHECKOUT              1858
 #define IDC_WORKTREE_LIST               1859
+#define IDC_WINDOWSCREDMGR              1859
 #define IDS_LOG_FILTER_REGEX_TT         1860
 #define IDS_LOG_REVERTTOREV_CONFIRM     1890
 #define IDS_LOG_REVERTREV_ERROR         1891
@@ -2140,7 +2141,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        370
 #define _APS_NEXT_COMMAND_VALUE         32881
-#define _APS_NEXT_CONTROL_VALUE         1859
+#define _APS_NEXT_CONTROL_VALUE         1860
 #define _APS_NEXT_SYMED_VALUE           201
 #endif
 #endif

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2021 - TortoiseGit
+// Copyright (C) 2013-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,6 +94,7 @@ BEGIN_MESSAGE_MAP(CSettingGitCredential, CPropertyPage)
 	ON_BN_CLICKED(IDC_CHECK_USEHTTPPATH, &CSettingGitCredential::OnBnClickedCheckUsehttppath)
 	ON_BN_CLICKED(IDC_BUTTON_REMOVE, &CSettingGitCredential::OnBnClickedButtonRemove)
 	ON_BN_CLICKED(IDC_OPENSETTINGSELEVATED, &CSettingGitCredential::OnBnClickedOpensettingselevated)
+	ON_BN_CLICKED(IDC_WINDOWSCREDMGR, &CSettingGitCredential::OnBnClickedWindowscredmgr)
 END_MESSAGE_MAP()
 
 static CStringA RegexEscape(CStringA str)
@@ -865,4 +866,14 @@ void CSettingGitCredential::OnBnClickedOpensettingselevated()
 	CString sCmd;
 	sCmd.Format(L"/command:settings /page:gitcredential /path:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 	CAppUtils::RunTortoiseGitProc(sCmd, true);
+}
+
+void CSettingGitCredential::OnBnClickedWindowscredmgr()
+{
+	// https://stackoverflow.com/a/31782500/3906760
+	if (CComHeapPtr<WCHAR> wcharPtr; SUCCEEDED(SHGetKnownFolderPath(FOLDERID_System, 0, nullptr, &wcharPtr)))
+	{
+		CString folder{ static_cast<LPCWSTR>(wcharPtr) };
+		CAppUtils::LaunchApplication(folder + L"\\rundll32.exe keymgr.dll,KRShowKeyMgr", CAppUtils::LaunchApplicationFlags());
+	}
 }
