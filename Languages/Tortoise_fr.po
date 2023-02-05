@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2022 the TortoiseGit team
+# Copyright (C) 2008-2023 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -33,6 +33,7 @@
 # Jonathan GRIFFON <kugan49@gmail.com>, 2017-2020
 # Kegnarok <kegnarok.rm@laposte.net>, 2013
 # Kerzzy <6greenday6@gmail.com>, 2015
+# Laurent TARREL, 2022
 # Le Gall Nicolas <contact@nlegall.fr>, 2014
 # 556b8933f5444413a6e3eb8ce0499357_237b366 <dc7a580f2694f34a68331c39892a2ae0_170598>, 2014
 # Linus Fredrich Levisse <linukcs@live.fr>, 2011
@@ -58,7 +59,7 @@
 # 4a14a73d523224463300dea5e0502458_3dab472, 2012
 # Stéphane Aulery <saulery@legtux.org>, 2016-2020
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2014,2021
-# ykatchou <ykatchou@gmail.com>, 2012-2013
+# cd745cd4f81f65f162b839eb6db444ef_3d7aa9f <59d011ccb8be1358eda753c01d748aa7_29593>, 2012-2013
 # d25d9e2161b89af316b61f449106a075_fbd05c9 <8465a6d6bba4183be55c93639397a626_353654>, 2015
 # d25d9e2161b89af316b61f449106a075_fbd05c9 <8465a6d6bba4183be55c93639397a626_353654>, 2015
 msgid ""
@@ -66,14 +67,14 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-01-17 17:17+0000\n"
-"Last-Translator: Clément Forest <Clement.Forest@cae.com>\n"
+"PO-Revision-Date: 2011-11-27 06:19+0000\n"
+"Last-Translator: Laurent TARREL, 2022\n"
 "Language-Team: French (http://www.transifex.com/lznuaa/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. Resource IDs: (IDS_STATUSBAR_CONFLICTEDLINES)
 # msgid/msgstr fields for Accelerator keys
@@ -386,7 +387,7 @@ msgid "&About TortoiseGitMerge..."
 msgstr "&A propos de TortoiseGitMerge..."
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog
-#. IDD_REBASE: Control id 1382)
+#. IDD_REBASE: Control id 1382, Dialog IDD_WORKTREE_LIST: Control id 1382)
 msgid "&Add"
 msgstr "&Ajouter"
 
@@ -459,7 +460,8 @@ msgstr "$Bordure :"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
 #. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1512)
 msgid "&Branch"
 msgstr "&Branche"
 
@@ -484,6 +486,10 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "&Annuler"
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
+msgid "&Checkout"
+msgstr "&Vérifier"
+
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
 msgstr "&Nettoyer..."
@@ -505,7 +511,8 @@ msgstr "&Fermer"
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
 #. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
-#. Dialog IDD_SYNC: Control id 1625)
+#. Dialog IDD_SYNC: Control id 1625, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1514)
 msgid "&Commit"
 msgstr "&Commit"
 
@@ -589,6 +596,10 @@ msgstr "Supprimer la branche à distance && la branche locale liée"
 msgid "&Delete branch/tag"
 msgstr "Supprimer la branche / étiquette"
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
+msgid "&Detach"
+msgstr "&Détacher"
+
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
 msgstr "&Détecter les lignes déplacées ou copiées"
@@ -620,10 +631,6 @@ msgstr "&Rejeter"
 #. Resource IDs: (IDS_DO_SAME_FOR_REST)
 msgid "&Do the same for the rest"
 msgstr "Faire de &même pour le reste"
-
-#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
-msgid "&Don't ask me again"
-msgstr "Ne plus &demander"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
 msgid ""
@@ -763,7 +770,7 @@ msgstr "&Police :"
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521)
+#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Forcer"
 
@@ -805,7 +812,8 @@ msgid "&Gray Unrelated Changed Paths"
 msgstr "&Griser les chemins modifiés non versionés"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1511)
+#. IDD_NEW_BRANCH_TAG: Control id 1511, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
 
@@ -929,6 +937,10 @@ msgstr "Branches &locale "
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1504)
 msgid "&Local:"
 msgstr "&Local :"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
+msgid "&Location"
+msgstr "&Emplacement"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "&Max line length for inline diffs"
@@ -1099,6 +1111,10 @@ msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
 msgstr "Continuer quand même\nIgnorer le scri&pt d'accroche et lancer la commande quand même."
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
+msgid "&Prune"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1279,7 +1295,7 @@ msgstr "&Écraser TOUT"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Staging"
-msgstr ""
+msgstr "&Présélectionner"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
@@ -1315,7 +1331,8 @@ msgstr "&Taille des tabulations :"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
 #. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1513)
 msgid "&Tag"
 msgstr "É&tiquettes"
 
@@ -1387,7 +1404,7 @@ msgstr "&Débloquer"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Unstaging"
-msgstr ""
+msgstr "&Dé-présélectionner"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -1446,7 +1463,7 @@ msgstr "&ajouter \"cherry picked depuis\""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
 msgid "&force"
-msgstr ""
+msgstr "&forcer"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -1522,7 +1539,8 @@ msgstr "--&tous"
 #. IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD:
 #. Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control
-#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
+#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104, Dialog IDD_WORKTREE_CREATE:
+#. Control id 1382, Dialog IDD_WORKTREE_CREATE: Control id 1483)
 msgid "..."
 msgstr "..."
 
@@ -2253,7 +2271,8 @@ msgstr "Graphique en barre"
 msgid "Base"
 msgstr "Basé sur"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522)
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1522)
 msgid "Base On"
 msgstr "Basé sur"
 
@@ -2397,7 +2416,8 @@ msgstr "Le nom de branche/tag ne doit pas être vide ou est incorrecte."
 msgid "Branch:"
 msgstr "Branche :"
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1383, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1384)
 msgid "Bro&wse..."
 msgstr "Parcourir"
 
@@ -2547,8 +2567,8 @@ msgstr "Impossible de copier \n%1!s!\nvers\n%2!s!"
 #. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
 #. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
 #. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
-#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
-#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, Dialog IDD_WORKTREE_CREATE:
+#. Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -4052,7 +4072,7 @@ msgid "Diffs two any commits"
 msgstr "Diff de deux des livraisons"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
-#. IDD_OPENDLG: Control id 65535)
+#. IDD_OPENDLG: Control id 65535, Dialog IDD_WORKTREE_CREATE: Control id 1518)
 msgid "Directory:"
 msgstr "Répertoire :"
 
@@ -4163,6 +4183,10 @@ msgstr "Voulez-vous réellement supprimer les %d élément(s) rémisé(s)"
 #, c-format
 msgid "Do you really want to delete \"%s\"?"
 msgstr "Voulez-vous réellement supprimer \"%s\"?"
+
+#. Resource IDs: (IDS_PROC_DELETE_WORKTREE)
+msgid "Do you really want to delete the selected worktree(s)?"
+msgstr "Voulez-vous vraiment supprimer le(s) arborescence sélectionnée(s) ?"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4281,6 +4305,10 @@ msgstr "Voulez-vous sortir la remise?"
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "Document :"
+
+#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
+msgid "Don't ask me &again"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -5433,6 +5461,10 @@ msgstr "Git Déplacer et renommer l'élément versionné ici"
 msgid "Git Move versioned item(s) here"
 msgstr "Git Déplacer les éléments versionnés ici"
 
+#. Resource IDs: (IDS_DROPNEWWORKTREE)
+msgid "Git New worktree..."
+msgstr "Nouvelle arborescence Git..."
+
 #. Resource IDs: (IDS_PROCS_TITLE_GITREMOTESETTINGS)
 msgid "Git Remote Settings"
 msgstr "Configuration distante de Git"
@@ -5607,7 +5639,8 @@ msgstr "Hébreu"
 #. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
 #. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
 #. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
-#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog
+#. IDD_WORKTREE_CREATE: Control id 9, Dialog IDD_WORKTREE_LIST: Control id 9,
 #. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "Aide"
@@ -5630,11 +5663,11 @@ msgstr "Cacher le patch<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
 msgid "Hide Staging<<"
-msgstr ""
+msgstr "Cacher la présélection<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
 msgid "Hide Unstaging<<"
-msgstr ""
+msgstr "Cacher la dé-présélection<<"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -6282,7 +6315,7 @@ msgid ""
 "Invalid selection.\n"
 "\n"
 "If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
-msgstr ""
+msgstr "Sélection non valide.\n\nSi un fichier d'une seule ligne a été modifié, vous devez cocher la pré-sélection ou la dé pré-désélection du fichier complet."
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
@@ -6616,6 +6649,15 @@ msgstr "Barre de localisation"
 msgid "Lock"
 msgstr "Bloquer"
 
+#. Resource IDs: (IDS_LOCKED)
+msgid "Locked"
+msgstr "Verrouillé"
+
+#. Resource IDs: (IDS_PROC_LOCKED_WORKTREES)
+#, c-format
+msgid "Locked %d worktree(s)."
+msgstr "%d arborescence verrouillée(s)"
+
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
 msgstr "Boquer un fichier en utilisant LSF"
@@ -6696,6 +6738,10 @@ msgstr "Gérer"
 #. IDS_PROC_BROWSEREFS_MANAGEREMOTES)
 msgid "Manage Remotes"
 msgstr "Gestion des éléments distants"
+
+#. Resource IDs: (IDS_MENUDESCWORKTREE)
+msgid "Manages the worktrees of a repository"
+msgstr "Gérer les arborescences d'un dépôt"
 
 #. Resource IDs: (IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED -
 #. Menu, cmdMarkResolved_LabelTitle_RESID)
@@ -6958,6 +7004,10 @@ msgstr "Nouveau &nom :"
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 309)
 msgid "New Branch/Tag"
 msgstr "Nouvelle branche/étiquette"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
+msgid "New Worktree"
+msgstr "Nouvelle arborescence"
 
 #. Resource IDs: (IDS_NEWHASH)
 msgid "New hash"
@@ -7368,7 +7418,8 @@ msgstr "OEM-US"
 #. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
 #. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
 #. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Dialog IDD_WORKTREE_CREATE: Control id 1, Dialog IDD_WORKTREE_LIST: Control
+#. id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "OK"
 
@@ -7519,7 +7570,7 @@ msgstr "Option"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
 #. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. IDD_STASH: Control id 1517, Dialog IDD_WORKTREE_CREATE: Control id 1517)
 msgid "Options"
 msgstr "Options"
 
@@ -7649,12 +7700,12 @@ msgstr "parents(s)"
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
 #. IDS_PROC_COMMIT_PARTIAL_STAGING)
 msgid "Partial Staging>>"
-msgstr ""
+msgstr "Présélection partielle>>"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
 #. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
 msgid "Partial Unstaging>>"
-msgstr ""
+msgstr "Dé-présélectionner partielle>>"
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
@@ -7998,7 +8049,7 @@ msgstr "Configuration du Proxy"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
 #. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
-#. 1603)
+#. 1603, IDS_PRUNE)
 msgid "Prune"
 msgstr "Séparer"
 
@@ -8163,6 +8214,10 @@ msgstr "Atteignable"
 #. Resource IDs: (IDS_MENUDESCHELP)
 msgid "Read the 'Daily Use Guide' before you are stuck..."
 msgstr "Lisez le 'Guide journalier' avant d'être bloqué..."
+
+#. Resource IDs: (IDS_REASON)
+msgid "Reason"
+msgstr "Raison"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 318)
 msgid "Rebase"
@@ -9697,11 +9752,11 @@ msgstr "Ignorer la révision courante dans le processus de bifurcation"
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
 msgid "Skip worktree"
-msgstr "Eviter l'arborescence de travail"
+msgstr "Sauter l'arborescence de travail"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAYHANDLERS: Control id 1529)
 msgid "Skip worktree (\"Locked\" in TortoiseSVN)"
-msgstr "Eviter l'arborescence de travail (\"Verrouillé\" dans TortoiseSVN)"
+msgstr "Sauter l'arborescence de travail (\"Verrouillée\" dans TortoiseSVN)"
 
 #. Resource IDs: (IDS_SVNACTION_SKIP)
 msgid "Skipped"
@@ -9779,7 +9834,7 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
 #. - Menu)
 msgid "Stage selected &lines"
-msgstr ""
+msgstr "Présélection des &lignes sélectionnées"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
 msgid "Staging support (EXPERIMENTAL)"
@@ -10022,6 +10077,11 @@ msgstr "Les sous-modules sont initialisés et clonés en utilisant leurs paramè
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
 msgstr "Succès"
+
+#. Resource IDs: (IDS_PROC_UNLOCKED_WORKTREES)
+#, c-format
+msgid "Successfully unlocked %d worktree(s)."
+msgstr "%d arborescence(s) déverrouillée(s) avec succès"
 
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
@@ -10747,11 +10807,11 @@ msgstr "Basculer les filtres"
 
 #. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
 msgid "Too many files to display."
-msgstr ""
+msgstr "Trop de fichiers à afficher."
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
 msgid "Top context menu on Windows 11"
-msgstr ""
+msgstr "Menu contextuel supérieur de Windows 11"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
@@ -11073,7 +11133,7 @@ msgstr "Annuler sélection"
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
 msgid ""
 "Unchecked items are not shown in the top menu but only in the original menu"
-msgstr ""
+msgstr "Les éléments non cochés ne sont pas affichés dans le menu du haut mais uniquement dans le menu d'origine"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
@@ -11132,6 +11192,10 @@ msgstr "Types de référence inconnus"
 msgid "Unlock"
 msgstr "Débloquer"
 
+#. Resource IDs: (IDS_UNLOCKED)
+msgid "Unlocked"
+msgstr "Déverrouillé"
+
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
 msgstr "Débloquer un fichier en utilisant LFS"
@@ -11151,12 +11215,12 @@ msgstr "Désélectionner la branche suivie"
 #. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
 #. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
 msgid "Unstage selected &hunks"
-msgstr ""
+msgstr "Dé-présélectionner les &hunks sélectectionnés"
 
 #. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
 #. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
 msgid "Unstage selected &lines"
-msgstr ""
+msgstr "Dé-présélectionner les &lines sélectionnées"
 
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
@@ -11427,13 +11491,16 @@ msgstr "Utiliser la &totalité de ce fichier"
 msgid "Use this block on left"
 msgstr "Utiliser ce bloc à gauche"
 
+#. Resource IDs: (IDS_COMMIT_AMEND_TT)
+msgid ""
+"Use this to modify/replace the latest checked out commit with a new commit. "
+"The message from the original commit is used as the starting point. "
+"Attention: This modifies the Git history."
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
 msgid "Use whole other &file"
 msgstr "Utiliser l'autre &fichier entier"
-
-#. Resource IDs: (IDS_COMMIT_AMEND_TT)
-msgid "Used to amend the tip of the current branch."
-msgstr "Utilisé pour corriger la tête de la branche courante."
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "User Email:"
@@ -11560,11 +11627,11 @@ msgstr "Afficher un patch"
 
 #. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
 msgid "View Patch - HEAD to index"
-msgstr ""
+msgstr "Voir le correctif - HEAD à l'index"
 
 #. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
 msgid "View Patch - index to working tree"
-msgstr ""
+msgstr "Voir le correctif - Indexer à l'arborescence de travail"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
 #. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -11740,7 +11807,7 @@ msgstr "Espacements"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
-msgstr ""
+msgstr "Menu contextuel Windows 11"
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -11797,6 +11864,14 @@ msgstr "Chemin de l'arborescence de travail :"
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
 msgid "Working tree changes"
 msgstr "Modification de l,rborescence de travail"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 4604)
+msgid "Worktree List"
+msgstr "Liste d'arborescences"
+
+#. Resource IDs: (IDS_MENUWORKTREE)
+msgid "Worktrees"
+msgstr "Arborescences"
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)
 msgid "Wrap Lines"
@@ -12389,7 +12464,7 @@ msgstr "Scan du chemin:"
 
 #. Resource IDs: (IDS_SETTINGS_LOCKEDNAME)
 msgid "skip-worktree"
-msgstr "Eviter l'arborescence de travail"
+msgstr "Sauter l'arborescence de travail"
 
 #. Resource IDs: (IDS_STATUSLIST_SWITCHEDTO)
 #, c-format

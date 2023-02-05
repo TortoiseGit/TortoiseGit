@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2022 the TortoiseGit team
+# Copyright (C) 2008-2023 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-01-03 14:09+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>\n"
+"PO-Revision-Date: 2011-11-27 06:19+0000\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>, 2020\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/lznuaa/tortoisegit/language/oc/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -332,7 +332,7 @@ msgid "&About TortoiseGitMerge..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog
-#. IDD_REBASE: Control id 1382)
+#. IDD_REBASE: Control id 1382, Dialog IDD_WORKTREE_LIST: Control id 1382)
 msgid "&Add"
 msgstr "&Apondre"
 
@@ -405,7 +405,8 @@ msgstr "&Bordadura :"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
 #. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1512)
 msgid "&Branch"
 msgstr "&Branca"
 
@@ -430,6 +431,10 @@ msgstr "&CD-ROM"
 msgid "&Cancel"
 msgstr "&Anullar"
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
+msgid "&Checkout"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
 msgstr "&Netejar..."
@@ -451,7 +456,8 @@ msgstr "&Tampar"
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
 #. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
-#. Dialog IDD_SYNC: Control id 1625)
+#. Dialog IDD_SYNC: Control id 1625, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1514)
 msgid "&Commit"
 msgstr ""
 
@@ -535,6 +541,10 @@ msgstr ""
 msgid "&Delete branch/tag"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
+msgid "&Detach"
+msgstr ""
+
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
 msgstr ""
@@ -565,10 +575,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_DO_SAME_FOR_REST)
 msgid "&Do the same for the rest"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
-msgid "&Don't ask me again"
 msgstr ""
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
@@ -709,7 +715,7 @@ msgstr "&Poliça :"
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521)
+#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr ""
 
@@ -751,7 +757,8 @@ msgid "&Gray Unrelated Changed Paths"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1511)
+#. IDD_NEW_BRANCH_TAG: Control id 1511, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1511)
 msgid "&HEAD"
 msgstr "&HEAD"
 
@@ -874,6 +881,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1504)
 msgid "&Local:"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
+msgid "&Location"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
@@ -1044,6 +1055,10 @@ msgstr ""
 msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
+msgid "&Prune"
 msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
@@ -1261,7 +1276,8 @@ msgstr "&Talha de las tabulacions :"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
 #. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1513)
 msgid "&Tag"
 msgstr ""
 
@@ -1468,7 +1484,8 @@ msgstr ""
 #. IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD:
 #. Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control
-#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
+#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104, Dialog IDD_WORKTREE_CREATE:
+#. Control id 1382, Dialog IDD_WORKTREE_CREATE: Control id 1483)
 msgid "..."
 msgstr "..."
 
@@ -2199,7 +2216,8 @@ msgstr "Grafic en barra"
 msgid "Base"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522)
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1522)
 msgid "Base On"
 msgstr ""
 
@@ -2343,7 +2361,8 @@ msgstr ""
 msgid "Branch:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1383, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1384)
 msgid "Bro&wse..."
 msgstr ""
 
@@ -2493,8 +2512,8 @@ msgstr ""
 #. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
 #. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
 #. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
-#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
-#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, Dialog IDD_WORKTREE_CREATE:
+#. Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "Anullar"
 
@@ -3998,7 +4017,7 @@ msgid "Diffs two any commits"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
-#. IDD_OPENDLG: Control id 65535)
+#. IDD_OPENDLG: Control id 65535, Dialog IDD_WORKTREE_CREATE: Control id 1518)
 msgid "Directory:"
 msgstr "Repertòri :"
 
@@ -4108,6 +4127,10 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_DELETEBRANCHTAG)
 #, c-format
 msgid "Do you really want to delete \"%s\"?"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_DELETE_WORKTREE)
+msgid "Do you really want to delete the selected worktree(s)?"
 msgstr ""
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
@@ -4227,6 +4250,10 @@ msgstr ""
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "Document :"
+
+#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
+msgid "Don't ask me &again"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -5379,6 +5406,10 @@ msgstr ""
 msgid "Git Move versioned item(s) here"
 msgstr ""
 
+#. Resource IDs: (IDS_DROPNEWWORKTREE)
+msgid "Git New worktree..."
+msgstr ""
+
 #. Resource IDs: (IDS_PROCS_TITLE_GITREMOTESETTINGS)
 msgid "Git Remote Settings"
 msgstr ""
@@ -5553,7 +5584,8 @@ msgstr ""
 #. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
 #. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
 #. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
-#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog
+#. IDD_WORKTREE_CREATE: Control id 9, Dialog IDD_WORKTREE_LIST: Control id 9,
 #. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "Ajuda"
@@ -6562,6 +6594,15 @@ msgstr "Barra de localizacion"
 msgid "Lock"
 msgstr ""
 
+#. Resource IDs: (IDS_LOCKED)
+msgid "Locked"
+msgstr ""
+
+#. Resource IDs: (IDS_PROC_LOCKED_WORKTREES)
+#, c-format
+msgid "Locked %d worktree(s)."
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
 msgstr ""
@@ -6641,6 +6682,10 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1382,
 #. IDS_PROC_BROWSEREFS_MANAGEREMOTES)
 msgid "Manage Remotes"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUDESCWORKTREE)
+msgid "Manages the worktrees of a repository"
 msgstr ""
 
 #. Resource IDs: (IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED -
@@ -6903,6 +6948,10 @@ msgstr "Novèl &nom :"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 309)
 msgid "New Branch/Tag"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
+msgid "New Worktree"
 msgstr ""
 
 #. Resource IDs: (IDS_NEWHASH)
@@ -7314,7 +7363,8 @@ msgstr "OEM-US"
 #. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
 #. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
 #. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Dialog IDD_WORKTREE_CREATE: Control id 1, Dialog IDD_WORKTREE_LIST: Control
+#. id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "D'acòrdi"
 
@@ -7465,7 +7515,7 @@ msgstr "Opcion"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
 #. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. IDD_STASH: Control id 1517, Dialog IDD_WORKTREE_CREATE: Control id 1517)
 msgid "Options"
 msgstr "Opcions"
 
@@ -7944,7 +7994,7 @@ msgstr "Configuracion del Proxy"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
 #. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
-#. 1603)
+#. 1603, IDS_PRUNE)
 msgid "Prune"
 msgstr ""
 
@@ -8109,6 +8159,10 @@ msgstr ""
 #. Resource IDs: (IDS_MENUDESCHELP)
 msgid "Read the 'Daily Use Guide' before you are stuck..."
 msgstr "Legissètz lo 'Guida jornalièr' abans d'èsser blocat..."
+
+#. Resource IDs: (IDS_REASON)
+msgid "Reason"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 318)
 msgid "Rebase"
@@ -9969,6 +10023,11 @@ msgstr ""
 msgid "Success"
 msgstr "Succès"
 
+#. Resource IDs: (IDS_PROC_UNLOCKED_WORKTREES)
+#, c-format
+msgid "Successfully unlocked %d worktree(s)."
+msgstr ""
+
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
 msgstr ""
@@ -11078,6 +11137,10 @@ msgstr ""
 msgid "Unlock"
 msgstr ""
 
+#. Resource IDs: (IDS_UNLOCKED)
+msgid "Unlocked"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
 msgstr ""
@@ -11373,13 +11436,16 @@ msgstr "Utilizar la &totalitat d'aqueste fichièr"
 msgid "Use this block on left"
 msgstr "Utilizar aqueste blòt a esquèrra"
 
+#. Resource IDs: (IDS_COMMIT_AMEND_TT)
+msgid ""
+"Use this to modify/replace the latest checked out commit with a new commit. "
+"The message from the original commit is used as the starting point. "
+"Attention: This modifies the Git history."
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
 msgid "Use whole other &file"
 msgstr "Utilizar l'autre &fichièr entièr"
-
-#. Resource IDs: (IDS_COMMIT_AMEND_TT)
-msgid "Used to amend the tip of the current branch."
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "User Email:"
@@ -11742,6 +11808,14 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
 msgid "Working tree changes"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 4604)
+msgid "Worktree List"
+msgstr ""
+
+#. Resource IDs: (IDS_MENUWORKTREE)
+msgid "Worktrees"
 msgstr ""
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)

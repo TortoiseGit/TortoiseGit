@@ -1,10 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2022 the TortoiseGit team
+# Copyright (C) 2008-2023 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # 乙酸鋰 <ch3cooli@gmail.com>, 2014
+# Cyberwolf <letian14@hotmail.com>, 2022
 # Entong Shen <dexter_shen@hotmail.com>, 2011
 # fang zheng <fz0000@sina.com>, 2011-2012
 # flypopo <flypopo.reg@qq.com>, 2015
@@ -34,7 +35,7 @@
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
 # XY <1642787610@qq.com>, 2020
-# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2021
+# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2022
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016
 # YFdyh000 <yfdyh000@gmail.com>, 2013-2018
 # zhang chuan <zhangchuan.cn@gmail.com>, 2011
@@ -44,8 +45,8 @@ msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-01-24 04:12+0000\n"
-"Last-Translator: lznuaa <lznuaa@gmail.com>\n"
+"PO-Revision-Date: 2011-11-27 06:19+0000\n"
+"Last-Translator: YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2022\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -364,7 +365,7 @@ msgid "&About TortoiseGitMerge..."
 msgstr "关于 TortoiseGitMerge(&A)..."
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1382, Dialog
-#. IDD_REBASE: Control id 1382)
+#. IDD_REBASE: Control id 1382, Dialog IDD_WORKTREE_LIST: Control id 1382)
 msgid "&Add"
 msgstr "添加(&A)"
 
@@ -437,7 +438,8 @@ msgstr "边框(&B):"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1512, Dialog IDD_GITSWITCH:
 #. Control id 1512, Dialog IDD_MERGE: Control id 1512, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512)
+#. IDD_NEW_BRANCH_TAG: Control id 1512, Dialog IDD_RESET: Control id 1512,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1512)
 msgid "&Branch"
 msgstr "分支(&B)"
 
@@ -462,6 +464,10 @@ msgstr "光驱(&C)"
 msgid "&Cancel"
 msgstr "取消(&C)"
 
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
+msgid "&Checkout"
+msgstr "检出(&C)"
+
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
 msgstr "清理(&C)..."
@@ -483,7 +489,8 @@ msgstr "关闭(&C)"
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1514, Dialog IDD_GITSWITCH:
 #. Control id 1514, Dialog IDD_MERGE: Control id 1514, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1514, Dialog IDD_RESET: Control id 1514,
-#. Dialog IDD_SYNC: Control id 1625)
+#. Dialog IDD_SYNC: Control id 1625, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1514)
 msgid "&Commit"
 msgstr "提交(&C)"
 
@@ -536,11 +543,11 @@ msgstr "自定义(&C)"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode"
-msgstr "＆黑暗模式"
+msgstr "深色模式(&D)"
 
 #. Resource IDs: (ID_VIEW_DARKMODE - Menu)
 msgid "&Dark Mode\tD"
-msgstr "＆黑暗模式\tD"
+msgstr "深色模式(&D)\tD"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
@@ -566,6 +573,10 @@ msgstr "删除本地分支及跟踪的远端分支(&D)"
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
 msgstr "删除分支/标签(&D)"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
+msgid "&Detach"
+msgstr "分离(&D)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -598,10 +609,6 @@ msgstr "放弃(&D)"
 #. Resource IDs: (IDS_DO_SAME_FOR_REST)
 msgid "&Do the same for the rest"
 msgstr "剩下的做同样操作(&D)"
-
-#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
-msgid "&Don't ask me again"
-msgstr "不再询问(&D)"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
 msgid ""
@@ -741,7 +748,7 @@ msgstr "字体(&F): "
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
 #. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521)
+#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "强制(&F)"
 
@@ -780,10 +787,11 @@ msgstr "跳转(&G)\tCtrl+G"
 
 #. Resource IDs: (IDS_SHOWFILES_GRAYPATHS)
 msgid "&Gray Unrelated Changed Paths"
-msgstr "灰化无关的修改路径(&G)"
+msgstr "灰化当前路径外的修改(&G)"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1511, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1511)
+#. IDD_NEW_BRANCH_TAG: Control id 1511, Dialog IDD_WORKTREE_CREATE: Control id
+#. 1511)
 msgid "&HEAD"
 msgstr "HEAD(&H)"
 
@@ -907,6 +915,10 @@ msgstr "本地分支(&L)"
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1504)
 msgid "&Local:"
 msgstr "本地(&L)"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
+msgid "&Location"
+msgstr "定位(&L)"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "&Max line length for inline diffs"
@@ -1077,6 +1089,10 @@ msgid ""
 "&Proceed anyway\n"
 "Ignore the hook script and run the command anyway."
 msgstr "继续执行(&P)\n忽略 Hook 脚本并继续执行命令。"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
+msgid "&Prune"
+msgstr "修剪(&P)"
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1257,7 +1273,7 @@ msgstr "并合全部(&S)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Staging"
-msgstr ""
+msgstr "暂存(&S)"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
@@ -1293,7 +1309,8 @@ msgstr "Tab 宽度(&T):"
 
 #. Resource IDs: (Dialog IDD_EXPORT: Control id 1513, Dialog IDD_GITSWITCH:
 #. Control id 1513, Dialog IDD_MERGE: Control id 1513, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513)
+#. IDD_NEW_BRANCH_TAG: Control id 1513, Dialog IDD_RESET: Control id 1513,
+#. Dialog IDD_WORKTREE_CREATE: Control id 1513)
 msgid "&Tag"
 msgstr "标签(&T)"
 
@@ -1361,11 +1378,11 @@ msgstr "未知磁盘(&U)"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 32927)
 msgid "&Unlock"
-msgstr "＆开锁"
+msgstr "解锁(&U)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Unstaging"
-msgstr ""
+msgstr "取消暂存(&U)"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -1391,7 +1408,7 @@ msgstr "用户名(&U): "
 
 #. Resource IDs: (65535 - PopupMenu, Dialog IDD_LOGMESSAGE: Control id 1777)
 msgid "&View"
-msgstr "查看(&V)"
+msgstr "视图(&V)"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 1851)
 msgid "&View effective config"
@@ -1424,7 +1441,7 @@ msgstr "添加“摘取自”(&A)"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
 msgid "&force"
-msgstr ""
+msgstr "强制覆盖所有(&F)"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -1500,7 +1517,8 @@ msgstr "--all(&A)"
 #. IDD_SETTINREMOTE: Control id 1483, Dialog IDD_SUBMODULE_ADD: Control id
 #. 1384, Dialog IDD_SUBMODULE_ADD: Control id 1583, Dialog IDD_SUBMODULE_ADD:
 #. Control id 1584, Dialog IDD_SYNC: Control id 1382, Dialog IDD_SYNC: Control
-#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104)
+#. id 1383, Dialog IDD_TOOLASSOC: Control id 1104, Dialog IDD_WORKTREE_CREATE:
+#. Control id 1382, Dialog IDD_WORKTREE_CREATE: Control id 1483)
 msgid "..."
 msgstr "..."
 
@@ -2231,7 +2249,8 @@ msgstr "柱状图"
 msgid "Base"
 msgstr "基础"
 
-#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522)
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1522, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1522)
 msgid "Base On"
 msgstr "基于"
 
@@ -2375,7 +2394,8 @@ msgstr "分支/标签名称必须非空且符合规定。"
 msgid "Branch:"
 msgstr "分支："
 
-#. Resource IDs: (Dialog IDD_CLONE: Control id 1383)
+#. Resource IDs: (Dialog IDD_CLONE: Control id 1383, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1384)
 msgid "Bro&wse..."
 msgstr "浏览(&W)..."
 
@@ -2525,8 +2545,8 @@ msgstr "无法复制 \n%1!s!\n到\n%2!s!"
 #. Dialog IDD_SUBMODULE_UPDATE: Control id 2, Dialog IDD_SVNDCOMMITTYPE:
 #. Control id 2, Dialog IDD_SVNIGNORE: Control id 2, Dialog IDD_SVNPROGRESS:
 #. Control id 2, Dialog IDD_TOOLASSOC: Control id 2, Dialog IDD_URL: Control
-#. id 2, Dialog IDD_USER_PASSWD: Control id 2, IDS_MSGBOX_CANCEL,
-#. IDS_PROC_OVERWRITEEXPORT_CANCEL)
+#. id 2, Dialog IDD_USER_PASSWD: Control id 2, Dialog IDD_WORKTREE_CREATE:
+#. Control id 2, IDS_MSGBOX_CANCEL, IDS_PROC_OVERWRITEEXPORT_CANCEL)
 msgid "Cancel"
 msgstr "取消"
 
@@ -2944,7 +2964,7 @@ msgstr "折叠"
 
 #. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
 msgid "Collapse revisions"
-msgstr ""
+msgstr "折叠修订"
 
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
@@ -3695,7 +3715,7 @@ msgstr "后台服务进程"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
 msgid "Dark theme"
-msgstr "黑暗主题"
+msgstr "深色主题"
 
 #. Resource IDs: (IDS_DARKTHEME_TT)
 msgid ""
@@ -4030,7 +4050,7 @@ msgid "Diffs two any commits"
 msgstr "比较任意两个版本"
 
 #. Resource IDs: (Dialog IDD_FORMAT_PATCH: Control id 65535, Dialog
-#. IDD_OPENDLG: Control id 65535)
+#. IDD_OPENDLG: Control id 65535, Dialog IDD_WORKTREE_CREATE: Control id 1518)
 msgid "Directory:"
 msgstr "目录: "
 
@@ -4141,6 +4161,10 @@ msgstr "您确定要删除 %d 个贮藏吗？"
 #, c-format
 msgid "Do you really want to delete \"%s\"?"
 msgstr "您真的要删除“%s”吗？"
+
+#. Resource IDs: (IDS_PROC_DELETE_WORKTREE)
+msgid "Do you really want to delete the selected worktree(s)?"
+msgstr "是否删除选中的工作树？"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4259,6 +4283,10 @@ msgstr "您现在要弹出贮藏(Stash)吗？"
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "文档:"
+
+#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
+msgid "Don't ask me &again"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -4691,7 +4719,7 @@ msgstr "退出"
 
 #. Resource IDs: (IDS_LOG_POPUP_EXPAND)
 msgid "Expand collapsed revisions"
-msgstr ""
+msgstr "展开已折叠修订"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
@@ -5294,7 +5322,7 @@ msgstr "完整数据"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
 msgid "Full history"
-msgstr ""
+msgstr "完整历史记录"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
@@ -5410,6 +5438,10 @@ msgstr "Git 移动并更名受版本控制的项目到当前位置"
 #. Resource IDs: (IDS_DROPMOVEMENU)
 msgid "Git Move versioned item(s) here"
 msgstr "Git 移动受版本控制的项目到当前位置"
+
+#. Resource IDs: (IDS_DROPNEWWORKTREE)
+msgid "Git New worktree..."
+msgstr "Git 新建工作树..."
 
 #. Resource IDs: (IDS_PROCS_TITLE_GITREMOTESETTINGS)
 msgid "Git Remote Settings"
@@ -5542,7 +5574,7 @@ msgstr "分组修改列表"
 
 #. Resource IDs: (IDS_SHOWFILES_HIDEPATHS)
 msgid "H&ide Unrelated Changed Paths"
-msgstr "隐藏不相关的文件(&I)"
+msgstr "隐藏当前路径外的修改(&I)"
 
 #. Resource IDs: (Dialog IDD_DIFFFILES: Control id 1353, Dialog IDD_DIFFFILES:
 #. Control id 1354, Dialog IDD_REPOSITORY_BROWSER: Control id 1684)
@@ -5585,7 +5617,8 @@ msgstr "Hebrew"
 #. IDD_SETTINGSBUGTRAQADV: Control id 9, Dialog IDD_SETTINGSHOOKCONFIG:
 #. Control id 9, Dialog IDD_STASH: Control id 9, Dialog IDD_SUBMODULE_ADD:
 #. Control id 9, Dialog IDD_SUBMODULE_UPDATE: Control id 9, Dialog
-#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9,
+#. IDD_SVNDCOMMITTYPE: Control id 9, Dialog IDD_SYNC: Control id 9, Dialog
+#. IDD_WORKTREE_CREATE: Control id 9, Dialog IDD_WORKTREE_LIST: Control id 9,
 #. IDS_MSGBOX_HELP)
 msgid "Help"
 msgstr "帮助"
@@ -5608,11 +5641,11 @@ msgstr "隐藏补丁<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
 msgid "Hide Staging<<"
-msgstr ""
+msgstr "隐藏暂存<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
 msgid "Hide Unstaging<<"
-msgstr ""
+msgstr "隐藏未暂存<<"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -6260,7 +6293,7 @@ msgid ""
 "Invalid selection.\n"
 "\n"
 "If this is a single-line file that has been modified, you must click the checkbox to stage or unstage the whole file."
-msgstr ""
+msgstr "无效选择。\n\n如果这是已被修改的单行文件，则必须点击复选框来暂存或取消暂存整个文件。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQ_CONFIG: Control id 4571)
 msgid "Issue Tracker Config"
@@ -6297,7 +6330,7 @@ msgstr "看上去您的提交信息中有一个冲突提示（一行如 \"# Conf
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1074)
 msgid "J&ump to first conflict when loading"
-msgstr "加载后跳到第一个冲突处"
+msgstr "加载后跳到第一处冲突(&U)"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Japanese"
@@ -6594,6 +6627,15 @@ msgstr "位置栏"
 msgid "Lock"
 msgstr "锁定"
 
+#. Resource IDs: (IDS_LOCKED)
+msgid "Locked"
+msgstr "锁定"
+
+#. Resource IDs: (IDS_PROC_LOCKED_WORKTREES)
+#, c-format
+msgid "Locked %d worktree(s)."
+msgstr " %d 个工作树已锁定。"
+
 #. Resource IDs: (IDS_MENUDESCLFSLOCK)
 msgid "Locks a file using LFS"
 msgstr "使用LFS锁定文件"
@@ -6674,6 +6716,10 @@ msgstr "管理"
 #. IDS_PROC_BROWSEREFS_MANAGEREMOTES)
 msgid "Manage Remotes"
 msgstr "管理远端"
+
+#. Resource IDs: (IDS_MENUDESCWORKTREE)
+msgid "Manages the worktrees of a repository"
+msgstr "管理仓库的工作树"
 
 #. Resource IDs: (IDS_SVNPROGRESS_MENUMARKASRESOLVED, ID_EDIT_MARKASRESOLVED -
 #. Menu, cmdMarkResolved_LabelTitle_RESID)
@@ -6936,6 +6982,10 @@ msgstr "新名称(&N): "
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 309)
 msgid "New Branch/Tag"
 msgstr "创建分支/标签"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
+msgid "New Worktree"
+msgstr "新建工作树"
 
 #. Resource IDs: (IDS_NEWHASH)
 msgid "New hash"
@@ -7346,7 +7396,8 @@ msgstr "OEM-US"
 #. Dialog IDD_SVNDCOMMITTYPE: Control id 1, Dialog IDD_SVNIGNORE: Control id
 #. 1, Dialog IDD_SVNPROGRESS: Control id 1, Dialog IDD_TOOLASSOC: Control id
 #. 1, Dialog IDD_URL: Control id 1, Dialog IDD_USER_PASSWD: Control id 1,
-#. IDS_MSGBOX_OK)
+#. Dialog IDD_WORKTREE_CREATE: Control id 1, Dialog IDD_WORKTREE_LIST: Control
+#. id 1, IDS_MSGBOX_OK)
 msgid "OK"
 msgstr "确定"
 
@@ -7433,7 +7484,7 @@ msgstr "打开"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1849)
 msgid "Open &settings"
-msgstr "打开设置"
+msgstr "打开设置(&S)"
 
 #. Resource IDs: (57601)
 msgid ""
@@ -7497,7 +7548,7 @@ msgstr "选项"
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1517, Dialog
 #. IDD_PULLFETCH: Control id 1517, Dialog IDD_PUSH: Control id 1502, Dialog
-#. IDD_STASH: Control id 1517)
+#. IDD_STASH: Control id 1517, Dialog IDD_WORKTREE_CREATE: Control id 1517)
 msgid "Options"
 msgstr "选项"
 
@@ -7627,12 +7678,12 @@ msgstr "父节点"
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1639,
 #. IDS_PROC_COMMIT_PARTIAL_STAGING)
 msgid "Partial Staging>>"
-msgstr ""
+msgstr "部分暂存>>"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1638,
 #. IDS_PROC_COMMIT_PARTIAL_UNSTAGING)
 msgid "Partial Unstaging>>"
-msgstr ""
+msgstr "部分未暂存>>"
 
 #. Resource IDs: (Dialog IDD_USER_PASSWD: Control id 4585)
 msgid "Password"
@@ -7976,7 +8027,7 @@ msgstr "代理服务器设置"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1603, Dialog
 #. IDD_SETTINGIT_CONFIG: Control id 1603, Dialog IDD_SETTINREMOTE: Control id
-#. 1603)
+#. 1603, IDS_PRUNE)
 msgid "Prune"
 msgstr "修剪"
 
@@ -8141,6 +8192,10 @@ msgstr "可达 (Reachable)"
 #. Resource IDs: (IDS_MENUDESCHELP)
 msgid "Read the 'Daily Use Guide' before you are stuck..."
 msgstr "在您卡住之前，请先阅读日常使用指南..."
+
+#. Resource IDs: (IDS_REASON)
+msgid "Reason"
+msgstr "原因"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 318)
 msgid "Rebase"
@@ -9143,7 +9198,7 @@ msgstr "选择远端 ref - TortoiseGit"
 #. Resource IDs: (IDS_SETTINGS_AUTOCLOSE_TT)
 msgid ""
 "Select the behavior of the progress dialog at the end of the operation."
-msgstr ""
+msgstr "选择在操作结束后如何处理进度对话框。"
 
 #. Resource IDs: (57642)
 msgid ""
@@ -9516,7 +9571,7 @@ msgstr "即便一个标签已在提交中精确描述，仍然显示长格式"
 #. Resource IDs: (Dialog IDD_MERGEABORT: Control id 1383, Dialog IDD_RESET:
 #. Control id 1383)
 msgid "Show modified files in &working tree"
-msgstr ""
+msgstr "显示工作树中已被修改的文件(&W)"
 
 #. Resource IDs: (25308)
 msgid ""
@@ -9752,16 +9807,16 @@ msgstr "叠加折线图"
 #. Resource IDs: (IDS_PROC_STAGE_SELECTED_HUNKS, ID_STAGING_STAGESELECTEDHUNKS
 #. - Menu)
 msgid "Stage selected &hunks"
-msgstr ""
+msgstr "暂存选中的块(&H)"
 
 #. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
 #. - Menu)
 msgid "Stage selected &lines"
-msgstr ""
+msgstr "暂存选中的行(&L)"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
 msgid "Staging support (EXPERIMENTAL)"
-msgstr ""
+msgstr "暂存支持（实验性！）"
 
 #. Resource IDs: (IDS_TOOLBAR_STANDARD)
 msgid "Standard"
@@ -10000,6 +10055,11 @@ msgstr "子模块将使用其默认设置进行初始化和克隆。"
 #. Resource IDs: (IDS_SUCCESS)
 msgid "Success"
 msgstr "成功"
+
+#. Resource IDs: (IDS_PROC_UNLOCKED_WORKTREES)
+#, c-format
+msgid "Successfully unlocked %d worktree(s)."
+msgstr "成功解锁 %d 个工作树。"
 
 #. Resource IDs: (IDS_SWITCH_TO_THIS)
 msgid "Sw&itch/Checkout to this..."
@@ -10725,11 +10785,11 @@ msgstr "切换过滤器"
 
 #. Resource IDs: (IDS_STATUSLIST_TOOMANYITEMS)
 msgid "Too many files to display."
-msgstr ""
+msgstr "要显示的文件太多。"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
 msgid "Top context menu on Windows 11"
-msgstr ""
+msgstr "Windows 11 中的顶置右键菜单"
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 4594, Dialog
 #. IDD_SETTINGSMAIN: Control id 65535, IDS_APPNAME)
@@ -11051,7 +11111,7 @@ msgstr "取消选中"
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 65535)
 msgid ""
 "Unchecked items are not shown in the top menu but only in the original menu"
-msgstr ""
+msgstr "未选中的项不会在顶置菜单中显示，而会显示在原菜单中"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 65535)
 msgid ""
@@ -11110,6 +11170,10 @@ msgstr "未知 ref-types"
 msgid "Unlock"
 msgstr "解除锁定"
 
+#. Resource IDs: (IDS_UNLOCKED)
+msgid "Unlocked"
+msgstr "已解除锁定"
+
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
 msgstr "使用LFS解锁文件"
@@ -11129,12 +11193,12 @@ msgstr "取消跟踪分支"
 #. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_HUNKS,
 #. ID_UNSTAGING_UNSTAGESELECTEDHUNKS - Menu)
 msgid "Unstage selected &hunks"
-msgstr ""
+msgstr "取消暂存选中的块(&H)"
 
 #. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
 #. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
 msgid "Unstage selected &lines"
-msgstr ""
+msgstr "取消暂存选中的行(&L)"
 
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"
@@ -11405,13 +11469,16 @@ msgstr "使用整个文件(&W)"
 msgid "Use this block on left"
 msgstr "将内容添加至左侧"
 
+#. Resource IDs: (IDS_COMMIT_AMEND_TT)
+msgid ""
+"Use this to modify/replace the latest checked out commit with a new commit. "
+"The message from the original commit is used as the starting point. "
+"Attention: This modifies the Git history."
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
 msgid "Use whole other &file"
 msgstr "使用其他文件(&F)"
-
-#. Resource IDs: (IDS_COMMIT_AMEND_TT)
-msgid "Used to amend the tip of the current branch."
-msgstr "覆盖（重写）当前分支的顶点提交（tip）。"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "User Email:"
@@ -11538,11 +11605,11 @@ msgstr "查看补丁"
 
 #. Resource IDs: (IDS_VIEWPATCH_HEAD_INDEX)
 msgid "View Patch - HEAD to index"
-msgstr ""
+msgstr "查看补丁 - HEAD 至 index"
 
 #. Resource IDs: (IDS_VIEWPATCH_INDEX_WORKTREE)
 msgid "View Patch - index to working tree"
-msgstr ""
+msgstr "查看补丁 - index 至 工作树"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1637, Dialog IDD_DIFFFILES:
 #. Control id 1637, IDS_PROC_COMMIT_SHOWPATCH)
@@ -11590,7 +11657,7 @@ msgstr "等待输入"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
 msgid "Walk Be&havior"
-msgstr ""
+msgstr "浏览模式(&H)"
 
 #. Resource IDs: (IDS_WARN_WARNING)
 msgid "Warning"
@@ -11688,7 +11755,7 @@ msgid ""
 "You can also click \"Partial Staging\" or \"Partial Unstaging\". A window shows up where you can select hunks or lines in the currently selected file and stage or unstage them.\n"
 "\n"
 "Please note that, for performance reasons, the file's group (Modified Files, Not Versioned Files...) and status (Added, Modified, Unknown...) are not updated when clicking its checkbox. If you want to see the updated group and status, you can trigger a full refresh by pressing F5."
-msgstr ""
+msgstr "在此模式下，每个文件的复选框反映了其暂存状态：\n- 勾选意味着该文件的所有修改都已被暂存\n- 未勾选意味着该文件的所有修改都未被暂存\n- 灰色的方块意味着该文件只有部分修改被暂存。\n\n点击这些复选框可以立即对整个文件进行暂存或解除暂存。\n\n您也可以点击 \"部分暂存 \"或 \"部分解除暂存\"。这时会出现一个窗口，你可以在当前选定的文件中选择几块或几行，对它们进行暂存或解除暂存。\n\n请注意，由于性能的原因，当点击文件的复选框时，文件的组（已修改的文件，没有版本的文件...）和状态（已添加，已修改，未知...）不会更新。如果你想看到更新的组别和状态，你可以按F5键触发一次完全刷新。"
 
 #. Resource IDs: (IDS_NEED_TO_RESOLVE_CONFLICTS_HINT)
 msgid ""
@@ -11718,7 +11785,7 @@ msgstr "空白字符"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
-msgstr ""
+msgstr "Windows 11 右键菜单"
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
@@ -11775,6 +11842,14 @@ msgstr "工作副本路径:"
 #. Resource IDs: (IDS_LOG_WORKINGDIRCHANGES)
 msgid "Working tree changes"
 msgstr "工作树变更"
+
+#. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 4604)
+msgid "Worktree List"
+msgstr "工作树列表"
+
+#. Resource IDs: (IDS_MENUWORKTREE)
+msgid "Worktrees"
+msgstr "工作树"
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)
 msgid "Wrap Lines"
@@ -12151,7 +12226,7 @@ msgstr "文件/文件夹名称"
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
 msgid "force &with lease"
-msgstr ""
+msgstr "强制覆盖已知(&W)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

@@ -582,10 +582,6 @@ msgstr "&நிராகரி"
 msgid "&Do the same for the rest"
 msgstr "மற்றவைக்கும் அதையே செய்"
 
-#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
-msgid "&Don't ask me again"
-msgstr "&என்னை மீண்டும் கேட்காதே"
-
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK4)
 msgid ""
 "&Don't run\n"
@@ -4259,6 +4255,10 @@ msgstr "இப்போது பதுக்கிவைத்தது தோ�
 #. Resource IDs: (Dialog AFX_IDD_PRINTDLG: Control id 65535)
 msgid "Document :"
 msgstr "ஆவணம் :"
+
+#. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
+msgid "Don't ask me &again"
+msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -11441,13 +11441,16 @@ msgstr "இந்த &முழு கோப்பை பயன்படுத�
 msgid "Use this block on left"
 msgstr "இடதுபுறத்தில் இந்த தடுப்பை பயன்படுத்தவும்"
 
+#. Resource IDs: (IDS_COMMIT_AMEND_TT)
+msgid ""
+"Use this to modify/replace the latest checked out commit with a new commit. "
+"The message from the original commit is used as the starting point. "
+"Attention: This modifies the Git history."
+msgstr ""
+
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
 msgid "Use whole other &file"
 msgstr "மற்ற &கோப்பை முழுவதுமாக பயன்படுத்தவும்"
-
-#. Resource IDs: (IDS_COMMIT_AMEND_TT)
-msgid "Used to amend the tip of the current branch."
-msgstr "தற்போதைய கிளையின் முனையை திருத்த பயன்படுகிறது."
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "User Email:"
