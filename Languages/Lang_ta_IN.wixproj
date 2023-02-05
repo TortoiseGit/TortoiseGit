@@ -13,7 +13,7 @@
 	</PropertyGroup>
 	<PropertyGroup>
 		<ProjectGuid>{7b2d915d-1328-4a3f-82d6-d86e6698025c}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-ta-IN</OutputName>
+		<OutputName>TortoiseGit-LanguagePack-ta_IN</OutputName>
 		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1097;LANGNATIVE=Tamil (India);</DefineConstants>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
