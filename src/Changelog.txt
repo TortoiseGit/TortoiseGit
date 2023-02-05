@@ -11,7 +11,7 @@ Released: unreleased
  * Fixed issue #3873: Submodule Add Dialog does not automatically grab the Git Clone link from the clipboard
  * Update zlib to 1.2.13
  * Update pcre2 to 10.40
- * Update hunspell to 1.7.1
+ * Update hunspell to 1.7.2
  * LogDlg: Prevent the graph from drawing an unfinished line for each ignored parent on first-parent only walk
  * Update shipped PuTTY binaries to 0.78
  * Update TortoiseGitPlink to PuTTY Plink 0.78
