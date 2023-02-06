@@ -25,7 +25,6 @@
 #include "../../apr/include/apr_version.h"
 #include "../../apr-util/include/apu_version.h"
 #include "../version.h"
-#include "SysInfo.h"
 
 // CAboutDlg dialog
 
@@ -70,19 +69,7 @@ BOOL CAboutDlg::OnInitDialog()
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
 	this->SetWindowText(L"TortoiseGitMerge");
 
-	int logoWidth = 468;
-	int logoHeight = 64;
-	if (!TryLoadSVG(IDR_TGITMERGELOGO, logoWidth, logoHeight))
-	{
-		CPictureHolder tmpPic;
-		tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
-		m_renderSrc.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
-		m_renderDest.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
-	}
-
-	m_waterEffect.Create(logoWidth, logoHeight);
-	SetTimer(ID_EFFECTTIMER, 40, nullptr);
-	SetTimer(ID_DROPTIMER, 300, nullptr);
+	LoadSVGLogoAndStartAnimation();
 
 	m_cWebLink.SetURL(L"https://tortoisegit.org/");
 	m_cSupportLink.SetURL(L"https://tortoisegit.org/contribute/");
@@ -91,32 +78,30 @@ BOOL CAboutDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-bool CAboutDlg::TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight)
+void CAboutDlg::LoadSVGLogoAndStartAnimation()
 {
-	if (!SysInfo::Instance().IsWin10())
-		return false;
-	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(logoID), RT_RCDATA);
+	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(IDR_TGITMERGELOGO), RT_RCDATA);
 	if (!hRes)
-		return false;
+		return;
 	DWORD sz = ::SizeofResource(nullptr, hRes);
 	HGLOBAL hData = ::LoadResource(nullptr, hRes);
 	if (!hData)
-		return false;
+		return;
 
-	auto& dpiAware = CDPIAware::Instance();
-	int width = dpiAware.ScaleX(GetSafeHwnd(), logoWidth);
-	int height = dpiAware.ScaleY(GetSafeHwnd(), logoHeight);
+	int width = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 468);
+	int height = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 64);
 	std::string_view svg(reinterpret_cast<const char*>(::LockResource(hData)), sz);
 	SCOPE_EXIT { ::UnlockResource(hData); };
 	if (!m_renderSrc.Create32BitFromSVG(svg, width, height) || !m_renderDest.Create32BitFromSVG(svg, width, height))
 	{
 		m_renderSrc.DeleteObject();
 		m_renderDest.DeleteObject();
-		return false;
+		return;
 	}
-	logoWidth = width;
-	logoHeight = height;
-	return true;
+
+	m_waterEffect.Create(width, height);
+	SetTimer(ID_EFFECTTIMER, 40, nullptr);
+	SetTimer(ID_DROPTIMER, 1500, nullptr);
 }
 
 void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
