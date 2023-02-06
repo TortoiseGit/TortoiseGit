@@ -1,6 +1,6 @@
 ﻿= Release 2.18.0 =
 
-This version drops support for all Windows version < 8.1.
+This version drops support for all Windows version < 10.
 
 Git for Windows is going to stop providing a build for 32-bit Windows, TortoiseGit will also follow with one of the next releases-
 

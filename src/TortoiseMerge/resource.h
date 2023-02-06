@@ -39,7 +39,6 @@
 #define IDD_REGEXFILTERS                164
 #define IDD_REGEXFILTER                 165
 #define IDR_REGEXFILTERINI              166
-#define IDB_LOGOFLIPPED                 168
 #define IDR_IGNORECOMMENTSTXT           169
 #define IDI_LINEMARKED                  170
 #define IDB_REGEX_FILTER                171
