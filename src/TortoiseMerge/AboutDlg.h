@@ -54,7 +54,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	bool TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight);
+	void LoadSVGLogoAndStartAnimation();
 
 	CWaterEffect m_waterEffect;
 	CDib m_renderSrc;
