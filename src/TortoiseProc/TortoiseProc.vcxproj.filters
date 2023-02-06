@@ -2070,9 +2070,6 @@
     <Image Include="..\Resources\jumpup.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\Resources\Library.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\lineadded.ico">
       <Filter>Resource Files</Filter>
     </Image>

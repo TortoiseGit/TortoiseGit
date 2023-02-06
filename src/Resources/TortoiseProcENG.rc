@@ -77,7 +77,6 @@ IDI_OPEN                ICON                    "open.ico"
 IDI_GITCONFIG           ICON                    "gitconfig.ico"
 IDI_GITREMOTE           ICON                    "gitremote.ico"
 IDI_ACTIONFETCHING      ICON                    "actionfetching.ico"
-IDI_LIBRARY             ICON                    "Library.ico"
 IDI_RESTORE             ICON                    "restore.ico"
 IDI_RESTOREOVL          ICON                    "restoreovl.ico"
 IDI_JUMPUP              ICON                    "jumpup.ico"
@@ -108,7 +107,6 @@ IDI_CHERRYPICK          ICON                    "cherry-pick.ico"
 // Bitmap
 //
 
-IDB_LOGOFLIPPED         BITMAP                  "tortoisegit_logoflipped.bmp"
 IDR_REVGRAPHBAR         BITMAP                  "revgraphbar.bmp"
 IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
 

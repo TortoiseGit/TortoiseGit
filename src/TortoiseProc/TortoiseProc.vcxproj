@@ -707,7 +707,6 @@
     <Image Include="..\Resources\indeterminate.ico" />
     <Image Include="..\Resources\jumpdown.ico" />
     <Image Include="..\Resources\jumpup.ico" />
-    <Image Include="..\Resources\Library.ico" />
     <Image Include="..\Resources\lineadded.ico" />
     <Image Include="..\Resources\lineconflicted.ico" />
     <Image Include="..\Resources\lineremoved.ico" />

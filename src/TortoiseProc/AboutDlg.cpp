@@ -28,7 +28,6 @@
 #include "AppUtils.h"
 #include "Git.h"
 #include "DPIAware.h"
-#include "SysInfo.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
@@ -125,18 +124,7 @@ BOOL CAboutDlg::OnInitDialog()
 	// we can only put up to 256 chars into the resource file, so fill it here with the full list
 	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> (Founder), Yue Lin Ho <b8732003@student.nsysu.edu.tw>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>");
 
-	int logoWidth = 468;
-	int logoHeight = 64;
-	if (!TryLoadSVG(IDR_TGITLOGO, logoWidth, logoHeight))
-	{
-		CPictureHolder tmpPic;
-		tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
-		m_renderSrc.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
-		m_renderDest.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
-	}
-	m_waterEffect.Create(logoWidth, logoHeight);
-	SetTimer(ID_EFFECTTIMER, 40, nullptr);
-	SetTimer(ID_DROPTIMER, 1500, nullptr);
+	LoadSVGLogoAndStartAnimation();
 
 	m_cWebLink.SetURL(L"https://tortoisegit.org/");
 	m_cSupportLink.SetURL(L"https://tortoisegit.org/donate");
@@ -146,31 +134,30 @@ BOOL CAboutDlg::OnInitDialog()
 	return FALSE;
 }
 
-bool CAboutDlg::TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight)
+void CAboutDlg::LoadSVGLogoAndStartAnimation()
 {
-	if (!SysInfo::Instance().IsWin10())
-		return false;
-	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(logoID), RT_RCDATA);
+	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(IDR_TGITLOGO), RT_RCDATA);
 	if (!hRes)
-		return false;
+		return;
 	DWORD sz = ::SizeofResource(nullptr, hRes);
 	HGLOBAL hData = ::LoadResource(nullptr, hRes);
 	if (!hData)
-		return false;
+		return;
 
-	int width = CDPIAware::Instance().ScaleX(GetSafeHwnd(), logoWidth);
-	int height = CDPIAware::Instance().ScaleY(GetSafeHwnd(), logoHeight);
+	int width = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 468);
+	int height = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 64);
 	std::string_view svg(reinterpret_cast<const char*>(::LockResource(hData)), sz);
 	SCOPE_EXIT { ::UnlockResource(hData); };
 	if (!m_renderSrc.Create32BitFromSVG(svg, width, height) || !m_renderDest.Create32BitFromSVG(svg, width, height))
 	{
 		m_renderSrc.DeleteObject();
 		m_renderDest.DeleteObject();
-		return false;
+		return;
 	}
-	logoWidth = width;
-	logoHeight = height;
-	return true;
+
+	m_waterEffect.Create(width, height);
+	SetTimer(ID_EFFECTTIMER, 40, nullptr);
+	SetTimer(ID_DROPTIMER, 1500, nullptr);
 }
 
 void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
