@@ -47,12 +47,8 @@
     <TargetName>$(ProjectName)_tgitmerge</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
-    <PreBuildEvent>
-      <Command>fc apr_escape_test_char.h ..\apr\include\apr_escape_test_char.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_char.h</Command>
-    </PreBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\apr\include;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\build\apr;..\apr\include;..\apr\include\private;..\apr\include\arch;..\apr\include\arch\win32;..\apr\include\arch\unix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -74,6 +70,9 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\apr\atomic\win32\apr_atomic.c" />
+    <ClCompile Include="..\apr\atomic\win32\apr_atomic64.c">
+      <ExcludedFromBuild Condition="'$(Platform)'!='x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\apr\dso\win32\dso.c" />
     <ClCompile Include="..\apr\encoding\apr_escape.c" />
     <ClCompile Include="..\apr\file_io\win32\buffer.c" />
@@ -200,21 +199,6 @@ if errorlevel 1 type apr_escape_test_char.h &gt;..\apr\include\apr_escape_test_c
     <ClInclude Include="..\apr\include\apr_user.h" />
     <ClInclude Include="..\apr\include\apr_version.h" />
     <ClInclude Include="..\apr\include\apr_want.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\apr\include\apr.h.in">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="..\apr\include\apr.hnw">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </CustomBuild>
-    <CustomBuild Include="..\apr\include\apr.hw">
-      <Message>Creating apr.h from apr.hw</Message>
-      <Command>fc ..\apr\include\apr.hw ..\apr\include\apr.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type ..\apr\include\apr.hw &gt; ..\apr\include\apr.h
-</Command>
-      <Outputs>..\apr\include\apr.h;%(Outputs)</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

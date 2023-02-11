@@ -3,6 +3,8 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #4027: Autocompletion doesn't handle JS classes
+ * Updated libapr to 1.7.2
+ * Updated libapr-util to 1.6.3
 
 = Release 2.14.0.1 =
 Released: 2023-04-15

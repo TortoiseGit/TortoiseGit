@@ -286,12 +286,6 @@
     <None Include="..\apr-util\include\apr_ldap.hnw">
       <Filter>Generated Files</Filter>
     </None>
-    <None Include="..\apr-util\include\apu.h.in">
-      <Filter>Generated Files</Filter>
-    </None>
-    <None Include="..\apr-util\include\apu.hnw">
-      <Filter>Generated Files</Filter>
-    </None>
     <None Include="..\apr-util\include\private\apu_select_dbm.h.in">
       <Filter>Generated Files</Filter>
     </None>
@@ -304,9 +298,6 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\apr-util\include\apr_ldap.hw">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\apr-util\include\apu.hw">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="..\apr-util\include\private\apu_config.hw">

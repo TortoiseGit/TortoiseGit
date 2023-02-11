@@ -47,13 +47,8 @@
     <TargetName>$(ProjectName)_tgitmerge</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
-    <PreBuildEvent>
-      <Command>fc apu.hw ..\apr-util\include\apu.hw &gt;NUL 2&gt;NUL
-if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
-</Command>
-    </PreBuildEvent>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\apr-util\include;..\apr\include;..\apr-util\include\private;..\apr-util\dbm\sdbm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\build\apr;..\apr-util\include;..\apr\include;..\apr-util\include\private;..\apr-util\dbm\sdbm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_STATIC;APU_DECLARE_STATIC;APU_USE_SDBM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level2</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
@@ -174,15 +169,6 @@ if errorlevel 1 type apu.hw &gt;..\apr-util\include\apu.hw
 if errorlevel 1 type ..\apr-util\include\apr_ldap.hw &gt; ..\apr-util\include\apr_ldap.h
 </Command>
       <Outputs>..\apr-util\include\apr_ldap.h;%(Outputs)</Outputs>
-    </CustomBuild>
-    <None Include="..\apr-util\include\apu.h.in" />
-    <None Include="..\apr-util\include\apu.hnw" />
-    <CustomBuild Include="..\apr-util\include\apu.hw">
-      <Message>Creating apu.h from apu.hw</Message>
-      <Command>fc ..\apr-util\include\apu.hw ..\apr-util\include\apu.h &gt;NUL 2&gt;NUL
-if errorlevel 1 type ..\apr-util\include\apu.hw &gt; ..\apr-util\include\apu.h
-</Command>
-      <Outputs>..\apr-util\include\apu.h;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\apr-util\include\private\apu_config.hw">
       <Message>Creating apu_config.h from apu_config.hw</Message>

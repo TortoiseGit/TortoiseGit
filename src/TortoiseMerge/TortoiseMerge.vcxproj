@@ -48,7 +48,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\;..\Utils\MiscUI;..\..\ext\ResizableLib;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\editorconfig\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\..\ext\gitdll;..\git;.\svninclude;..\..\ext\build\apr;..\..\ext\apr\include;..\..\ext\apr-util\include;.\libsvn_diff;..\Utils;..\;..\Utils\MiscUI;..\..\ext\ResizableLib;..\..\ext\libgit2\include;..\..\ext\zlib;..\..\ext\editorconfig\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>APR_DECLARE_STATIC;APU_DECLARE_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile>

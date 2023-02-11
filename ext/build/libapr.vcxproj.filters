@@ -289,6 +289,9 @@
     <ClCompile Include="..\apr\poll\unix\wakeup.c">
       <Filter>Source Files\poll</Filter>
     </ClCompile>
+    <ClCompile Include="..\apr\atomic\win32\apr_atomic64.c">
+      <Filter>Source Files\atomic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\apr\include\arch\win32\apr_arch_atime.h">
