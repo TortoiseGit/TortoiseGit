@@ -1,0 +1,129 @@
+From 1be70649432afc0dbac4fdd7d3d50d4881f3c634 Mon Sep 17 00:00:00 2001
+From: Edward Thomson <ethomson@edwardthomson.com>
+Date: Sat, 18 Feb 2023 12:54:31 -0800
+Subject: [PATCH 1/2] repo: don't fail on strange win32 paths
+
+With some paths on Win32, we cannot identify the owner because it's on a
+file share (WSL2 or UNC). In that case, don't fail, but identify that
+the current user does not own the path. This matches Git for Windows
+behavior.
+---
+ src/libgit2/repository.c | 3 +++
+ src/util/fs_path.c       | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/libgit2/repository.c b/src/libgit2/repository.c
+index 489d627a0de..c02662bdae6 100644
+--- a/src/libgit2/repository.c
++++ b/src/libgit2/repository.c
+@@ -547,6 +547,9 @@ static int validate_ownership_path(bool *is_safe, const char *path)
+ 	if (error == GIT_ENOTFOUND) {
+ 		*is_safe = true;
+ 		error = 0;
++	} else if (error == GIT_EINVALID) {
++		*is_safe = false;
++		error = 0;
+ 	}
+ 
+ 	return error;
+diff --git a/src/util/fs_path.c b/src/util/fs_path.c
+index 6c87bfd01b2..b52867e779f 100644
+--- a/src/util/fs_path.c
++++ b/src/util/fs_path.c
+@@ -1855,7 +1855,7 @@ static int file_owner_sid(PSID *out, const char *path)
+ 	PSECURITY_DESCRIPTOR descriptor = NULL;
+ 	PSID owner_sid;
+ 	DWORD ret;
+-	int error = -1;
++	int error = GIT_EINVALID;
+ 
+ 	if (git_win32_path_from_utf8(path_w32, path) < 0)
+ 		return -1;
+
+From be3a78cc933169bab12dccdfcbb173cb48261103 Mon Sep 17 00:00:00 2001
+From: Edward Thomson <ethomson@edwardthomson.com>
+Date: Mon, 20 Feb 2023 08:08:13 -0800
+Subject: [PATCH 2/2] repo: support safe.directory with %(prefix)/
+
+Git for Windows does some truly bizarre things with
+paths that start with a forward slash; and expects you
+to escape that with `%(prefix)`. This syntax generally
+means to add the prefix that Git was installed to -- eg
+`/usr/local` -- unless it's an absolute path, in which
+case the leading `%(prefix)/` is just removed. And Git
+for Windows expects you to use this syntax for absolute
+Unix-style paths (in "Git Bash" or Windows Subsystem for
+Linux).
+
+Worse, the behavior used to be that a leading `/` was
+not absolute. It would indicate that Git for Windows
+should add the prefix. So `//` is required for absolute
+Unix-style paths. Yes, this is truly horrifying.
+
+Emulate that behavior, I guess, but only for absolute
+paths. We won't deal with the Git install prefix. Also,
+give WSL users an escape hatch where they don't have to
+think about this and can use the literal path that the
+filesystem APIs provide (`//wsl.localhost/...`).
+---
+ src/libgit2/repository.c | 45 ++++++++++++++++++++++++++++++++++------
+ 1 file changed, 39 insertions(+), 6 deletions(-)
+
+diff --git a/src/libgit2/repository.c b/src/libgit2/repository.c
+index c02662bdae6..186b3d4ece6 100644
+--- a/src/libgit2/repository.c
++++ b/src/libgit2/repository.c
+@@ -496,14 +496,47 @@ static int validate_ownership_cb(const git_config_entry *entry, void *payload)
+ {
+ 	validate_ownership_data *data = payload;
+ 
+-	if (strcmp(entry->value, "") == 0)
++	if (strcmp(entry->value, "") == 0) {
+ 		*data->is_safe = false;
+-
+-	if (strcmp(entry->value, "*") == 0)
+-		*data->is_safe = true;
+-	else if (git_fs_path_prettify_dir(&data->tmp, entry->value, NULL) == 0 &&
+-	    strcmp(data->tmp.ptr, data->repo_path) == 0)
++	} else if (strcmp(entry->value, "*") == 0) {
+ 		*data->is_safe = true;
++	} else {
++		const char *test_path = entry->value;
++
++#ifdef GIT_WIN32
++		/*
++		 * Git for Windows does some truly bizarre things with
++		 * paths that start with a forward slash; and expects you
++		 * to escape that with `%(prefix)`. This syntax generally
++		 * means to add the prefix that Git was installed to -- eg
++		 * `/usr/local` -- unless it's an absolute path, in which
++		 * case the leading `%(prefix)/` is just removed. And Git
++		 * for Windows expects you to use this syntax for absolute
++		 * Unix-style paths (in "Git Bash" or Windows Subsystem for
++		 * Linux).
++		 *
++		 * Worse, the behavior used to be that a leading `/` was
++		 * not absolute. It would indicate that Git for Windows
++		 * should add the prefix. So `//` is required for absolute
++		 * Unix-style paths. Yes, this is truly horrifying.
++		 *
++		 * Emulate that behavior, I guess, but only for absolute
++		 * paths. We won't deal with the Git install prefix. Also,
++		 * give WSL users an escape hatch where they don't have to
++		 * think about this and can use the literal path that the
++		 * filesystem APIs provide (`//wsl.localhost/...`).
++		 */
++		if (strncmp(test_path, "%(prefix)//", strlen("%(prefix)//")) == 0)
++			test_path += strlen("%(prefix)/");
++		else if (strncmp(test_path, "//", 2) == 0 &&
++		         strncmp(test_path, "//wsl.localhost/", strlen("//wsl.localhost/")) != 0)
++			test_path++;
++#endif
++
++		if (git_fs_path_prettify_dir(&data->tmp, test_path, NULL) == 0 &&
++		    strcmp(data->tmp.ptr, data->repo_path) == 0)
++			*data->is_safe = true;
++	}
+ 
+ 	return 0;
+ }

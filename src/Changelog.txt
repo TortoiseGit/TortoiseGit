@@ -1,4 +1,10 @@
-﻿= Release 2.14.0 =
+﻿= Release 2.15.0 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #3997: TortoiseGit crashes with "libgit2 returned: failed to get security information: Incorrect function."
+
+= Release 2.14.0 =
 Released: 2023-02-05
 
 == Features ==
