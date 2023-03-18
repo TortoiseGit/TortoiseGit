@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -317,7 +317,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 	else
 	{
-		CString sPathArgument = CPathUtils::GetLongPathname(parser.GetVal(L"path"));
+		CString sPathArgument = parser.GetVal(L"path");
 		if (parser.HasKey(L"expaths"))
 		{
 			// an /expaths param means we're started via the buttons in our Win7 library
@@ -359,9 +359,9 @@ BOOL CTortoiseProcApp::InitInstance()
 			CMessageBox::Show(hWndExplorer, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
 			return FALSE;
 		}
-		int asterisk = sPathArgument.Find('*');
-		cmdLinePath.SetFromUnknown(asterisk >= 0 ? sPathArgument.Left(asterisk) : sPathArgument);
 		pathList.LoadFromAsteriskSeparatedString(sPathArgument);
+		if (!pathList.IsEmpty())
+			cmdLinePath = pathList[0];
 	}
 
 	if (pathList.IsEmpty()) {
