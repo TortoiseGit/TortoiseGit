@@ -347,11 +347,7 @@
 				Otherwise, you need to download the required dictionary files from
 				<ulink url="https://cgit.freedesktop.org/libreoffice/dictionaries/">
 					<citetitle>https://cgit.freedesktop.org/libreoffice/dictionaries/</citetitle>
-				</ulink>
-				or
-				<ulink url="https://wiki.openoffice.org/wiki/Dictionaries">
-					<citetitle>https://wiki.openoffice.org/wiki/Dictionaries</citetitle>
-				</ulink>
+				</ulink>.
 			</para>
 			<para>
 				Once you have got the dictionary files, you
