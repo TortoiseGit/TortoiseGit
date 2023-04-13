@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2022 - TortoiseGit
+// Copyright (C) 2015-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -410,6 +410,45 @@ TEST(CTGitPath, ListLoadingTest)
 	testList.Clear();
 	sPathList = L"c:\\path2 with spaces and stuff*c:\\funnypath\\*";
 	testList.LoadFromAsteriskSeparatedString(sPathList);
+	EXPECT_STREQ(L"c:\\", testList.GetCommonRoot().GetWinPathString());
+}
+
+TEST(CTGitPath, LoadFromFileAndWriteToFile)
+{
+	CAutoTempDir tmpDir;
+	CTGitPathList testList;
+	CString fileNameRead = tmpDir.GetTempDir() + L"\\input";
+	CString text;
+	CString fileNameWrite = tmpDir.GetTempDir() + L"\\output";
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(fileNameRead, L"Path1\nc:\\path2 with spaces and stuff\n\\funnypath\\", false));
+	EXPECT_TRUE(testList.LoadFromFile(fileNameRead));
+	EXPECT_EQ(3, testList.GetCount());
+	EXPECT_STREQ(L"Path1", testList[0].GetWinPathString());
+	EXPECT_STREQ(L"c:\\path2 with spaces and stuff", testList[1].GetWinPathString());
+	EXPECT_STREQ(L"\\funnypath", testList[2].GetWinPathString());
+	EXPECT_TRUE(testList.WriteToFile(fileNameWrite, true));
+	EXPECT_TRUE(CStringUtils::ReadStringFromTextFile(fileNameWrite, text));
+	EXPECT_STREQ(L"Path1\r\nc:/path2 with spaces and stuff\r\n/funnypath\r\n", text);
+	EXPECT_STREQ(L"", testList.GetCommonRoot().GetWinPathString());
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(fileNameRead, L"Path1\nc:\\path2 with spaces and stuff\n\n\\funnypath\\\n", false));
+	EXPECT_TRUE(testList.LoadFromFile(fileNameRead));
+	EXPECT_EQ(3, testList.GetCount());
+	EXPECT_STREQ(L"Path1", testList[0].GetWinPathString());
+	EXPECT_STREQ(L"c:\\path2 with spaces and stuff", testList[1].GetWinPathString());
+	EXPECT_STREQ(L"\\funnypath", testList[2].GetWinPathString());
+	EXPECT_TRUE(testList.WriteToFile(fileNameWrite, true));
+	text.Empty();
+	EXPECT_TRUE(CStringUtils::ReadStringFromTextFile(fileNameWrite, text));
+	EXPECT_STREQ(L"Path1\r\nc:/path2 with spaces and stuff\r\n/funnypath\r\n", text);
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(fileNameRead, L"c:\\path2 with spaces and stuff\nc:\\funnypath\\\n", false));
+	testList.LoadFromFile(fileNameRead);
+	EXPECT_STREQ(L"c:\\", testList.GetCommonRoot().GetWinPathString());
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(fileNameRead, L"c:\\path2 with spaces and stuff\n\nc:\\funnypath\\\n", false));
+	testList.LoadFromFile(fileNameRead);
 	EXPECT_STREQ(L"c:\\", testList.GetCommonRoot().GetWinPathString());
 }
 
