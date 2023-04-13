@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1472,6 +1472,8 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 		CTGitPath path;
 		while (file.ReadString(strLine))
 		{
+			if (strLine.IsEmpty())
+				continue;
 			path.SetFromUnknown(strLine);
 			AddPath(path);
 		}
