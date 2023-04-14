@@ -69,6 +69,7 @@ for:
     - set HOME=%USERPROFILE%
     - c:\cygwin\bin\git version
     - c:\cygwin\bin\git config --global --add safe.directory '*'
+    - set PATH="c:\cygwin\bin";%PATH%
     - bin\Debug\bin\tests.exe
     - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
     - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
@@ -93,6 +94,7 @@ for:
     - set HOME=%USERPROFILE%
     - c:\cygwin\bin\git version
     - c:\cygwin\bin\git config --global --add safe.directory '*'
+    - set PATH="c:\cygwin\bin";%PATH%
     - bin\Debug64\bin\tests.exe
     - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
     - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
