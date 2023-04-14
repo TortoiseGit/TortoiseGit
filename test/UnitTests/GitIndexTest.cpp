@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -133,39 +133,50 @@ static void ReadAndCheckIndex(CGitIndexList& indexList, const CString& gitdir, u
 
 TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 {
-	CGitIndexList indexList;
-	ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
-
 	CString testFile = m_Dir.GetTempDir() + L"\\1.txt";
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
-	CString output;
-	EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.txt", &output, CP_UTF8));
-	EXPECT_STREQ(L"", output);
+	{
+		CGitIndexList indexList;
+		ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
 
-	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
+		CString output;
+		EXPECT_EQ(0, m_Git.Run(L"git.exe add 1.txt", &output, CP_UTF8));
+		EXPECT_STREQ(L"", output);
+	}
 
-	EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
-	EXPECT_EQ(21, indexList[0].m_Size);
-	EXPECT_EQ(5, indexList[0].m_Flags);
-	EXPECT_EQ(0, indexList[0].m_FlagsExtended);
-	EXPECT_STREQ(L"e4aac1275dfc440ec521a76e9458476fe07038bb", indexList[0].m_IndexHash.ToString());
+	{
+		CGitIndexList indexList;
+		ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
-	EXPECT_EQ(0, m_Git.Run(L"git.exe rm -f 1.txt", &output, CP_UTF8));
+		EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
+		EXPECT_EQ(21, indexList[0].m_Size);
+		EXPECT_EQ(5, indexList[0].m_Flags);
+		EXPECT_EQ(0, indexList[0].m_FlagsExtended);
+		EXPECT_STREQ(L"e4aac1275dfc440ec521a76e9458476fe07038bb", indexList[0].m_IndexHash.ToString());
+		CString output;
+		EXPECT_EQ(0, m_Git.Run(L"git.exe rm -f 1.txt", &output, CP_UTF8));
+	}
 
-	ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
+	{
+		CGitIndexList indexList;
+		ReadAndCheckIndex(indexList, m_Dir.GetTempDir());
 
-	output.Empty();
-	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
-	EXPECT_EQ(0, m_Git.Run(L"git.exe add -N 1.txt", &output, CP_UTF8));
-	EXPECT_STREQ(L"", output);
+		CString output;
+		EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"this is testing file."));
+		EXPECT_EQ(0, m_Git.Run(L"git.exe add -N 1.txt", &output, CP_UTF8));
+		EXPECT_STREQ(L"", output);
+	}
 
-	ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
+	{
+		CGitIndexList indexList;
+		ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
-	EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
-	EXPECT_EQ(0, indexList[0].m_Size);
-	EXPECT_EQ(16389, indexList[0].m_Flags);
-	EXPECT_EQ(GIT_INDEX_ENTRY_INTENT_TO_ADD, indexList[0].m_FlagsExtended);
-	EXPECT_STREQ(L"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391", indexList[0].m_IndexHash.ToString());
+		EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
+		EXPECT_EQ(0, indexList[0].m_Size);
+		EXPECT_EQ(16389, indexList[0].m_Flags);
+		EXPECT_EQ(GIT_INDEX_ENTRY_INTENT_TO_ADD, indexList[0].m_FlagsExtended);
+		EXPECT_STREQ(L"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391", indexList[0].m_IndexHash.ToString());
+	}
 }
 
 TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
@@ -211,23 +222,24 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"noted-as-added.txt"), L"this is testing file."));
 	EXPECT_EQ(0, m_Git.Run(L"git.exe add -N -- noted-as-added.txt", &output, CP_UTF8));
 
+	CGitIndexList indexList2;
 	EXPECT_EQ(0, m_Git.Run(L"git.exe update-index --skip-worktree -- ansi.txt", &output, CP_UTF8));
-	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
-	EXPECT_FALSE(indexList.m_bHasConflicts);
+	EXPECT_EQ(0, indexList2.ReadIndex(m_Dir.GetTempDir()));
+	EXPECT_FALSE(indexList2.m_bHasConflicts);
 	status = { git_wc_status_none, false, false };
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", status, time, filesize, false));
+	EXPECT_EQ(0, indexList2.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", status, time, filesize, false));
 	EXPECT_EQ(git_wc_status_normal, status.status);
 	EXPECT_FALSE(status.assumeValid);
 	EXPECT_TRUE(status.skipWorktree);
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), &time, nullptr, &filesize));
 	status = { git_wc_status_none, false, false };
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", status, time, filesize, false));
+	EXPECT_EQ(0, indexList2.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", status, time, filesize, false));
 	EXPECT_EQ(git_wc_status_normal, status.status);
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"noted-as-added.txt"), &time, nullptr, &filesize));
 	status = { git_wc_status_none, false, false };
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"noted-as-added.txt", status, time, filesize, false));
+	EXPECT_EQ(0, indexList2.GetFileStatus(m_Dir.GetTempDir(), L"noted-as-added.txt", status, time, filesize, false));
 	EXPECT_EQ(git_wc_status_added, status.status);
 	EXPECT_FALSE(status.assumeValid);
 	EXPECT_FALSE(status.skipWorktree);
@@ -238,7 +250,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), L"this IS testing file."));
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"just-added.txt"), &time, nullptr, &filesize));
 	status = { git_wc_status_none, false, false };
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", status, time, filesize, false));
+	EXPECT_EQ(0, indexList2.GetFileStatus(m_Dir.GetTempDir(), L"just-added.txt", status, time, filesize, false));
 	EXPECT_EQ(git_wc_status_modified, status.status);
 
 	output.Empty();
@@ -249,13 +261,14 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus)
 	EXPECT_EQ(1, m_Git.Run(L"git.exe merge simple-conflict", &output, CP_UTF8));
 	EXPECT_STRNE(L"", output);
 
-	EXPECT_EQ(0, indexList.ReadIndex(m_Dir.GetTempDir()));
-	EXPECT_EQ(9U, indexList.size());
-	EXPECT_TRUE(indexList.m_bHasConflicts);
+	CGitIndexList indexList3;
+	EXPECT_EQ(0, indexList3.ReadIndex(m_Dir.GetTempDir()));
+	EXPECT_EQ(9U, indexList3.size());
+	EXPECT_TRUE(indexList3.m_bHasConflicts);
 
 	EXPECT_EQ(0, CGit::GetFileModifyTime(CombinePath(m_Dir.GetTempDir(), L"ansi.txt"), &time, nullptr, &filesize));
 	status = { git_wc_status_none, false, false };
-	EXPECT_EQ(0, indexList.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", status, time, filesize, false));
+	EXPECT_EQ(0, indexList3.GetFileStatus(m_Dir.GetTempDir(), L"ansi.txt", status, time, filesize, false));
 	EXPECT_EQ(git_wc_status_conflicted, status.status);
 }
 
