@@ -4,6 +4,9 @@ Released: unreleased
 == Features ==
  * Fixed issue #4027: Autocompletion doesn't handle JS classes
 
+= Release 2.14.0.1 =
+Released: 2023-04-15
+
 == Bug Fixes ==
  * Fixed issue #3997: TortoiseGit crashes with "libgit2 returned: failed to get security information: Incorrect function."
 
