@@ -1248,61 +1248,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					CRect rect;
 					GetSubItemRect(static_cast<int>(pLVCD->nmcd.dwItemSpec), pLVCD->iSubItem, LVIR_BOUNDS, rect);
 
-					// BEGIN: extended redraw, HACK for issue #1618 and #2014
-					// not in FillBackGround method, because this only affected the message subitem
-					if (0 != pLVCD->iStateId) // don't know why, but this helps against loosing the focus rect
-						return;
-
-					int index = static_cast<int>(pLVCD->nmcd.dwItemSpec);
-					int state = GetItemState(index, LVIS_SELECTED);
-					int txtState = LISS_NORMAL;
-					if (IsAppThemed() && GetHotItem() == static_cast<int>(index))
-					{
-						if (state & LVIS_SELECTED)
-							txtState = LISS_HOTSELECTED;
-						else
-							txtState = LISS_HOT;
-					}
-					else if (state & LVIS_SELECTED)
-					{
-						if (::GetFocus() == m_hWnd)
-							txtState = LISS_SELECTED;
-						else
-							txtState = LISS_SELECTEDNOTFOCUS;
-					}
-
-					CAutoThemeData hTheme;
-					if (IsAppThemed())
-					{
-						hTheme = OpenThemeData(m_hWnd, L"Explorer::ListView;ListView");
-
-						// make sure the column separator/border is not overpainted
-						int borderWidth = 0;
-						GetThemeMetric(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, LISS_NORMAL, TMT_BORDERSIZE, &borderWidth);
-						InflateRect(&rect, -(2 * borderWidth), 0);
-					}
-
-					if (hTheme && IsThemeBackgroundPartiallyTransparent(hTheme, LVP_LISTDETAIL, txtState))
-						DrawThemeParentBackground(m_hWnd, pLVCD->nmcd.hdc, &rect);
-					else
-					{
-						HBRUSH brush = ::CreateSolidBrush(pLVCD->clrTextBk);
-						::FillRect(pLVCD->nmcd.hdc, rect, brush);
-						::DeleteObject(brush);
-					}
-					if (hTheme && txtState != LISS_NORMAL)
-					{
-						CRect rt;
-						// get rect of whole line
-						GetItemRect(index, rt, LVIR_BOUNDS);
-						CRect rect2 = rect;
-
-						// calculate background for rect of whole line, but limit redrawing to SubItem rect
-						DrawThemeBackground(hTheme, pLVCD->nmcd.hdc, LVP_LISTITEM, txtState, rt, rect2);
-					}
-					hTheme.CloseHandle();
-					// END: extended redraw
-
 					FillBackGround(pLVCD->nmcd.hdc, pLVCD->nmcd.dwItemSpec, rect);
 
 					std::vector<REFLABEL> refsToShow;
