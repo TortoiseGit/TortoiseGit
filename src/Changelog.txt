@@ -7,6 +7,9 @@ Released: unreleased
  * Updated libapr-util to 1.6.3
  * Updated pcre2 to 10.42
 
+== Bug Fixes ==
+ * Fixed redraw bug in log list
+
 = Release 2.14.0.1 =
 Released: 2023-04-15
 
