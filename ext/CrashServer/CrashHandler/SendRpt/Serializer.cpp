@@ -119,7 +119,7 @@ Serializer& operator << (Serializer& ser, std::map<K, V>& val)
     }
     else
     {
-        for (std::map<K, V>::iterator it = val.begin(); it != val.end(); ++it)
+        for (auto it = val.begin(); it != val.end(); ++it)
         {
             std::pair<K, V> item = *it;
             ser << item;

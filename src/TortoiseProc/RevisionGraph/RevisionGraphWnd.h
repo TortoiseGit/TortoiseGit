@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019, 2022 - TortoiseGit
+// Copyright (C) 2012-2019, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,50 +38,32 @@
 using namespace Gdiplus;
 using namespace async;
 
-enum
-{
-	REVGRAPH_PREVIEW_WIDTH = 100,
-	REVGRAPH_PREVIEW_HEIGHT = 200,
+constexpr int REVGRAPH_PREVIEW_WIDTH = 100;
+constexpr int REVGRAPH_PREVIEW_HEIGHT = 200;
 
-	// don't draw pre-views with more than that number of nodes
+// don't draw pre-views with more than that number of nodes
+constexpr int REVGRAPH_PREVIEW_MAX_NODES = 10000;
 
-	REVGRAPH_PREVIEW_MAX_NODES = 10000
-};
+// radius of the rounded / slanted box corners  of the expand / collapse / split / join square gylphs
+constexpr int CORNER_SIZE = 12;
 
-enum
-{
-	// size of the node marker
+// font sizes
+constexpr int DEFAULT_ZOOM_FONT = 9; // default font size
+constexpr int SMALL_ZOOM_FONT = 11; // rel. larger font size for small zoom factors
+constexpr int SMALL_ZOOM_FONT_THRESHOLD = 6; // max. "small zoom" font size after scaling
 
-	MARKER_SIZE = 11,
-
-	// radius of the rounded / slanted box corners  of the expand / collapse / split / join square gylphs
-
-	CORNER_SIZE = 12,
-
-	// font sizes
-
-	DEFAULT_ZOOM_FONT = 9,			// default font size
-	SMALL_ZOOM_FONT = 11,			// rel. larger font size for small zoom factors
-	SMALL_ZOOM_FONT_THRESHOLD = 6,	// max. "small zoom" font size after scaling
-
-	// size of the expand / collapse / split / join square gylphs
-
-	// glyph display delay definitions
-
-	GLYPH_HOVER_EVENT = 10,		// timer ID for the glyph display delay
-	GLYPH_HOVER_DELAY = 250,	// delay until the glyphs are shown [ms]
-};
+// glyph display delay definitions
+constexpr int GLYPH_HOVER_EVENT = 10; // timer ID for the glyph display delay
+constexpr int GLYPH_HOVER_DELAY = 250; // delay until the glyphs are shown [ms]
 
 // zoom control
-
-const float MIN_ZOOM = 0.01f;
-const float MAX_ZOOM = 2.0f;
-const float DEFAULT_ZOOM = 1.0f;
-const float ZOOM_STEP = 0.9f;
+constexpr float MIN_ZOOM = 0.01f;
+constexpr float MAX_ZOOM = 2.0f;
+constexpr float DEFAULT_ZOOM = 1.0f;
+constexpr float ZOOM_STEP = 0.9f;
 
 // don't draw shadows below this zoom level
-
-const float SHADOW_ZOOM_THRESHOLD = 0.2f;
+constexpr float SHADOW_ZOOM_THRESHOLD = 0.2f;
 
 #define MAX_TT_LENGTH			60000
 #define MAX_TT_LENGTH_DEFAULT	1000

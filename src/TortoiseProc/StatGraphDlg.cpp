@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1715,7 +1715,7 @@ void CStatGraphDlg::LoadListOfAuthors (MAP &map, bool reloadSkiper/*= false*/,  
 	}
 
 	// Sort the list of authors based on commit count
-	m_authorNames.sort(MoreCommitsThan<MAP::mapped_type>(map));
+	m_authorNames.sort(MoreCommitsThan<typename MAP::mapped_type>(map));
 
 	// Set Skipper
 	SetSkipper(reloadSkiper);

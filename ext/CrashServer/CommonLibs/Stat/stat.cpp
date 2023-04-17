@@ -110,7 +110,7 @@ std::vector<BYTE> statistics::HttpPostXWwwFormUrlencoded(LPCTSTR agent, const CU
     LPCTSTR hdrs = _T("Content-Type: application/x-www-form-urlencoded");
 
     std::string postData;
-    for each (auto& var in query)
+    for (auto& var : query)
     {
         if (!postData.empty())
             postData += "&";

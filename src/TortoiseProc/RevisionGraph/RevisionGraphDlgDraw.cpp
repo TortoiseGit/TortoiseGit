@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2022 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,7 +94,7 @@ void CRevisionGraphWnd::CutawayPoints(const RectF& rect, float cutLen, TCutRecta
 
 void CRevisionGraphWnd::DrawRoundedRect(GraphicsDevice& graphics, const Color& penColor, int penWidth, const Pen* pen, const Color& fillColor, const Brush* brush, const RectF& rect, int mask) const
 {
-	enum {POINT_COUNT = 8};
+	constexpr int POINT_COUNT = 8;
 
 	float radius = CORNER_SIZE * m_fZoomFactor;
 	PointF points[POINT_COUNT];
