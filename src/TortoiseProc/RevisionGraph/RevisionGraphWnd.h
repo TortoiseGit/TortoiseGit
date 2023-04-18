@@ -48,10 +48,6 @@ enum
 	REVGRAPH_PREVIEW_MAX_NODES = 10000
 };
 
-// don't try to draw nodes smaller than that:
-
-#define REVGRAPH_MIN_NODE_HIGHT (0.5f)
-
 enum
 {
 	// size of the node marker
@@ -70,9 +66,6 @@ enum
 
 	// size of the expand / collapse / split / join square gylphs
 
-	GLYPH_BITMAP_SIZE = 16,
-	GLYPH_SIZE = 12,
-
 	// glyph display delay definitions
 
 	GLYPH_HOVER_EVENT = 10,		// timer ID for the glyph display delay
@@ -90,19 +83,6 @@ const float ZOOM_STEP = 0.9f;
 
 const float SHADOW_ZOOM_THRESHOLD = 0.2f;
 
-/**
- * \ingroup TortoiseProc
- * node shapes for the revision graph
- */
-enum NodeShape
-{
-	TSVNRectangle,
-	TSVNRoundRect,
-	TSVNOctangle,
-	TSVNEllipse
-};
-
-#define MAXFONTS				4
 #define MAX_TT_LENGTH			60000
 #define MAX_TT_LENGTH_DEFAULT	1000
 
