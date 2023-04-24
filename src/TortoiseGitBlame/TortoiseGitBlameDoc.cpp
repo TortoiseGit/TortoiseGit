@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -236,8 +236,8 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 
 		if (CGitMailmap::ShouldLoadMailmap())
 			GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
-		else if (GitRevLoglist::s_Mailmap)
-			GitRevLoglist::s_Mailmap = nullptr;
+		else if (GitRevLoglist::s_Mailmap.load())
+			GitRevLoglist::s_Mailmap.store(nullptr);
 
 		CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,GetMainFrame()->GetActiveView());
 		if (!pView)

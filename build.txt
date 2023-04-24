@@ -24,7 +24,7 @@ First, you need to install the compiler package:
    * VC++ 2022 v143 toolset (x86,x64) (checked by default)
    * Visual C++ ATL-support (x86 and x64)
    * Visual C++ MFC support (x86 and x64)
-   * Windows 10 SDK (>= 10.0.19041.0 for building the installer for the Windows 11 start menu extension)
+   * Windows 11 SDK
    * optional: NuGet packet manager (requirement for GoogleTestAdapter, see below)
    * optional: GoogleTestAdapter (if you want to run the tests from within VS)
    * optional: CodeSigning certificate (for Windows 11 start menu extension)
@@ -43,7 +43,7 @@ Next you might need to install some utilities/programs:
 
 In order to not build the Windows 11 start menu extension you need to adjust the following settings:
 * Set BuildWindows11ContextmenuExtension to 0 in src/TortoiseGit.settings.props
-* Unload the CustomActions11 project in the project explorer (if you don't have Windows 10 SDK >= 10.0.19041.0)
+* Unload the CustomActions11 project in the project explorer
 
 In order to build the Windows 11 start menu extension you need to put your code signing certificate info into:
 * src/TortoiseGitSetup/SparsePackage/AppxManifest.xml

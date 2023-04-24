@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2021, 2023 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -209,7 +209,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 		pos = lineEnd + 1;
 	}
 
-	auto mailmap = GitRevLoglist::s_Mailmap;
+	auto mailmap{ GitRevLoglist::s_Mailmap.load() };
 	for (const auto& hash2 : hashes)
 	{
 		CString err;

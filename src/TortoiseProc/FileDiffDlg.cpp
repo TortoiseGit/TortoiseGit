@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -548,7 +548,7 @@ void CFileDiffDlg::OnNMCustomdrawFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 		if (pLVCD->iSubItem > 1) // only highlight search matches in filename and extension
 			return;
 
-		auto filter(m_filter);
+		auto filter{ m_filter.load() };
 		if (filter->IsFilterActive())
 			*pResult = CGitLogListBase::DrawListItemWithMatches(filter.get(), m_cFileList, pLVCD, m_colors);
 	}
@@ -1242,7 +1242,7 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 void CFileDiffDlg::Filter(const CString& sFilterText)
 {
 	m_filter = std::make_shared<CLogDlgFileFilter>(sFilterText, 0, 0, false);
-	auto filter = *m_filter.get();
+	auto filter = *m_filter.load().get();
 
 	m_arFilteredList.clear();
 	for (int i=0;i<m_arFileList.GetCount();i++)

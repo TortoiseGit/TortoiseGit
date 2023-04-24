@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -452,7 +452,7 @@ public:
 	FilterShow			m_ShowFilter;
 	CLogDataVector		m_logEntries;
 
-	std::shared_ptr<CLogDlgFilter> m_LogFilter;
+	std::atomic<std::shared_ptr<CLogDlgFilter>> m_LogFilter;
 	CFilterData			m_Filter;
 
 	enum class RollUpState
@@ -461,7 +461,7 @@ public:
 		Collapse,		// Parents of the node should be hidden
 	};
 	using RollUpStateMap = std::unordered_map<CGitHash, RollUpState>;
-	std::shared_ptr<RollUpStateMap> m_RollUpStates;
+	std::atomic<std::shared_ptr<RollUpStateMap>> m_RollUpStates;
 
 	CTGitPath			m_Path;
 	int					m_ShowMask;
@@ -537,7 +537,7 @@ protected:
 	volatile LONG		m_bExitThread;
 	CWinThread*			m_LoadingThread;
 public:
-	std::shared_ptr<MAP_HASH_NAME> m_HashMap;
+	std::atomic<std::shared_ptr<MAP_HASH_NAME>> m_HashMap;
 protected:
 	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 

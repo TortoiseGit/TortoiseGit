@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -1046,7 +1046,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 		case ID_TOGGLE_ROLLUP:
 			{
-				auto newRollUpStates = std::make_shared<RollUpStateMap>(*m_RollUpStates);
+				auto newRollUpStates = std::make_shared<RollUpStateMap>(*m_RollUpStates.load());
 				RollUpState newNodeState = pSelLogEntry->m_RolledUp ? RollUpState::Expand : RollUpState::Collapse;
 				if (auto it = newRollUpStates->find(pSelLogEntry->m_CommitHash); it != newRollUpStates->end())
 				{
@@ -1057,7 +1057,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				}
 				else
 					newRollUpStates->emplace(pSelLogEntry->m_CommitHash, newNodeState);
-				m_RollUpStates.swap(newRollUpStates);
+				m_RollUpStates.store(newRollUpStates);
 				this->Refresh();
 			}
 			break;
