@@ -3,7 +3,7 @@ Released: unreleased
 
 == Features ==
  * Fixed issue #4027: Autocompletion doesn't handle JS classes
- * Updated libapr to 1.7.2
+ * Updated libapr to 1.7.4
  * Updated libapr-util to 1.6.3
  * Updated pcre2 to 10.42
 
