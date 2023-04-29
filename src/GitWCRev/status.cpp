@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2022 - TortoiseGit
+// Copyright (C) 2017-2023 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -259,7 +259,8 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 	else if (ret == 1)
 	{
 		memset(GitStat.HeadHash, 0, sizeof(GitStat.HeadHash));
-		strncpy_s(GitStat.HeadHashReadable, GIT_OID_HEX_ZERO, strlen(GIT_OID_HEX_ZERO));
+		memset(GitStat.HeadHashReadable, '0', sizeof(GitStat.HeadHashReadable));
+		GitStat.HeadHashReadable[sizeof(GitStat.HeadHashReadable) - 1] = '\0';
 		GitStat.bIsUnborn = TRUE;
 
 		CAutoReference symbolicHead;

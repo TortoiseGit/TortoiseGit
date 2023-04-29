@@ -224,7 +224,6 @@
     <ClCompile Include="..\libgit2\src\util\wildmatch.c" />
     <ClCompile Include="..\libgit2\src\util\win32\dir.c" />
     <ClCompile Include="..\libgit2\src\util\win32\error.c" />
-    <ClCompile Include="..\libgit2\src\util\win32\findfile.c" />
     <ClCompile Include="..\libgit2\src\util\win32\map.c" />
     <ClCompile Include="..\libgit2\src\util\win32\path_w32.c" />
     <ClCompile Include="..\libgit2\src\util\win32\posix_w32.c" />
@@ -314,6 +313,7 @@
     <ClInclude Include="..\libgit2\include\git2\transaction.h" />
     <ClInclude Include="..\libgit2\include\git2\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\worktree.h" />
+    <ClInclude Include="..\libgit2\src\libgit2\strarray.h" />
     <ClInclude Include="..\libgit2\src\util\alloc.h" />
     <ClInclude Include="..\libgit2\src\util\allocators\failalloc.h" />
     <ClInclude Include="..\libgit2\src\util\allocators\stdalloc.h" />
@@ -445,7 +445,6 @@
     <ClInclude Include="..\libgit2\src\util\wildmatch.h" />
     <ClInclude Include="..\libgit2\src\util\win32\dir.h" />
     <ClInclude Include="..\libgit2\src\util\win32\error.h" />
-    <ClInclude Include="..\libgit2\src\util\win32\findfile.h" />
     <ClInclude Include="..\libgit2\src\util\win32\mingw-compat.h" />
     <ClInclude Include="..\libgit2\src\util\win32\msvc-compat.h" />
     <ClInclude Include="..\libgit2\src\util\win32\path_w32.h" />
