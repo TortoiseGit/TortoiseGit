@@ -1798,6 +1798,30 @@ operator can use this facility to peek at the objects and refs from an
 import in progress, at the cost of some added running time and worse
 compression.</simpara>
 </simplesect>
+<simplesect id="git-fast-import(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+fastimport.unpackLimit
+</term>
+<listitem>
+<simpara>
+        If the number of objects imported by <xref linkend="git-fast-import(1)" />
+        is below this limit, then the objects will be unpacked into
+        loose object files.  However if the number of imported objects
+        equals or exceeds this limit then the pack will be stored as a
+        pack.  Storing the pack from a fast-import can make the import
+        operation complete faster, especially on slow filesystems.  If
+        not set, the value of <emphasis>transfer.unpackLimit</emphasis> is used instead.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-fast-import(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-fast-export(1)" /></simpara>

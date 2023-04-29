@@ -385,7 +385,7 @@ behavior:</simpara>
 <listitem>
 <simpara>
 <emphasis>fix</emphasis> outputs warnings for a few such errors, and applies the
-  patch after fixing them (<emphasis>strip</emphasis> is a synonym --- the tool
+  patch after fixing them (<emphasis>strip</emphasis> is a synonym -- the tool
   used to consider only trailing whitespace characters as errors, and the
   fix involved <emphasis>stripping</emphasis> them, but modern Gits do more).
 </simpara>
@@ -504,6 +504,9 @@ has no effect when <emphasis>--index</emphasis> or <emphasis>--cached</emphasis>
 </simplesect>
 <simplesect id="git-apply(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -511,9 +514,12 @@ apply.ignoreWhitespace
 </term>
 <listitem>
 <simpara>
-        Set to <emphasis>change</emphasis> if you want changes in whitespace to be ignored by default.
-        Set to one of: no, none, never, false if you want changes in
-        whitespace to be significant.
+        When set to <emphasis>change</emphasis>, tells <emphasis>git apply</emphasis> to ignore changes in
+        whitespace, in the same way as the <emphasis>--ignore-space-change</emphasis>
+        option.
+        When set to one of: no, none, never, false tells <emphasis>git apply</emphasis> to
+        respect all whitespace differences.
+        See <xref linkend="git-apply(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -523,8 +529,8 @@ apply.whitespace
 </term>
 <listitem>
 <simpara>
-        When no <emphasis>--whitespace</emphasis> flag is given from the command
-        line, this configuration item is used as the default.
+        Tells <emphasis>git apply</emphasis> how to handle whitespaces, in the same way
+        as the <emphasis>--whitespace</emphasis> option. See <xref linkend="git-apply(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

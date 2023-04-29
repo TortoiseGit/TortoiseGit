@@ -227,6 +227,16 @@ Other frontends may have some other order of preference.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>get</emphasis>
+</term>
+<listitem>
+<simpara>
+        Can use the <emphasis>get</emphasis> command to download a file from a given URI.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 <simpara>If a helper advertises <emphasis>connect</emphasis>, Git will use it if possible and
 fall back to another capability if the helper requests so when
@@ -570,6 +580,19 @@ operations.</simpara>
         pairs.  After the connection ends, the remote helper exits.
 </simpara>
 <simpara>Supported if the helper has the "stateless-connect" capability.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>get</emphasis> &lt;uri&gt; &lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        Downloads the file from the given <emphasis>&lt;uri&gt;</emphasis> to the given <emphasis>&lt;path&gt;</emphasis>. If
+        <emphasis>&lt;path&gt;.temp</emphasis> exists, then Git assumes that the <emphasis>.temp</emphasis> file is a
+        partial download from a previous attempt and will resume the
+        download from that position.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

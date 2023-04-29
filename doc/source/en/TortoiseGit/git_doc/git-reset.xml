@@ -73,7 +73,8 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 <simpara>
         This form resets the current branch head to <emphasis>&lt;commit&gt;</emphasis> and
         possibly updates the index (resetting it to the tree of <emphasis>&lt;commit&gt;</emphasis>) and
-        the working tree depending on <emphasis>&lt;mode&gt;</emphasis>. If <emphasis>&lt;mode&gt;</emphasis> is omitted,
+        the working tree depending on <emphasis>&lt;mode&gt;</emphasis>. Before the operation, <emphasis>ORIG_HEAD</emphasis>
+        is set to the tip of the current branch. If <emphasis>&lt;mode&gt;</emphasis> is omitted,
         defaults to <emphasis>--mixed</emphasis>. The <emphasis>&lt;mode&gt;</emphasis> must be one of the following:
 </simpara>
 <variablelist>

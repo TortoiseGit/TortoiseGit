@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-diagnose(1)">
+    <title>git-diagnose(1)</title>
+<indexterm>
+<primary>git-diagnose(1)</primary>
+</indexterm>
+<simplesect id="git-diagnose(1)__name">
+<title>NAME</title>
+<simpara>git-diagnose - Generate a zip archive of diagnostic information</simpara>
+</simplesect>
+<simplesect id="git-diagnose(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><emphasis>git diagnose</emphasis> [(-o | --output-directory) &lt;path&gt;] [(-s | --suffix) &lt;format&gt;]
+               [--mode=&lt;mode&gt;]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-diagnose(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Collects detailed information about the user's machine, Git client, and
+repository state and packages that information into a zip archive. The
+generated archive can then, for example, be shared with the Git mailing list to
+help debug an issue or serve as a reference for independent debugging.</simpara>
+<simpara>By default, the following information is captured in the archive:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>git version --build-options</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The path to the repository root
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The available disk space on the filesystem
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The name and size of each packfile, including those in alternate object
+    stores
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The total count of loose objects, as well as counts broken down by
+    <emphasis>.git/objects</emphasis> subdirectory
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Additional information can be collected by selecting a different diagnostic mode
+using the <emphasis>--mode</emphasis> option.</simpara>
+<simpara>This tool differs from <xref linkend="git-bugreport(1)" /> in that it collects much more
+detailed information with a greater focus on reporting the size and data shape
+of repository contents.</simpara>
+</simplesect>
+<simplesect id="git-diagnose(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+-o &lt;path&gt;
+</term>
+<term>
+--output-directory &lt;path&gt;
+</term>
+<listitem>
+<simpara>
+        Place the resulting diagnostics archive in <emphasis>&lt;path&gt;</emphasis> instead of the
+        current directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-s &lt;format&gt;
+</term>
+<term>
+--suffix &lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Specify an alternate suffix for the diagnostics archive name, to create
+        a file named <emphasis>git-diagnostics-&lt;formatted suffix&gt;</emphasis>. This should take the
+        form of a strftime(3) format string; the current local time will be
+        used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mode=(stats|all)
+</term>
+<listitem>
+<simpara>
+        Specify the type of diagnostics that should be collected. The default behavior
+        of <emphasis>git diagnose</emphasis> is equivalent to <emphasis>--mode=stats</emphasis>.
+</simpara>
+<simpara>The <emphasis>--mode=all</emphasis> option collects everything included in <emphasis>--mode=stats</emphasis>, as well
+as copies of <emphasis>.git</emphasis>, <emphasis>.git/hooks</emphasis>, <emphasis>.git/info</emphasis>, <emphasis>.git/logs</emphasis>, and
+<emphasis>.git/objects/info</emphasis> directories. This additional information may be sensitive,
+as it can be used to reconstruct the full contents of the diagnosed repository.
+Users should exercise caution when sharing an archive generated with
+<emphasis>--mode=all</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-diagnose(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

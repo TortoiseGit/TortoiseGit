@@ -364,6 +364,85 @@ HEAD is now at 9fc9555312 Merge branch 'cc/shared-index-permbits'</screen>
 always create a new name for it (without switching away):</simpara>
 <screen>$ git switch -c good-surprises</screen>
 </simplesect>
+<simplesect id="git-switch(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+checkout.defaultRemote
+</term>
+<listitem>
+<simpara>
+        When you run <emphasis>git checkout &lt;something&gt;</emphasis>
+        or <emphasis>git switch &lt;something&gt;</emphasis> and only have one
+        remote, it may implicitly fall back on checking out and
+        tracking e.g. <emphasis>origin/&lt;something&gt;</emphasis>. This stops working as soon
+        as you have more than one remote with a <emphasis>&lt;something&gt;</emphasis>
+        reference. This setting allows for setting the name of a
+        preferred remote that should always win when it comes to
+        disambiguation. The typical use-case is to set this to
+        <emphasis>origin</emphasis>.
+</simpara>
+<simpara>Currently this is used by <xref linkend="git-switch(1)" /> and
+<xref linkend="git-checkout(1)" /> when <emphasis>git checkout &lt;something&gt;</emphasis>
+or <emphasis>git switch &lt;something&gt;</emphasis>
+will checkout the <emphasis>&lt;something&gt;</emphasis> branch on another remote,
+and by <xref linkend="git-worktree(1)" /> when <emphasis>git worktree add</emphasis> refers to a
+remote branch. This setting might be used for other checkout-like
+commands or functionality in the future.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+checkout.guess
+</term>
+<listitem>
+<simpara>
+        Provides the default value for the <emphasis>--guess</emphasis> or <emphasis>--no-guess</emphasis>
+        option in <emphasis>git checkout</emphasis> and <emphasis>git switch</emphasis>. See
+        <xref linkend="git-switch(1)" /> and <xref linkend="git-checkout(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+checkout.workers
+</term>
+<listitem>
+<simpara>
+        The number of parallel workers to use when updating the working tree.
+        The default is one, i.e. sequential execution. If set to a value less
+        than one, Git will use as many workers as the number of logical cores
+        available. This setting and <emphasis>checkout.thresholdForParallelism</emphasis> affect
+        all commands that perform checkout. E.g. checkout, clone, reset,
+        sparse-checkout, etc.
+</simpara>
+<simpara>Note: parallel checkout usually delivers better performance for repositories
+located on SSDs or over NFS. For repositories on spinning disks and/or machines
+with a small number of cores, the default sequential checkout often performs
+better. The size and compression level of a repository might also influence how
+well the parallel version performs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+checkout.thresholdForParallelism
+</term>
+<listitem>
+<simpara>
+        When running parallel checkout with a small number of files, the cost
+        of subprocess spawning and inter-process communication might outweigh
+        the parallelization gains. This setting allows to define the minimum
+        number of files for which parallel checkout should be attempted. The
+        default is 100.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-switch(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-checkout(1)" />,

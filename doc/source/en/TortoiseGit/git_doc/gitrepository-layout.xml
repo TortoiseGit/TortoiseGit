@@ -664,8 +664,8 @@ objects in the repository MUST NOT be deleted (e.g., by <emphasis>git-prune</emp
 <emphasis>git repack -d</emphasis>).</simpara>
 </section>
 <section id="gitrepository-layout(5)__emphasis_partialclone_emphasis">
-<title><emphasis>partialclone</emphasis></title>
-<simpara>When the config key <emphasis>extensions.partialclone</emphasis> is set, it indicates
+<title><emphasis>partialClone</emphasis></title>
+<simpara>When the config key <emphasis>extensions.partialClone</emphasis> is set, it indicates
 that the repo was created with a partial clone (or later performed
 a partial fetch) and that the remote may have omitted sending
 certain unwanted objects.  Such a remote is called a "promisor remote"

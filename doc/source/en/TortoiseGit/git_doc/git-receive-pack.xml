@@ -13,7 +13,7 @@
 <simplesect id="git-receive-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git-receive-pack</emphasis> &lt;directory&gt;</literallayout>
+<literallayout><emphasis>git receive-pack</emphasis> &lt;git-dir&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-receive-pack(1)__description">
@@ -41,7 +41,7 @@ its behavior, see <xref linkend="git-config(1)" />.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;directory&gt;
+&lt;git-dir&gt;
 </term>
 <listitem>
 <simpara>

@@ -13,9 +13,10 @@
 <simplesect id="git-send-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git send-pack</emphasis> [--dry-run] [--force] [--receive-pack=&lt;git-receive-pack&gt;]
+<literallayout><emphasis>git send-pack</emphasis> [--mirror] [--dry-run] [--force]
+                [--receive-pack=&lt;git-receive-pack&gt;]
                 [--verbose] [--thin] [--atomic]
-                [--[no-]signed|--signed=(true|false|if-asked)]
+                [--[no-]signed | --signed=(true|false|if-asked)]
                 [&lt;host&gt;:]&lt;directory&gt; (--all | &lt;ref&gt;&#8230;)</literallayout>
 </blockquote>
 </simplesect>

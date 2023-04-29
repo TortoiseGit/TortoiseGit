@@ -69,10 +69,9 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 <simpara>
         Used by <xref linkend="git-http-backend(1)" /> to serve up
         <emphasis>$GIT_URL/info/refs?service=git-upload-pack</emphasis> requests. See
-        "Smart Clients" in <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/http-protocol.html"><citetitle>the HTTP
-        transfer protocols</citetitle></ulink> documentation and "HTTP Transport" in
-        <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/protocol-v2.html"><citetitle>the Git Wire Protocol, Version
-        2</citetitle></ulink> documentation. Also understood by
+        "Smart Clients" in <xref linkend="gitprotocol-http(5)" /> and "HTTP
+        Transport" in the <xref linkend="gitprotocol-v2(5)" />
+        documentation. Also understood by
         <xref linkend="git-receive-pack(1)" />.
 </simpara>
 </listitem>

@@ -86,6 +86,9 @@ that order.</simpara>
 <title>CONFIGURATION</title>
 <simpara>To use the tool, <emphasis>imap.folder</emphasis> and either <emphasis>imap.tunnel</emphasis> or <emphasis>imap.host</emphasis> must be set
 to appropriate values.</simpara>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>

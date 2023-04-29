@@ -13,7 +13,7 @@
 <simplesect id="git-upload-archive(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git upload-archive</emphasis> &lt;directory&gt;</literallayout>
+<literallayout><emphasis>git upload-archive</emphasis> &lt;repository&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-upload-archive(1)__description">
@@ -69,7 +69,7 @@ access via non-smart-http.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;directory&gt;
+&lt;repository&gt;
 </term>
 <listitem>
 <simpara>

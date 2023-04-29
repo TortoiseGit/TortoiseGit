@@ -92,13 +92,29 @@ each commit introduces are shown.</simpara>
 </term>
 <listitem>
 <simpara>
-        If no <emphasis>--decorate-refs</emphasis> is given, pretend as if all refs were
-        included.  For each candidate, do not use it for decoration if it
+        For each candidate reference, do not use it for decoration if it
         matches any patterns given to <emphasis>--decorate-refs-exclude</emphasis> or if it
         doesn't match any of the patterns given to <emphasis>--decorate-refs</emphasis>. The
         <emphasis>log.excludeDecoration</emphasis> config option allows excluding refs from
         the decorations, but an explicit <emphasis>--decorate-refs</emphasis> pattern will
         override a match in <emphasis>log.excludeDecoration</emphasis>.
+</simpara>
+<simpara>If none of these options or config settings are given, then references are
+used as decoration if they match <emphasis>HEAD</emphasis>, <emphasis>refs/heads/</emphasis>, <emphasis>refs/remotes/</emphasis>,
+<emphasis>refs/stash/</emphasis>, or <emphasis>refs/tags/</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--clear-decorations
+</term>
+<listitem>
+<simpara>
+        When specified, this option clears all previous <emphasis>--decorate-refs</emphasis>
+        or <emphasis>--decorate-refs-exclude</emphasis> options and relaxes the default
+        decoration filter to include all references. This option is
+        assumed if the config value <emphasis>log.initialDecorationSet</emphasis> is set to
+        <emphasis>all</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -647,6 +663,20 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--exclude-hidden=[receive|uploadpack]
+</term>
+<listitem>
+<simpara>
+        Do not include refs that would be hidden by <emphasis>git-receive-pack</emphasis> or
+        <emphasis>git-upload-pack</emphasis> by consulting the appropriate <emphasis>receive.hideRefs</emphasis> or
+        <emphasis>uploadpack.hideRefs</emphasis> configuration along with <emphasis>transfer.hideRefs</emphasis> (see
+        <xref linkend="git-config(1)" />). This option affects the next pseudo-ref option
+        <emphasis>--all</emphasis> or <emphasis>--glob</emphasis> and is cleared after processing them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --reflog
 </term>
 <listitem>
@@ -967,15 +997,17 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---ancestry-path
+--ancestry-path[=&lt;commit&gt;]
 </term>
 <listitem>
 <simpara>
         When given a range of commits to display (e.g. <emphasis>commit1..commit2</emphasis>
-        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits that exist
-        directly on the ancestry chain between the <emphasis>commit1</emphasis> and
-        <emphasis>commit2</emphasis>, i.e. commits that are both descendants of <emphasis>commit1</emphasis>,
-        and ancestors of <emphasis>commit2</emphasis>.
+        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits in that range
+        that are ancestors of &lt;commit&gt;, descendants of &lt;commit&gt;, or
+        &lt;commit&gt; itself.  If no commit is specified, use <emphasis>commit1</emphasis> (the
+        excluded part of the range) as &lt;commit&gt;.  Can be passed multiple
+        times; if so, a commit is included if it is any of the commits
+        given or if it is an ancestor or descendant of one of them.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1211,14 +1243,13 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <variablelist>
 <varlistentry>
 <term>
---ancestry-path
+--ancestry-path[=&lt;commit&gt;]
 </term>
 <listitem>
 <simpara>
-        Limit the displayed commits to those directly on the ancestry
-        chain between the from and to commits in the given commit
-        range. I.e. only display commits that are ancestor of the to
-        commit and descendants of the from commit.
+        Limit the displayed commits to those which are an ancestor of
+        &lt;commit&gt;, or which are a descendant of &lt;commit&gt;, or are &lt;commit&gt;
+        itself.
 </simpara>
 <simpara>As an example use case, consider the following commit history:</simpara>
 <screen>            D---E-------F
@@ -1242,6 +1273,20 @@ option does. Applied to the <emphasis>D..M</emphasis> range, it results in:</sim
                   G---H---I---J
                                \
                                 L--M</screen>
+<simpara>We can also use <emphasis>--ancestry-path=D</emphasis> instead of <emphasis>--ancestry-path</emphasis> which
+means the same thing when applied to the <emphasis>D..M</emphasis> range but is just more
+explicit.</simpara>
+<simpara>If we instead are interested in a given topic within this range, and all
+commits affected by that topic, we may only want to view the subset of
+<emphasis>D..M</emphasis> which contain that topic in their ancestry path.  So, using
+<emphasis>--ancestry-path=H D..M</emphasis> for example would result in:</simpara>
+<screen>                E
+                 \
+                  G---H---I---J
+                               \
+                                L--M</screen>
+<simpara>Whereas <emphasis>--ancestry-path=K D..M</emphasis> would result in</simpara>
+<screen>                K---------------L--M</screen>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -1285,7 +1330,7 @@ merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis>. With parent rew
 not actually contribute a change to <emphasis>file.txt</emphasis>. They only merged a topic
 that was based on an older version of <emphasis>file.txt</emphasis>. This is a common
 issue in repositories using a workflow where many contributors work in
-parallel and merge their topic branches along a single trunk: manu
+parallel and merge their topic branches along a single trunk: many
 unrelated merges appear in the <emphasis>--full-history</emphasis> results.</simpara>
 <simpara>When using the <emphasis>--simplify-merges</emphasis> option, the commits <emphasis>O</emphasis> and <emphasis>P</emphasis>
 disappear from the results. This is because the rewritten second parents
@@ -1698,20 +1743,11 @@ Use <emphasis>--date=format:%c</emphasis> to show the date in your system locale
 preferred format.  See the <emphasis>strftime</emphasis> manual for a complete list of
 format placeholders. When using <emphasis>-local</emphasis>, the correct syntax is
 <emphasis>--date=format-local:...</emphasis>.</simpara>
-<simpara><emphasis>--date=default</emphasis> is the default format, and is similar to
-<emphasis>--date=rfc2822</emphasis>, with a few exceptions:</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-there is no comma after the day-of-week
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-the time zone is omitted when the local time zone is used
-</simpara>
-</listitem>
-</itemizedlist>
+<simpara><emphasis>--date=default</emphasis> is the default format, and is based on ctime(3)
+output.  It shows a single line with three-letter day of the week,
+three-letter month, day-of-month, hour-minute-seconds in "HH:MM:SS"
+format, followed by 4-digit year, plus timezone information, unless
+the local time zone is used, e.g. <emphasis>Thu Jan 1 00:00:00 1970 +0000</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -2049,50 +2085,60 @@ switch line wrapping, like the -w option of
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;(&lt;N&gt;[,trunc|ltrunc|mtrunc])</emphasis>
+<emphasis>%&lt;( &lt;N&gt; [,trunc|ltrunc|mtrunc])</emphasis>
 </term>
 <listitem>
 <simpara>
 make the next placeholder take at
-                                  least N columns, padding spaces on
+                                  least N column widths, padding spaces on
                                   the right if necessary.  Optionally
-                                  truncate at the beginning (ltrunc),
-                                  the middle (mtrunc) or the end
-                                  (trunc) if the output is longer than
-                                  N columns.  Note that truncating
+                                  truncate (with ellipsis <emphasis>..</emphasis>) at the left (ltrunc) <emphasis>..ft</emphasis>,
+                                  the middle (mtrunc) <emphasis>mi..le</emphasis>, or the end
+                                  (trunc) <emphasis>rig..</emphasis>, if the output is longer than
+                                  N columns.
+                                  Note 1: that truncating
                                   only works correctly with N &gt;= 2.
+                                  Note 2: spaces around the N and M (see below)
+                                  values are optional.
+                                  Note 3: Emojis and other wide characters
+                                  will take two display columns, which may
+                                  over-run column boundaries.
+                                  Note 4: decomposed character combining marks
+                                  may be misplaced at padding boundaries.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-make the next placeholder take at least until Nth
-             columns, padding spaces on the right if necessary
+make the next placeholder take at least until Mth
+             display column, padding spaces on the right if necessary.
+             Use negative M values for column positions measured
+             from the right hand edge of the terminal window.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis> respectively,
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis> respectively,
                         but padding spaces on the left
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
                           respectively, except that if the next
                           placeholder takes more spaces than given and
                           there are spaces on its left, use those
@@ -2102,11 +2148,11 @@ similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</e
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis>
                           respectively, but padding both sides
                           (i.e. the text is centered)
 </simpara>
@@ -2907,7 +2953,8 @@ the default format.</simpara>
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section on generating patches).
+        Generate patch (see section titled
+<link linkend="git-log(1)_generate_patch_text_with_p">"Generating patch text with -p"</link>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -4501,7 +4548,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <simpara>For more detailed explanation on these common options, see also
 <xref linkend="gitdiffcore(7)" />.</simpara>
 </simplesect>
-<simplesect id="git-log(1)__generating_patch_text_with_p">
+<simplesect id="git-log(1)_generate_patch_text_with_p">
 <title>Generating patch text with -p</title>
 <simpara>Running
 <xref linkend="git-diff(1)" />,
@@ -4936,19 +4983,90 @@ i18n.logOutputEncoding
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+log.abbrevCommit
+</term>
+<listitem>
+<simpara>
+        If true, makes <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />, and
+        <xref linkend="git-whatchanged(1)" /> assume <emphasis>--abbrev-commit</emphasis>. You may
+        override this option with <emphasis>--no-abbrev-commit</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 log.date
 </term>
 <listitem>
 <simpara>
-        Default format for human-readable dates.  (Compare the
-        <emphasis>--date</emphasis> option.)  Defaults to "default", which means to write
-        dates like <emphasis>Sat May 8 19:35:34 2010 -0500</emphasis>.
+        Set the default date-time mode for the <emphasis>log</emphasis> command.
+        Setting a value for log.date is similar to using <emphasis>git log</emphasis>'s
+        <emphasis>--date</emphasis> option.  See <xref linkend="git-log(1)" /> for details.
 </simpara>
 <simpara>If the format is set to "auto:foo" and the pager is in use, format
 "foo" will be the used for the date format. Otherwise "default" will
 be used.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.decorate
+</term>
+<listitem>
+<simpara>
+        Print out the ref names of any commits that are shown by the log
+        command. If <emphasis>short</emphasis> is specified, the ref name prefixes <emphasis>refs/heads/</emphasis>,
+        <emphasis>refs/tags/</emphasis> and <emphasis>refs/remotes/</emphasis> will not be printed. If <emphasis>full</emphasis> is
+        specified, the full ref name (including prefix) will be printed.
+        If <emphasis>auto</emphasis> is specified, then if the output is going to a terminal,
+        the ref names are shown as if <emphasis>short</emphasis> were given, otherwise no ref
+        names are shown. This is the same as the <emphasis>--decorate</emphasis> option
+        of the <emphasis>git log</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.initialDecorationSet
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>git log</emphasis> only shows decorations for certain known ref
+        namespaces. If <emphasis>all</emphasis> is specified, then show all refs as
+        decorations.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.excludeDecoration
+</term>
+<listitem>
+<simpara>
+        Exclude the specified patterns from the log decorations. This is
+        similar to the <emphasis>--decorate-refs-exclude</emphasis> command-line option, but
+        the config option can be overridden by the <emphasis>--decorate-refs</emphasis>
+        option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.diffMerges
+</term>
+<listitem>
+<simpara>
+        Set diff format to be used when <emphasis>--diff-merges=on</emphasis> is
+        specified, see <emphasis>--diff-merges</emphasis> in <xref linkend="git-log(1)" /> for
+        details. Defaults to <emphasis>separate</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -4966,14 +5084,25 @@ log.follow
 </varlistentry>
 <varlistentry>
 <term>
+log.graphColors
+</term>
+<listitem>
+<simpara>
+        A list of colors, separated by commas, that can be used to draw
+        history lines in <emphasis>git log --graph</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 log.showRoot
 </term>
 <listitem>
 <simpara>
-        If <emphasis>false</emphasis>, <emphasis>git log</emphasis> and related commands will not treat the
-        initial commit as a big creation event.  Any root commits in
-        <emphasis>git log -p</emphasis> output would be shown without a diff attached.
-        The default is <emphasis>true</emphasis>.
+        If true, the initial commit will be shown as a big creation event.
+        This is equivalent to a diff against an empty tree.
+        Tools like <xref linkend="git-log(1)" /> or <xref linkend="git-whatchanged(1)" />, which
+        normally hide the root commit will now show it. True by default.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4983,18 +5112,48 @@ log.showSignature
 </term>
 <listitem>
 <simpara>
-        If <emphasis>true</emphasis>, <emphasis>git log</emphasis> and related commands will act as if the
-        <emphasis>--show-signature</emphasis> option was passed to them.
+        If true, makes <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />, and
+        <xref linkend="git-whatchanged(1)" /> assume <emphasis>--show-signature</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-mailmap.*
+log.mailmap
 </term>
 <listitem>
 <simpara>
-        See <xref linkend="git-shortlog(1)" />.
+        If true, makes <xref linkend="git-log(1)" />, <xref linkend="git-show(1)" />, and
+        <xref linkend="git-whatchanged(1)" /> assume <emphasis>--use-mailmap</emphasis>, otherwise
+        assume <emphasis>--no-use-mailmap</emphasis>. True by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.mergeStrategy
+</term>
+<listitem>
+<simpara>
+        Which merge strategy to choose by default when resolving notes
+        conflicts.  Must be one of <emphasis>manual</emphasis>, <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis>, or
+        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See "NOTES MERGE STRATEGIES"
+        section of <xref linkend="git-notes(1)" /> for more information on each strategy.
+</simpara>
+<simpara>This setting can be overridden by passing the <emphasis>--strategy</emphasis> option to
+<xref linkend="git-notes(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.&lt;name&gt;.mergeStrategy
+</term>
+<listitem>
+<simpara>
+        Which merge strategy to choose when doing a notes merge into
+        refs/notes/&lt;name&gt;.  This overrides the more general
+        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section in
+        <xref linkend="git-notes(1)" /> for more information on the available strategies.
 </simpara>
 </listitem>
 </varlistentry>
@@ -5004,17 +5163,72 @@ notes.displayRef
 </term>
 <listitem>
 <simpara>
-        Which refs, in addition to the default set by <emphasis>core.notesRef</emphasis>
-        or <emphasis>GIT_NOTES_REF</emphasis>, to read notes from when showing commit
-        messages with the <emphasis>log</emphasis> family of commands.  See
-        <xref linkend="git-notes(1)" />.
+        Which ref (or refs, if a glob or specified more than once), in
+        addition to the default set by <emphasis>core.notesRef</emphasis> or
+        <emphasis>GIT_NOTES_REF</emphasis>, to read notes from when showing commit
+        messages with the <emphasis>git log</emphasis> family of commands.
 </simpara>
-<simpara>May be an unabbreviated ref name or a glob and may be specified
-multiple times.  A warning will be issued for refs that do not exist,
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_DISPLAY_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
+<simpara>A warning will be issued for refs that do not exist,
 but a glob that does not match any refs is silently ignored.</simpara>
-<simpara>This setting can be disabled by the <emphasis>--no-notes</emphasis> option,
-overridden by the <emphasis>GIT_NOTES_DISPLAY_REF</emphasis> environment variable,
-and overridden by the <emphasis>--notes=&lt;ref&gt;</emphasis> option.</simpara>
+<simpara>This setting can be disabled by the <emphasis>--no-notes</emphasis> option to the <emphasis>git
+log</emphasis> family of commands, or by the <emphasis>--notes=&lt;ref&gt;</emphasis> option accepted by
+those commands.</simpara>
+<simpara>The effective value of "core.notesRef" (possibly overridden by
+GIT_NOTES_REF) is also implicitly added to the list of refs to be
+displayed.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewrite.&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        When rewriting commits with &lt;command&gt; (currently <emphasis>amend</emphasis> or
+        <emphasis>rebase</emphasis>), if this variable is <emphasis>false</emphasis>, git will not copy
+        notes from the original to the rewritten commit.  Defaults to
+        <emphasis>true</emphasis>.  See also "<emphasis>notes.rewriteRef</emphasis>" below.
+</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteMode
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite (see the
+        "notes.rewrite.&lt;command&gt;" option), determines what to do if
+        the target commit already has a note.  Must be one of
+        <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.
+        Defaults to <emphasis>concatenate</emphasis>.
+</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
+environment variable.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+notes.rewriteRef
+</term>
+<listitem>
+<simpara>
+        When copying notes during a rewrite, specifies the (fully
+        qualified) ref whose notes should be copied.  May be a glob,
+        in which case notes in all matching refs will be copied.  You
+        may also specify this configuration several times.
+</simpara>
+<simpara>Does not have a default value; you must configure this variable to
+enable note rewriting.  Set it to <emphasis>refs/notes/commits</emphasis> to enable
+rewriting for the default commit notes.</simpara>
+<simpara>Can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis> environment variable.
+See <emphasis>notes.rewrite.&lt;command&gt;</emphasis> above for a further description of its format.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

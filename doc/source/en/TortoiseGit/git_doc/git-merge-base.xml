@@ -13,8 +13,8 @@
 <simplesect id="git-merge-base(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git merge-base</emphasis> [-a|--all] &lt;commit&gt; &lt;commit&gt;&#8230;
-<emphasis>git merge-base</emphasis> [-a|--all] --octopus &lt;commit&gt;&#8230;
+<literallayout><emphasis>git merge-base</emphasis> [-a | --all] &lt;commit&gt; &lt;commit&gt;&#8230;
+<emphasis>git merge-base</emphasis> [-a | --all] --octopus &lt;commit&gt;&#8230;
 <emphasis>git merge-base</emphasis> --is-ancestor &lt;commit&gt; &lt;commit&gt;
 <emphasis>git merge-base</emphasis> --independent &lt;commit&gt;&#8230;
 <emphasis>git merge-base</emphasis> --fork-point &lt;ref&gt; [&lt;commit&gt;]</literallayout>

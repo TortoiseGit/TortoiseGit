@@ -13,12 +13,12 @@
 <simplesect id="git-show-branch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-branch</emphasis> [-a|--all] [-r|--remotes] [--topo-order | --date-order]
+<literallayout><emphasis>git show-branch</emphasis> [-a | --all] [-r | --remotes] [--topo-order | --date-order]
                 [--current] [--color[=&lt;when&gt;] | --no-color] [--sparse]
                 [--more=&lt;n&gt; | --list | --independent | --merge-base]
                 [--no-name | --sha1-name] [--topics]
                 [(&lt;rev&gt; | &lt;glob&gt;)&#8230;]
-<emphasis>git show-branch</emphasis> (-g|--reflog)[=&lt;n&gt;[,&lt;base&gt;]] [--list] [&lt;ref&gt;]</literallayout>
+<emphasis>git show-branch</emphasis> (-g | --reflog)[=&lt;n&gt;[,&lt;base&gt;]] [--list] [&lt;ref&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-branch(1)__description">
@@ -316,6 +316,25 @@ your topic branch, it is shown as well.</simpara>
 <simpara>shows 10 reflog entries going back from the tip as of 1 hour ago.
 Without <emphasis>--list</emphasis>, the output also shows how these tips are
 topologically related with each other.</simpara>
+</simplesect>
+<simplesect id="git-show-branch(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+showBranch.default
+</term>
+<listitem>
+<simpara>
+        The default set of branches for <xref linkend="git-show-branch(1)" />.
+        See <xref linkend="git-show-branch(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-show-branch(1)__git">
 <title>GIT</title>

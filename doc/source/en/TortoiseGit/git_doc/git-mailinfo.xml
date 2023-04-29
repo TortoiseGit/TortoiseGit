@@ -213,6 +213,28 @@ If no such configuration option has been set, <emphasis>warn</emphasis> will be 
 </varlistentry>
 </variablelist>
 </simplesect>
+<simplesect id="git-mailinfo(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+mailinfo.scissors
+</term>
+<listitem>
+<simpara>
+        If true, makes <xref linkend="git-mailinfo(1)" /> (and therefore
+        <xref linkend="git-am(1)" />) act by default as if the --scissors option
+        was provided on the command-line. When active, this features
+        removes everything from the message body before a scissors
+        line (i.e. consisting mainly of "&gt;8", "8&lt;" and "-").
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-mailinfo(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>

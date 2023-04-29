@@ -287,9 +287,18 @@ value; if that is unspecified, default to <emphasis>auto</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        Specify the encryption to use, either <emphasis>ssl</emphasis> or <emphasis>tls</emphasis>.  Any other
-        value reverts to plain SMTP.  Default is the value of
-        <emphasis>sendemail.smtpEncryption</emphasis>.
+        Specify in what way encrypting begins for the SMTP connection.
+        Valid values are <emphasis>ssl</emphasis> and <emphasis>tls</emphasis>. Any other value reverts to plain
+        (unencrypted) SMTP, which defaults to port 25.
+        Despite the names, both values will use the same newer version of TLS,
+        but for historic reasons have these names. <emphasis>ssl</emphasis> refers to "implicit"
+        encryption (sometimes called SMTPS), that uses port 465 by default.
+        <emphasis>tls</emphasis> refers to "explicit" encryption (often known as STARTTLS),
+        that uses port 25 by default. Other ports might be used by the SMTP
+        server, which are not the default. Commonly found alternative port for
+        <emphasis>tls</emphasis> and unencrypted is 587. You need to check your provider's
+        documentation or your server configuration to make sure
+        for your own case. Default is the value of <emphasis>sendemail.smtpEncryption</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -845,7 +854,84 @@ default to <emphasis>--validate</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-send-email(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
+<varlistentry>
+<term>
+sendemail.identity
+</term>
+<listitem>
+<simpara>
+        A configuration identity. When given, causes values in the
+        <emphasis>sendemail.&lt;identity&gt;</emphasis> subsection to take precedence over
+        values in the <emphasis>sendemail</emphasis> section. The default identity is
+        the value of <emphasis>sendemail.identity</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpEncryption
+</term>
+<listitem>
+<simpara>
+        See <xref linkend="git-send-email(1)" /> for description.  Note that this
+        setting is not subject to the <emphasis>identity</emphasis> mechanism.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpsslcertpath
+</term>
+<listitem>
+<simpara>
+        Path to ca-certificates (either a directory or a single file).
+        Set it to an empty string to disable certificate verification.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.&lt;identity&gt;.*
+</term>
+<listitem>
+<simpara>
+        Identity-specific versions of the <emphasis>sendemail.*</emphasis> parameters
+        found below, taking precedence over those when this
+        identity is selected, through either the command-line or
+        <emphasis>sendemail.identity</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.multiEdit
+</term>
+<listitem>
+<simpara>
+        If true (default), a single editor instance will be spawned to edit
+        files you have to edit (patches when <emphasis>--annotate</emphasis> is used, and the
+        summary when <emphasis>--compose</emphasis> is used). If false, files will be edited one
+        after the other, spawning a new editor each time.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.confirm
+</term>
+<listitem>
+<simpara>
+        Sets the default for whether to confirm before sending. Must be
+        one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, <emphasis>cc</emphasis>, <emphasis>compose</emphasis>, or <emphasis>auto</emphasis>. See <emphasis>--confirm</emphasis>
+        in the <xref linkend="git-send-email(1)" /> documentation for the meaning of these
+        values.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 sendemail.aliasesFile
@@ -909,26 +995,122 @@ Warnings are printed on the standard error output for any
 </varlistentry>
 <varlistentry>
 <term>
-sendemail.multiEdit
+sendemail.annotate
+</term>
+<term>
+sendemail.bcc
+</term>
+<term>
+sendemail.cc
+</term>
+<term>
+sendemail.ccCmd
+</term>
+<term>
+sendemail.chainReplyTo
+</term>
+<term>
+sendemail.envelopeSender
+</term>
+<term>
+sendemail.from
+</term>
+<term>
+sendemail.signedoffbycc
+</term>
+<term>
+sendemail.smtpPass
+</term>
+<term>
+sendemail.suppresscc
+</term>
+<term>
+sendemail.suppressFrom
+</term>
+<term>
+sendemail.to
+</term>
+<term>
+sendemail.tocmd
+</term>
+<term>
+sendemail.smtpDomain
+</term>
+<term>
+sendemail.smtpServer
+</term>
+<term>
+sendemail.smtpServerPort
+</term>
+<term>
+sendemail.smtpServerOption
+</term>
+<term>
+sendemail.smtpUser
+</term>
+<term>
+sendemail.thread
+</term>
+<term>
+sendemail.transferEncoding
+</term>
+<term>
+sendemail.validate
+</term>
+<term>
+sendemail.xmailer
 </term>
 <listitem>
 <simpara>
-        If true (default), a single editor instance will be spawned to edit
-        files you have to edit (patches when <emphasis>--annotate</emphasis> is used, and the
-        summary when <emphasis>--compose</emphasis> is used). If false, files will be edited one
-        after the other, spawning a new editor each time.
+        These configuration variables all provide a default for
+        <xref linkend="git-send-email(1)" /> command-line options. See its
+        documentation for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-sendemail.confirm
+sendemail.signedoffcc (deprecated)
 </term>
 <listitem>
 <simpara>
-        Sets the default for whether to confirm before sending. Must be
-        one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, <emphasis>cc</emphasis>, <emphasis>compose</emphasis>, or <emphasis>auto</emphasis>. See <emphasis>--confirm</emphasis>
-        in the previous section for the meaning of these values.
+        Deprecated alias for <emphasis>sendemail.signedoffbycc</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpBatchSize
+</term>
+<listitem>
+<simpara>
+        Number of messages to be sent per connection, after that a relogin
+        will happen.  If the value is 0 or undefined, send all messages in
+        one connection.
+        See also the <emphasis>--batch-size</emphasis> option of <xref linkend="git-send-email(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.smtpReloginDelay
+</term>
+<listitem>
+<simpara>
+        Seconds wait before reconnecting to smtp server.
+        See also the <emphasis>--relogin-delay</emphasis> option of <xref linkend="git-send-email(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.forbidSendmailVariables
+</term>
+<listitem>
+<simpara>
+        To avoid common misconfiguration mistakes, <xref linkend="git-send-email(1)" />
+        will abort with a warning if any configuration options for "sendmail"
+        exist. Set this variable to bypass the check.
 </simpara>
 </listitem>
 </varlistentry>

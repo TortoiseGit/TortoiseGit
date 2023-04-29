@@ -13,7 +13,7 @@
 <simplesect id="git-am(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git am</emphasis> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8]
+<literallayout><emphasis>git am</emphasis> [--signoff] [--keep] [--[no-]keep-cr] [--[no-]utf8] [--no-verify]
          [--[no-]3way] [--interactive] [--committer-date-is-author-date]
          [--ignore-date] [--ignore-space-change | --ignore-whitespace]
          [--whitespace=&lt;option&gt;] [-C&lt;n&gt;] [-p&lt;n&gt;] [--directory=&lt;dir&gt;]
@@ -247,8 +247,13 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </term>
 <listitem>
 <simpara>
-        Allow the rerere mechanism to update the index with the
-        result of auto-conflict resolution if possible.
+        After the rerere mechanism reuses a recorded resolution on
+        the current conflict to update the files in the working
+        tree, allow it to also update the index with the result of
+        resolution.  <emphasis>--no-rerere-autoupdate</emphasis> is a good way to
+        double-check what <emphasis>rerere</emphasis> did and catch potential
+        mismerges, before committing the result to the index with a
+        separate <emphasis>git add</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -312,6 +317,21 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 <listitem>
 <simpara>
         Run interactively.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-n
+</term>
+<term>
+--no-verify
+</term>
+<listitem>
+<simpara>
+        By default, the pre-applypatch and applypatch-msg hooks are run.
+        When any of <emphasis>--no-verify</emphasis> or <emphasis>-n</emphasis> is given, these are bypassed.
+        See also <xref linkend="githooks(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -527,6 +547,43 @@ errors in the "From:" lines).</simpara>
 <simpara>This command can run <emphasis>applypatch-msg</emphasis>, <emphasis>pre-applypatch</emphasis>,
 and <emphasis>post-applypatch</emphasis> hooks.  See <xref linkend="githooks(5)" /> for more
 information.</simpara>
+</simplesect>
+<simplesect id="git-am(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+am.keepcr
+</term>
+<listitem>
+<simpara>
+        If true, git-am will call git-mailsplit for patches in mbox format
+        with parameter <emphasis>--keep-cr</emphasis>. In this case git-mailsplit will
+        not remove <emphasis>\r</emphasis> from lines ending with <emphasis>\r\n</emphasis>. Can be overridden
+        by giving <emphasis>--no-keep-cr</emphasis> from the command line.
+        See <xref linkend="git-am(1)" />, <xref linkend="git-mailsplit(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+am.threeWay
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>git am</emphasis> will fail if the patch does not apply cleanly. When
+        set to true, this setting tells <emphasis>git am</emphasis> to fall back on 3-way merge if
+        the patch records the identity of blobs it is supposed to apply to and
+        we have those blobs available locally (equivalent to giving the <emphasis>--3way</emphasis>
+        option from the command line). Defaults to <emphasis>false</emphasis>.
+        See <xref linkend="git-am(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-am(1)__see_also">
 <title>SEE ALSO</title>

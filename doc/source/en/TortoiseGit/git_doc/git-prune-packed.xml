@@ -13,7 +13,7 @@
 <simplesect id="git-prune-packed(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git prune-packed</emphasis> [-n|--dry-run] [-q|--quiet]</literallayout>
+<literallayout><emphasis>git prune-packed</emphasis> [-n | --dry-run] [-q | --quiet]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-prune-packed(1)__description">

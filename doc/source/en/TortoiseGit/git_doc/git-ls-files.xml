@@ -14,8 +14,9 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git ls-files</emphasis> [-z] [-t] [-v] [-f]
-                [-c|--cached] [-d|--deleted] [-o|--others] [-i|--|ignored]
-                [-s|--stage] [-u|--unmerged] [-k|--|killed] [-m|--modified]
+                [-c|--cached] [-d|--deleted] [-o|--others] [-i|--ignored]
+                [-s|--stage] [-u|--unmerged] [-k|--killed] [-m|--modified]
+                [--resolve-undo]
                 [--directory [--no-empty-directory]] [--eol]
                 [--deduplicate]
                 [-x &lt;pattern&gt;|--exclude=&lt;pattern&gt;]
@@ -24,7 +25,7 @@
                 [--exclude-standard]
                 [--error-unmatch] [--with-tree=&lt;tree-ish&gt;]
                 [--full-name] [--recurse-submodules]
-                [--abbrev[=&lt;n&gt;]] [--] [&lt;file&gt;&#8230;]</literallayout>
+                [--abbrev[=&lt;n&gt;]] [--format=&lt;format&gt;] [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-ls-files(1)__description">
@@ -32,7 +33,9 @@
 <simpara>This merges the file listing in the index with the actual working
 directory list, and shows different combinations of the two.</simpara>
 <simpara>One or more of the options below may be used to determine the files
-shown:</simpara>
+shown, and each file may be printed multiple times if there are
+multiple entries in the index or multiple statuses are applicable for
+the relevant file selection options.</simpara>
 </simplesect>
 <simplesect id="git-ls-files(1)__options">
 <title>OPTIONS</title>
@@ -46,7 +49,9 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show cached files in the output (default)
+        Show all files cached in Git's index, i.e. all tracked files.
+        (This is the default if no -c/-s/-d/-o/-u/-k/-m/--resolve-undo
+        options are specified.)
 </simpara>
 </listitem>
 </varlistentry>
@@ -59,7 +64,7 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show deleted files in the output
+        Show files with an unstaged deletion
 </simpara>
 </listitem>
 </varlistentry>
@@ -72,7 +77,8 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show modified files in the output
+        Show files with an unstaged modification (note that an unstaged
+        deletion also counts as an unstaged modification)
 </simpara>
 </listitem>
 </varlistentry>
@@ -98,11 +104,14 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show only ignored files in the output. When showing files in the
-        index, print only those matched by an exclude pattern. When
-        showing "other" files, show only those matched by an exclude
-        pattern. Standard ignore rules are not automatically activated,
-        therefore at least one of the <emphasis>--exclude*</emphasis> options is required.
+        Show only ignored files in the output.  Must be used with
+        either an explicit <emphasis>-c</emphasis> or <emphasis>-o</emphasis>.  When showing files in the
+        index (i.e. when used with <emphasis>-c</emphasis>), print only those files
+        matching an exclude pattern.  When showing "other" files
+        (i.e. when used with <emphasis>-o</emphasis>), show only those matched by an
+        exclude pattern.  Standard ignore rules are not automatically
+        activated, therefore at least one of the <emphasis>--exclude*</emphasis> options
+        is required.
 </simpara>
 </listitem>
 </varlistentry>
@@ -127,6 +136,7 @@ shown:</simpara>
 <simpara>
         If a whole directory is classified as "other", show just its
         name (with a trailing slash) and not its whole contents.
+        Has no effect without -o/--others.
 </simpara>
 </listitem>
 </varlistentry>
@@ -149,7 +159,9 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show unmerged files in the output (forces --stage)
+        Show information about unmerged files in the output, but do
+        not show any other tracked files (forces --stage, overrides
+        --cached).
 </simpara>
 </listitem>
 </varlistentry>
@@ -162,9 +174,23 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        Show files on the filesystem that need to be removed due
-        to file/directory conflicts for checkout-index to
-        succeed.
+        Show untracked files on the filesystem that need to be removed
+        due to file/directory conflicts for tracked files to be able to
+        be written to the filesystem.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--resolve-undo
+</term>
+<listitem>
+<simpara>
+        Show files having resolve-undo information in the index
+        together with their resolve-undo information.  (resolve-undo
+        information is what is used to implement "git checkout -m
+        $PATH", i.e. to recreate merge conflicts that were
+        accidentally resolved)
 </simpara>
 </listitem>
 </varlistentry>
@@ -228,7 +254,8 @@ shown:</simpara>
 <listitem>
 <simpara>
         Read additional exclude patterns that apply only to the
-        directory and its subdirectories in &lt;file&gt;.
+        directory and its subdirectories in &lt;file&gt;.  Deprecated; use
+        --exclude-standard instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -274,15 +301,16 @@ shown:</simpara>
 </term>
 <listitem>
 <simpara>
-        This feature is semi-deprecated. For scripting purpose,
-        <xref linkend="git-status(1)" /> <emphasis>--porcelain</emphasis> and
+        Show status tags together with filenames.  Note that for
+        scripting purposes, <xref linkend="git-status(1)" /> <emphasis>--porcelain</emphasis> and
         <xref linkend="git-diff-files(1)" /> <emphasis>--name-status</emphasis> are almost always
         superior alternatives, and users should look at
         <xref linkend="git-status(1)" /> <emphasis>--short</emphasis> or <xref linkend="git-diff(1)" />
         <emphasis>--name-status</emphasis> for more user-friendly alternatives.
 </simpara>
-<simpara>This option identifies the file status with the following tags (followed by
-a space) at the start of each line:</simpara>
+<simpara>This option provides a reason for showing each filename, in the form
+of a status tag (which is followed by a space and then the filename).
+The status tags are all single characters from the following list:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -290,7 +318,7 @@ H
 </term>
 <listitem>
 <simpara>
-cached
+tracked file that is not either unmerged or skip-worktree
 </simpara>
 </listitem>
 </varlistentry>
@@ -300,7 +328,7 @@ S
 </term>
 <listitem>
 <simpara>
-skip-worktree
+tracked file that is skip-worktree
 </simpara>
 </listitem>
 </varlistentry>
@@ -310,7 +338,7 @@ M
 </term>
 <listitem>
 <simpara>
-unmerged
+tracked file that is unmerged
 </simpara>
 </listitem>
 </varlistentry>
@@ -320,7 +348,7 @@ R
 </term>
 <listitem>
 <simpara>
-removed/deleted
+tracked file with unstaged removal/deletion
 </simpara>
 </listitem>
 </varlistentry>
@@ -330,7 +358,7 @@ C
 </term>
 <listitem>
 <simpara>
-modified/changed
+tracked file with unstaged modification/change
 </simpara>
 </listitem>
 </varlistentry>
@@ -340,7 +368,8 @@ K
 </term>
 <listitem>
 <simpara>
-to be killed
+untracked paths which are part of file/directory conflicts
+                which prevent checking out tracked files
 </simpara>
 </listitem>
 </varlistentry>
@@ -350,7 +379,17 @@ to be killed
 </term>
 <listitem>
 <simpara>
-other
+untracked file
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+U
+</term>
+<listitem>
+<simpara>
+file with resolve-undo information
 </simpara>
 </listitem>
 </varlistentry>
@@ -466,6 +505,21 @@ followed by the  ("attr/&lt;eolattr&gt;").</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from the result being shown.
+        It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xx</emphasis> where <emphasis>xx</emphasis> are hex digits
+        interpolates to character with hex code <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis>
+        interpolates to <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and %0a to <emphasis>\n</emphasis> (LF).
+        --format cannot be combined with <emphasis>-s</emphasis>, <emphasis>-o</emphasis>, <emphasis>-k</emphasis>, <emphasis>-t</emphasis>, <emphasis>--resolve-undo</emphasis>
+        and <emphasis>--eol</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --
 </term>
 <listitem>
@@ -505,6 +559,86 @@ path. (see <xref linkend="git-read-tree(1)" /> for more information on state)</s
 quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
 (see <xref linkend="git-config(1)" />).  Using <emphasis>-z</emphasis> the filename is output
 verbatim and the line is terminated by a NUL byte.</simpara>
+<simpara>It is possible to print in a custom format by using the <emphasis>--format</emphasis>
+option, which is able to interpolate different fields using
+a <emphasis>%(fieldname)</emphasis> notation. For example, if you only care about the
+"objectname" and "path" fields, you can execute with a specific
+"--format" like</simpara>
+<literallayout class="monospaced">git ls-files --format='%(objectname) %(path)'</literallayout>
+</simplesect>
+<simplesect id="git-ls-files(1)__field_names">
+<title>FIELD NAMES</title>
+<simpara>The way each path is shown can be customized by using the
+<emphasis>--format=&lt;format&gt;</emphasis> option, where the %(fieldname) in the
+&lt;format&gt; string for various aspects of the index entry are
+interpolated.  The following "fieldname" are understood:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+objectmode
+</term>
+<listitem>
+<simpara>
+        The mode of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectname
+</term>
+<listitem>
+<simpara>
+        The name of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+stage
+</term>
+<listitem>
+<simpara>
+        The stage of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+eolinfo:index
+</term>
+<term>
+eolinfo:worktree
+</term>
+<listitem>
+<simpara>
+        The &lt;eolinfo&gt; (see the description of the <emphasis>--eol</emphasis> option) of
+        the contents in the index or in the worktree for the path.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+eolattr
+</term>
+<listitem>
+<simpara>
+        The &lt;eolattr&gt; (see the description of the <emphasis>--eol</emphasis> option)
+        that applies to the path.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+path
+</term>
+<listitem>
+<simpara>
+        The pathname of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-ls-files(1)__exclude_patterns">
 <title>EXCLUDE PATTERNS</title>
@@ -512,7 +646,9 @@ verbatim and the line is terminated by a NUL byte.</simpara>
 traversing the directory tree and finding files to show when the
 flags --others or --ignored are specified.  <xref linkend="gitignore(5)" />
 specifies the format of exclude patterns.</simpara>
-<simpara>These exclude patterns come from these places, in order:</simpara>
+<simpara>Generally, you should just use --exclude-standard, but for historical
+reasons the exclude patterns can be specified from the following
+places, in order:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>

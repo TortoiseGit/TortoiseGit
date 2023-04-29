@@ -41,7 +41,7 @@ supported.</simpara>
 <title>BUNDLE FORMAT</title>
 <simpara>Bundles are <emphasis>.pack</emphasis> files (see <xref linkend="git-pack-objects(1)" />) with a
 header indicating what references are contained within the bundle.</simpara>
-<simpara>Like the the packed archive format itself bundles can either be
+<simpara>Like the packed archive format itself bundles can either be
 self-contained, or be created using exclusions.
 See the "OBJECT PREREQUISITES" section below.</simpara>
 <simpara>Bundles created using revision exclusions are "thin packs" created
@@ -52,10 +52,8 @@ exclusions, and users should not be concerned about the difference. By
 using "thin packs", bundles created using exclusions are smaller in
 size. That they're "thin" under the hood is merely noted here as a
 curiosity, and as a reference to other documentation.</simpara>
-<simpara>See <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/bundle-format.html"><citetitle>the <emphasis>bundle-format</emphasis>
-documentation</citetitle></ulink> for more details and the discussion of "thin pack" in
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.html"><citetitle>the pack format documentation</citetitle></ulink> for
-further details.</simpara>
+<simpara>See <xref linkend="gitformat-bundle(5)" /> for more details and the discussion of
+"thin pack" in <xref linkend="gitformat-pack(5)" /> for further details.</simpara>
 </simplesect>
 <simplesect id="git-bundle(1)__options">
 <title>OPTIONS</title>
@@ -85,7 +83,7 @@ verify &lt;file&gt;
         commits exist and are fully linked in the current repository.
         Then, <emphasis>git bundle</emphasis> prints a list of missing commits, if any.
         Finally, information about additional capabilities, such as "object
-        filter", is printed. See "Capabilities" in link:technical/bundle-format.html
+        filter", is printed. See "Capabilities" in <xref linkend="gitformat-bundle(5)" />
         for more information. The exit code is zero for success, but will
         be nonzero if the bundle file is invalid.
 </simpara>
@@ -336,6 +334,10 @@ references when fetching:</simpara>
 <screen>$ git fetch mybundle master:localRef</screen>
 <simpara>You can also see what references it offers:</simpara>
 <screen>$ git ls-remote mybundle</screen>
+</simplesect>
+<simplesect id="git-bundle(1)__file_format">
+<title>FILE FORMAT</title>
+<simpara>See <xref linkend="gitformat-bundle(5)" />.</simpara>
 </simplesect>
 <simplesect id="git-bundle(1)__git">
 <title>GIT</title>

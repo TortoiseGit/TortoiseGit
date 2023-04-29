@@ -465,50 +465,60 @@ switch line wrapping, like the -w option of
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;(&lt;N&gt;[,trunc|ltrunc|mtrunc])</emphasis>
+<emphasis>%&lt;( &lt;N&gt; [,trunc|ltrunc|mtrunc])</emphasis>
 </term>
 <listitem>
 <simpara>
 make the next placeholder take at
-                                  least N columns, padding spaces on
+                                  least N column widths, padding spaces on
                                   the right if necessary.  Optionally
-                                  truncate at the beginning (ltrunc),
-                                  the middle (mtrunc) or the end
-                                  (trunc) if the output is longer than
-                                  N columns.  Note that truncating
+                                  truncate (with ellipsis <emphasis>..</emphasis>) at the left (ltrunc) <emphasis>..ft</emphasis>,
+                                  the middle (mtrunc) <emphasis>mi..le</emphasis>, or the end
+                                  (trunc) <emphasis>rig..</emphasis>, if the output is longer than
+                                  N columns.
+                                  Note 1: that truncating
                                   only works correctly with N &gt;= 2.
+                                  Note 2: spaces around the N and M (see below)
+                                  values are optional.
+                                  Note 3: Emojis and other wide characters
+                                  will take two display columns, which may
+                                  over-run column boundaries.
+                                  Note 4: decomposed character combining marks
+                                  may be misplaced at padding boundaries.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-make the next placeholder take at least until Nth
-             columns, padding spaces on the right if necessary
+make the next placeholder take at least until Mth
+             display column, padding spaces on the right if necessary.
+             Use negative M values for column positions measured
+             from the right hand edge of the terminal window.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis> respectively,
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis> respectively,
                         but padding spaces on the left
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
                           respectively, except that if the next
                           placeholder takes more spaces than given and
                           there are spaces on its left, use those
@@ -518,11 +528,11 @@ similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</e
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis>
                           respectively, but padding both sides
                           (i.e. the text is centered)
 </simpara>
@@ -1317,7 +1327,8 @@ diff output.</simpara>
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section on generating patches).
+        Generate patch (see section titled
+<link linkend="git-show(1)_generate_patch_text_with_p">"Generating patch text with -p"</link>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -2911,7 +2922,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <simpara>For more detailed explanation on these common options, see also
 <xref linkend="gitdiffcore(7)" />.</simpara>
 </simplesect>
-<simplesect id="git-show(1)__generating_patch_text_with_p">
+<simplesect id="git-show(1)_generate_patch_text_with_p">
 <title>Generating patch text with -p</title>
 <simpara>Running
 <xref linkend="git-diff(1)" />,

@@ -27,6 +27,14 @@ $GIT_DIR in a bare repository or the root of the working tree in a non-bare
 repository. An exception are hooks triggered during a push (<emphasis>pre-receive</emphasis>,
 <emphasis>update</emphasis>, <emphasis>post-receive</emphasis>, <emphasis>post-update</emphasis>, <emphasis>push-to-checkout</emphasis>) which are always
 executed in $GIT_DIR.</simpara>
+<simpara>Environment variables, such as <emphasis>GIT_DIR</emphasis>, <emphasis>GIT_WORK_TREE</emphasis>, etc., are exported
+so that Git commands run by the hook can correctly locate the repository.  If
+your hook needs to invoke Git commands in a foreign repository or in a
+different working tree of the same repository, then it should clear these
+environment variables so they do not interfere with Git operations at the
+foreign location.  For example:</simpara>
+<screen>local_desc=$(git describe)
+foreign_desc=$(unset $(git rev-parse --local-env-vars); git -C ../foreign-repo describe)</screen>
 <simpara>Hooks can get their arguments via the environment, command-line
 arguments, and stdin. See the documentation for each hook below for
 details.</simpara>

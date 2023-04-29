@@ -39,7 +39,8 @@ files are compared.</simpara>
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section on generating patches).
+        Generate patch (see section titled
+"Generating patch text with -p").
 </simpara>
 </listitem>
 </varlistentry>
@@ -1773,7 +1774,7 @@ followed by the name of the path in the merge commit.</simpara>
 <simpara>Note that <emphasis>combined diff</emphasis> lists only files which were modified from
 all parents.</simpara>
 </simplesect>
-<simplesect id="git-diff-index(1)__generating_patch_text_with_p">
+<simplesect id="git-diff-index(1)_generate_patch_text_with_p">
 <title>Generating patch text with -p</title>
 <simpara>Running
 <xref linkend="git-diff(1)" />,

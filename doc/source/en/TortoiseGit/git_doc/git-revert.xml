@@ -13,7 +13,7 @@
 <simplesect id="git-revert(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git revert</emphasis> [--[no-]edit] [-n] [-m parent-number] [-s] [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
+<literallayout><emphasis>git revert</emphasis> [--[no-]edit] [-n] [-m &lt;parent-number&gt;] [-s] [-S[&lt;keyid&gt;]] &lt;commit&gt;&#8230;
 <emphasis>git revert</emphasis> (--continue | --skip | --abort | --quit)</literallayout>
 </blockquote>
 </simplesect>
@@ -206,8 +206,13 @@ effect to your index in a row.</simpara>
 </term>
 <listitem>
 <simpara>
-        Allow the rerere mechanism to update the index with the
-        result of auto-conflict resolution if possible.
+        After the rerere mechanism reuses a recorded resolution on
+        the current conflict to update the files in the working
+        tree, allow it to also update the index with the result of
+        resolution.  <emphasis>--no-rerere-autoupdate</emphasis> is a good way to
+        double-check what <emphasis>rerere</emphasis> did and catch potential
+        mismerges, before committing the result to the index with a
+        separate <emphasis>git add</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -303,6 +308,25 @@ effect to your index in a row.</simpara>
         (included), but do not create any commit with the reverted
         changes. The revert only modifies the working tree and the
         index.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-revert(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+revert.reference
+</term>
+<listitem>
+<simpara>
+        Setting this variable to true makes <emphasis>git revert</emphasis> behave
+        as if the <emphasis>--reference</emphasis> option is given.
 </simpara>
 </listitem>
 </varlistentry>

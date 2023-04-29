@@ -13,7 +13,7 @@
 <simplesect id="git-sparse-checkout(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git sparse-checkout &lt;subcommand&gt; [&lt;options&gt;]</emphasis></literallayout>
+<literallayout><emphasis>git sparse-checkout</emphasis> (init | list | set | add | reapply | disable) [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-sparse-checkout(1)__description">

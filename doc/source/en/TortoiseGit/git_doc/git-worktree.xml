@@ -13,7 +13,8 @@
 <simplesect id="git-worktree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git worktree add</emphasis> [-f] [--detach] [--checkout] [--lock [--reason &lt;string&gt;]] [-b &lt;new-branch&gt;] &lt;path&gt; [&lt;commit-ish&gt;]
+<literallayout><emphasis>git worktree add</emphasis> [-f] [--detach] [--checkout] [--lock [--reason &lt;string&gt;]]
+                   [-b &lt;new-branch&gt;] &lt;path&gt; [&lt;commit-ish&gt;]
 <emphasis>git worktree list</emphasis> [-v | --porcelain [-z]]
 <emphasis>git worktree lock</emphasis> [--reason &lt;string&gt;] &lt;worktree&gt;
 <emphasis>git worktree move</emphasis> &lt;worktree&gt; &lt;new-path&gt;

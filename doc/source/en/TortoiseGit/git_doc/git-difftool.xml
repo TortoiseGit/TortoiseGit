@@ -202,10 +202,13 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 </variablelist>
 <simpara>See <xref linkend="git-diff(1)" /> for the full list of supported options.</simpara>
 </simplesect>
-<simplesect id="git-difftool(1)__config_variables">
-<title>CONFIG VARIABLES</title>
+<simplesect id="git-difftool(1)__configuration">
+<title>CONFIGURATION</title>
 <simpara><emphasis>git difftool</emphasis> falls back to <emphasis>git mergetool</emphasis> config variables when the
 difftool equivalents have not been defined.</simpara>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -213,7 +216,11 @@ diff.tool
 </term>
 <listitem>
 <simpara>
-        The default diff tool to use.
+        Controls which diff tool is used by <xref linkend="git-difftool(1)" />.
+        This variable overrides the value configured in <emphasis>merge.tool</emphasis>.
+        The list below shows the valid built-in values.
+        Any other value is treated as a custom diff tool and requires
+        that a corresponding difftool.&lt;tool&gt;.cmd variable is defined.
 </simpara>
 </listitem>
 </varlistentry>
@@ -223,8 +230,29 @@ diff.guitool
 </term>
 <listitem>
 <simpara>
-        The default diff tool to use when <emphasis>--gui</emphasis> is specified.
+        Controls which diff tool is used by <xref linkend="git-difftool(1)" /> when
+        the -g/--gui flag is specified. This variable overrides the value
+        configured in <emphasis>merge.guitool</emphasis>. The list below shows the valid
+        built-in values. Any other value is treated as a custom diff tool
+        and requires that a corresponding difftool.&lt;guitool&gt;.cmd variable
+        is defined.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.&lt;tool&gt;.cmd
+</term>
+<listitem>
+<simpara>
+        Specify the command to invoke the specified diff tool.
+        The specified command is evaluated in shell with the following
+        variables available:  <emphasis>LOCAL</emphasis> is set to the name of the temporary
+        file containing the contents of the diff pre-image and <emphasis>REMOTE</emphasis>
+        is set to the name of the temporary file containing the contents
+        of the diff post-image.
+</simpara>
+<simpara>See the <emphasis>--tool=&lt;tool&gt;</emphasis> option in <xref linkend="git-difftool(1)" /> for more details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -240,13 +268,13 @@ difftool.&lt;tool&gt;.path
 </varlistentry>
 <varlistentry>
 <term>
-difftool.&lt;tool&gt;.cmd
+difftool.trustExitCode
 </term>
 <listitem>
 <simpara>
-        Specify the command to invoke the specified diff tool.
+        Exit difftool if the invoked diff tool returns a non-zero exit status.
 </simpara>
-<simpara>See the <emphasis>--tool=&lt;tool&gt;</emphasis> option above for more details.</simpara>
+<simpara>See the <emphasis>--trust-exit-code</emphasis> option in <xref linkend="git-difftool(1)" /> for more details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -257,17 +285,6 @@ difftool.prompt
 <simpara>
         Prompt before each invocation of the diff tool.
 </simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-difftool.trustExitCode
-</term>
-<listitem>
-<simpara>
-        Exit difftool if the invoked diff tool returns a non-zero exit status.
-</simpara>
-<simpara>See the <emphasis>--trust-exit-code</emphasis> option above for more details.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

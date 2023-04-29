@@ -40,6 +40,11 @@ description on <emphasis>--fork-point</emphasis> below); or by <emphasis>git log
 <emphasis>--onto</emphasis> option was supplied.  This has the exact same effect as
 <emphasis>git reset --hard &lt;upstream&gt;</emphasis> (or <emphasis>&lt;newbase&gt;</emphasis>). <emphasis>ORIG_HEAD</emphasis> is set
 to point at the tip of the branch before the reset.</simpara>
+<note><simpara><emphasis>ORIG_HEAD</emphasis> is not guaranteed to still point to the previous branch tip
+at the end of the rebase if other commands that write that pseudo-ref
+(e.g. <emphasis>git reset</emphasis>) are used during the rebase. The previous branch tip,
+however, is accessible using the reflog of the current branch
+(i.e. <emphasis>@{1}</emphasis>, see <xref linkend="gitrevisions(7)" />).</simpara></note>
 <simpara>The commits that were previously saved into the temporary area are
 then reapplied to the current branch, one by one, in order. Note that
 any commits in <emphasis>HEAD</emphasis> which introduce the same textual changes as a commit
@@ -137,6 +142,82 @@ desired resolution, you can continue the rebasing process with</simpara>
 <simpara>Alternatively, you can undo the <emphasis>git rebase</emphasis> with</simpara>
 <literallayout class="monospaced">git rebase --abort</literallayout>
 </simplesect>
+<simplesect id="git-rebase(1)__mode_options">
+<title>MODE OPTIONS</title>
+<simpara>The options in this section cannot be used with any other option,
+including not with each other:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--continue
+</term>
+<listitem>
+<simpara>
+        Restart the rebasing process after having resolved a merge conflict.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--skip
+</term>
+<listitem>
+<simpara>
+        Restart the rebasing process by skipping the current patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abort
+</term>
+<listitem>
+<simpara>
+        Abort the rebase operation and reset HEAD to the original
+        branch. If <emphasis>&lt;branch&gt;</emphasis> was provided when the rebase operation was
+        started, then <emphasis>HEAD</emphasis> will be reset to <emphasis>&lt;branch&gt;</emphasis>. Otherwise <emphasis>HEAD</emphasis>
+        will be reset to where it was when the rebase operation was
+        started.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--quit
+</term>
+<listitem>
+<simpara>
+        Abort the rebase operation but <emphasis>HEAD</emphasis> is not reset back to the
+        original branch. The index and working tree are also left
+        unchanged as a result. If a temporary stash entry was created
+        using <emphasis>--autostash</emphasis>, it will be saved to the stash list.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--edit-todo
+</term>
+<listitem>
+<simpara>
+        Edit the todo list during an interactive rebase.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-current-patch
+</term>
+<listitem>
+<simpara>
+        Show the current patch in an interactive rebase or when rebase
+        is stopped because of conflicts. This is the equivalent of
+        <emphasis>git show REBASE_HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-rebase(1)__options">
 <title>OPTIONS</title>
 <variablelist>
@@ -166,12 +247,14 @@ leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
         merge base of <emphasis>&lt;upstream&gt;</emphasis> and <emphasis>&lt;branch&gt;</emphasis>. Running
         <emphasis>git rebase --keep-base &lt;upstream&gt; &lt;branch&gt;</emphasis> is equivalent to
         running
-        <emphasis>git rebase --onto &lt;upstream&gt;...&lt;branch&gt; &lt;upstream&gt; &lt;branch&gt;</emphasis>.
+        <emphasis>git rebase --reapply-cherry-picks --no-fork-point --onto &lt;upstream&gt;...&lt;branch&gt; &lt;upstream&gt; &lt;branch&gt;</emphasis>.
 </simpara>
 <simpara>This option is useful in the case where one is developing a feature on
 top of an upstream branch. While the feature is being worked on, the
 upstream branch may advance and it may not be the best idea to keep
-rebasing on top of the upstream but to keep the base commit as-is.</simpara>
+rebasing on top of the upstream but to keep the base commit as-is. As
+the base commit is unchanged this option implies <emphasis>--reapply-cherry-picks</emphasis>
+to avoid losing commits.</simpara>
 <simpara>Although both this option and <emphasis>--fork-point</emphasis> find the merge base between
 <emphasis>&lt;upstream&gt;</emphasis> and <emphasis>&lt;branch&gt;</emphasis>, this option uses the merge base as the <emphasis>starting
 point</emphasis> on which new commits will be created, whereas <emphasis>--fork-point</emphasis> uses
@@ -198,43 +281,6 @@ the merge base to determine the <emphasis>set of commits</emphasis> which will b
 <listitem>
 <simpara>
         Working branch; defaults to <emphasis>HEAD</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---continue
-</term>
-<listitem>
-<simpara>
-        Restart the rebasing process after having resolved a merge conflict.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---abort
-</term>
-<listitem>
-<simpara>
-        Abort the rebase operation and reset HEAD to the original
-        branch. If <emphasis>&lt;branch&gt;</emphasis> was provided when the rebase operation was
-        started, then <emphasis>HEAD</emphasis> will be reset to <emphasis>&lt;branch&gt;</emphasis>. Otherwise <emphasis>HEAD</emphasis>
-        will be reset to where it was when the rebase operation was
-        started.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---quit
-</term>
-<listitem>
-<simpara>
-        Abort the rebase operation but <emphasis>HEAD</emphasis> is not reset back to the
-        original branch. The index and working tree are also left
-        unchanged as a result. If a temporary stash entry was created
-        using <emphasis>--autostash</emphasis>, it will be saved to the stash list.
 </simpara>
 </listitem>
 </varlistentry>
@@ -271,7 +317,8 @@ the merge base to determine the <emphasis>set of commits</emphasis> which will b
 <simpara>Note that commits which start empty are kept (unless <emphasis>--no-keep-empty</emphasis>
 is specified), and commits which are clean cherry-picks (as determined
 by <emphasis>git log --cherry-mark ...</emphasis>) are detected and dropped as a
-preliminary step (unless <emphasis>--reapply-cherry-picks</emphasis> is passed).</simpara>
+preliminary step (unless <emphasis>--reapply-cherry-picks</emphasis> or <emphasis>--keep-base</emphasis> is
+passed).</simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
@@ -317,13 +364,14 @@ see the <emphasis>--empty</emphasis> flag.</simpara>
         upstream changes, the behavior towards them is controlled by
         the <emphasis>--empty</emphasis> flag.)
 </simpara>
-<simpara>By default (or if <emphasis>--no-reapply-cherry-picks</emphasis> is given), these commits
-will be automatically dropped.  Because this necessitates reading all
-upstream commits, this can be expensive in repos with a large number
-of upstream commits that need to be read.  When using the <emphasis>merge</emphasis>
-backend, warnings will be issued for each dropped commit (unless
-<emphasis>--quiet</emphasis> is given). Advice will also be issued unless
-<emphasis>advice.skippedCherryPicks</emphasis> is set to false (see <xref linkend="git-config(1)" />).</simpara>
+<simpara>In the absence of <emphasis>--keep-base</emphasis> (or if <emphasis>--no-reapply-cherry-picks</emphasis> is
+given), these commits will be automatically dropped.  Because this
+necessitates reading all upstream commits, this can be expensive in
+repositories with a large number of upstream commits that need to be
+read. When using the <emphasis>merge</emphasis> backend, warnings will be issued for each
+dropped commit (unless <emphasis>--quiet</emphasis> is given). Advice will also be issued
+unless <emphasis>advice.skippedCherryPicks</emphasis> is set to false (see
+<xref linkend="git-config(1)" />).</simpara>
 <simpara><emphasis>--reapply-cherry-picks</emphasis> allows rebase to forgo reading all upstream
 commits, potentially improving performance.</simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
@@ -341,38 +389,6 @@ commits, potentially improving performance.</simpara>
         message do not cause rebasing to halt.
 </simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---skip
-</term>
-<listitem>
-<simpara>
-        Restart the rebasing process by skipping the current patch.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---edit-todo
-</term>
-<listitem>
-<simpara>
-        Edit the todo list during an interactive rebase.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---show-current-patch
-</term>
-<listitem>
-<simpara>
-        Show the current patch in an interactive rebase or when rebase
-        is stopped because of conflicts. This is the equivalent of
-        <emphasis>git show REBASE_HEAD</emphasis>.
-</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -439,8 +455,13 @@ which makes little sense.</simpara>
 </term>
 <listitem>
 <simpara>
-        Allow the rerere mechanism to update the index with the
-        result of auto-conflict resolution if possible.
+        After the rerere mechanism reuses a recorded resolution on
+        the current conflict to update the files in the working
+        tree, allow it to also update the index with the result of
+        resolution.  <emphasis>--no-rerere-autoupdate</emphasis> is a good way to
+        double-check what <emphasis>rerere</emphasis> did and catch potential
+        mismerges, before committing the result to the index with a
+        separate <emphasis>git add</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -590,9 +611,9 @@ details).</simpara>
 <emphasis>fork_point</emphasis> is the result of <emphasis>git merge-base --fork-point &lt;upstream&gt;
 &lt;branch&gt;</emphasis> command (see <xref linkend="git-merge-base(1)" />).  If <emphasis>fork_point</emphasis>
 ends up being empty, the <emphasis>&lt;upstream&gt;</emphasis> will be used as a fallback.</simpara>
-<simpara>If <emphasis>&lt;upstream&gt;</emphasis> is given on the command line, then the default is
-<emphasis>--no-fork-point</emphasis>, otherwise the default is <emphasis>--fork-point</emphasis>. See also
-<emphasis>rebase.forkpoint</emphasis> in <xref linkend="git-config(1)" />.</simpara>
+<simpara>If <emphasis>&lt;upstream&gt;</emphasis> or <emphasis>--keep-base</emphasis> is given on the command line, then
+the default is <emphasis>--no-fork-point</emphasis>, otherwise the default is
+<emphasis>--fork-point</emphasis>. See also <emphasis>rebase.forkpoint</emphasis> in <xref linkend="git-config(1)" />.</simpara>
 <simpara>If your branch was based on <emphasis>&lt;upstream&gt;</emphasis> but <emphasis>&lt;upstream&gt;</emphasis> was rewound and
 your branch contains commits which were dropped, this option can be used
 with <emphasis>--keep-base</emphasis> in order to drop those commits from your branch.</simpara>
@@ -777,10 +798,7 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
 <simpara>
         Rebase all commits reachable from <emphasis>&lt;branch&gt;</emphasis>, instead of
         limiting them with an <emphasis>&lt;upstream&gt;</emphasis>.  This allows you to rebase
-        the root commit(s) on a branch.  When used with <emphasis>--onto</emphasis>, it
-        will skip changes already contained in <emphasis>&lt;newbase&gt;</emphasis> (instead of
-        <emphasis>&lt;upstream&gt;</emphasis>) whereas without <emphasis>--onto</emphasis> it will operate on every
-        change.
+        the root commit(s) on a branch.
 </simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
@@ -850,6 +868,24 @@ start would be overridden by the presence of
 <emphasis>rebase.rescheduleFailedExec=true</emphasis> configuration.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--update-refs
+</term>
+<term>
+--no-update-refs
+</term>
+<listitem>
+<simpara>
+        Automatically force-update any branches that point to commits that
+        are being rebased. Any branches that are checked out in a worktree
+        are not updated in this way.
+</simpara>
+<simpara>If the configuration variable <emphasis>rebase.updateRefs</emphasis> is set, then this option
+can be used to override and disable this setting.</simpara>
+<simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-rebase(1)__incompatible_options">
@@ -891,12 +927,7 @@ start would be overridden by the presence of
 </listitem>
 <listitem>
 <simpara>
---allow-empty-message
-</simpara>
-</listitem>
-<listitem>
-<simpara>
---[no-]autosquash
+--autosquash
 </simpara>
 </listitem>
 <listitem>
@@ -926,17 +957,17 @@ start would be overridden by the presence of
 </listitem>
 <listitem>
 <simpara>
---reapply-cherry-picks
+--[no-]reapply-cherry-picks when used without --keep-base
 </simpara>
 </listitem>
 <listitem>
 <simpara>
---edit-todo
+--update-refs
 </simpara>
 </listitem>
 <listitem>
 <simpara>
---root when used in combination with --onto
+--root when used without --onto
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1832,6 +1863,9 @@ merge cmake</screen>
 </simplesect>
 <simplesect id="git-rebase(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -1881,6 +1915,16 @@ rebase.autoStash
         This option can be overridden by the <emphasis>--no-autostash</emphasis> and
         <emphasis>--autostash</emphasis> options of <xref linkend="git-rebase(1)" />.
         Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.updateRefs
+</term>
+<listitem>
+<simpara>
+        If set to true enable <emphasis>--update-refs</emphasis> option by default.
 </simpara>
 </listitem>
 </varlistentry>

@@ -13,7 +13,8 @@
 <simplesect id="git-bugreport(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git bugreport</emphasis> [(-o | --output-directory) &lt;path&gt;] [(-s | --suffix) &lt;format&gt;]</literallayout>
+<literallayout><emphasis>git bugreport</emphasis> [(-o | --output-directory) &lt;path&gt;] [(-s | --suffix) &lt;format&gt;]
+                [--diagnose[=&lt;mode&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-bugreport(1)__description">
@@ -68,6 +69,9 @@ $SHELL
 </simpara>
 </listitem>
 </itemizedlist>
+<simpara>Additional information may be gathered into a separate zip archive using the
+<emphasis>--diagnose</emphasis> option, and can be attached alongside the bugreport document to
+provide additional context to readers.</simpara>
 <simpara>This tool is invoked via the typical Git setup process, which means that in some
 cases, it might not be able to launch - for example, if a relevant config file
 is unreadable. In this kind of scenario, it may be helpful to manually gather
@@ -103,6 +107,27 @@ the kind of information listed above when manually asking for help.</simpara>
         named <emphasis>git-bugreport-&lt;formatted suffix&gt;</emphasis>. This should take the form of a
         strftime(3) format string; the current local time will be used.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-diagnose
+</term>
+<term>
+--diagnose[=&lt;mode&gt;]
+</term>
+<listitem>
+<simpara>
+        Create a zip archive of supplemental information about the user's
+        machine, Git client, and repository state. The archive is written to the
+        same output directory as the bug report and is named
+        <emphasis>git-diagnostics-&lt;formatted suffix&gt;</emphasis>.
+</simpara>
+<simpara>Without <emphasis>mode</emphasis> specified, the diagnostic archive will contain the default set of
+statistics reported by <emphasis>git diagnose</emphasis>. An optional <emphasis>mode</emphasis> value may be specified
+to change which information is included in the archive. See
+<xref linkend="git-diagnose(1)" /> for the list of valid values for <emphasis>mode</emphasis> and details
+about their usage.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

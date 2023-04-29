@@ -13,7 +13,7 @@
 <simplesect id="git-read-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git read-tree</emphasis> [[-m [--trivial] [--aggressive] | --reset | --prefix=&lt;prefix&gt;]
+<literallayout><emphasis>git read-tree</emphasis> [(-m [--trivial] [--aggressive] | --reset | --prefix=&lt;prefix&gt;)
                 [-u | -i]] [--index-output=&lt;file&gt;] [--no-sparse-checkout]
                 (--empty | &lt;tree-ish1&gt; [&lt;tree-ish2&gt; [&lt;tree-ish3&gt;]])</literallayout>
 </blockquote>
@@ -340,7 +340,7 @@ see which of the "local changes" that you made were carried forward by running
 <emphasis>git diff-index --cached $M</emphasis>.  Note that this does not
 necessarily match what <emphasis>git diff-index --cached $H</emphasis> would have
 produced before such a two tree merge.  This is because of cases
-18 and 19 --- if you already had the changes in $M (e.g. maybe
+18 and 19 -- if you already had the changes in $M (e.g. maybe
 you picked it up via e-mail in a patch form), <emphasis>git diff-index
 --cached $H</emphasis> would have told you about the change before this
 merge, but it would not show in <emphasis>git diff-index --cached $M</emphasis>

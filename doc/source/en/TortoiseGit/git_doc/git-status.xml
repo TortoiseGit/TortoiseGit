@@ -13,7 +13,7 @@
 <simplesect id="git-status(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git status</emphasis> [&lt;options&gt;&#8230;] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git status</emphasis> [&lt;options&gt;] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-status(1)__description">
@@ -599,6 +599,78 @@ computation). When <emphasis>status</emphasis> is run in the background, the loc
 during the write may conflict with other simultaneous processes, causing
 them to fail. Scripts running <emphasis>status</emphasis> in the background should consider
 using <emphasis>git --no-optional-locks status</emphasis> (see <xref linkend="git(1)" /> for details).</simpara>
+</simplesect>
+<simplesect id="git-status(1)__untracked_files_and_performance">
+<title>UNTRACKED FILES AND PERFORMANCE</title>
+<simpara><emphasis>git status</emphasis> can be very slow in large worktrees if/when it
+needs to search for untracked files and directories. There are
+many configuration options available to speed this up by either
+avoiding the work or making use of cached results from previous
+Git commands. There is no single optimum set of settings right
+for everyone. We'll list a summary of the relevant options to help
+you, but before going into the list, you may want to run <emphasis>git status</emphasis>
+again, because your configuration may already be caching <emphasis>git status</emphasis>
+results, so it could be faster on subsequent runs.</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The <emphasis>--untracked-files=no</emphasis> flag or the
+        <emphasis>status.showUntrackedfiles=false</emphasis> config (see above for both):
+        indicate that <emphasis>git status</emphasis> should not report untracked
+        files. This is the fastest option. <emphasis>git status</emphasis> will not list
+        the untracked files, so you need to be careful to remember if
+        you create any new files and manually <emphasis>git add</emphasis> them.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>advice.statusUoption=false</emphasis> (see <xref linkend="git-config(1)" />):
+        setting this variable to <emphasis>false</emphasis> disables the warning message
+        given when enumerating untracked files takes more than 2
+        seconds.  In a large project, it may take longer and the user
+        may have already accepted the trade off (e.g. using "-uno" may
+        not be an acceptable option for the user), in which case, there
+        is no point issuing the warning message, and in such a case,
+        disabling the warning may be the best.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>core.untrackedCache=true</emphasis> (see <xref linkend="git-update-index(1)" />):
+        enable the untracked cache feature and only search directories
+        that have been modified since the previous <emphasis>git status</emphasis> command.
+        Git remembers the set of untracked files within each directory
+        and assumes that if a directory has not been modified, then
+        the set of untracked files within has not changed.  This is much
+        faster than enumerating the contents of every directory, but still
+        not without cost, because Git still has to search for the set of
+        modified directories. The untracked cache is stored in the
+        <emphasis>.git/index</emphasis> file. The reduced cost of searching for untracked
+        files is offset slightly by the increased size of the index and
+        the cost of keeping it up-to-date. That reduced search time is
+        usually worth the additional size.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>core.untrackedCache=true</emphasis> and <emphasis>core.fsmonitor=true</emphasis> or
+        <emphasis>core.fsmonitor=&lt;hook_command_pathname&gt;</emphasis> (see
+        <xref linkend="git-update-index(1)" />): enable both the untracked cache
+        and FSMonitor features and only search directories that have
+        been modified since the previous <emphasis>git status</emphasis> command.  This
+        is faster than using just the untracked cache alone because
+        Git can also avoid searching for modified directories.  Git
+        only has to enumerate the exact set of directories that have
+        changed recently. While the FSMonitor feature can be enabled
+        without the untracked cache, the benefits are greatly reduced
+        in that case.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>Note that after you turn on the untracked cache and/or FSMonitor
+features it may take a few <emphasis>git status</emphasis> commands for the various
+caches to warm up before you see improved command times.  This is
+normal.</simpara>
 </simplesect>
 <simplesect id="git-status(1)__see_also">
 <title>SEE ALSO</title>

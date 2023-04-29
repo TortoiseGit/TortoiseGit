@@ -13,12 +13,13 @@
 <simplesect id="git-var(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git var</emphasis> ( -l | &lt;variable&gt; )</literallayout>
+<literallayout><emphasis>git var</emphasis> (-l | &lt;variable&gt;)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-var(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Prints a Git logical variable.</simpara>
+<simpara>Prints a Git logical variable. Exits with code 1 if the variable has
+no value.</simpara>
 </simplesect>
 <simplesect id="git-var(1)__options">
 <title>OPTIONS</title>
@@ -79,6 +80,21 @@ GIT_EDITOR
     environment variable, then <emphasis>core.editor</emphasis> configuration, then
     <emphasis>$VISUAL</emphasis>, then <emphasis>$EDITOR</emphasis>, and then the default chosen at compile
     time, which is usually <emphasis>vi</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_SEQUENCE_EDITOR
+</term>
+<listitem>
+<simpara>
+    Text editor used to edit the <emphasis>todo</emphasis> file while running <emphasis>git rebase
+    -i</emphasis>. Like <emphasis>GIT_EDITOR</emphasis>, the value is meant to be interpreted by
+    the shell when it is used. The order of preference is the
+    <emphasis>$GIT_SEQUENCE_EDITOR</emphasis> environment variable, then
+    <emphasis>sequence.editor</emphasis> configuration, and then the value of <emphasis>git var
+    GIT_EDITOR</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

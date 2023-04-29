@@ -115,10 +115,10 @@ of &lt;commit&gt; and HEAD.  <emphasis>git diff --merge-base A</emphasis> is equ
 <simpara>
         This form is to view the results of a merge commit.  The first
         listed &lt;commit&gt; must be the merge itself; the remaining two or
-        more commits should be its parents.  A convenient way to produce
-        the desired set of revisions is to use the <emphasis>^@</emphasis> suffix.
-        For instance, if <emphasis>master</emphasis> names a merge commit, <emphasis>git diff master
-        master^@</emphasis> gives the same combined diff as <emphasis>git show master</emphasis>.
+        more commits should be its parents.  Convenient ways to produce
+        the desired set of revisions are to use the suffixes <emphasis>^@</emphasis> and
+        <emphasis>^!</emphasis>.  If A is a merge commit, then <emphasis>git diff A A^@</emphasis>,
+        <emphasis>git diff A^!</emphasis> and <emphasis>git show A</emphasis> all give the same combined diff.
 </simpara>
 </listitem>
 </varlistentry>
@@ -189,7 +189,8 @@ and the range notations (<emphasis>&lt;commit&gt;..&lt;commit&gt;</emphasis> and
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section on generating patches).
+        Generate patch (see section titled
+"Generating patch text with -p").
         This is the default.
 </simpara>
 </listitem>
@@ -1927,7 +1928,7 @@ followed by the name of the path in the merge commit.</simpara>
 <simpara>Note that <emphasis>combined diff</emphasis> lists only files which were modified from
 all parents.</simpara>
 </simplesect>
-<simplesect id="git-diff(1)__generating_patch_text_with_p">
+<simplesect id="git-diff(1)_generate_patch_text_with_p">
 <title>Generating patch text with -p</title>
 <simpara>Running
 <xref linkend="git-diff(1)" />,
@@ -2378,6 +2379,777 @@ Output diff in reverse.
 </para>
 </callout>
 </calloutlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-diff(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+diff.autoRefreshIndex
+</term>
+<listitem>
+<simpara>
+        When using <emphasis>git diff</emphasis> to compare with work tree
+        files, do not consider stat-only change as changed.
+        Instead, silently run <emphasis>git update-index --refresh</emphasis> to
+        update the cached stat information for paths whose
+        contents in the work tree match the contents in the
+        index.  This option defaults to true.  Note that this
+        affects only <emphasis>git diff</emphasis> Porcelain, and not lower level
+        <emphasis>diff</emphasis> commands such as <emphasis>git diff-files</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.dirstat
+</term>
+<listitem>
+<simpara>
+        A comma separated list of <emphasis>--dirstat</emphasis> parameters specifying the
+        default behavior of the <emphasis>--dirstat</emphasis> option to <xref linkend="git-diff(1)" />
+        and friends. The defaults can be overridden on the command line
+        (using <emphasis>--dirstat=&lt;param1,param2,...&gt;</emphasis>). The fallback defaults
+        (when not changed by <emphasis>diff.dirstat</emphasis>) are <emphasis>changes,noncumulative,3</emphasis>.
+        The following parameters are available:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>changes</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the lines that have been
+        removed from the source, or added to the destination. This ignores
+        the amount of pure code movements within a file.  In other words,
+        rearranging lines in a file is not counted as much as other changes.
+        This is the default behavior when no parameter is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>lines</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by doing the regular line-based diff
+        analysis, and summing the removed/added line counts. (For binary
+        files, count 64-byte chunks instead, since binary files have no
+        natural concept of lines). This is a more expensive <emphasis>--dirstat</emphasis>
+        behavior than the <emphasis>changes</emphasis> behavior, but it does count rearranged
+        lines within a file as much as other changes. The resulting output
+        is consistent with what you get from the other <emphasis>--*stat</emphasis> options.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>files</emphasis>
+</term>
+<listitem>
+<simpara>
+        Compute the dirstat numbers by counting the number of files changed.
+        Each changed file counts equally in the dirstat analysis. This is
+        the computationally cheapest <emphasis>--dirstat</emphasis> behavior, since it does
+        not have to look at the file contents at all.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>cumulative</emphasis>
+</term>
+<listitem>
+<simpara>
+        Count changes in a child directory for the parent directory as well.
+        Note that when using <emphasis>cumulative</emphasis>, the sum of the percentages
+        reported may exceed 100%. The default (non-cumulative) behavior can
+        be specified with the <emphasis>noncumulative</emphasis> parameter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+&lt;limit&gt;
+</term>
+<listitem>
+<simpara>
+        An integer parameter specifies a cut-off percent (3% by default).
+        Directories contributing less than this percentage of the changes
+        are not shown in the output.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Example: The following will count changed files, while ignoring
+directories with less than 10% of the total amount of changed files,
+and accumulating child directory counts in the parent directories:
+<emphasis>files,10,cumulative</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.statGraphWidth
+</term>
+<listitem>
+<simpara>
+        Limit the width of the graph part in --stat output. If set, applies
+        to all commands generating --stat output except format-patch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.context
+</term>
+<listitem>
+<simpara>
+        Generate diffs with &lt;n&gt; lines of context instead of the default
+        of 3. This value is overridden by the -U option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.interHunkContext
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified number
+        of lines, thereby fusing the hunks that are close to each other.
+        This value serves as the default for the <emphasis>--inter-hunk-context</emphasis>
+        command line option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.external
+</term>
+<listitem>
+<simpara>
+        If this config variable is set, diff generation is not
+        performed using the internal diff machinery, but using the
+        given command.  Can be overridden with the GIT_EXTERNAL_DIFF
+        environment variable.  The command is called with parameters
+        as described under "git Diffs" in <xref linkend="git(1)" />.  Note: if
+        you want to use an external diff program only on a subset of
+        your files, you might want to use <xref linkend="gitattributes(5)" /> instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.ignoreSubmodules
+</term>
+<listitem>
+<simpara>
+        Sets the default value of --ignore-submodules. Note that this
+        affects only <emphasis>git diff</emphasis> Porcelain, and not lower level <emphasis>diff</emphasis>
+        commands such as <emphasis>git diff-files</emphasis>. <emphasis>git checkout</emphasis>
+        and <emphasis>git switch</emphasis> also honor
+        this setting when reporting uncommitted changes. Setting it to
+        <emphasis>all</emphasis> disables the submodule summary normally shown by <emphasis>git commit</emphasis>
+        and <emphasis>git status</emphasis> when <emphasis>status.submoduleSummary</emphasis> is set unless it is
+        overridden by using the --ignore-submodules command-line option.
+        The <emphasis>git submodule</emphasis> commands are not affected by this setting.
+        By default this is set to untracked so that any untracked
+        submodules are ignored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.mnemonicPrefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> uses a prefix pair that is different from the
+        standard "a/" and "b/" depending on what is being compared.  When
+        this configuration is in effect, reverse diff output also swaps
+        the order of the prefixes:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>git diff</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares the (i)ndex and the (w)ork tree;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff HEAD</emphasis>
+</term>
+<listitem>
+<simpara>
+         compares a (c)ommit and the (w)ork tree;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff --cached</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares a (c)ommit and the (i)ndex;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff HEAD:file1 file2</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares an (o)bject and a (w)ork tree entity;
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git diff --no-index a b</emphasis>
+</term>
+<listitem>
+<simpara>
+        compares two non-git things (1) and (2).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.noprefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> does not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.relative
+</term>
+<listitem>
+<simpara>
+        If set to <emphasis>true</emphasis>, <emphasis>git diff</emphasis> does not show changes outside of the directory
+        and show pathnames relative to the current directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.orderFile
+</term>
+<listitem>
+<simpara>
+        File indicating how to order files within a diff.
+        See the <emphasis>-O</emphasis> option to <xref linkend="git-diff(1)" /> for details.
+        If <emphasis>diff.orderFile</emphasis> is a relative pathname, it is treated as
+        relative to the top of the working tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.renameLimit
+</term>
+<listitem>
+<simpara>
+        The number of files to consider in the exhaustive portion of
+        copy/rename detection; equivalent to the <emphasis>git diff</emphasis> option
+        <emphasis>-l</emphasis>.  If not set, the default value is currently 1000.  This
+        setting has no effect if rename detection is turned off.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.renames
+</term>
+<listitem>
+<simpara>
+        Whether and how Git detects renames.  If set to "false",
+        rename detection is disabled. If set to "true", basic rename
+        detection is enabled.  If set to "copies" or "copy", Git will
+        detect copies, as well.  Defaults to true.  Note that this
+        affects only <emphasis>git diff</emphasis> Porcelain like <xref linkend="git-diff(1)" /> and
+        <xref linkend="git-log(1)" />, and not lower level commands such as
+        <xref linkend="git-diff-files(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.suppressBlankEmpty
+</term>
+<listitem>
+<simpara>
+        A boolean to inhibit the standard behavior of printing a space
+        before each empty output line. Defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.submodule
+</term>
+<listitem>
+<simpara>
+        Specify the format in which differences in submodules are
+        shown.  The "short" format just shows the names of the commits
+        at the beginning and end of the range. The "log" format lists
+        the commits in the range like <xref linkend="git-submodule(1)" /> <emphasis>summary</emphasis>
+        does. The "diff" format shows an inline diff of the changed
+        contents of the submodule. Defaults to "short".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.wordRegex
+</term>
+<listitem>
+<simpara>
+        A POSIX Extended Regular Expression used to determine what is a "word"
+        when performing word-by-word difference calculations.  Character
+        sequences that match the regular expression are "words", all other
+        characters are <emphasis role="strong">ignorable</emphasis> whitespace.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.command
+</term>
+<listitem>
+<simpara>
+        The custom diff driver command.  See <xref linkend="gitattributes(5)" />
+        for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.xfuncname
+</term>
+<listitem>
+<simpara>
+        The regular expression that the diff driver should use to
+        recognize the hunk header.  A built-in pattern may also be used.
+        See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.binary
+</term>
+<listitem>
+<simpara>
+        Set this option to true to make the diff driver treat files as
+        binary.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.textconv
+</term>
+<listitem>
+<simpara>
+        The command that the diff driver should call to generate the
+        text-converted version of a file.  The result of the
+        conversion is used to generate a human-readable diff.  See
+        <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.wordRegex
+</term>
+<listitem>
+<simpara>
+        The regular expression that the diff driver should use to
+        split words in a line.  See <xref linkend="gitattributes(5)" /> for
+        details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.&lt;driver&gt;.cachetextconv
+</term>
+<listitem>
+<simpara>
+        Set this option to true to make the diff driver cache the text
+        conversion outputs.  See <xref linkend="gitattributes(5)" /> for details.
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>araxis</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Araxis Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc3</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc4</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>codecompare</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Code Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>deltawalker</emphasis>
+</term>
+<listitem>
+<simpara>
+Use DeltaWalker (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use DiffMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffuse</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Diffuse (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>ecmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use ECMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>emerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Emacs' Emerge
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>examdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use ExamDiff Pro (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>guiffy</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Guiffy's Diff Tool (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use gVim (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>kdiff3</emphasis>
+</term>
+<listitem>
+<simpara>
+Use KDiff3 (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>kompare</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Kompare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>meld</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Meld (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Neovim
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>opendiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use FileMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>p4merge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use HelixCore P4Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>smerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Sublime Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tkdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use TkDiff (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Vim
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>winmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use WinMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>xxdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use xxdiff (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.indentHeuristic
+</term>
+<listitem>
+<simpara>
+        Set this option to <emphasis>false</emphasis> to disable the default heuristics
+        that shift diff hunk boundaries to make patches easier to read.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.algorithm
+</term>
+<listitem>
+<simpara>
+        Choose a diff algorithm.  The variants are as follows:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>default</emphasis>, <emphasis>myers</emphasis>
+</term>
+<listitem>
+<simpara>
+        The basic greedy diff algorithm. Currently, this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>minimal</emphasis>
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible diff is
+        produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use "patience diff" algorithm when generating patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        This algorithm extends the patience algorithm to "support
+        low-occurrence common elements".
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.wsErrorHighlight
+</term>
+<listitem>
+<simpara>
+        Highlight whitespace errors in the <emphasis>context</emphasis>, <emphasis>old</emphasis> or <emphasis>new</emphasis>
+        lines of the diff.  Multiple values are separated by comma,
+        <emphasis>none</emphasis> resets previous values, <emphasis>default</emphasis> reset the list to
+        <emphasis>new</emphasis> and <emphasis>all</emphasis> is a shorthand for <emphasis>old,new,context</emphasis>.  The
+        whitespace errors are colored with <emphasis>color.diff.whitespace</emphasis>.
+        The command line option <emphasis>--ws-error-highlight=&lt;kind&gt;</emphasis>
+        overrides this setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.colorMoved
+</term>
+<listitem>
+<simpara>
+        If set to either a valid <emphasis>&lt;mode&gt;</emphasis> or a true value, moved lines
+        in a diff are colored differently, for details of valid modes
+        see <emphasis>--color-moved</emphasis> in <xref linkend="git-diff(1)" />. If simply set to
+        true the default color mode will be used. When set to false,
+        moved lines are not colored.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.colorMovedWS
+</term>
+<listitem>
+<simpara>
+        When moved lines are colored using e.g. the <emphasis>diff.colorMoved</emphasis> setting,
+        this option controls the <emphasis>&lt;mode&gt;</emphasis> how spaces are treated
+        for details of valid modes see <emphasis>--color-moved-ws</emphasis> in <xref linkend="git-diff(1)" />.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -123,6 +123,163 @@ v2.4.1  v2.4.10     v2.4.11     v2.4.12     v2.4.2
 v2.4.3  v2.4.4      v2.4.5      v2.4.6      v2.4.7
 v2.4.8  v2.4.9</screen>
 </simplesect>
+<simplesect id="git-column(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+column.ui
+</term>
+<listitem>
+<simpara>
+        Specify whether supported commands should output in columns.
+        This variable consists of a list of tokens separated by spaces
+        or commas:
+</simpara>
+<simpara>These options control when the feature should be enabled
+(defaults to <emphasis>never</emphasis>):</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+        always show in columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>never</emphasis>
+</term>
+<listitem>
+<simpara>
+        never show in columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>auto</emphasis>
+</term>
+<listitem>
+<simpara>
+        show in columns if the output is to the terminal
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>These options control layout (defaults to <emphasis>column</emphasis>).  Setting any
+of these implies <emphasis>always</emphasis> if none of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> are
+specified.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>column</emphasis>
+</term>
+<listitem>
+<simpara>
+        fill columns before rows
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>row</emphasis>
+</term>
+<listitem>
+<simpara>
+        fill rows before columns
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>plain</emphasis>
+</term>
+<listitem>
+<simpara>
+        show in one column
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Finally, these options can be combined with a layout option (defaults
+to <emphasis>nodense</emphasis>):</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>dense</emphasis>
+</term>
+<listitem>
+<simpara>
+        make unequal size columns to utilize more space
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nodense</emphasis>
+</term>
+<listitem>
+<simpara>
+        make equal size columns
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.branch
+</term>
+<listitem>
+<simpara>
+        Specify whether to output branch listing in <emphasis>git branch</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.clean
+</term>
+<listitem>
+<simpara>
+        Specify the layout when list items in <emphasis>git clean -i</emphasis>, which always
+        shows files and directories in columns. See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.status
+</term>
+<listitem>
+<simpara>
+        Specify whether to output untracked files in <emphasis>git status</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+column.tag
+</term>
+<listitem>
+<simpara>
+        Specify whether to output tag listing in <emphasis>git tag</emphasis> in columns.
+        See <emphasis>column.ui</emphasis> for details.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-column(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>

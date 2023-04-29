@@ -13,8 +13,9 @@
 <simplesect id="git-interpret-trailers(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git interpret-trailers</emphasis> [&lt;options&gt;] [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [&lt;file&gt;&#8230;]
-<emphasis>git interpret-trailers</emphasis> [&lt;options&gt;] [--parse] [&lt;file&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git interpret-trailers</emphasis> [--in-place] [--trim-empty]
+                        [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;]
+                        [--parse] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-interpret-trailers(1)__description">
@@ -55,10 +56,12 @@ The group must either be at the end of the message or be the last
 non-whitespace lines before a line that starts with <emphasis>---</emphasis> (followed by a
 space or the end of the line). Such three minus signs start the patch
 part of the message. See also <emphasis>--no-divider</emphasis> below.</simpara>
-<simpara>When reading trailers, there can be whitespaces after the
-token, the separator and the value. There can also be whitespaces
-inside the token and the value. The value may be split over multiple lines with
-each subsequent line starting with whitespace, like the "folding" in RFC 822.</simpara>
+<simpara>When reading trailers, there can be no whitespace before or inside the
+token, but any number of regular space and tab characters are allowed
+between the token and the separator. There can be whitespaces before,
+inside or after the value. The value may be split over multiple lines
+with each subsequent line starting with at least one whitespace, like
+the "folding" in RFC 822.</simpara>
 <simpara>Note that <emphasis>trailers</emphasis> do not follow and are not intended to follow many
 rules for RFC 822 headers. For example they do not follow
 the encoding rules and probably many other rules.</simpara>

@@ -14,22 +14,24 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git help</emphasis> [-a|--all] [--[no-]verbose] [--[no-]external-commands] [--[no-]aliases]
-<emphasis>git help</emphasis> [[-i|--info] [-m|--man] [-w|--web]] [&lt;command&gt;|&lt;guide&gt;]
+<emphasis>git help</emphasis> [[-i|--info] [-m|--man] [-w|--web]] [&lt;command&gt;|&lt;doc&gt;]
 <emphasis>git help</emphasis> [-g|--guides]
-<emphasis>git help</emphasis> [-c|--config]</literallayout>
+<emphasis>git help</emphasis> [-c|--config]
+<emphasis>git help</emphasis> [--user-interfaces]
+<emphasis>git help</emphasis> [--developer-interfaces]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-help(1)__description">
 <title>DESCRIPTION</title>
-<simpara>With no options and no <emphasis>&lt;command&gt;</emphasis> or <emphasis>&lt;guide&gt;</emphasis> given, the synopsis of the <emphasis>git</emphasis>
+<simpara>With no options and no <emphasis>&lt;command&gt;</emphasis> or <emphasis>&lt;doc&gt;</emphasis> given, the synopsis of the <emphasis>git</emphasis>
 command and a list of the most commonly used Git commands are printed
 on the standard output.</simpara>
 <simpara>If the option <emphasis>--all</emphasis> or <emphasis>-a</emphasis> is given, all available commands are
 printed on the standard output.</simpara>
 <simpara>If the option <emphasis>--guides</emphasis> or <emphasis>-g</emphasis> is given, a list of the
 Git concept guides is also printed on the standard output.</simpara>
-<simpara>If a command, or a guide, is given, a manual page for that command or
-guide is brought up. The <emphasis>man</emphasis> program is used by default for this
+<simpara>If a command or other documentation is given, the relevant manual page
+will be brought up. The <emphasis>man</emphasis> program is used by default for this
 purpose, but this can be overridden by other options or configuration
 variables.</simpara>
 <simpara>If an alias is given, git shows the definition of the alias on
@@ -113,6 +115,35 @@ former is internally converted into the latter.</simpara>
 <listitem>
 <simpara>
         Prints a list of the Git concept guides on the standard output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--user-interfaces
+</term>
+<listitem>
+<simpara>
+        Prints a list of the repository, command and file interfaces
+        documentation on the standard output.
+</simpara>
+<simpara>In-repository file interfaces such as <emphasis>.git/info/exclude</emphasis> are
+documented here (see <xref linkend="gitrepository-layout(5)" />), as well as
+in-tree configuration such as <emphasis>.mailmap</emphasis> (see <xref linkend="gitmailmap(5)" />).</simpara>
+<simpara>This section of the documentation also covers general or widespread
+user-interface conventions (e.g. <xref linkend="gitcli(7)" />), and
+pseudo-configuration such as the file-based <emphasis>.git/hooks/*</emphasis> interface
+described in <xref linkend="githooks(5)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--developer-interfaces
+</term>
+<listitem>
+<simpara>
+        Print list of file formats, protocols and other developer
+        interfaces documentation on the standard output.
 </simpara>
 </listitem>
 </varlistentry>
