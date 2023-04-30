@@ -6,7 +6,7 @@
 		<primary>Cherry pick</primary>
 	</indexterm>
 	<para>
-		<link linkend="git-cherry-pick(1)">Cherry-picking</link> in TortoiseGit is invoked from the <link linkend="tgit-dug-showlog">Revision Log Dialog</link>. Within this dialog, select the commit(s) to cherry-pick, then right-click on one of the selected commits to pop up the context menu. Select <guilabel>Cherry Pick this commit...</guilabel> (or <guilabel>Cherry Pick select commits...</guilabel> if more than one commit is selected).
+		Cherry-picking in TortoiseGit is invoked from the <link linkend="tgit-dug-showlog">Revision Log Dialog</link>. Within this dialog, select the commit(s) to cherry-pick, then right-click on one of the selected commits to pop up the context menu. Select <guilabel>Cherry Pick this commit...</guilabel> (or <guilabel>Cherry Pick select commits...</guilabel> if more than one commit is selected).
 	</para>
 	<para>
 		The Cherry Pick dialog will be shown.
@@ -29,6 +29,6 @@
 		</para>
 	</important>
 	<para>
-		You can find more information at <xref linkend="git-cherry-pick(1)"/>.
+		You can find more information at <gitdoclink cmd="git-cherry-pick" section="1"/>.
 	</para>
 </sect1>

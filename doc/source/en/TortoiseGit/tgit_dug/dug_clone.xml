@@ -65,6 +65,6 @@
 		OpenSSH, Plink or TortoiseGitPlink.
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-clone(1)"/>
+		You can find more information at <gitdoclink cmd="git-clone" section="1"/>
 	</para>
 </sect1>

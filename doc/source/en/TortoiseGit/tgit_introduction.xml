@@ -381,7 +381,7 @@
 					<listitem>
 						<para>
 						Check the <literal>tgit.projectlanguage</literal> setting. This setting can be set using TortoiseGit Settings <guilabel>Dialogs 3</guilabel> page (<xref linkend="tgit-dug-settings-dialogs3"/>).
-						Refer to <xref linkend="git-config(1)"/> for information
+						Refer to <gitdoclink cmd="git-config" section="1"/> for information
 						about setting properties (use the <literal>LCID Dec</literal> value as <ulink url="https://docs.microsoft.com/openspecs/windows_protocols/ms-lcid/a9eac961-e77d-41a6-90a5-ce1a8b0cdb9c">assigned by Microsoft</ulink>).
 						</para>
 					</listitem>

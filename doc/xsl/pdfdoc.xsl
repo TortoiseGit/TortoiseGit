@@ -5,6 +5,7 @@
 
 <xsl:import href="./db_pdfdoc.xsl"/>
 <xsl:import href="./defaults.xsl"/>
+<xsl:import href="./tgit.xsl"/>
 <xsl:param name="paper.type" select="'A4'"></xsl:param>
 <xsl:param name="page.orientation">portrait</xsl:param>
 <xsl:param name="double.sided" select="0"></xsl:param>

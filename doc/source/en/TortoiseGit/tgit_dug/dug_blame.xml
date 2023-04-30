@@ -183,6 +183,6 @@
 	</sect2>
 	-->
 	<para>
-		You can find more information at <xref linkend="git-blame(1)"/>.
+		You can find more information at <gitdoclink cmd="git-blame" section="1"/>.
 	</para>
 </sect1>

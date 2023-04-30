@@ -69,6 +69,6 @@
 		</para>
 	</important>
 	<para>
-		You can see more information at <xref linkend="git-merge(1)"/>.
+		You can see more information at <gitdoclink cmd="git-merge" section="1"/>.
 	</para>
 </sect1>

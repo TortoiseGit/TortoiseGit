@@ -81,7 +81,7 @@
 			<guilabel>Send Mail after create</guilabel> launch send mail dialog after patches created (see <xref linkend="tgit-dug-patch-sendpatches"/>).
 		</para>
 		<para>
-			You can find more information at <xref linkend="git-format-patch(1)"/>.
+			You can find more information at <gitdoclink cmd="git-format-patch" section="1"/>.
 		</para>
 		<important>
 			<para>
@@ -190,7 +190,7 @@
 			<guibutton>Apply</guibutton> Start applying the patches one by one.
 		</para>
 		<para>
-			You can find more information at <xref linkend="git-am(1)"/>.
+			You can find more information at <gitdoclink cmd="git-am" section="1"/>.
 		</para>
 	</sect2>
 	<sect2 id="tgit-dug-patch-pullrequest">
@@ -252,7 +252,7 @@
 			and pass it to other people who you want to pull your changes.
 		</para>
 		<para>
-			You can find more information at <xref linkend="git-request-pull(1)"/>.
+			You can find more information at <gitdoclink cmd="git-request-pull" section="1"/>.
 		</para>
 	</sect2>
 </sect1>

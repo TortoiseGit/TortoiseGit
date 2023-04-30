@@ -5,7 +5,7 @@
 	<sect3 id="tgit-dug-settings-hierarchical">
 		<title>The hierarchical Git configuration</title>
 		<para>
-			Git uses the concept of a hierarchical configuration (cf. <xref linkend="git-config(1)"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
+			Git uses the concept of a hierarchical configuration (cf. <gitdoclink cmd="git-config" section="1"/>). I.e. there are multiple levels; settings in higher levels override values in lower levels. The <guilabel>Effective</guilabel> tab shows you the effective values for the current scope (read-only).
 		</para>
 		<para>
 			Select any level (e.g. <guilabel>Local</guilabel> - the current repository settings stored locally in <filename>.git/config</filename>, <guilabel>Project</guilabel> - settings for the current repository stored within the repository in <filename>/.tgitconfig</filename>, <guilabel>Global</guilabel> - settings for the current user, <guilabel>System</guilabel> - settings for all users of the system) to see the values stored there.
@@ -49,7 +49,7 @@
 			The variable can be set to "warn",
 			in which case git will only warn about an irreversible conversion but continue the operation.
 		</para>
-		<para><guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <xref linkend="git-config(1)"/>.</para>
+		<para><guilabel>QuotePath</guilabel> Controls the <literal>core.quotepath</literal> setting which might be interesting when you have non ASCII filenames: See <gitdoclink cmd="git-config" section="1"/>.</para>
 		<important>
 			<para>
 				If you have problems entering/storing data please see <xref linkend="tgit-dug-settings-hierarchical"/>.
@@ -99,7 +99,7 @@
 		</para>
 		<para>
 			<guilabel>Push Default</guilabel>
-			Selecting this means to always push to this remote (cf. <xref linkend="git-config(1)"/>)
+			Selecting this means to always push to this remote (cf. <gitdoclink cmd="git-config" section="1"/>)
 			Default is false.
 		</para>
 		<para>
@@ -209,7 +209,7 @@
 			Also considers the path component of URL to match the configuration context.
 		</para>
 		<para>
-			You can find more information at <xref linkend="gitcredentials(7)"/>.
+			You can find more information at <gitdoclink cmd="gitcredentials" section="7"/>.
 		</para>
 	</sect3>
 </sect2>

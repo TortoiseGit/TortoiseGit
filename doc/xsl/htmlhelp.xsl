@@ -2,6 +2,7 @@
 
 <xsl:import href="./db_htmlhelp.xsl"/> 
 <xsl:import href="./defaults.xsl"/> 
+<xsl:import href="./tgit.xsl"/>
  <xsl:param name="keep.relative.image.uris" select="0"/>
 
 <xsl:param name="suppress.navigation" select="0"/> 

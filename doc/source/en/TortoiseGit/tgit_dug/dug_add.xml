@@ -106,6 +106,6 @@
 		This is to facilitate sharing repository with Linux / MacOS environment.
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-add(1)"/>
+		You can find more information at <gitdoclink cmd="git-add" section="1"/>
 	</para>
 </sect1>

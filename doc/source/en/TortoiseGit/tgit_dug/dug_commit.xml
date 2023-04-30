@@ -143,7 +143,7 @@
 			To help out in awkward cases like this, there is a Git flag for files
 			called <literal>skip-worktree</literal> - then files are treated as
 			unmodified and Git also refuses to merge those on merge/pull
-			(cf. <xref linkend="git-update-index(1)__skip_worktree_bit"/>).
+			(cf. <gitdoclink cmd="git-update-index" section="1" anchor="_skip_worktree_bit"/>).
 			As another way to tackle cases like this, we have reserved a changelist
 			called <literal>ignore-on-commit</literal>. Any file added to this
 			changelist will automatically be unchecked in the commit dialog.
@@ -403,6 +403,6 @@
 -->
 	</sect2>
 	<para>
-		You can find more information at <xref linkend="git-commit(1)"/>.
+		You can find more information at <gitdoclink cmd="git-commit" section="1"/>.
 	</para>
 </sect1>

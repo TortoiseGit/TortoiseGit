@@ -10,7 +10,7 @@
 		</figure>
 		The settings used by TortoiseGitBlame are controlled from the
 		main context menu, not directly with TortoiseGitBlame itself.
-		Details for the parameters for the blame algorithm are described in <xref linkend="git-blame(1)"/>.
+		Details for the parameters for the blame algorithm are described in <gitdoclink cmd="git-blame" section="1"/>.
 	</para>
 	<variablelist>
 		<varlistentry>

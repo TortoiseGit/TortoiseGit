@@ -13,7 +13,7 @@
 	</indexterm>
 	<?dbhh topicname="HIDD_GITSWITCH"?>
 	<para>
-		The Switch/Checkout dialog can be used to checkout a specific version to the working tree (i.e., all files are updated to match their state of the selected version). Normally, a specific version will be represented by a (local) branch which is set as the current branch (cf. <xref linkend="tgit-dug-branchtag"/> and <xref linkend="Git User Manual_repositories-and-branches"/>).
+		The Switch/Checkout dialog can be used to checkout a specific version to the working tree (i.e., all files are updated to match their state of the selected version). Normally, a specific version will be represented by a (local) branch which is set as the current branch (cf. <xref linkend="tgit-dug-branchtag"/> and <gitdoclink cmd="user-manual" anchor="repositories-and-branches"/>).
 	</para>
 	<para>
 		Select a git repository directory in windows explorer
@@ -217,13 +217,13 @@
 	</para>
 	-->
 	<para>
-		You can find more information at <xref linkend="git-checkout(1)"/>
+		You can find more information at <gitdoclink cmd="git-checkout" section="1"/>
 	</para>
 	<important>
 		<para>
 			If you checkout/switch to a <guilabel>Tag</guilabel> or <guilabel>Commit</guilabel>,
 			you should create a new branch. Otherwise you will
-			work at "no branch" (detached HEAD state; i.e., there is no current branch, cf. <xref linkend="git-checkout(1)__detached_head"/>).
+			work at "no branch" (detached HEAD state; i.e., there is no current branch, cf. <gitdoclink cmd="git-checkout" section="1" anchor="_detached_head"/>).
 			This can be easily fixed by creating a branch at this version and switching to it.
 		</para>
 	</important>

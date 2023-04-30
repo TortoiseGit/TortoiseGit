@@ -55,6 +55,9 @@ All user/site specific configuration is stored in doc.build.user.
 			<echo message="------------------------------------------------------------"/>
 			<echo message="Creating '${doc.target.name}' documentation"/>
 
+			<delete file="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml" if="${app=='TortoiseGit'}"/>
+			<copy file="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml.in" tofile="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml" overwrite="true" if="${app=='TortoiseGit' and external.gitdocs=='0'}"/>
+
 			<if test="${file::exists(pofiletotranslate)}" >
 				<call target="translate" unless="${lang.base==lang.target}" />
 			</if>
@@ -113,7 +116,7 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="copyimages" description="Copy images">
 		<delete dir="${doc.target.work}/images" failonerror="false"/>
 		<mkdir dir="${doc.target.work}/images"/>
-		<mkdir dir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit'}"/>
+		<mkdir dir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit' and external.gitdocs=='0'}"/>
 
 		<property name="xslt.params" value="${xsl.pdf.params}"/>
 		<property name="xslt.target" value="${path::get-temp-file-name()}"/>
@@ -138,7 +141,7 @@ All user/site specific configuration is stored in doc.build.user.
 			</fileset>
 		</copy>
 
-		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit'}">
+		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit' and external.gitdocs=='0'}">
 			<fileset basedir="images/${lang.base}/callouts">
 				<include name="*.png" unless="${docformat=='pdf'}"/>
 				<include name="*.svg" if="${docformat=='pdf'}"/>

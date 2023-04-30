@@ -65,7 +65,7 @@
 			<menuchoice>
 				<guimenuitem>Revert change by this commit</guimenuitem>
 			</menuchoice>
-			on a revision/commit (cf. <xref linkend="tgit-dug-showlog"/>). Then all changes of this commit are undone and a revert commit is created which need to be committed manually (cf. <xref linkend="git-revert(1)"/>).
+			on a revision/commit (cf. <xref linkend="tgit-dug-showlog"/>). Then all changes of this commit are undone and a revert commit is created which need to be committed manually (cf. <gitdoclink cmd="git-revert" section="1"/>).
 			It is also possible to (hard) reset to a previous commit, then all commits after that are forgotten (cf. <xref linkend="tgit-dug-reset"/>) - this might not be recommended if the changes are already pushed (also see <ulink url="https://stackoverflow.com/q/27032850/3906760">https://stackoverflow.com/q/27032850/3906760</ulink>).
 		</para>
 	</tip>
@@ -93,10 +93,10 @@
 		<para>
 			In the TortoiseGit naming a "revert" on a file is comparable to
 			<literal>git checkout HEAD -- filename</literal> (or <literal>git checkout REVISION -- filename</literal>)
-			for resetting a file to it's last (or a specific) committed state. This has nothing to do with <xref linkend="git-revert(1)"/>!
+			for resetting a file to it's last (or a specific) committed state. This has nothing to do with <gitdoclink cmd="git-revert" section="1"/>!
 		</para>
 		<para>
-			<xref linkend="git-revert(1)"/> is only referred to by <guilabel>Revert change by this commit</guilabel> in log dialog (cf. <xref linkend="tgit-dug-showlog"/>).
+			<gitdoclink cmd="git-revert" section="1"/> is only referred to by <guilabel>Revert change by this commit</guilabel> in log dialog (cf. <xref linkend="tgit-dug-showlog"/>).
 		</para>
 	</caution>
 </sect1>

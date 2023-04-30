@@ -23,7 +23,7 @@
 	<para>
 		If you need to set up per-repository proxy settings, you will
 		need to use the Git <filename>config</filename> file to
-		configure this. Consult <xref linkend="git-config(1)"/> for more details.
+		configure this. Consult <gitdoclink cmd="git-config" section="1"/> for more details.
 	</para>
 	<para>
 		You can also specify which program TortoiseGit should use to

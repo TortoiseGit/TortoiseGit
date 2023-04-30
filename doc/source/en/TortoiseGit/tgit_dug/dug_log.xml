@@ -969,7 +969,7 @@ Alice -Bob +Eve
 		</para>
 		<para>
 			The statistics dialog also honors the <filename>.mailmap</filename> file
-			(see <xref linkend="git-blame(1)__mapping_authors"/>).
+			(see <gitdoclink cmd="gitmailmap" section="5"/>).
 		</para>
 		<para>
 			Note that the statistics cover the same period as the

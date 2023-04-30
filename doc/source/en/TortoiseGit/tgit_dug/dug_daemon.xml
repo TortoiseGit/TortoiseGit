@@ -36,6 +36,6 @@
 		</para>
 	</important>
 	<para>
-		You can find more information at <xref linkend="git-daemon(1)"/>.
+		You can find more information at <gitdoclink cmd="git-daemon" section="1"/>.
 	</para>
 </sect1>

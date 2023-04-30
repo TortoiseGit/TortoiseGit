@@ -21,7 +21,7 @@
 		<para>
 			GitWCRev is Windows console program which can be used to read
 			the status of a Git working tree or specific files inside a working tree and optionally perform
-			keyword substitution in a template file - another alternative could be git filters (cf. <xref linkend="gitattributes(5)"/>).
+			keyword substitution in a template file - another alternative could be git filters (cf. <gitdoclink cmd="gitattributes" section="5"/>).
 			This is often used as part of the build process as a means of
 			incorporating working tree information into the object you
 			are building. Typically it might be used to include the

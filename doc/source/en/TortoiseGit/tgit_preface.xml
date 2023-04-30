@@ -80,7 +80,7 @@ and
 <citetitle>Tech Talk: Git</citetitle>
 </ulink> (more technical). You can also read <ulink url="https://git-scm.com/book">
 <citetitle>Pro Git book (multiple translations as well as downloadable versions available)</citetitle>
-</ulink>, <xref linkend="git_user-manual"/>, or <xref linkend="Git-Tutorial"/>
+</ulink>, <gitdoclink cmd="user-manual"/>, or <gitdoclink cmd="gittutorial" section="7"/>
 			which are a short introductions
 			to the <emphasis>Git</emphasis> revision control system,
 			explain the different approaches to version
@@ -112,7 +112,7 @@ and
 			for scripting where you still need user interaction.
 		</para>
 		<para>
-			The <xref linkend="git(1)"/> give git official document about
+			The <gitdoclink cmd="git" section="1"/> give git official document about
 			command line client <filename>git.exe</filename>.
 		</para>
 	</sect1>

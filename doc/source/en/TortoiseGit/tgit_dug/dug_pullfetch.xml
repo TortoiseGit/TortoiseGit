@@ -87,6 +87,6 @@
 		</para>
 	</important>
 	<para>
-		You can find more information at <xref linkend="git-fetch(1)"/> and <xref linkend="git-pull(1)"/>.
+		You can find more information at <gitdoclink cmd="git-fetch" section="1"/> and <gitdoclink cmd="git-pull" section="1"/>.
 	</para>
 </sect1>

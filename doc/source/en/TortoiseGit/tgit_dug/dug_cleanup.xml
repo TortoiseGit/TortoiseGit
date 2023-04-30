@@ -50,6 +50,6 @@
 		This also cleans submodules recursively.
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-clean(1)"/>.
+		You can find more information at <gitdoclink cmd="git-clean" section="1"/>.
 	</para>
 </sect1>

@@ -7,7 +7,7 @@
 		<primary>Rebase</primary>
 	</indexterm>
 	<para>
-		Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especially <xref linkend="git-rebase(1)"/>).
+		Rebase is quite complex and it alters/rewrites the history of a repository. Please make sure you understood its principles before using it (for general hints where to find more information about Git and rebasing see <xref linkend="tgit-preface-readingguide"/> and especially <gitdoclink cmd="git-rebase" section="1"/>).
 	</para>
 	<para>
 		<menuchoice>
@@ -49,7 +49,7 @@
 	</tip>
 	<important>
 		<para>
-			When preserving merge commits, re-ordering commits cannot be handled properly in all cases, see in known bugs of vanilla git rebase: <xref linkend="git-rebase(1)"/>.
+			When preserving merge commits, re-ordering commits cannot be handled properly in all cases, see in known bugs of vanilla git rebase: <gitdoclink cmd="git-rebase" section="1"/>.
 		</para>
 	</important>
 	<important>

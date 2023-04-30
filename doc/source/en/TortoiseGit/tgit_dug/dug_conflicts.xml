@@ -17,7 +17,7 @@
 		Whenever a conflict is reported you need to resolve it!
 	</para>
 	<para>
-		The conflicting area is marked in the file like this (also cf. <xref linkend="git-merge(1)__how_conflicts_are_presented"/>):
+		The conflicting area is marked in the file like this (also cf. <gitdoclink cmd="git-merge" section="1" anchor="_how_conflicts_are_presented"/>):
 <screen>
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; yours
     your changes

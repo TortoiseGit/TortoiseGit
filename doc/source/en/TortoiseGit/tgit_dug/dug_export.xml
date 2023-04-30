@@ -30,7 +30,7 @@
 		<xi:include href="./dug_chooseversion.xml"/>
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-archive(1)"/>.
+		You can find more information at <gitdoclink cmd="git-archive" section="1"/>.
 	</para>
 <!--
 	<para>

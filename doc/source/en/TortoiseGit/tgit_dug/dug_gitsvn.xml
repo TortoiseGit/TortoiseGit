@@ -20,7 +20,7 @@
 		the SVN repository.
 	</para>
 	<para>
-		If you need/want to use <literal>--use-log-author</literal> or <literal>--add-author-from</literal>, please set those in git config (cf. <xref linkend="git-config(1)"/>), also see <ulink url="https://tortoisegit.org/issue/2824">issue #2824</ulink>.
+		If you need/want to use <literal>--use-log-author</literal> or <literal>--add-author-from</literal>, please set those in git config (cf. <gitdoclink cmd="git-config" section="1"/>), also see <ulink url="https://tortoisegit.org/issue/2824">issue #2824</ulink>.
 	</para>
 	<para>
 		<guilabel>Git Style Commit (--rmdir)</guilabel>: Remove directories from the SVN tree
@@ -29,6 +29,6 @@
 		directories. Enabling this flag will make the commit to SVN act like git.
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-svn(1)"/>.
+		You can find more information at <gitdoclink cmd="git-svn" section="1"/>.
 	</para>
 </sect1>

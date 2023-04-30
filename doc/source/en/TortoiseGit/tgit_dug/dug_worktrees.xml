@@ -7,7 +7,7 @@
 		<primary>worktree</primary>
 	</indexterm>
 	<para>
-		A worktree can be seen as an additional checkout of a Git repository (cf. <xref linkend="Git User Manual_def_worktree" />).
+		A worktree can be seen as an additional checkout of a Git repository (cf. <gitdoclink cmd="user-manual" anchor="def_working_tree" />).
 	</para>
 
 	<para>
@@ -38,7 +38,7 @@
 			Alternatively use <guilabel>Force</guilabel> to check out the branch twice, but this is not recommended.
 		</para>
 		<para>
-			Check <xref linkend="git-worktree(1)" /> for further details.
+			Check <gitdoclink cmd="git-worktree" section="1"/> for further details.
 		</para>
 	</sect2>
 </sect1>

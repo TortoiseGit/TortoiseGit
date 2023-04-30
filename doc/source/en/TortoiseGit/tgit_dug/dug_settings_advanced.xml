@@ -138,7 +138,7 @@
 			<term condition="pot">DiffSimilarityIndexThreshold</term>
 			<listitem>
 				<para>
-					This setting controls which similarity index threshold is passed to git diff (as the value for the parameters <literal>-M</literal> and <literal>-C</literal> in per cent, cf. <literal>--find-copies</literal> in <xref linkend="git-diff(1)"/>).
+					This setting controls which similarity index threshold is passed to git diff (as the value for the parameters <literal>-M</literal> and <literal>-C</literal> in per cent, cf. <literal>--find-copies</literal> in <gitdoclink cmd="git-diff" section="1"/>).
 					The default value is <literal>50</literal>. You can disable finding renamed and copied
 					files by setting this to <literal>0</literal>, for only detecting exact renames use <literal>100</literal>.
 					You might need to remove the cache files <filename>tortoisegit.data</filename> and <filename>tortoisegit.index</filename> in the <filename>.git</filename> folders after changing this value.

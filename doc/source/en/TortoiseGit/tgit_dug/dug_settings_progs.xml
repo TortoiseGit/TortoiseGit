@@ -296,7 +296,7 @@ C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %b
 		</para>
 		<para>
 			When using an external tool, a conflicted file needs to be marked as revolved in TortoiseGit manually (doing so also removes the temporary files).
-			This can be simplified and might also be automated: TortoiseGit can be configured to synchronously executing the merge tool (<guilabel>Block TortoiseGit while executing the external merge tool</guilabel>). Then TortoiseGit waits until the external merge tool is closed and asks whether to resolve the conflict (the temporary files are removed in any case). If the external merge tool provides a proper exit code (0 for success) you can trust the exit code to automatically mark the conflicted file as resolved (as Git does, cf. <xref linkend="git-mergetool(1)"/>).
+			This can be simplified and might also be automated: TortoiseGit can be configured to synchronously executing the merge tool (<guilabel>Block TortoiseGit while executing the external merge tool</guilabel>). Then TortoiseGit waits until the external merge tool is closed and asks whether to resolve the conflict (the temporary files are removed in any case). If the external merge tool provides a proper exit code (0 for success) you can trust the exit code to automatically mark the conflicted file as resolved (as Git does, cf. <gitdoclink cmd="git-mergetool" section="1"/>).
 		</para>
 	</sect3>
 	<sect3 id="tgit-dug-settings-Progs-Adv">

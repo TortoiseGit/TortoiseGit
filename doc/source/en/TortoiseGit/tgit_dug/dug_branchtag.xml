@@ -85,11 +85,11 @@
 			unchecked <literal>--no-track</literal> is passed to git on <guilabel>OK</guilabel>.
 			The third state indicates, that neither <literal>--track</literal> nor <literal>--no-track</literal>
 			is passed to git on <guilabel>OK</guilabel> - see <literal>branch.autosetupmerge</literal> configuration variable
-			(<xref linkend="git-config(1)"/>) and <literal>--track parameter</literal> documentation for <xref linkend="git-branch(1)"/>.
+			(<gitdoclink cmd="git-config" section="1"/>) and <literal>--track parameter</literal> documentation for <gitdoclink cmd="git-branch" section="1"/>.
 		</para>
 		<para>
 			Check <guilabel>Sign</guilabel> to create a GPG signed tag. This requires GPG and also the configuration variable
-			<literal>user.signingkey</literal> to be set (see <xref linkend="tgit-dug-settings-config"/> and <xref linkend="git-config(1)"/>).
+			<literal>user.signingkey</literal> to be set (see <xref linkend="tgit-dug-settings-config"/> and <gitdoclink cmd="git-config" section="1"/>).
 			<tip>
 				<para>
 					When using GPG 1.4 (which is shipped with Git for Windows) this requires a key
@@ -121,6 +121,6 @@
 		</para>
 	</sect2>
 	<para>
-		You can find more information at <xref linkend="git-branch(1)"/> and <xref linkend="git-tag(1)"/>.
+		You can find more information at <gitdoclink cmd="git-branch" section="1"/> and <gitdoclink cmd="git-tag" section="1"/>.
 	</para>
 </sect1>

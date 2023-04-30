@@ -181,7 +181,7 @@
 				<ulink url="https://stackoverflow.com/q/14000173/3906760">
 					<citetitle>credential helper</citetitle>
 				</ulink>
-				(recommended, also see <xref linkend="gitcredentials(7)"/>) or manually use
+				(recommended, also see <gitdoclink cmd="gitcredentials" section="7"/>) or manually use
 				<ulink url="https://stackoverflow.com/revisions/6031266/6">
 					<citetitle><filename>%HOME%/_netrc</filename></citetitle>
 				</ulink>.

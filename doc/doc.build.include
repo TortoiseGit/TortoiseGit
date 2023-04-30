@@ -127,18 +127,23 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- ============================================================ -->
 	<!-- Settings for XSLTPROC                                        -->
 
+	<property name="external.gitdocs"
+		value="0"
+		unless="${property::exists('external.gitdocs')}"
+	/>
+
 	<!-- Paths where the xsl and css files are found                  -->
 	<property name="path.user.xsl" value="./xsl"/>
 	<property name="path.user.css" value="./source"/>
 
 	<!-- stylesheets and stringparams                                 -->
-	<property name="xsl.pdf.params" value="--nonet --xinclude"/>
+	<property name="xsl.pdf.params" value="--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.pdf.file" value="pdfdoc.xsl"/>
-	<property name="xsl.chm.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_chm.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.chm.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_chm.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.chm.file" value="htmlhelp.xsl"/>
-	<property name="xsl.html.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.html.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.html.file" value="htmlsingle.xsl"/>
-	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1"/>
+	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
 	<property name="xsl.profile.params" value="--nonet --xinclude --stringparam profile.condition &quot;exclude&quot;"/>
 	<property name="xsl.profile.file" value="profile.xsl"/>

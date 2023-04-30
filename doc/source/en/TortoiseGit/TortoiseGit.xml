@@ -44,7 +44,9 @@
 
 	<xi:include href="./tgit_app_ssh.xml"/>
 
-	<xi:include href="./git_doc/git-doc.xml"/>
+	<xi:include href="./git_doc/git-doc.xml">
+		<xi:fallback/>
+	</xi:include>
 
 	<xi:include href="../glossary.xml"/>
 

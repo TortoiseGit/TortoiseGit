@@ -2,6 +2,11 @@
 <!DOCTYPE appendix SYSTEM "../../../dtd/dblite.dtd">
 <appendix>
 	<title>Git Official Documentation</title>
+	<simplesect>
+		<para>
+			The up to date Git reference can be found on <ulink url="https://git-scm.com/docs/"><citetitle>https://git-scm.com/docs/</citetitle></ulink>
+		</para>
+	</simplesect>
 	<sect1 id="user-manual" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git User Manual</title>
 		<xi:include href="./user-manual.xml"/>

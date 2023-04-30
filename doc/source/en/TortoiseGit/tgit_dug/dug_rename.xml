@@ -185,7 +185,7 @@
 		<para>
 			This sometimes happens
 			when files are committed from a system with a case-sensitive
-			file system, like Linux, or when the setting <literal>core.ignorecase</literal> is set to false (cf. <xref linkend="git-config(1)"/>).
+			file system, like Linux, or when the setting <literal>core.ignorecase</literal> is set to false (cf. <gitdoclink cmd="git-config" section="1"/>).
 		</para>
 		<para>
 			In that case, you have to decide which one of them you want to

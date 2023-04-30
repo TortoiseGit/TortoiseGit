@@ -22,6 +22,6 @@
 		The RefLog can be used to restore deleted commits or HEAD positions (e.g. when you deleted a branch which was HEAD some time ago).
 	</para>
 	<para>
-		You can find more information at <xref linkend="git-reflog(1)"/>.
+		You can find more information at <gitdoclink cmd="git-reflog" section="1"/>.
 	</para>
 </sect1>
