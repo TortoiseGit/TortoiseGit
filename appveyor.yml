@@ -13,7 +13,6 @@ skip_commits:
     - '**/.editorconfig'
     - '**/.clang.format'
 image:
-  - Visual Studio 2019
   - Visual Studio 2022
 platform:
   - Win32
@@ -21,13 +20,6 @@ platform:
 configuration:
   - Debug
   - Release
-matrix:
-  exclude:
-    - image: Visual Studio 2019
-      configuration: Debug
-    - image: Visual Studio 2019
-      platform: Win32
-      configuration: Release
 init:
 - git version
 build_script:
@@ -43,18 +35,6 @@ build_script:
 - git config --global protocol.file.allow always
 
 for:
-  -
-    matrix:
-      only:
-        - platform: x64
-          configuration: Release
-          image: Visual Studio 2019
-    test_script:
-    - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
-    - bin\Release64\bin\tests.exe
-    - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/OGDF ext/hunspell
-    - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   -
     matrix:
       only:

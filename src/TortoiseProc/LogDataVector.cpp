@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2022 - TortoiseGit
+// Copyright (C) 2009-2023 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -108,9 +108,9 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 	if (CGitMailmap::ShouldLoadMailmap())
 		GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
-	else if (GitRevLoglist::s_Mailmap)
-		GitRevLoglist::s_Mailmap = nullptr;
-	auto mailmap = GitRevLoglist::s_Mailmap;
+	else if (GitRevLoglist::s_Mailmap.load())
+		GitRevLoglist::s_Mailmap.store(nullptr);
+	auto mailmap{ GitRevLoglist::s_Mailmap.load() };
 
 	int ret = 0;
 	while (ret == 0)
@@ -202,9 +202,9 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 
 	if (CGitMailmap::ShouldLoadMailmap())
 		GitRevLoglist::s_Mailmap = std::make_shared<CGitMailmap>();
-	else if (GitRevLoglist::s_Mailmap)
-		GitRevLoglist::s_Mailmap = nullptr;
-	auto mailmap = GitRevLoglist::s_Mailmap;
+	else if (GitRevLoglist::s_Mailmap.load())
+		GitRevLoglist::s_Mailmap.store(nullptr);
+	auto mailmap{ GitRevLoglist::s_Mailmap.load() };
 
 	std::set<GitRevLoglist*, SortByParentDate> revs;
 	for (const auto& hash : hashes)

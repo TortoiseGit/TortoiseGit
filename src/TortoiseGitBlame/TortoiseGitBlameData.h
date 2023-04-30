@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ public:
 
 	GitRevLoglist* GetRev(int line, CGitHashMap& hashToRev)
 	{
-		return GetRevForHash(hashToRev, GetHash(line), GitRevLoglist::s_Mailmap.get());
+		return GetRevForHash(hashToRev, GetHash(line), GitRevLoglist::s_Mailmap.load().get());
 	}
 
 private:

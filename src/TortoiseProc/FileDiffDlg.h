@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -141,7 +141,7 @@ private:
 	CMenuButton			m_cRev1Btn;
 	CMenuButton			m_cRev2Btn;
 	CFilterEdit			m_cFilter;
-	std::shared_ptr<CLogDlgFileFilter> m_filter;
+	std::atomic<std::shared_ptr<CLogDlgFileFilter>> m_filter;
 
 	CMenuButton			m_cDiffOptionsBtn;
 

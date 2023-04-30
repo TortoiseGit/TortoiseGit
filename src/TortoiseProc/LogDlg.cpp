@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -885,7 +885,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			std::vector<CHARRANGE> hightlightRanges;
 			std::vector<CHARRANGE> boldRanges;
-			auto filter = m_LogList.m_LogFilter;
+			auto filter{ m_LogList.m_LogFilter.load() };
 
 			// set the log message text
 			CString msg = CString(MAKEINTRESOURCE(IDS_HASH)) + L": ";
@@ -2284,7 +2284,7 @@ LRESULT CLogDlg::OnClickedInfoIcon(WPARAM wParam, LPARAM lParam)
 			}
 			CRegDWORD(L"Software\\TortoiseGit\\SelectedLogFilters") = m_SelectedFilters;
 			// Reload only if a search text is entered
-			if (m_LogList.m_LogFilter->IsFilterActive())
+			if (m_LogList.m_LogFilter.load()->IsFilterActive())
 				SetTimer(LOGFILTER_TIMER, 1000, nullptr);
 		}
 	}
@@ -2396,7 +2396,7 @@ bool CLogDlg::Validate(LPCWSTR string)
 	if (!m_bFilterWithRegex)
 		return true;
 	std::vector<std::wregex> pats;
-	return m_LogList.m_LogFilter->ValidateRegexp(string, pats);
+	return m_LogList.m_LogFilter.load()->ValidateRegexp(string, pats);
 }
 
 void CLogDlg::OnEnChangeFileFilter()
@@ -2591,7 +2591,7 @@ void CLogDlg::OnBnClickedJumpUp()
 	}
 	m_LogList.SetSelectionMark(-1);
 
-	auto hashMapSharedPtr = m_LogList.m_HashMap;
+	auto hashMapSharedPtr{ m_LogList.m_HashMap.load() };
 	const auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index - 1; i >= 0; i--)
@@ -2699,7 +2699,7 @@ void CLogDlg::OnBnClickedJumpDown()
 	}
 	m_LogList.SetSelectionMark(-1);
 
-	auto hashMapSharedPtr = m_LogList.m_HashMap;
+	auto hashMapSharedPtr{ m_LogList.m_HashMap.load() };
 	const auto& hashMap = *hashMapSharedPtr;
 
 	for (int i = index + 1; i < m_LogList.GetItemCount(); ++i)
@@ -3222,7 +3222,7 @@ void CLogDlg::HandleShowLabels(bool var, int flag)
 	else
 		m_LogList.m_ShowRefMask &= ~flag;
 
-	if (((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT)) || !m_LogList.m_RollUpStates->empty())
+	if (((m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_REFS) && !(m_LogList.m_ShowFilter & CGitLogListBase::FILTERSHOW_ANYCOMMIT)) || !m_LogList.m_RollUpStates.load()->empty())
 	{
 		// Remove commits where labels are not shown.
 		OnRefresh();
@@ -3571,7 +3571,7 @@ LRESULT CLogDlg::OnRefreshSelection(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 void CLogDlg::OnExitClearFilter()
 {
-	if (m_LogList.m_LogFilter->IsFilterActive())
+	if (m_LogList.m_LogFilter.load()->IsFilterActive())
 	{
 		OnClickedCancelFilter(NULL, NULL);
 		return;
@@ -3588,7 +3588,7 @@ void CLogDlg::OnNMCustomdrawChangedFileList(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pLVCD->iSubItem > 2)
 		return;
 
-	auto filter(m_LogList.m_LogFilter);
+	auto filter{ m_LogList.m_LogFilter.load() };
 	if ((m_SelectedFilters & LOGFILTER_PATHS) && (filter->IsFilterActive()))
 		*pResult = CGitLogListBase::DrawListItemWithMatches(filter.get(), m_ChangedFileListCtrl, pLVCD, m_Colors);
 }
