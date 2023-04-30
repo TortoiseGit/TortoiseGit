@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2022 - TortoiseGit
+// Copyright (C) 2012-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -191,7 +191,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 	this->m_LogCache.ClearAllParent();
 	this->m_logEntries.ClearAll();
 	CString range;
-	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bShowBranchingsMerges ? CGit::LOG_ORDER_TOPOORDER | CGit::LOG_INFO_SPARSE : 0);
+	DWORD infomask = CGit::LOG_INFO_SIMPILFY_BY_DECORATION | (m_bShowBranchingsMerges ? CGit::LOG_INFO_SPARSE : 0);
 
 	if (!m_FromRev.IsEmpty())
 	{
