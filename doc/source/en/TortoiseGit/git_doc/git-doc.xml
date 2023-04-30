@@ -55,6 +55,7 @@
 		<xi:include href="./git-cvsserver.xml"/>
 		<xi:include href="./git-daemon.xml"/>
 		<xi:include href="./git-describe.xml"/>
+		<xi:include href="./git-diagnose.xml"/>
 		<xi:include href="./git-diff-files.xml"/>
 		<xi:include href="./git-diff-index.xml"/>
 		<xi:include href="./git-diff-tree.xml"/>
@@ -174,6 +175,7 @@
 		<xi:include href="./git-whatchanged.xml"/>
 		<xi:include href="./git-worktree.xml"/>
 		<xi:include href="./git-write-tree.xml"/>
+		<xi:include href="./scalar.xml"/>
 	</sect1>
 	<sect1 id="git-misc" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Misc</title>
@@ -196,5 +198,19 @@
 		<xi:include href="./gitweb.conf.xml"/>
 		<xi:include href="./gitworkflows.xml"/>
 		<xi:include href="./gitglossary.xml"/>
+	</sect1>
+	<sect1 id="git-developerinfo" xmlns:xi="http://www.w3.org/2001/XInclude">
+		<title>File formats, protocols and other developer interfaces</title>
+		<xi:include href="./gitformat-bundle.xml"/>
+		<xi:include href="./gitformat-chunk.xml"/>
+		<xi:include href="./gitformat-commit-graph.xml"/>
+		<xi:include href="./gitformat-index.xml"/>
+		<xi:include href="./gitformat-pack.xml"/>
+		<xi:include href="./gitformat-signature.xml"/>
+		<xi:include href="./gitprotocol-capabilities.xml"/>
+		<xi:include href="./gitprotocol-common.xml"/>
+		<xi:include href="./gitprotocol-http.xml"/>
+		<xi:include href="./gitprotocol-pack.xml"/>
+		<xi:include href="./gitprotocol-v2.xml"/>
 	</sect1>
 </appendix>

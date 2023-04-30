@@ -15,7 +15,7 @@
 <blockquote>
 <literallayout><emphasis>git maintenance</emphasis> run [&lt;options&gt;]
 <emphasis>git maintenance</emphasis> start [--scheduler=&lt;scheduler&gt;]
-<emphasis>git maintenance</emphasis> (stop|register|unregister)</literallayout>
+<emphasis>git maintenance</emphasis> (stop|register|unregister) [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-maintenance(1)__description">
@@ -78,13 +78,13 @@ register
 </term>
 <listitem>
 <simpara>
-        Initialize Git config values so any scheduled maintenance will
-        start running on this repository. This adds the repository to the
-        <emphasis>maintenance.repo</emphasis> config variable in the current user's global
-        config and enables some recommended configuration values for
-        <emphasis>maintenance.&lt;task&gt;.schedule</emphasis>. The tasks that are enabled are safe
-        for running in the background without disrupting foreground
-        processes.
+        Initialize Git config values so any scheduled maintenance will start
+        running on this repository. This adds the repository to the
+        <emphasis>maintenance.repo</emphasis> config variable in the current user's global config,
+        or the config specified by --config-file option, and enables some
+        recommended configuration values for <emphasis>maintenance.&lt;task&gt;.schedule</emphasis>. The
+        tasks that are enabled are safe for running in the background without
+        disrupting foreground processes.
 </simpara>
 <simpara>The <emphasis>register</emphasis> subcommand will also set the <emphasis>maintenance.strategy</emphasis> config
 value to <emphasis>incremental</emphasis>, if this value is not previously set. The
@@ -132,6 +132,9 @@ unregister
         only removes the repository from the configured list. It does not
         stop the background maintenance processes from running.
 </simpara>
+<simpara>The <emphasis>unregister</emphasis> subcommand will report an error if the current repository
+is not already registered. Use the <emphasis>--force</emphasis> option to return success even
+when the current repository is not registered.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -490,6 +493,133 @@ in Task Scheduler. This change requires a password input, which is why
 <simpara>If you want to customize the background tasks, please rename the tasks
 so future calls to <emphasis>git maintenance (start|stop)</emphasis> do not overwrite your
 custom tasks.</simpara>
+</simplesect>
+<simplesect id="git-maintenance(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+maintenance.auto
+</term>
+<listitem>
+<simpara>
+        This boolean config option controls whether some commands run
+        <emphasis>git maintenance run --auto</emphasis> after doing their normal work. Defaults
+        to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.strategy
+</term>
+<listitem>
+<simpara>
+        This string config option provides a way to specify one of a few
+        recommended schedules for background maintenance. This only affects
+        which tasks are run during <emphasis>git maintenance run --schedule=X</emphasis>
+        commands, provided no <emphasis>--task=&lt;task&gt;</emphasis> arguments are provided.
+        Further, if a <emphasis>maintenance.&lt;task&gt;.schedule</emphasis> config value is set,
+        then that value is used instead of the one provided by
+        <emphasis>maintenance.strategy</emphasis>. The possible strategy strings are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>none</emphasis>: This default setting implies no task are run at any schedule.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>incremental</emphasis>: This setting optimizes for performing small maintenance
+  activities that do not delete any data. This does not schedule the <emphasis>gc</emphasis>
+  task, but runs the <emphasis>prefetch</emphasis> and <emphasis>commit-graph</emphasis> tasks hourly, the
+  <emphasis>loose-objects</emphasis> and <emphasis>incremental-repack</emphasis> tasks daily, and the <emphasis>pack-refs</emphasis>
+  task weekly.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.&lt;task&gt;.enabled
+</term>
+<listitem>
+<simpara>
+        This boolean config option controls whether the maintenance task
+        with name <emphasis>&lt;task&gt;</emphasis> is run when no <emphasis>--task</emphasis> option is specified to
+        <emphasis>git maintenance run</emphasis>. These config values are ignored if a
+        <emphasis>--task</emphasis> option exists. By default, only <emphasis>maintenance.gc.enabled</emphasis>
+        is true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.&lt;task&gt;.schedule
+</term>
+<listitem>
+<simpara>
+        This config option controls whether or not the given <emphasis>&lt;task&gt;</emphasis> runs
+        during a <emphasis>git maintenance run --schedule=&lt;frequency&gt;</emphasis> command. The
+        value must be one of "hourly", "daily", or "weekly".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.commit-graph.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>commit-graph</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>commit-graph</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        reachable commits that are not in the commit-graph file is at least
+        the value of <emphasis>maintenance.commit-graph.auto</emphasis>. The default value is
+        100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.loose-objects.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>loose-objects</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>loose-objects</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        loose objects is at least the value of <emphasis>maintenance.loose-objects.auto</emphasis>.
+        The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.incremental-repack.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>incremental-repack</emphasis>
+        task should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero,
+        then the <emphasis>incremental-repack</emphasis> task will not run with the <emphasis>--auto</emphasis>
+        option. A negative value will force the task to run every time.
+        Otherwise, a positive value implies the command should run when the
+        number of pack-files not in the multi-pack-index is at least the value
+        of <emphasis>maintenance.incremental-repack.auto</emphasis>. The default value is 10.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-maintenance(1)__git">
 <title>GIT</title>

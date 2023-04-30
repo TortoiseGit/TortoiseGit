@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="gitprotocol-http(5)">
+    <title>gitprotocol-http(5)</title>
+<indexterm>
+<primary>gitprotocol-http(5)</primary>
+</indexterm>
+<simplesect id="gitprotocol-http(5)__name">
+<title>NAME</title>
+<simpara>gitprotocol-http - Git HTTP-based protocols</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>&lt;over-the-wire-protocol&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__description">
+<title>DESCRIPTION</title>
+<simpara>Git supports two HTTP based transfer protocols.  A "dumb" protocol
+which requires only a standard HTTP server on the server end of the
+connection, and a "smart" protocol which requires a Git aware CGI
+(or server module).  This document describes both protocols.</simpara>
+<simpara>As a design feature smart clients can automatically upgrade "dumb"
+protocol URLs to smart URLs.  This permits all users to have the
+same published URL, and the peers automatically select the most
+efficient transport available to them.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__url_format">
+<title>URL Format</title>
+<simpara>URLs for Git repositories accessed by HTTP use the standard HTTP
+URL syntax documented by RFC 1738, so they are of the form:</simpara>
+<literallayout class="monospaced">http://&lt;host&gt;:&lt;port&gt;/&lt;path&gt;?&lt;searchpart&gt;</literallayout>
+<simpara>Within this documentation the placeholder <emphasis>$GIT_URL</emphasis> will stand for
+the http:// repository URL entered by the end-user.</simpara>
+<simpara>Servers SHOULD handle all requests to locations matching <emphasis>$GIT_URL</emphasis>, as
+both the "smart" and "dumb" HTTP protocols used by Git operate
+by appending additional path components onto the end of the user
+supplied <emphasis>$GIT_URL</emphasis> string.</simpara>
+<simpara>An example of a dumb client requesting for a loose object:</simpara>
+<literallayout class="monospaced">$GIT_URL:     http://example.com:8080/git/repo.git
+URL request:  http://example.com:8080/git/repo.git/objects/d0/49f6c27a2244e12041955e262a404c7faba355</literallayout>
+<simpara>An example of a smart request to a catch-all gateway:</simpara>
+<literallayout class="monospaced">$GIT_URL:     http://example.com/daemon.cgi?svc=git&amp;q=
+URL request:  http://example.com/daemon.cgi?svc=git&amp;q=/info/refs&amp;service=git-receive-pack</literallayout>
+<simpara>An example of a request to a submodule:</simpara>
+<literallayout class="monospaced">$GIT_URL:     http://example.com/git/repo.git/path/submodule.git
+URL request:  http://example.com/git/repo.git/path/submodule.git/info/refs</literallayout>
+<simpara>Clients MUST strip a trailing <emphasis>/</emphasis>, if present, from the user supplied
+<emphasis>$GIT_URL</emphasis> string to prevent empty path tokens (<emphasis>//</emphasis>) from appearing
+in any URL sent to a server.  Compatible clients MUST expand
+<emphasis>$GIT_URL/info/refs</emphasis> as <emphasis>foo/info/refs</emphasis> and not <emphasis>foo//info/refs</emphasis>.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__authentication">
+<title>Authentication</title>
+<simpara>Standard HTTP authentication is used if authentication is required
+to access a repository, and MAY be configured and enforced by the
+HTTP server software.</simpara>
+<simpara>Because Git repositories are accessed by standard path components
+server administrators MAY use directory based permissions within
+their HTTP server to control repository access.</simpara>
+<simpara>Clients SHOULD support Basic authentication as described by RFC 2617.
+Servers SHOULD support Basic authentication by relying upon the
+HTTP server placed in front of the Git server software.</simpara>
+<simpara>Servers SHOULD NOT require HTTP cookies for the purposes of
+authentication or access control.</simpara>
+<simpara>Clients and servers MAY support other common forms of HTTP based
+authentication, such as Digest authentication.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__ssl">
+<title>SSL</title>
+<simpara>Clients and servers SHOULD support SSL, particularly to protect
+passwords when relying on Basic HTTP authentication.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__session_state">
+<title>Session State</title>
+<simpara>The Git over HTTP protocol (much like HTTP itself) is stateless
+from the perspective of the HTTP server side.  All state MUST be
+retained and managed by the client process.  This permits simple
+round-robin load-balancing on the server side, without needing to
+worry about state management.</simpara>
+<simpara>Clients MUST NOT require state management on the server side in
+order to function correctly.</simpara>
+<simpara>Servers MUST NOT require HTTP cookies in order to function correctly.
+Clients MAY store and forward HTTP cookies during request processing
+as described by RFC 2616 (HTTP/1.1).  Servers SHOULD ignore any
+cookies sent by a client.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__general_request_processing">
+<title>General Request Processing</title>
+<simpara>Except where noted, all standard HTTP behavior SHOULD be assumed
+by both client and server.  This includes (but is not necessarily
+limited to):</simpara>
+<simpara>If there is no repository at <emphasis>$GIT_URL</emphasis>, or the resource pointed to by a
+location matching <emphasis>$GIT_URL</emphasis> does not exist, the server MUST NOT respond
+with <emphasis>200 OK</emphasis> response.  A server SHOULD respond with
+<emphasis>404 Not Found</emphasis>, <emphasis>410 Gone</emphasis>, or any other suitable HTTP status code
+which does not imply the resource exists as requested.</simpara>
+<simpara>If there is a repository at <emphasis>$GIT_URL</emphasis>, but access is not currently
+permitted, the server MUST respond with the <emphasis>403 Forbidden</emphasis> HTTP
+status code.</simpara>
+<simpara>Servers SHOULD support both HTTP 1.0 and HTTP 1.1.
+Servers SHOULD support chunked encoding for both request and response
+bodies.</simpara>
+<simpara>Clients SHOULD support both HTTP 1.0 and HTTP 1.1.
+Clients SHOULD support chunked encoding for both request and response
+bodies.</simpara>
+<simpara>Servers MAY return ETag and/or Last-Modified headers.</simpara>
+<simpara>Clients MAY revalidate cached entities by including If-Modified-Since
+and/or If-None-Match request headers.</simpara>
+<simpara>Servers MAY return <emphasis>304 Not Modified</emphasis> if the relevant headers appear
+in the request and the entity has not changed.  Clients MUST treat
+<emphasis>304 Not Modified</emphasis> identical to <emphasis>200 OK</emphasis> by reusing the cached entity.</simpara>
+<simpara>Clients MAY reuse a cached entity without revalidation if the
+Cache-Control and/or Expires header permits caching.  Clients and
+servers MUST follow RFC 2616 for cache controls.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__discovering_references">
+<title>Discovering References</title>
+<simpara>All HTTP clients MUST begin either a fetch or a push exchange by
+discovering the references available on the remote repository.</simpara>
+<section id="gitprotocol-http(5)__dumb_clients">
+<title>Dumb Clients</title>
+<simpara>HTTP clients that only support the "dumb" protocol MUST discover
+references by making a request for the special info/refs file of
+the repository.</simpara>
+<simpara>Dumb HTTP clients MUST make a <emphasis>GET</emphasis> request to <emphasis>$GIT_URL/info/refs</emphasis>,
+without any search/query parameters.</simpara>
+<literallayout class="monospaced">C: GET $GIT_URL/info/refs HTTP/1.0</literallayout>
+<literallayout class="monospaced">S: 200 OK
+S:
+S: 95dcfa3633004da0049d3d0fa03f80589cbcaf31  refs/heads/maint
+S: d049f6c27a2244e12041955e262a404c7faba355  refs/heads/master
+S: 2cb58b79488a98d2721cea644875a8dd0026b115  refs/tags/v1.0
+S: a3c2e2402b99163d1d59756e5f207ae21cccba4c  refs/tags/v1.0^{}</literallayout>
+<simpara>The Content-Type of the returned info/refs entity SHOULD be
+<emphasis>text/plain; charset=utf-8</emphasis>, but MAY be any content type.
+Clients MUST NOT attempt to validate the returned Content-Type.
+Dumb servers MUST NOT return a return type starting with
+<emphasis>application/x-git-</emphasis>.</simpara>
+<simpara>Cache-Control headers MAY be returned to disable caching of the
+returned entity.</simpara>
+<simpara>When examining the response clients SHOULD only examine the HTTP
+status code.  Valid responses are <emphasis>200 OK</emphasis>, or <emphasis>304 Not Modified</emphasis>.</simpara>
+<simpara>The returned content is a UNIX formatted text file describing
+each ref and its known value.  The file SHOULD be sorted by name
+according to the C locale ordering.  The file SHOULD NOT include
+the default ref named <emphasis>HEAD</emphasis>.</simpara>
+<literallayout class="monospaced">info_refs   =  *( ref_record )
+ref_record  =  any_ref / peeled_ref</literallayout>
+<literallayout class="monospaced">any_ref     =  obj-id HTAB refname LF
+peeled_ref  =  obj-id HTAB refname LF
+               obj-id HTAB refname "^{}" LF</literallayout>
+</section>
+<section id="gitprotocol-http(5)__smart_clients">
+<title>Smart Clients</title>
+<simpara>HTTP clients that support the "smart" protocol (or both the
+"smart" and "dumb" protocols) MUST discover references by making
+a parameterized request for the info/refs file of the repository.</simpara>
+<simpara>The request MUST contain exactly one query parameter,
+<emphasis>service=$servicename</emphasis>, where <emphasis>$servicename</emphasis> MUST be the service
+name the client wishes to contact to complete the operation.
+The request MUST NOT contain additional query parameters.</simpara>
+<literallayout class="monospaced">C: GET $GIT_URL/info/refs?service=git-upload-pack HTTP/1.0</literallayout>
+<simpara>dumb server reply:</simpara>
+<literallayout class="monospaced">S: 200 OK
+S:
+S: 95dcfa3633004da0049d3d0fa03f80589cbcaf31  refs/heads/maint
+S: d049f6c27a2244e12041955e262a404c7faba355  refs/heads/master
+S: 2cb58b79488a98d2721cea644875a8dd0026b115  refs/tags/v1.0
+S: a3c2e2402b99163d1d59756e5f207ae21cccba4c  refs/tags/v1.0^{}</literallayout>
+<simpara>smart server reply:</simpara>
+<literallayout class="monospaced">S: 200 OK
+S: Content-Type: application/x-git-upload-pack-advertisement
+S: Cache-Control: no-cache
+S:
+S: 001e# service=git-upload-pack\n
+S: 0000
+S: 004895dcfa3633004da0049d3d0fa03f80589cbcaf31 refs/heads/maint\0multi_ack\n
+S: 003fd049f6c27a2244e12041955e262a404c7faba355 refs/heads/master\n
+S: 003c2cb58b79488a98d2721cea644875a8dd0026b115 refs/tags/v1.0\n
+S: 003fa3c2e2402b99163d1d59756e5f207ae21cccba4c refs/tags/v1.0^{}\n
+S: 0000</literallayout>
+<simpara>The client may send Extra Parameters (see
+<xref linkend="gitprotocol-pack(5)" />) as a colon-separated string
+in the Git-Protocol HTTP header.</simpara>
+<simpara>Uses the <emphasis>--http-backend-info-refs</emphasis> option to
+<xref linkend="git-upload-pack(1)" />.</simpara>
+<section id="gitprotocol-http(5)__dumb_server_response">
+<title>Dumb Server Response</title>
+<simpara>Dumb servers MUST respond with the dumb server reply format.</simpara>
+<simpara>See the prior section under dumb clients for a more detailed
+description of the dumb server response.</simpara>
+</section>
+<section id="gitprotocol-http(5)__smart_server_response">
+<title>Smart Server Response</title>
+<simpara>If the server does not recognize the requested service name, or the
+requested service name has been disabled by the server administrator,
+the server MUST respond with the <emphasis>403 Forbidden</emphasis> HTTP status code.</simpara>
+<simpara>Otherwise, smart servers MUST respond with the smart server reply
+format for the requested service name.</simpara>
+<simpara>Cache-Control headers SHOULD be used to disable caching of the
+returned entity.</simpara>
+<simpara>The Content-Type MUST be <emphasis>application/x-$servicename-advertisement</emphasis>.
+Clients SHOULD fall back to the dumb protocol if another content
+type is returned.  When falling back to the dumb protocol clients
+SHOULD NOT make an additional request to <emphasis>$GIT_URL/info/refs</emphasis>, but
+instead SHOULD use the response already in hand.  Clients MUST NOT
+continue if they do not support the dumb protocol.</simpara>
+<simpara>Clients MUST validate the status code is either <emphasis>200 OK</emphasis> or
+<emphasis>304 Not Modified</emphasis>.</simpara>
+<simpara>Clients MUST validate the first five bytes of the response entity
+matches the regex <emphasis>^[0-9a-f]{4}#</emphasis>.  If this test fails, clients
+MUST NOT continue.</simpara>
+<simpara>Clients MUST parse the entire response as a sequence of pkt-line
+records.</simpara>
+<simpara>Clients MUST verify the first pkt-line is <emphasis># service=$servicename</emphasis>.
+Servers MUST set $servicename to be the request parameter value.
+Servers SHOULD include an LF at the end of this line.
+Clients MUST ignore an LF at the end of the line.</simpara>
+<simpara>Servers MUST terminate the response with the magic <emphasis>0000</emphasis> end
+pkt-line marker.</simpara>
+<simpara>The returned response is a pkt-line stream describing each ref and
+its known value.  The stream SHOULD be sorted by name according to
+the C locale ordering.  The stream SHOULD include the default ref
+named <emphasis>HEAD</emphasis> as the first ref.  The stream MUST include capability
+declarations behind a NUL on the first ref.</simpara>
+<simpara>The returned response contains "version 1" if "version=1" was sent as an
+Extra Parameter.</simpara>
+<literallayout class="monospaced">smart_reply     =  PKT-LINE("# service=$servicename" LF)
+                   "0000"
+                   *1("version 1")
+                   ref_list
+                   "0000"
+ref_list        =  empty_list / non_empty_list</literallayout>
+<literallayout class="monospaced">empty_list      =  PKT-LINE(zero-id SP "capabilities^{}" NUL cap-list LF)</literallayout>
+<literallayout class="monospaced">non_empty_list  =  PKT-LINE(obj-id SP name NUL cap_list LF)
+                   *ref_record</literallayout>
+<literallayout class="monospaced">cap-list        =  capability *(SP capability)
+capability      =  1*(LC_ALPHA / DIGIT / "-" / "_")
+LC_ALPHA        =  %x61-7A</literallayout>
+<literallayout class="monospaced">ref_record      =  any_ref / peeled_ref
+any_ref         =  PKT-LINE(obj-id SP name LF)
+peeled_ref      =  PKT-LINE(obj-id SP name LF)
+                   PKT-LINE(obj-id SP name "^{}" LF</literallayout>
+</section>
+</section>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__smart_service_git_upload_pack">
+<title>Smart Service git-upload-pack</title>
+<simpara>This service reads from the repository pointed to by <emphasis>$GIT_URL</emphasis>.</simpara>
+<simpara>Clients MUST first perform ref discovery with
+<emphasis>$GIT_URL/info/refs?service=git-upload-pack</emphasis>.</simpara>
+<literallayout class="monospaced">C: POST $GIT_URL/git-upload-pack HTTP/1.0
+C: Content-Type: application/x-git-upload-pack-request
+C:
+C: 0032want 0a53e9ddeaddad63ad106860237bbf53411d11a7\n
+C: 0032have 441b40d833fdfa93eb2908e52742248faf0ee993\n
+C: 0000</literallayout>
+<literallayout class="monospaced">S: 200 OK
+S: Content-Type: application/x-git-upload-pack-result
+S: Cache-Control: no-cache
+S:
+S: ....ACK %s, continue
+S: ....NAK</literallayout>
+<simpara>Clients MUST NOT reuse or revalidate a cached response.
+Servers MUST include sufficient Cache-Control headers
+to prevent caching of the response.</simpara>
+<simpara>Servers SHOULD support all capabilities defined here.</simpara>
+<simpara>Clients MUST send at least one "want" command in the request body.
+Clients MUST NOT reference an id in a "want" command which did not
+appear in the response obtained through ref discovery unless the
+server advertises capability <emphasis>allow-tip-sha1-in-want</emphasis> or
+<emphasis>allow-reachable-sha1-in-want</emphasis>.</simpara>
+<literallayout class="monospaced">compute_request   =  want_list
+                     have_list
+                     request_end
+request_end       =  "0000" / "done"</literallayout>
+<literallayout class="monospaced">want_list         =  PKT-LINE(want SP cap_list LF)
+                     *(want_pkt)
+want_pkt          =  PKT-LINE(want LF)
+want              =  "want" SP id
+cap_list          =  capability *(SP capability)</literallayout>
+<literallayout class="monospaced">have_list         =  *PKT-LINE("have" SP id LF)</literallayout>
+<simpara>TODO: Document this further.</simpara>
+<section id="gitprotocol-http(5)__the_negotiation_algorithm">
+<title>The Negotiation Algorithm</title>
+<simpara>The computation to select the minimal pack proceeds as follows
+(C = client, S = server):</simpara>
+<simpara><emphasis>init step:</emphasis></simpara>
+<simpara>C: Use ref discovery to obtain the advertised refs.</simpara>
+<simpara>C: Place any object seen into set <emphasis>advertised</emphasis>.</simpara>
+<simpara>C: Build an empty set, <emphasis>common</emphasis>, to hold the objects that are later
+   determined to be on both ends.</simpara>
+<simpara>C: Build a set, <emphasis>want</emphasis>, of the objects from <emphasis>advertised</emphasis> the client
+   wants to fetch, based on what it saw during ref discovery.</simpara>
+<simpara>C: Start a queue, <emphasis>c_pending</emphasis>, ordered by commit time (popping newest
+   first).  Add all client refs.  When a commit is popped from
+   the queue its parents SHOULD be automatically inserted back.
+   Commits MUST only enter the queue once.</simpara>
+<simpara><emphasis>one compute step:</emphasis></simpara>
+<simpara>C: Send one <emphasis>$GIT_URL/git-upload-pack</emphasis> request:</simpara>
+<literallayout class="monospaced">C: 0032want &lt;want #1&gt;...............................
+C: 0032want &lt;want #2&gt;...............................
+....
+C: 0032have &lt;common #1&gt;.............................
+C: 0032have &lt;common #2&gt;.............................
+....
+C: 0032have &lt;have #1&gt;...............................
+C: 0032have &lt;have #2&gt;...............................
+....
+C: 0000</literallayout>
+<simpara>The stream is organized into "commands", with each command
+appearing by itself in a pkt-line.  Within a command line,
+the text leading up to the first space is the command name,
+and the remainder of the line to the first LF is the value.
+Command lines are terminated with an LF as the last byte of
+the pkt-line value.</simpara>
+<simpara>Commands MUST appear in the following order, if they appear
+at all in the request stream:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"want"
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"have"
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The stream is terminated by a pkt-line flush (<emphasis>0000</emphasis>).</simpara>
+<simpara>A single "want" or "have" command MUST have one hex formatted
+object name as its value.  Multiple object names MUST be sent by sending
+multiple commands. Object names MUST be given using the object format
+negotiated through the <emphasis>object-format</emphasis> capability (default SHA-1).</simpara>
+<simpara>The <emphasis>have</emphasis> list is created by popping the first 32 commits
+from <emphasis>c_pending</emphasis>.  Less can be supplied if <emphasis>c_pending</emphasis> empties.</simpara>
+<simpara>If the client has sent 256 "have" commits and has not yet
+received one of those back from <emphasis>s_common</emphasis>, or the client has
+emptied <emphasis>c_pending</emphasis> it SHOULD include a "done" command to let
+the server know it won't proceed:</simpara>
+<literallayout class="monospaced">C: 0009done</literallayout>
+<simpara>S: Parse the git-upload-pack request:</simpara>
+<simpara>Verify all objects in <emphasis>want</emphasis> are directly reachable from refs.</simpara>
+<simpara>The server MAY walk backwards through history or through
+the reflog to permit slightly stale requests.</simpara>
+<simpara>If no "want" objects are received, send an error:
+TODO: Define error if no "want" lines are requested.</simpara>
+<simpara>If any "want" object is not reachable, send an error:
+TODO: Define error if an invalid "want" is requested.</simpara>
+<simpara>Create an empty list, <emphasis>s_common</emphasis>.</simpara>
+<simpara>If "have" was sent:</simpara>
+<simpara>Loop through the objects in the order supplied by the client.</simpara>
+<simpara>For each object, if the server has the object reachable from
+a ref, add it to <emphasis>s_common</emphasis>.  If a commit is added to <emphasis>s_common</emphasis>,
+do not add any ancestors, even if they also appear in <emphasis>have</emphasis>.</simpara>
+<simpara>S: Send the git-upload-pack response:</simpara>
+<simpara>If the server has found a closed set of objects to pack or the
+request ends with "done", it replies with the pack.
+TODO: Document the pack based response</simpara>
+<literallayout class="monospaced">S: PACK...</literallayout>
+<simpara>The returned stream is the side-band-64k protocol supported
+by the git-upload-pack service, and the pack is embedded into
+stream 1.  Progress messages from the server side MAY appear
+in stream 2.</simpara>
+<simpara>Here a "closed set of objects" is defined to have at least
+one path from every "want" to at least one "common" object.</simpara>
+<simpara>If the server needs more information, it replies with a
+status continue response:
+TODO: Document the non-pack response</simpara>
+<simpara>C: Parse the upload-pack response:
+   TODO: Document parsing response</simpara>
+<simpara><emphasis>Do another compute step.</emphasis></simpara>
+</section>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__smart_service_git_receive_pack">
+<title>Smart Service git-receive-pack</title>
+<simpara>This service reads from the repository pointed to by <emphasis>$GIT_URL</emphasis>.</simpara>
+<simpara>Clients MUST first perform ref discovery with
+<emphasis>$GIT_URL/info/refs?service=git-receive-pack</emphasis>.</simpara>
+<literallayout class="monospaced">C: POST $GIT_URL/git-receive-pack HTTP/1.0
+C: Content-Type: application/x-git-receive-pack-request
+C:
+C: ....0a53e9ddeaddad63ad106860237bbf53411d11a7 441b40d833fdfa93eb2908e52742248faf0ee993 refs/heads/maint\0 report-status
+C: 0000
+C: PACK....</literallayout>
+<literallayout class="monospaced">S: 200 OK
+S: Content-Type: application/x-git-receive-pack-result
+S: Cache-Control: no-cache
+S:
+S: ....</literallayout>
+<simpara>Clients MUST NOT reuse or revalidate a cached response.
+Servers MUST include sufficient Cache-Control headers
+to prevent caching of the response.</simpara>
+<simpara>Servers SHOULD support all capabilities defined here.</simpara>
+<simpara>Clients MUST send at least one command in the request body.
+Within the command portion of the request body clients SHOULD send
+the id obtained through ref discovery as old_id.</simpara>
+<literallayout class="monospaced">update_request  =  command_list
+                   "PACK" &lt;binary data&gt;</literallayout>
+<literallayout class="monospaced">command_list    =  PKT-LINE(command NUL cap_list LF)
+                   *(command_pkt)
+command_pkt     =  PKT-LINE(command LF)
+cap_list        =  *(SP capability) SP</literallayout>
+<literallayout class="monospaced">command         =  create / delete / update
+create          =  zero-id SP new_id SP name
+delete          =  old_id SP zero-id SP name
+update          =  old_id SP new_id SP name</literallayout>
+<simpara>TODO: Document this further.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__references">
+<title>REFERENCES</title>
+<simpara><ulink url="http://www.ietf.org/rfc/rfc1738.txt">RFC 1738: Uniform Resource Locators (URL)</ulink>
+<ulink url="http://www.ietf.org/rfc/rfc2616.txt">RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1</ulink></simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="gitprotocol-pack(5)" />
+<xref linkend="gitprotocol-capabilities(5)" /></simpara>
+</simplesect>
+<simplesect id="gitprotocol-http(5)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

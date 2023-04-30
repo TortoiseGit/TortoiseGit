@@ -1028,6 +1028,75 @@ reversible operation.</simpara>
 <emphasis>GIT_EDITOR</emphasis> environment variable, the core.editor configuration variable, the
 <emphasis>VISUAL</emphasis> environment variable, or the <emphasis>EDITOR</emphasis> environment variable (in that
 order).  See <xref linkend="git-var(1)" /> for details.</simpara>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+commit.cleanup
+</term>
+<listitem>
+<simpara>
+        This setting overrides the default of the <emphasis>--cleanup</emphasis> option in
+        <emphasis>git commit</emphasis>. See <xref linkend="git-commit(1)" /> for details. Changing the
+        default can be useful when you always want to keep lines that begin
+        with comment character <emphasis>#</emphasis> in your log message, in which case you
+        would do <emphasis>git config commit.cleanup whitespace</emphasis> (note that you will
+        have to remove the help lines that begin with <emphasis>#</emphasis> in the commit log
+        template yourself, if you do this).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.gpgSign
+</term>
+<listitem>
+<simpara>
+        A boolean to specify whether all commits should be GPG signed.
+        Use of this option when doing operations such as rebase can
+        result in a large number of commits being signed. It may be
+        convenient to use an agent to avoid typing your GPG passphrase
+        several times.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.status
+</term>
+<listitem>
+<simpara>
+        A boolean to enable/disable inclusion of status information in the
+        commit message template when using an editor to prepare the commit
+        message.  Defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.template
+</term>
+<listitem>
+<simpara>
+        Specify the pathname of a file to use as the template for
+        new commit messages.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commit.verbose
+</term>
+<listitem>
+<simpara>
+        A boolean or int to specify the level of verbose with <emphasis>git commit</emphasis>.
+        See <xref linkend="git-commit(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-commit(1)__hooks">
 <title>HOOKS</title>

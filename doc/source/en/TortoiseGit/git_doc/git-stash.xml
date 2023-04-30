@@ -14,17 +14,20 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git stash</emphasis> list [&lt;log-options&gt;]
-<emphasis>git stash</emphasis> show [-u|--include-untracked|--only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> drop [-q|--quiet] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> ( pop | apply ) [--index] [-q|--quiet] [&lt;stash&gt;]
+<emphasis>git stash</emphasis> show [-u | --include-untracked | --only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
+<emphasis>git stash</emphasis> drop [-q | --quiet] [&lt;stash&gt;]
+<emphasis>git stash</emphasis> pop [--index] [-q | --quiet] [&lt;stash&gt;]
+<emphasis>git stash</emphasis> apply [--index] [-q | --quiet] [&lt;stash&gt;]
 <emphasis>git stash</emphasis> branch &lt;branchname&gt; [&lt;stash&gt;]
-<emphasis>git stash</emphasis> [push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-q|--quiet]
-             [-u|--include-untracked] [-a|--all] [-m|--message &lt;message&gt;]
+<emphasis>git stash</emphasis> [push [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-q | --quiet]
+             [-u | --include-untracked] [-a | --all] [(-m | --message) &lt;message&gt;]
              [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
              [--] [&lt;pathspec&gt;&#8230;]]
+<emphasis>git stash</emphasis> save [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-q | --quiet]
+             [-u | --include-untracked] [-a | --all] [&lt;message&gt;]
 <emphasis>git stash</emphasis> clear
 <emphasis>git stash</emphasis> create [&lt;message&gt;]
-<emphasis>git stash</emphasis> store [-m|--message &lt;message&gt;] [-q|--quiet] &lt;commit&gt;</literallayout>
+<emphasis>git stash</emphasis> store [(-m | --message) &lt;message&gt;] [-q | --quiet] &lt;commit&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-stash(1)__description">
@@ -52,7 +55,7 @@ stash index (e.g. the integer <emphasis>n</emphasis> is equivalent to <emphasis>
 <variablelist>
 <varlistentry>
 <term>
-push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [-m|--message &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;&#8230;]
+push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [(-m|--message) &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
@@ -545,6 +548,50 @@ your repository, but not reachable any more:
 <screen>git fsck --unreachable |
 grep commit | cut -d\  -f3 |
 xargs git log --merges --no-walk --grep=WIP</screen>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-stash(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+stash.showIncludeUntracked
+</term>
+<listitem>
+<simpara>
+        If this is set to true, the <emphasis>git stash show</emphasis> command will show
+        the untracked files of a stash entry.  Defaults to false. See
+        description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+stash.showPatch
+</term>
+<listitem>
+<simpara>
+        If this is set to true, the <emphasis>git stash show</emphasis> command without an
+        option will show the stash entry in patch form.  Defaults to false.
+        See description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+stash.showStat
+</term>
+<listitem>
+<simpara>
+        If this is set to true, the <emphasis>git stash show</emphasis> command without an
+        option will show diffstat of the stash entry.  Defaults to true.
+        See description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -730,6 +730,27 @@ with the above configuration, i.e. <emphasis>j-c-diff</emphasis>, with 7
 parameters, just like <emphasis>GIT_EXTERNAL_DIFF</emphasis> program is called.
 See <xref linkend="git(1)" /> for details.</simpara>
 </section>
+<section id="gitattributes(5)__setting_the_internal_diff_algorithm">
+<title>Setting the internal diff algorithm</title>
+<simpara>The diff algorithm can be set through the <emphasis>diff.algorithm</emphasis> config key, but
+sometimes it may be helpful to set the diff algorithm per path. For example,
+one may want to use the <emphasis>minimal</emphasis> diff algorithm for .json files, and the
+<emphasis>histogram</emphasis> for .c files, and so on without having to pass in the algorithm
+through the command line each time.</simpara>
+<simpara>First, in <emphasis>.gitattributes</emphasis>, assign the <emphasis>diff</emphasis> attribute for paths.</simpara>
+<screen>*.json diff=&lt;name&gt;</screen>
+<simpara>Then, define a "diff.&lt;name&gt;.algorithm" configuration to specify the diff
+algorithm, choosing from <emphasis>myers</emphasis>, <emphasis>patience</emphasis>, <emphasis>minimal</emphasis>, or <emphasis>histogram</emphasis>.</simpara>
+<screen>[diff "&lt;name&gt;"]
+  algorithm = histogram</screen>
+<simpara>This diff algorithm applies to user facing diff output like git-diff(1),
+git-show(1) and is used for the <emphasis>--stat</emphasis> output as well. The merge machinery
+will not use the diff algorithm set through this method.</simpara>
+<note><simpara>If <emphasis>diff.&lt;name&gt;.command</emphasis> is defined for path with the
+<emphasis>diff=&lt;name&gt;</emphasis> attribute, it is executed as an external diff driver
+(see above), and adding <emphasis>diff.&lt;name&gt;.algorithm</emphasis> has no effect, as the
+algorithm is not passed to the external diff driver.</simpara></note>
+</section>
 <section id="gitattributes(5)__defining_a_custom_hunk_header">
 <title>Defining a custom hunk-header</title>
 <simpara>Each group of changes (called a "hunk") in the textual diff output
@@ -1214,7 +1235,7 @@ String
 </term>
 <listitem>
 <simpara>
-        Specify a comma separate list of common whitespace problems to
+        Specify a comma separated list of common whitespace problems to
         notice in the same format as the <emphasis>core.whitespace</emphasis> configuration
         variable.
 </simpara>

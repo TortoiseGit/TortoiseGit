@@ -671,6 +671,108 @@ commit commentary), a blame viewer will not care.</simpara></note>
 <title>MAPPING AUTHORS</title>
 <simpara>See <xref linkend="gitmailmap(5)" />.</simpara>
 </simplesect>
+<simplesect id="git-blame(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+blame.blankBoundary
+</term>
+<listitem>
+<simpara>
+        Show blank commit object name for boundary commits in
+        <xref linkend="git-blame(1)" />. This option defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.coloring
+</term>
+<listitem>
+<simpara>
+        This determines the coloring scheme to be applied to blame
+        output. It can be <emphasis>repeatedLines</emphasis>, <emphasis>highlightRecent</emphasis>,
+        or <emphasis>none</emphasis> which is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.date
+</term>
+<listitem>
+<simpara>
+        Specifies the format used to output dates in <xref linkend="git-blame(1)" />.
+        If unset the iso format is used. For supported values,
+        see the discussion of the <emphasis>--date</emphasis> option at <xref linkend="git-log(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.showEmail
+</term>
+<listitem>
+<simpara>
+        Show the author email instead of author name in <xref linkend="git-blame(1)" />.
+        This option defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.showRoot
+</term>
+<listitem>
+<simpara>
+        Do not treat root commits as boundaries in <xref linkend="git-blame(1)" />.
+        This option defaults to false.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.ignoreRevsFile
+</term>
+<listitem>
+<simpara>
+        Ignore revisions listed in the file, one unabbreviated object name per
+        line, in <xref linkend="git-blame(1)" />.  Whitespace and comments beginning with
+        <emphasis>#</emphasis> are ignored.  This option may be repeated multiple times.  Empty
+        file names will reset the list of ignored revisions.  This option will
+        be handled before the command line option <emphasis>--ignore-revs-file</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.markUnblamableLines
+</term>
+<listitem>
+<simpara>
+        Mark lines that were changed by an ignored revision that we could not
+        attribute to another commit with a <emphasis>*</emphasis> in the output of
+        <xref linkend="git-blame(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+blame.markIgnoredLines
+</term>
+<listitem>
+<simpara>
+        Mark lines that were changed by an ignored revision that we attributed to
+        another commit with a <emphasis>?</emphasis> in the output of <xref linkend="git-blame(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-blame(1)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-annotate(1)" /></simpara>

@@ -27,6 +27,7 @@
            [--break] [--heading] [-p | --show-function]
            [-A &lt;post-context&gt;] [-B &lt;pre-context&gt;] [-C &lt;context&gt;]
            [-W | --function-context]
+           [(-m | --max-count) &lt;num&gt;]
            [--threads &lt;num&gt;]
            [-f &lt;file&gt;] [-e] &lt;pattern&gt;
            [--and|--or|--not|(|)|-e &lt;pattern&gt;&#8230;]
@@ -555,6 +556,23 @@ providing this option will cause it to die.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-m &lt;num&gt;
+</term>
+<term>
+--max-count &lt;num&gt;
+</term>
+<listitem>
+<simpara>
+        Limit the amount of matches per file. When using the <emphasis>-v</emphasis> or
+        <emphasis>--invert-match</emphasis> option, the search stops after the specified
+        number of non-matches. A value of -1 will return unlimited
+        results (the default). A value of 0 will exit immediately with
+        a non-zero status.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --threads &lt;num&gt;
 </term>
 <listitem>
@@ -744,6 +762,9 @@ performance in this case, it might be desirable to use <emphasis>--threads=1</em
 </simplesect>
 <simplesect id="git-grep(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -774,7 +795,8 @@ grep.patternType
         Set the default matching behavior. Using a value of <emphasis>basic</emphasis>, <emphasis>extended</emphasis>,
         <emphasis>fixed</emphasis>, or <emphasis>perl</emphasis> will enable the <emphasis>--basic-regexp</emphasis>, <emphasis>--extended-regexp</emphasis>,
         <emphasis>--fixed-strings</emphasis>, or <emphasis>--perl-regexp</emphasis> option accordingly, while the
-        value <emphasis>default</emphasis> will return to the default matching behavior.
+        value <emphasis>default</emphasis> will use the <emphasis>grep.extendedRegexp</emphasis> option to choose
+        between <emphasis>basic</emphasis> and <emphasis>extended</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

@@ -45,7 +45,7 @@ message, after an unindented line saying "Notes (&lt;refname&gt;):" (or
 using the <emphasis>--notes</emphasis> option. Such notes are added as a patch commentary
 after a three dash separator line.</simpara>
 <simpara>To change which notes are shown by <emphasis>git log</emphasis>, see the
-"notes.displayRef" configuration in <xref linkend="git-log(1)" />.</simpara>
+"notes.displayRef" discussion in <xref linkend="git-notes(1)_CONFIGURATION"/>.</simpara>
 <simpara>See the "notes.rewrite.&lt;command&gt;" configuration for a way to carry
 notes across commands that rewrite commits.</simpara>
 </simplesect>
@@ -476,7 +476,7 @@ Of course, it doesn't make much sense to display non-text-format notes
 with <emphasis>git log</emphasis>, so if you use such notes, you'll probably need to write
 some special-purpose tools to do something useful with them.</simpara>
 </simplesect>
-<simplesect id="git-notes(1)__configuration">
+<simplesect id="git-notes(1)_CONFIGURATION">
 <title>CONFIGURATION</title>
 <variablelist>
 <varlistentry>
@@ -492,6 +492,11 @@ core.notesRef
 </simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
+<variablelist>
 <varlistentry>
 <term>
 notes.mergeStrategy
@@ -501,9 +506,10 @@ notes.mergeStrategy
         Which merge strategy to choose by default when resolving notes
         conflicts.  Must be one of <emphasis>manual</emphasis>, <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis>, or
         <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See "NOTES MERGE STRATEGIES"
-        section above for more information on each strategy.
+        section of <xref linkend="git-notes(1)" /> for more information on each strategy.
 </simpara>
-<simpara>This setting can be overridden by passing the <emphasis>--strategy</emphasis> option.</simpara>
+<simpara>This setting can be overridden by passing the <emphasis>--strategy</emphasis> option to
+<xref linkend="git-notes(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -514,8 +520,8 @@ notes.&lt;name&gt;.mergeStrategy
 <simpara>
         Which merge strategy to choose when doing a notes merge into
         refs/notes/&lt;name&gt;.  This overrides the more general
-        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section above
-        for more information on each available strategy.
+        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section in
+        <xref linkend="git-notes(1)" /> for more information on the available strategies.
 </simpara>
 </listitem>
 </varlistentry>
@@ -529,10 +535,18 @@ notes.displayRef
         addition to the default set by <emphasis>core.notesRef</emphasis> or
         <emphasis>GIT_NOTES_REF</emphasis>, to read notes from when showing commit
         messages with the <emphasis>git log</emphasis> family of commands.
-        This setting can be overridden on the command line or by the
-        <emphasis>GIT_NOTES_DISPLAY_REF</emphasis> environment variable.
-        See <xref linkend="git-log(1)" />.
 </simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_DISPLAY_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
+<simpara>A warning will be issued for refs that do not exist,
+but a glob that does not match any refs is silently ignored.</simpara>
+<simpara>This setting can be disabled by the <emphasis>--no-notes</emphasis> option to the <emphasis>git
+log</emphasis> family of commands, or by the <emphasis>--notes=&lt;ref&gt;</emphasis> option accepted by
+those commands.</simpara>
+<simpara>The effective value of "core.notesRef" (possibly overridden by
+GIT_NOTES_REF) is also implicitly added to the list of refs to be
+displayed.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -546,8 +560,9 @@ notes.rewrite.&lt;command&gt;
         notes from the original to the rewritten commit.  Defaults to
         <emphasis>true</emphasis>.  See also "<emphasis>notes.rewriteRef</emphasis>" below.
 </simpara>
-<simpara>This setting can be overridden by the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
-environment variable.</simpara>
+<simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
+environment variable, which must be a colon separated list of refs or
+globs.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -556,10 +571,11 @@ notes.rewriteMode
 </term>
 <listitem>
 <simpara>
-        When copying notes during a rewrite, what to do if the target
-        commit already has a note.  Must be one of <emphasis>overwrite</emphasis>,
-        <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.  Defaults to
-        <emphasis>concatenate</emphasis>.
+        When copying notes during a rewrite (see the
+        "notes.rewrite.&lt;command&gt;" option), determines what to do if
+        the target commit already has a note.  Must be one of
+        <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.
+        Defaults to <emphasis>concatenate</emphasis>.
 </simpara>
 <simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_MODE</emphasis>
 environment variable.</simpara>
@@ -577,8 +593,10 @@ notes.rewriteRef
         may also specify this configuration several times.
 </simpara>
 <simpara>Does not have a default value; you must configure this variable to
-enable note rewriting.</simpara>
-<simpara>Can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis> environment variable.</simpara>
+enable note rewriting.  Set it to <emphasis>refs/notes/commits</emphasis> to enable
+rewriting for the default commit notes.</simpara>
+<simpara>Can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis> environment variable.
+See <emphasis>notes.rewrite.&lt;command&gt;</emphasis> above for a further description of its format.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

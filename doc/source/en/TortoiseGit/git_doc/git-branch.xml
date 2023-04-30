@@ -141,7 +141,7 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </term>
 <listitem>
 <simpara>
-        Reset &lt;branchname&gt; to &lt;startpoint&gt;, even if &lt;branchname&gt; exists
+        Reset &lt;branchname&gt; to &lt;start-point&gt;, even if &lt;branchname&gt; exists
         already. Without <emphasis>-f</emphasis>, <emphasis>git branch</emphasis> refuses to change an existing branch.
         In combination with <emphasis>-d</emphasis> (or <emphasis>--delete</emphasis>), allow deleting the
         branch irrespective of its merged status, or whether it even
@@ -149,6 +149,9 @@ way to clean up all obsolete remote-tracking branches.</simpara>
         <emphasis>-m</emphasis> (or <emphasis>--move</emphasis>), allow renaming the branch even if the new
         branch name already exists, the same applies for <emphasis>-c</emphasis> (or <emphasis>--copy</emphasis>).
 </simpara>
+<simpara>Note that <emphasis>git branch -f &lt;branchname&gt; [&lt;start-point&gt;]</emphasis>, even with <emphasis>-f</emphasis>,
+refuses to change an existing branch <emphasis>&lt;branchname&gt;</emphasis> that is checked out
+in another worktree linked to the same repository.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -619,6 +622,175 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 <simpara><emphasis>pager.branch</emphasis> is only respected when listing branches, i.e., when
 <emphasis>--list</emphasis> is used or implied. The default is to use a pager.
 See <xref linkend="git-config(1)" />.</simpara>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+branch.autoSetupMerge
+</term>
+<listitem>
+<simpara>
+        Tells <emphasis>git branch</emphasis>, <emphasis>git switch</emphasis> and <emphasis>git checkout</emphasis> to set up new branches
+        so that <xref linkend="git-pull(1)" /> will appropriately merge from the
+        starting point branch. Note that even if this option is not set,
+        this behavior can be chosen per-branch using the <emphasis>--track</emphasis>
+        and <emphasis>--no-track</emphasis> options. The valid settings are: <emphasis>false</emphasis> -- no
+        automatic setup is done; <emphasis>true</emphasis> -- automatic setup is done when the
+        starting point is a remote-tracking branch; <emphasis>always</emphasis> --
+        automatic setup is done when the starting point is either a
+        local branch or remote-tracking branch; <emphasis>inherit</emphasis> -- if the starting point
+        has a tracking configuration, it is copied to the new
+        branch; <emphasis>simple</emphasis> -- automatic setup is done only when the starting point
+        is a remote-tracking branch and the new branch has the same name as the
+        remote branch. This option defaults to true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.autoSetupRebase
+</term>
+<listitem>
+<simpara>
+        When a new branch is created with <emphasis>git branch</emphasis>, <emphasis>git switch</emphasis> or <emphasis>git checkout</emphasis>
+        that tracks another branch, this variable tells Git to set
+        up pull to rebase instead of merge (see "branch.&lt;name&gt;.rebase").
+        When <emphasis>never</emphasis>, rebase is never automatically set to true.
+        When <emphasis>local</emphasis>, rebase is set to true for tracked branches of
+        other local branches.
+        When <emphasis>remote</emphasis>, rebase is set to true for tracked branches of
+        remote-tracking branches.
+        When <emphasis>always</emphasis>, rebase will be set to true for all tracking
+        branches.
+        See "branch.autoSetupMerge" for details on how to set up a
+        branch to track another branch.
+        This option defaults to never.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.sort
+</term>
+<listitem>
+<simpara>
+        This variable controls the sort ordering of branches when displayed by
+        <xref linkend="git-branch(1)" />. Without the "--sort=&lt;value&gt;" option provided, the
+        value of this variable will be used as the default.
+        See <xref linkend="git-for-each-ref(1)" /> field names for valid values.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.remote
+</term>
+<listitem>
+<simpara>
+        When on branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
+        which remote to fetch from/push to.  The remote to push to
+        may be overridden with <emphasis>remote.pushDefault</emphasis> (for all branches).
+        The remote to push to, for the current branch, may be further
+        overridden by <emphasis>branch.&lt;name&gt;.pushRemote</emphasis>.  If no remote is
+        configured, or if you are not on any branch and there is more than
+        one remote defined in the repository, it defaults to <emphasis>origin</emphasis> for
+        fetching and <emphasis>remote.pushDefault</emphasis> for pushing.
+        Additionally, <emphasis>.</emphasis> (a period) is the current local repository
+        (a dot-repository), see <emphasis>branch.&lt;name&gt;.merge</emphasis>'s final note below.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.pushRemote
+</term>
+<listitem>
+<simpara>
+        When on branch &lt;name&gt;, it overrides <emphasis>branch.&lt;name&gt;.remote</emphasis> for
+        pushing.  It also overrides <emphasis>remote.pushDefault</emphasis> for pushing
+        from branch &lt;name&gt;.  When you pull from one place (e.g. your
+        upstream) and push to another place (e.g. your own publishing
+        repository), you would want to set <emphasis>remote.pushDefault</emphasis> to
+        specify the remote to push to for all branches, and use this
+        option to override it for a specific branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.merge
+</term>
+<listitem>
+<simpara>
+        Defines, together with branch.&lt;name&gt;.remote, the upstream branch
+        for the given branch. It tells <emphasis>git fetch</emphasis>/<emphasis>git pull</emphasis>/<emphasis>git rebase</emphasis> which
+        branch to merge and can also affect <emphasis>git push</emphasis> (see push.default).
+        When in branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> the default
+        refspec to be marked for merging in FETCH_HEAD. The value is
+        handled like the remote part of a refspec, and must match a
+        ref which is fetched from the remote given by
+        "branch.&lt;name&gt;.remote".
+        The merge information is used by <emphasis>git pull</emphasis> (which at first calls
+        <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
+        this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
+        Specify multiple values to get an octopus merge.
+        If you wish to setup <emphasis>git pull</emphasis> so that it merges into &lt;name&gt; from
+        another branch in the local repository, you can point
+        branch.&lt;name&gt;.merge to the desired branch, and use the relative path
+        setting <emphasis>.</emphasis> (a period) for branch.&lt;name&gt;.remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.mergeOptions
+</term>
+<listitem>
+<simpara>
+        Sets default options for merging into branch &lt;name&gt;. The syntax and
+        supported options are the same as those of <xref linkend="git-merge(1)" />, but
+        option values containing whitespace characters are currently not
+        supported.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.rebase
+</term>
+<listitem>
+<simpara>
+        When true, rebase the branch &lt;name&gt; on top of the fetched branch,
+        instead of merging the default branch from the default remote when
+        "git pull" is run. See "pull.rebase" for doing this in a non
+        branch-specific manner.
+</simpara>
+<simpara>When <emphasis>merges</emphasis> (or just <emphasis>m</emphasis>), pass the <emphasis>--rebase-merges</emphasis> option to <emphasis>git rebase</emphasis>
+so that the local merge commits are included in the rebase (see
+<xref linkend="git-rebase(1)" /> for details).</simpara>
+<simpara>When the value is <emphasis>interactive</emphasis> (or just <emphasis>i</emphasis>), the rebase is run in interactive
+mode.</simpara>
+<simpara><emphasis role="strong">NOTE</emphasis>: this is a possibly dangerous operation; do <emphasis role="strong">not</emphasis> use
+it unless you understand the implications (see <xref linkend="git-rebase(1)" />
+for details).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+branch.&lt;name&gt;.description
+</term>
+<listitem>
+<simpara>
+        Branch description, can be edited with
+        <emphasis>git branch --edit-description</emphasis>. Branch description is
+        automatically added in the format-patch cover letter or
+        request-pull summary.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-branch(1)__examples">
 <title>EXAMPLES</title>

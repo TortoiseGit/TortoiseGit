@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="scalar(1)">
+    <title>scalar(1)</title>
+<indexterm>
+<primary>scalar(1)</primary>
+</indexterm>
+<simplesect id="scalar(1)__name">
+<title>NAME</title>
+<simpara>scalar - A tool for managing large Git repositories</simpara>
+</simplesect>
+<simplesect id="scalar(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>scalar clone [--single-branch] [--branch &lt;main-branch&gt;] [--full-clone] &lt;url&gt; [&lt;enlistment&gt;]
+scalar list
+scalar register [&lt;enlistment&gt;]
+scalar unregister [&lt;enlistment&gt;]
+scalar run ( all | config | commit-graph | fetch | loose-objects | pack-files ) [&lt;enlistment&gt;]
+scalar reconfigure [ --all | &lt;enlistment&gt; ]
+scalar diagnose [&lt;enlistment&gt;]
+scalar delete &lt;enlistment&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="scalar(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Scalar is a repository management tool that optimizes Git for use in large
+repositories. Scalar improves performance by configuring advanced Git settings,
+maintaining repositories in the background, and helping to reduce data sent
+across the network.</simpara>
+<simpara>An important Scalar concept is the enlistment: this is the top-level directory
+of the project. It usually contains the subdirectory <emphasis>src/</emphasis> which is a Git
+worktree. This encourages the separation between tracked files (inside <emphasis>src/</emphasis>)
+and untracked files, such as build artifacts (outside <emphasis>src/</emphasis>). When registering
+an existing Git worktree with Scalar whose name is not <emphasis>src</emphasis>, the enlistment
+will be identical to the worktree.</simpara>
+<simpara>The <emphasis>scalar</emphasis> command implements various subcommands, and different options
+depending on the subcommand. With the exception of <emphasis>clone</emphasis>, <emphasis>list</emphasis> and
+<emphasis>reconfigure --all</emphasis>, all subcommands expect to be run in an enlistment.</simpara>
+<simpara>The following options can be specified <emphasis>before</emphasis> the subcommand:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+-C &lt;directory&gt;
+</term>
+<listitem>
+<simpara>
+        Before running the subcommand, change the working directory. This
+        option imitates the same option of <xref linkend="git(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-c &lt;key&gt;=&lt;value&gt;
+</term>
+<listitem>
+<simpara>
+        For the duration of running the specified subcommand, configure this
+        setting. This option imitates the same option of <xref linkend="git(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="scalar(1)__commands">
+<title>COMMANDS</title>
+<section id="scalar(1)__clone">
+<title>Clone</title>
+<variablelist>
+<varlistentry>
+<term>
+clone [&lt;options&gt;] &lt;url&gt; [&lt;enlistment&gt;]
+</term>
+<listitem>
+<simpara>
+        Clones the specified repository, similar to <xref linkend="git-clone(1)" />. By
+        default, only commit and tree objects are cloned. Once finished, the
+        worktree is located at <emphasis>&lt;enlistment&gt;/src</emphasis>.
+</simpara>
+<simpara>The sparse-checkout feature is enabled (except when run with <emphasis>--full-clone</emphasis>)
+and the only files present are those in the top-level directory. Use
+<emphasis>git sparse-checkout set</emphasis> to expand the set of directories you want to see,
+or <emphasis>git sparse-checkout disable</emphasis> to expand to all files (see
+<xref linkend="git-sparse-checkout(1)" /> for more details). You can explore the
+subdirectories outside your sparse-checkout by using <emphasis>git ls-tree
+HEAD[:&lt;directory&gt;]</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-b &lt;name&gt;
+</term>
+<term>
+--branch &lt;name&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of checking out the branch pointed to by the cloned
+        repository's HEAD, check out the <emphasis>&lt;name&gt;</emphasis> branch instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]single-branch
+</term>
+<listitem>
+<simpara>
+        Clone only the history leading to the tip of a single branch, either
+        specified by the <emphasis>--branch</emphasis> option or the primary branch remote's
+        <emphasis>HEAD</emphasis> points at.
+</simpara>
+<simpara>Further fetches into the resulting repository will only update the
+remote-tracking branch for the branch this option was used for the initial
+cloning. If the HEAD at the remote did not point at any branch when
+<emphasis>--single-branch</emphasis> clone was made, no remote-tracking branch is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]full-clone
+</term>
+<listitem>
+<simpara>
+        A sparse-checkout is initialized by default. This behavior can be
+        turned off via <emphasis>--full-clone</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__list">
+<title>List</title>
+<variablelist>
+<varlistentry>
+<term>
+list
+</term>
+<listitem>
+<simpara>
+        List enlistments that are currently registered by Scalar. This
+        subcommand does not need to be run inside an enlistment.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__register">
+<title>Register</title>
+<variablelist>
+<varlistentry>
+<term>
+register [&lt;enlistment&gt;]
+</term>
+<listitem>
+<simpara>
+        Adds the enlistment's repository to the list of registered repositories
+        and starts background maintenance. If <emphasis>&lt;enlistment&gt;</emphasis> is not provided,
+        then the enlistment associated with the current working directory is
+        registered.
+</simpara>
+<simpara>Note: when this subcommand is called in a worktree that is called <emphasis>src/</emphasis>, its
+parent directory is considered to be the Scalar enlistment. If the worktree is
+<emphasis>not</emphasis> called <emphasis>src/</emphasis>, it itself will be considered to be the Scalar enlistment.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__unregister">
+<title>Unregister</title>
+<variablelist>
+<varlistentry>
+<term>
+unregister [&lt;enlistment&gt;]
+</term>
+<listitem>
+<simpara>
+        Remove the specified repository from the list of repositories
+        registered with Scalar and stop the scheduled background maintenance.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__run">
+<title>Run</title>
+<variablelist>
+<varlistentry>
+<term>
+scalar run ( all | config | commit-graph | fetch | loose-objects | pack-files ) [&lt;enlistment&gt;]
+</term>
+<listitem>
+<simpara>
+        Run the given maintenance task (or all tasks, if <emphasis>all</emphasis> was specified).
+        Except for <emphasis>all</emphasis> and <emphasis>config</emphasis>, this subcommand simply hands off to
+        <xref linkend="git-maintenance(1)" /> (mapping <emphasis>fetch</emphasis> to <emphasis>prefetch</emphasis> and
+        <emphasis>pack-files</emphasis> to <emphasis>incremental-repack</emphasis>).
+</simpara>
+<simpara>These tasks are run automatically as part of the scheduled maintenance,
+as soon as the repository is registered with Scalar. It should therefore
+not be necessary to run this subcommand manually.</simpara>
+<simpara>The <emphasis>config</emphasis> task is specific to Scalar and configures all those
+opinionated default settings that make Git work more efficiently with
+large repositories. As this task is run as part of <emphasis>scalar clone</emphasis>
+automatically, explicit invocations of this task are rarely needed.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__reconfigure">
+<title>Reconfigure</title>
+<simpara>After a Scalar upgrade, or when the configuration of a Scalar enlistment
+was somehow corrupted or changed by mistake, this subcommand allows to
+reconfigure the enlistment.</simpara>
+<simpara>With the <emphasis>--all</emphasis> option, all enlistments currently registered with Scalar
+will be reconfigured. Use this option after each Scalar upgrade.</simpara>
+</section>
+<section id="scalar(1)__diagnose">
+<title>Diagnose</title>
+<variablelist>
+<varlistentry>
+<term>
+diagnose [&lt;enlistment&gt;]
+</term>
+<listitem>
+<simpara>
+    When reporting issues with Scalar, it is often helpful to provide the
+    information gathered by this command, including logs and certain
+    statistics describing the data shape of the current enlistment.
+</simpara>
+<simpara>The output of this command is a <emphasis>.zip</emphasis> file that is written into
+a directory adjacent to the worktree in the <emphasis>src</emphasis> directory.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="scalar(1)__delete">
+<title>Delete</title>
+<variablelist>
+<varlistentry>
+<term>
+delete &lt;enlistment&gt;
+</term>
+<listitem>
+<simpara>
+        This subcommand lets you delete an existing Scalar enlistment from your
+        local file system, unregistering the repository.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+</simplesect>
+<simplesect id="scalar(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-clone(1)" />, <xref linkend="git-maintenance(1)" />.</simpara>
+</simplesect>
+<simplesect id="scalar(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

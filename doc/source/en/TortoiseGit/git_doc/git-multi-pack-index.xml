@@ -134,9 +134,10 @@ expire
 </term>
 <listitem>
 <simpara>
-        Delete the pack-files that are tracked  by the MIDX file, but
-        have no objects referenced by the MIDX. Rewrite the MIDX file
-        afterward to remove all references to these pack-files.
+        Delete the pack-files that are tracked by the MIDX file, but
+        have no objects referenced by the MIDX (with the exception of
+        <emphasis>.keep</emphasis> packs and cruft packs). Rewrite the MIDX file afterward
+        to remove all references to these pack-files.
 </simpara>
 </listitem>
 </varlistentry>
@@ -202,8 +203,8 @@ Verify the MIDX file for the packfiles in the current <emphasis>.git</emphasis> 
 <simplesect id="git-multi-pack-index(1)__see_also">
 <title>SEE ALSO</title>
 <simpara>See <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/multi-pack-index.html"><citetitle>The Multi-Pack-Index Design
-Document</citetitle></ulink> and <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.html"><citetitle>The Multi-Pack-Index
-Format</citetitle></ulink> for more information on the multi-pack-index feature.</simpara>
+Document</citetitle></ulink> and <xref linkend="gitformat-pack(5)" /> for more information on the
+multi-pack-index feature and its file format.</simpara>
 </simplesect>
 <simplesect id="git-multi-pack-index(1)__git">
 <title>GIT</title>

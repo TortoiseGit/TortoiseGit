@@ -367,6 +367,20 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--exclude-hidden=[receive|uploadpack]
+</term>
+<listitem>
+<simpara>
+        Do not include refs that would be hidden by <emphasis>git-receive-pack</emphasis> or
+        <emphasis>git-upload-pack</emphasis> by consulting the appropriate <emphasis>receive.hideRefs</emphasis> or
+        <emphasis>uploadpack.hideRefs</emphasis> configuration along with <emphasis>transfer.hideRefs</emphasis> (see
+        <xref linkend="git-config(1)" />). This option affects the next pseudo-ref option
+        <emphasis>--all</emphasis> or <emphasis>--glob</emphasis> and is cleared after processing them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --disambiguate=&lt;prefix&gt;
 </term>
 <listitem>
@@ -727,7 +741,8 @@ otherwise, <emphasis>refs/remotes/&lt;refname&gt;/HEAD</emphasis> if it exists.
 <emphasis>FETCH_HEAD</emphasis> records the branch which you fetched from a remote repository
 with your last <emphasis>git fetch</emphasis> invocation.
 <emphasis>ORIG_HEAD</emphasis> is created by commands that move your <emphasis>HEAD</emphasis> in a drastic
-way, to record the position of the <emphasis>HEAD</emphasis> before their operation, so that
+way (<emphasis>git am</emphasis>, <emphasis>git merge</emphasis>, <emphasis>git rebase</emphasis>, <emphasis>git reset</emphasis>),
+to record the position of the <emphasis>HEAD</emphasis> before their operation, so that
 you can easily change the tip of the branch back to the state before you ran
 them.
 <emphasis>MERGE_HEAD</emphasis> records the commit(s) which you are merging into your branch
@@ -1183,7 +1198,7 @@ three notations also consider its parents. For example you can say
 <listitem>
 <simpara>
   A suffix <emphasis>&#94;</emphasis> followed by an exclamation mark is the same
-  as giving commit <emphasis>&lt;rev&gt;</emphasis> and then all its parents prefixed with
+  as giving commit <emphasis>&lt;rev&gt;</emphasis> and all its parents prefixed with
   <emphasis>&#94;</emphasis> to exclude them (and their ancestors).
 </simpara>
 </listitem>

@@ -2402,7 +2402,7 @@ those "loose" objects.</simpara>
 <simpara>You can save space and make Git faster by moving these loose objects in
 to a "pack file", which stores a group of objects in an efficient
 compressed format; the details of how pack files are formatted can be
-found in <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/pack-format.html"><citetitle>pack format</citetitle></ulink>.</simpara>
+found in <xref linkend="gitformat-pack(5)" />.</simpara>
 <simpara>To put the loose objects into a pack, just run git repack:</simpara>
 <literallayout>$ git repack
 Counting objects: 6020, done.
@@ -3336,7 +3336,7 @@ itself!</simpara>
 <simpara>
         A "branch" is a line of development.  The most recent
         <link linkend="Git User Manual_def_commit">commit</link> on a branch is referred to as the tip of
-        that branch.  The tip of the branch is referenced by a branch
+        that branch.  The tip of the branch is <link linkend="Git User Manual_def_ref">referenced</link> by a branch
         <link linkend="Git User Manual_def_head">head</link>, which moves forward as additional development
         is done on the branch.  A single Git
         <link linkend="Git User Manual_def_repository">repository</link> can track an arbitrary number of
@@ -3439,6 +3439,35 @@ itself!</simpara>
 state in the Git history, by creating a new commit representing the current
 state of the <link linkend="Git User Manual_def_index">index</link> and advancing <link linkend="Git User Manual_def_HEAD">HEAD</link>
 to point at the new commit.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="Git User Manual_def_commit_graph_general" xreflabel="[def_commit_graph_general]"/>commit graph concept, representations and usage
+</term>
+<listitem>
+<simpara>
+        A synonym for the <link linkend="Git User Manual_def_DAG">DAG</link> structure formed by the commits
+        in the object database, <link linkend="Git User Manual_def_ref">referenced</link> by branch tips,
+        using their <link linkend="Git User Manual_def_chain">chain</link> of linked commits.
+        This structure is the definitive commit graph. The
+        graph can be represented in other ways, e.g. the
+        <link linkend="Git User Manual_def_commit_graph_file">"commit-graph" file</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="Git User Manual_def_commit_graph_file" xreflabel="[def_commit_graph_file]"/>commit-graph file
+</term>
+<listitem>
+<simpara>
+        The "commit-graph" (normally hyphenated) file is a supplemental
+        representation of the <link linkend="Git User Manual_def_commit_graph_general">commit graph</link>
+        which accelerates commit graph walks. The "commit-graph" file is
+        stored either in the .git/objects/info directory or in the info
+        directory of an alternate object database.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -3808,7 +3837,7 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
-<anchor id="Git User Manual_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier
+<anchor id="Git User Manual_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier (oid)
 </term>
 <listitem>
 <simpara>
@@ -4230,6 +4259,21 @@ exclude
         <link linkend="Git User Manual_def_commit_object">commits</link> to their parents or trees, and
         <link linkend="Git User Manual_def_tree_object">trees</link> to the trees or <link linkend="Git User Manual_def_blob_object">blobs</link>
         that they contain.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="Git User Manual_def_reachability_bitmap" xreflabel="[def_reachability_bitmap]"/>reachability bitmaps
+</term>
+<listitem>
+<simpara>
+        Reachability bitmaps store information about the
+        <link linkend="Git User Manual_def_reachable">reachability</link> of a selected set of commits in
+        a packfile, or a multi-pack index (MIDX), to speed up object search.
+        The bitmaps are stored in a ".bitmap" file. A repository may have at
+        most one bitmap file in use. The bitmap file may belong to either one
+        pack, or the repository's multi-pack index (if it exists).
 </simpara>
 </listitem>
 </varlistentry>

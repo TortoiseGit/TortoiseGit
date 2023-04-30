@@ -13,7 +13,7 @@
 <simplesect id="git-pack-redundant(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git pack-redundant</emphasis> [ --verbose ] [ --alt-odb ] ( --all | &lt;pack-filename&gt;&#8230; )</literallayout>
+<literallayout><emphasis>git pack-redundant</emphasis> [--verbose] [--alt-odb] (--all | &lt;pack-filename&gt;&#8230;)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pack-redundant(1)__description">
@@ -48,7 +48,7 @@ git pack-redundant --all | xargs rm</simpara>
 <listitem>
 <simpara>
         Don't require objects present in packs from alternate object
-        directories to be present in local packs.
+        database (odb) directories to be present in local packs.
 </simpara>
 </listitem>
 </varlistentry>

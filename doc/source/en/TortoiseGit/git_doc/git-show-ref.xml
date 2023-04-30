@@ -13,8 +13,8 @@
 <simplesect id="git-show-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-ref</emphasis> [-q|--quiet] [--verify] [--head] [-d|--dereference]
-             [-s|--hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]] [--tags]
+<literallayout><emphasis>git show-ref</emphasis> [-q | --quiet] [--verify] [--head] [-d | --dereference]
+             [-s | --hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]] [--tags]
              [--heads] [--] [&lt;pattern&gt;&#8230;]
 <emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;]</literallayout>
 </blockquote>

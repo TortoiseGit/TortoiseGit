@@ -661,7 +661,7 @@ as <emphasis>switch</emphasis>, <emphasis>pull</emphasis>, <emphasis>merge</emph
 However, these commands will sometimes write these files anyway in
 important cases such as conflicts during a merge or rebase.  Git
 commands will also avoid treating the lack of such files as an
-intentional deletion; for example <emphasis>git add -u</emphasis> will not not stage a
+intentional deletion; for example <emphasis>git add -u</emphasis> will not stage a
 deletion for these files and <emphasis>git commit -a</emphasis> will not make a commit
 deleting them either.</simpara>
 <simpara>Although this bit looks similar to assume-unchanged bit, its goal is

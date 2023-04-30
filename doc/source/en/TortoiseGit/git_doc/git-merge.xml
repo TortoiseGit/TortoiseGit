@@ -37,7 +37,8 @@ from one branch into another.</simpara>
 <emphasis>topic</emphasis> branch since it diverged from <emphasis>master</emphasis> (i.e., <emphasis>E</emphasis>) until
 its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis>, and record the result
 in a new commit along with the names of the two parent commits and
-a log message from the user describing the changes.</simpara>
+a log message from the user describing the changes. Before the operation,
+<emphasis>ORIG_HEAD</emphasis> is set to the tip of the current branch (<emphasis>C</emphasis>).</simpara>
 <screen>          A---B---C topic
          /         \
     D---E---F---G---H master</screen>
@@ -452,8 +453,13 @@ will be appended to the specified message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Allow the rerere mechanism to update the index with the
-        result of auto-conflict resolution if possible.
+        After the rerere mechanism reuses a recorded resolution on
+        the current conflict to update the files in the working
+        tree, allow it to also update the index with the result of
+        resolution.  <emphasis>--no-rerere-autoupdate</emphasis> is a good way to
+        double-check what <emphasis>rerere</emphasis> did and catch potential
+        mismerges, before committing the result to the index with a
+        separate <emphasis>git add</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1082,6 +1088,23 @@ substitutes the changed version instead.</simpara>
 <variablelist>
 <varlistentry>
 <term>
+branch.&lt;name&gt;.mergeOptions
+</term>
+<listitem>
+<simpara>
+        Sets default options for merging into branch &lt;name&gt;. The syntax and
+        supported options are the same as those of <emphasis>git merge</emphasis>, but option
+        values containing whitespace characters are currently not supported.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Everything above this line in this section isn't included from the
+<xref linkend="git-config(1)" /> documentation. The content that follows is the
+same as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
 merge.conflictStyle
 </term>
 <listitem>
@@ -1686,18 +1709,6 @@ merge.&lt;driver&gt;.recursive
         Names a low-level merge driver to be used when
         performing an internal merge between common ancestors.
         See <xref linkend="gitattributes(5)" /> for details.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-branch.&lt;name&gt;.mergeOptions
-</term>
-<listitem>
-<simpara>
-        Sets default options for merging into branch &lt;name&gt;. The syntax and
-        supported options are the same as those of <emphasis>git merge</emphasis>, but option
-        values containing whitespace characters are currently not supported.
 </simpara>
 </listitem>
 </varlistentry>

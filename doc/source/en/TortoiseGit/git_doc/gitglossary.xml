@@ -65,7 +65,7 @@
 <simpara>
         A "branch" is a line of development.  The most recent
         <link linkend="gitglossary(7)_def_commit">commit</link> on a branch is referred to as the tip of
-        that branch.  The tip of the branch is referenced by a branch
+        that branch.  The tip of the branch is <link linkend="gitglossary(7)_def_ref">referenced</link> by a branch
         <link linkend="gitglossary(7)_def_head">head</link>, which moves forward as additional development
         is done on the branch.  A single Git
         <link linkend="gitglossary(7)_def_repository">repository</link> can track an arbitrary number of
@@ -168,6 +168,35 @@
 state in the Git history, by creating a new commit representing the current
 state of the <link linkend="gitglossary(7)_def_index">index</link> and advancing <link linkend="gitglossary(7)_def_HEAD">HEAD</link>
 to point at the new commit.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_commit_graph_general" xreflabel="[def_commit_graph_general]"/>commit graph concept, representations and usage
+</term>
+<listitem>
+<simpara>
+        A synonym for the <link linkend="gitglossary(7)_def_DAG">DAG</link> structure formed by the commits
+        in the object database, <link linkend="gitglossary(7)_def_ref">referenced</link> by branch tips,
+        using their <link linkend="gitglossary(7)_def_chain">chain</link> of linked commits.
+        This structure is the definitive commit graph. The
+        graph can be represented in other ways, e.g. the
+        <link linkend="gitglossary(7)_def_commit_graph_file">"commit-graph" file</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_commit_graph_file" xreflabel="[def_commit_graph_file]"/>commit-graph file
+</term>
+<listitem>
+<simpara>
+        The "commit-graph" (normally hyphenated) file is a supplemental
+        representation of the <link linkend="gitglossary(7)_def_commit_graph_general">commit graph</link>
+        which accelerates commit graph walks. The "commit-graph" file is
+        stored either in the .git/objects/info directory or in the info
+        directory of an alternate object database.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -537,7 +566,7 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
-<anchor id="gitglossary(7)_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier
+<anchor id="gitglossary(7)_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier (oid)
 </term>
 <listitem>
 <simpara>
@@ -959,6 +988,21 @@ exclude
         <link linkend="gitglossary(7)_def_commit_object">commits</link> to their parents or trees, and
         <link linkend="gitglossary(7)_def_tree_object">trees</link> to the trees or <link linkend="gitglossary(7)_def_blob_object">blobs</link>
         that they contain.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_reachability_bitmap" xreflabel="[def_reachability_bitmap]"/>reachability bitmaps
+</term>
+<listitem>
+<simpara>
+        Reachability bitmaps store information about the
+        <link linkend="gitglossary(7)_def_reachable">reachability</link> of a selected set of commits in
+        a packfile, or a multi-pack index (MIDX), to speed up object search.
+        The bitmaps are stored in a ".bitmap" file. A repository may have at
+        most one bitmap file in use. The bitmap file may belong to either one
+        pack, or the repository's multi-pack index (if it exists).
 </simpara>
 </listitem>
 </varlistentry>

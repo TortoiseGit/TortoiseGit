@@ -158,6 +158,9 @@ success of the resolution after the custom tool has exited.</simpara>
 </simplesect>
 <simplesect id="git-mergetool(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -271,7 +274,7 @@ mergetool.hideResolved
         possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
         any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
         represent the versions of the file from before Git's conflict
-        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwriten so
+        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwritten so
         that only the unresolved conflicts are presented to the merge tool. Can
         be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
         configuration variable. Defaults to <emphasis>false</emphasis>.

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="gitformat-signature(5)">
+    <title>gitformat-signature(5)</title>
+<indexterm>
+<primary>gitformat-signature(5)</primary>
+</indexterm>
+<simplesect id="gitformat-signature(5)__name">
+<title>NAME</title>
+<simpara>gitformat-signature - Git cryptographic signature formats</simpara>
+</simplesect>
+<simplesect id="gitformat-signature(5)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>&lt;[tag|commit] object header(s)&gt;
+&lt;over-the-wire protocol&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="gitformat-signature(5)__description">
+<title>DESCRIPTION</title>
+<simpara>Git uses cryptographic signatures in various places, currently objects (tags,
+commits, mergetags) and transactions (pushes). In every case, the command which
+is about to create an object or transaction determines a payload from that,
+calls an external program to obtain a detached signature for the payload
+(<emphasis>gpg -bsa</emphasis> in the case of PGP signatures), and embeds the signature into the
+object or transaction.</simpara>
+<simpara>Signatures begin with an "ASCII Armor" header line and end with a tail line,
+which differ depending on signature type (as selected by <emphasis>gpg.format</emphasis>, see
+<xref linkend="git-config(1)" />). These are, for <emphasis>gpg.format</emphasis> values:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>gpg</emphasis> (PGP)
+</term>
+<listitem>
+<simpara>
+        <emphasis>-----BEGIN PGP SIGNATURE-----</emphasis> and <emphasis>-----END PGP SIGNATURE-----</emphasis>.
+        Or, if gpg is told to produce RFC1991 signatures,
+        <emphasis>-----BEGIN PGP MESSAGE-----</emphasis> and <emphasis>-----END PGP MESSAGE-----</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>ssh</emphasis> (SSH)
+</term>
+<listitem>
+<simpara>
+        <emphasis>-----BEGIN SSH SIGNATURE-----</emphasis> and <emphasis>-----END SSH SIGNATURE-----</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>x509</emphasis> (X.509)
+</term>
+<listitem>
+<simpara>
+        <emphasis>-----BEGIN SIGNED MESSAGE-----</emphasis> and <emphasis>-----END SIGNED MESSAGE-----</emphasis>
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Signatures sometimes appear as a part of the normal payload
+(e.g. a signed tag has the signature block appended after the payload
+that the signature applies to), and sometimes appear in the value of
+an object header (e.g. a merge commit that merged a signed tag would
+have the entire tag contents on its "mergetag" header).  In the case
+of the latter, the usual multi-line formatting rule for object
+headers applies.  I.e. the second and subsequent lines are prefixed
+with a SP to signal that the line is continued from the previous
+line.</simpara>
+<simpara>This is even true for an originally empty line.  In the following
+examples, the end of line that ends with a whitespace letter is
+highlighted with a <emphasis>$</emphasis> sign; if you are trying to recreate these
+example by hand, do not cut and paste them--they are there
+primarily to highlight extra whitespace at the end of some lines.</simpara>
+<simpara>The signed payload and the way the signature is embedded depends
+on the type of the object resp. transaction.</simpara>
+</simplesect>
+<simplesect id="gitformat-signature(5)__tag_signatures">
+<title>Tag signatures</title>
+<itemizedlist>
+<listitem>
+<simpara>
+created by: <emphasis>git tag -s</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+payload: annotated tag object
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+embedding: append the signature to the unsigned tag object
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+example: tag <emphasis>signedtag</emphasis> with subject <emphasis>signed tag</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>object 04b871796dc0420f8e7561a895b52484b701d51a
+type commit
+tag signedtag
+tagger C O Mitter &lt;committer@example.com&gt; 1465981006 +0000
+
+signed tag
+
+signed tag message body
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQEcBAABAgAGBQJXYRhOAAoJEGEJLoW3InGJklkIAIcnhL7RwEb/+QeX9enkXhxn
+rxfdqrvWd1K80sl2TOt8Bg/NYwrUBw/RWJ+sg/hhHp4WtvE1HDGHlkEz3y11Lkuh
+8tSxS3qKTxXUGozyPGuE90sJfExhZlW4knIQ1wt/yWqM+33E9pN4hzPqLwyrdods
+q8FWEqPPUbSJXoMbRPw04S5jrLtZSsUWbRYjmJCHzlhSfFWW4eFd37uquIaLUBS0
+rkC3Jrx7420jkIpgFcTI2s60uhSQLzgcCwdA2ukSYIRnjg/zDkj8+3h/GaROJ72x
+lZyI6HWixKJkWw8lE9aAOD9TmTW9sFJwcVAzmAuFX2kUreDUKMZduGcoRYGpD7E=
+=jpXa
+-----END PGP SIGNATURE-----</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+verify with: <emphasis>git verify-tag [-v]</emphasis> or <emphasis>git tag -v</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>gpg: Signature made Wed Jun 15 10:56:46 2016 CEST using RSA key ID B7227189
+gpg: Good signature from "Eris Discordia &lt;discord@example.net&gt;"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189
+object 04b871796dc0420f8e7561a895b52484b701d51a
+type commit
+tag signedtag
+tagger C O Mitter &lt;committer@example.com&gt; 1465981006 +0000
+
+signed tag
+
+signed tag message body</screen>
+</simplesect>
+<simplesect id="gitformat-signature(5)__commit_signatures">
+<title>Commit signatures</title>
+<itemizedlist>
+<listitem>
+<simpara>
+created by: <emphasis>git commit -S</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+payload: commit object
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+embedding: header entry <emphasis>gpgsig</emphasis>
+  (content is preceded by a space)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+example: commit with subject <emphasis>signed commit</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>tree eebfed94e75e7760540d1485c740902590a00332
+parent 04b871796dc0420f8e7561a895b52484b701d51a
+author A U Thor &lt;author@example.com&gt; 1465981137 +0000
+committer C O Mitter &lt;committer@example.com&gt; 1465981137 +0000
+gpgsig -----BEGIN PGP SIGNATURE-----
+ Version: GnuPG v1
+ $
+ iQEcBAABAgAGBQJXYRjRAAoJEGEJLoW3InGJ3IwIAIY4SA6GxY3BjL60YyvsJPh/
+ HRCJwH+w7wt3Yc/9/bW2F+gF72kdHOOs2jfv+OZhq0q4OAN6fvVSczISY/82LpS7
+ DVdMQj2/YcHDT4xrDNBnXnviDO9G7am/9OE77kEbXrp7QPxvhjkicHNwy2rEflAA
+ zn075rtEERDHr8nRYiDh8eVrefSO7D+bdQ7gv+7GsYMsd2auJWi1dHOSfTr9HIF4
+ HJhWXT9d2f8W+diRYXGh4X0wYiGg6na/soXc+vdtDYBzIxanRqjg8jCAeo1eOTk1
+ EdTwhcTZlI0x5pvJ3H0+4hA2jtldVtmPM4OTB0cTrEWBad7XV6YgiyuII73Ve3I=
+ =jKHM
+ -----END PGP SIGNATURE-----
+
+signed commit
+
+signed commit message body</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+verify with: <emphasis>git verify-commit [-v]</emphasis> (or <emphasis>git show --show-signature</emphasis>)
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>gpg: Signature made Wed Jun 15 10:58:57 2016 CEST using RSA key ID B7227189
+gpg: Good signature from "Eris Discordia &lt;discord@example.net&gt;"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189
+tree eebfed94e75e7760540d1485c740902590a00332
+parent 04b871796dc0420f8e7561a895b52484b701d51a
+author A U Thor &lt;author@example.com&gt; 1465981137 +0000
+committer C O Mitter &lt;committer@example.com&gt; 1465981137 +0000
+
+signed commit
+
+signed commit message body</screen>
+</simplesect>
+<simplesect id="gitformat-signature(5)__mergetag_signatures">
+<title>Mergetag signatures</title>
+<itemizedlist>
+<listitem>
+<simpara>
+created by: <emphasis>git merge</emphasis> on signed tag
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+payload/embedding: the whole signed tag object is embedded into
+  the (merge) commit object as header entry <emphasis>mergetag</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+example: merge of the signed tag <emphasis>signedtag</emphasis> as above
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>tree c7b1cff039a93f3600a1d18b82d26688668c7dea
+parent c33429be94b5f2d3ee9b0adad223f877f174b05d
+parent 04b871796dc0420f8e7561a895b52484b701d51a
+author A U Thor &lt;author@example.com&gt; 1465982009 +0000
+committer C O Mitter &lt;committer@example.com&gt; 1465982009 +0000
+mergetag object 04b871796dc0420f8e7561a895b52484b701d51a
+ type commit
+ tag signedtag
+ tagger C O Mitter &lt;committer@example.com&gt; 1465981006 +0000
+ $
+ signed tag
+ $
+ signed tag message body
+ -----BEGIN PGP SIGNATURE-----
+ Version: GnuPG v1
+ $
+ iQEcBAABAgAGBQJXYRhOAAoJEGEJLoW3InGJklkIAIcnhL7RwEb/+QeX9enkXhxn
+ rxfdqrvWd1K80sl2TOt8Bg/NYwrUBw/RWJ+sg/hhHp4WtvE1HDGHlkEz3y11Lkuh
+ 8tSxS3qKTxXUGozyPGuE90sJfExhZlW4knIQ1wt/yWqM+33E9pN4hzPqLwyrdods
+ q8FWEqPPUbSJXoMbRPw04S5jrLtZSsUWbRYjmJCHzlhSfFWW4eFd37uquIaLUBS0
+ rkC3Jrx7420jkIpgFcTI2s60uhSQLzgcCwdA2ukSYIRnjg/zDkj8+3h/GaROJ72x
+ lZyI6HWixKJkWw8lE9aAOD9TmTW9sFJwcVAzmAuFX2kUreDUKMZduGcoRYGpD7E=
+ =jpXa
+ -----END PGP SIGNATURE-----
+
+Merge tag 'signedtag' into downstream
+
+signed tag
+
+signed tag message body
+
+# gpg: Signature made Wed Jun 15 08:56:46 2016 UTC using RSA key ID B7227189
+# gpg: Good signature from "Eris Discordia &lt;discord@example.net&gt;"
+# gpg: WARNING: This key is not certified with a trusted signature!
+# gpg:          There is no indication that the signature belongs to the owner.
+# Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189</screen>
+<itemizedlist>
+<listitem>
+<simpara>
+verify with: verification is embedded in merge commit message by default,
+  alternatively with <emphasis>git show --show-signature</emphasis>:
+</simpara>
+</listitem>
+</itemizedlist>
+<screen>commit 9863f0c76ff78712b6800e199a46aa56afbcbd49
+merged tag 'signedtag'
+gpg: Signature made Wed Jun 15 10:56:46 2016 CEST using RSA key ID B7227189
+gpg: Good signature from "Eris Discordia &lt;discord@example.net&gt;"
+gpg: WARNING: This key is not certified with a trusted signature!
+gpg:          There is no indication that the signature belongs to the owner.
+Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189
+Merge: c33429b 04b8717
+Author: A U Thor &lt;author@example.com&gt;
+Date:   Wed Jun 15 09:13:29 2016 +0000
+
+    Merge tag 'signedtag' into downstream
+
+    signed tag
+
+    signed tag message body
+
+    # gpg: Signature made Wed Jun 15 08:56:46 2016 UTC using RSA key ID B7227189
+    # gpg: Good signature from "Eris Discordia &lt;discord@example.net&gt;"
+    # gpg: WARNING: This key is not certified with a trusted signature!
+    # gpg:          There is no indication that the signature belongs to the owner.
+    # Primary key fingerprint: D4BE 2231 1AD3 131E 5EDA  29A4 6109 2E85 B722 7189</screen>
+</simplesect>
+<simplesect id="gitformat-signature(5)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

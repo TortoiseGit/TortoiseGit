@@ -308,8 +308,13 @@ effect to your index in a row.</simpara>
 </term>
 <listitem>
 <simpara>
-        Allow the rerere mechanism to update the index with the
-        result of auto-conflict resolution if possible.
+        After the rerere mechanism reuses a recorded resolution on
+        the current conflict to update the files in the working
+        tree, allow it to also update the index with the result of
+        resolution.  <emphasis>--no-rerere-autoupdate</emphasis> is a good way to
+        double-check what <emphasis>rerere</emphasis> did and catch potential
+        mismerges, before committing the result to the index with a
+        separate <emphasis>git add</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -468,7 +473,7 @@ the code the patch applies to has changed too much, and then tries
 again, this time exercising more care about matching up context lines.</simpara>
 <screen>$ git cherry-pick topic^             <co id="git-cherry-pick_CO1-1"/>
 $ git diff                           <co id="git-cherry-pick_CO1-2"/>
-$ git reset --merge ORIG_HEAD        <co id="git-cherry-pick_CO1-3"/>
+$ git cherry-pick --abort            <co id="git-cherry-pick_CO1-3"/>
 $ git cherry-pick -Xpatience topic^  <co id="git-cherry-pick_CO1-4"/></screen>
 <calloutlist>
 <callout arearefs="git-cherry-pick_CO1-1">

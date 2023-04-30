@@ -13,8 +13,8 @@
 <simplesect id="git-check-attr(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git check-attr</emphasis> [-a | --all | &lt;attr&gt;&#8230;] [--] &lt;pathname&gt;&#8230;
-<emphasis>git check-attr</emphasis> --stdin [-z] [-a | --all | &lt;attr&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git check-attr</emphasis> [--source &lt;tree-ish&gt;] [-a | --all | &lt;attr&gt;&#8230;] [--] &lt;pathname&gt;&#8230;
+<emphasis>git check-attr</emphasis> --stdin [-z] [--source &lt;tree-ish&gt;] [-a | --all | &lt;attr&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-check-attr(1)__description">
@@ -67,6 +67,18 @@
         The output format is modified to be machine-parsable.
         If <emphasis>--stdin</emphasis> is also given, input paths are separated
         with a NUL character instead of a linefeed character.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--source=&lt;tree-ish&gt;
+</term>
+<listitem>
+<simpara>
+        Check attributes against the specified tree-ish. It is common to
+        specify the source tree by naming a commit, branch or tag associated
+        with it.
 </simpara>
 </listitem>
 </varlistentry>

@@ -267,6 +267,36 @@ Record the pristine state as the first commit in the history.
 </varlistentry>
 </variablelist>
 </simplesect>
+<simplesect id="git-init(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+init.templateDir
+</term>
+<listitem>
+<simpara>
+        Specify the directory from which templates will be copied.
+        (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+init.defaultBranch
+</term>
+<listitem>
+<simpara>
+        Allows overriding the default branch name e.g. when initializing
+        a new repository.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
 <simplesect id="git-init(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>

@@ -13,7 +13,7 @@
 <simplesect id="git-annotate(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git annotate</emphasis> [&lt;options&gt;] &lt;file&gt; [&lt;revision&gt;]</literallayout>
+<literallayout><emphasis>git annotate</emphasis> [&lt;options&gt;] [&lt;rev-opts&gt;] [&lt;rev&gt;] [--] &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-annotate(1)__description">

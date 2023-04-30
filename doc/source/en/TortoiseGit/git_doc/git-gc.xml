@@ -163,8 +163,9 @@ users and their repositories.</simpara>
 </simplesect>
 <simplesect id="git-gc(1)__configuration">
 <title>CONFIGURATION</title>
-<simpara>The below documentation is the same as what's found in
-<xref linkend="git-config(1)" />:</simpara>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>

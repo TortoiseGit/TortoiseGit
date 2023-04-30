@@ -571,11 +571,14 @@ a "no-op".</simpara>
         all submodules that changed in the revisions to be pushed will be
         pushed. If on-demand was not able to push all necessary revisions it will
         also be aborted and exit with non-zero status. If <emphasis>only</emphasis> is used all
-        submodules will be recursively pushed while the superproject is left
+        submodules will be pushed while the superproject is left
         unpushed. A value of <emphasis>no</emphasis> or using <emphasis>--no-recurse-submodules</emphasis> can be used
         to override the push.recurseSubmodules configuration variable when no
         submodule recursion is required.
 </simpara>
+<simpara>When using <emphasis>on-demand</emphasis> or <emphasis>only</emphasis>, if a submodule has a
+"push.recurseSubmodules={on-demand,only}" or "submodule.recurse" configuration,
+further recursion will occur. In this case, "only" is treated as "on-demand".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -777,7 +780,9 @@ config file would appear like this:</simpara>
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;URL&gt;</emphasis>.</simpara>
+to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
+defined urls if no pushurls are defined. Fetch, however, will only
+fetch from the first defined url if muliple urls are defined.</simpara>
 </section>
 <section id="git-push(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
@@ -1244,6 +1249,218 @@ As in #1, the attacker chooses an object ID X to steal. The victim sends
 </simpara>
 </listitem>
 </orderedlist>
+</simplesect>
+<simplesect id="git-push(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+push.autoSetupRemote
+</term>
+<listitem>
+<simpara>
+        If set to "true" assume <emphasis>--set-upstream</emphasis> on default push when no
+        upstream tracking exists for the current branch; this option
+        takes effect with push.default options <emphasis>simple</emphasis>, <emphasis>upstream</emphasis>,
+        and <emphasis>current</emphasis>. It is useful if by default you want new branches
+        to be pushed to the default remote (like the behavior of
+        <emphasis>push.default=current</emphasis>) and you also want the upstream tracking
+        to be set. Workflows most likely to benefit from this option are
+        <emphasis>simple</emphasis> central workflows where all branches are expected to
+        have the same name on the remote.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.default
+</term>
+<listitem>
+<simpara>
+        Defines the action <emphasis>git push</emphasis> should take if no refspec is
+        given (whether from the command-line, config, or elsewhere).
+        Different values are well-suited for
+        specific workflows; for instance, in a purely central workflow
+        (i.e. the fetch source is equal to the push destination),
+        <emphasis>upstream</emphasis> is probably what you want.  Possible values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>nothing</emphasis> - do not push anything (error out) unless a refspec is
+  given. This is primarily meant for people who want to
+  avoid mistakes by always being explicit.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>current</emphasis> - push the current branch to update a branch with the same
+  name on the receiving end.  Works in both central and non-central
+  workflows.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>upstream</emphasis> - push the current branch back to the branch whose
+  changes are usually integrated into the current branch (which is
+  called <emphasis>@{upstream}</emphasis>).  This mode only makes sense if you are
+  pushing to the same repository you would normally pull from
+  (i.e. central workflow).
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tracking</emphasis> - This is a deprecated synonym for <emphasis>upstream</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>simple</emphasis> - pushes the current branch with the same name on the remote.
+</simpara>
+<simpara>If you are working on a centralized workflow (pushing to the same repository you
+pull from, which is typically <emphasis>origin</emphasis>), then you need to configure an upstream
+branch with the same name.</simpara>
+<simpara>This mode is the default since Git 2.0, and is the safest option suited for
+beginners.</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>matching</emphasis> - push all branches having the same name on both ends.
+  This makes the repository you are pushing to remember the set of
+  branches that will be pushed out (e.g. if you always push <emphasis>maint</emphasis>
+  and <emphasis>master</emphasis> there and no other branches, the repository you push
+  to will have these two branches, and your local <emphasis>maint</emphasis> and
+  <emphasis>master</emphasis> will be pushed there).
+</simpara>
+<simpara>To use this mode effectively, you have to make sure <emphasis>all</emphasis> the
+branches you would push out are ready to be pushed out before
+running <emphasis>git push</emphasis>, as the whole point of this mode is to allow you
+to push all of the branches in one go.  If you usually finish work
+on only one branch and push out the result, while other branches are
+unfinished, this mode is not for you.  Also this mode is not
+suitable for pushing into a shared central repository, as other
+people may add new branches there, or update the tip of existing
+branches outside your control.</simpara>
+<simpara>This used to be the default, but not since Git 2.0 (<emphasis>simple</emphasis> is the
+new default).</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.followTags
+</term>
+<listitem>
+<simpara>
+        If set to true enable <emphasis>--follow-tags</emphasis> option by default.  You
+        may override this configuration at time of push by specifying
+        <emphasis>--no-follow-tags</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.gpgSign
+</term>
+<listitem>
+<simpara>
+        May be set to a boolean value, or the string <emphasis>if-asked</emphasis>. A true
+        value causes all pushes to be GPG signed, as if <emphasis>--signed</emphasis> is
+        passed to <xref linkend="git-push(1)" />. The string <emphasis>if-asked</emphasis> causes
+        pushes to be signed if the server supports it, as if
+        <emphasis>--signed=if-asked</emphasis> is passed to <emphasis>git push</emphasis>. A false value may
+        override a value from a lower-priority config file. An explicit
+        command-line flag always overrides this config option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.pushOption
+</term>
+<listitem>
+<simpara>
+        When no <emphasis>--push-option=&lt;option&gt;</emphasis> argument is given from the
+        command line, <emphasis>git push</emphasis> behaves as if each &lt;value&gt; of
+        this variable is given as <emphasis>--push-option=&lt;value&gt;</emphasis>.
+</simpara>
+<simpara>This is a multi-valued variable, and an empty value can be used in a
+higher priority configuration file (e.g. <emphasis>.git/config</emphasis> in a
+repository) to clear the values inherited from a lower priority
+configuration files (e.g. <emphasis>$HOME/.gitconfig</emphasis>).</simpara>
+<screen>Example:
+
+/etc/gitconfig
+  push.pushoption = a
+  push.pushoption = b
+
+~/.gitconfig
+  push.pushoption = c
+
+repo/.git/config
+  push.pushoption =
+  push.pushoption = b
+
+This will result in only b (a and c are cleared).</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.recurseSubmodules
+</term>
+<listitem>
+<simpara>
+        May be "check", "on-demand", "only", or "no", with the same behavior
+        as that of "push --recurse-submodules".
+        If not set, <emphasis>no</emphasis> is used by default, unless <emphasis>submodule.recurse</emphasis> is
+        set (in which case a <emphasis>true</emphasis> value means <emphasis>on-demand</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.useForceIfIncludes
+</term>
+<listitem>
+<simpara>
+        If set to "true", it is equivalent to specifying
+        <emphasis>--force-if-includes</emphasis> as an option to <xref linkend="git-push(1)" />
+        in the command line. Adding <emphasis>--no-force-if-includes</emphasis> at the
+        time of push overrides this configuration setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.negotiate
+</term>
+<listitem>
+<simpara>
+        If set to "true", attempt to reduce the size of the packfile
+        sent by rounds of negotiation in which the client and the
+        server attempt to find commits in common. If "false", Git will
+        rely solely on the server's ref advertisement to find commits
+        in common.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+push.useBitmaps
+</term>
+<listitem>
+<simpara>
+        If set to "false", disable use of bitmaps for "git push" even if
+        <emphasis>pack.useBitmaps</emphasis> is "true", without preventing other git operations
+        from using bitmaps. Default is true.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-push(1)__git">
 <title>GIT</title>

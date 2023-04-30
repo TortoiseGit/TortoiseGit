@@ -13,7 +13,7 @@
 <simplesect id="git-rerere(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rerere</emphasis> [<emphasis>clear</emphasis>|<emphasis>forget</emphasis> &lt;pathspec&gt;|<emphasis>diff</emphasis>|<emphasis>remaining</emphasis>|<emphasis>status</emphasis>|<emphasis>gc</emphasis>]</literallayout>
+<literallayout><emphasis>git rerere</emphasis> [clear | forget &lt;pathspec&gt;&#8230; | diff | status | remaining | gc]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rerere(1)__description">

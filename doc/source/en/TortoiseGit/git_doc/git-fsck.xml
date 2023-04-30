@@ -210,6 +210,9 @@ care about this output and want to speed it up further.</simpara>
 </simplesect>
 <simplesect id="git-fsck(1)__configuration">
 <title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -248,6 +251,8 @@ allow new instances of the same breakages go unnoticed.</simpara>
 <simpara>Setting an unknown <emphasis>fsck.&lt;msg-id&gt;</emphasis> value will cause fsck to die, but
 doing the same for <emphasis>receive.fsck.&lt;msg-id&gt;</emphasis> and <emphasis>fetch.fsck.&lt;msg-id&gt;</emphasis>
 will only cause git to warn.</simpara>
+<simpara>See <emphasis>Fsck Messages</emphasis> section of <xref linkend="git-fsck(1)" /> for supported
+values of <emphasis>&lt;msg-id&gt;</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -348,6 +353,589 @@ hash mismatch &lt;object&gt;
         The database has an object whose hash doesn't match the
         object database value.
         This indicates a serious data integrity problem.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-fsck(1)__fsck_messages">
+<title>FSCK MESSAGES</title>
+<simpara>The following lists the types of errors <emphasis>git fsck</emphasis> detects and what
+each error means, with their default severity.  The severity of the
+error, other than those that are marked as "(FATAL)", can be tweaked
+by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configuration variable.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>badDate</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Invalid date format in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badDateOverflow</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Invalid date value in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badEmail</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Invalid email format in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badFilemode</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) A tree contains a bad filemode entry.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) An author/committer name is empty.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badObjectSha1</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) An object has a bad sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badParentSha1</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A commit object has a bad parent sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badTagName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) A tag has an invalid format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badTimezone</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found an invalid time zone in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badTree</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A tree cannot be parsed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badTreeSha1</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A tree has an invalid format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badType</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found an invalid object type.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>duplicateEntries</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A tree contains duplicate file entries.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>emptyName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A path contains an empty name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>extraHeaderEntry</emphasis>
+</term>
+<listitem>
+<simpara>
+        (IGNORE) Extra headers found after <emphasis>tagger</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>fullPathname</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A path contains the full path starting with "/".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitattributesBlob</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A non-blob found at <emphasis>.gitattributes</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitattributesLarge</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The <emphasis>.gitattributes</emphasis> blob is too large.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitattributesLineLength</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The <emphasis>.gitattributes</emphasis> blob contains too long lines.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitattributesMissing</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Unable to read <emphasis>.gitattributes</emphasis> blob.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitattributesSymlink</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) <emphasis>.gitattributes</emphasis> is a symlink.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitignoreSymlink</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) <emphasis>.gitignore</emphasis> is a symlink.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesBlob</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A non-blob found at <emphasis>.gitmodules</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesLarge</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The <emphasis>.gitmodules</emphasis> file is too large to parse.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesMissing</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Unable to read <emphasis>.gitmodules</emphasis> blob.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A submodule name is invalid.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesParse</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) Could not parse <emphasis>.gitmodules</emphasis> blob.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara><emphasis>gitmodulesLarge</emphasis>;
+        (ERROR) <emphasis>.gitmodules</emphasis> blob is too large to parse.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>gitmodulesPath</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) <emphasis>.gitmodules</emphasis> path is invalid.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesSymlink</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) <emphasis>.gitmodules</emphasis> is a symlink.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesUpdate</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found an invalid submodule update setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gitmodulesUrl</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found an invalid submodule url.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>hasDot</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A tree contains an entry named <emphasis>.</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>hasDotdot</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A tree contains an entry named <emphasis>..</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>hasDotgit</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A tree contains an entry named <emphasis>.git</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>mailmapSymlink</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) <emphasis>.mailmap</emphasis> is a symlink.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingAuthor</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Author is missing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingCommitter</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Committer is missing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingEmail</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Email is missing in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingNameBeforeEmail</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing name before an email in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingObject</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing <emphasis>object</emphasis> line in tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingSpaceBeforeDate</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing space before date in an author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingSpaceBeforeEmail</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing space before the email in author/committer line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingTag</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Unexpected end after <emphasis>type</emphasis> line in a tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingTagEntry</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing <emphasis>tag</emphasis> line in a tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingTaggerEntry</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) Missing <emphasis>tagger</emphasis> line in a tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingTree</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing <emphasis>tree</emphasis> line in a commit object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingType</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Invalid type value on the <emphasis>type</emphasis> line in a tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>missingTypeEntry</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Missing <emphasis>type</emphasis> line in a tag object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>multipleAuthors</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Multiple author lines found in a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nulInCommit</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) Found a NUL byte in the commit object body.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nulInHeader</emphasis>
+</term>
+<listitem>
+<simpara>
+        (FATAL) NUL byte exists in the object header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nullSha1</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) Tree contains entries pointing to a null sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>treeNotSorted</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A tree is not properly sorted.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>unknownType</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found an unknown object type.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>unterminatedHeader</emphasis>
+</term>
+<listitem>
+<simpara>
+        (FATAL) Missing end-of-line in the object header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>zeroPaddedDate</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) Found a zero padded date in an author/commiter line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>zeroPaddedFilemode</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) Found a zero padded filemode in a tree.
 </simpara>
 </listitem>
 </varlistentry>

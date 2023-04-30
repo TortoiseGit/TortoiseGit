@@ -13,7 +13,7 @@
 <simplesect id="git-rev-list(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rev-list</emphasis> [&lt;options&gt;] &lt;commit&gt;&#8230; [[--] &lt;path&gt;&#8230;]</literallayout>
+<literallayout><emphasis>git rev-list</emphasis> [&lt;options&gt;] &lt;commit&gt;&#8230; [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rev-list(1)__description">
@@ -459,6 +459,20 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--exclude-hidden=[receive|uploadpack]
+</term>
+<listitem>
+<simpara>
+        Do not include refs that would be hidden by <emphasis>git-receive-pack</emphasis> or
+        <emphasis>git-upload-pack</emphasis> by consulting the appropriate <emphasis>receive.hideRefs</emphasis> or
+        <emphasis>uploadpack.hideRefs</emphasis> configuration along with <emphasis>transfer.hideRefs</emphasis> (see
+        <xref linkend="git-config(1)" />). This option affects the next pseudo-ref option
+        <emphasis>--all</emphasis> or <emphasis>--glob</emphasis> and is cleared after processing them.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --reflog
 </term>
 <listitem>
@@ -540,6 +554,9 @@ explicitly.</simpara>
 <term>
 --disk-usage
 </term>
+<term>
+--disk-usage=human
+</term>
 <listitem>
 <simpara>
         Suppress normal output; instead, print the sum of the bytes used
@@ -549,6 +566,8 @@ explicitly.</simpara>
         faster (especially with <emphasis>--use-bitmap-index</emphasis>). See the <emphasis>CAVEATS</emphasis>
         section in <xref linkend="git-cat-file(1)" /> for the limitations of what
         "on-disk storage" means.
+        With the optional value <emphasis>human</emphasis>, on-disk storage size is shown
+        in human-readable string(e.g. 12.24 Kib, 3.50 Mib).
 </simpara>
 </listitem>
 </varlistentry>
@@ -819,15 +838,17 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---ancestry-path
+--ancestry-path[=&lt;commit&gt;]
 </term>
 <listitem>
 <simpara>
         When given a range of commits to display (e.g. <emphasis>commit1..commit2</emphasis>
-        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits that exist
-        directly on the ancestry chain between the <emphasis>commit1</emphasis> and
-        <emphasis>commit2</emphasis>, i.e. commits that are both descendants of <emphasis>commit1</emphasis>,
-        and ancestors of <emphasis>commit2</emphasis>.
+        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits in that range
+        that are ancestors of &lt;commit&gt;, descendants of &lt;commit&gt;, or
+        &lt;commit&gt; itself.  If no commit is specified, use <emphasis>commit1</emphasis> (the
+        excluded part of the range) as &lt;commit&gt;.  Can be passed multiple
+        times; if so, a commit is included if it is any of the commits
+        given or if it is an ancestor or descendant of one of them.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1063,14 +1084,13 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <variablelist>
 <varlistentry>
 <term>
---ancestry-path
+--ancestry-path[=&lt;commit&gt;]
 </term>
 <listitem>
 <simpara>
-        Limit the displayed commits to those directly on the ancestry
-        chain between the from and to commits in the given commit
-        range. I.e. only display commits that are ancestor of the to
-        commit and descendants of the from commit.
+        Limit the displayed commits to those which are an ancestor of
+        &lt;commit&gt;, or which are a descendant of &lt;commit&gt;, or are &lt;commit&gt;
+        itself.
 </simpara>
 <simpara>As an example use case, consider the following commit history:</simpara>
 <screen>            D---E-------F
@@ -1094,6 +1114,20 @@ option does. Applied to the <emphasis>D..M</emphasis> range, it results in:</sim
                   G---H---I---J
                                \
                                 L--M</screen>
+<simpara>We can also use <emphasis>--ancestry-path=D</emphasis> instead of <emphasis>--ancestry-path</emphasis> which
+means the same thing when applied to the <emphasis>D..M</emphasis> range but is just more
+explicit.</simpara>
+<simpara>If we instead are interested in a given topic within this range, and all
+commits affected by that topic, we may only want to view the subset of
+<emphasis>D..M</emphasis> which contain that topic in their ancestry path.  So, using
+<emphasis>--ancestry-path=H D..M</emphasis> for example would result in:</simpara>
+<screen>                E
+                 \
+                  G---H---I---J
+                               \
+                                L--M</screen>
+<simpara>Whereas <emphasis>--ancestry-path=K D..M</emphasis> would result in</simpara>
+<screen>                K---------------L--M</screen>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -1137,7 +1171,7 @@ merge commits <emphasis>O</emphasis> and <emphasis>P</emphasis>. With parent rew
 not actually contribute a change to <emphasis>file.txt</emphasis>. They only merged a topic
 that was based on an older version of <emphasis>file.txt</emphasis>. This is a common
 issue in repositories using a workflow where many contributors work in
-parallel and merge their topic branches along a single trunk: manu
+parallel and merge their topic branches along a single trunk: many
 unrelated merges appear in the <emphasis>--full-history</emphasis> results.</simpara>
 <simpara>When using the <emphasis>--simplify-merges</emphasis> option, the commits <emphasis>O</emphasis> and <emphasis>P</emphasis>
 disappear from the results. This is because the rewritten second parents
@@ -1781,20 +1815,11 @@ Use <emphasis>--date=format:%c</emphasis> to show the date in your system locale
 preferred format.  See the <emphasis>strftime</emphasis> manual for a complete list of
 format placeholders. When using <emphasis>-local</emphasis>, the correct syntax is
 <emphasis>--date=format-local:...</emphasis>.</simpara>
-<simpara><emphasis>--date=default</emphasis> is the default format, and is similar to
-<emphasis>--date=rfc2822</emphasis>, with a few exceptions:</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-there is no comma after the day-of-week
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-the time zone is omitted when the local time zone is used
-</simpara>
-</listitem>
-</itemizedlist>
+<simpara><emphasis>--date=default</emphasis> is the default format, and is based on ctime(3)
+output.  It shows a single line with three-letter day of the week,
+three-letter month, day-of-month, hour-minute-seconds in "HH:MM:SS"
+format, followed by 4-digit year, plus timezone information, unless
+the local time zone is used, e.g. <emphasis>Thu Jan 1 00:00:00 1970 +0000</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -2191,50 +2216,60 @@ switch line wrapping, like the -w option of
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;(&lt;N&gt;[,trunc|ltrunc|mtrunc])</emphasis>
+<emphasis>%&lt;( &lt;N&gt; [,trunc|ltrunc|mtrunc])</emphasis>
 </term>
 <listitem>
 <simpara>
 make the next placeholder take at
-                                  least N columns, padding spaces on
+                                  least N column widths, padding spaces on
                                   the right if necessary.  Optionally
-                                  truncate at the beginning (ltrunc),
-                                  the middle (mtrunc) or the end
-                                  (trunc) if the output is longer than
-                                  N columns.  Note that truncating
+                                  truncate (with ellipsis <emphasis>..</emphasis>) at the left (ltrunc) <emphasis>..ft</emphasis>,
+                                  the middle (mtrunc) <emphasis>mi..le</emphasis>, or the end
+                                  (trunc) <emphasis>rig..</emphasis>, if the output is longer than
+                                  N columns.
+                                  Note 1: that truncating
                                   only works correctly with N &gt;= 2.
+                                  Note 2: spaces around the N and M (see below)
+                                  values are optional.
+                                  Note 3: Emojis and other wide characters
+                                  will take two display columns, which may
+                                  over-run column boundaries.
+                                  Note 4: decomposed character combining marks
+                                  may be misplaced at padding boundaries.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-make the next placeholder take at least until Nth
-             columns, padding spaces on the right if necessary
+make the next placeholder take at least until Mth
+             display column, padding spaces on the right if necessary.
+             Use negative M values for column positions measured
+             from the right hand edge of the terminal window.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis> respectively,
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis> respectively,
                         but padding spaces on the left
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&gt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&gt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&gt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;|( &lt;M&gt; )</emphasis>
                           respectively, except that if the next
                           placeholder takes more spaces than given and
                           there are spaces on its left, use those
@@ -2244,11 +2279,11 @@ similar to <emphasis>%&gt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;|(&lt;N&gt;)</e
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%&gt;&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&gt;&lt;|(&lt;N&gt;)</emphasis>
+<emphasis>%&gt;&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&gt;&lt;|( &lt;M&gt; )</emphasis>
 </term>
 <listitem>
 <simpara>
-similar to <emphasis>%&lt;(&lt;N&gt;)</emphasis>, <emphasis>%&lt;|(&lt;N&gt;)</emphasis>
+similar to <emphasis>%&lt;( &lt;N&gt; )</emphasis>, <emphasis>%&lt;|( &lt;M&gt; )</emphasis>
                           respectively, but padding both sides
                           (i.e. the text is centered)
 </simpara>

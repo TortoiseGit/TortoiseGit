@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="gitprotocol-common(5)">
+    <title>gitprotocol-common(5)</title>
+<indexterm>
+<primary>gitprotocol-common(5)</primary>
+</indexterm>
+<simplesect id="gitprotocol-common(5)__name">
+<title>NAME</title>
+<simpara>gitprotocol-common - Things common to various protocols</simpara>
+</simplesect>
+<simplesect id="gitprotocol-common(5)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout>&lt;over-the-wire-protocol&gt;</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="gitprotocol-common(5)__description">
+<title>DESCRIPTION</title>
+<simpara>This document sets defines things common to various over-the-wire
+protocols and file formats used in Git.</simpara>
+</simplesect>
+<simplesect id="gitprotocol-common(5)__abnf_notation">
+<title>ABNF Notation</title>
+<simpara>ABNF notation as described by RFC 5234 is used within the protocol documents,
+except the following replacement core rules are used:</simpara>
+<screen>  HEXDIG    =  DIGIT / "a" / "b" / "c" / "d" / "e" / "f"</screen>
+<simpara>We also define the following common rules:</simpara>
+<screen>  NUL       =  %x00
+  zero-id   =  40*"0"
+  obj-id    =  40*(HEXDIGIT)
+
+  refname  =  "HEAD"
+  refname /=  "refs/" &lt;see discussion below&gt;</screen>
+<simpara>A refname is a hierarchical octet string beginning with "refs/" and
+not violating the <emphasis>git-check-ref-format</emphasis> command's validation rules.
+More specifically, they:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+They can include slash <emphasis>/</emphasis> for hierarchical (directory)
+  grouping, but no slash-separated component can begin with a
+  dot <emphasis>.</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They must contain at least one <emphasis>/</emphasis>. This enforces the presence of a
+  category like <emphasis>heads/</emphasis>, <emphasis>tags/</emphasis> etc. but the actual names are not
+  restricted.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot have two consecutive dots <emphasis>..</emphasis> anywhere.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot have ASCII control characters (i.e. bytes whose
+  values are lower than \040, or \177 <emphasis>DEL</emphasis>), space, tilde <emphasis>~</emphasis>,
+  caret <emphasis>^</emphasis>, colon <emphasis>:</emphasis>, question-mark <emphasis>?</emphasis>, asterisk <emphasis>*</emphasis>,
+  or open bracket <emphasis>[</emphasis> anywhere.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot end with a slash <emphasis>/</emphasis> or a dot <emphasis>.</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot end with the sequence <emphasis>.lock</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot contain a sequence <emphasis>@{</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+They cannot contain a <emphasis>\\</emphasis>.
+</simpara>
+</listitem>
+</orderedlist>
+</simplesect>
+<simplesect id="gitprotocol-common(5)__pkt_line_format">
+<title>pkt-line Format</title>
+<simpara>Much (but not all) of the payload is described around pkt-lines.</simpara>
+<simpara>A pkt-line is a variable length binary string.  The first four bytes
+of the line, the pkt-len, indicates the total length of the line,
+in hexadecimal.  The pkt-len includes the 4 bytes used to contain
+the length's hexadecimal representation.</simpara>
+<simpara>A pkt-line MAY contain binary data, so implementors MUST ensure
+pkt-line parsing/formatting routines are 8-bit clean.</simpara>
+<simpara>A non-binary line SHOULD BE terminated by an LF, which if present
+MUST be included in the total length. Receivers MUST treat pkt-lines
+with non-binary data the same whether or not they contain the trailing
+LF (stripping the LF if present, and not complaining when it is
+missing).</simpara>
+<simpara>The maximum length of a pkt-line's data component is 65516 bytes.
+Implementations MUST NOT send pkt-line whose length exceeds 65520
+(65516 bytes of payload + 4 bytes of length data).</simpara>
+<simpara>Implementations SHOULD NOT send an empty pkt-line ("0004").</simpara>
+<simpara>A pkt-line with a length field of 0 ("0000"), called a flush-pkt,
+is a special case and MUST be handled differently than an empty
+pkt-line ("0004").</simpara>
+<screen>  pkt-line     =  data-pkt / flush-pkt
+
+  data-pkt     =  pkt-len pkt-payload
+  pkt-len      =  4*(HEXDIG)
+  pkt-payload  =  (pkt-len - 4)*(OCTET)
+
+  flush-pkt    = "0000"</screen>
+<simpara>Examples (as C-style strings):</simpara>
+<screen>  pkt-line          actual value
+  ---------------------------------
+  "0006a\n"         "a\n"
+  "0005a"           "a"
+  "000bfoobar\n"    "foobar\n"
+  "0004"            ""</screen>
+</simplesect>
+<simplesect id="gitprotocol-common(5)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

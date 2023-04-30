@@ -13,15 +13,7 @@
 <simplesect id="git-reflog(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git reflog</emphasis> &lt;subcommand&gt; &lt;options&gt;</literallayout>
-</blockquote>
-</simplesect>
-<simplesect id="git-reflog(1)__description">
-<title>DESCRIPTION</title>
-<simpara>The command takes various subcommands, and different options
-depending on the subcommand:</simpara>
-<blockquote>
-<literallayout><emphasis>git reflog</emphasis> [<emphasis>show</emphasis>] [&lt;log-options&gt;] [&lt;ref&gt;]
+<literallayout><emphasis>git reflog</emphasis> [show] [&lt;log-options&gt;] [&lt;ref&gt;]
 <emphasis>git reflog expire</emphasis> [--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]
         [--rewrite] [--updateref] [--stale-fix]
         [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
@@ -29,6 +21,10 @@ depending on the subcommand:</simpara>
         [--dry-run | -n] [--verbose] &lt;ref&gt;@{&lt;specifier&gt;}&#8230;
 <emphasis>git reflog exists</emphasis> &lt;ref&gt;</literallayout>
 </blockquote>
+</simplesect>
+<simplesect id="git-reflog(1)__description">
+<title>DESCRIPTION</title>
+<simpara>This command manages the information recorded in the reflogs.</simpara>
 <simpara>Reference logs, or "reflogs", record when the tips of branches and
 other references were updated in the local repository. Reflogs are
 useful in various Git commands, to specify the old value of a
@@ -36,7 +32,8 @@ reference. For example, <emphasis>HEAD@{2}</emphasis> means "where HEAD used to 
 moves ago", <emphasis>master@{one.week.ago}</emphasis> means "where master used to point
 to one week ago in this local repository", and so on. See
 <xref linkend="gitrevisions(7)" /> for more details.</simpara>
-<simpara>This command manages the information recorded in the reflogs.</simpara>
+<simpara>The command takes various subcommands, and different options
+depending on the subcommand:</simpara>
 <simpara>The "show" subcommand (which is also the default, in the absence of
 any subcommands) shows the log of the reference provided in the
 command-line (or <emphasis>HEAD</emphasis>, by default). The reflog covers all recent

@@ -6,6 +6,7 @@ Released: unreleased
  * Updated libapr to 1.7.4
  * Updated libapr-util to 1.6.3
  * Updated pcre2 to 10.42
+ * Updated libgit to 2.40.1 based on Git for Windows sources
  * Updated libgit2 to 1.6.4
 
 == Bug Fixes ==

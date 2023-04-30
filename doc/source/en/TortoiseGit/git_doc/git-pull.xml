@@ -1140,7 +1140,9 @@ config file would appear like this:</simpara>
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;URL&gt;</emphasis>.</simpara>
+to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
+defined urls if no pushurls are defined. Fetch, however, will only
+fetch from the first defined url if muliple urls are defined.</simpara>
 </section>
 <section id="git-pull(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>

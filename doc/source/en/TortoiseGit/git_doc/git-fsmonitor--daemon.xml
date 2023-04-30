@@ -8,7 +8,7 @@
 </indexterm>
 <simplesect id="git-fsmonitor&#45;&#45;daemon(1)__name">
 <title>NAME</title>
-<simpara>git-fsmonitor--daemon - A Built-in File System Monitor</simpara>
+<simpara>git-fsmonitor--daemon - A Built-in Filesystem Monitor</simpara>
 </simplesect>
 <simplesect id="git-fsmonitor&#45;&#45;daemon(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -22,7 +22,7 @@
 <simplesect id="git-fsmonitor&#45;&#45;daemon(1)__description">
 <title>DESCRIPTION</title>
 <simpara>A daemon to watch the working directory for file and directory
-changes using platform-specific file system notification facilities.</simpara>
+changes using platform-specific filesystem notification facilities.</simpara>
 <simpara>This daemon communicates directly with commands like <emphasis>git status</emphasis>
 using the <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/api-simple-ipc.html"><citetitle>simple IPC</citetitle></ulink> interface
 instead of the slower <xref linkend="githooks(5)" /> interface.</simpara>
@@ -92,12 +92,66 @@ automatically start it (if necessary).</simpara>
 <simplesect id="git-fsmonitor&#45;&#45;daemon(1)__caveats">
 <title>CAVEATS</title>
 <simpara>The fsmonitor daemon does not currently know about submodules and does
-not know to filter out file system events that happen within a
+not know to filter out filesystem events that happen within a
 submodule.  If fsmonitor daemon is watching a super repo and a file is
 modified within the working directory of a submodule, it will report
 the change (as happening against the super repo).  However, the client
 will properly ignore these extra events, so performance may be affected
 but it will not cause an incorrect result.</simpara>
+<simpara>By default, the fsmonitor daemon refuses to work against network-mounted
+repositories; this may be overridden by setting <emphasis>fsmonitor.allowRemote</emphasis> to
+<emphasis>true</emphasis>. Note, however, that the fsmonitor daemon is not guaranteed to work
+correctly with all network-mounted repositories and such use is considered
+experimental.</simpara>
+<simpara>On Mac OS, the inter-process communication (IPC) between various Git
+commands and the fsmonitor daemon is done via a Unix domain socket (UDS) -- a
+special type of file -- which is supported by native Mac OS filesystems,
+but not on network-mounted filesystems, NTFS, or FAT32.  Other filesystems
+may or may not have the needed support; the fsmonitor daemon is not guaranteed
+to work with these filesystems and such use is considered experimental.</simpara>
+<simpara>By default, the socket is created in the <emphasis>.git</emphasis> directory, however, if the
+<emphasis>.git</emphasis> directory is on a network-mounted filesystem, it will be instead be
+created at <emphasis>$HOME/.git-fsmonitor-*</emphasis> unless <emphasis>$HOME</emphasis> itself is on a
+network-mounted filesystem in which case you must set the configuration
+variable <emphasis>fsmonitor.socketDir</emphasis> to the path of a directory on a Mac OS native
+filesystem in which to create the socket file.</simpara>
+<simpara>If none of the above directories (<emphasis>.git</emphasis>, <emphasis>$HOME</emphasis>, or <emphasis>fsmonitor.socketDir</emphasis>)
+is on a native Mac OS file filesystem the fsmonitor daemon will report an
+error that will cause the daemon and the currently running command to exit.</simpara>
+</simplesect>
+<simplesect id="git-fsmonitor&#45;&#45;daemon(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+fsmonitor.allowRemote
+</term>
+<listitem>
+<simpara>
+    By default, the fsmonitor daemon refuses to work against network-mounted
+    repositories. Setting <emphasis>fsmonitor.allowRemote</emphasis> to <emphasis>true</emphasis> overrides this
+    behavior.  Only respected when <emphasis>core.fsmonitor</emphasis> is set to <emphasis>true</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fsmonitor.socketDir
+</term>
+<listitem>
+<simpara>
+    This Mac OS-specific option, if set, specifies the directory in
+    which to create the Unix domain socket used for communication
+    between the fsmonitor daemon and various Git commands. The directory must
+    reside on a native Mac OS filesystem.  Only respected when <emphasis>core.fsmonitor</emphasis>
+    is set to <emphasis>true</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-fsmonitor&#45;&#45;daemon(1)__git">
 <title>GIT</title>

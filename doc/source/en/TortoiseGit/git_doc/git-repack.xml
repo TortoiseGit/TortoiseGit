@@ -111,6 +111,19 @@ to the new separate pack will be written.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--expire-to=&lt;dir&gt;
+</term>
+<listitem>
+<simpara>
+        Write a cruft pack containing pruned objects (if any) to the
+        directory <emphasis>&lt;dir&gt;</emphasis>. This option is useful for keeping a copy of
+        any pruned objects in a separate directory as a backup. Only
+        useful with <emphasis>--cruft -d</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -l
 </term>
 <listitem>

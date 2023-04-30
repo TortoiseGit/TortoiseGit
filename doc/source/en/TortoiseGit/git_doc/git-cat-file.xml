@@ -18,7 +18,7 @@
 <emphasis>git cat-file</emphasis> (-t | -s) [--allow-unknown-type] &lt;object&gt;
 <emphasis>git cat-file</emphasis> (--batch | --batch-check | --batch-command) [--batch-all-objects]
              [--buffer] [--follow-symlinks] [--unordered]
-             [--textconv | --filters]
+             [--textconv | --filters] [-z]
 <emphasis>git cat-file</emphasis> (--textconv | --filters)
              [&lt;rev&gt;:&lt;path|tree-ish&gt; | --path=&lt;path|tree-ish&gt; &lt;rev&gt;]</literallayout>
 </blockquote>
@@ -69,7 +69,9 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
 <listitem>
 <simpara>
         Instead of the content, show the object size identified by
-        <emphasis>&lt;object&gt;</emphasis>.
+        <emphasis>&lt;object&gt;</emphasis>. If used with <emphasis>--use-mailmap</emphasis> option, will show
+        the size of updated object after replacing idents using the
+        mailmap mechanism.
 </simpara>
 </listitem>
 </varlistentry>
@@ -107,6 +109,21 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
         "tree" with <emphasis>&lt;object&gt;</emphasis> being a commit object that contains it,
         or to ask for a "blob" with <emphasis>&lt;object&gt;</emphasis> being a tag object that
         points at it.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]mailmap
+</term>
+<term>
+--[no-]use-mailmap
+</term>
+<listitem>
+<simpara>
+       Use mailmap file to map author, committer and tagger names
+       and email addresses to canonical real names and email addresses.
+       See <xref linkend="git-shortlog(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -158,11 +175,27 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
 <listitem>
 <simpara>
         Print object information and contents for each object provided
-        on stdin.  May not be combined with any other options or arguments
-        except <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, in which case the input lines
-        also need to specify the path, separated by whitespace.  See the
-        section <emphasis>BATCH OUTPUT</emphasis> below for details.
+        on stdin. May not be combined with any other options or arguments
+        except <emphasis>--textconv</emphasis>, <emphasis>--filters</emphasis>, or <emphasis>--use-mailmap</emphasis>.
 </simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When used with <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, the input lines
+          must specify the path, separated by whitespace. See the section
+          <emphasis>BATCH OUTPUT</emphasis> below for details.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When used with <emphasis>--use-mailmap</emphasis>, for commit and tag objects, the
+          contents part of the output shows the identities replaced using the
+          mailmap mechanism, while the information part of the output shows
+          the size of the object as if it actually recorded the replacement
+          identities.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -174,12 +207,26 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
 </term>
 <listitem>
 <simpara>
-        Print object information for each object provided on stdin.  May
-        not be combined with any other options or arguments except
-        <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, in which case the input lines also
-        need to specify the path, separated by whitespace.  See the
-        section <emphasis>BATCH OUTPUT</emphasis> below for details.
+        Print object information for each object provided on stdin. May not be
+        combined with any other options or arguments except <emphasis>--textconv</emphasis>, <emphasis>--filters</emphasis>
+        or <emphasis>--use-mailmap</emphasis>.
 </simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When used with <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, the input lines must
+         specify the path, separated by whitespace. See the section
+         <emphasis>BATCH OUTPUT</emphasis> below for details.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When used with <emphasis>--use-mailmap</emphasis>, for commit and tag objects, the
+          printed object information shows the size of the object as if the
+          identities recorded in it were replaced by the mailmap mechanism.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -192,11 +239,27 @@ whitespace, so that the appropriate drivers can be determined.</simpara>
 <listitem>
 <simpara>
         Enter a command mode that reads commands and arguments from stdin. May
-        only be combined with <emphasis>--buffer</emphasis>, <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>. In the
-        case of <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, the input lines also need to specify
-        the path, separated by whitespace. See the section <emphasis>BATCH OUTPUT</emphasis> below
-        for details.
+        only be combined with <emphasis>--buffer</emphasis>, <emphasis>--textconv</emphasis>, <emphasis>--use-mailmap</emphasis> or
+        <emphasis>--filters</emphasis>.
 </simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When used with <emphasis>--textconv</emphasis> or <emphasis>--filters</emphasis>, the input lines must
+          specify the path, separated by whitespace. See the section
+          <emphasis>BATCH OUTPUT</emphasis> below for details.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When used with <emphasis>--use-mailmap</emphasis>, for commit and tag objects, the
+          <emphasis>contents</emphasis> command shows the identities replaced using the
+          mailmap mechanism, while the <emphasis>info</emphasis> command shows the size
+          of the object as if it actually recorded the replacement
+          identities.
+</simpara>
+</listitem>
+</itemizedlist>
 <simpara><emphasis>--batch-command</emphasis> recognizes the following commands:</simpara>
 <variablelist>
 <varlistentry>
@@ -334,6 +397,18 @@ respectively print:</simpara>
 ../f</literallayout>
 <literallayout class="monospaced">symlink 11
 /etc/passwd</literallayout>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        Only meaningful with <emphasis>--batch</emphasis>, <emphasis>--batch-check</emphasis>, or
+        <emphasis>--batch-command</emphasis>; input is NUL-delimited instead of
+        newline-delimited.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

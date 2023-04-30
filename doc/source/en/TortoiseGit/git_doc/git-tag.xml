@@ -13,7 +13,7 @@
 <simplesect id="git-tag(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;keyid&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;] [-e]
+<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;key-id&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;] [-e]
         &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
 <emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
 <emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--no-contains &lt;commit&gt;]
@@ -28,16 +28,16 @@
 <simpara>Add a tag reference in <emphasis>refs/tags/</emphasis>, unless <emphasis>-d/-l/-v</emphasis> is given
 to delete, list or verify tags.</simpara>
 <simpara>Unless <emphasis>-f</emphasis> is given, the named tag must not yet exist.</simpara>
-<simpara>If one of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;keyid&gt;</emphasis> is passed, the command
+<simpara>If one of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis> is passed, the command
 creates a <emphasis>tag</emphasis> object, and requires a tag message.  Unless
 <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given, an editor is started for the user to type
 in the tag message.</simpara>
-<simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;keyid&gt;</emphasis>
+<simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;key-id&gt;</emphasis>
 are absent, <emphasis>-a</emphasis> is implied.</simpara>
 <simpara>Otherwise, a tag reference that points directly at the given object
 (i.e., a lightweight tag) is created.</simpara>
 <simpara>A GnuPG signed tag object will be created when <emphasis>-s</emphasis> or <emphasis>-u
-&lt;keyid&gt;</emphasis> is used.  When <emphasis>-u &lt;keyid&gt;</emphasis> is not used, the
+&lt;key-id&gt;</emphasis> is used.  When <emphasis>-u &lt;key-id&gt;</emphasis> is not used, the
 committer identity for the current user is used to find the
 GnuPG key for signing.  The configuration variable <emphasis>gpg.program</emphasis>
 is used to specify custom GnuPG binary.</simpara>
@@ -96,10 +96,10 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--u &lt;keyid&gt;
+-u &lt;key-id&gt;
 </term>
 <term>
---local-user=&lt;keyid&gt;
+--local-user=&lt;key-id&gt;
 </term>
 <listitem>
 <simpara>
@@ -308,7 +308,7 @@ options for details.</simpara>
         Use the given tag message (instead of prompting).
         If multiple <emphasis>-m</emphasis> options are given, their values are
         concatenated as separate paragraphs.
-        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;keyid&gt;</emphasis>
+        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
         is given.
 </simpara>
 </listitem>
@@ -324,7 +324,7 @@ options for details.</simpara>
 <simpara>
         Take the tag message from the given file.  Use <emphasis>-</emphasis> to
         read the message from the standard input.
-        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;keyid&gt;</emphasis>
+        Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
         is given.
 </simpara>
 </listitem>
@@ -421,7 +421,7 @@ committer identity (of the form <emphasis>Your Name &lt;your@email.address&gt;</
 find a key.  If you want to use a different default key, you can specify
 it in the repository configuration as follows:</simpara>
 <screen>[user]
-    signingKey = &lt;gpg-keyid&gt;</screen>
+    signingKey = &lt;gpg-key_id&gt;</screen>
 <simpara><emphasis>pager.tag</emphasis> is only respected when listing tags, i.e., when <emphasis>-l</emphasis> is
 used or implied. The default is to use a pager.
 See <xref linkend="git-config(1)" />.</simpara>
