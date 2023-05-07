@@ -7477,7 +7477,7 @@ msgstr ""
 msgid "Regex:"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1859)
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
 msgid "Register context menu"
 msgstr ""
 
