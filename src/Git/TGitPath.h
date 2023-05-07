@@ -448,4 +448,9 @@ public:
 	// If the list contains just files in one directory, then
 	// this contains the directory name
 	mutable CTGitPath m_commonBaseDirectory;
+
+	auto begin() noexcept { return m_paths.begin(); }
+	auto cbegin() const noexcept { return m_paths.cbegin(); }
+	auto end() noexcept { return m_paths.end(); }
+	auto cend() const noexcept { return m_paths.cend(); }
 };
