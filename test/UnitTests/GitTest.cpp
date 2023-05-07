@@ -49,10 +49,12 @@ TEST(CGit, RunGit)
 TEST(CGit, RunGit_BashPipe)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	tmpfile.Replace(L'\\', L'/');
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, L"testing piping..."));
 	SCOPE_EXIT{ ::DeleteFile(tmpfile); };
 	CString pipefile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	pipefile.Replace(L'\\', L'/');
 	CString pipecmd;
 	pipecmd.Format(L"cat < %s", static_cast<LPCTSTR>(tmpfile));
@@ -1388,6 +1390,7 @@ TEST(CGit, CEnvironment)
 static void GetOneFile(CGit& m_Git)
 {
 	CString tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
 	EXPECT_EQ(0, m_Git.GetOneFile(L"b9ef30183497cdad5c30b88d32dc1bed7951dfeb", CTGitPath(L"utf8-nobom.txt"), tmpFile));
 	CString fileContents;
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
@@ -1446,6 +1449,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	CString fileContents;
 	CString tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
 	EXPECT_STREQ(L"This should be encrypted...\nAnd decrypted on the fly\n", fileContents);
@@ -1453,6 +1457,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
 	EXPECT_STREQ(L"This should also be encrypted...\nAnd also decrypted on the fly\n", fileContents);
@@ -1464,6 +1469,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"1.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
 	fileContents.Replace(L"\r\n", L"\n");
@@ -1475,6 +1481,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 
 	fileContents.Empty();
 	tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
 	EXPECT_EQ(0, m_Git.GetOneFile(L"HEAD", CTGitPath(L"2.enc"), tmpFile));
 	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
 	fileContents.Replace(L"\r\n", L"\n");

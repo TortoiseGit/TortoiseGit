@@ -702,6 +702,8 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	proc += L'"';
 
 	CString tempfile = GetTempFile();
+	if (tempfile.IsEmpty())
+		return false;
 	::DeleteFile(tempfile);
 
 	proc += L" -c \"";
@@ -1042,6 +1044,11 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CSt
 {
 	int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 	CString tempfile=GetTempFile();
+	if (tempfile.IsEmpty())
+	{
+		::MessageBox(hWnd, L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
 	if (g_Git.GetUnifiedDiff(url1, rev1, rev2, tempfile, bMerge, bCombine, diffContext, bNoPrefix))
 	{
 		MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
@@ -1269,7 +1276,7 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 			if(!dlg.m_Message.Trim().IsEmpty())
 			{
 				CString tempfile = ::GetTempFile();
-				if (CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_Message))
+				if (tempfile.IsEmpty() || CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_Message))
 				{
 					MessageBox(hWnd, L"Could not save tag message", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
@@ -3009,11 +3016,18 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 		sysProgressDlg.ShowModeless(hWnd, true);
 
 		CString tempFileName = GetTempFile();
+		if (tempFileName.IsEmpty())
+		{
+			sysProgressDlg.Stop();
+			::MessageBox(hWnd, L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 		DeleteFile(tempFileName);
 		CreateDirectory(tempFileName, nullptr);
 		tempFileName += L"\\pullrequest.txt";
 		if (CString err; g_Git.RunLogFile(cmd, tempFileName, &err))
 		{
+			sysProgressDlg.Stop();
 			CString msg;
 			msg.LoadString(IDS_ERR_PULLREUQESTFAILED);
 			MessageBox(hWnd, msg + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -3022,6 +3036,7 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 
 		if (sysProgressDlg.HasUserCancelled())
 		{
+			sysProgressDlg.Stop();
 			CMessageBox::Show(hWnd, IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
 			::DeleteFile(tempFileName);
 			return false;

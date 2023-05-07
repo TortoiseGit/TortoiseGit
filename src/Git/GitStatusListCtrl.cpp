@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2333,6 +2333,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 					CString fullTempFile = GetTempFile();
+					if (fullTempFile.IsEmpty())
+					{
+						::MessageBox(m_hWnd, L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+						break;
+					}
 					std::wofstream outStream(fullTempFile);
 
 					POSITION pos = GetFirstSelectedItemPosition();

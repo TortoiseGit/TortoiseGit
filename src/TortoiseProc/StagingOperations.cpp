@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020-2021 - TortoiseGit
+// Copyright (C) 2020-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -357,6 +357,9 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(std::string& hunkWith
 CString StagingOperations::WritePatchBufferToTemporaryFile(const std::string& data)
 {
 	CString tempFile = ::GetTempFile();
+	if (tempFile.IsEmpty())
+		return CString();
+
 	FILE* fp = nullptr;
 	_wfopen_s(&fp, tempFile, L"w+b");
 	if (!fp)

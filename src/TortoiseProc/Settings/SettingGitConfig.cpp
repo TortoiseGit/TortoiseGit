@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -321,6 +321,11 @@ void CSettingGitConfig::OnBnClickedEdittgitconfig()
 	if (GitAdminDir::IsBareRepo(g_Git.m_CurrentDir))
 	{
 		CString tmpFile = GetTempFile();
+		if (tmpFile.IsEmpty())
+		{
+			MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return;
+		}
 		CTGitPath path(L".tgitconfig");
 		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
 		{
@@ -338,6 +343,11 @@ void CSettingGitConfig::OnBnClickedVieweffectivegitconfig()
 {
 	CString err;
 	CString tempfile = ::GetTempFile();
+	if (tempfile.IsEmpty())
+	{
+		MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return;
+	}
 
 	CString cmd = L"git config -l";
 	if (g_Git.RunLogFile(cmd, tempfile, &err))

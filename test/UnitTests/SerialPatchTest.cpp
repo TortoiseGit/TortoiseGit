@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@ TEST(CSerialPatch, Parse)
 	CStringA patch1 = patch1header + patch1body;
 
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch1)));
 
 	CSerialPatch parser;

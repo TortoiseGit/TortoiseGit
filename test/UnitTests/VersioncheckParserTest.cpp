@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 TEST(CVersioncheckParser, Invalid)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	CStringUtils::WriteStringToTextFile(tmpfile, L"");
 
 	CVersioncheckParser parser;
@@ -44,6 +45,7 @@ TEST(CVersioncheckParser, Invalid)
 TEST(CVersioncheckParser, ParseTestMinimal)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\r\nversion=2.3.4.0\r\n");
 
 	CVersioncheckParser parser;
@@ -79,6 +81,7 @@ TEST(CVersioncheckParser, ParseTestMinimal)
 TEST(CVersioncheckParser, ParseTestRelease)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=2.3.4.5\ninfotext=\"Hallo\\ntest\"\ninfotexturl=someurl\nissuesurl=https://tortoisegit.org/issue/%BUGID%\r\nbaseurl=https://updater.download.tortoisegit.org/tgit/2.3.0.0/\nlangs=\"1031;de\"\nlangs=\"1046;pt_BR\"\nlangs=\"2074;sr-latin\"\nlangs=\"1028;zh_TW\"");
 
 	CVersioncheckParser parser;
@@ -136,6 +139,7 @@ TEST(CVersioncheckParser, ParseTestRelease)
 TEST(CVersioncheckParser, ParseTestPreview)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=preview-1.8.14.2-20150705-92b29f6\nchangelogurl=https://versioncheck.tortoisegit.org/changelog-preview.txt\nbaseurl=http://updater.download.tortoisegit.org/tgit/previews/");
 
 	CVersioncheckParser parser;
@@ -168,6 +172,7 @@ TEST(CVersioncheckParser, ParseTestPreview)
 TEST(CVersioncheckParser, ParseTestHotfix)
 {
 	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
 	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstring=hfüx\nmainfilename=TortoiseGit-%2!s!bit-%1!s!-hotfix.exe\nhotfix=true\nissuesurl=");
 
 	CVersioncheckParser parser;

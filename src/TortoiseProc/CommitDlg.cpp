@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -867,8 +867,7 @@ void CCommitDlg::OnOK()
 		bCloseCommitDlg = true;
 
 		CString tempfile=::GetTempFile();
-
-		if (CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
+		if (tempfile.IsEmpty() || CAppUtils::SaveCommitUnicodeFile(tempfile, m_sLogMessage))
 		{
 			CMessageBox::Show(GetSafeHwnd(), L"Could not save commit message", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			InterlockedExchange(&m_bBlock, FALSE);

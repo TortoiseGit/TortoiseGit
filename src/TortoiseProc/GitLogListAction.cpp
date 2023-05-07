@@ -205,6 +205,11 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					else if ((cmd & 0xFFFF) == 0xFFFD)
 					{
 						CString tempfile = GetTempFile();
+						if (tempfile.IsEmpty())
+						{
+							MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+							break;
+						}
 						CString gitcmd = L"git.exe diff-tree --cc " + r1->m_CommitHash.ToString();
 						CString lastErr;
 						if (g_Git.RunLogFile(gitcmd, tempfile, &lastErr))
@@ -432,6 +437,11 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				auto pLastEntry = m_arShownList.SafeGetAt(LastSelect);
 				CString patch1 = GetTempFile();
 				CString patch2 = GetTempFile();
+				if (patch1.IsEmpty() || patch2.IsEmpty())
+				{
+					MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+					break;
+				}
 				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString() + L"", patch1, &err))
 				{
 					MessageBox(L"Could not generate patch for commit " + pFirstEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);

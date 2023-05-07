@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -230,6 +230,11 @@ void CSetMainPage::OnBnClickedButtonShowEnv()
 {
 	CString err;
 	CString tempfile=::GetTempFile();
+	if (tempfile.IsEmpty())
+	{
+		MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return;
+	}
 
 	CString cmd = L"cmd /c set";
 	if (g_Git.RunLogFile(cmd, tempfile, &err))

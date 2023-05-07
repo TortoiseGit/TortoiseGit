@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2021-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,6 +156,11 @@ void CPatchListCtrl::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 int CPatchListCtrl::LaunchProc(const CString& command)
 {
 	CString tempfile=GetTempFile();
+	if (tempfile.IsEmpty())
+	{
+		MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return -1;
+	}
 	POSITION pos=this->GetFirstSelectedItemPosition();
 	CFile file;
 	file.Open(tempfile,CFile::modeWrite|CFile::modeCreate);
