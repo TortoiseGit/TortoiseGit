@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -3307,9 +3307,13 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 	if (!logMessage.IsEmpty())
 	{
 		CString logmsg = logMessage;
-		logmsg.Replace(L"\\\"", L"\\\\\"");
-		logmsg.Replace(L"\"", L"\\\"");
-		args += L" -m \"" + logmsg + L"\"";
+		CString tempfile = ::GetTempFile();
+		if (tempfile.IsEmpty() || CAppUtils::SaveCommitUnicodeFile(tempfile, logmsg))
+		{
+			MessageBox(hWnd, L"Could not save merge message", L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
+		args.AppendFormat(L" -F \"%s\"", static_cast<LPCWSTR>(tempfile));
 	}
 
 	CString mergeVersion = g_Git.FixBranchName(version);
