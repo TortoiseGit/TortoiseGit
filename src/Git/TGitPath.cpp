@@ -1548,6 +1548,25 @@ CString CTGitPathList::CreateAsteriskSeparatedString() const
 }
 #endif // _MFC_VER
 
+bool CTGitPathList::WriteToPathSpecFile(const CString& sFilename) const
+{
+	CAutoFile hFile = ::CreateFile(sFilename, GENERIC_WRITE, FILE_SHARE_READ, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
+	if (!hFile)
+		return false;
+
+	constexpr char nullBuf[] = { '\0' };
+	DWORD dwWritten = 0;
+	for (const auto& path : m_paths)
+	{
+		CStringA line = CUnicodeUtils::GetUTF8(path.GetGitPathString());
+		if (!WriteFile(hFile, line.GetString(), static_cast<DWORD>(line.GetLength()), &dwWritten, nullptr))
+			return false;
+		if (!WriteFile(hFile, nullBuf, static_cast<DWORD>(sizeof(nullBuf)), &dwWritten, nullptr))
+			return false;
+	}
+	return true;
+}
+
 bool
 CTGitPathList::AreAllPathsFilesInOneDirectory() const
 {

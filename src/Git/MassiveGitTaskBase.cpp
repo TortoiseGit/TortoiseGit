@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019-2020, 2022 - TortoiseGit
+// Copyright (C) 2011-2016, 2019-2020, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,9 +67,60 @@ bool CMassiveGitTaskBase::Execute(BOOL& cancel)
 	return ExecuteCommands(cancel);
 }
 
+template <typename... T>
+bool startsWithOrIsParam(const CString& parameters, CString supportedParameter, T... tail)
+{
+	return startsWithOrIsParam(parameters, supportedParameter) || startsWithOrIsParam(parameters, tail...);
+}
+
+template<>
+bool startsWithOrIsParam(const CString& parameters, CString supportedParameter)
+{
+	return parameters == supportedParameter || CStringUtils::StartsWith(parameters, supportedParameter + L' ');
+}
+
 bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 {
 	m_bUnused = false;
+
+	if (IsListEmpty())
+		return true;
+
+	if (m_bIsPath && CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 26, 0) && startsWithOrIsParam(m_sParams, L"add", L"rm", L"reset", L"checkout", L"restore", L"stash"))
+	{
+		CString tempFilename = GetTempFile();
+		if (tempFilename.IsEmpty())
+		{
+			ReportError(L"Error creating temp file", -1);
+			return false;
+		}
+		SCOPE_EXIT { ::DeleteFile(tempFilename); };
+
+		if (!m_pathList.WriteToPathSpecFile(tempFilename))
+		{
+			ReportError(L"Error writing to temp file", -1);
+			return false;
+		}
+
+		CString cmd, out;
+		cmd.Format(L"git.exe %s --pathspec-from-file=\"%s\" --pathspec-file-nul", static_cast<LPCWSTR>(m_sParams), static_cast<LPCWSTR>(tempFilename));
+		int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
+		if (exitCode && !m_bIgnoreErrors)
+		{
+			ReportError(out, exitCode);
+			return false;
+		}
+
+		for (int i = 0; i < GetListCount(); ++i)
+			ReportProgress(m_pathList[i], i);
+
+		if (cancel)
+		{
+			ReportUserCanceled();
+			return false;
+		}
+		return true;
+	}
 
 	int max_command_line_length = 30000;
 	int quotes_length = 2;
