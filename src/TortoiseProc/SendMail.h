@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013, 2015 - TortoiseGit
+// Copyright (C) 2012-2013, 2015, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,8 +42,10 @@ protected:
 
 public:
 	CSendMail(const CString& To, const CString& CC, bool m_bAttachment);
-	~CSendMail();
 	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) = 0;
+
+protected:
+	~CSendMail();
 };
 
 class CSendMailCombineable : public CSendMail
