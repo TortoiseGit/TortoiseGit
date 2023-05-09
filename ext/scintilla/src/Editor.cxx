@@ -124,6 +124,7 @@ Idler::Idler() noexcept :
 		state(false), idlerID(nullptr) {}
 
 Editor::Editor() : durationWrapOneByte(0.000001, 0.00000001, 0.00001) {
+	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
