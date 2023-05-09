@@ -10,6 +10,7 @@ Released: unreleased
  * Updated libgit2 to 1.6.4
  * Fixed issue #3974: Windows 11 Context Menus only display in single user when has multiple users
    Added a button to register the win11 context menu for the current user
+ * Update Scintilla to 5.3.$ and Lexilla to 5.2.4
 
 == Bug Fixes ==
  * Fixed redraw bug in log list
