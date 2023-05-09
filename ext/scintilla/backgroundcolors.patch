@@ -7,10 +7,10 @@
  6 files changed, 25 insertions(+), 1 deletion(-)
 
 diff --git a/ext/scintilla/include/Scintilla.h b/ext/scintilla/include/Scintilla.h
-index 58bcb112a..899669fc9 100644
+index 92919bbae..29fd76abc 100644
 --- a/ext/scintilla/include/Scintilla.h
 +++ b/ext/scintilla/include/Scintilla.h
-@@ -1285,6 +1285,8 @@ typedef sptr_t (*SciFnDirectStatus)(sptr_t ptr, unsigned int iMessage, uptr_t wP
+@@ -1288,6 +1288,8 @@ typedef sptr_t (*SciFnDirectStatus)(sptr_t ptr, unsigned int iMessage, uptr_t wP
  
  #endif
  
@@ -20,7 +20,7 @@ index 58bcb112a..899669fc9 100644
   * CHARRANGE, TEXTRANGE, FINDTEXTEX, FORMATRANGE, and NMHDR structs.
   * So older code that treats Scintilla as a RichEdit will work. */
 diff --git a/ext/scintilla/src/EditView.cxx b/ext/scintilla/src/EditView.cxx
-index 5839b2b80..329c63d38 100644
+index a1ac8b027..12b4ac6ce 100644
 --- a/ext/scintilla/src/EditView.cxx
 +++ b/ext/scintilla/src/EditView.cxx
 @@ -65,6 +65,7 @@
@@ -31,7 +31,7 @@ index 5839b2b80..329c63d38 100644
  
  using namespace Scintilla;
  using namespace Scintilla::Internal;
-@@ -199,6 +200,7 @@ EditView::EditView() {
+@@ -196,6 +197,7 @@ EditView::EditView() {
  	tabArrowHeight = 4;
  	customDrawTabArrow = nullptr;
  	customDrawWrapMarker = nullptr;
@@ -39,12 +39,12 @@ index 5839b2b80..329c63d38 100644
  }
  
  EditView::~EditView() = default;
-@@ -2385,7 +2387,15 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
+@@ -2389,7 +2391,15 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
  	}
  
  	// See if something overrides the line background colour.
--	const std::optional<ColourRGBA> background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
-+	std::optional<ColourRGBA> background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
+-	const ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
++	ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
 +	SCNotification scn = { 0 };
 +	scn.nmhdr.code = SCN_GETBKCOLOR;
 +	scn.line = line;
@@ -57,10 +57,10 @@ index 5839b2b80..329c63d38 100644
  	const Sci::Position posLineStart = model.pdoc->LineStart(line);
  
 diff --git a/ext/scintilla/src/EditView.h b/ext/scintilla/src/EditView.h
-index aa5de4226..dd6c715e0 100644
+index 7b8064a95..3fdd2d46c 100644
 --- a/ext/scintilla/src/EditView.h
 +++ b/ext/scintilla/src/EditView.h
-@@ -78,6 +78,7 @@ public:
+@@ -77,6 +77,7 @@ public:
  	std::unique_ptr<Surface> pixmapLine;
  	std::unique_ptr<Surface> pixmapIndentGuide;
  	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
@@ -69,10 +69,10 @@ index aa5de4226..dd6c715e0 100644
  	LineLayoutCache llc;
  	std::unique_ptr<IPositionCache> posCache;
 diff --git a/ext/scintilla/src/Editor.cxx b/ext/scintilla/src/Editor.cxx
-index 3cf8d0d13..b45f8dfa6 100644
+index 305ce5326..7e012d616 100644
 --- a/ext/scintilla/src/Editor.cxx
 +++ b/ext/scintilla/src/Editor.cxx
-@@ -119,6 +119,7 @@ static constexpr bool IsAllSpacesOrTabs(std::string_view sv) noexcept {
+@@ -122,6 +122,7 @@ static constexpr bool IsAllSpacesOrTabs(std::string_view sv) noexcept {
  }
  
  Editor::Editor() : durationWrapOneByte(0.000001, 0.00000001, 0.00001) {
@@ -81,7 +81,7 @@ index 3cf8d0d13..b45f8dfa6 100644
  
  	stylesValid = false;
 diff --git a/ext/scintilla/src/Editor.h b/ext/scintilla/src/Editor.h
-index cfcde5265..f516f6506 100644
+index 0445dcd85..60c4a8140 100644
 --- a/ext/scintilla/src/Editor.h
 +++ b/ext/scintilla/src/Editor.h
 @@ -7,6 +7,7 @@
@@ -92,7 +92,7 @@ index cfcde5265..f516f6506 100644
  
  namespace Scintilla::Internal {
  
-@@ -669,6 +670,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
+@@ -678,6 +679,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
  public:
  	~Editor() override;
  
@@ -101,10 +101,10 @@ index cfcde5265..f516f6506 100644
  	bool IsUnicodeMode() const noexcept;
  	// Public so scintilla_send_message can use it.
 diff --git a/ext/scintilla/win32/ScintillaWin.cxx b/ext/scintilla/win32/ScintillaWin.cxx
-index 63e2af751..8b5f8ffae 100644
+index b460d1fe2..4603c8313 100644
 --- a/ext/scintilla/win32/ScintillaWin.cxx
 +++ b/ext/scintilla/win32/ScintillaWin.cxx
-@@ -433,6 +433,7 @@ class ScintillaWin :
+@@ -421,6 +421,7 @@ class ScintillaWin :
  	void SetCtrlID(int identifier) override;
  	int GetCtrlID() override;
  	void NotifyParent(NotificationData scn) override;
@@ -112,7 +112,7 @@ index 63e2af751..8b5f8ffae 100644
  	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
  	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
  	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
-@@ -2454,6 +2455,13 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
+@@ -2456,6 +2457,13 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
  	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
  }
  
