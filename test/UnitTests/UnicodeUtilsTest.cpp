@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ TEST(UnicodeUtils, Std)
 	EXPECT_EQ(0u, resultW.size());
 	EXPECT_STREQ(resultW.c_str(), L"");
 
-	result = CUnicodeUtils::GetUTF8(L"Iñtërnâtiônàlizætiøn");
+	result = CUnicodeUtils::StdGetUTF8(L"Iñtërnâtiônàlizætiøn");
 	EXPECT_EQ(27u, result.size());
 	EXPECT_STREQ(result.c_str(), "\x49\xC3\xB1\x74\xC3\xAB\x72\x6E\xC3\xA2\x74\x69\xC3\xB4\x6E\xC3\xA0\x6C\x69\x7A\xC3\xA6\x74\x69\xC3\xB8\x6E");
 	resultW = CUnicodeUtils::StdGetUnicode(result);
