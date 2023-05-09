@@ -161,26 +161,30 @@ int CPatchListCtrl::LaunchProc(const CString& command)
 		MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return -1;
 	}
-	POSITION pos=this->GetFirstSelectedItemPosition();
-	CFile file;
-	file.Open(tempfile,CFile::modeWrite|CFile::modeCreate);
 
+	CTGitPathList paths;
+	POSITION pos = GetFirstSelectedItemPosition();
 	while(pos)
 	{
 		int index = this->GetNextSelectedItem(pos);
-		CString one=this->GetItemText(index,0);
-		file.Write(static_cast<LPCWSTR>(one), sizeof(wchar_t) * one.GetLength());
-		file.Write(L"\n", sizeof(wchar_t) * 1);
+		paths.AddPath(GetItemText(index, 0));
 	}
-
-	file.Close();
+	if (!paths.WriteToFile(tempfile, false))
+	{
+		MessageBox(L"Could not write to temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return -1;
+	}
 
 	CString cmd = L"/command:";
 	cmd += command;
 	cmd += L" /pathfile:\"";
 	cmd += tempfile;
 	cmd += L"\" /deletepathfile";
-	CAppUtils::RunTortoiseGitProc(cmd);
+	if (!CAppUtils::RunTortoiseGitProc(cmd))
+	{
+		MessageBox(L"Could not start TortoiseGitProc.exe.", L"TortoiseGit", MB_ICONERROR);
+		return -1;
+	}
 	return 0;
 }
 
