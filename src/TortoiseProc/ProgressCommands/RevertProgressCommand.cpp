@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,10 @@
 #include "ShellUpdater.h"
 #include "AppUtils.h"
 #include "../TGitCache/CacheInterface.h"
+
+RevertProgressCommand::RevertProgressCommand(const CString& revertToRevision)
+	: m_sRevertToRevision(revertToRevision)
+{}
 
 bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
@@ -47,7 +51,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
-		if (CString err; g_Git.Revert(L"HEAD", m_targetPathList[i], err))
+		if (CString err; g_Git.Revert(m_sRevertToRevision, m_targetPathList[i], err))
 		{
 			list->ReportError(L"Revert failed:\n" + err);
 			return false;

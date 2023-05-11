@@ -42,6 +42,7 @@
 #include "GitDataObject.h"
 #include "ProgressCommands/AddProgressCommand.h"
 #include "ProgressCommands/LFSSetLockedProgressCommand.h"
+#include "ProgressCommands/RevertProgressCommand.h"
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
@@ -2648,34 +2649,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						CTGitPathList targetList;
 						FillListOfSelectedItemPaths(targetList);
 
-						// make sure that the list is reverse sorted, so that
-						// children are removed before any parents
-						targetList.SortByPathname(true);
-
-						// put all reverted files in the trashbin, except the ones with 'added'
-						// status because they are not restored by the revert.
-						CTGitPathList delList;
-						POSITION pos2 = GetFirstSelectedItemPosition();
-						int index2;
-						while ((index2 = GetNextSelectedItem(pos2)) >= 0)
-						{
-							auto entry = GetListEntry(index2);
-							if (entry&&(!(entry->m_Action& CTGitPath::LOGACTIONS_ADDED))
-									&& (!(entry->m_Action& CTGitPath::LOGACTIONS_REPLACED)) && !entry->IsDirectory())
-							{
-								CTGitPath fullpath;
-								fullpath.SetFromWin(g_Git.CombinePath(entry));
-								delList.AddPath(fullpath);
-							}
-						}
-						if (DWORD(CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE)))
-							delList.DeleteAllFiles(true);
-
 						CString revertToCommit = L"HEAD";
 						if (m_amend)
 							revertToCommit = L"HEAD~1";
-						if (CString err; g_Git.Revert(revertToCommit, targetList, err))
-							MessageBox(L"Revert failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
+
+						CGitProgressDlg progDlg;
+						RevertProgressCommand revertCommand{ revertToCommit };
+						progDlg.SetCommand(&revertCommand);
+						progDlg.SetItemCount(targetList.GetCount());
+						revertCommand.SetPathList(targetList);
+						if (!progDlg.DoModal())
+						{
+							if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+							break;
+						}
 						else
 						{
 							bool updateStatusList = false;

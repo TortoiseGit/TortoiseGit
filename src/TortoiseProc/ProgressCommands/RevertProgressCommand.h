@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,5 +21,9 @@
 class RevertProgressCommand : public ProgressCommand
 {
 public:
+	RevertProgressCommand(const CString& revertToRevision = L"HEAD");
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
+
+private:
+	CString m_sRevertToRevision;
 };
