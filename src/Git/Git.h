@@ -325,8 +325,6 @@ public:
 	*/
 	BOOL CheckCleanWorkTree(bool stagedOk = false);
 	BOOL IsResultingCommitBecomeEmpty(bool amend = false);
-	int Revert(const CString& commit, const CTGitPathList& list, std::function<bool(const CTGitPathList&)> progress, CString& err);
-	int Revert(const CString& commit, const CTGitPath &path, CString& err);
 	int DeleteRef(const CString& reference);
 	/**
 	Use this method only if m_IsUseLibGit2 is used for fallbacks.

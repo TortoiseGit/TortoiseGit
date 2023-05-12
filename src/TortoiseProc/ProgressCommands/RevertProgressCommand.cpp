@@ -21,6 +21,7 @@
 #include "ShellUpdater.h"
 #include "AppUtils.h"
 #include "../TGitCache/CacheInterface.h"
+#include "MassiveGitTask.h"
 
 RevertProgressCommand::RevertProgressCommand(const CString& revertToRevision)
 	: m_sRevertToRevision(revertToRevision)
@@ -50,28 +51,108 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 	list->ReportCmd(CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_REVERT)));
 
-	auto progress = [&list, &m_itemCount](const CTGitPathList& pathList)
-	{
-		auto count = pathList.GetCount();
+	CTGitPathList moveList;
+	CMassiveGitTask unstageTask{ L"rm -f --cached" };
+	CMassiveGitTask checkoutTask{ L"checkout " + m_sRevertToRevision + L" -f" };
+	CMassiveGitTask addTask{ L"add -f" };
 
-		for (int i = 0; i < count; ++i)
+	// prepare mass revert operation
+	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
+	{
+		auto& path = m_targetPathList[i];
+		if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED && !path.GetGitOldPathString().IsEmpty())
 		{
-			list->AddNotify(new CGitProgressList::WC_File_NotificationData(pathList[i], CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
-			++m_itemCount;
+			if (CTGitPath(path.GetGitOldPathString()).IsDirectory())
+			{
+				CString err;
+				err.Format(L"Revert failed:\nCannot revert renaming of \"%s\". A directory with the old name \"%s\" exists.", static_cast<LPCWSTR>(path.GetGitPathString()), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+				list->ReportError(err);
+				return false;
+			}
+			if (path.Exists())
+				moveList.AddPath(path); // needs special handling, e.g. only casing might have changed
+			else
+			{
+				unstageTask.AddFile(path);
+				checkoutTask.AddFile(path.GetGitPathString());
+			}
+		}
+		else if (path.m_Action & CTGitPath::LOGACTIONS_ADDED)
+			unstageTask.AddFile(path);
+		else
+			checkoutTask.AddFile(path);
+
+		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
+			addTask.AddFile(path);
+	}
+
+	unstageTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
+		if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) != 0)
+			return;
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		++m_itemCount;
+	});
+	unstageTask.SetProgressList(list);
+	if (!unstageTask.Execute(list->m_bCancelled))
+		return false;
+
+	checkoutTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
+		if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) != 0)
+			return;
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		++m_itemCount;
+	});
+	checkoutTask.SetProgressList(list);
+	if (!checkoutTask.Execute(list->m_bCancelled))
+		return false;
+
+	addTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		++m_itemCount;
+	});
+	addTask.SetProgressList(list);
+	if (!addTask.Execute(list->m_bCancelled))
+		return false;
+
+	for (const auto& path : moveList)
+	{
+		CString force;
+		// if the filenames only differ in case, we have to pass "-f"
+		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
+			force = L"-f ";
+		CString cmd;
+		cmd.Format(L"git.exe mv %s-- \"%s\" \"%s\"", static_cast<LPCWSTR>(force), static_cast<LPCWSTR>(path.GetGitPathString()), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+		if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
+		{
+			list->ReportError(err);
+			return false;
 		}
 
-		if (list->IsCancelled() == TRUE)
+		cmd.Format(L"git.exe checkout %s -f -- \"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+		if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
+		{
+			list->ReportError(err);
+			return false;
+		}
+
+		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
+		{
+			cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+			if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
+			{
+				list->ReportError(err);
+				return false;
+			}
+		}
+
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		++m_itemCount;
+
+		if (list->IsCancelled())
 		{
 			list->ReportUserCanceled();
 			return false;
 		}
-		return true;
-	};
-
-	if (CString err; g_Git.Revert(m_sRevertToRevision, m_targetPathList, progress, err))
-	{
-		list->ReportError(L"Revert failed:\n" + err);
-		return false;
 	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
