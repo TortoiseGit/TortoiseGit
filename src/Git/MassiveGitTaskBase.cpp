@@ -68,13 +68,12 @@ bool CMassiveGitTaskBase::Execute(BOOL& cancel)
 }
 
 template <typename... T>
-bool startsWithOrIsParam(const CString& parameters, CString supportedParameter, T... tail)
+bool startsWithOrIsParam(const CString& parameters, const CString& supportedParameter, T... tail)
 {
 	return startsWithOrIsParam(parameters, supportedParameter) || startsWithOrIsParam(parameters, tail...);
 }
-
 template<>
-bool startsWithOrIsParam(const CString& parameters, CString supportedParameter)
+bool startsWithOrIsParam(const CString& parameters, const CString& supportedParameter)
 {
 	return parameters == supportedParameter || CStringUtils::StartsWith(parameters, supportedParameter + L' ');
 }
