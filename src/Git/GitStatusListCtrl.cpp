@@ -2467,6 +2467,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
 					sCmd.Format(L"/command:log /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(oldName)));
+					if (filepath->IsDirectory())
+						sCmd += L" /submodule";
 					if (!m_sDisplayedBranch.IsEmpty())
 						sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
 					CAppUtils::RunTortoiseGitProc(sCmd);
