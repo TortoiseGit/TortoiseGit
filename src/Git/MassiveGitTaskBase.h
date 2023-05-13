@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2017, 2020, 2022 - TortoiseGit
+// Copyright (C) 2013-2017, 2020, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ public:
 
 	void					AddFile(const CString& filename);
 	void					AddFile(const CTGitPath& filename);
-	bool					Execute(BOOL& cancel);
+	bool					Execute(volatile BOOL& cancel);
 	int						GetListCount() const;
 	bool					IsListEmpty() const;
 	static void				ConvertToCmdList(CString params, const STRING_VECTOR& pathList, STRING_VECTOR& cmdList);

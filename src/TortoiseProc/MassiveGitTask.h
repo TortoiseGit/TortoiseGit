@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2013-2014, 2016-2017, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,6 +28,8 @@ public:
 	CMassiveGitTask(CString params, BOOL isPath = TRUE, bool ignoreErrors = false);
 	~CMassiveGitTask();
 
+	void SetProgressList(CGitProgressList* notifyCallbackInstance) { m_NotifyCallbackInstance = notifyCallbackInstance; }
+	void SetProgressCallback(std::function<void(const CTGitPath& path, int index)> progressCallback) { m_progressCallback = progressCallback; }
 	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
 
 private:
@@ -36,4 +38,5 @@ private:
 	virtual void			ReportUserCanceled() override;
 	CGitProgressList *		m_NotifyCallbackInstance;
 	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
+	std::function<void(const CTGitPath& path, int index)> m_progressCallback = nullptr;
 };

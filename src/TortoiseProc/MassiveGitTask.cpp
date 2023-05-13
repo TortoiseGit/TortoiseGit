@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011-2013 - Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2013-2016 - TortoiseGit
+// Copyright (C) 2013-2016, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,7 +51,9 @@ void CMassiveGitTask::ReportError(const CString& out, int exitCode)
 
 void CMassiveGitTask::ReportProgress(const CTGitPath& path, int index)
 {
-	if (m_NotifyCallbackInstance)
+	if (m_progressCallback)
+		m_progressCallback(path, index);
+	else if (m_NotifyCallbackInstance)
 	{
 		m_NotifyCallbackInstance->AddNotify(new CGitProgressList::WC_File_NotificationData(path, m_NotifyCallbackAction));
 		m_NotifyCallbackInstance->SetItemProgress(index);

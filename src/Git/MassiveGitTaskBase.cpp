@@ -60,7 +60,7 @@ void CMassiveGitTaskBase::SetPaths(const CTGitPathList* pathList)
 	m_pathList = *pathList;
 }
 
-bool CMassiveGitTaskBase::Execute(BOOL& cancel)
+bool CMassiveGitTaskBase::Execute(volatile BOOL& cancel)
 {
 	assert(m_bUnused);
 	m_pathList.RemoveDuplicates();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -325,8 +325,6 @@ public:
 	*/
 	BOOL CheckCleanWorkTree(bool stagedOk = false);
 	BOOL IsResultingCommitBecomeEmpty(bool amend = false);
-	int Revert(const CString& commit, const CTGitPathList &list, CString& err);
-	int Revert(const CString& commit, const CTGitPath &path, CString& err);
 	int DeleteRef(const CString& reference);
 	/**
 	Use this method only if m_IsUseLibGit2 is used for fallbacks.
