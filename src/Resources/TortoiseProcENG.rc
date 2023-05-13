@@ -3987,6 +3987,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_PROC_UNSTAGE_SELECTED_LINES "Unstage selected &lines"
+    IDS_HANDLESUBMODULES    "Handle submodules"
     IDS_LOCKED              "Locked"
     IDS_UNLOCKED            "Unlocked"
     IDS_ABOUTVERSION        "TortoiseGit %d.%d.%d.%d %s\n%s\n"

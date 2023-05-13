@@ -5007,6 +5007,10 @@ msgstr ""
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
 msgstr ""
 
+#. Resource IDs: (IDS_HANDLESUBMODULES)
+msgid "Handle submodules"
+msgstr ""
+
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
 msgstr ""

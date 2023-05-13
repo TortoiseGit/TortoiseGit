@@ -161,6 +161,26 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		}
 	}
 
+	m_PostCmdCallback = [this](DWORD status, PostCmdList& postCmdList) {
+		if (status)
+			return;
+
+		postCmdList.emplace_back(IDI_DIFF, IDS_HANDLESUBMODULES, [this] {
+			for (const auto& path : m_targetPathList)
+			{
+				if (!path.IsDirectory() && !((path.m_Action & CTGitPath::LOGACTIONS_REPLACED) == 0 && !path.GetGitOldPathString().IsEmpty() && CTGitPath(path.GetGitOldPathString()).IsDirectory()))
+					continue;
+				CString pathString{ path.GetGitPathString() };
+				if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED)
+					pathString = path.GetGitOldPathString();
+
+				CString sCmd;
+				sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GIT_REV_ZERO, static_cast<LPCWSTR>(pathString));
+				CCommonAppUtils::RunTortoiseGitProc(sCmd);
+			}
+		});
+	};
+
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
 	return true;

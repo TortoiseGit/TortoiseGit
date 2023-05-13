@@ -2699,12 +2699,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 											RemoveListEntry(nItem);
 										}
 									}
-									else if (path->IsDirectory() && path->IsWCRoot())
-									{
-										CString sCmd;
-										sCmd.Format(L"/command:revert /path:\"%s\"", static_cast<LPCWSTR>(path->GetGitPathString()));
-										CCommonAppUtils::RunTortoiseGitProc(sCmd);
-									}
 									else if (path->IsDirectory())
 										updateStatusList = true;
 									break;

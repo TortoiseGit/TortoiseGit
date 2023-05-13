@@ -1465,6 +1465,7 @@
 #define IDC_SHOW_DIFF                   1696
 #define IDS_PROC_UNSTAGE_SELECTED_LINES 1696
 #define IDC_GROUP_CHANGELOG             1697
+#define IDS_HANDLESUBMODULES            1697
 #define IDC_GROUP_DOWNLOADS             1698
 #define IDC_LOG3                        1698
 #define IDS_LOCKED                      1698

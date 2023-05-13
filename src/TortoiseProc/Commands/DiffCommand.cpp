@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007-2008 - TortoiseSVN
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ bool DiffCommand::Execute()
 			CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 			return false;
 		}
-		if (this->orgCmdLinePath.IsDirectory())
+		if (this->orgCmdLinePath.IsDirectory() && !parser.HasKey(L"submodule"))
 		{
 			CChangedDlg dlg;
 			dlg.m_pathList = CTGitPathList(cmdLinePath);

@@ -15,6 +15,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed redraw bug in log list
+ * Fixed issue #3843: 'Revert' does not work for submodules
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
