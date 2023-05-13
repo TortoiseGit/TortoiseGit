@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1327,6 +1327,8 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		break;
 	case ShellMenuRename:
 		AddPathCommand(gitCmd, L"rename", true, paths, folder);
+		if (itemStates & ITEMIS_SUBMODULE)
+			gitCmd += L" /submodule";
 		break;
 	case ShellMenuRemove:
 		AddPathFileCommand(gitCmd, L"remove", paths, folder);
