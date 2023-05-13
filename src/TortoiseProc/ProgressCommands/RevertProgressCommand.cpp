@@ -56,6 +56,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	CMassiveGitTask unstageTask{ L"rm -f --cached" };
 	CMassiveGitTask checkoutTask{ L"checkout " + m_sRevertToRevision + L" -f" };
 	CMassiveGitTask addTask{ L"add -f" };
+	CMassiveGitTask deleteTask{ L"rm --ignore-unmatch" };
 
 	// prepare mass revert operation
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
@@ -71,7 +72,15 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 				return false;
 			}
 			if (path.Exists())
-				moveList.AddPath(path); // needs special handling, e.g. only casing might have changed
+			{
+				if (path.IsDirectory())
+					moveList.AddPath(path); // submodule renames need special handling
+				else
+				{
+					deleteTask.AddFile(path);
+					checkoutTask.AddFile(path.GetGitOldPathString());
+				}
+			}
 			else
 			{
 				unstageTask.AddFile(path);
@@ -97,6 +106,11 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	if (!unstageTask.Execute(list->m_bCancelled))
 		return false;
 
+	deleteTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath&, int) {});
+	deleteTask.SetProgressList(list);
+	if (!deleteTask.Execute(list->m_bCancelled))
+		return false;
+
 	checkoutTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
 		if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) != 0)
 			return;
@@ -115,6 +129,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	if (!addTask.Execute(list->m_bCancelled))
 		return false;
 
+	// for handling submodule renames
 	for (const auto& path : moveList)
 	{
 		CString force;
@@ -134,16 +149,6 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		{
 			list->ReportError(err);
 			return false;
-		}
-
-		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
-		{
-			cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
-			if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
-			{
-				list->ReportError(err);
-				return false;
-			}
 		}
 
 		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
