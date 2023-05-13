@@ -36,15 +36,16 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 	m_itemCountTotal = 2 * m_targetPathList.GetCount();
 	CTGitPathList delList;
+	bool recycleRenamedFiles = CRegDWORD(L"Software\\TortoiseGit\\RevertRenamedFilesWithRecycleBin", TRUE) != FALSE;
 	for (m_itemCount = 0; m_itemCount < m_targetPathList.GetCount(); ++m_itemCount)
 	{
 		CTGitPath path;
 		path.SetFromWin(g_Git.CombinePath(m_targetPathList[m_itemCount]));
 		auto action = m_targetPathList[m_itemCount].m_Action;
 		/* rename file can't delete because it needs original file*/
-		if ((!(action & CTGitPath::LOGACTIONS_ADDED)) &&
-			(!(action & CTGitPath::LOGACTIONS_REPLACED)))
-			delList.AddPath(path);
+		if ((action & CTGitPath::LOGACTIONS_ADDED) || !recycleRenamedFiles && (action & CTGitPath::LOGACTIONS_REPLACED))
+			continue;
+		delList.AddPath(path);
 	}
 	if (DWORD(CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE)))
 		delList.DeleteAllFiles(true);
