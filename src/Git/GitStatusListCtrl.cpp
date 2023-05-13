@@ -2675,18 +2675,21 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 								for (int nItem=0; nItem<nListboxEntries; ++nItem)
 								{
 									auto path = GetListEntry(nItem);
-									if (path->GetGitPathString()==targetList[i].GetGitPathString() && !path->IsDirectory())
+									if (path->GetGitPathString() != targetList[i].GetGitPathString())
+										continue;
+									if (!path->IsDirectory())
 									{
 										if(path->m_Action & CTGitPath::LOGACTIONS_ADDED)
 										{
 											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
 											SetEntryCheck(path,nItem,false);
-											updateStatusList = true;
 #if 0 // revert an added file and some entry will be cloned (part 1/2)
 											SetItemGroup(nItem,1);
 											this->m_StatusFileList.RemoveItem(*path);
 											this->m_UnRevFileList.AddPath(*path);
 											//this->m_IgnoreFileList.RemoveItem(*path);
+#else
+											updateStatusList = true;
 #endif
 										}
 										else
@@ -2695,14 +2698,14 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 												m_nSelected--;
 											RemoveListEntry(nItem);
 										}
-										break;
 									}
-									else if (path->GetGitPathString()==targetList[i].GetGitPathString() && path->IsDirectory() && path->IsWCRoot())
+									else if (path->IsDirectory() && path->IsWCRoot())
 									{
 										CString sCmd;
 										sCmd.Format(L"/command:revert /path:\"%s\"", static_cast<LPCWSTR>(path->GetGitPathString()));
 										CCommonAppUtils::RunTortoiseGitProc(sCmd);
 									}
+									break;
 								}
 							}
 							SetRedraw(TRUE);
