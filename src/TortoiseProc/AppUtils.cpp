@@ -3762,6 +3762,7 @@ int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveW
 {
 	bool b_local = false, b_remote = false;
 	BYTE_VECTOR vector;
+	if (resolveWith != RESOLVE_WITH_CURRENT)
 	{
 		CString cmd;
 		cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));

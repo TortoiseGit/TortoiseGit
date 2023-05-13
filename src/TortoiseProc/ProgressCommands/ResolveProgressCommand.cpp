@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016, 2019 - TortoiseGit
+// Copyright (C) 2009-2016, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,28 +20,23 @@
 #include "ResolveProgressCommand.h"
 #include "ShellUpdater.h"
 #include "AppUtils.h"
+#include "MassiveGitTask.h"
 
 bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
-	ASSERT(m_targetPathList.GetCount() == 1);
 	list->SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
 	list->SetBackgroundImage(IDI_RESOLVE_BKG);
 
 	m_itemCountTotal = m_targetPathList.GetCount();
-	for (m_itemCount = 0; m_itemCount < m_itemCountTotal; ++m_itemCount)
-	{
-		CString cmd, out, tempmergefile;
-		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(m_targetPathList[m_itemCount].GetGitPathString()));
-		if (g_Git.Run(cmd, &out, CP_UTF8))
-		{
-			list->ReportError(out);
-			return false;
-		}
 
-		CAppUtils::RemoveTempMergeFile(m_targetPathList[m_itemCount]);
-
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[m_itemCount], CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved));
-	}
+	CMassiveGitTask mgt(L"add -f");
+	mgt.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
+		CAppUtils::RemoveTempMergeFile(path);
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved));
+		++m_itemCount;
+	});
+	if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved, list))
+		return false;
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
