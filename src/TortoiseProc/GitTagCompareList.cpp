@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -274,22 +274,16 @@ void CGitTagCompareList::Show()
 			{
 			case 0:
 				return SortPredicate(sortLogical, e1.name, e2.name);
-				break;
 			case 1:
 				return SortPredicate(false, e1.diffstate, e2.diffstate);
-				break;
 			case 2:
 				return e1.myHash < e2.myHash;
-				break;
 			case 3:
 				return SortPredicate(sortLogical, e1.myMessage, e2.myMessage);
-				break;
 			case 4:
 				return e1.theirHash < e2.theirHash;
-				break;
 			case 5:
 				return SortPredicate(sortLogical, e1.theirMessage, e2.theirMessage);
-				break;
 			}
 			return false;
 		};

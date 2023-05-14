@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2020 - TortoiseGit
+// Copyright (C) 2013-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -221,25 +221,18 @@ void CGitRefCompareList::Show()
 			{
 			case 0:
 				return StringComparePredicate(sortLogical, e1.shortName, e2.shortName);
-				break;
 			case 1:
 				return StringComparePredicate(false, RefTypeString(e1.refType), RefTypeString(e2.refType));
-				break;
 			case 2:
 				return StringComparePredicate(false, e1.change, e2.change);
-				break;
 			case 3:
 				return e1.oldHash.Compare(e2.oldHash) < 0;
-				break;
 			case 4:
 				return StringComparePredicate(sortLogical, e1.oldMessage, e2.oldMessage);
-				break;
 			case 5:
 				return e1.newHash.Compare(e2.newHash) < 0;
-				break;
 			case 6:
 				return StringComparePredicate(sortLogical, e1.newMessage, e2.newMessage);
-				break;
 			}
 			return false;
 		};

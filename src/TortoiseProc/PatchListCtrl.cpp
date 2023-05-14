@@ -201,7 +201,6 @@ void CPatchListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
 			*pResult = CDRF_NOTIFYITEMDRAW;
 			return;
 		}
-		break;
 	case CDDS_ITEMPREPAINT:
 		{
 			// This is the prepaint stage for an item. Here's where we set the
