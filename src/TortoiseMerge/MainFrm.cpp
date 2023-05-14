@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -1595,6 +1595,7 @@ void CMainFrame::OnFileSave()
 				break;
 			case 203: // both
 				m_pwndLeftView->SaveFile(SAVE_REMOVEDLINES);
+				[[fallthrough]];
 			case 202: // right
 				m_pwndRightView->SaveFile();
 				break;
@@ -2666,6 +2667,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 				break;
 			case 203: // both
 				m_pwndLeftView->SaveFile(SAVE_REMOVEDLINES);
+				[[fallthrough]];
 			case 202: // right
 				m_pwndRightView->SaveFile();
 				break;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2021 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2022 TortoiseGit
+// Copyright (C) 2011-2012, 2017-2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1667,6 +1667,7 @@ void CBaseView::DrawLineEnding(CDC *pDC, const CRect &rc, int nLineIndex, const 
 				// arrow from top to middle+2, then left
 				pDC->MoveTo(origin.x + GetCharWidth() - CDPIAware::Instance().ScaleX(1), rc.top + CDPIAware::Instance().ScaleY(1));
 				pDC->LineTo(origin.x + GetCharWidth() - CDPIAware::Instance().ScaleX(1), yMiddle);
+				[[fallthrough]];
 			case EOL_CR:
 				// arrow from right to left
 				pDC->MoveTo(origin.x + GetCharWidth() - CDPIAware::Instance().ScaleX(1), yMiddle);
@@ -5721,6 +5722,7 @@ bool CBaseView::Search(SearchDirection srchDir, bool useStart, bool flashIfNotFo
 		case DIFFSTATE_FILTEREDDIFF:
 			if (m_bLimitToDiff)
 				break;
+			[[fallthrough]];
 		case DIFFSTATE_REMOVED:
 		case DIFFSTATE_REMOVEDWHITESPACE:
 		case DIFFSTATE_ADDED:
@@ -6132,6 +6134,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 		case DIFFSTATE_CONFLICTEMPTY:
 		case DIFFSTATE_UNKNOWN:
 			line.state = DIFFSTATE_EMPTY;
+			[[fallthrough]];
 		case DIFFSTATE_EMPTY:
 			break;
 		case DIFFSTATE_ADDED:
@@ -6147,6 +6150,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 		case DIFFSTATE_YOURSREMOVED:
 			pwndView->SetViewState(viewLine, DIFFSTATE_NORMAL);
 			line.state = DIFFSTATE_NORMAL;
+			[[fallthrough]];
 		case DIFFSTATE_NORMAL:
 			break;
 		default:
@@ -6496,6 +6500,7 @@ void CBaseView::Tabularize()
 				{
 					continue;
 				}
+				[[fallthrough]];
 			case '\t':
 				nTabCount++;
 				nSpaceCount = 0;

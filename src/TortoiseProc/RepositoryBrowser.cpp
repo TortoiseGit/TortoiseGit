@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2022 - TortoiseGit
+// Copyright (C) 2009-2023 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,12 +92,14 @@ public:
 			result = SortStrCmp(pLeft->m_sName, pRight->m_sName);
 			if (result != 0)
 				break;
+			[[fallthrough]];
 		case CRepositoryBrowser::eCol_Extension:
 			result = m_pList->GetItemText(static_cast<int>(lParam1), 1).CompareNoCase(m_pList->GetItemText(static_cast<int>(lParam2), 1));
 			if (result == 0)  // if extensions are the same, use the filename to sort
 				result = SortStrCmp(pRight->m_sName, pRight->m_sName);
 			if (result != 0)
 				break;
+			[[fallthrough]];
 		case CRepositoryBrowser::eCol_FileSize:
 			if (pLeft->m_iSize > pRight->m_iSize)
 				result = 1;

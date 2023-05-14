@@ -2788,6 +2788,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				break;
 			case IDGITLC_KEEPCHANGELISTS:
 					m_regKeepChangeLists = m_bKeepChangeLists = !m_bKeepChangeLists;
+					break;
 			default:
 				{
 					if (cmd < IDGITLC_MOVETOCS)

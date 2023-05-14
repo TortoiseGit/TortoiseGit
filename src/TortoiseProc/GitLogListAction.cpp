@@ -1175,6 +1175,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 		case ID_OPENWITH:
 			bOpenWith = true;
+			[[fallthrough]];
 		case ID_OPEN:
 			{
 				CProgressDlg progDlg;
