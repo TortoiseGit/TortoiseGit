@@ -2054,25 +2054,25 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 				return;
 			case CFileTextLines::UTF8:
 			case CFileTextLines::UTF8BOM:
-				pFilter = new CUtf8Filter(NULL);
+				pFilter = new CUtf8Filter(nullptr);
 				break;
 			default:
 			case CFileTextLines::ASCII:
-				pFilter = new CAsciiFilter(NULL);
+				pFilter = new CAsciiFilter(nullptr);
 				break;
 			case CFileTextLines::UTF16_BE:
 			case CFileTextLines::UTF16_BEBOM:
-				pFilter = new CUtf16beFilter(NULL);
+				pFilter = new CUtf16beFilter(nullptr);
 				break;
 			case CFileTextLines::UTF16_LE:
 			case CFileTextLines::UTF16_LEBOM:
-				pFilter = new CUtf16leFilter(NULL);
+				pFilter = new CUtf16leFilter(nullptr);
 				break;
 			case CFileTextLines::UTF32_BE:
-				pFilter = new CUtf32beFilter(NULL);
+				pFilter = new CUtf32beFilter(nullptr);
 				break;
 			case CFileTextLines::UTF32_LE:
-				pFilter = new CUtf32leFilter(NULL);
+				pFilter = new CUtf32leFilter(nullptr);
 				break;
 			}
 			pFilter->Decode(oFile);
