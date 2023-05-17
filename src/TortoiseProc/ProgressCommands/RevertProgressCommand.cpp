@@ -57,6 +57,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	CMassiveGitTask checkoutTask{ L"checkout " + m_sRevertToRevision + L" -f" };
 	CMassiveGitTask addTask{ L"add -f" };
 	CMassiveGitTask deleteTask{ L"rm --ignore-unmatch" };
+	bool hasSubmodule = false;
 
 	// prepare mass revert operation
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
@@ -94,6 +95,8 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 		if (path.m_Action & CTGitPath::LOGACTIONS_DELETED)
 			addTask.AddFile(path);
+		if (path.IsDirectory() || ((path.m_Action & CTGitPath::LOGACTIONS_REPLACED) == 0 && !path.GetGitOldPathString().IsEmpty() && CTGitPath(path.GetGitOldPathString()).IsDirectory()))
+			hasSubmodule = true;
 	}
 
 	unstageTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
@@ -161,25 +164,28 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		}
 	}
 
-	m_PostCmdCallback = [this](DWORD status, PostCmdList& postCmdList) {
-		if (status)
-			return;
+	if (hasSubmodule)
+	{
+		m_PostCmdCallback = [this](DWORD status, PostCmdList& postCmdList) {
+			if (status)
+				return;
 
-		postCmdList.emplace_back(IDI_DIFF, IDS_HANDLESUBMODULES, [this] {
-			for (const auto& path : m_targetPathList)
-			{
-				if (!path.IsDirectory() && !((path.m_Action & CTGitPath::LOGACTIONS_REPLACED) == 0 && !path.GetGitOldPathString().IsEmpty() && CTGitPath(path.GetGitOldPathString()).IsDirectory()))
-					continue;
-				CString pathString{ path.GetGitPathString() };
-				if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED)
-					pathString = path.GetGitOldPathString();
+			postCmdList.emplace_back(IDI_DIFF, IDS_HANDLESUBMODULES, [this] {
+				for (const auto& path : m_targetPathList)
+				{
+					if (!path.IsDirectory() && !((path.m_Action & CTGitPath::LOGACTIONS_REPLACED) == 0 && !path.GetGitOldPathString().IsEmpty() && CTGitPath(path.GetGitOldPathString()).IsDirectory()))
+						continue;
+					CString pathString{ path.GetGitPathString() };
+					if (path.m_Action & CTGitPath::LOGACTIONS_REPLACED)
+						pathString = path.GetGitOldPathString();
 
-				CString sCmd;
-				sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GIT_REV_ZERO, static_cast<LPCWSTR>(pathString));
-				CCommonAppUtils::RunTortoiseGitProc(sCmd);
-			}
-		});
-	};
+					CString sCmd;
+					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GIT_REV_ZERO, static_cast<LPCWSTR>(pathString));
+					CCommonAppUtils::RunTortoiseGitProc(sCmd);
+				}
+			});
+		};
+	}
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);
 
