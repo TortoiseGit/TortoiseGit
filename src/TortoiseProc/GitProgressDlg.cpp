@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
-	, m_AutoClose(AUTOCLOSE_NO)
 	, m_hAccel(nullptr)
 {
 }
@@ -118,13 +117,13 @@ BOOL CGitProgressDlg::OnInitDialog()
 	switch (autoClose)
 	{
 	case 1:
-		m_AutoClose = AUTOCLOSE_IF_NO_OPTIONS;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS;
 		break;
 	case 2:
-		m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 		break;
 	default:
-		m_AutoClose = AUTOCLOSE_NO;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_NO;
 		break;
 	}
 
@@ -309,7 +308,7 @@ LRESULT	CGitProgressDlg::OnCmdEnd(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		SendMessage(DM_SETDEFID, IDOK);
 		GetDlgItem(IDOK)->SetFocus();
-		if (!m_ProgList.DidErrorsOccur() && (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS))
+		if (!m_ProgList.DidErrorsOccur() && (m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS))
 			PostMessage(WM_COMMAND, 1, reinterpret_cast<LPARAM>(pWndOk->GetSafeHwnd()));
 	}
 

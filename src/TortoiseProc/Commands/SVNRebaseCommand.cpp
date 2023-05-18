@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -102,7 +102,7 @@ bool SVNRebaseCommand::Execute()
 	}
 	CProgressDlg progress;
 	progress.m_GitCmd = L"git.exe svn fetch";
-	progress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+	progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 
 	if(progress.DoModal()!=IDOK)
 		return false;
@@ -133,7 +133,7 @@ bool SVNRebaseCommand::Execute()
 		CString cmd;
 		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(out));
 		progressReset.m_GitCmd = cmd;
-		progressReset.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+		progressReset.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 
 		if (progressReset.DoModal() != IDOK)
 			return false;

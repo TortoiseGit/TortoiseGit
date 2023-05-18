@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ private:
 	PostCmdList				m_PostCmdList;
 
 	CBrush					m_background_brush;
-	DWORD					m_AutoClose;
+	GitProgressAutoClose	m_AutoClose;
 
 	typedef struct {
 		int id;

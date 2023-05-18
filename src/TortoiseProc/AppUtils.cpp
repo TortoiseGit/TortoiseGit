@@ -2790,7 +2790,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			{
 				CProgressDlg mergeProgress(CWnd::FromHandle(hWnd));
 				mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
-				mergeProgress.m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+				mergeProgress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 				{
 					if (status && g_Git.HasWorkingTreeConflicts())

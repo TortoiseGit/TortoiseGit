@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2016, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,7 @@
 IMPLEMENT_DYNAMIC(CSetDialogs2, ISettingsPropPage)
 CSetDialogs2::CSetDialogs2()
 	: ISettingsPropPage(CSetDialogs2::IDD)
-	, m_dwAutoCloseGitProgress(AUTOCLOSE_NO)
+	, m_dwAutoCloseGitProgress(static_cast<DWORD>(GitProgressAutoClose::AUTOCLOSE_NO))
 	, m_bUseRecycleBin(TRUE)
 	, m_bConfirmKillProcess(FALSE)
 	, m_bSyncDialogRandomPos(FALSE)
@@ -142,11 +142,11 @@ BOOL CSetDialogs2::OnInitDialog()
 	EnableToolTips();
 
 	int ind = m_cAutoCloseGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_MANUAL)));
-	m_cAutoCloseGitProgress.SetItemData(ind, AUTOCLOSE_NO);
+	m_cAutoCloseGitProgress.SetItemData(ind, static_cast<DWORD>(GitProgressAutoClose::AUTOCLOSE_NO));
 	ind = m_cAutoCloseGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_NOPTIONS)));
-	m_cAutoCloseGitProgress.SetItemData(ind, AUTOCLOSE_IF_NO_OPTIONS);
+	m_cAutoCloseGitProgress.SetItemData(ind, static_cast<DWORD>(GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS));
 	ind = m_cAutoCloseGitProgress.AddString(CString(MAKEINTRESOURCE(IDS_PROGRS_CLOSE_NOERROR)));
-	m_cAutoCloseGitProgress.SetItemData(ind, AUTOCLOSE_IF_NO_ERRORS);
+	m_cAutoCloseGitProgress.SetItemData(ind, static_cast<DWORD>(GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS));
 
 	m_dwAutoCloseGitProgress = m_regAutoCloseGitProgress;
 	m_bUseRecycleBin = m_regUseRecycleBin;

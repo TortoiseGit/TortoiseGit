@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -62,13 +62,13 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	switch (autoClose)
 	{
 	case 1:
-		m_AutoClose = AUTOCLOSE_IF_NO_OPTIONS;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS;
 		break;
 	case 2:
-		m_AutoClose = AUTOCLOSE_IF_NO_ERRORS;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 		break;
 	default:
-		m_AutoClose = AUTOCLOSE_NO;
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_NO;
 		break;
 	}
 }
@@ -491,7 +491,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 
 		if (wParam == MSG_PROGRESSDLG_END && m_GitStatus == 0)
 		{
-			if (m_AutoClose == AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == AUTOCLOSE_IF_NO_ERRORS)
+			if (m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS)
 				PostMessage(WM_COMMAND, 1, reinterpret_cast<LPARAM>(GetDlgItem(IDOK)->m_hWnd));
 		}
 	}

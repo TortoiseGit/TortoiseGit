@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,11 +31,11 @@
 #define MSG_PROGRESSDLG_END   110
 #define MSG_PROGRESSDLG_FAILED 111
 
-typedef enum {
+enum class GitProgressAutoClose{
 	AUTOCLOSE_NO,
 	AUTOCLOSE_IF_NO_OPTIONS,
 	AUTOCLOSE_IF_NO_ERRORS,
-} GitProgressAutoClose;
+};
 
 using PostCmdAction = std::function<void()>;
 
