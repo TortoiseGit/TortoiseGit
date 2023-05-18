@@ -43,6 +43,7 @@ public:
 
 	void SetCommand(ProgressCommand* cmd) { m_ProgList.SetCommand(cmd); }
 	void SetOptions(DWORD opts) {m_ProgList.SetOptions(opts);}
+	void SetAutoClose(GitProgressAutoClose autoClose) { m_AutoClose = autoClose; }
 
 	/**
 	 * If the number of items for which the operation is done on is known

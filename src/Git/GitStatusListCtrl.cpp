@@ -2657,6 +2657,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CGitProgressDlg progDlg;
 						RevertProgressCommand revertCommand{ revertToCommit };
+						progDlg.SetAutoClose(GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS);
 						progDlg.SetCommand(&revertCommand);
 						progDlg.SetItemCount(targetList.GetCount());
 						revertCommand.SetPathList(targetList);

@@ -30,6 +30,22 @@ CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
 	, m_hAccel(nullptr)
 {
+	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
+	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
+	if (parser.HasKey(L"closeonend"))
+		autoClose = parser.GetLongVal(L"closeonend");
+	switch (autoClose)
+	{
+	case 1:
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS;
+		break;
+	case 2:
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
+		break;
+	default:
+		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_NO;
+		break;
+	}
 }
 
 CGitProgressDlg::~CGitProgressDlg()
@@ -109,23 +125,6 @@ BOOL CGitProgressDlg::OnInitDialog()
 
 	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 	m_ProgList.Init();
-
-	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
-	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
-	if (parser.HasKey(L"closeonend"))
-		autoClose = parser.GetLongVal(L"closeonend");
-	switch (autoClose)
-	{
-	case 1:
-		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS;
-		break;
-	case 2:
-		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
-		break;
-	default:
-		m_AutoClose = GitProgressAutoClose::AUTOCLOSE_NO;
-		break;
-	}
 
 	return TRUE;
 }
