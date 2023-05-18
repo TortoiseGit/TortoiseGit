@@ -2660,7 +2660,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						progDlg.SetCommand(&revertCommand);
 						progDlg.SetItemCount(targetList.GetCount());
 						revertCommand.SetPathList(targetList);
-						if (!progDlg.DoModal())
+						progDlg.DoModal();
+						if (progDlg.DidErrorsOccur())
 						{
 							if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
 								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
