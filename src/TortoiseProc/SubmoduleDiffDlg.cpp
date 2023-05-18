@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,7 +121,9 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
 
 	DialogEnableWindow(IDC_SHOW_DIFF, m_bFromOK && m_bToOK);
-	if (m_bDirty && m_nChangeType != CGitDiff::Unknown)
+	if (m_nChangeType == CGitDiff::Identical)
+		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
+	else if (m_bDirty && m_nChangeType != CGitDiff::Unknown)
 	{
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_PROC_SHOWDIFF));
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
@@ -249,10 +251,15 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
+	if (m_nChangeType == CGitDiff::Identical)
+		sCmd.Format(L"/command:repostatus /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)));
+	else
+	{
+		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
 
-	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
-		sCmd += L" /alternative";
+		if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
+			sCmd += L" /alternative";
+	}
 
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
