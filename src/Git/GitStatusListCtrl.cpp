@@ -4647,6 +4647,8 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	if (m_CurrentVersion.IsEmpty())
 		return 0;
 
+	bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
+
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
 	std::map<CString, int> versionMap;
@@ -4672,6 +4674,8 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		CString filename = fentry->GetGitPathString();
 		if (!fentry->GetGitOldPathString().IsEmpty())
 			filename = fentry->GetGitOldPathString();
+		if (CTGitPath path = g_Git.CombinePath(filename); useRecycleBin && !path.IsDirectory())
+			path.Delete(useRecycleBin, true);
 		CString cmd, out;
 		cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(version), static_cast<LPCWSTR>(filename));
 		if (g_Git.Run(cmd, &out, CP_UTF8))

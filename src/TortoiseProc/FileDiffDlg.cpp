@@ -1348,18 +1348,24 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 			cmd.Format(L"git.exe rm --cached -- \"%s\"", static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			if ((isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_ADDED && m_rev2.m_CommitHash.IsEmpty()) || (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_DELETED && m_rev1.m_CommitHash.IsEmpty()))
 				CTGitPath(g_Git.CombinePath(fentry->GetGitPathString())).Delete(useRecycleBin, true);
+			else if (CTGitPath path = g_Git.CombinePath(fentry->GetGitPathString()); useRecycleBin && !path.IsDirectory())
+				path.Delete(useRecycleBin, true);
 		}
 		else if (isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED)
 		{
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
 			if (m_rev2.m_CommitHash.IsEmpty())
 				CTGitPath(g_Git.CombinePath(fentry->GetGitPathString())).Delete(useRecycleBin, true);
+			else if (CTGitPath path = g_Git.CombinePath(fentry->GetGitOldPathString()); useRecycleBin && !path.IsDirectory())
+				path.Delete(useRecycleBin, true);
 		}
 		else
 		{
 			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			if (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED && m_rev1.m_CommitHash.IsEmpty())
 				CTGitPath(g_Git.CombinePath(fentry->GetGitOldPathString())).Delete(useRecycleBin, true);
+			if (CTGitPath path = g_Git.CombinePath(fentry->GetGitPathString()); useRecycleBin && !path.IsDirectory())
+				path.Delete(useRecycleBin, true);
 		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
