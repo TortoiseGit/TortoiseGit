@@ -349,7 +349,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 }
 //Must use sperate function to convert ANSI str to union code string
 //Because A2W use stack as internal convert buffer.
-void CGit::StringAppend(CString* str, const char* p, int code, int length)
+void CGit::StringAppend(CString& str, const char* p, int code, int length)
 {
 	if (!str)
 		return ;
@@ -361,10 +361,10 @@ void CGit::StringAppend(CString* str, const char* p, int code, int length)
 		len=length;
 	if (len == 0)
 		return;
-	int currentContentLen = str->GetLength();
-	auto* buf = str->GetBuffer(len * 2 + currentContentLen) + currentContentLen;
+	const int currentContentLen = str.GetLength();
+	auto* buf = str.GetBuffer(len * 2 + currentContentLen) + currentContentLen;
 	int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
-	str->ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
+	str.ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
 
 // This method was originally used to check for orphaned branches
@@ -532,12 +532,13 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 		ret = Run(cmd, &vector);
 
 	vector.push_back(0);
-	StringAppend(output, vector.data(), code);
+	if (output)
+		StringAppend(*output, vector.data(), code);
 
 	if (outputErr)
 	{
 		vectorErr.push_back(0);
-		StringAppend(outputErr, vectorErr.data(), code);
+		StringAppend(*outputErr, vectorErr.data(), code);
 	}
 
 	return ret;
@@ -607,7 +608,7 @@ int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 		CGitCallCb call(cmd, recv, &vectorErr);
 		int ret = Run(&call);
 		vectorErr.push_back(0);
-		StringAppend(outputErr, vectorErr.data());
+		StringAppend(*outputErr, vectorErr.data());
 		return ret;
 	}
 
@@ -676,7 +677,6 @@ CString CGit::GetCommitterEmail()
 
 CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantBool)
 {
-	CString configValue;
 	if(this->m_IsUseGitDLL)
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -701,13 +701,13 @@ CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantB
 			return def;
 		}
 
-		StringAppend(&configValue, value);
-		return configValue;
+		return CUnicodeUtils::GetUnicode(value);
 	}
 	else
 	{
 		CString cmd;
 		cmd.Format(L"git.exe config%s %s", wantBool ? L" --bool" : L"", static_cast<LPCWSTR>(name));
+		CString configValue;
 		if (Run(cmd, &configValue, nullptr, CP_UTF8))
 			return def;
 		if (configValue.IsEmpty())
@@ -1183,7 +1183,8 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 	}
 
 	stderrVector.push_back(0);
-	StringAppend(stdErr, stderrVector.data(), CP_UTF8);
+	if (stdErr)
+		StringAppend(*stdErr, stderrVector.data(), CP_UTF8);
 
 	DWORD exitcode = 0;
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
@@ -3058,10 +3059,10 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 	return 0;
 }
 
-int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA* buffer, bool bMerge, bool bCombine, int diffContext)
+int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA& buffer, bool bMerge, bool bCombine, int diffContext)
 {
 	if (UsingLibGit2(GIT_CMD_DIFF))
-		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, buffer, bMerge, false);
+		return GetUnifiedDiffLibGit2(path, rev1, rev2, UnifiedDiffStatToStringA, UnifiedDiffToStringA, &buffer, bMerge, false);
 	else
 	{
 		CString cmd;
@@ -3071,7 +3072,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 		if (!vector.empty())
 		{
 			vector.push_back(0); // vector is not NUL terminated
-			buffer->Append(reinterpret_cast<const char*>(vector.data()));
+			buffer.Append(reinterpret_cast<const char*>(vector.data()));
 		}
 		return ret;
 	}
@@ -3251,9 +3252,9 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			size_t last = cmdErr.RevertFind(0);
 			CString str;
 			if (last != BYTE_VECTOR::npos)
-				CGit::StringAppend(&str, &cmdErr[last + 1], CP_UTF8, static_cast<int>(cmdErr.size() - last) - 1);
+				CGit::StringAppend(str, &cmdErr[last + 1], CP_UTF8, static_cast<int>(cmdErr.size() - last) - 1);
 			else if (!cmdErr.empty())
-				CGit::StringAppend(&str, cmdErr.data(), CP_UTF8, static_cast<int>(cmdErr.size()) - 1);
+				CGit::StringAppend(str, cmdErr.data(), CP_UTF8, static_cast<int>(cmdErr.size()) - 1);
 			else
 				str.Format(L"\"%s\" exited with an error code, but did not output any error message", static_cast<LPCWSTR>(cmd));
 			MessageBox(nullptr, str, L"TortoiseGit", MB_OK | MB_ICONERROR);

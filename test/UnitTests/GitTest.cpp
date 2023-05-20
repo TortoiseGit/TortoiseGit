@@ -135,25 +135,24 @@ TEST(CGit, RunLogFile_Error)
 
 TEST(CGit, StringAppend)
 {
-	CGit::StringAppend(nullptr, static_cast<BYTE*>(nullptr)); // string may be null
 	CString string = L"something";
-	CGit::StringAppend(&string, static_cast<BYTE*>(nullptr), CP_UTF8, 0);
+	CGit::StringAppend(string, static_cast<BYTE*>(nullptr), CP_UTF8, 0);
 	EXPECT_STREQ(L"something", string);
 	const BYTE somebytes[1] = { 0 };
-	CGit::StringAppend(&string, somebytes, CP_UTF8, 0);
+	CGit::StringAppend(string, somebytes, CP_UTF8, 0);
 	EXPECT_STREQ(L"something", string);
-	CGit::StringAppend(&string, somebytes);
+	CGit::StringAppend(string, somebytes);
 	EXPECT_STREQ(L"something", string);
 	const BYTE moreBytesUTFEight[] = { 0x68, 0x65, 0x6C, 0x6C, 0xC3, 0xB6, 0x0A, 0x00 };
-	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, 3);
+	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, 3);
 	EXPECT_STREQ(L"somethinghel", string);
-	CGit::StringAppend(&string, moreBytesUTFEight + 3, CP_ACP, 1);
+	CGit::StringAppend(string, moreBytesUTFEight + 3, CP_ACP, 1);
 	EXPECT_STREQ(L"somethinghell", string);
-	CGit::StringAppend(&string, moreBytesUTFEight);
+	CGit::StringAppend(string, moreBytesUTFEight);
 	EXPECT_STREQ(L"somethinghellhellö\n", string);
-	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, sizeof(moreBytesUTFEight));
+	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, sizeof(moreBytesUTFEight));
 	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0", string);
-	CGit::StringAppend(&string, moreBytesUTFEight, CP_UTF8, 3);
+	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, 3);
 	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0hel", string);
 }
 

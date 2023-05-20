@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -231,7 +231,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
 			CString err;
-			CGit::StringAppend(&err, &errBytes[0], CP_UTF8);
+			CGit::StringAppend(err, &errBytes[0], CP_UTF8);
 			CMessageBox::Show(hWnd, err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
@@ -242,10 +242,10 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			return -1;
 		}
 		CString temp;
-		CGit::StringAppend(&temp, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
+		CGit::StringAppend(temp, &bytes[15], CP_UTF8, 2 * GIT_HASH_SIZE);
 		oldhash = CGitHash::FromHexStrTry(temp);
 		temp.Empty();
-		CGit::StringAppend(&temp, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
+		CGit::StringAppend(temp, &bytes[15 + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
 		newhash = CGitHash::FromHexStrTry(temp);
 	}
 

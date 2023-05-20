@@ -1044,7 +1044,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		if (pos == CGitByteArray::npos)
 			return -1;
 
-		CGit::StringAppend(&pathstring, &out[pos + 1]);
+		CGit::StringAppend(pathstring, &out[pos + 1]);
 		path.SetFromGit(pathstring, (strtol(reinterpret_cast<const char*>(&out[modestart]), nullptr, 8) & S_IFDIR) == S_IFDIR);
 		path.m_Stage = strtol(reinterpret_cast<const char*>(&out[stagestart]), nullptr, 10);
 
@@ -1103,8 +1103,8 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		out.clear();
 		if (g_Git.Run(cmd, &out, &errb))
 		{
-			if (err != nullptr)
-				CGit::StringAppend(err, errb.data(), CP_UTF8, static_cast<int>(errb.size()));
+			if (err)
+				CGit::StringAppend(*err, errb.data(), CP_UTF8, static_cast<int>(errb.size()));
 			return -1;
 		}
 
@@ -1113,7 +1113,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		while (pos < out.size())
 		{
 			one.Empty();
-			CGit::StringAppend(&one, &out[pos], CP_UTF8);
+			CGit::StringAppend(one, &out[pos], CP_UTF8);
 			if(!one.IsEmpty())
 			{
 				//SetFromGit will clear all status
@@ -1143,7 +1143,7 @@ int CTGitPathList::FillLFSLocks(unsigned int action, CString* err)
 	CString errCmd;
 	if (g_Git.Run(L"git.exe lfs locks --json", &output, &errCmd, CP_UTF8) != 0)
 	{
-		if (err != nullptr)
+		if (err)
 			err->Append(errCmd);
 		return -1;
 	}
@@ -1297,9 +1297,9 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			pathname2.Empty();
 
 			if (file1 != BYTE_VECTOR::npos)
-				CGit::StringAppend(&pathname1, &log[file1], CP_UTF8);
+				CGit::StringAppend(pathname1, &log[file1], CP_UTF8);
 			if (file2 != BYTE_VECTOR::npos)
-				CGit::StringAppend(&pathname2, &log[file2], CP_UTF8);
+				CGit::StringAppend(pathname2, &log[file2], CP_UTF8);
 
 			if (actionstart == BYTE_VECTOR::npos)
 				return -1;
@@ -1354,7 +1354,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 				int modenew = strtol(reinterpret_cast<const char*>(&log[pos + 2]), nullptr, 8);
 				isSubmodule = (modenew & S_IFDIR) == S_IFDIR;
 				log[tabstart]=0;
-				CGit::StringAppend(&StatAdd, &log[pos], CP_UTF8);
+				CGit::StringAppend(StatAdd, &log[pos], CP_UTF8);
 				pos=tabstart+1;
 			}
 
@@ -1363,25 +1363,25 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			{
 				log[tabstart]=0;
 
-				CGit::StringAppend(&StatDel, &log[pos], CP_UTF8);
+				CGit::StringAppend(StatDel, &log[pos], CP_UTF8);
 				pos=tabstart+1;
 			}
 
 			if(log[pos] == 0) //rename
 			{
 				++pos;
-				CGit::StringAppend(&pathname2, &log[pos], CP_UTF8);
+				CGit::StringAppend(pathname2, &log[pos], CP_UTF8);
 				size_t sec = log.find(0, pos);
 				if (sec != BYTE_VECTOR::npos)
 				{
 					++sec;
-					CGit::StringAppend(&pathname1, &log[sec], CP_UTF8);
+					CGit::StringAppend(pathname1, &log[sec], CP_UTF8);
 				}
 				pos=sec;
 			}
 			else
 			{
-				CGit::StringAppend(&pathname1, &log[pos], CP_UTF8);
+				CGit::StringAppend(pathname1, &log[pos], CP_UTF8);
 			}
 			path.SetFromGit(pathname1, &pathname2, &isSubmodule);
 

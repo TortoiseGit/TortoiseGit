@@ -1774,7 +1774,7 @@ static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool&
 	{
 		one.Empty();
 
-		CGit::StringAppend(&one, &out[pos], CP_UTF8);
+		CGit::StringAppend(one, &out[pos], CP_UTF8);
 		int tabstart = 0;
 		one.Tokenize(L"\t", tabstart);
 

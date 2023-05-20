@@ -373,12 +373,12 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			int status, isBin, inc, dec, isDir;
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
-			CGit::StringAppend(&strnewname, newname, CP_UTF8);
+			CGit::StringAppend(strnewname, newname, CP_UTF8);
 			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname, isDir != FALSE);
 			else
 			{
-				CGit::StringAppend(&stroldname, oldname, CP_UTF8);
+				CGit::StringAppend(stroldname, oldname, CP_UTF8);
 				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
 			path.ParserAction(static_cast<BYTE>(status));

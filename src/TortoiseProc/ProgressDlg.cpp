@@ -810,10 +810,10 @@ CString CCommitProgressDlg::Convert2UnionCode(char* buff)
 			}
 		}
 
-		CGit::StringAppend(&str, buff, g_Git.m_LogEncode, start);
+		CGit::StringAppend(str, buff, g_Git.m_LogEncode, start);
 	}
 
-	CGit::StringAppend(&str, buff + start, CP_UTF8, size - start);
+	CGit::StringAppend(str, buff + start, CP_UTF8, size - start);
 
 	ClearESC(str);
 

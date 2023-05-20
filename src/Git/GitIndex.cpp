@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -522,7 +522,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			return -1;
 
 		ReadFile(hfile, p, filesize - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
-		CGit::StringAppend(&m_HeadRefFile, p, CP_UTF8, filesize - static_cast<int>(strlen("ref:")));
+		CGit::StringAppend(m_HeadRefFile, p, CP_UTF8, filesize - static_cast<int>(strlen("ref:")));
 		free(p);
 
 		CString ref = m_HeadRefFile.Trim();
@@ -652,7 +652,7 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 			CGitTreeItem item;
 			item.m_Hash = git_tree_entry_id(entry);
 			item.m_FileName = base;
-			CGit::StringAppend(&item.m_FileName, git_tree_entry_name(entry), CP_UTF8);
+			CGit::StringAppend(item.m_FileName, git_tree_entry_name(entry), CP_UTF8);
 			if (isSubmodule)
 				item.m_FileName += L'/';
 			push_back(item);
@@ -664,7 +664,7 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		if (!object)
 			continue;
 		CString parent = base;
-		CGit::StringAppend(&parent, git_tree_entry_name(entry));
+		CGit::StringAppend(parent, git_tree_entry_name(entry));
 		parent += L'/';
 		ReadTreeRecursive(repo, reinterpret_cast<git_tree*>(static_cast<git_object*>(object)), parent);
 	}

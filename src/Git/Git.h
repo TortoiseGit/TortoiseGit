@@ -428,8 +428,8 @@ public:
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
-	static void StringAppend(CString* str, const char* p, int code = CP_UTF8, int length = -1);
-	inline static void StringAppend(CString* str, const BYTE* p, int code = CP_UTF8, int length = -1)
+	static void StringAppend(CString& str, const char* p, int code = CP_UTF8, int length = -1);
+	inline static void StringAppend(CString& str, const BYTE* p, int code = CP_UTF8, int length = -1)
 	{
 		StringAppend(str, reinterpret_cast<const char*>(p), code, length);
 	}
@@ -541,7 +541,7 @@ public:
 	int SetGitNotes(const CGitHash& hash, const CString& notes);
 
 	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
-	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA* buffer, bool bMerge, bool bCombine, int diffContext);
+	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA& buffer, bool bMerge, bool bCombine, int diffContext);
 
 	int GitRevert(int parent, const CGitHash &hash);
 

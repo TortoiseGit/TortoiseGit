@@ -211,9 +211,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 		{
 			CString str;
 			if (!m_BlameData.empty())
-				CGit::StringAppend(&str, m_BlameData.data(), CP_UTF8, static_cast<int>(m_BlameData.size()));
+				CGit::StringAppend(str, m_BlameData.data(), CP_UTF8, static_cast<int>(m_BlameData.size()));
 			if (!err.empty())
-				CGit::StringAppend(&str, err.data(), CP_UTF8, static_cast<int>(err.size()));
+				CGit::StringAppend(str, err.data(), CP_UTF8, static_cast<int>(err.size()));
 			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + str, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 
 			return FALSE;
