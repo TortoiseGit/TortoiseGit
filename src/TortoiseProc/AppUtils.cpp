@@ -3411,7 +3411,11 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 			postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&hWnd]{ CAppUtils::SVNDCommit(hWnd); });
 	};
 
-	Prodlg.DoModal();
+	if (Prodlg.DoModal() == IDCANCEL && g_Git.HasWorkingTreeConflicts() == 1)
+	{
+		CAppUtils::MergeAbort(hWnd);
+		return false;
+	}
 	return !Prodlg.m_GitStatus;
 }
 
