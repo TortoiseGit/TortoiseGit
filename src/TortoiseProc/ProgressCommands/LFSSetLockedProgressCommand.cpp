@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2021 - TortoiseGit
+// Copyright (C) 2019-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,6 +54,12 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 				sCmd.Format(L"/command:lfsunlock /force /pathfile:\"%s\" /deletepathfile", static_cast<LPCWSTR>(tempfilename));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
+		}
+		if (!status && m_bIsLock)
+		{
+			CString sCmd;
+			sCmd.Format(L"/command:pull /path:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
+			CAppUtils::RunTortoiseGitProc(sCmd);
 		}
 	};
 

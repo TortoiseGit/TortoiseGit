@@ -13,6 +13,7 @@ Released: unreleased
  * Update Scintilla to 5.3.$ and Lexilla to 5.2.4
  * Fixed issue #3435: Dramatically speed up revert operations
  * Fixed issue #3053: "Abort" button in merge conflict dialogue is misleading -> opens Abort merge dialog now
+ * Fixed issue #4034: After git lfs lock, UI suggest a pull
 
 == Bug Fixes ==
  * Fixed redraw bug in log list
