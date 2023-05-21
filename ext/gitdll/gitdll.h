@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ GITDLL_API int git_close_log(GIT_LOG handle);
 GITDLL_API int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash);
 GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
 GITDLL_API int git_commit_is_root(const GIT_COMMIT* commit);
-GITDLL_API int git_get_commit_first_parent(GIT_COMMIT *commit,GIT_COMMIT_LIST *list);
+GITDLL_API int git_get_commit_first_parent(const GIT_COMMIT* commit, GIT_COMMIT_LIST* list);
 GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
 
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);

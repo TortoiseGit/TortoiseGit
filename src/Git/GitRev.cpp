@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ void GitRev::Clear()
 	m_sErr.Empty();
 }
 
-int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
+int GitRev::ParserParentFromCommit(const GIT_COMMIT* commit)
 {
 	this->m_ParentHash.clear();
 	GIT_COMMIT_LIST list;
@@ -57,7 +57,7 @@ int GitRev::ParserParentFromCommit(GIT_COMMIT *commit)
 	return 0;
 }
 
-int GitRev::ParserFromCommit(GIT_COMMIT *commit)
+int GitRev::ParserFromCommit(const GIT_COMMIT *commit)
 {
 	int encode =CP_UTF8;
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
@@ -183,7 +183,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 			return -1;
 		}
 	}
-	catch (char* msg)
+	catch (const char* msg)
 	{
 		m_sErr = L"Could not get parents of commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
@@ -217,7 +217,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 			return -1;
 		}
 	}
-	catch (char * msg)
+	catch (const char * msg)
 	{
 		m_sErr = L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;
@@ -250,7 +250,7 @@ int GitRev::GetCommit(const CString& refname)
 	{
 		g_Git.CheckAndInitDll();
 	}
-	catch (char* msg)
+	catch (const char* msg)
 	{
 		m_sErr = L"Could not initiate libgit.\nlibgit reports:\n" + CString(msg);
 		return -1;
@@ -275,7 +275,7 @@ int GitRev::GetCommit(const CString& refname)
 			return -1;
 		}
 	}
-	catch (char * msg)
+	catch (const char* msg)
 	{
 		m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CString(msg);
 		return -1;

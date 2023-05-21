@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -116,8 +116,8 @@ public:
 	inline int ParentsCount() const { return static_cast<int>(m_ParentHash.size()); }
 
 protected:
-	int ParserFromCommit(GIT_COMMIT *commit);
-	int ParserParentFromCommit(GIT_COMMIT *commit);
+	int ParserFromCommit(const GIT_COMMIT* commit);
+	int ParserParentFromCommit(const GIT_COMMIT* commit);
 
 	int ParserFromCommit(const git_commit* commit);
 	int ParserParentFromCommit(const git_commit* commit);

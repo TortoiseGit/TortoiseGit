@@ -480,14 +480,14 @@ public:
 	int GetInitAddList(CTGitPathList &outpathlist, bool getStagingStatus = false);
 	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr, bool includedStaged = false, bool getStagingStatus = false);
 
-	static __int64 filetime_to_time_t(__int64 winTime)
+	constexpr static __int64 filetime_to_time_t(__int64 winTime) noexcept
 	{
 		winTime -= 116444736000000000LL; /* Windows to Unix Epoch conversion */
 		winTime /= 10000000;		 /* Nano to seconds resolution */
 		return static_cast<time_t>(winTime);
 	}
 
-	static inline __int64 filetime_to_time_t(const FILETIME *ft)
+	constexpr static inline __int64 filetime_to_time_t(const FILETIME* ft) noexcept
 	{
 		return filetime_to_time_t(static_cast<__int64>(ft->dwHighDateTime) << 32 | ft->dwLowDateTime);
 	}

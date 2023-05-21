@@ -452,7 +452,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			// make sure all config files are read in order to check that none contains an error
 			g_Git.GetConfigValue(L"doesnot.exist");
 		}
-		catch (char* msg)
+		catch (const char* msg)
 		{
 			err = CString(msg);
 		}

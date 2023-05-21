@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2006-2007, 2012-2016, 2019 - TortoiseSVN
+// Copyright (C) 2006-2007, 2012-2016, 2019, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -164,7 +164,7 @@ public:
 	 * \param pBuffer pointer to the buffer containing text
 	 * \param cb size of the text buffer in bytes
 	 */
-	UnicodeType		CheckUnicodeType(LPVOID pBuffer, int cb);
+	UnicodeType CheckUnicodeType(LPCVOID pBuffer, int cb);
 
 private:
 	void			SetErrorString();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2016, 2019, 2021 - TortoiseGit
+// Copyright (C) 2016, 2019, 2021, 2023 - TortoiseGit
 // Copyright (C) 2007-2016, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ CFileTextLines::~CFileTextLines()
 {
 }
 
-CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPVOID pBuffer, int cb)
+CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPCVOID pBuffer, int cb)
 {
 	if (cb < 2)
 		return CFileTextLines::ASCII;

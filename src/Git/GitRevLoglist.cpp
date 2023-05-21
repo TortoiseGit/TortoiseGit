@@ -119,7 +119,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
 			return -1;
 	}
-	catch (char *)
+	catch (const char*)
 	{
 		return -1;
 	}
@@ -137,7 +137,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 			else
 				git_do_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
 		}
-		catch (char *)
+		catch (const char*)
 		{
 			return -1;
 		}
@@ -154,7 +154,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 			{
 				git_get_diff_file(git->GetGitSimpleListDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 			}
-			catch (char *)
+			catch (const char*)
 			{
 				return -1;
 			}

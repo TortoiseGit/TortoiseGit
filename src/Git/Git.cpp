@@ -34,7 +34,7 @@
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
 
-static int CalculateDiffSimilarityIndexThreshold(DWORD index)
+constexpr static int CalculateDiffSimilarityIndexThreshold(DWORD index) noexcept
 {
 	if (index < 0 || index > 100)
 		return 50;
@@ -52,7 +52,7 @@ static LPCWSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 		return nullptr;
 
 	const wchar_t* base = path;
-	wchar_t term = (*path == L'"') ? *path++ : L';';
+	const wchar_t term = (*path == L'"') ? *path++ : L';';
 
 	for (buflen--; *path && *path != term && buflen; buflen--)
 		*buf++ = *path++;

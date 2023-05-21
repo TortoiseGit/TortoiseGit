@@ -2752,7 +2752,7 @@ int CGitLogListBase::BeginFetchLog()
 		CAutoLocker lock(g_Git.m_critGitDllSec);
 		g_Git.CheckAndInitDll();
 	}
-	catch (char* msg)
+	catch (const char* msg)
 	{
 		CString err(msg);
 		MessageBox(L"Could not initialize libgit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
@@ -2782,7 +2782,7 @@ int CGitLogListBase::BeginFetchLog()
 			return -1;
 		}
 	}
-	catch (char* msg)
+	catch (const char* msg)
 	{
 		g_Git.m_critGitDllSec.Unlock();
 		CString err(msg);
@@ -2954,7 +2954,7 @@ UINT CGitLogListBase::LogThread()
 			[&] {git_get_log_firstcommit(m_DllGitLog);}();
 			total = git_get_log_estimate_commit_count(m_DllGitLog);
 		}
-		catch (char* msg)
+		catch (const char* msg)
 		{
 			CString err(msg);
 			MessageBox(L"Could not get first commit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
@@ -2987,7 +2987,7 @@ UINT CGitLogListBase::LogThread()
 			{
 				[&] { ret = git_get_log_nextcommit(this->m_DllGitLog, &commit, m_ShowMask & CGit::LOG_INFO_FOLLOW); } ();
 			}
-			catch (char* msg)
+			catch (const char* msg)
 			{
 				g_Git.m_critGitDllSec.Unlock();
 				CString err(msg);
@@ -3028,7 +3028,7 @@ UINT CGitLogListBase::LogThread()
 			{
 				git_get_notes(commit.m_hash, &note);
 			}
-			catch (char* msg)
+			catch (const char* msg)
 			{
 				g_Git.m_critGitDllSec.Unlock();
 				CString err(msg);

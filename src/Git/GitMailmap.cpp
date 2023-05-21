@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2020 - TortoiseGit
+// Copyright (C) 2013-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ CGitMailmap::CGitMailmap()
 			CAutoLocker lock(g_Git.m_critGitDllSec);
 			g_Git.CheckAndInitDll();
 		}
-		catch (char* msg)
+		catch (const char* msg)
 		{
 			CString err(msg);
 			MessageBox(nullptr, L"Could not initialize libgit. Disabling Mailmap support.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);

@@ -144,7 +144,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 			CAutoLocker lock(g_Git.m_critGitDllSec);
 			g_Git.CheckAndInitDll();
 		}
-		catch (char * libgiterr)
+		catch (const char* libgiterr)
 		{
 			MessageBox(nullptr, CString(libgiterr), L"TortoiseGitBlame", MB_ICONERROR);
 			return FALSE;
