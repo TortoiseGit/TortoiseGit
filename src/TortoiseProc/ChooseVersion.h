@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -225,6 +225,8 @@ protected:
 			m_ChooseVersioinBranch.SetCurSel(data->current_branch_idx);
 			m_ChooseVersioinTags.SetList(data->tags);
 			m_ChooseVersioinTags.SetCurSel(0);
+			if (auto pCurrentBranch = m_pWin->GetDlgItem(IDC_CURRENTBRANCH); pCurrentBranch)
+				pCurrentBranch->SetWindowText(g_Git.GetCurrentBranch());
 		}
 
 		m_RadioBranch.EnableWindow(TRUE);
@@ -326,6 +328,8 @@ public:
 		AddAnchor(IDC_GROUP_BASEON, TOP_LEFT, TOP_RIGHT);		\
 		AddAnchor(IDC_BUTTON_SHOW,TOP_RIGHT);					\
 		AddAnchor(IDC_BUTTON_BROWSE_REF,TOP_RIGHT);				\
+		if (auto pCurrentBranch = GetDlgItem(IDC_CURRENTBRANCH); pCurrentBranch) \
+			AddAnchor(IDC_CURRENTBRANCH, TOP_LEFT, TOP_RIGHT); \
 	}
 
 #define CHOOSE_EVENT_RADIO() \

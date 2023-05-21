@@ -3289,6 +3289,10 @@ msgstr ""
 msgid "Current branch is up to date or newer than the fetched branch. Open rebase anyway?"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET: Control id 65535)
+msgid "Current branch:"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr ""
@@ -7730,11 +7734,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_RESETCOLUMNORDER)
 msgid "Reset columns"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_RESETBRANCH)
-#, c-format
-msgid "Reset current branch \"%s\" to"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_RESOLVE: Control id 207, IDS_PROGRS_CMD_RESOLVE, IDS_PROGRS_TITLE_RESOLVE)
