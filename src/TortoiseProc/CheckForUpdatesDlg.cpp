@@ -449,7 +449,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	CStdioFile file;
 	if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
 	{
-		auto buf = std::make_unique<BYTE[]>(static_cast<UINT>(file.GetLength()));
+		auto buf = std::make_unique<char[]>(static_cast<UINT>(file.GetLength()));
 		UINT read = file.Read(buf.get(), static_cast<UINT>(file.GetLength()));
 		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
 		CGit::StringAppend(temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));

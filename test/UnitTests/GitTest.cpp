@@ -136,14 +136,14 @@ TEST(CGit, RunLogFile_Error)
 TEST(CGit, StringAppend)
 {
 	CString string = L"something";
-	CGit::StringAppend(string, static_cast<BYTE*>(nullptr), CP_UTF8, 0);
+	CGit::StringAppend(string, nullptr, CP_UTF8, 0);
 	EXPECT_STREQ(L"something", string);
-	const BYTE somebytes[1] = { 0 };
+	constexpr char somebytes[1] = { 0 };
 	CGit::StringAppend(string, somebytes, CP_UTF8, 0);
 	EXPECT_STREQ(L"something", string);
 	CGit::StringAppend(string, somebytes);
 	EXPECT_STREQ(L"something", string);
-	const BYTE moreBytesUTFEight[] = { 0x68, 0x65, 0x6C, 0x6C, 0xC3, 0xB6, 0x0A, 0x00 };
+	constexpr char moreBytesUTFEight[] = { 0x68, 0x65, 0x6C, 0x6C, '\xC3', '\xB6', 0x0A, 0x00 };
 	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, 3);
 	EXPECT_STREQ(L"somethinghel", string);
 	CGit::StringAppend(string, moreBytesUTFEight + 3, CP_ACP, 1);

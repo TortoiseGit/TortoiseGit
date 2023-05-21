@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,17 +29,17 @@ enum
 	TGIT_GIT_ERROR_GET_EXIT_CODE
 };
 
-class CGitByteArray:public std::vector<BYTE>
+class CGitByteArray : public std::vector<char>
 {
 public:
-	size_t find(BYTE data, size_t start = 0) const
+	size_t find(char data, size_t start = 0) const
 	{
 		for (size_t i = start, end = size(); i < end; ++i)
 			if ((*this)[i] == data)
 				return i;
 		return npos;
 	}
-	size_t RevertFind(BYTE data, size_t start = npos) const
+	size_t RevertFind(char data, size_t start = npos) const
 	{
 		if (start == npos)
 		{
@@ -72,7 +72,7 @@ public:
 
 		return pos;
 	}
-	size_t append(std::vector<BYTE> &v, size_t start = 0, size_t end = npos)
+	size_t append(std::vector<char>& v, size_t start = 0, size_t end = npos)
 	{
 		if (end == npos)
 			end = v.size();
@@ -80,13 +80,13 @@ public:
 			this->push_back(v[i]);
 		return 0;
 	}
-	void append(const BYTE* data, size_t dataSize)
+	void append(const char* data, size_t dataSize)
 	{
 		if (dataSize == 0)
 			return;
 		size_t oldsize=size();
 		resize(oldsize+dataSize);
-		memcpy(&*(begin()+oldsize),data,dataSize);
+		memcpy(this->data() + oldsize, data, dataSize);
 	}
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");

@@ -42,7 +42,7 @@ CTortoiseGitBlameData::~CTortoiseGitBlameData()
 {
 }
 
-int CTortoiseGitBlameData::GetEncode(unsigned char *buff, int size, int *bomoffset)
+int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 {
 	CFileTextLines textlines;
 	CFileTextLines::UnicodeType type = textlines.CheckUnicodeType(buff, size);

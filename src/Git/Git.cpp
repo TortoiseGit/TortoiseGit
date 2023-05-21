@@ -398,7 +398,7 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 	auto pDataArray = static_cast<PASYNCREADSTDERRTHREADARGS>(lpParam);
 
 	DWORD readnumber;
-	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	char data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
 		if (pDataArray->pcall->OnOutputErrData(data,readnumber))
@@ -444,7 +444,7 @@ int CGit::Run(CGitCall* pcall)
 	}
 
 	DWORD readnumber;
-	BYTE data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	char data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	bool bAborted=false;
 	while (ReadFile(hRead, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
@@ -482,7 +482,7 @@ class CGitCall_ByteVector : public CGitCall
 {
 public:
 	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr) : CGitCall(cmd),m_pvector(pvector), m_pvectorErr(pvectorErr) {}
-	virtual bool OnOutputData(const BYTE* data, size_t size) override
+	bool OnOutputData(const char* data, size_t size) override
 	{
 		if (!m_pvector || size == 0)
 			return false;
@@ -491,7 +491,7 @@ public:
 		memcpy(&*(m_pvector->begin()+oldsize),data,size);
 		return false;
 	}
-	virtual bool OnOutputErrData(const BYTE* data, size_t size) override
+	bool OnOutputErrData(const char* data, size_t size) override
 	{
 		if (!m_pvectorErr || size == 0)
 			return false;
@@ -553,7 +553,7 @@ public:
 	, m_pvectorErr(pvectorErr)
 	{}
 
-	virtual bool OnOutputData(const BYTE* data, size_t size) override
+	bool OnOutputData(const char* data, size_t size) override
 	{
 		// Add data
 		if (size == 0)
@@ -577,7 +577,7 @@ public:
 		return false;
 	}
 
-	virtual bool OnOutputErrData(const BYTE* data, size_t size) override
+	bool OnOutputErrData(const char* data, size_t size) override
 	{
 		if (!m_pvectorErr || size == 0)
 			return false;

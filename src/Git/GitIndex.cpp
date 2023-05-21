@@ -517,14 +517,14 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		if (filesize < 5 || filesize == INVALID_FILE_SIZE)
 			return -1;
 
-		auto p = static_cast<unsigned char*>(malloc(filesize - strlen("ref:")));
-		if (!p)
-			return -1;
+		{
+			auto p = std::make_unique<char[]>(filesize - strlen("ref:"));
+			if (!p)
+				return -1;
 
-		ReadFile(hfile, p, filesize - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
-		CGit::StringAppend(m_HeadRefFile, p, CP_UTF8, filesize - static_cast<int>(strlen("ref:")));
-		free(p);
-
+			ReadFile(hfile, p.get(), filesize - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
+			CGit::StringAppend(m_HeadRefFile, p.get(), CP_UTF8, filesize - static_cast<int>(strlen("ref:")));
+		}
 		CString ref = m_HeadRefFile.Trim();
 		int start = 0;
 		ref = ref.Tokenize(L"\n", start);

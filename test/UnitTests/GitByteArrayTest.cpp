@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018 - TortoiseGit
+// Copyright (C) 2015-2016, 2018, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ TEST(CGitByteArray, Empty)
 
 TEST(CGitByteArray, AppendByteArray)
 {
-	BYTE inputByteArray[] = { "12345789" };
+	constexpr char inputByteArray[] = { "12345789" };
 	CGitByteArray byteArray;
 	byteArray.append(inputByteArray, sizeof(inputByteArray));
 	EXPECT_EQ(sizeof(inputByteArray), byteArray.size());
@@ -44,7 +44,7 @@ TEST(CGitByteArray, AppendByteArray)
 
 TEST(CGitByteArray, AppendByteArrayWithNulls)
 {
-	BYTE inputByteArray[] = { "1234\0""5789\0" };
+	constexpr char inputByteArray[] = { "1234\0""5789\0" };
 	CGitByteArray byteArray;
 
 	byteArray.append(inputByteArray, 0);
@@ -59,7 +59,7 @@ TEST(CGitByteArray, AppendByteArrayWithNulls)
 
 TEST(CGitByteArray, AppendByteArrayRange)
 {
-	BYTE inputByteArray[] = { "1234\0""5789\0" };
+	constexpr char inputByteArray[] = { "1234\0""5789\0" };
 	CGitByteArray byteArray1;
 	byteArray1.append(inputByteArray, sizeof(inputByteArray));
 	EXPECT_EQ(sizeof(inputByteArray), byteArray1.size());
@@ -83,7 +83,7 @@ TEST(CGitByteArray, AppendByteArrayRange)
 
 TEST(CGitByteArray, Find)
 {
-	BYTE inputByteArray[] = { "1234\0""5789\0" };
+	constexpr char inputByteArray[] = { "1234\0""5789\0" };
 	CGitByteArray byteArray;
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.find(0));
@@ -103,7 +103,7 @@ TEST(CGitByteArray, Find)
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.find('F'));
 
-	byteArray.append((const BYTE*)"1", 1);
+	byteArray.append("1", 1);
 	EXPECT_EQ(0U, byteArray.find('1'));
 	EXPECT_EQ(11U, byteArray.find('1', 2));
 
@@ -118,7 +118,7 @@ TEST(CGitByteArray, Find)
 
 TEST(CGitByteArray, RevertFind)
 {
-	BYTE inputByteArray[] = { "1234\0""5789\0" };
+	constexpr char inputByteArray[] = { "1234\0""5789\0" };
 	CGitByteArray byteArray;
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.RevertFind(0));
@@ -139,7 +139,7 @@ TEST(CGitByteArray, RevertFind)
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.RevertFind('F'));
 
-	byteArray.append((const BYTE*)"1", 1);
+	byteArray.append("1", 1);
 	EXPECT_EQ(11U, byteArray.RevertFind('1'));
 	EXPECT_EQ(11U, byteArray.RevertFind('1', 11));
 	EXPECT_EQ(0U, byteArray.RevertFind('1', 10));
@@ -159,7 +159,7 @@ TEST(CGitByteArray, RevertFind)
 
 TEST(CGitByteArray, FindNextString)
 {
-	BYTE inputByteArray[] = { "1234\0""5789\0" };
+	constexpr char inputByteArray[] = { "1234\0""5789\0" };
 	CGitByteArray byteArray;
 
 	EXPECT_EQ(CGitByteArray::npos, byteArray.findNextString(0));
@@ -175,7 +175,7 @@ TEST(CGitByteArray, FindNextString)
 	EXPECT_EQ(CGitByteArray::npos, byteArray.findNextString(9));
 	EXPECT_EQ(CGitByteArray::npos, byteArray.findNextString(10));
 
-	byteArray.append((const BYTE*)"0", 1);
+	byteArray.append("0", 1);
 	EXPECT_EQ(5U, byteArray.findNextString(0));
 	EXPECT_EQ(5U, byteArray.findNextString(2));
 	EXPECT_EQ(5U, byteArray.findNextString(4));
@@ -188,7 +188,7 @@ TEST(CGitByteArray, FindNextString)
 	byteArray.append(inputByteArray, sizeof(inputByteArray));
 	EXPECT_EQ(sizeof(inputByteArray), byteArray.size());
 
-	byteArray.append((const BYTE*)"1", 1);
+	byteArray.append("1", 1);
 	EXPECT_EQ(5U, byteArray.findNextString(0));
 	EXPECT_EQ(5U, byteArray.findNextString(2));
 	EXPECT_EQ(5U, byteArray.findNextString(4));

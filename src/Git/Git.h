@@ -81,8 +81,8 @@ public:
 	//This function is called when command output data is available.
 	//When this function returns 'true' the git command should be aborted.
 	//This behavior is not implemented yet.
-	virtual bool	OnOutputData(const BYTE* data, size_t size)=0;
-	virtual bool	OnOutputErrData(const BYTE* data, size_t size)=0;
+	virtual bool	OnOutputData(const char* data, size_t size) = 0;
+	virtual bool	OnOutputErrData(const char* data, size_t size) = 0;
 	virtual void	OnEnd(){}
 
 private:
@@ -429,10 +429,6 @@ public:
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
 	static void StringAppend(CString& str, const char* p, int code = CP_UTF8, int length = -1);
-	inline static void StringAppend(CString& str, const BYTE* p, int code = CP_UTF8, int length = -1)
-	{
-		StringAppend(str, reinterpret_cast<const char*>(p), code, length);
-	}
 
 	BOOL CanParseRev(CString ref);
 	/**
