@@ -305,17 +305,19 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
 	bool startsWithGit = CStringUtils::StartsWith(cmd, L"git");
-	if (ms_bMsys2Git && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
+	if ((ms_bMsys2Git || ms_bCygwinGit) && startsWithGit)
 	{
-		cmd.Replace(L"\\", L"\\\\\\\\");
-		cmd.Replace(L"\"", L"\\\"");
-		cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\bash.exe\" -c \"/usr/bin/" + cmd + L'"';
-	}
-	else if (ms_bCygwinGit && startsWithGit && !CStringUtils::StartsWith(cmd, L"git.exe config "))
-	{
-		cmd.Replace(L'\\', L'/');
-		cmd.Replace(L"\"", L"\\\"");
-		cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\bash.exe\" -c \"/bin/" + cmd + L'"';
+		if (!CStringUtils::StartsWith(cmd, L"git.exe config "))
+			cmd.Replace(L'\\', L'/');
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": executing via bash: %s\n", static_cast<LPCWSTR>(cmd));
+		CString tmpFile = GetTempFile();
+		if (ms_bMsys2Git)
+			cmd = L"/usr/bin/" + cmd;
+		else if (ms_bCygwinGit)
+			cmd = L"/bin/" + cmd;
+		CStringUtils::WriteStringToTextFile(tmpFile, cmd);
+		tmpFile.Replace(L'\\', L'/');
+		cmd = L'"' + CGit::ms_LastMsysGitDir + L"\\bash.exe\" \"" + tmpFile + L'"';
 	}
 	else if (startsWithGit || CStringUtils::StartsWith(cmd, L"bash"))
 	{
