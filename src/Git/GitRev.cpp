@@ -47,6 +47,7 @@ void GitRev::Clear()
 
 int GitRev::ParserParentFromCommit(const GIT_COMMIT* commit)
 {
+	ATLASSERT(commit);
 	this->m_ParentHash.clear();
 	GIT_COMMIT_LIST list;
 	GIT_HASH   parent;
@@ -59,6 +60,7 @@ int GitRev::ParserParentFromCommit(const GIT_COMMIT* commit)
 
 int GitRev::ParserFromCommit(const GIT_COMMIT *commit)
 {
+	ATLASSERT(commit);
 	int encode =CP_UTF8;
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
 		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicodeLength(commit->m_Encode, commit->m_EncodeSize));
@@ -82,6 +84,7 @@ int GitRev::ParserFromCommit(const GIT_COMMIT *commit)
 
 int GitRev::ParserParentFromCommit(const git_commit* commit)
 {
+	ATLASSERT(commit);
 	m_ParentHash.clear();
 	unsigned int parentCount = git_commit_parentcount(commit);
 	for (unsigned int i = 0; i < parentCount; ++i)
@@ -92,6 +95,7 @@ int GitRev::ParserParentFromCommit(const git_commit* commit)
 
 int GitRev::ParserFromCommit(const git_commit* commit)
 {
+	ATLASSERT(commit);
 	Clear();
 
 	int encode = CP_UTF8;
@@ -127,6 +131,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 
 int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
 {
+	ATLASSERT(repo);
 	CAutoCommit commit;
 	if (git_commit_lookup(commit.GetPointer(), repo, hash) < 0)
 	{
@@ -139,6 +144,7 @@ int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
 
 int GitRev::GetCommit(git_repository* repo, const CString& refname)
 {
+	ATLASSERT(repo);
 	if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopy(), refname.GetLength()) == 0)
 	{
 		Clear();

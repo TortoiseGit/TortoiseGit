@@ -489,6 +489,7 @@ public:
 
 	constexpr static inline __int64 filetime_to_time_t(const FILETIME* ft) noexcept
 	{
+		ATLASSERT(ft);
 		return filetime_to_time_t(static_cast<__int64>(ft->dwHighDateTime) << 32 | ft->dwLowDateTime);
 	}
 

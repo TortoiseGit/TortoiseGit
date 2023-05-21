@@ -44,6 +44,8 @@ CTortoiseGitBlameData::~CTortoiseGitBlameData()
 
 int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 {
+	ATLASSERT(bomoffset);
+
 	CFileTextLines textlines;
 	CFileTextLines::UnicodeType type = textlines.CheckUnicodeType(buff, size);
 
@@ -76,6 +78,8 @@ int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 
 int CTortoiseGitBlameData::GetEncode(int *bomoffset)
 {
+	ATLASSERT(bomoffset);
+
 	int encoding = 0;
 	BYTE_VECTOR rawAll;
 	for (const auto& rawBytes : m_RawLines)

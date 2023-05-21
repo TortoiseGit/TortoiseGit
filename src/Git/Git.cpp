@@ -424,6 +424,7 @@ void CGit::KillRelatedThreads(CWinThread* thread)
 
 int CGit::Run(CGitCall* pcall)
 {
+	ASSERT(pcall);
 	PROCESS_INFORMATION pi;
 	CAutoGeneralHandle hRead, hReadErr;
 	if (RunAsync(pcall->GetCmd(), &pi, hRead.GetPointer(), hReadErr.GetPointer()))
@@ -484,6 +485,7 @@ public:
 	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr) : CGitCall(cmd),m_pvector(pvector), m_pvectorErr(pvectorErr) {}
 	bool OnOutputData(const char* data, size_t size) override
 	{
+		ASSERT(data);
 		if (!m_pvector || size == 0)
 			return false;
 		size_t oldsize=m_pvector->size();
@@ -493,6 +495,7 @@ public:
 	}
 	bool OnOutputErrData(const char* data, size_t size) override
 	{
+		ASSERT(data);
 		if (!m_pvectorErr || size == 0)
 			return false;
 		size_t oldsize = m_pvectorErr->size();
@@ -555,6 +558,7 @@ public:
 
 	bool OnOutputData(const char* data, size_t size) override
 	{
+		ASSERT(data);
 		// Add data
 		if (size == 0)
 			return false;
@@ -579,6 +583,7 @@ public:
 
 	bool OnOutputErrData(const char* data, size_t size) override
 	{
+		ASSERT(data);
 		if (!m_pvectorErr || size == 0)
 			return false;
 		size_t oldsize = m_pvectorErr->size();
@@ -2668,6 +2673,7 @@ void CEnvironment::CopyProcessEnvironment()
 
 CString CEnvironment::GetEnv(const wchar_t* name)
 {
+	ASSERT(name);
 	CString str;
 	for (size_t i = 0; i < size(); ++i)
 	{
@@ -2683,6 +2689,7 @@ CString CEnvironment::GetEnv(const wchar_t* name)
 
 void CEnvironment::SetEnv(const wchar_t* name, const wchar_t* value)
 {
+	ASSERT(name);
 	unsigned int i;
 	for (i = 0; i < size(); ++i)
 	{

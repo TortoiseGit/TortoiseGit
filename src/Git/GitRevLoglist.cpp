@@ -60,6 +60,7 @@ void GitRevLoglist::Clear()
 
 int GitRevLoglist::SafeGetSimpleList(CGit* git)
 {
+	ATLASSERT(git);
 	m_SimpleFileList.clear();
 	if (git->UsingLibGit2(CGit::GIT_CMD_LOGLISTDIFF))
 	{
@@ -176,6 +177,7 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 {
+	ATLASSERT(git);
 	AcquireSRWLockExclusive(&m_lock);
 	SCOPE_EXIT { ReleaseSRWLockExclusive(&m_lock); };
 	m_Files.Clear();
