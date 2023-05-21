@@ -1016,6 +1016,47 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_FALSE(testList[8].IsDirectory());
 }
 
+/* git status output for the following tests marked with "(**)"
+ * build.txt was renamed to büil國立1dк.txt
+ * Ümlautfile.txt new file
+ * src/Debug-Hints.txt was modified
+
+On branch master2
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+		renamed:    build.txt -> "b\303\274il\345\234\213\347\253\2131d\320\272.txt"
+		new file:   "\303\234mlautfile.txt"
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+		modified:   src/Debug-Hints.txt
+*/
+
+TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_UTF8)
+{
+	// as used in CGit::GetWorkingTreeChanges, but here separated; based on (**)
+	BYTE git_DiffIndex_Raw_Cached_M_C_z_output[] = { ":100644 100644 cbb4dfec5cd5a56eb616cfb73852c4f1eef4e4de cbb4dfec5cd5a56eb616cfb73852c4f1eef4e4de R100\0build.txt\0bÃ¼ilåœ‹ç«‹1dÐº.txt\0:000000 100644 0000000000000000000000000000000000000000 0d8c7e67d8e0a17d5529a54a0edd26c0cc0510bd A\0Ãœmlautfile.txt\0""0	0	\0build.txt\0bÃ¼ilåœ‹ç«‹1dÐº.txt\0""1	0	Ãœmlautfile.txt\0" };
+	CGitByteArray byteArray;
+	byteArray.append(git_DiffIndex_Raw_Cached_M_C_z_output, sizeof(git_DiffIndex_Raw_Cached_M_C_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
+	ASSERT_EQ(2, testList.GetCount());
+	EXPECT_STREQ(L"büil\u570B\u7ACB1d\u043A.txt", testList[0].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[0].m_Action);
+	EXPECT_STREQ(L"0", testList[0].m_StatAdd);
+	EXPECT_STREQ(L"0", testList[0].m_StatDel);
+	EXPECT_EQ(0, testList[0].m_Stage);
+	EXPECT_FALSE(testList[0].IsDirectory());
+	EXPECT_STREQ(L"build.txt", testList[0].GetGitOldPathString());
+	EXPECT_STREQ(L"Ümlautfile.txt", testList[1].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[1].m_Action);
+	EXPECT_STREQ(L"1", testList[1].m_StatAdd);
+	EXPECT_STREQ(L"0", testList[1].m_StatDel);
+	EXPECT_EQ(0, testList[1].m_Stage);
+	EXPECT_FALSE(testList[1].IsDirectory());
+}
+
 TEST(CTGitPath, ParserFromLog_DiffTree)
 {
 	// git.exe diff-tree -r --raw -C -M --numstat -z 8a75b51cc7f10b9755fc89837fe78b0c646b8b12~1 8a75b51cc7f10b9755fc89837fe78b0c646b8b12

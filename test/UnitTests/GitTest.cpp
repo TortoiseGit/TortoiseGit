@@ -232,6 +232,8 @@ TEST(CGit, IsBranchNameValid)
 	CGit cgit;
 	EXPECT_TRUE(cgit.IsBranchNameValid(L"master"));
 	EXPECT_TRUE(cgit.IsBranchNameValid(L"def/master"));
+	EXPECT_TRUE(cgit.IsBranchNameValid(L"mäin"));
+	EXPECT_TRUE(cgit.IsBranchNameValid(L"branch_\u570B\u7ACB1d\u043A"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"HEAD"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"-test"));
 	EXPECT_FALSE(cgit.IsBranchNameValid(L"jfjf>ff"));
@@ -456,6 +458,9 @@ TEST_P(CBasicGitWithTestRepoFixture, GetCurrentBranch)
 	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout 560deea87853158b22d0c0fd73f60a458d47838a", &output, CP_UTF8));
 	EXPECT_STREQ(L"(no branch)", m_Git.GetCurrentBranch());
 	EXPECT_STREQ(L"560deea87853158b22d0c0fd73f60a458d47838a", m_Git.GetCurrentBranch(true));
+
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout -b mäin 560deea87853158b22d0c0fd73f60a458d47838a", &output, CP_UTF8));
+	EXPECT_STREQ(L"mäin", m_Git.GetCurrentBranch());
 
 	output.Empty();
 	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
@@ -1139,6 +1144,26 @@ TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_orphan)
 	EXPECT_STREQ(L"subdir/branch", branches[5]);
 }
 
+TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_utf8)
+{
+	CString output;
+	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout -b branch_\u570B\u7ACB1d\u043A", &output, CP_UTF8));
+	EXPECT_STRNE(L"", output);
+
+	STRING_VECTOR branches;
+	int current = -2;
+	EXPECT_EQ(0, m_Git.GetBranchList(branches, &current));
+	ASSERT_EQ(7U, branches.size());
+	EXPECT_EQ(0, current);
+	EXPECT_STREQ(L"branch_\u570B\u7ACB1d\u043A", branches[0]);
+	EXPECT_STREQ(L"forconflict", branches[1]);
+	EXPECT_STREQ(L"master", branches[2]);
+	EXPECT_STREQ(L"master2", branches[3]);
+	EXPECT_STREQ(L"signed-commit", branches[4]);
+	EXPECT_STREQ(L"simple-conflict", branches[5]);
+	EXPECT_STREQ(L"subdir/branch", branches[6]);
+}
+
 TEST_P(CBasicGitWithTestRepoFixture, GetBranchList_detachedhead)
 {
 	CString output;
@@ -1401,9 +1426,25 @@ static void GetOneFile(CGit& m_Git)
 	::DeleteFile(tmpFile);
 }
 
+static void GetOneFile_utf8(CGit& m_Git)
+{
+	CString tmpFile = GetTempFile();
+	ASSERT_STRNE(L"", tmpFile);
+	EXPECT_EQ(0, m_Git.GetOneFile(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", CTGitPath(L"newfiles2 - Cöpy.txt"), tmpFile));
+	CString fileContents;
+	EXPECT_EQ(true, CStringUtils::ReadStringFromTextFile(tmpFile, fileContents));
+	struct _stat32 stat_buf {};
+	EXPECT_EQ(0, _wstat32(tmpFile, &stat_buf));
+	EXPECT_EQ(14, stat_buf.st_size);
+	EXPECT_EQ(14, fileContents.GetLength());
+	EXPECT_STREQ(L"more new stuff", fileContents);
+	::DeleteFile(tmpFile);
+}
+
 TEST_P(CBasicGitWithTestRepoFixture, GetOneFile)
 {
 	GetOneFile(m_Git);
+	GetOneFile_utf8(m_Git);
 
 	// clean&smudge filters are not available for GetOneFile without libigt2
 	if (GetParam() == GIT_CLI || GetParam() == LIBGIT)
@@ -1540,7 +1581,7 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"remote.origin.url"));
 	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"core.ignorecase"));
 
-	CString values[] = { L"", L" ", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n" };
+	CString values[] = { L"", L" ", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n", L"with ümlaut"};
 	for (int i = 0; i < _countof(values); ++i)
 	{
 		CString key;
@@ -2127,24 +2168,24 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.Run(L"git.exe reset --hard master", &output, CP_UTF8));
 	EXPECT_STRNE(L"", output);
 	output.Empty();
-	EXPECT_EQ(0, m_Git.Run(L"git.exe mv ansi.txt ansi2.txt", &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe mv ansi.txt änsi2.txt", &output, CP_UTF8));
 	EXPECT_STREQ(L"", output);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
+	EXPECT_STREQ(L"änsi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
-	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
+	EXPECT_STREQ(L"änsi2.txt", list[1].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter, false));
@@ -2153,7 +2194,7 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter, true));
 	ASSERT_EQ(1, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
-	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
+	EXPECT_STREQ(L"änsi2.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	list.Clear();
@@ -2163,11 +2204,11 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter, true));
 	ASSERT_EQ(2, list.GetCount());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
-	EXPECT_STREQ(L"ansi2.txt", list[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
+	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
-	EXPECT_STREQ(L"ascii.txt", list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[1].m_Action);
+	EXPECT_STREQ(L"änsi2.txt", list[1].GetGitPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
 
 	// renamed file in same folder (subfolder)
