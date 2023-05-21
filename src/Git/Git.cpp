@@ -252,7 +252,7 @@ bool CGit::IsBranchNameValid(const CString& branchname)
 	return valid == 1;
 }
 
-int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
+int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HANDLE* hErrReadOut, const CString* StdioFile)
 {
 	CAutoGeneralHandle hRead, hWrite, hReadErr, hWriteErr, hWriteIn, hReadIn;
 	CAutoFile hStdioFile;
@@ -340,9 +340,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION* piOut, HANDLE* hReadOut, HA
 	hWriteIn.CloseHandle();
 
 	m_CurrentGitPi = pi;
-
-	if(piOut)
-		*piOut=pi;
+	piOut = pi;
 	if(hReadOut)
 		*hReadOut = hRead.Detach();
 	if(hErrReadOut)
@@ -429,7 +427,7 @@ int CGit::Run(CGitCall* pcall)
 	ASSERT(pcall);
 	PROCESS_INFORMATION pi;
 	CAutoGeneralHandle hRead, hReadErr;
-	if (RunAsync(pcall->GetCmd(), &pi, hRead.GetPointer(), hReadErr.GetPointer()))
+	if (RunAsync(pcall->GetCmd(), pi, hRead.GetPointer(), hReadErr.GetPointer()))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
 	CAutoGeneralHandle piThread(std::move(pi.hThread));
@@ -1160,7 +1158,7 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 {
 	PROCESS_INFORMATION pi;
 	CAutoGeneralHandle hReadErr;
-	if (RunAsync(cmd, &pi, nullptr, hReadErr.GetPointer(), &filename))
+	if (RunAsync(cmd, pi, nullptr, hReadErr.GetPointer(), &filename))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
 	CAutoGeneralHandle piThread(std::move(pi.hThread));
