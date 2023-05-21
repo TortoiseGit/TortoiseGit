@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2016 - TortoiseGit
+// Copyright (C) 2011, 2015-2016, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ private:
 	DECLARE_DYNAMIC(CHorizontalResizableStandAloneDialog)
 
 protected:
-	virtual BOOL OnInitDialog();
+	BOOL OnInitDialog() override;
 
 	DECLARE_MESSAGE_MAP()
 };

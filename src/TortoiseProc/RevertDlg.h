@@ -38,11 +38,11 @@ public:
 	enum { IDD = IDD_REVERT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
-	virtual void OnCancel() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
+	void OnOK() override;
+	void OnCancel() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnBnClickedSelectall();
 	afx_msg LRESULT	OnSVNStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);

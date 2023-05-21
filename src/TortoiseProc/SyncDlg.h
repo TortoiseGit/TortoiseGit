@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2020 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,12 +65,12 @@ public:
 			GIT_COMMAND_STASH
 		};
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	BRANCH_COMBOX_EVENT_HANDLE();
 
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedButtonManage();
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnCbnEditchangeComboboxex();
 	afx_msg void OnBnClickedButtonPull();
 	afx_msg void OnBnClickedButtonPush();
@@ -229,8 +229,8 @@ protected:
 	void EnableControlButton(bool bEnabled=true);
 	afx_msg void OnBnClickedButtonCommit();
 
-	virtual void	OnOK() override;
-	virtual void	OnCancel() override;
+	void	OnOK() override;
+	void	OnCancel() override;
 	void	Refresh();
 	bool	AskSetTrackedBranch();
 

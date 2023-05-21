@@ -136,7 +136,7 @@ protected:
 		}
 	}
 
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -152,8 +152,8 @@ protected:
 	afx_msg void OnBnClickedOpensettingselevated();
 	afx_msg void OnBnClickedWindowscredmgr();
 
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL OnApply() override;
+	BOOL OnInitDialog() override;
+	BOOL OnApply() override;
 
 	void EnableAdvancedOptions();
 	BOOL IsUrlExist(const CString& text);

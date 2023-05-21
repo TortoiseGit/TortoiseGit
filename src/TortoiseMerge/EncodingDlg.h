@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,12 +46,12 @@ public:
 	EOL lineendings;
 	CString view;
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-	virtual void OnCancel();
-	virtual void OnOK();
-	virtual BOOL OnInitDialog() override;
+	void OnCancel() override;
+	void OnOK() override;
+	BOOL OnInitDialog() override;
 	CComboBox m_Encoding;
 	CComboBox m_EOL;
 };

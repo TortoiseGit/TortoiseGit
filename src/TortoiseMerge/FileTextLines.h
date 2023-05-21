@@ -265,8 +265,8 @@ public:
 	CUtf16leFilter(CStdioFile *pFile) : CBaseFilter(pFile){}
 	virtual ~CUtf16leFilter() {}
 
-	virtual bool Decode(/*in out*/ CBuffer& data) override;
-	virtual const CBuffer& Encode(const CString& s) override;
+	bool Decode(/*in out*/ CBuffer& data) override;
+	const CBuffer& Encode(const CString& s) override;
 };
 
 
@@ -276,8 +276,8 @@ public:
 	CUtf16beFilter(CStdioFile *pFile) : CUtf16leFilter(pFile){}
 	virtual ~CUtf16beFilter() {}
 
-	virtual bool Decode(/*in out*/ CBuffer& data) override;
-	virtual const CBuffer& Encode(const CString& s) override;
+	bool Decode(/*in out*/ CBuffer& data) override;
+	const CBuffer& Encode(const CString& s) override;
 };
 
 
@@ -287,8 +287,8 @@ public:
 	CUtf32leFilter(CStdioFile *pFile) : CBaseFilter(pFile){}
 	virtual ~CUtf32leFilter() {}
 
-	virtual bool Decode(/*in out*/ CBuffer& data) override;
-	virtual const CBuffer& Encode(const CString& s) override;
+	bool Decode(/*in out*/ CBuffer& data) override;
+	const CBuffer& Encode(const CString& s) override;
 };
 
 
@@ -298,6 +298,6 @@ public:
 	CUtf32beFilter(CStdioFile *pFile) : CUtf32leFilter(pFile){}
 	virtual ~CUtf32beFilter() {}
 
-	virtual bool Decode(/*in out*/ CBuffer& data) override;
-	virtual const CBuffer& Encode(const CString& s) override;
+	bool Decode(/*in out*/ CBuffer& data) override;
+	const CBuffer& Encode(const CString& s) override;
 };

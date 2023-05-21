@@ -60,13 +60,13 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 	virtual void OnCancel();
 	virtual void PostNcDestroy();
 	virtual void OnOK();
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnCbnEditchangeFindcombo();
 	afx_msg void OnBnClickedCount();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor);

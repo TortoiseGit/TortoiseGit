@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019 - TortoiseGit
+// Copyright (C) 2016-2017, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,11 +57,11 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual void OnCancel() override;
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual void PostNcDestroy() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void OnCancel() override;
+	BOOL OnInitDialog() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	void PostNcDestroy() override;
 	afx_msg void OnEnChangeEditFilter();
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedSelRevBtn();

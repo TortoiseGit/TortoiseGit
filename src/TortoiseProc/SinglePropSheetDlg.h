@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009 - TortoiseGit
+// Copyright (C) 2009, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ public:
 	void RemovePropPages();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -42,5 +42,5 @@ private:
 	ISettingsPropPage*	m_pThePropPage;
 
 public:
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 };

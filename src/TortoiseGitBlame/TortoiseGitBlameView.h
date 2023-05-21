@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -96,23 +96,23 @@ public:
 public:
 	afx_msg void OnDraw(CDC* pDC);  // overridden to draw this view
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 protected:
-	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
+	ULONG GetGestureStatus(CPoint ptTouch) override;
 
 // Implementation
 public:
 	virtual ~CTortoiseGitBlameView();
 #ifdef _DEBUG
-	virtual void AssertValid() const override;
-	virtual void Dump(CDumpContext& dc) const override;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 protected:
 
 // Generated message map functions
 protected:
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
 	afx_msg void OnDestroy();
 	afx_msg void OnChangeEncode(UINT nID);

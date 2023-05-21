@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -65,9 +65,9 @@ public:
 
 protected:
 	// CSciEditContextMenuInterface
-	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
-	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
-	virtual void		HandleSnippet(int type, const CString& text, CSciEdit* pSciEdit) override;
+	void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
+	bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
+	void		HandleSnippet(int type, const CString& text, CSciEdit* pSciEdit) override;
 
 public:
 	void ShowViewPatchText(bool b=true)
@@ -123,8 +123,8 @@ private:
 	static UINT StatusThreadEntry(LPVOID pVoid);
 	UINT StatusThread();
 	void FillPatchView(bool onlySetTimer = false);
-	CWnd * GetPatchViewParentWnd() { return this; }
-	void TogglePatchView();
+	CWnd* GetPatchViewParentWnd() override { return this; }
+	void TogglePatchView() override;
 	void SetDlgTitle();
 	CString GetSignedOffByLine();
 	CString m_sTitle;
@@ -133,14 +133,14 @@ private:
 	enum { IDD = IDD_COMMITDLG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 	void PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool& bAddSuccess, int& nchecked, CMassiveGitTask& mgtReAddAfterCommit, CMassiveGitTask& mgtReDelAfterCommit);
-	virtual void OnCancel() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
+	void OnCancel() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 	afx_msg void OnBnClickedShowunversioned();
 	afx_msg void OnBnClickedHistory();
 	afx_msg void OnBnClickedBugtraqbutton();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2020-2022 - TortoiseGit
+// Copyright (C) 2008-2014, 2020-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoioseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,9 +58,9 @@ public:
 	void DisableTooltip(){m_bDyn = FALSE;} //because rebase need disable combox tooltip to show version info
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual void PreSubclassWindow() override;
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	void PreSubclassWindow() override;
 
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
@@ -200,15 +200,15 @@ public:
 	CCustomAutoCompleteSource(const CStringArray& pData);
 
 	//IUnknown
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
-	virtual ULONG STDMETHODCALLTYPE AddRef() override;
-	virtual ULONG STDMETHODCALLTYPE Release() override;
+	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override;
+	ULONG STDMETHODCALLTYPE AddRef() override;
+	ULONG STDMETHODCALLTYPE Release() override;
 
 	//IEnumString
-	virtual HRESULT STDMETHODCALLTYPE Clone(IEnumString** ppenum) override;
-	virtual HRESULT STDMETHODCALLTYPE Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched) override;
-	virtual HRESULT STDMETHODCALLTYPE Reset() override;
-	virtual HRESULT STDMETHODCALLTYPE Skip(ULONG celt) override;
+	HRESULT STDMETHODCALLTYPE Clone(IEnumString** ppenum) override;
+	HRESULT STDMETHODCALLTYPE Next(ULONG celt, LPOLESTR* rgelt, ULONG* pceltFetched) override;
+	HRESULT STDMETHODCALLTYPE Reset() override;
+	HRESULT STDMETHODCALLTYPE Skip(ULONG celt) override;
 
 private:
 	volatile ULONG		m_cRefCount;

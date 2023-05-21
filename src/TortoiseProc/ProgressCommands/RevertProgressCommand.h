@@ -22,7 +22,7 @@ class RevertProgressCommand : public ProgressCommand
 {
 public:
 	RevertProgressCommand(const CString& revertToRevision = L"HEAD");
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
+	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 
 private:
 	CString m_sRevertToRevision;

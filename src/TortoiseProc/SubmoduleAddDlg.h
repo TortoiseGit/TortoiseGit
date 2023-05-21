@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017, 2020-2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2020-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,14 +34,14 @@ public:
 	enum { IDD = IDD_SUBMODULE_ADD };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	afx_msg void OnRepBrowse();
 	afx_msg void OnPathBrowse();
 	afx_msg void OnBranchCheck();
 	afx_msg void OnBnClickedPuttykeyfileBrowse();
 	afx_msg void OnBnClickedPuttykeyAutoload();
 	afx_msg BOOL OnRepoEndEdit(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
-	virtual void OnOK() override;
+	void OnOK() override;
 	DECLARE_MESSAGE_MAP()
 public:
 	CHistoryCombo m_Repository;

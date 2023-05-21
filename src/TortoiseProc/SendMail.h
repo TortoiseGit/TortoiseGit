@@ -54,7 +54,7 @@ public:
 	CSendMailCombineable(const CString& To, const CString& CC, const CString& subject, bool bAttachment, bool bCombine);
 	~CSendMailCombineable();
 
-	virtual int Send(const CTGitPathList& list, CGitProgressList* instance) override;
+	int Send(const CTGitPathList& list, CGitProgressList* instance) override;
 
 protected:
 	virtual int SendAsSingleMail(const CTGitPath& path, CGitProgressList* instance);

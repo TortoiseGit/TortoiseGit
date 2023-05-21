@@ -224,7 +224,7 @@ public:
 
 	BOOL IsBoundary() const { return m_Mark == L'-'; }
 
-	virtual void Clear() override;
+	void Clear() override;
 
 	int SafeFetchFullInfo(CGit* git);
 

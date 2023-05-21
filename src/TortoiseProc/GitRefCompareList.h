@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -72,7 +72,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd *pWnd, CPoint point);
 	void OnContextMenuList(CWnd *pWnd, CPoint point);
 	void OnContextMenuHeader(CWnd *pWnd, CPoint point);
-	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
+	ULONG GetGestureStatus(CPoint ptTouch) override;
 
 	DECLARE_MESSAGE_MAP()
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,6 @@
 class CDockablePaneUnscaledStoredState : public CDockablePane
 {
 public:
-	virtual BOOL LoadState(LPCWSTR lpszProfileName = NULL, int nIndex = -1, UINT uiID = (UINT)-1) override;
-	virtual BOOL SaveState(LPCWSTR lpszProfileName = NULL, int nIndex = -1, UINT uiID = (UINT)-1) override;
+	BOOL LoadState(LPCWSTR lpszProfileName = nullptr, int nIndex = -1, UINT uiID = (UINT)-1) override;
+	BOOL SaveState(LPCWSTR lpszProfileName = nullptr, int nIndex = -1, UINT uiID = (UINT)-1) override;
 };

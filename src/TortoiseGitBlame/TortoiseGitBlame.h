@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2017, 2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2017, 2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ public:
 
 // Overrides
 public:
-	virtual BOOL InitInstance() override;
+	BOOL InitInstance() override;
 
 	BOOL LoadWindowPlacement(CRect& rectNormalPosition, int& nFlags, int& nShowCmd) override;
 	BOOL StoreWindowPlacement(const CRect& rectNormalPosition, int nFlags, int nShowCmd) override;
@@ -54,7 +54,7 @@ public:
 	afx_msg void OnAppAbout();
 	afx_msg void OnFileSettings();
 	DECLARE_MESSAGE_MAP()
-	virtual int ExitInstance() override;
+	int ExitInstance() override;
 };
 
 extern CTortoiseGitBlameApp theApp;

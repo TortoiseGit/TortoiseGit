@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2019-2020 - TortoiseGit
+// Copyright (C) 2013-2014, 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,7 +34,7 @@ protected:
 	{
 	public:
 		RefUpdateNotificationData(const char* refname, const git_oid* oldOid, const git_oid* newOid, const CString& change);
-		virtual void GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions) override;
+		void GetContextMenu(CIconMenu& popup, CGitProgressList::ContextMenuActionList& actions) override;
 	protected:
 		CGitHash	m_OldHash;
 		CGitHash	m_NewHash;

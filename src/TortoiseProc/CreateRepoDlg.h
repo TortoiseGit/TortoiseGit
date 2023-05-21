@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011, 2013, 2015 - TortoiseGit
+// Copyright (C) 2010-2011, 2013, 2015, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,11 +35,11 @@ public:
 
 protected:
 	// Overrides
-	virtual void OnOK() override;
-	virtual void OnCancel() override;
+	void OnOK() override;
+	void OnCancel() override;
 
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
 	CString m_ModuleName;
 
 	DECLARE_MESSAGE_MAP()

@@ -34,8 +34,8 @@ public:
 	enum { IDD = IDD_SETTINGSWIN11CONTEXTMENU };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnApply() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnApply() override;
 	afx_msg void OnLvnItemchangedMenulist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnBnClickedSelectall();
 	afx_msg void OnBnClickedRestoreDefaults();
@@ -44,7 +44,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 
 private:
 	CRegStdQWORD		m_regtopMenu;

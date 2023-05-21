@@ -39,9 +39,9 @@ public:
 	enum { IDD = IDD_SETTINGSBUGTRAQ };
 
 protected:
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL OnApply() override;
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
+	BOOL OnApply() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	afx_msg void OnBnClickedRemovebutton();
 	afx_msg void OnBnClickedEditbutton();
 	afx_msg void OnBnClickedAddbutton();

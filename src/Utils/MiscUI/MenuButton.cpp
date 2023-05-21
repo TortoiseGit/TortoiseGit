@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2015-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2011, 2015-2017, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2011,2015-2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -169,7 +169,7 @@ void CMenuButton::OnDestroy()
 	__super::OnDestroy();
 }
 
-BOOL CMenuButton::IsPressed()
+BOOL CMenuButton::IsPressed() const
 {
 	return __super::IsPressed() || m_bChecked;
 }

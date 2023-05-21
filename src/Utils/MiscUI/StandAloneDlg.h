@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2020-2021 - TortoiseGit
+// Copyright (C) 2015-2016, 2020-2023 - TortoiseGit
 // Copyright (C) 2003-2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ protected:
 		CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	}
 
-	virtual BOOL OnInitDialog() override
+	BOOL OnInitDialog() override
 	{
 		m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
 
@@ -80,7 +80,7 @@ protected:
 		return FALSE;
 	}
 
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override
+	BOOL PreTranslateMessage(MSG* pMsg) override
 	{
 		m_tooltips.RelayEvent(pMsg, this);
 		if (pMsg->message == WM_KEYDOWN)
@@ -208,7 +208,7 @@ protected:
 	}
 
 protected:
-	virtual void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F) override
+	void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F) override
 	{
 		CWinApp* pApp = AfxGetApp();
 		ASSERT_VALID(pApp);
@@ -306,7 +306,7 @@ private:
 	DECLARE_DYNAMIC(CResizableStandAloneDialog)
 
 protected:
-	virtual BOOL	OnInitDialog() override;
+	BOOL			OnInitDialog() override;
 	afx_msg void	OnSizing(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void	OnNcMButtonUp(UINT nHitTest, CPoint point);

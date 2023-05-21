@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2020 - TortoiseGit
+// Copyright (C) 2016-2017, 2020, 2023 - TortoiseGit
 // Copyright (C) 2011, 2016 - Sven Strickroth <email@cs-ware.de>
 
 //based on:
@@ -85,9 +85,9 @@ public:
 	bool	m_bAlwaysShowArrow;
 
 protected:
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 
-	virtual BOOL IsPressed() override;
+	BOOL IsPressed() const override;
 
 	afx_msg void OnDraw(CDC* pDC, const CRect& rect, UINT uiState) override;
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

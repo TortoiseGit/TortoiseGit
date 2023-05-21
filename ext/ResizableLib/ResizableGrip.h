@@ -52,12 +52,12 @@ private:
 
 		BOOL IsRTL();			// right-to-left layout support
 
-		virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+		LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 
 		SIZE m_size;			// holds grip size
 
 	protected:
-		virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+		BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
 		BOOL m_bTriangular;		// triangular shape active
 		BOOL m_bTransparent;	// transparency active

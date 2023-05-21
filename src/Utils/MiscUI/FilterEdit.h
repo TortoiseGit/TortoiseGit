@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2020 - TortoiseGit
+// Copyright (C) 2016-2017, 2020, 2023 - TortoiseGit
 // Copyright (C) 2007-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -127,9 +127,9 @@ public:
 	void ValidateAndRedraw() { OnEnChange(); }
 
 protected:
-	virtual void	PreSubclassWindow() override;
-	virtual BOOL	PreTranslateMessage(MSG* pMsg) override;
-	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
+	void			PreSubclassWindow() override;
+	BOOL			PreTranslateMessage(MSG* pMsg) override;
+	ULONG			GetGestureStatus(CPoint ptTouch) override;
 
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);

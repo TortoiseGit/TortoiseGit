@@ -56,10 +56,10 @@ public:
 	};
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnApply() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnApply() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnLvnBeginlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnNMDblclkConfig(NMHDR *pNMHDR, LRESULT *pResult);

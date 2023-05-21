@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2011 - TortoiseSVN
-// Copyright (C) 2012, 2018-2020 - TortoiseGit
+// Copyright (C) 2012, 2018-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,11 +78,11 @@ protected:
 	bool			InitialSetMenu(const CString& settingName, bool defaultValue, int nId);
 	bool			ToggleSetMenu(const CString& settingName, int nId);
 
-	virtual void	DoDataExchange(CDataExchange* pDX) override;		// DDX/DDV support
-	virtual BOOL	OnInitDialog() override;
-	virtual void	OnCancel() override;
-	virtual void	OnOK() override;
-	virtual BOOL	PreTranslateMessage(MSG* pMsg) override;
+	void	DoDataExchange(CDataExchange* pDX) override;		// DDX/DDV support
+	BOOL	OnInitDialog() override;
+	void	OnCancel() override;
+	void	OnOK() override;
+	BOOL	PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg void	OnViewFilter();
 	afx_msg void	OnViewZoomin();

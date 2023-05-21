@@ -37,9 +37,9 @@ public:
 	CString			m_sReplace;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK();
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 	void ShowEditBalloon(UINT nIdControl, UINT nIdText, UINT nIdTitle, int nIcon = TTI_WARNING);
 
 	DECLARE_MESSAGE_MAP()

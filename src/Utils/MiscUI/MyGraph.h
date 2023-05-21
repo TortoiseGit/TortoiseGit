@@ -101,7 +101,7 @@ private:
 
 	CString	GetTipText() const;
 
-	INT_PTR	OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
+	INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
 
 	CPoint  WedgeEndFromDegrees(double degrees, const CPoint& ptCenter,
 					double radius) const;
@@ -118,7 +118,7 @@ private:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(MyGraph)
 	protected:
-	virtual void PreSubclassWindow();
+	void PreSubclassWindow() override;
 	//}}AFX_VIRTUAL
 
 // Generated message map functions

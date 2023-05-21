@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2019 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2019, 2023 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -83,8 +83,8 @@ public:
 
 	//{{AFX_VIRTUAL(CACEdit)
 public:
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual ULONG GetGestureStatus(CPoint /*ptTouch*/) override { return 0; }
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	ULONG GetGestureStatus(CPoint /*ptTouch*/) override { return 0; }
 	//}}AFX_VIRTUAL
 
 	// Implementierung

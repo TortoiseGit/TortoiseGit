@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021 - TortoiseGit
+// Copyright (C) 2009-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2013, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -173,9 +173,9 @@ private:
 
 	static bool IsValidURLChar(unsigned char ch);
 protected:
-	virtual BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
+	BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	ULONG GetGestureStatus(CPoint ptTouch) override;
 	void		CheckSpelling(Sci_Position startpos, Sci_Position endpos);
 	void		SuggestSpellingAlternatives();
 	void		DoAutoCompletion(Sci_Position nMinPrefixLength);

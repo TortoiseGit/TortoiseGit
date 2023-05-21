@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2016, 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -70,9 +70,9 @@ protected:
 	BOOL			m_bSetPushRemote;
 	BOOL			m_bSetPushBranch;
 
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
@@ -88,7 +88,7 @@ protected:
 	afx_msg void OnBnClickedTags();
 	afx_msg void OnBnClickedProcPushSetUpstream();
 	afx_msg void OnBnClickedProcPushSetPushremote();
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	void Refresh();
 	void GetRemoteBranch(CString currentBranch);
 	void EnDisablePushRemoteArchiveBranch();

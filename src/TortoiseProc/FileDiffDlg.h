@@ -63,10 +63,10 @@ public:
 	enum { IDD = IDD_DIFFFILES };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual void OnCancel() override;
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void OnCancel() override;
+	BOOL OnInitDialog() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg LRESULT OnRefLoad(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult);
@@ -135,7 +135,7 @@ private:
 
 	STRING_VECTOR		m_Reflist;
 
-	virtual BOOL DestroyWindow() override;
+	BOOL DestroyWindow() override;
 	void OnTextUpdate(CACEdit *pEdit);
 
 	CMenuButton			m_cRev1Btn;

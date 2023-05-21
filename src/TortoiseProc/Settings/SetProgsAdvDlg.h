@@ -57,8 +57,8 @@ private:
 	void EnableBtns();
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnBnClickedAddtool();
 	afx_msg void OnBnClickedEdittool();
 	afx_msg void OnBnClickedRemovetool();

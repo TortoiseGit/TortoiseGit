@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022-2023 - TortoiseGit
 // Copyright (C) 2006, 2008, 2010-2011, 2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -104,9 +104,9 @@ protected:
 	int							m_ShownIndex;
 	HFONT						m_boldFont;
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual void OnOK();
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void OnOK() override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnLvnItemchangedFilelist(NMHDR *pNMHDR, LRESULT *pResult);

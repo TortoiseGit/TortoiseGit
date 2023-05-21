@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2018-2019 - TortoiseGit
+// Copyright (C) 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2006, 2009, 2015, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -98,7 +98,7 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 };
 
 

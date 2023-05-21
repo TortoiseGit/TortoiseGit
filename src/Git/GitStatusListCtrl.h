@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -746,10 +746,10 @@ private:
 
 	void DeleteSelectedFiles();
 
-	virtual void PreSubclassWindow() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
-	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
+	void PreSubclassWindow() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
+	ULONG GetGestureStatus(CPoint ptTouch) override;
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnHdnItemclick(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg BOOL OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
@@ -913,8 +913,8 @@ class CGitStatusListCtrlDropTarget : public CIDropTarget
 public:
 	CGitStatusListCtrlDropTarget(CGitStatusListCtrl* pGitStatusListCtrl) : CIDropTarget(pGitStatusListCtrl->m_hWnd) { m_pGitStatusListCtrl = pGitStatusListCtrl; }
 
-	virtual bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect, POINTL pt) override;
-	virtual HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect) override;
+	bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect, POINTL pt) override;
+	HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect) override;
 private:
 	CGitStatusListCtrl* m_pGitStatusListCtrl;
 };

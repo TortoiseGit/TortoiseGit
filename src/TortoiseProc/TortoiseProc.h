@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2018, 2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2018, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,8 +49,8 @@ public:
 
 // Overrides
 public:
-	virtual BOOL InitInstance() override;
-	virtual int ExitInstance() override;
+	BOOL InitInstance() override;
+	int ExitInstance() override;
 
 	void CheckUpgrade();
 	void CheckForNewerVersion();

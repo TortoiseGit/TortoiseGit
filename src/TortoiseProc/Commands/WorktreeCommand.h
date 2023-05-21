@@ -25,7 +25,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool Execute() override;
+	bool Execute() override;
 };
 
 class WorktreeListCommand : public Command
@@ -34,7 +34,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool Execute() override;
+	bool Execute() override;
 };
 
 class DropWorktreeCreateCommand : public Command
@@ -43,5 +43,5 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool Execute() override;
+	bool Execute() override;
 };

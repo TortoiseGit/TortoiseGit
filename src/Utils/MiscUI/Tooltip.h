@@ -31,7 +31,7 @@ class CToolTips : public CToolTipCtrl
 {
 // Construction
 public:
-	virtual BOOL Create(CWnd* pParentWnd, DWORD dwStyle = 0);
+	BOOL Create(CWnd* pParentWnd, DWORD dwStyle = 0) override;
 	CToolTips() : CToolTipCtrl(), m_pParentWnd(nullptr), m_themeCallbackId(0) {}
 	virtual ~CToolTips() {}
 

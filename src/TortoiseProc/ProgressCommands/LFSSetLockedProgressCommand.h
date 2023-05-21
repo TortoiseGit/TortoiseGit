@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2020 - TortoiseGit
+// Copyright (C) 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ private:
 	bool m_bIsForce;
 
 public:
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
+	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 
 	LFSSetLockedProgressCommand(bool isLock, bool isForce) : m_bIsLock(isLock), m_bIsForce(isForce)
 	{

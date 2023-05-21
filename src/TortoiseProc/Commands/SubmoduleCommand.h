@@ -25,7 +25,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 
 class SubmoduleUpdateCommand : public Command
@@ -34,7 +34,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 
 class SubmoduleSyncCommand : public Command
@@ -43,7 +43,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 
 

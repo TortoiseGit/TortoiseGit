@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016-2017, 2020-2021 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017, 2020-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -125,14 +125,14 @@ public:
 	};
 
 private:
-	virtual void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void			OnOK();
-	afx_msg void			OnCancel();
+	afx_msg void			OnOK() override;
+	afx_msg void			OnCancel() override;
 	afx_msg void			OnDestroy();
-	virtual BOOL			OnInitDialog() override;
+	BOOL					OnInitDialog() override;
 
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RepoTree;
 	CGestureEnabledControlTmpl<CListCtrl>	m_RepoList;
@@ -177,7 +177,7 @@ private:
 
 	afx_msg void			OnBnClickedButtonRevision();
 
-	virtual BOOL			PreTranslateMessage(MSG* pMsg) override;
+	BOOL					PreTranslateMessage(MSG* pMsg) override;
 
 	void					UpdateDiffWithFileFromReg();
 	CString					m_sMarkForDiffFilename;

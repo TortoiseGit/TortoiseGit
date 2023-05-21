@@ -25,7 +25,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 
 class StashApplyCommand : public Command
@@ -34,7 +34,7 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 
 class StashPopCommand : public Command
@@ -43,6 +43,6 @@ public:
 	/**
 	 * Executes the command.
 	 */
-	virtual bool			Execute() override;
+	bool			Execute() override;
 };
 

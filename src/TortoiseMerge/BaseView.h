@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2020, 2022 - TortoiseGit
+// Copyright (C) 2020, 2022-2023 - TortoiseGit
 // Copyright (C) 2003-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -295,11 +295,11 @@ protected:  // methods
 		MOVELEFT = 1,
 	};
 
-	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
-	virtual void	OnDraw(CDC * pDC);
-	virtual INT_PTR	OnToolHitTest(CPoint point, TOOLINFO* pTI) const;
-	virtual BOOL	PreTranslateMessage(MSG* pMsg);
-	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
+	BOOL			PreCreateWindow(CREATESTRUCT& cs) override;
+	void			OnDraw(CDC* pDC) override;
+	INT_PTR			OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;
+	BOOL			PreTranslateMessage(MSG* pMsg) override;
+	ULONG			GetGestureStatus(CPoint ptTouch) override;
 	BOOL			OnToolTipNotify(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void	OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
@@ -323,7 +323,7 @@ protected:  // methods
 	afx_msg void	OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void	OnLButtonDblClk(UINT nFlags, CPoint point);
-	virtual void	OnLButtonTrippleClick(UINT nFlags, CPoint point) override;
+	void			OnLButtonTrippleClick(UINT nFlags, CPoint point) override;
 	afx_msg void	OnEditCopy();
 	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);

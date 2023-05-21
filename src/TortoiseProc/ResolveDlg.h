@@ -37,14 +37,14 @@ public:
 	enum { IDD = IDD_RESOLVE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	afx_msg void OnBnClickedSelectall();
 	afx_msg LRESULT OnFileDropped(WPARAM, LPARAM lParam);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
-	virtual void OnCancel() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL OnInitDialog() override;
+	void OnOK() override;
+	void OnCancel() override;
 
 private:
 	static UINT ResolveThreadEntry(LPVOID pVoid);

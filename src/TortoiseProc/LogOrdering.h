@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2020 - TortoiseGit
+// Copyright (C) 2013, 2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,9 +35,9 @@ public:
 	enum { IDD = IDD_LOGORDERING };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
+	void DoDataExchange(CDataExchange* pDX) override;
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 
 	DECLARE_MESSAGE_MAP()
 

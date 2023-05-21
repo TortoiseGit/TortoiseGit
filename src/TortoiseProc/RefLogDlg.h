@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2016-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,15 +35,15 @@ public:
 	enum { IDD = IDD_REFLOG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
 	afx_msg void OnCbnSelchangeRef();
 	afx_msg LRESULT OnRefLogChanged(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnLvnItemchangedRefLoglist(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedClearStash();
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	DECLARE_MESSAGE_MAP()
 
 	void			Refresh();

@@ -39,9 +39,9 @@ public:
 	enum { IDD = IDD_SETOVERLAYICONS };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL	OnInitDialog() override;
-	virtual BOOL	OnApply() override;
+	void	DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL	OnInitDialog() override;
+	BOOL	OnApply() override;
 	afx_msg void	OnBnClickedListradio();
 	afx_msg void	OnBnClickedSymbolradio();
 	afx_msg void	OnCbnSelchangeIconsetcombo();

@@ -592,7 +592,7 @@ public:
 		return false;
 	}
 
-	virtual void OnEnd() override
+	void OnEnd() override
 	{
 		if (!m_buffer.IsEmpty())
 			m_recv(m_buffer);

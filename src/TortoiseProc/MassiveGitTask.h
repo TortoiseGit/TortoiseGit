@@ -33,9 +33,9 @@ public:
 	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
 
 private:
-	virtual void			ReportError(const CString& out, int exitCode) override;
-	virtual void			ReportProgress(const CTGitPath& path, int index) override;
-	virtual void			ReportUserCanceled() override;
+	void					ReportError(const CString& out, int exitCode) override;
+	void					ReportProgress(const CTGitPath& path, int index) override;
+	void					ReportUserCanceled() override;
 	CGitProgressList *		m_NotifyCallbackInstance;
 	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
 	std::function<void(const CTGitPath& path, int index)> m_progressCallback = nullptr;

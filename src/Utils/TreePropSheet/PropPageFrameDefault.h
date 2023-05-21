@@ -51,14 +51,14 @@ public:
 
 // overridings
 public:
-	virtual BOOL Create(DWORD dwWindowStyle, const RECT& rect, CWnd* pwndParent, UINT nID) override;
-	virtual CWnd* GetWnd() override;
-	virtual void SetCaption(LPCWSTR lpszCaption, HICON hIcon = nullptr) override;
+	BOOL Create(DWORD dwWindowStyle, const RECT& rect, CWnd* pwndParent, UINT nID) override;
+	CWnd* GetWnd() override;
+	void SetCaption(LPCWSTR lpszCaption, HICON hIcon = nullptr) override;
 
 protected:
-	virtual CRect CalcMsgArea() override;
-	virtual CRect CalcCaptionArea() override;
-	virtual void DrawCaption(CDC* pDc, CRect rect, LPCWSTR lpszCaption, HICON hIcon) override;
+	CRect CalcMsgArea() override;
+	CRect CalcCaptionArea() override;
+	void DrawCaption(CDC* pDc, CRect rect, LPCWSTR lpszCaption, HICON hIcon) override;
 
 // Implementation helpers
 protected:

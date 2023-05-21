@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013 - TortoiseGit
+// Copyright (C) 2013, 2023 - TortoiseGit
 // Copyright (C) 2006-2010, 2013-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,9 +46,9 @@ public:
 	enum { IDD = IDD_SETMAINPAGE };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnApply();
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnApply() override;
+	BOOL OnInitDialog() override;
 
 	afx_msg void OnModified();
 	afx_msg void OnModifiedWithReload();

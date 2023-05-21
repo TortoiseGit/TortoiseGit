@@ -205,9 +205,9 @@ protected:
 
 	int GetLeftRightMargin() const { return 20; };
 	int GetTopBottomMargin() const { return 5; };
-	virtual void	DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
+	void			DoDataExchange(CDataExchange* pDX) override;	// DDX/DDV support
 	afx_msg void	OnPaint();
-	virtual ULONG	GetGestureStatus(CPoint ptTouch) override;
+	ULONG			GetGestureStatus(CPoint ptTouch) override;
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg void	OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void	OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

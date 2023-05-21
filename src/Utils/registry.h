@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019, 2021 - TortoiseGit
+// Copyright (C) 2011-2019, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -184,7 +184,7 @@ protected:
 	 */
 
 	LPCWSTR GetPlainString(const CString& s) const override { return static_cast<LPCWSTR>(s); }
-	virtual DWORD GetLength(const CString& s) const { return s.GetLength(); }
+	virtual DWORD GetLength(const CString& s) const override { return s.GetLength(); }
 
 public: //methods
 	/** Default constructor.
@@ -201,7 +201,7 @@ public: //methods
 	/**
 	 * Returns the string of the last error occurred.
 	 */
-	CString getErrorString()
+	CString getErrorString() override
 	{
 		CString error = CRegBaseCommon<CString>::getErrorString();
 #if defined IDS_REG_ERROR
@@ -878,8 +878,8 @@ private:
 	 * provide type-specific code to extract data from and write data to an open registry key.
 	 */
 
-	virtual void InternalRead(HKEY hKey, CRect& value);
-	virtual void InternalWrite(HKEY hKey, const CRect& value);
+	void InternalRead(HKEY hKey, CRect& value) override;
+	void InternalWrite(HKEY hKey, const CRect& value) override;
 
 public:
 	CRegRect();
@@ -967,8 +967,8 @@ private:
 	 * provide type-specific code to extract data from and write data to an open registry key.
 	 */
 
-	virtual void InternalRead(HKEY hKey, CPoint& value);
-	virtual void InternalWrite(HKEY hKey, const CPoint& value);
+	void InternalRead(HKEY hKey, CPoint& value) override;
+	void InternalWrite(HKEY hKey, const CPoint& value) override;
 
 public:
 	CRegPoint();

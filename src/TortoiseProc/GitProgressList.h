@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -130,12 +130,12 @@ public:
 		} git_wc_notify_action_t;
 
 		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);
-		virtual void SetColorCode(CColors& colors) override;
+		void SetColorCode(CColors& colors) override;
 
 		git_wc_notify_action_t action;
 
-		virtual void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions) override;
-		virtual void HandleDblClick() const override;
+		void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions) override;
+		void HandleDblClick() const override;
 	};
 
 	void AddNotify(NotificationData* data, CColors::Colors color = CColors::COLOR_END);
@@ -230,9 +230,9 @@ public:
 
 protected:
 	afx_msg void OnClose();
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnSysColorChange();
-	virtual ULONG GetGestureStatus(CPoint ptTouch) override;
+	ULONG GetGestureStatus(CPoint ptTouch) override;
 };
 
 class ProgressCommand

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2011-2013, 2015-2018, 2021 - TortoiseGit
+// Copyright (C) 2008, 2011-2013, 2015-2018, 2021-2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -125,11 +125,11 @@ protected:
 	using AuthorshipDataMap = std::map<std::wstring, double>;
 
 	// *** Re-implemented member functions from CDialog
-	virtual void OnOK() override;
-	virtual void OnCancel() override;
+	void OnOK() override;
+	void OnCancel() override;
 
-	virtual void DoDataExchange(CDataExchange* pDX) override;
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;
+	BOOL OnInitDialog() override;
 	void ShowLabels(BOOL bShow);
 	afx_msg void OnCbnSelchangeGraphcombo();
 	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

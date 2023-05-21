@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,10 +33,10 @@ public:
 	enum { IDD = IDD_FIRSTSTARTWIZARD_AUTHENTICATION };
 
 protected:
-	virtual void	DoDataExchange(CDataExchange* pDX) override;
-	virtual BOOL	OnWizardFinish() override;
-	virtual BOOL	OnInitDialog() override;
-	virtual BOOL	OnSetActive() override;
+	void	DoDataExchange(CDataExchange* pDX) override;
+	BOOL	OnWizardFinish() override;
+	BOOL	OnInitDialog() override;
+	BOOL	OnSetActive() override;
 
 	afx_msg void	OnBnClickedGenerateputtykey();
 	afx_msg void	OnBnClickedAdvancedconfiguration();

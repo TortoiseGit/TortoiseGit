@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2014, 2016, 2018-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ protected:
 	bool SetFileMode(uint32_t mode);
 
 public:
-	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
+	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 
 	AddProgressCommand()
 		: m_bShowCommitButtonAfterAdd(true)

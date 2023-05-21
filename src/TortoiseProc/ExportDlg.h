@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2008 - Stefan Kueng
-// Copyright (C) 2008-2011, 2013, 2015-2016 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2015-2016, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,10 +38,10 @@ public:
 	enum { IDD = IDD_EXPORT };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckoutdirectoryBrowse();
 	afx_msg void OnEnChangeCheckoutdirectory();

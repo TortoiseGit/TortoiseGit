@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018 - TortoiseGit
+// Copyright (C) 2016, 2018, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,9 +40,9 @@ public:
 	hookcmd cmd;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 	afx_msg void OnBnClickedHookbrowse();
 	afx_msg void OnBnClickedHookcommandbrowse();
 	afx_msg void OnBnClickedLocalcheck();

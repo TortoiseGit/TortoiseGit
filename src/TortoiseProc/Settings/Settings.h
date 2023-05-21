@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016, 2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -96,5 +96,5 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 };

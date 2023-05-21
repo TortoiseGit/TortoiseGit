@@ -1465,7 +1465,7 @@ public:
 	STRING_VECTOR m_Items;
 	CString m_eol;
 
-	virtual BOOL ReadString(CString& rString)
+	BOOL ReadString(CString& rString) override
 	{
 		if (GetPosition() == 0)
 		{

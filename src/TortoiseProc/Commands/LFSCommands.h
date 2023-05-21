@@ -22,17 +22,17 @@
 class LFSLockCommand : public Command
 {
 public:
-	virtual bool Execute() override;
+	bool Execute() override;
 };
 
 class LFSUnlockCommand : public Command
 {
 public:
-	virtual bool Execute() override;
+	bool Execute() override;
 };
 
 class LFSLocksCommand : public Command
 {
 public:
-	virtual bool Execute() override;
+	bool Execute() override;
 };

@@ -91,22 +91,22 @@ public:
 	~CIShellFolderHook() { m_iSF->Release(); }
 
 	// IUnknown methods --------
-	virtual HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void** ppvObject) override { return m_iSF->QueryInterface(riid, ppvObject); }
-	virtual ULONG STDMETHODCALLTYPE AddRef() override { return m_iSF->AddRef(); }
-	virtual ULONG STDMETHODCALLTYPE Release() override { return m_iSF->Release(); }
+	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, __RPC__deref_out void** ppvObject) override { return m_iSF->QueryInterface(riid, ppvObject); }
+	ULONG STDMETHODCALLTYPE AddRef() override { return m_iSF->AddRef(); }
+	ULONG STDMETHODCALLTYPE Release() override { return m_iSF->Release(); }
 
 	// IShellFolder methods ----
-	virtual HRESULT STDMETHODCALLTYPE GetUIObjectOf(HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT* rgfReserved, void** ppv) override;
+	HRESULT STDMETHODCALLTYPE GetUIObjectOf(HWND hwndOwner, UINT cidl, PCUITEMID_CHILD_ARRAY apidl, REFIID riid, UINT* rgfReserved, void** ppv) override;
 
-	virtual HRESULT STDMETHODCALLTYPE CompareIDs(LPARAM lParam, __RPC__in PCUIDLIST_RELATIVE pidl1, __RPC__in PCUIDLIST_RELATIVE pidl2) override { return m_iSF->CompareIDs(lParam, pidl1, pidl2); }
-	virtual HRESULT STDMETHODCALLTYPE GetDisplayNameOf(__RPC__in_opt PCUITEMID_CHILD pidl, SHGDNF uFlags, __RPC__out STRRET* pName) override { return m_iSF->GetDisplayNameOf(pidl, uFlags, pName); }
-	virtual HRESULT STDMETHODCALLTYPE CreateViewObject(__RPC__in_opt HWND hwndOwner, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->CreateViewObject(hwndOwner, riid, ppv); }
-	virtual HRESULT STDMETHODCALLTYPE EnumObjects(__RPC__in_opt HWND hwndOwner, SHCONTF grfFlags, __RPC__deref_out_opt IEnumIDList** ppenumIDList) override { return m_iSF->EnumObjects(hwndOwner, grfFlags, ppenumIDList); }
-	virtual HRESULT STDMETHODCALLTYPE BindToObject(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx* pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->BindToObject(pidl, pbc, riid, ppv); }
-	virtual HRESULT STDMETHODCALLTYPE ParseDisplayName(__RPC__in_opt HWND hwnd, __RPC__in_opt IBindCtx* pbc, __RPC__in_string LPWSTR pszDisplayName, __reserved ULONG* pchEaten, __RPC__deref_out_opt PIDLIST_RELATIVE* ppidl, __RPC__inout_opt ULONG* pdwAttributes) override { return m_iSF->ParseDisplayName(hwnd, pbc, pszDisplayName, pchEaten, ppidl, pdwAttributes); }
-	virtual HRESULT STDMETHODCALLTYPE GetAttributesOf(UINT cidl, __RPC__in_ecount_full_opt(cidl) PCUITEMID_CHILD_ARRAY apidl, __RPC__inout SFGAOF* rgfInOut) override { return m_iSF->GetAttributesOf(cidl, apidl, rgfInOut); }
-	virtual HRESULT STDMETHODCALLTYPE BindToStorage(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx* pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->BindToStorage(pidl, pbc, riid, ppv); }
-	virtual HRESULT STDMETHODCALLTYPE SetNameOf(__in_opt HWND hwnd, __in PCUITEMID_CHILD pidl, __in LPCWSTR pszName, __in SHGDNF uFlags, __deref_opt_out PITEMID_CHILD* ppidlOut) override { return m_iSF->SetNameOf(hwnd, pidl, pszName, uFlags, ppidlOut); }
+	HRESULT STDMETHODCALLTYPE CompareIDs(LPARAM lParam, __RPC__in PCUIDLIST_RELATIVE pidl1, __RPC__in PCUIDLIST_RELATIVE pidl2) override { return m_iSF->CompareIDs(lParam, pidl1, pidl2); }
+	HRESULT STDMETHODCALLTYPE GetDisplayNameOf(__RPC__in_opt PCUITEMID_CHILD pidl, SHGDNF uFlags, __RPC__out STRRET* pName) override { return m_iSF->GetDisplayNameOf(pidl, uFlags, pName); }
+	HRESULT STDMETHODCALLTYPE CreateViewObject(__RPC__in_opt HWND hwndOwner, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->CreateViewObject(hwndOwner, riid, ppv); }
+	HRESULT STDMETHODCALLTYPE EnumObjects(__RPC__in_opt HWND hwndOwner, SHCONTF grfFlags, __RPC__deref_out_opt IEnumIDList** ppenumIDList) override { return m_iSF->EnumObjects(hwndOwner, grfFlags, ppenumIDList); }
+	HRESULT STDMETHODCALLTYPE BindToObject(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx* pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->BindToObject(pidl, pbc, riid, ppv); }
+	HRESULT STDMETHODCALLTYPE ParseDisplayName(__RPC__in_opt HWND hwnd, __RPC__in_opt IBindCtx* pbc, __RPC__in_string LPWSTR pszDisplayName, __reserved ULONG* pchEaten, __RPC__deref_out_opt PIDLIST_RELATIVE* ppidl, __RPC__inout_opt ULONG* pdwAttributes) override { return m_iSF->ParseDisplayName(hwnd, pbc, pszDisplayName, pchEaten, ppidl, pdwAttributes); }
+	HRESULT STDMETHODCALLTYPE GetAttributesOf(UINT cidl, __RPC__in_ecount_full_opt(cidl) PCUITEMID_CHILD_ARRAY apidl, __RPC__inout SFGAOF* rgfInOut) override { return m_iSF->GetAttributesOf(cidl, apidl, rgfInOut); }
+	HRESULT STDMETHODCALLTYPE BindToStorage(__RPC__in PCUIDLIST_RELATIVE pidl, __RPC__in_opt IBindCtx* pbc, __RPC__in REFIID riid, __RPC__deref_out_opt void** ppv) override { return m_iSF->BindToStorage(pidl, pbc, riid, ppv); }
+	HRESULT STDMETHODCALLTYPE SetNameOf(__in_opt HWND hwnd, __in PCUITEMID_CHILD pidl, __in LPCWSTR pszName, __in SHGDNF uFlags, __deref_opt_out PITEMID_CHILD* ppidlOut) override { return m_iSF->SetNameOf(hwnd, pidl, pszName, uFlags, ppidlOut); }
 
 protected:
 	LPSHELLFOLDER m_iSF;

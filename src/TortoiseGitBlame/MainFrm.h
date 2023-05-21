@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013, 2016-2017, 2020 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2016-2017, 2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,15 +36,15 @@ protected: // create from serialization only
 	};
 
 public:
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs) override;
-	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
+	BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+	BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr) override;
 
 // Implementation
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
-	virtual void AssertValid() const override;
-	virtual void Dump(CDumpContext& dc) const override;
+	void AssertValid() const override;
+	void Dump(CDumpContext& dc) const override;
 #endif
 
 	COutputWnd			m_wndOutput;

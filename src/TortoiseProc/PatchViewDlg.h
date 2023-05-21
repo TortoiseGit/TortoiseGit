@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2014-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2011, 2014-2017, 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,8 +50,8 @@ public:
 	enum { IDD = IDD_PATCH_VIEW };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 
 public:
 	CSciEdit			m_ctrlPatchView;
@@ -59,7 +59,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnClose();
@@ -90,8 +90,8 @@ protected:
 	EnableStagingTypes	m_nEnableStagingType;
 
 	// CSciEditContextMenuInterface
-	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
-	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
+	void				InsertMenuItems(CMenu& mPopup, int& nCmd) override;
+	bool				HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
 	int					m_nPopupSave;
 	int					m_nStageHunks;
 	int					m_nStageLines;

@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006. 2011, 2017 - TortoiseSVN
 
@@ -56,7 +56,7 @@ public:
 
 protected:
 	void			MoveWindowTo(CPoint pt);
-	virtual void	PreSubclassWindow();
+	void			PreSubclassWindow() override;
 	afx_msg void	OnPaint();
 	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL	OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);

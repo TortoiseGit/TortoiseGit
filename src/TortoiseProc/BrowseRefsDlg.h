@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021 - TortoiseGit
+// Copyright (C) 2009-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -151,12 +151,12 @@ public:
 	enum { IDD = IDD_BROWSE_REFS };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnBnClickedOk();
-	virtual BOOL OnInitDialog() override;
+	BOOL OnInitDialog() override;
 
 	CString			GetSelectedRef(bool onlyIfLeaf, bool pickFirstSelIfMultiSel = false);
 
@@ -215,7 +215,7 @@ private:
 
 	bool		AreAllFrom(VectorPShadowTree& leafs, const wchar_t* from);
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL		PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnLvnColumnclickListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnDestroy();
 	afx_msg void OnNMDblclkListRefLeafs(NMHDR *pNMHDR, LRESULT *pResult);

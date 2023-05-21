@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009, 2012, 2015-2016 - TortoiseSVN
 
@@ -28,8 +28,8 @@ public:
 	static const UINT LK_LINKITEMCLICKED;
 
 protected:
-	virtual void PreSubclassWindow();
-	virtual BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	void PreSubclassWindow() override;
+	BOOL OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult) override;
 
 private:
 	HCURSOR         m_hLinkCursor;                  // Cursor for hyperlink

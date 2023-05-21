@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,8 +45,8 @@ public:
 	CString m_sWorktreePath;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+	BOOL OnInitDialog() override;
 
 	CHOOSE_EVENT_RADIO();
 
@@ -55,6 +55,6 @@ protected:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedWorkdirDirBrowse();
 
-	virtual void OnVersionChanged() override;
+	void OnVersionChanged() override;
 	afx_msg void OnDestroy();
 };

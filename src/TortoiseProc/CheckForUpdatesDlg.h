@@ -52,11 +52,11 @@ protected:
 	afx_msg LRESULT OnEndDownload(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnFillChangelog(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnTaskbarBtnCreated(WPARAM, LPARAM);
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
 	afx_msg void OnDestroy();
-	virtual void OnOK() override;
-	virtual void OnCancel() override;
+	void OnOK() override;
+	void OnCancel() override;
 
 	DECLARE_MESSAGE_MAP()
 

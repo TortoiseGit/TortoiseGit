@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2017 - TortoiseGit
+// Copyright (C) 2011, 2017, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,12 +39,12 @@ public:
 	enum { IDD = IDD_SETTINGSPROGSDIFF };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 protected:
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL OnApply() override;
+	BOOL OnInitDialog() override;
+	BOOL OnApply() override;
 	afx_msg void OnBnClickedExtdiffOff();
 	afx_msg void OnBnClickedExtdiffOn();
 	afx_msg void OnBnClickedExtdiffbrowse();

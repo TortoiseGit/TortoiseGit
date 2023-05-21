@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -81,14 +81,14 @@ public:
 	};
 
 private:
-	virtual void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
+	void DoDataExchange(CDataExchange* pDX) override; // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnOK();
+	afx_msg void OnOK() override;
 	afx_msg void OnDestroy();
-	virtual BOOL OnInitDialog() override;
-	virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+	BOOL OnInitDialog() override;
+	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnNMDblclkWorktreeList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonPrune();

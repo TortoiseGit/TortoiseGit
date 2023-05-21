@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013, 2021 - TortoiseGit
+// Copyright (C) 2013, 2021-2023 - TortoiseGit
 // Copyright (C) 2006-2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -207,8 +207,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 protected:
 	void			UpdateLayout();
-	virtual	BOOL	PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch) override;
-	virtual BOOL	DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2) override;
+	BOOL			PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch) override;
+	BOOL			DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2) override;
 	BOOL			MarkAsResolved();
 	int				SaveFile(const CString& sFilePath);
 	void			WriteWindowPlacement(WINDOWPLACEMENT * pwp);

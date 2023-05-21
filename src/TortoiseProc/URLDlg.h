@@ -39,9 +39,9 @@ public:
 
 	enum { IDD = IDD_URL };
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);
-	virtual BOOL OnInitDialog() override;
-	virtual void OnOK();
+	void DoDataExchange(CDataExchange* pDX) override;
+	BOOL OnInitDialog() override;
+	void OnOK() override;
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
 	DECLARE_MESSAGE_MAP()

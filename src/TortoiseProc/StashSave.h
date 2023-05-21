@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2013 Sven Strickroth, <email@cs-ware.de>
+// Copyright (C) 2011, 2013, 2023 Sven Strickroth, <email@cs-ware.de>
 //
 // Based on PushDlg.cpp
 // Copyright (C) 2003-2008 - TortoiseGit
@@ -36,8 +36,8 @@ public:
 	enum { IDD = IDD_STASH };
 
 protected:
-	virtual BOOL OnInitDialog() override;
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
 

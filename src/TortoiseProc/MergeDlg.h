@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2007-2011, 2013-2016 - TortoiseGit
+// Copyright (C) 2007-2011, 2013-2016, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,8 +48,8 @@ public:
 	//CString m_Base;
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
-	virtual BOOL OnInitDialog() override;
+	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
+	BOOL OnInitDialog() override;
 
 	CSciEdit			m_cLogMessage;
 	ProjectProperties	m_ProjectProperties;
@@ -59,8 +59,8 @@ protected:
 	CHOOSE_EVENT_RADIO() ;
 
 	// CSciEditContextMenuInterface
-	virtual void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
-	virtual bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
+	void		InsertMenuItems(CMenu& mPopup, int& nCmd) override;
+	bool		HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
 
 public:
 	CString m_strLogMesage;
@@ -72,7 +72,7 @@ private:
 
 	void ReloadHistoryEntries();
 	afx_msg void OnBnClickedOk();
-	virtual void OnCancel() override;
+	void OnCancel() override;
 	afx_msg void OnDestroy();
 	afx_msg void OnBnClickedCheckSquash();
 	afx_msg void OnBnClickedCheckMergeLog();

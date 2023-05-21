@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "afxwin.h"
 
 class CBufferDC :
@@ -27,5 +27,5 @@ private:
 
 public:
 	UINT SetBoundsRect(LPCRECT lpRectBounds, UINT flags);
-	virtual BOOL RestoreDC(int nSavedDC);
+	BOOL RestoreDC(int nSavedDC) override;
 };
