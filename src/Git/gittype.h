@@ -34,7 +34,8 @@ class CGitByteArray : public std::vector<char>
 public:
 	size_t find(char data, size_t start = 0) const
 	{
-		for (size_t i = start, end = size(); i < end; ++i)
+		const size_t end = size();
+		for (size_t i = start; i < end; ++i)
 			if ((*this)[i] == data)
 				return i;
 		return npos;
@@ -56,36 +57,36 @@ public:
 	size_t findNextString(size_t start = 0) const
 	{
 		size_t pos = start;
-		size_t end = size();
+		const size_t end = size();
 		do
 		{
 			pos=find(0,pos);
-			if(pos != npos)
-				++pos;
-			else
+			if (pos == npos)
 				break;
-
+			++pos;
 			if (pos >= end)
 				return npos;
 
-		}while(at(pos)==0);
+		} while ((*this)[pos] == 0);
 
 		return pos;
 	}
-	size_t append(std::vector<char>& v, size_t start = 0, size_t end = npos)
+	size_t append(const std::vector<char>& v, size_t start = 0, size_t end = npos)
 	{
 		if (end == npos)
 			end = v.size();
-		for (size_t i = start; i < end; ++i)
-			this->push_back(v[i]);
+
+		if (end <= start)
+			return 0;
+		insert(this->end(), v.cbegin() + start, v.cbegin() + end);
 		return 0;
 	}
 	void append(const char* data, size_t dataSize)
 	{
 		if (dataSize == 0)
 			return;
-		size_t oldsize=size();
-		resize(oldsize+dataSize);
+		const size_t oldsize = size();
+		resize(oldsize + dataSize);
 		memcpy(this->data() + oldsize, data, dataSize);
 	}
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
