@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2019 - TortoiseGit
+// Copyright (C) 2012-2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2006,2008, 2011, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,7 +42,6 @@ CHyperLink::CHyperLink()
 
 CHyperLink::~CHyperLink()
 {
-	m_UnderlineFont.DeleteObject();
 }
 
 BOOL CHyperLink::DestroyWindow()

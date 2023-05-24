@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2016, 2019, 2021, 2023 - TortoiseGit
 // Copyright (C) 2009, 2012-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,8 +35,6 @@ CLinkControl::~CLinkControl()
 	* No need to call DestroyCursor() for cursors acquired through
 	* LoadCursor().
 	*/
-	m_NormalFont.DeleteObject();
-	m_UnderlineFont.DeleteObject();
 }
 
 void CLinkControl::PreSubclassWindow()
