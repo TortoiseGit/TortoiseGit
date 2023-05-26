@@ -65,8 +65,8 @@ protected:
 
 private:
 	// flags
-	BOOL m_bEnableSaveRestore;
-	BOOL m_bRectOnly;
+	BOOL m_bEnableSaveRestore = FALSE;
+	BOOL m_bRectOnly = FALSE;
 
 	// internal status
 	CString m_sSection;			// section name (identifies a parent window)

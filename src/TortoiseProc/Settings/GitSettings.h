@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2021 - TortoiseGit
+// Copyright (C) 2013-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,13 +29,7 @@ class CSettings;
 class CGitSettings
 {
 public:
-	CGitSettings()
-	: m_iConfigSource(CFG_SRC_EFFECTIVE)
-	, m_bGlobal(false)
-	, m_bIsBareRepo(false)
-	, m_bHonorProjectConfig(false)
-	{
-	}
+	CGitSettings() = default;
 
 protected:
 	CComboBox m_cSaveTo;
@@ -47,10 +41,10 @@ protected:
 		CFG_SRC_GLOBAL = 3,
 		CFG_SRC_SYSTEM = 4,
 	};
-	int		m_iConfigSource;
-	bool	m_bGlobal;
-	bool	m_bIsBareRepo;
-	bool	m_bHonorProjectConfig;
+	int		m_iConfigSource = CFG_SRC_EFFECTIVE;
+	bool	m_bGlobal = false;
+	bool	m_bIsBareRepo = false;
+	bool	m_bHonorProjectConfig = false;
 
 	void InitGitSettings(ISettingsPropPage *page, bool honorProjectConfig, CToolTips * tooltips)
 	{

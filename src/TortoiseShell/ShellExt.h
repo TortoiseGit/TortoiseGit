@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2021 - TortoiseGit
+// Copyright (C) 2018-2023 - TortoiseGit
 // Copyright (C) 2003-2012, 2014, 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -78,8 +78,8 @@ class CShellExt : public IContextMenu3,
 
 protected:
 
-	FileState m_State;
-	volatile ULONG	m_cRef;
+	FileState m_State = FileStateInvalid;
+	volatile ULONG m_cRef = 0;
 	//std::map<int,std::string> verbMap;
 	std::map<UINT_PTR, UINT_PTR>	myIDMap;
 	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
@@ -87,12 +87,12 @@ protected:
 	std::map<UINT_PTR, std::wstring> myVerbsIDMap;
 	std::wstring folder_;
 	std::vector<std::wstring> files_;
-	DWORD itemStates;				///< see the globals.h file for the ITEMIS_* defines
-	DWORD itemStatesFolder;			///< used for states of the folder_ (folder background and/or drop target folder)
+	DWORD itemStates = 0;				///< see the globals.h file for the ITEMIS_* defines
+	DWORD itemStatesFolder = 0;			///< used for states of the folder_ (folder background and/or drop target folder)
 	std::wstring uuidSource;
 	std::wstring uuidTarget;
-	int space;
-	wchar_t stringtablebuffer[255];
+	int space = 0;
+	wchar_t stringtablebuffer[255]{};
 	std::wstring ignoredprops;
 	CRegStdString		regDiffLater;
 

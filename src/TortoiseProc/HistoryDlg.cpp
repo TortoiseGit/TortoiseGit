@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021 - TortoiseGit
+// Copyright (C) 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,7 +27,6 @@
 IMPLEMENT_DYNAMIC(CHistoryDlg, CResizableStandAloneDialog)
 CHistoryDlg::CHistoryDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CHistoryDlg::IDD, pParent)
-	, m_history(nullptr)
 {
 }
 

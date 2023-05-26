@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,12 +31,9 @@ CString CBrowseFolder::m_sDefaultPath;
 class BrowseFolderDlgEventHandler : public CFileDlgEventHandler
 {
 public:
-	BrowseFolderDlgEventHandler()
-		: m_DisableCheckbox2WhenCheckbox1IsChecked(false)
-	{
-	}
+	BrowseFolderDlgEventHandler() = default;
 
-	bool m_DisableCheckbox2WhenCheckbox1IsChecked;
+	bool m_DisableCheckbox2WhenCheckbox1IsChecked = false;
 
 	STDMETHODIMP OnCheckButtonToggled(IFileDialogCustomize *pfdc, DWORD dwIDCtl, BOOL bChecked) override
 	{
@@ -52,10 +49,7 @@ public:
 };
 
 CBrowseFolder::CBrowseFolder()
-:	m_style(0)
-,	m_DisableCheckbox2WhenCheckbox1IsChecked(false)
 {
-	SecureZeroMemory(&m_title, sizeof(m_title));
 }
 
 CBrowseFolder::~CBrowseFolder()

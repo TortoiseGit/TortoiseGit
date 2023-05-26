@@ -29,11 +29,6 @@ static char THIS_FILE[] = __FILE__;
 
 CResizableComboLBox::CResizableComboLBox()
 {
-	m_dwAddToStyle = WS_THICKFRAME;
-	m_dwAddToStyleEx = 0;//WS_EX_CLIENTEDGE;
-	m_bSizing = FALSE;
-	m_nHitTest = 0;
-	m_pOwnerCombo = NULL;
 }
 
 CResizableComboLBox::~CResizableComboLBox()

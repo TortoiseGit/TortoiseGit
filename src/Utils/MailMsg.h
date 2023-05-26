@@ -100,7 +100,7 @@ protected:
 	CString						m_sSubject;                   // EMail subject
 	CString						m_sMessage;                   // EMail message
 
-	BOOL						m_bShowComposeDialog;
+	BOOL						m_bShowComposeDialog = FALSE;
 
 	CString						m_sErrorMsg;
 };

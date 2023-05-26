@@ -42,29 +42,6 @@
 IMPLEMENT_DYNAMIC(CLogDlg, CResizableStandAloneDialog)
 CLogDlg::CLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CLogDlg::IDD, pParent)
-	, m_wParam(0)
-	, m_nSortColumn(0)
-	, m_bFollowRenames(false)
-	, m_bSelect(false)
-	, m_bSelectionMustBeSingle(true)
-	, m_bShowTags(true)
-	, m_bShowLocalBranches(true)
-	, m_bShowRemoteBranches(true)
-	, m_bShowOtherRefs(true)
-	, m_bNoMerges(false)
-	, m_iHidePaths(0)
-	, m_bFirstParent(false)
-	, m_bWholeProject(FALSE)
-	, m_iCompressedGraph(0)
-	, m_bShowWC(true)
-
-	, m_bSelectionMustBeContinuous(false)
-
-	, m_pNotifyWindow(nullptr)
-
-	, m_bAscending(FALSE)
-	, m_hAccel(nullptr)
-	, m_bNavigatingWithSelect(false)
 {
 	m_bFilterWithRegex = !!CRegDWORD(L"Software\\TortoiseGit\\UseRegexFilter", FALSE);
 	m_bFilterCaseSensitively = !!CRegDWORD(L"Software\\TortoiseGit\\FilterCaseSensitively", FALSE);

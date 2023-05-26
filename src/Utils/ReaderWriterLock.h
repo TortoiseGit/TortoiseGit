@@ -90,15 +90,15 @@ protected:
 	// A critical section to guard all the other members
 	mutable CRITICAL_SECTION m_cs;
 	// Auto-reset event, will be dynamically created/destroyed on demand
-	volatile HANDLE m_hSafeToWriteEvent;
+	volatile HANDLE m_hSafeToWriteEvent = nullptr;
 	// Manual-reset event, will be dynamically created/destroyed on demand
-	volatile HANDLE m_hSafeToReadEvent;
+	volatile HANDLE m_hSafeToReadEvent = nullptr;
 	// Total number of writers on this object
-	volatile INT m_iNumOfWriter;
+	volatile INT m_iNumOfWriter = 0;
 	// Total number of readers have already owned this object
-	volatile INT m_iNumOfReaderEntered;
+	volatile INT m_iNumOfReaderEntered = 0;
 	// Total number of readers are waiting to be owners of this object
-	volatile INT m_iNumOfReaderWaiting;
+	volatile INT m_iNumOfReaderWaiting = 0;
 	// Internal/Real implementation
 	void EnterCS() const noexcept;
 	void LeaveCS() const noexcept;

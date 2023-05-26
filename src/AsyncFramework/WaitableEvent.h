@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (C) 2009 by Stefan Fuhrmann                                 *
  *   stefanfuhrmann@alice-dsl.de                                           *
  *                                                                         *
@@ -38,8 +38,8 @@ private:
 
     /// OS-specific event object
 
-    HANDLE event;
-    volatile LONG state;
+    HANDLE event = nullptr;
+    volatile LONG state = FALSE;
 
 public:
 
@@ -72,7 +72,7 @@ private:
 
     /// OS-specific event object
 
-    HANDLE event;
+    HANDLE event = nullptr;
 
 public:
 

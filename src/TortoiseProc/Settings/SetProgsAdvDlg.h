@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,5 +76,5 @@ private:
 
 	using TOOL_MAP = std::map<CString, CString>;
 	TOOL_MAP		m_Tools;				///< internal storage of all tools
-	bool			m_ToolsValid;			///< true if m_Tools was ever read
+	bool			m_ToolsValid = false;	///< true if m_Tools was ever read
 };

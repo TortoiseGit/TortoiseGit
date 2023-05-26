@@ -56,14 +56,14 @@ private:
 	void AddSubString(CString token, Prefix prefix);
 
 	/// if false, normalize all strings to lower case before comparing them
-	bool m_bCaseSensitive;
+	bool m_bCaseSensitive = false;
 
 	/// attribute selector
 	/// (i.e. what members of GitRevLoglist shall be used for comparison)
-	DWORD m_dwAttributeSelector;
+	DWORD m_dwAttributeSelector = UINT_MAX;
 
 	/// negate pattern matching result
-	bool m_bNegate;
+	bool m_bNegate = false;
 
 protected:
 	/// temp / scratch objects to minimize the number memory

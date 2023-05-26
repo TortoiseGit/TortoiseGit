@@ -43,7 +43,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	bool		m_bAdd;
+	bool		m_bAdd = false;
 	CToolTips	m_tooltips;
 	CString		m_sType;
 

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2006,2008,2010,2014 - TortoiseSVN
-// Copyright (C) 2008-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2019, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -229,8 +229,6 @@ CGitStatusCache::CGitStatusCache()
 		if (!path.IsEmpty())
 			m_NoWatchPaths[CTGitPath(path)] = forever;
 	}
-	m_bClearMemory = false;
-	m_mostRecentExpiresAt = 0;
 }
 
 CGitStatusCache::~CGitStatusCache()

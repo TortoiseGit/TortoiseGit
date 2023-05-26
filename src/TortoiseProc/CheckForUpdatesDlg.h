@@ -64,24 +64,24 @@ private:
 	static UINT CheckThreadEntry(LPVOID pVoid);
 	UINT		CheckThread();
 
-	BOOL		m_bThreadRunning;
+	BOOL		m_bThreadRunning = FALSE;
 
 public:
-	BOOL		m_bShowInfo;
-	BOOL		m_bForce;
+	bool		m_bShowInfo = false;
+	bool		m_bForce = false;
 
 private:
-	BOOL		m_bVisible;
+	bool		m_bVisible = false;
 	CProgressCtrl	m_progress;
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
 	CEvent		m_eventStop;
-	CWinThread	*m_pDownloadThread;
+	CWinThread*	m_pDownloadThread = nullptr;
 	CString		m_sFilesURL;
 
 	static UINT	DownloadThreadEntry(LPVOID pParam);
 	UINT		DownloadThread();
 	bool		Download(CString filename);
-	CUpdateDownloader* m_updateDownloader;
+	CUpdateDownloader* m_updateDownloader = nullptr;
 	bool		VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename);
 
 	CUpdateListCtrl	m_ctrlFiles;

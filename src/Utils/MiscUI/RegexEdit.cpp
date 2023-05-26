@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2017, 2019 - TortoiseGit
+// Copyright (C) 2012, 2017, 2019, 2023 - TortoiseGit
 // Copyright (C) 2011, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,7 +25,6 @@
 
 IMPLEMENT_DYNAMIC(CRegexEdit, CEdit)
 CRegexEdit::CRegexEdit()
-: m_bValid(true)
 {
 }
 

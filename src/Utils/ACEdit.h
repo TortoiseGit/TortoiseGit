@@ -94,8 +94,8 @@ public:
 	// Generierte Nachrichtenzuordnungsfunktionen
 protected:
 	CString m_EditText, m_SeparationStr,m_LastDirectory;
-	wchar_t m_PrefixChar;
-	int m_iMode;
+	wchar_t m_PrefixChar = L'\0';
+	int m_iMode = _MODE_STANDARD_;
 	//{{AFX_MSG(CACEdit)
 	afx_msg void OnKillfocus();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -113,9 +113,9 @@ protected:
 	int FindSepRightPos(int pos);
 	bool HandleKey(UINT nChar, bool m_bFromChild);
 
-	bool m_CursorMode;
-	int m_iType;
-	CEdit *m_pEdit;
+	bool m_CursorMode = false;
+	int m_iType = -1;
+	CEdit* m_pEdit = nullptr;
 
 	wchar_t m_szDrive[_MAX_DRIVE], m_szDir[_MAX_DIR], m_szFname[_MAX_FNAME], m_szExt[_MAX_EXT];
 };

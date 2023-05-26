@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021 - TortoiseGit
+// Copyright (C) 2009-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,8 +35,6 @@ UINT CRefLogDlg::m_FindDialogMessage = ::RegisterWindowMessage(FINDMSGSTRING);
 
 CRefLogDlg::CRefLogDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRefLogDlg::IDD, pParent)
-	, m_pFindDialog(nullptr)
-	, m_nSearchLine(0)
 {
 }
 

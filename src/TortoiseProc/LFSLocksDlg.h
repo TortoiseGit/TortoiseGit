@@ -56,11 +56,11 @@ public:
 	CTGitPathList		m_pathList;
 
 private:
-	volatile LONG		m_bThreadRunning;
+	volatile LONG		m_bThreadRunning = FALSE;
 	CGitStatusListCtrl	m_LocksList;
 	CButton				m_SelectAll;
 	CButton				m_Force;
 	CButton				m_UnLock;
 	CButton				m_Refresh;
-	bool				m_bCancelled;
+	bool				m_bCancelled = false;
 };

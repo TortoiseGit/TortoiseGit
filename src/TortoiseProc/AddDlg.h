@@ -64,9 +64,9 @@ public:
 
 private:
 	CGitStatusListCtrl	m_addListCtrl;
-	volatile LONG	m_bThreadRunning;
+	volatile LONG	m_bThreadRunning = FALSE;
 	CButton			m_SelectAll;
-	bool			m_bCancelled;
-	BOOL			m_bIncludeIgnored;
+	bool			m_bCancelled = false;
+	BOOL			m_bIncludeIgnored = FALSE;
 };
 

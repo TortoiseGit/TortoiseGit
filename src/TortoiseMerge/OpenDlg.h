@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006, 2009-2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,7 +72,7 @@ protected:
 	void OnOK() override;
 	void AutoCompleteOn(int controlId);
 
-	BOOL	m_bFromClipboard;
-	UINT	m_cFormat;
-	HWND	m_nextViewer;
+	BOOL	m_bFromClipboard = FALSE;
+	UINT	m_cFormat = 0;
+	HWND	m_nextViewer = nullptr;
 };

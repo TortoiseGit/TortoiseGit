@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +59,7 @@ public:
 
 private:
 	CGitStatusListCtrl	m_resolveListCtrl;
-	volatile LONG		m_bThreadRunning;
+	volatile LONG		m_bThreadRunning = FALSE;
 	CButton				m_SelectAll;
-	bool				m_bCancelled;
+	bool				m_bCancelled = false;
 };

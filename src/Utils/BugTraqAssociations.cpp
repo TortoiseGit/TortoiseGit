@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2012-2016, 2019 - TortoiseGit
+// Copyright (C) 2009, 2012-2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,7 +29,6 @@ DEFINE_GUID(CATID_BugTraqProvider,
 #define BUGTRAQ_ASSOCIATIONS_REGPATH L"Software\\TortoiseGit\\BugTraq Associations"
 
 CBugTraqAssociations::CBugTraqAssociations()
-: pProjectProvider(nullptr)
 {
 }
 

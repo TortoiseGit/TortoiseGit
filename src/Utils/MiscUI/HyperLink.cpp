@@ -31,10 +31,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 CHyperLink::CHyperLink()
-	: m_hLinkCursor(nullptr)
-	, m_crLinkColor(GetSysColor(COLOR_HOTLIGHT))
+	: m_crLinkColor(GetSysColor(COLOR_HOTLIGHT))
 	, m_crHoverColor(RGB(255, 0, 0)) // Red
-	, m_bOverControl(FALSE)
 	, m_nUnderline(ulHover)
 	, m_nTimerID(100)
 {

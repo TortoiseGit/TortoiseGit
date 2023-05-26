@@ -1,5 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseGit
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2012-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,8 +29,6 @@
 
 CAboutDlg::CAboutDlg(HWND hParent)
     : m_hParent(hParent)
-    , m_hHiddenWnd(0)
-    , m_themeCallbackId(0)
 {
 }
 

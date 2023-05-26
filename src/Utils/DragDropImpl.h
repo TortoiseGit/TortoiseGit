@@ -16,18 +16,11 @@
 class CDragSourceNotify : IDropSourceNotify
 {
 private:
-	LONG refCount;
+	LONG refCount = 0;
 
 public:
-
-	CDragSourceNotify()
-	{
-		refCount = 0;
-	}
-
-	~CDragSourceNotify()
-	{
-	}
+	CDragSourceNotify() = default;
+	~CDragSourceNotify() = default;
 
 	HRESULT STDMETHODCALLTYPE QueryInterface(REFIID riid, void** ppvObject) override
 	{
@@ -77,10 +70,10 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class CEnumFormatEtc : public IEnumFORMATETC
 {
-   private:
-	 ULONG           m_cRefCount;
+private:
+	ULONG m_cRefCount = 0;
 	 CSimpleArray<FORMATETC>  m_pFmtEtc;
-	 int           m_iCur;
+	int m_iCur = 0;
 
    public:
 	 CEnumFormatEtc(const CSimpleArray<FORMATETC>& ArrFE);
@@ -146,8 +139,8 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class CIDataObject : public IDataObject//,public IAsyncOperation
 {
-	CIDropSource* m_pDropSource;
-	long m_cRefCount;
+	CIDropSource* m_pDropSource = nullptr;
+	long m_cRefCount = 0;
 	CSimpleArray<FORMATETC*> m_ArrFormatEtc;
 	CSimpleArray<STGMEDIUM*> m_StgMedium;
 public:
@@ -239,14 +232,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class CIDropTarget : public IDropTarget
 {
-	DWORD m_cRefCount;
-	bool m_bAllowDrop;
-	IDropTargetHelper *m_pDropTargetHelper;
+	DWORD m_cRefCount = 0;
+	bool m_bAllowDrop = false;
+	IDropTargetHelper* m_pDropTargetHelper = nullptr;
 	CSimpleArray<FORMATETC> m_formatetc;
-	FORMATETC* m_pSupportedFrmt;
+	FORMATETC* m_pSupportedFrmt = nullptr;
 protected:
-	HWND m_hTargetWnd;
-	IDataObject *           m_pIDataObject;
+	HWND m_hTargetWnd = nullptr;
+	IDataObject* m_pIDataObject = nullptr;
 public:
 
 	CIDropTarget(HWND m_hTargetWnd);
@@ -285,14 +278,12 @@ public:
 
 class CDragSourceHelper
 {
-	IDragSourceHelper2* pDragSourceHelper2;
-	IDragSourceHelper* pDragSourceHelper;
+	IDragSourceHelper2* pDragSourceHelper2 = nullptr;
+	IDragSourceHelper* pDragSourceHelper = nullptr;
 
 public:
 	CDragSourceHelper()
 	{
-		pDragSourceHelper = nullptr;
-		pDragSourceHelper2 = nullptr;
 		if(FAILED(CoCreateInstance(CLSID_DragDropHelper,
 						nullptr,
 						CLSCTX_INPROC_SERVER,

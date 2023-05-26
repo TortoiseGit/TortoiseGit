@@ -151,25 +151,25 @@ public:
 private:
 	bool IsUTF8(LPVOID pBuffer, size_t cb);
 	CAutoLibrary	m_hModule;
-	LRESULT		m_DirectFunction;
-	LRESULT		m_DirectPointer;
+	LRESULT		m_DirectFunction = 0;
+	LRESULT		m_DirectPointer = 0;
 	std::unique_ptr<Hunspell>	pChecker;
-	UINT		m_spellcodepage;
+	UINT		m_spellcodepage = 0;
 	std::map<CString, int> m_autolist;
-	wchar_t		m_separator;
-	wchar_t		m_typeSeparator;
+	wchar_t		m_separator = '\0';
+	wchar_t		m_typeSeparator = '\x01';
 	CStringA	m_sCommand;
 	CStringA	m_sBugID;
 	CString		m_sUrl;
 	CArray<CSciEditContextMenuInterface *, CSciEditContextMenuInterface *> m_arContextHandlers;
 	CPersonalDictionary m_personalDict;
 	bool		m_bUDiffmode = false;
-	bool		m_bDoStyle;
-	int			m_nAutoCompleteMinChars;
-	LruCache<std::wstring, BOOL> m_SpellingCache;
-	bool		m_blockModifiedHandler;
-	bool		m_bReadOnly;
-	int			m_themeCallbackId;
+	bool		m_bDoStyle = false;
+	int			m_nAutoCompleteMinChars = 3;
+	LruCache<std::wstring, BOOL> m_SpellingCache{2000};
+	bool		m_blockModifiedHandler = false;
+	bool		m_bReadOnly = false;
+	int			m_themeCallbackId = 0;
 
 	static bool IsValidURLChar(unsigned char ch);
 protected:

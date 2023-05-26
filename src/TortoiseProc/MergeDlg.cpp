@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,8 +39,6 @@ CMergeDlg::CMergeDlg(CWnd* pParent /*=nullptr*/)
 	, m_bSquash(BST_UNCHECKED)
 	, m_bNoCommit(BST_UNCHECKED)
 	, m_bLog(BST_UNCHECKED)
-	, m_nPopupPasteLastMessage(0)
-	, m_nPopupRecentMessage(0)
 	, m_bNoFF(BST_UNCHECKED)
 	, m_bFFonly(BST_UNCHECKED)
 {

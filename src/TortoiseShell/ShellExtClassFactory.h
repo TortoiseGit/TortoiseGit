@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -27,9 +28,9 @@
 class CShellExtClassFactory : public IClassFactory
 {
 protected:
-	ULONG m_cRef;
+	ULONG m_cRef = 0;
 	/// variable to contain class of object (i.e. not under source control, up to date)
-	FileState				m_StateToMake;
+	FileState m_StateToMake = FileStateInvalid;
 
 public:
 	CShellExtClassFactory(FileState state);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2010, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,25 +71,20 @@ public:
 
 	operator HWND() const {return m_hwnd;}
 protected:
-	HINSTANCE hResource;
-	HWND m_hwnd;
-	HWND m_hParent;
-	bool bWindowClosed;
+	HINSTANCE hResource = nullptr;
+	HWND m_hwnd = nullptr;
+	HWND m_hParent = nullptr;
+	bool bWindowClosed = false;
 	std::wstring sClassName;
 	std::wstring sWindowTitle;
 	std::wstring sRegistryPath;
 	std::wstring sRegistryValue;
-	bool bWindowRestored;
+	bool bWindowRestored = false;
 
 	//constructor
 	CWindow(HINSTANCE hInstance, CONST WNDCLASSEX* wcx = nullptr)
-		: m_hwnd(nullptr)
-		, hResource(nullptr)
-		, m_hParent(nullptr)
-		, bWindowClosed(FALSE)
-		, bWindowRestored(false)
+		: hResource(hInstance)
 	{
-		hResource = hInstance;
 		if (wcx)
 			RegisterWindow(wcx);
 	};

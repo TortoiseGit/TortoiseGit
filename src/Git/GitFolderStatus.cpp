@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011, 2014 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,16 +29,6 @@ extern ShellCache g_ShellCache;
 
 GitFolderStatus::GitFolderStatus()
 {
-	m_TimeStamp = 0;
-	invalidstatus.askedcounter = -1;
-	invalidstatus.status = git_wc_status_none;
-	invalidstatus.assumeValid = FALSE;
-	invalidstatus.skipWorktree = FALSE;
-	dirstat.askedcounter = -1;
-	dirstat.assumeValid = dirstat.skipWorktree = false;
-	dirstat.status = git_wc_status_none;
-	dirstatus = nullptr;
-	m_mostRecentStatus = nullptr;
 	sCacheKey.reserve(MAX_PATH);
 
 	g_Git.SetCurrentDir(L"");

@@ -51,7 +51,7 @@ public:
 	bool GetTortoiseGitIsHotfix();
 	CString GetTortoiseGitMainfilename();
 
-	typedef struct
+	struct LanguagePack
 	{
 		CString m_PackName;
 		CString m_LangName;
@@ -59,7 +59,7 @@ public:
 		CString m_LangCode;
 
 		CString m_filename;
-	} LanguagePack;
+	};
 	using LANGPACK_VECTOR = std::vector<LanguagePack>;
 	LANGPACK_VECTOR GetTortoiseGitLanguagePacks();
 

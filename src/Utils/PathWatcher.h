@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // External Cache Copyright (C) 2007-2008, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -96,11 +97,11 @@ private:
 	CComAutoCriticalSection	m_critSec;
 	CAutoGeneralHandle		m_hThread;
 	CAutoGeneralHandle		m_hCompPort;
-	volatile LONG			m_bRunning;
+	volatile LONG			m_bRunning = TRUE;
 
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 	CTGitPathList			m_changedPaths;	///< list of paths which got changed
-	bool					m_bLimitReached;
+	bool					m_bLimitReached = false;
 
 	/**
 	 * Helper class: provides information about watched directories.
@@ -121,12 +122,9 @@ private:
 		CAutoFile	m_hDir;			///< handle to the directory that we're watching
 		CTGitPath	m_dirName;		///< the directory that we're watching
 		CHAR		m_buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
-		OVERLAPPED  m_overlapped;
+		OVERLAPPED	m_overlapped{};
 		CString		m_dirPath;		///< the directory name we're watching with a backslash at the end
-		//HDEVNOTIFY	m_hDevNotify;	///< Notification handle
 	};
 
 	std::map<HANDLE, CDirWatchInfo *> watchInfoMap;
-
-	HDEVNOTIFY		m_hdev;
 };

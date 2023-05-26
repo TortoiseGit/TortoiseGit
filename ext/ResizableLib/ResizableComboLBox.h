@@ -61,16 +61,16 @@ private:
 	CPoint m_ptBeforeSizing;	// screen coords
 	CRect m_rcBeforeSizing;		// screen coords
 	CSize m_sizeAfterSizing;	// screen coords
-	LONG_PTR m_nHitTest;		// current resize operation
-	BOOL m_bSizing;
+	LONG_PTR m_nHitTest = 0;		// current resize operation
+	BOOL m_bSizing = FALSE;
 
 	void InitializeControl();
 
 protected:
-	DWORD m_dwAddToStyle;
-	DWORD m_dwAddToStyleEx;
+	DWORD m_dwAddToStyle = WS_THICKFRAME;
+	DWORD m_dwAddToStyleEx = 0; //WS_EX_CLIENTEDGE;
 	CSize m_sizeMin;			// initial size (minimum)
-	CResizableComboBox* m_pOwnerCombo;	// owner combobox
+	CResizableComboBox* m_pOwnerCombo = nullptr;	// owner combobox
 
 	void ApplyLimitsToPos(WINDOWPOS* lpwndpos);
 	void EndSizing();

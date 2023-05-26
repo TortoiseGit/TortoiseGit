@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2011-2013, 2015-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,16 +23,13 @@
 #include "StringUtils.h"
 
 ItemIDList::ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent)
-	: item_ (item)
-	, parent_ (parent)
-	, count_ (-1)
+	: item_(item)
+	, parent_(parent)
 {
 }
 
 ItemIDList::ItemIDList(PCIDLIST_ABSOLUTE item)
 	: item_(static_cast<PCUITEMID_CHILD>(item))
-	, parent_(0)
-	, count_(-1)
 {
 }
 

@@ -512,13 +512,13 @@ protected:  // variables
 	bool			m_bReadonly;
 	bool			m_bReadonlyIsChangable;
 	bool			m_bTarget;						///< view intended as result
-	POINT			m_ptCaretViewPos;
+	POINT			m_ptCaretViewPos{};
 	int				m_nCaretGoalPos;
 
 	// Text selection attributes
-	POINT			m_ptSelectionViewPosStart;
-	POINT			m_ptSelectionViewPosEnd;
-	POINT			m_ptSelectionViewPosOrigin;
+	POINT			m_ptSelectionViewPosStart{};
+	POINT			m_ptSelectionViewPosEnd{};
+	POINT			m_ptSelectionViewPosOrigin{};
 
 	static const UINT m_FindDialogMessage;
 	CFindDlg *		m_pFindDialog;
@@ -543,7 +543,7 @@ protected:  // variables
 	CAutoIcon m_hMovedIcon;
 	CAutoIcon m_hMarkedIcon;
 
-	LOGFONT			m_lfBaseFont;
+	LOGFONT			m_lfBaseFont{};
 	static const int fontsCount = 4;
 	CFont *			m_apFonts[fontsCount];
 	CString			m_sConflictedText;

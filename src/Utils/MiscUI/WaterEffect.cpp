@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2009-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,12 +23,6 @@
 #include <math.h>
 
 CWaterEffect::CWaterEffect()
-	: m_iWidth(0)
-	, m_iHeight(0)
-
-	, m_iLightModifier(10)
-	, m_iHpage(0)
-	, m_iDensity(2)
 {
 }
 

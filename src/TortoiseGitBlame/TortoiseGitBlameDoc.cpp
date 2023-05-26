@@ -51,9 +51,6 @@ END_MESSAGE_MAP()
 // CTortoiseGitBlameDoc construction/destruction
 
 CTortoiseGitBlameDoc::CTortoiseGitBlameDoc()
-: m_bFirstStartup(true)
-, m_IsGitFile(FALSE)
-, m_lLine(1)
 {
 }
 
@@ -120,7 +117,6 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 	}
 	else
 	{
-		m_IsGitFile=TRUE;
 		sOrigCWD = g_Git.m_CurrentDir = topdir;
 
 		CString PathName = m_CurrentFileName;

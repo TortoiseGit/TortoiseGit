@@ -31,7 +31,6 @@
 IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)
 
 CPatchListCtrl::CPatchListCtrl()
-: m_ContextMenuMask(0xFFFFFFFF)
 {
 }
 

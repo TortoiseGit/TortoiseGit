@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2021 - TortoiseGit
+// Copyright (C) 2016, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ public:
 	CResizableColumnsListCtrl()
 		: BaseType()
 		, m_ColumnManager(this)
-		, m_bAllowHiding(true)
 	{}
 
 	DECLARE_MESSAGE_MAP()
@@ -124,7 +123,7 @@ public:
 		m_ColumnManager.WriteSettings();
 	}
 
-	bool			m_bAllowHiding;
+	bool			m_bAllowHiding = true;
 	ColumnManager	m_ColumnManager;
 };
 

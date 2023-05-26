@@ -53,6 +53,6 @@ private:
 	static WORD GetColor(Gdiplus::Color c) noexcept { return (static_cast<DWORD>(c.GetRed()) << 16) | (static_cast<DWORD>(c.GetGreen()) << 8) | static_cast<DWORD>(c.GetBlue()); }
 
 	std::vector<CStringA>   objects;
-	int					 viewportWidth;
-	int					 viewportHeight;
+	int viewportWidth = 1000;
+	int viewportHeight = 1000;
 };

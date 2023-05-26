@@ -38,27 +38,6 @@ using json = nlohmann::json;
 extern CGit g_Git;
 
 CTGitPath::CTGitPath()
-	: m_bDirectoryKnown(false)
-	, m_bIsDirectory(false)
-	, m_bHasAdminDirKnown(false)
-	, m_bHasAdminDir(false)
-	, m_bIsValidOnWindowsKnown(false)
-	, m_bIsValidOnWindows(false)
-	, m_bIsReadOnly(false)
-	, m_bIsAdminDirKnown(false)
-	, m_bIsAdminDir(false)
-	, m_bExists(false)
-	, m_bExistsKnown(false)
-	, m_bLastWriteTimeKnown(0)
-	, m_lastWriteTime(0)
-	, m_bIsWCRootKnown(false)
-	, m_bIsWCRoot(false)
-	, m_fileSize(0)
-	, m_Checked(false)
-	, m_Action(0)
-	, m_ParentNo(0)
-	, m_Stage(0)
-	, m_stagingStatus(StagingStatus::DontCare)
 {
 }
 
@@ -1001,13 +980,11 @@ bool CTGitPath::IsValidOnWindows() const
 
 CTGitPathList::CTGitPathList()
 {
-	m_Action = 0;
 }
 
 // A constructor which allows a path list to be easily built which one initial entry in
 CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
-	m_Action = 0;
 	AddPath(firstEntry);
 }
 int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)

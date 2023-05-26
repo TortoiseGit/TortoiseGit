@@ -24,8 +24,8 @@ using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_
 class CloneProgressCommand : public FetchProgressCommand
 {
 protected:
-	bool m_bBare;
-	bool m_bNoCheckout;
+	bool m_bBare = false;
+	bool m_bNoCheckout = false;
 
 	static void CheckoutCallback(const char *path, size_t cur, size_t tot, void *payload)
 	{
@@ -37,10 +37,7 @@ protected:
 	}
 
 public:
-	CloneProgressCommand()
-		: m_bBare(false)
-		, m_bNoCheckout(false)
-	{}
+	CloneProgressCommand() = default;
 
 	void SetIsBare(bool b) { m_bBare = b; }
 	void SetNoCheckout(bool b){ m_bNoCheckout = b; }

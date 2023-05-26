@@ -35,8 +35,8 @@ public:
 #endif
 	CTGitPath(const CString& sUnknownPath);
 	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);
-	int m_Stage;
-	int m_ParentNo;
+	int m_Stage = 0;
+	int m_ParentNo = 0;
 
 	enum class StagingStatus
 	{
@@ -68,12 +68,12 @@ public:
 
 	CString m_StatAdd;
 	CString m_StatDel;
-	StagingStatus m_stagingStatus;
+	StagingStatus m_stagingStatus = StagingStatus::DontCare;
 #ifdef TGIT_LFS
 	CString m_LFSLockOwner;
 #endif
-	unsigned int		m_Action;
-	bool    m_Checked;
+	unsigned int m_Action = 0;
+	bool m_Checked = false;
 	unsigned int ParserAction(BYTE action);
 	unsigned int ParserAction(git_delta_t action);
 	CString GetActionName() const;
@@ -331,22 +331,22 @@ private:
 	mutable CString m_sOldFwdslashPath;
 
 	// Have we yet determined if this is a directory or not?
-	mutable bool m_bDirectoryKnown;
-	mutable bool m_bIsDirectory;
-	mutable bool m_bLastWriteTimeKnown;
-	mutable __int64 m_lastWriteTime;
-	mutable __int64 m_fileSize;
-	mutable bool m_bIsReadOnly;
-	mutable bool m_bHasAdminDirKnown;
-	mutable bool m_bHasAdminDir;
-	mutable bool m_bIsValidOnWindowsKnown;
-	mutable bool m_bIsValidOnWindows;
-	mutable bool m_bIsAdminDirKnown;
-	mutable bool m_bIsAdminDir;
-	mutable bool m_bIsWCRootKnown;
-	mutable bool m_bIsWCRoot;
-	mutable bool m_bExists;
-	mutable bool m_bExistsKnown;
+	mutable bool m_bDirectoryKnown = false;
+	mutable bool m_bIsDirectory = false;
+	mutable bool m_bLastWriteTimeKnown = false;
+	mutable __int64 m_lastWriteTime = 0;
+	mutable __int64 m_fileSize = 0;
+	mutable bool m_bIsReadOnly = false;
+	mutable bool m_bHasAdminDirKnown = false;
+	mutable bool m_bHasAdminDir = false;
+	mutable bool m_bIsValidOnWindowsKnown = false;
+	mutable bool m_bIsValidOnWindows = false;
+	mutable bool m_bIsAdminDirKnown = false;
+	mutable bool m_bIsAdminDir = false;
+	mutable bool m_bIsWCRootKnown = false;
+	mutable bool m_bIsWCRoot = false;
+	mutable bool m_bExists = false;
+	mutable bool m_bExistsKnown = false;
 
 	friend bool operator<(const CTGitPath& left, const CTGitPath& right);
 };
@@ -369,7 +369,7 @@ public:
 	CTGitPathList();
 	// A constructor which allows a path list to be easily built with one initial entry in
 	explicit CTGitPathList(const CTGitPath& firstEntry);
-	unsigned int m_Action;
+	unsigned int m_Action = 0;
 
 public:
 	void AddPath(const CTGitPath& newPath);

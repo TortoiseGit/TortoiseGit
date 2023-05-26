@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019 - TortoiseGit
+// Copyright (C) 2008-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,13 +27,6 @@ int static Compare(const void *p1, const void*p2)
 }
 
 CLogCache::CLogCache()
-	: m_IndexFile(INVALID_HANDLE_VALUE)
-	, m_IndexFileMap(nullptr)
-	, m_pCacheIndex(nullptr)
-	, m_DataFile(INVALID_HANDLE_VALUE)
-	, m_DataFileMap(nullptr)
-	, m_pCacheData(nullptr)
-	, m_DataFileLength(0)
 {
 	m_bEnabled = CRegDWORD(L"Software\\TortoiseGit\\EnableLogCache", TRUE);
 }

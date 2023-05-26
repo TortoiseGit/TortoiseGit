@@ -1,3 +1,6 @@
+// TortoiseGitMerge - a Diff/Patch program
+
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,10 +78,10 @@ protected:
 	static UINT GetCommandIdProperty(IUISimplePropertySet* propertySet);
 
 private:
-	CFrameWnd* m_pFrame;
+	CFrameWnd* m_pFrame = nullptr;
 	CComPtr<IUIFramework> m_pFramework;
 	std::list<UINT32> m_commandIds;
 	std::list<UINT32> m_collectionCommandIds;
-	ULONG m_cRefCount;
+	ULONG m_cRefCount = 0;
 	CString m_SettingsFileName;
 };

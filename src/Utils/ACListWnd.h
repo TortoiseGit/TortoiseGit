@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015, 2018 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015, 2018, 2023 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -51,8 +51,8 @@ public:
 public:
 	CListCtrl m_List;
 	CString m_DisplayStr;
-	wchar_t m_PrefixChar;
-	long m_lMode;
+	wchar_t m_PrefixChar = L'\0';
+	long m_lMode = 0;
 	// Operationen
 public:
 	CStringArray m_SearchList;
@@ -92,14 +92,18 @@ protected:
 	CStringArray m_DisplayList;
 	CScrollBar m_VertBar, m_HoriBar;
 	CRect m_LastSize, m_ParentRect;
-	CFont *pFontDC;
+	CFont* pFontDC = nullptr;
 	CFont fontDC, boldFontDC;
-	CEdit *m_pEditParent;
+	CEdit* m_pEditParent = nullptr;
 	CFont m_uiFont;
-	LOGFONT logfont;
+	LOGFONT logfont{};
 
-	int m_nIDTimer;
-	long m_lTopIndex,m_lCount,m_ItemHeight,m_VisibleItems,m_lSelItem;
+	int m_nIDTimer = 0;
+	long m_lTopIndex = 0;
+	long m_lCount = 0;
+	long m_ItemHeight = 16;
+	long m_VisibleItems = 0;
+	long m_lSelItem = -1;
 
 	int HitTest(CPoint point);
 	void SetScroller();

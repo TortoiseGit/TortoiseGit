@@ -45,7 +45,7 @@ public:
 	CHistoryCombo(BOOL bAllowSortStyle = FALSE);
 	virtual ~CHistoryCombo();
 
-	bool m_bWantReturn;
+	bool m_bWantReturn = false;
 // Operations
 public:
 	/**
@@ -180,18 +180,18 @@ protected:
 	CString			m_sSection;
 	CString			m_sKeyPrefix;
 	int				m_nMaxHistoryItems;
-	BOOL			m_bAllowSortStyle;
-	BOOL			m_bURLHistory;
-	BOOL			m_bPathHistory;
-	HWND			m_hWndToolTip;
-	TOOLINFO		m_ToolInfo;
+	BOOL			m_bAllowSortStyle = FALSE;
+	BOOL			m_bURLHistory = FALSE;
+	BOOL			m_bPathHistory = FALSE;
+	HWND			m_hWndToolTip = nullptr;
+	TOOLINFO		m_ToolInfo{};
 	CString			m_ToolText;
-	BOOL			m_ttShown;
-	BOOL			m_bDyn;
-	BOOL			m_bTrim;
-	BOOL			m_bCaseSensitive;
-	BOOL			m_bCheckDuplicate;
-	bool			m_bAllowDelete;
+	BOOL			m_ttShown = FALSE;
+	BOOL			m_bDyn = FALSE;
+	BOOL			m_bTrim = TRUE;
+	BOOL			m_bCaseSensitive = FALSE;
+	BOOL			m_bCheckDuplicate = TRUE;
+	bool			m_bAllowDelete = false;
 };
 
 class CCustomAutoCompleteSource : public IEnumString
@@ -211,7 +211,7 @@ public:
 	HRESULT STDMETHODCALLTYPE Skip(ULONG celt) override;
 
 private:
-	volatile ULONG		m_cRefCount;
-	int					m_index;
+	volatile ULONG		m_cRefCount = 0;
+	int					m_index = 0;
 	const CStringArray&	m_pData;
 };

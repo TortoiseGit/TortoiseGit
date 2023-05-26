@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2021 - TortoiseGit
+// Copyright (C) 2016, 2019-2021, 2023 - TortoiseGit
 // Copyright (C) 2007, 2009-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -70,16 +70,16 @@ private:
 	void                UpdateLineCount();
 
 private:
-	LRESULT             m_directFunction;
-	LRESULT             m_directPointer;
+	LRESULT             m_directFunction = 0;
+	LRESULT             m_directPointer = 0;
 
-	HWND                m_hWndEdit;
-	int                 m_themeCallbackId;
+	HWND                m_hWndEdit = nullptr;
+	int                 m_themeCallbackId = 0;
 
 	void                DoSearch(bool reverse);
 	CFindBar            m_FindBar;
-	bool                m_bShowFindBar;
-	bool                m_bMatchCase;
+	bool                m_bShowFindBar = false;
+	bool                m_bMatchCase = false;
 	std::wstring             m_findtext;
 	std::wstring             m_filename;
 

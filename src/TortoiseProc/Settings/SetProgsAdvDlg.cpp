@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@ CSetProgsAdvDlg::CSetProgsAdvDlg(const CString& type, CWnd* pParent /*=nullptr*/
 	: CResizableStandAloneDialog(CSetProgsAdvDlg::IDD, pParent)
 	, m_sType(type)
 	, m_regToolKey(L"Software\\TortoiseGit\\" + type + L"Tools")
-	, m_ToolsValid(false)
 {
 }
 

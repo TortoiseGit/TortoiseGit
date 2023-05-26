@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2014, 2018, 2020-2021 - TortoiseGit
+// Copyright (C) 2009, 2011-2014, 2018, 2020-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -145,7 +145,7 @@ public:
 	CString		sMessage;
 
 	/** If this is set, then the bug-id / issue number must be a number, no text */
-	BOOL		bNumber;
+	BOOL		bNumber = TRUE;
 
 	/** replaces bNumer: a regular expression string to check the validity of
 	  * the entered bug ID. */
@@ -161,11 +161,11 @@ public:
 
 	/** If set to TRUE, show a warning dialog if the user forgot to enter
 	 * an issue number in the commit dialog. */
-	BOOL		bWarnIfNoIssue;
+	BOOL		bWarnIfNoIssue = FALSE;
 
 	/** If set to FALSE, then the bug tracking entry is inserted at the top of the
 	   log message instead of at the bottom. Default is TRUE */
-	BOOL		bAppend;
+	BOOL		bAppend = TRUE;
 
 	/** the parameters passed to the COM bugtraq provider which implements the
 	   IBugTraqProvider interface */
@@ -173,17 +173,17 @@ public:
 
 	/** The number of chars the width marker should be shown at. If the property
 	 * is not set, then this value is 80 by default. */
-	int			nLogWidthMarker;
+	int			nLogWidthMarker = 0;
 
 	/** Minimum size a log message must have in chars */
-	int			nMinLogSize;
+	int			nMinLogSize = 0;
 
 	/** TRUE if the file list to be inserted in the commit dialog should be in
 	 * English and not in the localized language. Default is TRUE */
-	BOOL		bFileListInEnglish;
+	BOOL		bFileListInEnglish = TRUE;
 
 	/** The language identifier this project uses for log messages. */
-	LONG		lProjectLanguage;
+	LONG		lProjectLanguage = 0;
 
 	/** The url pointing to the web viewer. The string %REVISION% is replaced
 	 *  with the revision number, "HEAD", or a date */
@@ -194,7 +194,7 @@ public:
 	 *  with the path relative to the repository root, e.g. "/trunk/src/file" */
 	CString		sWebViewerPathRev;
 
-	BOOL		bWarnNoSignedOffBy;
+	BOOL		bWarnNoSignedOffBy = FALSE;
 	CString		sIcon;
 
 	/**
@@ -228,11 +228,11 @@ private:
 
 	void FetchHookString(CAutoConfig& gitconfig, const CString& sBase, CString& sHook);
 
-	bool regExNeedUpdate;
+	bool regExNeedUpdate = true;
 	std::wregex regCheck;
 	std::wregex regBugID;
 
-	int			nBugIdPos;				///< result	of sMessage.Find(L"%BUGID%");
+	int			nBugIdPos = -1;				///< result	of sMessage.Find(L"%BUGID%");
 
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(ProjectPropertiesTest, ParseBugIDs);

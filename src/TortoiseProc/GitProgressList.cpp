@@ -39,27 +39,6 @@ int		CGitProgressList::m_nSortedColumn = -1;
 IMPLEMENT_DYNAMIC(CGitProgressList, CListCtrl)
 
 CGitProgressList::CGitProgressList():CListCtrl()
-	, m_bCancelled(FALSE)
-	, m_pThread(nullptr)
-	, m_bErrorsOccurred(false)
-	, m_options(ProgOptNone)
-	, m_bSetTitle(false)
-	, m_pTaskbarList(nullptr)
-	, m_Command(nullptr)
-	, m_bThreadRunning(FALSE)
-	, iFirstResized(0)
-	, bSecondResized(false)
-	, nEnsureVisibleCount(0)
-	, m_TotalBytesTransferred(0)
-	, m_bFinishedItemAdded(false)
-	, m_bLastVisible(false)
-	, m_itemCount(-1)
-	, m_itemCountTotal(-1)
-	, m_pInfoCtrl(nullptr)
-	, m_pAnimate(nullptr)
-	, m_pProgControl(nullptr)
-	, m_pProgressLabelCtrl(nullptr)
-	, m_pPostWnd(nullptr)
 {
 	m_columnbuf[0] = L'\0';
 }

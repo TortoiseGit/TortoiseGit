@@ -39,7 +39,6 @@ CSettingGitRemote::CSettingGitRemote()
 	, m_bPrune(2)
 	, m_bPushDefault(FALSE)
 {
-	m_ChangedMask = 0;
 }
 
 CSettingGitRemote::~CSettingGitRemote()

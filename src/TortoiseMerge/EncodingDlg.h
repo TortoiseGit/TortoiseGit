@@ -42,8 +42,8 @@ public:
 // Dialog Data
 	enum { IDD = IDD_ENCODING };
 
-	CFileTextLines::UnicodeType texttype;
-	EOL lineendings;
+	CFileTextLines::UnicodeType texttype = CFileTextLines::UnicodeType::ASCII;
+	EOL lineendings = EOL::AutoLine;
 	CString view;
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support

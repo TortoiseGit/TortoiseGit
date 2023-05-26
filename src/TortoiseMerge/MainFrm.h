@@ -269,16 +269,16 @@ protected:
 
 	GitPatch		m_Patch;
 	BOOL			m_bInitSplitter;
-	bool			m_bCheckReload;
+	bool			m_bCheckReload = false;
 
-	bool			m_bHasConflicts;
-	bool			m_bMarkedAsResolvedWasDone;
+	bool			m_bHasConflicts = false;
+	bool			m_bMarkedAsResolvedWasDone = false;
 
-	bool			m_bInlineWordDiff;
+	bool			m_bInlineWordDiff = true;
 	bool			m_bInlineDiff;
-	bool			m_bLineDiff;
-	bool			m_bLocatorBar;
-	bool			m_bUseRibbons;
+	bool			m_bLineDiff = true;
+	bool			m_bLocatorBar = true;
+	bool			m_bUseRibbons = true;
 
 	CRegDWORD		m_regWrapLines;
 	CRegDWORD		m_regViewModedBlocks;
@@ -290,26 +290,26 @@ protected:
 
 	std::map<CString, std::tuple<CString, CString, CString>>	m_IgnoreCommentsMap;
 	CSimpleIni		m_regexIni;
-	int				m_regexIndex;
+	int				m_regexIndex = -1;
 public:
-	CLeftView *		m_pwndLeftView;
-	CRightView *	m_pwndRightView;
-	CBottomView *	m_pwndBottomView;
+	CLeftView*		m_pwndLeftView = nullptr;
+	CRightView*		m_pwndRightView = nullptr;
+	CBottomView*	m_pwndBottomView = nullptr;
 	BOOL			m_bOneWay;
-	BOOL			m_bReversedPatch;
+	BOOL			m_bReversedPatch = FALSE;
 	CDiffData		m_Data;
-	bool			m_bReadOnly;
-	bool			m_bBlame;
-	int				m_nMoveMovesToIgnore;
+	bool			m_bReadOnly = false;
+	bool			m_bBlame = false;
+	int				m_nMoveMovesToIgnore = 0;
 	bool			m_bCollapsed;
 	bool			m_bViewMovedBlocks;
 	bool			m_bWrapLines;
-	bool			m_bSaveRequired;
-	bool			m_bSaveRequiredOnConflicts;
-	bool			m_bDeleteBaseTheirsMineOnClose;
-	HWND			resolveMsgWnd;
-	WPARAM			resolveMsgWParam;
-	LPARAM			resolveMsgLParam;
+	bool			m_bSaveRequired = false;
+	bool			m_bSaveRequiredOnConflicts = false;
+	bool			m_bDeleteBaseTheirsMineOnClose = false;
+	HWND			resolveMsgWnd = nullptr;
+	WPARAM			resolveMsgWParam = 0;
+	LPARAM			resolveMsgLParam = 0;
 
 	const CMFCToolBar *   GetToolbar() const { return &m_wndToolBar; }
 	void			FillEncodingButton( CMFCRibbonButton * pButton, int start );
@@ -318,7 +318,7 @@ public:
 	CMFCMenuBar		m_wndMenuBar;
 	CMFCToolBar		m_wndToolBar;
 
-	int				m_themeCallbackId;
+	int				m_themeCallbackId = 0;
 
 	std::unique_ptr<CNativeRibbonApp> m_pRibbonApp;
 	CComPtr<IUIFramework> m_pRibbonFramework;

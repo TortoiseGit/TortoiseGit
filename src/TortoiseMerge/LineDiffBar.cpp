@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2008, 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,10 +28,6 @@
 IMPLEMENT_DYNAMIC(CLineDiffBar, CPaneDialog)
 CLineDiffBar::CLineDiffBar() : CPaneDialog()
 {
-	m_pMainFrm = nullptr;
-	m_pCacheBitmap = nullptr;
-	m_nLineIndex = -1;
-	m_nLineHeight = 0;
 	m_bExclusiveRow = TRUE;
 }
 

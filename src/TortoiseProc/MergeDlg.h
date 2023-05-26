@@ -54,7 +54,7 @@ protected:
 	CSciEdit			m_cLogMessage;
 	ProjectProperties	m_ProjectProperties;
 
-	wchar_t*			m_pDefaultText;
+	const wchar_t*		m_pDefaultText = nullptr;
 	DECLARE_MESSAGE_MAP()
 	CHOOSE_EVENT_RADIO() ;
 
@@ -67,8 +67,8 @@ public:
 
 private:
 	CRegHistory			m_History;
-	int					m_nPopupPasteLastMessage;
-	int					m_nPopupRecentMessage;
+	int					m_nPopupPasteLastMessage = 0;
+	int					m_nPopupRecentMessage = 0;
 
 	void ReloadHistoryEntries();
 	afx_msg void OnBnClickedOk();

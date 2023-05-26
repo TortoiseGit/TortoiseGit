@@ -62,8 +62,6 @@ CTortoiseGitBlameApp::CTortoiseGitBlameApp()
 #endif
 	EnableHtmlHelp();
 	git_libgit2_init();
-	m_gdiplusToken = NULL;
-	m_bHiColorIcons = TRUE;
 }
 
 CTortoiseGitBlameApp::~CTortoiseGitBlameApp()

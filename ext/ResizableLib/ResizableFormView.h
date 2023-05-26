@@ -48,7 +48,7 @@ private:
 	void PrivateConstruct();
 	
 	// support for temporarily hiding the grip
-	DWORD m_dwGripTempState;
+	DWORD m_dwGripTempState = GHR_SCROLLBAR | GHR_ALIGNMENT | GHR_MAXIMIZED;
 	enum GripHideReason		// bitmask
 	{
 		GHR_MAXIMIZED = 0x01,

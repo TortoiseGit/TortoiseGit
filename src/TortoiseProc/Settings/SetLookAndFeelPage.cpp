@@ -148,7 +148,6 @@ static unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
 IMPLEMENT_DYNAMIC(CSetLookAndFeelPage, ISettingsPropPage)
 CSetLookAndFeelPage::CSetLookAndFeelPage()
 	: ISettingsPropPage(CSetLookAndFeelPage::IDD)
-	, m_bBlock(false)
 	, m_bHideMenus(false)
 {
 	ShellCache cache;
@@ -309,8 +308,6 @@ CSetExtMenu::CSetExtMenu()
 	: ISettingsPropPage(CSetExtMenu::IDD)
 {
 	ShellCache shell;
-
-	m_bBlock = false;
 
 	m_regExtmenu = shell.menuextlow;
 	m_regExtmenuhigh = shell.menuexthigh;

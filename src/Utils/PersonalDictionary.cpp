@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2014, 2016, 2019 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,8 +25,7 @@
 #include "PathUtils.h"
 
 CPersonalDictionary::CPersonalDictionary(LONG lLanguage /* = 0*/)
-	: m_bLoaded(false)
-	, m_lLanguage(lLanguage)
+	: m_lLanguage(lLanguage)
 {
 }
 

@@ -33,8 +33,6 @@ IMPLEMENT_DYNCREATE(CResizableMDIChild, CMDIChildWnd)
 
 CResizableMDIChild::CResizableMDIChild()
 {
-	m_bEnableSaveRestore = FALSE;
-	m_bRectOnly = FALSE;
 }
 
 CResizableMDIChild::~CResizableMDIChild()

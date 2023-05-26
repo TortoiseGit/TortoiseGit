@@ -158,19 +158,19 @@ public:
 	void			BuildPreview();
 
 protected:
-	ULONGLONG		m_ullTicks;
+	ULONGLONG		m_ullTicks = 0;
 	CRect			m_OverviewPosRect;
 	CRect			m_OverviewRect;
 
 	bool			m_bShowOverview;
 
-	CRevisionGraphDlg *m_parent;
+	CRevisionGraphDlg* m_parent = nullptr;
 
-	ogdf::node		m_HeadNode;
-	ogdf::node		m_SelectedEntry1;
-	ogdf::node		m_SelectedEntry2;
+	ogdf::node		m_HeadNode = nullptr;
+	ogdf::node		m_SelectedEntry1 = nullptr;
+	ogdf::node		m_SelectedEntry2 = nullptr;
 	int				m_nFontSize;
-	CToolTipCtrl *	m_pDlgTip;
+	CToolTipCtrl*	m_pDlgTip = nullptr;
 	char			m_szTip[MAX_TT_LENGTH+1];
 	wchar_t			m_wszTip[MAX_TT_LENGTH+1];
 	CString			m_sTitle;
@@ -188,9 +188,9 @@ protected:
 	int				m_previewHeight;
 	float			m_previewZoom;
 
-	ogdf::node		m_hoverIndex;
-	DWORD			m_hoverGlyphs;	// the glyphs shown for \ref m_hoverIndex
-	mutable ogdf::node m_tooltipIndex;	// the node index we fetched the tooltip for
+	ogdf::node		m_hoverIndex = nullptr;
+	DWORD			m_hoverGlyphs = 0;	// the glyphs shown for \ref m_hoverIndex
+	mutable ogdf::node m_tooltipIndex = nullptr;	// the node index we fetched the tooltip for
 	bool			m_showHoverGlyphs;	// if true, show the glyphs we currently hover over
 										// (will be activated only after some delay)
 
@@ -254,30 +254,20 @@ private:
 		Below = 8,
 	};
 
-	class GraphicsDevice
+	struct GraphicsDevice
 	{
-	public:
-		GraphicsDevice()
-			: pDC(nullptr)
-			, graphics(nullptr)
-			, pSVG(nullptr)
-			, pGraphviz(nullptr)
-		{
-		}
-		~GraphicsDevice() {}
-	public:
-		CDC *				pDC;
-		Graphics *			graphics;
-		SVG *				pSVG;
-		Graphviz *			pGraphviz;
+		CDC* pDC = nullptr;
+		Graphics* graphics = nullptr;
+		SVG* pSVG = nullptr;
+		Graphviz* pGraphviz = nullptr;
 	};
 
 	class SVGGrouper
 	{
 	public:
-		SVGGrouper(SVG * pSVG)
+		SVGGrouper(SVG* pSVG)
+			: m_pSVG(pSVG)
 		{
-			m_pSVG = pSVG;
 			if (m_pSVG)
 				m_pSVG->StartGroup();
 		}
@@ -287,9 +277,7 @@ private:
 				m_pSVG->EndGroup();
 		}
 	private:
-		SVGGrouper() {}
-
-		SVG *	m_pSVG;
+		SVG*	m_pSVG = nullptr;
 	};
 
 	bool			UpdateSelectedEntry (ogdf::node clickedentry);

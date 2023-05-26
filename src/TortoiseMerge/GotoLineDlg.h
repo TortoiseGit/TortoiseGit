@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2011, 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -44,9 +45,9 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 private:
-	int			m_nLine;
-	int			m_nLow;
-	int			m_nHigh;
+	int			m_nLine = 0;
+	int			m_nLow = -1;
+	int			m_nHigh = -1;
 	CString		m_sLabel;
 	CEdit		m_cNumber;
 };

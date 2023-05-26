@@ -116,11 +116,6 @@ CBaseView::CBaseView()
 	, m_themeCallbackId(0)
 	, m_MarkedWordCount(0)
 {
-	m_ptCaretViewPos.x = 0;
-	m_ptCaretViewPos.y = 0;
-	m_ptSelectionViewPosStart = m_ptCaretViewPos;
-	m_ptSelectionViewPosEnd = m_ptSelectionViewPosStart;
-	m_ptSelectionViewPosOrigin = m_ptSelectionViewPosEnd;
 	m_bViewWhitespace = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewWhitespaces", 1);
 	m_bViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
 	m_bShowInlineDiff = CRegDWORD(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE);
@@ -161,7 +156,6 @@ CBaseView::CBaseView()
 
 	m_szTip[0]  = 0;
 	m_wszTip[0] = 0;
-	SecureZeroMemory(&m_lfBaseFont, sizeof(m_lfBaseFont));
 	EnableToolTips();
 
 	m_Eols[static_cast<int>(EOL::LF)] = L"\n"; // x0a

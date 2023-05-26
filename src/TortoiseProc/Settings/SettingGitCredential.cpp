@@ -62,7 +62,6 @@ CSettingGitCredential::CSettingGitCredential()
 	, m_bUseHttpPath(FALSE)
 	, m_iSimpleStoredValue(-2)
 {
-	m_ChangedMask = 0;
 }
 
 CSettingGitCredential::~CSettingGitCredential()

@@ -38,7 +38,6 @@ CSetOverlayIcons::CSetOverlayIcons()
 	m_regAdded = CRegString(L"Software\\TortoiseOverlays\\AddedIcon");
 	m_regIgnored = CRegString(L"Software\\TortoiseOverlays\\IgnoredIcon");
 	m_regUnversioned = CRegString(L"Software\\TortoiseOverlays\\UnversionedIcon");
-	m_selIndex = CB_ERR;
 }
 
 CSetOverlayIcons::~CSetOverlayIcons()

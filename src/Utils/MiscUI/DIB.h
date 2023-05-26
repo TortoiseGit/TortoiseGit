@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -88,8 +89,8 @@ public:
 	BOOL		Draw(CDC* pDC, CPoint ptDest);
 
 protected:
-	HBITMAP		m_hBitmap;
-	BITMAPINFO  m_BMinfo;
-	VOID		*m_pBits;
+	HBITMAP m_hBitmap = nullptr;
+	BITMAPINFO m_BMinfo{};
+	VOID* m_pBits = nullptr;
 };
 

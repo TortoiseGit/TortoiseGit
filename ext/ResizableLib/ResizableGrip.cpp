@@ -35,7 +35,6 @@ static char THIS_FILE[]=__FILE__;
 
 CResizableGrip::CResizableGrip()
 {
-	m_nShowCount = 0;
 }
 
 CResizableGrip::~CResizableGrip()

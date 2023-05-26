@@ -120,24 +120,11 @@ static CString GetGUID()
 	return sGuid;
 }
 
-CHwSMTP::CHwSMTP () :
-	m_bConnected ( FALSE ),
-	m_nSmtpSrvPort ( 25 ),
-	m_bMustAuth ( TRUE )
-	, m_credentials(nullptr)
+CHwSMTP::CHwSMTP()
 {
 	m_csPartBoundary = L"NextPart_" + GetGUID();
 	m_csMIMEContentType.Format(L"multipart/mixed; boundary=%s", static_cast<LPCWSTR>(m_csPartBoundary));
 	m_csNoMIMEText = L"This is a multi-part message in MIME format.";
-
-	hContext = nullptr;
-	hCreds = nullptr;
-	pbIoBuffer = nullptr;
-	cbIoBufferLength = 0;
-
-	m_iSecurityLevel = none;
-
-	SecureZeroMemory(&Sizes, sizeof(SecPkgContext_StreamSizes));
 
 	AfxSocketInit();
 }

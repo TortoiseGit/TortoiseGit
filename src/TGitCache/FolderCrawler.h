@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2007, 2009-2011, 2014 TortoiseSVN
-// Copyright (C) 2008-2012 - TortoiseGit
+// Copyright (C) 2008-2012, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,19 +66,19 @@ private:
 	// This will be *asynchronously* modified by CCrawlInhibitor.
 	// So, we have to mark it volatile, preparing compiler and
 	// optimizer for the "worst".
-	volatile LONG m_lCrawlInhibitSet;
+	volatile LONG m_lCrawlInhibitSet = 0;
 
 	// While the shell is still asking for items, we don't
 	// want to start crawling.  This timer is pushed-out for
 	// every shell request, and stops us crawling until
 	// a bit of quiet time has elapsed
 	LONGLONG m_crawlHoldoffReleasesAt;
-	bool m_bItemsAddedSinceLastCrawl;
-	bool m_bPathsAddedSinceLastCrawl;
+	bool m_bItemsAddedSinceLastCrawl = false;
+	bool m_bPathsAddedSinceLastCrawl = false;
 
 	CTGitPath m_blockedPath;
-	ULONGLONG m_blockReleasesAt;
-	bool m_bRun;
+	ULONGLONG m_blockReleasesAt = 0;
+	bool m_bRun = false;
 
 
 	friend class CCrawlInhibitor;

@@ -28,7 +28,7 @@ class CPatchListCtrl : public CListCtrl
 public:
 	CPatchListCtrl();
 	virtual ~CPatchListCtrl();
-	DWORD m_ContextMenuMask;
+	DWORD m_ContextMenuMask = DWORD_MAX;
 	enum
 	{
 		MENU_SENDMAIL=1,

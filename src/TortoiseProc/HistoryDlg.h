@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,6 +54,6 @@ protected:
 private:
 	CListBox		m_List;
 	CString			m_SelectedText;
-	CRegHistory*	m_history;
+	CRegHistory*	m_history = nullptr;
 	CHistoryCombo	m_VersionCombo;
 };

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017, 2019 - TortoiseGit
+// Copyright (C) 2017, 2019, 2023 - TortoiseGit
 // Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,10 +25,7 @@
 class CTimerEventHandler : public IUIAnimationTimerEventHandler
 {
 public:
-	CTimerEventHandler()
-		: ref(0)
-	{
-	}
+	CTimerEventHandler() = default;
 
 	/// Adds a new callback function for a specific StoryBoard
 	void AddCallback(IUIAnimationStoryboard* ptr, std::function<void()> func)
@@ -110,7 +107,7 @@ public:
 
 private:
 	std::map<IUIAnimationStoryboard*, std::function<void()>> callbacks;
-	unsigned long ref;
+	unsigned long ref = 0;
 };
 
 /// object to handle StoryBoard events
@@ -118,11 +115,7 @@ class NotificationAnimationEventHandler : public IUIAnimationStoryboardEventHand
 {
 public:
 	/// Constructor
-	NotificationAnimationEventHandler()
-		: ref(0)
-		, timerEventHandler(nullptr)
-	{
-	}
+	NotificationAnimationEventHandler() = default;
 
 	~NotificationAnimationEventHandler()
 	{
@@ -194,8 +187,8 @@ public:
 	}
 
 private:
-	CTimerEventHandler* timerEventHandler;
-	unsigned long ref;
+	CTimerEventHandler* timerEventHandler = nullptr;
+	unsigned long ref = 0;
 };
 
 IUIAnimationVariablePtr Animator::CreateAnimationVariable(double start)
@@ -356,7 +349,6 @@ HRESULT Animator::AbandonAllStoryBoards()
 }
 
 Animator::Animator()
-	: timerEventHandler(nullptr)
 {
 	// Create the IUIAnimationManager.
 	if (FAILED(pAnimMgr.CreateInstance(CLSID_UIAnimationManager, 0, CLSCTX_INPROC_SERVER)))

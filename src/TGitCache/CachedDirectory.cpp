@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,9 +26,6 @@
 #include <set>
 
 CCachedDirectory::CCachedDirectory()
-	: m_currentFullStatus(git_wc_status_none)
-	, m_mostImportantFileStatus(git_wc_status_none)
-	, m_bRecursive(true)
 {
 }
 

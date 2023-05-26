@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2016-2020 - TortoiseGit
+// Copyright (C) 2009-2013, 2016-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,9 +32,6 @@ IMPLEMENT_DYNAMIC(CRevertDlg, CResizableStandAloneDialog)
 CRevertDlg::CRevertDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRevertDlg::IDD, pParent)
 	, m_bSelectAll(TRUE)
-	, m_bThreadRunning(FALSE)
-	, m_bCancelled(false)
-	, m_bRecursive(FALSE)
 {
 }
 
@@ -150,11 +147,11 @@ void CRevertDlg::OnOK()
 		return;
 	auto locker(m_RevertList.AcquireReadLock());
 	// save only the files the user has selected into the temporary file
-	m_bRecursive = TRUE;
+	m_bRecursive = true;
 	for (int i=0; i<m_RevertList.GetItemCount(); ++i)
 	{
 		if (!m_RevertList.GetCheck(i))
-			m_bRecursive = FALSE;
+			m_bRecursive = false;
 		else
 		{
 			m_selectedPathList.AddPath(*m_RevertList.GetListEntry(i));

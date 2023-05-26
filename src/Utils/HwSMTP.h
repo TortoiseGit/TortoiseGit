@@ -108,11 +108,11 @@ private:
 	BOOL Send ( const CString &data );
 	BOOL SendBuffer(const char* buffer, int size = -1);
 	BOOL GetResponse(LPCSTR lpszVerifyCode);
-	BOOL m_bConnected;
+	BOOL m_bConnected = FALSE;
 	CSocket m_SendSock;
 	CStringArray m_StrAryAttach;
 	CString m_csSmtpSrvHost;
-	CCredentials* m_credentials;
+	CCredentials* m_credentials = nullptr;
 	CString m_csAddrFrom;
 	CString m_csAddrTo;
 	CString m_csFromName;
@@ -122,15 +122,15 @@ private:
 	CString m_csSender;
 	CString m_csToList;
 
-	CtxtHandle * hContext;
-	CredHandle * hCreds;
-	SecPkgContext_StreamSizes Sizes;
-	PBYTE pbIoBuffer;
-	DWORD cbIoBufferLength;
-	SECURITY_LEVEL m_iSecurityLevel;
+	CtxtHandle* hContext = nullptr;
+	CredHandle* hCreds = nullptr;
+	SecPkgContext_StreamSizes Sizes{};
+	PBYTE pbIoBuffer = nullptr;
+	DWORD cbIoBufferLength = 0;
+	SECURITY_LEVEL m_iSecurityLevel = none;
 
-	BOOL m_bMustAuth;
-	UINT m_nSmtpSrvPort;
+	BOOL m_bMustAuth = TRUE;
+	UINT m_nSmtpSrvPort = 25;
 
 	CString m_csLastError;
 	BOOL SendOnAttach(LPCWSTR lpszFileName);

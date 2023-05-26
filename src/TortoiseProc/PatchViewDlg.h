@@ -38,7 +38,7 @@ class CPatchViewDlg : public CStandAloneDialog, public CSciEditContextMenuInterf
 public:
 	CPatchViewDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CPatchViewDlg();
-	IHasPatchView	*m_ParentDlg;
+	IHasPatchView* m_ParentDlg = nullptr;
 	void SetText(const CString& text);
 	void ClearView();
 	void ShowAndAlignToParent();
@@ -83,20 +83,20 @@ protected:
 
 	void				DoSearch(bool reverse);
 	CFindBar            m_FindBar;
-	bool                m_bShowFindBar;
+	bool				m_bShowFindBar = false;
 
-	HACCEL				m_hAccel;
+	HACCEL				m_hAccel = nullptr;
 
-	EnableStagingTypes	m_nEnableStagingType;
+	EnableStagingTypes	m_nEnableStagingType = EnableStagingTypes::None;
 
 	// CSciEditContextMenuInterface
 	void				InsertMenuItems(CMenu& mPopup, int& nCmd) override;
 	bool				HandleMenuItemClick(int cmd, CSciEdit* pSciEdit) override;
-	int					m_nPopupSave;
-	int					m_nStageHunks;
-	int					m_nStageLines;
-	int					m_nUnstageHunks;
-	int					m_nUnstageLines;
+	int					m_nPopupSave = 0;
+	int					m_nStageHunks = 0;
+	int					m_nStageLines = 0;
+	int					m_nUnstageHunks = 0;
+	int					m_nUnstageLines = 0;
 
 	int GetFirstLineNumberSelected();
 	int GetLastLineNumberSelected();

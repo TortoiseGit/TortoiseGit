@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -48,8 +49,8 @@ private:
 	CAutoGeneralHandle m_hTerminationEvent;
 	CAutoGeneralHandle m_hWakeEvent;
 
-	volatile bool m_bItemsAddedSinceLastUpdate;
-	volatile LONG m_bRunning;
+	volatile bool m_bItemsAddedSinceLastUpdate = false;
+	volatile LONG m_bRunning = FALSE;
 };
 
 

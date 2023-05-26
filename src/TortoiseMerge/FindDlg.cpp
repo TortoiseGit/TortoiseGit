@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006, 2011-2014, 2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,19 +29,16 @@ IMPLEMENT_DYNAMIC(CFindDlg, CStandAloneDialog)
 CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CFindDlg::IDD, pParent)
 	, m_pParent(pParent)
-	, m_bTerminating(false)
 	, m_bFindNext(false)
 	, m_bMatchCase(FALSE)
 	, m_bLimitToDiffs(FALSE)
 	, m_bWholeWord(FALSE)
 	, m_bSearchUp(FALSE)
-	, m_FindMsg(0)
 	, m_clrFindStatus(RGB(0, 0, 255))
 	, m_bReadonly(false)
 	, m_regMatchCase(L"Software\\TortoiseGitMerge\\FindMatchCase", FALSE)
 	, m_regLimitToDiffs(L"Software\\TortoiseGitMerge\\FindLimitToDiffs", FALSE)
 	, m_regWholeWord(L"Software\\TortoiseGitMerge\\FindWholeWord", FALSE)
-	, m_id(0)
 {
 }
 

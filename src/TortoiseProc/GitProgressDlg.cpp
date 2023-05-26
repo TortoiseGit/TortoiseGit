@@ -28,7 +28,6 @@
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CGitProgressDlg::IDD, pParent)
-	, m_hAccel(nullptr)
 {
 	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);

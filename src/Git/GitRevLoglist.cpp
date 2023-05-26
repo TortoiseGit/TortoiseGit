@@ -27,15 +27,7 @@
 std::atomic<std::shared_ptr<CGitMailmap>> GitRevLoglist::s_Mailmap = nullptr;
 
 GitRevLoglist::GitRevLoglist() : GitRev()
-, m_Action(0)
-, m_RebaseAction(0)
-, m_IsDiffFiles(FALSE)
-, m_CallDiffAsync(nullptr)
-, m_IsSimpleListReady(FALSE)
-, m_Mark(0)
 , m_lock(SRWLOCK_INIT)
-, m_RolledUp(false)
-, m_RolledUpIsForced(false)
 {
 }
 

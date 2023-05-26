@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2010, 2012, 2015, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -66,10 +67,10 @@ protected:
 	void			DocumentUpdated(CBaseView* view, CDWordArray& indents, CDWordArray& states);
 	void			SetTheme(bool bDark);
 
-	CBitmap *		m_pCacheBitmap;
+	CBitmap*		m_pCacheBitmap = nullptr;
 
-	int				m_minWidth;
-	int				m_nLines;
+	int				m_minWidth = 0;
+	int				m_nLines = -1;
 	CPoint			m_MousePos;
 	CDWordArray		m_arLeftIdent;
 	CDWordArray		m_arLeftState;
@@ -79,9 +80,9 @@ protected:
 	CDWordArray		m_arBottomState;
 
 	CRegDWORD		m_regUseFishEye;
-	bool			m_bDark;
-	int				m_themeCallbackId;
+	bool			m_bDark = false;
+	int				m_themeCallbackId = 0;
 	DECLARE_MESSAGE_MAP()
 public:
-	CMainFrame *	m_pMainFrm;
+	CMainFrame*		m_pMainFrm = nullptr;
 };

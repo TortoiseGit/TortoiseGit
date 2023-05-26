@@ -94,7 +94,6 @@ CUndo& CUndo::GetInstance()
 
 CUndo::CUndo()
 {
-	Clear();
 }
 
 CUndo::~CUndo()

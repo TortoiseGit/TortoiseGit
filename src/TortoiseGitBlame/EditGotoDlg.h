@@ -38,5 +38,5 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	DWORD m_LineNumber;
+	DWORD m_LineNumber = 0;
 };

@@ -25,10 +25,10 @@
 
 struct FileStatusCacheEntry
 {
-	git_wc_status_kind		status;
-	int						askedcounter;
-	bool					assumeValid;
-	bool					skipWorktree;
+	git_wc_status_kind		status = git_wc_status_none;
+	int						askedcounter = -1;
+	bool					assumeValid = false;
+	bool					skipWorktree = false;
 };
 
 #define GITFOLDERSTATUS_CACHETIMES				10
@@ -69,9 +69,9 @@ private:
 
 	using FileStatusMap = std::map<std::wstring, FileStatusCacheEntry>;
 	FileStatusMap			m_cache;
-	ULONGLONG				m_TimeStamp;
+	ULONGLONG				m_TimeStamp = 0;
 	FileStatusCacheEntry	dirstat;
-	git_wc_status2_t *		dirstatus;
+	git_wc_status2_t*		dirstatus = nullptr;
 
 	std::wstring			sCacheKey;
 
@@ -79,6 +79,6 @@ private:
 
 	// The item we most recently supplied status for
 	CTGitPath		m_mostRecentPath;
-	const FileStatusCacheEntry* m_mostRecentStatus;
+	const FileStatusCacheEntry* m_mostRecentStatus = nullptr;
 };
 

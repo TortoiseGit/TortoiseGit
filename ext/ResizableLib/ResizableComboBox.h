@@ -56,10 +56,10 @@ public:
 	virtual ~CResizableComboBox();
 
 protected:
-	RECT m_rectDropDown;
-	BOOL m_bClipMaxHeight;
-	BOOL m_bIntegralHeight;
-	int m_iExtent;
+	RECT m_rectDropDown{};
+	BOOL m_bClipMaxHeight = TRUE;
+	BOOL m_bIntegralHeight = TRUE;
+	int m_iExtent = 0;
 
 	void InitHorizontalExtent();
 	void UpdateHorizontalExtent(LPCTSTR szText);

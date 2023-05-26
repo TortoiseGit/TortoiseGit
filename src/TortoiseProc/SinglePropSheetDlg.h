@@ -39,7 +39,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	ISettingsPropPage*	m_pThePropPage;
+	ISettingsPropPage*	m_pThePropPage = nullptr;
 
 public:
 	BOOL OnInitDialog() override;

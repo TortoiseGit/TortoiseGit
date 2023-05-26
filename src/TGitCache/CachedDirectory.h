@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006, 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016-2017, 2021-2022 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2021-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,12 +98,12 @@ private:
 	CStatusCacheEntry m_ownStatus;
 
 	// Our current fully recursive status
-	git_wc_status_kind  m_currentFullStatus;
+	git_wc_status_kind m_currentFullStatus = git_wc_status_none;
 
 	// The most important status from all our file entries
-	git_wc_status_kind m_mostImportantFileStatus;
+	git_wc_status_kind m_mostImportantFileStatus = git_wc_status_none;
 
-	bool m_bRecursive;		// used in the status callback
+	bool m_bRecursive = true;		// used in the status callback
 	friend class CGitStatusCache;
 };
 

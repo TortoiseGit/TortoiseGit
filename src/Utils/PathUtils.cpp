@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2022 - TortoiseGit
+// Copyright (C) 2012-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -329,6 +329,7 @@ std::wstring CPathUtils::GetVersionFromFile(LPCWSTR p_strFilename)
 			VOID*       lpFixedPointer;
 			TRANSARRAY* lpTransArray;
 
+			dwReserved = 0;
 			GetFileVersionInfo(p_strFilename,
 				dwReserved,
 				dwBufferSize,
@@ -381,6 +382,7 @@ CString CPathUtils::GetCopyrightForSelf()
 
 		if (pBuffer)
 		{
+			dwReserved = 0;
 			GetFileVersionInfo(static_cast<LPCWSTR>(path),
 				dwReserved,
 				dwBufferSize,

@@ -21,9 +21,7 @@
 #include "StringUtils.h"
 
 CSimpleFileFind::CSimpleFileFind(const CString& sPath, LPCWSTR pPattern)
-	: m_dError(ERROR_SUCCESS)
-	, m_bFirst(TRUE)
-	, m_sPathPrefix(sPath)
+	: m_sPathPrefix(sPath)
 {
 	// Add a trailing \ to m_sPathPrefix if it is missing.
 	// Do not add one to "C:" since "C:" and "C:\" are different.

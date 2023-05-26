@@ -181,44 +181,44 @@ protected:
 public:
 	CString				m_sLogMessage;
 	BOOL				m_bDoNotAutoselectSubmodules;
-	bool				m_bForceCommitAmend;
+	bool				m_bForceCommitAmend = false;
 	BOOL				m_bCommitAmend;
-	BOOL				m_bNoPostActions;
-	bool				m_bSelectFilesForCommit;
-	bool				m_bAutoClose;
+	bool				m_bNoPostActions = false;
+	bool				m_bSelectFilesForCommit = true;
+	bool				m_bAutoClose = false;
 	CString				m_AmendStr;
 	CString				m_sBugID;
 	BOOL				m_bWholeProject;
 	BOOL				m_bWholeProject2;
 	CTGitPathList		m_pathList;
-	Git_PostCommit_Cmd	m_PostCmd;
+	Git_PostCommit_Cmd	m_PostCmd = Git_PostCommit_Cmd::Nothing;
 	BOOL				m_bAmendDiffToLastCommit;
 	BOOL				m_bCommitMessageOnly;
-	bool				m_bWarnDetachedHead;
+	bool				m_bWarnDetachedHead = true;
 
 protected:
 	CTGitPathList		m_selectedPathList;
 	CSciEdit			m_cLogMessage;
-	INT_PTR				m_itemsCount;
+	INT_PTR				m_itemsCount = 0;
 	CComPtr<IBugTraqProvider> m_BugTraqProvider;
 	CString				m_NoAmendStr;
 	BOOL				m_bCreateNewBranch;
 	BOOL				m_bSetAuthor;
 	CString				m_sAuthor;
-	volatile bool		m_bDoNotStoreLastSelectedLine; // true on first start of commit dialog and set on recommit
+	volatile bool		m_bDoNotStoreLastSelectedLine = true; // true on first start of commit dialog and set on recommit
 	BOOL				m_bStagingSupport;
-	volatile LONG		m_nBlockItemChangeHandler; // used to make sure FillPatch is called only once after a partial staging
+	volatile LONG		m_nBlockItemChangeHandler = FALSE; // used to make sure FillPatch is called only once after a partial staging
 
 	int					CheckHeadDetach();
 
 private:
-	CWinThread*			m_pThread;
+	CWinThread*			m_pThread = nullptr;
 	std::map<CString, CString>	m_snippet;
 	CGitStatusListCtrl	m_ListCtrl;
 	BOOL				m_bShowUnversioned;
-	volatile LONG		m_bBlock;
-	volatile LONG		m_bThreadRunning;
-	volatile LONG		m_bRunThread;
+	volatile LONG		m_bBlock = FALSE;
+	volatile LONG		m_bThreadRunning = FALSE;
+	volatile LONG		m_bRunThread = FALSE;
 	CRegDWORD			m_regAddBeforeCommit;
 	CRegDWORD			m_regDoNotAutoselectSubmodules;
 	CRegDWORD			m_regShowWholeProject;
@@ -228,13 +228,13 @@ private:
 	static UINT			WM_UPDATEOKBUTTON;
 	static UINT			WM_UPDATEDATAFALSE;
 	static UINT			WM_PARTIALSTAGINGREFRESHPATCHVIEW;
-	int					m_nPopupPickCommitHash;
-	int					m_nPopupPickCommitMessage;
-	int					m_nPopupPasteListCmd;
-	int					m_nPopupPasteLastMessage;
-	int					m_nPopupRecentMessage;
+	int					m_nPopupPickCommitHash = 0;
+	int					m_nPopupPickCommitMessage = 0;
+	int					m_nPopupPasteListCmd = 0;
+	int					m_nPopupPasteLastMessage = 0;
+	int					m_nPopupRecentMessage = 0;
 	CRegHistory			m_History;
-	bool				m_bCancelled;
+	bool				m_bCancelled = false;
 	CSplitterControl	m_wndSplitter;
 	CRect				m_DlgOrigRect;
 	CRect				m_LogMsgOrigRect;
@@ -259,10 +259,10 @@ private:
 		int wmid;
 	};
 	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
-	HACCEL							m_hAccelOkButton;
+	HACCEL							m_hAccelOkButton = nullptr;
 
 	CBugTraqAssociation	m_bugtraq_association;
-	HACCEL				m_hAccel;
+	HACCEL				m_hAccel = nullptr;
 	bool				RestoreFiles(bool doNotAsk = false, bool allowCancel = true);
 
 	// State of the links "Partial Staging>>" and "Partial Unstaging>>" shown on the commit window
@@ -272,7 +272,7 @@ private:
 		SHOW_STAGING = 0x00000001, // unset when "Hide Staging"
 		SHOW_UNSTAGING = 0x00000002, // unset when "Hide Unstaging"
 	};
-	unsigned char m_stagingDisplayState;
+	unsigned char m_stagingDisplayState = SHOW_STAGING | SHOW_UNSTAGING;
 
 protected:
 	afx_msg void OnBnClickedSignOff();

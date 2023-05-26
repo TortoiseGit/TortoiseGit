@@ -47,7 +47,6 @@ template <typename BaseType> class CStandAloneDialogTmpl : public BaseType, prot
 {
 protected:
 	CStandAloneDialogTmpl(UINT nIDTemplate, CWnd* pParentWnd = nullptr) : BaseType(nIDTemplate, pParentWnd), CommonDialogFunctions<BaseType>(this)
-		, m_themeCallbackId(0)
 	{
 		m_hIcon = AfxGetApp()->LoadIcon(1); // IDR_MAINFRAME; use the magic value here, because we cannot include resource.h here
 	}
@@ -156,7 +155,7 @@ protected:
 
 protected:
 	CToolTips	m_tooltips;
-	int m_themeCallbackId;
+	int m_themeCallbackId = 0;
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -241,25 +240,19 @@ class CStateDialog : public CDialog, public CResizableWndState
 public:
 	CStateDialog()
 	: CDialog()
-	, m_bEnableSaveRestore(false)
-	, m_bRectOnly(false)
 	{}
 	CStateDialog(UINT nIDTemplate, CWnd* pParentWnd = nullptr)
 	: CDialog(nIDTemplate, pParentWnd)
-	, m_bEnableSaveRestore(false)
-	, m_bRectOnly(false)
 	{}
 	CStateDialog(LPCWSTR lpszTemplateName, CWnd* pParentWnd = nullptr)
 	: CDialog(lpszTemplateName, pParentWnd)
-	, m_bEnableSaveRestore(false)
-	, m_bRectOnly(false)
 	{}
 	virtual ~CStateDialog() {};
 
 private:
 	// flags
-	bool m_bEnableSaveRestore;
-	bool m_bRectOnly;
+	bool m_bEnableSaveRestore = false;
+	bool m_bRectOnly = false;
 
 	// internal status
 	CString m_sSection;			// section name (identifies a parent window)
@@ -316,9 +309,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 protected:
-	int			m_nResizeBlock;
-	long		m_width;
-	long		m_height;
+	int			m_nResizeBlock = 0;
+	long		m_width = 0;
+	long		m_height = 0;
 
 	void BlockResize(int block)
 	{
@@ -334,8 +327,8 @@ protected:
 	};
 
 private:
-	bool		m_bVertical;
-	bool		m_bHorizontal;
+	bool		m_bVertical = false;
+	bool		m_bHorizontal = false;
 	CRect		m_rcOrgWindowRect;
 };
 

@@ -41,5 +41,5 @@ protected:
 
 private:
 	CBrush  m_invalidBkgnd;
-	bool    m_bValid;
+	bool    m_bValid = true;
 };

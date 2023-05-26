@@ -36,7 +36,7 @@ private:
 	void					ReportError(const CString& out, int exitCode) override;
 	void					ReportProgress(const CTGitPath& path, int index) override;
 	void					ReportUserCanceled() override;
-	CGitProgressList *		m_NotifyCallbackInstance;
+	CGitProgressList*		m_NotifyCallbackInstance = nullptr;
 	CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action m_NotifyCallbackAction;
 	std::function<void(const CTGitPath& path, int index)> m_progressCallback = nullptr;
 };

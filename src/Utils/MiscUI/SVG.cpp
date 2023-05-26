@@ -22,8 +22,6 @@
 #include "SmartHandle.h"
 
 SVG::SVG()
-	: viewportWidth(1000)
-	, viewportHeight(1000)
 {
 }
 

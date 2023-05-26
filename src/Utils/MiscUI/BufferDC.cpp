@@ -26,20 +26,7 @@ CBufferDC::CBufferDC(CWnd* pWnd) : CPaintDC(pWnd)
 		CPaintDC::m_hAttribDC = m_hMemoryDC;
 	}
 	else
-	{
 		ATLASSERT(false);
-		m_hAttributeDC = nullptr;
-		m_hOutputDC = nullptr;
-		m_hMemoryDC = nullptr;
-		m_hPaintBitmap = nullptr;
-		m_hOldBitmap = nullptr;
-		m_ClientRect.right = 0;
-		m_ClientRect.left = 0;
-		m_ClientRect.top = 0;
-		m_ClientRect.bottom = 0;
-	}
-
-	m_bBoundsUpdated = FALSE;
 }
 
 CBufferDC::~CBufferDC()

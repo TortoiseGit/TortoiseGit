@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2021 - TortoiseGit
+// Copyright (C) 2019-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2013, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,14 +37,6 @@ static HCURSOR SplitterControl_hCursor1 = nullptr;
 static HCURSOR SplitterControl_hCursor2 = nullptr;
 
 CSplitterControl::CSplitterControl()
-	: m_bIsPressed(false)
-	, m_nMin(-1)
-	, m_nMax(-1)
-	, m_bMouseOverControl(false)
-	, m_nType(0)
-	, m_nX(0)
-	, m_nY(0)
-	, m_nSavePos(0)
 {
 	m_AnimVarHot = Animator::Instance().CreateAnimationVariable(0.0);
 

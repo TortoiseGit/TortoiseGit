@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015-2016, 2018-2020, 2023 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -45,19 +45,6 @@ void DoPaintMessageLoop()
 
 CACListWnd::CACListWnd()
 {
-	m_lTopIndex = 0;
-	m_lCount = 0;
-	m_ItemHeight = 16;
-	m_lSelItem = -1;
-	m_VisibleItems = 0;
-	m_pEditParent = nullptr;
-	m_LastSize.SetRectEmpty();
-	m_PrefixChar = 0;
-	m_lMode = 0;
-	pFontDC = nullptr;
-	m_nIDTimer = 0;
-	SecureZeroMemory(&logfont, sizeof(LOGFONT));
-
 	NONCLIENTMETRICS metrics = { 0 };
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -99,13 +99,7 @@ HBRUSH CTheme::s_backBrush = nullptr;
 HBRUSH CTheme::s_backHotBrush = nullptr;
 
 CTheme::CTheme()
-	: m_bLoaded(false)
-	, m_dark(false)
-	, m_lastThemeChangeCallbackId(0)
-	, m_regDarkTheme(REGSTRING_DARKTHEME, 0) // define REGSTRING_DARKTHEME on app level as e.g. L"Software\\TortoiseMerge\\DarkTheme"
-	, m_bDarkModeIsAllowed(false)
-	, m_isHighContrastMode(false)
-	, m_isHighContrastModeDark(false)
+	: m_regDarkTheme(REGSTRING_DARKTHEME, 0) // define REGSTRING_DARKTHEME on app level as e.g. L"Software\\TortoiseMerge\\DarkTheme"
 {
 }
 

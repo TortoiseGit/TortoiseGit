@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021 - TortoiseGit
+// Copyright (C) 2012-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,12 +38,6 @@ const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated")
 
 CMainWindow::CMainWindow(HINSTANCE hInst, const WNDCLASSEX* wcx /* = nullptr*/)
 	: CWindow(hInst, wcx)
-	, m_bShowFindBar(false)
-	, m_directFunction(0)
-	, m_directPointer(0)
-	, m_hWndEdit(nullptr)
-	, m_bMatchCase(false)
-	, m_themeCallbackId(0)
 {
 	SetWindowTitle(L"TortoiseGitUDiff");
 }

@@ -60,16 +60,6 @@ UINT CFileDiffDlg::WM_DIFFFINISHED = RegisterWindowMessage(L"TORTOISEGIT_FILEDIF
 IMPLEMENT_DYNAMIC(CFileDiffDlg, CResizableStandAloneDialog)
 CFileDiffDlg::CFileDiffDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFileDiffDlg::IDD, pParent)
-	, m_bBlame(false)
-	, m_nIconFolder(0)
-	, m_bThreadRunning(FALSE)
-	, m_bIgnoreSpaceAtEol(false)
-	, m_bIgnoreSpaceChange(false)
-	, m_bIgnoreAllSpace(false)
-	, m_bIgnoreBlankLines(false)
-	, m_bCommonAncestorDiff(false)
-	, m_bIsBare(false)
-	, m_bLoadingRef(FALSE)
 {
 }
 

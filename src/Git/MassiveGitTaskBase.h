@@ -43,9 +43,9 @@ protected:
 	CString					GetParams() const { return m_sParams; }
 private:
 	CString					GetListItem(int index) const;
-	bool					m_bUnused;
-	BOOL					m_bIsPath;
-	bool					m_bIgnoreErrors;
+	bool					m_bUnused = true;
+	BOOL					m_bIsPath = TRUE;
+	bool					m_bIgnoreErrors = false;
 	CString					m_sParams;
 	CTGitPathList			m_pathList;
 	STRING_VECTOR			m_itemList;

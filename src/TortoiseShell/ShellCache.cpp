@@ -42,7 +42,6 @@ ShellCache::ShellCache()
 	showunversionedoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowUnversionedOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	drivetypeticker = 0;
 
 	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", DEFAULTWIN11MENUTOPENTRIES, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
@@ -58,7 +57,6 @@ ShellCache::ShellCache()
 	menumaskhigh_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
 	menumasklow_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menumaskhigh_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	menumaskticker = 0;
 	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	blockstatus = CRegStdDWORD(L"Software\\TortoiseGit\\BlockStatus", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	std::fill_n(drivetypecache, 27, UINT(-1));
@@ -68,7 +66,6 @@ ShellCache::ShellCache()
 		drivetypecache[0] = DRIVE_REMOVABLE;
 		drivetypecache[1] = DRIVE_REMOVABLE;
 	}
-	drivetypepathcache[0] = L'\0';
 	nocontextpaths = CRegStdString(L"Software\\TortoiseGit\\NoContextPaths", L"", false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	// Use RegNotifyChangeKeyValue() to get a notification event whenever a registry value
 	// below HKCU\Software\TortoiseGit is changed. If a value has changed, re-read all
@@ -85,7 +82,6 @@ ShellCache::ShellCache()
 	}
 
 	// find out if we're elevated
-	isElevated = false;
 	HANDLE hToken = nullptr;
 	if (::OpenProcessToken(::GetCurrentProcess(), TOKEN_QUERY, &hToken))
 	{

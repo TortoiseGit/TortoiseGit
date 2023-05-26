@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2012-2015, 2017, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -172,10 +172,10 @@ public:
 
 	CComPtr<IPicture> m_IPicture;	///< Same As LPPICTURE (typedef IPicture __RPC_FAR *LPPICTURE)
 
-	LONG		m_Height;	///< Height (in pixels)
-	LONG		m_Width;	///< Width (in pixels)
-	UINT		m_ColorDepth;///< the color depth
-	LONG		m_Weight;	///< Size Of The Image Object In Bytes (File OR Resource)
+	LONG		m_Height = 0;	///< Height (in pixels)
+	LONG		m_Width = 0;	///< Width (in pixels)
+	UINT		m_ColorDepth = 0;///< the color depth
+	LONG		m_Weight = 0;	///< Size Of The Image Object In Bytes (File OR Resource)
 	std::wstring m_Name;	///< The FileName of the Picture as used in Load()
 
 protected:
@@ -194,16 +194,16 @@ private:
 	bool TryLoadSvg(const std::wstring& sFilePathName);
 
 	GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR			gdiplusToken;
+	ULONG_PTR			gdiplusToken = 0;
 	std::unique_ptr<Bitmap> m_pBitmap;
 	std::unique_ptr<BYTE[]> m_pBitmapBuffer;
-	InterpolationMode	m_ip;
-	bool				bIsIcon;
-	bool				bIsTiff;
-	UINT				nCurrentIcon;
+	InterpolationMode	m_ip = InterpolationModeDefault;
+	bool				bIsIcon = false;
+	bool				bIsTiff = false;
+	UINT				nCurrentIcon = 0;
 	std::unique_ptr<BYTE[]> m_lpIcons;
 	std::unique_ptr<std::vector<CAutoIcon>> m_hIcons;
-	DWORD				m_nSize;
+	DWORD				m_nSize = 0;
 
 	#pragma pack(push, r1, 2)   // n = 16, pushed to stack
 

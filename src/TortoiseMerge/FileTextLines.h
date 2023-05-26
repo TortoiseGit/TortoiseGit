@@ -69,7 +69,7 @@ using CStdDWORDArray = CStdArrayV<DWORD>;
 
 struct CFileTextLine {
 	CString				sLine;
-	EOL					eEnding;
+	EOL					eEnding = EOL::AutoLine;
 };
 using CStdFileLineArray = CStdArrayD<CFileTextLine>;
 /**
@@ -101,8 +101,8 @@ public:
 	};
 
 	struct SaveParams {
-		UnicodeType		  m_UnicodeType;
-		EOL				  m_LineEndings;
+		UnicodeType		m_UnicodeType = CFileTextLines::UnicodeType::AUTOTYPE;
+		EOL				m_LineEndings = EOL::AutoLine;
 	};
 
 	/**
@@ -178,8 +178,8 @@ private:
 
 private:
 	CString				m_sErrorString;
-	bool				m_bNeedsConversion;
-	bool				m_bKeepEncoding;
+	bool				m_bNeedsConversion = false;
+	bool				m_bKeepEncoding = false;
 	SaveParams			m_SaveParams;
 	CString				m_sCommentLine;
 	CString				m_sCommentBlockStart;
@@ -191,12 +191,12 @@ private:
 class CBuffer
 {
 public:
-	CBuffer() {Init(); }
-	CBuffer(const CBuffer & Src) {Init(); Copy(Src); }
-	CBuffer(const CBuffer * const Src) {Init(); Copy(*Src); }
+	CBuffer() = default;
+	CBuffer(const CBuffer& Src) { Copy(Src); }
+	CBuffer(const CBuffer* const Src) { Copy(*Src); }
 	~CBuffer() {Free(); }
 
-	CBuffer & operator =(const CBuffer & Src) { Copy(Src); return *this; }
+	CBuffer& operator=(const CBuffer& Src) { Copy(Src); return *this; }
 	operator bool () const { return !IsEmpty(); }
 	template<typename T>
 	operator T () const { return reinterpret_cast<T>(m_pBuffer); }
@@ -206,16 +206,15 @@ public:
 	int GetLength() const { return m_nUsed; }
 	bool IsEmpty() const {  return GetLength()==0; }
 	void SetLength(int nUsed);
-	void Swap(CBuffer & Src);
+	void Swap(CBuffer& Src) noexcept;
 
 private:
 	void Copy(const CBuffer & Src);
 	void Free() { delete [] m_pBuffer; }
-	void Init() { m_pBuffer = nullptr; m_nUsed = 0; m_nAllocated = 0; }
 
-	BYTE * m_pBuffer;
-	int m_nUsed;
-	int m_nAllocated;
+	BYTE* m_pBuffer = nullptr;
+	int m_nUsed = 0;
+	int m_nAllocated = 0;
 };
 
 

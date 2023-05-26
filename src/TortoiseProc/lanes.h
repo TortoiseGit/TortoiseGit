@@ -1,6 +1,6 @@
 ﻿/*
 	Author: Marco Costalba (C) 2005-2007
-	Author: TortoiseGit (C) 2008-2013, 2017, 2021
+	Author: TortoiseGit (C) 2008-2013, 2017, 2021, 2023
 
 	Copyright: See COPYING file that comes with this distribution
 
@@ -9,8 +9,6 @@
 #define LANES_H
 
 #include "githash.h"
-
-#define QVector std::vector
 
 using CGitHashList = std::vector<CGitHash>;
 
@@ -57,10 +55,7 @@ public:
 	static inline bool isMerge(LaneType x) { return (x == LaneType::MERGE_FORK || x == LaneType::MERGE_FORK_R || x == LaneType::MERGE_FORK_L || isBoundary(x)); }
 	static inline bool isActive(LaneType x) { return (x == LaneType::ACTIVE || x == LaneType::INITIAL || x == LaneType::BRANCH || isMerge(x)); }
 
-	Lanes() // init() will setup us later, when data is available
-		: activeLane(0)
-		, boundary(false)
-	{}
+	Lanes() = default;
 	bool isEmpty() const { return typeVec.empty(); }
 	void init(const CGitHash& expectedSha);
 	void clear();
@@ -77,7 +72,7 @@ public:
 	void afterBranch();
 	void afterApplied();
 	void nextParent(const CGitHash& sha);
-	void getLanes(QVector<LaneType>& ln) const { ln = typeVec; } // O(1) vector is implicitly shared
+	void getLanes(std::vector<LaneType>& ln) const { ln = typeVec; } // O(1) vector is implicitly shared
 
 private:
 	int findNextSha(const CGitHash& next, int pos);
@@ -85,10 +80,10 @@ private:
 	int add(LaneType type, const CGitHash& next, int pos, bool& wasEmptyCross);
 	inline bool IS_NODE(LaneType x) { return x == NODE || x == NODE_R || x == NODE_L; }
 
-	int activeLane;
-	QVector<LaneType> typeVec;
-	QVector<CGitHash> nextShaVec;
-	bool boundary;
+	int activeLane = 0;
+	std::vector<LaneType> typeVec;
+	std::vector<CGitHash> nextShaVec;
+	bool boundary = false;
 	LaneType NODE = LaneType::EMPTY;
 	LaneType NODE_L = LaneType::EMPTY;
 	LaneType NODE_R = LaneType::EMPTY;

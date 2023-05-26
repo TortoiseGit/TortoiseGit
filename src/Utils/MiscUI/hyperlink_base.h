@@ -43,17 +43,17 @@ protected:
 	virtual void OnSelect()   {}
 	virtual void OnDeselect() {}
 
-	LPWSTR   m_strURL;                              // hyperlink URL
+	LPWSTR   m_strURL = nullptr;                    // hyperlink URL
 
 private:
 	static COLORREF g_crLinkColor, g_crVisitedColor;// Hyperlink colors
 	static HCURSOR  g_hLinkCursor;                  // Cursor for hyperlink
 	static HFONT    g_UnderlineFont;                // Font for underline display
 	static int      g_counter;						// Global resources user counter
-	BOOL     m_bOverControl;                        // cursor over control?
-	BOOL     m_bVisited;                            // Has it been visited?
-	HFONT    m_StdFont;                             // Standard font
-	WNDPROC  m_pfnOrigCtlProc;
+	BOOL     m_bOverControl = FALSE;                // cursor over control?
+	BOOL     m_bVisited = FALSE;                    // Has it been visited?
+	HFONT    m_StdFont = nullptr;                   // Standard font
+	WNDPROC  m_pfnOrigCtlProc = nullptr;
 
 	void createUnderlineFont();
 	static void createLinkCursor();

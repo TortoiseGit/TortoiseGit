@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2020 - TortoiseGit
-// Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2008-2013, 2015-2016, 2018-2020, 2023 - TortoiseGit
+// Copyright (C) 2011-2013, 2023 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,17 +39,6 @@ static char THIS_FILE[]=__FILE__;
 // CResourceViewBar
 
 CPropertiesWnd::CPropertiesWnd()
-	: m_CommitHash(nullptr)
-	, m_AuthorName(nullptr)
-	, m_AuthorEmail(nullptr)
-	, m_AuthorDate(nullptr)
-	, m_CommitterName(nullptr)
-	, m_CommitterEmail(nullptr)
-	, m_CommitterDate(nullptr)
-	, m_Subject(nullptr)
-	, m_Body(nullptr)
-	, m_ParentGroup(nullptr)
-	, m_BaseInfoGroup(nullptr)
 {
 }
 

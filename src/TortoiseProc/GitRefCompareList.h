@@ -43,10 +43,10 @@ class CGitRefCompareList : public CHintCtrl<CListCtrl>
 	struct RefEntry
 	{
 		CString fullName;
-		CGit::REF_TYPE refType;
+		CGit::REF_TYPE refType = CGit::REF_TYPE::UNKNOWN;
 		CString shortName;
 		CString change;
-		ChangeType changeType;
+		ChangeType changeType = ChangeType::Unknown;
 		CString oldHash;
 		CString oldMessage;
 		CString newHash;
@@ -83,14 +83,14 @@ private:
 	BOOL					m_bHideUnchanged;
 	static BOOL 			m_bSortLogical;
 
-	int colRef;
-	int colRefType;
-	int colChange;
-	int colOldHash;
-	int colOldMessage;
-	int colNewHash;
-	int colNewMessage;
+	int colRef = 0;
+	int colRefType = 0;
+	int colChange = 0;
+	int colOldHash = 0;
+	int colOldMessage = 0;
+	int colNewHash = 0;
+	int colNewMessage = 0;
 
-	bool	m_bAscending;		///< sort direction
-	int		m_nSortedColumn;	///< which column to sort
+	bool	m_bAscending = false;		///< sort direction
+	int		m_nSortedColumn = -1;	///< which column to sort
 };

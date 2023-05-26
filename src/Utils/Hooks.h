@@ -46,9 +46,9 @@ enum class HookType
 class hookkey
 {
 public:
-	HookType		htype;
+	HookType		htype = HookType::unknown_hook;
 	CTGitPath		path;
-	bool			local;
+	bool			local = false;
 
 	bool operator < (const hookkey& hk) const
 	{
@@ -72,12 +72,12 @@ public:
 struct hookcmd
 {
 	CString			commandline;
-	bool			bWait;
-	bool			bShow;
-	bool			bEnabled;
-	bool			bLocal;
-	bool			bApproved; ///< user explicitly approved
-	bool			bStored; ///< use decision is stored in reg
+	bool			bWait = true;
+	bool			bShow = true;
+	bool			bEnabled = false;
+	bool			bLocal = false;
+	bool			bApproved = false; ///< user explicitly approved
+	bool			bStored = false; ///< use decision is stored in reg
 	CString			sRegKey;
 };
 

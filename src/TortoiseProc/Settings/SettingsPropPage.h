@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2023 - TortoiseGit
 // Copyright (C) 2007-2010, 2015, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ protected:
 
 protected:
 
-	SettingsRestart m_restart;
+	SettingsRestart m_restart = Restart_None;
 	CToolTips		m_tooltips;
 
 	/**

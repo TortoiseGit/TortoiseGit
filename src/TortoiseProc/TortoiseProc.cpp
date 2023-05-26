@@ -64,7 +64,6 @@ END_MESSAGE_MAP()
 //////////////////////////////////////////////////////////////////////////
 
 CTortoiseProcApp::CTortoiseProcApp()
-	: hWndExplorer(nullptr)
 {
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Constructor\n");
 	SetDllDirectory(L"");
@@ -77,8 +76,6 @@ CTortoiseProcApp::CTortoiseProcApp()
 	CGit::SetGit2CertificateCheckCertificate(CAppUtils::Git2CertificateCheck);
 	m_bLoadUserToolbars = FALSE;
 	m_bSaveState = FALSE;
-	retSuccess = false;
-	m_gdiplusToken = NULL;
 }
 
 CTortoiseProcApp::~CTortoiseProcApp()

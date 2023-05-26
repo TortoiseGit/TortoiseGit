@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2007, 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,8 +36,8 @@ protected:
     LRESULT                 DoCommand(int id);
 
 private:
-    HWND                    m_hParent;
-    HWND                    m_hHiddenWnd;
+    HWND                    m_hParent = nullptr;
+    HWND                    m_hHiddenWnd = nullptr;
     CHyperLink              m_link;
-    int                     m_themeCallbackId;
+    int                     m_themeCallbackId = 0;
 };

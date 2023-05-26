@@ -22,15 +22,8 @@
 class CDPIAware
 {
 private:
-	CDPIAware()
-		: m_fInitialized(false)
-		, m_dpi(96)
-		, pfnGetDpiForWindow(nullptr)
-		, pfnGetDpiForSystem(nullptr)
-		, pfnGetSystemMetricsForDpi(nullptr)
-		, pfnSystemParametersInfoForDpi(nullptr)
-	{}
-	~CDPIAware() {}
+	CDPIAware() = default;
+	~CDPIAware() = default;
 
 public:
 	static CDPIAware&   Instance()
@@ -201,13 +194,13 @@ private:
 	using GetSystemMetricsForDpiFN = UINT(STDAPICALLTYPE)(int nIndex, UINT dpi);
 	using SystemParametersInfoForDpiFN = UINT(STDAPICALLTYPE)(UINT uiAction,UINT uiParam, PVOID pvParam, UINT fWinIni, UINT dpi);
 
-	GetDpiForWindowFN* pfnGetDpiForWindow;
-	GetDpiForSystemFN* pfnGetDpiForSystem;
-	GetSystemMetricsForDpiFN* pfnGetSystemMetricsForDpi;
-	SystemParametersInfoForDpiFN* pfnSystemParametersInfoForDpi;
+	GetDpiForWindowFN* pfnGetDpiForWindow = nullptr;
+	GetDpiForSystemFN* pfnGetDpiForSystem = nullptr;
+	GetSystemMetricsForDpiFN* pfnGetSystemMetricsForDpi = nullptr;
+	SystemParametersInfoForDpiFN* pfnSystemParametersInfoForDpi = nullptr;
 
 	// Member variable indicating whether the class has been initialized
-	bool m_fInitialized;
+	bool m_fInitialized = false;
 
-	int m_dpi;
+	int m_dpi = 96;
 };

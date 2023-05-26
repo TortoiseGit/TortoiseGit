@@ -63,15 +63,15 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	UINT			m_FindMsg;
-	bool			m_bTerminating;
+	UINT			m_FindMsg = 0;
+	bool			m_bTerminating = false;
 	bool			m_bFindNext;
 	BOOL			m_bMatchCase;
 	BOOL			m_bRegex;
 	bool			m_bIsRef;
 	CHistoryCombo	m_FindCombo;
 	CString			m_FindString;
-	CWnd			*m_pParent;
+	CWnd*			m_pParent = nullptr;
 	STRING_VECTOR	m_RefList;
 	CRegDWORD		m_regMatchCase;
 	CRegDWORD		m_regRegex;

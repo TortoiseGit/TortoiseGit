@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,15 +56,15 @@ protected:
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 
-	CBitmap *		m_pCacheBitmap;
+	CBitmap*		m_pCacheBitmap = nullptr;
 
-	int				m_nLineIndex;
-	int				m_nLineHeight;
+	int				m_nLineIndex = -1;
+	int				m_nLineHeight = 0;
 
 
 	DECLARE_MESSAGE_MAP()
 public:
-	CMainFrame *	m_pMainFrm;
+	CMainFrame*		m_pMainFrm = nullptr;
 };
 
 

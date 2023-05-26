@@ -40,14 +40,14 @@ class CResizableMinMax
 // Attributes
 private:
 	// flags
-	BOOL m_bUseMaxTrack;
-	BOOL m_bUseMinTrack;
-	BOOL m_bUseMaxRect;
+	BOOL m_bUseMaxTrack = FALSE;
+	BOOL m_bUseMinTrack = FALSE;
+	BOOL m_bUseMaxRect = FALSE;
 
-	POINT m_ptMinTrackSize;		// min tracking size
-	POINT m_ptMaxTrackSize;		// max tracking size
-	POINT m_ptMaxPos;			// maximized position
-	POINT m_ptMaxSize;			// maximized size
+	POINT m_ptMinTrackSize{};	// min tracking size
+	POINT m_ptMaxTrackSize{};	// max tracking size
+	POINT m_ptMaxPos{};			// maximized position
+	POINT m_ptMaxSize{};		// maximized size
 
 public:
 	CResizableMinMax();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2017, 2019 - TortoiseGit
+// Copyright (C) 2017, 2019, 2023 - TortoiseGit
 // Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 CNativeRibbonApp::CNativeRibbonApp(CFrameWnd* pFrame, IUIFramework* pFramework)
 	: m_pFrame(pFrame)
 	, m_pFramework(pFramework)
-	, m_cRefCount(0)
 {
 }
 

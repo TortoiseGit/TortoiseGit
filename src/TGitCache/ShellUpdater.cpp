@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011, 2013, 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2015-2017, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,8 +24,6 @@
 #include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater()
-	: m_bRunning(FALSE)
-	, m_bItemsAddedSinceLastUpdate(false)
 {
 	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);

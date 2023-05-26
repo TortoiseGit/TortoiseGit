@@ -48,7 +48,7 @@ public:
 	};
 
 public:
-	ISettingsPropPage* page;
+	ISettingsPropPage* page = nullptr;
 	CString pageName;
 };
 

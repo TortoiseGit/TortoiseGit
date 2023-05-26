@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2020 - TortoiseGit
+// Copyright (C) 2012, 2014-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,9 +27,6 @@
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)
 CInputDlg::CInputDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CInputDlg::IDD, pParent)
-	, m_pProjectProperties(nullptr)
-	, m_iCheck(0)
-	, m_bUseLogWidth(true)
 {
 }
 

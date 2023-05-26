@@ -46,13 +46,13 @@ private:
 	 * Windows error code - if all is well, ERROR_SUCCESS.
 	 * At end of directory, ERROR_NO_MORE_FILES.
 	 */
-	DWORD m_dError;
+	DWORD m_dError = ERROR_SUCCESS;
 
 	/**
 	 * Flag indicating that FindNextFile() has not yet been
 	 * called.
 	 */
-	BOOL m_bFirst;
+	BOOL m_bFirst = TRUE;
 
 protected:
 	/**

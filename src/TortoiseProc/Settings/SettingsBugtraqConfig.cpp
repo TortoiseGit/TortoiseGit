@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,6 @@ IMPLEMENT_DYNAMIC(CSettingsBugtraqConfig, ISettingsPropPage)
 
 CSettingsBugtraqConfig::CSettingsBugtraqConfig()
 : ISettingsPropPage(CSettingsBugtraqConfig::IDD)
-, m_bNeedSave(false)
 , m_bInheritURL(FALSE)
 , m_bInheritMessage(FALSE)
 , m_bInheritLabel(FALSE)

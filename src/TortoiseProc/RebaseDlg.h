@@ -86,7 +86,7 @@ protected:
 	CRect m_DlgOrigRect;
 	CRect m_CommitListOrigRect;
 	CString m_sStatusText;
-	bool m_bStatusWarning;
+	bool m_bStatusWarning = false;
 	BOOL PreTranslateMessage(MSG* pMsg) override;
 	bool LogListHasFocus(HWND hwnd);
 	bool LogListHasMenuItem(int i);
@@ -101,15 +101,15 @@ protected:
 	int  DoRebase();
 	afx_msg LRESULT OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM);
 	void Refresh();
-	volatile LONG m_bThreadRunning;
-	volatile LONG m_bAbort;
+	volatile LONG m_bThreadRunning = FALSE;
+	volatile LONG m_bAbort = FALSE;
 	int  RebaseThread();
 	static UINT RebaseThreadEntry(LPVOID pVoid) { return static_cast<CRebaseDlg*>(pVoid)->RebaseThread(); };
 	BOOL IsEnd();
 
 	int IsCommitEmpty(const CGitHash& hash);
 
-	BOOL m_IsFastForward;
+	bool m_IsFastForward = false;
 
 	CGitHash m_OrigBranchHash;
 	CGitHash m_OrigUpstreamHash;
@@ -121,7 +121,7 @@ protected:
 	int VerifyNoConflict();
 
 	CString m_SquashMessage;
-	bool m_CurrentCommitEmpty;
+	bool m_CurrentCommitEmpty = false;
 	struct SquashFirstMetaData
 	{
 		CString name;
@@ -129,10 +129,7 @@ protected:
 		CTime time;
 		bool set = false;
 
-		SquashFirstMetaData()
-			: set(false)
-		{
-		}
+		SquashFirstMetaData() = default;
 
 		SquashFirstMetaData(GitRev* rev)
 			: set(true)
@@ -179,7 +176,7 @@ protected:
 			return temp;
 		}
 	} m_SquashFirstMetaData;
-	int m_iSquashdate;
+	int m_iSquashdate = 0;
 
 	int CheckNextCommitIsSquash();
 	int GetCurrentCommitID();
@@ -201,8 +198,8 @@ protected:
 	CStatic				m_CtrlStatusText;
 
 	BOOL				m_bAddCherryPickedFrom;
-	BOOL				m_bAutoSkipFailedCommit;
-	bool				m_bRebaseAutoEnd;
+	BOOL				m_bAutoSkipFailedCommit = FALSE;
+	bool				m_bRebaseAutoEnd = false;
 
 public:
 	CStringArray		m_PostButtonTexts;
@@ -212,8 +209,8 @@ public:
 	CString				m_Branch;
 	CString				m_Onto;
 
-	BOOL				m_IsCherryPick;
-	bool				m_bRebaseAutoStart;
+	bool				m_IsCherryPick = false;
+	bool				m_bRebaseAutoStart = false;
 	BOOL				m_bPreserveMerges;
 	BOOL				m_bForce;
 protected:
@@ -229,9 +226,9 @@ protected:
 
 	BOOL				m_bSplitCommit;
 
-	RebaseStage			m_RebaseStage;
-	bool				m_bFinishedRebase;
-	bool				m_bStashed;
+	RebaseStage			m_RebaseStage = RebaseStage::Choose_Branch;
+	bool				m_bFinishedRebase = false;
+	bool				m_bStashed = false;
 
 	std::unordered_map<CGitHash, CGitHash> m_rewrittenCommitsMap;
 	std::vector<CGitHash> m_forRewrite;
@@ -244,7 +241,7 @@ protected:
 	int StartRebase();
 	int CheckRebaseCondition();
 	void CheckRestoreStash();
-	int m_CurrentRebaseIndex;
+	int m_CurrentRebaseIndex = -1;
 	int GoNext();
 	void ResetParentForSquash(const CString& commitMessage);
 	void CleanUpRebaseActiveFolder();

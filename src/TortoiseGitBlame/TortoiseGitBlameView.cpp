@@ -123,29 +123,6 @@ END_MESSAGE_MAP()
 // CTortoiseGitBlameView construction/destruction
 
 CTortoiseGitBlameView::CTortoiseGitBlameView()
-	: bIgnoreEOL(false)
-	, bIgnoreSpaces(false)
-	, bIgnoreAllSpaces(false)
-	, m_MouseLine(-1)
-	, m_bMatchCase(false)
-	, hInstance(nullptr)
-	, hResource(nullptr)
-	, currentDialog(nullptr)
-	, m_blamewidth(0)
-	, m_revwidth(0)
-	, m_logidwidth(0)
-	, m_datewidth(0)
-	, m_authorwidth(0)
-	, m_filenameWidth(0)
-	, m_originalLineNumberWidth(0)
-	, m_linewidth(0)
-	, m_SelectedLine(-1)
-	, m_bShowLine(true)
-	, m_pFindDialog(nullptr)
-	, m_themeCallbackId(0)
-#ifdef USE_TEMPFILENAME
-	, m_Buffer(nullptr)
-#endif
 {
 	m_colorage = !!theApp.GetInt(L"ColorAge", !CTheme::Instance().IsHighContrastMode());
 	m_bLexer = !!theApp.GetInt(L"EnableLexer", !CTheme::Instance().IsHighContrastMode());

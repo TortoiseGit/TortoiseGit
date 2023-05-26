@@ -34,8 +34,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CPatch::CPatch()
-	: m_nStrip(0)
-	, m_UnicodeType(CFileTextLines::UnicodeType::AUTOTYPE)
 {
 }
 

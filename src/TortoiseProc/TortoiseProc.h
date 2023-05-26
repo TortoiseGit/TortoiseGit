@@ -57,15 +57,15 @@ public:
 	void InitializeJumpList(const CString& appid);
 	void DoInitializeJumpList(const CString& appid);
 
-	ULONG_PTR m_gdiplusToken;
+	ULONG_PTR m_gdiplusToken = 0;
 
 	HWND GetExplorerHWND() const { return ::IsWindow(hWndExplorer) ? hWndExplorer : nullptr; }
 
 // Implementation
 private:
 	DECLARE_MESSAGE_MAP()
-	bool	retSuccess;
-	HWND	hWndExplorer;
+	bool	retSuccess = false;
+	HWND	hWndExplorer = nullptr;
 };
 
 extern CTortoiseProcApp theApp;

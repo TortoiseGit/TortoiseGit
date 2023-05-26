@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2008-2010, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -109,8 +110,8 @@ public:
 	 */
 	void Blob(int x, int y, int radius, int height, int page);
 
-	int			m_iDensity;	///< The water density, higher values lead to slower water motion
-	int			m_iHpage;	///< the buffer which is in use
+	int			m_iDensity = 2;	///< The water density, higher values lead to slower water motion
+	int			m_iHpage= 0;	///< the buffer which is in use
 private:
 	/**
 	 * Clears both buffers. The result is that all effects are cleared.
@@ -142,9 +143,9 @@ private:
 	COLORREF GetShiftedColor(COLORREF color,int shift);
 	int NormalizeColor(long color) const;
 
-	int			m_iLightModifier;
-	int			m_iWidth;
-	int			m_iHeight;
+	int			m_iLightModifier = 10;
+	int			m_iWidth = 0;
+	int			m_iHeight = 0;
 
 	std::unique_ptr<int[]>	m_iBuffer1;
 	std::unique_ptr<int[]>	m_iBuffer2;

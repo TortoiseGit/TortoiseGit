@@ -57,7 +57,7 @@ protected:
 	afx_msg void OnBnClickedVieweffectivegitconfig();
 	GITSETTINGS_RADIO_EVENT_HANDLE;
 
-	bool	m_bNeedSave;
+	bool	m_bNeedSave = false;
 	CString	m_UserName;
 	BOOL	m_bInheritUserName;
 	CString	m_UserEmail;

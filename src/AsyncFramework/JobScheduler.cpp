@@ -79,9 +79,6 @@ CJobScheduler* CJobScheduler::CThreadPool::SelectStarving()
 // create empty thread pool
 
 CJobScheduler::CThreadPool::CThreadPool()
-    : yetToCreate (0)
-    , allocCount (0)
-    , maxCount (0)
 {
 }
 
@@ -418,20 +415,12 @@ CJobScheduler::CJobScheduler
     , size_t sharedThreads
     , bool aggressiveThreading
     , bool fifo)
-    : waitingThreads (0)
-    , aggressiveThreading (aggressiveThreading)
+    : aggressiveThreading(aggressiveThreading)
 {
-    threads.runningCount = 0;
-    threads.suspendedCount = 0;
-
-    threads.fromShared = 0;
     threads.maxFromShared = sharedThreads;
 
     threads.unusedCount = threadCount + sharedThreads;
     threads.yetToCreate = threadCount;
-
-    threads.starved = false;
-    threads.stopCount = 0;
 
     queue.set_fifo (fifo);
 

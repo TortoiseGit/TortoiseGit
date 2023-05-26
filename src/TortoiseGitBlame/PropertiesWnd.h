@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2015-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2008-2011, 2015-2017, 2019-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -75,20 +75,20 @@ protected:
 	void InitPropList();
 	void SetPropListFont();
 
-	CMFCPropertyGridProperty* m_CommitHash;
-	CMFCPropertyGridProperty* m_AuthorName;
-	CMFCPropertyGridProperty* m_AuthorDate;
-	CMFCPropertyGridProperty* m_AuthorEmail;
+	CMFCPropertyGridProperty* m_CommitHash = nullptr;
+	CMFCPropertyGridProperty* m_AuthorName = nullptr;
+	CMFCPropertyGridProperty* m_AuthorDate = nullptr;
+	CMFCPropertyGridProperty* m_AuthorEmail = nullptr;
 
-	CMFCPropertyGridProperty* m_CommitterName;
-	CMFCPropertyGridProperty* m_CommitterEmail;
-	CMFCPropertyGridProperty* m_CommitterDate;
+	CMFCPropertyGridProperty* m_CommitterName = nullptr;
+	CMFCPropertyGridProperty* m_CommitterEmail = nullptr;
+	CMFCPropertyGridProperty* m_CommitterDate = nullptr;
 
-	CMFCPropertyGridProperty* m_Subject;
-	CMFCPropertyGridProperty* m_Body;
+	CMFCPropertyGridProperty* m_Subject = nullptr;
+	CMFCPropertyGridProperty* m_Body = nullptr;
 
-	CMFCPropertyGridProperty* m_ParentGroup;
-	CMFCPropertyGridProperty* m_BaseInfoGroup;
+	CMFCPropertyGridProperty* m_ParentGroup = nullptr;
+	CMFCPropertyGridProperty* m_BaseInfoGroup = nullptr;
 
 	std::vector<CMFCPropertyGridProperty*> m_ParentHash;
 	std::vector<CMFCPropertyGridProperty*> m_ParentSubject;

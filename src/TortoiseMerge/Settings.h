@@ -78,10 +78,10 @@ private:
 	}
 
 private:
-	CSetMainPage *		m_pMainPage;
-	CSetColorPage *		m_pColorPage;
+	CSetMainPage*		m_pMainPage = nullptr;
+	CSetColorPage*		m_pColorPage = nullptr;
 
-	int m_themeCallbackId;
+	int m_themeCallbackId = 0;
 
 public:
 	CSettings(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011, 2014, 2017, 2019 - TortoiseGit
+// Copyright (C) 2009, 2011, 2014, 2017, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -54,12 +54,12 @@ private:
 
 private:
 	CAutoFile m_hPipe;
-	OVERLAPPED m_Overlapped;
+	OVERLAPPED m_Overlapped{};
 	CAutoGeneralHandle m_hEvent;
 
 	CAutoFile m_hCommandPipe;
 
 
 	CComAutoCriticalSection m_critSec;
-	LONGLONG m_lastTimeout;
+	LONGLONG m_lastTimeout = 0;
 };

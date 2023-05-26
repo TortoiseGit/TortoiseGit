@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -28,12 +28,10 @@ IMPLEMENT_DYNAMIC(CFindDlg, CResizableStandAloneDialog)
 
 CFindDlg::CFindDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFindDlg::IDD, pParent)
-	, m_bTerminating(false)
 	, m_bFindNext(false)
 	, m_bMatchCase(FALSE)
 	, m_bRegex(FALSE)
 	, m_bIsRef(false)
-	, m_FindMsg(0)
 	, m_regMatchCase(L"Software\\TortoiseGit\\LogDialog\\FindMatchCase", FALSE)
 	, m_regRegex(L"Software\\TortoiseGit\\LogDialog\\FindRegex", FALSE)
 	, m_pParent(pParent)

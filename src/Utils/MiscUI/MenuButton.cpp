@@ -34,10 +34,6 @@ static char THIS_FILE[]=__FILE__;
 IMPLEMENT_DYNCREATE(CMenuButton, CMFCMenuButton)
 
 CMenuButton::CMenuButton() : CThemeMFCMenuButton()
-	, m_nDefault(0)
-	, m_bMarkDefault(TRUE)
-	, m_bShowCurrentItem(true)
-	, m_bAlwaysShowArrow(false)
 {
 	m_bOSMenu = TRUE;
 	m_bDefaultClick = TRUE;

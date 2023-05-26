@@ -27,20 +27,18 @@ class WorktreeDetails
 {
 public:
 	WorktreeDetails(CString worktreeName, CString path, CGitHash hash, CString branch)
-		: m_isBaseRepo(FALSE)
-		, m_IsLocked(FALSE)
-		, m_WorktreeName(worktreeName)
+		: m_WorktreeName(worktreeName)
 		, m_Path(path)
 		, m_Hash(hash)
 		, m_Branch(branch)
 	{}
 
-	bool m_isBaseRepo;
+	bool m_isBaseRepo = false;
 	CString m_WorktreeName;
 	CString m_Path;
 	CGitHash m_Hash;
 	CString m_Branch;
-	bool m_IsLocked;
+	bool m_IsLocked = false;
 	CString m_LockedReason;
 
 	CString GetFullName() const

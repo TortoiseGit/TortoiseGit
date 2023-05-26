@@ -214,17 +214,11 @@ CGit::CGit()
 {
 	git_libgit2_init();
 	GetCurrentDirectory(MAX_PATH, CStrBuf(m_CurrentDir, MAX_PATH));
-	m_IsGitDllInited = false;
-	m_GitDiff=0;
-	m_GitSimpleListDiff=0;
 	m_IsUseGitDLL = !!CRegDWORD(L"Software\\TortoiseGit\\UsingGitDLL",1);
 	m_IsUseLibGit2 = !!CRegDWORD(L"Software\\TortoiseGit\\UseLibgit2", TRUE);
 	m_IsUseLibGit2_mask = CRegDWORD(L"Software\\TortoiseGit\\UseLibgit2_mask", DEFAULT_USE_LIBGIT2_MASK);
 
-	SecureZeroMemory(&m_CurrentGitPi, sizeof(PROCESS_INFORMATION));
-
 	GetSortOptions();
-	this->m_bInitialized =false;
 	CheckMsysGitDir();
 }
 
@@ -2344,7 +2338,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	}
 #endif
 
-	m_bInitialized = TRUE;
+	m_bInitialized = true;
 	return true;
 }
 

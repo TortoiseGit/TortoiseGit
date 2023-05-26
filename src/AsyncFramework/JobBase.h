@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (C) 2009-2010, 2012 by Stefan Fuhrmann                      *
  *   stefanfuhrmann@alice-dsl.de                                           *
  *                                                                         *
@@ -46,16 +46,16 @@ private:
 
     /// TRUE until Execute() is called
 
-    volatile LONG waiting;
+    volatile LONG waiting = TRUE;
 
     /// if set, we should not run at all or at least try to terminate asap
 
-    volatile LONG terminated;
+    volatile LONG terminated = FALSE;
 
     /// if set, \ref finished will not be signalled unless
     /// \ref Execute is called from the scheduler.
 
-    volatile LONG scheduled;
+    volatile LONG scheduled = FALSE;
 
     /// For now, update the internal @a scheduled flag only.
 

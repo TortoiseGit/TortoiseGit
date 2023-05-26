@@ -46,23 +46,10 @@ IMPLEMENT_DYNAMIC(CRebaseDlg, CResizableStandAloneDialog)
 CRebaseDlg::CRebaseDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRebaseDlg::IDD, pParent)
 	, m_bAddCherryPickedFrom(FALSE)
-	, m_bStatusWarning(false)
-	, m_bAutoSkipFailedCommit(FALSE)
-	, m_bFinishedRebase(false)
-	, m_bStashed(false)
 	, m_bSplitCommit(FALSE)
 	, m_bPreserveMerges(FALSE)
-	, m_bRebaseAutoStart(false)
-	, m_bRebaseAutoEnd(false)
-	, m_RebaseStage(RebaseStage::Choose_Branch)
-	, m_CurrentRebaseIndex(-1)
-	, m_bThreadRunning(FALSE)
-	, m_IsCherryPick(FALSE)
 	, m_bForce(BST_UNCHECKED)
-	, m_IsFastForward(FALSE)
 	, m_iSquashdate(CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0))
-	, m_bAbort(FALSE)
-	, m_CurrentCommitEmpty(false)
 {
 }
 
@@ -543,7 +530,7 @@ void CRebaseDlg::OnCbnSelchangeUpstream()
 void CRebaseDlg::FetchLogList()
 {
 	CGitHash base,hash,upstream;
-	m_IsFastForward=FALSE;
+	m_IsFastForward = false;
 
 	if (m_BranchCtrl.GetString().IsEmpty())
 	{
@@ -588,7 +575,7 @@ void CRebaseDlg::FetchLogList()
 
 	if (g_Git.IsFastForward(m_BranchCtrl.GetString(), m_UpstreamCtrl.GetString(), &base) && m_Onto.IsEmpty())
 	{
-		this->m_IsFastForward=TRUE;
+		m_IsFastForward = true;
 
 		m_CommitList.Clear();
 		CString text;
@@ -1253,7 +1240,7 @@ void CRebaseDlg::OnBnClickedContinue()
 	}
 
 	m_bAbort = FALSE;
-	if( this->m_IsFastForward )
+	if (m_IsFastForward)
 	{
 		GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(FALSE);
 		CString cmd,out;
@@ -1768,7 +1755,7 @@ void CRebaseDlg::SetContinueButtonText()
 	{
 	case RebaseStage::Choose_Branch:
 	case RebaseStage::Choose_Commit_Pick_Mode:
-		if(this->m_IsFastForward)
+		if (m_IsFastForward)
 			Text.LoadString(IDS_PROC_STARTREBASEFFBUTTON);
 		else
 			Text.LoadString(IDS_PROC_STARTREBASEBUTTON);
@@ -2589,7 +2576,7 @@ void CRebaseDlg::OnBnClickedAbort()
 			WriteReflog(head, "rebase: begin aborting...");
 	}
 
-	if(this->m_IsFastForward)
+	if (m_IsFastForward)
 	{
 		CString cmd;
 		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(this->m_OrigBranchHash.ToString()));

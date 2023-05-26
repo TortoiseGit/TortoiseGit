@@ -31,16 +31,6 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CResizableSheet, CPropertySheet)
 
-inline void CResizableSheet::PrivateConstruct()
-{
-	m_bEnableSaveRestore = FALSE;
-	m_bSavePage = FALSE;
-	m_dwGripTempState = 1;
-	m_bLayoutDone = FALSE;
-	m_bRectOnly = FALSE;
-	m_nCallbackID = 0;
-}
-
 inline BOOL CResizableSheet::IsWizard() const
 {
 	return (m_psh.dwFlags & PSH_WIZARD);
@@ -48,19 +38,16 @@ inline BOOL CResizableSheet::IsWizard() const
 
 CResizableSheet::CResizableSheet()
 {
-	PrivateConstruct();
 }
 
 CResizableSheet::CResizableSheet(UINT nIDCaption, CWnd *pParentWnd, UINT iSelectPage)
 	 : CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
-	PrivateConstruct();
 }
 
 CResizableSheet::CResizableSheet(LPCTSTR pszCaption, CWnd *pParentWnd, UINT iSelectPage)
 	 : CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
-	PrivateConstruct();
 }
 
 CResizableSheet::~CResizableSheet()

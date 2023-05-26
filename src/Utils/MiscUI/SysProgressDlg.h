@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2012, 2016-2017, 2021 - TortoiseGit
+// Copyright (C) 2009, 2011-2012, 2016-2017, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -165,9 +165,9 @@ public:
 
 protected:
 	ATL::CComPtr<IProgressDialog> m_pIDlg;
-	bool				m_isVisible;
-	DWORD				m_dwDlgFlags;
-	HWND				m_hWndProgDlg;
-	HWND				m_hWndParent;
-	HWND				m_hWndFocus;
+	bool				m_isVisible = false;
+	DWORD				m_dwDlgFlags = PROGDLG_NORMAL;
+	HWND m_hWndProgDlg = nullptr;
+	HWND m_hWndParent = nullptr;
+	HWND m_hWndFocus = nullptr;
 };

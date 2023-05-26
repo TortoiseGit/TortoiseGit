@@ -75,14 +75,7 @@ IMPLEMENT_DYNAMIC(CTreePropSheet, CPropertySheet)
 const UINT CTreePropSheet::s_unPageTreeId = 0x7EEE;
 
 CTreePropSheet::CTreePropSheet()
-:	CPropertySheet(),
-	m_bPageTreeSelChangedActive(FALSE),
-	m_bTreeViewMode(TRUE),
-	m_bPageCaption(FALSE),
-	m_bTreeImages(FALSE),
-	m_nPageTreeWidth(150),
-	m_pwndPageTree(nullptr),
-	m_pFrame(nullptr)
+:	CPropertySheet()
 {
 	m_psh.pfnCallback = PropSheetProc;
 	m_psh.dwFlags |= PSH_USECALLBACK;
@@ -90,14 +83,7 @@ CTreePropSheet::CTreePropSheet()
 
 
 CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
-:	CPropertySheet(nIDCaption, pParentWnd, iSelectPage),
-	m_bPageTreeSelChangedActive(FALSE),
-	m_bTreeViewMode(TRUE),
-	m_bPageCaption(FALSE),
-	m_bTreeImages(FALSE),
-	m_nPageTreeWidth(150),
-	m_pwndPageTree(nullptr),
-	m_pFrame(nullptr)
+:	CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
 {
 	m_psh.pfnCallback = PropSheetProc;
 	m_psh.dwFlags |= PSH_USECALLBACK;
@@ -105,14 +91,7 @@ CTreePropSheet::CTreePropSheet(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPa
 
 
 CTreePropSheet::CTreePropSheet(LPCWSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
-:	CPropertySheet(pszCaption, pParentWnd, iSelectPage),
-	m_bPageTreeSelChangedActive(FALSE),
-	m_bTreeViewMode(TRUE),
-	m_bPageCaption(FALSE),
-	m_bTreeImages(FALSE),
-	m_nPageTreeWidth(150),
-	m_pwndPageTree(nullptr),
-	m_pFrame(nullptr)
+:	CPropertySheet(pszCaption, pParentWnd, iSelectPage)
 {
 	m_psh.pfnCallback = PropSheetProc;
 	m_psh.dwFlags |= PSH_USECALLBACK;

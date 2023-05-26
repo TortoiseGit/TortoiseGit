@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2010, 2013, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +37,7 @@ public:
 	CBrowseFolder();
 	~CBrowseFolder();
 public:
-	DWORD m_style;		///< styles of the dialog.
+	DWORD m_style = 0;		///< styles of the dialog.
 	/**
 	 * Sets the info text of the dialog. Call this method before calling Show().
 	 */
@@ -68,8 +69,8 @@ public:
 	static BOOL m_bCheck2;
 protected:
 	static CString m_sDefaultPath;
-	wchar_t m_title[200];
+	wchar_t m_title[200]{};
 	CString m_CheckText;
 	CString m_CheckText2;
-	bool m_DisableCheckbox2WhenCheckbox1IsChecked;
+	bool m_DisableCheckbox2WhenCheckbox1IsChecked = false;
 };

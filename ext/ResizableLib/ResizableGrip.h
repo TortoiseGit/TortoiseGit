@@ -43,8 +43,6 @@ private:
 	public:
 		CSizeGrip()
 		{
-			m_bTransparent = FALSE;
-			m_bTriangular = FALSE;
 		}
 
 		void SetTriangularShape(BOOL bEnable);
@@ -54,13 +52,13 @@ private:
 
 		LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 
-		SIZE m_size;			// holds grip size
+		SIZE m_size{};			// holds grip size
 
 	protected:
 		BOOL PreCreateWindow(CREATESTRUCT& cs) override;
 
-		BOOL m_bTriangular;		// triangular shape active
-		BOOL m_bTransparent;	// transparency active
+		BOOL m_bTriangular = FALSE;		// triangular shape active
+		BOOL m_bTransparent = FALSE;	// transparency active
 
 		// memory DCs and bitmaps for transparent grip
 		CDC m_dcGrip, m_dcMask;
@@ -68,7 +66,7 @@ private:
 	};
 protected:
 	CSizeGrip m_wndGrip;		// grip control
-	int m_nShowCount;			// support for hiding the grip
+	int m_nShowCount = 0;		// support for hiding the grip
 
 protected:
 	// create a size grip, with options

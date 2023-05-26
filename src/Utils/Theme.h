@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -93,13 +94,13 @@ private:
 	static LRESULT CALLBACK AutoSuggestSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData);
 
 private:
-	bool m_bLoaded;
-	bool m_dark;
-	bool m_isHighContrastMode;
-	bool m_isHighContrastModeDark;
-	bool m_bDarkModeIsAllowed;
+	bool m_bLoaded = false;
+	bool m_dark = false;
+	bool m_isHighContrastMode = false;
+	bool m_isHighContrastModeDark = false;
+	bool m_bDarkModeIsAllowed = false;
 	std::unordered_map<int, ThemeChangeCallback> m_themeChangeCallbacks;
-	int m_lastThemeChangeCallbackId;
+	int m_lastThemeChangeCallbackId = 0;
 	CRegStdDWORD m_regDarkTheme;
 	static HBRUSH s_backBrush;
 	static HBRUSH s_backHotBrush;

@@ -38,10 +38,7 @@ class CShadowTree
 public:
 	using TShadowTreeMap = std::map<CString, CShadowTree>;
 
-	CShadowTree()
-	: m_hTree(nullptr)
-	, m_pParent(nullptr)
-	{}
+	CShadowTree() = default;
 
 	CShadowTree*	GetNextSub(CString& nameLeft, bool bCreateIfNotExist);
 
@@ -91,10 +88,10 @@ public:
 	CString			m_csSubject;
 	CString			m_csDescription;
 
-	HTREEITEM		m_hTree;
+	HTREEITEM		m_hTree = nullptr;
 
 	TShadowTreeMap	m_ShadowTree;
-	CShadowTree*	m_pParent;
+	CShadowTree*	m_pParent = nullptr;
 };
 using VectorPShadowTree = std::vector<CShadowTree*>;
 
@@ -180,14 +177,14 @@ protected:
 	CShadowTree*	GetTreeEntry(HTREEITEM treeItem);
 
 private:
-	bool			m_bHasWC;
+	bool			m_bHasWC = true;
 
 	CString			m_cmdPath;
 
 	STRING_VECTOR	remotes;
 
 	CShadowTree		m_TreeRoot;
-	CShadowTree*	m_pListCtrlRoot;
+	CShadowTree*	m_pListCtrlRoot = nullptr;
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RefTreeCtrl;
 	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>>	m_ListRefLeafs;
 
@@ -200,8 +197,8 @@ private:
 	afx_msg LRESULT OnClickedCancelFilter(WPARAM wParam, LPARAM lParam);
 	CComboBox		m_cBranchFilter;
 
-	int				m_currSortCol;
-	bool			m_currSortDesc;
+	int				m_currSortCol = 0;
+	bool			m_currSortDesc = false;
 	CRegDWORD		m_regCurrSortCol;
 	CRegDWORD		m_regCurrSortDesc;
 	afx_msg void OnTvnSelchangedTreeRef(NMHDR *pNMHDR, LRESULT *pResult);
@@ -231,15 +228,15 @@ private:
 
 	CString	m_sLastSelected;
 	CString m_initialRef;
-	int		m_pickRef_Kind;
+	int		m_pickRef_Kind = gPickRef_All;
 	CString m_pickedRef;
-	bool	m_bWantPick;
-	bool	m_bPickOne;
-	bool	m_bShowRangeOptionWithTwoRefs;
-	bool	m_bPickedRefSet;
+	bool	m_bWantPick = false;
+	bool	m_bPickOne = false;
+	bool	m_bShowRangeOptionWithTwoRefs = false;
+	bool	m_bPickedRefSet = false;
 
-	DWORD	m_DateFormat;		// DATE_SHORTDATE or DATE_LONGDATE
-	bool	m_bRelativeTimes;	// Show relative times
+	DWORD	m_DateFormat = DATE_SHORTDATE;		// DATE_SHORTDATE or DATE_LONGDATE
+	bool	m_bRelativeTimes = false;	// Show relative times
 
 public:
 	static CString	PickRef(bool returnAsHash = false, CString initialRef = CString(), int pickRef_Kind = gPickRef_All, bool pickMultipleRefs = false, bool showRangeOptionWithTwoRefs = true);

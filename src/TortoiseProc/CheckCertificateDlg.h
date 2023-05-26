@@ -35,7 +35,7 @@ public:
 	CString m_sCertificateCN;
 	CString m_sCertificateIssuer;
 
-	git_cert_x509* cert;
+	git_cert_x509* cert = nullptr;
 
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support

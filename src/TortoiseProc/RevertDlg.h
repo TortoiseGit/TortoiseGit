@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,13 +58,13 @@ private:
 public:
 	CTGitPathList 		m_pathList;
 	CTGitPathList 		m_selectedPathList;
-	BOOL				m_bRecursive;
+	bool				m_bRecursive = false;
 
 private:
 	BOOL				m_bSelectAll;
-	volatile LONG		m_bThreadRunning;
+	volatile LONG		m_bThreadRunning = FALSE;
 	CGitStatusListCtrl	m_RevertList;
 	CButton				m_SelectAll;
-	bool				m_bCancelled;
+	bool				m_bCancelled = false;
 };
 

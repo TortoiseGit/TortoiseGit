@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013, 2015-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2016, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2012-2013, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,8 +27,6 @@
 #include "Theme.h"
 
 CFindBar::CFindBar()
-	: m_hParent(nullptr)
-	, m_themeCallbackId(0)
 {
 }
 

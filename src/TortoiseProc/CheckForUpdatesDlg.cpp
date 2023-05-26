@@ -48,12 +48,6 @@
 IMPLEMENT_DYNAMIC(CCheckForUpdatesDlg, CResizableStandAloneDialog)
 CCheckForUpdatesDlg::CCheckForUpdatesDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CCheckForUpdatesDlg::IDD, pParent)
-	, m_bShowInfo(FALSE)
-	, m_bForce(FALSE)
-	, m_bVisible(FALSE)
-	, m_pDownloadThread(nullptr)
-	, m_bThreadRunning(FALSE)
-	, m_updateDownloader(nullptr)
 	, m_sUpdateDownloadLink(L"https://tortoisegit.org/download")
 {
 }
@@ -310,7 +304,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 				FillDownloads(versioncheck);
 
 			AdjustSize(versioncheck.GetTortoiseGitHasChangelog(), versioncheck.GetTortoiseGitIsDirectDownloadable());
-			m_bShowInfo = TRUE;
+			m_bShowInfo = true;
 		}
 		else if (m_bShowInfo)
 		{
@@ -468,7 +462,7 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 			KillTimer(100);
 			if (m_bShowInfo)
 			{
-				m_bVisible = TRUE;
+				m_bVisible = true;
 				ShowWindow(SW_SHOWNORMAL);
 			}
 			else
@@ -481,7 +475,7 @@ void CCheckForUpdatesDlg::OnTimer(UINT_PTR nIDEvent)
 void CCheckForUpdatesDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 {
 	CResizableStandAloneDialog::OnWindowPosChanging(lpwndpos);
-	if (m_bVisible == FALSE)
+	if (!m_bVisible)
 		lpwndpos->flags &= ~SWP_SHOWWINDOW;
 }
 

@@ -129,9 +129,9 @@ public:
 		return StrCmpI(left, right);
 	}
 
-	int m_col;
-	bool m_desc;
-	CListCtrl* m_pList;
+	int m_col = CRepositoryBrowser::eCol_Name;
+	bool m_desc = false;
+	CListCtrl* m_pList = nullptr;
 };
 
 // CRepositoryBrowser dialog
@@ -142,19 +142,8 @@ IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 
 CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
-, m_currSortCol(0)
-, m_currSortDesc(false)
 , m_sRevision(rev)
-, m_bHasWC(true)
 , m_ColumnManager(&m_RepoList)
-, m_nIconFolder(0)
-, m_nOpenIconFolder(0)
-, m_nExternalOvl(0)
-, m_nExecutableOvl(0)
-, m_nSymlinkOvl(0)
-, bDragMode(false)
-, oldy(0)
-, oldx(0)
 {
 }
 
@@ -1048,12 +1037,11 @@ void CRepositoryBrowser::HandleDividerMove(CPoint point, bool bDraw)
 	if (bDraw)
 	{
 		CDC * pDC = GetDC();
-		DrawXorBar(pDC, oldx - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(2));
+		DrawXorBar(pDC, m_oldSliderXPos - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(2));
 		ReleaseDC(pDC);
 	}
 
-	oldx = point.x;
-	oldy = point.y;
+	m_oldSliderXPos = point.x;
 
 	//position the child controls
 	GetDlgItem(IDC_REPOTREE)->GetWindowRect(&treelist);
@@ -1101,7 +1089,7 @@ void CRepositoryBrowser::OnMouseMove(UINT nFlags, CPoint point)
 	if (point.x > treelist.right - minWidth)
 		point.x = treelist.right - minWidth;
 
-	if ((nFlags & MK_LBUTTON) && (point.x != oldx))
+	if ((nFlags & MK_LBUTTON) && (point.x != m_oldSliderXPos))
 	{
 		CDC * pDC = GetDC();
 
@@ -1109,14 +1097,13 @@ void CRepositoryBrowser::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			auto divWidth = CDPIAware::Instance().ScaleX(2);
 			auto divHeight = CDPIAware::Instance().ScaleY(2);
-			DrawXorBar(pDC, oldx - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - divHeight);
+			DrawXorBar(pDC, m_oldSliderXPos - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - divHeight);
 			DrawXorBar(pDC, point.x - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - divHeight);
 
 			ReleaseDC(pDC);
 		}
 
-		oldx = point.x;
-		oldy = point.y;
+		m_oldSliderXPos = point.x;
 	}
 
 	CStandAloneDialogTmpl<CResizableDialog>::OnMouseMove(nFlags, point);
@@ -1166,8 +1153,7 @@ void CRepositoryBrowser::OnLButtonDown(UINT nFlags, CPoint point)
 	DrawXorBar(pDC, point.x - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(2));
 	ReleaseDC(pDC);
 
-	oldx = point.x;
-	oldy = point.y;
+	m_oldSliderXPos = point.x;
 
 	CStandAloneDialogTmpl<CResizableDialog>::OnLButtonDown(nFlags, point);
 }

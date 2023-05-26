@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006, 2009-2010, 2014-2015, 2017-2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,17 +44,11 @@ int CALLBACK PropSheetProc(HWND /*hWndDlg*/, UINT uMsg, LPARAM lParam)
 IMPLEMENT_DYNAMIC(CSettings, CPropertySheet)
 CSettings::CSettings(UINT nIDCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(nIDCaption, pParentWnd, iSelectPage)
-	, m_pMainPage(nullptr)
-	, m_pColorPage(nullptr)
-	, m_themeCallbackId(0)
 {
 }
 
 CSettings::CSettings(LPCWSTR pszCaption, CWnd* pParentWnd, UINT iSelectPage)
 	: CPropertySheet(pszCaption, pParentWnd, iSelectPage)
-	, m_pMainPage(nullptr)
-	, m_pColorPage(nullptr)
-	, m_themeCallbackId(0)
 {
 	AddPropPages();
 }

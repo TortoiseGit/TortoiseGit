@@ -82,8 +82,8 @@ public:
 	};
 
 protected:
-	int				m_RebaseAction;
-	unsigned int	m_Action;
+	int				m_RebaseAction = 0;
+	unsigned int	m_Action = 0;
 	CTGitPathList	m_Files;
 	CTGitPathList	m_UnRevFiles;
 
@@ -92,9 +92,9 @@ protected:
 public:
 	CString m_Notes;
 
-	wchar_t m_Mark;
-	bool m_RolledUp; // Parent commits up to the next merge, fork or ref are not shown
-	bool m_RolledUpIsForced; // for CGitLogList::ContextMenuAction()/ID_TOGGLE_ROLLUP
+	wchar_t m_Mark = '\0';
+	bool m_RolledUp = false; // Parent commits up to the next merge, fork or ref are not shown
+	bool m_RolledUpIsForced = false; // for CGitLogList::ContextMenuAction()/ID_TOGGLE_ROLLUP
 	CString m_Ref; // for Refloglist
 	CString m_RefAction; // for Refloglist
 
@@ -103,9 +103,9 @@ public:
 
 	static std::atomic<std::shared_ptr<CGitMailmap>> s_Mailmap;
 
-	volatile LONG m_IsDiffFiles;
+	volatile LONG m_IsDiffFiles = FALSE;
 
-	CALL_UPDATE_DIFF_ASYNC *m_CallDiffAsync;
+	CALL_UPDATE_DIFF_ASYNC* m_CallDiffAsync = nullptr;
 
 	int CheckAndDiff()
 	{
@@ -230,7 +230,7 @@ public:
 	int SafeFetchFullInfo(CGit* git);
 
 	int SafeGetSimpleList(CGit* git);
-	volatile LONG m_IsSimpleListReady;
+	volatile LONG m_IsSimpleListReady = FALSE;
 	STRING_VECTOR m_SimpleFileList;  /* use for find and filter, no rename detection and line num stat info */
 
 	static int GetRefLog(const CString& ref, std::vector<GitRevLoglist>& refloglist, CString& error);

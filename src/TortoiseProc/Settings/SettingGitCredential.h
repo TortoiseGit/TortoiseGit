@@ -168,7 +168,7 @@ protected:
 	bool SaveSimpleCredential(int type);
 	bool SaveSettings();
 
-	int			m_ChangedMask;
+	int			m_ChangedMask = 0;
 	int			m_iSimpleStoredValue; // the SimpleCredential value initially read from config
 
 	CComboBox	m_ctrlSimpleCredential;

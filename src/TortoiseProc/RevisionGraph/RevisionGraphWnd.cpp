@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2022 - TortoiseGit
+// Copyright (C) 2012-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,27 +83,16 @@ enum RevisionGraphContextMenuCommands
 
 CRevisionGraphWnd::CRevisionGraphWnd()
 	: CWnd()
-	, m_SelectedEntry1(nullptr)
-	, m_SelectedEntry2(nullptr)
-	, m_HeadNode(nullptr)
-	, m_pDlgTip(nullptr)
 	, m_nFontSize(12)
 	, m_bTweakTrunkColors(true)
 	, m_bTweakTagsColors(true)
 	, m_fZoomFactor(DEFAULT_ZOOM)
-	, m_ptRubberEnd(0,0)
-	, m_ptMoveCanvas(0,0)
 	, m_bShowOverview(false)
-	, m_parent(nullptr)
-	, m_hoverIndex(nullptr)
-	, m_hoverGlyphs (0)
-	, m_tooltipIndex(nullptr)
 	, m_showHoverGlyphs (false)
 	, m_bIsCanvasMove(false)
 	, m_previewWidth(0)
 	, m_previewHeight(0)
 	, m_previewZoom(1)
-	, m_ullTicks(0)
 	, m_logEntries(&m_LogCache)
 	, m_bCurrentBranch(false)
 	, m_bLocalBranches(FALSE)

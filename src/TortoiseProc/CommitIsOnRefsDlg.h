@@ -88,18 +88,18 @@ public:
 	CString				m_Rev;
 
 private:
-	HWND				m_bNonModalParentHWND;
+	HWND				m_bNonModalParentHWND = nullptr;
 	static UINT			WM_GETTINGREFSFINISHED;
 	void				StartGetRefsThread();
 	static UINT			GetRefsThreadEntry(LPVOID pVoid);
 	UINT				GetRefsThread();
 
-	volatile LONG		m_bThreadRunning;
-	bool				m_bRefsLoaded;
+	volatile LONG		m_bThreadRunning = FALSE;
+	bool				m_bRefsLoaded = false;
 	CString				m_sLastSelected;
 	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cRefList;
 	CACEdit				m_cRevEdit;
 	CMenuButton			m_cSelRevBtn;
 	CFilterEdit			m_cFilter;
-	bool				m_bHasWC;
+	bool				m_bHasWC = true;
 };

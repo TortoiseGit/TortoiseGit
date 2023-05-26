@@ -68,7 +68,6 @@ public:
 
 
 CTortoiseMergeApp::CTortoiseMergeApp()
-	: m_hasConflicts(false)
 {
 	EnableHtmlHelp();
 	git_libgit2_init();

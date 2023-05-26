@@ -49,7 +49,7 @@ protected:
 private:
 	bool HasClipboardPatch();
 	static bool TrySavePatchFromClipboard(std::wstring& resultFile);
-	bool m_hasConflicts;
+	bool m_hasConflicts = false;
 };
 
 extern CTortoiseMergeApp theApp;

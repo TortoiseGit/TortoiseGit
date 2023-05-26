@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -91,18 +91,18 @@ class CLogCache
 public:
 
 protected:
-	BOOL m_bEnabled;
+	BOOL m_bEnabled = TRUE;
 
-	HANDLE m_IndexFile;
-	HANDLE m_IndexFileMap;
-	SLogCacheIndexFile *m_pCacheIndex;
+	HANDLE m_IndexFile = INVALID_HANDLE_VALUE;
+	HANDLE m_IndexFileMap = nullptr;
+	SLogCacheIndexFile* m_pCacheIndex = nullptr;
 
 
 
-	HANDLE m_DataFile;
-	HANDLE m_DataFileMap;
-	BYTE  *m_pCacheData;
-	DWORD m_DataFileLength;
+	HANDLE m_DataFile = INVALID_HANDLE_VALUE;
+	HANDLE m_DataFileMap = nullptr;
+	BYTE* m_pCacheData = nullptr;
+	DWORD m_DataFileLength = 0;
 
 	void CloseDataHandles();
 	void CloseIndexHandles();

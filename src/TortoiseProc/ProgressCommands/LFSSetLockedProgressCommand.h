@@ -21,13 +21,15 @@
 class LFSSetLockedProgressCommand : public ProgressCommand
 {
 private:
-	bool m_bIsLock;
-	bool m_bIsForce;
+	bool m_bIsLock = true;
+	bool m_bIsForce = false;
 
 public:
 	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 
-	LFSSetLockedProgressCommand(bool isLock, bool isForce) : m_bIsLock(isLock), m_bIsForce(isForce)
+	LFSSetLockedProgressCommand(bool isLock, bool isForce)
+		: m_bIsLock(isLock)
+		, m_bIsForce(isForce)
 	{
 	};
 };

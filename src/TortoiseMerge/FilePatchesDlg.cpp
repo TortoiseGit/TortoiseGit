@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015, 2020 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017, 2019-2020-2022 - TortoiseGit
+// Copyright (C) 2012, 2016-2017, 2019-2020-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,13 +30,6 @@
 IMPLEMENT_DYNAMIC(CFilePatchesDlg, CResizableStandAloneDialog)
 CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CFilePatchesDlg::IDD, pParent)
-	, m_ShownIndex(-1)
-	, m_bMinimized(FALSE)
-	, m_pPatch(nullptr)
-	, m_pCallBack(nullptr)
-	, m_nWindowHeight(-1)
-	, m_pMainFrame(nullptr)
-	, m_boldFont(nullptr)
 {
 }
 

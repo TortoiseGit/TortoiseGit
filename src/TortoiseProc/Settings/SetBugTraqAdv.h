@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2016, 2023 - TortoiseGit
 // Copyright (C) 2008,2010 - TortoiseSVN
@@ -56,7 +56,7 @@ protected:
 
 	BOOL			m_bEnabled;
 	CString			m_sPath;
-	CLSID			m_provider_clsid;
+	CLSID			m_provider_clsid = GUID_NULL;
 	CString			m_sParameters;
 	CComboBox		m_cProviderCombo;
 };

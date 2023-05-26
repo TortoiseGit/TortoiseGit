@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2020-2022 - TortoiseGit
+// Copyright (C) 2014, 2020-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,10 +39,10 @@ private:
 	static bool GetTrueWindowsVersion(OSVERSIONINFOEX& osVersionInfo);
 	static void BruteforceGetWindowsVersionNumber(OSVERSIONINFOEX& osVersionInfo);
 
-	HINTERNET hOpenHandle;
+	HINTERNET hOpenHandle = nullptr;
 
-	HWND	m_hWnd;
-	bool	m_bForce;
-	UINT	m_uiMsg;
-	CEvent	*m_eventStop;
+	HWND	m_hWnd = nullptr;
+	bool	m_bForce = false;
+	UINT	m_uiMsg = 0;
+	CEvent* m_eventStop = nullptr;
 };

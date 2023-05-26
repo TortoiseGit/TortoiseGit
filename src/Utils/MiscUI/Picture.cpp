@@ -39,16 +39,6 @@
 #define HIMETRIC_INCH 2540
 
 CPicture::CPicture()
-	: m_Height(0)
-	, m_Weight(0)
-	, m_Width(0)
-	, m_ip(InterpolationModeDefault)
-	, nCurrentIcon(0)
-	, bIsIcon(false)
-	, bIsTiff(false)
-	, m_nSize(0)
-	, m_ColorDepth(0)
-	, gdiplusToken(NULL)
 {
 }
 

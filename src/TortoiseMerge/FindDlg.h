@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2010, 2013-2014, 2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,8 +75,8 @@ protected:
 	afx_msg void OnBnClickedReplaceall();
 	void SaveWindowPos(CWnd* pParent);
 private:
-	UINT			m_FindMsg;
-	bool			m_bTerminating;
+	UINT			m_FindMsg = 0;
+	bool			m_bTerminating = false;
 	bool			m_bFindNext;
 	BOOL			m_bMatchCase;
 	BOOL			m_bLimitToDiffs;
@@ -84,11 +85,11 @@ private:
 	CHistoryCombo	m_FindCombo;
 	CHistoryCombo	m_ReplaceCombo;
 	CStatic			m_FindStatus;
-	CWnd *			m_pParent;
+	CWnd*			m_pParent = nullptr;
 	CRegDWORD		m_regMatchCase;
 	CRegDWORD		m_regLimitToDiffs;
 	CRegDWORD		m_regWholeWord;
 	COLORREF		m_clrFindStatus;
 	bool			m_bReadonly;
-	int				m_id;
+	int				m_id = 0;
 };

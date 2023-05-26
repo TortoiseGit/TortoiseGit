@@ -165,14 +165,14 @@ protected:
 	CRect					m_rcEditArea;
 	CRect					m_rcButtonArea;
 	CRect					m_rcInfoArea;
-	BOOL					m_bShowCancelButtonAlways;
-	BOOL					m_bPressed;
-	UINT					m_iButtonClickedMessageId;
-	UINT					m_iCancelClickedMessageId;
+	BOOL					m_bShowCancelButtonAlways = FALSE;
+	BOOL					m_bPressed = FALSE;
+	UINT					m_iButtonClickedMessageId = WM_FILTEREDIT_INFOCLICKED;
+	UINT					m_iCancelClickedMessageId = WM_FILTEREDIT_CANCELCLICKED;
 	COLORREF				m_backColor;
 	CBrush					m_brBack;
-	int						m_themeCallbackId;
-	IFilterEditValidator *	m_pValidator;
+	int						m_themeCallbackId = 0;
+	IFilterEditValidator*	m_pValidator = nullptr;
 	CString					m_sCueBanner;
 };
 

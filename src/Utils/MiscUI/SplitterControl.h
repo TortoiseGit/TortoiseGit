@@ -68,12 +68,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	bool		m_bIsPressed;
-	int			m_nType;
-	int			m_nX, m_nY;
-	int			m_nMin, m_nMax;
-	int			m_nSavePos;
-	bool		m_bMouseOverControl;
-	ULONG_PTR	m_gdiPlusToken;
+	bool		m_bIsPressed  = false;
+	int			m_nType = 0;
+	int			m_nX = 0;
+	int			m_nY = 0;
+	int			m_nMin = -1;
+	int			m_nMax = -1;
+	int			m_nSavePos = 0;
+	bool		m_bMouseOverControl = false;
+	ULONG_PTR	m_gdiPlusToken = 0;
 	IUIAnimationVariablePtr m_AnimVarHot;
 };

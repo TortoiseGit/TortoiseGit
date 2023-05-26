@@ -23,8 +23,7 @@
 #include <assert.h>
 
 CMassiveGitTaskBase::CMassiveGitTaskBase(CString gitParameters, BOOL isPath, bool ignoreErrors)
-	: m_bUnused(true)
-	, m_bIsPath(isPath)
+	: m_bIsPath(isPath)
 	, m_bIgnoreErrors(ignoreErrors)
 	, m_sParams(gitParameters)
 {

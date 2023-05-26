@@ -1,5 +1,6 @@
 // TortoiseIDiff - an image diff viewer in TortoiseSVN
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,7 +26,7 @@
  */
 class CNiceTrackbar {
 public:
-    CNiceTrackbar() : m_Window(nullptr), m_OrigProc(nullptr), m_Dragging(false), m_DragChanged(false) {}
+    CNiceTrackbar() = default;
 
     HWND GetWindow() const { return m_Window; }
     bool IsValid() const { return m_Window != nullptr; }
@@ -38,8 +39,8 @@ private:
     bool SetThumb (LPARAM lparamPoint);
 
 private:
-    HWND m_Window;
-    WNDPROC m_OrigProc;
-    bool m_Dragging;
-    bool m_DragChanged;
+    HWND m_Window = nullptr;
+    WNDPROC m_OrigProc = nullptr;
+    bool m_Dragging = false;
+    bool m_DragChanged = false;
 };

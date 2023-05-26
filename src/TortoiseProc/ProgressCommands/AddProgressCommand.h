@@ -21,20 +21,16 @@
 class AddProgressCommand : public ProgressCommand
 {
 protected:
-	bool m_bShowCommitButtonAfterAdd;
-	bool m_bExecutable;
-	bool m_bSymlink;
+	bool m_bShowCommitButtonAfterAdd = true;
+	bool m_bExecutable = false;
+	bool m_bSymlink = false;
 
 	bool SetFileMode(uint32_t mode);
 
 public:
 	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 
-	AddProgressCommand()
-		: m_bShowCommitButtonAfterAdd(true)
-		, m_bExecutable(false)
-		, m_bSymlink(false)
-	{}
+	AddProgressCommand() = default;
 
 	void SetShowCommitButtonAfterAdd(bool b) { m_bShowCommitButtonAfterAdd = b; }
 	void SetExecutable(bool b = true)

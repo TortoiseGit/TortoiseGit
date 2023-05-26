@@ -131,6 +131,6 @@ private:
 	std::vector<int>			m_OriginalLineNumbers;
 	std::vector<BYTE_VECTOR>	m_RawLines;
 
-	int m_encode;
+	int m_encode = -1;
 	std::vector<CStringA> m_Utf8Lines;
 };

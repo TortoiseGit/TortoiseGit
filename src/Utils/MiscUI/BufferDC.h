@@ -7,16 +7,16 @@ class CBufferDC :
 	DECLARE_DYNAMIC(CBufferDC)
 
 private:
-	HDC m_hOutputDC;
-	HDC m_hAttributeDC;
-	HDC m_hMemoryDC;
+	HDC m_hOutputDC = nullptr;
+	HDC m_hAttributeDC = nullptr;
+	HDC m_hMemoryDC = nullptr;
 
-	HBITMAP  m_hPaintBitmap;
-	HBITMAP  m_hOldBitmap;
+	HBITMAP m_hPaintBitmap = nullptr;
+	HBITMAP m_hOldBitmap = nullptr;
 
-	RECT m_ClientRect;
+	RECT m_ClientRect{};
 
-	BOOL m_bBoundsUpdated;
+	BOOL m_bBoundsUpdated = FALSE;
 
 public:
 	CBufferDC(CWnd* pWnd);

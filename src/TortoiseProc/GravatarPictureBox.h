@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2019 - TortoiseGit
+// Copyright (C) 2013, 2016-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,12 +35,12 @@ private:
 	afx_msg void OnPaint();
 	int		DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest);
 
-	bool				m_bEnableGravatar;
+	bool				m_bEnableGravatar = false;
 	CString				m_filename;
 	CString				m_email;
-	HANDLE				m_gravatarEvent;
-	CWinThread*			m_gravatarThread;
-	bool*				m_gravatarExit;
+	HANDLE				m_gravatarEvent = INVALID_HANDLE_VALUE;
+	CWinThread*			m_gravatarThread = nullptr;
+	bool*				m_gravatarExit = nullptr;
 	CComAutoCriticalSection m_gravatarLock;
 
 	DECLARE_MESSAGE_MAP();

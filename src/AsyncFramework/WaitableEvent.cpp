@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (C) 2009 by Stefan Fuhrmann                                 *
  *   stefanfuhrmann@alice-dsl.de                                           *
  *                                                                         *
@@ -43,7 +43,7 @@ namespace
 
         // flag indicating that this instance has not been destroyed, yet
 
-        volatile LONG alive;
+        volatile LONG alive = TRUE;
 
         // construction / destruction:
         // free all handles upon destruction at latest
@@ -68,10 +68,7 @@ namespace
 
     // construction / destruction:
 
-    CWaitableEventPool::CWaitableEventPool()
-        : alive (TRUE)
-    {
-    }
+    CWaitableEventPool::CWaitableEventPool() = default;
 
     CWaitableEventPool::~CWaitableEventPool()
     {
@@ -151,8 +148,6 @@ namespace
 // construction / destruction: manage event handle
 
 COneShotEvent::COneShotEvent()
-    : event (NULL)
-    , state (FALSE)
 {
 }
 

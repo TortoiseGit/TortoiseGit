@@ -38,7 +38,7 @@ class CTortoiseGitBlameApp : public CWinAppEx
 public:
 	CTortoiseGitBlameApp();
 	~CTortoiseGitBlameApp();
-	ULONG_PTR m_gdiplusToken;
+	ULONG_PTR m_gdiplusToken = 0;
 
 // Overrides
 public:
@@ -48,7 +48,7 @@ public:
 	BOOL StoreWindowPlacement(const CRect& rectNormalPosition, int nFlags, int nShowCmd) override;
 
 // Implementation
-	BOOL  m_bHiColorIcons;
+	BOOL m_bHiColorIcons = TRUE;
 
 	CString m_Rev;
 	afx_msg void OnAppAbout();

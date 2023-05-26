@@ -48,12 +48,12 @@ public:
 
 class CSmartAnimation
 {
-	CAnimateCtrl* m_pAnimate;
+	CAnimateCtrl* m_pAnimate = nullptr;
 
 public:
 	CSmartAnimation(CAnimateCtrl* pAnimate)
+		: m_pAnimate(pAnimate)
 	{
-		m_pAnimate = pAnimate;
 		if (m_pAnimate)
 		{
 			m_pAnimate->ShowWindow(SW_SHOW);

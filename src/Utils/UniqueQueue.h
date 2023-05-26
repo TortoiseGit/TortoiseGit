@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2020 - TortoiseGit
+// Copyright (C) 2013, 2020, 2023 - TortoiseGit
 // Copyright (C) 2010-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -54,16 +54,15 @@ private:
 	struct UniqueQueueStruct
 	{
 		T			value;
-		size_t		priority;
+		size_t		priority = 0;
 	};
 	std::map<T, size_t>				m_QueueTMap;
 	std::deque<UniqueQueueStruct>	m_Queue;
-	size_t							m_highestValue;
+	size_t							m_highestValue = 0;
 };
 
 template <class T>
 UniqueQueue<T>::UniqueQueue()
-	: m_highestValue(0)
 {
 }
 

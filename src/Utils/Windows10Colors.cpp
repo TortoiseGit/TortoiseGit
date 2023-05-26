@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021 - TortoiseGit
+// Copyright (C) 2021, 2023 - TortoiseGit
 // Copyright (C) 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,14 +30,11 @@ namespace WindowsUI = ABI::Windows::UI;
 /// Wrapper class for WinRT string reference
 class HStringRef
 {
-	HSTRING hstr;
-	HSTRING_HEADER str_header;
+	HSTRING hstr = nullptr;
+	HSTRING_HEADER str_header{};
 
 public:
-	HStringRef()
-		: hstr(nullptr)
-	{
-	}
+	HStringRef() = default;
 	// String ref doesn't need dtor
 
 	template <size_t N>

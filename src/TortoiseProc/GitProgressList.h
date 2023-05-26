@@ -64,25 +64,25 @@ public:
 	void SetItemProgress(long count) { m_itemCount = count;} // do not use SetItemCount here as this overrides the ListBox method
 	bool SetBackgroundImage(UINT nID);
 	bool DidErrorsOccur() const { return m_bErrorsOccurred; }
-	bool			m_bErrorsOccurred;
-	CWnd			*m_pProgressLabelCtrl;
-	CWnd			*m_pInfoCtrl;
-	CAnimateCtrl	*m_pAnimate;
-	CProgressCtrl	*m_pProgControl;
-	ProgressCommand	*m_Command;
+	bool m_bErrorsOccurred = false;
+	CWnd* m_pProgressLabelCtrl = nullptr;
+	CWnd* m_pInfoCtrl = nullptr;
+	CAnimateCtrl* m_pAnimate = nullptr;
+	CProgressCtrl* m_pProgControl = nullptr;
+	ProgressCommand* m_Command = nullptr;
 	void			Cancel();
 	volatile BOOL IsCancelled() const { return m_bCancelled; }
 	volatile LONG IsRunning() const { return m_bThreadRunning; }
-	CWinThread*				m_pThread;
-	CWnd			*m_pPostWnd;
-	bool					m_bSetTitle;
+	CWinThread* m_pThread = nullptr;
+	CWnd* m_pPostWnd = nullptr;
+	bool m_bSetTitle = false;
 
 public:
 	using ContextMenuActionList = std::vector<std::function<void()>>;
 	struct Payload
 	{
-		CGitProgressList* list;
-		git_repository* repo;
+		CGitProgressList* list = nullptr;
+		git_repository* repo = nullptr;
 	};
 
 	class NotificationData
@@ -90,8 +90,6 @@ public:
 	public:
 		NotificationData()
 		: color(::GetSysColor(COLOR_WINDOWTEXT))
-		, colorIsDirect(false)
-		, bAuxItem(false)
 		{};
 
 		NotificationData(const CTGitPath &path, UINT actionTextId)
@@ -111,8 +109,8 @@ public:
 		CString					sActionColumnText;
 		CTGitPath				path;
 		COLORREF				color;
-		bool					colorIsDirect;
-		bool					bAuxItem;					// Set if this item is not a true 'Git action'
+		bool					colorIsDirect = false;
+		bool					bAuxItem = false; // Set if this item is not a true 'Git action'
 		CString					sPathColumnText;
 	};
 
@@ -196,32 +194,32 @@ private:
 
 	NotificationDataVect	m_arData;
 
-	volatile LONG			m_bThreadRunning;
+	volatile LONG			m_bThreadRunning = 0;
 
-	int						m_options;	// Use values from the ProgressOptions enum
+	int						m_options = ProgOptNone;	// Use values from the ProgressOptions enum
 
 
 	wchar_t					m_columnbuf[MAX_PATH];
 
 public:
-	volatile BOOL			m_bCancelled;
+	volatile BOOL			m_bCancelled = FALSE;
 
 private:
-	int						iFirstResized;
-	BOOL					bSecondResized;
-	int						nEnsureVisibleCount;
+	int						iFirstResized = 0;
+	BOOL					bSecondResized = FALSE;
+	int						nEnsureVisibleCount = 0;
 
 	CString					m_sTotalBytesTransferred;
-	size_t					m_TotalBytesTransferred;
+	size_t					m_TotalBytesTransferred = 0;
 
 	CColors					m_Colors;
 
-	bool					m_bFinishedItemAdded;
-	bool					m_bLastVisible;
+	bool					m_bFinishedItemAdded = false;
+	bool					m_bLastVisible = false;
 
 public:
-	int						m_itemCount;
-	int						m_itemCountTotal;
+	int						m_itemCount = -1;
+	int						m_itemCountTotal = -1;
 
 public:
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
@@ -241,11 +239,9 @@ protected:
 	CTGitPathList		m_targetPathList;
 
 public:
-	PostCmdCallback	m_PostCmdCallback;
+	PostCmdCallback	m_PostCmdCallback = nullptr;
 
-	ProgressCommand()
-	: m_PostCmdCallback(nullptr)
-	{}
+	ProgressCommand() = default;
 
 	void SetPathList(const CTGitPathList& pathList) { m_targetPathList = pathList; }
 	virtual bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) = 0;

@@ -34,7 +34,6 @@ constexpr wchar_t WideCharSwap2(wchar_t nValue) noexcept
 // CTortoiseGitBlameData construction/destruction
 
 CTortoiseGitBlameData::CTortoiseGitBlameData()
-	: m_encode(-1)
 {
 }
 

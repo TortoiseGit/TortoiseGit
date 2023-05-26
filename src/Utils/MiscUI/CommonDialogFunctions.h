@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ public:
 	{}
 
 private:
-	BaseType* m_ctrl;
+	BaseType* m_ctrl = nullptr;
 
 public:
 	/**

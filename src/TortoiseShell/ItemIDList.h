@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,8 +37,8 @@ public:
 
 	PCUITEMID_CHILD operator& ();
 private:
-	PCUITEMID_CHILD item_;
-	PCUIDLIST_RELATIVE parent_;
-	mutable int count_;
+	PCUITEMID_CHILD item_ = nullptr;
+	PCUIDLIST_RELATIVE parent_ = nullptr;
+	mutable int count_ = -1;
 };
 

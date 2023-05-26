@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,6 @@ static std::vector<DWORD> g_langs;
 IMPLEMENT_DYNAMIC(CSetDialogs3, ISettingsPropPage)
 CSetDialogs3::CSetDialogs3()
 	: ISettingsPropPage(CSetDialogs3::IDD)
-	, m_bNeedSave(false)
 	, m_bInheritLogMinSize(FALSE)
 	, m_bInheritBorder(FALSE)
 	, m_bInheritIconFile(FALSE)

@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +40,7 @@ public:
 private:
 	bool Load();
 private:
-	LONG m_lLanguage;
-	bool m_bLoaded;
+	LONG m_lLanguage = 0;
+	bool m_bLoaded = false;
 	std::set<CString> dict;
 };

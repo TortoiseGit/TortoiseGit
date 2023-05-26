@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2014, 2016-2017, 2021 - TortoiseGit
+// Copyright (C) 2009, 2014, 2016-2017, 2021, 2023 - TortoiseGit
 // Copyright (C) 2008,2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 
 struct CBugTraqProvider
 {
-	CLSID clsid;
+	CLSID clsid = GUID_NULL;
 	CString name;
 };
 
@@ -33,15 +33,10 @@ class CBugTraqAssociation
 	CTGitPath m_path;
 	CBugTraqProvider m_provider;
 	CString m_parameters;
-	bool m_enabled;
+	bool m_enabled = true;
 
 public:
-	CBugTraqAssociation()
-		: m_enabled(true)
-	{
-		 m_provider.clsid = GUID_NULL;
-	}
-
+	CBugTraqAssociation() = default;
 	CBugTraqAssociation(LPCWSTR szWorkingCopy, const CLSID& provider_clsid, LPCWSTR szProviderName, LPCWSTR szParameters, bool enabled)
 		: m_path(szWorkingCopy), m_parameters(szParameters), m_enabled(enabled)
 	{
@@ -99,5 +94,5 @@ private:
 	};
 	CString	providerUUID;
 	CString	providerParams;
-	CBugTraqAssociation * pProjectProvider;
+	CBugTraqAssociation* pProjectProvider = nullptr;
 };

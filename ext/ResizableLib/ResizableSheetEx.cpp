@@ -31,16 +31,6 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CResizableSheetEx, CPropertySheetEx)
 
-inline void CResizableSheetEx::PrivateConstruct()
-{
-	m_bEnableSaveRestore = FALSE;
-	m_bSavePage = FALSE;
-	m_dwGripTempState = 1;
-	m_bLayoutDone = FALSE;
-	m_bRectOnly = FALSE;
-	m_nCallbackID = 0;
-}
-
 inline BOOL CResizableSheetEx::IsWizard() const
 {
 	return (m_psh.dwFlags & PSH_WIZARD);
@@ -53,7 +43,6 @@ inline BOOL CResizableSheetEx::IsWizard97() const
 
 CResizableSheetEx::CResizableSheetEx()
 {
-	PrivateConstruct();
 }
 
 CResizableSheetEx::CResizableSheetEx(UINT nIDCaption, CWnd* pParentWnd,
@@ -62,7 +51,6 @@ CResizableSheetEx::CResizableSheetEx(UINT nIDCaption, CWnd* pParentWnd,
 : CPropertySheetEx(nIDCaption, pParentWnd, iSelectPage,
 				  hbmWatermark, hpalWatermark, hbmHeader)
 {
-	PrivateConstruct();
 }
 
 CResizableSheetEx::CResizableSheetEx(LPCTSTR pszCaption, CWnd* pParentWnd,
@@ -71,7 +59,6 @@ CResizableSheetEx::CResizableSheetEx(LPCTSTR pszCaption, CWnd* pParentWnd,
 : CPropertySheetEx(pszCaption, pParentWnd, iSelectPage,
 					  hbmWatermark, hpalWatermark, hbmHeader)
 {
-	PrivateConstruct();
 }
 
 

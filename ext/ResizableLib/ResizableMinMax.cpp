@@ -35,14 +35,10 @@ static char THIS_FILE[]=__FILE__;
 
 CResizableMinMax::CResizableMinMax()
 {
-	m_bUseMinTrack = FALSE;
-	m_bUseMaxTrack = FALSE;
-	m_bUseMaxRect = FALSE;
 }
 
 CResizableMinMax::~CResizableMinMax()
 {
-
 }
 
 void CResizableMinMax::MinMaxInfo(LPMINMAXINFO lpMMI)

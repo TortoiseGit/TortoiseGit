@@ -149,22 +149,22 @@ private:
 	CColors				m_colors;
 	CFont				m_font;
 	CGestureEnabledControlTmpl<CHintCtrl<CListCtrl>>	m_cFileList;
-	bool				m_bBlame;
+	bool				m_bBlame = false;
 	CTGitPathList		m_arFileList;
 	std::vector<const CTGitPath*> m_arFilteredList;
 
 	CString				m_strExportDir;
 
-	int					m_nIconFolder;
+	int					m_nIconFolder = 0;
 
-	bool				m_bIsBare;
+	bool				m_bIsBare = false;
 	CTGitPath			m_path;
 	GitRev				m_rev1;
 	GitRev				m_rev2;
 
-	volatile LONG		m_bThreadRunning;
+	volatile LONG		m_bThreadRunning = FALSE;
 
-	volatile LONG		m_bLoadingRef;
+	volatile LONG		m_bLoadingRef = FALSE;
 
 	void				Sort();
 	static bool			SortCompare(const CTGitPath& Data1, const CTGitPath& Data2);
@@ -175,11 +175,11 @@ private:
 	CACEdit				m_ctrRev1Edit;
 	CACEdit				m_ctrRev2Edit;
 
-	bool				m_bIgnoreSpaceAtEol;
-	bool				m_bIgnoreSpaceChange;
-	bool				m_bIgnoreAllSpace;
-	bool				m_bIgnoreBlankLines;
-	bool				m_bCommonAncestorDiff;
+	bool				m_bIgnoreSpaceAtEol = false;
+	bool				m_bIgnoreSpaceChange = false;
+	bool				m_bIgnoreAllSpace = false;
+	bool				m_bIgnoreBlankLines = false;
+	bool				m_bCommonAncestorDiff = false;
 
 	CHyperLink m_ctrlShowPatch;
 	afx_msg void OnStnClickedViewPatch();

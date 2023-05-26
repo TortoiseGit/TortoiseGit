@@ -96,6 +96,6 @@ private:
 		int wmid;
 	};
 	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
-	HACCEL							m_hAccel;
+	HACCEL							m_hAccel = nullptr;
 	LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 };

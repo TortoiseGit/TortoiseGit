@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012, 2019-2020 - TortoiseGit
+// Copyright (C) 2012, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2010-2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -121,23 +121,23 @@ private:
 	struct PathRejects
 	{
 		CString		path;
-		int			rejects;
+		int			rejects = 0;
 		CString		basePath; // empty if patch applies cleany to local file; path to tempfile of base-version if patch only applies cleanly to base-version
 		CString		resultPath;
 		CString		rejectsPath;
-		bool		content;
-		bool		props;
+		bool		content = false;
+		bool		props = false;
 	};
 	std::vector<PathRejects> m_filePaths;
-	int						m_nStrip;
-	bool					m_bSuccessfullyPatched;
-	int						m_nRejected;
+	int						m_nStrip = 0;
+	bool					m_bSuccessfullyPatched = false;
+	int						m_nRejected = 0;
 	CString					m_patchfile;
 	CString					m_targetpath;
 	CString					m_testPath;
 	CString					m_filetopatch;
 	CString					m_errorStr;
-	CSysProgressDlg *		m_pProgDlg;
+	CSysProgressDlg*		m_pProgDlg = nullptr;
 
 	CPatch					m_patch;
 	bool					ApplyPatches();

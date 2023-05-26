@@ -53,9 +53,9 @@ protected:
 	CRefLogList		m_RefList;
 
 	void				OnFind();
-	CFindReplaceDialog	*m_pFindDialog;
+	CFindReplaceDialog*	m_pFindDialog = nullptr;
 	static UINT			m_FindDialogMessage;
-	size_t				m_nSearchLine;
+	size_t				m_nSearchLine = 0;
 
 public:
 	CString			m_CurrentBranch;

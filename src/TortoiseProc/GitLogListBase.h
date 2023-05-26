@@ -94,7 +94,6 @@ class SelectionHistory
 #define HISTORYLENGTH 50
 public:
 	SelectionHistory()
-	: location(0)
 	{
 		lastselected.reserve(HISTORYLENGTH);
 	}
@@ -157,12 +156,12 @@ public:
 	}
 private:
 	std::vector<CGitHash> lastselected;
-	size_t location;
+	size_t location = 0;
 };
 
 class CThreadSafePtrArray : public std::vector<GitRevLoglist*>
 {
-	CComCriticalSection *m_critSec;
+	CComCriticalSection* m_critSec = nullptr;
 public:
 	CThreadSafePtrArray(CComCriticalSection* section) : m_critSec(section)
 	{
@@ -248,28 +247,26 @@ public:
 			m_arShownList[0] = &m_wcRev;
 	}
 
-	volatile LONG		m_bNoDispUpdates;
-	BOOL m_IsIDReplaceAction;
-	BOOL m_IsOldFirst;
+	volatile LONG m_bNoDispUpdates = FALSE;
+	BOOL m_IsIDReplaceAction = FALSE;
+	BOOL m_IsOldFirst = FALSE;
 protected:
 	void hideFromContextMenu(unsigned __int64 hideMask, bool exclusivelyShow);
 public:
-	BOOL m_IsRebaseReplaceGraph;
-	BOOL m_bNoHightlightHead;
+	BOOL m_IsRebaseReplaceGraph = FALSE;
+	BOOL m_bNoHightlightHead = FALSE;
 
 protected:
 	void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
 public:
-	BOOL m_bShowBugtraqColumn;
-protected:
-	BOOL m_bSearchIndex;
+	BOOL m_bShowBugtraqColumn = FALSE;
 public:
-	bool m_bIsCherryPick;
-	unsigned __int64 m_ContextMenuMask;
+	bool m_bIsCherryPick = false;
+	unsigned __int64 m_ContextMenuMask = UINT64_MAX;
 
-	bool				m_hasWC;
-	bool				m_bShowWC;
+	bool				m_hasWC = true;
+	bool				m_bShowWC = false;
 protected:
 	GitRevLoglist		m_wcRev;
 public:
@@ -433,7 +430,7 @@ public:
 	CString	GetTagInfo(GitRev* pLogEntry) const;
 	CString GetTagInfo(const STRING_VECTOR& refs) const;
 
-	CFindDlg *m_pFindDialog;
+	CFindDlg* m_pFindDialog = nullptr;
 	static const UINT	m_FindDialogMessage;
 	void OnFind();
 
@@ -449,10 +446,10 @@ public:
 	void Refresh(BOOL IsCleanFilter=TRUE);
 	void Clear();
 
-	FilterShow			m_ShowFilter;
+	FilterShow			m_ShowFilter = FILTERSHOW_ALL;
 	CLogDataVector		m_logEntries;
 
-	std::atomic<std::shared_ptr<CLogDlgFilter>> m_LogFilter;
+	std::atomic<std::shared_ptr<CLogDlgFilter>> m_LogFilter = std::make_shared<CLogDlgFilter>();
 	CFilterData			m_Filter;
 
 	enum class RollUpState
@@ -461,14 +458,14 @@ public:
 		Collapse,		// Parents of the node should be hidden
 	};
 	using RollUpStateMap = std::unordered_map<CGitHash, RollUpState>;
-	std::atomic<std::shared_ptr<RollUpStateMap>> m_RollUpStates;
+	std::atomic<std::shared_ptr<RollUpStateMap>> m_RollUpStates = std::make_shared<RollUpStateMap>();
 
 	CTGitPath			m_Path;
-	int					m_ShowMask;
+	int					m_ShowMask = 0;
 	CGitHash			m_lastSelectedHash;
 	SelectionHistory	m_selectionHistory;
 	CGitHash			m_highlight;
-	int					m_ShowRefMask;
+	int					m_ShowRefMask = LOGLIST_SHOWALLREFS;
 
 protected:
 	CGit::SubmoduleInfo	m_submoduleInfo;
@@ -532,12 +529,13 @@ public:
 
 	CString GetRange() const { return m_sRange; }
 
-	int					m_nSearchIndex;
+	int					m_nSearchIndex = 0;
 protected:
-	volatile LONG		m_bExitThread;
-	CWinThread*			m_LoadingThread;
+	volatile LONG		m_bExitThread = FALSE;
+	CWinThread*			m_LoadingThread = nullptr;
 public:
-	std::atomic<std::shared_ptr<MAP_HASH_NAME>> m_HashMap;
+	std::atomic<std::shared_ptr<MAP_HASH_NAME>> m_HashMap = std::make_shared<MAP_HASH_NAME>();
+
 protected:
 	std::map<CString, std::pair<CString, CString>>	m_TrackingMap;
 
@@ -547,16 +545,17 @@ public:
 	CString				m_ColumnRegKey;
 
 protected:
-	typedef struct {
+	struct REFLABEL
+	{
 		CString name;
-		COLORREF color;
+		COLORREF color = 0;
 		CString simplifiedName;
 		CString fullName;
-		bool singleRemote;
-		bool hasTracking;
-		bool sameName;
-		CGit::REF_TYPE refType;
-	} REFLABEL;
+		bool singleRemote = false;
+		bool hasTracking = false;
+		bool sameName = false;
+		CGit::REF_TYPE refType = CGit::REF_TYPE::UNKNOWN;
+	};
 
 	DECLARE_MESSAGE_MAP()
 	afx_msg void OnDestroy();
@@ -620,10 +619,10 @@ protected:
 
 	std::vector<GitRevLoglist*> m_AsynDiffList;
 	CComAutoCriticalSection m_AsynDiffListLock;
-	HANDLE	m_AsyncDiffEvent;
-	volatile LONG m_AsyncThreadExit;
-	CWinThread*			m_DiffingThread;
-	volatile LONG m_AsyncThreadRunning;
+	HANDLE m_AsyncDiffEvent = nullptr;
+	volatile LONG m_AsyncThreadExit = FALSE;
+	CWinThread* m_DiffingThread = nullptr;
+	volatile LONG m_AsyncThreadRunning = FALSE;
 
 public:
 	bool IsCached(GitRevLoglist* rev)
@@ -696,35 +695,33 @@ protected:
 
 	CRegDWORD			m_regMaxBugIDColWidth;
 
-	void				*m_ProcData;
-
 	CColors				m_Colors;
 
 	CString				m_CurrentBranch;
 	CGitHash			m_HeadHash;
 
-	DWORD				m_LineWidth;
-	DWORD				m_NodeSize;
-	DWORD				m_DateFormat;	// DATE_SHORTDATE or DATE_LONGDATE
-	bool				m_bRelativeTimes;	// Show relative times
-	GIT_LOG				m_DllGitLog;
+	DWORD				m_LineWidth = 0;
+	DWORD				m_NodeSize = 0;
+	DWORD				m_DateFormat = DATE_SHORTDATE;	// DATE_SHORTDATE or DATE_LONGDATE
+	bool				m_bRelativeTimes = false;	// Show relative times
+	GIT_LOG				m_DllGitLog = nullptr;
 	CString				m_SingleRemote;
-	bool				m_bTagsBranchesOnRightSide;
-	bool				m_bFullCommitMessageOnLogLine;
-	bool				m_bSymbolizeRefNames;
-	bool				m_bIncludeBoundaryCommits;
+	bool				m_bTagsBranchesOnRightSide = false;
+	bool				m_bFullCommitMessageOnLogLine = false;
+	bool				m_bSymbolizeRefNames = false;
+	bool				m_bIncludeBoundaryCommits = false;
 
-	DWORD				m_dwDefaultColumns;
+	DWORD				m_dwDefaultColumns = 0;
 	wchar_t				m_wszTip[8192];
 	char                m_szTip[8192];
 	std::map<CString, CRect> m_RefLabelPosMap; // ref name vs. label position
-	int					m_OldTopIndex;
+	int					m_OldTopIndex = -1;
 
-	bool				m_bDragndropEnabled;
-	BOOL				m_bDragging;
-	int					m_nDropIndex;
-	int					m_nDropMarkerLast;
-	int					m_nDropMarkerLastHot;
+	bool				m_bDragndropEnabled = false;
+	bool				m_bDragging = false;
+	int					m_nDropIndex = -1;
+	int					m_nDropMarkerLast = -1;
+	int					m_nDropMarkerLastHot = -1;
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);

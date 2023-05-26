@@ -32,7 +32,6 @@
 
 CCacheDlg::CCacheDlg(CWnd* pParent /*=nullptr*/)
 : CDialog(CCacheDlg::IDD, pParent)
-, m_hPipe(INVALID_HANDLE_VALUE)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }

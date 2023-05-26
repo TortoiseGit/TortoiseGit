@@ -31,13 +31,7 @@
 
 IMPLEMENT_DYNAMIC(CLocatorBar, CPaneDialog)
 CLocatorBar::CLocatorBar() : CPaneDialog()
-	, m_pMainFrm(nullptr)
-	, m_pCacheBitmap(nullptr)
 	, m_regUseFishEye(L"Software\\TortoiseGitMerge\\UseFishEye", TRUE)
-	, m_nLines(-1)
-	, m_minWidth(0)
-	, m_bDark(false)
-	, m_themeCallbackId(0)
 {
 	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
 	SetTheme(CTheme::Instance().IsDarkTheme());

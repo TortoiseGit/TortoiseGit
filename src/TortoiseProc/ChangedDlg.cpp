@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -32,8 +32,6 @@ CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CChangedDlg::IDD, pParent)
 	, m_bShowUnversioned(FALSE)
 	, m_iShowUnmodified(0)
-	, m_bBlock(FALSE)
-	, m_bCanceled(false)
 	, m_bShowIgnored(FALSE)
 	, m_bShowLocalChangesIgnored(FALSE)
 	, m_bWholeProject(FALSE)

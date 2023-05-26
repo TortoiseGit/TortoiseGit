@@ -125,12 +125,12 @@ class CGit
 private:
 	CString		gitLastErr;
 protected:
-	GIT_DIFF m_GitDiff;
-	GIT_DIFF m_GitSimpleListDiff;
+	GIT_DIFF m_GitDiff = nullptr;
+	GIT_DIFF m_GitSimpleListDiff = nullptr;
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 public:
 #endif
-	bool m_IsGitDllInited;
+	bool m_IsGitDllInited = false;
 public:
 	CComAutoCriticalSection m_critGitDllSec;
 	bool	m_IsUseGitDLL;
@@ -218,7 +218,7 @@ public:
 
 	BOOL CheckMsysGitDir(BOOL bFallback = TRUE);
 	BOOL FindAndSetGitExePath(BOOL bFallback);
-	BOOL m_bInitialized;
+	bool m_bInitialized = false;
 
 	enum LIBGIT2_CMD
 	{
@@ -273,7 +273,7 @@ public:
 	bool BranchTagExists(const CString& name, bool isBranch = true);
 	unsigned int Hash2int(const CGitHash &hash);
 
-	PROCESS_INFORMATION m_CurrentGitPi;
+	PROCESS_INFORMATION m_CurrentGitPi{};
 
 	CGit();
 	~CGit();

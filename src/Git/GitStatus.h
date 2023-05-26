@@ -21,7 +21,7 @@
 #include "TGitPath.h"
 #include "PathUtils.h"
 
-class CGitFileName;
+struct CGitFileName;
 
 #include "GitHash.h"
 
@@ -40,10 +40,10 @@ enum git_wc_status_kind
 
 struct git_wc_status2_t
 {
-	git_wc_status_kind status;
+	git_wc_status_kind status = git_wc_status_none;
 
-	bool assumeValid;
-	bool skipWorktree;
+	bool assumeValid = false;
+	bool skipWorktree = false;
 };
 
 #define MAX_STATUS_STRING_LENGTH		256
@@ -120,7 +120,7 @@ public:
 	/**
 	 * This member variable hold the status of the last call to GetStatus().
 	 */
-	git_wc_status2_t *			status;				///< the status result of GetStatus()
+	git_wc_status2_t*			status = nullptr;	///< the status result of GetStatus()
 
 private:
 	git_wc_status2_t			m_status;		// used for GetStatus

@@ -82,11 +82,11 @@ private:
 	CTGitPathList				m_gitPaths;
 	CGitHash					m_revision;
 	std::vector<CTGitPath>		m_allPaths;
-	int							m_iStripLength;
-	long						m_cRefCount;
-	bool						m_containsExistingFiles;
-	BOOL						m_bInOperation;
-	BOOL						m_bIsAsync;
+	int							m_iStripLength = 0;
+	long						m_cRefCount = 0;
+	bool						m_containsExistingFiles = false;
+	BOOL						m_bInOperation = FALSE;
+	BOOL						m_bIsAsync = TRUE;
 	std::vector<FORMATETC*>		m_vecFormatEtc;
 	std::vector<STGMEDIUM*>		m_vecStgMedium;
 };
@@ -117,9 +117,9 @@ private:
 private:
 	std::vector<FORMATETC>		m_vecFormatEtc;
 	FORMATETC					m_formats[GITDATAOBJECT_NUMFORMATS];
-	ULONG						m_cRefCount;
-	size_t						m_iCur;
-	bool						m_localonly;
-	bool						m_containsExistingFiles;
+	ULONG						m_cRefCount = 0;
+	size_t						m_iCur = 0;
+	bool						m_localonly = false;
+	bool						m_containsExistingFiles = false;
 };
 

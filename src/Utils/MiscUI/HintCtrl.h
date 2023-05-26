@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2021 - TortoiseGit
+// Copyright (C) 2016, 2019-2021, 2023 - TortoiseGit
 // Copyright (C) 2011, 2013, 2015, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 template <typename BaseType> class CHintCtrl : public BaseType
 {
 public:
-	CHintCtrl() : BaseType(), m_uiFont(nullptr)
+	CHintCtrl() : BaseType()
 	{
 		NONCLIENTMETRICS metrics = { 0 };
 		metrics.cbSize = sizeof(NONCLIENTMETRICS);
@@ -127,7 +127,7 @@ protected:
 
 private:
 	CString			m_sText;
-	HFONT			m_uiFont;
+	HFONT			m_uiFont = nullptr;
 };
 
 BEGIN_TEMPLATE_MESSAGE_MAP(CHintCtrl, BaseType, BaseType)

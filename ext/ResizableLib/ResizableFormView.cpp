@@ -31,21 +31,14 @@ static char THIS_FILE[] = __FILE__;
 
 IMPLEMENT_DYNAMIC(CResizableFormView, CFormView)
 
-inline void CResizableFormView::PrivateConstruct()
-{
-	m_dwGripTempState = GHR_SCROLLBAR | GHR_ALIGNMENT | GHR_MAXIMIZED;
-}
-
 CResizableFormView::CResizableFormView(UINT nIDTemplate)
 	: CFormView(nIDTemplate)
 {
-	PrivateConstruct();
 }
 
 CResizableFormView::CResizableFormView(LPCTSTR lpszTemplateName)
 	: CFormView(lpszTemplateName)
 {
-	PrivateConstruct();
 }
 
 CResizableFormView::~CResizableFormView()

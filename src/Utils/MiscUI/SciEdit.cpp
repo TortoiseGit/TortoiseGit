@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2022 - TortoiseGit
+// Copyright (C) 2009-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -73,19 +73,7 @@ struct loc_map enc2locale[] = {
 
 IMPLEMENT_DYNAMIC(CSciEdit, CWnd)
 
-CSciEdit::CSciEdit() : m_DirectFunction(NULL)
-	, m_DirectPointer(NULL)
-	, m_spellcodepage(0)
-	, m_spellCheckerFactory(nullptr)
-	, m_SpellChecker(nullptr)
-	, m_separator(0)
-	, m_typeSeparator(1)
-	, m_bDoStyle(false)
-	, m_nAutoCompleteMinChars(3)
-	, m_SpellingCache(2000)
-	, m_blockModifiedHandler(false)
-	, m_bReadOnly(false)
-	, m_themeCallbackId(0)
+CSciEdit::CSciEdit()
 {
 	m_hModule = ::LoadLibrary(L"SciLexer_tgit.dll");
 }

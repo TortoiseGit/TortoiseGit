@@ -194,9 +194,6 @@ void CFilterHelper::AddSubString(CString token, Prefix prefix)
 
 // construction
 CFilterHelper::CFilterHelper()
-	: m_dwAttributeSelector(UINT_MAX)
-	, m_bCaseSensitive(false)
-	, m_bNegate(false)
 {
 }
 
@@ -208,7 +205,6 @@ CFilterHelper::CFilterHelper(const CFilterHelper& rhs)
 CFilterHelper::CFilterHelper(const CString& filter, bool filterWithRegex, DWORD selectedFilter, bool caseSensitive)
 	: m_dwAttributeSelector(selectedFilter)
 	, m_bCaseSensitive(caseSensitive)
-	, m_bNegate(false)
 {
 	// decode string matching spec
 	CString filterText = filter;

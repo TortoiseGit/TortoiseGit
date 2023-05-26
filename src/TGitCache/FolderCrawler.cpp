@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2019, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,12 +29,7 @@ CFolderCrawler::CFolderCrawler()
 {
 	m_hWakeEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 	m_hTerminationEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
-	m_lCrawlInhibitSet = 0;
 	m_crawlHoldoffReleasesAt = static_cast<LONGLONG>(GetTickCount64());
-	m_bRun = false;
-	m_bPathsAddedSinceLastCrawl = false;
-	m_bItemsAddedSinceLastCrawl = false;
-	m_blockReleasesAt = 0;
 }
 
 CFolderCrawler::~CFolderCrawler()

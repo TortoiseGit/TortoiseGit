@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // External Cache Copyright (C) 2005-2008, 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -105,15 +106,15 @@ private:
 	CComAutoCriticalSection m_critSec;
 	CAutoGeneralHandle		m_hThread;
 	CAutoGeneralHandle		m_hCompPort;
-	volatile LONG			m_bRunning;
-	volatile LONG			m_bCleaned;
+	volatile LONG			m_bRunning = TRUE;
+	volatile LONG			m_bCleaned = FALSE;
 
-	CFolderCrawler *		m_FolderCrawler;	///< where the change reports go to
+	CFolderCrawler*			m_FolderCrawler = nullptr;	///< where the change reports go to
 
 	CTGitPathList			watchedPaths;	///< list of watched paths.
 
 	CTGitPath				blockedPath;
-	ULONGLONG				blockTickCount;
+	ULONGLONG				blockTickCount = 0;
 
 	/**
 	 * \ingroup TGitCache
@@ -135,15 +136,13 @@ private:
 		CAutoFile	m_hDir;			///< handle to the directory that we're watching
 		CTGitPath	m_DirName;		///< the directory that we're watching
 		CHAR		m_Buffer[READ_DIR_CHANGE_BUFFER_SIZE]; ///< buffer for ReadDirectoryChangesW
-		OVERLAPPED	m_Overlapped;
+		OVERLAPPED m_Overlapped{};
 		CString		m_DirPath;		///< the directory name we're watching with a backslash at the end
-		HDEVNOTIFY	m_hDevNotify;	///< Notification handle
+		HDEVNOTIFY	m_hDevNotify = nullptr;	///< Notification handle
 	};
 
 	using TInfoMap = std::map<HANDLE, CDirWatchInfo*>;
 	TInfoMap watchInfoMap;
-
-	HDEVNOTIFY		m_hdev;
 
 	// scheduled for deletion upon the next CleanupWatchInfo()
 	std::vector<CDirWatchInfo*> infoToDelete;

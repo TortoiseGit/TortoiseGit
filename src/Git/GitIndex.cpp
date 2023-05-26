@@ -43,20 +43,10 @@ int CGitIndex::Print()
 }
 
 CGitIndexList::CGitIndexList()
-: m_bHasConflicts(FALSE)
-, m_LastModifyTime(0)
-, m_LastFileSize(-1)
-, m_iIndexCaps(GIT_INDEX_CAPABILITY_IGNORE_CASE | GIT_INDEX_CAPABILITY_NO_SYMLINKS)
-, m_incoming(static_cast<size_t>(-1))
-, m_outgoing(static_cast<size_t>(-1))
-, m_stashCount(0)
 {
 #ifndef TGIT_TESTS_ONLY
 	m_iMaxCheckSize = static_cast<__int64>(CRegDWORD(L"Software\\TortoiseGit\\TGitCacheCheckContentMaxSize", 10 * 1024)) * 1024; // stored in KiB
 	m_bCalculateIncomingOutgoing = (CRegStdDWORD(L"Software\\TortoiseGit\\ModifyExplorerTitle", TRUE) != FALSE);
-#else
-	m_iMaxCheckSize = 10 * 1024 * 1024;
-	m_bCalculateIncomingOutgoing = true;
 #endif
 }
 

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -74,8 +74,6 @@ const UINT CGitPropertyPage::m_UpdateLastCommit = RegisterWindowMessage(L"TORTOI
 CGitPropertyPage::CGitPropertyPage(const std::vector<std::wstring>& newFilenames, CString projectTopDir, bool bIsSubmodule)
 	: filenames(newFilenames)
 	, m_ProjectTopDir(projectTopDir)
-	,m_bChanged(false)
-	, m_hwnd(nullptr)
 	, m_bIsSubmodule(bIsSubmodule)
 {
 	m_iStripLength = m_ProjectTopDir.GetLength();

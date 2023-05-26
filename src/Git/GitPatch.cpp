@@ -31,11 +31,6 @@
 #define STRIP_LIMIT 10
 
 GitPatch::GitPatch()
-	: m_nStrip(0)
-	, m_bSuccessfullyPatched(false)
-	, m_nRejected(0)
-	, m_pProgDlg(nullptr)
-	, m_patch()
 {
 }
 
@@ -89,7 +84,6 @@ int GitPatch::Init(const CString& patchfile, const CString& targetpath, CSysProg
 
 	if ((m_nRejected > (static_cast<int>(m_filePaths.size()) / 3)) && !m_testPath.IsEmpty())
 	{
-		++m_nStrip;
 		for (m_nStrip = 0; m_nStrip < STRIP_LIMIT; ++m_nStrip)
 		{
 			if (std::any_of(m_filePaths.cbegin(), m_filePaths.cend(), [this](auto& filepath) { return Strip(filepath.path).IsEmpty(); }))

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2013, 2016, 2018-2019, 2023 - TortoiseGit
 // External Cache Copyright (C) 2007-2012, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,9 +22,6 @@
 #include "PathWatcher.h"
 
 CPathWatcher::CPathWatcher()
-	: m_hCompPort(nullptr)
-	, m_bRunning(TRUE)
-	, m_bLimitReached(false)
 {
 	// enable the required privileges for this process
 	LPCWSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
@@ -361,7 +358,6 @@ CPathWatcher::CDirWatchInfo::CDirWatchInfo(CAutoFile&& hDir, const CTGitPath& di
 {
 	ATLASSERT(m_hDir && !directoryName.IsEmpty());
 	m_buffer[0] = 0;
-	memset(&m_overlapped, 0, sizeof(m_overlapped));
 	m_dirPath = m_dirName.GetWinPathString();
 	if (m_dirPath.GetAt(m_dirPath.GetLength() - 1) != '\\')
 		m_dirPath += L'\\';

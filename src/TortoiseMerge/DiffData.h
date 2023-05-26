@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2008, 2010-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -90,7 +91,7 @@ public:
 	CString						m_sPatchPath;
 	CString						m_sPatchOriginal;
 	CString						m_sPatchPatched;
-	bool						m_bPatchRequired;
+	bool						m_bPatchRequired = false;
 
 public:
 	CFileTextLines				m_arBaseFile;
@@ -111,8 +112,8 @@ public:
 
 	static int					abort_on_pool_failure (int retcode);
 protected:
-	bool						m_bBlame;
-	bool						m_bViewMovedBlocks;
+	bool						m_bBlame = false;
+	bool						m_bViewMovedBlocks = false;
 	CString						m_CommentLineStart;
 	CString						m_CommentBlockStart;
 	CString						m_CommentBlockEnd;

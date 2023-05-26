@@ -38,23 +38,15 @@ typedef struct tagRESIZEPROPERTIES
 
 typedef struct tagCLIPPINGPROPERTY
 {
-	BOOL bLikesClipping;
-
-	// initialize with valid data
-	tagCLIPPINGPROPERTY() : bLikesClipping(FALSE) {}
-
+	BOOL bLikesClipping = FALSE;
 } CLIPPINGPROPERTY, *PCLIPPINGPROPERTY, *LPCLIPPINGPROPERTY;
 
 
 typedef struct tagREFRESHPROPERTY
 {
-	BOOL bNeedsRefresh;
-	RECT rcOld;
-	RECT rcNew;
-
-	// initialize with valid data
-	tagREFRESHPROPERTY() : bNeedsRefresh(TRUE) {}
-
+	BOOL bNeedsRefresh = TRUE;
+	RECT rcOld{};
+	RECT rcNew{};
 } REFRESHPROPERTY, *PREFRESHPROPERTY, *LPREFRESHPROPERTY;
 
 

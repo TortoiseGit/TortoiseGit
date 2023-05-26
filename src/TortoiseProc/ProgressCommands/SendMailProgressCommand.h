@@ -22,12 +22,10 @@
 class SendMailProgressCommand : public ProgressCommand
 {
 private:
-	CSendMail *	m_SendMail;
+	CSendMail*	m_SendMail = nullptr;
 
 public:
-	SendMailProgressCommand()
-	: m_SendMail(nullptr)
-	{}
+	SendMailProgressCommand() = default;
 
 	void SetSendMailOption(CSendMail *sendmail) { m_SendMail = sendmail; }
 	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;

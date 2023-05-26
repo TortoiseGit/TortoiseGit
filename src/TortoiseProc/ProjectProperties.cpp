@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2021 - TortoiseGit
+// Copyright (C) 2003-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -34,16 +34,6 @@ struct num_compare
 };
 
 ProjectProperties::ProjectProperties()
-	: regExNeedUpdate (true)
-	, nBugIdPos(-1)
-	, bWarnNoSignedOffBy(FALSE)
-	, bNumber(TRUE)
-	, bWarnIfNoIssue(FALSE)
-	, nLogWidthMarker(0)
-	, nMinLogSize(0)
-	, bFileListInEnglish(TRUE)
-	, bAppend(TRUE)
-	, lProjectLanguage(0)
 {
 }
 

@@ -67,14 +67,6 @@ inline static bool SortPredicate(bool sortLogical, const CString& e1, const CStr
 
 CGitTagCompareList::CGitTagCompareList()
 	: CHintCtrl<CListCtrl>()
-	, colTag(0)
-	, colDiff(0)
-	, colMyHash(0)
-	, colMyMessage(0)
-	, colTheirHash(0)
-	, colTheirMessage(0)
-	, m_bAscending(false)
-	, m_nSortedColumn(-1)
 {
 	m_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
 	if (m_bSortLogical)

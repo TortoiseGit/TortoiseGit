@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -35,7 +36,7 @@ public:
 
 // Implementation
 protected:
-	HICON m_hIcon;
+	HICON m_hIcon = nullptr;
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog() override;
@@ -48,9 +49,9 @@ protected:
 
 	CString m_sRootPath;
 	CStringArray m_filelist;
-	HANDLE m_hPipe;
-	OVERLAPPED m_Overlapped;
-	HANDLE m_hEvent;
+	HANDLE m_hPipe = INVALID_HANDLE_VALUE;
+	OVERLAPPED m_Overlapped{};
+	HANDLE m_hEvent = nullptr;
 	CComCriticalSection m_critSec;
 	static UINT TestThreadEntry(LPVOID pVoid);
 	UINT TestThread();

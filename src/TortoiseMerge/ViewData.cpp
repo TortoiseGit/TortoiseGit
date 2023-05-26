@@ -21,7 +21,6 @@
 #include "ViewData.h"
 
 CViewData::CViewData()
-	: m_nMarkedBlocks(0)
 {
 }
 

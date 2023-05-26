@@ -29,28 +29,18 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CResizableDialog
 
-inline void CResizableDialog::PrivateConstruct()
-{
-	m_bEnableSaveRestore = FALSE;
-	m_dwGripTempState = 1;
-	m_bRectOnly = FALSE;
-}
-
 CResizableDialog::CResizableDialog()
 {
-	PrivateConstruct();
 }
 
 CResizableDialog::CResizableDialog(UINT nIDTemplate, CWnd* pParentWnd)
 	: CDialog(nIDTemplate, pParentWnd)
 {
-	PrivateConstruct();
 }
 
 CResizableDialog::CResizableDialog(LPCTSTR lpszTemplateName, CWnd* pParentWnd)
 	: CDialog(lpszTemplateName, pParentWnd)
 {
-	PrivateConstruct();
 }
 
 CResizableDialog::~CResizableDialog()

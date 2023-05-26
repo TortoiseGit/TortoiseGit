@@ -52,11 +52,7 @@ constexpr UINT64 inline DwordSwapBytes(UINT64 nValue) noexcept
 }
 
 CFileTextLines::CFileTextLines()
-	: m_bNeedsConversion(false)
-	, m_bKeepEncoding(false)
 {
-	m_SaveParams.m_UnicodeType = CFileTextLines::UnicodeType::AUTOTYPE;
-	m_SaveParams.m_LineEndings = EOL::AutoLine;
 }
 
 CFileTextLines::~CFileTextLines()
@@ -744,7 +740,7 @@ void CBuffer::SetLength(int nUsed)
 	m_nUsed = nUsed;
 }
 
-void CBuffer::Swap(CBuffer & Src)
+void CBuffer::Swap(CBuffer& Src) noexcept
 {
 	std::swap(Src.m_nAllocated, m_nAllocated);
 	std::swap(Src.m_pBuffer, m_pBuffer);

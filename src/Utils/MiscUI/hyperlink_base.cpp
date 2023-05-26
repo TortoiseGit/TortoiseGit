@@ -82,11 +82,6 @@ inline void INFLATERECT( PRECT r, int dx, int dy )
 
 CHyperLink::CHyperLink()
 {
-	m_bOverControl      = FALSE;                // Cursor not yet over control
-	m_bVisited          = FALSE;                // Hasn't been visited yet.
-	m_StdFont           = nullptr;
-	m_pfnOrigCtlProc    = nullptr;
-	m_strURL            = nullptr;
 }
 
 CHyperLink::~CHyperLink()

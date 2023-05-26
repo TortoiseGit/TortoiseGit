@@ -59,7 +59,7 @@ private:
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
 	ULARGE_INTEGER		m_topmenu;
-	bool				m_bBlock;
+	bool				m_bBlock = false;
 	CRegDWORD			m_regHideMenus;
 	BOOL				m_bHideMenus;
 

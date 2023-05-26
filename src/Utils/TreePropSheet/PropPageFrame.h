@@ -276,10 +276,10 @@ protected:
 // Properties
 private:
 	/** TRUE if the caption should be drawn, FALSE otherwise. */
-	BOOL m_bShowCaption;
+	BOOL m_bShowCaption = FALSE;
 
 	/** Height of the caption in pixels, if it is enabled. */
-	int m_nCaptionHeight;
+	int m_nCaptionHeight = 0;
 
 	/** Text to display in the caption. */
 	CString m_strCaption;
@@ -288,15 +288,15 @@ private:
 	Icon to display in the caption or nullptr if no icon should be
 	displayed.
 	*/
-	HICON m_hCaptionIcon;
+	HICON m_hCaptionIcon = nullptr;
 
 	/** Message text to display. */
 	CString m_strMsg;
 
 	/** Style to use when drawing the message text m_strMsg. */
-	DWORD m_dwMsgFormat;
+	DWORD m_dwMsgFormat = DT_CENTER | DT_VCENTER | DT_NOPREFIX | DT_SINGLELINE;
 
-	HFONT m_uiFont;
+	HFONT m_uiFont = nullptr;
 	bool m_bDark = false;
 };
 

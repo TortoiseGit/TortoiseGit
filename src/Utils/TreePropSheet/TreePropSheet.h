@@ -465,13 +465,13 @@ protected:
 // Properties
 private:
 	/** TRUE if we should use the tree control instead of the tab ctrl. */
-	BOOL m_bTreeViewMode;
+	BOOL m_bTreeViewMode= TRUE;
 
 	/** The tree control */
-	CTreeCtrl *m_pwndPageTree;
+	CTreeCtrl* m_pwndPageTree = nullptr;
 
 	/** The frame around the pages */
-	CPropPageFrame *m_pFrame;
+	CPropPageFrame* m_pFrame = nullptr;
 
 	std::map<const CPropertyPage*, CPropertyPage*> parentsMap;
 
@@ -479,13 +479,13 @@ private:
 	TRUE, if a tree item selection by OnPageTreeSelChanged() is
 	performed currently.
 	*/
-	BOOL m_bPageTreeSelChangedActive;
+	BOOL m_bPageTreeSelChangedActive = FALSE;
 
 	/** TRUE if a page caption should be displayed, FALSE otherwise. */
-	BOOL m_bPageCaption;
+	BOOL m_bPageCaption = FALSE;
 
 	/** TRUE if images should be displayed in the tree. */
-	BOOL m_bTreeImages;
+	BOOL m_bTreeImages = FALSE;
 
 	/** Images to be displayed in the tree control. */
 	CImageList m_Images;
@@ -501,7 +501,7 @@ private:
 	CString m_strEmptyPageMessage;
 
 	/** The width of the page tree control in pixels. */
-	int m_nPageTreeWidth;
+	int m_nPageTreeWidth = 150;
 
 	bool m_bDark = false;
 

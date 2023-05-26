@@ -110,19 +110,19 @@ private:
 			/// sub-paths is !included.
 			/// This is a temporary setting an be invalid
 			/// after @ref PostProcessData
-			bool recursive;
+			bool recursive = false;
 
 			/// this is an "include" specification
-			Tristate included;
+			Tristate included = Tristate::Unknown;
 
 			/// if @ref recursive is not set, this is
 			/// the parent path status being passed down
 			/// combined with the information of other
 			/// entries for the same @ref path.
-			Tristate subPathIncluded;
+			Tristate subPathIncluded = Tristate::Unknown;
 
 			/// do entries for sub-paths exist?
-			bool hasSubFolderEntries;
+			bool hasSubFolderEntries = false;
 
 			/// STL support
 			/// For efficient folding, it is imperative that
@@ -179,9 +179,9 @@ private:
 
 	struct AdminDir_s
 	{
-		BOOL bHasAdminDir;
+		BOOL bHasAdminDir = false;
 		std::wstring sProjectRoot;
-		ULONGLONG timeout;
+		ULONGLONG timeout = ADMINDIRTIMEOUT;
 	};
 
 public:
@@ -218,20 +218,18 @@ public:
 
 	CPathFilter pathFilter;
 
-	ULONGLONG drivetypeticker;
-	ULONGLONG menumaskticker;
+	ULONGLONG drivetypeticker = 0;
+	ULONGLONG menumaskticker = 0;
 	UINT  drivetypecache[27];
-	wchar_t drivetypepathcache[MAX_PATH];		// MAX_PATH ok.
-	wchar_t szDecSep[5];
-	wchar_t szThousandsSep[5];
+	wchar_t drivetypepathcache[MAX_PATH]{}; // MAX_PATH ok.
 	std::map<std::wstring, AdminDir_s> admindircache;
 	CRegStdString nocontextpaths;
 	std::wstring excludecontextstr;
 	std::vector<std::wstring> excontextvector;
 	CComAutoCriticalSection m_critSec;
-	HANDLE m_registryChangeEvent;
-	HKEY m_hNotifyRegKey;
-	bool isElevated;
+	HANDLE m_registryChangeEvent = nullptr;
+	HKEY m_hNotifyRegKey = nullptr;
+	bool isElevated = false;
 };
 
 inline bool operator<(const ShellCache::CPathFilter::SEntry& lhs, const std::pair<LPCWSTR, size_t>& rhs)

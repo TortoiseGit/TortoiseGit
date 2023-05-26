@@ -49,17 +49,17 @@ public:
 // Attributes
 private:
 	// support for temporarily hiding the grip
-	DWORD m_dwGripTempState;
+	DWORD m_dwGripTempState = 1;
 
 	// flags
-	BOOL m_bEnableSaveRestore;
-	BOOL m_bRectOnly;
-	BOOL m_bSavePage;
+	BOOL m_bEnableSaveRestore = FALSE;
+	BOOL m_bRectOnly = FALSE;
+	BOOL m_bSavePage = FALSE;
 
 	// layout vars
-	UINT_PTR m_nCallbackID;
+	UINT_PTR m_nCallbackID = 0;
 	CSize m_sizePageTL, m_sizePageBR;
-	BOOL m_bLayoutDone;
+	BOOL m_bLayoutDone = FALSE;
 
 	// internal status
 	CString m_sSection;			// section name (identifies a parent window)

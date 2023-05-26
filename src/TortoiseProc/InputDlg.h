@@ -51,8 +51,8 @@ public:
 	CString				m_sHintText;
 	CString				m_sTitle;
 	CString				m_sCheckText;
-	int					m_iCheck;
+	int					m_iCheck = 0;
 	CSciEdit			m_cInput;
-	ProjectProperties * m_pProjectProperties;
-	bool				m_bUseLogWidth;
+	ProjectProperties*	m_pProjectProperties = nullptr;
+	bool				m_bUseLogWidth = true;
 };

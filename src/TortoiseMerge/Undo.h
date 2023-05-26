@@ -32,7 +32,6 @@ class viewstate
 {
 public:
 	viewstate()
-	: modifies(false)
 	{}
 
 	std::map<int, CString>	difflines;
@@ -44,7 +43,7 @@ public:
 
 	std::map<int, viewdata> removedlines;
 	std::map<int, viewdata> replacedlines;
-	bool					modifies; ///< this step modifies view (save before and after save differs)
+	bool					modifies = false; ///< this step modifies view (save before and after save differs)
 
 	void	AddViewLineFromView(CBaseView *pView, int nViewLine, bool bAddEmptyLine);
 	void	Clear();
@@ -95,10 +94,10 @@ protected:
 	std::list<allviewstate> m_viewstates;
 	std::list<POINT> m_caretpoints;
 	std::list< std::list<int>::size_type > m_groups;
-	size_t m_originalstateLeft;
-	size_t m_originalstateRight;
-	size_t m_originalstateBottom;
-	int m_groupCount;
+	size_t m_originalstateLeft = 0;
+	size_t m_originalstateRight = 0;
+	size_t m_originalstateBottom = 0;
+	int m_groupCount = 0;
 
 	std::list<allviewstate> m_redoviewstates;
 	std::list<POINT> m_redocaretpoints;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,10 +30,6 @@ extern HWND hWndHidden;
 extern CGitAdminDirMap g_AdminDirMap;
 
 CDirectoryWatcher::CDirectoryWatcher()
-	: m_bRunning(TRUE)
-	, m_bCleaned(FALSE)
-	, m_FolderCrawler(nullptr)
-	, blockTickCount(0)
 {
 	// enable the required privileges for this process
 
@@ -624,11 +620,9 @@ CDirectoryWatcher::CDirWatchInfo::CDirWatchInfo(HANDLE hDir, const CTGitPath& Di
 {
 	ATLASSERT(m_hDir && !DirectoryName.IsEmpty());
 	m_Buffer[0] = '\0';
-	SecureZeroMemory(&m_Overlapped, sizeof(m_Overlapped));
 	m_DirPath = m_DirName.GetWinPathString();
 	if (m_DirPath.GetAt(m_DirPath.GetLength() - 1) != L'\\')
 		m_DirPath += L'\\';
-	m_hDevNotify = nullptr;
 }
 
 CDirectoryWatcher::CDirWatchInfo::~CDirWatchInfo()

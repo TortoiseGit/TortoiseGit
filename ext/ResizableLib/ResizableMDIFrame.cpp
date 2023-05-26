@@ -33,8 +33,6 @@ IMPLEMENT_DYNCREATE(CResizableMDIFrame, CMDIFrameWnd)
 
 CResizableMDIFrame::CResizableMDIFrame()
 {
-	m_bEnableSaveRestore = FALSE;
-	m_bRectOnly = FALSE;
 }
 
 CResizableMDIFrame::~CResizableMDIFrame()

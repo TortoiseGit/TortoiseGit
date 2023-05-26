@@ -32,13 +32,13 @@ public:
 	CString m_initialRefName;
 
 private:
-	CWnd *	m_pWin;
-	CWinThread*			m_pLoadingThread;
+	CWnd*	m_pWin = nullptr;
+	CWinThread* m_pLoadingThread = nullptr;
 	static UINT LoadingThreadEntry(LPVOID pVoid)
 	{
 		return static_cast<CChooseVersion*>(pVoid)->LoadingThread();
 	};
-	volatile LONG 		m_bLoadingThreadRunning;
+	volatile LONG m_bLoadingThreadRunning = FALSE;
 
 protected:
 	CHistoryCombo	m_ChooseVersioinBranch;
@@ -47,15 +47,15 @@ protected:
 	CButton			m_RadioBranch;
 	CButton			m_RadioTag;
 	CString			m_pendingRefName;
-	bool			m_bNotFullName;
-	bool			m_bSkipCurrentBranch;
+	bool			m_bNotFullName = true;
+	bool			m_bSkipCurrentBranch = false;
 
-	typedef struct
+	struct GUI_UPDATE_DATA
 	{
 		STRING_VECTOR branches;
-		int current_branch_idx;
+		int current_branch_idx = -1;
 		STRING_VECTOR tags;
-	} GUI_UPDATE_DATA;
+	};
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -207,7 +207,6 @@ protected:
 	UINT LoadingThread()
 	{
 		GUI_UPDATE_DATA data;
-		data.current_branch_idx = -1;
 		g_Git.GetBranchList(data.branches, &data.current_branch_idx, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL, m_bSkipCurrentBranch);
 
 		g_Git.GetTagList(data.tags);
@@ -290,17 +289,11 @@ protected:
 	}
 public:
 	CString m_VersionName;
-	bool	m_bIsBranch;
-	bool	m_bIsFirstTimeToSetFocus;
+	bool	m_bIsBranch = false;
+	bool	m_bIsFirstTimeToSetFocus = false;
 	CChooseVersion(CWnd *win)
-	: m_bIsBranch(false)
-	, m_bIsFirstTimeToSetFocus(false)
-	, m_pLoadingThread(nullptr)
-	, m_bLoadingThreadRunning(FALSE)
-	, m_bNotFullName(true)
-	, m_bSkipCurrentBranch(false)
+		: m_pWin(win)
 	{
-		m_pWin=win;
 	};
 };
 

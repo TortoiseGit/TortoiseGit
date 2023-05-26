@@ -41,21 +41,10 @@ IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
 CSyncDlg::CSyncDlg(CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
-, m_iPullRebase(0)
-, m_CurrentCmd(0)
-, m_bInited(false)
-, m_CmdOutCurrentPos(0)
+, CBranchCombox(L"sync")
 , m_bAutoLoadPuttyKey(CAppUtils::IsSSHPutty())
 , m_bForce(BST_UNCHECKED)
-, m_bBlock(false)
-, m_BufStart(0)
-, m_pThread(nullptr)
-, m_bAbort(false)
-, m_bDone(false)
-, m_bWantToExit(false)
-, m_GitCmdStatus(-1)
 , m_startTick(GetTickCount64())
-, m_seq(0)
 {
 	m_pTooltip = &m_tooltips;
 }

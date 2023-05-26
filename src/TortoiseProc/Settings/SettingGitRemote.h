@@ -73,7 +73,7 @@ protected:
 	BOOL Save(CString key, CString value);
 	BOOL SaveGeneral(CString key, CString value);
 
-	int			m_ChangedMask;
+	int			m_ChangedMask = 0;
 
 	CListBox	m_ctrlRemoteList;
 	CString		m_strRemote;

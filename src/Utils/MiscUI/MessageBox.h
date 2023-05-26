@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2017, 2021-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
@@ -413,28 +413,28 @@ protected:
 
 	void SetHelpPath(LPCWSTR sHelpPath) {m_sHelpPath = sHelpPath;}
 
-	LOGFONT	m_LogFont;
+	LOGFONT m_LogFont{};
 	CCursor m_Cursor;
 	CString m_sMessage;
-	HICON m_hIcon;
-	BOOL m_bDestroyIcon;
-	int m_nDefButton;
+	HICON m_hIcon = nullptr;
+	BOOL m_bDestroyIcon = FALSE;
+	int m_nDefButton = 0;
 	CString m_sButton1;
 	CString m_sButton2;
 	CString m_sButton3;
 	CString m_sCheckbox;
 	CString m_sHelpPath;
-	UINT m_uButton1Ret;
-	UINT m_uButton2Ret;
-	UINT m_uButton3Ret;
-	UINT m_uCancelRet;
-	UINT m_uType;
+	UINT m_uButton1Ret = 1;
+	UINT m_uButton2Ret = 2;
+	UINT m_uButton3Ret = 3;
+	UINT m_uCancelRet = 0;
+	UINT m_uType = 0;
 	CSize m_szIcon;
 	CSize m_szAllButtons;
 	CSize m_szButtons;
 	CSize m_szText;
 
-	BOOL m_bShowCheck;
+	BOOL m_bShowCheck = FALSE;
 	CString m_sRegistryValue;
 
 	CString m_i18l;			//only used if some strings are defined for internationalization
@@ -447,7 +447,7 @@ public:
 	afx_msg void OnButton3();
 	BOOL OnInitDialog() override;
 
-	BOOL m_bChecked;
+	BOOL m_bChecked = FALSE;
 protected:
 	void OnCancel() override;
 	BOOL PreTranslateMessage(MSG* pMsg) override;

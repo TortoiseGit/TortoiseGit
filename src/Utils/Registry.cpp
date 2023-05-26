@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2006,2008-2010, 2014, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -132,11 +132,10 @@ void CRegPoint::InternalWrite(HKEY hKey, const CPoint& value)
 
 #ifdef __AFXCOLL_H__   // defines CStringList
 CRegistryKey::CRegistryKey(const CString& key, HKEY base, REGSAM sam)
+	: m_base(base)
+	, m_sam(sam)
+	, m_path(key)
 {
-	m_base = base;
-	m_hKey = nullptr;
-	m_sam = sam;
-	m_path = key;
 	m_path.TrimLeft(L'\\');
 }
 

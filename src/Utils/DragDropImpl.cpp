@@ -18,8 +18,8 @@
 // CIDataObject Class
 //////////////////////////////////////////////////////////////////////
 
-CIDataObject::CIDataObject(CIDropSource* pDropSource):
-m_cRefCount(0), m_pDropSource(pDropSource)
+CIDataObject::CIDataObject(CIDropSource* pDropSource)
+	: m_pDropSource(pDropSource)
 {
 }
 
@@ -388,16 +388,14 @@ STDMETHODIMP CIDropSource::GiveFeedback(
 // CEnumFormatEtc Class
 //////////////////////////////////////////////////////////////////////
 
-CEnumFormatEtc::CEnumFormatEtc(const CSimpleArray<FORMATETC>& ArrFE):
-m_cRefCount(0),m_iCur(0)
+CEnumFormatEtc::CEnumFormatEtc(const CSimpleArray<FORMATETC>& ArrFE)
 {
 	ATLTRACE("CEnumFormatEtc::CEnumFormatEtc()\n");
 	for(int i = 0; i < ArrFE.GetSize(); ++i)
 		m_pFmtEtc.Add(ArrFE[i]);
 }
 
-CEnumFormatEtc::CEnumFormatEtc(const CSimpleArray<FORMATETC*>& ArrFE):
-m_cRefCount(0),m_iCur(0)
+CEnumFormatEtc::CEnumFormatEtc(const CSimpleArray<FORMATETC*>& ArrFE)
 {
 	for(int i = 0; i < ArrFE.GetSize(); ++i)
 		m_pFmtEtc.Add(*ArrFE[i]);
@@ -489,12 +487,8 @@ STDMETHODIMP CEnumFormatEtc::Clone(IEnumFORMATETC FAR * FAR*ppCloneEnumFormatEtc
 //////////////////////////////////////////////////////////////////////
 // CIDropTarget Class
 //////////////////////////////////////////////////////////////////////
-CIDropTarget::CIDropTarget(HWND hTargetWnd):
-	m_hTargetWnd(hTargetWnd),
-	m_cRefCount(0), m_bAllowDrop(false),
-	m_pDropTargetHelper(nullptr),
-	m_pSupportedFrmt(nullptr),
-	m_pIDataObject(nullptr)
+CIDropTarget::CIDropTarget(HWND hTargetWnd)
+	: m_hTargetWnd(hTargetWnd)
 {
 	if (FAILED(CoCreateInstance(CLSID_DragDropHelper, nullptr, CLSCTX_INPROC_SERVER, IID_IDropTargetHelper, reinterpret_cast<LPVOID*>(&m_pDropTargetHelper))))
 		m_pDropTargetHelper = nullptr;

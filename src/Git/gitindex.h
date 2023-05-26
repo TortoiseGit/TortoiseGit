@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,9 +35,8 @@
 #define S_ISLNK(m) (((m) & _S_IFMT) == _S_IFLNK)
 #endif
 
-class CGitIndex
+struct CGitIndex
 {
-public:
 	CString    m_FileName;
 	mutable __time64_t	m_ModifyTime;
 	uint16_t	m_Flags;
@@ -52,13 +51,13 @@ public:
 class CGitIndexList:public std::vector<CGitIndex>
 {
 public:
-	__time64_t  m_LastModifyTime;
-	__int64		m_LastFileSize;
-	BOOL		m_bHasConflicts;
+	__time64_t  m_LastModifyTime = 0;
+	__int64		m_LastFileSize = -1;
+	BOOL		m_bHasConflicts = FALSE;
 	CString		m_branch;
-	size_t		m_incoming;
-	size_t		m_outgoing;
-	size_t		m_stashCount;
+	size_t		m_incoming = static_cast<size_t>(-1);
+	size_t		m_outgoing = static_cast<size_t>(-1);
+	size_t		m_stashCount = 0;
 	inline bool IsIgnoreCase() const { return m_iIndexCaps & GIT_INDEX_CAPABILITY_IGNORE_CASE; }
 
 	CGitIndexList();
@@ -72,9 +71,9 @@ public:
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
 protected:
-	int		m_iIndexCaps;
-	__int64 m_iMaxCheckSize;
-	bool	m_bCalculateIncomingOutgoing;
+	int		m_iIndexCaps = GIT_INDEX_CAPABILITY_IGNORE_CASE | GIT_INDEX_CAPABILITY_NO_SYMLINKS;
+	__int64 m_iMaxCheckSize = 10 * 1024 * 1024;
+	bool	m_bCalculateIncomingOutgoing = true;
 	CAutoConfig config;
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink, CGitHash* pHash = nullptr) const;
 };
@@ -140,9 +139,8 @@ public:
 	}
 };
 
-class CGitTreeItem
+struct CGitTreeItem
 {
-public:
 	CString	m_FileName;
 	CGitHash	m_Hash;
 	int			m_Flags;
@@ -156,32 +154,24 @@ class CGitHeadFileList:public std::vector<CGitTreeItem>
 private:
 	int GetPackRef(const CString &gitdir);
 
-	__time64_t  m_LastModifyTimeHead;
-	__time64_t  m_LastModifyTimeRef;
-	__time64_t	m_LastModifyTimePackRef;
+	__time64_t	m_LastModifyTimeHead = 0;
+	__time64_t	m_LastModifyTimeRef = 0;
+	__time64_t	m_LastModifyTimePackRef = 0;
 
-	__int64		m_LastFileSizeHead;
-	__int64		m_LastFileSizePackRef;
+	__int64		m_LastFileSizeHead = -1;
+	__int64		m_LastFileSizePackRef = -1;
 
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;
 	CString		m_Gitdir;
 	CString		m_PackRefFile;
-	bool		m_bRefFromPackRefFile;
+	bool		m_bRefFromPackRefFile = false;
 
 	std::map<CString,CGitHash> m_PackRefMap;
 
 public:
-	CGitHeadFileList()
-	: m_LastModifyTimeHead(0)
-	, m_LastModifyTimeRef(0)
-	, m_LastModifyTimePackRef(0)
-	, m_LastFileSizeHead(-1)
-	, m_LastFileSizePackRef(-1)
-	, m_bRefFromPackRefFile(false)
-	{
-	}
+	CGitHeadFileList() = default;
 
 	int ReadTree(bool ignoreCase);
 	int ReadHeadHash(const CString& gitdir);
@@ -243,35 +233,24 @@ public:
 	void CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase);
 };
 
-class CGitFileName
+struct CGitFileName
 {
-public:
-	CGitFileName() {}
+	CGitFileName() = default;
 	CGitFileName(LPCWSTR filename, __int64 size, __int64 lastmodified)
 	: m_FileName(filename)
 	, m_Size(size)
 	, m_LastModified(lastmodified)
-	, m_bSymlink(false)
 	{
 	}
 	CString m_FileName;
-	__int64 m_Size;
-	__int64 m_LastModified;
-	bool	m_bSymlink;
+	__int64 m_Size = -1;
+	__int64 m_LastModified = 0;
+	bool	m_bSymlink = false;
 };
 
 class CGitIgnoreItem
 {
 public:
-	CGitIgnoreItem()
-	: m_LastModifyTime(0)
-	, m_LastFileSize(-1)
-	, m_pExcludeList(nullptr)
-	, m_buffer(nullptr)
-	, m_iIgnoreCase(nullptr)
-	{
-	}
-
 	~CGitIgnoreItem()
 	{
 		if(m_pExcludeList)
@@ -279,12 +258,12 @@ public:
 		free(m_buffer);
 	}
 
-	__time64_t  m_LastModifyTime;
-	__int64		m_LastFileSize;
+	__time64_t	m_LastModifyTime = 0;
+	__int64		m_LastFileSize = -1;
 	CStringA m_BaseDir;
-	BYTE *m_buffer;
-	EXCLUDE_LIST m_pExcludeList;
-	int* m_iIgnoreCase;
+	BYTE* m_buffer = nullptr;
+	EXCLUDE_LIST m_pExcludeList = nullptr;
+	int* m_iIgnoreCase = nullptr;
 
 	int FetchIgnoreList(const CString& projectroot, const CString& file, bool isGlobal, int* ignoreCase);
 

@@ -1027,9 +1027,9 @@ public: //methods
 	bool getSubKeys(CStringList& subkeys);      ///< returns the list of sub keys
 
 public: //members
-	HKEY m_base;        ///< handle to the registry base
-	HKEY m_hKey;        ///< handle to the open registry key
-	REGSAM m_sam;       ///< the security attributes to pass to the registry command
+	HKEY m_base = nullptr; ///< handle to the registry base
+	HKEY m_hKey = nullptr; ///< handle to the open registry key
+	REGSAM m_sam = 0;      ///< the security attributes to pass to the registry command
 	CString m_path;     ///< the path to the key
 };
 #endif

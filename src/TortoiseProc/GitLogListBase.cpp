@@ -44,39 +44,8 @@ IMPLEMENT_DYNAMIC(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl
 
 CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCtrl>>()
 	,m_regMaxBugIDColWidth(L"Software\\TortoiseGit\\MaxBugIDColWidth", 200)
-	,m_nSearchIndex(0)
-	,m_bNoDispUpdates(FALSE)
-	, m_ShowFilter(FILTERSHOW_ALL)
-	, m_bShowWC(false)
 	, m_logEntries(&m_LogCache)
-	, m_pFindDialog(nullptr)
-	, m_dwDefaultColumns(0)
 	, m_arShownList(&m_critSec)
-	, m_hasWC(true)
-	, m_bNoHightlightHead(FALSE)
-	, m_ShowRefMask(LOGLIST_SHOWALLREFS)
-	, m_bFullCommitMessageOnLogLine(false)
-	, m_OldTopIndex(-1)
-	, m_AsyncThreadRunning(FALSE)
-	, m_AsyncThreadExit(FALSE)
-	, m_DiffingThread(nullptr)
-	, m_bIsCherryPick(false)
-	, m_bShowBugtraqColumn(false)
-	, m_IsIDReplaceAction(FALSE)
-	, m_ShowMask(0)
-	, m_LoadingThread(nullptr)
-	, m_bExitThread(FALSE)
-	, m_IsOldFirst(FALSE)
-	, m_IsRebaseReplaceGraph(FALSE)
-	, m_ContextMenuMask(0xFFFFFFFFFFFFFFFF)
-	, m_bDragndropEnabled(false)
-	, m_bDragging(FALSE)
-	, m_nDropIndex(-1)
-	, m_nDropMarkerLast(-1)
-	, m_nDropMarkerLastHot(-1)
-	, m_LogFilter(std::make_shared<CLogDlgFilter>())
-	, m_HashMap(std::make_shared<MAP_HASH_NAME>())
-	, m_RollUpStates(std::make_shared<RollUpStateMap>())
 {
 	// use the default GUI font, create a copy of it and
 	// change the copy to BOLD (leave the rest of the font
@@ -2844,10 +2813,9 @@ void CGitLogListBase::OnNMDblclkLoglist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 		DiffSelectedRevWithPrevious();
 }
 
-void CGitLogListBase::FetchLogAsync(void* data)
+void CGitLogListBase::FetchLogAsync(void*)
 {
 	ReloadHashMap();
-	m_ProcData=data;
 	StartLoadingThread();
 }
 
@@ -3905,7 +3873,7 @@ void CGitLogListBase::OnBeginDrag(NMHDR* /*pnmhdr*/, LRESULT* pResult)
 	if (!m_bDragndropEnabled || GetSelectedCount() == 0 || !IsSelectionContinuous())
 		return;
 
-	m_bDragging = TRUE;
+	m_bDragging = true;
 	m_nDropIndex = -1;
 	m_nDropMarkerLast = -1;
 	m_nDropMarkerLastHot = GetHotItem();
@@ -3972,7 +3940,7 @@ void CGitLogListBase::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		::ReleaseCapture();
 		SetCursor(LoadCursor(nullptr, IDC_HAND));
-		m_bDragging = FALSE;
+		m_bDragging = false;
 
 		CRect rect;
 		GetItemRect(m_nDropMarkerLast, &rect, 0);

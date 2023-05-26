@@ -54,25 +54,10 @@ IMPLEMENT_DYNAMIC(CStatGraphDlg, CResizableStandAloneDialog)
 CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CStatGraphDlg::IDD, pParent)
 , m_bStacked(FALSE)
-, m_GraphType(MyGraph::GraphType::Bar)
 , m_bAuthorsCaseSensitive(TRUE)
 , m_bSortByCommitCount(TRUE)
 , m_bUseCommitterNames(FALSE)
 , m_bUseCommitDates(TRUE)
-, m_nWeeks(-1)
-, m_nDays(-1)
-, m_langOrder(0)
-, m_firstInterval(0)
-, m_lastInterval(0)
-, m_nTotalCommits(0)
-, m_nTotalLinesInc(0)
-, m_nTotalLinesDec(0)
-, m_nTotalLinesNew(0)
-, m_nTotalLinesDel(0)
-, m_bDiffFetched(FALSE)
-, m_minDate(0)
-, m_maxDate(0)
-, m_nTotalFileChanges(0)
 {
 }
 
@@ -1728,7 +1713,7 @@ void CStatGraphDlg::OnBnClickedFetchDiff()
 		return;
 	if (GatherData(TRUE))
 		return;
-	this->m_bDiffFetched = TRUE;
+	m_bDiffFetched = true;
 	GetDlgItem(IDC_CALC_DIFF)->ShowWindow(!m_bDiffFetched);
 
 	ShowStats();

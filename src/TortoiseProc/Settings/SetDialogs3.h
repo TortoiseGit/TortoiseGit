@@ -58,7 +58,7 @@ protected:
 	void AddLangToCombo(DWORD langID);
 
 private:
-	bool				m_bNeedSave;
+	bool				m_bNeedSave = false;
 	CComboBox			m_langCombo;
 	CString				m_LogMinSize;
 	BOOL				m_bInheritLogMinSize;

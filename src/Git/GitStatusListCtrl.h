@@ -164,10 +164,10 @@ public:
 
 private:
 
-	ColumnManager* columnManager;
-	int sortedColumn;
-	bool ascending;
-	bool s_bSortLogical;
+	ColumnManager* columnManager = nullptr;
+	int sortedColumn = 0;
+	bool ascending = true;
+	bool s_bSortLogical = true;
 };
 
 /**
@@ -640,7 +640,7 @@ public:
 
 	CString						m_sDisplayedBranch; ///< When on LogDialog, what is the current displayed branch
 
-	CWnd						*m_hwndLogicalParent;
+	CWnd*						m_hwndLogicalParent = nullptr;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -771,15 +771,15 @@ private:
 	bool GetParentCommitInfo(const CGitHash& hash, const int parentNo, CGitHash& parentHash, CString& title);
 
 private:
-	bool *						m_pbCanceled;
-	bool					    m_bAscending;		///< sort direction
-	int					        m_nSortedColumn;	///< which column to sort
-	bool						m_bHasCheckboxes;
-	bool						m_bHasWC;
-	bool						m_bUnversionedLast;
-	BOOL						m_bHasUnversionedItems;
-	bool						m_bHasChangeLists;
-	bool						m_bKeepChangeLists;
+	bool*						m_pbCanceled = nullptr;
+	bool						m_bAscending = false;	///< sort direction
+	int							m_nSortedColumn = -1;	///< which column to sort
+	bool						m_bHasCheckboxes = false;
+	bool						m_bHasWC = true;
+	bool						m_bUnversionedLast = true;
+	BOOL						m_bHasUnversionedItems = FALSE;
+	bool						m_bHasChangeLists = false;
+	bool						m_bKeepChangeLists = false;
 	CRegDWORD					m_regKeepChangeLists;
 	//typedef std::vector<FileEntry*> FileEntryVector;
 	//FileEntryVector				m_arStatusArray;
@@ -787,7 +787,7 @@ private:
 	std::vector<size_t>			m_arListArray;
 	std::map<CString, int>		m_changelists; // maps changelist to group index
 	std::map<CString, CString>	m_pathToChangelist; // maps gitpath to changelist
-	bool						m_bHasIgnoreGroup;
+	bool						m_bHasIgnoreGroup = false;
 	CTGitPathList				m_StatusFileList;
 	CTGitPathList				m_UnRevFileList;
 	CTGitPathList				m_LocksFileList;
@@ -795,59 +795,59 @@ private:
 	CTGitPathList				m_LocalChangesIgnoredFileList; // assume valid & skip worktree
 	CString						m_sLastError;
 
-	LONG						m_nUnversioned;
-	LONG						m_nNormal;
-	LONG						m_nModified;
-	LONG						m_nAdded;
-	LONG						m_nDeleted;
-	LONG						m_nConflicted;
-	LONG						m_nTotal;
-	LONG						m_nSelected;
-	LONG						m_nLineAdded;
-	LONG						m_nLineDeleted;
-	LONG						m_nRenamed;
+	LONG						m_nUnversioned = 0;
+	LONG						m_nNormal = 0;
+	LONG						m_nModified = 0;
+	LONG						m_nAdded = 0;
+	LONG						m_nDeleted = 0;
+	LONG						m_nConflicted = 0;
+	LONG						m_nTotal = 0;
+	LONG						m_nSelected = 0;
+	LONG						m_nLineAdded = 0;
+	LONG						m_nLineDeleted = 0;
+	LONG						m_nRenamed = 0;
 
-	LONG						m_nShownUnversioned;
-	LONG						m_nShownModified;
-	LONG						m_nShownAdded;
-	LONG						m_nShownDeleted;
-	LONG						m_nShownConflicted;
-	LONG						m_nShownFiles;
-	LONG						m_nShownSubmodules;
+	LONG						m_nShownUnversioned = 0;
+	LONG						m_nShownModified = 0;
+	LONG						m_nShownAdded = 0;
+	LONG						m_nShownDeleted = 0;
+	LONG						m_nShownConflicted = 0;
+	LONG						m_nShownFiles = 0;
+	LONG						m_nShownSubmodules = 0;
 
-	DWORD						m_dwDefaultColumns;
-	DWORD						m_dwShow;
-	bool						m_bShowFolders;
-	bool						m_bShowIgnores;
-	bool						m_bHideTooManyItems;
-	bool						m_bTooManyItems;
-	bool						m_bUpdate;
-	unsigned __int64			m_dwContextMenus;
-	bool						m_bBusy;
-	bool						m_bWaitCursor;
-	bool						m_bEmpty;
-	bool						m_bIgnoreRemoveOnly;
-	bool						m_bCheckIfGroupsExist;
-	bool						m_bFileDropsEnabled;
-	bool						m_bOwnDrag;
+	DWORD						m_dwDefaultColumns = 0;
+	DWORD						m_dwShow = 0;
+	bool						m_bShowFolders = false;
+	bool						m_bShowIgnores = false;
+	bool						m_bHideTooManyItems = false;
+	bool						m_bTooManyItems = false;
+	bool						m_bUpdate = false;
+	unsigned __int64			m_dwContextMenus = 0;
+	bool						m_bBusy = false;
+	bool						m_bWaitCursor = false;
+	bool						m_bEmpty = false;
+	bool						m_bIgnoreRemoveOnly = false;
+	bool						m_bCheckIfGroupsExist = true;
+	bool						m_bFileDropsEnabled = false;
+	bool						m_bOwnDrag = false;
 
-	int							m_nIconFolder;
-	int							m_nRestoreOvl;
+	int							m_nIconFolder = 0;
+	int							m_nRestoreOvl = 0;
 
-	CWnd *						m_pStatLabel;
-	CButton *					m_pSelectButton;
-	CButton *					m_pConfirmButton;
+	CWnd*						m_pStatLabel = nullptr;
+	CButton*					m_pSelectButton = nullptr;
+	CButton*					m_pConfirmButton = nullptr;
 	CColors						m_Colors;
 
 	CString						m_sEmpty;
 	CString						m_sBusy;
 	CString						m_sTooManyItems;
 
-	DWORD						m_nTooManyItemsThreshold;
+	DWORD						m_nTooManyItemsThreshold = 1000;
 
-	bool						m_bCheckChildrenWithParent;
+	bool						m_bCheckChildrenWithParent = false;
 	std::unique_ptr<CGitStatusListCtrlDropTarget> m_pDropTarget;
-	volatile LONG				m_nBlockItemChangeHandler;
+	volatile LONG				m_nBlockItemChangeHandler = FALSE;
 	std::map<CString,bool>		m_mapFilenameToChecked; ///< Remember de-/selected items
 	std::set<CString>			m_setDirectFiles;
 
@@ -875,18 +875,18 @@ public:
 
 	void AddEntry(size_t arStatusArrayIndex, CTGitPath* path, WORD langID, int ListIndex);
 	void Clear();
-	int m_FileLoaded;
+	int m_FileLoaded = 0;
 	CGitHash m_CurrentVersion;
-	bool m_bDoNotAutoselectSubmodules;
-	bool m_bNoAutoselectMissing;
-	bool m_bEnableDblClick;
+	bool m_bDoNotAutoselectSubmodules = false;
+	bool m_bNoAutoselectMissing = false;
+	bool m_bEnableDblClick = true;
 	std::map<CString, CString>	m_restorepaths;
 	mutable CReaderWriterLock	m_guard;
 
 	CFont			m_uiFont;
 
-	HMENU			m_hShellMenu;
-	LPCONTEXTMENU	m_pContextMenu;
+	HMENU			m_hShellMenu = nullptr;
+	LPCONTEXTMENU	m_pContextMenu = nullptr;
 
 	void			StoreScrollPos();
 
@@ -895,14 +895,14 @@ private:
 	struct ScrollPos
 	{
 		bool enabled = false;
-		int selMark;
-		int nSelectedEntry;
+		int selMark = -1;
+		int nSelectedEntry = -1;
 		POINT coordOrigin{0, 0};
 	} m_sScrollPos;
 
 	void			GitStageEntry(CTGitPath* entry);
 	void			GitUnstageEntry(CTGitPath* entry);
-	bool			m_bThreeStateCheckboxes;
+	bool			m_bThreeStateCheckboxes = false;
 
 public:
 	void UpdateSelectedFileStagingStatus(CTGitPath::StagingStatus newStatus);
@@ -916,7 +916,7 @@ public:
 	bool OnDrop(FORMATETC* pFmtEtc, STGMEDIUM& medium, DWORD* pdwEffect, POINTL pt) override;
 	HRESULT STDMETHODCALLTYPE DragOver(DWORD grfKeyState, POINTL pt, DWORD __RPC_FAR* pdwEffect) override;
 private:
-	CGitStatusListCtrl* m_pGitStatusListCtrl;
+	CGitStatusListCtrl* m_pGitStatusListCtrl = nullptr;
 };
 
 class ScopedInDecrement

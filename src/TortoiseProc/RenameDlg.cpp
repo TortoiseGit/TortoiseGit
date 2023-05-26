@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2008-2009, 2011-2013, 2015-2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,9 +29,6 @@
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CRenameDlg::IDD, pParent)
-	, m_renameRequired(true)
-	, m_pInputValidator(nullptr)
-	, m_bBalloonVisible(false)
 	, m_sBaseDir(g_Git.m_CurrentDir)
 {
 }

@@ -77,12 +77,12 @@ public:
 	 */
 	void	RemoveAll();
 
-	bool	m_bMarkDefault;
+	bool	m_bMarkDefault = true;
 
 	/** Don't show text on Button */
-	bool	m_bShowCurrentItem;
+	bool	m_bShowCurrentItem = true;
 
-	bool	m_bAlwaysShowArrow;
+	bool	m_bAlwaysShowArrow = false;
 
 protected:
 	BOOL PreTranslateMessage(MSG* pMsg) override;
@@ -98,7 +98,7 @@ protected:
 	afx_msg void OnDestroy();
 
 	CIconMenu	m_btnMenu;
-	INT_PTR	m_nDefault;
+	INT_PTR	m_nDefault = 0;
 
 	DECLARE_MESSAGE_MAP()
 

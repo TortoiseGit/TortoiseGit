@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2017, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2009-2010, 2013, 2016 - TortoiseSVN
@@ -56,8 +56,8 @@ public:
 	CString m_sBaseDir;
 
 private:
-	bool				m_bBalloonVisible;
-	bool				m_renameRequired;
+	bool				m_bBalloonVisible = false;
+	bool				m_renameRequired = true;
 	CString				m_originalName;
-	IInputValidator		m_pInputValidator;
+	IInputValidator		m_pInputValidator = nullptr;
 };

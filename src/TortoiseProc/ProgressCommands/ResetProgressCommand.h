@@ -22,12 +22,10 @@ class ResetProgressCommand : public ProgressCommand
 {
 private:
 	CString	m_revision;
-	int		m_resetType;
+	int		m_resetType = 0;
 
 public:
-	ResetProgressCommand()
-	: m_resetType(0)
-	{}
+	ResetProgressCommand() = default;
 
 	void SetRevision(const CString& revision) { m_revision = revision; }
 	void SetResetType(int resetType){ m_resetType = resetType; }

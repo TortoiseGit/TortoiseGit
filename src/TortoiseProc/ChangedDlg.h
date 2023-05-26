@@ -92,9 +92,9 @@ private:
 	BOOL					m_bShowUnversioned;
 	int						m_iShowUnmodified;
 	BOOL					m_bShowLocalChangesIgnored;
-	volatile LONG			m_bBlock;
+	volatile LONG			m_bBlock = FALSE;
 	CString					m_sTitle;
-	bool					m_bCanceled;
+	bool					m_bCanceled = false;
 	BOOL					m_bShowIgnored;
 	BOOL					m_bWholeProject;
 	BOOL					m_bShowStaged;

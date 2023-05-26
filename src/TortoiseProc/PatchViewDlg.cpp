@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2022 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,15 +42,6 @@ IMPLEMENT_DYNAMIC(CPatchViewDlg, CStandAloneDialog)
 
 CPatchViewDlg::CPatchViewDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(CPatchViewDlg::IDD, pParent)
-	, m_ParentDlg(nullptr)
-	, m_hAccel(nullptr)
-	, m_bShowFindBar(false)
-	, m_nPopupSave(0)
-	, m_nStageHunks(0)
-	, m_nStageLines(0)
-	, m_nUnstageHunks(0)
-	, m_nUnstageLines(0)
-	, m_nEnableStagingType(EnableStagingTypes::None)
 {
 }
 

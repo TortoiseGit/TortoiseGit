@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,9 +30,6 @@
 IMPLEMENT_DYNAMIC(CAddDlg, CResizableStandAloneDialog)
 CAddDlg::CAddDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CAddDlg::IDD, pParent)
-	, m_bThreadRunning(FALSE)
-	, m_bCancelled(false)
-	, m_bIncludeIgnored(FALSE)
 {
 }
 

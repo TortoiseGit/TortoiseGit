@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016 - TortoiseGit
+// Copyright (C) 2016, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,8 +37,8 @@ public:
 
 	operator HWND() const {return m_hwnd;}
 protected:
-	HINSTANCE hResource;
-	HWND m_hwnd;
+	HINSTANCE hResource = nullptr;
+	HWND m_hwnd = nullptr;
 
 	void InitDialog(HWND hwndDlg, UINT iconID);
 

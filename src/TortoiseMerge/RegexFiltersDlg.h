@@ -1,5 +1,6 @@
 ﻿// TortoiseMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -49,5 +50,5 @@ protected:
 	void		SetupListControl();
 private:
 	CListCtrl		m_RegexList;
-	CSimpleIni *	m_pIni;
+	CSimpleIni*		m_pIni = nullptr;
 };

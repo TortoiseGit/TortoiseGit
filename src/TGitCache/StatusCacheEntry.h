@@ -1,7 +1,7 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2012, 2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2017, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,12 +50,12 @@ private:
 
 private:
 	LONGLONG			m_discardAtTime;
-	git_wc_status_kind	m_highestPriorityLocalStatus;
+	git_wc_status_kind	m_highestPriorityLocalStatus = git_wc_status_none;
 	git_wc_status2_t	m_GitStatus;
-	__int64				m_lastWriteTime;
-	bool				m_bSet;
-	bool				m_bAssumeValid;
-	bool				m_bSkipWorktree;
+	__int64				m_lastWriteTime = 0;
+	bool				m_bSet = false;
+	bool				m_bAssumeValid = false;
+	bool				m_bSkipWorktree = false;
 
 	friend class CGitStatusCache;
 };

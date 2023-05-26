@@ -54,5 +54,5 @@ private:
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
-	bool				m_bBlock;
+	bool				m_bBlock = false;
 };

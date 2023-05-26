@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2016-2019, 2021-2023 - TortoiseGit
 // Copyright (C) 2007-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,11 +35,7 @@ CLIPFORMAT CF_FILE_ATTRIBUTES_ARRAY = static_cast<CLIPFORMAT>(RegisterClipboardF
 GitDataObject::GitDataObject(const CTGitPathList& gitpaths, const CGitHash& rev, int stripLength)
 	: m_gitPaths(gitpaths)
 	, m_revision(rev)
-	, m_bInOperation(FALSE)
-	, m_bIsAsync(TRUE)
-	, m_cRefCount(0)
 	, m_iStripLength(stripLength)
-	, m_containsExistingFiles(false)
 {
 	ASSERT((m_revision.IsEmpty() && m_iStripLength == -1) || (!m_revision.IsEmpty() && m_iStripLength >= -1)); // m_iStripLength only possible if rev is set
 	for (int i = 0; i < m_gitPaths.GetCount(); ++i)
@@ -715,9 +711,7 @@ void CGitEnumFormatEtc::Init(bool localonly, bool containsExistingFiles)
 }
 
 CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool localonly, bool containsExistingFiles)
-	: m_cRefCount(0)
-	, m_iCur(0)
-	, m_localonly(localonly)
+	: m_localonly(localonly)
 	, m_containsExistingFiles(containsExistingFiles)
 {
 	for (size_t i = 0; i < vec.size(); ++i)
@@ -726,9 +720,7 @@ CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC>& vec, bool loc
 }
 
 CGitEnumFormatEtc::CGitEnumFormatEtc(const std::vector<FORMATETC*>& vec, bool localonly, bool containsExistingFiles)
-	: m_cRefCount(0)
-	, m_iCur(0)
-	, m_localonly(localonly)
+	: m_localonly(localonly)
 	, m_containsExistingFiles(containsExistingFiles)
 {
 	for (size_t i = 0; i < vec.size(); ++i)

@@ -24,8 +24,6 @@
 const UINT CLinkControl::LK_LINKITEMCLICKED = ::RegisterWindowMessage(L"LK_LINKITEMCLICKED");
 
 CLinkControl::CLinkControl()
-	: m_bOverControl(false)
-	, m_hLinkCursor(nullptr)
 {
 }
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012, 2019-2020 - TortoiseGit
+// Copyright (C) 2012, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,9 +30,6 @@
 IMPLEMENT_DYNAMIC(COpenDlg, CStandAloneDialog)
 COpenDlg::COpenDlg(CWnd* pParent /*=nullptr*/)
 	: CStandAloneDialog(COpenDlg::IDD, pParent)
-	, m_bFromClipboard(FALSE)
-	, m_cFormat(0)
-	, m_nextViewer(nullptr)
 {
 }
 

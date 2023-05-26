@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006, 2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2018, 2021 - TortoiseGit
+// Copyright (C) 2008-2014, 2018, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,11 +56,11 @@ protected:
 	void PageProcOnCommand(WPARAM wParam);
 	void RunCommand(const std::wstring& command);
 
-	HWND m_hwnd;
+	HWND m_hwnd = nullptr;
 	std::vector<std::wstring> filenames;
 	CString	m_ProjectTopDir;
-	int		m_iStripLength;
-	bool	m_bIsSubmodule;
+	int		m_iStripLength = 0;
+	bool	m_bIsSubmodule = false;
 	struct
 	{
 		bool allAreVersionedItems = false;
@@ -73,7 +73,7 @@ protected:
 	/**
 	 * Were executable, assumeValid or skip-worktree flags changes
 	 */
-	bool m_bChanged;
+	bool m_bChanged = false;
 };
 
 

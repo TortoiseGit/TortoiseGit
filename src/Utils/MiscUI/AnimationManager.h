@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -121,5 +122,5 @@ private:
 	/// The holder of the UITransitionLibrary
 	IUIAnimationTransitionLibraryPtr pTransLib;
 	/// the timer callback object
-	CTimerEventHandler* timerEventHandler;
+	CTimerEventHandler* timerEventHandler = nullptr;
 };

@@ -33,10 +33,7 @@ CGitHeadFileMap g_HeadFileMap;
 CGitIgnoreList  g_IgnoreList;
 
 GitStatus::GitStatus()
-	: status(nullptr)
 {
-	m_status.assumeValid = m_status.skipWorktree = false;
-	m_status.status = git_wc_status_none;
 }
 
 // static method

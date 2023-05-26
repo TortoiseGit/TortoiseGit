@@ -72,7 +72,7 @@ protected:
 
 	CString		 	m_sFilter;
 
-	HACCEL			m_hAccel;
+	HACCEL			m_hAccel = nullptr;
 
 	BOOL			InitializeToolbar();
 	bool			InitialSetMenu(const CString& settingName, bool defaultValue, int nId);
@@ -106,11 +106,11 @@ protected:
 	afx_msg BOOL	OnToolTipNotify (UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnWindowPosChanging(WINDOWPOS* lpwndpos);
 
-	CFindDlg* m_pFindDialog;
+	CFindDlg* m_pFindDialog = nullptr;
 	static const UINT m_FindDialogMessage;
 	afx_msg void OnFind();
 	afx_msg LRESULT OnFindDialogMessage(WPARAM wParam, LPARAM lParam);
-	int m_nSearchIndex;
+	int m_nSearchIndex = 0;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -129,7 +129,7 @@ private:
 	CRevGraphToolBar			m_ToolBar;
 	bool						m_bVisible;
 	CString						m_outputPath;
-	ULONG_PTR					m_gdiPlusToken;
+	ULONG_PTR					m_gdiPlusToken = 0;
 	CComPtr<ITaskbarList3>		m_pTaskbarList;
-	int							m_themeCallbackId;
+	int							m_themeCallbackId = 0;
 };

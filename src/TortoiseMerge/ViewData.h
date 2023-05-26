@@ -37,16 +37,7 @@ enum class HideState
 class viewdata
 {
 public:
-	viewdata()
-		: state(DiffState::Unknown)
-		, linenumber(-1)
-		, movedIndex(-1)
-		, movedFrom(true)
-		, ending(EOL::AutoLine)
-		, hidestate(HideState::Hidden)
-		, marked(false)
-	{
-	}
+	viewdata() = default;
 
 	viewdata(
 			const CString& sLineInit,
@@ -57,8 +48,6 @@ public:
 			bool markedInit = false)
 		: state(stateInit)
 		, linenumber(linenumberInit)
-		, movedIndex(-1)
-		, movedFrom(true)
 		, ending(endingInit)
 		, hidestate(hideInit)
 		, marked(markedInit)
@@ -67,13 +56,13 @@ public:
 	}
 
 	CString			sLine;
-	DiffState		state;
-	int				linenumber;
-	int				movedIndex;
-	bool			movedFrom;
-	EOL				ending;
-	HideState 		hidestate;
-	bool			marked;
+	DiffState		state = DiffState::Unknown;
+	int				linenumber = -1;
+	int				movedIndex = -1;
+	bool			movedFrom = true;
+	EOL				ending = EOL::AutoLine;
+	HideState		hidestate = HideState::Hidden;
+	bool			marked = false;
 };
 
 /**
@@ -139,5 +128,5 @@ public:
 
 protected:
 	std::vector<viewdata>		m_data;
-	int							m_nMarkedBlocks;
+	int							m_nMarkedBlocks = 0;
 };

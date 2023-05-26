@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019 - TortoiseGit
+// Copyright (C) 2009-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,20 +27,19 @@
 class CBranchCombox
 {
 public:
-	CBranchCombox()
-		: m_LocalBranchFilter(gPickRef_Head)
-		, m_RemoteBranchFilter(gPickRef_Remote)
-		, m_DialogName(L"sync")
-		, m_pTooltip(nullptr)
+	CBranchCombox(CString dialogName)
+
+		: m_DialogName(dialogName)
 	{
 	}
+
 protected:
 	CHistoryCombo m_ctrlLocalBranch;
 	CHistoryCombo m_ctrlRemoteBranch;
-	int m_LocalBranchFilter;
-	int m_RemoteBranchFilter;
+	int m_LocalBranchFilter = gPickRef_Head;
+	int m_RemoteBranchFilter = gPickRef_Remote;
 
-	CToolTips *m_pTooltip;
+	CToolTips* m_pTooltip = nullptr;
 
 	CString m_DialogName;
 
@@ -190,7 +189,7 @@ protected:
 		else
 		{
 			m_ctrlRemoteBranch.Reset();
-			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch, L"sync");
+			m_ctrlRemoteBranch.LoadHistory(m_RegKeyRemoteBranch, m_DialogName);
 		}
 
 		if(!this->m_strLocalBranch.IsEmpty())

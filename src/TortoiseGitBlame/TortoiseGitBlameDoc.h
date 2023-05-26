@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2011, 2013, 2016-2017, 2023 - TortoiseGit
 
@@ -31,7 +31,7 @@ class CTortoiseGitBlameDoc : public CDocument
 protected: // create from serialization only
 	CTortoiseGitBlameDoc();
 	DECLARE_DYNCREATE(CTortoiseGitBlameDoc)
-	bool m_bFirstStartup;
+	bool m_bFirstStartup = true;
 
 // Attributes
 public:
@@ -41,10 +41,9 @@ public:
 	CString m_TempFileName;
 #endif
 	CString m_Rev;
-	int		m_lLine;
+	int		m_lLine = 1;
 
 // Operations
-	BOOL m_IsGitFile;
 	CTGitPath m_GitPath;
 
 // Overrides

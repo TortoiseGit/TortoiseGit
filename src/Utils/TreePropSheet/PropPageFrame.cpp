@@ -1,4 +1,4 @@
-/********************************************************************
+﻿/********************************************************************
 *
 * Copyright (c) 2002 Sven Wiegand <mail@sven-wiegand.de>
 *
@@ -37,12 +37,6 @@ namespace TreePropSheet
 //-------------------------------------------------------------------
 
 CPropPageFrame::CPropPageFrame()
-:	m_bShowCaption(FALSE),
-	m_nCaptionHeight(0),
-	m_hCaptionIcon(nullptr),
-	m_dwMsgFormat(DT_CENTER|DT_VCENTER|DT_NOPREFIX|DT_SINGLELINE),
-	m_uiFont(nullptr)
-	, m_bDark(false)
 {
 	NONCLIENTMETRICS metrics = { 0 };
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);

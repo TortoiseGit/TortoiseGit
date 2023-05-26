@@ -42,17 +42,14 @@
  */
 typedef struct tagANCHOR
 {
-	int cx; //!< horizontal component, in percent
-	int cy; //!< vertical component, in percent
+	int cx = 0; //!< horizontal component, in percent
+	int cy = 0; //!< vertical component, in percent
 
-	tagANCHOR() {}
+	tagANCHOR() = default;
 
-	tagANCHOR(int x, int y)
+	tagANCHOR(int x, int y) : cx(x), cy(y)
 	{
-		cx = x;
-		cy = y;
 	}
-
 } ANCHOR, *PANCHOR, *LPANCHOR;
 
 /*! @defgroup ConstAnchors Alignment Constants
@@ -88,9 +85,9 @@ typedef struct tagANCHOR
 typedef struct tagLAYOUTINFO
 {
 	//! Handle of the window the layout of which is being defined
-	HWND hWnd;
+	HWND hWnd = nullptr;
 	//! Identification number assigned to the callback slot
-	UINT_PTR nCallbackID;
+	UINT_PTR nCallbackID = 0;
 
 	//! Window class name to identify standard controls
 	TCHAR sWndClass[MAX_PATH];
@@ -98,19 +95,19 @@ typedef struct tagLAYOUTINFO
 	//! Anchor point for the top-left corner
 	ANCHOR anchorTopLeft;
 	//! Fixed distance for the top-left corner
-	SIZE marginTopLeft;
+	SIZE marginTopLeft{};
 	
 	//! Anchor point for the bottom-right corner
 	ANCHOR anchorBottomRight;
 	//! Fixed distance for the bottom-right corner
-	SIZE marginBottomRight;
+	SIZE marginBottomRight{};
 
 	//! Flag that enables support for custom windows
-	BOOL bMsgSupport;
+	BOOL bMsgSupport = FALSE;
 	//! Redraw settings for anti-flickering and proper painting
 	RESIZEPROPERTIES properties;
 
-	tagLAYOUTINFO() : hWnd(NULL), nCallbackID(0), bMsgSupport(FALSE)
+	tagLAYOUTINFO()
 	{
 		sWndClass[0] = 0;
 	}
@@ -118,7 +115,7 @@ typedef struct tagLAYOUTINFO
 	tagLAYOUTINFO(HWND hwnd, ANCHOR tl_type, SIZE tl_margin, 
 		ANCHOR br_type, SIZE br_margin)
 		:
-		hWnd(hwnd), nCallbackID(0), bMsgSupport(FALSE),
+		hWnd(hwnd),
 		anchorTopLeft(tl_type), marginTopLeft(tl_margin),
 		anchorBottomRight(br_type), marginBottomRight(br_margin)
 	{
@@ -146,14 +143,14 @@ private:
 
 	//@{
 	//! @brief Used for clipping implementation
-	HRGN m_hOldClipRgn;
-	int m_nOldClipRgn;
+	HRGN m_hOldClipRgn = nullptr;
+	int m_nOldClipRgn = 0;
 	//@}
 
 	//@{
 	//! @brief Used for advanced anti-flickering
-	RECT m_rectClientBefore;
-	BOOL m_bNoRecursion;
+	RECT m_rectClientBefore{};
+	BOOL m_bNoRecursion = FALSE;
 	//@}
 
 	//! @brief Apply clipping settings for the specified control
@@ -292,9 +289,7 @@ protected:
 public:
 	CResizableLayout()
 	{
-		m_bNoRecursion = FALSE;
 		m_hOldClipRgn = ::CreateRectRgn(0,0,0,0);
-		m_nOldClipRgn = 0;
 	}
 
 	virtual ~CResizableLayout()

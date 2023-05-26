@@ -46,31 +46,7 @@ class CMainWindow : public CWindow
 {
 public:
     CMainWindow(HINSTANCE hInstance, const WNDCLASSEX* wcx = nullptr) : CWindow(hInstance, wcx)
-        , picWindow1(hInstance)
-        , picWindow2(hInstance)
-        , picWindow3(hInstance)
-        , oldx(-4)
-        , oldy(-4)
-        , bMoved(false)
-        , bDragMode(false)
-        , bDrag2(false)
-        , nSplitterPos(100)
-        , nSplitterPos2(200)
-        , bOverlap(false)
-        , bShowInfo(false)
-        , bVertical(false)
-        , bLinkedPositions(true)
-        , bFitWidths(false)
-        , bFitHeights(false)
         , transparentColor(::GetSysColor(COLOR_WINDOW))
-        , m_BlendType(CPicWindow::BlendType::Alpha)
-        , hwndTB(0)
-        , hToolbarImgList(nullptr)
-        , bSelectionMode(false)
-        , m_themeCallbackId(0)
-        , resolveMsgWnd(nullptr)
-        , resolveMsgLParam(0)
-        , resolveMsgWParam(0)
     {
         SetWindowTitle(static_cast<LPCWSTR>(ResString(hResource, IDS_APP_TITLE)));
     };
@@ -127,11 +103,11 @@ protected:
     void                                Splitter_CaptureChanged();
 
     void                                SetTheme(bool bDark);
-    int                                 m_themeCallbackId;
+    int                                 m_themeCallbackId = 0;
     // toolbar
     bool                                CreateToolbar();
-    HWND                                hwndTB;
-    HIMAGELIST                          hToolbarImgList;
+    HWND                                hwndTB = nullptr;
+    HIMAGELIST                          hToolbarImgList = nullptr;
 
     // command line params
     static std::wstring                 leftpicpath;
@@ -141,29 +117,29 @@ protected:
     static std::wstring                 rightpictitle;
 
     // image data
-    CPicWindow                          picWindow1;
-    CPicWindow                          picWindow2;
-    CPicWindow                          picWindow3;
-    bool                                bShowInfo;
+    CPicWindow                          picWindow1 = nullptr;
+    CPicWindow                          picWindow2 = nullptr;
+    CPicWindow                          picWindow3 = nullptr;
+    bool                                bShowInfo = false;
     COLORREF                            transparentColor;
 
     // splitter data
-    int                                 oldx;
-    int                                 oldy;
-    bool                                bMoved;
-    bool                                bDragMode;
-    bool                                bDrag2;
-    int                                 nSplitterPos;
-    int                                 nSplitterPos2;
+    int                                 oldx = -4;
+    int                                 oldy = -4;
+    bool                                bMoved = false;
+    bool                                bDragMode = false;
+    bool                                bDrag2 = false;
+    int                                 nSplitterPos = 100;
+    int                                 nSplitterPos2 = 200;
 
     // one/two pane view
-    bool                                bSelectionMode;
-    bool                                bOverlap;
-    bool                                bVertical;
-    bool                                bLinkedPositions;
-    bool                                bFitWidths;
-    bool                                bFitHeights;
-    CPicWindow::BlendType               m_BlendType;
+    bool                                bSelectionMode = false;
+    bool                                bOverlap = false;
+    bool                                bVertical = false;
+    bool                                bLinkedPositions = true;
+    bool                                bFitWidths = false;
+    bool                                bFitHeights = false;
+    CPicWindow::BlendType               m_BlendType = CPicWindow::BlendType::Alpha;
 
     // selection mode data
     std::map<FileType, std::wstring>    selectionPaths;
@@ -171,8 +147,8 @@ protected:
     std::wstring                        selectionResult;
 
 public:
-    HWND			resolveMsgWnd;
-    WPARAM			resolveMsgWParam;
-    LPARAM			resolveMsgLParam;
+    HWND			resolveMsgWnd = nullptr;
+    WPARAM			resolveMsgWParam = 0;
+    LPARAM			resolveMsgLParam = 0;
 };
 

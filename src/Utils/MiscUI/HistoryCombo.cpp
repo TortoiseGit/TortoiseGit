@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2020 - TortoiseSVN
-// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,18 +36,7 @@ WNDPROC CHistoryCombo::lpfnEditWndProc = nullptr;
 CHistoryCombo::CHistoryCombo(BOOL bAllowSortStyle /*=FALSE*/ )
 	: m_nMaxHistoryItems ( MAX_HISTORY_ITEMS)
 	, m_bAllowSortStyle(bAllowSortStyle)
-	, m_bURLHistory(FALSE)
-	, m_bPathHistory(FALSE)
-	, m_hWndToolTip(nullptr)
-	, m_ttShown(FALSE)
-	, m_bDyn(FALSE)
-	, m_bWantReturn(FALSE)
-	, m_bTrim(TRUE)
-	, m_bCaseSensitive(FALSE)
-	, m_bCheckDuplicate(TRUE)
-	, m_bAllowDelete(FALSE)
 {
-	SecureZeroMemory(&m_ToolInfo, sizeof(m_ToolInfo));
 }
 
 CHistoryCombo::~CHistoryCombo()
@@ -817,8 +806,6 @@ LRESULT CHistoryCombo::OnPaste(WPARAM, LPARAM)
 
 CCustomAutoCompleteSource::CCustomAutoCompleteSource(const CStringArray& pData)
 	: m_pData(pData)
-	, m_index(0)
-	, m_cRefCount(0)
 {
 }
 

@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +21,6 @@
 #include "DIB.h"
 
 CDib::CDib()
-	: m_hBitmap(nullptr)
 {
 	DeleteObject();
 }
@@ -66,19 +66,13 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 	// Create a 32 bit bitmap
 	std::vector<DWORD> pBits(iWidth * iHeight);
 
-	BITMAPINFO bi;
+	BITMAPINFO bi{};
 	bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
 	bi.bmiHeader.biWidth         = iWidth;
 	bi.bmiHeader.biHeight        = iHeight;
 	bi.bmiHeader.biPlanes        = 1;
 	bi.bmiHeader.biBitCount      = 32;
 	bi.bmiHeader.biCompression   = BI_RGB;
-	bi.bmiHeader.biSizeImage     = 0;
-	bi.bmiHeader.biXPelsPerMeter = 0;
-	bi.bmiHeader.biYPelsPerMeter = 0;
-	bi.bmiHeader.biClrUsed       = 0;
-	bi.bmiHeader.biClrImportant  = 0;
-
 
 	SetBitmap(&bi, pBits.data());
 

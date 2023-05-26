@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +21,7 @@
 
 class CBstrSafeVector {
 public:
-	CBstrSafeVector() : controlled(nullptr) {}
+	CBstrSafeVector() = default;
 	CBstrSafeVector( ULONG count );
 	~CBstrSafeVector() { release(); }
 
@@ -33,7 +34,7 @@ public:
 	HRESULT PutElement( LONG index, const CString& value );
 
 private:
-	SAFEARRAY* controlled;
+	SAFEARRAY* controlled = nullptr;
 
 	void release();
 };

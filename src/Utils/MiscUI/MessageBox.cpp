@@ -29,18 +29,7 @@
 #define BTN_OFFSET 100 // use an offset in order to not interfere with IDYES and so on...
 
 CMessageBox::CMessageBox()
-	: m_hIcon(nullptr)
-	, m_uButton1Ret(1)
-	, m_uButton2Ret(2)
-	, m_uButton3Ret(3)
-	, m_uCancelRet(0)
-	, m_bShowCheck(FALSE)
-	, m_bDestroyIcon(FALSE)
-	, m_nDefButton(0)
-	, m_uType(0)
-	, m_bChecked(FALSE)
 {
-	SecureZeroMemory(&m_LogFont, sizeof(LOGFONT));
 }
 
 CMessageBox::~CMessageBox()

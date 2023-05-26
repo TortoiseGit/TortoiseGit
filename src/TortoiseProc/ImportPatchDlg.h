@@ -44,12 +44,12 @@ public:
 	CTGitPathList m_PathList;
 
 protected:
-	int m_CurrentItem;
+	int m_CurrentItem = 0;
 
-	volatile LONG		m_bExitThread;
-	volatile LONG 		m_bThreadRunning;
+	volatile LONG		m_bExitThread = FALSE;
+	volatile LONG 		m_bThreadRunning = FALSE;
 
-	CWinThread*			m_LoadingThread;
+	CWinThread*			m_LoadingThread = nullptr;
 
 	static UINT ThreadEntry(LPVOID pVoid)
 	{

@@ -93,16 +93,16 @@ public:
 	bool	HasFiles() const { return m_cFileList.GetItemCount() > 0; }
 	enum { IDD = IDD_FILEPATCHES };
 protected:
-	GitPatch *					m_pPatch;
-	CPatchFilesDlgCallBack *	m_pCallBack;
+	GitPatch*					m_pPatch = nullptr;
+	CPatchFilesDlgCallBack*		m_pCallBack = nullptr;
 	CString						m_sPath;
 	CListCtrl					m_cFileList;
 	CDWordArray					m_arFileStates;
-	BOOL						m_bMinimized;
-	int							m_nWindowHeight;
-	CWnd *						m_pMainFrame;
-	int							m_ShownIndex;
-	HFONT						m_boldFont;
+	BOOL						m_bMinimized = FALSE;
+	int							m_nWindowHeight = -1;
+	CWnd*						m_pMainFrame = nullptr;
+	int							m_ShownIndex = -1;
+	HFONT						m_boldFont = nullptr;
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	void OnOK() override;

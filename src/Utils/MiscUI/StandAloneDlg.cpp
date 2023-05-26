@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016, 2020 - TortoiseGit
+// Copyright (C) 2013, 2016, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,11 +43,6 @@ END_MESSAGE_MAP()
 IMPLEMENT_DYNAMIC(CResizableStandAloneDialog, CDialog)
 CResizableStandAloneDialog::CResizableStandAloneDialog(UINT nIDTemplate, CWnd* pParentWnd /*= nullptr*/)
 	: CStandAloneDialogTmpl<CResizableDialog>(nIDTemplate, pParentWnd)
-	, m_bVertical(false)
-	, m_bHorizontal(false)
-	, m_nResizeBlock(0)
-	, m_height(0)
-	, m_width(0)
 {
 }
 

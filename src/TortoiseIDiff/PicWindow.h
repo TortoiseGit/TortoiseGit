@@ -59,65 +59,19 @@
 class CPicWindow : public CWindow
 {
 private:
-    CPicWindow() : CWindow(nullptr) {}
+    CPicWindow() : CWindow(nullptr)
+        , transparentColor(::GetSysColor(COLOR_WINDOW))
+    {
+        m_wszTip[0] = 0;
+        m_szTip[0] = 0;
+    }
 public:
     CPicWindow(HINSTANCE hInstance, const WNDCLASSEX* wcx = nullptr) : CWindow(hInstance, wcx)
-        , bValid(false)
-        , nHScrollPos(0)
-        , nVScrollPos(0)
-        , picscale(100)
         , transparentColor(::GetSysColor(COLOR_WINDOW))
-        , pSecondPic(nullptr)
-        , blendAlpha(0.5f)
-        , bShowInfo(false)
-        , nDimensions(0)
-        , nCurrentDimension(1)
-        , nFrames(0)
-        , nCurrentFrame(1)
-        , bPlaying(false)
-        , pTheOtherPic(nullptr)
-        , bLinkedPositions(true)
-        , bFitWidths(false)
-        , bFitHeights(false)
-        , bOverlap(false)
-        , m_blend(BlendType::Alpha)
-        , bMainPic(false)
-        , bFirstpaint(false)
-        , nVSecondScrollPos(0)
-        , nHSecondScrollPos(0)
-        , startVScrollPos(0)
-        , startHScrollPos(0)
-        , startVSecondScrollPos(0)
-        , startHSecondScrollPos(0)
-        , hwndTT(0)
-        , hwndTrack(0)
-        , hwndLeftBtn(0)
-        , hwndRightBtn(0)
-        , hwndPlayBtn(0)
-        , hwndSelectBtn(0)
-        , hwndAlphaToggleBtn(0)
-        , hLeft(0)
-        , hRight(0)
-        , hPlay(0)
-        , hStop(0)
-        , hAlphaToggle(0)
-        , m_linkedWidth(0)
-        , m_linkedHeight(0)
-        , bDragging(false)
-        , bSelectionMode(false)
-        , m_themeCallbackId(0)
     {
         SetWindowTitle(L"Picture Window");
-        m_lastTTPos.x = 0;
-        m_lastTTPos.y = 0;
         m_wszTip[0]   = 0;
         m_szTip[0]    = 0;
-        ptPanStart.x = -1;
-        ptPanStart.y = -1;
-        m_inforect.left = 0;
-        m_inforect.right = 0;
-        m_inforect.bottom = 0;
-        m_inforect.top = 0;
     };
 
     enum class BlendType
@@ -249,62 +203,62 @@ protected:
     std::wstring        picpath;            ///< the path to the image we show
     std::wstring        pictitle;           ///< the string to show in the image view as a title
     CPicture            picture;            ///< the picture object of the image
-    bool                bValid;             ///< true if the picture object is valid, i.e. if the image could be loaded and can be shown
-    int                 picscale;           ///< the scale factor of the image in percent
+    bool                bValid = false;     ///< true if the picture object is valid, i.e. if the image could be loaded and can be shown
+    int                 picscale = 100;     ///< the scale factor of the image in percent
     COLORREF            transparentColor;   ///< the color to draw under the images
-    bool                bFirstpaint;        ///< true if the image is painted the first time. Used to initialize some stuff when the window is valid for sure.
-    CPicture *          pSecondPic;         ///< if set, this is the picture to draw transparently above the original
-    CPicWindow *        pTheOtherPic;       ///< pointer to the other picture window. Used for "linking" the two windows when scrolling/zooming/...
-    bool                bMainPic;           ///< if true, this is the first image
-    bool                bLinkedPositions;   ///< if true, the two image windows are linked together for scrolling/zooming/...
-    bool                bFitWidths;         ///< if true, the two image windows are shown with the same width
-    bool                bFitHeights;        ///< if true, the two image windows are shown with the same height
-    bool                bOverlap;           ///< true if the overlay mode is active
-    bool                bDragging;          ///< indicates an ongoing dragging operation
-    BlendType           m_blend;            ///< type of blending to use
+    bool                bFirstpaint = false;     ///< true if the image is painted the first time. Used to initialize some stuff when the window is valid for sure.
+    CPicture*           pSecondPic = nullptr;    ///< if set, this is the picture to draw transparently above the original
+    CPicWindow*         pTheOtherPic = nullptr;  ///< pointer to the other picture window. Used for "linking" the two windows when scrolling/zooming/...
+    bool                bMainPic = false;        ///< if true, this is the first image
+    bool                bLinkedPositions = true; ///< if true, the two image windows are linked together for scrolling/zooming/...
+    bool                bFitWidths = false;      ///< if true, the two image windows are shown with the same width
+    bool                bFitHeights = false;     ///< if true, the two image windows are shown with the same height
+    bool                bOverlap = false;        ///< true if the overlay mode is active
+    bool                bDragging = false;      ///< indicates an ongoing dragging operation
+    BlendType           m_blend = BlendType::Alpha; ///< type of blending to use
     std::wstring        pictitle2;          ///< the title of the second picture
     std::wstring        picpath2;           ///< the path of the second picture
-    float               blendAlpha;         ///<the alpha value for transparency blending
-    bool                bShowInfo;          ///< true if the info rectangle of the image should be shown
+    float               blendAlpha = 0.5f;  ///<the alpha value for transparency blending
+    bool                bShowInfo = false;  ///< true if the info rectangle of the image should be shown
     wchar_t             m_wszTip[8192];
     char                m_szTip[8192];
-    POINT               m_lastTTPos;
-    HWND                hwndTT;
-    HWND                hwndTrack;
-    bool                bSelectionMode;     ///< true if TortoiseIDiff is in selection mode, used to resolve conflicts
-    int                 m_themeCallbackId;
+    POINT               m_lastTTPos{};
+    HWND                hwndTT = nullptr;
+    HWND                hwndTrack = nullptr;
+    bool                bSelectionMode = false;     ///< true if TortoiseIDiff is in selection mode, used to resolve conflicts
+    int                 m_themeCallbackId = 0;
     // scrollbar info
-    int                 nVScrollPos;        ///< vertical scroll position
-    int                 nHScrollPos;        ///< horizontal scroll position
-    int                 nVSecondScrollPos;  ///< vertical scroll position of second pic at the moment of enabling overlap mode
-    int                 nHSecondScrollPos;  ///< horizontal scroll position of second pic at the moment of enabling overlap mode
-    POINT               ptPanStart;         ///< the point of the last mouse click
-    int                 startVScrollPos;    ///< the vertical scroll position when panning starts
-    int                 startHScrollPos;    ///< the horizontal scroll position when panning starts
-    int                 startVSecondScrollPos;  ///< the vertical scroll position of the second pic when panning starts
-    int                 startHSecondScrollPos;  ///< the horizontal scroll position of the second pic when panning starts
+    int                 nVScrollPos = 0;        ///< vertical scroll position
+    int                 nHScrollPos = 0;        ///< horizontal scroll position
+    int                 nVSecondScrollPos = 0;  ///< vertical scroll position of second pic at the moment of enabling overlap mode
+    int                 nHSecondScrollPos = 0;  ///< horizontal scroll position of second pic at the moment of enabling overlap mode
+    POINT               ptPanStart{ -1, -1 }; ///< the point of the last mouse click
+    int                 startVScrollPos = 0;  ///< the vertical scroll position when panning starts
+    int                 startHScrollPos = 0;  ///< the horizontal scroll position when panning starts
+    int                 startVSecondScrollPos = 0;  ///< the vertical scroll position of the second pic when panning starts
+    int                 startHSecondScrollPos = 0;  ///< the horizontal scroll position of the second pic when panning starts
     // image frames/dimensions
-    UINT                nDimensions;
-    UINT                nCurrentDimension;
-    UINT                nFrames;
-    UINT                nCurrentFrame;
+    UINT                nDimensions = 0;
+    UINT                nCurrentDimension = 1;
+    UINT                nFrames = 0;
+    UINT                nCurrentFrame = 1;
 
     // controls
-    HWND                hwndLeftBtn;
-    HWND                hwndRightBtn;
-    HWND                hwndPlayBtn;
-    HWND                hwndSelectBtn;
+    HWND                hwndLeftBtn = nullptr;
+    HWND                hwndRightBtn = nullptr;
+    HWND                hwndPlayBtn = nullptr;
+    HWND                hwndSelectBtn = nullptr;
     CNiceTrackbar       m_AlphaSlider;
-    HWND                hwndAlphaToggleBtn;
+    HWND                hwndAlphaToggleBtn = nullptr;
     CAutoIcon           hLeft;
     CAutoIcon           hRight;
     CAutoIcon           hPlay;
     CAutoIcon           hStop;
     CAutoIcon           hAlphaToggle;
-    bool                bPlaying;
-    RECT                m_inforect;
+    bool                bPlaying = false;
+    RECT                m_inforect{};
 
     // linked image sizes/positions
-    long                m_linkedWidth;
-    long                m_linkedHeight;
+    long                m_linkedWidth = 0;
+    long                m_linkedHeight = 0;
 };

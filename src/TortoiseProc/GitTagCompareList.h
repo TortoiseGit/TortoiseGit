@@ -66,13 +66,13 @@ private:
 
 	CString	m_remote;
 
-	int colTag;
-	int colDiff;
-	int colMyHash;
-	int colMyMessage;
-	int colTheirHash;
-	int colTheirMessage;
+	int colTag = 0;
+	int colDiff = 0;
+	int colMyHash = 0;
+	int colMyMessage = 0;
+	int colTheirHash = 0;
+	int colTheirMessage = 0;
 
-	bool	m_bAscending;		///< sort direction
-	int		m_nSortedColumn;	///< which column to sort
+	bool	m_bAscending = false;		///< sort direction
+	int		m_nSortedColumn = -1;	///< which column to sort
 };

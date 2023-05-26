@@ -224,7 +224,7 @@ protected:
 	BOOL			m_bSortByCommitCount;
 	BOOL			m_bUseCommitterNames;
 	BOOL			m_bUseCommitDates;
-	BOOL			m_bDiffFetched;
+	bool			m_bDiffFetched = false;
 
 	CMFCButton		m_btnGraphBar;
 	CMFCButton		m_btnGraphBarStacked;
@@ -232,25 +232,25 @@ protected:
 	CMFCButton		m_btnGraphLineStacked;
 	CMFCButton		m_btnGraphPie;
 
-	MyGraph::GraphType	m_GraphType;
-	bool				m_bStacked;
+	MyGraph::GraphType	m_GraphType = MyGraph::GraphType::Bar;
+	bool				m_bStacked = false;
 
-	int				m_langOrder;
+	int				m_langOrder = 0;
 
 	// ** Member variables holding the statistical data	**
 
 	///	Number of days in the revision interval.
-	int						m_nDays;
+	int						m_nDays = -1;
 	///	Number of weeks	in the revision	interval.
-	int						m_nWeeks;
+	int						m_nWeeks = -1;
 	///	The	starting date/time for the revision	interval.
-	__time64_t				m_minDate;
+	__time64_t				m_minDate = 0;
 	///	The	ending date/time for the revision interval.
-	__time64_t				m_maxDate;
+	__time64_t				m_maxDate = 0;
 	///	The	total number of	commits	(equals	size of	the	m_parXXX arrays).
-	INT_PTR					m_nTotalCommits;
+	INT_PTR					m_nTotalCommits = 0;
 	///	The	total number of	file changes.
-	LONG					m_nTotalFileChanges;
+	LONG					m_nTotalFileChanges = 0;
 	///	Holds the number of	commits	per	unit and author.
 	IntervalDataMap			m_commitsPerUnitAndAuthor;
 
@@ -260,18 +260,18 @@ protected:
 	///	Holds the number of	file changes per unit and author.
 	IntervalDataMap			m_filechangesPerUnitAndAuthor;
 	///	First interval number (key)	in the mappings.
-	int						m_firstInterval;
+	int						m_firstInterval = 0;
 	///	Last interval number (key) in the mappings.
-	int						m_lastInterval;
+	int						m_lastInterval = 0;
 	///	Mapping	of total commits per author, access	data via
 	AuthorDataMap			m_commitsPerAuthor;
 	///	Mapping	of Percentage Of Authorship	per	author
 	AuthorshipDataMap		   m_PercentageOfAuthorship;
 
-	LONG					m_nTotalLinesInc;
-	LONG					m_nTotalLinesDec;
-	LONG					m_nTotalLinesNew;
-	LONG					m_nTotalLinesDel;
+	LONG					m_nTotalLinesInc = 0;
+	LONG					m_nTotalLinesDec = 0;
+	LONG					m_nTotalLinesNew = 0;
+	LONG					m_nTotalLinesDel = 0;
 
 	///	The	list of	author names sorted	based on commit	count
 	///	(author	with most commits is first in list).

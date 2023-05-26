@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2021 - TortoiseGit
+// Copyright (C) 2011-2023 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -35,10 +35,6 @@ extern ShellObjects g_shellObjects;
 // *********************** CShellExt *************************
 CShellExt::CShellExt(FileState state)
 	: m_State(state)
-	, itemStates(0)
-	, itemStatesFolder(0)
-	, space(0)
-	, m_cRef(0)
 	,regDiffLater(L"Software\\TortoiseGit\\DiffLater", L"")
 {
 	InterlockedIncrement(&g_cRefThisDll);

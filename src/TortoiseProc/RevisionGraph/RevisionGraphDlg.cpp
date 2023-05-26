@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2018, 2021 - TortoiseSVN
-// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,13 +58,9 @@ struct CToolBarData
 IMPLEMENT_DYNAMIC(CRevisionGraphDlg, CResizableStandAloneDialog)
 CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CRevisionGraphDlg::IDD, pParent)
-	, m_hAccel(nullptr)
 	, m_bFetchLogs(true)
 	, m_fZoomFactor(DEFAULT_ZOOM)
 	, m_bVisible(true)
-	, m_pFindDialog(nullptr)
-	, m_nSearchIndex(0)
-	, m_themeCallbackId(0)
 {
 	// GDI+ initialization
 
