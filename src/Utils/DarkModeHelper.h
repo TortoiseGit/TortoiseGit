@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseSVN
+// Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,18 +78,18 @@ public:
 		SIZE_T cbData;
 	};
 
-	bool CanHaveDarkMode();
-	void AllowDarkModeForApp(BOOL allow);
-	void AllowDarkModeForWindow(HWND hwnd, BOOL allow);
-	BOOL ShouldAppsUseDarkMode();
-	BOOL IsDarkModeAllowedForWindow(HWND hwnd);
-	BOOL IsDarkModeAllowedForApp();
-	BOOL ShouldSystemUseDarkMode();
-	void RefreshImmersiveColorPolicyState();
-	BOOL GetIsImmersiveColorUsingHighContrast(IMMERSIVE_HC_CACHE_MODE mode);
-	void FlushMenuThemes();
-	BOOL SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONATTRIBDATA* data);
-	void RefreshTitleBarThemeColor(HWND hWnd, BOOL dark);
+	bool CanHaveDarkMode() const;
+	void AllowDarkModeForApp(BOOL allow) const;
+	void AllowDarkModeForWindow(HWND hwnd, BOOL allow) const;
+	BOOL ShouldAppsUseDarkMode() const;
+	BOOL IsDarkModeAllowedForWindow(HWND hwnd) const;
+	BOOL IsDarkModeAllowedForApp() const;
+	BOOL ShouldSystemUseDarkMode() const;
+	void RefreshImmersiveColorPolicyState() const;
+	BOOL GetIsImmersiveColorUsingHighContrast(IMMERSIVE_HC_CACHE_MODE mode) const;
+	void FlushMenuThemes() const;
+	BOOL SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONATTRIBDATA* data) const;
+	void RefreshTitleBarThemeColor(HWND hWnd, BOOL dark) const;
 
 private:
 	DarkModeHelper();

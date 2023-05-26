@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2020 - TortoiseSVN
+// Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,12 +30,12 @@ DarkModeHelper& DarkModeHelper::Instance()
 	return helper;
 }
 
-bool DarkModeHelper::CanHaveDarkMode()
+bool DarkModeHelper::CanHaveDarkMode() const
 {
 	return m_bCanHaveDarkMode;
 }
 
-void DarkModeHelper::AllowDarkModeForApp(BOOL allow)
+void DarkModeHelper::AllowDarkModeForApp(BOOL allow) const
 {
 	if (m_pAllowDarkModeForApp)
 		m_pAllowDarkModeForApp(allow ? 1 : 0);
@@ -43,67 +43,67 @@ void DarkModeHelper::AllowDarkModeForApp(BOOL allow)
 		m_pSetPreferredAppMode(allow ? PreferredAppMode::AllowDark : PreferredAppMode::Default);
 }
 
-void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow)
+void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow) const
 {
 	if (m_pAllowDarkModeForWindow)
 		m_pAllowDarkModeForWindow(hwnd, allow);
 }
 
-BOOL DarkModeHelper::ShouldAppsUseDarkMode()
+BOOL DarkModeHelper::ShouldAppsUseDarkMode() const
 {
 	if (m_pShouldAppsUseDarkMode)
 		return m_pShouldAppsUseDarkMode() & 0x01;
 	return FALSE;
 }
 
-BOOL DarkModeHelper::IsDarkModeAllowedForWindow(HWND hwnd)
+BOOL DarkModeHelper::IsDarkModeAllowedForWindow(HWND hwnd) const
 {
 	if (m_pIsDarkModeAllowedForWindow)
 		return m_pIsDarkModeAllowedForWindow(hwnd);
 	return FALSE;
 }
 
-BOOL DarkModeHelper::IsDarkModeAllowedForApp()
+BOOL DarkModeHelper::IsDarkModeAllowedForApp() const
 {
 	if (m_pIsDarkModeAllowedForApp)
 		return m_pIsDarkModeAllowedForApp();
 	return FALSE;
 }
 
-BOOL DarkModeHelper::ShouldSystemUseDarkMode()
+BOOL DarkModeHelper::ShouldSystemUseDarkMode() const
 {
 	if (m_pShouldSystemUseDarkMode)
 		return m_pShouldSystemUseDarkMode();
 	return FALSE;
 }
 
-void DarkModeHelper::RefreshImmersiveColorPolicyState()
+void DarkModeHelper::RefreshImmersiveColorPolicyState() const
 {
 	if (m_pRefreshImmersiveColorPolicyState)
 		m_pRefreshImmersiveColorPolicyState();
 }
 
-BOOL DarkModeHelper::GetIsImmersiveColorUsingHighContrast(IMMERSIVE_HC_CACHE_MODE mode)
+BOOL DarkModeHelper::GetIsImmersiveColorUsingHighContrast(IMMERSIVE_HC_CACHE_MODE mode) const
 {
 	if (m_pGetIsImmersiveColorUsingHighContrast)
 		return m_pGetIsImmersiveColorUsingHighContrast(mode);
 	return FALSE;
 }
 
-void DarkModeHelper::FlushMenuThemes()
+void DarkModeHelper::FlushMenuThemes() const
 {
 	if (m_pFlushMenuThemes)
 		m_pFlushMenuThemes();
 }
 
-BOOL DarkModeHelper::SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONATTRIBDATA* data)
+BOOL DarkModeHelper::SetWindowCompositionAttribute(HWND hWnd, WINDOWCOMPOSITIONATTRIBDATA* data) const
 {
 	if (m_pSetWindowCompositionAttribute)
 		return m_pSetWindowCompositionAttribute(hWnd, data);
 	return FALSE;
 }
 
- void DarkModeHelper::RefreshTitleBarThemeColor(HWND hWnd, BOOL dark)
+void DarkModeHelper::RefreshTitleBarThemeColor(HWND hWnd, BOOL dark) const
 {
 	WINDOWCOMPOSITIONATTRIBDATA data = { WINDOWCOMPOSITIONATTRIB::WCA_USEDARKMODECOLORS, &dark, sizeof(dark) };
 	SetWindowCompositionAttribute(hWnd, &data);
