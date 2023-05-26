@@ -291,7 +291,6 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 
 					SetWindowTheme(info.hwndList, L"Explorer", nullptr);
 					SetWindowTheme(info.hwndItem, L"Explorer", nullptr);
-					SetWindowTheme(info.hwndCombo, L"Explorer", nullptr);
 					SetWindowTheme(info.hwndCombo, L"CFD", nullptr);
 				}
 			}
@@ -544,7 +543,7 @@ LRESULT CTheme::ComboBoxSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 		break;
 	case WM_DESTROY:
 	case WM_NCDESTROY:
-		RemoveWindowSubclass(hWnd, ListViewSubclassProc, SubclassID);
+		RemoveWindowSubclass(hWnd, ComboBoxSubclassProc, SubclassID);
 		break;
 	}
 	return DefSubclassProc(hWnd, uMsg, wParam, lParam);
@@ -573,7 +572,7 @@ LRESULT CTheme::MainSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 		break;
 	case WM_DESTROY:
 	case WM_NCDESTROY:
-		RemoveWindowSubclass(hWnd, ListViewSubclassProc, SubclassID);
+		RemoveWindowSubclass(hWnd, MainSubclassProc, SubclassID);
 		break;
 	}
 	return DefSubclassProc(hWnd, uMsg, wParam, lParam);
