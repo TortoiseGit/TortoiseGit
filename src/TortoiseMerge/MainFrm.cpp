@@ -432,8 +432,18 @@ void CMainFrame::OnDestroy()
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
+	cs.style &= ~WS_VISIBLE;
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
+	if (CTheme::Instance().IsDarkTheme())
+	{
+		WNDCLASSEX wndClass{};
+		wndClass.cbSize = sizeof(WNDCLASSEX);
+		GetClassInfoEx(AfxGetInstanceHandle(), cs.lpszClass, &wndClass);
+		UnregisterClass(cs.lpszClass, AfxGetInstanceHandle());
+		wndClass.hbrBackground = (HBRUSH)(COLOR_WINDOWTEXT + 1);
+		RegisterClassEx(&wndClass);
+	}
 	return TRUE;
 }
 

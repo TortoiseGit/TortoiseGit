@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2023 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -209,7 +209,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	if (!pFrame)
 		return FALSE;
 	m_pMainWnd = pFrame;
-
+	m_nCmdShow = SW_HIDE;
 	// create and load the frame with its resources
 	if (!pFrame->LoadFrame(IDR_MAINFRAME, WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, nullptr, nullptr))
 		return FALSE;
@@ -454,6 +454,13 @@ BOOL CTortoiseMergeApp::InitInstance()
 	}
 
 	return pFrame->LoadViews(line);
+}
+
+BOOL CTortoiseMergeApp::LoadWindowPlacement(CRect& rectNormalPosition, int& nFflags, int& nShowCmd)
+{
+	BOOL b = CWinAppEx::LoadWindowPlacement(rectNormalPosition, nFflags, nShowCmd);
+	nShowCmd = SW_HIDE;
+	return b;
 }
 
 // CTortoiseMergeApp message handlers

@@ -19,6 +19,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed redraw bug in log list
  * Fixed issue #3843: 'Revert' does not work for submodules
+ * Fixed issue #4030: TortoiseGitMerge Dark mode flashes white when opening
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
