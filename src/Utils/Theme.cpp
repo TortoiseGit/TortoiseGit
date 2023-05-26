@@ -199,6 +199,8 @@ bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
 {
 	ASSERT(hWnd);
 	DarkModeHelper::Instance().AllowDarkModeForWindow(hWnd, bDark);
+	if (bDark && !DarkModeHelper::Instance().CanHaveDarkMode())
+		return false;
 	if (bDark)
 		SetWindowSubclass(hWnd, MainSubclassProc, SubclassID, reinterpret_cast<DWORD_PTR>(&s_backBrush));
 	else
