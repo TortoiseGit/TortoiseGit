@@ -1588,6 +1588,7 @@ void CPicWindow::SetTheme(bool bDark)
     if (bDark)
     {
         DarkModeHelper::Instance().AllowDarkModeForWindow(*this, TRUE);
+        CTheme::Instance().SetThemeForDialog(*this, true);
         SetClassLongPtr(*this, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetStockObject(BLACK_BRUSH)));
         if (FAILED(SetWindowTheme(*this, L"DarkMode_Explorer", nullptr)))
             SetWindowTheme(*this, L"Explorer", nullptr);
@@ -1612,6 +1613,7 @@ void CPicWindow::SetTheme(bool bDark)
     else
     {
         DarkModeHelper::Instance().AllowDarkModeForWindow(*this, FALSE);
+        CTheme::Instance().SetThemeForDialog(*this, false);
         SetClassLongPtr(*this, GCLP_HBRBACKGROUND, reinterpret_cast<LONG_PTR>(GetSysColorBrush(COLOR_3DFACE)));
         SetWindowTheme(*this, L"Explorer", nullptr);
         DarkModeHelper::Instance().AllowDarkModeForWindow(hwndTrack, FALSE);
