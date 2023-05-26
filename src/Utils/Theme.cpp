@@ -208,6 +208,7 @@ bool CTheme::SetThemeForDialog(HWND hWnd, bool bDark)
 	AdjustThemeForChildrenProc(hWnd, bDark ? TRUE : FALSE);
 	EnumChildWindows(hWnd, AdjustThemeForChildrenProc, bDark ? TRUE : FALSE);
 	EnumThreadWindows(GetCurrentThreadId(), AdjustThemeForChildrenProc, bDark ? TRUE : FALSE);
+	DarkModeHelper::Instance().RefreshTitleBarThemeColor(hWnd, bDark);
 	::RedrawWindow(hWnd, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 	DarkModeHelper::Instance().RefreshTitleBarThemeColor(hWnd, bDark);
 	return true;
