@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,9 +51,9 @@ void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow) const
 
 BOOL DarkModeHelper::ShouldAppsUseDarkMode() const
 {
-	if (m_pShouldAppsUseDarkMode)
+	if (m_pShouldAppsUseDarkMode && m_pAllowDarkModeForApp)
 		return m_pShouldAppsUseDarkMode() & 0x01;
-	return FALSE;
+	return ShouldSystemUseDarkMode();
 }
 
 BOOL DarkModeHelper::IsDarkModeAllowedForWindow(HWND hwnd) const
