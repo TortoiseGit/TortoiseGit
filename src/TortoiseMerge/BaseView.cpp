@@ -2256,6 +2256,7 @@ void CBaseView::OnSize(UINT nType, int cx, int cy)
 
 	m_nScreenLines = -1;
 	m_nScreenChars = -1;
+	m_nCharWidth = -1;
 	if (m_nLastScreenChars != GetScreenChars())
 	{
 		auto oldCaretLine = m_ptCaretViewPos.y;
