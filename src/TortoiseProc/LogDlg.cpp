@@ -34,8 +34,8 @@
 #include "DPIAware.h"
 #include "LogDlgFileFilter.h"
 
-#define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(20))
-#define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(10))
+#define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20))
+#define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10))
 
 #define WM_TGIT_REFRESH_SELECTION   (WM_APP + 1)
 
@@ -289,7 +289,7 @@ BOOL CLogDlg::OnInitDialog()
 	UpdateData(FALSE);
 
 	// set the font to use in the log message view, configured in the settings dialog
-	CAppUtils::CreateFontForLogs(m_logFont);
+	CAppUtils::CreateFontForLogs(GetSafeHwnd(), m_logFont);
 	SetupLogMessageViewControl();
 
 	// "unrelated paths" should be in gray color
@@ -383,35 +383,35 @@ BOOL CLogDlg::OnInitDialog()
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"LogDlg");
 
-	DWORD yPos1 = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
-	DWORD yPos2 = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
+	DWORD yPos1 = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
+	DWORD yPos2 = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));
 	RECT rcDlg, rcLogList, rcChgMsg;
 	GetClientRect(&rcDlg);
 	m_LogList.GetWindowRect(&rcLogList);
 	ScreenToClient(&rcLogList);
 	m_ChangedFileListCtrl.GetWindowRect(&rcChgMsg);
 	ScreenToClient(&rcChgMsg);
-	if (yPos1 && (static_cast<LONG>(yPos1) < rcDlg.bottom - CDPIAware::Instance().ScaleY(185)))
+	if (yPos1 && (static_cast<LONG>(yPos1) < rcDlg.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 185)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos1 - rectSplitter.top;
 
-		if ((rcLogList.bottom + delta > rcLogList.top) && (rcLogList.bottom + delta < rcChgMsg.bottom - CDPIAware::Instance().ScaleY(30)))
+		if ((rcLogList.bottom + delta > rcLogList.top) && (rcLogList.bottom + delta < rcChgMsg.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter1.SetWindowPos(nullptr, rectSplitter.left, yPos1, 0, 0, SWP_NOSIZE);
 			DoSizeV1(delta);
 		}
 	}
-	if (yPos2 && (static_cast<LONG>(yPos2) < rcDlg.bottom - CDPIAware::Instance().ScaleY(153)))
+	if (yPos2 && (static_cast<LONG>(yPos2) < rcDlg.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 153)))
 	{
 		RECT rectSplitter;
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos2 - rectSplitter.top;
 
-		if ((rcChgMsg.top + delta < rcChgMsg.bottom) && (rcChgMsg.top + delta > rcLogList.top + CDPIAware::Instance().ScaleY(30)))
+		if ((rcChgMsg.top + delta < rcChgMsg.bottom) && (rcChgMsg.top + delta > rcLogList.top + CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter2.SetWindowPos(nullptr, rectSplitter.left, yPos2, 0, 0, SWP_NOSIZE);
 			DoSizeV2(delta);
@@ -1241,10 +1241,10 @@ void CLogDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos1 = CDPIAware::Instance().UnscaleY(rectSplitter.top);
+		regPos1 = CDPIAware::Instance().UnscaleY(GetSafeHwnd(), rectSplitter.top);
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos2 = CDPIAware::Instance().UnscaleY(rectSplitter.top);
+		regPos2 = CDPIAware::Instance().UnscaleY(GetSafeHwnd(), rectSplitter.top);
 	}
 }
 
@@ -1997,7 +1997,7 @@ void CLogDlg::DoSizeV1(int delta)
 	CRect messageViewRect;
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
 
-	int messageViewDelta = max(-delta, CDPIAware::Instance().ScaleY(20) - messageViewRect.Height());
+	int messageViewDelta = max(-delta, CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20) - messageViewRect.Height());
 	int changeFileListDelta = -delta - messageViewDelta;
 
 	// set new sizes & positions
@@ -2030,7 +2030,7 @@ void CLogDlg::DoSizeV2(int delta)
 	CRect messageViewRect;
 	GetDlgItem(IDC_MSGVIEW)->GetClientRect(messageViewRect);
 
-	int messageViewDelta = max(delta, CDPIAware::Instance().ScaleY(20) - messageViewRect.Height());
+	int messageViewDelta = max(delta, CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20) - messageViewRect.Height());
 	int logListDelta = delta - messageViewDelta;
 
 	// set new sizes & positions

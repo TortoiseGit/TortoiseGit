@@ -115,8 +115,8 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 	m_ctrlFiles.InsertColumn(0, temp, 0, -1);
 	m_ctrlFiles.InsertColumn(1, temp, 0, -1);
 	m_ctrlFiles.SetExtendedStyle(LVS_EX_DOUBLEBUFFER | LVS_EX_CHECKBOXES);
-	m_ctrlFiles.SetColumnWidth(0, CDPIAware::Instance().ScaleX(350));
-	m_ctrlFiles.SetColumnWidth(1, CDPIAware::Instance().ScaleX(200));
+	m_ctrlFiles.SetColumnWidth(0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 350));
+	m_ctrlFiles.SetColumnWidth(1, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 200));
 
 	m_cLogMessage.Init(-1);
 	m_cLogMessage.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
@@ -882,11 +882,11 @@ void CCheckForUpdatesDlg::AdjustSize(bool changelog, bool downloads, bool handle
 			GetDlgItem(IDC_DONOTASKAGAIN)->MoveWindow(&rectDoNotAskAgainButton);
 			GetDlgItem(IDC_DONOTASKAGAIN)->EnableWindow(TRUE);
 			GetDlgItem(IDC_DONOTASKAGAIN)->ShowWindow(SW_SHOW);
-			rectOKButton.left += CDPIAware::Instance().ScaleX(60);
+			rectOKButton.left += CDPIAware::Instance().ScaleX(GetSafeHwnd(), 60);
 			CString temp;
 			temp.LoadString(IDS_REMINDMELATER);
 			GetDlgItem(IDOK)->SetWindowText(temp);
-			rectOKButton.right += CDPIAware::Instance().ScaleX(160);
+			rectOKButton.right += CDPIAware::Instance().ScaleX(GetSafeHwnd(), 160);
 		}
 	}
 	GetDlgItem(IDOK)->MoveWindow(&rectOKButton);

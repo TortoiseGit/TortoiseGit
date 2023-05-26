@@ -200,7 +200,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
 	static UINT columnNames[] = { IDS_STATUSLIST_COLFILENAME, IDS_STATUSLIST_COLEXT, IDS_LOG_SIZE };
-	static int columnWidths[] = { CDPIAware::Instance().ScaleX(150), CDPIAware::Instance().ScaleX(100), CDPIAware::Instance().ScaleX(100) };
+	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
@@ -252,7 +252,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 		GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 		xPos = rc.right - rc.left;
 	}
-	HandleDividerMove(CPoint(CDPIAware::Instance().ScaleX(xPos + 20), CDPIAware::Instance().ScaleY(10)), false);
+	HandleDividerMove(CPoint(CDPIAware::Instance().ScaleX(GetSafeHwnd(), xPos + 20), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10)), false);
 
 	CString sWindowTitle;
 	GetWindowText(sWindowTitle);
@@ -997,7 +997,7 @@ void CRepositoryBrowser::SaveDividerPosition()
 	RECT rc;
 	GetDlgItem(IDC_REPOTREE)->GetClientRect(&rc);
 	CRegDWORD xPos(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider");
-	xPos = CDPIAware::Instance().UnscaleX(rc.right - rc.left);
+	xPos = CDPIAware::Instance().UnscaleX(GetSafeHwnd(), rc.right - rc.left);
 }
 
 void CRepositoryBrowser::HandleDividerMove(CPoint point, bool bDraw)
@@ -1015,7 +1015,7 @@ void CRepositoryBrowser::HandleDividerMove(CPoint point, bool bDraw)
 	GetClientRect(&rect);
 	ClientToScreen(&rect);
 
-	auto minWidth = CDPIAware::Instance().ScaleX(REPOBROWSER_CTRL_MIN_WIDTH);
+	auto minWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), REPOBROWSER_CTRL_MIN_WIDTH);
 	CPoint point2 = point;
 	if (point2.x < treelist.left + minWidth)
 		point2.x = treelist.left + minWidth;
@@ -1032,12 +1032,12 @@ void CRepositoryBrowser::HandleDividerMove(CPoint point, bool bDraw)
 	if (point.x > treelist.right - minWidth)
 		point.x = treelist.right - minWidth;
 
-	auto divWidth = CDPIAware::Instance().ScaleX(2);
+	const auto divWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 2);
 
 	if (bDraw)
 	{
 		CDC * pDC = GetDC();
-		DrawXorBar(pDC, m_oldSliderXPos - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(2));
+		DrawXorBar(pDC, m_oldSliderXPos - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 2));
 		ReleaseDC(pDC);
 	}
 
@@ -1083,7 +1083,7 @@ void CRepositoryBrowser::OnMouseMove(UINT nFlags, CPoint point)
 	//same for the window coordinates - make them relative to 0,0
 	OffsetRect(&treelist, -treelist.left, -treelist.top);
 
-	auto minWidth = CDPIAware::Instance().ScaleX(REPOBROWSER_CTRL_MIN_WIDTH);
+	auto minWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), REPOBROWSER_CTRL_MIN_WIDTH);
 	if (point.x < treelist.left + minWidth)
 		point.x = treelist.left + minWidth;
 	if (point.x > treelist.right - minWidth)
@@ -1095,8 +1095,8 @@ void CRepositoryBrowser::OnMouseMove(UINT nFlags, CPoint point)
 
 		if (pDC)
 		{
-			auto divWidth = CDPIAware::Instance().ScaleX(2);
-			auto divHeight = CDPIAware::Instance().ScaleY(2);
+			const auto divWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 2);
+			const auto divHeight = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 2);
 			DrawXorBar(pDC, m_oldSliderXPos - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - divHeight);
 			DrawXorBar(pDC, point.x - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - divHeight);
 
@@ -1131,16 +1131,16 @@ void CRepositoryBrowser::OnLButtonDown(UINT nFlags, CPoint point)
 	//same for the window coordinates - make them relative to 0,0
 	OffsetRect(&treelist, -treelist.left, -treelist.top);
 
-	auto minWidth = CDPIAware::Instance().ScaleX(REPOBROWSER_CTRL_MIN_WIDTH);
+	const auto minWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), REPOBROWSER_CTRL_MIN_WIDTH);
 
 	if (point.x < treelist.left + minWidth)
 		return CStandAloneDialogTmpl < CResizableDialog>::OnLButtonDown(nFlags, point);
-	if (point.x > treelist.right - CDPIAware::Instance().ScaleX(3))
+	if (point.x > treelist.right - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 3))
 		return CStandAloneDialogTmpl < CResizableDialog>::OnLButtonDown(nFlags, point);
 	if (point.x > treelist.right - minWidth)
 		point.x = treelist.right - minWidth;
 
-	auto divHeight = CDPIAware::Instance().ScaleY(3);
+	const auto divHeight = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 3);
 	if ((point.y < treelist.top + divHeight) || (point.y > treelist.bottom - divHeight))
 		return CStandAloneDialogTmpl<CResizableDialog>::OnLButtonDown(nFlags, point);
 
@@ -1148,9 +1148,9 @@ void CRepositoryBrowser::OnLButtonDown(UINT nFlags, CPoint point)
 
 	SetCapture();
 
-	auto divWidth = CDPIAware::Instance().ScaleX(2);
+	const auto divWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 2);
 	CDC * pDC = GetDC();
-	DrawXorBar(pDC, point.x - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(2));
+	DrawXorBar(pDC, point.x - divWidth, treelistclient.top, 2 * divWidth, treelistclient.bottom - treelistclient.top - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 2));
 	ReleaseDC(pDC);
 
 	m_oldSliderXPos = point.x;
@@ -1217,7 +1217,7 @@ BOOL CRepositoryBrowser::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 			ClientToScreen(&pt);
 			// are we right of the tree control?
 			GetDlgItem(IDC_REPOTREE)->GetWindowRect(&rect);
-			auto divHeight = CDPIAware::Instance().ScaleY(3);
+			const auto divHeight = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 3);
 			if ((pt.x > rect.right) && (pt.y >= rect.top + divHeight) && (pt.y <= rect.bottom - divHeight))
 			{
 				// but left of the list control?

@@ -110,8 +110,8 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 	// Tab control should cover the whole client area:
 	if (m_Gravatar.IsGravatarEnabled())
 	{
-		m_LogList.SetWindowPos(nullptr, -1, -1, cx - CDPIAware::Instance().ScaleX(80), cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
-		m_Gravatar.SetWindowPos(nullptr, cx - CDPIAware::Instance().ScaleX(80), 0, CDPIAware::Instance().ScaleX(80), CDPIAware::Instance().ScaleY(80), SWP_NOACTIVATE | SWP_NOZORDER);
+		m_LogList.SetWindowPos(nullptr, -1, -1, cx - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80), cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+		m_Gravatar.SetWindowPos(nullptr, cx - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80), 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 80), SWP_NOACTIVATE | SWP_NOZORDER);
 		return;
 	}
 	m_LogList.SetWindowPos(nullptr, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);

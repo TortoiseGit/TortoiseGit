@@ -57,6 +57,9 @@
     <Link>
       <AdditionalDependencies>gdiplus.lib;comctl32.lib;shlwapi.lib;UxTheme.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>true</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Git\Git.cpp" />

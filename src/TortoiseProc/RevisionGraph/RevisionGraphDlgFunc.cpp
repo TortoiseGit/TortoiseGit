@@ -58,8 +58,8 @@ void CRevisionGraphWnd::BuildPreview()
 	float origZoom = m_fZoomFactor;
 
 	CRect clientRect = GetClientRect();
-	CSize preViewSize(max(CDPIAware::Instance().ScaleX(REVGRAPH_PREVIEW_WIDTH), clientRect.Width() / 4),
-					  max(CDPIAware::Instance().ScaleY(REVGRAPH_PREVIEW_HEIGHT), clientRect.Height() / 4));
+	CSize preViewSize(max(CDPIAware::Instance().ScaleX(GetSafeHwnd(), REVGRAPH_PREVIEW_WIDTH), clientRect.Width() / 4),
+					  max(CDPIAware::Instance().ScaleY(GetSafeHwnd(), REVGRAPH_PREVIEW_HEIGHT), clientRect.Height() / 4));
 
 	// zoom the graph so that it is completely visible in the window
 	CRect graphRect = GetGraphRect();

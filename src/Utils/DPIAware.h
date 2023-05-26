@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2018-2020, 2023 - TortoiseGit
-// Copyright (C) 2018 - TortoiseSVN
+// Copyright (C) 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <cmath>
 
 class CDPIAware
 {
@@ -32,80 +33,89 @@ public:
 		return instance;
 	}
 
-private:
 	// Get screen DPI.
-	int GetDPI() { _Init(); return m_dpi; }
+	int GetDPI(HWND hWnd)
+	{
+		_Init();
+		if (pfnGetDpiForWindow && hWnd)
+		{
+			return pfnGetDpiForWindow(hWnd);
+		}
+		return m_dpi;
+	}
 
+private:
 	// Convert between raw pixels and relative pixels.
-	int Scale(int x) { _Init(); return MulDiv(x, m_dpi, 96); }
-	float ScaleFactor() { _Init(); return m_dpi / 96.0f; }
-	int Unscale(int x) { _Init(); return MulDiv(x, 96, m_dpi); }
+	int Scale(HWND hWnd, int x) { return MulDiv(x, GetDPI(hWnd), 96); }
+	float ScaleFactor(HWND hWnd) { return GetDPI(hWnd) / 96.0f; }
+	float ScaleFactorSystemToWindow(HWND hWnd) { return static_cast<float>(GetDPI(hWnd)) / static_cast<float>(m_dpi); }
+	int Unscale(HWND hWnd, int x) { return MulDiv(x, 96, GetDPI(hWnd)); }
+
 public:
-	inline int GetDPIX() { return GetDPI(); }
-	inline int GetDPIY() { return GetDPI(); }
-	inline int ScaleX(int x) { return Scale(x); }
-	inline int ScaleY(int y) { return Scale(y); }
-	inline float ScaleFactorX() { return ScaleFactor(); }
-	inline float ScaleFactorY() { return ScaleFactor(); }
-	inline int UnscaleX(int x) { return Unscale(x); }
-	inline int UnscaleY(int y) { return Unscale(y); }
-	inline int PointsToPixelsX(int pt) { return PointsToPixels(pt); }
-	inline int PointsToPixelsY(int pt) { return PointsToPixels(pt); }
-	inline int PixelsToPointsX(int px) { return PixelsToPoints(px); }
-	inline int PixelsToPointsY(int px) { return PixelsToPoints(px); }
+	inline int GetDPIX(HWND hWnd) { return GetDPI(hWnd); }
+	inline int GetDPIY(HWND hWnd) { return GetDPI(hWnd); }
+	inline int ScaleX(HWND hWnd, int x) { return Scale(hWnd, x); }
+	inline int ScaleY(HWND hWnd, int y) { return Scale(hWnd, y); }
+	inline float ScaleFactorX(HWND hWnd) { return ScaleFactor(hWnd); }
+	inline float ScaleFactorY(HWND hWnd) { return ScaleFactor(hWnd); }
+	inline int UnscaleX(HWND hWnd, int x) { return Unscale(hWnd, x); }
+	inline int UnscaleY(HWND hWnd, int y) { return Unscale(hWnd, y); }
+	inline int PointsToPixelsX(HWND hWnd, int pt) { return PointsToPixels(hWnd, pt); }
+	inline int PointsToPixelsY(HWND hWnd, int pt) { return PointsToPixels(hWnd, pt); }
+	inline int PixelsToPointsX(HWND hWnd, int px) { return PixelsToPoints(hWnd, px); }
+	inline int PixelsToPointsY(HWND hWnd, int px) { return PixelsToPoints(hWnd, px); }
 
 	// Determine the screen dimensions in relative pixels.
 	int ScaledScreenWidth() { return _ScaledSystemMetric(SM_CXSCREEN); }
 	int ScaledScreenHeight() { return _ScaledSystemMetric(SM_CYSCREEN); }
 
 	// Scale rectangle from raw pixels to relative pixels.
-	void ScaleRect(__inout RECT *pRect)
+	void ScaleRect(HWND hWnd, __inout RECT* pRect)
 	{
-		pRect->left = Scale(pRect->left);
-		pRect->right = Scale(pRect->right);
-		pRect->top = Scale(pRect->top);
-		pRect->bottom = Scale(pRect->bottom);
+		pRect->left = Scale(hWnd, pRect->left);
+		pRect->right = Scale(hWnd, pRect->right);
+		pRect->top = Scale(hWnd, pRect->top);
+		pRect->bottom = Scale(hWnd, pRect->bottom);
 	}
-	void UnscaleRect(__inout RECT* pRect)
+	void UnscaleRect(HWND hWnd, __inout RECT* pRect)
 	{
-		pRect->left = Unscale(pRect->left);
-		pRect->right = Unscale(pRect->right);
-		pRect->top = Unscale(pRect->top);
-		pRect->bottom = Unscale(pRect->bottom);
+		pRect->left = Unscale(hWnd, pRect->left);
+		pRect->right = Unscale(hWnd, pRect->right);
+		pRect->top = Unscale(hWnd, pRect->top);
+		pRect->bottom = Unscale(hWnd, pRect->bottom);
 	}
 
 	// Scale Point from raw pixels to relative pixels.
-	void ScalePoint(__inout POINT *pPoint)
+	void ScalePoint(HWND hWnd, __inout POINT* pPoint)
 	{
-		pPoint->x = Scale(pPoint->x);
-		pPoint->y = Scale(pPoint->y);
+		pPoint->x = Scale(hWnd, pPoint->x);
+		pPoint->y = Scale(hWnd, pPoint->y);
 	}
-	void UnscalePoint(__inout POINT* pPoint)
+	void UnscalePoint(HWND hWnd, __inout POINT* pPoint)
 	{
-		pPoint->x = Unscale(pPoint->x);
-		pPoint->y = Unscale(pPoint->y);
+		pPoint->x = Unscale(hWnd, pPoint->x);
+		pPoint->y = Unscale(hWnd, pPoint->y);
 	}
 
 	// Scale Size from raw pixels to relative pixels.
-	void ScaleSize(__inout SIZE *pSize)
+	void ScaleSize(HWND hWnd, __inout SIZE* pSize)
 	{
-		pSize->cx = Scale(pSize->cx);
-		pSize->cy = Scale(pSize->cy);
+		pSize->cx = Scale(hWnd, pSize->cx);
+		pSize->cy = Scale(hWnd, pSize->cy);
 	}
 
-	void ScaleWindowPlacement(__inout WINDOWPLACEMENT* pWindowPlacement)
+	void ScaleWindowPlacement(HWND hWnd, __inout WINDOWPLACEMENT* pWindowPlacement)
 	{
-		ScaleRect(&pWindowPlacement->rcNormalPosition);
-		ScalePoint(&pWindowPlacement->ptMinPosition);
-		ScalePoint(&pWindowPlacement->ptMaxPosition);
+		ScaleRect(hWnd, &pWindowPlacement->rcNormalPosition);
+		ScalePoint(hWnd, &pWindowPlacement->ptMinPosition);
+		ScalePoint(hWnd, &pWindowPlacement->ptMaxPosition);
 	}
-	void UnscaleWindowPlacement(__inout WINDOWPLACEMENT* pWindowPlacement)
+	void UnscaleWindowPlacement(HWND hWnd, __inout WINDOWPLACEMENT* pWindowPlacement)
 	{
-		UnscaleRect(&pWindowPlacement->rcNormalPosition);
-		UnscalePoint(&pWindowPlacement->ptMinPosition);
-		UnscalePoint(&pWindowPlacement->ptMaxPosition);
+		UnscaleRect(hWnd, &pWindowPlacement->rcNormalPosition);
+		UnscalePoint(hWnd, &pWindowPlacement->ptMinPosition);
+		UnscalePoint(hWnd, &pWindowPlacement->ptMaxPosition);
 	}
-
 
 	// Determine if screen resolution meets minimum requirements in relative pixels.
 	bool IsResolutionAtLeast(int cxMin, int cyMin)
@@ -113,12 +123,10 @@ public:
 		return (ScaledScreenWidth() >= cxMin) && (ScaledScreenHeight() >= cyMin);
 	}
 
-private:
 	// Convert a point size (1/72 of an inch) to raw pixels.
-	int PointsToPixels(int pt) { _Init(); return MulDiv(pt, m_dpi, 72); }
-	int PixelsToPoints(int px) { _Init(); return MulDiv(px, 72, m_dpi); }
+	int PointsToPixels(HWND hWnd, int pt) { return MulDiv(pt, GetDPI(hWnd), 72); }
+	int PixelsToPoints(HWND hWnd, int px) { return MulDiv(px, 72, GetDPI(hWnd)); }
 
-public:
 	// returns the system metrics. For Windows 10, it returns the metrics dpi scaled.
 	UINT GetSystemMetrics(int nIndex)
 	{
@@ -139,6 +147,44 @@ public:
 
 	// Invalidate any cached metrics.
 	void Invalidate() { m_fInitialized = false; }
+
+	struct DPIAdjustData
+	{
+		HWND hDlg;
+		double zoom;
+	};
+	static BOOL CALLBACK DPIAdjustChildren(HWND hWnd, LPARAM lParam)
+	{
+		auto data = reinterpret_cast<DPIAdjustData*>(lParam);
+		if (data->hDlg != ::GetParent(hWnd))
+			return TRUE;
+
+		const double zoom = data->zoom;
+
+		RECT rect{};
+		::GetWindowRect(hWnd, &rect);
+
+		POINT pt = { rect.left, rect.top };
+		::ScreenToClient(::GetParent(hWnd), &pt);
+
+		::MoveWindow(hWnd,
+					 static_cast<int>(std::round(static_cast<double>(pt.x) * zoom)),
+					 static_cast<int>(std::round(static_cast<double>(pt.y) * zoom)),
+					 static_cast<int>(std::round((static_cast<double>(rect.right - rect.left)) * zoom)),
+					 static_cast<int>(std::round((static_cast<double>(rect.bottom - rect.top)) * zoom)),
+					 TRUE);
+
+		if (HFONT font = reinterpret_cast<HFONT>(::SendMessage(hWnd, WM_GETFONT, 0, 0)))
+		{
+			LOGFONT lf{};
+			::GetObject(font, sizeof(LOGFONT), &lf);
+			lf.lfHeight = static_cast<LONG>(lf.lfHeight * zoom);
+			auto newFont = ::CreateFontIndirect(&lf);
+			::SendMessage(hWnd, WM_SETFONT, reinterpret_cast<WPARAM>(newFont), TRUE);
+		}
+
+		return TRUE;
+	}
 
 private:
 

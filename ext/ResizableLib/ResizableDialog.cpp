@@ -152,7 +152,7 @@ BOOL CResizableDialog::OnEraseBkgnd(CDC* pDC)
 
 LRESULT CResizableDialog::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
 {
-	if (message != WM_NCCALCSIZE || wParam == 0)
+	if (message != WM_NCCALCSIZE || wParam == 0 || m_noNcCalcSizeAdjustments)
 		return CDialog::WindowProc(message, wParam, lParam);
 
 	LRESULT lResult = 0;

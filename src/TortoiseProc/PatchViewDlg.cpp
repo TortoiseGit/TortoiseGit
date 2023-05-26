@@ -167,8 +167,8 @@ void CPatchViewDlg::OnSize(UINT nType, int cx, int cy)
 
 		if (m_bShowFindBar)
 		{
-			::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
-			::SetWindowPos(m_FindBar.GetSafeHwnd(), HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+			::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+			::SetWindowPos(m_FindBar.GetSafeHwnd(), HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ void CPatchViewDlg::ShowAndAlignToParent()
 	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), rect);
 	rect.left = rect.right - adjust;
 	rect.right = rect.left;
-	int xPos = CDPIAware::Instance().ScaleX(static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth")));
+	int xPos = CDPIAware::Instance().ScaleX(GetSafeHwnd(), static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth")));
 	if (xPos)
 		rect.right += xPos;
 	else
@@ -302,8 +302,8 @@ void CPatchViewDlg::OnShowFindBar()
 	m_bShowFindBar = true;
 	RECT rect;
 	GetClientRect(&rect);
-	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
-	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
+	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
 	if (auto selstart = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART), selend = m_ctrlPatchView.Call(SCI_GETSELECTIONEND); selstart != selend)
 	{
 		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
@@ -493,7 +493,7 @@ void CPatchViewDlg::OnDestroy()
 	__super::OnDestroy();
 	CRect rect;
 	GetWindowRect(&rect);
-	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth") = CDPIAware::Instance().UnscaleX(rect.Width());
+	CRegStdDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\PatchDlgWidth") = CDPIAware::Instance().UnscaleX(GetSafeHwnd(), rect.Width());
 	m_ctrlPatchView.ClearContextMenuHandlers();
 }
 

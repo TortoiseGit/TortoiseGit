@@ -78,7 +78,7 @@ void CMainWindow::PositionChildren(RECT * clientrect /* = nullptr */)
     RECT tbRect;
     if (!clientrect)
         return;
-    const auto splitter_border = CDPIAware::Instance().ScaleX(SPLITTER_BORDER);
+    const auto splitter_border = CDPIAware::Instance().ScaleX(*this, SPLITTER_BORDER);
     SendMessage(hwndTB, TB_AUTOSIZE, 0, 0);
     GetWindowRect(hwndTB, &tbRect);
     LONG tbHeight = tbRect.bottom-tbRect.top-1;
@@ -421,6 +421,10 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
     case WM_SYSCOLORCHANGE:
         CTheme::Instance().OnSysColorChanged();
         CTheme::Instance().SetDarkTheme(CTheme::Instance().IsDarkTheme(), true);
+        break;
+    case WM_DPICHANGED:
+        CDPIAware::Instance().Invalidate();
+        ::RedrawWindow(*this, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
         break;
     default:
         return DefWindowProc(hwnd, uMsg, wParam, lParam);
@@ -1005,8 +1009,8 @@ LRESULT CMainWindow::Splitter_OnLButtonUp(HWND hwnd, UINT /*iMsg*/, WPARAM /*wPa
     if (bDragMode == FALSE)
         return 0;
 
-    const auto bordersm = CDPIAware::Instance().ScaleX(2);
-    const auto borderl = CDPIAware::Instance().ScaleY(4);
+    const auto bordersm = CDPIAware::Instance().ScaleX(*this, 2);
+    const auto borderl = CDPIAware::Instance().ScaleY(*this, 4);
 
     GetClientRect(hwnd, &clientrect);
     GetWindowRect(hwnd, &rect);
@@ -1112,8 +1116,8 @@ LRESULT CMainWindow::Splitter_OnMouseMove(HWND hwnd, UINT /*iMsg*/, WPARAM wPara
     if (bDragMode == FALSE)
         return 0;
 
-    const auto bordersm = CDPIAware::Instance().ScaleX(2);
-    const auto borderl = CDPIAware::Instance().ScaleY(4);
+    const auto bordersm = CDPIAware::Instance().ScaleX(*this, 2);
+    const auto borderl = CDPIAware::Instance().ScaleY(*this, 4);
 
     pt.x = static_cast<short>(LOWORD(lParam));  // horizontal position of cursor
     pt.y = static_cast<short>(HIWORD(lParam));
@@ -1282,8 +1286,8 @@ bool CMainWindow::CreateToolbar()
 
     TBBUTTON tbb[14];
     // create an imagelist containing the icons for the toolbar
-    auto imgSizeX = CDPIAware::Instance().ScaleX(24);
-    auto imgSizeY = CDPIAware::Instance().ScaleY(24);
+    auto imgSizeX = CDPIAware::Instance().ScaleX(*this, 24);
+    auto imgSizeY = CDPIAware::Instance().ScaleY(*this, 24);
     hToolbarImgList = ImageList_Create(imgSizeX, imgSizeY, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, 12, 4);
     if (!hToolbarImgList)
         return false;

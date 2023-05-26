@@ -311,7 +311,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForFileListCtrl", FALSE))
 	{
-		CAppUtils::CreateFontForLogs(m_font);
+		CAppUtils::CreateFontForLogs(GetSafeHwnd(), m_font);
 		m_cFileList.SetFont(&m_font);
 	}
 

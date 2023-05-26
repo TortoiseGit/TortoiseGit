@@ -776,7 +776,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 							int iState = GetStateFromBtnState(dwStyle, bHot, bFocus, dwCheckState, iPartId, FALSE);
 
-							int bmWidth = int(ceil(13.0 * CDPIAware::Instance().GetDPIX() / 96.0));
+							int bmWidth = int(ceil(13.0 * CDPIAware::Instance().GetDPIX(hWnd) / 96.0));
 
 							UINT uiHalfWidth = (RECTWIDTH(rcClient) - bmWidth) / 2;
 

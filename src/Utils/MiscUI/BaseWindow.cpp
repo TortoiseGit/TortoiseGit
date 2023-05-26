@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2020 - TortoiseSGit
+// Copyright (C) 2018-2020, 2023 - TortoiseSGit
 // Copyright (C) 2003-2009, 2012-2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
 				DWORD size = sizeof(wpl);
 				if (SHGetValue(HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(), REG_NONE, &wpl, &size) == ERROR_SUCCESS)
 				{
-					CDPIAware::Instance().ScaleWindowPlacement(&wpl);
+					CDPIAware::Instance().ScaleWindowPlacement(hwnd, &wpl);
 					SetWindowPlacement(hwnd, &wpl);
 				}
 				else
@@ -106,7 +106,7 @@ LRESULT CALLBACK CWindow::stWinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, L
 				WINDOWPLACEMENT wpl = {0};
 				wpl.length = sizeof(WINDOWPLACEMENT);
 				GetWindowPlacement(hwnd, &wpl);
-				CDPIAware::Instance().UnscaleWindowPlacement(&wpl);
+				CDPIAware::Instance().UnscaleWindowPlacement(hwnd, &wpl);
 				SHSetValue(HKEY_CURRENT_USER, pWnd->sRegistryPath.c_str(), pWnd->sRegistryValue.c_str(), REG_NONE, &wpl, sizeof(wpl));
 			}
 			break;

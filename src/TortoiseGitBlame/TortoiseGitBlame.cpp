@@ -226,7 +226,7 @@ BOOL CTortoiseGitBlameApp::LoadWindowPlacement(CRect& rectNormalPosition, int& n
 		return FALSE;
 	pwp->length = sizeof(WINDOWPLACEMENT);
 
-	CDPIAware::Instance().ScaleWindowPlacement(pwp);
+	CDPIAware::Instance().ScaleWindowPlacement(m_pMainWnd->GetSafeHwnd(), pwp);
 	rectNormalPosition = wp.rcNormalPosition;
 	nFlags = wp.flags;
 	nShowCmd = wp.showCmd;
@@ -244,7 +244,7 @@ BOOL CTortoiseGitBlameApp::StoreWindowPlacement(const CRect& rectNormalPosition,
 	wp.rcNormalPosition = rectNormalPosition;
 	wp.showCmd = nShowCmd;
 
-	CDPIAware::Instance().UnscaleWindowPlacement(&wp);
+	CDPIAware::Instance().UnscaleWindowPlacement(m_pMainWnd->GetSafeHwnd(), &wp);
 
 	wchar_t szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
 	swprintf_s(szBuffer, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",

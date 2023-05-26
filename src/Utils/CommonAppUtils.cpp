@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2010, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -209,7 +209,7 @@ bool CCommonAppUtils::IsAdminLogin()
 
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID)
 {
-	return SetListCtrlBackgroundImage(hListCtrl, nID, CDPIAware::Instance().ScaleX(128), CDPIAware::Instance().ScaleY(128));
+	return SetListCtrlBackgroundImage(hListCtrl, nID, CDPIAware::Instance().ScaleX(hListCtrl, 128), CDPIAware::Instance().ScaleY(hListCtrl, 128));
 }
 
 bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int width, int height)
@@ -368,11 +368,11 @@ DWORD CCommonAppUtils::GetLogFontSize()
 	return CRegDWORD(L"Software\\TortoiseGit\\LogFontSize", 9);
 }
 
-void CCommonAppUtils::CreateFontForLogs(CFont& fontToCreate)
+void CCommonAppUtils::CreateFontForLogs(HWND hWnd, CFont& fontToCreate)
 {
 	LOGFONT logFont;
 	HDC hScreenDC = ::GetDC(nullptr);
-	logFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(GetLogFontSize());
+	logFont.lfHeight = -CDPIAware::Instance().PointsToPixelsY(hWnd, GetLogFontSize());
 	::ReleaseDC(nullptr, hScreenDC);
 	logFont.lfWidth = 0;
 	logFont.lfEscapement = 0;

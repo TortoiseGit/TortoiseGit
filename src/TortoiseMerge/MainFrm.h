@@ -85,6 +85,7 @@ protected:
 
 	afx_msg LRESULT	OnTaskbarButtonCreated(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT	OnIdleUpdateCmdUI(WPARAM wParam, LPARAM);
+	afx_msg LRESULT	OnDPIChanged(WPARAM wParam, LPARAM);
 
 	afx_msg void	OnFileSave();
 	afx_msg void	OnFileSaveAs();

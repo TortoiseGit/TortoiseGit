@@ -105,6 +105,7 @@ protected:
 	afx_msg void	OnChangeZoom();
 	afx_msg BOOL	OnToolTipNotify (UINT id, NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void	OnWindowPosChanging(WINDOWPOS* lpwndpos);
+	afx_msg LRESULT	OnDPIChanged(WPARAM, LPARAM lParam);
 
 	CFindDlg* m_pFindDialog = nullptr;
 	static const UINT m_FindDialogMessage;

@@ -415,7 +415,7 @@ BOOL CCommitDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"CommitDlg");
-	DWORD yPos = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
+	DWORD yPos = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\CommitDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_cLogMessage.GetWindowRect(&rcLogMsg);
@@ -428,7 +428,7 @@ BOOL CCommitDlg::OnInitDialog()
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos - rectSplitter.top;
-		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
@@ -1328,7 +1328,7 @@ void CCommitDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos = CDPIAware::Instance().UnscaleY(rectSplitter.top);
+		regPos = CDPIAware::Instance().UnscaleY(GetSafeHwnd(), rectSplitter.top);
 	}
 }
 
@@ -2554,7 +2554,7 @@ void CCommitDlg::SetSplitterRange()
 		m_ListCtrl.GetWindowRect(rcMiddle);
 		ScreenToClient(rcMiddle);
 		if (rcMiddle.Height() && rcMiddle.Width())
-			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(120), rcMiddle.bottom - CDPIAware::Instance().ScaleY(80));
+			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(GetSafeHwnd(), 120), rcMiddle.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 80));
 	}
 }
 

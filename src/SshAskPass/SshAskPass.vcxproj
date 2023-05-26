@@ -54,7 +54,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <Link>
       <AdditionalDependencies>UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Utils\DarkModeHelper.h" />
+    <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\PathUtils.h" />
     <ClInclude Include="..\Utils\registry.h" />
     <ClInclude Include="..\Utils\StringUtils.h" />

@@ -59,6 +59,8 @@ static char THIS_FILE[]=__FILE__;
  */
 void CResizableLayout::AddAnchor(HWND hWnd, ANCHOR anchorTopLeft, ANCHOR anchorBottomRight)
 {
+	m_anchors[hWnd] = std::make_tuple(anchorTopLeft, anchorBottomRight);
+
 	CWnd* pParent = GetResizableWnd();
 
 	// child window must be valid
@@ -161,6 +163,16 @@ BOOL CResizableLayout::ArrangeLayoutCallback(LAYOUTINFO& layout) const
 	ASSERT(FALSE); // must be overridden, if callback is used
 	
 	return FALSE; // no useful output data
+}
+
+void CResizableLayout::AddAllAnchors(const std::map<HWND, std::tuple<ANCHOR, ANCHOR>>& anchors)
+{
+	RemoveAllAnchors();
+	m_anchors.clear();
+	for (const auto& anchor : anchors)
+	{
+		AddAnchor(anchor.first, std::get<0>(anchor.second), std::get<1>(anchor.second));
+	}
 }
 
 /*!

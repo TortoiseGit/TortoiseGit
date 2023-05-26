@@ -68,7 +68,7 @@ public:
 					// which means we have to add a little space for the checkbox
 					// the value of 3 pixels added here is necessary in case certain visual styles have
 					// been disabled. Without this, the width is calculated too short.
-					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + CDPIAware::Instance().ScaleX(3);
+					const int checkWidth = GetSystemMetrics(SM_CXMENUCHECK) + 2 * GetSystemMetrics(SM_CXEDGE) + CDPIAware::Instance().ScaleX(m_ctrl->GetSafeHwnd(), 3);
 					controlrectorig.right = controlrectorig.left + (controlrect.right - controlrect.left) + (ischeck ? checkWidth : 0);
 					pwndDlgItem->MoveWindow(&controlrectorig);
 				}
@@ -100,7 +100,7 @@ public:
 		RECT controlrectorig;
 		pwndDlgItem->GetWindowRect(&controlrect);
 		::MapWindowPoints(nullptr, m_ctrl->GetSafeHwnd(), reinterpret_cast<LPPOINT>(&controlrect), 2);
-		controlrect.right += CDPIAware::Instance().ScaleX(200); // in case the control needs to be bigger than it currently is (e.g., due to translations)
+		controlrect.right += CDPIAware::Instance().ScaleX(pwndDlgItem->GetSafeHwnd(), 200); // in case the control needs to be bigger than it currently is (e.g., due to translations)
 		controlrectorig = controlrect;
 
 		long height = controlrectorig.bottom - controlrectorig.top;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2016-2018, 2020 - TortoiseGit
+// Copyright (C) 2008-2009, 2016-2018, 2020, 2023 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,9 +26,10 @@ bool SettingsCommand::Execute()
 {
 	CString defaultpage = parser.GetVal(L"page");
 
+	int dpiX = CDPIAware::Instance().GetDPI(nullptr);
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
 	dlg.SetTreeViewMode(TRUE, TRUE, TRUE);
-	dlg.SetTreeWidth(220);
+	dlg.SetTreeWidth(220 * dpiX / 96);
 	dlg.m_DefaultPage = defaultpage;
 
 	dlg.DoModal();

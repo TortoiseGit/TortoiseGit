@@ -321,7 +321,7 @@ void CGitProgressList::ResizeColumns()
 			hdi.pszText = textbuf;
 			hdi.cchTextMax = _countof(textbuf);
 			pHeaderCtrl->GetItem(col, &hdi);
-			int cx = GetStringWidth(hdi.pszText)+CDPIAware::Instance().ScaleX(20); // 20 pixels for col separator and margin
+			int cx = GetStringWidth(hdi.pszText) + CDPIAware::Instance().ScaleX(GetSafeHwnd(), 20); // 20 pixels for col separator and margin
 
 			for (int index = 0; index<count; ++index)
 			{
@@ -330,10 +330,10 @@ void CGitProgressList::ResizeColumns()
 				switch (col)
 				{
 				case 0:
-					linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + CDPIAware::Instance().ScaleX(12);
+					linewidth = GetStringWidth(m_arData[index]->sActionColumnText) + CDPIAware::Instance().ScaleX(GetSafeHwnd(), 12);
 					break;
 				case 1:
-					linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + CDPIAware::Instance().ScaleX(12);
+					linewidth = GetStringWidth(m_arData[index]->sPathColumnText) + CDPIAware::Instance().ScaleX(GetSafeHwnd(), 12);
 					break;
 				}
 				if (cx < linewidth)

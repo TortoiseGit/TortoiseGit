@@ -287,7 +287,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForFileListCtrl", FALSE))
 	{
 		m_uiFont.DeleteObject();
-		CAppUtils::CreateFontForLogs(m_uiFont);
+		CAppUtils::CreateFontForLogs(GetSafeHwnd(), m_uiFont);
 		SetFont(&m_uiFont);
 	}
 

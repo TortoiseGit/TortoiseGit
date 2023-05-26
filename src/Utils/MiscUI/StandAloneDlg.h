@@ -26,6 +26,7 @@
 #include "EditWordBreak.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "DPIAware.h"
 #pragma comment(lib, "htmlhelp.lib")
 
 #define DIALOG_BLOCKHORIZONTAL 1
@@ -75,6 +76,8 @@ protected:
 		auto CustomBreak = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\UseCustomWordBreak", 2));
 		if (CustomBreak)
 			SetUrlWordBreakProcToChildWindows(BaseType::GetSafeHwnd(), CustomBreak == 2);
+
+		m_dpi = CDPIAware::Instance().GetDPI(BaseType::GetSafeHwnd());
 
 		return FALSE;
 	}
@@ -156,6 +159,7 @@ protected:
 protected:
 	CToolTips	m_tooltips;
 	int m_themeCallbackId = 0;
+	int m_dpi = 0;
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -170,6 +174,55 @@ protected:
 		BaseType::OnSysColorChange();
 		CTheme::Instance().OnSysColorChanged();
 		SetTheme(CTheme::Instance().IsDarkTheme());
+	}
+
+	LRESULT OnDPIChanged(WPARAM /*wParam*/, LPARAM lParam)
+	{
+		CDPIAware::Instance().Invalidate();
+
+		const auto newDPI = CDPIAware::Instance().GetDPI(BaseType::GetSafeHwnd());
+		if (m_dpi == 0)
+		{
+			m_dpi = newDPI;
+			return 0;
+		}
+
+		RECT* rect = reinterpret_cast<RECT*>(lParam);
+		RECT oldRect{};
+		GetWindowRect(BaseType::GetSafeHwnd(), &oldRect);
+
+		const double zoom = (static_cast<double>(newDPI) / (static_cast<double>(m_dpi) / 100.0)) / 100.0;
+		rect->right = static_cast<LONG>(rect->left + (oldRect.right - oldRect.left) * zoom);
+		rect->bottom = static_cast<LONG>(rect->top + (oldRect.bottom - oldRect.top) * zoom);
+
+		const CDPIAware::DPIAdjustData data{ BaseType::GetSafeHwnd(), zoom };
+		if constexpr (std::is_same_v<BaseType, CResizableDialog>)
+		{
+			auto anchors = BaseType::GetAllAnchors();
+			BaseType::RemoveAllAnchors();
+
+			auto minTrackSize = BaseType::GetMinTrackSize();
+			minTrackSize.cx = (LONG)(minTrackSize.cx * zoom);
+			minTrackSize.cy = (LONG)(minTrackSize.cy * zoom);
+			BaseType::SetMinTrackSize(minTrackSize);
+
+			BaseType::m_noNcCalcSizeAdjustments = true;
+			BaseType::SetWindowPos(nullptr, rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+			BaseType::m_noNcCalcSizeAdjustments = false;
+			::EnumChildWindows(BaseType::GetSafeHwnd(), CDPIAware::DPIAdjustChildren, reinterpret_cast<LPARAM>(&data));
+
+			BaseType::AddAllAnchors(anchors);
+		}
+		else
+		{
+			BaseType::SetWindowPos(nullptr, rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+			::EnumChildWindows(BaseType::GetSafeHwnd(), CDPIAware::DPIAdjustChildren, reinterpret_cast<LPARAM>(&data));
+		}
+
+		m_dpi = newDPI;
+
+		::RedrawWindow(BaseType::GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+		return 1; // let MFC handle this message as well
 	}
 
 	virtual void SetTheme(bool bDark)
@@ -359,5 +412,6 @@ BEGIN_TEMPLATE_MESSAGE_MAP(CStandAloneDialogTmpl, BaseType, BaseType)
 	ON_WM_QUERYDRAGICON()
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, OnTaskbarButtonCreated)
 	ON_WM_SYSCOLORCHANGE()
+	ON_MESSAGE(WM_DPICHANGED, OnDPIChanged)
 END_MESSAGE_MAP()
 

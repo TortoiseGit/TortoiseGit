@@ -74,7 +74,7 @@ void CGitRefCompareList::Init()
 	colNewMessage = InsertColumn(index++,CString(MAKEINTRESOURCE(IDS_NEWMESSAGE)));
 	for (int i = 0; i < index; ++i)
 		SetColumnWidth(i, LVSCW_AUTOSIZE_USEHEADER);
-	SetColumnWidth(colRef, CDPIAware::Instance().ScaleX(130));
+	SetColumnWidth(colRef, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 130));
 
 	CImageList *imagelist = new CImageList();
 	imagelist->Create(IDB_BITMAP_REFTYPE, 16, 3, RGB(255, 255, 255));
