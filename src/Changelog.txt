@@ -15,6 +15,7 @@ Released: unreleased
  * Fixed issue #3053: "Abort" button in merge conflict dialogue is misleading -> opens Abort merge dialog now
  * Fixed issue #4034: After git lfs lock, UI suggest a pull
  * Allow the dark mode to be enabled (independent of the system theme; e.g., using Ctrl+Alt+D)
+ * Add support for SVG files in TortoiseGitIDiff
 
 == Bug Fixes ==
  * Fixed redraw bug in log list

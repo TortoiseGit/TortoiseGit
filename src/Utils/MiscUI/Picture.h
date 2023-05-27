@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2020 - TortoiseGit
-// Copyright (C) 2003-2007, 2009, 2012-2015, 2017 - TortoiseSVN
+// Copyright (C) 2003-2007, 2009, 2012-2015, 2017, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -191,6 +191,7 @@ private:
 	bool TryLoadIcon(const std::wstring& sFilePathName);
 	bool TryLoadWIC(const std::wstring& sFilePathName);
 	bool TryLoadFreeImage(const std::wstring& sFilePathName);
+	bool TryLoadSvg(const std::wstring& sFilePathName);
 
 	GdiplusStartupInput gdiplusStartupInput;
 	ULONG_PTR			gdiplusToken;

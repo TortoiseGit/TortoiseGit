@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2015-2020 - TortoiseGit
-// Copyright (C) 2003-2015, 2017 - TortoiseSVN
+// Copyright (C) 2003-2015, 2017, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,10 @@
 #include "Picture.h"
 #include <atlbase.h>
 #include <Wincodec.h>
+#include <d2d1.h>
+#include <d2d1_3.h>
 
+#pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "gdiplus.lib")
 // note: linking with Windowscodecs.lib does not make the exe require the dll
@@ -325,6 +328,89 @@ bool CPicture::TryLoadFreeImage(const std::wstring& sFilePathName)
 	return true;
 }
 
+bool CPicture::TryLoadSvg(const std::wstring& sFilePathName)
+{
+	// initialize Direct2D
+	D2D1_FACTORY_OPTIONS options = {
+#ifdef _DEBUG
+		D2D1_DEBUG_LEVEL_INFORMATION
+#endif
+	};
+
+	// open a stream from the .SVG file
+	CComPtr<IStream> svgStream;
+	if (FAILED(SHCreateStreamOnFileW(sFilePathName.c_str(), 0, &svgStream)))
+		return false;
+
+	CComPtr<ID2D1Factory> factory;
+	if (FAILED(D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, IID_ID2D1Factory, &options, reinterpret_cast<void**>(&factory))))
+		return false;
+
+	// create a DC render target
+	CComPtr<ID2D1DCRenderTarget> target;
+	D2D1_RENDER_TARGET_PROPERTIES props{};
+	props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+	if (FAILED(factory->CreateDCRenderTarget(&props, &target)))
+		return false;
+
+	// this requires Windows 10 1703
+	CComPtr<ID2D1DeviceContext5> dc;
+	if (FAILED(target->QueryInterface(&dc)))
+		return false;
+
+	// open the SVG as a document
+	CComPtr<ID2D1SvgDocument> svg;
+	D2D1_SIZE_F size = { static_cast<float>(1), static_cast<float>(1) };
+	if (FAILED(dc->CreateSvgDocument(svgStream, size, &svg)))
+		return false;
+
+	CComPtr<ID2D1SvgElement> pSvgElement;
+	D2D1_SVG_VIEWBOX viewBox{};
+	float svgWidth = 0.0f;
+	float svgHeight = 0.0f;
+
+	svg->GetRoot(&pSvgElement);
+	pSvgElement->GetAttributeValue(L"viewBox", D2D1_SVG_ATTRIBUTE_POD_TYPE_VIEWBOX, static_cast<void*>(&viewBox), sizeof(viewBox));
+	pSvgElement->GetAttributeValue(L"width", &svgWidth);
+	pSvgElement->GetAttributeValue(L"height", &svgHeight);
+
+	long width = 1000;
+	long height = 1000;
+	if (viewBox.width != 0.0f && viewBox.height != 0.0f)
+	{
+		width = static_cast<long>(viewBox.width);
+		height = static_cast<long>(viewBox.height);
+	}
+	if (height != 0 && width != 0)
+	{
+		width = static_cast<long>(svgWidth);
+		height = static_cast<long>(svgHeight);
+	}
+
+	auto pBitmap = std::make_unique<Bitmap>(width, height, PixelFormat32bppARGB);
+	Graphics g(pBitmap.get());
+	RECT rc = { 0, 0, width, height };
+	auto hdc = g.GetHDC();
+	if (FAILED(target->BindDC(hdc, &rc)))
+		return false;
+
+	size = { static_cast<float>(width), static_cast<float>(height) };
+	svg->SetViewportSize(size);
+
+	// draw it on the render target
+	target->BeginDraw();
+	dc->DrawSvgDocument(svg);
+	target->EndDraw();
+	g.ReleaseHDC(hdc);
+
+	m_Width = width;
+	m_Height = height;
+	m_pBitmap = std::move(pBitmap);
+
+	return true;
+}
+
 bool CPicture::Load(std::wstring sFilePathName)
 {
 	bool bResult = false;
@@ -367,6 +453,8 @@ bool CPicture::Load(std::wstring sFilePathName)
 
 	if (bIsIcon)
 		bResult = TryLoadIcon(sFilePathName);
+	else if (wcsstr(lowerfilename.c_str(), L".svg"))
+		bResult = TryLoadSvg(sFilePathName);
 	else if (pBitmap) // Image loaded successfully with GDI+
 	{
 		m_Height = pBitmap->GetHeight();
