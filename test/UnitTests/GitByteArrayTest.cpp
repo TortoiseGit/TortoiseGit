@@ -81,7 +81,7 @@ TEST(CGitByteArray, AppendByteArrayRange)
 
 	CGitByteArray byteArray2;
 	EXPECT_EQ(0U, byteArray2.append(byteArray1, 0, 0));
-	EXPECT_EQ(0, byteArray2.size());
+	EXPECT_EQ(0U, byteArray2.size());
 
 	EXPECT_EQ(0U, byteArray2.append(byteArray1, 0));
 	EXPECT_EQ(byteArray1.size(), byteArray2.size());
