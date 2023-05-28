@@ -736,7 +736,7 @@ Gdiplus::Color GetGdiColor(COLORREF col)
 {
 	return Gdiplus::Color(GetRValue(col),GetGValue(col),GetBValue(col));
 }
-void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool rolledUp, int x1, int x2,
+void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight, Lanes::LaneType type, bool rolledUp, int x1, int x2,
 										const COLORREF& col,const COLORREF& activeColor, int top
 										)
 {
@@ -781,10 +781,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 
 	// arc
 	switch (type) {
-	case Lanes::JOIN:
-	case Lanes::JOIN_R:
-	case Lanes::HEAD:
-	case Lanes::HEAD_R:
+	case Lanes::LaneType::JOIN:
+	case Lanes::LaneType::JOIN_R:
+	case Lanes::LaneType::HEAD:
+	case Lanes::LaneType::HEAD_R:
 	{
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(x1-2, h+top-2),
@@ -801,7 +801,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 
 		break;
 	}
-	case Lanes::JOIN_L:
+	case Lanes::LaneType::JOIN_L:
 	{
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(P_270),
@@ -819,8 +819,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 
 		break;
 	}
-	case Lanes::TAIL:
-	case Lanes::TAIL_R:
+	case Lanes::LaneType::TAIL:
+	case Lanes::LaneType::TAIL_R:
 	{
 		Gdiplus::LinearGradientBrush gradient(
 								Gdiplus::Point(x1-2, h+top-2),
@@ -860,10 +860,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 
 	// vertical line
 	switch (type) {
-	case Lanes::ACTIVE:
-	case Lanes::MERGE_FORK:
-	case Lanes::MERGE_FORK_R:
-	case Lanes::MERGE_FORK_L:
+	case Lanes::LaneType::ACTIVE:
+	case Lanes::LaneType::MERGE_FORK:
+	case Lanes::LaneType::MERGE_FORK_R:
+	case Lanes::LaneType::MERGE_FORK_L:
 		if (rolledUp)
 		{
 			graphics.DrawLine(&myPen, P_90, P_CENTER_90);
@@ -871,40 +871,40 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 			break;
 		}
 		[[fallthrough]];
-	case Lanes::NOT_ACTIVE:
-	case Lanes::JOIN:
-	case Lanes::JOIN_R:
-	case Lanes::JOIN_L:
-	case Lanes::CROSS:
+	case Lanes::LaneType::NOT_ACTIVE:
+	case Lanes::LaneType::JOIN:
+	case Lanes::LaneType::JOIN_R:
+	case Lanes::LaneType::JOIN_L:
+	case Lanes::LaneType::CROSS:
 		//DrawLine(hdc,P_90,P_270);
 		graphics.DrawLine(&myPen,P_90,P_270);
 		//p->drawLine(P_90, P_270);
 		break;
-	case Lanes::BRANCH:
+	case Lanes::LaneType::BRANCH:
 		if (rolledUp)
 		{
 			graphics.DrawLine(&myPen, P_CENTER_270, P_270);
 			break;
 		}
 		[[fallthrough]];
-	case Lanes::HEAD_L:
+	case Lanes::LaneType::HEAD_L:
 		//DrawLine(hdc,P_CENTER,P_270);
 		graphics.DrawLine(&myPen,P_CENTER,P_270);
 		//p->drawLine(P_CENTER, P_270);
 		break;
-	case Lanes::INITIAL:
-	case Lanes::MERGE_FORK_L_INITIAL:
-	case Lanes::BOUNDARY:
-	case Lanes::BOUNDARY_C:
-	case Lanes::BOUNDARY_R:
-	case Lanes::BOUNDARY_L:
+	case Lanes::LaneType::INITIAL:
+	case Lanes::LaneType::MERGE_FORK_L_INITIAL:
+	case Lanes::LaneType::BOUNDARY:
+	case Lanes::LaneType::BOUNDARY_C:
+	case Lanes::LaneType::BOUNDARY_R:
+	case Lanes::LaneType::BOUNDARY_L:
 		if (rolledUp)
 		{
 			graphics.DrawLine(&myPen, P_90, P_CENTER_90);
 			break;
 		}
 		[[fallthrough]];
-	case Lanes::TAIL_L:
+	case Lanes::LaneType::TAIL_L:
 		//DrawLine(hdc,P_90, P_CENTER);
 		graphics.DrawLine(&myPen,P_90,P_CENTER);
 		//p->drawLine(P_90, P_CENTER);
@@ -917,8 +917,8 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 
 	// horizontal line
 	switch (type) {
-	case Lanes::MERGE_FORK:
-	case Lanes::BOUNDARY_C:
+	case Lanes::LaneType::MERGE_FORK:
+	case Lanes::LaneType::BOUNDARY_C:
 		if (rolledUp)
 		{
 			graphics.DrawLine(&myPen, P_180, P_CENTER_180);
@@ -926,17 +926,17 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 			break;
 		}
 		[[fallthrough]];
-	case Lanes::JOIN:
-	case Lanes::HEAD:
-	case Lanes::TAIL:
-	case Lanes::CROSS:
-	case Lanes::CROSS_EMPTY:
+	case Lanes::LaneType::JOIN:
+	case Lanes::LaneType::HEAD:
+	case Lanes::LaneType::TAIL:
+	case Lanes::LaneType::CROSS:
+	case Lanes::LaneType::CROSS_EMPTY:
 		//DrawLine(hdc,P_180,P_0);
 		graphics.DrawLine(&myPen,P_180,P_0);
 		//p->drawLine(P_180, P_0);
 		break;
-	case Lanes::MERGE_FORK_R:
-	case Lanes::BOUNDARY_R:
+	case Lanes::LaneType::MERGE_FORK_R:
+	case Lanes::LaneType::BOUNDARY_R:
 		//DrawLine(hdc,P_180,P_CENTER);
 		if (rolledUp)
 			graphics.DrawLine(&myPen, P_180, P_CENTER_180);
@@ -944,17 +944,17 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 			graphics.DrawLine(&myPen, P_180, P_CENTER);
 		//p->drawLine(P_180, P_CENTER);
 		break;
-	case Lanes::MERGE_FORK_L:
-	case Lanes::MERGE_FORK_L_INITIAL:
-	case Lanes::BOUNDARY_L:
+	case Lanes::LaneType::MERGE_FORK_L:
+	case Lanes::LaneType::MERGE_FORK_L_INITIAL:
+	case Lanes::LaneType::BOUNDARY_L:
 		if (rolledUp)
 		{
 			graphics.DrawLine(&myPen, P_CENTER_0, P_0);
 			break;
 		}
 		[[fallthrough]];
-	case Lanes::HEAD_L:
-	case Lanes::TAIL_L:
+	case Lanes::LaneType::HEAD_L:
+	case Lanes::LaneType::TAIL_L:
 		//DrawLine(hdc,P_CENTER,P_0);
 		graphics.DrawLine(&myPen,P_CENTER,P_0);
 		//p->drawLine(P_CENTER, P_0);
@@ -973,9 +973,9 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 	Gdiplus::Pen myPen1(GetGdiColor(col), 1);
 	// center symbol, e.g. rect or ellipse
 	switch (type) {
-	case Lanes::ACTIVE:
-	case Lanes::INITIAL:
-	case Lanes::BRANCH:
+	case Lanes::LaneType::ACTIVE:
+	case Lanes::LaneType::INITIAL:
+	case Lanes::LaneType::BRANCH:
 
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
@@ -986,10 +986,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 			graphics.FillEllipse(&myBrush, R_CENTER);
 		//p->drawEllipse(R_CENTER);
 		break;
-	case Lanes::MERGE_FORK:
-	case Lanes::MERGE_FORK_R:
-	case Lanes::MERGE_FORK_L:
-	case Lanes::MERGE_FORK_L_INITIAL:
+	case Lanes::LaneType::MERGE_FORK:
+	case Lanes::LaneType::MERGE_FORK_R:
+	case Lanes::LaneType::MERGE_FORK_L:
+	case Lanes::LaneType::MERGE_FORK_L_INITIAL:
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(col);
 		//p->drawRect(R_CENTER);
@@ -999,7 +999,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 		else
 			graphics.FillRectangle(&myBrush, R_CENTER);
 		break;
-	case Lanes::UNAPPLIED:
+	case Lanes::LaneType::UNAPPLIED:
 		// Red minus sign
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(Qt::red);
@@ -1007,7 +1007,7 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
 		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
 		break;
-	case Lanes::APPLIED:
+	case Lanes::LaneType::APPLIED:
 		// Green plus sign
 		//p->setPen(Qt::NoPen);
 		//p->setBrush(DARK_GREEN);
@@ -1017,15 +1017,15 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight,int type, bool roll
 		graphics.FillRectangle(&myBrush,m-r,h-1,d,2);
 		graphics.FillRectangle(&myBrush,m-1,h-r,2,d);
 		break;
-	case Lanes::BOUNDARY:
+	case Lanes::LaneType::BOUNDARY:
 		//p->setBrush(back);
 		//p->drawEllipse(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeAntiAlias);
 		graphics.DrawEllipse(&myPen, R_CENTER);
 		break;
-	case Lanes::BOUNDARY_C:
-	case Lanes::BOUNDARY_R:
-	case Lanes::BOUNDARY_L:
+	case Lanes::LaneType::BOUNDARY_C:
+	case Lanes::LaneType::BOUNDARY_R:
+	case Lanes::LaneType::BOUNDARY_L:
 		//p->setBrush(back);
 		//p->drawRect(R_CENTER);
 		graphics.SetSmoothingMode(Gdiplus::SmoothingModeNone);
@@ -1072,7 +1072,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 	if (data->m_Lanes.empty())
 		m_logEntries.setLane(data->m_CommitHash, m_ShowMask & CGit::LOG_INFO_FIRST_PARENT);
 
-	std::vector<int>& lanes=data->m_Lanes;
+	std::vector<Lanes::LaneType>& lanes = data->m_Lanes;
 	size_t laneNum = lanes.size();
 	UINT activeLane = 0;
 	for (UINT i = 0; i < laneNum; ++i)
@@ -1092,8 +1092,8 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		int x1 = x2;
 		x2 += lw;
 
-		int ln = lanes[i];
-		if (ln == Lanes::EMPTY)
+		Lanes::LaneType ln = lanes[i];
+		if (ln == Lanes::LaneType::EMPTY)
 			continue;
 
 		COLORREF color = i == activeLane ? activeColor : CTheme::Instance().GetThemeColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1 + (i % Lanes::COLORS_NUM))), true);

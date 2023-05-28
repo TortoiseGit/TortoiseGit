@@ -1,5 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,25 +25,25 @@ const wchar_t * GetEolName(EOL eEol)
 {
 	switch(eEol)
 	{
-	case EOL_LF:
+	case EOL::LF:
 		return L"LF";
-	case EOL_CRLF:
+	case EOL::CRLF:
 		return L"CRLF";
-	case EOL_LFCR:
+	case EOL::LFCR:
 		return L"LFCR";
-	case EOL_CR:
+	case EOL::CR:
 		return L"CR";
-	case EOL_VT:
+	case EOL::VT:
 		return L"VT";
-	case EOL_FF:
+	case EOL::FF:
 		return L"FF";
-	case EOL_NEL:
+	case EOL::NEL:
 		return L"NEL";
-	case EOL_LS:
+	case EOL::LS:
 		return L"LS";
-	case EOL_PS:
+	case EOL::PS:
 		return L"PS";
-	case EOL_AUTOLINE:
+	case EOL::AutoLine:
 		return L"AEOL";
 	}
 	return L"";

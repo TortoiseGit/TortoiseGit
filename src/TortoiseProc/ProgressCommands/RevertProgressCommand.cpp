@@ -23,6 +23,8 @@
 #include "../TGitCache/CacheInterface.h"
 #include "MassiveGitTask.h"
 
+using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action;
+
 RevertProgressCommand::RevertProgressCommand(const CString& revertToRevision)
 	: m_sRevertToRevision(revertToRevision)
 {}
@@ -102,7 +104,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	unstageTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
 		if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) != 0)
 			return;
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Revert));
 		++m_itemCount;
 	});
 	unstageTask.SetProgressList(list);
@@ -117,7 +119,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	checkoutTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
 		if ((path.m_Action & CTGitPath::LOGACTIONS_DELETED) != 0)
 			return;
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Revert));
 		++m_itemCount;
 	});
 	checkoutTask.SetProgressList(list);
@@ -125,7 +127,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		return false;
 
 	addTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Revert));
 		++m_itemCount;
 	});
 	addTask.SetProgressList(list);
@@ -154,7 +156,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 			return false;
 		}
 
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_revert));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Revert));
 		++m_itemCount;
 
 		if (list->IsCancelled())

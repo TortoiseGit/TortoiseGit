@@ -56,11 +56,11 @@ class MyGraph : public CStatic
 {
 // Enum.
 public:
-	enum GraphType		{ Bar, Line, PieChart }; // Renamed 'Pie' because it hides a GDI function name
+	enum class GraphType		{ Bar, Line, PieChart }; // Renamed 'Pie' because it hides a GDI function name
 
 // Construction.
 public:
-	MyGraph(GraphType eGraphType = MyGraph::PieChart, bool bStackedGraph = false);
+	MyGraph(GraphType eGraphType = MyGraph::GraphType::PieChart, bool bStackedGraph = false);
 	virtual ~MyGraph();
 
 // Declared but not defined.

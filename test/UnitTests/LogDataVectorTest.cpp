@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015, 2017-2020 - TortoiseGit
+// Copyright (C) 2015, 2017-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -76,9 +76,9 @@ TEST(CLogCache, ClearAllParent)
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"0000000000000000000000000000000000000000"));
 	EXPECT_EQ(1U, pRev->m_ParentHash.size());
-	pRev->m_Lanes.push_back(1);
-	pRev->m_Lanes.push_back(2);
-	pRev->m_Lanes.push_back(3);
+	pRev->m_Lanes.push_back(Lanes::LaneType::ACTIVE);
+	pRev->m_Lanes.push_back(Lanes::LaneType::NOT_ACTIVE);
+	pRev->m_Lanes.push_back(Lanes::LaneType::MERGE_FORK);
 	EXPECT_EQ(3U, pRev->m_Lanes.size());
 	CGitHash hash2 = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
@@ -86,7 +86,7 @@ TEST(CLogCache, ClearAllParent)
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111111"));
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111112"));
 	EXPECT_EQ(2U, pRev->m_ParentHash.size());
-	pRev->m_Lanes.push_back(4);
+	pRev->m_Lanes.push_back(Lanes::LaneType::MERGE_FORK_R);
 	EXPECT_EQ(1U, pRev->m_Lanes.size());
 
 	logCache.ClearAllParent();
@@ -109,9 +109,9 @@ TEST(CLogCache, ClearAllLanes)
 	ASSERT_TRUE(pRev);
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"0000000000000000000000000000000000000000"));
 	EXPECT_EQ(1U, pRev->m_ParentHash.size());
-	pRev->m_Lanes.push_back(1);
-	pRev->m_Lanes.push_back(2);
-	pRev->m_Lanes.push_back(3);
+	pRev->m_Lanes.push_back(Lanes::LaneType::ACTIVE);
+	pRev->m_Lanes.push_back(Lanes::LaneType::NOT_ACTIVE);
+	pRev->m_Lanes.push_back(Lanes::LaneType::MERGE_FORK);
 	EXPECT_EQ(3U, pRev->m_Lanes.size());
 	CGitHash hash2 = CGitHash::FromHexStr(L"dead91b4aedeaddeaddead2a56d3c473c705dead");
 	pRev = logCache.GetCacheData(hash2);
@@ -119,7 +119,7 @@ TEST(CLogCache, ClearAllLanes)
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111111"));
 	pRev->m_ParentHash.push_back(CGitHash::FromHexStr(L"1111111111111111111111111111111111111112"));
 	EXPECT_EQ(2U, pRev->m_ParentHash.size());
-	pRev->m_Lanes.push_back(4);
+	pRev->m_Lanes.push_back(Lanes::LaneType::MERGE_FORK_R);
 	EXPECT_EQ(1U, pRev->m_Lanes.size());
 
 	logCache.ClearAllLanes();

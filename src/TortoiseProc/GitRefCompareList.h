@@ -27,7 +27,7 @@ class CGitRefCompareList : public CHintCtrl<CListCtrl>
 {
 	DECLARE_DYNAMIC(CGitRefCompareList);
 
-	enum ChangeType
+	enum class ChangeType
 	{
 		Unknown,
 		New,

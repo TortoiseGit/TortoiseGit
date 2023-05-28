@@ -1,4 +1,4 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007, 2011, 2013-2014 - TortoiseSVN
 
@@ -36,5 +36,5 @@ public:
 	void	UseRightFile() override; ///< Use File from Right
 
 protected:
-	void	AddContextItems(CIconMenu& popup, DiffStates state) override;
+	void	AddContextItems(CIconMenu& popup, DiffState state) override;
 };

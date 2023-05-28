@@ -30,7 +30,7 @@ CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=nullptr*/)
 	, m_bFromOK(false)
 	, m_bToOK(false)
 	, m_bDirty(false)
-	, m_nChangeType(CGitDiff::Unknown)
+	, m_nChangeType(CGitDiff::ChangeType::Unknown)
 	, m_bRefresh(false)
 {
 }
@@ -106,7 +106,7 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 
-	CString changeTypeTable[] =
+	const CString changeTypeTable[] =
 	{
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_UNKNOWN)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_IDENTICAL)),
@@ -118,12 +118,12 @@ BOOL CSubmoduleDiffDlg::OnInitDialog()
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME))
 	};
-	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeType]);
+	GetDlgItem(IDC_CHANGETYPE)->SetWindowText(changeTypeTable[static_cast<int>(m_nChangeType)]);
 
 	DialogEnableWindow(IDC_SHOW_DIFF, m_bFromOK && m_bToOK);
-	if (m_nChangeType == CGitDiff::Identical)
+	if (m_nChangeType == CGitDiff::ChangeType::Identical)
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
-	else if (m_bDirty && m_nChangeType != CGitDiff::Unknown)
+	else if (m_bDirty && m_nChangeType != CGitDiff::ChangeType::Unknown)
 	{
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_PROC_SHOWDIFF));
 		m_ctrlShowDiffBtn.AddEntry(MAKEINTRESOURCE(IDS_LOG_POPUP_COMPARE));
@@ -145,28 +145,28 @@ HBRUSH CSubmoduleDiffDlg::GetInvalidBrush(CDC* pDC)
 
 HBRUSH CSubmoduleDiffDlg::GetChangeTypeBrush(CDC* pDC, const CGitDiff::ChangeType& changeType)
 {
-	if (changeType == CGitDiff::FastForward)
+	if (changeType == CGitDiff::ChangeType::FastForward)
 	{
 		// light green
 		pDC->SetBkColor(RGB(211, 249, 154));
 		pDC->SetTextColor(RGB(0, 0, 0));
 		return CreateSolidBrush(RGB(211, 249, 154));
 	}
-	if (changeType == CGitDiff::Rewind)
+	if (changeType == CGitDiff::ChangeType::Rewind)
 	{
 		// pink
 		pDC->SetBkColor(RGB(249, 199, 229));
 		pDC->SetTextColor(RGB(0, 0, 0));
 		return CreateSolidBrush(RGB(249, 199, 229));
 	}
-	if (changeType == CGitDiff::NewerTime)
+	if (changeType == CGitDiff::ChangeType::NewerTime)
 	{
 		// light blue
 		pDC->SetBkColor(RGB(176, 223, 244));
 		pDC->SetTextColor(RGB(0, 0, 0));
 		return CreateSolidBrush(RGB(176, 223, 244));
 	}
-	if (changeType == CGitDiff::OlderTime)
+	if (changeType == CGitDiff::ChangeType::OlderTime)
 	{
 		// light orange
 		pDC->SetBkColor(RGB(244, 207, 159));
@@ -197,7 +197,7 @@ HBRUSH CSubmoduleDiffDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 			return CreateSolidBrush(RGB(255, 255, 0));
 		}
 
-		if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && m_nChangeType != CGitDiff::Identical)
+		if (pWnd->GetDlgCtrlID() == IDC_CHANGETYPE && m_nChangeType != CGitDiff::ChangeType::Identical)
 			return GetChangeTypeBrush(pDC, m_nChangeType);
 	}
 
@@ -251,11 +251,11 @@ void CSubmoduleDiffDlg::OnBnClickedLog2()
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
-	if (m_nChangeType == CGitDiff::Identical)
+	if (m_nChangeType == CGitDiff::ChangeType::Identical)
 		sCmd.Format(L"/command:repostatus /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)));
 	else
 	{
-		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
+		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::ChangeType::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
 
 		if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 			sCmd += L" /alternative";

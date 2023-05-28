@@ -1,6 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2023 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ public:
         , bFitWidths(false)
         , bFitHeights(false)
         , bOverlap(false)
-        , m_blend(BLEND_ALPHA)
+        , m_blend(BlendType::Alpha)
         , bMainPic(false)
         , bFirstpaint(false)
         , nVSecondScrollPos(0)
@@ -120,10 +120,10 @@ public:
         m_inforect.top = 0;
     };
 
-    enum BlendType
+    enum class BlendType
     {
-        BLEND_ALPHA,
-        BLEND_XOR,
+        Alpha,
+        Xor,
     };
     /// Registers the window class and creates the window
     bool RegisterAndCreateWindow(HWND hParent);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019, 2021 - TortoiseGit
+// Copyright (C) 2018-2019, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ private:
 	std::vector<std::wregex> m_patterns;
 
 	/// sub-string matching info
-	enum Prefix
+	enum class Prefix
 	{
 		And,
 		Or,

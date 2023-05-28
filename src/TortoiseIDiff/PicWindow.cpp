@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2006-2016, 2018-2020 - TortoiseSVN
-// Copyright (C) 2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2016, 2018-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -66,7 +66,7 @@ void CPicWindow::PositionTrackBar()
     RECT rc;
     GetClientRect(&rc);
     HWND slider = m_AlphaSlider.GetWindow();
-    if ((pSecondPic)&&(m_blend == BLEND_ALPHA))
+    if (pSecondPic && m_blend == BlendType::Alpha)
     {
         MoveWindow(slider, 0, rc.top - CDPIAware::Instance().ScaleY(4) + slider_width, slider_width, rc.bottom - rc.top - slider_width + CDPIAware::Instance().ScaleX(8), true);
         ShowWindow(slider, SW_SHOW);
@@ -415,14 +415,14 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
                 break;
             case BLENDALPHA_ID:
                 {
-                    m_blend = BLEND_ALPHA;
+                    m_blend = BlendType::Alpha;
                     PositionTrackBar();
                     InvalidateRect(*this, nullptr, TRUE);
                 }
                 break;
             case BLENDXOR_ID:
                 {
-                    m_blend = BLEND_XOR;
+                    m_blend = BlendType::Xor;
                     PositionTrackBar();
                     InvalidateRect(*this, nullptr, TRUE);
                 }
@@ -1199,11 +1199,11 @@ void CPicWindow::Paint(HWND hwnd)
     hdc = BeginPaint(hwnd, &ps);
     {
         // Exclude the alpha control and button
-        if ((pSecondPic)&&(m_blend == BLEND_ALPHA))
+        if (pSecondPic && m_blend == BlendType::Alpha)
             ExcludeClipRect(hdc, 0, m_inforect.top - border, slider_width, m_inforect.bottom + border);
 
         CMyMemDC memDC(hdc);
-        if ((pSecondPic)&&(m_blend != BLEND_ALPHA))
+        if (pSecondPic && m_blend != BlendType::Alpha)
         {
             // erase the place where the alpha slider would be
             ::SetBkColor(memDC, GetTransparentThemedColor());
@@ -1222,7 +1222,7 @@ void CPicWindow::Paint(HWND hwnd)
                 HBITMAP hOldBitmap = static_cast<HBITMAP>(SelectObject(secondhdc, hBitmap));
                 SetWindowOrgEx(secondhdc, rect.left, rect.top, nullptr);
 
-                if ((pSecondPic)&&(m_blend != BLEND_ALPHA))
+                if (pSecondPic && m_blend != BlendType::Alpha)
                 {
                     // erase the place where the alpha slider would be
                     ::SetBkColor(secondhdc, GetTransparentThemedColor());
@@ -1232,7 +1232,7 @@ void CPicWindow::Paint(HWND hwnd)
                 if (pTheOtherPic)
                     ShowPicWithBorder(secondhdc, rect, *pSecondPic, pTheOtherPic->GetZoom());
 
-                if (m_blend == BLEND_ALPHA)
+                if (m_blend == BlendType::Alpha)
                 {
                     BLENDFUNCTION blender;
                     blender.AlphaFormat = 0;
@@ -1251,7 +1251,7 @@ void CPicWindow::Paint(HWND hwnd)
                         rect.bottom-rect.top,
                         blender);
                 }
-                else if (m_blend == BLEND_XOR)
+                else if (m_blend == BlendType::Xor)
                 {
                     BitBlt(memDC,
                         rect.left,
@@ -1298,7 +1298,7 @@ void CPicWindow::Paint(HWND hwnd)
             }
 
             int sliderwidth = 0;
-            if ((pSecondPic)&&(m_blend == BLEND_ALPHA))
+            if (pSecondPic && m_blend == BlendType::Alpha)
                 sliderwidth = slider_width;
             m_inforect.left = rect.left + border + sliderwidth;
             m_inforect.top = rect.top;

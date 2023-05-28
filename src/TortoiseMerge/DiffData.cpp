@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -127,7 +128,7 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 		if (toIndex < 0)
 			return;
 		while((toIndex < m_YourBaseBoth.GetCount())&&
-			  ((m_YourBaseBoth.GetState(toIndex) != DIFFSTATE_ADDED)&&
+			  ((m_YourBaseBoth.GetState(toIndex) != DiffState::Added)&&
 			  (!m_YourBaseBoth.IsMoved(toIndex))||(m_YourBaseBoth.IsMovedFrom(toIndex))||
 			  (m_YourBaseBoth.GetLineNumber(toIndex) != to)))
 		{
@@ -138,7 +139,7 @@ void CDiffData::TieMovedBlocks(int from, int to, apr_off_t length)
 		if (fromIndex < 0)
 			return;
 		while((fromIndex < m_YourBaseBoth.GetCount())&&
-			  ((m_YourBaseBoth.GetState(fromIndex) != DIFFSTATE_REMOVED)&&
+			  ((m_YourBaseBoth.GetState(fromIndex) != DiffState::Removed)&&
 			  (!m_YourBaseBoth.IsMoved(fromIndex))||(!m_YourBaseBoth.IsMovedFrom(fromIndex))||
 			  (m_YourBaseBoth.GetLineNumber(fromIndex) != from)))
 		{
@@ -237,7 +238,7 @@ BOOL CDiffData::Load()
 			return FALSE;
 		}
 		bBaseNeedConvert = bIgnoreCase || bIgnoreComments || (m_arBaseFile.NeedsConversion()) || !m_rx._Empty();
-		bBaseIsUtf8 = (m_arBaseFile.GetUnicodeType()!=CFileTextLines::ASCII) || bBaseNeedConvert;
+		bBaseIsUtf8 = (m_arBaseFile.GetUnicodeType() != CFileTextLines::UnicodeType::ASCII) || bBaseNeedConvert;
 	}
 
 	if (IsTheirFileInUse())
@@ -250,7 +251,7 @@ BOOL CDiffData::Load()
 			return FALSE;
 		}
 		bTheirNeedConvert = bIgnoreCase || bIgnoreComments || (m_arTheirFile.NeedsConversion()) || !m_rx._Empty();
-		bTheirIsUtf8 = (m_arTheirFile.GetUnicodeType()!=CFileTextLines::ASCII) || bTheirNeedConvert;
+		bTheirIsUtf8 = (m_arTheirFile.GetUnicodeType() != CFileTextLines::UnicodeType::ASCII) || bTheirNeedConvert;
 	}
 
 	if (IsYourFileInUse())
@@ -263,7 +264,7 @@ BOOL CDiffData::Load()
 			return FALSE;
 		}
 		bYourNeedConvert = bIgnoreCase || bIgnoreComments || (m_arYourFile.NeedsConversion()) || !m_rx._Empty();
-		bYourIsUtf8 = (m_arYourFile.GetUnicodeType()!=CFileTextLines::ASCII) || bYourNeedConvert;
+		bYourIsUtf8 = (m_arYourFile.GetUnicodeType() != CFileTextLines::UnicodeType::ASCII) || bYourNeedConvert;
 	}
 
 	// in case at least one of the files got converted or is UTF8
@@ -417,23 +418,23 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 					if (changedWS || ignoreWs == IgnoreWS::None)
 					{
 						// one-pane view: two lines, one 'removed' and one 'added'
-						m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVEDWHITESPACE, yourline, endingBase, changedWS && ignoreWs != IgnoreWS::None ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
-						m_YourBaseBoth.AddData(sCurrentYourLine, DIFFSTATE_ADDEDWHITESPACE, yourline, endingYours, changedWS && ignoreWs != IgnoreWS::None ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
+						m_YourBaseBoth.AddData(sCurrentBaseLine, DiffState::RemovedWhitespace, yourline, endingBase, changedWS && ignoreWs != IgnoreWS::None ? HideState::Hidden : HideState::Shown, -1);
+						m_YourBaseBoth.AddData(sCurrentYourLine, DiffState::AddedWhitespace, yourline, endingYours, changedWS && ignoreWs != IgnoreWS::None ? HideState::Hidden : HideState::Shown, -1);
 					}
 					else
 					{
-						m_YourBaseBoth.AddData(sCurrentYourLine, DIFFSTATE_NORMAL, yourline, endingBase, HIDESTATE_HIDDEN, -1);
+						m_YourBaseBoth.AddData(sCurrentYourLine, DiffState::Normal, yourline, endingBase, HideState::Hidden, -1);
 					}
 				}
 				else
 				{
-					m_YourBaseBoth.AddData(sCurrentYourLine, DIFFSTATE_NORMAL, yourline, endingBase, HIDESTATE_HIDDEN, -1);
+					m_YourBaseBoth.AddData(sCurrentYourLine, DiffState::Normal, yourline, endingBase, HideState::Hidden, -1);
 				}
 				yourline++;     //in both files
 			}
 			else
 			{ // small trick - we need here a baseline, but we fix it back to yourline at the end of routine
-				m_YourBaseBoth.AddData(sCurrentBaseLine, DIFFSTATE_REMOVED, -1, endingBase, HIDESTATE_SHOWN, -1);
+				m_YourBaseBoth.AddData(sCurrentBaseLine, DiffState::Removed, -1, endingBase, HideState::Shown, -1);
 			}
 			baseline++;
 		}
@@ -443,7 +444,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 			{
 				if (m_arYourFile.GetCount() > yourline)
 				{
-					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_ADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
+					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::Added, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
 				}
 				yourline++;
 			}
@@ -474,7 +475,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 				if (sCurrentBaseLine != sCurrentYourLine)
 				{
 					bool changedNonWS = false;
-					auto ds = DIFFSTATE_NORMAL;
+					auto ds = DiffState::Normal;
 
 					if (ignoreWs == IgnoreWS::AllWhiteSpaces)
 					{
@@ -513,27 +514,27 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 							*pS2 = '\0';
 							auto hasWhitespaceChanges = wcscmp(s1.get(), s2.get()) != 0;
 							if (hasWhitespaceChanges)
-								ds = DIFFSTATE_WHITESPACE;
+								ds = DiffState::Whitespace;
 						}
 					}
 					if (ignoreWs == IgnoreWS::WhiteSpaces)
 						changedNonWS = CompareWithIgnoreWS(sCurrentBaseLine, sCurrentYourLine, ignoreWs);
 					if (!changedNonWS)
 					{
-						ds = DIFFSTATE_NORMAL;
+						ds = DiffState::Normal;
 					}
-					if ((ds == DIFFSTATE_NORMAL) && (!m_rx._Empty() || bIgnoreCase || bIgnoreComments))
+					if ((ds == DiffState::Normal) && (!m_rx._Empty() || bIgnoreCase || bIgnoreComments))
 					{
-						ds = DIFFSTATE_FILTEREDDIFF;
+						ds = DiffState::FilteredDiff;
 					}
 
-					m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, (ds == DIFFSTATE_NORMAL) && (ignoreWs != IgnoreWS::None) ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
-					m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, (ds == DIFFSTATE_NORMAL) && (ignoreWs != IgnoreWS::None) ? HIDESTATE_HIDDEN : HIDESTATE_SHOWN, -1);
+					m_YourBaseLeft.AddData(sCurrentBaseLine, ds, baseline, endingBase, (ds == DiffState::Normal) && (ignoreWs != IgnoreWS::None) ? HideState::Hidden : HideState::Shown, -1);
+					m_YourBaseRight.AddData(sCurrentYourLine, ds, yourline, endingYours, (ds == DiffState::Normal) && (ignoreWs != IgnoreWS::None) ? HideState::Hidden : HideState::Shown, -1);
 				}
 				else
 				{
-					m_YourBaseLeft.AddData(sCurrentBaseLine, DIFFSTATE_NORMAL, baseline, endingBase, HIDESTATE_HIDDEN, -1);
-					m_YourBaseRight.AddData(sCurrentYourLine, DIFFSTATE_NORMAL, yourline, endingYours, HIDESTATE_HIDDEN, -1);
+					m_YourBaseLeft.AddData(sCurrentBaseLine, DiffState::Normal, baseline, endingBase, HideState::Hidden, -1);
+					m_YourBaseRight.AddData(sCurrentYourLine, DiffState::Normal, yourline, endingYours, HideState::Hidden, -1);
 				}
 				baseline++;
 				yourline++;
@@ -552,7 +553,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 				if (m_arYourFile.GetCount() > yourline)
 				{
 					EOL endingYours = m_arYourFile.GetLineEnding(yourline);
-					m_YourBaseRight.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_ADDED, yourline, endingYours, HIDESTATE_SHOWN, -1);
+					m_YourBaseRight.AddData(m_arYourFile.GetAt(yourline), DiffState::Added, yourline, endingYours, HideState::Shown, -1);
 					if (original_length-- <= 0)
 					{
 						m_YourBaseLeft.AddEmpty();
@@ -560,7 +561,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 					else
 					{
 						EOL endingBase = m_arBaseFile.GetLineEnding(baseline);
-						m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_REMOVED, baseline, endingBase, HIDESTATE_SHOWN, -1);
+						m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DiffState::Removed, baseline, endingBase, HideState::Shown, -1);
 						baseline++;
 					}
 					yourline++;
@@ -572,7 +573,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 				if ((modified_length-- <= 0)&&(m_arBaseFile.GetCount() > baseline))
 				{
 					EOL endingBase = m_arBaseFile.GetLineEnding(baseline);
-					m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_REMOVED, baseline, endingBase, HIDESTATE_SHOWN, -1);
+					m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DiffState::Removed, baseline, endingBase, HideState::Shown, -1);
 					m_YourBaseRight.AddEmpty();
 					baseline++;
 				}
@@ -586,19 +587,19 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 		if (m_arYourFile.GetCount() > yourline)
 		{
 			// last line is missing in both files add them to end and mark as no diff
-			m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_NORMAL, baseline, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
-			m_YourBaseRight.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_NORMAL, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
+			m_YourBaseLeft.AddData(m_arBaseFile.GetAt(baseline), DiffState::Normal, baseline, m_arBaseFile.GetLineEnding(baseline), HideState::Shown, -1);
+			m_YourBaseRight.AddData(m_arYourFile.GetAt(yourline), DiffState::Normal, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
 			yourline++;
 			baseline++;
 		}
 		else
 		{
-			viewdata oViewData(m_arBaseFile.GetAt(baseline), DIFFSTATE_REMOVED, baseline, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN);
+			viewdata oViewData(m_arBaseFile.GetAt(baseline), DiffState::Removed, baseline, m_arBaseFile.GetLineEnding(baseline), HideState::Shown);
 			baseline++;
 
 			// find first EMPTY line in last blok
 			int nPos = m_YourBaseLeft.GetCount();
-			while (--nPos>=0 && m_YourBaseLeft.GetState(nPos)==DIFFSTATE_EMPTY) ;
+			while (--nPos>=0 && m_YourBaseLeft.GetState(nPos)==DiffState::Empty) ;
 			if (++nPos<m_YourBaseLeft.GetCount())
 			{
 				m_YourBaseLeft.SetData(nPos, oViewData);
@@ -612,12 +613,12 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 	}
 	else if (m_arYourFile.GetCount() > yourline)
 	{
-		viewdata oViewData(m_arYourFile.GetAt(yourline), DIFFSTATE_ADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN);
+		viewdata oViewData(m_arYourFile.GetAt(yourline), DiffState::Added, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown);
 		yourline++;
 
 		// try to move last line higher
 		int nPos = m_YourBaseRight.GetCount();
-		while (--nPos>=0 && m_YourBaseRight.GetState(nPos)==DIFFSTATE_EMPTY) ;
+		while (--nPos>=0 && m_YourBaseRight.GetState(nPos)==DiffState::Empty) ;
 		if (++nPos<m_YourBaseRight.GetCount())
 		{
 			m_YourBaseRight.SetData(nPos, oViewData);
@@ -653,7 +654,7 @@ bool CDiffData::DoTwoWayDiff(const CString& sBaseFilename, const CString& sYourF
 	for(int i=0; i<m_YourBaseBoth.GetCount(); i++)
 	{
 		DiffStates state = m_YourBaseBoth.GetState(i);
-		if((state == DIFFSTATE_REMOVED)||(state == DIFFSTATE_MOVED_FROM))
+		if((state == DiffState::Removed)||(state == DIFFSTATE_MOVED_FROM))
 		{
 			m_YourBaseBoth.SetLineNumber(i, -1);
 		}
@@ -702,8 +703,8 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 	LONG theirline = 0;
 	LONG resline = 0;
 	// common viewdata
-	const viewdata emptyConflictEmpty(L"", DIFFSTATE_CONFLICTEMPTY, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
-	const viewdata emptyIdenticalRemoved(L"", DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN);
+	const viewdata emptyConflictEmpty(L"", DiffState::ConflictEmpty, DIFF_EMPTYLINENUMBER, EOL::NoEnding, HideState::Shown);
+	const viewdata emptyIdenticalRemoved(L"", DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, EOL::NoEnding, HideState::Shown);
 	while (tempdiff)
 	{
 		if (tempdiff->type == svn_diff__type_common)
@@ -715,9 +716,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_NORMAL, resline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_HIDDEN, -1);
-					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_NORMAL, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_HIDDEN, -1);
-					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_NORMAL, theirline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_HIDDEN, -1);
+					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DiffState::Normal, resline, m_arYourFile.GetLineEnding(yourline), HideState::Hidden, -1);
+					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::Normal, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Hidden, -1);
+					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DiffState::Normal, theirline, m_arTheirFile.GetLineEnding(theirline), HideState::Hidden, -1);
 
 					baseline++;
 					yourline++;
@@ -736,9 +737,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
-					m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN, -1);
-					m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HideState::Shown, -1);
+					m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, EOL::NoEnding, HideState::Shown, -1);
+					m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, EOL::NoEnding, HideState::Shown, -1);
 
 					baseline++;
 				}
@@ -749,9 +750,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_IDENTICALADDED, resline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
-					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_IDENTICALADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
-					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_IDENTICALADDED, resline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DiffState::IdenticalAdded, resline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
+					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::IdenticalAdded, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
+					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DiffState::IdenticalAdded, resline, m_arTheirFile.GetLineEnding(theirline), HideState::Shown, -1);
 
 					yourline++;
 					theirline++;
@@ -782,16 +783,16 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 			}
 			for (int i=0; i<length; i++)
 			{
-				EOL endingBase = m_arBaseFile.GetCount() > baseline ? m_arBaseFile.GetLineEnding(baseline) : EOL_AUTOLINE;
+				EOL endingBase = m_arBaseFile.GetCount() > baseline ? m_arBaseFile.GetLineEnding(baseline) : EOL::AutoLine;
 				if (original)
 				{
 					if (m_arBaseFile.GetCount() > baseline)
 					{
 						AddLines(baseline, yourline, theirline);
 
-						m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, endingBase , HIDESTATE_SHOWN, -1);
-						m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, endingBase , HIDESTATE_SHOWN, -1);
-						m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_IDENTICALREMOVED, DIFF_EMPTYLINENUMBER, endingBase , HIDESTATE_SHOWN, -1);
+						m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, endingBase , HideState::Shown, -1);
+						m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, endingBase , HideState::Shown, -1);
+						m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::IdenticalRemoved, DIFF_EMPTYLINENUMBER, endingBase , HideState::Shown, -1);
 					}
 				}
 				else if ((originalresolved)||((modifiedresolved)&&(latestresolved)))
@@ -846,7 +847,7 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(L"", DIFFSTATE_CONFLICTED, resline, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(L"", DiffState::Conflicted, resline, EOL::NoEnding, HideState::Shown, -1);
 
 					resline++;
 				}
@@ -855,7 +856,7 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					if (m_arYourFile.GetCount() > yourline)
 					{
-						m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_CONFLICTADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
+						m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::ConflictAdded, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
 					}
 				}
 				else if ((latestresolved)||(modified)||(modifiedresolved))
@@ -866,7 +867,7 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					if (m_arTheirFile.GetCount() > theirline)
 					{
-						m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_CONFLICTADDED, theirline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_SHOWN, -1);
+						m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DiffState::ConflictAdded, theirline, m_arTheirFile.GetLineEnding(theirline), HideState::Shown, -1);
 					}
 				}
 				else if ((modifiedresolved)||(latest)||(latestresolved))
@@ -905,9 +906,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_THEIRSREMOVED, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
-					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_NORMAL, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
-					m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_THEIRSREMOVED, DIFF_EMPTYLINENUMBER, EOL_NOENDING, HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DiffState::TheirsRemoved, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HideState::Shown, -1);
+					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::Normal, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
+					m_TheirBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::TheirsRemoved, DIFF_EMPTYLINENUMBER, EOL::NoEnding, HideState::Shown, -1);
 
 					baseline++;
 					yourline++;
@@ -920,9 +921,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_THEIRSADDED, resline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(m_arTheirFile.GetAt(theirline), DiffState::TheirsAdded, resline, m_arTheirFile.GetLineEnding(theirline), HideState::Shown, -1);
 					m_YourBaseBoth.AddEmpty();
-					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_THEIRSADDED, theirline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_SHOWN, -1);
+					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DiffState::TheirsAdded, theirline, m_arTheirFile.GetLineEnding(theirline), HideState::Shown, -1);
 
 					theirline++;
 					resline++;
@@ -939,9 +940,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_YOURSREMOVED, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
-					m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DIFFSTATE_YOURSREMOVED, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HIDESTATE_SHOWN, -1);
-					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DIFFSTATE_NORMAL, theirline, m_arTheirFile.GetLineEnding(theirline), HIDESTATE_HIDDEN, -1);
+					m_Diff3.AddData(m_arBaseFile.GetAt(baseline), DiffState::YoursRemoved, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HideState::Shown, -1);
+					m_YourBaseBoth.AddData(m_arBaseFile.GetAt(baseline), DiffState::YoursRemoved, DIFF_EMPTYLINENUMBER, m_arBaseFile.GetLineEnding(baseline), HideState::Shown, -1);
+					m_TheirBaseBoth.AddData(m_arTheirFile.GetAt(theirline), DiffState::Normal, theirline, m_arTheirFile.GetLineEnding(theirline), HideState::Hidden, -1);
 
 					baseline++;
 					theirline++;
@@ -953,8 +954,8 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 				{
 					AddLines(baseline, yourline, theirline);
 
-					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_YOURSADDED, resline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
-					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DIFFSTATE_IDENTICALADDED, yourline, m_arYourFile.GetLineEnding(yourline), HIDESTATE_SHOWN, -1);
+					m_Diff3.AddData(m_arYourFile.GetAt(yourline), DiffState::YoursAdded, resline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
+					m_YourBaseBoth.AddData(m_arYourFile.GetAt(yourline), DiffState::IdenticalAdded, yourline, m_arYourFile.GetLineEnding(yourline), HideState::Shown, -1);
 					m_TheirBaseBoth.AddEmpty();
 
 					yourline++;
@@ -978,11 +979,11 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 		// mark the conflict with the proper colors.
 		for (long i=0; i<m_Diff3.GetCount(); ++i)
 		{
-			DiffStates state1 = m_YourBaseBoth.GetState(i);
-			DiffStates state2 = m_TheirBaseBoth.GetState(i);
+			DiffState state1 = m_YourBaseBoth.GetState(i);
+			DiffState state2 = m_TheirBaseBoth.GetState(i);
 
-			if (((state1 == DIFFSTATE_IDENTICALADDED)||(state1 == DIFFSTATE_NORMAL))&&
-				((state2 == DIFFSTATE_IDENTICALADDED)||(state2 == DIFFSTATE_NORMAL)))
+			if (((state1 == DiffState::IdenticalAdded)||(state1 == DiffState::Normal))&&
+				((state2 == DiffState::IdenticalAdded)||(state2 == DiffState::Normal)))
 			{
 				LONG lineyour = m_arDiff3LinesYour.GetAt(i);
 				LONG linetheir = m_arDiff3LinesTheir.GetAt(i);
@@ -998,9 +999,9 @@ bool CDiffData::DoThreeWayDiff(const CString& sBaseFilename, const CString& sYou
 						(m_arTheirFile.GetAt(linetheir).Compare(m_arBaseFile.GetAt(linebase))!=0)&&
 						(m_arYourFile.GetAt(lineyour).Compare(m_arTheirFile.GetAt(linetheir))!=0)))
 					{
-						m_Diff3.SetState(i, DIFFSTATE_CONFLICTED_IGNORED);
-						m_YourBaseBoth.SetState(i, DIFFSTATE_CONFLICTADDED);
-						m_TheirBaseBoth.SetState(i, DIFFSTATE_CONFLICTADDED);
+						m_Diff3.SetState(i, DiffState::Conflicted_Ignored);
+						m_YourBaseBoth.SetState(i, DiffState::ConflictAdded);
+						m_TheirBaseBoth.SetState(i, DiffState::ConflictAdded);
 					}
 				}
 			}
@@ -1025,56 +1026,56 @@ void CDiffData::HideUnchangedSections(CViewData * data1, CViewData * data2, CVie
 
 	if (data1->GetCount() > 1)
 	{
-		HIDESTATE lastHideState = data1->GetHideState(0);
-		if (lastHideState == HIDESTATE_HIDDEN)
+		HideState lastHideState = data1->GetHideState(0);
+		if (lastHideState == HideState::Hidden)
 		{
-			data1->SetLineHideState(0, HIDESTATE_MARKER);
+			data1->SetLineHideState(0, HideState::Marker);
 			if (data2)
-				data2->SetLineHideState(0, HIDESTATE_MARKER);
+				data2->SetLineHideState(0, HideState::Marker);
 			if (data3)
-				data3->SetLineHideState(0, HIDESTATE_MARKER);
+				data3->SetLineHideState(0, HideState::Marker);
 		}
 		for (int i = 1; i < data1->GetCount(); ++i)
 		{
-			HIDESTATE hideState = data1->GetHideState(i);
+			HideState hideState = data1->GetHideState(i);
 			if (hideState != lastHideState)
 			{
-				if (hideState == HIDESTATE_SHOWN)
+				if (hideState == HideState::Shown)
 				{
 					// go back and show the last 'contextLines' lines to "SHOWN"
 					int lineback = i - 1;
 					int stopline = lineback - static_cast<int>(contextLines);
 					while ((lineback >= 0)&&(lineback > stopline))
 					{
-						data1->SetLineHideState(lineback, HIDESTATE_SHOWN);
+						data1->SetLineHideState(lineback, HideState::Shown);
 						if (data2)
-							data2->SetLineHideState(lineback, HIDESTATE_SHOWN);
+							data2->SetLineHideState(lineback, HideState::Shown);
 						if (data3)
-							data3->SetLineHideState(lineback, HIDESTATE_SHOWN);
+							data3->SetLineHideState(lineback, HideState::Shown);
 						lineback--;
 					}
 				}
-				else if ((hideState == HIDESTATE_HIDDEN)&&(lastHideState != HIDESTATE_MARKER))
+				else if ((hideState == HideState::Hidden)&&(lastHideState != HideState::Marker))
 				{
 					// go forward and show the next 'contextLines' lines to "SHOWN"
 					int lineforward = i + 1;
 					int stopline = lineforward + static_cast<int>(contextLines);
 					while ((lineforward < data1->GetCount())&&(lineforward < stopline))
 					{
-						data1->SetLineHideState(lineforward, HIDESTATE_SHOWN);
+						data1->SetLineHideState(lineforward, HideState::Shown);
 						if (data2)
-							data2->SetLineHideState(lineforward, HIDESTATE_SHOWN);
+							data2->SetLineHideState(lineforward, HideState::Shown);
 						if (data3)
-							data3->SetLineHideState(lineforward, HIDESTATE_SHOWN);
+							data3->SetLineHideState(lineforward, HideState::Shown);
 						lineforward++;
 					}
-					if ((lineforward < data1->GetCount())&&(data1->GetHideState(lineforward) == HIDESTATE_HIDDEN))
+					if ((lineforward < data1->GetCount())&&(data1->GetHideState(lineforward) == HideState::Hidden))
 					{
-						data1->SetLineHideState(lineforward, HIDESTATE_MARKER);
+						data1->SetLineHideState(lineforward, HideState::Marker);
 						if (data2)
-							data2->SetLineHideState(lineforward, HIDESTATE_MARKER);
+							data2->SetLineHideState(lineforward, HideState::Marker);
 						if (data3)
-							data3->SetLineHideState(lineforward, HIDESTATE_MARKER);
+							data3->SetLineHideState(lineforward, HideState::Marker);
 					}
 				}
 			}

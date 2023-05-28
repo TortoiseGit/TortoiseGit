@@ -76,7 +76,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_stagingDisplayState(SHOW_STAGING | SHOW_UNSTAGING)
 	, m_nBlockItemChangeHandler(0)
 	, m_bCancelled(false)
-	, m_PostCmd(GIT_POSTCOMMIT_CMD_NOTHING)
+	, m_PostCmd(Git_PostCommit_Cmd::Nothing)
 	, m_bAmendDiffToLastCommit(FALSE)
 	, m_nPopupPasteListCmd(0)
 	, m_nPopupPasteLastMessage(0)
@@ -696,7 +696,7 @@ void CCommitDlg::OnOK()
 		return;
 
 	CHooks::Instance().SetProjectProperties(g_Git.m_CurrentDir, m_ProjectProperties);
-	if (CHooks::Instance().IsHookPresent(pre_commit_hook, g_Git.m_CurrentDir))
+	if (CHooks::Instance().IsHookPresent(HookType::pre_commit_hook, g_Git.m_CurrentDir))
 	{
 		DWORD exitcode = 0xFFFFFFFF;
 		CString error;
@@ -922,21 +922,21 @@ void CCommitDlg::OnOK()
 				return;
 
 			if (IsGitSVN)
-				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_DCOMMIT; });
+				postCmdList.emplace_back(IDI_COMMIT, IDS_MENUSVNDCOMMIT, [&] { m_PostCmd = Git_PostCommit_Cmd::DCommit; });
 
-			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PUSH; });
-			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_PULL; });
-			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT; });
-			postCmdList.emplace_back(IDI_TAG, IDS_MENUTAG, [&]{ m_PostCmd = GIT_POSTCOMMIT_CMD_CREATETAG; });
+			postCmdList.emplace_back(IDI_PUSH, IDS_MENUPUSH, [&] { m_PostCmd = Git_PostCommit_Cmd::Push; });
+			postCmdList.emplace_back(IDI_PULL, IDS_MENUPULL, [&] { m_PostCmd = Git_PostCommit_Cmd::Pull; });
+			postCmdList.emplace_back(IDI_COMMIT, IDS_PROC_COMMIT_RECOMMIT, [&] { m_PostCmd = Git_PostCommit_Cmd::ReCommit; });
+			postCmdList.emplace_back(IDI_TAG, IDS_MENUTAG, [&] { m_PostCmd = Git_PostCommit_Cmd::CreateTag; });
 		};
 
-		m_PostCmd = GIT_POSTCOMMIT_CMD_NOTHING;
+		m_PostCmd = Git_PostCommit_Cmd::Nothing;
 		progress.DoModal();
 
 		if (!m_bNoPostActions)
 			m_regLastAction = static_cast<int>(m_ctrlOkButton.GetCurrentEntry());
 		if (m_ctrlOkButton.GetCurrentEntry() == 1)
-			m_PostCmd = GIT_POSTCOMMIT_CMD_RECOMMIT;
+			m_PostCmd = Git_PostCommit_Cmd::ReCommit;
 
 		::DeleteFile(tempfile);
 
@@ -1014,7 +1014,7 @@ void CCommitDlg::OnOK()
 			}
 		}
 
-		if (progress.m_GitStatus || m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+		if (progress.m_GitStatus || m_PostCmd == Git_PostCommit_Cmd::ReCommit)
 		{
 			bCloseCommitDlg = false;
 			if (m_bCreateNewBranch)
@@ -1024,7 +1024,7 @@ void CCommitDlg::OnOK()
 				GetDlgItem(IDC_COMMIT_TO)->ShowWindow(SW_SHOW);
 			}
 			m_bCreateNewBranch = FALSE;
-			if (!progress.m_GitStatus && m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+			if (!progress.m_GitStatus && m_PostCmd == Git_PostCommit_Cmd::ReCommit)
 			{
 				if (!m_sLogMessage.IsEmpty())
 				{
@@ -1101,7 +1101,7 @@ void CCommitDlg::OnOK()
 			DoPush(GetSafeHwnd(), !!m_bCommitAmend);
 		CResizableStandAloneDialog::OnOK();
 	}
-	else if (m_PostCmd == GIT_POSTCOMMIT_CMD_RECOMMIT)
+	else if (m_PostCmd == Git_PostCommit_Cmd::ReCommit)
 	{
 		m_bDoNotStoreLastSelectedLine = true;
 		this->Refresh();
@@ -2050,28 +2050,28 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 			CBaseFilter* pFilter = nullptr;
 			switch (type)
 			{
-			case CFileTextLines::BINARY:
+			case CFileTextLines::UnicodeType::BINARY:
 				return;
-			case CFileTextLines::UTF8:
-			case CFileTextLines::UTF8BOM:
+			case CFileTextLines::UnicodeType::UTF8:
+			case CFileTextLines::UnicodeType::UTF8BOM:
 				pFilter = new CUtf8Filter(nullptr);
 				break;
 			default:
-			case CFileTextLines::ASCII:
+			case CFileTextLines::UnicodeType::ASCII:
 				pFilter = new CAsciiFilter(nullptr);
 				break;
-			case CFileTextLines::UTF16_BE:
-			case CFileTextLines::UTF16_BEBOM:
+			case CFileTextLines::UnicodeType::UTF16_BE:
+			case CFileTextLines::UnicodeType::UTF16_BEBOM:
 				pFilter = new CUtf16beFilter(nullptr);
 				break;
-			case CFileTextLines::UTF16_LE:
-			case CFileTextLines::UTF16_LEBOM:
+			case CFileTextLines::UnicodeType::UTF16_LE:
+			case CFileTextLines::UnicodeType::UTF16_LEBOM:
 				pFilter = new CUtf16leFilter(nullptr);
 				break;
-			case CFileTextLines::UTF32_BE:
+			case CFileTextLines::UnicodeType::UTF32_BE:
 				pFilter = new CUtf32beFilter(nullptr);
 				break;
-			case CFileTextLines::UTF32_LE:
+			case CFileTextLines::UnicodeType::UTF32_LE:
 				pFilter = new CUtf32leFilter(nullptr);
 				break;
 			}

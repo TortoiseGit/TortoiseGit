@@ -49,25 +49,25 @@ int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 	CFileTextLines textlines;
 	CFileTextLines::UnicodeType type = textlines.CheckUnicodeType(buff, size);
 
-	if (type == CFileTextLines::UTF8BOM)
+	if (type == CFileTextLines::UnicodeType::UTF8BOM)
 	{
 		*bomoffset = 3;
 		return CP_UTF8;
 	}
-	if (type == CFileTextLines::UTF8)
+	if (type == CFileTextLines::UnicodeType::UTF8)
 		return CP_UTF8;
 
-	if (type == CFileTextLines::UTF16_LE)
+	if (type == CFileTextLines::UnicodeType::UTF16_LE)
 		return 1200;
-	if (type == CFileTextLines::UTF16_LEBOM)
+	if (type == CFileTextLines::UnicodeType::UTF16_LEBOM)
 	{
 		*bomoffset = 2;
 		return 1200;
 	}
 
-	if (type == CFileTextLines::UTF16_BE)
+	if (type == CFileTextLines::UnicodeType::UTF16_BE)
 		return 1201;
-	if (type == CFileTextLines::UTF16_BEBOM)
+	if (type == CFileTextLines::UnicodeType::UTF16_BEBOM)
 	{
 		*bomoffset = 2;
 		return 1201;

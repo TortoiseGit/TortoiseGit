@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2007,2009-2010, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,7 +29,7 @@ CViewData::~CViewData()
 {
 }
 
-void CViewData::AddData(const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedIndex)
+void CViewData::AddData(const CString& sLine, DiffState state, int linenumber, EOL ending, HideState hide, int movedIndex)
 {
 	viewdata data;
 	data.sLine = sLine;
@@ -45,7 +46,7 @@ void CViewData::AddData(const viewdata& data)
 	return m_data.push_back(data);
 }
 
-void CViewData::InsertData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedIndex)
+void CViewData::InsertData(int index, const CString& sLine, DiffState state, int linenumber, EOL ending, HideState hide, int movedIndex)
 {
 	viewdata data;
 	data.sLine = sLine;

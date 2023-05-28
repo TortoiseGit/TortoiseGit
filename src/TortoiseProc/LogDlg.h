@@ -45,7 +45,7 @@
 
 using GENERICCOMPAREFN = int(__cdecl *)(const void* elem1, const void* elem2);
 
-enum AllBranchType
+enum class AllBranchType
 {
 	None = 0,
 	AllBranches = 1,

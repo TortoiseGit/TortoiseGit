@@ -48,20 +48,20 @@ public:
 // Dialog Data
 	enum { IDD = IDD_REBASE };
 
-	enum REBASE_STAGE
+	enum class RebaseStage
 	{
-		CHOOSE_BRANCH,
-		CHOOSE_COMMIT_PICK_MODE,
-		REBASE_START,
-		REBASE_CONTINUE,
-		REBASE_ABORT,
-		REBASE_FINISH,
-		REBASE_CONFLICT,
-		REBASE_EDIT,
-		REBASE_SQUASH_EDIT,
-		REBASE_SQUASH_CONFLICT,
-		REBASE_DONE,
-		REBASE_ERROR,
+		Choose_Branch,
+		Choose_Commit_Pick_Mode,
+		Start,
+		Continue,
+		Abort,
+		Finish,
+		Conclict,
+		Edit,
+		Squash_Edit,
+		Squash_Conclict,
+		Done,
+		Error,
 	};
 
 protected:
@@ -229,7 +229,7 @@ protected:
 
 	BOOL				m_bSplitCommit;
 
-	REBASE_STAGE		m_RebaseStage;
+	RebaseStage			m_RebaseStage;
 	bool				m_bFinishedRebase;
 	bool				m_bStashed;
 

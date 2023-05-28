@@ -40,14 +40,14 @@
 #define REFRESHTIMER	101
 #define FILLPATCHVTIMER	102
 
-enum GIT_POSTCOMMIT_CMD
+enum class Git_PostCommit_Cmd
 {
-	GIT_POSTCOMMIT_CMD_NOTHING,
-	GIT_POSTCOMMIT_CMD_RECOMMIT,
-	GIT_POSTCOMMIT_CMD_PUSH,
-	GIT_POSTCOMMIT_CMD_DCOMMIT,
-	GIT_POSTCOMMIT_CMD_PULL,
-	GIT_POSTCOMMIT_CMD_CREATETAG,
+	Nothing,
+	ReCommit,
+	Push,
+	DCommit,
+	Pull,
+	CreateTag,
 };
 
 
@@ -191,7 +191,7 @@ public:
 	BOOL				m_bWholeProject;
 	BOOL				m_bWholeProject2;
 	CTGitPathList		m_pathList;
-	GIT_POSTCOMMIT_CMD	m_PostCmd;
+	Git_PostCommit_Cmd	m_PostCmd;
 	BOOL				m_bAmendDiffToLastCommit;
 	BOOL				m_bCommitMessageOnly;
 	bool				m_bWarnDetachedHead;

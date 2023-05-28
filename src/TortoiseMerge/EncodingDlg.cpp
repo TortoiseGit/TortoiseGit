@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,29 +23,29 @@
 
 const CFileTextLines::UnicodeType uctArray[] =
 {
-	CFileTextLines::ASCII,
-	CFileTextLines::UTF16_LE,
-	CFileTextLines::UTF16_BE,
-	CFileTextLines::UTF16_LEBOM,
-	CFileTextLines::UTF16_BEBOM,
-	CFileTextLines::UTF32_LE,
-	CFileTextLines::UTF32_BE,
-	CFileTextLines::UTF8,
-	CFileTextLines::UTF8BOM
+	CFileTextLines::UnicodeType::ASCII,
+	CFileTextLines::UnicodeType::UTF16_LE,
+	CFileTextLines::UnicodeType::UTF16_BE,
+	CFileTextLines::UnicodeType::UTF16_LEBOM,
+	CFileTextLines::UnicodeType::UTF16_BEBOM,
+	CFileTextLines::UnicodeType::UTF32_LE,
+	CFileTextLines::UnicodeType::UTF32_BE,
+	CFileTextLines::UnicodeType::UTF8,
+	CFileTextLines::UnicodeType::UTF8BOM
 };
 
 const EOL eolArray[] =
 {
-	EOL_AUTOLINE,
-	EOL_CRLF,
-	EOL_LF,
-	EOL_CR,
-	EOL_LFCR,
-	EOL_VT,
-	EOL_FF,
-	EOL_NEL,
-	EOL_LS,
-	EOL_PS
+	EOL::AutoLine,
+	EOL::CRLF,
+	EOL::LF,
+	EOL::CR,
+	EOL::LFCR,
+	EOL::VT,
+	EOL::FF,
+	EOL::NEL,
+	EOL::LS,
+	EOL::PS
 };
 
 // dialog
@@ -53,8 +54,8 @@ IMPLEMENT_DYNAMIC(CEncodingDlg, CStandAloneDialog)
 
 CEncodingDlg::CEncodingDlg(CWnd* pParent)
 	: CStandAloneDialog(CEncodingDlg::IDD, pParent)
-	, texttype(CFileTextLines::ASCII)
-	, lineendings(EOL_AUTOLINE)
+	, texttype(CFileTextLines::UnicodeType::ASCII)
+	, lineendings(EOL::AutoLine)
 {
 }
 

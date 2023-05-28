@@ -33,12 +33,12 @@ TEST(CFileTextLines, CheckUnicodeType)
 	constexpr unsigned char utf16lebom[] = { 0xFF, 0xFE, 0x54, 0x00, 0x68, 0x00, 0x69, 0x00, 0x73, 0x00, 0x20, 0x00, 0x74, 0x00, 0x65, 0x00, 0x78, 0x00, 0x74, 0x00, 0x20, 0x00, 0x63, 0x00, 0x6F, 0x00, 0x6E, 0x00, 0x74, 0x00, 0x61, 0x00, 0x69, 0x00, 0x6E, 0x00, 0x73, 0x00, 0x20, 0x00, 0x74, 0x00, 0x68, 0x00, 0x65, 0x00, 0x20, 0x00, 0x75, 0x00, 0x6D, 0x00, 0x6C, 0x00, 0x61, 0x00, 0x75, 0x00, 0x74, 0x00, 0x20, 0x00, 0x22, 0x00, 0xE4, 0x00, 0x22, 0x00, 0x2E, 0x00 };
 
 	CFileTextLines ftl;
-	EXPECT_EQ(CFileTextLines::ASCII, ftl.CheckUnicodeType(ascii, sizeof(ascii) - 1));
-	EXPECT_EQ(CFileTextLines::ASCII, ftl.CheckUnicodeType(ansi, sizeof(ansi)));
-	EXPECT_EQ(CFileTextLines::UTF8, ftl.CheckUnicodeType(utf8, sizeof(utf8)));
-	EXPECT_EQ(CFileTextLines::UTF8BOM, ftl.CheckUnicodeType(utf8bom, sizeof(utf8bom)));
-	EXPECT_EQ(CFileTextLines::UTF16_BE, ftl.CheckUnicodeType(utf16be, sizeof(utf16be)));
-	EXPECT_EQ(CFileTextLines::UTF16_BEBOM, ftl.CheckUnicodeType(utf16bebom, sizeof(utf16bebom)));
-	EXPECT_EQ(CFileTextLines::UTF16_LE, ftl.CheckUnicodeType(utf16le, sizeof(utf16le)));
-	EXPECT_EQ(CFileTextLines::UTF16_LEBOM, ftl.CheckUnicodeType(utf16lebom, sizeof(utf16lebom)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::ASCII, ftl.CheckUnicodeType(ascii, sizeof(ascii) - 1));
+	EXPECT_EQ(CFileTextLines::UnicodeType::ASCII, ftl.CheckUnicodeType(ansi, sizeof(ansi)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF8, ftl.CheckUnicodeType(utf8, sizeof(utf8)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF8BOM, ftl.CheckUnicodeType(utf8bom, sizeof(utf8bom)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF16_BE, ftl.CheckUnicodeType(utf16be, sizeof(utf16be)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF16_BEBOM, ftl.CheckUnicodeType(utf16bebom, sizeof(utf16bebom)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF16_LE, ftl.CheckUnicodeType(utf16le, sizeof(utf16le)));
+	EXPECT_EQ(CFileTextLines::UnicodeType::UTF16_LEBOM, ftl.CheckUnicodeType(utf16lebom, sizeof(utf16lebom)));
 }

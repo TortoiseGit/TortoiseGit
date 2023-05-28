@@ -1,6 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2015-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2020, 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -119,11 +119,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
     mainWindow->SetLeft(leftfile.c_str(), parser.HasVal(L"lefttitle") ? parser.GetVal(L"lefttitle") : L"");
     mainWindow->SetRight(rightfile.c_str(), parser.HasVal(L"righttitle") ? parser.GetVal(L"righttitle") : L"");
     if (parser.HasVal(L"base"))
-        mainWindow->SetSelectionImage(FileTypeBase, parser.GetVal(L"base"), parser.HasVal(L"basetitle") ? parser.GetVal(L"basetitle") : L"");
+        mainWindow->SetSelectionImage(FileType::Base, parser.GetVal(L"base"), parser.HasVal(L"basetitle") ? parser.GetVal(L"basetitle") : L"");
     if (parser.HasVal(L"mine"))
-        mainWindow->SetSelectionImage(FileTypeMine, parser.GetVal(L"mine"), parser.HasVal(L"minetitle") ? parser.GetVal(L"minetitle") : L"");
+        mainWindow->SetSelectionImage(FileType::Mine, parser.GetVal(L"mine"), parser.HasVal(L"minetitle") ? parser.GetVal(L"minetitle") : L"");
     if (parser.HasVal(L"theirs"))
-        mainWindow->SetSelectionImage(FileTypeTheirs, parser.GetVal(L"theirs"), parser.HasVal(L"theirstitle") ? parser.GetVal(L"theirstitle") : L"");
+        mainWindow->SetSelectionImage(FileType::Theirs, parser.GetVal(L"theirs"), parser.HasVal(L"theirstitle") ? parser.GetVal(L"theirstitle") : L"");
     if (parser.HasVal(L"result"))
         mainWindow->SetSelectionResult(parser.GetVal(L"result"));
     mainWindow->resolveMsgWnd = parser.HasVal(L"resolvemsghwnd") ? reinterpret_cast<HWND>(parser.GetLongLongVal(L"resolvemsghwnd")) : 0;

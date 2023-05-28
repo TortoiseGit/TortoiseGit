@@ -22,6 +22,8 @@
 #include "AppUtils.h"
 #include "MassiveGitTask.h"
 
+using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action;
+
 bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
 	list->SetWindowTitle(IDS_PROGRS_TITLE_RESOLVE, g_Git.CombinePath(m_targetPathList.GetCommonRoot().GetUIPathString()), sWindowTitle);
@@ -32,10 +34,10 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	CMassiveGitTask mgt(L"add -f");
 	mgt.SetProgressCallback([&m_itemCount, &list](const CTGitPath& path, int) {
 		CAppUtils::RemoveTempMergeFile(path);
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Resolved));
 		++m_itemCount;
 	});
-	if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, CGitProgressList::WC_File_NotificationData::git_wc_notify_resolved, list))
+	if (!mgt.ExecuteWithNotify(&m_targetPathList, list->m_bCancelled, Git_WC_Notify_Action::Resolved, list))
 		return false;
 
 	CShellUpdater::Instance().AddPathsForUpdate(m_targetPathList);

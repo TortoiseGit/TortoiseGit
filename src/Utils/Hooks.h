@@ -26,7 +26,7 @@
  * \ingroup TortoiseProc
  * enumeration of all client hook types
  */
-enum hooktype
+enum class HookType
 {
 	unknown_hook,
 	start_commit_hook,
@@ -46,7 +46,7 @@ enum hooktype
 class hookkey
 {
 public:
-	hooktype		htype;
+	HookType		htype;
 	CTGitPath		path;
 	bool			local;
 
@@ -121,7 +121,7 @@ public:
 	/**
 	 * Adds a new hook script. To make the change persistent, call Save().
 	 */
-	void				Add(hooktype ht, const CTGitPath& Path, LPCWSTR szCmd,
+	void				Add(HookType ht, const CTGitPath& Path, LPCWSTR szCmd,
 							bool bWait, bool bShow, bool bEnabled, bool bLocal);
 
 	/**
@@ -131,9 +131,9 @@ public:
 	bool				SetEnabled(const hookkey& key, bool bEnabled);
 
 	/// returns the string representation of the hook type.
-	static CString		GetHookTypeString(hooktype t);
+	static CString		GetHookTypeString(HookType t);
 	/// returns the hooktype from a string representation of the same.
-	static hooktype		GetHookType(const CString& s);
+	static HookType		GetHookType(const CString& s);
 
 	/// Add hook script data from project properties
 	void				SetProjectProperties(const CTGitPath& Path, const ProjectProperties& pp);
@@ -187,7 +187,7 @@ public:
 
 	bool	PreRebase(HWND hWnd, const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error);
 
-	bool	IsHookPresent(hooktype t, const CString& workingTree);
+	bool	IsHookPresent(HookType t, const CString& workingTree);
 
 private:
 	/**
@@ -203,7 +203,7 @@ private:
 	 * Find the hook script information for the hook type \c t which matches the
 	 * path in \c workingTree.
 	 */
-	hookiterator	FindItem(hooktype t, const CString& workingTree);
+	hookiterator	FindItem(HookType t, const CString& workingTree);
 
 	static void ParseHookString(CString strhooks, bool bLocal);
 

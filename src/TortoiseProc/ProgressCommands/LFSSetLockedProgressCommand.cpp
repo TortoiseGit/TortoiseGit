@@ -22,6 +22,8 @@
 #include "AppUtils.h"
 #include "TempFile.h"
 
+using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action;
+
 bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount)
 {
 	m_itemCountTotal = m_targetPathList.GetCount();
@@ -31,9 +33,7 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 	list->SetBackgroundImage(m_bIsLock ? IDI_LOCK_BKG : IDI_UNLOCK_BKG);
 	list->ReportCmd(CString(MAKEINTRESOURCE(m_bIsLock ? IDS_PROGRS_CMD_LFS_LOCK : IDS_PROGRS_CMD_LFS_UNLOCK)));
 
-	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t notifyAction =
-		m_bIsLock ?	CGitProgressList::WC_File_NotificationData::git_wc_notify_lfs_lock :
-					CGitProgressList::WC_File_NotificationData::git_wc_notify_lfs_unlock;
+	Git_WC_Notify_Action notifyAction = m_bIsLock ? Git_WC_Notify_Action::LFS_Lock : Git_WC_Notify_Action::LFS_Unlock;
 
 	CString cmdBase = L"git.exe lfs ";
 	cmdBase += m_bIsLock ? L"lock " : L"unlock ";

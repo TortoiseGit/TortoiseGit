@@ -72,9 +72,9 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 
 		CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, DeleteSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, ChangeType::DeleteSubmodule);
 		else
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, CGitHash(), L"", true, newhash, newsub, toOK, dirty, NewSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, CGitHash(), L"", true, newhash, newsub, toOK, dirty, ChangeType::NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
@@ -256,7 +256,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 	CGit subgit;
 	subgit.m_IsUseGitDLL = false;
 	subgit.m_CurrentDir = g_Git.CombinePath(pPath);
-	ChangeType changeType = Unknown;
+	ChangeType changeType = ChangeType::Unknown;
 
 	if (CTGitPath(subgit.m_CurrentDir).HasAdminDir())
 		GetSubmoduleChangeType(subgit, oldhash, newhash, oldOK, newOK, changeType, oldsub, newsub);
@@ -308,12 +308,12 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, con
 	if (oldhash.IsEmpty())
 	{
 		oldOK = true;
-		changeType = NewSubmodule;
+		changeType = ChangeType::NewSubmodule;
 	}
 	else if (newhash.IsEmpty())
 	{
 		newOK = true;
-		changeType = DeleteSubmodule;
+		changeType = ChangeType::DeleteSubmodule;
 	}
 	else if (oldhash != newhash)
 	{
@@ -324,23 +324,23 @@ void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, con
 			if (!ffOlder)
 			{
 				if (newTime > oldTime)
-					changeType = NewerTime;
+					changeType = ChangeType::NewerTime;
 				else if (newTime < oldTime)
-					changeType = OlderTime;
+					changeType = ChangeType::OlderTime;
 				else
-					changeType = SameTime;
+					changeType = ChangeType::SameTime;
 			}
 			else
-				changeType = Rewind;
+				changeType = ChangeType::Rewind;
 		}
 		else
-			changeType = FastForward;
+			changeType = ChangeType::FastForward;
 	}
 	else if (oldhash == newhash)
-		changeType = Identical;
+		changeType = ChangeType::Identical;
 
 	if (!oldOK || !newOK)
-		changeType = Unknown;
+		changeType = ChangeType::Unknown;
 }
 
 int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, const CString& rev1, const CString& rev2, bool /*blame*/, bool /*unified*/, int jumpToLine, bool bAlternativeTool, bool mustExist)

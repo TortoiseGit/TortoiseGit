@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021 - TortoiseGit
+// Copyright (C) 2012-2023 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -359,9 +359,9 @@ BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 {
 	RefreshIfNeeded();
 	Locker lock(m_critSec);
-	tristate_t allowed = pathFilter.IsPathAllowed(path);
-	if (allowed != tristate_unknown)
-		return allowed == tristate_true ? TRUE : FALSE;
+	Tristate allowed = pathFilter.IsPathAllowed(path);
+	if (allowed != Tristate::Unknown)
+		return allowed == Tristate::True ? TRUE : FALSE;
 
 	UINT drivetype = 0;
 	int drivenumber = PathGetDriveNumber(path);
@@ -507,8 +507,8 @@ void ShellCache::CPathFilter::AddEntry(const std::wstring& s, bool include)
 	SEntry entry;
 	entry.hasSubFolderEntries = false;
 	entry.recursive = lastChar != L'?';
-	entry.included = include ? tristate_true : tristate_false;
-	entry.subPathIncluded = include == entry.recursive ? tristate_true : tristate_false;
+	entry.included = include ? Tristate::True : Tristate::False;
+	entry.subPathIncluded = include == entry.recursive ? Tristate::True : Tristate::False;
 
 	entry.path = s;
 	if ((lastChar == L'?') || (lastChar == L'*'))
@@ -571,10 +571,10 @@ void ShellCache::CPathFilter::PostProcessData()
 			else
 			{
 				// include beats exclude
-				if (source->included == tristate_true)
-					dest->included = tristate_true;
-				if (source->recursive && source->subPathIncluded == tristate_true)
-					dest->subPathIncluded = tristate_true;
+				if (source->included == Tristate::True)
+					dest->included = Tristate::True;
+				if (source->recursive && source->subPathIncluded == Tristate::True)
+					dest->subPathIncluded = Tristate::True;
 			}
 		}
 		else
@@ -602,9 +602,9 @@ void ShellCache::CPathFilter::PostProcessData()
 // excluded: C:, C:\some\deep\path
 // include: C:\some
 // lookup for C:\some\deeper\path
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const
+Tristate ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const
 {
-	tristate_t result = tristate_unknown;
+	Tristate result = Tristate::Unknown;
 
 	// handle special cases
 	if (begin == end)
@@ -684,22 +684,22 @@ void ShellCache::CPathFilter::Refresh()
 }
 
 // data access
-tristate_t ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path) const
+Tristate ShellCache::CPathFilter::IsPathAllowed(LPCWSTR path) const
 {
 	if (!path)
-		return tristate_unknown;
+		return Tristate::Unknown;
 	// always ignore the recycle bin
 	PTSTR pFound = StrStrI(path, L":\\RECYCLER");
 	if (pFound)
 	{
 		if ((*(pFound + 10) == L'\0') || (*(pFound + 10) == L'\\'))
-			return tristate_false;
+			return Tristate::False;
 	}
 	pFound = StrStrI(path, L":\\$Recycle.Bin");
 	if (pFound)
 	{
 		if ((*(pFound + 14) == '\0') || (*(pFound + 14) == L'\\'))
-			return tristate_false;
+			return Tristate::False;
 	}
 	return IsPathAllowed(path, data.begin(), data.end());
 }

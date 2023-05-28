@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019 - TortoiseGit
+// Copyright (C) 2012-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,8 +31,8 @@ CSubmoduleResolveConflictDlg::CSubmoduleResolveConflictDlg(CWnd* pParent /*=null
 	, m_bBaseOK(false)
 	, m_bMineOK(false)
 	, m_bTheirsOK(false)
-	, m_nChangeTypeMine(CGitDiff::Unknown)
-	, m_nChangeTypeTheirs(CGitDiff::Unknown)
+	, m_nChangeTypeMine(CGitDiff::ChangeType::Unknown)
+	, m_nChangeTypeTheirs(CGitDiff::ChangeType::Unknown)
 	, m_bRevertTheirMy(false)
 	, m_bResolved(false)
 {
@@ -106,7 +106,7 @@ BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 
-	CString changeTypeTable[] =
+	const CString changeTypeTable[] =
 	{
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_UNKNOWN)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_IDENTICAL)),
@@ -118,16 +118,16 @@ BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_OLDERTIME)),
 		CString(MAKEINTRESOURCE(IDS_SUBMODULEDIFF_SAMETIME))
 	};
-	GetDlgItem(IDC_MINECHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeTypeMine]);
-	GetDlgItem(IDC_THEIRSCHANGETYPE)->SetWindowText(changeTypeTable[m_nChangeTypeTheirs]);
+	GetDlgItem(IDC_MINECHANGETYPE)->SetWindowText(changeTypeTable[static_cast<int>(m_nChangeTypeMine)]);
+	GetDlgItem(IDC_THEIRSCHANGETYPE)->SetWindowText(changeTypeTable[static_cast<int>(m_nChangeTypeTheirs)]);
 
 	GetDlgItem(IDC_FROMGROUP)->SetWindowText(m_sBaseTitle);
 	GetDlgItem(IDC_TOGROUP)->SetWindowText(m_sMineTitle);
 	GetDlgItem(IDC_TOGROUP2)->SetWindowText(m_sTheirsTitle);
 
 	DialogEnableWindow(IDC_LOG, m_bBaseOK);
-	DialogEnableWindow(IDC_LOG2, m_bMineOK && m_nChangeTypeMine != CGitDiff::DeleteSubmodule);
-	DialogEnableWindow(IDC_LOG3, m_bTheirsOK && m_nChangeTypeTheirs != CGitDiff::DeleteSubmodule);
+	DialogEnableWindow(IDC_LOG2, m_bMineOK && m_nChangeTypeMine != CGitDiff::ChangeType::DeleteSubmodule);
+	DialogEnableWindow(IDC_LOG3, m_bTheirsOK && m_nChangeTypeTheirs != CGitDiff::ChangeType::DeleteSubmodule);
 
 	return FALSE;
 }
@@ -145,10 +145,10 @@ HBRUSH CSubmoduleResolveConflictDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlC
 		if (pWnd->GetDlgCtrlID() == IDC_THEIRSSUBJECT && !m_bTheirsOK)
 			return CSubmoduleDiffDlg::GetInvalidBrush(pDC);
 
-		if (pWnd->GetDlgCtrlID() == IDC_MINECHANGETYPE && m_nChangeTypeMine != CGitDiff::Identical)
+		if (pWnd->GetDlgCtrlID() == IDC_MINECHANGETYPE && m_nChangeTypeMine != CGitDiff::ChangeType::Identical)
 			return CSubmoduleDiffDlg::GetChangeTypeBrush(pDC, m_nChangeTypeMine);
 
-		if (pWnd->GetDlgCtrlID() == IDC_THEIRSCHANGETYPE && m_nChangeTypeTheirs != CGitDiff::Identical)
+		if (pWnd->GetDlgCtrlID() == IDC_THEIRSCHANGETYPE && m_nChangeTypeTheirs != CGitDiff::ChangeType::Identical)
 			return CSubmoduleDiffDlg::GetChangeTypeBrush(pDC, m_nChangeTypeTheirs);
 	}
 

@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2011, 2013,2015, 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -416,10 +417,10 @@ viewstate CUndo::Do(const viewstate& state, CBaseView * pView, const POINT& pt)
 		revstate.linelines[it->first] = viewData->GetLineNumber(it->first);
 		viewData->SetLineNumber(it->first, it->second);
 	}
-	for (std::map<int, DWORD>::const_iterator it = state.linestates.begin(); it != state.linestates.end(); ++it)
+	for (auto it = state.linestates.cbegin(); it != state.linestates.cend(); ++it)
 	{
 		revstate.linestates[it->first] = viewData->GetState(it->first);
-		viewData->SetState(it->first, static_cast<DiffStates>(it->second));
+		viewData->SetState(it->first, it->second);
 	}
 	for (std::map<int, EOL>::const_iterator it = state.linesEOL.begin(); it != state.linesEOL.end(); ++it)
 	{

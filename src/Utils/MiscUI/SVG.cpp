@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2010-2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -187,7 +188,7 @@ void SVG::Ellipse( int x, int y, int width, int height, Gdiplus::Color stroke, i
 	objects.push_back(sObj);
 }
 
-void SVG::Text( int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text , int al)
+void SVG::Text( int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text , SVG::Align al)
 {
 	CStringA sObj;
 	sObj.Format("<text x=\"%d\"  y=\"%d\" \
@@ -199,13 +200,8 @@ stroke:none;\
 text-anchor: %s;\
 fill:#%06lx;\">%s</text>",
 		x, y, font, fontsize, italic ? "italic" : "none", bold ? "bold" : "none",
-		al==SVG::left? "left": al==SVG::middle? "middle": "right",
+		al==SVG::Align::left? "left": al==SVG::Align::middle? "middle": "right",
 		GetColor(color),text);
 
 	objects.push_back(sObj);
-}
-
-DWORD SVG::GetColor( Gdiplus::Color c ) const
-{
-	return (static_cast<DWORD>(c.GetRed()) << 16) | (static_cast<DWORD>(c.GetGreen()) << 8) | static_cast<DWORD>(c.GetBlue());
 }

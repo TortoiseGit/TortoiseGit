@@ -1902,8 +1902,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			subgit.GetHash(baseHash, L"HEAD");
 		}
 
-		CGitDiff::ChangeType changeTypeMine = CGitDiff::Unknown;
-		CGitDiff::ChangeType changeTypeTheirs = CGitDiff::Unknown;
+		CGitDiff::ChangeType changeTypeMine = CGitDiff::ChangeType::Unknown;
+		CGitDiff::ChangeType changeTypeTheirs = CGitDiff::ChangeType::Unknown;
 
 		bool baseOK = false, mineOK = false, theirsOK = false;
 		CString baseSubject, mineSubject, theirsSubject;
@@ -1917,8 +1917,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		}
 		else if (baseHash.IsEmpty() && localHash.IsEmpty() && !remoteHash.IsEmpty()) // merge conflict with no submodule, but submodule in merged revision (not initialized)
 		{
-			changeTypeMine = CGitDiff::Identical;
-			changeTypeTheirs = CGitDiff::NewSubmodule;
+			changeTypeMine = CGitDiff::ChangeType::Identical;
+			changeTypeTheirs = CGitDiff::ChangeType::NewSubmodule;
 			baseSubject.LoadString(IDS_CONFLICT_NOSUBMODULE);
 			mineSubject = baseSubject;
 			theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
@@ -1929,8 +1929,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			baseSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			mineSubject = baseSubject;
 			theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
-			changeTypeMine = CGitDiff::Identical;
-			changeTypeTheirs = CGitDiff::DeleteSubmodule;
+			changeTypeMine = CGitDiff::ChangeType::Identical;
+			changeTypeTheirs = CGitDiff::ChangeType::DeleteSubmodule;
 		}
 		else if (!baseHash.IsEmpty() && !localHash.IsEmpty() && !remoteHash.IsEmpty()) // base has submodule, mine has submodule and theirs also, but not initialized
 		{
@@ -1938,7 +1938,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			mineSubject = baseSubject;
 			theirsSubject = baseSubject;
 			if (baseHash == localHash)
-				changeTypeMine = CGitDiff::Identical;
+				changeTypeMine = CGitDiff::ChangeType::Identical;
 		}
 		else if (baseHash.IsEmpty() && !localHash.IsEmpty() && !remoteHash.IsEmpty())
 		{
@@ -1947,14 +1947,14 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			if (remoteIsFile)
 			{
 				theirsSubject.LoadString(IDS_CONFLICT_NOTASUBMODULE);
-				changeTypeMine = CGitDiff::NewSubmodule;
+				changeTypeMine = CGitDiff::ChangeType::NewSubmodule;
 			}
 			else
 				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 			if (localIsFile)
 			{
 				mineSubject.LoadString(IDS_CONFLICT_NOTASUBMODULE);
-				changeTypeTheirs = CGitDiff::NewSubmodule;
+				changeTypeTheirs = CGitDiff::ChangeType::NewSubmodule;
 			}
 			else
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
@@ -1965,24 +1965,24 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			if (localHash.IsEmpty())
 			{
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
-				changeTypeMine = CGitDiff::DeleteSubmodule;
+				changeTypeMine = CGitDiff::ChangeType::DeleteSubmodule;
 			}
 			else
 			{
 				mineSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				if (localHash == baseHash)
-					changeTypeMine = CGitDiff::Identical;
+					changeTypeMine = CGitDiff::ChangeType::Identical;
 			}
 			if (remoteHash.IsEmpty())
 			{
 				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
-				changeTypeTheirs = CGitDiff::DeleteSubmodule;
+				changeTypeTheirs = CGitDiff::ChangeType::DeleteSubmodule;
 			}
 			else
 			{
 				theirsSubject.LoadString(IDS_CONFLICT_SUBMODULENOTINITIALIZED);
 				if (remoteHash == baseHash)
-					changeTypeTheirs = CGitDiff::Identical;
+					changeTypeTheirs = CGitDiff::ChangeType::Identical;
 			}
 		}
 		else
@@ -3161,16 +3161,16 @@ BOOL CAppUtils::Commit(HWND hWnd, const CString& bugid, BOOL bWholeProject, CStr
 
 			switch (dlg.m_PostCmd)
 			{
-			case GIT_POSTCOMMIT_CMD_DCOMMIT:
+			case Git_PostCommit_Cmd::DCommit:
 				CAppUtils::SVNDCommit(hWnd);
 				break;
-			case GIT_POSTCOMMIT_CMD_PUSH:
+			case Git_PostCommit_Cmd::Push:
 				CAppUtils::Push(hWnd);
 				break;
-			case GIT_POSTCOMMIT_CMD_CREATETAG:
+			case Git_PostCommit_Cmd::CreateTag:
 				CAppUtils::CreateBranchTag(hWnd, TRUE);
 				break;
-			case GIT_POSTCOMMIT_CMD_PULL:
+			case Git_PostCommit_Cmd::Pull:
 				CAppUtils::Pull(hWnd, true);
 				break;
 			default:

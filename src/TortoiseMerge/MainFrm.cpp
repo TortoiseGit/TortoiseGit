@@ -701,7 +701,7 @@ BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString 
 
 void CMainFrame::OnFileOpen()
 {
-	if (CheckForSave(CHFSR_OPEN)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Open)==IDCANCEL)
 		return;
 	return OnFileOpen(false);
 }
@@ -1064,10 +1064,10 @@ bool CMainFrame::LoadViews(int line)
 				int skip = 0;
 				for (int i = m_pwndRightView->m_nTopLine; i != n; i += step)
 				{
-					if (m_pwndRightView->m_pViewData->GetHideState(i) == HIDESTATE_HIDDEN)
+					if (m_pwndRightView->m_pViewData->GetHideState(i) == HideState::Hidden)
 						++skip;
 				}
-				if (m_pwndRightView->m_pViewData->GetHideState(n) == HIDESTATE_HIDDEN)
+				if (m_pwndRightView->m_pViewData->GetHideState(n) == HideState::Hidden)
 					OnViewTextFoldUnfold();
 				else
 					n = n + (skip * step * -1);
@@ -1270,7 +1270,7 @@ void CMainFrame::OnUpdateViewWraplonglines(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewOnewaydiff()
 {
-	if (CheckForSave(CHFSR_RELOAD)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Reload)==IDCANCEL)
 		return;
 	m_bOneWay = !m_bOneWay;
 	m_regOneWay = m_bOneWay;
@@ -1416,8 +1416,8 @@ int CMainFrame::CheckResolved()
 		{
 			for (int i=0; i<viewdata->GetCount(); i++)
 			{
-				const DiffStates state = viewdata->GetState(i);
-				if ((DIFFSTATE_CONFLICTED == state)||(DIFFSTATE_CONFLICTED_IGNORED == state))
+				const DiffState state = viewdata->GetState(i);
+				if ((DiffState::Conflicted == state)||(DiffState::Conflicted_Ignored == state))
 					return i;
 			}
 		}
@@ -1462,24 +1462,24 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 		for (int i=0; i<pViewData->GetCount(); i++)
 		{
 			//only copy non-removed lines
-			DiffStates state = pViewData->GetState(i);
+			DiffState state = pViewData->GetState(i);
 			switch (state)
 			{
-			case DIFFSTATE_CONFLICTED:
-			case DIFFSTATE_CONFLICTED_IGNORED:
+			case DiffState::Conflicted:
+			case DiffState::Conflicted_Ignored:
 				{
 					int first = i;
 					int last = i;
 					do
 					{
 						last++;
-					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DIFFSTATE_CONFLICTED)||(pViewData->GetState(last)==DIFFSTATE_CONFLICTED_IGNORED)));
+					} while((last<pViewData->GetCount()) && ((pViewData->GetState(last)==DiffState::Conflicted)||(pViewData->GetState(last)==DiffState::Conflicted_Ignored)));
 					// TortoiseGitMerge changes here
 					file.Add(L"<<<<<<< .mine", m_pwndRightView->GetLineEndings());
 					for (int j=first; j<last; j++)
 					{
 						EOL lineending = m_pwndRightView->m_pViewData->GetLineEnding(j);
-						if (lineending == EOL_NOENDING)
+						if (lineending == EOL::NoEnding)
 							lineending = m_pwndRightView->GetLineEndings();
 						file.Add(m_pwndRightView->m_pViewData->GetLine(j), lineending);
 					}
@@ -1487,7 +1487,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 					for (int j=first; j<last; j++)
 					{
 						EOL lineending = m_pwndLeftView->m_pViewData->GetLineEnding(j);
-						if (lineending == EOL_NOENDING)
+						if (lineending == EOL::NoEnding)
 							lineending = m_pwndLeftView->GetLineEndings();
 						file.Add(m_pwndLeftView->m_pViewData->GetLine(j), lineending);
 					}
@@ -1495,13 +1495,13 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 					i = last-1;
 				}
 				break;
-			case DIFFSTATE_EMPTY:
-			case DIFFSTATE_CONFLICTEMPTY:
-			case DIFFSTATE_IDENTICALREMOVED:
-			case DIFFSTATE_REMOVED:
-			case DIFFSTATE_THEIRSREMOVED:
-			case DIFFSTATE_YOURSREMOVED:
-			case DIFFSTATE_CONFLICTRESOLVEDEMPTY:
+			case DiffState::Empty:
+			case DiffState::ConflictEmpty:
+			case DiffState::IdenticalRemoved:
+			case DiffState::Removed:
+			case DiffState::TheirsRemoved:
+			case DiffState::YoursRemoved:
+			case DiffState::ConflictResolvedEmpty:
 				// do not save removed lines
 				break;
 			default:
@@ -1539,7 +1539,7 @@ int CMainFrame::SaveFile(const CString& sFilePath)
 				false,
 				IsViewGood(m_pwndRightView) && (pViewData == m_pwndRightView->m_pViewData),
 				IsViewGood(m_pwndBottomView) && (pViewData == m_pwndBottomView->m_pViewData));
-		if (file.GetCount() == 1 && file.GetAt(0).IsEmpty() && file.GetLineEnding(0) == EOL_NOENDING)
+		if (file.GetCount() == 1 && file.GetAt(0).IsEmpty() && file.GetLineEnding(0) == EOL::NoEnding)
 			return 0;
 		return file.GetCount();
 	}
@@ -1922,7 +1922,7 @@ void CMainFrame::OnViewOptions()
 	CTheme::Instance().SetDarkTheme(dlg.IsDarkMode());
 	if (dlg.IsReloadNeeded())
 	{
-		if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+		if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 			return;
 		CDiffColors::GetInstance().LoadRegistry();
 		LoadViews();
@@ -1941,7 +1941,7 @@ void CMainFrame::OnClose()
 {
 	if (!IsWindowEnabled())
 		return; // just in case someone sends a WM_CLOSE to the main window while another window (dialog,...) is open
-	if (CheckForSave(CHFSR_CLOSE)!=IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Close)!=IDCANCEL)
 	{
 		WINDOWPLACEMENT wp;
 
@@ -2125,7 +2125,7 @@ void CMainFrame::OnUpdateEditUseblockfromrightbeforeleft(CCmdUI *pCmdUI)
 
 void CMainFrame::OnFileReload()
 {
-	if (CheckForSave(CHFSR_RELOAD)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Reload)==IDCANCEL)
 		return;
 	CDiffColors::GetInstance().LoadRegistry();
 	LoadViews(-1);
@@ -2398,7 +2398,7 @@ void CMainFrame::OnUpdateEditPaste(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewSwitchleft()
 {
-	if (CheckForSave(CHFSR_SWITCH)!=IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Switch)!=IDCANCEL)
 	{
 		CWorkingFile file = m_Data.m_baseFile;
 		m_Data.m_baseFile = m_Data.m_yourFile;
@@ -2597,27 +2597,27 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 	int idCancelAction = IDS_ASKFORSAVE_CANCEL_OPEN;
 	switch (eReason)
 	{
-	case CHFSR_CLOSE:
+	case ECheckForSaveReason::Close:
 		//idTitle = IDS_WARNMODIFIEDLOOSECHANGES;
 		idNoSave = IDS_ASKFORSAVE_TASK4;
 		idCancelAction = IDS_ASKFORSAVE_TASK5;
 		break;
-	case CHFSR_SWITCH:
+	case ECheckForSaveReason::Switch:
 		//idTitle = IDS_WARNMODIFIEDLOOSECHANGES;
 		//idNoSave = IDS_ASKFORSAVE_TASK7;
 		idCancelAction = IDS_ASKFORSAVE_TASK8;
 		break;
-	case CHFSR_RELOAD:
+	case ECheckForSaveReason::Reload:
 		//idTitle = IDS_WARNMODIFIEDLOOSECHANGES;
 		//idNoSave = IDS_ASKFORSAVE_TASK7;
 		idCancelAction = IDS_ASKFORSAVE_CANCEL_OPEN;
 		break;
-	case CHFSR_OPTIONS:
+	case ECheckForSaveReason::Options:
 		idTitle = IDS_WARNMODIFIEDLOOSECHANGESOPTIONS;
 		//idNoSave = IDS_ASKFORSAVE_TASK7;
 		idCancelAction = IDS_ASKFORSAVE_CANCEL_OPTIONS;
 		break;
-	case CHFSR_OPEN:
+	case ECheckForSaveReason::Open:
 		//idTitle = IDS_WARNMODIFIEDLOOSECHANGES;
 		idNoSave = IDS_ASKFORSAVE_NOSAVE_OPEN;
 		idCancelAction = IDS_ASKFORSAVE_CANCEL_OPEN;
@@ -2682,7 +2682,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 				m_pwndRightView->SaveFile();
 				break;
 			}
-			if (ret != IDCANCEL && (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN))
+			if (ret != IDCANCEL && (eReason == ECheckForSaveReason::Close || eReason == ECheckForSaveReason::Open))
 				DeleteBaseTheirsMineOnClose();
 			return ret;
 		}
@@ -2720,13 +2720,13 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 					return IDCANCEL;
 			}
 		}
-		if (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN)
+		if (eReason == ECheckForSaveReason::Close || eReason == ECheckForSaveReason::Open)
 			DeleteBaseTheirsMineOnClose();
 		return IDNO;
 	}
 	else
 	{
-		if (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN)
+		if (eReason == ECheckForSaveReason::Close || eReason == ECheckForSaveReason::Open)
 			DeleteBaseTheirsMineOnClose();
 		return IDNO; // nothing to save
 	}
@@ -2760,7 +2760,7 @@ int CMainFrame::CheckForSave(ECheckForSaveReason eReason)
 		}
 	}
 
-	if (ret != IDCANCEL && (eReason == CHFSR_CLOSE || eReason == CHFSR_OPEN))
+	if (ret != IDCANCEL && (eReason == ECheckForSaveReason::Close || eReason == ECheckForSaveReason::Open))
 		DeleteBaseTheirsMineOnClose();
 
 	return ret;
@@ -2985,7 +2985,7 @@ void CMainFrame::OnViewLocatorbar()
 
 void CMainFrame::OnViewComparewhitespaces()
 {
-	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = static_cast<int>(IgnoreWS::None);
@@ -3001,7 +3001,7 @@ void CMainFrame::OnUpdateViewComparewhitespaces(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewIgnorewhitespacechanges()
 {
-	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = static_cast<int>(IgnoreWS::WhiteSpaces);
@@ -3017,7 +3017,7 @@ void CMainFrame::OnUpdateViewIgnorewhitespacechanges(CCmdUI *pCmdUI)
 
 void CMainFrame::OnViewIgnoreallwhitespacechanges()
 {
-	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 		return;
 	CRegDWORD regIgnoreWS(L"Software\\TortoiseGitMerge\\IgnoreWS");
 	regIgnoreWS = static_cast<int>(IgnoreWS::AllWhiteSpaces);
@@ -3220,7 +3220,7 @@ void CMainFrame::LoadIgnoreCommentData()
 
 void CMainFrame::OnViewIgnorecomments()
 {
-	if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 		return;
 	m_regIgnoreComments = !DWORD(m_regIgnoreComments);
 	LoadViews(-1);
@@ -3318,7 +3318,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 	{
 		if (cmd == static_cast<UINT>(m_regexIndex) && !m_bUseRibbons)
 		{
-			if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+			if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 				return;
 			m_Data.SetRegexTokens(std::wregex(), L"");
 			m_regexIndex = -1;
@@ -3334,7 +3334,7 @@ void CMainFrame::OnRegexfilter(UINT cmd)
 			{
 				if (cmd == static_cast<UINT>(index))
 				{
-					if (CheckForSave(CHFSR_OPTIONS)==IDCANCEL)
+					if (CheckForSave(ECheckForSaveReason::Options)==IDCANCEL)
 						break;
 					try
 					{
@@ -3437,30 +3437,30 @@ void CMainFrame::BuildRegexSubitems(CMFCPopupMenu* pMenuPopup)
 void CMainFrame::FillEncodingButton( CMFCRibbonButton * pButton, int start )
 {
 	pButton->SetDefaultCommand(FALSE);
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::ASCII,       L"ASCII"       ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::BINARY,      L"BINARY"      ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LE,    L"UTF-16LE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_LEBOM, L"UTF-16LE BOM"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BE,    L"UTF-16BE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF16_BEBOM, L"UTF-16BE BOM"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_LE,    L"UTF-32LE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF32_BE,    L"UTF-32BE"    ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8,        L"UTF-8"       ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + CFileTextLines::UnicodeType::UTF8BOM,     L"UTF-8 BOM"   ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::ASCII),       L"ASCII"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::BINARY),      L"BINARY"      ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF16_LE),    L"UTF-16LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF16_LEBOM), L"UTF-16LE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF16_BE),    L"UTF-16BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF16_BEBOM), L"UTF-16BE BOM"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF32_LE),    L"UTF-32LE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF32_BE),    L"UTF-32BE"    ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF8),        L"UTF-8"       ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(CFileTextLines::UnicodeType::UTF8BOM),     L"UTF-8 BOM"   ));
 }
 
 void CMainFrame::FillEOLButton( CMFCRibbonButton * pButton, int start )
 {
 	pButton->SetDefaultCommand(FALSE);
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LF  , L"LF"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CRLF, L"CRLF"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LFCR, L"LRCR"));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_CR  , L"CR"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_VT  , L"VT"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_FF  , L"FF"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_NEL , L"NEL" ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_LS  , L"LS"  ));
-	pButton->AddSubItem(new CMFCRibbonButton(start + EOL::EOL_PS  , L"PS"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::LF)  , L"LF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::CRLF), L"CRLF"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::LFCR), L"LRCR"));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::CR)  , L"CR"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::VT)  , L"VT"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::FF)  , L"FF"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::NEL) , L"NEL" ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::LS)  , L"LS"  ));
+	pButton->AddSubItem(new CMFCRibbonButton(start + static_cast<int>(EOL::PS)  , L"PS"  ));
 }
 
 void CMainFrame::FillTabModeButton(CMFCRibbonButton * pButton, int start)
@@ -3810,7 +3810,7 @@ void CMainFrame::OnUpdateColumnStatusBar(CCmdUI* pCmdUI)
 
 void CMainFrame::OnRegexNoFilter()
 {
-	if (CheckForSave(CHFSR_OPTIONS) == IDCANCEL)
+	if (CheckForSave(ECheckForSaveReason::Options) == IDCANCEL)
 		return;
 	m_Data.SetRegexTokens(std::wregex(), L"");
 	m_regexIndex = -1;

@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2007-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,11 +23,11 @@
 
 #include <vector>
 
-enum HIDESTATE
+enum class HideState
 {
-	HIDESTATE_SHOWN,
-	HIDESTATE_HIDDEN,
-	HIDESTATE_MARKER,
+	Shown,
+	Hidden,
+	Marker,
 };
 
 /**
@@ -37,22 +38,22 @@ class viewdata
 {
 public:
 	viewdata()
-		: state(DIFFSTATE_UNKNOWN)
+		: state(DiffState::Unknown)
 		, linenumber(-1)
 		, movedIndex(-1)
 		, movedFrom(true)
-		, ending(EOL_AUTOLINE)
-		, hidestate(HIDESTATE_HIDDEN)
+		, ending(EOL::AutoLine)
+		, hidestate(HideState::Hidden)
 		, marked(false)
 	{
 	}
 
 	viewdata(
 			const CString& sLineInit,
-			DiffStates stateInit,
+			DiffState stateInit,
 			int linenumberInit,
 			EOL endingInit,
-			HIDESTATE hideInit,
+			HideState hideInit,
 			bool markedInit = false)
 		: state(stateInit)
 		, linenumber(linenumberInit)
@@ -66,12 +67,12 @@ public:
 	}
 
 	CString			sLine;
-	DiffStates		state;
+	DiffState		state;
 	int				linenumber;
 	int				movedIndex;
 	bool			movedFrom;
 	EOL				ending;
-	HIDESTATE 		hidestate;
+	HideState 		hidestate;
 	bool			marked;
 };
 
@@ -85,17 +86,17 @@ public:
 	CViewData();
 	~CViewData();
 
-	void			AddData(const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
+	void			AddData(const CString& sLine, DiffState state, int linenumber, EOL ending, HideState hide, int movedline);
 	void			AddData(const viewdata& data);
-	void			AddEmpty() {AddData(CString(), DIFFSTATE_EMPTY, -1, EOL_NOENDING, HIDESTATE_SHOWN, -1);}
-	void			InsertData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
+	void			AddEmpty() {AddData(CString(), DiffState::Empty, -1, EOL::NoEnding, HideState::Shown, -1);}
+	void			InsertData(int index, const CString& sLine, DiffState state, int linenumber, EOL ending, HideState hide, int movedline);
 	void			InsertData(int index, const viewdata& data);
 	void			RemoveData(int index) {m_data.erase(m_data.begin() + index);}
 
 	const viewdata&	GetData(int index) const {return m_data[index];}
 	const CString&	GetLine(int index) const {return m_data[index].sLine;}
-	DiffStates		GetState(int index) const {return m_data[index].state;}
-	HIDESTATE		GetHideState(int index) const {return m_data[index].hidestate;}
+	DiffState		GetState(int index) const {return m_data[index].state;}
+	HideState		GetHideState(int index) const {return m_data[index].hidestate;}
 	int				GetLineNumber(int index) const {return m_data.size() ? m_data[index].linenumber : 0;}
 	int				GetMovedIndex(int index) const {return m_data.size() ? m_data[index].movedIndex: 0;}
 	bool			IsMoved(int index) const {return m_data.size() ? m_data[index].movedIndex >= 0 : false;}
@@ -116,12 +117,12 @@ public:
 			m_nMarkedBlocks++;
 		m_data[index] = data;
 	}
-	void			SetState(int index, DiffStates state) {m_data[index].state = state;}
+	void			SetState(int index, DiffState state) {m_data[index].state = state;}
 	void			SetLine(int index, const CString& sLine) {m_data[index].sLine = sLine;}
 	void			SetLineNumber(int index, int linenumber) {m_data[index].linenumber = linenumber;}
 	void			SetLineEnding(int index, EOL ending) {m_data[index].ending = ending;}
 	void			SetMovedIndex(int index, int movedIndex, bool movedFrom) {m_data[index].movedIndex = movedIndex; m_data[index].movedFrom = movedFrom;}
-	void			SetLineHideState(int index, HIDESTATE state) {m_data[index].hidestate = state;}
+	void			SetLineHideState(int index, HideState state) {m_data[index].hidestate = state;}
 	void			SetMarked(int index, bool marked)
 	{
 		bool oldmarked = m_data[index].marked;

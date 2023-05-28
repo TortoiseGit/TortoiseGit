@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -1498,25 +1498,25 @@ int CTortoiseGitBlameView::GetEncode(unsigned char *buff, int size, int *bomoffs
 	CFileTextLines textlines;
 	CFileTextLines::UnicodeType type = textlines.CheckUnicodeType(buff, size);
 
-	if(type == CFileTextLines::UTF8BOM)
+	if (type == CFileTextLines::UnicodeType::UTF8BOM)
 	{
 		*bomoffset = 3;
 		return CP_UTF8;
 	}
-	if(type == CFileTextLines::UTF8)
+	if (type == CFileTextLines::UnicodeType::UTF8)
 		return CP_UTF8;
 
-	if(type == CFileTextLines::UTF16_LE)
+	if (type == CFileTextLines::UnicodeType::UTF16_LE)
 		return 1200;
-	if (type == CFileTextLines::UTF16_LEBOM)
+	if (type == CFileTextLines::UnicodeType::UTF16_LEBOM)
 	{
 		*bomoffset = 2;
 		return 1200;
 	}
 
-	if(type == CFileTextLines::UTF16_BE)
+	if (type == CFileTextLines::UnicodeType::UTF16_BE)
 		return 1201;
-	if (type == CFileTextLines::UTF16_BEBOM)
+	if (type == CFileTextLines::UnicodeType::UTF16_BEBOM)
 	{
 		*bomoffset = 2;
 		return 1201;

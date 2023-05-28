@@ -30,13 +30,13 @@ public:
 
 	void SetProgressList(CGitProgressList* notifyCallbackInstance) { m_NotifyCallbackInstance = notifyCallbackInstance; }
 	void SetProgressCallback(std::function<void(const CTGitPath& path, int index)> progressCallback) { m_progressCallback = progressCallback; }
-	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance);
+	bool					ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action action, CGitProgressList* instance);
 
 private:
 	void					ReportError(const CString& out, int exitCode) override;
 	void					ReportProgress(const CTGitPath& path, int index) override;
 	void					ReportUserCanceled() override;
 	CGitProgressList *		m_NotifyCallbackInstance;
-	CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t	m_NotifyCallbackAction;
+	CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action m_NotifyCallbackAction;
 	std::function<void(const CTGitPath& path, int index)> m_progressCallback = nullptr;
 };

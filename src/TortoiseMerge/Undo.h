@@ -1,7 +1,7 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006-2007,2009-2015 - TortoiseSVN
-// Copyright (C) 2011 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2023 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,7 +36,7 @@ public:
 	{}
 
 	std::map<int, CString>	difflines;
-	std::map<int, DWORD>	linestates;
+	std::map<int, DiffState>	linestates;
 	std::map<int, DWORD>	linelines;
 	std::map<int, EOL>		linesEOL;
 	std::map<int, bool>		markedlines;

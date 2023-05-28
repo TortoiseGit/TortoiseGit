@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1106,8 +1106,8 @@ void CGitProgressList::SetProgressLabelText(const CString& str)
 		m_pProgressLabelCtrl->SetWindowText(str);
 }
 
-CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action)
-: NotificationData()
+CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGitPath& path, Git_WC_Notify_Action action)
+	: NotificationData()
 , action(action)
 {
 	this->path = path;
@@ -1115,22 +1115,22 @@ CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGit
 
 	switch (action)
 	{
-	case git_wc_notify_add:
+	case Git_WC_Notify_Action::Add:
 		sActionColumnText.LoadString(IDS_SVNACTION_ADD);
 		break;
-	case git_wc_notify_resolved:
+	case Git_WC_Notify_Action::Resolved:
 		sActionColumnText.LoadString(IDS_SVNACTION_RESOLVE);
 		break;
-	case git_wc_notify_revert:
+	case Git_WC_Notify_Action::Revert:
 		sActionColumnText.LoadString(IDS_SVNACTION_REVERT);
 		break;
-	case git_wc_notify_checkout:
+	case Git_WC_Notify_Action::Checkout:
 		sActionColumnText.LoadString(IDS_PROGRS_CMD_CHECKOUT);
 		break;
-	case git_wc_notify_lfs_lock:
+	case Git_WC_Notify_Action::LFS_Lock:
 		sActionColumnText.LoadString(IDS_PROGRS_CMD_LFS_LOCK);
 		break;
-	case git_wc_notify_lfs_unlock:
+	case Git_WC_Notify_Action::LFS_Unlock:
 		sActionColumnText.LoadString(IDS_PROGRS_CMD_LFS_UNLOCK);
 		break;
 	default:
@@ -1142,9 +1142,9 @@ void CGitProgressList::WC_File_NotificationData::SetColorCode(CColors& colors)
 {
 	switch (action)
 	{
-	case git_wc_notify_checkout:
+	case Git_WC_Notify_Action::Checkout:
 		[[fallthrough]];
-	case git_wc_notify_add:
+	case Git_WC_Notify_Action::Add:
 		color = colors.GetColor(CColors::Added);
 		colorIsDirect = true;
 		break;
@@ -1156,12 +1156,12 @@ void CGitProgressList::WC_File_NotificationData::SetColorCode(CColors& colors)
 
 void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions)
 {
-	if ((action == git_wc_notify_add) ||
-		(action == git_wc_notify_revert) ||
-		(action == git_wc_notify_resolved) ||
-		(action == git_wc_notify_checkout) ||
-		(action == git_wc_notify_lfs_lock) ||
-		(action == git_wc_notify_lfs_unlock))
+	if ((action == Git_WC_Notify_Action::Add) ||
+		(action == Git_WC_Notify_Action::Revert) ||
+		(action == Git_WC_Notify_Action::Resolved) ||
+		(action == Git_WC_Notify_Action::Checkout) ||
+		(action == Git_WC_Notify_Action::LFS_Lock) ||
+		(action == Git_WC_Notify_Action::LFS_Unlock))
 	{
 		actions.push_back([&]()
 		{
@@ -1184,8 +1184,8 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 		actions.push_back([&]{ CAppUtils::ExploreTo(nullptr, g_Git.CombinePath(path)); });
 		popup.AppendMenuIcon(actions.size(), IDS_STATUSLIST_CONTEXT_EXPLORE, IDI_EXPLORER);
 
-		if ((action == git_wc_notify_lfs_lock) ||
-			(action == git_wc_notify_lfs_unlock))
+		if ((action == Git_WC_Notify_Action::LFS_Lock) ||
+			(action == Git_WC_Notify_Action::LFS_Unlock))
 		{
 			popup.AppendMenu(MF_SEPARATOR, NULL);
 

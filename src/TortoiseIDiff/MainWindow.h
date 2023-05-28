@@ -1,6 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2009, 2011-2013, 2015-2016, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,11 +30,11 @@
 #define WINDOW_MINHEIGHT 200
 #define WINDOW_MINWIDTH 200
 
-enum FileType
+enum class FileType
 {
-    FileTypeMine        = 1,
-    FileTypeTheirs      = 2,
-    FileTypeBase        = 3,
+    Mine        = 1,
+    Theirs      = 2,
+    Base        = 3,
 };
 
 /**
@@ -63,7 +63,7 @@ public:
         , bFitWidths(false)
         , bFitHeights(false)
         , transparentColor(::GetSysColor(COLOR_WINDOW))
-        , m_BlendType(CPicWindow::BLEND_ALPHA)
+        , m_BlendType(CPicWindow::BlendType::Alpha)
         , hwndTB(0)
         , hToolbarImgList(nullptr)
         , bSelectionMode(false)

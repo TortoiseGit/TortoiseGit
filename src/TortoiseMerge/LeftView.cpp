@@ -1,5 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -58,7 +59,7 @@ void CLeftView::UseBothLeftFirst()
 	{
 		if (!IsStateEmpty(GetViewState(viewLine)))
 		{
-			SetViewState(viewLine, DIFFSTATE_REMOVED);
+			SetViewState(viewLine, DiffState::Removed);
 		}
 	}
 	SaveUndoStep();
@@ -70,13 +71,13 @@ void CLeftView::UseBothLeftFirst()
 		viewdata line = m_pwndRight->GetViewData(viewLine);
 		if (IsStateEmpty(line.state))
 		{
-			line.state = DIFFSTATE_EMPTY;
+			line.state = DiffState::Empty;
 		}
 		else
 		{
-			if (line.state!=DIFFSTATE_NORMAL) {
-				m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
-				line.state = DIFFSTATE_NORMAL;
+			if (line.state!=DiffState::Normal) {
+				m_pwndRight->SetViewState(viewLine, DiffState::Normal);
+				line.state = DiffState::Normal;
 			}
 			SetModified();
 		}
@@ -126,7 +127,7 @@ void CLeftView::UseBothRightFirst()
 	{
 		if (!IsStateEmpty(GetViewState(viewLine)))
 		{
-			SetViewState(viewLine, DIFFSTATE_THEIRSREMOVED);
+			SetViewState(viewLine, DiffState::TheirsRemoved);
 		}
 	}
 	SaveUndoStep();
@@ -136,13 +137,13 @@ void CLeftView::UseBothRightFirst()
 		viewdata line = m_pwndRight->GetViewData(viewLine);
 		if (IsStateEmpty(line.state))
 		{
-			line.state = DIFFSTATE_EMPTY;
+			line.state = DiffState::Empty;
 		}
 		else
 		{
-			if (line.state!=DIFFSTATE_NORMAL) {
-				m_pwndRight->SetViewState(viewLine, DIFFSTATE_NORMAL);
-				line.state = DIFFSTATE_NORMAL;
+			if (line.state!=DiffState::Normal) {
+				m_pwndRight->SetViewState(viewLine, DiffState::Normal);
+				line.state = DiffState::Normal;
 			}
 			SetModified();
 		}
@@ -195,9 +196,9 @@ void CLeftView::UseRightFile()
 }
 
 
-void CLeftView::AddContextItems(CIconMenu& popup, DiffStates state)
+void CLeftView::AddContextItems(CIconMenu& popup, DiffState state)
 {
-	const bool bShow = HasSelection() && (state != DIFFSTATE_UNKNOWN);
+	const bool bShow = HasSelection() && (state != DiffState::Unknown);
 
 	if (IsBottomViewGood())
 	{

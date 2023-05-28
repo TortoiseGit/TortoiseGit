@@ -22,6 +22,7 @@
 #include "TGitPath.h"
 #include "gitdll.h"
 #include <atomic>
+#include "lanes.h"
 
 class CGit;
 extern CGit g_Git;
@@ -98,7 +99,7 @@ public:
 	CString m_RefAction; // for Refloglist
 
 	// Show version tree Graphic
-	std::vector<int> m_Lanes;
+	std::vector<Lanes::LaneType> m_Lanes;
 
 	static std::atomic<std::shared_ptr<CGitMailmap>> s_Mailmap;
 

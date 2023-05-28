@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2007-2008, 2011, 2013, 2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -145,15 +146,15 @@ class CDiffColors
 public:
 	static CDiffColors&			GetInstance();
 
-	void						GetColors(DiffStates state, bool darkMode, COLORREF& crBkgnd, COLORREF& crText);
-	void						SetColors(DiffStates state, bool darkMode, const COLORREF& crBkgnd, const COLORREF& crText);
+	void						GetColors(DiffState state, bool darkMode, COLORREF& crBkgnd, COLORREF& crText);
+	void						SetColors(DiffState state, bool darkMode, const COLORREF& crBkgnd, const COLORREF& crText);
 	void						LoadRegistry();
 
 protected:
-	CRegDWORD					m_regForegroundColors[DIFFSTATE_END];
-	CRegDWORD					m_regBackgroundColors[DIFFSTATE_END];
-	CRegDWORD					m_regDarkForegroundColors[DIFFSTATE_END];
-	CRegDWORD					m_regDarkBackgroundColors[DIFFSTATE_END];
+	CRegDWORD					m_regForegroundColors[static_cast<int>(DiffState::End)];
+	CRegDWORD					m_regBackgroundColors[static_cast<int>(DiffState::End)];
+	CRegDWORD					m_regDarkForegroundColors[static_cast<int>(DiffState::End)];
+	CRegDWORD					m_regDarkBackgroundColors[static_cast<int>(DiffState::End)];
 private:
 	CDiffColors();
 	~CDiffColors();

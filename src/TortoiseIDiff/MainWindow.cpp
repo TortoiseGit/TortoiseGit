@@ -1,6 +1,6 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2019 - TortoiseGit
+// Copyright (C) 2015-2019, 2023 - TortoiseGit
 // Copyright (C) 2006-2015, 2018, 2020-2021, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -189,9 +189,9 @@ LRESULT CALLBACK CMainWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam,
             {
                 picWindow3.RegisterAndCreateWindow(hwnd);
 
-                picWindow1.SetPic(selectionPaths[FileTypeMine], selectionTitles[FileTypeMine], false);
-                picWindow2.SetPic(selectionPaths[FileTypeBase], selectionTitles[FileTypeBase], false);
-                picWindow3.SetPic(selectionPaths[FileTypeTheirs], selectionTitles[FileTypeTheirs], false);
+                picWindow1.SetPic(selectionPaths[FileType::Mine], selectionTitles[FileType::Mine], false);
+                picWindow2.SetPic(selectionPaths[FileType::Base], selectionTitles[FileType::Base], false);
+                picWindow3.SetPic(selectionPaths[FileType::Theirs], selectionTitles[FileType::Theirs], false);
             }
 
             picWindow1.SetSelectionMode(!selectionPaths.empty());
@@ -482,7 +482,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             UINT uCheck = MF_BYCOMMAND;
             uCheck |= bOverlap ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_OVERLAPIMAGES, uCheck);
-            uCheck |= ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
+            uCheck |= ((m_BlendType == CPicWindow::BlendType::Alpha) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_BLENDALPHA, uCheck);
             UINT uEnabled = MF_BYCOMMAND;
             uEnabled |= bOverlap ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
@@ -495,7 +495,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             tbi.fsState = bOverlap ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_OVERLAPIMAGES, reinterpret_cast<LPARAM>(&tbi));
 
-            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED : 0;
+            tbi.fsState = ((m_BlendType == CPicWindow::BlendType::Alpha) && bOverlap) ? TBSTATE_CHECKED : 0;
             if (bOverlap)
                 tbi.fsState |= TBSTATE_ENABLED;
             else
@@ -546,14 +546,14 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
         break;
     case ID_VIEW_BLENDALPHA:
         {
-            if (m_BlendType == CPicWindow::BLEND_ALPHA)
-                m_BlendType = CPicWindow::BLEND_XOR;
+            if (m_BlendType == CPicWindow::BlendType::Alpha)
+                m_BlendType = CPicWindow::BlendType::Xor;
             else
-                m_BlendType = CPicWindow::BLEND_ALPHA;
+                m_BlendType = CPicWindow::BlendType::Alpha;
 
             HMENU hMenu = GetMenu(*this);
             UINT uCheck = MF_BYCOMMAND;
-            uCheck |= ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
+            uCheck |= ((m_BlendType == CPicWindow::BlendType::Alpha) && bOverlap) ? MF_CHECKED : MF_UNCHECKED;
             CheckMenuItem(hMenu, ID_VIEW_BLENDALPHA, uCheck);
             UINT uEnabled = MF_BYCOMMAND;
             uEnabled |= bOverlap ? MF_ENABLED : MF_DISABLED | MF_GRAYED;
@@ -563,7 +563,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             TBBUTTONINFO tbi;
             tbi.cbSize = sizeof(TBBUTTONINFO);
             tbi.dwMask = TBIF_STATE;
-            tbi.fsState = ((m_BlendType == CPicWindow::BLEND_ALPHA) && bOverlap) ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
+            tbi.fsState = ((m_BlendType == CPicWindow::BlendType::Alpha) && bOverlap) ? TBSTATE_CHECKED | TBSTATE_ENABLED : TBSTATE_ENABLED;
             SendMessage(hwndTB, TB_SETBUTTONINFO, ID_VIEW_BLENDALPHA, reinterpret_cast<LPARAM>(&tbi));
             picWindow1.SetBlendAlpha(m_BlendType, picWindow1.GetBlendAlpha());
             PositionChildren();
@@ -757,17 +757,17 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             auto hSource = reinterpret_cast<HWND>(lParam);
             FileType resolveWith;
             if (picWindow1 == hSource)
-                resolveWith = FileTypeMine;
+                resolveWith = FileType::Mine;
             else if (picWindow2 == hSource)
-                resolveWith = FileTypeBase;
+                resolveWith = FileType::Base;
             else if (picWindow3 == hSource)
-                resolveWith = FileTypeTheirs;
+                resolveWith = FileType::Theirs;
             else
                 break;
 
             if (selectionResult.empty())
             {
-                PostQuitMessage(resolveWith);
+                PostQuitMessage(static_cast<int>(resolveWith));
                 break;
             }
 
@@ -776,14 +776,14 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             CAutoBuf projectRoot;
             if (git_repository_discover(projectRoot, CUnicodeUtils::GetUTF8(selectionResult.c_str()), FALSE, nullptr) < 0 && strstr(projectRoot->ptr, "/.git/"))
             {
-                PostQuitMessage(resolveWith);
+                PostQuitMessage(static_cast<int>(resolveWith));
                 break;
             }
 
             CAutoRepository repository(projectRoot->ptr);
             if (!repository)
             {
-                PostQuitMessage(resolveWith);
+                PostQuitMessage(static_cast<int>(resolveWith));
                 break;
             }
 
@@ -792,7 +792,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             CAutoIndex index;
             if (git_repository_index(index.GetPointer(), repository) || (git_index_get_bypath(index, subpath, 1) == nullptr && git_index_get_bypath(index, subpath, 2) == nullptr))
             {
-                PostQuitMessage(resolveWith);
+                PostQuitMessage(static_cast<int>(resolveWith));
                 break;
             }
 
@@ -813,7 +813,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             if (!CreateProcess(nullptr, cmd.GetBuffer(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr, nullptr, &startup, &process))
             {
                 cmd.ReleaseBuffer();
-                PostQuitMessage(resolveWith);
+                PostQuitMessage(static_cast<int>(resolveWith));
                 break;
             }
             cmd.ReleaseBuffer();
@@ -823,7 +823,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
             CloseHandle(process.hThread);
             CloseHandle(process.hProcess);
 
-            PostQuitMessage(resolveWith);
+            PostQuitMessage(static_cast<int>(resolveWith));
         }
         break;
         case ID_VIEW_DARKMODE:

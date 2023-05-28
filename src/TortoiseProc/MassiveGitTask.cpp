@@ -25,7 +25,7 @@
 CMassiveGitTask::CMassiveGitTask(CString gitParameters, BOOL isPath, bool ignoreErrors)
 	: CMassiveGitTaskBase(gitParameters, isPath, ignoreErrors)
 	, m_NotifyCallbackInstance(nullptr)
-	, m_NotifyCallbackAction(CGitProgressList::WC_File_NotificationData::git_wc_notify_add)
+	, m_NotifyCallbackAction(CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action::Add)
 {
 }
 
@@ -66,7 +66,7 @@ void CMassiveGitTask::ReportUserCanceled()
 		m_NotifyCallbackInstance->ReportUserCanceled();
 }
 
-bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::git_wc_notify_action_t action, CGitProgressList* instance)
+bool CMassiveGitTask::ExecuteWithNotify(CTGitPathList* pathList, volatile BOOL& cancel, CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action action, CGitProgressList* instance)
 {
 	SetPaths(pathList);
 	m_NotifyCallbackInstance = instance;

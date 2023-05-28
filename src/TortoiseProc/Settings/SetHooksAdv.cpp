@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2013-2019 - TortoiseGit
+// Copyright (C) 2010, 2013-2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,22 +71,22 @@ BOOL CSetHooksAdv::OnInitDialog()
 	// initialize the combo box with all the hook types we have
 	int index;
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_STARTCOMMIT)));
-	m_cHookTypeCombo.SetItemData(index, start_commit_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::start_commit_hook));
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PRECOMMIT)));
-	m_cHookTypeCombo.SetItemData(index, pre_commit_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::pre_commit_hook));
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTCOMMIT)));
-	m_cHookTypeCombo.SetItemData(index, post_commit_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::post_commit_hook));
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREPUSH)));
-	m_cHookTypeCombo.SetItemData(index, pre_push_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::pre_push_hook));
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_POSTPUSH)));
-	m_cHookTypeCombo.SetItemData(index, post_push_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::post_push_hook));
 	index = m_cHookTypeCombo.AddString(CString(MAKEINTRESOURCE(IDS_HOOKTYPE_PREREBASE)));
-	m_cHookTypeCombo.SetItemData(index, pre_rebase_hook);
+	m_cHookTypeCombo.SetItemData(index, static_cast<int>(HookType::pre_rebase_hook));
 
 	// preselect the right hook type in the combobox
 	for (int i=0; i<m_cHookTypeCombo.GetCount(); ++i)
 	{
-		hooktype ht = static_cast<hooktype>(m_cHookTypeCombo.GetItemData(i));
+		HookType ht = static_cast<HookType>(m_cHookTypeCombo.GetItemData(i));
 		if (ht == key.htype)
 		{
 			CString str;
@@ -131,10 +131,10 @@ void CSetHooksAdv::OnOK()
 {
 	UpdateData();
 	int cursel = m_cHookTypeCombo.GetCurSel();
-	key.htype = unknown_hook;
+	key.htype = HookType::unknown_hook;
 	if (cursel != CB_ERR)
 	{
-		key.htype = static_cast<hooktype>(m_cHookTypeCombo.GetItemData(cursel));
+		key.htype = static_cast<HookType>(m_cHookTypeCombo.GetItemData(cursel));
 		key.path = CTGitPath(m_sPath);
 		cmd.commandline = m_sCommandLine;
 		cmd.bEnabled = m_bEnabled == BST_CHECKED;
@@ -142,7 +142,7 @@ void CSetHooksAdv::OnOK()
 		cmd.bShow = !m_bHide;
 		cmd.bLocal = !!m_bLocal;
 	}
-	if (key.htype == unknown_hook)
+	if (key.htype == HookType::unknown_hook)
 	{
 		m_tooltips.ShowBalloon(IDC_HOOKTYPECOMBO, IDS_ERR_NOHOOKTYPESPECIFIED, IDS_ERR_ERROR, TTI_ERROR);
 		return;

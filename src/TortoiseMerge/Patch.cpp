@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2022 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2023 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -35,7 +35,7 @@ static char THIS_FILE[] = __FILE__;
 
 CPatch::CPatch()
 	: m_nStrip(0)
-	, m_UnicodeType(CFileTextLines::AUTOTYPE)
+	, m_UnicodeType(CFileTextLines::UnicodeType::AUTOTYPE)
 {
 }
 
@@ -52,7 +52,7 @@ void CPatch::FreeMemory()
 BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 {
 	CString sLine;
-	EOL ending = EOL_NOENDING;
+	EOL ending = EOL::NoEnding;
 
 	int state = 0;
 	int nIndex = 0;
@@ -66,8 +66,8 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 	{
 		sLine = PatchLines.GetAt(nIndex);
 		ending = PatchLines.GetLineEnding(nIndex);
-		if (ending != EOL_NOENDING)
-			ending = EOL_AUTOLINE;
+		if (ending != EOL::NoEnding)
+			ending = EOL::AutoLine;
 
 		switch (state)
 		{
@@ -565,16 +565,16 @@ int CPatch::PatchFile(const int strip, int nIndex, const CString& sPatchPath, co
 			} // switch (nPatchState)
 		} // for (j=0; j<chunk->arLines.GetCount(); j++)
 	} // for (int i=0; i<chunks->chunks.GetCount(); i++)
-	if ((chunks->oldHasBom == 0 || (chunks->chunks.size() == 1 && chunks->chunks.at(0).get()->lRemoveStart == 0 && chunks->chunks.at(0).get()->lRemoveLength == 0)) && chunks->newHasBom == 1 && PatchLines.GetUnicodeType() != CFileTextLines::UTF8BOM)
+	if ((chunks->oldHasBom == 0 || (chunks->chunks.size() == 1 && chunks->chunks.at(0).get()->lRemoveStart == 0 && chunks->chunks.at(0).get()->lRemoveLength == 0)) && chunks->newHasBom == 1 && PatchLines.GetUnicodeType() != CFileTextLines::UnicodeType::UTF8BOM)
 	{
 		auto saveParams = PatchLines.GetSaveParams();
-		saveParams.m_UnicodeType = CFileTextLines::UTF8BOM;
+		saveParams.m_UnicodeType = CFileTextLines::UnicodeType::UTF8BOM;
 		PatchLines.SetSaveParams(saveParams);
 	}
-	else if (chunks->oldHasBom == 1 && chunks->newHasBom == 0 && PatchLines.GetUnicodeType() == CFileTextLines::UTF8BOM)
+	else if (chunks->oldHasBom == 1 && chunks->newHasBom == 0 && PatchLines.GetUnicodeType() == CFileTextLines::UnicodeType::UTF8BOM)
 	{
 		auto saveParams = PatchLines.GetSaveParams();
-		saveParams.m_UnicodeType = CFileTextLines::UTF8;
+		saveParams.m_UnicodeType = CFileTextLines::UnicodeType::UTF8;
 		PatchLines.SetSaveParams(saveParams);
 	}
 		if (!sSavePath.IsEmpty())

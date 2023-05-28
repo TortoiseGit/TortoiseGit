@@ -157,10 +157,10 @@ public: // methods
 	void			CheckModifications(bool& hasMods, bool& hasConflicts, bool& hasWhitespaceMods, bool& hasFilteredMods);
 
 	// state classifying methods; note: state may belong to more classes
-	static bool		IsStateConflicted(DiffStates state);
-	static bool		IsStateEmpty(DiffStates state);
-	static bool		IsStateRemoved(DiffStates state);
-	static DiffStates	ResolveState(DiffStates state);
+	static bool		IsStateConflicted(DiffState state);
+	static bool		IsStateEmpty(DiffState state);
+	static bool		IsStateRemoved(DiffState state);
+	static DiffState	ResolveState(DiffState state);
 
 	bool			IsLineEmpty(int nLineIndex);
 	bool			IsViewLineEmpty(int nViewLine);
@@ -193,14 +193,14 @@ public: // methods
 	virtual void	UseViewFileExceptEdited() { UseViewFileExceptEdited(m_pwndLeft); }
 
 	// ViewData methods
-	void			InsertViewData(int index, const CString& sLine, DiffStates state, int linenumber, EOL ending, HIDESTATE hide, int movedline);
+	void			InsertViewData(int index, const CString& sLine, DiffState state, int linenumber, EOL ending, HideState hide, int movedline);
 	void			InsertViewData(int index, const viewdata& data);
 	void			RemoveViewData(int index);
 
 	const viewdata&	GetViewData(int index) const {return m_pViewData->GetData(index); }
 	const CString&	GetViewLine(int index) const {return m_pViewData->GetLine(index); }
-	DiffStates		GetViewState(int index) const {return m_pViewData->GetState(index); }
-	HIDESTATE		GetViewHideState(int index) {return m_pViewData->GetHideState(index); }
+	DiffState		GetViewState(int index) const {return m_pViewData->GetState(index); }
+	HideState		GetViewHideState(int index) {return m_pViewData->GetHideState(index); }
 	int				GetViewLineNumber(int index) {return m_pViewData->GetLineNumber(index); }
 	int				GetViewMovedIndex(int index) {return m_pViewData->GetMovedIndex(index); }
 	int				FindViewLineNumber(int number) {return m_pViewData->FindLineNumber(number); }
@@ -210,7 +210,7 @@ public: // methods
 	int				GetViewCount() const {return m_pViewData ? m_pViewData->GetCount() : -1; }
 
 	void			SetViewData(int index, const viewdata& data);
-	void			SetViewState(int index, DiffStates state);
+	void			SetViewState(int index, DiffState state);
 	void			SetViewLine(int index, const CString& sLine);
 	void			SetViewLineNumber(int index, int linenumber);
 	void			SetViewLineEnding(int index, EOL ending);
@@ -402,7 +402,7 @@ protected:  // methods
 	bool			IsViewLineHidden(int nViewLine);
 	static bool		IsViewLineHidden(CViewData * pViewData, int nViewLine);
 
-	void			OnContextMenu(CPoint point, DiffStates state);
+	void			OnContextMenu(CPoint point, DiffState state);
 	/**
 	 * Updates the status bar pane. Call this if the document changed.
 	 */
@@ -457,11 +457,11 @@ protected:  // methods
 	void			UseViewFileOfMarked(CBaseView *pwndView);
 	void			UseViewFileExceptEdited(CBaseView *pwndView);
 
-	virtual void	AddContextItems(CIconMenu& popup, DiffStates state);
+	virtual void	AddContextItems(CIconMenu& popup, DiffState state);
 	void			AddCutCopyAndPaste(CIconMenu& popup);
 	void			CompensateForKeyboard(CPoint& point);
 	void			ReleaseBitmap();
-	static bool		LinesInOneChange( int direction, DiffStates firstLineState, DiffStates currentLineState );
+	static bool		LinesInOneChange(int direction, DiffState firstLineState, DiffState currentLineState );
 	static void		FilterWhitespaces(CString& first, CString& second);
 	static void		FilterWhitespaces(CString& line);
 	int				GetButtonEventLineIndex(const POINT& point);
@@ -556,7 +556,7 @@ protected:  // variables
 	CDC *			m_pDC;
 	CScrollTool		m_ScrollTool;
 	CString			m_sWordSeparators;
-	CString			m_Eols[EOL__COUNT];
+	CString			m_Eols[static_cast<int>(EOL::_COUNT)];
 
 	UnicodeType		m_texttype;		///< the text encoding this view uses
 	EOL				m_lineendings;	///< the line endings the view uses

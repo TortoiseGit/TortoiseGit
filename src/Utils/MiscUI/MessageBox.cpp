@@ -684,10 +684,10 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 	RegCloseKey(hKey);
 }
 
-enum COMMAND {
-	NONE = 0,
-	NEW_LINE,
-	TABULATION,
+enum class Command {
+	None = 0,
+	NewLine,
+	Tabulation,
 };
 
 CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCalculate = FALSE)
@@ -718,16 +718,16 @@ CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCal
 	//iterate through all characters of the string
 	for (int i = 0; i <= str.GetLength(); ++i)
 	{
-		COMMAND nCmd = NONE;
+		Command nCmd = Command::None;
 		if (i < str.GetLength())
 		{
 			switch (str.GetAt(i))
 			{
 			case L'\n':
-				nCmd = NEW_LINE;
+				nCmd = Command::NewLine;
 				break;
 			case L'\t':
-				nCmd = TABULATION;
+				nCmd = Command::Tabulation;
 				break;
 			case L'\r':
 				break;
@@ -737,9 +737,9 @@ CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCal
 			}
 		}
 		else // Immitates new line at the end of the string
-			nCmd = NEW_LINE;
+			nCmd = Command::NewLine;
 
-		if (nCmd != NONE)
+		if (nCmd != Command::None)
 		{
 			if (!strText.IsEmpty())
 			{
@@ -753,13 +753,13 @@ CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCal
 			// Executes command
 			switch (nCmd)
 			{
-			case NEW_LINE:
+			case Command::NewLine:
 				// New line
 				sz.cx = max(sz.cx, ptCur.x - pt.x);
 				ptCur.y += nHeight;
 				ptCur.x = pt.x;
 				break;
-			case TABULATION:
+			case Command::Tabulation:
 				// Tabulation
 				int nTemp = (ptCur.x - pt.x) % (nWidth * 4);
 				if (nTemp)

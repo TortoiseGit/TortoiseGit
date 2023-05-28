@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2021 - TortoiseGit
+// Copyright (C) 2018-2023 - TortoiseGit
 // Copyright (C) 2010-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,10 +40,10 @@ bool CFilterHelper::Match(std::wstring& text) const
 			bool found = text.find(condition.subString) != std::wstring::npos;
 			switch (condition.prefix)
 			{
-			case AndNot:
+			case Prefix::AndNot:
 				found = !found;
 				[[fallthrough]];
-			case And:
+			case Prefix::And:
 				if (!found)
 				{
 					// not a match, so skip to the next "+"-prefixed item
@@ -55,7 +55,7 @@ bool CFilterHelper::Match(std::wstring& text) const
 				}
 				break;
 
-			case Or:
+			case Prefix::Or:
 				current_value |= found;
 				if (!current_value)
 				{
@@ -97,7 +97,7 @@ void CFilterHelper::GetMatchRanges(std::vector<CHARRANGE>& ranges, CString textU
 		auto toScan = static_cast<LPCWSTR>(textUTF16);
 		for (auto iter = subStringConditions.cbegin(), end = subStringConditions.cend(); iter != end; ++iter)
 		{
-			if (iter->prefix == AndNot)
+			if (iter->prefix == Prefix::AndNot)
 				continue;
 
 			auto toFind = iter->subString.c_str();
@@ -180,7 +180,7 @@ void CFilterHelper::AddSubString(CString token, Prefix prefix)
 
 	// update previous conditions
 	size_t newPos = subStringConditions.size() - 1;
-	if (prefix == Or)
+	if (prefix == Prefix::Or)
 	{
 		for (size_t i = newPos; i > 0; --i)
 		{
@@ -238,18 +238,18 @@ CFilterHelper::CFilterHelper(const CString& filter, bool filterWithRegex, DWORD 
 			}
 
 			// has it a prefix?
-			Prefix prefix = And;
+			Prefix prefix = Prefix::And;
 			if (curPos < length)
 			{
 				switch (filterText[curPos])
 				{
 				case L'-':
-					prefix = AndNot;
+					prefix = Prefix::AndNot;
 					++curPos;
 					break;
 
 				case L'+':
-					prefix = Or;
+					prefix = Prefix::Or;
 					++curPos;
 					break;
 				}

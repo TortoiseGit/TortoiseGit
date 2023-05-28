@@ -54,7 +54,7 @@ IMPLEMENT_DYNAMIC(CStatGraphDlg, CResizableStandAloneDialog)
 CStatGraphDlg::CStatGraphDlg(CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CStatGraphDlg::IDD, pParent)
 , m_bStacked(FALSE)
-, m_GraphType(MyGraph::Bar)
+, m_GraphType(MyGraph::GraphType::Bar)
 , m_bAuthorsCaseSensitive(TRUE)
 , m_bSortByCommitCount(TRUE)
 , m_bUseCommitterNames(FALSE)
@@ -290,23 +290,23 @@ BOOL CStatGraphDlg::OnInitDialog()
 	int statspage = lastStatsPage % 10;
 	switch (statspage) {
 		case 1 :
-			m_GraphType = MyGraph::Bar;
+		m_GraphType = MyGraph::GraphType::Bar;
 			m_bStacked = true;
 			break;
 		case 2 :
-			m_GraphType = MyGraph::Bar;
+			m_GraphType = MyGraph::GraphType::Bar;
 			m_bStacked = false;
 			break;
 		case 3 :
-			m_GraphType = MyGraph::Line;
+			m_GraphType = MyGraph::GraphType::Line;
 			m_bStacked = true;
 			break;
 		case 4 :
-			m_GraphType = MyGraph::Line;
+			m_GraphType = MyGraph::GraphType::Line;
 			m_bStacked = false;
 			break;
 		case 5 :
-			m_GraphType = MyGraph::PieChart;
+			m_GraphType = MyGraph::GraphType::PieChart;
 			break;
 
 		default : return TRUE;
@@ -1176,7 +1176,7 @@ void CStatGraphDlg::OnCbnSelchangeGraphcombo()
 		m_btnGraphLine.EnableWindow(TRUE);
 		m_btnGraphLineStacked.EnableWindow(TRUE);
 		m_btnGraphPie.EnableWindow(TRUE);
-		m_GraphType = MyGraph::Line;
+		m_GraphType = MyGraph::GraphType::Line;
 		m_bStacked = false;
 		break;
 	case PercentageOfAuthorship:
@@ -1185,7 +1185,7 @@ void CStatGraphDlg::OnCbnSelchangeGraphcombo()
 		m_btnGraphLine.EnableWindow(FALSE);
 		m_btnGraphLineStacked.EnableWindow(FALSE);
 		m_btnGraphPie.EnableWindow(TRUE);
-		m_GraphType = MyGraph::Bar;
+		m_GraphType = MyGraph::GraphType::Bar;
 		m_bStacked = false;
 		break;
 	}
@@ -1386,23 +1386,23 @@ void CStatGraphDlg::RedrawGraph()
 	m_btnGraphLineStacked.SetState(BST_UNCHECKED);
 	m_btnGraphPie.SetState(BST_UNCHECKED);
 
-	if ((m_GraphType == MyGraph::Bar)&&(m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Bar) && (m_bStacked))
 	{
 		m_btnGraphBarStacked.SetState(BST_CHECKED);
 	}
-	if ((m_GraphType == MyGraph::Bar)&&(!m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Bar) && (!m_bStacked))
 	{
 		m_btnGraphBar.SetState(BST_CHECKED);
 	}
-	if ((m_GraphType == MyGraph::Line)&&(m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Line) && (m_bStacked))
 	{
 		m_btnGraphLineStacked.SetState(BST_CHECKED);
 	}
-	if ((m_GraphType == MyGraph::Line)&&(!m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Line) && (!m_bStacked))
 	{
 		m_btnGraphLine.SetState(BST_CHECKED);
 	}
-	if (m_GraphType == MyGraph::PieChart)
+	if (m_GraphType == MyGraph::GraphType::PieChart)
 	{
 		m_btnGraphPie.SetState(BST_CHECKED);
 	}
@@ -1412,35 +1412,35 @@ void CStatGraphDlg::RedrawGraph()
 }
 void CStatGraphDlg::OnBnClickedGraphbarbutton()
 {
-	m_GraphType = MyGraph::Bar;
+	m_GraphType = MyGraph::GraphType::Bar;
 	m_bStacked = false;
 	RedrawGraph();
 }
 
 void CStatGraphDlg::OnBnClickedGraphbarstackedbutton()
 {
-	m_GraphType = MyGraph::Bar;
+	m_GraphType = MyGraph::GraphType::Bar;
 	m_bStacked = true;
 	RedrawGraph();
 }
 
 void CStatGraphDlg::OnBnClickedGraphlinebutton()
 {
-	m_GraphType = MyGraph::Line;
+	m_GraphType = MyGraph::GraphType::Line;
 	m_bStacked = false;
 	RedrawGraph();
 }
 
 void CStatGraphDlg::OnBnClickedGraphlinestackedbutton()
 {
-	m_GraphType = MyGraph::Line;
+	m_GraphType = MyGraph::GraphType::Line;
 	m_bStacked = true;
 	RedrawGraph();
 }
 
 void CStatGraphDlg::OnBnClickedGraphpiebutton()
 {
-	m_GraphType = MyGraph::PieChart;
+	m_GraphType = MyGraph::GraphType::PieChart;
 	m_bStacked = false;
 	RedrawGraph();
 }
@@ -1613,15 +1613,15 @@ void CStatGraphDlg::StoreCurrentGraphType()
 	DWORD graphtype = static_cast<DWORD>(m_cGraphType.GetItemData(m_cGraphType.GetCurSel()));
 	// encode the current chart type
 	DWORD statspage = graphtype*10;
-	if ((m_GraphType == MyGraph::Bar)&&(m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Bar) && (m_bStacked))
 		statspage += 1;
-	if ((m_GraphType == MyGraph::Bar)&&(!m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Bar) && (!m_bStacked))
 		statspage += 2;
-	if ((m_GraphType == MyGraph::Line)&&(m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Line) && (m_bStacked))
 		statspage += 3;
-	if ((m_GraphType == MyGraph::Line)&&(!m_bStacked))
+	if ((m_GraphType == MyGraph::GraphType::Line) && (!m_bStacked))
 		statspage += 4;
-	if (m_GraphType == MyGraph::PieChart)
+	if (m_GraphType == MyGraph::GraphType::PieChart)
 		statspage += 5;
 
 	// store current chart type in registry

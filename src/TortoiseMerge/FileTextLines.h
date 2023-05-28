@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2012-2016, 2019, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -84,7 +85,7 @@ public:
 	CFileTextLines();
 	~CFileTextLines();
 
-	enum UnicodeType
+	enum class UnicodeType
 	{
 		AUTOTYPE,
 		BINARY,

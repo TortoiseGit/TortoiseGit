@@ -19,6 +19,8 @@
 #include "GitProgressList.h"
 #include "FetchProgressCommand.h"
 
+using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action;
+
 class CloneProgressCommand : public FetchProgressCommand
 {
 protected:
@@ -31,7 +33,7 @@ protected:
 		auto list = static_cast<CGitProgressList*>(payload);
 		list->m_itemCountTotal = static_cast<int>(tot);
 		list->m_itemCount = static_cast<int>(cur);
-		list->AddNotify(new CGitProgressList::WC_File_NotificationData(tpath, CGitProgressList::WC_File_NotificationData::git_wc_notify_checkout));
+		list->AddNotify(new CGitProgressList::WC_File_NotificationData(tpath, Git_WC_Notify_Action::Checkout));
 	}
 
 public:

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2007-2008, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -143,22 +143,22 @@ bool CHooks::Save()
 		CStringA sHookPropName;
 		switch (hook.first.htype)
 		{
-		case start_commit_hook:
+		case HookType::start_commit_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_STARTCOMMITHOOK);
 			break;
-		case pre_commit_hook:
+		case HookType::pre_commit_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PRECOMMITHOOK);
 			break;
-		case post_commit_hook:
+		case HookType::post_commit_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTCOMMITHOOK);
 			break;
-		case pre_push_hook:
+		case HookType::pre_push_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREPUSHHOOK);
 			break;
-		case post_push_hook:
+		case HookType::post_push_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_POSTPUSHHOOK);
 			break;
-		case pre_rebase_hook:
+		case HookType::pre_rebase_hook:
 			sHookPropName = CUnicodeUtils::GetUTF8(PROJECTPROPNAME_PREREBASEHOOK);
 			break;
 		}
@@ -189,7 +189,7 @@ bool CHooks::Remove(const hookkey &key)
 	return (erase(key) > 0);
 }
 
-void CHooks::Add(hooktype ht, const CTGitPath& Path, LPCWSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
+void CHooks::Add(HookType ht, const CTGitPath& Path, LPCWSTR szCmd, bool bWait, bool bShow, bool bEnabled, bool bLocal)
 {
 	hookkey key;
 	key.htype = ht;
@@ -219,42 +219,42 @@ bool CHooks::SetEnabled(const hookkey& k, bool bEnabled)
 	return true;
 }
 
-CString CHooks::GetHookTypeString(hooktype t)
+CString CHooks::GetHookTypeString(HookType t)
 {
 	switch (t)
 	{
-	case start_commit_hook:
+	case HookType::start_commit_hook:
 		return L"start_commit_hook";
-	case pre_commit_hook:
+	case HookType::pre_commit_hook:
 		return L"pre_commit_hook";
-	case post_commit_hook:
+	case HookType::post_commit_hook:
 		return L"post_commit_hook";
-	case pre_push_hook:
+	case HookType::pre_push_hook:
 		return L"pre_push_hook";
-	case post_push_hook:
+	case HookType::post_push_hook:
 		return L"post_push_hook";
-	case pre_rebase_hook:
+	case HookType::pre_rebase_hook:
 		return L"pre_rebase_hook";
 	}
 	return L"";
 }
 
-hooktype CHooks::GetHookType(const CString& s)
+HookType CHooks::GetHookType(const CString& s)
 {
 	if (s.Compare(L"start_commit_hook") == 0)
-		return start_commit_hook;
+		return HookType::start_commit_hook;
 	if (s.Compare(L"pre_commit_hook") == 0)
-		return pre_commit_hook;
+		return HookType::pre_commit_hook;
 	if (s.Compare(L"post_commit_hook") == 0)
-		return post_commit_hook;
+		return HookType::post_commit_hook;
 	if (s.Compare(L"pre_push_hook") == 0)
-		return pre_push_hook;
+		return HookType::pre_push_hook;
 	if (s.Compare(L"post_push_hook") == 0)
-		return post_push_hook;
+		return HookType::post_push_hook;
 	if (s.Compare(L"pre_rebase_hook") == 0)
-		return pre_rebase_hook;
+		return HookType::pre_rebase_hook;
 
-	return unknown_hook;
+	return HookType::unknown_hook;
 }
 
 void CHooks::SetProjectProperties(const CTGitPath& Path, const ProjectProperties& pp)
@@ -263,17 +263,17 @@ void CHooks::SetProjectProperties(const CTGitPath& Path, const ProjectProperties
 
 	CString sHookString;
 	if (!pp.sPreCommitHook.IsEmpty())
-		sHookString += GetHookTypeString(pre_commit_hook) + L"\n?\n" + pp.sPreCommitHook + L"\n";
+		sHookString += GetHookTypeString(HookType::pre_commit_hook) + L"\n?\n" + pp.sPreCommitHook + L"\n";
 	if (!pp.sStartCommitHook.IsEmpty())
-		sHookString += GetHookTypeString(start_commit_hook) + L"\n?\n" + pp.sStartCommitHook + L"\n";
+		sHookString += GetHookTypeString(HookType::start_commit_hook) + L"\n?\n" + pp.sStartCommitHook + L"\n";
 	if (!pp.sPostCommitHook.IsEmpty())
-		sHookString += GetHookTypeString(post_commit_hook) + L"\n?\n" + pp.sPostCommitHook + L"\n";
+		sHookString += GetHookTypeString(HookType::post_commit_hook) + L"\n?\n" + pp.sPostCommitHook + L"\n";
 	if (!pp.sPrePushHook.IsEmpty())
-		sHookString += GetHookTypeString(pre_push_hook) + L"\n?\n" + pp.sPrePushHook + L"\n";
+		sHookString += GetHookTypeString(HookType::pre_push_hook) + L"\n?\n" + pp.sPrePushHook + L"\n";
 	if (!pp.sPostPushHook.IsEmpty())
-		sHookString += GetHookTypeString(post_push_hook) + L"\n?\n" + pp.sPostPushHook + L"\n";
+		sHookString += GetHookTypeString(HookType::post_push_hook) + L"\n?\n" + pp.sPostPushHook + L"\n";
 	if (!pp.sPreRebaseHook.IsEmpty())
-		sHookString += GetHookTypeString(pre_rebase_hook) + L"\n?\n" + pp.sPreRebaseHook + L"\n";
+		sHookString += GetHookTypeString(HookType::pre_rebase_hook) + L"\n?\n" + pp.sPreRebaseHook + L"\n";
 	ParseHookString(sHookString, true);
 }
 
@@ -315,7 +315,7 @@ CTGitPath CHooks::AddMessageFileParam(CString& sCmd, const CString& message)
 
 bool CHooks::StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(start_commit_hook, workingTree);
+	auto it = FindItem(HookType::start_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -338,7 +338,7 @@ bool CHooks::StartCommit(HWND hWnd, const CString& workingTree, const CTGitPathL
 
 bool CHooks::PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathList& pathList, CString& message, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(pre_commit_hook, workingTree);
+	auto it = FindItem(HookType::pre_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -359,7 +359,7 @@ bool CHooks::PreCommit(HWND hWnd, const CString& workingTree, const CTGitPathLis
 
 bool CHooks::PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(post_commit_hook, workingTree);
+	auto it = FindItem(HookType::post_commit_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -380,7 +380,7 @@ bool CHooks::PostCommit(HWND hWnd, const CString& workingTree, bool amend, DWORD
 
 bool CHooks::PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(pre_push_hook, workingTree);
+	auto it = FindItem(HookType::pre_push_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -398,7 +398,7 @@ bool CHooks::PrePush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CSt
 
 bool CHooks::PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(post_push_hook, workingTree);
+	auto it = FindItem(HookType::post_push_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -416,7 +416,7 @@ bool CHooks::PostPush(HWND hWnd, const CString& workingTree, DWORD& exitcode, CS
 
 bool CHooks::PreRebase(HWND hWnd, const CString& workingTree, const CString& upstream, const CString& rebasedBranch, DWORD& exitcode, CString& error)
 {
-	auto it = FindItem(pre_rebase_hook, workingTree);
+	auto it = FindItem(HookType::pre_rebase_hook, workingTree);
 	if (it == end())
 		return false;
 	if (!ApproveHook(hWnd, it, exitcode))
@@ -434,13 +434,13 @@ bool CHooks::PreRebase(HWND hWnd, const CString& workingTree, const CString& ups
 	return true;
 }
 
-bool CHooks::IsHookPresent(hooktype t, const CString& workingTree)
+bool CHooks::IsHookPresent(HookType t, const CString& workingTree)
 {
 	auto it = FindItem(t, workingTree);
 	return it != end();
 }
 
-hookiterator CHooks::FindItem(hooktype t, const CString& workingTree)
+hookiterator CHooks::FindItem(HookType t, const CString& workingTree)
 {
 	hookkey key;
 	CTGitPath path = workingTree;

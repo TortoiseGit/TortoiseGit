@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2010, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +37,7 @@ public:
 	virtual ~SVG();
 
 	bool Save(const CString& path);
-	enum align {left, middle, right};
+	enum class Align {left, middle, right};
 
 	void StartGroup() { objects.push_back("<g>"); }
 	void EndGroup() { objects.push_back("</g>"); }
@@ -47,9 +48,9 @@ public:
 	void Polyline(const Gdiplus::PointF * points, int numPoints, Gdiplus::Color stroke, int penWidth);
 	void GradientRectangle(int x, int y, int width, int height, Gdiplus::Color topColor, Gdiplus::Color bottomColor, Gdiplus::Color stroke);
 	void Ellipse(int x, int y, int width, int height, Gdiplus::Color stroke, int penWidth, Gdiplus::Color fill);
-	void Text(int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text, int al=SVG::left);
+	void Text(int x, int y, LPCSTR font, int fontsize, bool italic, bool bold, Gdiplus::Color color, LPCSTR text, Align al = SVG::Align::left);
 private:
-	DWORD GetColor(Gdiplus::Color c) const;
+	static WORD GetColor(Gdiplus::Color c) noexcept { return (static_cast<DWORD>(c.GetRed()) << 16) | (static_cast<DWORD>(c.GetGreen()) << 8) | static_cast<DWORD>(c.GetBlue()); }
 
 	std::vector<CStringA>   objects;
 	int					 viewportWidth;

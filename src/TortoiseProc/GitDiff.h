@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2016-2018 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2018, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ public:
 	CGitDiff() = delete;
 
 	// if you change something here, also update SubmoduleDiffDlg.cpp and SubmoduleResolveConflictDlg.cpp!
-	enum ChangeType
+	enum class ChangeType
 	{
 		Unknown,
 		Identical,

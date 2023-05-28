@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2014 - TortoiseGit
+// Copyright (C) 2014, 2023 - TortoiseGit
 // Copyright (C) 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -61,11 +61,11 @@ bool CEditorConfigWrapper::Load(CString filename)
 		else if (!strcmp(name, "end_of_line"))
 		{
 			if (!strcmp(value, "lf"))
-				m_EndOfLine = EOL::EOL_LF;
+				m_EndOfLine = EOL::LF;
 			else if (!strcmp(value, "cr"))
-				m_EndOfLine = EOL::EOL_CR;
+				m_EndOfLine = EOL::CR;
 			else if (!strcmp(value, "crlf"))
-				m_EndOfLine = EOL::EOL_CRLF;
+				m_EndOfLine = EOL::CRLF;
 			else
 				m_EndOfLine = nullptr;
 		}

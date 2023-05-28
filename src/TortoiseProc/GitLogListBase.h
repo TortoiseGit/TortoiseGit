@@ -608,7 +608,7 @@ public:
 	static LRESULT DrawListItemWithMatches(CFilterHelper* filter, CListCtrl& listCtrl, NMLVCUSTOMDRAW* pLVCD, CColors& colors);
 
 protected:
-	void paintGraphLane(HDC hdc,int laneHeight, int type, bool rolledUp, int x1, int x2,
+	void paintGraphLane(HDC hdc, int laneHeight, Lanes::LaneType type, bool rolledUp, int x1, int x2,
 									  const COLORREF& col,const COLORREF& activeColor, int top) ;
 	void DrawLine(HDC hdc, int x1, int y1, int x2, int y2){ ::MoveToEx(hdc, x1, y1, nullptr); ::LineTo(hdc, x2, y2); }
 	/**

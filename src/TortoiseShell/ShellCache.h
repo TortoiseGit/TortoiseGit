@@ -30,14 +30,14 @@
 
 using Locker = CComCritSecLock<CComCriticalSection>;
 
-enum tristate_t
+enum class Tristate
 {
 	/** state known to be false (the constant does not evaulate to false) */
-	tristate_false = 2,
+	False = 2,
 	/** state known to be true */
-	tristate_true,
+	True,
 	/** state could be true or false */
-	tristate_unknown
+	Unknown
 };
 
 /**
@@ -113,13 +113,13 @@ private:
 			bool recursive;
 
 			/// this is an "include" specification
-			tristate_t included;
+			Tristate included;
 
 			/// if @ref recursive is not set, this is
 			/// the parent path status being passed down
 			/// combined with the information of other
 			/// entries for the same @ref path.
-			tristate_t subPathIncluded;
+			Tristate subPathIncluded;
 
 			/// do entries for sub-paths exist?
 			bool hasSubFolderEntries;
@@ -161,7 +161,7 @@ private:
 		/// excluded: C:, C:\some\deep\path
 		/// include: C:\some
 		/// lookup for C:\some\deeper\path
-		tristate_t IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const;
+		Tristate IsPathAllowed(LPCWSTR path, TData::const_iterator begin, TData::const_iterator end) const;
 
 	public:
 		/// construction
@@ -171,7 +171,7 @@ private:
 		void Refresh();
 
 		/// data access
-		tristate_t IsPathAllowed(LPCWSTR path) const;
+		Tristate IsPathAllowed(LPCWSTR path) const;
 	};
 
 	friend bool operator< (const CPathFilter::SEntry& rhs, const std::pair<LPCWSTR, size_t>& lhs);

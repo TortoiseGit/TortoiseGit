@@ -119,20 +119,20 @@ public:
 	class WC_File_NotificationData : public NotificationData
 	{
 	public:
-		enum git_wc_notify_action_t
+		enum class Git_WC_Notify_Action
 		{
-			git_wc_notify_add,
-			git_wc_notify_resolved,
-			git_wc_notify_revert,
-			git_wc_notify_checkout,
-			git_wc_notify_lfs_lock,
-			git_wc_notify_lfs_unlock,
+			Add,
+			Resolved,
+			Revert,
+			Checkout,
+			LFS_Lock,
+			LFS_Unlock,
 		};
 
-		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);
+		WC_File_NotificationData(const CTGitPath& path, Git_WC_Notify_Action action);
 		void SetColorCode(CColors& colors) override;
 
-		git_wc_notify_action_t action;
+		Git_WC_Notify_Action action;
 
 		void GetContextMenu(CIconMenu& popup, ContextMenuActionList& actions) override;
 		void HandleDblClick() const override;

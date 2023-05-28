@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2019 - TortoiseGit
+// Copyright (C) 2019, 2023 - TortoiseGit
 // Copyright (C) 2006-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -37,9 +37,9 @@ CBottomView::~CBottomView()
 }
 
 
-void CBottomView::AddContextItems(CIconMenu& popup, DiffStates state)
+void CBottomView::AddContextItems(CIconMenu& popup, DiffState state)
 {
-	const bool bShow = HasSelection() && (state != DIFFSTATE_UNKNOWN);
+	const bool bShow = HasSelection() && (state != DiffState::Unknown);
 	if (!bShow)
 		return;
 
@@ -61,7 +61,7 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndView->GetViewData(viewLine);
-		if ((lineData.ending != EOL_NOENDING) || (viewLine < (GetViewCount() - 1) && lineData.state != DIFFSTATE_CONFLICTEMPTY && lineData.state != DIFFSTATE_IDENTICALREMOVED))
+		if ((lineData.ending != EOL::NoEnding) || (viewLine < (GetViewCount() - 1) && lineData.state != DiffState::ConflictEmpty && lineData.state != DiffState::IdenticalRemoved))
 			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
@@ -71,9 +71,9 @@ void CBottomView::UseBlock(CBaseView * pwndView, int nFirstViewLine, int nLastVi
 	// make sure previous (non empty) line have EOL set
 	for (int nCheckViewLine = nFirstViewLine-1; nCheckViewLine > 0; nCheckViewLine--)
 	{
-		if (!IsViewLineEmpty(nCheckViewLine) && GetViewState(nCheckViewLine) != DIFFSTATE_IDENTICALREMOVED)
+		if (!IsViewLineEmpty(nCheckViewLine) && GetViewState(nCheckViewLine) != DiffState::IdenticalRemoved)
 		{
-			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
+			if (GetViewLineEnding(nCheckViewLine) == EOL::NoEnding)
 			{
 				SetViewLineEnding(nCheckViewLine, m_lineendings);
 				SetModified();
@@ -114,13 +114,13 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	for (int viewLine = nFirstViewLine; viewLine <= nLastViewLine; viewLine++)
 	{
 		viewdata lineData = pwndFirst->GetViewData(viewLine);
-		if ((lineData.ending != EOL_NOENDING) || (viewLine < (GetViewCount() - 1) && lineData.state != DIFFSTATE_CONFLICTEMPTY && lineData.state != DIFFSTATE_IDENTICALREMOVED))
+		if ((lineData.ending != EOL::NoEnding) || (viewLine < (GetViewCount() - 1) && lineData.state != DiffState::ConflictEmpty && lineData.state != DiffState::IdenticalRemoved))
 			lineData.ending = m_lineendings;
 		lineData.state = ResolveState(lineData.state);
 		SetViewData(viewLine, lineData);
 		if (!IsStateEmpty(pwndFirst->GetViewState(viewLine)))
 		{
-			pwndFirst->SetViewState(viewLine, DIFFSTATE_YOURSADDED); // this is improper (may be DIFFSTATE_THEIRSADDED) but seems not to produce any visible bug
+			pwndFirst->SetViewState(viewLine, DiffState::YoursAdded); // this is improper (may be DiffState::TheirsAdded) but seems not to produce any visible bug
 		}
 	}
 	// make sure previous (non empty) line have EOL set
@@ -128,7 +128,7 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 	{
 		if (!IsViewLineEmpty(nCheckViewLine))
 		{
-			if (GetViewLineEnding(nCheckViewLine) == EOL_NOENDING)
+			if (GetViewLineEnding(nCheckViewLine) == EOL::NoEnding)
 			{
 				SetViewLineEnding(nCheckViewLine, m_lineendings);
 			}
@@ -147,7 +147,7 @@ void CBottomView::UseBothBlocks(CBaseView * pwndFirst, CBaseView * pwndLast)
 		InsertViewData(nViewIndex, lineData);
 		if (!IsStateEmpty(pwndLast->GetViewState(viewLine)))
 		{
-			pwndLast->SetViewState(viewLine, DIFFSTATE_THEIRSADDED); // this is improper but seems not to produce any visible bug
+			pwndLast->SetViewState(viewLine, DiffState::TheirsAdded); // this is improper but seems not to produce any visible bug
 		}
 	}
 	SaveUndoStep();
