@@ -30,7 +30,7 @@ public:
 
 	bool Load(const CString& filename, CString& err);
 
-	typedef struct Version_
+	struct Version
 	{
 		CString version;
 		CString version_for_filename;
@@ -38,7 +38,7 @@ public:
 		unsigned int minor = 0;
 		unsigned int micro = 0;
 		unsigned int build = 0;
-	} Version;
+	};
 	Version GetTortoiseGitVersion();
 
 	CString GetTortoiseGitInfoText();

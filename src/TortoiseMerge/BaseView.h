@@ -28,11 +28,11 @@
 #include "IconMenu.h"
 #include "FindDlg.h"
 
-typedef struct inlineDiffPos
+struct inlineDiffPos
 {
 	apr_off_t		start;
 	apr_off_t		end;
-} inlineDiffPos;
+};
 
 
 /**

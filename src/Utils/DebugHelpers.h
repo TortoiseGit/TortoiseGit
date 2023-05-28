@@ -1,5 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -40,13 +41,13 @@ CString GetLastErrorMessageString();
 
 #define MS_VC_EXCEPTION 0x406d1388
 
-typedef struct tagTHREADNAME_INFO
+struct THREADNAME_INFO
 {
 	DWORD dwType;        // must be 0x1000
 	LPCSTR szName;       // pointer to name (in same addr space)
 	DWORD dwThreadID;    // thread ID (-1 caller thread)
 	DWORD dwFlags;       // reserved for future use, most be zero
-} THREADNAME_INFO;
+};
 
 /**
  * Sets a name for a thread. The Thread name must not exceed 9 characters!

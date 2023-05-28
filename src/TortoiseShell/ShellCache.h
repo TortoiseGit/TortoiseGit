@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019, 2021 - TortoiseGit
+// Copyright (C) 2012-2019, 2021-2023 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@
 
 using Locker = CComCritSecLock<CComCriticalSection>;
 
-typedef enum tristate_t
+enum tristate_t
 {
 	/** state known to be false (the constant does not evaulate to false) */
 	tristate_false = 2,
@@ -38,7 +38,7 @@ typedef enum tristate_t
 	tristate_true,
 	/** state could be true or false */
 	tristate_unknown
-} tristate_t;
+};
 
 /**
  * \ingroup TortoiseShell

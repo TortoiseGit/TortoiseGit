@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2015, 2017, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -238,15 +238,15 @@ bool CPicture::TryLoadFreeImage(const std::wstring& sFilePathName)
 	CAutoLibrary hFreeImageLib = LoadLibrary(L"FreeImage.dll");
 
 	// FreeImage DLL functions
-	typedef const char*(__stdcall * FreeImage_GetVersion_t)(void);
-	typedef int(__stdcall * FreeImage_GetFileType_t)(const wchar_t* filename, int size);
-	typedef int(__stdcall * FreeImage_GetFIFFromFilename_t)(const wchar_t* filename);
-	typedef void*(__stdcall * FreeImage_Load_t)(int format, const wchar_t* filename, int flags);
-	typedef void(__stdcall * FreeImage_Unload_t)(void* dib);
-	typedef int(__stdcall * FreeImage_GetColorType_t)(void* dib);
-	typedef unsigned(__stdcall * FreeImage_GetWidth_t)(void* dib);
-	typedef unsigned(__stdcall * FreeImage_GetHeight_t)(void* dib);
-	typedef void(__stdcall * FreeImage_ConvertToRawBits_t)(BYTE * bits, void* dib, int pitch, unsigned bpp, unsigned red_mask, unsigned green_mask, unsigned blue_mask, BOOL topdown);
+	using FreeImage_GetVersion_t = const char*(__stdcall*)(void);
+	using FreeImage_GetFileType_t = int(__stdcall*)(const wchar_t* filename, int size);
+	using FreeImage_GetFIFFromFilename_t = int(__stdcall*)(const wchar_t* filename);
+	using FreeImage_Load_t = void*(__stdcall*)(int format, const wchar_t* filename, int flags);
+	using FreeImage_Unload_t = void(__stdcall*)(void* dib);
+	using FreeImage_GetColorType_t = int(__stdcall*)(void* dib);
+	using FreeImage_GetWidth_t = unsigned(__stdcall*)(void* dib);
+	using FreeImage_GetHeight_t = unsigned(__stdcall*)(void* dib);
+	using FreeImage_ConvertToRawBits_t = void(__stdcall*)(BYTE* bits, void* dib, int pitch, unsigned bpp, unsigned red_mask, unsigned green_mask, unsigned blue_mask, BOOL topdown);
 
 	//FreeImage_GetVersion_t FreeImage_GetVersion = nullptr;
 	FreeImage_GetFileType_t FreeImage_GetFileType = nullptr;

@@ -220,7 +220,7 @@ public:
 	BOOL FindAndSetGitExePath(BOOL bFallback);
 	BOOL m_bInitialized;
 
-	typedef enum
+	enum LIBGIT2_CMD
 	{
 		GIT_CMD_CLONE,
 		GIT_CMD_FETCH,
@@ -239,7 +239,7 @@ public:
 		GIT_CMD_LOGLISTDIFF,
 		GIT_CMD_BRANCH_CONTAINS,
 		LAST_VALUE,
-	} LIBGIT2_CMD;
+	};
 	static_assert(LIBGIT2_CMD::LAST_VALUE < sizeof(DWORD) * 8, "too many flags for storing them in a DWORD bitfield");
 	bool UsingLibGit2(LIBGIT2_CMD cmd) const;
 	/**
@@ -288,11 +288,11 @@ private:
 	CComAutoCriticalSection	m_critSecThreadMap;
 	std::map<DWORD, HANDLE>	m_AsyncReadStdErrThreadMap;
 	static DWORD WINAPI AsyncReadStdErrThread(LPVOID lpParam);
-	typedef struct AsyncReadStdErrThreadArguments
+	struct ASYNCREADSTDERRTHREADARGS
 	{
 		HANDLE fileHandle;
 		CGitCall* pcall;
-	} ASYNCREADSTDERRTHREADARGS, *PASYNCREADSTDERRTHREADARGS;
+	};
 	CString GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 
 public:

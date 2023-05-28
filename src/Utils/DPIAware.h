@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2020 - TortoiseGit
+// Copyright (C) 2018-2020, 2023 - TortoiseGit
 // Copyright (C) 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -196,10 +196,10 @@ private:
 	}
 
 private:
-	typedef UINT STDAPICALLTYPE GetDpiForWindowFN(HWND hWnd);
-	typedef UINT STDAPICALLTYPE GetDpiForSystemFN();
-	typedef UINT STDAPICALLTYPE GetSystemMetricsForDpiFN(int nIndex, UINT dpi);
-	typedef UINT STDAPICALLTYPE SystemParametersInfoForDpiFN(UINT uiAction,UINT uiParam, PVOID pvParam, UINT fWinIni, UINT dpi);
+	using GetDpiForWindowFN = UINT(STDAPICALLTYPE)(HWND hWnd);
+	using GetDpiForSystemFN = UINT(STDAPICALLTYPE)();
+	using GetSystemMetricsForDpiFN = UINT(STDAPICALLTYPE)(int nIndex, UINT dpi);
+	using SystemParametersInfoForDpiFN = UINT(STDAPICALLTYPE)(UINT uiAction,UINT uiParam, PVOID pvParam, UINT fWinIni, UINT dpi);
 
 	GetDpiForWindowFN* pfnGetDpiForWindow;
 	GetDpiForSystemFN* pfnGetDpiForSystem;

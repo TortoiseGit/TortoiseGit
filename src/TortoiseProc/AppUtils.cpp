@@ -3532,7 +3532,7 @@ int CAppUtils::GetMsysgitVersion(HWND hWnd)
 
 void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 {
-	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
+	using SHGPSFW = HRESULT(WINAPI*)(HWND hwnd, REFIID riid, void** ppv);
 
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
 

@@ -200,11 +200,10 @@ bool CJobScheduler::CThreadPool::RemoveStarving (CJobScheduler* scheduler)
 {
     CCriticalSectionLock lock (mutex);
 
-    typedef std::vector<CJobScheduler*>::iterator TI;
-    TI begin = starving.begin();
-    TI end = starving.end();
+    auto begin = starving.begin();
+    auto end = starving.end();
 
-    TI newEnd = std::remove_copy (begin, end, begin, scheduler);
+    auto newEnd = std::remove_copy (begin, end, begin, scheduler);
     if (newEnd == end)
         return false;
 

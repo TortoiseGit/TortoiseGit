@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -98,18 +99,18 @@ private:
 	DarkModeHelper(const DarkModeHelper& t) = delete;
 	DarkModeHelper& operator=(const DarkModeHelper& t) = delete;
 
-	typedef void(WINAPI* AllowDarkModeForAppFPN)(BOOL allow);
-	typedef PreferredAppMode(WINAPI* SetPreferredAppModeFPN)(PreferredAppMode appMode);
-	typedef void(WINAPI* AllowDarkModeForWindowFPN)(HWND hwnd, BOOL allow);
-	typedef BOOL(WINAPI* ShouldAppsUseDarkModeFPN)();
-	typedef BOOL(WINAPI* IsDarkModeAllowedForWindowFPN)(HWND hwnd);
-	typedef BOOL(WINAPI* IsDarkModeAllowedForAppFPN)();
-	typedef BOOL(WINAPI* ShouldSystemUseDarkModeFPN)();
-	typedef void(WINAPI* RefreshImmersiveColorPolicyStateFN)();
-	typedef BOOL(WINAPI* GetIsImmersiveColorUsingHighContrastFN)(IMMERSIVE_HC_CACHE_MODE mode);
-	typedef void(WINAPI* FlushMenuThemesFN)();
-	typedef HTHEME(WINAPI* OpenNCThemeDataFPN)(HWND hWnd, LPCWSTR pszClassList);
-	typedef BOOL(WINAPI* SetWindowCompositionAttributeFPN)(HWND hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
+	using AllowDarkModeForAppFPN = void(WINAPI*)(BOOL allow);
+	using SetPreferredAppModeFPN = PreferredAppMode(WINAPI*)(PreferredAppMode appMode);
+	using AllowDarkModeForWindowFPN   = void(WINAPI*)(HWND hwnd, BOOL allow);
+	using ShouldAppsUseDarkModeFPN = BOOL(WINAPI*)();
+	using IsDarkModeAllowedForWindowFPN = BOOL(WINAPI*)(HWND hwnd);
+	using IsDarkModeAllowedForAppFPN = BOOL(WINAPI*)();
+	using ShouldSystemUseDarkModeFPN = BOOL(WINAPI*)();
+	using RefreshImmersiveColorPolicyStateFN = void(WINAPI*)();
+	using GetIsImmersiveColorUsingHighContrastFN = BOOL(WINAPI*)(IMMERSIVE_HC_CACHE_MODE mode);
+	using FlushMenuThemesFN = void(WINAPI*)();
+	using OpenNcThemeDataFPN = HTHEME(WINAPI*)(HWND hWnd, LPCWSTR pszClassList);
+	using SetWindowCompositionAttributeFPN = BOOL(WINAPI*)(HWND hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
 
 	AllowDarkModeForAppFPN m_pAllowDarkModeForApp = nullptr;
 	SetPreferredAppModeFPN m_pSetPreferredAppMode = nullptr;

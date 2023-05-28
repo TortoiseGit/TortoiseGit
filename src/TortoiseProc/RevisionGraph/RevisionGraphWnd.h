@@ -312,7 +312,7 @@ private:
 	DWORD			GetHoverGlyphs (CPoint point) const;
 	PointF			cutPoint(ogdf::node v, double lw, const PointF& ps, const PointF& pt) const;
 
-	typedef PointF TCutRectangle[8];
+	using TCutRectangle = PointF[8];
 	void			CutawayPoints (const RectF& rect, float cutLen, TCutRectangle& result) const;
 	enum
 	{

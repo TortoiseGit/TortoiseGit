@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2014, 2016-2017, 2021 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2021-2023 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,13 +23,13 @@
 #include "TGitPath.h"
 #include "SmartHandle.h"
 
-typedef struct FileStatusCacheEntry
+struct FileStatusCacheEntry
 {
 	git_wc_status_kind		status;
 	int						askedcounter;
 	bool					assumeValid;
 	bool					skipWorktree;
-} FileStatusCacheEntry;
+};
 
 #define GITFOLDERSTATUS_CACHETIMES				10
 #define GITFOLDERSTATUS_CACHETIMEOUT			2000

@@ -40,7 +40,7 @@
 #define REFRESHTIMER	101
 #define FILLPATCHVTIMER	102
 
-typedef enum
+enum GIT_POSTCOMMIT_CMD
 {
 	GIT_POSTCOMMIT_CMD_NOTHING,
 	GIT_POSTCOMMIT_CMD_RECOMMIT,
@@ -48,7 +48,7 @@ typedef enum
 	GIT_POSTCOMMIT_CMD_DCOMMIT,
 	GIT_POSTCOMMIT_CMD_PULL,
 	GIT_POSTCOMMIT_CMD_CREATETAG,
-} GIT_POSTCOMMIT_CMD;
+};
 
 
 /**
@@ -252,12 +252,12 @@ private:
 	CMenuButton			m_ctrlOkButton;
 	CRegDWORD			m_regLastAction;
 	void				PrepareOkButton();
-	typedef struct
+	struct ACCELLERATOR
 	{
 		int id;
 		int cnt;
 		int wmid;
-	} ACCELLERATOR;
+	};
 	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccelOkButton;
 

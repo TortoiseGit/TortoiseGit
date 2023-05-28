@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2018-2022 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2023 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -684,11 +684,11 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 	RegCloseKey(hKey);
 }
 
-typedef enum {
+enum COMMAND {
 	NONE = 0,
 	NEW_LINE,
 	TABULATION,
-} COMMAND;
+};
 
 CSize DrawText(CDC* pDC, CRect rect, const CString& str, LOGFONT font, BOOL bCalculate = FALSE)
 {
@@ -960,7 +960,7 @@ void CMessageBox::OnButton2()
 		m_bChecked = FALSE;
 	if ((m_uButton2Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
-		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
+		using FPHH = HWND(WINAPI*)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp = nullptr; // Function pointer
 		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(L"HHCtrl.ocx");
 		HWND hHelp = nullptr;
@@ -990,7 +990,7 @@ void CMessageBox::OnButton3()
 		m_bChecked = FALSE;
 	if ((m_uButton3Ret == IDHELP)&&(!m_sHelpPath.IsEmpty()))
 	{
-		typedef HWND (WINAPI* FPHH)(HWND, LPCWSTR, UINT, DWORD);
+		using FPHH = HWND(WINAPI*)(HWND, LPCWSTR, UINT, DWORD);
 		FPHH pHtmlHelp = nullptr; // Function pointer
 		CAutoLibrary hInstHtmlHelp = AtlLoadSystemLibraryUsingFullPath(L"HHCtrl.ocx");
 		HWND hHelp = nullptr;

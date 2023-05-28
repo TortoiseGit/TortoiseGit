@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006. 2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -34,11 +35,11 @@
 #define CW_BOTTOMALIGN 4
 #define SPS_VERTICAL 1
 #define SPS_HORIZONTAL 2
-typedef struct SPC_NMHDR
+struct SPC_NMHDR
 {
 	NMHDR hdr;
 	int delta;
-} SPC_NMHDR;
+};
 
 class CSplitterControl : public CStatic
 {

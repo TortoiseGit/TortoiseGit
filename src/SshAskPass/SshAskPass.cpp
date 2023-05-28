@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,7 +101,7 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 void MarkWindowAsUnpinnable(HWND hWnd)
 {
-	typedef HRESULT (WINAPI *SHGPSFW) (HWND hwnd,REFIID riid,void** ppv);
+	using SHGPSFW = HRESULT(WINAPI*)(HWND hwnd, REFIID riid, void** ppv);
 
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"Shell32.dll");
 

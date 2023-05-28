@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@
 #include "UnIgnoreCommand.h"
 #endif
 
-typedef enum
+enum TGitCommand
 {
 	cmdAbout,
 	cmdAdd,
@@ -162,7 +162,7 @@ typedef enum
 	cmdWorktreeCreate,
 	cmdWorktreeList,
 	cmdDropWorktreeCreate,
-} TGitCommand;
+};
 
 static const struct CommandInfo
 {

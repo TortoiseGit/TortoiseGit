@@ -43,7 +43,7 @@
 #define LOG_HEADER_ORDER_TIMER 104
 #define FILEFILTER_TIMER	105
 
-typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
+using GENERICCOMPAREFN = int(__cdecl *)(const void* elem1, const void* elem2);
 
 enum AllBranchType
 {

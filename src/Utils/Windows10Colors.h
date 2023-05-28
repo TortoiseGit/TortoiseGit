@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +40,7 @@ public:
 	 * RGBA color. Red is in the LSB, Alpha in the MSB.
 	 * You can use GetRValue() et al to access individual components.
 	 */
-	typedef DWORD RGBA;
+	using RGBA = DWORD;
 
 	/// Accent color shades
 	struct AccentColor
@@ -111,9 +112,8 @@ private:
 	HMODULE            winrt          = 0;
 	HMODULE            winrt_string   = 0;
 
-	typedef HRESULT(STDAPICALLTYPE* pfnWindowsCreateStringReference)(
-		PCWSTR sourceString, UINT32 length, HSTRING_HEADER* hstringHeader, HSTRING* string);
+	using pfnWindowsCreateStringReference =  HRESULT(STDAPICALLTYPE*)(PCWSTR sourceString, UINT32 length, HSTRING_HEADER* hstringHeader, HSTRING* string);
 	pfnWindowsCreateStringReference pWindowsCreateStringReference = nullptr;
-	typedef HRESULT(WINAPI* pfnRoActivateInstance)(HSTRING activatableClassId, IInspectable** instance);
+	using pfnRoActivateInstance = HRESULT(WINAPI*)(HSTRING activatableClassId, IInspectable** instance);
 	pfnRoActivateInstance pRoActivateInstance = nullptr;
 };

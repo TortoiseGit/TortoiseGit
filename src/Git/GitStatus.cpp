@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,11 +156,11 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 
 using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
-typedef struct CGitRepoLists
+struct CGitRepoLists
 {
 	SHARED_INDEX_PTR pIndex;
 	SHARED_TREE_PTR pTree;
-} CGitRepoLists;
+};
 
 static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, const CString& path, git_wc_status2_t& status, BOOL IsFull, BOOL IsIgnore, BOOL update)
 {

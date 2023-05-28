@@ -395,15 +395,15 @@ void CRevisionGraphWnd::DrawConnections(GraphicsDevice& graphics, const CRect& /
 	}
 }
 
-typedef struct ColorsAndBrushes
+struct ColorsAndBrushes
 {
 	Gdiplus::Color background;
 	Gdiplus::Color brightColor;
 	Gdiplus::Pen pen;
 	Gdiplus::SolidBrush brush;
-} ColorsAndBrushes;
+};
 
-typedef struct AllColorsAndBrushes
+struct AllColorsAndBrushes
 {
 	SolidBrush blackbrush;
 	ColorsAndBrushes Commits;
@@ -418,7 +418,7 @@ typedef struct AllColorsAndBrushes
 	ColorsAndBrushes Notes;
 	ColorsAndBrushes SuperProjectPointer;
 	ColorsAndBrushes Other;
-} AllColorsAndBrushes;
+};
 
 inline static Gdiplus::Color GetColorRefColor(COLORREF colRef)
 {

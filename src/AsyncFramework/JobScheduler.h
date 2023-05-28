@@ -90,7 +90,7 @@ private:
 
     /// jobs
 
-    typedef std::pair<IJob*, bool> TJob;
+    using TJob = std::pair<IJob*, bool>;
 
     /**
      * Very low-overhead job queue class.

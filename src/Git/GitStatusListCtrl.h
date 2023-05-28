@@ -131,7 +131,7 @@ GITSLC_SHOWINCOMPLETE|GITSLC_SHOWEXTERNAL|GITSLC_SHOWINEXTERNALS)
 
 #define OVL_RESTORE			1
 
-typedef int (__cdecl *GENERICCOMPAREFN)(const void * elem1, const void * elem2);
+using GENERICCOMPAREFN = int (__cdecl*)(const void * elem1, const void * elem2);
 
 class CGitStatusListCtrlDropTarget;
 class CIconMenu;

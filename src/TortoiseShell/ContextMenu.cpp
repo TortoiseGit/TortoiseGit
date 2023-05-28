@@ -2420,7 +2420,7 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 				// tree view
 				if (!psiItemArray)
 				{
-					typedef DPI_AWARENESS_CONTEXT(WINAPI * SetThreadDpiAwarenessContextProc)(DPI_AWARENESS_CONTEXT);
+					using SetThreadDpiAwarenessContextProc = DPI_AWARENESS_CONTEXT(WINAPI*)(DPI_AWARENESS_CONTEXT);
 					SetThreadDpiAwarenessContextProc SetThreadDpiAwarenessContext = reinterpret_cast<SetThreadDpiAwarenessContextProc>(GetProcAddress(GetModuleHandle(L"user32"), "SetThreadDpiAwarenessContext"));
 					DPI_AWARENESS_CONTEXT context = DPI_AWARENESS_CONTEXT_UNAWARE;
 					// the shell disables dpi awareness for extensions, so enable them explicitly

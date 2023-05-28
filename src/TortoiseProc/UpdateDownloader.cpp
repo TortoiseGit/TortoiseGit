@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019-2022 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ CUpdateDownloader::~CUpdateDownloader()
 
 bool CUpdateDownloader::GetTrueWindowsVersion(OSVERSIONINFOEX& pOSversion)
 {
-	typedef LONG(WINAPI * RtlGetVersion_FUNC)(OSVERSIONINFOEXW*);
+	using RtlGetVersion_FUNC = LONG(WINAPI*)(OSVERSIONINFOEXW*);
 
 	CAutoLibrary hNTdllDll = ::LoadLibrary(L"ntdll.dll");
 	if (!hNTdllDll)

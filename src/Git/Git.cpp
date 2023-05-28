@@ -395,7 +395,7 @@ BOOL CGit::IsInitRepos()
 
 DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 {
-	auto pDataArray = static_cast<PASYNCREADSTDERRTHREADARGS>(lpParam);
+	auto pDataArray = static_cast<ASYNCREADSTDERRTHREADARGS*>(lpParam);
 
 	DWORD readnumber;
 	char data[CALL_OUTPUT_READ_CHUNK_SIZE];
@@ -2030,10 +2030,10 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	return ret;
 }
 
-typedef struct map_each_ref_payload {
-	git_repository * repo;
-	MAP_HASH_NAME * map;
-} map_each_ref_payload;
+struct map_each_ref_payload {
+	git_repository* repo = nullptr;
+	MAP_HASH_NAME* map = nullptr;
+};
 
 int libgit2_addto_map_each_ref_fn(git_reference* rawref, void* payload)
 {

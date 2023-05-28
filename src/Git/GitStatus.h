@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018 - TortoiseGit
+// Copyright (C) 2008-2018, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@ class CGitFileName;
 
 #include "GitHash.h"
 
-typedef enum type_git_wc_status_kind
+enum git_wc_status_kind
 {
 	git_wc_status_none,
 	git_wc_status_unversioned,
@@ -36,19 +36,19 @@ typedef enum type_git_wc_status_kind
 	git_wc_status_added,
 	git_wc_status_conflicted,
 	git_wc_status_unknown, // should be last, see TGitCache/CacheInterface.h
-}git_wc_status_kind;
+};
 
-typedef struct git_wc_status2_t
+struct git_wc_status2_t
 {
 	git_wc_status_kind status;
 
 	bool assumeValid;
 	bool skipWorktree;
-} git_wc_status2;
+};
 
 #define MAX_STATUS_STRING_LENGTH		256
 
-typedef BOOL (*FILL_STATUS_CALLBACK)(const CString& path, const git_wc_status2_t* status, bool isDir, __int64 lastwritetime, void* baton);
+using FILL_STATUS_CALLBACK = BOOL(const CString& path, const git_wc_status2_t* status, bool isDir, __int64 lastwritetime, void* baton);
 
 static CString CombinePath(const CString& part1, const CString& part2)
 {

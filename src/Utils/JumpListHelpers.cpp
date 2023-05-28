@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2009-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +27,7 @@
 HRESULT SetAppID(LPCWSTR appID)
 {
 	HRESULT hRes = S_FALSE;
-	typedef HRESULT STDAPICALLTYPE SetCurrentProcessExplicitAppUserModelIDFN(PCWSTR AppID);
+	using SetCurrentProcessExplicitAppUserModelIDFN = HRESULT(PCWSTR AppID);
 	CAutoLibrary hShell = AtlLoadSystemLibraryUsingFullPath(L"shell32.dll");
 	if (hShell)
 	{

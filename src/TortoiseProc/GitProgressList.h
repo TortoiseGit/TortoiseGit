@@ -30,12 +30,12 @@
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works
  */
-typedef enum
+enum ProgressOptions
 {
 	ProgOptNone = 0,
 	/// Don't actually do the merge - just practice it
 	ProgOptDryRun = 0x04,
-} ProgressOptions;
+};
 
 // CGitProgressList
 //struct git_indexer_progress;
@@ -119,7 +119,7 @@ public:
 	class WC_File_NotificationData : public NotificationData
 	{
 	public:
-		typedef enum
+		enum git_wc_notify_action_t
 		{
 			git_wc_notify_add,
 			git_wc_notify_resolved,
@@ -127,7 +127,7 @@ public:
 			git_wc_notify_checkout,
 			git_wc_notify_lfs_lock,
 			git_wc_notify_lfs_unlock,
-		} git_wc_notify_action_t;
+		};
 
 		WC_File_NotificationData(const CTGitPath& path, git_wc_notify_action_t action);
 		void SetColorCode(CColors& colors) override;

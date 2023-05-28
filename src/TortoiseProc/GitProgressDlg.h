@@ -90,11 +90,11 @@ private:
 	CBrush					m_background_brush;
 	GitProgressAutoClose	m_AutoClose;
 
-	typedef struct {
+	struct ACCELLERATOR {
 		int id;
 		int cnt;
 		int wmid;
-	} ACCELLERATOR;
+	};
 	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccel;
 	LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;

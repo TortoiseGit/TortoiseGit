@@ -4,7 +4,7 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020, 2023
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
    * auto extract filenames of attachments
@@ -53,18 +53,18 @@
 
 using TStrStrMap = std::map<CString, CString>;
 
-typedef struct MailAddress
+struct MailAddress
 {
 	CString email;
 	CString name;
 
-	MailAddress() {};
+	MailAddress() = default;
 
 	MailAddress(const CString& email, const CString& name)
 	: email(email)
 	, name(name)
 	{}
-} MailAddress;
+};
 
 // ===========================================================================
 // CMailMsg

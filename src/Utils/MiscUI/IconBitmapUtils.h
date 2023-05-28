@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2009, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,9 +24,9 @@
 #include <GdiPlus.h>
 #pragma warning(pop)
 
-typedef HRESULT (WINAPI *FN_GetBufferedPaintBits) (HPAINTBUFFER hBufferedPaint, RGBQUAD **ppbBuffer, int *pcxRow);
-typedef HPAINTBUFFER (WINAPI *FN_BeginBufferedPaint) (HDC hdcTarget, const RECT *prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS *pPaintParams, HDC *phdc);
-typedef HRESULT (WINAPI *FN_EndBufferedPaint) (HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
+using FN_GetBufferedPaintBits = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, RGBQUAD** ppbBuffer, int* pcxRow);
+using FN_BeginBufferedPaint = HPAINTBUFFER(WINAPI*)(HDC hdcTarget, const RECT* prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS* pPaintParams, HDC* phdc);
+using FN_EndBufferedPaint = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
 
 
 /**

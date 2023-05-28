@@ -26,7 +26,7 @@
  * \ingroup TortoiseProc
  * enumeration of all client hook types
  */
-typedef enum hooktype
+enum hooktype
 {
 	unknown_hook,
 	start_commit_hook,
@@ -36,7 +36,7 @@ typedef enum hooktype
 	pre_push_hook,
 	post_push_hook,
 	pre_rebase_hook,
-} hooktype;
+};
 
 /**
  * \ingroup TortoiseProc
@@ -69,7 +69,7 @@ public:
  * helper struct, used as the value to the std::map we
  * store the data for the client hook scripts in.
  */
-typedef struct hookcmd
+struct hookcmd
 {
 	CString			commandline;
 	bool			bWait;
@@ -79,7 +79,7 @@ typedef struct hookcmd
 	bool			bApproved; ///< user explicitly approved
 	bool			bStored; ///< use decision is stored in reg
 	CString			sRegKey;
-} hookcmd;
+};
 
 using hookiterator = std::map<hookkey, hookcmd>::iterator;
 using const_hookiterator = std::map<hookkey, hookcmd>::const_iterator;
