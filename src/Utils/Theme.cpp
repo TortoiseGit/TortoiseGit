@@ -315,13 +315,13 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 			format.crTextColor = darkTextColor;
 			format.crBackColor = darkBkColor;
 			SendMessage(hwnd, EM_SETCHARFORMAT, SCF_ALL, reinterpret_cast<LPARAM>(&format));
-			SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, format.crBackColor);
+			SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, static_cast<LPARAM>(format.crBackColor));
 		}
 		else if (wcscmp(szWndClassName, PROGRESS_CLASS) == 0)
 		{
 			SetWindowTheme(hwnd, L"", L"");
-			SendMessage(hwnd, PBM_SETBKCOLOR, 0, darkBkColor);
-			SendMessage(hwnd, PBM_SETBARCOLOR, 0, RGB(50, 50, 180));
+			SendMessage(hwnd, PBM_SETBKCOLOR, 0, static_cast<LPARAM>(darkBkColor));
+			SendMessage(hwnd, PBM_SETBARCOLOR, 0, static_cast<LPARAM>(RGB(50, 50, 180)));
 		}
 		else if (wcscmp(szWndClassName, REBARCLASSNAME) == 0)
 			SetWindowTheme(hwnd, L"DarkModeNavBar", nullptr);
@@ -429,7 +429,7 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 			format.crTextColor = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOWTEXT));
 			format.crBackColor = CTheme::Instance().GetThemeColor(GetSysColor(COLOR_WINDOW));
 			SendMessage(hwnd, EM_SETCHARFORMAT, SCF_ALL, reinterpret_cast<LPARAM>(&format));
-			SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, format.crBackColor);
+			SendMessage(hwnd, EM_SETBKGNDCOLOR, 0, static_cast<LPARAM>(format.crBackColor));
 		}
 		else if (wcscmp(szWndClassName, PROGRESS_CLASS) == 0)
 			SetWindowTheme(hwnd, nullptr, nullptr);
@@ -497,7 +497,6 @@ LRESULT CTheme::ComboBoxSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 				*hbrBkgnd = CreateSolidBrush(darkBkColor);
 			return reinterpret_cast<LRESULT>(*hbrBkgnd);
 		}
-		break;
 	case WM_DRAWITEM:
 		{
 			auto pDIS = reinterpret_cast<LPDRAWITEMSTRUCT>(lParam);
@@ -569,10 +568,11 @@ LRESULT CTheme::MainSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPa
 				*hbrBkgnd = CreateSolidBrush(darkBkColor);
 			return reinterpret_cast<LRESULT>(*hbrBkgnd);
 		}
-		break;
 	case WM_DESTROY:
 	case WM_NCDESTROY:
 		RemoveWindowSubclass(hWnd, MainSubclassProc, SubclassID);
+		break;
+	default:
 		break;
 	}
 	return DefSubclassProc(hWnd, uMsg, wParam, lParam);
@@ -630,7 +630,6 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 			InvalidateRgn(hWnd, nullptr, FALSE);
 			return res;
 		}
-		break;
 	case WM_PAINT:
 		{
 			PAINTSTRUCT ps;
@@ -658,7 +657,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 						// into the DC and fake a drawing operation:
 						auto hFontOld = reinterpret_cast<HFONT>(SendMessage(hWnd, WM_GETFONT, 0L, 0));
 						if (hFontOld)
-							hFontOld = reinterpret_cast<HFONT>(SelectObject(hdc, hFontOld));
+							hFontOld = static_cast<HFONT>(SelectObject(hdc, hFontOld));
 
 						RECT rcDraw = rcClient;
 						DWORD dwFlags = DT_SINGLELINE;
@@ -686,7 +685,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 							// the buffered DC:
 							hFontOld = reinterpret_cast<HFONT>(SendMessage(hWnd, WM_GETFONT, 0L, 0));
 							if (hFontOld)
-								hFontOld = reinterpret_cast<HFONT>(SelectObject(hdcPaint, hFontOld));
+								hFontOld = static_cast<HFONT>(SelectObject(hdcPaint, hFontOld));
 
 							::SetBkColor(hdcPaint, darkBkColor);
 							::ExtTextOut(hdcPaint, 0, 0, ETO_OPAQUE, &rcClient, nullptr, 0, nullptr);
@@ -719,7 +718,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 							if (iLen)
 							{
 								iLen += 5; // 1 for terminating zero, 4 for DT_MODIFYSTRING
-								auto szText = reinterpret_cast<LPWSTR>(LocalAlloc(LPTR, sizeof(WCHAR) * iLen));
+								auto szText = static_cast<LPWSTR>(LocalAlloc(LPTR, sizeof(WCHAR) * iLen));
 								if (szText)
 								{
 									iLen = GetWindowTextW(hWnd, szText, iLen);
@@ -762,7 +761,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 						BP_PAINTPARAMS params = { sizeof(BP_PAINTPARAMS) };
 						params.dwFlags = BPPF_ERASE;
 						HPAINTBUFFER hBufferedPaint = BeginBufferedPaint(hdc, &rcClient, BPBF_TOPDOWNDIB, &params, &hdcPaint);
-						if (hdcPaint)
+						if (hdcPaint && hBufferedPaint)
 						{
 							::SetBkColor(hdcPaint, darkBkColor);
 							::ExtTextOut(hdcPaint, 0, 0, ETO_OPAQUE, &rcClient, nullptr, 0, nullptr);
@@ -842,13 +841,13 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
 							HFONT hFontOld = reinterpret_cast<HFONT>(SendMessage(hWnd, WM_GETFONT, 0L, 0));
 							if (hFontOld)
-								hFontOld = reinterpret_cast<HFONT>(SelectObject(hdcPaint, hFontOld));
+								hFontOld = static_cast<HFONT>(SelectObject(hdcPaint, hFontOld));
 							int iLen = GetWindowTextLength(hWnd);
 
 							if (iLen)
 							{
 								iLen += 5; // 1 for terminating zero, 4 for DT_MODIFYSTRING
-								LPWSTR szText = reinterpret_cast<LPWSTR>(LocalAlloc(LPTR, sizeof(WCHAR) * iLen));
+								LPWSTR szText = static_cast<LPWSTR>(LocalAlloc(LPTR, sizeof(WCHAR) * iLen));
 								if (szText)
 								{
 									iLen = GetWindowTextW(hWnd, szText, iLen);
@@ -947,7 +946,6 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 			EndPaint(hWnd, &ps);
 			return 0;
 		}
-		break;
 	case WM_DESTROY:
 	case WM_NCDESTROY:
 		RemoveWindowSubclass(hWnd, ButtonSubclassProc, SubclassID);
@@ -1052,70 +1050,70 @@ void CTheme::RGBToHSB(COLORREF rgb, BYTE& hue, BYTE& saturation, BYTE& brightnes
 	if (maxRGB)
 		s = (255.0 * delta) / maxRGB;
 
-	if (BYTE(s) != 0)
+	if (static_cast<BYTE>(s) != 0)
 	{
 		if (r == maxRGB)
-			h = 0 + 43 * double(g - b) / delta;
+			h = 0 + 43 * static_cast<double>(g - b) / delta;
 		else if (g == maxRGB)
-			h = 85 + 43 * double(b - r) / delta;
+			h = 85 + 43 * static_cast<double>(b - r) / delta;
 		else if (b == maxRGB)
-			h = 171 + 43 * double(r - g) / delta;
+			h = 171 + 43 * static_cast<double>(r - g) / delta;
 	}
 	else
 		h = 0.0;
 
-	hue = BYTE(h);
-	saturation = BYTE(s);
-	brightness = BYTE(l);
+	hue = static_cast<BYTE>(h);
+	saturation = static_cast<BYTE>(s);
+	brightness = static_cast<BYTE>(l);
 }
 
 void CTheme::RGBtoHSL(COLORREF color, float& h, float& s, float& l)
 {
-	const float r_percent = float(GetRValue(color)) / 255;
-	const float g_percent = float(GetGValue(color)) / 255;
-	const float b_percent = float(GetBValue(color)) / 255;
+	const float rPercent = static_cast<float>(GetRValue(color)) / 255;
+	const float gPercent = static_cast<float>(GetGValue(color)) / 255;
+	const float bPercent = static_cast<float>(GetBValue(color)) / 255;
 
-	float max_color = 0;
-	if ((r_percent >= g_percent) && (r_percent >= b_percent))
-		max_color = r_percent;
-	else if ((g_percent >= r_percent) && (g_percent >= b_percent))
-		max_color = g_percent;
-	else if ((b_percent >= r_percent) && (b_percent >= g_percent))
-		max_color = b_percent;
+	float maxColor = 0;
+	if ((rPercent >= gPercent) && (rPercent >= bPercent))
+		maxColor = rPercent;
+	else if ((gPercent >= rPercent) && (gPercent >= bPercent))
+		maxColor = gPercent;
+	else if ((bPercent >= rPercent) && (bPercent >= gPercent))
+		maxColor = bPercent;
 
-	float min_color = 0;
-	if ((r_percent <= g_percent) && (r_percent <= b_percent))
-		min_color = r_percent;
-	else if ((g_percent <= r_percent) && (g_percent <= b_percent))
-		min_color = g_percent;
-	else if ((b_percent <= r_percent) && (b_percent <= g_percent))
-		min_color = b_percent;
+	float minColor = 0;
+	if ((rPercent <= gPercent) && (rPercent <= bPercent))
+		minColor = rPercent;
+	else if ((gPercent <= rPercent) && (gPercent <= bPercent))
+		minColor = gPercent;
+	else if ((bPercent <= rPercent) && (bPercent <= gPercent))
+		minColor = bPercent;
 
 	float L = 0, S = 0, H = 0;
 
-	L = (max_color + min_color) / 2;
+	L = (maxColor + minColor) / 2;
 
-	if (max_color == min_color)
+	if (maxColor == minColor)
 	{
 		S = 0;
 		H = 0;
 	}
 	else
 	{
-		auto d = max_color - min_color;
+		auto d = maxColor - minColor;
 		if (L < .50)
-			S = d / (max_color + min_color);
+			S = d / (maxColor + minColor);
 		else
-			S = d / ((2.0f - max_color) - min_color);
+			S = d / ((2.0f - maxColor) - minColor);
 
-		if (max_color == r_percent)
-			H = (g_percent - b_percent) / d;
+		if (maxColor == rPercent)
+			H = (gPercent - bPercent) / d;
 
-		else if (max_color == g_percent)
-			H = 2.0f + (b_percent - r_percent) / d;
+		else if (maxColor == gPercent)
+			H = 2.0f + (bPercent - rPercent) / d;
 
-		else if (max_color == b_percent)
-			H = 4.0f + (r_percent - g_percent) / d;
+		else if (maxColor == bPercent)
+			H = 4.0f + (rPercent - gPercent) / d;
 	}
 	H = H * 60;
 	if (H < 0)
@@ -1141,7 +1139,7 @@ COLORREF CTheme::HSLtoRGB(float h, float s, float l)
 {
 	if (s == 0)
 	{
-		BYTE t = BYTE(l / 100 * 255);
+		BYTE t = static_cast<BYTE>(l / 100 * 255);
 		return RGB(t, t, t);
 	}
 	const float L = l / 100;
@@ -1160,9 +1158,9 @@ COLORREF CTheme::HSLtoRGB(float h, float s, float l)
 	if (temp3 < 0)
 		temp3 += 1;
 	const float pcb = HSLtoRGB_Subfunction(temp1, temp2, temp3);
-	BYTE r = BYTE(pcr / 100 * 255);
-	BYTE g = BYTE(pcg / 100 * 255);
-	BYTE b = BYTE(pcb / 100 * 255);
+	BYTE r = static_cast<BYTE>(pcr / 100 * 255);
+	BYTE g = static_cast<BYTE>(pcg / 100 * 255);
+	BYTE b = static_cast<BYTE>(pcb / 100 * 255);
 	return RGB(r, g, b);
 }
 
@@ -1172,12 +1170,11 @@ std::optional<LRESULT> CTheme::HandleMenuBar(HWND hWnd, UINT msg, WPARAM /*wPara
 
 	if (!CTheme::Instance().IsDarkTheme())
 		return {};
-
 	switch (msg)
 	{
 		case WM_MENUBAR_DRAWMENU:
 		{
-			auto pMbm = reinterpret_cast<MenubarMenu*>(lParam);
+			auto* pMbm = reinterpret_cast<MenubarMenu*>(lParam);
 			RECT rc = { 0 };
 
 			// get the menubar rect
@@ -1427,7 +1424,7 @@ void PaintControl(HWND hWnd, HDC hdc, RECT* prc, bool bDrawBorder)
 	if (bDrawBorder)
 		InflateRect(prc, 1, 1);
 	HPAINTBUFFER hBufferedPaint = BeginBufferedPaint(hdc, prc, BPBF_TOPDOWNDIB, nullptr, &hdcPaint);
-	if (hdcPaint)
+	if (hdcPaint && hBufferedPaint)
 	{
 		RECT rc;
 		GetWindowRect(hWnd, &rc);
@@ -1448,7 +1445,7 @@ void PaintControl(HWND hWnd, HDC hdc, RECT* prc, bool bDrawBorder)
 		if (bDrawBorder)
 		{
 			InflateRect(prc, 1, 1);
-			FrameRect(hdcPaint, prc, reinterpret_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
+			FrameRect(hdcPaint, prc, static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH)));
 		}
 
 		// don't make a possible border opaque, only the inner part of the control

@@ -18,7 +18,6 @@
 //
 #pragma once
 #include "registry.h"
-#include <string>
 #include <unordered_map>
 #include <functional>
 #include <optional>
