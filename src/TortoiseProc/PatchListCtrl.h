@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2015-2016, 2018, 2020 - TortoiseGit
+// Copyright (C) 2009-2011, 2015-2016, 2018, 2020, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@ public:
 		STATUS_MASK = 0xFFFF,
 	};
 
-	static inline DWORD GetMenuMask(int x) { return 1 << x; }
+	static constexpr DWORD GetMenuMask(int x) noexcept { return 1 << x; }
 
 	CFont				m_boldFont;
 

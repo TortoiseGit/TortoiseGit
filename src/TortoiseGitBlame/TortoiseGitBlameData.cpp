@@ -26,7 +26,7 @@
 #include "FileTextLines.h"
 #include "UnicodeUtils.h"
 
-wchar_t WideCharSwap2(wchar_t nValue)
+constexpr wchar_t WideCharSwap2(wchar_t nValue) noexcept
 {
 	return (((nValue>> 8)) | (nValue << 8));
 }

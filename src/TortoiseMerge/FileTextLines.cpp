@@ -25,18 +25,18 @@
 #include "FormatMessageWrapper.h"
 #include "SmartHandle.h"
 
-wchar_t inline WideCharSwap(wchar_t nValue)
+constexpr wchar_t inline WideCharSwap(wchar_t nValue) noexcept
 {
 	return (((nValue>> 8)) | (nValue << 8));
 	//return _byteswap_ushort(nValue);
 }
 
-UINT64 inline WordSwapBytes(UINT64 nValue)
+constexpr UINT64 inline WordSwapBytes(UINT64 nValue) noexcept
 {
 	return ((nValue&0xff00ff00ff00ff)<<8) | ((nValue>>8)&0xff00ff00ff00ff); // swap BYTESs in WORDs
 }
 
-UINT32 inline DwordSwapBytes(UINT32 nValue)
+constexpr UINT32 inline DwordSwapBytes(UINT32 nValue) noexcept
 {
 	UINT32 nRet = (nValue<<16) | (nValue>>16); // swap WORDs
 	nRet = ((nRet&0xff00ff)<<8) | ((nRet>>8)&0xff00ff); // swap BYTESs in WORDs
@@ -44,7 +44,7 @@ UINT32 inline DwordSwapBytes(UINT32 nValue)
 	//return _byteswap_ulong(nValue);
 }
 
-UINT64 inline DwordSwapBytes(UINT64 nValue)
+constexpr UINT64 inline DwordSwapBytes(UINT64 nValue) noexcept
 {
 	UINT64 nRet = ((nValue&0xffff0000ffffL)<<16) | ((nValue>>16)&0xffff0000ffffL); // swap WORDs in DWORDs
 	nRet = ((nRet&0xff00ff00ff00ff)<<8) | ((nRet>>8)&0xff00ff00ff00ff); // swap BYTESs in WORDs
