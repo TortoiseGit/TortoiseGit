@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2016, 2018-2021 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2016, 2018-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include "TGitPath.h"
 #include "SmartHandle.h"
 #include "Git.h"
+#include "DirFileEnum.h"
 
 CTempFiles::CTempFiles()
 {
@@ -90,4 +91,43 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 	if (bRemoveAtEnd)
 		m_TempFileList.AddPath(tempfile);
 	return tempfile;
+}
+
+void CTempFiles::DeleteOldTempFiles()
+{
+	DWORD len = GetTortoiseGitTempPath(0, nullptr);
+	auto path = std::make_unique<wchar_t[]>(len + 100);
+	len = GetTortoiseGitTempPath (len + 100, path.get());
+	if (len == 0)
+		return;
+
+	CDirFileEnum finder(path.get());
+	FILETIME systime_;
+	::GetSystemTimeAsFileTime(&systime_);
+	__int64 systime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
+	bool isDir;
+	CString filepath;
+	while (finder.NextFile(filepath, &isDir))
+	{
+		HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : 0, nullptr);
+		if (hFile != INVALID_HANDLE_VALUE)
+		{
+			FILETIME createtime_;
+			if (::GetFileTime(hFile, &createtime_, nullptr, nullptr))
+			{
+				::CloseHandle(hFile);
+				__int64 createtime = static_cast<__int64>(createtime_.dwHighDateTime) << 32 | createtime_.dwLowDateTime;
+				if ((createtime + 864000000000) < systime)		//only delete files older than a day
+				{
+					::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
+					if (isDir)
+						::RemoveDirectory(filepath);
+					else
+						::DeleteFile(filepath);
+				}
+			}
+			else
+				::CloseHandle(hFile);
+		}
+	}
 }

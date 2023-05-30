@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2012-2013, 2015-2017 - TortoiseGit
 // Copyright (C) 2003-2006,2008,2015 - TortoiseSVN
@@ -46,6 +46,8 @@ public:
 	 *                     as this path.
 	 */
 	CTGitPath		GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path = CTGitPath(), const CGitHash& hash = CGitHash());
+
+	void DeleteOldTempFiles();
 
 private:
 	CTGitPathList m_TempFileList;

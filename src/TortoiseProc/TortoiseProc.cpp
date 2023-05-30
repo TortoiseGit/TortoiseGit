@@ -28,7 +28,6 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include "MessageBox.h"
-#include "DirFileEnum.h"
 #include "GitAdminDir.h"
 #include "Git.h"
 #include "SmartHandle.h"
@@ -48,6 +47,7 @@
 #include "AnimationManager.h"
 #include "../TGitCache/CacheInterface.h"
 #include "VersioncheckParser.h"
+#include "TempFile.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -488,46 +488,10 @@ BOOL CTortoiseProcApp::InitInstance()
 		delete cmd;
 	}
 
-	// Look for temporary files left around by TortoiseSVN and
+	// Look for temporary files left around by TortoiseGit and
 	// remove them. But only delete 'old' files because some
 	// apps might still be needing the recent ones.
-	{
-		DWORD len = GetTortoiseGitTempPath(0, nullptr);
-		auto path = std::make_unique<wchar_t[]>(len + 100);
-		len = GetTortoiseGitTempPath (len + 100, path.get());
-		if (len != 0)
-		{
-			CDirFileEnum finder(path.get());
-			FILETIME systime_;
-			::GetSystemTimeAsFileTime(&systime_);
-			__int64 systime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
-			bool isDir;
-			CString filepath;
-			while (finder.NextFile(filepath, &isDir))
-			{
-				HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : 0, nullptr);
-				if (hFile != INVALID_HANDLE_VALUE)
-				{
-					FILETIME createtime_;
-					if (::GetFileTime(hFile, &createtime_, nullptr, nullptr))
-					{
-						::CloseHandle(hFile);
-						__int64 createtime = static_cast<__int64>(createtime_.dwHighDateTime) << 32 | createtime_.dwLowDateTime;
-						if ((createtime + 864000000000) < systime)		//only delete files older than a day
-						{
-							::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-							if (isDir)
-								::RemoveDirectory(filepath);
-							else
-								::DeleteFile(filepath);
-						}
-					}
-					else
-						::CloseHandle(hFile);
-				}
-			}
-		}
-	}
+	CTempFiles::Instance().DeleteOldTempFiles();
 
 	Animator::Instance().ShutDown();
 
