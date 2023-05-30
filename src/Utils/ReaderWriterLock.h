@@ -102,9 +102,9 @@ protected:
 	// Internal/Real implementation
 	void EnterCS() const noexcept;
 	void LeaveCS() const noexcept;
-	bool _ReaderWait(DWORD dwTimeout) noexcept;
-	bool _WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout) noexcept;
-	bool _UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) noexcept;
+	bool _ReaderWait(ULONGLONG dwTimeout) noexcept;
+	bool _WriterWaitAndLeaveCSIfSuccess(ULONGLONG dwTimeout) noexcept;
+	bool _UpgradeToWriterLockAndLeaveCS(ULONGLONG dwTimeout) noexcept;
 	void _ReaderRelease() noexcept;
 	void _WriterRelease(bool blDowngrade) noexcept;
 

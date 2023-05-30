@@ -60,7 +60,7 @@ CReaderWriterLockNonReentrance::~CReaderWriterLockNonReentrance()
 	DeleteCriticalSection(&m_cs);
 }
 
-bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) noexcept
+bool CReaderWriterLockNonReentrance::_ReaderWait(ULONGLONG dwTimeout) noexcept
 {
 	bool blCanRead;
 
@@ -86,13 +86,12 @@ bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) noexcept
 	{
 		LeaveCS();
 
-		DWORD const dwBeginTime = GetTickCount();
-		DWORD dwConsumedTime = 0;
+		ULONGLONG const dwBeginTime = GetTickCount64();
+		ULONGLONG dwConsumedTime = 0;
 
 		while(TRUE)
 		{
-			blCanRead = (WAIT_OBJECT_0 == WaitForSingleObject(m_hSafeToReadEvent,
-				dwTimeout - dwConsumedTime));
+			blCanRead = (WAIT_OBJECT_0 == WaitForSingleObject(m_hSafeToReadEvent, static_cast<DWORD>(dwTimeout - dwConsumedTime)));
 
 			EnterCS();
 
@@ -115,7 +114,7 @@ bool CReaderWriterLockNonReentrance::_ReaderWait(DWORD dwTimeout) noexcept
 			// So leave CS and prepare to try again
 			LeaveCS();
 
-			dwConsumedTime = GetTickCount() - dwBeginTime;
+			dwConsumedTime = GetTickCount64() - dwBeginTime;
 			if(dwConsumedTime > dwTimeout)
 			{
 				// Don't worry why the code here looks stupid
@@ -148,7 +147,7 @@ void CReaderWriterLockNonReentrance::_ReaderRelease() noexcept
 	}
 }
 
-bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTimeout) noexcept
+bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(ULONGLONG dwTimeout) noexcept
 {
 	//EnterCS();
 	_ASSERT(0 != dwTimeout);
@@ -166,7 +165,7 @@ bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTime
 	}
 	LeaveCS();
 
-	bool blCanWrite = (WAIT_OBJECT_0 == WaitForSingleObject(m_hSafeToWriteEvent, dwTimeout));
+	bool blCanWrite = (WAIT_OBJECT_0 == WaitForSingleObject(m_hSafeToWriteEvent, static_cast<DWORD>(dwTimeout)));
 	if (!blCanWrite)
 	{
 		// Undo what we changed after timeout
@@ -192,7 +191,7 @@ bool CReaderWriterLockNonReentrance::_WriterWaitAndLeaveCSIfSuccess(DWORD dwTime
 	return blCanWrite;
 }
 
-bool CReaderWriterLockNonReentrance::_UpgradeToWriterLockAndLeaveCS(DWORD dwTimeout) noexcept
+bool CReaderWriterLockNonReentrance::_UpgradeToWriterLockAndLeaveCS(ULONGLONG dwTimeout) noexcept
 {
 	_ASSERT(m_iNumOfReaderEntered > 0);
 
