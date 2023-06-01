@@ -621,13 +621,12 @@ CString	CPatch::CheckPatchPath(const CString& path)
 			return upperpath;
 	}
 	//still no match found. So try sub folders
-	bool isDir = false;
-	CString subpath;
 	CDirFileEnum filefinder(path);
-	while (filefinder.NextFile(subpath, &isDir))
+	while (auto file = filefinder.NextFile())
 	{
-		if (!isDir)
+		if (!file->IsDirectory())
 			continue;
+		CString subpath = file->GetFilePath();
 		if (GitAdminDir::IsAdminDirPath(subpath))
 			continue;
 		if (CountMatches(subpath) > (GetNumberOfFiles()/3))

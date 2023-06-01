@@ -1,6 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2005 - 2006, 2010-2011, 2013 - TortoiseSVN
+// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2005-2006, 2010-2011, 2013-2014, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,12 +34,13 @@
  *    automatically.
  * 4) No dynamic memory allocation.
  */
-class CSimpleFileFind {
+class CSimpleFileFind
+{
 private:
 	/**
 	 * Windows FindFirstFile() handle.
 	 */
-   HANDLE m_hFindFile;
+	HANDLE m_hFindFile;
 
 	/**
 	 * Windows error code - if all is well, ERROR_SUCCESS.
@@ -64,7 +66,7 @@ protected:
 	/**
 	 * The file data returned by FindFirstFile()/FindNextFile().
 	 */
-	WIN32_FIND_DATA m_FindFileData;
+	WIN32_FIND_DATA m_findFileData;
 
 public:
 	/**
@@ -116,7 +118,7 @@ public:
 	 *
 	 * \return Windows error code.
 	 */
-	inline DWORD GetError() const
+	DWORD GetError() const
 	{
 		return m_dError;
 	}
@@ -128,7 +130,7 @@ public:
 	 *
 	 * \return TRUE iff the current file data is valid.
 	 */
-	inline BOOL IsValid() const
+	BOOL IsValid() const
 	{
 		return (m_dError == ERROR_SUCCESS);
 	}
@@ -138,7 +140,7 @@ public:
 	 *
 	 * \return TRUE iff we have passed the end of the directory.
 	 */
-	inline BOOL IsPastEnd() const
+	BOOL IsPastEnd() const
 	{
 		return (m_dError == ERROR_NO_MORE_FILES);
 	}
@@ -149,7 +151,7 @@ public:
 	 *
 	 * \return TRUE iff there has been an unexpected error.
 	 */
-	inline BOOL IsError() const
+	BOOL IsError() const
 	{
 		return (m_dError != ERROR_SUCCESS) && (m_dError != ERROR_NO_MORE_FILES);
 	}
@@ -159,9 +161,9 @@ public:
 	 *
 	 * \return TRUE iff the current file is a directory.
 	 */
-	inline bool IsDirectory() const
+	bool IsDirectory() const
 	{
-		return !!(m_FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+		return !!(m_findFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
 	}
 
 	/**
@@ -169,9 +171,9 @@ public:
 	 *
 	 * \return the current file name.
 	 */
-	inline CString GetFileName() const
+	CString GetFileName() const
 	{
-		return m_FindFileData.cFileName;
+		return m_findFileData.cFileName;
 	}
 
 	/*
@@ -179,9 +181,9 @@ public:
 	 *
 	 * \return the current file path.
 	 */
-	inline CString GetFilePath() const
+	CString GetFilePath() const
 	{
-		return m_sPathPrefix + m_FindFileData.cFileName;
+		return m_sPathPrefix + m_findFileData.cFileName;
 	}
 
 	/**
@@ -189,11 +191,11 @@ public:
 	 */
 	FILETIME GetLastWriteTime() const
 	{
-		return m_FindFileData.ftLastWriteTime;
+		return m_findFileData.ftLastWriteTime;
 	}
 	FILETIME GetCreateTime() const
 	{
-		return m_FindFileData.ftCreationTime;
+		return m_findFileData.ftCreationTime;
 	}
 
 	/**
@@ -203,13 +205,9 @@ public:
 	 * \return TRUE iff the current file is the "." or ".."
 	 * pseudo-directory.
 	 */
-	inline BOOL IsDots() const
+	BOOL IsDots() const
 	{
-		return IsDirectory()
-			&& m_FindFileData.cFileName[0] == L'.'
-			&& ( (m_FindFileData.cFileName[1] == L'\0')
-				|| (m_FindFileData.cFileName[1] == L'.'
-			&& m_FindFileData.cFileName[2] == L'\0'));
+		return IsDirectory() && m_findFileData.cFileName[0] == '.' && ((m_findFileData.cFileName[1] == 0) || (m_findFileData.cFileName[1] == '.' && m_findFileData.cFileName[2] == 0));
 	}
 };
 
@@ -234,22 +232,31 @@ public:
  */
 class CDirFileEnum
 {
-private:
-	class CDirStackEntry : public CSimpleFileFind
-	{
-
 public:
-		CDirStackEntry(CDirStackEntry * seNext, const CString& sDirName);
+	// inherit protected so that CDirStackEntry ist not polymorphic with CSimpleFileFind
+	class CDirStackEntry : protected CSimpleFileFind
+	{
+	protected:
+		CDirStackEntry(CDirStackEntry* seNext, const CString& sDirName);
 		~CDirStackEntry();
 
-		CDirStackEntry * m_seNext;
+		CDirStackEntry* m_seNext;
+
+	public:
+		using CSimpleFileFind::GetCreateTime;
+		using CSimpleFileFind::GetFileName;
+		using CSimpleFileFind::GetFilePath;
+		using CSimpleFileFind::GetLastWriteTime;
+		using CSimpleFileFind::IsDirectory;
+
+		friend class CDirFileEnum;
 	};
 
-	CDirStackEntry * m_seStack;
+	CDirStackEntry* m_seStack;
 	BOOL m_bIsNew;
 
-	inline void PopStack();
-	inline void PushStack(const CString& sDirName);
+	void PopStack();
+	void PushStack(const CString& sDirName);
 
 public:
 	/**
@@ -260,7 +267,7 @@ public:
 	 * passed to this constructor.
 	 *
 	 * @param dirName The directory to search in.
-	*/
+	 */
 	CDirFileEnum(const CString& dirName);
 
 	/**
@@ -281,5 +288,5 @@ public:
 	 *                recurse into that directory or skip it.
 	 * \return TRUE iff a file was found, false at end of the iteration.
 	 */
-	BOOL NextFile(CString &result, bool* pbIsDirectory, bool bRecurse = true);
+	const CDirStackEntry* NextFile(bool bRecurse = true);
 };

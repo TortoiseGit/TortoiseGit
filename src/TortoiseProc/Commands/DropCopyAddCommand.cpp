@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2013-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2011, 2013-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -95,12 +95,11 @@ bool DropCopyAddCommand::Execute()
 				{
 					// add all copied files WITH special handling for repos/submodules (folders which include a .git entry)
 					CDirFileEnum finder(droppath + L'\\' + name);
-					bool isDir = true;
-					CString filepath;
 					CString lastRepo;
 					bool isRepo = false;
-					while (finder.NextFile(filepath, &isDir, !isRepo)) // don't recurse into .git directories
+					while (auto file = finder.NextFile(!isRepo)) // don't recurse into .git directories
 					{
+						CString filepath = file->GetFilePath();
 						if (!lastRepo.IsEmpty())
 						{
 							if (CStringUtils::StartsWith(filepath, lastRepo))
@@ -117,7 +116,7 @@ bool DropCopyAddCommand::Execute()
 						{
 							lastRepo = filepath.Left(filepath.GetLength() - GitAdminDir::GetAdminDirName().GetLength());
 							CString msg;
-							if (!isDir)
+							if (!file->IsDirectory())
 								msg.Format(IDS_PROC_COPY_SUBMODULE, static_cast<LPCWSTR>(lastRepo));
 							else
 								msg.Format(IDS_PROC_COPY_REPOSITORY, static_cast<LPCWSTR>(lastRepo));
@@ -131,7 +130,7 @@ bool DropCopyAddCommand::Execute()
 							}
 							continue;
 						}
-						if (!isDir)
+						if (!file->IsDirectory())
 							copiedFiles.AddPath(CTGitPath(filepath.Mid(worktreePathLen + 1))); //add the new filepath
 					}
 				}

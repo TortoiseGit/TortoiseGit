@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2019, 2023 - TortoiseGit
 // Copyright (C) 2010-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -272,15 +272,14 @@ CString GitPatch::CheckPatchPath(const CString& path)
 			return upperpath;
 	}
 	// still no match found. So try sub folders
-	bool isDir = false;
-	CString subpath;
 	CDirFileEnum filefinder(path);
-	while (filefinder.NextFile(subpath, &isDir))
+	while (auto file = filefinder.NextFile())
 	{
 		if (progress.HasUserCancelled())
 			return path;
-		if (!isDir)
+		if (!file->IsDirectory())
 			continue;
+		CString subpath = file->GetFilePath();
 		if (GitAdminDir::IsAdminDirPath(subpath))
 			continue;
 		progress.SetLine(2, subpath, true);

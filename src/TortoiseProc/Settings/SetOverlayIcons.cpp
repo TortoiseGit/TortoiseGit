@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013-2014, 2016, 2020 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -74,13 +74,11 @@ BOOL CSetOverlayIcons::OnInitDialog()
 	m_sIconPath += L"\\TortoiseOverlays\\Icons";
 	// list all the icon sets
 	CDirFileEnum filefinder(m_sIconPath);
-	bool isDir = false;
-	CString item;
-	while (filefinder.NextFile(item, &isDir))
+	while (auto file = filefinder.NextFile())
 	{
-		if (!isDir)
+		if (!file->IsDirectory())
 			continue;
-		m_cIconSet.AddString(CPathUtils::GetFileNameFromPath(item));
+		m_cIconSet.AddString(file->GetFileName());
 	}
 	CheckRadioButton(IDC_LISTRADIO, IDC_SYMBOLRADIO, IDC_LISTRADIO);
 	CString sModifiedIcon = m_regModified;

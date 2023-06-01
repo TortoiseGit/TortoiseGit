@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2019 - TortoiseGit
+// Copyright (C) 2012, 2014-2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -117,11 +117,12 @@ UINT CCacheDlg::TestThread()
 {
 	CDirFileEnum direnum(m_sRootPath);
 	m_filelist.RemoveAll();
-	CString filepath;
-	bool bIsDir = false;
-	while (direnum.NextFile(filepath, &bIsDir))
+	while (auto file = direnum.NextFile())
+	{
+		CString filepath = file->GetFilePath();
 		if (filepath.Find(L".git") < 0)
 			m_filelist.Add(filepath);
+	}
 
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(L"%H:%M:%S"));
@@ -404,10 +405,8 @@ UINT CCacheDlg::WatchTestThread()
 {
 	CDirFileEnum direnum(m_sRootPath);
 	m_filelist.RemoveAll();
-	CString filepath;
-	bool bIsDir = false;
-	while (direnum.NextFile(filepath, &bIsDir))
-		m_filelist.Add(filepath);
+	while (auto file = direnum.NextFile())
+		m_filelist.Add(file->GetFilePath());
 
 	CTime starttime = CTime::GetCurrentTime();
 	GetDlgItem(IDC_STARTTIME)->SetWindowText(starttime.Format(L"%H:%M:%S"));
@@ -418,7 +417,7 @@ UINT CCacheDlg::WatchTestThread()
 	std::random_device rd;
 	std::mt19937 mt(rd());
 	std::uniform_int_distribution<INT_PTR> dist(0, max(INT_PTR(0), m_filelist.GetCount() - 1));
-	filepath = m_filelist.GetAt(dist(mt));
+	CString filepath = m_filelist.GetAt(dist(mt));
 	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
 	for (int i=0; i < 10000; ++i)
 	{

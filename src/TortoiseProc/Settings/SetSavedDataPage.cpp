@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019-2021 - TortoiseGit
+// Copyright (C) 2012-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -118,9 +118,6 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	int nSSL = 0;
 	int nUsername = 0;
 
-	CString sFile;
-	bool bIsDir = false;
-
 	if (CComHeapPtr<WCHAR> pszPath; SHGetKnownFolderPath(FOLDERID_RoamingAppData, KF_FLAG_CREATE, nullptr, &pszPath) == S_OK)
 	{
 		CString path { static_cast<LPCWSTR>(pszPath) };
@@ -130,13 +127,13 @@ BOOL CSetSavedDataPage::OnInitDialog()
 		CString sSSL = path + L"svn.ssl.server";
 		CString sUsername = path + L"svn.username";
 		CDirFileEnum simpleenum(sSimple);
-		while (simpleenum.NextFile(sFile, &bIsDir))
+		while (simpleenum.NextFile())
 			nSimple++;
 		CDirFileEnum sslenum(sSSL);
-		while (sslenum.NextFile(sFile, &bIsDir))
+		while (sslenum.NextFile())
 			nSSL++;
 		CDirFileEnum userenum(sUsername);
-		while (userenum.NextFile(sFile, &bIsDir))
+		while (userenum.NextFile())
 			nUsername++;
 	}
 	CStringList credStore;
@@ -144,8 +141,8 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	nSimple += static_cast<int>(credStore.GetCount());
 
 	CDirFileEnum logenum(CPathUtils::GetAppDataDirectory() + L"logcache");
-	while (logenum.NextFile(sFile, &bIsDir))
-		nLogHistRepo++;
+	/* while (logenum.NextFile(sFile, &bIsDir))
+		nLogHistRepo++;*/
 	// the "Repositories.dat" is not a cache file
 	nLogHistRepo--;
 
@@ -302,12 +299,11 @@ void CSetSavedDataPage::OnBnClickedTempfileclear()
 			lastcount = count;
 			count = 0;
 			CDirFileEnum finder(path.get());
-			bool isDir;
-			CString filepath;
-			while (finder.NextFile(filepath, &isDir))
+			while (auto file = finder.NextFile())
 			{
+				CString filepath =file->GetFilePath();
 				::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-				if (isDir)
+				if (file->IsDirectory())
 				{
 					if (!::RemoveDirectory(filepath))
 						count++;

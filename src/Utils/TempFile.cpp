@@ -104,30 +104,20 @@ void CTempFiles::DeleteOldTempFiles()
 	CDirFileEnum finder(path.get());
 	FILETIME systime_;
 	::GetSystemTimeAsFileTime(&systime_);
-	__int64 systime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
-	bool isDir;
-	CString filepath;
-	while (finder.NextFile(filepath, &isDir))
+	__int64 sysTime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
+	while (auto file = finder.NextFile())
 	{
-		HANDLE hFile = ::CreateFile(filepath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, isDir ? FILE_FLAG_BACKUP_SEMANTICS : 0, nullptr);
-		if (hFile != INVALID_HANDLE_VALUE)
-		{
-			FILETIME createtime_;
-			if (::GetFileTime(hFile, &createtime_, nullptr, nullptr))
-			{
-				::CloseHandle(hFile);
-				__int64 createtime = static_cast<__int64>(createtime_.dwHighDateTime) << 32 | createtime_.dwLowDateTime;
-				if ((createtime + 864000000000) < systime)		//only delete files older than a day
-				{
-					::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
-					if (isDir)
-						::RemoveDirectory(filepath);
-					else
-						::DeleteFile(filepath);
-				}
-			}
-			else
-				::CloseHandle(hFile);
-		}
+		CString filepath = file->GetFilePath();
+		FILETIME createFileTime = file->GetCreateTime();
+		__int64 createTime = static_cast<long long>(createFileTime.dwLowDateTime) | static_cast<long long>(createFileTime.dwHighDateTime) << 32LL;
+		createTime += 864000000000LL; // only delete files older than a day
+		if (createTime >= sysTime)
+			continue;
+
+		::SetFileAttributes(filepath, FILE_ATTRIBUTE_NORMAL);
+		if (file->IsDirectory())
+			::RemoveDirectory(filepath);
+		else
+			::DeleteFile(filepath);
 	}
 }

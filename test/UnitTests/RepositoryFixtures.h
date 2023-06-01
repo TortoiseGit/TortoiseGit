@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2018, 2021 - TortoiseGit
+// Copyright (C) 2015-2018, 2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,12 +42,11 @@ static bool GetResourcesDir(CString& resourcesDir)
 static void CopyRecursively(const CString& source, const CString& dest)
 {
 	CDirFileEnum finder(source);
-	bool isDir;
-	CString filepath;
-	while (finder.NextFile(filepath, &isDir))
+	while (auto file = finder.NextFile())
 	{
+		CString filepath = file->GetFilePath();
 		CString relpath = filepath.Mid(source.GetLength());
-		if (isDir)
+		if (file->IsDirectory())
 			EXPECT_TRUE(CreateDirectory(dest + relpath, nullptr));
 		else
 			EXPECT_TRUE(CopyFile(filepath, dest + relpath, false));
