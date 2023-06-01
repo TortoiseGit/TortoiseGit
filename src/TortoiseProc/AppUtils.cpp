@@ -1333,7 +1333,7 @@ bool CAppUtils::CreateWorktree(HWND hWnd, const CString& target /* CString() */)
 		dlg.m_VersionName.Empty();
 
 	CString cmd;
-	cmd.Format(L"git.exe worktree add%s -- %s %s",
+	cmd.Format(L"git.exe worktree add%s -- \"%s\" %s",
 				static_cast<LPCWSTR>(params),
 				static_cast<LPCWSTR>(dlg.m_sWorktreePath),
 				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName)));

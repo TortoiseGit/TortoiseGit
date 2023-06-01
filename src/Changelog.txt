@@ -21,6 +21,7 @@ Released: unreleased
  * Fixed redraw bug in log list
  * Fixed issue #3843: 'Revert' does not work for submodules
  * Fixed issue #4030: TortoiseGitMerge Dark mode flashes white when opening
+ + Fixed issue #4041: Git Worktree Add command error 129 when directory path contains spaces
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
