@@ -140,7 +140,7 @@ using CAutoSignature			= CSmartLibgit2Ref<git_signature,			git_signature_free>;
 using CAutoMailmap				= CSmartLibgit2Ref<git_mailmap,				git_mailmap_free>;
 using CAutoWorktree				= CSmartLibgit2Ref<git_worktree,			git_worktree_free>;
 
-class CAutoRepository : public CSmartLibgit2Ref<git_repository, git_repository_free>
+class CAutoRepository : protected CSmartLibgit2Ref<git_repository, git_repository_free>
 {
 public:
 	CAutoRepository() = default;
@@ -150,18 +150,18 @@ public:
 		m_Ref = h;
 	}
 
-	CAutoRepository(CAutoRepository&& that) noexcept
+	explicit CAutoRepository(CAutoRepository&& that) noexcept
 	{
 		m_Ref = that.Detach();
 	}
 
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
-	CAutoRepository(const CString& gitDir)
+	explicit CAutoRepository(const CString& gitDir)
 	{
 		Open(gitDir);
 	}
 
-	CAutoRepository(const CStringA& gitDirA)
+	explicit CAutoRepository(const CStringA& gitDirA)
 	{
 		Open(gitDirA);
 	}
@@ -179,9 +179,17 @@ public:
 
 	CAutoRepository(const CAutoRepository&) = delete;
 	CAutoRepository& operator=(const CAutoRepository&) = delete;
+
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::GetPointer;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::Swap;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::Detach;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::Free;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::IsValid;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::operator git_repository*;
+	using CSmartLibgit2Ref<git_repository, git_repository_free>::operator bool;
 };
 
-class CAutoCommit : public CSmartLibgit2Ref<git_commit, git_commit_free>
+class CAutoCommit : protected CSmartLibgit2Ref<git_commit, git_commit_free>
 {
 public:
 	CAutoCommit() = default;
@@ -193,9 +201,17 @@ public:
 
 	CAutoCommit(const CAutoCommit&) = delete;
 	CAutoCommit& operator=(const CAutoCommit&) = delete;
+
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::GetPointer;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::Swap;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::Detach;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::Free;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::IsValid;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::operator git_commit*;
+	using CSmartLibgit2Ref<git_commit, git_commit_free>::operator bool;
 };
 
-class CAutoReference : public CSmartLibgit2Ref<git_reference, git_reference_free>
+class CAutoReference : protected CSmartLibgit2Ref<git_reference, git_reference_free>
 {
 public:
 	CAutoReference() = default;
@@ -207,9 +223,17 @@ public:
 
 	CAutoReference(const CAutoReference&) = delete;
 	CAutoReference& operator=(const CAutoReference&) = delete;
+
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::GetPointer;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::Swap;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::Detach;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::Free;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::IsValid;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::operator git_reference*;
+	using CSmartLibgit2Ref<git_reference, git_reference_free>::operator bool;
 };
 
-class CAutoTree : public CSmartLibgit2Ref<git_tree, git_tree_free>
+class CAutoTree : protected CSmartLibgit2Ref<git_tree, git_tree_free>
 {
 public:
 	CAutoTree() = default;
@@ -225,19 +249,27 @@ public:
 
 	CAutoTree(const CAutoTree&) = delete;
 	CAutoTree& operator=(const CAutoTree&) = delete;
+
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::GetPointer;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::Swap;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::Detach;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::Free;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::IsValid;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::operator git_tree*;
+	using CSmartLibgit2Ref<git_tree, git_tree_free>::operator bool;
 };
 
-class CAutoConfig : public CSmartLibgit2Ref<git_config, git_config_free>
+class CAutoConfig : protected CSmartLibgit2Ref<git_config, git_config_free>
 {
 public:
 	CAutoConfig() = default;
 
-	CAutoConfig(const CAutoRepository& repo)
+	explicit CAutoConfig(const CAutoRepository& repo)
 	{
 		git_repository_config(&m_Ref, repo);
 	}
 
-	CAutoConfig(bool init)
+	explicit CAutoConfig(bool init)
 	{
 		if (init)
 			New();
@@ -292,4 +324,12 @@ public:
 
 	CAutoConfig(const CAutoConfig&) = delete;
 	CAutoConfig& operator=(const CAutoConfig&) = delete;
+
+	using CSmartLibgit2Ref<git_config, git_config_free>::GetPointer;
+	using CSmartLibgit2Ref<git_config, git_config_free>::Swap;
+	using CSmartLibgit2Ref<git_config, git_config_free>::Detach;
+	using CSmartLibgit2Ref<git_config, git_config_free>::Free;
+	using CSmartLibgit2Ref<git_config, git_config_free>::IsValid;
+	using CSmartLibgit2Ref<git_config, git_config_free>::operator git_config*;
+	using CSmartLibgit2Ref<git_config, git_config_free>::operator bool;
 };
