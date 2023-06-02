@@ -26,6 +26,7 @@
 #include <memory>
 #include <chrono>
 #include <atomic>
+#include <mutex>
 #include <thread>
 #include <future>
 
@@ -122,7 +123,6 @@ static constexpr bool IsAllSpacesOrTabs(std::string_view sv) noexcept {
 }
 
 Editor::Editor() : durationWrapOneByte(0.000001, 0.00000001, 0.00001) {
-	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
@@ -1915,7 +1915,7 @@ Sci::Position Editor::FormatRange(Scintilla::Message iMessage, Scintilla::uptr_t
 	void *ptr = PtrFromSPtr(lParam);
 	if (iMessage == Message::FormatRange) {
 		RangeToFormat *pfr = static_cast<RangeToFormat *>(ptr);
-		CharacterRangeFull chrg{ pfr->chrg.cpMin,pfr->chrg.cpMax };
+		const CharacterRangeFull chrg{ pfr->chrg.cpMin,pfr->chrg.cpMax };
 		AutoSurface surface(pfr->hdc, this, Technology::Default);
 		AutoSurface surfaceMeasure(pfr->hdcTarget, this, Technology::Default);
 		if (!surface || !surfaceMeasure) {
