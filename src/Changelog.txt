@@ -14,14 +14,17 @@ Released: unreleased
  * Fixed issue #3435: Dramatically speed up revert operations
  * Fixed issue #3053: "Abort" button in merge conflict dialogue is misleading -> opens Abort merge dialog now
  * Fixed issue #4034: After git lfs lock, UI suggest a pull
- * Allow the dark mode to be enabled (independent of the system theme; e.g., using Ctrl+Alt+D)
+ * Allow the dark mode to be always enabled if possible (e.g., using Ctrl+Alt+D)
  * Add support for SVG files in TortoiseGitIDiff
+ * Lots of refactorings and performance optimizations
 
 == Bug Fixes ==
  * Fixed redraw bug in log list
  * Fixed issue #3843: 'Revert' does not work for submodules
  * Fixed issue #4030: TortoiseGitMerge Dark mode flashes white when opening
- + Fixed issue #4041: Git Worktree Add command error 129 when directory path contains spaces
+ * Fixed issue #4041: Git Worktree Add command error 129 when directory path contains spaces
+ * Improved Cygwin and Msys2 compatibility
+ * TortoiseGitMerge: Fixed optical glitch if wrap mode is enabled with non-ASCII files
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
