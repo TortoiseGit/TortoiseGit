@@ -437,6 +437,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	// The one and only window has been initialized, so show and update it
 	pFrame->ActivateFrame();
 	pFrame->ShowWindow(SW_SHOW);
+	::RedrawWindow(pFrame->GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 	pFrame->UpdateWindow();
 	pFrame->ShowDiffBar(!pFrame->m_bOneWay);
 	if (!pFrame->m_Data.IsBaseFileInUse() && pFrame->m_Data.m_sPatchPath.IsEmpty() && pFrame->m_Data.m_sDiffFile.IsEmpty())
