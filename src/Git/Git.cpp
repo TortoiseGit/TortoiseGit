@@ -113,6 +113,27 @@ static BOOL FindGitPath()
 	{
 		CGit::ms_LastMsysGitDir = gitExeDirectory;
 		CGit::ms_LastMsysGitDir.TrimRight(L'\\');
+
+		// check for (broken) scoop shim, cf. issue #4033
+		if (CString contents; CGit::LoadTextFile(CGit::ms_LastMsysGitDir + L"\\git.shim", contents))
+		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": found git.shim");
+			int start = 0 ;
+			while (start >= 0)
+			{
+				CString line = contents.Tokenize(L"\n", start);
+				if (auto separatorPos = line.Find(L'='); separatorPos > 0 && line.Mid(0, separatorPos).Trim() == L"path")
+				{
+					CString path = line.Mid(separatorPos + 1).Trim();
+					if (path.GetLength() >= 2 && path[0] == L'"' && path[path.GetLength() - 1] == L'"')
+						path = path.Mid(1, path.GetLength() - 2);
+					if (CStringUtils::EndsWithI(path, L"\\git.exe") && PathFileExists(path))
+						CGit::ms_LastMsysGitDir = path.Mid(0, path.GetLength() - static_cast<int>(wcslen(L"\\git.exe")));
+					break;
+				}
+			}
+		}
+
 		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw32\\bin") || CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\mingw64\\bin"))
 		{
 			// prefer cmd directory as early Git for Windows 2.x releases only had this

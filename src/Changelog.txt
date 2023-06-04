@@ -16,6 +16,7 @@ Released: unreleased
  * Fixed issue #4034: After git lfs lock, UI suggest a pull
  * Allow the dark mode to be always enabled if possible (e.g., using Ctrl+Alt+D)
  * Add support for SVG files in TortoiseGitIDiff
+ * Fixed issue #4033: Add workaround for broken scoop shim
  * Lots of refactorings and performance optimizations
 
 == Bug Fixes ==
