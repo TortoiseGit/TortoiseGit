@@ -18,6 +18,7 @@ Released: unreleased
  * Add support for SVG files in TortoiseGitIDiff
  * Fixed issue #4033: Add workaround for broken scoop shim
  * Lots of refactorings and performance optimizations
+ * Fixed issue #4040: TortoiseGitBlame: Ability to select multiple commits (line highlighting)
 
 == Bug Fixes ==
  * Fixed redraw bug in log list

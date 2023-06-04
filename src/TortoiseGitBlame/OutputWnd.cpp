@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016, 2018-2020, 2022 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2018-2020, 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,7 +68,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	rectDummy.SetRectEmpty();
 
 	// Create output panes:
-	const DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP |LVS_SINGLESEL |WS_CHILD | WS_VISIBLE;
+	constexpr DWORD dwStyle = LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | LVS_OWNERDATA | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
 
 	if (!m_LogList.Create(dwStyle, rectDummy, this, IDC_LOG))
 	{
@@ -146,19 +146,30 @@ void COutputWnd::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = 0;
 
 	//if (this->IsThreadRunning())
-	if (pNMLV->iItem >= 0)
-	{
-		if (pNMLV->iSubItem != 0)
-			return;
+	if (pNMLV->iSubItem != 0)
+		return;
 
-		if (pNMLV->uNewState & LVIS_SELECTED)
+	if ((pNMLV->uChanged & LVIF_STATE) && ((pNMLV->uNewState & LVIS_SELECTED) || (pNMLV->uOldState & LVIS_SELECTED)))
+	{
+		CMainFrame* pMain = DYNAMIC_DOWNCAST(CMainFrame, AfxGetApp()->GetMainWnd());
+		POSITION pos = pMain->GetActiveDocument()->GetFirstViewPosition();
+		CTortoiseGitBlameView* pView = DYNAMIC_DOWNCAST(CTortoiseGitBlameView, pMain->GetActiveDocument()->GetNextView(pos));
+
+		std::unordered_set<CGitHash> selectedHashes;
+		auto selPos = m_LogList.GetFirstSelectedItemPosition();
+		while (selPos)
 		{
-			CMainFrame *pMain=DYNAMIC_DOWNCAST(CMainFrame,AfxGetApp()->GetMainWnd());
-			POSITION pos=pMain->GetActiveDocument()->GetFirstViewPosition();
-			CTortoiseGitBlameView *pView=DYNAMIC_DOWNCAST(CTortoiseGitBlameView,pMain->GetActiveDocument()->GetNextView(pos));
-			pView->FocusOn(&this->m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem));
-			m_Gravatar.LoadGravatar(m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem).GetAuthorEmail());
+			int item = m_LogList.GetNextSelectedItem(selPos);
+			selectedHashes.insert(m_LogList.m_logEntries.GetGitRevAt(item).m_CommitHash);
 		}
+
+		GitRevLoglist* selected = nullptr;
+		if (pNMLV->iItem >= 0 && (pNMLV->uChanged & LVIF_STATE) && (pNMLV->uNewState & LVIS_SELECTED))
+			selected = &m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem);
+
+		pView->FocusOn(std::move(selectedHashes), selected);
+		if (selected)
+			m_Gravatar.LoadGravatar(m_LogList.m_logEntries.GetGitRevAt(pNMLV->iItem).GetAuthorEmail());
 	}
 }
 /////////////////////////////////////////////////////////////////////////////

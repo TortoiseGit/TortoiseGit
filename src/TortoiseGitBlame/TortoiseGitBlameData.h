@@ -43,7 +43,7 @@ public:
 	{
 		return line >= 0 && line < static_cast<int>(m_Hash.size());
 	}
-	int FindNextLine(CGitHash& commithash, int line, bool bUpOrDown=false);
+	int FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown = false);
 	// find first line with the given hash starting with given "line"
 	int FindFirstLine(const CGitHash& commithash, int line)
 	{

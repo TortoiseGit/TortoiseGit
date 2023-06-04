@@ -64,6 +64,7 @@ BEGIN
     IDS_LOG_POPUP_GNUDIFF_PARENT "&Unified diff with"
     IDS_LOG_POPUP_GETMERGELOGS "Get merge logs"
     IDS_LOG_POPUP_MERGEREV  "&Merge to ""%s""..."
+    IDS_SHOWLOG_OF          "Show log of %s"
 END
 
 STRINGTABLE 

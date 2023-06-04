@@ -180,7 +180,7 @@ public:
 	void UpdateInfo(int encode = 0);
 	CString ResolveCommitFile(int line);
 	CString ResolveCommitFile(const CString& path);
-	void FocusOn(GitRevLoglist* pRev);
+	void FocusOn(std::unordered_set<CGitHash>&& pRevs, GitRevLoglist* selected);
 
 	CSciEditBlame		m_TextView;
 	CToolTips			m_ToolTip;
@@ -223,7 +223,7 @@ public:
 	void SetSelectedLine(int line) { m_SelectedLine = line;};
 
 	int						m_MouseLine = -1;
-	CGitHash				m_SelectedHash;
+	std::unordered_set<CGitHash>	m_selectedHashes;
 	bool					m_colorage = false;
 	bool					m_bLexer = false;
 	bool					m_bWrapLongLines = false;
@@ -292,6 +292,8 @@ protected:
 
 	CString					m_sFindText;
 	bool					m_bMatchCase = false;
+
+	bool					m_bBlockUpdates = false;
 };
 
 #ifndef _DEBUG  // debug version in TortoiseGitBlameView.cpp

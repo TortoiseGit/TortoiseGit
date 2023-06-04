@@ -319,23 +319,24 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 	return encoding;
 }
 
-int CTortoiseGitBlameData::FindNextLine(CGitHash& CommitHash, int line, bool bUpOrDown)
+int CTortoiseGitBlameData::FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown)
 {
 	int startline = line;
 	bool findNoMatch = false;
 	while (line >= 0 && line < static_cast<int>(m_Hash.size()))
 	{
-		if (m_Hash[line] != CommitHash)
+		bool matches = commitHashes.contains(m_Hash[line]);
+		if (!matches)
 			findNoMatch = true;
 
-		if (m_Hash[line] == CommitHash && findNoMatch)
+		if (matches && findNoMatch)
 		{
 			if (line == startline + 2)
 				findNoMatch = false;
 			else
 			{
 				if (bUpOrDown)
-					line = FindFirstLineInBlock(CommitHash, line);
+					line = FindFirstLineInBlock(m_Hash[line], line);
 				return line;
 			}
 		}

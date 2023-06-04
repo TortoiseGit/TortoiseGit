@@ -911,7 +911,8 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		oldfont = static_cast<HFONT>(::SelectObject(hDC, m_font.GetSafeHandle()));
 		::SetBkColor(hDC, m_windowcolor);
 		::SetTextColor(hDC, m_textcolor);
-		if (!hash.IsEmpty() && hash == m_SelectedHash)
+		bool hashMatches = !hash.IsEmpty() && m_selectedHashes.contains(hash);
+		if (hashMatches)
 		{
 			::SetBkColor(hDC, m_selectedauthorcolor);
 			::SetTextColor(hDC, m_texthighlightcolor);
@@ -920,7 +921,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		if (m_MouseLine == i)
 			::SetBkColor(hDC, m_mouserevcolor);
 
-		if ((!hash.IsEmpty() && hash == m_SelectedHash) || m_MouseLine == i)
+		if (hashMatches || m_MouseLine == i)
 		{
 			auto old = ::GetTextColor(hDC);
 			::SetTextColor(hDC, ::GetBkColor(hDC));
@@ -1728,29 +1729,46 @@ void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 	if (static_cast<size_t>(line) < m_data.GetNumberOfLines())
 	{
 		SetSelectedLine(line);
-		if (m_data.GetHash(line) != m_SelectedHash)
+		bool found = m_selectedHashes.contains(m_data.GetHash(line));
+		if (nFlags == 9)
 		{
-			m_SelectedHash = m_data.GetHash(line);
-
-			int logIndex = m_lineToLogIndex[line];
-			if (logIndex >= 0)
-			{
-				this->GetLogList()->SetItemState(logIndex, LVIS_SELECTED, LVIS_SELECTED);
-				this->GetLogList()->EnsureVisible(logIndex, FALSE);
-			}
+			if (!found)
+				m_selectedHashes.insert(m_data.GetHash(line));
 			else
-			{
-				GitRevLoglist* pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
-				this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
-			}
+				m_selectedHashes.erase(m_data.GetHash(line));
+		}
+		else if (!found || m_selectedHashes.size() > 1)
+		{
+			m_selectedHashes.clear();
+			m_selectedHashes.insert(m_data.GetHash(line));
 		}
 		else
+			m_selectedHashes.clear();
+
+		if (m_selectedHashes.size() != 1)
+			GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(nullptr);
+		else if (!m_selectedHashes.empty())
 		{
-			m_SelectedHash.Empty();
+			auto pRev = m_data.GetRev(line, GetLogData()->m_pLogCache->m_HashMap);
+			GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
 		}
+		m_bBlockUpdates = true;
+		{
+			const int logSize = static_cast<int>(GetLogData()->size());
+			for (int i = 0; i < logSize; ++i)
+			{
+				if (!m_selectedHashes.contains((*GetLogData())[i]))
+					GetLogList()->SetItemState(i, 0, LVIS_SELECTED);
+				else
+					GetLogList()->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+			}
+			if (int logIndex = m_lineToLogIndex[line]; logIndex >= 0)
+				GetLogList()->EnsureVisible(logIndex, FALSE);
+		}
+		m_bBlockUpdates = false;
+
 		this->Invalidate();
 		this->m_TextView.Invalidate();
-
 	}
 	else
 	{
@@ -1787,30 +1805,34 @@ void CTortoiseGitBlameView::OnSciGetBkColor(NMHDR* hdr, LRESULT* /*result*/)
 
 	if (notification->line < static_cast<Sci_Position>(m_data.GetNumberOfLines()))
 	{
-		if (m_data.GetHash(notification->line) == this->m_SelectedHash)
+		if (m_selectedHashes.contains(m_data.GetHash(notification->line)))
 			notification->lParam = m_selectedauthorcolor;
 		else
 			notification->lParam = GetLineColor(notification->line);
 	}
 }
 
-void CTortoiseGitBlameView::FocusOn(GitRevLoglist* pRev)
+void CTortoiseGitBlameView::FocusOn(std::unordered_set<CGitHash>&& pRevs, GitRevLoglist* selected)
 {
-	this->GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(pRev);
+	if (m_bBlockUpdates)
+		return;
 
-	this->Invalidate();
-
-	if (m_SelectedHash != pRev->m_CommitHash) {
-		m_SelectedHash = pRev->m_CommitHash;
-		int line = m_data.FindFirstLine(m_SelectedHash, 0);
-		if (line >= 0)
-		{
+	SendEditor(SCI_SETEMPTYSELECTION, SendEditor(SCI_GETCURRENTPOS));
+	if (selected && !m_selectedHashes.contains(selected->m_CommitHash))
+	{
+		if (int line = m_data.FindFirstLine(selected->m_CommitHash, 0); line >= 0)
 			GotoLine(line + 1);
-			m_TextView.Invalidate();
-			return;
-		}
-		SendEditor(SCI_SETSEL, INT_MAX, -1);
 	}
+
+	m_selectedHashes.swap(pRevs);
+
+	if (m_selectedHashes.size() != 1)
+		GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(nullptr);
+	else if (selected && !m_selectedHashes.empty())
+		GetDocument()->GetMainFrame()->m_wndProperties.UpdateProperties(selected);
+
+	m_TextView.Invalidate();
+	this->Invalidate();
 }
 
 void CTortoiseGitBlameView::OnMouseHover(UINT /*nFlags*/, CPoint point)
@@ -1967,14 +1989,14 @@ LRESULT CTortoiseGitBlameView::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*l
 void CTortoiseGitBlameView::OnViewNext()
 {
 	int startline = static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE));
-	int line = m_data.FindNextLine(this->m_SelectedHash, startline, false);
+	int line = m_data.FindNextLine(m_selectedHashes, startline, false);
 	if(line >= 0)
 		SendEditor(SCI_LINESCROLL, 0, line - startline);
 }
 void CTortoiseGitBlameView::OnViewPrev()
 {
 	int startline = static_cast<int>(SendEditor(SCI_GETFIRSTVISIBLELINE));
-	int line = m_data.FindNextLine(this->m_SelectedHash, startline, true);
+	int line = m_data.FindNextLine(m_selectedHashes, startline, true);
 	if(line >= 0)
 		SendEditor(SCI_LINESCROLL, 0, line - startline + 1);
 }
