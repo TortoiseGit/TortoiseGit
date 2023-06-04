@@ -26,6 +26,7 @@
 #include "TGitPath.h"
 #include "Git.h"
 #include "UnicodeUtils.h"
+#include "URLFinder.h"
 #ifndef TGIT_TESTS_ONLY
 #include "ExportDlg.h"
 #include "ProgressDlg.h"
@@ -894,38 +895,6 @@ bool CAppUtils::FindStyleChars(const CString& sText, wchar_t stylechar, int& sta
 	return bFoundMarker;
 }
 
-// from CSciEdit
-namespace {
-	bool IsValidURLChar(wchar_t ch)
-	{
-		return iswalnum(ch) ||
-			ch == L'_' || ch == L'/' || ch == L';' || ch == L'?' || ch == L'&' || ch == L'=' ||
-			ch == L'%' || ch == L':' || ch == L'.' || ch == L'#' || ch == L'-' || ch == L'+' ||
-			ch == L'|' || ch == L'>' || ch == L'<' || ch == L'!' || ch == L'@' || ch == L'~';
-	}
-
-	bool IsUrlOrEmail(const CString& sText)
-	{
-		if (!PathIsURLW(sText))
-		{
-			auto atpos = sText.Find(L'@');
-			if (atpos <= 0)
-				return false;
-			if (sText.Find(L'.', atpos) <= atpos + 1) // a dot must follow after the @, but not directly after it
-				return false;
-			if (sText.Find(L':', atpos) < 0) // do not detect git@example.com:something as an email address
-				return true;
-			return false;
-		}
-		for (const CString& prefix : { L"http://", L"https://", L"git://", L"ftp://", L"file://", L"mailto:" })
-		{
-			if (CStringUtils::StartsWith(sText, prefix) && sText.GetLength() != prefix.GetLength())
-				return true;
-		}
-		return false;
-	}
-}
-
 bool CAppUtils::FindWarningsErrors(const CString& text, std::vector<CHARRANGE>& rangeErrors, std::vector<CHARRANGE>& rangeWarnings)
 {
 	if (text.IsEmpty())
@@ -989,47 +958,9 @@ std::vector<CHARRANGE> CAppUtils::FindURLMatches(const CString& msg)
 {
 	std::vector<CHARRANGE> result;
 
-	int len = msg.GetLength();
-	int starturl = -1;
-
-	for (int i = 0; i <= msg.GetLength(); ++i)
-	{
-		if ((i < len) && IsValidURLChar(msg[i]))
-		{
-			if (starturl < 0)
-				starturl = i;
-		}
-		else
-		{
-			if (starturl >= 0)
-			{
-				bool strip = true;
-				if (msg[starturl] == '<' && i < len) // try to detect and do not strip URLs put within <>
-				{
-					while (starturl <= i && msg[starturl] == '<') // strip leading '<'
-						++starturl;
-					strip = false;
-					i = starturl;
-					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
-						++i;
-				}
-
-				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
-					++skipTrailing;
-
-				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl - skipTrailing)))
-				{
-					starturl = -1;
-					continue;
-				}
-
-				CHARRANGE range = { starturl, i - skipTrailing };
-				result.push_back(range);
-			}
-			starturl = -1;
-		}
-	}
+	::FindURLMatches(msg, [](const CString&, int& i) { ++i; }, [&result](int start, int end) {
+		CHARRANGE range = { start, end };
+		result.push_back(range); });
 
 	return result;
 }

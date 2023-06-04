@@ -1969,6 +1969,9 @@
     <ClInclude Include="WorktreeListDlg.h">
       <Filter>Commands\worktree</Filter>
     </ClInclude>
+    <ClInclude Include="..\Utils\URLFinder.h">
+      <Filter>Utils\General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\actionadded.ico">

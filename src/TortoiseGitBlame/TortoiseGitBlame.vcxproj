@@ -171,6 +171,7 @@
     <ClInclude Include="..\Utils\TempFile.h" />
     <ClInclude Include="..\Utils\Theme.h" />
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
+    <ClInclude Include="..\Utils\URLFinder.h" />
     <ClInclude Include="BlameDetectMovedOrCopiedLines.h" />
     <ClInclude Include="BlameIndexColors.h" />
     <ClInclude Include="GitBlameLogList.h" />

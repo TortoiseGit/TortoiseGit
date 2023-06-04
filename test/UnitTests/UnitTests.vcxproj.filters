@@ -197,6 +197,9 @@
     <ClInclude Include="..\..\src\TortoiseProc\AppUtils.h">
       <Filter>TortoiseProc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\Utils\URLFinder.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

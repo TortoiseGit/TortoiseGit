@@ -125,6 +125,7 @@
     <ClInclude Include="..\..\src\Utils\TempFile.h" />
     <ClInclude Include="..\..\src\Utils\UnicodeUtils.h" />
     <ClInclude Include="..\..\src\Utils\UniqueQueue.h" />
+    <ClInclude Include="..\..\src\Utils\URLFinder.h" />
     <ClInclude Include="..\..\src\Utils\WindowsCredentialsStore.h" />
     <ClInclude Include="..\..\src\version.h" />
     <ClInclude Include="AutoTempDir.h" />

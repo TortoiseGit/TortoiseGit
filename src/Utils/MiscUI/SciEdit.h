@@ -171,7 +171,6 @@ private:
 	bool		m_bReadOnly = false;
 	int			m_themeCallbackId = 0;
 
-	static bool IsValidURLChar(unsigned char ch);
 protected:
 	BOOL OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pLResult) override;
 	BOOL PreTranslateMessage(MSG* pMsg) override;
@@ -188,11 +187,10 @@ protected:
 	bool		WrapLines(Sci_Position startpos, Sci_Position endpos);
 	bool		FindStyleChars(const char* line, char styler, Sci_Position& start, Sci_Position& end);
 	void		SetColors(bool recolorize);
-	void		AdvanceUTF8(const char * str, int& pos);
+	static void	AdvanceUTF8(const char* str, int& pos);
 	BOOL		IsMisspelled(const CString& sWord);
 	BOOL		CheckWordSpelling(const CString& sWord);
 	int			GetStyleAt(Sci_Position pos) { return static_cast<int>(Call(SCI_GETSTYLEAT, pos)) & 0x1f; }
-	bool		IsUrlOrEmail(const CStringA& sText);
 	std::string GetWordForSpellChecker(const CString& sWord);
 	CString		GetWordFromSpellChecker(const std::string& sWordA);
 

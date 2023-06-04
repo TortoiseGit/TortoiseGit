@@ -30,6 +30,7 @@
 #include "Theme.h"
 #include "Lexilla.h"
 #include "DarkModeHelper.h"
+#include "URLFinder.h"
 
 void CSciEditContextMenuInterface::InsertMenuItems(CMenu&, int&) {return;}
 bool CSciEditContextMenuInterface::HandleMenuItemClick(int, CSciEdit *) {return false;}
@@ -1508,23 +1509,13 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 	return FALSE;
 }
 
-//similar code in AppUtils.cpp
-bool CSciEdit::IsValidURLChar(unsigned char ch)
-{
-	return isalnum(ch) ||
-		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
-		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
-		ch == '|' || ch == '>' || ch == '<' || ch == '!' || ch == '@' || ch == '~';
-}
-
-//similar code in AppUtils.cpp
 void CSciEdit::StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos)
 {
 	const auto line_number = static_cast<int>(Call(SCI_LINEFROMPOSITION, startstylepos));
 	startstylepos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, line_number));
 
-	auto len = endstylepos - startstylepos + 1;
-	auto textbuffer = std::make_unique<char[]>(len + 1);
+	const auto len = endstylepos - startstylepos + 1;
+	const auto textbuffer = std::make_unique<char[]>(len + 1);
 	Sci_TextRange textrange;
 	textrange.lpstrText = textbuffer.get();
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(startstylepos);
@@ -1535,67 +1526,10 @@ void CSciEdit::StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos)
 	// that's why we use CStringA to still get a correct char index
 	CStringA msg = textbuffer.get();
 
-	int starturl = -1;
-	for (int i = 0; i <= msg.GetLength(); AdvanceUTF8(msg, i))
-	{
-		if ((i < len) && IsValidURLChar(msg[i]))
-		{
-			if (starturl < 0)
-				starturl = i;
-		}
-		else
-		{
-			if (starturl >= 0)
-			{
-				bool strip = true;
-				if (msg[starturl] == '<' && i < len) // try to detect and do not strip URLs put within <>
-				{
-					while (starturl <= i && msg[starturl] == '<') // strip leading '<'
-						++starturl;
-					strip = false;
-					i = starturl;
-					while (i < len && msg[i] != '\r' && msg[i] != '\n' && msg[i] != '>') // find first '>' or new line after resetting i to start position
-						AdvanceUTF8(msg, i);
-				}
-
-				int skipTrailing = 0;
-				while (strip && i - skipTrailing - 1 > starturl && (msg[i - skipTrailing - 1] == '.' || msg[i - skipTrailing - 1] == '-' || msg[i - skipTrailing - 1] == '?' || msg[i - skipTrailing - 1] == ';' || msg[i - skipTrailing - 1] == ':' || msg[i - skipTrailing - 1] == '>' || msg[i - skipTrailing - 1] == '<' || msg[i - skipTrailing - 1] == '!'))
-					++skipTrailing;
-
-				if (!IsUrlOrEmail(msg.Mid(starturl, i - starturl - skipTrailing)))
-				{
-					starturl = -1;
-					continue;
-				}
-
-				ASSERT(startstylepos + i - skipTrailing <= endstylepos);
-				Call(SCI_STARTSTYLING, startstylepos + starturl, STYLE_URL);
-				Call(SCI_SETSTYLING, i - starturl - skipTrailing, STYLE_URL);
-			}
-			starturl = -1;
-		}
-	}
-}
-
-bool CSciEdit::IsUrlOrEmail(const CStringA& sText)
-{
-	if (!PathIsURLA(sText))
-	{
-		auto atpos = sText.Find('@');
-		if (atpos <= 0)
-			return false;
-		if (sText.Find('.', atpos) <= atpos + 1) // a dot must follow after the @, but not directly after it
-			return false;
-		if (sText.Find(':', atpos) < 0) // do not detect git@example.com:something as an email address
-			return true;
-		return false;
-	}
-	for (const CStringA& prefix : { "http://", "https://", "git://", "ftp://", "file://", "mailto:" })
-	{
-		if (strncmp(sText, prefix, prefix.GetLength()) == 0 && sText.GetLength() != prefix.GetLength())
-			return true;
-	}
-	return false;
+	::FindURLMatches(msg, AdvanceUTF8, [&](int start, int end) {
+				ASSERT(startstylepos + end <= endstylepos);
+				Call(SCI_STARTSTYLING, startstylepos + start, STYLE_URL);
+				Call(SCI_SETSTYLING, end - start, STYLE_URL); });
 }
 
 std::string CSciEdit::GetWordForSpellChecker(const CString& sWord)
