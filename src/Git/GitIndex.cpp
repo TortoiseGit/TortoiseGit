@@ -713,7 +713,6 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 		git_free_exclude_list(m_pExcludeList);
 		m_pExcludeList = nullptr;
 	}
-	free(m_buffer);
 	m_buffer = nullptr;
 
 	this->m_BaseDir.Empty();
@@ -744,18 +743,17 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 	if (!hfile)
 		return -1 ;
 
-	DWORD filesize = GetFileSize(hfile, nullptr);
+	const DWORD filesize = GetFileSize(hfile, nullptr);
 	if (filesize == INVALID_FILE_SIZE)
 		return -1;
 
-	m_buffer = new BYTE[filesize + 1];
+	m_buffer = std::make_unique<char[]>(filesize + 1);
 	if (!m_buffer)
 		return -1;
 
 	DWORD size = 0;
-	if (!ReadFile(hfile, m_buffer, filesize, &size, nullptr))
+	if (!ReadFile(hfile, m_buffer.get(), filesize, &size, nullptr))
 	{
-		free(m_buffer);
 		m_buffer = nullptr;
 		return -1;
 	}
@@ -763,14 +761,13 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 
 	if (git_create_exclude_list(&m_pExcludeList))
 	{
-		free(m_buffer);
 		m_buffer = nullptr;
 		return -1;
 	}
 
 	m_iIgnoreCase = ignoreCase;
 
-	BYTE *p = m_buffer;
+	const char *p = m_buffer.get();
 	int line = 0;
 	for (DWORD i = 0; i < size; ++i)
 	{
@@ -780,9 +777,9 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 				m_buffer[i] = '\0';
 
 			if (p[0] != '#' && p[0])
-				git_add_exclude(reinterpret_cast<const char*>(p), this->m_BaseDir, m_BaseDir.GetLength(), this->m_pExcludeList, ++line);
+				git_add_exclude(p, m_BaseDir, m_BaseDir.GetLength(), m_pExcludeList, ++line);
 
-			p = m_buffer + i + 1;
+			p = m_buffer.get() + i + 1;
 		}
 	}
 
@@ -790,7 +787,6 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 	{
 		git_free_exclude_list(m_pExcludeList);
 		m_pExcludeList = nullptr;
-		free(m_buffer);
 		m_buffer = nullptr;
 	}
 

@@ -255,13 +255,12 @@ public:
 	{
 		if(m_pExcludeList)
 			git_free_exclude_list(m_pExcludeList);
-		free(m_buffer);
 	}
 
 	__time64_t	m_LastModifyTime = 0;
 	__int64		m_LastFileSize = -1;
 	CStringA m_BaseDir;
-	BYTE* m_buffer = nullptr;
+	std::unique_ptr<char[]> m_buffer;
 	EXCLUDE_LIST m_pExcludeList = nullptr;
 	int* m_iIgnoreCase = nullptr;
 
