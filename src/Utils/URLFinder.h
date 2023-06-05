@@ -34,6 +34,7 @@ bool isalnumTmpl(T ch)
 template <typename T>
 bool IsValidURLChar(T ch)
 {
+	static_assert('_' == L'_', "This method expects that char and wchar_t literals are comparable for ASCII characters");
 	return isalnumTmpl(ch) ||
 		ch == '_' || ch == '/' || ch == ';' || ch == '?' || ch == '&' || ch == '=' ||
 		ch == '%' || ch == ':' || ch == '.' || ch == '#' || ch == '-' || ch == '+' ||
@@ -75,6 +76,8 @@ bool IsUrlOrEmail(const T& sText)
 template <typename T, typename AdvanceCharacterFunc, typename FoundRangeCallback>
 void FindURLMatches(const T& msg, AdvanceCharacterFunc advanceCharacter, FoundRangeCallback callback)
 {
+	static_assert(std::is_convertible_v<AdvanceCharacterFunc, std::function<void(const T&, int&)>>, "Wrong signature for AdvanceCharacterFunc!");
+	static_assert(std::is_convertible_v<FoundRangeCallback, std::function<void(int, int)>>, "Wrong signature for FoundRangeCallback!");
 	const int len = msg.GetLength();
 	int starturl = -1;
 

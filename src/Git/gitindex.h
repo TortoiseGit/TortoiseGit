@@ -336,6 +336,7 @@ inline int GetRangeInSortVector(const T& vector, LPCWSTR pstr, size_t len, bool 
 template<class T, class V>
 int GetRangeInSortVector_int(const T& vector, LPCWSTR pstr, size_t len, V compare, size_t* start, size_t* end, size_t pos)
 {
+	static_assert(std::is_convertible_v<V, std::function<int(const wchar_t*, const wchar_t*, size_t)>>, "Wrong signature for the compare method, needs to be a wcsncmp equivalent");
 	if (pos == NPOS)
 		return -1;
 	if (!start || !end)
@@ -397,6 +398,7 @@ inline size_t SearchInSortVector(const T& vector, LPCWSTR pstr, int len, bool ig
 template<class T, class V>
 size_t SearchInSortVector_int(const T& vector, LPCWSTR pstr, V compare)
 {
+	static_assert(std::is_convertible_v<V, std::function<int(const wchar_t*, const wchar_t*)>>, "Wrong signature for the compare method, needs to be a wcscmp equivalent");
 	size_t end = vector.size() - 1;
 	size_t start = 0;
 	size_t mid = (start + end) / 2;
