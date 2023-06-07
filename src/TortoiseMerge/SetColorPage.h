@@ -41,7 +41,7 @@ public:
 	 */
 	void SaveData();
 
-	BOOL	m_bReloadNeeded;
+	BOOL	m_bReloadNeeded = FALSE;
 	bool	m_IsDarkMode;
 
 	// Dialog Data
@@ -60,7 +60,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 protected:
-	BOOL m_bInit;
+	BOOL m_bInit = FALSE;
 	CRegDWORD		m_regInlineAdded;
 	CRegDWORD		m_regInlineRemoved;
 	CRegDWORD		m_regModifiedBackground;
@@ -86,5 +86,5 @@ protected:
 	CMFCColorButton m_cFgWhitespaces;
 	CMFCColorButton m_cBkFiltered;
 	CButton m_chkUseDarkMode;
-	int m_themeCallbackId;
+	int m_themeCallbackId = 0;
 };

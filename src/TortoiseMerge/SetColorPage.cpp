@@ -28,7 +28,6 @@
 IMPLEMENT_DYNAMIC(CSetColorPage, CPropertyPage)
 CSetColorPage::CSetColorPage()
 	: CPropertyPage(CSetColorPage::IDD)
-	, m_bReloadNeeded(FALSE)
 	, m_regInlineAdded(L"Software\\TortoiseGitMerge\\Colors\\InlineAdded", INLINEADDED_COLOR)
 	, m_regInlineRemoved(L"Software\\TortoiseGitMerge\\Colors\\InlineRemoved", INLINEREMOVED_COLOR)
 	, m_regModifiedBackground(L"Software\\TortoiseGitMerge\\Colors\\ColorModifiedB", MODIFIED_COLOR)
@@ -36,9 +35,7 @@ CSetColorPage::CSetColorPage()
 	, m_regDarkInlineRemoved(L"Software\\TortoiseGitMerge\\Colors\\DarkInlineRemoved", INLINEREMOVED_DARK_COLOR)
 	, m_regDarkModifiedBackground(L"Software\\TortoiseGitMerge\\Colors\\DarkColorModifiedB", MODIFIED_DARK_COLOR)
 	, m_regUseDarkMode(L"Software\\TortoiseGitMerge\\DarkTheme", FALSE)
-	, m_bInit(false)
 	, m_IsDarkMode(CTheme::Instance().IsDarkTheme())
-	, m_themeCallbackId(0)
 {
 }
 

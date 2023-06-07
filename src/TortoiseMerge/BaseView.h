@@ -238,9 +238,9 @@ public: // methods
 	TWhitecharsProperties   GetWhitecharsProperties();
 
 public: // variables
-	CViewData *		m_pViewData;
-	CViewData *		m_pOtherViewData;
-	CBaseView *		m_pOtherView;
+	CViewData*		m_pViewData = nullptr;
+	CViewData*		m_pOtherViewData = nullptr;
+	CBaseView*		m_pOtherView = nullptr;
 
 	CString			m_sWindowName;		///< The name of the view which is shown as a window title to the user
 	CString			m_sFullFilePath;	///< The full path of the file shown
@@ -249,9 +249,9 @@ public: // variables
 
 	BOOL			m_bViewWhitespace;	///< If TRUE, then SPACE and TAB are shown as special characters
 	BOOL			m_bShowInlineDiff;	///< If TRUE, diffs in lines are marked colored
-	bool			m_bShowSelection;	///< If true, selection bars are shown and selected text darkened
-	bool			m_bWhitespaceInlineDiffs; ///< if true, inline diffs are shown for identical lines only differing in whitespace
-	int				m_nTopLine;			///< The topmost text line in the view
+	bool			m_bShowSelection = true;	///< If true, selection bars are shown and selected text darkened
+	bool			m_bWhitespaceInlineDiffs = false; ///< if true, inline diffs are shown for identical lines only differing in whitespace
+	int				m_nTopLine = 0;			///< The topmost text line in the view
 	std::vector<int> m_arMarkedWordLines;	///< which lines contain a marked word
 	std::vector<int> m_arFindStringLines;	///< which lines contain a found string
 
@@ -262,8 +262,8 @@ public: // variables
 	static CMainFrame * m_pMainFrame;	///< Pointer to the mainframe
 
 	int				m_nTabMode;
-	bool			m_bEditorConfigEnabled;
-	BOOL			m_bEditorConfigLoaded;
+	bool			m_bEditorConfigEnabled = false;
+	int				m_bEditorConfigLoaded = 2; // 2 = not evaluated
 
 	void			GoToFirstDifference();
 	void			GoToFirstConflict();
@@ -288,7 +288,7 @@ public: // variables
 	BOOL			GetEditorConfigLoaded() { return m_bEditorConfigLoaded; }
 
 	void DPIChanged();
-	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
+	CWorkingFile* m_pWorkingFile = nullptr; ///< pointer to source/destination file parametrers
 
 protected:  // methods
 	enum {
@@ -479,42 +479,42 @@ protected:  // variables
 	COLORREF		m_InlineAddedDarkBk;
 	COLORREF		m_ModifiedDarkBk;
 	COLORREF		m_WhiteSpaceFg;
-	UINT			m_nStatusBarID;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
+	UINT			m_nStatusBarID = 0;		///< The ID of the status bar pane used by this view. Must be set by the parent class.
 
 	SVNLineDiff		m_svnlinediff;
 	DWORD			m_nInlineDiffMaxLineLength;
-	BOOL			m_bOtherDiffChecked;
-	bool			m_bModified;
-	BOOL			m_bFocused;
+	BOOL			m_bOtherDiffChecked = FALSE;
+	bool			m_bModified = false;
+	BOOL			m_bFocused = FALSE;
 	BOOL			m_bViewLinenumbers;
-	BOOL			m_bIsHidden;
+	BOOL			m_bIsHidden = FALSE;
 	BOOL			m_bIconLFs;
-	int				m_nLineHeight;
-	int				m_nCharWidth;
-	int				m_nMaxLineLength;
-	int				m_nScreenLines;
-	int				m_nScreenChars;
-	int				m_nLastScreenChars;
-	int				m_nOffsetChar;
-	int				m_nTabSize;
-	int				m_nDigits;
-	bool			m_bInlineWordDiff;
+	int				m_nLineHeight = -1;
+	int				m_nCharWidth = -1;
+	int				m_nMaxLineLength = -1;
+	int				m_nScreenLines = -1;
+	int				m_nScreenChars = -1;
+	int				m_nLastScreenChars = -1;
+	int				m_nOffsetChar = 0;
+	int				m_nTabSize = 4;
+	int				m_nDigits = 0;
+	bool			m_bInlineWordDiff = true;
 
 	// Block selection attributes
-	int				m_nSelViewBlockStart;
-	int				m_nSelViewBlockEnd;
+	int				m_nSelViewBlockStart = -1;
+	int				m_nSelViewBlockEnd = -1;
 
-	int				m_nMouseLine;
-	int				m_nLDownLine;
-	bool			m_mouseInMargin;
-	HCURSOR			m_margincursor;
+	int				m_nMouseLine = -1;
+	int				m_nLDownLine = -1;
+	bool			m_mouseInMargin = false;
+	HCURSOR			m_margincursor = nullptr;
 
 	// caret
-	bool			m_bReadonly;
-	bool			m_bReadonlyIsChangable;
-	bool			m_bTarget;						///< view intended as result
+	bool			m_bReadonly = true;
+	bool			m_bReadonlyIsChangable = false;
+	bool			m_bTarget = false;						///< view intended as result
 	POINT			m_ptCaretViewPos{};
-	int				m_nCaretGoalPos;
+	int				m_nCaretGoalPos = 0;
 
 	// Text selection attributes
 	POINT			m_ptSelectionViewPosStart{};
@@ -522,11 +522,11 @@ protected:  // variables
 	POINT			m_ptSelectionViewPosOrigin{};
 
 	static const UINT m_FindDialogMessage;
-	CFindDlg *		m_pFindDialog;
+	CFindDlg*		m_pFindDialog = nullptr;
 	CString			m_sFindText;
-	BOOL			m_bMatchCase;
-	bool			m_bLimitToDiff;
-	bool			m_bWholeWord;
+	BOOL			m_bMatchCase = FALSE;
+	bool			m_bLimitToDiff = true;
+	bool			m_bWholeWord = false;
 
 
 	CAutoIcon m_hAddedIcon;
@@ -551,19 +551,19 @@ protected:  // variables
 	CString			m_sNoLineNr;
 	CString			m_sMarkedWord;
 	CString			m_sPreviousMarkedWord;
-	int				m_MarkedWordCount;
+	int				m_MarkedWordCount = 0;
 
-	CBitmap *		m_pCacheBitmap;
-	CDC *			m_pDC;
+	CBitmap*		m_pCacheBitmap = nullptr;
+	CDC*			m_pDC = nullptr;
 	CScrollTool		m_ScrollTool;
 	CString			m_sWordSeparators;
 	CString			m_Eols[static_cast<int>(EOL::_COUNT)];
 
-	UnicodeType		m_texttype;		///< the text encoding this view uses
-	EOL				m_lineendings;	///< the line endings the view uses
-	bool			m_bInsertMode;
-	bool			m_bDark;
-	int				m_themeCallbackId;
+	UnicodeType		m_texttype = CFileTextLines::UnicodeType::AUTOTYPE;		///< the text encoding this view uses
+	EOL				m_lineendings = EOL::AutoLine;	///< the line endings the view uses
+	bool			m_bInsertMode = true;
+	bool			m_bDark = false;
+	int				m_themeCallbackId = 0;
 	char			m_szTip[MAX_PATH*2+1];
 	wchar_t			m_wszTip[MAX_PATH*2+1];
 	// These three pointers lead to the three parent
@@ -623,7 +623,7 @@ protected:  // variables
 	std::vector<TScreenedViewLine> m_ScreenedViewLine; ///< cached data for screening
 
 	static allviewstate m_AllState;
-	viewstate *		m_pState;
+	viewstate*		m_pState = nullptr;
 
 	enum PopupCommands
 	{

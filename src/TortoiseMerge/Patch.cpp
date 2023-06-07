@@ -39,7 +39,6 @@ CPatch::CPatch()
 
 CPatch::~CPatch()
 {
-	FreeMemory();
 }
 
 void CPatch::FreeMemory()
