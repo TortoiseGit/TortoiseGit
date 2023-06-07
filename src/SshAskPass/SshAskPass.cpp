@@ -30,6 +30,7 @@
 #include "DarkModeHelper.h"
 #include "registry.h"
 #include "DPIAware.h"
+#include <afxtaskdialog.h>
 
 #include <commctrl.h>
 #pragma comment(lib, "comctl32.lib")
@@ -70,8 +71,16 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	if (StrStrI(lpCmdLine, L"(yes/no"))
 	{
-		SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
-		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI stdin wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
+		if (CTaskDialog::IsSupported())
+		{
+			if (CTaskDialog::ShowDialog(g_Prompt, L"", L"TortoiseGit - Git CLI stdin wrapper", TDCBF_NO_BUTTON | TDCBF_YES_BUTTON, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW) == IDYES)
+				wprintf(L"yes");
+			else
+				wprintf(L"no");
+			return 0;
+		}
+
+		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - Git CLI stdin wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
 			wprintf(L"yes");
 		else
 			wprintf(L"no");
@@ -80,8 +89,14 @@ int APIENTRY _tWinMain(HINSTANCE	/*hInstance*/,
 
 	if (StrStrI(lpCmdLine, L"Should I try again?"))
 	{
-		SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
-		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
+		if (CTaskDialog::IsSupported())
+		{
+			if (CTaskDialog::ShowDialog(g_Prompt, L"", L"TortoiseGit - Git CLI yes/no wrapper", TDCBF_NO_BUTTON | TDCBF_YES_BUTTON, TDF_USE_COMMAND_LINKS | TDF_POSITION_RELATIVE_TO_WINDOW) == IDYES)
+				return 0;
+			return 1;
+		}
+
+		if (::MessageBox(nullptr, g_Prompt, L"TortoiseGit - Git CLI yes/no wrapper", MB_YESNO | MB_ICONQUESTION) == IDYES)
 			return 0;
 
 		return 1;
