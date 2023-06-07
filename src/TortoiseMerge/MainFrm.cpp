@@ -186,6 +186,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_INDICATOR_BOTTOMTABMODESTART, ID_INDICATOR_BOTTOMTABMODESTART+19, &CMainFrame::OnUpdateTabModeBottom)
 	ON_WM_SETTINGCHANGE()
 	ON_WM_SYSCOLORCHANGE()
+	ON_MESSAGE(WM_DPICHANGED, OnDPIChanged)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -1896,8 +1897,11 @@ void CMainFrame::OnViewOptions()
 {
 	CString sTemp;
 	sTemp.LoadString(IDS_SETTINGSTITLE);
+	// dialog does not work well with different dpi settings, disable awareness
+	auto oldDpiAwareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 	CSettings dlg(sTemp);
 	dlg.DoModal();
+	SetThreadDpiAwarenessContext(oldDpiAwareness);
 	CTheme::Instance().SetDarkTheme(dlg.IsDarkMode());
 	if (dlg.IsReloadNeeded())
 	{
@@ -2164,7 +2168,7 @@ BOOL CMainFrame::ReadWindowPlacement(WINDOWPLACEMENT * pwp)
 		return FALSE;
 	pwp->length = sizeof(WINDOWPLACEMENT);
 
-	CDPIAware::Instance().ScaleWindowPlacement(pwp);
+	CDPIAware::Instance().ScaleWindowPlacement(GetSafeHwnd(), pwp);
 
 	return TRUE;
 }
@@ -2174,7 +2178,7 @@ void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 	CRegString placement(CString(L"Software\\TortoiseGitMerge\\WindowPos_") + GetMonitorSetupHash().c_str());
 	wchar_t szBuffer[_countof("-32767") * 8 + sizeof("65535") * 2];
 
-	CDPIAware::Instance().UnscaleWindowPlacement(pwp);
+	CDPIAware::Instance().UnscaleWindowPlacement(GetSafeHwnd(), pwp);
 
 	swprintf_s(szBuffer, L"%u,%u,%d,%d,%d,%d,%d,%d,%d,%d",
 			pwp->flags, pwp->showCmd,
@@ -3763,7 +3767,22 @@ LRESULT CMainFrame::OnIdleUpdateCmdUI(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void CMainFrame::OnUpdateThreeWayActions(CCmdUI * pCmdUI)
+LRESULT CMainFrame::OnDPIChanged(WPARAM, LPARAM lParam)
+{
+	CDPIAware::Instance().Invalidate();
+	if (m_pwndLeftView)
+		m_pwndLeftView->DPIChanged();
+	if (m_pwndRightView)
+		m_pwndRightView->DPIChanged();
+	if (m_pwndBottomView)
+		m_pwndBottomView->DPIChanged();
+	const RECT* rect = reinterpret_cast<RECT*>(lParam);
+	SetWindowPos(nullptr, rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
+	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+	return 1; // let MFC handle this message as well
+}
+
+void CMainFrame::OnUpdateThreeWayActions(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable();
 }

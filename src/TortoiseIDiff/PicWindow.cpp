@@ -62,15 +62,15 @@ bool CPicWindow::RegisterAndCreateWindow(HWND hParent)
 
 void CPicWindow::PositionTrackBar()
 {
-    const auto slider_width = CDPIAware::Instance().ScaleX(SLIDER_WIDTH);
+    const auto slider_width = CDPIAware::Instance().ScaleX(*this, SLIDER_WIDTH);
     RECT rc;
     GetClientRect(&rc);
     HWND slider = m_AlphaSlider.GetWindow();
     if (pSecondPic && m_blend == BlendType::Alpha)
     {
-        MoveWindow(slider, 0, rc.top - CDPIAware::Instance().ScaleY(4) + slider_width, slider_width, rc.bottom - rc.top - slider_width + CDPIAware::Instance().ScaleX(8), true);
+        MoveWindow(slider, 0, rc.top - CDPIAware::Instance().ScaleY(*this, 4) + slider_width, slider_width, rc.bottom - rc.top - slider_width + CDPIAware::Instance().ScaleX(*this, 8), true);
         ShowWindow(slider, SW_SHOW);
-        MoveWindow(hwndAlphaToggleBtn, 0, rc.top - CDPIAware::Instance().ScaleY(4), slider_width, slider_width, true);
+        MoveWindow(hwndAlphaToggleBtn, 0, rc.top - CDPIAware::Instance().ScaleY(*this, 4), slider_width, slider_width, true);
         ShowWindow(hwndAlphaToggleBtn, SW_SHOW);
     }
     else
@@ -254,7 +254,7 @@ LRESULT CALLBACK CPicWindow::WinMsgHandler(HWND hwnd, UINT uMsg, WPARAM wParam, 
             mevt.hwndTrack = *this;
             ::TrackMouseEvent(&mevt);
             POINT pt = { static_cast<int>(static_cast<short>(LOWORD(lParam))), static_cast<int>(static_cast<short>(HIWORD(lParam))) };
-            if (pt.y < CDPIAware::Instance().ScaleY(HEADER_HEIGHT))
+            if (pt.y < CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT))
             {
                 ClientToScreen(*this, &pt);
                 if ((abs(m_lastTTPos.x - pt.x) > 20)||(abs(m_lastTTPos.y - pt.y) > 10))
@@ -579,8 +579,8 @@ void CPicWindow::SetPic(const std::wstring& path, const std::wstring& title, boo
 
 void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
 {
-    const auto header_height = CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
-    auto hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
+    const auto header_height = CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
+    auto hFont = CreateFont(-CDPIAware::Instance().PointsToPixelsY(*this, pSecondPic ? 8 : 10), 0, 0, 0, FW_DONTCARE, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"MS Shell Dlg");
     auto hFontOld = static_cast<HFONT>(SelectObject(hDC, hFont));
 
     RECT textrect;
@@ -648,7 +648,8 @@ void CPicWindow::DrawViewTitle(HDC hDC, RECT * rect)
             RECT drawRC = textrect;
             drawRC.left = max(textrect.left + ((textrect.right - textrect.left) - nStringLength) / 2, 1l);
             drawRC.top = textrect.top + header_height + (header_height / 2) - stringsize.cy / 2;
-            ::DrawText(hDC, imgnumstring.c_str(), (int)imgnumstring.size(), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);        }
+            ::DrawText(hDC, imgnumstring.c_str(), (int)imgnumstring.size(), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
+        }
     }
     SelectObject(hDC, hFontOld);
     DeleteObject(hFont);
@@ -902,13 +903,13 @@ void CPicWindow::OnMouseWheel(short fwKeys, short zDelta)
 void CPicWindow::GetClientRect(RECT * pRect)
 {
     ::GetClientRect(*this, pRect);
-    pRect->top += CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
+    pRect->top += CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
     if (HasMultipleImages())
     {
-        pRect->top += CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
+        pRect->top += CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
     }
     if (pSecondPic)
-        pRect->left += CDPIAware::Instance().ScaleX(SLIDER_WIDTH);
+        pRect->left += CDPIAware::Instance().ScaleX(*this, SLIDER_WIDTH);
 }
 
 void CPicWindow::GetClientRectWithScrollbars(RECT * pRect)
@@ -919,13 +920,13 @@ void CPicWindow::GetClientRectWithScrollbars(RECT * pRect)
     pRect->bottom = pRect->bottom-pRect->top;
     pRect->top = 0;
     pRect->left = 0;
-    pRect->top += CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
+    pRect->top += CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
     if (HasMultipleImages())
     {
-        pRect->top += CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
+        pRect->top += CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
     }
     if (pSecondPic)
-        pRect->left += CDPIAware::Instance().ScaleX(SLIDER_WIDTH);
+        pRect->left += CDPIAware::Instance().ScaleX(*this, SLIDER_WIDTH);
 };
 
 
@@ -1052,7 +1053,7 @@ void CPicWindow::FitImageInWindow()
 
     GetClientRectWithScrollbars(&rect);
 
-    const auto border = CDPIAware::Instance().ScaleX(2);
+    const auto border = CDPIAware::Instance().ScaleX(*this, 2);
     if (rect.right-rect.left)
     {
         int Zoom = 100;
@@ -1101,7 +1102,7 @@ void CPicWindow::CenterImage()
 {
     RECT rect;
     GetClientRectWithScrollbars(&rect);
-    const auto border = CDPIAware::Instance().ScaleX(2);
+    const auto border = CDPIAware::Instance().ScaleX(*this, 2);
     long width = picture.m_Width*picscale / 100 + border;
     long height = picture.m_Height*picscale / 100 + border;
     if (pSecondPic && pTheOtherPic)
@@ -1164,7 +1165,7 @@ void CPicWindow::ShowPicWithBorder(HDC hdc, const RECT &bounds, CPicture &pic, i
 
     pic.Show(hdc, picrect);
 
-    const auto bordersize = CDPIAware::Instance().ScaleX(1);
+    const auto bordersize = CDPIAware::Instance().ScaleX(*this, 1);
 
     RECT border;
     border.left = picrect.left - bordersize;
@@ -1193,8 +1194,8 @@ void CPicWindow::Paint(HWND hwnd)
     if (IsRectEmpty(&rect))
         return;
 
-    const auto slider_width = CDPIAware::Instance().ScaleX(SLIDER_WIDTH);
-    const auto border = CDPIAware::Instance().ScaleX(4);
+    const auto slider_width = CDPIAware::Instance().ScaleX(*this, SLIDER_WIDTH);
+    const auto border = CDPIAware::Instance().ScaleX(*this, 4);
     ::GetClientRect(*this, &fullrect);
     hdc = BeginPaint(hwnd, &ps);
     {
@@ -1469,8 +1470,8 @@ bool CPicWindow::CreateButtons()
 
 void CPicWindow::PositionChildren()
 {
-    const auto header_height = CDPIAware::Instance().ScaleY(HEADER_HEIGHT);
-    const auto selBorder = CDPIAware::Instance().ScaleX(100);
+    const auto header_height = CDPIAware::Instance().ScaleY(*this, HEADER_HEIGHT);
+    const auto selBorder = CDPIAware::Instance().ScaleX(*this, 100);
     RECT rect;
     ::GetClientRect(*this, &rect);
     if (HasMultipleImages())

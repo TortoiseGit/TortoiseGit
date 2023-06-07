@@ -710,4 +710,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\perMonitorV2DpiAware.manifest" />
+  </ItemGroup>
 </Project>

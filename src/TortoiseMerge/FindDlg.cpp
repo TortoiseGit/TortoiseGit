@@ -55,9 +55,9 @@ void CFindDlg::Create(CWnd* pParent, int id /* = 0 */)
 		POINT pt = { 0 };
 		CString sRegPath;
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", id);
-		pt.x = CDPIAware::Instance().ScaleX(static_cast<int>(CRegDWORD(sRegPath, 0)));
+		pt.x = CDPIAware::Instance().ScaleX(GetSafeHwnd(), static_cast<int>(CRegDWORD(sRegPath, 0)));
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", id);
-		pt.y = CDPIAware::Instance().ScaleY(static_cast<int>(CRegDWORD(sRegPath, 0)));
+		pt.y = CDPIAware::Instance().ScaleY(GetSafeHwnd(), static_cast<int>(CRegDWORD(sRegPath, 0)));
 		pParent->ClientToScreen(&pt);
 		if (MonitorFromPoint(pt, MONITOR_DEFAULTTONULL))
 			SetWindowPos(nullptr, pt.x, pt.y, 0, 0, SWP_NOACTIVATE | SWP_NOREDRAW | SWP_NOSIZE);
@@ -264,9 +264,9 @@ void CFindDlg::SaveWindowPos(CWnd* pParent)
 		CString sRegPath;
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosX%d", m_id);
 		CRegDWORD regX(sRegPath);
-		regX = CDPIAware::Instance().UnscaleX(rc.left);
+		regX = CDPIAware::Instance().UnscaleX(GetSafeHwnd(), rc.left);
 		sRegPath.Format(L"Software\\TortoiseGitMerge\\FindDlgPosY%d", m_id);
 		CRegDWORD regY(sRegPath);
-		regY = regX = CDPIAware::Instance().UnscaleY(rc.top);
+		regY = regX = CDPIAware::Instance().UnscaleY(GetSafeHwnd(), rc.top);
 	}
 }

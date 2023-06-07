@@ -37,7 +37,6 @@
 #define _CRT_NONSTDC_NO_DEPRECATE 1
 #define _CRT_SECURE_NO_DEPRECATE 1
 #define _SECURE_SCL_DEPRECATE 0
-#define _HAS_ITERATOR_DEBUGGING 0
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 

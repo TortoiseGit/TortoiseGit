@@ -112,6 +112,7 @@ BEGIN_MESSAGE_MAP(CRevisionGraphDlg, CResizableStandAloneDialog)
 	ON_COMMAND(ID_VIEW_ARROW_POINT_TO_MERGES, OnViewArrowPointToMerges)
 	ON_COMMAND(ID_FIND, OnFind)
 	ON_REGISTERED_MESSAGE(m_FindDialogMessage, OnFindDialogMessage)
+	ON_MESSAGE(WM_DPICHANGED, OnDPIChanged)
 END_MESSAGE_MAP()
 
 BOOL CRevisionGraphDlg::InitializeToolbar()
@@ -167,24 +168,24 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 		// that's not faster. So loading it again is what we do.
 		cBitmap.Attach(LoadImage(AfxGetResourceHandle(), MAKEINTRESOURCE(IDR_REVGRAPHBAR),
 			IMAGE_BITMAP,
-			CDPIAware::Instance().ScaleX(bmBitmap.bmWidth),
-			CDPIAware::Instance().ScaleY(bmBitmap.bmHeight),
+			CDPIAware::Instance().ScaleX(GetSafeHwnd(), bmBitmap.bmWidth),
+			CDPIAware::Instance().ScaleY(GetSafeHwnd(), bmBitmap.bmHeight),
 			LR_CREATEDIBSECTION));
 		cBitmap.GetBitmap(&bmBitmap);
 
 
 		CSize	  cSize(bmBitmap.bmWidth, bmBitmap.bmHeight);
-		int nNbBtn = cSize.cx / CDPIAware::Instance().ScaleX(20);
+		int nNbBtn = cSize.cx / CDPIAware::Instance().ScaleX(GetSafeHwnd(), 20);
 		auto rgb = static_cast<RGBTRIPLE*>(bmBitmap.bmBits);
 		COLORREF	rgbMask = RGB(rgb[0].rgbtRed, rgb[0].rgbtGreen, rgb[0].rgbtBlue);
 
-		cImageList.Create(CDPIAware::Instance().ScaleX(20), cSize.cy, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, nNbBtn, 0);
+		cImageList.Create(CDPIAware::Instance().ScaleX(GetSafeHwnd(), 20), cSize.cy, ILC_COLOR32 | ILC_MASK | ILC_HIGHQUALITYSCALE, nNbBtn, 0);
 		cImageList.Add(&cBitmap, rgbMask);
 		// set the sizes of the button and images:
 		// note: buttonX must be 7 pixels more than imageX, and buttonY must be 6 pixels more than imageY.
 		// See the source of SetSizes().
-		m_ToolBar.SetSizes(CSize(CDPIAware::Instance().ScaleX(27), CDPIAware::Instance().ScaleY(26)),
-			CSize(CDPIAware::Instance().ScaleX(20), CDPIAware::Instance().ScaleY(20)));
+		m_ToolBar.SetSizes(CSize(CDPIAware::Instance().ScaleX(GetSafeHwnd(), 27), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 26)),
+			CSize(CDPIAware::Instance().ScaleX(GetSafeHwnd(), 20), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20)));
 		m_ToolBar.SendMessage(TB_SETIMAGELIST, 0, reinterpret_cast<LPARAM>(cImageList.m_hImageList));
 		cImageList.Detach();
 		cBitmap.Detach();
@@ -192,7 +193,7 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 
 	RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 
-#define SNAP_WIDTH CDPIAware::Instance().ScaleX(60) //the width of the combo box
+#define SNAP_WIDTH CDPIAware::Instance().ScaleX(GetSafeHwnd(), 60) // the width of the combo box
 	// set up the ComboBox control as a snap mode select box
 	// First get the index of the placeholders position in the toolbar
 	int zoomComboIndex = 0;
@@ -205,8 +206,8 @@ BOOL CRevisionGraphDlg::InitializeToolbar()
 	m_ToolBar.GetItemRect(zoomComboIndex, &rect);
 
 	// expand the rectangle to allow the combo box room to drop down
-	rect.top += CDPIAware::Instance().ScaleY(3);
-	rect.bottom += CDPIAware::Instance().ScaleY(200);
+	rect.top += CDPIAware::Instance().ScaleY(GetSafeHwnd(), 3);
+	rect.bottom += CDPIAware::Instance().ScaleY(GetSafeHwnd(), 200);
 
 	// then create the combo box and show it
 	if (!m_ToolBar.m_ZoomCombo.CreateEx(WS_EX_RIGHT, WS_CHILD|WS_VISIBLE|CBS_AUTOHSCROLL|CBS_DROPDOWN,
@@ -258,7 +259,7 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 	// set up the status bar
 	m_StatusBar.Create(WS_CHILD|WS_VISIBLE|SBT_OWNERDRAW,
 		CRect(0,0,0,0), this, 1);
-	int strPartDim[2]= {120, -1};
+	int strPartDim[2] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 120), -1 };
 	m_StatusBar.SetParts(2, strPartDim);
 
 	if (InitializeToolbar() != TRUE)
@@ -496,7 +497,7 @@ void CRevisionGraphDlg::OnViewZoomHeight()
 	float horzfact = (windowRect.Width() - 4.0f)/(4.0f + graphRect.Width());
 	float vertfact = (windowRect.Height() - 4.0f)/(4.0f + graphRect.Height());
 	if ((horzfact < vertfact) && (horzfact < MAX_ZOOM))
-		vertfact = (windowRect.Height() - CDPIAware::Instance().ScaleY(20)) / (4.0f + graphRect.Height());
+		vertfact = (windowRect.Height() - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20)) / (4.0f + graphRect.Height());
 
 	DoZoom (min (MAX_ZOOM, vertfact));
 }
@@ -510,7 +511,7 @@ void CRevisionGraphDlg::OnViewZoomWidth()
 	float horzfact = (windowRect.Width() - 4.0f)/(4.0f + graphRect.Width());
 	float vertfact = (windowRect.Height() - 4.0f)/(4.0f + graphRect.Height());
 	if ((vertfact < horzfact) && (vertfact < MAX_ZOOM))
-		horzfact = (windowRect.Width() - CDPIAware::Instance().ScaleX(20)) / (4.0f + graphRect.Width());
+		horzfact = (windowRect.Width() - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 20)) / (4.0f + graphRect.Width());
 
 	DoZoom (min (MAX_ZOOM, horzfact));
 }
@@ -856,4 +857,13 @@ void CRevisionGraphDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
 	if (!m_bVisible)
 		lpwndpos->flags &= ~SWP_SHOWWINDOW;
 	CResizableStandAloneDialog::OnWindowPosChanging(lpwndpos);
+}
+
+LRESULT CRevisionGraphDlg::OnDPIChanged(WPARAM wParam, LPARAM lParam)
+{
+	CDPIAware::Instance().Invalidate();
+	m_ToolBar.CloseWindow();
+	m_ToolBar.DestroyWindow();
+	InitializeToolbar();
+	return __super::OnDPIChanged(wParam, lParam);
 }

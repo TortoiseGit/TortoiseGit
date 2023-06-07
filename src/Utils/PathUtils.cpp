@@ -24,6 +24,8 @@
 #include "../../ext/libgit2/src/util/win32/reparse.h"
 #include "SmartHandle.h"
 #include <assert.h>
+#include <ShlObj.h>
+#include "UnicodeUtils.h"
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 {

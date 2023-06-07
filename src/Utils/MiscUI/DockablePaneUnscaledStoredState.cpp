@@ -35,8 +35,8 @@ BOOL CDockablePaneUnscaledStoredState::LoadState(LPCWSTR lpszProfileName, int nI
 	reg.Read(_T("RectRecentFloat"), m_recentDockInfo.m_rectRecentFloatingRect);
 	reg.Read(_T("RectRecentDocked"), m_rectSavedDockedRect);
 
-	CDPIAware::Instance().ScaleRect(&m_recentDockInfo.m_rectRecentFloatingRect);
-	CDPIAware::Instance().ScaleRect(&m_rectSavedDockedRect);
+	CDPIAware::Instance().ScaleRect(GetSafeHwnd(), &m_recentDockInfo.m_rectRecentFloatingRect);
+	CDPIAware::Instance().ScaleRect(GetSafeHwnd(), &m_rectSavedDockedRect);
 
 	m_recentDockInfo.m_recentSliderInfo.m_rectDockedRect = m_rectSavedDockedRect;
 
@@ -89,8 +89,8 @@ BOOL CDockablePaneUnscaledStoredState::SaveState(LPCWSTR lpszProfileName, int nI
 
 		CRect floatingRect = m_recentDockInfo.m_rectRecentFloatingRect;
 		CRect dockedRect = m_recentDockInfo.m_recentSliderInfo.m_rectDockedRect;
-		CDPIAware::Instance().UnscaleRect(&floatingRect);
-		CDPIAware::Instance().UnscaleRect(&dockedRect);
+		CDPIAware::Instance().UnscaleRect(GetSafeHwnd(), & floatingRect);
+		CDPIAware::Instance().UnscaleRect(GetSafeHwnd(), &dockedRect);
 
 		reg.Write(_T("RectRecentFloat"), floatingRect);
 		reg.Write(_T("RectRecentDocked"), dockedRect);

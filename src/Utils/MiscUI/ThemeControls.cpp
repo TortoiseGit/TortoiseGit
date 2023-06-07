@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020-2021 - TortoiseGit
-// Copyright (C) 2020 - TortoiseSVN
+// Copyright (C) 2020-2021, 2023 - TortoiseGit
+// Copyright (C) 2020-2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -234,9 +234,9 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 		{
 			HPEN hPen;
 			if ((uiState & ODS_DISABLED) && m_bGrayDisabled)
-				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(1), GetGlobalData()->clrGrayedText);
+				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 1), GetGlobalData()->clrGrayedText);
 			else
-				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(1), RGB(180, 180, 180));
+				hPen = CreatePen(PS_SOLID, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 1), RGB(180, 180, 180));
 			auto hOldPen = pDC->SelectObject(hPen);
 
 			HBRUSH hBrush;
@@ -246,8 +246,8 @@ void CThemeMFCMenuButton::OnDraw(CDC* pDC, const CRect& rect, UINT uiState)
 				hBrush = CreateSolidBrush(RGB(255, 255, 255));
 			auto hOldBrush = pDC->SelectObject(hBrush);
 
-			auto vmargin = CDPIAware::Instance().ScaleX(6);
-			auto hmargin = CDPIAware::Instance().ScaleY(3);
+			const auto vmargin = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 6);
+			const auto hmargin = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 3);
 
 			if (m_bRightArrow)
 			{

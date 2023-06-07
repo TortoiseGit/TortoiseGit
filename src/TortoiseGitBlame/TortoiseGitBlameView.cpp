@@ -239,7 +239,7 @@ int CTortoiseGitBlameView::OnCreate(LPCREATESTRUCT lpcs)
 {
 	CRect rect,rect1;
 	this->GetWindowRect(&rect1);
-	rect.left = m_blamewidth + CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
+	rect.left = m_blamewidth + CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH);
 	rect.right=rect.Width();
 	rect.top=0;
 	rect.bottom=rect.Height();
@@ -761,7 +761,7 @@ void CTortoiseGitBlameView::SetTheme(bool bDark)
 
 LONG CTortoiseGitBlameView::GetBlameWidth()
 {
-	LONG blamewidth = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(BLAMESPACE);
+	LONG blamewidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 	SIZE width;
 	CreateFont();
 	HDC hDC = this->GetDC()->m_hDC;
@@ -771,7 +771,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		CString shortHash('f', g_Git.GetShortHASHLength());
 		::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength(), &width);
-		m_revwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_revwidth = width.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_revwidth;
 	}
 	else
@@ -779,7 +779,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount() + 1)));
 		m_sLogIDFormat.Format(L"%%%dd", length);
 		::GetTextExtentPoint32(hDC, CString(L'8', length), length, &width);
-		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_logidwidth;
 	}
 	if (m_bShowDate)
@@ -793,7 +793,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_datewidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_datewidth = maxwidth.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_datewidth;
 	}
 	if ( m_bShowAuthor)
@@ -807,7 +807,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_authorwidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_authorwidth = maxwidth.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_authorwidth;
 	}
 	if (m_bShowFilename)
@@ -821,7 +821,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_filenameWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_filenameWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_filenameWidth;
 	}
 	if (m_bShowOriginalLineNumber)
@@ -837,7 +837,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 			if (width.cx > maxwidth.cx)
 				maxwidth = width;
 		}
-		m_originalLineNumberWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(BLAMESPACE);
+		m_originalLineNumberWidth = maxwidth.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_originalLineNumberWidth;
 	}
 	::SelectObject(hDC, oldfont);
@@ -861,7 +861,7 @@ void CTortoiseGitBlameView::CreateNewFont(bool resize)
 	m_font.DeleteObject();
 	LOGFONT lf = { 0 };
 	lf.lfWeight = 400;
-	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY(static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10))) - static_cast<int>(SendEditor(SCI_GETZOOM));
+	lf.lfHeight = -CDPIAware::Instance().PointsToPixelsY(GetSafeHwnd(), static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10))) - static_cast<int>(SendEditor(SCI_GETZOOM));
 	lf.lfCharSet = DEFAULT_CHARSET;
 	CRegStdString fontname = CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas");
 	wcsncpy_s(lf.lfFaceName, static_cast<std::wstring>(fontname).c_str(), _TRUNCATE);
@@ -925,7 +925,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		{
 			auto old = ::GetTextColor(hDC);
 			::SetTextColor(hDC, ::GetBkColor(hDC));
-			RECT rc2 = { CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y, m_blamewidth + CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y + (wrapcount * height) };
+			RECT rc2 = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH), Y, m_blamewidth + CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH), Y + (wrapcount * height) };
 			for (int j = 0; j < wrapcount; ++j)
 				::ExtTextOut(hDC, 0, Y + (j * height), ETO_CLIPPED, &rc2, buf, _countof(buf) - 1, 0);
 			::SetTextColor(hDC, old);
@@ -936,7 +936,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 		{
 			RECT rc;
 			rc.top = static_cast<LONG>(Y);
-			rc.left = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(BLAMESPACE);
+			rc.left = CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH) + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 			rc.bottom = static_cast<LONG>(Y + height);
 			rc.right = m_blamewidth;
 
@@ -997,7 +997,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 			brush.lbStyle = BS_SOLID;
 			HPEN pen = ExtCreatePen(PS_SOLID | PS_GEOMETRIC, 2, &brush, 0, nullptr);
 			HGDIOBJ hPenOld = SelectObject(hDC, pen);
-			RECT rc2 = { CDPIAware::Instance().ScaleX(LOCATOR_WIDTH), Y + 1, m_blamewidth, Y + (wrapcount * height) - 1};
+			RECT rc2 = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH), Y + 1, m_blamewidth, Y + (wrapcount * height) - 1 };
 			::MoveToEx(hDC, rc2.left, rc2.top, nullptr);
 			::LineTo(hDC, rc2.right, rc2.top);
 			::LineTo(hDC, rc2.right, rc2.bottom);
@@ -1024,7 +1024,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	RECT rc;
 	this->GetClientRect(&rc);
 
-	rc.right = CDPIAware::Instance().ScaleX(LOCATOR_WIDTH);
+	rc.right = CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOCATOR_WIDTH);
 
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;

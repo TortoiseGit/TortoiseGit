@@ -70,6 +70,7 @@ protected:
 
 	void SetMaximizedRect(const CRect& rc);		// set window rect when maximized
 	void ResetMaximizedRect();					// reset to default maximized rect
+	CSize GetMinTrackSize() const { return m_ptMinTrackSize; }
 	void SetMinTrackSize(const CSize& size);	// set minimum tracking size
 	void ResetMinTrackSize();					// reset to default minimum tracking size
 	void SetMaxTrackSize(const CSize& size);	// set maximum tracking size

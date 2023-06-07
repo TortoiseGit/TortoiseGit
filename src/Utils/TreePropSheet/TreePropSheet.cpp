@@ -817,8 +817,8 @@ BOOL CTreePropSheet::OnInitDialog()
 	m_pFrame->ShowCaption(m_bPageCaption);
 
 	// Lets make place for the tree ctrl
-	const int nTreeWidth = static_cast<int>(m_nPageTreeWidth * CDPIAware::Instance().ScaleFactorX());
-	const int nTreeSpace = CDPIAware::Instance().ScaleX(5);
+	const int nTreeWidth = static_cast<int>(m_nPageTreeWidth * CDPIAware::Instance().ScaleFactorX(GetSafeHwnd()));
+	const int nTreeSpace = CDPIAware::Instance().ScaleX(GetSafeHwnd() ,5);
 
 	CRect	rectSheet;
 	GetWindowRect(rectSheet);

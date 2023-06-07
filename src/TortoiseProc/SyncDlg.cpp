@@ -938,7 +938,7 @@ BOOL CSyncDlg::OnInitDialog()
 
 	// set the font to use in the log message view, configured in the settings dialog
 	CFont m_logFont;
-	CAppUtils::CreateFontForLogs(m_logFont);
+	CAppUtils::CreateFontForLogs(GetSafeHwnd(), m_logFont);
 	m_ctrlCmdOut.SetFont(&m_logFont);
 	m_ctrlTabCtrl.InsertTab(&m_ctrlCmdOut, CString(MAKEINTRESOURCE(IDS_LOG)), -1);
 	// make the log message rich edit control send a message when the mouse pointer is over a link
@@ -1179,8 +1179,8 @@ BOOL CSyncDlg::OnInitDialog()
 		rect.bottom -= m_seq * 30;
 		if (rect.top < 0)
 		{
-			rect.top += CDPIAware::Instance().ScaleY(150);
-			rect.bottom += CDPIAware::Instance().ScaleY(150);
+			rect.top += CDPIAware::Instance().ScaleY(GetSafeHwnd(), 150);
+			rect.bottom += CDPIAware::Instance().ScaleY(GetSafeHwnd(), 150);
 		}
 		MoveWindow(rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top);
 	}

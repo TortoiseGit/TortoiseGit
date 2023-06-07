@@ -287,7 +287,7 @@ CString CHistoryCombo::LoadHistory(LPCWSTR lpszSection, LPCWSTR lpszKeyPrefix, b
 	CRect rect;
 	GetWindowRect(rect);
 	GetParent()->ScreenToClient(rect);
-	MoveWindow(rect.left, rect.top, rect.Width(), CDPIAware::Instance().ScaleX(100));
+	MoveWindow(rect.left, rect.top, rect.Width(), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100));
 
 	return sText;
 }

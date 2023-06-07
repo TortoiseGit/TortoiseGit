@@ -25,6 +25,7 @@
 
 #include <afxtempl.h>
 #include "ResizableMsgSupport.h"
+#include <map>
 
 #if _MSC_VER > 1000
 #pragma once
@@ -140,6 +141,8 @@ private:
 	CList<LAYOUTINFO, LAYOUTINFO&> m_listLayout;
 	CList<LAYOUTINFO, LAYOUTINFO&> m_listLayoutCB;
 	//@}
+
+	std::map<HWND, std::tuple<ANCHOR, ANCHOR>> m_anchors;
 
 	//@{
 	//! @brief Used for clipping implementation
@@ -270,6 +273,9 @@ protected:
 		m_listLayout.RemoveAll();
 		m_listLayoutCB.RemoveAll();
 	}
+
+	std::map<HWND, std::tuple<ANCHOR, ANCHOR>> GetAllAnchors() const { return m_anchors; }
+	void AddAllAnchors(const std::map<HWND, std::tuple<ANCHOR, ANCHOR>>& anchors);
 
 	//! @brief Reposition and size all the controls in the layout
 	void ArrangeLayout() const;

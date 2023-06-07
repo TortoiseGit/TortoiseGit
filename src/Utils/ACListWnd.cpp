@@ -205,7 +205,7 @@ void CACListWnd::OnPaint()
 void CACListWnd::Init(CWnd *pWnd)
 {
 	VERIFY(m_VertBar.Create(WS_VISIBLE|SBS_VERT|SBS_LEFTALIGN,
-		CRect(0, 0, GetSystemMetrics(SM_CYVSCROLL), CDPIAware::Instance().ScaleX(100)), this, 0));
+		CRect(0, 0, GetSystemMetrics(SM_CYVSCROLL), CDPIAware::Instance().ScaleX(*pWnd, 100)), this, 0));
 
 	SetScroller();
 	m_pEditParent = static_cast<CEdit*>(pWnd);
@@ -239,7 +239,7 @@ void CACListWnd::SetScroller()
 		rcBar.left = (rcWnd.Width()-GetSystemMetrics(SM_CYVSCROLL));
 		rcBar.bottom-= GetSystemMetrics(SM_CYHSCROLL);
 		m_VertBar.MoveWindow(rcBar);
-		rcBar.top = rcWnd.bottom - CDPIAware::Instance().ScaleY(20);
+		rcBar.top = rcWnd.bottom - CDPIAware::Instance().ScaleY(m_VertBar.GetSafeHwnd() , 20);
 		rcBar.bottom = rcWnd.bottom;
 
 		m_VertBar.SetScrollPos(m_lTopIndex,true);

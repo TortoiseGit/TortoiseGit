@@ -66,6 +66,8 @@ public:
 	LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
 	//}}AFX_VIRTUAL
 
+	bool m_noNcCalcSizeAdjustments = false;
+
 // Implementation
 public:
 	virtual ~CResizableDialog();

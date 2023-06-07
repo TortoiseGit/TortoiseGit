@@ -250,7 +250,7 @@ END_MESSAGE_MAP()
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	//if (m_nRowHeight>0)
-		lpMeasureItemStruct->itemHeight = CDPIAware::Instance().ScaleY(50);
+		lpMeasureItemStruct->itemHeight = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 50);
 }
 
 int CGitLogListBase:: OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -294,7 +294,7 @@ void CGitLogListBase::InsertGitColumn()
 	Init();
 	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForLogCtrl", FALSE))
 	{
-		CCommonAppUtils::CreateFontForLogs(m_Font);
+		CCommonAppUtils::CreateFontForLogs(GetSafeHwnd(), m_Font);
 		SetFont(&m_Font);
 	}
 
@@ -333,8 +333,8 @@ void CGitLogListBase::InsertGitColumn()
 		IDS_LOG_SVNREV,
 	};
 
-	auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
-	auto columnWidth = CDPIAware::Instance().ScaleX(ICONITEMBORDER + 16 * 4);
+	auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
+	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
 	static int with[] =
 	{
 		columnWidth,
@@ -342,7 +342,7 @@ void CGitLogListBase::InsertGitColumn()
 		columnWidth,
 		columnWidth,
 		2 * iconItemBorder + GetSystemMetrics(SM_CXSMICON) * 5,
-		CDPIAware::Instance().ScaleX(LOGLIST_MESSAGE_MIN),
+		CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN),
 		columnWidth,
 		columnWidth,
 		columnWidth,
@@ -1430,7 +1430,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			// Draw the icon(s) into the compatible DC
 			int action = pLogEntry->GetAction(this);
-			auto iconItemBorder = CDPIAware::Instance().ScaleX(ICONITEMBORDER);
+			auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
 			if (!pLogEntry->m_IsDiffFiles)
 			{
 				::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
@@ -3739,7 +3739,7 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 		CRect rect;
 		GetSubItemRect(nItem, lvhitTestInfo.iSubItem, LVIR_LABEL, rect);
 		if (followMousePos)
-			rect.MoveToXY(pt.x, pt.y + CDPIAware::Instance().ScaleY(18)); // 18: to act like a normal tooltip
+			rect.MoveToXY(pt.x, pt.y + CDPIAware::Instance().ScaleY(GetSafeHwnd(), 18)); // 18: to act like a normal tooltip
 		ClientToScreen(rect);
 		::SetWindowPos(pNMHDR->hwndFrom, HWND_TOP, rect.left, rect.top, 0, 0, SWP_NOACTIVATE|SWP_NOSIZE|SWP_NOOWNERZORDER);
 

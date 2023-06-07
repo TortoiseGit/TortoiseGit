@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 
 	static UINT columnNames[] = { IDS_STATUSLIST_COLFILE, IDS_HASH, IDS_PROC_BRANCH, IDS_LOCKED, IDS_REASON };
-	static int columnWidths[] = { CDPIAware::Instance().ScaleX(150), CDPIAware::Instance().ScaleX(100), CDPIAware::Instance().ScaleX(100), CDPIAware::Instance().ScaleX(100), CDPIAware::Instance().ScaleX(100) };
+	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	DWORD dwDefaultColumns = (1 << eCol_Path) | (1 << eCol_Hash) | (1 << eCol_Branch) | (1 << eCol_Locked) | (1 << eCol_Reason);
 	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	constexpr int columnVersion = 0; // adjust when changing number/names/etc. of columns

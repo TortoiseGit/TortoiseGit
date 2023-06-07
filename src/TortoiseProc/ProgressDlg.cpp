@@ -971,7 +971,7 @@ void CProgressDlg::OnEnscrollLog()
 void CProgressDlg::SetupLogMessageViewControl()
 {
 	CFont logFont;
-	CAppUtils::CreateFontForLogs(logFont);
+	CAppUtils::CreateFontForLogs(GetSafeHwnd(), logFont);
 	m_Log.SetFont(&logFont);
 	// make the log message rich edit control send a message when the mouse pointer is over a link
 	m_Log.SendMessage(EM_SETEVENTMASK, NULL, ENM_LINK | ENM_SCROLL);

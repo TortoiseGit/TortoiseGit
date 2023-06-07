@@ -287,6 +287,7 @@ public: // variables
 	void			SetEditorConfigEnabled(bool bEditorConfigEnabled);
 	BOOL			GetEditorConfigLoaded() { return m_bEditorConfigLoaded; }
 
+	void DPIChanged();
 	CWorkingFile * m_pWorkingFile; ///< pointer to source/destination file parametrers
 
 protected:  // methods

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -109,7 +109,7 @@ public:
 	/**
 	 * Create a font which can is used for log messages, etc
 	 */
-	static void CreateFontForLogs(CFont& fontToCreate);
+	static void CreateFontForLogs(HWND hWnd, CFont& fontToCreate);
 
 	CCommonAppUtils() = delete;
 };

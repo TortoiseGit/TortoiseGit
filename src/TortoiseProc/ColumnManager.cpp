@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2023 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -445,7 +445,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 			// a standard column
 			if (width != MAXLONG)
 			{
-				columns[i].width = CDPIAware::Instance().ScaleX(width);
+				columns[i].width = CDPIAware::Instance().ScaleX(control->GetSafeHwnd(), width);
 				columns[i].adjusted = true;
 			}
 		}
@@ -557,7 +557,7 @@ CString ColumnManager::GetWidthString() const
 	wchar_t buf[10] = { 0 };
 	for (size_t i = 0; i < itemName.size(); ++i)
 	{
-		_stprintf_s(buf, L"%08X", columns[i].adjusted ? CDPIAware::Instance().UnscaleX(columns[i].width) : MAXLONG);
+		_stprintf_s(buf, L"%08X", columns[i].adjusted ? CDPIAware::Instance().UnscaleX(control->GetSafeHwnd(), columns[i].width) : MAXLONG);
 		result += buf;
 	}
 

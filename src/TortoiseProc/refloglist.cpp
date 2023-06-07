@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2013, 2015-2020 TortoiseGit
+// Copyright (C) 2009-2011, 2013, 2015-2020, 2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,13 +48,13 @@ void CRefLogList::InsertRefLogColumn()
 		IDS_STATUSLIST_COLDATE,
 	};
 
-	auto columnWidth = CDPIAware::Instance().ScaleX(ICONITEMBORDER + 16 * 4);
+	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
 	static int with[] =
 	{
 		columnWidth,
 		columnWidth,
 		columnWidth,
-		CDPIAware::Instance().ScaleX(LOGLIST_MESSAGE_MIN),
+		CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN),
 		columnWidth,
 	};
 	m_dwDefaultColumns = 0xFFFF;

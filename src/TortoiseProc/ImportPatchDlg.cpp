@@ -89,7 +89,7 @@ void CImportPatchDlg::SetSplitterRange()
 		m_ctrlTabCtrl.GetWindowRect(rcMiddle);
 		ScreenToClient(rcMiddle);
 		if (rcMiddle.Height() && rcMiddle.Width())
-			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(160), rcMiddle.bottom - CDPIAware::Instance().ScaleY(160));
+			m_wndSplitter.SetRange(rcTop.top + CDPIAware::Instance().ScaleY(GetSafeHwnd(), 160), rcMiddle.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 160));
 	}
 }
 
@@ -181,7 +181,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 	}
 	m_cList.SetColumnWidth(0, LVSCW_AUTOSIZE);
 
-	DWORD yPos = CDPIAware::Instance().ScaleY(CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
+	DWORD yPos = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\AMDlgSizer"));
 	RECT rcDlg, rcLogMsg, rcFileList;
 	GetClientRect(&rcDlg);
 	m_cList.GetWindowRect(&rcLogMsg);
@@ -194,7 +194,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
 		int delta = yPos - rectSplitter.top;
-		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(30)))
+		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, 0, yPos, 0, 0, SWP_NOSIZE);
 			DoSize(delta);
@@ -586,7 +586,7 @@ void CImportPatchDlg::SaveSplitterPos()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		regPos = CDPIAware::Instance().UnscaleY(rectSplitter.top);
+		regPos = CDPIAware::Instance().UnscaleY(GetSafeHwnd(), rectSplitter.top);
 	}
 }
 

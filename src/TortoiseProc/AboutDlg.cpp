@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2021 - TortoiseGit
+// Copyright (C) 2009-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -147,14 +147,14 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 	{
 		m_waterEffect.Render(static_cast<DWORD*>(m_renderSrc.GetDIBits()), static_cast<DWORD*>(m_renderDest.GetDIBits()));
 		CClientDC dc(this);
-		CPoint ptOrigin(CDPIAware::Instance().ScaleX(15), CDPIAware::Instance().ScaleY(20));
+		CPoint ptOrigin(CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20));
 		m_renderDest.Draw(&dc,ptOrigin);
 	}
 	if (nIDEvent == ID_DROPTIMER)
 	{
 		CRect r;
-		r.left = CDPIAware::Instance().ScaleX(15);
-		r.top = CDPIAware::Instance().ScaleY(20);
+		r.left = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15);
+		r.top = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
 		r.right = r.left + m_renderSrc.GetWidth();
 		r.bottom = r.top + m_renderSrc.GetHeight();
 		m_waterEffect.Blob(random(r.left,r.right), random(r.top, r.bottom), 5, 800, m_waterEffect.m_iHpage);
@@ -165,21 +165,21 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CRect r;
-	r.left = CDPIAware::Instance().ScaleX(15);
-	r.top = CDPIAware::Instance().ScaleY(20);
+	r.left = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15);
+	r.top = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
 	r.right = r.left + m_renderSrc.GetWidth();
 	r.bottom = r.top + m_renderSrc.GetHeight();
 
 	if(r.PtInRect(point) == TRUE)
 	{
 		// dibs are drawn upside down...
-		point.y -= CDPIAware::Instance().ScaleY(20);
+		point.y -= CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
 		point.y = 64-point.y;
 
 		if (nFlags & MK_LBUTTON)
-			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(15), point.y, 10, 1600, m_waterEffect.m_iHpage);
+			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), point.y, 10, 1600, m_waterEffect.m_iHpage);
 		else
-			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(15), point.y, 5, 50, m_waterEffect.m_iHpage);
+			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), point.y, 5, 50, m_waterEffect.m_iHpage);
 	}
 
 	CStandAloneDialog::OnMouseMove(nFlags, point);

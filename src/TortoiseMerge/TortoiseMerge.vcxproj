@@ -57,6 +57,9 @@
     <Link>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Git\Git.cpp" />
@@ -478,6 +481,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\Resources\ribbon\Filter16.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="..\perMonitorV2DpiAware.manifest" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

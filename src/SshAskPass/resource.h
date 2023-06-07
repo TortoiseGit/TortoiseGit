@@ -8,7 +8,6 @@
 #define IDD_ASK_PASSWORD                129
 #define IDC_PASSWORD                    1000
 #define IDC_STATIC_TITLE                1001
-#define IDC_STATIC                      -1
 
 // Next default values for new objects
 // 
