@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2010-2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +47,7 @@ struct EquivalencyGroup
 	bool IsPerfectMatch() const;
 };
 
-class LineToGroupMap : public std::map<CString, EquivalencyGroup*>
+class LineToGroupMap : private std::map<CString, EquivalencyGroup*>
 {
 public:
 	void Add(int lineno, const CString &line, int nside);

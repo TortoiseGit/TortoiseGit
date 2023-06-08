@@ -74,13 +74,24 @@ struct SLogCacheDataFileHeader
 };
 # pragma pack ()
 
-class CGitHashMap : public std::unordered_map<CGitHash, GitRevLoglist>
+class CGitHashMap : private std::unordered_map<CGitHash, GitRevLoglist>
 {
 public:
 	bool IsExist(CGitHash &hash)
 	{
 		return find(hash) != end();
 	}
+
+	using std::unordered_map<CGitHash, GitRevLoglist>::begin;
+	using std::unordered_map<CGitHash, GitRevLoglist>::end;
+	using std::unordered_map<CGitHash, GitRevLoglist>::cbegin;
+	using std::unordered_map<CGitHash, GitRevLoglist>::cend;
+	using std::unordered_map<CGitHash, GitRevLoglist>::clear;
+	using std::unordered_map<CGitHash, GitRevLoglist>::emplace;
+	using std::unordered_map<CGitHash, GitRevLoglist>::empty;
+	using std::unordered_map<CGitHash, GitRevLoglist>::find;
+	using std::unordered_map<CGitHash, GitRevLoglist>::size;
+	using std::unordered_map<CGitHash, GitRevLoglist>::operator[];
 };
 
 #define INDEX_FILE_NAME L"tortoisegit.index"

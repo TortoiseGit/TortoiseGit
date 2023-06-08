@@ -88,7 +88,7 @@ using const_hookiterator = std::map<hookkey, hookcmd>::const_iterator;
  * \ingroup TortoiseProc
  * Singleton class which deals with the client hook scripts.
  */
-class CHooks : public std::map<hookkey, hookcmd>
+class CHooks : private std::map<hookkey, hookcmd>
 {
 private:
 	CHooks();
@@ -109,6 +109,10 @@ public:
 	static CHooks&		Instance();
 	/// Destroys the singleton object. Call this at the end of the program.
 	static void			Destroy();
+
+	using std::map<hookkey, hookcmd>::begin;
+	using std::map<hookkey, hookcmd>::end;
+	using std::map<hookkey, hookcmd>::empty;
 
 public:
 	/// Saves the hook script information to the registry.

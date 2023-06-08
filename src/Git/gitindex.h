@@ -48,7 +48,7 @@ struct CGitIndex
 	int Print();
 };
 
-class CGitIndexList:public std::vector<CGitIndex>
+class CGitIndexList : private std::vector<CGitIndex>
 {
 public:
 	__time64_t  m_LastModifyTime = 0;
@@ -67,6 +67,15 @@ public:
 	int ReadIncomingOutgoing(git_repository* repo);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const;
+
+	using std::vector<CGitIndex>::begin;
+	using std::vector<CGitIndex>::end;
+	using std::vector<CGitIndex>::cbegin;
+	using std::vector<CGitIndex>::cend;
+	using std::vector<CGitIndex>::empty;
+	using std::vector<CGitIndex>::size;
+	using std::vector<CGitIndex>::operator[];
+
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
@@ -81,7 +90,7 @@ protected:
 using SHARED_INDEX_PTR = std::shared_ptr<const CGitIndexList>;
 using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
-class CGitIndexFileMap:public std::map<CString, SHARED_INDEX_PTR>
+class CGitIndexFileMap : private std::map<CString, SHARED_INDEX_PTR>
 {
 public:
 	CComAutoCriticalSection		m_critIndexSec;
@@ -149,7 +158,7 @@ struct CGitTreeItem
 /* After object create, never change field against
  * that needn't lock to get field
 */
-class CGitHeadFileList:public std::vector<CGitTreeItem>
+class CGitHeadFileList : private std::vector<CGitTreeItem>
 {
 private:
 	int GetPackRef(const CString &gitdir);
@@ -177,12 +186,20 @@ public:
 	int ReadHeadHash(const CString& gitdir);
 	bool CheckHeadUpdate() const;
 
+	using std::vector<CGitTreeItem>::begin;
+	using std::vector<CGitTreeItem>::end;
+	using std::vector<CGitTreeItem>::cbegin;
+	using std::vector<CGitTreeItem>::cend;
+	using std::vector<CGitTreeItem>::empty;
+	using std::vector<CGitTreeItem>::size;
+	using std::vector<CGitTreeItem>::operator[];
+
 private:
 	int ReadTreeRecursive(git_repository& repo, const git_tree* tree, const CString& base);
 };
 
 using SHARED_TREE_PTR = std::shared_ptr<const CGitHeadFileList>;
-class CGitHeadFileMap:public std::map<CString,SHARED_TREE_PTR>
+class CGitHeadFileMap : private std::map<CString,SHARED_TREE_PTR>
 {
 public:
 
@@ -425,7 +442,7 @@ size_t SearchInSortVector_int(const T& vector, LPCWSTR pstr, V compare)
 	return NPOS;
 };
 
-class CGitAdminDirMap:public std::map<CString, CString>
+class CGitAdminDirMap : private std::map<CString, CString>
 {
 public:
 	CComAutoCriticalSection		m_critIndexSec;
@@ -498,4 +515,8 @@ public:
 			return gitDir;
 		return lookup->second;
 	}
+
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
+	using std::map<CString, CString>::clear;
+#endif
 };

@@ -159,7 +159,7 @@ private:
 	size_t location = 0;
 };
 
-class CThreadSafePtrArray : public std::vector<GitRevLoglist*>
+class CThreadSafePtrArray : private std::vector<GitRevLoglist*>
 {
 	CComCriticalSection* m_critSec = nullptr;
 public:
@@ -203,6 +203,17 @@ public:
 		Locker lock(*m_critSec);
 		clear();
 	}
+
+	using std::vector<GitRevLoglist*>::begin;
+	using std::vector<GitRevLoglist*>::end;
+	using std::vector<GitRevLoglist*>::cbegin;
+	using std::vector<GitRevLoglist*>::cend;
+	using std::vector<GitRevLoglist*>::clear;
+	using std::vector<GitRevLoglist*>::empty;
+	using std::vector<GitRevLoglist*>::erase;
+	using std::vector<GitRevLoglist*>::push_back;
+	using std::vector<GitRevLoglist*>::size;
+	using std::vector<GitRevLoglist*>::operator[];
 };
 
 class IAsyncDiffCB

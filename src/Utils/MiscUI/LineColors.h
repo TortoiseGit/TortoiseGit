@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2010 - TortoiseSVN
@@ -28,9 +28,15 @@ struct linecolors_t
 	COLORREF shot;
 };
 
-class LineColors : public std::map<int, linecolors_t>
+class LineColors : private std::map<int, linecolors_t>
 {
 public:
+	using std::map<int, linecolors_t>::begin;
+	using std::map<int, linecolors_t>::end;
+	using std::map<int, linecolors_t>::cbegin;
+	using std::map<int, linecolors_t>::cend;
+	using std::map<int, linecolors_t>::lower_bound;
+
 	void AddShotColor(int pos, COLORREF b)
 	{
 		 // make sure position exists

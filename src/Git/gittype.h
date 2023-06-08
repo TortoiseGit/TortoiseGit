@@ -29,7 +29,7 @@ enum
 	TGIT_GIT_ERROR_GET_EXIT_CODE
 };
 
-class CGitByteArray : public std::vector<char>
+class CGitByteArray : private std::vector<char>
 {
 public:
 	size_t find(char data, size_t start = 0) const
@@ -71,7 +71,7 @@ public:
 
 		return pos;
 	}
-	size_t append(const std::vector<char>& v, size_t start = 0, size_t end = npos)
+	size_t append(const CGitByteArray& v, size_t start = 0, size_t end = npos)
 	{
 		if (end == npos)
 			end = v.size();
@@ -92,9 +92,23 @@ public:
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");
 	static_assert(-1 == static_cast<int>(npos), "NPOS must equal -1");
+
+	using std::vector<char>::begin;
+	using std::vector<char>::end;
+	using std::vector<char>::cbegin;
+	using std::vector<char>::cend;
+	using std::vector<char>::clear;
+	using std::vector<char>::data;
+	using std::vector<char>::empty;
+	using std::vector<char>::erase;
+	using std::vector<char>::pop_back;
+	using std::vector<char>::push_back;
+	using std::vector<char>::resize;
+	using std::vector<char>::size;
+	using std::vector<char>::operator[];
 };
 
-class CGitGuardedByteArray : public CGitByteArray
+class CGitGuardedByteArray : private CGitByteArray
 {
 private:
 	CGitGuardedByteArray(const CGitGuardedByteArray&) = delete;
@@ -103,6 +117,20 @@ public:
 	CGitGuardedByteArray() {}
 	~CGitGuardedByteArray() {}
 	CComAutoCriticalSection	m_critSec;
+
+	using CGitByteArray::begin;
+	using CGitByteArray::end;
+	using CGitByteArray::cbegin;
+	using CGitByteArray::cend;
+	using CGitByteArray::clear;
+	using CGitByteArray::data;
+	using CGitByteArray::empty;
+	using CGitByteArray::erase;
+	using CGitByteArray::pop_back;
+	using CGitByteArray::push_back;
+	using CGitByteArray::resize;
+	using CGitByteArray::size;
+	using CGitByteArray::operator[];
 };
 
 struct TGitRef

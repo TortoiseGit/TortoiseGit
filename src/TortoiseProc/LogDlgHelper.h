@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -38,7 +38,7 @@ using MAP_HASH_REV = std::unordered_map<CGitHash, size_t>;
  * Helper class for the log dialog, handles all the log entries, including
  * sorting.
  */
-class CLogDataVector : 	public std::vector<CGitHash>
+class CLogDataVector : private std::vector<CGitHash>
 {
 public:
 	CLogCache *m_pLogCache;
@@ -78,6 +78,19 @@ public:
 	void updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha, bool onlyFirstParent);
 	void setLane(const CGitHash& sha, bool onlyFirstParent);
 	void append(CGitHash& sha, bool storeInVector, bool onlyFirstParent);
+
+	using std::vector<CGitHash>::at;
+	using std::vector<CGitHash>::begin;
+	using std::vector<CGitHash>::end;
+	using std::vector<CGitHash>::cbegin;
+	using std::vector<CGitHash>::cend;
+	using std::vector<CGitHash>::clear;
+	using std::vector<CGitHash>::empty;
+	using std::vector<CGitHash>::erase;
+	using std::vector<CGitHash>::insert;
+	using std::vector<CGitHash>::push_back;
+	using std::vector<CGitHash>::size;
+	using std::vector<CGitHash>::operator[];
 
 #if 0
 	/// Ascending date sorting.
