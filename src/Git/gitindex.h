@@ -147,20 +147,26 @@ private:
 class CGitIndexFileMap : protected SharedPtrMapTmpl<SHARED_INDEX_PTR>
 {
 public:
-	void CheckAndUpdate(const CString& gitdir)
+	[[nodiscard]] SHARED_INDEX_PTR CheckAndUpdate(const CString& gitdir)
 	{
 		if (auto pIndex = SafeGet(gitdir); pIndex && !pIndex->HasIndexChangedOnDisk(gitdir))
-			return;
+			return pIndex;
 
-		LoadIndex(gitdir);
+		auto newIndex = std::make_shared<CGitIndexList>();
+		if (newIndex->ReadIndex(gitdir))
+		{
+			SafeClear(gitdir);
+			return {};
+		}
+
+		SafeSet(gitdir, newIndex);
+
+		return newIndex;
 	}
 
 	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeClear;
 	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeClearRecursively;
 	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeGet;
-
-private:
-	int LoadIndex(const CString& gitdir);
 };
 
 struct CGitTreeItem
@@ -217,7 +223,7 @@ using SHARED_TREE_PTR = std::shared_ptr<const CGitHeadFileList>;
 class CGitHeadFileMap : protected SharedPtrMapTmpl<SHARED_TREE_PTR>
 {
 public:
-	void CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase);
+	[[nodiscard]] SHARED_TREE_PTR CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase);
 
 	using SharedPtrMapTmpl<SHARED_TREE_PTR>::SafeClear;
 	using SharedPtrMapTmpl<SHARED_TREE_PTR>::SafeClearRecursively;

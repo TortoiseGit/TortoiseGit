@@ -355,21 +355,6 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 	return -1;
 }
 
-int CGitIndexFileMap::LoadIndex(const CString &gitdir)
-{
-	auto pIndex = std::make_shared<CGitIndexList>();
-
-	if (pIndex->ReadIndex(gitdir))
-	{
-		SafeClear(gitdir);
-		return -1;
-	}
-
-	this->SafeSet(gitdir, pIndex);
-
-	return 0;
-}
-
 // This method is assumed to be called with m_SharedMutex locked.
 int CGitHeadFileList::GetPackRef(const CString &gitdir)
 {
@@ -1095,21 +1080,19 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 	return -1;
 }
 
-void CGitHeadFileMap::CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase)
+SHARED_TREE_PTR CGitHeadFileMap::CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase)
 {
-	SHARED_TREE_PTR ptr = this->SafeGet(gitdir);
-
-	if (ptr.get() && !ptr->CheckHeadUpdate())
-		return;
+	if (auto ptr = this->SafeGet(gitdir); ptr.get() && !ptr->CheckHeadUpdate())
+		return ptr;
 
 	auto newPtr = std::make_shared<CGitHeadFileList>();
 	if (newPtr->ReadHeadHash(gitdir) || newPtr->ReadTree(ignoreCase))
 	{
 		SafeClear(gitdir);
-		return;
+		return {};
 	}
 
 	this->SafeSet(gitdir, newPtr);
 
-	return;
+	return newPtr;
 }

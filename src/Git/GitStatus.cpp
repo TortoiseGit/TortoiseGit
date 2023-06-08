@@ -182,10 +182,9 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 			if (!repolists.pTree)
 			{
 				if (update)
-					g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
-
-				// Check Head Tree Hash
-				repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
+					repolists.pTree = g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
+				else
+					repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
 			}
 			// broken HEAD
 			if (!repolists.pTree)
@@ -220,10 +219,9 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 		if (!repolists.pTree)
 		{
 			if (update)
-				g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
-
-			// Check Head Tree Hash
-			repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
+				repolists.pTree = g_HeadFileMap.CheckHeadAndUpdate(gitdir, repolists.pIndex->IsIgnoreCase());
+			else
+				repolists.pTree = g_HeadFileMap.SafeGet(gitdir);
 		}
 		// broken HEAD
 		if (!repolists.pTree)
@@ -260,8 +258,9 @@ int GitStatus::GetFileStatus(const CString& gitdir, CString path, git_wc_status2
 
 	CGitRepoLists sharedRepoLists;
 	if (update)
-		g_IndexFileMap.CheckAndUpdate(gitdir);
-	sharedRepoLists.pIndex = g_IndexFileMap.SafeGet(gitdir);
+		sharedRepoLists.pIndex = g_IndexFileMap.CheckAndUpdate(gitdir);
+	else
+		sharedRepoLists.pIndex = g_IndexFileMap.SafeGet(gitdir);
 	if (!sharedRepoLists.pIndex)
 	{
 		// git working tree has broken index
@@ -336,16 +335,12 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
 		path += L'/'; // Add trail / to show it is directory, not file name.
 
-	g_IndexFileMap.CheckAndUpdate(gitdir);
-
-	SHARED_INDEX_PTR indexptr = g_IndexFileMap.SafeGet(gitdir);
+	SHARED_INDEX_PTR indexptr = g_IndexFileMap.CheckAndUpdate(gitdir);
 	// there was an error loading the index
 	if (!indexptr)
 		return -1;
 
-	g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
-
-	SHARED_TREE_PTR treeptr = g_HeadFileMap.SafeGet(gitdir);
+	SHARED_TREE_PTR treeptr = g_HeadFileMap.CheckHeadAndUpdate(gitdir, indexptr->IsIgnoreCase());
 	// there was an error loading the HEAD commit/tree
 	if (!treeptr)
 		return -1;
@@ -549,10 +544,8 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 	if (!path.IsEmpty() && path[path.GetLength() - 1] != L'/')
 		path += L'/'; //Add trail / to show it is directory, not file name.
 
-	g_IndexFileMap.CheckAndUpdate(gitdir);
-
 	CGitRepoLists sharedRepoLists;
-	sharedRepoLists.pIndex = g_IndexFileMap.SafeGet(gitdir);
+	sharedRepoLists.pIndex = g_IndexFileMap.CheckAndUpdate(gitdir);
 
 	// broken index
 	if (!sharedRepoLists.pIndex)
@@ -578,9 +571,7 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 			return 0;
 		}
 
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
-
-		sharedRepoLists.pTree = g_HeadFileMap.SafeGet(gitdir);
+		sharedRepoLists.pTree = g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
 		// broken HEAD
 		if (!sharedRepoLists.pTree)
 		{
@@ -635,12 +626,10 @@ int GitStatus::GetDirStatus(const CString& gitdir, const CString& subpath, git_w
 
 	if (IsFul)
 	{
-		g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
-
 		// Check Add
 		{
 			// Check if new init repository
-			sharedRepoLists.pTree = g_HeadFileMap.SafeGet(gitdir);
+			sharedRepoLists.pTree = g_HeadFileMap.CheckHeadAndUpdate(gitdir, sharedRepoLists.pIndex->IsIgnoreCase());
 			// broken HEAD
 			if (!sharedRepoLists.pTree)
 			{
