@@ -90,43 +90,35 @@ protected:
 using SHARED_INDEX_PTR = std::shared_ptr<const CGitIndexList>;
 using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
-class CGitIndexFileMap : private std::map<CString, SHARED_INDEX_PTR>
+template<typename SharedPtr>
+class SharedPtrMapTmpl : private std::map<CString, SharedPtr>
 {
 public:
-	CComAutoCriticalSection		m_critIndexSec;
-
-	SHARED_INDEX_PTR SafeGet(const CString& path)
+	[[nodiscard]] SharedPtr SafeGet(const CString& path)
 	{
 		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critIndexSec);
-		auto lookup = find(thePath);
-		if (lookup == cend())
-			return SHARED_INDEX_PTR();
+		CAutoLocker lock(m_critSec);
+		auto lookup = this->find(thePath);
+		if (lookup == this->cend())
+			return {};
 		return lookup->second;
-	}
-
-	void SafeSet(const CString& path, SHARED_INDEX_PTR ptr)
-	{
-		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critIndexSec);
-		(*this)[thePath] = ptr;
 	}
 
 	bool SafeClear(const CString& path)
 	{
 		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critIndexSec);
-		auto lookup = find(thePath);
-		if (lookup == cend())
+		CAutoLocker lock(m_critSec);
+		auto lookup = this->find(thePath);
+		if (lookup == this->cend())
 			return false;
-		erase(lookup);
+		this->erase(lookup);
 		return true;
 	}
 
 	bool SafeClearRecursively(const CString& path)
 	{
 		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critIndexSec);
+		CAutoLocker lock(m_critSec);
 		std::vector<CString> toRemove;
 		for (auto it = this->cbegin(); it != this->cend(); ++it)
 		{
@@ -138,14 +130,34 @@ public:
 		return !toRemove.empty();
 	}
 
-	bool HasIndexChangedOnDisk(const CString& gitdir);
-	int LoadIndex(const CString &gitdir);
+protected:
+	void SafeSet(const CString& path, SharedPtr ptr)
+	{
+		CString thePath(CPathUtils::NormalizePath(path));
+		CAutoLocker lock(m_critSec);
+		(*this)[thePath] = ptr;
+	}
 
+private:
+	CComAutoCriticalSection m_critSec;
+};
+
+class CGitIndexFileMap : protected SharedPtrMapTmpl<SHARED_INDEX_PTR>
+{
+public:
 	void CheckAndUpdate(const CString& gitdir)
 	{
 		if (HasIndexChangedOnDisk(gitdir))
 			LoadIndex(gitdir);
 	}
+
+	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeClear;
+	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeClearRecursively;
+	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeGet;
+
+private:
+	bool HasIndexChangedOnDisk(const CString& gitdir);
+	int LoadIndex(const CString& gitdir);
 };
 
 struct CGitTreeItem
@@ -199,55 +211,14 @@ private:
 };
 
 using SHARED_TREE_PTR = std::shared_ptr<const CGitHeadFileList>;
-class CGitHeadFileMap : private std::map<CString,SHARED_TREE_PTR>
+class CGitHeadFileMap : protected SharedPtrMapTmpl<SHARED_TREE_PTR>
 {
 public:
-
-	CComAutoCriticalSection		m_critTreeSec;
-
-	SHARED_TREE_PTR SafeGet(const CString& path)
-	{
-		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critTreeSec);
-		auto lookup = find(thePath);
-		if (lookup == cend())
-			return SHARED_TREE_PTR();
-		return lookup->second;
-	}
-
-	void SafeSet(const CString& path, SHARED_TREE_PTR ptr)
-	{
-		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critTreeSec);
-		(*this)[thePath] = ptr;
-	}
-
-	bool SafeClear(const CString& path)
-	{
-		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critTreeSec);
-		auto lookup = find(thePath);
-		if (lookup == cend())
-			return false;
-		erase(lookup);
-		return true;
-	}
-
-	bool SafeClearRecursively(const CString& path)
-	{
-		CString thePath(CPathUtils::NormalizePath(path));
-		CAutoLocker lock(m_critTreeSec);
-		std::vector<CString> toRemove;
-		for (auto it = this->cbegin(); it != this->cend(); ++it)
-		{
-			if (CStringUtils::StartsWith((*it).first, thePath))
-				toRemove.push_back((*it).first);
-		}
-		for (auto it = toRemove.cbegin(); it != toRemove.cend(); ++it)
-			this->erase(*it);
-		return !toRemove.empty();
-	}
 	void CheckHeadAndUpdate(const CString& gitdir, bool ignoreCase);
+
+	using SharedPtrMapTmpl<SHARED_TREE_PTR>::SafeClear;
+	using SharedPtrMapTmpl<SHARED_TREE_PTR>::SafeClearRecursively;
+	using SharedPtrMapTmpl<SHARED_TREE_PTR>::SafeGet;
 };
 
 struct CGitFileName
