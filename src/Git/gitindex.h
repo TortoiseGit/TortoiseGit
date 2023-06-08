@@ -62,7 +62,7 @@ public:
 	~CGitIndexList();
 
 	bool HasIndexChangedOnDisk(const CString& gitdir) const;
-	int ReadIndex(CString dotgitdir);
+	int ReadIndex(const CString& dotgitdir);
 	int ReadIncomingOutgoing(git_repository* repo);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
 	int GetFileStatus(CAutoRepository& repository, const CString& gitdir, const CGitIndex& entry, git_wc_status2_t& status, __int64 time, __int64 filesize, bool isSymlink) const;

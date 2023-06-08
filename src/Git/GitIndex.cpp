@@ -63,7 +63,7 @@ bool CGitIndexList::HasIndexChangedOnDisk(const CString& gitdir) const
 	return (CGit::GetFileModifyTime(indexFile, &time, nullptr, &size) && !empty()) || m_LastModifyTime != time || m_LastFileSize != size;
 }
 
-int CGitIndexList::ReadIndex(CString dgitdir)
+int CGitIndexList::ReadIndex(const CString& dgitdir)
 {
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	clear(); // HACK to make tests work, until we use CGitIndexList
