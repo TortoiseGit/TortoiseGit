@@ -427,7 +427,7 @@ BOOL CCommitDlg::OnInitDialog()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		int delta = yPos - rectSplitter.top;
+		const int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
@@ -589,7 +589,7 @@ void CCommitDlg::OnOK()
 		auto pos = m_ListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 			m_ListCtrl.SetItemState(m_ListCtrl.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
-		int nListItems = m_ListCtrl.GetItemCount();
+		const int nListItems = m_ListCtrl.GetItemCount();
 		for (int i = 0; i < nListItems; ++i)
 		{
 			auto entry = m_ListCtrl.GetListEntry(i);
@@ -660,7 +660,7 @@ void CCommitDlg::OnOK()
 
 	if (m_ProjectProperties.bWarnNoSignedOffBy == TRUE && m_cLogMessage.GetText().Find(GetSignedOffByLine()) == -1)
 	{
-		UINT retval = CMessageBox::Show(this->m_hWnd, IDS_PROC_COMMIT_NOSIGNOFFLINE, IDS_APPNAME, 1, IDI_WARNING, IDS_PROC_COMMIT_ADDSIGNOFFBUTTON, IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON, IDS_ABORTBUTTON);
+		const UINT retval = CMessageBox::Show(this->m_hWnd, IDS_PROC_COMMIT_NOSIGNOFFLINE, IDS_APPNAME, 1, IDI_WARNING, IDS_PROC_COMMIT_ADDSIGNOFFBUTTON, IDS_PROC_COMMIT_NOADDSIGNOFFBUTTON, IDS_ABORTBUTTON);
 		if (retval == 1)
 		{
 			OnBnClickedSignOff();
@@ -697,7 +697,7 @@ void CCommitDlg::OnOK()
 		}
 	}
 
-	int nListItems = m_ListCtrl.GetItemCount();
+	const int nListItems = m_ListCtrl.GetItemCount();
 	for (int i = 0; i < nListItems && !m_bCommitMessageOnly; ++i)
 	{
 		auto entry = m_ListCtrl.GetListEntry(i);
@@ -726,7 +726,7 @@ void CCommitDlg::OnOK()
 		{
 			CString message;
 			message.Format(IDS_COMMITDLG_SUBMODULEDIRTY, static_cast<LPCWSTR>(entry->GetGitPathString()));
-			int result = CMessageBox::Show(m_hWnd, message, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
+			const int result = CMessageBox::Show(m_hWnd, message, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
 			if (result == 1)
 			{
 				CString cmdCommit;
@@ -854,7 +854,7 @@ void CCommitDlg::OnOK()
 
 		CTGitPath path=g_Git.m_CurrentDir;
 
-		BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
+		const BOOL IsGitSVN = path.GetAdminDirMask() & ITEMIS_GITSVN;
 
 		out.Empty();
 		CString amend;
@@ -1604,7 +1604,7 @@ BOOL CCommitDlg::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_hAccel)
 	{
-		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
+		const int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
 		if (ret)
 			return TRUE;
 	}
@@ -1818,7 +1818,7 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 				continue;
 			if (strLine[0] == L'#')
 				continue;
-			int eqpos = strLine.Find('=');
+			const int eqpos = strLine.Find('=');
 			CString rgx;
 			rgx = strLine.Mid(eqpos+1).Trim();
 
@@ -1851,7 +1851,7 @@ void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CStrin
 				continue;
 			if (strLine[0] == L'#') // comment char
 				continue;
-			int eqpos = strLine.Find(L'=');
+			const int eqpos = strLine.Find(L'=');
 			if (eqpos <= 0)
 				continue;
 			CString key = strLine.Left(eqpos);
@@ -1933,7 +1933,7 @@ void CCommitDlg::GetAutocompletionList(std::map<CString, int>& autolist)
 
 	// the next step is to go over all files shown in the commit dialog
 	// and scan them for strings we can use
-	int nListItems = m_ListCtrl.GetItemCount();
+	const int nListItems = m_ListCtrl.GetItemCount();
 
 	for (int i=0; i<nListItems && m_bRunThread; ++i)
 	{
@@ -1972,7 +1972,7 @@ void CCommitDlg::GetAutocompletionList(std::map<CString, int>& autolist)
 		// Some users prefer to also list file name without extension.
 		if (CRegDWORD(L"Software\\TortoiseGit\\AutocompleteRemovesExtensions", FALSE))
 		{
-			int dotPos = sPartPath.ReverseFind('.');
+			const int dotPos = sPartPath.ReverseFind('.');
 			if ((dotPos >= 0) && (dotPos > lastPos))
 				autolist.emplace(sPartPath.Mid(lastPos, dotPos - lastPos), AUTOCOMPLETE_FILENAME);
 		}
@@ -2174,7 +2174,7 @@ bool CCommitDlg::HandleMenuItemClick(int cmd, CSciEdit * pSciEdit)
 	{
 		CString logmsg;
 		auto locker(m_ListCtrl.AcquireReadLock());
-		int nListItems = m_ListCtrl.GetItemCount();
+		const int nListItems = m_ListCtrl.GetItemCount();
 		for (int i=0; i<nListItems; ++i)
 		{
 			auto entry = m_ListCtrl.GetListEntry(i);
@@ -2386,7 +2386,7 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			head = L"HEAD~1";
 		while(pos)
 		{
-			int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
+			const int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
 			auto p = m_ListCtrl.GetListEntry(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
@@ -2451,7 +2451,7 @@ LRESULT CCommitDlg::OnGitStatusListCtrlCheckChanged(WPARAM, LPARAM)
 LRESULT CCommitDlg::OnCheck(WPARAM wnd, LPARAM)
 {
 	HWND hwnd = reinterpret_cast<HWND>(wnd);
-	bool check = !(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	const bool check = !(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	if (hwnd == GetDlgItem(IDC_CHECKALL)->GetSafeHwnd())
 		m_ListCtrl.Check(GITSLC_SHOWEVERYTHING, check);
 	else if (hwnd == GetDlgItem(IDC_CHECKNONE)->GetSafeHwnd())
@@ -2480,8 +2480,8 @@ LRESULT CCommitDlg::OnUpdateOKButton(WPARAM, LPARAM)
 		return 0;
 
 	CString text = m_cLogMessage.GetText().Trim();
-	bool bValidLogSize = !text.IsEmpty() && text.GetLength() >= m_ProjectProperties.nMinLogSize;
-	bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
+	const bool bValidLogSize = !text.IsEmpty() && text.GetLength() >= m_ProjectProperties.nMinLogSize;
+	const bool bAmendOrSelectFilesOrMerge = m_ListCtrl.GetSelected() > 0 || (m_bCommitAmend && m_bAmendDiffToLastCommit) || CTGitPath(g_Git.m_CurrentDir).IsMergeActive();
 
 	DialogEnableWindow(IDOK, bValidLogSize && (m_bCommitMessageOnly || bAmendOrSelectFilesOrMerge));
 
@@ -2679,7 +2679,7 @@ void CCommitDlg::OnBnClickedSignOff()
 
 	if (m_cLogMessage.GetText().Find(str) == -1) {
 		m_cLogMessage.SetText(m_cLogMessage.GetText().TrimRight());
-		int lastNewline = m_cLogMessage.GetText().ReverseFind(L'\n');
+		const int lastNewline = m_cLogMessage.GetText().ReverseFind(L'\n');
 		int foundByLine = -1;
 		if (lastNewline > 0)
 			foundByLine = m_cLogMessage.GetText().Find(L"-by: ", lastNewline);
@@ -2906,7 +2906,7 @@ int CCommitDlg::CheckHeadDetach()
 	CString output;
 	if (CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, output))
 	{
-		int retval = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
+		const int retval = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_COMMIT_DETACHEDWARNING, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONWARNING);
 		if(retval == IDYES)
 		{
 			if (CAppUtils::CreateBranchTag(GetSafeHwnd(), FALSE, nullptr, true) == FALSE)

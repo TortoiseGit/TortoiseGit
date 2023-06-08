@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019, 2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -125,7 +125,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 		else if (IsBareRepo(sDirName))
 			return false;
 
-		int x = sDirName.ReverseFind(L'\\');
+		const int x = sDirName.ReverseFind(L'\\');
 		if (x < 2)
 			break;
 
@@ -160,9 +160,9 @@ bool GitAdminDir::GetAdminDirPath(const CString& projectTopDir, CString& adminDi
 	if (!pFile)
 		return false;
 
-	int size = 65536;
+	constexpr int size = 65536;
 	CStringA commonDirA;
-	int length = static_cast<int>(fread(commonDirA.GetBufferSetLength(size), sizeof(char), size, pFile));
+	const int length = static_cast<int>(fread(commonDirA.GetBufferSetLength(size), sizeof(char), size, pFile));
 	commonDirA.ReleaseBuffer(length);
 	CString commonDir = CUnicodeUtils::GetUnicode(commonDirA);
 	commonDir.TrimRight(L"\r\n");
@@ -207,9 +207,9 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	if (!pFile)
 		return L"";
 
-	int size = 65536;
+	constexpr int size = 65536;
 	auto buffer = std::make_unique<char[]>(size);
-	int length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile));
+	const int length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile));
 	CStringA gitPathA(buffer.get(), length);
 	if (length < 8 || !CStringUtils::StartsWith(gitPathA, "gitdir: "))
 		return L"";

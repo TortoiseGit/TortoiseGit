@@ -169,11 +169,11 @@ bool CAppUtils::StashApply(HWND hWnd, CString ref, bool showChanges /* true */)
 	sysProgressDlg.ShowModeless(hWnd, true);
 
 	CString out;
-	int ret = g_Git.Run(cmd, &out, CP_UTF8);
+	const int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
 	sysProgressDlg.Stop();
 
-	bool hasConflicts = (out.Find(L"CONFLICT") >= 0);
+	const bool hasConflicts = (out.Find(L"CONFLICT") >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 		CMessageBox::Show(hWnd, CString(MAKEINTRESOURCE(IDS_PROC_STASHAPPLYFAILED)) + L'\n' + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	else
@@ -213,11 +213,11 @@ bool CAppUtils::StashPop(HWND hWnd, int showChanges /* = 1 */)
 	sysProgressDlg.ShowModeless(hWnd, true);
 
 	CString out;
-	int ret = g_Git.Run(cmd, &out, CP_UTF8);
+	const int ret = g_Git.Run(cmd, &out, CP_UTF8);
 
 	sysProgressDlg.Stop();
 
-	bool hasConflicts = (out.Find(L"CONFLICT") >= 0);
+	const bool hasConflicts = (out.Find(L"CONFLICT") >= 0);
 	if (ret && !(ret == 1 && hasConflicts))
 		CMessageBox::Show(hWnd, CString(MAKEINTRESOURCE(IDS_PROC_STASHPOPFAILED)) + L'\n' + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
 	else
@@ -408,8 +408,8 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	if ((bReadOnly)&&(bInternal))
 		com += L" /readonly";
 
-	DWORD blocktrust = CRegDWORD(L"Software\\TortoiseGit\\MergeBlockTrustBehavior");
-	bool bWaitForExit = !bInternal && blocktrust >= 1;
+	const DWORD blocktrust = CRegDWORD(L"Software\\TortoiseGit\\MergeBlockTrustBehavior");
+	const bool bWaitForExit = !bInternal && blocktrust >= 1;
 	DWORD exitCode = DWORD_MAX;
 	if (!LaunchApplication(com, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_EXTMERGESTART).WaitForExit(bWaitForExit, nullptr, &exitCode)))
 		return FALSE;
@@ -518,7 +518,7 @@ bool CAppUtils::StartExtDiff(
 
 	viewer = PickDiffTool(file1, file2);
 	// If registry entry for a diff program is commented out, use TortoiseGitMerge.
-	bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
+	const bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
 	if (flags.bAlternativeTool)
 	{
 		// Invert external vs. internal diff tool selection.
@@ -530,7 +530,7 @@ bool CAppUtils::StartExtDiff(
 	else if (bCommentedOut)
 		viewer.Empty();
 
-	bool bInternal = viewer.IsEmpty();
+	const bool bInternal = viewer.IsEmpty();
 	if (bInternal)
 	{
 		viewer =
@@ -589,7 +589,7 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	viewer = v;
 
 	// If registry entry for a diff program is commented out, use TortoiseGitMerge.
-	bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
+	const bool bCommentedOut = CStringUtils::StartsWith(viewer, L"#");
 	if (bAlternativeTool)
 	{
 		// Invert external vs. internal diff tool selection.
@@ -835,7 +835,7 @@ bool CAppUtils::FormatTextInRichEditControl(CWnd * pWnd)
 bool CAppUtils::FindStyleChars(const CString& sText, wchar_t stylechar, int& start, int& end)
 {
 	int i=start;
-	int last = sText.GetLength() - 1;
+	const int last = sText.GetLength() - 1;
 	bool bFoundMarker = false;
 	wchar_t c = i == 0 ? L'\0' : sText[i - 1];
 	wchar_t nextChar = i >= last ? L'\0' : sText[i + 1];
@@ -968,7 +968,7 @@ bool CAppUtils::StartShowUnifiedDiff(HWND hWnd, const CTGitPath& url1, const CSt
 												bool bCombine,
 												bool bNoPrefix)
 {
-	int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
+	const int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 	CString tempfile=GetTempFile();
 	if (tempfile.IsEmpty())
 	{
@@ -1324,7 +1324,7 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 	progress.m_GitCmd = cmd;
 
 	CString currentBranch;
-	bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
+	const bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
 		if (!status)
@@ -1380,9 +1380,7 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 		}
 	};
 
-	INT_PTR ret = progress.DoModal();
-
-	return ret == IDOK;
+	return progress.DoModal() == IDOK;
 }
 
 class CIgnoreFile : public CStdioFile
@@ -1395,7 +1393,7 @@ public:
 	{
 		if (GetPosition() == 0)
 		{
-			unsigned char utf8bom[] = { 0xEF, 0xBB, 0xBF };
+			const unsigned char utf8bom[] = { 0xEF, 0xBB, 0xBF };
 			char buf[3] = { 0, 0, 0 };
 			Read(buf, 3);
 			if (memcpy(buf, utf8bom, sizeof(utf8bom)))
@@ -1710,7 +1708,7 @@ static bool ParseHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool&
 		part = one.Tokenize(L" ", tabstart); //Hash
 		CString hash = part;
 		part = one.Tokenize(L"\t", tabstart); //Stage
-		int stage = _wtol(part);
+		const int stage = _wtol(part);
 		if (stage == 1)
 		{
 			hash1 = CGitHash::FromHexStrTry(hash);
@@ -2273,9 +2271,9 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 	try
 	{
 		CFile file(filename, CFile::modeReadWrite | CFile::modeCreate);
-		int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(L"i18n.commitencoding"));
+		const int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(L"i18n.commitencoding"));
 
-		bool stripComments = (CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE) == TRUE);
+		const bool stripComments = (CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE) == TRUE);
 		wchar_t commentChar = L'#';
 		if (stripComments)
 		{
@@ -2288,7 +2286,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		if (sanitize)
 			message.Trim(L" \r\n");
 
-		int len = message.GetLength();
+		const int len = message.GetLength();
 		int start = 0;
 		int emptyLineCnt = 0;
 		while (start >= 0 && start < len)
@@ -2471,7 +2469,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		}
 	};
 
-	INT_PTR ret = progress.DoModal();
+	const INT_PTR ret = progress.DoModal();
 
 	if (ret == IDOK && progress.m_GitStatus == 1 && progress.m_LogText.Find(L"CONFLICT") >= 0 && CMessageBox::Show(hWnd, IDS_SEECHANGES, IDS_APPNAME, MB_YESNO | MB_ICONINFORMATION) == IDYES)
 	{
@@ -2526,7 +2524,7 @@ bool CAppUtils::RebaseAfterFetch(HWND hWnd, const CString& upstream, int rebase,
 		dlg.m_PostButtonTexts.Add(CString(MAKEINTRESOURCE(IDS_MENUREBASE)));
 		dlg.m_bRebaseAutoStart = (rebase == 2);
 		dlg.m_bPreserveMerges = preserveMerges;
-		INT_PTR response = dlg.DoModal();
+		const INT_PTR response = dlg.DoModal();
 		if (response == IDOK)
 			return true;
 		else if (response == IDC_REBASE_POST_BUTTON)
@@ -2907,8 +2905,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 		}
 	};
 
-	INT_PTR ret = progress.DoModal();
-	return ret == IDOK;
+	return progress.DoModal() == IDOK;
 }
 
 bool CAppUtils::Push(HWND hWnd, const CString& selectLocalBranch, int pushAll /* = BST_INETERMINATE */)
@@ -3432,7 +3429,7 @@ int CAppUtils::GetMsysgitVersion(HWND hWnd)
 	}
 
 	CString err;
-	int ver = g_Git.GetGitVersion(&versiondebug, &err);
+	const int ver = g_Git.GetGitVersion(&versiondebug, &err);
 	if (ver < 0)
 	{
 		MessageBox(hWnd, L"git.exe not correctly set up (" + err + L")\nCheck TortoiseGit settings and consult help file for \"Git.exe Path\".", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -3606,8 +3603,7 @@ bool CAppUtils::BisectOperation(HWND hWnd, const CString& op, const CString& ref
 		postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
 	};
 
-	INT_PTR ret = progress.DoModal();
-	return ret == IDOK;
+	return progress.DoModal() == IDOK;
 }
 
 int CAppUtils::Git2GetUserPassword(git_credential **out, const char *url, const char *username_from_url, unsigned int /*allowed_types*/, void * /*payload*/)
@@ -3680,7 +3676,7 @@ int CAppUtils::ExploreTo(HWND hwnd, CString path)
 	// if filepath does not exist any more, navigate to closest matching folder
 	do
 	{
-		int pos = path.ReverseFind(L'\\');
+		const int pos = path.ReverseFind(L'\\');
 		if (pos <= 3)
 			break;
 		path.Truncate(pos);
@@ -3893,7 +3889,7 @@ bool CAppUtils::DeleteRef(CWnd* parent, const CString& ref)
 	{
 		CString msg;
 		msg.Format(IDS_PROC_DELETEREMOTEBRANCH, static_cast<LPCWSTR>(ref));
-		int result = CMessageBox::Show(parent->GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		const int result = CMessageBox::Show(parent->GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)), CString(MAKEINTRESOURCE(IDS_PROC_DELETEREMOTEBRANCH_LOCAL)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (result == 1)
 		{
 			CString remoteName = shortname.Left(shortname.Find(L'/'));
@@ -3929,10 +3925,10 @@ bool CAppUtils::DeleteRef(CWnd* parent, const CString& ref)
 	{
 		CString err;
 		std::vector<GitRevLoglist> stashList;
-		size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
+		const size_t count = !GitRevLoglist::GetRefLog(ref, stashList, err) ? stashList.size() : 0;
 		CString msg;
 		msg.Format(IDS_PROC_DELETEALLSTASH, count);
-		int choose = CMessageBox::Show(parent->GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+		const int choose = CMessageBox::Show(parent->GetSafeOwner()->GetSafeHwnd(), msg, L"TortoiseGit", 3, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_DROPONESTASH)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
 		if (choose == 1)
 		{
 			CString out;

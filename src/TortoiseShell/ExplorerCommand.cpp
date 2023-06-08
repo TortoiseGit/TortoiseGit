@@ -1,6 +1,6 @@
 ﻿// TortoiseGit- a Windows shell extension for easy version control
 
-// Copyright (C) 2021-2022 - TortoiseSVN
+// Copyright (C) 2021-2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,9 +22,8 @@
 #include "ShellExt.h"
 
 CExplorerCommandEnum::CExplorerCommandEnum(const std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>>& vec)
-	: m_iCur(0)
+	: m_vecCommands(vec)
 {
-	m_vecCommands = vec;
 }
 
 HRESULT __stdcall CExplorerCommandEnum::Next(ULONG celt, IExplorerCommand** rgelt, ULONG* pceltFetched)

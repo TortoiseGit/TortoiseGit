@@ -81,7 +81,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 	GitAdminDir::GetWorktreeAdminDirPath(g_Git.m_CurrentDir, dotGitPath);
 	while(pos)
 	{
-		int index = GetNextSelectedItem(pos);
+		const int index = GetNextSelectedItem(pos);
 		GitRev* r1 = m_arShownList.SafeGetAt(index);
 
 		if (progress.IsVisible())
@@ -160,7 +160,7 @@ int CGitLogList::CherryPickFrom(CString from, CString to)
 void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CMenu* popmenu, const MAP_HASH_NAME& hashMap)
 {
 	POSITION pos = GetFirstSelectedItemPosition();
-	int indexNext = GetNextSelectedItem(pos);
+	const int indexNext = GetNextSelectedItem(pos);
 	if (indexNext < 0)
 		return;
 
@@ -672,7 +672,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				dlg.m_bSelectFilesForCommit = true;
 				dlg.m_bForceCommitAmend=true;
 				dlg.m_bCommitAmend = TRUE;
-				int squashDate = CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
+				const int squashDate = CRegDWORD(L"Software\\TortoiseGit\\SquashDate", 0);
 				if (squashDate == 1)
 					dlg.SetTime(m_arShownList.SafeGetAt(FirstSelect)->GetAuthorDate());
 				else if (squashDate == 2)
@@ -732,7 +732,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				POSITION pos2 = GetFirstSelectedItemPosition();
 				while(pos2)
 				{
-					int indexNext2 = GetNextSelectedItem(pos2);
+					const int indexNext2 = GetNextSelectedItem(pos2);
 					dlg.m_CommitList.m_logEntries.push_back(m_arShownList.SafeGetAt(indexNext2)->m_CommitHash);
 					dlg.m_CommitList.m_LogCache.m_HashMap[m_arShownList.SafeGetAt(indexNext2)->m_CommitHash] = *m_arShownList.SafeGetAt(indexNext2);
 					dlg.m_CommitList.m_logEntries.GetGitRevAt(dlg.m_CommitList.m_logEntries.size() - 1).GetRebaseAction() |= LOGACTIONS_REBASE_PICK;
@@ -828,7 +828,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					CString ref = m_arShownList.SafeGetAt(GetNextSelectedItem(pos2))->m_Ref;
 					if (CStringUtils::StartsWith(ref, L"refs/"))
 						ref = ref.Mid(static_cast<int>(wcslen(L"refs/")));
-					int refpos = ref.ReverseFind(L'{');
+					const int refpos = ref.ReverseFind(L'{');
 					if (refpos > 0 && ref.Mid(refpos - 1, 2) != L"@{")
 						ref = ref.Left(refpos) + L'@'+ ref.Mid(refpos);
 					refsToDelete.push_back(ref);
@@ -861,7 +861,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			break;
 		case ID_CREATE_PATCH:
 			{
-				int select=this->GetSelectedCount();
+				const int select = this->GetSelectedCount();
 				CString sCmd = L"/command:formatpatch";
 				sCmd += L" /path:\"" + g_Git.m_CurrentDir + L"\" ";
 
@@ -928,7 +928,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			POSITION pos2 = GetFirstSelectedItemPosition();
 			while (pos2)
 			{
-				int indexNext2 = GetNextSelectedItem(pos2);
+					const int indexNext2 = GetNextSelectedItem(pos2);
 				auto rev = m_arShownList.SafeGetAt(indexNext2);
 				if (!rev->m_CommitHash.IsEmpty())
 					refs.AppendFormat(L" %s", static_cast<LPCWSTR>(rev->m_CommitHash.ToString()));

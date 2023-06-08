@@ -404,7 +404,7 @@ size_t SearchInSortVector_int(const T& vector, LPCWSTR pstr, V compare)
 
 	while(!( start == end && start==mid))
 	{
-		int cmp = compare(vector[mid].m_FileName, pstr);
+		const int cmp = compare(vector[mid].m_FileName, pstr);
 		if (cmp == 0)
 			return mid;
 		else if (cmp < 0)

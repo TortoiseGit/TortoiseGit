@@ -141,7 +141,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 		}
 
-		DWORD indexFileLength = GetFileSize(m_IndexFile, nullptr);
+		const DWORD indexFileLength = GetFileSize(m_IndexFile, nullptr);
 		if (indexFileLength == INVALID_FILE_SIZE || indexFileLength < sizeof(SLogCacheIndexHeader))
 			break;
 

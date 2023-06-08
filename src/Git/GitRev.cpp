@@ -86,7 +86,7 @@ int GitRev::ParserParentFromCommit(const git_commit* commit)
 {
 	ATLASSERT(commit);
 	m_ParentHash.clear();
-	unsigned int parentCount = git_commit_parentcount(commit);
+	const unsigned int parentCount = git_commit_parentcount(commit);
 	for (unsigned int i = 0; i < parentCount; ++i)
 		m_ParentHash.emplace_back(git_commit_parent_id(commit, i));
 

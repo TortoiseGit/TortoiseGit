@@ -68,7 +68,7 @@ protected:
 		m_pWin->GetDlgItem(IDC_BUTTON_BROWSE_REF)->EnableWindow(FALSE);
 		m_pWin->GetDlgItem(IDC_BUTTON_SHOW)->EnableWindow(FALSE);
 		m_bIsBranch = false;
-		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
+		const int radio = m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION);
 		switch (radio)
 		{
 		case IDC_RADIO_HEAD:
@@ -118,7 +118,7 @@ protected:
 
 	void UpdateRevsionName()
 	{
-		int radio=m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD,IDC_RADIO_VERSION);
+		const int radio = m_pWin->GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION);
 		switch (radio)
 		{
 		case IDC_RADIO_HEAD:
@@ -281,7 +281,7 @@ protected:
 	{
 		if(m_bLoadingThreadRunning && m_pLoadingThread)
 		{
-			DWORD ret =::WaitForSingleObject(m_pLoadingThread->m_hThread,20000);
+			const DWORD ret = ::WaitForSingleObject(m_pLoadingThread->m_hThread, 20000);
 			if(ret == WAIT_TIMEOUT)
 				::TerminateThread(m_pLoadingThread,0);
 		}

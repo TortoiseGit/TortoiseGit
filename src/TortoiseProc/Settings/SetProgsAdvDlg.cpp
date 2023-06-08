@@ -95,7 +95,7 @@ void CSetProgsAdvDlg::DoDataExchange(CDataExchange* pDX)
 	if (pDX->m_bSaveAndValidate)
 	{
 		m_Tools.clear();
-		int count = m_ToolListCtrl.GetItemCount();
+		const int count = m_ToolListCtrl.GetItemCount();
 		for (int i = 0; i < count; i++)
 		{
 			CString ext = m_ToolListCtrl.GetItemText(i, 0);
@@ -180,7 +180,7 @@ int CSetProgsAdvDlg::AddExtension(const CString& ext, const CString& tool)
 
 int CSetProgsAdvDlg::FindExtension(const CString& ext)
 {
-	int count = m_ToolListCtrl.GetItemCount();
+	const int count = m_ToolListCtrl.GetItemCount();
 
 	for (int i = 0; i < count; i++)
 	{

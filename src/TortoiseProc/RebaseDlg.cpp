@@ -271,7 +271,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		RECT rectSplitter;
 		m_wndSplitter.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		int delta = yPos - rectSplitter.top;
+		const int delta = yPos - rectSplitter.top;
 		if ((rcLogMsg.bottom + delta > rcLogMsg.top) && (rcLogMsg.bottom + delta < rcFileList.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
 			m_wndSplitter.SetWindowPos(nullptr, rectSplitter.left, yPos, 0, 0, SWP_NOSIZE);
@@ -325,8 +325,8 @@ BOOL CRebaseDlg::OnInitDialog()
 		static_cast<CButton*>(GetDlgItem(IDC_BUTTON_ONTO))->SetCheck(m_Onto.IsEmpty() ? BST_UNCHECKED : BST_CHECKED);
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->ShowWindow(SW_HIDE);
 		GetDlgItem(IDC_CHECK_CHERRYPICKED_FROM)->EnableWindow(FALSE);
-		int iconWidth = GetSystemMetrics(SM_CXSMICON);
-		int iconHeight = GetSystemMetrics(SM_CYSMICON);
+		const int iconWidth = GetSystemMetrics(SM_CXSMICON);
+		const int iconHeight = GetSystemMetrics(SM_CYSMICON);
 		static_cast<CButton*>(GetDlgItem(IDC_BUTTON_REVERSE))->SetIcon(CCommonAppUtils::LoadIconEx(IDI_SWITCHLEFTRIGHT, iconWidth, iconHeight));
 		SetContinueButtonText();
 		m_CommitList.DeleteAllItems();
@@ -508,7 +508,7 @@ void CRebaseDlg::LoadBranchInfo()
 
 		CString defaultUpstream;
 		defaultUpstream.Format(L"remotes/%s/%s", static_cast<LPCWSTR>(pullRemote), static_cast<LPCWSTR>(pullBranch));
-		int found = m_UpstreamCtrl.FindStringExact(0, defaultUpstream);
+		const int found = m_UpstreamCtrl.FindStringExact(0, defaultUpstream);
 		if(found >= 0)
 			m_UpstreamCtrl.SetCurSel(found);
 		else
@@ -1001,7 +1001,7 @@ int CRebaseDlg::CheckRebaseCondition()
 
 void CRebaseDlg::CheckRestoreStash()
 {
-	bool autoStash = !m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash");
+	const bool autoStash = !m_IsCherryPick && g_Git.GetConfigValueBool(L"rebase.autostash");
 	if (m_bStashed && (autoStash || CMessageBox::Show(GetSafeHwnd(), IDS_DCOMMIT_STASH_POP, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES))
 		CAppUtils::StashPop(GetSafeHwnd(), autoStash ? 0 : 1);
 	m_bStashed = false;
@@ -1093,7 +1093,7 @@ int CRebaseDlg::StartRebase()
 }
 int CRebaseDlg::VerifyNoConflict()
 {
-	int hasConflicts = g_Git.HasWorkingTreeConflicts();
+	const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 	if (hasConflicts < 0)
 	{
 		AddLogString(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
@@ -1106,7 +1106,7 @@ int CRebaseDlg::VerifyNoConflict()
 		auto pos = m_FileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 			m_FileListCtrl.SetItemState(m_FileListCtrl.GetNextSelectedItem(pos), 0, LVIS_SELECTED);
-		int nListItems = m_FileListCtrl.GetItemCount();
+		const int nListItems = m_FileListCtrl.GetItemCount();
 		for (int i = 0; i < nListItems; ++i)
 		{
 			auto entry = m_FileListCtrl.GetListEntry(i);
@@ -1428,7 +1428,7 @@ void CRebaseDlg::OnBnClickedContinue()
 				}
 				else
 				{
-					int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+					const int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
 					if (choose == 2)
 						skipCurrent = true;
 					else if (choose == 1)
@@ -1626,7 +1626,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			options = L"--allow-empty ";
 		else if (g_Git.IsResultingCommitBecomeEmpty(m_RebaseStage != RebaseStage::Squash_Edit) == TRUE)
 		{
-			int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+			const int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
 			if (choose == 2)
 				skipCurrent = true;
 			else if (choose == 1)
@@ -1853,7 +1853,7 @@ void CRebaseDlg::SetControlEnable()
 		break;
 	}
 
-	bool canSplitCommit = m_RebaseStage == RebaseStage::Edit || m_RebaseStage == RebaseStage::Squash_Edit;
+	const bool canSplitCommit = m_RebaseStage == RebaseStage::Edit || m_RebaseStage == RebaseStage::Squash_Edit;
 	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->ShowWindow(canSplitCommit ? SW_SHOW : SW_HIDE);
 	GetDlgItem(IDC_REBASE_SPLIT_COMMIT)->EnableWindow(canSplitCommit);
 
@@ -2005,7 +2005,7 @@ int CRebaseDlg::DoRebase()
 		return 0;
 	}
 
-	bool nextCommitIsSquash = (CheckNextCommitIsSquash() == 0);
+	const bool nextCommitIsSquash = (CheckNextCommitIsSquash() == 0);
 	if (nextCommitIsSquash || mode != CGitLogListBase::LOGACTIONS_REBASE_PICK)
 	{ // next commit is squash or not pick
 		if (!this->m_SquashMessage.IsEmpty())
@@ -2054,7 +2054,7 @@ int CRebaseDlg::DoRebase()
 	else if (!m_IsCherryPick && nocommit.IsEmpty())
 		cherryPickedFrom = L"--ff "; // for issue #1833: "If the current HEAD is the same as the parent of the cherry-picked commit, then a fast forward to this commit will be performed."
 
-	int isEmpty = IsCommitEmpty(pRev->m_CommitHash);
+	const int isEmpty = IsCommitEmpty(pRev->m_CommitHash);
 	if (isEmpty == 1)
 	{
 		cherryPickedFrom += L"--allow-empty ";
@@ -2174,7 +2174,7 @@ int CRebaseDlg::DoRebase()
 						{
 							AddLogString(cmd);
 							AddLogString(out);
-							int hasConflicts = g_Git.HasWorkingTreeConflicts();
+							const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 							if (hasConflicts > 0)
 							{
 								m_RebaseStage = RebaseStage::Conclict;
@@ -2217,7 +2217,7 @@ int CRebaseDlg::DoRebase()
 		if(g_Git.Run(cmd,&out,CP_UTF8))
 		{
 			AddLogString(out);
-			int hasConflicts = g_Git.HasWorkingTreeConflicts();
+			const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 			if (hasConflicts < 0)
 			{
 				AddLogString(g_Git.GetGitLastErr(L"Checking for conflicts failed.", CGit::GIT_CMD_CHECKCONFLICTS));
@@ -2227,7 +2227,7 @@ int CRebaseDlg::DoRebase()
 			{
 				if (out.Find(L"commit --allow-empty") > 0)
 				{
-					int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
+					const int choose = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_CHERRYPICK_EMPTY, IDS_APPNAME, 1, IDI_QUESTION, IDS_COMMIT_COMMIT, IDS_SKIPBUTTON, IDS_MSGBOX_CANCEL, nullptr, 0);
 					if (choose != 1)
 					{
 						if (choose == 2 && !RunGitCmdRetryOrAbort(L"git.exe reset --hard"))
@@ -2714,7 +2714,7 @@ void CRebaseDlg::OnBnClickedButtonUp()
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 
-	bool moveToTop = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	const bool moveToTop = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	// do nothing if the first selected item is the first item in the list
 	if (!moveToTop && m_CommitList.GetNextSelectedItem(pos) == 0)
 		return;
@@ -2725,7 +2725,7 @@ void CRebaseDlg::OnBnClickedButtonUp()
 	bool changed = false;
 	while(pos)
 	{
-		int index=m_CommitList.GetNextSelectedItem(pos);
+		int index = m_CommitList.GetNextSelectedItem(pos);
 		count = moveToTop ? count : (index - 1);
 		while (index > count)
 		{
@@ -2752,7 +2752,7 @@ void CRebaseDlg::OnBnClickedButtonDown()
 	if (m_CommitList.GetSelectedCount() == 0)
 		return;
 
-	bool moveToBottom = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
+	const bool moveToBottom = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	POSITION pos;
 	pos = m_CommitList.GetFirstSelectedItemPosition();
 	bool changed = false;
@@ -2793,7 +2793,7 @@ void CRebaseDlg::OnBnClickedButtonDown()
 LRESULT CRebaseDlg::OnCommitsReordered(WPARAM wParam, LPARAM /*lParam*/)
 {
 	POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
-	int first = m_CommitList.GetNextSelectedItem(pos);
+	const int first = m_CommitList.GetNextSelectedItem(pos);
 	int last = first;
 	while (pos)
 		last = m_CommitList.GetNextSelectedItem(pos);
@@ -2802,7 +2802,7 @@ LRESULT CRebaseDlg::OnCommitsReordered(WPARAM wParam, LPARAM /*lParam*/)
 	for (int i = first; i < last; ++i)
 		m_CommitList.SetItemState(i, 0, LVIS_SELECTED);
 
-	int dest = static_cast<int>(wParam);
+	const int dest = static_cast<int>(wParam);
 	if (dest > first)
 	{
 		std::rotate(m_CommitList.m_logEntries.begin() + first, m_CommitList.m_logEntries.begin() + last, m_CommitList.m_logEntries.begin() + dest);
@@ -2860,11 +2860,11 @@ void CRebaseDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CRebaseDlg::FillLogMessageCtrl()
 {
-	int selCount = m_CommitList.GetSelectedCount();
+	const int selCount = m_CommitList.GetSelectedCount();
 	if (selCount == 1 && (m_RebaseStage == RebaseStage::Choose_Branch || m_RebaseStage == RebaseStage::Choose_Commit_Pick_Mode))
 	{
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
-		int selIndex = m_CommitList.GetNextSelectedItem(pos);
+		const int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		OnRefreshFilelist();
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
@@ -2874,11 +2874,11 @@ void CRebaseDlg::FillLogMessageCtrl()
 
 void CRebaseDlg::OnRefreshFilelist()
 {
-	int selCount = m_CommitList.GetSelectedCount();
+	const int selCount = m_CommitList.GetSelectedCount();
 	if (selCount == 1 && (m_RebaseStage == RebaseStage::Choose_Branch || m_RebaseStage == RebaseStage::Choose_Commit_Pick_Mode))
 	{
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
-		int selIndex = m_CommitList.GetNextSelectedItem(pos);
+		const int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		auto pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
 		auto files = pLogEntry->GetFiles(&m_CommitList);
 		if (!pLogEntry->m_IsDiffFiles)
@@ -2907,7 +2907,7 @@ LRESULT CRebaseDlg::OnRebaseActionMessage(WPARAM, LPARAM)
 	if (m_RebaseStage == RebaseStage::Error || m_RebaseStage == RebaseStage::Conclict)
 	{
 		GitRevLoglist* pRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
-		int mode = pRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_MODE_MASK;
+		const int mode = pRev->GetRebaseAction() & CGitLogListBase::LOGACTIONS_REBASE_MODE_MASK;
 		if (mode == CGitLogListBase::LOGACTIONS_REBASE_SKIP)
 		{
 			if (!RunGitCmdRetryOrAbort(L"git.exe reset --hard"))

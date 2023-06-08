@@ -166,7 +166,7 @@ bool CDirectoryWatcher::AddPath(const CTGitPath& path, bool bCloseInfoMap)
 	{
 		const CString& watched = watchedPaths[i].GetWinPathString();
 		const CString& sPath = path.GetWinPathString();
-		int minlen = min(sPath.GetLength(), watched.GetLength());
+		const int minlen = min(sPath.GetLength(), watched.GetLength());
 		int len = 0;
 		for (len = 0; len < minlen; ++len)
 		{
@@ -316,8 +316,8 @@ void CDirectoryWatcher::WorkerThread()
 					NotificationFilter.dbch_handle = hDir;
 					// RegisterDeviceNotification sends a message to the UI thread:
 					// make sure we *can* send it and that the UI thread isn't waiting on a lock
-					int numPaths = watchedPaths.GetCount();
-					size_t numWatch = watchInfoMap.size();
+					const int numPaths = watchedPaths.GetCount();
+					const size_t numWatch = watchInfoMap.size();
 					lock.Unlock();
 					NotificationFilter.dbch_hdevnotify = RegisterDeviceNotification(hWndHidden, &NotificationFilter, DEVICE_NOTIFY_WINDOW_HANDLE);
 					lock.Lock();

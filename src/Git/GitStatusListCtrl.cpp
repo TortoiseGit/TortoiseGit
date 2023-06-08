@@ -1260,8 +1260,8 @@ BOOL CGitStatusListCtrl::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
 		return FALSE;
 	}
 
-	bool bSelected = !!(ListView_GetItemState(m_hWnd, pNMLV->iItem, LVIS_SELECTED) & LVIS_SELECTED);
-	int nListItems = GetItemCount();
+	const bool bSelected = !!(ListView_GetItemState(m_hWnd, pNMLV->iItem, LVIS_SELECTED) & LVIS_SELECTED);
+	const int nListItems = GetItemCount();
 
 	// The checkbox rotates its states from the first to the last then wraps around, so we have to handle clicking a checked (2) checkbox to make
 	// it go back to unckecked (1) state, instead of becoming indeterminate (3).
@@ -2612,7 +2612,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							bool updateStatusList = false;
 							for (int i = 0 ; i < targetList.GetCount(); ++i)
 							{
-								int nListboxEntries = GetItemCount();
+								const int nListboxEntries = GetItemCount();
 								for (int nItem=0; nItem<nListboxEntries; ++nItem)
 								{
 									auto path = GetListEntry(nItem);
@@ -3241,7 +3241,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	}
 
 	CTGitPathList list;
-	int nListItems = GetItemCount();
+	const int nListItems = GetItemCount();
 	for (int i=0; i<nListItems; ++i)
 	{
 		auto* entry = GetListEntry(i);
@@ -3263,7 +3263,7 @@ void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
 		CAutoWriteLock locker(m_guard);
 		SetRedraw(FALSE);
 
-		int nListItems = GetItemCount();
+		const int nListItems = GetItemCount();
 		if (bSelect)
 			m_nSelected = nListItems;
 		else
@@ -3293,7 +3293,7 @@ void CGitStatusListCtrl::Check(DWORD dwCheck, bool check)
 		SetRedraw(FALSE);
 		ScopedInDecrement blocker(m_nBlockItemChangeHandler);
 
-		int nListItems = GetItemCount();
+		const int nListItems = GetItemCount();
 
 		for (int i = 0; i < nListItems; ++i)
 		{
@@ -3553,7 +3553,7 @@ void CGitStatusListCtrl::ResetChecked(const CTGitPath& entry)
 void CGitStatusListCtrl::SetCheckOnAllDescendentsOf(const FileEntry* parentEntry, bool bCheck)
 {
 	CAutoWriteLock locker(m_guard);
-	int nListItems = GetItemCount();
+	const int nListItems = GetItemCount();
 	for (int j=0; j< nListItems ; ++j)
 	{
 		FileEntry * childEntry = GetListEntry(j);
@@ -3579,7 +3579,7 @@ void CGitStatusListCtrl::WriteCheckedNamesToPathList(CTGitPathList& pathList)
 {
 	pathList.Clear();
 	CAutoReadLock locker(m_guard);
-	int nListItems = GetItemCount();
+	const int nListItems = GetItemCount();
 	for (int i = 0; i< nListItems; ++i)
 	{
 		auto entry = GetListEntry(i);
@@ -4587,7 +4587,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	if (m_CurrentVersion.IsEmpty())
 		return 0;
 
-	bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
+	const bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
 
 	POSITION pos = GetFirstSelectedItemPosition();
 	int index;
@@ -4717,7 +4717,7 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 		filelist += L'|';
 	}
 	filelist += L'|';
-	int len = filelist.GetLength();
+	const int len = filelist.GetLength();
 	auto buf = std::make_unique<wchar_t[]>(len + 2);
 	wcscpy_s(buf.get(), len + 2, filelist);
 	CStringUtils::PipesToNulls(buf.get(), len + 2);
@@ -5051,7 +5051,7 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 	}
 
 	std::set<CString> unchecked;
-	int nListboxEntries = GetItemCount();
+	const int nListboxEntries = GetItemCount();
 	for (int nItem = 0; nItem < nListboxEntries; ++nItem)
 	{
 		auto pentry = GetListEntry(nItem);

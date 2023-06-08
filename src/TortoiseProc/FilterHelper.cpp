@@ -101,7 +101,7 @@ void CFilterHelper::GetMatchRanges(std::vector<CHARRANGE>& ranges, CString textU
 				continue;
 
 			auto toFind = iter->subString.c_str();
-			size_t toFindLength = iter->subString.size();
+			const size_t toFindLength = iter->subString.size();
 			auto pFound = wcsstr(toScan, toFind);
 			while (pFound)
 			{
@@ -120,7 +120,7 @@ void CFilterHelper::GetMatchRanges(std::vector<CHARRANGE>& ranges, CString textU
 			const std::wcregex_iterator end;
 			for (std::wcregex_iterator it2(static_cast<LPCWSTR>(textUTF16), static_cast<LPCWSTR>(textUTF16) + textUTF16.GetLength(), *it); it2 != end; ++it2)
 			{
-				ptrdiff_t matchposID = it2->position(0);
+				const ptrdiff_t matchposID = it2->position(0);
 				CHARRANGE range = { static_cast<LONG>(matchposID) + offset, static_cast<LONG>(matchposID + (*it2)[0].str().size()) + offset };
 				ranges.push_back(range);
 			}
@@ -179,7 +179,7 @@ void CFilterHelper::AddSubString(CString token, Prefix prefix)
 	subStringConditions.push_back(condition);
 
 	// update previous conditions
-	size_t newPos = subStringConditions.size() - 1;
+	const size_t newPos = subStringConditions.size() - 1;
 	if (prefix == Prefix::Or)
 	{
 		for (size_t i = newPos; i > 0; --i)
@@ -224,7 +224,7 @@ CFilterHelper::CFilterHelper(const CString& filter, bool filterWithRegex, DWORD 
 	{
 		// now split the search string into words so we can search for each of them
 		int curPos = 0;
-		int length = filterText.GetLength();
+		const int length = filterText.GetLength();
 
 		while (curPos < length && curPos >= 0)
 		{

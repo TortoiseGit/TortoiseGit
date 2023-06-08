@@ -109,7 +109,7 @@ bool ShellCache::RefreshIfNeeded()
 	// has occurred since the last time we got here.
 	// if the event has occurred, re-read all registry variables and of course
 	// re-set the notification event to get further notifications of registry changes.
-	bool signalled = WaitForSingleObjectEx(m_registryChangeEvent, 0, true) != WAIT_TIMEOUT;
+	const bool signalled = WaitForSingleObjectEx(m_registryChangeEvent, 0, true) != WAIT_TIMEOUT;
 	if (!signalled)
 		return signalled;
 
@@ -355,12 +355,12 @@ BOOL ShellCache::IsPathAllowed(LPCWSTR path)
 {
 	RefreshIfNeeded();
 	Locker lock(m_critSec);
-	Tristate allowed = pathFilter.IsPathAllowed(path);
+	const Tristate allowed = pathFilter.IsPathAllowed(path);
 	if (allowed != Tristate::Unknown)
 		return allowed == Tristate::True ? TRUE : FALSE;
 
 	UINT drivetype = 0;
-	int drivenumber = PathGetDriveNumber(path);
+	const int drivenumber = PathGetDriveNumber(path);
 	if ((drivenumber >= 0) && (drivenumber <= 25))
 	{
 		drivetype = drivetypecache[drivenumber];
@@ -448,7 +448,7 @@ BOOL ShellCache::HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDi
 	}
 
 	CString sProjectRoot;
-	BOOL hasAdminDir = GitAdminDir::HasAdminDir(folder.c_str(), true, &sProjectRoot);
+	const BOOL hasAdminDir = GitAdminDir::HasAdminDir(folder.c_str(), true, &sProjectRoot);
 
 	Locker lock(m_critSec);
 	AdminDir_s& ad = admindircache[folder];

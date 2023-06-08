@@ -194,7 +194,7 @@ UINT __stdcall CShellExt::CopyCallback(HWND /*hWnd*/, UINT wFunc, UINT /*wFlags*
 	case FO_RENAME:
 		if (pszSrcFile && pszSrcFile[0] && g_ShellCache.IsPathAllowed(pszSrcFile))
 		{
-			auto cacheType = g_ShellCache.GetCacheType();
+			const auto cacheType = g_ShellCache.GetCacheType();
 			switch (cacheType)
 			{
 			case ShellCache::exe:

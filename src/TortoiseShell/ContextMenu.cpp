@@ -97,13 +97,13 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					return E_INVALIDARG;
 				}
 
-				int count = DragQueryFile(drop, UINT(-1), nullptr, 0);
+				const int count = DragQueryFile(drop, UINT(-1), nullptr, 0);
 				if (count == 1)
 					itemStates |= ITEMIS_ONLYONE;
 				for (int i = 0; i < count; i++)
 				{
 					// find the path length in chars
-					UINT len = DragQueryFile(drop, i, nullptr, 0);
+					const UINT len = DragQueryFile(drop, i, nullptr, 0);
 					if (len == 0)
 						continue;
 					auto szFileName = std::make_unique<wchar_t[]>(len + 1);
@@ -219,7 +219,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				auto cida = static_cast<CIDA*>(GlobalLock(medium.hGlobal));
 				ItemIDList parent( GetPIDLFolder (cida));
 
-				int count = cida->cidl;
+				const int count = cida->cidl;
 				BOOL statfetched = FALSE;
 				for (int i = 0; i < count; ++i)
 				{
@@ -349,7 +349,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
-				UINT cFormatDiff = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
+				const UINT cFormatDiff = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 				if (cFormatDiff)
 				{
 					if (IsClipboardFormatAvailable(cFormatDiff))
@@ -699,7 +699,7 @@ bool CShellExt::WriteClipboardPathsToTempFile(std::wstring& tempfile)
 	SCOPE_EXIT { GlobalUnlock(hDrop); };
 
 	wchar_t szFileName[MAX_PATH] = { 0 };
-	UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
+	const UINT cFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 	for(UINT i = 0; i < cFiles; ++i)
 	{
 		DragQueryFile(hDrop, i, szFileName, _countof(szFileName));
@@ -922,7 +922,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		//the dwItemData member points to our global ID string. That string is set
 		//by our shell extension when the folder menu is inserted.
 		wchar_t menubuf[MAX_PATH] = { 0 };
-		int count = GetMenuItemCount(hMenu);
+		const int count = GetMenuItemCount(hMenu);
 		for (int i=0; i<count; ++i)
 		{
 			MENUITEMINFO miif = { 0 };
@@ -999,7 +999,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 						idCmd++;
 					}
 
-					bool isMenu11 = ((topMenu11 & menuInfo[menuIndex].menuID) != 0);
+					const bool isMenu11 = ((topMenu11 & menuInfo[menuIndex].menuID) != 0);
 					// handle special cases (sub menus)
 					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
 					{
@@ -1509,7 +1509,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		{
 			// if there's a patch file in the clipboard, we save it
 			// to a temporary file and tell TortoiseGitMerge to use that one
-			UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
+			const UINT cFormat = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
 			CClipboardHelper clipboardHelper;
 			if (cFormat && clipboardHelper.Open(nullptr))
 			{
@@ -1577,7 +1577,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		if (WriteClipboardPathsToTempFile(tempfile))
 		{
 			bool bCopy = true;
-			UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
+			const UINT cPrefDropFormat = RegisterClipboardFormat(L"Preferred DropEffect");
 			if (cPrefDropFormat)
 			{
 				CClipboardHelper clipboardHelper;
@@ -2002,7 +2002,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 	std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> exCmds;
 	if (files_.empty())
 		return false;
-	UINT icon = bShowIcons ? IDI_IGNORE : 0;
+	const UINT icon = bShowIcons ? IDI_IGNORE : 0;
 
 	auto I = files_.cbegin();
 	if (wcsrchr(I->c_str(), L'\\'))

@@ -263,7 +263,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 
 	for (const auto& zfb : m_Worktrees)
 	{
-		int indexItem = m_WorktreeList.InsertItem(m_WorktreeList.GetItemCount(), zfb.m_Path, m_nIconFolder);
+		const int indexItem = m_WorktreeList.InsertItem(m_WorktreeList.GetItemCount(), zfb.m_Path, m_nIconFolder);
 		if (zfb.m_Hash.IsEmpty())
 			m_WorktreeList.SetItemText(indexItem, eCol_Hash, L"");
 		else

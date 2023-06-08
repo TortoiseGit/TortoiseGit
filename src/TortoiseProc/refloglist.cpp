@@ -130,7 +130,7 @@ void CRefLogList::OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 	*pResult = 0;
 
 	POSITION pos = GetFirstSelectedItemPosition();
-	int indexNext = GetNextSelectedItem(pos);
+	const int indexNext = GetNextSelectedItem(pos);
 	if (indexNext < 0)
 		return;
 

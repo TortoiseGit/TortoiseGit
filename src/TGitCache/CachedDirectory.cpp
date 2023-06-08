@@ -320,7 +320,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		{
 			AutoLocker lock(m_critSec);
 			// HasAdminDir(..., true) might modify m_directoryPath, so we need to do it synchronized (also write access to m_childDirectories, ... requires it)
-			bool isVersioned = m_directoryPath.HasAdminDir(&sProjectRoot, true);
+			const bool isVersioned = m_directoryPath.HasAdminDir(&sProjectRoot, true);
 			if (!isVersioned && (bRequestForSelf || !path.IsDirectory()))
 			{
 				// shortcut if path is not versioned

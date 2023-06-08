@@ -57,10 +57,10 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 		CGit subgit;
 		subgit.m_IsUseGitDLL = false;
 		subgit.m_CurrentDir = g_Git.CombinePath(pPath);
-		int encode=CAppUtils::GetLogOutputEncode(&subgit);
+		const int encode = CAppUtils::GetLogOutputEncode(&subgit);
 
 		cmd.Format(L"git.exe log -n1 --pretty=format:\"%%s\" %s --", static_cast<LPCWSTR>(newhash.ToString()));
-		bool toOK = !subgit.Run(cmd,&newsub,encode);
+		const bool toOK = !subgit.Run(cmd, &newsub, encode);
 
 		bool dirty = false;
 		if (hash.IsEmpty() && !(pPath->m_Action & CTGitPath::LOGACTIONS_DELETED))
@@ -132,7 +132,7 @@ int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, b
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(false, *pPath, rev1Hash).GetWinPathString();
 	::SetFileAttributes(tempfile, FILE_ATTRIBUTE_READONLY);
 
-	auto flags = CAppUtils::DiffFlags().AlternativeTool(bAlternative);
+	const auto flags = CAppUtils::DiffFlags().AlternativeTool(bAlternative);
 	if(bIsAdd)
 		CAppUtils::StartExtDiff(tempfile,file1,
 							pPath->GetGitPathString(),
@@ -205,7 +205,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		}
 
 		int start =0;
-		int oldstart = output.Find(L"-Subproject commit", start);
+		const int oldstart = output.Find(L"-Subproject commit", start);
 		if(oldstart<0)
 		{
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -213,7 +213,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		}
 		oldhash = CGitHash::FromHexStrTry(output.Mid(oldstart + static_cast<int>(wcslen(L"-Subproject commit")) + 1, GIT_HASH_SIZE * 2));
 		start = 0;
-		int newstart = output.Find(L"+Subproject commit",start);
+		const int newstart = output.Find(L"+Subproject commit", start);
 		if (newstart < 0)
 		{
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -273,7 +273,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 void CGitDiff::GetSubmoduleChangeType(CGit& subgit, const CGitHash& oldhash, const CGitHash& newhash, bool& oldOK, bool& newOK, ChangeType& changeType, CString& oldsub, CString& newsub)
 {
 	CString cmd;
-	int encode = CAppUtils::GetLogOutputEncode(&subgit);
+	const int encode = CAppUtils::GetLogOutputEncode(&subgit);
 	int oldTime = 0, newTime = 0;
 
 	if (!oldhash.IsEmpty())
@@ -432,7 +432,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 
 		file2 = CTempFiles::Instance().GetTempFilePath(false, fileName, rev2Hash).GetWinPathString();
 		title2 = fileName.GetGitPathString() + L": " + rev2Hash.ToString(g_Git.GetShortHASHLength());
-		auto ret = g_Git.GetOneFile(rev2Hash.ToString(), fileName, file2);
+		const auto ret = g_Git.GetOneFile(rev2Hash.ToString(), fileName, file2);
 		if (ret && !(!mustExist && ret == GIT_ENOTFOUND))
 		{
 			CString out;

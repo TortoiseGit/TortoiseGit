@@ -145,7 +145,7 @@ public:
 		//it is netshare \\server\sharefoldername
 		// \\server\.git will create smb error log.
 		{
-			int length = path.GetLength();
+			const int length = path.GetLength();
 
 			if(length<2)
 				return false;

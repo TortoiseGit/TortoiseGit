@@ -184,10 +184,10 @@ void CPatchViewDlg::OnMoving(UINT fwSide, LPRECT pRect)
 	RECT parentRect;
 	m_ParentDlg->GetPatchViewParentWnd()->GetWindowRect(&parentRect);
 
-	int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), parentRect);
+	const int adjust = GetBorderAjustment(m_ParentDlg->GetPatchViewParentWnd()->GetSafeHwnd(), parentRect);
 	if (abs(parentRect.right - pRect->left - adjust) < STICKYSIZE)
 	{
-		int width = pRect->right - pRect->left;
+		const int width = pRect->right - pRect->left;
 		pRect->left = parentRect.right - adjust;
 		pRect->right = pRect->left + width;
 	}
@@ -208,7 +208,7 @@ void CPatchViewDlg::ParentOnMoving(HWND parentHWND, LPRECT pRect)
 	RECT parentRect;
 	::GetWindowRect(parentHWND, &parentRect);
 
-	int adjust = GetBorderAjustment(parentHWND, parentRect);
+	const int adjust = GetBorderAjustment(parentHWND, parentRect);
 	if (patchrect.left == parentRect.right - adjust)
 		SetWindowPos(nullptr, patchrect.left - (parentRect.left - pRect->left), patchrect.top - (parentRect.top - pRect->top), 0, 0, SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_NOSIZE | SWP_NOZORDER);
 }
@@ -227,7 +227,7 @@ void CPatchViewDlg::ParentOnSizing(HWND parentHWND, LPRECT pRect)
 	RECT parentRect;
 	::GetWindowRect(parentHWND, &parentRect);
 
-	int adjust = GetBorderAjustment(parentHWND, parentRect);
+	const int adjust = GetBorderAjustment(parentHWND, parentRect);
 	if (patchrect.left != parentRect.right - adjust)
 		return;
 

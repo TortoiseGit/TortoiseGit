@@ -677,7 +677,7 @@ void CTortoiseGitBlameView::OnFindNext()
 bool CTortoiseGitBlameView::GotoLine(int line)
 {
 	--line;
-	int numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
+	const int numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
 	if (line < 0 || numberOfLines == 0)
 		return false;
 	if (line >= numberOfLines)
@@ -776,7 +776,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	}
 	else
 	{
-		auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount() + 1)));
+		const auto length = static_cast<int>(std::ceil(std::log10(GetLogList()->GetItemCount() + 1)));
 		m_sLogIDFormat.Format(L"%%%dd", length);
 		::GetTextExtentPoint32(hDC, CString(L'8', length), length, &width);
 		m_logidwidth = width.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
@@ -786,7 +786,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		auto numberOfLines = m_data.GetNumberOfLines();
+		const auto numberOfLines = m_data.GetNumberOfLines();
 		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC, m_data.GetDate(i), m_data.GetDate(i).GetLength(), &width);
@@ -800,7 +800,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		size_t numberOfLines = m_data.GetNumberOfLines();
+		const size_t numberOfLines = m_data.GetNumberOfLines();
 		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC,m_data.GetAuthor(i) , m_data.GetAuthor(i).GetLength(), &width);
@@ -814,7 +814,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		size_t numberOfLines = m_data.GetNumberOfLines();
+		const size_t numberOfLines = m_data.GetNumberOfLines();
 		for (size_t i = 0; i < numberOfLines; ++i)
 		{
 			::GetTextExtentPoint32(hDC, m_data.GetFilename(i), m_data.GetFilename(i).GetLength(), &width);
@@ -828,7 +828,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 	{
 		SIZE maxwidth = {0};
 
-		size_t numberOfLines = m_data.GetNumberOfLines();
+		const size_t numberOfLines = m_data.GetNumberOfLines();
 		CString str;
 		for (size_t i = 0; i < numberOfLines; ++i)
 		{
@@ -1029,7 +1029,7 @@ void CTortoiseGitBlameView::DrawLocatorBar(HDC hDC)
 	RECT lineRect = rc;
 	LONG height = rc.bottom-rc.top;
 
-	auto numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
+	const auto numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
 	// draw the colored bar
 	for (int currentLine = 0; currentLine < numberOfLines; ++currentLine)
 	{
@@ -1515,9 +1515,9 @@ void CTortoiseGitBlameView::MapLineToLogIndex()
 	std::vector<int> lineToLogIndex;
 
 
-	size_t numberOfLines = m_data.GetNumberOfLines();
+	const size_t numberOfLines = m_data.GetNumberOfLines();
 	lineToLogIndex.reserve(numberOfLines);
-	size_t logSize = this->GetLogData()->size();
+	const size_t logSize = this->GetLogData()->size();
 	for (size_t j = 0; j < numberOfLines; ++j)
 	{
 		CGitHash& hash = m_data.GetHash(j);
@@ -1558,7 +1558,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 
 	int encoding = m_data.UpdateEncoding(Encode);
 
-	auto numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
+	const auto numberOfLines = static_cast<int>(m_data.GetNumberOfLines());
 	int longestLine = 0;
 	int longestLineLen = 0;
 	if (numberOfLines > 0)
@@ -1566,7 +1566,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 		CStringA text;
 		for (int i = 0; i < numberOfLines; ++i)
 		{
-			auto lineLen = m_data.GetUtf8Line(i).GetLength();
+			const auto lineLen = m_data.GetUtf8Line(i).GetLength();
 			if (longestLineLen < lineLen)
 			{
 				longestLineLen = lineLen;
@@ -1725,7 +1725,7 @@ void CTortoiseGitBlameView::OnSciPainted(NMHDR *,LRESULT *)
 
 void CTortoiseGitBlameView::OnLButtonDown(UINT nFlags,CPoint point)
 {
-	int line = GetLineUnderCursor(point);
+	const int line = GetLineUnderCursor(point);
 	if (static_cast<size_t>(line) < m_data.GetNumberOfLines())
 	{
 		SetSelectedLine(line);

@@ -57,7 +57,7 @@ int GitStatus::GetAllStatus(const CTGitPath& path, bool bIsRecursive, git_wc_sta
 			sSubPath = s.Right(s.GetLength() - sProjectRoot.GetLength() - 1/*otherwise it gets initial slash*/);
 	}
 
-	bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
+	const bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	if(isDir)
 	{
@@ -112,7 +112,7 @@ void GitStatus::GetStatus(const CTGitPath& path, bool /*update*/ /* = false */, 
 	if ( !path.HasAdminDir(&sProjectRoot) )
 		return;
 
-	bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
+	const bool isfull = (static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION)) ? ShellCache::dll : ShellCache::exe) == ShellCache::dllFull);
 
 	int err = 0;
 
@@ -459,7 +459,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		for (auto it = indexptr->cbegin() + start, itlast = indexptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
-			int commonPrefixLength = path.GetLength();
+			const int commonPrefixLength = path.GetLength();
 			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = entry.m_FileName.GetLength();
@@ -470,8 +470,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			if (oldstring != filename)
 			{
 				oldstring = filename;
-				int length = filename.GetLength();
-				bool isDir = filename[length - 1] == L'/';
+				const int length = filename.GetLength();
+				const bool isDir = filename[length - 1] == L'/';
 				if (SearchInSortVector(filelist, filename, isDir ? length : -1, indexptr->IsIgnoreCase()) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					git_wc_status2_t status = { (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, false, false }; // only report deleted submodules and files as deletedy
@@ -508,7 +508,7 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 		for (auto it = treeptr->cbegin() + start, itlast = treeptr->cbegin() + end; it <= itlast; ++it)
 		{
 			auto& entry = *it;
-			int commonPrefixLength = path.GetLength();
+			const int commonPrefixLength = path.GetLength();
 			int index = entry.m_FileName.Find(L'/', commonPrefixLength);
 			if (index < 0)
 				index = entry.m_FileName.GetLength();
@@ -519,8 +519,8 @@ int GitStatus::EnumDirStatus(const CString& gitdir, const CString& subpath, git_
 			if (oldstring != filename && alreadyReported.find(filename) == alreadyReported.cend())
 			{
 				oldstring = filename;
-				int length = filename.GetLength();
-				bool isDir = filename[length - 1] == L'/';
+				const int length = filename.GetLength();
+				const bool isDir = filename[length - 1] == L'/';
 				if (SearchInSortVector(filelist, filename, isDir ? length : -1, indexptr->IsIgnoreCase()) == NPOS) // do full match for filenames and only prefix-match ending with "/" for folders
 				{
 					git_wc_status2_t status = { (!isDir || IsDirectSubmodule(entry.m_FileName, commonPrefixLength)) ? git_wc_status_deleted : git_wc_status_modified, false, false };
@@ -721,7 +721,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 {
 	if (!PathIsDirectory(sDirName))
 	{
-		int x = sDirName.ReverseFind(L'\\');
+		const int x = sDirName.ReverseFind(L'\\');
 		if (x < 2)
 			return false;
 
@@ -738,7 +738,7 @@ bool GitStatus::IsExistIndexLockFile(CString sDirName)
 			return false;
 		}
 
-		int x = sDirName.ReverseFind(L'\\');
+		const int x = sDirName.ReverseFind(L'\\');
 		if (x < 2)
 			return false;
 

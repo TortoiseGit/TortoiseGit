@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019-2021 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019-2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ struct CodeMap
 };
 int CUnicodeUtils::GetCPCode(const CString &codename)
 {
-	static CodeMap map[]=
+	static const CodeMap map[] =
 	{
 		{ 37, L"IBM037"},// IBM EBCDIC US-Canada
 		{437, L"IBM437"},// OEM United States
@@ -191,7 +191,7 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 		{0, nullptr}
 
 	};
-	static CodeMap *p=map;
+	static const CodeMap* p = map;
 	if (codename.IsEmpty())
 		return CP_UTF8;
 	CString code(codename);
@@ -212,35 +212,35 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 #define BUFFSIZE 1024
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
-	int len = string.GetLength();
-	int size = len * 3;
+	const int len = string.GetLength();
+	const int size = len * 3;
 	if (size < BUFFSIZE)
 	{
 		char buf[BUFFSIZE];
-		int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
+		const int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
 		return CStringA(buf, newlen);
 	}
 
 	CStringA retVal;
 	auto* buf = retVal.GetBuffer(size);
-	int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
+	const int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
 	retVal.ReleaseBuffer(newlen);
 	return retVal;
 }
 
 CString CUnicodeUtils::GetUnicodeLength(const char* string, int len, int acp)
 {
-	int size = len * 2;
+	const int size = len * 2;
 	if (size < BUFFSIZE)
 	{
 		wchar_t buf[BUFFSIZE];
-		int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
+		const int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
 		return CString(buf, newlen);
 	}
 
 	CString retVal;
 	auto* buf = retVal.GetBuffer(size);
-	int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
+	const int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
 	retVal.ReleaseBuffer(newlen);
 	return retVal;
 }
@@ -289,62 +289,62 @@ public:
 
 std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 {
-	int len = static_cast<int>(wide.size());
+	const int len = static_cast<int>(wide.size());
 	if (len <= 0)
 		return std::string();
 
-	int size = len * 3;
+	const int size = len * 3;
 	CBuffer<char> buffer(size);
 	if (!buffer)
 		return {};
 
-	int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, buffer, size, nullptr, nullptr);
+	const int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, buffer, size, nullptr, nullptr);
 	return std::string(buffer, ret);
 }
 
 std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 {
-	int len = static_cast<int>(multibyte.size());
+	const int len = static_cast<int>(multibyte.size());
 	if (len <= 0)
 		return std::wstring();
 
-	int size = len * 2;
+	const int size = len * 2;
 	CBuffer<wchar_t> buffer(size);
 	if (!buffer)
 		return {};
 
-	int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, buffer, size);
+	const int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, buffer, size);
 	return std::wstring(buffer, ret);
 }
 
 std::string WideToMultibyte(const std::wstring& wide)
 {
-	int len = static_cast<int>(wide.length());
+	const int len = static_cast<int>(wide.length());
 	if (len <= 0)
 		return {};
 
-	int size = len * 3;
+	const int size = len * 3;
 	CBuffer<char> buffer(size);
 	if (!buffer)
 		return {};
 
 	BOOL defaultCharUsed;
-	int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), len, buffer, size, ".", &defaultCharUsed);
+	const int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), len, buffer, size, ".", &defaultCharUsed);
 	return std::string(buffer, ret);
 }
 
 std::wstring MultibyteToWide(const std::string& multibyte)
 {
-	int len = static_cast<int>(multibyte.length());
+	const int len = static_cast<int>(multibyte.length());
 	if (len <= 0)
 		return std::wstring();
 
-	int size = len * 2;
+	const int size = len * 2;
 	CBuffer<wchar_t> buffer(size);
 	if (!buffer)
 		return std::wstring();
 
-	int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), len, buffer, size);
+	const int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), len, buffer, size);
 	return std::wstring(buffer, ret);
 }
 

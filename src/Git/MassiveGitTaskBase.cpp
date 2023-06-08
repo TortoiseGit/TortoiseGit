@@ -102,7 +102,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 
 		CString cmd, out;
 		cmd.Format(L"git.exe %s --pathspec-from-file=\"%s\" --pathspec-file-nul", static_cast<LPCWSTR>(m_sParams), static_cast<LPCWSTR>(tempFilename));
-		int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
+		const int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
 		if (exitCode && !m_bIgnoreErrors)
 		{
 			ReportError(out, exitCode);

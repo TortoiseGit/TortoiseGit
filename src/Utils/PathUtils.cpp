@@ -29,7 +29,7 @@
 
 BOOL CPathUtils::MakeSureDirectoryPathExists(LPCWSTR path)
 {
-	size_t len = wcslen(path) + 10;
+	const size_t len = wcslen(path) + 10;
 	auto buf = std::make_unique<wchar_t[]>(len);
 	auto internalpathbuf = std::make_unique<wchar_t[]>(len);
 	wchar_t* pPath = internalpathbuf.get();
@@ -102,7 +102,7 @@ CString CPathUtils::GetFileNameFromPath(CString sPath)
 
 CString CPathUtils::GetFileExtFromPath(const CString& sPath)
 {
-	int dotPos = sPath.ReverseFind('.');
+	const int dotPos = sPath.ReverseFind('.');
 	int slashPos = sPath.ReverseFind('\\');
 	if (slashPos < 0)
 		slashPos = sPath.ReverseFind('/');
@@ -460,7 +460,7 @@ CString CPathUtils::ExpandFileName(const CString& path)
 	if (path.IsEmpty())
 		return path;
 
-	DWORD ret = GetFullPathName(path, 0, nullptr, nullptr);
+	const DWORD ret = GetFullPathName(path, 0, nullptr, nullptr);
 	if (!ret)
 		return path;
 

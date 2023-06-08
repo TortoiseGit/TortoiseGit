@@ -135,7 +135,7 @@ bool CSyncDlg::AskSetTrackedBranch()
 
 void CSyncDlg::OnBnClickedButtonPull()
 {
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	int CurrentEntry = static_cast<int>(this->m_ctrlPull.GetCurrentEntry());
 	this->m_regPullButton = CurrentEntry;
@@ -215,7 +215,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		sysProgressDlg.SetShowProgressBar(false);
 		sysProgressDlg.ShowModal(this, true);
 		CString err;
-		auto ret = m_tagCompareList.Fill(m_strURL, err);
+		const auto ret = m_tagCompareList.Fill(m_strURL, err);
 		sysProgressDlg.Stop();
 		if (ret)
 		{
@@ -262,7 +262,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		FillNewRefMap();
 		FetchOutList(true);
 
-		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 		if (hasConflicts < 0)
 		{
 			this->m_ctrlCmdOut.SetSel(-1, -1);
@@ -507,7 +507,7 @@ void CSyncDlg::PullComplete()
 
 	if( this ->m_GitCmdStatus )
 	{
-		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 		if (hasConflicts < 0)
 		{
 			this->m_ctrlCmdOut.SetSel(-1,-1);
@@ -585,7 +585,7 @@ void CSyncDlg::FetchComplete()
 
 	if (g_Git.IsFastForward(L"HEAD", upstream))
 	{
-		UINT ret = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
+		const UINT ret = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
 		if (ret == 3)
 			return;
 		if (ret == 1)
@@ -633,7 +633,7 @@ void CSyncDlg::StashComplete()
 	SwitchToInput();
 	if (m_GitCmdStatus)
 	{
-		int hasConflicts = g_Git.HasWorkingTreeConflicts();
+		const int hasConflicts = g_Git.HasWorkingTreeConflicts();
 		if (hasConflicts < 0)
 		{
 			m_ctrlCmdOut.SetSel(-1, -1);
@@ -658,7 +658,7 @@ void CSyncDlg::StashComplete()
 
 void CSyncDlg::OnBnClickedButtonPush()
 {
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	this->UpdateData();
 	UpdateCombox();
 
@@ -852,7 +852,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 }
 void CSyncDlg::ShowProgressCtrl(bool bShow)
 {
-	int b=bShow?SW_NORMAL:SW_HIDE;
+	const int b = bShow ? SW_NORMAL : SW_HIDE;
 	this->m_ctrlAnimate.ShowWindow(b);
 	this->m_ctrlProgress.ShowWindow(b);
 	this->m_ctrlProgLabel.ShowWindow(b);
@@ -864,7 +864,7 @@ void CSyncDlg::ShowProgressCtrl(bool bShow)
 }
 void CSyncDlg::ShowInputCtrl(bool bShow)
 {
-	int b=bShow?SW_NORMAL:SW_HIDE;
+	const int b = bShow ? SW_NORMAL : SW_HIDE;
 	this->m_ctrlURL.ShowWindow(b);
 	this->m_ctrlLocalBranch.ShowWindow(b);
 	this->m_ctrlRemoteBranch.ShowWindow(b);
@@ -1201,7 +1201,7 @@ void CSyncDlg::Refresh()
 {
 	theApp.DoWaitCursor(1);
 
-	int lastSelected = m_ctrlURL.GetCurSel();
+	const int lastSelected = m_ctrlURL.GetCurSel();
 	CString url;
 	this->m_ctrlURL.GetWindowText(url);
 
@@ -1330,7 +1330,7 @@ void CSyncDlg::FetchOutList(bool force)
 			m_OutLogList.ClearText();
 
 			CGitHash base, localBranchHash;
-			bool isFastForward = g_Git.IsFastForward(remotebranch, localbranch, &base);
+			const bool isFastForward = g_Git.IsFastForward(remotebranch, localbranch, &base);
 
 			if (g_Git.GetHash(localBranchHash, localbranch))
 			{
@@ -1687,7 +1687,7 @@ void CSyncDlg::OnCancel()
 
 void CSyncDlg::OnBnClickedButtonSubmodule()
 {
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	this->UpdateData();
 	UpdateCombox();
 
@@ -1743,7 +1743,7 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 
 void CSyncDlg::OnBnClickedButtonStash()
 {
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 	UpdateData();
 	UpdateCombox();
 

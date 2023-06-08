@@ -60,7 +60,7 @@ int StagingOperations::FindHunkStartForwardsFrom(int line, int bottomBoundaryLin
 // If the end of the patch is reached, returns the line number of the last line.
 int StagingOperations::FindHunkEndForwardsFrom(int line, int topBoundaryLine) const
 {
-	int hunkStart = FindHunkStartBackwardsFrom(line, topBoundaryLine);
+	const int hunkStart = FindHunkStartBackwardsFrom(line, topBoundaryLine);
 	if (hunkStart == -1)
 		return -1;
 	auto strHunkStart = m_lines->GetFullLineByLineNumber(hunkStart);
@@ -82,7 +82,7 @@ int StagingOperations::FindHunkEndGivenHunkStartAndCounts(int hunkStart, int old
 {
 	if (oldCount == 0 || newCount == 0)
 		return -1; // Not applicable (file was added or deleted)
-	int lastDocumentLine = m_lines->GetLastDocumentLine();
+	const int lastDocumentLine = m_lines->GetLastDocumentLine();
 	int i = hunkStart + 1;
 	for (; i <= lastDocumentLine; ++i)
 	{
@@ -123,7 +123,7 @@ std::string StagingOperations::FindFileHeaderBackwardsFrom(int line) const
 	}
 	if (i == -1)
 		return {};
-	int fileHeaderLastLine = i;
+	const int fileHeaderLastLine = i;
 	for (; i > -1; --i)
 	{
 		if (m_lines->GetLineType(i) == DiffLineTypes::COMMAND)
@@ -131,7 +131,7 @@ std::string StagingOperations::FindFileHeaderBackwardsFrom(int line) const
 	}
 	if (i == -1)
 		return {};
-	int fileHeaderFirstLine = i;
+	const int fileHeaderFirstLine = i;
 	return m_lines->GetFullTextOfLineRange(fileHeaderFirstLine, fileHeaderLastLine);
 }
 
@@ -156,7 +156,7 @@ std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedHunks() 
 		if (startline == -1)
 			return {}; // No part of a hunk is selected, bail
 	}
-	int endline = FindHunkEndForwardsFrom(m_lines->GetLastLineNumberSelected(), startline);
+	const int endline = FindHunkEndForwardsFrom(m_lines->GetLastLineNumberSelected(), startline);
 	if (endline == -1)
 		return {};
 
@@ -201,8 +201,8 @@ std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(St
 	if (firstHunkLastLine == -1)
 		return {};
 
-	int firstLineSelected = m_lines->GetFirstLineNumberSelected();
-	int lastLineSelected = m_lines->GetLastLineNumberSelected();
+	const int firstLineSelected = m_lines->GetFirstLineNumberSelected();
+	const int lastLineSelected = m_lines->GetLastLineNumberSelected();
 
 	bool includeFirstHunkAtAll = ParseHunkOnEitherSelectionBoundary(firstHunkWithoutStartLine, firstHunkStartLine, firstHunkLastLine, firstLineSelected, lastLineSelected, &firstHunkOldCount, &firstHunkNewCount, stagingType);
 
@@ -219,7 +219,7 @@ std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(St
 		fullTempPatch.append(firstHunkWithoutStartLine);
 	}
 
-	int lastHunkStartLine = FindHunkStartBackwardsFrom(lastLineSelected, firstHunkStartLine);// firstHunkLastLine + 1);
+	const int lastHunkStartLine = FindHunkStartBackwardsFrom(lastLineSelected, firstHunkStartLine); // firstHunkLastLine + 1);
 	if (lastHunkStartLine == -1)
 		return {};
 
@@ -229,7 +229,7 @@ std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(St
 	if (!inBetweenLines.empty())
 		fullTempPatch.append(inBetweenLines);
 
-	int lastHunkLastLine = FindHunkEndForwardsFrom(lastHunkStartLine, lastHunkStartLine);
+	const int lastHunkLastLine = FindHunkEndForwardsFrom(lastHunkStartLine, lastHunkStartLine);
 	if (lastHunkLastLine == -1)
 		return {};
 	if (firstHunkStartLine == lastHunkStartLine)
@@ -244,7 +244,7 @@ std::string StagingOperations::CreatePatchBufferToStageOrUnstageSelectedLines(St
 	if (!CDiffLinesForStaging::GetOldAndNewLinesCountFromHunk(strLastHunkStartLine, &lastHunkOldCount, &lastHunkNewCount))
 		return {};
 
-	bool includeLastHunkAtAll = ParseHunkOnEitherSelectionBoundary(lastHunkWithoutStartLine, lastHunkStartLine, lastHunkLastLine, firstLineSelected, lastLineSelected, &lastHunkOldCount, &lastHunkNewCount, stagingType);
+	const bool includeLastHunkAtAll = ParseHunkOnEitherSelectionBoundary(lastHunkWithoutStartLine, lastHunkStartLine, lastHunkLastLine, firstLineSelected, lastLineSelected, &lastHunkOldCount, &lastHunkNewCount, stagingType);
 	if (includeLastHunkAtAll)
 	{
 		auto strHunkStartLineChanged = ChangeOldAndNewLinesCount(std::string(strLastHunkStartLine), lastHunkOldCount, lastHunkNewCount);
@@ -288,7 +288,7 @@ bool StagingOperations::ParseHunkOnEitherSelectionBoundary(std::string& hunkWith
 	bool includeHunkAtAll = false;
 	for (int i = hunkStartLine + 1; i <= hunkLastLine; ++i)
 	{
-		DiffLineTypes type = m_lines->GetLineType(i);
+		const DiffLineTypes type = m_lines->GetLineType(i);
 		auto strLine = m_lines->GetFullLineByLineNumber(i);
 		if (type == DiffLineTypes::DEFAULT || type == DiffLineTypes::NO_NEWLINE_BOTHFILES)
 			hunkWithoutStartLine.append(strLine);

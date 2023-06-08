@@ -162,7 +162,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		if (m_pProgDlg)
 			m_pProgDlg->FormatPathLine(2, IDS_PATCH_PATHINGFILE, static_cast<LPCWSTR>(pr.path));
 
-		int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
+		const int patchtry = m_patch.PatchFile(m_nStrip, nIndex, datapath, sTempFile, sBaseFile, true);
 
 		if (patchtry == TRUE)
 		{
@@ -360,7 +360,7 @@ CString GitPatch::Strip(const CString& filename) const
 			//       "ts/my-working-copy/dir/file.txt"
 			//          "my-working-copy/dir/file.txt"
 			//                          "dir/file.txt"
-			int p = s.FindOneOf(L"/\\");
+			const int p = s.FindOneOf(L"/\\");
 			if (p < 0)
 			{
 				s.Empty();

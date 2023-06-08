@@ -212,8 +212,8 @@ static int LogicalCompareBranchesPredicate(const CString &left, const CString &r
 {
 	if (g_bSortLocalBranchesFirst)
 	{
-		bool leftIsRemote = CStringUtils::StartsWith(left, L"remotes/");
-		bool rightIsRemote = CStringUtils::StartsWith(right, L"remotes/");
+		const bool leftIsRemote = CStringUtils::StartsWith(left, L"remotes/");
+		const bool rightIsRemote = CStringUtils::StartsWith(right, L"remotes/");
 
 		if (leftIsRemote && !rightIsRemote)
 			return false;
@@ -314,8 +314,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HA
 	si.dwFlags=STARTF_USESTDHANDLES|STARTF_USESHOWWINDOW;
 
 	LPWSTR pEnv = m_Environment;
-	DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT;
-	dwFlags |= CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
+	const DWORD dwFlags = CREATE_UNICODE_ENVIRONMENT | CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS;
 
 	memset(&this->m_CurrentGitPi,0,sizeof(PROCESS_INFORMATION));
 
@@ -336,7 +335,7 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HA
 	}
 	else if (startsWithGit || CStringUtils::StartsWith(cmd, L"bash"))
 	{
-		int firstSpace = cmd.Find(L' ');
+		const int firstSpace = cmd.Find(L' ');
 		if (firstSpace > 0)
 			cmd = L'"' + CGit::ms_LastMsysGitDir + L'\\' + cmd.Left(firstSpace) + L'"' + cmd.Mid(firstSpace);
 		else
@@ -378,7 +377,7 @@ void CGit::StringAppend(CString& str, const char* p, int code, int length)
 		return;
 	const int currentContentLen = str.GetLength();
 	auto* buf = str.GetBuffer(len * 2 + currentContentLen) + currentContentLen;
-	int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
+	const int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
 	str.ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
 
@@ -502,7 +501,7 @@ public:
 		ASSERT(data);
 		if (!m_pvector || size == 0)
 			return false;
-		size_t oldsize=m_pvector->size();
+		const size_t oldsize = m_pvector->size();
 		m_pvector->resize(m_pvector->size()+size);
 		memcpy(&*(m_pvector->begin()+oldsize),data,size);
 		return false;
@@ -512,7 +511,7 @@ public:
 		ASSERT(data);
 		if (!m_pvectorErr || size == 0)
 			return false;
-		size_t oldsize = m_pvectorErr->size();
+		const size_t oldsize = m_pvectorErr->size();
 		m_pvectorErr->resize(m_pvectorErr->size() + size);
 		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
 		return false;
@@ -528,7 +527,7 @@ int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 int CGit::Run(CString cmd, CString* output, int code)
 {
 	CString err;
-	int ret = Run(cmd, output, &err, code);
+	const int ret = Run(cmd, output, &err, code);
 
 	if (output && !err.IsEmpty())
 	{
@@ -576,7 +575,7 @@ public:
 		// Add data
 		if (size == 0)
 			return false;
-		int oldEndPos = m_buffer.GetLength();
+		const int oldEndPos = m_buffer.GetLength();
 		memcpy(m_buffer.GetBuffer(oldEndPos + static_cast<int>(size)) + oldEndPos, data, size);
 		m_buffer.ReleaseBuffer(oldEndPos + static_cast<int>(size));
 
@@ -600,7 +599,7 @@ public:
 		ASSERT(data);
 		if (!m_pvectorErr || size == 0)
 			return false;
-		size_t oldsize = m_pvectorErr->size();
+		const size_t oldsize = m_pvectorErr->size();
 		m_pvectorErr->resize(m_pvectorErr->size() + size);
 		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
 		return false;
@@ -625,7 +624,7 @@ int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 	{
 		BYTE_VECTOR vectorErr;
 		CGitCallCb call(cmd, recv, &vectorErr);
-		int ret = Run(call);
+		const int ret = Run(call);
 		vectorErr.push_back(0);
 		StringAppend(*outputErr, vectorErr.data());
 		return ret;
@@ -874,7 +873,7 @@ CString CGit::GetCurrentBranch(bool fallback)
 	CString output;
 	//Run(L"git.exe branch", &branch);
 
-	int result = GetCurrentBranchFromFile(m_CurrentDir, output, fallback);
+	const int result = GetCurrentBranchFromFile(m_CurrentDir, output, fallback);
 	if (result != 0 && ((result == 1 && !fallback) || result != 1))
 		return L"(no branch)";
 	else
@@ -1125,8 +1124,8 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 void GetTempPath(CString &path)
 {
 	wchar_t lpPathBuffer[BUFSIZE] = { 0 };
-	DWORD dwBufSize=BUFSIZE;
-	DWORD dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
+	const DWORD dwBufSize = BUFSIZE;
+	const DWORD dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
 	if (dwRetVal > dwBufSize || (dwRetVal == 0))
 		path.Empty();
 	path.Format(L"%s", lpPathBuffer);
@@ -1134,7 +1133,7 @@ void GetTempPath(CString &path)
 CString GetTempFile()
 {
 	wchar_t lpPathBuffer[BUFSIZE] = { 0 };
-	DWORD dwBufSize=BUFSIZE;
+	const DWORD dwBufSize = BUFSIZE;
 	wchar_t szTempName[BUFSIZE] = { 0 };
 
 	auto dwRetVal = GetTortoiseGitTempPath(dwBufSize, lpPathBuffer);
@@ -1153,7 +1152,7 @@ CString GetTempFile()
 
 DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPWSTR lpBuffer)
 {
-	DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
+	const DWORD result = ::GetTempPath(nBufferLength, lpBuffer);
 	if (result == 0) return 0;
 	if (!lpBuffer || (result + 13 > nBufferLength))
 	{
@@ -1234,7 +1233,7 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 		return 0;
 	}
 
-	int isHeadOrphan = git_repository_head_unborn(repo);
+	const int isHeadOrphan = git_repository_head_unborn(repo);
 	if (isHeadOrphan != 0)
 	{
 		hash.Empty();
@@ -1286,7 +1285,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		CString cmd;
 		cmd.Format(L"git.exe rev-parse %s", static_cast<LPCWSTR>(branch));
 		gitLastErr.Empty();
-		int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
+		const int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
 		hash = CGitHash::FromHexStrTry(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
@@ -1367,7 +1366,7 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 
 int CGit::GetTagList(STRING_VECTOR &list)
 {
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1391,7 +1390,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	else
 	{
 		gitLastErr.Empty();
-		int ret = Run(L"git.exe tag -l", [&](const CStringA& lineA)
+		const int ret = Run(L"git.exe tag -l", [&](const CStringA& lineA)
 		{
 			if (lineA.IsEmpty())
 				return;
@@ -1539,8 +1538,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 	cmd += L"refs/heads/" + name;
 	cmd += L" refs/tags/" + name;
 
-	int ret = Run(cmd, &output, nullptr, CP_UTF8);
-	if (!ret)
+	if (!Run(cmd, &output, nullptr, CP_UTF8))
 	{
 		if (!output.IsEmpty())
 			return true;
@@ -1587,7 +1585,7 @@ CString CGit::DerefFetchHead()
 
 int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, bool skipCurrent /*false*/)
 {
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	int ret = 0;
 	CString cur;
 	bool headIsDetached = false;
@@ -1704,7 +1702,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 	if (!includeTags && !includeBranches || hash.IsEmpty())
 		return 0;
 
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	if (UsingLibGit2(GIT_CMD_BRANCH_CONTAINS))
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1832,7 +1830,7 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 
 int CGit::GetRemoteList(STRING_VECTOR &list)
 {
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -1867,7 +1865,7 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 	if (!includeTags && !includeBranches)
 		return 0;
 
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	if (UsingLibGit2(GIT_CMD_FETCH))
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -2010,7 +2008,7 @@ int libgit2_addto_list_each_ref_fn(git_reference* rawref, void* payload)
 
 int CGit::GetRefList(STRING_VECTOR &list)
 {
-	size_t prevCount = list.size();
+	const size_t prevCount = list.size();
 	if (this->m_IsUseLibGit2)
 	{
 		CAutoRepository repo(GetGitRepository());
@@ -2026,9 +2024,9 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	}
 
 	gitLastErr.Empty();
-	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
+	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
-		int start = lineA.Find(L' ');
+		const int start = lineA.Find(L' ');
 		ASSERT(start == 2 * GIT_HASH_SIZE);
 		if (start <= 0)
 			return;
@@ -2102,9 +2100,9 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	}
 
 	gitLastErr.Empty();
-	int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
+	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
-		int start = lineA.Find(L' ');
+		const int start = lineA.Find(L' ');
 		ASSERT(start == 2 * GIT_HASH_SIZE);
 		if (start <= 0)
 			return;
@@ -2674,7 +2672,7 @@ void CEnvironment::CopyProcessEnvironment()
 	if (!empty())
 		pop_back();
 	wchar_t* porig = GetEnvironmentStrings();
-	wchar_t* p = porig;
+	const wchar_t* p = porig;
 	while(*p !=0 || *(p+1) !=0)
 		this->push_back(*p++);
 
@@ -3089,7 +3087,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 		CString cmd;
 		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
 		BYTE_VECTOR vector;
-		int ret = Run(cmd, &vector);
+		const int ret = Run(cmd, &vector);
 		if (!vector.empty())
 		{
 			vector.push_back(0); // vector is not NUL terminated
@@ -3113,9 +3111,7 @@ int CGit::GitRevert(int parent, const CGitHash &hash)
 
 		git_revert_options revert_opts = GIT_REVERT_OPTIONS_INIT;
 		revert_opts.mainline = parent;
-		int result = git_revert(repo, commit, &revert_opts);
-
-		return !result ? 0 : -1;
+		return !git_revert(repo, commit, &revert_opts) ? 0 : -1;
 	}
 	else
 	{
@@ -3509,7 +3505,7 @@ int CGit::GetGitNotes(const CGitHash& hash, CString& notes)
 		return -1;
 
 	CAutoNote note;
-	int ret = git_note_read(note.GetPointer(), repo, nullptr, hash);
+	const int ret = git_note_read(note.GetPointer(), repo, nullptr, hash);
 	if (ret == GIT_ENOTFOUND)
 	{
 		notes.Empty();

@@ -168,7 +168,7 @@ void CRefLogDlg::OnCbnSelchangeRef()
 	if (m_CurrentBranch == L"refs/stash")
 	{
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->ShowWindow(SW_SHOW);
-		BOOL enabled = !m_RefList.m_arShownList.empty();
+		const BOOL enabled = !m_RefList.m_arShownList.empty();
 		GetDlgItem(IDC_REFLOG_BUTTONCLEARSTASH)->EnableWindow(enabled);
 		if (!enabled)
 			GetDlgItem(IDOK)->SetFocus();
@@ -267,7 +267,7 @@ LRESULT CRefLogDlg::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		CString findString = m_pFindDialog->GetFindString();
 
 		bool bFound = false;
-		bool bCaseSensitive = !!(m_pFindDialog->MatchCase());
+		const bool bCaseSensitive = !!(m_pFindDialog->MatchCase());
 
 		if (!bCaseSensitive)
 			findString.MakeLower();

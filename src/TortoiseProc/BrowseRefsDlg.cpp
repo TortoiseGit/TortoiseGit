@@ -49,7 +49,7 @@ static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 		ref = ref.Mid(static_cast<int>(wcslen(L"remotes/")));
 
 	STRING_VECTOR list;
-	int result = g_Git.GetRemoteList(list);
+	const int result = g_Git.GetRemoteList(list);
 	if (result != 0)
 		return result;
 
@@ -117,7 +117,7 @@ public:
 
 	int Compare(const CShadowTree* pLeft, const CShadowTree* pRight)
 	{
-		int result=CompareNoDesc(pLeft,pRight);
+		const int result = CompareNoDesc(pLeft, pRight);
 		if(m_desc)
 			return -result;
 		return result;
@@ -242,7 +242,7 @@ void CBrowseRefsDlg::OnBnClickedOk()
 	TPMPARAMS params;
 	params.cbSize = sizeof(TPMPARAMS);
 	params.rcExclude = rect;
-	int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
+	const int selection = popupMenu.TrackPopupMenuEx(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_VERTICAL, rect.left, rect.top, this, &params);
 	switch (selection)
 	{
 	case 1:
@@ -330,7 +330,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 
 CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 {
-	int posSlash=nameLeft.Find('/');
+	const int posSlash = nameLeft.Find('/');
 	CString nameSub;
 	if(posSlash<0)
 	{
@@ -599,7 +599,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 		CString ref = refNamePrefix + pTree->m_csRefName;
 		if (!(pTree->m_csRefName.IsEmpty() || pTree->m_csRefName == L"refs" && !pTree->m_pParent) && filter(pTree, ref))
 		{
-			int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
+			const int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
 			m_ListRefLeafs.SetItemData(indexItem, reinterpret_cast<DWORD_PTR>(pTree));
 			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
@@ -1063,7 +1063,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				CString remoteBranch;
 				if (SplitRemoteBranchName(pTree->GetRefName(), remoteName, remoteBranch))
 					remoteName.Empty();
-				int pos = findVectorPosition(remotes, remoteName);
+				const int pos = findVectorPosition(remotes, remoteName);
 				if (pos >= 0)
 				{
 					CString temp;
@@ -1109,7 +1109,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		popupMenu.AppendMenu(MF_SEPARATOR);
 	popupMenu.AppendMenuIcon(eCmd_Copy, IDS_COPY_REF_NAMES, IDI_COPYCLIP);
 
-	int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr);
+	const int selection = popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr);
 	switch (static_cast<eCmd>(selection & 0xFFFF))
 	{
 	case eCmd_Select:
@@ -1170,7 +1170,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 	case eCmd_DeleteRemoteTag:
 		{
 			CDeleteRemoteTagDlg deleteRemoteTagDlg;
-			int remoteInx = selection >> 16;
+			const int remoteInx = selection >> 16;
 			if (remoteInx < 0 || static_cast<size_t>(remoteInx) >= remotes.size())
 				return;
 			deleteRemoteTagDlg.m_sRemote = remotes[remoteInx];
@@ -1624,7 +1624,7 @@ LRESULT CBrowseRefsDlg::OnClickedInfoIcon(WPARAM /*wParam*/, LPARAM lParam)
 		temp.LoadString(IDS_LOG_FILTER_TOGGLE);
 		popup.AppendMenu(MF_STRING | MF_ENABLED, LOGFILTER_TOGGLE, temp);
 
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (selection != 0)
 		{
 			if (selection == LOGFILTER_TOGGLE)

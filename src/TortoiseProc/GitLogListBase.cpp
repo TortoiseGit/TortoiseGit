@@ -53,8 +53,8 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 
 	ResetWcRev(false);
 
-	int cx = GetSystemMetrics(SM_CXSMICON);
-	int cy = GetSystemMetrics(SM_CYSMICON);
+	const int cx = GetSystemMetrics(SM_CXSMICON);
+	const int cy = GetSystemMetrics(SM_CYSMICON);
 	m_hModifiedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONMODIFIED, cx, cy);
 	m_hReplacedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONREPLACED, cx, cy);
 	m_hConflictedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONCONFLICTED, cx, cy);
@@ -187,7 +187,7 @@ int CGitLogListBase::AsyncDiffThread()
 				if(!m_AsyncThreadExit && GetSelectedCount() == 1)
 				{
 					POSITION pos = GetFirstSelectedItemPosition();
-					int nItem = GetNextSelectedItem(pos);
+					const int nItem = GetNextSelectedItem(pos);
 
 					if(nItem>=0)
 					{
@@ -412,7 +412,7 @@ void CGitLogListBase::FillBackGround(HDC hdc, DWORD_PTR Index, CRect &rect)
 
 	if (pLogEntry && !(rItem.state & LVIS_SELECTED))
 	{
-		int action = pLogEntry->GetRebaseAction();
+		const int action = pLogEntry->GetRebaseAction();
 		if (action & LOGACTIONS_REBASE_SQUASH)
 			brush = ::CreateSolidBrush(RGB(156,156,156));
 		else if (action & LOGACTIONS_REBASE_EDIT)
@@ -510,8 +510,8 @@ void CGitLogListBase::DrawTagBranchMessage(NMLVCUSTOMDRAW* pLVCD, const CRect& r
 	}
 
 	CString msg = MessageDisplayStr(data);
-	int action = data->GetRebaseAction();
-	bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
+	const int action = data->GetRebaseAction();
+	const bool skip = !!(action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP));
 	std::vector<CHARRANGE> ranges;
 	auto filter{ m_LogFilter.load() };
 	if ((filter->GetSelectedFilters() & (LOGFILTER_SUBJECT | (m_bFullCommitMessageOnLogLine ? LOGFILTER_MESSAGES : 0))) && filter->IsFilterActive())
@@ -572,8 +572,8 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, const CRe
 		CString shortname = !refList[i].simplifiedName.IsEmpty() ? refList[i].simplifiedName : refList[i].name;
 		HBRUSH brush = 0;
 		COLORREF colRef = refList[i].color;
-		bool singleRemote = refList[i].singleRemote;
-		bool hasTracking = refList[i].hasTracking;
+		const bool singleRemote = refList[i].singleRemote;
+		const bool hasTracking = refList[i].hasTracking;
 		CGit::REF_TYPE refType = refList[i].refType;
 
 		//When row selected, ajust label color
@@ -650,7 +650,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, const CRe
 			}
 
 			//Draw text inside label
-			bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800;	// check if dark background
+			const bool customColor = (colRef & 0xff) * 30 + ((colRef >> 8) & 0xff) * 59 + ((colRef >> 16) & 0xff) * 11 <= 12800; // check if dark background
 			if (!customColor && IsAppThemed())
 			{
 				int txtState = LISS_NORMAL;
@@ -684,7 +684,7 @@ void CGitLogListBase::DrawTagBranch(HDC hdc, CDC& W_Dc, HTHEME hTheme, const CRe
 			if (singleRemote)
 			{
 				COLORREF color = ::GetSysColor(customColor ? COLOR_HIGHLIGHTTEXT : COLOR_WINDOWTEXT);
-				int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
+				const int bold = data->m_CommitHash == m_HeadHash ? 2 : 1;
 				CRect newRect;
 				newRect.SetRect(rt.left + 2, rt.top + 4, rt.left + 6, rt.bottom - 4);
 				DrawUpstream(hdc, newRect, color, bold);
@@ -709,10 +709,10 @@ void CGitLogListBase::paintGraphLane(HDC hdc, int laneHeight, Lanes::LaneType ty
 										const COLORREF& col,const COLORREF& activeColor, int top
 										)
 {
-	int h = laneHeight / 2;
-	int m = (x1 + x2) / 2;
-	int r = (x2 - x1) * m_NodeSize / 30;
-	int d =  2 * r;
+	const int h = laneHeight / 2;
+	const int m = (x1 + x2) / 2;
+	const int r = (x2 - x1) * m_NodeSize / 30;
+	const int d = 2 * r;
 
 	#define P_CENTER		m , h+top
 	#define P_CENTER_0		m+r, h+top
@@ -1042,7 +1042,7 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		m_logEntries.setLane(data->m_CommitHash, m_ShowMask & CGit::LOG_INFO_FIRST_PARENT);
 
 	std::vector<Lanes::LaneType>& lanes = data->m_Lanes;
-	size_t laneNum = lanes.size();
+	const size_t laneNum = lanes.size();
 	UINT activeLane = 0;
 	for (UINT i = 0; i < laneNum; ++i)
 		if (Lanes::isMerge(lanes[i])) {
@@ -1051,8 +1051,8 @@ void CGitLogListBase::DrawGraph(HDC hdc,CRect &rect,INT_PTR index)
 		}
 
 	int x2 = 0;
-	int maxWidth = rect.Width();
-	int lw = 3 * rect.Height() / 4; //laneWidth()
+	const int maxWidth = rect.Width();
+	const int lw = 3 * rect.Height() / 4; // laneWidth()
 
 	COLORREF activeColor = CTheme::Instance().GetThemeColor(m_Colors.GetColor((CColors::Colors)(CColors::BranchLine1 + (activeLane % Lanes::COLORS_NUM))), true);
 
@@ -1125,7 +1125,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				if (data)
 				{
 					HGDIOBJ hGdiObj = nullptr;
-					int action = data->GetRebaseAction();
+					const int action = data->GetRebaseAction();
 					if (action & (LOGACTIONS_REBASE_DONE | LOGACTIONS_REBASE_SKIP))
 						crText = RGB(128, 128, 128);
 
@@ -1139,8 +1139,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 					if (action & LOGACTIONS_REBASE_CURRENT)
 						hGdiObj = m_boldFont.GetSafeHandle();
 
-					BOOL isHeadHash = data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE;
-					BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
+					const BOOL isHeadHash = data->m_CommitHash == m_HeadHash && m_bNoHightlightHead == FALSE;
+					const BOOL isHighlight = data->m_CommitHash == m_highlight && !m_highlight.IsEmpty();
 					if (isHeadHash && isHighlight)
 						hGdiObj = m_boldItalicsFont.GetSafeHandle();
 					else if (isHeadHash)
@@ -1272,7 +1272,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 									if (found)
 									{
-										bool sameName = pullBranch == refLabel.name;
+										const bool sameName = pullBranch == refLabel.name;
 										refsToShow.push_back(refLabel);
 										CGit::GetShortName(defaultUpstream, refLabel.name, L"refs/remotes/");
 										refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::RemoteBranch), true);
@@ -1412,8 +1412,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 				return;
 
 			int nIcons = 0;
-			int iconwidth = ::GetSystemMetrics(SM_CXSMICON);
-			int iconheight = ::GetSystemMetrics(SM_CYSMICON);
+			const int iconwidth = ::GetSystemMetrics(SM_CXSMICON);
+			const int iconheight = ::GetSystemMetrics(SM_CYSMICON);
 
 			GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(pLVCD->nmcd.dwItemSpec);
 			CRect rect;
@@ -1429,7 +1429,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			FillBackGround(myDC.GetDC(), pLVCD->nmcd.dwItemSpec, rect);
 
 			// Draw the icon(s) into the compatible DC
-			int action = pLogEntry->GetAction(this);
+			const int action = pLogEntry->GetAction(this);
 			auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
 			if (!pLogEntry->m_IsDiffFiles)
 			{
@@ -1554,7 +1554,7 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	// By default, clear text buffer.
 	lstrcpyn(pItem->pszText, L"", pItem->cchTextMax - 1);
 
-	bool bOutOfRange = pItem->iItem >= static_cast<int>(m_arShownList.size());
+	const bool bOutOfRange = pItem->iItem >= static_cast<int>(m_arShownList.size());
 
 	*pResult = 0;
 	if (m_bNoDispUpdates || bOutOfRange)
@@ -1682,7 +1682,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (pWnd != this)
 		return;
 
-	int selIndex = GetSelectionMark();
+	const int selIndex = GetSelectionMark();
 	if (selIndex < 0)
 		return; // nothing selected, nothing to do with a context menu
 
@@ -1697,10 +1697,10 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	}
 	m_nSearchIndex = selIndex;
 
-	bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool showExtendedMenu = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	POSITION pos = GetFirstSelectedItemPosition();
-	int FirstSelect = GetNextSelectedItem(pos);
+	const int FirstSelect = GetNextSelectedItem(pos);
 	if (FirstSelect < 0)
 		return;
 
@@ -1732,12 +1732,12 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		}
 		auto hashMapSharedPtr{ m_HashMap.load() };
 		const auto& hashMap = *hashMapSharedPtr;
-		bool isHeadCommit = (pSelLogEntry->m_CommitHash == headHash);
+		const bool isHeadCommit = (pSelLogEntry->m_CommitHash == headHash);
 		CString currentBranch = L"refs/heads/" + g_Git.GetCurrentBranch();
 		CTGitPath workingTree(g_Git.m_CurrentDir);
-		bool isMergeActive = workingTree.IsMergeActive();
-		bool isBisectActive = workingTree.IsBisectActive();
-		bool isStash = IsOnStash(FirstSelect);
+		const bool isMergeActive = workingTree.IsMergeActive();
+		const bool isBisectActive = workingTree.IsBisectActive();
+		const bool isStash = IsOnStash(FirstSelect);
 		GIT_REV_LIST parentHash;
 		GetParentHashes(pSelLogEntry, parentHash);
 		STRING_VECTOR parentInfo;
@@ -2193,7 +2193,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			{
 				if (m_ContextMenuMask&GetContextMenuBit(ID_COMBINE_COMMIT) && m_hasWC && !isMergeActive)
 				{
-					int headindex = this->GetHeadIndex();
+					const int headindex = this->GetHeadIndex();
 					if(headindex>=0 && LastSelect >= headindex && FirstSelect >= headindex)
 					{
 						CString head;
@@ -2243,7 +2243,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			if ((m_ContextMenuMask & GetContextMenuBit(ID_PUSH)) && ((!isStash && hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend()) || showExtendedMenu))
 			{
 				// show the push-option only if the log entry has an associated local branch
-				bool isLocal = hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && any_of(hashMap.find(pSelLogEntry->m_CommitHash)->second, [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); });
+				const bool isLocal = hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && any_of(hashMap.find(pSelLogEntry->m_CommitHash)->second, [](const CString& ref) { return CStringUtils::StartsWith(ref, L"refs/heads/") || CStringUtils::StartsWith(ref, L"refs/tags/"); });
 				if (isLocal || showExtendedMenu)
 				{
 					CString str;
@@ -2373,7 +2373,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 		if (selectedCount == 1 && (m_ContextMenuMask & GetContextMenuBit(ID_SHOWBRANCHES)) && !pSelLogEntry->m_CommitHash.IsEmpty())
 			popup.AppendMenuIcon(ID_SHOWBRANCHES, IDS_LOG_POPUP_SHOWBRANCHES, IDI_SHOWBRANCHES);
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 //		DialogEnableWindow(IDOK, FALSE);
 //		SetPromptApp(&theApp);
 
@@ -2399,7 +2399,7 @@ bool CGitLogListBase::IsSelectionContinuous()
 		int itemindex = GetNextSelectedItem(pos);
 		while (pos)
 		{
-			int nextindex = GetNextSelectedItem(pos);
+			const int nextindex = GetNextSelectedItem(pos);
 			if (nextindex - itemindex > 1)
 			{
 				bContinuous = false;
@@ -3043,24 +3043,24 @@ UINT CGitLogListBase::LogThread()
 			else // !(rollUpStates.empty())
 			{
 				auto itChildren = commitChildren.find(pRev->m_CommitHash);
-				bool hasChildren = itChildren != commitChildren.end();
-				bool isFork = hasChildren && (itChildren->second.size() > 1);
-				bool isChildExpanded = hasChildren && !isFork && expandedNodes.count(*itChildren->second.begin());
-				bool isChildCollapsed = hasChildren && !isFork && !isChildExpanded && collapsedNodes.count(*itChildren->second.begin());
+				const bool hasChildren = itChildren != commitChildren.end();
+				const bool isFork = hasChildren && (itChildren->second.size() > 1);
+				const bool isChildExpanded = hasChildren && !isFork && expandedNodes.count(*itChildren->second.begin());
+				const bool isChildCollapsed = hasChildren && !isFork && !isChildExpanded && collapsedNodes.count(*itChildren->second.begin());
 
 				auto itForcedState = rollUpStates.find(pRev->m_CommitHash);
-				bool hasForcedState = itForcedState != rollUpStates.end();
-				bool forcedRollUp = hasForcedState && (itForcedState->second == RollUpState::Collapse);
+				const bool hasForcedState = itForcedState != rollUpStates.end();
+				const bool forcedRollUp = hasForcedState && (itForcedState->second == RollUpState::Collapse);
 
-				bool shouldShowAny = ShouldShowAnyFilter();
-				bool shouldShowSpecial = ShouldShowRefsFilter(pRev, hashMap) || ShouldShowMergePointsFilter(pRev, commitChildren);
+				const bool shouldShowAny = ShouldShowAnyFilter();
+				const bool shouldShowSpecial = ShouldShowRefsFilter(pRev, hashMap) || ShouldShowMergePointsFilter(pRev, commitChildren);
 
-				bool isSpecial = isFork || shouldShowSpecial;
-				bool isRegular = !isSpecial;
+				const bool isSpecial = isFork || shouldShowSpecial;
+				const bool isRegular = !isSpecial;
 
 				visible = isSpecial || isChildExpanded || (shouldShowAny && !isChildCollapsed);
 
-				bool rolledUpByDefault = (isSpecial && !shouldShowAny) || (isRegular && isChildCollapsed);
+				const bool rolledUpByDefault = (isSpecial && !shouldShowAny) || (isRegular && isChildCollapsed);
 				pRev->m_RolledUp = (visible && hasForcedState) ? forcedRollUp : rolledUpByDefault;
 				pRev->m_RolledUpIsForced = (pRev->m_RolledUp != rolledUpByDefault);
 
@@ -3403,7 +3403,7 @@ void CGitLogListBase::OnDestroy()
 LRESULT CGitLogListBase::OnLoad(WPARAM wParam,LPARAM /*lParam*/)
 {
 	CRect rect;
-	int i = static_cast<int>(wParam);
+	const int i = static_cast<int>(wParam);
 	this->GetItemRect(i,&rect,LVIR_BOUNDS);
 	this->InvalidateRect(rect);
 
@@ -3461,7 +3461,7 @@ LRESULT CGitLogListBase::OnScrollToMessage(WPARAM itemToSelect, LPARAM /*lParam*
 	SetItemState(static_cast<int>(itemToSelect), LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	m_lastSelectedHash = theSelectedHash;
 
-	int countPerPage = GetCountPerPage();
+	const int countPerPage = GetCountPerPage();
 	EnsureVisible(max(0, static_cast<int>(itemToSelect) - countPerPage / 2), FALSE);
 	EnsureVisible(min(GetItemCount(), static_cast<int>(itemToSelect) + countPerPage / 2), FALSE);
 	EnsureVisible(static_cast<int>(itemToSelect), FALSE);
@@ -3474,7 +3474,7 @@ LRESULT CGitLogListBase::OnScrollToRef(WPARAM wParam, LPARAM /*lParam*/)
 	if (!ref || ref->IsEmpty())
 		return 1;
 
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	CGitHash hash;
 	if (g_Git.GetHash(hash, *ref + L"^{}")) // add ^{} in order to get the correct SHA-1 (especially for signed tags)
@@ -3484,7 +3484,7 @@ LRESULT CGitLogListBase::OnScrollToRef(WPARAM wParam, LPARAM /*lParam*/)
 		return 1;
 
 	bool bFound = false;
-	int cnt = static_cast<int>(m_arShownList.size());
+	const int cnt = static_cast<int>(m_arShownList.size());
 	int i;
 	for (i = 0; i < cnt; ++i)
 	{
@@ -3530,8 +3530,8 @@ LRESULT CGitLogListBase::OnFindDialogMessage(WPARAM /*wParam*/, LPARAM /*lParam*
 		return 0;
 	}
 
-	int cnt = static_cast<int>(m_arShownList.size());
-	bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
+	const int cnt = static_cast<int>(m_arShownList.size());
+	const bool bShift = (GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0;
 
 	if(m_pFindDialog->IsRef())
 	{
@@ -3628,8 +3628,8 @@ INT_PTR CGitLogListBase::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
 
 	lvhitTestInfo.pt = point;
 
-	int nItem = ListView_SubItemHitTest(m_hWnd, &lvhitTestInfo);
-	int nSubItem = lvhitTestInfo.iSubItem;
+	const int nItem = ListView_SubItemHitTest(m_hWnd, &lvhitTestInfo);
+	const int nSubItem = lvhitTestInfo.iSubItem;
 
 	UINT nFlags = lvhitTestInfo.flags;
 
@@ -3682,7 +3682,7 @@ BOOL CGitLogListBase::OnToolTipText(UINT /*id*/, NMHDR* pNMHDR, LRESULT* pResult
 	LVHITTESTINFO lvhitTestInfo;
 	lvhitTestInfo.pt = pt;
 
-	int nItem = SubItemHitTest(&lvhitTestInfo);
+	const int nItem = SubItemHitTest(&lvhitTestInfo);
 
 	if (lvhitTestInfo.flags & LVHT_ONITEM)
 	{
@@ -3783,7 +3783,7 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		if (pLogEntry == nullptr)
 			return CString();
 
-		int actions = pLogEntry->GetAction(this);
+		const int actions = pLogEntry->GetAction(this);
 		if (!pLogEntry->m_IsDiffFiles)
 			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES));
 
@@ -3913,7 +3913,7 @@ void CGitLogListBase::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	POSITION pos = GetFirstSelectedItemPosition();
-	int first = GetNextSelectedItem(pos);
+	const int first = GetNextSelectedItem(pos);
 	int last = first;
 	while (pos)
 		last = GetNextSelectedItem(pos);
@@ -3924,8 +3924,8 @@ void CGitLogListBase::OnMouseMove(UINT nFlags, CPoint point)
 	}
 
 	// handle auto scrolling
-	int hotItem = GetHotItem();
-	int topindex = GetTopIndex();
+	const int hotItem = GetHotItem();
+	const int topindex = GetTopIndex();
 	if (hotItem == topindex && hotItem != 0)
 		EnsureVisible(hotItem - 1, FALSE);
 	else if (hotItem >= topindex + GetCountPerPage() - 1 && hotItem + 1 < GetItemCount())

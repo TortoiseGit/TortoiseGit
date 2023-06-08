@@ -374,8 +374,8 @@ BOOL CLogDlg::OnInitDialog()
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH_FF)));
 	m_JumpType.AddString(CString(MAKEINTRESOURCE(IDS_PROC_SELECTION_HISTORY)));
 	m_JumpType.SetCurSel(0);
-	int iconWidth = GetSystemMetrics(SM_CXSMICON);
-	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	const int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	const int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	m_JumpUp.SetIcon(CCommonAppUtils::LoadIconEx(IDI_JUMPUP, iconWidth, iconHeight));
 	m_JumpDown.SetIcon(CCommonAppUtils::LoadIconEx(IDI_JUMPDOWN, iconWidth, iconHeight));
 
@@ -396,7 +396,7 @@ BOOL CLogDlg::OnInitDialog()
 		RECT rectSplitter;
 		m_wndSplitter1.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		int delta = yPos1 - rectSplitter.top;
+		const int delta = yPos1 - rectSplitter.top;
 
 		if ((rcLogList.bottom + delta > rcLogList.top) && (rcLogList.bottom + delta < rcChgMsg.bottom - CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
@@ -409,7 +409,7 @@ BOOL CLogDlg::OnInitDialog()
 		RECT rectSplitter;
 		m_wndSplitter2.GetWindowRect(&rectSplitter);
 		ScreenToClient(&rectSplitter);
-		int delta = yPos2 - rectSplitter.top;
+		const int delta = yPos2 - rectSplitter.top;
 
 		if ((rcChgMsg.top + delta < rcChgMsg.bottom) && (rcChgMsg.top + delta > rcLogList.top + CDPIAware::Instance().ScaleY(GetSafeHwnd(), 30)))
 		{
@@ -517,7 +517,7 @@ void CLogDlg::OnPaint()
 
 LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 {
-	int cur = static_cast<int>(wParam);
+	const int cur = static_cast<int>(wParam);
 
 	if( cur == GITLOG_START )
 	{
@@ -810,7 +810,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 	// depending on how many revisions are selected, we have to do different
 	// tasks.
-	int selCount = m_LogList.GetSelectedCount();
+	const int selCount = m_LogList.GetSelectedCount();
 	if (selCount == 0)
 	{
 		// if nothing is selected, we have nothing more to do
@@ -848,7 +848,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			CString out_counter;
 			if (m_bShowBranchRevNo && !pLogEntry->m_CommitHash.IsEmpty())
 			{
-				bool isFirstParentCommit = !pLogEntry->m_Lanes.empty() && Lanes::isActive(pLogEntry->m_Lanes[0]);
+				const bool isFirstParentCommit = !pLogEntry->m_Lanes.empty() && Lanes::isActive(pLogEntry->m_Lanes[0]);
 
 				if (isFirstParentCommit)
 				{
@@ -948,18 +948,18 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 
 			CString matchpath=this->m_path.GetGitPathString();
 
-			int count = files.GetCount();
+			const int count = files.GetCount();
 			if (!m_bWholeProject && !matchpath.IsEmpty() && m_iHidePaths)
 			{
 				if (m_path.IsDirectory() && !CStringUtils::EndsWith(matchpath, L'/'))
 					matchpath.AppendChar(L'/');
-				int matchPathLen = matchpath.GetLength();
+				const int matchPathLen = matchpath.GetLength();
 				bool somethingHidden = false;
 				for (int i = 0; i < count; ++i)
 				{
 					const_cast<CTGitPath&>(files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 
-					bool bothAreDirectory = m_path.IsDirectory() && files[i].IsDirectory() && files[i].GetGitPathString().GetLength() == matchPathLen - 1; // submodules don't end with slash, but we must also not match a submodule in a fodler with an equal prefix
+					const bool bothAreDirectory = m_path.IsDirectory() && files[i].IsDirectory() && files[i].GetGitPathString().GetLength() == matchPathLen - 1; // submodules don't end with slash, but we must also not match a submodule in a fodler with an equal prefix
 					if ((bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitPathString(), matchpath, matchPathLen)) && ((files[i].m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY)) == 0 || (bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen - 1) || !bothAreDirectory && wcsncmp(files[i].GetGitOldPathString(), matchpath, matchPathLen))))
 					{
 						somethingHidden = true;
@@ -1073,7 +1073,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 
 	if (pos == nullptr)
 	{
-		int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
+		const int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 		CStringA outA;
 		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? CString("HEAD") : (pLogEntry->m_CommitHash.ToString() + L"~1");
 		CString rev2 = pLogEntry->m_CommitHash.IsEmpty() ? CString(GIT_REV_ZERO) : pLogEntry->m_CommitHash.ToString();
@@ -1084,7 +1084,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 	{
 		while (pos)
 		{
-			int nSelect = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
+			const int nSelect = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
 			auto p = m_ChangedFileListCtrl.GetListEntry(nSelect);
 			if (p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER))
 			{
@@ -1188,7 +1188,7 @@ void CLogDlg::GoBackForward(bool select, bool bForward)
 					POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 					while (pos)
 					{
-						int index = m_LogList.GetNextSelectedItem(pos);
+						const int index = m_LogList.GetNextSelectedItem(pos);
 						if (index >= 0)
 							m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 					}
@@ -1279,7 +1279,7 @@ void CLogDlg::CopyChangedSelectionToClipBoard()
 		POSITION pos = m_ChangedFileListCtrl.GetFirstSelectedItemPosition();
 		while (pos)
 		{
-			int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
+			const int nItem = m_ChangedFileListCtrl.GetNextSelectedItem(pos);
 			auto path = m_ChangedFileListCtrl.GetListEntry(nItem);
 			if (!path)
 				continue;
@@ -1369,7 +1369,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 		}
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (cmd == 0)
 			return;
 		else if (cmd == 1)
@@ -1462,7 +1462,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenu(MF_SEPARATOR);
 		popup.AppendMenuIcon(++cnt, IDS_CONFIGUREDEFAULT);
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		if (cmd <= 0)
 			return;
 		else if (cmd == 1)
@@ -1486,7 +1486,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		return;
 	}
 
-	int selCount = m_LogList.GetSelectedCount();
+	const int selCount = m_LogList.GetSelectedCount();
 	if ((selCount == 1)&&(pWnd == GetDlgItem(IDC_MSGVIEW)))
 	{
 		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
@@ -1526,7 +1526,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				popup.AppendMenuIcon(CGitLogList::ID_EDITNOTE, sMenuItemText, IDI_EDIT);
 			}
 
-			int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+			const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 			switch (cmd)
 			{
 			case 0:
@@ -1534,11 +1534,11 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			case EM_SETSEL:
 				{
 					pEdit->SetRedraw(FALSE);
-					int oldLine = pEdit->GetFirstVisibleLine();
+				const int oldLine = pEdit->GetFirstVisibleLine();
 					pEdit->SetSel(0, -1);
 					pEdit->Copy();
 					pEdit->SetSel(start, end);
-					int newLine = pEdit->GetFirstVisibleLine();
+					const int newLine = pEdit->GetFirstVisibleLine();
 					pEdit->LineScroll(oldLine - newLine);
 					pEdit->SetRedraw(TRUE);
 					pEdit->RedrawWindow();
@@ -1573,7 +1573,7 @@ void CLogDlg::OnOK()
 	POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 	while (pos)
 	{
-		int selIndex = m_LogList.GetNextSelectedItem(pos);
+		const int selIndex = m_LogList.GetNextSelectedItem(pos);
 		GitRev* pLogEntry = m_LogList.m_arShownList.SafeGetAt(selIndex);
 		if (!pLogEntry)
 			continue;
@@ -1697,13 +1697,13 @@ void CLogDlg::OnPasteGitHash()
 
 void CLogDlg::JumpToGitHash(CString hash)
 {
-	int prefixLen = hash.GetLength();
+	const int prefixLen = hash.GetLength();
 	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
 		hash += L'0';
 	CGitHash prefixHash = CGitHash::FromHexStrTry(hash);
 	// start searching downwards, because it's unlikely that a hash is a forward reference
-	int currentPos = m_LogList.GetSelectionMark();
-	int cnt = static_cast<int>(m_LogList.m_arShownList.size());
+	const int currentPos = m_LogList.GetSelectionMark();
+	const int cnt = static_cast<int>(m_LogList.m_arShownList.size());
 	if (!cnt || currentPos < 0)
 		return;
 	for (int i = currentPos + 1; i != currentPos; ++i)
@@ -1723,7 +1723,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 		POSITION pos = m_LogList.GetFirstSelectedItemPosition();
 		while (pos)
 		{
-			int index = m_LogList.GetNextSelectedItem(pos);
+			const int index = m_LogList.GetNextSelectedItem(pos);
 			if (index >= 0)
 				m_LogList.SetItemState(index, 0, LVIS_SELECTED);
 		}
@@ -1742,7 +1742,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 {
 	// Skip Ctrl-C when copying text out of the log message or search filter
-	bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT) || GetFocus() == GetDlgItem(IDC_FILTER)) && GetKeyState(VK_CONTROL) & 0x8000);
+	const bool bSkipAccelerator = (pMsg->message == WM_KEYDOWN && (pMsg->wParam == 'C' || pMsg->wParam == VK_INSERT) && (GetFocus() == GetDlgItem(IDC_MSGVIEW) || GetFocus() == GetDlgItem(IDC_SEARCHEDIT) || GetFocus() == GetDlgItem(IDC_FILTER)) && GetKeyState(VK_CONTROL) & 0x8000);
 	if (pMsg->message == WM_KEYDOWN && pMsg->wParam=='\r')
 	{
 		if (GetFocus()==GetDlgItem(IDC_LOGLIST))
@@ -1782,7 +1782,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	else if (pMsg->message == WM_XBUTTONUP)
 	{
-		bool select = (pMsg->wParam & MK_SHIFT) == 0;
+		const bool select = (pMsg->wParam & MK_SHIFT) == 0;
 		if (HIWORD(pMsg->wParam) & XBUTTON1)
 			GoBackForward(select, false);
 		if (HIWORD(pMsg->wParam) & XBUTTON2)
@@ -1792,7 +1792,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
-		int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
+		const int ret = TranslateAccelerator(m_hWnd, m_hAccel, pMsg);
 		if (ret)
 			return TRUE;
 	}
@@ -1897,7 +1897,7 @@ void CLogDlg::OnEnLinkMsgview(NMHDR *pNMHDR, LRESULT *pResult)
 		auto pEdit = reinterpret_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
 		CHARRANGE selRange;
 		pEdit->GetSel(selRange);
-		bool hasSelection = (selRange.cpMax != selRange.cpMin);
+		const bool hasSelection = (selRange.cpMax != selRange.cpMin);
 
 		CString url, msg;
 		GetDlgItemText(IDC_MSGVIEW, msg);

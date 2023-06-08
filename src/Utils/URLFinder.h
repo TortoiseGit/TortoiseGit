@@ -55,7 +55,7 @@ bool IsUrlOrEmail(const T& sText)
 {
 	if (!PathIsURLTmpl(sText))
 	{
-		auto atpos = sText.Find('@');
+		const auto atpos = sText.Find('@');
 		if (atpos <= 0)
 			return false;
 		if (sText.Find('.', atpos) <= atpos + 1) // a dot must follow after the @, but not directly after it

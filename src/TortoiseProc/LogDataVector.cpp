@@ -302,9 +302,9 @@ void CLogDataVector::updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& s
 		lns.init(sha);
 
 	bool isDiscontinuity;
-	bool isFork = lns.isFork(sha, isDiscontinuity);
-	bool isMerge = (c.ParentsCount() > 1);
-	bool isInitial = (c.ParentsCount() == 0);
+	const bool isFork = lns.isFork(sha, isDiscontinuity);
+	const bool isMerge = (c.ParentsCount() > 1);
+	const bool isInitial = (c.ParentsCount() == 0);
 
 	if (isDiscontinuity)
 		lns.changeActiveLane(sha); // uses previous isBoundary state

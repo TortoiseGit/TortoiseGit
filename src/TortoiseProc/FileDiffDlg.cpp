@@ -188,8 +188,8 @@ BOOL CFileDiffDlg::OnInitDialog()
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 	m_cFileList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
-	int iconWidth = GetSystemMetrics(SM_CXSMICON);
-	int iconHeight = GetSystemMetrics(SM_CYSMICON);
+	const int iconWidth = GetSystemMetrics(SM_CXSMICON);
+	const int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	m_SwitchButton.SetImage(CCommonAppUtils::LoadIconEx(IDI_SWITCHLEFTRIGHT, iconWidth, iconHeight));
 	m_SwitchButton.Invalidate();
 
@@ -406,7 +406,7 @@ int CFileDiffDlg::AddEntry(const CTGitPath * fd)
 	int ret = -1;
 	if (fd)
 	{
-		int index = m_cFileList.GetItemCount();
+		const int index = m_cFileList.GetItemCount();
 
 		int icon_idx = 0;
 		if (fd->IsDirectory())
@@ -465,7 +465,7 @@ void CFileDiffDlg::OnNMDblclkFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	*pResult = 0;
 	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	int selIndex = pNMLV->iItem;
+	const int selIndex = pNMLV->iItem;
 	if (selIndex < 0)
 		return;
 	if (selIndex >= static_cast<int>(m_arFilteredList.size()))
@@ -626,7 +626,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		popup.AppendMenuIcon(ID_CLIPBOARD_PATH, IDS_STATUSLIST_CONTEXT_COPY, IDI_COPYCLIP);
 		popup.AppendMenuIcon(ID_CLIPBOARD_ALL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
 
-		int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		switch (cmd)
 		{
 		case ID_COMPARE:
@@ -636,7 +636,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
-					int index = m_cFileList.GetNextSelectedItem(pos);
+					const int index = m_cFileList.GetNextSelectedItem(pos);
 					DoDiff(index, false);
 				}
 			}
@@ -671,7 +671,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
-					int index = m_cFileList.GetNextSelectedItem(pos);
+					const int index = m_cFileList.GetNextSelectedItem(pos);
 					if (m_arFilteredList[index]->m_Action & CTGitPath::LOGACTIONS_DELETED)
 					{
 						if (!m_rev1.m_CommitHash.IsEmpty())
@@ -697,7 +697,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 				while (pos)
 				{
-					int index = m_cFileList.GetNextSelectedItem(pos);
+					const int index = m_cFileList.GetNextSelectedItem(pos);
 					CString sCmd = L"/command:log";
 					if (cmd == ID_LOG && m_arFilteredList[index]->IsDirectory())
 						sCmd += L" /submodule";
@@ -731,7 +731,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)
 						{
-							int index = m_cFileList.GetNextSelectedItem(pos);
+							const int index = m_cFileList.GetNextSelectedItem(pos);
 							auto fd = m_arFilteredList[index];
 							file.WriteString(fd->GetGitPathString());
 							file.WriteString(L"\r\n");
@@ -766,7 +766,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 					while (pos)
 					{
-						int index = m_cFileList.GetNextSelectedItem(pos);
+						const int index = m_cFileList.GetNextSelectedItem(pos);
 						auto fd = m_arFilteredList[index];
 						// we cannot export directories or folders
 						if (fd->m_Action == CTGitPath::LOGACTIONS_DELETED || fd->IsDirectory())
@@ -926,7 +926,7 @@ BOOL CFileDiffDlg::PreTranslateMessage(MSG* pMsg)
 				if (GetFocus() == GetDlgItem(IDC_FILELIST))
 				{
 					// Return pressed in file list. Show diff, as for double click
-					int selIndex = m_cFileList.GetSelectionMark();
+					const int selIndex = m_cFileList.GetSelectionMark();
 					if (selIndex >= 0 && selIndex < static_cast<int>(m_arFileList.GetCount()))
 						DoDiff(selIndex, m_bBlame);
 					return TRUE;
@@ -1240,7 +1240,7 @@ void CFileDiffDlg::Filter(const CString& sFilterText)
 		if (filter(m_arFileList[i]))
 		{
 			// Git 2.29.0 or later, --numstat doesn't show stats for the files with only ignored changes. This check hides such files.
-			bool showItem = m_arFileList[i].IsDirectory() || !(m_arFileList[i].m_StatAdd.IsEmpty() && m_arFileList[i].m_StatDel.IsEmpty());
+			const bool showItem = m_arFileList[i].IsDirectory() || !(m_arFileList[i].m_StatAdd.IsEmpty() && m_arFileList[i].m_StatDel.IsEmpty());
 			if (showItem)
 				m_arFilteredList.push_back(&m_arFileList[i]);
 		}
@@ -1324,7 +1324,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 	if (rev.IsEmpty() || rev == GIT_REV_ZERO)
 		return 0;
 
-	bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
+	const bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
 
 	POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 	int index;
@@ -1401,7 +1401,7 @@ void CFileDiffDlg::OnBnClickedDiffoption()
 		m_tooltips.Pop();
 		RECT rect;
 		GetDlgItem(IDC_DIFFOPTION)->GetWindowRect(&rect);
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this);
+		const int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, rect.left, rect.bottom, this);
 		switch (selection)
 		{
 		case DIFFOPTION_IGNORESPACEATEOL:
@@ -1441,7 +1441,7 @@ void CFileDiffDlg::OnBnClickedLog()
 
 bool CFileDiffDlg::CheckMultipleDiffs()
 {
-	UINT selCount = m_cFileList.GetSelectedCount();
+	const UINT selCount = m_cFileList.GetSelectedCount();
 	if (selCount > max(DWORD(3), static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\NumDiffWarning", 10))))
 	{
 		CString message;
@@ -1540,7 +1540,7 @@ void CFileDiffDlg::FillPatchView(bool onlySetTimer)
 	{
 		while (pos)
 		{
-			int nSelect = m_cFileList.GetNextSelectedItem(pos);
+			const int nSelect = m_cFileList.GetNextSelectedItem(pos);
 			auto fentry = m_arFilteredList[nSelect];
 			CString cmd;
 			if (m_rev2.m_CommitHash.IsEmpty())

@@ -38,7 +38,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 	m_itemCountTotal = 2 * m_targetPathList.GetCount();
 	CTGitPathList delList;
-	bool recycleRenamedFiles = CRegDWORD(L"Software\\TortoiseGit\\RevertRenamedFilesWithRecycleBin", TRUE) != FALSE;
+	const bool recycleRenamedFiles = CRegDWORD(L"Software\\TortoiseGit\\RevertRenamedFilesWithRecycleBin", TRUE) != FALSE;
 	for (m_itemCount = 0; m_itemCount < m_targetPathList.GetCount(); ++m_itemCount)
 	{
 		CTGitPath path;

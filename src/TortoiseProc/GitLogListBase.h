@@ -102,7 +102,7 @@ public:
 		if (hash.IsEmpty())
 			return;
 
-		size_t size = lastselected.size();
+		const size_t size = lastselected.size();
 
 		// re-select last selected commit
 		if (size > 0 && hash == lastselected[size - 1])

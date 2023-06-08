@@ -288,7 +288,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		if (pdata)
 		{
 			pdata->m_critSec.Lock();
-			bool post = !pdata->empty();
+			const bool post = !pdata->empty();
 			pdata->m_critSec.Unlock();
 			if (post)
 				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
@@ -387,7 +387,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			m_PostExecCallback(GetSafeHwnd(), m_GitStatus, extraMsg);
 			if (!extraMsg.IsEmpty())
 			{
-				int start = m_Log.GetTextLength();
+				const int start = m_Log.GetTextLength();
 				m_Log.SetSel(start, start);
 				m_Log.ReplaceSel(extraMsg);
 			}
@@ -558,12 +558,12 @@ void CProgressDlg::ClearESC(CString& str)
 	// drop colors
 	while (true)
 	{
-		int escapePosition = str.Find(L'\033');
+		const int escapePosition = str.Find(L'\033');
 		if (escapePosition >= 0 && str.GetLength() >= escapePosition + 3)
 		{
 			if (str.Mid(escapePosition, 2) == L"\033[")
 			{
-				int colorEnd = str.Find(L'm', escapePosition + 2);
+				const int colorEnd = str.Find(L'm', escapePosition + 2);
 				if (colorEnd > 0)
 				{
 					bool found = true;
@@ -599,7 +599,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 		//		TRACE(L"End Char %s \r\n", ch == L'\r' ? L"lf" : L"");
 		//		TRACE(L"End Char %s \r\n", ch == L'\n' ? L"cr" : L"");
 
-		int lines = log.GetLineCount();
+		const int lines = log.GetLineCount();
 		str.Trim();
 		//		TRACE(L"%s", str);
 
@@ -607,13 +607,13 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 
 		if (ch == ('\r'))
 		{
-			int start = log.LineIndex(lines - 1);
+			const int start = log.LineIndex(lines - 1);
 			log.SetSel(start, log.GetTextLength());
 			log.ReplaceSel(str);
 		}
 		else
 		{
-			int length = log.GetWindowTextLength();
+			const int length = log.GetWindowTextLength();
 			log.SetSel(length, length);
 			if (length > 0)
 				log.ReplaceSel(L"\r\n" + str);
@@ -623,20 +623,20 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 
 		if (lines > s_iProgressLinesLimit) //limited log length
 		{
-			int end = log.LineIndex(1);
+			const int end = log.LineIndex(1);
 			log.SetSel(0, end);
 			log.ReplaceSel(L"");
 		}
 		log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 
-		int s1 = str.ReverseFind(L':');
-		int s2 = str.Find(L'%');
+		const int s1 = str.ReverseFind(L':');
+		const int s2 = str.Find(L'%');
 		if (s1 > 0 && s2 > 0)
 		{
 			if (CurrentWork)
 				CurrentWork->SetWindowTextW(str.Left(s1));
 
-			int pos = ParsePercentage(str, s2);
+			const int pos = ParsePercentage(str, s2);
 			TRACE(L"Pos %d\r\n", pos);
 			if (pos > 0)
 			{
@@ -666,7 +666,7 @@ void CProgressDlg::WriteLog() const
 		LPCWSTR psz_string = text;
 		while (*psz_string)
 		{
-			size_t i_len = wcscspn(psz_string, L"\r\n");
+			const size_t i_len = wcscspn(psz_string, L"\r\n");
 			logfile.AddLine(CString(psz_string, static_cast<int>(i_len)));
 			psz_string += i_len;
 			if (*psz_string == '\r')
@@ -793,7 +793,7 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, CString text, COLORREF r
 CString CCommitProgressDlg::Convert2UnionCode(char* buff)
 {
 	int start = 0;
-	int size = static_cast<int>(strlen(buff));
+	const int size = static_cast<int>(strlen(buff));
 
 	CString str;
 	if (g_Git.m_LogEncode != CP_UTF8)
@@ -867,7 +867,7 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 					popup.EnableMenuItem(WM_COPY, MF_BYCOMMAND | MF_DISABLED | MF_GRAYED);
 				popup.AppendMenu(MF_SEPARATOR);
 				popup.AppendMenuIcon(EM_SETSEL, IDS_STATUSLIST_CONTEXT_COPYEXT, IDI_COPYCLIP);
-				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, pMsg->pt.x, pMsg->pt.y, this);
+				const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, pMsg->pt.x, pMsg->pt.y, this);
 				switch (cmd)
 				{
 				case 0: // no command selected
@@ -875,11 +875,11 @@ BOOL CProgressDlg::PreTranslateMessage(MSG* pMsg)
 				case EM_SETSEL:
 				{
 					pEdit->SetRedraw(FALSE);
-					int oldLine = pEdit->GetFirstVisibleLine();
+					const int oldLine = pEdit->GetFirstVisibleLine();
 					pEdit->SetSel(0, -1);
 					pEdit->Copy();
 					pEdit->SetSel(start, end);
-					int newLine = pEdit->GetFirstVisibleLine();
+					const int newLine = pEdit->GetFirstVisibleLine();
 					pEdit->LineScroll(oldLine - newLine);
 					pEdit->SetRedraw(TRUE);
 					pEdit->RedrawWindow();
@@ -929,7 +929,7 @@ void CProgressDlg::OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult)
 		msg.Replace(L"\r\n", L"\n");
 		CString url = msg.Mid(pEnLink->chrg.cpMin, pEnLink->chrg.cpMax - pEnLink->chrg.cpMin);
 		// check if it's an email address
-		auto atpos = url.Find(L'@');
+		const auto atpos = url.Find(L'@');
 		if ((atpos > 0) && (url.ReverseFind(L'.') > atpos) && !::PathIsURL(url))
 			url = L"mailto:" + url;
 		if (::PathIsURL(url))

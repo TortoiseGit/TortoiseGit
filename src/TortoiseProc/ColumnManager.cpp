@@ -189,7 +189,7 @@ int ColumnManager::GetColumnCount() const
 
 bool ColumnManager::IsVisible(int column) const
 {
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	assert(columns.size() > index);
 
 	return columns[index].visible;
@@ -202,7 +202,7 @@ int ColumnManager::GetInvisibleCount() const
 
 bool ColumnManager::IsRelevant(int column) const
 {
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	assert(columns.size() > index);
 
 	return columns[index].relevant;
@@ -231,7 +231,7 @@ void ColumnManager::SetRightAlign(int column) const
 CString ColumnManager::GetName(int column) const
 {
 	// standard columns
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	if (index < itemName.size())
 	{
 		CString result;
@@ -260,10 +260,10 @@ int ColumnManager::GetColumnByName(int nameId) const
 
 int ColumnManager::GetWidth(int column, bool useDefaults) const
 {
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	assert(columns.size() > index);
 
-	int width = columns[index].width;
+	const int width = columns[index].width;
 	if ((width == 0) && useDefaults)
 	{
 		if (index > 0)
@@ -293,7 +293,7 @@ int ColumnManager::GetVisibleWidth(int column, bool useDefaults) const
 
 void ColumnManager::SetVisible(int column, bool visible)
 {
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	assert(index < columns.size());
 
 	if (columns[index].visible != visible)
@@ -317,12 +317,12 @@ void ColumnManager::SetVisible(int column, bool visible)
 void ColumnManager::ColumnMoved(int column, int position)
 {
 	// in front of what column has it been inserted?
-	int index = columns[column].index;
+	const int index = columns[column].index;
 
 	std::vector<int> gridColumnOrder = GetGridColumnOrder();
 
-	size_t visiblePosition = static_cast<size_t>(position);
-	size_t columnCount = gridColumnOrder.size();
+	const size_t visiblePosition = static_cast<size_t>(position);
+	const size_t columnCount = gridColumnOrder.size();
 
 	int next = -1;
 	if (visiblePosition < columnCount - 1)
@@ -342,11 +342,11 @@ void ColumnManager::ColumnMoved(int column, int position)
 
 void ColumnManager::ColumnResized(int column, int manual)
 {
-	size_t index = static_cast<size_t>(column);
+	const size_t index = static_cast<size_t>(column);
 	assert(index < columns.size());
 	assert(columns[index].visible);
 
-	int width = control->GetColumnWidth(column);
+	const int width = control->GetColumnWidth(column);
 	if (manual != 0)
 		columns[index].adjusted = (manual < 3);
 	if (manual == 2)
@@ -374,7 +374,7 @@ void ColumnManager::RemoveUnusedProps()
 
 	for (size_t i = 0, count = columns.size(); i < count; ++i)
 	{
-		int index = columns[i].index;
+		const int index = columns[i].index;
 
 		if (itemProps.find(GetName(static_cast<int>(i))) != itemProps.end() || columns[i].visible)
 			validIndices[index] = index;
@@ -498,7 +498,7 @@ std::vector<int> ColumnManager::GetGridColumnOrder() const
 	std::vector<int> result;
 	result.reserve(MAX_COLUMNS + 1);
 
-	size_t colCount = columns.size();
+	const size_t colCount = columns.size();
 	bool visible = false;
 
 	do
@@ -507,7 +507,7 @@ std::vector<int> ColumnManager::GetGridColumnOrder() const
 
 		for (size_t i = 0, count = columnOrder.size(); i < count; ++i)
 		{
-			int index = columnOrder[i];
+			const int index = columnOrder[i];
 			for (size_t k = 0; k < colCount; ++k)
 			{
 				const ColumnInfo& column = columns[k];

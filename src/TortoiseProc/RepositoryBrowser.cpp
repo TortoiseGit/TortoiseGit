@@ -282,7 +282,7 @@ void CRepositoryBrowser::UpdateDiffWithFileFromReg()
 
 void CRepositoryBrowser::OnDestroy()
 {
-	int maxcol = m_ColumnManager.GetColumnCount();
+	const int maxcol = m_ColumnManager.GetColumnCount();
 	for (int col = 0; col < maxcol; ++col)
 		if (m_ColumnManager.IsVisible(col))
 			m_ColumnManager.ColumnResized(col);
@@ -383,7 +383,7 @@ void CRepositoryBrowser::Refresh()
 
 int CRepositoryBrowser::ReadTreeRecursive(git_repository& repo, const git_tree* tree, CShadowFilesTree* treeroot, bool recursive)
 {
-	size_t count = git_tree_entrycount(tree);
+	const size_t count = git_tree_entrycount(tree);
 	bool hasSubfolders = false;
 	treeroot->m_bLoaded = true;
 
@@ -593,7 +593,7 @@ void CRepositoryBrowser::FillListCtrlForShadowTree(CShadowFilesTree* pTree)
 			icon = SYS_IMAGE_LIST().GetPathIconIndex((*itShadowTree).second.m_sName);
 		}
 
-		int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
+		const int indexItem = m_RepoList.InsertItem(m_RepoList.GetItemCount(), (*itShadowTree).second.m_sName, icon);
 
 		if ((*itShadowTree).second.m_bSubmodule)
 		{
@@ -823,7 +823,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 		popupMenu.AppendMenuIcon(eCmd_CopyHash, IDS_COPY_COMMIT_HASH, IDI_COPYCLIP);
 	}
 
-	eCmd cmd = static_cast<eCmd>(popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr));
+	const eCmd cmd = static_cast<eCmd>(popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr));
 	switch(cmd)
 	{
 	case eCmd_ViewLog:

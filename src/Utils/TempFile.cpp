@@ -83,7 +83,7 @@ CTGitPath CTempFiles::GetTempFilePath(bool bRemoveAtEnd, const CTGitPath& path /
 			++i;
 			// now create the temp file in a thread safe way, so that subsequent calls to GetTempFile() return different filenames.
 			CAutoFile hFile = CreateFile(tempfile.GetWinPath(), GENERIC_READ, FILE_SHARE_READ, nullptr, CREATE_NEW, FILE_ATTRIBUTE_TEMPORARY, nullptr);
-			auto lastErr = GetLastError();
+			const auto lastErr = GetLastError();
 			if (hFile || ((lastErr != ERROR_FILE_EXISTS) && (lastErr != ERROR_ACCESS_DENIED)))
 				break;
 		} while (true);
@@ -104,7 +104,7 @@ void CTempFiles::DeleteOldTempFiles()
 	CDirFileEnum finder(path.get());
 	FILETIME systime_;
 	::GetSystemTimeAsFileTime(&systime_);
-	__int64 sysTime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
+	const __int64 sysTime = static_cast<__int64>(systime_.dwHighDateTime) << 32 | systime_.dwLowDateTime;
 	while (auto file = finder.NextFile())
 	{
 		CString filepath = file->GetFilePath();

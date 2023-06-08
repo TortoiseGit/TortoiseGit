@@ -363,7 +363,7 @@ void CGitTagCompareList::OnContextMenu(CWnd *pWnd, CPoint point)
 
 void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 {
-	int selIndex = GetSelectionMark();
+	const int selIndex = GetSelectionMark();
 	if (selIndex < 0)
 		return;
 
@@ -409,7 +409,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 	if (!theirHash.IsEmpty())
 		popup.AppendMenuIcon(IDGITRCL_DELETEREMOTE, IDS_DELETE_REMOTETAG, IDI_DELETE);
 
-	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+	const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 	switch (cmd)
 	{
 		case IDGITRCL_MYLOG:
@@ -513,7 +513,7 @@ void CGitTagCompareList::OnContextMenuHeader(CWnd * /*pWnd*/, CPoint point)
 	{
 		AppendMenuChecked(popup, IDS_HIDEUNCHANGED, IDGITRCLH_HIDEUNCHANGED, m_bHideEqual);
 
-		int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+		const int selection = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 		switch (selection)
 		{
 			case IDGITRCLH_HIDEUNCHANGED:

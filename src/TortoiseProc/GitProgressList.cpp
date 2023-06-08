@@ -126,7 +126,7 @@ svn_wc_conflict_choice_t CGitProgressList::ConflictResolveCallback(const svn_wc_
 #endif
 void CGitProgressList::AddItemToList()
 {
-	int totalcount = GetItemCount();
+	const int totalcount = GetItemCount();
 
 	SetItemCountEx(totalcount+1, LVSICF_NOSCROLL|LVSICF_NOINVALIDATEALL);
 	// make columns width fit
@@ -142,7 +142,7 @@ void CGitProgressList::AddItemToList()
 
 	// Make sure the item is *entirely* visible even if the horizontal
 	// scroll bar is visible.
-	int count = GetCountPerPage();
+	const int count = GetCountPerPage();
 	if (totalcount <= (GetTopIndex() + count + nEnsureVisibleCount + 2))
 	{
 		++nEnsureVisibleCount;
@@ -311,11 +311,11 @@ void CGitProgressList::ResizeColumns()
 	auto pHeaderCtrl = GetHeaderCtrl();
 	if (pHeaderCtrl)
 	{
-		int maxcol = pHeaderCtrl->GetItemCount()-1;
+		const int maxcol = pHeaderCtrl->GetItemCount()-1;
 		for (int col = 0; col <= maxcol; ++col)
 		{
 			// find the longest width of all items
-			int count = min(static_cast<int>(m_arData.size()), GetItemCount());
+			const int count = min(static_cast<int>(m_arData.size()), GetItemCount());
 			HDITEM hdi = {0};
 			hdi.mask = HDI_TEXT;
 			hdi.pszText = textbuf;
@@ -536,7 +536,7 @@ UINT CGitProgressList::ProgressThread()
 		ReportString(log, CString(MAKEINTRESOURCE(IDS_PROGRS_FINISHED)), !(CTheme::Instance().IsHighContrastMode() && bSuccess), color);
 	}
 
-	int count = GetItemCount();
+	const int count = GetItemCount();
 	if ((count > 0)&&(m_bLastVisible))
 		EnsureVisible(count-1, FALSE);
 
@@ -737,14 +737,14 @@ int CGitProgressList::UpdateProgress(const git_indexer_progress* stat)
 	if (dt > 100)
 	{
 		start = GetTickCount64();
-		size_t ds = stat->received_bytes - m_TotalBytesTransferred;
+		const size_t ds = stat->received_bytes - m_TotalBytesTransferred;
 		speed = ds * 1000.0/dt;
 		m_TotalBytesTransferred = stat->received_bytes;
 	}
 	else
 		return 0;
 
-	int progress = stat->received_objects + stat->indexed_objects;
+	const int progress = stat->received_objects + stat->indexed_objects;
 
 	if ((stat->total_objects > 1000) && m_pProgControl && (!m_pProgControl->IsWindowVisible()))
 		m_pProgControl->ShowWindow(SW_SHOW);
@@ -866,7 +866,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (pWnd != this)
 		return;
 
-	int selIndex = GetSelectionMark();
+	const int selIndex = GetSelectionMark();
 	if ((point.x == -1) && (point.y == -1))
 	{
 		// Menu was invoked from the keyboard rather than by right-clicking
@@ -897,7 +897,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 		POSITION pos = GetFirstSelectedItemPosition();
 		while (pos)
 		{
-			int nItem = GetNextSelectedItem(pos);
+			const int nItem = GetNextSelectedItem(pos);
 			NotificationData* data = m_arData[nItem];
 			if (data)
 			{
@@ -914,7 +914,7 @@ void CGitProgressList::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (actions.empty())
 		return;
 
-	int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
+	const int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY, point.x, point.y, this);
 
 	if (cmd <= 0 || static_cast<size_t>(cmd) > actions.size())
 		return;
@@ -964,7 +964,7 @@ void CGitProgressList::OnSize(UINT nType, int cx, int cy)
 		if(!m_hWnd)
 			return;
 
-		int count = GetItemCount();
+		const int count = GetItemCount();
 		if (count > 0)
 			EnsureVisible(count-1, false);
 	}

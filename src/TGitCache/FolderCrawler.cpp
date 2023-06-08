@@ -132,11 +132,11 @@ void CFolderCrawler::WorkerThread()
 
 	for(;;)
 	{
-		bool bRecursive = !!static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE));
+		const bool bRecursive = !!static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE));
 
 		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
 
-		DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
+		const DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
 
 		// exit event/working loop if the first event (m_hTerminationEvent)
 		// has been signaled or if one of the events has been abandoned
@@ -442,7 +442,7 @@ void CFolderCrawler::WorkerThread()
 bool CFolderCrawler::SetHoldoff(DWORD milliseconds /* = 100*/)
 {
 	LONGLONG tick = static_cast<LONGLONG>(GetTickCount64());
-	bool ret = ((tick - m_crawlHoldoffReleasesAt) > 0);
+	const bool ret = ((tick - m_crawlHoldoffReleasesAt) > 0);
 	m_crawlHoldoffReleasesAt = tick + milliseconds;
 	return ret;
 }

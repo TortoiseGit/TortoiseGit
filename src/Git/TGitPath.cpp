@@ -484,8 +484,8 @@ CString CTGitPath::GetFileExtension() const
 	if(!IsDirectory())
 	{
 		EnsureBackslashPathSet();
-		int dotPos = m_sBackslashPath.ReverseFind('.');
-		int slashPos = m_sBackslashPath.ReverseFind('\\');
+		const int dotPos = m_sBackslashPath.ReverseFind('.');
+		const int slashPos = m_sBackslashPath.ReverseFind('\\');
 		if (dotPos > slashPos)
 			return m_sBackslashPath.Mid(dotPos);
 	}
@@ -494,7 +494,7 @@ CString CTGitPath::GetFileExtension() const
 CString CTGitPath::GetBaseFilename() const
 {
 	CString filename=GetFilename();
-	int dot = filename.ReverseFind(L'.');
+	const int dot = filename.ReverseFind(L'.');
 	if(dot>0)
 		filename.Truncate(dot);
 	return filename;
@@ -1005,7 +1005,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		if (pos == CGitByteArray::npos)
 			return -1;
 
-		size_t modestart = pos + 1;
+		const size_t modestart = pos + 1;
 
 		pos = out.find(' ', pos + 1); // advance to hash
 		if (pos == CGitByteArray::npos)
@@ -1015,7 +1015,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		if (pos == CGitByteArray::npos)
 			return -1;
 
-		size_t stagestart = pos + 1;
+		const size_t stagestart = pos + 1;
 
 		pos = out.find('\t', pos + 1); // advance to filename
 		if (pos == CGitByteArray::npos)
@@ -1213,7 +1213,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 	CString pathname1;
 	CString pathname2;
 
-	size_t logend = log.size();
+	const size_t logend = log.size();
 	while (pos < logend)
 	{
 		path.Reset();
@@ -1236,7 +1236,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 
 			int modenew = 0;
 			int modeold = 0;
-			size_t end = log.find(0, pos);
+			const size_t end = log.find(0, pos);
 			size_t actionstart = BYTE_VECTOR::npos;
 			size_t file1 = BYTE_VECTOR::npos, file2 = BYTE_VECTOR::npos;
 			if (end != BYTE_VECTOR::npos && end > 7)
@@ -1281,7 +1281,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			if (actionstart == BYTE_VECTOR::npos)
 				return -1;
 
-			auto existing = duplicateMap.find(pathname1);
+			const auto existing = duplicateMap.find(pathname1);
 			if (existing != duplicateMap.end())
 			{
 				CTGitPath& p = m_paths[existing->second];
@@ -1740,8 +1740,7 @@ bool CTGitPathList::IsEqual(const CTGitPathList& list)
 
 const CTGitPath* CTGitPathList::LookForGitPath(const CString& path) const
 {
-	int i=0;
-	for (i = 0; i < this->GetCount(); ++i)
+	for (int i = 0; i < this->GetCount(); ++i)
 	{
 		if (CPathUtils::ArePathStringsEqualWithCase((*this)[i].GetGitPathString(), path))
 			return &(*this)[i];

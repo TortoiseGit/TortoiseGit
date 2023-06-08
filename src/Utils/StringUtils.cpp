@@ -250,8 +250,8 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 			return false;
 
 		CStringA filecontent;
-		UINT filelength = static_cast<UINT>(file.GetLength());
-		int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
+		const UINT filelength = static_cast<UINT>(file.GetLength());
+		const int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
 		filecontent.ReleaseBuffer(bytesread);
 		text = CUnicodeUtils::GetUnicode(filecontent);
 		file.Close();
@@ -416,9 +416,9 @@ std::vector<CString> CStringUtils::WordWrap(const CString& longstring, int limit
 
 int CStringUtils::GetMatchingLength (const CString& lhs, const CString& rhs)
 {
-	int lhsLength = lhs.GetLength();
-	int rhsLength = rhs.GetLength();
-	int maxResult = min (lhsLength, rhsLength);
+	const int lhsLength = lhs.GetLength();
+	const int rhsLength = rhs.GetLength();
+	const int maxResult = min(lhsLength, rhsLength);
 
 	LPCWSTR pLhs = lhs;
 	LPCWSTR pRhs = rhs;
@@ -503,7 +503,7 @@ static void cleanup_space(CString& string)
 CString CStringUtils::UnescapeGitQuotePath(const CString& s)
 {
 	CStringA t;
-	int i_size = s.GetLength();
+	const int i_size = s.GetLength();
 	bool isEscaped = false;
 	for (int i = 0; i < i_size; ++i)
 	{
@@ -553,10 +553,10 @@ static void parse_bogus_from(const CString& mailaddress, CString& parsedAddress,
 {
 	/* John Doe <johndoe> */
 
-	int bra = mailaddress.Find(L'<');
+	const int bra = mailaddress.Find(L'<');
 	if (bra < 0)
 		return;
-	int ket = mailaddress.Find(L'>');
+	const int ket = mailaddress.Find(L'>');
 	if (ket < 0)
 		return;
 
@@ -613,7 +613,7 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 		}
 	}
 
-	auto buf = mailaddress.GetBuffer();
+	const auto buf = mailaddress.GetBuffer();
 	auto at = wcschr(buf, L'@');
 	if (!at)
 	{
@@ -638,7 +638,7 @@ void CStringUtils::ParseEmailAddress(CString mailaddress, CString& parsedAddress
 	}
 
 	mailaddress.ReleaseBuffer();
-	size_t el = wcscspn(at, L" \n\t\r\v\f>");
+	const size_t el = wcscspn(at, L" \n\t\r\v\f>");
 	parsedAddress = mailaddress.Mid(static_cast<int>(at - buf), static_cast<int>(el));
 	mailaddress.Delete(static_cast<int>(at - buf), static_cast<int>(el + (at[el] ? 1 : 0)));
 
@@ -670,8 +670,8 @@ bool CStringUtils::StartsWith(const wchar_t* heystack, const CString& needle)
 
 bool CStringUtils::EndsWith(const CString& heystack, const wchar_t* needle)
 {
-	auto lenNeedle = wcslen(needle);
-	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
+	const auto lenNeedle = wcslen(needle);
+	const auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
 	return wcsncmp(static_cast<LPCWSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;
@@ -679,7 +679,7 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t* needle)
 
 bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
 {
-	auto lenHeystack = heystack.GetLength();
+	const auto lenHeystack = heystack.GetLength();
 	if (!lenHeystack)
 		return false;
 	return *(static_cast<LPCWSTR>(heystack) + (lenHeystack - 1)) == needle;
@@ -687,8 +687,8 @@ bool CStringUtils::EndsWith(const CString& heystack, const wchar_t needle)
 
 bool CStringUtils::EndsWithI(const CString& heystack, const wchar_t* needle)
 {
-	auto lenNeedle = wcslen(needle);
-	auto lenHeystack = static_cast<size_t>(heystack.GetLength());
+	const auto lenNeedle = wcslen(needle);
+	const auto lenHeystack = static_cast<size_t>(heystack.GetLength());
 	if (lenNeedle > lenHeystack)
 		return false;
 	return _wcsnicmp(static_cast<LPCWSTR>(heystack) + (lenHeystack - lenNeedle), needle, lenNeedle) == 0;

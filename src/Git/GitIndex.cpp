@@ -113,7 +113,7 @@ int CGitIndexList::ReadIndex(const CString& dgitdir)
 	if (CRegDWORD(L"Software\\TortoiseGit\\OverlaysCaseSensitive", TRUE) != FALSE)
 		m_iIndexCaps &= ~GIT_INDEX_CAPABILITY_IGNORE_CASE;
 
-	size_t ecount = git_index_entrycount(index);
+	const size_t ecount = git_index_entrycount(index);
 	try
 	{
 		resize(ecount);
@@ -170,7 +170,7 @@ int CGitIndexList::ReadIncomingOutgoing(git_repository* repository)
 		}, &m_stashCount) < 0)
 		return -1;
 
-	if (int detachedhead = git_repository_head_detached(repository); detachedhead == 1)
+	if (const int detachedhead = git_repository_head_detached(repository); detachedhead == 1)
 	{
 		m_branch = L"detached HEAD";
 		return 0;
@@ -179,7 +179,7 @@ int CGitIndexList::ReadIncomingOutgoing(git_repository* repository)
 		return -1;
 
 	CAutoReference head;
-	if (int unborn = git_repository_head_unborn(repository); unborn < 0)
+	if (const int unborn = git_repository_head_unborn(repository); unborn < 0)
 		return -1;
 	else if (unborn == 1)
 	{
@@ -390,7 +390,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	if (!hfile)
 		return -1;
 
-	DWORD filesize = GetFileSize(hfile, nullptr);
+	const DWORD filesize = GetFileSize(hfile, nullptr);
 	if (filesize == 0 || filesize == INVALID_FILE_SIZE)
 		return -1;
 
@@ -483,7 +483,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	if (strcmp(reinterpret_cast<const char*>(buffer), "ref:") == 0)
 	{
 		m_HeadRefFile.Empty();
-		DWORD filesize = GetFileSize(hfile, nullptr);
+		const DWORD filesize = GetFileSize(hfile, nullptr);
 		if (filesize < 5 || filesize == INVALID_FILE_SIZE)
 			return -1;
 
@@ -614,9 +614,9 @@ int CGitHeadFileList::ReadTreeRecursive(git_repository& repo, const git_tree* tr
 		const git_tree_entry *entry = git_tree_entry_byindex(tree, i);
 		if (!entry)
 			continue;
-		int mode = git_tree_entry_filemode(entry);
-		bool isDir = (mode & S_IFDIR) == S_IFDIR;
-		bool isSubmodule = (mode & S_IFMT) == S_IFGITLINK;
+		const int mode = git_tree_entry_filemode(entry);
+		const bool isDir = (mode & S_IFDIR) == S_IFDIR;
+		const bool isSubmodule = (mode & S_IFMT) == S_IFGITLINK;
 		if (!isDir || isSubmodule)
 		{
 			CGitTreeItem item;
@@ -795,7 +795,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 {
 	__int64 time = 0, size = -1;
 
-	int ret = CGit::GetFileModifyTime(path, &time, nullptr, &size);
+	const int ret = CGit::GetFileModifyTime(path, &time, nullptr, &size);
 
 	bool cacheExist;
 	{
@@ -855,7 +855,7 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 
 	if (!isDir)
 	{
-		int x = temp.ReverseFind(L'\\');
+		const int x = temp.ReverseFind(L'\\');
 		if (x >= 2)
 			temp.Truncate(x);
 	}
@@ -906,7 +906,7 @@ bool CGitIgnoreList::CheckAndUpdateIgnoreFiles(const CString& gitdir, const CStr
 			return updated;
 		}
 
-		int i = temp.ReverseFind(L'\\');
+		const int i = temp.ReverseFind(L'\\');
 		temp.Truncate(max(0, i));
 	}
 	return updated;
@@ -1032,7 +1032,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 
 		// strip directory name
 		// we do not need to check for a .ignore file inside a directory we might ignore
-		int i = temp.ReverseFind(L'\\');
+		const int i = temp.ReverseFind(L'\\');
 		if (i >= 0)
 			temp.Truncate(i);
 	}
@@ -1073,7 +1073,7 @@ int CGitIgnoreList::CheckIgnore(const CString &path, const CString &projectroot,
 			return -1;
 		}
 
-		int i = temp.ReverseFind(L'\\');
+		const int i = temp.ReverseFind(L'\\');
 		temp.Truncate(max(0, i));
 	}
 
