@@ -77,33 +77,26 @@
 
 #ifndef TGIT_TESTS_ONLY
 static struct last_accepted_cert {
-	BYTE*		data;
-	size_t		len;
+	std::unique_ptr<char[]> data;
+	size_t len = 0;
 
-	last_accepted_cert()
-		: data(nullptr)
-		, len(0)
-	{
-	}
-	~last_accepted_cert()
-	{
-		free(data);
-	};
+	last_accepted_cert() = default;
+	~last_accepted_cert() = default;
+
 	boolean cmp(git_cert_x509* cert)
 	{
-		return len > 0 && len == cert->len && memcmp(data, cert->data, len) == 0;
+		return len > 0 && len == cert->len && memcmp(data.get(), cert->data, len) == 0;
 	}
 	void set(git_cert_x509* cert)
 	{
-		free(data);
 		len = cert->len;
 		if (len == 0)
 		{
 			data = nullptr;
 			return;
 		}
-		data = new BYTE[len];
-		memcpy(data, cert->data, len);
+		data = std::make_unique<char[]>(len);
+		memcpy(data.get(), cert->data, len);
 	}
 } last_accepted_cert;
 
