@@ -437,12 +437,11 @@ void CGit::KillRelatedThreads(CWinThread* thread)
 }
 #endif
 
-int CGit::Run(CGitCall* pcall)
+int CGit::Run(CGitCall& pcall)
 {
-	ASSERT(pcall);
 	PROCESS_INFORMATION pi;
 	CAutoGeneralHandle hRead, hReadErr;
-	if (RunAsync(pcall->GetCmd(), pi, hRead.GetPointer(), hReadErr.GetPointer()))
+	if (RunAsync(pcall.GetCmd(), pi, hRead.GetPointer(), hReadErr.GetPointer()))
 		return TGIT_GIT_ERROR_CREATE_PROCESS;
 
 	CAutoGeneralHandle piThread(std::move(pi.hThread));
@@ -450,7 +449,7 @@ int CGit::Run(CGitCall* pcall)
 
 	ASYNCREADSTDERRTHREADARGS threadArguments;
 	threadArguments.fileHandle = hReadErr;
-	threadArguments.pcall = pcall;
+	threadArguments.pcall = &pcall;
 	CAutoGeneralHandle thread = CreateThread(nullptr, 0, AsyncReadStdErrThread, &threadArguments, 0, nullptr);
 
 	if (thread)
@@ -466,11 +465,11 @@ int CGit::Run(CGitCall* pcall)
 	{
 		// TODO: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
 		if(!bAborted)//For now, flush output when command aborted.
-			if(pcall->OnOutputData(data,readnumber))
+			if(pcall.OnOutputData(data,readnumber))
 				bAborted=true;
 	}
 	if(!bAborted)
-		pcall->OnEnd();
+		pcall.OnEnd();
 
 	if (thread)
 	{
@@ -524,7 +523,7 @@ public:
 int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
 {
 	CGitCall_ByteVector call(cmd, vector, vectorErr);
-	return Run(&call);
+	return Run(call);
 }
 int CGit::Run(CString cmd, CString* output, int code)
 {
@@ -626,14 +625,14 @@ int CGit::Run(CString cmd, const GitReceiverFunc& recv, CString* outputErr)
 	{
 		BYTE_VECTOR vectorErr;
 		CGitCallCb call(cmd, recv, &vectorErr);
-		int ret = Run(&call);
+		int ret = Run(call);
 		vectorErr.push_back(0);
 		StringAppend(*outputErr, vectorErr.data());
 		return ret;
 	}
 
 	CGitCallCb call(cmd, recv);
-	return Run(&call);
+	return Run(call);
 }
 
 CString CGit::GetUserName()
