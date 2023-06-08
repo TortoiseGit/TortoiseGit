@@ -51,8 +51,6 @@ struct CGitIndex
 class CGitIndexList : private std::vector<CGitIndex>
 {
 public:
-	__time64_t  m_LastModifyTime = 0;
-	__int64		m_LastFileSize = -1;
 	BOOL		m_bHasConflicts = FALSE;
 	CString		m_branch;
 	size_t		m_incoming = static_cast<size_t>(-1);
@@ -63,6 +61,7 @@ public:
 	CGitIndexList();
 	~CGitIndexList();
 
+	bool HasIndexChangedOnDisk(const CString& gitdir) const;
 	int ReadIndex(CString dotgitdir);
 	int ReadIncomingOutgoing(git_repository* repo);
 	int GetFileStatus(const CString& gitdir, const CString& path, git_wc_status2_t& status, CGitHash* pHash = nullptr) const;
@@ -79,7 +78,10 @@ public:
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	FRIEND_TEST(GitIndexCBasicGitWithTestRepoFixture, GetFileStatus);
 #endif
-protected:
+private:
+	__time64_t m_LastModifyTime = 0;
+	__int64 m_LastFileSize = -1;
+
 	int		m_iIndexCaps = GIT_INDEX_CAPABILITY_IGNORE_CASE | GIT_INDEX_CAPABILITY_NO_SYMLINKS;
 	__int64 m_iMaxCheckSize = 10 * 1024 * 1024;
 	bool	m_bCalculateIncomingOutgoing = true;
@@ -147,8 +149,10 @@ class CGitIndexFileMap : protected SharedPtrMapTmpl<SHARED_INDEX_PTR>
 public:
 	void CheckAndUpdate(const CString& gitdir)
 	{
-		if (HasIndexChangedOnDisk(gitdir))
-			LoadIndex(gitdir);
+		if (auto pIndex = SafeGet(gitdir); pIndex && !pIndex->HasIndexChangedOnDisk(gitdir))
+			return;
+
+		LoadIndex(gitdir);
 	}
 
 	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeClear;
@@ -156,7 +160,6 @@ public:
 	using SharedPtrMapTmpl<SHARED_INDEX_PTR>::SafeGet;
 
 private:
-	bool HasIndexChangedOnDisk(const CString& gitdir);
 	int LoadIndex(const CString& gitdir);
 };
 

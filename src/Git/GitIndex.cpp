@@ -54,6 +54,15 @@ CGitIndexList::~CGitIndexList()
 {
 }
 
+bool CGitIndexList::HasIndexChangedOnDisk(const CString& gitdir) const
+{
+	__int64 time = -1, size = -1;
+
+	CString indexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
+	// no need to refresh if there is no index right now and the current index is empty, but otherwise lastFileSize or lastmodifiedTime differ
+	return (CGit::GetFileModifyTime(indexFile, &time, nullptr, &size) && !empty()) || m_LastModifyTime != time || m_LastFileSize != size;
+}
+
 int CGitIndexList::ReadIndex(CString dgitdir)
 {
 #ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
@@ -344,20 +353,6 @@ int CGitIndexList::GetFileStatus(const CString& gitdir, const CString& path, git
 	status.status = git_wc_status_unversioned;
 
 	return -1;
-}
-
-bool CGitIndexFileMap::HasIndexChangedOnDisk(const CString& gitdir)
-{
-	__int64 time = -1, size = -1;
-
-	auto pIndex = SafeGet(gitdir);
-
-	if (!pIndex)
-		return true;
-
-	CString IndexFile = g_AdminDirMap.GetWorktreeAdminDirConcat(gitdir, L"index");
-	// no need to refresh if there is no index right now and the current index is empty, but otherwise or lastmodified time differs
-	return (CGit::GetFileModifyTime(IndexFile, &time, nullptr, &size) && !pIndex->empty()) || pIndex->m_LastModifyTime != time || pIndex->m_LastFileSize != size;
 }
 
 int CGitIndexFileMap::LoadIndex(const CString &gitdir)
