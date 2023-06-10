@@ -701,10 +701,10 @@ static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
 	{
 #ifdef TGIT_UPDATECRYPTO_DSA
 	case PUBLIC_KEY_ALGO_DSA:
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.p), 2 + i_p_len, 0);
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.q), 2 + i_q_len, 0);
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.g), 2 + i_g_len, 0);
-		CryptHashData(hHash, reinterpret_cast<uint8_t*>(&p_pkey->key.sig.dsa.y), 2 + i_y_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.p), 2 + i_p_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.q), 2 + i_q_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.g), 2 + i_g_len, 0);
+		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.y), 2 + i_y_len, 0);
 		break;
 #endif
 	case PUBLIC_KEY_ALGO_RSA:
