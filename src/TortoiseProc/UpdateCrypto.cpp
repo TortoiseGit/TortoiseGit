@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2019, 2021-2022 TortoiseGit
+// Copyright (C) 2014-2019, 2021-2023 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -30,8 +30,8 @@
 #include "TempFile.h"
 #include "SmartHandle.h"
 
-#define packet_type(c) ((c & 0x3c) >> 2)      /* 0x3C = 00111100 */
-#define packet_header_len(c) ((c & 0x03) + 1) /* number of bytes in a packet header */
+constexpr auto packet_type(uint8_t c) { return (c & 0x3c) >> 2; } /* 0x3C = 00111100 */
+constexpr auto packet_header_len(uint8_t c) { return (c & 0x03) + 1; } /* number of bytes in a packet header */
 
 #ifdef TGIT_UPDATECRYPTO_DSA
 #ifndef TGIT_UPDATECRYPTO_SHA1
@@ -39,7 +39,7 @@
 #endif
 #endif
 
-static inline int scalar_number(const uint8_t *p, int header_len)
+static inline uint32_t scalar_number(const uint8_t* p, int header_len)
 {
 	ASSERT(header_len == 1 || header_len == 2 || header_len == 4);
 
@@ -48,13 +48,13 @@ static inline int scalar_number(const uint8_t *p, int header_len)
 	else if (header_len == 2)
 		return (p[0] << 8) + p[1];
 	else if (header_len == 4)
-		return (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+		return (static_cast<uint32_t>(p[0]) << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
 	else
 		abort();
 }
 
 /* number of data bytes in a MPI */
-static int mpi_len(const uint8_t* mpi)
+static uint32_t mpi_len(const uint8_t* mpi)
 {
 	return (scalar_number(mpi, 2) + 7) / 8;
 }
@@ -230,7 +230,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 		{
 			if (p + 4 > max_pos)
 				return 0;
-			i_subpacket_len = size_t(*++p) << 24;
+			i_subpacket_len = static_cast<size_t>(*++p) << 24;
 			i_subpacket_len += static_cast<size_t>(*++p) << 16;
 			i_subpacket_len += static_cast<size_t>(*++p) << 8;
 			i_subpacket_len += *++p;
@@ -484,10 +484,10 @@ static int parse_public_key(const uint8_t *p_key_data, size_t i_key_len, public_
 		if (pos + i_header_len > max_pos || (i_header_len != 1 && i_header_len != 2 && i_header_len != 4))
 			goto error;
 
-		int i_packet_len = scalar_number(pos, i_header_len);
+		size_t i_packet_len = scalar_number(pos, i_header_len);
 		pos += i_header_len;
 
-		if (pos + i_packet_len > max_pos || i_packet_len < 0 || static_cast<size_t>(i_packet_len) > i_key_len)
+		if (pos + i_packet_len > max_pos || i_packet_len > i_key_len)
 			goto error;
 
 		switch (i_type)
@@ -822,8 +822,8 @@ static int check_hash(HCRYPTHASH hHash, const signature_packet_t *p_sig)
 */
 static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
 {
-	int i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), static_cast<int>(sizeof(p_pkey.key.sig.rsa.n)) - 2);
-	int i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), static_cast<int>(sizeof(p_sig.algo_specific.rsa.s)) - 2);
+	uint32_t i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), static_cast<uint32_t>(sizeof(p_pkey.key.sig.rsa.n)) - 2);
+	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.rsa.s)) - 2);
 
 	if (i_s_len > i_n_len)
 		return -1;
@@ -867,12 +867,12 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
 		return -1;
 
-	int i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), static_cast<int>(sizeof(p_pkey.key.sig.dsa.p)) - 2);
-	int i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), static_cast<int>(sizeof(p_pkey.key.sig.dsa.q)) - 2);
-	int i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), static_cast<int>(sizeof(p_pkey.key.sig.dsa.g)) - 2);
-	int i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), static_cast<int>(sizeof(p_pkey.key.sig.dsa.y)) - 2);
-	int i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), static_cast<int>(sizeof(p_sig.algo_specific.dsa.r)) - 2);
-	int i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), static_cast<int>(sizeof(p_sig.algo_specific.dsa.s)) - 2);
+	uint32_t i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.p)) - 2);
+	uint32_t i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.q)) - 2);
+	uint32_t i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.g)) - 2);
+	uint32_t i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.y)) - 2);
+	uint32_t i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.r)) - 2);
+	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.s)) - 2);
 
 	// CryptoAPI only supports 1024-bit DSA keys and SHA1 signatures
 	if (i_p_len > 128 || i_q_len > 20 && i_g_len > 128 || i_y_len > 128 || i_r_len > 20 || i_s_len > 20)
