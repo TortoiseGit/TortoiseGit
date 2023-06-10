@@ -228,7 +228,7 @@ static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t
 		}
 		else
 		{
-			if (p + 4 > max_pos)
+			if (++p + 4 > max_pos)
 				return 0;
 			i_subpacket_len = static_cast<size_t>(*++p) << 24;
 			i_subpacket_len += static_cast<size_t>(*++p) << 16;
