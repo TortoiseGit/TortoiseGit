@@ -1127,7 +1127,6 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		}
 
 		BYTE_VECTOR out, errb;
-		out.clear();
 		if (g_Git.Run(cmd, &out, &errb))
 		{
 			if (err)
