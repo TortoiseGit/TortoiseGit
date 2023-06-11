@@ -358,7 +358,6 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 		for (int j = 0; j < count; ++j)
 		{
-			path.Reset();
 			char* newname;
 			char* oldname;
 
@@ -370,6 +369,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
 			CGit::StringAppend(strnewname, newname, CP_UTF8);
+			// SetFromGit resets the path
 			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname, isDir != FALSE);
 			else
