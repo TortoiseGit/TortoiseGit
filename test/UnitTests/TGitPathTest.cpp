@@ -1600,6 +1600,71 @@ TEST(CTGitPath, ParserFromLog_DiffTree_BinaryFiles)
 	EXPECT_FALSE(testList[1].IsDirectory());
 }
 
+TEST(CTGitPath, ParserFromLog_Invalid)
+{
+	for (int i = 1; i < 84; ++i)
+	{
+		constexpr char git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt" };
+		if (i == 60)
+			continue;
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_output, i);
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	}
+	for (int i = 1; i < 129; ++i)
+	{
+		constexpr char git_difftree_output[] = { "3	6	.gitmodules\0""1	1	appveyor.yml\0""4	4	\0ext/build/gtest.vcxproj\0ext/build/googletest.vcxproj\0""3	3	\0ext/build/gtest.vcxproj.filters" };
+		if (i == 16 || i == 33 || i == 91)
+			continue;
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, i);
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	}
+	{
+		constexpr char git_difftree_output[] = { "	" };
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
+		CGitByteArray byteArray2;
+		byteArray2.append(git_difftree_output, sizeof(git_difftree_output - 1));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray2));
+	}
+	{
+		constexpr char git_difftree_output[] = { "		" };
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
+		CGitByteArray byteArray2;
+		byteArray2.append(git_difftree_output, sizeof(git_difftree_output) - 1);
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray2));
+	}
+	{
+		constexpr char git_difftree_output[] = { "1	4	" };
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	}
+	{
+		constexpr char git_difftree_output[] = { "		\0" };
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	}
+	{
+		constexpr char git_difftree_output[] = { "		\0def" };
+		CGitByteArray byteArray;
+		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
+	}
+}
+
 static void setFlagOnFileInIndex(CAutoIndex& gitindex, const CString& filename, bool assumevalid, bool skipworktree)
 {
 	size_t idx = SIZE_T_MAX;
@@ -1926,6 +1991,46 @@ TEST(CTGitPath, ParserFromLsFile_RepoWithSubmodule)
 	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_EQ(0U, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Invalid)
+{
+	constexpr char git_ls_file_u_t_z_output[] = { "H 160000 d4eaf3c5d0994eb0112c17aa3c732022eb9fdf6b 0	ext/gtest" };
+	for (int i = 1; i < sizeof(git_ls_file_u_t_z_output) - 1; ++i)
+	{
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_output, i);
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+	}
+	{
+		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "something" };
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+	}
+	{
+		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "    " };
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+	}
+	{
+		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "   	" };
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+	}
+	{
+		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "   	e" };
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
+		CTGitPathList testList;
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+	}
 }
 
 TEST(CTGitPath, ParserFromLsFile_Merged_SingleFileConflict)
