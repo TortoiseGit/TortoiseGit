@@ -1063,8 +1063,8 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted /*= f
 		pathstring.Empty();
 		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(fileNameEnd - pos));
 		// SetFromGit resets the path
-		path.SetFromGit(pathstring, (strtol(reinterpret_cast<const char*>(&out[modestart]), nullptr, 8) & S_IFDIR) == S_IFDIR);
-		path.m_Stage = strtol(reinterpret_cast<const char*>(&out[stagestart]), nullptr, 10);
+		path.SetFromGit(pathstring, (strtol(&out[modestart], nullptr, 8) & S_IFDIR) == S_IFDIR);
+		path.m_Stage = strtol(&out[stagestart], nullptr, 10);
 		if (path.m_Stage && mergeConflicted)
 		{
 			if (!IsEmpty() && path == m_paths[m_paths.size() - 1])

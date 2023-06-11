@@ -3088,7 +3088,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 		if (!vector.empty())
 		{
 			vector.push_back(0); // vector is not NUL terminated
-			buffer.Append(reinterpret_cast<const char*>(vector.data()));
+			buffer.Append(vector.data());
 		}
 		return ret;
 	}

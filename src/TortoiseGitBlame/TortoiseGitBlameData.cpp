@@ -127,7 +127,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					expectHash = false;
 					if (lineEnd - lineBegin > 2 * GIT_HASH_SIZE)
 					{
-						hash = CGitHash::FromHexStr(reinterpret_cast<char*>(&data[lineBegin]));
+						hash = CGitHash::FromHexStr(&data[lineBegin]);
 
 						size_t hashEnd = lineBegin + 2 * GIT_HASH_SIZE;
 						size_t originalLineNumberBegin = hashEnd + 1;
@@ -176,7 +176,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					size_t tokenEnd = data.find(' ', tokenBegin);
 					if (tokenEnd != BYTE_VECTOR::npos)
 					{
-						if (!strncmp("filename", reinterpret_cast<const char*>(&data[tokenBegin]), tokenEnd - tokenBegin))
+						if (!strncmp("filename", &data[tokenBegin], tokenEnd - tokenBegin))
 						{
 							size_t filenameBegin = tokenEnd + 1;
 							size_t filenameEnd = lineEnd;
