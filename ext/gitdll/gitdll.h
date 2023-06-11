@@ -132,7 +132,7 @@ GITDLL_API int git_diff_flush(GIT_DIFF diff);
 GITDLL_API int git_close_diff(GIT_DIFF diff);
 
 
-GITDLL_API int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, int* status, int* IsBin, int* inc, int* dec);
+GITDLL_API int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, char* status, int* IsBin, int* inc, int* dec);
 
 
 typedef void * EXCLUDE_LIST;

@@ -74,8 +74,9 @@ public:
 #endif
 	unsigned int m_Action = 0;
 	bool m_Checked = false;
-	unsigned int ParserAction(BYTE action);
-	unsigned int ParserAction(git_delta_t action);
+	static unsigned ParseStatus(const char status);
+	inline void ParseAndUpdateStatus(const char status) { m_Action |= ParseStatus(status); }
+	unsigned int ParseAndUpdateStatus(git_delta_t status);
 	CString GetActionName() const;
 	static CString GetActionName(unsigned int action);
 	/**

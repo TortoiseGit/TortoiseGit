@@ -610,7 +610,7 @@ int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_F
 	return 0;
 }
 
-int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, int* status, int* IsBin, int* inc, int* dec)
+int git_get_diff_file(GIT_DIFF diff, GIT_FILE file, int i, char** newname, char** oldname, int* IsDir, char* status, int* IsBin, int* inc, int* dec)
 {
 	struct diff_queue_struct *q = &diff_queued_diff;
 	struct rev_info *p_Rev;

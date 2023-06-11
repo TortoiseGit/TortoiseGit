@@ -56,45 +56,46 @@ CTGitPath::CTGitPath(const CString& sUnknownPath, bool bIsDirectory) : CTGitPath
 	m_bIsDirectory = bIsDirectory;
 }
 
-unsigned int CTGitPath::ParserAction(BYTE action)
+unsigned int CTGitPath::ParseStatus(const char status)
 {
-	//action=action.TrimLeft();
-	//wchar_t c=action.GetAt(0);
-	if(action == 'M')
-		m_Action|= LOGACTIONS_MODIFIED;
-	if(action == 'R')
-		m_Action|= LOGACTIONS_REPLACED;
-	if(action == 'A')
-		m_Action|= LOGACTIONS_ADDED;
-	if(action == 'D')
-		m_Action|= LOGACTIONS_DELETED;
-	if(action == 'U')
-		m_Action|= LOGACTIONS_UNMERGED;
-	if(action == 'K')
-		m_Action|= LOGACTIONS_DELETED;
-	if(action == 'C' )
-		m_Action|= LOGACTIONS_COPY;
-	if(action == 'T')
-		m_Action|= LOGACTIONS_MODIFIED;
-
-	return m_Action;
+	switch (status)
+	{
+	case 'M':
+		return LOGACTIONS_MODIFIED;
+	case 'R':
+		return LOGACTIONS_REPLACED;
+	case 'A':
+		return LOGACTIONS_ADDED;
+	case 'D':
+		return LOGACTIONS_DELETED;
+	case 'U':
+		return LOGACTIONS_UNMERGED;
+	case 'K':
+		return LOGACTIONS_DELETED;
+	case 'C':
+		return LOGACTIONS_COPY;
+	case 'T':
+		return LOGACTIONS_MODIFIED;
+	default:
+		return 0;
+	}
 }
 
-unsigned int CTGitPath::ParserAction(git_delta_t action)
+unsigned int CTGitPath::ParseAndUpdateStatus(git_delta_t status)
 {
-	if (action == GIT_DELTA_MODIFIED)
+	if (status == GIT_DELTA_MODIFIED)
 		m_Action |= LOGACTIONS_MODIFIED;
-	if (action == GIT_DELTA_RENAMED)
+	if (status == GIT_DELTA_RENAMED)
 		m_Action |= LOGACTIONS_REPLACED;
-	if (action == GIT_DELTA_ADDED)
+	if (status == GIT_DELTA_ADDED)
 		m_Action |= LOGACTIONS_ADDED;
-	if (action == GIT_DELTA_DELETED)
+	if (status == GIT_DELTA_DELETED)
 		m_Action |= LOGACTIONS_DELETED;
-	if (action == GIT_DELTA_UNMODIFIED)
+	if (status == GIT_DELTA_UNMODIFIED)
 		m_Action |= LOGACTIONS_UNMERGED;
-	if (action == GIT_DELTA_COPIED)
+	if (status == GIT_DELTA_COPIED)
 		m_Action |= LOGACTIONS_COPY;
-	if (action == GIT_DELTA_TYPECHANGE)
+	if (status == GIT_DELTA_TYPECHANGE)
 		m_Action |= LOGACTIONS_MODIFIED;
 
 	return m_Action;
@@ -1308,7 +1309,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			if (existing != duplicateMap.end())
 			{
 				CTGitPath& p = m_paths[existing->second];
-				p.ParserAction(log[actionstart]);
+				p.ParseAndUpdateStatus(log[actionstart]);
 
 				// reset submodule/folder status if a staged entry is not a folder
 				if (p.IsDirectory() && ((modeold && !(modeold & S_IFDIR)) || (modenew && !(modenew & S_IFDIR))))
@@ -1322,7 +1323,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			}
 			else
 			{
-				int ac=path.ParserAction(log[actionstart] );
+				unsigned int ac = CTGitPath::ParseStatus(log[actionstart]);
 				ac |= merged?CTGitPath::LOGACTIONS_MERGED:0;
 
 				int isSubmodule = FALSE;
