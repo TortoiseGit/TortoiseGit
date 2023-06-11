@@ -613,18 +613,63 @@ TEST(CTGitPath, ParserFromLog_Empty)
 	EXPECT_EQ(0, testList.GetCount());
 }
 
-TEST(CTGitPath, ParserFromLog_Conflict)
+TEST(CTGitPath, ParserFromLsFileSimple_Empty)
 {
-	// as used in CGit::GetWorkingTreeChanges
-	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt" };
 	CGitByteArray byteArray;
-	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLog(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray, 0));
+	EXPECT_EQ(0, testList.GetCount());
+}
+
+TEST(CTGitPath, ParserFromLsFileSimple_Clear)
+{
+	constexpr unsigned int magicValue = 5758345;
+
+	CGitByteArray byteArray;
+	CTGitPathList testList;
+	constexpr char git_ls_files_output[] = { "ext/LNI/" };
+	byteArray.append(git_ls_files_output, sizeof(git_ls_files_output));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray, magicValue));
 	ASSERT_EQ(1, testList.GetCount());
-	EXPECT_STREQ(L"bla.txt", testList[0].GetGitPathString());
-	EXPECT_EQ(0, testList[0].m_Stage); // not set
-	EXPECT_EQ(0U, testList[0].m_Action);
+	EXPECT_STREQ(L"ext/LNI", testList[0].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+
+	constexpr char git_ls_files_output2[] = { "src/gpl.txt" };
+	CGitByteArray byteArray2;
+	byteArray2.append(git_ls_files_output2, sizeof(git_ls_files_output2));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray2, magicValue));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"src/gpl.txt", testList[0].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[0].m_Action);
+	EXPECT_FALSE(testList[0].IsDirectory());
+
+	CGitByteArray byteArray3;
+	byteArray3.append(git_ls_files_output, sizeof(git_ls_files_output));
+	byteArray3.append(git_ls_files_output2, sizeof(git_ls_files_output2));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray3, magicValue));
+	ASSERT_EQ(2, testList.GetCount());
+	EXPECT_STREQ(L"ext/LNI", testList[0].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+	EXPECT_STREQ(L"src/gpl.txt", testList[1].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[1].m_Action);
+	EXPECT_FALSE(testList[1].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFileSimple_Invalid)
+{
+	constexpr char git_ls_file_d_z_output[] = { "build.txt\0zzz-added-only-in-index-missing-on-fs.txt" };
+
+	for (int i = 1; i < sizeof(git_ls_file_d_z_output); ++i)
+	{
+		if (i == 10)
+			continue;
+		CGitByteArray byteArray;
+		CTGitPathList testList;
+		byteArray.append(git_ls_file_d_z_output, i);
+		EXPECT_EQ(-1, testList.ParserFromLsFileSimple(byteArray, 0));
+	}
 }
 
 /* git status output for the following tests marked with "(*)"
@@ -679,32 +724,42 @@ Untracked files:
         src/gpl.txt
 */
 
-TEST(CTGitPath, ParserFromLog_Deleted_From_LsFiles)
+TEST(CTGitPath, ParserFromLsFileSimple_Deleted)
 {
 	// as used in CGit::GetWorkingTreeChanges, based on (*)
 	// git.exe ls-files -d -z
-	// build.txt\0zzz-added-only-in-index-missing-on-fs.txt
+	constexpr char git_ls_file_d_z_output[] = { "build.txt\0zzz-added-only-in-index-missing-on-fs.txt" };
 
 	CGitByteArray byteArray;
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
-	ASSERT_EQ(0, testList.GetCount());
-
-	constexpr char git_ls_file_d_z_output[] = { "build.txt\0" };
 	byteArray.append(git_ls_file_d_z_output, sizeof(git_ls_file_d_z_output));
-	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
-	ASSERT_EQ(1, testList.GetCount());
-	EXPECT_STREQ(L"build.txt", testList[0].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[0].m_Action);
-
-	constexpr char git_ls_file_d_z_output2[] = { "zzz-added-only-in-index-missing-on-fs.txt\0" };
-	byteArray.append(git_ls_file_d_z_output2, sizeof(git_ls_file_d_z_output2));
-	EXPECT_EQ(0, testList.ParserFromLog(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray, CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING));
 	ASSERT_EQ(2, testList.GetCount());
 	EXPECT_STREQ(L"build.txt", testList[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[0].m_Action);
 	EXPECT_STREQ(L"zzz-added-only-in-index-missing-on-fs.txt", testList[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING, testList[1].m_Action);
+}
+
+TEST(CTGitPath, ParserFromLsFileSimple_Unversioned)
+{
+	// as used in CTGitPathList::FillUnRev, based on (*)
+	// git.exe ls-files --exclude-standard --full-name --others
+	constexpr char git_ls_files_output[] = { "ext/LNI/\0src/gpl.txt" };
+
+	constexpr unsigned int magicValue = 5758345;
+
+	CGitByteArray byteArray;
+	CTGitPathList testList;
+	byteArray.append(git_ls_files_output, sizeof(git_ls_files_output));
+	EXPECT_EQ(0, testList.ParserFromLsFileSimple(byteArray, magicValue));
+	ASSERT_EQ(2, testList.GetCount());
+	EXPECT_STREQ(L"ext/LNI", testList[0].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+	EXPECT_STREQ(L"src/gpl.txt", testList[1].GetGitPathString());
+	EXPECT_EQ(magicValue, testList[1].m_Action);
+	EXPECT_FALSE(testList[1].IsDirectory());
 }
 
 TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
@@ -1871,6 +1926,79 @@ TEST(CTGitPath, ParserFromLsFile_RepoWithSubmodule)
 	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_EQ(0U, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SingleFileConflict)
+{
+	// as used in CGit::GetWorkingTreeChanges
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"bla.txt", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_FALSE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_ToNormalDir)
+{
+	// as used in CGit::GetWorkingTreeChanges
+	// merged commit where libgit2 is a normal folder (git status says "added by us: libgit2" and "new file: libgit2/Neues Textdokument.txt")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(2, testList[0].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_FileSubmodule)
+{
+	// as used in CGit::GetWorkingTreeChanges
+	// merged commit where a file with the same name was created (git status says "both added: libgit2")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 100644 9ae3e601584cc03f8f03f93761416b6599ac7c0d 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(2, testList[0].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_MultipleFilesConflict)
+{
+	// as used in CGit::GetWorkingTreeChanges
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 0ead9277724fc163fe64e1163cc2ff97d5670e41 1	OSMtracker.sln\0M 100644 7a8a41c7c26d259caba707adea36a8b9ae493c97 2	OSMtracker.sln\0M 100644 dcdd1c25bb0ebfd91082b3de5bd45d3f25418027 3	OSMtracker.sln\0M 100644 cbb00533d69b53e40a97f9bcf1c507a71f3c7353 1	OSMtracker/frmMain.vb\0M 100644 1cbfa36fef1af473884ad2e5820075b581fe33af 2	OSMtracker/frmMain.vb\0M 100644 337331224f438f5f49d5e8a4d4c1bafb66f2e67d 3	OSMtracker/frmMain.vb\0M 100644 786e60a550be11ef8e321222ffe6c0fa0f51f23d 1	OSMtracker/osmTileMap.vb\0M 100644 7fe8b75f56cf0202b4640d74d46240d2ba894115 2	OSMtracker/osmTileMap.vb\0M 100644 53d75915e78d0a53ba05c124d613fd75d625c142 3	OSMtracker/osmTileMap.vb" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	EXPECT_EQ(3, testList.GetCount()); // 3 files are conflicted
+	EXPECT_STREQ(L"OSMtracker.sln", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[1].GetGitPathString());
+	EXPECT_STREQ(L"OSMtracker/osmTileMap.vb", testList[2].GetGitPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(1, testList[1].m_Stage);
+	EXPECT_EQ(1, testList[2].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[1].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[2].m_Action);
+	EXPECT_FALSE(testList[0].IsDirectory());
+	EXPECT_FALSE(testList[1].IsDirectory());
+	EXPECT_FALSE(testList[2].IsDirectory());
 }
 
 TEST(CTGitPath, FillUnRev)

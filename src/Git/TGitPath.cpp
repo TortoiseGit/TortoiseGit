@@ -987,7 +987,41 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 {
 	AddPath(firstEntry);
 }
-int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
+
+int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear /*= true*/)
+{
+	size_t pos = 0;
+	const size_t end = out.size();
+	CTGitPath path;
+	CString pathstring;
+	if (clear)
+		Clear();
+	while (pos < end)
+	{
+		const size_t endOfLine = out.find('\0', pos);
+		if (endOfLine == CGitByteArray::npos || endOfLine == pos)
+			return -1;
+
+		pathstring.Empty();
+		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(endOfLine - pos));
+		// SetFromGit resets the path
+		if (CStringUtils::EndsWith(pathstring, L'/'))
+		{
+			pathstring.Truncate(pathstring.GetLength() - 1);
+			path.SetFromGit(pathstring, true);
+		}
+		else
+			path.SetFromGit(pathstring);
+
+		path.m_Action = action;
+		AddPath(path);
+
+		pos = out.findNextString(endOfLine);
+	}
+	return 0;
+}
+
+int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted /*= false*/)
 {
 	size_t pos = 0;
 	CTGitPath path;
@@ -1024,6 +1058,15 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR &out,bool /*staged*/)
 		CGit::StringAppend(pathstring, &out[pos + 1]);
 		path.SetFromGit(pathstring, (strtol(reinterpret_cast<const char*>(&out[modestart]), nullptr, 8) & S_IFDIR) == S_IFDIR);
 		path.m_Stage = strtol(reinterpret_cast<const char*>(&out[stagestart]), nullptr, 10);
+		if (path.m_Stage && mergeConflicted)
+		{
+			if (!IsEmpty() && path == m_paths[m_paths.size() - 1])
+			{
+				pos = out.findNextString(pos);
+				continue;
+			}
+			path.m_Action = CTGitPath::LOGACTIONS_UNMERGED;
+		}
 
 		this->AddPath(path);
 
@@ -1085,28 +1128,8 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 			return -1;
 		}
 
-		size_t pos = 0;
-		CString one;
-		while (pos < out.size())
-		{
-			one.Empty();
-			CGit::StringAppend(one, &out[pos], CP_UTF8);
-			if(!one.IsEmpty())
-			{
-				//SetFromGit will clear all status
-				if (CStringUtils::EndsWith(one, L'/'))
-				{
-					one.Truncate(one.GetLength() - 1);
-					path.SetFromGit(one, true);
-				}
-				else
-					path.SetFromGit(one);
-				path.m_Action=action;
-				AddPath(path);
-			}
-			pos=out.findNextString(pos);
-		}
-
+		if (ParserFromLsFileSimple(out, action, false) < 0)
+			return -1;
 	}
 	return 0;
 }
@@ -1201,7 +1224,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 	RemoveDuplicates();
 	return 0;
 }
-int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
+int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 {
 	this->Clear();
 	std::map<CString, size_t> duplicateMap;
@@ -1371,18 +1394,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR &log, bool parseDeletes /*false*/)
 			}
 			else
 			{
-				//path.SetFromGit(pathname);
-				if (parseDeletes)
-				{
-					path.m_StatAdd = L"0";
-					path.m_StatDel = L"0";
-					path.m_Action |= CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING;
-				}
-				else
-				{
-					path.m_StatAdd=StatAdd;
-					path.m_StatDel=StatDel;
-				}
+				path.m_StatAdd = StatAdd;
+				path.m_StatDel = StatDel;
 				AddPath(path);
 				duplicateMap.insert(std::pair<CString, size_t>(path.GetGitPathString(), m_paths.size() - 1));
 			}
