@@ -3684,169 +3684,218 @@ int CAppUtils::ExploreTo(HWND hwnd, CString path)
 	return reinterpret_cast<INT_PTR>(ShellExecute(hwnd, L"explore", path, nullptr, nullptr, SW_SHOW)) > 32 ? 0 : -1;
 }
 
-int CAppUtils::ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveWith)
+int CAppUtils::ResolveConflicts(HWND hWnd, const CTGitPathList& paths, resolve_with resolveWith)
 {
-	bool b_local = false, b_remote = false;
-	BYTE_VECTOR vector;
-	if (resolveWith != RESOLVE_WITH_CURRENT)
+	CBlockCacheForPath block(g_Git.m_CurrentDir);
+
+	CAutoIndex gitIndex;
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_GETCONFLICTINFO))
 	{
-		CString cmd;
-		cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
-		if (g_Git.Run(cmd, &vector))
+		CAutoRepository repo = g_Git.GetGitRepository();
+		if (!repo || git_repository_index(gitIndex.GetPointer(), repo) < 0)
 		{
-			MessageBox(hWnd, L"git ls-files failed!", L"TortoiseGit", MB_OK);
+			MessageBox(hWnd, CGit::GetLibGit2LastErr(), L"TortoiseGit", MB_OK);
 			return -1;
-		}
-
-		CTGitPathList list;
-		if (list.ParserFromLsFile(vector))
-		{
-			MessageBox(hWnd, L"Parse ls-files failed!", L"TortoiseGit", MB_OK);
-			return -1;
-		}
-
-		if (list.IsEmpty())
-			return 0;
-		for (int i = 0; i < list.GetCount(); ++i)
-		{
-			if (list[i].m_Stage == 2)
-				b_local = true;
-			if (list[i].m_Stage == 3)
-				b_remote = true;
 		}
 	}
 
-	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
-	CGitHash baseHash, localHash, remoteHash;
-	ParseHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile);
-
-	CBlockCacheForPath block(g_Git.m_CurrentDir);
-	if ((resolveWith == RESOLVE_WITH_THEIRS && !b_remote) || (resolveWith == RESOLVE_WITH_MINE && !b_local))
+	if (resolveWith == RESOLVE_WITH_CURRENT)
 	{
-		CString gitcmd, output; //retest with registered submodule!
-		gitcmd.Format(L"git.exe rm -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
-		if (g_Git.Run(gitcmd, &output, CP_UTF8))
+		CMassiveGitTask addTask{ L"add -f" };
+		for (auto& path : paths)
 		{
-			// a .git folder in a submodule which is not in .gitmodules cannot be deleted using "git rm"
-			if (PathIsDirectory(path.GetGitPathString()) && !PathIsDirectoryEmpty(path.GetGitPathString()))
+			if (path.m_Action & CTGitPath::LOGACTIONS_UNMERGED)
 			{
-				CString message(output);
-				output += L"\n\n";
-				output.AppendFormat(IDS_PROC_DELETEBRANCHTAG, path.GetWinPath());
-				CString deleteButton;
-				deleteButton.LoadString(IDS_DELETEBUTTON);
-				CString abortButton;
-				abortButton.LoadString(IDS_ABORTBUTTON);
-				if (CMessageBox::Show(hWnd, output, L"TortoiseGit", 2, IDI_QUESTION, deleteButton, abortButton) == 2)
-					return -1;
-				path.Delete(true, true);
-				output.Empty();
-				if (!g_Git.Run(gitcmd, &output, CP_UTF8))
-				{
-					RemoveTempMergeFile(path);
-					return 0;
-				}
+				addTask.AddFile(path);
+				RemoveTempMergeFile(path);
 			}
-			MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
-			return -1;
 		}
-		RemoveTempMergeFile(path);
+
+		BOOL cancel = FALSE;
+		if (!addTask.Execute(cancel))
+			return -1;
 		return 0;
 	}
 
-	if (resolveWith == RESOLVE_WITH_THEIRS || resolveWith == RESOLVE_WITH_MINE)
+	int ret = 0; // 0 no refresh needed, 1 needs refresh, e.g. because of delete/modify conflict with use delete
+	int destinationStage = (resolveWith == RESOLVE_WITH_THEIRS ? 3 : 2);
+	CMassiveGitTask addTask{ L"add -f" };
+	CMassiveGitTask rmTask{ L"rm -f" };
+	CString checkoutFromIndexTaskCmd;
+	checkoutFromIndexTaskCmd.Format(L"checkout-index -f --stage=%d", destinationStage);
+	CMassiveGitTask checkoutFromIndexTask{ checkoutFromIndexTaskCmd };
+	for (auto& path : paths)
 	{
-		auto resolve = [&b_local, &b_remote, &hWnd](const CTGitPath& path, int stage, bool willBeFile, const CGitHash& hash) -> int
+		bool b_local = false, b_remote = false;
+		bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+		CGitHash baseHash, localHash, remoteHash;
+		if (!gitIndex)
 		{
-			if (!willBeFile)
+			CString cmd;
+			cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+			BYTE_VECTOR vector;
+			if (g_Git.Run(cmd, &vector))
 			{
-				CTGitPath fullPath;
-				fullPath.SetFromWin(g_Git.CombinePath(path));
-				if (!fullPath.HasAdminDir()) // check if submodule is initialized
+				MessageBox(hWnd, L"git ls-files failed!", L"TortoiseGit", MB_OK);
+				return -1;
+			}
+
+			CTGitPathList list;
+			if (list.ParserFromLsFile(vector))
+			{
+				MessageBox(hWnd, L"Parse ls-files failed!", L"TortoiseGit", MB_OK);
+				return -1;
+			}
+
+			if (list.IsEmpty())
+				continue;
+			for (int i = 0; i < list.GetCount(); ++i)
+			{
+				if (list[i].m_Stage == 2)
+					b_local = true;
+				if (list[i].m_Stage == 3)
+					b_remote = true;
+			}
+
+			ParseHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile);
+		}
+		else
+		{
+			const git_index_entry* ancestor = nullptr;
+			const git_index_entry* our = nullptr;
+			const git_index_entry* their = nullptr;
+			if (int err = git_index_conflict_get(&ancestor, &our, &their, gitIndex, CUnicodeUtils::GetUTF8(path.GetGitPathString())); err == GIT_ENOTFOUND)
+				continue;
+			else if (err < 0)
+			{
+				MessageBox(hWnd, CGit::GetLibGit2LastErr(), L"TortoiseGit", MB_OK);
+				return -1;
+			}
+
+			if (ancestor) // stage == 1
+			{
+				baseHash = ancestor->id;
+				baseIsFile = (ancestor->mode & S_IFDIR) != S_IFDIR;
+			}
+			if (our) // stage == 2
+			{
+				b_local = true;
+				localHash = our->id;
+				localIsFile = (our->mode & S_IFDIR) != S_IFDIR;
+			}
+			if (their) // stage == 3
+			{
+				b_remote = true;
+				remoteHash = their->id;
+				remoteIsFile = (their->mode & S_IFDIR) != S_IFDIR;
+			}
+		}
+
+		if ((resolveWith == RESOLVE_WITH_THEIRS && !b_remote) || (resolveWith == RESOLVE_WITH_MINE && !b_local))
+		{
+			ret = 1;
+			if (!PathIsDirectory(path.GetGitPathString()))
+			{
+				rmTask.AddFile(path);
+				RemoveTempMergeFile(path);
+				continue;
+			}
+
+			CString gitcmd, output; // retest with registered submodule!
+			gitcmd.Format(L"git.exe rm -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+			if (g_Git.Run(gitcmd, &output, CP_UTF8))
+			{
+				// a .git folder in a submodule which is not in .gitmodules cannot be deleted using "git rm"
+				if (!PathIsDirectoryEmpty(path.GetGitPathString()))
 				{
-					CString gitcmd, output;
-					if (!fullPath.IsDirectory())
+					CString message(output);
+					output += L"\n\n";
+					output.AppendFormat(IDS_PROC_DELETEBRANCHTAG, path.GetWinPath());
+					CString deleteButton;
+					deleteButton.LoadString(IDS_DELETEBUTTON);
+					CString abortButton;
+					abortButton.LoadString(IDS_ABORTBUTTON);
+					if (CMessageBox::Show(hWnd, output, L"TortoiseGit", 2, IDI_QUESTION, deleteButton, abortButton) == 2)
+						return -1;
+					path.Delete(true, true);
+					output.Empty();
+					if (!g_Git.Run(gitcmd, &output, CP_UTF8))
 					{
-						gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- \"%s\"", stage, static_cast<LPCWSTR>(path.GetGitPathString()));
-						if (g_Git.Run(gitcmd, &output, CP_UTF8))
-						{
-							MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
-							return -1;
-						}
+						RemoveTempMergeFile(path);
+						continue;
 					}
-					gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,\"%s\"", static_cast<LPCWSTR>(hash.ToString()), static_cast<LPCWSTR>(path.GetGitPathString()));
+				}
+				MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
+				return -1;
+			}
+			continue;
+		}
+
+		CGitHash destinationHash = (resolveWith == RESOLVE_WITH_THEIRS ? remoteHash : localHash);
+		if (bool targetWillBeAFile = (resolveWith == RESOLVE_WITH_THEIRS ? remoteIsFile : localIsFile); !targetWillBeAFile)
+		{
+			CTGitPath fullPath;
+			fullPath.SetFromWin(g_Git.CombinePath(path));
+			if (!fullPath.HasAdminDir()) // check if submodule is initialized
+			{
+				CString gitcmd, output;
+				if (!fullPath.IsDirectory())
+				{
+					gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- \"%s\"", destinationStage, static_cast<LPCWSTR>(path.GetGitPathString()));
 					if (g_Git.Run(gitcmd, &output, CP_UTF8))
 					{
 						MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
 						return -1;
 					}
-					return 0;
 				}
-
-				CGit subgit;
-				subgit.m_IsUseGitDLL = false;
-				subgit.m_CurrentDir = fullPath.GetWinPath();
-				CGitHash submoduleHead;
-				if (subgit.GetHash(submoduleHead, L"HEAD"))
-				{
-					MessageBox(hWnd, subgit.GetGitLastErr(L"Could not get HEAD hash of submodule, this should not happen!"), L"TortoiseGit", MB_ICONERROR);
-					return -1;
-				}
-				if (submoduleHead != hash)
-				{
-					CString origPath = g_Git.m_CurrentDir;
-					g_Git.m_CurrentDir = fullPath.GetWinPath();
-					SetCurrentDirectory(g_Git.m_CurrentDir);
-					if (!GitReset(hWnd, hash.ToString()))
-					{
-						g_Git.m_CurrentDir = origPath;
-						SetCurrentDirectory(g_Git.m_CurrentDir);
-						return -1;
-					}
-					g_Git.m_CurrentDir = origPath;
-					SetCurrentDirectory(g_Git.m_CurrentDir);
-				}
-			}
-			else
-			{
-				CString gitcmd, output;
-				if (b_local && b_remote)
-					gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- \"%s\"", stage, static_cast<LPCWSTR>(path.GetGitPathString()));
-				else
-					gitcmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+				gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,\"%s\"", static_cast<LPCWSTR>(destinationHash.ToString()), static_cast<LPCWSTR>(path.GetGitPathString()));
 				if (g_Git.Run(gitcmd, &output, CP_UTF8))
 				{
 					MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
 					return -1;
 				}
+				RemoveTempMergeFile(path);
+				continue;
 			}
-			return 0;
-		};
-		int ret = -1;
-		if (resolveWith == RESOLVE_WITH_THEIRS)
-			ret = resolve(path, 3, remoteIsFile, remoteHash);
-		else
-			ret = resolve(path, 2, localIsFile, localHash);
-		if (ret)
-			return ret;
-	}
 
-	if (PathFileExists(g_Git.CombinePath(path)) && (path.m_Action & CTGitPath::LOGACTIONS_UNMERGED))
-	{
-		CString gitcmd, output;
-		gitcmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
-		if (g_Git.Run(gitcmd, &output, CP_UTF8))
-		{
-			MessageBox(hWnd, output, L"TortoiseGit", MB_ICONERROR);
-			return -1;
+			CGit subgit;
+			subgit.m_IsUseGitDLL = false;
+			subgit.m_CurrentDir = fullPath.GetWinPath();
+			CGitHash submoduleHead;
+			if (subgit.GetHash(submoduleHead, L"HEAD"))
+			{
+				MessageBox(hWnd, subgit.GetGitLastErr(L"Could not get HEAD hash of submodule, this should not happen!"), L"TortoiseGit", MB_ICONERROR);
+				return -1;
+			}
+			if (submoduleHead != destinationHash)
+			{
+				CString origPath = g_Git.m_CurrentDir;
+				g_Git.m_CurrentDir = fullPath.GetWinPath();
+				SetCurrentDirectory(g_Git.m_CurrentDir);
+				if (!GitReset(hWnd, destinationHash.ToString()))
+				{
+					g_Git.m_CurrentDir = origPath;
+					SetCurrentDirectory(g_Git.m_CurrentDir);
+					return -1;
+				}
+				g_Git.m_CurrentDir = origPath;
+				SetCurrentDirectory(g_Git.m_CurrentDir);
+			}
+			addTask.AddFile(path);
+			RemoveTempMergeFile(path);
+			continue;
 		}
 
-		path.m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
-		path.m_Action &= ~CTGitPath::LOGACTIONS_UNMERGED;
+		if (b_local && b_remote)
+			checkoutFromIndexTask.AddFile(path);
+		addTask.AddFile(path);
+		RemoveTempMergeFile(path);
 	}
 
-	RemoveTempMergeFile(path);
-	return 0;
+	BOOL cancel = FALSE;
+	if (!rmTask.Execute(cancel) || !checkoutFromIndexTask.Execute(cancel) || !addTask.Execute(cancel))
+		return -1;
+	return ret;
 }
 
 bool CAppUtils::ShellOpen(const CString& file, HWND hwnd /*= nullptr */)

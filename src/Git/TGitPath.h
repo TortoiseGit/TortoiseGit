@@ -452,7 +452,9 @@ public:
 	mutable CTGitPath m_commonBaseDirectory;
 
 	auto begin() noexcept { return m_paths.begin(); }
+	auto begin() const noexcept { return m_paths.cbegin(); }
 	auto cbegin() const noexcept { return m_paths.cbegin(); }
 	auto end() noexcept { return m_paths.end(); }
+	auto end() const noexcept { return m_paths.cend(); }
 	auto cend() const noexcept { return m_paths.cend(); }
 };

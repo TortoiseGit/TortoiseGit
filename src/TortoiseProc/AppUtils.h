@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2023 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -238,7 +238,7 @@ public:
 		RESOLVE_WITH_THEIRS,
 	};
 
-	static int ResolveConflict(HWND hWnd, CTGitPath& path, resolve_with resolveWith);
+	static int ResolveConflicts(HWND hWnd, const CTGitPathList& path, resolve_with resolveWith);
 
 	static bool IsTGitRebaseActive(HWND hWnd);
 

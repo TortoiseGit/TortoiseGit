@@ -20,6 +20,7 @@ Released: unreleased
  * Lots of refactorings and performance optimizations
  * Fixed issue #4040: TortoiseGitBlame: Ability to select multiple commits (line highlighting)
  * Make TortoiseGitMerge and SSHAskPass multi-monitor DPI aware
+ * Fixed issue #3698: "Resolve conflict using theirs" is extremely slow 
 
 == Bug Fixes ==
  * Fixed redraw bug in log list

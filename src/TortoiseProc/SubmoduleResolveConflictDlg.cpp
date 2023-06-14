@@ -225,7 +225,7 @@ void CSubmoduleResolveConflictDlg::Resolve(const CString& path, bool useMine)
 
 	CTGitPath gitpath(path);
 	gitpath.m_Action = CTGitPath::LOGACTIONS_UNMERGED;
-	if (CAppUtils::ResolveConflict(GetSafeHwnd(), gitpath, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS) == 0)
+	if (CAppUtils::ResolveConflicts(GetSafeHwnd(), CTGitPathList{ gitpath }, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS) == 0)
 	{
 		m_bResolved = true;
 		EndDialog(0);
