@@ -141,7 +141,8 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 		{
 			char* newname;
 			char* oldname;
-			int status, isBin, inc, dec, isDir;
+			char status;
+			int isBin, inc, dec, isDir;
 
 			try
 			{
@@ -281,7 +282,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 					path.SetFromGit(newname, &oldname, &isDir);
 				}
 				oldAction = m_Action;
-				m_Action |= path.ParserAction(delta->status);
+				m_Action |= path.ParseAndUpdateStatus(delta->status);
 				path.m_ParentNo = parentId;
 
 				if (delta->flags & GIT_DIFF_FLAG_BINARY)
@@ -357,17 +358,18 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 		for (int j = 0; j < count; ++j)
 		{
-			path.Reset();
 			char* newname;
 			char* oldname;
 
 			strnewname.Empty();
 			stroldname.Empty();
 
-			int status, isBin, inc, dec, isDir;
+			char status;
+			int isBin, inc, dec, isDir;
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
 			CGit::StringAppend(strnewname, newname, CP_UTF8);
+			// SetFromGit resets the path
 			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname, isDir != FALSE);
 			else
@@ -375,7 +377,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 				CGit::StringAppend(stroldname, oldname, CP_UTF8);
 				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
-			path.ParserAction(static_cast<BYTE>(status));
+			path.ParseAndUpdateStatus(status);
 			path.m_ParentNo = i;
 
 			m_Action |= path.m_Action;

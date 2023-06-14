@@ -3088,7 +3088,7 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 		if (!vector.empty())
 		{
 			vector.push_back(0); // vector is not NUL terminated
-			buffer.Append(reinterpret_cast<const char*>(vector.data()));
+			buffer.Append(vector.data());
 		}
 		return ret;
 	}
@@ -3351,7 +3351,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		Run(cmd, &cmdout);
 
 		CTGitPathList conflictlist;
-		conflictlist.ParserFromLog(cmdout);
+		conflictlist.ParserFromLsFile(cmdout, true);
 		for (int j = 0; j < conflictlist.GetCount(); ++j)
 		{
 			auto existing = duplicateMap.find(conflictlist[j].GetGitPathString());
@@ -3362,6 +3362,8 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			}
 			else
 			{
+				// should we ever get here?
+				ASSERT(false);
 				result.AddPath(conflictlist[j]);
 				duplicateMap.insert(std::pair<CString, int>(result[i].GetGitPathString(), result.GetCount() - 1));
 			}
@@ -3383,7 +3385,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		Run(cmd, &cmdout);
 
 		CTGitPathList deletelist;
-		deletelist.ParserFromLog(cmdout, true);
+		deletelist.ParserFromLsFileSimple(cmdout, CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING);
 		for (int j = 0; j < deletelist.GetCount(); ++j)
 		{
 			auto existing = duplicateMap.find(deletelist[j].GetGitPathString());

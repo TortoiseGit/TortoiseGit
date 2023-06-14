@@ -356,7 +356,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		{
 			m_Databuf.m_critSec.Lock();
 			m_Databuf.push_back(0);
-			m_Log.SetWindowText(Convert2UnionCode(reinterpret_cast<char*>(m_Databuf.data())));
+			m_Log.SetWindowText(Convert2UnionCode(m_Databuf.data()));
 			m_Databuf.m_critSec.Unlock();
 		}
 		m_BufStart = 0;
