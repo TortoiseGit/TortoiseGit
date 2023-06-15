@@ -2419,9 +2419,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (CAppUtils::ConflictEdit(GetParentHWND(), *filepath, bShift, m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 					{
 						CString conflictedFile = g_Git.CombinePath(filepath);
-						if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+						if (!PathFileExists(conflictedFile))
 						{
-							GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+							RefreshParent();
 							break;
 						}
 						StoreScrollPos();
@@ -2521,7 +2521,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!CAppUtils::IgnoreFile(GetParentHWND(), ignorelist, false))
 						break;
 
-					SetRedraw(FALSE);
 					RefreshParent();
 				}
 				break;
@@ -2535,7 +2534,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!CAppUtils::IgnoreFile(GetParentHWND(), ignorelist, true))
 						break;
 
-					SetRedraw(FALSE);
 					RefreshParent();
 				}
 				break;
@@ -2548,7 +2546,6 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					if (!CAppUtils::IgnoreFile(GetParentHWND(), ignorelist, false))
 						break;
 
-					SetRedraw(FALSE);
 					RefreshParent();
 				}
 				break;
@@ -2603,8 +2600,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						progDlg.DoModal();
 						if (progDlg.DidErrorsOccur())
 						{
-							if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
-								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+							RefreshParent();
 							break;
 						}
 						else
@@ -2648,8 +2644,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
 #else
-							if (updateStatusList && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
-								GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+							if (updateStatusList)
+								RefreshParent();
 #endif
 						}
 					}
@@ -2952,9 +2948,9 @@ void CGitStatusListCtrl::OnNMDblclk(NMHDR *pNMHDR, LRESULT *pResult)
 		if (CAppUtils::ConflictEdit(GetParentHWND(), *file, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000), m_bIsRevertTheirMy, GetLogicalParent() ? GetLogicalParent()->GetSafeHwnd() : nullptr))
 		{
 			CString conflictedFile = g_Git.CombinePath(file);
-			if (!PathFileExists(conflictedFile) && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
+			if (!PathFileExists(conflictedFile))
 			{
-				GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+				RefreshParent();
 				return;
 			}
 			StoreScrollPos();
@@ -3652,8 +3648,8 @@ void CGitStatusListCtrl::OnNMReturn(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 				StartDiff(index);
 		}
 	}
-	if (needsRefresh && GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
-		GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+	if (needsRefresh)
+		RefreshParent();
 	else if (resolvedTreeConfict)
 	{
 		StoreScrollPos();
@@ -4634,8 +4630,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 	}
 	if (!out.IsEmpty())
 	{
-		if (GetLogicalParent() && GetLogicalParent()->GetSafeHwnd())
-			GetLogicalParent()->SendMessage(GITSLNM_NEEDSREFRESH);
+		RefreshParent();
 		CMessageBox::Show(GetParentHWND(), out, L"TortoiseGit", MB_OK);
 	}
 	return 0;
@@ -5096,6 +5091,7 @@ void CGitStatusListCtrl::OnColumnVisibilityChanged(int column, bool visible)
 
 void CGitStatusListCtrl::RefreshParent()
 {
+	SetRedraw(FALSE);
 	auto pParent = GetLogicalParent();
 	if (pParent && pParent->GetSafeHwnd())
 		pParent->SendMessage(GITSLNM_NEEDSREFRESH);
