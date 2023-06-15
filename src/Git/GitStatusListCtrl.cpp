@@ -2610,40 +2610,38 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							bool updateStatusList = false;
-							for (int i = 0 ; i < targetList.GetCount(); ++i)
+							std::set<CString> revertedFiles;
+							std::for_each(targetList.cbegin(), targetList.cend(), [&revertedFiles](auto& path) { revertedFiles.emplace(path.GetGitPathString()); });
+							const int nListboxEntries = GetItemCount();
+							for (int nItem = 0; nItem < nListboxEntries; ++nItem)
 							{
-								const int nListboxEntries = GetItemCount();
-								for (int nItem=0; nItem<nListboxEntries; ++nItem)
+								auto path = GetListEntry(nItem);
+								if (!revertedFiles.contains(path->GetGitPathString()))
+									continue;
+								if (!path->IsDirectory())
 								{
-									auto path = GetListEntry(nItem);
-									if (path->GetGitPathString() != targetList[i].GetGitPathString())
-										continue;
-									if (!path->IsDirectory())
+									if (path->m_Action & CTGitPath::LOGACTIONS_ADDED)
 									{
-										if(path->m_Action & CTGitPath::LOGACTIONS_ADDED)
-										{
-											path->m_Action = CTGitPath::LOGACTIONS_UNVER;
-											SetEntryCheck(path,nItem,false);
+										path->m_Action = CTGitPath::LOGACTIONS_UNVER;
+										SetEntryCheck(path,nItem,false);
 #if 0 // revert an added file and some entry will be cloned (part 1/2)
-											SetItemGroup(nItem,1);
-											this->m_StatusFileList.RemoveItem(*path);
-											this->m_UnRevFileList.AddPath(*path);
-											//this->m_IgnoreFileList.RemoveItem(*path);
+										SetItemGroup(nItem,1);
+										this->m_StatusFileList.RemoveItem(*path);
+										this->m_UnRevFileList.AddPath(*path);
+										//this->m_IgnoreFileList.RemoveItem(*path);
 #else
-											updateStatusList = true;
-#endif
-										}
-										else
-										{
-											if (GetCheck(nItem))
-												m_nSelected--;
-											RemoveListEntry(nItem);
-										}
-									}
-									else if (path->IsDirectory())
 										updateStatusList = true;
-									break;
+#endif
+									}
+									else
+									{
+										if (GetCheck(nItem))
+											m_nSelected--;
+										RemoveListEntry(nItem);
+									}
 								}
+								else if (path->IsDirectory())
+									updateStatusList = true;
 							}
 							SetRedraw(TRUE);
 #if 0 // revert an added file and some entry will be cloned (part 2/2)
