@@ -628,13 +628,13 @@ public:
 	CAutoReadLock AcquireReadLock() { return CAutoReadLock(m_guard); }
 	CAutoReadWeakLock AcquireReadWeakLock(DWORD timeout) { return CAutoReadWeakLock(m_guard, timeout); }
 
-	LONG						m_nTargetCount;		///< number of targets in the file passed to GetStatus()
+	LONG						m_nTargetCount = 0;		///< number of targets in the file passed to GetStatus()
 
 	CString						m_sURL;				///< the URL of the target or "(multiple targets)"
 
-	bool						m_amend;			///< if true show the changes to the revision before the last commit
+	bool						m_amend = false;			///< if true show the changes to the revision before the last commit
 
-	bool						m_bIncludedStaged;
+	bool						m_bIncludedStaged = false;
 
 	CString						m_sUUID;			///< the UUID of the associated repository
 
@@ -676,7 +676,7 @@ private:
 	CString m_sMarkForDiffVersion;
 
 	/* while rebasing, Their and My versios are swapped. */
-	bool						m_bIsRevertTheirMy;
+	bool						m_bIsRevertTheirMy = false;
 
 	enum
 	{
