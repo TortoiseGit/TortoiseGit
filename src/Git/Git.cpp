@@ -365,11 +365,12 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HA
 //Because A2W use stack as internal convert buffer.
 void CGit::StringAppend(CString& str, const char* p, int code, int length)
 {
-	int len ;
-	if(length<0)
-		len = static_cast<int>(strlen(p));
-	else
-		len=length;
+	const int len = [length, p]() {
+		if (length < 0)
+			return static_cast<int>(strlen(p));
+		else
+			return length;
+	}();
 	if (len == 0)
 		return;
 	const int currentContentLen = str.GetLength();

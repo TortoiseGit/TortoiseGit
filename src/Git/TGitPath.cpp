@@ -1099,12 +1099,12 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 	this->Clear();
 	CTGitPath path;
 
-	int count;
-	if (!list)
-		count=1;
-	else
-		count=list->GetCount();
-	ATLASSERT(count > 0);
+	const int count = [list]() {
+		if (!list)
+			return 1;
+		else
+			return list->GetCount();
+	}();
 	for (int i = 0; i < count; ++i)
 	{
 		CString cmd;
@@ -1199,11 +1199,12 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 	if (git_repository_index(index.GetPointer(), repository))
 		return -1;
 
-	int count;
-	if (list == nullptr)
-		count = 1;
-	else
-		count = list->GetCount();
+	const int count = [list]() {
+		if (!list)
+			return 1;
+		else
+			return list->GetCount();
+	}();
 	for (int j = 0; j < count; ++j)
 	{
 		for (size_t i = 0, ecount = git_index_entrycount(index); i < ecount; ++i)
