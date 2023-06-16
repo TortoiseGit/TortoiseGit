@@ -217,7 +217,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		{
 			CTGitPath fullPath;
 			fullPath.SetFromWin(g_Git.CombinePath(path));
-			if (!fullPath.HasAdminDir()) // check if submodule is initialized
+			if (!fullPath.IsWCRoot()) // check if submodule is initialized
 			{
 				CString gitcmd, output;
 				if (!fullPath.IsDirectory())

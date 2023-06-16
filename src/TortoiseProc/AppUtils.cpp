@@ -1772,7 +1772,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	{
 		CTGitPath fullMergePath;
 		fullMergePath.SetFromWin(g_Git.CombinePath(merge));
-		if (fullMergePath.HasAdminDir())
+		if (fullMergePath.IsWCRoot())
 		{
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
@@ -1785,7 +1785,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 
 		bool baseOK = false, mineOK = false, theirsOK = false;
 		CString baseSubject, mineSubject, theirsSubject;
-		if (fullMergePath.HasAdminDir())
+		if (fullMergePath.IsWCRoot())
 		{
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
