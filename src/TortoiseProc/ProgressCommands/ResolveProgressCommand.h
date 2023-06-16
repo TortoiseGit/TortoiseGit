@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2014, 2023 - TortoiseGit
 
@@ -18,9 +18,23 @@
 
 #include "GitProgressList.h"
 
+enum class ResolveWith
+{
+	Current,
+	Mine,
+	Theirs,
+};
+
 class ResolveProgressCommand : public ProgressCommand
 {
 public:
+	ResolveProgressCommand(ResolveWith resolveWith)
+		: m_resolveWith(resolveWith)
+	{
+	};
 	bool Run(CGitProgressList* list, CString& sWindowTitle, int& m_itemCountTotal, int& m_itemCount) override;
 	bool ShowInfo(CString& info) override;
+
+private:
+	ResolveWith m_resolveWith = ResolveWith::Current;
 };

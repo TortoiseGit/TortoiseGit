@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2007-2008,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ bool ResolveCommand::Execute()
 			{
 				CGitProgressDlg progDlg(CWnd::FromHandle(GetExplorerHWND()));
 				theApp.m_pMainWnd = &progDlg;
-				ResolveProgressCommand resolveProgressCommand;
+				ResolveProgressCommand resolveProgressCommand{ ResolveWith::Mine };
 				progDlg.SetCommand(&resolveProgressCommand);
 				resolveProgressCommand.SetPathList(dlg.m_pathList);
 				progDlg.DoModal();

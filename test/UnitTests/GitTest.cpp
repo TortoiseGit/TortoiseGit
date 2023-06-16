@@ -3199,3 +3199,44 @@ TEST_P(CBasicGitWithTestRepoFixture, IsResultingCommitBecomeEmpty)
 	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty());
 	EXPECT_EQ(FALSE, m_Git.IsResultingCommitBecomeEmpty(true));
 }
+
+TEST(CGit, ParseConflictHashesFromLsFile_Empty)
+{
+	CGitByteArray byteArray;
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_FALSE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_SimpleConflict)
+{
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_TRUE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"1f9f46da1ee155aa765d6e379d9d19853358cb07", baseHash.ToString());
+	EXPECT_TRUE(baseIsFile);
+	EXPECT_STREQ(L"3aa011e7d3609ab9af90c4b10f616312d2be422f", localHash.ToString());
+	EXPECT_TRUE(localIsFile);
+	EXPECT_STREQ(L"56d252d69d535834b9fbfa6f6a633ecd505ea2e6", remoteHash.ToString());
+	EXPECT_TRUE(remoteIsFile);
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_FileSubmoduleConflict)
+{
+	constexpr char git_ls_file_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 100644 9ae3e601584cc03f8f03f93761416b6599ac7c0d 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_TRUE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", baseHash.ToString());
+	EXPECT_TRUE(baseIsFile);
+	EXPECT_STREQ(L"533da4ea00703f4ad6d5518e1ce81d20261c40c0", localHash.ToString());
+	EXPECT_FALSE(localIsFile);
+	EXPECT_STREQ(L"9ae3e601584cc03f8f03f93761416b6599ac7c0d", remoteHash.ToString());
+	EXPECT_TRUE(remoteIsFile);
+}
+

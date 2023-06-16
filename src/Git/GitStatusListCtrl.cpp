@@ -2437,31 +2437,23 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (CMessageBox::Show(GetParentHWND(), IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 					{
-						CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
+						ResolveWith resolveWith = ResolveWith::Current;
 						if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE))
-							resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
+							resolveWith = ResolveWith::Theirs;
 						else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
-							resolveWith = CAppUtils::RESOLVE_WITH_MINE;
+							resolveWith = ResolveWith::Mine;
 
 						CTGitPathList targetList;
 						FillListOfSelectedItemPaths(targetList);
 
-						if (resolveWith == CAppUtils::RESOLVE_WITH_CURRENT)
-						{
-							CGitProgressDlg progDlg;
-							ResolveProgressCommand resolveCommand;
-							progDlg.SetAutoClose(GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS);
-							progDlg.SetCommand(&resolveCommand);
-							progDlg.SetItemCount(targetList.GetCount());
-							resolveCommand.SetPathList(targetList);
-							progDlg.DoModal();
-							if (progDlg.DidErrorsOccur())
-							{
-								RefreshParent();
-								break;
-							}
-						}
-						else if (int ret = CAppUtils::ResolveConflicts(GetParentHWND(), targetList, resolveWith); ret != 0)
+						CGitProgressDlg progDlg;
+						ResolveProgressCommand resolveCommand{ resolveWith };
+						progDlg.SetAutoClose(GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS);
+						progDlg.SetCommand(&resolveCommand);
+						progDlg.SetItemCount(targetList.GetCount());
+						resolveCommand.SetPathList(targetList);
+						progDlg.DoModal();
+						if (progDlg.DidErrorsOccur() || resolveWith != ResolveWith::Current)
 						{
 							RefreshParent();
 							break;

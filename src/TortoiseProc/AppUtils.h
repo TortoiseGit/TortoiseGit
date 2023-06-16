@@ -232,14 +232,6 @@ public:
 
 	static void SetupBareRepoIcon(const CString& path);
 
-	enum resolve_with {
-		RESOLVE_WITH_CURRENT,
-		RESOLVE_WITH_MINE,
-		RESOLVE_WITH_THEIRS,
-	};
-
-	static int ResolveConflicts(HWND hWnd, const CTGitPathList& path, resolve_with resolveWith);
-
 	static bool IsTGitRebaseActive(HWND hWnd);
 
 private:

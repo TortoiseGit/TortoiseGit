@@ -3595,3 +3595,47 @@ int CGit::GetSubmodulePointer(SubmoduleInfo& submoduleinfo) const
 	submoduleinfo.superProjectHash = entry->id;
 	return 0;
 }
+
+bool CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool& isFile1, CGitHash& hash2, bool& isFile2, CGitHash& hash3, bool& isFile3)
+{
+	size_t pos = 0;
+	CString one;
+	CString part;
+
+	while (pos < out.size())
+	{
+		one.Empty();
+
+		CGit::StringAppend(one, &out[pos], CP_UTF8);
+		int tabstart = 0;
+		one.Tokenize(L"\t", tabstart);
+
+		tabstart = 0;
+		part = one.Tokenize(L" ", tabstart); // Tag
+		CString mode = one.Tokenize(L" ", tabstart); // Mode
+		part = one.Tokenize(L" ", tabstart); // Hash
+		CString hash = part;
+		part = one.Tokenize(L"\t", tabstart); // Stage
+		const int stage = _wtol(part);
+		if (stage == 1)
+		{
+			hash1 = CGitHash::FromHexStrTry(hash);
+			isFile1 = _wtol(mode) != 160000;
+		}
+		else if (stage == 2)
+		{
+			hash2 = CGitHash::FromHexStrTry(hash);
+			isFile2 = _wtol(mode) != 160000;
+		}
+		else if (stage == 3)
+		{
+			hash3 = CGitHash::FromHexStrTry(hash);
+			isFile3 = _wtol(mode) != 160000;
+			return true;
+		}
+
+		pos = out.findNextString(pos);
+	}
+
+	return false;
+}
