@@ -2445,14 +2445,11 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 						ScreenToClient(hWnd, &pt);
 						Microsoft::WRL::ComPtr<IShellItem> shellItem;
 
-						if (!psiItemArray)
-						{
-							nameSpaceTreeCtrl->HitTest(&pt, &shellItem);
-							if (shellItem)
-								SHCreateShellItemArrayFromShellItem(shellItem.Get(), IID_IShellItemArray, &ownItemArray);
-							else
-								nameSpaceTreeCtrl->GetSelectedItems(&ownItemArray);
-						}
+						nameSpaceTreeCtrl->HitTest(&pt, &shellItem);
+						if (shellItem)
+							SHCreateShellItemArrayFromShellItem(shellItem.Get(), IID_IShellItemArray, &ownItemArray);
+						else
+							nameSpaceTreeCtrl->GetSelectedItems(&ownItemArray);
 					}
 					if (SetThreadDpiAwarenessContext)
 						SetThreadDpiAwarenessContext(context);
