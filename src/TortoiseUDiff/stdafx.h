@@ -24,8 +24,8 @@ using std::min;
 #include <emmintrin.h>
 #elif defined(_M_ARM64)
 //#include ".\sse2neon\emmintrin.h"
-#elif
-/#   error Unsupported architecture
+#else
+#error Unsupported architecture
 #endif
 
 

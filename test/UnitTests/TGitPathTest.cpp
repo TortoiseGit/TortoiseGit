@@ -1627,7 +1627,7 @@ TEST(CTGitPath, ParserFromLog_Invalid)
 		CGitByteArray byteArray;
 		byteArray.append(git_difftree_output, sizeof(git_difftree_output));
 		CGitByteArray byteArray2;
-		byteArray2.append(git_difftree_output, sizeof(git_difftree_output - 1));
+		byteArray2.append(git_difftree_output, sizeof(git_difftree_output) - 1);
 		CTGitPathList testList;
 		EXPECT_EQ(-1, testList.ParserFromLog(byteArray));
 		EXPECT_EQ(-1, testList.ParserFromLog(byteArray2));
