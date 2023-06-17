@@ -1752,10 +1752,8 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	CTGitPath directory = merge.GetDirectory();
 
 	BYTE_VECTOR vector;
-
 	CString cmd;
 	cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>(merge.GetGitPathString()));
-
 	if (g_Git.Run(cmd, &vector))
 		return FALSE;
 
@@ -1878,16 +1876,6 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		return TRUE;
 	}
 
-	CTGitPathList list;
-	if (list.ParserFromLsFile(vector))
-	{
-		MessageBox(hWnd, L"Parse ls-files failed!", L"TortoiseGit", MB_OK | MB_ICONERROR);
-		return FALSE;
-	}
-
-	if (list.IsEmpty())
-		return FALSE;
-
 	CTGitPath theirs;
 	CTGitPath mine;
 	CTGitPath base;
@@ -1904,7 +1892,6 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	}
 	base.SetFromGit(GetMergeTempFile(L"BASE",merge));
 
-	CString format = L"git.exe checkout-index --temp --stage=%d -- \"%s\"";
 	CFile tempfile;
 	//create a empty file, incase stage is not three
 	tempfile.Open(mine.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
@@ -1914,48 +1901,29 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	tempfile.Open(base.GetWinPathString(),CFile::modeCreate|CFile::modeReadWrite);
 	tempfile.Close();
 
-	bool b_base=false, b_local=false, b_remote=false;
-
-	for (int i = 0; i< list.GetCount(); ++i)
-	{
-		CString outfile;
-		cmd.Empty();
-		outfile.Empty();
-
-		if( list[i].m_Stage == 1)
-		{
-			cmd.Format(format, list[i].m_Stage, static_cast<LPCWSTR>(list[i].GetGitPathString()));
-			b_base = true;
-			outfile = base.GetWinPathString();
-
-		}
-		if( list[i].m_Stage == 2 )
-		{
-			cmd.Format(format, list[i].m_Stage, static_cast<LPCWSTR>(list[i].GetGitPathString()));
-			b_local = true;
-			outfile = mine.GetWinPathString();
-
-		}
-		if( list[i].m_Stage == 3 )
-		{
-			cmd.Format(format, list[i].m_Stage, static_cast<LPCWSTR>(list[i].GetGitPathString()));
-			b_remote = true;
-			outfile = theirs.GetWinPathString();
-		}
+	CString format = L"git.exe checkout-index --temp --stage=%d -- \"%s\"";
+	auto prepareFile = [&hWnd, &merge, &format](int stage, const CString& outfile) {
+		CString cmd;
+		cmd.Format(format, stage, static_cast<LPCWSTR>(merge.GetGitPathString()));
 		CString output, err;
-		if(!outfile.IsEmpty())
-			if (!g_Git.Run(cmd, &output, &err, CP_UTF8))
-			{
-				CString file;
-				int start =0 ;
-				file = output.Tokenize(L"\t", start);
-				::MoveFileEx(file,outfile,MOVEFILE_REPLACE_EXISTING|MOVEFILE_COPY_ALLOWED);
-			}
-			else
-				CMessageBox::Show(hWnd, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
-	}
+		if (!g_Git.Run(cmd, &output, &err, CP_UTF8))
+		{
+			CString file;
+			int start = 0;
+			file = output.Tokenize(L"\t", start);
+			::MoveFileEx(file, outfile, MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED);
+		}
+		else
+			CMessageBox::Show(hWnd, output + L'\n' + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+	};
+	if (!baseHash.IsEmpty())
+		prepareFile(1, base.GetWinPathString());
+	if (!localHash.IsEmpty())
+		prepareFile(2, mine.GetWinPathString());
+	if (!remoteHash.IsEmpty())
+		prepareFile(2, theirs.GetWinPathString());
 
-	if(b_local && b_remote )
+	if (!localHash.IsEmpty() && !remoteHash.IsEmpty())
 	{
 		merge.SetFromWin(g_Git.CombinePath(merge));
 		if (isRebase)
@@ -1967,36 +1935,36 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	{
 		::DeleteFile(mine.GetWinPathString());
 		::DeleteFile(theirs.GetWinPathString());
-		if (!b_base)
+		if (baseHash.IsEmpty())
 			::DeleteFile(base.GetWinPathString());
 
 		SCOPE_EXIT{
-			if (b_base)
+			if (!baseHash.IsEmpty())
 				::DeleteFile(base.GetWinPathString());
 		};
 
 		CDeleteConflictDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 		if (!isRebase)
 		{
-			DescribeConflictFile(b_local, b_base, dlg.m_LocalStatus);
-			DescribeConflictFile(b_remote, b_base, dlg.m_RemoteStatus);
+			DescribeConflictFile(!localHash.IsEmpty(), !baseHash.IsEmpty(), dlg.m_LocalStatus);
+			DescribeConflictFile(!remoteHash.IsEmpty(), !baseHash.IsEmpty(), dlg.m_RemoteStatus);
 			dlg.m_LocalHash = mineHash;
 			dlg.m_RemoteHash = theirsHash;
 			dlg.m_LocalRef = mineTitle;
 			dlg.m_RemoteRef = theirsTitle;
-			dlg.m_bDiffMine = b_local;
+			dlg.m_bDiffMine = !localHash.IsEmpty();
 		}
 		else
 		{
-			DescribeConflictFile(b_local, b_base, dlg.m_RemoteStatus);
-			DescribeConflictFile(b_remote, b_base, dlg.m_LocalStatus);
+			DescribeConflictFile(!localHash.IsEmpty(), !baseHash.IsEmpty(), dlg.m_RemoteStatus);
+			DescribeConflictFile(!remoteHash.IsEmpty(), !baseHash.IsEmpty(), dlg.m_LocalStatus);
 			dlg.m_LocalHash = theirsHash;
 			dlg.m_RemoteHash = mineHash;
 			dlg.m_LocalRef = theirsTitle;
 			dlg.m_RemoteRef = mineTitle;
-			dlg.m_bDiffMine = !b_local;
+			dlg.m_bDiffMine = localHash.IsEmpty();
 		}
-		dlg.m_bShowModifiedButton = b_base;
+		dlg.m_bShowModifiedButton = !baseHash.IsEmpty();
 		dlg.m_File = merge;
 		dlg.m_FileBaseVersion = base;
 		if(dlg.DoModal() == IDOK)

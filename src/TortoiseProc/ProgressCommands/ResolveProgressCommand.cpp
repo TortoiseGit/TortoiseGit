@@ -95,7 +95,6 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 	CMassiveGitTask checkoutFromIndexTask{ checkoutFromIndexTaskCmd };
 	for (auto& path : m_targetPathList)
 	{
-		bool b_local = false, b_remote = false;
 		bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 		CGitHash baseHash, localHash, remoteHash;
 		if (!gitIndex)
@@ -109,28 +108,13 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 				return false;
 			}
 
-			CTGitPathList pathList;
-			if (pathList.ParserFromLsFile(vector))
-			{
-				list->ReportError(L"Parsing git ls-files failed!");
-				return false;
-			}
-
-			if (pathList.IsEmpty())
+			if (int ret = CGit::ParseConflictHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile); ret == 1)
 			{
 				list->AddNotify(new CGitProgressList::WC_File_NotificationData(path, Git_WC_Notify_Action::Skip));
 				++m_itemCount;
 				continue;
 			}
-			for (int i = 0; i < pathList.GetCount(); ++i)
-			{
-				if (pathList[i].m_Stage == 2)
-					b_local = true;
-				if (pathList[i].m_Stage == 3)
-					b_remote = true;
-			}
-
-			if (CGit::ParseConflictHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
+			else if (ret == -1)
 			{
 				list->ReportError(L"Parsing git ls-files for conflict info failed!");
 				return false;
@@ -160,19 +144,19 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			}
 			if (our) // stage == 2
 			{
-				b_local = true;
 				localHash = our->id;
 				localIsFile = (our->mode & S_IFDIR) != S_IFDIR;
 			}
 			if (their) // stage == 3
 			{
-				b_remote = true;
 				remoteHash = their->id;
 				remoteIsFile = (their->mode & S_IFDIR) != S_IFDIR;
 			}
 		}
 
-		if ((m_resolveWith == ResolveWith::Theirs && !b_remote) || (m_resolveWith == ResolveWith::Mine && !b_local))
+		ASSERT(m_resolveWith != ResolveWith::Current);
+		CGitHash destinationHash = (m_resolveWith == ResolveWith::Theirs ? remoteHash : localHash);
+		if (destinationHash.IsEmpty())
 		{
 			if (!PathIsDirectory(path.GetGitPathString()))
 			{
@@ -216,7 +200,6 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			continue;
 		}
 
-		CGitHash destinationHash = (m_resolveWith == ResolveWith::Theirs ? remoteHash : localHash);
 		if (bool targetWillBeAFile = (m_resolveWith == ResolveWith::Theirs ? remoteIsFile : localIsFile); !targetWillBeAFile)
 		{
 			CTGitPath fullPath;
@@ -274,8 +257,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			continue;
 		}
 
-		if (b_local && b_remote)
-			checkoutFromIndexTask.AddFile(path);
+		checkoutFromIndexTask.AddFile(path); // theoretically not needed for a deleted/modified conflcit as the file in the worktree already contains the modified version, but the user requested to use the staged version
 		addTask.AddFile(path);
 		CAppUtils::RemoveTempMergeFile(path);
 	}
