@@ -2049,6 +2049,37 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SingleFileConflict)
 	EXPECT_FALSE(testList[0].IsDirectory());
 }
 
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_Simple)
+{
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_DeletedModified)
+{
+	// merged commit where submodule was modified into commit where it was deleted (git status says "deleted by us: libgit2")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(1, testList[0].m_Stage);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
 TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_ToNormalDir)
 {
 	// as used in CGit::GetWorkingTreeChanges
@@ -2081,6 +2112,21 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_FileSubmodule)
 	EXPECT_EQ(2, testList[0].m_Stage);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_DeletedFileConflict)
+{
+	// file added, modified on branch A, deleted on branch B, merge branch A on B (git status says: "deleted by us")
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 24091f0add7afc47ac7cdc80ae4d3866b2ef588c 1	Neues Textdokument.txt\0M 100644 293b6f6293106b6ebb5d54ad482d7561b0f1c9ae 3	Neues Textdokument.txt" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"Neues Textdokument.txt", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_FALSE(testList[0].IsDirectory());
 }
 
 TEST(CTGitPath, ParserFromLsFile_Merged_MultipleFilesConflict)
