@@ -481,7 +481,7 @@ public:
 	int GetInitAddList(CTGitPathList &outpathlist, bool getStagingStatus = false);
 	int GetWorkingTreeChanges(CTGitPathList& result, bool amend = false, const CTGitPathList* filterlist = nullptr, bool includedStaged = false, bool getStagingStatus = false);
 
-	static bool ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool& isFile1, CGitHash& hash2, bool& isFile2, CGitHash& hash3, bool& isFile3);
+	static int ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHash, bool& baseIsFile, CGitHash& mineHash, bool& mineIsFile, CGitHash& remoteHash, bool& remoteIsFile);
 
 	constexpr static __int64 filetime_to_time_t(__int64 winTime) noexcept
 	{

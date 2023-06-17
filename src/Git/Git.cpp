@@ -3596,46 +3596,71 @@ int CGit::GetSubmodulePointer(SubmoduleInfo& submoduleinfo) const
 	return 0;
 }
 
-bool CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& hash1, bool& isFile1, CGitHash& hash2, bool& isFile2, CGitHash& hash3, bool& isFile3)
+// similar code in CTGitPath::ParserFromLsFile
+int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHash, bool& baseIsFile, CGitHash& mineHash, bool& mineIsFile, CGitHash& remoteHash, bool& remoteIsFile)
 {
 	size_t pos = 0;
-	CString one;
-	CString part;
-
-	while (pos < out.size())
+	const size_t end = out.size();
+	if (end == 0)
+		return 1;
+	while (pos < end)
 	{
-		one.Empty();
+		const size_t lineStart = pos;
 
-		CGit::StringAppend(one, &out[pos], CP_UTF8);
-		int tabstart = 0;
-		one.Tokenize(L"\t", tabstart);
-
-		tabstart = 0;
-		part = one.Tokenize(L" ", tabstart); // Tag
-		CString mode = one.Tokenize(L" ", tabstart); // Mode
-		part = one.Tokenize(L" ", tabstart); // Hash
-		CString hash = part;
-		part = one.Tokenize(L"\t", tabstart); // Stage
-		const int stage = _wtol(part);
-		if (stage == 1)
+		if (out[pos] != 'M')
 		{
-			hash1 = CGitHash::FromHexStrTry(hash);
-			isFile1 = _wtol(mode) != 160000;
+			ASSERT(false && "this should never happen as this method should only be called for output of git ls-files -u -t -z");
+			return -1;
+		}
+
+		pos = out.find(' ', pos); // advance to mode
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t modeStart = pos + 1;
+		pos = out.find(' ', modeStart); // advance to hash
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t hashStart = pos + 1;
+		pos = out.find(' ', hashStart); // advance to Stage
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t stageStart = pos + 1;
+		pos = out.find('\t', stageStart); // advance to filename
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		++pos;
+		const size_t fileNameEnd = out.find(0, pos);
+		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != 52)
+			return -1;
+
+		CString hash;
+		CGit::StringAppend(hash, &out[hashStart], CP_UTF8, static_cast<int>(stageStart - 1 - hashStart));
+		long mode = strtol(&out[modeStart], nullptr, 10);
+		const int stage = strtol(&out[stageStart], nullptr, 10);
+		if (stage == 0)
+			return -1;
+		else if (stage == 1)
+		{
+			baseHash = CGitHash::FromHexStrTry(hash);
+			baseIsFile = mode != 160000;
 		}
 		else if (stage == 2)
 		{
-			hash2 = CGitHash::FromHexStrTry(hash);
-			isFile2 = _wtol(mode) != 160000;
+			mineHash = CGitHash::FromHexStrTry(hash);
+			mineIsFile = mode != 160000;
 		}
 		else if (stage == 3)
 		{
-			hash3 = CGitHash::FromHexStrTry(hash);
-			isFile3 = _wtol(mode) != 160000;
-			return true;
+			remoteHash = CGitHash::FromHexStrTry(hash);
+			remoteIsFile = mode != 160000;
 		}
 
 		pos = out.findNextString(pos);
 	}
 
-	return false;
+	return 0;
 }

@@ -1763,10 +1763,10 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	CGitHash mineHash, theirsHash;
 	GetConflictTitles(&baseTitle, mineTitle, &mineHash, theirsTitle, &theirsHash, isRebase);
 
-	CGitHash baseHash, realBaseHash, localHash, remoteHash;
+	CGitHash baseHash, localHash, remoteHash;
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
-	if (CGit::ParseConflictHashesFromLsFile(vector, realBaseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
-		baseHash = realBaseHash;
+	if (CGit::ParseConflictHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
+		return FALSE;
 
 	if (!baseIsFile || !localIsFile || !remoteIsFile)
 	{

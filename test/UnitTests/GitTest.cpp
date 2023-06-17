@@ -3205,7 +3205,7 @@ TEST(CGit, ParseConflictHashesFromLsFile_Empty)
 	CGitByteArray byteArray;
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 	CGitHash baseHash, localHash, remoteHash;
-	EXPECT_FALSE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_NE(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
 }
 
 TEST(CGit, ParseConflictHashesFromLsFile_SimpleConflict)
@@ -3215,7 +3215,7 @@ TEST(CGit, ParseConflictHashesFromLsFile_SimpleConflict)
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 	CGitHash baseHash, localHash, remoteHash;
-	EXPECT_TRUE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
 	EXPECT_STREQ(L"1f9f46da1ee155aa765d6e379d9d19853358cb07", baseHash.ToString());
 	EXPECT_TRUE(baseIsFile);
 	EXPECT_STREQ(L"3aa011e7d3609ab9af90c4b10f616312d2be422f", localHash.ToString());
@@ -3224,14 +3224,65 @@ TEST(CGit, ParseConflictHashesFromLsFile_SimpleConflict)
 	EXPECT_TRUE(remoteIsFile);
 }
 
-TEST(CGit, ParseConflictHashesFromLsFile_FileSubmoduleConflict)
+TEST(CGit, ParseConflictHashesFromLsFile_SubmoduleConflict_Simple)
 {
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"46a2b8e855d5f6d8b60b81500a9f6779c7f63e63", baseHash.ToString());
+	EXPECT_FALSE(baseIsFile);
+	EXPECT_STREQ(L"533da4ea00703f4ad6d5518e1ce81d20261c40c0", localHash.ToString());
+	EXPECT_FALSE(localIsFile);
+	EXPECT_STREQ(L"ab2af775ec467ebb328a7374653f247920f258f3", remoteHash.ToString());
+	EXPECT_FALSE(remoteIsFile);
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_SubmoduleConflict_DeletedModified)
+{
+	// merged commit where submodule was modified into commit where it was deleted (git status says "deleted by us: libgit2")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"46a2b8e855d5f6d8b60b81500a9f6779c7f63e63", baseHash.ToString());
+	EXPECT_FALSE(baseIsFile);
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", localHash.ToString());
+	EXPECT_TRUE(localIsFile);
+	EXPECT_STREQ(L"ab2af775ec467ebb328a7374653f247920f258f3", remoteHash.ToString());
+	EXPECT_FALSE(remoteIsFile);
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_SubmoduleConflict_ToNormalDir)
+{
+	// merged commit where libgit2 is a normal folder (git status says "added by us: libgit2" and "new file: libgit2/Neues Textdokument.txt")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", baseHash.ToString());
+	EXPECT_TRUE(baseIsFile);
+	EXPECT_STREQ(L"533da4ea00703f4ad6d5518e1ce81d20261c40c0", localHash.ToString());
+	EXPECT_FALSE(localIsFile);
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", remoteHash.ToString());
+	EXPECT_TRUE(remoteIsFile);
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_SubmoduleConflict_FileSubmodule)
+{
+	// merged commit where a file with the same name was created (git status says "both added: libgit2")
 	constexpr char git_ls_file_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 100644 9ae3e601584cc03f8f03f93761416b6599ac7c0d 3	libgit2" };
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 	CGitHash baseHash, localHash, remoteHash;
-	EXPECT_TRUE(CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
 	EXPECT_STREQ(L"0000000000000000000000000000000000000000", baseHash.ToString());
 	EXPECT_TRUE(baseIsFile);
 	EXPECT_STREQ(L"533da4ea00703f4ad6d5518e1ce81d20261c40c0", localHash.ToString());
@@ -3240,3 +3291,34 @@ TEST(CGit, ParseConflictHashesFromLsFile_FileSubmoduleConflict)
 	EXPECT_TRUE(remoteIsFile);
 }
 
+TEST(CGit, ParseConflictHashesFromLsFile_DeletedFileConflict)
+{
+	// file added, modified on branch A, deleted on branch B, merge branch A on B (git status says: "deleted by us")
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 24091f0add7afc47ac7cdc80ae4d3866b2ef588c 1	Neues Textdokument.txt\0M 100644 293b6f6293106b6ebb5d54ad482d7561b0f1c9ae 3	Neues Textdokument.txt" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+	CGitHash baseHash, localHash, remoteHash;
+	EXPECT_EQ(0, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	EXPECT_STREQ(L"24091f0add7afc47ac7cdc80ae4d3866b2ef588c", baseHash.ToString());
+	EXPECT_TRUE(baseIsFile);
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", localHash.ToString());
+	EXPECT_TRUE(localIsFile);
+	EXPECT_STREQ(L"293b6f6293106b6ebb5d54ad482d7561b0f1c9ae", remoteHash.ToString());
+	EXPECT_TRUE(remoteIsFile);
+}
+
+TEST(CGit, ParseConflictHashesFromLsFile_Invalid)
+{
+	constexpr char git_ls_file_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 100644 9ae3e601584cc03f8f03f93761416b6599ac7c0d 3	libgit2" };
+	for (int i = 1; i < sizeof(git_ls_file_u_t_z_output); ++i)
+	{
+		if (i == 60)
+			continue;
+		CGitByteArray byteArray;
+		byteArray.append(git_ls_file_u_t_z_output, i);
+		bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
+		CGitHash baseHash, localHash, remoteHash;
+		EXPECT_EQ(-1, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	}
+}

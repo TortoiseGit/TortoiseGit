@@ -1022,6 +1022,7 @@ int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action,
 	return 0;
 }
 
+// similar code in CGit::ParseConflictHashesFromLsFile
 int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted /*= false*/)
 {
 	size_t pos = 0;

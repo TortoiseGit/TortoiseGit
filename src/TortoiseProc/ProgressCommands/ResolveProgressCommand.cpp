@@ -130,7 +130,11 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 					b_remote = true;
 			}
 
-			CGit::ParseConflictHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile);
+			if (CGit::ParseConflictHashesFromLsFile(vector, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile))
+			{
+				list->ReportError(L"Parsing git ls-files for conflict info failed!");
+				return false;
+			}
 		}
 		else
 		{
