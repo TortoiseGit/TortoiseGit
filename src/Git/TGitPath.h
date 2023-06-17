@@ -35,7 +35,6 @@ public:
 #endif
 	CTGitPath(const CString& sUnknownPath);
 	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);
-	int m_Stage = 0;
 	int m_ParentNo = 0;
 
 	enum class StagingStatus

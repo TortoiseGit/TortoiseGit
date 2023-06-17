@@ -51,7 +51,7 @@ struct SLogCacheRevFileHeader
 {
 	DWORD m_Magic;
 	DWORD m_Action;
-	DWORD m_Stage;
+	DWORD m_Stage; // TODO: unused, can be removed
 	DWORD m_ParentNo;
 	DWORD m_Add;
 	DWORD m_Del;

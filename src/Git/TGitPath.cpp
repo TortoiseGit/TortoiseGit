@@ -1065,8 +1065,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
 		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(fileNameEnd - pos));
 		// SetFromGit resets the path
 		path.SetFromGit(pathstring, (strtol(&out[modestart], nullptr, 8) & S_IFDIR) == S_IFDIR);
-		path.m_Stage = strtol(&out[stagestart], nullptr, 10);
-		if (path.m_Stage)
+		if (strtol(&out[stagestart], nullptr, 10) != 0)
 		{
 			if (!IsEmpty() && path == m_paths[m_paths.size() - 1])
 			{
