@@ -380,7 +380,7 @@ public:
 	const CTGitPath* LookForGitPath(const CString& path) const;
 	int	ParserFromLog(BYTE_VECTOR& log);
 	int ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear = true);
-	int ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted = false);
+	int ParserFromLsFile(BYTE_VECTOR& out);
 	void UpdateStagingStatusFromPath(const CString& path, CTGitPath::StagingStatus status);
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 #ifdef TGIT_LFS

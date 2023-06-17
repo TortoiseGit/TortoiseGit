@@ -3352,7 +3352,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		Run(cmd, &cmdout);
 
 		CTGitPathList conflictlist;
-		conflictlist.ParserFromLsFile(cmdout, true);
+		conflictlist.ParserFromLsFile(cmdout);
 		for (int j = 0; j < conflictlist.GetCount(); ++j)
 		{
 			auto existing = duplicateMap.find(conflictlist[j].GetGitPathString());

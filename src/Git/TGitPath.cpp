@@ -1023,7 +1023,7 @@ int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action,
 }
 
 // similar code in CGit::ParseConflictHashesFromLsFile
-int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted /*= false*/)
+int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
 {
 	size_t pos = 0;
 	const size_t end = out.size();
@@ -1066,7 +1066,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted /*= f
 		// SetFromGit resets the path
 		path.SetFromGit(pathstring, (strtol(&out[modestart], nullptr, 8) & S_IFDIR) == S_IFDIR);
 		path.m_Stage = strtol(&out[stagestart], nullptr, 10);
-		if (path.m_Stage && mergeConflicted)
+		if (path.m_Stage)
 		{
 			if (!IsEmpty() && path == m_paths[m_paths.size() - 1])
 			{
