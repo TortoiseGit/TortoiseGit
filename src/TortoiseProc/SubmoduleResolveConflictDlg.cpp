@@ -24,6 +24,8 @@
 #include "LoglistCommonResource.h"
 #include "SubmoduleDiffDlg.h"
 #include "MessageBox.h"
+#include "GitProgressDlg.h"
+#include "ProgressCommands/ResolveProgressCommand.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleResolveConflictDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleResolveConflictDlg::CSubmoduleResolveConflictDlg(CWnd* pParent /*=nullptr*/)
@@ -225,7 +227,15 @@ void CSubmoduleResolveConflictDlg::Resolve(const CString& path, bool useMine)
 
 	CTGitPath gitpath(path);
 	gitpath.m_Action = CTGitPath::LOGACTIONS_UNMERGED;
-	if (CAppUtils::ResolveConflict(GetSafeHwnd(), gitpath, useMine ? CAppUtils::RESOLVE_WITH_MINE : CAppUtils::RESOLVE_WITH_THEIRS) == 0)
+
+	CGitProgressDlg progDlg;
+	ResolveProgressCommand resolveCommand{ useMine ? ResolveWith::Mine : ResolveWith::Theirs };
+	progDlg.SetAutoClose(GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS);
+	progDlg.SetCommand(&resolveCommand);
+	progDlg.SetItemCount(1);
+	resolveCommand.SetPathList(CTGitPathList{ gitpath });
+	progDlg.DoModal();
+	if (!progDlg.DidErrorsOccur())
 	{
 		m_bResolved = true;
 		EndDialog(0);

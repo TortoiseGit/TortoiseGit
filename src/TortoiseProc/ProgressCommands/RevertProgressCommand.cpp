@@ -111,7 +111,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	if (!unstageTask.Execute(list->m_bCancelled))
 		return false;
 
-	deleteTask.SetProgressCallback([&m_itemCount, &list](const CTGitPath&, int) {});
+	deleteTask.SetProgressCallback([](const CTGitPath&, int) {});
 	deleteTask.SetProgressList(list);
 	if (!deleteTask.Execute(list->m_bCancelled))
 		return false;

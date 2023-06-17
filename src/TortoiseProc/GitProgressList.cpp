@@ -1094,6 +1094,9 @@ CGitProgressList::WC_File_NotificationData::WC_File_NotificationData(const CTGit
 
 	switch (action)
 	{
+	case Git_WC_Notify_Action::Skip:
+		sActionColumnText.LoadString(IDS_SVNACTION_SKIP);
+		break;
 	case Git_WC_Notify_Action::Add:
 		sActionColumnText.LoadString(IDS_SVNACTION_ADD);
 		break;

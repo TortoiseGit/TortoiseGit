@@ -3352,7 +3352,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		Run(cmd, &cmdout);
 
 		CTGitPathList conflictlist;
-		conflictlist.ParserFromLsFile(cmdout, true);
+		conflictlist.ParserFromLsFile(cmdout);
 		for (int j = 0; j < conflictlist.GetCount(); ++j)
 		{
 			auto existing = duplicateMap.find(conflictlist[j].GetGitPathString());
@@ -3593,5 +3593,74 @@ int CGit::GetSubmodulePointer(SubmoduleInfo& submoduleinfo) const
 		return -1;
 
 	submoduleinfo.superProjectHash = entry->id;
+	return 0;
+}
+
+// similar code in CTGitPath::ParserFromLsFile
+int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHash, bool& baseIsFile, CGitHash& mineHash, bool& mineIsFile, CGitHash& remoteHash, bool& remoteIsFile)
+{
+	size_t pos = 0;
+	const size_t end = out.size();
+	if (end == 0)
+		return 1;
+	while (pos < end)
+	{
+		const size_t lineStart = pos;
+
+		if (out[pos] != 'M')
+		{
+			ASSERT(false && "this should never happen as this method should only be called for output of git ls-files -u -t -z");
+			return -1;
+		}
+
+		pos = out.find(' ', pos); // advance to mode
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t modeStart = pos + 1;
+		pos = out.find(' ', modeStart); // advance to hash
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t hashStart = pos + 1;
+		pos = out.find(' ', hashStart); // advance to Stage
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		const size_t stageStart = pos + 1;
+		pos = out.find('\t', stageStart); // advance to filename
+		if (pos == CGitByteArray::npos)
+			return -1;
+
+		++pos;
+		const size_t fileNameEnd = out.find(0, pos);
+		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != 52)
+			return -1;
+
+		CString hash;
+		CGit::StringAppend(hash, &out[hashStart], CP_UTF8, static_cast<int>(stageStart - 1 - hashStart));
+		long mode = strtol(&out[modeStart], nullptr, 10);
+		const int stage = strtol(&out[stageStart], nullptr, 10);
+		if (stage == 0)
+			return -1;
+		else if (stage == 1)
+		{
+			baseHash = CGitHash::FromHexStrTry(hash);
+			baseIsFile = mode != 160000;
+		}
+		else if (stage == 2)
+		{
+			mineHash = CGitHash::FromHexStrTry(hash);
+			mineIsFile = mode != 160000;
+		}
+		else if (stage == 3)
+		{
+			remoteHash = CGitHash::FromHexStrTry(hash);
+			remoteIsFile = mode != 160000;
+		}
+
+		pos = out.findNextString(pos);
+	}
+
 	return 0;
 }

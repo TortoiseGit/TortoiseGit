@@ -119,6 +119,7 @@ public:
 	public:
 		enum class Git_WC_Notify_Action
 		{
+			Skip,
 			Add,
 			Resolved,
 			Revert,

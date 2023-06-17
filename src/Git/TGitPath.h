@@ -35,7 +35,6 @@ public:
 #endif
 	CTGitPath(const CString& sUnknownPath);
 	CTGitPath(const CString& sUnknownPath, bool bIsDirectory);
-	int m_Stage = 0;
 	int m_ParentNo = 0;
 
 	enum class StagingStatus
@@ -380,7 +379,7 @@ public:
 	const CTGitPath* LookForGitPath(const CString& path) const;
 	int	ParserFromLog(BYTE_VECTOR& log);
 	int ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear = true);
-	int ParserFromLsFile(BYTE_VECTOR& out, bool mergeConflicted = false);
+	int ParserFromLsFile(BYTE_VECTOR& out);
 	void UpdateStagingStatusFromPath(const CString& path, CTGitPath::StagingStatus status);
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 #ifdef TGIT_LFS
@@ -452,7 +451,9 @@ public:
 	mutable CTGitPath m_commonBaseDirectory;
 
 	auto begin() noexcept { return m_paths.begin(); }
+	auto begin() const noexcept { return m_paths.cbegin(); }
 	auto cbegin() const noexcept { return m_paths.cbegin(); }
 	auto end() noexcept { return m_paths.end(); }
+	auto end() const noexcept { return m_paths.cend(); }
 	auto cend() const noexcept { return m_paths.cend(); }
 };

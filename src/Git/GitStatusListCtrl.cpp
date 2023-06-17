@@ -43,6 +43,7 @@
 #include "ProgressCommands/AddProgressCommand.h"
 #include "ProgressCommands/LFSSetLockedProgressCommand.h"
 #include "ProgressCommands/RevertProgressCommand.h"
+#include "ProgressCommands/ResolveProgressCommand.h"
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
@@ -2436,76 +2437,40 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					if (CMessageBox::Show(GetParentHWND(), IDS_PROC_RESOLVE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
 					{
-						CAppUtils::resolve_with resolveWith = CAppUtils::RESOLVE_WITH_CURRENT;
+						ResolveWith resolveWith = ResolveWith::Current;
 						if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE))
-							resolveWith = CAppUtils::RESOLVE_WITH_THEIRS;
+							resolveWith = ResolveWith::Theirs;
 						else if (((!this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVEMINE) || ((this->m_bIsRevertTheirMy) && cmd == IDGITLC_RESOLVETHEIRS))
-							resolveWith = CAppUtils::RESOLVE_WITH_MINE;
+							resolveWith = ResolveWith::Mine;
 
-						CSysProgressDlg sysProgressDlg;
-						auto nListItems = GetSelectedCount();
-						if (nListItems >= 5)
-						{
-							CString tmp, mineTitle, theirsTitle;
-							CAppUtils::GetConflictTitles(nullptr, mineTitle, nullptr, theirsTitle, nullptr, m_bIsRevertTheirMy);
-							tmp.LoadString(IDS_PROGRS_TITLE_RESOLVE);
-							if (m_bIsRevertTheirMy)
-							{
-								if (cmd == IDGITLC_RESOLVEMINE)
-									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, static_cast<LPCWSTR>(theirsTitle));
-								else if (cmd == IDGITLC_RESOLVETHEIRS)
-									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, static_cast<LPCWSTR>(mineTitle));
-							}
-							else
-							{
-								if (cmd == IDGITLC_RESOLVETHEIRS)
-									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, static_cast<LPCWSTR>(theirsTitle));
-								else if (cmd == IDGITLC_RESOLVEMINE)
-									tmp.Format(IDS_SVNPROGRESS_MENURESOLVEUSING, static_cast<LPCWSTR>(mineTitle));
-							}
+						CTGitPathList targetList;
+						FillListOfSelectedItemPaths(targetList);
 
-							sysProgressDlg.SetTitle(L"TortoiseGit");
-							sysProgressDlg.SetLine(1, tmp);
-							sysProgressDlg.SetTime(true);
-							sysProgressDlg.SetShowProgressBar(true);
-							sysProgressDlg.ShowModal(this, true);
-						}
-						auto currentTicks = GetTickCount64();
-
-						bool needsFullRefresh = false;
-						POSITION pos = GetFirstSelectedItemPosition();
-						decltype(nListItems) j = 0;
-						while (pos != 0)
-						{
-							int index = GetNextSelectedItem(pos);
-							auto fentry = GetListEntry(index);
-							if (!fentry)
-								continue;
-
-							if (sysProgressDlg.IsVisible())
-							{
-								if (GetTickCount64() - currentTicks > 1000UL || j == nListItems - 1 || j == 0)
-								{
-									sysProgressDlg.SetLine(2, fentry->GetGitPathString(), true);
-									sysProgressDlg.SetProgress(j, nListItems);
-									AfxGetThread()->PumpMessage(); // process messages, in order to avoid freezing; do not call this too often: this takes time!
-									currentTicks = GetTickCount64();
-								}
-								++j;
-							}
-
-							if (CAppUtils::ResolveConflict(GetParentHWND(), *fentry, resolveWith) == 0 && fentry->m_Action & CTGitPath::LOGACTIONS_UNMERGED)
-								needsFullRefresh = true;
-
-							if (sysProgressDlg.HasUserCancelled())
-								break;
-						}
-						sysProgressDlg.Stop();
-						if (needsFullRefresh && CRegDWORD(L"Software\\TortoiseGit\\RefreshFileListAfterResolvingConflict", TRUE) == TRUE)
+						CGitProgressDlg progDlg;
+						ResolveProgressCommand resolveCommand{ resolveWith };
+						progDlg.SetAutoClose(GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS);
+						progDlg.SetCommand(&resolveCommand);
+						progDlg.SetItemCount(targetList.GetCount());
+						resolveCommand.SetPathList(targetList);
+						progDlg.DoModal();
+						if (progDlg.DidErrorsOccur() || resolveWith != ResolveWith::Current)
 						{
 							RefreshParent();
 							break;
 						}
+
+						std::set<CString> resolvedConflictFiles;
+						std::for_each(targetList.cbegin(), targetList.cend(), [&resolvedConflictFiles](auto& path) { resolvedConflictFiles.emplace(path.GetGitPathString()); });
+						const int nListboxEntries = GetItemCount();
+						for (int nItem = 0; nItem < nListboxEntries; ++nItem)
+						{
+							auto path = GetListEntry(nItem);
+							if (!resolvedConflictFiles.contains(path->GetGitPathString()))
+								continue;
+							path->m_Action |= CTGitPath::LOGACTIONS_MODIFIED;
+							path->m_Action &= ~CTGitPath::LOGACTIONS_UNMERGED;
+						}
+
 						StoreScrollPos();
 						Show(m_dwShow, 0, m_bShowFolders,0,true);
 					}

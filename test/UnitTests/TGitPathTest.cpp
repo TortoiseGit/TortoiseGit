@@ -780,7 +780,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"appveyor.yml", testList[i].GetGitPathString());
@@ -788,7 +787,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"build.txt", testList[i].GetGitPathString());
@@ -796,7 +794,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/apr-util", testList[i].GetGitPathString());
@@ -804,7 +801,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/hunspell", testList[i].GetGitPathString());
@@ -812,7 +808,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/json", testList[i].GetGitPathString());
@@ -820,7 +815,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/libgit2", testList[i].GetGitPathString());
@@ -828,7 +822,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/spell", testList[i].GetGitPathString());
@@ -836,7 +829,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -844,7 +836,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"signedness.txt", testList[i].GetGitPathString());
@@ -852,7 +843,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/Debug-Hints.txt", testList[i].GetGitPathString());
@@ -860,7 +850,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/gpl.txt", testList[i].GetGitPathString());
@@ -868,7 +857,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"test/UnitTests/TGitPathTest.cpp", testList[i].GetGitPathString());
@@ -876,7 +864,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -896,7 +883,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"3", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"45", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"appveyor.yml", testList[i].GetGitPathString());
@@ -904,7 +890,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"79", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"build.txt", testList[i].GetGitPathString());
@@ -912,7 +897,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"77", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/apr-util", testList[i].GetGitPathString());
@@ -920,7 +904,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/hunspell", testList[i].GetGitPathString());
@@ -928,7 +911,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/json", testList[i].GetGitPathString());
@@ -936,7 +918,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/libgit2", testList[i].GetGitPathString());
@@ -944,7 +925,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/spell", testList[i].GetGitPathString());
@@ -952,7 +932,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -960,7 +939,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"signedness.txt", testList[i].GetGitPathString());
@@ -968,7 +946,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1176", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/Debug-Hints.txt", testList[i].GetGitPathString());
@@ -976,7 +953,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"109", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/gpl.txt", testList[i].GetGitPathString());
@@ -984,7 +960,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"340", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"test/UnitTests/TGitPathTest.cpp", testList[i].GetGitPathString());
@@ -992,7 +967,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"162", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -1012,7 +986,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"6", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"30", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"appveyor.yml", testList[i].GetGitPathString());
@@ -1020,14 +993,12 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"79", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/hunspell", testList[i].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/json", testList[i].GetGitPathString());
@@ -1035,7 +1006,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -1043,7 +1013,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"signedness.txt", testList[i].GetGitPathString());
@@ -1051,7 +1020,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1176", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/Debug-Hints.txt", testList[i].GetGitPathString());
@@ -1059,14 +1027,12 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"109", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	++i;
 	EXPECT_STREQ(L"src/gpl.txt", testList[i].GetGitPathString());
 	EXPECT_STREQ(L"", testList[i].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"340", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"zzz-added-only-in-index-missing-on-fs.txt", testList[i].GetGitPathString());
@@ -1074,7 +1040,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -1094,7 +1059,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"3", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"45", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"appveyor.yml", testList[i].GetGitPathString());
@@ -1102,7 +1066,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"79", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/hunspell", testList[i].GetGitPathString());
@@ -1110,7 +1073,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/json", testList[i].GetGitPathString());
@@ -1118,7 +1080,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -1126,7 +1087,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"signedness.txt", testList[i].GetGitPathString());
@@ -1134,7 +1094,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1176", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/Debug-Hints.txt", testList[i].GetGitPathString());
@@ -1142,7 +1101,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"109", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/gpl.txt", testList[i].GetGitPathString());
@@ -1150,7 +1108,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"340", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"zzz-added-only-in-index-missing-on-fs.txt", testList[i].GetGitPathString());
@@ -1158,7 +1115,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"build.txt", testList[i].GetGitPathString());
@@ -1166,7 +1122,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"77", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/apr-util", testList[i].GetGitPathString());
@@ -1174,7 +1129,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/libgit2", testList[i].GetGitPathString());
@@ -1182,7 +1136,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/spell", testList[i].GetGitPathString());
@@ -1190,7 +1143,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"test/UnitTests/TGitPathTest.cpp", testList[i].GetGitPathString());
@@ -1198,7 +1150,6 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_AND_DiffIndex_R
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"162", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -1218,7 +1169,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"19", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"build.txt", testList[i].GetGitPathString());
@@ -1226,7 +1176,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"77", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/apr-util", testList[i].GetGitPathString());
@@ -1234,7 +1183,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/libgit2", testList[i].GetGitPathString());
@@ -1242,7 +1190,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/spell", testList[i].GetGitPathString());
@@ -1250,7 +1197,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -1258,7 +1204,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"test/UnitTests/TGitPathTest.cpp", testList[i].GetGitPathString());
@@ -1266,7 +1211,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"162", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"zzz-added-only-in-index-missing-on-fs.txt", testList[i].GetGitPathString());
@@ -1274,7 +1218,6 @@ TEST(CTGitPath, ParserFromLog_DiffFiles_raw_C_M_numstat_z)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -1294,7 +1237,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"3", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"45", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"appveyor.yml", testList[i].GetGitPathString());
@@ -1302,7 +1244,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"79", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"build.txt", testList[i].GetGitPathString());
@@ -1310,7 +1251,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"77", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/apr-util", testList[i].GetGitPathString());
@@ -1318,7 +1258,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/hunspell", testList[i].GetGitPathString());
@@ -1326,7 +1265,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/json", testList[i].GetGitPathString());
@@ -1334,7 +1272,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/libgit2", testList[i].GetGitPathString());
@@ -1342,7 +1279,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"ext/spell", testList[i].GetGitPathString());
@@ -1350,7 +1286,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_TRUE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"release-renamed.txt", testList[i].GetGitPathString());
@@ -1358,7 +1293,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[i].m_Action);
 	EXPECT_STREQ(L"1", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"signedness.txt", testList[i].GetGitPathString());
@@ -1366,7 +1300,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[i].m_Action);
 	EXPECT_STREQ(L"1176", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/Debug-Hints.txt", testList[i].GetGitPathString());
@@ -1374,7 +1307,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"109", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"src/gpl.txt", testList[i].GetGitPathString());
@@ -1382,7 +1314,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[i].m_Action);
 	EXPECT_STREQ(L"0", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"340", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 	++i;
 	EXPECT_STREQ(L"test/UnitTests/TGitPathTest.cpp", testList[i].GetGitPathString());
@@ -1390,7 +1321,6 @@ TEST(CTGitPath, ParserFromLog_Diff_r_raw_C_M_numstat_z_HEAD)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[i].m_Action);
 	EXPECT_STREQ(L"162", testList[i].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[i].m_StatDel);
-	EXPECT_EQ(0, testList[i].m_Stage);
 	EXPECT_FALSE(testList[i].IsDirectory());
 }
 
@@ -1424,14 +1354,12 @@ TEST(CTGitPath, ParserFromLog_DiffIndex_Raw_Cached_M_C_Numstat_z_UTF8)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[0].m_Action);
 	EXPECT_STREQ(L"0", testList[0].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[0].m_StatDel);
-	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_FALSE(testList[0].IsDirectory());
 	EXPECT_STREQ(L"build.txt", testList[0].GetGitOldPathString());
 	EXPECT_STREQ(L"Ümlautfile.txt", testList[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[1].m_Action);
 	EXPECT_STREQ(L"1", testList[1].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[1].m_StatDel);
-	EXPECT_EQ(0, testList[1].m_Stage);
 	EXPECT_FALSE(testList[1].IsDirectory());
 }
 
@@ -1449,57 +1377,48 @@ TEST(CTGitPath, ParserFromLog_DiffTree)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[0].m_Action);
 	EXPECT_STREQ(L"1", testList[0].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[0].m_StatDel);
-	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_FALSE(testList[0].IsDirectory());
 	EXPECT_STREQ(L"src/Git/Git.h", testList[1].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[1].m_Action);
 	EXPECT_STREQ(L"3", testList[1].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[1].m_StatDel);
-	EXPECT_EQ(0, testList[1].m_Stage);
 	EXPECT_FALSE(testList[1].IsDirectory());
 	EXPECT_STREQ(L"src/Git/Git.vcxproj", testList[2].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[2].m_Action);
 	EXPECT_STREQ(L"0", testList[2].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[2].m_StatDel);
-	EXPECT_EQ(0, testList[2].m_Stage);
 	EXPECT_FALSE(testList[2].IsDirectory());
 	EXPECT_STREQ(L"src/Git/Git.vcxproj.filters", testList[3].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[3].m_Action);
 	EXPECT_STREQ(L"0", testList[3].m_StatAdd);
 	EXPECT_STREQ(L"6", testList[3].m_StatDel);
-	EXPECT_EQ(0, testList[3].m_Stage);
 	EXPECT_FALSE(testList[3].IsDirectory());
 	EXPECT_STREQ(L"src/Git/GitConfig.cpp", testList[4].GetGitPathString());
 	EXPECT_STREQ(L"", testList[4].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[4].m_Action);
 	EXPECT_STREQ(L"0", testList[4].m_StatAdd);
 	EXPECT_STREQ(L"29", testList[4].m_StatDel);
-	EXPECT_EQ(0, testList[4].m_Stage);
 	EXPECT_FALSE(testList[4].IsDirectory());
 	EXPECT_STREQ(L"src/Git/GitForWindows.h", testList[5].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[5].m_Action);
 	EXPECT_STREQ(L"src/Git/GitConfig.h", testList[5].GetGitOldPathString());
 	EXPECT_STREQ(L"1", testList[5].m_StatAdd);
 	EXPECT_STREQ(L"11", testList[5].m_StatDel);
-	EXPECT_EQ(0, testList[5].m_Stage);
 	EXPECT_FALSE(testList[5].IsDirectory());
 	EXPECT_STREQ(L"src/Git/GitIndex.cpp", testList[6].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[6].m_Action);
 	EXPECT_STREQ(L"0", testList[6].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[6].m_StatDel);
-	EXPECT_EQ(0, testList[6].m_Stage);
 	EXPECT_FALSE(testList[6].IsDirectory());
 	EXPECT_STREQ(L"src/TortoiseProc/Settings/SetMainPage.cpp", testList[7].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[7].m_Action);
 	EXPECT_STREQ(L"1", testList[7].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[7].m_StatDel);
-	EXPECT_EQ(0, testList[7].m_Stage);
 	EXPECT_FALSE(testList[7].IsDirectory());
 	EXPECT_STREQ(L"src/TortoiseProc/TortoiseProc.cpp", testList[8].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[8].m_Action);
 	EXPECT_STREQ(L"0", testList[8].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[8].m_StatDel);
-	EXPECT_EQ(0, testList[8].m_Stage);
 	EXPECT_FALSE(testList[8].IsDirectory());
 }
 
@@ -1517,61 +1436,52 @@ TEST(CTGitPath, ParserFromLog_DiffTree_Submodule)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[0].m_Action);
 	EXPECT_STREQ(L"3", testList[0].m_StatAdd);
 	EXPECT_STREQ(L"6", testList[0].m_StatDel);
-	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_FALSE(testList[0].IsDirectory());
 	EXPECT_STREQ(L"appveyor.yml", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[1].m_Action);
 	EXPECT_STREQ(L"1", testList[1].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[1].m_StatDel);
-	EXPECT_EQ(0, testList[1].m_Stage);
 	EXPECT_FALSE(testList[1].IsDirectory());
 	EXPECT_STREQ(L"ext/build/googletest.vcxproj", testList[2].GetGitPathString());
 	EXPECT_STREQ(L"ext/build/gtest.vcxproj", testList[2].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[2].m_Action); // TODO: CTGitPath::LOGACTIONS_MODIFIED?, LOGACTIONS_MODIFIED has highter precedence in CTGitPath::GetActionName
 	EXPECT_STREQ(L"4", testList[2].m_StatAdd);
 	EXPECT_STREQ(L"4", testList[2].m_StatDel);
-	EXPECT_EQ(0, testList[2].m_Stage);
 	EXPECT_FALSE(testList[2].IsDirectory());
 	EXPECT_STREQ(L"ext/build/googletest.vcxproj.filters", testList[3].GetGitPathString());
 	EXPECT_STREQ(L"ext/build/gtest.vcxproj.filters", testList[3].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, testList[3].m_Action); // TODO: CTGitPath::LOGACTIONS_MODIFIED?, LOGACTIONS_MODIFIED has highter precedence in CTGitPath::GetActionName
 	EXPECT_STREQ(L"3", testList[3].m_StatAdd);
 	EXPECT_STREQ(L"3", testList[3].m_StatDel);
-	EXPECT_EQ(0, testList[3].m_Stage);
 	EXPECT_FALSE(testList[3].IsDirectory());
 	EXPECT_STREQ(L"ext/gmock", testList[4].GetGitPathString());
 	EXPECT_STREQ(L"", testList[4].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[4].m_Action);
 	EXPECT_STREQ(L"0", testList[4].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[4].m_StatDel);
-	EXPECT_EQ(0, testList[4].m_Stage);
 	EXPECT_TRUE(testList[4].IsDirectory());
 	EXPECT_STREQ(L"ext/googletest", testList[5].GetGitPathString());
 	EXPECT_STREQ(L"", testList[5].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_ADDED, testList[5].m_Action);
 	EXPECT_STREQ(L"1", testList[5].m_StatAdd);
 	EXPECT_STREQ(L"0", testList[5].m_StatDel);
-	EXPECT_EQ(0, testList[5].m_Stage);
 	EXPECT_TRUE(testList[5].IsDirectory());
 	EXPECT_STREQ(L"ext/gtest", testList[6].GetGitPathString());
 	EXPECT_STREQ(L"", testList[6].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, testList[6].m_Action);
 	EXPECT_STREQ(L"0", testList[6].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[6].m_StatDel);
-	EXPECT_EQ(0, testList[6].m_Stage);
 	EXPECT_TRUE(testList[6].IsDirectory());
 	EXPECT_STREQ(L"src/TortoiseGit.sln", testList[7].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[7].m_Action);
 	EXPECT_STREQ(L"1", testList[7].m_StatAdd);
 	EXPECT_STREQ(L"1", testList[7].m_StatDel);
-	EXPECT_EQ(0, testList[7].m_Stage);
 	EXPECT_FALSE(testList[7].IsDirectory());
 	EXPECT_STREQ(L"test/UnitTests/UnitTests.vcxproj", testList[8].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[8].m_Action);
 	EXPECT_STREQ(L"2", testList[8].m_StatAdd);
 	EXPECT_STREQ(L"2", testList[8].m_StatDel);
-	EXPECT_EQ(0, testList[8].m_Stage);
 	EXPECT_FALSE(testList[8].IsDirectory());
 }
 
@@ -1589,14 +1499,12 @@ TEST(CTGitPath, ParserFromLog_DiffTree_BinaryFiles)
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[0].m_Action);
 	EXPECT_STREQ(L"-", testList[0].m_StatAdd);
 	EXPECT_STREQ(L"-", testList[0].m_StatDel);
-	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_FALSE(testList[0].IsDirectory());
 	EXPECT_STREQ(L"ext/putty/puttygen.exe", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, testList[1].m_Action);
 	EXPECT_STREQ(L"-", testList[1].m_StatAdd);
 	EXPECT_STREQ(L"-", testList[1].m_StatDel);
-	EXPECT_EQ(0, testList[1].m_Stage);
 	EXPECT_FALSE(testList[1].IsDirectory());
 }
 
@@ -1778,181 +1686,6 @@ TEST(CTGitPath, ParserFromLsFile_Empty)
 	EXPECT_EQ(0, testList.GetCount());
 }
 
-TEST(CTGitPath, ParserFromLsFile_SingleFileConflict)
-{
-	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 1f9f46da1ee155aa765d6e379d9d19853358cb07 1	bla.txt\0M 100644 3aa011e7d3609ab9af90c4b10f616312d2be422f 2	bla.txt\0M 100644 56d252d69d535834b9fbfa6f6a633ecd505ea2e6 3	bla.txt" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	EXPECT_EQ(3, testList.GetCount());
-	EXPECT_STREQ(L"bla.txt", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"bla.txt", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"bla.txt", testList[2].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[2].GetGitOldPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(2, testList[1].m_Stage);
-	EXPECT_EQ(3, testList[2].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_EQ(0U, testList[2].m_Action);
-	EXPECT_FALSE(testList[0].IsDirectory());
-	EXPECT_FALSE(testList[1].IsDirectory());
-	EXPECT_FALSE(testList[2].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_SubmoduleConflict_Simple)
-{
-	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	ASSERT_EQ(3, testList.GetCount());
-	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"libgit2", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"libgit2", testList[2].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[2].GetGitOldPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(2, testList[1].m_Stage);
-	EXPECT_EQ(3, testList[2].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_EQ(0U, testList[2].m_Action);
-	EXPECT_TRUE(testList[0].IsDirectory());
-	EXPECT_TRUE(testList[1].IsDirectory());
-	EXPECT_TRUE(testList[2].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_SubmoduleConflict_DeletedModified)
-{
-	// merged commit where submodule was modified into commit where it was deleted (git status says "deleted by us: libgit2")
-	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	ASSERT_EQ(2, testList.GetCount());
-	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"libgit2", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(3, testList[1].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_TRUE(testList[0].IsDirectory());
-	EXPECT_TRUE(testList[1].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_SubmoduleConflict_ToNormalDir)
-{
-	// merged commit where libgit2 is a normal folder (git status says "added by us: libgit2" and "new file: libgit2/Neues Textdokument.txt")
-	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	ASSERT_EQ(1, testList.GetCount());
-	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_EQ(2, testList[0].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_TRUE(testList[0].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_SubmoduleConflict_FileSubmodule)
-{
-	// merged commit where a file with the same name was created (git status says "both added: libgit2")
-	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 100644 9ae3e601584cc03f8f03f93761416b6599ac7c0d 3	libgit2" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	ASSERT_EQ(2, testList.GetCount());
-	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"libgit2", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
-	EXPECT_EQ(2, testList[0].m_Stage);
-	EXPECT_EQ(3, testList[1].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_TRUE(testList[0].IsDirectory());
-	EXPECT_FALSE(testList[1].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_DeletedFileConflict)
-{
-	// file added, modified on branch A, deleted on branch B, merge branch A on B (git status says: "deleted by us")
-	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 24091f0add7afc47ac7cdc80ae4d3866b2ef588c 1	Neues Textdokument.txt\0M 100644 293b6f6293106b6ebb5d54ad482d7561b0f1c9ae 3	Neues Textdokument.txt" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	EXPECT_EQ(2, testList.GetCount());
-	EXPECT_STREQ(L"Neues Textdokument.txt", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"Neues Textdokument.txt", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(3, testList[1].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_FALSE(testList[0].IsDirectory());
-	EXPECT_FALSE(testList[1].IsDirectory());
-}
-
-TEST(CTGitPath, ParserFromLsFile_MultipleFilesConflict)
-{
-	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 0ead9277724fc163fe64e1163cc2ff97d5670e41 1	OSMtracker.sln\0M 100644 7a8a41c7c26d259caba707adea36a8b9ae493c97 2	OSMtracker.sln\0M 100644 dcdd1c25bb0ebfd91082b3de5bd45d3f25418027 3	OSMtracker.sln\0M 100644 cbb00533d69b53e40a97f9bcf1c507a71f3c7353 1	OSMtracker/frmMain.vb\0M 100644 1cbfa36fef1af473884ad2e5820075b581fe33af 2	OSMtracker/frmMain.vb\0M 100644 337331224f438f5f49d5e8a4d4c1bafb66f2e67d 3	OSMtracker/frmMain.vb\0M 100644 786e60a550be11ef8e321222ffe6c0fa0f51f23d 1	OSMtracker/osmTileMap.vb\0M 100644 7fe8b75f56cf0202b4640d74d46240d2ba894115 2	OSMtracker/osmTileMap.vb\0M 100644 53d75915e78d0a53ba05c124d613fd75d625c142 3	OSMtracker/osmTileMap.vb" };
-	CGitByteArray byteArray;
-	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
-	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
-	EXPECT_EQ(3 * 3, testList.GetCount()); // 3 files are conflicted with 3 stages
-	EXPECT_STREQ(L"OSMtracker.sln", testList[0].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker.sln", testList[1].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker.sln", testList[2].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[3].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[4].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[5].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/osmTileMap.vb", testList[6].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/osmTileMap.vb", testList[7].GetGitPathString());
-	EXPECT_STREQ(L"OSMtracker/osmTileMap.vb", testList[8].GetGitPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(2, testList[1].m_Stage);
-	EXPECT_EQ(3, testList[2].m_Stage);
-	EXPECT_EQ(1, testList[3].m_Stage);
-	EXPECT_EQ(2, testList[4].m_Stage);
-	EXPECT_EQ(3, testList[5].m_Stage);
-	EXPECT_EQ(1, testList[6].m_Stage);
-	EXPECT_EQ(2, testList[7].m_Stage);
-	EXPECT_EQ(3, testList[8].m_Stage);
-	EXPECT_EQ(0U, testList[0].m_Action);
-	EXPECT_EQ(0U, testList[1].m_Action);
-	EXPECT_EQ(0U, testList[2].m_Action);
-	EXPECT_EQ(0U, testList[3].m_Action);
-	EXPECT_EQ(0U, testList[4].m_Action);
-	EXPECT_EQ(0U, testList[5].m_Action);
-	EXPECT_EQ(0U, testList[6].m_Action);
-	EXPECT_EQ(0U, testList[7].m_Action);
-	EXPECT_EQ(0U, testList[8].m_Action);
-	EXPECT_FALSE(testList[0].IsDirectory());
-	EXPECT_FALSE(testList[1].IsDirectory());
-	EXPECT_FALSE(testList[2].IsDirectory());
-	EXPECT_FALSE(testList[3].IsDirectory());
-	EXPECT_FALSE(testList[4].IsDirectory());
-	EXPECT_FALSE(testList[5].IsDirectory());
-	EXPECT_FALSE(testList[6].IsDirectory());
-	EXPECT_FALSE(testList[7].IsDirectory());
-	EXPECT_FALSE(testList[8].IsDirectory());
-}
-
 TEST(CTGitPath, ParserFromLsFile_NormalRepo)
 {
 	constexpr char git_ls_file_u_t_z_output[] = { "H 100644 73aea48a4ede6d3ca43bc3273c52e81a5d739447 0	README.md\0H 100644 e2780959232e32e0cce8c1866d36b04db85481a6 0	taskxml.xsd\0H 100644 49aa0e1b2e9fcd752767863a1208ad5b5afb254f 0	whitepaper.md" };
@@ -1967,9 +1700,6 @@ TEST(CTGitPath, ParserFromLsFile_NormalRepo)
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
 	EXPECT_STREQ(L"", testList[1].GetGitOldPathString());
 	EXPECT_STREQ(L"", testList[2].GetGitOldPathString());
-	EXPECT_EQ(0, testList[0].m_Stage);
-	EXPECT_EQ(0, testList[1].m_Stage);
-	EXPECT_EQ(0, testList[2].m_Stage);
 	EXPECT_EQ(0U, testList[0].m_Action);
 	EXPECT_EQ(0U, testList[1].m_Action);
 	EXPECT_EQ(0U, testList[2].m_Action);
@@ -1988,7 +1718,6 @@ TEST(CTGitPath, ParserFromLsFile_RepoWithSubmodule)
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"ext/gtest", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_EQ(0, testList[0].m_Stage);
 	EXPECT_EQ(0U, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
 }
@@ -2040,13 +1769,41 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SingleFileConflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"bla.txt", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
 	EXPECT_FALSE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_Simple)
+{
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 533da4ea00703f4ad6d5518e1ce81d20261c40c0 2	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_DeletedModified)
+{
+	// merged commit where submodule was modified into commit where it was deleted (git status says "deleted by us: libgit2")
+	constexpr char git_ls_files_u_t_z_output[] = { "M 160000 46a2b8e855d5f6d8b60b81500a9f6779c7f63e63 1	libgit2\0M 160000 ab2af775ec467ebb328a7374653f247920f258f3 3	libgit2" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_TRUE(testList[0].IsDirectory());
 }
 
 TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_ToNormalDir)
@@ -2057,11 +1814,10 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_ToNormalDir)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_EQ(2, testList[0].m_Stage);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
 }
@@ -2074,13 +1830,27 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_FileSubmodule)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
-	EXPECT_EQ(2, testList[0].m_Stage);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
 	EXPECT_TRUE(testList[0].IsDirectory());
+}
+
+TEST(CTGitPath, ParserFromLsFile_Merged_DeletedFileConflict)
+{
+	// file added, modified on branch A, deleted on branch B, merge branch A on B (git status says: "deleted by us")
+	constexpr char git_ls_file_u_t_z_output[] = { "M 100644 24091f0add7afc47ac7cdc80ae4d3866b2ef588c 1	Neues Textdokument.txt\0M 100644 293b6f6293106b6ebb5d54ad482d7561b0f1c9ae 3	Neues Textdokument.txt" };
+	CGitByteArray byteArray;
+	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
+	CTGitPathList testList;
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	ASSERT_EQ(1, testList.GetCount());
+	EXPECT_STREQ(L"Neues Textdokument.txt", testList[0].GetGitPathString());
+	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
+	EXPECT_FALSE(testList[0].IsDirectory());
 }
 
 TEST(CTGitPath, ParserFromLsFile_Merged_MultipleFilesConflict)
@@ -2090,14 +1860,11 @@ TEST(CTGitPath, ParserFromLsFile_Merged_MultipleFilesConflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, true));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
 	EXPECT_EQ(3, testList.GetCount()); // 3 files are conflicted
 	EXPECT_STREQ(L"OSMtracker.sln", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[1].GetGitPathString());
 	EXPECT_STREQ(L"OSMtracker/osmTileMap.vb", testList[2].GetGitPathString());
-	EXPECT_EQ(1, testList[0].m_Stage);
-	EXPECT_EQ(1, testList[1].m_Stage);
-	EXPECT_EQ(1, testList[2].m_Stage);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[0].m_Action);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[1].m_Action);
 	EXPECT_EQ(CTGitPath::LOGACTIONS_UNMERGED, testList[2].m_Action);
