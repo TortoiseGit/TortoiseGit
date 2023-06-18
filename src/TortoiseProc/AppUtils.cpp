@@ -1921,7 +1921,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 	if (!localHash.IsEmpty())
 		prepareFile(2, mine.GetWinPathString());
 	if (!remoteHash.IsEmpty())
-		prepareFile(2, theirs.GetWinPathString());
+		prepareFile(3, theirs.GetWinPathString());
 
 	if (!localHash.IsEmpty() && !remoteHash.IsEmpty())
 	{
