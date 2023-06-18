@@ -132,5 +132,4 @@ private:
 	CString						m_outputPath;
 	ULONG_PTR					m_gdiPlusToken = 0;
 	CComPtr<ITaskbarList3>		m_pTaskbarList;
-	int							m_themeCallbackId = 0;
 };

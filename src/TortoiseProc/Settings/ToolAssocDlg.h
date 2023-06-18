@@ -38,13 +38,11 @@ public:
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	BOOL OnInitDialog() override;
-	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnBnClickedToolbrowse();
 
 	DECLARE_MESSAGE_MAP()
 
 	bool		m_bAdd = false;
-	CToolTips	m_tooltips;
 	CString		m_sType;
 
 public:

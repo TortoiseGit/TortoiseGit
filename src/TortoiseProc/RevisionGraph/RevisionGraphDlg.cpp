@@ -74,7 +74,6 @@ CRevisionGraphDlg::CRevisionGraphDlg(CWnd* pParent /*=nullptr*/)
 CRevisionGraphDlg::~CRevisionGraphDlg()
 {
 	// GDI+ cleanup
-	CTheme::Instance().RemoveRegisteredCallback(m_themeCallbackId);
 	GdiplusShutdown (m_gdiPlusToken);
 }
 
@@ -248,7 +247,6 @@ BOOL CRevisionGraphDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
-	m_themeCallbackId = CTheme::Instance().RegisterThemeChangeCallback([this]() { SetTheme(CTheme::Instance().IsDarkTheme()); });
 	EnableToolTips();
 
 	CString sWindowTitle;

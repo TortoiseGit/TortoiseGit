@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2020 - TortoiseGit
+// Copyright (C) 2016, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,7 +57,6 @@ BOOL CToolAssocDlg::OnInitDialog()
 	CStandAloneDialog::OnInitDialog();
 
 	EnableToolTips();
-	m_tooltips.Create(this);
 
 	CString title;
 	if (m_sType == L"Diff")
@@ -76,12 +75,6 @@ BOOL CToolAssocDlg::OnInitDialog()
 
 	UpdateData(FALSE);
 	return TRUE;
-}
-
-BOOL CToolAssocDlg::PreTranslateMessage(MSG* pMsg)
-{
-	m_tooltips.RelayEvent(pMsg);
-	return CStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
 void CToolAssocDlg::OnBnClickedToolbrowse()

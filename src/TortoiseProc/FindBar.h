@@ -57,7 +57,7 @@ protected:
 	afx_msg void OnFindPrev();
 	afx_msg void OnFindExit();
 
-	CAutoIcon m_hIcon;
+	CAutoIcon m_hCancelIcon;
 
 	CString					m_sFindStr;
 	BOOL					m_bMatchCase;
