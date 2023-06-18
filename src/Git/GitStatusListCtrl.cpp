@@ -2573,11 +2573,12 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							bool updateStatusList = false;
 							std::set<CString> revertedFiles;
 							std::for_each(targetList.cbegin(), targetList.cend(), [&revertedFiles](auto& path) { revertedFiles.emplace(path.GetGitPathString()); });
+							std::vector<int> toRemove;
 							const int nListboxEntries = GetItemCount();
 							for (int nItem = 0; nItem < nListboxEntries; ++nItem)
 							{
 								auto path = GetListEntry(nItem);
-								if (!revertedFiles.contains(path->GetGitPathString()))
+								if (!path || !revertedFiles.contains(path->GetGitPathString()))
 									continue;
 								if (!path->IsDirectory())
 								{
@@ -2592,25 +2593,36 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 										//this->m_IgnoreFileList.RemoveItem(*path);
 #else
 										updateStatusList = true;
+										break;
 #endif
 									}
 									else
 									{
 										if (GetCheck(nItem))
 											m_nSelected--;
-										RemoveListEntry(nItem);
+										toRemove.emplace_back(nItem);
+										if (toRemove.size() == revertedFiles.size())
+											break;
 									}
 								}
 								else if (path->IsDirectory())
+								{
 									updateStatusList = true;
+									break;
+								}
 							}
-							SetRedraw(TRUE);
 #if 0 // revert an added file and some entry will be cloned (part 2/2)
 							Show(m_dwShow, 0, m_bShowFolders,updateStatusList,true);
 							NotifyCheck();
 #else
 							if (updateStatusList)
 								RefreshParent();
+							else
+							{
+								SetRedraw(FALSE);
+								std::for_each(toRemove.rbegin(), toRemove.rend(), [&](int nItem) { RemoveListEntry(nItem); });
+								SetRedraw(TRUE);
+							}
 #endif
 						}
 					}
