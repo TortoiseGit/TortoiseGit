@@ -1233,6 +1233,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 }
 int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 {
+	static bool mergeReplacedStatus = CRegDWORD(L"Software\\TortoiseGit\\MergeReplacedStatusKS", TRUE, false, HKEY_LOCAL_MACHINE) == TRUE; // TODO: remove kill-switch
 	this->Clear();
 	std::map<CString, size_t> duplicateMap;
 	size_t pos = 0;
@@ -1298,7 +1299,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			if (const auto existing = duplicateMap.find(pathname1); existing != duplicateMap.end())
 			{
 				CTGitPath& p = m_paths[existing->second];
-				p.ParseAndUpdateStatus(log[statusStart]);
+				if (!(mergeReplacedStatus && p.m_Action == CTGitPath::LOGACTIONS_REPLACED && (log[statusStart] == 'A' || log[statusStart] == 'D')))
+					p.ParseAndUpdateStatus(log[statusStart]);
 
 				// reset submodule/folder status if a staged entry is not a folder
 				if (p.IsDirectory() && ((modeOld && !(modeOld & S_IFDIR)) || (modeNew && !(modeNew & S_IFDIR))))
@@ -1328,6 +1330,8 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 
 				AddPath(path);
 				duplicateMap.insert(std::pair<CString, size_t>(path.GetGitPathString(), m_paths.size() - 1));
+				if (mergeReplacedStatus && !pathname2.IsEmpty())
+					duplicateMap.insert(std::pair<CString, size_t>(path.GetGitOldPathString(), m_paths.size() - 1));
 			}
 		}
 		else // numstat output

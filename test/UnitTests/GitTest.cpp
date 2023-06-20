@@ -2668,42 +2668,33 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(testFile, L"lkjglkäöfdg\nfgdjsäkglsfdg\nöäöü45g\nfdgi & §$ % &hfdsgä\nä#äf34öööäß€9875oe\nöäSOMETHINGELSEmfdg\n€fgfdsg\n45\näü\n"));
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr));
-	ASSERT_EQ(2, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED, list.GetAction()); // TODO
+	ASSERT_EQ(1, list.GetCount());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"änsi2.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action); // TODO
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
-	EXPECT_STREQ(L"ansi.txt", list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
-	EXPECT_FALSE(list[1].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, nullptr, true, true));
-	ASSERT_EQ(2, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED | CTGitPath::LOGACTIONS_DELETED, list.GetAction()); // TODO
+	ASSERT_EQ(1, list.GetCount());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"änsi2.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action); // TODO
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	EXPECT_EQ(CTGitPath::StagingStatus::PartiallyStaged, list[0].m_stagingStatus);
-	EXPECT_STREQ(L"ansi.txt", list[1].GetGitPathString());
-	EXPECT_EQ(CTGitPath::CTGitPath::LOGACTIONS_DELETED, list[1].m_Action);
-	EXPECT_FALSE(list[1].IsDirectory());
 	//EXPECT_EQ(CTGitPath::StagingStatus::TotallyStaged, list[1].m_stagingStatus);
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, nullptr));
-	ASSERT_EQ(3, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_ADDED, list.GetAction()); // TODO
+	ASSERT_EQ(2, list.GetCount());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_MODIFIED, list.GetAction());
 	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	EXPECT_STREQ(L"änsi2.txt", list[1].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[1].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action); // TODO
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
-	EXPECT_STREQ(L"ansi.txt", list[2].GetGitPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_DELETED, list[2].m_Action);
-	EXPECT_FALSE(list[2].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter, false));
 	ASSERT_EQ(0, list.GetCount());
@@ -3165,18 +3156,18 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter, true));
 	ASSERT_EQ(1, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"copy/ansi2.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, false, &filter, true, true));
 	ASSERT_EQ(1, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"copy/ansi2.txt", list[0].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[0].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[0].m_Action);
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	EXPECT_EQ(CTGitPath::StagingStatus::TotallyStaged, list[0].m_stagingStatus);
 	list.Clear();
@@ -3197,25 +3188,25 @@ TEST_P(CBasicGitWithTestRepoFixture, GetWorkingTreeChanges)
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter, true));
 	ASSERT_EQ(2, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	EXPECT_STREQ(L"copy/ansi2.txt", list[1].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[1].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action); // TODO
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
 	list.Clear();
 	EXPECT_EQ(0, m_Git.GetWorkingTreeChanges(list, true, &filter, true, true));
 	ASSERT_EQ(2, list.GetCount());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list.GetAction());
+	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED | CTGitPath::LOGACTIONS_REPLACED, list.GetAction());
 	EXPECT_STREQ(L"ascii.txt", list[0].GetGitPathString());
 	EXPECT_EQ(CTGitPath::LOGACTIONS_MODIFIED, list[0].m_Action);
 	EXPECT_FALSE(list[0].IsDirectory());
 	EXPECT_EQ(CTGitPath::StagingStatus::TotallyStaged, list[0].m_stagingStatus);
 	EXPECT_STREQ(L"copy/ansi2.txt", list[1].GetGitPathString());
 	EXPECT_STREQ(L"ansi.txt", list[1].GetGitOldPathString());
-	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_ADDED, list[1].m_Action); // TODO
+	EXPECT_EQ(CTGitPath::LOGACTIONS_REPLACED, list[1].m_Action);
 	EXPECT_FALSE(list[1].IsDirectory());
 	EXPECT_EQ(CTGitPath::StagingStatus::TotallyStaged, list[1].m_stagingStatus);
 
