@@ -22,6 +22,7 @@ Released: unreleased
  * Make TortoiseGitMerge and SSHAskPass multi-monitor DPI aware
  * Fixed issue #3698: "Resolve conflict using theirs" is extremely slow 
  * Update editorconfig to 0.12.6
+ * Fixed issue #3745: Support show log for both A..B and B..A
 
 == Bug Fixes ==
  * Fixed redraw bug in log list

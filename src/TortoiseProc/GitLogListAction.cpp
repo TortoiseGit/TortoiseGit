@@ -456,6 +456,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			}
 			break;
 		case ID_LOG_VIEWRANGE:
+		case ID_LOG_VIEWRANGE_REVERSE:
 		case ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE:
 			{
 				GitRev* pLastEntry = m_arShownList.SafeGetAt(LastSelect);
@@ -465,8 +466,10 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					sep = L"...";
 
 				CString cmdline;
-				cmdline.Format(L"/command:log /path:\"%s\" /range:\"%s%s%s\"",
-					static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(sep), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
+				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REVERSE)
+					cmdline.Format(L"/command:log /path:\"%s\" /range:\"%s%s%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(sep), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString()));
+				else
+					cmdline.Format(L"/command:log /path:\"%s\" /range:\"%s%s%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(sep), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
 				CAppUtils::RunTortoiseGitProc(cmdline);
 			}
 			break;

@@ -234,8 +234,9 @@ void CBrowseRefsDlg::OnBnClickedOk()
 
 	popupMenu.AppendMenuIcon(1, GetSelectedRef(true, false), IDI_LOG);
 	popupMenu.SetDefaultItem(1);
-	popupMenu.AppendMenuIcon(2, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, L".."), IDI_LOG);
-	popupMenu.AppendMenuIcon(3, GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, L"..."), IDI_LOG);
+	popupMenu.AppendMenuIcon(2, GetTwoSelectedRefs(selectedLeafs, selectedLeafs[0]->GetRefName(), L".."), IDI_LOG);
+	popupMenu.AppendMenuIcon(3, GetTwoSelectedRefs(selectedLeafs, selectedLeafs[1]->GetRefName(), L".."), IDI_LOG);
+	popupMenu.AppendMenuIcon(4, GetTwoSelectedRefs(selectedLeafs, selectedLeafs[1]->GetRefName(), L"..."), IDI_LOG);
 
 	RECT rect;
 	GetDlgItem(IDOK)->GetWindowRect(&rect);
@@ -251,18 +252,25 @@ void CBrowseRefsDlg::OnBnClickedOk()
 	case 2:
 		{
 			m_bPickedRefSet = true;
-			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, L"..");
+			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, selectedLeafs[0]->GetRefName(), L"..");
 			OnOK();
 		}
 		break;
 	case 3:
 		{
 			m_bPickedRefSet = true;
-			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, m_sLastSelected, L"...");
+			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, selectedLeafs[1]->GetRefName(), L"..");
 			OnOK();
 		}
 		break;
-	default:
+	case 4:
+		{
+			m_bPickedRefSet = true;
+			m_pickedRef = GetTwoSelectedRefs(selectedLeafs, selectedLeafs[1]->GetRefName(), L"...");
+			OnOK();
+		}
+		break;
+		default:
 		break;
 	}
 }

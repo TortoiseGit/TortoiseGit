@@ -2155,6 +2155,8 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString menu;
 					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(lastSelHash + L".." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE, menu, IDI_LOG);
+					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(firstSelHash + L".." + lastSelHash));
+					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REVERSE, menu, IDI_LOG);
 					menu.Format(IDS_SHOWLOG_OF, static_cast<LPCWSTR>(lastSelHash + L"..." + firstSelHash));
 					popup.AppendMenuIcon(ID_LOG_VIEWRANGE_REACHABLEFROMONLYONE, menu, IDI_LOG);
 					bAddSeparator = true;
