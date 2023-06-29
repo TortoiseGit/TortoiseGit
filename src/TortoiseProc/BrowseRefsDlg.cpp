@@ -1307,13 +1307,11 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			CString sClipdata;
 			bool first = true;
-			POSITION pos = m_ListRefLeafs.GetFirstSelectedItemPosition();
-			while (pos)
+			for (const auto& leaf : selectedLeafs)
 			{
-				auto index = m_ListRefLeafs.GetNextSelectedItem(pos);
 				if (!first)
 					sClipdata += L"\r\n";
-				sClipdata += m_ListRefLeafs.GetItemText(index, eCol_Name);
+				sClipdata += CGit::StripRefName(leaf->GetRefName());
 				first = false;
 			}
 			CStringUtils::WriteAsciiStringToClipboard(sClipdata, GetSafeHwnd());
