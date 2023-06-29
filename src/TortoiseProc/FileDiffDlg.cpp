@@ -958,6 +958,11 @@ void CFileDiffDlg::OnCancel()
 	__super::OnCancel();
 }
 
+void CFileDiffDlg::OnOK()
+{
+	// do nothing, fixes issue #4049
+}
+
 void CFileDiffDlg::OnHdnItemclickFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 {
 	LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);

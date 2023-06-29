@@ -65,6 +65,7 @@ public:
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	void OnCancel() override;
+	void OnOK() override;
 	BOOL OnInitDialog() override;
 	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg LRESULT OnRefLoad(WPARAM wParam, LPARAM lParam);

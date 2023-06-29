@@ -30,6 +30,7 @@ Released: unreleased
  * Fixed issue #4041: Git Worktree Add command error 129 when directory path contains spaces
  * Improved Cygwin and Msys2 compatibility
  * TortoiseGitMerge: Fixed optical glitch if wrap mode is enabled with non-ASCII files
+ * Fixed issue #4049: Diff with previous version - ENTER closes dialog
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
