@@ -418,6 +418,7 @@ void CTGitPath::Reset()
 	this->m_StatAdd.Empty();
 	this->m_StatDel.Empty();
 	m_ParentNo=0;
+	m_stagingStatus = CTGitPath::StagingStatus::DontCare;
 	ATLASSERT(IsEmpty());
 }
 
