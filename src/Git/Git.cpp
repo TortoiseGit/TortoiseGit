@@ -3386,6 +3386,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			{
 				CTGitPath& p = const_cast<CTGitPath&>(result[existing->second]);
 				p.m_Action |= CTGitPath::LOGACTIONS_MISSING;
+				result.m_Action |= CTGitPath::LOGACTIONS_MISSING;
 			}
 		}
 	}
