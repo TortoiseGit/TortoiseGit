@@ -3212,6 +3212,438 @@ bool CGit::LoadTextFile(const CString &filename, CString &msg)
 
 int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPathList* filterlist, bool includedStaged /* = false */, bool getStagingStatus /* = false */)
 {
+	result.Clear();
+	if (UsingLibGit2(GIT_CMD_STATUS) && !filterlist)
+	{
+		CAutoRepository repo(g_Git.GetGitRepository());
+		if (!repo)
+			return -1;
+		CAutoStatusList status;
+		git_status_options options = GIT_STATUS_OPTIONS_INIT;
+		options.flags = GIT_STATUS_OPT_DISABLE_PATHSPEC_MATCH | GIT_STATUS_OPT_RENAMES_HEAD_TO_INDEX | GIT_STATUS_OPT_NO_REFRESH;
+		CAutoTree amendTree;
+		if (amend)
+		{
+			CAutoObject treeObject;
+			if (git_revparse_single(treeObject.GetPointer(), repo, "HEAD~1^{tree}") < 0)
+				return -1;
+			amendTree.ConvertFrom(std::move(treeObject));
+			options.baseline = amendTree;
+		}
+		std::vector<CStringA> refspecs;
+		std::vector<char*> vc;
+		if (filterlist)
+		{
+			refspecs.reserve(filterlist->GetCount());
+			std::transform(filterlist->cbegin(), filterlist->cend(), std::back_inserter(refspecs), [](auto& ref) { return CUnicodeUtils::GetUTF8(ref.GetGitPathString()); });
+
+			vc.reserve(refspecs.size());
+			std::transform(refspecs.begin(), refspecs.end(), std::back_inserter(vc), [](CStringA& s) -> char* { return s.GetBuffer(); });
+			options.pathspec = { vc.data(), vc.size() };
+		}
+		if (git_status_list_new(status.GetPointer(), repo, &options))
+			return -1;
+		CAutoIndex index;
+		const size_t count = git_status_list_entrycount(status);
+		CTGitPath path;
+		for (size_t i = 0; i < count; ++i)
+		{
+			const git_status_entry* statusentry = git_status_byindex(status, i);
+			wprintf(L"%d\n", statusentry->status);
+			switch (+statusentry->status) // to get around C4063, cf. https://wiki.openoffice.org/wiki/Writing_warning-free_code#Invalid_enum_case_values
+			{
+			case GIT_STATUS_CONFLICTED:
+			{
+				int isSubmodule = (statusentry->index_to_workdir->old_file.mode & S_IFDIR) == S_IFDIR || (statusentry->index_to_workdir->new_file.mode & S_IFDIR) == S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->index_to_workdir->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_UNMERGED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyUnstaged;
+
+				if (!index)
+				{
+					if (git_repository_index(index.GetPointer(), repo) < 0)
+						return -1;
+				}
+				const git_index_entry* stage1 = git_index_get_bypath(index, statusentry->index_to_workdir->new_file.path, 1);
+				const git_index_entry* stage2 = git_index_get_bypath(index, statusentry->index_to_workdir->new_file.path, 2);
+
+				if (isSubmodule)
+				{
+					if (stage1 != nullptr && (stage1->mode & S_IFDIR) == S_IFDIR && stage2 != nullptr && (stage2->mode & S_IFDIR) == S_IFDIR)
+					{
+						path.m_StatAdd = L"1";
+						path.m_StatDel = L"1";
+					}
+					else if (stage1 == nullptr && stage2 != nullptr && (stage2->mode & S_IFDIR) == S_IFDIR)
+					{
+						path.m_StatAdd = L"0";
+						path.m_StatDel = L"0";
+					}
+					else if (stage2 == nullptr && stage1 != nullptr && (stage1->mode & S_IFDIR) == S_IFDIR)
+					{
+						path.m_StatAdd = L"1";
+						path.m_StatDel = L"0";
+					}
+					else
+					{
+						path.m_StatAdd = L"1";
+						path.m_StatDel = L"1";
+					}
+				}
+				else if ((statusentry->index_to_workdir->old_file.flags & GIT_DIFF_FLAG_BINARY) != 0 || (statusentry->index_to_workdir->new_file.flags & GIT_DIFF_FLAG_BINARY) != 0)
+				{
+					path.m_StatAdd = L"-";
+					path.m_StatDel = L"-";
+				}
+				else
+				{
+					std::unique_ptr<char[]> pBuf;
+					size_t length = 0;
+					{
+						// open the file and read the contents
+						CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+						if (!hFile)
+							return -1;
+						DWORD filelength = GetFileSize(hFile, nullptr);
+						if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+							return -1;
+						length = filelength;
+						pBuf = std::make_unique<char[]>(length);
+						if (!pBuf)
+							return -1;
+						DWORD readlength = 0;
+						if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+							return -1;
+					}
+					CAutoBlob blobOld;
+					if ((stage1 != nullptr || stage2 != nullptr) && git_blob_lookup(blobOld.GetPointer(), repo, (statusentry->head_to_index->new_file.flags & GIT_DIFF_FLAG_EXISTS) ? &statusentry->head_to_index->new_file.id : &statusentry->head_to_index->old_file.id) < 0)
+						return -1;
+					CAutoPatch patch;
+					if (git_patch_from_blob_and_buffer(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, pBuf.get(), length, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+						return -1;
+					size_t add = 0, del = 0;
+					git_patch_line_stats(nullptr, &add, &del, patch);
+					path.m_StatAdd.Format(L"%zu", add);
+					path.m_StatDel.Format(L"%zu", del);
+				}
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_MODIFIED:
+			case GIT_STATUS_INDEX_TYPECHANGE:
+			{
+				CString local = CombinePath(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path));
+				int isSubmodule = PathIsDirectory(local) && (statusentry->head_to_index->new_file.mode & S_IFDIR) == S_IFDIR; //|| (statusentry->head_to_index->old_file.mode & S_IFDIR) == S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyStaged;
+				if ((statusentry->head_to_index->new_file.mode & S_IFDIR) == S_IFDIR || (statusentry->head_to_index->old_file.mode & S_IFDIR) == S_IFDIR)
+				{
+					path.m_StatAdd = L"1";
+					path.m_StatDel = L"1";
+				}
+				else
+				{
+					CAutoBlob blobOld;
+					CAutoBlob blobNew;
+					if (git_blob_lookup(blobNew.GetPointer(), repo, &statusentry->head_to_index->new_file.id) < 0)
+						return -1;
+					if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->head_to_index->old_file.id) < 0)
+						return -1;
+					if (!git_blob_is_binary(blobNew) && !git_blob_is_binary(blobOld))
+					{
+						CAutoPatch patch;
+						if (git_patch_from_blobs(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, blobNew, statusentry->head_to_index->new_file.path, nullptr) < 0)
+							return -1;
+						size_t add = 0, del = 0;
+						if (git_patch_line_stats(nullptr, &add, &del, patch) < 0)
+							return -1;
+						path.m_StatAdd.Format(L"%zu", add);
+						path.m_StatDel.Format(L"%zu", del);
+					}
+					else
+					{
+						path.m_StatAdd = L"-";
+						path.m_StatDel = L"-";
+					}
+				}
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_WT_MODIFIED:
+			{
+				int isSubmodule = statusentry->index_to_workdir->new_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->index_to_workdir->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyUnstaged;
+				if (!isSubmodule)
+				{
+					std::unique_ptr<char[]> pBuf;
+					size_t length = 0;
+					{
+						// open the file and read the contents
+						CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+						if (!hFile)
+							return -1;
+						DWORD filelength = GetFileSize(hFile, nullptr);
+						if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+							return -1;
+						length = filelength;
+						pBuf = std::make_unique<char[]>(length);
+						if (!pBuf)
+							return -1;
+						DWORD readlength = 0;
+						if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+							return -1;
+					}
+					CAutoBlob blobOld;
+					if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->index_to_workdir->old_file.id) < 0)
+						return -1;
+					CAutoPatch patch;
+					if (git_patch_from_blob_and_buffer(patch.GetPointer(), blobOld, statusentry->index_to_workdir->old_file.path, pBuf.get(), length, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+						return -1;
+					size_t add = 0, del = 0;
+					git_patch_line_stats(nullptr, &add, &del, patch);
+					path.m_StatAdd.Format(L"%zu", add);
+					path.m_StatDel.Format(L"%zu", del);
+				}
+				else
+				{
+					path.m_StatAdd = L"1";
+					path.m_StatDel = L"1";
+				}
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_MODIFIED | GIT_STATUS_WT_MODIFIED:
+			{
+				int isSubmodule = statusentry->head_to_index->new_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_MODIFIED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::PartiallyStaged;
+				std::unique_ptr<char[]> pBuf;
+				size_t length = 0;
+				{
+					// open the file and read the contents
+					CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+					if (!hFile)
+						return -1;
+					DWORD filelength = GetFileSize(hFile, nullptr);
+					if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+						return -1;
+					length = filelength;
+					pBuf = std::make_unique<char[]>(length);
+					if (!pBuf)
+						return -1;
+					DWORD readlength = 0;
+					if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+						return -1;
+				}
+				CAutoBlob blobOld;
+				if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->head_to_index->old_file.id) < 0)
+					return -1;
+				CAutoPatch patch;
+				if (git_patch_from_blob_and_buffer(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, pBuf.get(), length, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_WT_DELETED:
+			{
+				int isSubmodule = statusentry->index_to_workdir->old_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->index_to_workdir->old_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_DELETED | CTGitPath::LOGACTIONS_MISSING;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyUnstaged;
+				CAutoBlob blobOld;
+				if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->index_to_workdir->old_file.id) < 0)
+					return -1;
+				CAutoPatch patch;
+				if (git_patch_from_blobs(patch.GetPointer(), blobOld, statusentry->index_to_workdir->old_file.path, nullptr, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_RENAMED:
+			{
+				int isSubmodule = statusentry->head_to_index->new_file.mode & S_IFDIR;
+				CString oldPathname = CUnicodeUtils::GetUnicode(statusentry->head_to_index->old_file.path);
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), &oldPathname, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_REPLACED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyStaged;
+				CAutoBlob blobOld;
+				CAutoBlob blobNew;
+				if (git_blob_lookup(blobNew.GetPointer(), repo, &statusentry->head_to_index->new_file.id) < 0)
+					return -1;
+				if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->head_to_index->old_file.id) < 0)
+					return -1;
+				CAutoPatch patch;
+				if (git_patch_from_blobs(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, blobNew, statusentry->head_to_index->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_RENAMED | GIT_STATUS_WT_MODIFIED:
+			{
+				int isSubmodule = statusentry->head_to_index->new_file.mode & S_IFDIR;
+				CString oldPathname = CUnicodeUtils::GetUnicode(statusentry->head_to_index->old_file.path);
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), &oldPathname, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_REPLACED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::PartiallyStaged;
+				std::unique_ptr<char[]> pBuf;
+				size_t length = 0;
+				{
+					// open the file and read the contents
+					CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+					if (!hFile)
+						return -1;
+					DWORD filelength = GetFileSize(hFile, nullptr);
+					if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+						return -1;
+					length = filelength;
+					pBuf = std::make_unique<char[]>(length);
+					if (!pBuf)
+						return -1;
+					DWORD readlength = 0;
+					if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+						return -1;
+				}
+				CAutoBlob blobOld;
+				if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->head_to_index->old_file.id) < 0)
+					return -1;
+				CAutoPatch patch;
+				if (git_patch_from_blob_and_buffer(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, pBuf.get(), length, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_DELETED:
+			{
+				int isSubmodule = statusentry->head_to_index->old_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->old_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_DELETED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyStaged;
+				CAutoBlob blobOld;
+				if (git_blob_lookup(blobOld.GetPointer(), repo, &statusentry->head_to_index->old_file.id) < 0)
+					return -1;
+				CAutoPatch patch;
+				if (git_patch_from_blobs(patch.GetPointer(), blobOld, statusentry->head_to_index->old_file.path, nullptr, statusentry->head_to_index->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_NEW | GIT_STATUS_WT_MODIFIED:
+			{
+				int isSubmodule = statusentry->head_to_index->new_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_ADDED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::PartiallyStaged;
+				if (!isSubmodule)
+				{
+					std::unique_ptr<char[]> pBuf;
+					size_t length = 0;
+					{
+						// open the file and read the contents
+						CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+						if (!hFile)
+							return -1;
+						DWORD filelength = GetFileSize(hFile, nullptr);
+						if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+							return -1;
+						length = filelength;
+						pBuf = std::make_unique<char[]>(length);
+						if (!pBuf)
+							return -1;
+						DWORD readlength = 0;
+						if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+							return -1;
+					}
+					CAutoPatch patch;
+					if (git_patch_from_blob_and_buffer(patch.GetPointer(), nullptr, statusentry->head_to_index->old_file.path, pBuf.get(), length, statusentry->index_to_workdir->new_file.path, nullptr) < 0)
+						return -1;
+					size_t add = 0, del = 0;
+					git_patch_line_stats(nullptr, &add, &del, patch);
+					path.m_StatAdd.Format(L"%zu", add);
+					path.m_StatDel.Format(L"%zu", del);
+				}
+				else
+				{
+					path.m_StatAdd = L"1";
+					path.m_StatDel = L"0";
+				}
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			case GIT_STATUS_INDEX_NEW:
+			{
+				int isSubmodule = statusentry->head_to_index->new_file.mode & S_IFDIR;
+				path.SetFromGit(CUnicodeUtils::GetUnicode(statusentry->head_to_index->new_file.path), nullptr, &isSubmodule);
+				path.m_Action = CTGitPath::LOGACTIONS_ADDED;
+				path.m_stagingStatus = CTGitPath::StagingStatus::TotallyStaged;
+
+				std::unique_ptr<char[]> pBuf;
+				size_t length = 0;
+				{
+					// open the file and read the contents
+					CAutoFile hFile = CreateFile(CombinePath(path.GetGitPathString()), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, 0);
+					if (!hFile)
+						return -1;
+					DWORD filelength = GetFileSize(hFile, nullptr);
+					if (filelength == INVALID_FILE_SIZE) // TODO: length limitation
+						return -1;
+					length = filelength;
+					pBuf = std::make_unique<char[]>(length);
+					if (!pBuf)
+						return -1;
+					DWORD readlength = 0;
+					if (!ReadFile(hFile, pBuf.get(), static_cast<DWORD>(filelength), &readlength, nullptr) || readlength != filelength)
+						return -1;
+				}
+				CAutoPatch patch;
+				if (git_patch_from_blob_and_buffer(patch.GetPointer(), nullptr, statusentry->head_to_index->old_file.path, pBuf.get(), length, statusentry->head_to_index->new_file.path, nullptr) < 0)
+					return -1;
+				size_t add = 0, del = 0;
+				git_patch_line_stats(nullptr, &add, &del, patch);
+				path.m_StatAdd.Format(L"%zu", add);
+				path.m_StatDel.Format(L"%zu", del);
+
+				result.AddPath(path);
+				result.m_Action |= path.m_Action;
+				break;
+			}
+			}
+		}
+		return 0;
+	}
+
 	if (IsInitRepos())
 		return GetInitAddList(result, getStagingStatus);
 

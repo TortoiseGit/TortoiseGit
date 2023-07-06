@@ -239,6 +239,7 @@ public:
 		GIT_CMD_LOGLISTDIFF,
 		GIT_CMD_BRANCH_CONTAINS,
 		GIT_CMD_GETCONFLICTINFO,
+		GIT_CMD_STATUS,
 		LAST_VALUE,
 	};
 	static_assert(LIBGIT2_CMD::LAST_VALUE < sizeof(DWORD) * 8, "too many flags for storing them in a DWORD bitfield");
