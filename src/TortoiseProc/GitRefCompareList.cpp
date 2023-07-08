@@ -206,7 +206,7 @@ void CGitRefCompareList::Show()
 
 	if (m_nSortedColumn >= 0)
 	{
-		auto predicate = [](bool sortLogical, int sortColumn, const RefEntry& e1, const RefEntry& e2)
+		const auto predicate = [sortColumn=m_nSortedColumn, sortLogical=!!m_bSortLogical](const RefEntry& e1, const RefEntry& e2)
 		{
 			switch (sortColumn)
 			{
@@ -229,9 +229,9 @@ void CGitRefCompareList::Show()
 		};
 
 		if (m_bAscending)
-			std::stable_sort(m_RefList.begin(), m_RefList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_1, std::placeholders::_2));
+			std::stable_sort(m_RefList.begin(), m_RefList.end(), [&predicate](const auto& first, const auto& second) { return predicate(first, second); });
 		else
-			std::stable_sort(m_RefList.begin(), m_RefList.end(), std::bind(predicate, m_bSortLogical, m_nSortedColumn, std::placeholders::_2, std::placeholders::_1));
+			std::stable_sort(m_RefList.begin(), m_RefList.end(), [&predicate](const auto& first, const auto& second) { return predicate(second, first); });
 	}
 	else
 		std::sort(m_RefList.begin(), m_RefList.end(), SortPredicate);

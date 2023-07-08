@@ -178,7 +178,7 @@ BOOL CMailMsg::Send()
 	originator.lpszName = const_cast<LPWSTR>(static_cast<LPCWSTR>(m_from.name));
 
 	std::vector<MapiRecipDescW> recipients;
-	auto addRecipient = [&recipients](ULONG ulRecipClass, const MailAddress& recipient)
+	const auto addRecipient = [&recipients](ULONG ulRecipClass, const MailAddress& recipient)
 	{
 		MapiRecipDescW repipDesc = { 0 };
 		repipDesc.ulRecipClass = ulRecipClass;
@@ -187,9 +187,9 @@ BOOL CMailMsg::Send()
 		recipients.emplace_back(repipDesc);
 	};
 	// add to recipients
-	std::for_each(m_to.cbegin(), m_to.cend(), std::bind(addRecipient, MAPI_TO, std::placeholders::_1));
+	std::for_each(m_to.cbegin(), m_to.cend(), [&addRecipient](const auto& recipient) { addRecipient(MAPI_TO, recipient); });
 	// add cc receipients
-	std::for_each(m_cc.cbegin(), m_cc.cend(), std::bind(addRecipient, MAPI_CC, std::placeholders::_1));
+	std::for_each(m_cc.cbegin(), m_cc.cend(), [&addRecipient](const auto& recipient) { addRecipient(MAPI_CC, recipient); });
 
 	// add attachments
 	std::vector<MapiFileDescW> attachments;
