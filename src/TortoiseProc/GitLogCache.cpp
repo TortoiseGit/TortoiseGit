@@ -461,32 +461,32 @@ int CLogCache::SaveCache()
 		bool isShallow = !m_shallowAnchors.empty();
 		for (auto i = m_HashMap.cbegin(); i != m_HashMap.cend(); ++i)
 		{
-			if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
+			if (!bIsRebuild && GetOffset((*i).second.m_CommitHash, pIndex) != 0)
+				continue;
+
+			if (!(*i).second.m_IsDiffFiles || (*i).second.m_CommitHash.IsEmpty() || (isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
+				continue;
+
+			LARGE_INTEGER offset;
+			offset.LowPart = 0;
+			offset.HighPart = 0;
+			LARGE_INTEGER start;
+			start.QuadPart = 0;
+			SetFilePointerEx(m_DataFile, start, &offset, FILE_CURRENT);
+			if (SaveOneItem((*i).second, static_cast<LONG>(offset.QuadPart)))
 			{
-				if ((*i).second.m_IsDiffFiles && !(*i).second.m_CommitHash.IsEmpty() && !(isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
-				{
-					LARGE_INTEGER offset;
-					offset.LowPart=0;
-					offset.HighPart=0;
-					LARGE_INTEGER start;
-					start.QuadPart = 0;
-					SetFilePointerEx(m_DataFile, start, &offset, FILE_CURRENT);
-					if (this->SaveOneItem((*i).second, static_cast<LONG>(offset.QuadPart)))
-					{
-						TRACE(L"Save one item error");
-						SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN);
-						continue;
-					}
-
-					SLogCacheIndexItem item;
-					item.m_Hash = (*i).second.m_CommitHash;
-					item.m_Offset=offset.QuadPart;
-
-					DWORD num;
-					WriteFile(m_IndexFile,&item,sizeof(SLogCacheIndexItem),&num,0);
-					++header.m_ItemCount;
-				}
+				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Save one item error\n");
+				SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN);
+				continue;
 			}
+
+			SLogCacheIndexItem item;
+			item.m_Hash = (*i).second.m_CommitHash;
+			item.m_Offset = offset.QuadPart;
+
+			DWORD num;
+			WriteFile(m_IndexFile, &item, sizeof(SLogCacheIndexItem), &num, 0);
+			++header.m_ItemCount;
 		}
 		FlushFileBuffers(m_IndexFile);
 
