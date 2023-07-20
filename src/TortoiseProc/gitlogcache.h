@@ -108,7 +108,7 @@ protected:
 	HANDLE m_IndexFileMap = nullptr;
 	SLogCacheIndexFile* m_pCacheIndex = nullptr;
 
-
+	std::set<CGitHash> m_shallowAnchors;
 
 	HANDLE m_DataFile = INVALID_HANDLE_VALUE;
 	HANDLE m_DataFileMap = nullptr;

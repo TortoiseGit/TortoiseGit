@@ -33,6 +33,7 @@ Released: unreleased
  * TortoiseGitMerge: Fixed optical glitch if wrap mode is enabled with non-ASCII files
  * Fixed issue #4049: Diff with previous version - ENTER closes dialog
  * Fixed issue #4051: Copy ref names in nested view does not copy full ref name
+ * Fixed issue #3373: Refresh log after shallow clone depth update
 
 = Release 2.14.0.1 =
 Released: 2023-04-15

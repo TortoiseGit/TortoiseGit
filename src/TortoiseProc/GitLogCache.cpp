@@ -109,6 +109,27 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	if (!GitAdminDir::GetWorktreeAdminDirPath(GitDir, m_GitDir))
 		return -1;
 
+	if (PathFileExists(m_GitDir + L"\\shallow"))
+	{
+		try
+		{
+			CString strLine;
+			CStdioFile file(m_GitDir + L"\\shallow", CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
+			while (file.ReadString(strLine))
+			{
+				if (!CGitHash::IsValidSHA1(strLine))
+					continue;
+
+				m_shallowAnchors.insert(CGitHash::FromHexStr(strLine));
+			}
+		}
+		catch (CFileException* pE)
+		{
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading shallow file commits list\n");
+			pE->Delete();
+		}
+	}
+
 	int ret = -1;
 	do
 	{
@@ -437,11 +458,12 @@ int CLogCache::SaveCache()
 		SetFilePointer(m_DataFile, 0, 0, FILE_END);
 		SetFilePointer(m_IndexFile, 0, 0, FILE_END);
 
+		bool isShallow = !m_shallowAnchors.empty();
 		for (auto i = m_HashMap.cbegin(); i != m_HashMap.cend(); ++i)
 		{
 			if(this->GetOffset((*i).second.m_CommitHash,pIndex) ==0 || bIsRebuild)
 			{
-				if((*i).second.m_IsDiffFiles && !(*i).second.m_CommitHash.IsEmpty())
+				if ((*i).second.m_IsDiffFiles && !(*i).second.m_CommitHash.IsEmpty() && !(isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
 				{
 					LARGE_INTEGER offset;
 					offset.LowPart=0;
