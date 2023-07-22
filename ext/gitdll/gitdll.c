@@ -461,14 +461,15 @@ int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow)
 }
 
 struct notes_tree **display_notes_trees;
-int git_close_log(GIT_LOG handle)
+int git_close_log(GIT_LOG handle, int releaseRevsisions)
 {
 	if(handle)
 	{
 		struct rev_info *p_Rev;
 		p_Rev=(struct rev_info *)handle;
 		p_Rev->diffopt.no_free = 0;
-		release_revisions(p_Rev);
+		if (releaseRevsisions)
+			release_revisions(p_Rev);
 		diff_free(&p_Rev->diffopt);
 		free(p_Rev->pPrivate);
 		free(handle);

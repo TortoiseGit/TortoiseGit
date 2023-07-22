@@ -98,7 +98,12 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	try
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		[&]{ git_get_log_firstcommit(handle); }();
+		if (git_get_log_firstcommit(handle) < 0)
+		{
+			MessageBox(nullptr, L"Getting first commit and preparing the revision walk failed. Broken repository?", L"TortoiseGit", MB_ICONERROR);
+			git_close_log(handle, 0);
+			return -1;
+		}
 	}
 	catch (const char* msg)
 	{
@@ -167,7 +172,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		git_close_log(handle);
+		git_close_log(handle, 1);
 	}
 
 	return 0;

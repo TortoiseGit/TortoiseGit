@@ -2921,7 +2921,15 @@ UINT CGitLogListBase::LogThread()
 		int total = 0;
 		try
 		{
-			[&] {git_get_log_firstcommit(m_DllGitLog);}();
+			if (git_get_log_firstcommit(m_DllGitLog) < 0)
+			{
+				MessageBox(L"Getting first commit and preparing the revision walk failed. Broken repository?", L"TortoiseGit", MB_ICONERROR);
+				git_close_log(m_DllGitLog, 0);
+				g_Git.m_critGitDllSec.Unlock();
+				InterlockedExchange(&s_bThreadRunning, FALSE);
+				InterlockedExchange(&m_bNoDispUpdates, FALSE);
+				return 1;
+			}
 			total = git_get_log_estimate_commit_count(m_DllGitLog);
 		}
 		catch (const char* msg)
@@ -3113,7 +3121,7 @@ UINT CGitLogListBase::LogThread()
 			}
 		}
 		g_Git.m_critGitDllSec.Lock();
-		git_close_log(m_DllGitLog);
+		git_close_log(m_DllGitLog, 1);
 		g_Git.m_critGitDllSec.Unlock();
 	}
 

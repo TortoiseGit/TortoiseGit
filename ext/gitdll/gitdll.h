@@ -109,7 +109,7 @@ GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
  */
 GITDLL_API int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow);
 
-GITDLL_API int git_close_log(GIT_LOG handle);
+GITDLL_API int git_close_log(GIT_LOG handle, int releaseRevsisions);
 
 /**
  *	Get Commit information from commit hash
