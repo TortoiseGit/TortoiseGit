@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2021 TortoiseGit
+// Copyright (C) 2014, 2016-2021, 2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 #include "hash.h"
 #include "filter.h"
 #include "repository.h"
+#include "win32/utf-conv.h"
 
 #include "system-call.h"
 #include "filter-filter.h"
@@ -195,7 +196,7 @@ static int filter_apply(
 		git_str_dispose(&shParams);
 	}
 
-	if (git__utf8_to_16_alloc(&wide_cmd, cmd.ptr) < 0)
+	if (git_utf8_to_16_alloc(&wide_cmd, cmd.ptr) < 0)
 	{
 		git_str_dispose(&cmd);
 		git_error_set_oom();

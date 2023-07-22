@@ -51,9 +51,6 @@
     <Filter Include="Source Files\libgit2\transports">
       <UniqueIdentifier>{d20b438c-a3c6-4c98-80db-27bc6196208c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\libgit2\xdiff">
-      <UniqueIdentifier>{518b1f3c-b83c-48a3-b067-4dcba632612a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\util">
       <UniqueIdentifier>{06005ed8-d58a-44f9-8416-3db241708ca0}</UniqueIdentifier>
     </Filter>
@@ -78,8 +75,8 @@
     <Filter Include="Header Files\libgit2\transports">
       <UniqueIdentifier>{4af4e697-1a6c-4f2a-b096-bba6fd8759c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\libgit2\xdiff">
-      <UniqueIdentifier>{01a0a57e-fc50-4a9e-9691-40be14ebe9c0}</UniqueIdentifier>
+    <Filter Include="deps\xdiff">
+      <UniqueIdentifier>{518b1f3c-b83c-48a3-b067-4dcba632612a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,26 +113,26 @@
     <ClCompile Include="..\libgit2\src\libgit2\transports\winhttp.c">
       <Filter>Source Files\libgit2\transports</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xdiffi.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xdiffi.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xemit.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xemit.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xhistogram.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xhistogram.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xmerge.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xmerge.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xpatience.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xpatience.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xprepare.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xprepare.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xutils.c">
-      <Filter>Source Files\libgit2\xdiff</Filter>
+    <ClCompile Include="..\libgit2\deps\xdiff\xutils.c">
+      <Filter>deps\xdiff</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\util\win32\error.c">
       <Filter>Source Files\util\win32</Filter>
@@ -159,9 +156,6 @@
       <Filter>TGit extensions</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\transports\auth.c">
-      <Filter>Source Files\libgit2\transports</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\transports\auth_negotiate.c">
       <Filter>Source Files\libgit2\transports</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\util\win32\path_w32.c">
@@ -392,9 +386,6 @@
     <ClCompile Include="..\libgit2\src\util\net.c">
       <Filter>Source Files\util</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\netops.c">
-      <Filter>Source Files\libgit2</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\notes.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
@@ -605,6 +596,9 @@
     <ClCompile Include="..\libgit2\src\util\hash\win32.c">
       <Filter>Source Files\util\hash</Filter>
     </ClCompile>
+    <ClCompile Include="..\libgit2\src\libgit2\grafts.c">
+      <Filter>Source Files\libgit2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libgit2\src\util\win32\mingw-compat.h">
@@ -759,30 +753,6 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\util\win32\dir.h">
       <Filter>Header Files\util\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xdiff.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xdiffi.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xemit.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xinclude.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xmacros.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xprepare.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xtypes.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xutils.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\strarray.h">
       <Filter>Public Header Files</Filter>
@@ -990,9 +960,6 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\email.h">
       <Filter>Public Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\git-xdiff.h">
-      <Filter>Header Files\libgit2\xdiff</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\worktree.h">
       <Filter>Source Files\libgit2</Filter>
@@ -1225,9 +1192,6 @@
     <ClInclude Include="..\libgit2\src\libgit2\mwindow.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\netops.h">
-      <Filter>Header Files\libgit2</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\notes.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
@@ -1353,6 +1317,39 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\strarray.h">
       <Filter>Header Files\libgit2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\git-xdiff.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xdiff.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xdiffi.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xemit.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xinclude.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xmacros.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xprepare.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xtypes.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\deps\xdiff\xutils.h">
+      <Filter>deps\xdiff</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\libgit2\grafts.h">
+      <Filter>Header Files\libgit2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\util\staticstr.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

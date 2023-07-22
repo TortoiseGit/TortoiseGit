@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016, 2019, 2021 TortoiseGit
+// Copyright (C) 2014, 2016, 2019, 2021, 2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,7 +18,6 @@
 //
 
 #include "str.h"
-#include "netops.h"
 #include "system-call.h"
 
 static void safeCloseHandle(HANDLE *handle)

@@ -56,8 +56,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src\libgit2;..\libgit2\src\util;..\libgit2\include;..\libgit2\deps\http-parser;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;GIT_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_SHA256_WIN32;GIT_NTLM;GIT_REGEX_PCRE2;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src\libgit2;..\libgit2\src\util;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\xdiff;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;GIT_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_SHA256_WIN32;GIT_NTLM;GIT_REGEX_PCRE2;GIT_IO_WSAPOLL;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -78,6 +78,7 @@
     <ClCompile Include="..\..\src\libgit2\ssh-wintunnel.c" />
     <ClCompile Include="..\..\src\libgit2\system-call.c" />
     <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
+    <ClCompile Include="..\libgit2\src\libgit2\grafts.c" />
     <ClCompile Include="..\libgit2\src\util\alloc.c" />
     <ClCompile Include="..\libgit2\src\util\allocators\failalloc.c" />
     <ClCompile Include="..\libgit2\src\util\allocators\stdalloc.c" />
@@ -148,7 +149,6 @@
     <ClCompile Include="..\libgit2\src\libgit2\mwindow.c" />
     <ClCompile Include="..\libgit2\src\util\hash\win32.c" />
     <ClCompile Include="..\libgit2\src\util\net.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\netops.c" />
     <ClCompile Include="..\libgit2\src\libgit2\notes.c" />
     <ClCompile Include="..\libgit2\src\libgit2\object.c" />
     <ClCompile Include="..\libgit2\src\libgit2\object_api.c" />
@@ -210,7 +210,6 @@
     <ClCompile Include="..\libgit2\src\libgit2\transaction.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transport.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\auth.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\transports\auth_negotiate.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\credential.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\credential_helpers.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\ssh.c" />
@@ -245,13 +244,13 @@
     <ClCompile Include="..\libgit2\src\util\win32\w32_leakcheck.c" />
     <ClCompile Include="..\libgit2\src\util\win32\w32_util.c" />
     <ClCompile Include="..\libgit2\src\libgit2\worktree.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xdiffi.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xemit.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xhistogram.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xmerge.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xpatience.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xprepare.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\xdiff\xutils.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xdiffi.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xemit.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xhistogram.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xmerge.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xpatience.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xprepare.c" />
+    <ClCompile Include="..\libgit2\deps\xdiff\xutils.c" />
     <ClCompile Include="..\libgit2\src\util\zstream.c" />
   </ItemGroup>
   <ItemGroup>
@@ -313,6 +312,7 @@
     <ClInclude Include="..\libgit2\include\git2\transaction.h" />
     <ClInclude Include="..\libgit2\include\git2\transport.h" />
     <ClInclude Include="..\libgit2\include\git2\worktree.h" />
+    <ClInclude Include="..\libgit2\src\libgit2\grafts.h" />
     <ClInclude Include="..\libgit2\src\libgit2\strarray.h" />
     <ClInclude Include="..\libgit2\src\util\alloc.h" />
     <ClInclude Include="..\libgit2\src\util\allocators\failalloc.h" />
@@ -380,7 +380,6 @@
     <ClInclude Include="..\libgit2\src\libgit2\midx.h" />
     <ClInclude Include="..\libgit2\src\libgit2\mwindow.h" />
     <ClInclude Include="..\libgit2\src\util\net.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\netops.h" />
     <ClInclude Include="..\libgit2\src\libgit2\notes.h" />
     <ClInclude Include="..\libgit2\src\libgit2\object.h" />
     <ClInclude Include="..\libgit2\src\libgit2\odb.h" />
@@ -417,6 +416,7 @@
     <ClInclude Include="..\libgit2\src\libgit2\signature.h" />
     <ClInclude Include="..\libgit2\src\util\sortedcache.h" />
     <ClInclude Include="..\libgit2\src\libgit2\status.h" />
+    <ClInclude Include="..\libgit2\src\util\staticstr.h" />
     <ClInclude Include="..\libgit2\src\util\str.h" />
     <ClInclude Include="..\libgit2\src\libgit2\stream.h" />
     <ClInclude Include="..\libgit2\src\libgit2\streams\mbedtls.h" />
@@ -457,15 +457,15 @@
     <ClInclude Include="..\libgit2\src\util\win32\w32_util.h" />
     <ClInclude Include="..\libgit2\src\util\win32\win32-compat.h" />
     <ClInclude Include="..\libgit2\src\libgit2\worktree.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\git-xdiff.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xdiff.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xdiffi.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xemit.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xinclude.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xmacros.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xprepare.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xtypes.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\xdiff\xutils.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\git-xdiff.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xdiff.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xdiffi.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xemit.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xinclude.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xmacros.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xprepare.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xtypes.h" />
+    <ClInclude Include="..\libgit2\deps\xdiff\xutils.h" />
     <ClInclude Include="..\libgit2\src\util\win32\posix.h" />
     <ClInclude Include="..\libgit2\src\util\win32\precompiled.h" />
     <ClInclude Include="..\libgit2\src\util\win32\utf-conv.h" />

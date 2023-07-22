@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2022 TortoiseGit
+// Copyright (C) 2014, 2016-2023 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -20,7 +20,7 @@
 //
 
 #include "str.h"
-#include "netops.h"
+#include "win32/utf-conv.h"
 #include "http_parser.h"
 #include "../../ext/libgit2/src/libgit2/transports/smart.h"
 #include "system-call.h"
@@ -388,7 +388,7 @@ post_extract:
 		goto on_error;
 	}
 
-	if (git__utf8_to_16_alloc(&wideParams, params.ptr) < 0) {
+	if (git_utf8_to_16_alloc(&wideParams, params.ptr) < 0) {
 		git_error_set_oom();
 		goto on_error;
 	}
