@@ -7,7 +7,6 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-#include "Scintilla.h"
 
 namespace Scintilla::Internal {
 
@@ -679,7 +678,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 public:
 	~Editor() override;
 
-	virtual void NotifyParent(SCNotification *scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const noexcept;
 	// Public so scintilla_send_message can use it.
@@ -701,7 +699,7 @@ public:
 	AutoSurface(const Editor *ed) :
 		surf(ed->CreateMeasurementSurface())  {
 	}
-	AutoSurface(SurfaceID sid, Editor *ed, std::optional<Scintilla::Technology> technology = {}) :
+	AutoSurface(SurfaceID sid, const Editor *ed, std::optional<Scintilla::Technology> technology = {}) :
 		surf(ed->CreateDrawingSurface(sid, technology)) {
 	}
 	// Deleted so AutoSurface objects can not be copied.
