@@ -3292,9 +3292,9 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		CString cmd;
 
 		if (!filterlist)
-			cmd = L"git.exe ls-files -d -z";
+			cmd = L"git.exe diff --name-only --diff-filter=D -z";
 		else
-			cmd.Format(L"git.exe ls-files -d -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+			cmd.Format(L"git.exe diff --name-only --diff-filter=D -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
 
 		Run(cmd, &cmdout);
 
