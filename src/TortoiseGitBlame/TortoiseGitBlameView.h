@@ -233,7 +233,7 @@ public:
 
 	CLogDataVector *		GetLogData();
 
-	BOOL m_bShowLine = FALSE;
+	BOOL m_bShowLine = TRUE;
 
 protected:
 	void CreateFont();
