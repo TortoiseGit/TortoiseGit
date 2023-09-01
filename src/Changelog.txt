@@ -36,6 +36,7 @@ Released: unreleased
  * Fixed issue #4051: Copy ref names in nested view does not copy full ref name
  * Fixed issue #3373: Refresh log after shallow clone depth update
  * Improve crash resistance in log dialog on broken repositories
+ * Fixed issue #4057: "Clean up" fails to delete files with Unicode characters in name if core.quotepath is not explicitly set
 
 = Release 2.14.0.1 =
 Released: 2023-04-15

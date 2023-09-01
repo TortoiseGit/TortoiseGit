@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2021 - TortoiseGit
+// Copyright (C) 2009, 2011-2021, 2023 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -245,7 +245,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 		sysProgressDlg.SetShowProgressBar(false);
 		sysProgressDlg.ShowModeless(static_cast<HWND>(nullptr), true);
 
-		bool quotepath = g_Git.GetConfigValueBool(L"core.quotepath");
+		bool quotepath = g_Git.GetConfigValueBool(L"core.quotepath", true);
 
 		CTGitPathList delList;
 		for (int i = 0; i < pathList.GetCount(); ++i)
