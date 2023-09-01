@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -51,7 +51,7 @@ TEST(CPersonalDictionary, UseDictionary)
 	}
 
 	TCHAR tooLong[PDICT_MAX_WORD_LENGTH + 5] = { 0 };
-	for (int i = 0; i < _countof(tooLong); ++i)
+	for (int i = 0; i < _countof(tooLong) - 1; ++i)
 		tooLong[i] = L'a';
 	EXPECT_FALSE(dict.AddWord(tooLong));
 	EXPECT_FALSE(dict.FindWord(tooLong));
