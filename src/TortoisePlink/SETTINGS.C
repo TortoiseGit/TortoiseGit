@@ -686,12 +686,12 @@ void save_open_settings(settings_w *sesskey, Conf *conf)
     write_setting_b(sesskey, "BellOverload", conf_get_bool(conf, CONF_bellovl));
     write_setting_i(sesskey, "BellOverloadN", conf_get_int(conf, CONF_bellovl_n));
     write_setting_i(sesskey, "BellOverloadT", conf_get_int(conf, CONF_bellovl_t)
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                     * 1000
 #endif
                     );
     write_setting_i(sesskey, "BellOverloadS", conf_get_int(conf, CONF_bellovl_s)
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                     * 1000
 #endif
                     );
@@ -785,6 +785,7 @@ void save_open_settings(settings_w *sesskey, Conf *conf)
     write_setting_i(sesskey, "BugOldGex2", 2-conf_get_int(conf, CONF_sshbug_oldgex2));
     write_setting_i(sesskey, "BugWinadj", 2-conf_get_int(conf, CONF_sshbug_winadj));
     write_setting_i(sesskey, "BugChanReq", 2-conf_get_int(conf, CONF_sshbug_chanreq));
+    write_setting_i(sesskey, "BugRSASHA2CertUserauth", 2-conf_get_int(conf, CONF_sshbug_rsa_sha2_cert_userauth));
     write_setting_i(sesskey, "BugDropStart", 2-conf_get_int(conf, CONF_sshbug_dropstart));
     write_setting_i(sesskey, "BugFilterKexinit", 2-conf_get_int(conf, CONF_sshbug_filter_kexinit));
     write_setting_b(sesskey, "StampUtmp", conf_get_bool(conf, CONF_stamp_utmp));
@@ -1119,22 +1120,22 @@ void load_open_settings(settings_r *sesskey, Conf *conf)
     gppb(sesskey, "BellOverload", true, conf, CONF_bellovl);
     gppi(sesskey, "BellOverloadN", 5, conf, CONF_bellovl_n);
     i = gppi_raw(sesskey, "BellOverloadT", 2*TICKSPERSEC
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                                    *1000
 #endif
                                    );
     conf_set_int(conf, CONF_bellovl_t, i
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                  / 1000
 #endif
                  );
     i = gppi_raw(sesskey, "BellOverloadS", 5*TICKSPERSEC
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                                    *1000
 #endif
                                    );
     conf_set_int(conf, CONF_bellovl_s, i
-#ifdef PUTTY_UNIX_H
+#ifdef PUTTY_UNIX_PLATFORM_H
                  / 1000
 #endif
                  );
@@ -1266,6 +1267,7 @@ void load_open_settings(settings_r *sesskey, Conf *conf)
     i = gppi_raw(sesskey, "BugOldGex2", 0); conf_set_int(conf, CONF_sshbug_oldgex2, 2-i);
     i = gppi_raw(sesskey, "BugWinadj", 0); conf_set_int(conf, CONF_sshbug_winadj, 2-i);
     i = gppi_raw(sesskey, "BugChanReq", 0); conf_set_int(conf, CONF_sshbug_chanreq, 2-i);
+    i = gppi_raw(sesskey, "BugRSASHA2CertUserauth", 0); conf_set_int(conf, CONF_sshbug_rsa_sha2_cert_userauth, 2-i);
     i = gppi_raw(sesskey, "BugDropStart", 1); conf_set_int(conf, CONF_sshbug_dropstart, 2-i);
     i = gppi_raw(sesskey, "BugFilterKexinit", 1); conf_set_int(conf, CONF_sshbug_filter_kexinit, 2-i);
     conf_set_bool(conf, CONF_ssh_simple, false);

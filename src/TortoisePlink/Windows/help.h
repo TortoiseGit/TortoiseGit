@@ -167,6 +167,7 @@ typedef const char *HelpCtx;
 #define WINHELP_CTX_ssh_bugs_pksessid2 "config-ssh-bug-pksessid2"
 #define WINHELP_CTX_ssh_bugs_rekey2 "config-ssh-bug-rekey"
 #define WINHELP_CTX_ssh_bugs_maxpkt2 "config-ssh-bug-maxpkt2"
+#define WINHELP_CTX_ssh_bugs_rsa_sha2_cert_userauth "config-ssh-bug-rsa-sha2-cert-userauth"
 #define WINHELP_CTX_ssh_bugs_winadj "config-ssh-bug-winadj"
 #define WINHELP_CTX_ssh_bugs_chanreq "config-ssh-bug-chanreq"
 #define WINHELP_CTX_ssh_bugs_oldgex2 "config-ssh-bug-oldgex2"

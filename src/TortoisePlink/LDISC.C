@@ -442,6 +442,8 @@ void ldisc_send(Ldisc *ldisc, const void *vbuf, int len, bool interactive)
                         bsb(ldisc, plen(ldisc, ldisc->buf[ldisc->buflen - 1]));
                     ldisc->buflen--;
                 }
+                if (c == CTRL('U'))
+                    break;             /* ^U *just* erases a line */
                 ldisc_to_backend_special(ldisc, SS_EL, 0);
                 /*
                  * We don't send IP, SUSP or ABORT if the user has

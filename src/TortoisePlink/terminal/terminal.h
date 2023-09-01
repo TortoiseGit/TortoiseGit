@@ -155,6 +155,8 @@ struct terminal_tag {
     bool xterm_extended_mouse;
     bool urxvt_extended_mouse;
     int mouse_is_down;                 /* used while tracking mouse buttons */
+    int raw_mouse_reported_x;
+    int raw_mouse_reported_y;
 
     bool bracketed_paste, bracketed_paste_active;
 

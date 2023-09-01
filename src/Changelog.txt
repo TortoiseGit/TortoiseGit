@@ -9,6 +9,7 @@ Released: unreleased
  * Updated libgit to 2.40.1 based on Git for Windows sources
  * Updated libgit2 to 1.7.1
  * Updated zlib to 1.3
+ * Update TortoiseGitPlink to PuTTY Plink 0.79
  * Fixed issue #3974: Windows 11 Context Menus only display in single user when has multiple users
    Added a button to register the win11 context menu for the current user
  * Update Scintilla to 5.3.6 and Lexilla to 5.2.6

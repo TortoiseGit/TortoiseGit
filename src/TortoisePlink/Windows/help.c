@@ -118,7 +118,7 @@ static bool load_chm_resource(void)
     created = true;
 
     const uint8_t *p = (const uint8_t *)chm_resource;
-    for (DWORD pos = 0; pos < chm_resource_size; pos++) {
+    for (DWORD pos = 0; pos < chm_resource_size ;) {
         DWORD to_write = chm_resource_size - pos;
         DWORD written = 0;
 

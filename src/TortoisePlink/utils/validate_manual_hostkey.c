@@ -63,7 +63,7 @@ bool validate_manual_hostkey(char *key)
                 if (r[3*i+2] != ':')
                     goto not_fingerprint; /* sorry */
             for (i = 0; i < 16*3 - 1; i++)
-                key[i] = tolower(r[i]);
+                key[i] = tolower((unsigned char)r[i]);
             key[16*3 - 1] = '\0';
             return true;
         }

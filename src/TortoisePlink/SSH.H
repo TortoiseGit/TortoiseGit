@@ -1205,6 +1205,7 @@ extern const ssh2_macalg ssh_hmac_sha1_buggy;
 extern const ssh2_macalg ssh_hmac_sha1_96;
 extern const ssh2_macalg ssh_hmac_sha1_96_buggy;
 extern const ssh2_macalg ssh_hmac_sha256;
+extern const ssh2_macalg ssh_hmac_sha512;
 extern const ssh2_macalg ssh2_poly1305;
 extern const ssh2_macalg ssh2_aesgcm_mac;
 extern const ssh2_macalg ssh2_aesgcm_mac_sw;
@@ -1881,6 +1882,7 @@ void old_keyfile_warning(void);
     X(BUG_SENDS_LATE_REQUEST_REPLY)             \
     X(BUG_SSH2_OLDGEX)                          \
     X(BUG_REQUIRES_FILTERED_KEXINIT)            \
+    X(BUG_RSA_SHA2_CERT_USERAUTH)               \
     /* end of list */
 #define TMP_DECLARE_LOG2_ENUM(thing) log2_##thing,
 enum { SSH_IMPL_BUG_LIST(TMP_DECLARE_LOG2_ENUM) };

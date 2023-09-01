@@ -168,10 +168,10 @@ int x11_authcmp(void *av, void *bv)
 
 #define XDM_MAXSKEW 20*60      /* 20 minute clock skew should be OK */
 
-static const char *x11_verify(unsigned long peer_ip, int peer_port,
-                              tree234 *authtree, char *proto,
-                              unsigned char *data, int dlen,
-                              struct X11FakeAuth **auth_ret)
+static char *x11_verify(unsigned long peer_ip, int peer_port,
+                        tree234 *authtree, char *proto,
+                        unsigned char *data, int dlen,
+                        struct X11FakeAuth **auth_ret)
 {
     struct X11FakeAuth match_dummy;    /* for passing to find234 */
     struct X11FakeAuth *auth;
@@ -197,12 +197,21 @@ static const char *x11_verify(unsigned long peer_ip, int peer_port,
          */
         match_dummy.proto = X11_XDM;
         match_dummy.xa1_firstblock = data;
+    } else if (!proto[0]) {
+        /*
+         * If the user has attempted to connect to the forwarded X
+         * display with no authority at all, we can give a better
+         * error message than the generic "unsupported protocol". We
+         * at least _recognise_ the null auth protocol, even if we
+         * don't _accept_ it.
+         */
+        return dupstr("No authorisation provided");
     } else {
-        return "Unsupported authorisation protocol";
+        return dupprintf("Unsupported authorisation protocol '%s'", proto);
     }
 
     if ((auth = find234(authtree, &match_dummy, 0)) == NULL)
-        return "Authorisation not recognised";
+        return dupstr("Authorisation not recognised");
 
     /*
      * If we're using MIT-MAGIC-COOKIE-1, that was all we needed. If
@@ -216,24 +225,34 @@ static const char *x11_verify(unsigned long peer_ip, int peer_port,
         struct XDMSeen *seen, *ret;
 
         if (dlen != 24)
-            return "XDM-AUTHORIZATION-1 data was wrong length";
+            return dupprintf("XDM-AUTHORIZATION-1 data was wrong length "
+                             "(%d, expected 24)", dlen);
         if (peer_port == -1)
-            return "cannot do XDM-AUTHORIZATION-1 without remote address data";
+            return dupstr("cannot do XDM-AUTHORIZATION-1 without remote "
+                          "address data");
         des_decrypt_xdmauth(auth->data+9, data, 24);
-        if (memcmp(auth->data, data, 8) != 0)
-            return "XDM-AUTHORIZATION-1 data failed check"; /* cookie wrong */
-        if (GET_32BIT_MSB_FIRST(data+8) != peer_ip)
-            return "XDM-AUTHORIZATION-1 data failed check";   /* IP wrong */
-        if ((int)GET_16BIT_MSB_FIRST(data+12) != peer_port)
-            return "XDM-AUTHORIZATION-1 data failed check";   /* port wrong */
-        t = GET_32BIT_MSB_FIRST(data+14);
+
+        /* Bitwise-OR together any mismatches in the fixed parts of
+         * the data, to allow checking it all at once */
+        uint32_t mismatches = 0;
+        /* Check non-key half of auth cookie */
+        for (i = 0; i < 8; i++)
+            mismatches |= auth->data[i] ^ data[i];
+        /* Check IP address and port */
+        mismatches |= GET_32BIT_MSB_FIRST(data+8) ^ peer_ip;
+        mismatches |= (unsigned short)(GET_16BIT_MSB_FIRST(data+12) ^
+                                       peer_port);
+        /* Check zero padding */
         for (i = 18; i < 24; i++)
-            if (data[i] != 0)          /* zero padding wrong */
-                return "XDM-AUTHORIZATION-1 data failed check";
+            mismatches |= data[i];
+        if (mismatches)
+            return dupstr("XDM-AUTHORIZATION-1 data failed check");
+
+        t = GET_32BIT_MSB_FIRST(data+14);
         tim = time(NULL);
         if (((unsigned long)t - (unsigned long)tim
              + XDM_MAXSKEW) > 2*XDM_MAXSKEW)
-            return "XDM-AUTHORIZATION-1 time stamp was too far out";
+            return dupstr("XDM-AUTHORIZATION-1 time stamp was too far out");
         seen = snew(struct XDMSeen);
         seen->time = t;
         memcpy(seen->clientid, data+8, 6);
@@ -241,7 +260,7 @@ static const char *x11_verify(unsigned long peer_ip, int peer_port,
         ret = add234(auth->xdmseen, seen);
         if (ret != seen) {
             sfree(seen);
-            return "XDM-AUTHORIZATION-1 data replayed";
+            return dupstr("XDM-AUTHORIZATION-1 data replayed");
         }
         /* While we're here, purge entries too old to be replayed. */
         for (;;) {
@@ -504,6 +523,7 @@ static size_t x11_send(
      */
     if (!xconn->verified) {
         const char *err;
+        char *errmut;
         struct X11FakeAuth *auth_matched = NULL;
         unsigned long peer_ip;
         int peer_port;
@@ -529,11 +549,12 @@ static size_t x11_send(
         else
             peer_port = -1; /* signal no peer address data available */
 
-        err = x11_verify(peer_ip, peer_port,
-                         xconn->authtree, xconn->auth_protocol,
-                         xconn->auth_data, xconn->auth_dlen, &auth_matched);
-        if (err) {
-            x11_send_init_error(xconn, err);
+        errmut = x11_verify(peer_ip, peer_port,
+                            xconn->authtree, xconn->auth_protocol,
+                            xconn->auth_data, xconn->auth_dlen, &auth_matched);
+        if (errmut) {
+            x11_send_init_error(xconn, errmut);
+            sfree(errmut);
             return 0;
         }
         assert(auth_matched);

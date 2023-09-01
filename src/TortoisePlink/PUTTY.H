@@ -21,14 +21,14 @@
  * Fingerprints of the current and previous PGP master keys, to
  * establish a trust path between an executable and other files.
  */
-#define PGP_MASTER_KEY_YEAR "2021"
-#define PGP_MASTER_KEY_DETAILS "RSA, 3072-bit"
+#define PGP_MASTER_KEY_YEAR "2023"
+#define PGP_MASTER_KEY_DETAILS "RSA, 4096-bit"
 #define PGP_MASTER_KEY_FP                                  \
-    "A872 D42F 1660 890F 0E05  223E DD43 55EA AC11 19DE"
-#define PGP_PREV_MASTER_KEY_YEAR "2018"
-#define PGP_PREV_MASTER_KEY_DETAILS "RSA, 4096-bit"
+    "28D4 7C46 55E7 65A6 D827  AC66 B15D 9EFC 216B 06A1"
+#define PGP_PREV_MASTER_KEY_YEAR "2021"
+#define PGP_PREV_MASTER_KEY_DETAILS "RSA, 3072-bit"
 #define PGP_PREV_MASTER_KEY_FP                                  \
-    "24E1 B1C5 75EA 3C9F F752  A922 76BC 7FE4 EBFD 2D9E"
+    "A872 D42F 1660 890F 0E05  223E DD43 55EA AC11 19DE"
 
 /*
  * Definitions of three separate indexing schemes for colour palette
@@ -363,11 +363,12 @@ typedef enum {
     MBT_NOTHING,
     MBT_LEFT, MBT_MIDDLE, MBT_RIGHT,   /* `raw' button designations */
     MBT_SELECT, MBT_EXTEND, MBT_PASTE, /* `cooked' button designations */
-    MBT_WHEEL_UP, MBT_WHEEL_DOWN       /* mouse wheel */
+    MBT_WHEEL_UP, MBT_WHEEL_DOWN,      /* vertical mouse wheel */
+    MBT_WHEEL_LEFT, MBT_WHEEL_RIGHT    /* horizontal mouse wheel */
 } Mouse_Button;
 
 typedef enum {
-    MA_NOTHING, MA_CLICK, MA_2CLK, MA_3CLK, MA_DRAG, MA_RELEASE
+    MA_NOTHING, MA_CLICK, MA_2CLK, MA_3CLK, MA_DRAG, MA_RELEASE, MA_MOVE
 } Mouse_Action;
 
 /* Keyboard modifiers -- keys the user is actually holding down */
@@ -2024,6 +2025,7 @@ NORETURN void cleanup_exit(int);
     X(INT, NONE, sshbug_chanreq) \
     X(INT, NONE, sshbug_dropstart) \
     X(INT, NONE, sshbug_filter_kexinit) \
+    X(INT, NONE, sshbug_rsa_sha2_cert_userauth) \
     /*                                                                \
      * ssh_simple means that we promise never to open any channel     \
      * other than the main one, which means it can safely use a very  \
