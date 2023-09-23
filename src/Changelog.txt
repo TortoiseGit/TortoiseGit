@@ -13,7 +13,7 @@ Released: unreleased
  * Update shipped PuTTY binaries to 0.79
  * Fixed issue #3974: Windows 11 Context Menus only display in single user when has multiple users
    Added a button to register the win11 context menu for the current user
- * Update Scintilla to 5.3.6 and Lexilla to 5.2.6
+ * Update Scintilla to 5.3.6 and Lexilla to 5.2.7
  * Fixed issue #3435: Dramatically speed up revert operations
  * Fixed issue #3053: "Abort" button in merge conflict dialogue is misleading -> opens Abort merge dialog now
  * Fixed issue #4034: After git lfs lock, UI suggest a pull
