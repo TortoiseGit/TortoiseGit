@@ -3284,6 +3284,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		}
 	}
 
+	static bool useOldLSFilesDBehaviorKS = CRegDWORD(L"Software\\TortoiseGit\\OldLSFilesDBehaviorKS", FALSE, false, HKEY_LOCAL_MACHINE) == TRUE; // TODO: remove kill-switch
 	// handle source files of file renames/moves (issue #860)
 	// if a file gets renamed and the new file "git add"ed, diff-index doesn't list the source file anymore
 	for (int i = 0; i < count; ++i)
@@ -3292,9 +3293,19 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		CString cmd;
 
 		if (!filterlist)
-			cmd = L"git.exe ls-files -d -z";
+		{
+			if (!useOldLSFilesDBehaviorKS)
+				cmd = L"git.exe diff --name-only --diff-filter=D -z";
+			else
+				cmd = L"git.exe ls-files -d -z";
+		}
 		else
-			cmd.Format(L"git.exe ls-files -d -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+		{
+			if (!useOldLSFilesDBehaviorKS)
+				cmd.Format(L"git.exe diff --name-only --diff-filter=D -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+			else
+				cmd.Format(L"git.exe ls-files -d -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+		}
 
 		Run(cmd, &cmdout);
 
