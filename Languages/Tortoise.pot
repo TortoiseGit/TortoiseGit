@@ -2403,7 +2403,7 @@ msgid "Changelist %s moved"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
-msgid "Changes made (double-click on file for diff):"
+msgid "Changes made (F5: refresh, double-click on file for diff):"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)

@@ -278,7 +278,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,247,297,50,14
     PUSHBUTTON      "Help",IDHELP,302,297,50,14
     GROUPBOX        "&Message:",IDC_MESSAGEGROUP,6,19,346,135
-    GROUPBOX        "Changes made (double-click on file for diff):",IDC_LISTGROUP,6,162,346,126
+    GROUPBOX        "Changes made (F5: refresh, double-click on file for diff):",IDC_LISTGROUP,6,162,346,126
     LTEXT           "",IDC_TEXT_INFO,299,105,45,8,0,WS_EX_RIGHT
     ICON            IDI_MERGEACTIVE,IDC_MERGEACTIVE,147,291,18,17,SS_NOTIFY | SS_REALSIZEIMAGE | NOT WS_VISIBLE,WS_EX_TRANSPARENT
 END
