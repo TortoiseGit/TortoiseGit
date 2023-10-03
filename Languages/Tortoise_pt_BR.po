@@ -51,7 +51,7 @@ msgstr ""
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
 "Last-Translator: Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2022\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/lznuaa/tortoisegit/language/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (http://app.transifex.com/lznuaa/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2696,8 +2696,8 @@ msgid "Changelist %s moved"
 msgstr "Lista de alterações %s foi movida"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
-msgid "Changes made (double-click on file for diff):"
-msgstr "Alterações feitas (duplo clique no arquivo para comparar):"
+msgid "Changes made (F5: refresh, double-click on file for diff):"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3685,6 +3685,11 @@ msgid ""
 "Current branch is up to date or newer than the fetched branch. Open rebase "
 "anyway?"
 msgstr "O ramo atual está atualizado ou mais novo que o ramo remoto. Abrir a reorganização mesmo assim?"
+
+#. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
+#. Control id 65535)
+msgid "Current branch:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5593,6 +5598,10 @@ msgstr "HEAD:"
 #. 65535)
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
 msgstr "HTTP (URLs iniciam com \"http://\" ou \"https://\")"
+
+#. Resource IDs: (IDS_HANDLESUBMODULES)
+msgid "Handle submodules"
+msgstr ""
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -7620,6 +7629,10 @@ msgstr "PD"
 msgid "PI"
 msgstr "PI"
 
+#. Resource IDs: (IDS_PACKAGE_REGISTERED)
+msgid "Package registered"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
@@ -8322,6 +8335,10 @@ msgstr "Filtros de Expressões Regulares"
 msgid "Regex:"
 msgstr "Expressão Regular:"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
+msgid "Register context menu"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
 "Regular expressions filter:\n"
@@ -8603,11 +8620,6 @@ msgstr "Redefinir ramo ativo"
 #. Resource IDs: (IDS_STATUSLIST_RESETCOLUMNORDER)
 msgid "Reset columns"
 msgstr "Reiniciar colunas"
-
-#. Resource IDs: (IDS_PROC_RESETBRANCH)
-#, c-format
-msgid "Reset current branch \"%s\" to"
-msgstr "Restaurar o ramo atual \"%s\" para"
 
 #. Resource IDs: (Dialog IDD_RESOLVE: Control id 207, IDS_PROGRS_CMD_RESOLVE,
 #. IDS_PROGRS_TITLE_RESOLVE)
@@ -11789,6 +11801,10 @@ msgstr "Espaços em branco"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
+msgid "Windows Credential Manager"
 msgstr ""
 
 #. Resource IDs: (5020 - Menu)

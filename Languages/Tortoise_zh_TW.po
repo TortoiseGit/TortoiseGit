@@ -34,7 +34,7 @@ msgstr ""
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
 "Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>, 2013,2018,2021\n"
-"Language-Team: Chinese (Taiwan) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
+"Language-Team: Chinese (Taiwan) (http://app.transifex.com/lznuaa/tortoisegit/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2679,8 +2679,8 @@ msgid "Changelist %s moved"
 msgstr "移動了變更列表 %s"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
-msgid "Changes made (double-click on file for diff):"
-msgstr "變更（雙擊檔案可檢視差異）："
+msgid "Changes made (F5: refresh, double-click on file for diff):"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3668,6 +3668,11 @@ msgid ""
 "Current branch is up to date or newer than the fetched branch. Open rebase "
 "anyway?"
 msgstr "目前分支已經是最新的，甚至比獲取（fetch）的結果還新。\n仍然要開啟「變基」視窗？"
+
+#. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
+#. Control id 65535)
+msgid "Current branch:"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5576,6 +5581,10 @@ msgstr "HEAD："
 #. 65535)
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
 msgstr "HTTP（「http://」或「https://」開頭的 URL）"
+
+#. Resource IDs: (IDS_HANDLESUBMODULES)
+msgid "Handle submodules"
+msgstr ""
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -7603,6 +7612,10 @@ msgstr "PD"
 msgid "PI"
 msgstr "PI"
 
+#. Resource IDs: (IDS_PACKAGE_REGISTERED)
+msgid "Package registered"
+msgstr ""
+
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
@@ -8305,6 +8318,10 @@ msgstr "Regex 篩選器列表"
 msgid "Regex:"
 msgstr "Regex:"
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
+msgid "Register context menu"
+msgstr ""
+
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
 "Regular expressions filter:\n"
@@ -8586,11 +8603,6 @@ msgstr "重設現在分支"
 #. Resource IDs: (IDS_STATUSLIST_RESETCOLUMNORDER)
 msgid "Reset columns"
 msgstr "重設行"
-
-#. Resource IDs: (IDS_PROC_RESETBRANCH)
-#, c-format
-msgid "Reset current branch \"%s\" to"
-msgstr "重設當前分支「%s」到"
 
 #. Resource IDs: (Dialog IDD_RESOLVE: Control id 207, IDS_PROGRS_CMD_RESOLVE,
 #. IDS_PROGRS_TITLE_RESOLVE)
@@ -11772,6 +11784,10 @@ msgstr "空白字元"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
+msgstr ""
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
+msgid "Windows Credential Manager"
 msgstr ""
 
 #. Resource IDs: (5020 - Menu)

@@ -35,7 +35,7 @@
 # xiaobing chen <olivetchan@qq.com>, 2016
 # Xijian Yan, 2018
 # XY <1642787610@qq.com>, 2020
-# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2022
+# YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2023
 # YFdyh000 <yfdyh000@gmail.com>, 2013,2016
 # YFdyh000 <yfdyh000@gmail.com>, 2013-2018
 # zhang chuan <zhangchuan.cn@gmail.com>, 2011
@@ -46,8 +46,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2022\n"
-"Language-Team: Chinese (China) (http://www.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
+"Last-Translator: YFdyh000 <yfdyh000@gmail.com>, 2013,2016,2019-2023\n"
+"Language-Team: Chinese (China) (http://app.transifex.com/lznuaa/tortoisegit/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2692,8 +2692,8 @@ msgid "Changelist %s moved"
 msgstr "修改列表 %s 已移动"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
-msgid "Changes made (double-click on file for diff):"
-msgstr "变更列表（双击文件查看差异）: "
+msgid "Changes made (F5: refresh, double-click on file for diff):"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3682,6 +3682,11 @@ msgid ""
 "anyway?"
 msgstr "当前分支等同或新于已获取分支。依旧进行“变基”？"
 
+#. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
+#. Control id 65535)
+msgid "Current branch:"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
 msgstr "当前版本是: "
@@ -4286,7 +4291,7 @@ msgstr "文档:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "Don't ask me &again"
-msgstr ""
+msgstr "不再询问(&A)"
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -5589,6 +5594,10 @@ msgstr "HEAD:"
 #. 65535)
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
 msgstr "HTTP (URL 以 \"http://\" 或 \"https://\" 开始)"
+
+#. Resource IDs: (IDS_HANDLESUBMODULES)
+msgid "Handle submodules"
+msgstr "处理子模块"
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -7616,6 +7625,10 @@ msgstr "PD"
 msgid "PI"
 msgstr "PI"
 
+#. Resource IDs: (IDS_PACKAGE_REGISTERED)
+msgid "Package registered"
+msgstr "已注册包"
+
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
 msgid "Page %u"
@@ -8318,6 +8331,10 @@ msgstr "正则过滤器"
 msgid "Regex:"
 msgstr "正则："
 
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
+msgid "Register context menu"
+msgstr "注册右键菜单"
+
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
 "Regular expressions filter:\n"
@@ -8599,11 +8616,6 @@ msgstr "重置当前分支"
 #. Resource IDs: (IDS_STATUSLIST_RESETCOLUMNORDER)
 msgid "Reset columns"
 msgstr "重置列"
-
-#. Resource IDs: (IDS_PROC_RESETBRANCH)
-#, c-format
-msgid "Reset current branch \"%s\" to"
-msgstr "重置当前分支从%s到"
 
 #. Resource IDs: (Dialog IDD_RESOLVE: Control id 207, IDS_PROGRS_CMD_RESOLVE,
 #. IDS_PROGRS_TITLE_RESOLVE)
@@ -11474,7 +11486,7 @@ msgid ""
 "Use this to modify/replace the latest checked out commit with a new commit. "
 "The message from the original commit is used as the starting point. "
 "Attention: This modifies the Git history."
-msgstr ""
+msgstr "用它可以将最后签出的提交改换为一个全新提交。原提交消息可供您修改。小心，这将修改 Git 历史记录！"
 
 #. Resource IDs: (IDS_VIEWCONTEXTMENU_USEOTHERFILE)
 msgid "Use whole other &file"
@@ -11786,6 +11798,10 @@ msgstr "空白字符"
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
 msgstr "Windows 11 右键菜单"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
+msgid "Windows Credential Manager"
+msgstr "Windows 凭据管理器"
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"

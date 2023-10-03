@@ -4,6 +4,7 @@
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
+# Adam Gregořica, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2022-2023
 # Jiří Engelthaler <engycz@gmail.com>, 2015-2016
 # Jiri Sedlak <jiri_sedlak@users.sourceforge.net>, 2017
@@ -20,8 +21,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2023\n"
-"Language-Team: Czech (http://www.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
+"Last-Translator: Adam Gregořica, 2023\n"
+"Language-Team: Czech (http://app.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1841,7 +1842,7 @@ msgstr "Všechny místní větve"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr ""
+msgstr "Všechny nebo některé možnosti jsou omezené. Chcete-li změnit všechna tato nastavení, potřebujete práva správce."
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -1949,7 +1950,7 @@ msgstr "Při přístupu k %1 došlo k neznámé chybě."
 #. Resource IDs: (IDS_ERR_PATCH_UNKNOWNLINETYPE)
 #, c-format
 msgid "An unknown line type was found in line %d!"
-msgstr ""
+msgstr "Na řádku %d byl nalezen neznámý typ řádku!"
 
 #. Resource IDs: (IDS_ANNOTATEDTAGS)
 msgid "Annotated tags"
@@ -1989,7 +1990,7 @@ msgstr "Použít sjednocený rozdíl"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr ""
+msgstr "Schválit nebo odmítnout hákový skript na straně klienta"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2120,15 +2121,15 @@ msgstr "Email autora"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL)
 msgid "Author email addresses"
-msgstr ""
+msgstr "E-mailové adresy autora"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSNAME)
 msgid "Author names"
-msgstr ""
+msgstr "Jména autorů"
 
 #. Resource IDs: (Dialog IDD_ABOUT: Control id 65535)
 msgid "Author:\t\t\tStefan Kueng"
-msgstr ""
+msgstr "Autor:\t\t\tStefan Kueng"
 
 #. Resource IDs: (IDS_LOG_FILTER_AUTHORS)
 msgid "Authors"
@@ -2136,7 +2137,7 @@ msgstr "Autoři"
 
 #. Resource IDs: (IDS_LOG_POPUP_CLIPBOARD_AUTHORSFULL)
 msgid "Authors (full)"
-msgstr ""
+msgstr "Autoři (úplní)"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1265)
 msgid "Authors case sensitive"
@@ -2298,7 +2299,7 @@ msgstr "Mísit průhlednost"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "Blokovat TortoiseGit při provádění externího sloučení"
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2666,8 +2667,8 @@ msgid "Changelist %s moved"
 msgstr "Seznam změn %s přesunut"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
-msgid "Changes made (double-click on file for diff):"
-msgstr "Provedené změny (klikněte dvakrát na soubor pro porovnání):"
+msgid "Changes made (F5: refresh, double-click on file for diff):"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -2707,7 +2708,7 @@ msgstr "Zvolte ty položky nabídky, které chcete zobrazit v hlavní kontextov�
 msgid ""
 "Check those menu entries you want to appear only in the extended context "
 "menu (SHIFT + right click)"
-msgstr ""
+msgstr "Zkontrolujte položky nabídky, které chcete zobrazit pouze v rozšířené kontextové nabídce (SHIFT + kliknutí pravým tlačítkem)"
 
 #. Resource IDs: (IDS_SETTINGS_RELATIVETIMES_TT)
 msgid "Check to show relative times in log messages"
@@ -2725,7 +2726,7 @@ msgstr "Zkontrolovat:"
 msgid ""
 "Checked items will be hidden in the context menu by default and will only be"
 " visible if the shift key is pressed while opening the context menu."
-msgstr ""
+msgstr "Zaškrtnuté položky budou ve výchozím nastavení skryty v kontextové nabídce a budou viditelné pouze při stisknutí klávesy Shift při otevírání kontextové nabídky."
 
 #. Resource IDs: (IDS_PROGRS_CMD_CHECKOUT, IDS_PROGRS_TITLE_CHECKOUT)
 msgid "Checkout"
@@ -2755,7 +2756,7 @@ msgstr "Výběr nejlepšího selhal"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Výběr nejlepšího se nezdařil (podrobnosti naleznete v protokolu v dialogovém okně výběru nejlepšího/přeskládání)! Přeskočit toto odevzdání?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2901,7 +2902,7 @@ msgstr "Klonovat do prázd. úlož."
 
 #. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
 msgid "Clone into a git repository without the working tree."
-msgstr ""
+msgstr "Klonovat do uložiště git bez pracovního stromu."
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
@@ -2938,7 +2939,7 @@ msgstr "Sbalit"
 
 #. Resource IDs: (IDS_LOG_POPUP_COLLAPSE)
 msgid "Collapse revisions"
-msgstr ""
+msgstr "Sbalit revize"
 
 #. Resource IDs: (cmdViewCollapsed)
 msgid ""
@@ -2958,20 +2959,20 @@ msgstr "Barvy"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 315)
 msgid "Colors 1"
-msgstr ""
+msgstr "Barvy 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_2: Control id 212)
 msgid "Colors 2"
-msgstr ""
+msgstr "Barvy 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 316)
 msgid "Colors 3"
-msgstr ""
+msgstr "Barvy 3"
 
 #. Resource IDs: (IDS_INDICATOR_COLUMN)
 #, c-format
 msgid "Column: %d"
-msgstr ""
+msgstr "Sloupec: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
@@ -3114,7 +3115,7 @@ msgstr "Porovnat zvolené odkazy"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
 msgid "Compare tags"
-msgstr ""
+msgstr "Porovnat značky"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
@@ -3169,7 +3170,7 @@ msgstr "Typ nastavení:"
 
 #. Resource IDs: (cmdRegexFilterConfig2_LabelTitle_RESID)
 msgid "Configure Filter Regex"
-msgstr ""
+msgstr "Nastavit regulární výraz filtru"
 
 #. Resource IDs: (IDS_CONFIGUREREGEXES, ID_REGEXFILTER - Menu)
 msgid "Configure Filter Regexes"
@@ -3191,11 +3192,11 @@ msgstr "Nastavit alternativní editor. Je vhodné, aby dokázal zpracovat konce 
 
 #. Resource IDs: (IDS_CONFIGUREDEFAULT)
 msgid "Configure default"
-msgstr ""
+msgstr "Nastavit výchozí"
 
 #. Resource IDs: (IDS_FIRSTSTART_GITTITLE)
 msgid "Configure git.exe"
-msgstr ""
+msgstr "Nastavit git.exe"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure the program used for comparing different revisions of files"
@@ -3207,7 +3208,7 @@ msgstr "Nastavit program používaný k vyřešení konfliktních souborů."
 
 #. Resource IDs: (IDS_FIRSTSTART_USERTITLE)
 msgid "Configure user information"
-msgstr ""
+msgstr "Nastavit informace o uživateli"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSDIFF: Control id 65535)
 msgid "Configure viewer program for GNU diff files (patch files)"
@@ -3246,11 +3247,11 @@ msgstr "Konfliktů: %d"
 
 #. Resource IDs: (Dialog IDD_SETTINGSLOOKANDFEEL: Control id 195)
 msgid "Context Menu"
-msgstr ""
+msgstr "Kontextová nabídka"
 
 #. Resource IDs: (Dialog IDD_SETTINGSEXTMENU: Control id 4573)
 msgid "Context Menu 2"
-msgstr ""
+msgstr "Kontextová nabídka 2"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "Context lines for patches"
@@ -3654,6 +3655,11 @@ msgstr ""
 msgid ""
 "Current branch is up to date or newer than the fetched branch. Open rebase "
 "anyway?"
+msgstr "Současná větev je aktuální nebo novější než načtená větev. Přesto otevřít přeskládání?"
+
+#. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
+#. Control id 65535)
+msgid "Current branch:"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
@@ -3689,13 +3695,13 @@ msgstr "Daemon"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_1: Control id 1699)
 msgid "Dark theme"
-msgstr ""
+msgstr "Tmavý režim"
 
 #. Resource IDs: (IDS_DARKTHEME_TT)
 msgid ""
 "Dark theme requires at least Win10 1803, and it must be enabled in the "
 "Windows system settings."
-msgstr ""
+msgstr "Tmavý režim vyžaduje alespoň Win10 1803 a musí být povolen v nastavení systému Windows."
 
 #. Resource IDs: (IDS_LOG_DATE, IDS_STATUSLIST_COLDATE)
 msgid "Date"
@@ -3776,7 +3782,7 @@ msgstr "Smazat větev"
 
 #. Resource IDs: (IDS_DELETE_LOCALTAG)
 msgid "Delete local tag"
-msgstr ""
+msgstr "Smazat místní značku"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_DELETEREMOTEBRANCH)
 msgid "Delete remote branch"
@@ -3813,7 +3819,7 @@ msgstr "Smazat existující větev nebo použít jiný název."
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4570)
 msgid "Delete/modify merge conflict"
-msgstr ""
+msgstr "Smazat/upravit konflikt sloučení"
 
 #. Resource IDs: (IDS_DELETEWHENEMPTY_TASK3)
 msgid ""
@@ -3931,15 +3937,15 @@ msgstr "Dialogová okna"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 196)
 msgid "Dialogs 1"
-msgstr ""
+msgstr "Dialogy 1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 197)
 msgid "Dialogs 2"
-msgstr ""
+msgstr "Dialogy 2"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 4593)
 msgid "Dialogs 3"
-msgstr ""
+msgstr "Dialogy 3"
 
 #. Resource IDs: (cmdGroupDiff_LabelTitle_RESID)
 msgid "Diff"
@@ -4168,7 +4174,7 @@ msgstr "Opravdu chcete natrvalo smazat %d zvolených odkazů? NELZE je znovu obn
 
 #. Resource IDs: (IDS_PROC_PUSH_ALLBRANCHES)
 msgid "Do you really want to push all local branches?"
-msgstr ""
+msgstr "Opravdu chcete odeslat všechny místní větve?"
 
 #. Resource IDs: (IDS_WARN_DELETE_ONE_FROM_INDEX)
 #, c-format
@@ -4307,7 +4313,7 @@ msgstr "Stáhnout"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
 msgid "Download language packs:"
-msgstr ""
+msgstr "Stáhnout jazykové balíčky:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1073)
 msgid "Draw tag/branch labels on right side"
@@ -5060,11 +5066,11 @@ msgstr "Najít"
 
 #. Resource IDs: (cmdFindNext_LabelTitle_RESID)
 msgid "Find Next"
-msgstr ""
+msgstr "Najít další"
 
 #. Resource IDs: (cmdFindPrev_LabelTitle_RESID)
 msgid "Find Previous"
-msgstr ""
+msgstr "Najít předchozí"
 
 #. Resource IDs: (cmdFindPrev)
 msgid ""
@@ -5132,7 +5138,7 @@ msgstr "Pouze první rodič"
 #. IDD_FIRSTSTARTWIZARD_START: Control id 276, Dialog
 #. IDD_FIRSTSTARTWIZARD_USER: Control id 4597)
 msgid "First Start Wizard - TortoiseGit"
-msgstr ""
+msgstr "Průvodce prvním spuštěním - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 1617)
 msgid "First known &bad:"
@@ -5210,7 +5216,7 @@ msgstr "Vynutit přeskládání i když je současná větev potomkem odevzdán�
 
 #. Resource IDs: (IDS_PROGS_LFS_FORCEUNLOCK)
 msgid "Force unlock"
-msgstr ""
+msgstr "Vynutit odemčení"
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 65535, Dialog
 #. IDD_SETTINGSUDIFF: Control id 65535)
@@ -5296,7 +5302,7 @@ msgstr "Úplná data"
 
 #. Resource IDs: (IDS_WALKBEHAVIOUR_FULLHISTORY)
 msgid "Full history"
-msgstr ""
+msgstr "Úplná historie"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 20086)
 msgid "Full text search"
@@ -5564,6 +5570,10 @@ msgstr "HEAD:"
 msgid "HTTP (URLs start with \"http://\" or \"https://\")"
 msgstr ""
 
+#. Resource IDs: (IDS_HANDLESUBMODULES)
+msgid "Handle submodules"
+msgstr ""
+
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
 msgstr "Pevné"
@@ -5656,7 +5666,7 @@ msgstr "Nápověda"
 msgid ""
 "Hint: Recently used commit messages are available using the context menu of "
 "the text field."
-msgstr ""
+msgstr "Tip: Nedávno použité zprávy k revizi jsou k dispozici v kontextové nabídce textového pole."
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKS: Control id 103)
 msgid "Hook Scripts"
@@ -5676,7 +5686,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
-msgstr ""
+msgstr "Nepoužívám Git pro Windows a potřebuji speciální řešení"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
@@ -5934,7 +5944,7 @@ msgstr "Překryvy ikon"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
 msgid "Icon Set"
-msgstr ""
+msgstr "Sada ikon"
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6599,11 +6609,11 @@ msgstr "Lišta umístění"
 
 #. Resource IDs: (IDS_MENULFSLOCK, IDS_PROGRS_CMD_LFS_LOCK)
 msgid "Lock"
-msgstr ""
+msgstr "Uzamknout"
 
 #. Resource IDs: (IDS_LOCKED)
 msgid "Locked"
-msgstr ""
+msgstr "Uzamčeno"
 
 #. Resource IDs: (IDS_PROC_LOCKED_WORKTREES)
 #, c-format
@@ -6959,7 +6969,7 @@ msgstr "Nová větev/značka"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
 msgid "New Worktree"
-msgstr ""
+msgstr "Nový pracovní strom"
 
 #. Resource IDs: (IDS_NEWHASH)
 msgid "New hash"
@@ -7104,7 +7114,7 @@ msgstr "Od posledního odevzdání\nnebyly žádné soubory změněny, nebo při
 
 #. Resource IDs: (33002)
 msgid "No filter"
-msgstr ""
+msgstr "Bez filtru"
 
 #. Resource IDs: (IDS_PROC_NOMSYSGIT)
 msgid ""
@@ -7157,7 +7167,7 @@ msgstr "Žádná mezipaměť stavu. Pouze složky s verzí mají překryv, soubo
 
 #. Resource IDs: (IDS_NOGITREPO)
 msgid "No valid git repository found."
-msgstr ""
+msgstr "Nebylo nalezeno žádné platné uložiště git."
 
 #. Resource IDs: (IDS_NOWORKINGCOPY)
 msgid "No working directory found."
@@ -7432,7 +7442,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYLOCAL)
 msgid "Only local"
-msgstr ""
+msgstr "Pouze místní"
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYMERGED)
 msgid "Only merged (to HEAD)"
@@ -7446,7 +7456,7 @@ msgstr "Jsou povolena pouze čísla!\n(můžou být oddělena čárkami)"
 
 #. Resource IDs: (IDS_TAGCOMPARE_ONLYREMOTE)
 msgid "Only remote"
-msgstr ""
+msgstr "Pouze vzdálené"
 
 #. Resource IDs: (IDS_BROWSE_REFS_ONLYUNMERGED)
 msgid "Only unmerged (to HEAD)"
@@ -7588,6 +7598,10 @@ msgstr ""
 
 #. Resource IDs: (cmdNavigatePreviousInlineDiff_Keytip_RESID)
 msgid "PI"
+msgstr ""
+
+#. Resource IDs: (IDS_PACKAGE_REGISTERED)
+msgid "Package registered"
 msgstr ""
 
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
@@ -8169,7 +8183,7 @@ msgstr "Pokud si nevíte rady, přečtěte si 'Příručku každodenního použi
 
 #. Resource IDs: (IDS_REASON)
 msgid "Reason"
-msgstr ""
+msgstr "Důvod"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 318)
 msgid "Rebase"
@@ -8199,7 +8213,7 @@ msgstr "Nedávno změněné řádky"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 65535)
 msgid "Recommended: Git for Windows"
-msgstr ""
+msgstr "Doporučeno: Git pro Windows"
 
 #. Resource IDs: (IDS_MERGE_RECORDONLY)
 msgid "Record Only"
@@ -8260,7 +8274,7 @@ msgstr "Protokol odkazů"
 
 #. Resource IDs: (IDS_REFBROWSE)
 msgid "Reference Browser"
-msgstr ""
+msgstr "Prohlížeč odkazů"
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 4596)
 msgid "References commit is on"
@@ -8291,6 +8305,10 @@ msgstr "Filtry s regulárním výrazem"
 #. Resource IDs: (Dialog IDD_REGEXFILTER: Control id 65535)
 msgid "Regex:"
 msgstr "Regulární výraz:"
+
+#. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
+msgid "Register context menu"
+msgstr ""
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
@@ -8375,7 +8393,7 @@ msgstr "Vzdálená aktualizace"
 
 #. Resource IDs: (IDS_TAGCOMPARE_REMOTEMESSAGE)
 msgid "Remote message"
-msgstr ""
+msgstr "Vzdálená zpráva"
 
 #. Resource IDs: (IDS_PROC_GITCONFIG_REMOTEEMPTY)
 msgid "Remote name must not be empty."
@@ -8573,11 +8591,6 @@ msgstr "resetovat aktivní větev"
 #. Resource IDs: (IDS_STATUSLIST_RESETCOLUMNORDER)
 msgid "Reset columns"
 msgstr "Resetovat sloupce"
-
-#. Resource IDs: (IDS_PROC_RESETBRANCH)
-#, c-format
-msgid "Reset current branch \"%s\" to"
-msgstr "Resetovat současnou větev \"%s\" na"
 
 #. Resource IDs: (Dialog IDD_RESOLVE: Control id 207, IDS_PROGRS_CMD_RESOLVE,
 #. IDS_PROGRS_TITLE_RESOLVE)
@@ -9392,7 +9405,7 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_SHOWALLTAGS - Menu)
 msgid "Show all tags"
-msgstr ""
+msgstr "Zobrazit všechny značky"
 
 #. Resource IDs: (32813)
 msgid "Show an overview of the whole graph"
@@ -9500,7 +9513,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENULFSLOCKS)
 msgid "Show locked files"
-msgstr ""
+msgstr "Zobrazit uzamčené soubory"
 
 #. Resource IDs: (Dialog IDD_COMMITISONREFS: Control id 1132, Dialog
 #. IDD_DIFFFILES: Control id 1132, Dialog IDD_DIFFSUBMODULE: Control id 1132,
@@ -10823,7 +10836,7 @@ msgid ""
 "TortoiseGit requires a git.exe for its operations. TortoiseGit tries to "
 "automatically detect a working git.exe, but if that doesn't work or you want"
 " to use a different one please specify the path manually!"
-msgstr ""
+msgstr "TortoiseGit vyžaduje pro své operace git.exe. TortoiseGit se pokouší automaticky detekovat fungující git.exe, ale pokud nefunguje nebo chcete použít jiný, zadejte cestu ručně!"
 
 #. Resource IDs: (IDS_SETTINGS_OVERLAYINFO2)
 #, c-format
@@ -11142,11 +11155,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_MENULFSUNLOCK, IDS_PROGRS_CMD_LFS_UNLOCK)
 msgid "Unlock"
-msgstr ""
+msgstr "Odemknout"
 
 #. Resource IDs: (IDS_UNLOCKED)
 msgid "Unlocked"
-msgstr ""
+msgstr "Odemknuto"
 
 #. Resource IDs: (IDS_MENUDESCLFSUNLOCK)
 msgid "Unlocks a file using LFS"
@@ -11306,7 +11319,7 @@ msgstr "Použít nastavený server"
 
 #. Resource IDs: (Dialog IDD_SETCOLORPAGE: Control id 1513)
 msgid "Use dark mode"
-msgstr ""
+msgstr "Použít tmavý režim"
 
 #. Resource IDs: (ID_EDIT_USELEFTBLOCK - Menu,
 #. cmdUseLeftBlock_LabelTitle_RESID)
@@ -11658,7 +11671,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_STARTTITLE)
 msgid "Welcome to TortoiseGit!"
-msgstr ""
+msgstr "Vítejte v TortoiseGit!"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Western European"
@@ -11759,6 +11772,10 @@ msgstr "Mezery"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 4602)
 msgid "Windows 11 Context Menu"
+msgstr "Kontextová nabídka windows 11"
+
+#. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
+msgid "Windows Credential Manager"
 msgstr ""
 
 #. Resource IDs: (5020 - Menu)
@@ -11819,15 +11836,15 @@ msgstr "Změny v pracovním stromě"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 4604)
 msgid "Worktree List"
-msgstr ""
+msgstr "Seznam pracovních stromů"
 
 #. Resource IDs: (IDS_MENUWORKTREE)
 msgid "Worktrees"
-msgstr ""
+msgstr "Pracovní stromy"
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)
 msgid "Wrap Lines"
-msgstr ""
+msgstr "Zalamovat řádky"
 
 #. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu)
 msgid "Wrap long lines"
