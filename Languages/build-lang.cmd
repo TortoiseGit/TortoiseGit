@@ -38,6 +38,7 @@ call :nmake 1049 ru
 call :nmake 1051 sk
 call :nmake 1052 sq
 call :nmake 1053 sv
+call :nmake 1054 th
 call :nmake 1055 tr
 call :nmake 1057 id
 call :nmake 1058 uk
