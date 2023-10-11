@@ -1,4 +1,10 @@
-﻿= Release 2.15.0 =
+﻿= Release 2.16.0 =
+Released: unreleased
+
+== Features ==
+ * Updated OGDF to 2023.09 (Elderberry)
+
+= Release 2.15.0 =
 Released: 2023-10-03
 
 Support for Windows 7 and 8 will be dropped with one of the next releases.
