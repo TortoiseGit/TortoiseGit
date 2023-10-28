@@ -119,6 +119,13 @@ IDR_REVGRAPHGLYPHS      BITMAP                  "revgraphglyphs.bmp"
 
 IDC_PANCUR              CURSOR                  "pan.cur"
 IDC_PANCURDOWN          CURSOR                  "pandown.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+IDR_TGITLOGO            RCDATA                  "TortoiseGit_Logo.svgz"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2003-2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -55,6 +56,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	bool TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight);
+
 	CWaterEffect m_waterEffect;
 	CDib m_renderSrc;
 	CDib m_renderDest;

@@ -28,6 +28,7 @@
 #include "AppUtils.h"
 #include "Git.h"
 #include "DPIAware.h"
+#include "SysInfo.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
@@ -124,12 +125,16 @@ BOOL CAboutDlg::OnInitDialog()
 	// we can only put up to 256 chars into the resource file, so fill it here with the full list
 	SetDlgItemText(IDC_STATIC_AUTHORS, L"Sven Strickroth <email@cs-ware.de> (Current Maintainer), Sup Yut Sum <ch3cooli@gmail.com>, Frank Li <lznuaa@gmail.com> (Founder), Yue Lin Ho <b8732003@student.nsysu.edu.tw>, Colin Law <clanlaw@googlemail.com>, Myagi <snowcoder@gmail.com>, Johan 't Hart <johanthart@gmail.com>, Laszlo Papp <djszapi@archlinux.us>");
 
-	CPictureHolder tmpPic;
-	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
-	m_renderSrc.Create32BitFromPicture(&tmpPic,468,64);
-	m_renderDest.Create32BitFromPicture(&tmpPic,468,64);
-
-	m_waterEffect.Create(468,64);
+	int logoWidth = 468;
+	int logoHeight = 64;
+	if (!TryLoadSVG(IDR_TGITLOGO, logoWidth, logoHeight))
+	{
+		CPictureHolder tmpPic;
+		tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
+		m_renderSrc.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
+		m_renderDest.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
+	}
+	m_waterEffect.Create(logoWidth, logoHeight);
 	SetTimer(ID_EFFECTTIMER, 40, nullptr);
 	SetTimer(ID_DROPTIMER, 1500, nullptr);
 
@@ -139,6 +144,33 @@ BOOL CAboutDlg::OnInitDialog()
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	GetDlgItem(IDOK)->SetFocus();
 	return FALSE;
+}
+
+bool CAboutDlg::TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight)
+{
+	if (!SysInfo::Instance().IsWin10())
+		return false;
+	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(logoID), RT_RCDATA);
+	if (!hRes)
+		return false;
+	DWORD sz = ::SizeofResource(nullptr, hRes);
+	HGLOBAL hData = ::LoadResource(nullptr, hRes);
+	if (!hData)
+		return false;
+
+	int width = CDPIAware::Instance().ScaleX(GetSafeHwnd(), logoWidth);
+	int height = CDPIAware::Instance().ScaleY(GetSafeHwnd(), logoHeight);
+	std::string_view svg(reinterpret_cast<const char*>(::LockResource(hData)), sz);
+	SCOPE_EXIT { ::UnlockResource(hData); };
+	if (!m_renderSrc.Create32BitFromSVG(svg, width, height) || !m_renderDest.Create32BitFromSVG(svg, width, height))
+	{
+		m_renderSrc.DeleteObject();
+		m_renderDest.DeleteObject();
+		return false;
+	}
+	logoWidth = width;
+	logoHeight = height;
+	return true;
 }
 
 void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
@@ -174,7 +206,7 @@ void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		// dibs are drawn upside down...
 		point.y -= CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
-		point.y = 64-point.y;
+		point.y = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 64) - point.y;
 
 		if (nFlags & MK_LBUTTON)
 			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), point.y, 10, 1600, m_waterEffect.m_iHpage);

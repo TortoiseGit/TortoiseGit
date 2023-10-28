@@ -2327,6 +2327,9 @@
     <None Include="..\Resources\TortoiseLoglistCommon.rc2">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\TortoiseGit_Logo.svgz">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseProcENG.rc">
