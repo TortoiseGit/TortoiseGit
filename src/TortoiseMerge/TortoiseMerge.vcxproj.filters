@@ -694,6 +694,9 @@
     <None Include="..\Resources\ttf_glyph.bmp">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\Resources\TortoiseGitMerge_Logo.svgz">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc">

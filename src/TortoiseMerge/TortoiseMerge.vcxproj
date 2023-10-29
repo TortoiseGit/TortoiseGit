@@ -440,6 +440,7 @@
     <None Include="..\Resources\Toolbar.bmp" />
     <None Include="..\Resources\TortoiseMerge.ico" />
     <None Include="..\Resources\TortoiseMerge.rc2" />
+    <None Include="..\Resources\TortoiseGitMerge_Logo.svgz" />
     <None Include="..\Resources\tortoisemerge_logoflipped.bmp" />
     <None Include="..\Resources\ttf_glyph.bmp" />
   </ItemGroup>

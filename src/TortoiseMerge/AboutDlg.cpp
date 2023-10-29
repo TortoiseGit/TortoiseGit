@@ -1,5 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006-2007, 2009-2010, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,6 +25,7 @@
 #include "../../apr/include/apr_version.h"
 #include "../../apr-util/include/apu_version.h"
 #include "../version.h"
+#include "SysInfo.h"
 
 // CAboutDlg dialog
 
@@ -68,12 +70,17 @@ BOOL CAboutDlg::OnInitDialog()
 	SetDlgItemText(IDC_VERSIONABOUT, temp);
 	this->SetWindowText(L"TortoiseGitMerge");
 
-	CPictureHolder tmpPic;
-	tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
-	m_renderSrc.Create32BitFromPicture(&tmpPic,468,64);
-	m_renderDest.Create32BitFromPicture(&tmpPic,468,64);
+	int logoWidth = 468;
+	int logoHeight = 64;
+	if (!TryLoadSVG(IDR_TGITMERGELOGO, logoWidth, logoHeight))
+	{
+		CPictureHolder tmpPic;
+		tmpPic.CreateFromBitmap(IDB_LOGOFLIPPED);
+		m_renderSrc.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
+		m_renderDest.Create32BitFromPicture(&tmpPic, logoWidth, logoHeight);
+	}
 
-	m_waterEffect.Create(468,64);
+	m_waterEffect.Create(logoWidth, logoHeight);
 	SetTimer(ID_EFFECTTIMER, 40, nullptr);
 	SetTimer(ID_DROPTIMER, 300, nullptr);
 
@@ -84,20 +91,48 @@ BOOL CAboutDlg::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
+bool CAboutDlg::TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight)
+{
+	if (!SysInfo::Instance().IsWin10())
+		return false;
+	HRSRC hRes = ::FindResource(nullptr, MAKEINTRESOURCE(logoID), RT_RCDATA);
+	if (!hRes)
+		return false;
+	DWORD sz = ::SizeofResource(nullptr, hRes);
+	HGLOBAL hData = ::LoadResource(nullptr, hRes);
+	if (!hData)
+		return false;
+
+	auto& dpiAware = CDPIAware::Instance();
+	int width = dpiAware.ScaleX(GetSafeHwnd(), logoWidth);
+	int height = dpiAware.ScaleY(GetSafeHwnd(), logoHeight);
+	std::string_view svg(reinterpret_cast<const char*>(::LockResource(hData)), sz);
+	SCOPE_EXIT { ::UnlockResource(hData); };
+	if (!m_renderSrc.Create32BitFromSVG(svg, width, height) || !m_renderDest.Create32BitFromSVG(svg, width, height))
+	{
+		m_renderSrc.DeleteObject();
+		m_renderDest.DeleteObject();
+		return false;
+	}
+	logoWidth = width;
+	logoHeight = height;
+	return true;
+}
+
 void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	if (nIDEvent == ID_EFFECTTIMER)
 	{
 		m_waterEffect.Render(static_cast<DWORD*>(m_renderSrc.GetDIBits()), static_cast<DWORD*>(m_renderDest.GetDIBits()));
 		CClientDC dc(this);
-		CPoint ptOrigin(15,20);
+		CPoint ptOrigin(CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20));
 		m_renderDest.Draw(&dc,ptOrigin);
 	}
 	if (nIDEvent == ID_DROPTIMER)
 	{
 		CRect r;
-		r.left = 15;
-		r.top = 20;
+		r.left = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15);
+		r.top = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
 		r.right = r.left + m_renderSrc.GetWidth();
 		r.bottom = r.top + m_renderSrc.GetHeight();
 		m_waterEffect.Blob(random(r.left,r.right), random(r.top, r.bottom), 2, 400, m_waterEffect.m_iHpage);
@@ -108,22 +143,21 @@ void CAboutDlg::OnTimer(UINT_PTR nIDEvent)
 void CAboutDlg::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CRect r;
-	r.left = 15;
-	r.top = 20;
+	r.left = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15);
+	r.top = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
 	r.right = r.left + m_renderSrc.GetWidth();
 	r.bottom = r.top + m_renderSrc.GetHeight();
 
 	if (r.PtInRect(point) != FALSE)
 	{
 		// dibs are drawn upside down...
-		point.y -= 20;
-		point.y = 64-point.y;
+		point.y -= CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20);
+		point.y = CDPIAware::Instance().ScaleY(GetSafeHwnd(), 64) - point.y;
 
 		if (nFlags & MK_LBUTTON)
-			m_waterEffect.Blob(point.x -15,point.y,5,1600,m_waterEffect.m_iHpage);
+			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), point.y, 5, 1600, m_waterEffect.m_iHpage);
 		else
-			m_waterEffect.Blob(point.x -15,point.y,2,50,m_waterEffect.m_iHpage);
-
+			m_waterEffect.Blob(point.x - CDPIAware::Instance().ScaleX(GetSafeHwnd(), 15), point.y, 2, 50, m_waterEffect.m_iHpage);
 	}
 
 	CStandAloneDialog::OnMouseMove(nFlags, point);

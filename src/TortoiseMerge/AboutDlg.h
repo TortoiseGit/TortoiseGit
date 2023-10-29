@@ -1,5 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2023 - TortoiseGit
 // Copyright (C) 2006,2009-2010, 2013, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,6 +54,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	bool TryLoadSVG(UINT logoID, int& logoWidth, int& logoHeight);
+
 	CWaterEffect m_waterEffect;
 	CDib m_renderSrc;
 	CDib m_renderDest;

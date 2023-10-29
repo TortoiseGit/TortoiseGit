@@ -120,6 +120,13 @@ IDC_MARGINCURSOR        CURSOR                  "Margin.cur"
 //
 
 IDB_LOGO                PNG                     "ribbon\\TortoiseMerge.png"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+IDR_TGITMERGELOGO       RCDATA                  "TortoiseGitMerge_Logo.svgz"
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
 
