@@ -285,7 +285,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			(ext == L".tif") || (ext == L".tiff") ||
 			(ext == L".dib") || (ext == L".emf")  ||
 			(ext == L".cur") || (ext == L".webp") ||
-			(ext == L".svg"))
+			(ext == L".svg") || (ext == L".svgz"))
 		{
 			bInternal = true;
 			com = CPathUtils::GetAppDirectory() + L"TortoiseGitIDiff.exe";
@@ -493,7 +493,7 @@ CString CAppUtils::PickDiffTool(const CTGitPath& file1, const CTGitPath& file2)
 			(ext == L".tif") || (ext == L".tiff") ||
 			(ext == L".dib") || (ext == L".emf")  ||
 			(ext == L".cur") || (ext == L".webp") ||
-			(ext == L".svg"))
+			(ext == L".svg") || (ext == L".svgz"))
 		{
 			return
 				L'"' + CPathUtils::GetAppDirectory() + L"TortoiseGitIDiff.exe" + L'"' +
