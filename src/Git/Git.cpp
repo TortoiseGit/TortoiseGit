@@ -2573,7 +2573,7 @@ void CEnvironment::clear()
 	baseptr = nullptr;
 }
 
-bool CEnvironment::empty()
+bool CEnvironment::empty() const
 {
 	return size() < 3; // three is minimum for an empty environment with an empty key and empty value: "=\0\0"
 }
@@ -2606,7 +2606,7 @@ void CEnvironment::CopyProcessEnvironment()
 	FreeEnvironmentStrings(porig);
 }
 
-CString CEnvironment::GetEnv(const wchar_t* name)
+CString CEnvironment::GetEnv(const wchar_t* name) const
 {
 	ASSERT(name);
 	CString str;

@@ -168,11 +168,11 @@ public:
 		return *this;
 	}
 	void CopyProcessEnvironment();
-	CString GetEnv(const wchar_t*name);
+	CString GetEnv(const wchar_t* name) const;
 	void SetEnv(const wchar_t* name, const wchar_t* value);
 	void AddToPath(CString value);
 	void clear();
-	bool empty();
+	bool empty() const;
 	operator LPWSTR();
 	operator LPWSTR*();
 	LPWSTR baseptr;
