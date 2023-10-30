@@ -983,7 +983,7 @@ const wchar_t *wget_windows_home_directory(void)
 	return home_directory;
 }
 
-int get_set_config(const char *key, const char *value, CONFIG_TYPE type)
+int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 {
 	char * config_exclusive_filename = NULL;
 	int ret;

@@ -322,5 +322,5 @@ TEST(libgit, StoreUninitializedRepositoryConfig)
 	// clear any leftovers in caches
 	EXPECT_THROW(g_Git.CheckAndInitDll(), const char*);
 
-	EXPECT_THROW(get_set_config("something", "else", CONFIG_LOCAL), const char*);
+	EXPECT_THROW(git_set_config("something", "else", CONFIG_LOCAL), const char*);
 }
