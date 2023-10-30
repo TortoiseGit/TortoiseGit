@@ -88,26 +88,6 @@ static int is_cygwin_msys2_hack_active()
 	return dwValue == 1;
 }
 
-static std::wstring GetProgramDataConfig()
-{
-	// do not use shared windows-wide system config when cygwin hack is active
-	if (is_cygwin_msys2_hack_active())
-		return {};
-
-	// Git >= 2.24 doesn't use ProgramData any more
-	if (CRegStdDWORD(L"Software\\TortoiseGit\\git_cached_version", (2 << 24 | 24 << 16)) >= (2 << 24 | 24 << 16))
-		return {};
-
-	CComHeapPtr<WCHAR> pszPath;
-	if (SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &pszPath) != S_OK)
-		return {};
-
-	if (wcslen(pszPath) >= MAX_PATH - wcslen(L"\\Git\\config"))
-		return {};
-
-	return std::wstring(pszPath) + L"\\Git\\config";
-}
-
 static std::wstring GetSystemGitConfig()
 {
 	HKEY hKey;
@@ -236,11 +216,7 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, (home + "\\.gitconfig").c_str());
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, (home + "\\.config\\git\\config").c_str());
-	std::wstring programDataConfig = GetProgramDataConfig();
-	if (!programDataConfig.empty())
-		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, CUnicodeUtils::StdGetUTF8(programDataConfig).c_str());
-	else
-		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, "");
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
 
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);
 	CAutoBuf dotgitdir;
