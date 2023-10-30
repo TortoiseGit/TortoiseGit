@@ -98,6 +98,9 @@ static std::wstring GetSystemGitConfig()
 	{
 		RegQueryValueExW(hKey, L"SystemConfig", nullptr, &dwType, reinterpret_cast<LPBYTE>(&path), &dwSize);
 		RegCloseKey(hKey);
+		std::wstring readPath{ path };
+		if (readPath.size() > wcslen(L"\\gitconfig"))
+			return readPath.substr(0, readPath.size() - wcslen(L"\\gitconfig"));
 	}
 	return path;
 }
@@ -209,13 +212,10 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 {
 	// Configure libgit2 search paths
 	std::wstring systemConfig = GetSystemGitConfig();
-	if (!systemConfig.empty())
-		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, CUnicodeUtils::StdGetUTF8(systemConfig).c_str());
-	else
-		git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, "");
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, CUnicodeUtils::StdGetUTF8(systemConfig).c_str());
 	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, (home + "\\.gitconfig").c_str());
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, (home + "\\.config\\git\\config").c_str());
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, home.c_str());
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, (home + "\\.config\\git").c_str());
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
 
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);
