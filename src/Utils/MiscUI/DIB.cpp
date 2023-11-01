@@ -67,9 +67,6 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 	r.SetRect(0,0,iWidth,iHeight);
 	pPicture->Render(&tempDC,r,r);
 
-	// Create a 32 bit bitmap
-	std::vector<DWORD> pBits(iWidth * iHeight);
-
 	BITMAPINFO bi{};
 	bi.bmiHeader.biSize          = sizeof(BITMAPINFOHEADER);
 	bi.bmiHeader.biWidth         = iWidth;
@@ -78,7 +75,7 @@ void CDib::Create32BitFromPicture (CPictureHolder* pPicture, int iWidth, int iHe
 	bi.bmiHeader.biBitCount      = 32;
 	bi.bmiHeader.biCompression   = BI_RGB;
 
-	SetBitmap(&bi, pBits.data());
+	SetBitmap(&bi, nullptr);
 
 	auto pAr = static_cast<DWORD*>(GetDIBits());
 
@@ -114,8 +111,7 @@ bool CDib::Create32BitFromSVG(const std::string_view svg, int iWidth, int iHeigh
 	bi.bmiHeader.biBitCount = 32;
 	bi.bmiHeader.biCompression = BI_RGB;
 	// Create a 32 bit bitmap
-	std::vector<DWORD> pBits(iWidth * iHeight);
-	SetBitmap(&bi, pBits.data());
+	SetBitmap(&bi, nullptr);
 
 	CComPtr<ID2D1DCRenderTarget> target;
 	D2D1_RENDER_TARGET_PROPERTIES props{};
@@ -169,7 +165,7 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
 {
 	DeleteObject();
 
-	if (!lpBitmapInfo || !lpBits)
+	if (!lpBitmapInfo)
 		return FALSE;
 
 	DWORD dwBitmapInfoSize = sizeof(BITMAPINFO);
@@ -202,7 +198,8 @@ BOOL CDib::SetBitmap(const LPBITMAPINFO lpBitmapInfo, const LPVOID lpBits)
 
 	GdiFlush();
 
-	memcpy(m_pBits, lpBits, dwImageSize);
+	if (lpBits)
+		memcpy(m_pBits, lpBits, dwImageSize);
 
 	return TRUE;
 }
