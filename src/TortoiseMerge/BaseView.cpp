@@ -3665,6 +3665,13 @@ POINT CBaseView::ConvertViewPosToScreen(const POINT& pt)
 			nViewLineLenLeft -= nSubLineLength;
 			ptPos.y++;
 			nSubLineLength = GetLineChars(ptPos.y).GetLength();
+			// particular case when only first line exist. Without below statement we
+			// have infinite loop because nSublineLengh = 0 and ptPos.x = 1, 0 < 1
+			if (nSubLineLength == 0)
+			{
+				ptPos.y = 0;
+				ptPos.x = 0;
+			}
 		}
 		// last pos of non last sub-line go to start of next screen line
 		// Note: while this works correctly, it's not what a user might expect:
