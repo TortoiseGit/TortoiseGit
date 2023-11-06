@@ -54,6 +54,7 @@
       <PreprocessorDefinitions>SCI_LEXER;USE_D2D;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/source-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>imm32.lib;comctl32.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
