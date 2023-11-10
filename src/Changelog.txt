@@ -5,6 +5,9 @@ Released: unreleased
  * Updated OGDF to 2023.09 (Elderberry)
  * Update Scintilla to 5.3.8 and Lexilla to 5.2.8
 
+== Bug Fixes ==
+ * Fixed issue #4085: ImportPatch is closing even click "NO"
+
 = Release 2.15.0 =
 Released: 2023-10-03
 

@@ -626,13 +626,21 @@ void CImportPatchDlg::OnBnClickedCancel()
 	{
 		CTGitPath path;
 		path.SetFromWin(g_Git.m_CurrentDir);
-		if(path.HasRebaseApply())
-			if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_APPLYPATCH_GITAMACTIVE, IDS_APPNAME, MB_YESNO | MB_ICONQUESTION) == IDYES)
+		if (path.HasRebaseApply())
+		{
+			const UINT result = CMessageBox::Show(GetSafeHwnd(), IDS_PROC_APPLYPATCH_GITAMACTIVE, IDS_APPNAME, MB_YESNOCANCEL | MB_ICONQUESTION);
+			switch(result)
 			{
-				CString output;
-				if (g_Git.Run(L"git.exe am --abort", &output, CP_UTF8))
+			case IDYES:
+				if (CString output; g_Git.Run(L"git.exe am --abort", &output, CP_UTF8))
 					MessageBox(output, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				[[fallthrough]];
+			case IDNO:
+				break;
+			case IDCANCEL:
+				return;
 			}
+		}
 		OnCancel();
 	}
 }
