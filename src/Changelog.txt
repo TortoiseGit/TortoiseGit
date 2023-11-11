@@ -7,6 +7,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
+ * Fixed issue #4082: TortoiseGitMerge: Particular usage undo/redo function casue exception/freeze window
 
 = Release 2.15.0 =
 Released: 2023-10-03

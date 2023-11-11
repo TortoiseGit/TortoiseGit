@@ -91,12 +91,13 @@ protected:
 	viewstate Do(const viewstate& state, CBaseView * pView, const POINT& pt);
 	void UndoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
 	void RedoOne(CBaseView * pLeft, CBaseView * pRight, CBaseView * pBottom);
+	void updateActiveView(CBaseView* pLeft, CBaseView* pRight, CBaseView* pBottom) const;
 	std::list<allviewstate> m_viewstates;
 	std::list<POINT> m_caretpoints;
 	std::list< std::list<int>::size_type > m_groups;
-	size_t m_originalstateLeft = 0;
-	size_t m_originalstateRight = 0;
-	size_t m_originalstateBottom = 0;
+	__int64 m_originalstateLeft = 0;
+	__int64 m_originalstateRight = 0;
+	__int64 m_originalstateBottom = 0;
 	int m_groupCount = 0;
 
 	std::list<allviewstate> m_redoviewstates;
