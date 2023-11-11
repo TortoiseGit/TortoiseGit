@@ -5282,6 +5282,10 @@ msgstr ""
 msgid "ID:57643:V C +Z"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
