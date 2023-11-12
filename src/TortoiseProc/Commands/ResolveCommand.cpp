@@ -69,7 +69,7 @@ bool ResolveCommand::Execute()
 			{
 				CGitProgressDlg progDlg(CWnd::FromHandle(GetExplorerHWND()));
 				theApp.m_pMainWnd = &progDlg;
-				ResolveProgressCommand resolveProgressCommand{ ResolveWith::Mine };
+				ResolveProgressCommand resolveProgressCommand{ ResolveWith::Current };
 				progDlg.SetCommand(&resolveProgressCommand);
 				resolveProgressCommand.SetPathList(dlg.m_pathList);
 				progDlg.DoModal();
