@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Updated OGDF to 2023.09 (Elderberry)
  * Update Scintilla to 5.3.8 and Lexilla to 5.2.8
+ * TortoiseGitMerge: Add ignore line endings button to Ribbon
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"

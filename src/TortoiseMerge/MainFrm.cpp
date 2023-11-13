@@ -148,6 +148,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_TIMER()
 	ON_COMMAND(ID_VIEW_IGNORECOMMENTS, &CMainFrame::OnViewIgnorecomments)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNORECOMMENTS, &CMainFrame::OnUpdateViewIgnorecomments)
+	ON_COMMAND(ID_VIEW_IGNOREEOL, &CMainFrame::OnViewIgnoreEOL)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_IGNOREEOL, &CMainFrame::OnUpdateViewIgnoreEOL)
 	ON_COMMAND_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnRegexfilter)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_REGEXFILTER, ID_REGEXFILTER+400, &CMainFrame::OnUpdateViewRegexFilter)
 	ON_COMMAND(ID_REGEX_NO_FILTER, &CMainFrame::OnRegexNoFilter)
@@ -3235,6 +3237,24 @@ void CMainFrame::OnUpdateViewIgnorecomments(CCmdUI *pCmdUI)
 	pCmdUI->Enable(sC != m_IgnoreCommentsMap.end());
 
 	pCmdUI->SetCheck(DWORD(m_regIgnoreComments) != 0);
+}
+
+void CMainFrame::OnViewIgnoreEOL()
+{
+	if (CheckForSave(ECheckForSaveReason::Options) == IDCANCEL)
+		return;
+	CRegDWORD regIgnoreEOL(L"Software\\TortoiseGitMerge\\IgnoreEOL", TRUE);
+	bool bIgnoreEOL = static_cast<DWORD>(regIgnoreEOL) != 0;
+	bIgnoreEOL = !bIgnoreEOL;
+	regIgnoreEOL = bIgnoreEOL;
+	LoadViews();
+}
+
+void CMainFrame::OnUpdateViewIgnoreEOL(CCmdUI* pCmdUI)
+{
+	CRegDWORD regIgnoreEOL(L"Software\\TortoiseGitMerge\\IgnoreEOL", TRUE);
+	bool bIgnoreEOL = static_cast<DWORD>(regIgnoreEOL) != 0;
+	pCmdUI->SetCheck(bIgnoreEOL);
 }
 
 void CMainFrame::OnUpdateMarkedWords(CCmdUI* pCmdUI)

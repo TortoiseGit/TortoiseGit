@@ -270,6 +270,12 @@
       </Command.LargeImages>
     </Command>
 
+    <Command Name="cmdViewIgnoreEOL" LabelTitle="Ignore line endings" Id="32899">
+      <Command.LargeImages>
+        <Image Source="ribbon/EOL.bmp" />
+      </Command.LargeImages>
+    </Command>
+
     <Command Name="cmdViewCollapsed" LabelTitle="Collapse" Id="32870">
       <Command.LargeImages>
         <Image Source="ribbon/Collapse.bmp " />
@@ -480,7 +486,7 @@
             <ToggleButton CommandName="cmdIgnoreAllWhitespaceChanges" />
           </Group>
 
-          <Group CommandName="cmdGroupDiff" SizeDefinition="FourButtons">
+          <Group CommandName="cmdGroupDiff" SizeDefinition="FiveButtons">
             <ToggleButton CommandName="cmdViewInlineDiff" />
             <ToggleButton CommandName="cmdViewInlineDiffWord" />
             <SplitButtonGallery CommandName="cmdRegexFilterConfig1" Type="Items">
@@ -489,6 +495,7 @@
               </SplitButtonGallery.MenuLayout>
             </SplitButtonGallery>
             <ToggleButton CommandName="cmdViewIgnoreComments" />
+            <ToggleButton CommandName="cmdViewIgnoreEOL" />
           </Group>
 
           <Group CommandName="cmdGroupView" SizeDefinition="FiveButtons">

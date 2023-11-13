@@ -358,6 +358,7 @@
 #define ID_VIEW_IGNORECOMMENTS          32896
 #define ID_LOGOBUTTON                   32897
 #define ID_VIEW_BARS                    32898
+#define ID_VIEW_IGNOREEOL               32899
 #define ID_USEBLOCKS                    32914
 #define ID_EDIT_ENABLE                  32976
 #define ID_FILE_ENABLEEDIT              32978

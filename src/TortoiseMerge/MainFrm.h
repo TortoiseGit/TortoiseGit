@@ -176,6 +176,8 @@ protected:
 	afx_msg void	OnTimer(UINT_PTR nIDEvent);
 	afx_msg void	OnViewIgnorecomments();
 	afx_msg void	OnUpdateViewIgnorecomments(CCmdUI *pCmdUI);
+	afx_msg void	OnViewIgnoreEOL();
+	afx_msg void	OnUpdateViewIgnoreEOL(CCmdUI* pCmdUI);
 	afx_msg void	OnUpdateViewRegexFilter(CCmdUI *pCmdUI);
 	afx_msg void	OnRegexfilter(UINT cmd);
 	afx_msg void	OnDummyEnabled() {};

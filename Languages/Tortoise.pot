@@ -5481,6 +5481,10 @@ msgstr ""
 msgid "Ignore line &endings (recommended)"
 msgstr ""
 
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
 msgstr ""
