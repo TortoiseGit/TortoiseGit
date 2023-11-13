@@ -1170,6 +1170,8 @@ int CTGitPathList::ParserFromLFSLocks(unsigned int action, const CString& output
 		auto result = json::parse(CUnicodeUtils::GetUTF8(output).GetString());
 		for (auto& r : result)
 		{
+			if (r["id"].get<std::string>().empty())
+				continue;
 			CTGitPath gitPath;
 			gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>().c_str()));
 			gitPath.m_Action = action;

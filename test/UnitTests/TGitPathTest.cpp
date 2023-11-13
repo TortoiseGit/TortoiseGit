@@ -2291,6 +2291,25 @@ TEST(CTGitPath, ParseFromLFSLocks)
 	EXPECT_STRNE(L"", err);
 }
 
+TEST(CTGitPath, ParseFromLFSLocks_BrokenEmptyId)
+{
+	// output from git lfs locks --json (crafted to match crash report)
+	CString output = "[{\"id\":\"3185\",\"path\":\"Something.xlsx\",\"owner\":{\"name\":\"Person1\"},\"locked_at\":\"2023-01-31T15:51:05+01:00\"},{\"id\":\"\",\"path\":\"\",\"locked_at\":\"0001-01-01T00:00:00Z\"},{\"id\":\"3849\",\"path\":\"something else.docx\",\"owner\":{\"name\":\"Person2\"},\"locked_at\":\"2023-10-12T18:15:28+02:00\"}]";
+	constexpr unsigned int dummy = 5;
+
+	CTGitPathList locks;
+	EXPECT_EQ(0, locks.ParserFromLFSLocks(dummy, output));
+	ASSERT_EQ(2, locks.GetCount());
+
+	EXPECT_STREQ(L"Something.xlsx", locks[0].GetWinPathString());
+	EXPECT_STREQ(L"Person1", locks[0].m_LFSLockOwner);
+	EXPECT_EQ(dummy, locks[0].m_Action);
+
+	EXPECT_STREQ(L"something else.docx", locks[1].GetWinPathString());
+	EXPECT_STREQ(L"Person2", locks[1].m_LFSLockOwner);
+	EXPECT_EQ(dummy, locks[1].m_Action);
+}
+
 TEST(CTGitPath, IsRegisteredSubmoduleOfParentProject)
 {
 	CAutoTempDir tmp;
