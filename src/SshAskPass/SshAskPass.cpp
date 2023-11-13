@@ -248,6 +248,7 @@ INT_PTR CALLBACK PasswdDlg(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam
 			::SendMessage(textfield, EM_SETLIMITTEXT, MAX_LOADSTRING - 1, 0);
 			if (!StrStrI(g_Prompt, L"pass"))
 				::SendMessage(textfield, EM_SETPASSWORDCHAR, 0, 0);
+			::ShowWindow(hDlg, SW_SHOW);
 			::FlashWindow(hDlg, TRUE);
 		}
 		return TRUE;
