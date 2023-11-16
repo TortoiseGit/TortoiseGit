@@ -5,12 +5,14 @@ Released: unreleased
  * Updated OGDF to 2023.09 (Elderberry)
  * Update Scintilla to 5.3.8 and Lexilla to 5.2.8
  * TortoiseGitMerge: Add ignore line endings button to Ribbon
+ * Allow BugTraq "Select issue"-button at the same time as the textbox
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
  * Fixed issue #4082: TortoiseGitMerge: Particular usage undo/redo function casue exception/freeze window
  * Fixed issue #4086: ResolveDlg: Merge conflict file gets changed after fixing merge and pressing Resolve
  * Fixed issue #3917: Git not getting LFS files (SSHAskPass not showing)
+ * Fixed issue #4083: TortoiseGitMerge: Infinite loop when diff file has only 1 line and perform "Redo"
 
 = Release 2.15.0 =
 Released: 2023-10-03
