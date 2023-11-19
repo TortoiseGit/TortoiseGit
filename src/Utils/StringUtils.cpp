@@ -260,6 +260,7 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 	{
 		text.Empty();
 		pE->Delete();
+		return false;
 	}
 	return true;
 }
