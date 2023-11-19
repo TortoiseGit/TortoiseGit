@@ -416,27 +416,6 @@ CString CPathUtils::GetCopyrightForSelf()
 	return strReturn;
 }
 
-CString CPathUtils::PathPatternEscape(const CString& path)
-{
-	CString result = path;
-	// first remove already escaped patterns to avoid having those
-	// escaped twice
-	result.Replace(L"\\[", L"[");
-	result.Replace(L"\\]", L"]");
-	// now escape the patterns (again)
-	result.Replace(L"[", L"\\[");
-	result.Replace(L"]", L"\\]");
-	return result;
-}
-
-CString CPathUtils::PathPatternUnEscape(const CString& path)
-{
-	CString result = path;
-	result.Replace(L"\\[", L"[");
-	result.Replace(L"\\]", L"]");
-	return result;
-}
-
 CString CPathUtils::BuildPathWithPathDelimiter(const CString& path)
 {
 	CString result(path);

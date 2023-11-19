@@ -108,15 +108,6 @@ public:
 	static int ReadLink(LPCWSTR filename, CStringA* target = nullptr);
 
 	/**
-	* Escapes regexp-specific chars.
-	*/
-	static CString PathPatternEscape(const CString& path);
-	/**
-	 * Unescapes regexp-specific chars.
-	 */
-	static CString PathPatternUnEscape(const CString& path);
-
-	/**
 	 * Ensures that the path ends with a folder separator.
 	 * If the delimiter already exists, no additional delimiter will be added.
 	 * \param path to ensure
