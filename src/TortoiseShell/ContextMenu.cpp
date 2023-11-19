@@ -1229,7 +1229,6 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 	std::wstring gitCmd = L" /command:";
 	switch (cmd)
 	{
-		//#region case
 	case ShellMenuSync:
 	{
 		wchar_t syncSeq[12] = { 0 };
@@ -1654,7 +1653,6 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 
 	default:
 		break;
-		//#endregion
 	} // switch (id_it->second)
 	if (!gitCmd.empty())
 	{
