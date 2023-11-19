@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2019, 2021 - TortoiseGit
+// Copyright (C) 2013, 2016-2019, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ CCmdLineParser::CCmdLineParser(LPCWSTR sCmdLine)
 		Parse(sCmdLine);
 }
 
-CCmdLineParser& CCmdLineParser::operator=(CCmdLineParser&& other)
+CCmdLineParser& CCmdLineParser::operator=(CCmdLineParser&& other) noexcept
 {
 	m_sCmdLine = std::move(other.m_sCmdLine);
 	m_valueMap = std::move(other.m_valueMap);

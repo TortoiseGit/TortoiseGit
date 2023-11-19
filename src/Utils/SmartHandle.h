@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2011, 2015 - TortoiseSVN
-// Copyright (C) 2015-2016, 2019-2021 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2021, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -57,7 +57,7 @@ public:
 	{
 	}
 
-	CSmartHandle(CSmartHandle&& h)
+	CSmartHandle(CSmartHandle&& h) noexcept
 		: m_Handle(h.Detach())
 	{
 	}

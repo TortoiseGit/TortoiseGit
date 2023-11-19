@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2021 - TortoiseGit
+// Copyright (C) 2016, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ public:
 
 	CCmdLineParser(const CCmdLineParser&) = default;
 	CCmdLineParser& operator=(const CCmdLineParser&) = default;
-	CCmdLineParser& operator=(CCmdLineParser&& other);
+	CCmdLineParser& operator=(CCmdLineParser&& other) noexcept;
 
 	/**
 	 * returns the command line string this object was created on.
