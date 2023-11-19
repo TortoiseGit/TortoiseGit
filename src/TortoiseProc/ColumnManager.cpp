@@ -528,7 +528,7 @@ void ColumnManager::ApplyColumnOrder()
 	int order[MAX_COLUMNS + 1] = { 0 };
 
 	std::vector<int> gridColumnOrder = GetGridColumnOrder();
-	std::copy(gridColumnOrder.cbegin(), gridColumnOrder.cend(), stdext::checked_array_iterator<int*>(&order[0], sizeof(order)));
+	std::ranges::copy(gridColumnOrder, order);
 
 	// we must have placed all columns or something is really fishy ..
 	assert(gridColumnOrder.size() == columns.size());
