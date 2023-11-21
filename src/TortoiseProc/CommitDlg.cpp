@@ -234,9 +234,6 @@ BOOL CCommitDlg::OnInitDialog()
 
 	SetDlgTitle();
 
-	if (m_bSetAuthor)
-		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
-
 	// git commit accepts only 1970-01-01 to 2099-12-31 regardless timezone
 	COleDateTime minDate(1970, 1, 1, 0, 0, 0), maxDate(2099, 12, 31, 0, 0, 0);
 	m_CommitDate.SetRange(&minDate, &maxDate);
@@ -1023,7 +1020,8 @@ void CCommitDlg::OnOK()
 				GetDlgItem(IDC_COMMIT_DATEPICKER)->ShowWindow(SW_HIDE);
 				GetDlgItem(IDC_COMMIT_TIMEPICKER)->ShowWindow(SW_HIDE);
 				m_bSetAuthor = FALSE;
-				GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+				m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(g_Git.GetUserName()), static_cast<LPCWSTR>(g_Git.GetUserEmail()));
+				GetDlgItem(IDC_COMMIT_AUTHORDATA)->SendMessage(EM_SETREADONLY, TRUE);
 			}
 
 			UpdateData(FALSE);
@@ -1343,6 +1341,7 @@ UINT CCommitDlg::StatusThread()
 	DialogEnableWindow(IDC_COMMIT_AMEND, FALSE);
 	DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 	DialogEnableWindow(IDC_STAGINGSUPPORT, false);
+	GetDlgItem(IDC_COMMIT_AUTHORDATA)->SendMessage(EM_SETREADONLY, TRUE);
 	// read the list of recent log entries before querying the WC for status
 	// -> the user may select one and modify / update it while we are crawling the WC
 
@@ -1489,6 +1488,22 @@ UINT CCommitDlg::StatusThread()
 				else
 					GetDlgItem(IDC_COMMIT_AMENDDIFF)->EnableWindow(TRUE);
 			}
+		}
+
+		if (m_bSetAuthor)
+			GetDlgItem(IDC_COMMIT_AUTHORDATA)->SendMessage(EM_SETREADONLY, FALSE);
+		else
+		{
+			m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(g_Git.GetUserName()), static_cast<LPCWSTR>(g_Git.GetUserEmail()));
+			if (m_bCommitAmend)
+			{
+				GitRev headRevision;
+				if (headRevision.GetCommit(L"HEAD"))
+					MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+				else
+					m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(headRevision.GetAuthorName()), static_cast<LPCWSTR>(headRevision.GetAuthorEmail()));
+			}
+			SendMessage(WM_UPDATEDATAFALSE);
 		}
 
 		UpdateCheckLinks();
@@ -3023,23 +3038,18 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 {
 	UpdateData();
 
-	if (m_bSetAuthor)
+	GetDlgItem(IDC_COMMIT_AUTHORDATA)->SendMessage(EM_SETREADONLY, m_bSetAuthor ? FALSE: TRUE);
+
+	m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(g_Git.GetUserName()), static_cast<LPCWSTR>(g_Git.GetUserEmail()));
+	if (m_bCommitAmend)
 	{
-		m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(g_Git.GetUserName()), static_cast<LPCWSTR>(g_Git.GetUserEmail()));
-		if (m_bCommitAmend)
-		{
-			GitRev headRevision;
-			if (headRevision.GetCommit(L"HEAD"))
-				MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+		GitRev headRevision;
+		if (headRevision.GetCommit(L"HEAD"))
+			MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+		else
 			m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(headRevision.GetAuthorName()), static_cast<LPCWSTR>(headRevision.GetAuthorEmail()));
-		}
-
-		UpdateData(FALSE);
-
-		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_SHOW);
 	}
-	else
-		GetDlgItem(IDC_COMMIT_AUTHORDATA)->ShowWindow(SW_HIDE);
+	UpdateData(FALSE);
 }
 
 void CCommitDlg::PrepareStagingSupport()
