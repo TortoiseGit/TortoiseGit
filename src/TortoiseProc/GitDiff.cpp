@@ -231,7 +231,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
 			CString err;
-			CGit::StringAppend(err, &errBytes[0], CP_UTF8);
+			CGit::StringAppend(err, errBytes.data(), CP_UTF8);
 			CMessageBox::Show(hWnd, err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
