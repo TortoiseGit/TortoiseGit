@@ -349,7 +349,7 @@ void CSettingGitConfig::OnBnClickedVieweffectivegitconfig()
 		return;
 	}
 
-	CString cmd = L"git config -l";
+	CString cmd = L"git config --show-origin -l";
 	if (g_Git.RunLogFile(cmd, tempfile, &err))
 	{
 		CMessageBox::Show(GetSafeHwnd(), L"Could not get effective git config:\n" + err, L"TortoiseGit", MB_OK);
