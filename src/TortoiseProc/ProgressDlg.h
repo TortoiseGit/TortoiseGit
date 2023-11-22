@@ -146,7 +146,7 @@ private:
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 
 	CGitGuardedByteArray	m_Databuf;
-	virtual CString Convert2UnionCode(char* buff)
+	virtual CString Convert2UnionCode(const char* buff)
 	{
 		return CUnicodeUtils::GetUnicode(buff);
 	}
@@ -196,5 +196,5 @@ public:
 	{
 	}
 
-	CString Convert2UnionCode(char* buff) override;
+	CString Convert2UnionCode(const char* buff) override;
 };

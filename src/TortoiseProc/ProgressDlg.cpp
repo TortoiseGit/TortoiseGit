@@ -790,7 +790,7 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, CString text, COLORREF r
 	edit.SetDefaultCharFormat(old);
 }
 
-CString CCommitProgressDlg::Convert2UnionCode(char* buff)
+CString CCommitProgressDlg::Convert2UnionCode(const char* buff)
 {
 	int start = 0;
 	const int size = static_cast<int>(strlen(buff));
