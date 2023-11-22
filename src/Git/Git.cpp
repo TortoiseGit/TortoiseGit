@@ -2140,6 +2140,24 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	m_Environment.SetEnv(L"TGIT_INITIATED_CALL", L"1");
 
+	// Sanitize GIT_* environment variables, cf. https://github.com/git-for-windows/build-extra/pull/529
+	m_Environment.SetEnv(L"GIT_INDEX_FILE", nullptr);
+	m_Environment.SetEnv(L"GIT_INDEX_VERSION", nullptr);
+	m_Environment.SetEnv(L"GIT_OBJECT_DIRECTORY", nullptr);
+	m_Environment.SetEnv(L"GIT_ALTERNATE_OBJECT_DIRECTORIES", nullptr);
+	m_Environment.SetEnv(L"GIT_DIR", nullptr);
+	m_Environment.SetEnv(L"GIT_WORK_TREE", nullptr);
+	m_Environment.SetEnv(L"GIT_NAMESPACE", nullptr);
+	m_Environment.SetEnv(L"GIT_CEILING_DIRECTORIES", nullptr);
+	m_Environment.SetEnv(L"GIT_DISCOVERY_ACROSS_FILESYSTEM", nullptr);
+	m_Environment.SetEnv(L"GIT_COMMON_DIR", nullptr);
+	m_Environment.SetEnv(L"GIT_DEFAULT_HASH", nullptr);
+	m_Environment.SetEnv(L"GIT_CONFIG", nullptr);
+	m_Environment.SetEnv(L"GIT_CONFIG_GLOBAL", nullptr);
+	m_Environment.SetEnv(L"GIT_CONFIG_SYSTEM", nullptr);
+	m_Environment.SetEnv(L"GIT_CONFIG_NOSYSTEM", nullptr);
+	m_Environment.SetEnv(L"GIT_CONFIG_COUNT", nullptr);
+
 	// Git for Windows 2.10.1 and 2.10.2 require LC_ALL to be set, see https://tortoisegit.org/issue/2859 and https://github.com/git-for-windows/git/issues/945,
 	// because MSys2 changed the default to "ASCII". SO, make sure we have a proper default set
 	if (m_Environment.GetEnv(L"LC_ALL").IsEmpty())
