@@ -48,9 +48,6 @@
     <ClCompile Include="..\Utils\CmdLineParser.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp">
-      <Filter>Utils\MiscUI</Filter>
-    </ClCompile>
     <ClCompile Include="..\Utils\LangDll.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h">
-      <Filter>Utils\MiscUI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h">
       <Filter>Utils\MiscUI</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\MiscUI\Picture.h">

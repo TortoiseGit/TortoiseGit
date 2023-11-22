@@ -59,7 +59,6 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseDialog.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BaseWindow.cpp" />
-    <ClCompile Include="..\Utils\MiscUI\hyperlink_base.cpp" />
     <ClCompile Include="..\Utils\MiscUI\Picture.cpp" />
     <ClCompile Include="..\Utils\Monitor.cpp" />
     <ClCompile Include="..\Utils\PathUtils.cpp" />
@@ -87,7 +86,6 @@
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseDialog.h" />
     <ClInclude Include="..\Utils\MiscUI\BaseWindow.h" />
-    <ClInclude Include="..\Utils\MiscUI\hyperlink_base.h" />
     <ClInclude Include="..\Utils\MiscUI\MyMemDC.h" />
     <ClInclude Include="..\Utils\MiscUI\Picture.h" />
     <ClInclude Include="..\Utils\MiscUI\ResString.h" />

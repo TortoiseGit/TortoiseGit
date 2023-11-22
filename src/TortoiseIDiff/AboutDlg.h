@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 #include "BaseDialog.h"
-#include "hyperlink_base.h"
 
 /**
  * \ingroup TortoiseIDiff
@@ -38,6 +37,5 @@ protected:
 private:
     HWND                    m_hParent = nullptr;
     HWND                    m_hHiddenWnd = nullptr;
-    CHyperLink              m_link;
     int                     m_themeCallbackId = 0;
 };
