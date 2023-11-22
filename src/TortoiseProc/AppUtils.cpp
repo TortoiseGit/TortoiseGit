@@ -737,7 +737,7 @@ bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
 	CString sCmd;
 	sCmd.Format(L"\"%s\" \"%s\"", static_cast<LPCWSTR>(editTool), static_cast<LPCWSTR>(filename));
 
-	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac));
+	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac).UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART));
 }
 
 bool CAppUtils::LaunchRemoteSetting()
