@@ -822,7 +822,7 @@ bool CMainWindow::LoadFile(LPCWSTR filename)
 	if (!fp)
 		return false;
 
-	//SetTitle();
+	SetTitle(filename);
 	char data[4096] = { 0 };
 	size_t lenFile = fread(data, 1, sizeof(data), fp);
 	bool bUTF8 = IsUTF8(data, lenFile);

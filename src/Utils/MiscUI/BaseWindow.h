@@ -47,6 +47,8 @@ public:
 	void SetWindowTitle(const std::wstring& sTitle)
 	{
 		sWindowTitle = sTitle;
+		if (m_hwnd)
+			SetWindowText(m_hwnd, sWindowTitle.c_str());
 	};
 
 	void SetRegistryPath(const std::wstring& sPath)
