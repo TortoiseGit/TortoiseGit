@@ -35,12 +35,10 @@ public:
 		NONCLIENTMETRICS metrics = { 0 };
 		metrics.cbSize = sizeof(NONCLIENTMETRICS);
 		SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
-		m_uiFont = CreateFontIndirect(&metrics.lfMessageFont);
+		m_uiFont.CreateFontIndirect(&metrics.lfMessageFont);
 	}
 	virtual ~CHintCtrl()
 	{
-		if (m_uiFont)
-			DeleteObject(m_uiFont);
 	}
 
 	void ShowText(const CString& sText, bool forceupdate = false)
@@ -127,7 +125,7 @@ protected:
 
 private:
 	CString			m_sText;
-	HFONT			m_uiFont = nullptr;
+	CFont			m_uiFont;
 };
 
 BEGIN_TEMPLATE_MESSAGE_MAP(CHintCtrl, BaseType, BaseType)

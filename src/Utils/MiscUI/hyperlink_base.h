@@ -43,7 +43,7 @@ protected:
 	virtual void OnSelect()   {}
 	virtual void OnDeselect() {}
 
-	LPWSTR   m_strURL = nullptr;                    // hyperlink URL
+	CString m_strURL; // hyperlink URL
 
 private:
 	static COLORREF g_crLinkColor, g_crVisitedColor;// Hyperlink colors

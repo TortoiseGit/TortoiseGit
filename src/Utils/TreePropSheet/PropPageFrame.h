@@ -296,7 +296,7 @@ private:
 	/** Style to use when drawing the message text m_strMsg. */
 	DWORD m_dwMsgFormat = DT_CENTER | DT_VCENTER | DT_NOPREFIX | DT_SINGLELINE;
 
-	HFONT m_uiFont = nullptr;
+	CFont m_uiFont;
 	bool m_bDark = false;
 };
 

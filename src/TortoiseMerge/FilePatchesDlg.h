@@ -102,7 +102,7 @@ protected:
 	int							m_nWindowHeight = -1;
 	CWnd*						m_pMainFrame = nullptr;
 	int							m_ShownIndex = -1;
-	HFONT						m_boldFont = nullptr;
+	CFont						m_boldFont;
 protected:
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
 	void OnOK() override;

@@ -41,14 +41,12 @@ CPropPageFrame::CPropPageFrame()
 	NONCLIENTMETRICS metrics = { 0 };
 	metrics.cbSize = sizeof(NONCLIENTMETRICS);
 	SystemParametersInfo(SPI_GETNONCLIENTMETRICS, 0, &metrics, FALSE);
-	m_uiFont = CreateFontIndirect(&metrics.lfMessageFont);
+	m_uiFont.CreateFontIndirect(&metrics.lfMessageFont);
 }
 
 
 CPropPageFrame::~CPropPageFrame()
 {
-	if (m_uiFont)
-		DeleteObject(m_uiFont);
 }
 
 

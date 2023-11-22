@@ -86,7 +86,6 @@ CHyperLink::CHyperLink()
 
 CHyperLink::~CHyperLink()
 {
-	delete [] m_strURL;
 }
 
 /*-----------------------------------------------------------------------------
@@ -151,11 +150,7 @@ BOOL CHyperLink::ConvertStaticToHyperlink(HWND hwndParent, UINT uiCtlId,
  */
 BOOL CHyperLink::setURL(LPCWSTR strURL)
 {
-	delete[] m_strURL;
-	if ((m_strURL = new wchar_t[lstrlen(strURL) + 1]) == nullptr)
-		return FALSE;
-
-	lstrcpy(m_strURL, strURL);
+	m_strURL = strURL;
 
 	return TRUE;
 }
@@ -216,7 +211,7 @@ inline void CHyperLink::Navigate()
 	SHELLEXECUTEINFO sei = { 0 };
 	sei.cbSize = sizeof( SHELLEXECUTEINFO );		// Set Size
 	sei.lpVerb = TEXT( "open" );					// Set Verb
-	sei.lpFile = m_strURL;							// Set Target To Open
+	sei.lpFile = m_strURL.GetBuffer();				// Set Target To Open
 	sei.nShow = SW_SHOWNORMAL;						// Show Normal
 
 	LASTERRORDISPLAYR(ShellExecuteEx(&sei));

@@ -35,8 +35,6 @@ CFilePatchesDlg::CFilePatchesDlg(CWnd* pParent /*=nullptr*/)
 
 CFilePatchesDlg::~CFilePatchesDlg()
 {
-	if (m_boldFont)
-		DeleteObject(m_boldFont);
 }
 
 void CFilePatchesDlg::DoDataExchange(CDataExchange* pDX)
@@ -83,7 +81,7 @@ BOOL CFilePatchesDlg::OnInitDialog()
 	LOGFONT lf = {0};
 	GetObject(hFont, sizeof(LOGFONT), &lf);
 	lf.lfWeight = FW_BOLD;
-	m_boldFont = CreateFontIndirect(&lf);
+	m_boldFont.CreateFontIndirect(&lf);
 
 	AddAnchor(IDC_FILELIST, TOP_LEFT, BOTTOM_RIGHT);
 	AddAnchor(IDC_PATCHSELECTEDBUTTON, BOTTOM_LEFT, BOTTOM_RIGHT);
