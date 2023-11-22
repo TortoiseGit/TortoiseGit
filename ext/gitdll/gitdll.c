@@ -869,8 +869,9 @@ const wchar_t *wget_msysgit_etc(void)
 
 int git_get_config(const char *key, char *buffer, int size)
 {
-	const char *home;
 	char* system;
+	char* global = NULL;
+	char* globalxdg = NULL;
 	struct config_buf buf;
 	struct git_config_source config_source = { 0 };
 
@@ -893,27 +894,27 @@ int git_get_config(const char *key, char *buffer, int size)
 			return !buf.seen;
 	}
 
-	home = get_windows_home_directory();
-	if (home)
+	git_global_config(&global, &globalxdg);
+	if (globalxdg)
 	{
-		char* global = mkpathdup("%s/.gitconfig", home);
-		if (global)
+		config_source.file = globalxdg;
+		config_with_options(get_config, &buf, &config_source, &opts);
+		free(globalxdg);
+		globalxdg = NULL;
+		if (buf.seen)
 		{
-			config_source.file = global;
-			config_with_options(get_config, &buf, &config_source, &opts);
 			free(global);
-			if (buf.seen)
-				return !buf.seen;
+			return !buf.seen;
 		}
-		char* globalxdg = mkpathdup("%s/.config/git/config", home);
-		if (globalxdg)
-		{
-			config_source.file = globalxdg;
-			config_with_options(get_config, &buf, &config_source, &opts);
-			free(globalxdg);
-			if (buf.seen)
-				return !buf.seen;
-		}
+	}
+	if (global)
+	{
+		config_source.file = global;
+		config_with_options(get_config, &buf, &config_source, &opts);
+		free(global);
+		global = NULL;
+		if (buf.seen)
+			return !buf.seen;
 	}
 
 	system = git_system_config();
@@ -922,6 +923,7 @@ int git_get_config(const char *key, char *buffer, int size)
 		config_source.file = system;
 		config_with_options(get_config, &buf, &config_source, &opts);
 		free(system);
+		system = NULL;
 		if (buf.seen)
 			return !buf.seen;
 	}
@@ -998,14 +1000,21 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 	case CONFIG_GLOBAL:
 	case CONFIG_XDGGLOBAL:
 		{
-			const char *home = get_windows_home_directory();
-			if (home)
+			char* global = NULL;
+			char* globalxdg = NULL;
+			git_global_config(&global, &globalxdg);
+			if (type == CONFIG_GLOBAL)
 			{
-				if (type == CONFIG_GLOBAL)
-					config_exclusive_filename = mkpathdup("%s/.gitconfig", home);
-				else
-					config_exclusive_filename = mkpathdup("%s/.config/git/config", home);
+				config_exclusive_filename = global;
+				global = NULL;
 			}
+			else
+			{
+				config_exclusive_filename = globalxdg;
+				globalxdg = NULL;
+			}
+			free(global);
+			free(globalxdg);
 		}
 		break;
 	}

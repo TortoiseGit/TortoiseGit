@@ -2327,6 +2327,8 @@ CString CGit::GetGitGlobalConfig() const
 
 CString CGit::GetGitGlobalXDGConfigPath() const
 {
+	if (CString xdgPath = m_Environment.GetEnv(L"XDG_CONFIG_HOME"); !xdgPath.IsEmpty())
+		return xdgPath + L"\\.config\\git";
 	return g_Git.GetHomeDirectory() + L"\\.config\\git";
 }
 
