@@ -529,7 +529,7 @@ UINT CGitProgressList::ProgressThread()
 			str.LoadString(IDS_FAIL);
 			color = CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0);
 		}
-		log.Format(L"%s (%lu ms @ %s)", static_cast<LPCWSTR>(str), time, static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false)));
+		log.Format(L"%s (%I64u ms @ %s)", static_cast<LPCWSTR>(str), time, static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false)));
 
 		// there's no "finished: xxx" line at the end. We add one here to make
 		// sure the user sees that the command is actually finished.
