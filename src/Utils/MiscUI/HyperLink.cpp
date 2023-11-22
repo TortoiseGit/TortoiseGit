@@ -254,29 +254,7 @@ int CHyperLink::GetUnderline() const
 void CHyperLink::SetDefaultCursor()
 {
 	if (!m_hLinkCursor)
-	{
-		// first try the windows hand cursor (not available on NT4)
-#ifndef OCR_HAND
-#	define OCR_HAND 32649
-#endif
-		auto hHandCursor = static_cast<HCURSOR>(::LoadImage(nullptr, MAKEINTRESOURCE(OCR_HAND), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE | LR_SHARED));
-		if (hHandCursor)
-		{
-			m_hLinkCursor = hHandCursor;
-			return;
-		}
-		// windows cursor not available, so try to load it from winhlp32.exe
-		CString strWndDir;
-		GetWindowsDirectory(CStrBuf(strWndDir, MAX_PATH), MAX_PATH);	// Explorer can't handle paths longer than MAX_PATH.
-		strWndDir += L"\\winhlp32.exe";
-		// This retrieves cursor #106 from winhlp32.exe, which is a hand pointer
-		CAutoLibrary hModule = LoadLibrary(strWndDir);
-		if (hModule) {
-			auto hHandCursor2 = static_cast<HCURSOR>(::LoadImage(hModule, MAKEINTRESOURCE(106), IMAGE_CURSOR, 0, 0, LR_DEFAULTSIZE));
-			if (hHandCursor2)
-				m_hLinkCursor = CopyCursor(hHandCursor2);
-		}
-	}
+		m_hLinkCursor = ::LoadCursor(nullptr, IDC_HAND); // Load Windows' hand cursor
 }
 
 HINSTANCE CHyperLink::GotoURL(LPCWSTR url)
