@@ -34,7 +34,6 @@ public:
 
 public:
 	int GetEncode(const char* buffer, int size, int* bomoffset);
-	int GetEncode(int *bomoffset);
 	void ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes);
 	// updates sourcecode lines to the given encoding, encode==0 detects the encoding, returns the used encoding
 	int UpdateEncoding(int encode = 0);

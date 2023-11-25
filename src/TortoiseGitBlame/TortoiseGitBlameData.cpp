@@ -75,18 +75,6 @@ int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 	return GetACP();
 }
 
-int CTortoiseGitBlameData::GetEncode(int *bomoffset)
-{
-	ATLASSERT(bomoffset);
-
-	int encoding = 0;
-	BYTE_VECTOR rawAll;
-	for (const auto& rawBytes : m_RawLines)
-		rawAll.append(rawBytes);
-	encoding = GetEncode(rawAll.data(), static_cast<int>(rawAll.size()), bomoffset);
-	return encoding;
-}
-
 void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes)
 {
 	std::unordered_map<CGitHash, CString> hashToFilename;
