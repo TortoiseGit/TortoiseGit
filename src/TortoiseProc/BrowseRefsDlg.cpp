@@ -433,7 +433,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		if (selectRef == L"HEAD")
 		{
 			if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, selectRef))
-				selectRef.Empty();
+				selectRef = L"refs/heads";
 			else
 				selectRef = L"refs/heads/" + selectRef;
 		}
@@ -496,6 +496,8 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 	// try exact match first
 	if (!selectRef.IsEmpty() && !SelectRef(selectRef, true))
 		SelectRef(selectRef, false);
+	else if (refMap.empty())
+		SelectRef(L"refs", false);
 }
 
 bool CBrowseRefsDlg::SelectRef(CString refName, bool bExactMatch)
