@@ -6,6 +6,7 @@ Released: unreleased
  * Update Scintilla to 5.3.8 and Lexilla to 5.2.8
  * TortoiseGitMerge: Add ignore line endings button to Ribbon
  * Allow BugTraq "Select issue"-button at the same time as the textbox
+ * Add support for GIT_TEMPLATE_DIR environment variable
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
