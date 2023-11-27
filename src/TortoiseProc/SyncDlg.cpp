@@ -724,7 +724,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 		arg += L" --tags";
 		break;
 	case 2:
-		refName = L"refs/notes/commits";	//default ref for notes
+		refName = g_Git.GetNotesRef();
 		break;
 	}
 

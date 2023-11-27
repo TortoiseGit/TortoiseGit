@@ -323,6 +323,7 @@ public:
 	static bool ms_bMsys2Git;
 	static int ms_iSimilarityIndexThreshold;
 	static int m_LogEncode;
+	CString GetNotesRef() const;
 	static bool IsBranchNameValid(const CString& branchname);
 	bool IsLocalBranch(const CString& shortName);
 	bool IsBranchTagNameUnique(const CString& name);

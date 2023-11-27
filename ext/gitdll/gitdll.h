@@ -188,6 +188,8 @@ const char *get_windows_home_directory(void);
 GITDLL_API const wchar_t *wget_windows_home_directory(void);
 GITDLL_API const wchar_t *wget_msysgit_etc(void);
 
+GITDLL_API const char* git_default_notes_ref(void);
+
 typedef void *GIT_MAILMAP;
 
 GITDLL_API int git_read_mailmap(GIT_MAILMAP *mailmap);

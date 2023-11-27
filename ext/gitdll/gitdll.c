@@ -37,6 +37,7 @@
 #include "config.h"
 #include "mailmap.h"
 #include "tree.h"
+#include "notes.h"
 #pragma warning(pop)
 
 extern char g_last_error[];
@@ -983,6 +984,11 @@ const wchar_t *wget_windows_home_directory(void)
 	home_directory = _wcsdup(wpointer);
 
 	return home_directory;
+}
+
+const char* git_default_notes_ref(void)
+{
+	return default_notes_ref();
 }
 
 int git_set_config(const char* key, const char* value, CONFIG_TYPE type)

@@ -2343,6 +2343,11 @@ CString CGit::GetGitSystemConfig() const
 	return systemConfig;
 }
 
+CString CGit::GetNotesRef() const
+{
+	return CUnicodeUtils::GetUnicode(git_default_notes_ref());
+}
+
 BOOL CGit::CheckCleanWorkTree(bool stagedOk /* false */)
 {
 	if (UsingLibGit2(GIT_CMD_CHECK_CLEAN_WT))
