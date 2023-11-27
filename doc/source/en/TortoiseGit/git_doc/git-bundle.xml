@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-bundle(1)">
     <title>git-bundle(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-bundle(1)</primary>
 </indexterm>
@@ -13,7 +15,7 @@
 <simplesect id="git-bundle(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git bundle</emphasis> create [-q | --quiet | --progress | --all-progress] [--all-progress-implied]
+<literallayout><emphasis>git bundle</emphasis> create [-q | --quiet | --progress]
                     [--version=&lt;version&gt;] &lt;file&gt; &lt;git-rev-list-args&gt;
 <emphasis>git bundle</emphasis> verify [-q | --quiet] &lt;file&gt;
 <emphasis>git bundle</emphasis> list-heads &lt;file&gt; [&lt;refname&gt;&#8230;]
@@ -67,7 +69,7 @@ create [options] &lt;file&gt; &lt;git-rev-list-args&gt;
         Used to create a bundle named <emphasis>file</emphasis>.  This requires the
         <emphasis>&lt;git-rev-list-args&gt;</emphasis> arguments to define the bundle contents.
         <emphasis>options</emphasis> contains the options specific to the <emphasis>git bundle create</emphasis>
-        subcommand.
+        subcommand. If <emphasis>file</emphasis> is <emphasis>-</emphasis>, the bundle is written to stdout.
 </simpara>
 </listitem>
 </varlistentry>
@@ -85,7 +87,8 @@ verify &lt;file&gt;
         Finally, information about additional capabilities, such as "object
         filter", is printed. See "Capabilities" in <xref linkend="gitformat-bundle(5)" />
         for more information. The exit code is zero for success, but will
-        be nonzero if the bundle file is invalid.
+        be nonzero if the bundle file is invalid. If <emphasis>file</emphasis> is <emphasis>-</emphasis>, the
+        bundle is read from stdin.
 </simpara>
 </listitem>
 </varlistentry>
@@ -97,7 +100,7 @@ list-heads &lt;file&gt;
 <simpara>
         Lists the references defined in the bundle.  If followed by a
         list of references, only references matching those given are
-        printed out.
+        printed out. If <emphasis>file</emphasis> is <emphasis>-</emphasis>, the bundle is read from stdin.
 </simpara>
 </listitem>
 </varlistentry>
@@ -112,6 +115,7 @@ unbundle &lt;file&gt;
         defined references. If a list of references is given, only
         references matching those in the list are printed. This command is
         really plumbing, intended to be called only by <emphasis>git fetch</emphasis>.
+        If <emphasis>file</emphasis> is <emphasis>-</emphasis>, the bundle is read from stdin.
 </simpara>
 </listitem>
 </varlistentry>
@@ -156,36 +160,6 @@ unbundle &lt;file&gt;
         by default when it is attached to a terminal, unless -q
         is specified. This flag forces progress status even if
         the standard error stream is not directed to a terminal.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---all-progress
-</term>
-<listitem>
-<simpara>
-        When --stdout is specified then progress report is
-        displayed during the object count and compression phases
-        but inhibited during the write-out phase. The reason is
-        that in some cases the output stream is directly linked
-        to another command which may wish to display progress
-        status of its own as it processes incoming pack data.
-        This flag is like --progress except that it forces progress
-        report for the write-out phase as well even if --stdout is
-        used.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---all-progress-implied
-</term>
-<listitem>
-<simpara>
-        This is used to imply --all-progress whenever progress display
-        is activated.  Unlike --all-progress this flag doesn't actually
-        force any progress display by itself.
 </simpara>
 </listitem>
 </varlistentry>

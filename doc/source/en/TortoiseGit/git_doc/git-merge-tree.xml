@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-merge-tree(1)">
     <title>git-merge-tree(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge-tree(1)</primary>
 </indexterm>
@@ -154,7 +156,7 @@ NUL</literallayout>
 <simpara>This is an integer status followed by a NUL character.  The integer status is:</simpara>
 <literallayout class="monospaced">0: merge had conflicts
 1: merge was clean
-&amp;lt;0: something prevented the merge from running (e.g. access to repository
+&lt;0: something prevented the merge from running (e.g. access to repository
     objects denied by filesystem)</literallayout>
 </section>
 <section id="git-merge-tree(1)_OIDTLT">

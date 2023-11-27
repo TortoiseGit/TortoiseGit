@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-log(1)">
     <title>git-log(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-log(1)</primary>
 </indexterm>
@@ -663,13 +665,14 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---exclude-hidden=[receive|uploadpack]
+--exclude-hidden=[fetch|receive|uploadpack]
 </term>
 <listitem>
 <simpara>
-        Do not include refs that would be hidden by <emphasis>git-receive-pack</emphasis> or
-        <emphasis>git-upload-pack</emphasis> by consulting the appropriate <emphasis>receive.hideRefs</emphasis> or
-        <emphasis>uploadpack.hideRefs</emphasis> configuration along with <emphasis>transfer.hideRefs</emphasis> (see
+        Do not include refs that would be hidden by <emphasis>git-fetch</emphasis>,
+        <emphasis>git-receive-pack</emphasis> or <emphasis>git-upload-pack</emphasis> by consulting the appropriate
+        <emphasis>fetch.hideRefs</emphasis>, <emphasis>receive.hideRefs</emphasis> or <emphasis>uploadpack.hideRefs</emphasis>
+        configuration along with <emphasis>transfer.hideRefs</emphasis> (see
         <xref linkend="git-config(1)" />). This option affects the next pseudo-ref option
         <emphasis>--all</emphasis> or <emphasis>--glob</emphasis> and is cleared after processing them.
 </simpara>
@@ -746,10 +749,11 @@ explicitly.</simpara>
 </term>
 <listitem>
 <simpara>
-        In addition to the <emphasis>&lt;commit&gt;</emphasis> listed on the command
-        line, read them from the standard input. If a <emphasis>--</emphasis> separator is
-        seen, stop reading commits and start reading paths to limit the
-        result.
+        In addition to getting arguments from the command line, read
+        them from standard input as well. This accepts commits and
+        pseudo-options like <emphasis>--all</emphasis> and <emphasis>--glob=</emphasis>. When a <emphasis>--</emphasis> separator
+        is seen, the following input is treated as paths and used to
+        limit the result.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2953,8 +2957,7 @@ the default format.</simpara>
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section titled
-<link linkend="git-log(1)_generate_patch_text_with_p">"Generating patch text with -p"</link>).
+        Generate patch (see <xref linkend="git-log(1)_generate_patch_text_with_p"/>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -2967,8 +2970,10 @@ the default format.</simpara>
 </term>
 <listitem>
 <simpara>
-        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
-        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
+        Suppress all output from the diff machinery.  Useful for
+        commands like <emphasis>git show</emphasis> that show the patch by default to
+        squelch their output, or to cancel the effect of options like
+        <emphasis>--patch</emphasis>, <emphasis>--stat</emphasis> earlier on the command line in an alias.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4516,6 +4521,18 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <listitem>
 <simpara>
         Do not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--default-prefix
+</term>
+<listitem>
+<simpara>
+        Use the default source and destination prefixes ("a/" and "b/").
+        This is usually the default already, but may be used to override
+        config such as <emphasis>diff.noprefix</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

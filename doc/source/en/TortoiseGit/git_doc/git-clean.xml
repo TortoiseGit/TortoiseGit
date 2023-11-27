@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-clean(1)">
     <title>git-clean(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-clean(1)</primary>
 </indexterm>
@@ -221,7 +223,7 @@ quit
 </term>
 <listitem>
 <simpara>
-  This lets you quit without do cleaning.
+  This lets you quit without doing any cleaning.
 </simpara>
 </listitem>
 </varlistentry>

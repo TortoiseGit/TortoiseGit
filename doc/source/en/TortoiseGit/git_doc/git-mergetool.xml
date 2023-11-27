@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-mergetool(1)">
     <title>git-mergetool(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mergetool(1)</primary>
 </indexterm>
@@ -124,7 +126,8 @@ success of the resolution after the custom tool has exited.</simpara>
         the default merge tool will be read from the configured
         <emphasis>merge.guitool</emphasis> variable instead of <emphasis>merge.tool</emphasis>. If
         <emphasis>merge.guitool</emphasis> is not set, we will fallback to the tool
-        configured under <emphasis>merge.tool</emphasis>.
+        configured under <emphasis>merge.tool</emphasis>. This may be autoselected using
+        the configuration variable <emphasis>mergetool.guiDefault</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -134,9 +137,9 @@ success of the resolution after the custom tool has exited.</simpara>
 </term>
 <listitem>
 <simpara>
-        This overrides a previous <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> setting and reads the
-        default merge tool will be read from the configured <emphasis>merge.tool</emphasis>
-        variable.
+        This overrides a previous <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> setting or
+        <emphasis>mergetool.guiDefault</emphasis> configuration and reads the default merge
+        tool from the configured <emphasis>merge.tool</emphasis> variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -328,6 +331,20 @@ mergetool.prompt
 <listitem>
 <simpara>
         Prompt before each invocation of the merge resolution program.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+mergetool.guiDefault
+</term>
+<listitem>
+<simpara>
+        Set <emphasis>true</emphasis> to use the <emphasis>merge.guitool</emphasis> by default (equivalent to
+        specifying the <emphasis>--gui</emphasis> argument), or <emphasis>auto</emphasis> to select <emphasis>merge.guitool</emphasis>
+        or <emphasis>merge.tool</emphasis> depending on the presence of a <emphasis>DISPLAY</emphasis> environment
+        variable value. The default is <emphasis>false</emphasis>, where the <emphasis>--gui</emphasis> argument
+        must be provided explicitly for the <emphasis>merge.guitool</emphasis> to be used.
 </simpara>
 </listitem>
 </varlistentry>

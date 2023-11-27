@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-bisect(1)">
     <title>git-bisect(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-bisect(1)</primary>
 </indexterm>
@@ -136,9 +138,13 @@ of <emphasis>git bisect good</emphasis> and <emphasis>git bisect bad</emphasis> 
 command during the bisection process (the subcommand <emphasis>view</emphasis> can be used
 as an alternative to <emphasis>visualize</emphasis>):</simpara>
 <screen>$ git bisect visualize</screen>
-<simpara>If the <emphasis>DISPLAY</emphasis> environment variable is not set, <emphasis>git log</emphasis> is used
-instead.  You can also give command-line options such as <emphasis>-p</emphasis> and
-<emphasis>--stat</emphasis>.</simpara>
+<simpara>Git detects a graphical environment through various environment variables:
+<emphasis>DISPLAY</emphasis>, which is set in X Window System environments on Unix systems.
+<emphasis>SESSIONNAME</emphasis>, which is set under Cygwin in interactive desktop sessions.
+<emphasis>MSYSTEM</emphasis>, which is set under Msys2 and Git for Windows.
+<emphasis>SECURITYSESSIONID</emphasis>, which may be set on macOS in interactive desktop sessions.</simpara>
+<simpara>If none of these environment variables is set, <emphasis>git log</emphasis> is used instead.
+You can also give command-line options such as <emphasis>-p</emphasis> and <emphasis>--stat</emphasis>.</simpara>
 <screen>$ git bisect visualize --stat</screen>
 </section>
 <section id="git-bisect(1)__bisect_log_and_bisect_replay">

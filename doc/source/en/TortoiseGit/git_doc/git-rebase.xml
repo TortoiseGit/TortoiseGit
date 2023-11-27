@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-rebase(1)">
     <title>git-rebase(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-rebase(1)</primary>
 </indexterm>
@@ -741,6 +743,9 @@ have the long commit hash prepended to the format.</simpara>
 <term>
 --rebase-merges[=(rebase-cousins|no-rebase-cousins)]
 </term>
+<term>
+--no-rebase-merges
+</term>
 <listitem>
 <simpara>
         By default, a rebase will simply drop merge commits from the todo
@@ -749,14 +754,18 @@ have the long commit hash prepended to the format.</simpara>
         the branching structure within the commits that are to be rebased,
         by recreating the merge commits. Any resolved merge conflicts or
         manual amendments in these merge commits will have to be
-        resolved/re-applied manually.
+        resolved/re-applied manually. <emphasis>--no-rebase-merges</emphasis> can be used to
+        countermand both the <emphasis>rebase.rebaseMerges</emphasis> config option and a previous
+        <emphasis>--rebase-merges</emphasis>.
 </simpara>
-<simpara>By default, or when <emphasis>no-rebase-cousins</emphasis> was specified, commits which do not
-have <emphasis>&lt;upstream&gt;</emphasis> as direct ancestor will keep their original branch point,
-i.e. commits that would be excluded by <xref linkend="git-log(1)" />'s
-<emphasis>--ancestry-path</emphasis> option will keep their original ancestry by default. If
-the <emphasis>rebase-cousins</emphasis> mode is turned on, such commits are instead rebased
-onto <emphasis>&lt;upstream&gt;</emphasis> (or <emphasis>&lt;onto&gt;</emphasis>, if specified).</simpara>
+<simpara>When rebasing merges, there are two modes: <emphasis>rebase-cousins</emphasis> and
+<emphasis>no-rebase-cousins</emphasis>. If the mode is not specified, it defaults to
+<emphasis>no-rebase-cousins</emphasis>. In <emphasis>no-rebase-cousins</emphasis> mode, commits which do not have
+<emphasis>&lt;upstream&gt;</emphasis> as direct ancestor will keep their original branch point, i.e.
+commits that would be excluded by <xref linkend="git-log(1)" />'s <emphasis>--ancestry-path</emphasis>
+option will keep their original ancestry by default. In <emphasis>rebase-cousins</emphasis> mode,
+such commits are instead rebased onto <emphasis>&lt;upstream&gt;</emphasis> (or <emphasis>&lt;onto&gt;</emphasis>, if
+specified).</simpara>
 <simpara>It is currently only possible to recreate the merge commits using the
 <emphasis>ort</emphasis> merge strategy; different merge strategies can be used only via
 explicit <emphasis>exec git merge -s &lt;strategy&gt; [...]</emphasis> commands.</simpara>
@@ -1996,6 +2005,36 @@ rebase.forkPoint
 <listitem>
 <simpara>
         If set to false set <emphasis>--no-fork-point</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.rebaseMerges
+</term>
+<listitem>
+<simpara>
+        Whether and how to set the <emphasis>--rebase-merges</emphasis> option by default. Can
+        be <emphasis>rebase-cousins</emphasis>, <emphasis>no-rebase-cousins</emphasis>, or a boolean. Setting to
+        true or to <emphasis>no-rebase-cousins</emphasis> is equivalent to
+        <emphasis>--rebase-merges=no-rebase-cousins</emphasis>, setting to <emphasis>rebase-cousins</emphasis> is
+        equivalent to <emphasis>--rebase-merges=rebase-cousins</emphasis>, and setting to false is
+        equivalent to <emphasis>--no-rebase-merges</emphasis>. Passing <emphasis>--rebase-merges</emphasis> on the
+        command line, with or without an argument, overrides any
+        <emphasis>rebase.rebaseMerges</emphasis> configuration.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.maxLabelLength
+</term>
+<listitem>
+<simpara>
+        When generating label names from commit subjects, truncate the names to
+        this length. By default, the names are truncated to a little less than
+        <emphasis>NAME_MAX</emphasis> (to allow e.g. <emphasis>.lock</emphasis> files to be written for the
+        corresponding loose refs).
 </simpara>
 </listitem>
 </varlistentry>

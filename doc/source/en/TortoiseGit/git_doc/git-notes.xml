@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-notes(1)">
     <title>git-notes(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-notes(1)</primary>
 </indexterm>
@@ -14,10 +16,10 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git notes</emphasis> [list [&lt;object&gt;]]
-<emphasis>git notes</emphasis> add [-f] [--allow-empty] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> add [-f] [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
 <emphasis>git notes</emphasis> copy [-f] ( --stdin | &lt;from-object&gt; [&lt;to-object&gt;] )
-<emphasis>git notes</emphasis> append [--allow-empty] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
-<emphasis>git notes</emphasis> edit [--allow-empty] [&lt;object&gt;]
+<emphasis>git notes</emphasis> append [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
+<emphasis>git notes</emphasis> edit [--allow-empty] [&lt;object&gt;] [--[no-]stripspace]
 <emphasis>git notes</emphasis> show [&lt;object&gt;]
 <emphasis>git notes</emphasis> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes-ref&gt;
 <emphasis>git notes</emphasis> merge --commit [-v | -q]
@@ -76,7 +78,9 @@ add
         However, if you're using <emphasis>add</emphasis> interactively (using an editor
         to supply the notes contents), then - instead of aborting -
         the existing notes will be opened in the editor (like the <emphasis>edit</emphasis>
-        subcommand).
+        subcommand). If you specify multiple <emphasis>-m</emphasis> and <emphasis>-F</emphasis>, a blank
+        line will be inserted between the messages. Use the <emphasis>--separator</emphasis>
+        option to insert other delimiters.
 </simpara>
 </listitem>
 </varlistentry>
@@ -105,8 +109,12 @@ append
 </term>
 <listitem>
 <simpara>
-        Append to the notes of an existing object (defaults to HEAD).
-        Creates a new notes object if needed.
+        Append new message(s) given by <emphasis>-m</emphasis> or <emphasis>-F</emphasis> options to an
+        existing note, or add them as a new note if one does not
+        exist, for the object (defaults to HEAD).  When appending to
+        an existing note, a blank line is added before each new
+        message as an inter-paragraph separator.  The separator can
+        be customized with the <emphasis>--separator</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -218,6 +226,7 @@ get-ref
         are concatenated as separate paragraphs.
         Lines starting with <emphasis>#</emphasis> and empty lines other than a
         single line between paragraphs will be stripped out.
+        If you wish to keep them verbatim, use <emphasis>--no-stripspace</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -234,6 +243,7 @@ get-ref
         read the note message from the standard input.
         Lines starting with <emphasis>#</emphasis> and empty lines other than a
         single line between paragraphs will be stripped out.
+        If you wish to keep them verbatim, use <emphasis>--no-stripspace</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -248,7 +258,10 @@ get-ref
 <simpara>
         Take the given blob object (for example, another note) as the
         note message. (Use <emphasis>git notes copy &lt;object&gt;</emphasis> instead to
-        copy notes between objects.)
+        copy notes between objects.).  By default, message will be
+        copied verbatim, but if you wish to strip out the lines
+        starting with <emphasis>#</emphasis> and empty lines other than a single line
+        between paragraphs, use with`--stripspace` option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -274,6 +287,33 @@ get-ref
 <simpara>
         Allow an empty note object to be stored. The default behavior is
         to automatically remove empty notes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]separator, --separator=&lt;paragraph-break&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a string used as a custom inter-paragraph separator
+        (a newline is added at the end as needed). If <emphasis>--no-separator</emphasis>, no
+        separators will be added between paragraphs.  Defaults to a blank
+        line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]stripspace
+</term>
+<listitem>
+<simpara>
+        Strip leading and trailing whitespace from the note message.
+        Also strip out empty lines other than a single line between
+        paragraphs. Lines starting with <emphasis>#</emphasis> will be stripped out
+        in non-editor cases like <emphasis>-m</emphasis>, <emphasis>-F</emphasis> and <emphasis>-C</emphasis>, but not in
+        editor case like <emphasis>git notes edit</emphasis>, <emphasis>-c</emphasis>, etc.
 </simpara>
 </listitem>
 </varlistentry>

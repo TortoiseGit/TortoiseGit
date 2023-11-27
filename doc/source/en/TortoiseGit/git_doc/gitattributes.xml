@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitattributes(5)">
     <title>gitattributes(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitattributes(5)</primary>
 </indexterm>
@@ -141,14 +143,12 @@ Git stores the contents you prepare in the working tree in the
 repository upon <emphasis>git add</emphasis> and <emphasis>git commit</emphasis>.</simpara>
 <section id="gitattributes(5)__emphasis_text_emphasis">
 <title><emphasis>text</emphasis></title>
-<simpara>This attribute enables and controls end-of-line normalization.  When a
-text file is normalized, its line endings are converted to LF in the
-repository.  To control what line ending style is used in the working
-directory, use the <emphasis>eol</emphasis> attribute for a single file and the
-<emphasis>core.eol</emphasis> configuration variable for all text files.
-Note that setting <emphasis>core.autocrlf</emphasis> to <emphasis>true</emphasis> or <emphasis>input</emphasis> overrides
-<emphasis>core.eol</emphasis> (see the definitions of those options in
-<xref linkend="git-config(1)" />).</simpara>
+<simpara>This attribute marks the path as a text file, which enables end-of-line
+conversion: When a matching file is added to the index, the file's line
+endings are normalized to LF in the index.  Conversely, when the file is
+copied from the index to the working directory, its line endings may be
+converted from LF to CRLF depending on the <emphasis>eol</emphasis> attribute, the Git
+config, and the platform (see explanation of <emphasis>eol</emphasis> below).</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -157,8 +157,9 @@ Set
 <listitem>
 <simpara>
         Setting the <emphasis>text</emphasis> attribute on a path enables end-of-line
-        normalization and marks the path as a text file.  End-of-line
-        conversion takes place without guessing the content type.
+        conversion on checkin and checkout as described above.  Line endings
+        are normalized to LF in the index every time the file is checked in,
+        even if the file was previously added to Git with CRLF line endings.
 </simpara>
 </listitem>
 </varlistentry>
@@ -179,10 +180,11 @@ Set to string value "auto"
 </term>
 <listitem>
 <simpara>
-        When <emphasis>text</emphasis> is set to "auto", the path is marked for automatic
-        end-of-line conversion.  If Git decides that the content is
-        text, its line endings are converted to LF on checkin.
-        When the file has been committed with CRLF, no conversion is done.
+        When <emphasis>text</emphasis> is set to "auto", Git decides by itself whether the file
+        is text or binary.  If it is text and the file was not already in
+        Git with CRLF endings, line endings are converted on checkin and
+        checkout as described above.  Otherwise, no conversion is done on
+        checkin or checkout.
 </simpara>
 </listitem>
 </varlistentry>
@@ -204,14 +206,10 @@ unspecified.</simpara>
 </section>
 <section id="gitattributes(5)__emphasis_eol_emphasis">
 <title><emphasis>eol</emphasis></title>
-<simpara>This attribute sets a specific line-ending style to be used in the
-working directory.  This attribute has effect only if the <emphasis>text</emphasis>
-attribute is set or unspecified, or if it is set to <emphasis>auto</emphasis>, the file is
-detected as text, and it is stored with LF endings in the index.  Note
-that setting this attribute on paths which are in the index with CRLF
-line endings may make the paths to be considered dirty unless
-<emphasis>text=auto</emphasis> is set. Adding the path to the index again will normalize
-the line endings in the index.</simpara>
+<simpara>This attribute marks a path to use a specific line-ending style in the
+working tree when it is checked out.  It has effect only if <emphasis>text</emphasis> or
+<emphasis>text=auto</emphasis> is set (see above), but specifying <emphasis>eol</emphasis> automatically sets
+<emphasis>text</emphasis> if <emphasis>text</emphasis> was left unspecified.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -219,9 +217,8 @@ Set to string value "crlf"
 </term>
 <listitem>
 <simpara>
-        This setting forces Git to normalize line endings for this
-        file on checkin and convert them to CRLF when the file is
-        checked out.
+        This setting converts the file's line endings in the working
+        directory to CRLF when the file is checked out.
 </simpara>
 </listitem>
 </varlistentry>
@@ -231,9 +228,23 @@ Set to string value "lf"
 </term>
 <listitem>
 <simpara>
-        This setting forces Git to normalize line endings to LF on
-        checkin and prevents conversion to CRLF when the file is
-        checked out.
+        This setting uses the same line endings in the working directory as
+        in the index when the file is checked out.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Unspecified
+</term>
+<listitem>
+<simpara>
+        If the <emphasis>eol</emphasis> attribute is unspecified for a file, its line endings
+        in the working directory are determined by the <emphasis>core.autocrlf</emphasis> or
+        <emphasis>core.eol</emphasis> configuration variable (see the definitions of those
+        options in <xref linkend="git-config(1)" />).  If <emphasis>text</emphasis> is set but neither of
+        those variables is, the default is <emphasis>eol=crlf</emphasis> on Windows and
+        <emphasis>eol=lf</emphasis> on all other platforms.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1166,7 +1177,10 @@ size (see below).</simpara>
 <simpara>The merge driver is expected to leave the result of the merge in
 the file named with <emphasis>%A</emphasis> by overwriting it, and exit with zero
 status if it managed to merge them cleanly, or non-zero if there
-were conflicts.</simpara>
+were conflicts.  When the driver crashes (e.g. killed by SEGV),
+it is expected to exit with non-zero status that are higher than
+128, and in such a case, the merge results in a failure (which is
+different from producing a conflict).</simpara>
 <simpara>The <emphasis>merge.*.recursive</emphasis> variable specifies what other merge
 driver to use when the merge driver is called for an internal
 merge between common ancestors, when there are more than one.

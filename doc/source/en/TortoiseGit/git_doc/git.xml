@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git(1)">
     <title>git(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git(1)</primary>
 </indexterm>
@@ -364,6 +366,18 @@ environment variable)</simpara>
         list-&lt;category&gt; (see categories in command-list.txt),
         nohelpers (exclude helper commands), alias and config
         (retrieve command list from config variable completion.commands)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--attr-source=&lt;tree-ish&gt;
+</term>
+<listitem>
+<simpara>
+        Read gitattributes from &lt;tree-ish&gt; instead of the worktree. See
+        <xref linkend="gitattributes(5)" />. This is equivalent to setting the
+        <emphasis>GIT_ATTR_SOURCE</emphasis> environment variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1317,7 +1331,7 @@ repositories.</simpara>
 </term>
 <listitem>
 <simpara>
-        Compute object ID and optionally creates a blob from a file.
+        Compute object ID and optionally create an object from a file.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1472,7 +1486,7 @@ repositories.</simpara>
 </term>
 <listitem>
 <simpara>
-        Provide content or type and size information for repository objects.
+        Provide contents or details of repository objects.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2664,10 +2678,10 @@ double-quotes and respecting backslash escapes. E.g., the value
 <listitem>
 <simpara>
         If this variable is set, the default hash algorithm for new
-        repositories will be set to this value. This value is currently
-        ignored when cloning; the setting of the remote repository
-        is used instead. The default is "sha1". THIS VARIABLE IS
-        EXPERIMENTAL! See <emphasis>--object-format</emphasis> in <xref linkend="git-init(1)" />.
+        repositories will be set to this value. This value is
+        ignored when cloning and the setting of the remote repository
+        is always used. The default is "sha1".
+        See <emphasis>--object-format</emphasis> in <xref linkend="git-init(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2966,6 +2980,16 @@ for further details.</simpara>
         Setting and exporting this environment variable to any value
         tells Git not to verify the SSL certificate when fetching or
         pushing over HTTPS.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_ATTR_SOURCE</emphasis>
+</term>
+<listitem>
+<simpara>
+        Sets the treeish that gitattributes will be read from.
 </simpara>
 </listitem>
 </varlistentry>

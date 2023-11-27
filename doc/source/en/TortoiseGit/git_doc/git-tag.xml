@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-tag(1)">
     <title>git-tag(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-tag(1)</primary>
 </indexterm>
@@ -222,6 +224,17 @@ options for details.</simpara>
 <listitem>
 <simpara>
         Sorting and filtering tags are case insensitive.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--omit-empty
+</term>
+<listitem>
+<simpara>
+        Do not print a newline after formatted refs where the format expands
+        to the empty string.
 </simpara>
 </listitem>
 </varlistentry>
@@ -594,6 +607,25 @@ ISO 8601
 </simpara>
 <note><simpara>In addition, the date part is accepted in the following formats:
 <emphasis>YYYY.MM.DD</emphasis>, <emphasis>MM/DD/YYYY</emphasis> and <emphasis>DD.MM.YYYY</emphasis>.</simpara></note>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-tag(1)__files">
+<title>FILES</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>$GIT_DIR/TAG_EDITMSG</emphasis>
+</term>
+<listitem>
+<simpara>
+        This file contains the message of an in-progress annotated
+        tag. If <emphasis>git tag</emphasis> exits due to an error before creating an
+        annotated tag then the tag message that has been provided by the
+        user in an editor session will be available in this file, but
+        may be overwritten by the next invocation of <emphasis>git tag</emphasis>.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

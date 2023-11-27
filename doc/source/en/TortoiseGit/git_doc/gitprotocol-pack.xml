@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-pack(5)">
     <title>gitprotocol-pack(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-pack(5)</primary>
 </indexterm>

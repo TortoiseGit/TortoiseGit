@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-merge(1)">
     <title>git-merge(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge(1)</primary>
 </indexterm>
@@ -604,8 +606,16 @@ For conflicting paths, the index file records up to three
    versions: stage 1 stores the version from the common ancestor,
    stage 2 from <emphasis>HEAD</emphasis>, and stage 3 from <emphasis>MERGE_HEAD</emphasis> (you
    can inspect the stages with <emphasis>git ls-files -u</emphasis>).  The working
-   tree files contain the result of the "merge" program; i.e. 3-way
+   tree files contain the result of the merge operation; i.e. 3-way
    merge results with familiar conflict markers <emphasis>&lt;&lt;&lt;</emphasis> <emphasis>===</emphasis> <emphasis>&gt;&gt;&gt;</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+A special ref <emphasis>AUTO_MERGE</emphasis> is written, pointing to a tree
+   corresponding to the current content of the working tree (including
+   conflict markers for textual conflicts).  Note that this ref is only
+   written when the <emphasis>ort</emphasis> merge strategy is used (the default).
 </simpara>
 </listitem>
 <listitem>
@@ -739,7 +749,8 @@ Use a mergetool.  <emphasis>git mergetool</emphasis> to launch a graphical
 <simpara>
 Look at the diffs.  <emphasis>git diff</emphasis> will show a three-way diff,
    highlighting changes from both the <emphasis>HEAD</emphasis> and <emphasis>MERGE_HEAD</emphasis>
-   versions.
+   versions. <emphasis>git diff AUTO_MERGE</emphasis> will show what changes you've
+   made so far to resolve textual conflicts.
 </simpara>
 </listitem>
 <listitem>

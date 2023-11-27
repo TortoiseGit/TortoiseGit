@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-fetch(1)">
     <title>git-fetch(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-fetch(1)</primary>
 </indexterm>
@@ -204,6 +206,19 @@ Internally this is used to implement the <emphasis>push.negotiate</emphasis> opt
 <simpara>
         Show what would be done, without making any changes.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--porcelain
+</term>
+<listitem>
+<simpara>
+        Print the output to standard output in an easy-to-parse format for
+        scripts. See section OUTPUT in <xref linkend="git-fetch(1)" /> for details.
+</simpara>
+<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis> and takes
+precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -920,7 +935,7 @@ config file would appear like this:</simpara>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
 to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
 defined urls if no pushurls are defined. Fetch, however, will only
-fetch from the first defined url if muliple urls are defined.</simpara>
+fetch from the first defined url if multiple urls are defined.</simpara>
 </section>
 <section id="git-fetch(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>
@@ -1078,6 +1093,11 @@ section describes the output when fetching over the Git protocol
 <simpara>The status of the fetch is output in tabular form, with each line
 representing the status of a single ref. Each line is of the form:</simpara>
 <screen> &lt;flag&gt; &lt;summary&gt; &lt;from&gt; -&gt; &lt;to&gt; [&lt;reason&gt;]</screen>
+<simpara>When using <emphasis>--porcelain</emphasis>, the output format is intended to be
+machine-parseable. In contrast to the human-readable output formats it
+thus prints to standard output instead of standard error. Each line is
+of the form:</simpara>
+<screen>&lt;flag&gt; &lt;old-object-id&gt; &lt;new-object-id&gt; &lt;local-reference&gt;</screen>
 <simpara>The status of up-to-date refs is shown only if the --verbose option is
 used.</simpara>
 <simpara>In compact output mode, specified with configuration variable

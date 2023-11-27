@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-config(1)">
     <title>git-config(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-config(1)</primary>
 </indexterm>
@@ -368,7 +370,7 @@ available files.</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>path</emphasis>: canonicalize by adding a leading <emphasis>~</emphasis> to the value of <emphasis>$HOME</emphasis> and
+<emphasis>path</emphasis>: canonicalize by expanding a leading <emphasis>~</emphasis> to the value of <emphasis>$HOME</emphasis> and
   <emphasis>~user</emphasis> to the home directory for the specified user. This specifier has no
   effect when setting the value (but you can use <emphasis>git config section.variable
   ~/</emphasis> from the command line to let your shell do the expansion.)
@@ -1054,7 +1056,7 @@ potentially-included files can affect whether such files are potentially
 included, Git breaks the cycle by prohibiting these files from affecting
 the resolution of these conditions (thus, prohibiting them from
 declaring remote URLs).</simpara>
-<simpara>As for the naming of this keyword, it is for forwards compatibiliy with
+<simpara>As for the naming of this keyword, it is for forwards compatibility with
 a naming scheme that supports more variable-based include conditions,
 but currently Git only supports the exact keyword described above.</simpara>
 </listitem>
@@ -1687,6 +1689,28 @@ updateSparsePath
                 Advice shown when either <xref linkend="git-add(1)" /> or <xref linkend="git-rm(1)" />
                 is asked to update index entries outside the current sparse
                 checkout.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diverging
+</term>
+<listitem>
+<simpara>
+                Advice shown when a fast-forward is not possible.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+worktreeAddOrphan
+</term>
+<listitem>
+<simpara>
+                Advice shown when a user tries to create a worktree from an
+                invalid reference, to instruct how to create a new orphan
+                branch instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -5135,6 +5159,20 @@ difftool.prompt
 </varlistentry>
 <varlistentry>
 <term>
+difftool.guiDefault
+</term>
+<listitem>
+<simpara>
+        Set <emphasis>true</emphasis> to use the <emphasis>diff.guitool</emphasis> by default (equivalent to specifying
+        the <emphasis>--gui</emphasis> argument), or <emphasis>auto</emphasis> to select <emphasis>diff.guitool</emphasis> or <emphasis>diff.tool</emphasis>
+        depending on the presence of a <emphasis>DISPLAY</emphasis> environment variable value. The
+        default is <emphasis>false</emphasis>, where the <emphasis>--gui</emphasis> argument must be provided
+        explicitly for the <emphasis>diff.guitool</emphasis> to be used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 extensions.objectFormat
 </term>
 <listitem>
@@ -5243,8 +5281,8 @@ skipping more commits at a time, reducing the number of round trips.
 </listitem>
 <listitem>
 <simpara>
-<emphasis>gc.cruftPacks=true</emphasis> reduces disk space used by unreachable objects during
-garbage collection, preventing loose object explosions.
+<emphasis>pack.useBitmapBoundaryTraversal=true</emphasis> may improve bitmap traversal times by
+walking fewer objects.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -5790,6 +5828,20 @@ format.mboxrd
 </varlistentry>
 <varlistentry>
 <term>
+format.noprefix
+</term>
+<listitem>
+<simpara>
+        If set, do not show any source or destination prefix in patches.
+        This is equivalent to the <emphasis>diff.noprefix</emphasis> option used by <emphasis>git
+        diff</emphasis> (but which is not respected by <emphasis>format-patch</emphasis>). Note that
+        by setting this, the receiver of any patches you generate will
+        have to apply them using the <emphasis>-p0</emphasis> option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 filter.&lt;driver&gt;.clean
 </term>
 <listitem>
@@ -5993,11 +6045,11 @@ gc.bigPackThreshold
 </term>
 <listitem>
 <simpara>
-        If non-zero, all packs larger than this limit are kept when
-        <emphasis>git gc</emphasis> is run. This is very similar to <emphasis>--keep-largest-pack</emphasis>
-        except that all packs that meet the threshold are kept, not
-        just the largest pack. Defaults to zero. Common unit suffixes of
-        <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.
+        If non-zero, all non-cruft packs larger than this limit are kept
+        when <emphasis>git gc</emphasis> is run. This is very similar to
+        <emphasis>--keep-largest-pack</emphasis> except that all non-cruft packs that meet
+        the threshold are kept, not just the largest pack. Defaults to
+        zero. Common unit suffixes of <emphasis>k</emphasis>, <emphasis>m</emphasis>, or <emphasis>g</emphasis> are supported.
 </simpara>
 <simpara>Note that if the number of kept packs is more than gc.autoPackLimit,
 this configuration variable is ignored, all packs except the base pack
@@ -6060,7 +6112,7 @@ gc.cruftPacks
 <simpara>
         Store unreachable objects in a cruft pack (see
         <xref linkend="git-repack(1)" />) instead of as loose objects. The default
-        is <emphasis>false</emphasis>.
+        is <emphasis>true</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -6137,6 +6189,27 @@ commit --amend</emphasis> or <emphasis>git rebase</emphasis> and are the commits
 or rebase occurring.  Since these changes are not part of the current
 project most users will want to expire them sooner, which is why the
 default is more aggressive than <emphasis>gc.reflogExpire</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.recentObjectsHook
+</term>
+<listitem>
+<simpara>
+        When considering whether or not to remove an object (either when
+        generating a cruft pack or storing unreachable objects as
+        loose), use the shell to execute the specified command(s).
+        Interpret their output as object IDs which Git will consider as
+        "recent", regardless of their age. By treating their mtimes as
+        "now", any objects (and their descendants) mentioned in the
+        output will be kept regardless of their true age.
+</simpara>
+<simpara>Output must contain exactly one hex object ID per line, and nothing
+else. Objects which cannot be found in the repository are ignored.
+Multiple hooks are supported, but all must exit successfully, else the
+operation (either generating a cruft pack or unpacking unreachable
+objects) will be halted.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -7444,8 +7517,9 @@ http.lowSpeedLimit, http.lowSpeedTime
 </term>
 <listitem>
 <simpara>
-        If the HTTP transfer speed is less than <emphasis>http.lowSpeedLimit</emphasis>
-        for longer than <emphasis>http.lowSpeedTime</emphasis> seconds, the transfer is aborted.
+        If the HTTP transfer speed, in bytes per second, is less than
+        <emphasis>http.lowSpeedLimit</emphasis> for longer than <emphasis>http.lowSpeedTime</emphasis> seconds,
+        the transfer is aborted.
         Can be overridden by the <emphasis>GIT_HTTP_LOW_SPEED_LIMIT</emphasis> and
         <emphasis>GIT_HTTP_LOW_SPEED_TIME</emphasis> environment variables.
 </simpara>
@@ -9045,6 +9119,20 @@ mergetool.prompt
 </varlistentry>
 <varlistentry>
 <term>
+mergetool.guiDefault
+</term>
+<listitem>
+<simpara>
+        Set <emphasis>true</emphasis> to use the <emphasis>merge.guitool</emphasis> by default (equivalent to
+        specifying the <emphasis>--gui</emphasis> argument), or <emphasis>auto</emphasis> to select <emphasis>merge.guitool</emphasis>
+        or <emphasis>merge.tool</emphasis> depending on the presence of a <emphasis>DISPLAY</emphasis> environment
+        variable value. The default is <emphasis>false</emphasis>, where the <emphasis>--gui</emphasis> argument
+        must be provided explicitly for the <emphasis>merge.guitool</emphasis> to be used.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 notes.mergeStrategy
 </term>
 <listitem>
@@ -9358,6 +9446,28 @@ pack.useBitmaps
 </varlistentry>
 <varlistentry>
 <term>
+pack.useBitmapBoundaryTraversal
+</term>
+<listitem>
+<simpara>
+        When true, Git will use an experimental algorithm for computing
+        reachability queries with bitmaps. Instead of building up
+        complete bitmaps for all of the negated tips and then OR-ing
+        them together, consider negated tips with existing bitmaps as
+        additive (i.e. OR-ing them into the result if they exist,
+        ignoring them otherwise), and build up a bitmap at the boundary
+        instead.
+</simpara>
+<simpara>When using this algorithm, Git may include too many objects as a result
+of not opening up trees belonging to certain UNINTERESTING commits. This
+inexactness matches the non-bitmap traversal algorithm.</simpara>
+<simpara>In many cases, this can provide a speed-up over the exact algorithm,
+particularly when there is poor bitmap coverage of the negated side of
+the query.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 pack.useSparse
 </term>
 <listitem>
@@ -9438,6 +9548,19 @@ pack.writeBitmapLookupTable
 </varlistentry>
 <varlistentry>
 <term>
+pack.readReverseIndex
+</term>
+<listitem>
+<simpara>
+        When true, git will read any .rev file(s) that may be available
+        (see: <xref linkend="gitformat-pack(5)" />). When false, the reverse index
+        will be generated from scratch and stored in memory. Defaults to
+        true.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 pack.writeReverseIndex
 </term>
 <listitem>
@@ -9446,7 +9569,7 @@ pack.writeReverseIndex
         <xref linkend="gitformat-pack(5)" />)
         for each new packfile that it writes in all places except for
         <xref linkend="git-fast-import(1)" /> and in the bulk checkin mechanism.
-        Defaults to false.
+        Defaults to true.
 </simpara>
 </listitem>
 </varlistentry>
@@ -9988,6 +10111,36 @@ rebase.forkPoint
 <listitem>
 <simpara>
         If set to false set <emphasis>--no-fork-point</emphasis> option by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.rebaseMerges
+</term>
+<listitem>
+<simpara>
+        Whether and how to set the <emphasis>--rebase-merges</emphasis> option by default. Can
+        be <emphasis>rebase-cousins</emphasis>, <emphasis>no-rebase-cousins</emphasis>, or a boolean. Setting to
+        true or to <emphasis>no-rebase-cousins</emphasis> is equivalent to
+        <emphasis>--rebase-merges=no-rebase-cousins</emphasis>, setting to <emphasis>rebase-cousins</emphasis> is
+        equivalent to <emphasis>--rebase-merges=rebase-cousins</emphasis>, and setting to false is
+        equivalent to <emphasis>--no-rebase-merges</emphasis>. Passing <emphasis>--rebase-merges</emphasis> on the
+        command line, with or without an argument, overrides any
+        <emphasis>rebase.rebaseMerges</emphasis> configuration.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rebase.maxLabelLength
+</term>
+<listitem>
+<simpara>
+        When generating label names from commit subjects, truncate the names to
+        this length. By default, the names are truncated to a little less than
+        <emphasis>NAME_MAX</emphasis> (to allow e.g. <emphasis>.lock</emphasis> files to be written for the
+        corresponding loose refs).
 </simpara>
 </listitem>
 </varlistentry>
@@ -10852,6 +11005,9 @@ sendemail.envelopeSender
 </term>
 <term>
 sendemail.from
+</term>
+<term>
+sendemail.headerCmd
 </term>
 <term>
 sendemail.signedoffbycc

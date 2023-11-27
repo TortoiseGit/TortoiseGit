@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-checkout(1)">
     <title>git-checkout(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-checkout(1)</primary>
 </indexterm>
@@ -728,13 +730,11 @@ to checkout these paths out of the index.</simpara>
 </simplesect>
 <simplesect id="git-checkout(1)__examples">
 <title>EXAMPLES</title>
-<orderedlist numeration="arabic">
-<listitem>
-<simpara>
-The following sequence checks out the <emphasis>master</emphasis> branch, reverts
-  the <emphasis>Makefile</emphasis> to two revisions back, deletes <emphasis>hello.c</emphasis> by
-  mistake, and gets it back from the index.
-</simpara>
+<section id="git-checkout(1)__1_paths">
+<title>1. Paths</title>
+<simpara>The following sequence checks out the <emphasis>master</emphasis> branch, reverts
+the <emphasis>Makefile</emphasis> to two revisions back, deletes <emphasis>hello.c</emphasis> by
+mistake, and gets it back from the index.</simpara>
 <screen>$ git checkout master             <co id="git-checkout_CO2-1"/>
 $ git checkout master~2 Makefile  <co id="git-checkout_CO2-2"/>
 $ rm -f hello.c
@@ -754,6 +754,8 @@ take a file out of another commit
 <para>
 restore <emphasis>hello.c</emphasis> from the index
 </para>
+</callout>
+</calloutlist>
 <simpara>If you want to check out <emphasis>all</emphasis> C source files out of the index,
 you can say</simpara>
 <screen>$ git checkout -- '*.c'</screen>
@@ -765,14 +767,11 @@ because the file globbing is used to match entries in the index
 step would be confused as an instruction to switch to that branch.
 You should instead write:</simpara>
 <screen>$ git checkout -- hello.c</screen>
-</callout>
-</calloutlist>
-</listitem>
-<listitem>
-<simpara>
-After working in the wrong branch, switching to the correct
-  branch would be done using:
-</simpara>
+</section>
+<section id="git-checkout(1)__2_merge">
+<title>2. Merge</title>
+<simpara>After working in the wrong branch, switching to the correct
+branch would be done using:</simpara>
 <screen>$ git checkout mytopic</screen>
 <simpara>However, your "wrong" branch and correct <emphasis>mytopic</emphasis> branch may
 differ in files that you have modified locally, in which case
@@ -786,12 +785,11 @@ Auto-merging frotz</screen>
 <simpara>After this three-way merge, the local modifications are <emphasis>not</emphasis>
 registered in your index file, so <emphasis>git diff</emphasis> would show you what
 changes you made since the tip of the new branch.</simpara>
-</listitem>
-<listitem>
-<simpara>
-When a merge conflict happens during switching branches with
-  the <emphasis>-m</emphasis> option, you would see something like this:
-</simpara>
+</section>
+<section id="git-checkout(1)__3_merge_conflict">
+<title>3. Merge conflict</title>
+<simpara>When a merge conflict happens during switching branches with
+the <emphasis>-m</emphasis> option, you would see something like this:</simpara>
 <screen>$ git checkout -m mytopic
 Auto-merging frotz
 ERROR: Merge conflict in frotz
@@ -802,8 +800,7 @@ files.  Edit and resolve the conflict and mark it resolved with
 <emphasis>git add</emphasis> as usual:</simpara>
 <screen>$ edit frotz
 $ git add frotz</screen>
-</listitem>
-</orderedlist>
+</section>
 </simplesect>
 <simplesect id="git-checkout(1)__configuration">
 <title>CONFIGURATION</title>

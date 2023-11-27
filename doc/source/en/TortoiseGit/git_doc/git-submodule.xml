@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-submodule(1)">
     <title>git-submodule(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-submodule(1)</primary>
 </indexterm>
@@ -110,7 +112,7 @@ init [--] [&lt;path&gt;&#8230;]
 <simpara>
         Initialize the submodules recorded in the index (which were
         added and committed elsewhere) by setting <emphasis>submodule.$name.url</emphasis>
-        in .git/config. It uses the same setting from <emphasis>.gitmodules</emphasis> as
+        in <emphasis>.git/config</emphasis>, using the same setting from <emphasis>.gitmodules</emphasis> as
         a template. If the URL is relative, it will be resolved using
         the default remote. If there is no default remote, the current
         repository will be assumed to be upstream.
@@ -119,9 +121,11 @@ init [--] [&lt;path&gt;&#8230;]
 If no path is specified and submodule.active has been configured, submodules
 configured to be active will be initialized, otherwise all submodules are
 initialized.</simpara>
-<simpara>When present, it will also copy the value of <emphasis>submodule.$name.update</emphasis>.
-This command does not alter existing information in .git/config.
-You can then customize the submodule clone URLs in .git/config
+<simpara>It will also copy the value of <emphasis>submodule.$name.update</emphasis>, if present in
+the <emphasis>.gitmodules</emphasis> file, to <emphasis>.git/config</emphasis>, but (1) this command does not
+alter existing information in <emphasis>.git/config</emphasis>, and (2) <emphasis>submodule.$name.update</emphasis>
+that is set to a custom command is <emphasis role="strong">not</emphasis> copied for security reasons.</simpara>
+<simpara>You can then customize the submodule clone URLs in <emphasis>.git/config</emphasis>
 for your local setup and proceed to <emphasis>git submodule update</emphasis>;
 you can also just use <emphasis>git submodule update --init</emphasis> without
 the explicit <emphasis>init</emphasis> step if you do not intend to customize
@@ -163,6 +167,8 @@ the submodules. The "updating" can be done in several ways depending
 on command line options and the value of <emphasis>submodule.&lt;name&gt;.update</emphasis>
 configuration variable. The command line option takes precedence over
 the configuration variable. If neither is given, a <emphasis>checkout</emphasis> is performed.
+(note: what is in <emphasis>.gitmodules</emphasis> file is irrelevant at this point;
+see <emphasis>git submodule init</emphasis> above for how <emphasis>.gitmodules</emphasis> is used).
 The <emphasis>update</emphasis> procedures supported both from the command line as well as
 through the <emphasis>submodule.&lt;name&gt;.update</emphasis> configuration are:</simpara>
 <variablelist>
@@ -204,8 +210,7 @@ the commit recorded in the superproject will be merged
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>The following <emphasis>update</emphasis> procedures are only available via the
-<emphasis>submodule.&lt;name&gt;.update</emphasis> configuration variable:</simpara>
+<simpara>The following update procedures have additional limitations:</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -213,11 +218,13 @@ custom command
 </term>
 <listitem>
 <simpara>
-arbitrary shell command that takes a single
-            argument (the sha1 of the commit recorded in the
-            superproject) is executed. When <emphasis>submodule.&lt;name&gt;.update</emphasis>
-            is set to <emphasis>!command</emphasis>, the remainder after the exclamation mark
-            is the custom command.
+mechanism for running arbitrary commands with the
+            commit ID as an argument. Specifically, if the
+            <emphasis>submodule.&lt;name&gt;.update</emphasis> configuration variable is set to
+            <emphasis>!custom command</emphasis>, the object name of the commit recorded in the
+            superproject for the submodule is appended to the <emphasis>custom command</emphasis>
+            string and executed. Note that this mechanism is not supported in
+            the <emphasis>.gitmodules</emphasis> file or on the command line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -227,7 +234,8 @@ none
 </term>
 <listitem>
 <simpara>
-the submodule is not updated.
+the submodule is not updated. This update procedure is not
+            allowed on the command line.
 </simpara>
 </listitem>
 </varlistentry>

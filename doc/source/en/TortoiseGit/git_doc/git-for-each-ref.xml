@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-for-each-ref(1)">
     <title>git-for-each-ref(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-for-each-ref(1)</primary>
 </indexterm>
@@ -14,10 +16,12 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
-                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;] [&lt;pattern&gt;&#8230;]
+                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;]
+                   [ --stdin | &lt;pattern&gt;&#8230; ]
                    [--points-at=&lt;object&gt;]
                    [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
-                   [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]</literallayout>
+                   [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]
+                   [--exclude=&lt;pattern&gt; &#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__description">
@@ -42,6 +46,17 @@ host language allowing their direct evaluation in that language.</simpara>
         match against at least one pattern, either using fnmatch(3) or
         literally, in the latter case matching completely or from the
         beginning up to a slash.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--stdin
+</term>
+<listitem>
+<simpara>
+        If <emphasis>--stdin</emphasis> is supplied, then the list of patterns is read from
+        standard input instead of from the argument list.
 </simpara>
 </listitem>
 </varlistentry>
@@ -186,6 +201,29 @@ host language allowing their direct evaluation in that language.</simpara>
 <listitem>
 <simpara>
         Sorting and filtering refs are case insensitive.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--omit-empty
+</term>
+<listitem>
+<simpara>
+        Do not print a newline after formatted refs where the format expands
+        to the empty string.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        If one or more patterns are given, only refs which do not match
+        any excluded pattern(s) are shown. Matching is done using the
+        same rules as <emphasis>&lt;pattern&gt;</emphasis> above.
 </simpara>
 </listitem>
 </varlistentry>
@@ -393,6 +431,82 @@ symref
 </varlistentry>
 <varlistentry>
 <term>
+signature
+</term>
+<listitem>
+<simpara>
+        The GPG signature of a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:grade
+</term>
+<listitem>
+<simpara>
+        Show "G" for a good (valid) signature, "B" for a bad
+        signature, "U" for a good signature with unknown validity, "X"
+        for a good signature that has expired, "Y" for a good
+        signature made by an expired key, "R" for a good signature
+        made by a revoked key, "E" if the signature cannot be
+        checked (e.g. missing key) and "N" for no signature.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:signer
+</term>
+<listitem>
+<simpara>
+        The signer of the GPG signature of a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:key
+</term>
+<listitem>
+<simpara>
+        The key of the GPG signature of a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:fingerprint
+</term>
+<listitem>
+<simpara>
+        The fingerprint of the GPG signature of a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:primarykeyfingerprint
+</term>
+<listitem>
+<simpara>
+        The primary key fingerprint of the GPG signature of a commit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+signature:trustlevel
+</term>
+<listitem>
+<simpara>
+        The trust level of the GPG signature of a commit. Possible
+        outputs are <emphasis>ultimate</emphasis>, <emphasis>fully</emphasis>, <emphasis>marginal</emphasis>, <emphasis>never</emphasis> and <emphasis>undefined</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 worktreepath
 </term>
 <listitem>
@@ -401,6 +515,79 @@ worktreepath
         out, if it is checked out in any linked worktree. Empty string
         otherwise.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+ahead-behind:&lt;committish&gt;
+</term>
+<listitem>
+<simpara>
+        Two integers, separated by a space, demonstrating the number of
+        commits ahead and behind, respectively, when comparing the output
+        ref to the <emphasis>&lt;committish&gt;</emphasis> specified in the format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+describe[:options]
+</term>
+<listitem>
+<simpara>
+        A human-readable name, like <xref linkend="git-describe(1)" />;
+        empty string for undescribable commits. The <emphasis>describe</emphasis> string may
+        be followed by a colon and one or more comma-separated options.
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+tags=&lt;bool-value&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of only considering annotated tags, consider
+        lightweight tags as well; see the corresponding option in
+        <xref linkend="git-describe(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+abbrev=&lt;number&gt;
+</term>
+<listitem>
+<simpara>
+        Use at least &lt;number&gt; hexadecimal digits; see the corresponding
+        option in <xref linkend="git-describe(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+match=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        Only consider tags matching the given <emphasis>glob(7)</emphasis> pattern,
+        excluding the "refs/tags/" prefix; see the corresponding option
+        in <xref linkend="git-describe(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+exclude=&lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+        Do not consider tags matching the given <emphasis>glob(7)</emphasis> pattern,
+        excluding the "refs/tags/" prefix; see the corresponding option
+        in <xref linkend="git-describe(1)" /> for details.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 </variablelist>

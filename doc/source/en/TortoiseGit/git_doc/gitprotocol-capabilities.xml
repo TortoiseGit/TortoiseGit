@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-capabilities(5)">
     <title>gitprotocol-capabilities(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-capabilities(5)</primary>
 </indexterm>

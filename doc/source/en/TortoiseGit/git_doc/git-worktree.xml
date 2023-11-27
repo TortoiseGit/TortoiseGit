@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-worktree(1)">
     <title>git-worktree(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-worktree(1)</primary>
 </indexterm>
@@ -14,7 +16,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git worktree add</emphasis> [-f] [--detach] [--checkout] [--lock [--reason &lt;string&gt;]]
-                   [-b &lt;new-branch&gt;] &lt;path&gt; [&lt;commit-ish&gt;]
+                   [--orphan] [(-b | -B) &lt;new-branch&gt;] &lt;path&gt; [&lt;commit-ish&gt;]
 <emphasis>git worktree list</emphasis> [-v | --porcelain [-z]]
 <emphasis>git worktree lock</emphasis> [--reason &lt;string&gt;] &lt;worktree&gt;
 <emphasis>git worktree move</emphasis> &lt;worktree&gt; &lt;new-path&gt;
@@ -94,6 +96,15 @@ exist, a new branch based on <emphasis>HEAD</emphasis> is automatically created 
 <emphasis>-b &lt;branch&gt;</emphasis> was given.  If <emphasis>&lt;branch&gt;</emphasis> does exist, it will be checked out
 in the new worktree, if it's not checked out anywhere else, otherwise the
 command will refuse to create the worktree (unless <emphasis>--force</emphasis> is used).</simpara>
+<simpara>If <emphasis>&lt;commit-ish&gt;</emphasis> is omitted, neither <emphasis>--detach</emphasis>, or <emphasis>--orphan</emphasis> is
+used, and there are no valid local branches (or remote branches if
+<emphasis>--guess-remote</emphasis> is specified) then, as a convenience, the new worktree is
+associated with a new orphan branch named <emphasis>&lt;branch&gt;</emphasis> (after
+<emphasis>$(basename &lt;path&gt;)</emphasis> if neither <emphasis>-b</emphasis> or <emphasis>-B</emphasis> is used) as if <emphasis>--orphan</emphasis> was
+passed to the command. In the event the repository has a remote and
+<emphasis>--guess-remote</emphasis> is used, but no remote or local branches exist, then the
+command fails with a warning reminding the user to fetch from their remote
+first (or override by using <emphasis>-f/--force</emphasis>).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -326,6 +337,17 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
+--orphan
+</term>
+<listitem>
+<simpara>
+        With <emphasis>add</emphasis>, make the new worktree and index empty, associating
+        the worktree with a new orphan/unborn branch named <emphasis>&lt;new-branch&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --porcelain
 </term>
 <listitem>
@@ -425,7 +447,8 @@ rules and how to access refs of one worktree from another.</simpara>
 <simpara>In general, all pseudo refs are per-worktree and all refs starting with
 <emphasis>refs/</emphasis> are shared. Pseudo refs are ones like <emphasis>HEAD</emphasis> which are directly
 under <emphasis>$GIT_DIR</emphasis> instead of inside <emphasis>$GIT_DIR/refs</emphasis>. There are exceptions,
-however: refs inside <emphasis>refs/bisect</emphasis> and <emphasis>refs/worktree</emphasis> are not shared.</simpara>
+however: refs inside <emphasis>refs/bisect</emphasis>, <emphasis>refs/worktree</emphasis> and <emphasis>refs/rewritten</emphasis> are
+not shared.</simpara>
 <simpara>Refs that are per-worktree can still be accessed from another worktree via
 two special paths, <emphasis>main-worktree</emphasis> and <emphasis>worktrees</emphasis>. The former gives
 access to per-worktree refs of the main worktree, while the latter to all
@@ -501,8 +524,8 @@ linked worktree <emphasis>git rev-parse --git-path HEAD</emphasis> returns
 <emphasis>/path/other/test-next/.git/HEAD</emphasis> or <emphasis>/path/main/.git/HEAD</emphasis>) while <emphasis>git
 rev-parse --git-path refs/heads/master</emphasis> uses
 <emphasis>$GIT_COMMON_DIR</emphasis> and returns <emphasis>/path/main/.git/refs/heads/master</emphasis>,
-since refs are shared across all worktrees, except <emphasis>refs/bisect</emphasis> and
-<emphasis>refs/worktree</emphasis>.</simpara>
+since refs are shared across all worktrees, except <emphasis>refs/bisect</emphasis>,
+<emphasis>refs/worktree</emphasis> and <emphasis>refs/rewritten</emphasis>.</simpara>
 <simpara>See <xref linkend="gitrepository-layout(5)" /> for more information. The rule of
 thumb is do not make any assumption about whether a path belongs to
 <emphasis>$GIT_DIR</emphasis> or <emphasis>$GIT_COMMON_DIR</emphasis> when you need to directly access something

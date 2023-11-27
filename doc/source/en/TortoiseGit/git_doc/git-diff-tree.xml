@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-diff-tree(1)">
     <title>git-diff-tree(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-diff-tree(1)</primary>
 </indexterm>
@@ -40,8 +42,7 @@
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section titled
-"Generating patch text with -p").
+        Generate patch (see <xref linkend="git-diff-tree(1)_generate_patch_text_with_p"/>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -54,8 +55,10 @@
 </term>
 <listitem>
 <simpara>
-        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
-        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
+        Suppress all output from the diff machinery.  Useful for
+        commands like <emphasis>git show</emphasis> that show the patch by default to
+        squelch their output, or to cancel the effect of options like
+        <emphasis>--patch</emphasis>, <emphasis>--stat</emphasis> earlier on the command line in an alias.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1455,6 +1458,18 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <listitem>
 <simpara>
         Do not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--default-prefix
+</term>
+<listitem>
+<simpara>
+        Use the default source and destination prefixes ("a/" and "b/").
+        This is usually the default already, but may be used to override
+        config such as <emphasis>diff.noprefix</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

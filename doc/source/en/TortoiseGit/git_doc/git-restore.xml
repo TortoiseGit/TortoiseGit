@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-restore(1)">
     <title>git-restore(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-restore(1)</primary>
 </indexterm>

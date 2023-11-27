@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-ls-files(1)">
     <title>git-ls-files(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-ls-files(1)</primary>
 </indexterm>
@@ -585,11 +587,33 @@ objectmode
 </varlistentry>
 <varlistentry>
 <term>
+objecttype
+</term>
+<listitem>
+<simpara>
+        The object type of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 objectname
 </term>
 <listitem>
 <simpara>
         The name of the file which is recorded in the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+objectsize[:padded]
+</term>
+<listitem>
+<simpara>
+        The object size of the file which is recorded in the index
+        ("-" if the object is a <emphasis>commit</emphasis> or <emphasis>tree</emphasis>).
+        It also supports a padded format of size with "%(objectsize:padded)".
 </simpara>
 </listitem>
 </varlistentry>

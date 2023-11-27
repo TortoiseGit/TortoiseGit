@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-blame(1)">
     <title>git-blame(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-blame(1)</primary>
 </indexterm>
@@ -17,7 +19,7 @@
             [-L &lt;range&gt;] [-S &lt;revs-file&gt;] [-M] [-C] [-C] [-C] [--since=&lt;date&gt;]
             [--ignore-rev &lt;rev&gt;] [--ignore-revs-file &lt;file&gt;]
             [--color-lines] [--color-by-age] [--progress] [--abbrev=&lt;n&gt;]
-            [&lt;rev&gt; | --contents &lt;file&gt; | --reverse &lt;rev&gt;..&lt;rev&gt;] [--] &lt;file&gt;</literallayout>
+            [ --contents &lt;file&gt; ] [&lt;rev&gt; | --reverse &lt;rev&gt;..&lt;rev&gt;] [--] &lt;file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-blame(1)__description">
@@ -246,11 +248,9 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </term>
 <listitem>
 <simpara>
-        When &lt;rev&gt; is not specified, the command annotates the
-        changes starting backwards from the working tree copy.
-        This flag makes the command pretend as if the working
-        tree copy has the contents of the named file (specify
-        <emphasis>-</emphasis> to make the command read from the standard input).
+        Annotate using the contents from the named file, starting from &lt;rev&gt;
+        if it is specified, and HEAD otherwise. You may specify <emphasis>-</emphasis> to make
+        the command read from the standard input for the file contents.
 </simpara>
 </listitem>
 </varlistentry>

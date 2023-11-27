@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-push(1)">
     <title>git-push(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-push(1)</primary>
 </indexterm>
@@ -13,8 +15,8 @@
 <simplesect id="git-push(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git push</emphasis> [--all | --mirror | --tags] [--follow-tags] [--atomic] [-n | --dry-run] [--receive-pack=&lt;git-receive-pack&gt;]
-           [--repo=&lt;repository&gt;] [-f | --force] [-d | --delete] [--prune] [-v | --verbose]
+<literallayout><emphasis>git push</emphasis> [--all | --branches | --mirror | --tags] [--follow-tags] [--atomic] [-n | --dry-run] [--receive-pack=&lt;git-receive-pack&gt;]
+           [--repo=&lt;repository&gt;] [-f | --force] [-d | --delete] [--prune] [-q | --quiet] [-v | --verbose]
            [-u | --set-upstream] [-o &lt;string&gt; | --push-option=&lt;string&gt;]
            [--[no-]signed|--signed=(true|false|if-asked)]
            [--force-with-lease[=&lt;refname&gt;[:&lt;expect&gt;]] [--force-if-includes]]
@@ -37,7 +39,7 @@ arguments or <emphasis>--all</emphasis>, <emphasis>--mirror</emphasis>, <emphasi
 the default <emphasis>&lt;refspec&gt;</emphasis> by consulting <emphasis>remote.*.push</emphasis> configuration,
 and if it is not found, honors <emphasis>push.default</emphasis> configuration to decide
 what to push (See <xref linkend="git-config(1)" /> for the meaning of <emphasis>push.default</emphasis>).</simpara>
-<simpara>When neither the command-line nor the configuration specify what to
+<simpara>When neither the command-line nor the configuration specifies what to
 push, the default behavior is used, which corresponds to the <emphasis>simple</emphasis>
 value for <emphasis>push.default</emphasis>: the current branch is pushed to the
 corresponding upstream branch, but as a safety measure, the push is
@@ -158,6 +160,9 @@ already exists on the remote side.</simpara>
 <varlistentry>
 <term>
 --all
+</term>
+<term>
+--branches
 </term>
 <listitem>
 <simpara>
@@ -782,7 +787,7 @@ config file would appear like this:</simpara>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
 to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
 defined urls if no pushurls are defined. Fetch, however, will only
-fetch from the first defined url if muliple urls are defined.</simpara>
+fetch from the first defined url if multiple urls are defined.</simpara>
 </section>
 <section id="git-push(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>

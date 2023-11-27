@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitweb(1)">
     <title>gitweb(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitweb(1)</primary>
 </indexterm>
@@ -691,7 +693,7 @@ repositories, you can configure Apache like this:</simpara>
 &lt;/VirtualHost&gt;</screen>
 <simpara>The above configuration expects your public repositories to live under
 <emphasis>/pub/git</emphasis> and will serve them as <emphasis>http://git.domain.org/dir-under-pub-git</emphasis>,
-both as clonable Git URL and as browseable gitweb interface.  If you then
+both as clonable Git URL and as browsable gitweb interface.  If you then
 start your <xref linkend="git-daemon(1)" /> with <emphasis>--base-path=/pub/git --export-all</emphasis>
 then you can even use the <emphasis>git://</emphasis> URL with exactly the same path.</simpara>
 <simpara>Setting the environment variable <emphasis>GITWEB_CONFIG</emphasis> will tell gitweb to use the

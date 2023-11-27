@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-annotate(1)">
     <title>git-annotate(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-annotate(1)</primary>
 </indexterm>
@@ -227,11 +229,9 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </term>
 <listitem>
 <simpara>
-        When &lt;rev&gt; is not specified, the command annotates the
-        changes starting backwards from the working tree copy.
-        This flag makes the command pretend as if the working
-        tree copy has the contents of the named file (specify
-        <emphasis>-</emphasis> to make the command read from the standard input).
+        Annotate using the contents from the named file, starting from &lt;rev&gt;
+        if it is specified, and HEAD otherwise. You may specify <emphasis>-</emphasis> to make
+        the command read from the standard input for the file contents.
 </simpara>
 </listitem>
 </varlistentry>
