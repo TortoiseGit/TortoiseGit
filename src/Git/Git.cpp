@@ -2140,7 +2140,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	m_Environment.SetEnv(L"TGIT_INITIATED_CALL", L"1");
 
-	// Sanitize GIT_* environment variables, cf. https://github.com/git-for-windows/build-extra/pull/529 and git/cache.h
+	// Sanitize GIT_* environment variables, cf. https://github.com/git-for-windows/build-extra/pull/529 and git/environment.h
 	m_Environment.SetEnv(L"GIT_INDEX_FILE", nullptr);
 	m_Environment.SetEnv(L"GIT_INDEX_VERSION", nullptr);
 	m_Environment.SetEnv(L"GIT_OBJECT_DIRECTORY", nullptr);
@@ -2158,6 +2158,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 	m_Environment.SetEnv(L"GIT_CONFIG_NOSYSTEM", nullptr);
 	m_Environment.SetEnv(L"GIT_CONFIG_COUNT", nullptr);
 	m_Environment.SetEnv(L"GIT_ATTR_NOSYSTEM", nullptr);
+	m_Environment.SetEnv(L"GIT_ATTR_SOURCE", nullptr);
 	m_Environment.SetEnv(L"GIT_SHALLOW_FILE", nullptr);
 	m_Environment.SetEnv(L"GIT_GRAFT_FILE", nullptr);
 
