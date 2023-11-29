@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -313,7 +313,7 @@ void CPushDlg::GetRemoteBranch(CString currentBranch)
 		{
 			CString str;
 			int n = m_Remote.GetLBTextLen(i);
-			m_Remote.GetLBText(i, CStrBuf(str, n));
+			m_Remote.GetLBText(i, CStrBuf(str, n, 0));
 			if (str == pushRemote)
 			{
 				m_Remote.SetCurSel(i);

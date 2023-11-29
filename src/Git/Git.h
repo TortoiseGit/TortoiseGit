@@ -108,16 +108,14 @@ public:
 		if (size == 0)
 			return false;
 		const int oldEndPos = m_buffer.GetLength();
-		memcpy(m_buffer.GetBuffer(oldEndPos + static_cast<int>(size)) + oldEndPos, data, size);
-		m_buffer.ReleaseBuffer(oldEndPos + static_cast<int>(size));
+		memcpy(CStrBufA(m_buffer, oldEndPos + static_cast<int>(size), 0) + oldEndPos, data, size);
 
 		// Break into lines and feed to m_recv
 		int eolPos;
 		CStringA line;
 		while ((eolPos = m_buffer.Find('\n')) >= 0)
 		{
-			memcpy(line.GetBuffer(eolPos), static_cast<const char*>(m_buffer), eolPos);
-			line.ReleaseBuffer(eolPos);
+			memcpy(CStrBufA(line, eolPos, 0), static_cast<const char*>(m_buffer), eolPos);
 			auto oldLen = m_buffer.GetLength();
 			memmove(m_buffer.GetBuffer(oldLen), static_cast<const char*>(m_buffer) + eolPos + 1, m_buffer.GetLength() - eolPos - 1);
 			m_buffer.ReleaseBuffer(oldLen - eolPos - 1);

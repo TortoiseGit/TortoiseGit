@@ -314,8 +314,7 @@ BOOL CDiffData::Load()
 	}
 	catch (CMemoryException* e)
 	{
-		e->GetErrorMessage(m_sError.GetBuffer(255), 255);
-		m_sError.ReleaseBuffer();
+		e->GetErrorMessage(CStrBuf(m_sError, 255), 255);
 		e->Delete();
 		return FALSE;
 	}

@@ -285,9 +285,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 						linebomoffset = 1;
 					}
 					int size = static_cast<int>((rawLine.size() - linebomoffset) / 2);
-					wchar_t* buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
-					line.ReleaseBuffer();
+					memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}

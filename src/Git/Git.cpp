@@ -2571,10 +2571,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 			patha = CUnicodeUtils::GetUTF8(path.GetGitPathString());
 			outa = CUnicodeUtils::GetUTF8(outputfile);
 			::DeleteFile(outputfile);
-			int ret = git_checkout_file(ref, patha, outa.GetBuffer());
-			outa.ReleaseBuffer();
-			return ret;
-
+			return git_checkout_file(ref, patha, CStrBufA(outa));
 		}
 		catch (const char * msg)
 		{

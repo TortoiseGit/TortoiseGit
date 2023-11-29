@@ -450,9 +450,8 @@ void CFilePatchesDlg::SetTitleWithPath(int width)
 	CDC * pDC = GetDC();
 	if (pDC)
 	{
-		PathCompactPath(pDC->GetSafeHdc(), title.GetBuffer(), width);
+		PathCompactPath(pDC->GetSafeHdc(), CStrBuf(title), width);
 		ReleaseDC(pDC);
-		title.ReleaseBuffer();
 	}
 	SetWindowText(title);
 }

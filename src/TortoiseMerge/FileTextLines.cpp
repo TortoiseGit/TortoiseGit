@@ -202,7 +202,6 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPCVOID pBuffer, in
 
 BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 {
-	WCHAR exceptionError[1000] = {0};
 	m_SaveParams.m_LineEndings = EOL::AutoLine;
 	if (!m_bKeepEncoding)
 		m_SaveParams.m_UnicodeType = CFileTextLines::UnicodeType::AUTOTYPE;
@@ -255,8 +254,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	}
 	catch (CMemoryException* e)
 	{
-		e->GetErrorMessage(exceptionError, _countof(exceptionError));
-		m_sErrorString = exceptionError;
+		e->GetErrorMessage(CStrBuf(m_sErrorString, 1000), 1000);
 		return FALSE;
 	}
 
@@ -314,8 +312,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
 	}
 	catch (CMemoryException* e)
 	{
-		e->GetErrorMessage(exceptionError, _countof(exceptionError));
-		m_sErrorString = exceptionError;
+		e->GetErrorMessage(CStrBuf(m_sErrorString, 1000), 1000);
 		return FALSE;
 	}
 
@@ -588,8 +585,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 	}
 	catch (CException * e)
 	{
-		e->GetErrorMessage(m_sErrorString.GetBuffer(4096), 4096);
-		m_sErrorString.ReleaseBuffer();
+		e->GetErrorMessage(CStrBuf(m_sErrorString, 4096), 4096);
 		e->Delete();
 		return FALSE;
 	}
