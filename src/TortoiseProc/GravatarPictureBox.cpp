@@ -278,6 +278,8 @@ resend:
 		return ERROR_OPEN_FAILED;
 
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
+	constexpr DWORD BUFFER_SIZE = 65536;
+	auto buff = std::make_unique<wchar_t[]>(BUFFER_SIZE);
 	while (!*gravatarExit)
 	{
 		DWORD size; // size of the data available
@@ -285,14 +287,12 @@ resend:
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		DWORD downloaded; // size of the downloaded data
-		auto buff = std::make_unique<wchar_t[]>(size + 1);
-		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
+		if (!InternetReadFile(hResourceHandle, buff.get(), min(BUFFER_SIZE, size), &downloaded))
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		if (downloaded == 0)
 			break;
 
-		buff[downloaded] = '\0';
 		try
 		{
 			destinationFile.Write(buff.get(), downloaded);

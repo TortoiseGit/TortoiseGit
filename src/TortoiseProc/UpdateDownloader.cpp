@@ -175,6 +175,8 @@ resend:
 		return ERROR_OPEN_FAILED;
 	}
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
+	constexpr DWORD BUFFER_SIZE = 65536;
+	auto buff = std::make_unique<char[]>(BUFFER_SIZE);
 	do
 	{
 		DWORD size; // size of the data available
@@ -186,8 +188,7 @@ resend:
 		}
 
 		DWORD downloaded; // size of the downloaded data
-		auto buff = std::make_unique<char[]>(size + 1);
-		if (!InternetReadFile(hResourceHandle, buff.get(), size, &downloaded))
+		if (!InternetReadFile(hResourceHandle, buff.get(), min(BUFFER_SIZE, size), &downloaded))
 		{
 			DWORD err = GetLastError();
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Download of %s failed on InternetReadFile: %d\n", static_cast<LPCWSTR>(url), err);
@@ -197,7 +198,6 @@ resend:
 		if (downloaded == 0)
 			break;
 
-		buff[downloaded] = '\0';
 		try
 		{
 			destinationFile.Write(buff.get(), downloaded);
