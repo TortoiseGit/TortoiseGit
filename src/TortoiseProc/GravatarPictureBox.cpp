@@ -275,7 +275,7 @@ resend:
 
 	CFile destinationFile;
 	if (!destinationFile.Open(dest, CFile::modeCreate | CFile::modeWrite))
-		return ERROR_ACCESS_DENIED;
+		return ERROR_OPEN_FAILED;
 
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
 	while (!*gravatarExit)
@@ -293,7 +293,18 @@ resend:
 			break;
 
 		buff[downloaded] = '\0';
-		destinationFile.Write(buff.get(), downloaded);
+		try
+		{
+			destinationFile.Write(buff.get(), downloaded);
+		}
+		catch (CFileException* e)
+		{
+			auto ret = e->m_lOsError;
+			if (e->m_cause == CFileException::diskFull)
+				ret = ERROR_DISK_FULL;
+			e->Delete();
+			return ret;
+		}
 
 		downloadedSum += downloaded;
 	}

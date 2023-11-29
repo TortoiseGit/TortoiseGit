@@ -2933,8 +2933,12 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		file.SetLength(file.GetPosition());
 		file.Close();
 	}
-	catch (CFileException*)
+	catch (CFileException* e)
 	{
+		CString sErrorString;
+		e->GetErrorMessage(CStrBuf(sErrorString, 4096), 4096);
+		e->Delete();
+		MessageBox(sErrorString, L"TortoiseGitMerge", MB_ICONERROR);
 	}
 }
 
