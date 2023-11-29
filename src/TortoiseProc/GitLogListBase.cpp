@@ -2725,8 +2725,7 @@ int CGitLogListBase::BeginFetchLog()
 	}
 	catch (const char* msg)
 	{
-		CString err(msg);
-		MessageBox(L"Could not initialize libgit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+		MessageBox(L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -2756,8 +2755,7 @@ int CGitLogListBase::BeginFetchLog()
 	catch (const char* msg)
 	{
 		g_Git.m_critGitDllSec.Unlock();
-		CString err(msg);
-		MessageBox(L"Could not open log.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+		MessageBox(L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 	g_Git.m_critGitDllSec.Unlock();
@@ -2934,8 +2932,7 @@ UINT CGitLogListBase::LogThread()
 		}
 		catch (const char* msg)
 		{
-			CString err(msg);
-			MessageBox(L"Could not get first commit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+			MessageBox(L"Could not get first commit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 			ret = -1;
 		}
 		g_Git.m_critGitDllSec.Unlock();
@@ -2968,8 +2965,7 @@ UINT CGitLogListBase::LogThread()
 			catch (const char* msg)
 			{
 				g_Git.m_critGitDllSec.Unlock();
-				CString err(msg);
-				MessageBox(L"Could not get next commit.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+				MessageBox(L"Could not get next commit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 				break;
 			}
 
@@ -3009,8 +3005,7 @@ UINT CGitLogListBase::LogThread()
 			catch (const char* msg)
 			{
 				g_Git.m_critGitDllSec.Unlock();
-				CString err(msg);
-				MessageBox(L"Could not get commit notes.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+				MessageBox(L"Could not get commit notes.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 				break;
 			}
 

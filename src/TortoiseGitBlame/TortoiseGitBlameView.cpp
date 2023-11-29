@@ -388,7 +388,7 @@ void CTortoiseGitBlameView::OnRButtonUp(UINT /*nFlags*/, CPoint point)
 		}
 		catch (const char* msg)
 		{
-			MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		}
 
 		// blame previous

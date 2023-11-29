@@ -639,7 +639,7 @@ CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantB
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(nullptr, L"Could not get config.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, L"Could not get config.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return def;
 		}
 
@@ -700,7 +700,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(nullptr, L"Could not set config.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, L"Could not set config.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -751,7 +751,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		}
 		catch (const char *msg)
 		{
-			::MessageBox(nullptr, L"Could not unset config.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			::MessageBox(nullptr, L"Could not unset config.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
 	}
@@ -2578,7 +2578,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 		}
 		catch (const char * msg)
 		{
-			gitLastErr = L"gitdll.dll reports: " + CString(msg);
+			gitLastErr = L"gitdll.dll reports: " + CUnicodeUtils::GetUnicode(msg);
 			return -1;
 		}
 		catch (...)

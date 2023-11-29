@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020, 2023 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -232,7 +232,7 @@ void CGitBlameLogList::GetParentNumbers(GitRevLoglist* pRev, const std::vector<C
 	}
 	catch (const char* msg)
 	{
-		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 	}
 }
 
@@ -286,6 +286,6 @@ void CGitBlameLogList::GetParentHash(GitRevLoglist* pRev, int index, CGitHash& p
 	}
 	catch (const char* msg)
 	{
-		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(L"Could not get files of parents.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 	}
 }

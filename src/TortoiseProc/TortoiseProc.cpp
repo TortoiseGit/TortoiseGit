@@ -451,7 +451,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		catch (const char* msg)
 		{
-			err = CString(msg);
+			err = CUnicodeUtils::GetUnicode(msg);
 		}
 
 		if (!err.IsEmpty())

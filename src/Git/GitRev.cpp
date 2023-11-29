@@ -191,7 +191,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 	}
 	catch (const char* msg)
 	{
-		m_sErr = L"Could not get parents of commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
+		m_sErr = L"Could not get parents of commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 
@@ -258,7 +258,7 @@ int GitRev::GetCommit(const CString& refname)
 	}
 	catch (const char* msg)
 	{
-		m_sErr = L"Could not initiate libgit.\nlibgit reports:\n" + CString(msg);
+		m_sErr = L"Could not initiate libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 
@@ -283,7 +283,7 @@ int GitRev::GetCommit(const CString& refname)
 	}
 	catch (const char* msg)
 	{
-		m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CString(msg);
+		m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 

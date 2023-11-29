@@ -78,7 +78,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -91,7 +91,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -107,7 +107,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, L"Could not get first commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(nullptr, L"Could not get first commit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -129,7 +129,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		}
 		catch (const char* msg)
 		{
-			MessageBox(nullptr, L"Could not get next commit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(nullptr, L"Could not get next commit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 			break;
 		}
 
@@ -201,7 +201,7 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 	}
 	catch (const char* msg)
 	{
-		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -223,7 +223,7 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 		}
 		catch (const char* msg)
 		{
-			MessageBox(nullptr, L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg), L"TortoiseGit", MB_ICONERROR);
+			MessageBox(nullptr, L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 

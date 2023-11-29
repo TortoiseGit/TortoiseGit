@@ -142,7 +142,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 		}
 		catch (const char* libgiterr)
 		{
-			MessageBox(nullptr, CString(libgiterr), L"TortoiseGitBlame", MB_ICONERROR);
+			MessageBox(nullptr, CUnicodeUtils::GetUnicode(libgiterr), L"TortoiseGitBlame", MB_ICONERROR);
 			return FALSE;
 		}
 

@@ -324,7 +324,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 	}
 	catch (const char* msg)
 	{
-		m_sErr = L"Could not get commit \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
+		m_sErr = L"Could not get commit \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 
@@ -346,7 +346,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		}
 		catch (const char* msg)
 		{
-			m_sErr = L"Could do diff for \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
+			m_sErr = L"Could do diff for \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 			git_free_commit(&commit);
 			return -1;
 		}

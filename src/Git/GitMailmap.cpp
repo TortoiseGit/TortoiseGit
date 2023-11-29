@@ -32,8 +32,7 @@ CGitMailmap::CGitMailmap()
 		}
 		catch (const char* msg)
 		{
-			CString err(msg);
-			MessageBox(nullptr, L"Could not initialize libgit. Disabling Mailmap support.\nlibgit reports:\n" + err, L"TortoiseGit", MB_ICONERROR);
+			MessageBox(nullptr, L"Could not initialize libgit. Disabling Mailmap support.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 			return;
 		}
 		git_read_mailmap(&m_pMailmap);
