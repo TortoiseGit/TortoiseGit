@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-mktag(1)">
     <title>git-mktag(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mktag(1)</primary>
 </indexterm>
@@ -32,7 +34,7 @@ would run by default in that all <emphasis>fsck.&lt;msg-id&gt;</emphasis> messag
 from warnings to errors (so e.g. a missing "tagger" line is an error).</simpara>
 <simpara>Extra headers in the object are also an error under mktag, but ignored
 by <xref linkend="git-fsck(1)" />. This extra check can be turned off by setting
-the appropriate <emphasis>fsck.&lt;msg-id&gt;</emphasis> varible:</simpara>
+the appropriate <emphasis>fsck.&lt;msg-id&gt;</emphasis> variable:</simpara>
 <literallayout class="monospaced">git -c fsck.extraHeaderEntry=ignore mktag &lt;my-tag-with-headers</literallayout>
 </simplesect>
 <simplesect id="git-mktag(1)__options">

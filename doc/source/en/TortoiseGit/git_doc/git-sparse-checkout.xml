@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-sparse-checkout(1)">
     <title>git-sparse-checkout(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-sparse-checkout(1)</primary>
 </indexterm>
@@ -13,7 +15,7 @@
 <simplesect id="git-sparse-checkout(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git sparse-checkout</emphasis> (init | list | set | add | reapply | disable) [&lt;options&gt;]</literallayout>
+<literallayout><emphasis>git sparse-checkout</emphasis> (init | list | set | add | reapply | disable | check-rules) [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-sparse-checkout(1)__description">
@@ -166,6 +168,31 @@ paths to pass to a subsequent <emphasis>set</emphasis> or <emphasis>add</emphasi
 <emphasis>--cone</emphasis> and <emphasis>--sparse-index</emphasis> options would not be remembered across
 the disable command, so the easy restore of calling a plain <emphasis>init</emphasis>
 decreased in utility.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>check-rules</emphasis>
+</term>
+<listitem>
+<simpara>
+        Check whether sparsity rules match one or more paths.
+</simpara>
+<simpara>By default <emphasis>check-rules</emphasis> reads a list of paths from stdin and outputs only
+the ones that match the current sparsity rules. The input is expected to consist
+of one path per line, matching the output of <emphasis>git ls-tree --name-only</emphasis> including
+that pathnames that begin with a double quote (") are interpreted as C-style
+quoted strings.</simpara>
+<simpara>When called with the <emphasis>--rules-file &lt;file&gt;</emphasis> flag the input files are matched
+against the sparse checkout rules found in <emphasis>&lt;file&gt;</emphasis> instead of the current ones.
+The rules in the files are expected to be in the same form as accepted by <emphasis>git
+sparse-checkout set --stdin</emphasis> (in particular, they must be newline-delimited).</simpara>
+<simpara>By default, the rules passed to the <emphasis>--rules-file</emphasis> option are interpreted as
+cone mode directories. To pass non-cone mode patterns with <emphasis>--rules-file</emphasis>,
+combine the option with the <emphasis>--no-cone</emphasis> option.</simpara>
+<simpara>When called with the <emphasis>-z</emphasis> flag, the format of the paths input on stdin as well
+as the output paths are \0 terminated and not quoted. Note that this does not
+apply to the format of the rules passed with the <emphasis>--rules-file</emphasis> option.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -341,7 +368,7 @@ for non-cone users?  If it suggests paths, is it exacerbating the
 problem above?  Also, if it suggests paths, what if the user has a
 file or directory that begins with either a '!' or '#' or has a '*',
 '\', '?', '[', or ']' in its name?  And if it suggests paths, will
-it complete "/pro" to "/proc" (in the root filesytem) rather than to
+it complete "/pro" to "/proc" (in the root filesystem) rather than to
 "/progress.txt" in the current directory?  (Note that users are
 likely to want to start paths with a leading '/' in non-cone mode,
 for the same reason that .gitignore files often have one.)

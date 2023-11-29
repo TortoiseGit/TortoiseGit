@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-pull(1)">
     <title>git-pull(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pull(1)</primary>
 </indexterm>
@@ -631,6 +633,19 @@ Internally this is used to implement the <emphasis>push.negotiate</emphasis> opt
 </varlistentry>
 <varlistentry>
 <term>
+--porcelain
+</term>
+<listitem>
+<simpara>
+        Print the output to standard output in an easy-to-parse format for
+        scripts. See section OUTPUT in <xref linkend="git-fetch(1)" /> for details.
+</simpara>
+<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis> and takes
+precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -f
 </term>
 <term>
@@ -1142,7 +1157,7 @@ config file would appear like this:</simpara>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
 to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
 defined urls if no pushurls are defined. Fetch, however, will only
-fetch from the first defined url if muliple urls are defined.</simpara>
+fetch from the first defined url if multiple urls are defined.</simpara>
 </section>
 <section id="git-pull(1)__named_file_in_emphasis_git_dir_remotes_emphasis">
 <title>Named file in <emphasis>$GIT_DIR/remotes</emphasis></title>

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git_user-manual">
     <title>Git User Manual</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <section id="Git User Manual__introduction">
 <title>Introduction</title>
 <simpara>Git is a fast distributed revision control system.</simpara>
@@ -1026,6 +1028,28 @@ $ git diff -2 file.txt          # diff against stage 2
 $ git diff --ours file.txt      # same as the above
 $ git diff -3 file.txt          # diff against stage 3
 $ git diff --theirs file.txt    # same as the above.</literallayout>
+<simpara>When using the <emphasis>ort</emphasis> merge strategy (the default), before updating the working
+tree with the result of the merge, Git writes a special ref named AUTO_MERGE
+reflecting the state of the tree it is about to write. Conflicted paths with
+textual conflicts that could not be automatically merged are written to this
+tree with conflict markers, just as in the working tree. AUTO_MERGE can thus be
+used with <xref linkend="git-diff(1)" /> to show the changes you've made so far to resolve
+conflicts. Using the same example as above, after resolving the conflict we
+get:</simpara>
+<literallayout>$ git diff AUTO_MERGE
+diff --git a/file.txt b/file.txt
+index cd10406..8bf5ae7 100644
+--- a/file.txt
++++ b/file.txt
+@@ -1,5 +1 @@
+-&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD:file.txt
+-Hello world
+-=======
+-Goodbye
+-&gt;&gt;&gt;&gt;&gt;&gt;&gt; 77976da35a11db4580b80ae27e8d65caf5208086:file.txt
++Goodbye world</literallayout>
+<simpara>Notice that the diff shows we deleted the conflict markers and both versions of
+the content line, and wrote "Goodbye world" instead.</simpara>
 <simpara>The <xref linkend="git-log(1)" /> and <xref linkend="gitk(1)" /> commands also provide special help
 for merges:</simpara>
 <literallayout>$ git log --merge
@@ -3120,12 +3144,10 @@ today, but is small enough to read in one sitting.</simpara>
 <simpara>Note that terminology has changed since that revision.  For example, the
 README in that revision uses the word "changeset" to describe what we
 now call a <link linkend="Git User Manual_def_commit_object">commit</link>.</simpara>
-<simpara>Also, we do not call it "cache" any more, but rather "index"; however, the
-file is still called <emphasis>cache.h</emphasis>.  Remark: Not much reason to change it now,
-especially since there is no good single name for it anyway, because it is
-basically <emphasis>the</emphasis> header file which is included by <emphasis>all</emphasis> of Git's C sources.</simpara>
+<simpara>Also, we do not call it "cache" any more, but rather "index"; however,
+the file is still called <emphasis>read-cache.h</emphasis>.</simpara>
 <simpara>If you grasp the ideas in that initial commit, you should check out a
-more recent version and skim <emphasis>cache.h</emphasis>, <emphasis>object.h</emphasis> and <emphasis>commit.h</emphasis>.</simpara>
+more recent version and skim <emphasis>read-cache-ll.h</emphasis>, <emphasis>object.h</emphasis> and <emphasis>commit.h</emphasis>.</simpara>
 <simpara>In the early days, Git (in the tradition of UNIX) was a bunch of programs
 which were extremely simple, and which you used in scripts, piping the
 output of one into another. This turned out to be good for initial
@@ -3134,11 +3156,11 @@ many of these parts have become builtins, and some of the core has been
 "libified", i.e. put into libgit.a for performance, portability reasons,
 and to avoid code duplication.</simpara>
 <simpara>By now, you know what the index is (and find the corresponding data
-structures in <emphasis>cache.h</emphasis>), and that there are just a couple of object types
-(blobs, trees, commits and tags) which inherit their common structure from
-<emphasis>struct object</emphasis>, which is their first member (and thus, you can cast e.g.
-<emphasis>(struct object *)commit</emphasis> to achieve the <emphasis>same</emphasis> as <emphasis>&amp;commit-&gt;object</emphasis>, i.e.
-get at the object name and flags).</simpara>
+structures in <emphasis>read-cache-ll.h</emphasis>), and that there are just a couple of
+object types (blobs, trees, commits and tags) which inherit their
+common structure from <emphasis>struct object</emphasis>, which is their first member
+(and thus, you can cast e.g.  <emphasis>(struct object *)commit</emphasis> to achieve the
+<emphasis>same</emphasis> as <emphasis>&amp;commit-&gt;object</emphasis>, i.e.  get at the object name and flags).</simpara>
 <simpara>Now is a good point to take a break to let this information sink in.</simpara>
 <simpara>Next step: get familiar with the object naming.  Read <xref linkend="Git User Manual_naming-commits"/>.
 There are quite a few ways to name an object (and not only revisions!).

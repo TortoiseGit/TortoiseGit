@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitmodules(5)">
     <title>gitmodules(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitmodules(5)</primary>
 </indexterm>
@@ -65,9 +67,9 @@ submodule.&lt;name&gt;.update
         command in the superproject. This is only used by <emphasis>git
         submodule init</emphasis> to initialize the configuration variable of
         the same name. Allowed values here are <emphasis>checkout</emphasis>, <emphasis>rebase</emphasis>,
-        <emphasis>merge</emphasis> or <emphasis>none</emphasis>. See description of <emphasis>update</emphasis> command in
-        <xref linkend="git-submodule(1)" /> for their meaning. For security
-        reasons, the <emphasis>!command</emphasis> form is not accepted here.
+        <emphasis>merge</emphasis> or <emphasis>none</emphasis>, but not <emphasis>!command</emphasis> (for security reasons).
+        See the description of the <emphasis>update</emphasis> command in
+        <xref linkend="git-submodule(1)" /> for more details.
 </simpara>
 </listitem>
 </varlistentry>

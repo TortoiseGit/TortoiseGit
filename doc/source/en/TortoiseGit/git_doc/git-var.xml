@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-var(1)">
     <title>git-var(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-var(1)</primary>
 </indexterm>
@@ -122,7 +124,63 @@ GIT_DEFAULT_BRANCH
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+GIT_SHELL_PATH
+</term>
+<listitem>
+<simpara>
+    The path of the binary providing the POSIX shell for commands which use the shell.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_ATTR_SYSTEM
+</term>
+<listitem>
+<simpara>
+    The path to the system <xref linkend="gitattributes(5)" /> file, if one is enabled.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_ATTR_GLOBAL
+</term>
+<listitem>
+<simpara>
+    The path to the global (per-user) <xref linkend="gitattributes(5)" /> file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_CONFIG_SYSTEM
+</term>
+<listitem>
+<simpara>
+    The path to the system configuration file, if one is enabled.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+GIT_CONFIG_GLOBAL
+</term>
+<listitem>
+<simpara>
+    The path to the global (per-user) configuration files, if any.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+<simpara>Most path values contain only one value. However, some can contain multiple
+values, which are separated by newlines, and are listed in order from highest to
+lowest priority.  Callers should be prepared for any such path value to contain
+multiple items.</simpara>
+<simpara>Note that paths are printed even if they do not exist, but not if they are
+disabled by other environment variables.</simpara>
 </simplesect>
 <simplesect id="git-var(1)__see_also">
 <title>SEE ALSO</title>

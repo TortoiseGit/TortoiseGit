@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-pack-redundant(1)">
     <title>git-pack-redundant(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pack-redundant(1)</primary>
 </indexterm>
@@ -15,6 +17,19 @@
 <blockquote>
 <literallayout><emphasis>git pack-redundant</emphasis> [--verbose] [--alt-odb] (--all | &lt;pack-filename&gt;&#8230;)</literallayout>
 </blockquote>
+</simplesect>
+<simplesect id="git-pack-redundant(1)__warning">
+<title>WARNING</title>
+<simpara><emphasis>git pack-redundant</emphasis> has been deprecated and is scheduled for removal in
+a future version of Git. Because it can only remove entire duplicate
+packs and not individual duplicate objects, it is generally not a useful
+tool for reducing repository size. You are better off using <emphasis>git gc</emphasis> to
+do so, which will put objects into a new pack, removing duplicates.</simpara>
+<simpara>Running <emphasis>pack-redundant</emphasis> without the <emphasis>--i-still-use-this</emphasis> flag will fail
+in this release. If you believe you have a use case for which
+<emphasis>pack-redundant</emphasis> is better suited and oppose this removal, please
+contact the Git mailing list at <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>. More information
+about the list is available at <ulink url="https://git-scm.com/community">https://git-scm.com/community</ulink>.</simpara>
 </simplesect>
 <simplesect id="git-pack-redundant(1)__description">
 <title>DESCRIPTION</title>

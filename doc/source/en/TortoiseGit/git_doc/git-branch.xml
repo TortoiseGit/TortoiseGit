@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-branch(1)">
     <title>git-branch(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-branch(1)</primary>
 </indexterm>
@@ -234,6 +236,17 @@ in another worktree linked to the same repository.</simpara>
 <listitem>
 <simpara>
         Sorting and filtering branches are case insensitive.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--omit-empty
+</term>
+<listitem>
+<simpara>
+        Do not print a newline after formatted refs where the format expands
+        to the empty string.
 </simpara>
 </listitem>
 </varlistentry>

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-merge-one-file(1)">
     <title>git-merge-one-file(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge-one-file(1)</primary>
 </indexterm>

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-pack-refs(1)">
     <title>git-pack-refs(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pack-refs(1)</primary>
 </indexterm>
@@ -13,7 +15,7 @@
 <simplesect id="git-pack-refs(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git pack-refs</emphasis> [--all] [--no-prune]</literallayout>
+<literallayout><emphasis>git pack-refs</emphasis> [--all] [--no-prune] [--include &lt;pattern&gt;] [--exclude &lt;pattern&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pack-refs(1)__description">
@@ -56,8 +58,9 @@ The command by default packs all tags and refs that are already
 packed, and leaves other refs
 alone.  This is because branches are expected to be actively
 developed and packing their tips does not help performance.
-This option causes branch tips to be packed as well.  Useful for
-a repository with many branches of historical interests.
+This option causes all refs to be packed as well, with the exception
+of hidden refs, broken refs, and symbolic refs. Useful for a repository
+with many branches of historical interests.
 </simpara>
 </listitem>
 </varlistentry>
@@ -72,7 +75,39 @@ hierarchy after packing them.  This option tells it not to.
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--include &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+Pack refs based on a <emphasis>glob(7)</emphasis> pattern. Repetitions of this option
+accumulate inclusion patterns. If a ref is both included in <emphasis>--include</emphasis> and
+<emphasis>--exclude</emphasis>, <emphasis>--exclude</emphasis> takes precedence. Using <emphasis>--include</emphasis> will preclude all
+tags from being included by default. Symbolic refs and broken refs will never
+be packed. When used with <emphasis>--all</emphasis>, it will be a noop. Use <emphasis>--no-include</emphasis> to clear
+and reset the list of patterns.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+Do not pack refs matching the given <emphasis>glob(7)</emphasis> pattern. Repetitions of this option
+accumulate exclusion patterns. Use <emphasis>--no-exclude</emphasis> to clear and reset the list of
+patterns. If a ref is already packed, including it with <emphasis>--exclude</emphasis> will not
+unpack it.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+<simpara>When used with <emphasis>--all</emphasis>, pack only loose refs which do not match any of
+the provided <emphasis>--exclude</emphasis> patterns.</simpara>
+<simpara>When used with <emphasis>--include</emphasis>, refs provided to <emphasis>--include</emphasis>, minus refs that are
+provided to <emphasis>--exclude</emphasis> will be packed.</simpara>
 </simplesect>
 <simplesect id="git-pack-refs(1)__bugs">
 <title>BUGS</title>

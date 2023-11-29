@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-cvsserver(1)">
     <title>git-cvsserver(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-cvsserver(1)</primary>
 </indexterm>
@@ -149,7 +151,7 @@ for example:</simpara>
    myuser:$1$9K7FzU28$VfF6EoPYCJEYcVQwATgOP/
    myuser:$5$.NqmNH1vwfzGpV8B$znZIcumu1tNLATgV2l6e1/mY8RzhUDHMOaVOeL1cxV3</screen>
 <simpara>You can use the <emphasis>htpasswd</emphasis> facility that comes with Apache to make these
-files, but only with the -d option (or -B if your system suports it).</simpara>
+files, but only with the -d option (or -B if your system supports it).</simpara>
 <simpara>Preferably use the system specific utility that manages password hash
 creation in your platform (e.g. mkpasswd in Linux, encrypt in OpenBSD or
 pwhash in NetBSD) and paste it in the right location.</simpara>

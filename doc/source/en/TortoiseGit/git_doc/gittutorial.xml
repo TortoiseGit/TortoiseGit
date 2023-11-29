@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gittutorial(7)">
     <title>gittutorial(7)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gittutorial(7)</primary>
 </indexterm>
@@ -38,7 +40,7 @@ $ git config --global user.email you@yourdomain.example.com</screen>
 </simplesect>
 <simplesect id="gittutorial(7)__importing_a_new_project">
 <title>Importing a new project</title>
-<simpara>Assume you have a tarball project.tar.gz with your initial work.  You
+<simpara>Assume you have a tarball <emphasis>project.tar.gz</emphasis> with your initial work.  You
 can place it under Git revision control as follows.</simpara>
 <screen>$ tar xzf project.tar.gz
 $ cd project
@@ -46,7 +48,7 @@ $ git init</screen>
 <simpara>Git will reply</simpara>
 <screen>Initialized empty Git repository in .git/</screen>
 <simpara>You've now initialized the working directory--you may notice a new
-directory created, named ".git".</simpara>
+directory created, named <emphasis>.git</emphasis>.</simpara>
 <simpara>Next, tell Git to take a snapshot of the contents of all files under the
 current directory (note the <emphasis>.</emphasis>), with <emphasis>git add</emphasis>:</simpara>
 <screen>$ git add .</screen>
@@ -62,15 +64,14 @@ version of your project in Git.</simpara>
 <simpara>Modify some files, then add their updated contents to the index:</simpara>
 <screen>$ git add file1 file2 file3</screen>
 <simpara>You are now ready to commit.  You can see what is about to be committed
-using <emphasis>git diff</emphasis> with the --cached option:</simpara>
+using <emphasis>git diff</emphasis> with the <emphasis>--cached</emphasis> option:</simpara>
 <screen>$ git diff --cached</screen>
-<simpara>(Without --cached, <emphasis>git diff</emphasis> will show you any changes that
+<simpara>(Without <emphasis>--cached</emphasis>, <emphasis>git diff</emphasis> will show you any changes that
 you've made but not yet added to the index.)  You can also get a brief
 summary of the situation with <emphasis>git status</emphasis>:</simpara>
 <screen>$ git status
 On branch master
 Changes to be committed:
-Your branch is up to date with 'origin/master'.
   (use "git restore --staged &lt;file&gt;..." to unstage)
 
         modified:   file1
@@ -116,30 +117,30 @@ each step</simpara>
 <simplesect id="gittutorial(7)__managing_branches">
 <title>Managing branches</title>
 <simpara>A single Git repository can maintain multiple branches of
-development.  To create a new branch named "experimental", use</simpara>
+development.  To create a new branch named <emphasis>experimental</emphasis>, use</simpara>
 <screen>$ git branch experimental</screen>
 <simpara>If you now run</simpara>
 <screen>$ git branch</screen>
 <simpara>you'll get a list of all existing branches:</simpara>
 <screen>  experimental
 * master</screen>
-<simpara>The "experimental" branch is the one you just created, and the
-"master" branch is a default branch that was created for you
+<simpara>The <emphasis>experimental</emphasis> branch is the one you just created, and the
+<emphasis>master</emphasis> branch is a default branch that was created for you
 automatically.  The asterisk marks the branch you are currently on;
 type</simpara>
 <screen>$ git switch experimental</screen>
-<simpara>to switch to the experimental branch.  Now edit a file, commit the
-change, and switch back to the master branch:</simpara>
+<simpara>to switch to the <emphasis>experimental</emphasis> branch.  Now edit a file, commit the
+change, and switch back to the <emphasis>master</emphasis> branch:</simpara>
 <screen>(edit file)
 $ git commit -a
 $ git switch master</screen>
 <simpara>Check that the change you made is no longer visible, since it was
-made on the experimental branch and you're back on the master branch.</simpara>
-<simpara>You can make a different change on the master branch:</simpara>
+made on the <emphasis>experimental</emphasis> branch and you're back on the <emphasis>master</emphasis> branch.</simpara>
+<simpara>You can make a different change on the <emphasis>master</emphasis> branch:</simpara>
 <screen>(edit file)
 $ git commit -a</screen>
 <simpara>at this point the two branches have diverged, with different changes
-made in each.  To merge the changes made in experimental into master, run</simpara>
+made in each.  To merge the changes made in <emphasis>experimental</emphasis> into <emphasis>master</emphasis>, run</simpara>
 <screen>$ git merge experimental</screen>
 <simpara>If the changes don't conflict, you're done.  If there are conflicts,
 markers will be left in the problematic files showing the conflict;</simpara>
@@ -150,11 +151,11 @@ conflicts,</simpara>
 <simpara>will commit the result of the merge. Finally,</simpara>
 <screen>$ gitk</screen>
 <simpara>will show a nice graphical representation of the resulting history.</simpara>
-<simpara>At this point you could delete the experimental branch with</simpara>
+<simpara>At this point you could delete the <emphasis>experimental</emphasis> branch with</simpara>
 <screen>$ git branch -d experimental</screen>
-<simpara>This command ensures that the changes in the experimental branch are
+<simpara>This command ensures that the changes in the <emphasis>experimental</emphasis> branch are
 already in the current branch.</simpara>
-<simpara>If you develop on a branch crazy-idea, then regret it, you can always
+<simpara>If you develop on a branch <emphasis>crazy-idea</emphasis>, then regret it, you can always
 delete the branch with</simpara>
 <screen>$ git branch -D crazy-idea</screen>
 <simpara>Branches are cheap and easy, so this is a good way to try something
@@ -163,11 +164,11 @@ out.</simpara>
 <simplesect id="gittutorial(7)__using_git_for_collaboration">
 <title>Using Git for collaboration</title>
 <simpara>Suppose that Alice has started a new project with a Git repository in
-/home/alice/project, and that Bob, who has a home directory on the
+<emphasis>/home/alice/project</emphasis>, and that Bob, who has a home directory on the
 same machine, wants to contribute.</simpara>
 <simpara>Bob begins with:</simpara>
 <screen>bob$ git clone /home/alice/project myrepo</screen>
-<simpara>This creates a new directory "myrepo" containing a clone of Alice's
+<simpara>This creates a new directory <emphasis>myrepo</emphasis> containing a clone of Alice's
 repository.  The clone is on an equal footing with the original
 project, possessing its own copy of the original project's history.</simpara>
 <simpara>Bob then makes some changes and commits them:</simpara>
@@ -175,32 +176,32 @@ project, possessing its own copy of the original project's history.</simpara>
 bob$ git commit -a
 (repeat as necessary)</screen>
 <simpara>When he's ready, he tells Alice to pull changes from the repository
-at /home/bob/myrepo.  She does this with:</simpara>
+at <emphasis>/home/bob/myrepo</emphasis>.  She does this with:</simpara>
 <screen>alice$ cd /home/alice/project
 alice$ git pull /home/bob/myrepo master</screen>
-<simpara>This merges the changes from Bob's "master" branch into Alice's
+<simpara>This merges the changes from Bob's <emphasis>master</emphasis> branch into Alice's
 current branch.  If Alice has made her own changes in the meantime,
 then she may need to manually fix any conflicts.</simpara>
-<simpara>The "pull" command thus performs two operations: it fetches changes
+<simpara>The <emphasis>pull</emphasis> command thus performs two operations: it fetches changes
 from a remote branch, then merges them into the current branch.</simpara>
 <simpara>Note that in general, Alice would want her local changes committed before
-initiating this "pull".  If Bob's work conflicts with what Alice did since
+initiating this <emphasis>pull</emphasis>.  If Bob's work conflicts with what Alice did since
 their histories forked, Alice will use her working tree and the index to
 resolve conflicts, and existing local changes will interfere with the
 conflict resolution process (Git will still perform the fetch but will
 refuse to merge -- Alice will have to get rid of her local changes in
 some way and pull again when this happens).</simpara>
-<simpara>Alice can peek at what Bob did without merging first, using the "fetch"
+<simpara>Alice can peek at what Bob did without merging first, using the <emphasis>fetch</emphasis>
 command; this allows Alice to inspect what Bob did, using a special
-symbol "FETCH_HEAD", in order to determine if he has anything worth
+symbol <emphasis>FETCH_HEAD</emphasis>, in order to determine if he has anything worth
 pulling, like this:</simpara>
 <screen>alice$ git fetch /home/bob/myrepo master
 alice$ git log -p HEAD..FETCH_HEAD</screen>
 <simpara>This operation is safe even if Alice has uncommitted local changes.
-The range notation "HEAD..FETCH_HEAD" means "show everything that is reachable
-from the FETCH_HEAD but exclude anything that is reachable from HEAD".
-Alice already knows everything that leads to her current state (HEAD),
-and reviews what Bob has in his state (FETCH_HEAD) that she has not
+The range notation <emphasis>HEAD..FETCH_HEAD</emphasis> means "show everything that is reachable
+from the <emphasis>FETCH_HEAD</emphasis> but exclude anything that is reachable from <emphasis>HEAD</emphasis>".
+Alice already knows everything that leads to her current state (<emphasis>HEAD</emphasis>),
+and reviews what Bob has in his state (<emphasis>FETCH_HEAD</emphasis>) that she has not
 seen with this command.</simpara>
 <simpara>If Alice wants to visualize what Bob did since their histories forked
 she can issue the following command:</simpara>
@@ -211,19 +212,19 @@ She can use three-dot form instead of the two-dot form:</simpara>
 <screen>$ gitk HEAD...FETCH_HEAD</screen>
 <simpara>This means "show everything that is reachable from either one, but
 exclude anything that is reachable from both of them".</simpara>
-<simpara>Please note that these range notation can be used with both gitk
-and "git log".</simpara>
+<simpara>Please note that these range notation can be used with both <emphasis>gitk</emphasis>
+and <emphasis>git log</emphasis>.</simpara>
 <simpara>After inspecting what Bob did, if there is nothing urgent, Alice may
 decide to continue working without pulling from Bob.  If Bob's history
 does have something Alice would immediately need, Alice may choose to
-stash her work-in-progress first, do a "pull", and then finally unstash
+stash her work-in-progress first, do a <emphasis>pull</emphasis>, and then finally unstash
 her work-in-progress on top of the resulting history.</simpara>
 <simpara>When you are working in a small closely knit group, it is not
 unusual to interact with the same repository over and over
 again.  By defining <emphasis>remote</emphasis> repository shorthand, you can make
 it easier:</simpara>
 <screen>alice$ git remote add bob /home/bob/myrepo</screen>
-<simpara>With this, Alice can perform the first part of the "pull" operation
+<simpara>With this, Alice can perform the first part of the <emphasis>pull</emphasis> operation
 alone using the <emphasis>git fetch</emphasis> command without merging them with her own
 branch, using:</simpara>
 <screen>alice$ git fetch bob</screen>
@@ -233,9 +234,9 @@ fetched is stored in a remote-tracking branch, in this case
 <emphasis>bob/master</emphasis>.  So after this:</simpara>
 <screen>alice$ git log -p master..bob/master</screen>
 <simpara>shows a list of all the changes that Bob made since he branched from
-Alice's master branch.</simpara>
+Alice's <emphasis>master</emphasis> branch.</simpara>
 <simpara>After examining those changes, Alice
-could merge the changes into her master branch:</simpara>
+could merge the changes into her <emphasis>master</emphasis> branch:</simpara>
 <screen>alice$ git merge bob/master</screen>
 <simpara>This <emphasis>merge</emphasis> can also be done by <emphasis>pulling from her own remote-tracking
 branch</emphasis>, like this:</simpara>
@@ -253,8 +254,8 @@ used for pulls:</simpara>
 <simpara>(The complete configuration created by <emphasis>git clone</emphasis> is visible using
 <emphasis>git config -l</emphasis>, and the <xref linkend="git-config(1)" /> man page
 explains the meaning of each option.)</simpara>
-<simpara>Git also keeps a pristine copy of Alice's master branch under the
-name "origin/master":</simpara>
+<simpara>Git also keeps a pristine copy of Alice's <emphasis>master</emphasis> branch under the
+name <emphasis>origin/master</emphasis>:</simpara>
 <screen>bob$ git branch -r
   origin/master</screen>
 <simpara>If Bob later decides to work from a different host, he can still
@@ -270,7 +271,7 @@ that various users push changes to; see <xref linkend="git-push(1)" /> and
 <title>Exploring history</title>
 <simpara>Git history is represented as a series of interrelated commits.  We
 have already seen that the <emphasis>git log</emphasis> command can list those commits.
-Note that first line of each git log entry also gives a name for the
+Note that first line of each <emphasis>git log</emphasis> entry also gives a name for the
 commit:</simpara>
 <screen>$ git log
 commit c82a22c39cbc32576f64f5c6b3f24b99ea8149c7
@@ -297,7 +298,7 @@ $ git show HEAD~4 # to see the great-great grandparent of HEAD</screen>
 $ git show HEAD^2 # show the second parent of HEAD</screen>
 <simpara>You can also give commits names of your own; after running</simpara>
 <screen>$ git tag v2.5 1b2e1d63ff</screen>
-<simpara>you can refer to 1b2e1d63ff by the name "v2.5".  If you intend to
+<simpara>you can refer to <emphasis>1b2e1d63ff</emphasis> by the name <emphasis>v2.5</emphasis>.  If you intend to
 share this name with other people (for example, to identify a release
 version), you should create a "tag" object, and perhaps sign it; see
 <xref linkend="git-tag(1)" /> for details.</simpara>
@@ -319,7 +320,7 @@ instead.</simpara>
 <simpara>The <emphasis>git grep</emphasis> command can search for strings in any version of your
 project, so</simpara>
 <screen>$ git grep "hello" v2.5</screen>
-<simpara>searches for all occurrences of "hello" in v2.5.</simpara>
+<simpara>searches for all occurrences of "hello" in <emphasis>v2.5</emphasis>.</simpara>
 <simpara>If you leave out the commit name, <emphasis>git grep</emphasis> will search any of the
 files it manages in your current directory.  So</simpara>
 <screen>$ git grep "hello"</screen>
@@ -333,14 +334,14 @@ $ git log v2.5.. Makefile       # commits since v2.5 which modify
                                 # Makefile</screen>
 <simpara>You can also give <emphasis>git log</emphasis> a "range" of commits where the first is not
 necessarily an ancestor of the second; for example, if the tips of
-the branches "stable" and "master" diverged from a common
+the branches <emphasis>stable</emphasis> and <emphasis>master</emphasis> diverged from a common
 commit some time ago, then</simpara>
 <screen>$ git log stable..master</screen>
-<simpara>will list commits made in the master branch but not in the
+<simpara>will list commits made in the <emphasis>master</emphasis> branch but not in the
 stable branch, while</simpara>
 <screen>$ git log master..stable</screen>
 <simpara>will show the list of commits made on the stable branch but not
-the master branch.</simpara>
+the <emphasis>master</emphasis> branch.</simpara>
 <simpara>The <emphasis>git log</emphasis> command has a weakness: it must present commits in a
 list.  When the history has lines of development that diverged and
 then merged back together, the order in which <emphasis>git log</emphasis> presents
@@ -350,7 +351,7 @@ or Git itself) have frequent merges, and <emphasis>gitk</emphasis> does a better
 visualizing their history.  For example,</simpara>
 <screen>$ gitk --since="2 weeks ago" drivers/</screen>
 <simpara>allows you to browse any commits from the last 2 weeks of commits
-that modified files under the "drivers" directory.  (Note: you can
+that modified files under the <emphasis>drivers</emphasis> directory.  (Note: you can
 adjust gitk's fonts by holding down the control key while pressing
 "-" or "+".)</simpara>
 <simpara>Finally, most commands that take filenames will optionally allow you
@@ -400,7 +401,7 @@ digressions that may be interesting at this point are:</simpara>
 <simpara>
 <xref linkend="git-bisect(1)" />: When there is a regression in your
     project, one way to track down the bug is by searching through
-    the history to find the exact commit that's to blame.  Git bisect
+    the history to find the exact commit that's to blame.  <emphasis>git bisect</emphasis>
     can help you perform a binary search for that commit.  It is
     smart enough to perform a close-to-optimal search even in the
     case of complex non-linear history with lots of merged branches.

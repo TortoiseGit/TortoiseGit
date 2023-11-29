@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="gitignore(5)">
     <title>gitignore(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>gitignore(5)</primary>
 </indexterm>
@@ -128,7 +130,7 @@ An optional prefix "<emphasis>!</emphasis>" which negates the pattern; any
 </listitem>
 <listitem>
 <simpara>
-The slash <emphasis>/</emphasis> is used as the directory separator. Separators may
+The slash "<emphasis>/</emphasis>" is used as the directory separator. Separators may
    occur at the beginning, middle or end of the <emphasis>.gitignore</emphasis> search pattern.
 </simpara>
 </listitem>
@@ -211,7 +213,9 @@ those in <emphasis>$GIT_DIR/info/exclude</emphasis>.</simpara>
 <simpara>The purpose of gitignore files is to ensure that certain files
 not tracked by Git remain untracked.</simpara>
 <simpara>To stop tracking a file that is currently tracked, use
-<emphasis>git rm --cached</emphasis>.</simpara>
+<emphasis>git rm --cached</emphasis> to remove the file from the index. The filename
+can then be added to the <emphasis>.gitignore</emphasis> file to stop the file from
+being reintroduced in later commits.</simpara>
 <simpara>Git does not follow symbolic links when accessing a <emphasis>.gitignore</emphasis> file in
 the working tree. This keeps behavior consistent when the file is
 accessed from the index or a tree versus from the filesystem.</simpara>
@@ -247,10 +251,10 @@ The pattern <emphasis>doc/frotz</emphasis> and <emphasis>/doc/frotz</emphasis> h
 </listitem>
 <listitem>
 <simpara>
-The pattern "foo/*", matches "foo/test.json"
-   (a regular file), "foo/bar" (a directory), but it does not match
-   "foo/bar/hello.c" (a regular file), as the asterisk in the
-   pattern does not match "bar/hello.c" which has a slash in it.
+The pattern <emphasis>foo/*</emphasis>, matches <emphasis>foo/test.json</emphasis>
+   (a regular file), <emphasis>foo/bar</emphasis> (a directory), but it does not match
+   <emphasis>foo/bar/hello.c</emphasis> (a regular file), as the asterisk in the
+   pattern does not match <emphasis>bar/hello.c</emphasis> which has a slash in it.
 </simpara>
 </listitem>
 </itemizedlist>

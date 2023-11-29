@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-init(1)">
     <title>git-init(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-init(1)</primary>
 </indexterm>
@@ -73,14 +75,18 @@ current working directory.
 Specify the given object format (hash algorithm) for the repository.  The valid
 values are <emphasis>sha1</emphasis> and (if enabled) <emphasis>sha256</emphasis>.  <emphasis>sha1</emphasis> is the default.
 </simpara>
-<simpara>THIS OPTION IS EXPERIMENTAL! SHA-256 support is experimental and still
-in an early stage.  A SHA-256 repository will in general not be able to
-share work with "regular" SHA-1 repositories.  It should be assumed
-that, e.g., Git internal file formats in relation to SHA-256
-repositories may change in backwards-incompatible ways.  Only use
-<emphasis>--object-format=sha256</emphasis> for testing purposes.</simpara>
+<simpara>Note: At present, there is no interoperability between SHA-256
+repositories and SHA-1 repositories.</simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>Historically, we warned that SHA-256 repositories may later need
+backward incompatible changes when we introduce such interoperability
+features. Today, we only expect compatible changes. Furthermore, if such
+changes prove to be necessary, it can be expected that SHA-256 repositories
+created with today's Git will be usable by future versions of Git
+without data loss.</simpara>
+<variablelist>
 <varlistentry>
 <term>
 --template=&lt;template-directory&gt;

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-clone(1)">
     <title>git-clone(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-clone(1)</primary>
 </indexterm>
@@ -66,6 +68,10 @@ repository is specified as a URL, then this flag is ignored (and we
 never use the local optimizations).  Specifying <emphasis>--no-local</emphasis> will
 override the default when <emphasis>/path/to/repo</emphasis> is given, using the regular
 Git transport instead.</simpara>
+<simpara>If the repository's <emphasis>$GIT_DIR/objects</emphasis> has symbolic links or is a
+symbolic link, the clone will fail. This is a security measure to
+prevent the unintentional copying of files by dereferencing the symbolic
+links.</simpara>
 <simpara><emphasis role="strong">NOTE</emphasis>: this operation can race with concurrent modification to the
 source repository, similar to running <emphasis>cp -r src dst</emphasis> while modifying
 <emphasis>src</emphasis>.</simpara>

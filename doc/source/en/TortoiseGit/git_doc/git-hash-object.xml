@@ -3,12 +3,14 @@
 
 <sect2 lang="en" id="git-hash-object(1)">
     <title>git-hash-object(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-hash-object(1)</primary>
 </indexterm>
 <simplesect id="git-hash-object(1)__name">
 <title>NAME</title>
-<simpara>git-hash-object - Compute object ID and optionally creates a blob from a file</simpara>
+<simpara>git-hash-object - Compute object ID and optionally create an object from a file</simpara>
 </simplesect>
 <simplesect id="git-hash-object(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -35,7 +37,8 @@ When &lt;type&gt; is not specified, it defaults to "blob".</simpara>
 </term>
 <listitem>
 <simpara>
-        Specify the type (default: "blob").
+        Specify the type of object to be created (default: "blob"). Possible
+        values are <emphasis>commit</emphasis>, <emphasis>tree</emphasis>, <emphasis>blob</emphasis>, and <emphasis>tag</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

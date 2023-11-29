@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-ls-tree(1)">
     <title>git-ls-tree(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-ls-tree(1)</primary>
 </indexterm>
@@ -186,9 +188,9 @@ the behaviour is similar to that of "/bin/ls" in that the <emphasis>&lt;path&gt;
 <simpara>
         A string that interpolates <emphasis>%(fieldname)</emphasis> from the result
         being shown. It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and
-        <emphasis>%xx</emphasis> where <emphasis>xx</emphasis> are hex digits interpolates to character
-        with hex code <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis> interpolates to
-        <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
+        <emphasis>%xNN</emphasis> where <emphasis>NN</emphasis> are hex digits interpolates to character
+        with hex code <emphasis>NN</emphasis>; for example <emphasis>%x00</emphasis> interpolates to
+        <emphasis>\0</emphasis> (NUL), <emphasis>%x09</emphasis> to <emphasis>\t</emphasis> (TAB) and <emphasis>%x0a</emphasis> to <emphasis>\n</emphasis> (LF).
         When specified, <emphasis>--format</emphasis> cannot be combined with other
         format-altering options, including <emphasis>--long</emphasis>, <emphasis>--name-only</emphasis>
         and <emphasis>--object-only</emphasis>.
@@ -242,7 +244,7 @@ can execute with a specific "--format" like</simpara>
 <simplesect id="git-ls-tree(1)__field_names">
 <title>FIELD NAMES</title>
 <simpara>Various values from structured fields can be used to interpolate
-into the resulting output. For each outputing line, the following
+into the resulting output. For each outputting line, the following
 names can be used:</simpara>
 <variablelist>
 <varlistentry>

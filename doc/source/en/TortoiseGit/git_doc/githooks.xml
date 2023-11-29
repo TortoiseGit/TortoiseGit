@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="githooks(5)">
     <title>githooks(5)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>githooks(5)</primary>
 </indexterm>
@@ -521,10 +523,59 @@ processed by rebase.</simpara>
 </section>
 <section id="githooks(5)__sendemail_validate">
 <title>sendemail-validate</title>
-<simpara>This hook is invoked by <xref linkend="git-send-email(1)" />.  It takes a single parameter,
-the name of the file that holds the e-mail to be sent.  Exiting with a
-non-zero status causes <emphasis>git send-email</emphasis> to abort before sending any
-e-mails.</simpara>
+<simpara>This hook is invoked by <xref linkend="git-send-email(1)" />.</simpara>
+<simpara>It takes these command line arguments. They are,
+1. the name of the file which holds the contents of the email to be sent.
+2. The name of the file which holds the SMTP headers of the email.</simpara>
+<simpara>The SMTP headers are passed in the exact same way as they are passed to the
+user's Mail Transport Agent (MTA). In effect, the email given to the user's
+MTA, is the contents of $2 followed by the contents of $1.</simpara>
+<simpara>An example of a few common headers is shown below. Take notice of the
+capitalization and multi-line tab structure.</simpara>
+<literallayout class="monospaced">From: Example &lt;from@example.com&gt;
+To: to@example.com
+Cc: cc@example.com,
+        A &lt;author@example.com&gt;,
+        One &lt;one@example.com&gt;,
+        two@example.com
+Subject: PATCH-STRING</literallayout>
+<simpara>Exiting with a non-zero status causes <emphasis>git send-email</emphasis> to abort
+before sending any e-mails.</simpara>
+<simpara>The following environment variables are set when executing the hook.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>GIT_SENDEMAIL_FILE_COUNTER</emphasis>
+</term>
+<listitem>
+<simpara>
+        A 1-based counter incremented by one for every file holding an e-mail
+        to be sent (excluding any FIFOs). This counter does not follow the
+        patch series counter scheme. It will always start at 1 and will end at
+        GIT_SENDEMAIL_FILE_TOTAL.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_SENDEMAIL_FILE_TOTAL</emphasis>
+</term>
+<listitem>
+<simpara>
+        The total number of files that will be sent (excluding any FIFOs). This
+        counter does not follow the patch series counter scheme. It will always
+        be equal to the number of files being sent, whether there is a cover
+        letter or not.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>These variables may for instance be used to validate patch series.</simpara>
+<simpara>The sample <emphasis>sendemail-validate</emphasis> hook that comes with Git checks that all sent
+patches (excluding the cover letter) can be applied on top of the upstream
+repository default branch without conflicts. Some placeholders are left for
+additional validation steps to be performed after all patches of a given series
+have been applied.</simpara>
 </section>
 <section id="githooks(5)__fsmonitor_watchman">
 <title>fsmonitor-watchman</title>

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-show-branch(1)">
     <title>git-show-branch(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show-branch(1)</primary>
 </indexterm>
@@ -142,8 +144,7 @@ no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
         that is the common ancestor of all the branches.  This
         flag tells the command to go &lt;n&gt; more common commits
         beyond that.  When &lt;n&gt; is negative, display only the
-        &lt;reference&gt;s given, without showing the commit ancestry
-        tree.
+        &lt;ref&gt;s given, without showing the commit ancestry tree.
 </simpara>
 </listitem>
 </varlistentry>
@@ -177,8 +178,8 @@ no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
 </term>
 <listitem>
 <simpara>
-        Among the &lt;reference&gt;s given, display only the ones that
-        cannot be reached from any other &lt;reference&gt;.
+        Among the &lt;ref&gt;s given, display only the ones that cannot be
+        reached from any other &lt;ref&gt;.
 </simpara>
 </listitem>
 </varlistentry>
@@ -267,10 +268,10 @@ are mutually exclusive.</simpara>
 </simplesect>
 <simplesect id="git-show-branch(1)__output">
 <title>OUTPUT</title>
-<simpara>Given N &lt;references&gt;, the first N lines are the one-line
-description from their commit message.  The branch head that is
-pointed at by $GIT_DIR/HEAD is prefixed with an asterisk <emphasis>*</emphasis>
-character while other heads are prefixed with a <emphasis>!</emphasis> character.</simpara>
+<simpara>Given N &lt;ref&gt;s, the first N lines are the one-line description from
+their commit message. The branch head that is pointed at by
+$GIT_DIR/HEAD is prefixed with an asterisk <emphasis>*</emphasis> character while other
+heads are prefixed with a <emphasis>!</emphasis> character.</simpara>
 <simpara>Following these N lines, one-line log for each commit is
 displayed, indented N places.  If a commit is on the I-th
 branch, the I-th indentation character shows a <emphasis>+</emphasis> sign;

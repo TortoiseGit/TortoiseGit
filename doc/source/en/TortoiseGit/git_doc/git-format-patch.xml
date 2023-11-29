@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-format-patch(1)">
     <title>git-format-patch(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-format-patch(1)</primary>
 </indexterm>
@@ -113,7 +115,7 @@ line (see the DISCUSSION section of <xref linkend="git-commit(1)" />).</simpara>
 To omit patch numbers from the subject, use <emphasis>-N</emphasis>.</simpara>
 <simpara>If given <emphasis>--thread</emphasis>, <emphasis>git-format-patch</emphasis> will generate <emphasis>In-Reply-To</emphasis> and
 <emphasis>References</emphasis> headers to make the second and subsequent patch mails appear
-as replies to the first mail; this also generates a <emphasis>Message-Id</emphasis> header to
+as replies to the first mail; this also generates a <emphasis>Message-ID</emphasis> header to
 reference.</simpara>
 </simplesect>
 <simplesect id="git-format-patch(1)__options">
@@ -967,6 +969,18 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+--default-prefix
+</term>
+<listitem>
+<simpara>
+        Use the default source and destination prefixes ("a/" and "b/").
+        This is usually the default already, but may be used to override
+        config such as <emphasis>diff.noprefix</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --line-prefix=&lt;prefix&gt;
 </term>
 <listitem>
@@ -1151,7 +1165,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <simpara>
         Controls addition of <emphasis>In-Reply-To</emphasis> and <emphasis>References</emphasis> headers to
         make the second and subsequent mails appear as replies to the
-        first.  Also controls generation of the <emphasis>Message-Id</emphasis> header to
+        first.  Also controls generation of the <emphasis>Message-ID</emphasis> header to
         reference.
 </simpara>
 <simpara>The optional &lt;style&gt; argument can be either <emphasis>shallow</emphasis> or <emphasis>deep</emphasis>.
@@ -1160,8 +1174,7 @@ series, where the head is chosen from the cover letter, the
 <emphasis>--in-reply-to</emphasis>, and the first patch mail, in this order.  <emphasis>deep</emphasis>
 threading makes every mail a reply to the previous one.</simpara>
 <simpara>The default is <emphasis>--no-thread</emphasis>, unless the <emphasis>format.thread</emphasis> configuration
-is set.  If <emphasis>--thread</emphasis> is specified without a style, it defaults to the
-style specified by <emphasis>format.thread</emphasis> if any, or else <emphasis>shallow</emphasis>.</simpara>
+is set.  <emphasis>--thread</emphasis> without an argument is equivalent to <emphasis>--thread=shallow</emphasis>.</simpara>
 <simpara>Beware that the default for <emphasis>git send-email</emphasis> is to thread emails
 itself.  If you want <emphasis>git format-patch</emphasis> to take care of threading, you
 will want to ensure that threading is disabled for <emphasis>git send-email</emphasis>.</simpara>
@@ -1285,7 +1298,7 @@ populated with placeholder text.</simpara>
         or "--reroll-count=4rev2" are allowed), but the downside of
         using such a reroll-count is that the range-diff/interdiff
         with the previous version does not state exactly which
-        version the new interation is compared against.
+        version the new iteration is compared against.
 </simpara>
 </listitem>
 </varlistentry>

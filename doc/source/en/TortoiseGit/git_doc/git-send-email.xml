@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-send-email(1)">
     <title>git-send-email(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-send-email(1)</primary>
 </indexterm>
@@ -141,7 +143,7 @@ and In-Reply-To headers will be used unless they are removed.</simpara>
 <listitem>
 <simpara>
         Make the first mail (or all the mails with <emphasis>--no-thread</emphasis>) appear as a
-        reply to the given Message-Id, which avoids breaking threads to
+        reply to the given Message-ID, which avoids breaking threads to
         provide a new patch series.
         The second and subsequent emails will be sent as replies according to
         the <emphasis>--[no-]chain-reply-to</emphasis> setting.
@@ -542,6 +544,31 @@ must be used for each option.</simpara>
         should generate patch file specific "Cc:" entries.
         Output of this command must be single email address per line.
         Default is the value of <emphasis>sendemail.ccCmd</emphasis> configuration value.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--header-cmd=&lt;command&gt;
+</term>
+<listitem>
+<simpara>
+        Specify a command that is executed once per outgoing message
+        and output RFC 2822 style header lines to be inserted into
+        them. When the <emphasis>sendemail.headerCmd</emphasis> configuration variable is
+        set, its value is always used. When --header-cmd is provided
+        at the command line, its value takes precedence over the
+        <emphasis>sendemail.headerCmd</emphasis> configuration variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-header-cmd
+</term>
+<listitem>
+<simpara>
+        Disable any header command in use.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1016,6 +1043,9 @@ sendemail.envelopeSender
 sendemail.from
 </term>
 <term>
+sendemail.headerCmd
+</term>
+<term>
 sendemail.signedoffbycc
 </term>
 <term>
@@ -1127,12 +1157,9 @@ edit ~/.gitconfig to specify your account settings:</simpara>
         smtpServer = smtp.gmail.com
         smtpUser = yourname@gmail.com
         smtpServerPort = 587</screen>
-<simpara>If you have multi-factor authentication set up on your Gmail account, you will
-need to generate an app-specific password for use with <emphasis>git send-email</emphasis>. Visit
+<simpara>If you have multi-factor authentication set up on your Gmail account, you can
+generate an app-specific password for use with <emphasis>git send-email</emphasis>. Visit
 <ulink url="https://security.google.com/settings/security/apppasswords">https://security.google.com/settings/security/apppasswords</ulink> to create it.</simpara>
-<simpara>If you do not have multi-factor authentication set up on your Gmail account,
-you will need to allow less secure app access. Visit
-<ulink url="https://myaccount.google.com/lesssecureapps">https://myaccount.google.com/lesssecureapps</ulink> to enable it.</simpara>
 <simpara>Once your commits are ready to be sent to the mailing list, run the
 following commands:</simpara>
 <literallayout class="monospaced">$ git format-patch --cover-letter -M origin/master -o outgoing/

@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="scalar(1)">
     <title>scalar(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>scalar(1)</primary>
 </indexterm>
@@ -13,7 +15,8 @@
 <simplesect id="scalar(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout>scalar clone [--single-branch] [--branch &lt;main-branch&gt;] [--full-clone] &lt;url&gt; [&lt;enlistment&gt;]
+<literallayout>scalar clone [--single-branch] [--branch &lt;main-branch&gt;] [--full-clone]
+        [--[no-]src] &lt;url&gt; [&lt;enlistment&gt;]
 scalar list
 scalar register [&lt;enlistment&gt;]
 scalar unregister [&lt;enlistment&gt;]
@@ -116,6 +119,18 @@ HEAD[:&lt;directory&gt;]</emphasis>.</simpara>
 remote-tracking branch for the branch this option was used for the initial
 cloning. If the HEAD at the remote did not point at any branch when
 <emphasis>--single-branch</emphasis> clone was made, no remote-tracking branch is created.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]src
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>scalar clone</emphasis> places the cloned repository within a
+        <emphasis>&lt;entlistment&gt;/src</emphasis> directory. Use <emphasis>--no-src</emphasis> to place the cloned
+        repository directly in the <emphasis>&lt;enlistment&gt;</emphasis> directory.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

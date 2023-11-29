@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-repack(1)">
     <title>git-repack(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-repack(1)</primary>
 </indexterm>
@@ -344,7 +346,7 @@ depth is 4095.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--g=&lt;factor&gt;
+-g&lt;factor&gt;
 </term>
 <term>
 --geometric=&lt;factor&gt;
@@ -364,11 +366,8 @@ intact.</simpara>
 uniquely by the set of packs being "rolled-up"; in other words, the
 packs determined to need to be combined in order to restore a geometric
 progression.</simpara>
-<simpara>When <emphasis>--unpacked</emphasis> is specified, loose objects are implicitly included in
-this "roll-up", without respect to their reachability. This is subject
-to change in the future. This option (implying a drastically different
-repack mode) is not guaranteed to work with all other combinations of
-option to <emphasis>git repack</emphasis>.</simpara>
+<simpara>Loose objects are implicitly included in this "roll-up", without respect to
+their reachability. This is subject to change in the future.</simpara>
 <simpara>When writing a multi-pack bitmap, <emphasis>git repack</emphasis> selects the largest resulting
 pack as the preferred pack for object selection by the MIDX (see
 <xref linkend="git-multi-pack-index(1)" />).</simpara>

@@ -25,7 +25,8 @@
 #pragma warning(disable: 4100 4267)
 #include "git-compat-util.h"
 #include "gitdll.h"
-#include "cache.h"
+#include "read-cache.h"
+#include "object-name.h"
 #include "entry.h"
 #include "commit.h"
 #include "diff.h"
@@ -37,6 +38,10 @@
 #include "config.h"
 #include "mailmap.h"
 #include "tree.h"
+#include "environment.h"
+#include "setup.h"
+#include "path.h"
+#include "abspath.h"
 #include "notes.h"
 #pragma warning(pop)
 
@@ -82,7 +87,7 @@ void dll_entry(void)
 int git_get_sha1(const char *name, GIT_HASH sha1)
 {
 	struct object_id oid = { 0 };
-	int ret = get_oid(name, &oid);
+	int ret = repo_get_oid(the_repository, name, &oid);
 	hashcpy(sha1, oid.hash);
 	return ret;
 }
@@ -235,7 +240,7 @@ int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 	if(p == NULL)
 		return -1;
 
-	ret = parse_commit(p);
+	ret = repo_parse_commit(the_repository, p);
 	if( ret )
 		return ret;
 
@@ -403,7 +408,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	invalidate_ref_cache();
 	clear_ref_decorations();
 
-	init_revisions(p_Rev, g_prefix);
+	repo_init_revisions(the_repository, p_Rev, g_prefix);
 	p_Rev->diff = 1;
 
 	memset(&opt, 0, sizeof(opt));
@@ -501,7 +506,7 @@ int git_open_diff(GIT_DIFF* diff, const char* arg)
 	p_Rev->pPrivate = argv;
 	*diff = (GIT_DIFF)p_Rev;
 
-	init_revisions(p_Rev, g_prefix);
+	repo_init_revisions(the_repository, p_Rev, g_prefix);
 	git_config(git_diff_basic_config, NULL); /* no "diff" UI options */
 	p_Rev->abbrev = 0;
 	p_Rev->diff = 1;
@@ -778,7 +783,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	struct pathspec pathspec;
 	struct conv_attrs ca;
 	const char *matchbuf[1];
-	ret = get_oid(ref, &oid);
+	ret = repo_get_oid(the_repository, ref, &oid);
 	if(ret)
 		return ret;
 
@@ -807,7 +812,9 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	}
 	state.force = 1;
 	state.refresh_cache = 0;
+	state.istate = the_repository->index;
 
+	reset_parsed_attributes();
 	convert_attrs(state.istate, &ca, path);
 
 	ret = write_entry(ce, outputpath, &ca, &state, 0, NULL);
@@ -823,10 +830,10 @@ struct config_buf
 	int seen;
 };
 
-static int get_config(const char *key_, const char *value_, void *cb)
+static int get_config(const char* key_, const char* value_, const struct config_context* ctx, void* cb)
 {
-	struct config_buf *buf;
-	buf=(struct config_buf*)cb;
+	UNREFERENCED_PARAMETER(ctx);
+	struct config_buf *buf = (struct config_buf*)cb;
 	if(strcmp(key_, buf->key))
 		return 0;
 
@@ -889,7 +896,7 @@ int git_get_config(const char *key, char *buffer, int size)
 		opts.git_dir = get_git_dir();
 		char* local = git_pathdup("config");
 		config_source.file = local;
-		config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, the_repository, &opts);
 		free(local);
 		if (buf.seen)
 			return !buf.seen;
@@ -899,7 +906,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (globalxdg)
 	{
 		config_source.file = globalxdg;
-		config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, the_repository, &opts);
 		free(globalxdg);
 		globalxdg = NULL;
 		if (buf.seen)
@@ -911,7 +918,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (global)
 	{
 		config_source.file = global;
-		config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, the_repository, &opts);
 		free(global);
 		global = NULL;
 		if (buf.seen)
@@ -922,7 +929,7 @@ int git_get_config(const char *key, char *buffer, int size)
 	if (system)
 	{
 		config_source.file = system;
-		config_with_options(get_config, &buf, &config_source, &opts);
+		config_with_options(get_config, &buf, &config_source, the_repository, &opts);
 		free(system);
 		system = NULL;
 		if (buf.seen)

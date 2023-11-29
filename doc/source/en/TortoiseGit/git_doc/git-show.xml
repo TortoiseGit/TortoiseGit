@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-show(1)">
     <title>git-show(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show(1)</primary>
 </indexterm>
@@ -26,7 +28,7 @@ presents the merge commit in a special format as produced by
 <simpara>For trees, it shows the names (equivalent to <emphasis>git ls-tree</emphasis>
 with --name-only).</simpara>
 <simpara>For plain blobs, it shows the plain contents.</simpara>
-<simpara>The command takes options applicable to the <emphasis>git diff-tree</emphasis> command to
+<simpara>Some options that <emphasis>git log</emphasis> command understands can be used to
 control how the changes the commit introduces are shown.</simpara>
 <simpara>This manual page describes only the most frequently used options.</simpara>
 </simplesect>
@@ -1327,8 +1329,7 @@ diff output.</simpara>
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section titled
-<link linkend="git-show(1)_generate_patch_text_with_p">"Generating patch text with -p"</link>).
+        Generate patch (see <xref linkend="git-show(1)_generate_patch_text_with_p"/>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -1341,8 +1342,10 @@ diff output.</simpara>
 </term>
 <listitem>
 <simpara>
-        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
-        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
+        Suppress all output from the diff machinery.  Useful for
+        commands like <emphasis>git show</emphasis> that show the patch by default to
+        squelch their output, or to cancel the effect of options like
+        <emphasis>--patch</emphasis>, <emphasis>--stat</emphasis> earlier on the command line in an alias.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2890,6 +2893,18 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <listitem>
 <simpara>
         Do not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--default-prefix
+</term>
+<listitem>
+<simpara>
+        Use the default source and destination prefixes ("a/" and "b/").
+        This is usually the default already, but may be used to override
+        config such as <emphasis>diff.noprefix</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

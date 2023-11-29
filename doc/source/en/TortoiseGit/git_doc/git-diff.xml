@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-diff(1)">
     <title>git-diff(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-diff(1)</primary>
 </indexterm>
@@ -153,7 +155,11 @@ of &lt;commit&gt; and HEAD.  <emphasis>git diff --merge-base A</emphasis> is equ
 <simpara>Just in case you are doing something exotic, it should be
 noted that all of the &lt;commit&gt; in the above description, except
 in the <emphasis>--merge-base</emphasis> case and in the last two forms that use <emphasis>..</emphasis>
-notations, can be any &lt;tree&gt;.</simpara>
+notations, can be any &lt;tree&gt;. A tree of interest is the one pointed to
+by the special ref <emphasis>AUTO_MERGE</emphasis>, which is written by the <emphasis>ort</emphasis> merge
+strategy upon hitting merge conflicts (see <xref linkend="git-merge(1)" />).
+Comparing the working tree with <emphasis>AUTO_MERGE</emphasis> shows changes you've made
+so far to resolve textual conflicts (see the examples below).</simpara>
 <simpara>For a more complete list of ways to spell &lt;commit&gt;, see
 "SPECIFYING REVISIONS" section in <xref linkend="gitrevisions(7)" />.
 However, "diff" is about comparing two <emphasis>endpoints</emphasis>, not ranges,
@@ -189,8 +195,7 @@ and the range notations (<emphasis>&lt;commit&gt;..&lt;commit&gt;</emphasis> and
 </term>
 <listitem>
 <simpara>
-        Generate patch (see section titled
-"Generating patch text with -p").
+        Generate patch (see <xref linkend="git-diff(1)_generate_patch_text_with_p"/>).
         This is the default.
 </simpara>
 </listitem>
@@ -204,8 +209,10 @@ and the range notations (<emphasis>&lt;commit&gt;..&lt;commit&gt;</emphasis> and
 </term>
 <listitem>
 <simpara>
-        Suppress diff output. Useful for commands like <emphasis>git show</emphasis> that
-        show the patch by default, or to cancel the effect of <emphasis>--patch</emphasis>.
+        Suppress all output from the diff machinery.  Useful for
+        commands like <emphasis>git show</emphasis> that show the patch by default to
+        squelch their output, or to cancel the effect of options like
+        <emphasis>--patch</emphasis>, <emphasis>--stat</emphasis> earlier on the command line in an alias.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1614,6 +1621,18 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
+--default-prefix
+</term>
+<listitem>
+<simpara>
+        Use the default source and destination prefixes ("a/" and "b/").
+        This is usually the default already, but may be used to override
+        config such as <emphasis>diff.noprefix</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --line-prefix=&lt;prefix&gt;
 </term>
 <listitem>
@@ -2250,7 +2269,8 @@ Various ways to check your working tree
 <listitem>
 <screen>$ git diff            <co id="git-diff_CO1-1"/>
 $ git diff --cached   <co id="git-diff_CO1-2"/>
-$ git diff HEAD       <co id="git-diff_CO1-3"/></screen>
+$ git diff HEAD       <co id="git-diff_CO1-3"/>
+$ git diff AUTO_MERGE <co id="git-diff_CO1-4"/></screen>
 <calloutlist>
 <callout arearefs="git-diff_CO1-1">
 <para>
@@ -2267,6 +2287,12 @@ Changes between the index and your last commit; what you
 <para>
 Changes in the working tree since your last commit; what you
     would be committing if you run <emphasis>git commit -a</emphasis>
+</para>
+</callout>
+<callout arearefs="git-diff_CO1-4">
+<para>
+Changes in the working tree you've made to resolve textual
+    conflicts so far.
 </para>
 </callout>
 </calloutlist>

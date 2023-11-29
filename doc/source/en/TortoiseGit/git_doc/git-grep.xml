@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-grep(1)">
     <title>git-grep(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-grep(1)</primary>
 </indexterm>

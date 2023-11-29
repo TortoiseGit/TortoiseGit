@@ -3,6 +3,8 @@
 
 <sect2 lang="en" id="git-difftool(1)">
     <title>git-difftool(1)</title>
+    <date>2023-11-02</date>
+<revhistory><revision><date>2023-11-02</date></revision></revhistory>
 <indexterm>
 <primary>git-difftool(1)</primary>
 </indexterm>
@@ -177,10 +179,12 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 <simpara>
         When <emphasis>git-difftool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option
         the default diff tool will be read from the configured
-        <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>. The <emphasis>--no-gui</emphasis>
-        option can be used to override this setting. If <emphasis>diff.guitool</emphasis>
-        is not set, we will fallback in the order of <emphasis>merge.guitool</emphasis>,
-        <emphasis>diff.tool</emphasis>, <emphasis>merge.tool</emphasis> until a tool is found.
+        <emphasis>diff.guitool</emphasis> variable instead of <emphasis>diff.tool</emphasis>. This may be
+        selected automatically using the configuration variable
+        <emphasis>difftool.guiDefault</emphasis>. The <emphasis>--no-gui</emphasis> option can be used to
+        override these settings. If <emphasis>diff.guitool</emphasis> is not set, we will
+        fallback in the order of <emphasis>merge.guitool</emphasis>, <emphasis>diff.tool</emphasis>,
+        <emphasis>merge.tool</emphasis> until a tool is found.
 </simpara>
 </listitem>
 </varlistentry>
@@ -284,6 +288,20 @@ difftool.prompt
 <listitem>
 <simpara>
         Prompt before each invocation of the diff tool.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+difftool.guiDefault
+</term>
+<listitem>
+<simpara>
+        Set <emphasis>true</emphasis> to use the <emphasis>diff.guitool</emphasis> by default (equivalent to specifying
+        the <emphasis>--gui</emphasis> argument), or <emphasis>auto</emphasis> to select <emphasis>diff.guitool</emphasis> or <emphasis>diff.tool</emphasis>
+        depending on the presence of a <emphasis>DISPLAY</emphasis> environment variable value. The
+        default is <emphasis>false</emphasis>, where the <emphasis>--gui</emphasis> argument must be provided
+        explicitly for the <emphasis>diff.guitool</emphasis> to be used.
 </simpara>
 </listitem>
 </varlistentry>
