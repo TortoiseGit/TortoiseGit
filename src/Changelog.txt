@@ -8,6 +8,7 @@ Released: unreleased
  * Allow BugTraq "Select issue"-button at the same time as the textbox
  * Add support for GIT_TEMPLATE_DIR environment variable
  * Updated libgit to 2.43 based on Git for Windows sources
+ * Update json library to 3.11.3
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
