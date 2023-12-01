@@ -170,15 +170,15 @@ int git_parse_commit(GIT_COMMIT *commit)
 	pbuf = commit->buffer;
 	while(pbuf)
 	{
-		if (strncmp(pbuf, "author", 6) == 0)
+		if (strncmp(pbuf, "author ", strlen("author ")) == 0)
 		{
-			ret = git_parse_commit_author(&commit->m_Author,pbuf + 7);
+			ret = git_parse_commit_author(&commit->m_Author, pbuf + strlen("author "));
 			if(ret)
 				return -4;
 		}
-		else if (strncmp(pbuf, "committer", 9) == 0)
+		else if (strncmp(pbuf, "committer ", strlen("committer ")) == 0)
 		{
-			ret =  git_parse_commit_author(&commit->m_Committer,pbuf + 10);
+			ret = git_parse_commit_author(&commit->m_Committer, pbuf + strlen("committer "));
 			if(ret)
 				return -5;
 
@@ -186,9 +186,9 @@ int git_parse_commit(GIT_COMMIT *commit)
 			if(pbuf == NULL)
 				return -6;
 		}
-		else if (strncmp(pbuf, "encoding", 8) == 0)
+		else if (strncmp(pbuf, "encoding ", strlen("encoding ")) == 0)
 		{
-			pbuf += 9;
+			pbuf += strlen("encoding ");
 			commit->m_Encode=pbuf;
 			end = strchr(pbuf,'\n');
 			commit->m_EncodeSize= (int)(end -pbuf);

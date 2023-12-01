@@ -479,12 +479,12 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	ReadFile(hfile, buffer, static_cast<DWORD>(strlen("ref:")), &size, nullptr);
 	if (size != strlen("ref:"))
 		return -1;
-	buffer[4] = '\0';
+	buffer[strlen("ref:")] = '\0';
 	if (strcmp(reinterpret_cast<const char*>(buffer), "ref:") == 0)
 	{
 		m_HeadRefFile.Empty();
 		const DWORD filesize = GetFileSize(hfile, nullptr);
-		if (filesize < 5 || filesize == INVALID_FILE_SIZE)
+		if (filesize < strlen("ref:") + 1 || filesize == INVALID_FILE_SIZE)
 			return -1;
 
 		{

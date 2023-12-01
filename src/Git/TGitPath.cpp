@@ -793,7 +793,7 @@ bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 		if (i >= filesize)
 			break;
 
-		if (i <= filesize - 10 && (buff[i + 10] == '\n' || buff[i + 10] == '\0') && !strncmp("refs/stash", buff.get() + i, 10))
+		if (i <= filesize - strlen("refs/stash") && (buff[i + strlen("refs/stash")] == '\n' || buff[i + strlen("refs/stash")] == '\0') && !strncmp("refs/stash", buff.get() + i, strlen("refs/stash")))
 			return true;
 		while (buff[i] != '\n')
 		{
