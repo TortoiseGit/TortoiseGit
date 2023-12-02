@@ -2321,7 +2321,7 @@ CString CGit::GetHomeDirectory() const
 		if (CString tmp2 = m_Environment.GetEnv(L"HOMEPATH"); !tmp2.IsEmpty())
 		{
 			tmp += tmp2;
-			if (PathIsDirectory(tmp))
+			if (CString windowsSysDirectory; GetSystemDirectory(CStrBuf(windowsSysDirectory, 4096), 4096) != FALSE && windowsSysDirectory != tmp && PathIsDirectory(tmp))
 			{
 				homeDirectory = tmp;
 				return homeDirectory;
