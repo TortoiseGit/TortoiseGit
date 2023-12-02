@@ -2307,8 +2307,7 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 CString CGit::GetHomeDirectory() const
 {
-	const wchar_t * homeDir = wget_windows_home_directory();
-	return homeDir;
+	return wget_windows_home_directory(m_Environment);
 }
 
 CString CGit::GetGitLocalConfig() const
@@ -2343,8 +2342,7 @@ CString CGit::GetGitGlobalXDGConfig() const
 
 CString CGit::GetGitSystemConfig() const
 {
-	const wchar_t * systemConfig = wget_msysgit_etc();
-	return systemConfig;
+	return wget_msysgit_etc(m_Environment);
 }
 
 CString CGit::GetNotesRef() const

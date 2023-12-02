@@ -237,7 +237,7 @@ public:
 #endif
 		if(!m_IsGitDllInited)
 		{
-			git_init();
+			git_init(m_Environment);
 			m_IsGitDllInited=true;
 		}
 	}
