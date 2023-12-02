@@ -129,7 +129,7 @@ void command_init(COMMAND_HANDLE *commandHandle)
 	commandHandle->asyncReadOutThread = INVALID_HANDLE_VALUE;
 }
 
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWORD flags)
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, const LPWSTR *pEnv, DWORD flags)
 {
 	SECURITY_ATTRIBUTES sa;
 	HANDLE hReadOut = INVALID_HANDLE_VALUE, hWriteOut = INVALID_HANDLE_VALUE, hReadIn = INVALID_HANDLE_VALUE, hWriteIn = INVALID_HANDLE_VALUE, hReadError = INVALID_HANDLE_VALUE, hWriteError = INVALID_HANDLE_VALUE;

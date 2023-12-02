@@ -46,7 +46,7 @@ typedef struct {
 	ssh_stream *current_stream;
 	char *cmd_uploadpack;
 	char *cmd_receivepack;
-	LPWSTR* pEnv;
+	const LPWSTR *pEnv;
 	LPWSTR sshtoolpath;
 } ssh_subtransport;
 
@@ -546,7 +546,7 @@ static void _ssh_free(git_smart_subtransport *subtransport)
 }
 
 int git_smart_subtransport_ssh_wintunnel(
-	git_smart_subtransport **out, git_transport *owner, LPCWSTR sshtoolpath, LPWSTR* pEnv)
+	git_smart_subtransport **out, git_transport *owner, LPCWSTR sshtoolpath, const LPWSTR *pEnv)
 {
 	ssh_subtransport *t;
 

@@ -2611,7 +2611,7 @@ CEnvironment::operator LPWSTR()
 	return data();
 }
 
-CEnvironment::operator LPWSTR*()
+CEnvironment::operator const LPWSTR*() const
 {
 	return &baseptr;
 }
