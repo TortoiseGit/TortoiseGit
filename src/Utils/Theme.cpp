@@ -911,7 +911,7 @@ LRESULT CTheme::ButtonSubclassProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 											RECT rcFocus;
 											IntersectRect(&rcFocus, &rc, &rcDraw);
 
-											DrawFocusRect(&rcFocus, hdcPaint);
+											DrawFocusRect(hdcPaint, &rcFocus);
 										}
 									}
 									LocalFree(szText);
