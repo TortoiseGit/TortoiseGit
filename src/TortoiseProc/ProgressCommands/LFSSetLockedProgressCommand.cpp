@@ -38,7 +38,7 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 	CString cmdBase = L"git.exe lfs ";
 	cmdBase += m_bIsLock ? L"lock " : L"unlock ";
 	cmdBase += m_bIsForce ? L"--force " : L"";
-	cmdBase += L'"';
+	cmdBase += L"-- \"";
 
 	bool hasError = false;
 

@@ -471,7 +471,7 @@ void CWorktreeListDlg::OnBnClickedButtonAdd()
 bool CWorktreeListDlg::RemoveWorktree(const CString& path)
 {
 	CString cmd;
-	cmd.Format(L"git.exe worktree remove \"%s\"", static_cast<LPCWSTR>(path));
+	cmd.Format(L"git.exe worktree remove -- \"%s\"", static_cast<LPCWSTR>(path));
 
 	CProgressDlg progress;
 	progress.m_GitCmd = cmd;

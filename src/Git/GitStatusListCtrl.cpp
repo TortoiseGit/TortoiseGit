@@ -3111,7 +3111,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 				if(parent1>=0 && parent2>=0)
 				{
 					CString cmd, output;
-					cmd.Format(L"git.exe merge-base %s^%d %s^%d", static_cast<LPCWSTR>(m_CurrentVersion.ToString()), parent1 + 1,
+					cmd.Format(L"git.exe merge-base -- %s^%d %s^%d", static_cast<LPCWSTR>(m_CurrentVersion.ToString()), parent1 + 1,
 						static_cast<LPCWSTR>(m_CurrentVersion.ToString()), parent2 + 1);
 
 					if (!g_Git.Run(cmd, &output, nullptr, CP_UTF8))

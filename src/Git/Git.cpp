@@ -384,9 +384,8 @@ BOOL CGit::CanParseRev(CString ref)
 {
 	if (ref.IsEmpty())
 		ref = L"HEAD";
-	else if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 30, 0))
-		ref = L"--end-of-options " + ref;
 
+	// --end-of-options does not work without --verify, but we cannot use --verify becasue we also want to check for valid ranges
 	CString cmdout;
 	if (Run(L"git.exe rev-parse --revs-only " + ref, &cmdout, CP_UTF8))
 		return FALSE;
@@ -858,7 +857,7 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 {
 	CString refName;
 	CString cmd;
-	cmd.Format(L"git.exe rev-parse --symbolic-full-name %s", static_cast<LPCWSTR>(shortRefName));
+	cmd.Format(L"git.exe rev-parse --symbolic-full-name --verify --end-of-options %s", static_cast<LPCWSTR>(shortRefName));
 	if (Run(cmd, &refName, nullptr, CP_UTF8) != 0)
 		return CString();//Error
 	return refName.TrimRight();
@@ -1207,7 +1206,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		if (friendname == L"FETCH_HEAD" && branch.IsEmpty())
 			branch = friendname;
 		CString cmd;
-		cmd.Format(L"git.exe rev-parse %s", static_cast<LPCWSTR>(branch));
+		cmd.Format(L"git.exe rev-parse --verify --end-of-options %s", static_cast<LPCWSTR>(branch));
 		gitLastErr.Empty();
 		const int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
 		hash = CGitHash::FromHexStrTry(gitLastErr.Trim());
@@ -1273,12 +1272,12 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
 	{
 		if(rev1 == GIT_REV_ZERO)
-			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
+			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
 		else
-			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));
+			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));
 	}
 	else
-		cmd.Format(L"git.exe diff-tree -r --raw -C%d%% -M%d%% --numstat -z %s %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2), static_cast<LPCWSTR>(rev1));
+		cmd.Format(L"git.exe diff-tree -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2), static_cast<LPCWSTR>(rev1));
 
 	BYTE_VECTOR out;
 	if (Run(cmd, &out))
@@ -1409,7 +1408,7 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	}
 	// else
 	CString cmd;
-	cmd.Format(L"git.exe show-ref --tags --heads refs/heads/%s refs/tags/%s", static_cast<LPCWSTR>(name), static_cast<LPCWSTR>(name));
+	cmd.Format(L"git.exe show-ref --tags --heads -- refs/heads/%s refs/tags/%s", static_cast<LPCWSTR>(name), static_cast<LPCWSTR>(name));
 
 	int refCnt = 0;
 	Run(cmd, [&](const CStringA& lineA)
@@ -1458,7 +1457,7 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 	else
 		cmd += L"--tags ";
 
-	cmd += L"refs/heads/" + name;
+	cmd += L"-- refs/heads/" + name;
 	cmd += L" refs/tags/" + name;
 
 	if (!Run(cmd, &output, nullptr, CP_UTF8))
@@ -1844,7 +1843,7 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 	}
 
 	CString cmd;
-	cmd.Format(L"git.exe ls-remote%s \"%s\"", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(remote));
+	cmd.Format(L"git.exe ls-remote%s -- \"%s\"", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(remote));
 	gitLastErr = cmd + L'\n';
 	if (Run(
 		cmd, [&](CStringA lineA) {
@@ -2842,9 +2841,9 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, cons
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopy())
-		cmd.Format(L"git.exe diff --stat%s -p %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1));
+		cmd.Format(L"git.exe diff --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1));
 	else if (rev1 == GitRev::GetWorkingCopy())
-		cmd.Format(L"git.exe diff -R --stat%s -p %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev2));
+		cmd.Format(L"git.exe diff -R --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev2));
 	else
 	{
 		CString merge;
@@ -2857,7 +2856,7 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, cons
 		CString unified;
 		if (diffContext >= 0)
 			unified.Format(L" --unified=%d", diffContext);
-		cmd.Format(L"git.exe diff-tree -r -p%s%s --stat%s %s %s --", static_cast<LPCWSTR>(merge), static_cast<LPCWSTR>(unified), bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1), static_cast<LPCWSTR>(rev2));
+		cmd.Format(L"git.exe diff-tree -r -p%s%s --stat%s --end-of-options %s %s --", static_cast<LPCWSTR>(merge), static_cast<LPCWSTR>(unified), bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1), static_cast<LPCWSTR>(rev2));
 	}
 
 	if (!path.IsEmpty())

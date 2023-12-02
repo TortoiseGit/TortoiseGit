@@ -1117,7 +1117,7 @@ bool CAppUtils::Export(HWND hWnd, const CString* BashHash, const CTGitPath* orgP
 	if (dlg.DoModal() == IDOK)
 	{
 		CString cmd;
-		cmd.Format(L"git.exe archive --output=\"%s\" --verbose %s --",
+		cmd.Format(L"git.exe archive --output=\"%s\" --verbose --end-of-options %s",
 					static_cast<LPCWSTR>(dlg.m_strFile), static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName)));
 
 		CProgressDlg pro(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
@@ -1175,30 +1175,21 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 	if(dlg.DoModal()==IDOK)
 	{
 		CString cmd;
-		CString force;
-		CString track;
+		CString args;
 		if(dlg.m_bTrack == TRUE)
-			track = L"--track";
+			args = L" --track";
 		else if(dlg.m_bTrack == FALSE)
-			track = L"--no-track";
+			args = L" --no-track";
 
 		if(dlg.m_bForce)
-			force = L"-f";
+			args = L" -f";
 
 		if (isTag)
 		{
-			CString sign;
 			if(dlg.m_bSign)
-				sign = L"-s";
+				args = L" -s";
 
-			cmd.Format(L"git.exe tag %s %s %s %s",
-				static_cast<LPCWSTR>(force),
-				static_cast<LPCWSTR>(sign),
-				static_cast<LPCWSTR>(dlg.m_BranchTagName),
-				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName))
-				);
-
-			if(!dlg.m_Message.Trim().IsEmpty())
+			if (!dlg.m_Message.Trim().IsEmpty())
 			{
 				CString tempfile = ::GetTempFile();
 				if (tempfile.IsEmpty() || CAppUtils::SaveCommitUnicodeFile(tempfile, dlg.m_Message))
@@ -1206,14 +1197,19 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 					MessageBox(hWnd, L"Could not save tag message", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					return FALSE;
 				}
-				cmd.AppendFormat(L" -F \"%s\"", static_cast<LPCWSTR>(tempfile));
+				args.AppendFormat(L" -F \"%s\"", static_cast<LPCWSTR>(tempfile));
 			}
+
+			cmd.Format(L"git.exe tag%s -- %s %s",
+				static_cast<LPCWSTR>(args),
+				static_cast<LPCWSTR>(dlg.m_BranchTagName),
+				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName))
+				);
 		}
 		else
 		{
-			cmd.Format(L"git.exe branch %s %s %s %s",
-				static_cast<LPCWSTR>(track),
-				static_cast<LPCWSTR>(force),
+			cmd.Format(L"git.exe branch%s -- %s %s",
+				static_cast<LPCWSTR>(args),
 				static_cast<LPCWSTR>(dlg.m_BranchTagName),
 				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_VersionName))
 				);
@@ -2291,7 +2287,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		args += L" --allow-unrelated-histories";
 
 	CString cmd;
-	cmd.Format(L"git.exe pull --progress -v --no-rebase%s \"%s\" %s", static_cast<LPCWSTR>(args), static_cast<LPCWSTR>(url), static_cast<LPCWSTR>(remoteBranchName));
+	cmd.Format(L"git.exe pull --progress -v --no-rebase%s -- \"%s\" %s", static_cast<LPCWSTR>(args), static_cast<LPCWSTR>(url), static_cast<LPCWSTR>(remoteBranchName));
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	progress.m_GitCmd = cmd;
 
@@ -2462,7 +2458,7 @@ bool CAppUtils::RebaseAfterFetch(HWND hWnd, const CString& upstream, int rebase,
 		else if (response == IDC_REBASE_POST_BUTTON + 2)
 		{
 			CString cmd, out, err;
-			cmd.Format(L"git.exe format-patch -o \"%s\" %s..%s",
+			cmd.Format(L"git.exe format-patch -o \"%s\" --end-of-options %s..%s",
 				static_cast<LPCWSTR>(g_Git.m_CurrentDir),
 				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_Upstream)),
 				static_cast<LPCWSTR>(g_Git.FixBranchName(dlg.m_Branch)));
@@ -2550,7 +2546,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 	if (fetchAllRemotes)
 		cmd.Format(L"git.exe fetch --all -v%s", static_cast<LPCWSTR>(arg));
 	else
-		cmd.Format(L"git.exe fetch -v%s \"%s\" %s", static_cast<LPCWSTR>(arg), static_cast<LPCWSTR>(url), static_cast<LPCWSTR>(remoteBranch));
+		cmd.Format(L"git.exe fetch -v%s -- \"%s\" %s", static_cast<LPCWSTR>(arg), static_cast<LPCWSTR>(url), static_cast<LPCWSTR>(remoteBranch));
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
@@ -2636,7 +2632,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			if (ret == 1)
 			{
 				CProgressDlg mergeProgress(CWnd::FromHandle(hWnd));
-				mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
+				mergeProgress.m_GitCmd = L"git.exe merge --ff-only -- " + upstream;
 				mergeProgress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 				mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 				{
@@ -2751,19 +2747,19 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 		CString cmd;
 		if (allBranches)
 		{
-			cmd.Format(L"git.exe push --all %s\"%s\"",
+			cmd.Format(L"git.exe push --all %s -- \"%s\"",
 				static_cast<LPCWSTR>(arg),
 				static_cast<LPCWSTR>(remotesList[i]));
 
 			if (tags)
 			{
 				progress.m_GitCmdList.push_back(cmd);
-				cmd.Format(L"git.exe push --tags %s\"%s\"", static_cast<LPCWSTR>(arg), static_cast<LPCWSTR>(remotesList[i]));
+				cmd.Format(L"git.exe push --tags %s -- \"%s\"", static_cast<LPCWSTR>(arg), static_cast<LPCWSTR>(remotesList[i]));
 			}
 		}
 		else
 		{
-			cmd.Format(L"git.exe push %s\"%s\" %s",
+			cmd.Format(L"git.exe push %s -- \"%s\" %s",
 				static_cast<LPCWSTR>(arg),
 				static_cast<LPCWSTR>(remotesList[i]),
 				static_cast<LPCWSTR>(localBranch));
@@ -2777,7 +2773,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 
 		if (!allBranches && !!CRegDWORD(L"Software\\TortoiseGit\\ShowBranchRevisionNumber", FALSE))
 		{
-			cmd.Format(L"git.exe rev-list --count --first-parent %s --", static_cast<LPCWSTR>(localBranch));
+			cmd.Format(L"git.exe rev-list --count --first-parent --end-of-options %s --", static_cast<LPCWSTR>(localBranch));
 			progress.m_GitCmdList.push_back(cmd);
 		}
 	}
@@ -2852,7 +2848,7 @@ bool CAppUtils::RequestPull(HWND hWnd, const CString& endrevision, const CString
 	if (dlg.DoModal()==IDOK)
 	{
 		CString cmd;
-		cmd.Format(L"git.exe request-pull %s \"%s\" %s", static_cast<LPCWSTR>(dlg.m_StartRevision), static_cast<LPCWSTR>(dlg.m_RepositoryURL), static_cast<LPCWSTR>(dlg.m_EndRevision));
+		cmd.Format(L"git.exe request-pull -- %s \"%s\" %s", static_cast<LPCWSTR>(dlg.m_StartRevision), static_cast<LPCWSTR>(dlg.m_RepositoryURL), static_cast<LPCWSTR>(dlg.m_EndRevision));
 
 		CSysProgressDlg sysProgressDlg;
 		sysProgressDlg.SetTitle(CString(MAKEINTRESOURCE(IDS_APPNAME)));
@@ -3179,7 +3175,7 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 
 	CString mergeVersion = g_Git.FixBranchName(version);
 	CString cmd;
-	cmd.Format(L"git.exe merge%s %s", static_cast<LPCWSTR>(args), static_cast<LPCWSTR>(mergeVersion));
+	cmd.Format(L"git.exe merge%s -- %s", static_cast<LPCWSTR>(args), static_cast<LPCWSTR>(mergeVersion));
 
 	CProgressDlg Prodlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	Prodlg.m_GitCmd = cmd;

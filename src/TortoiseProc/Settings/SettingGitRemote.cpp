@@ -474,7 +474,7 @@ BOOL CSettingGitRemote::OnApply()
 
 		m_strUrl.Replace(L'\\', L'/');
 		CString cmd,out;
-		cmd.Format(L"git.exe remote add \"%s\" \"%s\"", static_cast<LPCWSTR>(m_strRemote), static_cast<LPCWSTR>(m_strUrl));
+		cmd.Format(L"git.exe remote add -- \"%s\" \"%s\"", static_cast<LPCWSTR>(m_strRemote), static_cast<LPCWSTR>(m_strUrl));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(GetSafeHwnd(), out, L"TorotiseGit", MB_OK | MB_ICONERROR);
@@ -551,7 +551,7 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
 			CString cmd,out;
-			cmd.Format(L"git.exe remote rm %s", static_cast<LPCWSTR>(str));
+			cmd.Format(L"git.exe remote rm -- \"%s\"", static_cast<LPCWSTR>(str));
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -574,7 +574,7 @@ void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 		m_ctrlRemoteList.GetText(sel, oldRemote);
 		GetDlgItem(IDC_EDIT_REMOTE)->GetWindowText(newRemote);
 		CString cmd, out;
-		cmd.Format(L"git.exe remote rename %s %s", static_cast<LPCWSTR>(oldRemote), static_cast<LPCWSTR>(newRemote));
+		cmd.Format(L"git.exe remote rename -- \"%s\" \"%s\"", static_cast<LPCWSTR>(oldRemote), static_cast<LPCWSTR>(newRemote));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);

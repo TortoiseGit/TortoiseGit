@@ -376,7 +376,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		cmd.Format(L"git.exe pull -v --progress%s \"%s\" %s",
+		cmd.Format(L"git.exe pull -v --progress%s -- \"%s\" %s",
 				static_cast<LPCWSTR>(force),
 				static_cast<LPCWSTR>(m_strURL),
 				static_cast<LPCWSTR>(remotebranch));
@@ -430,7 +430,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 		}
 		else
 		{
-			cmd.Format(L"git.exe fetch --progress -v%s \"%s\" %s",
+			cmd.Format(L"git.exe fetch --progress -v%s -- \"%s\" %s",
 					static_cast<LPCWSTR>(force),
 					static_cast<LPCWSTR>(m_strURL),
 					static_cast<LPCWSTR>(remotebranch));
@@ -461,7 +461,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	if (CurrentEntry == 5)
 	{
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
-		cmd.Format(L"git.exe remote prune \"%s\"", static_cast<LPCWSTR>(m_strURL));
+		cmd.Format(L"git.exe remote prune -- \"%s\"", static_cast<LPCWSTR>(m_strURL));
 		m_GitCmdList.push_back(cmd);
 
 		StartWorkerThread();
@@ -591,7 +591,7 @@ void CSyncDlg::FetchComplete()
 		if (ret == 1)
 		{
 			CProgressDlg mergeProgress;
-			mergeProgress.m_GitCmd = L"git.exe merge --ff-only " + upstream;
+			mergeProgress.m_GitCmd = L"git.exe merge --ff-only -- " + upstream;
 			mergeProgress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 			mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 			{
@@ -731,7 +731,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 	if(this->m_bForce)
 		arg += L" --force";
 
-	cmd.Format(L"git.exe push -v --progress%s \"%s\" %s",
+	cmd.Format(L"git.exe push -v --progress%s -- \"%s\" %s",
 				static_cast<LPCWSTR>(arg),
 				static_cast<LPCWSTR>(m_strURL),
 				static_cast<LPCWSTR>(refName));
@@ -770,7 +770,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 		int err=0;
 		for (int i = 0; i < dlg.m_PathList.GetCount(); ++i)
 		{
-			cmd.Format(L"git.exe am \"%s\"", static_cast<LPCWSTR>(dlg.m_PathList[i].GetGitPathString()));
+			cmd.Format(L"git.exe am -- \"%s\"", static_cast<LPCWSTR>(dlg.m_PathList[i].GetGitPathString()));
 
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
@@ -838,7 +838,7 @@ void CSyncDlg::OnBnClickedButtonEmail()
 	m_strURL=m_strURL.Trim();
 	m_strRemoteBranch=m_strRemoteBranch.Trim();
 
-	cmd.Format(L"git.exe format-patch -o \"%s\" %s/%s..%s",
+	cmd.Format(L"git.exe format-patch -o \"%s\" --end-of-options %s/%s..%s",
 					static_cast<LPCWSTR>(g_Git.m_CurrentDir),
 					static_cast<LPCWSTR>(m_strURL), static_cast<LPCWSTR>(m_strRemoteBranch), static_cast<LPCWSTR>(g_Git.FixBranchName(m_strLocalBranch)));
 

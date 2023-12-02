@@ -477,7 +477,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_PUSH:
 		{
 			CProgressDlg dlg;
-			dlg.m_GitCmd.Format(L"git.exe push --force \"%s\" refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag));
+			dlg.m_GitCmd.Format(L"git.exe push --force -- \"%s\" refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag));
 			dlg.DoModal();
 
 			if (CString err; Fill(m_remote, err))
@@ -488,7 +488,7 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_FETCH:
 		{
 			CProgressDlg dlg;
-			dlg.m_GitCmd.Format(L"git.exe fetch \"%s\" refs/tags/%s:refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag), static_cast<LPCWSTR>(tag));
+			dlg.m_GitCmd.Format(L"git.exe fetch -- \"%s\" refs/tags/%s:refs/tags/%s", static_cast<LPCWSTR>(m_remote), static_cast<LPCWSTR>(tag), static_cast<LPCWSTR>(tag));
 			dlg.DoModal();
 
 			if (CString err; Fill(m_remote, err))

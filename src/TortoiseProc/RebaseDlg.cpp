@@ -727,7 +727,7 @@ void CRebaseDlg::FetchLogList()
 		if (!m_Onto.IsEmpty())
 			refFrom = g_Git.FixBranchName(m_Onto);
 		CString cherryCmd;
-		cherryCmd.Format(L"git.exe cherry \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
+		cherryCmd.Format(L"git.exe cherry -- \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
 			if (line.GetLength() < 2)
@@ -2167,7 +2167,7 @@ int CRebaseDlg::DoRebase()
 						m_RebaseStage = RebaseStage::Error;
 						return -1;
 					}
-					cmd.Format(L"git.exe merge --no-ff%s %s", static_cast<LPCWSTR>(nocommit), static_cast<LPCWSTR>(parentString));
+					cmd.Format(L"git.exe merge --no-ff%s -- %s", static_cast<LPCWSTR>(nocommit), static_cast<LPCWSTR>(parentString));
 					if (nocommit.IsEmpty())
 					{
 						if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -2203,7 +2203,7 @@ int CRebaseDlg::DoRebase()
 			{
 				if (mode != CGitLogListBase::LOGACTIONS_REBASE_SQUASH)
 				{
-					cmd.Format(L"git.exe checkout %s", static_cast<LPCWSTR>(newParents[0].ToString()));
+					cmd.Format(L"git.exe checkout %s --", static_cast<LPCWSTR>(newParents[0].ToString()));
 					if (RunGitCmdRetryOrAbort(cmd))
 					{
 						m_RebaseStage = RebaseStage::Error;
@@ -2635,7 +2635,7 @@ void CRebaseDlg::OnBnClickedAbort()
 		// restore moved branch
 		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			cmd.Format(L"git.exe branch -f %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
+			cmd.Format(L"git.exe branch -f -- %s %s", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_OrigBranchHash.ToString()));
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				AddLogString(out);

@@ -853,7 +853,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				if (isFirstParentCommit)
 				{
 					CString rev_counter, rev_err;
-					if (g_Git.Run(L"git.exe rev-list --count --first-parent " + pLogEntry->m_CommitHash.ToString() + L" --", &rev_counter, &rev_err, CP_UTF8))
+					if (g_Git.Run(L"git.exe rev-list --count --first-parent --end-of-options " + pLogEntry->m_CommitHash.ToString() + L" --", &rev_counter, &rev_err, CP_UTF8))
 						CMessageBox::Show(GetSafeHwnd(), L"Could not get rev count\n" + rev_counter + L'\n' + rev_err, L"TortoiseGit", MB_ICONERROR);
 					else
 						out_counter = L", " + CString(MAKEINTRESOURCE(IDS_REV_COUNTER)) + L": " + rev_counter.Trim();
@@ -1092,7 +1092,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 				if (pLogEntry->m_CommitHash.IsEmpty())
 					cmd.Format(L"git.exe diff HEAD -- \"%s\"", static_cast<LPCWSTR>(p->GetGitPathString()));
 				else
-					cmd.Format(L"git.exe diff %s^%d..%s -- \"%s\"", static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(p->GetGitPathString()));
+					cmd.Format(L"git.exe diff --end-of-options %s^%d..%s -- \"%s\"", static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(p->GetGitPathString()));
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}
