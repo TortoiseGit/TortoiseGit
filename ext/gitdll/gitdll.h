@@ -183,9 +183,6 @@ typedef enum
 
 GITDLL_API int git_set_config(const char* key, const char* value, CONFIG_TYPE type);
 
-const char* get_windows_home_directory(const LPWSTR* env);
-
-GITDLL_API const wchar_t* wget_windows_home_directory(const LPWSTR* env);
 GITDLL_API const wchar_t* wget_msysgit_etc(const LPWSTR* env);
 
 GITDLL_API const char* git_default_notes_ref(void);

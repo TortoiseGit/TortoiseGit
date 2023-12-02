@@ -2307,7 +2307,35 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 CString CGit::GetHomeDirectory() const
 {
-	return wget_windows_home_directory(m_Environment);
+	static CString homeDirectory;
+
+	if (!homeDirectory.IsEmpty())
+		return homeDirectory;
+
+	homeDirectory = m_Environment.GetEnv(L"HOME");
+	if (!homeDirectory.IsEmpty())
+		return homeDirectory;
+
+	if (CString tmp = m_Environment.GetEnv(L"HOMEDRIVE"); !tmp.IsEmpty())
+	{
+		if (CString tmp2 = m_Environment.GetEnv(L"HOMEPATH"); !tmp2.IsEmpty())
+		{
+			tmp += tmp2;
+			if (PathIsDirectory(tmp))
+			{
+				homeDirectory = tmp;
+				return homeDirectory;
+			}
+		}
+	}
+
+	if (CString tmp = m_Environment.GetEnv(L"USERPROFILE"); !tmp.IsEmpty())
+	{
+		homeDirectory = tmp;
+		return homeDirectory;
+	}
+
+	return homeDirectory;
 }
 
 CString CGit::GetGitLocalConfig() const
