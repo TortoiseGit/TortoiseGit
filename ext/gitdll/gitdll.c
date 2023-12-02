@@ -60,7 +60,7 @@ extern int die_is_recursing_dll(void);
 extern void libgit_initialize(void);
 extern void cleanup_chdir_notify(void);
 extern void free_all_pack(void);
-extern void reset_git_env(void);
+extern void reset_git_env(const LPWSTR*);
 extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
 extern void git_atexit_clear(void);
@@ -92,7 +92,7 @@ int git_get_sha1(const char *name, GIT_HASH sha1)
 	return ret;
 }
 
-int git_init(void)
+int git_init(const LPWSTR* env)
 {
 	_fmode = _O_BINARY;
 	_setmode(_fileno(stdin), _O_BINARY);
@@ -101,9 +101,8 @@ int git_init(void)
 
 	cleanup_chdir_notify();
 	fscache_flush();
-	reset_git_env();
-	// set HOME if not set already
-	gitsetenv("HOME", get_windows_home_directory(), 0);
+	reset_git_env(env);
+	assert(getenv("HOME")); // make sure HOME is already set
 	drop_all_attr_stacks();
 	git_config_clear();
 	g_prefix = setup_git_directory();
@@ -854,7 +853,7 @@ static int get_config(const char* key_, const char* value_, const struct config_
 }
 
 // wchar_t wrapper for git_etc_gitconfig()
-const wchar_t *wget_msysgit_etc(void)
+const wchar_t *wget_msysgit_etc(const LPWSTR* env)
 {
 	static const wchar_t *etc_gitconfig = NULL;
 	wchar_t wpointer[MAX_PATH];
@@ -862,6 +861,7 @@ const wchar_t *wget_msysgit_etc(void)
 	if (etc_gitconfig)
 		return etc_gitconfig;
 
+	build_libgit_environment(env);
 	char* systemconfig = git_system_config();
 	if (xutftowcs_path(wpointer, systemconfig) < 0)
 	{
@@ -937,60 +937,6 @@ int git_get_config(const char *key, char *buffer, int size)
 	}
 
 	return !buf.seen;
-}
-
-// taken from msysgit: compat/mingw.c
-const char *get_windows_home_directory(void)
-{
-	static const char *home_directory = NULL;
-	const char* tmp;
-
-	if (home_directory)
-		return home_directory;
-
-	if ((tmp = getenv("HOME")) != NULL && *tmp)
-	{
-		home_directory = _strdup(tmp);
-		return home_directory;
-	}
-
-	if ((tmp = getenv("HOMEDRIVE")) != NULL)
-	{
-		struct strbuf buf = STRBUF_INIT;
-		strbuf_addstr(&buf, tmp);
-		if ((tmp = getenv("HOMEPATH")) != NULL)
-		{
-			strbuf_addstr(&buf, tmp);
-			if (is_directory(buf.buf))
-			{
-				home_directory = strbuf_detach(&buf, NULL);
-				return home_directory;
-			}
-		}
-		strbuf_release(&buf);
-	}
-
-	if ((tmp = getenv("USERPROFILE")) != NULL && *tmp)
-		home_directory = _strdup(tmp);
-
-	return home_directory;
-}
-
-// wchar_t wrapper for get_windows_home_directory()
-const wchar_t *wget_windows_home_directory(void)
-{
-	static const wchar_t *home_directory = NULL;
-	wchar_t wpointer[MAX_PATH];
-
-	if (home_directory)
-		return home_directory;
-
-	if (xutftowcs_path(wpointer, get_windows_home_directory()) < 0)
-		return NULL;
-
-	home_directory = _wcsdup(wpointer);
-
-	return home_directory;
 }
 
 const char* git_default_notes_ref(void)

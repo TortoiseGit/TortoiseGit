@@ -2307,8 +2307,35 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 CString CGit::GetHomeDirectory() const
 {
-	const wchar_t * homeDir = wget_windows_home_directory();
-	return homeDir;
+	static CString homeDirectory;
+
+	if (!homeDirectory.IsEmpty())
+		return homeDirectory;
+
+	homeDirectory = m_Environment.GetEnv(L"HOME");
+	if (!homeDirectory.IsEmpty())
+		return homeDirectory;
+
+	if (CString tmp = m_Environment.GetEnv(L"HOMEDRIVE"); !tmp.IsEmpty())
+	{
+		if (CString tmp2 = m_Environment.GetEnv(L"HOMEPATH"); !tmp2.IsEmpty())
+		{
+			tmp += tmp2;
+			if (CString windowsSysDirectory; GetSystemDirectory(CStrBuf(windowsSysDirectory, 4096), 4096) != FALSE && windowsSysDirectory != tmp && PathIsDirectory(tmp))
+			{
+				homeDirectory = tmp;
+				return homeDirectory;
+			}
+		}
+	}
+
+	if (CString tmp = m_Environment.GetEnv(L"USERPROFILE"); !tmp.IsEmpty())
+	{
+		homeDirectory = tmp;
+		return homeDirectory;
+	}
+
+	return homeDirectory;
 }
 
 CString CGit::GetGitLocalConfig() const
@@ -2343,8 +2370,7 @@ CString CGit::GetGitGlobalXDGConfig() const
 
 CString CGit::GetGitSystemConfig() const
 {
-	const wchar_t * systemConfig = wget_msysgit_etc();
-	return systemConfig;
+	return wget_msysgit_etc(m_Environment);
 }
 
 CString CGit::GetNotesRef() const
@@ -2611,7 +2637,7 @@ CEnvironment::operator LPWSTR()
 	return data();
 }
 
-CEnvironment::operator LPWSTR*()
+CEnvironment::operator const LPWSTR*() const
 {
 	return &baseptr;
 }

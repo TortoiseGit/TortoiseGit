@@ -1291,7 +1291,7 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 TEST(CGit, CEnvironment)
 {
 	CEnvironment env;
-	wchar_t** basePtr = env;
+	const LPWSTR* basePtr = env;
 	ASSERT_TRUE(basePtr);
 	EXPECT_FALSE(*basePtr);
 	EXPECT_TRUE(env.empty());
@@ -1396,7 +1396,7 @@ TEST(CGit, CEnvironment)
 
 	// also test copy constructor
 	CEnvironment env2(env);
-	EXPECT_EQ(static_cast<wchar_t*>(env2), *static_cast<wchar_t**>(env2));
+	EXPECT_EQ(static_cast<wchar_t*>(env2), *static_cast<const LPWSTR*>(env2));
 	EXPECT_NE(static_cast<wchar_t*>(env2), *basePtr);
 
 	// also test assignment operation
@@ -1406,7 +1406,7 @@ TEST(CGit, CEnvironment)
 	CEnvironment env3b;
 	env3b = env3a;
 	EXPECT_FALSE(env3b.empty());
-	EXPECT_EQ(static_cast<wchar_t**>(env3a), basePtr);
+	EXPECT_EQ(static_cast<const LPWSTR*>(env3a), basePtr);
 	EXPECT_EQ(static_cast<wchar_t*>(env3a), *basePtr);
 	EXPECT_NE(static_cast<wchar_t*>(env3b), *basePtr);
 }

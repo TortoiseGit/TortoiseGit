@@ -93,7 +93,7 @@ GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
  *  @remark, this function must be call before other function.
  *	@return			0	success
  */
-GITDLL_API int git_init(void);
+GITDLL_API int git_init(const LPWSTR* env);
 
 GITDLL_API int git_open_log(GIT_LOG* handle, const char* arg);
 GITDLL_API int git_get_log_firstcommit(GIT_LOG handle);
@@ -183,10 +183,7 @@ typedef enum
 
 GITDLL_API int git_set_config(const char* key, const char* value, CONFIG_TYPE type);
 
-const char *get_windows_home_directory(void);
-
-GITDLL_API const wchar_t *wget_windows_home_directory(void);
-GITDLL_API const wchar_t *wget_msysgit_etc(void);
+GITDLL_API const wchar_t* wget_msysgit_etc(const LPWSTR* env);
 
 GITDLL_API const char* git_default_notes_ref(void);
 

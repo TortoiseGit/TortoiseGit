@@ -172,7 +172,7 @@ public:
 	void clear();
 	bool empty() const;
 	operator LPWSTR();
-	operator LPWSTR*();
+	operator const LPWSTR*() const;
 	LPWSTR baseptr;
 	CEnvironment(CEnvironment&& env) = delete;
 	CEnvironment& operator =(CEnvironment&& env) = delete;
@@ -237,7 +237,7 @@ public:
 #endif
 		if(!m_IsGitDllInited)
 		{
-			git_init();
+			git_init(m_Environment);
 			m_IsGitDllInited=true;
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2021 TortoiseGit
+// Copyright (C) 2014, 2021, 2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ typedef struct {
 } COMMAND_HANDLE;
 
 void command_init(COMMAND_HANDLE *commandHandle);
-int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, LPWSTR* pEnv, DWORD flags);
+int command_start(wchar_t *cmd, COMMAND_HANDLE *commandHandle, const LPWSTR *pEnv, DWORD flags);
 void command_close_stdout(COMMAND_HANDLE *commandHandle);
 void command_close_stdin(COMMAND_HANDLE *commandHandle);
 DWORD command_close(COMMAND_HANDLE *commandHandle);

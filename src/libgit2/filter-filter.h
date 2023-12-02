@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016 TortoiseGit
+// Copyright (C) 2014, 2016, 2023 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,6 @@
 
 GIT_BEGIN_DECL
 
-GIT_EXTERN(git_filter *) git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv);
+GIT_EXTERN(git_filter *) git_filter_filter_new(LPCWSTR shexepath, const LPWSTR *pEnv);
 
 GIT_END_DECL

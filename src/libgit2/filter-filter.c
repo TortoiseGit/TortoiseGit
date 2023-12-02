@@ -34,7 +34,7 @@
 
 struct filter_filter {
 	git_filter	f;
-	LPWSTR*		pEnv;
+	const LPWSTR	*pEnv;
 	LPWSTR		shexepath;
 };
 
@@ -298,7 +298,7 @@ static int filter_stream(
 	return git_filter_buffered_stream_new(out, self, filter_apply, NULL, payload, src, next);
 }
 
-git_filter *git_filter_filter_new(LPCWSTR shexepath, LPWSTR* pEnv)
+git_filter *git_filter_filter_new(LPCWSTR shexepath, const LPWSTR *pEnv)
 {
 	struct filter_filter *f = git__calloc(1, sizeof(struct filter_filter));
 	if (!f)
