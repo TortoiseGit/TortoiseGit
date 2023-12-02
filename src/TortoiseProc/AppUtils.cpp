@@ -2777,7 +2777,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 
 		if (!allBranches && !!CRegDWORD(L"Software\\TortoiseGit\\ShowBranchRevisionNumber", FALSE))
 		{
-			cmd.Format(L"git.exe rev-list --count --first-parent %s", static_cast<LPCWSTR>(localBranch));
+			cmd.Format(L"git.exe rev-list --count --first-parent %s --", static_cast<LPCWSTR>(localBranch));
 			progress.m_GitCmdList.push_back(cmd);
 		}
 	}

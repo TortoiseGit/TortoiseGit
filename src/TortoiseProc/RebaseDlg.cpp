@@ -1698,7 +1698,7 @@ void CRebaseDlg::ResetParentForSquash(const CString& commitMessage)
 {
 	m_SquashMessage = commitMessage;
 	// reset parent so that we can do "git cherry-pick --no-commit" w/o introducing an unwanted commit
-	CString cmd = L"git.exe reset --soft HEAD~1";
+	CString cmd = L"git.exe reset --soft HEAD~1 --";
 	m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 	if (RunGitCmdRetryOrAbort(cmd))
 		return;
@@ -2155,7 +2155,7 @@ int CRebaseDlg::DoRebase()
 					return -1;
 				}
 				if (!parentRewritten && nocommit.IsEmpty())
-					cmd.Format(L"git.exe reset --hard %s", static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
+					cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 				else
 				{
 					CString parentString;

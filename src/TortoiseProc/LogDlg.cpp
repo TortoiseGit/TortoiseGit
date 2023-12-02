@@ -853,7 +853,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				if (isFirstParentCommit)
 				{
 					CString rev_counter, rev_err;
-					if (g_Git.Run(L"git.exe rev-list --count --first-parent " + pLogEntry->m_CommitHash.ToString(), &rev_counter, &rev_err, CP_UTF8))
+					if (g_Git.Run(L"git.exe rev-list --count --first-parent " + pLogEntry->m_CommitHash.ToString() + L" --", &rev_counter, &rev_err, CP_UTF8))
 						CMessageBox::Show(GetSafeHwnd(), L"Could not get rev count\n" + rev_counter + L'\n' + rev_err, L"TortoiseGit", MB_ICONERROR);
 					else
 						out_counter = L", " + CString(MAKEINTRESOURCE(IDS_REV_COUNTER)) + L": " + rev_counter.Trim();
