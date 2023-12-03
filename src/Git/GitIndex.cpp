@@ -395,7 +395,10 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		return -1;
 
 	DWORD size = 0;
-	auto buff = std::make_unique<char[]>(filesize);
+	auto buff = std::unique_ptr<char[]>(new (std::nothrow) char[filesize]); // prevent default initialization
+	if (!buff)
+		return -1;
+
 	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
 
 	if (size != filesize)
@@ -488,7 +491,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			return -1;
 
 		{
-			auto p = std::make_unique<char[]>(filesize - strlen("ref:"));
+			auto p = std::unique_ptr<char[]>(new (std::nothrow) char[filesize - strlen("ref:")]); // prevent default initialization
 			if (!p)
 				return -1;
 
@@ -727,7 +730,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 	if (filesize == INVALID_FILE_SIZE)
 		return -1;
 
-	m_buffer = std::make_unique<char[]>(filesize + 1);
+	m_buffer = std::unique_ptr<char[]>(new (std::nothrow) char[filesize + 1]); // prevent default initialization
 	if (!m_buffer)
 		return -1;
 
