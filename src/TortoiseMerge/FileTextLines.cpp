@@ -274,7 +274,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 	// we may have to convert the file content - CString is UTF16LE
 	try
 	{
-		CBaseFilter* pFilter = nullptr;
+		std::unique_ptr<CBaseFilter> pFilter;
 		switch (m_SaveParams.m_UnicodeType)
 		{
 		case UnicodeType::BINARY:
@@ -282,29 +282,28 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 			return FALSE;
 		case UnicodeType::UTF8:
 		case UnicodeType::UTF8BOM:
-			pFilter = new CUtf8Filter(nullptr);
+			pFilter = std::make_unique<CUtf8Filter>(nullptr);
 			break;
 		default:
 		case UnicodeType::ASCII:
-			pFilter = new CAsciiFilter(nullptr);
+			pFilter = std::make_unique<CAsciiFilter>(nullptr);
 			break;
 		case UnicodeType::UTF16_BE:
 		case UnicodeType::UTF16_BEBOM:
-			pFilter = new CUtf16beFilter(nullptr);
+			pFilter = std::make_unique<CUtf16beFilter>(nullptr);
 			break;
 		case UnicodeType::UTF16_LE:
 		case UnicodeType::UTF16_LEBOM:
-			pFilter = new CUtf16leFilter(nullptr);
+			pFilter = std::make_unique<CUtf16leFilter>(nullptr);
 			break;
 		case UnicodeType::UTF32_BE:
-			pFilter = new CUtf32beFilter(nullptr);
+			pFilter = std::make_unique<CUtf32beFilter>(nullptr);
 			break;
 		case UnicodeType::UTF32_LE:
-			pFilter = new CUtf32leFilter(nullptr);
+			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
 		pFilter->Decode(oFile);
-		delete pFilter;
 	}
 	catch (CMemoryException* e)
 	{
@@ -484,7 +483,7 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 			return FALSE;
 		}
 
-		CBaseFilter* pFilter = nullptr;
+		std::unique_ptr<CBaseFilter> pFilter;
 		bool bSaveBom = true;
 		CFileTextLines::UnicodeType eUnicodeType = bSaveAsUTF8 ? CFileTextLines::UnicodeType::UTF8 : m_SaveParams.m_UnicodeType;
 		switch (eUnicodeType)
@@ -492,32 +491,33 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 		default:
 		case CFileTextLines::UnicodeType::ASCII:
 			bSaveBom = false;
-			pFilter = new CAsciiFilter(&file);
+			pFilter = std::make_unique<CAsciiFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF8:
 			bSaveBom = false;
+			[[fallthrough]];
 		case CFileTextLines::UnicodeType::UTF8BOM:
-			pFilter = new CUtf8Filter(&file);
+			pFilter = std::make_unique<CUtf8Filter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_BE:
 			bSaveBom = false;
-			pFilter = new CUtf16beFilter(&file);
+			pFilter = std::make_unique<CUtf16beFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_BEBOM:
-			pFilter = new CUtf16beFilter(&file);
+			pFilter = std::make_unique<CUtf16beFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_LE:
 			bSaveBom = false;
-			pFilter = new CUtf16leFilter(&file);
+			pFilter = std::make_unique<CUtf16leFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_LEBOM:
-			pFilter = new CUtf16leFilter(&file);
+			pFilter = std::make_unique<CUtf16leFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF32_BE:
-			pFilter = new CUtf32beFilter(&file);
+			pFilter = std::make_unique<CUtf32beFilter>(&file);
 			break;
 		case CFileTextLines::UnicodeType::UTF32_LE:
-			pFilter = new CUtf32leFilter(&file);
+			pFilter = std::make_unique<CUtf32leFilter>(&file);
 			break;
 		}
 
@@ -576,7 +576,6 @@ BOOL CFileTextLines::Save( const CString& sFilePath
 			EOL eEol = GetLineEnding(i);
 			pFilter->Write(oEncodedEol[static_cast<int>(eEol)]);
 		}
-		delete pFilter;
 		file.Close();
 	}
 	catch (CException * e)

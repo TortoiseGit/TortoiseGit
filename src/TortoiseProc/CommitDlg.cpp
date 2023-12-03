@@ -2020,36 +2020,35 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 	CFileTextLines::UnicodeType type = filetextlines.CheckUnicodeType(oFile, readbytes);
 	try
 	{
-		CBaseFilter* pFilter = nullptr;
+		std::unique_ptr<CBaseFilter> pFilter;
 		switch (type)
 		{
 		case CFileTextLines::UnicodeType::BINARY:
 			return;
 		case CFileTextLines::UnicodeType::UTF8:
 		case CFileTextLines::UnicodeType::UTF8BOM:
-			pFilter = new CUtf8Filter(nullptr);
+			pFilter = std::make_unique<CUtf8Filter>(nullptr);
 			break;
 		default:
 		case CFileTextLines::UnicodeType::ASCII:
-			pFilter = new CAsciiFilter(nullptr);
+			pFilter = std::make_unique<CAsciiFilter>(nullptr);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_BE:
 		case CFileTextLines::UnicodeType::UTF16_BEBOM:
-			pFilter = new CUtf16beFilter(nullptr);
+			pFilter = std::make_unique<CUtf16beFilter>(nullptr);
 			break;
 		case CFileTextLines::UnicodeType::UTF16_LE:
 		case CFileTextLines::UnicodeType::UTF16_LEBOM:
-			pFilter = new CUtf16leFilter(nullptr);
+			pFilter = std::make_unique<CUtf16leFilter>(nullptr);
 			break;
 		case CFileTextLines::UnicodeType::UTF32_BE:
-			pFilter = new CUtf32beFilter(nullptr);
+			pFilter = std::make_unique<CUtf32beFilter>(nullptr);
 			break;
 		case CFileTextLines::UnicodeType::UTF32_LE:
-			pFilter = new CUtf32leFilter(nullptr);
+			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
 		pFilter->Decode(oFile);
-		delete pFilter;
 	}
 	catch (CMemoryException*)
 	{
