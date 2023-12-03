@@ -1997,9 +1997,9 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 		return;
 
 	DWORD size = GetFileSize(hFile, nullptr);
-	if (size > CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseMaxSize", 300000L))
+	if (size == 0 || size > CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseMaxSize", 300000L))
 	{
-		// no files bigger than 300k
+		// no empty files or files bigger than 300k
 		return;
 	}
 	// allocate memory to hold file contents
@@ -2048,7 +2048,8 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
-		pFilter->Decode(oFile);
+		if (!pFilter->Decode(oFile))
+			return;
 	}
 	catch (CMemoryException*)
 	{

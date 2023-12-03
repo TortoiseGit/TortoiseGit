@@ -271,6 +271,10 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 	// enforce conversion for all but ASCII and UTF8 type
 	m_bNeedsConversion = (m_SaveParams.m_UnicodeType != CFileTextLines::UnicodeType::UTF8) && (m_SaveParams.m_UnicodeType != CFileTextLines::UnicodeType::ASCII);
 
+	// no need to decode empty file
+	if (dwReadBytes == 0)
+		return TRUE;
+
 	// we may have to convert the file content - CString is UTF16LE
 	try
 	{
@@ -303,7 +307,11 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
-		pFilter->Decode(oFile);
+		if (!pFilter->Decode(oFile))
+		{
+			SetErrorString();
+			return FALSE;
+		}
 	}
 	catch (CMemoryException* e)
 	{
