@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019, 2021 - TortoiseGit
+// Copyright (C) 2017-2019, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -870,8 +870,11 @@ int wmain(int argc, wchar_t* argv[])
 			return ERR_READ;
 		}
 		maxlength = filelength + 8192; // We might be increasing file size.
-		pBuf = std::make_unique<char[]>(maxlength);
-		if (!pBuf)
+		try
+		{
+			pBuf = std::make_unique<char[]>(maxlength);
+		}
+		catch (const std::bad_alloc&)
 		{
 			wprintf(L"Could not allocate enough memory!\n");
 			return ERR_ALLOC;
