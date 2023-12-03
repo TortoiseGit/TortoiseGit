@@ -197,8 +197,8 @@ public:
 
 	CBuffer& operator=(const CBuffer& Src) { Copy(Src); return *this; }
 	operator bool () const { return !IsEmpty(); }
-	template<typename T>
-	operator T () const { return reinterpret_cast<T>(m_pBuffer); }
+	operator void*() const { return static_cast<void*>(m_pBuffer); }
+	operator LPSTR() const { return reinterpret_cast<LPSTR>(m_pBuffer); }
 
 	void Clear() { m_nUsed=0; }
 	void ExpandToAtLeast(int nNewSize);
@@ -216,15 +216,44 @@ private:
 	int m_nAllocated = 0;
 };
 
-
-class CBaseFilter
+class CDecodeFilter
 {
 public:
-	CBaseFilter(CStdioFile * p_File) { m_pFile=p_File; m_nCodePage=0; }
-	virtual ~CBaseFilter() {}
+	CDecodeFilter() = default;
+	CDecodeFilter(const CDecodeFilter&) = delete;
+	CDecodeFilter& operator=(const CDecodeFilter& Src) = delete;
+	virtual ~CDecodeFilter()
+	{
+		if (m_bNeedsCleanup)
+			delete[] m_pBuffer;
+	}
 
-	virtual bool Decode(/*in out*/ CBuffer & s);
-	virtual const CBuffer& Encode(const CString& data);
+	virtual bool Decode(std::unique_ptr<BYTE[]>& s, int len) = 0;
+	std::wstring_view GetStringView() const
+	{
+		if (m_iBufferLength == 0)
+			return {};
+		return std::wstring_view(m_pBuffer, m_iBufferLength);
+	}
+
+protected:
+	bool m_bNeedsCleanup = true;
+	wchar_t* m_pBuffer = nullptr;
+	int m_iBufferLength = 0;
+};
+
+class CEncodeFilter
+{
+public:
+	CEncodeFilter(CStdioFile* p_File)
+		: m_pFile(p_File)
+	{
+	}
+	virtual ~CEncodeFilter()
+	{
+	}
+
+	virtual const CBuffer& Encode(const CString& data) = 0;
 	const CBuffer & GetBuffer() const {return m_oBuffer; }
 	void Write(const CString& s) { Write(Encode(s)); } ///< encode into buffer and write
 	void Write() { Write(m_oBuffer); } ///< write preencoded internal buffer
@@ -232,39 +261,50 @@ public:
 
 protected:
 	CBuffer m_oBuffer;
-	/**
-		Code page for WideCharToMultiByte.
-	*/
-	UINT m_nCodePage;
 
 private:
 	CStdioFile * m_pFile;
 };
 
 
-class CAsciiFilter : public CBaseFilter
+class CAsciiFilter : public CEncodeFilter, public CDecodeFilter
 {
 public:
-	CAsciiFilter(CStdioFile *pFile) : CBaseFilter(pFile){ m_nCodePage=CP_ACP; }
-	virtual ~CAsciiFilter() {}
+	CAsciiFilter(CStdioFile* pFile)
+		: CEncodeFilter(pFile)
+		, m_nCodePage(CP_ACP)
+	{
+	}
+	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	const CBuffer& Encode(const CString& data) override;
+
+protected:
+	/**
+	Code page for MultiByteToWideChar.
+	*/
+	UINT m_nCodePage;
 };
 
 
-class CUtf8Filter : public CBaseFilter
+class CUtf8Filter : public CAsciiFilter
 {
 public:
-	CUtf8Filter(CStdioFile *pFile) : CBaseFilter(pFile){ m_nCodePage=CP_UTF8;}
-	virtual ~CUtf8Filter() {}
+	CUtf8Filter(CStdioFile* pFile)
+		: CAsciiFilter(pFile)
+	{
+		m_nCodePage = CP_UTF8;
+	}
 };
 
 
-class CUtf16leFilter : public CBaseFilter
+class CUtf16leFilter : public CEncodeFilter, public CDecodeFilter
 {
 public:
-	CUtf16leFilter(CStdioFile *pFile) : CBaseFilter(pFile){}
-	virtual ~CUtf16leFilter() {}
+	CUtf16leFilter(CStdioFile* pFile)
+		: CEncodeFilter(pFile)
+	{}
 
-	bool Decode(/*in out*/ CBuffer& data) override;
+	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
@@ -273,20 +313,20 @@ class CUtf16beFilter : public CUtf16leFilter
 {
 public:
 	CUtf16beFilter(CStdioFile *pFile) : CUtf16leFilter(pFile){}
-	virtual ~CUtf16beFilter() {}
 
-	bool Decode(/*in out*/ CBuffer& data) override;
+	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
 
-class CUtf32leFilter : public CBaseFilter
+class CUtf32leFilter : public CEncodeFilter, public CDecodeFilter
 {
 public:
-	CUtf32leFilter(CStdioFile *pFile) : CBaseFilter(pFile){}
-	virtual ~CUtf32leFilter() {}
+	CUtf32leFilter(CStdioFile* pFile)
+		: CEncodeFilter(pFile)
+	{}
 
-	bool Decode(/*in out*/ CBuffer& data) override;
+	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
@@ -295,8 +335,7 @@ class CUtf32beFilter : public CUtf32leFilter
 {
 public:
 	CUtf32beFilter(CStdioFile *pFile) : CUtf32leFilter(pFile){}
-	virtual ~CUtf32beFilter() {}
 
-	bool Decode(/*in out*/ CBuffer& data) override;
+	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };

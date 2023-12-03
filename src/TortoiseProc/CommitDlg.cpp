@@ -1996,31 +1996,30 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 	if (!hFile)
 		return;
 
-	DWORD size = GetFileSize(hFile, nullptr);
-	if (size == 0 || size > CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseMaxSize", 300000L))
+	LARGE_INTEGER fileSize;
+	if (GetFileSizeEx(hFile, &fileSize); fileSize.QuadPart == 0 || fileSize.QuadPart >= INT_MAX || fileSize.QuadPart > CRegDWORD(L"Software\\TortoiseGit\\AutocompleteParseMaxSize", 300000L))
 	{
-		// no empty files or files bigger than 300k
+		// no empty files or files bigger than a configurable maximum (default: 300k)
 		return;
 	}
 	// allocate memory to hold file contents
-	CBuffer oFile;
+	std::unique_ptr<BYTE[]> fileBuffer;
 	try
 	{
-		oFile.SetLength(size);
+		fileBuffer = std::unique_ptr<BYTE[]>(new BYTE[fileSize.LowPart]); // prevent default initialization
 	}
 	catch (CMemoryException*)
 	{
 		return;
 	}
 	DWORD readbytes;
-	if (!ReadFile(hFile, oFile, size, &readbytes, nullptr))
+	if (!ReadFile(hFile, fileBuffer.get(), fileSize.LowPart, &readbytes, nullptr))
 		return;
-	oFile.SetLength(readbytes);
 	CFileTextLines filetextlines;
-	CFileTextLines::UnicodeType type = filetextlines.CheckUnicodeType(oFile, readbytes);
+	CFileTextLines::UnicodeType type = filetextlines.CheckUnicodeType(fileBuffer.get(), readbytes);
+	std::unique_ptr<CDecodeFilter> pFilter;
 	try
 	{
-		std::unique_ptr<CBaseFilter> pFilter;
 		switch (type)
 		{
 		case CFileTextLines::UnicodeType::BINARY:
@@ -2048,7 +2047,7 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
-		if (!pFilter->Decode(oFile))
+		if (!pFilter->Decode(fileBuffer, readbytes))
 			return;
 	}
 	catch (CMemoryException*)
@@ -2056,7 +2055,7 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 		return;
 	}
 
-	std::wstring sFileContent = std::wstring(static_cast<wchar_t*>(oFile), oFile.GetLength() / sizeof(wchar_t));
+	std::wstring_view sFileContent = pFilter->GetStringView();
 	if (sFileContent.empty() || !m_bRunThread)
 		return;
 
@@ -2071,10 +2070,10 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 			regCheck = std::wregex(sRegex, std::regex_constants::icase | std::regex_constants::ECMAScript);
 			regexmap[sExt] = regCheck;
 		}
-		const std::wsregex_iterator end;
-		for (std::wsregex_iterator it(sFileContent.cbegin(), sFileContent.cend(), regCheck); it != end; ++it)
+		const std::wcregex_iterator end;
+		for (std::wcregex_iterator it(sFileContent.data(), sFileContent.data() + sFileContent.size(), regCheck); it != end; ++it)
 		{
-			const std::wsmatch match = *it;
+			const std::wcmatch match = *it;
 			for (size_t i = 1; i < match.size(); ++i)
 			{
 				if (match[i].second-match[i].first)
