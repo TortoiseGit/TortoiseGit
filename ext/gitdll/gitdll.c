@@ -139,13 +139,11 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR* author, const char*
 
 	pbuff = end + 2;
 
-	author->Date = atoll(pbuff);
-	end =  strchr(pbuff, ' ');
-	if( end == 0 )
+	author->Date = parse_timestamp(pbuff, &end, 10);
+	if (end == pbuff || !author->Date || !end || *end != ' ' || end[1] != '+' && end[1] != '-' || !isdigit(end[2]) || !isdigit(end[3]) || !isdigit(end[4]) || !isdigit(end[5]))
 		return -1;
-
-	pbuff=end;
-	author->TimeZone = atol(pbuff);
+	pbuff = end + 1;
+	author->TimeZone = strtol(pbuff, NULL, 10);
 
 	return 0;
 }
