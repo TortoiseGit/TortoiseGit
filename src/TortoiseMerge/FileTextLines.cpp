@@ -200,16 +200,12 @@ CFileTextLines::UnicodeType CFileTextLines::CheckUnicodeType(LPCVOID pBuffer, in
 }
 
 
-BOOL CFileTextLines::Load(const CString& sFilePath, int lengthHint /* = 0*/)
+BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 {
 	m_SaveParams.m_LineEndings = EOL::AutoLine;
 	if (!m_bKeepEncoding)
 		m_SaveParams.m_UnicodeType = CFileTextLines::UnicodeType::AUTOTYPE;
 	RemoveAll();
-	if(lengthHint != 0)
-	{
-		Reserve(lengthHint);
-	}
 
 	if (PathIsDirectory(sFilePath))
 	{

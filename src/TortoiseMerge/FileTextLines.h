@@ -59,7 +59,6 @@ public:
 	void SetAt(int index, const T& strVal)  { m_vec[index] = strVal; }
 	void Add(const T& strVal)    { m_vec.push_back(strVal); }
 	void RemoveAll()             { m_vec.clear(); }
-	void Reserve(int ) {  }
 
 private:
 	std::deque<T> m_vec;
