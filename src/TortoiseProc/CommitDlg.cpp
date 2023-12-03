@@ -2047,7 +2047,7 @@ void CCommitDlg::ScanFile(std::map<CString, int>& autolist, const CString& sFile
 			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
-		if (!pFilter->Decode(fileBuffer, readbytes))
+		if (!pFilter->Decode(std::move(fileBuffer), readbytes))
 			return;
 	}
 	catch (CMemoryException*)

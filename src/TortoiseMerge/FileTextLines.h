@@ -21,6 +21,7 @@
 #include "EOL.h"
 #include <deque>
 #include <regex>
+#include <functional>
 
 // A template class to make an array which looks like a CStringArray or CDWORDArray but
 // is in fact based on a STL vector, which is much faster at large sizes
@@ -224,11 +225,10 @@ public:
 	CDecodeFilter& operator=(const CDecodeFilter& Src) = delete;
 	virtual ~CDecodeFilter()
 	{
-		if (m_bNeedsCleanup)
-			delete[] m_pBuffer;
+		m_deleter(m_pBuffer);
 	}
 
-	virtual bool Decode(std::unique_ptr<BYTE[]>& s, int len) = 0;
+	virtual bool Decode(std::unique_ptr<BYTE[]> s, int len) = 0;
 	std::wstring_view GetStringView() const
 	{
 		if (m_iBufferLength == 0)
@@ -237,9 +237,9 @@ public:
 	}
 
 protected:
-	bool m_bNeedsCleanup = true;
 	wchar_t* m_pBuffer = nullptr;
 	int m_iBufferLength = 0;
+	std::function<void(void*)> m_deleter = [](void* ptr) { delete[] static_cast<wchar_t*>(ptr); };
 };
 
 class CEncodeFilter
@@ -275,7 +275,7 @@ public:
 		, m_nCodePage(CP_ACP)
 	{
 	}
-	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	bool Decode(std::unique_ptr<BYTE[]> data, int len) override;
 	const CBuffer& Encode(const CString& data) override;
 
 protected:
@@ -304,7 +304,7 @@ public:
 		: CEncodeFilter(pFile)
 	{}
 
-	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	bool Decode(std::unique_ptr<BYTE[]> data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
@@ -314,7 +314,7 @@ class CUtf16beFilter : public CUtf16leFilter
 public:
 	CUtf16beFilter(CStdioFile *pFile) : CUtf16leFilter(pFile){}
 
-	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	bool Decode(std::unique_ptr<BYTE[]> data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
@@ -326,7 +326,7 @@ public:
 		: CEncodeFilter(pFile)
 	{}
 
-	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	bool Decode(std::unique_ptr<BYTE[]> data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };
 
@@ -336,6 +336,6 @@ class CUtf32beFilter : public CUtf32leFilter
 public:
 	CUtf32beFilter(CStdioFile *pFile) : CUtf32leFilter(pFile){}
 
-	bool Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len) override;
+	bool Decode(std::unique_ptr<BYTE[]> data, int len) override;
 	const CBuffer& Encode(const CString& s) override;
 };

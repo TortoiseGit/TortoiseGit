@@ -305,7 +305,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 			pFilter = std::make_unique<CUtf32leFilter>(nullptr);
 			break;
 		}
-		if (!pFilter->Decode(fileBuffer, dwReadBytes))
+		if (!pFilter->Decode(std::move(fileBuffer), dwReadBytes))
 		{
 			SetErrorString();
 			return FALSE;
@@ -762,7 +762,7 @@ void CBuffer::Copy(const CBuffer & Src)
 }
 
 
-bool CAsciiFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
+bool CAsciiFilter::Decode(std::unique_ptr<BYTE[]> data, int len)
 {
 	ASSERT(!m_pBuffer);
 	int nFlags = (m_nCodePage==CP_ACP) ? MB_PRECOMPOSED : 0;
@@ -775,7 +775,6 @@ bool CAsciiFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
 	if (ret2 != nReadChars)
 		return false;
 
-	data.reset();
 	m_iBufferLength = nReadChars;
 
 	return true;
@@ -793,12 +792,12 @@ const CBuffer& CAsciiFilter::Encode(const CString& s)
 }
 
 
-bool CUtf16leFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
+bool CUtf16leFilter::Decode(std::unique_ptr<BYTE[]> data, int len)
 {
 	ASSERT(!m_pBuffer);
-	m_bNeedsCleanup = false;
 	// we believe data is ok for use
-	m_pBuffer = reinterpret_cast<wchar_t*>(data.get());
+	m_deleter = [](void* ptr) { delete[] static_cast<BYTE*>(ptr); };
+	m_pBuffer = reinterpret_cast<wchar_t*>(data.release());
 	m_iBufferLength = len / sizeof(wchar_t);
 	return true;
 }
@@ -814,7 +813,7 @@ const CBuffer& CUtf16leFilter::Encode(const CString& s)
 }
 
 
-bool CUtf16beFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
+bool CUtf16beFilter::Decode(std::unique_ptr<BYTE[]> data, int len)
 {
 	ASSERT(!m_pBuffer);
 	// make in place WORD BYTEs swap
@@ -830,7 +829,7 @@ bool CUtf16beFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
 	{
 		p_w[nWord] = WideCharSwap(p_w[nWord]);
 	}
-	return CUtf16leFilter::Decode(data, len);
+	return CUtf16leFilter::Decode(std::move(data), len);
 }
 
 const CBuffer& CUtf16beFilter::Encode(const CString& s)
@@ -858,7 +857,7 @@ const CBuffer& CUtf16beFilter::Encode(const CString& s)
 }
 
 
-bool CUtf32leFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
+bool CUtf32leFilter::Decode(std::unique_ptr<BYTE[]> data, int len)
 {
 	ASSERT(!m_pBuffer);
 	// UTF32 have four bytes per char
@@ -900,7 +899,6 @@ bool CUtf32leFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
 			*pOut = static_cast<wchar_t>(zChar);
 		}
 	}
-	data.reset();
 	m_iBufferLength = nReadChars;
 	return true;
 }
@@ -944,7 +942,7 @@ const CBuffer& CUtf32leFilter::Encode(const CString& s)
 }
 
 
-bool CUtf32beFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
+bool CUtf32beFilter::Decode(std::unique_ptr<BYTE[]> data, int len)
 {
 	// swap BYTEs order in DWORDs
 	auto p64 = static_cast<UINT64*>(static_cast<void*>(data.get()));
@@ -960,7 +958,7 @@ bool CUtf32beFilter::Decode(/*in out*/ std::unique_ptr<BYTE[]>& data, int len)
 	{
 		p32[nDword] = DwordSwapBytes(p32[nDword]);
 	}
-	return CUtf32leFilter::Decode(data, len);
+	return CUtf32leFilter::Decode(std::move(data), len);
 }
 
 const CBuffer& CUtf32beFilter::Encode(const CString& s)
