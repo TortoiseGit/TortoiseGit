@@ -878,7 +878,7 @@ bool CMainWindow::SaveFile(LPCWSTR filename)
 	auto len = static_cast<int>(SendEditor(SCI_GETTEXT, 0, 0));
 	auto data = std::make_unique<char[]>(len + 1);
 	SendEditor(SCI_GETTEXT, len, reinterpret_cast<LPARAM>(static_cast<char *>(data.get())));
-	fwrite(data.get(), sizeof(char), len-1, fp);
+	fwrite(data.get(), sizeof(char), len, fp);
 	fclose(fp);
 
 	SendEditor(SCI_SETSAVEPOINT);
