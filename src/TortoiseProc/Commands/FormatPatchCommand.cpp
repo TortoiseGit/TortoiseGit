@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009, 2015-2016, 2018-2019, 2023 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,17 +60,17 @@ bool FormatPatchCommand::Execute()
 		switch(dlg.m_Radio)
 		{
 		case IDC_RADIO_SINCE:
-			range=g_Git.FixBranchName(dlg.m_Since);
+			range = L"--end-of-options " + g_Git.FixBranchName(dlg.m_Since);
 			break;
 		case IDC_RADIO_NUM:
 			range.Format(L"-%d", dlg.m_Num);
 			break;
 		case IDC_RADIO_RANGE:
-			range.Format(L"%s..%s", static_cast<LPCWSTR>(dlg.m_From), static_cast<LPCWSTR>(dlg.m_To));
+			range.Format(L"--end-of-options %s..%s", static_cast<LPCWSTR>(dlg.m_From), static_cast<LPCWSTR>(dlg.m_To));
 			break;
 		}
 		dlg.m_Dir.Replace(L'\\', L'/');
-		cmd.Format(L"git.exe format-patch%s -o \"%s\" %s",
+		cmd.Format(L"git.exe format-patch%s -o \"%s\" %s --",
 			dlg.m_bNoPrefix ? L" --no-prefix" : L"",
 			static_cast<LPCWSTR>(dlg.m_Dir),
 			static_cast<LPCWSTR>(range)
