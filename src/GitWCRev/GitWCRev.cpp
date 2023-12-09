@@ -89,7 +89,7 @@ $WCLOGCOUNT$    Number of first-parent commits for the current branch\n\
 $WCLOGCOUNT&$   Number of commits ANDed with the number after the &\n\
 $WCLOGCOUNT+$   Number of commits added with the number after the &\n\
 $WCLOGCOUNT-$   Number of commits subtracted with the number after the &\n\
-$WCBRANCH$      Current branch name, SHA - 1 if head is detached\n"
+$WCBRANCH$      Current branch name, SHA1 if head is detached\n"
 
 // End of multi-line help text.
 
