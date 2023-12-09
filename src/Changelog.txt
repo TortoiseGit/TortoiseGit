@@ -18,6 +18,7 @@ Released: unreleased
  * Fixed issue #4083: TortoiseGitMerge: Infinite loop when diff file has only 1 line and perform "Redo"
  * Sanitize GIT_* environment variables to prevent passing environment variables to git.exe that are currently unsupported in TortoiseGit/libgit2 to prevent inconsistencies
  * Fixed issue #4096: Git configuration under XDG_CONFIG_HOME is not recognized correctly
+ * TortoiseGitBlame: Fix blaming a file from another working tree
 
 = Release 2.15.0 =
 Released: 2023-10-03

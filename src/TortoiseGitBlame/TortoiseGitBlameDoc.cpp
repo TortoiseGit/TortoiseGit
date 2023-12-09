@@ -136,9 +136,9 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 			// make sure all config files are read in order to check that none contains an error
 			g_Git.GetConfigValue(L"doesnot.exist");
 
-			// make sure git_init() works and that .git-dir is ok
+			// make sure git_init() works and that .git-dir is ok, even if we open a file from another working tree
 			CAutoLocker lock(g_Git.m_critGitDllSec);
-			g_Git.CheckAndInitDll();
+			g_Git.ForceReInitDll();
 		}
 		catch (const char* libgiterr)
 		{
