@@ -1131,7 +1131,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 		if (g_Git.Run(cmd, &out, &errb))
 		{
 			if (err)
-				CGit::StringAppend(*err, errb.data(), CP_UTF8, static_cast<int>(errb.size()));
+				*err = errb;
 			return -1;
 		}
 

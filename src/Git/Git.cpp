@@ -3240,13 +3240,8 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		BYTE_VECTOR cmdErr;
 		if (Run(cmd, &cmdout, &cmdErr))
 		{
-			size_t last = cmdErr.RevertFind(0);
-			CString str;
-			if (last != BYTE_VECTOR::npos)
-				CGit::StringAppend(str, &cmdErr[last + 1], CP_UTF8, static_cast<int>(cmdErr.size() - last) - 1);
-			else if (!cmdErr.empty())
-				CGit::StringAppend(str, cmdErr.data(), CP_UTF8, static_cast<int>(cmdErr.size()) - 1);
-			else
+			CString str{ cmdErr };
+			if (str.IsEmpty())
 				str.Format(L"\"%s\" exited with an error code, but did not output any error message", static_cast<LPCWSTR>(cmd));
 			MessageBox(nullptr, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}

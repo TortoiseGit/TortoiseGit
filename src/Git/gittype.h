@@ -89,6 +89,18 @@ public:
 		resize(oldsize + dataSize);
 		memcpy(this->data() + oldsize, data, dataSize);
 	}
+
+	operator CString()
+	{
+		if (empty())
+			return {};
+
+		if (at(size() - 1) != '\0')
+			push_back('\0');
+
+		return CUnicodeUtils::GetUnicode(data());
+	}
+
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
 	static_assert(MAXSIZE_T == npos, "NPOS must equal MAXSIZE_T");
 	static_assert(-1 == static_cast<int>(npos), "NPOS must equal -1");
