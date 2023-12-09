@@ -177,7 +177,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 		if (onlyFirstParent)
 		{
 			CString tmpfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-			cmd.Format(L"git rev-list --first-parent %s", static_cast<LPCWSTR>(Rev));
+			cmd.Format(L"git.exe rev-list --first-parent --end-of-options %s --", static_cast<LPCWSTR>(Rev));
 			CString err;
 			CAutoFILE file = _wfsopen(tmpfile, L"wb", SH_DENYWR);
 			if (!file)
