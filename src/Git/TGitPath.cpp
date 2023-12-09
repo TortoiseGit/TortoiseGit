@@ -1465,9 +1465,9 @@ bool CTGitPathList::LoadFromFile(const CTGitPath& filename)
 	catch (CFileException* pE)
 	{
 		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CFileException loading target file list\n");
-		wchar_t error[10000] = { 0 };
-		pE->GetErrorMessage(error, 10000);
-//		CMessageBox::Show(nullptr, error, L"TortoiseGit", MB_ICONERROR);
+		//CString error;
+		//pE->GetErrorMessage(CStrBuf(error, 8192), 8192);
+		//MessageBox(nullptr, error, L"TortoiseGit", MB_ICONERROR);
 		pE->Delete();
 		return false;
 	}
