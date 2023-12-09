@@ -221,6 +221,8 @@ LRESULT CMainWindow::DoCommand(int id)
 	switch (id)
 	{
 	case ID_FILE_OPEN:
+		if (!canCloseWhenModified())
+			break;
 		loadOrSaveFile(true);
 		break;
 	case ID_FILE_SAVEAS:
