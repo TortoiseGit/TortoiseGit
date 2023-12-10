@@ -61,8 +61,14 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 		return readable;
 	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
-	if (!CryptHashData(hHash, certificate, static_cast<DWORD>(len), 0))
-		return readable;
+	size_t offset = 0;
+	do
+	{
+		DWORD buffLength = static_cast<DWORD>(min(static_cast<size_t>(DWORD_MAX), len - offset));
+		if (!CryptHashData(hHash, certificate + offset, buffLength, 0))
+			return readable;
+		offset += buffLength;
+	} while (offset < len);
 
 	DWORD hashLen;
 	DWORD hashLenLen = sizeof(DWORD);
@@ -116,7 +122,15 @@ void CCheckCertificateDlg::OnBnClickedOpencert()
 	try
 	{
 		CFile file(tempFile.GetWinPathString(), CFile::modeReadWrite);
-		file.Write(cert->data, static_cast<UINT>(cert->len));
+
+		size_t offset = 0;
+		do
+		{
+			UINT buffLength = static_cast<UINT>(min(static_cast<size_t>(UINT_MAX), cert->len - offset));
+			file.Write(static_cast<BYTE*>(cert->data) + offset, buffLength);
+			offset += buffLength;
+		} while (offset < cert->len);
+
 		file.Close();
 	}
 	catch (CFileException* e)

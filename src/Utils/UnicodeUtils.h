@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2016, 2020 - TortoiseGit
+// Copyright (C) 2009-2013, 2016, 2020, 2023 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,27 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
+#include <intsafe.h>
+
+// Safely convert from size_t to int.
+// Throws a std::overflow_error exception if the conversion is impossible.
+inline int SafeSizeToInt(size_t sizeValue)
+{
+	constexpr int kIntMax = (std::numeric_limits<int>::max)();
+	if (sizeValue >= static_cast<size_t>(kIntMax))
+		throw std::overflow_error("size_t value is too big to fit into an int.");
+
+	return static_cast<int>(sizeValue);
+}
+
+inline int SafeIntMult(int val1, int val2)
+{
+	int bufferSize;
+	if (IntMult(val1, val2, &bufferSize) != S_OK)
+		throw std::overflow_error("int multiplication result too big for an int.");
+	return bufferSize;
+}
 
 /**
  * \ingroup Utils
@@ -33,7 +54,8 @@ public:
 	static inline CStringA GetUTF8(const CStringW& string) { return GetMulti(string, CP_UTF8); }
 	static CStringA GetMulti(const CStringW& string, int acp);
 	static inline CString GetUnicode(const CStringA& string, int acp = CP_UTF8) { return GetUnicodeLength(string, string.GetLength(), acp); };
-	static inline CString GetUnicode(const char* string, int acp = CP_UTF8) { return GetUnicodeLength(string, static_cast<int>(strlen(string)), acp); };
+	static inline CString GetUnicode(const char* string, int acp = CP_UTF8) { return GetUnicodeLengthSizeT(string, strlen(string), acp); };
+	static inline CString GetUnicodeLengthSizeT(const char* string, size_t len, int acp = CP_UTF8) { return GetUnicodeLength(string, SafeSizeToInt(len), acp); };
 	static CString GetUnicodeLength(const char* string, int len, int acp = CP_UTF8);
 	static int GetCPCode(const CString & codename);
 #endif

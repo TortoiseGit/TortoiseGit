@@ -246,7 +246,7 @@ bool CStringUtils::ReadStringFromTextFile(const CString& path, CString& text)
 	{
 		CStdioFile file;
 		// w/o typeBinary for some files \r gets dropped
-		if (!file.Open(path, CFile::typeBinary | CFile::modeRead | CFile::shareDenyWrite))
+		if (!file.Open(path, CFile::typeBinary | CFile::modeRead | CFile::shareDenyWrite) || file.GetLength() >= INT_MAX)
 			return false;
 
 		CStringA filecontent;

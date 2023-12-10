@@ -1004,7 +1004,7 @@ int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action,
 	while (pos < end)
 	{
 		const size_t endOfLine = out.find('\0', pos);
-		if (endOfLine == CGitByteArray::npos || endOfLine == pos)
+		if (endOfLine == CGitByteArray::npos || endOfLine == pos || endOfLine - pos >= INT_MAX)
 			return -1;
 
 		pathstring.Empty();
@@ -1289,14 +1289,14 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			if (log[statusStart] == 'C' || log[statusStart] == 'R')
 			{
 				const size_t filenameEnd = log.find('\0', pos);
-				if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd)
+				if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 					return -1;
 				// old filename before rename
 				CGit::StringAppend(pathname2, &log[pos], CP_UTF8, static_cast<int>(filenameEnd - pos));
 				pos = filenameEnd + 1;
 			}
 			const size_t filenameEnd = log.find('\0', pos);
-			if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd)
+			if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 				return -1;
 			pathname1.Empty();
 			CGit::StringAppend(pathname1, &log[pos], CP_UTF8, static_cast<int>(filenameEnd - pos));
@@ -1343,7 +1343,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 		else // numstat output
 		{
 			size_t tabstart = log.find('\t', pos); // find end of first number (added lines)
-			if (tabstart == BYTE_VECTOR::npos)
+			if (tabstart == BYTE_VECTOR::npos || tabstart - pos >= INT_MAX)
 				return -1;
 
 			StatAdd.Empty();
@@ -1351,7 +1351,7 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			pos = tabstart + 1;
 
 			tabstart = log.find('\t', pos); // find end of second number (removed lines)
-			if (tabstart == BYTE_VECTOR::npos)
+			if (tabstart == BYTE_VECTOR::npos || tabstart - pos >= INT_MAX)
 				return -1;
 
 			StatDel.Empty();
@@ -1366,13 +1366,13 @@ int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
 			{
 				++pos;
 				const size_t endPathname = log.find('\0', pos);
-				if (endPathname == BYTE_VECTOR::npos || pos == endPathname)
+				if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 					return -1;
 				CGit::StringAppend(pathname2, &log[pos], CP_UTF8, static_cast<int>(endPathname - pos));
 				pos = endPathname + 1;
 			}
 			const size_t endPathname = log.find('\0', pos);
-			if (endPathname == BYTE_VECTOR::npos || pos == endPathname)
+			if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 				return -1;
 			pathname1.Empty();
 			CGit::StringAppend(pathname1, &log[pos], CP_UTF8, static_cast<int>(endPathname - pos));

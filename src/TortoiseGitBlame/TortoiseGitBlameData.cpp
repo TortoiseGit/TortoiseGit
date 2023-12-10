@@ -122,7 +122,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 						size_t originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
 						if (originalLineNumberEnd != BYTE_VECTOR::npos)
 						{
-							originalLineNumber = atoi(CStringA(reinterpret_cast<LPCSTR>(&data[originalLineNumberBegin]), static_cast<int>(originalLineNumberEnd - originalLineNumberBegin)));
+							originalLineNumber = atoi(CStringA(reinterpret_cast<LPCSTR>(&data[originalLineNumberBegin]), SafeSizeToInt(originalLineNumberEnd - originalLineNumberBegin)));
 							size_t finalLineNumberBegin = originalLineNumberEnd + 1;
 							size_t finalLineNumberEnd = (numberOfSubsequentLines == 0) ? data.find(' ', finalLineNumberBegin) : lineEnd;
 							if (finalLineNumberEnd != BYTE_VECTOR::npos)
@@ -131,7 +131,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 								{
 									size_t numberOfSubsequentLinesBegin = finalLineNumberEnd + 1;
 									size_t numberOfSubsequentLinesEnd = lineEnd;
-									numberOfSubsequentLines = atoi(CStringA(reinterpret_cast<LPCSTR>(&data[numberOfSubsequentLinesBegin]), static_cast<int>(numberOfSubsequentLinesEnd - numberOfSubsequentLinesBegin)));
+									numberOfSubsequentLines = atoi(CStringA(reinterpret_cast<LPCSTR>(&data[numberOfSubsequentLinesBegin]), SafeSizeToInt(numberOfSubsequentLinesEnd - numberOfSubsequentLinesBegin)));
 								}
 							}
 							else
@@ -168,7 +168,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 						{
 							size_t filenameBegin = tokenEnd + 1;
 							size_t filenameEnd = lineEnd;
-							CStringA filenameA = CStringA(reinterpret_cast<LPCSTR>(&data[filenameBegin]), static_cast<int>(filenameEnd - filenameBegin));
+							CStringA filenameA = CStringA(reinterpret_cast<LPCSTR>(&data[filenameBegin]), SafeSizeToInt(filenameEnd - filenameBegin));
 							filename = UnquoteFilename(filenameA);
 							auto r = hashToFilename.emplace(hash, filename);
 							if (!r.second)
@@ -242,7 +242,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 			if (!rawLine.empty())
 				all.append(rawLine);
 		}
-		encoding = GetEncode(all.data(), static_cast<int>(all.size()), &bomoffset);
+		encoding = GetEncode(all.data(), SafeSizeToInt(all.size()), &bomoffset);
 	}
 
 	if (encoding != m_encode)
@@ -261,7 +261,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 				if (encoding == 1201)
 				{
 					CString line;
-					int size = static_cast<int>((rawLine.size() - linebomoffset) / 2);
+					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
 					wchar_t* buffer = line.GetBuffer(size);
 					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
 					// swap the bytes to little-endian order to get proper strings in wchar_t format
@@ -284,16 +284,16 @@ int CTortoiseGitBlameData::UpdateEncoding(int encode)
 					{
 						linebomoffset = 1;
 					}
-					int size = static_cast<int>((rawLine.size() - linebomoffset) / 2);
+					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
 					memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 				else if (encoding == CP_UTF8)
-					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), static_cast<int>(rawLine.size() - linebomoffset));
+					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), SafeSizeToInt(rawLine.size() - linebomoffset));
 				else
 				{
-					CString line = CUnicodeUtils::GetUnicodeLength(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), static_cast<int>(rawLine.size() - linebomoffset), encoding);
+					CString line = CUnicodeUtils::GetUnicodeLength(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), SafeSizeToInt(rawLine.size() - linebomoffset), encoding);
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 			}

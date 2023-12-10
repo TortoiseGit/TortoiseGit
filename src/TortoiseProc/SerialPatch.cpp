@@ -36,10 +36,11 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 	m_PathFile = pathfile;
 
 	CFile PatchFile;
-	if (!PatchFile.Open(m_PathFile, CFile::modeRead))
+	if (!PatchFile.Open(m_PathFile, CFile::modeRead) || PatchFile.GetLength() >= INT_MAX)
 		return -1;
 
-	PatchFile.Read(CStrBufA(m_Body, static_cast<UINT>(PatchFile.GetLength())), static_cast<UINT>(PatchFile.GetLength()));
+	if (!PatchFile.Read(CStrBufA(m_Body, static_cast<int>(PatchFile.GetLength()), 0), static_cast<UINT>(PatchFile.GetLength())))
+		return -1;
 	PatchFile.Close();
 
 	int start = 0;

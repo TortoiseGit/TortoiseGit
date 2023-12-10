@@ -2901,8 +2901,14 @@ void CMainFrame::OnEditCreateunifieddifffile()
 	try
 	{
 		CStdioFile file(outputFile, CFile::typeBinary | CFile::modeReadWrite | CFile::shareExclusive); // w/o typeBinary \r gets dropped for some files
+		if (file.GetLength() >= INT_MAX)
+		{
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_FILE_TOOBIG, IDS_APPNAME, MB_ICONERROR);
+			return;
+		}
+
 		CStringA filecontent;
-		UINT filelength = static_cast<UINT>(file.GetLength());
+		int filelength = static_cast<int>(file.GetLength());
 		int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
 		filecontent.ReleaseBuffer(bytesread);
 
@@ -2912,7 +2918,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		if (lineend <= static_cast<int>(strlen("diff --git ")))
 			return;
 		CStringA newStart = "diff --git \"a/" + origReflectedA + "\" \"b/" + modifiedReflectedA + "\"\n";
-		if (!CStringUtils::StartsWith(filecontent.GetBuffer() + lineend, "\nindex "))
+		if (!CStringUtils::StartsWith(static_cast<LPCSTR>(filecontent) + lineend, "\nindex "))
 			return;
 		int nextlineend = filecontent.Find("\n", lineend + 1);
 		if (nextlineend <= lineend)

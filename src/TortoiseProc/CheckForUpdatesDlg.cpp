@@ -440,8 +440,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	}
 
 	CString temp;
-	CStdioFile file;
-	if (file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary))
+	if (CStdioFile file; file.Open(tempchangelogfile, CFile::modeRead | CFile::typeBinary) || file.GetLength() >= INT_MAX)
 	{
 		auto buf = std::make_unique<char[]>(static_cast<UINT>(file.GetLength()));
 		UINT read = file.Read(buf.get(), static_cast<UINT>(file.GetLength()));

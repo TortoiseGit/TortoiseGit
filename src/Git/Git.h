@@ -105,10 +105,13 @@ public:
 	{
 		ASSERT(data);
 		// Add data
-		if (size == 0)
+		if (size == 0 || size >= INT_MAX)
 			return false;
 		const int oldEndPos = m_buffer.GetLength();
-		memcpy(CStrBufA(m_buffer, oldEndPos + static_cast<int>(size), 0) + oldEndPos, data, size);
+		int newLength;
+		if (IntAdd(oldEndPos, static_cast<int>(size), &newLength) != S_OK)
+			return false;
+		memcpy(CStrBufA(m_buffer, newLength, 0) + oldEndPos, data, size);
 
 		// Break into lines and feed to m_recv
 		int eolPos;
@@ -127,7 +130,7 @@ public:
 	bool OnOutputErrData(const char* data, size_t size) override
 	{
 		ASSERT(data);
-		if (!m_pvectorErr || size == 0)
+		if (!m_pvectorErr || size == 0 || size >= INT_MAX)
 			return false;
 		const size_t oldsize = m_pvectorErr->size();
 		m_pvectorErr->resize(m_pvectorErr->size() + size);

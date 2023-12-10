@@ -367,14 +367,16 @@ void CGit::StringAppend(CString& str, const char* p, int code, int length)
 {
 	const int len = [length, p]() {
 		if (length < 0)
-			return static_cast<int>(strlen(p));
+			return SafeSizeToInt(strlen(p));
 		else
 			return length;
 	}();
 	if (len == 0)
 		return;
 	const int currentContentLen = str.GetLength();
-	auto* buf = str.GetBuffer(len * 2 + currentContentLen) + currentContentLen;
+	if (len >= INT_MAX / 2)
+		throw std::overflow_error("CString would become too long");
+	auto* buf = str.GetBuffer(SafeSizeToInt(static_cast<size_t>(len) * 2 + currentContentLen)) + currentContentLen;
 	const int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
 	str.ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
@@ -3038,7 +3040,7 @@ static void UnifiedDiffStatToStringA(const git_buf* text, void* payload)
 {
 	ATLASSERT(payload && text);
 	auto str = static_cast<CStringA*>(payload);
-	str->Append(text->ptr, static_cast<int>(text->size));
+	str->Append(text->ptr, SafeSizeToInt(text->size));
 	str->AppendChar('\n');
 }
 
@@ -3048,7 +3050,7 @@ static int UnifiedDiffToStringA(const git_diff_delta * /*delta*/, const git_diff
 	auto str = static_cast<CStringA*>(payload);
 	if (line->origin == GIT_DIFF_LINE_CONTEXT || line->origin == GIT_DIFF_LINE_ADDITION || line->origin == GIT_DIFF_LINE_DELETION)
 		str->Append(&line->origin, 1);
-	str->Append(line->content, static_cast<int>(line->content_len));
+	str->Append(line->content, SafeSizeToInt(line->content_len));
 	return 0;
 }
 
@@ -3600,7 +3602,7 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 
 		const size_t stageStart = pos + 1;
 		pos = out.find('\t', stageStart); // advance to filename
-		if (pos == CGitByteArray::npos)
+		if (pos == CGitByteArray::npos || stageStart - 1 - hashStart >= INT_MAX)
 			return -1;
 
 		++pos;

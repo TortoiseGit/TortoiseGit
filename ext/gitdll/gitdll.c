@@ -121,19 +121,16 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR* author, const char*
 {
 	const char* end;
 
-	author->Name=pbuff;
 	end=strchr(pbuff,'<');
-	if( end == 0)
-	{
+	if (!end || end - pbuff - 1 >= INT_MAX)
 		return -1;
-	}
+	author->Name = pbuff;
 	author->NameSize = (int)(end - pbuff - 1);
 
 	pbuff = end +1;
 	end = strchr(pbuff, '>');
-	if( end == 0)
+	if (!end || end[1] != ' ' || end - pbuff >= INT_MAX)
 		return -1;
-
 	author->Email = pbuff ;
 	author->EmailSize = (int)(end - pbuff);
 
@@ -188,6 +185,8 @@ int git_parse_commit(GIT_COMMIT *commit)
 			pbuf += strlen("encoding ");
 			commit->m_Encode=pbuf;
 			end = strchr(pbuf,'\n');
+			if (!pbuf || end - pbuf >= INT_MAX)
+				return -7;
 			commit->m_EncodeSize= (int)(end -pbuf);
 		}
 
@@ -198,14 +197,25 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 			commit->m_Subject=pbuf;
 			end = strchr(pbuf,'\n');
-			if( end == 0)
-				commit->m_SubjectSize = (int)strlen(pbuf);
+			if (!end)
+			{
+				size_t subjLen = strlen(pbuf);
+				if (subjLen >= INT_MAX)
+					return -8;
+				commit->m_SubjectSize = (int)subjLen;
+			}
 			else
 			{
+				size_t bodyLen;
+				if (end - pbuf >= INT_MAX)
+					return -9;
 				commit->m_SubjectSize = (int)(end - pbuf);
 				pbuf = end +1;
 				commit->m_Body = pbuf;
-				commit->m_BodySize = (int)strlen(pbuf);
+				bodyLen = strlen(pbuf);
+				if (bodyLen >= INT_MAX)
+					return -10;
+				commit->m_BodySize = (int)bodyLen;
 				return 0;
 			}
 		}

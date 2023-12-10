@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2017-2019, 2021-2023 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 
 #include <comutil.h>
 #include <atlbase.h>
+#include <intsafe.h>
 
 #include "Register.h"
 #include "UnicodeUtils.h"
@@ -232,9 +233,23 @@ HRESULT GitWCRev::Utf8StringToVariant(const char* string, VARIANT* result )
 
 	result->vt = VT_BSTR;
 	const size_t len = strlen(string);
-	auto buf = std::make_unique<WCHAR[]>(len * 4 + 1);
-	MultiByteToWideChar(CP_UTF8, 0, string, -1, buf.get(), static_cast<int>(len) * 4);
-	result->bstrVal = SysAllocString(buf.get());
+	if (!len)
+	{
+		result->bstrVal = SysAllocString(L"");
+		return S_OK;
+	}
+	else if (len >= INT_MAX)
+		return E_OUTOFMEMORY;
+
+	// dry decode is around 8 times faster then real one, alternatively we can set buffer to max length
+	int bufferLength = MultiByteToWideChar(CP_UTF8, 0, string, static_cast<int>(len), nullptr, 0);
+	if (!bufferLength)
+		return GetLastError();
+	auto buf = std::make_unique<WCHAR[]>(bufferLength);
+	int convertedChars = MultiByteToWideChar(CP_UTF8, 0, string, static_cast<int>(len), buf.get(), bufferLength);
+	if (!convertedChars)
+		return GetLastError();
+	result->bstrVal = SysAllocStringLen(buf.get(), convertedChars);
 	return S_OK;
 }
 

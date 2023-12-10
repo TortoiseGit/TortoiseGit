@@ -28,14 +28,16 @@ static void safeCloseHandle(HANDLE *handle)
 	}
 }
 
-static int command_read(HANDLE handle, char *buffer, size_t buf_size, size_t *bytes_read)
+static int command_read(HANDLE handle, char *buffer, size_t obuf_size, size_t *pbytes_read)
 {
-	*bytes_read = 0;
+	*pbytes_read = 0;
 
-	if (!ReadFile(handle, buffer, (DWORD)buf_size, (DWORD*)bytes_read, NULL)) {
+	DWORD bytes_read = 0;
+	if (!ReadFile(handle, buffer, min(DWORD_MAX, obuf_size), &bytes_read, NULL)) {
 		git_error_set(GIT_ERROR_OS, "could not read data from external process");
 		return -1;
 	}
+	*pbytes_read = bytes_read;
 
 	return 0;
 }

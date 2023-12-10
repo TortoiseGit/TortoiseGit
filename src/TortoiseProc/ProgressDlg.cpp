@@ -793,7 +793,7 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, CString text, COLORREF r
 CString CCommitProgressDlg::Convert2UnionCode(const char* buff)
 {
 	int start = 0;
-	const int size = static_cast<int>(strlen(buff));
+	const int size = SafeSizeToInt(strlen(buff));
 
 	CString str;
 	if (g_Git.m_LogEncode != CP_UTF8)

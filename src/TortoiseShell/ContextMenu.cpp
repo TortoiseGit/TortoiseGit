@@ -104,7 +104,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				{
 					// find the path length in chars
 					const UINT len = DragQueryFile(drop, i, nullptr, 0);
-					if (len == 0)
+					if (len == 0 || len >= INT_MAX)
 						continue;
 					auto szFileName = std::make_unique<wchar_t[]>(len + 1);
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
