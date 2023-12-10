@@ -156,7 +156,7 @@ protected:
 		return TRUE;
 	}
 
-	int SaveOneItem(const GitRevLoglist& Rev, LONG offset);
+	int SaveOneItem(const GitRevLoglist& rev, LARGE_INTEGER offset);
 
 	CString m_GitDir;
 	int RebuildCacheFile();

@@ -166,7 +166,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		LARGE_INTEGER indexFileSize;
 		if (!GetFileSizeEx(m_IndexFile, &indexFileSize))
 			break;
-		if (indexFileSize.QuadPart >= INT_MAX)
+		if (indexFileSize.QuadPart >= SIZE_T_MAX)
 		{
 			CloseIndexHandles();
 			CloseDataHandles();
@@ -178,7 +178,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 			break;
 
-		if (static_cast<size_t>(indexFileSize.QuadPart) != sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
+		if (size_t len; SizeTMult(sizeof(SLogCacheIndexItem), m_pCacheIndex->m_Header.m_ItemCount, &len) != S_OK || SizeTAdd(len, sizeof(SLogCacheIndexHeader), &len) != S_OK || static_cast<size_t>(indexFileSize.QuadPart) != len)
 			break;
 
 		if(	m_DataFile == INVALID_HANDLE_VALUE )
@@ -204,7 +204,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		}
 		if (LARGE_INTEGER fileLength; !GetFileSizeEx(m_DataFile, &fileLength) || fileLength.QuadPart < sizeof(SLogCacheDataFileHeader))
 			break;
-		else if (fileLength.QuadPart >= INT_MAX)
+		else if (fileLength.QuadPart >= SIZE_T_MAX)
 		{
 			CloseIndexHandles();
 			CloseDataHandles();
@@ -223,7 +223,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if (!CheckHeader(reinterpret_cast<SLogCacheDataFileHeader*>(m_pCacheData)))
 			break;
 
-		if (m_DataFileLength < sizeof(SLogCacheDataFileHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheDataFileHeader))
+		if (size_t length; SizeTMult(m_pCacheIndex->m_Header.m_ItemCount, sizeof(SLogCacheRevItemHeader), &length) != S_OK || SizeTAdd(sizeof(SLogCacheDataFileHeader), length, &length) != S_OK || m_DataFileLength < length)
 			break;
 
 		ret = 0;
@@ -239,21 +239,20 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 	return ret;
 }
 
-int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
+int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LARGE_INTEGER offset)
 {
 	if(!Rev.m_IsDiffFiles)
 		return -1;
 
-	SetFilePointer(m_DataFile, offset, 0, FILE_BEGIN);
+	if (!SetFilePointerEx(m_DataFile, offset, nullptr, FILE_BEGIN))
+		return -1;
 
 	SLogCacheRevItemHeader header;
 
 	header.m_Magic=LOG_DATA_ITEM_MAGIC;
 	header.m_FileCount=Rev.m_Files.GetCount();
 
-	DWORD num;
-
-	if(!WriteFile(this->m_DataFile,&header, sizeof(header),&num,0))
+	if (!WriteFile(this->m_DataFile, &header, sizeof(header), nullptr, 0))
 		return -1;
 
 	CString stat;
@@ -275,17 +274,17 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 		stat = Rev.m_Files[i].m_StatDel;
 		revfileheader.m_Del = (stat == L"-") ? 0xFFFFFFFF : _wtol(stat);
 
-		if(!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(wchar_t), &num, 0))
+		if (!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(wchar_t), nullptr, 0))
 			return -1;
 
 		if(!name.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(wchar_t), &num, 0))
+			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(wchar_t), nullptr, 0))
 				return -1;
 		}
 		if(!oldname.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(wchar_t), &num, 0))
+			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(wchar_t), nullptr, 0))
 				return -1;
 		}
 
@@ -293,43 +292,45 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LONG offset)
 	return 0;
 }
 
-int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
+int CLogCache::LoadOneItem(GitRevLoglist& Rev, ULONGLONG ullOffset)
 {
 	if (!m_pCacheData)
 		return -1;
 
-	if (offset + sizeof(SLogCacheRevItemHeader) > m_DataFileLength)
+	if (ullOffset >= m_DataFileLength || ullOffset < sizeof(SLogCacheDataFileHeader))
 		return -2;
 
+	auto offset = static_cast<size_t>(ullOffset);
 	SLogCacheRevItemHeader* header = reinterpret_cast<SLogCacheRevItemHeader*>(m_pCacheData + offset);
+	if (SizeTAdd(offset, sizeof(SLogCacheRevItemHeader), &offset) != S_OK || offset > m_DataFileLength)
+		return -2;
 
 	if( !CheckHeader(header))
 		return -2;
 
 	Rev.m_Action = 0;
 
-	offset += sizeof(SLogCacheRevItemHeader);
-
 	for (DWORD i = 0; i < header->m_FileCount; ++i)
 	{
-		if (offset + sizeof(SLogCacheRevFileHeader) >= m_DataFileLength)
-		{
-			Rev.m_Action = 0;
-			Rev.m_Files.Clear();
-			return -2;
-		}
-
 		auto fileheader = reinterpret_cast<SLogCacheRevFileHeader*>(m_pCacheData + offset);
-
-		if(!CheckHeader(fileheader))
+		if (SizeTAdd(offset, sizeof(SLogCacheRevFileHeader) - sizeof(wchar_t), &offset) != S_OK || offset >= m_DataFileLength)
 		{
 			Rev.m_Action = 0;
 			Rev.m_Files.Clear();
 			return -2;
 		}
 
-		auto recordLength = sizeof(SLogCacheRevFileHeader) + fileheader->m_FileNameSize * sizeof(wchar_t) + fileheader->m_OldFileNameSize * sizeof(wchar_t) - sizeof(wchar_t);
-		if (!fileheader->m_FileNameSize || offset + recordLength > m_DataFileLength)
+		if (!CheckHeader(fileheader) || !fileheader->m_FileNameSize || fileheader->m_FileNameSize >= INT_MAX || fileheader->m_OldFileNameSize >= INT_MAX)
+		{
+			Rev.m_Action = 0;
+			Rev.m_Files.Clear();
+			return -2;
+		}
+
+		if (size_t recordLength; SizeTAdd(fileheader->m_FileNameSize, fileheader->m_OldFileNameSize, &recordLength) != S_OK
+			|| SizeTMult(recordLength, sizeof(wchar_t), &recordLength) != S_OK
+			|| SizeTAdd(offset, recordLength, &offset) != S_OK
+			|| offset > m_DataFileLength)
 		{
 			Rev.m_Action = 0;
 			Rev.m_Files.Clear();
@@ -359,8 +360,6 @@ int CLogCache::LoadOneItem(GitRevLoglist& Rev,ULONGLONG offset)
 			path.m_StatDel.Format(L"%d", fileheader->m_Del);
 
 		Rev.m_Files.AddPath(path);
-
-		offset += recordLength;
 	}
 	return 0;
 }
@@ -377,15 +376,13 @@ int CLogCache::RebuildCacheFile()
 	dataheader.m_Magic = LOG_DATA_MAGIC;
 	dataheader.m_Version = LOG_INDEX_VERSION;
 
-	SetFilePointer(m_IndexFile, 0, 0, FILE_BEGIN);
-	SetFilePointer(m_DataFile, 0, 0, FILE_BEGIN);
-	SetEndOfFile(this->m_IndexFile);
-	SetEndOfFile(this->m_DataFile);
+	LARGE_INTEGER start{};
+	SetFilePointerEx(m_DataFile, start, nullptr, FILE_BEGIN);
+	SetFilePointerEx(m_IndexFile, start, nullptr, FILE_BEGIN);
 
-	DWORD num;
-	WriteFile(this->m_IndexFile,&Indexheader,sizeof(SLogCacheIndexHeader),&num,0);
+	WriteFile(m_IndexFile, &Indexheader, sizeof(SLogCacheIndexHeader), nullptr, 0);
 	SetEndOfFile(this->m_IndexFile);
-	WriteFile(this->m_DataFile,&dataheader,sizeof(SLogCacheDataFileHeader),&num,0);
+	WriteFile(m_DataFile, &dataheader, sizeof(SLogCacheDataFileHeader), nullptr, 0);
 	SetEndOfFile(this->m_DataFile);
 	return 0;
 }
@@ -405,7 +402,9 @@ int CLogCache::SaveCache()
 	SLogCacheIndexFile* pIndex = nullptr;
 	if (m_pCacheIndex && m_pCacheIndex->m_Header.m_ItemCount > 0)
 	{
-		auto len = sizeof(SLogCacheIndexFile) + sizeof(SLogCacheIndexItem) * (m_pCacheIndex->m_Header.m_ItemCount - 1);
+		size_t len;
+		if (SizeTMult(sizeof(SLogCacheIndexItem), m_pCacheIndex->m_Header.m_ItemCount - 1, &len) != S_OK || SizeTAdd(len, sizeof(SLogCacheIndexFile), &len) != S_OK)
+			return -1;
 		pIndex = reinterpret_cast<SLogCacheIndexFile*>(malloc(len));
 		if (!pIndex)
 			return -1;
@@ -471,8 +470,11 @@ int CLogCache::SaveCache()
 		if(bIsRebuild)
 			header.m_ItemCount=0;
 
-		SetFilePointer(m_DataFile, 0, 0, FILE_END);
-		SetFilePointer(m_IndexFile, 0, 0, FILE_END);
+		{
+			LARGE_INTEGER start{};
+			SetFilePointerEx(m_DataFile, start, nullptr, FILE_END);
+			SetFilePointerEx(m_IndexFile, start, nullptr, FILE_END);
+		}
 
 		bool isShallow = !m_shallowAnchors.empty();
 		for (auto i = m_HashMap.cbegin(); i != m_HashMap.cend(); ++i)
@@ -483,16 +485,14 @@ int CLogCache::SaveCache()
 			if (!(*i).second.m_IsDiffFiles || (*i).second.m_CommitHash.IsEmpty() || (isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
 				continue;
 
-			LARGE_INTEGER offset;
-			offset.LowPart = 0;
-			offset.HighPart = 0;
-			LARGE_INTEGER start;
-			start.QuadPart = 0;
+			LARGE_INTEGER offset{};
+			LARGE_INTEGER start{};
 			SetFilePointerEx(m_DataFile, start, &offset, FILE_CURRENT);
-			if (SaveOneItem((*i).second, static_cast<LONG>(offset.QuadPart)))
+			if (SaveOneItem((*i).second, offset))
 			{
 				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Save one item error\n");
-				SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN);
+				if (!SetFilePointerEx(m_DataFile, offset, &offset, FILE_BEGIN))
+					break;
 				continue;
 			}
 
@@ -500,8 +500,8 @@ int CLogCache::SaveCache()
 			item.m_Hash = (*i).second.m_CommitHash;
 			item.m_Offset = offset.QuadPart;
 
-			DWORD num;
-			WriteFile(m_IndexFile, &item, sizeof(SLogCacheIndexItem), &num, 0);
+			if (!WriteFile(m_IndexFile, &item, sizeof(SLogCacheIndexItem), nullptr, 0))
+				break;
 			++header.m_ItemCount;
 		}
 		FlushFileBuffers(m_IndexFile);
@@ -524,6 +524,11 @@ int CLogCache::SaveCache()
 
 	this->CloseDataHandles();
 	this->CloseIndexHandles();
+	if (ret)
+	{
+		::DeleteFile(m_GitDir + INDEX_FILE_NAME);
+		::DeleteFile(m_GitDir + DATA_FILE_NAME);
+	}
 
 	free(pIndex);
 	return ret;
