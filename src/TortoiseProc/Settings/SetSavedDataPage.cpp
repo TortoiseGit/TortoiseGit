@@ -337,8 +337,8 @@ void CSetSavedDataPage::DeleteViaShell(LPCWSTR path, UINT progressText)
 	CString p(path);
 	p += L"||";
 	int len = p.GetLength();
-	auto buf = std::make_unique<wchar_t[]>(len + 2);
-	wcscpy_s(buf.get(), len + 2, p);
+	auto buf = std::make_unique<wchar_t[]>(len + sizeof(wchar_t));
+	wcscpy_s(buf.get(), len + sizeof(wchar_t), p);
 	CStringUtils::PipesToNulls(buf.get(), len);
 
 	CString progText(MAKEINTRESOURCE(progressText));

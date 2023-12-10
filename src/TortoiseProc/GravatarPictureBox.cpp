@@ -306,7 +306,9 @@ resend:
 			return ret;
 		}
 
-		downloadedSum += downloaded;
+		if (DWordAdd(downloadedSum, downloaded, &downloadedSum) != S_OK)
+			downloadedSum = DWORD_MAX;
+
 	}
 	destinationFile.Close();
 	if (downloadedSum == 0)

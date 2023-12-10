@@ -125,13 +125,18 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 		auto idata = static_cast<LPDATAOBJECT>(*ppv);
 		// the IDataObject returned here doesn't have a HDROP, so we create one ourselves and add it to the IDataObject
 		// the HDROP is necessary for most context menu handlers
-		int nLength = 0;
+		size_t nBufferSize = 0;
 		for (auto it = sortedpaths.cbegin(); it != sortedpaths.cend(); ++it)
 		{
-			nLength += static_cast<int>(it->size());
-			nLength += 1; // '\0' separator
+			if (HRESULT ret = SizeTAdd(nBufferSize, it->size(), &nBufferSize); ret != S_OK)
+				return ret;
 		}
-		int nBufferSize = sizeof(DROPFILES) + ((nLength + 5) * sizeof(wchar_t));
+		if (HRESULT ret = SizeTAdd(nBufferSize, sortedpaths.size(), &nBufferSize); ret != S_OK) // +1 for '\0' separator for each path entry
+			return ret;
+		if (HRESULT ret; (ret = SizeTAdd(nBufferSize, 5, &nBufferSize)) != S_OK || (ret = SizeTMult(nBufferSize, sizeof(wchar_t), &nBufferSize)) != S_OK)
+			return ret;
+		if (HRESULT ret = SizeTAdd(nBufferSize, sizeof(DROPFILES), &nBufferSize); ret != S_OK)
+			return ret;
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
 		df->pFiles = sizeof(DROPFILES);
@@ -151,6 +156,8 @@ HRESULT STDMETHODCALLTYPE CIShellFolderHook::GetUIObjectOf(HWND hwndOwner, UINT 
 		*pCurrentFilename = '\0'; // terminate array
 		STGMEDIUM medium = { 0 };
 		medium.tymed = TYMED_HGLOBAL;
+		if (SIZE_T_MAX - 20 <= nBufferSize)
+			return INTSAFE_E_ARITHMETIC_OVERFLOW;
 		medium.hGlobal = GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE, nBufferSize + 20);
 		if (medium.hGlobal)
 		{
@@ -4688,9 +4695,9 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	}
 	filelist += L'|';
 	const int len = filelist.GetLength();
-	auto buf = std::make_unique<wchar_t[]>(len + 2);
-	wcscpy_s(buf.get(), len + 2, filelist);
-	CStringUtils::PipesToNulls(buf.get(), len + 2);
+	auto buf = std::make_unique<wchar_t[]>(len + sizeof(wchar_t));
+	wcscpy_s(buf.get(), len + sizeof(wchar_t), filelist);
+	CStringUtils::PipesToNulls(buf.get(), len);
 	SHFILEOPSTRUCT fileop;
 	fileop.hwnd = this->m_hWnd;
 	fileop.wFunc = FO_DELETE;
@@ -4780,20 +4787,24 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 					g_pidlArray = nullptr;
 					g_pidlArrayItems = 0;
 				}
-				int nItems = targetList.GetCount();
-				g_pidlArray = static_cast<LPITEMIDLIST*>(CoTaskMemAlloc((nItems + 10) * sizeof(LPITEMIDLIST)));
-				SecureZeroMemory(g_pidlArray, (nItems + 10) * sizeof(LPITEMIDLIST));
+				size_t bufferSize;
+				if (SizeTMult(static_cast<size_t>(targetList.GetCount()) + 10, sizeof(LPITEMIDLIST), &bufferSize) != S_OK)
+					return TRUE;
+				g_pidlArray = static_cast<LPITEMIDLIST*>(CoTaskMemAlloc(bufferSize));
+				if (!g_pidlArray)
+					return TRUE;
+				SecureZeroMemory(g_pidlArray, bufferSize);
 				int succeededItems = 0;
 				PIDLIST_RELATIVE pidl = nullptr;
 
-				int bufsize = 1024;
+				size_t bufsize = 1024;
 				auto filepath = std::make_unique<WCHAR[]>(bufsize);
-				for (int i = 0; i < nItems; i++)
+				for (int i = 0; i < targetList.GetCount(); ++i)
 				{
 					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPath());
-					if (bufsize < fullPath.GetLength())
+					if (bufsize < static_cast<size_t>(fullPath.GetLength()))
 					{
-						bufsize = fullPath.GetLength() + 3;
+						bufsize = static_cast<size_t>(fullPath.GetLength()) + 3;
 						filepath = std::make_unique<WCHAR[]>(bufsize);
 					}
 					wcscpy_s(filepath.get(), bufsize, fullPath);

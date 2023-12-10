@@ -213,7 +213,8 @@ resend:
 			return ret;
 		}
 
-		downloadedSum += downloaded;
+		if (DWordAdd(downloadedSum, downloaded, &downloadedSum) != S_OK)
+			downloadedSum = DWORD_MAX - 1;
 
 		if (!showProgress)
 			continue;

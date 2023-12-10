@@ -501,7 +501,10 @@ public:
 		if (!m_pvector || size == 0)
 			return false;
 		const size_t oldsize = m_pvector->size();
-		m_pvector->resize(m_pvector->size()+size);
+		size_t newLength;
+		if (SizeTAdd(oldsize, size, &newLength) != S_OK)
+			return false;
+		m_pvector->resize(newLength);
 		memcpy(&*(m_pvector->begin()+oldsize),data,size);
 		return false;
 	}
@@ -511,7 +514,10 @@ public:
 		if (!m_pvectorErr || size == 0)
 			return false;
 		const size_t oldsize = m_pvectorErr->size();
-		m_pvectorErr->resize(m_pvectorErr->size() + size);
+		size_t newLength;
+		if (SizeTAdd(oldsize, size, &newLength) != S_OK)
+			return false;
+		m_pvectorErr->resize(newLength);
 		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
 		return false;
 	}

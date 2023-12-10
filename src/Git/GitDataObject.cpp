@@ -163,7 +163,11 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			m_allPaths.push_back(m_gitPaths[i]);
 		}
 
-		size_t dataSize = sizeof(FILEGROUPDESCRIPTOR) + ((max(size_t(1), m_allPaths.size()) - 1) * sizeof(FILEDESCRIPTOR));
+		size_t dataSize;
+		if (HRESULT ret = SizeTMult(max(size_t(1), m_allPaths.size()) - 1, sizeof(FILEDESCRIPTOR), &dataSize); ret != S_OK)
+			return ret;
+		if (HRESULT ret = SizeTAdd(sizeof(FILEGROUPDESCRIPTOR), dataSize, &dataSize); ret != S_OK)
+			return ret;
 		HGLOBAL data = GlobalAlloc(GMEM_MOVEABLE | GMEM_SHARE | GMEM_ZEROINIT, dataSize);
 
 		auto files = static_cast<FILEGROUPDESCRIPTOR*>(GlobalLock(data));
@@ -265,11 +269,14 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			}
 		}
 		pmedium->tymed = TYMED_HGLOBAL;
-		pmedium->hGlobal = GlobalAlloc(GHND, (text.GetLength() + 1) * sizeof(wchar_t));
+		size_t bufferSize;
+		if (HRESULT ret = SizeTMult(static_cast<size_t>(text.GetLength()) + 1, sizeof(wchar_t), &bufferSize); ret != S_OK)
+			return ret;
+		pmedium->hGlobal = GlobalAlloc(GHND, bufferSize);
 		if (pmedium->hGlobal)
 		{
 			auto pMem = static_cast<wchar_t*>(GlobalLock(pmedium->hGlobal));
-			wcscpy_s(pMem, text.GetLength() + 1, static_cast<LPCWSTR>(text));
+			wcscpy_s(pMem, static_cast<size_t>(text.GetLength()) + 1, static_cast<LPCWSTR>(text));
 			GlobalUnlock(pmedium->hGlobal);
 		}
 		pmedium->pUnkForRelease = nullptr;
@@ -277,18 +284,24 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	}
 	else if ((pformatetcIn->tymed & TYMED_HGLOBAL) && (pformatetcIn->dwAspect == DVASPECT_CONTENT) && (pformatetcIn->cfFormat == CF_HDROP))
 	{
-		int nLength = 0;
-
+		size_t nBufferSize = 0;
 		for (int i = 0; i < m_gitPaths.GetCount(); ++i)
 		{
 			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
 				continue;
 
-			nLength += g_Git.CombinePath(m_gitPaths[i]).GetLength();
-			nLength += 1; // '\0' separator
+			if (HRESULT ret = SizeTAdd(g_Git.CombinePath(m_gitPaths[i]).GetLength(), nBufferSize, &nBufferSize); ret != S_OK)
+				return ret;
+			if (HRESULT ret = SizeTAdd(1, nBufferSize, &nBufferSize); ret != S_OK) // '\0' separator
+				return ret;
 		}
 
-		int nBufferSize = sizeof(DROPFILES) + (nLength + 1) * sizeof(wchar_t);
+		if (HRESULT ret = SizeTAdd(1, nBufferSize, &nBufferSize); ret != S_OK)
+			return ret;
+		if (HRESULT ret = SizeTMult(nBufferSize, sizeof(wchar_t), &nBufferSize); ret != S_OK)
+			return ret;
+		if (HRESULT ret = SizeTAdd(sizeof(DROPFILES), nBufferSize, &nBufferSize); ret != S_OK)
+			return ret;
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 
 		auto df = reinterpret_cast<DROPFILES*>(pBuffer.get());
@@ -303,7 +316,7 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 			if (m_gitPaths[i].m_Action & (CTGitPath::LOGACTIONS_MISSING | CTGitPath::LOGACTIONS_DELETED) || m_gitPaths[i].IsDirectory())
 				continue;
 			CString str = g_Git.CombinePath(m_gitPaths[i]);
-			wcscpy_s(pCurrentFilename, str.GetLength() + 1, static_cast<LPCWSTR>(str));
+			wcscpy_s(pCurrentFilename, static_cast<size_t>(str.GetLength()) + 1, static_cast<LPCWSTR>(str));
 			pCurrentFilename += str.GetLength();
 			*pCurrentFilename = '\0'; // separator between file names
 			pCurrentFilename++;
@@ -324,7 +337,11 @@ STDMETHODIMP GitDataObject::GetData(FORMATETC* pformatetcIn, STGMEDIUM* pmedium)
 	}
 	else if ((pformatetcIn->tymed & TYMED_HGLOBAL) && (pformatetcIn->dwAspect == DVASPECT_CONTENT) && (pformatetcIn->cfFormat == CF_FILE_ATTRIBUTES_ARRAY))
 	{
-		int nBufferSize = sizeof(FILE_ATTRIBUTES_ARRAY) + m_gitPaths.GetCount() * sizeof(DWORD);
+		size_t nBufferSize;
+		if (HRESULT ret = SizeTMult(m_gitPaths.GetCount(), sizeof(DWORD), &nBufferSize); ret != S_OK)
+			return ret;
+		if (HRESULT ret = SizeTAdd(nBufferSize, sizeof(FILE_ATTRIBUTES_ARRAY), &nBufferSize); ret != S_OK)
+			return ret;
 		auto pBuffer = std::make_unique<char[]>(nBufferSize);
 
 		auto cf = reinterpret_cast<FILE_ATTRIBUTES_ARRAY*>(pBuffer.get());

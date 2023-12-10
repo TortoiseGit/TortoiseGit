@@ -133,7 +133,10 @@ public:
 		if (!m_pvectorErr || size == 0 || size >= INT_MAX)
 			return false;
 		const size_t oldsize = m_pvectorErr->size();
-		m_pvectorErr->resize(m_pvectorErr->size() + size);
+		size_t newLength;
+		if (SizeTAdd(oldsize, size, &newLength) != S_OK)
+			return false;
+		m_pvectorErr->resize(newLength);
 		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
 		return false;
 	}
