@@ -1814,26 +1814,56 @@ void CSciEdit::SetUDiffStyle()
 	}
 }
 
-int CSciEdit::LoadFromFile(CString &filename)
+int CSciEdit::LoadFromFile(const CString& filename)
 {
-	CAutoFILE fp = _wfsopen(filename, L"rb", _SH_DENYWR);
-	if (!fp)
+	CAutoFile hfile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!hfile)
+	{
+		MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONEXCLAMATION);
 		return -1;
+	}
+
+	char data[4096]{};
+	DWORD size = 0;
+	if (!ReadFile(hfile, data, sizeof(data), &size, nullptr))
+	{
+		MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONEXCLAMATION);
+		return -1;
+	}
 
 	auto readonly = m_bReadOnly;
 	SCOPE_EXIT { SetReadOnly(readonly); };
 	SetReadOnly(false);
 
+	int wasUndoCollection = static_cast<int>(Call(SCI_GETUNDOCOLLECTION));
+	SCOPE_EXIT { Call(SCI_SETUNDOCOLLECTION, wasUndoCollection); };
+	Call(SCI_SETUNDOCOLLECTION, 0);
+	ClearUndoBuffer();
 	Call(SCI_CLEARALL);
 	Call(SCI_CANCEL);
 
-	char data[4096] = { 0 };
-	size_t lenFile = fread(data, 1, sizeof(data), fp);
-	bool bUTF8 = IsUTF8(data, lenFile);
-	while (lenFile > 0)
+	bool bUTF8 = IsUTF8(data, size);
+	while (size > 0)
 	{
-		Call(SCI_ADDTEXT, lenFile, reinterpret_cast<LPARAM>(static_cast<char *>(data)));
-		lenFile = fread(data, 1, sizeof(data), fp);
+		Call(SCI_ADDTEXT, size, reinterpret_cast<LPARAM>(data));
+		if (auto sciStatus = static_cast<int>(Call(SCI_GETSTATUS)); sciStatus > SC_STATUS_OK && sciStatus < SC_STATUS_WARN_START)
+		{
+			if (sciStatus == SC_STATUS_BADALLOC)
+				MessageBox(static_cast<LPCWSTR>(CFormatMessageWrapper(static_cast<DWORD>(E_OUTOFMEMORY))), L"TortoiseGit", MB_ICONEXCLAMATION);
+			else
+				MessageBox(static_cast<LPCWSTR>(CFormatMessageWrapper(static_cast<DWORD>(E_FAIL))), L"TortoiseGit", MB_ICONEXCLAMATION);
+			
+			Call(SCI_CLEARALL);
+			Call(SCI_CANCEL);
+			return -1;
+		}
+		if (!ReadFile(hfile, data, sizeof(data), &size, nullptr))
+		{
+			Call(SCI_CLEARALL);
+			Call(SCI_CANCEL);
+			MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONEXCLAMATION);
+			return -1;
+		}
 	}
 	Call(SCI_SETCODEPAGE, bUTF8 ? SC_CP_UTF8 : GetACP());
 	return 0;
