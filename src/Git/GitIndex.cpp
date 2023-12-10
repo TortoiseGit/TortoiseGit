@@ -390,21 +390,22 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	if (!hfile)
 		return -1;
 
-	const DWORD filesize = GetFileSize(hfile, nullptr);
-	if (filesize == 0 || filesize == INVALID_FILE_SIZE)
+	LARGE_INTEGER fileSize;
+	if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart >= INT_MAX)
 		return -1;
 
 	DWORD size = 0;
-	auto buff = std::unique_ptr<char[]>(new (std::nothrow) char[filesize]); // prevent default initialization
+	auto buff = std::unique_ptr<char[]>(new (std::nothrow) char[fileSize.LowPart]); // prevent default initialization and throwing on allocation error
 	if (!buff)
 		return -1;
 
-	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
-
-	if (size != filesize)
+	if (!ReadFile(hfile, buff.get(), fileSize.LowPart, &size, nullptr))
 		return -1;
 
-	for (DWORD i = 0; i < filesize;)
+	if (size != fileSize.LowPart)
+		return -1;
+
+	for (DWORD i = 0; i < fileSize.LowPart;)
 	{
 		CString hash;
 		CString ref;
@@ -413,32 +414,32 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			while (buff[i] != '\n')
 			{
 				++i;
-				if (i == filesize)
+				if (i == fileSize.LowPart)
 					break;
 			}
 			++i;
 		}
 
-		if (i >= filesize)
+		if (i >= fileSize.LowPart)
 			break;
 
 		while (buff[i] != ' ')
 		{
 			hash.AppendChar(buff[i]);
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 
 		++i;
-		if (i >= filesize)
+		if (i >= fileSize.LowPart)
 			break;
 
 		while (buff[i] != '\n')
 		{
 			ref.AppendChar(buff[i]);
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 
@@ -448,7 +449,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 		while (buff[i] == '\n')
 		{
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 	}
@@ -486,17 +487,18 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	if (strcmp(reinterpret_cast<const char*>(buffer), "ref:") == 0)
 	{
 		m_HeadRefFile.Empty();
-		const DWORD filesize = GetFileSize(hfile, nullptr);
-		if (filesize < strlen("ref:") + 1 || filesize == INVALID_FILE_SIZE)
+		LARGE_INTEGER fileSize;
+		if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart < static_cast<int>(strlen("ref:") + 1) || fileSize.QuadPart >= 100 * 1024 * 1024)
 			return -1;
 
 		{
-			auto p = std::unique_ptr<char[]>(new (std::nothrow) char[filesize - strlen("ref:")]); // prevent default initialization
+			auto p = std::unique_ptr<char[]>(new (std::nothrow) char[fileSize.LowPart - strlen("ref:")]); // prevent default initialization and throwing on allocation error
 			if (!p)
 				return -1;
 
-			ReadFile(hfile, p.get(), filesize - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
-			CGit::StringAppend(m_HeadRefFile, p.get(), CP_UTF8, filesize - static_cast<int>(strlen("ref:")));
+			if (!ReadFile(hfile, p.get(), fileSize.LowPart - static_cast<DWORD>(strlen("ref:")), &size, nullptr))
+				return -1;
+			CGit::StringAppend(m_HeadRefFile, p.get(), CP_UTF8, fileSize.LowPart - static_cast<int>(strlen("ref:")));
 		}
 		CString ref = m_HeadRefFile.Trim();
 		int start = 0;
@@ -726,16 +728,16 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 	if (!hfile)
 		return -1 ;
 
-	const DWORD filesize = GetFileSize(hfile, nullptr);
-	if (filesize == INVALID_FILE_SIZE)
+	LARGE_INTEGER fileSize;
+	if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart >= INT_MAX)
 		return -1;
 
-	m_buffer = std::unique_ptr<char[]>(new (std::nothrow) char[filesize + 1]); // prevent default initialization
+	m_buffer = std::unique_ptr<char[]>(new (std::nothrow) char[fileSize.LowPart + 1]); // prevent default initialization and throwing on allocation error
 	if (!m_buffer)
 		return -1;
 
 	DWORD size = 0;
-	if (!ReadFile(hfile, m_buffer.get(), filesize, &size, nullptr))
+	if (!ReadFile(hfile, m_buffer.get(), fileSize.LowPart, &size, nullptr))
 	{
 		m_buffer = nullptr;
 		return -1;

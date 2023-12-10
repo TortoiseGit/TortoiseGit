@@ -113,7 +113,7 @@ protected:
 	HANDLE m_DataFile = INVALID_HANDLE_VALUE;
 	HANDLE m_DataFileMap = nullptr;
 	BYTE* m_pCacheData = nullptr;
-	DWORD m_DataFileLength = 0;
+	size_t m_DataFileLength = 0;
 
 	void CloseDataHandles();
 	void CloseIndexHandles();

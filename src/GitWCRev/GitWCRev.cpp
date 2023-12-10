@@ -863,10 +863,15 @@ int wmain(int argc, wchar_t* argv[])
 			wprintf(L"Unable to open input file '%s'\n", src);
 			return ERR_OPEN; // error opening file
 		}
-		filelength = GetFileSize(hFile, nullptr);
-		if (filelength == INVALID_FILE_SIZE)
+		LARGE_INTEGER fileSize;
+		if (!GetFileSizeEx(hFile, &fileSize))
 		{
 			wprintf(L"Could not determine file size of '%s'\n", src);
+			return ERR_READ;
+		}
+		if (fileSize.QuadPart > 100 * 1024 * 1024)
+		{
+			wprintf(L"File too big (>100 MiB)\n");
 			return ERR_READ;
 		}
 		maxlength = filelength + 8192; // We might be increasing file size.
@@ -1072,7 +1077,19 @@ int wmain(int argc, wchar_t* argv[])
 		return ERR_OPEN;
 	}
 
-	size_t filelengthExisting = GetFileSize(hFile, nullptr);
+	LARGE_INTEGER fileSize;
+	if (!GetFileSizeEx(hFile, &fileSize))
+	{
+		wprintf(L"Could not determine file size of '%s'\n", src);
+		return ERR_READ;
+	}
+	if (fileSize.QuadPart > 100 * 1024 * 1024)
+	{
+		wprintf(L"File too big (>100 MiB)\n");
+		return ERR_READ;
+	}
+	size_t filelengthExisting = static_cast<size_t>(fileSize.LowPart);
+
 	BOOL sameFileContent = FALSE;
 	if (filelength == filelengthExisting)
 	{

@@ -61,49 +61,6 @@ static CString FormatDateTime(COleDateTime& DateTime)
 	return strDate;
 }
 
-static int GetFileSize(LPCWSTR lpFileName)
-{
-	if (!lpFileName || lstrlen(lpFileName) < 1)
-		return -1;
-
-	CFileStatus fileStatus = { 0 };
-	memset(fileStatus.m_szFullName, 0, sizeof(fileStatus.m_szFullName));
-	try
-	{
-		CFile::GetStatus(lpFileName, fileStatus);
-	}
-	catch (CException&)
-	{
-		ASSERT(FALSE);
-	}
-
-	return static_cast<int>(fileStatus.m_size);
-}
-
-static CString FormatBytes(double fBytesNum, BOOL bShowUnit = TRUE , int nFlag = 0)
-{
-	CString csRes;
-	if (nFlag == 0)
-	{
-		if (fBytesNum >= 1024.0 && fBytesNum < 1024.0 * 1024.0)
-			csRes.Format(L"%.2f%s", fBytesNum / 1024.0, bShowUnit ? L" K" : L"");
-		else if (fBytesNum >= 1024.0 * 1024.0 && fBytesNum < 1024.0 * 1024.0 * 1024.0)
-			csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0), bShowUnit ? L" M" : L"");
-		else if (fBytesNum >= 1024.0 * 1024.0 * 1024.0)
-			csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0 * 1024.0), bShowUnit ? L" G" : L"");
-		else
-			csRes.Format(L"%.2f%s", fBytesNum, bShowUnit ? L" B" : L"");
-	}
-	else if (nFlag == 1)
-		csRes.Format(L"%.2f%s", fBytesNum / 1024.0, bShowUnit ? L" K" : L"");
-	else if (nFlag == 2)
-		csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0), bShowUnit ? L" M" : L"");
-	else if (nFlag == 3)
-		csRes.Format(L"%.2f%s", fBytesNum / (1024.0 * 1024.0 * 1024.0), bShowUnit ? L" G" : L"");
-
-	return csRes;
-}
-
 static CString GetGUID()
 {
 	CString sGuid;
@@ -1266,41 +1223,31 @@ BOOL CHwSMTP::SendOnAttach(LPCWSTR lpszFileName)
 	csAttach.AppendFormat(L"Content-Transfer-Encoding: base64\r\n");
 	csAttach.AppendFormat(L"Content-Disposition: attachment; filename=\"%s\"\r\n\r\n", static_cast<LPCWSTR>(csShortFileName));
 
-	auto dwFileSize = GetFileSize(lpszFileName);
-	if ( dwFileSize > 5*1024*1024 )
-	{
-		m_csLastError.Format(L"File [%s] too big. File size is : %s", lpszFileName, static_cast<LPCWSTR>(FormatBytes(dwFileSize)));
-		return FALSE;
-	}
-	auto pBuf = std::make_unique<char[]>(dwFileSize + 1);
-	if (!pBuf)
-		::AfxThrowMemoryException();
-
-	if (!Send(csAttach))
-		return FALSE;
-
-	CFile file;
-	CStringA filedata;
 	try
 	{
-		if ( !file.Open ( lpszFileName, CFile::modeRead ) )
+		CFile file(lpszFileName, CFile::modeRead | CFile::typeBinary | CFile::shareDenyWrite);
+		if (file.GetLength() > 15 * 1024 * 1024)
 		{
-			m_csLastError.Format(L"Open file [%s] failed", lpszFileName);
+			m_csLastError.Format(L"File [%s] too big (limit is 15 MiB).", lpszFileName);
 			return FALSE;
 		}
-		UINT nFileLen = file.Read(pBuf.get(), dwFileSize);
-		filedata = EncodeBase64(pBuf.get(), nFileLen, false);
+		auto pBuf = std::make_unique<char[]>(static_cast<UINT>(file.GetLength()) + 1);
+		UINT nFileLen = file.Read(pBuf.get(), static_cast<UINT>(file.GetLength()));
+		CStringA filedata = EncodeBase64(pBuf.get(), nFileLen, false);
 		filedata += L"\r\n\r\n";
+
+		if (!Send(csAttach))
+			return FALSE;
+
+		if (!SendBuffer(filedata))
+			return FALSE;
 	}
 	catch (CFileException *e)
 	{
+		e->GetErrorMessage(CStrBuf(m_csLastError, 1024), 1024);
 		e->Delete();
-		m_csLastError.Format(L"Read file [%s] failed", lpszFileName);
 		return FALSE;
 	}
-
-	if (!SendBuffer(filedata))
-		return FALSE;
 
 	return TRUE;
 }

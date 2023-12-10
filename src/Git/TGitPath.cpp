@@ -754,58 +754,61 @@ bool CTGitPath::HasStashDir(const CString& dotGitPath) const
 	if (!hfile)
 		return false;
 
-	DWORD filesize = ::GetFileSize(hfile, nullptr);
-	if (filesize == 0 || filesize == INVALID_FILE_SIZE)
+	LARGE_INTEGER fileSize;
+	if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart == 0 || fileSize.QuadPart >= INT_MAX)
 		return false;
 
+	auto buff = std::unique_ptr<char[]>(new (std::nothrow) char[fileSize.LowPart + 1]); // prevent default initialization and throwing on allocation error
+	if (!buff)
+		return false;
 	DWORD size = 0;
-	auto buff = std::make_unique<char[]>(filesize + 1);
-	ReadFile(hfile, buff.get(), filesize, &size, nullptr);
-	buff[filesize] = '\0';
+	if (!ReadFile(hfile, buff.get(), fileSize.LowPart, &size, nullptr))
+		return false;
+	buff[fileSize.LowPart] = '\0';
 
-	if (size != filesize)
+	if (size != fileSize.LowPart)
 		return false;
 
-	for (DWORD i = 0; i < filesize;)
+	for (DWORD i = 0; i < fileSize.LowPart;)
 	{
 		if (buff[i] == '#' || buff[i] == '^')
 		{
 			while (buff[i] != '\n')
 			{
 				++i;
-				if (i == filesize)
+				if (i == fileSize.LowPart)
 					break;
 			}
 			++i;
 		}
 
-		if (i >= filesize)
+		if (i >= fileSize.LowPart)
 			break;
 
 		while (buff[i] != ' ')
 		{
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 
 		++i;
-		if (i >= filesize)
+		if (i >= fileSize.LowPart)
 			break;
 
-		if (i <= filesize - strlen("refs/stash") && (buff[i + strlen("refs/stash")] == '\n' || buff[i + strlen("refs/stash")] == '\0') && !strncmp("refs/stash", buff.get() + i, strlen("refs/stash")))
+		if (i <= fileSize.LowPart - strlen("refs/stash") && (buff[i + strlen("refs/stash")] == '\n' || buff[i + strlen("refs/stash")] == '\0') && !strncmp("refs/stash", buff.get() + i, strlen("refs/stash")))
 			return true;
 		while (buff[i] != '\n')
 		{
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 
 		while (buff[i] == '\n')
 		{
 			++i;
-			if (i == filesize)
+			if (i == fileSize.LowPart)
 				break;
 		}
 	}

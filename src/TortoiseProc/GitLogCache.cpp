@@ -20,6 +20,7 @@
 #include "GitAdminDir.h"
 #include "GitLogCache.h"
 #include "registry.h"
+#include <intsafe.h>
 
 int static Compare(const void *p1, const void*p2)
 {
@@ -162,14 +163,22 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 				break;
 		}
 
-		const DWORD indexFileLength = GetFileSize(m_IndexFile, nullptr);
-		if (indexFileLength == INVALID_FILE_SIZE || indexFileLength < sizeof(SLogCacheIndexHeader))
+		LARGE_INTEGER indexFileSize;
+		if (!GetFileSizeEx(m_IndexFile, &indexFileSize))
+			break;
+		if (indexFileSize.QuadPart >= INT_MAX)
+		{
+			CloseIndexHandles();
+			CloseDataHandles();
+			return -1;
+		}
+		if (indexFileSize.QuadPart < sizeof(SLogCacheIndexHeader))
 			break;
 
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 			break;
 
-		if (indexFileLength != sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
+		if (static_cast<size_t>(indexFileSize.QuadPart) != sizeof(SLogCacheIndexHeader) + m_pCacheIndex->m_Header.m_ItemCount * sizeof(SLogCacheIndexItem))
 			break;
 
 		if(	m_DataFile == INVALID_HANDLE_VALUE )
@@ -193,9 +202,16 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			if (!m_DataFileMap)
 				break;
 		}
-		m_DataFileLength = GetFileSize(m_DataFile, nullptr);
-		if (m_DataFileLength == INVALID_FILE_SIZE || m_DataFileLength < sizeof(SLogCacheDataFileHeader))
+		if (LARGE_INTEGER fileLength; !GetFileSizeEx(m_DataFile, &fileLength) || fileLength.QuadPart < sizeof(SLogCacheDataFileHeader))
 			break;
+		else if (fileLength.QuadPart >= INT_MAX)
+		{
+			CloseIndexHandles();
+			CloseDataHandles();
+			return -1;
+		}
+		else
+			m_DataFileLength = static_cast<size_t>(fileLength.QuadPart);
 
 		if (!m_pCacheData)
 		{
