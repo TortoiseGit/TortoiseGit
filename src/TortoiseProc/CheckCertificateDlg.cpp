@@ -121,7 +121,9 @@ void CCheckCertificateDlg::OnBnClickedOpencert()
 	}
 	catch (CFileException* e)
 	{
-		MessageBox(L"Could not write to file.", L"TortoiseGit", MB_ICONERROR);
+		CString error;
+		e->GetErrorMessage(CStrBuf(error, 1024), 1024);
+		MessageBox(L"Could not write to file:\n" + error, L"TortoiseGit", MB_ICONERROR);
 		e->Delete();
 		return;
 	}

@@ -2900,11 +2900,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 	modifiedReflectedA.Replace('\\', '/');
 	try
 	{
-		CStdioFile file;
-		// w/o typeBinary for some files \r gets dropped
-		if (!file.Open(outputFile, CFile::typeBinary | CFile::modeReadWrite | CFile::shareExclusive))
-			return;
-
+		CStdioFile file(outputFile, CFile::typeBinary | CFile::modeReadWrite | CFile::shareExclusive); // w/o typeBinary \r gets dropped for some files
 		CStringA filecontent;
 		UINT filelength = static_cast<UINT>(file.GetLength());
 		int bytesread = static_cast<int>(file.Read(filecontent.GetBuffer(filelength), filelength));
