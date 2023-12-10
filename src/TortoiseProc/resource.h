@@ -180,6 +180,7 @@
 #define IDC_EXTDIFF                     1015
 #define IDS_ERR_TGITBLAME               1015
 #define IDC_EXTMERGE                    1016
+#define IDS_ERR_FILE_TOOBIG             1016
 #define IDC_DIFFVIEWER                  1017
 #define IDS_STATUSLIST_CONTEXT_COPYFULLPATHS 1017
 #define IDS_FILEDIFF_LOG                1018

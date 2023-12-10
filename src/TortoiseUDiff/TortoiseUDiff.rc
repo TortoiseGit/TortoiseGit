@@ -150,6 +150,11 @@ BEGIN
     IDS_MODIFIEDASKSAVE     "The file was modified. Do you want to save the changes?"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_ERR_FILE_TOOBIG     "The file is too big"
+END
+
 #endif    // Englisch (USA) resources
 /////////////////////////////////////////////////////////////////////////////
 

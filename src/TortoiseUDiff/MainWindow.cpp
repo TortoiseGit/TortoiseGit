@@ -819,6 +819,11 @@ bool CMainWindow::LoadFile(HANDLE hFile, bool wantStdIn)
 			MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
 			return false;
 		}
+		if (static_cast<Sci_Position>(SendEditor(SCI_GETTEXT)) >= 250 * 1024 * 1024) // styling gets really slow and Scintilla requires special initialization for large files
+		{
+				MessageBox(*this, static_cast<LPCWSTR>(ResString(hResource, IDS_ERR_FILE_TOOBIG)), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+				return false;
+		}
 		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, nullptr);
 	}
 	if (!bRet)
@@ -842,6 +847,17 @@ bool CMainWindow::LoadFile(LPCWSTR filename)
 	if (!hfile)
 	{
 		MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+		return false;
+	}
+
+	if (LARGE_INTEGER fileSize; !::GetFileSizeEx(hfile, &fileSize))
+	{
+		MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+		return false;
+	}
+	else if (fileSize.QuadPart >= 250 * 1024 * 1024) // styling gets really slow and Scintilla requires special initialization for large files
+	{
+		MessageBox(*this, static_cast<LPCWSTR>(ResString(hResource, IDS_ERR_FILE_TOOBIG)), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
 		return false;
 	}
 

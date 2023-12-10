@@ -3820,6 +3820,7 @@ BEGIN
                             "The file ""%s"" does not exist in your working tree.\nDo you want to select another file to diff?"
     IDS_MENURESTORE         "Restore"
     IDS_ERR_TGITBLAME       "Could not start TortoiseGitBlame"
+    IDS_ERR_FILE_TOOBIG     "The file is too big"
     IDS_STATUSLIST_CONTEXT_COPYFULLPATHS "full paths"
     IDS_FILEDIFF_LOG        "Show log"
     IDS_PROC_TASKS          "Tasks"

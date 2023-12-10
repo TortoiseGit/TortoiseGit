@@ -1814,13 +1814,26 @@ void CSciEdit::SetUDiffStyle()
 	}
 }
 
-int CSciEdit::LoadFromFile(const CString& filename)
+int CSciEdit::LoadFromFile(const CString& filename, UINT errorMsgId)
 {
 	CAutoFile hfile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (!hfile)
 	{
 		MessageBox(CFormatMessageWrapper(), L"TortoiseGit", MB_ICONEXCLAMATION);
 		return -1;
+	}
+
+	if (LARGE_INTEGER fileSize; !::GetFileSizeEx(hfile, &fileSize))
+	{
+		MessageBox(static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGit", MB_ICONEXCLAMATION);
+		return false;
+	}
+	else if (fileSize.QuadPart >= 250 * 1024 * 1024) // styling gets really slow and Scintilla requires special initialization for large files
+	{
+		CString error;
+		error.LoadString(errorMsgId);
+		MessageBox(error, L"TortoiseGit", MB_ICONEXCLAMATION);
+		return false;
 	}
 
 	char data[4096]{};

@@ -141,7 +141,7 @@ public:
 
 	CStringA	StringForControl(const CString& text);
 	CString		StringFromControl(const CStringA& text);
-	int			LoadFromFile(const CString& filename);
+	int			LoadFromFile(const CString& filename, UINT errorMsgId);
 	void		RestyleBugIDs();
 	BOOL		EnableWindow(BOOL bEnable = TRUE);
 	void		SetReadOnly(bool bReadOnly);

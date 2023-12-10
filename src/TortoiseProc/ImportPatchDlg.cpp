@@ -697,7 +697,7 @@ void CImportPatchDlg::OnHdnItemchangedListPatch(NMHDR * /*pNMHDR*/, LRESULT *pRe
 		if(selected>=0&& selected< m_cList.GetItemCount())
 		{
 			CString str = m_cList.GetItemText(selected,0);
-			m_PatchCtrl.LoadFromFile(str);
+			m_PatchCtrl.LoadFromFile(str, IDS_ERR_FILE_TOOBIG);
 
 		}
 		else

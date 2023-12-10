@@ -12,6 +12,7 @@
 #define IDC_TORTOISEUDIFF               109
 #define IDS_ERRORSAVE                   110
 #define IDS_MODIFIEDASKSAVE             111
+#define IDS_ERR_FILE_TOOBIG             112
 #define IDI_CANCELNORMAL                132
 #define IDD_FINDBAR                     144
 #define IDC_FINDNEXT                    1014
