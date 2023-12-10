@@ -798,7 +798,7 @@ void CMainWindow::SetTheme(bool bDark)
 	::RedrawWindow(*this, nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
-bool CMainWindow::LoadFile(HANDLE hFile)
+bool CMainWindow::LoadFile(HANDLE hFile, bool wantStdIn)
 {
 	InitEditor();
 	char data[4096] = { 0 };
@@ -810,7 +810,27 @@ bool CMainWindow::LoadFile(HANDLE hFile)
 	{
 		SendEditor(SCI_ADDTEXT, dwRead,
 			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+		if (auto sciStatus = static_cast<int>(SendEditor(SCI_GETSTATUS)); sciStatus > SC_STATUS_OK && sciStatus < SC_STATUS_WARN_START)
+		{
+			if (sciStatus == SC_STATUS_BADALLOC)
+					SetLastError(static_cast<DWORD>(E_OUTOFMEMORY));
+			else
+					SetLastError(static_cast<DWORD>(E_FAIL));
+			MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+			return false;
+		}
 		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, nullptr);
+	}
+	if (!bRet)
+	{
+		if (hFile || wantStdIn)
+		{
+			MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+			return false;
+		}
+		SetTitle(L"Unnamed");
+		InitEditor();
+		bUTF8 = true;
 	}
 	SetupWindow(bUTF8);
 	return true;
@@ -818,30 +838,62 @@ bool CMainWindow::LoadFile(HANDLE hFile)
 
 bool CMainWindow::LoadFile(LPCWSTR filename)
 {
-	InitEditor();
-	FILE* fp = nullptr;
-	_wfopen_s(&fp, filename, L"rb");
-	if (!fp)
-		return false;
-
-	SetTitle(filename);
-	char data[4096] = { 0 };
-	size_t lenFile = fread(data, 1, sizeof(data), fp);
-	bool bUTF8 = IsUTF8(data, lenFile);
-	while (lenFile > 0)
+	CAutoFile hfile = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!hfile)
 	{
-		SendEditor(SCI_ADDTEXT, lenFile,
-			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
-		lenFile = fread(data, 1, sizeof(data), fp);
+		MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+		return false;
 	}
-	fclose(fp);
+
+	char data[4096] = { 0 };
+	DWORD size = 0;
+	if (!ReadFile(hfile, data, sizeof(data), &size, nullptr))
+	{
+		MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+		return false;
+	}
+	bool bUTF8 = IsUTF8(data, size);
+	InitEditor();
+	bool error = false;
+	while (size > 0)
+	{
+		SendEditor(SCI_ADDTEXT, size,
+			reinterpret_cast<LPARAM>(static_cast<char *>(data)));
+		if (auto sciStatus = static_cast<int>(SendEditor(SCI_GETSTATUS)); sciStatus > SC_STATUS_OK && sciStatus < SC_STATUS_WARN_START)
+		{
+			if (sciStatus == SC_STATUS_BADALLOC)
+					SetLastError(static_cast<DWORD>(E_OUTOFMEMORY));
+			else
+					SetLastError(static_cast<DWORD>(E_FAIL));
+			error = true;
+			break;
+		}
+		if (!ReadFile(hfile, data, sizeof(data), &size, nullptr))
+		{
+			error = true;
+			break;
+		}
+	}
+
+	if (error)
+	{
+		MessageBox(*this, static_cast<LPCWSTR>(CFormatMessageWrapper()), L"TortoiseGitUDiff", MB_ICONEXCLAMATION);
+		InitEditor();
+		bUTF8 = true;
+		SetTitle(L"Unnamed");
+	}
+	else
+	{
+		m_filename = filename;
+		SetTitle(filename);
+	}
 	SetupWindow(bUTF8);
-	m_filename = filename;
-	return true;
+	return !error;
 }
 
 void CMainWindow::InitEditor()
 {
+	m_filename.clear();
 	SendEditor(SCI_SETREADONLY, FALSE);
 	SendEditor(SCI_CLEARALL);
 	SendEditor(SCI_EMPTYUNDOBUFFER);

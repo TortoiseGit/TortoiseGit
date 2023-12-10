@@ -47,7 +47,7 @@ public:
 	LRESULT             SendEditor(UINT Msg, WPARAM wParam = 0, LPARAM lParam = 0);
 	HWND                GetHWNDEdit() const { return m_hWndEdit; }
 	bool                LoadFile(LPCWSTR filename);
-	bool                LoadFile(HANDLE hFile);
+	bool                LoadFile(HANDLE hFile, bool wantStdIn);
 	bool                SaveFile(LPCWSTR filename);
 	void                SetTitle(LPCWSTR title);
 	std::wstring        GetAppDirectory();
