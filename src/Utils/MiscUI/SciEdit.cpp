@@ -487,7 +487,7 @@ CString CSciEdit::GetText()
 {
 	auto len = static_cast<int>(Call(SCI_GETTEXT, 0, 0));
 	CStringA sTextA;
-	Call(SCI_GETTEXT, len + 1, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CStrBufA(sTextA, len + 1))));
+	Call(SCI_GETTEXT, len + 1, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(CStrBufA(sTextA, len, 0))));
 	return StringFromControl(sTextA);
 }
 
@@ -500,10 +500,11 @@ CString CSciEdit::GetWordUnderCursor(bool bSelectWord, bool allchars)
 		return CString();
 	textrange.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMin, TRUE));
 
-	auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 1);
-	textrange.lpstrText = textbuffer.get();
+	CStringA textbuffer;
+	textrange.lpstrText = textbuffer.GetBuffer(textrange.chrg.cpMax - textrange.chrg.cpMin);
 	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
-	CString sRet = StringFromControl(textbuffer.get());
+	textbuffer.ReleaseBufferSetLength(textrange.chrg.cpMax - textrange.chrg.cpMin);
+	CString sRet = StringFromControl(textbuffer);
 	if (m_bDoStyle && !allchars)
 	{
 		for (const auto styleindicator : { '*', '_', '^' })
@@ -711,9 +712,10 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 			Sci_TextRange twoWords;
 			twoWords.chrg.cpMin = textrange.chrg.cpMin;
 			twoWords.chrg.cpMax = static_cast<int>(Call(SCI_WORDENDPOSITION, textrange.chrg.cpMax + 1, TRUE));
-			auto twoWordsBuffer = std::make_unique<char[]>(twoWords.chrg.cpMax - twoWords.chrg.cpMin + 1);
-			twoWords.lpstrText = twoWordsBuffer.get();
+			CStringA twoWordsBuffer;
+			twoWords.lpstrText = twoWordsBuffer.GetBuffer(twoWords.chrg.cpMax - twoWords.chrg.cpMin);
 			Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&twoWords));
+			twoWordsBuffer.ReleaseBufferSetLength(twoWords.chrg.cpMax - twoWords.chrg.cpMin);
 			CString sWord = StringFromControl(twoWords.lpstrText);
 			if (m_autolist.find(sWord) != m_autolist.end())
 			{
@@ -970,20 +972,21 @@ BOOL CSciEdit::OnChildNotify(UINT message, WPARAM wParam, LPARAM lParam, LRESULT
 				while (GetStyleAt(textrange.chrg.cpMax + 1) == style)
 					++textrange.chrg.cpMax;
 				++textrange.chrg.cpMax;
-				auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 1);
-				textrange.lpstrText = textbuffer.get();
+				CStringA textbuffer;
+				textrange.lpstrText = textbuffer.GetBuffer(textrange.chrg.cpMax - textrange.chrg.cpMin);
 				Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
+				textbuffer.ReleaseBufferSetLength(textrange.chrg.cpMax - textrange.chrg.cpMin);
 				CString url;
 				if (style == STYLE_URL)
 				{
-					url = StringFromControl(textbuffer.get());
+					url = StringFromControl(textbuffer);
 					if (url.Find(L'@') > 0 && !PathIsURL(url))
 						url = L"mailto:" + url;
 				}
 				else
 				{
 					url = m_sUrl;
-					ProjectProperties::ReplaceBugIDPlaceholder(url, StringFromControl(textbuffer.get()));
+					ProjectProperties::ReplaceBugIDPlaceholder(url, StringFromControl(textbuffer));
 				}
 				if (!url.IsEmpty())
 				{
@@ -1420,13 +1423,14 @@ BOOL CSciEdit::MarkEnteredBugID(Sci_Position startstylepos, Sci_Position endstyl
 		end_pos = switchtemp;
 	}
 
-	auto textbuffer = std::make_unique<char[]>(end_pos - start_pos + 2);
+	CStringA msg;
+	const auto len = SafeSizeToInt(end_pos - start_pos);
 	Sci_TextRange textrange;
-	textrange.lpstrText = textbuffer.get();
+	textrange.lpstrText = msg.GetBuffer(len);
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(start_pos);
 	textrange.chrg.cpMax = static_cast<Sci_PositionCR>(end_pos);
 	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
-	CStringA msg = CStringA(textbuffer.get());
+	msg.ReleaseBufferSetLength(len);
 
 	Call(SCI_STARTSTYLING, start_pos, STYLE_MASK);
 
@@ -1514,17 +1518,17 @@ void CSciEdit::StyleURLs(Sci_Position startstylepos, Sci_Position endstylepos)
 	const auto line_number = static_cast<int>(Call(SCI_LINEFROMPOSITION, startstylepos));
 	startstylepos = static_cast<Sci_Position>(Call(SCI_POSITIONFROMLINE, line_number));
 
-	const auto len = endstylepos - startstylepos + 1;
-	const auto textbuffer = std::make_unique<char[]>(len + 1);
+	const auto len = SafeSizeToInt(endstylepos - startstylepos);
+	CStringA msg;
 	Sci_TextRange textrange;
-	textrange.lpstrText = textbuffer.get();
+	textrange.lpstrText = msg.GetBuffer(len);
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(startstylepos);
 	textrange.chrg.cpMax = static_cast<Sci_PositionCR>(endstylepos);
 	Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
 	// we're dealing with utf8 encoded text here, which means one glyph is
 	// not necessarily one byte/wchar_t
 	// that's why we use CStringA to still get a correct char index
-	CStringA msg = textbuffer.get();
+	msg.ReleaseBufferSetLength(len);
 
 	::FindURLMatches(msg, AdvanceUTF8, [&](int start, int end) {
 				ASSERT(startstylepos + end <= endstylepos);

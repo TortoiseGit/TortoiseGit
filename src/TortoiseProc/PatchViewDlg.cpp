@@ -304,12 +304,13 @@ void CPatchViewDlg::OnShowFindBar()
 	GetClientRect(&rect);
 	::SetWindowPos(m_ctrlPatchView.GetSafeHwnd(), HWND_TOP, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
 	::SetWindowPos(m_FindBar, HWND_TOP, rect.left, rect.bottom - CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT + 2), rect.right - rect.left, CDPIAware::Instance().ScaleX(GetSafeHwnd(), SEARCHBARHEIGHT), SWP_SHOWWINDOW);
-	if (auto selstart = m_ctrlPatchView.Call(SCI_GETSELECTIONSTART), selend = m_ctrlPatchView.Call(SCI_GETSELECTIONEND); selstart != selend)
+	if (auto selstart = static_cast<Sci_Position>(m_ctrlPatchView.Call(SCI_GETSELECTIONSTART)), selend = static_cast<Sci_Position>(m_ctrlPatchView.Call(SCI_GETSELECTIONEND)); selstart != selend && selend - selstart < INT_MAX)
 	{
-		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
-		Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
-		if (m_ctrlPatchView.Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
-			m_FindBar.SetFindText(m_ctrlPatchView.StringFromControl(linebuf.get()));
+		CStringA selText;
+		Sci_TextRangeFull range = { selstart, selend, selText.GetBuffer(SafeSizeToInt(selend - selstart)) };
+		selText.ReleaseBufferSetLength(SafeSizeToInt(m_ctrlPatchView.Call(SCI_GETTEXTRANGEFULL, 0, reinterpret_cast<LPARAM>(&range))));
+		if (!selText.IsEmpty())
+			m_FindBar.SetFindText(m_ctrlPatchView.StringFromControl(selText));
 	}
 	m_FindBar.SetFocusTextBox();
 }

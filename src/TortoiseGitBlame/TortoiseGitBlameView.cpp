@@ -1932,12 +1932,13 @@ void CTortoiseGitBlameView::OnEditFind()
 	m_pFindDialog=new CFindReplaceDialog();
 
 	CString oneline = m_sFindText;
-	if (auto selstart = m_TextView.Call(SCI_GETSELECTIONSTART), selend = m_TextView.Call(SCI_GETSELECTIONEND); selstart != selend)
+	if (auto selstart = static_cast<Sci_Position>(m_TextView.Call(SCI_GETSELECTIONSTART)), selend = static_cast<Sci_Position>(m_TextView.Call(SCI_GETSELECTIONEND)); selstart != selend && selend - selstart < INT_MAX)
 	{
-		auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
-		Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
-		if (m_TextView.Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
-			oneline = m_TextView.StringFromControl(linebuf.get());
+		CStringA selText;
+		Sci_TextRangeFull range = { selstart, selend, selText.GetBuffer(SafeSizeToInt(selend - selstart)) };
+		selText.ReleaseBufferSetLength(SafeSizeToInt(m_TextView.Call(SCI_GETTEXTRANGEFULL, 0, reinterpret_cast<LPARAM>(&range))));
+		if (!selText.IsEmpty())
+			oneline = m_TextView.StringFromControl(selText);
 	}
 
 	DWORD flags = FR_DOWN | FR_HIDEWHOLEWORD;
