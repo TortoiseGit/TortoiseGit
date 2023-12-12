@@ -1,6 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2010, 2015, 2022 - TortoiseSVN
+// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2009-2010, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,26 +34,134 @@ public:
 // Dialog Data
 	enum { IDD = IDD_SETTINGS_CONFIG };
 
-	enum SettingType
+	class AdvancedSetting
 	{
-		SettingTypeBoolean,
-		SettingTypeNumber,
-		SettingTypeString,
-		SettingTypeNone,
-	};
+	public:
+		AdvancedSetting(const wchar_t* sName) noexcept
+			: sName(sName)
+		{
+		}
+		virtual ~AdvancedSetting() = default;
 
-	union defaultValue
-	{
-		bool		b;
-		LPCWSTR		s;
-		DWORD		l;
-	};
+		CString GetName() const { return sName; }
+		virtual CString GetValue() const = 0;
+		virtual bool IsValid(LPCWSTR s) const = 0;
+		virtual void StoreValue(const CString& sValue) const = 0;
 
-	struct AdvancedSetting
+	protected:
+		CString GetRegistryPath() const
+		{
+			return L"Software\\TortoiseGit\\" + GetName();
+		}
+
+	private:
+		CString sName;
+	};
+	class StringSetting : public AdvancedSetting
 	{
-		CString			sName;
-		SettingType		type;
-		defaultValue	def;
+	public:
+		StringSetting(const wchar_t* sName, LPCWSTR defaultValue) noexcept
+			: AdvancedSetting(sName)
+			, m_defaultValue(defaultValue)
+		{
+		}
+
+		CString GetValue() const override
+		{
+			return CRegString(GetRegistryPath(), m_defaultValue);
+		}
+		bool IsValid(LPCWSTR /*s*/) const override
+		{
+			return true;
+		}
+		void StoreValue(const CString& sValue) const override
+		{
+			CRegString s(GetRegistryPath(), m_defaultValue);
+			if (sValue.Compare(static_cast<CString>(s)))
+				s = sValue;
+		}
+
+	private:
+		LPCWSTR m_defaultValue;
+	};
+	class BooleanSetting : public AdvancedSetting
+	{
+	public:
+		BooleanSetting(const wchar_t* sName, bool defaultValue) noexcept
+			: AdvancedSetting(sName)
+			, m_defaultValue(defaultValue)
+		{
+		}
+
+		CString GetValue() const override
+		{
+			return static_cast<DWORD>(CRegDWORD(GetRegistryPath(), m_defaultValue)) ? L"true" : L"false";
+		}
+		bool IsValid(LPCWSTR pszText) const override
+		{
+			assert(pszText);
+			return (!*pszText ||
+					(wcscmp(pszText, L"true") == 0) ||
+					(wcscmp(pszText, L"false") == 0));
+		}
+		void StoreValue(const CString& sValue) const override
+		{
+			CRegDWORD s(GetRegistryPath(), m_defaultValue);
+			if (sValue.IsEmpty())
+			{
+				s.removeValue();
+				return;
+			}
+
+			const DWORD newValue = sValue.Compare(L"true") == 0;
+			if (DWORD(s) != newValue)
+				s = newValue;
+		}
+
+	private:
+		bool m_defaultValue = false;
+	};
+	class DWORDSetting : public AdvancedSetting
+	{
+	public:
+		DWORDSetting(const wchar_t* sName, DWORD defaultValue) noexcept
+			: AdvancedSetting(sName)
+			, m_defaultValue(defaultValue)
+		{
+		}
+
+		CString GetValue() const override
+		{
+			CString temp;
+			temp.Format(L"%ld", static_cast<DWORD>(CRegDWORD(GetRegistryPath(), m_defaultValue)));
+			return temp;
+		}
+		bool IsValid(LPCWSTR pszText) const override
+		{
+			assert(pszText);
+			const wchar_t* pChar = pszText;
+			while (*pChar)
+			{
+				if (!_istdigit(*pChar))
+					return false;
+				++pChar;
+			}
+			return true;
+		}
+		void StoreValue(const CString& sValue) const override
+		{
+			CRegDWORD s(GetRegistryPath(), m_defaultValue);
+			if (sValue.IsEmpty())
+			{
+				s.removeValue();
+				return;
+			}
+			if (DWORD(_wtol(sValue)) != DWORD(s))
+				s = _wtol(sValue);
+		}
+
+	private:
+		DWORD m_defaultValue;
 	};
 
 protected:
@@ -67,6 +176,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	template<typename T, typename S>
+	void AddSetting(const wchar_t* sName, S defaultValue)
+	{
+		settings.emplace_back(std::make_unique<T>(sName, defaultValue));
+	}
+
 	CListCtrl		m_ListCtrl;
-	AdvancedSetting	settings[51];
+	std::vector<std::unique_ptr<AdvancedSetting>> settings;
 };

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2022 - TortoiseGit
+// Copyright (C) 2012-2023 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,210 +30,56 @@ IMPLEMENT_DYNAMIC(CSettingsAdvanced, ISettingsPropPage)
 CSettingsAdvanced::CSettingsAdvanced()
 	: ISettingsPropPage(CSettingsAdvanced::IDD)
 {
-	int i = 0;
-	settings[i].sName	= L"AutoCompleteMinChars";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 3;
-
-	settings[i].sName	= L"AutocompleteParseMaxSize";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 300000L;
-
-	settings[i].sName	= L"AutocompleteParseUnversioned";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"AutocompleteRemovesExtensions";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"BlockStatus";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"CacheTrayIcon";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"CacheSave";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ConflictDontGuessBranchNames";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"CygwinHack";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"Debug";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"DebugOutputString";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"DiffSimilarityIndexThreshold";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 50;
-
-	settings[i].sName	= L"DownloadAnimation";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"FullRowSelect";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"GroupTaskbarIconsPerRepo";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 3;
-
-	settings[i].sName	= L"GroupTaskbarIconsPerRepoOverlay";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"LogFontForFileListCtrl";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"LogFontForLogCtrl";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"LogTooManyItemsThreshold";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 1000;
-
-	settings[i].sName	= L"LogIncludeBoundaryCommits";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"LogIncludeWorkingTreeChanges";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"LogShowSuperProjectSubmodulePointer";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"MaxRefHistoryItems";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 5;
-
-	settings[i].sName	= L"ModifyExplorerTitle";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName   = L"Msys2Hack";
-	settings[i].type    = CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b = false;
-
-	settings[i].sName	= L"NamedRemoteFetchAll";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"NoSortLocalBranchesFirst";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"NumDiffWarning";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 10;
-
-	settings[i].sName	= L"OverlaysCaseSensitive";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ProgressDlgLinesLimit";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 50000;
-
-	settings[i].sName	= L"ReaddUnselectedAddedFilesAfterCommit";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"RefreshFileListAfterResolvingConflict";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"RememberFileListPosition";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"SanitizeCommitMsg";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ScintillaDirect2D";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"ShellMenuAccelerators";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ShortHashLengthForHyperLinkInLogMessage";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= g_Git.GetShortHASHLength();
-
-	settings[i].sName	= L"ShowContextMenuIcons";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ShowAppContextMenuIcons";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ShowListBackgroundImage";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"ShowListFullPathTooltip";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"SquashDate";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 0;
-
-	settings[i].sName	= L"StyleCommitMessages";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"StyleGitOutput";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"TGitCacheCheckContentMaxSize";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l	= 10 * 1024;
-
-    settings[i].sName	= L"UseCustomWordBreak";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNumber;
-	settings[i++].def.l = 2;
-
-	settings[i].sName	= L"UseLibgit2";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"VersionCheck";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= true;
-
-	settings[i].sName	= L"VersionCheckPreview";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"Win8SpellChecker";
-	settings[i].type	= CSettingsAdvanced::SettingTypeBoolean;
-	settings[i++].def.b	= false;
-
-	settings[i].sName	= L"";
-	settings[i].type	= CSettingsAdvanced::SettingTypeNone;
-	settings[i++].def.b	= false;
+	AddSetting<DWORDSetting>  (L"AutoCompleteMinChars", 3);
+	AddSetting<DWORDSetting>  (L"AutocompleteParseMaxSize", 300000L);
+	AddSetting<BooleanSetting>(L"AutocompleteParseUnversioned", false);
+	AddSetting<BooleanSetting>(L"AutocompleteRemovesExtensions", false);
+	AddSetting<BooleanSetting>(L"BlockStatus", false);
+	AddSetting<BooleanSetting>(L"CacheTrayIcon", false);
+	AddSetting<BooleanSetting>(L"CacheSave", true);
+	AddSetting<BooleanSetting>(L"ConflictDontGuessBranchNames", false);
+	AddSetting<BooleanSetting>(L"CygwinHack", false);
+	AddSetting<BooleanSetting>(L"Debug", false);
+	AddSetting<BooleanSetting>(L"DebugOutputString", false);
+	AddSetting<DWORDSetting>  (L"DiffSimilarityIndexThreshold", 50);
+	AddSetting<BooleanSetting>(L"DownloadAnimation", true);
+	AddSetting<BooleanSetting>(L"FullRowSelect", true);
+	AddSetting<DWORDSetting>  (L"GroupTaskbarIconsPerRepo", 3);
+	AddSetting<BooleanSetting>(L"GroupTaskbarIconsPerRepoOverlay", true);
+	AddSetting<BooleanSetting>(L"LogFontForFileListCtrl", false);
+	AddSetting<BooleanSetting>(L"LogFontForLogCtrl", false);
+	AddSetting<DWORDSetting>  (L"LogTooManyItemsThreshold", 1000);
+	AddSetting<BooleanSetting>(L"LogIncludeBoundaryCommits", false);
+	AddSetting<BooleanSetting>(L"LogIncludeWorkingTreeChanges", true);
+	AddSetting<BooleanSetting>(L"LogShowSuperProjectSubmodulePointer", true);
+	AddSetting<DWORDSetting>  (L"MaxRefHistoryItems", 5);
+	AddSetting<BooleanSetting>(L"ModifyExplorerTitle", true);
+	AddSetting<BooleanSetting>(L"Msys2Hack", false);
+	AddSetting<BooleanSetting>(L"NamedRemoteFetchAll", true);
+	AddSetting<BooleanSetting>(L"NoSortLocalBranchesFirst", false);
+	AddSetting<DWORDSetting>  (L"NumDiffWarning", 10);
+	AddSetting<BooleanSetting>(L"OverlaysCaseSensitive", true);
+	AddSetting<DWORDSetting>  (L"ProgressDlgLinesLimit", 50000);
+	AddSetting<BooleanSetting>(L"ReaddUnselectedAddedFilesAfterCommit", true);
+	AddSetting<BooleanSetting>(L"RefreshFileListAfterResolvingConflict", true);
+	AddSetting<BooleanSetting>(L"RememberFileListPosition", true);
+	AddSetting<BooleanSetting>(L"SanitizeCommitMsg", true);
+	AddSetting<BooleanSetting>(L"ScintillaDirect2D", false);
+	AddSetting<BooleanSetting>(L"ShellMenuAccelerators", true);
+	AddSetting<DWORDSetting>  (L"ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength());
+	AddSetting<BooleanSetting>(L"ShowContextMenuIcons", true);
+	AddSetting<BooleanSetting>(L"ShowAppContextMenuIcons", true);
+	AddSetting<BooleanSetting>(L"ShowListBackgroundImage", true);
+	AddSetting<BooleanSetting>(L"ShowListFullPathTooltip", true);
+	AddSetting<DWORDSetting>  (L"SquashDate", 0);
+	AddSetting<BooleanSetting>(L"StyleCommitMessages", true);
+	AddSetting<BooleanSetting>(L"StyleGitOutput", true);
+	AddSetting<DWORDSetting>  (L"TGitCacheCheckContentMaxSize", 10 * 1024);
+	AddSetting<DWORDSetting>  (L"UseCustomWordBreak", 2);
+	AddSetting<BooleanSetting>(L"UseLibgit2", true);
+	AddSetting<BooleanSetting>(L"VersionCheck", true);
+	AddSetting<BooleanSetting>(L"VersionCheckPreview", false);
+	AddSetting<BooleanSetting>(L"Win8SpellChecker", false);
 }
 
 CSettingsAdvanced::~CSettingsAdvanced()
@@ -273,34 +119,11 @@ BOOL CSettingsAdvanced::OnInitDialog()
 
 	m_ListCtrl.SetRedraw(FALSE);
 
-	int i = 0;
-	while (settings[i].type != SettingTypeNone)
+	for (int i = 0; i < static_cast<int>(settings.size()); ++i)
 	{
-		m_ListCtrl.InsertItem(i, settings[i].sName);
-		m_ListCtrl.SetItemText(i, 1, settings[i].sName);
-		switch (settings[i].type)
-		{
-		case SettingTypeBoolean:
-			{
-				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.b);
-				m_ListCtrl.SetItemText(i, 0, DWORD(s) ?	L"true" : L"false");
-			}
-			break;
-		case SettingTypeNumber:
-			{
-				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
-				temp.Format(L"%ld", static_cast<DWORD>(s));
-				m_ListCtrl.SetItemText(i, 0, temp);
-			}
-			break;
-		case SettingTypeString:
-			{
-				CRegString s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.s);
-				m_ListCtrl.SetItemText(i, 0, CString(s));
-			}
-		}
-
-		++i;
+		m_ListCtrl.InsertItem(i, settings.at(i)->GetName());
+		m_ListCtrl.SetItemText(i, 1, settings.at(i)->GetName());
+		m_ListCtrl.SetItemText(i, 0, settings.at(i)->GetValue());
 	}
 
 	for (int col = 0, maxcol = m_ListCtrl.GetHeaderCtrl()->GetItemCount(); col < maxcol; ++col)
@@ -314,43 +137,9 @@ BOOL CSettingsAdvanced::OnInitDialog()
 
 BOOL CSettingsAdvanced::OnApply()
 {
-	int i = 0;
-	while (settings[i].type != SettingTypeNone)
+	for (int i = 0; i < static_cast<int>(settings.size()); ++i)
 	{
-		CString	sValue = m_ListCtrl.GetItemText(i, 0);
-		switch (settings[i].type)
-		{
-		case SettingTypeBoolean:
-			{
-				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.b);
-				if (sValue.IsEmpty())
-					s.removeValue();
-				else
-				{
-					DWORD newValue = sValue.Compare(L"true") == 0;
-					if (DWORD(s) != newValue)
-						s = newValue;
-				}
-			}
-			break;
-		case SettingTypeNumber:
-			{
-				CRegDWORD s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.l);
-				if (sValue.IsEmpty())
-					s.removeValue();
-				else if (DWORD(_wtol(sValue)) != DWORD(s))
-					s = _wtol(sValue);
-			}
-			break;
-		case SettingTypeString:
-			{
-				CRegString s(L"Software\\TortoiseGit\\" + settings[i].sName, settings[i].def.s);
-				if (sValue.Compare(CString(s)))
-					s = sValue;
-			}
-		}
-
-		++i;
+		settings.at(i)->StoreValue(m_ListCtrl.GetItemText(i, 0));
 	}
 
 	return ISettingsPropPage::OnApply();
@@ -368,38 +157,7 @@ void CSettingsAdvanced::OnLvnEndlabeledit(NMHDR *pNMHDR, LRESULT *pResult)
 	if (!pDispInfo->item.pszText)
 		return;
 
-	bool allowEdit = false;
-	switch (settings[pDispInfo->item.iItem].type)
-	{
-	case SettingTypeBoolean:
-		{
-			if ((pDispInfo->item.pszText[0] == 0) ||
-				(wcscmp(pDispInfo->item.pszText, L"true") == 0) ||
-				(wcscmp(pDispInfo->item.pszText, L"false") == 0))
-			{
-				allowEdit = true;
-			}
-		}
-		break;
-	case SettingTypeNumber:
-		{
-			wchar_t* pChar = pDispInfo->item.pszText;
-			allowEdit = true;
-			while (*pChar)
-			{
-				if (!_istdigit(*pChar))
-				{
-					allowEdit = false;
-					break;
-				}
-				++pChar;
-			}
-		}
-		break;
-	case SettingTypeString:
-		allowEdit = true;
-		break;
-	}
+	bool allowEdit = settings.at(pDispInfo->item.iItem)->IsValid(pDispInfo->item.pszText);
 
 	if (allowEdit)
 		SetModified();
