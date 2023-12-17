@@ -19,6 +19,7 @@ Released: unreleased
  * Sanitize GIT_* environment variables to prevent passing environment variables to git.exe that are currently unsupported in TortoiseGit/libgit2 to prevent inconsistencies
  * Fixed issue #4096: Git configuration under XDG_CONFIG_HOME is not recognized correctly
  * TortoiseGitBlame: Fix blaming a file from another working tree
+ * Fixed issue #4073: TortoiseGit extremely slow on network shares / UNC paths since 2.14
 
 = Release 2.15.0 =
 Released: 2023-10-03
