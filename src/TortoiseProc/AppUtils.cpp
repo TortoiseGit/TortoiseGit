@@ -1176,18 +1176,13 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 	{
 		CString cmd;
 		CString args;
-		if(dlg.m_bTrack == TRUE)
-			args = L" --track";
-		else if(dlg.m_bTrack == FALSE)
-			args = L" --no-track";
-
 		if(dlg.m_bForce)
-			args = L" -f";
+			args += L" -f";
 
 		if (isTag)
 		{
 			if(dlg.m_bSign)
-				args = L" -s";
+				args += L" -s";
 
 			if (!dlg.m_Message.Trim().IsEmpty())
 			{
@@ -1208,6 +1203,11 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 		}
 		else
 		{
+			if (dlg.m_bTrack == TRUE)
+				args += L" --track";
+			else if (dlg.m_bTrack == FALSE)
+				args += L" --no-track";
+
 			cmd.Format(L"git.exe branch%s -- %s %s",
 				static_cast<LPCWSTR>(args),
 				static_cast<LPCWSTR>(dlg.m_BranchTagName),
