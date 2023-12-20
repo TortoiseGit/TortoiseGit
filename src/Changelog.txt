@@ -10,6 +10,7 @@ Released: unreleased
  * Updated libgit to 2.43 based on Git for Windows sources
  * Update json library to 3.11.3
  * Update TortoiseGitPlink to PuTTY Plink 0.80
+ * Update shipped PuTTY binaries to 0.80
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
