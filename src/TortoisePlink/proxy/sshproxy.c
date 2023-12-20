@@ -430,8 +430,32 @@ static SeatPromptResult sshproxy_confirm_ssh_host_key(
     return SPR_SW_ABORT("Noninteractive SSH proxy cannot confirm host key");
 }
 
+static void sshproxy_format_seatdialogtext(strbuf *sb, SeatDialogText *text)
+{
+    for (SeatDialogTextItem *item = text->items,
+             *end = item+text->nitems; item < end; item++) {
+        switch (item->type) {
+          case SDT_SCARY_HEADING:
+          case SDT_PARA:
+          case SDT_DISPLAY:
+            put_stringz(sb, item->text);
+            put_byte(sb, '\n');
+            break;
+          case SDT_BATCH_ABORT:
+            put_stringz(sb, item->text);
+            put_byte(sb, '\n');
+            goto endloop;
+          default:
+            break;
+        }
+    }
+
+  endloop:
+    while (strbuf_chomp(sb, '\n'));
+}
+
 static SeatPromptResult sshproxy_confirm_weak_crypto_primitive(
-    Seat *seat, const char *algtype, const char *algname,
+    Seat *seat, SeatDialogText *text,
     void (*callback)(void *ctx, SeatPromptResult result), void *ctx)
 {
     SshProxy *sp = container_of(seat, SshProxy, seat);
@@ -442,22 +466,24 @@ static SeatPromptResult sshproxy_confirm_weak_crypto_primitive(
          * request on to it.
          */
         return seat_confirm_weak_crypto_primitive(
-            wrap(sp->clientseat), algtype, algname, callback, ctx);
+            wrap(sp->clientseat), text, callback, ctx);
     }
 
     /*
      * Otherwise, behave as if we're in batch mode: take the safest
      * option.
      */
-    sshproxy_error(sp, "First %s supported by server is %s, below warning "
-                   "threshold. Abandoning proxy SSH connection.",
-                   algtype, algname);
+    strbuf *sb = strbuf_new();
+    sshproxy_format_seatdialogtext(sb, text);
+    sshproxy_error(sp, sb->s);
+    strbuf_free(sb);
+
     return SPR_SW_ABORT("Noninteractive SSH proxy cannot confirm "
                         "weak crypto primitive");
 }
 
 static SeatPromptResult sshproxy_confirm_weak_cached_hostkey(
-    Seat *seat, const char *algname, const char *betteralgs,
+    Seat *seat, SeatDialogText *text,
     void (*callback)(void *ctx, SeatPromptResult result), void *ctx)
 {
     SshProxy *sp = container_of(seat, SshProxy, seat);
@@ -468,16 +494,18 @@ static SeatPromptResult sshproxy_confirm_weak_cached_hostkey(
          * request on to it.
          */
         return seat_confirm_weak_cached_hostkey(
-            wrap(sp->clientseat), algname, betteralgs, callback, ctx);
+            wrap(sp->clientseat), text, callback, ctx);
     }
 
     /*
      * Otherwise, behave as if we're in batch mode: take the safest
      * option.
      */
-    sshproxy_error(sp, "First host key type stored for server is %s, below "
-                   "warning threshold. Abandoning proxy SSH connection.",
-                   algname);
+    strbuf *sb = strbuf_new();
+    sshproxy_format_seatdialogtext(sb, text);
+    sshproxy_error(sp, sb->s);
+    strbuf_free(sb);
+
     return SPR_SW_ABORT("Noninteractive SSH proxy cannot confirm "
                         "weak cached host key");
 }

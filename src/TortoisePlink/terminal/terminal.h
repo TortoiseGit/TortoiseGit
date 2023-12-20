@@ -147,7 +147,6 @@ struct terminal_tag {
     long vbell_end;
     bool app_cursor_keys, app_keypad_keys, vt52_mode;
     bool repeat_off, srm_echo, cr_lf_return;
-    bool seen_disp_event;
     bool big_cursor;
 
     bool xterm_mouse_forbidden;
@@ -184,6 +183,7 @@ struct terminal_tag {
 #define ANSI_QUE(x)     ANSI(x,1)
 
 #define OSC_STR_MAX 2048
+    bool osc_is_apc;
     int osc_strlen;
     char osc_string[OSC_STR_MAX + 1];
     bool osc_w;
