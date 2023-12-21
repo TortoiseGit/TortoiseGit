@@ -904,7 +904,7 @@ msgid "&None"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
+msgid "&Notepad"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
