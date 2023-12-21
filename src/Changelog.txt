@@ -4,6 +4,9 @@ This version drops support for all Windows version < 10.
 
 Git for Windows is going to stop providing a build for 32-bit Windows, TortoiseGit will also follow with one of the next releases-
 
+TortoiseGit does not ship Notepad2 any more, but defaults to Windows Notepad that also supports LF EOL.
+If you want to use Notepad2, you have to set it up manually and can configure it in TortoiseGit settings as alternative editor.
+
 == Features ==
  * Fixed issue #3826: Help links don't open in a sensible browser
 
