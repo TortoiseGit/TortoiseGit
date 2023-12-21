@@ -62,7 +62,6 @@ END_MESSAGE_MAP()
 
 LRESULT CRefLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-	m_RefList.m_RevCache.clear();
 	OnCbnSelchangeRef();
 	return 0;
 }
@@ -131,8 +130,6 @@ void CRefLogDlg::OnBnClickedClearStash()
 			return;
 		}
 
-		m_RefList.m_RevCache.clear();
-
 		OnCbnSelchangeRef();
 	}
 }
@@ -140,8 +137,9 @@ void CRefLogDlg::OnBnClickedClearStash()
 void CRefLogDlg::OnCbnSelchangeRef()
 {
 	m_CurrentBranch = m_ChooseRef.GetString(); // remember selected branch
+	m_RefList.m_CurrentBranch = m_CurrentBranch;
+	m_RefList.m_RevCache.clear();
 	m_RefList.ClearText();
-
 	m_RefList.SetRedraw(false);
 
 	if (CString err; GitRevLoglist::GetRefLog(m_CurrentBranch, m_RefList.m_RevCache, err))
@@ -224,9 +222,6 @@ void CRefLogDlg::Refresh()
 	}
 	if (!found)
 		m_ChooseRef.SetCurSel(0); /* Choose HEAD */
-
-	m_RefList.m_CurrentBranch = m_CurrentBranch;
-	m_RefList.m_RevCache.clear();
 
 	OnCbnSelchangeRef();
 }
