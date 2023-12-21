@@ -41,25 +41,16 @@ for:
         - platform: Win32
           configuration: Debug
           image: Visual Studio 2022
-    test_script:
-    - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
-    - bin\Debug\bin\tests.exe
-    - reg add HKCU\Software\TortoiseGit /v CygwinHack /t REG_DWORD /f /d 1
-    - reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "c:\cygwin\bin"
-    - set HOME=%USERPROFILE%
-    - c:\cygwin\bin\git version
-    - c:\cygwin\bin\git config --global --add safe.directory '*'
-    - set PATH="c:\cygwin\bin";%PATH%
-    - bin\Debug\bin\tests.exe
-    - reg delete HKCU\Software\TortoiseGit /v CygwinHack /f
-    - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
-    - reg add HKCU\Software\TortoiseGit /v Msys2Hack /t REG_DWORD /f /d 1
-    - reg add HKCU\Software\TortoiseGit /v MSysGit /t REG_SZ /f /d "c:\msys64\usr\bin"
-    - c:\msys64\usr\bin\git version
-    - set PATH="c:\msys64\usr\bin";%PATH%
-    - bin\Debug\bin\tests.exe
-    - reg delete HKCU\Software\TortoiseGit /v Msys2Hack /f
-    - reg delete HKCU\Software\TortoiseGit /v MSysGit /f
+    build_script:
+    - git submodule update --init -- ext/libgit2 ext/tgit ext/zlib ext/pcre2
+    - cd ext\libgit2
+    - git config --global user.email "dummy@example.com"
+    - git config --global user.name "Dummy Name"
+    - for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+    - git config --unset --global user.email
+    - git config --unset --global user.name
+    - cd ..\..
+    - msbuild "src\TortoiseGit.sln" /t:"TortoiseShell" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   -
     matrix:
       only:
@@ -91,12 +82,16 @@ for:
         - platform: Win32
           configuration: Release
           image: Visual Studio 2022
-    test_script:
-    - set PATH="C:\Program Files\Git\mingw64\bin";%PATH%
-    - bin\Release\bin\tests.exe
-    - msbuild "src\TortoiseGit.sln" /t:"GitWCRev" /t:"GitWCRevCom" /t:"TortoiseGitSetup\CustomActions" /t:"TortoiseGitSetup\RestartExplorer" /t:"ext\Crash-Server\CrashServerSDK\CrashHandler" /t:"ext\Crash-Server\CrashServerSDK\SendRpt" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
-    - git submodule update --init -- ext/apr ext/apr-util ext/editorconfig ext/lexilla ext/OGDF ext/hunspell
-    - msbuild "src\TortoiseGit.sln" /t:"TGitCache" /t:"TortoiseGitBlame" /t:"TortoiseGitIDiff" /t:"TortoiseGitMerge" /t:"TortoiseGitPlink" /t:"TortoiseGitProc" /t:"TortoiseGitStub" /t:"TortoiseGitUDiff" /t:"TortoiseShell" /t:"SshAskPass" /t:"tgittouch" /t:"GitWCRev" /t:"GitWCRevCom" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
+    build_script:
+    - git submodule update --init -- ext/libgit2 ext/tgit ext/zlib ext/pcre2
+    - cd ext\libgit2
+    - git config --global user.email "dummy@example.com"
+    - git config --global user.name "Dummy Name"
+    - for %%G in (..\libgit2-*.patch) do ( type %%G | git am )
+    - git config --unset --global user.email
+    - git config --unset --global user.name
+    - cd ..\..
+    - msbuild "src\TortoiseGit.sln" /t:"TortoiseShell" /m /verbosity:minimal /p:Configuration=%CONFIGURATION% /p:Platform=%PLATFORM% /maxcpucount /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll"
   -
     matrix:
       only:

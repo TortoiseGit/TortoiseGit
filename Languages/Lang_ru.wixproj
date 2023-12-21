@@ -17,15 +17,6 @@
 		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1049;LANGNATIVE=Russian;SPELL=1;</DefineConstants>
 		<Cultures>ru-RU</Cultures>
 	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-		<OutputPath>bin\$(Configuration)\</OutputPath>
-		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
-		<DefineConstants>Debug</DefineConstants>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-		<OutputPath>..\bin\setup\x86\</OutputPath>
-		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
-	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
 		<OutputPath>bin\$(Configuration)64\</OutputPath>
 		<IntermediateOutputPath>..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>

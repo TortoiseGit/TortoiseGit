@@ -43,7 +43,6 @@
 	<PropertyGroup>
 		<OutputPath Condition="'$(Configuration)'=='Release'">..\..\bin\setup\$(Platform)\</OutputPath>
 		<OutputPath Condition="'$(Configuration)'=='Debug'">..\..\bin\setup\debug-$(Platform)\</OutputPath>
-		<IntermediateOutputPath Condition="'$(Platform)'=='x86'">..\..\obj\TortoiseGitSetup\$(Configuration)\</IntermediateOutputPath>
 		<IntermediateOutputPath Condition="'$(Platform)'=='x64'">..\..\obj\TortoiseGitSetup\$(Configuration)64\</IntermediateOutputPath>
 		<IntermediateOutputPath Condition="'$(Platform)'=='ARM64'">..\..\obj\TortoiseGitSetup\$(Configuration)ARM64\</IntermediateOutputPath>
 	</PropertyGroup>

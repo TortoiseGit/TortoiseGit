@@ -4,12 +4,7 @@
 
 	<?include Includes.wxi?>
 -->
-	<?if $(var.Platform) = "x86" ?>
-	<?define cf="CommonFilesFolder" ?>
-	<?endif ?>
-	<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 	<?define cf="CommonFiles64Folder" ?>
-	<?endif ?>
 <!--
 	<Fragment Id="StructureFragment">
 -->
@@ -18,10 +13,6 @@
 	<Directory Id="TARGETDIR" Name="SourceDir">
 		<Directory Id="D__ProgramFilesFolder" Name="Program Files">
 			<Directory Id="INSTALLDIR" Name="TortoiseGit">
-
-				<?if $(var.Platform) = "x86" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
-				<?endif ?>
 
 				<?if $(var.Platform) = "x64" ?>
 				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-x64.msm" DiskId="1" />
@@ -46,57 +37,6 @@
 				</Component>
 
 				<Component Id="C__shellregistry" Guid="*" Win64="$(var.Win64YesNo)">
-					<?if $(var.Platform) = "x86" ?>
-					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<?endif ?>
-					<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -145,9 +85,7 @@
 					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<?endif ?>
 				</Component>
-				<?if $(var.Platform) = "x64" ?>
 				<Component Id="C__shellregistry32" Guid="*" Win64="no">
 					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
@@ -198,7 +136,6 @@
 					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 				</Component>
-				<?endif ?>
 
 				<Component Id="C_SSHCLIENT_PLINK" Guid="*" Win64="$(var.Win64YesNo)" Permanent="yes">
 					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
@@ -295,36 +232,20 @@
 					</Component>
 
 					<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
-						<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
-						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes" />
 						<File Id="F__zlib" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
 						<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
-						<?endif ?>
 					</Component>
-					<?if $(var.Platform) = "x64" ?>
 					<Component Id="C__gitlibs32" Guid="$(var.GuidGitLibs32)" Win64="$(var.Win64YesNo)">
 						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
 						<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
 						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 					</Component>
-					<?endif ?>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
 						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
 						<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__notepad2x86" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x86.exe" />
-						<File Id="F__PuttyGenx86" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x86.exe" />
-						<File Id="F__pageantx86" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x86.exe" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__notepad2x64" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
-						<?endif ?>
 						<?if $(var.Platform) = "x64" ?>
 						<File Id="F__PuttyGenx64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x64.exe" />
 						<File Id="F__pageantx64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x64.exe" />
@@ -387,15 +308,9 @@
 					</Component>
 
 					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
 						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
-						<?endif ?>
-						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+						<?if $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 						<File Id="F__packagemsix" Name="package.msix" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\package.msix" />
 						<?endif ?>
 					</Component>
@@ -477,9 +392,7 @@
 						<?endif ?>
 						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
 						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
-						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") ?>
 						<File Id="F__vcruntime140_1" Name="vcruntime140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_1.dll" />
-						<?endif ?>
 						<?if $(var.VCToolsRedistVersionCheck) >= 1438 ?>
 						<File Id="F__vcruntime140_threads" Name="vcruntime140_threads.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_threads.dll" />
 						<?endif ?>

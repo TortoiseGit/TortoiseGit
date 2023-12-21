@@ -1,8 +1,6 @@
 ; URLs and filenames of PuTTY tools
 ; Always make sure the signatures are verified before changing this file!
-https://the.earth.li/~sgtatham/putty/0.80/w32/pageant.exe	pageant-x86.exe	c18fa123f0ceadfaf7a61d3b626a5f01d303851e8d3c8b03e10034526d1b043f
 https://the.earth.li/~sgtatham/putty/0.80/w64/pageant.exe	pageant-x64.exe	b0df9f1c67b830d5c4e2c88565e6c12b08a6634a3c1d234627ffa95fb5e8bcef
 https://the.earth.li/~sgtatham/putty/0.80/wa64/pageant.exe	pageant-arm64.exe	daeadccc27212692f11cb0fccdf3cefa0a1478e61e6d76f1a8b84beb559227f5
-https://the.earth.li/~sgtatham/putty/0.80/w32/puttygen.exe	puttygen-x86.exe	e201257cc705334ff47aabc5fed099cb4d07380d0ce602668a99f2f44070aa9d
 https://the.earth.li/~sgtatham/putty/0.80/w64/puttygen.exe	puttygen-x64.exe	97917d2459a395fde40c70bebe1b133624d83ad875d44164b940015996ef7ceb
 https://the.earth.li/~sgtatham/putty/0.80/wa64/puttygen.exe	puttygen-arm64.exe	680dd76d55067c58e28b881c30427b5ce2d55d63de115987687395c99bc87c6b
