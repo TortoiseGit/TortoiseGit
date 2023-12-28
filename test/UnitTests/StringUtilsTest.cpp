@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2021 - TortoiseGit
+// Copyright (C) 2015-2017, 2021, 2023 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -97,6 +97,20 @@ TEST(CStringUtils, RemoveAccelerators)
 	EXPECT_STREQ(L"Some & text", text6);
 }
 
+TEST(CStringUtils, GetAccellerator)
+{
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L""));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"&"));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"NoAccellerator"));
+	EXPECT_EQ(L'A', CStringUtils::GetAccellerator(L"&Accellerator"));
+	EXPECT_EQ(L'C', CStringUtils::GetAccellerator(L"Ac&cellerator"));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"Accellerator&"));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"Accellerator&&"));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"Some & text"));
+	EXPECT_EQ(L'\0', CStringUtils::GetAccellerator(L"&&Accellerator"));
+	EXPECT_EQ(L'L', CStringUtils::GetAccellerator(L"Acce&&&llerator"));
+	EXPECT_EQ(L'X', CStringUtils::GetAccellerator(L"Some & te&xt"));
+}
 TEST(CStringUtils, ParseEmailAddress)
 {
 	CString mail, name;

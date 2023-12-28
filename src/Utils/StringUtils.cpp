@@ -121,13 +121,12 @@ CString CStringUtils::EscapeAccellerators(CString& text)
 wchar_t CStringUtils::GetAccellerator(const CString& text)
 {
 	int pos = 0;
-	while ((pos = text.Find('&', pos)) >= 0)
+	while ((pos = text.Find(L'&', pos)) >= 0 && pos + 1 < text.GetLength())
 	{
-		if (text.GetLength() > (pos - 1))
-		{
-			if (text.GetAt(pos + 1) != ' ' && text.GetAt(pos + 1) != '&')
-				return towupper(text.GetAt(pos + 1));
-		}
+		if (text.GetAt(pos + 1) == '&')
+			++pos;
+		else if (text.GetAt(pos + 1) != ' ')
+			return towupper(text.GetAt(pos + 1));
 		++pos;
 	}
 	return L'\0';
