@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2010, 2020-2022 - TortoiseSVN
+// Copyright (C) 2003-2010, 2020-2023 - TortoiseSVN
 // Copyright (C) 2015-2016, 2020 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -164,6 +164,8 @@ public:
 	 * Escapes all '&' chars from a string with another '&'.
 	 */
 	static CString EscapeAccellerators(CString& text);
+
+	static CString EnsureCRLF(const CString& text);
 #endif
 
 #ifdef _MFC_VER

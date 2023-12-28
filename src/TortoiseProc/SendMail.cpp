@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2019, 2023 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -180,7 +180,7 @@ int GetFileContents(CString &filename, CString &content)
 		{
 			content += str;
 			str.Empty();
-			content += L'\n';
+			content += L"\r\n";
 		}
 		return 0;
 	}

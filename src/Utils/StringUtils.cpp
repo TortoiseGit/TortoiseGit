@@ -131,6 +131,22 @@ wchar_t CStringUtils::GetAccellerator(const CString& text)
 	}
 	return L'\0';
 }
+
+CString CStringUtils::EnsureCRLF(const CString& text)
+{
+	CString result;
+	const int length = text.GetLength();
+	for (int i = 0; i < length; ++i)
+	{
+		if (text[i] == L'\r' && (i == length - 1 || text[i + 1] != L'\n'))
+			result += "\r\n";
+		else if (text[i] == L'\n' && (i == 0 || text[i - 1] != L'\r'))
+			result += L"\r\n";
+		else
+			result += text[i];
+	}
+	return result;
+}
 #endif
 #ifdef _MFC_VER
 bool CStringUtils::WriteAsciiStringToClipboard(const CStringA& sClipdata, LCID lcid, HWND hOwningWnd)

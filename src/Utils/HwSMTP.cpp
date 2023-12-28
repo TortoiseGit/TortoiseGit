@@ -1186,7 +1186,7 @@ BOOL CHwSMTP::SendBody()
 		csBody += L"Content-Type: text/plain\r\nContent-Transfer-Encoding: 8bit\r\n\r\n";
 	}
 
-	m_csBody.Replace(L"\n.\n", L"\n..\n");
+	m_csBody = CStringUtils::EnsureCRLF(m_csBody);
 	m_csBody.Replace(L"\n.\r\n", L"\n..\r\n");
 
 	csBody += m_csBody;
