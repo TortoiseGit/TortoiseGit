@@ -26,7 +26,7 @@
 #endif
 #define HANDLE_IS_VALID(h) (reinterpret_cast<HANDLE>(h) != NULL && reinterpret_cast<HANDLE>(h) != INVALID_HANDLE_VALUE)
 
-DWORD dwProtocol = SP_PROT_TLS1; // SP_PROT_TLS1; // SP_PROT_PCT1; SP_PROT_SSL2; SP_PROT_SSL3; 0=default
+DWORD dwProtocol = SP_PROT_TLS1 | SP_PROT_TLS1_1 | SP_PROT_TLS1_2 | SP_PROT_TLS1_3; // 0=default
 ALG_ID aiKeyExch = 0; // = default; CALG_DH_EPHEM; CALG_RSA_KEYX;
 
 SCHANNEL_CRED SchannelCred;
