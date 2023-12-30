@@ -4598,8 +4598,8 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(version), static_cast<LPCWSTR>(filename));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (MessageBox(out, L"TortoiseGit", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)
-				continue;
+			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 1, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				break;
 		}
 		else
 			versionMap[version]++;
