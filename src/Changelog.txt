@@ -3,7 +3,7 @@ Released: unreleased
 
 == Features ==
  * Updated OGDF to 2023.09 (Elderberry)
- * Update Scintilla to 5.3.8 and Lexilla to 5.2.8
+ * Update Scintilla to 5.4.1 and Lexilla to 5.3.0
  * TortoiseGitMerge: Add ignore line endings button to Ribbon
  * Allow BugTraq "Select issue"-button at the same time as the textbox
  * Add support for GIT_TEMPLATE_DIR environment variable
