@@ -466,7 +466,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -2516,13 +2515,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
 }
 
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
-}
-
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
 	//Platform::DebugPrintf("ScintillaWin Double click 0\n");
 	ScintillaBase::NotifyDoubleClick(pt, modifiers);
@@ -3143,7 +3135,7 @@ LRESULT ScintillaWin::ImeOnReconvert(LPARAM lParam) {
 		} else {
 			// Ensure docCompStart+docCompLen be not beyond lineEnd.
 			// since docCompLen by byte might break eol.
-			const Sci::Position lineEnd = pdoc->LineEnd(pdoc->LineFromPosition(rBase));
+			const Sci::Position lineEnd = pdoc->LineEndPosition(rBase);
 			const Sci::Position overflow = (docCompStart + docCompLen) - lineEnd;
 			if (overflow > 0) {
 				pdoc->DeleteChars(docCompStart, docCompLen - overflow);

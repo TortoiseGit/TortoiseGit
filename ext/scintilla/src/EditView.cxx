@@ -65,7 +65,6 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "ElapsedPeriod.h"
-#include "Editor.h"
 
 using namespace Scintilla;
 using namespace Scintilla::Internal;
@@ -197,7 +196,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
-	editor = nullptr;
 }
 
 EditView::~EditView() = default;
@@ -2062,17 +2060,11 @@ void DrawFoldLines(Surface *surface, const EditModel &model, const ViewStyle &vs
 		const ColourRGBA foldLineColour = vsDraw.ElementColour(Element::FoldLine).value_or(
 			vsDraw.styles[StyleDefault].fore);
 		// Paint the line above the fold
-		if ((subLine == 0) &&
-			((expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeExpanded)))
-				||
-				(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineBeforeContracted))))) {
+		if ((subLine == 0) && FlagSet(model.foldFlags, (expanded ? FoldFlag::LineBeforeExpanded: FoldFlag::LineBeforeContracted))) {
 			surface->FillRectangleAligned(Side(rcLine, Edge::top, 1.0), foldLineColour);
 		}
 		// Paint the line below the fold
-		if (lastSubLine &&
-			((expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterExpanded)))
-				||
-				(!expanded && (FlagSet(model.foldFlags, FoldFlag::LineAfterContracted))))) {
+		if (lastSubLine && FlagSet(model.foldFlags, (expanded ? FoldFlag::LineAfterExpanded : FoldFlag::LineAfterContracted))) {
 			surface->FillRectangleAligned(Side(rcLine, Edge::bottom, 1.0), foldLineColour);
 			// If contracted fold line drawn then don't overwrite with hidden line
 			// as fold lines are more specific then hidden lines.
@@ -2391,15 +2383,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background colour.
-	ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1)
-		background = ColourRGBA::FromRGB(static_cast<int>(scn.lParam));
+	const ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
 
 	const Sci::Position posLineStart = model.pdoc->LineStart(line);
 
