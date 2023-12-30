@@ -12,6 +12,7 @@ Released: unreleased
  * Update TortoiseGitPlink to PuTTY Plink 0.80
  * Update shipped PuTTY binaries to 0.80
  * Fixed issue #3881: Compare Revisions - Revert - can not undo an Add action
+ * Fixed issue #4097: Revert to parent version menu missing for added files in Log Viewer
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
