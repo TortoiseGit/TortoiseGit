@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomActions.def" />
+    <None Include="CustomActions.rc2" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

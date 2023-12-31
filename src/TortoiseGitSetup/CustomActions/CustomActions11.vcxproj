@@ -38,6 +38,7 @@
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FILENAME_CUSTOMACTIONS=\"$(TargetName)\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -53,6 +54,7 @@
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CustomActions.rc2" />
     <None Include="CustomActions11.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -36,5 +36,8 @@
     <None Include="CustomActions11.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="CustomActions.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -60,7 +60,7 @@ END
 3 TEXTINCLUDE 
 BEGIN
     "\r\n"
-    "\0"
+    "#include ""CustomActions.rc2""  // non-Microsoft Visual C++ edited resources\r\n\0"
 END
 
 #endif    // APSTUDIO_INVOKED
@@ -76,6 +76,7 @@ END
 // Generated from the TEXTINCLUDE 3 resource.
 //
 
+#include "CustomActions.rc2"  // non-Microsoft Visual C++ edited resources
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED

@@ -1,0 +1,61 @@
+//
+// CustomActions.rc2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/////////////////////////////////////////////////////////////////////////////
+#include "../../version.h"
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef FILENAME_CUSTOMACTIONS
+#define FILENAME_CUSTOMACTIONS "CustomActions"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION FILEVER
+ PRODUCTVERSION PRODUCTVER
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "https://tortoisegit.org/"
+            VALUE "FileDescription", FILENAME_CUSTOMACTIONS " for TortoiseGit Installer"
+            VALUE "FileVersion", STRFILEVER
+            VALUE "InternalName", FILENAME_CUSTOMACTIONS
+            VALUE "LegalCopyright", "Copyright (C) 2008-2023 - TortoiseGit and Copyright (C) 2003-2023 - TortoiseSVN"
+            VALUE "OriginalFilename", FILENAME_CUSTOMACTIONS ".dll"
+            VALUE "ProductName", FILENAME_CUSTOMACTIONS
+            VALUE "ProductVersion", STRPRODUCTVER
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+

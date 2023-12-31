@@ -26,6 +26,9 @@
     <None Include="CustomActions.def">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="CustomActions.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
