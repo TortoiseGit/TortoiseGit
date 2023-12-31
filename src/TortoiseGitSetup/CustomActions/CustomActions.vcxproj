@@ -42,6 +42,7 @@
     </Link>
     <ResourceCompile>
       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">ARM64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>INCLUDE_RESTARTEXPLORER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

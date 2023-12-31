@@ -23,12 +23,14 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_DEFAULT
 // RCDATA
 //
 
+#ifdef INCLUDE_RESTARTEXPLORER
 #if defined(ARM64)
 IDR_RESTARTEXPLORER     RCDATA                  "..\\..\\..\\bin\\ReleaseARM64\\bin\\RestartExplorer.exe"
 #elif defined(WIN64)
 IDR_RESTARTEXPLORER     RCDATA                  "..\\..\\..\\bin\\Release64\\bin\\RestartExplorer.exe"
 #else
 IDR_RESTARTEXPLORER     RCDATA                  "..\\..\\..\\bin\\Release\\bin\\RestartExplorer.exe"
+#endif
 #endif
 #endif    // Neutral (Standard) resources
 /////////////////////////////////////////////////////////////////////////////
