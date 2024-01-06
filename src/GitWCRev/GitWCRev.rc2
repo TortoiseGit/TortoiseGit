@@ -35,7 +35,7 @@ BEGIN
             VALUE "FileDescription", "GitWCRev"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "GitWCRev"
-            VALUE "LegalCopyright", "Copyright (C) 2017-2023 - TortoiseGit and Copyright (C) 2003-2023 - TortoiseSVN"
+            VALUE "LegalCopyright", "Copyright (C) 2017-2024 - TortoiseGit and Copyright (C) 2003-2024 - TortoiseSVN"
             VALUE "OriginalFilename", "GitWCRev.exe"
             VALUE "ProductName", "GitWCRev"
             VALUE "ProductVersion", STRPRODUCTVER
