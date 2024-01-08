@@ -24,6 +24,7 @@ Released: unreleased
  * Fixed issue #4096: Git configuration under XDG_CONFIG_HOME is not recognized correctly
  * TortoiseGitBlame: Fix blaming a file from another working tree
  * Fixed issue #4073: TortoiseGit extremely slow on network shares / UNC paths since 2.14
+ * Fixed issue #4106: Submodule Update with force not working when using the Git Sync Dialog
 
 = Release 2.15.0 =
 Released: 2023-10-03

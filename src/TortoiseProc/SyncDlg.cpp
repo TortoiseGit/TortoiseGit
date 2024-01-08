@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1725,6 +1725,8 @@ void CSyncDlg::OnBnClickedButtonSubmodule()
 	{
 	case 0:
 		cmd = L"git.exe submodule update --init --recursive";
+		if (m_bForce)
+			cmd += L" --force";
 		break;
 	case 1:
 		cmd = L"git.exe submodule init";
