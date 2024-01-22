@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2017-2019, 2021, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -874,6 +874,7 @@ int wmain(int argc, wchar_t* argv[])
 			wprintf(L"File too big (>100 MiB)\n");
 			return ERR_READ;
 		}
+		filelength = fileSize.LowPart;
 		maxlength = filelength + 8192; // We might be increasing file size.
 		try
 		{
