@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1621,6 +1621,15 @@ static bool Reset(HWND hWnd, const CString& resetTo, int resetType)
 			postCmdList.emplace_back(IDI_THUMB_DOWN, IDS_MENUBISECTBAD, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /bad"); });
 			postCmdList.emplace_back(IDI_BISECT, IDS_MENUBISECTSKIP, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /skip"); });
 			postCmdList.emplace_back(IDI_BISECT_RESET, IDS_MENUBISECTRESET, [] { CAppUtils::RunTortoiseGitProc(L"/command:bisect /reset"); });
+		}
+
+		if (resetType == 2)
+		{
+			postCmdList.emplace_back(IDI_CLEANUP, IDS_MENUCLEANUP, [&] {
+				CString sCmd;
+				sCmd.Format(L"/command:cleanup /path:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
+				CAppUtils::RunTortoiseGitProc(sCmd);
+			});
 		}
 	};
 

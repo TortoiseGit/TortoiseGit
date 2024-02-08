@@ -15,6 +15,7 @@ Released: unreleased
  * Update shipped PuTTY binaries to 0.80
  * Fixed issue #3881: Compare Revisions - Revert - can not undo an Add action
  * Fixed issue #4097: Revert to parent version menu missing for added files in Log Viewer
+ * Fixed issue #4112: After conducting a 'hard' reset, "git clean" should be offered
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"
