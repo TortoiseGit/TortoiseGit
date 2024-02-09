@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -415,7 +415,9 @@ void CMainFrame::OnDestroy()
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	cs.style &= ~WS_VISIBLE;
-	if( !CFrameWndEx::PreCreateWindow(cs) )
+	// extra styles needed to avoid refresh problems with the ribbon
+	cs.style |= WS_CLIPCHILDREN | WS_CLIPSIBLINGS;
+	if (!CFrameWndEx::PreCreateWindow(cs))
 		return FALSE;
 	if (CTheme::Instance().IsDarkTheme())
 	{

@@ -28,6 +28,7 @@ Released: unreleased
  * TortoiseGitBlame: Fix blaming a file from another working tree
  * Fixed issue #4073: TortoiseGit extremely slow on network shares / UNC paths since 2.14
  * Fixed issue #4106: Submodule Update with force not working when using the Git Sync Dialog
+ * Fixed issue #4110: TortoiseGitMerge: Ribbon becomes empty after maximizing on Windows 11
 
 = Release 2.15.0 =
 Released: 2023-10-03
