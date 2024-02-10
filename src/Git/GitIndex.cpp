@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -278,7 +278,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 			CStringA linkDestination;
 			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, static_cast<LPCSTR>(linkDestination), linkDestination.GetLength(), GIT_OBJECT_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
-				entry.m_ModifyTime = time;
+				entry.m_ModifyTime = CGit::filetime_to_time_t(time);
 				status.status = git_wc_status_normal;
 			}
 			else
@@ -286,7 +286,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		}
 		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJECT_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
 		{
-			entry.m_ModifyTime = time;
+			entry.m_ModifyTime = CGit::filetime_to_time_t(time);
 			status.status = git_wc_status_normal;
 		}
 		else
