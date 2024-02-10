@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -93,6 +93,11 @@ static std::unique_ptr<UINT[]> Icon2Image(HICON hIcon)
 	ICONINFO iconInfo;
 	if (!GetIconInfo(hIcon, &iconInfo))
 		return nullptr;
+	SCOPE_EXIT
+	{
+		DeleteObject(iconInfo.hbmColor);
+		DeleteObject(iconInfo.hbmMask);
+	};
 
 	BITMAP bm;
 	if (!GetObject(iconInfo.hbmColor, sizeof(BITMAP), &bm))

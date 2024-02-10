@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023-2024 - TortoiseGit
 // Copyright (C) 2007, 2009, 2011-2015, 2017-2020, 2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -180,6 +180,8 @@ CSize CFilterEdit::GetIconSize(HICON hIcon)
 			size.cx = bmp.bmWidth;
 			size.cy = bmp.bmHeight;
 		}
+		DeleteObject(iconinfo.hbmColor);
+		DeleteObject(iconinfo.hbmMask);
 	}
 	return size;
 }
