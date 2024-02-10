@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020, 2023 - TortoiseGit
+// Copyright (C) 2015-2020, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -109,22 +109,22 @@ static void ReadAndCheckIndex(CGitIndexList& indexList, const CString& gitdir, u
 	ASSERT_EQ(14 + offset, indexList.size());
 
 	EXPECT_STREQ(L"ansi.txt", indexList[offset].m_FileName);
-	EXPECT_EQ(102, indexList[offset].m_Size);
+	EXPECT_EQ(static_cast<uint32_t>(102), indexList[offset].m_Size);
 	EXPECT_EQ(8, indexList[offset].m_Flags);
 	EXPECT_EQ(0, indexList[offset].m_FlagsExtended);
 	EXPECT_STREQ(L"961bdffbfce1bc617fb594091c3229f1cc674d76", indexList[offset].m_IndexHash.ToString());
 	EXPECT_STREQ(L"copy/ansi.txt", indexList[1 + offset].m_FileName);
-	EXPECT_EQ(103, indexList[1 + offset].m_Size);
+	EXPECT_EQ(static_cast<uint32_t>(103), indexList[1 + offset].m_Size);
 	EXPECT_EQ(13, indexList[1 + offset].m_Flags);
 	EXPECT_EQ(0, indexList[1 + offset].m_FlagsExtended);
 	EXPECT_STREQ(L"4c44667203f943dc5dbdf3cb526cb7ec24f60c09", indexList[1 + offset].m_IndexHash.ToString());
 	EXPECT_STREQ(L"copy/utf16-le-nobom.txt", indexList[5 + offset].m_FileName);
-	EXPECT_EQ(218, indexList[5 + offset].m_Size);
+	EXPECT_EQ(static_cast<uint32_t>(218), indexList[5 + offset].m_Size);
 	EXPECT_EQ(23, indexList[5 + offset].m_Flags);
 	EXPECT_EQ(0, indexList[5 + offset].m_FlagsExtended);
 	EXPECT_STREQ(L"fbea9ccd85c33fcdb542d8c73f910ea0e70c3ddc", indexList[5 + offset].m_IndexHash.ToString());
 	EXPECT_STREQ(L"utf8-nobom.txt", indexList[13 + offset].m_FileName);
-	EXPECT_EQ(139, indexList[13 + offset].m_Size);
+	EXPECT_EQ(static_cast<uint32_t>(139), indexList[13 + offset].m_Size);
 	EXPECT_EQ(14, indexList[13 + offset].m_Flags);
 	EXPECT_EQ(0, indexList[13 + offset].m_FlagsExtended);
 	EXPECT_STREQ(L"c225b3f14869ec8b6da32d52bd15dba0b043031d", indexList[13 + offset].m_IndexHash.ToString());
@@ -149,7 +149,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 		ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
 		EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
-		EXPECT_EQ(21, indexList[0].m_Size);
+		EXPECT_EQ(static_cast<uint32_t>(21), indexList[0].m_Size);
 		EXPECT_EQ(5, indexList[0].m_Flags);
 		EXPECT_EQ(0, indexList[0].m_FlagsExtended);
 		EXPECT_STREQ(L"e4aac1275dfc440ec521a76e9458476fe07038bb", indexList[0].m_IndexHash.ToString());
@@ -172,7 +172,7 @@ TEST_P(GitIndexCBasicGitWithTestRepoFixture, ReadIndex)
 		ReadAndCheckIndex(indexList, m_Dir.GetTempDir(), 1);
 
 		EXPECT_STREQ(L"1.txt", indexList[0].m_FileName);
-		EXPECT_EQ(0, indexList[0].m_Size);
+		EXPECT_EQ(static_cast<uint32_t>(0), indexList[0].m_Size);
 		EXPECT_EQ(16389, indexList[0].m_Flags);
 		EXPECT_EQ(GIT_INDEX_ENTRY_INTENT_TO_ADD, indexList[0].m_FlagsExtended);
 		EXPECT_STREQ(L"e69de29bb2d1d6434b8b29ae775ad8c2e48c5391", indexList[0].m_IndexHash.ToString());

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -37,12 +37,13 @@
 
 struct CGitIndex
 {
+	/* m_Size and m_ModifyTime are only uint32_t in libgit2, cf. https://github.com/libgit2/libgit2/blob/8535fdb9cbad8fcd15ee4022ed29c4138547e22d/include/git2/index.h#L48-L51 and https://tortoisegit.org/issue/4108 */
 	CString    m_FileName;
-	mutable __time64_t	m_ModifyTime;
+	mutable uint32_t	m_ModifyTime;
 	uint16_t	m_Flags;
 	uint16_t	m_FlagsExtended;
 	CGitHash	m_IndexHash;
-	__int64		m_Size;
+	uint32_t	m_Size;
 	uint32_t	m_Mode;
 
 	int Print();

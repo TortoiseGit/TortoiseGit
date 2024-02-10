@@ -247,9 +247,9 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		status.status = git_wc_status_deleted;
 	else if ((isSymlink && !S_ISLNK(entry.m_Mode)) || ((m_iIndexCaps & GIT_INDEX_CAPABILITY_NO_SYMLINKS) != GIT_INDEX_CAPABILITY_NO_SYMLINKS && isSymlink != S_ISLNK(entry.m_Mode)))
 		status.status = git_wc_status_modified;
-	else if (!isSymlink && filesize != entry.m_Size)
+	else if (!isSymlink && static_cast<uint32_t>(filesize) != entry.m_Size)
 		status.status = git_wc_status_modified;
-	else if (CGit::filetime_to_time_t(time) == entry.m_ModifyTime)
+	else if (static_cast<uint32_t>(CGit::filetime_to_time_t(time)) == entry.m_ModifyTime)
 		status.status = git_wc_status_normal;
 	else if (config && filesize < m_iMaxCheckSize)
 	{
@@ -278,7 +278,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 			CStringA linkDestination;
 			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, static_cast<LPCSTR>(linkDestination), linkDestination.GetLength(), GIT_OBJECT_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
-				entry.m_ModifyTime = CGit::filetime_to_time_t(time);
+				entry.m_ModifyTime = static_cast<uint32_t>(CGit::filetime_to_time_t(time));
 				status.status = git_wc_status_normal;
 			}
 			else
@@ -286,7 +286,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		}
 		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJECT_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
 		{
-			entry.m_ModifyTime = CGit::filetime_to_time_t(time);
+			entry.m_ModifyTime = static_cast<uint32_t>(CGit::filetime_to_time_t(time));
 			status.status = git_wc_status_normal;
 		}
 		else
