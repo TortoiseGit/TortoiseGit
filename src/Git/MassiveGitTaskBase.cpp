@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019-2020, 2022-2023 - TortoiseGit
+// Copyright (C) 2011-2016, 2019-2020, 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -100,8 +100,15 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 			return false;
 		}
 
+		CString pathSpecFileParam;
+		pathSpecFileParam.Format(L" --pathspec-from-file=\"%s\" --pathspec-file-nul", static_cast<LPCWSTR>(tempFilename));
+		CString params;
+		if (int endOfParamsPosition = m_sParams.Find(L" --end-of-options", 0); endOfParamsPosition == -1)
+			params = m_sParams + pathSpecFileParam;
+		else
+			params = m_sParams.Mid(0, endOfParamsPosition) + pathSpecFileParam + m_sParams.Mid(endOfParamsPosition);
 		CString cmd, out;
-		cmd.Format(L"git.exe %s --pathspec-from-file=\"%s\" --pathspec-file-nul", static_cast<LPCWSTR>(m_sParams), static_cast<LPCWSTR>(tempFilename));
+		cmd.Format(L"git.exe %s", static_cast<LPCWSTR>(params));
 		const int exitCode = g_Git.Run(cmd, &out, CP_UTF8);
 		if (exitCode && !m_bIgnoreErrors)
 		{

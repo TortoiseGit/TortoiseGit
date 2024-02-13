@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -659,10 +659,10 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 			}
 			break;
 		case ID_REVERT1:
-			RevertSelectedItemToVersion(m_rev1.m_CommitHash.ToString(), true);
+			RevertSelectedItemToVersion(m_rev1.m_CommitHash, true);
 			break;
 		case ID_REVERT2:
-			RevertSelectedItemToVersion(m_rev2.m_CommitHash.ToString(), false);
+			RevertSelectedItemToVersion(m_rev2.m_CommitHash, false);
 			break;
 		case ID_BLAME:
 			{
@@ -1324,9 +1324,9 @@ void CFileDiffDlg::OnTextUpdate(CACEdit * /*pEdit*/)
 	this->m_cFileList.ShowText(L"Wait For input validate version");
 }
 
-int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVersion)
+int CFileDiffDlg::RevertSelectedItemToVersion(const CGitHash& rev, bool isOldVersion)
 {
-	if (rev.IsEmpty() || rev == GIT_REV_ZERO)
+	if (rev.IsEmpty())
 		return 0;
 
 	const bool useRecycleBin = CRegDWORD(L"Software\\TortoiseGit\\RevertWithRecycleBin", TRUE);
@@ -1350,7 +1350,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 		}
 		else if (isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED)
 		{
-			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev.ToString()), static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
 			if (m_rev2.m_CommitHash.IsEmpty())
 				CTGitPath(g_Git.CombinePath(fentry->GetGitPathString())).Delete(useRecycleBin, true);
 			else if (CTGitPath path = g_Git.CombinePath(fentry->GetGitOldPathString()); useRecycleBin && !path.IsDirectory())
@@ -1358,7 +1358,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 		}
 		else
 		{
-			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev), static_cast<LPCWSTR>(fentry->GetGitPathString()));
+			cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(rev.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			if (!isOldVersion && fentry->m_Action == CTGitPath::LOGACTIONS_REPLACED && m_rev1.m_CommitHash.IsEmpty())
 				CTGitPath(g_Git.CombinePath(fentry->GetGitOldPathString())).Delete(useRecycleBin, true);
 			if (CTGitPath path = g_Git.CombinePath(fentry->GetGitPathString()); useRecycleBin && !path.IsDirectory())
@@ -1374,7 +1374,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CString& rev, bool isOldVers
 	}
 
 	CString out;
-	out.FormatMessage(IDS_STATUSLIST_FILESREVERTED, count, static_cast<LPCWSTR>(rev));
+	out.FormatMessage(IDS_STATUSLIST_FILESREVERTED, count, static_cast<LPCWSTR>(rev.ToString()));
 	CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK);
 	return 0;
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2024 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1325,8 +1325,11 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 }
 bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 {
+	CString endOfOptions;
+	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+		endOfOptions = L" --end-of-options";
 	CString cmd, out;
-	cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(m_sRevision), static_cast<LPCWSTR>(path));
+	cmd.Format(L"git.exe checkout%s %s -- \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_sRevision), static_cast<LPCWSTR>(path));
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 	{
 		if (MessageBox(out, L"TortoiseGit", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)

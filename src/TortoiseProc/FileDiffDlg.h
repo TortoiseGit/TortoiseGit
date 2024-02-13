@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ protected:
 
 	void				EnableInputControl(bool b=true);
 
-	int					RevertSelectedItemToVersion(const CString& rev, bool isOldVersion);
+	int					RevertSelectedItemToVersion(const CGitHash& rev, bool isOldVersion);
 
 	bool				CheckMultipleDiffs();
 

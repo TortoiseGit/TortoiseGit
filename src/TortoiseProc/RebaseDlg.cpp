@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1267,7 +1267,10 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			cmd.Format(L"git.exe checkout --no-track -f -B %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
+			CString endOfOptions;
+			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+				endOfOptions = L" --end-of-options";
+			cmd.Format(L"git.exe checkout --no-track -f -B %s%s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
 			AddLogString(cmd);
 			if (RunGitCmdRetryOrAbort(cmd))
 			{
@@ -1277,7 +1280,11 @@ void CRebaseDlg::OnBnClickedContinue()
 			AddLogString(out);
 			out.Empty();
 		}
-		cmd.Format(L"git.exe reset --hard %s --", static_cast<LPCWSTR>(g_Git.FixBranchName(this->m_UpstreamCtrl.GetString())));
+
+		CString endOfOptions;
+		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+			endOfOptions = L" --end-of-options";
+		cmd.Format(L"git.exe reset --hard%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(g_Git.FixBranchName(this->m_UpstreamCtrl.GetString())));
 		CString log;
 		log.Format(IDS_PROC_REBASE_FFTO, static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
 		this->AddLogString(log);
@@ -2161,7 +2168,7 @@ int CRebaseDlg::DoRebase()
 					CString parentString;
 					for (const auto& parent : newParents)
 						parentString += L' ' + parent.ToString();
-					cmd.Format(L"git.exe checkout %s", static_cast<LPCWSTR>(newParents[0].ToString()));
+					cmd.Format(L"git.exe checkout %s --", static_cast<LPCWSTR>(newParents[0].ToString()));
 					if (RunGitCmdRetryOrAbort(cmd))
 					{
 						m_RebaseStage = RebaseStage::Error;

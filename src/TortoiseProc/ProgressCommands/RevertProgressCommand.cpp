@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019, 2022-2023 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019, 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -56,7 +56,10 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 	CTGitPathList moveList;
 	CMassiveGitTask unstageTask{ L"rm -f --cached" };
-	CMassiveGitTask checkoutTask{ L"checkout " + m_sRevertToRevision + L" -f" };
+	CString endOfOptions;
+	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+		endOfOptions = L" --end-of-options";
+	CMassiveGitTask checkoutTask{ L"checkout -f" + endOfOptions + " " + m_sRevertToRevision };
 	CMassiveGitTask addTask{ L"add -f" };
 	CMassiveGitTask deleteTask{ L"rm --ignore-unmatch" };
 	bool hasSubmodule = false;
@@ -149,7 +152,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 			return false;
 		}
 
-		cmd.Format(L"git.exe checkout %s -f -- \"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+		cmd.Format(L"git.exe checkout -f%s %s -- \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_sRevertToRevision), static_cast<LPCWSTR>(path.GetGitOldPathString()));
 		if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
 		{
 			list->ReportError(err);

@@ -1287,36 +1287,27 @@ bool CAppUtils::Switch(HWND hWnd, const CString& initialRefName)
 
 bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* false */, const CString& sNewBranch /* CString() */, bool bBranchOverride /* false */, BOOL bTrack /* 2 */, bool bMerge /* false */)
 {
-	CString cmd;
-	CString track;
-	CString force;
-	CString branch;
-	CString merge;
-
-	if(!sNewBranch.IsEmpty()){
-		if (bBranchOverride)
-			branch.Format(L"-B %s ", static_cast<LPCWSTR>(sNewBranch));
-		else
-			branch.Format(L"-b %s ", static_cast<LPCWSTR>(sNewBranch));
-		if (bTrack == TRUE)
-			track = L"--track ";
-		else if (bTrack == FALSE)
-			track = L"--no-track ";
-	}
+	CString params;
 	if (bForce)
-		force = L"-f ";
+		params += L" -f";
+	if(!sNewBranch.IsEmpty()){
+		if (bTrack == TRUE)
+			params += L" --track";
+		else if (bTrack == FALSE)
+			params += L" --no-track";
+		if (bBranchOverride)
+			params.AppendFormat(L" -B %s", static_cast<LPCWSTR>(sNewBranch));
+		else
+			params.AppendFormat(L" -b %s", static_cast<LPCWSTR>(sNewBranch));
+	}
 	if (bMerge)
-		merge = L"--merge ";
+		params += L" --merge";
 
-	cmd.Format(L"git.exe checkout %s%s%s%s%s --",
-			static_cast<LPCWSTR>(force),
-			static_cast<LPCWSTR>(track),
-			static_cast<LPCWSTR>(merge),
-			static_cast<LPCWSTR>(branch),
-			static_cast<LPCWSTR>(g_Git.FixBranchName(ref)));
+	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+		params += L" --end-of-options";
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-	progress.m_GitCmd = cmd;
+	progress.m_GitCmd.Format(L"git.exe checkout%s %s --", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(g_Git.FixBranchName(ref)));
 
 	CString currentBranch;
 	const bool hasBranch = CGit::GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch) == 0;
@@ -1547,7 +1538,6 @@ bool CAppUtils::IgnoreFile(HWND hWnd, const CTGitPathList& path,bool IsMask)
 
 static bool Reset(HWND hWnd, const CString& resetTo, int resetType)
 {
-	CString cmd;
 	CString type;
 	switch (resetType)
 	{
@@ -1591,10 +1581,13 @@ static bool Reset(HWND hWnd, const CString& resetTo, int resetType)
 		type = L"--mixed";
 		break;
 	}
-	cmd.Format(L"git.exe reset %s %s --", static_cast<LPCWSTR>(type), static_cast<LPCWSTR>(resetTo));
+
+	CString endOfOptions;
+	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+		endOfOptions = L" --end-of-options";
 
 	CProgressDlg progress(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
-	progress.m_GitCmd = cmd;
+	progress.m_GitCmd.Format(L"git.exe reset %s%s %s --", static_cast<LPCWSTR>(type), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(resetTo));
 
 	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
 	{
