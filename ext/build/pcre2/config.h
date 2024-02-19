@@ -198,6 +198,10 @@ sure both macros are undefined; an emulation function will then be used. */
 
 #define MAX_NAME_SIZE 32
 
+/* The value of MAX_VARLOOKBEHIND specifies the default maximum length, in
+   characters, for a variable-length lookbehind assertion. */
+#define MAX_VARLOOKBEHIND 255
+
 /* Defining NEVER_BACKSLASH_C locks out the use of \C in all patterns. */
 #undef NEVER_BACKSLASH_C
 
@@ -217,7 +221,7 @@ sure both macros are undefined; an emulation function will then be used. */
 #define PACKAGE_NAME "PCRE2"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "PCRE2 10.39"
+#define PACKAGE_STRING "PCRE2 10.43"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "pcre2"
@@ -226,7 +230,7 @@ sure both macros are undefined; an emulation function will then be used. */
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "10.39"
+#define PACKAGE_VERSION "10.43"
 
 /* The value of PARENS_NEST_LIMIT specifies the maximum depth of nested
    parentheses (of any kind) in a pattern. This limits the amount of system
@@ -247,17 +251,11 @@ sure both macros are undefined; an emulation function will then be used. */
    allows for the buffering of "before" and "after" lines. */
 #define PCRE2GREP_MAX_BUFSIZE 1048576
 
-/* to make a symbol visible */
-#undef PCRE2POSIX_EXP_DECL
-
-/* to make a symbol visible */
-#undef PCRE2POSIX_EXP_DEFN
-
 /* Define to any value to include debugging code. */
 #undef PCRE2_DEBUG
 
 /* to make a symbol visible */
-#undef PCRE2_EXP_DECL
+#define PCRE2_EXPORT
 
 
 /* If you are compiling for a system other than a Unix-like system or
@@ -287,6 +285,9 @@ sure both macros are undefined; an emulation function will then be used. */
    required in a freestanding environment). This macro is provided for
    backward compatibility; new code need not use it. */
 #undef STDC_HEADERS
+
+/* Define to any value to enable differential fuzzing support. */
+#undef SUPPORT_DIFF_FUZZ
 
 /* Define to any value to enable support for Just-In-Time compiling. */
 #undef SUPPORT_JIT

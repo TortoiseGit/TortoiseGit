@@ -95,6 +95,9 @@
     <ClCompile Include="..\pcre2\src\pcre2posix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2_chkdint.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pcre2\config.h">

@@ -10,6 +10,7 @@ Released: unreleased
  * Add support for GIT_TEMPLATE_DIR environment variable
  * Updated libgit to 2.43 based on Git for Windows sources
  * Updated libgit2 to 1.7.2
+ * Updated pcre2 to 10.43
  * Update json library to 3.11.3
  * Update TortoiseGitPlink to PuTTY Plink 0.80
  * Update shipped PuTTY binaries to 0.80

@@ -50,13 +50,14 @@
       <AdditionalIncludeDirectories>pcre2;..\pcre2\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <CompileAs>CompileAsC</CompileAs>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PreprocessorDefinitions>HAVE_CONFIG_H;PCRE2_CODE_UNIT_WIDTH=8;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;PCRE2_CODE_UNIT_WIDTH=8;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level2</WarningLevel>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\pcre2\src\pcre2posix.c" />
     <ClCompile Include="..\pcre2\src\pcre2_auto_possess.c" />
+    <ClCompile Include="..\pcre2\src\pcre2_chkdint.c" />
     <ClCompile Include="..\pcre2\src\pcre2_compile.c" />
     <ClCompile Include="..\pcre2\src\pcre2_config.c" />
     <ClCompile Include="..\pcre2\src\pcre2_context.c" />
