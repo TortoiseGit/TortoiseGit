@@ -77,13 +77,10 @@ Open TortoiseGit.sln in Visual Studio.
 Build all projects.
 
 You can also build TortoiseGit via command line by calling MSBuild
-Open Developer Command Prompt for VS2017
+Open Developer Command Prompt for VS20XX
 
     MSBuild TortoiseGit.sln /p:Configuration=Release;Platform=Win32
     MSBuild TortoiseGit.sln /p:Configuration=Release;Platform=x64
 
 If you want to build the installer package, make sure you build the Win32 configuration before the x64 one
 Also, build the docs before the installer packages (or copy existing TortoiseGit_en.chm and TortoiseMerge_en.chm files into the doc/output folder).
-
-For optimized debugging copy TGitNatVis.dll and TortoiseGit.natvis from contrib\NatVis to %USERPROFILE%\Documents\Visual Studio 2017\Visualizers.
-Then CGitHash will provide a readable preview of the SHA-1 and CTGitPath is also optimized.
