@@ -138,10 +138,12 @@ int CGitIndexList::ReadIndex(const CString& dgitdir)
 		item.m_FileName = CUnicodeUtils::GetUnicode(e->path);
 		if (e->mode & S_IFDIR)
 			item.m_FileName += L'/';
+		static_assert(std::is_same<decltype(item.m_ModifyTime), decltype(e->mtime.seconds)>::value);
 		item.m_ModifyTime = e->mtime.seconds;
 		item.m_Flags = e->flags;
 		item.m_FlagsExtended = e->flags_extended;
 		item.m_IndexHash = e->id;
+		static_assert(std::is_same<decltype(item.m_Size), decltype(e->file_size)>::value);
 		item.m_Size = e->file_size;
 		item.m_Mode = e->mode;
 		m_bHasConflicts |= GIT_INDEX_ENTRY_STAGE(e);
@@ -249,7 +251,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		status.status = git_wc_status_modified;
 	else if (!isSymlink && static_cast<uint32_t>(filesize) != entry.m_Size)
 		status.status = git_wc_status_modified;
-	else if (static_cast<uint32_t>(CGit::filetime_to_time_t(time)) == entry.m_ModifyTime)
+	else if (static_cast<int32_t>(CGit::filetime_to_time_t(time)) == entry.m_ModifyTime)
 		status.status = git_wc_status_normal;
 	else if (config && filesize < m_iMaxCheckSize)
 	{
@@ -278,7 +280,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 			CStringA linkDestination;
 			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, static_cast<LPCSTR>(linkDestination), linkDestination.GetLength(), GIT_OBJECT_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
-				entry.m_ModifyTime = static_cast<uint32_t>(CGit::filetime_to_time_t(time));
+				entry.m_ModifyTime = static_cast<int32_t>(CGit::filetime_to_time_t(time));
 				status.status = git_wc_status_normal;
 			}
 			else
@@ -286,7 +288,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		}
 		else if (!git_repository_hashfile(&actual, repository, fileA, GIT_OBJECT_BLOB, nullptr) && !git_oid_cmp(&actual, entry.m_IndexHash))
 		{
-			entry.m_ModifyTime = static_cast<uint32_t>(CGit::filetime_to_time_t(time));
+			entry.m_ModifyTime = static_cast<int32_t>(CGit::filetime_to_time_t(time));
 			status.status = git_wc_status_normal;
 		}
 		else
