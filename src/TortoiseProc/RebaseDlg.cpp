@@ -195,17 +195,14 @@ BOOL CRebaseDlg::OnInitDialog()
 	}
 	m_ctrlTabCtrl.SetResizeMode(CMFCTabCtrl::RESIZE_NO);
 	// Create output panes:
-	//const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	DWORD dwStyle =LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE;
-
-	if (! this->m_FileListCtrl.Create(dwStyle,rectDummy,&this->m_ctrlTabCtrl,0) )
+	if (!m_FileListCtrl.Create(LVS_REPORT | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP | WS_CHILD | WS_VISIBLE, rectDummy, &this->m_ctrlTabCtrl, 0))
 	{
 		TRACE0("Failed to create output windows\n");
 		return FALSE;      // fail to create
 	}
 	m_FileListCtrl.m_hwndLogicalParent = this;
 
-	if (!m_LogMessageCtrl.Create(L"Scintilla", L"source", 0, rectDummy, &m_ctrlTabCtrl, 0, 0))
+	if (!m_LogMessageCtrl.Create(L"Scintilla", L"source", 0, rectDummy, &m_ctrlTabCtrl, 0))
 	{
 		TRACE0("Failed to create log message control");
 		return FALSE;
@@ -215,9 +212,7 @@ BOOL CRebaseDlg::OnInitDialog()
 	m_LogMessageCtrl.SetFont(CAppUtils::GetLogFontName(), CAppUtils::GetLogFontSize());
 	m_LogMessageCtrl.SetReadOnly(true);
 
-	dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-
-	if (!m_wndOutputRebase.Create(L"Scintilla", L"source", 0, rectDummy, &m_ctrlTabCtrl, 0, 0))
+	if (!m_wndOutputRebase.Create(L"Scintilla", L"source", 0, rectDummy, &m_ctrlTabCtrl, 0))
 	{
 		TRACE0("Failed to create output windows\n");
 		return -1;      // fail to create
