@@ -135,6 +135,17 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">DialogTitles</term>
+			<listitem>
+				<para>
+					The default format (value of 0) of dialog titles is
+					<literal>url/path - name of dialog - TortoiseGit</literal>.
+					If you set this value to 1, the format changes to
+					<literal>relative url/path based on repository name - name of dialog - TortoiseGit</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">DiffSimilarityIndexThreshold</term>
 			<listitem>
 				<para>

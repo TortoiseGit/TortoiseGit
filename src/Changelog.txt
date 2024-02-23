@@ -17,6 +17,8 @@ Released: unreleased
  * Fixed issue #3881: Compare Revisions - Revert - can not undo an Add action
  * Fixed issue #4097: Revert to parent version menu missing for added files in Log Viewer
  * Fixed issue #4112: After conducting a 'hard' reset, "git clean" should be offered
+ * Fixed issue #3325: Display repository name first in window title
+   Can be controlled using the DialogTitles advanced setting.
 
 == Bug Fixes ==
  * Fixed issue #4085: ImportPatch is closing even click "NO"

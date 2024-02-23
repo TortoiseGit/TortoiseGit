@@ -3393,20 +3393,47 @@ void CAppUtils::MarkWindowAsUnpinnable(HWND hWnd)
 		}
 	}
 }
+#endif
 
-void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname)
+CString CAppUtils::FormatWindowTitle(const CString& urlorpath2, const CString& dialogname, const CString& appname, DWORD format)
 {
-	ASSERT(dialogname.GetLength() < 70);
-	ASSERT(urlorpath.GetLength() < MAX_PATH);
-	WCHAR pathbuf[MAX_PATH] = {0};
+	CString urlorpath{ urlorpath2 };
+	switch (format)
+	{
+	case 1:
+	{
+		const CTGitPath filePath{ g_Git.m_CurrentDir };
+		const CString toStrip = filePath.GetContainingDirectory().GetWinPathString();
+		if (!CStringUtils::StartsWith(urlorpath2, g_Git.m_CurrentDir))
+			break;
+		else if (toStrip.IsEmpty() || CStringUtils::EndsWith(toStrip, L'\\'))
+			urlorpath = urlorpath2.Right(urlorpath2.GetLength() - toStrip.GetLength());
+		else
+			urlorpath = urlorpath2.Right(urlorpath2.GetLength() - toStrip.GetLength() - 1);
+	}
+	break;
+	default:
+		break;
+	}
 
-	PathCompactPathEx(pathbuf, urlorpath, 70 - dialogname.GetLength(), 0);
+	ASSERT(dialogname.GetLength() < 80);
+	ASSERT(urlorpath.GetLength() < MAX_PATH);
+	WCHAR pathbuf[MAX_PATH] = { 0 };
+
+	PathCompactPathEx(pathbuf, urlorpath, 80 - dialogname.GetLength(), 0);
 
 	wcscat_s(pathbuf, L" - ");
 	wcscat_s(pathbuf, dialogname);
 	wcscat_s(pathbuf, L" - ");
-	wcscat_s(pathbuf, CString(MAKEINTRESOURCE(IDS_APPNAME)));
-	SetWindowText(hWnd, pathbuf);
+	wcscat_s(pathbuf, appname);
+
+	return pathbuf;
+}
+
+#ifndef TGIT_TESTS_ONLY
+void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname)
+{
+	SetWindowText(hWnd, FormatWindowTitle(urlorpath, dialogname, CString(MAKEINTRESOURCE(IDS_APPNAME)), static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\DialogTitles", 0))));
 }
 
 bool CAppUtils::BisectStart(HWND hWnd, const CString& lastGood, const CString& firstBad)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 #include "AppUtils.h"
+#include "Git.h"
 
 TEST(CAppUtils, FindWarningsErrors)
 {
@@ -141,4 +142,27 @@ TEST(CAppUtils, FindURLMatches)
 		EXPECT_EQ(185, ranges[4].cpMax);
 		EXPECT_STREQ(L"ftp://example.com/some!string", text.Mid(ranges[4].cpMin, ranges[4].cpMax - ranges[4].cpMin));
 	}
+}
+
+TEST(CAppUtils, FormatWindowTitle)
+{
+	EXPECT_STREQ(L"D:\\ - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\", L"Commit", L"TortoiseGit", 0));
+	EXPECT_STREQ(L"D:\\RepoDir - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\RepoDir", L"Commit", L"TortoiseGit", 0));
+	EXPECT_STREQ(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With ...\\And Even more Subpaths - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With Veeeeeeeeeeeeeeeeeeeery Long Subpaths\\RepoDir\\And Even more Subpaths", L"Commit", L"TortoiseGit", 0));
+
+	g_Git.m_CurrentDir = L"D:\\";
+	EXPECT_STREQ(L"D:\\ - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"D:\\SubDir - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\SubDir", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With ...\\And Even more Subpaths - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With Veeeeeeeeeeeeeeeeeeeery Long Subpaths\\RepoDir\\And Even more Subpaths", L"Commit", L"TortoiseGit", 1));
+
+	g_Git.m_CurrentDir = L"D:\\RepoDir";
+	EXPECT_STREQ(L"D:\\ - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"D:\\SubDir - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\SubDir", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"RepoDir - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\RepoDir", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"RepoDir\\SubPath - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\RepoDir\\SubPath", L"Commit", L"TortoiseGit", 1));
+
+	g_Git.m_CurrentDir = L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With Veeeeeeeeeeeeeeeeeeeery Long Subpaths\\RepoDir";
+	EXPECT_STREQ(L"RepoDir - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With Veeeeeeeeeeeeeeeeeeeery Long Subpaths\\RepoDir", L"Commit", L"TortoiseGit", 1));
+	EXPECT_STREQ(L"RepoDir\\And Even more Subpaths - Commit - TortoiseGit", CAppUtils::FormatWindowTitle(L"D:\\Some Veeeeeeeeeeeeeeeeeeeery Long Path\\With Veeeeeeeeeeeeeeeeeeeery Long Subpaths\\RepoDir\\And Even more Subpaths", L"Commit", L"TortoiseGit", 1));
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2023 - TortoiseGit
+// Copyright (C) 2012-2024 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,6 +41,7 @@ CSettingsAdvanced::CSettingsAdvanced()
 	AddSetting<BooleanSetting>(L"CygwinHack", false);
 	AddSetting<BooleanSetting>(L"Debug", false);
 	AddSetting<BooleanSetting>(L"DebugOutputString", false);
+	AddSetting<DWORDSetting>  (L"DialogTitles", 0);
 	AddSetting<DWORDSetting>  (L"DiffSimilarityIndexThreshold", 50);
 	AddSetting<BooleanSetting>(L"DownloadAnimation", true);
 	AddSetting<BooleanSetting>(L"FullRowSelect", true);

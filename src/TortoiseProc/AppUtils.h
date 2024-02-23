@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022-2023 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -109,6 +109,12 @@ public:
 	*/
 	static bool LaunchAlternativeEditor(const CString& filename, bool uac = false);
 
+private:
+#endif
+	static CString FormatWindowTitle(const CString& urlorpath, const CString& dialogname, const CString& appname, DWORD format);
+
+public:
+#ifndef TGIT_TESTS_ONLY
 	/**
 	* Sets the title of a dialog
 	*/
