@@ -8365,12 +8365,8 @@ msgstr ""
 msgid "Setting properties..."
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
 msgid "Settings"
-msgstr ""
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270, IDS_STATUSLIST_CONTEXT_SHELL)

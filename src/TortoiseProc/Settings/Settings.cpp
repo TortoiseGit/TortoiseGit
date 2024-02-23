@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018, 2020-2021 - TortoiseGit
+// Copyright (C) 2008-2018, 2020-2021, 2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -180,12 +180,12 @@ BOOL CSettings::OnInitDialog()
 	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
+	CString title;
+	GetWindowText(title);
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CString title;
-		GetWindowText(title);
-		SetWindowText(g_Git.m_CurrentDir + L" - " + title);
-	}
+		CAppUtils::SetWindowTitle(GetSafeHwnd(), g_Git.m_CurrentDir, title);
+	else
+		SetWindowText(title + " - " + CString(MAKEINTRESOURCE(IDS_APPNAME)));
 
 	DarkModeHelper::Instance().AllowDarkModeForApp(CTheme::Instance().IsDarkTheme());
 	SetTheme(CTheme::Instance().IsDarkTheme());

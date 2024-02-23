@@ -3764,7 +3764,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PROC_SETTINGS_TITLE "Settings - TortoiseGit"
+    IDS_PROC_SETTINGS_TITLE "Settings"
     IDS_SETTINGS_ALTERNATIVEEDITOR_TT 
                             "An alternative editor. Which should preferably support *nix line endings."
     IDS_PROC_OVERWRITE_CONFIRM 
