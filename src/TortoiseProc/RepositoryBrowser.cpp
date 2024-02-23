@@ -254,9 +254,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	}
 	HandleDividerMove(CPoint(CDPIAware::Instance().ScaleX(GetSafeHwnd(), xPos + 20), CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10)), false);
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sWindowTitle);
+	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 
 	m_bHasWC = !GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 

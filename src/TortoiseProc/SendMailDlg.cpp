@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017, 2022 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -95,9 +95,7 @@ BOOL CSendMailDlg::OnInitDialog()
 
 	EnableSaveRestore(L"SendMailDlg");
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, m_PathList.GetCommonRoot().GetUIPathString(), sWindowTitle);
+	CAppUtils::SetWindowTitle(*this, m_PathList.GetCommonRoot().GetUIPathString());
 
 	m_ctrlCC.Init();
 	m_ctrlTO.Init();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022-2023 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -164,9 +164,7 @@ BOOL CProgressDlg::OnInitDialog()
 		m_pThread->ResumeThread();
 	}
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, m_Git->m_CurrentDir, sWindowTitle);
+	CAppUtils::SetWindowTitle(*this, m_Git->m_CurrentDir);
 
 	// Make sure this dialog is shown in foreground (see issue #1536)
 	SetForegroundWindow();

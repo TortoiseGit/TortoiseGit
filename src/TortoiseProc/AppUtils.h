@@ -118,6 +118,7 @@ public:
 	/**
 	* Sets the title of a dialog
 	*/
+	static void SetWindowTitle(const CWnd& dialog, const CString& urlorpath);
 	static void SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname);
 
 	/**

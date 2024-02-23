@@ -180,12 +180,14 @@ BOOL CSettings::OnInitDialog()
 	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
-	CString title;
-	GetWindowText(title);
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-		CAppUtils::SetWindowTitle(GetSafeHwnd(), g_Git.m_CurrentDir, title);
+		CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 	else
+	{
+		CString title;
+		GetWindowText(title);
 		SetWindowText(title + " - " + CString(MAKEINTRESOURCE(IDS_APPNAME)));
+	}
 
 	DarkModeHelper::Instance().AllowDarkModeForApp(CTheme::Instance().IsDarkTheme());
 	SetTheme(CTheme::Instance().IsDarkTheme());

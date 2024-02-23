@@ -165,12 +165,10 @@ BOOL CFileDiffDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CString temp;
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
 	CString pathText = g_Git.m_CurrentDir;
 	if (!m_path.IsEmpty())
 		pathText = g_Git.CombinePath(m_path);
-	CAppUtils::SetWindowTitle(m_hWnd, pathText, sWindowTitle);
+	CAppUtils::SetWindowTitle(*this, pathText);
 
 	this->m_ctrRev1Edit.Init();
 	this->m_ctrRev2Edit.Init();

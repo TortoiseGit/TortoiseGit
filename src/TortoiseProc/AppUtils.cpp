@@ -3431,6 +3431,14 @@ CString CAppUtils::FormatWindowTitle(const CString& urlorpath2, const CString& d
 }
 
 #ifndef TGIT_TESTS_ONLY
+void CAppUtils::SetWindowTitle(const CWnd& dialog, const CString& urlorpath)
+{
+	CString sWindowTitle;
+	dialog.GetWindowTextW(sWindowTitle);
+	ASSERT(sWindowTitle.Find(CString(MAKEINTRESOURCE(IDS_APPNAME)), 0) == -1);
+	SetWindowTitle(dialog.GetSafeHwnd(), urlorpath, sWindowTitle);
+}
+
 void CAppUtils::SetWindowTitle(HWND hWnd, const CString& urlorpath, const CString& dialogname)
 {
 	SetWindowText(hWnd, FormatWindowTitle(urlorpath, dialogname, CString(MAKEINTRESOURCE(IDS_APPNAME)), static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\DialogTitles", 0))));

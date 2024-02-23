@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2020 - TortoiseGit
+// Copyright (C) 2009-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -94,9 +94,7 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 		DialogEnableWindow(IDC_LOG2, FALSE);
 	}
 
-	CString sWindowTitle;
-	GetWindowText(sWindowTitle);
-	CAppUtils::SetWindowTitle(m_hWnd, g_Git.CombinePath(m_File), sWindowTitle);
+	CAppUtils::SetWindowTitle(*this, g_Git.CombinePath(m_File));
 
 	GetDlgItem(IDC_INFOLABEL)->SetWindowText(m_File.GetGitPathString());
 

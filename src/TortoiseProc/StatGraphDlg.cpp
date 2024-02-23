@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2021, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2011, 2014-2016, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -166,12 +166,10 @@ BOOL CStatGraphDlg::OnInitDialog()
 	LoadStatQueries(IDS_STATGRAPH_LINES_BYDATE_WO, LinesWOByDate);
 
 	// set the dialog title to "Statistics - path/to/whatever/we/show/the/statistics/for"
-	CString sTitle;
-	GetWindowText(sTitle);
 	if (m_path.IsEmpty())
-		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, sTitle);
+		CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 	else
-		CAppUtils::SetWindowTitle(m_hWnd, m_path.GetUIPathString(), sTitle);
+		CAppUtils::SetWindowTitle(*this, m_path.GetUIPathString());
 
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
