@@ -40,6 +40,7 @@ struct CGitIndex
 	/* m_Size and m_ModifyTime are only uint32_t in libgit2, cf. https://github.com/libgit2/libgit2/blob/8535fdb9cbad8fcd15ee4022ed29c4138547e22d/include/git2/index.h#L48-L51 and https://tortoisegit.org/issue/4108 */
 	CString    m_FileName;
 	mutable int32_t	m_ModifyTime;
+	mutable uint32_t	m_ModifyTimeNanos;
 	uint16_t	m_Flags;
 	uint16_t	m_FlagsExtended;
 	CGitHash	m_IndexHash;
