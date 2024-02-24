@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018, 2023 - TortoiseGit
+// Copyright (C) 2016, 2018, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -58,6 +58,7 @@ TEST(CVersioncheckParser, ParseTestMinimal)
 	EXPECT_EQ(3U, version.minor);
 	EXPECT_EQ(4U, version.micro);
 	EXPECT_EQ(0U, version.build);
+	EXPECT_STREQ(version.version, version.version_languagepacks);
 
 	EXPECT_STREQ(L"", parser.GetTortoiseGitInfoText());
 	EXPECT_STREQ(L"", parser.GetTortoiseGitInfoTextURL());
@@ -94,6 +95,7 @@ TEST(CVersioncheckParser, ParseTestRelease)
 	EXPECT_EQ(3U, version.minor);
 	EXPECT_EQ(4U, version.micro);
 	EXPECT_EQ(5U, version.build);
+	EXPECT_STREQ(version.version, version.version_languagepacks);
 
 	EXPECT_STREQ(L"Hallo\ntest", parser.GetTortoiseGitInfoText());
 	EXPECT_STREQ(L"someurl", parser.GetTortoiseGitInfoTextURL());
@@ -152,6 +154,7 @@ TEST(CVersioncheckParser, ParseTestPreview)
 	EXPECT_EQ(8U, version.minor);
 	EXPECT_EQ(14U, version.micro);
 	EXPECT_EQ(2U, version.build);
+	EXPECT_STREQ(version.version, version.version_languagepacks);
 
 	EXPECT_STREQ(L"http://updater.download.tortoisegit.org/tgit/previews/", parser.GetTortoiseGitBaseURL());
 	EXPECT_STREQ(L"https://tortoisegit.org/issue/%BUGID%", parser.GetTortoiseGitIssuesURL());
@@ -185,6 +188,7 @@ TEST(CVersioncheckParser, ParseTestHotfix)
 	EXPECT_EQ(8U, version.minor);
 	EXPECT_EQ(14U, version.micro);
 	EXPECT_EQ(2U, version.build);
+	EXPECT_STREQ(version.version, version.version_languagepacks);
 
 	EXPECT_STREQ(L"http://updater.download.tortoisegit.org/tgit/hfüx/", parser.GetTortoiseGitBaseURL());
 	EXPECT_TRUE(parser.GetTortoiseGitIsHotfix());
@@ -199,4 +203,57 @@ TEST(CVersioncheckParser, ParseTestHotfix)
 
 	auto langs = parser.GetTortoiseGitLanguagePacks();
 	EXPECT_EQ(0U, langs.size());
+}
+
+TEST(CVersioncheckParser, ParseTestSpecialLanguagePack)
+{
+	CString tmpfile = GetTempFile();
+	ASSERT_STRNE(L"", tmpfile);
+	CStringUtils::WriteStringToTextFile(tmpfile, L"[TortoiseGit]\nversion=1.8.14.2\nversionstringlanguagepacks=1.8.14.0\n\nlangs=\"1031;de\"\nlangs=\"1046;pt_BR\"\nlangs=\"2074;sr-latin\"\nlangs=\"1028;zh_TW\"");
+
+	CVersioncheckParser parser;
+	CString err;
+	EXPECT_TRUE(parser.Load(tmpfile, err));
+
+	auto version = parser.GetTortoiseGitVersion();
+	EXPECT_STREQ(L"1.8.14.2", version.version);
+	EXPECT_STREQ(version.version, version.version_for_filename);
+	EXPECT_EQ(1U, version.major);
+	EXPECT_EQ(8U, version.minor);
+	EXPECT_EQ(14U, version.micro);
+	EXPECT_EQ(2U, version.build);
+	EXPECT_STREQ(L"1.8.14.0", version.version_languagepacks);
+
+	EXPECT_FALSE(parser.GetTortoiseGitIsHotfix());
+
+#if WIN64
+	EXPECT_STREQ(L"TortoiseGit-1.8.14.2-64bit.msi", parser.GetTortoiseGitMainfilename());
+#else
+	EXPECT_STREQ(L"TortoiseGit-1.8.14.2-32bit.msi", parser.GetTortoiseGitMainfilename());
+#endif
+
+	auto langs = parser.GetTortoiseGitLanguagePacks();
+	ASSERT_EQ(4U, langs.size());
+
+	EXPECT_EQ(1031U, langs[0].m_LocaleID);
+	EXPECT_EQ(1046U, langs[1].m_LocaleID);
+	EXPECT_EQ(2074U, langs[2].m_LocaleID);
+	EXPECT_EQ(1028U, langs[3].m_LocaleID);
+
+	EXPECT_STREQ(L"de", langs[0].m_LangCode);
+	EXPECT_STREQ(L"pt_BR", langs[1].m_LangCode);
+	EXPECT_STREQ(L"sr-latin", langs[2].m_LangCode);
+	EXPECT_STREQ(L"zh_TW", langs[3].m_LangCode);
+
+#if WIN64
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-64bit-de.msi", langs[0].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-64bit-pt_BR.msi", langs[1].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-64bit-sr-latin.msi", langs[2].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-64bit-zh_TW.msi", langs[3].m_filename);
+#else
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-32bit-de.msi", langs[0].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-32bit-pt_BR.msi", langs[1].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-32bit-sr-latin.msi", langs[2].m_filename);
+	EXPECT_STREQ(L"TortoiseGit-LanguagePack-1.8.14.0-32bit-zh_TW.msi", langs[3].m_filename);
+#endif
 }

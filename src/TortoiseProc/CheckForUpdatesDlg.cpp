@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -96,7 +96,7 @@ BOOL CCheckForUpdatesDlg::OnInitDialog()
 		}
 	}
 	if (m_myVersion.version.IsEmpty() || !m_myVersion.major)
-		m_myVersion = { _T(STRFILEVER), L"", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD };
+		m_myVersion = { _T(STRFILEVER), L"", L"", TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD };
 
 	CString temp;
 	temp.Format(IDS_CHECKNEWER_YOURVERSION, m_myVersion.major, m_myVersion.minor, m_myVersion.micro, m_myVersion.build);
@@ -276,6 +276,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 			bNewer = TRUE;
 
 		m_sNewVersionNumber.Format(L"%u.%u.%u.%u", version.major, version.minor, version.micro, version.build);
+		m_sNewVersionNumberLanguagepacks = version.version_languagepacks;
 		if (m_sNewVersionNumber != version.version_for_filename)
 		{
 			CString versionstr = m_sNewVersionNumber + L" (" + version.version_for_filename + L")";
@@ -338,7 +339,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	else
 		m_ctrlFiles.InsertItem(0, L"TortoiseGit");
 	CString filenameMain = versioncheck.GetTortoiseGitMainfilename();
-	m_ctrlFiles.SetItemData(0, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(filenameMain, CUpdateListCtrl::STATUS_NONE)));
+	m_ctrlFiles.SetItemData(0, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(filenameMain, false, CUpdateListCtrl::STATUS_NONE)));
 	m_ctrlFiles.SetCheck(0 , TRUE);
 
 	if (isHotfix)
@@ -389,7 +390,7 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	{
 		int pos = m_ctrlFiles.InsertItem(m_ctrlFiles.GetItemCount(), langs.languagepack.m_PackName);
 		m_ctrlFiles.SetItemText(pos, 1, langs.languagepack.m_LangName);
-		m_ctrlFiles.SetItemData(pos, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(langs.languagepack.m_filename, CUpdateListCtrl::STATUS_NONE)));
+		m_ctrlFiles.SetItemData(pos, reinterpret_cast<DWORD_PTR>(new CUpdateListCtrl::Entry(langs.languagepack.m_filename, true, CUpdateListCtrl::STATUS_NONE)));
 
 		if (langs.m_Installed)
 			m_ctrlFiles.SetCheck(pos , TRUE);
@@ -546,7 +547,7 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 	return static_cast<CCheckForUpdatesDlg*>(pVoid)->DownloadThread();
 }
 
-bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename)
+bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename, const CString& versionnumber)
 {
 	if (VerifyIntegrity(filename, filenameSignature, m_updateDownloader) != 0)
 	{
@@ -566,10 +567,10 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": MsiGetSummaryInformation reported: %s\n", static_cast<LPCWSTR>(CFormatMessageWrapper(ret)));
 			return false;
 		}
-		else if (sFileVer == m_sNewVersionNumber)
+		else if (sFileVer == versionnumber)
 			return true;
 
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(m_sNewVersionNumber), static_cast<LPCWSTR>(sFileVer));
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(versionnumber), static_cast<LPCWSTR>(sFileVer));
 		return false;
 	}
 	SCOPE_EXIT{ MsiCloseHandle(hSummary); };
@@ -590,23 +591,23 @@ bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CStrin
 		return false;
 	}
 
-	CString sFileVer = buffer.Right(m_sNewVersionNumber.GetLength() + 1);
-	if (sFileVer != L"v" + m_sNewVersionNumber)
+	CString sFileVer = buffer.Right(versionnumber.GetLength() + 1);
+	if (sFileVer != L"v" + versionnumber)
 	{
-		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(m_sNewVersionNumber), static_cast<LPCWSTR>(sFileVer));
+		m_sErrors.AppendFormat(L"%s: Version number of downloaded file doesn't match (expected: \"v%s\", got: \"%s\").\r\n", static_cast<LPCWSTR>(reportingFilename), static_cast<LPCWSTR>(versionnumber), static_cast<LPCWSTR>(sFileVer));
 		return false;
 	}
 
 	return true;
 }
 
-bool CCheckForUpdatesDlg::Download(CString filename)
+bool CCheckForUpdatesDlg::Download(const CString& filename, const CString& versionnumber)
 {
 	CString url = m_sFilesURL + filename;
 	CString destFilename = GetDownloadsDirectory() + filename;
 	if (PathFileExists(destFilename) && PathFileExists(destFilename + SIGNATURE_FILE_ENDING))
 	{
-		if (VerifyUpdateFile(destFilename, destFilename + SIGNATURE_FILE_ENDING, destFilename))
+		if (VerifyUpdateFile(destFilename, destFilename + SIGNATURE_FILE_ENDING, destFilename, versionnumber))
 			return true;
 		else
 		{
@@ -647,7 +648,7 @@ bool CCheckForUpdatesDlg::Download(CString filename)
 		m_sErrors += url + L": " + GetWinINetError(ret) + L"\r\n";
 	if (!ret)
 	{
-		if (VerifyUpdateFile(tempfile, signatureTempfile, url))
+		if (VerifyUpdateFile(tempfile, signatureTempfile, url, versionnumber))
 		{
 			DeleteFile(destFilename);
 			DeleteFile(destFilename + SIGNATURE_FILE_ENDING);
@@ -684,7 +685,7 @@ UINT CCheckForUpdatesDlg::DownloadThread()
 		{
 			data->m_status = CUpdateListCtrl::STATUS_DOWNLOADING;
 			m_ctrlFiles.InvalidateRect(rect);
-			if (Download(data->m_filename))
+			if (Download(data->m_filename, data->m_languagepack ? m_sNewVersionNumberLanguagepacks : m_sNewVersionNumber))
 				data->m_status = CUpdateListCtrl::STATUS_SUCCESS;
 			else
 			{

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2019, 2022-2023 - TortoiseGit
+// Copyright (C) 2013-2019, 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -113,6 +113,9 @@ bool CVersioncheckParser::Load(const CString& filename, CString& err)
 	m_version.version_for_filename = GetStringValue(L"tortoisegit", L"versionstring");
 	if (m_version.version_for_filename.IsEmpty())
 		m_version.version_for_filename = m_version.version;
+	m_version.version_languagepacks = GetStringValue(L"tortoisegit", L"versionstringlanguagepacks");
+	if (m_version.version_languagepacks.IsEmpty())
+		m_version.version_languagepacks = m_version.version;
 
 	return true;
 }
@@ -233,7 +236,7 @@ CVersioncheckParser::LANGPACK_VECTOR CVersioncheckParser::GetTortoiseGitLanguage
 			pack.m_LangName += L')';
 		}
 
-		pack.m_filename.FormatMessage(languagepackfilenametemplate, static_cast<LPCWSTR>(m_version.version_for_filename), static_cast<LPCWSTR>(architecture()), static_cast<LPCWSTR>(pack.m_LangCode), pack.m_LocaleID);
+		pack.m_filename.FormatMessage(languagepackfilenametemplate, static_cast<LPCWSTR>(m_version.version_languagepacks), static_cast<LPCWSTR>(architecture()), static_cast<LPCWSTR>(pack.m_LangCode), pack.m_LocaleID);
 
 		vec.push_back(pack);
 	}
