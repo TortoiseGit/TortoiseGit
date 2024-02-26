@@ -1352,6 +1352,8 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				});
 			}
+			if (!bMerge)
+				postCmdList.emplace_back(IDI_SHELVE, IDS_MENUSTASHSAVE, [&hWnd] { CAppUtils::StashSave(hWnd, L"", true); });
 			postCmdList.emplace_back(IDI_REFRESH, IDS_MSGBOX_RETRY, [&]{ PerformSwitch(hWnd, ref, bForce, sNewBranch, bBranchOverride, bTrack, bMerge); });
 			if (!bMerge)
 				postCmdList.emplace_back(IDI_SWITCH, IDS_SWITCH_WITH_MERGE, [&]{ PerformSwitch(hWnd, ref, bForce, sNewBranch, bBranchOverride, bTrack, true); });
