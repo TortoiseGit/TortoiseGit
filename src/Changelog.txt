@@ -34,6 +34,7 @@ Released: unreleased
  * Fixed issue #4106: Submodule Update with force not working when using the Git Sync Dialog
  * Fixed issue #4110: TortoiseGitMerge: Ribbon becomes empty after maximizing on Windows 11
  * Fixed issue #4004: TortoiseGit closes window after commit when pressing push when the owning explorer window has been closed
+ * Fixed issue #3909: App freezes when pasting from a closed logs window
 
 = Release 2.15.0 =
 Released: 2023-10-03

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1536,7 +1536,8 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					pEdit->SetRedraw(FALSE);
 				const int oldLine = pEdit->GetFirstVisibleLine();
 					pEdit->SetSel(0, -1);
-					pEdit->Copy();
+					// manually copy text, to detach it from process (cf. issue #3909)
+					CStringUtils::WriteAsciiStringToClipboard(pEdit->GetSelText(), m_hWnd);
 					pEdit->SetSel(start, end);
 					const int newLine = pEdit->GetFirstVisibleLine();
 					pEdit->LineScroll(oldLine - newLine);
@@ -1545,7 +1546,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 				}
 				break;
 			case WM_COPY:
-				::SendMessage(GetDlgItem(IDC_MSGVIEW)->GetSafeHwnd(), cmd, 0, -1);
+				CStringUtils::WriteAsciiStringToClipboard(pEdit->GetSelText(), m_hWnd); // manually copy text, to detach it from process (cf. issue #3909)
 				break;
 			case CGitLogList::ID_EDITNOTE:
 				CAppUtils::EditNote(GetSafeHwnd(), pRev, &m_LogList.m_ProjectProperties);
@@ -1789,6 +1790,13 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 			GoBackForward(select, true);
 		if (HIWORD(pMsg->wParam) & (XBUTTON1 | XBUTTON2))
 			return TRUE;
+	}
+	else if (pMsg->message == WM_KEYDOWN && ((pMsg->wParam == 'C' && GetKeyState(VK_CONTROL) < 0) || (pMsg->wParam == VK_INSERT && GetKeyState(VK_CONTROL) < 0 && GetKeyState(VK_CONTROL) >= 0)) && GetFocus() == GetDlgItem(IDC_MSGVIEW))
+	{
+		// manually copy text, to detach it from process (cf. issue #3909)
+		auto pEdit = reinterpret_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
+		CStringUtils::WriteAsciiStringToClipboard(pEdit->GetSelText(), m_hWnd);
+		return TRUE;
 	}
 	if (m_hAccel && !bSkipAccelerator)
 	{
