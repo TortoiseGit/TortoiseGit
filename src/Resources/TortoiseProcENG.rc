@@ -3836,6 +3836,7 @@ BEGIN
                             "Do you really want to mark the selected file(s) as assume-valid?"
     IDS_PROC_MARK_SKIPWORKTREE 
                             "Do you really want to mark the selected file(s) as skip-worktree?"
+    IDS_REMOVEWITHFORCE     "Force remove"
     IDS_LOG_CHRONOLOGICALREVERSEDORDER "Chronological reversed (git default)"
     IDS_TORTOISEGITDEFAULT  "(TortoiseGit default)"
     IDS_DELETING_REMOTE_REFS "Deleting remote refs..."

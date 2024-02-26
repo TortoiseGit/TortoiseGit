@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022-2023 - TortoiseGit
+// Copyright (C) 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,6 +67,7 @@ public:
 		eCmd_Remove,
 		eCmd_Lock,
 		eCmd_Unlock,
+		eCmd_RemoveWithForce,
 	};
 
 	enum eCol
@@ -106,6 +107,6 @@ private:
 	int FillListCtrlWithWorktreeList(CString& error);
 	int GetWorktreeNames(STRING_VECTOR& list, CString& error);
 
-	bool RemoveWorktree(const CString& path);
+	bool RemoveWorktree(const CString& path, bool force);
 	bool PruneWorktrees();
 };

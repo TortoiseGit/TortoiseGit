@@ -359,7 +359,10 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 	if (showUnlock)
 		popupMenu.AppendMenuIcon(eCmd_Unlock, IDS_MENULFSUNLOCK, IDI_LFSUNLOCK);
 	if (showRemove)
+	{
 		popupMenu.AppendMenuIcon(eCmd_Remove, IDS_REMOVEBUTTON, IDI_DELETE);
+		popupMenu.AppendMenuIcon(eCmd_RemoveWithForce, IDS_REMOVEWITHFORCE, IDI_DELETE);
+	}
 
 	eCmd cmd = static_cast<eCmd>(popupMenu.TrackPopupMenuEx(TPM_LEFTALIGN | TPM_RETURNCMD, point.x, point.y, this, nullptr));
 	switch (cmd)
@@ -372,6 +375,7 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 			break;
 		}
 		case eCmd_Remove:
+		case eCmd_RemoveWithForce:
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), IDS_PROC_DELETE_WORKTREE, IDS_APPNAME, 2, IDI_QUESTION, IDS_MSGBOX_YES, IDS_MSGBOX_NO) == 2)
 				return;
@@ -386,7 +390,7 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 					continue;
 				}
 
-				if (!RemoveWorktree(zf.m_Path))
+				if (!RemoveWorktree(zf.m_Path, cmd == eCmd_RemoveWithForce))
 					break; // Don't continue with other worktrees
 			}
 
@@ -466,13 +470,21 @@ void CWorktreeListDlg::OnBnClickedButtonAdd()
 		Refresh();
 }
 
-bool CWorktreeListDlg::RemoveWorktree(const CString& path)
+bool CWorktreeListDlg::RemoveWorktree(const CString& path, bool force)
 {
+	CString params;
+	if (force)
+		params += " --force";
+
 	CString cmd;
-	cmd.Format(L"git.exe worktree remove -- \"%s\"", static_cast<LPCWSTR>(path));
+	cmd.Format(L"git.exe worktree remove%s -- \"%s\"", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(path));
 
 	CProgressDlg progress;
 	progress.m_GitCmd = cmd;
+	progress.m_PostCmdCallback = [&](DWORD status, PostCmdList& postCmdList) {
+		if (status && !force)
+			postCmdList.emplace_back(IDI_DELETE, IDS_REMOVEWITHFORCE, [&] { RemoveWorktree(path, true); });
+	};
 
 	return progress.DoModal() == IDOK;
 }

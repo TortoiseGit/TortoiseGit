@@ -4689,6 +4689,10 @@ msgstr ""
 msgid "Force push to the selected remote reference and override it without any safety checks.\nThis can cause the remote repository to lose unseen commits; use it with care.\nThis option corresponds to the --force git option."
 msgstr ""
 
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr ""
+
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid "Force the rebase even if the current branch is a descendant of the commit you are rebasing onto.\nNormally the command will exit with the message \"Current branch is up to date\" in such a situation."
 msgstr ""
