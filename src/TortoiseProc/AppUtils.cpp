@@ -3001,6 +3001,10 @@ BOOL CAppUtils::Commit(HWND hWnd, const CString& bugid, BOOL bWholeProject, CStr
 			sLogMsg = dlg.m_sLogMessage;
 			bSelectFilesForCommit = true;
 
+			// explorer might have been closed
+			if (!::IsWindow(hWnd))
+				hWnd = nullptr;
+
 			switch (dlg.m_PostCmd)
 			{
 			case Git_PostCommit_Cmd::DCommit:
