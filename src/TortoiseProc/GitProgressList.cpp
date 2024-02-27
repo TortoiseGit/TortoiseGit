@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -593,6 +593,7 @@ void CGitProgressList::OnLvnGetdispinfoSvnprogress(NMHDR *pNMHDR, LRESULT *pResu
 						{
 							CFont * pFont = pDC->SelectObject(GetFont());
 							PathCompactPath(pDC->GetSafeHdc(), m_columnbuf, cWidth);
+							CPathUtils::ConvertToSlash(m_columnbuf);
 							pDC->SelectObject(pFont);
 							ReleaseDC(pDC);
 						}
