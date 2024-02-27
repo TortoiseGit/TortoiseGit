@@ -1791,7 +1791,7 @@ BOOL CLogDlg::PreTranslateMessage(MSG* pMsg)
 		if (HIWORD(pMsg->wParam) & (XBUTTON1 | XBUTTON2))
 			return TRUE;
 	}
-	else if (pMsg->message == WM_KEYDOWN && ((pMsg->wParam == 'C' && GetKeyState(VK_CONTROL) < 0) || (pMsg->wParam == VK_INSERT && GetKeyState(VK_CONTROL) < 0 && GetKeyState(VK_CONTROL) >= 0)) && GetFocus() == GetDlgItem(IDC_MSGVIEW))
+	else if (pMsg->message == WM_KEYDOWN && GetKeyState(VK_CONTROL) < 0 && (pMsg->wParam == 'C' || (pMsg->wParam == VK_INSERT && GetKeyState(VK_SHIFT) >= 0)) && GetFocus() == GetDlgItem(IDC_MSGVIEW))
 	{
 		// manually copy text, to detach it from process (cf. issue #3909)
 		auto pEdit = reinterpret_cast<CRichEditCtrl*>(GetDlgItem(IDC_MSGVIEW));
