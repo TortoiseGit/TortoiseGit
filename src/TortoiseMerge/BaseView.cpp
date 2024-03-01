@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2021 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2023 TortoiseGit
+// Copyright (C) 2011-2012, 2017-2024 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -418,8 +418,11 @@ void CBaseView::UpdateStatusBar()
 					pButton->SetDescription(GetTabModeString(m_nTabMode, m_nTabSize, m_bEditorConfigEnabled && m_bEditorConfigLoaded));
 				}
 			}
-			m_pwndRibbonStatusBar->RecalcLayout();
-			m_pwndRibbonStatusBar->Invalidate();
+			if (m_pwndRibbonStatusBar->GetSafeHwnd())
+			{
+				m_pwndRibbonStatusBar->RecalcLayout();
+				m_pwndRibbonStatusBar->Invalidate();
+			}
 		}
 	}
 }
