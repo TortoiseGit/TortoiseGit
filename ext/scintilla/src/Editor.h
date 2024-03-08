@@ -7,7 +7,6 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-#include "Scintilla.h"
 
 namespace Scintilla::Internal {
 
@@ -669,6 +668,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	static Scintilla::sptr_t StringResult(Scintilla::sptr_t lParam, const char *val) noexcept;
 	static Scintilla::sptr_t BytesResult(Scintilla::sptr_t lParam, const unsigned char *val, size_t len) noexcept;
+	static Scintilla::sptr_t BytesResult(Scintilla::sptr_t lParam, std::string_view sv) noexcept;
 
 	// Set a variable controlling appearance to a value and invalidates the display
 	// if a change was made. Avoids extra text and the possibility of mistyping.
@@ -686,7 +686,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 public:
 	~Editor() override;
 
-	virtual void NotifyParent(SCNotification *scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const noexcept;
 	// Public so scintilla_send_message can use it.
