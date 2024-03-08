@@ -246,6 +246,9 @@
     <ClInclude Include="..\scintilla\src\UndoHistory.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
+    <ClInclude Include="..\lexilla\lexlib\InList.h">
+      <Filter>lexlib\lexlib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\scintilla\src\SciTE.properties">
@@ -756,6 +759,9 @@
     </ClCompile>
     <ClCompile Include="..\scintilla\src\UndoHistory.cxx">
       <Filter>scintilla\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\lexilla\lexlib\InList.cxx">
+      <Filter>lexlib\lexlib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -68,6 +68,7 @@
     <ClInclude Include="..\lexilla\lexlib\CharacterCategory.h" />
     <ClInclude Include="..\lexilla\lexlib\CharacterSet.h" />
     <ClInclude Include="..\lexilla\lexlib\DefaultLexer.h" />
+    <ClInclude Include="..\lexilla\lexlib\InList.h" />
     <ClInclude Include="..\lexilla\lexlib\LexAccessor.h" />
     <ClInclude Include="..\lexilla\lexlib\LexerBase.h" />
     <ClInclude Include="..\lexilla\lexlib\LexerModule.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="..\lexilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\lexilla\lexlib\CharacterSet.cxx" />
     <ClCompile Include="..\lexilla\lexlib\DefaultLexer.cxx" />
+    <ClCompile Include="..\lexilla\lexlib\InList.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerBase.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerModule.cxx" />
