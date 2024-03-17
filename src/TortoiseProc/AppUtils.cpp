@@ -27,6 +27,7 @@
 #include "Git.h"
 #include "UnicodeUtils.h"
 #include "URLFinder.h"
+#include "git2/sys/errors.h"
 #ifndef TGIT_TESTS_ONLY
 #include "ExportDlg.h"
 #include "ProgressDlg.h"

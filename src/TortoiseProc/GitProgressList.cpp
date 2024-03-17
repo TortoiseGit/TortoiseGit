@@ -28,6 +28,7 @@
 #include "LoglistUtils.h"
 #include "Theme.h"
 #include "TempFile.h"
+#include "git2/sys/errors.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
 int		CGitProgressList::m_nSortedColumn = -1;

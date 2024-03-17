@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@
 #include "MassiveGitTaskBase.h"
 #include "git2/sys/filter.h"
 #include "git2/sys/transport.h"
+#include "git2/sys/errors.h"
 #include "../libgit2/filter-filter.h"
 #include "../libgit2/ssh-wintunnel.h"
 

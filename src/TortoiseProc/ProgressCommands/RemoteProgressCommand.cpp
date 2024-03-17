@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2022 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@
 #include "RemoteProgressCommand.h"
 #include "../TortoiseShell/resource.h"
 #include "AppUtils.h"
+#include "git2/sys/errors.h"
 
 int RemoteProgressCommand::RemoteProgressCallback(const char* str, int len, void* data)
 {

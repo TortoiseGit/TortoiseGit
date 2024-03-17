@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2021, 2023 - TortoiseGit
+// Copyright (C) 2003-2021, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "TempFile.h"
 #include <WinInet.h>
 #include "SysInfo.h"
+#include "git2/sys/errors.h"
 
 struct num_compare
 {

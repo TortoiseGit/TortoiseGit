@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2023 TortoiseGit
+// Copyright (C) 2014, 2016-2024 TortoiseGit
 // Copyright (C) the libgit2 contributors. All rights reserved.
 //               - based on libgit2/src/transports/ssh.c
 
@@ -22,13 +22,12 @@
 #include "str.h"
 #include "win32/utf-conv.h"
 #include "http_parser.h"
+#include "process.h"
 #include "../../ext/libgit2/src/libgit2/transports/smart.h"
 #include "system-call.h"
 #include "ssh-wintunnel.h"
 
 #define OWNING_SUBTRANSPORT(s) ((ssh_subtransport *)(s)->parent.subtransport)
-
-static const char *ssh_prefixes[] = { "ssh://", "ssh+git://", "git+ssh://" };
 
 static const char cmd_uploadpack[] = "git-upload-pack";
 static const char cmd_receivepack[] = "git-receive-pack";
@@ -49,48 +48,6 @@ typedef struct {
 	const LPWSTR *pEnv;
 	LPWSTR sshtoolpath;
 } ssh_subtransport;
-
-/*
- * Create a git protocol request.
- *
- * For example: git-upload-pack '/libgit2/libgit2'
- */
-static int gen_proto(git_str *request, const char *cmd, const char *url)
-{
-	const char *repo;
-
-	size_t i;
-
-	for (i = 0; i < ARRAY_SIZE(ssh_prefixes); ++i) {
-		const char *p = ssh_prefixes[i];
-
-		if (!git__prefixcmp(url, p)) {
-			url = url + strlen(p);
-			repo = strchr(url, '/');
-			if (repo && repo[1] == '~')
-				++repo;
-
-			goto done;
-		}
-	}
-	repo = strchr(url, ':');
-	if (repo) repo++;
-
-done:
-	if (!repo) {
-		git_error_set_str(GIT_ERROR_NET, "Malformed git protocol URL");
-		return -1;
-	}
-
-	git_str_printf(request, "\"%s '%s'\"", cmd, repo);
-
-	if (git_str_oom(request)) {
-		git_error_set_oom();
-		return -1;
-	}
-
-	return 0;
-}
 
 static int ssh_stream_read(
 	git_smart_subtransport_stream *stream,
@@ -188,43 +145,6 @@ static int ssh_stream_alloc(
 	return 0;
 }
 
-static int git_ssh_extract_url_parts(
-	char **host,
-	char **username,
-	const char *url)
-{
-	const char *colon, *at;
-	const char *start;
-
-	colon = strchr(url, ':');
-
-	at = strchr(url, '@');
-	if (at) {
-		start = at + 1;
-		*username = git__substrdup(url, at - url);
-		if (!*username) {
-			git_error_set_oom();
-			return -1;
-		}
-	} else {
-		start = url;
-		*username = NULL;
-	}
-
-	if (colon == NULL || (colon < start)) {
-		git_error_set_str(GIT_ERROR_NET, "Malformed URL");
-		return -1;
-	}
-
-	*host = git__substrdup(start, colon - start);
-	if (!*host) {
-		git_error_set_oom();
-		return -1;
-	}
-
-	return 0;
-}
-
 static int wcstristr(const wchar_t *heystack, const wchar_t *needle)
 {
 	const wchar_t *end;
@@ -262,79 +182,18 @@ static char* unescape(char *str)
 	return str;
 }
 
-/* based on gitno_extract_url_parts, keep c&p copy here until https://github.com/libgit2/libgit2/pull/2492 gets merged or forever ;)*/
-static int extract_url_parts(
-	char **host,
-	char **port,
-	char **path,
-	char **username,
-	char **password,
-	const char *url,
-	const char *default_port)
-{
-	struct http_parser_url u = { 0 };
-	const char *_host, *_port, *_path, *_userinfo;
-
-	if (http_parser_parse_url(url, strlen(url), false, &u)) {
-		git_error_set(GIT_ERROR_NET, "Malformed URL '%s'", url);
-		return GIT_EINVALIDSPEC;
-	}
-
-	_host = url + u.field_data[UF_HOST].off;
-	_port = url + u.field_data[UF_PORT].off;
-	_path = url + u.field_data[UF_PATH].off;
-	_userinfo = url + u.field_data[UF_USERINFO].off;
-
-	if (u.field_set & (1 << UF_HOST)) {
-		*host = git__substrdup(_host, u.field_data[UF_HOST].len);
-		GIT_ERROR_CHECK_ALLOC(*host);
-	}
-
-	if (u.field_set & (1 << UF_PORT)) {
-		*port = git__substrdup(_port, u.field_data[UF_PORT].len);
-	} else if (default_port) {
-		*port = git__strdup(default_port);
-		GIT_ERROR_CHECK_ALLOC(*port);
-	} else {
-		*port = NULL;
-	}
-
-	if (u.field_set & (1 << UF_PATH)) {
-		*path = git__substrdup(_path, u.field_data[UF_PATH].len);
-		GIT_ERROR_CHECK_ALLOC(*path);
-	} else {
-		git_error_set(GIT_ERROR_NET, "invalid url, missing path");
-		return GIT_EINVALIDSPEC;
-	}
-
-	if (u.field_set & (1 << UF_USERINFO)) {
-		const char *colon = memchr(_userinfo, ':', u.field_data[UF_USERINFO].len);
-		if (colon) {
-			*username = unescape(git__substrdup(_userinfo, colon - _userinfo));
-			*password = unescape(git__substrdup(colon + 1, u.field_data[UF_USERINFO].len - (colon + 1 - _userinfo)));
-			GIT_ERROR_CHECK_ALLOC(*password);
-		} else {
-			*username = git__substrdup(_userinfo, u.field_data[UF_USERINFO].len);
-		}
-		GIT_ERROR_CHECK_ALLOC(*username);
-
-	}
-
-	return 0;
-}
-
 static int _git_ssh_setup_tunnel(
 	ssh_subtransport *t,
 	const char *url,
 	const char *gitCmd,
 	git_smart_subtransport_stream **stream)
 {
-	char *host = NULL, *port = NULL, *path = NULL, *user = NULL, *pass = NULL;
 	size_t i;
 	ssh_stream *s;
 	wchar_t *ssh = t->sshtoolpath;
 	wchar_t *wideParams = NULL;
 	wchar_t *cmd = NULL;
+	git_net_url parsed_url = GIT_NET_URL_INIT;
 	git_str params = GIT_STR_INIT;
 	int isPutty;
 	size_t length;
@@ -347,42 +206,42 @@ static int _git_ssh_setup_tunnel(
 
 	s = (ssh_stream *)*stream;
 
-	for (i = 0; i < ARRAY_SIZE(ssh_prefixes); ++i) {
-		const char *p = ssh_prefixes[i];
-
-		if (!git__prefixcmp(url, p)) {
-			if (extract_url_parts(&host, &port, &path, &user, &pass, url, NULL) < 0)
-				goto on_error;
-
-			goto post_extract;
-		}
-	}
-	if (git_ssh_extract_url_parts(&host, &user, url) < 0)
+	if (git_net_url_parse_standard_or_scp(&parsed_url, url) < 0)
 		goto on_error;
 
-post_extract:
-	if (!ssh)
-	{
+	if (!ssh) {
 		git_error_set(GIT_ERROR_SSH, "No GIT_SSH tool configured");
 		goto on_error;
 	}
 
 	isPutty = wcstristr(ssh, L"plink");
-	if (port) {
+	if (parsed_url.port) {
 		if (isPutty)
-			git_str_printf(&params, " -P %s", port);
+			git_str_printf(&params, " -P %s", parsed_url.port);
 		else
-			git_str_printf(&params, " -p %s", port);
+			git_str_printf(&params, " -p %s", parsed_url.port);
 	}
 	if (isPutty && !wcstristr(ssh, L"tortoiseplink")) {
 		git_str_puts(&params, " -batch");
 	}
-	if (user)
-		git_str_printf(&params, " %s@%s ", user, host);
+
+	if (git_process__is_cmdline_option(parsed_url.username)) {
+		git_error_set(GIT_ERROR_NET, "cannot start ssh: username '%s' is ambiguous with command-line option", parsed_url.username);
+		return -1;
+	} else if (git_process__is_cmdline_option(parsed_url.host)) {
+		git_error_set(GIT_ERROR_NET, "cannot start ssh: host '%s' is ambiguous with command-line option", parsed_url.host);
+		return -1;
+	} else if (git_process__is_cmdline_option(parsed_url.path)) {
+		git_error_set(GIT_ERROR_NET, "cannot start ssh: path '%s' is ambiguous with command-line option", parsed_url.path);
+		return -1;
+	}
+
+	if (parsed_url.username)
+		git_str_printf(&params, " \"%s@%s\" ", parsed_url.username, parsed_url.host);
 	else
-		git_str_printf(&params, " %s ", host);
-	if (gen_proto(&params, s->cmd, s->url))
-		goto on_error;
+		git_str_printf(&params, " \"%s\" ", parsed_url.host);
+
+	git_str_printf(&params, "%s \"%s\"", gitCmd, parsed_url.path);
 	if (git_str_oom(&params)) {
 		git_error_set_oom();
 		goto on_error;
@@ -412,11 +271,7 @@ post_extract:
 	git__free(wideParams);
 	git__free(cmd);
 	t->current_stream = s;
-	git__free(host);
-	git__free(port);
-	git__free(path);
-	git__free(user);
-	git__free(pass);
+	git_net_url_dispose(&parsed_url);
 
 	return 0;
 
@@ -432,10 +287,7 @@ on_error:
 
 	git__free(cmd);
 
-	git__free(host);
-	git__free(port);
-	git__free(user);
-	git__free(pass);
+	git_net_url_dispose(&parsed_url);
 
 	return -1;
 }
