@@ -668,6 +668,7 @@
     <Image Include="..\Resources\actionadded.ico" />
     <Image Include="..\Resources\actionconflicted.ico" />
     <Image Include="..\Resources\actiondeleted.ico" />
+    <Image Include="..\Resources\actionerror.ico" />
     <Image Include="..\Resources\actionfetching.ico" />
     <Image Include="..\Resources\actionmodified.ico" />
     <Image Include="..\Resources\actionreplaced.ico" />

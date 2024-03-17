@@ -102,6 +102,7 @@ IDI_LOCK_BKG            ICON                    "LockBackground.ico"
 IDI_UNLOCK_BKG          ICON                    "UnlockBackground.ico"
 IDI_INDETERMINATE       ICON                    "indeterminate.ico"
 IDI_CHERRYPICK          ICON                    "cherry-pick.ico"
+IDI_ACTIONERROR         ICON                    "actionerror.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -4013,6 +4014,7 @@ BEGIN
                             "Do you really want to delete the selected worktree(s)?"
     IDS_PROC_LOCKED_WORKTREES "Locked %d worktree(s)."
     IDS_PROC_UNLOCKED_WORKTREES "Successfully unlocked %d worktree(s)."
+    IDS_PROC_LOG_FETCHFILESERROR "Could not fetch commit or calculate diff."
 END
 
 STRINGTABLE

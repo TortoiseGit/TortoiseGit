@@ -2313,6 +2313,9 @@
     <Image Include="..\Resources\cherry-pick.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\Resources\actionerror.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Resources\download.avi">

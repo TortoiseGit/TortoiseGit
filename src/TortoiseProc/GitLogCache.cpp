@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2019, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -241,7 +241,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 
 int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LARGE_INTEGER offset)
 {
-	if(!Rev.m_IsDiffFiles)
+	if (!Rev.m_IsDiffFiles || Rev.m_IsDiffFiles == 2)
 		return -1;
 
 	if (!SetFilePointerEx(m_DataFile, offset, nullptr, FILE_BEGIN))
@@ -482,7 +482,7 @@ int CLogCache::SaveCache()
 			if (!bIsRebuild && GetOffset((*i).second.m_CommitHash, pIndex) != 0)
 				continue;
 
-			if (!(*i).second.m_IsDiffFiles || (*i).second.m_CommitHash.IsEmpty() || (isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
+			if (!(*i).second.m_IsDiffFiles || (*i).second.m_IsDiffFiles == 2 || (*i).second.m_CommitHash.IsEmpty() || (isShallow && m_shallowAnchors.contains((*i).second.m_CommitHash)))
 				continue;
 
 			LARGE_INTEGER offset{};

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -61,6 +61,7 @@ CGitLogListBase::CGitLogListBase() : CHintCtrl<CResizableColumnsListCtrl<CListCt
 	m_hAddedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONADDED, cx, cy);
 	m_hDeletedIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONDELETED, cx, cy);
 	m_hFetchIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONFETCHING, cx, cy);
+	m_hErrorIcon = CCommonAppUtils::LoadIconEx(IDI_ACTIONERROR, cx, cy);
 
 	m_Filter.m_NumberOfLogsScale = CRegDWORD(L"Software\\TortoiseGit\\LogDialog\\NumberOfLogsScale", CFilterData::SHOW_NO_LIMIT);
 	if (m_Filter.m_NumberOfLogsScale == CFilterData::SHOW_LAST_SEL_DATE)
@@ -169,7 +170,7 @@ int CGitLogListBase::AsyncDiffThread()
 				continue;
 			}
 
-			if (!pRev->CheckAndDiff())
+			pRev->CheckAndDiff();
 			{	// fetch change file list
 				for (int i = GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex() + GetCountPerPage(); ++i)
 				{
@@ -1434,6 +1435,12 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			if (!pLogEntry->m_IsDiffFiles)
 			{
 				::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hFetchIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
+				*pResult = CDRF_SKIPDEFAULT;
+				return;
+			}
+			else if (pLogEntry->m_IsDiffFiles == 2)
+			{
+				::DrawIconEx(myDC.GetDC(), rect.left + iconItemBorder, rect.top, m_hErrorIcon, iconwidth, iconheight, 0, nullptr, DI_NORMAL);
 				*pResult = CDRF_SKIPDEFAULT;
 				return;
 			}
@@ -3791,6 +3798,8 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 		const int actions = pLogEntry->GetAction(this);
 		if (!pLogEntry->m_IsDiffFiles)
 			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES));
+		else if (pLogEntry->m_IsDiffFiles == 2)
+			return CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHFILESERROR));
 
 		CString actionText;
 		if (actions & CTGitPath::LOGACTIONS_MODIFIED)

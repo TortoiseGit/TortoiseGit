@@ -3044,6 +3044,10 @@ msgstr ""
 msgid "Could not determine the last committed revision!"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr ""

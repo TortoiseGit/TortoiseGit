@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -319,12 +319,14 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + m_CommitHash.ToString();
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": " + m_sErr);
 			return -1;
 		}
 	}
 	catch (const char* msg)
 	{
 		m_sErr = L"Could not get commit \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": " + m_sErr);
 		return -1;
 	}
 
@@ -347,6 +349,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		catch (const char* msg)
 		{
 			m_sErr = L"Could do diff for \"" + m_CommitHash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": " + m_sErr);
 			git_free_commit(&commit);
 			return -1;
 		}

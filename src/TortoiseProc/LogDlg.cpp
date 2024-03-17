@@ -938,9 +938,12 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 				CAppUtils::FormatTextInRichEditControl(pMsgView);
 
 			auto files = pLogEntry->GetFiles(&m_LogList); // either load the diff from disk cache and sets m_IsDiffFiles (then we safe a reload) or it enqueues it in the AsyncDiffThread
-			if (!pLogEntry->m_IsDiffFiles)
+			if (!pLogEntry->m_IsDiffFiles || pLogEntry->m_IsDiffFiles == 2)
 			{
-				m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
+				if (pLogEntry->m_IsDiffFiles == 2)
+					m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHFILESERROR)));
+				else
+					m_ChangedFileListCtrl.SetBusyString(CString(MAKEINTRESOURCE(IDS_PROC_LOG_FETCHINGFILES)));
 				m_ChangedFileListCtrl.SetBusy(TRUE);
 				m_ChangedFileListCtrl.SetRedraw(TRUE);
 				return;

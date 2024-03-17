@@ -154,6 +154,7 @@
 #define IDI_INDETERMINATE               368
 #define IDI_CHERRYPICK                  369
 #define IDR_TGITLOGO                    370
+#define IDI_ACTIONERROR                 371
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -1487,6 +1488,7 @@
 #define IDC_CHECKMODIFIED               1706
 #define IDS_PROC_UNLOCKED_WORKTREES     1706
 #define IDC_CHECKFILES                  1707
+#define IDS_PROC_LOG_FETCHFILESERROR    1707
 #define IDC_CHECKSUBMODULES             1708
 #define IDC_CHECKDELETED                1709
 #define IDC_BUTTON_UPDATE               1710
@@ -2143,7 +2145,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        371
+#define _APS_NEXT_RESOURCE_VALUE        372
 #define _APS_NEXT_COMMAND_VALUE         32881
 #define _APS_NEXT_CONTROL_VALUE         1860
 #define _APS_NEXT_SYMED_VALUE           201
