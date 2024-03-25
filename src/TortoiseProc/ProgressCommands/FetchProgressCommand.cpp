@@ -58,7 +58,8 @@ bool FetchProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	git_fetch_options fetchopts = GIT_FETCH_OPTIONS_INIT;
 	fetchopts.prune = m_Prune;
-	fetchopts.update_flags = GIT_REMOTE_UPDATE_FETCHHEAD | GIT_REMOTE_UPDATE_REPORT_UNCHANGED;
+	fetchopts.update_fetchhead = 1;
+	fetchopts.report_unchanged = 1;
 	fetchopts.download_tags = m_AutoTag;
 	git_remote_callbacks& callbacks = fetchopts.callbacks;
 	callbacks.update_tips = RemoteUpdatetipsCallback;

@@ -9,7 +9,7 @@ Released: unreleased
  * Allow BugTraq "Select issue"-button at the same time as the textbox
  * Add support for GIT_TEMPLATE_DIR environment variable
  * Updated libgit to 2.43 based on Git for Windows sources
- * Updated libgit2 to latest main branch (1.8.0pre)
+ * Updated libgit2 to 1.8.0
    libgit2 now supports worktree config
  * Updated pcre2 to 10.43
  * Update json library to 3.11.3

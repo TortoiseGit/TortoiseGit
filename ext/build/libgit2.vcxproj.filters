@@ -991,6 +991,9 @@
     <ClInclude Include="..\libgit2\src\util\cc-compat.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="..\libgit2\src\util\ctype_compat.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
     <ClInclude Include="..\libgit2\src\util\date.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
