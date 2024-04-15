@@ -111,6 +111,7 @@
     <ClCompile Include="..\..\..\crypto\pubkey-pem.c" />
     <ClCompile Include="..\..\..\crypto\pubkey-ppk.c" />
     <ClCompile Include="..\..\..\crypto\pubkey-ssh1.c" />
+    <ClCompile Include="..\..\..\crypto\rfc6979.c" />
     <ClCompile Include="..\..\..\crypto\rsa.c" />
     <ClCompile Include="..\..\..\crypto\sha1-common.c" />
     <ClCompile Include="..\..\..\crypto\sha1-ni.c">

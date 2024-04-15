@@ -41,6 +41,17 @@ Released: unreleased
  * Fixed issue #3959: The slash direction of the abbreviated path displayed in the dialog box is different
  * Fixed issue #4122: TortoiseGitMerge "Encountered an improper argument" error message
 
+= Release 2.15.0.1 =
+Released: 2024-04-15
+
+PuTTY 0.81 fixes a critical vulnerability CVE-2024-31497 in the use of 521-bit ECDSA keys (ecdsa-sha2-nistp521). If you have used a 521-bit ECDSA private key with any previous version of PuTTY, consider the private key compromised: remove the public key from authorized_keys files, and generate a new key pair.
+
+However, this only affects that one algorithm and key size. No other size of ECDSA key is affected, and no other key type is affected. 
+
+== Bug Fixes ==
+ * Update TortoiseGitPlink to PuTTY Plink 0.81
+ * Update shipped PuTTY binaries to 0.81
+
 = Release 2.15.0 =
 Released: 2023-10-03
 
