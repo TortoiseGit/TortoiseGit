@@ -7,6 +7,85 @@
 #include "mpint.h"
 #include "misc.h"
 
+/*
+ * All DSA-type signature systems depend on a nonce - a random number
+ * generated during the signing operation.
+ *
+ * This nonce is a weak point of DSA and needs careful protection,
+ * for multiple reasons:
+ *
+ *  1. If an attacker in possession of your public key and a single
+ *     signature can find out or guess the nonce you used in that
+ *     signature, they can immediately recover your _private key_.
+ *
+ *  2. If you reuse the same nonce in two different signatures, this
+ *     will be instantly obvious to the attacker (one of the two
+ *     values making up the signature will match), and again, they can
+ *     immediately recover the private key as soon as they notice this.
+ *
+ *  3. In at least one system, information about your private key is
+ *     leaked merely by generating nonces with a significant bias.
+ *
+ * Attacks #1 and #2 work across all of integer DSA, NIST-style ECDSA,
+ * and EdDSA. The details vary, but the headline effects are the same.
+ *
+ * So we must be very careful with our nonces. They must be generated
+ * with uniform distribution, but also, they must avoid depending on
+ * any random number generator that has the slightest doubt about its
+ * reliability.
+ *
+ * In particular, PuTTY's policy is that for this purpose we don't
+ * _even_ trust the PRNG we use for other cryptography. This is mostly
+ * a concern because of Windows, where system entropy sources are
+ * limited and we have doubts about their trustworthiness
+ * - even CryptGenRandom. PuTTY compensates as best it can with its
+ * own ongoing entropy collection, and we trust that for session keys,
+ * but revealing the private key that goes with a long-term public key
+ * is a far worse outcome than revealing one SSH session key, and for
+ * keeping your private key safe, we don't think the available Windows
+ * entropy gives us enough confidence.
+ *
+ * A common strategy these days (although <hipster>PuTTY was doing it
+ * before it was cool</hipster>) is to avoid using a PRNG based on
+ * system entropy at all. Instead, you use a deterministic PRNG that
+ * starts from a fixed input seed, and in that input seed you include
+ * the message to be signed and the _private key_.
+ *
+ * Including the private key in the seed is counterintuitive, but does
+ * actually make sense. A deterministic nonce generation strategy must
+ * use _some_ piece of input that the attacker doesn't have, or else
+ * they'd be able to repeat the entire computation and construct the
+ * same nonce you did. And the one thing they don't know is the
+ * private key! So we include that in the seed data (under enough
+ * layers of overcautious hashing to protect it against exposure), and
+ * then they _can't_ repeat the same construction. Moreover, if they
+ * _could_, they'd already know the private key, so they wouldn't need
+ * to perform an attack of this kind at all!
+ *
+ * (This trick doesn't, _per se_, protect against reuse of nonces.
+ * That is left to chance, which is enough, because the space of
+ * nonces is large enough to make it adequately unlikely. But it
+ * avoids escalating the reuse risk due to inadequate entropy.)
+ *
+ * For integer DSA and ECDSA, the system we use for deterministic
+ * generation of k is exactly the one specified in RFC 6979. We
+ * switched to this from the old system that PuTTY used to use before
+ * that RFC came out. The old system had a critical bug: it did not
+ * always generate _enough_ data to get uniform distribution, because
+ * its output was a single SHA-512 hash. We could have fixed that
+ * minimally, by concatenating multiple hashes, but it seemed more
+ * sensible to switch to a system that comes with test vectors.
+ *
+ * One downside of RFC 6979 is that it's based on rejection sampling
+ * (that is, you generate a random number and keep retrying until it's
+ * in range). This makes it play badly with our side-channel test
+ * system, which wants every execution trace of a supposedly
+ * constant-time operation to be the same. To work around this
+ * awkwardness, we break up the algorithm further, into a setup phase
+ * and an 'attempt to generate an output' phase, each of which is
+ * individually constant-time.
+ */
+
 struct RFC6979 {
     /*
      * Size of the cyclic group over which we're doing DSA.
@@ -197,6 +276,37 @@ RFC6979Result rfc6979_attempt(RFC6979 *s)
 
     /*
      * Perturb K and regenerate V ready for the next attempt.
+     *
+     * We do this unconditionally, whether or not the k we just
+     * generated is acceptable. The time cost isn't large compared to
+     * the public-key operation we're going to do next (not to mention
+     * the larger number of these same operations we've already done),
+     * and it makes side-channel testing easier if this function is
+     * constant-time from beginning to end.
+     *
+     * In other rejection-sampling situations, particularly prime
+     * generation, we're not this careful: it's enough to ensure that
+     * _successful_ attempts run in constant time, Failures can do
+     * whatever they like, on the theory that the only information
+     * they _have_ to potentially expose via side channels is
+     * information that was subsequently thrown away without being
+     * used for anything important. (Hence, for example, it's fine to
+     * have multiple different early-exit paths for failures you
+     * detect at different times.)
+     *
+     * But here, the situation is different. Prime generation attempts
+     * are independent of each other. These are not. All our
+     * iterations round this loop use the _same_ secret data set up by
+     * rfc6979_new(), and also, the perturbation step we're about to
+     * compute will be used by the next iteration if there is one. So
+     * it's absolutely _not_ true that a failed iteration deals
+     * exclusively with data that won't contribute to the eventual
+     * output. Hence, we have to be careful about the failures as well
+     * as the successes.
+     *
+     * (Even so, it would be OK to make successes and failures take
+     * different amounts of time, as long as each of those amounts was
+     * consistent. But it's easier for testing to make them the same.)
      */
     ssh2_mac_start(s->mac);
     put_data(s->mac, s->V, s->hlen);
