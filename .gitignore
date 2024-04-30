@@ -19,6 +19,7 @@
 /doc/source/*.h
 /doc/source/en/pubdate.xml
 /doc/source/en/version.xml
+/doc/source/en/TortoiseGit/git_doc/git-doc.xml
 /doc/xsl/db_*.xsl
 /Languages/.tx
 /src/.vs
