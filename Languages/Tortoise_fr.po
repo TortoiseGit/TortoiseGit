@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -28,13 +28,13 @@
 # Groog <florentzimolo@gmail.com>, 2014
 # guillaumefrancois55 <guillaume.francois55@gmail.com>, 2011
 # Jack, 2015
-# Jack, 2020
+# Jack, 2020,2024
 # jeremy shields <jeremy.shields@orange.fr>, 2016
 # Jorg722, 2023
 # Jonathan GRIFFON <kugan49@gmail.com>, 2017-2020
 # Kegnarok <kegnarok.rm@laposte.net>, 2013
 # Kerzzy <6greenday6@gmail.com>, 2015
-# Laurent TARREL, 2022
+# Laurent TARREL, 2022-2023
 # Le Gall Nicolas <contact@nlegall.fr>, 2014
 # 556b8933f5444413a6e3eb8ce0499357_237b366 <dc7a580f2694f34a68331c39892a2ae0_170598>, 2014
 # Linus Fredrich Levisse <linukcs@live.fr>, 2011
@@ -69,7 +69,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Jorg722, 2023\n"
+"Last-Translator: Jack, 2020,2024\n"
 "Language-Team: French (http://app.transifex.com/lznuaa/tortoisegit/language/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2716,7 +2716,7 @@ msgstr "Liste des changements %s déplacée"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "Modifications apportées (F5 : rafraîchir, double-cliquez sur le fichier pour le diff) :"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3708,7 +3708,7 @@ msgstr "La branche actuelle est à jour ou en avance par rapport à la distante.
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "Branche actuelle :"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5916,6 +5916,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6146,6 +6150,10 @@ msgstr "Ignorer l'objet(s) récursivement"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignor&er les fins de lignes (recommandé)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr "Ignorer les fins de ligne"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
@@ -7650,7 +7658,7 @@ msgstr "PI"
 
 #. Resource IDs: (IDS_PACKAGE_REGISTERED)
 msgid "Package registered"
-msgstr ""
+msgstr "Paquet enregistré"
 
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
@@ -8356,7 +8364,7 @@ msgstr "Expression régulière:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
 msgid "Register context menu"
-msgstr ""
+msgstr "Menu contextuel d'enregistrement"
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""

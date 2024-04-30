@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -5860,6 +5860,10 @@ msgstr "ID :57637 :V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID :57643 :V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6089,6 +6093,10 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
+msgstr ""
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
 msgstr ""
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)

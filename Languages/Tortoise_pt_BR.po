@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -31,7 +31,7 @@
 # Rafael Neri <rafepel@gmail.com>, 2014
 # Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2012
 # Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2022
-# Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2012,2016-2018
+# Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2012,2016-2018,2023
 # Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2016
 # Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2012-2015
 # Rodrigo Monte <rodrigo.monte86@gmail.com>, 2014
@@ -50,7 +50,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2022\n"
+"Last-Translator: Ricardo Souza (RCDMK) <rcdmk@hotmail.com>, 2012,2016-2018,2023\n"
 "Language-Team: Portuguese (Brazil) (http://app.transifex.com/lznuaa/tortoisegit/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -470,7 +470,7 @@ msgstr "&Cancelar"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
 msgid "&Checkout"
-msgstr ""
+msgstr "&Obter"
 
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
@@ -580,7 +580,7 @@ msgstr "&Deletar ramo/etiqueta"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
 msgid "&Detach"
-msgstr ""
+msgstr "&Desvincular"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -922,7 +922,7 @@ msgstr "&Local:"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
 msgid "&Location"
-msgstr ""
+msgstr "&Localização"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "&Max line length for inline diffs"
@@ -1096,7 +1096,7 @@ msgstr "&Prosseguir mesmo assim\nIgnorar o script e executar o comando mesmo ass
 
 #. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
 msgid "&Prune"
-msgstr ""
+msgstr "&Aparar"
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1277,7 +1277,7 @@ msgstr "&Esmagar TUDO"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Staging"
-msgstr ""
+msgstr "&Preparando"
 
 #. Resource IDs: (Dialog IDD_REQUESTPULL: Control id 1616)
 msgid "&Start"
@@ -1386,7 +1386,7 @@ msgstr "&Desbloquear"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Unstaging"
-msgstr ""
+msgstr "&Despreparando"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
 msgid "&Up"
@@ -2697,7 +2697,7 @@ msgstr "Lista de alterações %s foi movida"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "Alterações feitas (F5: atualizar, duplo clique no arquivo para comparar):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3689,7 +3689,7 @@ msgstr "O ramo atual está atualizado ou mais novo que o ramo remoto. Abrir a re
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "Ramo Atual:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -4173,7 +4173,7 @@ msgstr "Você realmente deseja excluir \"%s\"?"
 
 #. Resource IDs: (IDS_PROC_DELETE_WORKTREE)
 msgid "Do you really want to delete the selected worktree(s)?"
-msgstr ""
+msgstr "Você realmente deseja excluir o(s) diretório(s) de trabalho selecionada(s)?"
 
 #. Resource IDs: (IDS_DISABLEUPDATECHECKS)
 msgid ""
@@ -4295,7 +4295,7 @@ msgstr "Documento :"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "Don't ask me &again"
-msgstr ""
+msgstr "Não me pergunte &novamente"
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -5450,7 +5450,7 @@ msgstr "Mover itens versionados aqui com o Git"
 
 #. Resource IDs: (IDS_DROPNEWWORKTREE)
 msgid "Git New worktree..."
-msgstr ""
+msgstr "Git Novo diretório de trabalho..."
 
 #. Resource IDs: (IDS_PROCS_TITLE_GITREMOTESETTINGS)
 msgid "Git Remote Settings"
@@ -5601,7 +5601,7 @@ msgstr "HTTP (URLs iniciam com \"http://\" ou \"https://\")"
 
 #. Resource IDs: (IDS_HANDLESUBMODULES)
 msgid "Handle submodules"
-msgstr ""
+msgstr "Processar submódulos"
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -5654,11 +5654,11 @@ msgstr "Ocultar Correções"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
 msgid "Hide Staging<<"
-msgstr ""
+msgstr "Ocultar Preparando<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
 msgid "Hide Unstaging<<"
-msgstr ""
+msgstr "Ocultar Despreparando<<"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -5813,7 +5813,7 @@ msgstr "ID:32818:V   +H"
 
 #. Accelerator Entry for Menu ID:32819; '&Dark Mode\tD'
 msgid "ID:32819:V   +D"
-msgstr ""
+msgstr "ID:32819:V   +D"
 
 #. Accelerator Entry for Menu ID:32822; ''
 msgid "ID:32822:V C +F"
@@ -5897,6 +5897,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -5973,7 +5977,7 @@ msgstr "Sobreposição de Ícones"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
 msgid "Icon Set"
-msgstr ""
+msgstr "Conjunto de Ícones"
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6128,6 +6132,10 @@ msgstr "Ignorar itens recursivamente"
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignorar &fins de linha (recomendado)"
 
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr ""
+
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
 msgstr "Ignorar os multiplos itens por & extensão"
@@ -6204,7 +6212,7 @@ msgstr "Obtendo arquivo %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
 msgid "In Changelist"
-msgstr ""
+msgstr "Na Lista de Alterações"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"

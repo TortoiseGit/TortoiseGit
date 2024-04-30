@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -8,7 +8,7 @@
 # Gyusun Yeom <omniavinco@gmail.com>, 2012
 # Hyuk Jae Choi <certin1945@gmail.com>, 2016
 # Ian Yoon <learder@gmail.com>, 2012
-# Hoj Gim <solum5013@gmail.com>, 2013
+# jeiea <solum5013@gmail.com>, 2013
 # Jinbaek Lee <jinb92@gmail.com>, 2016
 # Juhee Park <uu7470@gmail.com>, 2020
 # 오준일 <juniri123@gmail.com>, 2018
@@ -5882,6 +5882,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6112,6 +6116,10 @@ msgstr "하위 폴더 전체에서 무시하기"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "줄바꿈 문자 무시(권장)(&E)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"

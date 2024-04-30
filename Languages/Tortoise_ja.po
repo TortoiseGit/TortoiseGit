@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,7 +10,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2008
 # fshin, 2019
 # fshin, 2019
-# hirose y <yh1224@gmail.com>, 2012,2017
+# Hirose <yh1224@gmail.com>, 2012,2017
 # Ilias-Dimitrios Vrachnis, 2013
 # タカハシ, 2013
 # Joseph Ting <josephting90@gmail.com>, 2017
@@ -36,7 +36,7 @@
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2012-2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013
 # YANO Tetsu <tetuyano+transi@gmail.com>, 2013-2015,2021
-# hirose y <yh1224@gmail.com>, 2012
+# Hirose <yh1224@gmail.com>, 2012
 # Yoshitaka Yamashita <drum@magic-touch.org>, 2013
 # youten, 2011
 # Tsuyoshi Okawa <tu44okawa3@gmail.com>, 2016
@@ -5894,6 +5894,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6124,6 +6128,10 @@ msgstr "再帰的にアイテムを無視します"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "改行コードを無視する（推奨）(&E)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"

@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -30,7 +30,7 @@
 # 82f4f02557fd4886d250a2aa0aecb530_0f90749 <0cd40767d55b0248271195f29db18a8d_208365>, 2014
 # Sergey Kuznetsov <votkinsk@gmail.com>, 2021
 # Alexander Shchekaturov <shcham@gmail.com>, 2013
-# Stanislav Kroter <krotersv@gmail.com>, 2016-2023
+# Stanislav Kroter <krotersv@gmail.com>, 2016-2024
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2020-2021
 # Дмитрий Сытьков <sytkov@gmail.com>, 2011
 # Arioch <the_Arioch@nm.ru>, 2013
@@ -50,7 +50,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Stanislav Kroter <krotersv@gmail.com>, 2016-2023\n"
+"Last-Translator: Stanislav Kroter <krotersv@gmail.com>, 2016-2024\n"
 "Language-Team: Russian (http://app.transifex.com/lznuaa/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2697,7 +2697,7 @@ msgstr "Группа изменений %s перемещена"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "Изменения сделаны (F5: обновление, двойной щелчок на файл для сравнения):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3689,7 +3689,7 @@ msgstr "Текущая ветка обновлена или новее, чем �
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "Текущая ветка:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5654,11 +5654,11 @@ msgstr "Скрыть заплатку<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_STAGING)
 msgid "Hide Staging<<"
-msgstr ""
+msgstr "Скрыть индексированное<<"
 
 #. Resource IDs: (IDS_PROC_COMMIT_HIDE_UNSTAGING)
 msgid "Hide Unstaging<<"
-msgstr ""
+msgstr "Скрыть исключённое из индекса<<"
 
 #. Resource IDs: (Dialog IDD_SETTINGSHOOKCONFIG: Control id 1326)
 msgid "Hide the script while running"
@@ -5897,6 +5897,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6127,6 +6131,10 @@ msgstr "Игнорировать элемент(ы) рекурсивно"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Игнорировать &завершения строк(рекомендуется)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr "Игнорировать окончания строк"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"

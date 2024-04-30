@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,15 +10,16 @@
 # Sven Strickroth <sstrickroth@googlemail.com>, 2015
 # அனிச் பிரபு தி, 2021-2022
 # அனிச் பிரபு தி, 2021
-# நேரம் தமிழ் <anishprabu.t@gmail.com>, 2021
-# நேரம் தமிழ் <anishprabu.t@gmail.com>, 2021-2023
+# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2023-2024
+# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2021
+# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2021-2023
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: நேரம் தமிழ் <anishprabu.t@gmail.com>, 2021-2023\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>, 2023-2024\n"
 "Language-Team: Tamil (India) (http://app.transifex.com/lznuaa/tortoisegit/language/ta_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,7 +57,7 @@ msgstr "%.2f மெகா பைட்டுகள் பரிமாற்ற�
 #. Resource IDs: (AFX_IDP_ARCH_BADCLASS)
 #, c-format
 msgid "%1 contained an unexpected object."
-msgstr "%1 எதிர்பாராத பொருளை கொண்டிருந்தது"
+msgstr "%1 எதிர்பாராத பொருளைக் கொண்டிருந்தது."
 
 #. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
@@ -2665,7 +2666,7 @@ msgstr "மாற்றப்பட்டியல் %s நகர்த்த�
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "செய்யப்பட்ட மாற்றங்கள் (F5: புதுப்பித்தல், வேறுபாட்டிற்கு கோப்பில் இருமுறை சொடுக்கவும்):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3657,7 +3658,7 @@ msgstr "தற்போதைய கிளை புதுப்பித்த 
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "தற்போதைய கிளை:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5865,6 +5866,10 @@ msgstr "அடையாளம்:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "அடையாளம்:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr "ID:57644:V C +Y"
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6095,6 +6100,10 @@ msgstr "உருப்படி(களை) மீண்டும் மீண�
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "வரி &முடிவுகளை புறக்கணிக்கவும் (பரிந்துரைக்கப்பட்டது)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr "வரி முடிவுகளைப் புறக்கணி"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"

@@ -1,12 +1,12 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2023 the TortoiseGit team
+# Copyright (C) 2008-2024 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # Adam Gregořica, 2023
 # Aleš Fiala <f.ales1@seznam.cz>, 2022-2023
-# Jiří Engelthaler <engycz@gmail.com>, 2015-2016
+# Jiří Engelthaler <engycz@gmail.com>, 2015-2016,2024
 # Jiri Sedlak <jiri_sedlak@users.sourceforge.net>, 2017
 # Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Adam Gregořica, 2023\n"
+"Last-Translator: Jiří Engelthaler <engycz@gmail.com>, 2015-2016,2024\n"
 "Language-Team: Czech (http://app.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2011,7 +2011,7 @@ msgstr "Opravdu chcete přerušit proces přeskládání?"
 
 #. Resource IDs: (IDS_REALLYCANCEL)
 msgid "Are you sure you want to cancel?"
-msgstr ""
+msgstr "Jste si jistý, že to chcete zrušit?"
 
 #. Resource IDs: (IDS_PROC_RESOLVE)
 msgid "Are you sure you want to mark the conflicted file(s) as resolved?"
@@ -2035,7 +2035,7 @@ msgstr "Uspořádat &svisle\tV"
 
 #. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
 msgid "Arrows point towards merges"
-msgstr ""
+msgstr "Šipky ukazují ve směru sloučení"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2105,7 +2105,7 @@ msgstr "Ověření"
 
 #. Resource IDs: (IDS_FIRSTSTART_AUTHENTICATIONTITLE)
 msgid "Authentication and credential store"
-msgstr ""
+msgstr "Úložiště ověření a pověření"
 
 #. Resource IDs: (Dialog IDD_SETTINGSSAVEDDATA: Control id 1278)
 msgid "Authentication data"
@@ -2149,7 +2149,7 @@ msgstr "Automatický převod CrLf"
 
 #. Resource IDs: (Dialog IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "Auto&CrLf:"
-msgstr ""
+msgstr "Auto&CrLf:"
 
 #. Resource IDs: (IDS_PROGRS_CLOSE_NOCONFLICTS)
 msgid "Auto-close if no conflicts"
@@ -2175,7 +2175,7 @@ msgstr "Automatické dokončování navrhuje, při psaní zprávy protokolu, slo
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 65535)
 msgid "AutoCrLf:"
-msgstr ""
+msgstr "AutoCrLf:"
 
 #. Resource IDs: (Dialog IDD_PULLFETCH: Control id 1505)
 msgid "AutoLoad Putty &Key"
@@ -2263,7 +2263,7 @@ msgstr "Reset půlení"
 
 #. Resource IDs: (IDS_MENUBISECTSKIP)
 msgid "Bisect skip"
-msgstr ""
+msgstr "Přeskočit půlené"
 
 #. Resource IDs: (Dialog IDD_BISECTSTART: Control id 4574,
 #. IDS_MENUBISECTSTART)
@@ -2432,7 +2432,7 @@ msgstr ""
 
 #. Resource IDs: (cmdCopy_Keytip_RESID)
 msgid "C"
-msgstr ""
+msgstr "C"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1216, Dialog
 #. IDD_SETTINGSMAIN: Control id 1215, Dialog IDD_SETTINGSMAIN: Control id
@@ -2446,7 +2446,7 @@ msgstr "&Odevzdat"
 
 #. Resource IDs: (IDS_LOG_POPUP_COMMIT)
 msgid "C&ommit..."
-msgstr ""
+msgstr "&Odevzdat..."
 
 #. Resource IDs: (IDS_LOG_POPUP_COPY)
 msgid "C&reate branch/tag from revision"
@@ -2471,7 +2471,7 @@ msgstr "Vypočítat"
 #. Resource IDs: (IDS_ERR_GITCALLFAILED)
 #, c-format
 msgid "Calling git.exe failed (exit code: %d). Please check the git.exe path."
-msgstr ""
+msgstr "Volání git.exe selhalo (exit kód: %d). Zkontrolujte cestu k git.exe."
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1127)
 msgid "Can double-click in log list to compare with previous revision"
@@ -2488,7 +2488,7 @@ msgid ""
 "%1!s!\n"
 "to\n"
 "%2!s!"
-msgstr ""
+msgstr "Chyba kopírování \n%1!s!\ndo\n%2!s!"
 
 #. Resource IDs: (Dialog AFX_IDD_NEWTYPEDLG: Control id 2, Dialog
 #. AFX_IDD_PRINTDLG: Control id 2, Dialog IDD_ADD: Control id 2, Dialog
@@ -2633,12 +2633,12 @@ msgstr "Změněné soubory"
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
-msgstr ""
+msgstr "Změněné soubory mezi %1!s! a %2!s!"
 
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
 #, c-format
 msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr ""
+msgstr "Změněné soubory mezi %1!s!, %2!s! a %3!s!, %4!s!"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -5868,6 +5868,10 @@ msgstr "ID:57637:V C +V"
 msgid "ID:57643:V C +Z"
 msgstr "ID:57643:V C +Z"
 
+#. Accelerator Entry for Menu ID:57644; ''
+msgid "ID:57644:V C +Y"
+msgstr ""
+
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 msgid "ID:57665:V C +Q"
@@ -6098,6 +6102,10 @@ msgstr "Ignorovat položky rekurzivně"
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1018)
 msgid "Ignore line &endings (recommended)"
 msgstr "Ignorovat &ukončení řádků (doporučeno)"
+
+#. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
+msgid "Ignore line endings"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
@@ -9712,7 +9720,7 @@ msgstr "Přeskočit záplatu: %s"
 
 #. Resource IDs: (IDS_MENUDESCBISECTSKIP)
 msgid "Skip current revision in bisecting process"
-msgstr ""
+msgstr "Přeskočit aktuální revizi při půlení"
 
 #. Resource IDs: (Dialog IDD_PROPPAGE: Control id 11029,
 #. IDS_PATHACTIONS_SKIPWORKTREE, IDS_STATUSLIST_SKIPWORKTREE)
