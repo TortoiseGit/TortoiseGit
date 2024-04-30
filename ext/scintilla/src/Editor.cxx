@@ -124,7 +124,6 @@ static constexpr bool IsAllSpacesOrTabs(std::string_view sv) noexcept {
 }
 
 Editor::Editor() : durationWrapOneByte(0.000001, 0.00000001, 0.00001) {
-	view.editor = this;
 	ctrlID = 0;
 
 	stylesValid = false;
@@ -7632,7 +7631,8 @@ sptr_t Editor::WndProc(Message iMessage, uptr_t wParam, sptr_t lParam) {
 	case Message::SetCaretLineVisible:
 		if (wParam) {
 			if (!vs.elementColours.count(Element::CaretLineBack)) {
-				vs.elementColours[Element::CaretLineBack] = ColourRGBA(0xFF, 0xFF, 0);
+				// Yellow default
+				vs.elementColours[Element::CaretLineBack] = ColourRGBA(maximumByte, maximumByte, 0);
 				InvalidateStyleRedraw();
 			}
 		} else {
