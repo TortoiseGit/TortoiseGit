@@ -1,5 +1,9 @@
 ﻿= Release 2.16.0 =
-Released: unreleased
+Released: 2024-04-30
+
+Support for Windows 7 and 8 will be dropped with one of the next releases.
+
+Contains a fix for a critical vulnerability (CVE-2024-31497) in PuTTY with 521-bit ECDSA keys, see notes for release 2.15.0.1.
 
 == Features ==
  * Updated OGDF to 2023.09 (Elderberry)
@@ -38,6 +42,10 @@ Released: unreleased
  * Fixed issue #3909: App freezes when pasting from a closed logs window
  * Fixed issue #3959: The slash direction of the abbreviated path displayed in the dialog box is different
  * Fixed issue #4122: TortoiseGitMerge "Encountered an improper argument" error message
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.15.0.1 =
 Released: 2024-04-15
@@ -96,10 +104,6 @@ Support for Windows 7 and 8 will be dropped with one of the next releases.
  * Fixed issue #4057: "Clean up" fails to delete files with Unicode characters in name if core.quotepath is not explicitly set
  * Fixed issue #4058: Performance issue when the Git index contains a large number of files
  * Fixed issue #3874: TortoiseGitMerge GUI elements overlap with Ribbon on Windows 7
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.14.0.1 =
 Released: 2023-04-15
