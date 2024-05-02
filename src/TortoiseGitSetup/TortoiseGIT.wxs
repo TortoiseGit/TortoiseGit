@@ -1,9 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<?include Includes.wxi?>
-	<Product UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Id="*" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Codepage="1252">
-
-		<Package Id="*" Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Comments="$(var.TortoiseGitOrg)" Manufacturer="$(var.PackageManufacturer)" InstallerVersion="405" Platform="$(var.PackagePlatforms)" Languages="1033" Compressed="yes" SummaryCodepage="1252" InstallPrivileges="elevated" />
+	<Package UpgradeCode="$(var.UpgradeGuid)" Name="$(var.ProductName) $(var.VersionNumberUserVisible) $(var.PlatformUserVisible)" Version="$(var.VersionNumberInternal)" Manufacturer="TortoiseGit" Language="1033" Scope="perMachine">
+		<SummaryInformation Keywords="$(var.PackageKeywords)" Description="$(var.PackageDescription)" Manufacturer="$(var.PackageManufacturer)" />
 		<Upgrade Id="$(var.UpgradeGuid)">
 			<!-- upgrade is flagged if current-install is newer than or equal to package -->
 			<UpgradeVersion Property="NEWERVERSIONDETECTED" Minimum="$(var.VersionNumberInternal)" OnlyDetect="yes" />
@@ -22,42 +20,41 @@
 
 		<Icon Id="TGITIcon" SourceFile="..\Resources\Tortoise.ico" />
 
-		<Property Id="SSHTOOL" Secure="yes">Plink</Property>
+		<Property Id="SSHTOOL" Secure="yes" Value="Plink" />
 		<Property Id="OLDSSH" Secure="yes">
 			<RegistrySearch Id="oldSSHSetting" Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Type="raw" />
 		</Property>
 
 		<!-- Launch Condition related properties ................................................................................. -->
-		<Property Id="SHOWCHANGELOG" Secure="yes">1</Property>
-		<Property Id="FIRSTSTARTWIZARD" Secure="yes">1</Property>
-		<Property Id="ALLUSERS" Secure="yes">1</Property>
+		<Property Id="SHOWCHANGELOG" Secure="yes" Value="1" />
+		<Property Id="FIRSTSTARTWIZARD" Secure="yes" Value="1" />
 
-		<Condition Message="[ProductName] requires Windows 7 or later."><![CDATA[(VersionNT >= 601)]]></Condition>
+		<Launch Condition="(VersionNT &gt;= 601)" Message="[ProductName] requires Windows 7 or later." />
 
 		<?if $(var.Platform) = "x86" ?>
-		<Condition Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead.">NOT Msix64</Condition>
-		<?endif ?>
+		<Launch Condition="NOT Msix64" Message="You are attempting to run the 32-bit installer on a 64-bit version of Windows. Please install the 64-bit version of TortoiseGit instead." />
+		<?endif?>
 
 		<?if $(var.Platform) = "x64" ?>
 		<Upgrade Id="$(var.UpgradeGuid32)">
 			<UpgradeVersion Minimum="0.0.0.0" OnlyDetect="yes" Property="WIN32TGITFOUND" />
 		</Upgrade>
-		<Condition Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName].">NOT WIN32TGITFOUND</Condition>
-		<?endif ?>
+		<Launch Condition="NOT WIN32TGITFOUND" Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName]." />
+		<?endif?>
 
 		<!-- test for the universal CRT -->
 		<Property Id="UCRTVERSION" Secure="yes">
 			<?if $(var.Platform) = "x64" ?>
 			<DirectorySearch Id="SystemFolder64V" Path="[System64Folder]">
-				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0" />
 			</DirectorySearch>
 			<?else?>
 			<DirectorySearch Id="SystemFolder32V" Path="[SystemFolder]">
-				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0"/>
+				<FileSearch Name="ucrtbase.dll" MinVersion="0.0.0.0" />
 			</DirectorySearch>
 			<?endif?>
 		</Property>
-		<Condition Message="Please install the Universal CRT first. You can install it via Windows Update (KB2999226) or you can manually download it from Microsoft by doing a search for 'vcredist 2019 download'">UCRTVERSION</Condition>
+		<Launch Condition="UCRTVERSION" Message="Please install the Universal CRT first. You can install it via Windows Update (KB2999226) or you can manually download it from Microsoft by doing a search for 'vcredist 2019 download'" />
 
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR" Secure="yes">
@@ -71,38 +68,38 @@
 		<CustomAction Id="Set_FirstStartWizard" Property="FIRSTSTARTWIZARD" Value="" Return="check" />
 		<CustomAction Id="FirstStartWizardAction" Directory="D__Bin" ExeCommand="&quot;[INSTALLDIR]bin\TortoiseGitProc.exe&quot; /command:firststart" Return="asyncNoWait" />
 
-		<CustomAction Id="ShowDonatePage" BinaryKey="CustomActionsDLL" DllEntry="OpenDonatePage" />
-		<CustomAction Id="RemoveAllUserSettings" BinaryKey="CustomActionsDLL" DllEntry="RemoveAllUserSettings" />
+		<CustomAction Id="ShowDonatePage" DllEntry="OpenDonatePage" BinaryRef="CustomActionsDLL" />
+		<CustomAction Id="RemoveAllUserSettings" DllEntry="RemoveAllUserSettings" BinaryRef="CustomActionsDLL" />
 
-		<CustomAction Id="KillCache" BinaryKey="CustomActionsDLL" DllEntry="TerminateCache" />
+		<CustomAction Id="KillCache" DllEntry="TerminateCache" BinaryRef="CustomActionsDLL" />
 		<Binary Id="CustomActionsDLL" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions.dll" />
-		<CustomAction Id="RestartExplorer" BinaryKey="CustomActionsDLL" DllEntry="RestartExplorer" />
+		<CustomAction Id="RestartExplorer" DllEntry="RestartExplorer" BinaryRef="CustomActionsDLL" />
 		<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 		<!-- only needed for Windows 11; there is no x86 version -->
 		<Binary Id="CustomActionsDLL11" SourceFile="..\..\bin\$(var.ReleasePath)\bin\CustomActions11.dll" />
-		<CustomAction Id="RegisterSparsePackage" Impersonate="yes" BinaryKey="CustomActionsDLL11" DllEntry="RegisterSparsePackage"/>
-		<CustomAction Id="UnregisterSparsePackage" Impersonate="yes" BinaryKey="CustomActionsDLL11" DllEntry="UnregisterSparsePackage"/>
-		<?endif ?>
+		<CustomAction Id="RegisterSparsePackage" Impersonate="yes" DllEntry="RegisterSparsePackage" BinaryRef="CustomActionsDLL11" />
+		<CustomAction Id="UnregisterSparsePackage" Impersonate="yes" DllEntry="UnregisterSparsePackage" BinaryRef="CustomActionsDLL11" />
+		<?endif?>
 
 		<!-- Unsafe-check properties and custom actions .......................................................................... -->
-		<Property Id="VSDUIANDADVERTISED" Secure="yes">This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic.</Property>
+		<Property Id="VSDUIANDADVERTISED" Secure="yes" Value="This advertised application will not be installed because it might be unsafe. Contact your administrator to change the installation user interface option of the package to basic." />
 		<CustomAction Id="ERRCA_UIANDADVERTISED" Error="[VSDUIANDADVERTISED]" />
 
 		<!-- Figure out where a previous installation was, if any ................................................................ -->
 		<?if $(var.Platform) = "x64" OR $(var.Platform) = "ARM64" ?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFiles64Folder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR" Secure="yes">
-			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
+			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" />
 		</Property>
-		<?else ?>
+		<?else?>
 		<CustomAction Id="DefaultTargetDir" Property="INSTALLDIR" Value="[ProgramFilesFolder]$(var.ProductName)" Execute="immediate" />
 		<Property Id="INSTALLDIR" Secure="yes">
-			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" Win64="$(var.Win64YesNo)" />
+			<RegistrySearch Id="PreviousInstallLocationRegistrySearch" Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Type="raw" />
 		</Property>
-		<?endif ?>
+		<?endif?>
 
 		<Property Id="LANGUAGEFOLDER" Secure="yes">
-			<RegistrySearch Key="SOFTWARE\[Manufacturer]" Root="HKLM" Type="raw" Id="LANGUAGEFOLDER_REGSEARCH" Name="LanguageFolderPath" Win64="$(var.Win64YesNo)"/>
+			<RegistrySearch Key="SOFTWARE\[Manufacturer]" Root="HKLM" Type="raw" Id="LANGUAGEFOLDER_REGSEARCH" Name="LanguageFolderPath" />
 		</Property>
 
 		<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
@@ -112,21 +109,21 @@
 			 for Win11 -->
 		<Property Id="WIN11FOUND" Secure="yes">
 			<DirectorySearch Id="searchSystem" Path="[System64Folder]" AssignToProperty="yes">
-				<FileSearch Id="searchFile" Name="shell32.dll" MinVersion="6.3.21999.0"/>
+				<FileSearch Id="searchFile" Name="shell32.dll" MinVersion="6.3.21999.0" />
 			</DirectorySearch>
 		</Property>
 
 		<!-- properties for the custom actions to (un)register the sparse package -->
-		<Property Id="SPARSEPACKAGEFILE" Value="package.msix"  Secure="yes"/>
-		<Property Id="SPARSEPACKAGENAME" Value="0BF99681-825C-4B2A-A14F-2AC01DB9B70E"  Secure="yes"/>
-		<?endif ?>
+		<Property Id="SPARSEPACKAGEFILE" Value="package.msix" Secure="yes" />
+		<Property Id="SPARSEPACKAGENAME" Value="0BF99681-825C-4B2A-A14F-2AC01DB9B70E" Secure="yes" />
+		<?endif?>
 
 		<?include FeaturesFragment.wxi?>
 		<?include StructureFragment.wxi?>
 		<?include UIFragment.wxi?>
 		<?if $(var.Platform) != "ARM64" ?>
 		<?include Win7LibraryAndExplorerToolbarActions.wxi?>
-		<?endif ?>
+		<?endif?>
 		<?include ProtocolSupport.wxi?>
 		<?include TortoiseUDiff.wxi?>
 
@@ -142,13 +139,13 @@
 			<!-- AppSearch must be done before RemoveExistingProducts and before FindRelatedProducts -->
 			<AppSearch Sequence="1" />
 			<LaunchConditions After="AppSearch" />
-			<Custom Action="DefaultTargetDir" After="LaunchConditions">INSTALLDIR=""</Custom>
-			<Custom Action="KillCache" After="ValidateProductID">Installed OR REMOVE OR CLOSETGITCACHE</Custom>
+			<Custom Action="DefaultTargetDir" After="LaunchConditions" Condition="INSTALLDIR=&quot;&quot;" />
+			<Custom Action="KillCache" After="ValidateProductID" Condition="Installed OR REMOVE OR CLOSETGITCACHE" />
 			<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
 			<!-- only needed for Windows 11; there is no x86 version -->
-			<Custom Action="RegisterSparsePackage" After="InstallFinalize">NOT (REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>
-			<Custom Action="UnregisterSparsePackage" Before="RemoveFiles">(REMOVE~="ALL") AND (NOT WIN11FOUND="")</Custom>
-			<?endif ?>
+			<Custom Action="RegisterSparsePackage" After="InstallFinalize" Condition="NOT (REMOVE~=&quot;ALL&quot;) AND (NOT WIN11FOUND=&quot;&quot;)" />
+			<Custom Action="UnregisterSparsePackage" Before="RemoveFiles" Condition="(REMOVE~=&quot;ALL&quot;) AND (NOT WIN11FOUND=&quot;&quot;)" />
+			<?endif?>
 		</InstallExecuteSequence>
 
 		<!-- UI Sequencing ...................................................................................................... -->
@@ -156,7 +153,7 @@
 			<Show Dialog="FatalErrorDlg" OnExit="error" />
 			<Show Dialog="UserExit" OnExit="cancel" />
 			<Show Dialog="ExitDlg" OnExit="success" />
-			<Show Dialog="PrepareDlg" Before="CostInitialize"><![CDATA[]]></Show>
+			<Show Dialog="PrepareDlg" Before="CostInitialize" Condition=" " />
 			<Show Dialog="AdminWelcomeDlg" After="CostFinalize" />
 			<Show Dialog="ProgressDlg" After="AdminWelcomeDlg" />
 		</AdminUISequence>
@@ -166,18 +163,18 @@
 			<Show Dialog="UserExit" OnExit="cancel" />
 			<Show Dialog="ExitDlg" OnExit="success" />
 			<Show Dialog="PrepareDlg" After="LaunchConditions" />
-			<Show Dialog="WelcomeDlg" After="MigrateFeatureStates"><![CDATA[NOT Installed]]></Show>
-			<Show Dialog="ResumeDlg" After="WelcomeDlg"><![CDATA[Installed AND (RESUME OR Preselected)]]></Show>
-			<Show Dialog="PatchWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND PATCH]]></Show>
-			<Show Dialog="MaintenanceWelcomeDlg" After="ResumeDlg"><![CDATA[Installed AND NOT RESUME AND NOT Preselected and NOT PATCH]]></Show>
+			<Show Dialog="WelcomeDlg" After="MigrateFeatureStates" Condition="NOT Installed" />
+			<Show Dialog="ResumeDlg" After="WelcomeDlg" Condition="Installed AND (RESUME OR Preselected)" />
+			<Show Dialog="PatchWelcomeDlg" After="ResumeDlg" Condition="Installed AND NOT RESUME AND PATCH" />
+			<Show Dialog="MaintenanceWelcomeDlg" After="ResumeDlg" Condition="Installed AND NOT RESUME AND NOT Preselected and NOT PATCH" />
 			<Show Dialog="ProgressDlg" After="MaintenanceWelcomeDlg" />
 
-			<FindRelatedProducts Suppress="no">1</FindRelatedProducts>
+			<FindRelatedProducts Suppress="no" Condition="1" />
 
-			<Custom Action="DefaultTargetDir" After="PrepareDlg">INSTALLDIR=""</Custom>
-			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch">ProductState=1</Custom>
-			<Custom Action="Set_ShowChangelog" After="LaunchConditions">NOT (NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)</Custom>
-			<Custom Action="Set_FirstStartWizard" After="LaunchConditions">(NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)</Custom>
+			<Custom Action="DefaultTargetDir" After="PrepareDlg" Condition="INSTALLDIR=&quot;&quot;" />
+			<Custom Action="ERRCA_UIANDADVERTISED" Before="AppSearch" Condition="ProductState=1" />
+			<Custom Action="Set_ShowChangelog" After="LaunchConditions" Condition="NOT (NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)" />
+			<Custom Action="Set_FirstStartWizard" After="LaunchConditions" Condition="(NEWERVERSIONDETECTED OR PREVIOUSVERSIONSINSTALLED OR PATCH)" />
 		</InstallUISequence>
-	</Product>
+	</Package>
 </Wix>

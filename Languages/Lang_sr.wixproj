@@ -1,17 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<PropertyGroup>
-		<ProjectGuid>{d4321ff8-5df1-4522-9029-ae9fbcdac1e9}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-sr</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=3098;LANGNATIVE=Serbian cyrillic;SPELL=1;</DefineConstants>
-		<Cultures>en-US</Cultures>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="LanguagePack.wxs" />
-		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\3098.wxi" />
-	</ItemGroup>
-	<Import Project="WixProj.common.props" />
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputName>TortoiseGit-LanguagePack-sr</OutputName>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=3098;LANGNATIVE=Serbian cyrillic;SPELL=1;</DefineConstants>
+    <Cultures>en-US</Cultures>
+  </PropertyGroup>
+  <Import Project="WixProj.common.props" />
+  <ItemGroup>
+    <Content Include="spell\3098.wxi" />
+  </ItemGroup>
 </Project>

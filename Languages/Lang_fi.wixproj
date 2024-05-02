@@ -1,14 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<PropertyGroup>
-		<ProjectGuid>{4236aebe-79df-40ad-8243-8228935f243d}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-fi</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1035;LANGNATIVE=Finnish;</DefineConstants>
-		<Cultures>fi-FI</Cultures>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="LanguagePack.wxs" />
-		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<Import Project="WixProj.common.props" />
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputName>TortoiseGit-LanguagePack-fi</OutputName>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1035;LANGNATIVE=Finnish;</DefineConstants>
+    <Cultures>fi-FI</Cultures>
+  </PropertyGroup>
+  <Import Project="WixProj.common.props" />
 </Project>

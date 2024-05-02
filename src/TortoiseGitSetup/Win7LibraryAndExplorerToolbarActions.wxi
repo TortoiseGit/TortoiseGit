@@ -1,10 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Include>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<DirectoryRef Id="INSTALLDIR">
-		<Component Id="C__win7library" Guid="*" Win64="$(var.Win64YesNo)">
-			<Condition>VersionNT = 601</Condition>
+		<Component Id="C__win7library" Condition="VersionNT = 601">
 			<!-- Folders -->
-			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="CanonicalName" Value="GitWCs" Type="string" KeyPath="yes"/>
+			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="CanonicalName" Value="GitWCs" Type="string" KeyPath="yes" />
 			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="class" Value="GitWCs" Type="string" />
 			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="LayoutType" Value="7" Type="integer" />
 			<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\$(var.GuidFolderTypeGit)" Name="MostRelevant" Value="prop:System.Author;System.StructuredQuery.Virtual.Type;System.DateModified;System.Size;System.ItemNameDisplay;System.ItemFolderPathDisplay;System.Keywords;System.Title" Type="string" />

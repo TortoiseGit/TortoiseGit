@@ -1,17 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<PropertyGroup>
-		<ProjectGuid>{5af16f95-b1b1-4ef7-bcd0-cbd7857f3d5f}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-he</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1037;LANGNATIVE=Hebrew;SPELL=1;</DefineConstants>
-		<Cultures>he-IL</Cultures>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="LanguagePack.wxs" />
-		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1037.wxi" />
-	</ItemGroup>
-	<Import Project="WixProj.common.props" />
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputName>TortoiseGit-LanguagePack-he</OutputName>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1037;LANGNATIVE=Hebrew;SPELL=1;</DefineConstants>
+    <Cultures>he-IL</Cultures>
+  </PropertyGroup>
+  <Import Project="WixProj.common.props" />
+  <ItemGroup>
+    <Content Include="spell\1037.wxi" />
+  </ItemGroup>
 </Project>

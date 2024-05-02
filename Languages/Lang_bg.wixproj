@@ -1,17 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<PropertyGroup>
-		<ProjectGuid>{3796a881-6668-41c7-88ae-005bb8dc6a8e}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-bg</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1026;LANGNATIVE=Bulgarian;SPELL=1;</DefineConstants>
-		<Cultures>bg-BG</Cultures>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="LanguagePack.wxs" />
-		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="spell\1026.wxi" />
-	</ItemGroup>
-	<Import Project="WixProj.common.props" />
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputName>TortoiseGit-LanguagePack-bg</OutputName>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=1026;LANGNATIVE=Bulgarian;SPELL=1;</DefineConstants>
+    <Cultures>bg-BG</Cultures>
+  </PropertyGroup>
+  <Import Project="WixProj.common.props" />
+  <ItemGroup>
+    <Content Include="spell\1026.wxi" />
+  </ItemGroup>
 </Project>

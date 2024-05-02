@@ -3,7 +3,7 @@
 ; Top-most EditorConfig file
 root = true
 
-[*.{sln,wixproj,wxi,wxs,xml}]
+[*.{sln,wxi,wxs,xml}]
 charset                  = utf-8-bom
 end_of_line              = crlf
 trim_trailing_whitespace = true
@@ -39,7 +39,7 @@ insert_final_newline     = true
 indent_style             = space
 indent_size              = 4
 
-[*.{vcxproj,vcxproj.filters,props}]
+[*.{vcxproj,vcxproj.filters,props,wixproj}]
 charset                  = utf-8-bom
 end_of_line              = crlf
 trim_trailing_whitespace = true

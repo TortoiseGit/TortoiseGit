@@ -1,4 +1,4 @@
-﻿<Include>
-	<File Id='SPELLHEILAFF' Name='he_IL.aff' DiskId='1' Source='..\ext\spell\he_IL\he_IL.aff' Vital='no'></File>
-	<File Id='SPELLHEILDIC' Name='he_IL.dic' DiskId='1' Source='..\ext\spell\he_IL\he_IL.dic' Vital='no'></File>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<File Id="SPELLHEILAFF" Name="he_IL.aff" DiskId="1" Source="..\ext\spell\he_IL\he_IL.aff" Vital="no"></File>
+	<File Id="SPELLHEILDIC" Name="he_IL.dic" DiskId="1" Source="..\ext\spell\he_IL\he_IL.dic" Vital="no"></File>
 </Include>

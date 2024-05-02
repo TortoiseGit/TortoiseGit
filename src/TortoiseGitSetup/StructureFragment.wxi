@@ -1,748 +1,733 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!--
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-
-	<?include Includes.wxi?>
--->
-	<?if $(var.Platform) = "x86" ?>
+﻿	<?if $(var.Platform) = "x86" ?>
 	<?define cf="CommonFilesFolder" ?>
-	<?endif ?>
+	<?endif?>
 	<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
 	<?define cf="CommonFiles64Folder" ?>
-	<?endif ?>
-<!--
-	<Fragment Id="StructureFragment">
--->
+	<?endif?>
 
-<Include>
-	<Directory Id="TARGETDIR" Name="SourceDir">
-		<Directory Id="D__ProgramFilesFolder" Name="Program Files">
-			<Directory Id="INSTALLDIR" Name="TortoiseGit">
+<Include xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+	<Directory Id="D__ProgramFilesFolder" Name="Program Files">
+		<Directory Id="INSTALLDIR" Name="TortoiseGit">
 
+			<?if $(var.Platform) = "x86" ?>
+			<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
+			<?endif?>
+
+			<?if $(var.Platform) = "x64" ?>
+			<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-x64.msm" DiskId="1" />
+			<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
+			<?endif?>
+
+			<?if $(var.Platform) = "ARM64" ?>
+			<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-arm64.msm" DiskId="1" />
+			<?endif?>
+
+			<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)">
+				<File Id="F__changelog" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
+				<File Id="F__changelog_pre2.0" Name="Changelog-pre2.0.txt" DiskId="1" Source="..\Changelog-pre2.0.txt" />
+				<File Id="F__changelog_pre1.8" Name="Changelog-pre1.8.txt" DiskId="1" Source="..\Changelog-pre1.8.txt" />
+				<File Id="F__tortoisegitlicense" Name="TortoiseGit License.txt" DiskId="1" Source="..\..\LICENSE" />
+				<File Id="F__aprlicense" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
+			</Component>
+
+			<Component Id="C__ProgramMenuFolder" Guid="$(var.GuidProgramMenuFolder)">
+				<RemoveFolder Directory="INSTALLDIR" On="uninstall" Id="RemoveFolder_INSTALLDIR" />
+				<RemoveFolder Directory="D_TortoisePrgMenu" On="uninstall" Id="RemoveFolder_PrgMenu" />
+			</Component>
+
+			<Component Id="C__shellregistry">
 				<?if $(var.Platform) = "x86" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
-				<?endif ?>
+				<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<?endif?>
+				<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
+				<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<?endif?>
+			</Component>
+			<?if $(var.Platform) = "x64" ?>
+			<Component Id="C__shellregistry32" Bitness="always32">
+				<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
+				<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
+				<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+			</Component>
+			<?endif?>
 
-				<?if $(var.Platform) = "x64" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-x64.msm" DiskId="1" />
-				<Merge Id="Ovlays32" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-win32.msm" DiskId="1" />
-				<?endif ?>
+			<Component Id="C_SSHCLIENT_PLINK" Permanent="yes" Condition="(OLDSSH = &quot;&quot;) and (SSHTOOL=&quot;Plink&quot;)">
+				<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPlink.exe" Type="string" KeyPath="yes" />
+			</Component>
+			<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Permanent="yes" Condition="(OLDSSH = &quot;&quot;) and (SSHTOOL=&quot;OpenSSH&quot;)">
+				<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" KeyPath="yes" />
+			</Component>
 
-				<?if $(var.Platform) = "ARM64" ?>
-				<Merge Id="Ovlays" Language="0" SourceFile="..\..\ext\TortoiseOverlays\TortoiseOverlays-1.1.5.29440-arm64.msm" DiskId="1" />
-				<?endif ?>
+			<Component Id="C__machineregistry">
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" KeyPath="yes" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="Git" Value="{$(var.GuidModified)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="Git" Value="{$(var.GuidConflict)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="Git" Value="{$(var.GuidDeleted)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="Git" Value="{$(var.GuidReadonly)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="Git" Value="{$(var.GuidLocked)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="Git" Value="{$(var.GuidAdded)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="Git" Value="{$(var.GuidIgnored)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="Git" Value="{$(var.GuidUnversioned)}" Type="string" />
+			</Component>
+			<?if $(var.Platform) = "x64" ?>
+			<Component Id="C__machineregistry32" Bitness="always32">
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="Git" Value="{$(var.GuidModified)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="Git" Value="{$(var.GuidConflict)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="Git" Value="{$(var.GuidDeleted)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="Git" Value="{$(var.GuidReadonly)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="Git" Value="{$(var.GuidLocked)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="Git" Value="{$(var.GuidAdded)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="Git" Value="{$(var.GuidIgnored)}" Type="string" />
+				<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="Git" Value="{$(var.GuidUnversioned)}" Type="string" />
+			</Component>
+			<?endif?>
 
-				<Component Id="C__infofiles" Guid="$(var.GuidInfoFiles)" Win64="$(var.Win64YesNo)">
-					<File Id="F__changelog" Name="Changelog.txt" DiskId="1" Source="..\Changelog.txt" KeyPath="yes" />
-					<File Id="F__changelog_pre2.0" Name="Changelog-pre2.0.txt" DiskId="1" Source="..\Changelog-pre2.0.txt" />
-					<File Id="F__changelog_pre1.8" Name="Changelog-pre1.8.txt" DiskId="1" Source="..\Changelog-pre1.8.txt" />
-					<File Id="F__tortoisegitlicense" Name="TortoiseGit License.txt" DiskId="1" Source="..\..\LICENSE" />
-					<File Id="F__aprlicense" Name="apr License.txt" DiskId="1" Source="..\..\ext\apr\LICENSE" />
+			<Component Id="C__approveshellcomponents">
+				<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+					<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
+					<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
+					<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
+					<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
+					<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
+					<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
+					<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
+					<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
+					<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
+					<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
+					<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
+				</RegistryKey>
+			</Component>
+			<?if $(var.Platform) = "x64" ?>
+			<Component Id="C__approveshellcomponents32" Bitness="always32">
+				<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
+					<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
+					<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
+					<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
+					<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
+					<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
+					<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
+					<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
+					<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
+					<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
+					<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
+					<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
+				</RegistryKey>
+			</Component>
+			<?endif?>
+
+			<Directory Id="D__Bin" Name="bin">
+				<Component Id="C__touch" Guid="$(var.GuidTouch)">
+					<File Id="F__touch" Name="tgittouch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgittouch.exe" KeyPath="yes" />
 				</Component>
 
-				<Component Id="C__ProgramMenuFolder" Guid="$(var.GuidProgramMenuFolder)" Win64="$(var.Win64YesNo)">
-					<RemoveFolder Directory="INSTALLDIR" On="uninstall" Id="RemoveFolder_INSTALLDIR" />
-					<RemoveFolder Directory="D_TortoisePrgMenu" On="uninstall" Id="RemoveFolder_PrgMenu" />
+				<?if $(var.IncludeCrashReportDll) = 1 ?>
+				<Component Id="C__crash" Guid="$(var.GuidCrashRpt)">
+					<File Id="F__crashrpt" Name="crshhndl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\crshhndl.dll" KeyPath="yes" />
+					<File Id="F__sendrpt" Name="sendrpt.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sendrpt.exe" />
+					<File Id="F__dbghelp" Name="dbghelp.dll" DiskId="1" Source="..\..\ext\CrashServer\CrashHandler\SendRpt\dbghelp\$(var.Platform)\dbghelp.dll" />
+				</Component>
+				<?endif?>
+
+				<Component Id="C__help_en" Guid="$(var.GuidHelpEN)">
+					<File Id="F_TortoiseGit_en" Name="TortoiseGit_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseGit_en.chm" KeyPath="yes" />
+					<File Id="F__TortoiseMerge_en" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />
+					<RemoveFile Id="F__Tortoise_lang" Name="*.chm" On="uninstall" />
 				</Component>
 
-				<Component Id="C__shellregistry" Guid="*" Win64="$(var.Win64YesNo)">
+				<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)">
 					<?if $(var.Platform) = "x86" ?>
-					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<?endif ?>
+					<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
+					<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
+					<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
+					<?endif?>
 					<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
-					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<?endif ?>
+					<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes" />
+					<File Id="F__zlib" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
+					<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
+					<?endif?>
 				</Component>
 				<?if $(var.Platform) = "x64" ?>
-				<Component Id="C__shellregistry32" Guid="*" Win64="no">
-					<RegistryValue Root="HKCR" Key="Drive\shellex\ContextMenuHandlers\TortoiseGit" KeyPath="yes" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Drive\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\Background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryLocation\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="LibraryFolder\background\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Folder\shellex\DragDropHandlers\TortoiseGit" Value="{$(var.GuidDropHandler)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidAdded)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidLocked)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDeleted)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidNormal)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidReadonly)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUncontrolled)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidModified)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidDropHandler)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidConflict)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidIgnored)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Name="ThreadingModel" Value="Apartment" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}\InProcServer32" Value="[INSTALLDIR]bin\TortoiseGitStub32.dll" Type="string" />
-					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidUnversioned)}" Value="TortoiseGit" Type="string" />
-					<RegistryValue Root="HKCR" Key="lnkfile\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="InternetShortcut\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
-					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+				<Component Id="C__gitlibs32" Guid="$(var.GuidGitLibs32)">
+					<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
+					<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
+					<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
 				</Component>
-				<?endif ?>
+				<?endif?>
 
-				<Component Id="C_SSHCLIENT_PLINK" Guid="*" Win64="$(var.Win64YesNo)" Permanent="yes">
-					<Condition>(OLDSSH = "") and (SSHTOOL="Plink")</Condition>
-					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="[INSTALLDIR]bin\TortoiseGitPlink.exe" Type="string" KeyPath="yes" />
-				</Component>
-				<Component Id="C_SSHCLIENT_OPENSSH" Guid="$(var.RegSSHOpen)" Win64="$(var.Win64YesNo)" Permanent="yes">
-					<Condition>(OLDSSH = "") and (SSHTOOL="OpenSSH")</Condition>
-					<RegistryValue Root="HKCU" Key="Software\[Manufacturer]" Name="SSH" Value="ssh.exe" Type="string" KeyPath="yes" />
+				<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)">
+					<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
+					<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
+					<?if $(var.Platform) = "x86" ?>
+					<File Id="F__notepad2x86" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x86.exe" />
+					<File Id="F__PuttyGenx86" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x86.exe" />
+					<File Id="F__pageantx86" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x86.exe" />
+					<?endif?>
+					<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
+					<File Id="F__notepad2x64" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
+					<?endif?>
+					<?if $(var.Platform) = "x64" ?>
+					<File Id="F__PuttyGenx64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x64.exe" />
+					<File Id="F__pageantx64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x64.exe" />
+					<?endif?>
+					<?if $(var.Platform) = "ARM64" ?>
+					<File Id="F__PuttyGenarm64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-arm64.exe" />
+					<File Id="F__pageantarm64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-arm64.exe" />
+					<?endif?>
+					<File Id="F__askpass" Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
 				</Component>
 
-				<Component Id="C__machineregistry" Guid="*" Win64="$(var.Win64YesNo)">
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" KeyPath="yes" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="Git" Value="{$(var.GuidModified)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="Git" Value="{$(var.GuidConflict)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="Git" Value="{$(var.GuidDeleted)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="Git" Value="{$(var.GuidReadonly)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="Git" Value="{$(var.GuidLocked)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="Git" Value="{$(var.GuidAdded)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="Git" Value="{$(var.GuidIgnored)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="Git" Value="{$(var.GuidUnversioned)}" Type="string" />
+				<Component Id="C__TortoiseGitGitWCRev" Guid="$(var.GuidTortoiseGitGitWCRev)">
+					<File Id="F__GitWCRev" Name="GitWCRev.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRev.exe" />
+					<File Id="F__GitWCRevCOM" Name="GitWCRevCOM.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRevCOM.exe" />
+
+					<!-- App Paths to support Start, Run -->
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
+
+					<!-- register the GitWCRev COM-Object -->
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\LocalServer32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe /automation" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\ProgID" Value="GitWCRev.object.1" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\VersionIndependentProgID" Value="GitWCRev.object" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}" Value="GitWCRev Server Object" Type="string" />
+					<RegistryValue Root="HKCR" Key="GitWCRev.object" Value="GitWCRev Server Object" Type="string" />
+					<RegistryValue Root="HKCR" Key="GitWCRev.object\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="GitWCRev.object\CurVer" Value="GitWCRev.object.1" Type="string" />
+					<RegistryValue Root="HKCR" Key="GitWCRev.object.1" Value="GitWCRev Server Object" Type="string" />
+					<RegistryValue Root="HKCR" Key="GitWCRev.object.1\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0" Value="GitWCRev Type Library" Type="string" />
+					<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe" Type="string" />
+					<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
+					<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
+					<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}" Value="IGitWCRev" Type="string" />
+					<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
+					<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
+				</Component>
+
+				<?if $(var.Platform) = "x64" ?>
+				<Component Id="C__TortoiseGitGitWCRev32" Bitness="always32">
+					<!-- App Paths to support Start, Run -->
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
+				</Component>
+				<?endif?>
+
+				<Component Id="C__TGitCache" Guid="$(var.GuidTortoiseGitCache)">
+					<File Id="F__TGitCache" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" KeyPath="yes" />
+				</Component>
+
+				<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)">
+					<File Id="F__TortoiseProc" Name="TortoiseGitProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitProc.exe" KeyPath="yes" />
+					<File Id="F__TGITAutolist" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
+					<File Id="F__TGITSnippet" Name="snippet.txt" DiskId="1" Source="include\snippet.txt" />
+					<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
+					<RemoveFile Id="CleanupHotfixFile" Name="Hotfix.ini" On="both" />
+				</Component>
+
+				<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)">
+					<?if $(var.Platform) = "x86" ?>
+					<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
+					<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
+					<?endif?>
+					<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
+					<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
+					<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
+					<?endif?>
+					<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
+					<File Id="F__packagemsix" Name="package.msix" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\package.msix" />
+					<?endif?>
 				</Component>
 				<?if $(var.Platform) = "x64" ?>
-				<Component Id="C__machineregistry32" Guid="*" Win64="no">
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="ProcPath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="CachePath" Value="[INSTALLDIR]bin\TGitCache.exe" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="TMergePath" Value="[INSTALLDIR]bin\TortoiseGitMerge.exe" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="Directory" Value="[INSTALLDIR]" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Normal" Name="Git" Value="{$(var.GuidNormal)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Modified" Name="Git" Value="{$(var.GuidModified)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Conflict" Name="Git" Value="{$(var.GuidConflict)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Deleted" Name="Git" Value="{$(var.GuidDeleted)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\ReadOnly" Name="Git" Value="{$(var.GuidReadonly)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Locked" Name="Git" Value="{$(var.GuidLocked)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Added" Name="Git" Value="{$(var.GuidAdded)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Ignored" Name="Git" Value="{$(var.GuidIgnored)}" Type="string" />
-					<RegistryValue Root="HKLM" Key="Software\TortoiseOverlays\Unversioned" Name="Git" Value="{$(var.GuidUnversioned)}" Type="string" />
+				<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)">
+					<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
+					<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
 				</Component>
-				<?endif ?>
+				<?endif?>
 
-				<Component Id="C__approveshellcomponents" Guid="*" Win64="$(var.Win64YesNo)">
-					<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
-						<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
-						<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
-						<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
-						<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
-						<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
-						<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
-						<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
-						<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
-						<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
-						<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
-						<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
-					</RegistryKey>
+				<Component Id="C__TortoiseGITShortcuts" Guid="$(var.GuidTortoiseGITShortcuts)">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
+					<Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" Name="TortoiseGit" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
+					<Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
+					<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="PuTTYgen" Advertise="no" Target="[INSTALLDIR]bin\puttygen.exe" Description="PuTTY key generator" Show="normal" />
+					<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no" Target="[INSTALLDIR]bin\pageant.exe" Description="PuTTY SSH authentication agent" Show="normal" />
+					<Shortcut Id="S__notepad2" Directory="D_TortoisePrgMenu" Name="Notepad2e" Advertise="no" Target="[INSTALLDIR]bin\notepad2.exe" Description="A fast and light-weight Notepad-like text editor with syntax highlighting" Show="normal" />
 				</Component>
-				<?if $(var.Platform) = "x64" ?>
-				<Component Id="C__approveshellcomponents32" Guid="*" Win64="no">
-					<RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Approved">
-						<RegistryValue Name="{$(var.GuidConflict)}" Value="TortoiseGit - Conflict" KeyPath="yes" Type="string" />
-						<RegistryValue Name="{$(var.GuidModified)}" Value="TortoiseGit - Modified" Type="string" />
-						<RegistryValue Name="{$(var.GuidDropHandler)}" Value="TortoiseGit - DropHandler" Type="string" />
-						<RegistryValue Name="{$(var.GuidDeleted)}" Value="TortoiseGit - Deleted" Type="string" />
-						<RegistryValue Name="{$(var.GuidNormal)}" Value="TortoiseGit - Normal" Type="string" />
-						<RegistryValue Name="{$(var.GuidUncontrolled)}" Value="TortoiseGit - Uncontrolled" Type="string" />
-						<RegistryValue Name="{$(var.GuidReadonly)}" Value="TortoiseGit - ReadOnly" Type="string" />
-						<RegistryValue Name="{$(var.GuidLocked)}" Value="TortoiseGit - Locked" Type="string" />
-						<RegistryValue Name="{$(var.GuidAdded)}" Value="TortoiseGit - Added" Type="string" />
-						<RegistryValue Name="{$(var.GuidIgnored)}" Value="TortoiseGit - Ignored" Type="string" />
-						<RegistryValue Name="{$(var.GuidUnversioned)}" Value="TortoiseGit - Unversioned" Type="string" />
-					</RegistryKey>
+
+				<Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)">
+					<File Id="F__TortoiseMerge" Name="TortoiseGitMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitMerge.exe" KeyPath="yes" />
 				</Component>
-				<?endif ?>
 
-				<Directory Id="D__Bin" Name="bin">
-					<Component Id="C__touch" Guid="$(var.GuidTouch)" Win64="$(var.Win64YesNo)">
-						<File Id="F__touch" Name="tgittouch.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\tgittouch.exe" KeyPath="yes" />
-					</Component>
+				<Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseGitMerge" Type="string" />
+					<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" Name="TortoiseGitMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
+				</Component>
 
-					<?if $(var.IncludeCrashReportDll) = 1 ?>
-					<Component Id="C__crash" Guid="$(var.GuidCrashRpt)" Win64="$(var.Win64YesNo)">
-						<File Id="F__crashrpt" Name="crshhndl.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\crshhndl.dll" KeyPath="yes" />
-						<File Id="F__sendrpt" Name="sendrpt.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sendrpt.exe" />
-						<File Id="F__dbghelp" Name="dbghelp.dll" DiskId="1" Source="..\..\ext\CrashServer\CrashHandler\SendRpt\dbghelp\$(var.Platform)\dbghelp.dll" />
-					</Component>
-					<?endif ?>
+				<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)">
+					<File Id="F__TortoiseBlame" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
+					<File Id="F__SciLexer" Name="SciLexer_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer_tgit.dll" />
+				</Component>
 
-					<Component Id="C__help_en" Guid="$(var.GuidHelpEN)" Win64="$(var.Win64YesNo)">
-						<File Id="F_TortoiseGit_en" Name="TortoiseGit_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseGit_en.chm" KeyPath="yes" />
-						<File Id="F__TortoiseMerge_en" Name="TortoiseMerge_en.chm" DiskId="1" Source="..\..\doc\output\TortoiseMerge_en.chm" />
-						<RemoveFile Id="F__Tortoise_lang" Name="*.chm" On="uninstall" />
-					</Component>
+				<Component Id="C__TortoiseGitBlameShortcuts" Guid="$(var.GuidTortoiseGitBlameShortcuts)">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGitBlame" Value="TortoiseGitBlame" Type="string" />
+					<Shortcut Id="S__TortoiseGitBlame" Directory="D_TortoisePrgMenu" Name="TortoiseGitBlame" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitBlame.exe" Description="TortoiseGitBlame, the TortoiseGit annotation tool" Show="normal" />
+				</Component>
 
-					<Component Id="C__gitlibs" Guid="$(var.GuidGitLibs)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
-						<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
-						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
-						<File Id="F__gitdll" Name="gitdll.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\gitdll.dll" KeyPath="yes" />
-						<File Id="F__zlib" Name="zlib1_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\zlib1_tgit.dll" />
-						<File Id="F__libgit2" Name="libgit2_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\libgit2_tgit.dll" />
-						<?endif ?>
-					</Component>
-					<?if $(var.Platform) = "x64" ?>
-					<Component Id="C__gitlibs32" Guid="$(var.GuidGitLibs32)" Win64="$(var.Win64YesNo)">
-						<File Id="F__gitdll32" Name="gitdll32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\gitdll32.dll" KeyPath="yes" />
-						<File Id="F__zlib32" Name="zlib132_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\zlib132_tgit.dll" />
-						<File Id="F__libgit232" Name="libgit232_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\libgit232_tgit.dll" />
-					</Component>
-					<?endif ?>
+				<Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)">
+					<File Id="F__TortoiseIDiff" Name="TortoiseGitIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitIDiff.exe" KeyPath="yes" />
+				</Component>
 
-					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoisePlinkold" Name="TortoisePlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
-						<File Id="F__TortoisePlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" />
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__notepad2x86" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x86.exe" />
-						<File Id="F__PuttyGenx86" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x86.exe" />
-						<File Id="F__pageantx86" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x86.exe" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
-						<File Id="F__notepad2x64" Name="notepad2.exe" DiskId="1" Source="..\..\ext\tools\notepad2-x64.exe" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" ?>
-						<File Id="F__PuttyGenx64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x64.exe" />
-						<File Id="F__pageantx64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x64.exe" />
-						<?endif ?>
-						<?if $(var.Platform) = "ARM64" ?>
-						<File Id="F__PuttyGenarm64" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-arm64.exe" />
-						<File Id="F__pageantarm64" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-arm64.exe" />
-						<?endif ?>
-						<File Id="F__askpass" Name="sshaskpass.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\sshaskpass.exe" />
-					</Component>
+				<Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseGitIDiff" Type="string" />
+					<Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" Name="TortoiseGitIDiff" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitIDiff.exe" Description="View Diff's of image files" Show="normal" />
+				</Component>
 
-					<Component Id="C__TortoiseGitGitWCRev" Guid="$(var.GuidTortoiseGitGitWCRev)" Win64="$(var.Win64YesNo)">
-						<File Id="F__GitWCRev" Name="GitWCRev.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRev.exe" />
-						<File Id="F__GitWCRevCOM" Name="GitWCRevCOM.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\GitWCRevCOM.exe" />
+				<Component Id="C_LanguagePacks">
+					<!--	When a language pack is installed, it copies files into the [INSTALLDIR]Languages folder.
+							We could add here RemoveFile-Elements for each and every one of the possible
+							language packs, but using the WiX utility RemoveFolderEx is in this case the better option.
+							To use RemoveFolderEx, we have to use a property with the path of the language folder, so
+							to get such a property we save that path to a registry key and read that key into the property.
+							-->
+					<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="LanguageFolderPath" Type="string" Value="[INSTALLDIR]Languages" KeyPath="yes" />
+					<util:RemoveFolderEx Id="CleanupApplicationFolder" On="uninstall" Property="LANGUAGEFOLDER" />
+				</Component>
 
-						<!-- App Paths to support Start, Run -->
-						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
+				<Component Id="C__PlainSettingsShortcuts" Condition="NOT VersionNT64">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
+					<Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
+				</Component>
 
-						<!-- register the GitWCRev COM-Object -->
-						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\LocalServer32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe /automation" Type="string" />
-						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\ProgID" Value="GitWCRev.object.1" Type="string" />
-						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\VersionIndependentProgID" Value="GitWCRev.object" Type="string" />
-						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
-						<RegistryValue Root="HKCR" Key="CLSID\{$(var.GuidGitWCRev)}" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKCR" Key="GitWCRev.object" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKCR" Key="GitWCRev.object\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
-						<RegistryValue Root="HKCR" Key="GitWCRev.object\CurVer" Value="GitWCRev.object.1" Type="string" />
-						<RegistryValue Root="HKCR" Key="GitWCRev.object.1" Value="GitWCRev Server Object" Type="string" />
-						<RegistryValue Root="HKCR" Key="GitWCRev.object.1\CLSID" Value="{$(var.GuidGitWCRev)}" Type="string" />
-						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0" Value="GitWCRev Type Library" Type="string" />
-						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\0\win32" Value="[INSTALLDIR]bin\GitWCRevCOM.exe" Type="string" />
-						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\FLAGS" Value="0" Type="string" />
-						<RegistryValue Root="HKCR" Key="TypeLib\{$(var.GuidGitWCRevTypeLib)}\1.0\HELPDIR" Value="[INSTALLDIR]" Type="string" />
-						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}" Value="IGitWCRev" Type="string" />
-						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
-						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\ProxyStubClsid32" Value="{00020424-0000-0000-C000-000000000046}" Type="string" />
-						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Value="{$(var.GuidGitWCRevTypeLib)}" Type="string" />
-						<RegistryValue Root="HKCR" Key="Interface\{$(var.GuidGitWCRevInterface)}\TypeLib" Name="Version" Value="1.0" Type="string" />
-					</Component>
+				<Component Id="C__PlatformSettingsShortcuts" Guid="$(var.GuidPlatformSettingsShortcuts)" Condition="VersionNT64">
+					<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
+					<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
+				</Component>
 
-					<?if $(var.Platform) = "x64" ?>
-					<Component Id="C__TortoiseGitGitWCRev32" Guid="*" Win64="no">
-						<!-- App Paths to support Start, Run -->
-						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Name="Path" Value="[INSTALLDIR]bin" Type="string" />
-						<RegistryValue Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\App Paths\GitWCRev.exe" Value="[INSTALLDIR]bin\GitWCRev.exe" Type="string" />
-					</Component>
-					<?endif ?>
+				<Component Id="C__crtmfc" Guid="$(var.GuidCRTMFC)">
+					<File Id="F__concrt140" Name="concrt140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\concrt140.dll" />
+					<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140.dll" />
+					<File Id="F__msvcp140_1" Name="msvcp140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_1.dll" />
+					<File Id="F__msvcp140_2" Name="msvcp140_2.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_2.dll" />
+					<File Id="F__msvcp140_codecvt_ids" Name="msvcp140_codecvt_ids.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_codecvt_ids.dll" />
+					<?if $(var.VCToolsRedistVersionCheck) >= 1428 ?>
+					<File Id="F__msvcp140_atomic_wait" Name="msvcp140_atomic_wait.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_atomic_wait.dll" />
+					<?endif?>
+					<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
+					<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
+					<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") ?>
+					<File Id="F__vcruntime140_1" Name="vcruntime140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_1.dll" />
+					<?endif?>
+					<?if $(var.VCToolsRedistVersionCheck) >= 1438 ?>
+					<File Id="F__vcruntime140_threads" Name="vcruntime140_threads.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_threads.dll" />
+					<?endif?>
+					<File Id="F__mfc140u" Name="mfc140u.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFC\mfc140u.dll" />
+					<File Id="F__mfc140chs" Name="mfc140chs.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140chs.dll" />
+					<File Id="F__mfc140cht" Name="mfc140cht.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140cht.dll" />
+					<File Id="F__mfc140deu" Name="mfc140deu.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140deu.dll" />
+					<File Id="F__mfc140enu" Name="mfc140enu.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140enu.dll" />
+					<File Id="F__mfc140esn" Name="mfc140esn.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140esn.dll" />
+					<File Id="F__mfc140fra" Name="mfc140fra.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140fra.dll" />
+					<File Id="F__mfc140ita" Name="mfc140ita.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140ita.dll" />
+					<File Id="F__mfc140jpn" Name="mfc140jpn.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140jpn.dll" />
+					<File Id="F__mfc140kor" Name="mfc140kor.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140kor.dll" />
+					<File Id="F__mfc140rus" Name="mfc140rus.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140rus.dll" />
+				</Component>
+			</Directory>
 
-					<Component Id="C__TGitCache" Guid="$(var.GuidTortoiseGitCache)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TGitCache" Name="TGitCache.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TGitCache.exe" KeyPath="yes" />
-					</Component>
+			<Directory Id="D__Languages" Name="Languages">
+				<?if $(var.DictionaryENGB) = 1 ?>
+				<Component Id="C__DictionaryENGB" Guid="$(var.GuidDictionaryENGB)">
+					<File Id="F__ENGBSPELLAFF" Name="en_GB.aff" Source="..\..\ext\spell\en\en_GB.aff" DiskId="1" KeyPath="yes" />
+					<File Id="F__ENGBSPELLDIC" Name="en_GB.dic" Source="..\..\ext\spell\en\en_GB.dic" DiskId="1" />
+				</Component>
+				<?endif?>
 
-					<Component Id="C__TortoiseProc" Guid="$(var.GuidTortoiseProc)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseProc" Name="TortoiseGitProc.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitProc.exe" KeyPath="yes" />
-						<File Id="F__TGITAutolist" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
-						<File Id="F__TGITSnippet" Name="snippet.txt" DiskId="1" Source="include\snippet.txt" />
-						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
-						<RemoveFile Id="CleanupHotfixFile" Name="Hotfix.ini" On="both" />
-					</Component>
+				<?if $(var.DictionaryENUS) = 1 ?>
+				<Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)">
+					<File Id="F__ENSPELLAFF" Name="en_US.aff" Source="..\..\ext\spell\en\en_US.aff" DiskId="1" KeyPath="yes" />
+					<File Id="F__ENSPELLDIC" Name="en_US.dic" Source="..\..\ext\spell\en\en_US.dic" DiskId="1" />
+				</Component>
+				<?endif?>
+			</Directory>
 
-					<Component Id="C__TortoiseShell" Guid="$(var.GuidTortoiseShell)" Win64="$(var.Win64YesNo)">
-						<?if $(var.Platform) = "x86" ?>
-						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
-						<?endif ?>
-						<?if $(var.Platform) = "x64" or $(var.Platform) = "ARM64" ?>
-						<File Id="F__TortoiseGitStub" Name="TortoiseGitStub.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitStub.dll" />
-						<File Id="F__TortoiseShell" Name="TortoiseGit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGit.dll" KeyPath="yes" />
-						<?endif ?>
-						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") AND $(var.BuildWindows11ContextmenuExtension) = "1" ?>
-						<File Id="F__packagemsix" Name="package.msix" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\package.msix" />
-						<?endif ?>
-					</Component>
-					<?if $(var.Platform) = "x64" ?>
-					<Component Id="C__TortoiseShell32" Guid="$(var.GuidTortoiseShell32)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseGitStub32" Name="TortoiseGitStub32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGitStub32.dll" />
-						<File Id="F__TortoiseShell32" Name="TortoiseGit32.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath32)\bin\TortoiseGit32.dll" KeyPath="yes" />
-					</Component>
-					<?endif ?>
+			<Directory Id="D__DiffScripts" Name="Diff-Scripts">
+				<Component Id="C__DiffScripts" Guid="$(var.GuidDiffScripts)">
+					<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes" />
+					<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\diff-scripts\diff-ppt.js" DiskId="1" />
+					<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\diff-scripts\diff-doc.js" DiskId="1" />
+					<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\diff-scripts\merge-doc.js" DiskId="1" />
+					<File Id="F__diffsxw" Name="diff-sxw.vbs" Source="..\..\contrib\diff-scripts\diff-sxw.vbs" DiskId="1" />
+					<File Id="F__diffodt" Name="diff-odt.vbs" Source="..\..\contrib\diff-scripts\diff-odt.vbs" DiskId="1" />
+					<File Id="F__mergeods" Name="merge-ods.vbs" Source="..\..\contrib\diff-scripts\merge-ods.vbs" DiskId="1" />
+					<File Id="F__diffnb" Name="diff-nb.vbs" Source="..\..\contrib\diff-scripts\diff-nb.vbs" DiskId="1" />
+					<File Id="F__diffdll" Name="diff-dll.vbs" Source="..\..\contrib\diff-scripts\diff-dll.vbs" DiskId="1" />
+				</Component>
+			</Directory>
 
-					<Component Id="C__TortoiseGITShortcuts" Guid="$(var.GuidTortoiseGITShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
-						<Shortcut Id="S__RTFM" Directory="D_TortoisePrgMenu" Name="TortoiseGit" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:rtfm" Show="normal" />
-						<Shortcut Id="S__TortoiseProc" Directory="D_TortoisePrgMenu" Name="Help" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="Documentation about TortoiseGit" Arguments="/command:help" Show="normal" />
-						<Shortcut Id="S__puttykeygen" Directory="D_TortoisePrgMenu" Name="PuTTYgen" Advertise="no" Target="[INSTALLDIR]bin\puttygen.exe" Description="PuTTY key generator" Show="normal" />
-						<Shortcut Id="S__pageant" Directory="D_TortoisePrgMenu" Name="Pageant" Advertise="no" Target="[INSTALLDIR]bin\pageant.exe" Description="PuTTY SSH authentication agent" Show="normal" />
-						<Shortcut Id="S__notepad2" Directory="D_TortoisePrgMenu" Name="Notepad2e" Advertise="no" Target="[INSTALLDIR]bin\notepad2.exe" Description="A fast and light-weight Notepad-like text editor with syntax highlighting" Show="normal" />
-					</Component>
+			<Directory Id="ProgramMenuFolder" Name="." SourceName="User's Programs Menu">
+				<Directory Id="D_TortoisePrgMenu" Name="TortoiseGit" />
+			</Directory>
 
-					<Component Id="C__TortoiseMerge" Guid="$(var.GuidTortoiseMerge)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseMerge" Name="TortoiseGitMerge.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitMerge.exe" KeyPath="yes" />
-					</Component>
+			<Directory Id="$(var.cf)" Name="Common">
+				<Directory Id="TortoioseOverlays" Name="TortoiseOverlays">
+					<Directory Id="D__icons" Name="icons">
+						<Directory Id="D__iconscvsclassic" Name="CVSClassic">
+							<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)">
+								<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
+								<File Id="F__CVSClassicModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
+								<File Id="F__CVSClassicReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ReadOnlyIcon.ico" />
+								<File Id="F__CVSClassicDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\DeletedIcon.ico" />
+								<File Id="F__CVSClassicLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\LockedIcon.ico" />
+								<File Id="F__CVSClassicAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\AddedIcon.ico" />
+								<File Id="F__CVSClassicIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\IgnoredIcon.ico" />
+								<File Id="F__CVSClassicUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__TortoiseMergeShortcuts" Guid="$(var.GuidTortoiseMergeShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseMerge" Value="TortoiseGitMerge" Type="string" />
-						<Shortcut Id="S__TortoiseMerge" Directory="D_TortoisePrgMenu" Name="TortoiseGitMerge" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitMerge.exe" Description="View Diff's, Merge Diff's, Resolve Conflicted Files and Apply Patches" Show="normal" />
-					</Component>
+						<Directory Id="D__iconsmodern" Name="Modern">
+							<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)">
+								<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
+								<File Id="F__ModernModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />
+								<File Id="F__ModernReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ReadOnlyIcon.ico" />
+								<File Id="F__ModernDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\DeletedIcon.ico" />
+								<File Id="F__ModernLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\LockedIcon.ico" />
+								<File Id="F__ModernAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\AddedIcon.ico" />
+								<File Id="F__ModernIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\IgnoredIcon.ico" />
+								<File Id="F__ModernUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__TortoiseBlame" Guid="$(var.GuidTortoiseBlame)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseBlame" Name="TortoiseGitBlame.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitBlame.exe" KeyPath="yes" />
-						<File Id="F__SciLexer" Name="SciLexer_tgit.dll" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\SciLexer_tgit.dll" />
-					</Component>
+						<Directory Id="D__iconssubclipse" Name="Subclipse">
+							<Component Id="C__iconsmarkphippard" Guid="$(var.GuidIconsMarkPhippard)">
+								<File Id="F__SubclipseConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__SubclipseInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
+								<File Id="F__SubclipseModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ModifiedIcon.ico" />
+								<File Id="F__SubclipseReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ReadOnlyIcon.ico" />
+								<File Id="F__SubclipseDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\DeletedIcon.ico" />
+								<File Id="F__SubclipseLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\LockedIcon.ico" />
+								<File Id="F__SubclipseAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\AddedIcon.ico" />
+								<File Id="F__SubclipseIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\IgnoredIcon.ico" />
+								<File Id="F__SubclipseUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__TortoiseGitBlameShortcuts" Guid="$(var.GuidTortoiseGitBlameShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGitBlame" Value="TortoiseGitBlame" Type="string" />
-						<Shortcut Id="S__TortoiseGitBlame" Directory="D_TortoisePrgMenu" Name="TortoiseGitBlame" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitBlame.exe" Description="TortoiseGitBlame, the TortoiseGit annotation tool" Show="normal" />
-					</Component>
+						<Directory Id="D__iconsstraight" Name="Straight">
+							<Component Id="C__iconsstraight" Guid="$(var.GuidIconsStraight)">
+								<File Id="F__StraightConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__StraightInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
+								<File Id="F__StraightModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ModifiedIcon.ico" />
+								<File Id="F__StraightReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ReadOnlyIcon.ico" />
+								<File Id="F__StraightDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\DeletedIcon.ico" />
+								<File Id="F__StraightLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\LockedIcon.ico" />
+								<File Id="F__StraightAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\AddedIcon.ico" />
+								<File Id="F__StraightIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\IgnoredIcon.ico" />
+								<File Id="F__StraightUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__TortoiseIDiff" Guid="$(var.GuidTortoiseIDiff)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseIDiff" Name="TortoiseGitIDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitIDiff.exe" KeyPath="yes" />
-					</Component>
+						<Directory Id="D__iconsfunction" Name="Function">
+							<Component Id="C__iconsfunction" Guid="$(var.GuidIconsFunction)">
+								<File Id="F__FunctionConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__FunctionInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\NormalIcon.ico" />
+								<File Id="F__FunctionModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ModifiedIcon.ico" />
+								<File Id="F__FunctionReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ReadOnlyIcon.ico" />
+								<File Id="F__FunctionDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\DeletedIcon.ico" />
+								<File Id="F__FunctionLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\LockedIcon.ico" />
+								<File Id="F__FunctionAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\AddedIcon.ico" />
+								<File Id="F__FunctionIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\IgnoredIcon.ico" />
+								<File Id="F__FunctionUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__TortoiseIDiffShortcuts" Guid="$(var.GuidTortoiseIDiffShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseIDiff" Value="TortoiseGitIDiff" Type="string" />
-						<Shortcut Id="S__TortoiseIDiff" Directory="D_TortoisePrgMenu" Name="TortoiseGitIDiff" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitIDiff.exe" Description="View Diff's of image files" Show="normal" />
-					</Component>
+						<Directory Id="D__iconsdechenesxp" Name="DechenesXP">
+							<Component Id="C__iconsdechenesxp" Guid="$(var.GuidIconsDechenesXP)">
+								<File Id="F__DechenesXPConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__DechenesXPInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\NormalIcon.ico" />
+								<File Id="F__DechenesXPModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ModifiedIcon.ico" />
+								<File Id="F__DechenesXPReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ReadOnlyIcon.ico" />
+								<File Id="F__DechenesXPDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\DeletedIcon.ico" />
+								<File Id="F__DechenesXPLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\LockedIcon.ico" />
+								<File Id="F__DechenesXPAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\AddedIcon.ico" />
+								<File Id="F__DechenesXPIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\IgnoredIcon.ico" />
+								<File Id="F__DechenesXPUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C_LanguagePacks" Guid="*" Win64="$(var.Win64YesNo)">
-						<!--	When a language pack is installed, it copies files into the [INSTALLDIR]Languages folder.
-								We could add here RemoveFile-Elements for each and every one of the possible
-								language packs, but using the WiX utility RemoveFolderEx is in this case the better option.
-								To use RemoveFolderEx, we have to use a property with the path of the language folder, so
-								to get such a property we save that path to a registry key and read that key into the property.
-								-->
-						<RegistryValue Root="HKLM" Key="Software\[Manufacturer]" Name="LanguageFolderPath" Type="string" Value="[INSTALLDIR]Languages" KeyPath="yes" />
-						<RemoveFolderEx Id="CleanupApplicationFolder" On="uninstall" Property="LANGUAGEFOLDER" xmlns="http://schemas.microsoft.com/wix/UtilExtension" />
-					</Component>
+						<Directory Id="D__iconsdechenesvista" Name="DechenesVista">
+							<Component Id="C__iconsdechenesvista" Guid="$(var.GuidIconsDechenesVista)">
+								<File Id="F__DechenesVistaConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__DechenesVistaInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\NormalIcon.ico" />
+								<File Id="F__DechenesVistaModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ModifiedIcon.ico" />
+								<File Id="F__DechenesVistaReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ReadOnlyIcon.ico" />
+								<File Id="F__DechenesVistaDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\DeletedIcon.ico" />
+								<File Id="F__DechenesVistaLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\LockedIcon.ico" />
+								<File Id="F__DechenesVistaAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\AddedIcon.ico" />
+								<File Id="F__DechenesVistaIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\IgnoredIcon.ico" />
+								<File Id="F__DechenesVistaUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__PlainSettingsShortcuts" Guid="*" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
-						<Condition><![CDATA[NOT VersionNT64]]></Condition>
-						<Shortcut Id="S__PlainConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
-					</Component>
+						<Directory Id="D__iconsblip" Name="Blip">
+							<Component Id="C__iconsblip" Guid="$(var.GuidIconsBlip)">
+								<File Id="F__BlipConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__BlipInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\NormalIcon.ico" />
+								<File Id="F__BlipModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ModifiedIcon.ico" />
+								<File Id="F__BlipReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ReadOnlyIcon.ico" />
+								<File Id="F__BlipDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\DeletedIcon.ico" />
+								<File Id="F__BlipLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\LockedIcon.ico" />
+								<File Id="F__BlipAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\AddedIcon.ico" />
+								<File Id="F__BlipIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\IgnoredIcon.ico" />
+								<File Id="F__BlipUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__PlatformSettingsShortcuts" Guid="$(var.GuidPlatformSettingsShortcuts)" Win64="$(var.Win64YesNo)">
-						<RegistryValue Root="HKCU" Key="Software\TortoiseGit" KeyPath="yes" Name="TortoiseGit" Value="TortoiseGit" Type="string" />
-						<Condition>VersionNT64</Condition>
-						<Shortcut Id="S__PlatformConfig" Directory="D_TortoisePrgMenu" Name="Settings" Advertise="no" Target="[INSTALLDIR]bin\TortoiseGitProc.exe" Description="TortoiseGit" Arguments="/command:settings" Show="normal" />
-					</Component>
+						<Directory Id="D__iconsblipclean" Name="BlipClean">
+							<Component Id="C__iconsblipclean" Guid="$(var.GuidIconsBlipClean)">
+								<File Id="F__BlipCleanConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__BlipCleanInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\NormalIcon.ico" />
+								<File Id="F__BlipCleanModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ModifiedIcon.ico" />
+								<File Id="F__BlipCleanReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ReadOnlyIcon.ico" />
+								<File Id="F__BlipCleanDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\DeletedIcon.ico" />
+								<File Id="F__BlipCleanLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\LockedIcon.ico" />
+								<File Id="F__BlipCleanAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\AddedIcon.ico" />
+								<File Id="F__BlipCleanIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\IgnoredIcon.ico" />
+								<File Id="F__BlipCleanUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<Component Id="C__crtmfc" Guid="$(var.GuidCRTMFC)" Win64="$(var.Win64YesNo)">
-						<File Id="F__concrt140" Name="concrt140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\concrt140.dll" />
-						<File Id="F__msvcp140" Name="msvcp140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140.dll" />
-						<File Id="F__msvcp140_1" Name="msvcp140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_1.dll" />
-						<File Id="F__msvcp140_2" Name="msvcp140_2.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_2.dll" />
-						<File Id="F__msvcp140_codecvt_ids" Name="msvcp140_codecvt_ids.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_codecvt_ids.dll" />
-						<?if $(var.VCToolsRedistVersionCheck) >= 1428 ?>
-						<File Id="F__msvcp140_atomic_wait" Name="msvcp140_atomic_wait.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\msvcp140_atomic_wait.dll" />
-						<?endif ?>
-						<File Id="F__vccorlib140" Name="vccorlib140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vccorlib140.dll" />
-						<File Id="F__vcruntime140" Name="vcruntime140.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140.dll" />
-						<?if ($(var.Platform) = "x64" OR $(var.Platform) = "ARM64") ?>
-						<File Id="F__vcruntime140_1" Name="vcruntime140_1.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_1.dll" />
-						<?endif ?>
-						<?if $(var.VCToolsRedistVersionCheck) >= 1438 ?>
-						<File Id="F__vcruntime140_threads" Name="vcruntime140_threads.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).CRT\vcruntime140_threads.dll" />
-						<?endif ?>
-						<File Id="F__mfc140u" Name="mfc140u.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFC\mfc140u.dll" />
-						<File Id="F__mfc140chs" Name="mfc140chs.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140chs.dll" />
-						<File Id="F__mfc140cht" Name="mfc140cht.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140cht.dll" />
-						<File Id="F__mfc140deu" Name="mfc140deu.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140deu.dll" />
-						<File Id="F__mfc140enu" Name="mfc140enu.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140enu.dll" />
-						<File Id="F__mfc140esn" Name="mfc140esn.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140esn.dll" />
-						<File Id="F__mfc140fra" Name="mfc140fra.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140fra.dll" />
-						<File Id="F__mfc140ita" Name="mfc140ita.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140ita.dll" />
-						<File Id="F__mfc140jpn" Name="mfc140jpn.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140jpn.dll" />
-						<File Id="F__mfc140kor" Name="mfc140kor.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140kor.dll" />
-						<File Id="F__mfc140rus" Name="mfc140rus.dll" DiskId="1" Source="$(var.VCInstallDir)Redist\MSVC\$(var.VCToolsRedistVersion)\$(var.PackagePlatforms)\Microsoft.VC$(var.PlatformToolsetVersion).MFCLOC\mfc140rus.dll" />
-					</Component>
-				</Directory>
+						<Directory Id="D__iconsmufwin7" Name="MufWin7">
+							<Component Id="C__iconsmufwin7" Guid="$(var.GuidIconsMufWin7)">
+								<File Id="F__MufWin7ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__MufWin7InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\NormalIcon.ico" />
+								<File Id="F__MufWin7ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ModifiedIcon.ico" />
+								<File Id="F__MufWin7ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ReadOnlyIcon.ico" />
+								<File Id="F__MufWin7DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\DeletedIcon.ico" />
+								<File Id="F__MufWin7LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\LockedIcon.ico" />
+								<File Id="F__MufWin7AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\AddedIcon.ico" />
+								<File Id="F__MufWin7IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\IgnoredIcon.ico" />
+								<File Id="F__MufWin7UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-				<Directory Id="D__Languages" Name="Languages">
-					<?if $(var.DictionaryENGB) = 1 ?>
-					<Component Id="C__DictionaryENGB" Guid="$(var.GuidDictionaryENGB)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENGBSPELLAFF" Name="en_GB.aff" Source="..\..\..\ext\spell\en\en_GB.aff" DiskId="1" KeyPath="yes" />
-						<File Id="F__ENGBSPELLDIC" Name="en_GB.dic" Source="..\..\..\ext\spell\en\en_GB.dic" DiskId="1" />
-					</Component>
-					<?endif ?>
+						<Directory Id="D__iconswin10" Name="Win10">
+							<Component Id="C__iconswin10" Guid="$(var.GuidIconsWin10)">
+								<File Id="F__Win10ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__Win10InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\NormalIcon.ico" />
+								<File Id="F__Win10ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ModifiedIcon.ico" />
+								<File Id="F__Win10ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ReadOnlyIcon.ico" />
+								<File Id="F__Win10DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\DeletedIcon.ico" />
+								<File Id="F__Win10LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\LockedIcon.ico" />
+								<File Id="F__Win10AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\AddedIcon.ico" />
+								<File Id="F__Win10IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\IgnoredIcon.ico" />
+								<File Id="F__Win10UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-					<?if $(var.DictionaryENUS) = 1 ?>
-					<Component Id="C__DictionaryENUS" Guid="$(var.GuidDictionaryENUS)" Win64="$(var.Win64YesNo)">
-						<File Id="F__ENSPELLAFF" Name="en_US.aff" Source="..\..\ext\spell\en\en_US.aff" DiskId="1" KeyPath="yes" />
-						<File Id="F__ENSPELLDIC" Name="en_US.dic" Source="..\..\ext\spell\en\en_US.dic" DiskId="1" />
-					</Component>
-					<?endif ?>
-				</Directory>
+						<Directory Id="D__iconsflat" Name="Flat">
+							<Component Id="C__iconsflat" Guid="$(var.GuidIconsFlat)">
+								<File Id="F__FlatConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__FlatInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\NormalIcon.ico" />
+								<File Id="F__FlatModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ModifiedIcon.ico" />
+								<File Id="F__FlatReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ReadOnlyIcon.ico" />
+								<File Id="F__FlatDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\DeletedIcon.ico" />
+								<File Id="F__FlatLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\LockedIcon.ico" />
+								<File Id="F__FlatAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\AddedIcon.ico" />
+								<File Id="F__FlatIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\IgnoredIcon.ico" />
+								<File Id="F__FlatUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-				<Directory Id="D__DiffScripts" Name="Diff-Scripts">
-					<Component Id="C__DiffScripts" Guid="$(var.GuidDiffScripts)" Win64="$(var.Win64YesNo)">
-						<File Id="F__diffxls" Name="diff-xls.js" Source="..\..\contrib\diff-scripts\diff-xls.js" DiskId="1" KeyPath="yes" />
-						<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\diff-scripts\diff-ppt.js" DiskId="1" />
-						<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\diff-scripts\diff-doc.js" DiskId="1" />
-						<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\diff-scripts\merge-doc.js" DiskId="1" />
-						<File Id="F__diffsxw" Name="diff-sxw.vbs" Source="..\..\contrib\diff-scripts\diff-sxw.vbs" DiskId="1" />
-						<File Id="F__diffodt" Name="diff-odt.vbs" Source="..\..\contrib\diff-scripts\diff-odt.vbs" DiskId="1" />
-						<File Id="F__mergeods" Name="merge-ods.vbs" Source="..\..\contrib\diff-scripts\merge-ods.vbs" DiskId="1" />
-						<File Id="F__diffnb" Name="diff-nb.vbs" Source="..\..\contrib\diff-scripts\diff-nb.vbs" DiskId="1" />
-						<File Id="F__diffdll" Name="diff-dll.vbs" Source="..\..\contrib\diff-scripts\diff-dll.vbs" DiskId="1" />
-					</Component>
-				</Directory>
+						<Directory Id="D__iconsillustration" Name="Illustration">
+							<Component Id="C__iconsillustration" Guid="$(var.GuidIconsIllustration)">
+								<File Id="F__IllustrationConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__IllustrationInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\NormalIcon.ico" />
+								<File Id="F__IllustrationModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ModifiedIcon.ico" />
+								<File Id="F__IllustrationReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ReadOnlyIcon.ico" />
+								<File Id="F__IllustrationDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\DeletedIcon.ico" />
+								<File Id="F__IllustrationLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\LockedIcon.ico" />
+								<File Id="F__IllustrationAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\AddedIcon.ico" />
+								<File Id="F__IllustrationIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\IgnoredIcon.ico" />
+								<File Id="F__IllustrationUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-				<Directory Id="ProgramMenuFolder" Name="." SourceName="User's Programs Menu">
-					<Directory Id="D_TortoisePrgMenu" Name="TortoiseGit" />
-				</Directory>
+						<Directory Id="D__iconsprofessional" Name="Professional">
+							<Component Id="C__iconsprofessional" Guid="$(var.GuidIconsProfessional)">
+								<File Id="F__ProfessionalConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__ProfessionalInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\NormalIcon.ico" />
+								<File Id="F__ProfessionalModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ModifiedIcon.ico" />
+								<File Id="F__ProfessionalReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ReadOnlyIcon.ico" />
+								<File Id="F__ProfessionalDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\DeletedIcon.ico" />
+								<File Id="F__ProfessionalLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\LockedIcon.ico" />
+								<File Id="F__ProfessionalAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\AddedIcon.ico" />
+								<File Id="F__ProfessionalIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\IgnoredIcon.ico" />
+								<File Id="F__ProfessionalUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\UnversionedIcon.ico" />
+							</Component>
+						</Directory>
 
-				<Directory Id="$(var.cf)" Name="Common">
-					<Directory Id="TortoioseOverlays" Name="TortoiseOverlays">
-						<Directory Id="D__icons" Name="icons">
-							<Directory Id="D__iconscvsclassic" Name="CVSClassic">
-								<Component Id="C__iconscvsclassic" Guid="$(var.GuidIconsCVSClassic)" Win64="$(var.Win64YesNo)">
-									<File Id="F__CVSClassicConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__CVSClassicInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\NormalIcon.ico" />
-									<File Id="F__CVSClassicModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ModifiedIcon.ico" />
-									<File Id="F__CVSClassicReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\ReadOnlyIcon.ico" />
-									<File Id="F__CVSClassicDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\DeletedIcon.ico" />
-									<File Id="F__CVSClassicLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\LockedIcon.ico" />
-									<File Id="F__CVSClassicAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\AddedIcon.ico" />
-									<File Id="F__CVSClassicIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\IgnoredIcon.ico" />
-									<File Id="F__CVSClassicUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\CVSClassic\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsmodern" Name="Modern">
-								<Component Id="C__iconsmodern" Guid="$(var.GuidIconsModern)" Win64="$(var.Win64YesNo)">
-									<File Id="F__ModernConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__ModernInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\NormalIcon.ico" />
-									<File Id="F__ModernModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ModifiedIcon.ico" />
-									<File Id="F__ModernReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\ReadOnlyIcon.ico" />
-									<File Id="F__ModernDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\DeletedIcon.ico" />
-									<File Id="F__ModernLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\LockedIcon.ico" />
-									<File Id="F__ModernAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\AddedIcon.ico" />
-									<File Id="F__ModernIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\IgnoredIcon.ico" />
-									<File Id="F__ModernUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Modern\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconssubclipse" Name="Subclipse">
-								<Component Id="C__iconsmarkphippard" Guid="$(var.GuidIconsMarkPhippard)" Win64="$(var.Win64YesNo)">
-									<File Id="F__SubclipseConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__SubclipseInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\NormalIcon.ico" />
-									<File Id="F__SubclipseModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ModifiedIcon.ico" />
-									<File Id="F__SubclipseReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\ReadOnlyIcon.ico" />
-									<File Id="F__SubclipseDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\DeletedIcon.ico" />
-									<File Id="F__SubclipseLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\LockedIcon.ico" />
-									<File Id="F__SubclipseAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\AddedIcon.ico" />
-									<File Id="F__SubclipseIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\IgnoredIcon.ico" />
-									<File Id="F__SubclipseUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Subclipse\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsstraight" Name="Straight">
-								<Component Id="C__iconsstraight" Guid="$(var.GuidIconsStraight)" Win64="$(var.Win64YesNo)">
-									<File Id="F__StraightConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__StraightInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\NormalIcon.ico" />
-									<File Id="F__StraightModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ModifiedIcon.ico" />
-									<File Id="F__StraightReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\ReadOnlyIcon.ico" />
-									<File Id="F__StraightDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\DeletedIcon.ico" />
-									<File Id="F__StraightLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\LockedIcon.ico" />
-									<File Id="F__StraightAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\AddedIcon.ico" />
-									<File Id="F__StraightIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\IgnoredIcon.ico" />
-									<File Id="F__StraightUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Straight\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsfunction" Name="Function">
-								<Component Id="C__iconsfunction" Guid="$(var.GuidIconsFunction)" Win64="$(var.Win64YesNo)">
-									<File Id="F__FunctionConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__FunctionInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\NormalIcon.ico" />
-									<File Id="F__FunctionModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ModifiedIcon.ico" />
-									<File Id="F__FunctionReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\ReadOnlyIcon.ico" />
-									<File Id="F__FunctionDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\DeletedIcon.ico" />
-									<File Id="F__FunctionLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\LockedIcon.ico" />
-									<File Id="F__FunctionAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\AddedIcon.ico" />
-									<File Id="F__FunctionIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\IgnoredIcon.ico" />
-									<File Id="F__FunctionUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Function\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsdechenesxp" Name="DechenesXP">
-								<Component Id="C__iconsdechenesxp" Guid="$(var.GuidIconsDechenesXP)" Win64="$(var.Win64YesNo)">
-									<File Id="F__DechenesXPConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__DechenesXPInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\NormalIcon.ico" />
-									<File Id="F__DechenesXPModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ModifiedIcon.ico" />
-									<File Id="F__DechenesXPReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\ReadOnlyIcon.ico" />
-									<File Id="F__DechenesXPDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\DeletedIcon.ico" />
-									<File Id="F__DechenesXPLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\LockedIcon.ico" />
-									<File Id="F__DechenesXPAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\AddedIcon.ico" />
-									<File Id="F__DechenesXPIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\IgnoredIcon.ico" />
-									<File Id="F__DechenesXPUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesXP\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsdechenesvista" Name="DechenesVista">
-								<Component Id="C__iconsdechenesvista" Guid="$(var.GuidIconsDechenesVista)" Win64="$(var.Win64YesNo)">
-									<File Id="F__DechenesVistaConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__DechenesVistaInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\NormalIcon.ico" />
-									<File Id="F__DechenesVistaModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ModifiedIcon.ico" />
-									<File Id="F__DechenesVistaReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\ReadOnlyIcon.ico" />
-									<File Id="F__DechenesVistaDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\DeletedIcon.ico" />
-									<File Id="F__DechenesVistaLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\LockedIcon.ico" />
-									<File Id="F__DechenesVistaAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\AddedIcon.ico" />
-									<File Id="F__DechenesVistaIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\IgnoredIcon.ico" />
-									<File Id="F__DechenesVistaUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\DechenesVista\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsblip" Name="Blip">
-								<Component Id="C__iconsblip" Guid="$(var.GuidIconsBlip)" Win64="$(var.Win64YesNo)">
-									<File Id="F__BlipConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__BlipInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\NormalIcon.ico" />
-									<File Id="F__BlipModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ModifiedIcon.ico" />
-									<File Id="F__BlipReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\ReadOnlyIcon.ico" />
-									<File Id="F__BlipDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\DeletedIcon.ico" />
-									<File Id="F__BlipLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\LockedIcon.ico" />
-									<File Id="F__BlipAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\AddedIcon.ico" />
-									<File Id="F__BlipIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\IgnoredIcon.ico" />
-									<File Id="F__BlipUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsblipclean" Name="BlipClean">
-								<Component Id="C__iconsblipclean" Guid="$(var.GuidIconsBlipClean)" Win64="$(var.Win64YesNo)">
-									<File Id="F__BlipCleanConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__BlipCleanInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\NormalIcon.ico" />
-									<File Id="F__BlipCleanModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ModifiedIcon.ico" />
-									<File Id="F__BlipCleanReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\ReadOnlyIcon.ico" />
-									<File Id="F__BlipCleanDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\DeletedIcon.ico" />
-									<File Id="F__BlipCleanLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\LockedIcon.ico" />
-									<File Id="F__BlipCleanAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\AddedIcon.ico" />
-									<File Id="F__BlipCleanIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\IgnoredIcon.ico" />
-									<File Id="F__BlipCleanUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Blip Clean\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsmufwin7" Name="MufWin7">
-								<Component Id="C__iconsmufwin7" Guid="$(var.GuidIconsMufWin7)" Win64="$(var.Win64YesNo)">
-									<File Id="F__MufWin7ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__MufWin7InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\NormalIcon.ico" />
-									<File Id="F__MufWin7ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ModifiedIcon.ico" />
-									<File Id="F__MufWin7ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\ReadOnlyIcon.ico" />
-									<File Id="F__MufWin7DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\DeletedIcon.ico" />
-									<File Id="F__MufWin7LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\LockedIcon.ico" />
-									<File Id="F__MufWin7AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\AddedIcon.ico" />
-									<File Id="F__MufWin7IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\IgnoredIcon.ico" />
-									<File Id="F__MufWin7UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\MufWin7\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconswin10" Name="Win10">
-								<Component Id="C__iconswin10" Guid="$(var.GuidIconsWin10)" Win64="$(var.Win64YesNo)">
-									<File Id="F__Win10ConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__Win10InSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\NormalIcon.ico" />
-									<File Id="F__Win10ModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ModifiedIcon.ico" />
-									<File Id="F__Win10ReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\ReadOnlyIcon.ico" />
-									<File Id="F__Win10DeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\DeletedIcon.ico" />
-									<File Id="F__Win10LockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\LockedIcon.ico" />
-									<File Id="F__Win10AddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\AddedIcon.ico" />
-									<File Id="F__Win10IgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\IgnoredIcon.ico" />
-									<File Id="F__Win10UnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Win10\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsflat" Name="Flat">
-								<Component Id="C__iconsflat" Guid="$(var.GuidIconsFlat)" Win64="$(var.Win64YesNo)">
-									<File Id="F__FlatConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__FlatInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\NormalIcon.ico" />
-									<File Id="F__FlatModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ModifiedIcon.ico" />
-									<File Id="F__FlatReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\ReadOnlyIcon.ico" />
-									<File Id="F__FlatDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\DeletedIcon.ico" />
-									<File Id="F__FlatLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\LockedIcon.ico" />
-									<File Id="F__FlatAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\AddedIcon.ico" />
-									<File Id="F__FlatIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\IgnoredIcon.ico" />
-									<File Id="F__FlatUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Flat\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsillustration" Name="Illustration">
-								<Component Id="C__iconsillustration" Guid="$(var.GuidIconsIllustration)" Win64="$(var.Win64YesNo)">
-									<File Id="F__IllustrationConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__IllustrationInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\NormalIcon.ico" />
-									<File Id="F__IllustrationModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ModifiedIcon.ico" />
-									<File Id="F__IllustrationReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\ReadOnlyIcon.ico" />
-									<File Id="F__IllustrationDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\DeletedIcon.ico" />
-									<File Id="F__IllustrationLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\LockedIcon.ico" />
-									<File Id="F__IllustrationAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\AddedIcon.ico" />
-									<File Id="F__IllustrationIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\IgnoredIcon.ico" />
-									<File Id="F__IllustrationUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Illustration\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsprofessional" Name="Professional">
-								<Component Id="C__iconsprofessional" Guid="$(var.GuidIconsProfessional)" Win64="$(var.Win64YesNo)">
-									<File Id="F__ProfessionalConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__ProfessionalInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\NormalIcon.ico" />
-									<File Id="F__ProfessionalModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ModifiedIcon.ico" />
-									<File Id="F__ProfessionalReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\ReadOnlyIcon.ico" />
-									<File Id="F__ProfessionalDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\DeletedIcon.ico" />
-									<File Id="F__ProfessionalLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\LockedIcon.ico" />
-									<File Id="F__ProfessionalAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\AddedIcon.ico" />
-									<File Id="F__ProfessionalIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\IgnoredIcon.ico" />
-									<File Id="F__ProfessionalUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Professional\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
-
-							<Directory Id="D__iconsribbon" Name="Ribbon">
-								<Component Id="C__iconsribbon" Guid="$(var.GuidIconsRibbon)" Win64="$(var.Win64YesNo)">
-									<File Id="F__RibbonConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ConflictIcon.ico" KeyPath="yes" />
-									<File Id="F__RibbonInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\NormalIcon.ico" />
-									<File Id="F__RibbonModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ModifiedIcon.ico" />
-									<File Id="F__RibbonReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ReadOnlyIcon.ico" />
-									<File Id="F__RibbonDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\DeletedIcon.ico" />
-									<File Id="F__RibbonLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\LockedIcon.ico" />
-									<File Id="F__RibbonAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\AddedIcon.ico" />
-									<File Id="F__RibbonIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\IgnoredIcon.ico" />
-									<File Id="F__RibbonUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\UnversionedIcon.ico" />
-								</Component>
-							</Directory>
+						<Directory Id="D__iconsribbon" Name="Ribbon">
+							<Component Id="C__iconsribbon" Guid="$(var.GuidIconsRibbon)">
+								<File Id="F__RibbonConflictIcon" Name="ConflictIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ConflictIcon.ico" KeyPath="yes" />
+								<File Id="F__RibbonInSubversionIcon" Name="NormalIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\NormalIcon.ico" />
+								<File Id="F__RibbonModifiedIcon" Name="ModifiedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ModifiedIcon.ico" />
+								<File Id="F__RibbonReadOnlyIcon" Name="ReadOnlyIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\ReadOnlyIcon.ico" />
+								<File Id="F__RibbonDeletedIcon" Name="DeletedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\DeletedIcon.ico" />
+								<File Id="F__RibbonLockedIcon" Name="LockedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\LockedIcon.ico" />
+								<File Id="F__RibbonAddedIcon" Name="AddedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\AddedIcon.ico" />
+								<File Id="F__RibbonIgnoredIcon" Name="IgnoredIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\IgnoredIcon.ico" />
+								<File Id="F__RibbonUnversionedIcon" Name="UnversionedIcon.ico" DiskId="1" Source="..\Resources\Icons\Ribbon\UnversionedIcon.ico" />
+							</Component>
 						</Directory>
 					</Directory>
 				</Directory>

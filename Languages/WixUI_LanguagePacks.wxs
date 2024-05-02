@@ -1,6 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+﻿<!--
 	Copyright (c) Microsoft Corporation.  All rights reserved.
 -->
 <!--
@@ -11,7 +9,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
                                             - WixUI_VerifyReadyDlg
 -->
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment>
 		<UI Id="WixUI_LanguagePack">
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
@@ -31,14 +29,14 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 			<DialogRef Id="MyUserExit" />
 			<DialogRef Id="MyWelcomeDlg" />
 
-			<Publish Dialog="MyExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+			<Publish Dialog="MyExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999" />
 
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnWaitDialog" Value="WaitForCostingDlg">CostingComplete = 1</Publish>
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnDialog" Value="OutOfRbDiskDlg">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST="P" OR NOT PROMPTROLLBACKCOST)</Publish>
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EndDialog" Value="Return">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EnableRollback" Value="False">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnDialog" Value="OutOfDiskDlg">(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")</Publish>
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnWaitDialog" Value="WaitForCostingDlg" Condition="CostingComplete = 1" />
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
 
 			<Property Id="ARPNOMODIFY" Value="1" />
 		</UI>
@@ -49,28 +47,22 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 	<Fragment>
 		<UI>
 			<Dialog Id="MyWelcomeDlg" Width="370" Height="270" Title="!(loc.WelcomeDlg_Title)">
-				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" >
-					<Publish Property="WixUI_InstallMode" Value="Update">Installed AND PATCH</Publish>
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)">
+					<Publish Property="WixUI_InstallMode" Value="Update" Condition="Installed AND PATCH" />
 				</Control>
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
-					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
 				</Control>
 				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="!(loc.WelcomeDlgBitmap)" />
 				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
 				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
-				<Control Id="Description" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgDescription)" >
-					<Condition Action="show">NOT Installed OR NOT PATCH</Condition>
-					<Condition Action="hide">Installed AND PATCH</Condition>
-				</Control>
-				<Control Id="PatchDescription" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeUpdateDlgDescriptionUpdate)" >
-					<Condition Action="show">Installed AND PATCH</Condition>
-					<Condition Action="hide">NOT Installed OR NOT PATCH</Condition>
-				</Control>
+				<Control Id="Description" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgDescription)" ShowCondition="NOT Installed OR NOT PATCH" HideCondition="Installed AND PATCH" />
+				<Control Id="PatchDescription" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeUpdateDlgDescriptionUpdate)" ShowCondition="Installed AND PATCH" HideCondition="NOT Installed OR NOT PATCH" />
 				<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.WelcomeDlgTitle)" />
 			</Dialog>
 
 			<InstallUISequence>
-				<Show Dialog="MyWelcomeDlg" Before="ProgressDlg" Overridable="yes">NOT Installed OR PATCH</Show>
+				<Show Dialog="MyWelcomeDlg" Before="ProgressDlg" Overridable="yes" Condition="NOT Installed OR PATCH" />
 			</InstallUISequence>
 		</UI>
 	</Fragment>
@@ -78,7 +70,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 		<UI>
 			<Dialog Id="MyUserExit" Width="370" Height="270" Title="!(loc.UserExit_Title)">
 				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)">
-					<Publish Event="EndDialog" Value="Exit">1</Publish>
+					<Publish Event="EndDialog" Value="Exit" />
 				</Control>
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUICancel)" />
 				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="!(loc.UserExitBitmap)" />
@@ -101,7 +93,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 		<UI>
 			<Dialog Id="MyFatalError" Width="370" Height="270" Title="!(loc.FatalError_Title)">
 				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUIFinish)">
-					<Publish Event="EndDialog" Value="Exit">1</Publish>
+					<Publish Event="EndDialog" Value="Exit" />
 				</Control>
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUICancel)" />
 				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="!(loc.FatalErrorBitmap)" />
@@ -124,7 +116,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 		<UI>
 			<Dialog Id="MyPrepareDlg" Width="370" Height="270" Title="!(loc.PrepareDlg_Title)" Modeless="yes">
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="!(loc.WixUICancel)">
-					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
 				</Control>
 				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="!(loc.PrepareDlgBitmap)" />
 				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
@@ -148,26 +140,26 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 	<Fragment>
 		<UI>
 			<Dialog Id="MyResumeDlg" Width="370" Height="270" Title="!(loc.ResumeDlg_Title)">
-				<Control Id="Install" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Default="yes" Text="!(loc.ResumeDlgInstall)" Hidden="yes">
-					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
-					<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
-					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST="P" OR NOT PROMPTROLLBACKCOST)</Publish>
-					<Publish Event="EndDialog" Value="Return">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-					<Publish Event="EnableRollback" Value="False">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-					<Publish Event="SpawnDialog" Value="OutOfDiskDlg">(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")</Publish>
-					<Condition Action="show">ALLUSERS</Condition>
+				<Control Id="Install" Type="PushButton" ElevationShield="yes" X="212" Y="243" Width="80" Height="17" Default="yes" Text="!(loc.ResumeDlgInstall)" Hidden="yes" ShowCondition="ALLUSERS">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg" Condition="!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+					
 				</Control>
-				<Control Id="InstallNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Default="yes" Text="!(loc.ResumeDlgInstall)" Hidden="yes">
-					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg">!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1</Publish>
-					<Publish Event="EndDialog" Value="Return"><![CDATA[OutOfDiskSpace <> 1]]></Publish>
-					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST="P" OR NOT PROMPTROLLBACKCOST)</Publish>
-					<Publish Event="EndDialog" Value="Return">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-					<Publish Event="EnableRollback" Value="False">OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST="D"</Publish>
-					<Publish Event="SpawnDialog" Value="OutOfDiskDlg">(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST="F")</Publish>
-					<Condition Action="show">NOT ALLUSERS</Condition>
+				<Control Id="InstallNoShield" Type="PushButton" ElevationShield="no" X="212" Y="243" Width="80" Height="17" Default="yes" Text="!(loc.ResumeDlgInstall)" Hidden="yes" ShowCondition="NOT ALLUSERS">
+					<Publish Event="SpawnWaitDialog" Value="WaitForCostingDlg" Condition="!(wix.WixUICostingPopupOptOut) OR CostingComplete = 1" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace &lt;&gt; 1" />
+					<Publish Event="SpawnDialog" Value="OutOfRbDiskDlg" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND (PROMPTROLLBACKCOST=&quot;P&quot; OR NOT PROMPTROLLBACKCOST)" />
+					<Publish Event="EndDialog" Value="Return" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="EnableRollback" Value="False" Condition="OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 0 AND PROMPTROLLBACKCOST=&quot;D&quot;" />
+					<Publish Event="SpawnDialog" Value="OutOfDiskDlg" Condition="(OutOfDiskSpace = 1 AND OutOfNoRbDiskSpace = 1) OR (OutOfDiskSpace = 1 AND PROMPTROLLBACKCOST=&quot;F&quot;)" />
+					
 				</Control>
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
-					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+					<Publish Event="SpawnDialog" Value="CancelDlg" />
 				</Control>
 				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="!(loc.ResumeDlgBitmap)" />
 				<Control Id="Back" Type="PushButton" X="156" Y="243" Width="56" Height="17" Disabled="yes" Text="!(loc.WixUIBack)" />
@@ -177,7 +169,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 			</Dialog>
 
 			<InstallUISequence>
-				<Show Dialog="MyResumeDlg" Before="ProgressDlg" Overridable="yes">Installed AND (RESUME OR Preselected)</Show>
+				<Show Dialog="MyResumeDlg" Before="ProgressDlg" Overridable="yes" Condition="Installed AND (RESUME OR Preselected)" />
 			</InstallUISequence>
 		</UI>
 	</Fragment>
@@ -191,12 +183,8 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
 				<Control Id="Description" Type="Text" X="135" Y="70" Width="220" Height="40" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogDescription)" />
 				<Control Id="Title" Type="Text" X="135" Y="20" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="!(loc.ExitDialogTitle)" />
-				<Control Id="OptionalText" Type="Text" X="135" Y="110" Width="220" Height="80" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="[WIXUI_EXITDIALOGOPTIONALTEXT]">
-					<Condition Action="show">WIXUI_EXITDIALOGOPTIONALTEXT AND NOT Installed</Condition>
-				</Control>
-				<Control Id="OptionalCheckBox" Type="CheckBox" X="135" Y="190" Width="220" Height="40" Hidden="yes" Property="WIXUI_EXITDIALOGOPTIONALCHECKBOX" CheckBoxValue="1" Text="[WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT]">
-					<Condition Action="show">WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT AND NOT Installed</Condition>
-				</Control>
+				<Control Id="OptionalText" Type="Text" X="135" Y="110" Width="220" Height="80" Transparent="yes" NoPrefix="yes" Hidden="yes" Text="[WIXUI_EXITDIALOGOPTIONALTEXT]" ShowCondition="WIXUI_EXITDIALOGOPTIONALTEXT AND NOT Installed" />
+				<Control Id="OptionalCheckBox" Type="CheckBox" X="135" Y="190" Width="220" Height="40" Hidden="yes" Property="WIXUI_EXITDIALOGOPTIONALCHECKBOX" CheckBoxValue="1" Text="[WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT]" ShowCondition="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT AND NOT Installed" />
 			</Dialog>
 
 			<InstallUISequence>

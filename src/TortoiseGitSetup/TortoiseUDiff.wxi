@@ -1,7 +1,6 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Include>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<DirectoryRef Id="D__Bin">
-		<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)" Win64="$(var.Win64YesNo)">
+		<Component Id="C__TortoiseUDiff" Guid="$(var.GuidTortoiseUDiff)">
 			<File Id="F__TortoiseUDiff" Name="TortoiseGitUDiff.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitUDiff.exe" KeyPath="yes" />
 
 			<!-- App registration, see https://docs.microsoft.com/en-us/windows/desktop/shell/app-registration -->
@@ -48,12 +47,12 @@
 			<RegistryValue Root="HKCR" Key=".diff\OpenWithProgids" Name="$(var.DiffProgId)" Value="" Type="string" />
 		</Component>
 
-		<Component Id="C__TortoiseUDiffAssoc" Guid="*" Win64="$(var.Win64YesNo)">
+		<Component Id="C__TortoiseUDiffAssoc">
 			<RegistryValue Root="HKCR" Key=".patch" Value="$(var.PatchProgId)" Type="string" />
 			<RegistryValue Root="HKCR" Key=".diff" Value="$(var.DiffProgId)" Type="string" />
 		</Component>
 
-		<Component Id="C__TortoiseUDiffMetaData" Guid="*" Win64="$(var.Win64YesNo)" NeverOverwrite="yes">
+		<Component Id="C__TortoiseUDiffMetaData" NeverOverwrite="yes">
 			<RegistryValue Root="HKCR" Key=".patch" Name="Content Type" Value="text/plain" Type="string" />
 			<RegistryValue Root="HKCR" Key=".patch" Name="PerceivedType" Value="text" Type="string" />
 

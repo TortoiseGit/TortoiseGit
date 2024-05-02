@@ -1,14 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
-	<PropertyGroup>
-		<ProjectGuid>{b0e79916-b2b5-464d-ab25-8269b0f40f4a}</ProjectGuid>
-		<OutputName>TortoiseGit-LanguagePack-zh_CN</OutputName>
-		<DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=2052;LANGNATIVE=Chinese (simplified);</DefineConstants>
-		<Cultures>zh-CN</Cultures>
-	</PropertyGroup>
-	<ItemGroup>
-		<Compile Include="LanguagePack.wxs" />
-		<Compile Include="WixUI_LanguagePacks.wxs" />
-	</ItemGroup>
-	<Import Project="WixProj.common.props" />
+<Project Sdk="WixToolset.Sdk/4.0.5">
+  <PropertyGroup>
+    <OutputName>TortoiseGit-LanguagePack-zh_CN</OutputName>
+    <DefineConstants>TSVNHelpFile=0;TMergeHelpFile=0;COUNTRYID=2052;LANGNATIVE=Chinese (simplified);</DefineConstants>
+    <Cultures>zh-CN</Cultures>
+  </PropertyGroup>
+  <Import Project="WixProj.common.props" />
 </Project>

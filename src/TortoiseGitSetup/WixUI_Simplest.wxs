@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
+﻿<!--
 First-time install dialog sequence:      Maintenance dialog sequence:
  - WixUI_WelcomeDlg                     - WixUI_MaintenanceWelcomeDlg
                                           - WixUI_MaintenanceTypeDlg
@@ -8,7 +6,7 @@ First-time install dialog sequence:      Maintenance dialog sequence:
                                             - WixUI_VerifyReadyDlg
 -->
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment>
 		<UI Id="WixUI_Simplest">
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
@@ -59,54 +57,54 @@ First-time install dialog sequence:      Maintenance dialog sequence:
 			<Binary Id="WixUI_Bmp_Up" SourceFile="include\Up.ico" />
 
 			<UIText Id="AbsentPath" />
-			<UIText Id="bytes">$(loc.UITextbytes)</UIText>
-			<UIText Id="GB">$(loc.UITextGB)</UIText>
-			<UIText Id="KB">$(loc.UITextKB)</UIText>
-			<UIText Id="MB">$(loc.UITextMB)</UIText>
-			<UIText Id="MenuAbsent">$(loc.UITextMenuAbsent)</UIText>			<UIText Id="MenuAdvertise">$(loc.UITextMenuAdvertise)</UIText>
-			<UIText Id="MenuAllCD">$(loc.UITextMenuAllCD)</UIText>
-			<UIText Id="MenuAllLocal">$(loc.UITextMenuAllLocal)</UIText>
-			<UIText Id="MenuAllNetwork">$(loc.UITextMenuAllNetwork)</UIText>
-			<UIText Id="MenuCD">$(loc.UITextMenuCD)</UIText>
-			<UIText Id="MenuLocal">$(loc.UITextMenuLocal)</UIText>
-			<UIText Id="MenuNetwork">$(loc.UITextMenuNetwork)</UIText>
-			<UIText Id="ScriptInProgress">$(loc.UITextScriptInProgress)</UIText>
-			<UIText Id="SelAbsentAbsent">$(loc.UITextSelAbsentAbsent)</UIText>
-			<UIText Id="SelAbsentAdvertise">$(loc.UITextSelAbsentAdvertise)</UIText>
-			<UIText Id="SelAbsentCD">$(loc.UITextSelAbsentCD)</UIText>
-			<UIText Id="SelAbsentLocal">$(loc.UITextSelAbsentLocal)</UIText>
-			<UIText Id="SelAbsentNetwork">$(loc.UITextSelAbsentNetwork)</UIText>
-			<UIText Id="SelAdvertiseAbsent">$(loc.UITextSelAdvertiseAbsent)</UIText>
-			<UIText Id="SelAdvertiseAdvertise">$(loc.UITextSelAdvertiseAdvertise)</UIText>
-			<UIText Id="SelAdvertiseCD">$(loc.UITextSelAdvertiseCD)</UIText>
-			<UIText Id="SelAdvertiseLocal">$(loc.UITextSelAdvertiseLocal)</UIText>
-			<UIText Id="SelAdvertiseNetwork">$(loc.UITextSelAdvertiseNetwork)</UIText>
-			<UIText Id="SelCDAbsent">$(loc.UITextSelCDAbsent)</UIText>
-			<UIText Id="SelCDAdvertise">$(loc.UITextSelCDAdvertise)</UIText>
-			<UIText Id="SelCDCD">$(loc.UITextSelCDCD)</UIText>
-			<UIText Id="SelCDLocal">$(loc.UITextSelCDLocal)</UIText>
-			<UIText Id="SelChildCostNeg">$(loc.UITextSelChildCostNeg)</UIText>
-			<UIText Id="SelChildCostPos">$(loc.UITextSelChildCostPos)</UIText>
-			<UIText Id="SelCostPending">$(loc.UITextSelCostPending)</UIText>
-			<UIText Id="SelLocalAbsent">$(loc.UITextSelLocalAbsent)</UIText>
-			<UIText Id="SelLocalAdvertise">$(loc.UITextSelLocalAdvertise)</UIText>
-			<UIText Id="SelLocalCD">$(loc.UITextSelLocalCD)</UIText>
-			<UIText Id="SelLocalLocal">$(loc.UITextSelLocalLocal)</UIText>
-			<UIText Id="SelLocalNetwork">$(loc.UITextSelLocalNetwork)</UIText>
-			<UIText Id="SelNetworkAbsent">$(loc.UITextSelNetworkAbsent)</UIText>
-			<UIText Id="SelNetworkAdvertise">$(loc.UITextSelNetworkAdvertise)</UIText>
-			<UIText Id="SelNetworkLocal">$(loc.UITextSelNetworkLocal)</UIText>
-			<UIText Id="SelNetworkNetwork">$(loc.UITextSelNetworkNetwork)</UIText>
-			<UIText Id="SelParentCostNegNeg">$(loc.UITextSelParentCostNegNeg)</UIText>
-			<UIText Id="SelParentCostNegPos">$(loc.UITextSelParentCostNegPos)</UIText>
-			<UIText Id="SelParentCostPosNeg">$(loc.UITextSelParentCostPosNeg)</UIText>
-			<UIText Id="SelParentCostPosPos">$(loc.UITextSelParentCostPosPos)</UIText>
-			<UIText Id="TimeRemaining">$(loc.UITextTimeRemaining)</UIText>
-			<UIText Id="VolumeCostAvailable">$(loc.UITextVolumeCostAvailable)</UIText>
-			<UIText Id="VolumeCostDifference">$(loc.UITextVolumeCostDifference)</UIText>
-			<UIText Id="VolumeCostRequired">$(loc.UITextVolumeCostRequired)</UIText>
-			<UIText Id="VolumeCostSize">$(loc.UITextVolumeCostSize)</UIText>
-			<UIText Id="VolumeCostVolume">$(loc.UITextVolumeCostVolume)</UIText>
+			<UIText Id="bytes" Value="$(loc.UITextbytes)" />
+			<UIText Id="GB" Value="$(loc.UITextGB)" />
+			<UIText Id="KB" Value="$(loc.UITextKB)" />
+			<UIText Id="MB" Value="$(loc.UITextMB)" />
+			<UIText Id="MenuAbsent" Value="$(loc.UITextMenuAbsent)" />			<UIText Id="MenuAdvertise" Value="$(loc.UITextMenuAdvertise)" />
+			<UIText Id="MenuAllCD" Value="$(loc.UITextMenuAllCD)" />
+			<UIText Id="MenuAllLocal" Value="$(loc.UITextMenuAllLocal)" />
+			<UIText Id="MenuAllNetwork" Value="$(loc.UITextMenuAllNetwork)" />
+			<UIText Id="MenuCD" Value="$(loc.UITextMenuCD)" />
+			<UIText Id="MenuLocal" Value="$(loc.UITextMenuLocal)" />
+			<UIText Id="MenuNetwork" Value="$(loc.UITextMenuNetwork)" />
+			<UIText Id="ScriptInProgress" Value="$(loc.UITextScriptInProgress)" />
+			<UIText Id="SelAbsentAbsent" Value="$(loc.UITextSelAbsentAbsent)" />
+			<UIText Id="SelAbsentAdvertise" Value="$(loc.UITextSelAbsentAdvertise)" />
+			<UIText Id="SelAbsentCD" Value="$(loc.UITextSelAbsentCD)" />
+			<UIText Id="SelAbsentLocal" Value="$(loc.UITextSelAbsentLocal)" />
+			<UIText Id="SelAbsentNetwork" Value="$(loc.UITextSelAbsentNetwork)" />
+			<UIText Id="SelAdvertiseAbsent" Value="$(loc.UITextSelAdvertiseAbsent)" />
+			<UIText Id="SelAdvertiseAdvertise" Value="$(loc.UITextSelAdvertiseAdvertise)" />
+			<UIText Id="SelAdvertiseCD" Value="$(loc.UITextSelAdvertiseCD)" />
+			<UIText Id="SelAdvertiseLocal" Value="$(loc.UITextSelAdvertiseLocal)" />
+			<UIText Id="SelAdvertiseNetwork" Value="$(loc.UITextSelAdvertiseNetwork)" />
+			<UIText Id="SelCDAbsent" Value="$(loc.UITextSelCDAbsent)" />
+			<UIText Id="SelCDAdvertise" Value="$(loc.UITextSelCDAdvertise)" />
+			<UIText Id="SelCDCD" Value="$(loc.UITextSelCDCD)" />
+			<UIText Id="SelCDLocal" Value="$(loc.UITextSelCDLocal)" />
+			<UIText Id="SelChildCostNeg" Value="$(loc.UITextSelChildCostNeg)" />
+			<UIText Id="SelChildCostPos" Value="$(loc.UITextSelChildCostPos)" />
+			<UIText Id="SelCostPending" Value="$(loc.UITextSelCostPending)" />
+			<UIText Id="SelLocalAbsent" Value="$(loc.UITextSelLocalAbsent)" />
+			<UIText Id="SelLocalAdvertise" Value="$(loc.UITextSelLocalAdvertise)" />
+			<UIText Id="SelLocalCD" Value="$(loc.UITextSelLocalCD)" />
+			<UIText Id="SelLocalLocal" Value="$(loc.UITextSelLocalLocal)" />
+			<UIText Id="SelLocalNetwork" Value="$(loc.UITextSelLocalNetwork)" />
+			<UIText Id="SelNetworkAbsent" Value="$(loc.UITextSelNetworkAbsent)" />
+			<UIText Id="SelNetworkAdvertise" Value="$(loc.UITextSelNetworkAdvertise)" />
+			<UIText Id="SelNetworkLocal" Value="$(loc.UITextSelNetworkLocal)" />
+			<UIText Id="SelNetworkNetwork" Value="$(loc.UITextSelNetworkNetwork)" />
+			<UIText Id="SelParentCostNegNeg" Value="$(loc.UITextSelParentCostNegNeg)" />
+			<UIText Id="SelParentCostNegPos" Value="$(loc.UITextSelParentCostNegPos)" />
+			<UIText Id="SelParentCostPosNeg" Value="$(loc.UITextSelParentCostPosNeg)" />
+			<UIText Id="SelParentCostPosPos" Value="$(loc.UITextSelParentCostPosPos)" />
+			<UIText Id="TimeRemaining" Value="$(loc.UITextTimeRemaining)" />
+			<UIText Id="VolumeCostAvailable" Value="$(loc.UITextVolumeCostAvailable)" />
+			<UIText Id="VolumeCostDifference" Value="$(loc.UITextVolumeCostDifference)" />
+			<UIText Id="VolumeCostRequired" Value="$(loc.UITextVolumeCostRequired)" />
+			<UIText Id="VolumeCostSize" Value="$(loc.UITextVolumeCostSize)" />
+			<UIText Id="VolumeCostVolume" Value="$(loc.UITextVolumeCostVolume)" />
 		</UI>
 	</Fragment>
 </Wix>

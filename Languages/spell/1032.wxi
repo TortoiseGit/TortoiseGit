@@ -1,4 +1,4 @@
-﻿<Include>
-	<File Id='SPELLELGRAFF' Name='el_GR.aff' DiskId='1' Source='..\ext\spell\el_GR\el_GR.aff' Vital='no'></File>
-	<File Id='SPELLELGRDIC' Name='el_GR.dic' DiskId='1' Source='..\ext\spell\el_GR\el_GR.dic' Vital='no'></File>
+﻿<Include xmlns="http://wixtoolset.org/schemas/v4/wxs">
+	<File Id="SPELLELGRAFF" Name="el_GR.aff" DiskId="1" Source="..\ext\spell\el_GR\el_GR.aff" Vital="no"></File>
+	<File Id="SPELLELGRDIC" Name="el_GR.dic" DiskId="1" Source="..\ext\spell\el_GR\el_GR.dic" Vital="no"></File>
 </Include>
