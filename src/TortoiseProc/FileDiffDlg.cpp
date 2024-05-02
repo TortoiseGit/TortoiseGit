@@ -1549,11 +1549,14 @@ void CFileDiffDlg::FillPatchView(bool onlySetTimer)
 			auto fentry = m_arFilteredList[nSelect];
 			CString cmd;
 			if (m_rev2.m_CommitHash.IsEmpty())
-				cmd.Format(L"git.exe diff%s %s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s %s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()));
 			else if (m_rev1.m_CommitHash.IsEmpty())
-				cmd.Format(L"git.exe diff%s -R %s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s -R %s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 			else
-				cmd.Format(L"git.exe diff%s %s..%s -- \"%s\"", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(fentry->GetGitPathString()));
+				cmd.Format(L"git.exe diff%s %s..%s --", static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
+			if (!fentry->GetGitOldPathString().IsEmpty())
+				cmd.AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(fentry->GetGitOldPathString()));
+			cmd.AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(fentry->GetGitPathString()));
 			g_Git.Run(cmd, &out, CP_UTF8);
 		}
 	}
