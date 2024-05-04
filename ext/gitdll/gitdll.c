@@ -910,7 +910,7 @@ int git_get_config(const char *key, char *buffer, int size)
 			return !buf.seen;
 	}
 
-	git_global_config(&global, &globalxdg);
+	git_global_config_paths(&global, &globalxdg);
 	if (globalxdg)
 	{
 		config_source.file = globalxdg;
@@ -969,7 +969,7 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 		{
 			char* global = NULL;
 			char* globalxdg = NULL;
-			git_global_config(&global, &globalxdg);
+			git_global_config_paths(&global, &globalxdg);
 			if (type == CONFIG_GLOBAL)
 			{
 				config_exclusive_filename = global;
@@ -989,7 +989,7 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 	if(!config_exclusive_filename)
 		return -1;
 
-	ret = git_config_set_multivar_in_file_gently(config_exclusive_filename, key, value, NULL, 0);
+	ret = git_config_set_multivar_in_file_gently(config_exclusive_filename, key, value, NULL, NULL, 0);
 	free(config_exclusive_filename);
 	return ret;
 }
