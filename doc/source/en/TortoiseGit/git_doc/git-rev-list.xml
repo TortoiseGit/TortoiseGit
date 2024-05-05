@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-rev-list(1)">
     <title>git-rev-list(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-04-29</date>
+<revhistory><revision><date>2024-04-29</date></revision></revhistory>
 <indexterm>
 <primary>git-rev-list(1)</primary>
 </indexterm>
@@ -44,9 +44,9 @@ for merges.  The resulting set of commits is the symmetric difference
 between the two operands.  The following two commands are equivalent:</simpara>
 <screen>$ git rev-list A B --not $(git merge-base --all A B)
 $ git rev-list A...B</screen>
-<simpara><emphasis>rev-list</emphasis> is a very essential Git command, since it
+<simpara><emphasis>rev-list</emphasis> is an essential Git command, since it
 provides the ability to build and traverse commit ancestry graphs. For
-this reason, it has a lot of different options that enables it to be
+this reason, it has a lot of different options that enable it to be
 used by commands as different as <emphasis>git bisect</emphasis> and
 <emphasis>git repack</emphasis>.</simpara>
 </simplesect>
@@ -178,7 +178,7 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 </term>
 <listitem>
 <simpara>
-        Limit the commits output to ones with log message that
+        Limit the commits output to ones with a log message that
         matches the specified pattern (regular expression).  With
         more than one <emphasis>--grep=&lt;pattern&gt;</emphasis>, commits whose message
         matches any of the given patterns are chosen (but see
@@ -203,7 +203,7 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 </term>
 <listitem>
 <simpara>
-        Limit the commits output to ones with log message that do not
+        Limit the commits output to ones with a log message that do not
         match the pattern specified with <emphasis>--grep=&lt;pattern&gt;</emphasis>.
 </simpara>
 </listitem>
@@ -373,6 +373,10 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 <simpara>
         Reverses the meaning of the <emphasis>&#94;</emphasis> prefix (or lack thereof)
         for all following revision specifiers, up to the next <emphasis>--not</emphasis>.
+        When used on the command line before --stdin, the revisions passed
+        through stdin will not be affected by it. Conversely, when passed
+        via standard input, the revisions passed on the command line will
+        not be affected by it.
 </simpara>
 </listitem>
 </varlistentry>
@@ -536,7 +540,9 @@ explicitly.</simpara>
         them from standard input as well. This accepts commits and
         pseudo-options like <emphasis>--all</emphasis> and <emphasis>--glob=</emphasis>. When a <emphasis>--</emphasis> separator
         is seen, the following input is treated as paths and used to
-        limit the result.
+        limit the result. Flags like <emphasis>--not</emphasis> which are read via standard input
+        are only respected for arguments passed in the same way and will not
+        influence any subsequent command line arguments.
 </simpara>
 </listitem>
 </varlistentry>
@@ -657,13 +663,13 @@ list.</simpara>
 <simpara>With <emphasis>--pretty</emphasis> format other than <emphasis>oneline</emphasis> and <emphasis>reference</emphasis> (for obvious reasons),
 this causes the output to have two extra lines of information
 taken from the reflog.  The reflog designator in the output may be shown
-as <emphasis>ref@{Nth}</emphasis> (where <emphasis>Nth</emphasis> is the reverse-chronological index in the
-reflog) or as <emphasis>ref@{timestamp}</emphasis> (with the timestamp for that entry),
+as <emphasis>ref@{&lt;Nth&gt;}</emphasis> (where <emphasis>&lt;Nth&gt;</emphasis> is the reverse-chronological index in the
+reflog) or as <emphasis>ref@{&lt;timestamp&gt;}</emphasis> (with the <emphasis>&lt;timestamp&gt;</emphasis> for that entry),
 depending on a few rules:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-If the starting point is specified as <emphasis>ref@{Nth}</emphasis>, show the index
+If the starting point is specified as <emphasis>ref@{&lt;Nth&gt;}</emphasis>, show the index
    format.
 </simpara>
 </listitem>
@@ -698,8 +704,11 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        After a failed merge, show refs that touch files having a
-        conflict and don't exist on all heads to merge.
+        Show commits touching conflicted paths in the range <emphasis>HEAD...&lt;other&gt;</emphasis>,
+        where <emphasis>&lt;other&gt;</emphasis> is the first existing pseudoref in <emphasis>MERGE_HEAD</emphasis>,
+        <emphasis>CHERRY_PICK_HEAD</emphasis>, <emphasis>REVERT_HEAD</emphasis> or <emphasis>REBASE_HEAD</emphasis>. Only works
+        when the index has unmerged entries. This option can be used to show
+        relevant commits when resolving conflicts from a 3-way merge.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1497,10 +1506,10 @@ together.</simpara>
         may be one of the following:
 </simpara>
 <simpara>The form <emphasis>--filter=blob:none</emphasis> omits all blobs.</simpara>
-<simpara>The form <emphasis>--filter=blob:limit=&lt;n&gt;[kmg]</emphasis> omits blobs larger than n bytes
-or units.  n may be zero.  The suffixes k, m, and g can be used to name
-units in KiB, MiB, or GiB.  For example, <emphasis>blob:limit=1k</emphasis> is the same
-as <emphasis>blob:limit=1024</emphasis>.</simpara>
+<simpara>The form <emphasis>--filter=blob:limit=&lt;n&gt;[kmg]</emphasis> omits blobs of size at least n
+bytes or units.  n may be zero.  The suffixes k, m, and g can be used
+to name units in KiB, MiB, or GiB.  For example, <emphasis>blob:limit=1k</emphasis>
+is the same as <emphasis>blob:limit=1024</emphasis>.</simpara>
 <simpara>The form <emphasis>--filter=object:type=(tag|commit|tree|blob)</emphasis> omits all objects
 which are not of the requested type.</simpara>
 <simpara>The form <emphasis>--filter=sparse:oid=&lt;blob-ish&gt;</emphasis> uses a sparse-checkout
@@ -1586,6 +1595,9 @@ allow object traversal to continue for EXPECTED promisor missing objects.
 Unexpected missing objects will raise an error.</simpara>
 <simpara>The form <emphasis>--missing=print</emphasis> is like <emphasis>allow-any</emphasis>, but will also print a
 list of the missing objects.  Object IDs are prefixed with a ? character.</simpara>
+<simpara>If some tips passed to the traversal are missing, they will be
+considered as missing too, and the traversal will ignore them. In case
+we cannot get their Object ID though, an error will be raised.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1728,7 +1740,7 @@ people using 80-column terminals.</simpara>
 <listitem>
 <simpara>
         Perform a tab expansion (replace each tab with enough spaces
-        to fill to the next display column that is multiple of <emphasis>&lt;n&gt;</emphasis>)
+        to fill to the next display column that is a multiple of <emphasis>&lt;n&gt;</emphasis>)
         in the log message before showing it in the output.
         <emphasis>--expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=8</emphasis>, and
         <emphasis>--no-expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=0</emphasis>,
@@ -2128,7 +2140,9 @@ a raw <emphasis>%</emphasis>
 </term>
 <listitem>
 <simpara>
-print a byte from a hex code
+<emphasis>%x</emphasis> followed by two hexadecimal digits is replaced with a
+         byte with the hexadecimal digits' value (we will call this
+         "literal formatting code" in the rest of this document).
 </simpara>
 </listitem>
 </varlistentry>
@@ -2675,17 +2689,58 @@ ref names without the " (", ")" wrapping.
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%(describe[:options])</emphasis>
+<emphasis>%(decorate[:&lt;options&gt;])</emphasis>
 </term>
 <listitem>
 <simpara>
-human-readable name, like
-                          <xref linkend="git-describe(1)" />; empty string for
-                          undescribable commits.  The <emphasis>describe</emphasis> string
-                          may be followed by a colon and zero or more
-                          comma-separated options.  Descriptions can be
-                          inconsistent when tags are added or removed at
-                          the same time.
+ref names with custom decorations. The <emphasis>decorate</emphasis> string may be followed by a
+colon and zero or more comma-separated options. Option values may contain
+literal formatting codes. These must be used for commas (<emphasis>%x2C</emphasis>) and closing
+parentheses (<emphasis>%x29</emphasis>), due to their role in the option syntax.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>prefix=&lt;value&gt;</emphasis>: Shown before the list of ref names.  Defaults to "&#160;<emphasis>(</emphasis>".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>suffix=&lt;value&gt;</emphasis>: Shown after the list of ref names.  Defaults to "<emphasis>)</emphasis>".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>separator=&lt;value&gt;</emphasis>: Shown between ref names.  Defaults to "<emphasis>,</emphasis>&#160;".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>pointer=&lt;value&gt;</emphasis>: Shown between HEAD and the branch it points to, if any.
+                      Defaults to "&#160;<emphasis>-&gt;</emphasis>&#160;".
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tag=&lt;value&gt;</emphasis>: Shown before tag names. Defaults to "<emphasis>tag:</emphasis>&#160;".
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>For example, to produce decorations with no wrapping
+or tag annotations, and spaces as separators:</simpara>
+<simpara><emphasis>%(decorate:prefix=,suffix=,tag=,separator= )</emphasis></simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>%(describe[:&lt;options&gt;])</emphasis>
+</term>
+<listitem>
+<simpara>
+human-readable name, like <xref linkend="git-describe(1)" />; empty string for
+undescribable commits.  The <emphasis>describe</emphasis> string may be followed by a colon and
+zero or more comma-separated options.  Descriptions can be inconsistent when
+tags are added or removed at the same time.
 </simpara>
 <itemizedlist>
 <listitem>
@@ -2936,17 +2991,14 @@ reflog subject
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>%(trailers[:options])</emphasis>
+<emphasis>%(trailers[:&lt;options&gt;])</emphasis>
 </term>
 <listitem>
 <simpara>
-display the trailers of the body as
-                          interpreted by
-                          <xref linkend="git-interpret-trailers(1)" />. The
-                          <emphasis>trailers</emphasis> string may be followed by a colon
-                          and zero or more comma-separated options.
-                          If any option is provided multiple times the
-                          last occurrence wins.
+display the trailers of the body as interpreted by
+<xref linkend="git-interpret-trailers(1)" />. The <emphasis>trailers</emphasis> string may be followed by
+a colon and zero or more comma-separated options. If any option is provided
+multiple times, the last occurrence wins.
 </simpara>
 <itemizedlist>
 <listitem>
@@ -2969,9 +3021,8 @@ display the trailers of the body as
 </listitem>
 <listitem>
 <simpara>
-<emphasis>separator=&lt;sep&gt;</emphasis>: specify a separator inserted between trailer
-   lines. When this option is not given each trailer line is
-   terminated with a line feed character. The string &lt;sep&gt; may contain
+<emphasis>separator=&lt;sep&gt;</emphasis>: specify the separator inserted between trailer
+   lines. Defaults to a line feed character. The string &lt;sep&gt; may contain
    the literal formatting codes described above. To use comma as
    separator one must use <emphasis>%x2C</emphasis> as it would otherwise be parsed as
    next option. E.g., <emphasis>%(trailers:key=Ticket,separator=%x2C )</emphasis>
@@ -2998,10 +3049,9 @@ display the trailers of the body as
 </listitem>
 <listitem>
 <simpara>
-<emphasis>key_value_separator=&lt;sep&gt;</emphasis>: specify a separator inserted between
-   trailer lines. When this option is not given each trailer key-value
-   pair is separated by ": ". Otherwise it shares the same semantics
-   as <emphasis>separator=&lt;sep&gt;</emphasis> above.
+<emphasis>key_value_separator=&lt;sep&gt;</emphasis>: specify the separator inserted between
+   the key and value of each trailer. Defaults to ": ". Otherwise it
+   shares the same semantics as <emphasis>separator=&lt;sep&gt;</emphasis> above.
 </simpara>
 </listitem>
 </itemizedlist>

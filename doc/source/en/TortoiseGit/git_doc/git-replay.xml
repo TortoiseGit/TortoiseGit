@@ -1,180 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
 
-<sect2 lang="en" id="git-shortlog(1)">
-    <title>git-shortlog(1)</title>
+<sect2 lang="en" id="git-replay(1)">
+    <title>git-replay(1)</title>
     <date>2024-04-29</date>
 <revhistory><revision><date>2024-04-29</date></revision></revhistory>
 <indexterm>
-<primary>git-shortlog(1)</primary>
+<primary>git-replay(1)</primary>
 </indexterm>
-<simplesect id="git-shortlog(1)__name">
+<simplesect id="git-replay(1)__name">
 <title>NAME</title>
-<simpara>git-shortlog - Summarize <emphasis>git log</emphasis> output</simpara>
+<simpara>git-replay - EXPERIMENTAL: Replay commits on a new base, works with bare repos too</simpara>
 </simplesect>
-<simplesect id="git-shortlog(1)__synopsis">
+<simplesect id="git-replay(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git shortlog</emphasis> [&lt;options&gt;] [&lt;revision-range&gt;] [[--] &lt;path&gt;&#8230;]
-git log --pretty=short | <emphasis>git shortlog</emphasis> [&lt;options&gt;]</literallayout>
+<literallayout>(EXPERIMENTAL!) <emphasis>git replay</emphasis> ([--contained] --onto &lt;newbase&gt; | --advance &lt;branch&gt;) &lt;revision-range&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
-<simplesect id="git-shortlog(1)__description">
+<simplesect id="git-replay(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Summarizes <emphasis>git log</emphasis> output in a format suitable for inclusion
-in release announcements. Each commit will be grouped by author and title.</simpara>
-<simpara>Additionally, "[PATCH]" will be stripped from the commit description.</simpara>
-<simpara>If no revisions are passed on the command line and either standard input
-is not a terminal or there is no current branch, <emphasis>git shortlog</emphasis> will
-output a summary of the log read from standard input, without
-reference to the current repository.</simpara>
+<simpara>Takes ranges of commits and replays them onto a new location. Leaves
+the working tree and the index untouched, and updates no references.
+The output of this command is meant to be used as input to
+<emphasis>git update-ref --stdin</emphasis>, which would update the relevant branches
+(see the OUTPUT section below).</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
 </simplesect>
-<simplesect id="git-shortlog(1)__options">
+<simplesect id="git-replay(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
--n
-</term>
-<term>
---numbered
+--onto &lt;newbase&gt;
 </term>
 <listitem>
 <simpara>
-        Sort output according to the number of commits per author instead
-        of author alphabetic order.
+        Starting point at which to create the new commits.  May be any
+        valid commit, and not just an existing branch name.
 </simpara>
+<simpara>When <emphasis>--onto</emphasis> is specified, the update-ref command(s) in the output will
+update the branch(es) in the revision range to point at the new
+commits, similar to the way how <emphasis>git rebase --update-refs</emphasis> updates
+multiple branches in the affected range.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--s
-</term>
-<term>
---summary
+--advance &lt;branch&gt;
 </term>
 <listitem>
 <simpara>
-        Suppress commit description and provide a commit count summary only.
+        Starting point at which to create the new commits; must be a
+        branch name.
 </simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--e
-</term>
-<term>
---email
-</term>
-<listitem>
-<simpara>
-        Show the email address of each author.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---format[=&lt;format&gt;]
-</term>
-<listitem>
-<simpara>
-        Instead of the commit subject, use some other information to
-        describe each commit.  <emphasis>&lt;format&gt;</emphasis> can be any string accepted
-        by the <emphasis>--format</emphasis> option of <emphasis>git log</emphasis>, such as <emphasis>* [%h] %s</emphasis>.
-        (See the "PRETTY FORMATS" section of <xref linkend="git-log(1)" />.)
-</simpara>
-<literallayout class="monospaced">Each pretty-printed commit will be rewrapped before it is shown.</literallayout>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---date=&lt;format&gt;
-</term>
-<listitem>
-<simpara>
-        Show dates formatted according to the given date string. (See
-        the <emphasis>--date</emphasis> option in the "Commit Formatting" section of
-        <xref linkend="git-log(1)" />). Useful with <emphasis>--group=format:&lt;format&gt;</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---group=&lt;type&gt;
-</term>
-<listitem>
-<simpara>
-        Group commits based on <emphasis>&lt;type&gt;</emphasis>. If no <emphasis>--group</emphasis> option is
-        specified, the default is <emphasis>author</emphasis>. <emphasis>&lt;type&gt;</emphasis> is one of:
-</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-<emphasis>author</emphasis>, commits are grouped by author
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<emphasis>committer</emphasis>, commits are grouped by committer (the same as <emphasis>-c</emphasis>)
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<emphasis>trailer:&lt;field&gt;</emphasis>, the <emphasis>&lt;field&gt;</emphasis> is interpreted as a case-insensitive
-   commit message trailer (see <xref linkend="git-interpret-trailers(1)" />). For
-   example, if your project uses <emphasis>Reviewed-by</emphasis> trailers, you might want
-   to see who has been reviewing with
-   <emphasis>git shortlog -ns --group=trailer:reviewed-by</emphasis>.
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-<emphasis>format:&lt;format&gt;</emphasis>, any string accepted by the <emphasis>--format</emphasis> option of
-   <emphasis>git log</emphasis>. (See the "PRETTY FORMATS" section of
-   <xref linkend="git-log(1)" />.)
-</simpara>
-<simpara>Note that commits that do not include the trailer will not be counted.
-Likewise, commits with multiple trailers (e.g., multiple signoffs) may
-be counted more than once (but only once per unique trailer value in
-that commit).</simpara>
-<simpara>Shortlog will attempt to parse each trailer value as a <emphasis>name &lt;email&gt;</emphasis>
-identity. If successful, the mailmap is applied and the email is omitted
-unless the <emphasis>--email</emphasis> option is specified. If the value cannot be parsed
-as an identity, it will be taken literally and completely.</simpara>
-</listitem>
-</itemizedlist>
-<simpara>If <emphasis>--group</emphasis> is specified multiple times, commits are counted under each
-value (but again, only once per unique value in that commit). For
-example, <emphasis>git shortlog --group=author --group=trailer:co-authored-by</emphasis>
-counts both authors and co-authors.</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--c
-</term>
-<term>
---committer
-</term>
-<listitem>
-<simpara>
-        This is an alias for <emphasis>--group=committer</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--w[&lt;width&gt;[,&lt;indent1&gt;[,&lt;indent2&gt;]]]
-</term>
-<listitem>
-<simpara>
-        Linewrap the output by wrapping each line at <emphasis>width</emphasis>.  The first
-        line of each entry is indented by <emphasis>indent1</emphasis> spaces, and the second
-        and subsequent lines are indented by <emphasis>indent2</emphasis> spaces. <emphasis>width</emphasis>,
-        <emphasis>indent1</emphasis>, and <emphasis>indent2</emphasis> default to 76, 6 and 9 respectively.
-</simpara>
-<simpara>If width is <emphasis>0</emphasis> (zero) then indent the lines of the output without wrapping
-them.</simpara>
+<simpara>When <emphasis>--advance</emphasis> is specified, the update-ref command(s) in the output
+will update the branch passed as an argument to <emphasis>--advance</emphasis> to point at
+the new commits (in other words, this mimics a cherry-pick operation).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -183,31 +65,16 @@ them.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show only commits in the specified revision range.  When no
-        &lt;revision-range&gt; is specified, it defaults to <emphasis>HEAD</emphasis> (i.e. the
-        whole history leading to the current commit).  <emphasis>origin..HEAD</emphasis>
-        specifies all the commits reachable from the current commit
-        (i.e. <emphasis>HEAD</emphasis>), but not from <emphasis>origin</emphasis>. For a complete list of
-        ways to spell &lt;revision-range&gt;, see the "Specifying Ranges"
-        section of <xref linkend="gitrevisions(7)" />.
+        Range of commits to replay. More than one &lt;revision-range&gt; can
+        be passed, but in <emphasis>--advance &lt;branch&gt;</emphasis> mode, they should have
+        a single tip, so that it's clear where &lt;branch&gt; should point
+        to. See "Specifying Ranges" in <xref linkend="git-rev-parse(1)" /> and the
+        "Commit Limiting" options below.
 </simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-[--] &lt;path&gt;&#8230;
-</term>
-<listitem>
-<simpara>
-        Consider only commits that are enough to explain how the files
-        that match the specified paths came to be.
-</simpara>
-<simpara>Paths may need to be prefixed with <emphasis>--</emphasis> to separate them from
-options or the revision range, when confusion arises.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
-<section id="git-shortlog(1)__commit_limiting">
+<section id="git-replay(1)__commit_limiting">
 <title>Commit Limiting</title>
 <simpara>Besides specifying a range of commits that should be listed using the
 special notations explained in the description, additional commit
@@ -847,7 +714,7 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </varlistentry>
 </variablelist>
 </section>
-<section id="git-shortlog(1)__history_simplification">
+<section id="git-replay(1)__history_simplification">
 <title>History Simplification</title>
 <simpara>Sometimes you are only interested in parts of the history, for example the
 commits modifying a particular &lt;path&gt;. But there are two parts of
@@ -1357,15 +1224,497 @@ above) if (1) they are referenced by tags, or (2) they change the
 contents of the paths given on the command line.  All other
 commits are marked as TREESAME (subject to be simplified away).</simpara>
 </section>
+<section id="git-replay(1)__commit_ordering">
+<title>Commit Ordering</title>
+<simpara>By default, the commits are shown in reverse chronological order.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--date-order
+</term>
+<listitem>
+<simpara>
+        Show no parents before all of its children are shown, but
+        otherwise show commits in the commit timestamp order.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--author-date-order
+</term>
+<listitem>
+<simpara>
+        Show no parents before all of its children are shown, but
+        otherwise show commits in the author timestamp order.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--topo-order
+</term>
+<listitem>
+<simpara>
+        Show no parents before all of its children are shown, and
+        avoid showing commits on multiple lines of history
+        intermixed.
+</simpara>
+<simpara>For example, in a commit history like this:</simpara>
+<screen>    ---1----2----4----7
+        \              \
+         3----5----6----8---</screen>
+<simpara>where the numbers denote the order of commit timestamps, <emphasis>git
+rev-list</emphasis> and friends with <emphasis>--date-order</emphasis> show the commits in the
+timestamp order: 8 7 6 5 4 3 2 1.</simpara>
+<simpara>With <emphasis>--topo-order</emphasis>, they would show 8 6 5 3 7 4 2 1 (or 8 7 4 2 6 5
+3 1); some older commits are shown before newer ones in order to
+avoid showing the commits from two parallel development track mixed
+together.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reverse
+</term>
+<listitem>
+<simpara>
+        Output the commits chosen to be shown (see Commit Limiting
+        section above) in reverse order. Cannot be combined with
+        <emphasis>--walk-reflogs</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="git-replay(1)__object_traversal">
+<title>Object Traversal</title>
+<simpara>These options are mostly targeted for packing of Git repositories.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--no-walk[=(sorted|unsorted)]
+</term>
+<listitem>
+<simpara>
+        Only show the given commits, but do not traverse their ancestors.
+        This has no effect if a range is specified. If the argument
+        <emphasis>unsorted</emphasis> is given, the commits are shown in the order they were
+        given on the command line. Otherwise (if <emphasis>sorted</emphasis> or no argument
+        was given), the commits are shown in reverse chronological order
+        by commit time.
+        Cannot be combined with <emphasis>--graph</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--do-walk
+</term>
+<listitem>
+<simpara>
+        Overrides a previous <emphasis>--no-walk</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="git-replay(1)__commit_formatting">
+<title>Commit Formatting</title>
+<variablelist>
+<varlistentry>
+<term>
+--pretty[=&lt;format&gt;]
+</term>
+<term>
+--format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Pretty-print the contents of the commit logs in a given format,
+        where <emphasis>&lt;format&gt;</emphasis> can be one of <emphasis>oneline</emphasis>, <emphasis>short</emphasis>, <emphasis>medium</emphasis>,
+        <emphasis>full</emphasis>, <emphasis>fuller</emphasis>, <emphasis>reference</emphasis>, <emphasis>email</emphasis>, <emphasis>raw</emphasis>, <emphasis>format:&lt;string&gt;</emphasis>
+        and <emphasis>tformat:&lt;string&gt;</emphasis>.  When <emphasis>&lt;format&gt;</emphasis> is none of the above,
+        and has <emphasis>%placeholder</emphasis> in it, it acts as if
+        <emphasis>--pretty=tformat:&lt;format&gt;</emphasis> were given.
+</simpara>
+<simpara>See the "PRETTY FORMATS" section for some additional details for each
+format.  When <emphasis>=&lt;format&gt;</emphasis> part is omitted, it defaults to <emphasis>medium</emphasis>.</simpara>
+<simpara>Note: you can specify the default pretty format in the repository
+configuration (see <xref linkend="git-config(1)" />).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--abbrev-commit
+</term>
+<listitem>
+<simpara>
+        Instead of showing the full 40-byte hexadecimal commit object
+        name, show a prefix that names the object uniquely.
+        "--abbrev=&lt;n&gt;" (which also modifies diff output, if it is displayed)
+        option can be used to specify the minimum length of the prefix.
+</simpara>
+<simpara>This should make "--pretty=oneline" a whole lot more readable for
+people using 80-column terminals.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-abbrev-commit
+</term>
+<listitem>
+<simpara>
+        Show the full 40-byte hexadecimal commit object name. This negates
+        <emphasis>--abbrev-commit</emphasis>, either explicit or implied by other options such
+        as "--oneline". It also overrides the <emphasis>log.abbrevCommit</emphasis> variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--oneline
+</term>
+<listitem>
+<simpara>
+        This is a shorthand for "--pretty=oneline --abbrev-commit"
+        used together.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--encoding=&lt;encoding&gt;
+</term>
+<listitem>
+<simpara>
+        Commit objects record the character encoding used for the log message
+        in their encoding header; this option can be used to tell the
+        command to re-code the commit log message in the encoding
+        preferred by the user.  For non plumbing commands this
+        defaults to UTF-8. Note that if an object claims to be encoded
+        in <emphasis>X</emphasis> and we are outputting in <emphasis>X</emphasis>, we will output the object
+        verbatim; this means that invalid sequences in the original
+        commit may be copied to the output. Likewise, if iconv(3) fails
+        to convert the commit, we will quietly output the original
+        object verbatim.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--expand-tabs=&lt;n&gt;
+</term>
+<term>
+--expand-tabs
+</term>
+<term>
+--no-expand-tabs
+</term>
+<listitem>
+<simpara>
+        Perform a tab expansion (replace each tab with enough spaces
+        to fill to the next display column that is a multiple of <emphasis>&lt;n&gt;</emphasis>)
+        in the log message before showing it in the output.
+        <emphasis>--expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=8</emphasis>, and
+        <emphasis>--no-expand-tabs</emphasis> is a short-hand for <emphasis>--expand-tabs=0</emphasis>,
+        which disables tab expansion.
+</simpara>
+<simpara>By default, tabs are expanded in pretty formats that indent the log
+message by 4 spaces (i.e.  <emphasis>medium</emphasis>, which is the default, <emphasis>full</emphasis>,
+and <emphasis>fuller</emphasis>).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--notes[=&lt;ref&gt;]
+</term>
+<listitem>
+<simpara>
+        Show the notes (see <xref linkend="git-notes(1)" />) that annotate the
+        commit, when showing the commit log message.  This is the default
+        for <emphasis>git log</emphasis>, <emphasis>git show</emphasis> and <emphasis>git whatchanged</emphasis> commands when
+        there is no <emphasis>--pretty</emphasis>, <emphasis>--format</emphasis>, or <emphasis>--oneline</emphasis> option given
+        on the command line.
+</simpara>
+<simpara>By default, the notes shown are from the notes refs listed in the
+<emphasis>core.notesRef</emphasis> and <emphasis>notes.displayRef</emphasis> variables (or corresponding
+environment overrides). See <xref linkend="git-config(1)" /> for more details.</simpara>
+<simpara>With an optional <emphasis>&lt;ref&gt;</emphasis> argument, use the ref to find the notes
+to display.  The ref can specify the full refname when it begins
+with <emphasis>refs/notes/</emphasis>; when it begins with <emphasis>notes/</emphasis>, <emphasis>refs/</emphasis> and otherwise
+<emphasis>refs/notes/</emphasis> is prefixed to form the full name of the ref.</simpara>
+<simpara>Multiple --notes options can be combined to control which notes are
+being displayed. Examples: "--notes=foo" will show only notes from
+"refs/notes/foo"; "--notes=foo --notes" will show both notes from
+"refs/notes/foo" and from the default notes ref(s).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-notes
+</term>
+<listitem>
+<simpara>
+        Do not show notes. This negates the above <emphasis>--notes</emphasis> option, by
+        resetting the list of notes refs from which notes are shown.
+        Options are parsed in the order given on the command line, so e.g.
+        "--notes --notes=foo --no-notes --notes=bar" will only show notes
+        from "refs/notes/bar".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-notes-by-default
+</term>
+<listitem>
+<simpara>
+        Show the default notes unless options for displaying specific
+        notes are given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-notes[=&lt;ref&gt;]
+</term>
+<term>
+--[no-]standard-notes
+</term>
+<listitem>
+<simpara>
+        These options are deprecated. Use the above --notes/--no-notes
+        options instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-signature
+</term>
+<listitem>
+<simpara>
+        Check the validity of a signed commit object by passing the signature
+        to <emphasis>gpg --verify</emphasis> and show the output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--relative-date
+</term>
+<listitem>
+<simpara>
+        Synonym for <emphasis>--date=relative</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--date=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Only takes effect for dates shown in human-readable format, such
+        as when using <emphasis>--pretty</emphasis>. <emphasis>log.date</emphasis> config variable sets a default
+        value for the log command's <emphasis>--date</emphasis> option. By default, dates
+        are shown in the original time zone (either committer's or
+        author's). If <emphasis>-local</emphasis> is appended to the format (e.g.,
+        <emphasis>iso-local</emphasis>), the user's local time zone is used instead.
+</simpara>
+<simpara><emphasis>--date=relative</emphasis> shows dates relative to the current time,
+e.g. 2 hours ago. The <emphasis>-local</emphasis> option has no effect for
+<emphasis>--date=relative</emphasis>.</simpara>
+<simpara><emphasis>--date=local</emphasis> is an alias for <emphasis>--date=default-local</emphasis>.</simpara>
+<simpara><emphasis>--date=iso</emphasis> (or <emphasis>--date=iso8601</emphasis>) shows timestamps in a ISO 8601-like format.
+The differences to the strict ISO 8601 format are:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+a space instead of the <emphasis>T</emphasis> date/time delimiter
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+a space between time and time zone
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+no colon between hours and minutes of the time zone
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara><emphasis>--date=iso-strict</emphasis> (or <emphasis>--date=iso8601-strict</emphasis>) shows timestamps in strict
+ISO 8601 format.</simpara>
+<simpara><emphasis>--date=rfc</emphasis> (or <emphasis>--date=rfc2822</emphasis>) shows timestamps in RFC 2822
+format, often found in email messages.</simpara>
+<simpara><emphasis>--date=short</emphasis> shows only the date, but not the time, in <emphasis>YYYY-MM-DD</emphasis> format.</simpara>
+<simpara><emphasis>--date=raw</emphasis> shows the date as seconds since the epoch (1970-01-01
+00:00:00 UTC), followed by a space, and then the timezone as an offset
+from UTC (a <emphasis>+</emphasis> or <emphasis>-</emphasis> with four digits; the first two are hours, and
+the second two are minutes). I.e., as if the timestamp were formatted
+with <emphasis>strftime("%s %z")</emphasis>).
+Note that the <emphasis>-local</emphasis> option does not affect the seconds-since-epoch
+value (which is always measured in UTC), but does switch the accompanying
+timezone value.</simpara>
+<simpara><emphasis>--date=human</emphasis> shows the timezone if the timezone does not match the
+current time-zone, and doesn't print the whole date if that matches
+(ie skip printing year for dates that are "this year", but also skip
+the whole date itself if it's in the last few days and we can just say
+what weekday it was).  For older dates the hour and minute is also
+omitted.</simpara>
+<simpara><emphasis>--date=unix</emphasis> shows the date as a Unix epoch timestamp (seconds since
+1970).  As with <emphasis>--raw</emphasis>, this is always in UTC and therefore <emphasis>-local</emphasis>
+has no effect.</simpara>
+<simpara><emphasis>--date=format:...</emphasis> feeds the format <emphasis>...</emphasis> to your system <emphasis>strftime</emphasis>,
+except for %s, %z, and %Z, which are handled internally.
+Use <emphasis>--date=format:%c</emphasis> to show the date in your system locale's
+preferred format.  See the <emphasis>strftime</emphasis> manual for a complete list of
+format placeholders. When using <emphasis>-local</emphasis>, the correct syntax is
+<emphasis>--date=format-local:...</emphasis>.</simpara>
+<simpara><emphasis>--date=default</emphasis> is the default format, and is based on ctime(3)
+output.  It shows a single line with three-letter day of the week,
+three-letter month, day-of-month, hour-minute-seconds in "HH:MM:SS"
+format, followed by 4-digit year, plus timezone information, unless
+the local time zone is used, e.g. <emphasis>Thu Jan 1 00:00:00 1970 +0000</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--parents
+</term>
+<listitem>
+<simpara>
+        Print also the parents of the commit (in the form "commit parent&#8230;").
+        Also enables parent rewriting, see <emphasis>History Simplification</emphasis> above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--children
+</term>
+<listitem>
+<simpara>
+        Print also the children of the commit (in the form "commit child&#8230;").
+        Also enables parent rewriting, see <emphasis>History Simplification</emphasis> above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--left-right
+</term>
+<listitem>
+<simpara>
+        Mark which side of a symmetric difference a commit is reachable from.
+        Commits from the left side are prefixed with <emphasis>&lt;</emphasis> and those from
+        the right with <emphasis>&gt;</emphasis>.  If combined with <emphasis>--boundary</emphasis>, those
+        commits are prefixed with <emphasis>-</emphasis>.
+</simpara>
+<simpara>For example, if you have this topology:</simpara>
+<screen>             y---b---b  branch B
+            / \ /
+           /   .
+          /   / \
+         o---x---a---a  branch A</screen>
+<simpara>you would get an output like this:</simpara>
+<screen>        $ git rev-list --left-right --boundary --pretty=oneline A...B
+
+        &gt;bbbbbbb... 3rd on b
+        &gt;bbbbbbb... 2nd on b
+        &lt;aaaaaaa... 3rd on a
+        &lt;aaaaaaa... 2nd on a
+        -yyyyyyy... 1st on b
+        -xxxxxxx... 1st on a</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--graph
+</term>
+<listitem>
+<simpara>
+        Draw a text-based graphical representation of the commit history
+        on the left hand side of the output.  This may cause extra lines
+        to be printed in between commits, in order for the graph history
+        to be drawn properly.
+        Cannot be combined with <emphasis>--no-walk</emphasis>.
+</simpara>
+<simpara>This enables parent rewriting, see <emphasis>History Simplification</emphasis> above.</simpara>
+<simpara>This implies the <emphasis>--topo-order</emphasis> option by default, but the
+<emphasis>--date-order</emphasis> option may also be specified.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-linear-break[=&lt;barrier&gt;]
+</term>
+<listitem>
+<simpara>
+        When --graph is not used, all history branches are flattened
+        which can make it hard to see that the two consecutive commits
+        do not belong to a linear branch. This option puts a barrier
+        in between them in that case. If <emphasis>&lt;barrier&gt;</emphasis> is specified, it
+        is the string that will be shown instead of the default one.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
 </simplesect>
-<simplesect id="git-shortlog(1)__mapping_authors">
-<title>MAPPING AUTHORS</title>
-<simpara>See <xref linkend="gitmailmap(5)" />.</simpara>
-<simpara>Note that if <emphasis>git shortlog</emphasis> is run outside of a repository (to process
-log contents on standard input), it will look for a <emphasis>.mailmap</emphasis> file in
-the current directory.</simpara>
+<simplesect id="git-replay(1)__output">
+<title>OUTPUT</title>
+<simpara>When there are no conflicts, the output of this command is usable as
+input to <emphasis>git update-ref --stdin</emphasis>.  It is of the form:</simpara>
+<literallayout class="monospaced">update refs/heads/branch1 ${NEW_branch1_HASH} ${OLD_branch1_HASH}
+update refs/heads/branch2 ${NEW_branch2_HASH} ${OLD_branch2_HASH}
+update refs/heads/branch3 ${NEW_branch3_HASH} ${OLD_branch3_HASH}</literallayout>
+<simpara>where the number of refs updated depends on the arguments passed and
+the shape of the history being replayed.  When using <emphasis>--advance</emphasis>, the
+number of refs updated is always one, but for <emphasis>--onto</emphasis>, it can be one
+or more (rebasing multiple branches simultaneously is supported).</simpara>
 </simplesect>
-<simplesect id="git-shortlog(1)__git">
+<simplesect id="git-replay(1)__exit_status">
+<title>EXIT STATUS</title>
+<simpara>For a successful, non-conflicted replay, the exit status is 0.  When
+the replay has conflicts, the exit status is 1.  If the replay is not
+able to complete (or start) due to some kind of error, the exit status
+is something other than 0 or 1.</simpara>
+</simplesect>
+<simplesect id="git-replay(1)__examples">
+<title>EXAMPLES</title>
+<simpara>To simply rebase <emphasis>mybranch</emphasis> onto <emphasis>target</emphasis>:</simpara>
+<screen>$ git replay --onto target origin/main..mybranch
+update refs/heads/mybranch ${NEW_mybranch_HASH} ${OLD_mybranch_HASH}</screen>
+<simpara>To cherry-pick the commits from mybranch onto target:</simpara>
+<screen>$ git replay --advance target origin/main..mybranch
+update refs/heads/target ${NEW_target_HASH} ${OLD_target_HASH}</screen>
+<simpara>Note that the first two examples replay the exact same commits and on
+top of the exact same new base, they only differ in that the first
+provides instructions to make mybranch point at the new commits and
+the second provides instructions to make target point at them.</simpara>
+<simpara>What if you have a stack of branches, one depending upon another, and
+you'd really like to rebase the whole set?</simpara>
+<screen>$ git replay --contained --onto origin/main origin/main..tipbranch
+update refs/heads/branch1 ${NEW_branch1_HASH} ${OLD_branch1_HASH}
+update refs/heads/branch2 ${NEW_branch2_HASH} ${OLD_branch2_HASH}
+update refs/heads/tipbranch ${NEW_tipbranch_HASH} ${OLD_tipbranch_HASH}</screen>
+<simpara>When calling <emphasis>git replay</emphasis>, one does not need to specify a range of
+commits to replay using the syntax <emphasis>A..B</emphasis>; any range expression will
+do:</simpara>
+<screen>$ git replay --onto origin/main ^base branch1 branch2 branch3
+update refs/heads/branch1 ${NEW_branch1_HASH} ${OLD_branch1_HASH}
+update refs/heads/branch2 ${NEW_branch2_HASH} ${OLD_branch2_HASH}
+update refs/heads/branch3 ${NEW_branch3_HASH} ${OLD_branch3_HASH}</screen>
+<simpara>This will simultaneously rebase <emphasis>branch1</emphasis>, <emphasis>branch2</emphasis>, and <emphasis>branch3</emphasis>,
+all commits they have since <emphasis>base</emphasis>, playing them on top of
+<emphasis>origin/main</emphasis>. These three branches may have commits on top of <emphasis>base</emphasis>
+that they have in common, but that does not need to be the case.</simpara>
+</simplesect>
+<simplesect id="git-replay(1)__git">
 <title>GIT</title>
 <simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
 </simplesect>
