@@ -47,8 +47,9 @@
     <OutDir Condition="'$(Platform)'=='ARM64'">$(SolutionDir)..\bin\$(Configuration)ARM64\Languages\</OutDir>
     <ExeDir Condition="'$(Platform)'=='Win32'">$(SolutionDir)..\bin\$(Configuration)\Languages\</ExeDir>
     <ExeDir Condition="'$(Platform)'=='x64'">$(SolutionDir)..\bin\$(Configuration)64\Languages\</ExeDir>
-    <ExeDir Condition="'$(Platform)'=='ARM64' AND '$(PROCESSOR_ARCHITECTURE)' == 'AMD64'">$(SolutionDir)..\bin\$(Configuration)64\Languages\</ExeDir>
-    <ExeDir Condition="'$(Platform)'=='ARM64' AND '$(PROCESSOR_ARCHITECTURE)' == 'ARM64'">$(SolutionDir)..\bin\$(Configuration)ARM64\Languages\</ExeDir>
+    <ExeDir Condition="'$(Platform)'=='ARM64' AND ('$(PROCESSOR_ARCHITECTURE)'=='AMD64' OR '$(PROCESSOR_ARCHITEW6432)'=='AMD64')">$(SolutionDir)..\bin\$(Configuration)64\Languages\</ExeDir>
+    <ExeDir Condition="'$(Platform)'=='ARM64' AND ('$(PROCESSOR_ARCHITECTURE)'=='$(Platform)' OR '$(PROCESSOR_ARCHITEW6432)'=='$(Platform)')">$(SolutionDir)..\bin\$(Configuration)ARM64\Languages\</ExeDir>
+    <ExeDir Condition="'$(ExeDir)'==''">$(SolutionDir)..\bin\$(Configuration)\Languages\</ExeDir>
     <NMakeBuildCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)" clean</NMakeCleanCommandLine>
