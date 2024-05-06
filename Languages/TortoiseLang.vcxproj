@@ -53,6 +53,7 @@
     <NMakeBuildCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)"</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)"</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine>build-lang.cmd "$(OutDir)" "$(ExeDir)" clean</NMakeCleanCommandLine>
+    <ResolveNuGetPackages>false</ResolveNuGetPackages>  
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
