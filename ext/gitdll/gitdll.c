@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -137,7 +137,7 @@ static int git_parse_commit_author(struct GIT_COMMIT_AUTHOR* author, const char*
 	pbuff = end + 2;
 
 	author->Date = parse_timestamp(pbuff, &end, 10);
-	if (end == pbuff || !author->Date || !end || *end != ' ' || end[1] != '+' && end[1] != '-' || !isdigit(end[2]) || !isdigit(end[3]) || !isdigit(end[4]) || !isdigit(end[5]))
+	if (end == pbuff || !end || *end != ' ' || end[1] != '+' && end[1] != '-' || !isdigit(end[2]) || !isdigit(end[3]) || !isdigit(end[4]) || !isdigit(end[5]))
 		return -1;
 	pbuff = end + 1;
 	author->TimeZone = strtol(pbuff, NULL, 10);
