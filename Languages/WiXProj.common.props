@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+		<ProductVersion>3.5</ProductVersion>
+		<SchemaVersion>2.0</SchemaVersion>
+		<OutputType>Package</OutputType>
+		<WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+		<LinkerAdditionalOptions>-ext WixUIExtension</LinkerAdditionalOptions>
+		<SuppressIces>ICE61;ICE82</SuppressIces>
+		<SuppressSpecificWarnings>1008</SuppressSpecificWarnings>
+	</PropertyGroup>
+	<PropertyGroup>
+		<DefineConstants Condition="'$(Configuration)'=='Debug'">Debug;$(DefineConstants)</DefineConstants>
+		<OutputPath Condition="'$(Configuration)'=='Release'">..\bin\setup\$(Platform)\</OutputPath>
+		<OutputPath Condition="'$(Configuration)'=='Debug'">..\bin\setup\debug-$(Platform)\</OutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='x86'">..\obj\$(OutputName)\$(Configuration)\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='x64'">..\obj\$(OutputName)\$(Configuration)64\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(Platform)'=='ARM64'">..\obj\$(OutputName)\$(Configuration)ARM64\</IntermediateOutputPath>
+	</PropertyGroup>
+	<Import Project="$(WixTargetsPath)" />
+</Project>
