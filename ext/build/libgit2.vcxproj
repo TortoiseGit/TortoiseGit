@@ -56,8 +56,8 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src\libgit2;..\libgit2\src\util;..\libgit2\include;..\libgit2\deps\http-parser;..\libgit2\deps\xdiff;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;GIT_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_SHA256_WIN32;GIT_NTLM;GIT_REGEX_PCRE2;GIT_IO_WSAPOLL;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\build\pcre2;..\zlib;..\libgit2\src\libgit2;..\libgit2\src\util;..\libgit2\include;..\libgit2\deps\llhttp;..\libgit2\deps\xdiff;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LIBGIT2_NO_FEATURES_H;GIT_QSORT_S;GIT_HTTPS;GIT_WINHTTP;GIT_HTTPPARSER_BUILTIN;GIT_USE_NSEC;GIT_THREADS;GIT_SHA1_COLLISIONDETECT;GIT_SHA256_WIN32;GIT_NTLM;GIT_REGEX_PCRE2;GIT_IO_WSAPOLL;PCRE2_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32'">GIT_ARCH_32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='x64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">GIT_ARCH_64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -77,9 +77,13 @@
     <ClCompile Include="..\..\src\libgit2\filter-filter.c" />
     <ClCompile Include="..\..\src\libgit2\ssh-wintunnel.c" />
     <ClCompile Include="..\..\src\libgit2\system-call.c" />
-    <ClCompile Include="..\libgit2\deps\http-parser\http_parser.c" />
+    <ClCompile Include="..\libgit2\deps\llhttp\api.c" />
+    <ClCompile Include="..\libgit2\deps\llhttp\http.c" />
+    <ClCompile Include="..\libgit2\deps\llhttp\llhttp.c" />
     <ClCompile Include="..\libgit2\src\libgit2\config_list.c" />
     <ClCompile Include="..\libgit2\src\libgit2\grafts.c" />
+    <ClCompile Include="..\libgit2\src\libgit2\settings.c" />
+    <ClCompile Include="..\libgit2\src\libgit2\transports\httpparser.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\ssh_exec.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\ssh_libssh2.c" />
     <ClCompile Include="..\libgit2\src\util\alloc.c" />
@@ -260,7 +264,6 @@
     <ClInclude Include="..\..\src\libgit2\filter-filter.h" />
     <ClInclude Include="..\..\src\libgit2\ssh-wintunnel.h" />
     <ClInclude Include="..\..\src\libgit2\system-call.h" />
-    <ClInclude Include="..\libgit2\deps\http-parser\http_parser.h" />
     <ClInclude Include="..\libgit2\include\git2\annotated_commit.h" />
     <ClInclude Include="..\libgit2\include\git2\apply.h" />
     <ClInclude Include="..\libgit2\include\git2\blame.h" />
@@ -319,6 +322,7 @@
     <ClInclude Include="..\libgit2\src\libgit2\config_list.h" />
     <ClInclude Include="..\libgit2\src\libgit2\grafts.h" />
     <ClInclude Include="..\libgit2\src\libgit2\strarray.h" />
+    <ClInclude Include="..\libgit2\src\libgit2\transports\httpparser.h" />
     <ClInclude Include="..\libgit2\src\libgit2\transports\ssh_exec.h" />
     <ClInclude Include="..\libgit2\src\libgit2\transports\ssh_libssh2.h" />
     <ClInclude Include="..\libgit2\src\util\alloc.h" />
