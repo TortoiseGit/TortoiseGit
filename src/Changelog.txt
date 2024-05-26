@@ -5,6 +5,7 @@ Released: unreleased
  * Fixed issue #4132: Error "Could not get next commit. libgit returns: -4" in Log Messages dialog on commit with author date 1970-01-01T00:00:00Z
  * Fixed issue #4126: Capitalize the first letter in the Push dialog
  * Fixed issue #4133: libgit2 returned: failed to parse revision specifier (ref ending with an `@` character)
+ * Fixed issue #4141: Cannot remove remote: "usage: git remote remove <name>"
 
 = Release 2.16.0 =
 Released: 2024-04-30
