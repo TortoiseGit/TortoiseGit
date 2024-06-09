@@ -196,7 +196,7 @@ sure both macros are undefined; an emulation function will then be used. */
    Care must be taken if it is increased, because it guards against integer
    overflow caused by enormously large patterns. */
 
-#define MAX_NAME_SIZE 32
+#define MAX_NAME_SIZE 128
 
 /* The value of MAX_VARLOOKBEHIND specifies the default maximum length, in
    characters, for a variable-length lookbehind assertion. */
@@ -221,7 +221,7 @@ sure both macros are undefined; an emulation function will then be used. */
 #define PACKAGE_NAME "PCRE2"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "PCRE2 10.43"
+#define PACKAGE_STRING "PCRE2 10.44"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "pcre2"
@@ -230,7 +230,7 @@ sure both macros are undefined; an emulation function will then be used. */
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "10.43"
+#define PACKAGE_VERSION "10.44"
 
 /* The value of PARENS_NEST_LIMIT specifies the maximum depth of nested
    parentheses (of any kind) in a pattern. This limits the amount of system
