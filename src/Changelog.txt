@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Updated pcre2 to 10.44
  * Update editorconfig to 0.12.8
+ * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
 
 == Bug Fixes ==
  * Fixed issue #4132: Error "Could not get next commit. libgit returns: -4" in Log Messages dialog on commit with author date 1970-01-01T00:00:00Z

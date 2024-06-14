@@ -1490,7 +1490,9 @@
 #define IDC_CHECKFILES                  1707
 #define IDS_PROC_LOG_FETCHFILESERROR    1707
 #define IDC_CHECKSUBMODULES             1708
+#define IDS_LASTCOMMITTER               1708
 #define IDC_CHECKDELETED                1709
+#define IDS_DATELASTAUTHOR              1709
 #define IDC_BUTTON_UPDATE               1710
 #define IDC_LIST_DOWNLOADS              1711
 #define IDC_STATIC_REVISION             1712

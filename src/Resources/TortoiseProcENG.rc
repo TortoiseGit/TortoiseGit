@@ -4015,6 +4015,8 @@ BEGIN
     IDS_PROC_LOCKED_WORKTREES "Locked %d worktree(s)."
     IDS_PROC_UNLOCKED_WORKTREES "Successfully unlocked %d worktree(s)."
     IDS_PROC_LOG_FETCHFILESERROR "Could not fetch commit or calculate diff."
+    IDS_LASTCOMMITTER       "Last Committer"
+    IDS_DATELASTAUTHOR      "Last Author Date"
 END
 
 STRINGTABLE

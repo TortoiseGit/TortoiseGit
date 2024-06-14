@@ -129,9 +129,11 @@ public:
 		{
 		case CBrowseRefsDlg::eCol_Name:	return SortStrCmp(pLeft->GetRefName(), pRight->GetRefName());
 		case CBrowseRefsDlg::eCol_Upstream:	return SortStrCmp(pLeft->m_csUpstream, pRight->m_csUpstream);
-		case CBrowseRefsDlg::eCol_Date:	return ((pLeft->m_csDate == pRight->m_csDate) ? 0 : ((pLeft->m_csDate > pRight->m_csDate) ? 1 : -1));
+		case CBrowseRefsDlg::eCol_AuthorDate: return ((pLeft->m_csAuthorDate == pRight->m_csAuthorDate) ? 0 : ((pLeft->m_csAuthorDate > pRight->m_csAuthorDate) ? 1 : -1));
 		case CBrowseRefsDlg::eCol_Msg:	return SortStrCmp(pLeft->m_csSubject, pRight->m_csSubject);
 		case CBrowseRefsDlg::eCol_LastAuthor: return SortStrCmp(pLeft->m_csAuthor, pRight->m_csAuthor);
+		case CBrowseRefsDlg::eCol_CommitterDate: return ((pLeft->m_csCommitterDate == pRight->m_csCommitterDate) ? 0 : ((pLeft->m_csCommitterDate > pRight->m_csCommitterDate) ? 1 : -1));
+		case CBrowseRefsDlg::eCol_LastCommitter: return SortStrCmp(pLeft->m_csCommitter, pRight->m_csCommitter);
 		case CBrowseRefsDlg::eCol_Hash:	return pLeft->m_csRefHash.CompareNoCase(pRight->m_csRefHash);
 		case CBrowseRefsDlg::eCol_Description: return SortStrCmp(pLeft->m_csDescription, pRight->m_csDescription);
 		}
@@ -295,15 +297,14 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | LVS_EX_INFOTIP | LVS_EX_DOUBLEBUFFER);
-	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTCOMMIT, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_HASH, IDS_DESCRIPTION };
-	static int columnWidths[] = { 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 300), 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80) };
-	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_Date) | (1 << eCol_Msg) |
-		(1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
-	m_ListRefLeafs.m_bAllowHiding = false;
+	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTAUTHOR, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_DATELASTCOMMIT, IDS_LASTCOMMITTER, IDS_HASH, IDS_DESCRIPTION };
+	static int columnWidths[] = { 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 300), 0, 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80) };
+	static_assert(_countof(columnNames) == _countof(columnWidths));
+	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_AuthorDate) | (1 << eCol_Msg) | (1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ListRefLeafs.Init();
 	m_ListRefLeafs.SetListContextMenuHandler([&](CPoint point) {OnContextMenu_ListRefLeafs(point); });
 	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
-	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
+	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ListRefLeafs.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"BrowseRefs", columnVersion, _countof(columnNames), columnWidths);
 	m_bPickedRefSet = false;
 
@@ -484,7 +485,9 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 			treeLeaf.m_csUpstream = L"(gone: " + treeLeaf.m_csUpstream + L")";
 		treeLeaf.m_csSubject = ref.GetSubject();
 		treeLeaf.m_csAuthor = ref.GetAuthorName();
-		treeLeaf.m_csDate = ref.GetAuthorDate();
+		treeLeaf.m_csAuthorDate = ref.GetAuthorDate();
+		treeLeaf.m_csCommitter = ref.GetCommitterName();
+		treeLeaf.m_csCommitterDate = ref.GetCommitterDate();
 		treeLeaf.m_csDescription = ref.m_Description;
 	}
 
@@ -610,12 +613,14 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			const int indexItem = m_ListRefLeafs.InsertItem(m_ListRefLeafs.GetItemCount(), L"");
 
 			m_ListRefLeafs.SetItemData(indexItem, reinterpret_cast<DWORD_PTR>(pTree));
-			m_ListRefLeafs.SetItemText(indexItem,eCol_Name, ref);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_Name, ref);
 			m_ListRefLeafs.SetItemText(indexItem, eCol_Upstream, pTree->m_csUpstream);
-			m_ListRefLeafs.SetItemText(indexItem, eCol_Date, pTree->m_csDate != 0 ? CLoglistUtils::FormatDateAndTime(pTree->m_csDate, m_DateFormat, true, m_bRelativeTimes) : CString());
-			m_ListRefLeafs.SetItemText(indexItem,eCol_Msg, pTree->m_csSubject);
-			m_ListRefLeafs.SetItemText(indexItem,eCol_LastAuthor, pTree->m_csAuthor);
-			m_ListRefLeafs.SetItemText(indexItem,eCol_Hash, pTree->m_csRefHash);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_AuthorDate, pTree->m_csAuthorDate != 0 ? CLoglistUtils::FormatDateAndTime(pTree->m_csAuthorDate, m_DateFormat, true, m_bRelativeTimes) : CString());
+			m_ListRefLeafs.SetItemText(indexItem, eCol_CommitterDate, pTree->m_csCommitterDate != 0 ? CLoglistUtils::FormatDateAndTime(pTree->m_csCommitterDate, m_DateFormat, true, m_bRelativeTimes) : CString());
+			m_ListRefLeafs.SetItemText(indexItem, eCol_Msg, pTree->m_csSubject);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_LastAuthor, pTree->m_csAuthor);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_LastCommitter, pTree->m_csCommitter);
+			m_ListRefLeafs.SetItemText(indexItem, eCol_Hash, pTree->m_csRefHash);
 			CString descrition = pTree->m_csDescription;
 			descrition.Replace(L'\n', L' ');
 			m_ListRefLeafs.SetItemText(indexItem, eCol_Description, descrition);

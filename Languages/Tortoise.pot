@@ -5800,8 +5800,16 @@ msgstr ""
 msgid "Last Author"
 msgstr ""
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
+msgstr ""
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)

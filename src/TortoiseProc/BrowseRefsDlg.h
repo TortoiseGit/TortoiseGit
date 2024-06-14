@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,7 +83,9 @@ public:
 	CString			m_csRefName;
 	CString			m_csUpstream;
 	CString			m_csRefHash;
-	CTime			m_csDate;
+	CTime			m_csAuthorDate;
+	CString			m_csCommitter;
+	CTime			m_csCommitterDate;
 	CString			m_csAuthor;
 	CString			m_csSubject;
 	CString			m_csDescription;
@@ -137,9 +139,11 @@ public:
 	{
 		eCol_Name,
 		eCol_Upstream,
-		eCol_Date,
+		eCol_AuthorDate,
 		eCol_Msg,
 		eCol_LastAuthor,
+		eCol_CommitterDate,
+		eCol_LastCommitter,
 		eCol_Hash,
 		eCol_Description,
 	};

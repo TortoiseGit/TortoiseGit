@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,6 +47,8 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
 	EXPECT_STREQ(L"2015-03-07 18:03:58", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetCommitterName());
+	EXPECT_STREQ(L"2015-03-07 18:03:58", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Changed ASCII file", rev.GetSubject());
 	EXPECT_STREQ(L"refs/remotes/origin/master", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"test", rev.m_Description);
@@ -55,6 +57,8 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
 	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetCommitterName());
+	EXPECT_STREQ(L"2015-03-16 13:06:08", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Several actions", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"", rev.m_Description);
@@ -63,6 +67,8 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"e89cb722e0f9b2eb763bb059dc099ee6c502a6d8", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
 	EXPECT_STREQ(L"2015-03-04 17:45:40", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
+	EXPECT_STREQ(L"Sven Strickroth", rev.GetCommitterName());
+	EXPECT_STREQ(L"2015-03-04 17:45:40", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S"));
 	EXPECT_STREQ(L"Also signed", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"", rev.m_Description);
@@ -71,6 +77,8 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"31ff87c86e9f6d3853e438cb151043f30f09029a", rev.m_CommitHash.ToString());
 	EXPECT_STREQ(L"Sven Strickroth", rev.GetAuthorName());
 	EXPECT_STREQ(L"2015-03-16 12:52:29", rev.GetAuthorDate().FormatGmt(L"%Y-%m-%d %H:%M:%S")); // used here, because author and commit time differ
+	EXPECT_STREQ(L"a", rev.GetCommitterName());
+	EXPECT_STREQ(L"2017-07-29 15:05:49", rev.GetCommitterDate().FormatGmt(L"%Y-%m-%d %H:%M:%S")); // used here, because author and commit time differ
 	EXPECT_STREQ(L"Several actions", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"multi\nline", rev.m_Description);
