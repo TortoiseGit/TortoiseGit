@@ -11,6 +11,7 @@ Released: unreleased
  * Fixed issue #4126: Capitalize the first letter in the Push dialog
  * Fixed issue #4133: libgit2 returned: failed to parse revision specifier (ref ending with an `@` character)
  * Fixed issue #4141: Cannot remove remote: "usage: git remote remove <name>"
+ * Fixed issue #4145: "Push default" option for remote resetted after adding a new remote
 
 = Release 2.16.0 =
 Released: 2024-04-30

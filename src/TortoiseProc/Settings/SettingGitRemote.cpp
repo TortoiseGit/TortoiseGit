@@ -430,7 +430,7 @@ BOOL CSettingGitRemote::OnApply()
 			if (!SaveGeneral(L"remote.pushdefault", m_strRemote.Trim()))
 				return FALSE;
 		}
-		if (!m_bPushDefault)
+		if (!m_bPushDefault && m_strRemote.Trim() == g_Git.GetConfigValue(L"remote.pushdefault"))
 		{
 			if (!SaveGeneral(L"remote.pushdefault", L""))
 				return FALSE;
