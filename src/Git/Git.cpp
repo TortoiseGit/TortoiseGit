@@ -1042,6 +1042,8 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 		param += L" --topo-order";
 	else if (logOrderBy == LOG_ORDER_DATEORDER)
 		param += L" --date-order";
+	else if (logOrderBy == LOG_ORDER_AUTHORDATEORDER)
+		param += L" --author-date-order";
 
 	CString cmd;
 	CString file;

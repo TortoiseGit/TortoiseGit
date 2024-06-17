@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2013-2016, 2019-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,8 @@ BOOL CLogOrdering::OnInitDialog()
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_TOPOORDER);
 	ind = m_cLogOrdering.AddString(L"--date-order");
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_DATEORDER);
+	ind = m_cLogOrdering.AddString(L"--author-date-order");
+	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_AUTHORDATEORDER);
 
 	DWORD curOrder = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER);
 	for (int i = 0; i < m_cLogOrdering.GetCount(); ++i)
