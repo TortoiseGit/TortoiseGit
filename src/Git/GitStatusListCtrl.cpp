@@ -320,6 +320,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	if (!CTGitPath(g_Git.m_CurrentDir).HasLFS())
 		allowedColumns &= ~GITSLC_COLLFSLOCK;
 
+	static_assert(_countof(standardColumnNames) == GITSLC_NUMCOLUMNS);
 	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
 	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, columnVersion, GITSLC_NUMCOLUMNS);

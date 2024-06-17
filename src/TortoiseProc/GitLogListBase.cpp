@@ -353,6 +353,7 @@ void CGitLogListBase::InsertGitColumn()
 		columnWidth,
 		columnWidth,
 	};
+	static_assert(_countof(normal) == _countof(with));
 	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
 	DWORD hideColumns = 0;
