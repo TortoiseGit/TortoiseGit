@@ -336,7 +336,7 @@ void CGitLogListBase::InsertGitColumn()
 
 	auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
 	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	static int with[] =
+	static int columnWidths[] =
 	{
 		columnWidth,
 		columnWidth,
@@ -353,7 +353,7 @@ void CGitLogListBase::InsertGitColumn()
 		columnWidth,
 		columnWidth,
 	};
-	static_assert(_countof(normal) == _countof(with));
+	static_assert(_countof(normal) == _countof(columnWidths));
 	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
 	DWORD hideColumns = 0;
@@ -385,7 +385,7 @@ void CGitLogListBase::InsertGitColumn()
 
 	m_ColumnManager.SetNames(normal, _countof(normal));
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), with);
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), columnWidths);
 	m_ColumnManager.SetRightAlign(LOGLIST_ID);
 
 	if (!(hideColumns & GIT_LOG_ACTIONS))

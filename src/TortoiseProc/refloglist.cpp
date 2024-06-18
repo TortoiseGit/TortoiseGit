@@ -49,7 +49,7 @@ void CRefLogList::InsertRefLogColumn()
 	};
 
 	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	static int with[] =
+	static int columnWidths[] =
 	{
 		columnWidth,
 		columnWidth,
@@ -57,14 +57,14 @@ void CRefLogList::InsertRefLogColumn()
 		CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN),
 		columnWidth,
 	};
-	static_assert(_countof(normal) == _countof(with));
+	static_assert(_countof(normal) == _countof(columnWidths));
 	m_dwDefaultColumns = 0xFFFF;
 
 	SetRedraw(false);
 
 	m_ColumnManager.SetNames(normal, _countof(normal));
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), with);
+	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), columnWidths);
 
 	SetRedraw(true);
 }
