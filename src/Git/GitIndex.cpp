@@ -735,7 +735,7 @@ int CGitIgnoreItem::FetchIgnoreList(const CString& projectroot, const CString& f
 		return -1 ;
 
 	LARGE_INTEGER fileSize;
-	if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart >= INT_MAX)
+	if (!::GetFileSizeEx(hfile, &fileSize) || fileSize.QuadPart > 100 * 1024 * 1024)
 		return -1;
 
 	m_buffer = std::unique_ptr<char[]>(new (std::nothrow) char[fileSize.LowPart + 1]); // prevent default initialization and throwing on allocation error
