@@ -1060,24 +1060,30 @@ int CRebaseDlg::StartRebase()
 
 	if( !this->m_IsCherryPick )
 	{
+		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
+		{
+			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_BranchCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
+			return -1;
+		}
+
 		if (g_Git.m_IsUseLibGit2)
 			WriteReflog(m_OrigHEADHash, "rebase: start (" + CUnicodeUtils::GetUTF8(m_OrigHEADBranch) + " on " + CUnicodeUtils::GetUTF8(m_OrigUpstreamHash.ToString()) + ")");
 		cmd.Format(L"git.exe checkout -f %s --", static_cast<LPCWSTR>(m_OrigUpstreamHash.ToString()));
 		this->AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
 			return -1;
+		if (!g_Git.CheckCleanWorkTree())
+		{
+			// this situation may occur when text transformations are performed and a file in Git history is not in the normalized format
+			AddLogString(L"Unrecoverable error: Working tree is not clean after checkout.");
+			m_RebaseStage = RebaseStage::Error;
+			return -1;
+		}
 	}
 
 	CString log;
 	if( !this->m_IsCherryPick )
-	{
-		if (g_Git.GetHash(m_OrigBranchHash, m_BranchCtrl.GetString()))
-		{
-			MessageBox(g_Git.GetGitLastErr(L"Could not get hash of \"" + m_BranchCtrl.GetString() + L"\"."), L"TortoiseGit", MB_ICONERROR);
-			return -1;
-		}
 		log.Format(L"%s\r\n", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTREBASE))));
-	}
 	else
 		log.Format(L"%s\r\n", static_cast<LPCWSTR>(CString(MAKEINTRESOURCE(IDS_PROC_REBASE_STARTCHERRYPICK))));
 
