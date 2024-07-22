@@ -216,9 +216,6 @@
     <ClInclude Include="..\lexilla\lexlib\LexerModule.h">
       <Filter>lexlib\lexlib</Filter>
     </ClInclude>
-    <ClInclude Include="..\lexilla\lexlib\LexerNoExceptions.h">
-      <Filter>lexlib\lexlib</Filter>
-    </ClInclude>
     <ClInclude Include="..\scintilla\src\CharacterCategoryMap.h">
       <Filter>scintilla\src</Filter>
     </ClInclude>
@@ -725,9 +722,6 @@
       <Filter>lexlib\lexlib</Filter>
     </ClCompile>
     <ClCompile Include="..\lexilla\lexlib\LexerModule.cxx">
-      <Filter>lexlib\lexlib</Filter>
-    </ClCompile>
-    <ClCompile Include="..\lexilla\lexlib\LexerNoExceptions.cxx">
       <Filter>lexlib\lexlib</Filter>
     </ClCompile>
     <ClCompile Include="..\lexilla\lexlib\LexerSimple.cxx">
