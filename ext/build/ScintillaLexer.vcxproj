@@ -72,7 +72,6 @@
     <ClInclude Include="..\lexilla\lexlib\LexAccessor.h" />
     <ClInclude Include="..\lexilla\lexlib\LexerBase.h" />
     <ClInclude Include="..\lexilla\lexlib\LexerModule.h" />
-    <ClInclude Include="..\lexilla\lexlib\LexerNoExceptions.h" />
     <ClInclude Include="..\lexilla\lexlib\LexerSimple.h" />
     <ClInclude Include="..\lexilla\lexlib\OptionSet.h" />
     <ClInclude Include="..\lexilla\lexlib\PropSetSimple.h" />
@@ -265,7 +264,6 @@
     <ClCompile Include="..\lexilla\lexlib\LexAccessor.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerBase.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerModule.cxx" />
-    <ClCompile Include="..\lexilla\lexlib\LexerNoExceptions.cxx" />
     <ClCompile Include="..\lexilla\lexlib\LexerSimple.cxx" />
     <ClCompile Include="..\lexilla\lexlib\PropSetSimple.cxx" />
     <ClCompile Include="..\lexilla\lexlib\StyleContext.cxx" />
