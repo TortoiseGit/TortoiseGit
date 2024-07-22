@@ -7,7 +7,6 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-#include "Scintilla.h"
 
 namespace Scintilla::Internal {
 
@@ -437,6 +436,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void PasteRectangular(SelectionPosition pos, const char *ptr, Sci::Position len);
 	virtual void Copy() = 0;
 	void CopyAllowLine();
+	void CutAllowLine();
 	virtual bool CanPaste();
 	virtual void Paste() = 0;
 	void Clear();
@@ -482,6 +482,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	enum class CaseMapping { same, upper, lower };
 	virtual std::string CaseMapString(const std::string &s, CaseMapping caseMapping);
 	void ChangeCaseOfSelection(CaseMapping caseMapping);
+	void LineDelete();
 	void LineTranspose();
 	void LineReverse();
 	void Duplicate(bool forLine);
@@ -516,6 +517,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	virtual void CopyToClipboard(const SelectionText &selectedText) = 0;
 	std::string RangeText(Sci::Position start, Sci::Position end) const;
+	bool CopyLineRange(SelectionText *ss, bool allowProtected=true);
 	void CopySelectionRange(SelectionText *ss, bool allowLineCopy=false);
 	void CopyRangeToClipboard(Sci::Position start, Sci::Position end);
 	void CopyText(size_t length, const char *text);
@@ -687,7 +689,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 public:
 	~Editor() override;
 
-	virtual void NotifyParent(SCNotification *scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const noexcept;
 	// Public so scintilla_send_message can use it.

@@ -293,9 +293,8 @@ public:
 class GlobalMemory;
 
 class ReverseArrowCursor {
-	UINT dpi = USER_DEFAULT_SCREEN_DPI;
-	UINT cursorBaseSize = defaultCursorBaseSize;
 	HCURSOR cursor {};
+	bool valid = false;
 
 public:
 	ReverseArrowCursor() noexcept {}
@@ -310,17 +309,20 @@ public:
 		}
 	}
 
-	HCURSOR Load(UINT dpi_, UINT cursorBaseSize_) noexcept {
+	void Invalidate() noexcept {
+		valid = false;
+	}
+
+	HCURSOR Load(UINT dpi) noexcept {
 		if (cursor)	 {
-			if (dpi == dpi_ && cursorBaseSize == cursorBaseSize_) {
+			if (valid) {
 				return cursor;
 			}
 			::DestroyCursor(cursor);
 		}
 
-		dpi = dpi_;
-		cursorBaseSize = cursorBaseSize_;
-		cursor = LoadReverseArrowCursor(dpi_, cursorBaseSize_);
+		valid = true;
+		cursor = LoadReverseArrowCursor(dpi);
 		return cursor ? cursor : ::LoadCursor({}, IDC_ARROW);
 	}
 };
@@ -361,7 +363,6 @@ class ScintillaWin :
 	MouseWheelDelta horizontalWheelDelta;
 
 	UINT dpi = USER_DEFAULT_SCREEN_DPI;
-	UINT cursorBaseSize = defaultCursorBaseSize;
 	ReverseArrowCursor reverseArrowCursor;
 
 	PRectangle rectangleClient;
@@ -485,7 +486,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -595,7 +595,7 @@ ScintillaWin::ScintillaWin(HWND hwnd) {
 	cfColumnSelect = RegisterClipboardType(L"MSDEVColumnSelect");
 	cfBorlandIDEBlockType = RegisterClipboardType(L"Borland IDE Block Type");
 
-	// Likewise for line-copy (copies a full line when no text is selected)
+	// Likewise for line-copy or line-cut (copies or cuts a full line when no text is selected)
 	cfLineSelect = RegisterClipboardType(L"MSDEVLineSelect");
 	cfVSLineTag = RegisterClipboardType(L"VisualStudioEditorOperationsLineCutCopyClipboardTag");
 	hrOle = E_FAIL;
@@ -795,7 +795,7 @@ void ScintillaWin::DisplayCursor(Window::Cursor c) {
 		c = static_cast<Window::Cursor>(cursorMode);
 	}
 	if (c == Window::Cursor::reverseArrow) {
-		::SetCursor(reverseArrowCursor.Load(static_cast<UINT>(dpi * deviceScaleFactor), cursorBaseSize));
+		::SetCursor(reverseArrowCursor.Load(static_cast<UINT>(dpi * deviceScaleFactor)));
 	} else {
 		wMain.SetCursor(c);
 	}
@@ -2135,6 +2135,7 @@ sptr_t ScintillaWin::WndProc(Message iMessage, uptr_t wParam, sptr_t lParam) {
 
 		case WM_DPICHANGED:
 			dpi = HIWORD(wParam);
+			reverseArrowCursor.Invalidate();
 			InvalidateStyleRedraw();
 			break;
 
@@ -2142,6 +2143,7 @@ sptr_t ScintillaWin::WndProc(Message iMessage, uptr_t wParam, sptr_t lParam) {
 				const UINT dpiNow = DpiForWindow(wMain.GetID());
 				if (dpi != dpiNow) {
 					dpi = dpiNow;
+					reverseArrowCursor.Invalidate();
 					InvalidateStyleRedraw();
 				}
 			}
@@ -2533,13 +2535,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
 }
 
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
-}
-
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
 	//Platform::DebugPrintf("ScintillaWin Double click 0\n");
 	ScintillaBase::NotifyDoubleClick(pt, modifiers);
@@ -2754,6 +2749,27 @@ bool OpenClipboardRetry(HWND hwnd) noexcept {
 	return false;
 }
 
+// Ensure every successful OpenClipboard is followed by a CloseClipboard.
+class Clipboard {
+	bool opened = false;
+public:
+	Clipboard(HWND hwnd) noexcept : opened(::OpenClipboardRetry(hwnd)) {
+	}
+	// Deleted so Clipboard objects can not be copied.
+	Clipboard(const Clipboard &) = delete;
+	Clipboard(Clipboard &&) = delete;
+	Clipboard &operator=(const Clipboard &) = delete;
+	Clipboard &operator=(Clipboard &&) = delete;
+	~Clipboard() noexcept {
+		if (opened) {
+			::CloseClipboard();
+		}
+	}
+	constexpr operator bool() const noexcept {
+		return opened;
+	}
+};
+
 bool IsValidFormatEtc(const FORMATETC *pFE) noexcept {
 	return pFE->ptd == nullptr &&
 		(pFE->dwAspect & DVASPECT_CONTENT) != 0 &&
@@ -2769,7 +2785,8 @@ bool SupportedFormat(const FORMATETC *pFE) noexcept {
 }
 
 void ScintillaWin::Paste() {
-	if (!::OpenClipboardRetry(MainHWND())) {
+	Clipboard clipboard(MainHWND());
+	if (!clipboard) {
 		return;
 	}
 	UndoGroup ug(pdoc);
@@ -2795,7 +2812,6 @@ void ScintillaWin::Paste() {
 		InsertPasteShape(putf.c_str(), putf.length(), pasteShape);
 		memUSelection.Unlock();
 	}
-	::CloseClipboard();
 	Redraw();
 }
 
@@ -3224,6 +3240,8 @@ LRESULT ScintillaWin::ImeOnDocumentFeed(LPARAM lParam) const {
 }
 
 void ScintillaWin::GetMouseParameters() noexcept {
+	// mouse pointer size and colour may changed
+	reverseArrowCursor.Invalidate();
 	// This retrieves the number of lines per scroll as configured in the Mouse Properties sheet in Control Panel
 	::SystemParametersInfo(SPI_GETWHEELSCROLLLINES, 0, &linesPerScroll, 0);
 	if (!::SystemParametersInfo(SPI_GETWHEELSCROLLCHARS, 0, &charsPerScroll, 0)) {
@@ -3231,20 +3249,6 @@ void ScintillaWin::GetMouseParameters() noexcept {
 		charsPerScroll = (linesPerScroll == WHEEL_PAGESCROLL) ? 3 : linesPerScroll;
 	}
 	::SystemParametersInfo(SPI_GETMOUSEVANISH, 0, &typingWithoutCursor, 0);
-
-	// https://learn.microsoft.com/en-us/answers/questions/815036/windows-cursor-size
-	HKEY hKey;
-	LSTATUS status = ::RegOpenKeyExW(HKEY_CURRENT_USER, L"Control Panel\\Cursors", 0, KEY_READ, &hKey);
-	if (status == ERROR_SUCCESS) {
-		DWORD baseSize = 0;
-		DWORD type = REG_DWORD;
-		DWORD size = sizeof(DWORD);
-		status = ::RegQueryValueExW(hKey, L"CursorBaseSize", nullptr, &type, reinterpret_cast<LPBYTE>(&baseSize), &size);
-		if (status == ERROR_SUCCESS && type == REG_DWORD) {
-			cursorBaseSize = baseSize;
-		}
-		::RegCloseKey(hKey);
-	}
 }
 
 void ScintillaWin::CopyToGlobal(GlobalMemory &gmUnicode, const SelectionText &selectedText) {
@@ -3271,7 +3275,8 @@ void ScintillaWin::CopyToGlobal(GlobalMemory &gmUnicode, const SelectionText &se
 }
 
 void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
-	if (!::OpenClipboardRetry(MainHWND())) {
+	Clipboard clipboard(MainHWND());
+	if (!clipboard) {
 		return;
 	}
 	::EmptyClipboard();
@@ -3297,8 +3302,6 @@ void ScintillaWin::CopyToClipboard(const SelectionText &selectedText) {
 		::SetClipboardData(cfLineSelect, 0);
 		::SetClipboardData(cfVSLineTag, 0);
 	}
-
-	::CloseClipboard();
 }
 
 void ScintillaWin::ScrollMessage(WPARAM wParam) {
