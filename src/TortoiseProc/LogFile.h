@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013 - TortoiseGit
-// Copyright (C) 2007-2008 - TortoiseSVN
+// Copyright (C) 2013, 2024 - TortoiseGit
+// Copyright (C) 2007-2008, 2010, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 #pragma once
 #include "registry.h"
 #include "TGitPath.h"
-#include <list>
+#include <deque>
 
 /**
  * \ingroup TortoiseProc
@@ -32,7 +32,7 @@
 class CLogFile
 {
 public:
-	CLogFile(const CString& repo);
+	CLogFile(const CString& repo, DWORD maxLines = CRegStdDWORD(L"Software\\TortoiseGit\\MaxLinesInLogfile", 4000));
 	~CLogFile();
 
 	/**
@@ -44,24 +44,23 @@ public:
 	 */
 	bool	Open();
 	/**
-	 * Adds one line to the log file. The file is \b not yet written back to disk.
+	 * Adds one line to the log file. The file is *not* yet written back to disk.
 	 */
-	bool	AddLine(const CString& line);
+	void	AddLine(const CString& line);
 	/**
 	 * Writes the contents to the disk.
 	 */
 	bool	Close();
-
 	/**
-	 * Inserts a line with the current time and date to the log file.
+	 * Inserts a line with the current time and date to the log file. The file is *not* yet written back to disk.
 	 */
-	bool	AddTimeLine();
-protected:
-	void	AdjustSize();
+	void	AddTimeLine();
 
 private:
+	void TrimFile(DWORD maxLines) const;
+
 	CString					m_sRepo;
-	CRegStdDWORD				m_maxlines;
-	CTGitPath				m_logfile;
-	std::list<CString>		m_lines;
+	DWORD					m_maxLines;
+	CTGitPath				m_logFile;
+	std::deque<CString>		m_newLines;
 };

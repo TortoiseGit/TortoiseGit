@@ -200,6 +200,9 @@
     <ClInclude Include="..\..\src\Utils\URLFinder.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\LogFile.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -422,6 +425,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\TortoiseProc\AppUtils.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="LogFileTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\LogFile.cpp">
       <Filter>TortoiseProc</Filter>
     </ClCompile>
   </ItemGroup>
