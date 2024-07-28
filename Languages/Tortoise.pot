@@ -3160,7 +3160,7 @@ msgstr ""
 msgid "Create &Library"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr ""
 
