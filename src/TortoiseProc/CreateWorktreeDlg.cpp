@@ -51,12 +51,20 @@ void CCreateWorktreeDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_CHECKOUT, m_bCheckout);
 	DDX_Check(pDX, IDC_CHECK_FORCE, m_bForce);
 	DDX_Check(pDX, IDC_CHECK_DETACH, m_bDetach);
+	DDX_Check(pDX, IDC_CHECK_BRANCH, m_bBranch);
+	DDX_Text(pDX, IDC_EDIT_BRANCH, m_sNewBranch);
 }
 
 BEGIN_MESSAGE_MAP(CCreateWorktreeDlg, CResizableStandAloneDialog)
 	CHOOSE_VERSION_EVENT
 	ON_BN_CLICKED(IDOK, &CCreateWorktreeDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON_DIR, &CCreateWorktreeDlg::OnBnClickedWorkdirDirBrowse)
+	ON_BN_CLICKED(IDC_CHECK_BRANCH, OnBnClickedCheckBranch)
+	ON_BN_CLICKED(IDC_CHECK_DETACH, OnBnClickedCheckDetach)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_BRANCH, OnCbnEditchangeComboboxexVersion)
+	ON_CBN_SELCHANGE(IDC_COMBOBOXEX_TAGS, OnCbnEditchangeComboboxexVersion)
+	ON_CBN_EDITCHANGE(IDC_COMBOBOXEX_VERSION, OnCbnEditchangeComboboxexVersion)
+	ON_EN_CHANGE(IDC_WORKTREE_DIR, OnCbnEditchangeComboboxexVersion)
 	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
@@ -83,6 +91,7 @@ BOOL CCreateWorktreeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_CHECKOUT);
 	AdjustControlSize(IDC_CHECK_FORCE);
 	AdjustControlSize(IDC_CHECK_DETACH);
+	AdjustControlSize(IDC_CHECK_BRANCH);
 
 	CHOOSE_VERSION_ADDANCHOR;
 
@@ -90,6 +99,7 @@ BOOL CCreateWorktreeDlg::OnInitDialog()
 	AddAnchor(IDC_WORKTREE_DIR, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_GROUP_BRANCH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDC_GROUP_OPTION, TOP_LEFT, TOP_RIGHT);
+	AddAnchor(IDC_EDIT_BRANCH, TOP_LEFT, TOP_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
@@ -130,6 +140,12 @@ void CCreateWorktreeDlg::OnBnClickedOk()
 		return;
 	}
 
+	if (m_bBranch && !CGit::IsBranchNameValid(m_sNewBranch))
+	{
+		ShowEditBalloon(IDC_EDIT_BRANCH, IDS_B_T_NOTEMPTY, IDS_ERR_ERROR, TTI_ERROR);
+		return;
+	}
+
 	CTGitPath path(m_sWorktreePath);
 	if (!path.IsValidOnWindows())
 	{
@@ -144,6 +160,47 @@ void CCreateWorktreeDlg::OnBnClickedOk()
 
 void CCreateWorktreeDlg::OnVersionChanged()
 {
+	UpdateData(TRUE);
+	UpdateRevsionName();
+
+	const int radio = GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION);
+	CString version = m_VersionName;
+
+	int start = -1;
+	if (CStringUtils::StartsWith(version, L"origin/"))
+		start = version.Find(L'/', static_cast<int>(wcslen(L"origin/")) + 1);
+	else if (CStringUtils::StartsWith(version, L"remotes/"))
+		start = version.Find(L'/', static_cast<int>(wcslen(L"remotes/")) + 1);
+
+	if (radio == IDC_RADIO_HEAD)
+	{
+		if (CString name = CTGitPath(m_sWorktreePath).GetUIFileOrDirectoryName(); !name.IsEmpty())
+			m_sNewBranch = name;
+		m_bBranch = FALSE;
+	}
+	else if (start >= 0)
+	{
+		version = version.Mid(start + 1);
+		m_sNewBranch = version;
+
+		m_bBranch = TRUE;
+	}
+	else
+	{
+		if (CStringUtils::StartsWith(m_VersionName, L"refs/heads/"))
+			version = m_VersionName.Mid(static_cast<int>(wcslen(L"refs/heads/")));
+		else if (radio == IDC_RADIO_VERSION)
+			version = version.Left(g_Git.GetShortHASHLength());
+		m_sNewBranch = L"Branch_" + version;
+
+		m_bBranch = FALSE;
+	}
+	if (radio == IDC_RADIO_VERSION || radio == IDC_RADIO_TAGS)
+		m_bBranch = TRUE;
+
+	UpdateData(FALSE);
+
+	OnBnClickedCheckBranch();
 }
 
 void CCreateWorktreeDlg::OnBnClickedWorkdirDirBrowse()
@@ -157,6 +214,40 @@ void CCreateWorktreeDlg::OnBnClickedWorkdirDirBrowse()
 		m_sWorktreePath = strDirectory;
 		UpdateData(FALSE);
 	}
+}
+
+void CCreateWorktreeDlg::OnBnClickedCheckBranch()
+{
+	UpdateData();
+	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
+
+	const int radio = GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION);
+	if (!m_bBranch && (radio == IDC_RADIO_VERSION || radio == IDC_RADIO_TAGS || radio == IDC_RADIO_BRANCH && CStringUtils::StartsWith(m_VersionName, L"remotes/")))
+		m_bDetach = TRUE;
+	else
+		m_bDetach = FALSE;
+	GetDlgItem(IDC_CHECK_DETACH)->EnableWindow(!m_bDetach);
+	UpdateData(FALSE);
+}
+
+void CCreateWorktreeDlg::OnBnClickedCheckDetach()
+{
+	UpdateData();
+
+	if (!m_bDetach)
+		return;
+
+	m_bBranch = FALSE;
+	UpdateData(FALSE);
+	GetDlgItem(IDC_EDIT_BRANCH)->EnableWindow(m_bBranch);
+	const int radio = GetCheckedRadioButton(IDC_RADIO_HEAD, IDC_RADIO_VERSION);
+	if (radio == IDC_RADIO_VERSION || radio == IDC_RADIO_TAGS || radio == IDC_RADIO_BRANCH && CStringUtils::StartsWith(m_VersionName, L"remotes/"))
+		GetDlgItem(IDC_CHECK_DETACH)->EnableWindow(FALSE);
+}
+
+void CCreateWorktreeDlg::OnCbnEditchangeComboboxexVersion()
+{
+	OnVersionChanged();
 }
 
 void CCreateWorktreeDlg::OnDestroy()

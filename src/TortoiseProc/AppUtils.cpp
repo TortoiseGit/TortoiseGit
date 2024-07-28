@@ -1249,6 +1249,8 @@ bool CAppUtils::CreateWorktree(HWND hWnd, const CString& target /* CString() */)
 		params += L" --force";
 	if (dlg.m_bDetach)
 		params += L" --detach";
+	else if (dlg.m_bBranch)
+		params += L" -b " + dlg.m_sNewBranch;
 	if (dlg.m_VersionName == L"HEAD")
 		dlg.m_VersionName.Empty();
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022-2023 - TortoiseGit
+// Copyright (C) 2022-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,6 +42,9 @@ public:
 	BOOL m_bForce = BST_UNCHECKED;
 	BOOL m_bDetach = BST_UNCHECKED;
 
+	BOOL m_bBranch = BST_UNCHECKED;
+	CString m_sNewBranch;
+
 	CString m_sWorktreePath;
 
 protected:
@@ -54,6 +57,9 @@ protected:
 
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedWorkdirDirBrowse();
+	afx_msg void OnBnClickedCheckBranch();
+	afx_msg void OnBnClickedCheckDetach();
+	afx_msg void OnCbnEditchangeComboboxexVersion();
 
 	void OnVersionChanged() override;
 	afx_msg void OnDestroy();

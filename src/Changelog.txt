@@ -7,6 +7,7 @@ Released: unreleased
  * Update Scintilla to 5.5.1 and Lexilla to 5.3.3
  * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
  * Fixed issue #4147: Allow sorting Log view by `--author-date-order` 
+ * Fixed issue #4137: "Detach" option ignored when making a new worktree
 
 == Bug Fixes ==
  * Fixed issue #4132: Error "Could not get next commit. libgit returns: -4" in Log Messages dialog on commit with author date 1970-01-01T00:00:00Z
