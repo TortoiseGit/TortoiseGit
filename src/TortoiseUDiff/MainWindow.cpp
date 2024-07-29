@@ -826,7 +826,7 @@ bool CMainWindow::LoadFile(HANDLE hFile, bool wantStdIn)
 		}
 		bRet = ReadFile(hFile, data, sizeof(data), &dwRead, nullptr);
 	}
-	if (!bRet)
+	if (auto lastError = GetLastError(); !bRet && lastError != ERROR_BROKEN_PIPE)
 	{
 		if (hFile || wantStdIn)
 		{
