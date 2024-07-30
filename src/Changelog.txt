@@ -5,6 +5,7 @@ Released: unreleased
  * Updated pcre2 to 10.44
  * Update editorconfig to 0.12.9
  * Update Scintilla to 5.5.1 and Lexilla to 5.3.3
+ * Updated libgit to version 2.46 based on Git for Windows sources
  * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
  * Fixed issue #4147: Allow sorting Log view by `--author-date-order` 
  * Fixed issue #4137: "Detach" option ignored when making a new worktree

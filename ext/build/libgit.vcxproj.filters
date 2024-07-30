@@ -54,6 +54,12 @@
     <Filter Include="Header Files\trace2">
       <UniqueIdentifier>{4727a21e-5f8a-4b52-8c00-a66505628d2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git\reftable">
+      <UniqueIdentifier>{1be6d144-cfda-43be-b46c-477bc2ac8928}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\reftable">
+      <UniqueIdentifier>{8bccf295-78f2-4d2c-9f62-4e6a31f020e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -851,6 +857,60 @@
     <ClCompile Include="..\tgit\parse.c">
       <Filter>git</Filter>
     </ClCompile>
+    <ClCompile Include="..\tgit\loose.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\object-file-convert.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\refs\reftable-backend.c">
+      <Filter>git\refs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\basics.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\block.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\blocksource.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\dump.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\error.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\generic.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\iter.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\merged.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\pq.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\publicbasics.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\reader.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\record.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\stack.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\tree.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\writer.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\tgit\compat\msvc.h">
@@ -1519,6 +1579,87 @@
     </ClInclude>
     <ClInclude Include="..\tgit\parse.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\loose.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\object-file-convert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\basics.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\block.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\blocksource.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\constants.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\generic.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\iter.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\merged.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\pq.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reader.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\record.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\refname.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-blocksource.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-error.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-generic.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-iterator.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-malloc.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-merged.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-reader.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-record.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-stack.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-writer.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\stack.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\system.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\tree.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\writer.h">
+      <Filter>Header Files\reftable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

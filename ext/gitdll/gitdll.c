@@ -24,7 +24,6 @@
 #pragma warning(push)
 #pragma warning(disable: 4100 4267)
 #include "git-compat-util.h"
-#include "gitdll.h"
 #include "read-cache.h"
 #include "object-name.h"
 #include "entry.h"
@@ -43,6 +42,7 @@
 #include "path.h"
 #include "abspath.h"
 #include "notes.h"
+#include "gitdll.h"
 #pragma warning(pop)
 
 extern char g_last_error[];
@@ -64,9 +64,9 @@ extern void reset_git_env(const LPWSTR*);
 extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
 extern void git_atexit_clear(void);
-extern void invalidate_ref_cache(void);
+extern void ref_store_release_and_clear(struct repository* repo);
 extern void clear_ref_decorations(void);
-extern void cmd_log_init(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
+extern void cmd_log_init_tgit(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
 extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
 extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca, const struct checkout* state, int to_tempfile, int* nr_checkouts);
@@ -88,7 +88,7 @@ int git_get_sha1(const char *name, GIT_HASH sha1)
 {
 	struct object_id oid = { 0 };
 	int ret = repo_get_oid(the_repository, name, &oid);
-	hashcpy(sha1, oid.hash);
+	hashcpy(sha1, oid.hash, the_repository->hash_algo);
 	return ret;
 }
 
@@ -107,7 +107,7 @@ int git_init(const LPWSTR* env)
 	git_config_clear();
 	g_prefix = setup_git_directory();
 	git_config(git_default_config, NULL);
-	invalidate_ref_cache();
+	ref_store_release_and_clear(the_repository);
 	clear_ref_decorations();
 
 	/* add a safeguard until we have full support in TortoiseGit */
@@ -239,7 +239,7 @@ int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 
 	memset(commit,0,sizeof(GIT_COMMIT));
 
-	hashcpy(oid.hash, hash);
+	hashcpy(oid.hash, hash, the_repository->hash_algo);
 	oid.algo = 0;
 
 	commit->m_pGitCommit = p = lookup_commit(the_repository, &oid);
@@ -412,7 +412,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 
 	memset(p_Rev,0,sizeof(struct rev_info));
 
-	invalidate_ref_cache();
+	ref_store_release_and_clear(the_repository);
 	clear_ref_decorations();
 
 	repo_init_revisions(the_repository, p_Rev, g_prefix);
@@ -421,7 +421,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	memset(&opt, 0, sizeof(opt));
 	opt.def = "HEAD";
 
-	cmd_log_init(argc, argv, g_prefix,p_Rev,&opt);
+	cmd_log_init_tgit(argc, argv, g_prefix, p_Rev, &opt);
 
 	p_Rev->pPrivate = argv;
 	*handle = p_Rev;
@@ -567,7 +567,7 @@ int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count
 
 	p_Rev = (struct rev_info *)diff;
 
-	hashcpy(oid.hash, hash);
+	hashcpy(oid.hash, hash, the_repository->hash_algo);
 
 	diff_root_tree_oid(&oid, "", &p_Rev->diffopt);
 
@@ -599,9 +599,9 @@ int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_F
 
 	p_Rev = (struct rev_info *)diff;
 
-	hashcpy(oid1.hash, hash1);
+	hashcpy(oid1.hash, hash1, the_repository->hash_algo);
 	oid1.algo = 0;
-	hashcpy(oid2.hash, hash2);
+	hashcpy(oid2.hash, hash2, the_repository->hash_algo);
 	oid2.algo = 0;
 
 	diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
@@ -723,7 +723,7 @@ int git_get_notes(const GIT_HASH hash, char** p_note)
 	struct strbuf sb;
 	size_t size;
 	strbuf_init(&sb,0);
-	hashcpy(oid.hash, hash);
+	hashcpy(oid.hash, hash, the_repository->hash_algo);
 	oid.algo = 0;
 	format_display_notes(&oid, &sb, "utf-8", 1);
 	*p_note = strbuf_detach(&sb,&size);
@@ -761,7 +761,7 @@ void git_exit_cleanup(void)
 
 int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data)
 {
-	return for_each_reflog_ent(ref,fn,cb_data);
+	return refs_for_each_reflog_ent(get_main_ref_store(the_repository) , ref, fn, cb_data);
 }
 
 static int update_some(const struct object_id* sha1, struct strbuf* base, const char* pathname, unsigned mode, void* context)
@@ -910,7 +910,7 @@ int git_get_config(const char *key, char *buffer, int size)
 			return !buf.seen;
 	}
 
-	git_global_config(&global, &globalxdg);
+	git_global_config_paths(&global, &globalxdg);
 	if (globalxdg)
 	{
 		config_source.file = globalxdg;
@@ -969,7 +969,7 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 		{
 			char* global = NULL;
 			char* globalxdg = NULL;
-			git_global_config(&global, &globalxdg);
+			git_global_config_paths(&global, &globalxdg);
 			if (type == CONFIG_GLOBAL)
 			{
 				config_exclusive_filename = global;
@@ -989,7 +989,7 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 	if(!config_exclusive_filename)
 		return -1;
 
-	ret = git_config_set_multivar_in_file_gently(config_exclusive_filename, key, value, NULL, 0);
+	ret = git_config_set_multivar_in_file_gently(config_exclusive_filename, key, value, NULL, NULL, 0);
 	free(config_exclusive_filename);
 	return ret;
 }
