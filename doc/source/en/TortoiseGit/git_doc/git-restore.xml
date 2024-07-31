@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-restore(1)">
     <title>git-restore(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-restore(1)</primary>
 </indexterm>
@@ -136,6 +136,8 @@ all modified paths.</simpara>
 <simpara>
         When restoring files in the working tree from the index, use
         stage #2 (<emphasis>ours</emphasis>) or #3 (<emphasis>theirs</emphasis>) for unmerged paths.
+        This option cannot be used when checking out paths from a
+        tree-ish (i.e. with the <emphasis>--source</emphasis> option).
 </simpara>
 <simpara>Note that during <emphasis>git rebase</emphasis> and <emphasis>git pull --rebase</emphasis>, <emphasis>ours</emphasis> and
 <emphasis>theirs</emphasis> may appear swapped. See the explanation of the same options
@@ -153,6 +155,8 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 <simpara>
         When restoring files on the working tree from the index,
         recreate the conflicted merge in the unmerged paths.
+        This option cannot be used when checking out paths from a
+        tree-ish (i.e. with the <emphasis>--source</emphasis> option).
 </simpara>
 </listitem>
 </varlistentry>
@@ -188,7 +192,7 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </term>
 <listitem>
 <simpara>
-        In sparse checkout mode, by default is to only update entries
+        In sparse checkout mode, the default is to only update entries
         matched by <emphasis>&lt;pathspec&gt;</emphasis> and sparse patterns in
         $GIT_DIR/info/sparse-checkout. This option ignores the sparse
         patterns and unconditionally restores any files in
@@ -318,7 +322,7 @@ working tree by the shell).</simpara>
 <simpara>To restore a file in the index to match the version in <emphasis>HEAD</emphasis> (this is
 the same as using <xref linkend="git-reset(1)" />)</simpara>
 <screen>$ git restore --staged hello.c</screen>
-<simpara>or you can restore both the index and the working tree (this the same
+<simpara>or you can restore both the index and the working tree (this is the same
 as using <xref linkend="git-checkout(1)" />)</simpara>
 <screen>$ git restore --source=HEAD --staged --worktree hello.c</screen>
 <simpara>or the short form which is more practical but less readable:</simpara>

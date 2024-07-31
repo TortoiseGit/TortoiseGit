@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-pack-refs(1)">
     <title>git-pack-refs(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pack-refs(1)</primary>
 </indexterm>
@@ -15,7 +15,7 @@
 <simplesect id="git-pack-refs(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git pack-refs</emphasis> [--all] [--no-prune] [--include &lt;pattern&gt;] [--exclude &lt;pattern&gt;]</literallayout>
+<literallayout><emphasis>git pack-refs</emphasis> [--all] [--no-prune] [--auto] [--include &lt;pattern&gt;] [--exclude &lt;pattern&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pack-refs(1)__description">
@@ -73,6 +73,33 @@ with many branches of historical interests.
 The command usually removes loose refs under <emphasis>$GIT_DIR/refs</emphasis>
 hierarchy after packing them.  This option tells it not to.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--auto
+</term>
+<listitem>
+<simpara>
+Pack refs as needed depending on the current state of the ref database. The
+behavior depends on the ref format used by the repository and may change in the
+future.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"files": No special handling for <emphasis>--auto</emphasis> has been implemented.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"reftable": Tables are compacted such that they form a geometric
+          sequence. For two tables N and N+1, where N+1 is newer, this
+          maintains the property that N is at least twice as big as N+1. Only
+          tables that violate this property are compacted.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>

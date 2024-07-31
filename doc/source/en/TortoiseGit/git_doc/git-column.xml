@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-column(1)">
     <title>git-column(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-column(1)</primary>
 </indexterm>
@@ -253,7 +253,7 @@ column.clean
 </term>
 <listitem>
 <simpara>
-        Specify the layout when list items in <emphasis>git clean -i</emphasis>, which always
+        Specify the layout when listing items in <emphasis>git clean -i</emphasis>, which always
         shows files and directories in columns. See <emphasis>column.ui</emphasis> for details.
 </simpara>
 </listitem>
@@ -275,7 +275,7 @@ column.tag
 </term>
 <listitem>
 <simpara>
-        Specify whether to output tag listing in <emphasis>git tag</emphasis> in columns.
+        Specify whether to output tag listings in <emphasis>git tag</emphasis> in columns.
         See <emphasis>column.ui</emphasis> for details.
 </simpara>
 </listitem>

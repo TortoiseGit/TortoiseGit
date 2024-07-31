@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-show-ref(1)">
     <title>git-show-ref(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show-ref(1)</primary>
 </indexterm>
@@ -15,10 +15,14 @@
 <simplesect id="git-show-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-ref</emphasis> [-q | --quiet] [--verify] [--head] [-d | --dereference]
+<literallayout><emphasis>git show-ref</emphasis> [--head] [-d | --dereference]
              [-s | --hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]] [--tags]
              [--heads] [--] [&lt;pattern&gt;&#8230;]
-<emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;]</literallayout>
+<emphasis>git show-ref</emphasis> --verify [-q | --quiet] [-d | --dereference]
+             [-s | --hash[=&lt;n&gt;]] [--abbrev[=&lt;n&gt;]]
+             [--] [&lt;ref&gt;&#8230;]
+<emphasis>git show-ref</emphasis> --exclude-existing[=&lt;pattern&gt;]
+<emphasis>git show-ref</emphasis> --exists &lt;ref&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-ref(1)__description">
@@ -31,6 +35,9 @@ particular ref exists.</simpara>
 <simpara>The <emphasis>--exclude-existing</emphasis> form is a filter that does the inverse. It reads
 refs from stdin, one ref per line, and shows those that don't exist in
 the local repository.</simpara>
+<simpara>The <emphasis>--exists</emphasis> form can be used to check for the existence of a single
+references. This form does not verify whether the reference resolves to an
+actual object.</simpara>
 <simpara>Use of this utility is encouraged in favor of directly accessing files under
 the <emphasis>.git</emphasis> directory.</simpara>
 </simplesect>
@@ -104,6 +111,18 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--exists
+</term>
+<listitem>
+<simpara>
+        Check whether the given reference exists. Returns an exit code of 0 if
+        it does, 2 if it is missing, and 1 in case looking up the reference
+        failed with an error other than the reference being missing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --abbrev[=&lt;n&gt;]
 </term>
 <listitem>
@@ -122,8 +141,8 @@ the <emphasis>.git</emphasis> directory.</simpara>
 </term>
 <listitem>
 <simpara>
-        Do not print any results to stdout. When combined with <emphasis>--verify</emphasis>, this
-        can be used to silently check if a reference exists.
+        Do not print any results to stdout. Can be used with <emphasis>--verify</emphasis> to
+        silently check if a reference exists.
 </simpara>
 </listitem>
 </varlistentry>
@@ -190,7 +209,7 @@ else, and regardless of how deep in the reference naming hierarchy they are,
 use:</simpara>
 <screen>        git show-ref master</screen>
 <simpara>This will show "refs/heads/master" but also "refs/remote/other-repo/master",
-if such references exists.</simpara>
+if such references exist.</simpara>
 <simpara>When using the <emphasis>--verify</emphasis> flag, the command requires an exact path:</simpara>
 <screen>        git show-ref --verify refs/heads/master</screen>
 <simpara>will only match the exact branch called "master".</simpara>

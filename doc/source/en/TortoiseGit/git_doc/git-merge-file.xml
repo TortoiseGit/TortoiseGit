@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-merge-file(1)">
     <title>git-merge-file(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge-file(1)</primary>
 </indexterm>
@@ -17,18 +17,19 @@
 <blockquote>
 <literallayout><emphasis>git merge-file</emphasis> [-L &lt;current-name&gt; [-L &lt;base-name&gt; [-L &lt;other-name&gt;]]]
         [--ours|--theirs|--union] [-p|--stdout] [-q|--quiet] [--marker-size=&lt;n&gt;]
-        [--[no-]diff3] &lt;current-file&gt; &lt;base-file&gt; &lt;other-file&gt;</literallayout>
+        [--[no-]diff3] [--object-id] &lt;current&gt; &lt;base&gt; &lt;other&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-merge-file(1)__description">
 <title>DESCRIPTION</title>
-<simpara><emphasis>git merge-file</emphasis> incorporates all changes that lead from the <emphasis>&lt;base-file&gt;</emphasis>
-to <emphasis>&lt;other-file&gt;</emphasis> into <emphasis>&lt;current-file&gt;</emphasis>. The result ordinarily goes into
-<emphasis>&lt;current-file&gt;</emphasis>. <emphasis>git merge-file</emphasis> is useful for combining separate changes
-to an original. Suppose <emphasis>&lt;base-file&gt;</emphasis> is the original, and both
-<emphasis>&lt;current-file&gt;</emphasis> and <emphasis>&lt;other-file&gt;</emphasis> are modifications of <emphasis>&lt;base-file&gt;</emphasis>,
+<simpara>Given three files <emphasis>&lt;current&gt;</emphasis>, <emphasis>&lt;base&gt;</emphasis> and <emphasis>&lt;other&gt;</emphasis>,
+<emphasis>git merge-file</emphasis> incorporates all changes that lead from <emphasis>&lt;base&gt;</emphasis>
+to <emphasis>&lt;other&gt;</emphasis> into <emphasis>&lt;current&gt;</emphasis>. The result ordinarily goes into
+<emphasis>&lt;current&gt;</emphasis>. <emphasis>git merge-file</emphasis> is useful for combining separate changes
+to an original. Suppose <emphasis>&lt;base&gt;</emphasis> is the original, and both
+<emphasis>&lt;current&gt;</emphasis> and <emphasis>&lt;other&gt;</emphasis> are modifications of <emphasis>&lt;base&gt;</emphasis>,
 then <emphasis>git merge-file</emphasis> combines both changes.</simpara>
-<simpara>A conflict occurs if both <emphasis>&lt;current-file&gt;</emphasis> and <emphasis>&lt;other-file&gt;</emphasis> have changes
+<simpara>A conflict occurs if both <emphasis>&lt;current&gt;</emphasis> and <emphasis>&lt;other&gt;</emphasis> have changes
 in a common segment of lines. If a conflict is found, <emphasis>git merge-file</emphasis>
 normally outputs a warning and brackets the conflict with lines containing
 &lt;&lt;&lt;&lt;&lt;&lt;&lt; and &gt;&gt;&gt;&gt;&gt;&gt;&gt; markers. A typical conflict will look like this:</simpara>
@@ -39,9 +40,12 @@ lines in file B
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; B</literallayout>
 <simpara>If there are conflicts, the user should edit the result and delete one of
 the alternatives.  When <emphasis>--ours</emphasis>, <emphasis>--theirs</emphasis>, or <emphasis>--union</emphasis> option is in effect,
-however, these conflicts are resolved favouring lines from <emphasis>&lt;current-file&gt;</emphasis>,
-lines from <emphasis>&lt;other-file&gt;</emphasis>, or lines from both respectively.  The length of the
+however, these conflicts are resolved favouring lines from <emphasis>&lt;current&gt;</emphasis>,
+lines from <emphasis>&lt;other&gt;</emphasis>, or lines from both respectively.  The length of the
 conflict markers can be given with the <emphasis>--marker-size</emphasis> option.</simpara>
+<simpara>If <emphasis>--object-id</emphasis> is specified, exactly the same behavior occurs, except that
+instead of specifying what to merge as files, it is specified as a list of
+object IDs referring to blobs.</simpara>
 <simpara>The exit value of this program is negative on error, and the number of
 conflicts otherwise (truncated to 127 if there are more than that many
 conflicts). If the merge was clean, the exit value is 0.</simpara>
@@ -52,6 +56,20 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 <simplesect id="git-merge-file(1)__options">
 <title>OPTIONS</title>
 <variablelist>
+<varlistentry>
+<term>
+--object-id
+</term>
+<listitem>
+<simpara>
+        Specify the contents to merge as blobs in the current repository instead of
+        files.  In this case, the operation must take place within a valid repository.
+</simpara>
+<simpara>If the <emphasis>-p</emphasis> option is specified, the merged file (including conflicts, if any)
+goes to standard output as normal; otherwise, the merged file is written to the
+object store and the object ID of its blob is written to standard output.</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 -L &lt;label&gt;
@@ -74,7 +92,7 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 <listitem>
 <simpara>
         Send results to standard output instead of overwriting
-        <emphasis>&lt;current-file&gt;</emphasis>.
+        <emphasis>&lt;current&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -125,6 +143,20 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--diff-algorithm={patience|minimal|histogram|myers}
+</term>
+<listitem>
+<simpara>
+        Use a different diff algorithm while merging. The current default is "myers",
+        but selecting more recent algorithm such as "histogram" can help
+        avoid mismerges that occur due to unimportant matching lines
+        (such as braces from distinct functions). See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-merge-file(1)__examples">
@@ -149,6 +181,17 @@ implements all of RCS <emphasis>merge</emphasis>'s functionality which is needed
 <simpara>
         merges tmp/a123 and tmp/c345 with the base tmp/b234, but uses labels
         <emphasis>a</emphasis> and <emphasis>c</emphasis> instead of <emphasis>tmp/a123</emphasis> and <emphasis>tmp/c345</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git merge-file -p --object-id abc1234 def567 890abcd</emphasis>
+</term>
+<listitem>
+<simpara>
+        combines the changes of the blob abc1234 and 890abcd since def567,
+        tries to merge them and writes the result to standard output
 </simpara>
 </listitem>
 </varlistentry>

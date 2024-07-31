@@ -135,6 +135,7 @@
 		<xi:include href="./git-remote.xml"/>
 		<xi:include href="./git-repack.xml"/>
 		<xi:include href="./git-replace.xml"/>
+		<xi:include href="./git-replay.xml"/>
 		<xi:include href="./git-request-pull.xml"/>
 		<xi:include href="./git-rerere.xml"/>
 		<xi:include href="./git-reset.xml"/>

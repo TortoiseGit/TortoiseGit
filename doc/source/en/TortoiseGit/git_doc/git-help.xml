@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-help(1)">
     <title>git-help(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-help(1)</primary>
 </indexterm>
@@ -42,7 +42,7 @@ standard output. To get the manual page for the aliased command, use
 <simpara>Note that <emphasis>git --help ...</emphasis> is identical to <emphasis>git help ...</emphasis> because the
 former is internally converted into the latter.</simpara>
 <simpara>To display the <xref linkend="git(1)" /> man page, use <emphasis>git help git</emphasis>.</simpara>
-<simpara>This page can be displayed with <emphasis>git help help</emphasis> or <emphasis>git help --help</emphasis></simpara>
+<simpara>This page can be displayed with <emphasis>git help help</emphasis> or <emphasis>git help --help</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-help(1)__options">
 <title>OPTIONS</title>
@@ -56,7 +56,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints all the available commands on the standard output.
+        Print all the available commands on the standard output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -88,7 +88,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        When used with <emphasis>--all</emphasis> print description for all recognized
+        When used with <emphasis>--all</emphasis>, print description for all recognized
         commands. This is the default.
 </simpara>
 </listitem>
@@ -116,7 +116,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints a list of the Git concept guides on the standard output.
+        Print a list of the Git concept guides on the standard output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -126,7 +126,7 @@ former is internally converted into the latter.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prints a list of the repository, command and file interfaces
+        Print a list of the repository, command and file interfaces
         documentation on the standard output.
 </simpara>
 <simpara>In-repository file interfaces such as <emphasis>.git/info/exclude</emphasis> are
@@ -144,7 +144,7 @@ described in <xref linkend="githooks(5)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        Print list of file formats, protocols and other developer
+        Print a list of file formats, protocols and other developer
         interfaces documentation on the standard output.
 </simpara>
 </listitem>
@@ -194,7 +194,7 @@ other display programs (see below).</simpara>
         format. A web browser will be used for that purpose.
 </simpara>
 <simpara>The web browser can be specified using the configuration variable
-<emphasis>help.browser</emphasis>, or <emphasis>web.browser</emphasis> if the former is not set. If none of
+<emphasis>help.browser</emphasis>, or <emphasis>web.browser</emphasis> if the former is not set. If neither of
 these config variables is set, the <emphasis>git web&#45;&#45;browse</emphasis> helper script
 (called by <emphasis>git help</emphasis>) will pick a suitable default. See
 <xref linkend="git-web&#45;&#45;browse(1)" /> for more information about this.</simpara>
@@ -229,7 +229,7 @@ line option:</simpara>
 </itemizedlist>
 </section>
 <section id="git-help(1)__help_browser_web_browser_and_browser_lt_tool_gt_path">
-<title>help.browser, web.browser and browser.&lt;tool&gt;.path</title>
+<title>help.browser, web.browser, and browser.&lt;tool&gt;.path</title>
 <simpara>The <emphasis>help.browser</emphasis>, <emphasis>web.browser</emphasis> and <emphasis>browser.&lt;tool&gt;.path</emphasis> will also
 be checked if the <emphasis>web</emphasis> format is chosen (either by command-line
 option or configuration variable). See <emphasis>-w|--web</emphasis> in the OPTIONS

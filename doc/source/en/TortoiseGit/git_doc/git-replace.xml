@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-replace(1)">
     <title>git-replace(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-replace(1)</primary>
 </indexterm>
@@ -37,7 +37,7 @@ Merge commits can be replaced by non-merge commits and vice versa.</simpara>
 <simpara>Replacement references will be used by default by all Git commands
 except those doing reachability traversal (prune, pack transfer and
 fsck).</simpara>
-<simpara>It is possible to disable use of replacement references for any
+<simpara>It is possible to disable the use of replacement references for any
 command using the <emphasis>--no-replace-objects</emphasis> option just after <emphasis>git</emphasis>.</simpara>
 <simpara>For example if commit <emphasis>foo</emphasis> has been replaced by commit <emphasis>bar</emphasis>:</simpara>
 <screen>$ git --no-replace-objects cat-file commit foo</screen>
@@ -167,24 +167,24 @@ achieve the same effect as the <emphasis>--no-replace-objects</emphasis> option.
 </simplesect>
 <simplesect id="git-replace(1)__formats">
 <title>FORMATS</title>
-<simpara>The following format are available:</simpara>
+<simpara>The following formats are available:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
 <emphasis>short</emphasis>:
-        &lt;replaced sha1&gt;
+        &lt;replaced-sha1&gt;
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>medium</emphasis>:
-        &lt;replaced sha1&gt; &#8594; &lt;replacement sha1&gt;
+        &lt;replaced-sha1&gt; &#8594; &lt;replacement-sha1&gt;
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>long</emphasis>:
-        &lt;replaced sha1&gt; (&lt;replaced type&gt;) &#8594; &lt;replacement sha1&gt; (&lt;replacement type&gt;)
+        &lt;replaced-sha1&gt; (&lt;replaced-type&gt;) &#8594; &lt;replacement-sha1&gt; (&lt;replacement-type&gt;)
 </simpara>
 </listitem>
 </itemizedlist>

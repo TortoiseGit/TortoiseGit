@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-mergetool&#45;&#45;lib(1)">
     <title>git-mergetool&#45;&#45;lib(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mergetool&#45;&#45;lib(1)</primary>
 </indexterm>
@@ -39,7 +39,7 @@ get_merge_tool
 </term>
 <listitem>
 <simpara>
-        returns a merge tool. the return code is 1 if we returned a guessed
+        Returns a merge tool. The return code is 1 if we returned a guessed
         merge tool, else 0. <emphasis>$GIT_MERGETOOL_GUI</emphasis> may be set to <emphasis>true</emphasis> to
         search for the appropriate guitool.
 </simpara>
@@ -51,7 +51,7 @@ get_merge_tool_cmd
 </term>
 <listitem>
 <simpara>
-        returns the custom command for a merge tool.
+        Returns the custom command for a merge tool.
 </simpara>
 </listitem>
 </varlistentry>
@@ -61,7 +61,7 @@ get_merge_tool_path
 </term>
 <listitem>
 <simpara>
-        returns the custom path for a merge tool.
+        Returns the custom path for a merge tool.
 </simpara>
 </listitem>
 </varlistentry>
@@ -71,7 +71,7 @@ initialize_merge_tool
 </term>
 <listitem>
 <simpara>
-        bring merge tool specific functions into scope so they can be used or
+        Brings merge tool specific functions into scope so they can be used or
         overridden.
 </simpara>
 </listitem>
@@ -82,7 +82,7 @@ run_merge_tool
 </term>
 <listitem>
 <simpara>
-        launches a merge tool given the tool name and a true/false
+        Launches a merge tool given the tool name and a true/false
         flag to indicate whether a merge base is present.
         <emphasis>$MERGED</emphasis>, <emphasis>$LOCAL</emphasis>, <emphasis>$REMOTE</emphasis>, and <emphasis>$BASE</emphasis> must be defined
         for use by the merge tool.

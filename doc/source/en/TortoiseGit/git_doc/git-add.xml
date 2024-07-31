@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-add(1)">
     <title>git-add(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-add(1)</primary>
 </indexterm>
@@ -16,7 +16,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git add</emphasis> [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--patch | -p]
-          [--edit | -e] [--[no-]all | --[no-]ignore-removal | [--update | -u]] [--sparse]
+          [--edit | -e] [--[no-]all | -A | --[no-]ignore-removal | [--update | -u]] [--sparse]
           [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing] [--renormalize]
           [--chmod=(+|-)x] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
@@ -71,7 +71,7 @@ commit.</simpara>
         to ignore removed files; use <emphasis>--no-all</emphasis> option if you want
         to add modified or new files but ignore removed ones.
 </simpara>
-<simpara>For more details about the &lt;pathspec&gt; syntax, see the <emphasis>pathspec</emphasis> entry
+<simpara>For more details about the <emphasis>&lt;pathspec&gt;</emphasis> syntax, see the <emphasis>pathspec</emphasis> entry
 in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
@@ -194,10 +194,10 @@ apply to the index. See EDITING PATCHES below.</simpara>
 <listitem>
 <simpara>
         Update the index just where it already has an entry matching
-        &lt;pathspec&gt;.  This removes as well as modifies index entries to
+        <emphasis>&lt;pathspec&gt;</emphasis>.  This removes as well as modifies index entries to
         match the working tree, but adds no new files.
 </simpara>
-<simpara>If no &lt;pathspec&gt; is given when <emphasis>-u</emphasis> option is used, all
+<simpara>If no <emphasis>&lt;pathspec&gt;</emphasis> is given when <emphasis>-u</emphasis> option is used, all
 tracked files in the entire working tree are updated (old versions
 of Git used to limit the update to the current directory and its
 subdirectories).</simpara>
@@ -216,11 +216,11 @@ subdirectories).</simpara>
 <listitem>
 <simpara>
         Update the index not only where the working tree has a file
-        matching &lt;pathspec&gt; but also where the index already has an
+        matching <emphasis>&lt;pathspec&gt;</emphasis> but also where the index already has an
         entry. This adds, modifies, and removes index entries to
         match the working tree.
 </simpara>
-<simpara>If no &lt;pathspec&gt; is given when <emphasis>-A</emphasis> option is used, all
+<simpara>If no <emphasis>&lt;pathspec&gt;</emphasis> is given when <emphasis>-A</emphasis> option is used, all
 files in the entire working tree are updated (old versions
 of Git used to limit the update to the current directory and its
 subdirectories).</simpara>
@@ -238,11 +238,11 @@ subdirectories).</simpara>
         Update the index by adding new files that are unknown to the
         index and files modified in the working tree, but ignore
         files that have been removed from the working tree.  This
-        option is a no-op when no &lt;pathspec&gt; is used.
+        option is a no-op when no <emphasis>&lt;pathspec&gt;</emphasis> is used.
 </simpara>
 <simpara>This option is primarily to help users who are used to older
-versions of Git, whose "git add &lt;pathspec&gt;&#8230;" was a synonym
-for "git add --no-all &lt;pathspec&gt;&#8230;", i.e. ignored removed files.</simpara>
+versions of Git, whose "git add <emphasis>&lt;pathspec&gt;</emphasis>&#8230;" was a synonym
+for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignored removed files.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -524,6 +524,7 @@ k - leave this hunk undecided, see previous undecided hunk
 K - leave this hunk undecided, see previous hunk
 s - split the current hunk into smaller hunks
 e - manually edit the current hunk
+p - print the current hunk
 ? - print help</literallayout>
 <simpara>After deciding the fate for all hunks, if there is any hunk
 that was chosen, the index is updated with the selected hunks.</simpara>

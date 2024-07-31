@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-worktree(1)">
     <title>git-worktree(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-worktree(1)</primary>
 </indexterm>
@@ -99,7 +99,7 @@ command will refuse to create the worktree (unless <emphasis>--force</emphasis> 
 <simpara>If <emphasis>&lt;commit-ish&gt;</emphasis> is omitted, neither <emphasis>--detach</emphasis>, or <emphasis>--orphan</emphasis> is
 used, and there are no valid local branches (or remote branches if
 <emphasis>--guess-remote</emphasis> is specified) then, as a convenience, the new worktree is
-associated with a new orphan branch named <emphasis>&lt;branch&gt;</emphasis> (after
+associated with a new unborn branch named <emphasis>&lt;branch&gt;</emphasis> (after
 <emphasis>$(basename &lt;path&gt;)</emphasis> if neither <emphasis>-b</emphasis> or <emphasis>-B</emphasis> is used) as if <emphasis>--orphan</emphasis> was
 passed to the command. In the event the repository has a remote and
 <emphasis>--guess-remote</emphasis> is used, but no remote or local branches exist, then the
@@ -342,7 +342,7 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 <listitem>
 <simpara>
         With <emphasis>add</emphasis>, make the new worktree and index empty, associating
-        the worktree with a new orphan/unborn branch named <emphasis>&lt;new-branch&gt;</emphasis>.
+        the worktree with a new unborn branch named <emphasis>&lt;new-branch&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

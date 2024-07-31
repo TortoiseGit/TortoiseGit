@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-name-rev(1)">
     <title>git-name-rev(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-name-rev(1)</primary>
 </indexterm>
@@ -44,7 +44,7 @@ format parsable by <emphasis>git rev-parse</emphasis>.</simpara>
 <listitem>
 <simpara>
         Only use refs whose names match a given shell pattern.  The pattern
-        can be one of branch name, tag name or fully qualified ref name. If
+        can be a branch name, a tag name, or a fully qualified ref name. If
         given multiple times, use refs whose names match any of the given shell
         patterns. Use <emphasis>--no-refs</emphasis> to clear any previous ref patterns given.
 </simpara>

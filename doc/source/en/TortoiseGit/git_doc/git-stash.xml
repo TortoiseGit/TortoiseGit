@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-stash(1)">
     <title>git-stash(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-stash(1)</primary>
 </indexterm>
@@ -568,7 +568,7 @@ stash.showIncludeUntracked
 <simpara>
         If this is set to true, the <emphasis>git stash show</emphasis> command will show
         the untracked files of a stash entry.  Defaults to false. See
-        description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -580,7 +580,7 @@ stash.showPatch
 <simpara>
         If this is set to true, the <emphasis>git stash show</emphasis> command without an
         option will show the stash entry in patch form.  Defaults to false.
-        See description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        See the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -591,8 +591,8 @@ stash.showStat
 <listitem>
 <simpara>
         If this is set to true, the <emphasis>git stash show</emphasis> command without an
-        option will show diffstat of the stash entry.  Defaults to true.
-        See description of <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        option will show a diffstat of the stash entry.  Defaults to true.
+        See the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

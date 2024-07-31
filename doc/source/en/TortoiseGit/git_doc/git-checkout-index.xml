@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-checkout-index(1)">
     <title>git-checkout-index(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-checkout-index(1)</primary>
 </indexterm>
@@ -25,7 +25,7 @@
 </simplesect>
 <simplesect id="git-checkout-index(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Will copy all files listed from the index to the working directory
+<simpara>Copies all listed files from the index to the working directory
 (not overwriting existing files).</simpara>
 </simplesect>
 <simplesect id="git-checkout-index(1)__options">
@@ -118,7 +118,7 @@
 <listitem>
 <simpara>
         Instead of checking out unmerged entries, copy out the
-        files from named stage.  &lt;number&gt; must be between 1 and 3.
+        files from the named stage.  &lt;number&gt; must be between 1 and 3.
         Note: --stage=all automatically implies --temp.
 </simpara>
 </listitem>
@@ -129,7 +129,7 @@
 </term>
 <listitem>
 <simpara>
-        Instead of copying the files to the working directory
+        Instead of copying the files to the working directory,
         write the content to temporary files.  The temporary name
         associations will be written to stdout.
 </simpara>
@@ -152,8 +152,8 @@
 </term>
 <listitem>
 <simpara>
-        Instead of taking list of paths from the command line,
-        read list of paths from the standard input.  Paths are
+        Instead of taking a list of paths from the command line,
+        read the list of paths from the standard input.  Paths are
         separated by LF (i.e. one path per line) by default.
 </simpara>
 </listitem>

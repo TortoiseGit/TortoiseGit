@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-pull(1)">
     <title>git-pull(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pull(1)</primary>
 </indexterm>
@@ -98,7 +98,7 @@ pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]recurse-submodules[=yes|on-demand|no]
+--[no-]recurse-submodules[=(yes|on-demand|no)]
 </term>
 <listitem>
 <simpara>
@@ -265,7 +265,7 @@ actual commits being merged.</simpara>
         the committer has the rights to submit the work under the
         project's license or agrees to some contributor representation,
         such as a Developer Certificate of Origin.
-        (See <ulink url="http://developercertificate.org">http://developercertificate.org</ulink> for the one used by the
+        (See <ulink url="https://developercertificate.org">https://developercertificate.org</ulink> for the one used by the
         Linux kernel and Git projects.)  Consult the documentation or
         leadership of the project to which you're contributing to
         understand how the signoffs are used in that project.
@@ -402,7 +402,7 @@ option can be used to override --squash.</simpara>
 <listitem>
 <simpara>
         Automatically create a temporary stash entry before the operation
-        begins, record it in the special ref <emphasis>MERGE_AUTOSTASH</emphasis>
+        begins, record it in the ref <emphasis>MERGE_AUTOSTASH</emphasis>
         and apply it after the operation ends.  This means
         that you can run the operation on a dirty worktree.  However, use
         with care: the final stash application after a successful
@@ -431,7 +431,7 @@ option can be used to override --squash.</simpara>
 -r
 </term>
 <term>
---rebase[=false|true|merges|interactive]
+--rebase[=(false|true|merges|interactive)]
 </term>
 <listitem>
 <simpara>
@@ -472,11 +472,12 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 <variablelist>
 <varlistentry>
 <term>
---all
+--[no-]all
 </term>
 <listitem>
 <simpara>
-        Fetch all remotes.
+        Fetch all remotes. This overrides the configuration variable
+        <emphasis>fetch.all</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -577,7 +578,7 @@ the current repository has the same history as the source repository.</simpara>
 <simpara>
         By default when fetching from a shallow repository,
         <emphasis>git fetch</emphasis> refuses refs that require updating
-        .git/shallow. This option updates .git/shallow and accept such
+        .git/shallow. This option updates .git/shallow and accepts such
         refs.
 </simpara>
 </listitem>
@@ -653,7 +654,7 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </term>
 <listitem>
 <simpara>
-        When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec it may
+        When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec, it may
         refuse to update the local branch as discussed
         in the <emphasis>&lt;refspec&gt;</emphasis> part of the <xref linkend="git-fetch(1)" />
         documentation.
@@ -953,20 +954,20 @@ refspec (or <emphasis>--force</emphasis>).</simpara>
 <simpara>Unlike when pushing with <xref linkend="git-push(1)" />, any updates outside of
 <emphasis>refs/{tags,heads}/*</emphasis> will be accepted without <emphasis>+</emphasis> in the refspec (or
 <emphasis>--force</emphasis>), whether that's swapping e.g. a tree object for a blob, or
-a commit for another commit that's doesn't have the previous commit as
+a commit for another commit that doesn't have the previous commit as
 an ancestor etc.</simpara>
 <simpara>Unlike when pushing with <xref linkend="git-push(1)" />, there is no
 configuration which'll amend these rules, and nothing like a
 <emphasis>pre-fetch</emphasis> hook analogous to the <emphasis>pre-receive</emphasis> hook.</simpara>
 <simpara>As with pushing with <xref linkend="git-push(1)" />, all of the rules described
 above about what's not allowed as an update can be overridden by
-adding an the optional leading <emphasis>+</emphasis> to a refspec (or using <emphasis>--force</emphasis>
+adding an optional leading <emphasis>+</emphasis> to a refspec (or using the <emphasis>--force</emphasis>
 command line option). The only exception to this is that no amount of
 forcing will make the <emphasis>refs/heads/*</emphasis> namespace accept a non-commit
 object.</simpara>
 <note><simpara>When the remote branch you want to fetch is known to
 be rewound and rebased regularly, it is expected that
-its new tip will not be descendant of its previous tip
+its new tip will not be a descendant of its previous tip
 (as stored in your remote-tracking branch the last time
 you fetched).  You would want
 to use the <emphasis>+</emphasis> sign to indicate non-fast-forward updates
@@ -1002,31 +1003,31 @@ is often useful.</simpara></note>
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp
 and ftps can be used for fetching, but this is inefficient and
-deprecated; do not use it).</simpara>
+deprecated; do not use them).</simpara>
 <simpara>The native transport (i.e. git:// URL) does no authentication and
 should be used with caution on unsecured networks.</simpara>
 <simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;:<emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>http</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ftp</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1034,7 +1035,7 @@ ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
 <itemizedlist>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1043,21 +1044,21 @@ first colon. This helps differentiate a local path that contains a
 colon. For example the local path <emphasis>foo:bar</emphasis> could be specified as an
 absolute path or <emphasis>./foo:bar</emphasis> to avoid being misinterpreted as an ssh
 url.</simpara>
-<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<simpara>The ssh and git protocols additionally support <literal>~</literal><emphasis>&lt;username&gt;</emphasis> expansion:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1066,40 +1067,42 @@ syntaxes may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-/path/to/repo.git/
+<emphasis>/path/to/repo.git/</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-file:///path/to/repo.git/
+<literal>file:///path/to/repo.git/</literal>
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>These two syntaxes are mostly equivalent, except when cloning, when
-the former implies --local option. See <xref linkend="git-clone(1)" /> for
+the former implies <emphasis>--local</emphasis> option. See <xref linkend="git-clone(1)" /> for
 details.</simpara>
 <simpara><emphasis>git clone</emphasis>, <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>, but not <emphasis>git push</emphasis>, will also
 accept a suitable bundle file. See <xref linkend="git-bundle(1)" />.</simpara>
 <simpara>When Git doesn't know how to handle a certain transport protocol, it
-attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+attempts to use the <emphasis>remote-</emphasis><emphasis>&lt;transport&gt;</emphasis> remote helper, if one
 exists. To explicitly request a remote helper, the following syntax
 may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-&lt;transport&gt;::&lt;address&gt;
+<emphasis>&lt;transport&gt;</emphasis>::<emphasis>&lt;address&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+<simpara>where <emphasis>&lt;address&gt;</emphasis> may be a path, a server and path, or an arbitrary
 URL-like string recognized by the specific remote helper being
 invoked. See <xref linkend="gitremote-helpers(7)" /> for details.</simpara>
 <simpara>If there are a large number of similarly-named remote repositories and
 you want to use a different format for them (such that the URLs you
 use will be rewritten into URLs that work), you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                insteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                insteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "git://git.host.xz/"]
                 insteadOf = host.xz:/path/to/
@@ -1108,8 +1111,10 @@ configuration section of the form:</simpara>
 rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
 <simpara>If you want to rewrite URLs for push only, you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                pushInsteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                pushInsteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "ssh://example.org/"]
                 pushInsteadOf = git://example.org/</screen>
@@ -1155,7 +1160,7 @@ config file would appear like this:</simpara>
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
+to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or all
 defined urls if no pushurls are defined. Fetch, however, will only
 fetch from the first defined url if multiple urls are defined.</simpara>
 </section>
@@ -1167,7 +1172,7 @@ in this file will be used to access the repository.  The refspec
 in this file will be used as default when you do not
 provide a refspec on the command line.  This file should have the
 following format:</simpara>
-<screen>        URL: one of the above URL format
+<screen>        URL: one of the above URL formats
         Push: &lt;refspec&gt;
         Pull: &lt;refspec&gt;</screen>
 <simpara><emphasis>Push:</emphasis> lines are used by <emphasis>git push</emphasis> and

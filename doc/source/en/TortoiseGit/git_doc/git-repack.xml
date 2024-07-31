@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-repack(1)">
     <title>git-repack(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-repack(1)</primary>
 </indexterm>
@@ -108,6 +108,24 @@ to the new separate pack will be written.</simpara>
         Expire unreachable objects older than <emphasis>&lt;approxidate&gt;</emphasis>
         immediately instead of waiting for the next <emphasis>git gc</emphasis> invocation.
         Only useful with <emphasis>--cruft -d</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--max-cruft-size=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Repack cruft objects into packs as large as <emphasis>&lt;n&gt;</emphasis> bytes before
+        creating new packs. As long as there are enough cruft packs
+        smaller than <emphasis>&lt;n&gt;</emphasis>, repacking will cause a new cruft pack to
+        be created containing objects from any combined cruft packs,
+        along with any new unreachable objects. Cruft packs larger than
+        <emphasis>&lt;n&gt;</emphasis> will not be modified. When the new cruft pack is larger
+        than <emphasis>&lt;n&gt;</emphasis> bytes, it will be split into multiple packs, all of
+        which are guaranteed to be at most <emphasis>&lt;n&gt;</emphasis> bytes in size. Only
+        useful with <emphasis>--cruft -d</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -255,6 +273,43 @@ depth is 4095.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--filter=&lt;filter-spec&gt;
+</term>
+<listitem>
+<simpara>
+        Remove objects matching the filter specification from the
+        resulting packfile and put them into a separate packfile. Note
+        that objects used in the working directory are not filtered
+        out. So for the split to fully work, it's best to perform it
+        in a bare repo and to use the <emphasis>-a</emphasis> and <emphasis>-d</emphasis> options along with
+        this option.  Also <emphasis>--no-write-bitmap-index</emphasis> (or the
+        <emphasis>repack.writebitmaps</emphasis> config option set to <emphasis>false</emphasis>) should be
+        used otherwise writing bitmap index will fail, as it supposes
+        a single packfile containing all the objects. See
+        <xref linkend="git-rev-list(1)" /> for valid <emphasis>&lt;filter-spec&gt;</emphasis> forms.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--filter-to=&lt;dir&gt;
+</term>
+<listitem>
+<simpara>
+        Write the pack containing filtered out objects to the
+        directory <emphasis>&lt;dir&gt;</emphasis>. Only useful with <emphasis>--filter</emphasis>. This can be
+        used for putting the pack on a separate object directory that
+        is accessed through the Git alternates mechanism. <emphasis role="strong">WARNING:</emphasis>
+        If the packfile containing the filtered out objects is not
+        accessible, the repo can become corrupt as it might not be
+        possible to access the objects in that packfile. See the
+        <emphasis>objects</emphasis> and <emphasis>objects/info/alternates</emphasis> sections of
+        <xref linkend="gitrepository-layout(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 -b
 </term>
 <term>
@@ -296,7 +351,7 @@ depth is 4095.</simpara>
         Exclude the given pack from repacking. This is the equivalent
         of having <emphasis>.keep</emphasis> file on the pack. <emphasis>&lt;pack-name&gt;</emphasis> is the
         pack file name without leading directory (e.g. <emphasis>pack-123.pack</emphasis>).
-        The option could be specified multiple times to keep multiple
+        The option can be specified multiple times to keep multiple
         packs.
 </simpara>
 </listitem>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitweb.conf(5)">
     <title>gitweb.conf(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitweb.conf(5)</primary>
 </indexterm>
@@ -58,7 +58,7 @@ common system-wide configuration file (defaults to
 <listitem>
 <simpara>
 either per-instance configuration file (defaults to <emphasis>gitweb_config.perl</emphasis>
-   in the same directory as the installed gitweb), or if it does not exists
+   in the same directory as the installed gitweb), or if it does not exist
    then fallback system-wide configuration file (defaults to <emphasis>/etc/gitweb.conf</emphasis>).
 </simpara>
 </listitem>
@@ -267,7 +267,7 @@ $highlight_bin
 <listitem>
 <simpara>
         Path to the highlight executable to use (it must be the one from
-        <ulink url="http://www.andre-simon.de">http://www.andre-simon.de</ulink> due to assumptions about parameters and output).
+        <ulink url="http://andre-simon.de/zip/download.php">http://andre-simon.de/zip/download.php</ulink> due to assumptions about parameters and output).
         By default set to <emphasis>highlight</emphasis>; set it to full path to highlight
         executable if it is not installed on your web server's PATH.
         Note that <emphasis>highlight</emphasis> feature must be set for gitweb to actually
@@ -399,7 +399,7 @@ $home_link_str
         Label for the "home link" at the top of all pages, leading to <emphasis>$home_link</emphasis>
         (usually the main gitweb page, which contains the projects list).  It is
         used as the first component of gitweb's "breadcrumb trail":
-        <emphasis>&lt;home link&gt; / &lt;project&gt; / &lt;action&gt;</emphasis>.  Can be set at build time using
+        <emphasis>&lt;home-link&gt; / &lt;project&gt; / &lt;action&gt;</emphasis>.  Can be set at build time using
         the <emphasis>GITWEB_HOME_LINK_STR</emphasis> variable.  By default it is set to "projects",
         as this link leads to the list of projects.  Another popular choice is to
         set it to the name of site.  Note that it is treated as raw HTML so it
@@ -817,15 +817,15 @@ $base_url
 <emphasis>%feature</emphasis> hash.  Names of gitweb features are keys of this hash.</simpara>
 <simpara>Each <emphasis>%feature</emphasis> hash element is a hash reference and has the following
 structure:</simpara>
-<screen>"&lt;feature_name&gt;" =&gt; {
-        "sub" =&gt; &lt;feature-sub (subroutine)&gt;,
-        "override" =&gt; &lt;allow-override (boolean)&gt;,
+<screen>"&lt;feature-name&gt;" =&gt; {
+        "sub" =&gt; &lt;feature-sub-(subroutine)&gt;,
+        "override" =&gt; &lt;allow-override-(boolean)&gt;,
         "default" =&gt; [ &lt;options&gt;... ]
 },</screen>
 <simpara>Some features cannot be overridden per project.  For those
 features the structure of appropriate <emphasis>%feature</emphasis> hash element has a simpler
 form:</simpara>
-<screen>"&lt;feature_name&gt;" =&gt; {
+<screen>"&lt;feature-name&gt;" =&gt; {
         "override" =&gt; 0,
         "default" =&gt; [ &lt;options&gt;... ]
 },</screen>
@@ -1117,7 +1117,7 @@ expands to the project name, <emphasis>%f</emphasis> to the project path within 
 filesystem (i.e. "$projectroot/$project"), <emphasis>%h</emphasis> to the current hash
 ('h gitweb parameter) and %b` to the current hash base
 ('hb gitweb parameter); %%` expands to '%.</simpara>
-<simpara>For example, at the time this page was written, the <ulink url="http://repo.or.cz">http://repo.or.cz</ulink>
+<simpara>For example, at the time this page was written, the <ulink url="https://repo.or.cz">https://repo.or.cz</ulink>
 Git hosting site set it to the following to enable graphical log
 (using the third party tool <emphasis role="strong">git-browser</emphasis>):</simpara>
 <screen>$feature{'actions'}{'default'} =

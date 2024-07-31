@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitk(1)">
     <title>gitk(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitk(1)</primary>
 </indexterm>
@@ -15,7 +15,7 @@
 <simplesect id="gitk(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>gitk</emphasis> [&lt;options&gt;] [&lt;revision range&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
+<literallayout><emphasis>gitk</emphasis> [&lt;options&gt;] [&lt;revision-range&gt;] [--] [&lt;path&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="gitk(1)__description">
@@ -32,7 +32,7 @@ options applicable to the <emphasis>git diff-*</emphasis> commands to control ho
 changes each commit introduces are shown.  Finally, it supports some
 gitk-specific options.</simpara>
 <simpara>gitk generally only understands options with arguments in the
-<emphasis>sticked</emphasis> form (see <xref linkend="gitcli(7)" />) due to limitations in the
+<emphasis>stuck</emphasis> form (see <xref linkend="gitcli(7)" />) due to limitations in the
 command-line parser.</simpara>
 <section id="gitk(1)__rev_list_options_and_arguments">
 <title>rev-list options and arguments</title>
@@ -266,7 +266,7 @@ in <xref linkend="gitattributes(5)" />).</simpara>
         range to show.  The command is expected to print on its
         standard output a list of additional revisions to be shown,
         one per line.  Use this instead of explicitly specifying a
-        <emphasis>&lt;revision range&gt;</emphasis> if the set of commits to show may vary
+        <emphasis>&lt;revision-range&gt;</emphasis> if the set of commits to show may vary
         between refreshes.
 </simpara>
 </listitem>

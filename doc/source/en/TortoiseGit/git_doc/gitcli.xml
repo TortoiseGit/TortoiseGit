@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitcli(7)">
     <title>gitcli(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitcli(7)</primary>
 </indexterm>
@@ -29,10 +29,10 @@ Options come first and then args.
     A subcommand may take dashed options (which may take their own
     arguments, e.g. "--max-parents 2") and arguments.  You SHOULD
     give dashed options first and then arguments.  Some commands may
-    accept dashed options after you have already gave non-option
+    accept dashed options after you have already given non-option
     arguments (which may make the command ambiguous), but you should
     not rely on it (because eventually we may find a way to fix
-    these ambiguity by enforcing the "options then args" rule).
+    these ambiguities by enforcing the "options then args" rule).
 </simpara>
 </listitem>
 <listitem>
@@ -49,7 +49,7 @@ When an argument can be misunderstood as either a revision or a path,
    they can be disambiguated by placing <emphasis>--</emphasis> between them.
    E.g. <emphasis>git diff -- HEAD</emphasis> is, "I have a file called HEAD in my work
    tree.  Please show changes between the version I staged in the index
-   and what I have in the work tree for that file", not "show difference
+   and what I have in the work tree for that file", not "show the difference
    between the HEAD commit and the work tree as a whole".  You can say
    <emphasis>git diff HEAD --</emphasis> to ask for the latter.
 </simpara>
@@ -57,7 +57,7 @@ When an argument can be misunderstood as either a revision or a path,
 <listitem>
 <simpara>
 Without disambiguating <emphasis>--</emphasis>, Git makes a reasonable guess, but errors
-   out and asking you to disambiguate when ambiguous.  E.g. if you have a
+   out and asks you to disambiguate when ambiguous.  E.g. if you have a
    file called HEAD in your work tree, <emphasis>git diff HEAD</emphasis> is ambiguous, and
    you have to say either <emphasis>git diff HEAD --</emphasis> or <emphasis>git diff -- HEAD</emphasis> to
    disambiguate.
@@ -102,12 +102,6 @@ Just as the filesystem <emphasis>.</emphasis> (period) refers to the current dir
 <simpara>Here are the rules regarding the "flags" that you should follow when you are
 scripting Git:</simpara>
 <itemizedlist>
-<listitem>
-<simpara>
-It's preferred to use the non-dashed form of Git commands, which means that
-   you should prefer <emphasis>git foo</emphasis> to <emphasis>git-foo</emphasis>.
-</simpara>
-</listitem>
 <listitem>
 <simpara>
 Splitting short options to separate words (prefer <emphasis>git foo -a -b</emphasis>

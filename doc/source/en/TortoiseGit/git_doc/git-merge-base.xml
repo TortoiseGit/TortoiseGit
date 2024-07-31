@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-merge-base(1)">
     <title>git-merge-base(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge-base(1)</primary>
 </indexterm>
@@ -24,7 +24,7 @@
 </simplesect>
 <simplesect id="git-merge-base(1)__description">
 <title>DESCRIPTION</title>
-<simpara><emphasis>git merge-base</emphasis> finds best common ancestor(s) between two commits to use
+<simpara><emphasis>git merge-base</emphasis> finds the best common ancestor(s) between two commits to use
 in a three-way merge.  One common ancestor is <emphasis>better</emphasis> than another common
 ancestor if the latter is an ancestor of the former.  A common ancestor
 that does not have any better common ancestor is a <emphasis>best common
@@ -33,7 +33,7 @@ merge base for a pair of commits.</simpara>
 </simplesect>
 <simplesect id="git-merge-base(1)__operation_modes">
 <title>OPERATION MODES</title>
-<simpara>As the most common special case, specifying only two commits on the
+<simpara>In the most common special case, specifying only two commits on the
 command line means computing the merge base between the given two commits.</simpara>
 <simpara>More generally, among the two commits to compute the merge base from,
 one is specified by the first commit argument on the command line;
@@ -93,7 +93,7 @@ from <xref linkend="git-show-branch(1)" /> when used with the <emphasis>--merge-
         the two commits, but also takes into account the reflog of
         &lt;ref&gt; to see if the history leading to &lt;commit&gt; forked from
         an earlier incarnation of the branch &lt;ref&gt; (see discussion
-        on this mode below).
+        of this mode below).
 </simpara>
 </listitem>
 </varlistentry>
@@ -126,7 +126,7 @@ which is reachable from both <emphasis>A</emphasis> and <emphasis>B</emphasis> t
         /
 ---o---1---o---o---o---A</literallayout>
 <simpara>the merge base between <emphasis>A</emphasis> and <emphasis>B</emphasis> is <emphasis>1</emphasis>.</simpara>
-<simpara>Given three commits <emphasis>A</emphasis>, <emphasis>B</emphasis> and <emphasis>C</emphasis>, <emphasis>git merge-base A B C</emphasis> will compute the
+<simpara>Given three commits <emphasis>A</emphasis>, <emphasis>B</emphasis>, and <emphasis>C</emphasis>, <emphasis>git merge-base A B C</emphasis> will compute the
 merge base between <emphasis>A</emphasis> and a hypothetical commit <emphasis>M</emphasis>, which is a merge
 between <emphasis>B</emphasis> and <emphasis>C</emphasis>.  For example, with this topology:</simpara>
 <literallayout class="monospaced">       o---o---o---o---C
@@ -153,7 +153,7 @@ the best common ancestor of all commits.</simpara>
      X
     / \
 ---2---o---o---B</literallayout>
-<simpara>both <emphasis>1</emphasis> and <emphasis>2</emphasis> are merge-bases of A and B.  Neither one is better than
+<simpara>both <emphasis>1</emphasis> and <emphasis>2</emphasis> are merge bases of A and B.  Neither one is better than
 the other (both are <emphasis>best</emphasis> merge bases).  When the <emphasis>--all</emphasis> option is not given,
 it is unspecified which best one is output.</simpara>
 <simpara>A common idiom to check "fast-forward-ness" between two commits A
@@ -206,7 +206,7 @@ discarded.</simpara>
 <literallayout class="monospaced">$ fork_point=$(git merge-base --fork-point origin/master topic)</literallayout>
 <simpara>will find B0, and</simpara>
 <literallayout class="monospaced">$ git rebase --onto origin/master $fork_point topic</literallayout>
-<simpara>will replay D0, D1 and D on top of B to create a new history of this
+<simpara>will replay D0, D1, and D on top of B to create a new history of this
 shape:</simpara>
 <literallayout class="monospaced">                 o---B2
                 /

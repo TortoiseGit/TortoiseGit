@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitattributes(5)">
     <title>gitattributes(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitattributes(5)</primary>
 </indexterm>
@@ -127,6 +127,19 @@ Attributes for all users on a system should be placed in the
 <simpara>Sometimes you would need to override a setting of an attribute
 for a path to <emphasis>Unspecified</emphasis> state.  This can be done by listing
 the name of the attribute prefixed with an exclamation point <emphasis>!</emphasis>.</simpara>
+</simplesect>
+<simplesect id="gitattributes(5)__reserved_builtin__attributes">
+<title>RESERVED BUILTIN_* ATTRIBUTES</title>
+<simpara>builtin_* is a reserved namespace for builtin attribute values. Any
+user defined attributes under this namespace will be ignored and
+trigger a warning.</simpara>
+<section id="gitattributes(5)__emphasis_builtin_objectmode_emphasis">
+<title><emphasis>builtin_objectmode</emphasis></title>
+<simpara>This attribute is for filtering files by their file bit modes (40000,
+120000, 160000, 100755, 100644). e.g. <emphasis>:(attr:builtin_objectmode=160000)</emphasis>.
+You may also check these values with <emphasis>git check-attr builtin_objectmode -- &lt;file&gt;</emphasis>.
+If the object is not in the index <emphasis>git check-attr --cached</emphasis> will return unspecified.</simpara>
+</section>
 </simplesect>
 <simplesect id="gitattributes(5)__effects">
 <title>EFFECTS</title>
@@ -1168,11 +1181,11 @@ manual page is a wrong place to talk about it.  However&#8230;</simpara>
 <simpara>The <emphasis>merge.*.name</emphasis> variable gives the driver a human-readable
 name.</simpara>
 <simpara>The merge.*.driver` variable's value is used to construct a
-command to run to merge ancestor's version (<emphasis>%O</emphasis>), current
+command to run to common ancestor's version (<emphasis>%O</emphasis>), current
 version (<emphasis>%A</emphasis>) and the other branches version (<emphasis>%B</emphasis>).  These
 three tokens are replaced with the names of temporary files that
 hold the contents of these versions when the command line is
-built. Additionally, %L will be replaced with the conflict marker
+built. Additionally, <emphasis>%L</emphasis> will be replaced with the conflict marker
 size (see below).</simpara>
 <simpara>The merge driver is expected to leave the result of the merge in
 the file named with <emphasis>%A</emphasis> by overwriting it, and exit with zero
@@ -1187,13 +1200,15 @@ merge between common ancestors, when there are more than one.
 When left unspecified, the driver itself is used for both
 internal merge and the final merge.</simpara>
 <simpara>The merge driver can learn the pathname in which the merged result
-will be stored via placeholder <emphasis>%P</emphasis>.</simpara>
+will be stored via placeholder <emphasis>%P</emphasis>. The conflict labels to be used
+for the common ancestor, local head and other head can be passed by
+using <emphasis>%S</emphasis>, <emphasis>%X</emphasis> and '%Y` respectively.</simpara>
 </section>
 <section id="gitattributes(5)__emphasis_conflict_marker_size_emphasis">
 <title><emphasis>conflict-marker-size</emphasis></title>
 <simpara>This attribute controls the length of conflict markers left in
-the work tree file during a conflicted merge.  Only setting to
-the value to a positive integer has any meaningful effect.</simpara>
+the work tree file during a conflicted merge.  Only a positive
+integer has a meaningful effect.</simpara>
 <simpara>For example, this line in <emphasis>.gitattributes</emphasis> can be used to tell the merge
 machinery to leave much longer (instead of the usual 7-character-long)
 conflict markers when merging the file <emphasis>Documentation/git-merge.txt</emphasis>

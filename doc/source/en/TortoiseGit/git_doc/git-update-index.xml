@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-update-index(1)">
     <title>git-update-index(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-update-index(1)</primary>
 </indexterm>
@@ -31,6 +31,7 @@
              [--really-refresh] [--unresolve] [--again | -g]
              [--info-only] [--index-info]
              [-z] [--stdin] [--index-version &lt;n&gt;]
+             [--show-index-version]
              [--verbose]
              [--] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
@@ -67,7 +68,7 @@ using the various options:</simpara>
 <simpara>
         If a specified file is in the index but is missing then it's
         removed.
-        Default behavior is to ignore removed file.
+        Default behavior is to ignore removed files.
 </simpara>
 </listitem>
 </varlistentry>
@@ -178,7 +179,7 @@ using the various options:</simpara>
         the index.  If you want to change the working tree file,
         you need to unset the bit to tell Git.  This is
         sometimes helpful when working with a big project on a
-        filesystem that has very slow lstat(2) system call
+        filesystem that has a very slow lstat(2) system call
         (e.g. cifs).
 </simpara>
 <simpara>Git will fail (gracefully) in case it needs to modify this file
@@ -204,7 +205,7 @@ you will need to handle the situation manually.</simpara>
 </term>
 <listitem>
 <simpara>
-        When one of these flags is specified, the object name recorded
+        When one of these flags is specified, the object names recorded
         for the paths are not updated. Instead, these options
         set and unset the "skip-worktree" bit for the paths. See
         section "Skip-worktree bit" below for more information.
@@ -228,7 +229,7 @@ you will need to handle the situation manually.</simpara>
 </term>
 <listitem>
 <simpara>
-        When one of these flags is specified, the object name recorded
+        When one of these flags is specified, the object names recorded
         for the paths are not updated. Instead, these options
         set and unset the "fsmonitor valid" bit for the paths. See
         section "File System Monitor" below for more information.
@@ -245,7 +246,7 @@ you will need to handle the situation manually.</simpara>
 <listitem>
 <simpara>
         Runs <emphasis>git update-index</emphasis> itself on the paths whose index
-        entries are different from those from the <emphasis>HEAD</emphasis> commit.
+        entries are different from those of the <emphasis>HEAD</emphasis> commit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -304,8 +305,8 @@ you will need to handle the situation manually.</simpara>
 </term>
 <listitem>
 <simpara>
-        Instead of taking list of paths from the command line,
-        read list of paths from the standard input.  Paths are
+        Instead of taking a list of paths from the command line,
+        read a list of paths from the standard input.  Paths are
         separated by LF (i.e. one path per line) by default.
 </simpara>
 </listitem>
@@ -316,7 +317,7 @@ you will need to handle the situation manually.</simpara>
 </term>
 <listitem>
 <simpara>
-        Report what is being added and removed from index.
+        Report what is being added and removed from the index.
 </simpara>
 </listitem>
 </varlistentry>
@@ -327,15 +328,28 @@ you will need to handle the situation manually.</simpara>
 <listitem>
 <simpara>
         Write the resulting index out in the named on-disk format version.
-        Supported versions are 2, 3 and 4. The current default version is 2
+        Supported versions are 2, 3, and 4. The current default version is 2
         or 3, depending on whether extra features are used, such as
-        <emphasis>git add -N</emphasis>.
+        <emphasis>git add -N</emphasis>.  With <emphasis>--verbose</emphasis>, also report the version the index
+        file uses before and after this command.
 </simpara>
 <simpara>Version 4 performs a simple pathname compression that reduces index
 size by 30%-50% on large repositories, which results in faster load
-time. Version 4 is relatively young (first released in 1.8.0 in
-October 2012). Other Git implementations such as JGit and libgit2
-may not support it yet.</simpara>
+time.  Git supports it since version 1.8.0, released in October 2012,
+and support for it was added to libgit2 in 2016 and to JGit in 2020.
+Older versions of this manual page called it "relatively young", but
+it should be considered mature technology these days.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--show-index-version
+</term>
+<listitem>
+<simpara>
+        Report the index format version used by the on-disk index file.
+        See <emphasis>--index-version</emphasis> above.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

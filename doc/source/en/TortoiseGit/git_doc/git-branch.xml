@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-branch(1)">
     <title>git-branch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-branch(1)</primary>
 </indexterm>
@@ -573,7 +573,8 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </term>
 <listitem>
 <simpara>
-        The name of an existing branch to rename.
+        The name of an existing branch.  If this option is omitted,
+        the name of the current branch will be used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -599,7 +600,7 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
         multiple times, in which case the last key becomes the primary
         key. The keys supported are the same as those in <emphasis>git
         for-each-ref</emphasis>. Sort order defaults to the value configured for the
-        <emphasis>branch.sort</emphasis> variable if exists, or to sorting based on the
+        <emphasis>branch.sort</emphasis> variable if it exists, or to sorting based on the
         full refname (including <emphasis>refs/...</emphasis> prefix). This lists
         detached HEAD (if present) first, then local branches and
         finally remote-tracking branches. See <xref linkend="git-config(1)" />.
@@ -703,7 +704,7 @@ branch.&lt;name&gt;.remote
 <listitem>
 <simpara>
         When on branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
-        which remote to fetch from/push to.  The remote to push to
+        which remote to fetch from or push to.  The remote to push to
         may be overridden with <emphasis>remote.pushDefault</emphasis> (for all branches).
         The remote to push to, for the current branch, may be further
         overridden by <emphasis>branch.&lt;name&gt;.pushRemote</emphasis>.  If no remote is
@@ -745,7 +746,7 @@ branch.&lt;name&gt;.merge
         handled like the remote part of a refspec, and must match a
         ref which is fetched from the remote given by
         "branch.&lt;name&gt;.remote".
-        The merge information is used by <emphasis>git pull</emphasis> (which at first calls
+        The merge information is used by <emphasis>git pull</emphasis> (which first calls
         <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
         this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
         Specify multiple values to get an octopus merge.
@@ -798,7 +799,7 @@ branch.&lt;name&gt;.description
 <simpara>
         Branch description, can be edited with
         <emphasis>git branch --edit-description</emphasis>. Branch description is
-        automatically added in the format-patch cover letter or
+        automatically added to the format-patch cover letter or
         request-pull summary.
 </simpara>
 </listitem>

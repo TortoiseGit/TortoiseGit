@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-mailsplit(1)">
     <title>git-mailsplit(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mailsplit(1)</primary>
 </indexterm>
@@ -68,7 +68,7 @@ patches in the correct order.</simpara></important>
 <listitem>
 <simpara>
         If any file doesn't begin with a From line, assume it is a
-        single mail message instead of signaling error.
+        single mail message instead of signaling an error.
 </simpara>
 </listitem>
 </varlistentry>

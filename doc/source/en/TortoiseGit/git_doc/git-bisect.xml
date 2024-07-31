@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-bisect(1)">
     <title>git-bisect(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-bisect(1)</primary>
 </indexterm>
@@ -22,17 +22,17 @@
 <title>DESCRIPTION</title>
 <simpara>The command takes various subcommands, and different options depending
 on the subcommand:</simpara>
-<literallayout class="monospaced">git bisect start [--term-{new,bad}=&lt;term&gt; --term-{old,good}=&lt;term&gt;]
-                 [--no-checkout] [--first-parent] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;paths&gt;...]
+<literallayout class="monospaced">git bisect start [--term-(bad|new)=&lt;term-new&gt; --term-(good|old)=&lt;term-old&gt;]
+                 [--no-checkout] [--first-parent] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;pathspec&gt;...]
 git bisect (bad|new|&lt;term-new&gt;) [&lt;rev&gt;]
 git bisect (good|old|&lt;term-old&gt;) [&lt;rev&gt;...]
-git bisect terms [--term-good | --term-bad]
+git bisect terms [--term-(good|old) | --term-(bad|new)]
 git bisect skip [(&lt;rev&gt;|&lt;range&gt;)...]
 git bisect reset [&lt;commit&gt;]
 git bisect (visualize|view)
 git bisect replay &lt;logfile&gt;
 git bisect log
-git bisect run &lt;cmd&gt;...
+git bisect run &lt;cmd&gt; [&lt;arg&gt;...]
 git bisect help</literallayout>
 <simpara>This command uses a binary search algorithm to find which commit in
 your project's history introduced a bug. You use it by first telling
@@ -117,8 +117,10 @@ commands to add the commits:</simpara>
 <simpara>to indicate that it was after.</simpara>
 <simpara>To get a reminder of the currently used terms, use</simpara>
 <screen>git bisect terms</screen>
-<simpara>You can get just the old (respectively new) term with <emphasis>git bisect terms
---term-old</emphasis> or <emphasis>git bisect terms --term-good</emphasis>.</simpara>
+<simpara>You can get just the old term with <emphasis>git bisect terms --term-old</emphasis>
+or <emphasis>git bisect terms --term-good</emphasis>; <emphasis>git bisect terms --term-new</emphasis>
+and <emphasis>git bisect terms --term-bad</emphasis> can be used to learn how to call
+the commits more recent than the sought change.</simpara>
 <simpara>If you would like to use your own terms instead of "bad"/"good" or
 "new"/"old", you can choose any names you like (except existing bisect
 subcommands like <emphasis>reset</emphasis>, <emphasis>start</emphasis>, &#8230;) by starting the
@@ -198,7 +200,7 @@ would issue the command:</simpara>
 <title>Cutting down bisection by giving more parameters to bisect start</title>
 <simpara>You can further cut down the number of trials, if you know what part of
 the tree is involved in the problem you are tracking down, by specifying
-path parameters when issuing the <emphasis>bisect start</emphasis> command:</simpara>
+pathspec parameters when issuing the <emphasis>bisect start</emphasis> command:</simpara>
 <screen>$ git bisect start -- arch/i386 include/asm-i386</screen>
 <simpara>If you know beforehand more than one good commit, you can narrow the
 bisect space down by specifying all of the good commits immediately after
@@ -250,7 +252,7 @@ determine the eventual outcome of the bisect session.</simpara>
 </term>
 <listitem>
 <simpara>Do not checkout the new working tree at each iteration of the bisection
-process. Instead just update a special reference named <emphasis>BISECT_HEAD</emphasis> to make
+process. Instead just update the reference named <emphasis>BISECT_HEAD</emphasis> to make
 it point to the commit that should be tested.</simpara>
 <simpara>This option may be useful when the test you would perform in each step
 does not require a checked out tree.</simpara>

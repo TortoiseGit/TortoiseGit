@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-format-patch(1)">
     <title>git-format-patch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-format-patch(1)</primary>
 </indexterm>
@@ -23,10 +23,10 @@
                    [--signature-file=&lt;file&gt;]
                    [-n | --numbered | -N | --no-numbered]
                    [--start-number &lt;n&gt;] [--numbered-files]
-                   [--in-reply-to=&lt;message id&gt;] [--suffix=.&lt;sfx&gt;]
+                   [--in-reply-to=&lt;message-id&gt;] [--suffix=.&lt;sfx&gt;]
                    [--ignore-if-in-upstream] [--always]
                    [--cover-from-description=&lt;mode&gt;]
-                   [--rfc] [--subject-prefix=&lt;subject prefix&gt;]
+                   [--rfc] [--subject-prefix=&lt;subject-prefix&gt;]
                    [(--reroll-count|-v) &lt;n&gt;]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
                    [--[no-]cover-letter] [--quiet]
@@ -36,8 +36,8 @@
                    [--range-diff=&lt;previous&gt; [--creation-factor=&lt;percent&gt;]]
                    [--filename-max-length=&lt;n&gt;]
                    [--progress]
-                   [&lt;common diff options&gt;]
-                   [ &lt;since&gt; | &lt;revision range&gt; ]</literallayout>
+                   [&lt;common-diff-options&gt;]
+                   [ &lt;since&gt; | &lt;revision-range&gt; ]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-format-patch(1)__description">
@@ -70,7 +70,7 @@ The "patch", which is the "diff -p --stat" output (see
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The log message and the patch is separated by a line with a
+<simpara>The log message and the patch are separated by a line with a
 three-dash line.</simpara>
 <simpara>There are two ways to specify which commits to operate on.</simpara>
 <orderedlist numeration="arabic">
@@ -83,7 +83,7 @@ A single commit, &lt;since&gt;, specifies that the commits leading
 </listitem>
 <listitem>
 <simpara>
-Generic &lt;revision range&gt; expression (see "SPECIFYING
+Generic &lt;revision-range&gt; expression (see "SPECIFYING
    REVISIONS" section in <xref linkend="gitrevisions(7)" />) means the
    commits in the specified range.
 </simpara>
@@ -311,14 +311,15 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
         part. Maximum width defaults to terminal width, or 80 columns
         if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
-        giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
-        of the graph part can be limited by using
-        <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> (affects all commands generating
-        a stat graph) or by setting <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>
-        (does not affect <emphasis>git format-patch</emphasis>).
-        By giving a third parameter <emphasis>&lt;count&gt;</emphasis>, you can limit the
-        output to the first <emphasis>&lt;count&gt;</emphasis> lines, followed by <emphasis>...</emphasis> if
-        there are more.
+        giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma or by setting
+        <emphasis>diff.statNameWidth=&lt;width&gt;</emphasis>. The width of the graph part can be
+        limited by using <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> or by setting
+        <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>. Using <emphasis>--stat</emphasis> or
+        <emphasis>--stat-graph-width</emphasis> affects all commands generating a stat graph,
+        while setting <emphasis>diff.statNameWidth</emphasis> or <emphasis>diff.statGraphWidth</emphasis>
+        does not affect <emphasis>git format-patch</emphasis>.
+        By giving a third parameter <emphasis>&lt;count&gt;</emphasis>, you can limit the output to
+        the first <emphasis>&lt;count&gt;</emphasis> lines, followed by <emphasis>...</emphasis> if there are more.
 </simpara>
 <simpara>These parameters can also be set individually with <emphasis>--stat-width=&lt;width&gt;</emphasis>,
 <emphasis>--stat-name-width=&lt;name-width&gt;</emphasis> and <emphasis>--stat-count=&lt;count&gt;</emphasis>.</simpara>
@@ -473,7 +474,7 @@ and accumulating child directory counts in the parent directories:
 </term>
 <listitem>
 <simpara>
-        Synonym for --dirstat=files,param1,param2&#8230;
+        Synonym for --dirstat=files,&lt;param1&gt;,&lt;param2&gt;&#8230;
 </simpara>
 </listitem>
 </varlistentry>
@@ -733,7 +734,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <simpara>
         Discard the files before the named &lt;file&gt; from the output
         (i.e. <emphasis>skip to</emphasis>), or move them to the end of the output
-        (i.e. <emphasis>rotate to</emphasis>).  These were invented primarily for use
+        (i.e. <emphasis>rotate to</emphasis>).  These options were invented primarily for the use
         of the <emphasis>git difftool</emphasis> command, and may not be very useful
         otherwise.
 </simpara>
@@ -974,8 +975,9 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <listitem>
 <simpara>
         Use the default source and destination prefixes ("a/" and "b/").
-        This is usually the default already, but may be used to override
-        config such as <emphasis>diff.noprefix</emphasis>.
+        This overrides configuration variables such as <emphasis>diff.noprefix</emphasis>,
+        <emphasis>diff.srcPrefix</emphasis>, <emphasis>diff.dstPrefix</emphasis>, and <emphasis>diff.mnemonicPrefix</emphasis>
+        (see <emphasis>git-config</emphasis>(1)).
 </simpara>
 </listitem>
 </varlistentry>
@@ -1182,12 +1184,12 @@ will want to ensure that threading is disabled for <emphasis>git send-email</emp
 </varlistentry>
 <varlistentry>
 <term>
---in-reply-to=&lt;message id&gt;
+--in-reply-to=&lt;message-id&gt;
 </term>
 <listitem>
 <simpara>
         Make the first mail (or all the mails with <emphasis>--no-thread</emphasis>) appear as a
-        reply to the given &lt;message id&gt;, which avoids breaking threads to
+        reply to the given &lt;message-id&gt;, which avoids breaking threads to
         provide a new patch series.
 </simpara>
 </listitem>
@@ -1242,15 +1244,31 @@ populated with placeholder text.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---subject-prefix=&lt;subject prefix&gt;
+--description-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        Use the contents of &lt;file&gt; instead of the branch's description
+        for generating the cover letter.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--subject-prefix=&lt;subject-prefix&gt;
 </term>
 <listitem>
 <simpara>
         Instead of the standard <emphasis>[PATCH]</emphasis> prefix in the subject
-        line, instead use <emphasis>[&lt;subject prefix&gt;]</emphasis>. This
-        allows for useful naming of a patch series, and can be
-        combined with the <emphasis>--numbered</emphasis> option.
+        line, instead use <emphasis>[&lt;subject-prefix&gt;]</emphasis>. This can be used
+        to name a patch series, and can be combined with the
+        <emphasis>--numbered</emphasis> option.
 </simpara>
+<simpara>The configuration variable <emphasis>format.subjectPrefix</emphasis> may also be used
+to configure a subject prefix to apply to a given repository for
+all patches. This is often useful on mailing lists which receive
+patches for several repositories and can be used to disambiguate
+the patches (with a value of e.g. "PATCH my-project").</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1273,9 +1291,9 @@ populated with placeholder text.</simpara>
 </term>
 <listitem>
 <simpara>
-        Alias for <emphasis>--subject-prefix="RFC PATCH"</emphasis>. RFC means "Request For
-        Comments"; use this when sending an experimental patch for
-        discussion rather than application.
+        Prepends "RFC" to the subject prefix (producing "RFC PATCH" by
+        default). RFC means "Request For Comments"; use this when sending
+        an experimental patch for discussion rather than application.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1582,7 +1600,7 @@ you can use <emphasis>--suffix=-patch</emphasis> to get <emphasis>0001-descripti
 </term>
 <listitem>
 <simpara>
-        Treat the revision argument as a &lt;revision range&gt;, even if it
+        Treat the revision argument as a &lt;revision-range&gt;, even if it
         is just a single commit (that would normally be treated as a
         &lt;since&gt;).  Note that root commits included in the specified
         range are always formatted as creation patches, independently
@@ -1814,8 +1832,8 @@ and the patches will not be mangled.</simpara>
 <section id="git-format-patch(1)__approach_3_external_editor">
 <title>Approach #3 (external editor)</title>
 <simpara>The following Thunderbird extensions are needed:
-AboutConfig from <ulink url="http://aboutconfig.mozdev.org/">http://aboutconfig.mozdev.org/</ulink> and
-External Editor from <ulink url="http://globs.org/articles.php?lng=en&amp;pg=8">http://globs.org/articles.php?lng=en&amp;pg=8</ulink></simpara>
+AboutConfig from <ulink url="https://mjg.github.io/AboutConfig/">https://mjg.github.io/AboutConfig/</ulink> and
+External Editor from <ulink url="https://globs.org/articles.php?lng=en&amp;pg=8">https://globs.org/articles.php?lng=en&amp;pg=8</ulink></simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>

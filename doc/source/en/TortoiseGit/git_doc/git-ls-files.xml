@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-ls-files(1)">
     <title>git-ls-files(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-ls-files(1)</primary>
 </indexterm>
@@ -32,11 +32,11 @@
 </simplesect>
 <simplesect id="git-ls-files(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This merges the file listing in the index with the actual working
+<simpara>This command merges the file listing in the index with the actual working
 directory list, and shows different combinations of the two.</simpara>
-<simpara>One or more of the options below may be used to determine the files
+<simpara>Several flags can be used to determine which files are
 shown, and each file may be printed multiple times if there are
-multiple entries in the index or multiple statuses are applicable for
+multiple entries in the index or if multiple statuses are applicable for
 the relevant file selection options.</simpara>
 </simplesect>
 <simplesect id="git-ls-files(1)__options">
@@ -112,7 +112,7 @@ the relevant file selection options.</simpara>
         matching an exclude pattern.  When showing "other" files
         (i.e. when used with <emphasis>-o</emphasis>), show only those matched by an
         exclude pattern.  Standard ignore rules are not automatically
-        activated, therefore at least one of the <emphasis>--exclude*</emphasis> options
+        activated; therefore, at least one of the <emphasis>--exclude*</emphasis> options
         is required.
 </simpara>
 </listitem>
@@ -256,8 +256,10 @@ the relevant file selection options.</simpara>
 <listitem>
 <simpara>
         Read additional exclude patterns that apply only to the
-        directory and its subdirectories in &lt;file&gt;.  Deprecated; use
-        --exclude-standard instead.
+        directory and its subdirectories in &lt;file&gt;.  If you are
+        trying to emulate the way Porcelain commands work, using
+        the <emphasis>--exclude-standard</emphasis> option instead is easier and more
+        thorough.
 </simpara>
 </listitem>
 </varlistentry>
@@ -306,7 +308,7 @@ the relevant file selection options.</simpara>
         Show status tags together with filenames.  Note that for
         scripting purposes, <xref linkend="git-status(1)" /> <emphasis>--porcelain</emphasis> and
         <xref linkend="git-diff-files(1)" /> <emphasis>--name-status</emphasis> are almost always
-        superior alternatives, and users should look at
+        superior alternatives; users should look at
         <xref linkend="git-status(1)" /> <emphasis>--short</emphasis> or <xref linkend="git-diff(1)" />
         <emphasis>--name-status</emphasis> for more user-friendly alternatives.
 </simpara>
@@ -670,9 +672,8 @@ path
 traversing the directory tree and finding files to show when the
 flags --others or --ignored are specified.  <xref linkend="gitignore(5)" />
 specifies the format of exclude patterns.</simpara>
-<simpara>Generally, you should just use --exclude-standard, but for historical
-reasons the exclude patterns can be specified from the following
-places, in order:</simpara>
+<simpara>These exclude patterns can be specified from the following places,
+in order:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
@@ -703,6 +704,24 @@ from the file specified with --exclude-from is relative to the
 top of the directory tree.  A pattern read from a file specified
 by --exclude-per-directory is relative to the directory that the
 pattern file appears in.</simpara>
+<simpara>Generally, you should be able to use <emphasis>--exclude-standard</emphasis> when you
+want the exclude rules applied the same way as what Porcelain
+commands do.  To emulate what <emphasis>--exclude-standard</emphasis> specifies, you
+can give <emphasis>--exclude-per-directory=.gitignore</emphasis>, and then specify:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+The file specified by the <emphasis>core.excludesfile</emphasis> configuration
+     variable, if exists, or the <emphasis>$XDG_CONFIG_HOME/git/ignore</emphasis> file.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>$GIT_DIR/info/exclude</emphasis> file.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>via the <emphasis>--exclude-from=</emphasis> option.</simpara>
 </simplesect>
 <simplesect id="git-ls-files(1)__see_also">
 <title>SEE ALSO</title>

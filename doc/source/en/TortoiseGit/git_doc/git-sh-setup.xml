@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-sh-setup(1)">
     <title>git-sh-setup(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-sh-setup(1)</primary>
 </indexterm>
@@ -27,7 +27,7 @@ Porcelain-ish scripts and/or are writing new ones.</simpara>
 <emphasis>.</emphasis>) by other shell scripts to set up some variables pointing at
 the normal Git directories and a few helper shell functions.</simpara>
 <simpara>Before sourcing it, your script should set up a few variables;
-<emphasis>USAGE</emphasis> (and <emphasis>LONG_USAGE</emphasis>, if any) is used to define message
+<emphasis>USAGE</emphasis> (and <emphasis>LONG_USAGE</emphasis>, if any) is used to define the message
 given by <emphasis>usage()</emphasis> shell function.  <emphasis>SUBDIRECTORY_OK</emphasis> can be set
 if the script can run from a subdirectory of the working tree
 (some commands do not).</simpara>

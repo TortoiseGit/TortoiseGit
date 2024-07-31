@@ -3,14 +3,14 @@
 
 <sect2 lang="en" id="git-whatchanged(1)">
     <title>git-whatchanged(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-whatchanged(1)</primary>
 </indexterm>
 <simplesect id="git-whatchanged(1)__name">
 <title>NAME</title>
-<simpara>git-whatchanged - Show logs with difference each commit introduces</simpara>
+<simpara>git-whatchanged - Show logs with differences each commit introduces</simpara>
 </simplesect>
 <simplesect id="git-whatchanged(1)__synopsis">
 <title>SYNOPSIS</title>
@@ -23,10 +23,10 @@
 <simpara>Shows commit logs and diff output each commit introduces.</simpara>
 <simpara>New users are encouraged to use <xref linkend="git-log(1)" /> instead.  The
 <emphasis>whatchanged</emphasis> command is essentially the same as <xref linkend="git-log(1)" />
-but defaults to show the raw format diff output and to skip merges.</simpara>
-<simpara>The command is kept primarily for historical reasons; fingers of
+but defaults to showing the raw format diff output and skipping merges.</simpara>
+<simpara>The command is primarily kept for historical reasons; fingers of
 many people who learned Git long before <emphasis>git log</emphasis> was invented by
-reading Linux kernel mailing list are trained to type it.</simpara>
+reading the Linux kernel mailing list are trained to type it.</simpara>
 </simplesect>
 <simplesect id="git-whatchanged(1)__examples">
 <title>Examples</title>

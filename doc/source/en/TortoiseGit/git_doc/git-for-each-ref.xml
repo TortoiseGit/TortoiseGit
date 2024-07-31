@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-for-each-ref(1)">
     <title>git-for-each-ref(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-for-each-ref(1)</primary>
 </indexterm>
@@ -17,7 +17,7 @@
 <blockquote>
 <literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
                    [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;]
-                   [ --stdin | &lt;pattern&gt;&#8230; ]
+                   [--include-root-refs] [ --stdin | &lt;pattern&gt;&#8230; ]
                    [--points-at=&lt;object&gt;]
                    [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
                    [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]
@@ -92,18 +92,14 @@ host language allowing their direct evaluation in that language.</simpara>
 </term>
 <listitem>
 <simpara>
-        A string that interpolates <emphasis>%(fieldname)</emphasis> from a ref being shown
-        and the object it points at.  If <emphasis>fieldname</emphasis>
-        is prefixed with an asterisk (<emphasis>*</emphasis>) and the ref points
-        at a tag object, use the value for the field in the object
-        which the tag object refers to (instead of the field in the tag object).
-        When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to
-        <emphasis>%(objectname) SPC %(objecttype) TAB %(refname)</emphasis>.
-        It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xx</emphasis> where <emphasis>xx</emphasis>
-        are hex digits interpolates to character with hex code
-        <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis> interpolates to <emphasis>\0</emphasis> (NUL),
-        <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from a ref being shown and
+        the object it points at. In addition, the string literal <emphasis>%%</emphasis>
+        renders as <emphasis>%</emphasis> and <emphasis>%xx</emphasis> - where <emphasis>xx</emphasis> are hex digits - renders as
+        the character with hex code <emphasis>xx</emphasis>. For example, <emphasis>%00</emphasis> interpolates to
+        <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB), and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
 </simpara>
+<simpara>When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to <emphasis>%(objectname) SPC %(objecttype)
+TAB %(refname)</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -224,6 +220,16 @@ host language allowing their direct evaluation in that language.</simpara>
         If one or more patterns are given, only refs which do not match
         any excluded pattern(s) are shown. Matching is done using the
         same rules as <emphasis>&lt;pattern&gt;</emphasis> above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--include-root-refs
+</term>
+<listitem>
+<simpara>
+        List root refs (HEAD and pseudorefs) apart from regular refs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -600,12 +606,19 @@ Fields <emphasis>tree</emphasis> and <emphasis>parent</emphasis> can also be use
 fields will correspond to the appropriate date or name-email-date tuple
 from the <emphasis>committer</emphasis> or <emphasis>tagger</emphasis> fields depending on the object type.
 These are intended for working on a mix of annotated and lightweight tags.</simpara>
+<simpara>For tag objects, a <emphasis>fieldname</emphasis> prefixed with an asterisk (<emphasis>*</emphasis>) expands to
+the <emphasis>fieldname</emphasis> value of the peeled object, rather than that of the tag
+object itself.</simpara>
 <simpara>Fields that have name-email-date tuple as its value (<emphasis>author</emphasis>,
 <emphasis>committer</emphasis>, and <emphasis>tagger</emphasis>) can be suffixed with <emphasis>name</emphasis>, <emphasis>email</emphasis>,
 and <emphasis>date</emphasis> to extract the named component.  For email fields (<emphasis>authoremail</emphasis>,
 <emphasis>committeremail</emphasis> and <emphasis>taggeremail</emphasis>), <emphasis>:trim</emphasis> can be appended to get the email
 without angle brackets, and <emphasis>:localpart</emphasis> to get the part before the <emphasis>@</emphasis> symbol
-out of the trimmed email.</simpara>
+out of the trimmed email. In addition to these, the <emphasis>:mailmap</emphasis> option and the
+corresponding <emphasis>:mailmap,trim</emphasis> and <emphasis>:mailmap,localpart</emphasis> can be used (order does
+not matter) to get values of the name and email according to the .mailmap file
+or according to the file set in the mailmap.file or mailmap.blob configuration
+variable (see <xref linkend="gitmailmap(5)" />).</simpara>
 <simpara>The raw data in an object is <emphasis>raw</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
@@ -694,9 +707,11 @@ the fieldname <emphasis>version:refname</emphasis> or its alias <emphasis>v:refn
 <simpara>In any case, a field name that refers to a field inapplicable to
 the object referred by the ref does not cause an error.  It
 returns an empty string instead.</simpara>
-<simpara>As a special case for the date-type fields, you may specify a format for
-the date by adding <emphasis>:</emphasis> followed by date format name (see the
-values the <emphasis>--date</emphasis> option to <xref linkend="git-rev-list(1)" /> takes).</simpara>
+<simpara>As a special case for the date-type fields, you may specify a format for the
+date by adding <emphasis>:</emphasis> followed by date format name (see the values the <emphasis>--date</emphasis>
+option to <xref linkend="git-rev-list(1)" /> takes). If this formatting is provided in
+a <emphasis>--sort</emphasis> key, references will be sorted according to the byte-value of the
+formatted string rather than the numeric value of the underlying timestamp.</simpara>
 <simpara>Some atoms like %(align) and %(if) always require a matching %(end).
 We call them "opening atoms" and sometimes denote them as %($open).</simpara>
 <simpara>When a scripting language specific quoting is in effect, everything

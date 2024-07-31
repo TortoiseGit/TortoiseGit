@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-diagnose(1)">
     <title>git-diagnose(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-diagnose(1)</primary>
 </indexterm>
@@ -88,7 +88,7 @@ of repository contents.</simpara>
 <listitem>
 <simpara>
         Specify an alternate suffix for the diagnostics archive name, to create
-        a file named <emphasis>git-diagnostics-&lt;formatted suffix&gt;</emphasis>. This should take the
+        a file named <emphasis>git-diagnostics-&lt;formatted-suffix&gt;</emphasis>. This should take the
         form of a strftime(3) format string; the current local time will be
         used.
 </simpara>

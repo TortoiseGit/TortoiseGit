@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-reflog(1)">
     <title>git-reflog(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-reflog(1)</primary>
 </indexterm>
@@ -16,6 +16,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git reflog</emphasis> [show] [&lt;log-options&gt;] [&lt;ref&gt;]
+<emphasis>git reflog list</emphasis>
 <emphasis>git reflog expire</emphasis> [--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]
         [--rewrite] [--updateref] [--stale-fix]
         [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
@@ -42,6 +43,7 @@ command-line (or <emphasis>HEAD</emphasis>, by default). The reflog covers all r
 actions, and in addition the <emphasis>HEAD</emphasis> reflog records branch switching.
 <emphasis>git reflog show</emphasis> is an alias for <emphasis>git log -g --abbrev-commit
 --pretty=oneline</emphasis>; see <xref linkend="git-log(1)" /> for more information.</simpara>
+<simpara>The "list" subcommand lists all refs which have a corresponding reflog.</simpara>
 <simpara>The "expire" subcommand prunes older reflog entries. Entries older
 than <emphasis>expire</emphasis> time, or entries older than <emphasis>expire-unreachable</emphasis> time
 and not reachable from the current tip, are removed from the reflog.

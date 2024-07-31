@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-read-tree(1)">
     <title>git-read-tree(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-read-tree(1)</primary>
 </indexterm>
@@ -29,8 +29,8 @@ but does not actually <emphasis role="strong">update</emphasis> any of the files
 fast-forward (i.e. 2-way) merge, or a 3-way merge, with the <emphasis>-m</emphasis>
 flag.  When used with <emphasis>-m</emphasis>, the <emphasis>-u</emphasis> flag causes it to also update
 the files in the work tree with the result of the merge.</simpara>
-<simpara>Trivial merges are done by <emphasis>git read-tree</emphasis> itself.  Only conflicting paths
-will be in unmerged state when <emphasis>git read-tree</emphasis> returns.</simpara>
+<simpara>Only trivial merges are done by <emphasis>git read-tree</emphasis> itself.  Only conflicting paths
+will be in an unmerged state when <emphasis>git read-tree</emphasis> returns.</simpara>
 </simplesect>
 <simplesect id="git-read-tree(1)__options">
 <title>OPTIONS</title>
@@ -43,7 +43,7 @@ will be in unmerged state when <emphasis>git read-tree</emphasis> returns.</simp
 <simpara>
         Perform a merge, not just a read.  The command will
         refuse to run if your index file has unmerged entries,
-        indicating that you have not finished previous merge you
+        indicating that you have not finished a previous merge you
         started.
 </simpara>
 </listitem>

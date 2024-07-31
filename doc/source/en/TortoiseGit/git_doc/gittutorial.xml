@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gittutorial(7)">
     <title>gittutorial(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gittutorial(7)</primary>
 </indexterm>
@@ -87,10 +87,10 @@ record a new version of the project.</simpara>
 <simpara>which will automatically notice any modified (but not new) files, add
 them to the index, and commit, all in one step.</simpara>
 <simpara>A note on commit messages: Though not required, it's a good idea to
-begin the commit message with a single short (less than 50 character)
-line summarizing the change, followed by a blank line and then a more
-thorough description. The text up to the first blank line in a commit
-message is treated as the commit title, and that title is used
+begin the commit message with a single short (no more than 50
+characters) line summarizing the change, followed by a blank line and
+then a more thorough description. The text up to the first blank line in
+a commit message is treated as the commit title, and that title is used
 throughout Git.  For example, <xref linkend="git-format-patch(1)" /> turns a
 commit into email, and it uses the title on the Subject line and the
 rest of the commit in the body.</simpara>

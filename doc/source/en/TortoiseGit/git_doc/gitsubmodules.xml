@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitsubmodules(7)">
     <title>gitsubmodules(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitsubmodules(7)</primary>
 </indexterm>
@@ -99,7 +99,7 @@ Access control:
 <simpara>
 The command line for those commands that support taking submodules
    as part of their pathspecs. Most commands have a boolean flag
-   <emphasis>--recurse-submodules</emphasis> which specify whether to recurse into submodules.
+   <emphasis>--recurse-submodules</emphasis> which specifies whether to recurse into submodules.
    Examples are <emphasis>grep</emphasis> and <emphasis>checkout</emphasis>.
    Some commands take enums, such as <emphasis>fetch</emphasis> and <emphasis>push</emphasis>, where you can
    specify how submodules are affected.
@@ -186,7 +186,7 @@ is not affected. This can be undone using <emphasis>git submodule init</emphasis
 <listitem>
 <simpara>
 Deleted submodule: A submodule can be deleted by running
-<emphasis>git rm &lt;submodule path&gt; &amp;&amp; git commit</emphasis>. This can be undone
+<emphasis>git rm &lt;submodule-path&gt; &amp;&amp; git commit</emphasis>. This can be undone
 using <emphasis>git revert</emphasis>.
 </simpara>
 <simpara>The deletion removes the superproject's tracking data, which are
@@ -232,7 +232,7 @@ if <emphasis>submodule.&lt;name&gt;.url</emphasis> is set.
   url = https://example.org/bar
 [submodule "baz"]
   url = https://example.org/baz</literallayout>
-<simpara>In the above config only the submodule <emphasis>bar</emphasis> and <emphasis>baz</emphasis> are active,
+<simpara>In the above config only the submodules <emphasis>bar</emphasis> and <emphasis>baz</emphasis> are active,
 <emphasis>bar</emphasis> due to (1) and <emphasis>baz</emphasis> due to (3). <emphasis>foo</emphasis> is inactive because
 (1) takes precedence over (3)</simpara>
 <simpara>Note that (3) is a historical artefact and will be ignored if the
@@ -264,7 +264,7 @@ presence of the .url field.</simpara>
 <literallayout class="monospaced"># Add a submodule
 git submodule add &lt;URL&gt; &lt;path&gt;</literallayout>
 <literallayout class="monospaced"># Occasionally update the submodule to a new version:
-git -C &lt;path&gt; checkout &lt;new version&gt;
+git -C &lt;path&gt; checkout &lt;new-version&gt;
 git add &lt;path&gt;
 git commit -m "update submodule to new version"</literallayout>
 <literallayout class="monospaced"># See the list of submodules in a superproject
@@ -298,7 +298,7 @@ will not be checked out by default; you can instruct <emphasis>clone</emphasis> 
 into submodules. The <emphasis>init</emphasis> and <emphasis>update</emphasis> subcommands of <emphasis>git submodule</emphasis>
 will maintain submodules checked out and at an appropriate revision in
 your working tree. Alternatively you can set <emphasis>submodule.recurse</emphasis> to have
-<emphasis>checkout</emphasis> recursing into submodules (note that <emphasis>submodule.recurse</emphasis> also
+<emphasis>checkout</emphasis> recurse into submodules (note that <emphasis>submodule.recurse</emphasis> also
 affects other Git commands, see <xref linkend="git-config(1)" /> for a complete list).</simpara>
 </simplesect>
 <simplesect id="gitsubmodules(7)__see_also">

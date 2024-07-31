@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-v2(5)">
     <title>gitprotocol-v2(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-v2(5)</primary>
 </indexterm>
@@ -60,7 +60,7 @@ Designed with http and stateless-rpc in mind.  With clear flush
 </listitem>
 </itemizedlist>
 <simpara>In protocol v2 communication is command oriented.  When first contacting a
-server a list of capabilities will advertised.  Some of these capabilities
+server a list of capabilities will be advertised.  Some of these capabilities
 will be commands which a client can request be executed.  Once a command
 has completed, a client can reuse the connection and request that other
 commands be executed.</simpara>
@@ -215,7 +215,7 @@ Unlike the current reference advertisement, ls-refs takes in arguments
 which can be used to limit the refs sent from the server.</simpara>
 <simpara>Additional features not supported in the base command will be advertised
 as the value of the command in the capability advertisement in the form
-of a space separated list of features: "&lt;command&gt;=&lt;feature 1&gt; &lt;feature 2&gt;"</simpara>
+of a space separated list of features: "&lt;command&gt;=&lt;feature-1&gt; &lt;feature-2&gt;"</simpara>
 <simpara>ls-refs takes in the following arguments:</simpara>
 <literallayout class="monospaced">symrefs
     In addition to the object pointed by it, show the underlying ref
@@ -253,7 +253,7 @@ message format is tweaked to eliminate redundancies and permit easy
 addition of future extensions.</simpara>
 <simpara>Additional features not supported in the base command will be advertised
 as the value of the command in the capability advertisement in the form
-of a space separated list of features: "&lt;command&gt;=&lt;feature 1&gt; &lt;feature 2&gt;"</simpara>
+of a space separated list of features: "&lt;command&gt;=&lt;feature-1&gt; &lt;feature-2&gt;"</simpara>
 <simpara>A <emphasis>fetch</emphasis> request can take the following arguments:</simpara>
 <literallayout class="monospaced">want &lt;oid&gt;
     Indicates to the server an object which the client wants to
@@ -336,7 +336,8 @@ the <emphasis>wanted-refs</emphasis> section in the server's response as explain
 <literallayout class="monospaced">want-ref &lt;ref&gt;
     Indicates to the server that the client wants to retrieve a
     particular ref, where &lt;ref&gt; is the full name of a ref on the
-    server.</literallayout>
+    server.  It is a protocol error to send want-ref for the
+    same ref more than once.</literallayout>
 <simpara>If the <emphasis>sideband-all</emphasis> feature is advertised, the following argument can be
 included in the client's request:</simpara>
 <literallayout class="monospaced">sideband-all
@@ -348,8 +349,9 @@ included in the client's request:</simpara>
 <simpara>If the <emphasis>packfile-uris</emphasis> feature is advertised, the following argument
 can be included in the client's request as well as the potential
 addition of the <emphasis>packfile-uris</emphasis> section in the server's response as
-explained below.</simpara>
-<literallayout class="monospaced">packfile-uris &lt;comma-separated list of protocols&gt;
+explained below. Note that at most one <emphasis>packfile-uris</emphasis> line can be sent
+to the server.</simpara>
+<literallayout class="monospaced">packfile-uris &lt;comma-separated-list-of-protocols&gt;
     Indicates to the server that the client is willing to receive
     URIs of any of the given protocols in place of objects in the
     sent packfile. Before performing the connectivity check, the
@@ -565,7 +567,7 @@ only handle SHA-1.  If the client would like to use a hash algorithm other than
 SHA-1, it should specify its object-format string.</simpara>
 </section>
 <section id="gitprotocol-v2(5)__session_id_lt_session_id_gt">
-<title>session-id=&lt;session id&gt;</title>
+<title>session-id=&lt;session-id&gt;</title>
 <simpara>The server may advertise a session ID that can be used to identify this process
 across multiple requests. The client may advertise its own session ID back to
 the server as well.</simpara>

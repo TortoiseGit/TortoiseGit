@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitformat-index(5)">
     <title>gitformat-index(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitformat-index(5)</primary>
 </indexterm>
@@ -476,8 +476,8 @@ Hash over the extension types and their sizes (but not
         long, "REUC" extension that is M-bytes long, followed by "EOIE",
         then the hash would be:
 </simpara>
-<literallayout class="monospaced">Hash("TREE" + &lt;binary representation of N&gt; +
-        "REUC" + &lt;binary representation of M&gt;)</literallayout>
+<literallayout class="monospaced">Hash("TREE" + &lt;binary-representation-of-N&gt; +
+        "REUC" + &lt;binary-representation-of-M&gt;)</literallayout>
 </listitem>
 </itemizedlist>
 </simplesect>

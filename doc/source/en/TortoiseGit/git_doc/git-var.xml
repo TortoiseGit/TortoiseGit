@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-var(1)">
     <title>git-var(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-var(1)</primary>
 </indexterm>
@@ -32,7 +32,7 @@ no value.</simpara>
 </term>
 <listitem>
 <simpara>
-        Cause the logical variables to be listed. In addition, all the
+        Display the logical variables. In addition, all the
         variables of the Git configuration file .git/config are listed
         as well. (However, the configuration variables listing functionality
         is deprecated in favor of <emphasis>git config -l</emphasis>.)

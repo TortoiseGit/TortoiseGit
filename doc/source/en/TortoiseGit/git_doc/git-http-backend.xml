@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-http-backend(1)">
     <title>git-http-backend(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-http-backend(1)</primary>
 </indexterm>
@@ -30,7 +30,7 @@ discussion of <emphasis>GIT_PROTOCOL</emphasis> in the ENVIRONMENT section below
 <simpara>It verifies that the directory has the magic file
 "git-daemon-export-ok", and it will refuse to export any Git directory
 that hasn't explicitly been marked for export this way (unless the
-<emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environmental variable is set).</simpara>
+<emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environment variable is set).</simpara>
 <simpara>By default, only the <emphasis>upload-pack</emphasis> service is enabled, which serves
 <emphasis>git fetch-pack</emphasis> and <emphasis>git ls-remote</emphasis> clients, which are invoked from
 <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis>, and <emphasis>git clone</emphasis>.  If the client is authenticated,
@@ -53,7 +53,7 @@ http.getanyfile
         any file within the repository, including objects that are
         no longer reachable from a branch but are still present.
         It is enabled by default, but a repository can disable it
-        by setting this configuration item to <emphasis>false</emphasis>.
+        by setting this configuration value to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -65,7 +65,7 @@ http.uploadpack
 <simpara>
         This serves <emphasis>git fetch-pack</emphasis> and <emphasis>git ls-remote</emphasis> clients.
         It is enabled by default, but a repository can disable it
-        by setting this configuration item to <emphasis>false</emphasis>.
+        by setting this configuration value to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -294,11 +294,11 @@ REQUEST_METHOD
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The <emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environmental variable may be passed to
+<simpara>The <emphasis>GIT_HTTP_EXPORT_ALL</emphasis> environment variable may be passed to
 <emphasis>git-http-backend</emphasis> to bypass the check for the "git-daemon-export-ok"
 file in each repository before allowing export of that repository.</simpara>
 <simpara>The <emphasis>GIT_HTTP_MAX_REQUEST_BUFFER</emphasis> environment variable (or the
-<emphasis>http.maxRequestBuffer</emphasis> config variable) may be set to change the
+<emphasis>http.maxRequestBuffer</emphasis> config option) may be set to change the
 largest ref negotiation request that git will handle during a fetch; any
 fetch requiring a larger buffer will not succeed.  This value should not
 normally need to be changed, but may be helpful if you are fetching from

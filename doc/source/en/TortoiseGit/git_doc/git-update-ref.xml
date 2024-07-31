@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-update-ref(1)">
     <title>git-update-ref(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-update-ref(1)</primary>
 </indexterm>
@@ -15,21 +15,21 @@
 <simplesect id="git-update-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] [--no-deref] (-d &lt;ref&gt; [&lt;oldvalue&gt;] | [--create-reflog] &lt;ref&gt; &lt;newvalue&gt; [&lt;oldvalue&gt;] | --stdin [-z])</literallayout>
+<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] [--no-deref] (-d &lt;ref&gt; [&lt;old-oid&gt;] | [--create-reflog] &lt;ref&gt; &lt;new-oid&gt; [&lt;old-oid&gt;] | --stdin [-z])</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-update-ref(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Given two arguments, stores the &lt;newvalue&gt; in the &lt;ref&gt;, possibly
+<simpara>Given two arguments, stores the &lt;new-oid&gt; in the &lt;ref&gt;, possibly
 dereferencing the symbolic refs.  E.g. <emphasis>git update-ref HEAD
-&lt;newvalue&gt;</emphasis> updates the current branch head to the new object.</simpara>
-<simpara>Given three arguments, stores the &lt;newvalue&gt; in the &lt;ref&gt;,
+&lt;new-oid&gt;</emphasis> updates the current branch head to the new object.</simpara>
+<simpara>Given three arguments, stores the &lt;new-oid&gt; in the &lt;ref&gt;,
 possibly dereferencing the symbolic refs, after verifying that
-the current value of the &lt;ref&gt; matches &lt;oldvalue&gt;.
-E.g. <emphasis>git update-ref refs/heads/master &lt;newvalue&gt; &lt;oldvalue&gt;</emphasis>
-updates the master branch head to &lt;newvalue&gt; only if its current
-value is &lt;oldvalue&gt;.  You can specify 40 "0" or an empty string
-as &lt;oldvalue&gt; to make sure that the ref you are creating does
+the current value of the &lt;ref&gt; matches &lt;old-oid&gt;.
+E.g. <emphasis>git update-ref refs/heads/master &lt;new-oid&gt; &lt;old-oid&gt;</emphasis>
+updates the master branch head to &lt;new-oid&gt; only if its current
+value is &lt;old-oid&gt;.  You can specify 40 "0" or an empty string
+as &lt;old-oid&gt; to make sure that the ref you are creating does
 not exist.</simpara>
 <simpara>It also allows a "ref" file to be a symbolic pointer to another
 ref file by starting with the four-byte header sequence of
@@ -54,13 +54,13 @@ for reading but not for writing (so we'll never write through a
 ref symlink to some other tree, if you have copied a whole
 archive by creating a symlink tree).</simpara>
 <simpara>With <emphasis>-d</emphasis> flag, it deletes the named &lt;ref&gt; after verifying it
-still contains &lt;oldvalue&gt;.</simpara>
+still contains &lt;old-oid&gt;.</simpara>
 <simpara>With <emphasis>--stdin</emphasis>, update-ref reads instructions from standard input and
 performs all modifications together.  Specify commands of the form:</simpara>
-<literallayout class="monospaced">update SP &lt;ref&gt; SP &lt;newvalue&gt; [SP &lt;oldvalue&gt;] LF
-create SP &lt;ref&gt; SP &lt;newvalue&gt; LF
-delete SP &lt;ref&gt; [SP &lt;oldvalue&gt;] LF
-verify SP &lt;ref&gt; [SP &lt;oldvalue&gt;] LF
+<literallayout class="monospaced">update SP &lt;ref&gt; SP &lt;new-oid&gt; [SP &lt;old-oid&gt;] LF
+create SP &lt;ref&gt; SP &lt;new-oid&gt; LF
+delete SP &lt;ref&gt; [SP &lt;old-oid&gt;] LF
+verify SP &lt;ref&gt; [SP &lt;old-oid&gt;] LF
 option SP &lt;opt&gt; LF
 start LF
 prepare LF
@@ -74,10 +74,10 @@ Use 40 "0" characters or the empty string to specify a zero value.  To
 specify a missing value, omit the value and its preceding SP entirely.</simpara>
 <simpara>Alternatively, use <emphasis>-z</emphasis> to specify in NUL-terminated format, without
 quoting:</simpara>
-<literallayout class="monospaced">update SP &lt;ref&gt; NUL &lt;newvalue&gt; NUL [&lt;oldvalue&gt;] NUL
-create SP &lt;ref&gt; NUL &lt;newvalue&gt; NUL
-delete SP &lt;ref&gt; NUL [&lt;oldvalue&gt;] NUL
-verify SP &lt;ref&gt; NUL [&lt;oldvalue&gt;] NUL
+<literallayout class="monospaced">update SP &lt;ref&gt; NUL &lt;new-oid&gt; NUL [&lt;old-oid&gt;] NUL
+create SP &lt;ref&gt; NUL &lt;new-oid&gt; NUL
+delete SP &lt;ref&gt; NUL [&lt;old-oid&gt;] NUL
+verify SP &lt;ref&gt; NUL [&lt;old-oid&gt;] NUL
 option SP &lt;opt&gt; NUL
 start NUL
 prepare NUL
@@ -95,9 +95,9 @@ update
 </term>
 <listitem>
 <simpara>
-        Set &lt;ref&gt; to &lt;newvalue&gt; after verifying &lt;oldvalue&gt;, if given.
-        Specify a zero &lt;newvalue&gt; to ensure the ref does not exist
-        after the update and/or a zero &lt;oldvalue&gt; to make sure the
+        Set &lt;ref&gt; to &lt;new-oid&gt; after verifying &lt;old-oid&gt;, if given.
+        Specify a zero &lt;new-oid&gt; to ensure the ref does not exist
+        after the update and/or a zero &lt;old-oid&gt; to make sure the
         ref does not exist before the update.
 </simpara>
 </listitem>
@@ -108,8 +108,8 @@ create
 </term>
 <listitem>
 <simpara>
-        Create &lt;ref&gt; with &lt;newvalue&gt; after verifying it does not
-        exist.  The given &lt;newvalue&gt; may not be zero.
+        Create &lt;ref&gt; with &lt;new-oid&gt; after verifying it does not
+        exist.  The given &lt;new-oid&gt; may not be zero.
 </simpara>
 </listitem>
 </varlistentry>
@@ -119,8 +119,8 @@ delete
 </term>
 <listitem>
 <simpara>
-        Delete &lt;ref&gt; after verifying it exists with &lt;oldvalue&gt;, if
-        given.  If given, &lt;oldvalue&gt; may not be zero.
+        Delete &lt;ref&gt; after verifying it exists with &lt;old-oid&gt;, if
+        given.  If given, &lt;old-oid&gt; may not be zero.
 </simpara>
 </listitem>
 </varlistentry>
@@ -130,8 +130,8 @@ verify
 </term>
 <listitem>
 <simpara>
-        Verify &lt;ref&gt; against &lt;oldvalue&gt; but do not change it.  If
-        &lt;oldvalue&gt; is zero or missing, the ref must not exist.
+        Verify &lt;ref&gt; against &lt;old-oid&gt; but do not change it.  If
+        &lt;old-oid&gt; is zero or missing, the ref must not exist.
 </simpara>
 </listitem>
 </varlistentry>
@@ -141,7 +141,7 @@ option
 </term>
 <listitem>
 <simpara>
-        Modify behavior of the next command naming a &lt;ref&gt;.
+        Modify the behavior of the next command naming a &lt;ref&gt;.
         The only valid option is <emphasis>no-deref</emphasis> to avoid dereferencing
         a symbolic ref.
 </simpara>
@@ -195,7 +195,7 @@ abort
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>If all &lt;ref&gt;s can be locked with matching &lt;oldvalue&gt;s
+<simpara>If all &lt;ref&gt;s can be locked with matching &lt;old-oid&gt;s
 simultaneously, all modifications are performed.  Otherwise, no
 modifications are performed.  Note that while each individual
 &lt;ref&gt; is updated or deleted atomically, a concurrent reader may
@@ -213,7 +213,7 @@ formatted as:</simpara>
 <literallayout class="monospaced">oldsha1 SP newsha1 SP committer LF</literallayout>
 <simpara>Where "oldsha1" is the 40 character hexadecimal value previously
 stored in &lt;ref&gt;, "newsha1" is the 40 character hexadecimal value of
-&lt;newvalue&gt; and "committer" is the committer's name, email address
+&lt;new-oid&gt; and "committer" is the committer's name, email address
 and date in the standard Git committer ident format.</simpara>
 <simpara>Optionally with -m:</simpara>
 <literallayout class="monospaced">oldsha1 SP newsha1 SP committer TAB message LF</literallayout>

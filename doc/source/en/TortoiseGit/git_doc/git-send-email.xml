@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-send-email(1)">
     <title>git-send-email(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-send-email(1)</primary>
 </indexterm>
@@ -15,8 +15,8 @@
 <simplesect id="git-send-email(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;file|directory&gt;&#8230;
-<emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;format-patch options&gt;
+<literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] (&lt;file&gt;|&lt;directory&gt;)&#8230;
+<emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;format-patch-options&gt;
 <emphasis>git send-email</emphasis> --dump-aliases</literallayout>
 </blockquote>
 </simplesect>
@@ -100,11 +100,12 @@ and the "Subject:" of the message as the second line.</simpara>
         Invoke a text editor (see GIT_EDITOR in <xref linkend="git-var(1)" />)
         to edit an introductory message for the patch series.
 </simpara>
-<simpara>When <emphasis>--compose</emphasis> is used, git send-email will use the From, Subject, and
-In-Reply-To headers specified in the message. If the body of the message
-(what you type after the headers and a blank line) only contains blank
-(or Git: prefixed) lines, the summary won't be sent, but From, Subject,
-and In-Reply-To headers will be used unless they are removed.</simpara>
+<simpara>When <emphasis>--compose</emphasis> is used, git send-email will use the From, To, Cc, Bcc,
+Subject, Reply-To, and In-Reply-To headers specified in the message. If
+the body of the message (what you type after the headers and a blank
+line) only contains blank (or Git: prefixed) lines, the summary won't be
+sent, but the headers mentioned above will be used unless they are
+removed.</simpara>
 <simpara>Missing From or In-Reply-To headers will be prompted for.</simpara>
 <simpara>See the CONFIGURATION section for <emphasis>sendemail.multiEdit</emphasis>.</simpara>
 </listitem>
@@ -210,7 +211,7 @@ is not set, this will be prompted for.</simpara>
 <listitem>
 <simpara>
         Specify encoding of compose message. Default is the value of the
-        <emphasis>sendemail.composeencoding</emphasis>; if that is unspecified, UTF-8 is assumed.
+        <emphasis>sendemail.composeEncoding</emphasis>; if that is unspecified, UTF-8 is assumed.
 </simpara>
 </listitem>
 </varlistentry>
@@ -277,7 +278,7 @@ value; if that is unspecified, default to <emphasis>auto</emphasis>.</simpara>
         Specify a command to run to send the email. The command should
         be sendmail-like; specifically, it must support the <emphasis>-i</emphasis> option.
         The command will be executed in the shell if necessary.  Default
-        is the value of <emphasis>sendemail.sendmailcmd</emphasis>.  If unspecified, and if
+        is the value of <emphasis>sendemail.sendmailCmd</emphasis>.  If unspecified, and if
         --smtp-server is also unspecified, git-send-email will search
         for <emphasis>sendmail</emphasis> in <emphasis>/usr/sbin</emphasis>, <emphasis>/usr/lib</emphasis> and $PATH.
 </simpara>
@@ -435,7 +436,7 @@ must be used for each option.</simpara>
         certificates concatenated together: see verify(1) -CAfile and
         -CApath for more information on these). Set it to an empty string
         to disable certificate verification. Defaults to the value of the
-        <emphasis>sendemail.smtpsslcertpath</emphasis> configuration variable, if set, or the
+        <emphasis>sendemail.smtpSSLCertPath</emphasis> configuration variable, if set, or the
         backing SSL library's compiled-in default otherwise (which should
         be the best choice on most platforms).
 </simpara>
@@ -455,7 +456,7 @@ must be used for each option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---smtp-debug=0|1
+--smtp-debug=(0|1)
 </term>
 <listitem>
 <simpara>
@@ -501,7 +502,13 @@ must be used for each option.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---no-[to|cc|bcc]
+--no-to
+</term>
+<term>
+--no-cc
+</term>
+<term>
+--no-bcc
 </term>
 <listitem>
 <simpara>
@@ -530,7 +537,7 @@ must be used for each option.</simpara>
         Specify a command to execute once per patch file which
         should generate patch file specific "To:" entries.
         Output of this command must be single email address per line.
-        Default is the value of <emphasis>sendemail.tocmd</emphasis> configuration value.
+        Default is the value of <emphasis>sendemail.toCmd</emphasis> configuration value.
 </simpara>
 </listitem>
 </varlistentry>
@@ -607,7 +614,7 @@ must be used for each option.</simpara>
 <listitem>
 <simpara>
         If this is set, add emails found in the <emphasis>Signed-off-by</emphasis> trailer or Cc: lines to the
-        cc list. Default is the value of <emphasis>sendemail.signedoffbycc</emphasis> configuration
+        cc list. Default is the value of <emphasis>sendemail.signedOffByCc</emphasis> configuration
         value; if that is unspecified, default to --signed-off-by-cc.
 </simpara>
 </listitem>
@@ -620,7 +627,7 @@ must be used for each option.</simpara>
 <simpara>
         If this is set, emails found in Cc: headers in the first patch of
         the series (typically the cover letter) are added to the cc list
-        for each email set. Default is the value of <emphasis>sendemail.cccover</emphasis>
+        for each email set. Default is the value of <emphasis>sendemail.ccCover</emphasis>
         configuration value; if that is unspecified, default to --no-cc-cover.
 </simpara>
 </listitem>
@@ -633,7 +640,7 @@ must be used for each option.</simpara>
 <simpara>
         If this is set, emails found in To: headers in the first patch of
         the series (typically the cover letter) are added to the to list
-        for each email set. Default is the value of <emphasis>sendemail.tocover</emphasis>
+        for each email set. Default is the value of <emphasis>sendemail.toCover</emphasis>
         configuration value; if that is unspecified, default to --no-to-cover.
 </simpara>
 </listitem>
@@ -699,7 +706,7 @@ must be used for each option.</simpara>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>Default is the value of <emphasis>sendemail.suppresscc</emphasis> configuration value; if
+<simpara>Default is the value of <emphasis>sendemail.suppressCc</emphasis> configuration value; if
 that is unspecified, default to <emphasis>self</emphasis> if --suppress-from is
 specified, as well as <emphasis>body</emphasis> if --no-signed-off-cc is specified.</simpara>
 </listitem>
@@ -840,7 +847,7 @@ Warn of patches that contain lines longer than
                         998 characters unless a suitable transfer encoding
                         (<emphasis>auto</emphasis>, <emphasis>base64</emphasis>, or <emphasis>quoted-printable</emphasis>) is used;
                         this is due to SMTP limits as described by
-                        <ulink url="http://www.ietf.org/rfc/rfc5322.txt">http://www.ietf.org/rfc/rfc5322.txt</ulink>.
+                        <ulink url="https://www.ietf.org/rfc/rfc5322.txt">https://www.ietf.org/rfc/rfc5322.txt</ulink>.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -870,9 +877,9 @@ default to <emphasis>--validate</emphasis>.</simpara>
 <listitem>
 <simpara>
         Instead of the normal operation, dump the shorthand alias names from
-        the configured alias file(s), one per line in alphabetical order. Note,
-        this only includes the alias name and not its expanded email addresses.
-        See <emphasis>sendemail.aliasesfile</emphasis> for more information about aliases.
+        the configured alias file(s), one per line in alphabetical order. Note
+        that this only includes the alias name and not its expanded email addresses.
+        See <emphasis>sendemail.aliasesFile</emphasis> for more information about aliases.
 </simpara>
 </listitem>
 </varlistentry>
@@ -911,7 +918,7 @@ sendemail.smtpEncryption
 </varlistentry>
 <varlistentry>
 <term>
-sendemail.smtpsslcertpath
+sendemail.smtpSSLCertPath
 </term>
 <listitem>
 <simpara>
@@ -977,7 +984,7 @@ sendemail.aliasFileType
 <listitem>
 <simpara>
         Format of the file(s) specified in sendemail.aliasesFile. Must be
-        one of <emphasis>mutt</emphasis>, <emphasis>mailrc</emphasis>, <emphasis>pine</emphasis>, <emphasis>elm</emphasis>, or <emphasis>gnus</emphasis>, or <emphasis>sendmail</emphasis>.
+        one of <emphasis>mutt</emphasis>, <emphasis>mailrc</emphasis>, <emphasis>pine</emphasis>, <emphasis>elm</emphasis>, <emphasis>gnus</emphasis>, or <emphasis>sendmail</emphasis>.
 </simpara>
 <simpara>What an alias file in each format looks like can be found in
 the documentation of the email program of the same name. The
@@ -1046,13 +1053,13 @@ sendemail.from
 sendemail.headerCmd
 </term>
 <term>
-sendemail.signedoffbycc
+sendemail.signedOffByCc
 </term>
 <term>
 sendemail.smtpPass
 </term>
 <term>
-sendemail.suppresscc
+sendemail.suppressCc
 </term>
 <term>
 sendemail.suppressFrom
@@ -1061,7 +1068,7 @@ sendemail.suppressFrom
 sendemail.to
 </term>
 <term>
-sendemail.tocmd
+sendemail.toCmd
 </term>
 <term>
 sendemail.smtpDomain
@@ -1100,11 +1107,11 @@ sendemail.xmailer
 </varlistentry>
 <varlistentry>
 <term>
-sendemail.signedoffcc (deprecated)
+sendemail.signedOffCc (deprecated)
 </term>
 <listitem>
 <simpara>
-        Deprecated alias for <emphasis>sendemail.signedoffbycc</emphasis>.
+        Deprecated alias for <emphasis>sendemail.signedOffByCc</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1127,7 +1134,7 @@ sendemail.smtpReloginDelay
 </term>
 <listitem>
 <simpara>
-        Seconds wait before reconnecting to smtp server.
+        Seconds to wait before reconnecting to the smtp server.
         See also the <emphasis>--relogin-delay</emphasis> option of <xref linkend="git-send-email(1)" />.
 </simpara>
 </listitem>

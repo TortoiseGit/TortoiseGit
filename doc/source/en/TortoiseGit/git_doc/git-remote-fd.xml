@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-remote-fd(1)">
     <title>git-remote-fd(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-remote-fd(1)</primary>
 </indexterm>
@@ -20,16 +20,16 @@
 <title>DESCRIPTION</title>
 <simpara>This helper uses specified file descriptors to connect to a remote Git server.
 This is not meant for end users but for programs and scripts calling git
-fetch, push or archive.</simpara>
+fetch, push, or archive.</simpara>
 <simpara>If only &lt;infd&gt; is given, it is assumed to be a bidirectional socket connected
-to remote Git server (git-upload-pack, git-receive-pack or
+to a remote Git server (git-upload-pack, git-receive-pack, or
 git-upload-archive). If both &lt;infd&gt; and &lt;outfd&gt; are given, they are assumed
 to be pipes connected to a remote Git server (&lt;infd&gt; being the inbound pipe
-and &lt;outfd&gt; being the outbound pipe.</simpara>
+and &lt;outfd&gt; being the outbound pipe).</simpara>
 <simpara>It is assumed that any handshaking procedures have already been completed
 (such as sending service request for git://) before this helper is started.</simpara>
 <simpara>&lt;anything&gt; can be any string. It is ignored. It is meant for providing
-information to user in the URL in case that URL is displayed in some
+information to the user in the URL in case that URL is displayed in some
 context.</simpara>
 </simplesect>
 <simplesect id="git-remote-fd(1)__environment_variables">
@@ -79,7 +79,7 @@ GIT_TRANSLOOP_DEBUG
 <simpara>
         Push master, using file descriptor #7 to read data from
         git-receive-pack and file descriptor #8 to write data to
-        same service.
+        the same service.
 </simpara>
 </listitem>
 </varlistentry>

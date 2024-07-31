@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-blame(1)">
     <title>git-blame(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-blame(1)</primary>
 </indexterm>
@@ -468,7 +468,7 @@ take effect.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show the author email instead of author name (Default: off).
+        Show the author email instead of the author name (Default: off).
         This can also be controlled via the <emphasis>blame.showEmail</emphasis> config
         option.
 </simpara>
@@ -513,7 +513,7 @@ abbreviated object name for the commit the line came from;
 </listitem>
 <listitem>
 <simpara>
-author ident (by default author name and date, unless <emphasis>-s</emphasis> or <emphasis>-e</emphasis>
+author ident (by default the author name and date, unless <emphasis>-s</emphasis> or <emphasis>-e</emphasis>
   is specified); and
 </simpara>
 </listitem>
@@ -574,7 +574,7 @@ the first line of the commit log message ("summary").
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The contents of the actual line is output after the above
+<simpara>The contents of the actual line are output after the above
 header, prefixed by a TAB. This is to allow adding more
 header elements later.</simpara>
 <simpara>The porcelain format generally suppresses commit information that has
@@ -606,7 +606,7 @@ git blame -L 40,+21 foo</literallayout>
 <simpara>which limits the annotation to the body of the <emphasis>hello</emphasis> subroutine.</simpara>
 <simpara>When you are not interested in changes older than version
 v2.6.18, or changes older than 3 weeks, you can use revision
-range specifiers  similar to <emphasis>git rev-list</emphasis>:</simpara>
+range specifiers similar to <emphasis>git rev-list</emphasis>:</simpara>
 <literallayout class="monospaced">git blame v2.6.18.. -- foo
 git blame --since=3.weeks -- foo</literallayout>
 <simpara>When revision range specifiers are used to limit the annotation,
@@ -639,7 +639,7 @@ annotated.</simpara>
 <simpara>
 Each blame entry always starts with a line of:
 </simpara>
-<literallayout class="monospaced">&lt;40-byte hex sha1&gt; &lt;sourceline&gt; &lt;resultline&gt; &lt;num_lines&gt;</literallayout>
+<literallayout class="monospaced">&lt;40-byte-hex-sha1&gt; &lt;sourceline&gt; &lt;resultline&gt; &lt;num-lines&gt;</literallayout>
 <simpara>Line numbers count from 1.</simpara>
 </listitem>
 <listitem>

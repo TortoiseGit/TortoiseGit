@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-maintenance(1)">
     <title>git-maintenance(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-maintenance(1)</primary>
 </indexterm>
@@ -171,9 +171,9 @@ prefetch
         requested refs within <emphasis>refs/prefetch/</emphasis>. Also, tags are not updated.
 </simpara>
 <simpara>This is done to avoid disrupting the remote-tracking branches. The end users
-expect these refs to stay unmoved unless they initiate a fetch.  With prefetch
-task, however, the objects necessary to complete a later real fetch would
-already be obtained, so the real fetch would go faster.  In the ideal case,
+expect these refs to stay unmoved unless they initiate a fetch.  However,
+with the prefetch task, the objects necessary to complete a later real fetch
+would already be obtained, making the real fetch faster.  In the ideal case,
 it will just become an update to a bunch of remote-tracking branches without
 any object transfer.</simpara>
 </listitem>
@@ -531,7 +531,7 @@ maintenance.strategy
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>none</emphasis>: This default setting implies no task are run at any schedule.
+<emphasis>none</emphasis>: This default setting implies no tasks are run at any schedule.
 </simpara>
 </listitem>
 <listitem>

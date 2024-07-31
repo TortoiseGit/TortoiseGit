@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-update-server-info(1)">
     <title>git-update-server-info(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-update-server-info(1)</primary>
 </indexterm>
@@ -38,7 +38,7 @@ generates such auxiliary files.</simpara>
 </term>
 <listitem>
 <simpara>
-        update the info files from scratch.
+        Update the info files from scratch.
 </simpara>
 </listitem>
 </varlistentry>
@@ -47,7 +47,7 @@ generates such auxiliary files.</simpara>
 <simplesect id="git-update-server-info(1)__output">
 <title>OUTPUT</title>
 <simpara>Currently the command updates the following files.  Please see
-<xref linkend="gitrepository-layout(5)" /> for description of
+<xref linkend="gitrepository-layout(5)" /> for a description of
 what they are for:</simpara>
 <itemizedlist>
 <listitem>

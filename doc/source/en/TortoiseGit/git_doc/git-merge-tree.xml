@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-merge-tree(1)">
     <title>git-merge-tree(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge-tree(1)</primary>
 </indexterm>
@@ -24,10 +24,10 @@
 <simpara>This command has a modern <emphasis>--write-tree</emphasis> mode and a deprecated
 <emphasis>--trivial-merge</emphasis> mode.  With the exception of the
 <link linkend="git-merge-tree(1)_DEPMERGE">DEPRECATED DESCRIPTION</link> section at the end, the rest of
-this documentation describes modern <emphasis>--write-tree</emphasis> mode.</simpara>
+this documentation describes the modern <emphasis>--write-tree</emphasis> mode.</simpara>
 <simpara>Performs a merge, but does not make any new commits and does not read
 from or write to either the working tree or index.</simpara>
-<simpara>The performed merge will use the same feature as the "real"
+<simpara>The performed merge will use the same features as the "real"
 <xref linkend="git-merge(1)" />, including:</simpara>
 <itemizedlist>
 <listitem>
@@ -117,13 +117,29 @@ etc.
 </varlistentry>
 <varlistentry>
 <term>
---merge-base=&lt;commit&gt;
+--merge-base=&lt;tree-ish&gt;
 </term>
 <listitem>
 <simpara>
         Instead of finding the merge-bases for &lt;branch1&gt; and &lt;branch2&gt;,
         specify a merge-base for the merge, and specifying multiple bases is
         currently not supported. This option is incompatible with <emphasis>--stdin</emphasis>.
+</simpara>
+<simpara>As the merge-base is provided directly, &lt;branch1&gt; and &lt;branch2&gt; do not need
+to specify commits; trees are enough.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+-X&lt;option&gt;
+</term>
+<term>
+--strategy-option=&lt;option&gt;
+</term>
+<listitem>
+<simpara>
+        Pass the merge strategy-specific option through to the merge strategy.
+        See <xref linkend="git-merge(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -322,7 +338,7 @@ in the future).</simpara>
 the <link linkend="git-merge-tree(1)_CFI">Conflicted file info</link> list.  The information there is
 insufficient to do so.  For example: Rename/rename(1to2) conflicts (both
 sides renamed the same file differently) will result in three different
-file having higher order stages (but each only has one higher order
+files having higher order stages (but each only has one higher order
 stage), with no way (short of the <link linkend="git-merge-tree(1)_IM">Informational messages</link> section)
 to determine which three files are related.  File/directory conflicts
 also result in a file with exactly one higher order stage.
@@ -331,7 +347,7 @@ Possibly-involved-in-directory-rename conflicts (when
 a file with exactly one higher order stage.  In all cases, the
 <link linkend="git-merge-tree(1)_IM">Informational messages</link> section has the necessary info, though it
 is not designed to be machine parseable.</simpara>
-<simpara>Do NOT assume that each paths from <link linkend="git-merge-tree(1)_CFI">Conflicted file info</link>, and
+<simpara>Do NOT assume that each path from <link linkend="git-merge-tree(1)_CFI">Conflicted file info</link>, and
 the logical conflicts in the <link linkend="git-merge-tree(1)_IM">Informational messages</link> have a
 one-to-one mapping, nor that there is a one-to-many mapping, nor a
 many-to-one mapping.  Many-to-many mappings exist, meaning that each

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-shortlog(1)">
     <title>git-shortlog(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-shortlog(1)</primary>
 </indexterm>
@@ -320,7 +320,7 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 </term>
 <listitem>
 <simpara>
-        Limit the commits output to ones with log message that
+        Limit the commits output to ones with a log message that
         matches the specified pattern (regular expression).  With
         more than one <emphasis>--grep=&lt;pattern&gt;</emphasis>, commits whose message
         matches any of the given patterns are chosen (but see
@@ -347,7 +347,7 @@ matched as if it were part of the log message.</simpara>
 </term>
 <listitem>
 <simpara>
-        Limit the commits output to ones with log message that do not
+        Limit the commits output to ones with a log message that do not
         match the pattern specified with <emphasis>--grep=&lt;pattern&gt;</emphasis>.
 </simpara>
 </listitem>
@@ -517,6 +517,10 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 <simpara>
         Reverses the meaning of the <emphasis>&#94;</emphasis> prefix (or lack thereof)
         for all following revision specifiers, up to the next <emphasis>--not</emphasis>.
+        When used on the command line before --stdin, the revisions passed
+        through stdin will not be affected by it. Conversely, when passed
+        via standard input, the revisions passed on the command line will
+        not be affected by it.
 </simpara>
 </listitem>
 </varlistentry>
@@ -693,7 +697,9 @@ explicitly.</simpara>
         them from standard input as well. This accepts commits and
         pseudo-options like <emphasis>--all</emphasis> and <emphasis>--glob=</emphasis>. When a <emphasis>--</emphasis> separator
         is seen, the following input is treated as paths and used to
-        limit the result.
+        limit the result. Flags like <emphasis>--not</emphasis> which are read via standard input
+        are only respected for arguments passed in the same way and will not
+        influence any subsequent command line arguments.
 </simpara>
 </listitem>
 </varlistentry>
@@ -779,13 +785,13 @@ list.</simpara>
 <simpara>With <emphasis>--pretty</emphasis> format other than <emphasis>oneline</emphasis> and <emphasis>reference</emphasis> (for obvious reasons),
 this causes the output to have two extra lines of information
 taken from the reflog.  The reflog designator in the output may be shown
-as <emphasis>ref@{Nth}</emphasis> (where <emphasis>Nth</emphasis> is the reverse-chronological index in the
-reflog) or as <emphasis>ref@{timestamp}</emphasis> (with the timestamp for that entry),
+as <emphasis>ref@{&lt;Nth&gt;}</emphasis> (where <emphasis>&lt;Nth&gt;</emphasis> is the reverse-chronological index in the
+reflog) or as <emphasis>ref@{&lt;timestamp&gt;}</emphasis> (with the <emphasis>&lt;timestamp&gt;</emphasis> for that entry),
 depending on a few rules:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-If the starting point is specified as <emphasis>ref@{Nth}</emphasis>, show the index
+If the starting point is specified as <emphasis>ref@{&lt;Nth&gt;}</emphasis>, show the index
    format.
 </simpara>
 </listitem>
@@ -820,8 +826,11 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </term>
 <listitem>
 <simpara>
-        After a failed merge, show refs that touch files having a
-        conflict and don't exist on all heads to merge.
+        Show commits touching conflicted paths in the range <emphasis>HEAD...&lt;other&gt;</emphasis>,
+        where <emphasis>&lt;other&gt;</emphasis> is the first existing pseudoref in <emphasis>MERGE_HEAD</emphasis>,
+        <emphasis>CHERRY_PICK_HEAD</emphasis>, <emphasis>REVERT_HEAD</emphasis> or <emphasis>REBASE_HEAD</emphasis>. Only works
+        when the index has unmerged entries. This option can be used to show
+        relevant commits when resolving conflicts from a 3-way merge.
 </simpara>
 </listitem>
 </varlistentry>

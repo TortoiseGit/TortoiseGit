@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-request-pull(1)">
     <title>git-request-pull(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-request-pull(1)</primary>
 </indexterm>
@@ -23,7 +23,7 @@
 <simpara>Generate a request asking your upstream project to pull changes into
 their tree.  The request, printed to the standard output,
 begins with the branch description, summarizes
-the changes and indicates from where they can be pulled.</simpara>
+the changes, and indicates from where they can be pulled.</simpara>
 <simpara>The upstream project is expected to have the commit named by
 <emphasis>&lt;start&gt;</emphasis> and the output asks it to integrate the changes you made
 since that commit, up to the commit named by <emphasis>&lt;end&gt;</emphasis>, by visiting
@@ -83,7 +83,7 @@ its remote name.</simpara>
 <simplesect id="git-request-pull(1)__examples">
 <title>EXAMPLES</title>
 <simpara>Imagine that you built your work on your <emphasis>master</emphasis> branch on top of
-the <emphasis>v1.0</emphasis> release, and want it to be integrated to the project.
+the <emphasis>v1.0</emphasis> release, and want it to be integrated into the project.
 First you push that change to your public repository for others to
 see:</simpara>
 <literallayout class="monospaced">git push https://git.ko.xz/project master</literallayout>

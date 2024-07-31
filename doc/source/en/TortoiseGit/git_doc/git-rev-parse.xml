@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-rev-parse(1)">
     <title>git-rev-parse(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-rev-parse(1)</primary>
 </indexterm>
@@ -15,17 +15,23 @@
 <simplesect id="git-rev-parse(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rev-parse</emphasis> [&lt;options&gt;] &lt;args&gt;&#8230;</literallayout>
+<literallayout><emphasis>git rev-parse</emphasis> [&lt;options&gt;] &lt;arg&gt;&#8230;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rev-parse(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Many Git porcelainish commands take mixture of flags
+<simpara>Many Git porcelainish commands take a mixture of flags
 (i.e. parameters that begin with a dash <emphasis>-</emphasis>) and parameters
 meant for the underlying <emphasis>git rev-list</emphasis> command they use internally
 and flags and parameters for the other commands they use
-downstream of <emphasis>git rev-list</emphasis>.  This command is used to
-distinguish between them.</simpara>
+downstream of <emphasis>git rev-list</emphasis>.  The primary purpose of this command
+is to allow calling programs to distinguish between them.  There are
+a few other operation modes that have nothing to do with the above
+"help parse command line options".</simpara>
+<simpara>Unless otherwise specified, most of the options and operation modes
+require you to run this command inside a git repository or a working
+tree that is under the control of a git repository, and will give you
+a fatal error otherwise.</simpara>
 </simplesect>
 <simplesect id="git-rev-parse(1)__options">
 <title>OPTIONS</title>
@@ -40,6 +46,8 @@ distinguish between them.</simpara>
 <listitem>
 <simpara>
         Use <emphasis>git rev-parse</emphasis> in option parsing mode (see PARSEOPT section below).
+        The command in this mode can be used outside a repository or
+        a working tree controlled by a repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -51,7 +59,9 @@ distinguish between them.</simpara>
 <simpara>
         Use <emphasis>git rev-parse</emphasis> in shell quoting mode (see SQ-QUOTE
         section below). In contrast to the <emphasis>--sq</emphasis> option below, this
-        mode does only quoting. Nothing else is done to command input.
+        mode only does quoting. Nothing else is done to command input.
+        The command in this mode can be used outside a repository or
+        a working tree controlled by a repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -235,7 +245,7 @@ for another option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---short[=length]
+--short[=&lt;length&gt;]
 </term>
 <listitem>
 <simpara>
@@ -292,9 +302,24 @@ for another option.</simpara>
         are not refs (i.e. branch or tag names; or more
         explicitly disambiguating "heads/master" form, when you
         want to name the "master" branch when there is an
-        unfortunately named tag "master"), and show them as full
+        unfortunately named tag "master"), and shows them as full
         refnames (e.g. "refs/heads/master").
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--output-object-format=(sha1|sha256|storage)
+</term>
+<listitem>
+<simpara>
+        Allow oids to be input from any object format that the current
+        repository supports.
+</simpara>
+<literallayout class="monospaced">Specifying "sha1" translates if necessary and returns a sha1 oid.</literallayout>
+<literallayout class="monospaced">Specifying "sha256" translates if necessary and returns a sha256 oid.</literallayout>
+<literallayout class="monospaced">Specifying "storage" translates if necessary and returns an oid in
+encoded in the storage hash algorithm.</literallayout>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -314,13 +339,13 @@ for another option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---branches[=pattern]
+--branches[=&lt;pattern&gt;]
 </term>
 <term>
---tags[=pattern]
+--tags[=&lt;pattern&gt;]
 </term>
 <term>
---remotes[=pattern]
+--remotes[=&lt;pattern&gt;]
 </term>
 <listitem>
 <simpara>
@@ -335,7 +360,7 @@ shown.  If the pattern does not contain a globbing character (<emphasis>?</empha
 </varlistentry>
 <varlistentry>
 <term>
---glob=pattern
+--glob=&lt;pattern&gt;
 </term>
 <listitem>
 <simpara>
@@ -369,7 +394,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---exclude-hidden=[fetch|receive|uploadpack]
+--exclude-hidden=(fetch|receive|uploadpack)
 </term>
 <listitem>
 <simpara>
@@ -612,6 +637,16 @@ print a message to stderr and exit with nonzero status.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--show-ref-format
+</term>
+<listitem>
+<simpara>
+        Show the reference storage format used for the repository.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git-rev-parse(1)__other_options">
@@ -619,10 +654,10 @@ print a message to stderr and exit with nonzero status.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---since=datestring
+--since=&lt;datestring&gt;
 </term>
 <term>
---after=datestring
+--after=&lt;datestring&gt;
 </term>
 <listitem>
 <simpara>
@@ -633,10 +668,10 @@ print a message to stderr and exit with nonzero status.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---until=datestring
+--until=&lt;datestring&gt;
 </term>
 <term>
---before=datestring
+--before=&lt;datestring&gt;
 </term>
 <listitem>
 <simpara>
@@ -647,7 +682,7 @@ print a message to stderr and exit with nonzero status.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;args&gt;&#8230;
+&lt;arg&gt;&#8230;
 </term>
 <listitem>
 <simpara>
@@ -1420,7 +1455,7 @@ Use <emphasis>!</emphasis> to not make the corresponding negated long option ava
 </varlistentry>
 </variablelist>
 <simpara>The remainder of the line, after stripping the spaces, is used
-as the help associated to the option.</simpara>
+as the help associated with the option.</simpara>
 <simpara>Blank lines are ignored, and lines that don't match this specification are used
 as option group headers (start the line with a space to create such
 lines on purpose).</simpara>
@@ -1432,7 +1467,7 @@ some-command [&lt;options&gt;] &lt;args&gt;...
 
 some-command does foo and bar!
 --
-h,help    show the help
+h,help!   show the help
 
 foo       some nifty option --foo
 bar=      some cool option --bar with an argument
@@ -1453,10 +1488,10 @@ usage text would be shown:</simpara>
     some-command does foo and bar!
 
     -h, --help            show the help
-    --foo                 some nifty option --foo
-    --bar ...             some cool option --bar with an argument
-    --baz &lt;arg&gt;           another cool option --baz with a named argument
-    --qux[=&lt;path&gt;]        qux may take a path argument but has meaning by itself
+    --[no-]foo            some nifty option --foo
+    --[no-]bar ...        some cool option --bar with an argument
+    --[no-]baz &lt;arg&gt;      another cool option --baz with a named argument
+    --[no-]qux[=&lt;path&gt;]   qux may take a path argument but has meaning by itself
 
 An option group Header
     -C[...]               option C with an optional argument</screen>

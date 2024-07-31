@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-for-each-repo(1)">
     <title>git-for-each-repo(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-for-each-repo(1)</primary>
 </indexterm>
@@ -46,6 +46,22 @@ in the multi-valued config variable <emphasis>maintenance.repo</emphasis>.</simp
 <simpara>These config values are loaded from system, global, and local Git config,
 as available. If <emphasis>git for-each-repo</emphasis> is run in a directory that is not a
 Git repository, then only the system and global config is used.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--keep-going
+</term>
+<listitem>
+<simpara>
+        Continue with the remaining repositories if the command failed
+        on a repository. The exit code will still indicate that the
+        overall operation was not successful.
+</simpara>
+<simpara>Note that the exact exit code of the failing command is not passed
+through as the exit code of the <emphasis>for-each-repo</emphasis> command: If the command
+failed in any of the specified repositories, the overall exit code will
+be 1.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-mktag(1)">
     <title>git-mktag(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mktag(1)</primary>
 </indexterm>
@@ -20,7 +20,7 @@
 </simplesect>
 <simplesect id="git-mktag(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Reads a tag contents on standard input and creates a tag object. The
+<simpara>Reads a tag's contents on standard input and creates a tag object. The
 output is the new tag's &lt;object&gt; identifier.</simpara>
 <simpara>This command is mostly equivalent to <xref linkend="git-hash-object(1)" />
 invoked with <emphasis>-t tag -w --stdin</emphasis>. I.e. both of these will create and
@@ -29,7 +29,7 @@ write a tag found in <emphasis>my-tag</emphasis>:</simpara>
 git hash-object -t tag -w --stdin &lt;my-tag</literallayout>
 <simpara>The difference is that mktag will die before writing the tag if the
 tag doesn't pass a <xref linkend="git-fsck(1)" /> check.</simpara>
-<simpara>The "fsck" check done mktag is stricter than what <xref linkend="git-fsck(1)" />
+<simpara>The "fsck" check done by mktag is stricter than what <xref linkend="git-fsck(1)" />
 would run by default in that all <emphasis>fsck.&lt;msg-id&gt;</emphasis> messages are promoted
 from warnings to errors (so e.g. a missing "tagger" line is an error).</simpara>
 <simpara>Extra headers in the object are also an error under mktag, but ignored
@@ -63,7 +63,7 @@ type &lt;typename&gt;
 tag &lt;tagname&gt;
 tagger &lt;tagger&gt;</literallayout>
 <simpara>followed by some <emphasis>optional</emphasis> free-form message (some tags created
-by older Git may not have <emphasis>tagger</emphasis> line).  The message, when it
+by older Git may not have a <emphasis>tagger</emphasis> line).  The message, when it
 exists, is separated by a blank line from the header.  The
 message part may contain a signature that Git itself doesn't
 care about, but that can be verified with gpg.</simpara>

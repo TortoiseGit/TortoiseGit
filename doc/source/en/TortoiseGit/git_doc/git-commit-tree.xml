@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-commit-tree(1)">
     <title>git-commit-tree(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-commit-tree(1)</primary>
 </indexterm>
@@ -158,7 +158,7 @@ RFC 2822
 </term>
 <listitem>
 <simpara>
-        The standard email format as described by RFC 2822, for example
+        The standard date format as described by RFC 2822, for example
         <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
 </simpara>
 </listitem>
@@ -230,7 +230,7 @@ mind.</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-<emphasis>git commit</emphasis> and <emphasis>git commit-tree</emphasis> issues
+<emphasis>git commit</emphasis> and <emphasis>git commit-tree</emphasis> issue
   a warning if the commit log message given to it does not look
   like a valid UTF-8 string, unless you explicitly say your
   project uses a legacy encoding.  The way to say this is to
@@ -239,7 +239,7 @@ mind.</simpara>
 <screen>[i18n]
         commitEncoding = ISO-8859-1</screen>
 <simpara>Commit objects created with the above setting record the value
-of <emphasis>i18n.commitEncoding</emphasis> in its <emphasis>encoding</emphasis> header.  This is to
+of <emphasis>i18n.commitEncoding</emphasis> in their <emphasis>encoding</emphasis> header.  This is to
 help other people who look at them later.  Lack of this header
 implies that the commit log message is encoded in UTF-8.</simpara>
 </listitem>

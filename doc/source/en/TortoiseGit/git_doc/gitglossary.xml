@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitglossary(7)">
     <title>gitglossary(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitglossary(7)</primary>
 </indexterm>
@@ -221,9 +221,8 @@ to point at the new commit.</simpara>
 </term>
 <listitem>
 <simpara>
-        A <link linkend="gitglossary(7)_def_commit_object">commit object</link> or an
-        <link linkend="gitglossary(7)_def_object">object</link> that can be recursively dereferenced to
-        a commit object.
+        A <link linkend="gitglossary(7)_def_commit_object">commit object</link> or an <link linkend="gitglossary(7)_def_object">object</link> that
+        can be recursively <link linkend="gitglossary(7)_def_dereference">dereferenced</link> to a commit object.
         The following are all commit-ishes:
         a commit object,
         a <link linkend="gitglossary(7)_def_tag_object">tag object</link> that points to a commit
@@ -269,6 +268,29 @@ to point at the new commit.</simpara>
         dangling object has no references to it from any
         reference or <link linkend="gitglossary(7)_def_object">object</link> in the <link linkend="gitglossary(7)_def_repository">repository</link>.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_dereference" xreflabel="[def_dereference]"/>dereference
+</term>
+<listitem>
+<simpara>
+        Referring to a <link linkend="gitglossary(7)_def_symref">symbolic ref</link>: the action of accessing the
+        <link linkend="gitglossary(7)_def_ref">reference</link> pointed at by a symbolic ref. Recursive
+        dereferencing involves repeating the aforementioned process on the
+        resulting ref until a non-symbolic reference is found.
+</simpara>
+<simpara>Referring to a <link linkend="gitglossary(7)_def_tag_object">tag object</link>: the action of accessing the
+<link linkend="gitglossary(7)_def_object">object</link> a tag points at. Tags are recursively dereferenced by
+repeating the operation on the result object until the result has either a
+specified <link linkend="gitglossary(7)_def_object_type">object type</link> (where applicable) or any non-"tag"
+object type. A synonym for "recursive dereference" in the context of tags is
+"<link linkend="gitglossary(7)_def_peel">peel</link>".</simpara>
+<simpara>Referring to a <link linkend="gitglossary(7)_def_commit_object">commit object</link>: the action of accessing
+the commit's tree object. Commits cannot be dereferenced recursively.</simpara>
+<simpara>Unless otherwise specified, "dereferencing" as it used in the context of Git
+commands or protocols is implicitly recursive.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -390,6 +412,8 @@ current branch integrates with) obviously do not work, as there is no
 <simpara>
         A plain file <emphasis>.git</emphasis> at the root of a working tree that
         points at the directory that is the real repository.
+        For proper use see <xref linkend="git-worktree(1)" /> or <xref linkend="git-submodule(1)" />.
+        For syntax see <xref linkend="gitrepository-layout(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -399,7 +423,7 @@ current branch integrates with) obviously do not work, as there is no
 </term>
 <listitem>
 <simpara>
-        Grafts enables two otherwise different lines of development to be joined
+        Grafts enable two otherwise different lines of development to be joined
         together by recording fake ancestry information for commits. This way
         you can make Git pretend the set of <link linkend="gitglossary(7)_def_parent">parents</link> a <link linkend="gitglossary(7)_def_commit">commit</link> has
         is different from what was recorded when the commit was
@@ -608,6 +632,19 @@ This commit is referred to as a "merge commit", or sometimes just a
 <listitem>
 <simpara>
         To <link linkend="gitglossary(7)_def_merge">merge</link> more than two <link linkend="gitglossary(7)_def_branch">branches</link>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_orphan" xreflabel="[def_orphan]"/>orphan
+</term>
+<listitem>
+<simpara>
+        The act of getting on a <link linkend="gitglossary(7)_def_branch">branch</link> that does not
+        exist yet (i.e., an <link linkend="gitglossary(7)_def_unborn">unborn</link> branch).  After
+        such an operation, the commit first created becomes a commit
+        without a parent, starting a new history.
 </simpara>
 </listitem>
 </varlistentry>
@@ -870,6 +907,17 @@ exclude
         A <link linkend="gitglossary(7)_def_commit_object">commit object</link> contains a (possibly empty) list
         of the logical predecessor(s) in the line of development, i.e. its
         parents.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_peel" xreflabel="[def_peel]"/>peel
+</term>
+<listitem>
+<simpara>
+        The action of recursively <link linkend="gitglossary(7)_def_dereference">dereferencing</link> a
+        <link linkend="gitglossary(7)_def_tag_object">tag object</link>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1204,6 +1252,34 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<anchor id="gitglossary(7)_def_special_ref" xreflabel="[def_special_ref]"/>special ref
+</term>
+<listitem>
+<simpara>
+        A ref that has different semantics than normal refs. These refs can be
+        accessed via normal Git commands but may not behave the same as a
+        normal ref in some cases.
+</simpara>
+<simpara>The following special refs are known to Git:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"<emphasis>FETCH_HEAD</emphasis>" is written by <xref linkend="git-fetch(1)" /> or <xref linkend="git-pull(1)" />. It
+   may refer to multiple object IDs. Each object ID is annotated with metadata
+   indicating where it was fetched from and its fetch status.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"<emphasis>MERGE_HEAD</emphasis>" is written by <xref linkend="git-merge(1)" /> when resolving merge
+   conflicts. It contains all commit IDs which are being merged.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <anchor id="gitglossary(7)_def_submodule" xreflabel="[def_submodule]"/>submodule
 </term>
 <listitem>
@@ -1233,12 +1309,11 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        Symbolic reference: instead of containing the <link linkend="gitglossary(7)_def_SHA1">SHA-1</link>
-        id itself, it is of the format <emphasis>ref: refs/some/thing</emphasis> and when
-        referenced, it recursively dereferences to this reference.
-        <emphasis><link linkend="gitglossary(7)_def_HEAD">HEAD</link></emphasis> is a prime example of a symref. Symbolic
-        references are manipulated with the <xref linkend="git-symbolic-ref(1)" />
-        command.
+        Symbolic reference: instead of containing the <link linkend="gitglossary(7)_def_SHA1">SHA-1</link> id
+        itself, it is of the format <emphasis>ref: refs/some/thing</emphasis> and when referenced,
+        it recursively <link linkend="gitglossary(7)_def_dereference">dereferences</link> to this reference.
+        <emphasis><link linkend="gitglossary(7)_def_HEAD">HEAD</link></emphasis> is a prime example of a symref. Symbolic references
+        are manipulated with the <xref linkend="git-symbolic-ref(1)" /> command.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1315,11 +1390,11 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        A <link linkend="gitglossary(7)_def_tree_object">tree object</link> or an <link linkend="gitglossary(7)_def_object">object</link>
-        that can be recursively dereferenced to a tree object.
-        Dereferencing a <link linkend="gitglossary(7)_def_commit_object">commit object</link> yields the
-        tree object corresponding to the <link linkend="gitglossary(7)_def_revision">revision</link>'s
-        top <link linkend="gitglossary(7)_def_directory">directory</link>.
+        A <link linkend="gitglossary(7)_def_tree_object">tree object</link> or an <link linkend="gitglossary(7)_def_object">object</link> that can
+        be recursively <link linkend="gitglossary(7)_def_dereference">dereferenced</link> to a tree object.
+        Dereferencing a <link linkend="gitglossary(7)_def_commit_object">commit object</link> yields the tree
+        object corresponding to the <link linkend="gitglossary(7)_def_revision">revision</link>'s top
+        <link linkend="gitglossary(7)_def_directory">directory</link>.
         The following are all tree-ishes:
         a <link linkend="gitglossary(7)_def_commit-ish">commit-ish</link>,
         a tree object,
@@ -1327,6 +1402,24 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
         a tag object that points to a tag object that points to a tree
         object,
         etc.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_unborn" xreflabel="[def_unborn]"/>unborn
+</term>
+<listitem>
+<simpara>
+        The <link linkend="gitglossary(7)_def_HEAD">HEAD</link> can point at a <link linkend="gitglossary(7)_def_branch">branch</link>
+        that does not yet exist and that does not have any commit on
+        it yet, and such a branch is called an unborn branch.  The
+        most typical way users encounter an unborn branch is by
+        creating a repository anew without cloning from elsewhere.
+        The HEAD would point at the <emphasis>main</emphasis> (or <emphasis>master</emphasis>, depending
+        on your configuration) branch that is yet to be born.  Also
+        some operations can get you on an unborn branch with their
+        <link linkend="gitglossary(7)_def_orphan">orphan</link> option.
 </simpara>
 </listitem>
 </varlistentry>

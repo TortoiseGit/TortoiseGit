@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-upload-pack(1)">
     <title>git-upload-pack(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-upload-pack(1)</primary>
 </indexterm>
@@ -37,7 +37,7 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 </term>
 <listitem>
 <simpara>
-        Do not try &lt;directory&gt;/.git/ if &lt;directory&gt; is no Git directory.
+        Do not try &lt;directory&gt;/.git/ if &lt;directory&gt; is not a Git directory.
 </simpara>
 </listitem>
 </varlistentry>
@@ -105,7 +105,41 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_NO_LAZY_FETCH</emphasis>
+</term>
+<listitem>
+<simpara>
+        When cloning or fetching from a partial repository (i.e., one
+        itself cloned with <emphasis>--filter</emphasis>), the server-side <emphasis>upload-pack</emphasis>
+        may need to fetch extra objects from its upstream in order to
+        complete the request. By default, <emphasis>upload-pack</emphasis> will refuse to
+        perform such a lazy fetch, because <emphasis>git fetch</emphasis> may run arbitrary
+        commands specified in configuration and hooks of the source
+        repository (and <emphasis>upload-pack</emphasis> tries to be safe to run even in
+        untrusted <emphasis>.git</emphasis> directories).
+</simpara>
+<simpara>This is implemented by having <emphasis>upload-pack</emphasis> internally set the
+<emphasis>GIT_NO_LAZY_FETCH</emphasis> variable to <emphasis>1</emphasis>. If you want to override it
+(because you are fetching from a partial clone, and you are sure
+you trust it), you can explicitly set <emphasis>GIT_NO_LAZY_FETCH</emphasis> to
+<emphasis>0</emphasis>.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-upload-pack(1)__security">
+<title>SECURITY</title>
+<simpara>Most Git commands should not be run in an untrusted <emphasis>.git</emphasis> directory
+(see the section <emphasis>SECURITY</emphasis> in <xref linkend="git(1)" />). <emphasis>upload-pack</emphasis> tries to
+avoid any dangerous configuration options or hooks from the repository
+it's serving, making it safe to clone an untrusted directory and run
+commands on the resulting clone.</simpara>
+<simpara>For an extra level of safety, you may be able to run <emphasis>upload-pack</emphasis> as an
+alternate user. The details will be platform dependent, but on many
+systems you can run:</simpara>
+<literallayout class="monospaced">git clone --no-local --upload-pack='sudo -u nobody git-upload-pack' ...</literallayout>
 </simplesect>
 <simplesect id="git-upload-pack(1)__see_also">
 <title>SEE ALSO</title>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-check-attr(1)">
     <title>git-check-attr(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-check-attr(1)</primary>
 </indexterm>
@@ -56,7 +56,7 @@
 <listitem>
 <simpara>
         Read pathnames from the standard input, one per line,
-        instead of from the command-line.
+        instead of from the command line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -79,7 +79,7 @@
 <listitem>
 <simpara>
         Check attributes against the specified tree-ish. It is common to
-        specify the source tree by naming a commit, branch or tag associated
+        specify the source tree by naming a commit, branch, or tag associated
         with it.
 </simpara>
 </listitem>
@@ -107,7 +107,7 @@ pathnames.</simpara>
 <simpara>unless <emphasis>-z</emphasis> is in effect, in which case NUL is used as delimiter:
 &lt;path&gt; NUL &lt;attribute&gt; NUL &lt;info&gt; NUL</simpara>
 <simpara>&lt;path&gt; is the path of a file being queried, &lt;attribute&gt; is an attribute
-being queried and &lt;info&gt; can be either:</simpara>
+being queried, and &lt;info&gt; can be either:</simpara>
 <variablelist>
 <varlistentry>
 <term>

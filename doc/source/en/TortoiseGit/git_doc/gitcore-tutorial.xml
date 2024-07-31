@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitcore-tutorial(7)">
     <title>gitcore-tutorial(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitcore-tutorial(7)</primary>
 </indexterm>
@@ -825,7 +825,7 @@ multiple working trees, but disk space is cheap these days.</simpara></note>
 repository from time to time. As a short hand, you can store
 the remote repository URL in the local repository's config file
 like this:</simpara>
-<screen>$ git config remote.linus.url http://www.kernel.org/pub/scm/git/git.git/</screen>
+<screen>$ git config remote.linus.url https://git.kernel.org/pub/scm/git/git.git/</screen>
 <simpara>and use the "linus" keyword with <emphasis>git pull</emphasis> instead of the full URL.</simpara>
 <simpara>Examples.</simpara>
 <orderedlist numeration="arabic">

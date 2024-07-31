@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-revert(1)">
     <title>git-revert(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-revert(1)</primary>
 </indexterm>
@@ -225,7 +225,7 @@ effect to your index in a row.</simpara>
 <listitem>
 <simpara>
         Instead of starting the body of the log message with "This
-        reverts &lt;full object name of the commit being reverted&gt;.",
+        reverts &lt;full-object-name-of-the-commit-being-reverted&gt;.",
         refer to the commit using "--pretty=reference" format
         (cf. <xref linkend="git-log(1)" />).  The <emphasis>revert.reference</emphasis>
         configuration variable can be used to enable this option by
@@ -314,6 +314,15 @@ effect to your index in a row.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-revert(1)__discussion">
+<title>DISCUSSION</title>
+<simpara>While git creates a basic commit message automatically, it is
+<emphasis>strongly</emphasis> recommended to explain why the original commit is being
+reverted.
+In addition, repeatedly reverting reverts will result in increasingly
+unwieldy subject lines, for example <emphasis>Reapply "Reapply "&lt;original-subject&gt;""</emphasis>.
+Please consider rewording these to be shorter and more unique.</simpara>
 </simplesect>
 <simplesect id="git-revert(1)__configuration">
 <title>CONFIGURATION</title>

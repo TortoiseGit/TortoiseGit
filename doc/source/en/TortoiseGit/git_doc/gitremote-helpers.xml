@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitremote-helpers(7)">
     <title>gitremote-helpers(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitremote-helpers(7)</primary>
 </indexterm>
@@ -686,7 +686,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-'option deepen-since &lt;timestamp&gt;
+<emphasis>option deepen-since</emphasis> &lt;timestamp&gt;
 </term>
 <listitem>
 <simpara>
@@ -696,7 +696,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-'option deepen-not &lt;ref&gt;
+<emphasis>option deepen-not</emphasis> &lt;ref&gt;
 </term>
 <listitem>
 <simpara>
@@ -707,7 +707,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>option deepen-relative {'true</emphasis>|<emphasis>false</emphasis>}
+<emphasis>option deepen-relative</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
 </term>
 <listitem>
 <simpara>
@@ -804,7 +804,7 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-'option push-option &lt;string&gt;
+<emphasis>option push-option</emphasis> &lt;string&gt;
 </term>
 <listitem>
 <simpara>
@@ -848,16 +848,14 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>option object-format</emphasis> {<emphasis>true</emphasis>|algorithm}
+<emphasis>option object-format true</emphasis>
 </term>
 <listitem>
 <simpara>
-        If <emphasis>true</emphasis>, indicate that the caller wants hash algorithm information
+        Indicate that the caller wants hash algorithm information
         to be passed back from the remote.  This mode is used when fetching
         refs.
 </simpara>
-<simpara>If set to an algorithm, indicate that the caller wants to interact with
-the remote side using that algorithm.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
