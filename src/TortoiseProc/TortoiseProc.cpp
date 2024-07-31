@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -220,6 +220,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		}
 		return FALSE;
 	}
+	CGit::ms_LastMsysGitVersion = 0; // HACK to re-check Git version in next method call to CheckGitVersion, only needed becasue APPDATA is a Git config dir since 2.46
 	if (!CConfigureGitExe::CheckGitVersion(hWndExplorer))
 		return FALSE;
 

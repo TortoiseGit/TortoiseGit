@@ -315,8 +315,7 @@ public:
 	CString GetHomeDirectory() const;
 	CString GetGitLocalConfig() const;
 	CString GetGitGlobalConfig() const;
-	CString GetGitGlobalXDGConfigPath() const;
-	CString GetGitGlobalXDGConfig() const;
+	CString GetGitGlobalXDGConfig(bool returnDirectory = false) const;
 	CString GetGitSystemConfig() const;
 	CAutoRepository GetGitRepository() const;
 	static CStringA GetGitPathStringA(const CString &path);

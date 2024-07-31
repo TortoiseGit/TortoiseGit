@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -128,7 +128,7 @@ BOOL CSettingGitConfig::OnInitDialog()
 		this->GetDlgItem(IDC_VIEWSYSTEMGITCONFIG)->ShowWindow(SW_SHOW);
 	}
 
-	if (PathIsDirectory(g_Git.GetGitGlobalXDGConfigPath()))
+	if (PathIsDirectory(g_Git.GetGitGlobalXDGConfig(true)))
 	{
 		GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->EnableWindow(TRUE);
 		this->GetDlgItem(IDC_EDITGLOBALXDGGITCONFIG)->ShowWindow(SW_SHOW);

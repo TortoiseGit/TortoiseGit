@@ -3382,6 +3382,10 @@ int CAppUtils::GetMsysgitVersion(HWND hWnd)
 	regVersion = ver;
 	g_Git.ms_LastMsysGitVersion = ver;
 
+	// reinitialize everything (especially libgit2 config search paths), only needed because APPDATA is a Git config dir since 2.46
+	g_Git.m_bInitialized = false;
+	g_Git.CheckMsysGitDir();
+
 	return ver;
 }
 
