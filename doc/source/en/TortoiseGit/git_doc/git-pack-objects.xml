@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-pack-objects(1)">
     <title>git-pack-objects(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pack-objects(1)</primary>
 </indexterm>
@@ -170,9 +170,7 @@ older than the <emphasis>--cruft-expiration</emphasis>, but are reachable from a
 unreachable object whose mtime is newer than the <emphasis>--cruft-expiration</emphasis>).</simpara>
 <simpara>Incompatible with <emphasis>--unpack-unreachable</emphasis>, <emphasis>--keep-unreachable</emphasis>,
 <emphasis>--pack-loose-unreachable</emphasis>, <emphasis>--stdin-packs</emphasis>, as well as any other
-options which imply <emphasis>--revs</emphasis>. Also incompatible with <emphasis>--max-pack-size</emphasis>;
-when this option is set, the maximum pack size is not inferred from
-<emphasis>pack.packSizeLimit</emphasis>.</simpara>
+options which imply <emphasis>--revs</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -518,8 +516,8 @@ So does <emphasis>git bundle</emphasis> (see <xref linkend="git-bundle(1)" />) w
 </term>
 <listitem>
 <simpara>
-        Requires <emphasis>--stdout</emphasis>.  Omits certain objects (usually blobs) from
-        the resulting packfile.  See <xref linkend="git-rev-list(1)" /> for valid
+        Omits certain objects (usually blobs) from the resulting
+        packfile.  See <xref linkend="git-rev-list(1)" /> for valid
         <emphasis>&lt;filter-spec&gt;</emphasis> forms.
 </simpara>
 </listitem>

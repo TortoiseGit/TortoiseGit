@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-difftool(1)">
     <title>git-difftool(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-difftool(1)</primary>
 </indexterm>
@@ -75,7 +75,7 @@ to <emphasis>git diff</emphasis> and accepts the same options and arguments. See
 <listitem>
 <simpara>
         Start showing the diff for the given path,
-        the paths before it will move to end and output.
+        the paths before it will move to the end and output.
 </simpara>
 </listitem>
 </varlistentry>
@@ -143,7 +143,7 @@ with custom merge tool commands and has the same value as <emphasis>$MERGED</emp
 </term>
 <listitem>
 <simpara>
-        <emphasis>git difftool</emphasis>'s default behavior is create symlinks to the
+        <emphasis>git difftool</emphasis>'s default behavior is to create symlinks to the
         working tree when run in <emphasis>--dir-diff</emphasis> mode and the right-hand
         side of the comparison yields the same content as the file in
         the working tree.
@@ -163,7 +163,7 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 <simpara>
         Specify a custom command for viewing diffs.
         <emphasis>git-difftool</emphasis> ignores the configured defaults and runs
-        <emphasis>$command $LOCAL $REMOTE</emphasis> when this option is specified.
+        <emphasis>&lt;command&gt; $LOCAL $REMOTE</emphasis> when this option is specified.
         Additionally, <emphasis>$BASE</emphasis> is set in the environment.
 </simpara>
 </listitem>
@@ -194,7 +194,6 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 </term>
 <listitem>
 <simpara>
-        <emphasis>git-difftool</emphasis> invokes a diff tool individually on each file.
         Errors reported by the diff tool are ignored by default.
         Use <emphasis>--trust-exit-code</emphasis> to make <emphasis>git-difftool</emphasis> exit when an
         invoked diff tool returns a non-zero exit code.

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-capabilities(5)">
     <title>gitprotocol-capabilities(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-capabilities(5)</primary>
 </indexterm>
@@ -33,7 +33,7 @@ to the client.</simpara>
 to be in effect. The client MUST NOT ask for capabilities the server
 did not say it supports.</simpara>
 <simpara>Server MUST diagnose and abort if capabilities it does not understand
-was sent.  Server MUST NOT ignore capabilities that client requested
+were sent.  Server MUST NOT ignore capabilities that client requested
 and server advertised.  As a consequence of these rules, server MUST
 NOT advertise capabilities it does not understand.</simpara>
 <simpara>The <emphasis>atomic</emphasis>, <emphasis>report-status</emphasis>, <emphasis>report-status-v2</emphasis>, <emphasis>delete-refs</emphasis>, <emphasis>quiet</emphasis>,
@@ -58,8 +58,8 @@ complete cut across the DAG, or the client has said "done".</simpara>
 <simpara>Without multi_ack, a client sends have lines in --date-order until
 the server has found a common base.  That means the client will send
 have lines that are already known by the server to be common, because
-they overlap in time with another branch that the server hasn't found
-a common base on yet.</simpara>
+they overlap in time with another branch on which the server hasn't found
+a common base yet.</simpara>
 <simpara>For example suppose the client has commits in caps that the server
 doesn't and the server has commits in lower case that the client
 doesn't, as in the following diagram:</simpara>
@@ -81,7 +81,7 @@ interleaved with S-R-Q.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-capabilities(5)__multi_ack_detailed">
 <title>multi_ack_detailed</title>
-<simpara>This is an extension of multi_ack that permits client to better
+<simpara>This is an extension of multi_ack that permits the client to better
 understand the server's in-memory state. See <xref linkend="gitprotocol-pack(5)" />,
 section "Packfile Negotiation" for more information.</simpara>
 </simplesect>
@@ -121,7 +121,7 @@ to disable the feature in a backwards-compatible manner.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-capabilities(5)__side_band_side_band_64k">
 <title>side-band, side-band-64k</title>
-<simpara>This capability means that server can send, and client understand multiplexed
+<simpara>This capability means that the server can send, and the client can understand, multiplexed
 progress reports and error info interleaved with the packfile itself.</simpara>
 <simpara>These two options are mutually exclusive. A modern client always
 favors <emphasis>side-band-64k</emphasis>.</simpara>
@@ -142,13 +142,13 @@ for the older clients.</simpara>
 999 bytes of payload and 1 byte for the stream code. With side-band-64k,
 same deal, you have up to 65519 bytes of data and 1 byte for the stream
 code.</simpara>
-<simpara>The client MUST send only maximum of one of "side-band" and "side-
-band-64k".  Server MUST diagnose it as an error if client requests
+<simpara>The client MUST send only one of "side-band" and "side-
+band-64k".  The server MUST diagnose it as an error if client requests
 both.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-capabilities(5)__ofs_delta">
 <title>ofs-delta</title>
-<simpara>Server can send, and client understand PACKv2 with delta referring to
+<simpara>The server can send, and the client can understand, PACKv2 with delta referring to
 its base by position in pack rather than by an obj-id.  That is, they can
 send/read OBJ_OFS_DELTA (aka type 6) in a packfile.</simpara>
 </simplesect>
@@ -218,7 +218,7 @@ the current shallow boundary, instead of the depth from remote refs.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-capabilities(5)__no_progress">
 <title>no-progress</title>
-<simpara>The client was started with "git clone -q" or something, and doesn't
+<simpara>The client was started with "git clone -q" or something similar, and doesn't
 want that side band 2.  Basically the client just says "I do not
 wish to receive stream 2 on sideband, so do not send it to me, and if
 you did, I will drop it on the floor anyway".  However, the sideband
@@ -236,7 +236,7 @@ the server advertises this capability. The decision for a client to
 request include-tag only has to do with the client's desires for tag
 data, whether or not a server had advertised objects in the
 refs/tags/* namespace.</simpara>
-<simpara>Servers MUST pack the tags if their referrant is packed and the client
+<simpara>Servers MUST pack the tags if their referent is packed and the client
 has requested include-tags.</simpara>
 <simpara>Clients MUST be prepared for the case where a server has ignored
 include-tag and has not actually sent tags in the pack.  In such
@@ -330,7 +330,7 @@ or partial fetch and request that the server omit various objects
 from the packfile.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-capabilities(5)__session_id_lt_session_id_gt">
-<title>session-id=&lt;session id&gt;</title>
+<title>session-id=&lt;session-id&gt;</title>
 <simpara>The server may advertise a session ID that can be used to identify this process
 across multiple requests. The client may advertise its own session ID back to
 the server as well.</simpara>

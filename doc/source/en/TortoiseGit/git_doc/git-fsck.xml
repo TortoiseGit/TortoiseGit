@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-fsck(1)">
     <title>git-fsck(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-fsck(1)</primary>
 </indexterm>
@@ -37,7 +37,7 @@
         An object to treat as the head of an unreachability trace.
 </simpara>
 <simpara>If no objects are given, <emphasis>git fsck</emphasis> defaults to using the
-index file, all SHA-1 references in <emphasis>refs</emphasis> namespace, and all reflogs
+index file, all SHA-1 references in the <emphasis>refs</emphasis> namespace, and all reflogs
 (unless --no-reflogs is given) as heads.</simpara>
 </listitem>
 </varlistentry>
@@ -132,7 +132,7 @@ index file, all SHA-1 references in <emphasis>refs</emphasis> namespace, and all
 <simpara>
         Check only the connectivity of reachable objects, making sure
         that any objects referenced by a reachable tag, commit, or tree
-        is present. This speeds up the operation by avoiding reading
+        are present. This speeds up the operation by avoiding reading
         blobs entirely (though it does still check that referenced blobs
         exist). This will detect corruption in commits and trees, but
         not do any semantic checks (e.g., for format errors). Corruption
@@ -153,7 +153,7 @@ care about this output and want to speed it up further.</simpara>
         recorded with g+w bit set, which was created by older
         versions of Git.  Existing repositories, including the
         Linux kernel, Git itself, and sparse repository have old
-        objects that triggers this check, but it is recommended
+        objects that trigger this check, but it is recommended
         to check new projects with this flag.
 </simpara>
 </listitem>
@@ -233,12 +233,12 @@ to accept pushes of such data set <emphasis>receive.fsck.&lt;msg-id&gt;</emphasi
 to clone or fetch it set <emphasis>fetch.fsck.&lt;msg-id&gt;</emphasis>.</simpara>
 <simpara>The rest of the documentation discusses <emphasis>fsck.*</emphasis> for brevity, but the
 same applies for the corresponding <emphasis>receive.fsck.*</emphasis> and
-<emphasis>fetch.&lt;msg-id&gt;.*</emphasis>. variables.</simpara>
-<simpara>Unlike variables like <emphasis>color.ui</emphasis> and <emphasis>core.editor</emphasis> the
+<emphasis>fetch.fsck.*</emphasis>. variables.</simpara>
+<simpara>Unlike variables like <emphasis>color.ui</emphasis> and <emphasis>core.editor</emphasis>, the
 <emphasis>receive.fsck.&lt;msg-id&gt;</emphasis> and <emphasis>fetch.fsck.&lt;msg-id&gt;</emphasis> variables will not
 fall back on the <emphasis>fsck.&lt;msg-id&gt;</emphasis> configuration if they aren't set. To
-uniformly configure the same fsck settings in different circumstances
-all three of them they must all set to the same values.</simpara>
+uniformly configure the same fsck settings in different circumstances,
+all three of them must be set to the same values.</simpara>
 <simpara>When <emphasis>fsck.&lt;msg-id&gt;</emphasis> is set, errors can be switched to warnings and
 vice versa by configuring the <emphasis>fsck.&lt;msg-id&gt;</emphasis> setting where the
 <emphasis>&lt;msg-id&gt;</emphasis> is the fsck message ID and the value is one of <emphasis>error</emphasis>,
@@ -253,7 +253,7 @@ allow new instances of the same breakages go unnoticed.</simpara>
 <simpara>Setting an unknown <emphasis>fsck.&lt;msg-id&gt;</emphasis> value will cause fsck to die, but
 doing the same for <emphasis>receive.fsck.&lt;msg-id&gt;</emphasis> and <emphasis>fetch.fsck.&lt;msg-id&gt;</emphasis>
 will only cause git to warn.</simpara>
-<simpara>See <emphasis>Fsck Messages</emphasis> section of <xref linkend="git-fsck(1)" /> for supported
+<simpara>See the <emphasis>Fsck Messages</emphasis> section of <xref linkend="git-fsck(1)" /> for supported
 values of <emphasis>&lt;msg-id&gt;</emphasis>.</simpara>
 </listitem>
 </varlistentry>
@@ -265,12 +265,12 @@ fsck.skipList
 <simpara>
         The path to a list of object names (i.e. one unabbreviated SHA-1 per
         line) that are known to be broken in a non-fatal way and should
-        be ignored. On versions of Git 2.20 and later comments (<emphasis>#</emphasis>), empty
-        lines, and any leading and trailing whitespace is ignored. Everything
+        be ignored. On versions of Git 2.20 and later, comments (<emphasis>#</emphasis>), empty
+        lines, and any leading and trailing whitespace are ignored. Everything
         but a SHA-1 per line will error out on older versions.
 </simpara>
 <simpara>This feature is useful when an established project should be accepted
-despite early commits containing errors that can be safely ignored
+despite early commits containing errors that can be safely ignored,
 such as invalid committer email addresses.  Note: corrupt objects
 cannot be skipped with this setting.</simpara>
 <simpara>Like <emphasis>fsck.&lt;msg-id&gt;</emphasis> this variable has corresponding
@@ -278,10 +278,10 @@ cannot be skipped with this setting.</simpara>
 <simpara>Unlike variables like <emphasis>color.ui</emphasis> and <emphasis>core.editor</emphasis> the
 <emphasis>receive.fsck.skipList</emphasis> and <emphasis>fetch.fsck.skipList</emphasis> variables will not
 fall back on the <emphasis>fsck.skipList</emphasis> configuration if they aren't set. To
-uniformly configure the same fsck settings in different circumstances
-all three of them they must all set to the same values.</simpara>
+uniformly configure the same fsck settings in different circumstances,
+all three of them must be set to the same values.</simpara>
 <simpara>Older versions of Git (before 2.20) documented that the object names
-list should be sorted. This was never a requirement, the object names
+list should be sorted. This was never a requirement; the object names
 could appear in any order, but when reading the list we tracked whether
 the list was sorted for the purposes of an internal binary search
 implementation, which could save itself some work with an already sorted
@@ -713,6 +713,20 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>largePathname</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A tree contains an entry with a very long path name. If
+        the value of <emphasis>fsck.largePathname</emphasis> contains a colon, that value
+        is used as the maximum allowable length (e.g., "warn:10" would
+        complain about any path component of 11 or more bytes). The
+        default value is 4096.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>mailmapSymlink</emphasis>
 </term>
 <listitem>
@@ -787,7 +801,7 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </term>
 <listitem>
 <simpara>
-        (ERROR) Missing space before the email in author/committer line.
+        (ERROR) Missing space before the email in an author/committer line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -927,7 +941,7 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </term>
 <listitem>
 <simpara>
-        (ERROR) Found a zero padded date in an author/commiter line.
+        (ERROR) Found a zero padded date in an author/committer line.
 </simpara>
 </listitem>
 </varlistentry>

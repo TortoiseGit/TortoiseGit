@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-push(1)">
     <title>git-push(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-push(1)</primary>
 </indexterm>
@@ -55,7 +55,7 @@ local one.</simpara>
 </term>
 <listitem>
 <simpara>
-        The "remote" repository that is destination of a push
+        The "remote" repository that is the destination of a push
         operation.  This parameter can be either a URL
         (see the section <link linkend="git-push(1)_URLS">GIT URLS</link> below) or the name
         of a remote (see the section <link linkend="git-push(1)_REMOTES">REMOTES</link> below).
@@ -632,31 +632,31 @@ further recursion will occur. In this case, "only" is treated as "on-demand".</s
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp
 and ftps can be used for fetching, but this is inefficient and
-deprecated; do not use it).</simpara>
+deprecated; do not use them).</simpara>
 <simpara>The native transport (i.e. git:// URL) does no authentication and
 should be used with caution on unsecured networks.</simpara>
 <simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;:<emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>http</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ftp</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -664,7 +664,7 @@ ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
 <itemizedlist>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -673,21 +673,21 @@ first colon. This helps differentiate a local path that contains a
 colon. For example the local path <emphasis>foo:bar</emphasis> could be specified as an
 absolute path or <emphasis>./foo:bar</emphasis> to avoid being misinterpreted as an ssh
 url.</simpara>
-<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<simpara>The ssh and git protocols additionally support <literal>~</literal><emphasis>&lt;username&gt;</emphasis> expansion:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -696,40 +696,42 @@ syntaxes may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-/path/to/repo.git/
+<emphasis>/path/to/repo.git/</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-file:///path/to/repo.git/
+<literal>file:///path/to/repo.git/</literal>
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>These two syntaxes are mostly equivalent, except when cloning, when
-the former implies --local option. See <xref linkend="git-clone(1)" /> for
+the former implies <emphasis>--local</emphasis> option. See <xref linkend="git-clone(1)" /> for
 details.</simpara>
 <simpara><emphasis>git clone</emphasis>, <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>, but not <emphasis>git push</emphasis>, will also
 accept a suitable bundle file. See <xref linkend="git-bundle(1)" />.</simpara>
 <simpara>When Git doesn't know how to handle a certain transport protocol, it
-attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+attempts to use the <emphasis>remote-</emphasis><emphasis>&lt;transport&gt;</emphasis> remote helper, if one
 exists. To explicitly request a remote helper, the following syntax
 may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-&lt;transport&gt;::&lt;address&gt;
+<emphasis>&lt;transport&gt;</emphasis>::<emphasis>&lt;address&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+<simpara>where <emphasis>&lt;address&gt;</emphasis> may be a path, a server and path, or an arbitrary
 URL-like string recognized by the specific remote helper being
 invoked. See <xref linkend="gitremote-helpers(7)" /> for details.</simpara>
 <simpara>If there are a large number of similarly-named remote repositories and
 you want to use a different format for them (such that the URLs you
 use will be rewritten into URLs that work), you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                insteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                insteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "git://git.host.xz/"]
                 insteadOf = host.xz:/path/to/
@@ -738,8 +740,10 @@ configuration section of the form:</simpara>
 rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
 <simpara>If you want to rewrite URLs for push only, you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                pushInsteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                pushInsteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "ssh://example.org/"]
                 pushInsteadOf = git://example.org/</screen>
@@ -785,7 +789,7 @@ config file would appear like this:</simpara>
                 push = &lt;refspec&gt;
                 fetch = &lt;refspec&gt;</screen>
 <simpara>The <emphasis>&lt;pushurl&gt;</emphasis> is used for pushes only. It is optional and defaults
-to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or to all
+to <emphasis>&lt;URL&gt;</emphasis>. Pushing to a remote affects all defined pushurls or all
 defined urls if no pushurls are defined. Fetch, however, will only
 fetch from the first defined url if multiple urls are defined.</simpara>
 </section>
@@ -797,7 +801,7 @@ in this file will be used to access the repository.  The refspec
 in this file will be used as default when you do not
 provide a refspec on the command line.  This file should have the
 following format:</simpara>
-<screen>        URL: one of the above URL format
+<screen>        URL: one of the above URL formats
         Push: &lt;refspec&gt;
         Pull: &lt;refspec&gt;</screen>
 <simpara><emphasis>Push:</emphasis> lines are used by <emphasis>git push</emphasis> and
@@ -1323,7 +1327,7 @@ push.default
 </listitem>
 <listitem>
 <simpara>
-<emphasis>simple</emphasis> - pushes the current branch with the same name on the remote.
+<emphasis>simple</emphasis> - push the current branch with the same name on the remote.
 </simpara>
 <simpara>If you are working on a centralized workflow (pushing to the same repository you
 pull from, which is typically <emphasis>origin</emphasis>), then you need to configure an upstream
@@ -1361,7 +1365,7 @@ push.followTags
 </term>
 <listitem>
 <simpara>
-        If set to true enable <emphasis>--follow-tags</emphasis> option by default.  You
+        If set to true, enable <emphasis>--follow-tags</emphasis> option by default.  You
         may override this configuration at time of push by specifying
         <emphasis>--no-follow-tags</emphasis>.
 </simpara>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-verify-pack(1)">
     <title>git-verify-pack(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-verify-pack(1)</primary>
 </indexterm>
@@ -21,7 +21,7 @@
 <simplesect id="git-verify-pack(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Reads given idx file for packed Git archive created with the
-<emphasis>git pack-objects</emphasis> command and verifies idx file and the
+<emphasis>git pack-objects</emphasis> command and verifies the idx file and the
 corresponding pack file.</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__options">
@@ -46,7 +46,7 @@ corresponding pack file.</simpara>
 </term>
 <listitem>
 <simpara>
-        After verifying the pack, show list of objects contained
+        After verifying the pack, show the list of objects contained
         in the pack and a histogram of delta chain length.
 </simpara>
 </listitem>
@@ -61,7 +61,7 @@ corresponding pack file.</simpara>
 <listitem>
 <simpara>
         Do not verify the pack contents; only show the histogram of delta
-        chain length.  With <emphasis>--verbose</emphasis>, list of objects is also shown.
+        chain length.  With <emphasis>--verbose</emphasis>, the list of objects is also shown.
 </simpara>
 </listitem>
 </varlistentry>

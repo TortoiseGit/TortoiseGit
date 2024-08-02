@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-diff(1)">
     <title>git-diff(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-diff(1)</primary>
 </indexterm>
@@ -156,7 +156,7 @@ of &lt;commit&gt; and HEAD.  <emphasis>git diff --merge-base A</emphasis> is equ
 noted that all of the &lt;commit&gt; in the above description, except
 in the <emphasis>--merge-base</emphasis> case and in the last two forms that use <emphasis>..</emphasis>
 notations, can be any &lt;tree&gt;. A tree of interest is the one pointed to
-by the special ref <emphasis>AUTO_MERGE</emphasis>, which is written by the <emphasis>ort</emphasis> merge
+by the ref named <emphasis>AUTO_MERGE</emphasis>, which is written by the <emphasis>ort</emphasis> merge
 strategy upon hitting merge conflicts (see <xref linkend="git-merge(1)" />).
 Comparing the working tree with <emphasis>AUTO_MERGE</emphasis> shows changes you've made
 so far to resolve textual conflicts (see the examples below).</simpara>
@@ -414,14 +414,15 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
         part. Maximum width defaults to terminal width, or 80 columns
         if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
-        giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma. The width
-        of the graph part can be limited by using
-        <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> (affects all commands generating
-        a stat graph) or by setting <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>
-        (does not affect <emphasis>git format-patch</emphasis>).
-        By giving a third parameter <emphasis>&lt;count&gt;</emphasis>, you can limit the
-        output to the first <emphasis>&lt;count&gt;</emphasis> lines, followed by <emphasis>...</emphasis> if
-        there are more.
+        giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma or by setting
+        <emphasis>diff.statNameWidth=&lt;width&gt;</emphasis>. The width of the graph part can be
+        limited by using <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> or by setting
+        <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>. Using <emphasis>--stat</emphasis> or
+        <emphasis>--stat-graph-width</emphasis> affects all commands generating a stat graph,
+        while setting <emphasis>diff.statNameWidth</emphasis> or <emphasis>diff.statGraphWidth</emphasis>
+        does not affect <emphasis>git format-patch</emphasis>.
+        By giving a third parameter <emphasis>&lt;count&gt;</emphasis>, you can limit the output to
+        the first <emphasis>&lt;count&gt;</emphasis> lines, followed by <emphasis>...</emphasis> if there are more.
 </simpara>
 <simpara>These parameters can also be set individually with <emphasis>--stat-width=&lt;width&gt;</emphasis>,
 <emphasis>--stat-name-width=&lt;name-width&gt;</emphasis> and <emphasis>--stat-count=&lt;count&gt;</emphasis>.</simpara>
@@ -576,7 +577,7 @@ and accumulating child directory counts in the parent directories:
 </term>
 <listitem>
 <simpara>
-        Synonym for --dirstat=files,param1,param2&#8230;
+        Synonym for --dirstat=files,&lt;param1&gt;,&lt;param2&gt;&#8230;
 </simpara>
 </listitem>
 </varlistentry>
@@ -621,7 +622,8 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 </term>
 <listitem>
 <simpara>
-        Show only names of changed files. The file names are often encoded in UTF-8.
+        Show only the name of each changed file in the post-image tree.
+        The file names are often encoded in UTF-8.
         For more information see the discussion about encoding in the <xref linkend="git-log(1)" />
         manual page.
 </simpara>
@@ -633,7 +635,7 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
 </term>
 <listitem>
 <simpara>
-        Show only names and status of changed files. See the description
+        Show only the name(s) and status of each changed file. See the description
         of the <emphasis>--diff-filter</emphasis> option on what the status letters mean.
         Just like <emphasis>--name-only</emphasis> the file names are often encoded in UTF-8.
 </simpara>
@@ -1352,7 +1354,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <simpara>
         Discard the files before the named &lt;file&gt; from the output
         (i.e. <emphasis>skip to</emphasis>), or move them to the end of the output
-        (i.e. <emphasis>rotate to</emphasis>).  These were invented primarily for use
+        (i.e. <emphasis>rotate to</emphasis>).  These options were invented primarily for the use
         of the <emphasis>git difftool</emphasis> command, and may not be very useful
         otherwise.
 </simpara>
@@ -1626,8 +1628,9 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 <listitem>
 <simpara>
         Use the default source and destination prefixes ("a/" and "b/").
-        This is usually the default already, but may be used to override
-        config such as <emphasis>diff.noprefix</emphasis>.
+        This overrides configuration variables such as <emphasis>diff.noprefix</emphasis>,
+        <emphasis>diff.srcPrefix</emphasis>, <emphasis>diff.dstPrefix</emphasis>, and <emphasis>diff.mnemonicPrefix</emphasis>
+        (see <emphasis>git-config</emphasis>(1)).
 </simpara>
 </listitem>
 </varlistentry>
@@ -1965,15 +1968,15 @@ diff format:</simpara>
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-It is preceded with a "git diff" header that looks like this:
+It is preceded by a "git diff" header that looks like this:
 </simpara>
 <literallayout class="monospaced">diff --git a/file1 b/file2</literallayout>
 <simpara>The <emphasis>a/</emphasis> and <emphasis>b/</emphasis> filenames are the same unless rename/copy is
 involved.  Especially, even for a creation or a deletion,
 <emphasis>/dev/null</emphasis> is <emphasis>not</emphasis> used in place of the <emphasis>a/</emphasis> or <emphasis>b/</emphasis> filenames.</simpara>
-<simpara>When rename/copy is involved, <emphasis>file1</emphasis> and <emphasis>file2</emphasis> show the
+<simpara>When a rename/copy is involved, <emphasis>file1</emphasis> and <emphasis>file2</emphasis> show the
 name of the source file of the rename/copy and the name of
-the file that rename/copy produces, respectively.</simpara>
+the file that the rename/copy produces, respectively.</simpara>
 </listitem>
 <listitem>
 <simpara>
@@ -2028,7 +2031,7 @@ rename to a</literallayout>
 <simpara>
 Hunk headers mention the name of the function to which the hunk
     applies.  See "Defining a custom hunk-header" in
-    <xref linkend="gitattributes(5)" /> for details of how to tailor to this to
+    <xref linkend="gitattributes(5)" /> for details of how to tailor this to
     specific languages.
 </simpara>
 </listitem>
@@ -2041,7 +2044,7 @@ produce a <emphasis>combined diff</emphasis> when showing a merge. This is the d
 format when showing merges with <xref linkend="git-diff(1)" /> or
 <xref linkend="git-show(1)" />. Note also that you can give suitable
 <emphasis>--diff-merges</emphasis> option to any of these commands to force generation of
-diffs in specific format.</simpara>
+diffs in a specific format.</simpara>
 <simpara>A "combined diff" format looks like this:</simpara>
 <screen>diff --combined describe.c
 index fabadb8,cc95eb0..4866510
@@ -2073,7 +2076,7 @@ index fabadb8,cc95eb0..4866510
 <orderedlist numeration="arabic">
 <listitem>
 <simpara>
-It is preceded with a "git diff" header, that looks like
+It is preceded by a "git diff" header, that looks like
      this (when the <emphasis>-c</emphasis> option is used):
 </simpara>
 <literallayout class="monospaced">diff --combined file</literallayout>
@@ -2091,22 +2094,22 @@ new file mode &lt;mode&gt;
 deleted file mode &lt;mode&gt;,&lt;mode&gt;</literallayout>
 <simpara>The <emphasis>mode &lt;mode&gt;,&lt;mode&gt;..&lt;mode&gt;</emphasis> line appears only if at least one of
 the &lt;mode&gt; is different from the rest. Extended headers with
-information about detected contents movement (renames and
-copying detection) are designed to work with diff of two
+information about detected content movement (renames and
+copying detection) are designed to work with the diff of two
 &lt;tree-ish&gt; and are not used by combined diff format.</simpara>
 </listitem>
 <listitem>
 <simpara>
-It is followed by two-line from-file/to-file header
+It is followed by a two-line from-file/to-file header:
 </simpara>
 <literallayout class="monospaced">--- a/file
 +++ b/file</literallayout>
-<simpara>Similar to two-line header for traditional <emphasis>unified</emphasis> diff
+<simpara>Similar to the two-line header for the traditional <emphasis>unified</emphasis> diff
 format, <emphasis>/dev/null</emphasis> is used to signal created or deleted
 files.</simpara>
 <simpara>However, if the --combined-all-paths option is provided, instead of a
-two-line from-file/to-file you get a N+1 line from-file/to-file header,
-where N is the number of parents in the merge commit</simpara>
+two-line from-file/to-file, you get an N+1 line from-file/to-file header,
+where N is the number of parents in the merge commit:</simpara>
 <literallayout class="monospaced">--- a/file
 --- a/file
 --- a/file
@@ -2144,7 +2147,7 @@ added, from the point of view of that parent).</simpara>
 <simpara>In the above example output, the function signature was changed
 from both files (hence two <emphasis>-</emphasis> removals from both file1 and
 file2, plus <emphasis>++</emphasis> to mean one line that was added does not appear
-in either file1 or file2).  Also eight other lines are the same
+in either file1 or file2).  Also, eight other lines are the same
 from file1 but do not appear in file2 (hence prefixed with <emphasis>+</emphasis>).</simpara>
 <simpara>When shown by <emphasis>git diff-tree -c</emphasis>, it compares the parents of a
 merge commit with the merge result (i.e. file1..fileN are the
@@ -2422,7 +2425,7 @@ diff.autoRefreshIndex
 <listitem>
 <simpara>
         When using <emphasis>git diff</emphasis> to compare with work tree
-        files, do not consider stat-only change as changed.
+        files, do not consider stat-only changes as changed.
         Instead, silently run <emphasis>git update-index --refresh</emphasis> to
         update the cached stat information for paths whose
         contents in the work tree match the contents in the
@@ -2519,6 +2522,17 @@ diff.dirstat
 directories with less than 10% of the total amount of changed files,
 and accumulating child directory counts in the parent directories:
 <emphasis>files,10,cumulative</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.statNameWidth
+</term>
+<listitem>
+<simpara>
+        Limit the width of the filename part in --stat output. If set, applies
+        to all commands generating --stat output except format-patch.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -2659,11 +2673,31 @@ diff.mnemonicPrefix
 </varlistentry>
 <varlistentry>
 <term>
-diff.noprefix
+diff.noPrefix
 </term>
 <listitem>
 <simpara>
         If set, <emphasis>git diff</emphasis> does not show any source or destination prefix.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.srcPrefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> uses this source prefix. Defaults to "a/".
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+diff.dstPrefix
+</term>
+<listitem>
+<simpara>
+        If set, <emphasis>git diff</emphasis> uses this destination prefix. Defaults to "b/".
 </simpara>
 </listitem>
 </varlistentry>
@@ -3173,8 +3207,8 @@ diff.colorMovedWS
 <listitem>
 <simpara>
         When moved lines are colored using e.g. the <emphasis>diff.colorMoved</emphasis> setting,
-        this option controls the <emphasis>&lt;mode&gt;</emphasis> how spaces are treated
-        for details of valid modes see <emphasis>--color-moved-ws</emphasis> in <xref linkend="git-diff(1)" />.
+        this option controls the <emphasis>&lt;mode&gt;</emphasis> how spaces are treated.
+        For details of valid modes see <emphasis>--color-moved-ws</emphasis> in <xref linkend="git-diff(1)" />.
 </simpara>
 </listitem>
 </varlistentry>

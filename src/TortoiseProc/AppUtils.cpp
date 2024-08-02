@@ -2171,13 +2171,15 @@ bool CAppUtils::MessageContainsConflictHints(HWND hWnd, const CString& message)
 	CString cleanupMode = g_Git.GetConfigValue(L"core.cleanup", L"default");
 	if (cleanupMode == L"verbatim" || cleanupMode == L"whitespace" || cleanupMode == L"scissors")
 		return false;
-	wchar_t commentChar = L'#';
+
 	CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
-	if (!commentCharValue.IsEmpty())
-		commentChar = commentCharValue[0];
+	if (commentCharValue.IsEmpty())
+		commentCharValue = L"#";
+	else if (CGit::ms_LastMsysGitVersion < ConvertVersionToInt(2, 45, 0))
+		commentCharValue = commentCharValue.Left(1);
 
 	CString conflictsHint;
-	conflictsHint.Format(L"\n%c Conflicts:\n%c\t", commentChar, commentChar);
+	conflictsHint.Format(L"\n%s Conflicts:\n%s\t", static_cast<LPCWSTR>(commentCharValue), static_cast<LPCWSTR>(commentCharValue));
 
 	if (message.Find(conflictsHint) <= 0)
 		return false;
@@ -2200,12 +2202,14 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 		const int cp = CUnicodeUtils::GetCPCode(g_Git.GetConfigValue(L"i18n.commitencoding"));
 
 		const bool stripComments = (CRegDWORD(L"Software\\TortoiseGit\\StripCommentedLines", FALSE) == TRUE);
-		wchar_t commentChar = L'#';
+		CString commentCharValue;
 		if (stripComments)
 		{
-			CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
-			if (!commentCharValue.IsEmpty())
-				commentChar = commentCharValue[0];
+			commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
+			if (commentCharValue.IsEmpty())
+				commentCharValue = L"#";
+			else if (CGit::ms_LastMsysGitVersion < ConvertVersionToInt(2, 45, 0))
+				commentCharValue = commentCharValue.Left(1);
 		}
 
 		bool sanitize = (CRegDWORD(L"Software\\TortoiseGit\\SanitizeCommitMsg", TRUE) == TRUE);
@@ -2225,7 +2229,7 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 				line.Truncate(start - oldStart);
 				++start; // move forward so we don't find the same char again
 			}
-			if (stripComments && (!line.IsEmpty() && line.GetAt(0) == commentChar) || (start < 0 && line.IsEmpty()))
+			if (stripComments && (!line.IsEmpty() && CStringUtils::StartsWith(line, commentCharValue)) || (start < 0 && line.IsEmpty()))
 				continue;
 			line.TrimRight(L" \r");
 			if (sanitize)
@@ -3377,6 +3381,10 @@ int CAppUtils::GetMsysgitVersion(HWND hWnd)
 	regTime = static_cast<DWORD>(CGit::filetime_to_time_t(time));
 	regVersion = ver;
 	g_Git.ms_LastMsysGitVersion = ver;
+
+	// reinitialize everything (especially libgit2 config search paths), only needed because APPDATA is a Git config dir since 2.46
+	g_Git.m_bInitialized = false;
+	g_Git.CheckMsysGitDir();
 
 	return ver;
 }

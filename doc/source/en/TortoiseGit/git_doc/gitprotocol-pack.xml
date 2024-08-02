@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-pack(5)">
     <title>gitprotocol-pack(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-pack(5)</primary>
 </indexterm>
@@ -35,7 +35,7 @@ of data to send in order to fully update one or the other.</simpara>
 <simplesect id="gitprotocol-pack(5)__pkt_line_format">
 <title>pkt-line Format</title>
 <simpara>The descriptions below build on the pkt-line format described in
-<xref linkend="gitprotocol-common(5)" />. When the grammar indicate <emphasis>PKT-LINE(...)</emphasis>, unless
+<xref linkend="gitprotocol-common(5)" />. When the grammar indicates <emphasis>PKT-LINE(...)</emphasis>, unless
 otherwise noted the usual pkt-line LF rules apply: the sender SHOULD
 include a LF, but the receiver MUST NOT complain if it is not present.</simpara>
 <simpara>An error packet is a special pkt-line that contains an error string.</simpara>
@@ -115,7 +115,7 @@ an absolute path in the remote filesystem.</simpara>
                 |
                 v
 ssh user@example.com "git-upload-pack '/project.git'"</literallayout>
-<simpara>In a "user@host:path" format URI, its relative to the user's home
+<simpara>In a "user@host:path" format URI, it's relative to the user's home
 directory, because the Git client will run:</simpara>
 <literallayout class="monospaced">   git clone user@example.com:project.git
                   |
@@ -280,7 +280,7 @@ a positive depth, this step is skipped.</simpara>
   unshallow-line   =  PKT-LINE("unshallow" SP obj-id)</screen>
 <simpara>If the client has requested a positive depth, the server will compute
 the set of commits which are no deeper than the desired depth. The set
-of commits start at the client's wants.</simpara>
+of commits starts at the client's wants.</simpara>
 <simpara>The server writes <emphasis>shallow</emphasis> lines for each
 commit whose parents will not be sent as a result. The server writes
 an <emphasis>unshallow</emphasis> line for each commit which the client has indicated is

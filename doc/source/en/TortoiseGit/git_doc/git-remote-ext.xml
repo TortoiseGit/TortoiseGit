@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-remote-ext(1)">
     <title>git-remote-ext(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-remote-ext(1)</primary>
 </indexterm>
@@ -82,10 +82,10 @@ the same service.</simpara>
         This argument will not be passed to <emphasis>&lt;command&gt;</emphasis>. Instead, it
         will cause the helper to start by sending git:// service requests to
         the remote side with the service field set to an appropriate value and
-        the repository field set to rest of the argument. Default is not to send
+        the repository field set to the rest of the argument. Default is not to send
         such a request.
 </simpara>
-<simpara>This is useful if remote side is git:// server accessed over
+<simpara>This is useful if the remote side is git:// server accessed over
 some tunnel.</simpara>
 </listitem>
 </varlistentry>
@@ -96,7 +96,7 @@ some tunnel.</simpara>
 <listitem>
 <simpara>
         This argument will not be passed to <emphasis>&lt;command&gt;</emphasis>. Instead it sets
-        the vhost field in the git:// service request (to rest of the argument).
+        the vhost field in the git:// service request (to the rest of the argument).
         Default is not to send vhost in such request (if sent).
 </simpara>
 </listitem>
@@ -159,7 +159,7 @@ begins with <emphasis>ext::</emphasis>.  Examples:</simpara>
 <listitem>
 <simpara>
         Like host.example:foo/repo, but use /home/foo/.ssh/somekey as
-        keypair and user as user on remote side. This avoids needing to
+        keypair and user as the user on the remote side. This avoids the need to
         edit .ssh/config.
 </simpara>
 </listitem>
@@ -171,7 +171,7 @@ begins with <emphasis>ext::</emphasis>.  Examples:</simpara>
 <listitem>
 <simpara>
         Represents repository with path /somerepo accessible over
-        git protocol at abstract namespace address /git-server.
+        git protocol at the abstract namespace address /git-server.
 </simpara>
 </listitem>
 </varlistentry>

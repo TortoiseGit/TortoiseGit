@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-mergetool(1)">
     <title>git-mergetool(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-mergetool(1)</primary>
 </indexterm>
@@ -23,7 +23,7 @@
 <simpara>Use <emphasis>git mergetool</emphasis> to run one of several merge utilities to resolve
 merge conflicts.  It is typically run after <emphasis>git merge</emphasis>.</simpara>
 <simpara>If one or more &lt;file&gt; parameters are given, the merge tool program will
-be run to resolve differences on each file (skipping those without
+be run to resolve differences in each file (skipping those without
 conflicts).  Specifying a directory will include all unresolved files in
 that path.  If no &lt;file&gt; names are specified, <emphasis>git mergetool</emphasis> will run
 the merge tool program on every file with merge conflicts.</simpara>
@@ -60,7 +60,7 @@ by specifying the command line to invoke in a configuration
 variable <emphasis>mergetool.&lt;tool&gt;.cmd</emphasis>.</simpara>
 <simpara>When <emphasis>git mergetool</emphasis> is invoked with this tool (either through the
 <emphasis>-t</emphasis> or <emphasis>--tool</emphasis> option or the <emphasis>merge.tool</emphasis> configuration
-variable) the configured command line will be invoked with <emphasis>$BASE</emphasis>
+variable), the configured command line will be invoked with <emphasis>$BASE</emphasis>
 set to the name of a temporary file containing the common base for
 the merge, if available; <emphasis>$LOCAL</emphasis> set to the name of a temporary
 file containing the contents of the file on the current branch;
@@ -122,7 +122,7 @@ success of the resolution after the custom tool has exited.</simpara>
 </term>
 <listitem>
 <simpara>
-        When <emphasis>git-mergetool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option
+        When <emphasis>git-mergetool</emphasis> is invoked with the <emphasis>-g</emphasis> or <emphasis>--gui</emphasis> option,
         the default merge tool will be read from the configured
         <emphasis>merge.guitool</emphasis> variable instead of <emphasis>merge.tool</emphasis>. If
         <emphasis>merge.guitool</emphasis> is not set, we will fallback to the tool
@@ -215,8 +215,8 @@ mergetool.&lt;tool&gt;.trustExitCode
         For a custom merge command, specify whether the exit code of
         the merge command can be used to determine whether the merge was
         successful.  If this is not set to true then the merge target file
-        timestamp is checked and the merge assumed to have been successful
-        if the file has been updated, otherwise the user is prompted to
+        timestamp is checked, and the merge is assumed to have been successful
+        if the file has been updated; otherwise, the user is prompted to
         indicate the success of the merge.
 </simpara>
 </listitem>
@@ -244,7 +244,7 @@ mergetool.meld.useAutoMerge
 <listitem>
 <simpara>
         When the <emphasis>--auto-merge</emphasis> is given, meld will merge all non-conflicting
-        parts automatically, highlight the conflicting parts and wait for
+        parts automatically, highlight the conflicting parts, and wait for
         user decision.  Setting <emphasis>mergetool.meld.useAutoMerge</emphasis> to <emphasis>true</emphasis> tells
         Git to unconditionally use the <emphasis>--auto-merge</emphasis> option with <emphasis>meld</emphasis>.
         Setting this value to <emphasis>auto</emphasis> makes git detect whether <emphasis>--auto-merge</emphasis>
@@ -256,14 +256,19 @@ mergetool.meld.useAutoMerge
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.vimdiff.layout
+mergetool.&lt;vimdiff variant&gt;.layout
 </term>
 <listitem>
 <simpara>
-        The vimdiff backend uses this variable to control how its split
-        windows look like. Applies even if you are using Neovim (<emphasis>nvim</emphasis>) or
-        gVim (<emphasis>gvim</emphasis>) as the merge tool. See BACKEND SPECIFIC HINTS section
-        for details.
+        Configure the split window layout for vimdiff's <emphasis>&lt;variant&gt;</emphasis>, which is any of <emphasis>vimdiff</emphasis>,
+        <emphasis>nvimdiff</emphasis>, <emphasis>gvimdiff</emphasis>.
+        Upon launching <emphasis>git mergetool</emphasis> with <emphasis>--tool=&lt;variant&gt;</emphasis> (or without <emphasis>--tool</emphasis>
+        if <emphasis>merge.tool</emphasis> is configured as <emphasis>&lt;variant&gt;</emphasis>), Git will consult
+        <emphasis>mergetool.&lt;variant&gt;.layout</emphasis> to determine the tool's layout. If the
+        variant-specific configuration is not available, <emphasis>vimdiff</emphasis>'s is used as
+        fallback.  If that too is not available, a default layout with 4 windows
+        will be used.  To configure the layout, see the <emphasis>BACKEND SPECIFIC HINTS</emphasis>
+        section.
 </simpara>
 </listitem>
 </varlistentry>
@@ -273,7 +278,7 @@ mergetool.hideResolved
 </term>
 <listitem>
 <simpara>
-        During a merge Git will automatically resolve as many conflicts as
+        During a merge, Git will automatically resolve as many conflicts as
         possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
         any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
         represent the versions of the file from before Git's conflict
@@ -306,7 +311,7 @@ mergetool.keepTemporaries
         When invoking a custom merge tool, Git uses a set of temporary
         files to pass to the tool. If the tool returns an error and this
         variable is set to <emphasis>true</emphasis>, then these temporary files will be
-        preserved, otherwise they will be removed after the tool has
+        preserved; otherwise, they will be removed after the tool has
         exited. Defaults to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
@@ -356,7 +361,7 @@ mergetool.guiDefault
 These are safe to remove once a file has been merged and its
 <emphasis>git mergetool</emphasis> session has completed.</simpara>
 <simpara>Setting the <emphasis>mergetool.keepBackup</emphasis> configuration variable to <emphasis>false</emphasis>
-causes <emphasis>git mergetool</emphasis> to automatically remove the backup as files
+causes <emphasis>git mergetool</emphasis> to automatically remove the backup files as files
 are successfully merged.</simpara>
 </simplesect>
 <simplesect id="git-mergetool(1)__backend_specific_hints">
@@ -406,12 +411,12 @@ have special meaning:</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>@</emphasis> is used to indicate which is the file containing the final version after
+<emphasis>@</emphasis> is used to indicate the file containing the final version after
     solving the conflicts. If not present, <emphasis>MERGED</emphasis> will be used by default.
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The precedence of the operators is this one (you can use parentheses to change
+<simpara>The precedence of the operators is as follows (you can use parentheses to change
 it):</simpara>
 <literallayout class="monospaced">`@` &gt; `+` &gt; `/` &gt; `,`</literallayout>
 <simpara>Let's see some examples to understand how it works:</simpara>
@@ -526,7 +531,7 @@ information as the first tab, with a different layout.</simpara>
 |---------------------|                     |
 |       REMOTE        |                     |
 ---------------------------------------------</literallayout>
-<simpara>Note how in the third tab definition we need to use parenthesis to make <emphasis>,</emphasis>
+<simpara>Note how in the third tab definition we need to use parentheses to make <emphasis>,</emphasis>
 have precedence over <emphasis>/</emphasis>.</simpara>
 </listitem>
 </itemizedlist>
@@ -548,7 +553,8 @@ have precedence over <emphasis>/</emphasis>.</simpara>
 </itemizedlist>
 <simpara>When using these variants, in order to specify a custom layout you will have to
 set configuration variables <emphasis>mergetool.gvimdiff.layout</emphasis> and
-<emphasis>mergetool.nvimdiff.layout</emphasis> instead of <emphasis>mergetool.vimdiff.layout</emphasis></simpara>
+<emphasis>mergetool.nvimdiff.layout</emphasis> instead of <emphasis>mergetool.vimdiff.layout</emphasis> (though the
+latter will be used as fallback if the variant-specific one is not set).</simpara>
 <simpara>In addition, for backwards compatibility with previous Git versions, you can
 also append <emphasis>1</emphasis>, <emphasis>2</emphasis> or <emphasis>3</emphasis> to either <emphasis>vimdiff</emphasis> or any of the variants (ex:
 <emphasis>vimdiff3</emphasis>, <emphasis>nvimdiff1</emphasis>, etc&#8230;) to use a predefined layout.

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-tag(1)">
     <title>git-tag(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-tag(1)</primary>
 </indexterm>
@@ -434,7 +434,7 @@ committer identity (of the form <emphasis>Your Name &lt;your@email.address&gt;</
 find a key.  If you want to use a different default key, you can specify
 it in the repository configuration as follows:</simpara>
 <screen>[user]
-    signingKey = &lt;gpg-key_id&gt;</screen>
+    signingKey = &lt;gpg-key-id&gt;</screen>
 <simpara><emphasis>pager.tag</emphasis> is only respected when listing tags, i.e., when <emphasis>-l</emphasis> is
 used or implied. The default is to use a pager.
 See <xref linkend="git-config(1)" />.</simpara>
@@ -588,7 +588,7 @@ RFC 2822
 </term>
 <listitem>
 <simpara>
-        The standard email format as described by RFC 2822, for example
+        The standard date format as described by RFC 2822, for example
         <emphasis>Thu, 07 Apr 2005 22:13:13 +0200</emphasis>.
 </simpara>
 </listitem>

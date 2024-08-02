@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2023 - TortoiseGit
+// Copyright (C) 2017-2024 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -51,6 +51,7 @@ void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 
 static std::wstring GetHomePath()
 {
+	// also see Git.cpp!
 	wchar_t* tmp;
 	if ((tmp = _wgetenv(L"HOME")) != nullptr && *tmp)
 		return tmp;
@@ -86,6 +87,40 @@ static int is_cygwin_msys2_hack_active()
 		RegCloseKey(hKey);
 	}
 	return dwValue == 1;
+}
+
+static int is_new_git_with_appdata()
+{
+	HKEY hKey;
+	DWORD dwValue = 0;
+	if (RegOpenKeyExW(HKEY_CURRENT_USER, L"Software\\TortoiseGit", 0, KEY_ALL_ACCESS, &hKey) == ERROR_SUCCESS)
+	{
+		DWORD dwType = REG_DWORD;
+		DWORD dwSize = sizeof(dwValue);
+		RegQueryValueExW(hKey, L"git_cached_version", NULL, &dwType, (LPBYTE)&dwValue, &dwSize);
+		RegCloseKey(hKey);
+	}
+	return dwValue >= (2 << 24 | 46 << 16);
+}
+
+static std::wstring GetXDGConfigPath()
+{
+	// also see Git.cpp!
+	wchar_t* tmp;
+	if ((tmp = _wgetenv(L"XDG_CONFIG_HOME")) != nullptr && *tmp)
+		return std::wstring(tmp) + L"\\git";
+
+	if ((tmp = _wgetenv(L"APPDATA")) != nullptr && *tmp && !is_cygwin_msys2_hack_active() && is_new_git_with_appdata())
+	{
+		std::wstring xdgPath = std::wstring(tmp) + L"\\Git";
+		if (PathFileExists((xdgPath + L"\\config").c_str()))
+			return xdgPath;
+	}
+
+	if (std::wstring home = GetHomePath(); !home.empty())
+		return home + L"\\.config\\git";
+
+	return {};
 }
 
 static std::wstring GetSystemGitConfig()
@@ -213,9 +248,8 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 	// Configure libgit2 search paths
 	std::wstring systemConfig = GetSystemGitConfig();
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_SYSTEM, CUnicodeUtils::StdGetUTF8(systemConfig).c_str());
-	std::string home(CUnicodeUtils::StdGetUTF8(GetHomePath()));
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, home.c_str());
-	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, (home + "\\.config\\git").c_str());
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_GLOBAL, CUnicodeUtils::StdGetUTF8(GetHomePath()).c_str());
+	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_XDG, CUnicodeUtils::StdGetUTF8(GetXDGConfigPath()).c_str());
 	git_libgit2_opts(GIT_OPT_SET_SEARCH_PATH, GIT_CONFIG_LEVEL_PROGRAMDATA, L"");
 
 	std::string pathA = CUnicodeUtils::StdGetUTF8(path);

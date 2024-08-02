@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-http-fetch(1)">
     <title>git-http-fetch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-http-fetch(1)</primary>
 </indexterm>
@@ -65,7 +65,7 @@ commit-id
 </term>
 <listitem>
 <simpara>
-        Writes the commit-id into the filename under $GIT_DIR/refs/&lt;filename&gt; on
+        Writes the commit-id into the specified filename under $GIT_DIR/refs/&lt;filename&gt; on
         the local end after the transfer is complete.
 </simpara>
 </listitem>

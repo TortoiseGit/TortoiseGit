@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-symbolic-ref(1)">
     <title>git-symbolic-ref(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-symbolic-ref(1)</primary>
 </indexterm>
@@ -32,7 +32,7 @@ point at the given branch &lt;ref&gt;.</simpara>
 symbolic ref.</simpara>
 <simpara>A symbolic ref is a regular file that stores a string that
 begins with <emphasis>ref: refs/</emphasis>.  For example, your <emphasis>.git/HEAD</emphasis> is
-a regular file whose contents is <emphasis>ref: refs/heads/master</emphasis>.</simpara>
+a regular file whose content is <emphasis>ref: refs/heads/master</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-symbolic-ref(1)__options">
 <title>OPTIONS</title>

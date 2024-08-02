@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-count-objects(1)">
     <title>git-count-objects(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-count-objects(1)</primary>
 </indexterm>
@@ -20,7 +20,7 @@
 </simplesect>
 <simplesect id="git-count-objects(1)__description">
 <title>DESCRIPTION</title>
-<simpara>This counts the number of unpacked object files and disk space consumed by
+<simpara>Counts the number of unpacked object files and disk space consumed by
 them, to help you decide when it is a good time to repack.</simpara>
 </simplesect>
 <simplesect id="git-count-objects(1)__options">
@@ -35,7 +35,7 @@ them, to help you decide when it is a good time to repack.</simpara>
 </term>
 <listitem>
 <simpara>
-        Report in more detail:
+        Provide more detailed reports:
 </simpara>
 <simpara>count: the number of loose objects</simpara>
 <simpara>size: disk space consumed by loose objects, in KiB (unless -H is specified)</simpara>
@@ -43,7 +43,7 @@ them, to help you decide when it is a good time to repack.</simpara>
 <simpara>size-pack: disk space consumed by the packs, in KiB (unless -H is specified)</simpara>
 <simpara>prune-packable: the number of loose objects that are also present in
 the packs. These objects could be pruned using <emphasis>git prune-packed</emphasis>.</simpara>
-<simpara>garbage: the number of files in object database that are neither valid loose
+<simpara>garbage: the number of files in the object database that are neither valid loose
 objects nor valid packs</simpara>
 <simpara>size-garbage: disk space consumed by garbage files, in KiB (unless -H is
 specified)</simpara>

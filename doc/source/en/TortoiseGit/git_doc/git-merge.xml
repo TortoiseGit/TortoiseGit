@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-merge(1)">
     <title>git-merge(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-merge(1)</primary>
 </indexterm>
@@ -31,11 +31,11 @@ branch.  This command is used by <emphasis>git pull</emphasis> to incorporate ch
 from another repository and can be used by hand to merge changes
 from one branch into another.</simpara>
 <simpara>Assume the following history exists and the current branch is
-"<emphasis>master</emphasis>":</simpara>
+<emphasis>master</emphasis>:</simpara>
 <screen>          A---B---C topic
          /
     D---E---F---G master</screen>
-<simpara>Then "<emphasis>git merge topic</emphasis>" will replay the changes made on the
+<simpara>Then <emphasis>git merge topic</emphasis> will replay the changes made on the
 <emphasis>topic</emphasis> branch since it diverged from <emphasis>master</emphasis> (i.e., <emphasis>E</emphasis>) until
 its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis>, and record the result
 in a new commit along with the names of the two parent commits and
@@ -44,18 +44,18 @@ a log message from the user describing the changes. Before the operation,
 <screen>          A---B---C topic
          /         \
     D---E---F---G---H master</screen>
-<simpara>The second syntax ("<emphasis>git merge --abort</emphasis>") can only be run after the
-merge has resulted in conflicts. <emphasis>git merge --abort</emphasis> will abort the
-merge process and try to reconstruct the pre-merge state. However,
-if there were uncommitted changes when the merge started (and
-especially if those changes were further modified after the merge
-was started), <emphasis>git merge --abort</emphasis> will in some cases be unable to
-reconstruct the original (pre-merge) changes. Therefore:</simpara>
+<simpara>A merge stops if there's a conflict that cannot be resolved
+automatically or if <emphasis>--no-commit</emphasis> was provided when initiating the
+merge. At that point you can run <emphasis>git merge --abort</emphasis> or <emphasis>git merge
+--continue</emphasis>.</simpara>
+<simpara><emphasis>git merge --abort</emphasis> will abort the merge process and try to reconstruct
+the pre-merge state. However, if there were uncommitted changes when the
+merge started (and especially if those changes were further modified
+after the merge was started), <emphasis>git merge --abort</emphasis> will in some cases be
+unable to reconstruct the original (pre-merge) changes. Therefore:</simpara>
 <simpara><emphasis role="strong">Warning</emphasis>: Running <emphasis>git merge</emphasis> with non-trivial uncommitted changes is
 discouraged: while possible, it may leave you in a state that is hard to
 back out of in the case of a conflict.</simpara>
-<simpara>The third syntax ("<emphasis>git merge --continue</emphasis>") can only be run after the
-merge has resulted in conflicts.</simpara>
 </simplesect>
 <simplesect id="git-merge(1)__options">
 <title>OPTIONS</title>
@@ -203,7 +203,7 @@ actual commits being merged.</simpara>
         the committer has the rights to submit the work under the
         project's license or agrees to some contributor representation,
         such as a Developer Certificate of Origin.
-        (See <ulink url="http://developercertificate.org">http://developercertificate.org</ulink> for the one used by the
+        (See <ulink url="https://developercertificate.org">https://developercertificate.org</ulink> for the one used by the
         Linux kernel and Git projects.)  Consult the documentation or
         leadership of the project to which you're contributing to
         understand how the signoffs are used in that project.
@@ -379,7 +379,7 @@ option can be used to override --squash.</simpara>
 <listitem>
 <simpara>
         Automatically create a temporary stash entry before the operation
-        begins, record it in the special ref <emphasis>MERGE_AUTOSTASH</emphasis>
+        begins, record it in the ref <emphasis>MERGE_AUTOSTASH</emphasis>
         and apply it after the operation ends.  This means
         that you can run the operation on a dirty worktree.  However, use
         with care: the final stash application after a successful
@@ -612,7 +612,7 @@ For conflicting paths, the index file records up to three
 </listitem>
 <listitem>
 <simpara>
-A special ref <emphasis>AUTO_MERGE</emphasis> is written, pointing to a tree
+A ref named <emphasis>AUTO_MERGE</emphasis> is written, pointing to a tree
    corresponding to the current content of the working tree (including
    conflict markers for textual conflicts).  Note that this ref is only
    written when the <emphasis>ort</emphasis> merge strategy is used (the default).
@@ -676,7 +676,7 @@ area.  You cannot tell how many lines are deleted and replaced with
 Barbie's remark on your side.  The only thing you can tell is that your
 side wants to say it is hard and you'd prefer to go shopping, while the
 other side wants to claim it is easy.</simpara>
-<simpara>An alternative style can be used by setting the "merge.conflictStyle"
+<simpara>An alternative style can be used by setting the <emphasis>merge.conflictStyle</emphasis>
 configuration variable to either "diff3" or "zdiff3".  In "diff3"
 style, the above conflict may look like this:</simpara>
 <screen>Here are lines that are either unchanged from the common
@@ -742,7 +742,7 @@ Resolve the conflicts.  Git will mark the conflicts in
 <listitem>
 <simpara>
 Use a mergetool.  <emphasis>git mergetool</emphasis> to launch a graphical
-   mergetool which will work you through the merge.
+   mergetool which will work through the merge with you.
 </simpara>
 </listitem>
 <listitem>
@@ -1128,7 +1128,7 @@ merge.conflictStyle
         marker and the original text before the <emphasis>=======</emphasis> marker.  The
         "merge" style tends to produce smaller conflict regions than diff3,
         both because of the exclusion of the original text, and because
-        when a subset of lines match on the two sides they are just pulled
+        when a subset of lines match on the two sides, they are just pulled
         out of the conflict region.  Another alternate style, "zdiff3", is
         similar to diff3 but removes matching lines on the two sides from
         the conflict region when those matching lines appear near either

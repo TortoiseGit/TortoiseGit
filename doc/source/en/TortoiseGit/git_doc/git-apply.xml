@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-apply(1)">
     <title>git-apply(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-apply(1)</primary>
 </indexterm>
@@ -30,8 +30,8 @@
 <simpara>Reads the supplied diff output (i.e. "a patch") and applies it to files.
 When running from a subdirectory in a repository, patched paths
 outside the directory are ignored.
-With the <emphasis>--index</emphasis> option the patch is also applied to the index, and
-with the <emphasis>--cached</emphasis> option the patch is only applied to the index.
+With the <emphasis>--index</emphasis> option, the patch is also applied to the index, and
+with the <emphasis>--cached</emphasis> option, the patch is only applied to the index.
 Without these options, the command applies the patch only to files,
 and does not require them to be in a Git repository.</simpara>
 <simpara>This command applies the patch but does not create a commit.  Use
@@ -85,7 +85,7 @@ and does not require them to be in a Git repository.</simpara>
 <simpara>
         Instead of applying the patch, output a condensed
         summary of information obtained from git diff extended
-        headers, such as creations, renames and mode changes.
+        headers, such as creations, renames, and mode changes.
         Turns off "apply".
 </simpara>
 </listitem>
@@ -259,7 +259,7 @@ explained for the configuration variable <emphasis>core.quotePath</emphasis> (se
         applying a diff generated with <emphasis>--unified=0</emphasis>. To bypass these
         checks use <emphasis>--unidiff-zero</emphasis>.
 </simpara>
-<simpara>Note, for the reasons stated above usage of context-free patches is
+<simpara>Note, for the reasons stated above, the usage of context-free patches is
 discouraged.</simpara>
 </listitem>
 </varlistentry>
@@ -300,9 +300,9 @@ discouraged.</simpara>
 </term>
 <listitem>
 <simpara>
-        Historically we did not allow binary patch applied
+        Historically we did not allow binary patch application
         without an explicit permission from the user, and this
-        flag was the way to do so.  Currently we always allow binary
+        flag was the way to do so.  Currently, we always allow binary
         patch application, so this is a no-op.
 </simpara>
 </listitem>
@@ -497,7 +497,7 @@ has no effect when <emphasis>--index</emphasis> or <emphasis>--cached</emphasis>
 </term>
 <listitem>
 <simpara>
-        Don't return error for patches containing no diff. This includes
+        Don't return an error for patches containing no diff. This includes
         empty patches and patches with commit text only.
 </simpara>
 </listitem>
@@ -519,7 +519,7 @@ apply.ignoreWhitespace
         When set to <emphasis>change</emphasis>, tells <emphasis>git apply</emphasis> to ignore changes in
         whitespace, in the same way as the <emphasis>--ignore-space-change</emphasis>
         option.
-        When set to one of: no, none, never, false tells <emphasis>git apply</emphasis> to
+        When set to one of: no, none, never, false, it tells <emphasis>git apply</emphasis> to
         respect all whitespace differences.
         See <xref linkend="git-apply(1)" />.
 </simpara>
@@ -531,7 +531,7 @@ apply.whitespace
 </term>
 <listitem>
 <simpara>
-        Tells <emphasis>git apply</emphasis> how to handle whitespaces, in the same way
+        Tells <emphasis>git apply</emphasis> how to handle whitespace, in the same way
         as the <emphasis>--whitespace</emphasis> option. See <xref linkend="git-apply(1)" />.
 </simpara>
 </listitem>

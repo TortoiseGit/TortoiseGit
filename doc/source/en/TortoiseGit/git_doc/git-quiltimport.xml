@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-quiltimport(1)">
     <title>git-quiltimport(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-quiltimport(1)</primary>
 </indexterm>
@@ -53,7 +53,7 @@ preserved as the 1 line subject in the Git description.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---author Author Name &lt;Author Email&gt;
+--author <emphasis>Author Name &lt;Author Email&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -70,7 +70,7 @@ preserved as the 1 line subject in the Git description.</simpara>
 <simpara>
         The directory to find the quilt patches.
 </simpara>
-<simpara>The default for the patch directory is patches
+<simpara>The default for the patch directory is <emphasis>patches</emphasis>
 or the value of the <emphasis>$QUILT_PATCHES</emphasis> environment
 variable.</simpara>
 </listitem>

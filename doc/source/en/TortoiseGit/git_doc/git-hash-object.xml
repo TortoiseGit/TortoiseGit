@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-hash-object(1)">
     <title>git-hash-object(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-hash-object(1)</primary>
 </indexterm>
@@ -79,10 +79,10 @@ When &lt;type&gt; is not specified, it defaults to "blob".</simpara>
 </term>
 <listitem>
 <simpara>
-        Hash object as it were located at the given path. The location of
-        file does not directly influence on the hash value, but path is
-        used to determine what Git filters should be applied to the object
-        before it can be placed to the object database, and, as result of
+        Hash object as if it were located at the given path. The location of
+        the file does not directly influence the hash value, but the path is
+        used to determine which Git filters should be applied to the object
+        before it can be placed in the object database.  As a result of
         applying filters, the actual blob put into the object database may
         differ from the given file. This option is mainly useful for hashing
         temporary files located outside of the working directory or files

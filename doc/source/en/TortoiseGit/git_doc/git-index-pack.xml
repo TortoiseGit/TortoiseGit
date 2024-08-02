@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-index-pack(1)">
     <title>git-index-pack(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-index-pack(1)</primary>
 </indexterm>
@@ -22,10 +22,10 @@
 </simplesect>
 <simplesect id="git-index-pack(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Reads a packed archive (.pack) from the specified file, and
-builds a pack index file (.idx) for it. Optionally writes a
+<simpara>Reads a packed archive (.pack) from the specified file,
+builds a pack index file (.idx) for it, and optionally writes a
 reverse-index (.rev) for the specified pack. The packed
-archive together with the pack index can then be placed in
+archive, together with the pack index, can then be placed in
 the objects/pack/ directory of a Git repository.</simpara>
 </simplesect>
 <simplesect id="git-index-pack(1)__options">
@@ -121,8 +121,8 @@ the objects/pack/ directory of a Git repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Like --keep create a .keep file before moving the index into
-        its final destination, but rather than creating an empty file
+        Like --keep, create a .keep file before moving the index into
+        its final destination.  However, instead of creating an empty file
         place <emphasis>&lt;msg&gt;</emphasis> followed by an LF into the .keep file.  The <emphasis>&lt;msg&gt;</emphasis>
         message can later be searched for within all .keep files to
         locate any which have outlived their usefulness.
@@ -143,11 +143,16 @@ the objects/pack/ directory of a Git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---strict
+--strict[=&lt;msg-id&gt;=&lt;severity&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
-        Die, if the pack contains broken objects or links.
+        Die, if the pack contains broken objects or links. An optional
+        comma-separated list of <emphasis>&lt;msg-id&gt;=&lt;severity&gt;</emphasis> can be passed to change
+        the severity of some possible issues, e.g.,
+         <emphasis>--strict="missingEmail=ignore,badTagName=error"</emphasis>. See the entry for the
+        <emphasis>fsck.&lt;msg-id&gt;</emphasis> configuration options in <xref linkend="git-fsck(1)" /> for more
+        information on the possible values of <emphasis>&lt;msg-id&gt;</emphasis> and <emphasis>&lt;severity&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -175,16 +180,21 @@ default and "Indexing objects" when <emphasis>--stdin</emphasis> is specified.</
 </varlistentry>
 <varlistentry>
 <term>
---fsck-objects
+--fsck-objects[=&lt;msg-id&gt;=&lt;severity&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
-        For internal use only.
+        Die if the pack contains broken objects, but unlike <emphasis>--strict</emphasis>, don't
+        choke on broken links. If the pack contains a tree pointing to a
+        .gitmodules blob that does not exist, prints the hash of that blob
+        (for the caller to check) after the hash that goes into the name of the
+        pack/idx file (see "Notes").
 </simpara>
-<simpara>Die if the pack contains broken objects. If the pack contains a tree
-pointing to a .gitmodules blob that does not exist, prints the hash of
-that blob (for the caller to check) after the hash that goes into the
-name of the pack/idx file (see "Notes").</simpara>
+<simpara>An optional comma-separated list of <emphasis>&lt;msg-id&gt;=&lt;severity&gt;</emphasis> can be passed to
+change the severity of some possible issues, e.g.,
+<emphasis>--fsck-objects="missingEmail=ignore,badTagName=ignore"</emphasis>. See the entry for the
+<emphasis>fsck.&lt;msg-id&gt;</emphasis> configuration options in <xref linkend="git-fsck(1)" /> for more
+information on the possible values of <emphasis>&lt;msg-id&gt;</emphasis> and <emphasis>&lt;severity&gt;</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

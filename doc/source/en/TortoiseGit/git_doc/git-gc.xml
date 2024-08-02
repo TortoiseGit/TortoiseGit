@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-gc(1)">
     <title>git-gc(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-gc(1)</primary>
 </indexterm>
@@ -79,6 +79,20 @@ be performed as well.</simpara>
         When expiring unreachable objects, pack them separately into a
         cruft pack instead of storing them as loose objects. <emphasis>--cruft</emphasis>
         is on by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--max-cruft-size=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        When packing unreachable objects into a cruft pack, limit the
+        size of new cruft packs to be at most <emphasis>&lt;n&gt;</emphasis> bytes. Overrides any
+        value specified via the <emphasis>gc.maxCruftSize</emphasis> configuration. See
+        the <emphasis>--max-cruft-size</emphasis> option of <xref linkend="git-repack(1)" /> for
+        more.
 </simpara>
 </listitem>
 </varlistentry>
@@ -214,7 +228,7 @@ gc.auto
         default value is 6700.
 </simpara>
 <simpara>Setting this to 0 disables not only automatic packing based on the
-number of loose objects, but any other heuristic <emphasis>git gc --auto</emphasis> will
+number of loose objects, but also any other heuristic <emphasis>git gc --auto</emphasis> will
 otherwise use to determine if there's work to do, such as
 <emphasis>gc.autoPackLimit</emphasis>.</simpara>
 </listitem>
@@ -241,7 +255,7 @@ gc.autoDetach
 </term>
 <listitem>
 <simpara>
-        Make <emphasis>git gc --auto</emphasis> return immediately and run in background
+        Make <emphasis>git gc --auto</emphasis> return immediately and run in the background
         if the system supports it. Default is true.
 </simpara>
 </listitem>
@@ -320,6 +334,19 @@ gc.cruftPacks
         Store unreachable objects in a cruft pack (see
         <xref linkend="git-repack(1)" />) instead of as loose objects. The default
         is <emphasis>true</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.maxCruftSize
+</term>
+<listitem>
+<simpara>
+        Limit the size of new cruft packs when repacking. When
+        specified in addition to <emphasis>--max-cruft-size</emphasis>, the command line
+        option takes priority. See the <emphasis>--max-cruft-size</emphasis> option of
+        <xref linkend="git-repack(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -417,6 +444,36 @@ else. Objects which cannot be found in the repository are ignored.
 Multiple hooks are supported, but all must exit successfully, else the
 operation (either generating a cruft pack or unpacking unreachable
 objects) will be halted.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.repackFilter
+</term>
+<listitem>
+<simpara>
+        When repacking, use the specified filter to move certain
+        objects into a separate packfile.  See the
+        <emphasis>--filter=&lt;filter-spec&gt;</emphasis> option of <xref linkend="git-repack(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.repackFilterTo
+</term>
+<listitem>
+<simpara>
+        When repacking and using a filter, see <emphasis>gc.repackFilter</emphasis>, the
+        specified location will be used to create the packfile
+        containing the filtered out objects. <emphasis role="strong">WARNING:</emphasis> The
+        specified location should be accessible, using for example the
+        Git alternates mechanism, otherwise the repo could be
+        considered corrupt by Git as it migh not be able to access the
+        objects in that packfile. See the <emphasis>--filter-to=&lt;dir&gt;</emphasis> option
+        of <xref linkend="git-repack(1)" /> and the <emphasis>objects/info/alternates</emphasis>
+        section of <xref linkend="gitrepository-layout(5)" />.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

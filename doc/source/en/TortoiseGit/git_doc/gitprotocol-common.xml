@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-common(5)">
     <title>gitprotocol-common(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-common(5)</primary>
 </indexterm>
@@ -20,7 +20,7 @@
 </simplesect>
 <simplesect id="gitprotocol-common(5)__description">
 <title>DESCRIPTION</title>
-<simpara>This document sets defines things common to various over-the-wire
+<simpara>This document defines things common to various over-the-wire
 protocols and file formats used in Git.</simpara>
 </simplesect>
 <simplesect id="gitprotocol-common(5)__abnf_notation">

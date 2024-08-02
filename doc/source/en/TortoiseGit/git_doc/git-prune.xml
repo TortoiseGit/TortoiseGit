@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-prune(1)">
     <title>git-prune(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-prune(1)</primary>
 </indexterm>
@@ -23,7 +23,7 @@
 <note><simpara>In most cases, users should run <emphasis>git gc</emphasis>, which calls
 <emphasis>git prune</emphasis>. See the section "NOTES", below.</simpara></note>
 <simpara>This runs <emphasis>git fsck --unreachable</emphasis> using all the refs
-available in <emphasis>refs/</emphasis>, optionally with additional set of
+available in <emphasis>refs/</emphasis>, optionally with an additional set of
 objects specified on the command line, and prunes all unpacked
 objects unreachable from any of these head objects from the object database.
 In addition, it

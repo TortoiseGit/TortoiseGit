@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-init(1)">
     <title>git-init(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-init(1)</primary>
 </indexterm>
@@ -15,10 +15,11 @@
 <simplesect id="git-init(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git init</emphasis> [-q | --quiet] [--bare] [--template=&lt;template-directory&gt;]
-          [--separate-git-dir &lt;git-dir&gt;] [--object-format=&lt;format&gt;]
-          [-b &lt;branch-name&gt; | --initial-branch=&lt;branch-name&gt;]
-          [--shared[=&lt;permissions&gt;]] [&lt;directory&gt;]</literallayout>
+<literallayout><emphasis>git init</emphasis> [<emphasis>-q</emphasis> | <emphasis>--quiet</emphasis>] [<emphasis>--bare</emphasis>] [<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>]
+          [<emphasis>--separate-git-dir</emphasis> <emphasis>&lt;git-dir&gt;</emphasis>] [<literal>--object-format=</literal><emphasis>&lt;format&gt;</emphasis>]
+          [<literal>--ref-format=</literal><emphasis>&lt;format&gt;</emphasis>]
+          [<emphasis>-b</emphasis> <emphasis>&lt;branch-name&gt;</emphasis> | <literal>--initial-branch=</literal><emphasis>&lt;branch-name&gt;</emphasis>]
+          [<literal>--shared</literal>[<literal>=</literal><emphasis>&lt;permissions&gt;</emphasis>]] [<emphasis>&lt;directory&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-init(1)__description">
@@ -32,22 +33,22 @@ for its name).</simpara>
 to use instead of <emphasis>./.git</emphasis> for the base of the repository.</simpara>
 <simpara>If the object storage directory is specified via the
 <emphasis>$GIT_OBJECT_DIRECTORY</emphasis> environment variable then the sha1 directories
-are created underneath - otherwise the default <emphasis>$GIT_DIR/objects</emphasis>
+are created underneath; otherwise, the default <emphasis>$GIT_DIR/objects</emphasis>
 directory is used.</simpara>
 <simpara>Running <emphasis>git init</emphasis> in an existing repository is safe. It will not
 overwrite things that are already there. The primary reason for
 rerunning <emphasis>git init</emphasis> is to pick up newly added templates (or to move
-the repository to another place if --separate-git-dir is given).</simpara>
+the repository to another place if <emphasis>--separate-git-dir</emphasis> is given).</simpara>
 </simplesect>
 <simplesect id="git-init(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -57,7 +58,7 @@ Only print error and warning messages; all other output will be suppressed.
 </varlistentry>
 <varlistentry>
 <term>
---bare
+<emphasis>--bare</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -68,11 +69,11 @@ current working directory.
 </varlistentry>
 <varlistentry>
 <term>
---object-format=&lt;format&gt;
+<literal>--object-format=</literal><emphasis>&lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-Specify the given object format (hash algorithm) for the repository.  The valid
+Specify the given object <emphasis>&lt;format&gt;</emphasis> (hash algorithm) for the repository.  The valid
 values are <emphasis>sha1</emphasis> and (if enabled) <emphasis>sha256</emphasis>.  <emphasis>sha1</emphasis> is the default.
 </simpara>
 <simpara>Note: At present, there is no interoperability between SHA-256
@@ -89,7 +90,30 @@ without data loss.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---template=&lt;template-directory&gt;
+<literal>--ref-format=</literal><emphasis>&lt;format&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+Specify the given ref storage <emphasis>&lt;format&gt;</emphasis> for the repository. The valid values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>files</emphasis> for loose files with packed-refs. This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>reftable</emphasis> for the reftable format. This format is experimental and its
+  internals are subject to change.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -100,28 +124,28 @@ DIRECTORY" section below.)
 </varlistentry>
 <varlistentry>
 <term>
---separate-git-dir=&lt;git-dir&gt;
+<literal>--separate-git-dir=</literal><emphasis>&lt;git-dir&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
 Instead of initializing the repository as a directory to either <emphasis>$GIT_DIR</emphasis> or
 <emphasis>./.git/</emphasis>, create a text file there containing the path to the actual
-repository.  This file acts as filesystem-agnostic Git symbolic link to the
+repository.  This file acts as a filesystem-agnostic Git symbolic link to the
 repository.
 </simpara>
-<simpara>If this is reinitialization, the repository will be moved to the specified path.</simpara>
+<simpara>If this is a reinitialization, the repository will be moved to the specified path.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;branch-name&gt;
+<emphasis>-b</emphasis> <emphasis>&lt;branch-name&gt;</emphasis>
 </term>
 <term>
---initial-branch=&lt;branch-name&gt;
+<literal>--initial-branch=</literal><emphasis>&lt;branch-name&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-Use the specified name for the initial branch in the newly created
+Use <emphasis>&lt;branch-name&gt;</emphasis> for the initial branch in the newly created
 repository.  If not specified, fall back to the default name (currently
 <emphasis>master</emphasis>, but this is subject to change in the future; the name can be
 customized via the <emphasis>init.defaultBranch</emphasis> configuration variable).
@@ -130,40 +154,46 @@ customized via the <emphasis>init.defaultBranch</emphasis> configuration variabl
 </varlistentry>
 <varlistentry>
 <term>
---shared[=(false|true|umask|group|all|world|everybody|&lt;perm&gt;)]
+<literal>--shared</literal>[<literal>=</literal>(<emphasis>false</emphasis>|<emphasis>true</emphasis>|<emphasis>umask</emphasis>|<emphasis>group</emphasis>|<emphasis>all</emphasis>|<emphasis>world</emphasis>|<emphasis>everybody</emphasis>|<emphasis>&lt;perm&gt;</emphasis>)]
 </term>
 <listitem>
 <simpara>
 Specify that the Git repository is to be shared amongst several users.  This
 allows users belonging to the same group to push into that
-repository.  When specified, the config variable "core.sharedRepository" is
+repository.  When specified, the config variable <emphasis>core.sharedRepository</emphasis> is
 set so that files and directories under <emphasis>$GIT_DIR</emphasis> are created with the
 requested permissions.  When not specified, Git will use permissions reported
-by umask(2).
+by <emphasis>umask</emphasis>(2).
 </simpara>
 <simpara>The option can have the following values, defaulting to <emphasis>group</emphasis> if no value
 is given:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>umask</emphasis> (or <emphasis>false</emphasis>)
+<emphasis>umask</emphasis>
+</term>
+<term>
+<emphasis>false</emphasis>
 </term>
 <listitem>
 <simpara>
-Use permissions reported by umask(2). The default, when <emphasis>--shared</emphasis> is not
+Use permissions reported by <emphasis>umask</emphasis>(2). The default, when <emphasis>--shared</emphasis> is not
 specified.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>group</emphasis> (or <emphasis>true</emphasis>)
+<emphasis>group</emphasis>
+</term>
+<term>
+<emphasis>true</emphasis>
 </term>
 <listitem>
 <simpara>
-Make the repository group-writable, (and g+sx, since the git group may be not
+Make the repository group-writable, (and <emphasis>g+sx</emphasis>, since the git group may not be
 the primary group of all users). This is used to loosen the permissions of an
-otherwise safe umask(2) value. Note that the umask still applies to the other
+otherwise safe <emphasis>umask</emphasis>(2) value. Note that the umask still applies to the other
 permission bits (e.g. if umask is <emphasis>0022</emphasis>, using <emphasis>group</emphasis> will not remove read
 privileges from other (non-group) users). See <emphasis>0xxx</emphasis> for how to exactly specify
 the repository permissions.
@@ -172,7 +202,13 @@ the repository permissions.
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>all</emphasis> (or <emphasis>world</emphasis> or <emphasis>everybody</emphasis>)
+<emphasis>all</emphasis>
+</term>
+<term>
+<emphasis>world</emphasis>
+</term>
+<term>
+<emphasis>everybody</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -187,9 +223,9 @@ Same as <emphasis>group</emphasis>, but make the repository readable by all user
 <listitem>
 <simpara>
 <emphasis>&lt;perm&gt;</emphasis> is a 3-digit octal number prefixed with 0` and each file
-will have mode <emphasis>&lt;perm&gt;</emphasis>. <emphasis>&lt;perm&gt;</emphasis> will override users umask(2)
+will have mode <emphasis>&lt;perm&gt;</emphasis>. <emphasis>&lt;perm&gt;</emphasis> will override users <emphasis>umask</emphasis>(2)
 value (and not only loosen permissions as <emphasis>group</emphasis> and <emphasis>all</emphasis>
-does). <emphasis>0640</emphasis> will create a repository which is group-readable, but
+do). <emphasis>0640</emphasis> will create a repository which is group-readable, but
 not group-writable or accessible to others. <emphasis>0660</emphasis> will create a repo
 that is readable and writable to the current user and group, but
 inaccessible to others (directories and executable files get their
@@ -204,7 +240,7 @@ inaccessible to others (directories and executable files get their
 <simpara>By default, the configuration flag <emphasis>receive.denyNonFastForwards</emphasis> is enabled
 in shared repositories, so that you cannot force a non fast-forwarding push
 into it.</simpara>
-<simpara>If you provide a <emphasis>directory</emphasis>, the command is run inside it. If this directory
+<simpara>If you provide a <emphasis>&lt;directory&gt;</emphasis>, the command is run inside it. If this directory
 does not exist, it will be created.</simpara>
 </simplesect>
 <simplesect id="git-init(1)__template_directory">
@@ -255,7 +291,7 @@ $ git commit    <co id="git-init_CO1-3"/></screen>
 <calloutlist>
 <callout arearefs="git-init_CO1-1">
 <para>
-Create a /path/to/my/codebase/.git directory.
+Create a <emphasis>/path/to/my/codebase/.git</emphasis> directory.
 </para>
 </callout>
 <callout arearefs="git-init_CO1-2">
@@ -281,18 +317,17 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-init.templateDir
+<emphasis>init.templateDir</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specify the directory from which templates will be copied.
-        (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
+        Specify the directory from which templates will be copied. 
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-init.defaultBranch
+<emphasis>init.defaultBranch</emphasis>
 </term>
 <listitem>
 <simpara>

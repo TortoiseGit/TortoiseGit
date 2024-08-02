@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-hook(1)">
     <title>git-hook(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-hook(1)</primary>
 </indexterm>
@@ -20,7 +20,7 @@
 </simplesect>
 <simplesect id="git-hook(1)__description">
 <title>DESCRIPTION</title>
-<simpara>A command interface to running git hooks (see <xref linkend="githooks(5)" />),
+<simpara>A command interface for running git hooks (see <xref linkend="githooks(5)" />),
 for use by other scripted git commands.</simpara>
 </simplesect>
 <simplesect id="git-hook(1)__subcommands">
@@ -51,7 +51,7 @@ mandatory <emphasis>--</emphasis> (or <emphasis>--end-of-options</emphasis>, see
 </term>
 <listitem>
 <simpara>
-        For "run"; Specify a file which will be streamed into the
+        For "run"; specify a file which will be streamed into the
         hook's stdin. The hook will receive the entire file from
         beginning to EOF.
 </simpara>

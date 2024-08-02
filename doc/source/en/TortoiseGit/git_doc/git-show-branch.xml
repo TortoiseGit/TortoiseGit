@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-show-branch(1)">
     <title>git-show-branch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show-branch(1)</primary>
 </indexterm>
@@ -92,7 +92,7 @@ no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
 <listitem>
 <simpara>
         With this option, the command includes the current
-        branch to the list of revs to be shown when it is not
+        branch in the list of revs to be shown when it is not
         given on the command line.
 </simpara>
 </listitem>
@@ -263,7 +263,7 @@ no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
-<simpara>Note that --more, --list, --independent and --merge-base options
+<simpara>Note that --more, --list, --independent, and --merge-base options
 are mutually exclusive.</simpara>
 </simplesect>
 <simplesect id="git-show-branch(1)__output">
@@ -272,13 +272,13 @@ are mutually exclusive.</simpara>
 their commit message. The branch head that is pointed at by
 $GIT_DIR/HEAD is prefixed with an asterisk <emphasis>*</emphasis> character while other
 heads are prefixed with a <emphasis>!</emphasis> character.</simpara>
-<simpara>Following these N lines, one-line log for each commit is
+<simpara>Following these N lines, a one-line log for each commit is
 displayed, indented N places.  If a commit is on the I-th
 branch, the I-th indentation character shows a <emphasis>+</emphasis> sign;
 otherwise it shows a space.  Merge commits are denoted by
 a <emphasis>-</emphasis> sign.  Each commit shows a short name that
 can be used as an extended SHA-1 to name that commit.</simpara>
-<simpara>The following example shows three branches, "master", "fixes"
+<simpara>The following example shows three branches, "master", "fixes",
 and "mhf":</simpara>
 <screen>$ git show-branch master fixes mhf
 * [master] Add 'git show-branch'.
@@ -286,7 +286,7 @@ and "mhf":</simpara>
   ! [mhf] Allow "+remote:local" refspec to cause --force when fetching.
 ---
   + [mhf] Allow "+remote:local" refspec to cause --force when fetching.
-  + [mhf~1] Use git-octopus when pulling more than one heads.
+  + [mhf~1] Use git-octopus when pulling more than one head.
  +  [fixes] Introduce "reset type" flag to "git reset"
   + [mhf~2] "git fetch --force".
   + [mhf~3] Use .git/remote/origin, not .git/branches/origin.
@@ -316,7 +316,7 @@ your topic branch, it is shown as well.</simpara>
 <screen>$ git show-branch --reflog="10,1 hour ago" --list master</screen>
 <simpara>shows 10 reflog entries going back from the tip as of 1 hour ago.
 Without <emphasis>--list</emphasis>, the output also shows how these tips are
-topologically related with each other.</simpara>
+topologically related to each other.</simpara>
 </simplesect>
 <simplesect id="git-show-branch(1)__configuration">
 <title>CONFIGURATION</title>

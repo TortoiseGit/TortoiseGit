@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-clone(1)">
     <title>git-clone(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-clone(1)</primary>
 </indexterm>
@@ -15,15 +15,15 @@
 <simplesect id="git-clone(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git clone</emphasis> [--template=&lt;template-directory&gt;]
-          [-l] [-s] [--no-hardlinks] [-q] [-n] [--bare] [--mirror]
-          [-o &lt;name&gt;] [-b &lt;name&gt;] [-u &lt;upload-pack&gt;] [--reference &lt;repository&gt;]
-          [--dissociate] [--separate-git-dir &lt;git-dir&gt;]
-          [--depth &lt;depth&gt;] [--[no-]single-branch] [--no-tags]
-          [--recurse-submodules[=&lt;pathspec&gt;]] [--[no-]shallow-submodules]
-          [--[no-]remote-submodules] [--jobs &lt;n&gt;] [--sparse] [--[no-]reject-shallow]
-          [--filter=&lt;filter&gt; [--also-filter-submodules]] [--] &lt;repository&gt;
-          [&lt;directory&gt;]</literallayout>
+<literallayout><emphasis>git clone</emphasis> [<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>]
+          [<emphasis>-l</emphasis>] [<emphasis>-s</emphasis>] [<emphasis>--no-hardlinks</emphasis>] [<emphasis>-q</emphasis>] [<emphasis>-n</emphasis>] [<emphasis>--bare</emphasis>] [<emphasis>--mirror</emphasis>]
+          [<emphasis>-o</emphasis> <emphasis>&lt;name&gt;</emphasis>] [<emphasis>-b</emphasis> <emphasis>&lt;name&gt;</emphasis>] [<emphasis>-u</emphasis> <emphasis>&lt;upload-pack&gt;</emphasis>] [<emphasis>--reference</emphasis> <emphasis>&lt;repository&gt;</emphasis>]
+          [<emphasis>--dissociate</emphasis>] [<emphasis>--separate-git-dir</emphasis> <emphasis>&lt;git-dir&gt;</emphasis>]
+          [<emphasis>--depth</emphasis> <emphasis>&lt;depth&gt;</emphasis>] [<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>single-branch</emphasis>] [<emphasis>--no-tags</emphasis>]
+          [<literal>--recurse-submodules</literal>[<literal>=</literal><emphasis>&lt;pathspec&gt;</emphasis>]] [<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>shallow-submodules</emphasis>]
+          [<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>remote-submodules</emphasis>] [<emphasis>--jobs</emphasis> <emphasis>&lt;n&gt;</emphasis>] [<emphasis>--sparse</emphasis>] [<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>reject-shallow</emphasis>]
+          [<literal>--filter=</literal><emphasis>&lt;filter-spec&gt;</emphasis>] [<emphasis>--also-filter-submodules</emphasis>]] [<emphasis>--</emphasis>] <emphasis>&lt;repository&gt;</emphasis>
+          [<emphasis>&lt;directory&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-clone(1)__description">
@@ -36,7 +36,7 @@ currently active branch.</simpara>
 <simpara>After the clone, a plain <emphasis>git fetch</emphasis> without arguments will update
 all the remote-tracking branches, and a <emphasis>git pull</emphasis> without
 arguments will in addition merge the remote master branch into the
-current master branch, if any (this is untrue when "--single-branch"
+current master branch, if any (this is untrue when <emphasis>--single-branch</emphasis>
 is given; see below).</simpara>
 <simpara>This default configuration is achieved by creating references to
 the remote branch heads under <emphasis>refs/remotes/origin</emphasis> and
@@ -48,17 +48,17 @@ configuration variables.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <term>
---local
+<emphasis>--local</emphasis>
 </term>
 <listitem>
 <simpara>
         When the repository to clone from is on a local machine,
         this flag bypasses the normal "Git aware" transport
         mechanism and clones the repository by making a copy of
-        HEAD and everything under objects and refs directories.
+        <emphasis>HEAD</emphasis> and everything under objects and refs directories.
         The files under <emphasis>.git/objects/</emphasis> directory are hardlinked
         to save space when possible.
 </simpara>
@@ -79,7 +79,7 @@ source repository, similar to running <emphasis>cp -r src dst</emphasis> while m
 </varlistentry>
 <varlistentry>
 <term>
---no-hardlinks
+<emphasis>--no-hardlinks</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -92,10 +92,10 @@ source repository, similar to running <emphasis>cp -r src dst</emphasis> while m
 </varlistentry>
 <varlistentry>
 <term>
--s
+<emphasis>-s</emphasis>
 </term>
 <term>
---shared
+<emphasis>--shared</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -126,13 +126,13 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---reference[-if-able] &lt;repository&gt;
+<emphasis>--reference</emphasis>[<emphasis>-if-able</emphasis>] <emphasis>&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        If the reference repository is on the local machine,
+        If the reference <emphasis>&lt;repository&gt;</emphasis> is on the local machine,
         automatically setup <emphasis>.git/objects/info/alternates</emphasis> to
-        obtain objects from the reference repository.  Using
+        obtain objects from the reference <emphasis>&lt;repository&gt;</emphasis>.  Using
         an already existing repository as an alternate will
         require fewer objects to be copied from the repository
         being cloned, reducing network and local storage costs.
@@ -146,7 +146,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---dissociate
+<emphasis>--dissociate</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -164,10 +164,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -178,10 +178,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -192,7 +192,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -205,7 +205,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---server-option=&lt;option&gt;
+<literal>--server-option=</literal><emphasis>&lt;option&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -213,17 +213,17 @@ objects from the source repository into a pack in the cloned repository.</simpar
         protocol version 2.  The given string must not contain a NUL or LF
         character.  The server's handling of server options, including
         unknown ones, is server-specific.
-        When multiple <emphasis>--server-option=&lt;option&gt;</emphasis> are given, they are all
+        When multiple <literal>--server-option=</literal><emphasis>&lt;option&gt;</emphasis> are given, they are all
         sent to the other side in the order listed on the command line.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---no-checkout
+<emphasis>--no-checkout</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -233,7 +233,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---[no-]reject-shallow
+<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>reject-shallow</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -245,13 +245,13 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---bare
+<emphasis>--bare</emphasis>
 </term>
 <listitem>
 <simpara>
         Make a <emphasis>bare</emphasis> Git repository.  That is, instead of
         creating <emphasis>&lt;directory&gt;</emphasis> and placing the administrative
-        files in <emphasis>&lt;directory&gt;/.git</emphasis>, make the <emphasis>&lt;directory&gt;</emphasis>
+        files in <emphasis>&lt;directory&gt;</emphasis><emphasis>/.git</emphasis>, make the <emphasis>&lt;directory&gt;</emphasis>
         itself the <emphasis>$GIT_DIR</emphasis>. This obviously implies the <emphasis>--no-checkout</emphasis>
         because there is nowhere to check out the working tree.
         Also the branch heads at the remote are copied directly
@@ -264,7 +264,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---sparse
+<emphasis>--sparse</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -277,7 +277,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---filter=&lt;filter-spec&gt;
+<literal>--filter=</literal><emphasis>&lt;filter-spec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -286,7 +286,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
         When using <emphasis>--filter</emphasis>, the supplied <emphasis>&lt;filter-spec&gt;</emphasis> is used for
         the partial clone filter. For example, <emphasis>--filter=blob:none</emphasis> will
         filter out all blobs (file contents) until needed by Git. Also,
-        <emphasis>--filter=blob:limit=&lt;size&gt;</emphasis> will filter out all blobs of size
+        <literal>--filter=blob:limit=</literal><emphasis>&lt;size&gt;</emphasis> will filter out all blobs of size
         at least <emphasis>&lt;size&gt;</emphasis>. For more details on filter specifications, see
         the <emphasis>--filter</emphasis> option in <xref linkend="git-rev-list(1)" />.
 </simpara>
@@ -294,7 +294,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---also-filter-submodules
+<emphasis>--also-filter-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -306,7 +306,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---mirror
+<emphasis>--mirror</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -321,10 +321,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--o &lt;name&gt;
+<emphasis>-o</emphasis> <emphasis>&lt;name&gt;</emphasis>
 </term>
 <term>
---origin &lt;name&gt;
+<emphasis>--origin</emphasis> <emphasis>&lt;name&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -336,10 +336,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;name&gt;
+<emphasis>-b</emphasis> <emphasis>&lt;name&gt;</emphasis>
 </term>
 <term>
---branch &lt;name&gt;
+<emphasis>--branch</emphasis> <emphasis>&lt;name&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -354,10 +354,10 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--u &lt;upload-pack&gt;
+<emphasis>-u</emphasis> <emphasis>&lt;upload-pack&gt;</emphasis>
 </term>
 <term>
---upload-pack &lt;upload-pack&gt;
+<emphasis>--upload-pack</emphasis> <emphasis>&lt;upload-pack&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -369,7 +369,7 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---template=&lt;template-directory&gt;
+<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -380,17 +380,17 @@ objects from the source repository into a pack in the cloned repository.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--c &lt;key&gt;=&lt;value&gt;
+<emphasis>-c</emphasis> <emphasis>&lt;key&gt;</emphasis><literal>=</literal><emphasis>&lt;value&gt;</emphasis>
 </term>
 <term>
---config &lt;key&gt;=&lt;value&gt;
+<emphasis>--config</emphasis> <emphasis>&lt;key&gt;</emphasis><literal>=</literal><emphasis>&lt;value&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Set a configuration variable in the newly-created repository;
         this takes effect immediately after the repository is
         initialized, but before the remote history is fetched or any
-        files checked out.  The key is in the same format as expected by
+        files checked out.  The <emphasis>&lt;key&gt;</emphasis> is in the same format as expected by
         <xref linkend="git-config(1)" /> (e.g., <emphasis>core.eol=true</emphasis>). If multiple
         values are given for the same key, each value will be written to
         the config file. This makes it safe, for example, to add
@@ -399,13 +399,13 @@ objects from the source repository into a pack in the cloned repository.</simpar
 <simpara>Due to limitations of the current implementation, some configuration
 variables do not take effect until after the initial fetch and checkout.
 Configuration variables known to not take effect are:
-<emphasis>remote.&lt;name&gt;.mirror</emphasis> and <emphasis>remote.&lt;name&gt;.tagOpt</emphasis>.  Use the
+<literal>remote.</literal><emphasis>&lt;name&gt;</emphasis><literal>.mirror</literal> and <literal>remote.</literal><emphasis>&lt;name&gt;</emphasis><literal>.tagOpt</literal>.  Use the
 corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> options instead.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---depth &lt;depth&gt;
+<emphasis>--depth</emphasis> <emphasis>&lt;depth&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -419,7 +419,7 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
---shallow-since=&lt;date&gt;
+<literal>--shallow-since=</literal><emphasis>&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -429,7 +429,7 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
---shallow-exclude=&lt;revision&gt;
+<literal>--shallow-exclude=</literal><emphasis>&lt;revision&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -441,7 +441,7 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
---[no-]single-branch
+<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>single-branch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -450,7 +450,7 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
         branch remote's <emphasis>HEAD</emphasis> points at.
         Further fetches into the resulting repository will only update the
         remote-tracking branch for the branch this option was used for the
-        initial cloning.  If the HEAD at the remote did not point at any
+        initial cloning.  If the <emphasis>HEAD</emphasis> at the remote did not point at any
         branch when <emphasis>--single-branch</emphasis> clone was made, no remote-tracking
         branch is created.
 </simpara>
@@ -458,7 +458,7 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
---no-tags
+<emphasis>--no-tags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -476,12 +476,12 @@ branch of some repository for search indexing.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules[=&lt;pathspec&gt;]
+<emphasis>--recurse-submodules</emphasis>[<emphasis>=</emphasis><emphasis>&lt;pathspec&gt;</emphasis>]
 </term>
 <listitem>
 <simpara>
         After the clone is created, initialize and clone submodules
-        within based on the provided pathspec.  If no pathspec is
+        within based on the provided <emphasis>&lt;pathspec&gt;</emphasis>.  If no <emphasis>=&lt;pathspec&gt;</emphasis> is
         provided, all submodules are initialized and cloned.
         This option can be given multiple times for pathspecs consisting
         of multiple entries.  The resulting clone has <emphasis>submodule.active</emphasis> set to
@@ -498,7 +498,7 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]shallow-submodules
+<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>shallow-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -508,7 +508,7 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]remote-submodules
+<emphasis>--</emphasis>[<emphasis>no-</emphasis>]<emphasis>remote-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -521,7 +521,7 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---separate-git-dir=&lt;git-dir&gt;
+<emphasis>--separate-git-dir=</emphasis><emphasis>&lt;git-dir&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -535,10 +535,33 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--j &lt;n&gt;
+<emphasis>--ref-format=</emphasis><emphasis>&lt;ref-format&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+Specify the given ref storage format for the repository. The valid values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>files</emphasis> for loose files with packed-refs. This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>reftable</emphasis> for the reftable format. This format is experimental and its
+  internals are subject to change.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-j</emphasis> <emphasis>&lt;n&gt;</emphasis>
 </term>
 <term>
---jobs &lt;n&gt;
+<emphasis>--jobs</emphasis> <emphasis>&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -549,11 +572,11 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;repository&gt;
+<emphasis>&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        The (possibly remote) repository to clone from.  See the
+        The (possibly remote) <emphasis>&lt;repository&gt;</emphasis> to clone from.  See the
         <link linkend="git-clone(1)_URLS">GIT URLS</link> section below for more information on specifying
         repositories.
 </simpara>
@@ -561,12 +584,12 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;directory&gt;
+<emphasis>&lt;directory&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The name of a new directory to clone into.  The "humanish"
-        part of the source repository is used if no directory is
+        part of the source repository is used if no <emphasis>&lt;directory&gt;</emphasis> is
         explicitly given (<emphasis>repo</emphasis> for <emphasis>/path/to/repo.git</emphasis> and <emphasis>foo</emphasis>
         for <emphasis>host.xz:foo/.git</emphasis>).  Cloning into an existing directory
         is only allowed if the directory is empty.
@@ -575,7 +598,7 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---bundle-uri=&lt;uri&gt;
+<emphasis>--bundle-uri=</emphasis><emphasis>&lt;uri&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -595,31 +618,31 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 address of the remote server, and the path to the repository.
 Depending on the transport protocol, some of this information may be
 absent.</simpara>
-<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp,
+<simpara>Git supports ssh, git, http, and https protocols (in addition, ftp
 and ftps can be used for fetching, but this is inefficient and
-deprecated; do not use it).</simpara>
+deprecated; do not use them).</simpara>
 <simpara>The native transport (i.e. git:// URL) does no authentication and
 should be used with caution on unsecured networks.</simpara>
 <simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;:<emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-http&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>http</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
+<literal>ftp</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -627,7 +650,7 @@ ftp&#91;s&#93;://host.xz&#91;:port&#93;/path/to/repo.git/
 <itemizedlist>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -636,21 +659,21 @@ first colon. This helps differentiate a local path that contains a
 colon. For example the local path <emphasis>foo:bar</emphasis> could be specified as an
 absolute path or <emphasis>./foo:bar</emphasis> to avoid being misinterpreted as an ssh
 url.</simpara>
-<simpara>The ssh and git protocols additionally support ~username expansion:</simpara>
+<simpara>The ssh and git protocols additionally support <literal>~</literal><emphasis>&lt;username&gt;</emphasis> expansion:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-ssh://&#91;user@&#93;host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-git://host.xz&#91;:port&#93;/~&#91;user&#93;/path/to/repo.git/
+<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-&#91;user@&#93;host.xz:/~&#91;user&#93;/path/to/repo.git/
+&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -659,39 +682,41 @@ syntaxes may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-/path/to/repo.git/
+<emphasis>/path/to/repo.git/</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-file:///path/to/repo.git/
+<literal>file:///path/to/repo.git/</literal>
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>These two syntaxes are mostly equivalent, except the former implies
---local option.</simpara>
+<emphasis>--local</emphasis> option.</simpara>
 <simpara><emphasis>git clone</emphasis>, <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>, but not <emphasis>git push</emphasis>, will also
 accept a suitable bundle file. See <xref linkend="git-bundle(1)" />.</simpara>
 <simpara>When Git doesn't know how to handle a certain transport protocol, it
-attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
+attempts to use the <emphasis>remote-</emphasis><emphasis>&lt;transport&gt;</emphasis> remote helper, if one
 exists. To explicitly request a remote helper, the following syntax
 may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-&lt;transport&gt;::&lt;address&gt;
+<emphasis>&lt;transport&gt;</emphasis>::<emphasis>&lt;address&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>where &lt;address&gt; may be a path, a server and path, or an arbitrary
+<simpara>where <emphasis>&lt;address&gt;</emphasis> may be a path, a server and path, or an arbitrary
 URL-like string recognized by the specific remote helper being
 invoked. See <xref linkend="gitremote-helpers(7)" /> for details.</simpara>
 <simpara>If there are a large number of similarly-named remote repositories and
 you want to use a different format for them (such that the URLs you
 use will be rewritten into URLs that work), you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                insteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                insteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "git://git.host.xz/"]
                 insteadOf = host.xz:/path/to/
@@ -700,8 +725,10 @@ configuration section of the form:</simpara>
 rewritten in any context that takes a URL to be "git://git.host.xz/repo.git".</simpara>
 <simpara>If you want to rewrite URLs for push only, you can create a
 configuration section of the form:</simpara>
-<screen>        [url "&lt;actual url base&gt;"]
-                pushInsteadOf = &lt;other url base&gt;</screen>
+<blockquote>
+<literallayout>        [url "<emphasis>&lt;actual-url-base&gt;</emphasis>"]
+                pushInsteadOf = <emphasis>&lt;other-url-base&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>For example, with this:</simpara>
 <screen>        [url "ssh://example.org/"]
                 pushInsteadOf = git://example.org/</screen>
@@ -753,18 +780,17 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-init.templateDir
+<emphasis>init.templateDir</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specify the directory from which templates will be copied.
-        (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
+        Specify the directory from which templates will be copied. (See the "TEMPLATE DIRECTORY" section of <xref linkend="git-init(1)" />.)
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-init.defaultBranch
+<emphasis>init.defaultBranch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -775,30 +801,31 @@ init.defaultBranch
 </varlistentry>
 <varlistentry>
 <term>
-clone.defaultRemoteName
+<emphasis>clone.defaultRemoteName</emphasis>
 </term>
 <listitem>
 <simpara>
         The name of the remote to create when cloning a repository.  Defaults to
-        <emphasis>origin</emphasis>, and can be overridden by passing the <emphasis>--origin</emphasis> command-line
-        option to <xref linkend="git-clone(1)" />.
+        <emphasis>origin</emphasis>.
+        It can be overridden by passing the <emphasis>--origin</emphasis> command-line
+        option.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-clone.rejectShallow
+<emphasis>clone.rejectShallow</emphasis>
 </term>
 <listitem>
 <simpara>
-        Reject to clone a repository if it is a shallow one, can be overridden by
-        passing option <emphasis>--reject-shallow</emphasis> in command line. See <xref linkend="git-clone(1)" />
+        Reject cloning a repository if it is a shallow one; this can be overridden by
+        passing the <emphasis>--reject-shallow</emphasis> option on the command line.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-clone.filterSubmodules
+<emphasis>clone.filterSubmodules</emphasis>
 </term>
 <listitem>
 <simpara>

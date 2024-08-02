@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-rebase(1)">
     <title>git-rebase(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-rebase(1)</primary>
 </indexterm>
@@ -19,7 +19,7 @@
         [--onto &lt;newbase&gt; | --keep-base] [&lt;upstream&gt; [&lt;branch&gt;]]
 <emphasis>git rebase</emphasis> [-i | --interactive] [&lt;options&gt;] [--exec &lt;cmd&gt;] [--onto &lt;newbase&gt;]
         --root [&lt;branch&gt;]
-<emphasis>git rebase</emphasis> (--continue | --skip | --abort | --quit | --edit-todo | --show-current-patch)</literallayout>
+<emphasis>git rebase</emphasis> (--continue|--skip|--abort|--quit|--edit-todo|--show-current-patch)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rebase(1)__description">
@@ -301,21 +301,54 @@ the merge base to determine the <emphasis>set of commits</emphasis> which will b
 </varlistentry>
 <varlistentry>
 <term>
---empty={drop,keep,ask}
+--empty=(drop|keep|stop)
 </term>
 <listitem>
 <simpara>
         How to handle commits that are not empty to start and are not
         clean cherry-picks of any upstream commit, but which become
         empty after rebasing (because they contain a subset of already
-        upstream changes).  With drop (the default), commits that
-        become empty are dropped.  With keep, such commits are kept.
-        With ask (implied by <emphasis>--interactive</emphasis>), the rebase will halt when
-        an empty commit is applied allowing you to choose whether to
-        drop it, edit files more, or just commit the empty changes.
-        Other options, like <emphasis>--exec</emphasis>, will use the default of drop unless
-        <emphasis>-i</emphasis>/<emphasis>--interactive</emphasis> is explicitly specified.
+        upstream changes):
 </simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>drop</emphasis>
+</term>
+<listitem>
+<simpara>
+        The commit will be dropped. This is the default behavior.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>keep</emphasis>
+</term>
+<listitem>
+<simpara>
+        The commit will be kept. This option is implied when <emphasis>--exec</emphasis> is
+        specified unless <emphasis>-i</emphasis>/<emphasis>--interactive</emphasis> is also specified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>stop</emphasis>
+</term>
+<term>
+<emphasis>ask</emphasis>
+</term>
+<listitem>
+<simpara>
+        The rebase will halt when the commit is applied, allowing you to
+        choose whether to drop it, edit files more, or just commit the empty
+        changes. This option is implied when <emphasis>-i</emphasis>/<emphasis>--interactive</emphasis> is
+        specified. <emphasis>ask</emphasis> is a deprecated synonym of <emphasis>stop</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <simpara>Note that commits which start empty are kept (unless <emphasis>--no-keep-empty</emphasis>
 is specified), and commits which are clean cherry-picks (as determined
 by <emphasis>git log --cherry-mark ...</emphasis>) are detected and dropped as a
@@ -732,7 +765,7 @@ merge backend
 </simpara>
 <simpara>The commit list format can be changed by setting the configuration option
 rebase.instructionFormat.  A customized instruction format will automatically
-have the long commit hash prepended to the format.</simpara>
+have the commit hash prepended to the format.</simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
@@ -821,21 +854,25 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
 </term>
 <listitem>
 <simpara>
-        When the commit log message begins with "squash! &#8230;" or "fixup! &#8230;"
-        or "amend! &#8230;", and there is already a commit in the todo list that
-        matches the same <emphasis>...</emphasis>, automatically modify the todo list of
-        <emphasis>rebase -i</emphasis>, so that the commit marked for squashing comes right after
-        the commit to be modified, and change the action of the moved commit
-        from <emphasis>pick</emphasis> to <emphasis>squash</emphasis> or <emphasis>fixup</emphasis> or <emphasis>fixup -C</emphasis> respectively. A commit
-        matches the <emphasis>...</emphasis> if the commit subject matches, or if the <emphasis>...</emphasis> refers
-        to the commit's hash. As a fall-back, partial matches of the commit
-        subject work, too. The recommended way to create fixup/amend/squash
-        commits is by using the <emphasis>--fixup</emphasis>, <emphasis>--fixup=amend:</emphasis> or <emphasis>--fixup=reword:</emphasis>
-        and <emphasis>--squash</emphasis> options respectively of <xref linkend="git-commit(1)" />.
+        Automatically squash commits with specially formatted messages into
+        previous commits being rebased.  If a commit message starts with
+        "squash! ", "fixup! " or "amend! ", the remainder of the subject line
+        is taken as a commit specifier, which matches a previous commit if it
+        matches the subject line or the hash of that commit.  If no commit
+        matches fully, matches of the specifier with the start of commit
+        subjects are considered.
 </simpara>
-<simpara>If the <emphasis>--autosquash</emphasis> option is enabled by default using the
-configuration variable <emphasis>rebase.autoSquash</emphasis>, this option can be
-used to override and disable this setting.</simpara>
+<simpara>In the rebase todo list, the actions of squash, fixup and amend commits are
+changed from <emphasis>pick</emphasis> to <emphasis>squash</emphasis>, <emphasis>fixup</emphasis> or <emphasis>fixup -C</emphasis>, respectively, and they
+are moved right after the commit they modify.  The <emphasis>--interactive</emphasis> option can
+be used to review and edit the todo list before proceeding.</simpara>
+<simpara>The recommended way to create commits with squash markers is by using the
+<emphasis>--squash</emphasis>, <emphasis>--fixup</emphasis>, <emphasis>--fixup=amend:</emphasis> or <emphasis>--fixup=reword:</emphasis> options of
+<xref linkend="git-commit(1)" />, which take the target commit as an argument and
+automatically fill in the subject line of the new commit from that.</simpara>
+<simpara>Setting configuration variable <emphasis>rebase.autoSquash</emphasis> to true enables
+auto-squashing by default for interactive rebase.  The <emphasis>--no-autosquash</emphasis>
+option can be used to override that setting.</simpara>
 <simpara>See also INCOMPATIBLE OPTIONS below.</simpara>
 </listitem>
 </varlistentry>
@@ -868,13 +905,15 @@ used to override and disable this setting.</simpara>
         Automatically reschedule <emphasis>exec</emphasis> commands that failed. This only makes
         sense in interactive mode (or when an <emphasis>--exec</emphasis> option was provided).
 </simpara>
-<simpara>Even though this option applies once a rebase is started, it's set for
-the whole rebase at the start based on either the
-<emphasis>rebase.rescheduleFailedExec</emphasis> configuration (see <xref linkend="git-config(1)" />
-or "CONFIGURATION" below) or whether this option is
-provided. Otherwise an explicit <emphasis>--no-reschedule-failed-exec</emphasis> at the
-start would be overridden by the presence of
-<emphasis>rebase.rescheduleFailedExec=true</emphasis> configuration.</simpara>
+<simpara>This option applies once a rebase is started. It is preserved for the whole
+rebase based on, in order, the command line option provided to the initial <emphasis>git
+rebase</emphasis>, the <emphasis>rebase.rescheduleFailedExec</emphasis> configuration (see
+<xref linkend="git-config(1)" /> or "CONFIGURATION" below), or it defaults to false.</simpara>
+<simpara>Recording this option for the whole rebase is a convenience feature. Otherwise
+an explicit <emphasis>--no-reschedule-failed-exec</emphasis> at the start would be overridden by
+the presence of a <emphasis>rebase.rescheduleFailedExec=true</emphasis> configuration when <emphasis>git
+rebase --continue</emphasis> is invoked. Currently, you cannot pass
+<emphasis>--[no-]reschedule-failed-exec</emphasis> to <emphasis>git rebase --continue</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1020,7 +1059,7 @@ be dropped automatically with <emphasis>--no-keep-empty</emphasis>).</simpara>
 <simpara>Similar to the apply backend, by default the merge backend drops
 commits that become empty unless <emphasis>-i</emphasis>/<emphasis>--interactive</emphasis> is specified (in
 which case it stops and asks the user what to do).  The merge backend
-also has an <emphasis>--empty={drop,keep,ask}</emphasis> option for changing the behavior
+also has an <emphasis>--empty=(drop|keep|stop)</emphasis> option for changing the behavior
 of handling commits that become empty.</simpara>
 </section>
 <section id="git-rebase(1)__directory_rename_detection">
@@ -1573,10 +1612,9 @@ exec cd subdir; make test
 <simpara>The interactive rebase will stop when a command fails (i.e. exits with
 non-0 status) to give you an opportunity to fix the problem. You can
 continue with <emphasis>git rebase --continue</emphasis>.</simpara>
-<simpara>The "exec" command launches the command in a shell (the one specified
-in <emphasis>$SHELL</emphasis>, or the default shell if <emphasis>$SHELL</emphasis> is not set), so you can
-use shell features (like "cd", "&gt;", ";" &#8230;). The command is run from
-the root of the working tree.</simpara>
+<simpara>The "exec" command launches the command in a shell (the default one, usually
+/bin/sh), so you can use shell features (like "cd", "&gt;", ";" &#8230;). The command
+is run from the root of the working tree.</simpara>
 <screen>$ git rebase -i --exec "make test"</screen>
 <simpara>This command lets you check that intermediate commits are compilable.
 The todo list becomes like that:</simpara>
@@ -1906,7 +1944,9 @@ rebase.autoSquash
 </term>
 <listitem>
 <simpara>
-        If set to true enable <emphasis>--autosquash</emphasis> option by default.
+        If set to true, enable the <emphasis>--autosquash</emphasis> option of
+        <xref linkend="git-rebase(1)" /> by default for interactive mode.
+        This can be overridden with the <emphasis>--no-autosquash</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1963,7 +2003,7 @@ rebase.instructionFormat
 <simpara>
         A format string, as specified in <xref linkend="git-log(1)" />, to be used for the
         todo list during an interactive rebase.  The format will
-        automatically have the long commit hash prepended to the format.
+        automatically have the commit hash prepended to the format.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2047,7 +2087,7 @@ sequence.editor
         Text editor used by <emphasis>git rebase -i</emphasis> for editing the rebase instruction file.
         The value is meant to be interpreted by the shell when it is used.
         It can be overridden by the <emphasis>GIT_SEQUENCE_EDITOR</emphasis> environment variable.
-        When not configured the default commit message editor is used instead.
+        When not configured, the default commit message editor is used instead.
 </simpara>
 </listitem>
 </varlistentry>

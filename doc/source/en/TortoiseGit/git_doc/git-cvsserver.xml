@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-cvsserver(1)">
     <title>git-cvsserver(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-cvsserver(1)</primary>
 </indexterm>
@@ -219,7 +219,7 @@ For SSH clients that will make commits, make sure their server-side
 Clients should now be able to check out the project. Use the CVS <emphasis>module</emphasis>
    name to indicate what Git <emphasis>head</emphasis> you want to check out.  This also sets the
    name of your newly checked-out directory, unless you tell it otherwise with
-   <emphasis>-d &lt;dir_name&gt;</emphasis>.  For example, this checks out <emphasis>master</emphasis> branch to the
+   <emphasis>-d &lt;dir-name&gt;</emphasis>.  For example, this checks out <emphasis>master</emphasis> branch to the
    <emphasis>project-master</emphasis> directory:
 </simpara>
 <screen>   cvs co -d project-master master</screen>
@@ -241,7 +241,7 @@ the pserver method), <emphasis>git-cvsserver</emphasis> should have write access
 the database to work reliably (otherwise you need to make sure
 that the database is up to date any time <emphasis>git-cvsserver</emphasis> is executed).</simpara>
 <simpara>By default it uses SQLite databases in the Git directory, named
-<emphasis>gitcvs.&lt;module_name&gt;.sqlite</emphasis>. Note that the SQLite backend creates
+<emphasis>gitcvs.&lt;module-name&gt;.sqlite</emphasis>. Note that the SQLite backend creates
 temporary files in the same directory as the database file on
 write so it might not be enough to grant the users using
 <emphasis>git-cvsserver</emphasis> write access to the database file without granting

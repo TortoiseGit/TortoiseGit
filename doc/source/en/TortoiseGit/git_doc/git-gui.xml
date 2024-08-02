@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-gui(1)">
     <title>git-gui(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-gui(1)</primary>
 </indexterm>
@@ -209,7 +209,7 @@ version
 versions are distributed as part of the Git suite for the convenience
 of end users.</simpara>
 <simpara>The official repository of the <emphasis>git gui</emphasis> project can be found at:</simpara>
-<literallayout class="monospaced">https://github.com/prati0100/git-gui.git/</literallayout>
+<literallayout class="monospaced">https://github.com/j6t/git-gui</literallayout>
 </simplesect>
 <simplesect id="git-gui(1)__git">
 <title>GIT</title>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-receive-pack(1)">
     <title>git-receive-pack(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-receive-pack(1)</primary>
 </indexterm>
@@ -24,9 +24,9 @@
 information fed from the remote end.</simpara>
 <simpara>This command is usually not invoked directly by the end user.
 The UI for the protocol is on the <emphasis>git send-pack</emphasis> side, and the
-program pair is meant to be used to push updates to remote
+program pair is meant to be used to push updates to a remote
 repository.  For pull operations, see <xref linkend="git-fetch-pack(1)" />.</simpara>
-<simpara>The command allows for creation and fast-forwarding of sha1 refs
+<simpara>The command allows for the creation and fast-forwarding of sha1 refs
 (heads/tags) on the remote end (strictly speaking, it is the
 local end <emphasis>git-receive-pack</emphasis> runs, but to the user who is sitting at
 the send-pack end, it is updating the remote.  Confused?)</simpara>

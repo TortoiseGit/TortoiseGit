@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-range-diff(1)">
     <title>git-range-diff(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-range-diff(1)</primary>
 </indexterm>
@@ -95,7 +95,7 @@ to revert to color all lines according to the outer diff markers
         Defaults to 60. Try a larger value if <emphasis>git range-diff</emphasis> erroneously
         considers a large change a total rewrite (deletion of one commit
         and addition of another), and a smaller one in the reverse case.
-        See the ``Algorithm`` section below for an explanation why this is
+        See the ``Algorithm`` section below for an explanation of why this is
         needed.
 </simpara>
 </listitem>
@@ -223,7 +223,7 @@ introduced by the rebase directly afterwards using:</simpara>
 3:  bedead &lt; -:  ------- TO-UNDO</screen>
 <simpara>In this example, there are 3 old and 3 new commits, where the developer
 removed the 3rd, added a new one before the first two, and modified the
-commit message of the 2nd commit as well its diff.</simpara>
+commit message of the 2nd commit as well as its diff.</simpara>
 <simpara>When the output goes to a terminal, it is color-coded by default, just
 like regular <emphasis>git diff</emphasis>'s output. In addition, the first line (adding a
 commit) is green, the last line (deleting a commit) is red, the second

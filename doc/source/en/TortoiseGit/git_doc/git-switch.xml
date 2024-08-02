@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-switch(1)">
     <title>git-switch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-switch(1)</primary>
 </indexterm>
@@ -91,11 +91,15 @@ out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which c
 <listitem>
 <simpara>
         Create a new branch named <emphasis>&lt;new-branch&gt;</emphasis> starting at
-        <emphasis>&lt;start-point&gt;</emphasis> before switching to the branch. This is a
-        convenient shortcut for:
+        <emphasis>&lt;start-point&gt;</emphasis> before switching to the branch. This is the
+        transactional equivalent of
 </simpara>
 <screen>$ git branch &lt;new-branch&gt;
 $ git switch &lt;new-branch&gt;</screen>
+<simpara>that is to say, the branch is not reset/created unless "git switch" is
+successful (e.g., when the branch is in use in another worktree, not
+just the current branch stays the same, but the branch is not reset to
+the start-point, either).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -289,7 +293,7 @@ name, the guessing is aborted.  You can explicitly give a name with
 </term>
 <listitem>
 <simpara>
-        Create a new <emphasis>orphan</emphasis> branch, named <emphasis>&lt;new-branch&gt;</emphasis>. All
+        Create a new unborn branch, named <emphasis>&lt;new-branch&gt;</emphasis>. All
         tracked files are removed.
 </simpara>
 </listitem>
@@ -422,7 +426,7 @@ checkout.workers
         all commands that perform checkout. E.g. checkout, clone, reset,
         sparse-checkout, etc.
 </simpara>
-<simpara>Note: parallel checkout usually delivers better performance for repositories
+<simpara>Note: Parallel checkout usually delivers better performance for repositories
 located on SSDs or over NFS. For repositories on spinning disks and/or machines
 with a small number of cores, the default sequential checkout often performs
 better. The size and compression level of a repository might also influence how
@@ -437,7 +441,7 @@ checkout.thresholdForParallelism
 <simpara>
         When running parallel checkout with a small number of files, the cost
         of subprocess spawning and inter-process communication might outweigh
-        the parallelization gains. This setting allows to define the minimum
+        the parallelization gains. This setting allows you to define the minimum
         number of files for which parallel checkout should be attempted. The
         default is 100.
 </simpara>

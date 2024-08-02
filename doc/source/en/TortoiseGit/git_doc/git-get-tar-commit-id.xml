@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-get-tar-commit-id(1)">
     <title>git-get-tar-commit-id(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-get-tar-commit-id(1)</primary>
 </indexterm>
@@ -24,7 +24,7 @@
 and extract the commit ID stored in it.  It reads only the first
 1024 bytes of input, thus its runtime is not influenced by the size
 of the tar archive very much.</simpara>
-<simpara>If no commit ID is found, <emphasis>git get-tar-commit-id</emphasis> quietly exists with a
+<simpara>If no commit ID is found, <emphasis>git get-tar-commit-id</emphasis> quietly exits with a
 return code of 1.  This can happen if the archive had not been created
 using <emphasis>git archive</emphasis> or if the first parameter of <emphasis>git archive</emphasis> had been
 a tree ID instead of a commit ID or tag.</simpara>

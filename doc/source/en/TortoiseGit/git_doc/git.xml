@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git(1)">
     <title>git(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git(1)</primary>
 </indexterm>
@@ -132,9 +132,9 @@ foo.bar= ...</emphasis>) sets <emphasis>foo.bar</emphasis> to the empty string w
         to avoid ambiguity with <emphasis>&lt;name&gt;</emphasis> containing one.
 </simpara>
 <simpara>This is useful for cases where you want to pass transitory
-configuration options to git, but are doing so on OS's where
-other processes might be able to read your cmdline
-(e.g. <emphasis>/proc/self/cmdline</emphasis>), but not your environ
+configuration options to git, but are doing so on operating systems
+where other processes might be able to read your command line
+(e.g. <emphasis>/proc/self/cmdline</emphasis>), but not your environment
 (e.g. <emphasis>/proc/self/environ</emphasis>). That behavior is the default on
 Linux, but may not be on your system.</simpara>
 <simpara>Note that this might add security for variables such as
@@ -287,8 +287,24 @@ environment variable)</simpara>
 </term>
 <listitem>
 <simpara>
-        Do not use replacement refs to replace Git objects. See
-        <xref linkend="git-replace(1)" /> for more information.
+        Do not use replacement refs to replace Git objects.
+        This is equivalent to exporting the <emphasis>GIT_NO_REPLACE_OBJECTS</emphasis>
+        environment variable with any value.
+        See <xref linkend="git-replace(1)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-lazy-fetch
+</term>
+<listitem>
+<simpara>
+        Do not fetch missing objects from the promisor remote on
+        demand.  Useful together with <emphasis>git cat-file -e &lt;object&gt;</emphasis> to
+        see if the object is locally available.
+        This is equivalent to setting the <emphasis>GIT_NO_LAZY_FETCH</emphasis>
+        environment variable to <emphasis>1</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -354,7 +370,7 @@ environment variable)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---list-cmds=group[,group&#8230;]
+--list-cmds=&lt;group&gt;[,&lt;group&gt;&#8230;]
 </term>
 <listitem>
 <simpara>
@@ -1110,7 +1126,7 @@ ancillary user utilities.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show logs with difference each commit introduces.
+        Show logs with differences each commit introduces.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1422,6 +1438,16 @@ repositories.</simpara>
 <listitem>
 <simpara>
         Reads tree information into the index.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-replay(1)" />
+</term>
+<listitem>
+<simpara>
+        EXPERIMENTAL: Replay commits on a new base, works with bare repos too.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2685,6 +2711,18 @@ double-quotes and respecting backslash escapes. E.g., the value
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_DEFAULT_REF_FORMAT</emphasis>
+</term>
+<listitem>
+<simpara>
+        If this variable is set, the default reference backend format for new
+        repositories will be set to this value. The default is "files".
+        See <emphasis>--ref-format</emphasis> in <xref linkend="git-init(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git(1)__git_commits">
@@ -3058,13 +3096,12 @@ for further details.</simpara>
 </term>
 <listitem>
 <simpara>
-
-        If this environment variable is set to "1", then commands such
+        If this Boolean environment variable is set to true, then commands such
         as <emphasis>git blame</emphasis> (in incremental mode), <emphasis>git rev-list</emphasis>, <emphasis>git log</emphasis>,
         <emphasis>git check-attr</emphasis> and <emphasis>git check-ignore</emphasis> will
         force a flush of the output stream after each record have been
         flushed. If this
-        variable is set to "0", the output of these commands will be done
+        variable is set to false, the output of these commands will be done
         using completely buffered I/O.   If this environment variable is
         not set, Git will choose buffered or record-oriented flushing
         based on whether stdout appears to be redirected to a file or not.
@@ -3248,7 +3285,7 @@ in that directory, named according to the last component
 of the SID and an optional counter (to avoid filename
 collisions).</simpara>
 <simpara>In addition, if the variable is set to
-<emphasis>af_unix:[&lt;socket_type&gt;:]&lt;absolute-pathname&gt;</emphasis>, Git will try
+<emphasis>af_unix:[&lt;socket-type&gt;:]&lt;absolute-pathname&gt;</emphasis>, Git will try
 to open the path as a Unix Domain Socket.  The socket type
 can be either <emphasis>stream</emphasis> or <emphasis>dgram</emphasis>.</simpara>
 <simpara>Unsetting the variable, or setting it to empty, "0" or
@@ -3294,6 +3331,17 @@ for full details.</simpara>
         cookies, the "Authorization:" header, the "Proxy-Authorization:"
         header and packfile URIs. Set this Boolean environment variable to false to prevent this
         redaction.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_NO_REPLACE_OBJECTS</emphasis>
+</term>
+<listitem>
+<simpara>
+        Setting and exporting this environment variable tells Git to
+        ignore replacement refs and do not replace Git objects.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3348,6 +3396,18 @@ for full details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>GIT_NO_LAZY_FETCH</emphasis>
+</term>
+<listitem>
+<simpara>
+        Setting this Boolean environment variable to true tells Git
+        not to lazily fetch missing objects from the promisor remote
+        on demand.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>GIT_REFLOG_ACTION</emphasis>
 </term>
 <listitem>
@@ -3380,6 +3440,22 @@ for full details.</simpara>
         should not normally need to set this to <emphasis>0</emphasis>, but it may be
         useful when trying to salvage data from a corrupted repository.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_COMMIT_GRAPH_PARANOIA</emphasis>
+</term>
+<listitem>
+<simpara>
+        When loading a commit object from the commit-graph, Git performs an
+        existence check on the object in the object database. This is done to
+        avoid issues with stale commit-graphs that contain references to
+        already-deleted commits, but comes with a performance penalty.
+</simpara>
+<simpara>The default is "false", which disables the aforementioned behavior.
+Setting this to "true" enables the existence check so that stale commits
+will never be returned from the commit-graph at the cost of performance.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -3418,7 +3494,7 @@ for full details.</simpara>
 <simpara>
         For internal use only.  Used in handshaking the wire protocol.
         Contains a colon <emphasis>:</emphasis> separated list of keys with optional values
-        <emphasis>key[=value]</emphasis>.  Presence of unknown keys and values must be
+        <emphasis>&lt;key&gt;[=&lt;value&gt;]</emphasis>.  Presence of unknown keys and values must be
         ignored.
 </simpara>
 <simpara>Note that servers may need to be configured to allow this variable to
@@ -3525,10 +3601,11 @@ purpose.</simpara>
 <simpara>When first created, objects are stored in individual files, but for
 efficiency may later be compressed together into "pack files".</simpara>
 <simpara>Named pointers called refs mark interesting points in history.  A ref
-may contain the SHA-1 name of an object or the name of another ref.  Refs
-with names beginning <emphasis>ref/head/</emphasis> contain the SHA-1 name of the most
+may contain the SHA-1 name of an object or the name of another ref (the
+latter is called a "symbolic ref").
+Refs with names beginning <emphasis>refs/head/</emphasis> contain the SHA-1 name of the most
 recent commit (or "head") of a branch under development.  SHA-1 names of
-tags of interest are stored under <emphasis>ref/tags/</emphasis>.  A special ref named
+tags of interest are stored under <emphasis>refs/tags/</emphasis>.  A symbolic ref named
 <emphasis>HEAD</emphasis> contains the name of the currently checked-out branch.</simpara>
 <simpara>The index file is initialized with a list of all paths and, for each
 path, a blob object and a set of attributes.  The blob object represents
@@ -3541,6 +3618,33 @@ content stored in the index.</simpara>
 <simpara>The index is also capable of storing multiple entries (called "stages")
 for a given pathname.  These stages are used to hold the various
 unmerged version of a file when a merge is in progress.</simpara>
+</simplesect>
+<simplesect id="git(1)__security">
+<title>SECURITY</title>
+<simpara>Some configuration options and hook files may cause Git to run arbitrary
+shell commands. Because configuration and hooks are not copied using
+<emphasis>git clone</emphasis>, it is generally safe to clone remote repositories with
+untrusted content, inspect them with <emphasis>git log</emphasis>, and so on.</simpara>
+<simpara>However, it is not safe to run Git commands in a <emphasis>.git</emphasis> directory (or
+the working tree that surrounds it) when that <emphasis>.git</emphasis> directory itself
+comes from an untrusted source. The commands in its config and hooks
+are executed in the usual way.</simpara>
+<simpara>By default, Git will refuse to run when the repository is owned by
+someone other than the user running the command. See the entry for
+<emphasis>safe.directory</emphasis> in <xref linkend="git-config(1)" />. While this can help protect
+you in a multi-user environment, note that you can also acquire
+untrusted repositories that are owned by you (for example, if you
+extract a zip file or tarball from an untrusted source). In such cases,
+you'd need to "sanitize" the untrusted repository first.</simpara>
+<simpara>If you have an untrusted <emphasis>.git</emphasis> directory, you should first clone it
+with <emphasis>git clone --no-local</emphasis> to obtain a clean copy. Git does restrict
+the set of options and hooks that will be run by <emphasis>upload-pack</emphasis>, which
+handles the server side of a clone or fetch, but beware that the
+surface area for attack against <emphasis>upload-pack</emphasis> is large, so this does
+carry some risk. The safest thing is to serve the repository as an
+unprivileged user (either via <xref linkend="git-daemon(1)" />, ssh, or using
+other tools to change user ids). See the discussion in the <emphasis>SECURITY</emphasis>
+section of <xref linkend="git-upload-pack(1)" />.</simpara>
 </simplesect>
 <simplesect id="git(1)__further_documentation">
 <title>FURTHER DOCUMENTATION</title>
@@ -3562,7 +3666,7 @@ read <xref linkend="gitcvs-migration(7)" />.</simpara>
 <title>Authors</title>
 <simpara>Git was started by Linus Torvalds, and is currently maintained by Junio
 C Hamano. Numerous contributions have come from the Git mailing list
-&lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.  <ulink url="http://www.openhub.net/p/git/contributors/summary">http://www.openhub.net/p/git/contributors/summary</ulink>
+&lt;<ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>&gt;.  <ulink url="https://openhub.net/p/git/contributors/summary">https://openhub.net/p/git/contributors/summary</ulink>
 gives you a more complete list of contributors.</simpara>
 <simpara>If you have a clone of git.git itself, the
 output of <xref linkend="git-shortlog(1)" /> and <xref linkend="git-blame(1)" /> can show you

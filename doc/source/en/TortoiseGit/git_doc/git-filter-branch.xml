@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-filter-branch(1)">
     <title>git-filter-branch(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-filter-branch(1)</primary>
 </indexterm>
@@ -21,7 +21,7 @@
         [--msg-filter &lt;command&gt;] [--commit-filter &lt;command&gt;]
         [--tag-name-filter &lt;command&gt;] [--prune-empty]
         [--original &lt;namespace&gt;] [-d &lt;directory&gt;] [-f | --force]
-        [--state-branch &lt;branch&gt;] [--] [&lt;rev-list options&gt;&#8230;]</literallayout>
+        [--state-branch &lt;branch&gt;] [--] [&lt;rev-list-options&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-filter-branch(1)__warning">
@@ -40,7 +40,7 @@ listed there as reasonably possible.</simpara>
 <simplesect id="git-filter-branch(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Lets you rewrite Git revision history by rewriting the branches mentioned
-in the &lt;rev-list options&gt;, applying custom filters on each revision.
+in the &lt;rev-list-options&gt;, applying custom filters on each revision.
 Those filters can modify each tree (e.g. removing a file or running
 a perl rewrite on all files) or information about each commit.
 Otherwise, all information (including original commit times or merge
@@ -738,7 +738,7 @@ Someone can do a history rewrite, realize they messed up, restore
 <listitem>
 <simpara>
 Running git-filter-branch with either --tags or --all in your
-     &lt;rev-list options&gt;.  In order to retain annotated tags as
+     &lt;rev-list-options&gt;.  In order to retain annotated tags as
      annotated, you must use --tag-name-filter (and must not have
      restored from refs/original/ in a previously botched rewrite).
 </simpara>

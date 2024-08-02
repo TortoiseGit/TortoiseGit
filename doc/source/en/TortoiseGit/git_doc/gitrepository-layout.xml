@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitrepository-layout(5)">
     <title>gitrepository-layout(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitrepository-layout(5)</primary>
 </indexterm>
@@ -36,7 +36,9 @@ a <emphasis>&lt;project&gt;.git</emphasis> directory that is a <emphasis>bare</e
 </itemizedlist>
 <simpara><emphasis role="strong">Note</emphasis>: Also you can have a plain text file <emphasis>.git</emphasis> at the root of
 your working tree, containing <emphasis>gitdir: &lt;path&gt;</emphasis> to point at the real
-directory that has the repository.  This mechanism is often used for
+directory that has the repository.
+This mechanism is called a <emphasis>gitfile</emphasis> and is usually managed via the
+<emphasis>git submodule</emphasis> and <emphasis>git worktree</emphasis> commands. It is often used for
 a working tree of a submodule checkout, to allow you in the
 containing superproject to <emphasis>git checkout</emphasis> a branch that does not
 have the submodule.  The <emphasis>checkout</emphasis> has to remove the entire
@@ -678,10 +680,16 @@ in the future.</simpara>
 <section id="gitrepository-layout(5)__emphasis_worktreeconfig_emphasis">
 <title><emphasis>worktreeConfig</emphasis></title>
 <simpara>If set, by default "git config" reads from both "config" and
-"config.worktree" file from GIT_DIR in that order. In
+"config.worktree" files from GIT_DIR in that order. In
 multiple working directory mode, "config" file is shared while
 "config.worktree" is per-working directory (i.e., it's in
 GIT_COMMON_DIR/worktrees/&lt;id&gt;/config.worktree)</simpara>
+</section>
+<section id="gitrepository-layout(5)__emphasis_refstorage_emphasis">
+<title><emphasis>refStorage</emphasis></title>
+<simpara>Specifies the file format for the ref database. The valid values are
+<emphasis>files</emphasis> (loose references with a packed-refs file) and <emphasis>reftable</emphasis> (see
+Documentation/technical/reftable.txt).</simpara>
 </section>
 </section>
 </simplesect>

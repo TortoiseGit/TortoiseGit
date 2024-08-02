@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-remote(1)">
     <title>git-remote(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-remote(1)</primary>
 </indexterm>
@@ -47,7 +47,7 @@
 <listitem>
 <simpara>
         Be a little more verbose and show remote url after name.
-        For promisor remotes, also show which filter (<emphasis>blob:none</emphasis> etc.)
+        For promisor remotes, also show which filters (<emphasis>blob:none</emphasis> etc.)
         are configured.
         NOTE: This must be placed between <emphasis>remote</emphasis> and subcommand.
 </simpara>

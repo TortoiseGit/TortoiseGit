@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitdiffcore(7)">
     <title>gitdiffcore(7)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitdiffcore(7)</primary>
 </indexterm>
@@ -173,7 +173,7 @@ number after the "-M" or "-C" option (e.g. "-M8" to tell it to use
 detection are off, rename detection adds a preliminary step that first
 checks if files are moved across directories while keeping their
 filename the same.  If there is a file added to a directory whose
-contents is sufficiently similar to a file with the same name that got
+contents are sufficiently similar to a file with the same name that got
 deleted from a different directory, it will mark them as renames and
 exclude them from the later quadratic step (the one that pairwise
 compares all unmatched files to find the "best" matches, determined by
@@ -209,7 +209,7 @@ from the original, and does not count insertion.  If you removed
 only 10 lines from a 100-line document, even if you added 910
 new lines to make a new 1000-line document, you did not do a
 complete rewrite.  diffcore-break breaks such a case in order to
-help diffcore-rename to consider such filepairs as candidate of
+help diffcore-rename to consider such filepairs as a candidate of
 rename/copy detection, but if filepairs broken that way were not
 matched with other filepairs to create rename/copy, then this
 transformation merges them back into the original
@@ -232,36 +232,36 @@ like these:</simpara>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>Note that earlier implementation left a broken pair as a separate
-creation and deletion patches.  This was an unnecessary hack and
+<simpara>Note that earlier implementation left a broken pair as separate
+creation and deletion patches.  This was an unnecessary hack, and
 the latest implementation always merges all the broken pairs
 back into modifications, but the resulting patch output is
 formatted differently for easier review in case of such
-a complete rewrite by showing the entire contents of old version
-prefixed with <emphasis>-</emphasis>, followed by the entire contents of new
+a complete rewrite by showing the entire contents of the old version
+prefixed with <emphasis>-</emphasis>, followed by the entire contents of the new
 version prefixed with <emphasis>+</emphasis>.</simpara>
 </simplesect>
 <simplesect id="gitdiffcore(7)__diffcore_pickaxe_for_detecting_addition_deletion_of_specified_string">
 <title>diffcore-pickaxe: For Detecting Addition/Deletion of Specified String</title>
 <simpara>This transformation limits the set of filepairs to those that change
 specified strings between the preimage and the postimage in a certain
-way.  -S&lt;block of text&gt; and -G&lt;regular expression&gt; options are used to
+way.  -S&lt;block-of-text&gt; and -G&lt;regular-expression&gt; options are used to
 specify different ways these strings are sought.</simpara>
-<simpara>"-S&lt;block of text&gt;" detects filepairs whose preimage and postimage
+<simpara>"-S&lt;block-of-text&gt;" detects filepairs whose preimage and postimage
 have different number of occurrences of the specified block of text.
 By definition, it will not detect in-file moves.  Also, when a
 changeset moves a file wholesale without affecting the interesting
 string, diffcore-rename kicks in as usual, and <emphasis>-S</emphasis> omits the filepair
 (since the number of occurrences of that string didn't change in that
 rename-detected filepair).  When used with <emphasis>--pickaxe-regex</emphasis>, treat
-the &lt;block of text&gt; as an extended POSIX regular expression to match,
+the &lt;block-of-text&gt; as an extended POSIX regular expression to match,
 instead of a literal string.</simpara>
-<simpara>"-G&lt;regular expression&gt;" (mnemonic: grep) detects filepairs whose
+<simpara>"-G&lt;regular-expression&gt;" (mnemonic: grep) detects filepairs whose
 textual diff has an added or a deleted line that matches the given
 regular expression.  This means that it will detect in-file (or what
 rename-detection considers the same file) moves, which is noise.  The
 implementation runs diff twice and greps, and this can be quite
-expensive.  To speed things up binary files without textconv filters
+expensive.  To speed things up, binary files without textconv filters
 will be ignored.</simpara>
 <simpara>When <emphasis>-S</emphasis> or <emphasis>-G</emphasis> are used without <emphasis>--pickaxe-all</emphasis>, only filepairs
 that match their respective criterion are kept in the output.  When

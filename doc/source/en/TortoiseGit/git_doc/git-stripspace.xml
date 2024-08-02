@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-stripspace(1)">
     <title>git-stripspace(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-stripspace(1)</primary>
 </indexterm>
@@ -49,7 +49,7 @@ add a missing <emphasis>\n</emphasis> to the last line if necessary.
 </itemizedlist>
 <simpara>In the case where the input consists entirely of whitespace characters, no
 output will be produced.</simpara>
-<simpara><emphasis role="strong">NOTE</emphasis>: This is intended for cleaning metadata, prefer the <emphasis>--whitespace=fix</emphasis>
+<simpara><emphasis role="strong">NOTE</emphasis>: This is intended for cleaning metadata. Prefer the <emphasis>--whitespace=fix</emphasis>
 mode of <xref linkend="git-apply(1)" /> for correcting whitespace of patches or files in
 the repository.</simpara>
 </simplesect>
@@ -65,7 +65,7 @@ the repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Skip and remove all lines starting with comment character (default <emphasis>#</emphasis>).
+        Skip and remove all lines starting with a comment character (default <emphasis>#</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
@@ -78,7 +78,7 @@ the repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Prepend comment character and blank to each line. Lines will automatically
+        Prepend the comment character and a blank space to each line. Lines will automatically
         be terminated with a newline. On empty lines, only the comment character
         will be prepended.
 </simpara>

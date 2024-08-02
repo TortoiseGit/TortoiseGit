@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-grep(1)">
     <title>git-grep(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-grep(1)</primary>
 </indexterm>
@@ -34,7 +34,7 @@
            [-f &lt;file&gt;] [-e] &lt;pattern&gt;
            [--and|--or|--not|(|)|-e &lt;pattern&gt;&#8230;]
            [--recurse-submodules] [--parent-basename &lt;basename&gt;]
-           [ [--[no-]exclude-standard] [--cached | --no-index | --untracked] | &lt;tree&gt;&#8230;]
+           [ [--[no-]exclude-standard] [--cached | --untracked | --no-index] | &lt;tree&gt;&#8230;]
            [--] [&lt;pathspec&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -61,16 +61,6 @@ characters.  An empty string as search expression matches all lines.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-index
-</term>
-<listitem>
-<simpara>
-        Search files in the current directory that is not managed by Git.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 --untracked
 </term>
 <listitem>
@@ -78,6 +68,23 @@ characters.  An empty string as search expression matches all lines.</simpara>
         In addition to searching in the tracked files in the working
         tree, search also in untracked files.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-index
+</term>
+<listitem>
+<simpara>
+        Search files in the current directory that is not managed by Git,
+        or by ignoring that the current directory is managed by Git.  This
+        is rather similar to running the regular <emphasis>grep(1)</emphasis> utility with its
+        <emphasis>-r</emphasis> option specified, but with some additional benefits, such as
+        using pathspec patterns to limit paths;  see the <emphasis>pathspec</emphasis> entry
+        in <xref linkend="gitglossary(7)" /> for more information.
+</simpara>
+<simpara>This option cannot be used together with <emphasis>--cached</emphasis> or <emphasis>--untracked</emphasis>.
+See also <emphasis>grep.fallbackToNoIndex</emphasis> in <emphasis>CONFIGURATION</emphasis> below.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -111,9 +118,9 @@ characters.  An empty string as search expression matches all lines.</simpara>
 <simpara>
         Recursively search in each submodule that is active and
         checked out in the repository.  When used in combination with the
-        &lt;tree&gt; option the prefix of all submodule output will be the name of
-        the parent project's &lt;tree&gt; object. This option has no effect
-        if <emphasis>--no-index</emphasis> is given.
+        <emphasis>&lt;tree&gt;</emphasis> option the prefix of all submodule output will be the name of
+        the parent project's <emphasis>&lt;tree&gt;</emphasis> object.  This option cannot be used together
+        with <emphasis>--untracked</emphasis>, and it has no effect if <emphasis>--no-index</emphasis> is specified.
 </simpara>
 </listitem>
 </varlistentry>
@@ -400,7 +407,7 @@ providing this option will cause it to die.</simpara>
         Use \0 as the delimiter for pathnames in the output, and print
         them verbatim. Without this option, pathnames with "unusual"
         characters are quoted as explained for the configuration
-        variable core.quotePath (see <xref linkend="git-config(1)" />).
+        variable <emphasis>core.quotePath</emphasis> (see <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
@@ -579,8 +586,8 @@ providing this option will cause it to die.</simpara>
 </term>
 <listitem>
 <simpara>
-        Number of grep worker threads to use.
-        See <emphasis>grep.threads</emphasis> in <emphasis>CONFIGURATION</emphasis> for more information.
+        Number of <emphasis>grep</emphasis> worker threads to use.  See <emphasis>NOTES ON THREADS</emphasis>
+        and <emphasis>grep.threads</emphasis> in <emphasis>CONFIGURATION</emphasis> for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -755,12 +762,12 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </simplesect>
 <simplesect id="git-grep(1)__notes_on_threads">
 <title>NOTES ON THREADS</title>
-<simpara>The <emphasis>--threads</emphasis> option (and the grep.threads configuration) will be ignored when
+<simpara>The <emphasis>--threads</emphasis> option (and the <emphasis>grep.threads</emphasis> configuration) will be ignored when
 <emphasis>--open-files-in-pager</emphasis> is used, forcing a single-threaded execution.</simpara>
 <simpara>When grepping the object store (with <emphasis>--cached</emphasis> or giving tree objects), running
-with multiple threads might perform slower than single threaded if <emphasis>--textconv</emphasis>
-is given and there're too many text conversions. So if you experience low
-performance in this case, it might be desirable to use <emphasis>--threads=1</emphasis>.</simpara>
+with multiple threads might perform slower than single-threaded if <emphasis>--textconv</emphasis>
+is given and there are too many text conversions.  Thus, if low performance is
+experienced in this case, it might be desirable to use <emphasis>--threads=1</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-grep(1)__configuration">
 <title>CONFIGURATION</title>
@@ -841,7 +848,7 @@ grep.fallbackToNoIndex
 </term>
 <listitem>
 <simpara>
-        If set to true, fall back to git grep --no-index if git grep
+        If set to true, fall back to <emphasis>git grep --no-index</emphasis> if <emphasis>git grep</emphasis>
         is executed outside of a git repository.  Defaults to false.
 </simpara>
 </listitem>

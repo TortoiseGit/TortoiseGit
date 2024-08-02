@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-daemon(1)">
     <title>git-daemon(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-daemon(1)</primary>
 </indexterm>
@@ -25,7 +25,7 @@
              [--allow-override=&lt;service&gt;] [--forbid-override=&lt;service&gt;]
              [--access-hook=&lt;path&gt;] [--[no-]informative-errors]
              [--inetd |
-              [--listen=&lt;host_or_ipaddr&gt;] [--port=&lt;n&gt;]
+              [--listen=&lt;host-or-ipaddr&gt;] [--port=&lt;n&gt;]
               [--user=&lt;user&gt; [--group=&lt;group&gt;]]]
              [--log-destination=(stderr|syslog|none)]
              [&lt;directory&gt;&#8230;]</literallayout>
@@ -135,13 +135,13 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---listen=&lt;host_or_ipaddr&gt;
+--listen=&lt;host-or-ipaddr&gt;
 </term>
 <listitem>
 <simpara>
         Listen on a specific IP address or hostname.  IP addresses can
         be either an IPv4 address or an IPv6 address if supported.  If IPv6
-        is not supported, then --listen=hostname is also not supported and
+        is not supported, then --listen=&lt;hostname&gt; is also not supported and
         --listen must be given an IPv4 address.
         Can be given more than once.
         Incompatible with <emphasis>--inetd</emphasis> option.
@@ -263,11 +263,11 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 <listitem>
 <simpara>
         Allow &#126;user notation to be used in requests.  When
-        specified with no parameter, requests to
+        specified with no parameter, a request to
         git://host/&#126;alice/foo is taken as a request to access
         <emphasis>foo</emphasis> repository in the home directory of user <emphasis>alice</emphasis>.
-        If <emphasis>--user-path=path</emphasis> is specified, the same request is
-        taken as a request to access <emphasis>path/foo</emphasis> repository in
+        If <emphasis>--user-path=&lt;path&gt;</emphasis> is specified, the same request is
+        taken as a request to access <emphasis>&lt;path&gt;/foo</emphasis> repository in
         the home directory of user <emphasis>alice</emphasis>.
 </simpara>
 </listitem>

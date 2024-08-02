@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-svn(1)">
     <title>git-svn(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-svn(1)</primary>
 </indexterm>
@@ -51,22 +51,22 @@ Subversion updated from Git by the <emphasis>dcommit</emphasis> command.</simpar
 <variablelist>
 <varlistentry>
 <term>
--T&lt;trunk_subdir&gt;
+-T&lt;trunk-subdir&gt;
 </term>
 <term>
---trunk=&lt;trunk_subdir&gt;
+--trunk=&lt;trunk-subdir&gt;
 </term>
 <term>
--t&lt;tags_subdir&gt;
+-t&lt;tags-subdir&gt;
 </term>
 <term>
---tags=&lt;tags_subdir&gt;
+--tags=&lt;tags-subdir&gt;
 </term>
 <term>
--b&lt;branches_subdir&gt;
+-b&lt;branches-subdir&gt;
 </term>
 <term>
---branches=&lt;branches_subdir&gt;
+--branches=&lt;branches-subdir&gt;
 </term>
 <term>
 -s
@@ -1354,14 +1354,14 @@ creating the branch or tag.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--R&lt;remote name&gt;
+-R&lt;remote-name&gt;
 </term>
 <term>
---svn-remote &lt;remote name&gt;
+--svn-remote &lt;remote-name&gt;
 </term>
 <listitem>
 <simpara>
-        Specify the [svn-remote "&lt;remote name&gt;"] section to use,
+        Specify the [svn-remote "&lt;remote-name&gt;"] section to use,
         this allows SVN multiple repositories to be tracked.
         Default: "svn"
 </simpara>

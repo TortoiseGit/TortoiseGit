@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-fast-export(1)">
     <title>git-fast-export(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-fast-export(1)</primary>
 </indexterm>
@@ -73,7 +73,7 @@ warning.</simpara>
 when encountering such a tag.  With <emphasis>drop</emphasis> it will omit such tags from
 the output.  With <emphasis>rewrite</emphasis>, if the tagged object is a commit, it will
 rewrite the tag to tag an ancestor commit (via parent rewriting; see
-<xref linkend="git-rev-list(1)" />)</simpara>
+<xref linkend="git-rev-list(1)" />).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

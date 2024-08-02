@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-notes(1)">
     <title>git-notes(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-notes(1)</primary>
 </indexterm>
@@ -62,7 +62,7 @@ list
 <simpara>
         List the notes object for a given object. If no object is
         given, show a list of all note objects and the objects they
-        annotate (in the format "&lt;note object&gt; &lt;annotated object&gt;").
+        annotate (in the format "&lt;note-object&gt; &lt;annotated-object&gt;").
         This is the default subcommand if no subcommand is given.
 </simpara>
 </listitem>
@@ -545,7 +545,7 @@ notes.mergeStrategy
 <simpara>
         Which merge strategy to choose by default when resolving notes
         conflicts.  Must be one of <emphasis>manual</emphasis>, <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis>, or
-        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See "NOTES MERGE STRATEGIES"
+        <emphasis>cat_sort_uniq</emphasis>.  Defaults to <emphasis>manual</emphasis>.  See the "NOTES MERGE STRATEGIES"
         section of <xref linkend="git-notes(1)" /> for more information on each strategy.
 </simpara>
 <simpara>This setting can be overridden by passing the <emphasis>--strategy</emphasis> option to

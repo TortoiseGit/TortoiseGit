@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitformat-bundle(5)">
     <title>gitformat-bundle(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitformat-bundle(5)</primary>
 </indexterm>
@@ -65,7 +65,7 @@ pack         = ... ; packfile</screen>
 </listitem>
 <listitem>
 <simpara>
-"Prerequisites" lists the objects that are NOT included in the bundle and the
+"Prerequisites" list the objects that are NOT included in the bundle and the
   reader of the bundle MUST already have, in order to use the data in the
   bundle. The objects stored in the bundle may refer to prerequisite objects and
   anything reachable from them (e.g. a tree object in the bundle can reference
@@ -91,9 +91,9 @@ pack         = ... ; packfile</screen>
 <simpara>In the bundle format, there can be a comment following a prerequisite obj-id.
 This is a comment and it has no specific meaning. The writer of the bundle MAY
 put any string here. The reader of the bundle MUST ignore the comment.</simpara>
-<section id="gitformat-bundle(5)__note_on_the_shallow_clone_and_a_git_bundle">
-<title>Note on the shallow clone and a Git bundle</title>
-<simpara>Note that the prerequisites does not represent a shallow-clone boundary. The
+<section id="gitformat-bundle(5)__note_on_shallow_clones_and_git_bundles">
+<title>Note on shallow clones and Git bundles</title>
+<simpara>Note that the prerequisites do not represent a shallow-clone boundary. The
 semantics of the prerequisites and the shallow-clone boundaries are different,
 and the Git bundle v2 format cannot represent a shallow clone repository.</simpara>
 </section>

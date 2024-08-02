@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-interpret-trailers(1)">
     <title>git-interpret-trailers(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-interpret-trailers(1)</primary>
 </indexterm>
@@ -16,7 +16,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git interpret-trailers</emphasis> [--in-place] [--trim-empty]
-                        [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;]
+                        [(--trailer (&lt;key&gt;|&lt;key-alias&gt;)[(=|:)&lt;value&gt;])&#8230;]
                         [--parse] [&lt;file&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
@@ -34,10 +34,14 @@ Signed-off-by: Bob &lt;bob@example.com&gt;</screen>
 <simpara>the last two lines starting with "Signed-off-by" are trailers.</simpara>
 <simpara>This command reads commit messages from either the
 &lt;file&gt; arguments or the standard input if no &lt;file&gt; is specified.
-If <emphasis>--parse</emphasis> is specified, the output consists of the parsed trailers.
-Otherwise, this command applies the arguments passed using the
-<emphasis>--trailer</emphasis> option, if any, to each input file. The result is emitted on the
-standard output.</simpara>
+If <emphasis>--parse</emphasis> is specified, the output consists of the parsed trailers
+coming from the input, without influencing them with any command line
+options or configuration variables.</simpara>
+<simpara>Otherwise, this command applies <emphasis>trailer.*</emphasis> configuration variables
+(which could potentially add new trailers, as well as reposition them),
+as well as any command line arguments that can override configuration
+variables (such as <emphasis>--trailer=...</emphasis> which could also add new trailers),
+to each input file. The result is emitted on the standard output.</simpara>
 <simpara>This command can also operate on the output of <xref linkend="git-format-patch(1)" />,
 which is more elaborate than a plain commit message. Namely, such output
 includes a commit message (as above), a "---" divider line, and a patch part.
@@ -48,18 +52,23 @@ this command and are emitted as is on the output, unless
 are applied to each input and the way any existing trailer in
 the input is changed. They also make it possible to
 automatically add some trailers.</simpara>
-<simpara>By default, a <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> or <emphasis>&lt;token&gt;:&lt;value&gt;</emphasis> argument given
+<simpara>By default, a <emphasis>&lt;key&gt;=&lt;value&gt;</emphasis> or <emphasis>&lt;key&gt;:&lt;value&gt;</emphasis> argument given
 using <emphasis>--trailer</emphasis> will be appended after the existing trailers only if
-the last trailer has a different (&lt;token&gt;, &lt;value&gt;) pair (or if there
-is no existing trailer). The &lt;token&gt; and &lt;value&gt; parts will be trimmed
+the last trailer has a different (&lt;key&gt;, &lt;value&gt;) pair (or if there
+is no existing trailer). The &lt;key&gt; and &lt;value&gt; parts will be trimmed
 to remove starting and trailing whitespace, and the resulting trimmed
-&lt;token&gt; and &lt;value&gt; will appear in the output like this:</simpara>
-<screen>token: value</screen>
-<simpara>This means that the trimmed &lt;token&gt; and &lt;value&gt; will be separated by
-<emphasis>': '</emphasis> (one colon followed by one space). For convenience, the &lt;token&gt; can be a
-shortened string key (e.g., "sign") instead of the full string which should
-appear before the separator on the output (e.g., "Signed-off-by"). This can be
-configured using the <emphasis>trailer.&lt;token&gt;.key</emphasis> configuration variable.</simpara>
+&lt;key&gt; and &lt;value&gt; will appear in the output like this:</simpara>
+<screen>key: value</screen>
+<simpara>This means that the trimmed &lt;key&gt; and &lt;value&gt; will be separated by
+<emphasis>': '</emphasis> (one colon followed by one space).</simpara>
+<simpara>For convenience, a &lt;key-alias&gt; can be configured to make using <emphasis>--trailer</emphasis>
+shorter to type on the command line. This can be configured using the
+<emphasis>trailer.&lt;key-alias&gt;.key</emphasis> configuration variable. The &lt;keyAlias&gt; must be a prefix
+of the full &lt;key&gt; string, although case sensitivity does not matter. For
+example, if you have</simpara>
+<screen>trailer.sign.key "Signed-off-by: "</screen>
+<simpara>in your configuration, you only need to specify <emphasis>--trailer="sign: foo"</emphasis>
+on the command line instead of <emphasis>--trailer="Signed-off-by: foo"</emphasis>.</simpara>
 <simpara>By default the new trailer will appear at the end of all the existing
 trailers. If there is no existing trailer, the new trailer will appear
 at the end of the input. A blank line will be added before the new
@@ -73,12 +82,12 @@ The group must either be at the end of the input or be the last
 non-whitespace lines before a line that starts with <emphasis>---</emphasis> (followed by a
 space or the end of the line).</simpara>
 <simpara>When reading trailers, there can be no whitespace before or inside the
-&lt;token&gt;, but any number of regular space and tab characters are allowed
-between the &lt;token&gt; and the separator. There can be whitespaces before,
+&lt;key&gt;, but any number of regular space and tab characters are allowed
+between the &lt;key&gt; and the separator. There can be whitespaces before,
 inside or after the &lt;value&gt;. The &lt;value&gt; may be split over multiple lines
 with each subsequent line starting with at least one whitespace, like
 the "folding" in RFC 822. Example:</simpara>
-<screen>token: This is a very long value, with spaces and
+<screen>key: This is a very long value, with spaces and
   newlines in it.</screen>
 <simpara>Note that trailers do not follow (nor are they intended to follow) many of the
 rules for RFC 822 headers. For example they do not follow the encoding rule.</simpara>
@@ -110,11 +119,11 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 </varlistentry>
 <varlistentry>
 <term>
---trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+--trailer &lt;key&gt;[(=|:)&lt;value&gt;]
 </term>
 <listitem>
 <simpara>
-        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        Specify a (&lt;key&gt;, &lt;value&gt;) pair that should be applied as a
         trailer to the inputs. See the description of this
         command.
 </simpara>
@@ -130,10 +139,13 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 <listitem>
 <simpara>
         Specify where all new trailers will be added.  A setting
-        provided with <emphasis>--where</emphasis> overrides all configuration variables
+        provided with <emphasis>--where</emphasis> overrides the <emphasis>trailer.where</emphasis> and any
+        applicable <emphasis>trailer.&lt;keyAlias&gt;.where</emphasis> configuration variables
         and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
-        <emphasis>--where</emphasis> or <emphasis>--no-where</emphasis>. Possible values are <emphasis>after</emphasis>, <emphasis>before</emphasis>,
-        <emphasis>end</emphasis> or <emphasis>start</emphasis>.
+        <emphasis>--where</emphasis> or <emphasis>--no-where</emphasis>. Upon encountering <emphasis>--no-where</emphasis>, clear the
+        effect of any previous use of <emphasis>--where</emphasis>, such that the relevant configuration
+        variables are no longer overridden. Possible placements are <emphasis>after</emphasis>,
+        <emphasis>before</emphasis>, <emphasis>end</emphasis> or <emphasis>start</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -147,10 +159,13 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 <listitem>
 <simpara>
         Specify what action will be performed when there is already at
-        least one trailer with the same &lt;token&gt; in the input.  A setting
-        provided with <emphasis>--if-exists</emphasis> overrides all configuration variables
+        least one trailer with the same &lt;key&gt; in the input.  A setting
+        provided with <emphasis>--if-exists</emphasis> overrides the <emphasis>trailer.ifExists</emphasis> and any
+        applicable <emphasis>trailer.&lt;keyAlias&gt;.ifExists</emphasis> configuration variables
         and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
-        <emphasis>--if-exists</emphasis> or <emphasis>--no-if-exists</emphasis>. Possible actions are <emphasis>addIfDifferent</emphasis>,
+        <emphasis>--if-exists</emphasis> or <emphasis>--no-if-exists</emphasis>. Upon encountering '--no-if-exists, clear the
+        effect of any previous use of '--if-exists, such that the relevant configuration
+        variables are no longer overridden. Possible actions are <emphasis>addIfDifferent</emphasis>,
         <emphasis>addIfDifferentNeighbor</emphasis>, <emphasis>add</emphasis>, <emphasis>replace</emphasis> and <emphasis>doNothing</emphasis>.
 </simpara>
 </listitem>
@@ -165,10 +180,13 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 <listitem>
 <simpara>
         Specify what action will be performed when there is no other
-        trailer with the same &lt;token&gt; in the input.  A setting
-        provided with <emphasis>--if-missing</emphasis> overrides all configuration variables
+        trailer with the same &lt;key&gt; in the input.  A setting
+        provided with <emphasis>--if-missing</emphasis> overrides the <emphasis>trailer.ifMissing</emphasis> and any
+        applicable <emphasis>trailer.&lt;keyAlias&gt;.ifMissing</emphasis> configuration variables
         and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
-        <emphasis>--if-missing</emphasis> or <emphasis>--no-if-missing</emphasis>. Possible actions are <emphasis>doNothing</emphasis>
+        <emphasis>--if-missing</emphasis> or <emphasis>--no-if-missing</emphasis>. Upon encountering '--no-if-missing,
+        clear the effect of any previous use of '--if-missing, such that the relevant
+        configuration variables are no longer overridden. Possible actions are <emphasis>doNothing</emphasis>
         or <emphasis>add</emphasis>.
 </simpara>
 </listitem>
@@ -190,8 +208,8 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 <listitem>
 <simpara>
         Output only trailers that exist in the input; do not add any
-        from the command-line or by following configured <emphasis>trailer.*</emphasis>
-        rules.
+        from the command-line or by applying <emphasis>trailer.*</emphasis> configuration
+        variables.
 </simpara>
 </listitem>
 </varlistentry>
@@ -201,8 +219,8 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 </term>
 <listitem>
 <simpara>
-        Remove any whitespace-continuation in trailers, so that each
-        trailer appears on a line by itself with its full content.
+        If a trailer has a value that runs over multiple lines (aka "folded"),
+        reformat the value into a single line.
 </simpara>
 </listitem>
 </varlistentry>
@@ -213,7 +231,10 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 <listitem>
 <simpara>
         A convenience alias for <emphasis>--only-trailers --only-input
-        --unfold</emphasis>.
+        --unfold</emphasis>. This makes it easier to only see the trailers coming from the
+        input without influencing them with any command line options or
+        configuration variables, while also making the output machine-friendly with
+        --unfold.
 </simpara>
 </listitem>
 </varlistentry>
@@ -249,11 +270,11 @@ trailer.separators
 used when another separator is not specified in the config for this
 trailer.</simpara>
 <simpara>For example, if the value for this option is "%=$", then only lines
-using the format <emphasis>&lt;token&gt;&lt;sep&gt;&lt;value&gt;</emphasis> with &lt;sep&gt; containing <emphasis>%</emphasis>, <emphasis>=</emphasis>
+using the format <emphasis>&lt;key&gt;&lt;sep&gt;&lt;value&gt;</emphasis> with &lt;sep&gt; containing <emphasis>%</emphasis>, <emphasis>=</emphasis>
 or <emphasis>$</emphasis> and then spaces will be considered trailers. And <emphasis>%</emphasis> will be
 the default separator used, so by default trailers will appear like:
-<emphasis>&lt;token&gt;% &lt;value&gt;</emphasis> (one percent sign and one space will appear between
-the token and the value).</simpara>
+<emphasis>&lt;key&gt;% &lt;value&gt;</emphasis> (one percent sign and one space will appear between
+the key and the value).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -270,9 +291,9 @@ existing trailers.</simpara>
 <simpara>If it is <emphasis>start</emphasis>, then each new trailer will appear at the start,
 instead of the end, of the existing trailers.</simpara>
 <simpara>If it is <emphasis>after</emphasis>, then each new trailer will appear just after the
-last trailer with the same &lt;token&gt;.</simpara>
+last trailer with the same &lt;key&gt;.</simpara>
 <simpara>If it is <emphasis>before</emphasis>, then each new trailer will appear just before the
-first trailer with the same &lt;token&gt;.</simpara>
+first trailer with the same &lt;key&gt;.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -283,23 +304,23 @@ trailer.ifexists
 <simpara>
         This option makes it possible to choose what action will be
         performed when there is already at least one trailer with the
-        same &lt;token&gt; in the input.
+        same &lt;key&gt; in the input.
 </simpara>
 <simpara>The valid values for this option are: <emphasis>addIfDifferentNeighbor</emphasis> (this
 is the default), <emphasis>addIfDifferent</emphasis>, <emphasis>add</emphasis>, <emphasis>replace</emphasis> or <emphasis>doNothing</emphasis>.</simpara>
 <simpara>With <emphasis>addIfDifferentNeighbor</emphasis>, a new trailer will be added only if no
-trailer with the same (&lt;token&gt;, &lt;value&gt;) pair is above or below the line
+trailer with the same (&lt;key&gt;, &lt;value&gt;) pair is above or below the line
 where the new trailer will be added.</simpara>
 <simpara>With <emphasis>addIfDifferent</emphasis>, a new trailer will be added only if no trailer
-with the same (&lt;token&gt;, &lt;value&gt;) pair is already in the input.</simpara>
+with the same (&lt;key&gt;, &lt;value&gt;) pair is already in the input.</simpara>
 <simpara>With <emphasis>add</emphasis>, a new trailer will be added, even if some trailers with
-the same (&lt;token&gt;, &lt;value&gt;) pair are already in the input.</simpara>
-<simpara>With <emphasis>replace</emphasis>, an existing trailer with the same &lt;token&gt; will be
+the same (&lt;key&gt;, &lt;value&gt;) pair are already in the input.</simpara>
+<simpara>With <emphasis>replace</emphasis>, an existing trailer with the same &lt;key&gt; will be
 deleted and the new trailer will be added. The deleted trailer will be
-the closest one (with the same &lt;token&gt;) to the place where the new one
+the closest one (with the same &lt;key&gt;) to the place where the new one
 will be added.</simpara>
 <simpara>With <emphasis>doNothing</emphasis>, nothing will be done; that is no new trailer will be
-added if there is already one with the same &lt;token&gt; in the input.</simpara>
+added if there is already one with the same &lt;key&gt; in the input.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -310,7 +331,7 @@ trailer.ifmissing
 <simpara>
         This option makes it possible to choose what action will be
         performed when there is not yet any trailer with the same
-        &lt;token&gt; in the input.
+        &lt;key&gt; in the input.
 </simpara>
 <simpara>The valid values for this option are: <emphasis>add</emphasis> (this is the default) and
 <emphasis>doNothing</emphasis>.</simpara>
@@ -320,98 +341,103 @@ trailer.ifmissing
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.key
+trailer.&lt;keyAlias&gt;.key
 </term>
 <listitem>
 <simpara>
-        This <emphasis>key</emphasis> will be used instead of &lt;token&gt; in the trailer. At
-        the end of this key, a separator can appear and then some
-        space characters. By default the only valid separator is <emphasis>:</emphasis>,
-        but this can be changed using the <emphasis>trailer.separators</emphasis> config
-        variable.
+        Defines a &lt;keyAlias&gt; for the &lt;key&gt;. The &lt;keyAlias&gt; must be a
+        prefix (case does not matter) of the &lt;key&gt;. For example, in <emphasis>git
+        config trailer.ack.key "Acked-by"</emphasis> the "Acked-by" is the &lt;key&gt; and
+        the "ack" is the &lt;keyAlias&gt;. This configuration allows the shorter
+        <emphasis>--trailer "ack:..."</emphasis> invocation on the command line using the "ack"
+        &lt;keyAlias&gt; instead of the longer <emphasis>--trailer "Acked-by:..."</emphasis>.
 </simpara>
-<simpara>If there is a separator, then the key will be used instead of both the
-&lt;token&gt; and the default separator when adding the trailer.</simpara>
+<simpara>At the end of the &lt;key&gt;, a separator can appear and then some
+space characters. By default the only valid separator is <emphasis>:</emphasis>,
+but this can be changed using the <emphasis>trailer.separators</emphasis> config
+variable.</simpara>
+<simpara>If there is a separator in the key, then it overrides the default
+separator when adding the trailer.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.where
+trailer.&lt;keyAlias&gt;.where
 </term>
 <listitem>
 <simpara>
         This option takes the same values as the <emphasis>trailer.where</emphasis>
         configuration variable and it overrides what is specified by
-        that option for trailers with the specified &lt;token&gt;.
+        that option for trailers with the specified &lt;keyAlias&gt;.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.ifexists
+trailer.&lt;keyAlias&gt;.ifexists
 </term>
 <listitem>
 <simpara>
         This option takes the same values as the <emphasis>trailer.ifexists</emphasis>
         configuration variable and it overrides what is specified by
-        that option for trailers with the specified &lt;token&gt;.
+        that option for trailers with the specified &lt;keyAlias&gt;.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.ifmissing
+trailer.&lt;keyAlias&gt;.ifmissing
 </term>
 <listitem>
 <simpara>
         This option takes the same values as the <emphasis>trailer.ifmissing</emphasis>
         configuration variable and it overrides what is specified by
-        that option for trailers with the specified &lt;token&gt;.
+        that option for trailers with the specified &lt;keyAlias&gt;.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.command
+trailer.&lt;keyAlias&gt;.command
 </term>
 <listitem>
 <simpara>
-        Deprecated in favor of <emphasis>trailer.&lt;token&gt;.cmd</emphasis>.
-        This option behaves in the same way as <emphasis>trailer.&lt;token&gt;.cmd</emphasis>, except
+        Deprecated in favor of <emphasis>trailer.&lt;keyAlias&gt;.cmd</emphasis>.
+        This option behaves in the same way as <emphasis>trailer.&lt;keyAlias&gt;.cmd</emphasis>, except
         that it doesn't pass anything as argument to the specified command.
         Instead the first occurrence of substring $ARG is replaced by the
         &lt;value&gt; that would be passed as argument.
 </simpara>
 <simpara>Note that $ARG in the user's command is
 only replaced once and that the original way of replacing $ARG is not safe.</simpara>
-<simpara>When both <emphasis>trailer.&lt;token&gt;.cmd</emphasis> and <emphasis>trailer.&lt;token&gt;.command</emphasis> are given
-for the same &lt;token&gt;, <emphasis>trailer.&lt;token&gt;.cmd</emphasis> is used and
-<emphasis>trailer.&lt;token&gt;.command</emphasis> is ignored.</simpara>
+<simpara>When both <emphasis>trailer.&lt;keyAlias&gt;.cmd</emphasis> and <emphasis>trailer.&lt;keyAlias&gt;.command</emphasis> are given
+for the same &lt;keyAlias&gt;, <emphasis>trailer.&lt;keyAlias&gt;.cmd</emphasis> is used and
+<emphasis>trailer.&lt;keyAlias&gt;.command</emphasis> is ignored.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-trailer.&lt;token&gt;.cmd
+trailer.&lt;keyAlias&gt;.cmd
 </term>
 <listitem>
 <simpara>
         This option can be used to specify a shell command that will be called
-        once to automatically add a trailer with the specified &lt;token&gt;, and then
-        called each time a <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument is specified to
+        once to automatically add a trailer with the specified &lt;keyAlias&gt;, and then
+        called each time a <emphasis>--trailer &lt;keyAlias&gt;=&lt;value&gt;</emphasis> argument is specified to
         modify the &lt;value&gt; of the trailer that this option would produce.
 </simpara>
 <simpara>When the specified command is first called to add a trailer
-with the specified &lt;token&gt;, the behavior is as if a special
-<emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument was added at the beginning
+with the specified &lt;keyAlias&gt;, the behavior is as if a special
+<emphasis>--trailer &lt;keyAlias&gt;=&lt;value&gt;</emphasis> argument was added at the beginning
 of the "git interpret-trailers" command, where &lt;value&gt;
 is taken to be the standard output of the command with any
 leading and trailing whitespace trimmed off.</simpara>
-<simpara>If some <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> arguments are also passed
+<simpara>If some <emphasis>--trailer &lt;keyAlias&gt;=&lt;value&gt;</emphasis> arguments are also passed
 on the command line, the command is called again once for each
-of these arguments with the same &lt;token&gt;. And the &lt;value&gt; part
+of these arguments with the same &lt;keyAlias&gt;. And the &lt;value&gt; part
 of these arguments, if any, will be passed to the command as its
 first argument. This way the command can produce a &lt;value&gt; computed
-from the &lt;value&gt; passed in the <emphasis>--trailer &lt;token&gt;=&lt;value&gt;</emphasis> argument.</simpara>
+from the &lt;value&gt; passed in the <emphasis>--trailer &lt;keyAlias&gt;=&lt;value&gt;</emphasis> argument.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="gitprotocol-http(5)">
     <title>gitprotocol-http(5)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-http(5)</primary>
 </indexterm>
@@ -40,7 +40,7 @@ the http:// repository URL entered by the end-user.</simpara>
 both the "smart" and "dumb" HTTP protocols used by Git operate
 by appending additional path components onto the end of the user
 supplied <emphasis>$GIT_URL</emphasis> string.</simpara>
-<simpara>An example of a dumb client requesting for a loose object:</simpara>
+<simpara>An example of a dumb client requesting a loose object:</simpara>
 <literallayout class="monospaced">$GIT_URL:     http://example.com:8080/git/repo.git
 URL request:  http://example.com:8080/git/repo.git/objects/d0/49f6c27a2244e12041955e262a404c7faba355</literallayout>
 <simpara>An example of a smart request to a catch-all gateway:</simpara>
@@ -295,7 +295,7 @@ cap_list          =  capability *(SP capability)</literallayout>
 <simpara>C: Place any object seen into set <emphasis>advertised</emphasis>.</simpara>
 <simpara>C: Build an empty set, <emphasis>common</emphasis>, to hold the objects that are later
    determined to be on both ends.</simpara>
-<simpara>C: Build a set, <emphasis>want</emphasis>, of the objects from <emphasis>advertised</emphasis> the client
+<simpara>C: Build a set, <emphasis>want</emphasis>, of the objects from <emphasis>advertised</emphasis> that the client
    wants to fetch, based on what it saw during ref discovery.</simpara>
 <simpara>C: Start a queue, <emphasis>c_pending</emphasis>, ordered by commit time (popping newest
    first).  Add all client refs.  When a commit is popped from
@@ -303,14 +303,14 @@ cap_list          =  capability *(SP capability)</literallayout>
    Commits MUST only enter the queue once.</simpara>
 <simpara><emphasis>one compute step:</emphasis></simpara>
 <simpara>C: Send one <emphasis>$GIT_URL/git-upload-pack</emphasis> request:</simpara>
-<literallayout class="monospaced">C: 0032want &lt;want #1&gt;...............................
-C: 0032want &lt;want #2&gt;...............................
+<literallayout class="monospaced">C: 0032want &lt;want-#1&gt;...............................
+C: 0032want &lt;want-#2&gt;...............................
 ....
-C: 0032have &lt;common #1&gt;.............................
-C: 0032have &lt;common #2&gt;.............................
+C: 0032have &lt;common-#1&gt;.............................
+C: 0032have &lt;common-#2&gt;.............................
 ....
-C: 0032have &lt;have #1&gt;...............................
-C: 0032have &lt;have #2&gt;...............................
+C: 0032have &lt;have-#1&gt;...............................
+C: 0032have &lt;have-#2&gt;...............................
 ....
 C: 0000</literallayout>
 <simpara>The stream is organized into "commands", with each command
@@ -339,7 +339,7 @@ object name as its value.  Multiple object names MUST be sent by sending
 multiple commands. Object names MUST be given using the object format
 negotiated through the <emphasis>object-format</emphasis> capability (default SHA-1).</simpara>
 <simpara>The <emphasis>have</emphasis> list is created by popping the first 32 commits
-from <emphasis>c_pending</emphasis>.  Less can be supplied if <emphasis>c_pending</emphasis> empties.</simpara>
+from <emphasis>c_pending</emphasis>.  Fewer can be supplied if <emphasis>c_pending</emphasis> empties.</simpara>
 <simpara>If the client has sent 256 "have" commits and has not yet
 received one of those back from <emphasis>s_common</emphasis>, or the client has
 emptied <emphasis>c_pending</emphasis> it SHOULD include a "done" command to let
@@ -402,7 +402,7 @@ to prevent caching of the response.</simpara>
 Within the command portion of the request body clients SHOULD send
 the id obtained through ref discovery as old_id.</simpara>
 <literallayout class="monospaced">update_request  =  command_list
-                   "PACK" &lt;binary data&gt;</literallayout>
+                   "PACK" &lt;binary-data&gt;</literallayout>
 <literallayout class="monospaced">command_list    =  PKT-LINE(command NUL cap_list LF)
                    *(command_pkt)
 command_pkt     =  PKT-LINE(command LF)
@@ -415,8 +415,8 @@ update          =  old_id SP new_id SP name</literallayout>
 </simplesect>
 <simplesect id="gitprotocol-http(5)__references">
 <title>REFERENCES</title>
-<simpara><ulink url="http://www.ietf.org/rfc/rfc1738.txt">RFC 1738: Uniform Resource Locators (URL)</ulink>
-<ulink url="http://www.ietf.org/rfc/rfc2616.txt">RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1</ulink></simpara>
+<simpara><ulink url="https://www.ietf.org/rfc/rfc1738.txt">RFC 1738: Uniform Resource Locators (URL)</ulink>
+<ulink url="https://www.ietf.org/rfc/rfc2616.txt">RFC 2616: Hypertext Transfer Protocol -- HTTP/1.1</ulink></simpara>
 </simplesect>
 <simplesect id="gitprotocol-http(5)__see_also">
 <title>SEE ALSO</title>

@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-bugreport(1)">
     <title>git-bugreport(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-bugreport(1)</primary>
 </indexterm>
@@ -15,16 +15,18 @@
 <simplesect id="git-bugreport(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git bugreport</emphasis> [(-o | --output-directory) &lt;path&gt;] [(-s | --suffix) &lt;format&gt;]
+<literallayout><emphasis>git bugreport</emphasis> [(-o | --output-directory) &lt;path&gt;]
+                [(-s | --suffix) &lt;format&gt; | --no-suffix]
                 [--diagnose[=&lt;mode&gt;]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-bugreport(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Captures information about the user's machine, Git client, and repository state,
-as well as a form requesting information about the behavior the user observed,
-into a single text file which the user can then share, for example to the Git
-mailing list, in order to report an observed bug.</simpara>
+<simpara>Collects information about the user's machine, Git client, and repository
+state, in addition to a form requesting information about the behavior the
+user observed, and stores it in a single text file which the user can then
+share, for example to the Git mailing list, in order to report an observed
+bug.</simpara>
 <simpara>The following information is requested from the user:</simpara>
 <itemizedlist>
 <listitem>
@@ -103,11 +105,16 @@ the kind of information listed above when manually asking for help.</simpara>
 <term>
 --suffix &lt;format&gt;
 </term>
+<term>
+--no-suffix
+</term>
 <listitem>
 <simpara>
         Specify an alternate suffix for the bugreport name, to create a file
-        named <emphasis>git-bugreport-&lt;formatted suffix&gt;</emphasis>. This should take the form of a
+        named <emphasis>git-bugreport-&lt;formatted-suffix&gt;</emphasis>. This should take the form of a
         strftime(3) format string; the current local time will be used.
+        <emphasis>--no-suffix</emphasis> disables the suffix and the file is just named
+        <emphasis>git-bugreport</emphasis> without any disambiguation measure.
 </simpara>
 </listitem>
 </varlistentry>
@@ -123,7 +130,7 @@ the kind of information listed above when manually asking for help.</simpara>
         Create a zip archive of supplemental information about the user's
         machine, Git client, and repository state. The archive is written to the
         same output directory as the bug report and is named
-        <emphasis>git-diagnostics-&lt;formatted suffix&gt;</emphasis>.
+        <emphasis>git-diagnostics-&lt;formatted-suffix&gt;</emphasis>.
 </simpara>
 <simpara>Without <emphasis>mode</emphasis> specified, the diagnostic archive will contain the default set of
 statistics reported by <emphasis>git diagnose</emphasis>. An optional <emphasis>mode</emphasis> value may be specified

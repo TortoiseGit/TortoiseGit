@@ -3,8 +3,8 @@
 
 <sect2 lang="en" id="git-cvsimport(1)">
     <title>git-cvsimport(1)</title>
-    <date>2023-11-02</date>
-<revhistory><revision><date>2023-11-02</date></revision></revhistory>
+    <date>2024-07-02</date>
+<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-cvsimport(1)</primary>
 </indexterm>
@@ -28,7 +28,7 @@
 deprecated; it does not work with cvsps version 3 and later.  If you are
 performing a one-shot import of a CVS repository consider using
 <ulink url="http://cvs2svn.tigris.org/cvs2git.html">cvs2git</ulink> or
-<ulink url="http://www.catb.org/esr/cvs-fast-export/">cvs-fast-export</ulink>.</simpara>
+<ulink url="https://gitlab.com/esr/cvs-fast-export">cvs-fast-export</ulink>.</simpara>
 <simpara>Imports a CVS repository into Git. It will either create a new
 repository, or incrementally import into an existing one.</simpara>
 <simpara>Splitting the CVS log into patch sets is done by <emphasis>cvsps</emphasis>.
@@ -383,7 +383,7 @@ want to import, consider using cvs2git:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-cvs2git (part of cvs2svn), <emphasis>http://subversion.apache.org/</emphasis>
+cvs2git (part of cvs2svn), <emphasis>https://subversion.apache.org/</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
