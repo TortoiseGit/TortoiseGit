@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "Git.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
+#include "../TGitCache/CacheInterface.h"
 
 #define GIT_FOR_WINDOWS_URL L"https://gitforwindows.org/"
 
@@ -143,7 +144,11 @@ protected:
 
 		StoreSetting(hwnd, gitpath, m_regMsysGitPath);
 		StoreSetting(hwnd, pathaddition, m_regMsysGitExtranPath);
-		SCOPE_EXIT{
+		bool undoOnError = true;
+		SCOPE_EXIT
+		{
+			if (!undoOnError)
+				return;
 			StoreSetting(hwnd, oldpath, m_regMsysGitPath);
 			StoreSetting(hwnd, oldextranpath, m_regMsysGitExtranPath);
 		};
@@ -222,6 +227,12 @@ protected:
 		CRegDWORD(L"Software\\TortoiseGit\\git_file_time").removeValue();
 		if (!CheckGitVersion(hwnd))
 			return false;
+
+		// tell the cache to refresh everything and restart
+		SendCacheCommand(TGITCACHECOMMAND_REFRESHALL);
+		SendCacheCommand(TGITCACHECOMMAND_END);
+
+		undoOnError = false;
 		return true;
 	}
 
