@@ -252,7 +252,8 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LARGE_INTEGER offset)
 	header.m_Magic=LOG_DATA_ITEM_MAGIC;
 	header.m_FileCount=Rev.m_Files.GetCount();
 
-	if (!WriteFile(this->m_DataFile, &header, sizeof(header), nullptr, 0))
+	DWORD dwWritten = 0;
+	if (!WriteFile(this->m_DataFile, &header, sizeof(header), &dwWritten, 0))
 		return -1;
 
 	CString stat;
@@ -274,17 +275,17 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LARGE_INTEGER offset)
 		stat = Rev.m_Files[i].m_StatDel;
 		revfileheader.m_Del = (stat == L"-") ? 0xFFFFFFFF : _wtol(stat);
 
-		if (!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(wchar_t), nullptr, 0))
+		if (!WriteFile(this->m_DataFile, &revfileheader, sizeof(revfileheader) - sizeof(wchar_t), &dwWritten, 0))
 			return -1;
 
 		if(!name.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(wchar_t), nullptr, 0))
+			if (!WriteFile(this->m_DataFile, name, name.GetLength() * sizeof(wchar_t), &dwWritten, 0))
 				return -1;
 		}
 		if(!oldname.IsEmpty())
 		{
-			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(wchar_t), nullptr, 0))
+			if (!WriteFile(this->m_DataFile, oldname, oldname.GetLength() * sizeof(wchar_t), &dwWritten, 0))
 				return -1;
 		}
 
@@ -380,9 +381,10 @@ int CLogCache::RebuildCacheFile()
 	SetFilePointerEx(m_DataFile, start, nullptr, FILE_BEGIN);
 	SetFilePointerEx(m_IndexFile, start, nullptr, FILE_BEGIN);
 
-	WriteFile(m_IndexFile, &Indexheader, sizeof(SLogCacheIndexHeader), nullptr, 0);
+	DWORD dwWritten = 0;
+	WriteFile(m_IndexFile, &Indexheader, sizeof(SLogCacheIndexHeader), &dwWritten, 0);
 	SetEndOfFile(this->m_IndexFile);
-	WriteFile(m_DataFile, &dataheader, sizeof(SLogCacheDataFileHeader), nullptr, 0);
+	WriteFile(m_DataFile, &dataheader, sizeof(SLogCacheDataFileHeader), &dwWritten, 0);
 	SetEndOfFile(this->m_DataFile);
 	return 0;
 }
@@ -500,7 +502,8 @@ int CLogCache::SaveCache()
 			item.m_Hash = (*i).second.m_CommitHash;
 			item.m_Offset = offset.QuadPart;
 
-			if (!WriteFile(m_IndexFile, &item, sizeof(SLogCacheIndexItem), nullptr, 0))
+			DWORD dwWritten = 0;
+			if (!WriteFile(m_IndexFile, &item, sizeof(SLogCacheIndexItem), &dwWritten, 0))
 				break;
 			++header.m_ItemCount;
 		}
