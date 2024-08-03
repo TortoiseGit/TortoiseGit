@@ -57,7 +57,7 @@ Rules
   	<guimenuitem>Commit</guimenuitem>
   </menuchoice>
 
-  For context menus within TSVN dialogs, use this markup:
+  For context menus within TGit dialogs, use this markup:
   <menuchoice>
   	<guimenu>Context Menu</guimenu>
   	<guimenuitem>Commit</guimenuitem>

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book SYSTEM "../../dtd/dblite.dtd">
-<book id="tsvn" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
+<book id="tgit" lang="en" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<?dbhh topicname="HIDD_FIRSTSTARTWIZARD_START"?>
 	<title>TortoiseGit</title>
 	<subtitle>A Git client for Windows</subtitle>

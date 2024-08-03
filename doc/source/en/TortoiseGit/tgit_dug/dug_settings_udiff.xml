@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
-<sect2 id="tsvn-dug-settings-tortoiseudiff">
+<sect2 id="tgit-dug-settings-tortoiseudiff">
 	<?dbhh topicname="HIDD_SETTINGSUDIFF"?>
 	<title>TortoiseGitUDiff Settings</title>
 	<para>
-		<figure id="tsvn-dug-settings-dia-udiff">
+		<figure id="tgit-dug-settings-dia-udiff">
 			<title>The Settings Dialog, TortoiseGitUDiff Page</title>
 			<graphic fileref="../images/SettingsUDiff.png"/>
 		</figure>
