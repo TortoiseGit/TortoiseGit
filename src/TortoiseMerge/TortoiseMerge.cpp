@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2024 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -435,9 +435,13 @@ BOOL CTortoiseMergeApp::InitInstance()
 	pFrame->resolveMsgLParam = parser.HasVal(L"resolvemsglparam") ? static_cast<LPARAM>(parser.GetLongLongVal(L"resolvemsglparam"))  : 0;
 
 	// The one and only window has been initialized, so show and update it
+	BOOL cloak = TRUE;
+	DwmSetWindowAttribute(pFrame->GetSafeHwnd(), DWMWA_CLOAK, &cloak, sizeof(cloak)); // hide the window until we're ready
 	pFrame->ActivateFrame();
 	pFrame->ShowWindow(SW_SHOW);
 	::RedrawWindow(pFrame->GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
+	cloak = FALSE;
+	DwmSetWindowAttribute(pFrame->GetSafeHwnd(), DWMWA_CLOAK, &cloak, sizeof(cloak)); // show the window again
 	pFrame->UpdateWindow();
 	pFrame->ShowDiffBar(!pFrame->m_bOneWay);
 	if (!pFrame->m_Data.IsBaseFileInUse() && pFrame->m_Data.m_sPatchPath.IsEmpty() && pFrame->m_Data.m_sDiffFile.IsEmpty())

@@ -17,6 +17,7 @@ Released: unreleased
  * Fixed issue #4141: Cannot remove remote: "usage: git remote remove <name>"
  * Fixed issue #4145: "Push default" option for remote resetted after adding a new remote
  * Fixed issue #4159: Closing the git log window crashes TortoiseGit on Windows 7
+ * Fixed issue #4140: TortoiseGitMerge Dark mode flashes white when maximized
 
 = Release 2.16.0 =
 Released: 2024-04-30
