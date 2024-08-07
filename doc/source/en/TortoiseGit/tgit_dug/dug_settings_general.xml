@@ -235,6 +235,24 @@
 		</para>
 		<variablelist>
 			<varlistentry>
+				<term>Default limitation of log messages</term>
+				<listitem>
+					<para>
+						Limits the number of log messages that TortoiseGit loads and displays when you first select
+						<menuchoice>
+							<guimenu>TortoiseGit</guimenu>
+							<guimenuitem>Show log...</guimenuitem>
+						</menuchoice> (cf. <xref linkend="tgit-dug-showlog"/>).
+						The number of log messages can be limited by a fixed number of revisions to display,
+						it can remember the last selected date when the Log Dialog is opened again,
+						it can be limited to the last N year(s)/month(s)/week(s),
+						or just be unlimited (i.e., all revisions are shown; this is the default).
+						When a default limitation is active, the <guilabel>From</guilabel> label has a blueish background in the Revision Log dialog.
+						By opening the context menu on the <guilabel>From</guilabel> date picker, you can configure the default limit or disable the default limit for the current dialog.
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
 				<term>Font for log messages</term>
 				<listitem>
 					<para>
