@@ -684,7 +684,7 @@
 			The start and end date controls allow you
 			to restrict the output to a known date range. The search
 			box allows you to show only messages which contain a
-			particular phrase. A default limitation for <guilabel>From</guilabel> can be configured in the settings dialog on the <guilabel>Dialogs 1</guilabel> page (cf. <xref linkend="tgit-dug-settings-dialogs"/>).
+			particular phrase. A default limitation for <guilabel>From</guilabel> or the number of log entries displayed can be configured in the settings dialog on the <guilabel>Dialogs 1</guilabel> page (cf. <xref linkend="tgit-dug-settings-dialogs"/>). When a default limitation is active, the <guilabel>From</guilabel> has a blueish background. By opening the context menu on the date picker, you can configure the default limit or disable the default limit for the current dialogue.
 		</para>
 		<para>
 			Click on the search icon to select which information you want
