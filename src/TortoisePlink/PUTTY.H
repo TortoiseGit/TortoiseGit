@@ -2588,7 +2588,7 @@ struct cmdline_get_passwd_input_state { bool tried; };
 #define CMDLINE_GET_PASSWD_INPUT_STATE_INIT { .tried = false }
 extern const cmdline_get_passwd_input_state cmdline_get_passwd_input_state_new;
 
-int cmdline_process_param(const char *, char *, int, Conf *);
+int cmdline_process_param(const char *, char *, int, Conf *, bool ignoreFurtherParameters);
 void cmdline_run_saved(Conf *);
 void cmdline_cleanup(void);
 SeatPromptResult cmdline_get_passwd_input(
