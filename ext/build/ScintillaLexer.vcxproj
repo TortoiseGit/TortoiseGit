@@ -249,6 +249,7 @@
     <ClCompile Include="..\lexilla\lexers\LexTCL.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTCMD.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTeX.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexTOML.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTxt2tags.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexVB.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexVerilog.cxx" />
