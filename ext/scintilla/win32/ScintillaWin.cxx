@@ -486,7 +486,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -1114,8 +1113,7 @@ void ScintillaWin::MoveImeCarets(Sci::Position offset) noexcept {
 	// Move carets relatively by bytes.
 	for (size_t r=0; r<sel.Count(); r++) {
 		const Sci::Position positionInsert = sel.Range(r).Start().Position();
-		sel.Range(r).caret.SetPosition(positionInsert + offset);
-		sel.Range(r).anchor.SetPosition(positionInsert + offset);
+		sel.Range(r) = SelectionRange(positionInsert + offset);
 	}
 }
 
@@ -2536,13 +2534,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
 }
 
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
-}
-
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
 	//Platform::DebugPrintf("ScintillaWin Double click 0\n");
 	ScintillaBase::NotifyDoubleClick(pt, modifiers);
@@ -3180,8 +3171,7 @@ LRESULT ScintillaWin::ImeOnReconvert(LPARAM lParam) {
 		const Sci::Position docCompStart = rBase + adjust;
 
 		if (inOverstrike) { // the docCompLen of bytes will be overstriked.
-			sel.Range(r).caret.SetPosition(docCompStart);
-			sel.Range(r).anchor.SetPosition(docCompStart);
+			sel.Range(r) = SelectionRange(docCompStart);
 		} else {
 			// Ensure docCompStart+docCompLen be not beyond lineEnd.
 			// since docCompLen by byte might break eol.

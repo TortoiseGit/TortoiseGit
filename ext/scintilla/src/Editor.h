@@ -7,7 +7,6 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-#include "Scintilla.h"
 
 namespace Scintilla::Internal {
 
@@ -506,7 +505,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	virtual int KeyDefault(Scintilla::Keys /* key */, Scintilla::KeyMod /*modifiers*/);
 	int KeyDownWithModifiers(Scintilla::Keys key, Scintilla::KeyMod modifiers, bool *consumed);
 
-	void Indent(bool forwards);
+	void Indent(bool forwards, bool lineTab);
 
 	virtual std::unique_ptr<CaseFolder> CaseFolderForEncoding();
 	Sci::Position FindText(Scintilla::uptr_t wParam, Scintilla::sptr_t lParam);
@@ -690,7 +689,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 public:
 	~Editor() override;
 
-	virtual void NotifyParent(SCNotification *scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const noexcept;
 	// Public so scintilla_send_message can use it.
