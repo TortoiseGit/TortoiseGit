@@ -757,6 +757,9 @@
     <ClCompile Include="..\lexilla\lexlib\InList.cxx">
       <Filter>lexlib\lexlib</Filter>
     </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexTOML.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">
