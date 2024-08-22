@@ -62,7 +62,9 @@ void CRevisionGraphWnd::OnPaint()
 	{
 		CString fetch = CString(MAKEINTRESOURCE(IDS_PROC_LOADING));
 		dc.FillSolidRect(rect, CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_APPWORKSPACE)));
+		COLORREF oldColor = dc.SetTextColor(CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT)));
 		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, fetch, nullptr);
+		dc.SetTextColor(oldColor);
 		CWnd::OnPaint();
 		return;
 
@@ -71,7 +73,9 @@ void CRevisionGraphWnd::OnPaint()
 		CString sNoGraphText;
 		sNoGraphText.LoadString(IDS_REVGRAPH_ERR_NOGRAPH);
 		dc.FillSolidRect(rect, CTheme::Instance().GetThemeColor(RGB(255, 255, 255), true));
+		COLORREF oldColor = dc.SetTextColor(CTheme::Instance().GetThemeColor(::GetSysColor(COLOR_WINDOWTEXT)));
 		dc.ExtTextOut(20, 20, ETO_CLIPPED, nullptr, sNoGraphText, nullptr);
+		dc.SetTextColor(oldColor);
 		return;
 	}
 
