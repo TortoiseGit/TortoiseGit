@@ -387,8 +387,7 @@
 						<para>
 							Search log messages for the text you enter. This searches
 							the log messages that you entered and also the action summaries
-							created by Git (shown in the bottom pane). The search
-							is not case sensitive.
+							created by Git (shown in the bottom pane).
 						</para>
 						<tip>
 							<para>
@@ -396,6 +395,9 @@
 							</para>
 							<para>
 								If you press <keycap>SHIFT</keycap> while clicking on a ref or on <guibutton>Find</guibutton> you can navigate to the commit w/o selecting it.
+							</para>
+							<para>
+								The Search Log Messages dialog is complementary to the Log Filter which is implemented using the controls at the top of the Log dialog (cf. <xref linkend="tgit-dug-showlog-filter"/>).
 							</para>
 						</tip>
 					</listitem>
@@ -687,8 +689,15 @@
 			particular phrase. A default limitation for <guilabel>From</guilabel> or the number of log entries displayed can be configured in the settings dialog on the <guilabel>Dialogs 1</guilabel> page (cf. <xref linkend="tgit-dug-settings-dialogs"/>). When a default limitation is active, the <guilabel>From</guilabel> has a blueish background. By opening the context menu on the date picker, you can configure the default limit or disable the default limit for the current dialogue.
 		</para>
 		<para>
-			Click on the search icon to select which information you want
-			to search in, and to choose <emphasis>regex</emphasis> mode.
+			Click on the search icon (the magnifier glass) to select which information you want
+			to search in, to choose <emphasis>regex</emphasis> mode, and to toggle case sensitivity.
+			Deselecting "Paths" can significantly speed up the filter.
+
+			<figure id="tgit-dug-showlog-filter-dia-1">
+				<title>Option Menu for the Log Filter</title>
+				<graphic fileref="../images/LogFilterOptions.png"/>
+			</figure>
+
 			Normally you will only need a simple sub-string search, but if you
 			need to more flexible search terms, you can use regular expressions.
 			If you hover the mouse over the box, a tooltip will give hints
