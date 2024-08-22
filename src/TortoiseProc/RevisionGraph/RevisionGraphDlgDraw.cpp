@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
-// Copyright (C) 2012-2013, 2015-2023 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -401,11 +401,11 @@ struct ColorsAndBrushes
 	Gdiplus::Color brightColor;
 	Gdiplus::Pen pen;
 	Gdiplus::SolidBrush brush;
+	Gdiplus::SolidBrush textBrush;
 };
 
 struct AllColorsAndBrushes
 {
-	SolidBrush blackbrush;
 	ColorsAndBrushes Commits;
 	ColorsAndBrushes CurrentBranch;
 	ColorsAndBrushes LocalBranch;
@@ -425,7 +425,28 @@ inline static Gdiplus::Color GetColorRefColor(COLORREF colRef)
 	return { GetRValue(colRef), GetGValue(colRef), GetBValue(colRef) };
 }
 
-#define COLORLINE(colRef) { GetColorRefColor(colRef), GetColorRefColor(colRef), { GetColorRefColor(colRef) }, { GetColorRefColor(colRef) } }
+static double GetLuminance(COLORREF color)
+{
+	// Extract RGB components
+	double r = GetRValue(color) / 255.0;
+	double g = GetGValue(color) / 255.0;
+	double b = GetBValue(color) / 255.0;
+
+	// Apply sRGB luminance formula
+	r = (r <= 0.03928) ? r / 12.92 : pow((r + 0.055) / 1.055, 2.4);
+	g = (g <= 0.03928) ? g / 12.92 : pow((g + 0.055) / 1.055, 2.4);
+	b = (b <= 0.03928) ? b / 12.92 : pow((b + 0.055) / 1.055, 2.4);
+
+	return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+// Choose black or white based on luminance
+inline static Gdiplus::Color GetBestContrastColor(COLORREF backgroundColor)
+{
+	return (GetLuminance(backgroundColor) > 0.5) ? Gdiplus::Color::Black : Gdiplus::Color::White;
+}
+
+#define COLORLINE(colRef) { GetColorRefColor(colRef), GetColorRefColor(colRef), { GetColorRefColor(colRef) }, { GetColorRefColor(colRef) }, { GetBestContrastColor(colRef) } }
 
 static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 {
@@ -436,8 +457,7 @@ static AllColorsAndBrushes SetupColorsAndBrushes(CColors& colors)
 	Color brightColor = LimitedScaleColor(background, RGB(255, 0, 0), 0.9f);
 
 	return {
-		{ static_cast<ARGB>(Color::Black) },
-		{ background, brightColor, { background, 1.0F }, { brightColor } },
+		{ background, brightColor, { background, 1.0F }, { brightColor }, { GetBestContrastColor(GetSysColor(COLOR_WINDOW)) } },
 		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(revGraphUseLocalForCur ? colors.LocalBranch : colors.CurrentBranch), true)),
 		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.LocalBranch), true)),
 		COLORLINE(CTheme::Instance().GetThemeColor(colors.GetColor(colors.RemoteBranch), true)),
@@ -470,7 +490,7 @@ void CRevisionGraphWnd::DrawNode(GraphicsDevice& graphics, AllColorsAndBrushes& 
 									  &font,
 									  Gdiplus::PointF(static_cast<REAL>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
 													  static_cast<REAL>(noderect.Y + this->GetTopBottomMargin() * m_fZoomFactor + height * line)),
-									  &colorsAndBrushes.blackbrush);
+									  &colors->textBrush);
 	}
 	else if (graphics.pSVG)
 		graphics.pSVG->Text(static_cast<int>(noderect.X + this->GetLeftRightMargin() * m_fZoomFactor),
