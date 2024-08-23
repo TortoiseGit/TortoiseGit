@@ -1668,6 +1668,13 @@ void CRebaseDlg::OnBnClickedContinue()
 		AddLogString(out);
 		if (CheckNextCommitIsSquash() == 0 && m_RebaseStage != RebaseStage::Squash_Edit) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
 		{
+			GitRev latest;
+			if (latest.GetCommit(L"HEAD"))
+			{
+				MessageBox(L"Could not get HEAD commit:" + latest.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
+				return;
+			}
+			m_SquashFirstMetaData = SquashFirstMetaData(&latest);
 			ResetParentForSquash(str);
 		}
 		else

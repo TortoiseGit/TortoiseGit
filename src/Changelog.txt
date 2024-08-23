@@ -20,6 +20,7 @@ Released: unreleased
  * Fixed issue #4140: TortoiseGitMerge Dark mode flashes white when maximized
  * Fixed issue #4148: Dialogs 1 doesn't have documentation for the Default limitation of log messages fields
  * Fixed issue #4075: Dark theme revision graph text color contrast too low
+ * Fixed issue #4165: Changing rebase settings during rebase can corrupt commit (squash after finishing edit)
 
 = Release 2.16.0 =
 Released: 2024-04-30
