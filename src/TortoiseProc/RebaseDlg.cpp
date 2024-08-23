@@ -1666,7 +1666,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		AddLogString(out);
-		if (CheckNextCommitIsSquash() == 0) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
+		const bool nextIsSquash = CheckNextCommitIsSquash() == 0;
+		if (nextIsSquash) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
 		{
 			GitRev latest;
 			if (latest.GetCommit(L"HEAD"))
@@ -1690,7 +1691,8 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_rewrittenCommitsMap[curRev->m_CommitHash] = head; // we had a reset to parent, so this is not the correct hash
 		for (const auto& hash : m_forRewrite)
 			m_rewrittenCommitsMap[hash] = head;
-		m_forRewrite.clear();
+		if (!nextIsSquash)
+			m_forRewrite.clear();
 		curRev->GetRebaseAction() |= CGitLogListBase::LOGACTIONS_REBASE_DONE;
 		this->UpdateCurrentStatus();
 	}
