@@ -1921,16 +1921,11 @@ void CMainFrame::OnViewOptions()
 {
 	CString sTemp;
 	sTemp.LoadString(IDS_SETTINGSTITLE);
-	using SetThreadDpiAwarenessContextProc = DPI_AWARENESS_CONTEXT(WINAPI*)(DPI_AWARENESS_CONTEXT);
-	SetThreadDpiAwarenessContextProc SetThreadDpiAwarenessContext = reinterpret_cast<SetThreadDpiAwarenessContextProc>(GetProcAddress(GetModuleHandle(L"user32"), "SetThreadDpiAwarenessContext"));
-	DPI_AWARENESS_CONTEXT oldDpiAwareness = DPI_AWARENESS_CONTEXT_UNAWARE;
 	// dialog does not work well with different dpi settings, disable awareness
-	if (SetThreadDpiAwarenessContext)
-		oldDpiAwareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
+	DPI_AWARENESS_CONTEXT oldDpiAwareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_SYSTEM_AWARE);
 	CSettings dlg(sTemp);
 	dlg.DoModal();
-	if (SetThreadDpiAwarenessContext)
-		SetThreadDpiAwarenessContext(oldDpiAwareness);
+	SetThreadDpiAwarenessContext(oldDpiAwareness);
 	CTheme::Instance().SetDarkTheme(dlg.IsDarkMode());
 	if (dlg.IsReloadNeeded())
 	{

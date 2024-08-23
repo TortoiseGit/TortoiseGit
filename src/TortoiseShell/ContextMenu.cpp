@@ -2391,12 +2391,8 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 				// tree view
 				if (!psiItemArray)
 				{
-					using SetThreadDpiAwarenessContextProc = DPI_AWARENESS_CONTEXT(WINAPI*)(DPI_AWARENESS_CONTEXT);
-					SetThreadDpiAwarenessContextProc SetThreadDpiAwarenessContext = reinterpret_cast<SetThreadDpiAwarenessContextProc>(GetProcAddress(GetModuleHandle(L"user32"), "SetThreadDpiAwarenessContext"));
-					DPI_AWARENESS_CONTEXT context = DPI_AWARENESS_CONTEXT_UNAWARE;
 					// the shell disables dpi awareness for extensions, so enable them explicitly
-					if (SetThreadDpiAwarenessContext)
-						context = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
+					DPI_AWARENESS_CONTEXT context = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE);
 					Microsoft::WRL::ComPtr<INameSpaceTreeControl> nameSpaceTreeCtrl;
 					oleWindow.As(&nameSpaceTreeCtrl);
 					if (nameSpaceTreeCtrl)
@@ -2422,8 +2418,7 @@ HRESULT __stdcall CShellExt::GetState(IShellItemArray* psiItemArray, BOOL fOkToB
 						else
 							nameSpaceTreeCtrl->GetSelectedItems(&ownItemArray);
 					}
-					if (SetThreadDpiAwarenessContext)
-						SetThreadDpiAwarenessContext(context);
+					SetThreadDpiAwarenessContext(context);
 					if (!ownItemArray)
 					{
 						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Shell :: GetState - hidden\n");
