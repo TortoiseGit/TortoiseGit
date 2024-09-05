@@ -5,7 +5,7 @@
 	<para>
 		Unlike CVS, Git allows renaming and moving of files and
 		folders. So there are menu entries for delete and rename
-		in the TortoiseGit submenu. However, unlike SVN Git does not track filenames.
+		in the TortoiseGit submenu. However, unlike SVN Git does <emphasis>not</emphasis> track filenames.
 		Git only tracks the content of files. So there is in general no need to use the
 		Git rename or remove functionality or even to "repair renames" as in SVN. Renames
 		and copies are automatically detected when showing the log.
@@ -150,12 +150,12 @@
 			</orderedlist>
 		</para>
 		<caution>
-			<title>Do Not Git Move Submodule</title>
+			<title>Moving Submodules</title>
 			<para>
-				You should <emphasis>not</emphasis> use the TortoiseGit
-				<guilabel>Move</guilabel> or <guilabel>Rename</guilabel>
-				commands on a folder which has been created using
-				<literal>git submodule</literal>.
+				Moving Submodules (<gitdoclink cmd="git-submodule" section="1"/>)
+				using TortoiseGit's <guilabel>Move</guilabel> and <guilabel>Rename</guilabel> commands
+				should work. There are, however, notes for the used <gitdoclink cmd="git-rm" section="1" /> command
+				(cf. <gitdoclink cmd="git-rm" section="1" anchor="_submodules" />).
 			</para>
 		</caution>
 	</sect2>
