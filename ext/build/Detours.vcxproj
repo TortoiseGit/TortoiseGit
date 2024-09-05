@@ -27,16 +27,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E8C01071-3B47-4A3F-9168-AA58A4635638}</ProjectGuid>
-    <RootNamespace>SshAskPass</RootNamespace>
-    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{E5AF2264-B5A2-424C-9C5C-7E88375583CE}</ProjectGuid>
+    <RootNamespace>Detours</RootNamespace>
   </PropertyGroup>
   <Import Project="$(SolutionDir)TortoiseGit.toolset.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>Unicode</CharacterSet>
-    <UseOfMfc>Dynamic</UseOfMfc>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Release'" Label="Configuration">
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -44,57 +42,28 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   <Import Project="$(SolutionDir)TortoiseGit.common.props" />
+  <Import Project="$(SolutionDir)TortoiseGit.common-staticlib.props" />
   <PropertyGroup Label="UserMacros" />
-  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
-    <Link>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-    </Link>
-  </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\Utils;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
-    <Manifest>
-      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
-    </Manifest>
-    <Link>
-      <AdditionalDependencies>UxTheme.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Utils\DarkModeHelper.cpp" />
-    <ClCompile Include="..\Utils\PathUtils.cpp" />
-    <ClCompile Include="..\Utils\Registry.cpp" />
-    <ClCompile Include="..\Utils\StringUtils.cpp" />
-    <ClCompile Include="..\Utils\UnicodeUtils.cpp" />
-    <ClCompile Include="SshAskPass.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="..\Detours\src\creatwth.cpp" />
+    <ClCompile Include="..\Detours\src\detours.cpp" />
+    <ClCompile Include="..\Detours\src\disasm.cpp" />
+    <ClCompile Include="..\Detours\src\disolarm.cpp" />
+    <ClCompile Include="..\Detours\src\disolarm64.cpp" />
+    <ClCompile Include="..\Detours\src\disolia64.cpp" />
+    <ClCompile Include="..\Detours\src\disolx64.cpp" />
+    <ClCompile Include="..\Detours\src\disolx86.cpp" />
+    <ClCompile Include="..\Detours\src\image.cpp" />
+    <ClCompile Include="..\Detours\src\modules.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Utils\DarkModeHelper.h" />
-    <ClInclude Include="..\Utils\DPIAware.h" />
-    <ClInclude Include="..\Utils\PathUtils.h" />
-    <ClInclude Include="..\Utils\registry.h" />
-    <ClInclude Include="..\Utils\StringUtils.h" />
-    <ClInclude Include="..\Utils\UnicodeUtils.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="SshAskPass.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="SshAskPass.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="SshAskPass.rc2" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ext\build\Detours.vcxproj">
-      <Project>{e5af2264-b5a2-424c-9c5c-7e88375583ce}</Project>
-    </ProjectReference>
+    <ClInclude Include="..\Detours\src\detours.h" />
+    <ClInclude Include="..\Detours\src\detver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

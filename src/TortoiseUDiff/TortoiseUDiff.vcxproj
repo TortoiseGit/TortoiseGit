@@ -112,6 +112,9 @@
     <ResourceCompile Include="TortoiseUDiff.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\Detours.vcxproj">
+      <Project>{e5af2264-b5a2-424c-9c5c-7e88375583ce}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\build\ScintillaLexer.vcxproj">
       <Project>{a5498556-ce09-4095-8335-08fc8370552d}</Project>
     </ProjectReference>

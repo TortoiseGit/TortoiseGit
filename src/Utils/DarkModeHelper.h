@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2023 - TortoiseGit
-// Copyright (C) 2020-2021 - TortoiseSVN
+// Copyright (C) 2020-2021, 2024 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -111,6 +111,11 @@ private:
 	using FlushMenuThemesFN = void(WINAPI*)();
 	using OpenNcThemeDataFPN = HTHEME(WINAPI*)(HWND hWnd, LPCWSTR pszClassList);
 	using SetWindowCompositionAttributeFPN = BOOL(WINAPI*)(HWND hwnd, WINDOWCOMPOSITIONATTRIBDATA* data);
+	using OpenNcThemeDataType = HTHEME(WINAPI*)(HWND hwnd, LPCWSTR classList);
+
+	static LONG DetourOpenNcThemeData();
+	static LONG RestoreOpenNcThemeData();
+	static HTHEME WINAPI DetouredOpenNcThemeData(HWND hwnd, LPCWSTR classList);
 
 	AllowDarkModeForAppFPN m_pAllowDarkModeForApp = nullptr;
 	SetPreferredAppModeFPN m_pSetPreferredAppMode = nullptr;
@@ -125,4 +130,5 @@ private:
 	SetWindowCompositionAttributeFPN m_pSetWindowCompositionAttribute = nullptr;
 	HMODULE m_hUxthemeLib = nullptr;
 	bool m_bCanHaveDarkMode = false;
+	static OpenNcThemeDataType m_openNcThemeData;
 };

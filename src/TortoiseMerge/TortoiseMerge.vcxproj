@@ -448,6 +448,9 @@
     <ResourceCompile Include="..\Resources\TortoiseMergeENG.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ext\build\Detours.vcxproj">
+      <Project>{e5af2264-b5a2-424c-9c5c-7e88375583ce}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\ext\build\editorconfig.vcxproj">
       <Project>{da843306-3d6d-4198-890e-25e6177e01c3}</Project>
     </ProjectReference>

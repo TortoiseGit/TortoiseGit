@@ -40,3 +40,6 @@
 [submodule "ext/lexilla"]
 	path = ext/lexilla
 	url = https://github.com/ScintillaOrg/lexilla.git
+[submodule "ext/Detours"]
+	path = ext/Detours
+	url = https://github.com/microsoft/Detours.git

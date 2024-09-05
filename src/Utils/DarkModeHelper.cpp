@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2020, 2023 - TortoiseGit
-// Copyright (C) 2020-2021 - TortoiseSVN
+// Copyright (C) 2020-2021, 2024 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,7 +22,47 @@
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include <vector>
+#include <functional>
 #include <Shlobj.h>
+#include "scope_exit_noexcept.h"
+#include "../../ext/Detours/src/detours.h"
+
+
+namespace
+{
+LONG DetourTransaction(std::function<LONG()> callback)
+{
+	LONG res = DetourTransactionBegin();
+
+	if (res != NO_ERROR)
+		return res;
+
+	SCOPE_EXIT
+	{
+		if (res != ERROR_SUCCESS)
+			DetourTransactionAbort();
+	};
+
+	res = DetourUpdateThread(GetCurrentThread());
+
+	if (res != NO_ERROR)
+		return res;
+
+	res = callback();
+
+	if (res != NO_ERROR)
+		return res;
+
+	res = DetourTransactionCommit();
+
+	if (res != NO_ERROR)
+		return res;
+
+	return res;
+}
+} // namespace
+
+DarkModeHelper::OpenNcThemeDataType DarkModeHelper::m_openNcThemeData = nullptr;
 
 DarkModeHelper& DarkModeHelper::Instance()
 {
@@ -41,6 +81,10 @@ void DarkModeHelper::AllowDarkModeForApp(BOOL allow) const
 		m_pAllowDarkModeForApp(allow ? 1 : 0);
 	if (m_pSetPreferredAppMode)
 		m_pSetPreferredAppMode(allow ? PreferredAppMode::ForceDark : PreferredAppMode::Default);
+	if (allow)
+		DetourOpenNcThemeData();
+	else
+		RestoreOpenNcThemeData();
 }
 
 void DarkModeHelper::AllowDarkModeForWindow(HWND hwnd, BOOL allow) const
@@ -185,10 +229,36 @@ DarkModeHelper::DarkModeHelper()
 			m_pGetIsImmersiveColorUsingHighContrast = reinterpret_cast<GetIsImmersiveColorUsingHighContrastFN>(GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(106)));
 		if (!m_pFlushMenuThemes)
 			m_pFlushMenuThemes = reinterpret_cast<FlushMenuThemesFN>(GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(136)));
+		if (!m_openNcThemeData)
+			m_openNcThemeData = reinterpret_cast<OpenNcThemeDataType>(GetProcAddress(m_hUxthemeLib, MAKEINTRESOURCEA(49)));
 	}
 }
 
 DarkModeHelper::~DarkModeHelper()
 {
 	FreeLibrary(m_hUxthemeLib);
+}
+
+LONG DarkModeHelper::DetourOpenNcThemeData()
+{
+	return DetourTransaction([] { return DetourAttach(&reinterpret_cast<PVOID&>(m_openNcThemeData), DetouredOpenNcThemeData); });
+}
+
+LONG DarkModeHelper::RestoreOpenNcThemeData()
+{
+	return DetourTransaction([] { return DetourDetach(&reinterpret_cast<PVOID&>(m_openNcThemeData), DetouredOpenNcThemeData); });
+}
+
+HTHEME WINAPI DarkModeHelper::DetouredOpenNcThemeData(HWND hwnd, LPCWSTR classList)
+{
+	// The "ItemsView" theme used to style listview controls in dark mode doesn't change the
+	// scrollbar colors. By changing the class here, the scrollbars in a listview control will
+	// appear dark in dark mode.
+	if (lstrcmp(classList, L"ScrollBar") == 0)
+	{
+		hwnd = nullptr;
+		classList = L"Explorer::ScrollBar";
+	}
+
+	return m_openNcThemeData(hwnd, classList);
 }

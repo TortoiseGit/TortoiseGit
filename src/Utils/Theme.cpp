@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2020, 2023 - TortoiseGit
-// Copyright (C) 2020-2021 - TortoiseSVN
+// Copyright (C) 2020-2021, 2024 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -217,20 +217,10 @@ BOOL CTheme::AdjustThemeForChildrenProc(HWND hwnd, LPARAM lParam)
 	{
 		if ((wcscmp(szWndClassName, WC_LISTVIEW) == 0) || (wcscmp(szWndClassName, WC_LISTBOX) == 0))
 		{
-			// theme "Explorer" also gets the scrollbars with dark mode, but the hover color
-			// is the blueish from the bright mode.
-			// theme "ItemsView" has the hover color the same as the windows explorer (grayish),
-			// but then the scrollbars are not drawn for dark mode.
-			// theme "DarkMode_Explorer" doesn't paint a hover color at all.
-			//
-			// Also, the group headers are not affected in dark mode and therefore the group texts are
-			// hardly visible.
-			//
-			// so use "Explorer" for now. The downside of the bluish hover color isn't that bad,
-			// except in situations where both a treeview and a listview are on the same dialog
-			// at the same time (e.g. repobrowser) - then the difference is unfortunately very
-			// noticeable...
-			SetWindowTheme(hwnd, L"Explorer", nullptr);
+			// the theme "ItemsView" draws the scrollbars not in dark mode.
+			// but with the Detours lib we can intercept opening the theme and force
+			// "explorer" for the scrollbars, which then will be drawn in dark mode
+			SetWindowTheme(hwnd, L"ItemsView", nullptr);
 			auto header = ListView_GetHeader(hwnd);
 			DarkModeHelper::Instance().AllowDarkModeForWindow(header, static_cast<BOOL>(lParam));
 			SetWindowTheme(header, L"Explorer", nullptr);
