@@ -74,7 +74,7 @@
 					select
 					<menuchoice>
 						<guimenu>Context Menu</guimenu>
-						<guimenuitem>Git Add copy and add files</guimenuitem>
+						<guimenuitem>Git copy and add files to this WC</guimenuitem>
 					</menuchoice>.
 					The files will then be copied to the working tree and
 					added to version control.

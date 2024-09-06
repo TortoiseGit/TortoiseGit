@@ -1,23 +1,39 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE sect1 SYSTEM "../../../dtd/dblite.dtd">
-<sect1 id="tgit-dug-rename">
-	<title>Deleting, Moving and Renaming</title>
+<sect1 id="tgit-dug-delete-copy-move">
+	<title>Deleting, Copying, Moving and Renaming Files and Folders</title>
 	<para>
-		Unlike CVS, Git allows renaming and moving of files and
-		folders. So there are menu entries for delete and rename
-		in the TortoiseGit submenu. However, unlike SVN Git does <emphasis>not</emphasis> track filenames.
-		Git only tracks the content of files. So there is in general no need to use the
-		Git rename or remove functionality or even to "repair renames" as in SVN. Renames
-		and copies are automatically detected when showing the log.
-		However, using the Git delete and move functionality the files are automatically
-		removed from the Git index (i.e., not shown as missing, but deleted)
-		and in case of move/rename also re-added with the new names (i.e., the new names don't show up as unversioned).
-		<figure id="tgit-dug-renaming-dia-1">
+		<figure id="tgit-dug-delete-copy-move-dia-1">
 			<title>Explorer context menu for versioned files</title>
 			<graphic fileref="../images/ContextMenuFileControl.png"/>
 		</figure>
+		As you work on a project, you will eventually need to manage files or folders, i.e. delete, copy, rename, or move them.
+		TortoiseGit provides support for such operations.
+		They are available from the context menu of versioned files (and folders) and are described in more detail in the following subsections.
 	</para>
-	<sect2 id="tgit-dug-rename-delete">
+	<important>
+		<title>Git only tracks content</title>
+		<para>
+			Unlike Subversion and other version control systems, Git does <emphasis>not</emphasis> track file names.
+			Git only tracks the contents of files and, therefore, it is not necessary to explicitly record copies, renames or moves.
+			So there is generally no need to use Git's rename or remove functionality or even to "repair renames" as in Subversion.
+			Renames and copies are automatically detected when you view the log.
+			Nevertheless, adding (cf. <xref linkend="tgit-dug-add"/>) and removing files from version control need to be recorded.
+		</para>
+	</important>
+	<important>
+		<title>Cannot copy between repositories</title>
+		<para>
+			Whilst you can copy and files and folders <emphasis>within</emphasis>
+			a repository, you <emphasis>cannot</emphasis> copy or move from one
+			repository to another while preserving history using Git or TortoiseGit.
+			Not even if the repositories live on the same server. All you can
+			do is copy the content in its current state and add it as new
+			content to the second repository.
+		</para>
+	</important>
+
+	<sect2 id="tgit-dug-delete-copy-move-delete">
 		<title>Deleting files and folders</title>
 		<indexterm>
 			<primary>delete</primary>
@@ -34,13 +50,15 @@
 			to remove files or folders from Git.
 		</para>
 		<para>
-			When you
+			When you use
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
 			</menuchoice>
-			a file, it is removed from your working tree immediately as well
-			as being marked for deletion in the repository on next commit.
+			on a file, it is removed from your working tree immediately as well
+			as being marked for deletion in the repository on the next commit
+			(i.e., the file is removed from the Git index). When you perform this action on a folder,
+			all files/folders will be removed recursively.
 <!--
 			The file's parent folder shows a <quote>deleted</quote> icon overlay.
 -->
@@ -49,33 +67,35 @@
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Revert</guimenuitem>
 			</menuchoice>
-			on the parent folder or on the or <xref linkend="tgit-dug-commit"/> or <xref linkend="tgit-dug-wcstatus"/> dialogs.
+			on the parent folder or use the commit (cf. <xref linkend="tgit-dug-commit"/>) or status (cf. <xref linkend="tgit-dug-wcstatus"/>) dialogs.
 		</para>
 		<para>
-			If you want to delete an item from the repository, but keep it
+			If you want to delete an item from version control, but keep it
 			locally as an unversioned file/folder, use
 			<menuchoice>
 				<guimenu>Extended Context Menu</guimenu>
 				<guimenuitem>Delete (keep local)</guimenuitem>
 			</menuchoice>.
-			You might have to hold the <keycap>Shift</keycap> key while right clicking on
-			the item in the explorer list pane (right pane) in order to see this
+			There also is a special command for deleting an item and adding it to the ignore list (<menuchoice>
+				<guimenu>Extended Context Menu</guimenu>
+				<guimenuitem>Delete and add to ignore list</guimenuitem>
+			</menuchoice>, cf. <xref linkend="tgit-dug-ignore"/>).
+			You may have to hold the <keycap>Shift</keycap> key while right clicking on
+			the item in the explorer list pane (right pane) in order to see these options
 			in the extended context menu.
 		</para>
-<!--
 		<para>
-			If a <emphasis>file</emphasis> is deleted via the explorer
-			instead of using the TortoiseGit context menu, the commit
-			dialog shows those files and lets you remove them from
-			version control too before the commit.
-			If you need to delete a version-controlled file, always use
+			If a file is deleted via the explorer instead of using TortoiseGit's context menu,
+			the commit dialog (cf. <xref linkend="tgit-dug-commit"/>) and status (cf. <xref linkend="tgit-dug-wcstatus"/>) dialogs
+			will show the file as <emphasis>missing</emphasis>.
+			Missing files are also automatically marked as deleted on commit when they are selected,
+			but explicitly deleting a version-controlled file using
 			<menuchoice>
 				<guimenu>TortoiseGit</guimenu>
 				<guimenuitem>Delete</guimenuitem>
-			</menuchoice> so that Git doesn't have to guess what
-			you really want to do.
+			</menuchoice>
+			may make your intention on commit more clear while your are preparing the commit.
 		</para>
--->
 
 		<tip>
 			<title>Getting a deleted file or folder back</title>
@@ -99,8 +119,26 @@
 			</para>
 		</tip>
 	</sect2>
-	<sect2 id="tgit-dug-rename-move">
-		<title>Moving files and folders</title>
+
+	<sect2 id="tgit-dug-delete-copy-move-copy">
+		<title>Copying Files and Folders</title>
+		<indexterm>
+			<primary>copy files</primary>
+		</indexterm>
+		<para>
+			It often happens that you already have the files you need in another folder
+			in your repository. As Git only tracks content, simply copy the items across your working tree and 
+			mark them as added or select them while committing (cf. <xref linkend="tgit-dug-add"/>).
+		</para>
+		<para>
+			In order to get older versions of a file you can use the repository browser or the log dialog to locate content you want,
+			and copy (or drag and drop) it into your working tree directly from the repository.
+			Refer to <xref linkend="tgit-dug-repobrowser"/> and <xref linkend="tgit-dug-showlog"/> to find out more.
+		</para>
+	</sect2>
+
+	<sect2 id="tgit-dug-delete-copy-move-move">
+		<title>Moving Files and Folders</title>
 		<indexterm>
 			<primary>rename</primary>
 		</indexterm>
@@ -116,15 +154,17 @@
 				<guimenuitem>Rename...</guimenuitem>
 			</menuchoice>
 			Enter the new name for the item and you're done.
+			You can move an item around in the whole working tree, i.e.,
+			the name may start with <filename>..\</filename> to move a file upwards in the folder structure.
+			Use the <guibutton>...</guibutton> to open a file chooser dialog which automatically generates the correct destination name.
 		</para>
 		<para>
-			If you want to move files around inside your working tree,
-			perhaps to a different sub-folder, you can
-			use the right-mouse drag-and-drop handler:
+			The easiest way to move files and folders from within a working tree is
+			to use the right-drag menu:
 			<orderedlist>
 				<listitem>
 					<para>
-						select the files or directories you want to move
+						Select the files or directories you want to move
 					</para>
 				</listitem>
 				<listitem>
@@ -148,6 +188,15 @@
 					</para>
 				</listitem>
 			</orderedlist>
+			<figure id="tgit-dug-rename-right-drag-dia-1">
+				<title>Right drag menu for a directory under version control</title>
+				<graphic fileref="../images/RightDragMenu.png"/>
+			</figure>
+		</para>
+		<para>
+			Since Git only tracks content and not filenames, you could also simply move/rename files in Explorer.
+			But then you have to mark the old file as deleted, and mark the new file as added separately later
+			(at the latest during commit).
 		</para>
 		<caution>
 			<title>Moving Submodules</title>
@@ -172,7 +221,7 @@
 			Use the <guimenuitem>Rename...</guimenuitem> command in the TortoiseGit submenu.
 		</para>
 	</sect2>
-	<sect2 id="tgit-dug-rename-case-conflict">
+	<sect2 id="tgit-dug-delete-copy-move-rename-case-conflict">
 		<title>Dealing with filename case conflicts</title>
 		<para>
 			If the repository already contains two files with the same name
@@ -232,7 +281,8 @@
 			</orderedlist>
 		</para>
 	</sect2>
-	<sect2 id="tgit-dug-rename-del-unversioned">
+
+	<sect2 id="tgit-dug-delete-copy-move-del-unversioned">
 		<title>Deleting Unversioned Files</title>
 		<para>
 			Usually you set your ignore list such that all generated files are ignored

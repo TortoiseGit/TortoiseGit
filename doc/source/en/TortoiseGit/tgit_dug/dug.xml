@@ -72,9 +72,8 @@
 	<xi:include href="./dug_repobrowser.xml"/>
 	<xi:include href="./dug_diff.xml"/>
 	<xi:include href="./dug_add.xml"/>
-	<xi:include href="./dug_copy.xml"/>
 	<xi:include href="./dug_ignore.xml"/>
-	<xi:include href="./dug_rename.xml"/>
+	<xi:include href="./dug_delete_copy_move.xml"/>
 	<xi:include href="./dug_revert.xml"/>
 	<xi:include href="./dug_cleanup.xml"/>
 	<xi:include href="./dug_reset.xml"/>
