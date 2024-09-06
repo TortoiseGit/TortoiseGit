@@ -7,7 +7,7 @@ Released: unreleased
  * Update Scintilla to 5.5.2 and Lexilla to 5.4.0
  * Updated libgit to version 2.46 based on Git for Windows sources
  * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
- * Fixed issue #4147: Allow sorting Log view by `--author-date-order` 
+ * Fixed issue #4147: Allow sorting Log view by `--author-date-order`
  * Fixed issue #4137: "Detach" option ignored when making a new worktree
 
 == Bug Fixes ==
@@ -77,7 +77,7 @@ Released: 2024-04-15
 
 PuTTY 0.81 fixes a critical vulnerability CVE-2024-31497 in the use of 521-bit ECDSA keys (ecdsa-sha2-nistp521). If you have used a 521-bit ECDSA private key with any previous version of PuTTY, consider the private key compromised: remove the public key from authorized_keys files, and generate a new key pair.
 
-However, this only affects that one algorithm and key size. No other size of ECDSA key is affected, and no other key type is affected. 
+However, this only affects that one algorithm and key size. No other size of ECDSA key is affected, and no other key type is affected.
 
 == Bug Fixes ==
  * Update TortoiseGitPlink to PuTTY Plink 0.81
@@ -110,7 +110,7 @@ Support for Windows 7 and 8 will be dropped with one of the next releases.
  * Lots of refactorings and performance optimizations
  * Fixed issue #4040: TortoiseGitBlame: Ability to select multiple commits (line highlighting)
  * Make TortoiseGitMerge and SSHAskPass multi-monitor DPI aware
- * Fixed issue #3698: "Resolve conflict using theirs" is extremely slow 
+ * Fixed issue #3698: "Resolve conflict using theirs" is extremely slow
  * Update editorconfig to 0.12.6
  * Fixed issue #3745: Support show log for both A..B and B..A
  * Fixed issue #2754: Add hint for pressing F5 for Refresh in TortoiseGit Commit window
@@ -497,7 +497,7 @@ Released: 2019-02-28
  * Improve documentation for alternative unified diff viewer configuration
  * TGitCache: Speed up scanning of folders with lots of unversioned files
  * BrowseRefsDlg: Allow to delete multiple remote branches in batch
- * Rebase: Document start, abort and finish in reflog 
+ * Rebase: Document start, abort and finish in reflog
  * Add TortoiseGitUDiff to Open With list
  * Update editorconfig to 0.12.4
  * Fixed issue #3295: TortoiseGitPlink does not work with Git protocol ver. 2
