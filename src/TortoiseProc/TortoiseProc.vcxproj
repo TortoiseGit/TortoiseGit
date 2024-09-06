@@ -93,6 +93,7 @@
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MailMsg.cpp" />
     <ClCompile Include="..\Utils\MiscUI\AnimationManager.cpp" />
+    <ClCompile Include="..\Utils\MiscUI\AutoCloakWindow.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BrowseFolder.cpp" />
     <ClCompile Include="..\Utils\MiscUI\BufferDC.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DIB.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MailMsg.h" />
     <ClInclude Include="..\Utils\MiscUI\AnimationManager.h" />
+    <ClInclude Include="..\Utils\MiscUI\AutoCloakWindow.h" />
     <ClInclude Include="..\Utils\MiscUI\BrowseFolder.h" />
     <ClInclude Include="..\Utils\MiscUI\BufferDC.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />

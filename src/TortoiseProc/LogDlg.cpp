@@ -33,6 +33,7 @@
 #include "ClipboardHelper.h"
 #include "DPIAware.h"
 #include "LogDlgFileFilter.h"
+#include "AutoCloakWindow.h"
 
 #define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20))
 #define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10))
@@ -263,6 +264,7 @@ void CLogDlg::SetFilter(const CString& findstr, LONG findtype, bool findregex)
 BOOL CLogDlg::OnInitDialog()
 {
 	CString temp;
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -382,6 +384,7 @@ BOOL CLogDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"LogDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	DWORD yPos1 = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer1"));
 	DWORD yPos2 = CDPIAware::Instance().ScaleY(GetSafeHwnd(), CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\LogDlgSizer2"));

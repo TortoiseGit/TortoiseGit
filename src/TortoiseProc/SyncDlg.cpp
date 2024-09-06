@@ -34,6 +34,7 @@
 #include "SyncTabCtrl.h"
 #include "SysProgressDlg.h"
 #include "ThemeMFCVisualManager.h"
+#include "AutoCloakWindow.h"
 
 // CSyncDlg dialog
 
@@ -887,6 +888,7 @@ void CSyncDlg::ShowInputCtrl(bool bShow)
 }
 BOOL CSyncDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

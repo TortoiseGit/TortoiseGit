@@ -38,6 +38,7 @@
 #include "Hooks.h"
 #include "LogDlg.h"
 #include "ThemeMFCVisualManager.h"
+#include "AutoCloakWindow.h"
 
 // CRebaseDlg dialog
 
@@ -156,6 +157,7 @@ void CRebaseDlg::AddRebaseAnchor()
 
 BOOL CRebaseDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

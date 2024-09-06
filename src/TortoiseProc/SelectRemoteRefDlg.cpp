@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2012-2017, 2019-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "SelectRemoteRefDlg.h"
 #include "MessageBox.h"
 #include "SysProgressDlg.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSelectRemoteRefDlg, CHorizontalResizableStandAloneDialog)
 
@@ -49,6 +50,7 @@ END_MESSAGE_MAP()
 
 BOOL CSelectRemoteRefDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -70,6 +72,7 @@ BOOL CSelectRemoteRefDlg::OnInitDialog()
 	Refresh();
 
 	EnableSaveRestore(L"SelectRemoteRefDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

@@ -38,6 +38,7 @@
 #include "TempFile.h"
 #include "DPIAware.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
@@ -181,6 +182,7 @@ END_MESSAGE_MAP()
 
 BOOL CRepositoryBrowser::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -245,6 +247,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_nOpenIconFolder = SYS_IMAGE_LIST().GetDirOpenIconIndex();
 
 	EnableSaveRestore(L"Reposbrowser");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	DWORD xPos = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\ResizableState\\RepobrowserDivider", 0);
 	if (xPos == 0)

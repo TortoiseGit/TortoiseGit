@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2024 - TortoiseGit
 // Copyright (C) 2009, 2011, 2013-2014, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include "AppUtils.h"
 #include <regex>
 #include <string>
+#include "AutoCloakWindow.h"
 
 // CAutoTextTestDlg dialog
 
@@ -54,10 +55,13 @@ END_MESSAGE_MAP()
 
 BOOL CAutoTextTestDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
 	m_cContent.LimitText(200*1024);
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

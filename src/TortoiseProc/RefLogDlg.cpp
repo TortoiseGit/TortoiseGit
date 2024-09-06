@@ -26,6 +26,7 @@
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
+#include "AutoCloakWindow.h"
 
 // CRefLogDlg dialog
 
@@ -68,6 +69,7 @@ LRESULT CRefLogDlg::OnRefLogChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 BOOL CRefLogDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -81,6 +83,7 @@ BOOL CRefLogDlg::OnInitDialog()
 
 	AddOthersToAnchor();
 	this->EnableSaveRestore(L"RefLogDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 

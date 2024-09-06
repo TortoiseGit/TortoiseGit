@@ -26,6 +26,7 @@
 #include "AppUtils.h"
 #include "BrowseFolder.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 // CCreateWorktreeDlg dialog
 
@@ -70,6 +71,7 @@ END_MESSAGE_MAP()
 
 BOOL CCreateWorktreeDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

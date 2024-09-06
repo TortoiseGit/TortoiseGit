@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019, 2022 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "SubmoduleUpdateDlg.h"
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 
@@ -117,6 +118,7 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 
 BOOL CSubmoduleUpdateDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -167,6 +169,7 @@ BOOL CSubmoduleUpdateDlg::OnInitDialog()
 	SetDlgTitle();
 
 	EnableSaveRestore(L"SubmoduleUpdateDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	Refresh();
 	UpdateData(FALSE);

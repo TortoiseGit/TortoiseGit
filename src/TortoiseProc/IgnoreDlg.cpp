@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013 - TortoiseGit
+// Copyright (C) 2012-2013, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "IgnoreDlg.h"
+#include "AutoCloakWindow.h"
 
 // CIgnoreDlg dialog
 
@@ -51,6 +52,7 @@ END_MESSAGE_MAP()
 // CIgnoreDlg message handlers
 BOOL CIgnoreDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStateStandAloneDialog::OnInitDialog();
 
 	this->CheckRadioButton(IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE, IDC_RADIO_IGNOREFILE_GITINFOEXCLUDE, IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE + m_IgnoreType);
@@ -65,6 +67,7 @@ BOOL CIgnoreDlg::OnInitDialog()
 	AdjustControlSize(IDC_RADIO_IGNORETYPE_RECURSIVELY);
 
 	EnableSaveRestore(L"IgnoreDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

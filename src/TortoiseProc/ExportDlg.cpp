@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020 - TortoiseGit
+// Copyright (C) 2008-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "MessageBox.h"
 #include "BrowseFolder.h"
 #include "AppUtils.h"
+#include "AutoCloakWindow.h"
 
 
 IMPLEMENT_DYNAMIC(CExportDlg, CHorizontalResizableStandAloneDialog)
@@ -57,6 +58,7 @@ END_MESSAGE_MAP()
 
 BOOL CExportDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

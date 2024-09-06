@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019, 2023 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023-2024 - TortoiseGit
 // Copyright (C) 2006 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 #include "resource.h"
 #include "FindDlg.h"
 #include "StringUtils.h"
+#include "AutoCloakWindow.h"
 
 // CFindDlg dialog
 
@@ -106,6 +107,7 @@ void CFindDlg::OnOK()
 
 BOOL CFindDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 
@@ -129,6 +131,7 @@ BOOL CFindDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 
 	EnableSaveRestore(L"FindDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CImageList *imagelist = new CImageList();
 	imagelist->Create(IDB_BITMAP_REFTYPE,16,3,RGB(255,255,255));

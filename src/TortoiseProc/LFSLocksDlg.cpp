@@ -25,6 +25,7 @@
 #include "AppUtils.h"
 #include "GitProgressDlg.h"
 #include "ProgressCommands/LFSSetLockedProgressCommand.h"
+#include "AutoCloakWindow.h"
 
 #define REFRESHTIMER    100
 
@@ -55,6 +56,7 @@ END_MESSAGE_MAP()
 
 BOOL CLFSLocksDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -78,6 +80,7 @@ BOOL CLFSLocksDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"LFSLocksDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	// first start a thread to obtain the file list with the status without 
 	// blocking the dialog

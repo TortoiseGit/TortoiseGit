@@ -29,6 +29,7 @@
 #include "LoglistCommonResource.h"
 #include "DPIAware.h"
 #include "ThemeMFCVisualManager.h"
+#include "AutoCloakWindow.h"
 
 // CImportPatchDlg dialog
 
@@ -97,6 +98,7 @@ BOOL CImportPatchDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
 	// do this, Explorer would be unable to send that message to our window if we
@@ -208,6 +210,8 @@ BOOL CImportPatchDlg::OnInitDialog()
 	EnableSaveRestore(L"ImportDlg");
 
 	SetSplitterRange();
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2016, 2019, 2023 - TortoiseGit
+// Copyright (C) 2014-2016, 2019, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "AppUtils.h"
 #include "TempFile.h"
 #include <WinCrypt.h>
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CCheckCertificateDlg, CStandAloneDialog)
 CCheckCertificateDlg::CCheckCertificateDlg(CWnd* pParent /*=nullptr*/)
@@ -88,6 +89,7 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 
 BOOL CCheckCertificateDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -109,6 +111,8 @@ BOOL CCheckCertificateDlg::OnInitDialog()
 	SetDlgItemText(IDC_ERRORDESC, error);
 
 	UpdateData(FALSE);
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	GetDlgItem(IDCANCEL)->SetFocus();
 

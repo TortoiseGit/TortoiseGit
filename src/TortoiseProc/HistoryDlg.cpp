@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021, 2023 - TortoiseGit
+// Copyright (C) 2021, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "TortoiseProc.h"
 #include "registry.h"
 #include "HistoryDlg.h"
-
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CHistoryDlg, CResizableStandAloneDialog)
 CHistoryDlg::CHistoryDlg(CWnd* pParent /*=nullptr*/)
@@ -69,6 +69,7 @@ void CHistoryDlg::OnBnClickedOk()
 
 BOOL CHistoryDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	// calculate and set listbox width
@@ -91,6 +92,7 @@ BOOL CHistoryDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 	AddAnchor(IDCANCEL, BOTTOM_RIGHT);
 	EnableSaveRestore(L"HistoryDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	m_List.SetFocus();
 	return FALSE;
 }

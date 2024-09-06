@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2021, 2023 - TortoiseGit
+// Copyright (C) 2016-2021, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,6 +28,7 @@
 #include "AppUtils.h"
 #include "FileDiffDlg.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 // CCommitIsOnRefsDlg dialog
 
@@ -91,6 +92,7 @@ void CCommitIsOnRefsDlg::PostNcDestroy()
 
 BOOL CCommitIsOnRefsDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 
 	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);
@@ -113,6 +115,7 @@ BOOL CCommitIsOnRefsDlg::OnInitDialog()
 	m_cSelRevBtn.AddEntry(CString(MAKEINTRESOURCE(IDS_REFLOG)));
 
 	EnableSaveRestore(L"CommitIsOnRefsDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CImageList* imagelist = new CImageList();
 	imagelist->Create(IDB_BITMAP_REFTYPE, 16, 3, RGB(255, 255, 255));

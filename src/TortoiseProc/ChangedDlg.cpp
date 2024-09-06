@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include "ChangedDlg.h"
 #include "IconMenu.h"
 #include "RefLogDlg.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
@@ -77,6 +78,7 @@ END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);
@@ -129,6 +131,7 @@ BOOL CChangedDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"ChangedDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	m_ctrlStash.m_bAlwaysShowArrow = true;
 

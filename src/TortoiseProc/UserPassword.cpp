@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2020, 2023 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2020, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "UserPassword.h"
+#include "AutoCloakWindow.h"
 
 // CUserPassword dialog
 
@@ -52,6 +53,7 @@ END_MESSAGE_MAP()
 
 BOOL CUserPassword::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	if (!m_URL.IsEmpty())
 	{
@@ -61,6 +63,7 @@ BOOL CUserPassword::OnInitDialog()
 		title += m_URL;
 		this->SetWindowText(title);
 	}
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	GetDlgItem(IDC_USER_PASSWORD)->SendMessage(EM_SETLIMITTEXT, MAX_LENGTH_PASSWORD - 1, 0);
 	if (GetDlgItem(IDC_USER_NAME)->GetWindowTextLength())
 		GetDlgItem(IDC_USER_PASSWORD)->SetFocus();

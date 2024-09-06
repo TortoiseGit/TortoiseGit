@@ -26,6 +26,7 @@
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
 #include "SendMailPatch.h"
+#include "AutoCloakWindow.h"
 
 // CSendMailDlg dialog
 
@@ -73,6 +74,7 @@ END_MESSAGE_MAP()
 
 BOOL CSendMailDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -94,6 +96,7 @@ BOOL CSendMailDlg::OnInitDialog()
 	this->AddOthersToAnchor();
 
 	EnableSaveRestore(L"SendMailDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CAppUtils::SetWindowTitle(*this, m_PathList.GetCommonRoot().GetUIPathString());
 

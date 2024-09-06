@@ -25,6 +25,7 @@
 #include "SubmoduleAddDlg.h"
 #include "BrowseFolder.h"
 #include "AppUtils.h"
+#include "AutoCloakWindow.h"
 
 // CSubmoduleAddDlg dialog
 
@@ -69,6 +70,7 @@ END_MESSAGE_MAP()
 
 BOOL CSubmoduleAddDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -93,6 +95,7 @@ BOOL CSubmoduleAddDlg::OnInitDialog()
 	AddOthersToAnchor();
 
 	EnableSaveRestore(L"SubmoduleAddDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CAppUtils::SetWindowTitle(*this, g_Git.CombinePath(m_strPath).TrimRight('\\'));
 

@@ -27,6 +27,7 @@
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CBisectStartDlg, CHorizontalResizableStandAloneDialog)
 
@@ -71,6 +72,7 @@ static void uniqueMergeLists(STRING_VECTOR& list, const STRING_VECTOR& listToMer
 
 BOOL CBisectStartDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -87,6 +89,7 @@ BOOL CBisectStartDlg::OnInitDialog()
 	AddAnchor(IDC_COMBOBOXEX_BAD, TOP_LEFT, TOP_RIGHT);
 
 	EnableSaveRestore(L"BisectStartDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 

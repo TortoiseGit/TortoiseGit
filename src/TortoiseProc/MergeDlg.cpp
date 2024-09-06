@@ -21,12 +21,12 @@
 //
 
 #include "stdafx.h"
-
 #include "Git.h"
 #include "TortoiseProc.h"
 #include "MergeDlg.h"
 #include "AppUtils.h"
 #include "HistoryDlg.h"
+#include "AutoCloakWindow.h"
 
 // CMergeDlg dialog
 
@@ -90,6 +90,7 @@ void CMergeDlg::ReloadHistoryEntries()
 
 BOOL CMergeDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

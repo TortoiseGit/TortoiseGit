@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "CreateBranchTagDlg.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 // CCreateBranchTagDlg dialog
 
@@ -71,6 +72,7 @@ END_MESSAGE_MAP()
 
 BOOL CCreateBranchTagDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

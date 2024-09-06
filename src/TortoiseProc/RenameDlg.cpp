@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011-2013, 2015-2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2009, 2011-2013, 2015-2019, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include "ControlsBridge.h"
 #include "Git.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
@@ -51,6 +52,7 @@ END_MESSAGE_MAP()
 
 BOOL CRenameDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -79,6 +81,7 @@ BOOL CRenameDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"RenameDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	m_originalName = m_name;
 	return TRUE;
 }

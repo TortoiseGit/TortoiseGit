@@ -28,6 +28,7 @@
 #include "BrowseRefsDlg.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
 
 // CFormatPatchDlg dialog
 
@@ -88,6 +89,7 @@ END_MESSAGE_MAP()
 
 BOOL CFormatPatchDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

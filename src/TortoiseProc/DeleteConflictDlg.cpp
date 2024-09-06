@@ -24,6 +24,7 @@
 #include "DeleteConflictDlg.h"
 #include "AppUtils.h"
 #include "Git.h"
+#include "AutoCloakWindow.h"
 
 // CDeleteConflictDlg dialog
 
@@ -65,6 +66,7 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteConflictDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 
 	if(this->m_bShowModifiedButton )
@@ -97,6 +99,8 @@ BOOL CDeleteConflictDlg::OnInitDialog()
 	CAppUtils::SetWindowTitle(*this, g_Git.CombinePath(m_File));
 
 	GetDlgItem(IDC_INFOLABEL)->SetWindowText(m_File.GetGitPathString());
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	GetDlgItem(IDCANCEL)->SetFocus();
 

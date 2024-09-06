@@ -34,6 +34,7 @@
 #include "LogFile.h"
 #include "CmdLineParser.h"
 #include "StringUtils.h"
+#include "AutoCloakWindow.h"
 
 // CProgressDlg dialog
 
@@ -103,6 +104,7 @@ END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
@@ -151,6 +153,7 @@ BOOL CProgressDlg::OnInitDialog()
 		InsertColorText(this->m_Log, m_PreFailText, CTheme::Instance().IsDarkTheme() ? RGB(207, 47, 47) : RGB(255, 0, 0));
 
 	EnableSaveRestore(L"ProgressDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	m_pThread = AfxBeginThread(ProgressThreadEntry, this, THREAD_PRIORITY_NORMAL, 0, CREATE_SUSPENDED);
 	if (!m_pThread)

@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2013, 2018 - TortoiseGit
+// Copyright (C) 2009, 2013, 2018, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SinglePropSheetDlg.h"
-
+#include "AutoCloakWindow.h"
 
 // CSinglePropSheetDlg dialog
 using namespace TreePropSheet;
@@ -67,6 +67,7 @@ END_MESSAGE_MAP()
 
 BOOL CSinglePropSheetDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bReturn = CTreePropSheet::OnInitDialog();
 
 //	CRect clientRect;
@@ -77,6 +78,8 @@ BOOL CSinglePropSheetDlg::OnInitDialog()
 
 
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return bReturn;
 }

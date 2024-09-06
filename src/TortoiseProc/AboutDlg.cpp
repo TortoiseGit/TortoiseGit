@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2021, 2023 - TortoiseGit
+// Copyright (C) 2009-2021, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@
 #include "Git.h"
 #include "DPIAware.h"
 #include "SysInfo.h"
+#include "AutoCloakWindow.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
@@ -74,6 +75,7 @@ static CString Lf2Crlf(const CString& text)
 
 BOOL CAboutDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -140,6 +142,8 @@ BOOL CAboutDlg::OnInitDialog()
 
 	m_cWebLink.SetURL(L"https://tortoisegit.org/");
 	m_cSupportLink.SetURL(L"https://tortoisegit.org/donate");
+
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	GetDlgItem(IDOK)->SetFocus();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022 - TortoiseGit
+// Copyright (C) 2008-2022, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,8 @@
 #include "AppUtils.h"
 #include "SelectRemoteRefDlg.h"
 #include "MessageBox.h"
+#include "AutoCloakWindow.h"
+
 // CPullFetchDlg dialog
 
 IMPLEMENT_DYNAMIC(CPullFetchDlg, CHorizontalResizableStandAloneDialog)
@@ -90,6 +92,7 @@ END_MESSAGE_MAP()
 
 BOOL CPullFetchDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

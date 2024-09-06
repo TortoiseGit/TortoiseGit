@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2019, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include "SmartHandle.h"
 #include "StringUtils.h"
 #include "CmdLineParser.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
@@ -79,6 +80,7 @@ END_MESSAGE_MAP()
 
 BOOL CGitProgressDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
@@ -121,6 +123,7 @@ BOOL CGitProgressDlg::OnInitDialog()
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	EnableSaveRestore(L"GITProgressDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	m_background_brush.CreateSolidBrush(GetSysColor(COLOR_WINDOW));
 	m_ProgList.Init();

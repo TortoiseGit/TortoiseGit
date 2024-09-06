@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2020, 2023 - TortoiseGit
+// Copyright (C) 2012, 2014-2020, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -22,7 +22,7 @@
 #include "InputDlg.h"
 #include "registry.h"
 #include "AppUtils.h"
-
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)
 CInputDlg::CInputDlg(CWnd* pParent /*=nullptr*/)
@@ -48,6 +48,7 @@ END_MESSAGE_MAP()
 
 BOOL CInputDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	if (m_pProjectProperties)
@@ -89,6 +90,7 @@ BOOL CInputDlg::OnInitDialog()
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 
 	EnableSaveRestore(L"InputDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 	if (GetExplorerHWND())
 		CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 	GetDlgItem(IDC_INPUTTEXT)->SetFocus();

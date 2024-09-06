@@ -40,6 +40,7 @@
 #include "StringUtils.h"
 #include "BrowseRefsDlgFilter.h"
 #include "DPIAware.h"
+#include "AutoCloakWindow.h"
 
 static int SplitRemoteBranchName(CString ref, CString &remote, CString &branch)
 {
@@ -279,6 +280,7 @@ void CBrowseRefsDlg::OnBnClickedOk()
 
 BOOL CBrowseRefsDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -318,6 +320,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	Refresh(m_initialRef);
 
 	EnableSaveRestore(L"BrowseRefs");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 

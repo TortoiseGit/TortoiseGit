@@ -23,6 +23,7 @@ Released: unreleased
  * Fixed issue #4165: Changing rebase settings during rebase can corrupt commit (squash after finishing edit)
  * Fixed issue #3995: Dark theme - selected items not visible
  * Fixed issue #4170: git-svn checkout ignores -T trunk or other options
+ * Fixed issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
 
 = Release 2.16.0 =
 Released: 2024-04-30

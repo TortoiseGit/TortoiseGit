@@ -1,6 +1,6 @@
 // TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017 - TortoiseGit
+// Copyright (C) 2008-2017, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "CleanTypeDlg.h"
 #include "Git.h"
 #include "AppUtils.h"
+#include "AutoCloakWindow.h"
 
 // CCleanTypeDlg dialog
 
@@ -70,6 +71,7 @@ END_MESSAGE_MAP()
 
 BOOL CCleanTypeDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStateStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -83,6 +85,7 @@ BOOL CCleanTypeDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECKSUBMODULES);
 
 	EnableSaveRestore(L"CleanTypeDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	SetDlgTitle();
 

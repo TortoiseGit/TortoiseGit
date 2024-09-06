@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,6 +25,7 @@
 #include "Git.h"
 #include "FileDiffDlg.h"
 #include "AppUtils.h"
+#include "AutoCloakWindow.h"
 
 // CResetDlg dialog
 
@@ -56,6 +57,7 @@ END_MESSAGE_MAP()
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

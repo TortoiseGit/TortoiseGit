@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2012-2017, 2019-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "MessageBox.h"
 #include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
+#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CResizableStandAloneDialog)
 
@@ -53,6 +54,7 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteRemoteTagDlg::OnInitDialog()
 {
+	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
@@ -77,6 +79,7 @@ BOOL CDeleteRemoteTagDlg::OnInitDialog()
 	Refresh();
 
 	EnableSaveRestore(L"DeleteRemoteTagDlg");
+	SetTheme(CTheme::Instance().IsDarkTheme());
 
 	return TRUE;
 }
