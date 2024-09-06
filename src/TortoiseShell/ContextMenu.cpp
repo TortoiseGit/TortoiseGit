@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@
 #include "resource.h"
 #include "LoadIconEx.h"
 #include "ClipboardHelper.h"
+#include "scope_exit_noexcept.h"
 
 #pragma comment(lib, "comsupp.lib")
 
@@ -2546,49 +2547,47 @@ HRESULT __stdcall CShellExt::EnumSubCommands(IEnumExplorerCommand** ppEnum)
 std::wstring CShellExt::ExplorerViewPath(const Microsoft::WRL::ComPtr<IUnknown>& site)
 {
 	CTraceToOutputDebugString::Instance()(__FUNCTION__ "\n");
-	std::wstring path;
-	if (site)
-	{
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got site\n");
-		Microsoft::WRL::ComPtr<IServiceProvider> serviceProvider;
-		if (SUCCEEDED(site.As(&serviceProvider)))
-		{
-			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IServiceProvider\n");
-			Microsoft::WRL::ComPtr<IShellBrowser> shellBrowser;
-			if (SUCCEEDED(serviceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, &shellBrowser)))
-			{
-				CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellBrowser\n");
-				Microsoft::WRL::ComPtr<IShellView> shellView;
-				if (SUCCEEDED(shellBrowser->QueryActiveShellView(&shellView)))
-				{
-					CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellView\n");
-					Microsoft::WRL::ComPtr<IFolderView> folderView;
-					if (SUCCEEDED(shellView.As(&folderView)))
-					{
-						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IFolderView\n");
-						Microsoft::WRL::ComPtr<IPersistFolder2> persistFolder;
-						if (SUCCEEDED(folderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&persistFolder)))
-						{
-							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IPersistFolder2\n");
-							PIDLIST_ABSOLUTE curFolder;
-							if (SUCCEEDED(persistFolder->GetCurFolder(&curFolder)))
-							{
-								CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got GetCurFolder\n");
-								wchar_t buf[MAX_PATH] = { 0 };
-								// find the path of the folder
-								if (SHGetPathFromIDList(curFolder, buf))
-								{
-									CTraceToOutputDebugString::Instance()(__FUNCTION__ L": got SHGetPathFromIDList : %s\n", buf);
-									path = buf;
-								}
-								CoTaskMemFree(curFolder);
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 
-	return path;
+	if (!site)
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got site\n");
+	Microsoft::WRL::ComPtr<IServiceProvider> serviceProvider;
+	if (!SUCCEEDED(site.As(&serviceProvider)))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IServiceProvider\n");
+	Microsoft::WRL::ComPtr<IShellBrowser> shellBrowser;
+	if (!SUCCEEDED(serviceProvider->QueryService(SID_SShellBrowser, IID_IShellBrowser, &shellBrowser)))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellBrowser\n");
+	Microsoft::WRL::ComPtr<IShellView> shellView;
+	if (!SUCCEEDED(shellBrowser->QueryActiveShellView(&shellView)))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IShellView\n");
+	Microsoft::WRL::ComPtr<IFolderView> folderView;
+	if (!SUCCEEDED(shellView.As(&folderView)))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IFolderView\n");
+	Microsoft::WRL::ComPtr<IPersistFolder2> persistFolder;
+	if (!SUCCEEDED(folderView->GetFolder(IID_IPersistFolder2, (LPVOID*)&persistFolder)))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got IPersistFolder2\n");
+	PIDLIST_ABSOLUTE curFolder;
+	if (!SUCCEEDED(persistFolder->GetCurFolder(&curFolder)))
+		return {};
+	SCOPE_EXIT { CoTaskMemFree(curFolder); };
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ ": got GetCurFolder\n");
+	wchar_t buf[MAX_PATH] = { 0 };
+	// find the path of the folder
+	if (!SHGetPathFromIDList(curFolder, buf))
+		return {};
+
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ L": got SHGetPathFromIDList : %s\n", buf);
+	return { buf };
 }
