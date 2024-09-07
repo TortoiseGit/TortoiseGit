@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2023 - TortoiseGit
+// Copyright (C) 2015-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,8 +83,6 @@ void CGitTagCompareList::Init()
 	colMyMessage = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_TAGCOMPARE_LOCALMESSAGE)));
 	colTheirHash = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_TAGCOMPARE_REMOTEHASH)));
 	colTheirMessage = InsertColumn(index++, CString(MAKEINTRESOURCE(IDS_TAGCOMPARE_REMOTEMESSAGE)));
-
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	if (!!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_LOCAL_MACHINE) || !!CRegDWORD(L"Software\\TortoiseGit\\SortTagsReversed", 0, false, HKEY_CURRENT_USER))
 	{

@@ -110,8 +110,6 @@ BOOL CSettingsAdvanced::OnInitDialog()
 	while (c >= 0)
 		m_ListCtrl.DeleteColumn(c--);
 
-	SetWindowTheme(m_ListCtrl.GetSafeHwnd(), L"Explorer", nullptr);
-
 	CString temp;
 	temp.LoadString(IDS_SETTINGS_CONF_VALUECOL);
 	m_ListCtrl.InsertColumn(0, temp);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019 - TortoiseGit
+// Copyright (C) 2016, 2019, 2024 - TortoiseGit
 // Copyright (C) 2008, 2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -71,8 +71,6 @@ BOOL CSetBugTraq::OnInitDialog()
 	m_cBugTraqList.InsertColumn(1, temp);
 	temp.LoadString(IDS_SETTINGS_BUGTRAQ_PARAMETERSCOL);
 	m_cBugTraqList.InsertColumn(2, temp);
-
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	RebuildBugTraqList();
 

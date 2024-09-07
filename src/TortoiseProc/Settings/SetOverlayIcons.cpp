@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,8 +115,6 @@ BOOL CSetOverlayIcons::OnInitDialog()
 
 	m_sReadOnly.LoadString(IDS_SETTINGS_READONLYNAME);
 	m_sLocked.LoadString(IDS_SETTINGS_LOCKEDNAME);
-
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	ShowIconSet(true);
 

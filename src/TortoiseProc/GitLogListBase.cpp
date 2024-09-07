@@ -270,7 +270,6 @@ void CGitLogListBase::PreSubclassWindow()
 	SetStyle();
 	// load the icons for the action columns
 //	m_Theme.Open(m_hWnd, L"ListView");
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 	__super::PreSubclassWindow();
 }
 

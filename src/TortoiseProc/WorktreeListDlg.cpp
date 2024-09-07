@@ -97,8 +97,6 @@ BOOL CWorktreeListDlg::OnInitDialog()
 
 	CAppUtils::SetListCtrlBackgroundImage(m_WorktreeList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 
-	SetWindowTheme(m_WorktreeList.GetSafeHwnd(), L"Explorer", nullptr);
-
 	EnableSaveRestore(L"WorktreeList");
 	SetTheme(CTheme::Instance().IsDarkTheme());
 

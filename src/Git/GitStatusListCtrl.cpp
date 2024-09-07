@@ -290,8 +290,6 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetExtendedStyle(exStyle);
 	CResizableColumnsListCtrl::Init();
 
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
-
 	if (CRegDWORD(L"Software\\TortoiseGit\\LogFontForFileListCtrl", FALSE))
 	{
 		m_uiFont.DeleteObject();
@@ -3671,7 +3669,6 @@ void CGitStatusListCtrl::PreSubclassWindow()
 {
 	__super::PreSubclassWindow();
 	EnableToolTips(TRUE);
-	SetWindowTheme(GetSafeHwnd(), L"Explorer", nullptr);
 }
 
 void CGitStatusListCtrl::OnPaint()

@@ -177,7 +177,6 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	m_tooltips.AddTool(IDC_SWITCHLEFTRIGHT, IDS_FILEDIFF_SWITCHLEFTRIGHT_TT);
 
-	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", nullptr);
 	m_cFileList.SetRedraw(false);
 	m_cFileList.DeleteAllItems();
 	DWORD exStyle = LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP;

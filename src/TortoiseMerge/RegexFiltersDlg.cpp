@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023-2024 - TortoiseGit
 // Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -116,8 +116,6 @@ void CRegexFiltersDlg::OnBnClickedRemove()
 BOOL CRegexFiltersDlg::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
-
-	SetWindowTheme(m_RegexList.GetSafeHwnd(), L"Explorer", nullptr);
 
 	SetupListControl();
 

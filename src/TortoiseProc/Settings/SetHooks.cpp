@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2016-2019, 2021-2022, 2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -76,8 +76,6 @@ BOOL CSetHooks::OnInitDialog()
 	m_cHookList.InsertColumn(3, temp);
 	temp.LoadString(IDS_SETTINGS_HOOKS_SHOWCOL);
 	m_cHookList.InsertColumn(4, temp);
-
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
 
 	ProjectProperties pp;
 	pp.ReadProps();

@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015, 2020 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017, 2019-2020-2023 - TortoiseGit
+// Copyright (C) 2012, 2016-2017, 2019-2020-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -115,7 +115,6 @@ BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack
 		m_sPath += L'\\';
 	}
 
-	SetWindowTheme(m_cFileList.GetSafeHwnd(), L"Explorer", nullptr);
 	m_cFileList.SetExtendedStyle(LVS_EX_INFOTIP | LVS_EX_FULLROWSELECT | LVS_EX_DOUBLEBUFFER);
 	m_cFileList.DeleteAllItems();
 	int c = m_cFileList.GetHeaderCtrl()->GetItemCount() - 1;

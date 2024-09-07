@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019, 2023 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -136,8 +136,6 @@ BOOL CSetProgsAdvDlg::OnInitDialog()
 	int c = m_ToolListCtrl.GetHeaderCtrl()->GetItemCount() - 1;
 	while (c>=0)
 		m_ToolListCtrl.DeleteColumn(c--);
-
-	SetWindowTheme(m_ToolListCtrl.GetSafeHwnd(), L"Explorer", nullptr);
 
 	CString temp;
 	temp.LoadString(IDS_PROGS_EXTCOL);

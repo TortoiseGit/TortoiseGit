@@ -230,9 +230,6 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_nSymlinkOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_SYMLINKOVL, 0, 0));
 	// set externaloverlay in SYS_IMAGE_LIST() in Refresh method, so that it is updated after every launch of the logdialog
 
-	SetWindowTheme(m_RepoTree.GetSafeHwnd(), L"Explorer", nullptr);
-	SetWindowTheme(m_RepoList.GetSafeHwnd(), L"Explorer", nullptr);
-
 	int borderWidth = 0;
 	if (IsAppThemed())
 	{

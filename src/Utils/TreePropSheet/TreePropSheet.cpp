@@ -1,6 +1,6 @@
 ﻿/********************************************************************
 *
-* Copyright (c) 2002 Sven Wiegand <mail@sven-wiegand.de>
+* Copyright (c) 2002, 2024 Sven Wiegand <mail@sven-wiegand.de>
 *
 * You can use this and modify this in any way you want,
 * BUT LEAVE THIS HEADER INTACT.
@@ -886,7 +886,6 @@ BOOL CTreePropSheet::OnInitDialog()
 		m_pwndPageTree->SetImageList(&m_Images, TVSIL_NORMAL);
 		m_pwndPageTree->SetImageList(&m_Images, TVSIL_STATE);
 	}
-	SetWindowTheme(m_pwndPageTree->GetSafeHwnd(), L"Explorer", nullptr);
 
 	// Fill the tree ctrl
 	RefillPageTree();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019, 2021-2023 - TortoiseGit
+// Copyright (C) 2011-2016, 2019, 2021-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -213,8 +213,6 @@ BOOL CSetLookAndFeelPage::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, L"");
 
-	SetWindowTheme(m_hWnd, L"Explorer", nullptr);
-
 	m_cMenuList.SetRedraw(false);
 
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
@@ -349,8 +347,6 @@ BOOL CSetExtMenu::OnInitDialog()
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, L"");
 
-	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", nullptr);
-
 	m_cMenuList.SetRedraw(false);
 
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
@@ -464,8 +460,6 @@ BOOL CSetWin11ContextMenu::OnInitDialog()
 	while (c >= 0)
 		m_cMenuList.DeleteColumn(c--);
 	m_cMenuList.InsertColumn(0, L"");
-
-	SetWindowTheme(m_cMenuList.GetSafeHwnd(), L"Explorer", nullptr);
 
 	m_cMenuList.SetRedraw(false);
 
