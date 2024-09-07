@@ -38,6 +38,7 @@
 #include "Hooks.h"
 #include "LogDlg.h"
 #include "ThemeMFCVisualManager.h"
+#include "AutoCloakWindow.h"
 
 // CRebaseDlg dialog
 
@@ -158,6 +159,7 @@ BOOL CRebaseDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
+	AutoCloakWindow cloak{ GetSafeHwnd() };
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't
 	// do this, Explorer would be unable to send that message to our window if we
