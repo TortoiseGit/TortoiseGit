@@ -23,6 +23,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SinglePropSheetDlg.h"
+#include "DarkModeHelper.h"
 #include "AutoCloakWindow.h"
 
 // CSinglePropSheetDlg dialog
@@ -70,16 +71,11 @@ BOOL CSinglePropSheetDlg::OnInitDialog()
 	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bReturn = CTreePropSheet::OnInitDialog();
 
-//	CRect clientRect;
-//	GetClientRect(&clientRect);
-//	clientRect.DeflateRect(10,10,10,10);
-//	m_pThePropPage->Create(m_pThePropPage->m_lpszTemplateName,this);
-//	m_pThePropPage->MoveWindow(clientRect);
-
-
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
+	DarkModeHelper::Instance().AllowDarkModeForApp(CTheme::Instance().IsDarkTheme());
 	SetTheme(CTheme::Instance().IsDarkTheme());
+	CTheme::Instance().SetThemeForDialog(GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 
 	return bReturn;
 }
