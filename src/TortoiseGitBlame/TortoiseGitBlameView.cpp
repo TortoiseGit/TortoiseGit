@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -43,6 +43,7 @@
 #include "Theme.h"
 #include "DarkModeHelper.h"
 #include "Lexilla.h"
+#include "AutoCloakWindow.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1946,6 +1947,7 @@ void CTortoiseGitBlameView::OnEditFind()
 		flags |= FR_MATCHCASE;
 
 	m_pFindDialog->Create(TRUE, oneline, nullptr, flags, this);
+	CAutoCloakWindow window_cloaker{ m_pFindDialog->GetSafeHwnd() };
 	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
 }
 
