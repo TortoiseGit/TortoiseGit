@@ -23,7 +23,10 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SinglePropSheetDlg.h"
+#include "Git.h"
+#include "AppUtils.h"
 #include "DarkModeHelper.h"
+#include "DPIAware.h"
 #include "AutoCloakWindow.h"
 
 // CSinglePropSheetDlg dialog
@@ -35,6 +38,8 @@ CSinglePropSheetDlg::CSinglePropSheetDlg(const wchar_t* szCaption, ISettingsProp
 :	CTreePropSheet(szCaption,pParent),// CSinglePropSheetDlg::IDD, pParent),
 	m_pThePropPage(pThePropPage)
 {
+	SetTreeViewMode(TRUE, TRUE, TRUE);
+	SetTreeWidth(220 * CDPIAware::Instance().GetDPI(nullptr) / 96);
 	AddPropPages();
 }
 
@@ -70,6 +75,15 @@ BOOL CSinglePropSheetDlg::OnInitDialog()
 {
 	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bReturn = CTreePropSheet::OnInitDialog();
+
+	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+		CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
+	else
+	{
+		CString title;
+		GetWindowText(title);
+		SetWindowText(title + L" - " + CString(MAKEINTRESOURCE(IDS_APPNAME)));
+	}
 
 	CenterWindow(CWnd::FromHandle(GetExplorerHWND()));
 
