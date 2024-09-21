@@ -192,6 +192,11 @@
 			If there are some paths on your computer where you just don't want
 			TortoiseGit's context menu to appear at all, you can list them in
 			the box at the bottom.
+			A trailing <literal>*</literal> is treated as a wildcard character matching
+			any characters. Additionally, a path ending with <literal>\</literal> will
+			match a folder and all its files and subfolders.
+			<emphasis>Please note:</emphasis> <literal>*</literal> cannot be used as a wildcard
+			character within a path.
 		</para>
 		<para>
 			If you right click and drag folder/file in Windows Explorer,

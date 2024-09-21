@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2023 - TortoiseGit
+// Copyright (C) 2012-2024 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -339,11 +339,34 @@ BOOL ShellCache::IsContextPathAllowed(LPCWSTR path)
 	{
 		if (exPath.empty())
 			continue;
-		if (exPath[exPath.size() - 1] == '*')
+		const size_t filterlen = exPath.size();
+		const wchar_t last_character = exPath.at(filterlen - 1);
+		if (last_character == L'*')
 		{
-			std::wstring str = exPath.substr(0, exPath.size() - 1);
-			if (_wcsnicmp(str.c_str(), path, str.size()) == 0)
+			if (_wcsnicmp(exPath.c_str(), path, filterlen - 1) == 0)
 				return FALSE;
+		}
+		else if (last_character == L'\\')
+		{
+			const size_t pathlen = wcslen(path);
+
+			if (pathlen < filterlen - 1)
+				// path is a parent of the current filter. Don't filter
+				continue;
+
+			if (pathlen == filterlen - 1)
+			{
+				// path MAY be the filtered path without trailing backslash.
+				// compare with the filter excluding trailing backslash!
+				if (_wcsnicmp(exPath.c_str(), path, filterlen - 1) == 0)
+					return FALSE;
+			}
+			else
+			{
+				// path is at least as large as the filter. compare with the whole filter!
+				if (_wcsnicmp(exPath.c_str(), path, filterlen) == 0)
+					return FALSE;
+			}
 		}
 		else if (_wcsicmp(exPath.c_str(), path) == 0)
 			return FALSE;
