@@ -89,7 +89,6 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					return E_INVALIDARG;
 				}
 
-
 				auto drop = static_cast<HDROP>(GlobalLock(stg.hGlobal));
 				if (!drop)
 				{
@@ -111,104 +110,104 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
 					auto str = std::wstring(szFileName.get());
-					if ((!str.empty()) && (g_ShellCache.IsContextPathAllowed(szFileName.get())))
+					if (str.empty() || !g_ShellCache.IsContextPathAllowed(szFileName.get()))
+						continue;
+
 					{
+						CTGitPath strpath;
+						strpath.SetFromWin(str.c_str());
+						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
+						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
+					}
+					files_.push_back(str);
+					if (i != 0)
+						continue;
+
+					// get the git status of the item
+					git_wc_status_kind status = git_wc_status_none;
+					CTGitPath askedpath;
+					askedpath.SetFromWin(str.c_str());
+					CString workTreePath;
+					if (!askedpath.HasAdminDir(&workTreePath) && GitAdminDir::IsBareRepo(str.c_str()))
+						itemStates |= ITEMIS_BAREREPO; // TODO: optimize
+					uuidSource = workTreePath;
+					try
+					{
+						if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 						{
-							CTGitPath strpath;
-							strpath.SetFromWin(str.c_str());
-							itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
-							itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
+							CTGitPath tpath(str.c_str());
+							if (!tpath.HasAdminDir())
+							{
+								status = git_wc_status_none;
+								continue;
+							}
+							if (tpath.IsAdminDir())
+							{
+								status = git_wc_status_none;
+								continue;
+							}
+							TGITCacheResponse itemStatus = { 0 };
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+							{
+								fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
+								if (askedpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+								{
+									itemStates |= ITEMIS_FOLDER;
+									if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
+										itemStates |= ITEMIS_FOLDERINGIT;
+								}
+							}
 						}
-						files_.push_back(str);
-						if (i == 0)
+						else
 						{
-							//get the git status of the item
-							git_wc_status_kind status = git_wc_status_none;
-							CTGitPath askedpath;
-							askedpath.SetFromWin(str.c_str());
-							CString workTreePath;
-							if (!askedpath.HasAdminDir(&workTreePath) && GitAdminDir::IsBareRepo(str.c_str()))
-								itemStates |= ITEMIS_BAREREPO; // TODO: optimize
-							uuidSource = workTreePath;
-							try
+							GitStatus stat;
+							stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
+							if (stat.status)
 							{
-								if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
+								statuspath = str;
+								status = stat.status->status;
+								fetchedstatus = status;
+								if (askedpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 								{
-									CTGitPath tpath(str.c_str());
-									if (!tpath.HasAdminDir())
-									{
-										status = git_wc_status_none;
-										continue;
-									}
-									if (tpath.IsAdminDir())
-									{
-										status = git_wc_status_none;
-										continue;
-									}
-									TGITCacheResponse itemStatus = { 0 };
-									if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-									{
-										fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
-										if (askedpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-										{
-											itemStates |= ITEMIS_FOLDER;
-											if ((status != git_wc_status_unversioned) && (status != git_wc_status_ignored) && (status != git_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINGIT;
-										}
-									}
+									itemStates |= ITEMIS_FOLDER;
+									if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
+										itemStates |= ITEMIS_FOLDERINGIT;
 								}
-								else
-								{
-									GitStatus stat;
-									stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
-									if (stat.status)
-									{
-										statuspath = str;
-										status = stat.status->status;
-										fetchedstatus = status;
-										if ( askedpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-										{
-											itemStates |= ITEMIS_FOLDER;
-											if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-												itemStates |= ITEMIS_FOLDERINGIT;
-										}
-										//if ((stat.status->entry)&&(stat.status->entry->uuid))
-										//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-									}
-									else
-									{
-										// sometimes, git_client_status() returns with an error.
-										// in that case, we have to check if the working copy is versioned
-										// anyway to show the 'correct' context menu
-										if (askedpath.HasAdminDir())
-											status = git_wc_status_normal;
-									}
-								}
+								// if ((stat.status->entry)&&(stat.status->entry->uuid))
+								//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 							}
-							catch ( ... )
+							else
 							{
-								CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
+								// sometimes, git_client_status() returns with an error.
+								// in that case, we have to check if the working copy is versioned
+								// anyway to show the 'correct' context menu
+								if (askedpath.HasAdminDir())
+									status = git_wc_status_normal;
 							}
-
-							// TODO: should we really assume any sub-directory to be versioned
-							//       or only if it contains versioned files
-							itemStates |= askedpath.GetAdminDirMask();
-
-							if ((status == git_wc_status_unversioned) || (status == git_wc_status_ignored) || (status == git_wc_status_none))
-								itemStates &= ~ITEMIS_INGIT;
-
-							if (status == git_wc_status_ignored)
-								itemStates |= ITEMIS_IGNORED;
-							if (status == git_wc_status_normal)
-								itemStates |= ITEMIS_NORMAL;
-							if (status == git_wc_status_conflicted)
-								itemStates |= ITEMIS_CONFLICTED;
-							if (status == git_wc_status_added)
-								itemStates |= ITEMIS_ADDED;
-							if (status == git_wc_status_deleted)
-								itemStates |= ITEMIS_DELETED;
 						}
 					}
+					catch (...)
+					{
+						CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
+					}
+
+					// TODO: should we really assume any sub-directory to be versioned
+					//       or only if it contains versioned files
+					itemStates |= askedpath.GetAdminDirMask();
+
+					if (status == git_wc_status_unversioned || status == git_wc_status_ignored || status == git_wc_status_none)
+						itemStates &= ~ITEMIS_INGIT;
+
+					if (status == git_wc_status_ignored)
+						itemStates |= ITEMIS_IGNORED;
+					if (status == git_wc_status_normal)
+						itemStates |= ITEMIS_NORMAL;
+					if (status == git_wc_status_conflicted)
+						itemStates |= ITEMIS_CONFLICTED;
+					if (status == git_wc_status_added)
+						itemStates |= ITEMIS_ADDED;
+					if (status == git_wc_status_deleted)
+						itemStates |= ITEMIS_DELETED;
 				} // for (int i = 0; i < count; i++)
 				GlobalUnlock ( drop );
 				ReleaseStgMedium ( &stg );
@@ -226,118 +225,115 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				{
 					ItemIDList child (GetPIDLItem (cida, i), &parent);
 					std::wstring str = child.toString();
-					if ((str.empty() == false)&&(g_ShellCache.IsContextPathAllowed(str.c_str())))
-					{
-						//check if our menu is requested for a git admin directory
-						if (GitAdminDir::IsAdminDirPath(str.c_str()))
-							continue;
+					if (str.empty() || !g_ShellCache.IsContextPathAllowed(str.c_str()))
+						continue;
 
-						files_.push_back(str);
-						CTGitPath strpath;
-						strpath.SetFromWin(str.c_str());
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
-						if (!statfetched)
+					// check if our menu is requested for a git admin directory
+					if (GitAdminDir::IsAdminDirPath(str.c_str()))
+						continue;
+
+					files_.push_back(str);
+					CTGitPath strpath;
+					strpath.SetFromWin(str.c_str());
+					itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
+					itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
+					if (statfetched)
+						continue;
+
+					// get the git status of the item
+					git_wc_status_kind status = git_wc_status_none;
+					if (g_ShellCache.IsSimpleContext() && strpath.IsDirectory())
+					{
+						if (strpath.HasAdminDir())
+							status = git_wc_status_normal;
+					}
+					else
+					{
+						try
 						{
-							//get the git status of the item
-							git_wc_status_kind status = git_wc_status_none;
-							if ((g_ShellCache.IsSimpleContext())&&(strpath.IsDirectory()))
+							if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 							{
-								if (strpath.HasAdminDir())
-									status = git_wc_status_normal;
+								CTGitPath tpath(str.c_str());
+								if (!tpath.HasAdminDir())
+								{
+									status = git_wc_status_none;
+									continue;
+								}
+								if (tpath.IsAdminDir())
+								{
+									status = git_wc_status_none;
+									continue;
+								}
+								TGITCacheResponse itemStatus = { 0 };
+								if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+								{
+									fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
+									if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+									{
+										itemStates |= ITEMIS_FOLDER;
+										if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
+											itemStates |= ITEMIS_FOLDERINGIT;
+									}
+									if (status == git_wc_status_conflicted) // if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+										itemStates |= ITEMIS_CONFLICTED;
+								}
 							}
 							else
 							{
-								try
+								GitStatus stat;
+								if (strpath.HasAdminDir())
+									stat.GetStatus(strpath, false, false, true);
+								statuspath = str;
+								if (stat.status)
 								{
-									if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
+									status = stat.status->status;
+									fetchedstatus = status;
+									if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 									{
-										CTGitPath tpath(str.c_str());
-										if(!tpath.HasAdminDir())
-										{
-											status = git_wc_status_none;
-											continue;
-										}
-										if(tpath.IsAdminDir())
-										{
-											status = git_wc_status_none;
-											continue;
-										}
-										TGITCacheResponse itemStatus = { 0 };
-										if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
-										{
-											fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
-											if (strpath.IsDirectory())//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-											{
-												itemStates |= ITEMIS_FOLDER;
-												if ((status != git_wc_status_unversioned) && (status != git_wc_status_ignored) && (status != git_wc_status_none))
-													itemStates |= ITEMIS_FOLDERINGIT;
-											}
-											if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
-												itemStates |= ITEMIS_CONFLICTED;
-										}
+										itemStates |= ITEMIS_FOLDER;
+										if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
+											itemStates |= ITEMIS_FOLDERINGIT;
 									}
-									else
-									{
-										GitStatus stat;
-										if (strpath.HasAdminDir())
-											stat.GetStatus(strpath, false, false, true);
-										statuspath = str;
-										if (stat.status)
-										{
-											status = stat.status->status;
-											fetchedstatus = status;
-											if ( strpath.IsDirectory() )//if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
-											{
-												itemStates |= ITEMIS_FOLDER;
-												if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
-													itemStates |= ITEMIS_FOLDERINGIT;
-											}
-											// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
-											if (status == git_wc_status_conflicted)//if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
-												itemStates |= ITEMIS_CONFLICTED;
-											//if ((stat.status->entry)&&(stat.status->entry->uuid))
-											//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
-										}
-										else
-										{
-											// sometimes, git_client_status() returns with an error.
-											// in that case, we have to check if the working copy is versioned
-											// anyway to show the 'correct' context menu
-											if (strpath.HasAdminDir())
-											{
-												status = git_wc_status_normal;
-												fetchedstatus = status;
-											}
-										}
-									}
-									statfetched = TRUE;
+									// TODO: do we need to check that it's not a dir? does conflict options makes sense for dir in git?
+									if (status == git_wc_status_conflicted) // if ((stat.status->entry)&&(stat.status->entry->conflict_wrk))
+										itemStates |= ITEMIS_CONFLICTED;
+									// if ((stat.status->entry)&&(stat.status->entry->uuid))
+									//	uuidSource = CUnicodeUtils::StdGetUnicode(stat.status->entry->uuid);
 								}
-								catch ( ... )
+								else
 								{
-									CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
+									// sometimes, git_client_status() returns with an error.
+									// in that case, we have to check if the working copy is versioned
+									// anyway to show the 'correct' context menu
+									if (strpath.HasAdminDir())
+									{
+										status = git_wc_status_normal;
+										fetchedstatus = status;
+									}
 								}
 							}
-
-							itemStates |= strpath.GetAdminDirMask();
-
-							if ((status == git_wc_status_unversioned)||(status == git_wc_status_ignored)||(status == git_wc_status_none))
-								itemStates &= ~ITEMIS_INGIT;
-							if (status == git_wc_status_ignored)
-							{
-								itemStates |= ITEMIS_IGNORED;
-							}
-
-							if (status == git_wc_status_normal)
-								itemStates |= ITEMIS_NORMAL;
-							if (status == git_wc_status_conflicted)
-								itemStates |= ITEMIS_CONFLICTED;
-							if (status == git_wc_status_added)
-								itemStates |= ITEMIS_ADDED;
-							if (status == git_wc_status_deleted)
-								itemStates |= ITEMIS_DELETED;
+							statfetched = TRUE;
+						}
+						catch (...)
+						{
+							CTraceToOutputDebugString::Instance()(__FUNCTION__ ": Exception in GitStatus::GetStatus()\n");
 						}
 					}
+
+					itemStates |= strpath.GetAdminDirMask();
+
+					if (status == git_wc_status_unversioned || status == git_wc_status_ignored || status == git_wc_status_none)
+						itemStates &= ~ITEMIS_INGIT;
+					if (status == git_wc_status_ignored)
+						itemStates |= ITEMIS_IGNORED;
+					if (status == git_wc_status_normal)
+						itemStates |= ITEMIS_NORMAL;
+					if (status == git_wc_status_conflicted)
+						itemStates |= ITEMIS_CONFLICTED;
+					if (status == git_wc_status_added)
+						itemStates |= ITEMIS_ADDED;
+					if (status == git_wc_status_deleted)
+						itemStates |= ITEMIS_DELETED;
 				} // for (int i = 0; i < count; ++i)
 				ItemIDList child (GetPIDLItem (cida, 0), &parent);
 				if (g_ShellCache.HasGITAdminDir(child.toString().c_str(), FALSE))
@@ -358,7 +354,6 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				}
 				if (IsClipboardFormatAvailable(CF_HDROP))
 					itemStates |= ITEMIS_PATHINCLIPBOARD;
-
 			}
 
 			ReleaseStgMedium ( &medium );
@@ -494,9 +489,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					}
 				}
 				else
-				{
 					status = fetchedstatus;
-				}
+
 				//if ((status != git_wc_status_unversioned)&&(status != git_wc_status_ignored)&&(status != git_wc_status_none))
 				itemStates |= askedpath.GetAdminDirMask();
 
@@ -510,10 +504,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					itemStates |= ITEMIS_ADDED;
 				if (status == git_wc_status_deleted)
 					itemStates |= ITEMIS_DELETED;
-
 			}
 		}
-
 	}
 
 	return S_OK;
