@@ -113,44 +113,40 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (str.empty() || !g_ShellCache.IsContextPathAllowed(str))
 						continue;
 
-					{
-						CTGitPath strpath;
-						strpath.SetFromWin(str.c_str());
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
-						itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
-					}
+					CTGitPath strpath;
+					strpath.SetFromWin(str.c_str());
+					itemStates |= (strpath.GetFileExtension().CompareNoCase(L".diff") == 0) ? ITEMIS_PATCHFILE : 0;
+					itemStates |= (strpath.GetFileExtension().CompareNoCase(L".patch") == 0) ? ITEMIS_PATCHFILE : 0;
+
 					files_.push_back(str);
 					if (i != 0)
 						continue;
 
 					// get the git status of the item
 					git_wc_status_kind status = git_wc_status_none;
-					CTGitPath askedpath;
-					askedpath.SetFromWin(str.c_str());
 					CString workTreePath;
-					if (!askedpath.HasAdminDir(&workTreePath) && GitAdminDir::IsBareRepo(str.c_str()))
+					if (!strpath.HasAdminDir(&workTreePath) && GitAdminDir::IsBareRepo(str.c_str()))
 						itemStates |= ITEMIS_BAREREPO; // TODO: optimize
 					uuidSource = workTreePath;
 					try
 					{
 						if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 						{
-							CTGitPath tpath(str.c_str());
-							if (!tpath.HasAdminDir())
+							if (!strpath.HasAdminDir())
 							{
 								status = git_wc_status_none;
 								continue;
 							}
-							if (tpath.IsAdminDir())
+							if (strpath.IsAdminDir())
 							{
 								status = git_wc_status_none;
 								continue;
 							}
 							TGITCacheResponse itemStatus = { 0 };
-							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus, true))
 							{
 								fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
-								if (askedpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+								if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 								{
 									itemStates |= ITEMIS_FOLDER;
 									if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
@@ -161,13 +157,13 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 						else
 						{
 							GitStatus stat;
-							stat.GetStatus(CTGitPath(str.c_str()), false, false, true);
+							stat.GetStatus(strpath, false, false, true);
 							if (stat.status)
 							{
 								statuspath = str;
 								status = stat.status->status;
 								fetchedstatus = status;
-								if (askedpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
+								if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
 								{
 									itemStates |= ITEMIS_FOLDER;
 									if (status != git_wc_status_unversioned && status != git_wc_status_ignored && status != git_wc_status_none)
@@ -181,7 +177,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 								// sometimes, git_client_status() returns with an error.
 								// in that case, we have to check if the working copy is versioned
 								// anyway to show the 'correct' context menu
-								if (askedpath.HasAdminDir())
+								if (strpath.HasAdminDir())
 									status = git_wc_status_normal;
 							}
 						}
@@ -193,7 +189,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 
 					// TODO: should we really assume any sub-directory to be versioned
 					//       or only if it contains versioned files
-					itemStates |= askedpath.GetAdminDirMask();
+					itemStates |= strpath.GetAdminDirMask();
 
 					if (status == git_wc_status_unversioned || status == git_wc_status_ignored || status == git_wc_status_none)
 						itemStates &= ~ITEMIS_INGIT;
@@ -211,7 +207,6 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				} // for (int i = 0; i < count; i++)
 				GlobalUnlock ( drop );
 				ReleaseStgMedium ( &stg );
-
 			} // if (m_State == FileStateDropHandler)
 			else
 			{
@@ -253,19 +248,18 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 						{
 							if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(str.c_str()))
 							{
-								CTGitPath tpath(str.c_str());
-								if (!tpath.HasAdminDir())
+								if (!strpath.HasAdminDir())
 								{
 									status = git_wc_status_none;
 									continue;
 								}
-								if (tpath.IsAdminDir())
+								if (strpath.IsAdminDir())
 								{
 									status = git_wc_status_none;
 									continue;
 								}
 								TGITCacheResponse itemStatus = { 0 };
-								if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+								if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus, true))
 								{
 									fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 									if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
@@ -388,22 +382,21 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				{
 					if (g_ShellCache.GetCacheType() == ShellCache::exe && g_ShellCache.IsPathAllowed(folder_.c_str()))
 					{
-						CTGitPath tpath(folder_.c_str());
-						if(!tpath.HasAdminDir())
+						if (!askedpath.HasAdminDir())
 							status = git_wc_status_none;
-						else if(tpath.IsAdminDir())
+						else if (askedpath.IsAdminDir())
 							status = git_wc_status_none;
 						else
 						{
 							TGITCacheResponse itemStatus = { 0 };
-							if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(askedpath, &itemStatus, true))
 								status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 						}
 					}
 					else
 					{
 						GitStatus stat;
-						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
+						stat.GetStatus(askedpath, false, false, true);
 						if (stat.status)
 							status = stat.status->status;
 						else
@@ -479,7 +472,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					try
 					{
 						GitStatus stat;
-						stat.GetStatus(CTGitPath(folder_.c_str()), false, false, true);
+						stat.GetStatus(askedpath, false, false, true);
 						if (stat.status)
 							status = stat.status->status;
 					}
