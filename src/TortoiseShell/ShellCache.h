@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2019, 2021-2023 - TortoiseGit
+// Copyright (C) 2012-2019, 2021-2024 - TortoiseGit
 // Copyright (C) 2003-2011, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ public:
 	BOOL IsRAM();
 	BOOL IsUnknown();
 
-	BOOL IsContextPathAllowed(LPCWSTR path);
+	BOOL IsContextPathAllowed(const std::wstring& path);
 	BOOL IsPathAllowed(LPCWSTR path);
 	DWORD GetLangID();
 	BOOL HasGITAdminDir(LPCWSTR path, BOOL bIsDir, CString* ProjectTopDir = nullptr);

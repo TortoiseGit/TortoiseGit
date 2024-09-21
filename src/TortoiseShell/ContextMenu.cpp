@@ -110,7 +110,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (0 == DragQueryFile(drop, i, szFileName.get(), len + 1))
 						continue;
 					auto str = std::wstring(szFileName.get());
-					if (str.empty() || !g_ShellCache.IsContextPathAllowed(szFileName.get()))
+					if (str.empty() || !g_ShellCache.IsContextPathAllowed(str))
 						continue;
 
 					{
@@ -225,7 +225,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				{
 					ItemIDList child (GetPIDLItem (cida, i), &parent);
 					std::wstring str = child.toString();
-					if (str.empty() || !g_ShellCache.IsContextPathAllowed(str.c_str()))
+					if (str.empty() || !g_ShellCache.IsContextPathAllowed(str))
 						continue;
 
 					// check if our menu is requested for a git admin directory
@@ -377,7 +377,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 		CTGitPath askedpath;
 		askedpath.SetFromWin(folder_.c_str());
 
-		if (g_ShellCache.IsContextPathAllowed(folder_.c_str()))
+		if (g_ShellCache.IsContextPathAllowed(folder_))
 		{
 			if (folder_.compare(statuspath)!=0)
 			{
@@ -462,7 +462,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 	}
 	if (files_.size() == 2)
 		itemStates |= ITEMIS_TWO;
-	if ((files_.size() == 1)&&(g_ShellCache.IsContextPathAllowed(files_.front().c_str())))
+	if (files_.size() == 1 && g_ShellCache.IsContextPathAllowed(files_.front()))
 	{
 		itemStates |= ITEMIS_ONLYONE;
 		if (m_State != FileStateDropHandler)

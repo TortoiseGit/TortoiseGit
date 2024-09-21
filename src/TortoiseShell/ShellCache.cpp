@@ -331,7 +331,7 @@ BOOL ShellCache::IsUnknown()
 	return (driveunknown);
 }
 
-BOOL ShellCache::IsContextPathAllowed(LPCWSTR path)
+BOOL ShellCache::IsContextPathAllowed(const std::wstring& path)
 {
 	Locker lock(m_critSec);
 	ExcludeContextValid();
@@ -343,32 +343,30 @@ BOOL ShellCache::IsContextPathAllowed(LPCWSTR path)
 		const wchar_t last_character = exPath.at(filterlen - 1);
 		if (last_character == L'*')
 		{
-			if (_wcsnicmp(exPath.c_str(), path, filterlen - 1) == 0)
+			if (_wcsnicmp(exPath.c_str(), path.c_str(), filterlen - 1) == 0)
 				return FALSE;
 		}
 		else if (last_character == L'\\')
 		{
-			const size_t pathlen = wcslen(path);
-
-			if (pathlen < filterlen - 1)
+			if (path.length() < filterlen - 1)
 				// path is a parent of the current filter. Don't filter
 				continue;
 
-			if (pathlen == filterlen - 1)
+			if (path.length() == filterlen - 1)
 			{
 				// path MAY be the filtered path without trailing backslash.
 				// compare with the filter excluding trailing backslash!
-				if (_wcsnicmp(exPath.c_str(), path, filterlen - 1) == 0)
+				if (_wcsnicmp(exPath.c_str(), path.c_str(), filterlen - 1) == 0)
 					return FALSE;
 			}
 			else
 			{
 				// path is at least as large as the filter. compare with the whole filter!
-				if (_wcsnicmp(exPath.c_str(), path, filterlen) == 0)
+				if (_wcsnicmp(exPath.c_str(), path.c_str(), filterlen) == 0)
 					return FALSE;
 			}
 		}
-		else if (_wcsicmp(exPath.c_str(), path) == 0)
+		else if (_wcsicmp(exPath.c_str(), path.c_str()) == 0)
 			return FALSE;
 	}
 	return TRUE;
