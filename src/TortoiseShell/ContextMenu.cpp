@@ -941,7 +941,6 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	unsigned __int64 menumask = g_ShellCache.GetMenuMask();
 	unsigned __int64 menuex = g_ShellCache.GetMenuExt();
 
-	int menuIndex = 0;
 	bool bAddSeparator = false;
 	bool bMenuEntryAdded = false;
 	bool bMenuEmpty = true;
@@ -952,9 +951,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	}
 	bool bShowIcons = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\ShowContextMenuIcons", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
-	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
+	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
 	{
-		if (menuInfo[menuIndex].command == ShellSeparator)
+		const auto& menuItem = menuInfo[menuIndex];
+		if (menuItem.command == ShellSeparator)
 		{
 			// we don't add a separator immediately. Because there might not be
 			// another 'normal' menu entry after we insert a separator.
@@ -964,77 +964,75 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 				bAddSeparator = true;
 			if (bMenuEntryAdded)
 				bAddSeparator = true;
+			continue;
+		}
+
+		// check the conditions whether to show the menu entry or not
+		const bool bInsertMenu = ShouldInsertItem(menuItem);
+		if (menuItem.menuID & menuex)
+		{
+			if (!(itemStates & ITEMIS_EXTENDED))
+				continue;
+		}
+
+		if ((menuItem.menuID & (~menumask)) == 0)
+			continue;
+
+		if (!bInsertMenu)
+			continue;
+
+			bool bIsTop = ((topmenu & menuItem.menuID) != 0);
+		// insert a separator
+		if (bMenuEntryAdded && bAddSeparator && !bIsTop)
+		{
+			bAddSeparator = false;
+			bMenuEntryAdded = false;
+			if (subMenu)
+				InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr);
+			else
+				m_explorerCommands.push_back(Microsoft::WRL::Make<CExplorerCommand>(L"", 0, 0, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>>(), m_site));
+			idCmd++;
+		}
+
+		const bool isMenu11 = ((topMenu11 & menuItem.menuID) != 0);
+		// handle special cases (sub menus)
+		if ((menuItem.command == ShellMenuIgnoreSub) || (menuItem.command == ShellMenuUnIgnoreSub) || (menuItem.command == ShellMenuDeleteIgnoreSub))
+		{
+			if (hMenu || isMenu11)
+			{
+				if (InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
+					bMenuEntryAdded = true;
+			}
+		}
+		else if (menuItem.command == ShellMenuLFSMenu)
+		{
+			if (InsertLFSSubmenu(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
+				bMenuEntryAdded = true;
 		}
 		else
 		{
-			// check the conditions whether to show the menu entry or not
-			bool bInsertMenu = ShouldInsertItem(menuInfo[menuIndex]);
-			if (menuInfo[menuIndex].menuID & menuex)
-			{
-				if( !(itemStates & ITEMIS_EXTENDED) )
-					bInsertMenu = false;
-			}
+			bIsTop = ((topmenu & menuItem.menuID) != 0);
 
-			if (menuInfo[menuIndex].menuID & (~menumask))
+			if (hMenu || isMenu11)
 			{
-				if (bInsertMenu)
+				// insert the menu entry
+				InsertGitMenu(bIsTop,
+							  bIsTop ? hMenu : subMenu,
+							  bIsTop ? indexMenu++ : indexSubMenu++,
+							  idCmd++,
+							  menuItem.menuTextID,
+							  bShowIcons ? menuItem.iconID : 0,
+							  idCmdFirst,
+							  menuItem.command,
+							  uFlags);
+				if (!bIsTop)
 				{
-					bool bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
-					// insert a separator
-					if ((bMenuEntryAdded)&&(bAddSeparator)&&(!bIsTop))
-					{
-						bAddSeparator = false;
-						bMenuEntryAdded = false;
-						if (subMenu)
-							InsertMenu(subMenu, indexSubMenu++, MF_SEPARATOR | MF_BYPOSITION, 0, nullptr);
-						else
-							m_explorerCommands.push_back(Microsoft::WRL::Make<CExplorerCommand>(L"", 0, 0, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>>(), m_site));
-						idCmd++;
-					}
-
-					const bool isMenu11 = ((topMenu11 & menuInfo[menuIndex].menuID) != 0);
-					// handle special cases (sub menus)
-					if ((menuInfo[menuIndex].command == ShellMenuIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuUnIgnoreSub)||(menuInfo[menuIndex].command == ShellMenuDeleteIgnoreSub))
-					{
-						if (hMenu || isMenu11)
-						{
-							if (InsertIgnoreSubmenus(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
-								bMenuEntryAdded = true;
-						}
-					}
-					else if (menuInfo[menuIndex].command == ShellMenuLFSMenu)
-					{
-						if (InsertLFSSubmenu(idCmd, idCmdFirst, hMenu, subMenu, indexMenu, indexSubMenu, topmenu, bShowIcons, uFlags))
-							bMenuEntryAdded = true;
-					}
-					else
-					{
-						bIsTop = ((topmenu & menuInfo[menuIndex].menuID) != 0);
-
-						if (hMenu || isMenu11)
-						{
-							// insert the menu entry
-							InsertGitMenu(bIsTop,
-										  bIsTop ? hMenu : subMenu,
-										  bIsTop ? indexMenu++ : indexSubMenu++,
-										  idCmd++,
-										  menuInfo[menuIndex].menuTextID,
-										  bShowIcons ? menuInfo[menuIndex].iconID : 0,
-										  idCmdFirst,
-										  menuInfo[menuIndex].command,
-										  uFlags);
-							if (!bIsTop)
-							{
-								bMenuEntryAdded = true;
-								bMenuEmpty = false;
-								bAddSeparator = false;
-							}
-						}
-					}
+					bMenuEntryAdded = true;
+					bMenuEmpty = false;
+					bAddSeparator = false;
 				}
 			}
 		}
-		menuIndex++;
 	}
 
 	// do not show TortoiseGit menu if it's empty
@@ -1672,15 +1670,14 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 	HRESULT hr = E_INVALIDARG;
 
 	MAKESTRING(IDS_MENUDESCDEFAULT);
-	int menuIndex = 0;
-	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
+	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
 	{
-		if (menuInfo[menuIndex].command == static_cast<GitCommands>(id_it->second))
+		const auto& menuItem = menuInfo[menuIndex];
+		if (menuItem.command == static_cast<GitCommands>(id_it->second))
 		{
-			MAKESTRING(menuInfo[menuIndex].menuDescID);
+			MAKESTRING(menuItem.menuDescID);
 			break;
 		}
-		menuIndex++;
 	}
 
 	const wchar_t* desc = stringtablebuffer;
@@ -1860,35 +1857,34 @@ LPCWSTR CShellExt::GetMenuTextFromResource(int id)
 	unsigned __int64 layout = g_ShellCache.GetMenuLayout();
 	space = 6;
 
-	int menuIndex = 0;
-	while (menuInfo[menuIndex].command != ShellMenuLastEntry)
+	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
 	{
-		if (menuInfo[menuIndex].command == id)
+		const auto& menuItem = menuInfo[menuIndex];
+		if (menuItem.command != id)
+			continue;
+
+		MAKESTRING(menuItem.menuTextID);
+		resource = MAKEINTRESOURCE(menuItem.iconID);
+		switch (id)
 		{
-			MAKESTRING(menuInfo[menuIndex].menuTextID);
-			resource = MAKEINTRESOURCE(menuInfo[menuIndex].iconID);
-			switch (id)
+		case ShellSubMenuMultiple:
+		case ShellSubMenuLink:
+		case ShellSubMenuFolder:
+		case ShellSubMenuFile:
+		case ShellSubMenu:
+			space = 0;
+			break;
+		default:
+			space = (layout & menuItem.menuID) ? 0 : 6;
+			if (layout & menuItem.menuID)
 			{
-			case ShellSubMenuMultiple:
-			case ShellSubMenuLink:
-			case ShellSubMenuFolder:
-			case ShellSubMenuFile:
-			case ShellSubMenu:
-				space = 0;
-				break;
-			default:
-				space = (layout & menuInfo[menuIndex].menuID) ? 0 : 6;
-				if (layout & menuInfo[menuIndex].menuID)
-				{
-					wcscpy_s(textbuf, L"Git ");
-					wcscat_s(textbuf, stringtablebuffer);
-					wcscpy_s(stringtablebuffer, textbuf);
-				}
-				break;
+				wcscpy_s(textbuf, L"Git ");
+				wcscat_s(textbuf, stringtablebuffer);
+				wcscpy_s(stringtablebuffer, textbuf);
 			}
-			return resource;
+			break;
 		}
-		menuIndex++;
+		return resource;
 	}
 	return nullptr;
 }
