@@ -214,7 +214,7 @@ static int _git_ssh_setup_tunnel(
 	}
 
 	isPutty = wcstristr(ssh, L"plink");
-	if (parsed_url.port) {
+	if (parsed_url.port_specified && parsed_url.port) {
 		if (isPutty)
 			git_str_printf(&params, " -P %s", parsed_url.port);
 		else

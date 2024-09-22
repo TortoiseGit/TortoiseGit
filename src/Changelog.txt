@@ -6,6 +6,7 @@ Released: unreleased
  * Update editorconfig to 0.12.9
  * Update Scintilla to 5.5.2 and Lexilla to 5.4.0
  * Updated libgit to version 2.46.1 based on Git for Windows sources
+ * Updated libgit2 to 1.8.2pre
  * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
  * Fixed issue #4147: Allow sorting Log view by `--author-date-order`
  * Fixed issue #4137: "Detach" option ignored when making a new worktree
