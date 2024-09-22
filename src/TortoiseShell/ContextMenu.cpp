@@ -73,29 +73,30 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 
 		if (SUCCEEDED(hres) && medium.hGlobal)
 		{
+			SCOPE_EXIT
+			{
+				ReleaseStgMedium(&medium);
+				if (medium.pUnkForRelease)
+				{
+					IUnknown* relInterface = medium.pUnkForRelease;
+					relInterface->Release();
+				}
+			};
 			if (m_State == FileStateDropHandler)
 			{
 				if (!CRegStdDWORD(L"Software\\TortoiseGit\\EnableDragContextMenu", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY))
-				{
-					ReleaseStgMedium(&medium);
 					return S_OK;
-				}
 
 				FORMATETC etc = { CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
 				STGMEDIUM stg = { TYMED_HGLOBAL };
 				if ( FAILED( pDataObj->GetData ( &etc, &stg )))
-				{
-					ReleaseStgMedium ( &medium );
 					return E_INVALIDARG;
-				}
+				SCOPE_EXIT { ReleaseStgMedium(&stg); };
 
 				auto drop = static_cast<HDROP>(GlobalLock(stg.hGlobal));
 				if (!drop)
-				{
-					ReleaseStgMedium ( &stg );
-					ReleaseStgMedium ( &medium );
 					return E_INVALIDARG;
-				}
+				SCOPE_EXIT { GlobalUnlock(drop); };
 
 				const int count = DragQueryFile(drop, UINT(-1), nullptr, 0);
 				if (count == 1)
@@ -205,13 +206,12 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (status == git_wc_status_deleted)
 						itemStates |= ITEMIS_DELETED;
 				} // for (int i = 0; i < count; i++)
-				GlobalUnlock ( drop );
-				ReleaseStgMedium ( &stg );
 			} // if (m_State == FileStateDropHandler)
 			else
 			{
 				//Enumerate PIDLs which the user has selected
 				auto cida = static_cast<CIDA*>(GlobalLock(medium.hGlobal));
+				SCOPE_EXIT { GlobalUnlock(medium.hGlobal); };
 				ItemIDList parent( GetPIDLFolder (cida));
 
 				const int count = cida->cidl;
@@ -336,8 +336,6 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				if (GitAdminDir::IsBareRepo(child.toString().c_str()))
 					itemStates = ITEMIS_BAREREPO;
 
-				GlobalUnlock(medium.hGlobal);
-
 				// if the item is a versioned folder, check if there's a patch file
 				// in the clipboard to be used in "Apply Patch"
 				const UINT cFormatDiff = RegisterClipboardFormat(L"TGIT_UNIFIEDDIFF");
@@ -348,13 +346,6 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 				}
 				if (IsClipboardFormatAvailable(CF_HDROP))
 					itemStates |= ITEMIS_PATHINCLIPBOARD;
-			}
-
-			ReleaseStgMedium ( &medium );
-			if (medium.pUnkForRelease)
-			{
-				IUnknown* relInterface = medium.pUnkForRelease;
-				relInterface->Release();
 			}
 		}
 	}
@@ -1498,6 +1489,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 			{
 				HGLOBAL hglb = GetClipboardData(cFormat);
 				auto lpstr = static_cast<LPCSTR>(GlobalLock(hglb));
+				SCOPE_EXIT { GlobalUnlock(hglb); };
 
 				DWORD len = GetTortoiseGitTempPath(0, nullptr);
 				auto path = std::make_unique<wchar_t[]>(len + 1);
@@ -1520,7 +1512,6 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 					}
 					fclose(outFile);
 				}
-				GlobalUnlock(hglb);
 			}
 		}
 		if (itemStates & ITEMIS_PATCHFILE)
