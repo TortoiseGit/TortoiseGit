@@ -216,6 +216,7 @@ protected:
 	int				SaveFile(const CString& sFilePath);
 	void			WriteWindowPlacement(WINDOWPLACEMENT * pwp);
 	BOOL			ReadWindowPlacement(WINDOWPLACEMENT * pwp);
+	void			WriteViewBarPreferences();
 	bool			FileSave(bool bCheckResolved=true);
 	void			PatchSave();
 	bool			FileSaveAs(bool bCheckResolved=true);
@@ -279,8 +280,8 @@ protected:
 
 	bool			m_bInlineWordDiff = true;
 	bool			m_bInlineDiff;
-	bool			m_bLineDiff = true;
-	bool			m_bLocatorBar = true;
+	bool			m_bLineDiff;
+	bool			m_bLocatorBar;
 	bool			m_bUseRibbons = true;
 
 	CRegDWORD		m_regWrapLines;
@@ -290,6 +291,9 @@ protected:
 	CRegDWORD		m_regInlineDiff;
 	CRegDWORD		m_regUseRibbons;
 	CRegDWORD		m_regIgnoreComments;
+	CRegDWORD		m_regLineDiff;
+	CRegDWORD		m_regLocatorBar;
+	CRegDWORD		m_regStatusBar;
 
 	std::map<CString, std::tuple<CString, CString, CString>>	m_IgnoreCommentsMap;
 	CSimpleIni		m_regexIni;

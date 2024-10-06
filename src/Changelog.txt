@@ -10,6 +10,7 @@ Released: unreleased
  * Fixed issue #4143: BrowseRefsDlg: Order the branches by commit date instead of date (add committer name/date columns)
  * Fixed issue #4147: Allow sorting Log view by `--author-date-order`
  * Fixed issue #4137: "Detach" option ignored when making a new worktree
+ * Fixed issue #3904: TortioiseGitMerge doesn't remember View/Bars settings
 
 == Bug Fixes ==
  * Fixed issue #4132: Error "Could not get next commit. libgit returns: -4" in Log Messages dialog on commit with author date 1970-01-01T00:00:00Z

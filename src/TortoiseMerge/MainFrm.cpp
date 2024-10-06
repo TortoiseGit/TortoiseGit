@@ -214,6 +214,9 @@ CMainFrame::CMainFrame()
 	, m_regInlineDiff(L"Software\\TortoiseGitMerge\\DisplayBinDiff", TRUE)
 	, m_regUseRibbons(L"Software\\TortoiseGitMerge\\UseRibbons", TRUE)
 	, m_regIgnoreComments(L"Software\\TortoiseGitMerge\\IgnoreComments", FALSE)
+	, m_regLineDiff(L"Software\\TortoiseGitMerge\\LineDiff", TRUE)
+	, m_regLocatorBar(L"Software\\TortoiseGitMerge\\LocatorBar", TRUE)
+	, m_regStatusBar(L"Software\\TortoiseGitMerge\\StatusBar", TRUE)
 {
 	m_bOneWay = (0 != (static_cast<DWORD>(m_regOneWay)));
 	m_bCollapsed = !!static_cast<DWORD>(m_regCollapsed);
@@ -221,6 +224,8 @@ CMainFrame::CMainFrame()
 	m_bWrapLines = !!static_cast<DWORD>(m_regWrapLines);
 	m_bInlineDiff = !!m_regInlineDiff;
 	m_bUseRibbons = !!m_regUseRibbons;
+	m_bLineDiff = m_regLineDiff;
+	m_bLocatorBar = m_regLocatorBar;
 }
 
 CMainFrame::~CMainFrame()
@@ -324,6 +329,7 @@ int CMainFrame::InitRibbon()
 	apBtnGroupRight->AddButton(new CMFCRibbonStatusBarPane(ID_INDICATOR_RIGHTVIEW, L"", TRUE));
 	m_wndRibbonStatusBar.AddExtendedElement(apBtnGroupRight.release(), L"");
 
+	ShowPane(&m_wndRibbonStatusBar, m_regStatusBar, FALSE, FALSE);
 	return 0;
 }
 
@@ -367,6 +373,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 			SetTheme(CTheme::Instance().IsDarkTheme());
 		});
 		SetTheme(CTheme::Instance().IsDarkTheme());
+
+		ShowPane(&m_wndStatusBar, m_regStatusBar, FALSE, FALSE);
 	}
 
 	if (!m_wndLocatorBar.Create(this, IDD_DIFFLOCATOR,
@@ -394,8 +402,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 	DockPane(&m_wndLocatorBar);
 	DockPane(&m_wndLineDiffBar);
-	ShowPane(&m_wndLocatorBar, true, false, true);
-	ShowPane(&m_wndLineDiffBar, true, false, true);
+	ShowPane(&m_wndLocatorBar, m_bLocatorBar, false, true);
+	ShowPane(&m_wndLineDiffBar, m_bLineDiff, false, true);
 
 	m_wndLocatorBar.EnableGripper(FALSE);
 	m_wndLineDiffBar.EnableGripper(FALSE);
@@ -1954,6 +1962,8 @@ void CMainFrame::OnClose()
 			// and write it
 			WriteWindowPlacement(&wp);
 		}
+
+		WriteViewBarPreferences();
 		__super::OnClose();
 	}
 }
@@ -2196,6 +2206,17 @@ void CMainFrame::WriteWindowPlacement(WINDOWPLACEMENT * pwp)
 			pwp->rcNormalPosition.left, pwp->rcNormalPosition.top,
 			pwp->rcNormalPosition.right, pwp->rcNormalPosition.bottom);
 	placement = szBuffer;
+}
+
+void CMainFrame::WriteViewBarPreferences()
+{
+	m_regLineDiff = m_bLineDiff;
+	m_regLocatorBar = m_bLocatorBar;
+
+	if (m_bUseRibbons)
+		m_regStatusBar = (m_wndRibbonStatusBar.GetStyle() & WS_VISIBLE) != 0;
+	else
+		m_regStatusBar = (m_wndStatusBar.GetStyle() & WS_VISIBLE) != 0;
 }
 
 void CMainFrame::OnUpdateMergeMarkasresolved(CCmdUI *pCmdUI)
