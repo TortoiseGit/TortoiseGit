@@ -601,7 +601,7 @@ void CTreePropSheet::UpdateCaption()
 	if (!m_pFrame->GetShowCaption())
 		return;
 
-	// get tab control, to the the images from
+	// get tab control, to get the images from
 	CTabCtrl	*pTabCtrl = GetTabControl();
 	if (!IsWindow(pTabCtrl->GetSafeHwnd()))
 	{

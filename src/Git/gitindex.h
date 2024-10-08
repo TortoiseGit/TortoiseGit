@@ -266,7 +266,7 @@ public:
 	int FetchIgnoreList(const CString& projectroot, const CString& file, bool isGlobal, int* ignoreCase);
 
 	/**
-	* patha: the filename to be checked whether is is ignored or not
+	* patha: the filename to be checked whether it is ignored or not
 	* base: must be a pointer to the beginning of the base filename WITHIN patha
 	* type: DT_DIR or DT_REG
 	*/

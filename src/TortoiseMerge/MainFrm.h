@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013, 2021-2023 - TortoiseGit
+// Copyright (C) 2013, 2021-2024 - TortoiseGit
 // Copyright (C) 2006-2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -230,7 +230,7 @@ protected:
 		Switch, ///< switching views
 		Reload, ///< reload views also switching between 1 and 2 way diff
 		Options, ///< white space change, options
-		Open, ///< open open dialog
+		Open, ///< opening an open dialog
 	};
 	/// checks if there are modifications and asks the user to save them first
 	/// IDCANCEL is returned if the user wants to cancel.

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -133,7 +133,7 @@ public:
 	 */
 	CTGitPath GetDirectory() const;
 	/**
-	* Returns the the directory which contains the item the path refers to.
+	* Returns the directory which contains the item the path refers to.
 	* If the path is a directory, then this returns the directory above it.
 	* If the path is to a file, then this returns the directory which contains the path
 	* parent directory is returned.

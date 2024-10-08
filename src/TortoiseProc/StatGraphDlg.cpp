@@ -485,7 +485,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 					dDateFirstJanuary = CTime(iYear-1,1,1,0,0,0);
 					iDayOfWeek =
 						(dDateFirstJanuary.GetDayOfWeek()+5+iFirstDayOfWeek)%7;
-					// and we correct this in the same we we done this before but
+					// and we correct this in the same way we done this before but
 					// the result is now 52 or 53 and not 0
 					iWeekOfYear =
 						static_cast<int>(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +
@@ -518,7 +518,7 @@ int CStatGraphDlg::GetCalendarWeek(const CTime& time)
 					dDateFirstJanuary = CTime(iYear-1,1,1,0,0,0);
 					iDayOfWeek =
 						(dDateFirstJanuary.GetDayOfWeek()+5+iFirstDayOfWeek)%7;
-					// and we correct this in the same we we done this before but the result
+					// and we correct this in the same way we done this before but the result
 					// is now 52 or 53 and not 0
 					iWeekOfYear =
 						static_cast<int>(((time-dDateFirstJanuary).GetDays()+iDayOfWeek) / 7) +

@@ -224,7 +224,7 @@ private:
      *
      * Job schedulers will borrow from this pool via \ref TryAlloc
      * and release (not necessarily the same) threads via
-     * \ref Release as as they are no longer used.
+     * \ref Release as they are no longer used.
      *
      * The number of threads handed out to job scheudulers
      * (\ref allocCount) plus the number of threads still in the

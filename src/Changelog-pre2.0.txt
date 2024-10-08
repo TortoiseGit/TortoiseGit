@@ -257,7 +257,7 @@ Released: 2014-08-12
  * Fixed issue #2250: bugtraq.logregex Test incorrectly saves the order of the fields
  * TGitCache now does not check the contents of files with filesize > 10 MiB any more
    and falls back to checking the timestamp of the files (as if TGitCacheCheckContent
-   is set to "false") according the the git index. This limit can be changed by adjusting
+   is set to "false") according the git index. This limit can be changed by adjusting
    TGitCacheCheckContentMaxSize (measured in KiB) in TortoiseGit advanced settings.
    The reason for this change is that libgit2 reads a file to memory for hashing and,
    thus, locking the file and the repository for this time span.

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2023 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -240,7 +240,7 @@ MenuInfo menuInfo[] =
 	{ ShellMenuAbout,						MENUABOUT,			IDI_ABOUT,				IDS_MENUABOUT,				IDS_MENUDESCABOUT,
 		{ITEMIS_FOLDER, 0}, {0, ITEMIS_FOLDER}, {0, 0}, {0, 0} },
 
-	// the sub menus - they're not added like the the commands, therefore the menu ID is zero
+	// the sub menus - they're not added like the commands, therefore the menu ID is zero
 	// but they still need to be in here, because we use the icon and string information anyway.
 	{ ShellSubMenu,							NULL,				IDI_APP,				IDS_MENUSUBMENU,			0,
 		{0, 0}, {0, 0}, {0, 0}, {0, 0} },

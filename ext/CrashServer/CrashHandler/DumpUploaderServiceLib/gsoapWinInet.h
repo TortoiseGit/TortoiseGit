@@ -114,7 +114,7 @@ with any other plugin that uses these functions.
 If there are errors in sending the HTTP request which would cause a dialog
 box to be displayed in IE (for instance, invalid certificates on an HTTPS
 connection), then a dialog will also be displayed by this library. At the
-moment is is not possible to disable the UI. If you wish to remove the UI
+moment, it is not possible to disable the UI. If you wish to remove the UI
 then you will need to hack the source to remove the dialog box and resolve the
 errors programmatically, or supply the appropriate flags in
 soap_register_plugin_arg() to disable the unwanted warnings.

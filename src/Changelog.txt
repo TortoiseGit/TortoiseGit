@@ -25,6 +25,7 @@ Released: unreleased
  * Fixed issue #3995: Dark theme - selected items not visible
  * Fixed issue #4170: git-svn checkout ignores -T trunk or other options
  * Fixed issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
+ * Fixed issue #4174: Fix double words typo
 
 = Release 2.16.0 =
 Released: 2024-04-30
@@ -264,7 +265,7 @@ Released: 2022-01-31
  * Fixed issue #3793: "Diff with previous version" dialog does not clear files list during validation / for invalid version
  * Fixed issue #3784: Rebase dialog does not ask to pop stash when post rebase options in the lower left are used
  * Fixed issue #3625: Commit dialog shows wrong branch after committing failed when new branch was specified
- * Fixed issue #3658: Cannot "format-patch" from from stash
+ * Fixed issue #3658: Cannot "format-patch" from stash
  * Fixed issue #3791: TortoiseGitMerge: Ensure the line has an EOL unless it's the end of the document
  * Fixed issue #3790: TortoiseGitMerge: Prevent calling "mark as resolved" twice
  * Fixed issue #3765: TortoiseGitMerge crashes with files larger than 1GB
@@ -894,7 +895,7 @@ Released: 2016-03-26
  * Fixed issue #2728: Cherry Pick is not working in case of conflict and empty message
  * Fixed issue #2715: Cannot commit with a commit message starting with a hash (#) character
  * Updated libgit to 2.5.5 which includes fixes for CVE-2016-2315 and CVE-2016-2324
- * Fix the the credential helper settings dialog
+ * Fix the credential helper settings dialog
 
 = Release 2.0.0 =
 Released: 2016-02-29
