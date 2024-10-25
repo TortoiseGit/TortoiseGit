@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -154,12 +154,12 @@ protected:
 		{
 			m_pendingRefName = m_VersionName;
 			m_bNotFullName = true;
-			InitChooseVersion(false, true);
+			InitChooseVersion(true, true);
 			return;
 		}
 		m_pendingRefName = resultRef;
 		m_bNotFullName = false;
-		InitChooseVersion(false, true);
+		InitChooseVersion(true, true);
 	}
 
 	void SelectRef(CString refName, bool bRefNameIsPossiblyNotFullName = true)

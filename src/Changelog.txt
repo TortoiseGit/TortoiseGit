@@ -27,6 +27,7 @@ Released: unreleased
  * Fixed issue #4170: git-svn checkout ignores -T trunk or other options
  * Fixed issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
  * Fixed issue #4174: Fix double words typo
+ * Fixed issue #4173: Escape key stops working in Switch/Checkout dialog after browsing branches
 
 = Release 2.16.0 =
 Released: 2024-04-30
