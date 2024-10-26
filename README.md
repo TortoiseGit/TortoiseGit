@@ -44,13 +44,13 @@ You're welcome to contribute to this project! There are several aspects you can 
 * testing [preview releases](https://download.tortoisegit.org/tgit/previews/),
 * helping other users on the mailing lists,
 * improving our UIs, or also
-* coding (e.g., fix open issues or implement new features; see below for more information).
+* coding (e.g., fix open issues or implement new features).
 
 Any help is appreciated!
 
 Feel free to report issues and open merge requests.
 
-Please also check the [contribution guidelines](doc/HowToContribute.txt) to understand our
+Please also check the [contribution guidelines](CONTRIBUTING.md) to understand our
 workflow.
 
 How to build
