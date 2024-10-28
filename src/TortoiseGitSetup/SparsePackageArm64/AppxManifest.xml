@@ -12,7 +12,7 @@
   xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
   IgnorableNamespaces="uap uap2 uap3 rescap desktop uap10">
   <Identity Name="0BF99681-825C-4B2A-A14F-2AC01DB9B70E" ProcessorArchitecture="arm64"
-            Publisher="E=mail@cs-ware.de, CN=&quot;Open Source Developer, Sven Strickroth&quot;, O=Open Source Developer, S=Bavaria, C=DE"
+            Publisher="CN=&quot;Open Source Developer, Sven Strickroth&quot;, O=Open Source Developer, S=Bayern, C=DE"
             Version="1.0.0.0" />
   <Properties>
     <DisplayName>TortoiseGit</DisplayName>
