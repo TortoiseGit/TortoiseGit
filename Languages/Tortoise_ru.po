@@ -9836,7 +9836,7 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_STAGE_SELECTED_LINES, ID_STAGING_STAGESELECTEDLINES
 #. - Menu)
 msgid "Stage selected &lines"
-msgstr ""
+msgstr "Индексировать выбранные &строки"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1855)
 msgid "Staging support (EXPERIMENTAL)"
@@ -11222,7 +11222,7 @@ msgstr ""
 #. Resource IDs: (IDS_PROC_UNSTAGE_SELECTED_LINES,
 #. ID_UNSTAGING_UNSTAGESELECTEDLINES - Menu)
 msgid "Unstage selected &lines"
-msgstr ""
+msgstr "Удалить из индекса выбранные &строки"
 
 #. Resource IDs: (AFX_IDS_UNTITLED)
 msgid "Untitled"

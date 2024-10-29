@@ -21,7 +21,7 @@
 # lznuaa <lznuaa@gmail.com>, 2012-2013
 # lznuaa <lznuaa@gmail.com>, 2012-2013
 # Nick Vrvilo <nick@vrvilo.com>, 2011-2012
-# pluwen <pluwen@gmail.com>, 2011
+# 普鲁文 <pluwen@gmail.com>, 2011
 # qingxianhao <qinghao1@foxmail.com>, 2012
 # RAMBOO <ramboooo@126.com>, 2013
 # RAMBOO <ramboooo@126.com>, 2013
@@ -6131,7 +6131,7 @@ msgstr "忽略行尾符号（推荐）(&E)"
 
 #. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
 msgid "Ignore line endings"
-msgstr "忽略 CRLF"
+msgstr ""
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"

@@ -10,16 +10,16 @@
 # Sven Strickroth <sstrickroth@googlemail.com>, 2015
 # அனிச் பிரபு தி, 2021-2022
 # அனிச் பிரபு தி, 2021
-# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2023-2024
-# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2021
-# தமிழ்நேரம் <anishprabu.t@gmail.com>, 2021-2023
+# தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2023-2024
+# தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2021
+# தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2021-2023
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>, 2023-2024\n"
+"Last-Translator: தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2023-2024\n"
 "Language-Team: Tamil (India) (http://app.transifex.com/lznuaa/tortoisegit/language/ta_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"

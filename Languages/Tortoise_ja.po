@@ -17,7 +17,7 @@
 # kobachi, 2022
 #  Koto <>, 2012
 # Lübbe  <luebbe.tortoisesvn@googlemail.com>, 2012
-# 藤本 理弘 <mfujimot@gmail.com>, 2015
+# 藤本理弘 <mfujimot@gmail.com>, 2015
 # Nozomu Kaneko <nozom.kaneko@gmail.com>, 2013
 # Osamu NAKAMURA, 2013
 # Ratnadeep Debnath <rtnpro@transifex.com>, 2012
@@ -40,7 +40,7 @@
 # Yoshitaka Yamashita <drum@magic-touch.org>, 2013
 # youten, 2011
 # Tsuyoshi Okawa <tu44okawa3@gmail.com>, 2016
-# 藤本 理弘 <mfujimot@gmail.com>, 2013,2015,2017,2019-2021
+# 藤本理弘 <mfujimot@gmail.com>, 2013,2015,2017,2019-2021
 msgid ""
 msgstr ""
 "Project-Id-Version: TortoiseGit\n"

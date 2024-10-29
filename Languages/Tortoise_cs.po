@@ -5,7 +5,7 @@
 # 
 # Translators:
 # Adam Gregořica, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2022-2023
+# Aleš Fiala <f.ales1@seznam.cz>, 2022-2024
 # Jiří Engelthaler <engycz@gmail.com>, 2015-2016,2024
 # Jiri Sedlak <jiri_sedlak@users.sourceforge.net>, 2017
 # Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Jiří Engelthaler <engycz@gmail.com>, 2015-2016,2024\n"
+"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2024\n"
 "Language-Team: Czech (http://app.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1264,7 +1264,7 @@ msgstr "&Lišta stavu"
 
 #. Resource IDs: (Dialog IDD_SETTINGSMTP: Control id 1849)
 msgid "&Store credentials..."
-msgstr "&Uložit přihlašovací údaje..."
+msgstr "&Uložit pověření..."
 
 #. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1525)
 msgid "&Switch to new branch"
@@ -2355,7 +2355,7 @@ msgstr "Číslo revize větve"
 msgid ""
 "Branch \"%1!s!\" behind \"%2!s!\"\n"
 "\"%3!s!\" will fastforward to \"%4!s!\""
-msgstr ""
+msgstr "Větev \"%1!s!\" je za \"%2!s!\"\n\"%3!s!\" bude rychle posunuta vpřed na \"%4!s!\""
 
 #. Resource IDs: (IDS_B_T_INVALID)
 msgid "Branch/Tag name is invalid."
@@ -2428,7 +2428,7 @@ msgstr "Button3"
 msgid ""
 "By default Git does not save/cache credentials. However, you can configure a"
 " credential helper (recommended) or manually use %HOME%/_netrc."
-msgstr ""
+msgstr "Ve výchozím nastavení Git neukládá/nekešuje pověření. Můžete však nakonfigurovat pomocníka pro pověření (doporučeno) nebo ručně použít %HOME%/_netrc."
 
 #. Resource IDs: (cmdCopy_Keytip_RESID)
 msgid "C"
@@ -2668,7 +2668,7 @@ msgstr "Seznam změn %s přesunut"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "Provedené změny (F5: obnovte, poklepejte na soubor pro rozdíl):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -3660,7 +3660,7 @@ msgstr "Současná větev je aktuální nebo novější než načtená větev. P
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "Současná větev:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -5572,7 +5572,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_HANDLESUBMODULES)
 msgid "Handle submodules"
-msgstr ""
+msgstr "Zpracovat podmoduly"
 
 #. Resource IDs: (IDS_RESET_HARD)
 msgid "Hard"
@@ -5870,7 +5870,7 @@ msgstr "ID:57643:V C +Z"
 
 #. Accelerator Entry for Menu ID:57644; ''
 msgid "ID:57644:V C +Y"
-msgstr ""
+msgstr "ID:57644:V C +Y"
 
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
@@ -6105,7 +6105,7 @@ msgstr "Ignorovat &ukončení řádků (doporučeno)"
 
 #. Resource IDs: (cmdViewIgnoreEOL_LabelTitle_RESID)
 msgid "Ignore line endings"
-msgstr ""
+msgstr "Ignorovat konce řádků"
 
 #. Resource IDs: (IDS_MENUIGNOREMULTIPLEMASK2)
 msgid "Ignore multiple items by &extension"
@@ -7610,7 +7610,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PACKAGE_REGISTERED)
 msgid "Package registered"
-msgstr ""
+msgstr "Balíček registrován"
 
 #. Resource IDs: (AFX_IDS_PRINTPAGENUM)
 #, c-format
@@ -8316,7 +8316,7 @@ msgstr "Regulární výraz:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSWIN11CONTEXTMENU: Control id 1861)
 msgid "Register context menu"
-msgstr ""
+msgstr "Registrovat kontextové menu"
 
 #. Resource IDs: (IDS_LOG_FILTER_REGEX_TT)
 msgid ""
@@ -11784,7 +11784,7 @@ msgstr "Kontextová nabídka windows 11"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 1859)
 msgid "Windows Credential Manager"
-msgstr ""
+msgstr "Správce pověření systému windows"
 
 #. Resource IDs: (5020 - Menu)
 msgid "Windows-1250"
