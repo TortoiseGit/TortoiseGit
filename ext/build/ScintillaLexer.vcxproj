@@ -167,6 +167,7 @@
     <ClCompile Include="..\lexilla\lexers\LexCsound.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexCSS.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexD.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexDart.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexDataflex.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexDiff.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexDMAP.cxx" />
@@ -250,6 +251,7 @@
     <ClCompile Include="..\lexilla\lexers\LexTCMD.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTeX.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTOML.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexTroff.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexTxt2tags.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexVB.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexVerilog.cxx" />
@@ -257,6 +259,7 @@
     <ClCompile Include="..\lexilla\lexers\LexVisualProlog.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexX12.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexYAML.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexZig.cxx" />
     <ClCompile Include="..\lexilla\lexlib\Accessor.cxx" />
     <ClCompile Include="..\lexilla\lexlib\CharacterCategory.cxx" />
     <ClCompile Include="..\lexilla\lexlib\CharacterSet.cxx" />
