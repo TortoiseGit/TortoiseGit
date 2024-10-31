@@ -2065,7 +2065,7 @@
 #define IDM_FINDEXIT                    32791
 #define ID_VIEW_ZOOM100                 32803
 #define ID_VIEW_ZOOMALL                 32804
-#define ID_FILE_SAVEGRAPHAS32805        32805
+#define ID_FILE_SAVEGRAPHAS             32805
 #define ID_FILE_SAVESTATGRAPHAS         32806
 #define ID_FILTER_EXCLUDEPATHS          32807
 #define ID_FILTER_EXCLUDEREVISIONS      32808
@@ -2092,7 +2092,6 @@
 #define ID_VIEW_SHOWWCMODIFICATION      32838
 #define ID_VIEW_FILTER                  32839
 #define ID_VIEW_SHOWTREESTRIPES         32840
-#define ID_FILE_SAVEGRAPHAS             32841
 #define ID_MENUEXIT                     32842
 #define ID_MENUHELP                     32843
 #define ID_VIEW_COMPAREREVISIONS        32844
