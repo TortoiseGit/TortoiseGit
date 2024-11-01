@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -252,12 +252,14 @@ void CFirstStartWizardAuthentication::OnClickedLink(NMHDR* pNMHDR, LRESULT* pRes
 	ATLASSERT(pNMHDR && pResult);
 	auto pNMLink = reinterpret_cast<PNMLINK>(pNMHDR);
 	if (wcscmp(pNMLink->item.szID, L"manual") == 0)
-		HtmlHelp(0x20000 + IDD_FIRSTSTARTWIZARD_AUTHENTICATION);
+	{
+		if (!CAppUtils::StartHtmlHelp(0x20000 + IDD_FIRSTSTARTWIZARD_AUTHENTICATION))
+			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
+	}
 	else if (wcscmp(pNMLink->item.szID, L"sshfaq") == 0)
 	{
-		CString helppath(theApp.m_pszHelpFilePath);
-		helppath += L"::/tgit-ssh-howto.html";
-		::HtmlHelp(GetSafeHwnd(), helppath, HH_DISPLAY_TOPIC, 0);
+		if (!CAppUtils::StartHtmlHelp(0, L"tgit-ssh-howto.html"))
+			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
 	}
 	*pResult = 0;
 }

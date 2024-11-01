@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2021, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -186,7 +186,7 @@ BOOL CSetMainPage::OnApply()
 	Store(m_bCheckNewer, m_regCheckNewer);
 
 	// only complete if the msysgit directory is ok
-	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }))
+	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { if (!CAppUtils::StartHtmlHelp(0x20000 + helpid)) { AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP); } }))
 		return 0;
 
 	if (gitChanged || g_Git.ms_LastMsysGitVersion != static_cast<int>(m_dwMsysGitVersion))
@@ -221,7 +221,7 @@ void CSetMainPage::OnCheck()
 {
 	UpdateData(TRUE);
 
-	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); });
+	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { if (!CAppUtils::StartHtmlHelp(0x20000 + helpid)) { AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP); } });
 
 	UpdateData(FALSE);
 }
