@@ -1,7 +1,9 @@
-﻿= Release 2.17.0.1 =
+﻿= Release 2.17.0.2 =
 Released: 2024-11-01
 
 This is the last version that will work on Windows 7 and 8 (and possibly 8.1).
+
+The TortoiseGit 2.17.0.1 installer was missing statically linked x86 libraries for the x64 build.
 
 == Bug Fixes ==
  * Fixed issue #4177: TortoiseGit dialogs may not be visible (when a modal sub dialog is shown too early during dialog initialization)
