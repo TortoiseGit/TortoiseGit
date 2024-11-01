@@ -1,5 +1,5 @@
 ﻿= Release 2.17.0.1 =
-Released: unreleased
+Released: 2024-11-01
 
 This is the last version that will work on Windows 7 and 8 (and possibly 8.1).
 
