@@ -123,6 +123,10 @@ This will only build the english HTML help file for TortoiseGit
 		value="${path::get-full-path('../Tools')}"
 		unless="${property::exists('path.gettext')}"
 	/>
+	<property name="name.python"
+		value="python3"
+		unless="${property::exists('name.python')}"
+	/>
 
 	<!-- ============================================================ -->
 	<!-- Settings for XSLTPROC                                        -->
