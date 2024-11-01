@@ -129,6 +129,7 @@
 		<?endif ?>
 		<?include ProtocolSupport.wxi?>
 		<?include TortoiseUDiff.wxi?>
+		<?include HTMLHelpfiles.wxi?>
 
 		<!--
 		<FragmentRef Id="StructureFragment" />

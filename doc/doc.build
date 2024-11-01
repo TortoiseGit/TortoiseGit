@@ -515,7 +515,16 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<call target="xsltproc" />
 		</if>
-		<call target="helpmapping" if="${lang.base==lang.target and help.mapping=='1'}" />
+		<if test="${lang.base==lang.target and help.mapping=='1'}">
+			<call target="helpmapping"/>
+			<property name="help.wixfilelist" value="../src/TortoiseGitSetup/HTMLHelpfiles.wxi" unless="${property::exists('help.wixfilelist')}"/>
+			<exec program="${name.python}"
+						commandline="scripts/generate_wix_filelist.py"
+						output="${help.wixfilelist}"
+						verbose="false"/>
+			<exec program="sed" commandline=" -i 's/$/\r/' ${help.wixfilelist}" if="${platform::is-unix()}"/>
+			<echo message="Updated help WiX filelist: '${help.wixfilelist}'"/>
+		</if>
 	</target>
 
 <!-- ====================================================================== -->

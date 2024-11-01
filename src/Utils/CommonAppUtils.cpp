@@ -29,6 +29,7 @@
 #include "LoadIconEx.h"
 #include "IconBitmapUtils.h"
 #include "CreateProcessHelper.h"
+#include "SysInfo.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -409,68 +410,59 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 {
 	ATLASSERT(page == "index.html" || id == 0);
 
-	CWinApp* pApp = AfxGetApp();
-	ASSERT_VALID(pApp);
+#if !defined(IDR_HELPMAPPING) || !defined(IDS_APPNAME)
+	return false;
+#else
+	static std::map<DWORD_PTR, std::wstring> idMap;
 
-	CString helpFile{ pApp->m_pszHelpFilePath };
-
-	if (helpFile.IsEmpty() || !PathFileExists(helpFile))
+	if (idMap.empty())
 	{
-#if defined(IDR_HELPMAPPING) && defined(IDS_APPNAME)
-		static std::map<DWORD_PTR, std::wstring> idMap;
-
-		if (idMap.empty())
+		DWORD resSize = 0;
+		const char* resData = GetResourceData(L"help", IDR_HELPMAPPING, resSize);
+		if (resData)
 		{
-			DWORD resSize = 0;
-			const char* resData = GetResourceData(L"help", IDR_HELPMAPPING, resSize);
-			if (resData)
+			auto resString = std::string(resData, resSize);
+			std::vector<std::string> lines;
+			stringtok(lines, resString, true, "\r\n");
+			for (const auto& line : lines)
 			{
-				auto resString = std::string(resData, resSize);
-				std::vector<std::string> lines;
-				stringtok(lines, resString, true, "\r\n");
-				for (const auto& line : lines)
-				{
-					if (line.empty())
-						continue;
-					std::vector<std::string> lineParts;
-					stringtok(lineParts, line, true, "=");
-					if (lineParts.size() == 2)
-						idMap[std::stoi(lineParts[0], nullptr, 0)] = CUnicodeUtils::StdGetUnicode(lineParts[1]);
-				}
+				if (line.empty())
+					continue;
+				std::vector<std::string> lineParts;
+				stringtok(lineParts, line, true, "=");
+				if (lineParts.size() == 2)
+					idMap[std::stoi(lineParts[0], nullptr, 0)] = CUnicodeUtils::StdGetUnicode(lineParts[1]);
 			}
 		}
-
-		std::wstring baseUrl{ L"https://tortoisegit.org/docs/" };
-		CString appName(MAKEINTRESOURCE(IDS_APPNAME));
-
-		if (idMap.find(id) != idMap.end())
-		{
-			page = idMap[id].c_str();
-			page.Replace(L"@", L"%40");
-		}
-
-		baseUrl += appName.MakeLower();
-		baseUrl += L'/';
-		baseUrl += page;
-
-		return reinterpret_cast<INT_PTR>(ShellExecute(nullptr, L"open", baseUrl.c_str(), nullptr, nullptr, SW_SHOWNORMAL)) > 32;
-#else
-		return false;
-#endif
 	}
 
-	CString mapID;
-	if (id)
-		mapID.Format(L" -mapid %Iu", id);
-	else
-		helpFile += L"::/" + page;
+	if (idMap.find(id) != idMap.end())
+	{
+		page = idMap[id].c_str();
+		page.Replace(L"@", L"%40");
+	}
 
-	wchar_t windir[MAX_PATH]{ 0 };
-	if (!GetWindowsDirectory(windir, _countof(windir))) // MAX_PATH ok.
-		return false;
+	CString appName(MAKEINTRESOURCE(IDS_APPNAME));
+	if (CString appHelp = CPathUtils::GetAppDirectory() + appName + L"_en\\"; PathFileExists(appHelp))
+	{
+		// We have to find the default browser, ourselves, because ShellExecute cannot handle anchors on local HTML files
+		DWORD dwszBuffPathLen = MAX_PATH;
+		if (CString application; SUCCEEDED(::AssocQueryStringW(SysInfo::Instance().IsWin8OrLater() ? ASSOCF_IS_PROTOCOL : 0, ASSOCSTR_COMMAND, L"http", L"open", CStrBuf(application, dwszBuffPathLen), &dwszBuffPathLen)))
+		{
+			if (application.Find(L"%1") < 0)
+				application += L" %1";
 
-	CString cmd;
-	cmd.Format(L"%s\\HH.exe%s \"%s\"", windir, static_cast<LPCWSTR>(mapID), static_cast<LPCWSTR>(helpFile));
+			if (application.Find(L"\"%1\"") >= 0)
+				application.Replace(L"\"%1\"", L"%1");
 
-	return CCreateProcessHelper::CreateProcessDetached(nullptr, cmd);
+			appHelp.Replace(L" ", L"%20");
+			appHelp.Replace(L'\\', L'/');
+			application.Replace(L"%1", L"file:///" + appHelp + page); // if the path is not prefixed with file:///, the anchor separator may not be detected correctly
+			return CCreateProcessHelper::CreateProcessDetached(nullptr, application);
+		}
+	}
+	CString url;
+	url.Format(L"https://tortoisegit.org/docs/%s/%s", static_cast<LPCWSTR>(appName.MakeLower()), static_cast<LPCWSTR>(page));
+	return reinterpret_cast<INT_PTR>(ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_SHOWNORMAL)) > 32;
+#endif
 }

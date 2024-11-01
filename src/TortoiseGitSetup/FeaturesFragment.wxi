@@ -67,7 +67,7 @@
 		<?endif ?>
 
 		<Feature Id="F_HELPFILES" Level="1" Title="Help/manual files" Description="If not installed, TortoiseGit will automatically open the manual on https://tortoisegit.org/docs/" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
-			<ComponentRef Id="C__help_en" />
+			<ComponentGroupRef Id="C__help_en" />
 		</Feature>
 
 		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
