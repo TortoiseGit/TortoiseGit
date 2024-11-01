@@ -1,0 +1,1045 @@
+<?xml version="1.0" ?>
+<Include>
+	<DirectoryRef Id="D__Bin">
+		<Directory Id="D__htmlhelp_TortoiseGit_en" Name="TortoiseGit_en">
+			<Component Id="C__htmlhelp_TortoiseGit_en_apg" Guid="1d3e3f92-af8b-4c35-116b-978377465585" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_apg" Name="apg.html" Source="..\..\doc\output\TortoiseGit_en\apg.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_git_command" Guid="088f7513-e5ba-fb56-6f5b-623f9883d43f" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_git_command" Name="git-command.html" Source="..\..\doc\output\TortoiseGit_en\git-command.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_git_developerinfo" Guid="b45e24b3-846d-6fcc-3004-e291386aaf29" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_git_developerinfo" Name="git-developerinfo.html" Source="..\..\doc\output\TortoiseGit_en\git-developerinfo.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_git_misc" Guid="9fbcd8a6-8712-fc5e-b74d-fb57f112a38e" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_git_misc" Name="git-misc.html" Source="..\..\doc\output\TortoiseGit_en\git-misc.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_Git_Tutorial" Guid="9741d7c1-2ad1-28d2-35c5-05a96b0aa29d" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_Git_Tutorial" Name="Git-Tutorial.html" Source="..\..\doc\output\TortoiseGit_en\Git-Tutorial.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_index" Guid="12a4635b-3b04-2b97-ec25-1379d57db66e" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_index" Name="index.html" Source="..\..\doc\output\TortoiseGit_en\index.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_styles_html" Guid="4355b5b0-f506-98be-4c8a-bd66cddb1f2c" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_styles_html" Name="styles_html.css" Source="..\..\doc\output\TortoiseGit_en\styles_html.css"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_admins_disablemenus" Guid="0d443476-807f-92b4-212a-2786cb46778e" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_admins_disablemenus" Name="tgit-admins-disablemenus.html" Source="..\..\doc\output\TortoiseGit_en\tgit-admins-disablemenus.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_admins_upgradecheck" Guid="450ee7db-b6d6-4e8f-3974-15705b7520ab" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_admins_upgradecheck" Name="tgit-admins-upgradecheck.html" Source="..\..\doc\output\TortoiseGit_en\tgit-admins-upgradecheck.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_admins" Guid="a0195078-0c8d-b80d-5df4-5823846874b0" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_admins" Name="tgit-admins.html" Source="..\..\doc\output\TortoiseGit_en\tgit-admins.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_app_internals" Guid="4fe5bea7-7aac-2830-f393-e248e267d360" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_app_internals" Name="tgit-app-internals.html" Source="..\..\doc\output\TortoiseGit_en\tgit-app-internals.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_automation_idiff" Guid="7c3eb1a3-e4e5-721e-1880-0c9f6de5c6d8" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_automation_idiff" Name="tgit-automation-idiff.html" Source="..\..\doc\output\TortoiseGit_en\tgit-automation-idiff.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_automation" Guid="d2e0a8ca-a553-cee1-03f7-cd9533ad36f6" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_automation" Name="tgit-automation.html" Source="..\..\doc\output\TortoiseGit_en\tgit-automation.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_add" Guid="14933292-4060-2796-54a1-a11127025f63" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_add" Name="tgit-dug-add.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-add.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_bisect" Guid="ca85e279-4824-d084-044f-2add810f1e1b" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_bisect" Name="tgit-dug-bisect.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-bisect.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_blame" Guid="c485ec4a-43da-4761-0fb9-ccb47f3a3d1c" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_blame" Name="tgit-dug-blame.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-blame.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_branchtag" Guid="77e0de73-35d2-fd16-4522-b4e4c2b1b265" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_branchtag" Name="tgit-dug-branchtag.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-branchtag.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_browse_ref" Guid="b0425463-9d87-12fb-51f0-0c7bd80e1798" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_browse_ref" Name="tgit-dug-browse-ref.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-browse-ref.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_bugtracker" Guid="bdca42ba-814e-47b1-c05d-1a84b6d96b67" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_bugtracker" Name="tgit-dug-bugtracker.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-bugtracker.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_changelists" Guid="c3c9ce2d-1e33-3bf9-bdf9-bd218e2063b7" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_changelists" Name="tgit-dug-changelists.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-changelists.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_checkout" Guid="ec86beb7-4704-16cf-5a3b-a08d4ee619d7" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_checkout" Name="tgit-dug-checkout.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-checkout.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_cherrypick" Guid="2bcac92c-1623-033b-233a-fb2ff94c410a" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_cherrypick" Name="tgit-dug-cherrypick.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-cherrypick.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_cleanup" Guid="eddaa485-de18-ca94-c37e-cb8b26628421" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_cleanup" Name="tgit-dug-cleanup.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-cleanup.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_clone" Guid="7c98480d-c88e-bc02-0fe2-2786b9752321" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_clone" Name="tgit-dug-clone.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-clone.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_commit" Guid="8866f255-3616-cf0c-5c25-b114de11a9d4" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_commit" Name="tgit-dug-commit.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-commit.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_conflicts" Guid="44486ca2-b0cf-18ac-e128-56d74eecc166" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_conflicts" Name="tgit-dug-conflicts.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-conflicts.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_create" Guid="71325930-898b-249c-a254-6ed3117243cb" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_create" Name="tgit-dug-create.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-create.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_daemon" Guid="01d98155-3020-7685-7208-d5203d73b342" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_daemon" Name="tgit-dug-daemon.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-daemon.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_delete_copy_move" Guid="a40a52f9-96a2-e35e-cde9-fa88a6d46a22" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_delete_copy_move" Name="tgit-dug-delete-copy-move.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-delete-copy-move.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_diff" Guid="a16a9c82-f654-2a63-5bad-62528f4ba6f7" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_diff" Name="tgit-dug-diff.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-diff.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_donate" Guid="d3e1dcf9-ba33-137f-a2e9-139fdf386854" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_donate" Name="tgit-dug-donate.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-donate.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_export" Guid="1edfc676-fdb8-adc1-c7b6-c2e05011fd7f" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_export" Name="tgit-dug-export.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-export.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_ignore" Guid="7909ee94-fcf1-a9c2-813f-3dc46fc6525c" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_ignore" Name="tgit-dug-ignore.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-ignore.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_lfslocking" Guid="70d953c0-5520-6529-9cf9-0970f3ab6701" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_lfslocking" Name="tgit-dug-lfslocking.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-lfslocking.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_merge" Guid="6a8171a5-de69-822e-ee2f-07f9243ae686" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_merge" Name="tgit-dug-merge.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-merge.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_patch" Guid="80bf9e8d-3764-1997-e399-d58dd89d6a6a" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_patch" Name="tgit-dug-patch.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-patch.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_pull" Guid="a7821b41-362c-8eb2-d8a0-f07506b5fc35" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_pull" Name="tgit-dug-pull.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-pull.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_push" Guid="e86b5129-5681-fc3a-7bec-b3f9d91292ce" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_push" Name="tgit-dug-push.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-push.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_rebase" Guid="73a57e30-b7c2-3ffa-f007-3940f5f4a145" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_rebase" Name="tgit-dug-rebase.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-rebase.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_reflog" Guid="80c0983b-b2bd-9eee-e525-5b0690a7ddfe" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_reflog" Name="tgit-dug-reflog.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-reflog.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_repobrowser" Guid="ba66f37f-67f7-f788-3207-ecf9b18c836e" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_repobrowser" Name="tgit-dug-repobrowser.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-repobrowser.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_reset" Guid="e3476b85-7b00-e8e2-276f-9e64bad28279" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_reset" Name="tgit-dug-reset.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-reset.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_revert" Guid="3cdbdd20-585f-4e25-8b43-e108bca93fe1" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_revert" Name="tgit-dug-revert.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-revert.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_revgraph" Guid="b89a7d71-aee4-44cd-bf76-b404269c2585" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_revgraph" Name="tgit-dug-revgraph.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-revgraph.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_settings" Guid="718c411c-4846-c8d5-82bd-bd53ba727522" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_settings" Name="tgit-dug-settings.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-settings.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_showlog" Guid="ff9912bd-18f4-c81f-a6d7-431b91f4204b" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_showlog" Name="tgit-dug-showlog.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-showlog.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_stash" Guid="a85c4dfc-69de-ad0f-b8cc-cba0de6c33c5" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_stash" Name="tgit-dug-stash.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-stash.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_submodules" Guid="69acb14b-cd1c-f433-67f2-e9f0f9bde545" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_submodules" Name="tgit-dug-submodules.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-submodules.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_svn_dcommit" Guid="cefca4f2-d4c1-c89b-0358-7da472094805" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_svn_dcommit" Name="tgit-dug-svn-dcommit.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-svn-dcommit.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_sync" Guid="cb27a4b7-1551-427b-a54c-29d2662a4c82" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_sync" Name="tgit-dug-sync.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-sync.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_wcstatus" Guid="5bfa5d0a-57cb-6474-5977-f5d809caa7b3" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_wcstatus" Name="tgit-dug-wcstatus.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-wcstatus.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug_worktrees" Guid="a07282d7-95a1-c19e-586f-41b96759c8e9" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug_worktrees" Name="tgit-dug-worktrees.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug-worktrees.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_dug" Guid="33cd20d4-d7d4-2238-2ca2-17ef31753388" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_dug" Name="tgit-dug.html" Source="..\..\doc\output\TortoiseGit_en\tgit-dug.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_faq" Guid="c75abda3-ffc6-ebcb-d0dc-b85331f88d8c" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_faq" Name="tgit-faq.html" Source="..\..\doc\output\TortoiseGit_en\tgit-faq.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_com_interface" Guid="b60e1b6c-5d8d-43c3-a5ed-6ef8bef9617d" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_gitwcrev_com_interface" Name="tgit-gitwcrev-com-interface.html" Source="..\..\doc\output\TortoiseGit_en\tgit-gitwcrev-com-interface.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_example" Guid="b1a24561-73cf-56ab-872a-8ce00952aba5" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_gitwcrev_example" Name="tgit-gitwcrev-example.html" Source="..\..\doc\output\TortoiseGit_en\tgit-gitwcrev-example.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_keywords" Guid="2b8051fc-accc-7e1d-55f0-81d21b43e0d5" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_gitwcrev_keywords" Name="tgit-gitwcrev-keywords.html" Source="..\..\doc\output\TortoiseGit_en\tgit-gitwcrev-keywords.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev" Guid="4b83fc05-c8ba-d13c-48c9-de590c5732d3" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_gitwcrev" Name="tgit-gitwcrev.html" Source="..\..\doc\output\TortoiseGit_en\tgit-gitwcrev.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_glossary" Guid="7680c5a3-d1fc-5625-64c9-7552d49c4c2c" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_glossary" Name="tgit-glossary.html" Source="..\..\doc\output\TortoiseGit_en\tgit-glossary.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_1" Guid="7627f519-8b9e-059b-d9c8-4a4ddeab63c1" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_1" Name="tgit-ibugtraqprovider-1.html" Source="..\..\doc\output\TortoiseGit_en\tgit-ibugtraqprovider-1.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_2" Guid="080111a7-2b09-82ba-8d92-fb308be48f7a" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_2" Name="tgit-ibugtraqprovider-2.html" Source="..\..\doc\output\TortoiseGit_en\tgit-ibugtraqprovider-2.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider" Guid="5b48ec26-0801-cc52-16d3-9d5226f71f99" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider" Name="tgit-ibugtraqprovider.html" Source="..\..\doc\output\TortoiseGit_en\tgit-ibugtraqprovider.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_index" Guid="ace6332c-db1e-f090-8de2-29b207c42e69" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_index" Name="tgit-index.html" Source="..\..\doc\output\TortoiseGit_en\tgit-index.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_intro_features" Guid="742ee525-f352-0c28-1e9f-9ed2a21bc19d" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_intro_features" Name="tgit-intro-features.html" Source="..\..\doc\output\TortoiseGit_en\tgit-intro-features.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_intro_history" Guid="95cf810d-26eb-e975-7554-8a8fb5a78bc9" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_intro_history" Name="tgit-intro-history.html" Source="..\..\doc\output\TortoiseGit_en\tgit-intro-history.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_intro_install" Guid="25188b9c-a82c-4968-8fcc-66d358ffa407" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_intro_install" Name="tgit-intro-install.html" Source="..\..\doc\output\TortoiseGit_en\tgit-intro-install.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_introduction" Guid="2b0dc8d7-8146-47c4-2ac4-42acba966f3f" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_introduction" Name="tgit-introduction.html" Source="..\..\doc\output\TortoiseGit_en\tgit-introduction.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface_acknowledgements" Guid="47622a14-1b94-576c-acbe-ccd3bd7463d0" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface_acknowledgements" Name="tgit-preface-acknowledgements.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface-acknowledgements.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface_community" Guid="d2941540-d6f1-9324-19e9-5b7e1c23d206" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface_community" Name="tgit-preface-community.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface-community.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface_readingguide" Guid="3a0d2a89-f73b-5a14-f8f6-13481eda4fda" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface_readingguide" Name="tgit-preface-readingguide.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface-readingguide.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface_source" Guid="f1a72ca9-2a92-7ca9-48f0-8610ce9229a6" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface_source" Name="tgit-preface-source.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface-source.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface_terminoloty" Guid="a31d130f-77d5-6a44-1021-f25eb08d0db8" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface_terminoloty" Name="tgit-preface-terminoloty.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface-terminoloty.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_preface" Guid="6e3654be-d8ab-897b-80da-99808f7b53a0" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_preface" Name="tgit-preface.html" Source="..\..\doc\output\TortoiseGit_en\tgit-preface.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_ssh_faq" Guid="9e06a09b-9d2a-bb96-04a2-682274cbd316" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_ssh_faq" Name="tgit-ssh-faq.html" Source="..\..\doc\output\TortoiseGit_en\tgit-ssh-faq.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseGit_en_tgit_ssh_howto" Guid="92307119-1615-7704-cd86-e11887b25fdf" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseGit_en_tgit_ssh_howto" Name="tgit-ssh-howto.html" Source="..\..\doc\output\TortoiseGit_en\tgit-ssh-howto.html"/>
+			</Component>
+			<Directory Id="D__htmlhelp_TortoiseGit_en_images" Name="images">
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_AbortMerge" Guid="5940fa75-c5aa-24d3-2450-4a4c5db5e3d8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_AbortMerge" Name="AbortMerge.png" Source="..\..\doc\output\TortoiseGit_en\images\AbortMerge.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ActionAddedIcon" Guid="76d8243c-2cbd-685e-7f30-85560051b61b" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ActionAddedIcon" Name="ActionAddedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ActionAddedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ActionDeletedIcon" Guid="ce001b7d-0a82-0a0c-69a7-867346393f29" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ActionDeletedIcon" Name="ActionDeletedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ActionDeletedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ActionModifiedIcon" Guid="158b8e1b-3efe-c90a-89d0-f5b428ecb0eb" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ActionModifiedIcon" Name="ActionModifiedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ActionModifiedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ActionReplacedIcon" Guid="fb0af188-14d8-c547-a3e7-0c2403ebbd8c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ActionReplacedIcon" Name="ActionReplacedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ActionReplacedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_AddedIcon" Guid="0ee74b6b-ac76-d8cd-8e5a-ffd9caae1ecd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_AddedIcon" Name="AddedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\AddedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_AddFinish" Guid="38e40643-bb6f-2f7b-192d-b6c48199645f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_AddFinish" Name="AddFinish.png" Source="..\..\doc\output\TortoiseGit_en\images\AddFinish.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ApplyPatch" Guid="ed19754c-002f-6ed3-e2c9-e27ce8da76b5" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ApplyPatch" Name="ApplyPatch.png" Source="..\..\doc\output\TortoiseGit_en\images\ApplyPatch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_bisect" Guid="52f97afb-692d-f54f-5884-edcaf7d44e24" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_bisect" Name="bisect.png" Source="..\..\doc\output\TortoiseGit_en\images\bisect.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Branch" Guid="0f3c7e09-2d99-eb9c-3114-1beabd29919d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Branch" Name="Branch.png" Source="..\..\doc\output\TortoiseGit_en\images\Branch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_BrowseRef" Guid="763942bc-97f2-f492-9717-6e237afacbde" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_BrowseRef" Name="BrowseRef.png" Source="..\..\doc\output\TortoiseGit_en\images\BrowseRef.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_caution" Guid="db8ac6f9-b0a3-383c-5844-dbd2270c0c5d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_caution" Name="caution.png" Source="..\..\doc\output\TortoiseGit_en\images\caution.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Changelist" Guid="e6c549d2-4659-3253-bda1-8e326520b099" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Changelist" Name="Changelist.png" Source="..\..\doc\output\TortoiseGit_en\images\Changelist.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_CheckoutSubmodules" Guid="026a47a9-16f8-e7f9-0fd4-1630f83a86ff" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_CheckoutSubmodules" Name="CheckoutSubmodules.png" Source="..\..\doc\output\TortoiseGit_en\images\CheckoutSubmodules.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ChooseRepository" Guid="d8c67b2c-cc96-79d9-1dcf-d063cafa2d5c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ChooseRepository" Name="ChooseRepository.png" Source="..\..\doc\output\TortoiseGit_en\images\ChooseRepository.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_clean" Guid="cb39d1cb-d947-a7dc-ec7b-b8fd8b5243e8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_clean" Name="clean.png" Source="..\..\doc\output\TortoiseGit_en\images\clean.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Commit" Guid="38526920-ffe7-4b84-f862-b8589ee42917" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Commit" Name="Commit.png" Source="..\..\doc\output\TortoiseGit_en\images\Commit.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_CommitProgress" Guid="53d81166-9042-1d31-66bf-fb4fe4206051" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_CommitProgress" Name="CommitProgress.png" Source="..\..\doc\output\TortoiseGit_en\images\CommitProgress.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_CommitSpellcheck" Guid="1321a3d7-c6ed-e18a-8af7-36eee9da63cb" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_CommitSpellcheck" Name="CommitSpellcheck.png" Source="..\..\doc\output\TortoiseGit_en\images\CommitSpellcheck.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_CompareRevisions" Guid="3847819c-1b00-0c8f-869f-647dbb283c4b" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_CompareRevisions" Name="CompareRevisions.png" Source="..\..\doc\output\TortoiseGit_en\images\CompareRevisions.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ConflictIcon" Guid="66eebfd3-6169-71f6-b286-9f8a346d3c5d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ConflictIcon" Name="ConflictIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ConflictIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuBisect" Guid="6cf34584-7b58-a303-ac08-f6224f714caf" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuBisect" Name="ContextMenuBisect.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuBisect.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuDirControl" Guid="2cc9dd16-3e50-09d1-f33a-ff6d328571a9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuDirControl" Name="ContextMenuDirControl.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuDirControl.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileControl" Guid="63d4ed3e-c809-768a-f5cd-3f1aefc85cf1" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuFileControl" Name="ContextMenuFileControl.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuFileControl.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileIgnore" Guid="26b6bb7d-7f09-6c92-951f-1def6c82d145" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuFileIgnore" Name="ContextMenuFileIgnore.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuFileIgnore.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileNoControl" Guid="2ba55354-6e2e-db30-680c-d8e0278395cd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuFileNoControl" Name="ContextMenuFileNoControl.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuFileNoControl.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuStash" Guid="1146a544-525b-3bc6-ada4-48d339eefe95" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuStash" Name="ContextMenuStash.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuStash.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuSubmodules" Guid="45559987-5fce-e89f-a746-06ede630731e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ContextMenuSubmodules" Name="ContextMenuSubmodules.png" Source="..\..\doc\output\TortoiseGit_en\images\ContextMenuSubmodules.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_CreatePatch" Guid="d6c6fc54-bf88-8477-2502-7ebc71d3bf58" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_CreatePatch" Name="CreatePatch.png" Source="..\..\doc\output\TortoiseGit_en\images\CreatePatch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_DaemonProgress" Guid="2b35c055-e3aa-32b5-d349-1ad587b7612e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_DaemonProgress" Name="DaemonProgress.png" Source="..\..\doc\output\TortoiseGit_en\images\DaemonProgress.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_DeletedIcon" Guid="acf46752-f716-34ef-d7a3-b127163a1107" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_DeletedIcon" Name="DeletedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\DeletedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_DeleteRemoteTag" Guid="f0026e16-5ca4-4fc9-2504-0f0b9948d28a" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_DeleteRemoteTag" Name="DeleteRemoteTag.png" Source="..\..\doc\output\TortoiseGit_en\images\DeleteRemoteTag.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ExplorerFileMenuFileShortcut" Guid="73e5ce8e-53f8-88ec-a93c-176c71742734" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ExplorerFileMenuFileShortcut" Name="ExplorerFileMenuFileShortcut.png" Source="..\..\doc\output\TortoiseGit_en\images\ExplorerFileMenuFileShortcut.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ExportURL" Guid="f35357cc-40f0-b145-419e-1d1bd66563a3" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ExportURL" Name="ExportURL.png" Source="..\..\doc\output\TortoiseGit_en\images\ExportURL.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Fetch" Guid="2ef3354a-cf03-9a01-a57d-b99117827903" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Fetch" Name="Fetch.png" Source="..\..\doc\output\TortoiseGit_en\images\Fetch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitCherryPick" Guid="50bf5eaf-9617-ab1f-ca2e-9cbcf90aba06" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitCherryPick" Name="GitCherryPick.png" Source="..\..\doc\output\TortoiseGit_en\images\GitCherryPick.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitClone" Guid="07462940-66a1-25b1-2f07-926a5b15a44c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitClone" Name="GitClone.png" Source="..\..\doc\output\TortoiseGit_en\images\GitClone.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitCreate" Guid="c288793d-c292-dd0b-2e1d-e8e0238d7671" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitCreate" Name="GitCreate.png" Source="..\..\doc\output\TortoiseGit_en\images\GitCreate.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitCreateMsg" Guid="5fc93d68-e6fe-d102-9e0a-699bb994eade" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitCreateMsg" Name="GitCreateMsg.png" Source="..\..\doc\output\TortoiseGit_en\images\GitCreateMsg.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitPull" Guid="ebb5f920-d0f3-0822-a927-cedc633514c4" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitPull" Name="GitPull.png" Source="..\..\doc\output\TortoiseGit_en\images\GitPull.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitPush" Guid="338a343c-65b5-bbd0-b8bd-1e6dfba3c78c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitPush" Name="GitPush.png" Source="..\..\doc\output\TortoiseGit_en\images\GitPush.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitRebase" Guid="50734d3d-9c42-9183-9c51-b404482d1b6a" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitRebase" Name="GitRebase.png" Source="..\..\doc\output\TortoiseGit_en\images\GitRebase.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitReflog" Guid="24bf8488-1c41-4bcc-7247-4406fc655dc2" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitReflog" Name="GitReflog.png" Source="..\..\doc\output\TortoiseGit_en\images\GitReflog.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitReset" Guid="00b9b2c2-1842-df4b-d631-ff4f5abfcb92" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitReset" Name="GitReset.png" Source="..\..\doc\output\TortoiseGit_en\images\GitReset.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitSubModuleAdd" Guid="b4ee8399-0d74-814c-99bb-295d2dbcdfa5" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitSubModuleAdd" Name="GitSubModuleAdd.png" Source="..\..\doc\output\TortoiseGit_en\images\GitSubModuleAdd.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_GitSync" Guid="612ee374-787c-bfd4-4c58-fbaab1b7bd5c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_GitSync" Name="GitSync.png" Source="..\..\doc\output\TortoiseGit_en\images\GitSync.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_IgnoreDialog" Guid="15087a0e-5be8-bd0e-530d-a2a48ee5fbb9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_IgnoreDialog" Name="IgnoreDialog.png" Source="..\..\doc\output\TortoiseGit_en\images\IgnoreDialog.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_IgnoredIcon" Guid="24f1dcf3-805c-23fe-ae05-9bd9a484f5db" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_IgnoredIcon" Name="IgnoredIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\IgnoredIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_important" Guid="05f550a5-f16f-2088-931e-626df93fa88f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_important" Name="important.png" Source="..\..\doc\output\TortoiseGit_en\images\important.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_InGitIcon" Guid="432dd16e-ccbd-fb4c-0b7b-2c319ec03247" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_InGitIcon" Name="InGitIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\InGitIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_IssueTrackerQuery" Guid="762b587a-7260-e194-a636-1188f753576b" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_IssueTrackerQuery" Name="IssueTrackerQuery.png" Source="..\..\doc\output\TortoiseGit_en\images\IssueTrackerQuery.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LFSLocks" Guid="3a93eeb3-0a4a-6845-a83c-feb17c40ef36" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LFSLocks" Name="LFSLocks.png" Source="..\..\doc\output\TortoiseGit_en\images\LFSLocks.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_link" Guid="401654e5-1053-9a99-15d5-0a3cc20a4d6a" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_link" Name="link.png" Source="..\..\doc\output\TortoiseGit_en\images\link.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LockedIcon" Guid="4a72b5be-a77f-5f82-4c3b-b7525bd64eaa" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LockedIcon" Name="LockedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\LockedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogCollapsedRevs" Guid="beb69662-cae5-6335-3921-42e588743473" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogCollapsedRevs" Name="LogCollapsedRevs.png" Source="..\..\doc\output\TortoiseGit_en\images\LogCollapsedRevs.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu" Guid="5c55bee8-c6b7-26d7-2d7d-7d4e9d84a155" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogContextMenu" Name="LogContextMenu.png" Source="..\..\doc\output\TortoiseGit_en\images\LogContextMenu.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu1" Guid="30b60308-3bb9-61e4-b4da-edecefee4335" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogContextMenu1" Name="LogContextMenu1.png" Source="..\..\doc\output\TortoiseGit_en\images\LogContextMenu1.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu2" Guid="e4a8a52b-930b-18a2-35cd-edcef411d8b4" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogContextMenu2" Name="LogContextMenu2.png" Source="..\..\doc\output\TortoiseGit_en\images\LogContextMenu2.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogFilterOptions" Guid="3f134490-f0e9-fb2e-ac28-d529493dd51d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogFilterOptions" Name="LogFilterOptions.png" Source="..\..\doc\output\TortoiseGit_en\images\LogFilterOptions.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogMessages" Guid="3b439608-681e-9a9f-cfaa-921d29a4d993" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogMessages" Name="LogMessages.png" Source="..\..\doc\output\TortoiseGit_en\images\LogMessages.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_LogSearch" Guid="56ebb1ea-95a4-2871-479c-a50aca99597c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_LogSearch" Name="LogSearch.png" Source="..\..\doc\output\TortoiseGit_en\images\LogSearch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Merge" Guid="fbd608b6-1be0-473e-6607-211d8b3e2546" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Merge" Name="Merge.png" Source="..\..\doc\output\TortoiseGit_en\images\Merge.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ModifiedIcon" Guid="b79b6e71-ed2d-d5b2-d08c-247c32658f68" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ModifiedIcon" Name="ModifiedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ModifiedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_note" Guid="c58a8b30-3570-34b4-c8fc-56f3f90b3bdd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_note" Name="note.png" Source="..\..\doc\output\TortoiseGit_en\images\note.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Overlays" Guid="ace00888-e74b-3a3e-4d2a-967c0e164dc8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Overlays" Name="Overlays.png" Source="..\..\doc\output\TortoiseGit_en\images\Overlays.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Properties" Guid="cb419d0a-7330-e8a1-7906-fcbfe0fdd374" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Properties" Name="Properties.png" Source="..\..\doc\output\TortoiseGit_en\images\Properties.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ReadOnlyIcon" Guid="6f0af730-d000-90c5-d1e1-f02f03000ffe" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ReadOnlyIcon" Name="ReadOnlyIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\ReadOnlyIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_RepoBrowser" Guid="8c4d82ef-61e9-5a82-b216-001d293887d9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_RepoBrowser" Name="RepoBrowser.png" Source="..\..\doc\output\TortoiseGit_en\images\RepoBrowser.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_RepoStatus" Guid="6ef9faf5-795c-1646-f4fe-3c13b3eddc63" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_RepoStatus" Name="RepoStatus.png" Source="..\..\doc\output\TortoiseGit_en\images\RepoStatus.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_RequestPull" Guid="b9c996eb-9082-b7f7-79e7-cd574f6f816a" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_RequestPull" Name="RequestPull.png" Source="..\..\doc\output\TortoiseGit_en\images\RequestPull.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_resolve_delete_modify_conflict" Guid="544fd83c-5176-92d1-d8dc-158d20051e54" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_resolve_delete_modify_conflict" Name="resolve-delete-modify-conflict.png" Source="..\..\doc\output\TortoiseGit_en\images\resolve-delete-modify-conflict.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_resolve_submodule_conflict" Guid="f14e2df1-c8f1-ddeb-a6ac-8bab00961d69" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_resolve_submodule_conflict" Name="resolve-submodule-conflict.png" Source="..\..\doc\output\TortoiseGit_en\images\resolve-submodule-conflict.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_ResolveConflict" Guid="76e66649-7a2a-5c0a-b30c-e52b5f051eb4" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_ResolveConflict" Name="ResolveConflict.png" Source="..\..\doc\output\TortoiseGit_en\images\ResolveConflict.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Revert" Guid="7f309cb7-7cc9-fb86-9393-b62d7e9059bb" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Revert" Name="Revert.png" Source="..\..\doc\output\TortoiseGit_en\images\Revert.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_RevisionGraph" Guid="f06bb323-7961-8ace-e02e-a7e1ec34a909" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_RevisionGraph" Name="RevisionGraph.png" Source="..\..\doc\output\TortoiseGit_en\images\RevisionGraph.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_RightDragMenu" Guid="85d86a35-a0d4-e18c-2927-ec9e07fd4974" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_RightDragMenu" Name="RightDragMenu.png" Source="..\..\doc\output\TortoiseGit_en\images\RightDragMenu.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SendPatch" Guid="0f0e6e8b-d5cc-8778-3fb8-a5b80b2ac1d9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SendPatch" Name="SendPatch.png" Source="..\..\doc\output\TortoiseGit_en\images\SendPatch.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsAlternativeEditor" Guid="c2e3553c-5473-a6a3-f192-c4dc26c4c807" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsAlternativeEditor" Name="SettingsAlternativeEditor.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsAlternativeEditor.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsBlame" Guid="e8edf86f-730c-0341-6174-1f730c45745c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsBlame" Name="SettingsBlame.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsBlame.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors" Guid="1e217fb2-79c3-c6db-7975-318846cd5dd9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsColors" Name="SettingsColors.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsColors.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors2" Guid="44835983-7401-fdf0-064c-7837a9e7ac40" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsColors2" Name="SettingsColors2.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsColors2.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors3" Guid="fc8ed8f5-737c-df80-24f4-868acf7aa436" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsColors3" Name="SettingsColors3.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsColors3.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsContext" Guid="234abc39-e1e8-3498-fa64-170530a31ac4" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsContext" Name="SettingsContext.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsContext.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog" Guid="73a385b7-9c3f-6069-82e9-3d46cf58161c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsDialog" Name="SettingsDialog.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsDialog.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog2" Guid="f77eb15c-57e8-3c62-3c1b-12fb86871b2d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsDialog2" Name="SettingsDialog2.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsDialog2.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog3" Guid="cd85cca2-8d39-0613-8475-2fc2917efb5e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsDialog3" Name="SettingsDialog3.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsDialog3.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsEmail" Guid="24941610-e870-b260-2f92-22df91a77cc6" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsEmail" Name="SettingsEmail.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsEmail.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsExtendMenu" Guid="a891cc0a-8260-1b62-6bbf-f4b0fc0fc6a7" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsExtendMenu" Name="SettingsExtendMenu.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsExtendMenu.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitConfig" Guid="e58a333f-cdeb-53fc-a97b-6e846601bf00" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsGitConfig" Name="SettingsGitConfig.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsGitConfig.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitCredential" Guid="1763966a-2e6b-ec42-1660-19141e78c543" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsGitCredential" Name="SettingsGitCredential.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsGitCredential.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitRemote" Guid="4729b2c5-f85e-8025-a8de-f00f157ef572" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsGitRemote" Name="SettingsGitRemote.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsGitRemote.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsHookEdit" Guid="29ea1a91-da31-347f-ed6f-b6f7d575c253" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsHookEdit" Name="SettingsHookEdit.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsHookEdit.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsHooks" Guid="c137d591-be63-6f77-6d97-024907a8ad3d" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsHooks" Name="SettingsHooks.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsHooks.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTracker" Guid="21a7d11f-1dc4-fa46-c518-fe98d69e9c04" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsIssueTracker" Name="SettingsIssueTracker.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsIssueTracker.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerConfig" Guid="5e891fc5-d6b2-a086-a8a9-d4e1abf1643e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerConfig" Name="SettingsIssueTrackerConfig.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsIssueTrackerConfig.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerIntegration" Guid="9c33b996-6ca6-30d2-fc34-1c64b1840fc9" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerIntegration" Name="SettingsIssueTrackerIntegration.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsIssueTrackerIntegration.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsMain" Guid="423eff21-7408-2bab-f28e-97973d8f7338" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsMain" Name="SettingsMain.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsMain.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsMergeTool" Guid="28b79250-0827-eb5b-60f8-30a3ede06025" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsMergeTool" Name="SettingsMergeTool.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsMergeTool.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlay" Guid="2dfe0a21-7719-0889-1e77-806ee4033a31" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsOverlay" Name="SettingsOverlay.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsOverlay.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlayChooser" Guid="ea183215-76f5-4af0-eb1e-77baa4f8dd90" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsOverlayChooser" Name="SettingsOverlayChooser.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsOverlayChooser.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlayHandlers" Guid="fb678101-7bec-eb37-cc53-3c618473e44f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsOverlayHandlers" Name="SettingsOverlayHandlers.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsOverlayHandlers.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsProgs" Guid="bc91a114-22ae-4252-2d7b-1b3fd2ce9fc5" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsProgs" Name="SettingsProgs.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsProgs.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsProgsAdv" Guid="5619bc79-2d41-7a5f-0d3f-6a26c35672f0" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsProgsAdv" Name="SettingsProgsAdv.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsProgsAdv.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsProxy" Guid="d82a79d7-d87f-c951-4a27-aa8fb0fb1bfd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsProxy" Name="SettingsProxy.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsProxy.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsSavedData" Guid="7d2ea496-c999-35f9-e05a-6bf881870fe6" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsSavedData" Name="SettingsSavedData.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsSavedData.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SettingsUDiff" Guid="02cdfc0b-52c5-12c0-eb26-55889e2c9223" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SettingsUDiff" Name="SettingsUDiff.png" Source="..\..\doc\output\TortoiseGit_en\images\SettingsUDiff.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_stash" Guid="88b3761d-573d-1096-7c5e-25be1a8cd36c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_stash" Name="stash.png" Source="..\..\doc\output\TortoiseGit_en\images\stash.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_StatsByAuthor" Guid="64988971-e2d3-c4b6-c187-2730d050eef7" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_StatsByAuthor" Name="StatsByAuthor.png" Source="..\..\doc\output\TortoiseGit_en\images\StatsByAuthor.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_StatsByAuthPie" Guid="d863748a-938b-2536-b22d-c9f5262a61f6" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_StatsByAuthPie" Name="StatsByAuthPie.png" Source="..\..\doc\output\TortoiseGit_en\images\StatsByAuthPie.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_StatsByDate" Guid="2c3795ef-75df-e9b6-40cb-54db7f4a6c94" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_StatsByDate" Name="StatsByDate.png" Source="..\..\doc\output\TortoiseGit_en\images\StatsByDate.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SubmoduleDiff" Guid="0cc39506-a6a6-8ef3-3708-318269b54807" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SubmoduleDiff" Name="SubmoduleDiff.png" Source="..\..\doc\output\TortoiseGit_en\images\SubmoduleDiff.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SubmoduleUpdate" Guid="88882fa9-fe63-d960-8a9c-b6852b315bbb" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SubmoduleUpdate" Name="SubmoduleUpdate.png" Source="..\..\doc\output\TortoiseGit_en\images\SubmoduleUpdate.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SwitchCheckOut" Guid="0e49cded-289d-bdfa-b2a9-73ca49004591" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SwitchCheckOut" Name="SwitchCheckOut.png" Source="..\..\doc\output\TortoiseGit_en\images\SwitchCheckOut.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_SymbolizeRefNamesExample" Guid="87c57916-e935-028f-c60d-5cb000b93363" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_SymbolizeRefNamesExample" Name="SymbolizeRefNamesExample.png" Source="..\..\doc\output\TortoiseGit_en\images\SymbolizeRefNamesExample.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_Tag" Guid="7b062d9b-1dcf-849f-d3e8-e735c3229a4f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_Tag" Name="Tag.png" Source="..\..\doc\output\TortoiseGit_en\images\Tag.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroup1" Guid="c21e3d9d-d559-1e91-0bff-46ff1f8ae9dc" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TaskbarGroup1" Name="TaskbarGroup1.png" Source="..\..\doc\output\TortoiseGit_en\images\TaskbarGroup1.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroup2" Guid="16eae1ce-c505-b88f-716e-f1fcdb9232f8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TaskbarGroup2" Name="TaskbarGroup2.png" Source="..\..\doc\output\TortoiseGit_en\images\TaskbarGroup2.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroupOverlay" Guid="1ea3bc12-c591-c658-dcd0-f41ede078951" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TaskbarGroupOverlay" Name="TaskbarGroupOverlay.png" Source="..\..\doc\output\TortoiseGit_en\images\TaskbarGroupOverlay.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TaskbarOverlayIcon" Guid="6bf0b41e-fce7-941f-6e3b-49c283eed7f8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TaskbarOverlayIcon" Name="TaskbarOverlayIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\TaskbarOverlayIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_tip" Guid="b0452d52-2a2e-8b88-82ad-606ed8f9da88" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_tip" Name="tip.png" Source="..\..\doc\output\TortoiseGit_en\images\tip.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TortoiseBlame" Guid="eb2bb88d-54de-5618-2b2b-5372753a1c81" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TortoiseBlame" Name="TortoiseBlame.png" Source="..\..\doc\output\TortoiseGit_en\images\TortoiseBlame.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TortoiseGit_banner" Guid="20f005db-ca4a-a8bc-98ff-c34b06fdb0c8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TortoiseGit_banner" Name="TortoiseGit_banner.png" Source="..\..\doc\output\TortoiseGit_en\images\TortoiseGit_banner.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_TortoiseIDiff" Guid="c119c484-1679-dee3-c615-f323c9323953" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_TortoiseIDiff" Name="TortoiseIDiff.png" Source="..\..\doc\output\TortoiseGit_en\images\TortoiseIDiff.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_UnversionedIcon" Guid="65007933-50f0-476d-8691-2e3153fa6ee7" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_UnversionedIcon" Name="UnversionedIcon.png" Source="..\..\doc\output\TortoiseGit_en\images\UnversionedIcon.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_upgradecheck" Guid="fa9bcafe-15eb-3477-ab1d-fae337670bda" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_upgradecheck" Name="upgradecheck.png" Source="..\..\doc\output\TortoiseGit_en\images\upgradecheck.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseGit_en_images_warning" Guid="2e672349-6ad8-c45d-e302-cbd68869318e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseGit_en_images_warning" Name="warning.png" Source="..\..\doc\output\TortoiseGit_en\images\warning.png"/>
+				</Component>
+				<Directory Id="D__htmlhelp_TortoiseGit_en_images_callouts" Name="callouts">
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_1" Guid="91b16819-e342-260d-2f8f-c9486168c8d6" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_1" Name="1.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\1.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_10" Guid="223ceb9e-632b-51e8-930a-2d1c235473b0" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_10" Name="10.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\10.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_11" Guid="14676dc1-69aa-b3c2-2dd1-76e2ce2ffb4e" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_11" Name="11.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\11.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_12" Guid="cd3ebb3a-3904-b69c-1c04-49971971de74" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_12" Name="12.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\12.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_13" Guid="7616ebf4-7206-7605-8dbf-e4395f3597de" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_13" Name="13.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\13.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_14" Guid="85fcc88c-7caf-27c4-3b32-9a74c37458ea" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_14" Name="14.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\14.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_15" Guid="107c570a-a802-483f-8fd2-07fdc9db6b16" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_15" Name="15.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\15.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_2" Guid="3b7587ee-8f23-64c0-5ad6-2ac5f0ba4a9c" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_2" Name="2.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\2.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_3" Guid="f20de942-1871-4c2e-b937-66a1c53f0897" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_3" Name="3.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\3.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_4" Guid="aaa56a19-1468-3f8d-7c19-4aae25a2625f" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_4" Name="4.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\4.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_5" Guid="6c04f736-e428-9261-1f8f-032fff02b081" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_5" Name="5.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\5.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_6" Guid="97131138-0d73-39c6-3a06-309c14716b09" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_6" Name="6.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\6.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_7" Guid="2108108b-970d-9736-57c0-ee0f6f368e01" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_7" Name="7.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\7.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_8" Guid="67198635-3e40-a9b2-862e-275bee45ad6a" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_8" Name="8.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\8.svg"/>
+					</Component>
+					<Component Id="C__htmlhelp_TortoiseGit_en_images_callouts_9" Guid="3ee1338e-bea8-dee6-0926-ddf7faa50884" Win64="$(var.Win64YesNo)">
+						<File Id="F__htmlhelp_TortoiseGit_en_images_callouts_9" Name="9.svg" Source="..\..\doc\output\TortoiseGit_en\images\callouts\9.svg"/>
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+		<Directory Id="D__htmlhelp_TortoiseMerge_en" Name="TortoiseGitMerge_en">
+			<Component Id="C__htmlhelp_TortoiseMerge_en_index" Guid="18b25066-b0d7-be05-e561-5529548f923b" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_index" Name="index.html" Source="..\..\doc\output\TortoiseMerge_en\index.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_styles_html" Guid="393b8e0e-2af6-9097-e9c1-7f2f60acc41e" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_styles_html" Name="styles_html.css" Source="..\..\doc\output\TortoiseMerge_en\styles_html.css"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tgit_glossary" Guid="dbbda7c2-b6aa-4284-e778-4e4e2f94eaae" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tgit_glossary" Name="tgit-glossary.html" Source="..\..\doc\output\TortoiseMerge_en\tgit-glossary.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tme_automation" Guid="a3937119-48de-d7fc-0f4c-da7c4629d2d5" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tme_automation" Name="tme-automation.html" Source="..\..\doc\output\TortoiseMerge_en\tme-automation.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tme_keyboard" Guid="5cd9bca6-7c24-0c31-9ec2-ecc047c10abd" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tme_keyboard" Name="tme-keyboard.html" Source="..\..\doc\output\TortoiseMerge_en\tme-keyboard.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tme_preface_acknowledgements" Guid="742f4774-b625-1573-c0a9-87f2352b5c07" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tme_preface_acknowledgements" Name="tme-preface-acknowledgements.html" Source="..\..\doc\output\TortoiseMerge_en\tme-preface-acknowledgements.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tme_preface" Guid="14ced16c-4bab-3a37-23ab-06629aab3003" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tme_preface" Name="tme-preface.html" Source="..\..\doc\output\TortoiseMerge_en\tme-preface.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics_conflicts" Guid="2ac5c525-ff5e-9121-a4b2-439beade66d6" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_basics_conflicts" Name="tmerge-basics-conflicts.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-basics-conflicts.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics_patch" Guid="a25a7848-a7db-c76b-7e1d-eda4e52203b8" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_basics_patch" Name="tmerge-basics-patch.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-basics-patch.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics" Guid="e912a029-a3cf-40a3-5073-86b9b9369be3" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_basics" Name="tmerge-basics.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-basics.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_conflicts" Guid="4f3a2124-6476-7edf-edf2-635162421b40" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug_conflicts" Name="tmerge-dug-conflicts.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug-conflicts.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_icons" Guid="88eb7a69-43d7-d35f-5669-163a01f69137" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug_icons" Name="tmerge-dug-icons.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug-icons.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_open" Guid="4dd741a9-3f9a-7b8c-69f3-1caba6697cc8" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug_open" Name="tmerge-dug-open.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug-open.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_settings" Guid="ec7e621c-b7cb-f5f0-075e-d357d7f8a559" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug_settings" Name="tmerge-dug-settings.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug-settings.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_toolbar" Guid="abc893db-d938-4e68-aea2-902a0265bee8" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug_toolbar" Name="tmerge-dug-toolbar.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug-toolbar.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug" Guid="95520f85-6219-55f2-6884-ec4b40f67703" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_dug" Name="tmerge-dug.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-dug.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_intro_history" Guid="39dc7a72-5fdd-47c2-2aed-f2f7b972a7d1" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_intro_history" Name="tmerge-intro-history.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-intro-history.html"/>
+			</Component>
+			<Component Id="C__htmlhelp_TortoiseMerge_en_tmerge_intro" Guid="653e3c78-f60a-160d-3441-8f6594d76763" Win64="$(var.Win64YesNo)">
+				<File Id="F__htmlhelp_TortoiseMerge_en_tmerge_intro" Name="tmerge-intro.html" Source="..\..\doc\output\TortoiseMerge_en\tmerge-intro.html"/>
+			</Component>
+			<Directory Id="D__htmlhelp_TortoiseMerge_en_images" Name="images">
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_caution" Guid="7a352408-3f13-8ca2-bfd2-50afbe8fe50e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_caution" Name="caution.png" Source="..\..\doc\output\TortoiseMerge_en\images\caution.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_important" Guid="2e3d9fc7-e710-6ae8-cd66-579e60c599bd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_important" Name="important.png" Source="..\..\doc\output\TortoiseMerge_en\images\important.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_link" Guid="93103bd0-653d-d1ea-cccd-9eaace61547e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_link" Name="link.png" Source="..\..\doc\output\TortoiseMerge_en\images\link.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_mergeprinciple" Guid="dbc671af-57fa-b94f-6ec2-a6ccf8101b13" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_mergeprinciple" Name="mergeprinciple.png" Source="..\..\doc\output\TortoiseMerge_en\images\mergeprinciple.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_note" Guid="61d403f1-2938-36bf-cf58-23713dee2e0b" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_note" Name="note.png" Source="..\..\doc\output\TortoiseMerge_en\images\note.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_tip" Guid="5259b4f8-db30-9752-bbe5-99f6ddaa9c64" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_tip" Name="tip.png" Source="..\..\doc\output\TortoiseMerge_en\images\tip.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineadded" Guid="48bc473e-b818-b8e9-1f85-72db0c76eb12" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineadded" Name="TMerge_lineadded.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineadded.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflicted" Guid="3dbfee75-2d4f-8a5e-e1f7-be5ab3e0cf0f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflicted" Name="TMerge_lineconflicted.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineconflicted.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflictedignored" Guid="4b05ace5-0dbf-0720-b10c-f2af9f72ae2b" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflictedignored" Name="TMerge_lineconflictedignored.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineconflictedignored.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineedited" Guid="62d6faca-b13b-0d58-3d34-c9b01f1b2910" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineedited" Name="TMerge_lineedited.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineedited.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineequal" Guid="239be265-e9bf-7d85-9c62-8816b306d8f0" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineequal" Name="TMerge_lineequal.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineequal.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_linemoved" Guid="5234dd82-ea77-93dc-9941-28ed55e956bd" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_linemoved" Name="TMerge_linemoved.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_linemoved.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineremoved" Guid="a2202e37-1882-4a92-61e9-5b7118e5f0c1" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_lineremoved" Name="TMerge_lineremoved.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_lineremoved.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_linewhitespace" Guid="7fdbd72b-ebcf-36ac-8d24-7b63aa1dd2b6" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_linewhitespace" Name="TMerge_linewhitespace.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_linewhitespace.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_OnePane" Guid="2bde8ecf-50e8-3e40-4aa4-c775aaeb37bf" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_OnePane" Name="TMerge_OnePane.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_OnePane.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_Open" Guid="e56f22b9-8683-6671-4da4-19512abe8ca8" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_Open" Name="TMerge_Open.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_Open.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_PatchWindow" Guid="8a5ec549-23ab-786c-3b86-563b77194291" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_PatchWindow" Name="TMerge_PatchWindow.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_PatchWindow.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsColors" Guid="6cef8b6b-6511-07a1-ab75-00ee91d14a4e" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsColors" Name="TMerge_SettingsColors.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_SettingsColors.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsGeneral" Guid="243a17c1-e50c-5c0a-61e4-460bef89e02f" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsGeneral" Name="TMerge_SettingsGeneral.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_SettingsGeneral.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_ThreePane" Guid="6aa2cdf5-f2b4-5625-0871-4591df43b624" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_ThreePane" Name="TMerge_ThreePane.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_ThreePane.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_TwoPane" Guid="bf1787dc-5835-5fc2-850f-2752350fab26" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TMerge_TwoPane" Name="TMerge_TwoPane.png" Source="..\..\doc\output\TortoiseMerge_en\images\TMerge_TwoPane.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_TortoiseGitMerge_banner" Guid="71f0ab32-cdae-3f6e-4c3f-b0c868504a4c" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_TortoiseGitMerge_banner" Name="TortoiseGitMerge_banner.png" Source="..\..\doc\output\TortoiseMerge_en\images\TortoiseGitMerge_banner.png"/>
+				</Component>
+				<Component Id="C__htmlhelp_TortoiseMerge_en_images_warning" Guid="902d51a2-d4e6-8271-6bd0-4aa842f247f7" Win64="$(var.Win64YesNo)">
+					<File Id="F__htmlhelp_TortoiseMerge_en_images_warning" Name="warning.png" Source="..\..\doc\output\TortoiseMerge_en\images\warning.png"/>
+				</Component>
+			</Directory>
+		</Directory>
+	</DirectoryRef>
+	<ComponentGroup Id="C__help_en">
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_apg"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_git_command"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_git_developerinfo"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_git_misc"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_Git_Tutorial"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_index"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_styles_html"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_admins_disablemenus"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_admins_upgradecheck"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_admins"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_app_internals"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_automation_idiff"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_automation"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_add"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_bisect"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_blame"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_branchtag"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_browse_ref"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_bugtracker"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_changelists"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_checkout"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_cherrypick"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_cleanup"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_clone"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_commit"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_conflicts"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_create"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_daemon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_delete_copy_move"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_diff"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_donate"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_export"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_ignore"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_lfslocking"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_merge"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_patch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_pull"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_push"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_rebase"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_reflog"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_repobrowser"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_reset"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_revert"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_revgraph"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_settings"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_showlog"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_stash"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_submodules"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_svn_dcommit"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_sync"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_wcstatus"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug_worktrees"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_dug"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_faq"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_com_interface"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_example"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev_keywords"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_gitwcrev"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_glossary"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_1"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider_2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_ibugtraqprovider"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_index"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_intro_features"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_intro_history"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_intro_install"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_introduction"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface_acknowledgements"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface_community"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface_readingguide"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface_source"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface_terminoloty"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_preface"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_ssh_faq"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_tgit_ssh_howto"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_AbortMerge"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ActionAddedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ActionDeletedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ActionModifiedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ActionReplacedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_AddedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_AddFinish"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ApplyPatch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_bisect"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Branch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_BrowseRef"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_caution"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Changelist"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_CheckoutSubmodules"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ChooseRepository"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_clean"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Commit"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_CommitProgress"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_CommitSpellcheck"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_CompareRevisions"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ConflictIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuBisect"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuDirControl"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileControl"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileIgnore"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuFileNoControl"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuStash"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ContextMenuSubmodules"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_CreatePatch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_DaemonProgress"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_DeletedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_DeleteRemoteTag"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ExplorerFileMenuFileShortcut"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ExportURL"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Fetch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitCherryPick"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitClone"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitCreate"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitCreateMsg"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitPull"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitPush"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitRebase"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitReflog"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitReset"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitSubModuleAdd"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_GitSync"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_IgnoreDialog"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_IgnoredIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_important"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_InGitIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_IssueTrackerQuery"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LFSLocks"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_link"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LockedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogCollapsedRevs"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu1"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogContextMenu2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogFilterOptions"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogMessages"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_LogSearch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Merge"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ModifiedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_note"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Overlays"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Properties"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ReadOnlyIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_RepoBrowser"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_RepoStatus"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_RequestPull"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_resolve_delete_modify_conflict"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_resolve_submodule_conflict"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_ResolveConflict"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Revert"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_RevisionGraph"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_RightDragMenu"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SendPatch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsAlternativeEditor"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsBlame"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsColors3"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsContext"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsDialog3"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsEmail"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsExtendMenu"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitConfig"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitCredential"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsGitRemote"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsHookEdit"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsHooks"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTracker"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerConfig"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsIssueTrackerIntegration"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsMain"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsMergeTool"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlay"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlayChooser"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsOverlayHandlers"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsProgs"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsProgsAdv"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsProxy"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsSavedData"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SettingsUDiff"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_stash"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_StatsByAuthor"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_StatsByAuthPie"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_StatsByDate"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SubmoduleDiff"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SubmoduleUpdate"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SwitchCheckOut"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_SymbolizeRefNamesExample"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_Tag"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroup1"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroup2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TaskbarGroupOverlay"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TaskbarOverlayIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_tip"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TortoiseBlame"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TortoiseGit_banner"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_TortoiseIDiff"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_UnversionedIcon"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_upgradecheck"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_warning"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_1"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_10"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_11"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_12"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_13"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_14"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_15"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_2"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_3"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_4"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_5"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_6"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_7"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_8"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseGit_en_images_callouts_9"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_index"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_styles_html"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tgit_glossary"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tme_automation"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tme_keyboard"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tme_preface_acknowledgements"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tme_preface"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics_conflicts"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics_patch"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_basics"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_conflicts"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_icons"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_open"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_settings"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug_toolbar"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_dug"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_intro_history"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_tmerge_intro"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_caution"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_important"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_link"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_mergeprinciple"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_note"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_tip"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineadded"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflicted"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineconflictedignored"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineedited"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineequal"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_linemoved"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_lineremoved"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_linewhitespace"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_OnePane"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_Open"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_PatchWindow"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsColors"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_SettingsGeneral"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_ThreePane"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TMerge_TwoPane"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_TortoiseGitMerge_banner"/>
+		<ComponentRef Id="C__htmlhelp_TortoiseMerge_en_images_warning"/>
+	</ComponentGroup>
+</Include>
