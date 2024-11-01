@@ -44,8 +44,7 @@
 #define IDI_LINEMARKED                  170
 #define IDB_REGEX_FILTER                171
 #define IDR_TGITMERGELOGO               172
-#define IDR_HELPALIAS                   173
-#define IDR_HELPCONTEXT                 174
+#define IDR_HELPMAPPING                 173
 #define IDS_SELECTFILE                  200
 #define IDS_INDICATOR_COLUMN            202
 #define IDS_INDICATOR_MARKEDWORDCOUNT   203
@@ -373,7 +372,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_RESOURCE_VALUE        174
 #define _APS_NEXT_COMMAND_VALUE         33003
 #define _APS_NEXT_CONTROL_VALUE         1514
 #define _APS_NEXT_SYMED_VALUE           101

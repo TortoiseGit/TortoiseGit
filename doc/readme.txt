@@ -29,6 +29,8 @@ Use 7-zip extract the tools-*.7z file to e.g. \TortoiseGit\Tools. You might want
 place your tools directory somewhere else on your harddisk, if you want to use it
 to build other docs too. This will, however, require tweaking the build scripts.
 
+Furthermore, Python 3 (can be installed from the Microsoft Store) is required.
+
 Please note that having spaces in your directory path will (for the time being)
 cause the documentation build process to fail.
 

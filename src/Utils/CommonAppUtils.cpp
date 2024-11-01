@@ -416,34 +416,13 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 
 	if (helpFile.IsEmpty() || !PathFileExists(helpFile))
 	{
-#if defined(IDR_HELPCONTEXT) && defined(IDR_HELPALIAS) && defined(IDS_APPNAME)
+#if defined(IDR_HELPMAPPING) && defined(IDS_APPNAME)
 		static std::map<DWORD_PTR, std::wstring> idMap;
 
 		if (idMap.empty())
 		{
-			std::map<std::string, DWORD_PTR> contextMap;
 			DWORD resSize = 0;
-			const char* resData = GetResourceData(L"help", IDR_HELPCONTEXT, resSize);
-			if (resData)
-			{
-				auto resString = std::string(resData, resSize);
-				std::vector<std::string> lines;
-				stringtok(lines, resString, true, "\r\n");
-				for (const auto& line : lines)
-				{
-					if (line._Starts_with("//"))
-						continue;
-					if (line.empty())
-						continue;
-					std::vector<std::string> lineParts;
-					stringtok(lineParts, line, true, " ");
-					if (lineParts.size() == 3)
-						contextMap[lineParts[1]] = std::stoi(lineParts[2], nullptr, 0);
-				}
-			}
-			std::map<std::string, std::string> aliasMap;
-			resSize = 0;
-			resData = GetResourceData(L"help", IDR_HELPALIAS, resSize);
+			const char* resData = GetResourceData(L"help", IDR_HELPMAPPING, resSize);
 			if (resData)
 			{
 				auto resString = std::string(resData, resSize);
@@ -456,15 +435,7 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 					std::vector<std::string> lineParts;
 					stringtok(lineParts, line, true, "=");
 					if (lineParts.size() == 2)
-						aliasMap[lineParts[0]] = lineParts[1];
-				}
-			}
-			for (const auto& [textId, link] : aliasMap)
-			{
-				if (contextMap.find(textId) != contextMap.end())
-				{
-					auto numId = contextMap.find(textId)->second;
-					idMap[numId] = CUnicodeUtils::StdGetUnicode(link);
+						idMap[std::stoi(lineParts[0], nullptr, 0)] = CUnicodeUtils::StdGetUnicode(lineParts[1]);
 				}
 			}
 		}

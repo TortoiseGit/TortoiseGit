@@ -367,8 +367,7 @@
     <ClInclude Include="..\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\Git\TGitPath.h" />
     <ClInclude Include="..\Resources\LoglistCommonResource.h" />
-    <ClInclude Include="..\Resources\TGitHelpAlias.h" />
-    <ClInclude Include="..\Resources\TGitHelpContext.h" />
+    <ClInclude Include="..\Resources\TGitHelpMapping.ini" />
     <ClInclude Include="..\TortoiseMerge\FileTextLines.h" />
     <ClInclude Include="..\TortoiseShell\ShellCache.h" />
     <ClInclude Include="..\Utils\ACEdit.h" />
