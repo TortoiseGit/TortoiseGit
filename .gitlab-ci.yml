@@ -5,9 +5,10 @@ doc:
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en python3
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en python3 git
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
+    - rm -f src/Resources/TGitHelpAlias.h src/Resources/TGitHelpContext.h src/Resources/TGitMergeHelpAlias.h src/Resources/TGitMergeHelpContext.h
     - mv doc/doc.build.user.linux.templ doc/doc.build.user
     - cd doc
     - nant -D:spellcheck=true
@@ -17,6 +18,9 @@ doc:
         exit 1;
       fi
     - ./CheckIDD.sh
+    - cd ..
+    - git diff -- src/Resources/TGitHelpAlias.h src/Resources/TGitHelpContext.h src/Resources/TGitMergeHelpAlias.h src/Resources/TGitMergeHelpContext.h
+    - git diff-index --quiet HEAD -- src/Resources/TGitHelpAlias.h src/Resources/TGitHelpContext.h src/Resources/TGitMergeHelpAlias.h src/Resources/TGitMergeHelpContext.h
   except:
     refs:
       - tags
@@ -29,7 +33,11 @@ doc:
       - doc/doc.build*
       - doc/Aspell/*
       - doc/scripts/**
+      - src/TortoiseMege/resource.h
+      - src/TortoiseProc/resource.h
       - src/Resources/*.rc
+      - src/Resources/TGit*HelpAlias.h
+      - src/Resources/TGit*HelpContext.h
 
 spellcheck-pot:
   image: debian:buster

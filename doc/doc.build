@@ -247,7 +247,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<if test="${not file::up-to-date(file.target, potfile)}">
 				<echo message="Creating po template from sources"/>
-				<exec program="python"
+				<exec program="${name.python}"
 							commandline="xml2po.py -e -o ${potfile}.tmp ${file.target}"
 							verbose="false"/>
 
@@ -304,7 +304,7 @@ All user/site specific configuration is stored in doc.build.user.
 					<echo message="Translating: ${path::get-file-name(file.target)}"/>
 					<property name="dir.target" value="${path::get-directory-name(file.target)}"/>
 					<mkdir dir="${dir.target}" unless="${directory::exists(dir.target)}"/>
-					<exec program="python"
+					<exec program="${name.python}"
 								commandline='xml2po.py -t "${lang.target}.mo" -o "${file.target}" "${file.base}"'
 								verbose="false"/>
 				</if>
@@ -522,7 +522,15 @@ All user/site specific configuration is stored in doc.build.user.
 			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
 
 			<call target="xsltproc" />
-
+		</if>
+		<call target="helpmapping" if="${lang.base==lang.target}" />
+		<if test="${doc.target.name == 'TortoiseGit_en'}">
+			<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitHelpAlias.h" />
+			<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitHelpContext.h" />
+		</if>
+		<if test="${doc.target.name == 'TortoiseMerge_en'}">
+			<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitMergeHelpAlias.h" />
+			<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitMergeHelpContext.h" />
 		</if>
 	</target>
 
@@ -546,6 +554,19 @@ All user/site specific configuration is stored in doc.build.user.
 			<call target="xsltproc" />
 
 		</if>
+	</target>
+
+<!-- ====================================================================== -->
+<!-- Create mapping files for TortoiseGit online help                       -->
+<!-- ====================================================================== -->
+
+	<target name="helpmapping" description="Create Context.h">
+		<call target="help.prepare.${app}" />
+		<exec program="${name.python}"
+					output="${doc.target.work}/context.h"
+					commandline="scripts/create_html_mapping.py ${help.resource}"
+					verbose="false"/>
+		<exec program="sed" commandline=" -i 's/$/\r/' ${doc.target.work}/context.h" if="${platform::is-unix()}"/>
 	</target>
 
 </project>
