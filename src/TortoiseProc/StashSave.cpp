@@ -23,7 +23,6 @@
 #include "AppUtils.h"
 #include "MessageBox.h"
 #include "Git.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CStashSaveDlg, CHorizontalResizableStandAloneDialog)
 
@@ -54,7 +53,6 @@ END_MESSAGE_MAP()
 
 BOOL CStashSaveDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

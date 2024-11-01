@@ -40,7 +40,6 @@
 #include "StringUtils.h"
 #include "FileTextLines.h"
 #include "DPIAware.h"
-#include "AutoCloakWindow.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -189,7 +188,6 @@ static int GetCommitTemplate(CString &msg)
 
 BOOL CCommitDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

@@ -22,7 +22,6 @@
 #include "AppUtils.h"
 #include "SubmoduleDiffDlg.h"
 #include "LoglistCommonResource.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=nullptr*/)
@@ -63,7 +62,6 @@ END_MESSAGE_MAP()
 
 BOOL CSubmoduleDiffDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 
 	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);

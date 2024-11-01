@@ -26,7 +26,6 @@
 #include "MessageBox.h"
 #include "GitProgressDlg.h"
 #include "ProgressCommands/ResolveProgressCommand.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleResolveConflictDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleResolveConflictDlg::CSubmoduleResolveConflictDlg(CWnd* pParent /*=nullptr*/)
@@ -67,7 +66,6 @@ END_MESSAGE_MAP()
 
 BOOL CSubmoduleResolveConflictDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 
 	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);

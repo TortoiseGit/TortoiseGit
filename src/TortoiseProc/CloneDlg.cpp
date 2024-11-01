@@ -26,7 +26,6 @@
 #include "BrowseFolder.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 // CCloneDlg dialog
 
@@ -100,7 +99,6 @@ void CCloneDlg::DoDataExchange(CDataExchange* pDX)
 
 BOOL CCloneDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

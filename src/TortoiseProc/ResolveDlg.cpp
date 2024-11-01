@@ -24,7 +24,6 @@
 #include "PathUtils.h"
 #include "AppUtils.h"
 #include "Git.h"
-#include "AutoCloakWindow.h"
 
 #define REFRESHTIMER   100
 
@@ -55,7 +54,6 @@ END_MESSAGE_MAP()
 
 BOOL CResolveDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

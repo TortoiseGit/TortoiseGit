@@ -25,7 +25,6 @@
 #include "BrowseFolder.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include "AutoCloakWindow.h"
 
 // CCreateRepoDlg dialog
 
@@ -50,7 +49,6 @@ void CCreateRepoDlg::DoDataExchange(CDataExchange* pDX)
 
 BOOL CCreateRepoDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

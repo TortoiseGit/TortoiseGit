@@ -25,7 +25,6 @@
 #include "GitSwitchDlg.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CGitSwitchDlg dialog
 
@@ -77,7 +76,6 @@ END_MESSAGE_MAP()
 
 BOOL CGitSwitchDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

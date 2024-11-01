@@ -33,7 +33,6 @@
 #include "ClipboardHelper.h"
 #include "DPIAware.h"
 #include "LogDlgFileFilter.h"
-#include "AutoCloakWindow.h"
 
 #define MIN_CTRL_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 20))
 #define MIN_SPLITTER_HEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10))
@@ -264,7 +263,6 @@ void CLogDlg::SetFilter(const CString& findstr, LONG findtype, bool findregex)
 BOOL CLogDlg::OnInitDialog()
 {
 	CString temp;
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

@@ -25,7 +25,6 @@
 #include "ControlsBridge.h"
 #include "Git.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CRenameDlg, CHorizontalResizableStandAloneDialog)
 CRenameDlg::CRenameDlg(CWnd* pParent /*=nullptr*/)
@@ -52,7 +51,6 @@ END_MESSAGE_MAP()
 
 BOOL CRenameDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

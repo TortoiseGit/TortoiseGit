@@ -24,7 +24,6 @@
 #include "AppUtils.h"
 #include <regex>
 #include <string>
-#include "AutoCloakWindow.h"
 
 // CAutoTextTestDlg dialog
 
@@ -55,7 +54,6 @@ END_MESSAGE_MAP()
 
 BOOL CAutoTextTestDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

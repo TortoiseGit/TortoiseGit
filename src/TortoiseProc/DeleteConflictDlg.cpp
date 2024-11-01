@@ -24,7 +24,6 @@
 #include "DeleteConflictDlg.h"
 #include "AppUtils.h"
 #include "Git.h"
-#include "AutoCloakWindow.h"
 
 // CDeleteConflictDlg dialog
 
@@ -66,7 +65,6 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteConflictDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 
 	if(this->m_bShowModifiedButton )

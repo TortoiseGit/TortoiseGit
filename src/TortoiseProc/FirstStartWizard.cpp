@@ -20,7 +20,6 @@
 #include "TortoiseProc.h"
 #include "FirstStartWizard.h"
 #include "TaskbarUUID.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CFirstStartWizard, CStandAloneDialogTmpl<CPropertySheetEx>)
 
@@ -53,7 +52,6 @@ END_MESSAGE_MAP()
 // CFirstStartWizard message handlers
 BOOL CFirstStartWizard::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

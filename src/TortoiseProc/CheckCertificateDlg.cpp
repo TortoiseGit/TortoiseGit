@@ -22,7 +22,6 @@
 #include "AppUtils.h"
 #include "TempFile.h"
 #include <WinCrypt.h>
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CCheckCertificateDlg, CStandAloneDialog)
 CCheckCertificateDlg::CCheckCertificateDlg(CWnd* pParent /*=nullptr*/)
@@ -89,7 +88,6 @@ static CString getCertificateHash(HCRYPTPROV hCryptProv, ALG_ID algId, BYTE* cer
 
 BOOL CCheckCertificateDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

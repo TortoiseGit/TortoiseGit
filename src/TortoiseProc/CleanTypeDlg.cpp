@@ -24,7 +24,6 @@
 #include "CleanTypeDlg.h"
 #include "Git.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 // CCleanTypeDlg dialog
 
@@ -71,7 +70,6 @@ END_MESSAGE_MAP()
 
 BOOL CCleanTypeDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStateStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

@@ -25,7 +25,6 @@
 #include "Git.h"
 #include "FileDiffDlg.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 // CResetDlg dialog
 
@@ -57,7 +56,6 @@ END_MESSAGE_MAP()
 // CResetDlg message handlers
 BOOL CResetDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

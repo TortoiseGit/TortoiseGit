@@ -21,7 +21,6 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "UserPassword.h"
-#include "AutoCloakWindow.h"
 
 // CUserPassword dialog
 
@@ -53,7 +52,6 @@ END_MESSAGE_MAP()
 
 BOOL CUserPassword::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	if (!m_URL.IsEmpty())
 	{

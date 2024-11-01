@@ -21,7 +21,6 @@
 #include "resource.h"
 #include "FindDlg.h"
 #include "StringUtils.h"
-#include "AutoCloakWindow.h"
 
 // CFindDlg dialog
 
@@ -107,7 +106,6 @@ void CFindDlg::OnOK()
 
 BOOL CFindDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 	m_FindMsg = RegisterWindowMessage(FINDMSGSTRING);
 

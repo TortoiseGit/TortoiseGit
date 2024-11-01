@@ -28,7 +28,6 @@
 #include "AppUtils.h"
 #include "FileDiffDlg.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CCommitIsOnRefsDlg dialog
 
@@ -92,7 +91,6 @@ void CCommitIsOnRefsDlg::PostNcDestroy()
 
 BOOL CCommitIsOnRefsDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 
 	AddAnchor(IDC_FILTER, BOTTOM_LEFT, BOTTOM_RIGHT);

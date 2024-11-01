@@ -29,7 +29,6 @@
 #include "Git.h"
 #include "DPIAware.h"
 #include "SysInfo.h"
-#include "AutoCloakWindow.h"
 
 //IMPLEMENT_DYNAMIC(CAboutDlg, CStandAloneDialog)
 CAboutDlg::CAboutDlg(CWnd* pParent /*=nullptr*/)
@@ -75,7 +74,6 @@ static CString Lf2Crlf(const CString& text)
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

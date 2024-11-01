@@ -22,7 +22,6 @@
 #include "TortoiseProc.h"
 #include "registry.h"
 #include "HistoryDlg.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CHistoryDlg, CResizableStandAloneDialog)
 CHistoryDlg::CHistoryDlg(CWnd* pParent /*=nullptr*/)
@@ -69,7 +68,6 @@ void CHistoryDlg::OnBnClickedOk()
 
 BOOL CHistoryDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	// calculate and set listbox width

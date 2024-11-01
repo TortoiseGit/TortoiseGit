@@ -26,7 +26,6 @@
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
 #include "SendMailPatch.h"
-#include "AutoCloakWindow.h"
 
 // CSendMailDlg dialog
 
@@ -74,7 +73,6 @@ END_MESSAGE_MAP()
 
 BOOL CSendMailDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

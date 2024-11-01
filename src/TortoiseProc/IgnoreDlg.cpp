@@ -22,7 +22,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "IgnoreDlg.h"
-#include "AutoCloakWindow.h"
 
 // CIgnoreDlg dialog
 
@@ -52,7 +51,6 @@ END_MESSAGE_MAP()
 // CIgnoreDlg message handlers
 BOOL CIgnoreDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStateStandAloneDialog::OnInitDialog();
 
 	this->CheckRadioButton(IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE, IDC_RADIO_IGNOREFILE_GITINFOEXCLUDE, IDC_RADIO_IGNOREFILE_GLOBALGITIGNORE + m_IgnoreType);

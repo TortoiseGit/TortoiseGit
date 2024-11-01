@@ -38,7 +38,6 @@
 #include "FormatMessageWrapper.h"
 #include "GitDataObject.h"
 #include "LogDlgFileFilter.h"
-#include "AutoCloakWindow.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -163,7 +162,6 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
 
 BOOL CFileDiffDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CString temp;
 

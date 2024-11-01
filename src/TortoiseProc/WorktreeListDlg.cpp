@@ -29,7 +29,6 @@
 #include "SysImageList.h"
 #include "PathUtils.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CWorktreeListDlg dialog
 
@@ -64,7 +63,6 @@ END_MESSAGE_MAP()
 
 BOOL CWorktreeListDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

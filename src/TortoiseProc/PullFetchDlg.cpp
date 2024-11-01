@@ -27,7 +27,6 @@
 #include "AppUtils.h"
 #include "SelectRemoteRefDlg.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CPullFetchDlg dialog
 
@@ -92,7 +91,6 @@ END_MESSAGE_MAP()
 
 BOOL CPullFetchDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

@@ -20,7 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "CreateChangelistDlg.h"
-#include "AutoCloakWindow.h"
 
 // CCreateChangelistDlg dialog
 
@@ -49,7 +48,6 @@ END_MESSAGE_MAP()
 
 BOOL CCreateChangelistDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStandAloneDialog::OnInitDialog();
 
 	SetTheme(CTheme::Instance().IsDarkTheme());

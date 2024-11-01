@@ -43,8 +43,6 @@
 #include "Theme.h"
 #include "DarkModeHelper.h"
 #include "Lexilla.h"
-#include "AutoCloakWindow.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -1947,8 +1945,12 @@ void CTortoiseGitBlameView::OnEditFind()
 		flags |= FR_MATCHCASE;
 
 	m_pFindDialog->Create(TRUE, oneline, nullptr, flags, this);
-	CAutoCloakWindow window_cloaker{ m_pFindDialog->GetSafeHwnd() };
+
+	BOOL cloak = TRUE;
+	DwmSetWindowAttribute(m_hWnd, DWMWA_CLOAK, &cloak, sizeof(cloak)); // hide the window until we're ready
 	CTheme::Instance().SetThemeForDialog(m_pFindDialog->GetSafeHwnd(), CTheme::Instance().IsDarkTheme());
+	cloak = FALSE;
+	DwmSetWindowAttribute(m_hWnd, DWMWA_CLOAK, &cloak, sizeof(cloak)); // hide the window until we're ready
 }
 
 void CTortoiseGitBlameView::OnEditGoto()

@@ -24,7 +24,6 @@
 #include "CreateBranchTagDlg.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CCreateBranchTagDlg dialog
 
@@ -72,7 +71,6 @@ END_MESSAGE_MAP()
 
 BOOL CCreateBranchTagDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

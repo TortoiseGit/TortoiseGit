@@ -34,7 +34,6 @@
 #include "LogFile.h"
 #include "CmdLineParser.h"
 #include "StringUtils.h"
-#include "AutoCloakWindow.h"
 
 // CProgressDlg dialog
 
@@ -104,7 +103,6 @@ END_MESSAGE_MAP()
 
 BOOL CProgressDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't

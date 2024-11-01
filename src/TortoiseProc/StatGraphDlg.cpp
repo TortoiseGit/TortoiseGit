@@ -25,7 +25,6 @@
 #include "registry.h"
 #include "FormatMessageWrapper.h"
 #include "SysProgressDlg.h"
-#include "AutoCloakWindow.h"
 #include <cmath>
 #include <locale>
 #include <utility>
@@ -138,7 +137,6 @@ void CStatGraphDlg::SetSkipper (bool reloadSkiper)
 
 BOOL CStatGraphDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	m_tooltips.AddTool(&m_btnGraphPie, IDS_STATGRAPH_PIEBUTTON_TT);

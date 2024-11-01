@@ -31,7 +31,6 @@
 #include "BrowseRefsDlg.h"
 #include "RefLogDlg.h"
 #include "MessageBox.h"
-#include "AutoCloakWindow.h"
 
 // CPushDlg dialog
 
@@ -155,7 +154,6 @@ BOOL CPushDlg::OnInitDialog()
 
 	this->GetDlgItem(IDC_PUTTYKEY_AUTOLOAD)->EnableWindow(CAppUtils::IsSSHPutty());
 
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	EnableSaveRestore(L"PushDlg");
 
 	m_Remote.SetMaxHistoryItems(0x7FFFFFFF);

@@ -55,7 +55,6 @@
 #include "SettingSMTP.h"
 #include "SettingsTUDiff.h"
 #include "SysInfo.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSettings, CTreePropSheet)
 CSettings::CSettings(UINT nIDCaption, CTGitPath * /*cmdPath*/, CWnd* pParentWnd, UINT iSelectPage)
@@ -178,7 +177,6 @@ END_MESSAGE_MAP()
 
 BOOL CSettings::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bResult = __super::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

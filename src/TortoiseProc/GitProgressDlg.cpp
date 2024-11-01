@@ -24,7 +24,6 @@
 #include "SmartHandle.h"
 #include "StringUtils.h"
 #include "CmdLineParser.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CGitProgressDlg, CResizableStandAloneDialog)
 CGitProgressDlg::CGitProgressDlg(CWnd* pParent /*=nullptr*/)
@@ -80,7 +79,6 @@ END_MESSAGE_MAP()
 
 BOOL CGitProgressDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	__super::OnInitDialog();
 
 	// Let the TaskbarButtonCreated message through the UIPI filter. If we don't

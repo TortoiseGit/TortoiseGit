@@ -26,7 +26,6 @@
 #include "MessageBox.h"
 #include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CResizableStandAloneDialog)
 
@@ -54,7 +53,6 @@ END_MESSAGE_MAP()
 
 BOOL CDeleteRemoteTagDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

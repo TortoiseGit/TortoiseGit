@@ -23,7 +23,6 @@
 #include "MessageBox.h"
 #include "BrowseFolder.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 
 IMPLEMENT_DYNAMIC(CExportDlg, CHorizontalResizableStandAloneDialog)
@@ -58,7 +57,6 @@ END_MESSAGE_MAP()
 
 BOOL CExportDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

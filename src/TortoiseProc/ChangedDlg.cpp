@@ -26,7 +26,6 @@
 #include "ChangedDlg.h"
 #include "IconMenu.h"
 #include "RefLogDlg.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CChangedDlg, CResizableStandAloneDialog)
 CChangedDlg::CChangedDlg(CWnd* pParent /*=nullptr*/)
@@ -78,7 +77,6 @@ END_MESSAGE_MAP()
 
 BOOL CChangedDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	m_regAddBeforeCommit = CRegDWORD(L"Software\\TortoiseGit\\AddBeforeCommit", TRUE);

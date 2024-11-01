@@ -1,4 +1,17 @@
-﻿= Release 2.17.0 =
+﻿= Release 2.17.0.1 =
+Released: unreleased
+
+This is the last version that will work on Windows 7 and 8 (and possibly 8.1).
+
+== Bug Fixes ==
+ * Fixed issue #4177: TortoiseGit dialogs may not be visible (when a modal sub dialog is shown too early during dialog initialization)
+   This reverts the fix for issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
+
+= Release 2.17.0 =
 Released: 2024-10-30
 
 This is the last version that will work on Windows 7 and 8 (and possibly 8.1).
@@ -31,10 +44,6 @@ This is the last version that will work on Windows 7 and 8 (and possibly 8.1).
  * Fixed issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
  * Fixed issue #4174: Fix double words typo
  * Fixed issue #4173: Escape key stops working in Switch/Checkout dialog after browsing branches
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.16.0 =
 Released: 2024-04-30

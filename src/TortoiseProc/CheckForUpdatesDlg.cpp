@@ -36,7 +36,6 @@
 #include <MsiDefs.h>
 #include <MsiQuery.h>
 #include "DPIAware.h"
-#include "AutoCloakWindow.h"
 
 #pragma comment(lib, "msi.lib")
 
@@ -82,7 +81,6 @@ END_MESSAGE_MAP()
 
 BOOL CCheckForUpdatesDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

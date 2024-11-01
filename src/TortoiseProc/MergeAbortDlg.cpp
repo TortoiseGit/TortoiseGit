@@ -24,7 +24,6 @@
 #include "MergeAbortDlg.h"
 #include "FileDiffDlg.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 // CMergeAbortDlg dialog
 
@@ -54,7 +53,6 @@ END_MESSAGE_MAP()
 // CMergeAbortDlg message handlers
 BOOL CMergeAbortDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CStateStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

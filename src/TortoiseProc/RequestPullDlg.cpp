@@ -27,7 +27,6 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CRequestPullDlg, CHorizontalResizableStandAloneDialog)
 
@@ -59,7 +58,6 @@ END_MESSAGE_MAP()
 
 BOOL CRequestPullDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CHorizontalResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 

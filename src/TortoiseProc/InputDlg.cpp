@@ -22,7 +22,6 @@
 #include "InputDlg.h"
 #include "registry.h"
 #include "AppUtils.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CInputDlg, CResizableStandAloneDialog)
 CInputDlg::CInputDlg(CWnd* pParent /*=nullptr*/)
@@ -48,7 +47,6 @@ END_MESSAGE_MAP()
 
 BOOL CInputDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 
 	if (m_pProjectProperties)

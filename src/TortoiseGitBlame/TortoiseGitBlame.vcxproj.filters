@@ -210,9 +210,6 @@
     <ClCompile Include="..\Utils\DirFileEnum.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\Utils\MiscUI\AutoCloakWindow.cpp">
-      <Filter>Utils\MiscUI</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -427,9 +424,6 @@
     </ClInclude>
     <ClInclude Include="..\Utils\URLFinder.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Utils\MiscUI\AutoCloakWindow.h">
-      <Filter>Utils\MiscUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

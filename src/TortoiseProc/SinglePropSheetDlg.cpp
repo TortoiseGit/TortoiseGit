@@ -27,7 +27,6 @@
 #include "AppUtils.h"
 #include "DarkModeHelper.h"
 #include "DPIAware.h"
-#include "AutoCloakWindow.h"
 
 // CSinglePropSheetDlg dialog
 using namespace TreePropSheet;
@@ -73,7 +72,6 @@ END_MESSAGE_MAP()
 
 BOOL CSinglePropSheetDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	BOOL bReturn = CTreePropSheet::OnInitDialog();
 
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))

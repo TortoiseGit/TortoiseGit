@@ -22,7 +22,6 @@
 #include "SubmoduleUpdateDlg.h"
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
-#include "AutoCloakWindow.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleUpdateDlg, CResizableStandAloneDialog)
 
@@ -118,7 +117,6 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 
 BOOL CSubmoduleUpdateDlg::OnInitDialog()
 {
-	CAutoCloakWindow window_cloaker{ GetSafeHwnd() };
 	CResizableStandAloneDialog::OnInitDialog();
 	CAppUtils::MarkWindowAsUnpinnable(m_hWnd);
 
