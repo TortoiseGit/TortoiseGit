@@ -39,6 +39,7 @@ Next you might need to install some utilities/programs:
 *  If you want to build the installer you need to update the PuTTY binaries by running ext/putty/download.bat
 *  For building the docs you need NAnt (http://nant.sourceforge.net/) and
    https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
+   Furthermore, Python 3 (can be installed from the Microsoft Store) is required.
    See doc/readme.txt for more details on building the docs.
 
 In order to not build the Windows 11 start menu extension you need to adjust the following settings:

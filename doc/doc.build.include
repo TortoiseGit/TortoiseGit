@@ -73,6 +73,11 @@ This will only build the english HTML help file for TortoiseGit
 			unless="${property::exists('help.resource.TortoiseGit')}"
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseGit}" />
+		<property name="help.mappingfile.TortoiseGit"
+		  value="../src/Resources/TGitHelpMapping.ini"
+			unless="${property::exists('help.mappingfile.TortoiseGit')}"
+		/>
+		<property name="help.mappingfile" value="${help.mappingfile.TortoiseGit}" />
 	</target>
 	<target name="help.prepare.TortoiseMerge">
 	<echo message="help.prepare.TortoiseMerge"/>
@@ -81,6 +86,11 @@ This will only build the english HTML help file for TortoiseGit
 			unless="${property::exists('help.resource.TortoiseMerge')}"
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseMerge}" />
+		<property name="help.mappingfile.TortoiseMerge"
+		  value="../src/Resources/TGitMergeHelpMapping.ini"
+			unless="${property::exists('help.mappingfile.TortoiseMerge')}"
+		/>
+		<property name="help.mappingfile" value="${help.mappingfile.TortoiseMerge}" />
 	</target>
 
 	<!-- Fileset to exclude from translation and .pot creation        -->

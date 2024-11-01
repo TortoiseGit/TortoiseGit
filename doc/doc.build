@@ -486,16 +486,8 @@ All user/site specific configuration is stored in doc.build.user.
 						timeout="600000" />
 
 			<copy file="${doc.target.work}/htmlhelp.chm" tofile="${file.target}"/>
-
-			<if test="${doc.target.name == 'TortoiseGit_en'}">
-				<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitHelpAlias.h" />
-				<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitHelpContext.h" />
-			</if>
-			<if test="${doc.target.name == 'TortoiseMerge_en'}">
-				<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitMergeHelpAlias.h" />
-				<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitMergeHelpContext.h" />
-			</if>
 		</if>
+		<call target="helpmapping" if="${lang.base==lang.target}" />
 		<!--
 		<delete>
 			<fileset>
@@ -524,14 +516,6 @@ All user/site specific configuration is stored in doc.build.user.
 			<call target="xsltproc" />
 		</if>
 		<call target="helpmapping" if="${lang.base==lang.target}" />
-		<if test="${doc.target.name == 'TortoiseGit_en'}">
-			<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitHelpAlias.h" />
-			<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitHelpContext.h" />
-		</if>
-		<if test="${doc.target.name == 'TortoiseMerge_en'}">
-			<copy file="${doc.target.work}/alias.h" tofile="../src/Resources/TGitMergeHelpAlias.h" />
-			<copy file="${doc.target.work}/context.h" tofile="../src/Resources/TGitMergeHelpContext.h" />
-		</if>
 	</target>
 
 <!-- ====================================================================== -->
@@ -560,13 +544,14 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- Create mapping files for TortoiseGit online help                       -->
 <!-- ====================================================================== -->
 
-	<target name="helpmapping" description="Create Context.h">
+	<target name="helpmapping" description="Create help mapping for IDs to filenames">
 		<call target="help.prepare.${app}" />
 		<exec program="${name.python}"
-					output="${doc.target.work}/context.h"
-					commandline="scripts/create_html_mapping.py ${help.resource}"
+					commandline="scripts/create_html_mapping.py ${help.resource} ${doc.target.work}/alias.h"
+					output="${help.mappingfile}"
 					verbose="false"/>
-		<exec program="sed" commandline=" -i 's/$/\r/' ${doc.target.work}/context.h" if="${platform::is-unix()}"/>
+		<exec program="sed" commandline=" -i 's/$/\r/' ${help.mappingfile}" if="${platform::is-unix()}"/>
+		<echo message="Updated help mapping: '${help.mappingfile}'"/>
 	</target>
 
 </project>

@@ -1972,10 +1972,7 @@
     <ClInclude Include="..\Utils\URLFinder.h">
       <Filter>Utils\General</Filter>
     </ClInclude>
-    <ClInclude Include="..\Resources\TGitHelpAlias.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Resources\TGitHelpContext.h">
+    <ClInclude Include="..\Resources\TGitHelpMapping.ini">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -143,8 +143,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // HELP
 //
 
-IDR_HELPALIAS           HELP                    "TGitMergeHelpAlias.h"
-IDR_HELPCONTEXT         HELP                    "TGitMergeHelpContext.h"
+IDR_HELPMAPPING         HELP                    "TGitMergeHelpMapping.ini"
 
 /////////////////////////////////////////////////////////////////////////////
 //
