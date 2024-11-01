@@ -6,9 +6,14 @@
 <xsl:param name="keep.relative.image.uris" select="0"/>
 <xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
 
+<xsl:param name="generate.help.mapping" select="1"/>
 <xsl:template match="/">
   <xsl:apply-templates/>
-  <xsl:call-template name="hh-alias"/>
+  <xsl:choose>
+    <xsl:when test="$generate.help.mapping != '0'">
+      <xsl:call-template name="hh-alias"/>
+    </xsl:when>
+  </xsl:choose>
 </xsl:template>
 <xsl:template name="hh-alias">
   <xsl:call-template name="write.text.chunk">

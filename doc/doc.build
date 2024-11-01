@@ -515,7 +515,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<call target="xsltproc" />
 		</if>
-		<call target="helpmapping" if="${lang.base==lang.target}" />
+		<call target="helpmapping" if="${lang.base==lang.target and help.mapping=='1'}" />
 	</target>
 
 <!-- ====================================================================== -->

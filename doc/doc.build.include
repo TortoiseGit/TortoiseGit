@@ -146,6 +146,11 @@ This will only build the english HTML help file for TortoiseGit
 		unless="${property::exists('external.gitdocs')}"
 	/>
 
+	<property name="help.mapping"
+		value="1"
+		unless="${property::exists('help.mapping')}"
+	/>
+
 	<!-- Paths where the xsl and css files are found                  -->
 	<property name="path.user.xsl" value="./xsl"/>
 	<property name="path.user.css" value="./source"/>
@@ -157,7 +162,7 @@ This will only build the english HTML help file for TortoiseGit
 	<property name="xsl.chm.file" value="htmlhelp.xsl"/>
 	<property name="xsl.html.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.html.file" value="htmlsingle.xsl"/>
-	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
+	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
 	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
 	<property name="xsl.profile.params" value="--nonet --xinclude --stringparam profile.condition &quot;exclude&quot;"/>
 	<property name="xsl.profile.file" value="profile.xsl"/>
