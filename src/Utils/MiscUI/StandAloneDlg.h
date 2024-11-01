@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2020-2023 - TortoiseGit
+// Copyright (C) 2015-2016, 2020-2024 - TortoiseGit
 // Copyright (C) 2003-2015, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include "EditWordBreak.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "CommonAppUtils.h"
 #include "DPIAware.h"
-#pragma comment(lib, "htmlhelp.lib")
 
 #define DIALOG_BLOCKHORIZONTAL 1
 #define DIALOG_BLOCKVERTICAL 2
@@ -262,21 +262,9 @@ protected:
 protected:
 	void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F) override
 	{
-		CWinApp* pApp = AfxGetApp();
-		ASSERT_VALID(pApp);
-		ASSERT(pApp->m_pszHelpFilePath);
-		// to call HtmlHelp the m_fUseHtmlHelp must be set in
-		// the application's constructor
-		ASSERT(pApp->m_eHelpType == afxHTMLHelp);
-
-		CWaitCursor wait;
-
-		BaseType::PrepareForHelp();
-		// run the HTML Help engine
-		if (!::HtmlHelp(BaseType::m_hWnd, pApp->m_pszHelpFilePath, nCmd, dwData))
-		{
+		UNREFERENCED_PARAMETER(nCmd);
+		if (!CCommonAppUtils::StartHtmlHelp(dwData))
 			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
-		}
 	}
 
 	afx_msg LRESULT OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)

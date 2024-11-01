@@ -56,6 +56,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_WM_DESTROY()
 	// Global help commands
+	ON_WM_HELPINFO()
 	ON_COMMAND(ID_HELP_FINDER, CFrameWndEx::OnHelpFinder)
 	ON_COMMAND(ID_HELP, CFrameWndEx::OnHelp)
 	ON_COMMAND(ID_CONTEXT_HELP, CFrameWndEx::OnContextHelp)
@@ -1114,6 +1115,17 @@ bool CMainFrame::LoadViews(int line)
 		m_bSaveRequired = false;
 	CUndo::GetInstance().Clear();
 	return true;
+}
+
+void CMainFrame::HtmlHelp(DWORD_PTR dwData, UINT /* nCmd */)
+{
+	if (!CCommonAppUtils::StartHtmlHelp(dwData))
+		AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
+}
+
+BOOL CMainFrame::OnHelpInfo(HELPINFO* /*pHelpInfo*/)
+{
+	return FALSE;
 }
 
 void CMainFrame::UpdateLayout()

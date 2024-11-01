@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
 // Copyright (C) 2003-2008, 2010, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include "DPIAware.h"
 #include "LoadIconEx.h"
 #include "IconBitmapUtils.h"
+#include "CreateProcessHelper.h"
 
 extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
@@ -388,4 +389,32 @@ void CCommonAppUtils::CreateFontForLogs(HWND hWnd, CFont& fontToCreate)
 	logFont.lfPitchAndFamily = FF_DONTCARE | FIXED_PITCH;
 	wcsncpy_s(logFont.lfFaceName, static_cast<LPCWSTR>(GetLogFontName()), _TRUNCATE);
 	VERIFY(fontToCreate.CreateFontIndirect(&logFont));
+}
+
+bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html" */)
+{
+	ATLASSERT(page == "index.html" || id == 0);
+
+	CWinApp* pApp = AfxGetApp();
+	ASSERT_VALID(pApp);
+
+	CString helpFile{ pApp->m_pszHelpFilePath };
+
+	if (helpFile.IsEmpty() || !PathFileExists(helpFile))
+		return false;
+
+	CString mapID;
+	if (id)
+		mapID.Format(L" -mapid %Iu", id);
+	else
+		helpFile += L"::/" + page;
+
+	wchar_t windir[MAX_PATH]{ 0 };
+	if (!GetWindowsDirectory(windir, _countof(windir))) // MAX_PATH ok.
+		return false;
+
+	CString cmd;
+	cmd.Format(L"%s\\HH.exe%s \"%s\"", windir, static_cast<LPCWSTR>(mapID), static_cast<LPCWSTR>(helpFile));
+
+	return CCreateProcessHelper::CreateProcessDetached(nullptr, cmd);
 }

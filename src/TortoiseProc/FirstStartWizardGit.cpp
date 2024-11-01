@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2020 - TortoiseGit
+// Copyright (C) 2016-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -88,7 +88,7 @@ LRESULT CFirstStartWizardGit::OnWizardNext()
 
 	// only complete if the msysgit directory is ok
 	bool needWorkarounds = (GetDlgItem(IDC_WORKAROUNDS)->IsWindowVisible() == TRUE);
-	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }, &needWorkarounds))
+	if (!CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { if (!CAppUtils::StartHtmlHelp(0x20000 + helpid)) { AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP); } }, &needWorkarounds))
 	{
 		if (needWorkarounds)
 			ShowWorkarounds(true);
@@ -229,7 +229,7 @@ void CFirstStartWizardGit::OnCheck()
 	SetGitHacks();
 
 	bool needWorkarounds = (GetDlgItem(IDC_WORKAROUNDS)->IsWindowVisible() == TRUE);
-	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { HtmlHelp(0x20000 + helpid); }, &needWorkarounds);
+	CheckGitExe(GetSafeHwnd(), m_sMsysGitPath, m_sMsysGitExtranPath, IDC_MSYSGIT_VER, [&](UINT helpid) { if (!CAppUtils::StartHtmlHelp(0x20000 + helpid)) { AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP); } }, &needWorkarounds);
 	if (needWorkarounds)
 		ShowWorkarounds(true);
 }

@@ -215,3 +215,9 @@ BOOL CSettings::OnInitDialog()
 
 	return bResult;
 }
+
+void CSettings::HtmlHelp(DWORD_PTR dwData, UINT /* nCmd */)
+{
+	if (!CCommonAppUtils::StartHtmlHelp(dwData))
+		AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
+}

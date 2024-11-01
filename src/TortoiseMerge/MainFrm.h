@@ -209,7 +209,11 @@ protected:
 	afx_msg void	OnUpdateRegexNoFilter(CCmdUI* pCmdUI);
 	afx_msg void	OnSettingChange(UINT uFlags, LPCWSTR lpszSection);
 	afx_msg void	OnSysColorChange();
+	afx_msg BOOL	OnHelpInfo(HELPINFO* pHelpInfo);
 	DECLARE_MESSAGE_MAP()
+
+	void HtmlHelp(DWORD_PTR dwData, UINT nCmd = 0x000F) override;
+
 protected:
 	void			UpdateLayout();
 	BOOL			PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch) override;
