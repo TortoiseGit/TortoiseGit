@@ -51,8 +51,6 @@ def generate_wix_directory(root_dir, directory_path, wix_dir, current_path=None,
 		for file in files:
 			if file == "alias.h":
 				continue
-			if file == "context.h" or file.endswith('.chm'):
-				raise Exception("Documentation needs to be generated using the docformat 'html'")
 			file_path = os.path.join(root, file).replace('/', '\\')
 			file_id = f"F__htmlhelp_{rel_dir}_{os.path.splitext(file)[0]}".replace('-', '_').replace(' ', '_')
 			component_guid = generate_deterministic_guid(file_id)
