@@ -143,8 +143,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit' and external.gitdocs=='0'}">
 			<fileset basedir="images/${lang.base}/callouts">
-				<include name="*.png" unless="${docformat=='pdf'}"/>
-				<include name="*.svg" if="${docformat=='pdf'}"/>
+				<include name="*.svg"/>
 			</fileset>
 		</copy>
 	</target>
