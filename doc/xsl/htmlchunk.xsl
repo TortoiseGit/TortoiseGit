@@ -5,6 +5,7 @@
 <xsl:param name="ulink.target">_blank</xsl:param>
 <xsl:param name="keep.relative.image.uris" select="0"/>
 <xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
+<xsl:param name="callout.graphics.extension">.svg</xsl:param>
 
 <xsl:param name="generate.help.mapping" select="1"/>
 <xsl:template match="/">
