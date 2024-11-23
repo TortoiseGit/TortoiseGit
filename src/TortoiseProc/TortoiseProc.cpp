@@ -417,7 +417,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				if (GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
 				{
 					git_oid oid;
-					CStringA wcRootA(wcroot + CPathUtils::GetAppDirectory());
+					CStringA wcRootA{ CUnicodeUtils::GetUTF8(wcroot + CPathUtils::GetAppDirectory()) };
 					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJECT_BLOB))
 					{
 						CStringA hash;
