@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2020, 2022-2023 - TortoiseGit
+// Copyright (C) 2020, 2022-2024 - TortoiseGit
 // Copyright (C) 2003-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -276,16 +276,16 @@ public: // variables
 	EOL				GetLineEndings(bool MixelEols);
 	void			ReplaceLineEndings(EOL);									///< Set AUTO lineending and replaces all EOLs
 	void			SetLineEndingStyle(EOL);									///< Set AUTO lineending
-	UnicodeType		GetTextType() { return m_texttype; }
+	UnicodeType		GetTextType() const { return m_texttype; }
 	void			SetTextType(UnicodeType);									///< Changes TextType
 	void			AskUserForNewLineEndingsAndTextType(int);					///< Open gui
-	int				GetTabMode() { return m_nTabMode; }
+	int				GetTabMode() const { return m_nTabMode; }
 	void			SetTabMode(int nTabMode) { m_nTabMode = nTabMode; }
-	int				GetTabSize() { return m_nTabSize; }
+	int				GetTabSize() const { return m_nTabSize; }
 	void			SetTabSize(int nTabSize) { m_nTabSize = nTabSize; }
-	bool			GetEditorConfigEnabled() { return m_bEditorConfigEnabled; }
+	bool			GetEditorConfigEnabled() const { return m_bEditorConfigEnabled; }
 	void			SetEditorConfigEnabled(bool bEditorConfigEnabled);
-	BOOL			GetEditorConfigLoaded() { return m_bEditorConfigLoaded; }
+	BOOL			GetEditorConfigLoaded() const { return m_bEditorConfigLoaded; }
 
 	void DPIChanged();
 	CWorkingFile* m_pWorkingFile = nullptr; ///< pointer to source/destination file parametrers
