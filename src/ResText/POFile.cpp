@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2013 - TortoiseGit
-// Copyright (C) 2003-2008, 2011-2016 - TortoiseSVN
+// Copyright (C) 2003-2008, 2011-2016, 2024 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,8 @@
 #include "Utils.h"
 #include "ResModule.h"
 #include "POFile.h"
+
+#include "../Utils/UnicodeUtils.h"
 
 #include <algorithm>
 #include <cctype>
@@ -64,15 +66,14 @@ BOOL CPOFile::ParseFile(LPCWSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 	char filepath[MAX_PATH + 1] = { 0 };
 	WideCharToMultiByte(CP_ACP, 0, szPath, -1, filepath, _countof(filepath) - 1, nullptr, nullptr);
 
-	std::wifstream File;
-	File.imbue(std::locale(std::locale(), new utf8_conversion()));
+	std::ifstream File;
 	File.open(filepath);
 	if (!File.good())
 	{
 		fwprintf(stderr, L"can't open input file %s\n", szPath);
 		return FALSE;
 	}
-	auto line = std::make_unique<wchar_t[]>(2 * MAX_STRING_LENGTH);
+	auto line = std::make_unique<char[]>(2 * MAX_STRING_LENGTH);
 	std::vector<std::wstring> entry;
 	do
 	{
@@ -175,7 +176,7 @@ BOOL CPOFile::ParseFile(LPCWSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
 		}
 		else
 		{
-			entry.push_back(line.get());
+			entry.push_back(CUnicodeUtils::StdGetUnicode(line.get()));
 		}
 	} while (File.gcount() > 0);
 	printf("%s", File.getloc().name().c_str());
@@ -195,59 +196,57 @@ BOOL CPOFile::SaveFile(LPCWSTR szPath, LPCWSTR lpszHeaderFile)
 	int nEntries = 0;
 	WideCharToMultiByte(CP_ACP, 0, szPath, -1, filepath, _countof(filepath) - 1, nullptr, nullptr);
 
-	std::wofstream File;
-	File.imbue(std::locale(std::locale(), new utf8_conversion()));
-	File.open(filepath, std::ios_base::binary);
+	std::ofstream file;
+	file.open(filepath, std::ios_base::binary);
 
 	if ((lpszHeaderFile)&&(lpszHeaderFile[0])&&(PathFileExists(lpszHeaderFile)))
 	{
 		// read the header file and save it to the top of the pot file
-		std::wifstream inFile;
-		inFile.imbue(std::locale(std::locale(), new utf8_conversion()));
+		std::ifstream inFile;
 		inFile.open(lpszHeaderFile, std::ios_base::binary);
 
-		wchar_t ch;
+		char ch;
 		while(inFile && inFile.get(ch))
-			File.put(ch);
+			file.put(ch);
 		inFile.close();
 	}
 	else
 	{
-		File << L"# SOME DESCRIPTIVE TITLE.\n";
-		File << L"# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n";
-		File << L"# This file is distributed under the same license as the PACKAGE package.\n";
-		File << L"# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n";
-		File << L"#\n";
-		File << L"#, fuzzy\n";
-		File << L"msgid \"\"\n";
-		File << L"msgstr \"\"\n";
-		File << L"\"Project-Id-Version: PACKAGE VERSION\\n\"\n";
-		File << L"\"Report-Msgid-Bugs-To: \\n\"\n";
-		File << L"\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n";
-		File << L"\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n";
-		File << L"\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n";
-		File << L"\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n";
-		File << L"\"MIME-Version: 1.0\\n\"\n";
-		File << L"\"Content-Type: text/plain; charset=UTF-8\\n\"\n";
-		File << L"\"Content-Transfer-Encoding: 8bit\\n\"\n\n";
+		file << "# SOME DESCRIPTIVE TITLE.\n";
+		file << "# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER\n";
+		file << "# This file is distributed under the same license as the PACKAGE package.\n";
+		file << "# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.\n";
+		file << "#\n";
+		file << "#, fuzzy\n";
+		file << "msgid \"\"\n";
+		file << "msgstr \"\"\n";
+		file << "\"Project-Id-Version: PACKAGE VERSION\\n\"\n";
+		file << "\"Report-Msgid-Bugs-To: \\n\"\n";
+		file << "\"POT-Creation-Date: 1900-01-01 00:00+0000\\n\"\n";
+		file << "\"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\\n\"\n";
+		file << "\"Last-Translator: FULL NAME <EMAIL@ADDRESS>\\n\"\n";
+		file << "\"Language-Team: LANGUAGE <LL@li.org>\\n\"\n";
+		file << "\"MIME-Version: 1.0\\n\"\n";
+		file << "\"Content-Type: text/plain; charset=UTF-8\\n\"\n";
+		file << "\"Content-Transfer-Encoding: 8bit\\n\"\n\n";
 	}
-	File << L"\n";
-	File << L"# msgid/msgstr fields for Accelerator keys\n";
-	File << L"# Format is: \"ID:xxxxxx:VACS+X\" where:\n";
-	File << L"#    ID:xxxxx = the menu ID corresponding to the accelerator\n";
-	File << L"#    V = Virtual key (or blank if not used) - nearly always set!\n";
-	File << L"#    A = Alt key     (or blank if not used)\n";
-	File << L"#    C = Ctrl key    (or blank if not used)\n";
-	File << L"#    S = Shift key   (or blank if not used)\n";
-	File << L"#    X = upper case character\n";
-	File << L"# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n";
-	File << L"\n";
-	File << L"# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n";
-	File << L"# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n";
-	File << L"\n";
-	File << L"# ONLY change the msgstr field. Do NOT change any other.\n";
-	File << L"# If you do not want to change an Accelerator Key, copy msgid to msgstr\n";
-	File << L"\n";
+	file << "\n";
+	file << "# msgid/msgstr fields for Accelerator keys\n";
+	file << "# Format is: \"ID:xxxxxx:VACS+X\" where:\n";
+	file << "#    ID:xxxxx = the menu ID corresponding to the accelerator\n";
+	file << "#    V = Virtual key (or blank if not used) - nearly always set!\n";
+	file << "#    A = Alt key     (or blank if not used)\n";
+	file << "#    C = Ctrl key    (or blank if not used)\n";
+	file << "#    S = Shift key   (or blank if not used)\n";
+	file << "#    X = upper case character\n";
+	file << "# e.g. \"V CS+Q\" == Ctrl + Shift + 'Q'\n";
+	file << "\n";
+	file << "# ONLY Accelerator Keys with corresponding alphanumeric characters can be\n";
+	file << "# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.\n";
+	file << "\n";
+	file << "# ONLY change the msgstr field. Do NOT change any other.\n";
+	file << "# If you do not want to change an Accelerator Key, copy msgid to msgstr\n";
+	file << "\n";
 
 	for (auto I = this->cbegin(); I != this->cend(); ++I)
 	{
@@ -259,34 +258,34 @@ BOOL CPOFile::SaveFile(LPCWSTR szPath, LPCWSTR lpszHeaderFile)
 		RESOURCEENTRY entry = I->second;
 		for (auto II = entry.automaticcomments.cbegin(); II != entry.automaticcomments.cend(); ++II)
 		{
-			File << II->c_str() << L"\n";
+			file << CUnicodeUtils::StdGetUTF8(*II) << "\n";
 		}
 		for (auto II = entry.translatorcomments.cbegin(); II != entry.translatorcomments.cend(); ++II)
 		{
-			File << II->c_str() << L"\n";
+			file << CUnicodeUtils::StdGetUTF8(*II) << "\n";
 		}
 		if (!I->second.resourceIDs.empty())
 		{
-			File << L"#. Resource IDs: (";
+			file << "#. Resource IDs: (";
 
 			auto II = I->second.resourceIDs.begin();
-			File << (*II);
+			file << CUnicodeUtils::StdGetUTF8(*II);
 			++II;
 			while (II != I->second.resourceIDs.end())
 			{
-				File << L", ";
-				File << (*II);
+				file << ", ";
+				file << CUnicodeUtils::StdGetUTF8(*II);
 				++II;
 			};
-			File << L")\n";
+			file << ")\n";
 		}
 		if (I->second.flag.length() > 0)
-			File << (I->second.flag.c_str()) << L"\n";
-		File << (L"msgid \"") << (I->first.c_str()) << L"\"\n";
-		File << (L"msgstr \"") << (I->second.msgstr.c_str()) << L"\"\n\n";
+			file << CUnicodeUtils::StdGetUTF8(I->second.flag) << "\n";
+		file << ("msgid \"") << CUnicodeUtils::StdGetUTF8(I->first) << "\"\n";
+		file << ("msgstr \"") << CUnicodeUtils::StdGetUTF8(I->second.msgstr) << "\"\n\n";
 		nEntries++;
 	}
-	File.close();
+	file.close();
 	if (!m_bQuiet)
 		fwprintf(stdout, L"File %s saved, containing %d entries\n", szPath, nEntries);
 	return TRUE;
