@@ -46,6 +46,8 @@ class CBottomView;
 #define TABSIZEBUTTON8 6
 #define ENABLEEDITORCONFIG 8
 
+#define TABSIZE_MIN 1
+#define TABSIZE_MAX 1000
 
 /**
  * \ingroup TortoiseMerge

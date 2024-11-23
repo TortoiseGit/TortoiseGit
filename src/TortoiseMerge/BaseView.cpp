@@ -84,7 +84,7 @@ CBaseView::CBaseView()
 	m_WhiteSpaceFg = CRegDWORD(L"Software\\TortoiseGitMerge\\Colors\\Whitespace", CTheme::Instance().GetThemeColor(GetSysColor(COLOR_3DSHADOW)));
 	m_sWordSeparators = CRegString(L"Software\\TortoiseGitMerge\\WordSeparators", L"[]();:.,{}!@#$%^&*-+=|/\\<>'`~\"?");
 	m_bIconLFs = CRegDWORD(L"Software\\TortoiseGitMerge\\IconLFs", 0);
-	m_nTabSize = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4));
+	m_nTabSize = std::min(TABSIZE_MAX, std::max(TABSIZE_MIN, static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4))));
 	m_nTabMode = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE));
 	m_bEditorConfigEnabled = !!static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGitMerge\\EnableEditorConfig", FALSE));
 	std::fill_n(m_apFonts, fontsCount, static_cast<CFont*>(nullptr));
@@ -200,7 +200,7 @@ void CBaseView::DocumentUpdated()
 	m_nDigits = 0;
 	m_nMouseLine = -1;
 	m_nLDownLine = -1;
-	m_nTabSize = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4));
+	m_nTabSize = std::min(TABSIZE_MAX, std::max(TABSIZE_MIN, static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4))));
 	m_nTabMode = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE));
 	m_bViewLinenumbers = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewLinenumbers", 1);
 	m_bIconLFs = CRegDWORD(L"Software\\TortoiseGitMerge\\IconLFs", 0);
@@ -217,7 +217,7 @@ void CBaseView::DocumentUpdated()
 void CBaseView::SetEditorConfigEnabled(bool bEditorConfigEnabled)
 {
 	m_bEditorConfigEnabled = bEditorConfigEnabled;
-	m_nTabSize = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4));
+	m_nTabSize = std::min(TABSIZE_MAX, std::max(TABSIZE_MIN, static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabSize", 4))));
 	m_nTabMode = static_cast<int>(CRegDWORD(L"Software\\TortoiseGitMerge\\TabMode", TABMODE_NONE));
 	if (m_bEditorConfigEnabled)
 	{
@@ -227,7 +227,7 @@ void CBaseView::SetEditorConfigEnabled(bool bEditorConfigEnabled)
 		{
 			m_bEditorConfigLoaded = TRUE;
 			if (ec.m_nTabWidth != nullptr)
-				m_nTabSize = ec.m_nTabWidth;
+				m_nTabSize = std::min(TABSIZE_MAX, std::max(TABSIZE_MIN, static_cast<int>(ec.m_nTabWidth)));
 			if (ec.m_bIndentStyle != nullptr)
 				m_nTabMode = (m_nTabMode & ~TABMODE_USESPACES) | (ec.m_bIndentStyle ? TABMODE_USESPACES : TABMODE_NONE);
 		}

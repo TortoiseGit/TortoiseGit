@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2014, 2019 - TortoiseGit
+// Copyright (C) 2013-2014, 2019, 2024 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014, 2016, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ CSetMainPage::CSetMainPage()
 	, m_bFirstConflictOnLoad(FALSE)
 	, m_bUseSpaces(FALSE)
 	, m_bSmartTabChar(FALSE)
-	, m_nTabSize(0)
+	, m_nTabSize(4)
 	, m_bEnableEditorConfig(FALSE)
 	, m_nContextLines(-1)
 	, m_bIgnoreEOL(FALSE)
@@ -73,7 +73,7 @@ CSetMainPage::CSetMainPage()
 	m_bFirstConflictOnLoad = m_regFirstConflictOnLoad;
 	m_bUseSpaces = (m_regTabMode & TABMODE_USESPACES) ? TRUE : FALSE;
 	m_bSmartTabChar = (m_regTabMode & TABMODE_SMARTINDENT) ? TRUE : FALSE;
-	m_nTabSize = m_regTabSize;
+	m_nTabSize = std::min(TABSIZE_MAX, std::max(TABSIZE_MIN, static_cast<int>(m_regTabSize)));
 	m_bEnableEditorConfig = m_regEnableEditorConfig;
 	m_nContextLines = m_regContextLines;
 	m_bIgnoreEOL = m_regIgnoreEOL;
@@ -100,7 +100,7 @@ void CSetMainPage::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_USESPACES, m_bUseSpaces);
 	DDX_Check(pDX, IDC_SMARTTABCHAR, m_bSmartTabChar);
 	DDX_Text(pDX, IDC_TABSIZE, m_nTabSize);
-	DDV_MinMaxInt(pDX, m_nTabSize, 1, 1000);
+	DDV_MinMaxInt(pDX, m_nTabSize, TABSIZE_MIN, TABSIZE_MAX);
 	DDX_Check(pDX, IDC_ENABLEEDITORCONFIG, m_bEnableEditorConfig);
 	DDX_Text(pDX, IDC_CONTEXTLINES, m_nContextLines);
 	DDV_MinMaxInt(pDX, m_nContextLines, -1, 1000);
