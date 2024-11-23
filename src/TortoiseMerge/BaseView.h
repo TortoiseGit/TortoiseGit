@@ -373,7 +373,6 @@ protected:  // methods
 
 	void			ShowDiffLines(int nLine);
 
-	int				GetTabSize() const {return m_nTabSize;}
 	void			DeleteFonts();
 
 	void			CalcLineCharDim();
