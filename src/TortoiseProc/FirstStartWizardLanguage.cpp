@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2020 - TortoiseGit
+// Copyright (C) 2016-2020, 2024 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,6 +36,7 @@ CFirstStartWizardLanguage::CFirstStartWizardLanguage() : CFirstStartWizardBasePa
 , m_dwLanguage(1033)
 , m_regLanguage(L"Software\\TortoiseGit\\LanguageID", 1033)
 {
+	m_dwInitialLanguage = m_regLanguage;
 	m_psp.dwFlags |= PSP_DEFAULT | PSP_USEHEADERTITLE;
 	m_psp.pszHeaderTitle = MAKEINTRESOURCE(IDS_FIRSTSTART_STARTTITLE);
 }
@@ -111,7 +112,7 @@ LRESULT CFirstStartWizardLanguage::OnWizardNext()
 {
 	UpdateData();
 
-	if (m_dwLanguage != m_regLanguage)
+	if (m_dwLanguage != m_dwInitialLanguage)
 	{
 		m_regLanguage = m_dwLanguage;
 
