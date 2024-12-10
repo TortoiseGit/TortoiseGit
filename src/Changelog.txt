@@ -1,4 +1,9 @@
-﻿= Release 2.17.0.2 =
+﻿= Release 2.18.0 =
+
+== Features ==
+ * Fixed issue #3826: Help links don't open in a sensible browser
+
+= Release 2.17.0.2 =
 Released: 2024-11-01
 
 This is the last version that will work on Windows 7 and 8 (and possibly 8.1).

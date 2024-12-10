@@ -14,9 +14,10 @@
 *.zip
 /doc/Aspell/aspell.bat
 /doc/Aspell/Temp.pws
+/doc/IDD_Errors.txt
 /doc/images/8bit.tmp
 /doc/output
-/doc/source/*.h
+/doc/scripts/__pycache__
 /doc/source/en/pubdate.xml
 /doc/source/en/version.xml
 /doc/source/en/TortoiseGit/git_doc/git-doc.xml

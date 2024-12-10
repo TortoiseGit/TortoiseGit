@@ -37,8 +37,11 @@ Next you might need to install some utilities/programs:
 *  If you want to build the MSI installer you need WiX 3.11 (http://wixtoolset.org/releases/)
    and the VS2022 extension (https://github.com/wixtoolset/VisualStudioExtension/releases).
 *  If you want to build the installer you need to update the PuTTY binaries by running ext/putty/download.bat
-*  For building the docs you need NAnt (http://nant.sourceforge.net/) and
-   https://sourceforge.net/projects/tortoisesvn/files/build%20tools/
+*  For building the docs you need NAnt (http://nant.sourceforge.net/), xsltproc,
+   DocBook XSL for DocBook 5.x (https://cdn.docbook.org/release/xsl/),
+   for spell checking you need aspell and for building PDF docs you need Apache fop (https://xmlgraphics.apache.org/fop/);
+   all these prerequisite tools can be obtained packaged from https://sourceforge.net/projects/tortoisesvn/files/build%20tools/.
+   Furthermore, Python 3 (can be installed from the Microsoft Store) is required.
    See doc/readme.txt for more details on building the docs.
 
 In order to not build the Windows 11 start menu extension you need to adjust the following settings:

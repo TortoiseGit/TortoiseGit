@@ -155,6 +155,7 @@
 #define IDI_CHERRYPICK                  369
 #define IDR_TGITLOGO                    370
 #define IDI_ACTIONERROR                 371
+#define IDR_HELPMAPPING                 372
 #define IDS_CHSTAT_FILECOL              1000
 #define IDS_CHSTAT_WCCOL                1001
 #define IDS_CHSTAT_REPOCOL              1002
@@ -2065,7 +2066,7 @@
 #define IDM_FINDEXIT                    32791
 #define ID_VIEW_ZOOM100                 32803
 #define ID_VIEW_ZOOMALL                 32804
-#define ID_FILE_SAVEGRAPHAS32805        32805
+#define ID_FILE_SAVEGRAPHAS             32805
 #define ID_FILE_SAVESTATGRAPHAS         32806
 #define ID_FILTER_EXCLUDEPATHS          32807
 #define ID_FILTER_EXCLUDEREVISIONS      32808
@@ -2092,7 +2093,6 @@
 #define ID_VIEW_SHOWWCMODIFICATION      32838
 #define ID_VIEW_FILTER                  32839
 #define ID_VIEW_SHOWTREESTRIPES         32840
-#define ID_FILE_SAVEGRAPHAS             32841
 #define ID_MENUEXIT                     32842
 #define ID_MENUHELP                     32843
 #define ID_VIEW_COMPAREREVISIONS        32844
@@ -2147,7 +2147,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        372
+#define _APS_NEXT_RESOURCE_VALUE        373
 #define _APS_NEXT_COMMAND_VALUE         32881
 #define _APS_NEXT_CONTROL_VALUE         1860
 #define _APS_NEXT_SYMED_VALUE           201

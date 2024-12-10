@@ -143,8 +143,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit' and external.gitdocs=='0'}">
 			<fileset basedir="images/${lang.base}/callouts">
-				<include name="*.png" unless="${docformat=='pdf'}"/>
-				<include name="*.svg" if="${docformat=='pdf'}"/>
+				<include name="*.svg"/>
 			</fileset>
 		</copy>
 	</target>
@@ -247,7 +246,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<if test="${not file::up-to-date(file.target, potfile)}">
 				<echo message="Creating po template from sources"/>
-				<exec program="python"
+				<exec program="${name.python}"
 							commandline="xml2po.py -e -o ${potfile}.tmp ${file.target}"
 							verbose="false"/>
 
@@ -304,7 +303,7 @@ All user/site specific configuration is stored in doc.build.user.
 					<echo message="Translating: ${path::get-file-name(file.target)}"/>
 					<property name="dir.target" value="${path::get-directory-name(file.target)}"/>
 					<mkdir dir="${dir.target}" unless="${directory::exists(dir.target)}"/>
-					<exec program="python"
+					<exec program="${name.python}"
 								commandline='xml2po.py -t "${lang.target}.mo" -o "${file.target}" "${file.base}"'
 								verbose="false"/>
 				</if>
@@ -457,46 +456,6 @@ All user/site specific configuration is stored in doc.build.user.
 	</target>
 
 <!-- ====================================================================== -->
-<!-- Create CHM documentation                                               -->
-<!-- ====================================================================== -->
-
-	<target name="chm" description="Create CHM documentation">
-
-		<property name="file.target" value="${doc.target.work}.chm"/>
-		<call target="uptodate"/>
-
-		<if test="${not file.target.uptodate}">
-			<property name="xslt.params" value="${xsl.chm.params}"/>
-			<property name="xslt.file" value="${xsl.chm.file}"/>
-			<property name="xslt.target" value="${doc.target.work}/${doc.target.name}"/>
-
-			<call target="xsltproc" />
-
-			<!-- The CHM helpcontext target resides in an external build file -->
-			<call target="help.prepare" if="${target::exists('help.prepare')}"/>
-
-			<copy file="${path.user.css}/styles_chm.css" todir="${doc.target.work}"/>
-
-			<exec program="SBAppLocale.exe"
-						commandline="${lang.target.code} ${path.bin}/hhc.exe ${doc.target.work}/htmlhelp.hhp"
-						basedir="${path.bin}"
-						resultproperty="result.hhc"
-						failonerror="false"
-						verbose="false"
-						timeout="600000" />
-
-			<copy file="${doc.target.work}/htmlhelp.chm" tofile="${file.target}"/>
-		</if>
-		<!--
-		<delete>
-			<fileset>
-				<include name="${doc.target.work}/*.*"/>
-			</fileset>
-		</delete>
-		-->
-	</target>
-
-<!-- ====================================================================== -->
 <!-- Create HTML multi page documentation                                   -->
 <!-- ====================================================================== -->
 	<target name="html" description="Create HTML documentation" depends="">
@@ -509,11 +468,19 @@ All user/site specific configuration is stored in doc.build.user.
 			<property name="xslt.file" value="${xsl.htmlsingle.file}"/>
 			<property name="xslt.target" value="${doc.target.work}/${doc.target.name}"/>
 
-			<copy file="${path.user.css}/styles_chm.css" todir="${doc.target.work}"/>
 			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
 
 			<call target="xsltproc" />
-
+		</if>
+		<if test="${lang.base==lang.target and help.mapping=='1'}">
+			<call target="helpmapping"/>
+			<property name="help.wixfilelist" value="../src/TortoiseGitSetup/HTMLHelpfiles.wxi" unless="${property::exists('help.wixfilelist')}"/>
+			<exec program="${name.python}"
+						commandline="scripts/generate_wix_filelist.py"
+						output="${help.wixfilelist}"
+						verbose="false"/>
+			<exec program="sed" commandline=" -i 's/$/\r/' ${help.wixfilelist}" if="${platform::is-unix()}"/>
+			<echo message="Updated help WiX filelist: '${help.wixfilelist}'"/>
 		</if>
 	</target>
 
@@ -531,12 +498,25 @@ All user/site specific configuration is stored in doc.build.user.
 			<property name="xslt.file" value="${xsl.html.file}"/>
 			<property name="xslt.target" value="${file.target}"/>
 
-			<copy file="${path.user.css}/styles_chm.css" todir="${doc.target.work}"/>
 			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
 
 			<call target="xsltproc" />
 
 		</if>
+	</target>
+
+<!-- ====================================================================== -->
+<!-- Create mapping files for TortoiseGit online help                       -->
+<!-- ====================================================================== -->
+
+	<target name="helpmapping" description="Create help mapping for IDs to filenames">
+		<call target="help.prepare.${app}" />
+		<exec program="${name.python}"
+					commandline="scripts/create_html_mapping.py ${help.resource} ${doc.target.work}/alias.h"
+					output="${help.mappingfile}"
+					verbose="false"/>
+		<exec program="sed" commandline=" -i 's/$/\r/' ${help.mappingfile}" if="${platform::is-unix()}"/>
+		<echo message="Updated help mapping: '${help.mappingfile}'"/>
 	</target>
 
 </project>

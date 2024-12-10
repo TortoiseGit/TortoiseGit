@@ -3,7 +3,6 @@
 	<Feature Id="DefaultFeature" Level="1" ConfigurableDirectory="INSTALLDIR" Title="TortoiseGit" Absent="disallow" TypicalDefault="install" Description="The TortoiseGit package and dependencies." Display="expand" InstallDefault="local" AllowAdvertise="no">
 		<ComponentRef Id="C__infofiles" />
 
-		<ComponentRef Id="C__help_en" />
 		<ComponentRef Id="C__gitlibs" />
 		<ComponentRef Id="C__TortoiseShell" />
 		<ComponentRef Id="C__TortoiseGitTools" />
@@ -66,6 +65,10 @@
 			</Feature>
 		</Feature>
 		<?endif ?>
+
+		<Feature Id="F_HELPFILES" Level="1" Title="Help/manual files" Description="If not installed, TortoiseGit will automatically open the manual on https://tortoisegit.org/docs/" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
+			<ComponentGroupRef Id="C__help_en" />
+		</Feature>
 
 		<Feature Id="MoreIcons" Level="1" Title="Additional icon sets" Description="Additional sets of icon overlays in different styles" TypicalDefault="install" Absent="allow" AllowAdvertise="no">
 			<ComponentRef Id="C__iconscvsclassic" />

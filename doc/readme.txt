@@ -15,26 +15,24 @@ Tools needed
 ------------
 
 There are some tools for processing the XML input that you need to build the docs.
-Scripts and dtd are included, but the executables (formatting processor, microsoft
-help compiler, translation tools) have to be installed separately.
-You will also need to have a Java Runtime Environment version 1.3.x or above.
+Scripts and dtd are included, but the executables (formatting processor,
+translation tools) have to be installed separately.
+For building the PDF manual, you will also need to have a recent Java Runtime Environment.
 
     tools\fop\		- the fop processor (for PDF generation)
     tools\xsl\		- the docbook xsl files from sourceforge
-    tools\			- xsl processor, hhc.exe, ...
+    tools\			- xsl processor, aspell, ...
 
 you can download all the required tools as a 7-Zip package from the TortoiseSVN project:
-<https://osdn.net/projects/tortoisesvn/storage/build%20tools/>
+<https://sourceforge.net/projects/tortoisesvn/files/build%20tools/>
 Use 7-zip extract the tools-*.7z file to e.g. \TortoiseGit\Tools. You might want to
 place your tools directory somewhere else on your harddisk, if you want to use it
 to build other docs too. This will, however, require tweaking the build scripts.
 
+Furthermore, Python 3 (can be installed from the Microsoft Store) is required.
+
 Please note that having spaces in your directory path will (for the time being)
 cause the documentation build process to fail.
-
-For chm docs you need:
-- Microsofts makehm.exe, Part of visual studio, sources available on msdn
-- Microsofts html workshop, Binaries available on msdn
 
 If you want to update the git-man pages see [source/en/TortoiseGit/git_doc.patch](doc/source/en/TortoiseGit/git_doc.patch).
 
@@ -56,7 +54,7 @@ Building the docs
 NAnt Build
 ----------
 
-    VS->Tools->Visual Studio 2013 command line
+    Open a command line
     cd TortoiseGit
     cd doc
     ..\tools\nant\nant.exe

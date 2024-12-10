@@ -7,7 +7,7 @@ defining them in doc.build.user which is included here if it exists.
 
 Example content of doc.build.user:
 <property name="applications" value="TortoiseGit, TortoiseMerge" />
-<property name="docformats" value="chm" />
+<property name="docformats" value="html" />
 <property name="languages" value="en" />
 
 This will only build the english HTML help file for TortoiseGit
@@ -28,9 +28,9 @@ This will only build the english HTML help file for TortoiseGit
 		unless="${property::exists('applications')}"
 	/>
 
-	<!-- pdf,chm,html,htmlsingle -->
+	<!-- pdf,html,htmlsingle -->
 	<property name="docformats"
-		value="chm"
+		value="html"
 		unless="${property::exists('docformats')}"
 	/>
 
@@ -61,7 +61,7 @@ This will only build the english HTML help file for TortoiseGit
 	/>
 
 	<!-- ============================================================ -->
-	<!-- Settings for the CHM Help creation                           -->
+	<!-- Settings for the help mapping file generation                -->
 	<!-- Attention, this is implemented as a target, because I could  -->
 	<!-- not find a better way to create the property depending on    -->
 	<!-- the app name                                                 -->
@@ -73,6 +73,11 @@ This will only build the english HTML help file for TortoiseGit
 			unless="${property::exists('help.resource.TortoiseGit')}"
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseGit}" />
+		<property name="help.mappingfile.TortoiseGit"
+		  value="../src/Resources/TGitHelpMapping.ini"
+			unless="${property::exists('help.mappingfile.TortoiseGit')}"
+		/>
+		<property name="help.mappingfile" value="${help.mappingfile.TortoiseGit}" />
 	</target>
 	<target name="help.prepare.TortoiseMerge">
 	<echo message="help.prepare.TortoiseMerge"/>
@@ -81,6 +86,11 @@ This will only build the english HTML help file for TortoiseGit
 			unless="${property::exists('help.resource.TortoiseMerge')}"
 		/>
 		<property name="help.resource" value="${help.resource.TortoiseMerge}" />
+		<property name="help.mappingfile.TortoiseMerge"
+		  value="../src/Resources/TGitMergeHelpMapping.ini"
+			unless="${property::exists('help.mappingfile.TortoiseMerge')}"
+		/>
+		<property name="help.mappingfile" value="${help.mappingfile.TortoiseMerge}" />
 	</target>
 
 	<!-- Fileset to exclude from translation and .pot creation        -->
@@ -123,6 +133,10 @@ This will only build the english HTML help file for TortoiseGit
 		value="${path::get-full-path('../Tools')}"
 		unless="${property::exists('path.gettext')}"
 	/>
+	<property name="name.python"
+		value="python3"
+		unless="${property::exists('name.python')}"
+	/>
 
 	<!-- ============================================================ -->
 	<!-- Settings for XSLTPROC                                        -->
@@ -132,6 +146,11 @@ This will only build the english HTML help file for TortoiseGit
 		unless="${property::exists('external.gitdocs')}"
 	/>
 
+	<property name="help.mapping"
+		value="1"
+		unless="${property::exists('help.mapping')}"
+	/>
+
 	<!-- Paths where the xsl and css files are found                  -->
 	<property name="path.user.xsl" value="./xsl"/>
 	<property name="path.user.css" value="./source"/>
@@ -139,11 +158,9 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- stylesheets and stringparams                                 -->
 	<property name="xsl.pdf.params" value="--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.pdf.file" value="pdfdoc.xsl"/>
-	<property name="xsl.chm.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_chm.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
-	<property name="xsl.chm.file" value="htmlhelp.xsl"/>
 	<property name="xsl.html.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.html.file" value="htmlsingle.xsl"/>
-	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
+	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
 	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
 	<property name="xsl.profile.params" value="--nonet --xinclude --stringparam profile.condition &quot;exclude&quot;"/>
 	<property name="xsl.profile.file" value="profile.xsl"/>
@@ -155,10 +172,6 @@ This will only build the english HTML help file for TortoiseGit
 	<target name="prepare.custom"
 		description="Prepare XSL files, create help context file"
 		depends="PrepareVersionInfo">
-
-		<!-- Delete CHM help context files to force re-creation -->
-		<delete file="source/TortoiseGit.h" if="${file::exists('source/TortoiseGit.h')}"/>
-		<delete file="source/TortoiseMerge.h" if="${file::exists('source/TortoiseMerge.h')}"/>
 
 		<!-- Store path to docbook stylesheets in helper stylesheets -->
 		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_pdfdoc.xsl"/>
@@ -201,71 +214,6 @@ This will only build the english HTML help file for TortoiseGit
 		</if>
 
 		<property name="docverstring" value="${environment::get-variable('MajorVersion')}.${environment::get-variable('MinorVersion')}.${environment::get-variable('MicroVersion')}"/>
-
-	</target>
-
-<!-- ====================================================================== -->
-<!-- Prepare help context file                                              -->
-<!-- ====================================================================== -->
-
-	<target name="help.prepare" description="Create CHM help context">
-		<call target="help.prepare.${app}" />
-<!--		if="${target::exists('help.prepare.${app}')}"/>-->
-
-		<property name="help.context" value="source/${app}.h"/>
-		<if test="${not file::exists(help.context)}">
-
-			<property name="headerfile" value="source/${app}_ASCII.h"/>
-			<loadfile file="${help.resource}" property="header" />
-			<echo file="${headerfile}" message="${header}" />
-			<echo message="header file ${help.resource}" />
-
-			<echo message="// Generated Help Map file.&#13;&#10;" file="${help.context}" />
-			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Commands (ID_* and IDM_*)&#13;&#10;" file="${help.context}" append="true"/>
-			<exec program="makehm"
-						commandline="/h ID_,HID_,0x10000 IDM_,HIDM_,0x10000 ${headerfile}"
-						output="${help.context}"
-						append="true"
-						verbose="false" />
-
-			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Prompts (IDP_*)&#13;&#10;" file="${help.context}" append="true"/>
-			<exec program="makehm"
-						commandline="/h IDP_,HIDP_,0x30000 ${headerfile}"
-						output="${help.context}"
-						append="true"
-						verbose="false" />
-
-			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Resources (IDR_*)&#13;&#10;" file="${help.context}" append="true"/>
-			<exec program="makehm"
-						commandline="/h IDR_,HIDR_,0x20000 ${headerfile}"
-						output="${help.context}"
-						append="true"
-						verbose="false" />
-
-			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Dialogs (IDD_*)&#13;&#10;" file="${help.context}" append="true"/>
-			<exec program="makehm"
-						commandline="/h IDD_,HIDD_,0x20000 ${headerfile}"
-						output="${help.context}"
-						append="true"
-						verbose="false" />
-
-<!--
-			<echo message="" file="${help.context}" append="true"/>
-			<echo message="// Frame Controls xyxzy(IDW_*)&#13;&#10;" file="${help.context}" append="true"/>
-			<exec program="makehm"
-						commandline="/h /a afxhh.h IDW_,HIDW_,0x50000 ${headerfile}"
-						output="${help.context}"
-						append="true"
-						verbose="false" />
--->
-		</if>
-
-		<!-- Copy help context to target location -->
-		<copy file="${help.context}" tofile="${doc.target.work}/context.h" overwrite="true"/>
 
 	</target>
 

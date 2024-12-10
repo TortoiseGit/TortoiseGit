@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2024 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +19,7 @@
 //
 #pragma once
 #include "Command.h"
-
+#include "AppUtils.h"
 
 /**
  * \ingroup TortoiseProc
@@ -32,7 +33,12 @@ public:
 	 */
 	virtual bool			Execute() override
 	{
-		return (reinterpret_cast<INT_PTR>(ShellExecute(GetExplorerHWND(), L"open", theApp.m_pszHelpFilePath, nullptr, nullptr, SW_SHOWNORMAL)) > 32);
+		if (!CAppUtils::StartHtmlHelp(0))
+		{
+			AfxMessageBox(AFX_IDP_FAILED_TO_LAUNCH_HELP);
+			return false;
+		}
+		return true;
 	}
 };
 
