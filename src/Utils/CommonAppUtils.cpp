@@ -411,6 +411,8 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 	ATLASSERT(page == "index.html" || id == 0);
 
 #if !defined(IDR_HELPMAPPING) || !defined(IDS_APPNAME)
+	UNREFERENCED_PARAMETER(id);
+	UNREFERENCED_PARAMETER(page);
 	return false;
 #else
 	static std::map<DWORD_PTR, std::wstring> idMap;
