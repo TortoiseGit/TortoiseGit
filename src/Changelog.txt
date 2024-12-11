@@ -1,5 +1,13 @@
 ﻿= Release 2.18.0 =
 
+This version drops support for all Windows versions < 10.
+
+TortoiseGit not longer ships Notepad2e any more, but now defaults to Windows Notepad that also supports LF EOL.
+If you want to use Notepad2e, you will need to set it up manually (<https://github.com/ProgerXP/Notepad2e>)
+and configure it in TortoiseGit settings as alternative editor.
+
+Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGit will follow suit with one of the next releases.
+
 == Features ==
  * Fixed issue #3826: Help links don't open in a sensible browser
 

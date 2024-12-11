@@ -117,24 +117,6 @@
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
 	<?define GuidTouch="049D92F9-F0FD-4540-A250-0DF9A7BB86B0"?>
 
-	<!-- Used in C__win7library -->
-	<?define GuidFolderTypeGit="{DC9E616B-7611-461C-9D37-730FDD4CE278}"?>
-	<?define GuidLibraryTypeGit="{D44311F9-08E5-4BB8-96E3-E3E4F2A1BDD0}"?>
-	<?define GuidLibraryFolderGit="{D75C7F5F-5AD0-4059-9274-E8A69E0819CC}"?>
-	<?define GuidSearchFolderGit="{F8DF8783-8587-4BAF-9A19-E664BE2A6130}"?>
-	<?define GuidTopView1="{15A6AE7B-C972-47B3-A24A-06E592A3A2A5}"?>
-	<?define GuidTopView2="{82BA0782-5B7A-4569-B5D7-EC83085F08CC}"?>
-	<?define GuidTopView3="{9B371A56-C568-4C17-A8CA-ED0422C8BD20}"?>
-	<?define GuidTopView4="{A34FCE31-1399-42A7-B445-2A27E88F85F8}"?>
-	<?define GuidTopView5="{C274421B-F691-4C1F-AE01-A21B4E8A9995}"?>
-	<?define GuidTopView6="{FD7F4AD8-A3D9-4073-BF95-18261841333E}"?>
-	<?define GuidFolderTypeCmd0="{025AEA90-F150-49D2-861E-1CB1188FDBA1}"?>
-	<?define GuidFolderTypeCmd1="{13732517-1006-43BA-A895-9A4961C94DE1}"?>
-	<?define GuidFolderTypeCmd2="{51826E14-2906-4E3B-9677-4DCF778C9E21}"?>
-	<?define GuidFolderTypeCmd3="{0B9D41AB-361E-4A6F-B72E-D79C69C3A5E4}"?>
-	<?define GuidFolderTypeCmd4="{FEB5544C-AC53-4D75-9242-B2B2A875687A}"?>
-	<?define GuidFolderTypeCmd5="{1751A73B-8AD8-4905-B1FD-DC3A98C4FBF1}"?>
-
 	<?elseif $(var.Platform) = "ARM64" ?>
 	<!-- Installer component GUIDs (these can be changed safely, unless code checks if a feature is enabled by checking the registry for them) -->
 	<?define GuidInfoFiles="8727825F-7A17-4587-AD59-839F2010E023"?>
@@ -225,23 +207,5 @@
 	<?define GuidIconsRibbon="757B98D0-EA17-4A9A-BB05-E1F5F01CC2B5"?>
 	<?define RegSSHOpen="0E21B3B2-FA54-411B-9AF3-BB275F169A27"?>
 	<?define GuidTouch="ABC9CE77-824F-40B4-AA07-6706E94AEFDD"?>
-
-	<!-- Used in C__win7library -->
-	<?define GuidFolderTypeGit="{B118C031-A977-4A67-9344-47F057388105}"?>
-	<?define GuidLibraryTypeGit="{2944F3BB-D880-41D6-A271-721B184684F7}"?>
-	<?define GuidLibraryFolderGit="{37608D23-CCD9-474C-9DFE-E72A83C8666D}"?>
-	<?define GuidSearchFolderGit="{5C9CF7AB-3D1C-44BC-B315-C346F431540E}"?>
-	<?define GuidTopView1="{15A6AE7B-C972-47B3-A24A-06E592A3A2A5}"?>
-	<?define GuidTopView2="{82BA0782-5B7A-4569-B5D7-EC83085F08CC}"?>
-	<?define GuidTopView3="{9B371A56-C568-4C17-A8CA-ED0422C8BD20}"?>
-	<?define GuidTopView4="{A34FCE31-1399-42A7-B445-2A27E88F85F8}"?>
-	<?define GuidTopView5="{C274421B-F691-4C1F-AE01-A21B4E8A9995}"?>
-	<?define GuidTopView6="{FD7F4AD8-A3D9-4073-BF95-18261841333E}"?>
-	<?define GuidFolderTypeCmd0="{20B25F22-6433-4A59-B5DB-3D94C0D467CF}"?>
-	<?define GuidFolderTypeCmd1="{A40D37EE-F8C1-42EC-AAAF-05BBD196CCD6}"?>
-	<?define GuidFolderTypeCmd2="{3BC677A5-FBFE-4423-9836-457522019974}"?>
-	<?define GuidFolderTypeCmd3="{65E9EE9F-A9D3-4EAC-82AD-448379A7E4BB}"?>
-	<?define GuidFolderTypeCmd4="{BB7C278C-989A-49AE-9C43-B43ABA4C6D86}"?>
-	<?define GuidFolderTypeCmd5="{FFB2B3FB-66E3-49F0-B713-4A1B0ECE2CBB}"?>
 	<?endif?>
 </Include>

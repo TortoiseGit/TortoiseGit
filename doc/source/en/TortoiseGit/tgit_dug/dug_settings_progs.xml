@@ -325,15 +325,16 @@ C:\Path-To\WinMergeU.exe /e /ub /fr /wl /wm /dl %bname /dm %tname /dr %yname  %b
 			<graphic fileref="../images/SettingsAlternativeEditor.png"/>
 		</figure>
 		<para>
-			The original Windows Notepad program does not behave
-			well on files which do not have standard CR-LF
-			line-endings. However, a lot of git configuration files do not have
-			a standard CR-LF line-ending. Because of this TortoiseGit uses a free
-			(shipped) Notepad replacement
-			<ulink url="https://www.flos-freeware.ch/notepad2.html">
-				<citetitle>Notepad2</citetitle>
+			The original Windows Notepad program did not support
+			files which do not have standard CR-LF
+			line-endings before Windows 10. As a lot of Git configuration files do not have
+			a standard CR-LF line-ending by default, TortoiseGit used to ship the
+			Notepad replacement
+			<ulink url="https://github.com/ProgerXP/Notepad2e">
+				<citetitle>Notepad2e</citetitle>
 			</ulink>
-			which displays the line-endings correctly by default.
+			until version 2.18.0.
+			So if you (still) want to use Notepad2e you have to set it up and configure it here.
 		</para>
 	</sect3>
 </sect2>
