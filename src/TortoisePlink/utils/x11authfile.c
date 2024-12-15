@@ -27,7 +27,7 @@ static void BinarySink_put_stringpl_xauth(BinarySink *bs, ptrlen pl)
     BinarySink_put_stringpl_xauth(BinarySink_UPCAST(bs),ptrlen)
 
 void x11_get_auth_from_authfile(struct X11Display *disp,
-                                const char *authfilename)
+                                Filename *authfilename)
 {
     FILE *authfp;
     char *buf;
@@ -72,7 +72,7 @@ void x11_get_auth_from_authfile(struct X11Display *disp,
      */
     bool localhost = !disp->unixdomain && sk_address_is_local(disp->addr);
 
-    authfp = fopen(authfilename, "rb");
+    authfp = f_open(authfilename, "rb", false);
     if (!authfp)
         return;
 

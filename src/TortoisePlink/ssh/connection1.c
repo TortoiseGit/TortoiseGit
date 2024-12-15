@@ -48,7 +48,7 @@ static void ssh1_rportfwd_remove(
     ConnectionLayer *cl, struct ssh_rportfwd *rpf);
 static SshChannel *ssh1_lportfwd_open(
     ConnectionLayer *cl, const char *hostname, int port,
-    const char *description, const SocketPeerInfo *pi, Channel *chan);
+    const char *description, const SocketEndpointInfo *pi, Channel *chan);
 static struct X11FakeAuth *ssh1_add_x11_display(
     ConnectionLayer *cl, int authtype, struct X11Display *disp);
 static bool ssh1_agent_forwarding_permitted(ConnectionLayer *cl);
@@ -641,7 +641,7 @@ static struct X11FakeAuth *ssh1_add_x11_display(
 
 static SshChannel *ssh1_lportfwd_open(
     ConnectionLayer *cl, const char *hostname, int port,
-    const char *description, const SocketPeerInfo *pi, Channel *chan)
+    const char *description, const SocketEndpointInfo *pi, Channel *chan)
 {
     struct ssh1_connection_state *s =
         container_of(cl, struct ssh1_connection_state, cl);

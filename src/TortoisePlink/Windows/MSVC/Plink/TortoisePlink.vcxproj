@@ -182,6 +182,7 @@
     <ClCompile Include="..\..\..\ssh\verstring.c" />
     <ClCompile Include="..\..\..\ssh\x11fwd.c" />
     <ClCompile Include="..\..\..\ssh\zlib.c" />
+    <ClCompile Include="..\..\..\stubs\no-lineedit.c" />
     <ClCompile Include="..\..\..\stubs\no-term.c" />
     <ClCompile Include="..\..\..\stubs\null-cipher.c" />
     <ClCompile Include="..\..\..\stubs\null-key.c" />
@@ -190,6 +191,7 @@
     <ClCompile Include="..\..\..\stubs\null-opener.c" />
     <ClCompile Include="..\..\..\stubs\null-plug.c" />
     <ClCompile Include="..\..\..\stubs\null-seat.c" />
+    <ClCompile Include="..\..\..\stubs\null-socket.c" />
     <ClCompile Include="..\..\..\timing.c" />
     <ClCompile Include="..\..\..\utils\antispoof.c" />
     <ClCompile Include="..\..\..\utils\backend_socket_log.c" />
@@ -201,19 +203,23 @@
     <ClCompile Include="..\..\..\utils\bufchain.c" />
     <ClCompile Include="..\..\..\utils\buildinfo.c" />
     <ClCompile Include="..\..\..\utils\burnstr.c" />
+    <ClCompile Include="..\..\..\utils\burnwcs.c" />
     <ClCompile Include="..\..\..\utils\cert-expr.c" />
     <ClCompile Include="..\..\..\utils\chomp.c" />
     <ClCompile Include="..\..\..\utils\cmdline_get_passwd_input_state_new.c" />
     <ClCompile Include="..\..\..\utils\conf.c" />
+    <ClCompile Include="..\..\..\utils\conf_data.c" />
     <ClCompile Include="..\..\..\utils\conf_dest.c" />
     <ClCompile Include="..\..\..\utils\conf_launchable.c" />
     <ClCompile Include="..\..\..\utils\ctrlparse.c" />
     <ClCompile Include="..\..\..\utils\decode_utf8.c" />
     <ClCompile Include="..\..\..\utils\decode_utf8_to_wchar.c" />
+    <ClCompile Include="..\..\..\utils\decode_utf8_to_wide_string.c" />
     <ClCompile Include="..\..\..\utils\default_description.c" />
     <ClCompile Include="..\..\..\utils\dupcat.c" />
     <ClCompile Include="..\..\..\utils\dupprintf.c" />
     <ClCompile Include="..\..\..\utils\dupstr.c" />
+    <ClCompile Include="..\..\..\utils\dupwcs.c" />
     <ClCompile Include="..\..\..\utils\dup_mb_to_wc.c" />
     <ClCompile Include="..\..\..\utils\dup_wc_to_mb.c" />
     <ClCompile Include="..\..\..\utils\encode_utf8.c" />
@@ -226,6 +232,7 @@
     <ClCompile Include="..\..\..\utils\host_strduptrim.c" />
     <ClCompile Include="..\..\..\utils\host_strrchr.c" />
     <ClCompile Include="..\..\..\utils\key_components.c" />
+    <ClCompile Include="..\..\..\utils\logeventf.c" />
     <ClCompile Include="..\..\..\utils\log_proxy_stderr.c" />
     <ClCompile Include="..\..\..\utils\make_spr_sw_abort_static.c" />
     <ClCompile Include="..\..\..\utils\marshal.c" />
@@ -241,6 +248,7 @@
     <ClCompile Include="..\..\..\utils\read_file_into.c" />
     <ClCompile Include="..\..\..\utils\seat_connection_fatal.c" />
     <ClCompile Include="..\..\..\utils\seat_dialog_text.c" />
+    <ClCompile Include="..\..\..\utils\seat_nonfatal.c" />
     <ClCompile Include="..\..\..\utils\sessprep.c" />
     <ClCompile Include="..\..\..\utils\sk_free_peer_info.c" />
     <ClCompile Include="..\..\..\utils\smemclr.c" />
@@ -297,6 +305,7 @@
     <ClCompile Include="..\..\utils\agent_named_pipe_name.c" />
     <ClCompile Include="..\..\utils\arm_arch_queries.c" />
     <ClCompile Include="..\..\utils\aux_match_opt.c" />
+    <ClCompile Include="..\..\utils\cmdline_arg.c" />
     <ClCompile Include="..\..\utils\cryptoapi.c" />
     <ClCompile Include="..\..\utils\defaults.c" />
     <ClCompile Include="..\..\utils\dll_hijacking_protection.c" />
@@ -316,6 +325,7 @@
     <ClCompile Include="..\..\utils\registry.c" />
     <ClCompile Include="..\..\utils\request_file.c" />
     <ClCompile Include="..\..\utils\security.c" />
+    <ClCompile Include="..\..\utils\split_into_argv_w.c" />
     <ClCompile Include="..\..\utils\version.c">
       <ObjectFileName>$(IntDir)windows-%(Filename)</ObjectFileName>
     </ClCompile>

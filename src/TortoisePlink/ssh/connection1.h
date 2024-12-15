@@ -111,7 +111,7 @@ struct ssh_rportfwd *ssh1_rportfwd_alloc(
     int addressfamily, const char *log_description, PortFwdRecord *pfr,
     ssh_sharing_connstate *share_ctx);
 SshChannel *ssh1_serverside_x11_open(
-    ConnectionLayer *cl, Channel *chan, const SocketPeerInfo *pi);
+    ConnectionLayer *cl, Channel *chan, const SocketEndpointInfo *pi);
 SshChannel *ssh1_serverside_agent_open(ConnectionLayer *cl, Channel *chan);
 
 void ssh1_connection_direction_specific_setup(

@@ -123,11 +123,6 @@ static const char *sshproxy_socket_error(Socket *s)
     return sp->errmsg;
 }
 
-static SocketPeerInfo *sshproxy_peer_info(Socket *s)
-{
-    return NULL;
-}
-
 static const SocketVtable SshProxy_sock_vt = {
     .plug = sshproxy_plug,
     .close = sshproxy_close,
@@ -136,14 +131,14 @@ static const SocketVtable SshProxy_sock_vt = {
     .write_eof = sshproxy_write_eof,
     .set_frozen = sshproxy_set_frozen,
     .socket_error = sshproxy_socket_error,
-    .peer_info = sshproxy_peer_info,
+    .endpoint_info = nullsock_endpoint_info,
 };
 
 static void sshproxy_eventlog(LogPolicy *lp, const char *event)
 {
     SshProxy *sp = container_of(lp, SshProxy, logpolicy);
-    log_proxy_stderr(sp->plug, &sp->psb, event, strlen(event));
-    log_proxy_stderr(sp->plug, &sp->psb, "\n", 1);
+    log_proxy_stderr(sp->plug, &sp->sock, &sp->psb, event, strlen(event));
+    log_proxy_stderr(sp->plug, &sp->sock, &sp->psb, "\n", 1);
 }
 
 static int sshproxy_askappend(LogPolicy *lp, Filename *filename,
@@ -248,7 +243,8 @@ static void sshproxy_notify_session_started(Seat *seat)
         interactor_return_seat(sp->clientitr);
     sp->conn_established = true;
 
-    plug_log(sp->plug, PLUGLOG_CONNECT_SUCCESS, sp->addr, sp->port, NULL, 0);
+    plug_log(sp->plug, &sp->sock, PLUGLOG_CONNECT_SUCCESS, sp->addr, sp->port,
+             NULL, 0);
 }
 
 static size_t sshproxy_output(Seat *seat, SeatOutputType type,
@@ -261,7 +257,7 @@ static size_t sshproxy_output(Seat *seat, SeatOutputType type,
         try_send_ssh_to_socket(sp);
         break;
       case SEAT_OUTPUT_STDERR:
-        log_proxy_stderr(sp->plug, &sp->psb, data, len);
+        log_proxy_stderr(sp->plug, &sp->sock, &sp->psb, data, len);
         break;
     }
     return bufchain_size(&sp->ssh_to_socket);
@@ -322,8 +318,8 @@ static void sshproxy_send_close(SshProxy *sp)
         interactor_return_seat(sp->clientitr);
 
     if (!sp->conn_established)
-        plug_log(sp->plug, PLUGLOG_CONNECT_FAILED, sp->addr, sp->port,
-                 sp->errmsg, 0);
+        plug_log(sp->plug, &sp->sock, PLUGLOG_CONNECT_FAILED, sp->addr,
+                 sp->port, sp->errmsg, 0);
 
     if (sp->errmsg)
         plug_closing_error(sp->plug, sp->errmsg);
@@ -403,6 +399,14 @@ static void sshproxy_connection_fatal(Seat *seat, const char *message)
             "fatal error in proxy SSH connection: %s", message);
         queue_toplevel_callback(sshproxy_connection_fatal_callback, sp);
     }
+}
+
+static void sshproxy_nonfatal(Seat *seat, const char *message)
+{
+    SshProxy *sp = container_of(seat, SshProxy, seat);
+    if (sp->clientseat)
+        seat_nonfatal(sp->clientseat, "error in proxy SSH connection: %s",
+                      message);
 }
 
 static SeatPromptResult sshproxy_confirm_ssh_host_key(
@@ -569,6 +573,7 @@ static const SeatVtable SshProxy_seat_vt = {
     .notify_remote_exit = nullseat_notify_remote_exit,
     .notify_remote_disconnect = sshproxy_notify_remote_disconnect,
     .connection_fatal = sshproxy_connection_fatal,
+    .nonfatal = sshproxy_nonfatal,
     .update_specials_menu = nullseat_update_specials_menu,
     .get_ttymode = nullseat_get_ttymode,
     .set_busy_status = nullseat_set_busy_status,

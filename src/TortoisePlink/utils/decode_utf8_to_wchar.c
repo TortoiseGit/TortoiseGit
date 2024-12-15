@@ -5,10 +5,11 @@
 #include "putty.h"
 #include "misc.h"
 
-size_t decode_utf8_to_wchar(const char **utf8, wchar_t *out)
+size_t decode_utf8_to_wchar(BinarySource *src, wchar_t *out,
+                            DecodeUTF8Failure *err)
 {
     size_t outlen = 0;
-    unsigned wc = decode_utf8(utf8);
+    unsigned wc = decode_utf8(src, err);
     if (sizeof(wchar_t) > 2 || wc < 0x10000) {
         out[outlen++] = wc;
     } else {

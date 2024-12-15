@@ -26,12 +26,51 @@ void cleanup_exit(int code)
 }
 
 /*
+ * System for getting I/O handles to talk to the console for
+ * interactive prompts.
+ *
+ * In PuTTY 0.81 and before, these prompts used the standard I/O
+ * handles. But this means you can't redirect Plink's actual stdin
+ * from a sensible data channel without the responses to login prompts
+ * unwantedly being read from it too. Also, if you have a real
+ * console handle then you can read from it in Unicode mode, which is
+ * an option not available for any old file handle.
+ *
+ * However, many versions of PuTTY have worked the old way, so we need
+ * a method of falling back to it for the sake of whoever's workflow
+ * it turns out to break. So this structure equivocates between the
+ * two systems.
+ */
+static bool conio_use_standard_handles = false;
+bool console_set_stdio_prompts(bool newvalue)
+{
+    conio_use_standard_handles = newvalue;
+    return true;
+}
+
+static bool conio_use_utf8 = true;
+bool set_legacy_charset_handling(bool newvalue)
+{
+    conio_use_utf8 = !newvalue;
+    return true;
+}
+
+typedef enum {
+    RESPONSE_ABANDON,
+    RESPONSE_YES,
+    RESPONSE_NO,
+    RESPONSE_INFO,
+    RESPONSE_UNRECOGNISED
+} ResponseType;
+
+/*
  * Helper function to print the message from a SeatDialogText. Returns
  * the final prompt to print on the input line, or NULL if a
  * batch-mode abort is needed. In the latter case it will have printed
  * the abort text already.
  */
-static strbuf *console_print_seatdialogtext(SeatDialogText *text, const char **title)
+static strbuf *console_print_seatdialogtext(
+    SeatDialogText *text, const char **title)
 {
     strbuf* buf = strbuf_new();
 
@@ -42,8 +81,8 @@ static strbuf *console_print_seatdialogtext(SeatDialogText *text, const char **t
              *end = item+text->nitems; item < end; item++) {
         switch (item->type) {
           case SDT_TITLE:
-              *title = item->text;
-              break;
+            *title = item->text;
+            break;
           case SDT_PARA:
             put_dataz(buf, item->text);
             put_dataz(buf, "\n");
@@ -62,12 +101,11 @@ static strbuf *console_print_seatdialogtext(SeatDialogText *text, const char **t
           case SDT_BATCH_ABORT:
             if (console_batch_mode) {
                 strbuf_free(buf);
-                return NULL;
             }
             break;
           case SDT_PROMPT:
-              put_dataz(buf, "\n");
-              put_dataz(buf, item->text);
+            put_dataz(buf, "\n");
+            put_dataz(buf, item->text);
             break;
           default:
             break;
@@ -89,41 +127,36 @@ SeatPromptResult console_confirm_ssh_host_key(
     if (!buf)
         return SPR_SW_ABORT("Cannot confirm a host key in batch mode");
 
-    mbret = MessageBox(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    mbret = MessageBoxA(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
     strbuf_free(buf);
-	if (mbret == IDYES)
-	{
-		store_host_key(host, port, keytype, keystr);
-		return SPR_OK;
-	}
-	else if (mbret == IDNO)
-	{
-		return SPR_OK;
-	}
-	else
-	{
-		return SPR_USER_ABORT;
-	}
+    if (mbret == IDYES) {
+        store_host_key(seat, host, port, keytype, keystr);
+        return SPR_OK;
+    } else if (mbret == IDNO) {
+        return SPR_OK;
+    } else {
+        return SPR_USER_ABORT;
+    }
 }
 
 SeatPromptResult console_confirm_weak_crypto_primitive(
     Seat *seat, SeatDialogText *text,
     void (*callback)(void *ctx, SeatPromptResult result), void *ctx)
 {
-	int mbret;
-    char *title = NULL;
-	static const char mbtitle[] = "%s Security Alert";
+    int mbret;
+    const char* title = NULL;
+    static const char mbtitle[] = "%s Security Alert";
 
-    strbuf* buf = console_print_seatdialogtext(text, &title);
+    strbuf *buf = console_print_seatdialogtext(text, &title);
     if (!buf)
         return SPR_SW_ABORT("Cannot confirm a weak crypto primitive "
-                            "in batch mode");
+                              "in batch mode");
 
-	title = dupprintf(mbtitle, appname);
+    title = dupprintf(mbtitle, appname);
 
-    mbret = MessageBox(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
+    mbret = MessageBoxA(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNO | MB_DEFBUTTON2);
     strbuf_free(buf);
-	sfree(title);
+    sfree(title);
     if (mbret == IDYES) {
         return SPR_OK;
     } else {
@@ -135,20 +168,20 @@ SeatPromptResult console_confirm_weak_cached_hostkey(
     Seat *seat, SeatDialogText *text,
     void (*callback)(void *ctx, SeatPromptResult result), void *ctx)
 {
-	int mbret;
+    int mbret;
     char *title = NULL;
-	static const char mbtitle[] = "%s Security Alert";
+    static const char mbtitle[] = "%s Security Alert";
 
     strbuf* buf = console_print_seatdialogtext(text, &title);
     if (!buf)
         return SPR_SW_ABORT("Cannot confirm a weak cached host key "
                             "in batch mode");
 
-	title = dupprintf(mbtitle, appname);
+    title = dupprintf(mbtitle, appname);
 
-    mbret = MessageBox(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    mbret = MessageBoxA(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
     strbuf_to_str(buf);
-	sfree(title);
+    sfree(title);
 
     if (mbret == IDYES) {
         return SPR_OK;
@@ -210,16 +243,13 @@ bool console_has_mixed_input_stream(Seat *seat)
 int console_askappend(LogPolicy *lp, Filename *filename,
                       void (*callback)(void *ctx, int result), void *ctx)
 {
-    HANDLE hin;
-    DWORD savemode, i;
-
     static const char msgtemplate[] =
         "The session log file \"%.*s\" already exists.\n"
         "You can overwrite it with a new session log,\n"
         "append your session log to the end of it,\n"
         "or disable session logging for this session.\n"
-        "Hit Yes to wipe the file, hit No to append to it,\n"
-        "or just press Cancel to disable logging.\n"
+        "Hit \"Yes\" to wipe the file, hit \"No\" to append to it,\n"
+        "or just press \"Cancel\" to disable logging.\n"
         "Wipe the log file?";
 
     static const char msgtemplate_batch[] =
@@ -228,14 +258,20 @@ int console_askappend(LogPolicy *lp, Filename *filename,
 
     int mbret;
     char *message, *title;
+    wchar_t *wmessage, *wtitle;
     static const char mbtitle[] = "%s Session log";
 
-    message = dupprintf(msgtemplate, FILENAME_MAX, filename->path);
+    message = dupprintf(msgtemplate, FILENAME_MAX, filename->utf8path);
     title = dupprintf(mbtitle, appname);
 
-    mbret = MessageBox(GetParentHwnd(), message, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    wmessage = decode_utf8_to_wide_string(message);
+    wtitle = decode_utf8_to_wide_string(title);
     sfree(message);
     sfree(title);
+
+    mbret = MessageBoxW(GetParentHwnd(), wmessage, wtitle, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
+    sfree(wmessage);
+    sfree(wtitle);
 
     if (mbret == IDYES)
         return 2;
@@ -311,15 +347,8 @@ StripCtrlChars *console_stripctrl_new(
     return stripctrl_new(bs_out, false, 0);
 }
 
-static void console_write(HANDLE hout, ptrlen data)
-{
-    DWORD dummy;
-    WriteFile(hout, data.ptr, data.len, &dummy, NULL);
-}
-
 SeatPromptResult console_get_userpass_input(prompts_t *p)
 {
-    HANDLE hin = INVALID_HANDLE_VALUE, hout = INVALID_HANDLE_VALUE;
     size_t curr_prompt;
 
     /*
@@ -332,17 +361,16 @@ SeatPromptResult console_get_userpass_input(prompts_t *p)
     }
 
     if (console_batch_mode)
-		return SPR_USER_ABORT;
+        return SPR_USER_ABORT;
 
     for (curr_prompt = 0; curr_prompt < p->n_prompts; curr_prompt++) {
-
         prompt_t *pr = p->prompts[curr_prompt];
 
         char result[MAX_LENGTH_PASSWORD] = { 0 };
-		if (!DoLoginDialog(result, sizeof(result), pr->prompt))
-			return SPR_USER_ABORT;
-		prompt_set_result(pr, result);
-		SecureZeroMemory(&result, sizeof(result));
+        if (!DoLoginDialog(result, sizeof(result), pr->prompt))
+            return SPR_USER_ABORT;
+        prompt_set_result(pr, result);
+        SecureZeroMemory(&result, sizeof(result));
     }
 
     return SPR_OK;

@@ -54,10 +54,10 @@ struct crcda_ctx {
 
 struct crcda_ctx *crcda_make_context(void)
 {
-    struct crcda_ctx *ret = snew(struct crcda_ctx);
-    ret->h = NULL;
-    ret->n = HASH_MINSIZE / HASH_ENTRYSIZE;
-    return ret;
+    struct crcda_ctx *ctx = snew(struct crcda_ctx);
+    ctx->h = NULL;
+    ctx->n = HASH_MINSIZE / HASH_ENTRYSIZE;
+    return ctx;
 }
 
 void crcda_free_context(struct crcda_ctx *ctx)

@@ -1,4 +1,4 @@
-﻿/*
+/*
  * PLink - a Windows command-line (stdin/stdout) variant of PuTTY.
  */
 
@@ -27,7 +27,7 @@ void cmdline_error(const char *fmt, ...)
     stuff = dupvprintf(fmt, ap);
     va_end(ap);
     sprintf(morestuff, "%.70s Command Line Error", appname);
-    MessageBox(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
+    MessageBoxA(GetParentHwnd(), stuff, morestuff, MB_ICONERROR | MB_OK);
     sfree(stuff);
     exit(1);
 }
@@ -92,8 +92,8 @@ static SeatPromptResult plink_get_userpass_input(Seat *seat, prompts_t *p)
 
 static bool plink_seat_interactive(Seat *seat)
 {
-    return (!*conf_get_str(conf, CONF_remote_cmd) &&
-            !*conf_get_str(conf, CONF_remote_cmd2) &&
+    return (!*conf_get_str_ambi(conf, CONF_remote_cmd, NULL) &&
+            !*conf_get_str_ambi(conf, CONF_remote_cmd2, NULL) &&
             !*conf_get_str(conf, CONF_ssh_nc_host));
 }
 
@@ -107,6 +107,7 @@ static const SeatVtable plink_seat_vt = {
     .notify_remote_exit = nullseat_notify_remote_exit,
     .notify_remote_disconnect = nullseat_notify_remote_disconnect,
     .connection_fatal = console_connection_fatal,
+    .nonfatal = console_nonfatal,
     .update_specials_menu = nullseat_update_specials_menu,
     .get_ttymode = nullseat_get_ttymode,
     .set_busy_status = nullseat_set_busy_status,
@@ -181,11 +182,11 @@ static void usage(void)
     j += sprintf(buf + j, "  -share    enable use of connection sharing\n");
     j += sprintf(buf + j, "  -hostkey keyid\n");
     j += sprintf(buf + j, "            manually specify a host key (may be repeated)\n");
-	j += sprintf(buf + j, "  -sanitise-stderr, -sanitise-stdout, ");
+    j += sprintf(buf + j, "  -sanitise-stderr, -sanitise-stdout, ");
     j += sprintf(buf + j, "-no-sanitise-stderr, -no-sanitise-stdout\n");
-	j += sprintf(buf + j, "            do/don't strip control chars from standard ");
+    j += sprintf(buf + j, "            do/don't strip control chars from standard ");
     j += sprintf(buf + j, "output/error\n");
-	j += sprintf(buf + j, "  -no-antispoof   omit anti-spoofing prompt after ");
+    j += sprintf(buf + j, "  -no-antispoof   omit anti-spoofing prompt after ");
     j += sprintf(buf + j, "authentication\n");
     j += sprintf(buf + j, "  -m file   read remote command(s) from file\n");
     j += sprintf(buf + j, "  -s        remote command is an SSH subsystem (SSH-2 only)\n");
@@ -200,8 +201,7 @@ static void usage(void)
     j += sprintf(buf + j, "            control what happens when a log file already exists\n");
     j += sprintf(buf + j, "  -shareexists\n");
     j += sprintf(buf + j, "            test whether a connection-sharing upstream exists\n");
-    MessageBox(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
-    exit(1);
+    MessageBoxA(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
 }
 
 static void version(void)
@@ -210,7 +210,7 @@ static void version(void)
     char* buildinfo_text = buildinfo("\n");
     sprintf(buf, "TortoiseGitPlink: %s\n%s\n", ver, buildinfo_text);
     sfree(buildinfo_text);
-    MessageBox(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
+    MessageBoxA(NULL, buf, "TortoiseGitPlink", MB_ICONINFORMATION);
     exit(0);
 }
 
@@ -331,24 +331,25 @@ int main(int argc, char **argv)
     conf_set_bool(conf, CONF_agentfwd, FALSE);
     conf_set_bool(conf, CONF_x11_forward, FALSE);
     bool skipFurtherParameters = false;
-    while (--argc) {
-        char *p = *++argv;
+    CmdlineArgList *arglist = cmdline_arg_list_from_GetCommandLineW();
+    size_t arglistpos = 0;
+    while (arglist->args[arglistpos]) {
+        CmdlineArg *arg = arglist->args[arglistpos++];
+        CmdlineArg *nextarg = arglist->args[arglistpos];
+        const char *p = cmdline_arg_to_str(arg);
         if (p && !strcmp(p, "--")) {
             skipFurtherParameters = true;
             continue;
         }
-        int ret = cmdline_process_param(p, (argc > 1 ? argv[1] : NULL),
-                                        1, conf, skipFurtherParameters);
+        int ret = cmdline_process_param(arg, nextarg, 1, conf, skipFurtherParameters);
         if (ret == -2) {
             fprintf(stderr,
                     "TortoiseGitPlink: option \"%s\" requires an argument\n", p);
             errors = true;
         } else if (ret == 2) {
-            --argc, ++argv;
+            arglistpos++;
         } else if (ret == 1) {
             continue;
-        } else if (!strcmp(p, "-batch") && !skipFurtherParameters) {
-            // ignore and do not print an error message
         } else if (!strcmp(p, "-s") && !skipFurtherParameters) {
             /* Save status to write to conf later. */
             use_subsystem = true;
@@ -356,9 +357,10 @@ int main(int argc, char **argv)
             version();
         } else if (!strcmp(p, "--help") && !skipFurtherParameters) {
             usage();
+            exit(0);
         } else if (!strcmp(p, "-pgpfp") && !skipFurtherParameters) {
             pgp_fingerprints();
-            exit(1);
+            exit(0);
         } else if (!strcmp(p, "-shareexists") && !skipFurtherParameters) {
             just_test_share_exists = true;
         } else if ((!strcmp(p, "-sanitise-stdout") ||
@@ -378,12 +380,11 @@ int main(int argc, char **argv)
         } else if (*p != '-' || skipFurtherParameters) {
             strbuf *cmdbuf = strbuf_new();
 
-            while (argc > 0) {
+            while (arg) {
                 if (cmdbuf->len > 0)
                     put_byte(cmdbuf, ' '); /* add space separator */
-                put_dataz(cmdbuf, p);
-                if (--argc > 0)
-                    p = *++argv;
+                put_dataz(cmdbuf, cmdline_arg_to_utf8(arg));
+                arg = arglist->args[arglistpos++];
             }
 
             conf_set_str(conf, CONF_remote_cmd, cmdbuf->s);
@@ -402,7 +403,10 @@ int main(int argc, char **argv)
         return 1;
 
     if (!cmdline_host_ok(conf)) {
-        usage();
+        fprintf(stderr, "TortoiseGitPlink: no valid host name provided\n"
+                "try \"TortoiseGitPlink --help\" for help\n");
+        cmdline_arg_list_free(arglist);
+        return 1;
     }
 
     prepare_session(conf);

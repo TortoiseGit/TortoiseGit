@@ -531,7 +531,7 @@ struct ssh_rportfwd *ssh1_rportfwd_alloc(
 }
 
 SshChannel *ssh1_serverside_x11_open(
-    ConnectionLayer *cl, Channel *chan, const SocketPeerInfo *pi)
+    ConnectionLayer *cl, Channel *chan, const SocketEndpointInfo *pi)
 {
     unreachable("Should never be called in the client");
 }

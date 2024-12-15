@@ -23,6 +23,7 @@ struct SshServerConfig {
     bool stunt_open_unconditional_agent_socket;
     bool stunt_allow_trivial_ki_auth;
     bool stunt_return_success_to_pubkey_offer;
+    bool stunt_close_after_banner;
 };
 
 Plug *ssh_server_plug(

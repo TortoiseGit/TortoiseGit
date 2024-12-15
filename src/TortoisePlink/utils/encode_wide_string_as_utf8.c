@@ -17,9 +17,7 @@ char *encode_wide_string_as_utf8(const wchar_t *ws)
         } else if (IS_SURROGATE(ch)) {
             ch = 0xfffd; /* illegal UTF-16 -> REPLACEMENT CHARACTER */
         }
-        char utf8[6];
-        size_t size = encode_utf8(utf8, ch);
-        put_data(sb, utf8, size);
+        put_utf8_char(sb, ch);
     }
     return strbuf_to_str(sb);
 }

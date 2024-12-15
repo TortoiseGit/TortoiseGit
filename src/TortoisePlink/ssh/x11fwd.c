@@ -277,12 +277,6 @@ static char *x11_verify(unsigned long peer_ip, int peer_port,
     return NULL;
 }
 
-static void x11_log(Plug *p, PlugLogType type, SockAddr *addr, int port,
-                    const char *error_msg, int error_code)
-{
-    /* We have no interface to the logging module here, so we drop these. */
-}
-
 static void x11_send_init_error(struct X11Connection *conn,
                                 const char *err_message);
 
@@ -336,7 +330,7 @@ static void x11_sent(Plug *plug, size_t bufsize)
 }
 
 static const PlugVtable X11Connection_plugvt = {
-    .log = x11_log,
+    .log = nullplug_log,
     .closing = x11_closing,
     .receive = x11_receive,
     .sent = x11_sent,

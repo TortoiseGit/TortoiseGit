@@ -13,14 +13,12 @@
 /*
  * Call this to initialise the state structure.
  */
-AuxMatchOpt aux_match_opt_init(int argc, char **argv, int start_index,
-                               aux_opt_error_fn_t opt_error)
+AuxMatchOpt aux_match_opt_init(aux_opt_error_fn_t opt_error)
 {
     AuxMatchOpt amo[1];
 
-    amo->argc = argc;
-    amo->argv = argv;
-    amo->index = start_index;
+    amo->arglist = cmdline_arg_list_from_GetCommandLineW();
+    amo->index = 0;
     amo->doing_opts = true;
     amo->error = opt_error;
 
@@ -32,12 +30,14 @@ AuxMatchOpt aux_match_opt_init(int argc, char **argv, int start_index,
  * Point 'val' at a char * to receive the option argument, if one is
  * expected. Set 'val' to NULL if no argument is expected.
  */
-bool aux_match_opt(AuxMatchOpt *amo, char **val, const char *optname, ...)
+bool aux_match_opt(AuxMatchOpt *amo, CmdlineArg **val,
+                   const char *optname, ...)
 {
-    assert(amo->index < amo->argc);
-
     /* Find the end of the option name */
-    char *opt = amo->argv[amo->index];
+    CmdlineArg *optarg = amo->arglist->args[amo->index];
+    assert(optarg);
+    const char *opt = cmdline_arg_to_utf8(optarg);
+
     ptrlen argopt;
     argopt.ptr = opt;
     argopt.len = strcspn(opt, "=");
@@ -72,14 +72,14 @@ bool aux_match_opt(AuxMatchOpt *amo, char **val, const char *optname, ...)
     if (opt[argopt.len]) {
         if (!val)
             amo->error("option '%s' does not expect a value", opt);
-        *val = opt + argopt.len + 1;
+        *val = cmdline_arg_from_utf8(optarg->list, opt + argopt.len + 1);
         amo->index++;
     } else if (!val) {
         amo->index++;
     } else {
-        if (amo->index + 1 >= amo->argc)
+        if (!amo->arglist->args[amo->index + 1])
             amo->error("option '%s' expects a value", opt);
-        *val = amo->argv[amo->index + 1];
+        *val = amo->arglist->args[amo->index + 1];
         amo->index += 2;
     }
 
@@ -89,13 +89,14 @@ bool aux_match_opt(AuxMatchOpt *amo, char **val, const char *optname, ...)
 /*
  * Call this to return a non-option argument in *val.
  */
-bool aux_match_arg(AuxMatchOpt *amo, char **val)
+bool aux_match_arg(AuxMatchOpt *amo, CmdlineArg **val)
 {
-    assert(amo->index < amo->argc);
-    char *opt = amo->argv[amo->index];
+    CmdlineArg *optarg = amo->arglist->args[amo->index];
+    assert(optarg);
+    const char *opt = cmdline_arg_to_utf8(optarg);
 
     if (!amo->doing_opts || opt[0] != '-' || !strcmp(opt, "-")) {
-        *val = opt;
+        *val = optarg;
         amo->index++;
         return true;
     }
@@ -108,10 +109,12 @@ bool aux_match_arg(AuxMatchOpt *amo, char **val)
  */
 bool aux_match_done(AuxMatchOpt *amo)
 {
-    if (amo->index < amo->argc && !strcmp(amo->argv[amo->index], "--")) {
+    CmdlineArg *optarg = amo->arglist->args[amo->index];
+    const char *opt = cmdline_arg_to_utf8(optarg);
+    if (opt && !strcmp(opt, "--")) {
         amo->doing_opts = false;
         amo->index++;
     }
 
-    return amo->index >= amo->argc;
+    return amo->arglist->args[amo->index] == NULL;
 }

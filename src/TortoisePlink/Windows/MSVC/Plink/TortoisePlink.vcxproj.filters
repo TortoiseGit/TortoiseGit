@@ -735,6 +735,36 @@
     <ClCompile Include="..\..\..\crypto\rfc6979.c">
       <Filter>Source Files\crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\utils\burnwcs.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\logeventf.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\conf_data.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\dupwcs.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\cmdline_arg.c">
+      <Filter>Source Files\windows\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\decode_utf8_to_wide_string.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\seat_nonfatal.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\split_into_argv_w.c">
+      <Filter>Source Files\windows\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\stubs\no-lineedit.c">
+      <Filter>Source Files\stubs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\stubs\null-socket.c">
+      <Filter>Source Files\stubs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\logindialog.h">
