@@ -309,8 +309,8 @@
 					<?endif ?>
 
 					<Component Id="C__TortoiseGitTools" Guid="$(var.GuidTortoiseGitTools)" Win64="$(var.Win64YesNo)">
-						<File Id="F__TortoiseGitPLink" Name="TortoiseGitPLink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
-						<CopyFile Id="F__TortoisePlink" FileId="F__TortoiseGitPLink" DestinationName="TortoisePlink.exe" />
+						<File Id="F__TortoiseGitPlink" Name="TortoiseGitPlink.exe" DiskId="1" Source="..\..\bin\$(var.ReleasePath)\bin\TortoiseGitPlink.exe" KeyPath="yes" />
+						<CopyFile Id="F__TortoisePlink" FileId="F__TortoiseGitPlink" DestinationName="TortoisePlink.exe" />
 						<?if $(var.Platform) = "x86" ?>
 						<File Id="F__PuttyGenx86" Name="puttygen.exe" DiskId="1" Source="..\..\ext\putty\puttygen-x86.exe" />
 						<File Id="F__pageantx86" Name="pageant.exe" DiskId="1" Source="..\..\ext\putty\pageant-x86.exe" />
