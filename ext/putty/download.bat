@@ -37,6 +37,9 @@ for /F "tokens=1-3" %%a in (download.txt) do (
     del findstroutput.tmp wantedhash.tmp
   ) || (
     echo "Invalid hash for !LOCALFILENAME! found!"
+    echo "Expected hash: %%c"
+    echo "Got hash:"
+    certUtil -hashfile !LOCALFILENAME! sha256
     del !LOCALFILENAME! findstroutput.tmp wantedhash.tmp
     goto error
   )

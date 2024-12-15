@@ -11,6 +11,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
 == Features ==
  * Fixed issue #3826: Help links don't open in a sensible browser
  * Update TortoiseGitPlink to PuTTY Plink 0.82
+ * Update shipped PuTTY binaries to 0.82
 
 = Release 2.17.0.2 =
 Released: 2024-11-01
