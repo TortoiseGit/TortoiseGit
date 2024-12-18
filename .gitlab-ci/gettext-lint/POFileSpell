@@ -1,0 +1,216 @@
+#!@PYTHON@
+# -*- mode: Python; coding: utf-8; -*-
+
+# PO file spell checker
+# 
+# Pedro Morais <morais@kde.org>
+# José Nuno Pires <jncp@netcabo.pt>
+# João Neves <joao@silvanaves.org>
+# Sven Strickroth <email@cs-ware.de>
+# (c) Copyright 2003, 2004, 2024
+# Distributable under the terms of the GPL - see COPYING
+
+import sys
+import os
+import getopt
+import re
+if not "@prefix@/share/@PACKAGE@" in sys.path:
+    sys.path.append("@prefix@/share/@PACKAGE@")
+from POFile import POFile
+from util import Output
+
+spellCommand = 'aspell --encoding=UTF-8 list'
+
+def usage(code = -1):
+    w = sys.stderr.write
+    w('Usage: POFileSpell [OPTION] <FILE>...\n')
+    w('\n')
+    w('Mandatory arguments to long options are mandatory '
+      'for short options too.\n')
+    w('\n')
+    w('Options:\n')
+    w('  -h, --help                 show this help\n')
+    w('  -i, --interactive          interactive console mode\n')
+    w('  -o, --overview             generate an overview file\n')
+    w('  -d, --dict=<file>          load a extra dictionary file\n')
+    w('      --batch-add=<file>     add words on file to ignore list\n')
+    w('      --command=<command>    command used for spellchecking\n')
+    w('                             (default: "%s")\n' % spellCommand)
+    sys.exit(code)
+
+try:
+    opts, args = getopt.getopt(sys.argv[1:], "hiod:",
+                               ["help", "interactive", "overview", "dict=",
+                                "command=", "batch-add="])
+except getopt.GetoptError:
+    usage()
+interactive = 0
+overview = None
+dict = {}
+dictfiles = []
+batchaddwordlist = []
+for o, a in opts:
+    if o in ("-h", "--help"): usage(0)
+    if o in ("-i", "--interactive"): interactive = 1
+    if o in ("-o", "--overview"): overview = {}
+    if o in ("-d", "--dict"):
+        fn = os.path.expandvars(os.path.expanduser(a))
+        dictfiles.append(fn)
+        words = open(fn).readlines()
+        for word in words:
+            word = word[:-1]
+            dict[word] = word
+    if o in ("--batch-add",):
+        fn = os.path.expandvars(os.path.expanduser(a))
+        words = open(fn).readlines()
+        for word in words:
+            word = word[:-1]
+            batchaddwordlist.append(word)
+    if o in ("--command",):
+        spellCommand = a
+if len(args) < 1: usage()
+
+def spelling(args, overview, dict, dictfiles, spellCommand):
+    tagname = "po-file-spell"
+    if overview is not None: tagname = "po-file-spell-overview"
+    out = Output(tagname)
+    for filename in args:
+        po = POFile(filename)
+        if po.parse() == 0:
+            sys.stderr.write('error parsing file %s\n' % filename)
+        else:
+            po.parseHeader()
+            if spellCommand: po.spellCommand = spellCommand
+            po.spell(dict)
+            if len(po.spellErrors) > 0:
+                if overview is not None:
+                    for e in po.spellErrors:
+                        ce = 0
+                        if e in overview: ce = overview[e]
+                        overview[e] = ce + 1
+                else:
+                    out.opentag('file', {'name': filename})
+                    for e in po.spellErrors:
+                        out.opentag('error', {}, body = e, close = 1)
+                    out.closetag()
+    if overview:
+        for i in overview.iteritems():
+            out.opentag('error', {'count': str(i[1])}, body = i[0], close = 1)
+    out.finish()
+
+def interactiveSpelling(args, dict, dictfiles, spellCommand):
+    for filename in args:
+        po = POFile(filename)
+        if po.parse() == 0:
+            sys.stderr.write('error parsing file %s\n' % filename)
+        else:
+            po.parseHeader()
+            if spellCommand: po.spellCommand = spellCommand
+            po.spell(dict)
+            if len(po.spellErrors) > 0:
+                for e in po.spellErrors:
+                    print('Error: %s' % e)
+                    ctxs = po.searchInMsgstr(e)
+                    for line, message, context in ctxs:
+                        print('  message %d, line %d: %s' % (
+                            message, line, context))
+                    print('a - add to current file (%s)' % filename)
+                    if len(ctxs):
+                        print('r - replace in current file with another word')
+                    d = 1
+                    for dictfile in dictfiles:
+                        print('%d - add to dictionary %s' % (d, dictfile))
+                        d = d + 1
+                    print('n - go to the next file')
+                    x = raw_input('Enter your choice, enter to continue: ')
+                    if x == 'n':
+                        break
+                    elif x == 'a':
+                        if addSpellExtra(po, filename, e):
+                            print('added word to file %s' % filename)
+                        else:
+                            print('error adding word to file %s' % filename)
+                    elif len(ctxs) and x == 'r':
+                        replace = raw_input('Enter replacement word: ')
+                        for line, message, context in ctxs:
+                            podata = po.data[message - 1]
+                            regexp = re.compile('\\b' + e + '\\b')
+                            rrr = regexp.sub(replace, podata[3])
+                            lines = po.prepare_replace(message)
+                            if lines is not None:
+                                file = open(filename, 'w')
+                                po.execute_replace(lines, rrr, 1, file,
+                                                   breaknewlines = 1)
+                                file.close()
+                                po.data[message - 1] = (podata[0], podata[1],
+                                                        podata[2], rrr,
+                                                        podata[3])
+                                print('replaced word in %s' % filename)
+                            else:
+                                print('error replacing word in %s' % filename)
+                    else:
+                        dictchoice = 0
+                        try:
+                            dictchoice = int(x)
+                        except:
+                            dictchoice = 0
+                        if dictchoice >= 1 and dictchoice <= len(dictfiles):
+                            chdict = dictfiles[dictchoice - 1]
+                            dfile = open(chdict, 'a')
+                            dfile.write('%s\n' % e)
+                            dfile.close()
+                            print('added to dictionary %s' % chdict)
+                            dict[e] = e
+                    print
+
+def batchAddSpellExtra(args, wordlist):
+    for filename in args:
+        po = POFile(filename)
+        if po.parse() == 0:
+            sys.stderr.write('error parsing file %s\n' % filename)
+            return
+        else:
+            po.parseHeader()
+            for word in wordlist:
+                addSpellExtra(po, filename, word)
+
+def addSpellExtra(po, filename, e):
+    header = po.data[0][3]
+    headerlines = header.split('\\n')
+    li = 0
+    sli = -1
+    for hl in headerlines:
+        if hl.startswith('X-POFile-SpellExtra: '):
+            if len(hl) + len(e) < 74:
+                sli = li
+            else:
+                sli = -1
+        li = li + 1
+    if sli < 0:
+        header = header + ('X-POFile-SpellExtra: %s\\n' % e)
+    else:
+        header = ''
+        li = 0
+        for hl in headerlines:
+            header = header + hl
+            if li == sli:
+                header = header + ' ' + e
+            header = header + '\\n'
+            li = li + 1
+
+    lines = po.prepare_replace(1)
+    if lines is not None:
+        file = open(filename, 'w')
+        po.execute_replace(lines, header, 1, file, breaknewlines = 1)
+        file.close()
+        po.data[0] = (po.data[0][0], po.data[0][1],
+                      po.data[0][2], header, po.data[0][3])
+        return 1
+    return 0
+
+if len(batchaddwordlist):
+    batchAddSpellExtra(args, batchaddwordlist)
+elif interactive:
+    interactiveSpelling(args, dict, dictfiles, spellCommand)
+else:
+    spelling(args, overview, dict, dictfiles, spellCommand)

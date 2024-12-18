@@ -39,11 +39,11 @@ doc:
       - src/Resources/*HelpMapping.ini
 
 spellcheck-pot:
-  image: debian:buster
+  image: debian:bookworm
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - apt-get install -qq --no-install-recommends -y aspell aspell-en gettext gettext-lint
+    - apt-get install -qq --no-install-recommends -y aspell aspell-en gettext python3
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - perl -pi -e 's|\\r||g' Languages/Tortoise.pot
@@ -51,7 +51,7 @@ spellcheck-pot:
     - perl -pi -e 's|&([^ ])|\1|g' Languages/Tortoise_en.po
     - cp doc/Aspell/TortoiseGit.tmpl.pws doc/Aspell/Temp.pws
     - perl -pi -e 's/\$LANG\$/en/g' doc/Aspell/Temp.pws
-    - POFileSpell --command='aspell --encoding=UTF-8 --add-extra-dicts="./doc/Aspell/en.pws" --add-extra-dicts=./doc/Aspell/Temp.pws --add-extra-dicts=./doc/Aspell/TortoisePot.pws --lang=en list' Languages/Tortoise_en.po > spellcheck.log
+    - python3 .gitlab-ci/gettext-lint/POFileSpell --command='aspell --encoding=UTF-8 --add-extra-dicts="./doc/Aspell/en.pws" --add-extra-dicts=./doc/Aspell/Temp.pws --add-extra-dicts=./doc/Aspell/TortoisePot.pws --lang=en list' Languages/Tortoise_en.po > spellcheck.log
     - if [[ $(cat spellcheck.log 2>/dev/null | wc -l) -gt 1 ]]; then
         echo -e "\e[1;31m!!! Found typos !!!\e[0m";
         cat spellcheck.log;
@@ -63,11 +63,12 @@ spellcheck-pot:
   only:
     changes:
       - .gitlab-ci.yml
+      - .gitlab-ci/gettext-lint/*
       - Languages/Tortoise.pot
       - doc/Aspell/*.pws
 
 commit-messages:
-  image: debian:buster
+  image: debian:bookworm
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
