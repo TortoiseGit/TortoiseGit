@@ -1328,8 +1328,6 @@ typedef sptr_t (*SciFnDirectStatus)(sptr_t ptr, unsigned int iMessage, uptr_t wP
 
 #endif
 
-#define SCN_GETBKCOLOR 5000
-
 /* These structures are defined to be exactly the same shape as the Win32
  * CHARRANGE, TEXTRANGE, FINDTEXTEX, FORMATRANGE, and NMHDR structs.
  * So older code that treats Scintilla as a RichEdit will work. */
@@ -1396,7 +1394,7 @@ struct Sci_RangeToFormatFull {
 
 #ifndef __cplusplus
 /* For the GTK+ platform, g-ir-scanner needs to have these typedefs. This
- * is not required in C++ code and actually seems to break ScintillaEditPy */
+ * is not required in C++ code and has caused problems in the past. */
 typedef struct Sci_NotifyHeader Sci_NotifyHeader;
 typedef struct SCNotification SCNotification;
 #endif
