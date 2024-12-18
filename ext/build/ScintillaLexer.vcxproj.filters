@@ -769,6 +769,9 @@
     <ClCompile Include="..\lexilla\lexers\LexZig.cxx">
       <Filter>lexlib\lexers</Filter>
     </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexNix.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">

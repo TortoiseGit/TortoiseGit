@@ -212,6 +212,7 @@
     <ClCompile Include="..\lexilla\lexers\LexMySQL.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexNim.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexNimrod.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexNix.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexNsis.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexNull.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexOpal.cxx" />
