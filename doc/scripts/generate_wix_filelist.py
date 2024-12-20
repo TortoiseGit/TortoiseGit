@@ -48,7 +48,7 @@ def generate_wix_directory(root_dir, directory_path, wix_dir, current_path=None,
 				dir_element = current_path[dir_id]
 
 		# Add files to the current directory
-		for file in files:
+		for file in sorted(files):
 			if file == "alias.h":
 				continue
 			file_path = os.path.join(root, file).replace('/', '\\')
@@ -58,7 +58,7 @@ def generate_wix_directory(root_dir, directory_path, wix_dir, current_path=None,
 			SubElement(component, "File", Id=file_id, Name=file, Source=f"..\\..\\doc\\{file_path}")
 
 		# Add subdirectories as child elements
-		for subdir in dirs:
+		for subdir in sorted(dirs):
 			subdir_path = os.path.join(root, subdir)
 			sub_rel_dir = os.path.relpath(subdir_path, root_dir).replace('\\', '_').replace('/', '_')
 			dir_name = subdir
