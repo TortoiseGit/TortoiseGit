@@ -113,10 +113,10 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- stylesheets and stringparams                                 -->
 	<property name="xsl.pdf.params" value="--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.pdf.file" value="pdfdoc.xsl"/>
-	<property name="xsl.html.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
-	<property name="xsl.html.file" value="htmlsingle.xsl"/>
-	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
-	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
+	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
+	<property name="xsl.htmlsingle.file" value="htmlsingle.xsl"/>
+	<property name="xsl.htmlchunk.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
+	<property name="xsl.htmlchunk.file" value="htmlchunk.xsl"/>
 
 <!-- ====================================================================== -->
 <!-- Custom target to prepare the build                                     -->

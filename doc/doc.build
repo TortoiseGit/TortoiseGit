@@ -313,8 +313,8 @@ All user/site specific configuration is stored in doc.build.user.
 		<call target="uptodate"/>
 
 		<if test="${not file.target.uptodate}">
-			<property name="xslt.params" value="${xsl.htmlsingle.params}"/>
-			<property name="xslt.file" value="${xsl.htmlsingle.file}"/>
+			<property name="xslt.params" value="${xsl.htmlchunk.params}"/>
+			<property name="xslt.file" value="${xsl.htmlchunk.file}"/>
 			<property name="xslt.target" value="${doc.target.work}/${doc.target.name}"/>
 
 			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
@@ -343,8 +343,8 @@ All user/site specific configuration is stored in doc.build.user.
 		<call target="uptodate"/>
 
 		<if test="${not file.target.uptodate}">
-			<property name="xslt.params" value="${xsl.html.params}"/>
-			<property name="xslt.file" value="${xsl.html.file}"/>
+			<property name="xslt.params" value="${xsl.htmlsingle.params}"/>
+			<property name="xslt.file" value="${xsl.htmlsingle.file}"/>
 			<property name="xslt.target" value="${file.target}"/>
 
 			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
