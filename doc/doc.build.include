@@ -27,7 +27,7 @@ This will only build the english HTML help file for TortoiseGit
 		unless="${property::exists('applications')}"
 	/>
 
-	<!-- pdf,html,htmlsingle -->
+	<!-- pdf,html -->
 	<property name="docformats"
 		value="html"
 		unless="${property::exists('docformats')}"
@@ -113,8 +113,6 @@ This will only build the english HTML help file for TortoiseGit
 	<!-- stylesheets and stringparams                                 -->
 	<property name="xsl.pdf.params" value="--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"/>
 	<property name="xsl.pdf.file" value="pdfdoc.xsl"/>
-	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs}"/>
-	<property name="xsl.htmlsingle.file" value="htmlsingle.xsl"/>
 	<property name="xsl.htmlchunk.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
 	<property name="xsl.htmlchunk.file" value="htmlchunk.xsl"/>
 
@@ -130,10 +128,6 @@ This will only build the english HTML help file for TortoiseGit
 		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_pdfdoc.xsl"/>
 		<echo message="&lt;xsl:import href=&quot;${path.xsl}/fo/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
 		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
-
-		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlsingle.xsl"/>
-		<echo message="&lt;xsl:import href=&quot;${path.xsl}/html/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlsingle.xsl" append="true"/>
-		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_htmlsingle.xsl" append="true"/>
 
 		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlchunk.xsl"/>
 		<echo message="&lt;xsl:import href=&quot;${path.xsl}/html/chunk.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlchunk.xsl" append="true"/>

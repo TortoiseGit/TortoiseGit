@@ -334,27 +334,6 @@ All user/site specific configuration is stored in doc.build.user.
 	</target>
 
 <!-- ====================================================================== -->
-<!-- Create HTML single page documentation                                  -->
-<!-- ====================================================================== -->
-
-	<target name="htmlsingle" description="Create HTML single page documentation" depends="">
-
-		<property name="file.target" value="${doc.target.work}/help-onepage.html"/>
-		<call target="uptodate"/>
-
-		<if test="${not file.target.uptodate}">
-			<property name="xslt.params" value="${xsl.htmlsingle.params}"/>
-			<property name="xslt.file" value="${xsl.htmlsingle.file}"/>
-			<property name="xslt.target" value="${file.target}"/>
-
-			<copy file="${path.user.css}/styles_html.css" todir="${doc.target.work}"/>
-
-			<call target="xsltproc" />
-
-		</if>
-	</target>
-
-<!-- ====================================================================== -->
 <!-- Create mapping files for TortoiseGit online help                       -->
 <!-- ====================================================================== -->
 
