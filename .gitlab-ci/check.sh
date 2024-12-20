@@ -15,7 +15,7 @@ function section_end() {
 	echo -e "section_end:`date +%s`:${section_title}\r\e[0K"
 }
 
-rm -f src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini
+rm -f src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini src/TortoiseGitSetup/HTMLHelpfiles.wxi
 
 err=0
 pushd "$CI_PROJECT_DIR/doc" > /dev/null
@@ -51,9 +51,9 @@ fi
 popd > /dev/null
 
 section_start "helpmapping_inconsistencies" "Checking for (uncommitted) inconsistencies in the help mapping files"
-git diff --no-prefix --color -- src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini
+git diff --no-prefix --color -- src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini src/TortoiseGitSetup/HTMLHelpfiles.wxi
 result=$?
-git diff-index --no-prefix --color --quiet HEAD -- src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini
+git diff-index --no-prefix --color --quiet HEAD -- src/Resources/TGitHelpMapping.ini src/Resources/TGitMergeHelpMapping.ini src/TortoiseGitSetup/HTMLHelpfiles.wxi
 result=$(($result + $?))
 section_end "helpmapping_inconsistencies"
 if [[ $result -ne 0 ]]; then
