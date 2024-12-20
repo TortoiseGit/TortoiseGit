@@ -9,7 +9,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 <project name="Documentation" default="all" basedir=".">
 	<description>
-		Builds the Documentation in all languages and all output formats
+		Builds the Documentation and selected all output formats
 	</description>
 
 	<!-- default: we don't clean first -->
@@ -18,61 +18,38 @@ All user/site specific configuration is stored in doc.build.user.
 	<include buildfile="doc.build.include"/>
 
 <!-- ====================================================================== -->
-<!-- Loop over all languages                                                -->
-<!-- ====================================================================== -->
-
-	<target name="all"
-		description="Loop over all languages, output formats and applications and build documentation"
-		depends="prepare" >
-
-		<foreach item="String" in="${languages}" delim="," property="lang.target">
-			<!-- language code for English (US) (default)-->
-			<property name="lang.target.code" value="1033" />
-			<property name="languagebuildfile" value="${path.user.xsl}/${lang.target}/lang.build" />
-			<if test="${file::exists(languagebuildfile)}" >
-				<include buildfile="${languagebuildfile}" />
-			</if>
-			<call target="doit" failonerror="${critical or lang.base==lang.target}"/>
-		</foreach>
-	</target>
-
-<!-- ====================================================================== -->
 <!-- Loop over all applications and output formats                          -->
 <!-- ====================================================================== -->
 
-	<target name="doit">
+	<target name="all"
+		description="Loop over all output formats and applications and build documentation"
+		depends="prepare" >
 
 		<foreach item="String" in="${applications}" delim="," property="app">
-			<property name="doc.source.file" value="source/${lang.base}/${app}.xml"/>
-			<property name="doc.base.name" value="${app}_${lang.base}"/>
+			<property name="doc.source.file" value="source/en/${app}.xml"/>
+			<property name="doc.base.name" value="${app}_en"/>
 			<property name="doc.base.work" value="output/${doc.base.name}"/>
 
-			<property name="doc.target.name" value="${app}_${lang.target}"/>
+			<property name="doc.target.name" value="${app}_en"/>
 			<property name="doc.target.work" value="output/${doc.target.name}"/>
-			<property name="doc.target.source" value="source/${lang.target}/${app}/${app}.xml"/>
-			<property name="pofiletotranslate" value="po/${app}_${lang.target}.po" />
+			<property name="doc.target.source" value="source/en/${app}/${app}.xml"/>
 
 			<echo message="------------------------------------------------------------"/>
 			<echo message="Creating '${doc.target.name}' documentation"/>
 
-			<delete file="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml" if="${app=='TortoiseGit'}"/>
-			<copy file="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml.in" tofile="source/${lang.base}/TortoiseGit/git_doc/git-doc.xml" overwrite="true" if="${app=='TortoiseGit' and external.gitdocs=='0'}"/>
+			<delete file="source/en/TortoiseGit/git_doc/git-doc.xml" if="${app=='TortoiseGit'}"/>
+			<copy file="source/en/TortoiseGit/git_doc/git-doc.xml.in" tofile="source/en/TortoiseGit/git_doc/git-doc.xml" overwrite="true" if="${app=='TortoiseGit' and external.gitdocs=='0'}"/>
 
-			<if test="${file::exists(pofiletotranslate)}" >
-				<call target="translate" unless="${lang.base==lang.target}" />
-			</if>
-			<if test="${lang.base==lang.target or file::exists(pofiletotranslate)}" >
-				<!-- update version info in version.xml -->
-				<call target="UpdateVersionInfo"/>
+			<!-- update version info in version.xml -->
+			<call target="UpdateVersionInfo"/>
 
-				<call target="spellcheck" if="${property::exists('spellcheck') and spellcheck=='true'}"/>
+			<call target="spellcheck" if="${property::exists('spellcheck') and spellcheck=='true'}"/>
 
-				<property name="xslt.source" value="${doc.target.source}"/>
-				<foreach item="String" in="${docformats}" delim="," property="docformat">
-					<call target="copyimages"/>
-					<call target="${docformat}"/>
-				</foreach>
-			</if>
+			<property name="xslt.source" value="${doc.target.source}"/>
+			<foreach item="String" in="${docformats}" delim="," property="docformat">
+				<call target="copyimages"/>
+				<call target="${docformat}"/>
+			</foreach>
 		</foreach>
 	</target>
 
@@ -97,7 +74,7 @@ All user/site specific configuration is stored in doc.build.user.
 		<fail unless="${directory::exists(fontpath)}">fontpath '${fontpath}' does not exist</fail>
 
 		<!-- ensure "Version" translation invariant -->
-		<copy file="source/${lang.base}/Version.in" tofile="source/${lang.base}/version.xml" overwrite="true"/>
+		<copy file="source/en/Version.in" tofile="source/en/version.xml" overwrite="true"/>
 
 		<!-- tune path to xsltproc.exe in aspell.bat -->
 		<copy file="Aspell/aspell.bat.in" tofile="Aspell/aspell.bat" overwrite="true" unless="${platform::is-unix()}">
@@ -126,12 +103,12 @@ All user/site specific configuration is stored in doc.build.user.
 					verbose="false"/>
 		<foreach item="Line" in="${xslt.target}" property="filename" trim="Both">
 			<property name="destname" value="${doc.target.work}/images/${filename}"/>
-			<copy file="images/${lang.target}/${filename}" tofile="${destname}" if="${file::exists(path::combine('images', path::combine(lang.target, filename)))}"/>
-			<copy file="images/${lang.base}/${filename}" tofile="${destname}" unless="${file::exists(destname)}"/>
+			<copy file="images/en/${filename}" tofile="${destname}" if="${file::exists(path::combine('images', path::combine('en', filename)))}"/>
+			<copy file="images/en/${filename}" tofile="${destname}" unless="${file::exists(destname)}"/>
 		</foreach>
 
 		<copy todir="${doc.target.work}/images">
-			<fileset basedir="images/${lang.base}">
+			<fileset basedir="images/en">
 				<include name="caution.png"/>
 				<include name="warning.png"/>
 				<include name="important.png"/>
@@ -142,7 +119,7 @@ All user/site specific configuration is stored in doc.build.user.
 		</copy>
 
 		<copy todir="${doc.target.work}/images/callouts" if="${app=='TortoiseGit' and external.gitdocs=='0'}">
-			<fileset basedir="images/${lang.base}/callouts">
+			<fileset basedir="images/en/callouts">
 				<include name="*.svg"/>
 			</fileset>
 		</copy>
@@ -156,10 +133,10 @@ All user/site specific configuration is stored in doc.build.user.
 		<echo message="Checking if '${file.target}' is up to date"/>
 		<uptodate property="file.target.uptodate">
 			<sourcefiles>
-				<include name="source/${lang.target}/${app}/**/*.xml"/>
-				<include name="source/${lang.target}/glossary.xml"/>
-				<include name="source/${lang.target}/wishlist.xml"/>
-				<include name="source/${lang.target}/version.in"/>
+				<include name="source/en/${app}/**/*.xml"/>
+				<include name="source/en/glossary.xml"/>
+				<include name="source/en/wishlist.xml"/>
+				<include name="source/en/version.in"/>
 			</sourcefiles>
 			<targetfiles>
 				<include name="${file.target}"/>
@@ -179,7 +156,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 		<!-- Check whether a language specific xsl file exists and use it -->
 		<!-- if none is found, load XSL file from default location.       -->
-		<property name="xslt.file.lang" value="${path.user.xsl}/${lang.target}/${xslt.file}" />
+		<property name="xslt.file.lang" value="${path.user.xsl}/en/${xslt.file}" />
 		<property name="xslt.file" value="${xslt.file.lang}" if="${file::exists(xslt.file.lang)}"/>
 		<property name="xslt.file" value="${path.user.xsl}/${xslt.file}" unless="${file::exists(xslt.file.lang)}"/>
 
@@ -199,142 +176,14 @@ All user/site specific configuration is stored in doc.build.user.
 	</target>
 
 <!-- ====================================================================== -->
-<!-- Profile source into a single file                                      -->
-<!-- ====================================================================== -->
-
-	<target name="profile" description="Profile source into a single file" >
-
-		<call target="uptodate"/>
-
-		<if test="${not file.target.uptodate}">
-			<property name="xslt.params" value="${xsl.profile.params}"/>
-			<property name="xslt.file" value="${xsl.profile.file}"/>
-			<property name="xslt.target" value="${file.target}.tmp"/>
-
-			<echo message="Profiling into: ${file.target}"/>
-			<call target="xsltproc"/>
-
-			<!-- Removes the moreinfo="" attributes added by xsltproc -->
-			<move file="${xslt.target}" tofile="${file.target}" overwrite="true">
-				<filterchain>
-					<replacestring from=" moreinfo=&quot;none&quot;" to="" />
-				</filterchain>
-			</move>
-		</if>
-	</target>
-
-<!-- ====================================================================== -->
-<!-- Create po template for each application from sources                   -->
-<!-- ====================================================================== -->
-
-	<target name="potfile" description="Create po template from sources">
-		<property name="lang.target" value="${lang.base}"/>
-
-		<!-- ensure "Version" translation invariant -->
-		<copy file="source\${lang.base}\version.in" tofile="source\${lang.base}\version.xml" overwrite="true"/>
-
-		<foreach item="String" in="${potemplates}" delim="," property="app">
-
-			<property name="potfile" value="po/${app}.pot" />
-			<property name="xslt.source" value="source/${lang.base}/${app}/${app}.xml"/>
-			<property name="file.target" value="source/${app}_${lang.base}.xml"/>
-
-			<echo message="------------------------------------------------------------"/>
-			<echo message="Checking if ${potfile} is up to date"/>
-
-			<call target="profile" />
-
-			<if test="${not file::up-to-date(file.target, potfile)}">
-				<echo message="Creating po template from sources"/>
-				<exec program="${name.python}"
-							commandline="xml2po.py -e -o ${potfile}.tmp ${file.target}"
-							verbose="false"/>
-
-				<!-- Adjust path to source file -->
-				<move file="${potfile}.tmp" tofile="${potfile}" overwrite="true">
-					<filterchain>
-						<replacestring from="#: ${file.target}" to="#: ../${file.target}" />
-					</filterchain>
-				</move>
-			</if>
-
-			<echo message="" />
-		</foreach>
-	</target>
-
-<!-- ====================================================================== -->
-<!-- Create translated source files                                         -->
-<!-- ====================================================================== -->
-
-	<target name="translate" description="Create translated source file">
-		<property name="lang.pofile" value="po/${app}_${lang.target}.po"/>
-
-		<echo message="Translating: '${app} ${lang.target}' This may take a few minutes"/>
-
-		<exec program="msgfmt"
-					commandline="${lang.pofile} -o ${lang.target}.mo"
-					basedir="${path.gettext}"
-					verbose="false"/>
-
-		<foreach item="File" property="file.base">
-			<in>
-				<items>
-					<include name="source/${lang.base}/${app}/**/*.xml"/>
-					<include name="source/${lang.base}/glossary.xml"/>
-					<include name="source/${lang.base}/wishlist.xml"/>
-					<include name="source/${lang.base}/version.in"/>
-				</items>
-			</in>
-			<do>
-				<property name="file.target" value="${string::replace(file.base,'\'+lang.base+'\','\'+lang.target+'\')}"/>
-
-				<uptodate property="file.target.uptodate">
-					<sourcefiles>
-						<include name="${file.base}"/>
-						<include name="${lang.pofile}"/>
-					</sourcefiles>
-					<targetfiles>
-						<include name="${file.target}"/>
-					</targetfiles>
-				</uptodate>
-
-				<if test="${not file.target.uptodate}">
-
-					<echo message="Translating: ${path::get-file-name(file.target)}"/>
-					<property name="dir.target" value="${path::get-directory-name(file.target)}"/>
-					<mkdir dir="${dir.target}" unless="${directory::exists(dir.target)}"/>
-					<exec program="${name.python}"
-								commandline='xml2po.py -t "${lang.target}.mo" -o "${file.target}" "${file.base}"'
-								verbose="false"/>
-				</if>
-
-			</do>
-		</foreach>
-
-<!--
-		<foreach item="File" property="file.base">
-			<in>
-				<items refid="files.exclude" />
-			</in>
-			<do>
-				<property name="file.target" value="${string::replace(file.base,'\'+lang.base+'\','\'+lang.target+'\')}"/>
-				<copy file="${file.base}" tofile="${file.target}" overwrite="true"/>
-			</do>
-		</foreach>
--->
-
-		<delete file="${lang.target}.mo"/>
-	</target>
-
-<!-- ====================================================================== -->
 <!-- Try to update version info in the version file                         -->
 <!-- ====================================================================== -->
 
 	<target name="UpdateVersionInfo" description="Updates the version file with version info">
 
 		<copy
-			file="source/${lang.target}/Version.in"
-			tofile="source/${lang.target}/version.xml"
+			file="source/en/Version.in"
+			tofile="source/en/version.xml"
 			overwrite="true">
 
 			<filterchain>
@@ -353,18 +202,18 @@ All user/site specific configuration is stored in doc.build.user.
 <!-- ====================================================================== -->
 
 	<target name="spellcheck" description="Run spellchecker on files">
-		<echo message="Spellchecking: '${app} ${lang.target}' This may take a few minutes"/>
-		<property name="spellcheck.log" value="Aspell/${app}_${lang.target}.log"/>
+		<echo message="Spellchecking: '${app} en' This may take a few minutes"/>
+		<property name="spellcheck.log" value="Aspell/${app}_en.log"/>
 		<property name="script.extension" value=".bat" if="${platform::is-windows()}"/>
 		<property name="script.extension" value=".sh" if="${platform::is-unix()}"/>
-		<mkdir dir="Aspell/${app}_${lang.target}"/>
+		<mkdir dir="Aspell/${app}_en"/>
 
 		<delete dir="${spellcheck.log}" failonerror="false"/>
 
 		<copy file="Aspell/TortoiseGit.tmpl.pws" tofile="Aspell/Temp.pws" overwrite="true" inputencoding="utf-8" outputencoding="utf-8">
 			<filterchain>
 				<replacetokens begintoken="$" endtoken="$">
-					<token key="LANG" value="${lang.target}" />
+					<token key="LANG" value="en" />
 				</replacetokens>
 			</filterchain>
 		</copy>
@@ -373,20 +222,20 @@ All user/site specific configuration is stored in doc.build.user.
 		<foreach item="File" property="file.base">
 			<in>
 				<items>
-					<exclude name="source/${lang.base}/TortoiseGit/git_doc/*.xml"/>
-					<include name="source/${lang.base}/${app}/**/*.xml"/>
-					<include name="source/${lang.base}/glossary.xml"/>
-					<include name="source/${lang.base}/wishlist.xml"/>
+					<exclude name="source/en/TortoiseGit/git_doc/*.xml"/>
+					<include name="source/en/${app}/**/*.xml"/>
+					<include name="source/en/glossary.xml"/>
+					<include name="source/en/wishlist.xml"/>
 				</items>
 			</in>
 			<do>
-				<property name="file.target" value="${string::replace(file.base, '/' + lang.base + '/', '/' + lang.target + '/')}"/>
-				<property name="file.log" value="Aspell/${app}_${lang.target}/${path::get-file-name(file.target)}.log"/>
+				<property name="file.target" value="${file.base}"/>
+				<property name="file.log" value="Aspell/${app}_en/${path::get-file-name(file.target)}.log"/>
 
 				<uptodate property="file.target.uptodate">
 					<sourcefiles>
 						<include name="${file.target}"/>
-						<include name="Aspell/${lang.target}.pws"/>
+						<include name="Aspell/en.pws"/>
 						<include name="Aspell/TortoiseGit.tmpl.pws"/>
 					</sourcefiles>
 					<targetfiles>
@@ -397,7 +246,7 @@ All user/site specific configuration is stored in doc.build.user.
 				<if test="${not file.target.uptodate}">
 					<echo message="Checking: ${path::get-file-name(file.target)}"/>
 					<exec program="Aspell/aspell${script.extension}"
-						commandline="&quot;${path.spellcheck}&quot; &quot;${lang.target}&quot; &quot;${file.target}&quot; &quot;${file.log}&quot;"
+						commandline="&quot;${path.spellcheck}&quot; &quot;en&quot; &quot;${file.target}&quot; &quot;${file.log}&quot;"
 						failonerror="false"/>
 				</if>
 				<exec program="Aspell/append${script.extension}"
@@ -412,7 +261,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 	<target name="pdf" description="Create PDF documentation">
 
-		<property name="file.target" value="output/${app}-${docverstring}-${lang.target}.pdf"/>
+		<property name="file.target" value="output/${app}-${docverstring}-en.pdf"/>
 		<call target="uptodate"/>
 
 		<if test="${not file.target.uptodate}">
@@ -432,8 +281,8 @@ All user/site specific configuration is stored in doc.build.user.
 				</filterchain>
 			</move>
 
-			<property name="userconfig.langtemplate" value="${path.user.xsl}/${lang.target}/userconfig.template.xml" />
-			<property name="userconfig.lang" value="${path.user.xsl}/${lang.target}/userconfig.xml" />
+			<property name="userconfig.langtemplate" value="${path.user.xsl}/en/userconfig.template.xml" />
+			<property name="userconfig.lang" value="${path.user.xsl}/en/userconfig.xml" />
 
 			<if test="${file::exists(userconfig.langtemplate)}">
 				<loadfile file="${userconfig.langtemplate}" property="configfile">
@@ -472,7 +321,7 @@ All user/site specific configuration is stored in doc.build.user.
 
 			<call target="xsltproc" />
 		</if>
-		<if test="${lang.base==lang.target and help.mapping=='1'}">
+		<if test="${help.mapping=='1'}">
 			<call target="helpmapping"/>
 			<property name="help.wixfilelist" value="../src/TortoiseGitSetup/HTMLHelpfiles.wxi" unless="${property::exists('help.wixfilelist')}"/>
 			<exec program="${name.python}"

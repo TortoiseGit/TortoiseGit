@@ -8,7 +8,6 @@ defining them in doc.build.user which is included here if it exists.
 Example content of doc.build.user:
 <property name="applications" value="TortoiseGit, TortoiseMerge" />
 <property name="docformats" value="html" />
-<property name="languages" value="en" />
 
 This will only build the english HTML help file for TortoiseGit
 
@@ -32,32 +31,6 @@ This will only build the english HTML help file for TortoiseGit
 	<property name="docformats"
 		value="html"
 		unless="${property::exists('docformats')}"
-	/>
-
-	<!--,de,es,fa,fi,fr,hr,id,ja,nl,ru,sl,sk,sr_spc,sr_spl,zh_CN" -->
-	<property name="languages"
-		value="en"
-		unless="${property::exists('languages')}"
-	/>
-
-	<!-- ============================================================ -->
-	<!-- Define property so that doc.build alone doesn't fail         -->
-
-	<property name="devrelease"
-		value=""
-		unless="${property::exists('devrelease')}"
-	/>
-
-	<property name="critical" value="${devrelease!='-dev'}" />
-
-	<!-- ============================================================ -->
-	<!-- Settings for the translation                                 -->
-
-	<!-- Base language. All other documents are created using this    -->
-	<!-- documents structure                                          -->
-	<property name="lang.base"
-		value="en"
-		unless="${property::exists('lang.base')}"
 	/>
 
 	<!-- ============================================================ -->
@@ -92,24 +65,6 @@ This will only build the english HTML help file for TortoiseGit
 		/>
 		<property name="help.mappingfile" value="${help.mappingfile.TortoiseMerge}" />
 	</target>
-
-	<!-- Fileset to exclude from translation and .pot creation        -->
-	<!-- Duplicate these files in the "sourcefiles" fileset           -->
-<!--
-	<fileset id="files.exclude">
-		<include name="source/${lang.base}/**/version.xml"/>
-	</fileset>
-
-	<fileset id="files.filtered">
-		<include name="source/${lang.base}/TortoiseGit/**/*.xml"/>
-		<include name="source/${lang.base}/**/wishlist.xml"/>
-		<exclude name="source/${lang.base}/**/version.xml"/>
-	</fileset>
--->
-
-	<!-- Name of the po template file to create. Can also be a list   -->
-	<!-- of applications if you want to create a template for each    -->
-	<property name="potemplates" value="${applications}" />
 
 	<!-- ============================================================ -->
 	<!-- Paths to the binaries                                        -->
@@ -162,8 +117,6 @@ This will only build the english HTML help file for TortoiseGit
 	<property name="xsl.html.file" value="htmlsingle.xsl"/>
 	<property name="xsl.htmlsingle.params" value="--nonet --xinclude --stringparam chunker.output.encoding UTF-8 --stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 --stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"/>
 	<property name="xsl.htmlsingle.file" value="htmlchunk.xsl"/>
-	<property name="xsl.profile.params" value="--nonet --xinclude --stringparam profile.condition &quot;exclude&quot;"/>
-	<property name="xsl.profile.file" value="profile.xsl"/>
 
 <!-- ====================================================================== -->
 <!-- Custom target to prepare the build                                     -->
@@ -177,10 +130,6 @@ This will only build the english HTML help file for TortoiseGit
 		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_pdfdoc.xsl"/>
 		<echo message="&lt;xsl:import href=&quot;${path.xsl}/fo/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
 		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_pdfdoc.xsl" append="true"/>
-
-		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlhelp.xsl"/>
-		<echo message="&lt;xsl:import href=&quot;${path.xsl}/htmlhelp/htmlhelp.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlhelp.xsl" append="true"/>
-		<echo message="&lt;/xsl:stylesheet&gt;" file="${path.user.xsl}/db_htmlhelp.xsl" append="true"/>
 
 		<echo message="&lt;xsl:stylesheet xmlns:xsl=&quot;http://www.w3.org/1999/XSL/Transform&quot; version=&quot;1.0&quot;&gt;" file="${path.user.xsl}/db_htmlsingle.xsl"/>
 		<echo message="&lt;xsl:import href=&quot;${path.xsl}/html/docbook.xsl&quot;/&gt;" file="${path.user.xsl}/db_htmlsingle.xsl" append="true"/>
