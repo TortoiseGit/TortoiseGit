@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Use a Python script to cross check IDD_ values in the resource file with
 # HIDD_ values in the docs to ensure that every dialog has a link to the help.
 tmpfile=`mktemp`
