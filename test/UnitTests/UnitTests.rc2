@@ -36,7 +36,7 @@ BEGIN
             VALUE "FileDescription", "TortoiseGit UnitTests"
             VALUE "FileVersion", STRFILEVER
             VALUE "InternalName", "Tests"
-            VALUE "LegalCopyright", "Copyright (C) 2008-2020 - TortoiseGit and Copyright (C) 2003-2020 - TortoiseSVN"
+            VALUE "LegalCopyright", "Copyright (C) 2008-2025 - TortoiseGit and Copyright (C) 2003-2020 - TortoiseSVN"
             VALUE "OriginalFilename", "Tests.exe"
             VALUE "ProductName", "TortoiseGit"
             VALUE "ProductVersion", STRPRODUCTVER
