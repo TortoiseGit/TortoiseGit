@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2015, 2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2013-2015, 2019, 2021, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ bool CloneProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, in
 
 	git_clone_options cloneOpts = GIT_CLONE_OPTIONS_INIT;
 	git_remote_callbacks& callbacks = cloneOpts.fetch_opts.callbacks;
-	callbacks.update_tips = RemoteUpdatetipsCallback;
+	callbacks.reserved_update_tips = RemoteUpdatetipsCallback;
 	callbacks.sideband_progress = RemoteProgressCallback;
 	callbacks.completion = RemoteCompletionCallback;
 	callbacks.transfer_progress = FetchCallback;

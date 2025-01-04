@@ -13,6 +13,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Update TortoiseGitPlink to PuTTY Plink 0.82
  * Update shipped PuTTY binaries to 0.82
  * Update Scintilla to 5.5.4 and Lexilla to 5.4.2
+ * Update libgit2 to 1.9.0
 
 = Release 2.17.0.2 =
 Released: 2024-11-01

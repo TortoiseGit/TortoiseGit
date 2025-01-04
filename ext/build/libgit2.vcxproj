@@ -82,6 +82,7 @@
     <ClCompile Include="..\libgit2\deps\llhttp\llhttp.c" />
     <ClCompile Include="..\libgit2\src\libgit2\config_list.c" />
     <ClCompile Include="..\libgit2\src\libgit2\grafts.c" />
+    <ClCompile Include="..\libgit2\src\libgit2\index_map.c" />
     <ClCompile Include="..\libgit2\src\libgit2\settings.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\httpparser.c" />
     <ClCompile Include="..\libgit2\src\libgit2\transports\ssh_exec.c" />
@@ -140,7 +141,6 @@
     <ClCompile Include="..\libgit2\src\util\hash\sha1dc\sha1.c" />
     <ClCompile Include="..\libgit2\src\util\hash\sha1dc\ubc_check.c" />
     <ClCompile Include="..\libgit2\src\libgit2\ident.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\idxmap.c" />
     <ClCompile Include="..\libgit2\src\libgit2\ignore.c" />
     <ClCompile Include="..\libgit2\src\libgit2\index.c" />
     <ClCompile Include="..\libgit2\src\libgit2\indexer.c" />
@@ -162,10 +162,8 @@
     <ClCompile Include="..\libgit2\src\libgit2\odb_loose.c" />
     <ClCompile Include="..\libgit2\src\libgit2\odb_mempack.c" />
     <ClCompile Include="..\libgit2\src\libgit2\odb_pack.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\offmap.c" />
     <ClCompile Include="..\libgit2\src\libgit2\oid.c" />
     <ClCompile Include="..\libgit2\src\libgit2\oidarray.c" />
-    <ClCompile Include="..\libgit2\src\libgit2\oidmap.c" />
     <ClCompile Include="..\libgit2\src\libgit2\pack-objects.c" />
     <ClCompile Include="..\libgit2\src\libgit2\pack.c" />
     <ClCompile Include="..\libgit2\src\libgit2\parse.c" />
@@ -206,7 +204,6 @@
     <ClCompile Include="..\libgit2\src\libgit2\streams\registry.c" />
     <ClCompile Include="..\libgit2\src\libgit2\streams\socket.c" />
     <ClCompile Include="..\libgit2\src\util\strlist.c" />
-    <ClCompile Include="..\libgit2\src\util\strmap.c" />
     <ClCompile Include="..\libgit2\src\libgit2\submodule.c" />
     <ClCompile Include="..\libgit2\src\libgit2\sysdir.c" />
     <ClCompile Include="..\libgit2\src\libgit2\tag.c" />
@@ -310,7 +307,6 @@
     <ClInclude Include="..\libgit2\include\git2\sys\openssl.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\path.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refdb_backend.h" />
-    <ClInclude Include="..\libgit2\include\git2\sys\reflog.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\refs.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\repository.h" />
     <ClInclude Include="..\libgit2\include\git2\sys\stream.h" />
@@ -321,6 +317,8 @@
     <ClInclude Include="..\libgit2\include\git2\worktree.h" />
     <ClInclude Include="..\libgit2\src\libgit2\config_list.h" />
     <ClInclude Include="..\libgit2\src\libgit2\grafts.h" />
+    <ClInclude Include="..\libgit2\src\libgit2\hashmap_oid.h" />
+    <ClInclude Include="..\libgit2\src\libgit2\index_map.h" />
     <ClInclude Include="..\libgit2\src\libgit2\strarray.h" />
     <ClInclude Include="..\libgit2\src\libgit2\transports\httpparser.h" />
     <ClInclude Include="..\libgit2\src\libgit2\transports\ssh_exec.h" />
@@ -372,17 +370,17 @@
     <ClInclude Include="..\libgit2\src\libgit2\filter.h" />
     <ClInclude Include="..\libgit2\src\util\fs_path.h" />
     <ClInclude Include="..\libgit2\src\util\hash.h" />
+    <ClInclude Include="..\libgit2\src\util\hashmap.h" />
+    <ClInclude Include="..\libgit2\src\util\hashmap_str.h" />
     <ClInclude Include="..\libgit2\src\util\hash\collisiondetect.h" />
     <ClInclude Include="..\libgit2\src\util\hash\sha.h" />
     <ClInclude Include="..\libgit2\src\util\hash\sha1dc\sha1.h" />
     <ClInclude Include="..\libgit2\src\util\hash\sha1dc\ubc_check.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\idxmap.h" />
     <ClInclude Include="..\libgit2\src\libgit2\ignore.h" />
     <ClInclude Include="..\libgit2\src\libgit2\index.h" />
     <ClInclude Include="..\libgit2\src\util\hash\win32.h" />
     <ClInclude Include="..\libgit2\src\util\integer.h" />
     <ClInclude Include="..\libgit2\src\libgit2\iterator.h" />
-    <ClInclude Include="..\libgit2\src\util\khash.h" />
     <ClInclude Include="..\libgit2\src\libgit2\libgit2.h" />
     <ClInclude Include="..\libgit2\src\libgit2\mailmap.h" />
     <ClInclude Include="..\libgit2\src\util\map.h" />
@@ -394,10 +392,8 @@
     <ClInclude Include="..\libgit2\src\libgit2\notes.h" />
     <ClInclude Include="..\libgit2\src\libgit2\object.h" />
     <ClInclude Include="..\libgit2\src\libgit2\odb.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\offmap.h" />
     <ClInclude Include="..\libgit2\src\libgit2\oid.h" />
     <ClInclude Include="..\libgit2\src\libgit2\oidarray.h" />
-    <ClInclude Include="..\libgit2\src\libgit2\oidmap.h" />
     <ClInclude Include="..\libgit2\src\libgit2\pack-objects.h" />
     <ClInclude Include="..\libgit2\src\libgit2\pack.h" />
     <ClInclude Include="..\libgit2\src\libgit2\parse.h" />
@@ -436,7 +432,6 @@
     <ClInclude Include="..\libgit2\src\libgit2\streams\registry.h" />
     <ClInclude Include="..\libgit2\src\libgit2\streams\socket.h" />
     <ClInclude Include="..\libgit2\src\util\strlist.h" />
-    <ClInclude Include="..\libgit2\src\util\strmap.h" />
     <ClInclude Include="..\libgit2\src\util\strnlen.h" />
     <ClInclude Include="..\libgit2\src\libgit2\submodule.h" />
     <ClInclude Include="..\libgit2\src\libgit2\sysdir.h" />

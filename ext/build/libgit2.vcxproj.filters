@@ -335,9 +335,6 @@
     <ClCompile Include="..\libgit2\src\libgit2\ident.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\idxmap.c">
-      <Filter>Source Files\libgit2</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\ignore.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
@@ -398,16 +395,10 @@
     <ClCompile Include="..\libgit2\src\libgit2\odb_pack.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\offmap.c">
-      <Filter>Source Files\libgit2</Filter>
-    </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\oid.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\oidarray.c">
-      <Filter>Source Files\libgit2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\libgit2\oidmap.c">
       <Filter>Source Files\libgit2</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\pack.c">
@@ -477,9 +468,6 @@
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\util\zstream.c">
-      <Filter>Source Files\util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\libgit2\src\util\strmap.c">
       <Filter>Source Files\util</Filter>
     </ClCompile>
     <ClCompile Include="..\libgit2\src\libgit2\proxy.c">
@@ -622,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="..\libgit2\src\util\ctype_compat.h">
       <Filter>Header Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libgit2\src\libgit2\index_map.c">
+      <Filter>Source Files\libgit2</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -825,9 +816,6 @@
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\blame.h">
       <Filter>Public Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\include\git2\sys\reflog.h">
-      <Filter>Public Header Files\sys</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\include\git2\revert.h">
       <Filter>Public Header Files</Filter>
@@ -1171,15 +1159,6 @@
     <ClInclude Include="..\libgit2\src\libgit2\filter.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\idxmap.h">
-      <Filter>Header Files\libgit2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\util\khash.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\util\strmap.h">
-      <Filter>Header Files\util</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\index.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
@@ -1213,16 +1192,10 @@
     <ClInclude Include="..\libgit2\src\libgit2\odb.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\offmap.h">
-      <Filter>Header Files\libgit2</Filter>
-    </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\oid.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\oidarray.h">
-      <Filter>Header Files\libgit2</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libgit2\src\libgit2\oidmap.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\pack.h">
@@ -1385,6 +1358,18 @@
       <Filter>Header Files\libgit2\transports</Filter>
     </ClInclude>
     <ClInclude Include="..\libgit2\src\libgit2\worktree.h">
+      <Filter>Header Files\libgit2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\util\hashmap.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\util\hashmap_str.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\libgit2\index_map.h">
+      <Filter>Header Files\libgit2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libgit2\src\libgit2\hashmap_oid.h">
       <Filter>Header Files\libgit2</Filter>
     </ClInclude>
   </ItemGroup>
