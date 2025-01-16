@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -599,7 +599,6 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 		//		TRACE(L"End Char %s \r\n", ch == L'\n' ? L"cr" : L"");
 
 		const int lines = log.GetLineCount();
-		str.Trim();
 		//		TRACE(L"%s", str);
 
 		ClearESC(str);
@@ -607,7 +606,7 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 		if (ch == ('\r'))
 		{
 			const int start = log.LineIndex(lines - 1);
-			log.SetSel(start, log.GetTextLength());
+			log.SetSel(start, std::min(static_cast<int>(log.GetTextLength()), start + str.GetLength()));
 			log.ReplaceSel(str);
 		}
 		else

@@ -15,6 +15,9 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Update Scintilla to 5.5.5 and Lexilla to 5.4.3
  * Update libgit2 to 1.9.0
 
+== Bug Fixes ==
+ * Fixed issue #4191: Fix \r handling in log output window to avoid accidentally overwriting remote messages
+
 = Release 2.17.0.2 =
 Released: 2024-11-01
 
