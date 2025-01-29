@@ -252,9 +252,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\checkout.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="..\Resources\clippaste.ico">
       <Filter>Resource Files</Filter>
     </Image>

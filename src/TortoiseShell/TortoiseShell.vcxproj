@@ -152,7 +152,6 @@
     <ClInclude Include="..\Utils\UnicodeUtils.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\checkout.ico" />
     <Image Include="..\Resources\clippaste.ico" />
     <Image Include="..\Resources\copy.ico" />
     <Image Include="..\Resources\menuabout.ico" />
