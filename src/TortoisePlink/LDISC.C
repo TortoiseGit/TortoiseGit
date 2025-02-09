@@ -272,8 +272,10 @@ void ldisc_send(Ldisc *ldisc, const void *vbuf, int len, bool interactive)
          */
         len = strlen(vbuf);
         type = DEDICATED;
-    } else {
+    } else if (len > 0) {
         type = interactive ? NORMAL : NONINTERACTIVE;
+    } else {
+        return; /* nothing to do anyway */
     }
 
     /*

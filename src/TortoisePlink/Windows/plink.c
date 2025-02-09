@@ -311,6 +311,7 @@ int main(int argc, char **argv)
     const struct BackendVtable *vt;
 
     dll_hijacking_protection();
+    enable_dit();
 
     InitCommonControls();
     /*

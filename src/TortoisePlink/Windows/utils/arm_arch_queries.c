@@ -43,3 +43,11 @@ bool platform_sha512_neon_available(void)
      * SHA-512 architecture extension. */
     return false;
 }
+
+bool platform_dit_available(void)
+{
+    /* As of 2024-12-17, as far as I can tell from docs.microsoft.com,
+     * Windows on Arm does not yet provide a PF_ARM_V8_* flag for the
+     * DIT bit in PSTATE. */
+    return false;
+}

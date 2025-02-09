@@ -47,7 +47,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\..\;..\..\..\charset\;..\..\..\windows\;..\..\..\terminal\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>APPNAME=TortoiseGitPlink;SSH;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>APPNAME=TortoiseGitPlink;SSH;NO_HTMLHELP;HAVE_GETNAMEDPIPECLIENTPROCESSID;HAVE_ADDDLLDIRECTORY;HAVE_SETDEFAULTDLLDIRECTORIES;HAVE_STRTOUMAX;HAVE_WMEMCHR;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'!='ARM64'">HAVE_AES_NI;HAVE_SHA_NI;HAVE_CLMUL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='ARM64'">HAVE_NEON_CRYPTO;HAVE_NEON_SHA512_INTRINSICS;USE_ARM64_NEON_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
@@ -101,9 +101,11 @@
     <ClCompile Include="..\..\..\crypto\ecc-ssh.c" />
     <ClCompile Include="..\..\..\crypto\hash_simple.c" />
     <ClCompile Include="..\..\..\crypto\hmac.c" />
+    <ClCompile Include="..\..\..\crypto\kex-hybrid.c" />
     <ClCompile Include="..\..\..\crypto\mac.c" />
     <ClCompile Include="..\..\..\crypto\mac_simple.c" />
     <ClCompile Include="..\..\..\crypto\md5.c" />
+    <ClCompile Include="..\..\..\crypto\mlkem.c" />
     <ClCompile Include="..\..\..\crypto\mpint.c" />
     <ClCompile Include="..\..\..\crypto\ntru.c" />
     <ClCompile Include="..\..\..\crypto\openssh-certs.c" />
@@ -220,6 +222,7 @@
     <ClCompile Include="..\..\..\utils\dupprintf.c" />
     <ClCompile Include="..\..\..\utils\dupstr.c" />
     <ClCompile Include="..\..\..\utils\dupwcs.c" />
+    <ClCompile Include="..\..\..\utils\dupwcscat.c" />
     <ClCompile Include="..\..\..\utils\dup_mb_to_wc.c" />
     <ClCompile Include="..\..\..\utils\dup_wc_to_mb.c" />
     <ClCompile Include="..\..\..\utils\encode_utf8.c" />
@@ -334,6 +337,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\charset\charset.h" />
+    <ClInclude Include="..\..\..\crypto\mlkem.h" />
+    <ClInclude Include="..\..\..\crypto\smallmoduli.h" />
     <ClInclude Include="..\..\..\defs.h" />
     <ClInclude Include="..\..\..\logindialog.h" />
     <ClInclude Include="..\..\..\marshal.h" />

@@ -40,6 +40,9 @@
     <Filter Include="Source Files\ssh">
       <UniqueIdentifier>{e6e2ad60-ae0d-4a42-8f35-b8361622043b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\crypto">
+      <UniqueIdentifier>{99c16af7-a185-49bb-958b-da447898b107}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\cmdline.c">
@@ -765,6 +768,15 @@
     <ClCompile Include="..\..\..\stubs\null-socket.c">
       <Filter>Source Files\stubs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\utils\dupwcscat.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\crypto\mlkem.c">
+      <Filter>Source Files\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\crypto\kex-hybrid.c">
+      <Filter>Source Files\crypto</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\logindialog.h">
@@ -817,6 +829,12 @@
     </ClInclude>
     <ClInclude Include="..\..\putty-rc.h">
       <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\crypto\smallmoduli.h">
+      <Filter>Header Files\crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\crypto\mlkem.h">
+      <Filter>Header Files\crypto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

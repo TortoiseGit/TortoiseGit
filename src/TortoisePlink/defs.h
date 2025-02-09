@@ -53,6 +53,11 @@ uintmax_t strtoumax(const char *nptr, char **endptr, int base);
 #define SIZEu "zu"
 #endif
 
+#if !HAVE_WMEMCHR
+/* Work around lack of wmemchr in older MSVC */
+wchar_t *wmemchr(const wchar_t *s, wchar_t c, size_t n);
+#endif
+
 #if defined __GNUC__ || defined __clang__
 /*
  * On MinGW, the correct compiler format checking for vsnprintf() etc
@@ -187,10 +192,13 @@ typedef struct ssh2_ciphers ssh2_ciphers;
 typedef struct dh_ctx dh_ctx;
 typedef struct ecdh_key ecdh_key;
 typedef struct ecdh_keyalg ecdh_keyalg;
+typedef struct pq_kemalg pq_kemalg;
+typedef struct pq_kem_dk pq_kem_dk;
 typedef struct NTRUKeyPair NTRUKeyPair;
 typedef struct NTRUEncodeSchedule NTRUEncodeSchedule;
 typedef struct RFC6979 RFC6979;
 typedef struct RFC6979Result RFC6979Result;
+typedef struct ShakeXOF ShakeXOF;
 
 typedef struct dlgparam dlgparam;
 typedef struct dlgcontrol dlgcontrol;
