@@ -65,7 +65,6 @@
 #include "MarginView.h"
 #include "EditView.h"
 #include "ElapsedPeriod.h"
-#include "Editor.h"
 
 using namespace Scintilla;
 using namespace Scintilla::Internal;
@@ -197,7 +196,6 @@ EditView::EditView() {
 	tabArrowHeight = 4;
 	customDrawTabArrow = nullptr;
 	customDrawWrapMarker = nullptr;
-	editor = nullptr;
 }
 
 EditView::~EditView() = default;
@@ -2394,15 +2392,7 @@ void EditView::DrawLine(Surface *surface, const EditModel &model, const ViewStyl
 	}
 
 	// See if something overrides the line background colour.
-	ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
-	SCNotification scn = { 0 };
-	scn.nmhdr.code = SCN_GETBKCOLOR;
-	scn.line = line;
-	scn.lParam = -1;
-	if (editor)
-		((Editor*)editor)->NotifyParent(&scn);
-	if (scn.lParam != -1)
-		background = ColourRGBA::FromRGB(static_cast<int>(scn.lParam));
+	const ColourOptional background = vsDraw.Background(model.GetMark(line), model.caret.active, ll->containsCaret);
 
 	const Sci::Position posLineStart = model.pdoc->LineStart(line);
 
@@ -2540,19 +2530,13 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, const V
 
 		Sci::Line lineDocPrevious = -1;	// Used to avoid laying out one document line multiple times
 		std::shared_ptr<LineLayout> ll;
-		std::vector<DrawPhase> phases;
+		DrawPhase phase = DrawPhase::all;
 		if ((phasesDraw == PhasesDraw::Multiple) && !bufferedDraw) {
-			for (DrawPhase phase = DrawPhase::back; phase <= DrawPhase::carets; phase = static_cast<DrawPhase>(static_cast<int>(phase) * 2)) {
-				phases.push_back(phase);
-			}
-		} else {
-			phases.push_back(DrawPhase::all);
+			phase = DrawPhase::back;
 		}
-		for (const DrawPhase &phase : phases) {
-			int ypos = 0;
-			if (!bufferedDraw)
-				ypos += screenLinePaintFirst * vsDraw.lineHeight;
+		for (;;) {
 			int yposScreen = screenLinePaintFirst * vsDraw.lineHeight;
+			int ypos = bufferedDraw ? 0 : yposScreen;
 			Sci::Line visibleLine = model.TopLineOfMain() + screenLinePaintFirst;
 			while (visibleLine < model.pcs->LinesDisplayed() && yposScreen < rcArea.bottom) {
 
@@ -2571,6 +2555,10 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, const V
 					ll = RetrieveLineLayout(lineDoc, model);
 					LayoutLine(model, surface, vsDraw, ll.get(), model.wrapWidth);
 					lineDocPrevious = lineDoc;
+					if (ll && model.BidirectionalEnabled()) {
+						// Fill the line bidi data
+						UpdateBidiData(model, vsDraw, ll.get());
+					}
 				}
 #if defined(TIME_PAINTING)
 				durLayout += ep.Duration(true);
@@ -2596,11 +2584,6 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, const V
 						rcSpacer.right = rcSpacer.left;
 						rcSpacer.left -= 1;
 						surface->FillRectangleAligned(rcSpacer, Fill(vsDraw.styles[StyleDefault].back));
-					}
-
-					if (model.BidirectionalEnabled()) {
-						// Fill the line bidi data
-						UpdateBidiData(model, vsDraw, ll.get());
 					}
 
 					DrawLine(surface, model, vsDraw, ll.get(), lineDoc, visibleLine, xStart, rcLine, subLine, phase);
@@ -2641,6 +2624,11 @@ void EditView::PaintText(Surface *surfaceWindow, const EditModel &model, const V
 				yposScreen += vsDraw.lineHeight;
 				visibleLine++;
 			}
+
+			if (phase >= DrawPhase::carets) {
+				break;
+			}
+			phase = static_cast<DrawPhase>(static_cast<int>(phase) * 2);
 		}
 		ll.reset();
 #if defined(TIME_PAINTING)
