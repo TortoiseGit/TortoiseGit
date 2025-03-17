@@ -229,7 +229,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
 
-	if (range == GitRev::GetWorkingCopy())
+	if (range == GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()))
 		range = GitRev::GetHead();
 
 	if (!(range.IsEmpty() || range == GitRev::GetHead()))
@@ -640,16 +640,16 @@ void CLogDlg::EnableOKButton()
 
 bool LookLikeGitHash(const CString& msg, int &pos)
 {
-	static int shortHashLength = std::min(GIT_HASH_SIZE * 2, std::max(3, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength()))));
+	static int shortHashLength = std::min(CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2, std::max(3, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength()))));
 	int c = 0;
 	for (; pos < msg.GetLength(); ++pos)
 	{
 		if (msg[pos] >= '0' && msg[pos] <= '9' || msg[pos] >= 'a' && msg[pos] <= 'f')
 			c++;
 		else
-			return c >= shortHashLength && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
+			return c >= shortHashLength && c <= CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2 && msg[pos] != '@';
 	}
-	return c >= shortHashLength && c <= GIT_HASH_SIZE * 2;
+	return c >= shortHashLength && c <= CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2;
 }
 
 std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
@@ -1706,9 +1706,9 @@ void CLogDlg::OnPasteGitHash()
 void CLogDlg::JumpToGitHash(CString hash)
 {
 	const int prefixLen = hash.GetLength();
-	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
+	while (hash.GetLength() < 2 * CGitHash::HashLength(g_Git.GetCurrentRepoHashType()))
 		hash += L'0';
-	CGitHash prefixHash = CGitHash::FromHexStrTry(hash);
+	CGitHash prefixHash = CGitHash::FromHexStrTry(hash, g_Git.GetCurrentRepoHashType());
 	// start searching downwards, because it's unlikely that a hash is a forward reference
 	const int currentPos = m_LogList.GetSelectionMark();
 	const int cnt = static_cast<int>(m_LogList.m_arShownList.size());

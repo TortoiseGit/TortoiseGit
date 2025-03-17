@@ -627,7 +627,7 @@ void CRebaseDlg::FetchLogList()
 		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCWSTR>(head.ToString()), static_cast<LPCWSTR>(upstreamHash.ToString()));
 		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
-			CGitHash hash = CGitHash::FromHexStr(line);
+			CGitHash hash = CGitHash::FromHexStr(line, g_Git.GetCurrentRepoHashType());
 			if (hash.IsEmpty())
 				return;
 			m_rewrittenCommitsMap[hash] = upstreamHash;
@@ -665,7 +665,7 @@ void CRebaseDlg::FetchLogList()
 				return;
 			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
 			hash.Trim();
-			nonCherryPicked.emplace_back(CGitHash::FromHexStrTry(hash));
+			nonCherryPicked.emplace_back(CGitHash::FromHexStrTry(hash, g_Git.GetCurrentRepoHashType()));
 		});
 		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
@@ -729,7 +729,7 @@ void CRebaseDlg::FetchLogList()
 				return; // Don't skip (only skip commits starting with a '-')
 			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
 			hash.Trim();
-			auto itIx = revIxMap.find(CGitHash::FromHexStrTry(hash));
+			auto itIx = revIxMap.find(CGitHash::FromHexStrTry(hash, g_Git.GetCurrentRepoHashType()));
 			if (itIx == revIxMap.end())
 				return; // Not found?? Should not occur...
 

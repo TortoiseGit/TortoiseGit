@@ -100,8 +100,14 @@ public:
 
 	inline constexpr static LPCWSTR GetHead() { return L"HEAD"; }
 	inline static CString GetHeadString() { return GetHead(); }
-	inline constexpr static LPCWSTR GetWorkingCopy() { return GIT_REV_ZERO; }
-	inline static CString GetWorkingCopyString() { return GetWorkingCopy(); }
+	inline constexpr static LPCWSTR GetWorkingCopy(GIT_HASH_TYPE type)
+	{
+		if (type == GIT_HASH_TYPE::GIT_HASH_SHA256)
+			return GIT_REV_SHA256_ZERO;
+		// error fall through
+		return GIT_REV_SHA1_ZERO;
+	}
+	inline static CString GetWorkingCopyString(GIT_HASH_TYPE type) { return GetWorkingCopy(type); }
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;

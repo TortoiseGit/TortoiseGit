@@ -185,7 +185,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 						pathString = path.GetGitOldPathString();
 
 					CString sCmd;
-					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GitRev::GetWorkingCopy(), static_cast<LPCWSTR>(pathString));
+					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()), static_cast<LPCWSTR>(pathString));
 					CCommonAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			});

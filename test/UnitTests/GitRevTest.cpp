@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2015-2017, 2019-2020, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ static void GetRevParsingTests()
 	EXPECT_STREQ(L"1fc3c9688e27596d8717b54f2939dc951568f6cb", rev.m_ParentHash[0].ToString());
 	EXPECT_STREQ(L"", rev.GetLastErr());
 	rev.Clear();
-	EXPECT_EQ(0, rev.GetCommit(GitRev::GetWorkingCopy()));
+	EXPECT_EQ(0, rev.GetCommit(GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType())));
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	EXPECT_STREQ(L"", rev.GetAuthorName());
 	EXPECT_STREQ(L"", rev.GetAuthorEmail());
@@ -94,7 +94,7 @@ static void GetRevParsingTests()
 	EXPECT_STRNE(L"", rev.GetLastErr());
 	EXPECT_TRUE(rev.m_CommitHash.IsEmpty());
 	rev.Clear();
-	CGitHash hash(CGitHash::FromHexStr(L"aa5b97f89cea6863222823c8289ce392d06d1691"));
+	CGitHash hash(CGitHash::FromHexStr(L"aa5b97f89cea6863222823c8289ce392d06d1691", GIT_HASH_TYPE::GIT_HASH_SHA1));
 	EXPECT_EQ(0, rev.GetCommitFromHash(hash));
 	EXPECT_EQ(hash, rev.m_CommitHash);
 	EXPECT_STREQ(L"Another dummy with ümlaut", rev.GetAuthorName());
@@ -191,5 +191,6 @@ TEST_P(GitRevCBasicGitWithTestRepoBareFixture, GitRevParsing)
 TEST(GitRev, Constants)
 {
 	EXPECT_STREQ(L"HEAD", GitRev::GetHead());
-	EXPECT_STREQ(L"0000000000000000000000000000000000000000", GitRev::GetWorkingCopy());
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000", GitRev::GetWorkingCopy(GIT_HASH_TYPE::GIT_HASH_SHA1));
+	EXPECT_STREQ(L"0000000000000000000000000000000000000000000000000000000000000000", GitRev::GetWorkingCopy(GIT_HASH_TYPE::GIT_HASH_SHA256));
 }

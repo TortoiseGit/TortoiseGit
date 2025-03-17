@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -187,6 +187,9 @@ class CGit
 {
 private:
 	CString		gitLastErr;
+	void InitHashType();
+	GIT_HASH_TYPE m_hashType = GIT_HASH_TYPE::GIT_HASH_UNKNOWN;
+
 protected:
 	GIT_DIFF m_GitDiff = nullptr;
 	GIT_DIFF m_GitSimpleListDiff = nullptr;
@@ -195,6 +198,13 @@ public:
 #endif
 	bool m_IsGitDllInited = false;
 public:
+	GIT_HASH_TYPE GetCurrentRepoHashType()
+	{
+		if (m_hashType == GIT_HASH_TYPE::GIT_HASH_UNKNOWN)
+			InitHashType();
+		return m_hashType;
+	}
+
 	CComAutoCriticalSection m_critGitDllSec;
 	bool	m_IsUseGitDLL;
 	bool	m_IsUseLibGit2;
@@ -233,6 +243,7 @@ public:
 #ifdef TGITCACHE
 		ATLASSERT("we should never get here");
 #endif
+		m_hashType = GIT_HASH_TYPE::GIT_HASH_UNKNOWN;
 		m_IsGitDllInited = false;
 		CheckAndInitDll();
 	}

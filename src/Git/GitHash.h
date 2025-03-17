@@ -18,15 +18,31 @@
 //
 
 #pragma once
-#define GIT_HASH_SIZE 20
+#define GIT_HASH_SHA1_SIZE 20
+#define GIT_HASH_SHA256_SIZE 32
+#define GIT_HASH_MAX_SIZE GIT_HASH_SHA256_SIZE
 
 /* also see gitdll.c */
-static_assert(sizeof(git_oid) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
-static_assert(sizeof(git_oid) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
-static_assert(sizeof(git_oid::id) == GIT_HASH_SIZE, "hash size needs to be the same as in libgit2");
+static_assert(sizeof(git_oid::id) == GIT_HASH_MAX_SIZE, "hash size needs to be the same as in libgit2");
 
-#define GIT_REV_ZERO_C "0000000000000000000000000000000000000000"
-#define GIT_REV_ZERO _T(GIT_REV_ZERO_C)
+#define GIT_REV_SHA1_ZERO_C "0000000000000000000000000000000000000000"
+#define GIT_REV_SHA1_ZERO _T(GIT_REV_SHA1_ZERO_C)
+#define GIT_REV_SHA256_ZERO_C "0000000000000000000000000000000000000000000000000000000000000000"
+#define GIT_REV_SHA256_ZERO _T(GIT_REV_SHA256_ZERO_C)
+static_assert(sizeof(GIT_REV_SHA1_ZERO_C) == 2 * GIT_HASH_SHA1_SIZE + 1);
+static_assert(sizeof(GIT_REV_SHA256_ZERO_C) == 2 * GIT_HASH_SHA256_SIZE + 1);
+
+/** The type of object id. */
+enum class GIT_HASH_TYPE : unsigned char
+{
+	GIT_HASH_UNKNOWN = 0, /**< UNKNOWN, not initialized yet */
+	GIT_HASH_SHA1 = 1, /**< SHA1 */
+	GIT_HASH_SHA256 = 2 /**< SHA256 */
+};
+#define GIT_HASH_DEFAULT GIT_HASH_SHA1
+
+static_assert(GIT_OID_SHA1 == (int)GIT_HASH_TYPE::GIT_HASH_SHA1, "needs to be the same in libgit2");
+static_assert(GIT_OID_SHA256 == (int)GIT_HASH_TYPE::GIT_HASH_SHA256, "needs to be the same in libgit2");
 
 class CGitHash;
 template<>
@@ -35,41 +51,69 @@ struct std::hash<CGitHash>;
 class CGitHash
 {
 private:
-	unsigned char m_hash[GIT_HASH_SIZE]{};
+	/** type of object id */
+	GIT_HASH_TYPE m_type = GIT_HASH_TYPE::GIT_HASH_DEFAULT;
+
+	/** raw binary formatted id */
+	unsigned char m_hash[GIT_HASH_MAX_SIZE]{};
 
 public:
 	CGitHash() = default;
+	CGitHash(GIT_HASH_TYPE type)
+		: m_type(type)
+	{
+		ASSERT(type != GIT_HASH_TYPE::GIT_HASH_UNKNOWN);
+	}
 	CGitHash(const git_oid* oid)
 	{
-		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(this), oid);
 	}
 	CGitHash(const git_oid& oid)
+		: CGitHash(&oid)
 	{
-		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
 	}
 	CGitHash& operator = (const git_oid* oid)
 	{
-		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(this), oid);
 		return *this;
 	}
 	CGitHash& operator = (const git_oid& oid)
 	{
-		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), &oid);
+		git_oid_cpy(reinterpret_cast<git_oid*>(this), &oid);
 		return *this;
 	}
 
-	static CGitHash FromHexStrTry(const CString& str)
+	inline constexpr static int HashLength(GIT_HASH_TYPE type)
 	{
-		if (!IsValidSHA1(str))
-			return CGitHash();
+		if (type == GIT_HASH_TYPE::GIT_HASH_SHA1)
+			return GIT_HASH_SHA1_SIZE;
+		else if (type == GIT_HASH_TYPE::GIT_HASH_SHA256)
+			return GIT_HASH_SHA256_SIZE;
 
-		return FromHexStr(str);
+		ASSERT(false);
+		return 0;
 	}
 
-	static CGitHash FromHexStr(const CString& str)
+private:
+	inline int HashLength() const
 	{
-		CGitHash hash;
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
+		return HashLength(m_type);
+	}
+
+public:
+	static CGitHash FromHexStrTry(const CString& str, GIT_HASH_TYPE type)
+	{
+		if (!IsValidHash(str, type))
+			return CGitHash(type);
+
+		return FromHexStr(str, type);
+	}
+
+	static CGitHash FromHexStr(const CString& str, GIT_HASH_TYPE type)
+	{
+		CGitHash hash{ type };
+		const int hashLength = HashLength(type);
+		for (int i = 0; i < hashLength; ++i)
 		{
 			unsigned char a;
 			a=0;
@@ -90,17 +134,18 @@ public:
 		return hash;
 	}
 
-	static CGitHash FromRaw(const unsigned char* raw)
+	static CGitHash FromRaw(const unsigned char* raw, unsigned int type)
 	{
-		CGitHash hash;
-		memcpy(hash.m_hash, raw, GIT_HASH_SIZE);
+		CGitHash hash{ static_cast<GIT_HASH_TYPE>(type) };
+		memcpy(hash.m_hash, raw, HashLength(static_cast<GIT_HASH_TYPE>(type)));
 		return hash;
 	}
 
-	static CGitHash FromHexStr(const char* str)
+	static CGitHash FromHexStr(const char* str, GIT_HASH_TYPE type)
 	{
-		CGitHash hash;
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
+		CGitHash hash{ type };
+		const int hashLength = HashLength(type);
+		for (int i = 0; i < hashLength; ++i)
 		{
 			unsigned char a;
 			a=0;
@@ -124,11 +169,12 @@ public:
 
 	void Empty()
 	{
-		memset(m_hash,0, GIT_HASH_SIZE);
+		memset(m_hash, 0, GIT_HASH_MAX_SIZE);
 	}
 	bool IsEmpty() const
 	{
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
+		const int hashLength = HashLength(m_type);
+		for (int i = 0; i < hashLength; ++i)
 		{
 			if(m_hash[i] != 0)
 				return false;
@@ -138,16 +184,18 @@ public:
 
 	CString ToString() const
 	{
+		ASSERT(m_type != GIT_HASH_TYPE::GIT_HASH_UNKNOWN);
+		const int hashLength = HashLength(m_type);
 		CString str;
-		str.Preallocate(GIT_HASH_SIZE * 2);
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
+		str.Preallocate(hashLength * 2);
+		for (int i = 0; i < hashLength; ++i)
 			str.AppendFormat(L"%02x", m_hash[i]);
 		return str;
 	}
 
 	CString ToString(int len) const
 	{
-		ASSERT(len >= 0 && len <= GIT_HASH_SIZE * 2);
+		ASSERT(len >= 0 && len <= HashLength() * 2);
 		CString str { ToString() };
 		str.Truncate(len);
 		return str;
@@ -155,7 +203,10 @@ public:
 
 	operator const git_oid*() const
 	{
-		return reinterpret_cast<const git_oid*>(m_hash);
+		static_assert(sizeof(CGitHash) == sizeof(git_oid), "must be equal");
+		static_assert(&(((CGitHash*)nullptr)->m_hash) == &(((git_oid*)nullptr)->id), "must be equal");
+		static_assert(&(((CGitHash*)nullptr)->m_type) == (void*)&(((git_oid*)nullptr)->type), "must be equal");
+		return reinterpret_cast<const git_oid*>(this);
 	}
 
 	const unsigned char* ToRaw() const
@@ -163,40 +214,51 @@ public:
 		return m_hash;
 	}
 
+	int HashType() const
+	{
+		return static_cast<int>(m_type);
+	}
+
 	bool operator == (const CGitHash &hash) const
 	{
-		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
+		ASSERT(m_type != GIT_HASH_TYPE::GIT_HASH_UNKNOWN);
+		return memcmp(m_hash, hash.m_hash, HashLength()) == 0 && hash.m_type == m_type;
 	}
 
 	static friend bool operator<(const CGitHash& left, const CGitHash& right)
 	{
-		return memcmp(left.m_hash,right.m_hash,GIT_HASH_SIZE) < 0;
+		ASSERT(left.m_type == right.m_type);
+		return memcmp(left.m_hash, right.m_hash, HashLength(left.m_type)) < 0;
 	}
 
 	static friend bool operator>(const CGitHash& left, const CGitHash& right)
 	{
-		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) > 0;
+		ASSERT(left.m_type == right.m_type);
+		return memcmp(left.m_hash, right.m_hash, HashLength(left.m_type)) > 0;
 	}
 
 	static friend bool operator != (const CGitHash& left, const CGitHash& right)
 	{
-		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
+		ASSERT(left.m_type == right.m_type);
+		return left.m_type != right.m_type || memcmp(left.m_hash, right.m_hash, HashLength(left.m_type)) != 0;
 	}
 
 	bool MatchesPrefix(const CGitHash& hash, const CString& hashString, size_t prefixLen) const
 	{
+		ASSERT(prefixLen <= 2 * static_cast<size_t>(HashLength()));
 		if (memcmp(m_hash, hash.m_hash, prefixLen >> 1))
 			return false;
-		return prefixLen == 2 * GIT_HASH_SIZE || wcsncmp(ToString(), hashString, prefixLen) == 0;
+		return prefixLen == 2 * static_cast<size_t>(HashLength()) || wcsncmp(ToString(), hashString, prefixLen) == 0;
 	}
 
-	static bool IsValidSHA1(const CString &possibleSHA1)
+	static bool IsValidHash(const CString& possibleHash, GIT_HASH_TYPE type)
 	{
-		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)
+		ASSERT(type != GIT_HASH_TYPE::GIT_HASH_UNKNOWN);
+		if (possibleHash.GetLength() != 2 * HashLength(type))
 			return false;
-		for (int i = 0; i < possibleSHA1.GetLength(); ++i)
+		for (int i = 0; i < possibleHash.GetLength(); ++i)
 		{
-			if (!((possibleSHA1[i] >= '0' && possibleSHA1[i] <= '9') || (possibleSHA1[i] >= 'a' && possibleSHA1[i] <= 'f') || (possibleSHA1[i] >= 'A' && possibleSHA1[i] <= 'F')))
+			if (!((possibleHash[i] >= '0' && possibleHash[i] <= '9') || (possibleHash[i] >= 'a' && possibleHash[i] <= 'f') || (possibleHash[i] >= 'A' && possibleHash[i] <= 'F')))
 				return false;
 		}
 		return true;
@@ -212,6 +274,7 @@ namespace std
 	{
 		std::size_t operator()(const CGitHash& k) const
 		{
+			static_assert(sizeof(size_t) <= sizeof(k.m_hash));
 			return reinterpret_cast<const size_t&>(k.m_hash);
 		}
 	};

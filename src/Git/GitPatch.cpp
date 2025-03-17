@@ -25,7 +25,8 @@
 #include "DirFileEnum.h"
 #include "GitAdminDir.h"
 #include "StringUtils.h"
-
+#include "Git.h"
+#include "GitRev.h"
 #include "AppUtils.h"
 
 #define STRIP_LIMIT 10
@@ -141,7 +142,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		CString sVersion = m_patch.GetRevision(nIndex);
 
 		CString sBaseFile;
-		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GitRev::GetWorkingCopy(), sVersion.GetLength()) == 0) || sFilePath == L"NUL")
+		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()), sVersion.GetLength()) == 0) || sFilePath == L"NUL")
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 		else
 		{

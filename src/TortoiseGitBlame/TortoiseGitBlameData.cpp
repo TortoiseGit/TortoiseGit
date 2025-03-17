@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include "LoglistUtils.h"
 #include "FileTextLines.h"
 #include "UnicodeUtils.h"
+#include "Git.h"
 
 constexpr wchar_t WideCharSwap2(wchar_t nValue) noexcept
 {
@@ -90,6 +91,15 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	int originalLineNumber = 0;
 	int numberOfSubsequentLines = 0;
 	CString filename;
+	const auto [hashType, hashLength] = []
+	{
+		CString objectFormat = g_Git.GetConfigValue(L"extensions.objectformat", L"sha1");
+		if (objectFormat == "sha256")
+			return std::tuple<GIT_HASH_TYPE, size_t>(GIT_HASH_TYPE::GIT_HASH_SHA256, static_cast<size_t>(2 * 2 * GIT_HASH_SHA256_SIZE));
+		else if (objectFormat != "sha1")
+			ASSERT(false);
+		return std::tuple<GIT_HASH_TYPE, size_t>(GIT_HASH_TYPE::GIT_HASH_SHA1, static_cast<size_t>(2 * GIT_HASH_SHA1_SIZE));
+	}();
 
 	size_t pos = 0;
 	bool expectHash = true;
@@ -113,11 +123,11 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 				if (expectHash)
 				{
 					expectHash = false;
-					if (lineEnd - lineBegin > 2 * GIT_HASH_SIZE)
+					if (lineEnd - lineBegin > hashLength)
 					{
-						hash = CGitHash::FromHexStr(&data[lineBegin]);
+						hash = CGitHash::FromHexStr(&data[lineBegin], hashType);
 
-						size_t hashEnd = lineBegin + 2 * GIT_HASH_SIZE;
+						size_t hashEnd = lineBegin + hashLength;
 						size_t originalLineNumberBegin = hashEnd + 1;
 						size_t originalLineNumberEnd = data.find(' ', originalLineNumberBegin);
 						if (originalLineNumberEnd != BYTE_VECTOR::npos)
