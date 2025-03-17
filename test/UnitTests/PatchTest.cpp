@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2018-2019, 2021-2022, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -377,7 +377,7 @@ TEST(CPatch, PatchFile)
 		EXPECT_EQ(TRUE, CStringUtils::ReadStringFromTextFile(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5), text));
 		EXPECT_STREQ(L"new file\r\ndfkdsf#dsf\r\n\r\n\r\ndsf\r\n", text);
 		git_oid oid2 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(5)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashAfter = oid2;
 		EXPECT_STREQ(patch.GetRevision2(5), hashAfter.ToString(patch.GetRevision2(5).GetLength()));
 	}
@@ -385,12 +385,12 @@ TEST(CPatch, PatchFile)
 	// modify file
 	{
 		git_oid oid1 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(2)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(2)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashBefore = oid1;
 		EXPECT_STREQ(patch.GetRevision(2), hashBefore.ToString(patch.GetRevision(2).GetLength()));
 		EXPECT_TRUE(patch.PatchFile(0, 2, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2), L"", false));
 		git_oid oid2 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashAfter = oid2;
 		EXPECT_STREQ(patch.GetRevision2(2), hashAfter.ToString(patch.GetRevision2(2).GetLength()));
 	}
@@ -412,12 +412,12 @@ TEST(CPatch, PatchFile_UTF8)
 	EXPECT_EQ(1, patch.GetNumberOfFiles());
 
 	git_oid oid1 = { 0 };
-	EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(0)), GIT_OBJECT_BLOB));
+	EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(0)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 	CGitHash hashBefore = oid1;
 	EXPECT_STREQ(patch.GetRevision(0), hashBefore.ToString(patch.GetRevision(0).GetLength()));
 	EXPECT_EQ(TRUE, patch.PatchFile(0, 0, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0), L"", false));
 	git_oid oid2 = { 0 };
-	EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0)), GIT_OBJECT_BLOB));
+	EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 	CGitHash hashAfter = oid2;
 	EXPECT_STREQ(patch.GetRevision2(0), hashAfter.ToString(patch.GetRevision2(0).GetLength()));
 }
@@ -440,7 +440,7 @@ TEST(CPatch, PatchFile_BOMChanges)
 	{
 		EXPECT_TRUE(patch.PatchFile(0, 0, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0), L"", false));
 		git_oid oid2 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(0)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashAfter = oid2;
 		EXPECT_STREQ(patch.GetRevision2(0), hashAfter.ToString(patch.GetRevision2(0).GetLength()));
 	}
@@ -449,12 +449,12 @@ TEST(CPatch, PatchFile_BOMChanges)
 	{
 		ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tempDir.GetTempDir() + L"\\input\\utf8-add-bom.txt", L"dsfds\r\nä\r\ndsf\r\nädsf\r\ndsf\r\nsdf", true));
 		git_oid oid1 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(2)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(2)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashBefore = oid1;
 		EXPECT_STREQ(patch.GetRevision(2), hashBefore.ToString(patch.GetRevision(2).GetLength()));
 		EXPECT_TRUE(patch.PatchFile(0, 2, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2), L"", false));
 		git_oid oid2 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(2)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashAfter = oid2;
 		EXPECT_STREQ(patch.GetRevision2(2), hashAfter.ToString(patch.GetRevision2(2).GetLength()));
 	}
@@ -463,12 +463,12 @@ TEST(CPatch, PatchFile_BOMChanges)
 	{
 		ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tempDir.GetTempDir() + L"\\input\\drop-bom.txt", L"\uFEFFdsfds\r\nä\r\ndsf\r\nädsf\r\ndsf\r\nsdf", true));
 		git_oid oid1 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(3)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid1, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\input\\" + patch.GetFilename(3)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashBefore = oid1;
 		EXPECT_STREQ(patch.GetRevision(3), hashBefore.ToString(patch.GetRevision(3).GetLength()));
 		EXPECT_TRUE(patch.PatchFile(0, 3, tempDir.GetTempDir() + L"\\input", tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(3), L"", false));
 		git_oid oid2 = { 0 };
-		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(3)), GIT_OBJECT_BLOB));
+		EXPECT_EQ(0, git_odb_hashfile(&oid2, CUnicodeUtils::GetUTF8(tempDir.GetTempDir() + L"\\output\\" + patch.GetFilename2(3)), GIT_OBJECT_BLOB, GIT_OID_SHA1));
 		CGitHash hashAfter = oid2;
 		EXPECT_STREQ(patch.GetRevision2(3), hashAfter.ToString(patch.GetRevision2(3).GetLength()));
 	}

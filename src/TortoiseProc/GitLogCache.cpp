@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 
 int static Compare(const void *p1, const void*p2)
 {
-	return memcmp(p1, p2, GIT_HASH_SIZE);
+	return memcmp(p1, p2, GIT_HASH_MAX_SIZE);
 }
 
 CLogCache::CLogCache()
@@ -117,12 +117,13 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		{
 			CString strLine;
 			CStdioFile file(m_GitDir + L"\\shallow", CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
+			const auto hashType = g_Git.GetCurrentRepoHashType();
 			while (file.ReadString(strLine))
 			{
-				if (!CGitHash::IsValidSHA1(strLine))
+				if (!CGitHash::IsValidHash(strLine, hashType))
 					continue;
 
-				m_shallowAnchors.insert(CGitHash::FromHexStr(strLine));
+				m_shallowAnchors.insert(CGitHash::FromHexStr(strLine, hashType));
 			}
 		}
 		catch (CFileException* pE)
@@ -179,7 +180,7 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 		if( !CheckHeader(&m_pCacheIndex->m_Header))
 			break;
 
-		if (m_pCacheIndex->m_Header.m_DiffPercentage != CGit::ms_iSimilarityIndexThreshold)
+		if (m_pCacheIndex->m_Header.m_DiffPercentage != static_cast<unsigned int>(CGit::ms_iSimilarityIndexThreshold))
 			break;
 
 		if (size_t len; SizeTMult(sizeof(SLogCacheIndexItem), m_pCacheIndex->m_Header.m_ItemCount, &len) != S_OK || SizeTAdd(len, sizeof(SLogCacheIndexHeader), &len) != S_OK || static_cast<size_t>(indexFileSize.QuadPart) != len)
@@ -504,7 +505,7 @@ int CLogCache::SaveCache()
 			}
 
 			SLogCacheIndexItem item;
-			item.m_Hash = (*i).second.m_CommitHash;
+			item.m_oid = (*i).second.m_CommitHash;
 			item.m_Offset = offset.QuadPart;
 
 			DWORD dwWritten = 0;

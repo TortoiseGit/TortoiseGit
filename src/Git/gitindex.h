@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -193,6 +193,7 @@ private:
 	__int64		m_LastFileSizeHead = -1;
 	__int64		m_LastFileSizePackRef = -1;
 
+	GIT_HASH_TYPE m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA1;
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;

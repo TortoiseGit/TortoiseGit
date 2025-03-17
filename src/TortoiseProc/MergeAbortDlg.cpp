@@ -82,7 +82,7 @@ void CMergeAbortDlg::OnBnClickedShowModifiedFiles()
 		CFileDiffDlg dlg;
 
 		dlg.m_strRev1 = GitRev::GetHead();
-		dlg.m_strRev2 = GitRev::GetWorkingCopy();
+		dlg.m_strRev2 = GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType());
 
 		dlg.DoModal();
 }

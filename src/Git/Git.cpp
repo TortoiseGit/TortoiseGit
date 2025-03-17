@@ -920,7 +920,7 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 		CStringA utf8Hash(s);
 		CString unicodeHash = CUnicodeUtils::GetUnicode(utf8Hash);
 		unicodeHash.TrimRight(L" \r\n\t");
-		if (CGitHash::IsValidSHA1(unicodeHash))
+		if (CGitHash::IsValidHash(unicodeHash, g_Git.GetCurrentRepoHashType()))
 			sBranchOut = unicodeHash;
 		else
 			//# Assume this is a detached head.
@@ -1156,14 +1156,25 @@ CAutoRepository CGit::GetGitRepository() const
 	return CAutoRepository(GetGitPathStringA(m_CurrentDir));
 }
 
+inline static GIT_HASH_TYPE GetRepository_oid_Type(git_repository* repo)
+{
+	git_oid_t oid_type = git_repository_oid_type(repo);
+	if (oid_type == GIT_OID_SHA1)
+		return GIT_HASH_TYPE::GIT_HASH_SHA1;
+	if (oid_type == GIT_OID_SHA256)
+		return GIT_HASH_TYPE::GIT_HASH_SHA256;
+	ASSERT(false);
+	return GIT_HASH_TYPE::GIT_HASH_SHA1;
+}
+
 int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck /* = false */)
 {
 	ATLASSERT(repo);
 
 	// no need to parse a ref if it's already a 40-byte hash
-	if (!skipFastCheck && CGitHash::IsValidSHA1(friendname))
+	if (!skipFastCheck && CGitHash::IsValidHash(friendname, GetRepository_oid_Type(repo)))
 	{
-		hash = CGitHash::FromHexStr(friendname);
+		hash = CGitHash::FromHexStr(friendname, GetRepository_oid_Type(repo));
 		return 0;
 	}
 
@@ -1189,12 +1200,28 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 	return 0;
 }
 
+void CGit::InitHashType()
+{
+	CString objectFormat = GetConfigValue(L"extensions.objectformat", L"sha1");
+	if (objectFormat == "sha256")
+		m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA256;
+	else if (objectFormat == "sha1")
+		m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA1;
+	else
+	{
+		m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA1;
+		ASSERT(false);
+	}
+}
+
 int CGit::GetHash(CGitHash &hash, const CString& friendname)
 {
+	const auto hashType = g_Git.GetCurrentRepoHashType();
+
 	// no need to parse a ref if it's already a 40-byte hash
-	if (CGitHash::IsValidSHA1(friendname))
+	if (CGitHash::IsValidHash(friendname, hashType))
 	{
-		hash = CGitHash::FromHexStr(friendname);
+		hash = CGitHash::FromHexStr(friendname, hashType);
 		return 0;
 	}
 
@@ -1220,7 +1247,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		cmd.Format(L"git.exe rev-parse --verify --end-of-options %s", static_cast<LPCWSTR>(branch));
 		gitLastErr.Empty();
 		const int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
-		hash = CGitHash::FromHexStr(gitLastErr.Trim());
+		hash = CGitHash::FromHexStr(gitLastErr.Trim(), hashType);
 		if (ret == 0)
 			gitLastErr.Empty();
 		else if (friendname == GitRev::GetHead()) // special check for unborn branch
@@ -1280,9 +1307,9 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if (ignoreBlankLines)
 		ignore += L" --ignore-blank-lines";
 
-	if (rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
+	if (rev1 == GitRev::GetWorkingCopy(GetCurrentRepoHashType()) || rev2 == GitRev::GetWorkingCopy(GetCurrentRepoHashType()))
 	{
-		if (rev1 == GitRev::GetWorkingCopy())
+		if (rev1 == GitRev::GetWorkingCopy(GetCurrentRepoHashType()))
 			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
 		else
 			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));
@@ -1853,15 +1880,17 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 		return 0;
 	}
 
+	const GIT_HASH_TYPE hashType = GetCurrentRepoHashType();
+	const int hashLength = CGitHash::HashLength(hashType) * 2;
 	CString cmd;
 	cmd.Format(L"git.exe ls-remote%s -- \"%s\"", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(remote));
 	gitLastErr = cmd + L'\n';
 	if (Run(
 		cmd, [&](const CStringA& origLineA) {
-			if (origLineA.GetLength() <= GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t")) || origLineA[GIT_HASH_SIZE * 2] != '\t') // OID, tab, refname
+			if (origLineA.GetLength() <= hashLength + static_cast<int>(strlen("\t")) || origLineA[hashLength] != '\t') // OID, tab, refname
 				return;
-			CGitHash hash = CGitHash::FromHexStr(std::string_view(origLineA, GIT_HASH_SIZE * 2));
-			CString ref = CUnicodeUtils::GetUnicode(origLineA.Mid(GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t"))));
+			CGitHash hash = CGitHash::FromHexStr(std::string_view(origLineA, hashLength), hashType);
+			CString ref = CUnicodeUtils::GetUnicode(origLineA.Mid(hashLength + static_cast<int>(strlen("\t"))));
 			CString shortname;
 			if (GetShortName(ref, shortname, L"refs/tags/"))
 			{
@@ -1959,7 +1988,7 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		const int start = lineA.Find(L' ');
-		ASSERT(start == 2 * GIT_HASH_SIZE);
+		ASSERT(start == 2 * CGitHash::HashLength(GetCurrentRepoHashType()));
 		if (start <= 0)
 			return;
 
@@ -2031,15 +2060,16 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		return GetMapHashToFriendName(repo, map);
 	}
 
+	const GIT_HASH_TYPE hashType = GetCurrentRepoHashType();
 	gitLastErr.Empty();
 	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
 	{
 		const int start = lineA.Find(L' ');
-		ASSERT(start == 2 * GIT_HASH_SIZE);
+		ASSERT(start == 2 * CGitHash::HashLength(hashType));
 		if (start <= 0)
 			return;
 
-		CGitHash hash = CGitHash::FromHexStr(std::string_view(lineA, start));
+		CGitHash hash = CGitHash::FromHexStr(std::string_view(lineA, start), hashType);
 		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
 	}, &gitLastErr);
 
@@ -2517,7 +2547,11 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 		return false;
-	basehash = CGitHash::FromHexStr(base.Trim());
+
+	if (m_hashType == GIT_HASH_TYPE::GIT_HASH_UNKNOWN)
+		InitHashType();
+
+	basehash = CGitHash::FromHexStr(base.Trim(), m_hashType);
 
 	GetHash(hash, from);
 
@@ -2871,9 +2905,9 @@ void CGit::SetGit2CertificateCheckCertificate(void* callback)
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	CString cmd;
-	if (rev2 == GitRev::GetWorkingCopy())
+	if (rev2 == GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()))
 		cmd.Format(L"git.exe diff --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1));
-	else if (rev1 == GitRev::GetWorkingCopy())
+	else if (rev1 == GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()))
 		cmd.Format(L"git.exe diff -R --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev2));
 	else
 	{
@@ -2977,15 +3011,15 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, c
 	}
 	CAutoDiff diff;
 
-	if (revNew == GitRev::GetWorkingCopy() || revOld == GitRev::GetWorkingCopy())
+	if (revNew == GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()) || revOld == GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()))
 	{
 		CAutoTree t1;
 		CAutoDiff diff2;
 
-		if (revNew != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree1, t1.GetPointer()))
+		if (revNew != GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()) && resolve_to_tree(repo, tree1, t1.GetPointer()))
 			return -1;
 
-		if (revOld != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree2, t1.GetPointer()))
+		if (revOld != GitRev::GetWorkingCopy(g_Git.GetCurrentRepoHashType()) && resolve_to_tree(repo, tree2, t1.GetPointer()))
 			return -1;
 
 		if (git_diff_tree_to_index(diff.GetPointer(), repo, t1, nullptr, &opts))
@@ -3605,6 +3639,9 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 	const size_t end = out.size();
 	if (end == 0)
 		return 1;
+
+	const auto hashType = g_Git.GetCurrentRepoHashType();
+
 	while (pos < end)
 	{
 		const size_t lineStart = pos;
@@ -3646,17 +3683,17 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 			return -1;
 		else if (stage == 1)
 		{
-			baseHash = CGitHash::FromHexStr(hash);
+			baseHash = CGitHash::FromHexStr(hash, hashType);
 			baseIsFile = mode != 160000;
 		}
 		else if (stage == 2)
 		{
-			mineHash = CGitHash::FromHexStr(hash);
+			mineHash = CGitHash::FromHexStr(hash, hashType);
 			mineIsFile = mode != 160000;
 		}
 		else if (stage == 3)
 		{
-			remoteHash = CGitHash::FromHexStr(hash);
+			remoteHash = CGitHash::FromHexStr(hash, hashType);
 			remoteIsFile = mode != 160000;
 		}
 
