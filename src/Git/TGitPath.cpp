@@ -993,7 +993,7 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 	AddPath(firstEntry);
 }
 
-int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear /*= true*/)
+int CTGitPathList::ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int action, bool clear /*= true*/)
 {
 	size_t pos = 0;
 	const size_t end = out.size();
@@ -1027,8 +1027,10 @@ int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action,
 }
 
 // similar code in CGit::ParseConflictHashesFromLsFile
-int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
+int CTGitPathList::ParserFromLsFile(const BYTE_VECTOR& out, const GIT_HASH_TYPE hashType)
 {
+	const auto hashLength = 2 * CGitHash::HashLength(hashType);
+
 	size_t pos = 0;
 	const size_t end = out.size();
 	CTGitPath path;
@@ -1063,7 +1065,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
 
 		++pos;
 		const size_t fileNameEnd = out.find(0, pos);
-		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != strlen("H 100644 ") + 2 * GIT_HASH_SIZE + strlen(" 0\t")) // <tag> <mode> <object> <stage>\t<file>
+		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != strlen("H 100644 ") + hashLength + strlen(" 0\t")) // <tag> <mode> <object> <stage>\t<file>
 			return -1;
 		pathstring.Empty();
 		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(fileNameEnd - pos));
@@ -1237,7 +1239,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 	RemoveDuplicates();
 	return 0;
 }
-int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
+int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 {
 	static bool mergeReplacedStatus = CRegDWORD(L"Software\\TortoiseGit\\MergeReplacedStatusKS", TRUE, false, HKEY_LOCAL_MACHINE) == TRUE; // TODO: remove kill-switch
 	this->Clear();

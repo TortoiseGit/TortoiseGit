@@ -380,7 +380,7 @@ BOOL CTortoiseProcApp::InitInstance()
 				{
 					git_oid oid;
 					CStringA wcRootA{ CUnicodeUtils::GetUTF8(wcroot + CPathUtils::GetAppDirectory()) };
-					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJECT_BLOB))
+					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJECT_BLOB, GIT_OID_SHA1))
 					{
 						CStringA hash;
 						git_oid_tostr(CStrBufA(hash, GIT_OID_SHA1_HEXSIZE, CStrBufA::SET_LENGTH), GIT_OID_SHA1_HEXSIZE + 1, &oid);

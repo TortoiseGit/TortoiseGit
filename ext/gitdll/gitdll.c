@@ -50,6 +50,8 @@ static const char* g_prefix;
 /* also see GitHash.h */
 static_assert(GIT_SHA1_RAWSZ <= LIBGIT_GIT_HASH_SIZE && GIT_SHA256_RAWSZ <= LIBGIT_GIT_HASH_SIZE && GIT_MAX_RAWSZ == LIBGIT_GIT_HASH_SIZE, "Required to be equal in gitdll.h");
 static_assert(sizeof(struct object_id) == sizeof(struct GIT_OBJECT_OID), "Required to be equal in gitdll.h");
+static_assert(GIT_HASH_SHA1 == 1 && GIT_HASH_SHA256 == 2, "Required to be equal in gitdll.h, TortoiseGit and libgit2");
+static_assert(GIT_HASH_NALGOS == 3, "Safeguard for gitdll.h");
 
 extern NORETURN void die_dll(const char* err, va_list params);
 extern void handle_error(const char* err, va_list params);
@@ -83,12 +85,9 @@ void dll_entry(void)
 	libgit_initialize();
 }
 
-int git_get_sha1(const char *name, GIT_HASH sha1)
+int git_get_oid(const char* name, struct object_id* oid)
 {
-	struct object_id oid = { 0 };
-	int ret = repo_get_oid(the_repository, name, &oid);
-	hashcpy(sha1, oid.hash, the_repository->hash_algo);
-	return ret;
+	return repo_get_oid(the_repository, name, oid);
 }
 
 int git_init(const LPWSTR* env)
@@ -108,10 +107,6 @@ int git_init(const LPWSTR* env)
 	git_config(git_default_config, NULL);
 	ref_store_release_and_clear(the_repository);
 	clear_ref_decorations();
-
-	/* add a safeguard until we have full support in TortoiseGit */
-	if (the_repository && the_repository->hash_algo && strcmp(the_repository->hash_algo->name, "sha1") != 0)
-		die("Only SHA1 is supported right now.");
 
 	return 0;
 }
@@ -153,7 +148,8 @@ int git_parse_commit(GIT_COMMIT *commit)
 
 	p= (struct commit *)commit->m_pGitCommit;
 
-	memcpy(commit->m_hash, p->object.oid.hash, GIT_SHA1_RAWSZ);
+	hashcpy(commit->m_oid.hash, p->object.oid.hash, the_repository->hash_algo);
+	commit->m_oid.algo = p->object.oid.algo;
 
 	commit->m_Encode = NULL;
 	commit->m_EncodeSize = 0;
@@ -226,22 +222,18 @@ int git_parse_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
+int git_get_commit_from_oid(GIT_COMMIT* commit, const struct object_id* oid)
 {
 	int ret = 0;
 
 	struct commit *p;
-	struct object_id oid;
 
 	if (commit == NULL)
 		return -1;
 
 	memset(commit,0,sizeof(GIT_COMMIT));
 
-	hashcpy(oid.hash, hash, the_repository->hash_algo);
-	oid.algo = 0;
-
-	commit->m_pGitCommit = p = lookup_commit(the_repository, &oid);
+	commit->m_pGitCommit = p = lookup_commit(the_repository, oid);
 
 	if(p == NULL)
 		return -1;
@@ -251,6 +243,14 @@ int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash)
 		return ret;
 
 	return git_parse_commit(commit);
+}
+
+int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash, int algo)
+{
+	struct object_id oid;
+	hashcpy(oid.hash, hash, the_repository->hash_algo);
+	oid.algo = algo;
+	return git_get_commit_from_oid(commit, &oid);
 }
 
 int git_get_commit_first_parent(const GIT_COMMIT* commit, GIT_COMMIT_LIST* list)
@@ -270,7 +270,7 @@ int git_commit_is_root(const GIT_COMMIT* commit)
 	return (struct commit_list**)p->parents ? 1 : 0;
 }
 
-int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
+int git_get_commit_next_parent(GIT_COMMIT_LIST* list, struct object_id* oid)
 {
 	struct commit_list *l;
 	if (list == NULL)
@@ -280,8 +280,11 @@ int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash)
 	if (l == NULL)
 		return -1;
 
-	if(hash)
-		memcpy(hash, l->item->object.oid.hash, GIT_SHA1_RAWSZ);
+	if (oid)
+	{
+		hashcpy(oid->hash, l->item->object.oid.hash, the_repository->hash_algo);
+		oid->algo = l->item->object.oid.algo;
+	}
 
 	*list = (GIT_COMMIT_LIST *)l->next;
 	return 0;
@@ -558,17 +561,14 @@ int git_diff_flush(GIT_DIFF diff)
 	return 0;
 }
 
-int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat)
+int git_root_diff(GIT_DIFF diff, const struct object_id* oid, GIT_FILE* file, int* count, int isstat)
 {
-	struct object_id oid = { 0 };
 	struct rev_info *p_Rev;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
 
-	hashcpy(oid.hash, hash, the_repository->hash_algo);
-
-	diff_root_tree_oid(&oid, "", &p_Rev->diffopt);
+	diff_root_tree_oid(oid, "", &p_Rev->diffopt);
 
 	if(isstat)
 	{
@@ -590,20 +590,14 @@ int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count
 	return 0;
 }
 
-int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat)
+int git_do_diff(GIT_DIFF diff, const struct object_id* oid1, const struct object_id* oid2, GIT_FILE* file, int* count, int isstat)
 {
 	struct rev_info *p_Rev;
-	struct object_id oid1, oid2;
 	struct diff_queue_struct *q = &diff_queued_diff;
 
 	p_Rev = (struct rev_info *)diff;
 
-	hashcpy(oid1.hash, hash1, the_repository->hash_algo);
-	oid1.algo = 0;
-	hashcpy(oid2.hash, hash2, the_repository->hash_algo);
-	oid2.algo = 0;
-
-	diff_tree_oid(&oid1, &oid2, "", &p_Rev->diffopt);
+	diff_tree_oid(oid1, oid2, "", &p_Rev->diffopt);
 
 	if(isstat)
 	{
@@ -716,15 +710,12 @@ int git_check_excluded_1(const char *pathname,
 	return path_matches_pattern_list(pathname, pathlen, basename, dtype, el, NULL);
 }
 
-int git_get_notes(const GIT_HASH hash, char** p_note)
+int git_get_notes(const struct object_id* oid, char** p_note)
 {
-	struct object_id oid;
 	struct strbuf sb;
 	size_t size;
 	strbuf_init(&sb,0);
-	hashcpy(oid.hash, hash, the_repository->hash_algo);
-	oid.algo = 0;
-	format_display_notes(&oid, &sb, "utf-8", 1);
+	format_display_notes(oid, &sb, "utf-8", 1);
 	*p_note = strbuf_detach(&sb,&size);
 
 	return 0;

@@ -49,11 +49,11 @@ int GitRev::ParserParentFromCommit(const GIT_COMMIT* commit)
 	ATLASSERT(commit);
 	this->m_ParentHash.clear();
 	GIT_COMMIT_LIST list;
-	GIT_HASH   parent;
+	GIT_OBJECT_OID parent;
 
 	git_get_commit_first_parent(commit,&list);
-	while(git_get_commit_next_parent(&list,parent)==0)
-		m_ParentHash.emplace_back(CGitHash::FromRaw(parent));
+	 while (git_get_commit_next_parent(&list, &parent) == 0)
+		m_ParentHash.emplace_back(CGitHash::FromRaw(parent.hash, parent.algo));
 	return 0;
 }
 
@@ -64,7 +64,7 @@ int GitRev::ParserFromCommit(const GIT_COMMIT *commit)
 	if(commit->m_Encode != 0 && commit->m_EncodeSize != 0)
 		encode = CUnicodeUtils::GetCPCode(CUnicodeUtils::GetUnicodeLength(commit->m_Encode, commit->m_EncodeSize));
 
-	this->m_CommitHash = CGitHash::FromRaw(commit->m_hash);
+	this->m_CommitHash = CGitHash::FromRaw(commit->m_oid.hash, commit->m_oid.algo);
 
 	this->m_AuthorDate = commit->m_Author.Date;
 	this->m_AuthorEmail = CUnicodeUtils::GetUnicodeLength(commit->m_Author.Email, commit->m_Author.EmailSize, encode);
@@ -144,7 +144,7 @@ int GitRev::GetCommitFromHash(git_repository* repo, const CGitHash& hash)
 int GitRev::GetCommit(git_repository* repo, const CString& refname)
 {
 	ATLASSERT(repo);
-	if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopyRef(), refname.GetLength()) == 0)
+	if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopyRef(static_cast<GIT_HASH_TYPE>(git_repository_oid_type(repo))), refname.GetLength()) == 0)
 	{
 		Clear();
 		m_Subject = L"Working Tree";
@@ -182,7 +182,7 @@ int GitRev::GetParentFromHash(const CGitHash& hash)
 	{
 		g_Git.CheckAndInitDll();
 
-		if (git_get_commit_from_hash(&commit, hash.ToRaw()))
+		if (git_get_commit_from_hash(&commit, hash.ToRaw(), hash.HashType()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -216,7 +216,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	GIT_COMMIT commit;
 	try
 	{
-		if (git_get_commit_from_hash(&commit, hash.ToRaw()))
+		if (git_get_commit_from_hash(&commit, hash.ToRaw(), hash.HashType()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + hash.ToString();
 			return -1;
@@ -262,7 +262,7 @@ int GitRev::GetCommit(const CString& refname)
 	}
 
 	if(refname.GetLength() >= 8)
-		if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopyRef(), refname.GetLength()) == 0)
+		if (refname.GetLength() >= 8 && wcsncmp(refname, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), refname.GetLength()) == 0)
 		{
 			this->m_CommitHash.Empty();
 			this->m_Subject = L"Working Tree";
@@ -270,23 +270,23 @@ int GitRev::GetCommit(const CString& refname)
 			return 0;
 		}
 	CStringA rev = CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname + L"^{}")); // add ^{} in order to dereference signed tags
-	GIT_HASH sha;
+	GIT_OBJECT_OID oid;
 
 	try
 	{
-		if (git_get_sha1(rev.GetBuffer(), sha))
+		if (git_get_oid(rev.GetBuffer(), &oid))
 		{
-			m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname);
+			m_sErr = L"Could not get OID of ref \"" + g_Git.FixBranchName(refname);
 			return -1;
 		}
 	}
 	catch (const char* msg)
 	{
-		m_sErr = L"Could not get SHA-1 of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+		m_sErr = L"Could not get OID of ref \"" + g_Git.FixBranchName(refname) + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 
-	CGitHash hash = CGitHash::FromRaw(sha);
+	CGitHash hash = CGitHash::FromRaw(oid.hash, oid.algo);
 	return GetCommitFromHash_withoutLock(hash);
 }
 

@@ -97,7 +97,13 @@ public:
 
 	virtual ~GitRev();
 
-	inline constexpr static LPCWSTR GetWorkingCopyRef() { return GIT_REV_ZERO; }
+	inline constexpr static LPCWSTR GetWorkingCopyRef(GIT_HASH_TYPE type)
+	{
+		if (type == GIT_HASH_TYPE::GIT_HASH_SHA256)
+			return GIT_REV_SHA256_ZERO;
+		// error fall through
+		return GIT_REV_SHA1_ZERO;
+	}
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;

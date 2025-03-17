@@ -24,6 +24,7 @@
 #include "SysProgressDlg.h"
 #include "DirFileEnum.h"
 #include "GitAdminDir.h"
+#include "Git.h"
 #include "GitRev.h"
 #include "TempFile.h"
 #include "AppUtils.h"
@@ -141,7 +142,7 @@ bool GitPatch::PatchFile(int nIndex, CString &datapath)
 		CString sVersion = m_patch.GetRevision(nIndex);
 
 		CString sBaseFile;
-		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GitRev::GetWorkingCopyRef(), sVersion.GetLength()) == 0) || sFilePath == L"NUL")
+		if ((sVersion.GetLength() >= 7 && wcsncmp(sVersion, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), sVersion.GetLength()) == 0) || sFilePath == L"NUL")
 			sBaseFile = CTempFiles::Instance().GetTempFilePathString();
 		else
 		{

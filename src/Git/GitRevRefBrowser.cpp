@@ -209,7 +209,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 			continue;
 
 		GitRevRefBrowser ref;
-		ref.m_CommitHash = CGitHash::FromHexStr(singleRef.Tokenize(L"\04", valuePos).Trim()); if (valuePos < 0) continue;
+		ref.m_CommitHash = CGitHash::FromHexStr(singleRef.Tokenize(L"\04", valuePos).Trim(), g_Git.GetCurrentRepoHashType()); if (valuePos < 0) continue;
 		ref.m_UpstreamRef = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
 		ref.m_Subject = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
 		ref.m_AuthorName = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;

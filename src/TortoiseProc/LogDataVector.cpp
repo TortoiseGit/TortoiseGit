@@ -146,14 +146,14 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 			continue;
 		}
 
-		CGitHash hash = CGitHash::FromRaw(commit.m_hash);
+		CGitHash hash = CGitHash::FromRaw(commit.m_oid.hash, commit.m_oid.algo);
 
 		GitRevLoglist* pRev = this->m_pLogCache->GetCacheData(hash);
 
 		char *pNote = nullptr;
 		{
 			CAutoLocker lock(g_Git.m_critGitDllSec);
-			git_get_notes(commit.m_hash, &pNote);
+			git_get_notes(&commit.m_oid, &pNote);
 		}
 		if (pNote)
 		{
@@ -218,7 +218,7 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 		try
 		{
 			CAutoLocker lock(g_Git.m_critGitDllSec);
-			if (git_get_commit_from_hash(&commit, hash.ToRaw()))
+			if (git_get_commit_from_hash(&commit, hash.ToRaw(), hash.HashType()))
 				return -1;
 		}
 		catch (const char* msg)

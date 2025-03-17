@@ -228,7 +228,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
 
-	if (range == GitRev::GetWorkingCopyRef())
+	if (range == GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 		range = L"HEAD";
 
 	if (!(range.IsEmpty() || range == L"HEAD"))
@@ -639,16 +639,17 @@ void CLogDlg::EnableOKButton()
 
 bool LookLikeGitHash(const CString& msg, int &pos)
 {
-	static int shortHashLength = std::min(GIT_HASH_SIZE * 2, std::max(3, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength()))));
+	const int hashLength = 2 * CGitHash::HashLength(g_Git.GetCurrentRepoHashType());
+	static int shortHashLength = std::min(hashLength, std::max(3, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ShortHashLengthForHyperLinkInLogMessage", g_Git.GetShortHASHLength()))));
 	int c = 0;
 	for (; pos < msg.GetLength(); ++pos)
 	{
 		if (msg[pos] >= '0' && msg[pos] <= '9' || msg[pos] >= 'a' && msg[pos] <= 'f')
 			c++;
 		else
-			return c >= shortHashLength && c <= GIT_HASH_SIZE * 2 && msg[pos] != '@';
+			return c >= shortHashLength && c <= hashLength && msg[pos] != '@';
 	}
-	return c >= shortHashLength && c <= GIT_HASH_SIZE * 2;
+	return c >= shortHashLength && c <= hashLength;
 }
 
 std::vector<CHARRANGE> FindGitHashPositions(const CString& msg, int offset)
@@ -1705,9 +1706,10 @@ void CLogDlg::OnPasteGitHash()
 void CLogDlg::JumpToGitHash(CString hash)
 {
 	const int prefixLen = hash.GetLength();
-	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
+	const int hashLength = 2 * CGitHash::HashLength(g_Git.GetCurrentRepoHashType());
+	while (hash.GetLength() < hashLength)
 		hash += L'0';
-	CGitHash prefixHash = CGitHash::FromHexStr(hash);
+	CGitHash prefixHash = CGitHash::FromHexStr(hash, g_Git.GetCurrentRepoHashType());
 	// start searching downwards, because it's unlikely that a hash is a forward reference
 	const int currentPos = m_LogList.GetSelectionMark();
 	const int cnt = static_cast<int>(m_LogList.m_arShownList.size());

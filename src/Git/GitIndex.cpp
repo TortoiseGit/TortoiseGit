@@ -279,7 +279,7 @@ int CGitIndexList::GetFileStatus(CAutoRepository& repository, const CString& git
 		if (isSymlink && S_ISLNK(entry.m_Mode))
 		{
 			CStringA linkDestination;
-			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, static_cast<LPCSTR>(linkDestination), linkDestination.GetLength(), GIT_OBJECT_BLOB) && !git_oid_cmp(&actual, entry.m_IndexHash))
+			if (!CPathUtils::ReadLink(CombinePath(gitdir, entry.m_FileName), &linkDestination) && !git_odb_hash(&actual, static_cast<LPCSTR>(linkDestination), linkDestination.GetLength(), GIT_OBJECT_BLOB, git_repository_oid_type(repository)) && !git_oid_cmp(&actual, entry.m_IndexHash))
 			{
 				entry.m_ModifyTime = static_cast<int32_t>(CGit::filetime_to_time_t(time));
 				entry.m_ModifyTimeNanos = (time % 10000000) * 100;
@@ -450,7 +450,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 
 		if (!ref.IsEmpty())
 		{
-			CGitHash refHash = CGitHash::FromHexStr(hash);
+			CGitHash refHash = CGitHash::FromHexStr(hash, m_hashType);
 			if (!refHash.IsEmpty())
 				m_PackRefMap[CUnicodeUtils::GetUnicode(ref)] = refHash;
 		}
@@ -478,6 +478,13 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	if (CGit::GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead, nullptr, &m_LastFileSizeHead))
 		return -1;
 
+	CString projectConfig = g_AdminDirMap.GetAdminDir(gitdir) + L"config";
+	CAutoConfig temp{ true };
+	
+	git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(projectConfig), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE);
+	if (CAutoBuf configValue; git_config_get_string_buf(configValue, temp, "extensions.objectformat") == 0 && std::string_view(configValue->ptr, configValue->size) == "sha256")
+		m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA256;
+
 	CAutoFile hfile = CreateFile(m_HeadFile,
 		GENERIC_READ,
 		FILE_SHARE_READ | FILE_SHARE_DELETE | FILE_SHARE_WRITE,
@@ -490,7 +497,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		return -1;
 
 	DWORD size = 0;
-	unsigned char buffer[2 * GIT_HASH_SIZE];
+	unsigned char buffer[2 * GIT_HASH_MAX_SIZE];
 	ReadFile(hfile, buffer, static_cast<DWORD>(strlen("ref:")), &size, nullptr);
 	if (size != strlen("ref:"))
 		return -1;
@@ -556,24 +563,24 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 			return 0;
 		}
 
-		ReadFile(href, buffer, 2 * GIT_HASH_SIZE, &size, nullptr);
-		if (size != 2 * GIT_HASH_SIZE)
+		ReadFile(href, buffer, 2 * CGitHash::HashLength(m_hashType), &size, nullptr);
+		if (size != 2 * static_cast<unsigned int>(CGitHash::HashLength(m_hashType)))
 			return -1;
 
-		m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), size));
+		m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), size), m_hashType);
 
 		m_LastModifyTimeRef = time;
 
 		return 0;
 	}
 
-	ReadFile(hfile, buffer + static_cast<DWORD>(strlen("ref:")), 2 * GIT_HASH_SIZE - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
-	if (size != 2 * GIT_HASH_SIZE - static_cast<DWORD>(strlen("ref:")))
+	ReadFile(hfile, buffer + static_cast<DWORD>(strlen("ref:")), 2 * CGitHash::HashLength(m_hashType) - static_cast<DWORD>(strlen("ref:")), &size, nullptr);
+	if (size != 2 * CGitHash::HashLength(m_hashType) - static_cast<DWORD>(strlen("ref:")))
 		return -1;
 
 	m_HeadRefFile.Empty();
 
-	m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), 2 * GIT_HASH_SIZE));
+	m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), 2 * CGitHash::HashLength(m_hashType)), m_hashType);
 
 	return 0;
 }

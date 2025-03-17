@@ -1690,7 +1690,7 @@ TEST(CTGitPath, ParserFromLsFile_Empty)
 {
 	CGitByteArray byteArray;
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	EXPECT_EQ(0, testList.GetCount());
 }
 
@@ -1700,7 +1700,7 @@ TEST(CTGitPath, ParserFromLsFile_NormalRepo)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	EXPECT_EQ(3, testList.GetCount());
 	EXPECT_STREQ(L"README.md", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"taskxml.xsd", testList[1].GetGitPathString());
@@ -1722,7 +1722,7 @@ TEST(CTGitPath, ParserFromLsFile_RepoWithSubmodule)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"ext/gtest", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1738,35 +1738,35 @@ TEST(CTGitPath, ParserFromLsFile_Invalid)
 		CGitByteArray byteArray;
 		byteArray.append(git_ls_file_u_t_z_output, i);
 		CTGitPathList testList;
-		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	}
 	{
 		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "something" };
 		CGitByteArray byteArray;
 		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
 		CTGitPathList testList;
-		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	}
 	{
 		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "    " };
 		CGitByteArray byteArray;
 		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
 		CTGitPathList testList;
-		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	}
 	{
 		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "   	" };
 		CGitByteArray byteArray;
 		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
 		CTGitPathList testList;
-		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	}
 	{
 		constexpr char git_ls_file_u_t_z_outputInvalidFilename[] = { "   	e" };
 		CGitByteArray byteArray;
 		byteArray.append(git_ls_file_u_t_z_outputInvalidFilename, sizeof(git_ls_file_u_t_z_outputInvalidFilename));
 		CTGitPathList testList;
-		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray));
+		EXPECT_EQ(-1, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	}
 }
 
@@ -1777,7 +1777,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SingleFileConflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"bla.txt", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1791,7 +1791,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_Simple)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1806,7 +1806,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_DeletedModified)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1822,7 +1822,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_ToNormalDir)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1838,7 +1838,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_SubmoduleConflict_FileSubmodule)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_files_u_t_z_output, sizeof(git_ls_files_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"libgit2", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1853,7 +1853,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_DeletedFileConflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	ASSERT_EQ(1, testList.GetCount());
 	EXPECT_STREQ(L"Neues Textdokument.txt", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"", testList[0].GetGitOldPathString());
@@ -1868,7 +1868,7 @@ TEST(CTGitPath, ParserFromLsFile_Merged_MultipleFilesConflict)
 	CGitByteArray byteArray;
 	byteArray.append(git_ls_file_u_t_z_output, sizeof(git_ls_file_u_t_z_output));
 	CTGitPathList testList;
-	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray));
+	EXPECT_EQ(0, testList.ParserFromLsFile(byteArray, GIT_HASH_TYPE::GIT_HASH_SHA1));
 	EXPECT_EQ(3, testList.GetCount()); // 3 files are conflicted
 	EXPECT_STREQ(L"OSMtracker.sln", testList[0].GetGitPathString());
 	EXPECT_STREQ(L"OSMtracker/frmMain.vb", testList[1].GetGitPathString());

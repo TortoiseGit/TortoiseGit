@@ -42,8 +42,7 @@ struct GitWCRev_t
 		HeadHashReadable[0] = '\0';
 	}
 
-	static_assert(GIT_OID_MAX_SIZE == GIT_OID_SHA1_SIZE, "SHA2 is not available");
-	char HeadHashReadable[GIT_OID_SHA1_HEXSIZE + 1];
+	char HeadHashReadable[GIT_OID_MAX_HEXSIZE + 1];
 	std::string HeadAuthor;
 	std::string HeadEmail;
 	__time64_t HeadTime;

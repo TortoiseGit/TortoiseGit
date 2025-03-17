@@ -265,8 +265,8 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 		return ERR_GIT_ERR;
 	else if (ret == 1)
 	{
-		memset(GitStat.HeadHashReadable, '0', sizeof(GitStat.HeadHashReadable));
-		GitStat.HeadHashReadable[sizeof(GitStat.HeadHashReadable) - 1] = '\0';
+		git_oid emptyOid = { static_cast<unsigned char>(git_repository_oid_type(repo)) };
+		git_oid_tostr(GitStat.HeadHashReadable, sizeof(GitStat.HeadHashReadable), &emptyOid);
 		GitStat.bIsUnborn = TRUE;
 
 		CAutoReference symbolicHead;

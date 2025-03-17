@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019 - TortoiseGit
+// Copyright (C) 2019, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ TEST(CTempFiles, LongName)
 
 TEST(CTempFiles, ValidName)
 {
-	auto path1 = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(L"invalid?file|name.txt"), CGitHash::FromHexStr(L"012345678901234567890abcdef123456789abfd"));
+	auto path1 = CTempFiles::Instance().GetTempFilePath(false, CTGitPath(L"invalid?file|name.txt"), CGitHash::FromHexStr(L"012345678901234567890abcdef123456789abfd", GIT_HASH_TYPE::GIT_HASH_SHA1));
 	EXPECT_TRUE(path1.Exists());
 	path1.Delete(false, false);
 

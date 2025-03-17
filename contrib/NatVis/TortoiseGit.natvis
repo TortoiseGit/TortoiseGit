@@ -3,14 +3,18 @@
 <!-- https://github.com/microsoft/STL/blob/main/stl/debugger/STL.natvis -->
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
   <Type Name="CGitHash">
-    <DisplayString>SHA1: {m_hash[0],nvoxb}{m_hash[1],nvoxb}{m_hash[2],nvoxb}{m_hash[3],nvoxb}{m_hash[4],nvoxb}{m_hash[5],nvoxb}{m_hash[6],nvoxb}{m_hash[7],nvoxb}{m_hash[8],nvoxb}{m_hash[9],nvoxb}{m_hash[10],nvoxb}{m_hash[11],nvoxb}{m_hash[12],nvoxb}{m_hash[13],nvoxb}{m_hash[14],nvoxb}{m_hash[15],nvoxb}{m_hash[16],nvoxb}{m_hash[17],nvoxb}{m_hash[18],nvoxb}{m_hash[19],nvoxb}</DisplayString>
+    <DisplayString Condition="m_type == 0">unknown hash</DisplayString>
+    <DisplayString Condition="m_type == 1">SHA1: {m_hash[0],nvoxb}{m_hash[1],nvoxb}{m_hash[2],nvoxb}{m_hash[3],nvoxb}{m_hash[4],nvoxb}{m_hash[5],nvoxb}{m_hash[6],nvoxb}{m_hash[7],nvoxb}{m_hash[8],nvoxb}{m_hash[9],nvoxb}{m_hash[10],nvoxb}{m_hash[11],nvoxb}{m_hash[12],nvoxb}{m_hash[13],nvoxb}{m_hash[14],nvoxb}{m_hash[15],nvoxb}{m_hash[16],nvoxb}{m_hash[17],nvoxb}{m_hash[18],nvoxb}{m_hash[19],nvoxb}</DisplayString>
+    <DisplayString Condition="m_type == 2">SHA256: {m_hash[0],nvoxb}{m_hash[1],nvoxb}{m_hash[2],nvoxb}{m_hash[3],nvoxb}{m_hash[4],nvoxb}{m_hash[5],nvoxb}{m_hash[6],nvoxb}{m_hash[7],nvoxb}{m_hash[8],nvoxb}{m_hash[9],nvoxb}{m_hash[10],nvoxb}{m_hash[11],nvoxb}{m_hash[12],nvoxb}{m_hash[13],nvoxb}{m_hash[14],nvoxb}{m_hash[15],nvoxb}{m_hash[16],nvoxb}{m_hash[17],nvoxb}{m_hash[18],nvoxb}{m_hash[19],nvoxb}{m_hash[20],nvoxb}{m_hash[21],nvoxb}{m_hash[22],nvoxb}{m_hash[23],nvoxb}{m_hash[24],nvoxb}{m_hash[25],nvoxb}{m_hash[26],nvoxb}{m_hash[27],nvoxb}{m_hash[28],nvoxb}{m_hash[29],nvoxb}{m_hash[30],nvoxb}{m_hash[31],nvoxb}</DisplayString>
   </Type>
   <Type Name="git_oid">
-    <DisplayString>SHA1: {id[0],nvoxb}{id[1],nvoxb}{id[2],nvoxb}{id[3],nvoxb}{id[4],nvoxb}{id[5],nvoxb}{id[6],nvoxb}{id[7],nvoxb}{id[8],nvoxb}{id[9],nvoxb}{id[10],nvoxb}{id[11],nvoxb}{id[12],nvoxb}{id[13],nvoxb}{id[14],nvoxb}{id[15],nvoxb}{id[16],nvoxb}{id[17],nvoxb}{id[18],nvoxb}{id[19],nvoxb}</DisplayString>
+    <DisplayString Condition="type == 1">SHA1: {id[0],nvoxb}{id[1],nvoxb}{id[2],nvoxb}{id[3],nvoxb}{id[4],nvoxb}{id[5],nvoxb}{id[6],nvoxb}{id[7],nvoxb}{id[8],nvoxb}{id[9],nvoxb}{id[10],nvoxb}{id[11],nvoxb}{id[12],nvoxb}{id[13],nvoxb}{id[14],nvoxb}{id[15],nvoxb}{id[16],nvoxb}{id[17],nvoxb}{id[18],nvoxb}{id[19],nvoxb}</DisplayString>
+    <DisplayString Condition="type == 2">SHA256: {id[0],nvoxb}{id[1],nvoxb}{id[2],nvoxb}{id[3],nvoxb}{id[4],nvoxb}{id[5],nvoxb}{id[6],nvoxb}{id[7],nvoxb}{id[8],nvoxb}{id[9],nvoxb}{id[10],nvoxb}{id[11],nvoxb}{id[12],nvoxb}{id[13],nvoxb}{id[14],nvoxb}{id[15],nvoxb}{id[16],nvoxb}{id[17],nvoxb}{id[18],nvoxb}{id[19],nvoxb}{id[20],nvoxb}{id[21],nvoxb}{id[22],nvoxb}{id[23],nvoxb}{id[24],nvoxb}{id[25],nvoxb}{id[26],nvoxb}{id[27],nvoxb}{id[28],nvoxb}{id[29],nvoxb}{id[30],nvoxb}{id[31],nvoxb}</DisplayString>
   </Type>
   <Type Name="object_id">
     <DisplayString Condition="algo == 0">unknown hash</DisplayString>
     <DisplayString Condition="algo == 1">SHA1: {hash[0],nvoxb}{hash[1],nvoxb}{hash[2],nvoxb}{hash[3],nvoxb}{hash[4],nvoxb}{hash[5],nvoxb}{hash[6],nvoxb}{hash[7],nvoxb}{hash[8],nvoxb}{hash[9],nvoxb}{hash[10],nvoxb}{hash[11],nvoxb}{hash[12],nvoxb}{hash[13],nvoxb}{hash[14],nvoxb}{hash[15],nvoxb}{hash[16],nvoxb}{hash[17],nvoxb}{hash[18],nvoxb}{hash[19],nvoxb}</DisplayString>
+    <DisplayString Condition="algo == 2">SHA256: {hash[0],nvoxb}{hash[1],nvoxb}{hash[2],nvoxb}{hash[3],nvoxb}{hash[4],nvoxb}{hash[5],nvoxb}{hash[6],nvoxb}{hash[7],nvoxb}{hash[8],nvoxb}{hash[9],nvoxb}{hash[10],nvoxb}{hash[11],nvoxb}{hash[12],nvoxb}{hash[13],nvoxb}{hash[14],nvoxb}{hash[15],nvoxb}{hash[16],nvoxb}{hash[17],nvoxb}{hash[18],nvoxb}{hash[19],nvoxb}{hash[20],nvoxb}{hash[21],nvoxb}{hash[22],nvoxb}{hash[23],nvoxb}{hash[24],nvoxb}{hash[25],nvoxb}{hash[26],nvoxb}{hash[27],nvoxb}{hash[28],nvoxb}{hash[29],nvoxb}{hash[30],nvoxb}{hash[31],nvoxb}</DisplayString>
   </Type>
 
   <Type Name="git_strarray">

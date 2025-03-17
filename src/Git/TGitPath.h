@@ -377,9 +377,9 @@ public:
 	bool WriteToFile(const CString& sFilename, bool bUTF8 = false) const;
 	bool WriteToPathSpecFile(const CString& sFilename) const;
 	const CTGitPath* LookForGitPath(const CString& path) const;
-	int	ParserFromLog(BYTE_VECTOR& log);
-	int ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear = true);
-	int ParserFromLsFile(BYTE_VECTOR& out);
+	int ParserFromLog(const BYTE_VECTOR& log);
+	int ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int action, bool clear = true);
+	int ParserFromLsFile(const BYTE_VECTOR& out, const GIT_HASH_TYPE hashType);
 	void UpdateStagingStatusFromPath(const CString& path, CTGitPath::StagingStatus status);
 	int FillUnRev(unsigned int Action, const CTGitPathList* filterlist = nullptr, CString* err = nullptr);
 #ifdef TGIT_LFS

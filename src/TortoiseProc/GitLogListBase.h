@@ -244,6 +244,7 @@ public:
 				pParent->SendMessage(LOGLIST_RESET_WCREV);
 		}
 		m_wcRev.Clear();
+		m_wcRev.m_CommitHash = CGitHash(g_Git.GetCurrentRepoHashType());
 		m_wcRev.GetSubject().LoadString(IDS_LOG_WORKINGDIRCHANGES);
 		m_wcRev.m_Mark = L'-';
 		m_wcRev.GetBody().LoadString(IDS_LOG_FETCHINGSTATUS);

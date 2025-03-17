@@ -268,7 +268,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					}
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, L"HEAD", m_Path, GitRev::GetWorkingCopyRef(), bShiftPressed);
+					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, L"HEAD", m_Path, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), bShiftPressed);
 			}
 			break;
 

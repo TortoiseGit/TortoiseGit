@@ -625,7 +625,7 @@ void CRebaseDlg::FetchLogList()
 		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCWSTR>(head.ToString()), static_cast<LPCWSTR>(upstreamHash.ToString()));
 		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
-			CGitHash hash = CGitHash::FromHexStr(line);
+			CGitHash hash = CGitHash::FromHexStr(line, g_Git.GetCurrentRepoHashType());
 			if (hash.IsEmpty())
 				return;
 			m_rewrittenCommitsMap[hash] = upstreamHash;
@@ -655,13 +655,15 @@ void CRebaseDlg::FetchLogList()
 		std::vector<CGitHash> nonCherryPicked;
 		CString cherryCmd;
 		cherryCmd.Format(L"git rev-list \"%s...%s\" --left-right --cherry-pick", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
+		const GIT_HASH_TYPE hashType = g_Git.GetCurrentRepoHashType();
+		const int hashLength = 2 * CGitHash::HashLength(hashType);
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
-			if (line.GetLength() < 1 + 2 * GIT_HASH_SIZE)
+			if (line.GetLength() < 1 + hashLength)
 				return;
 			if (line[0] != '>')
 				return;
-			nonCherryPicked.push_back(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(1)));
+			nonCherryPicked.push_back(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(1), hashType));
 		});
 		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
@@ -717,13 +719,15 @@ void CRebaseDlg::FetchLogList()
 			refFrom = g_Git.FixBranchName(m_Onto);
 		CString cherryCmd;
 		cherryCmd.Format(L"git.exe cherry -- \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
+		const GIT_HASH_TYPE hashType = g_Git.GetCurrentRepoHashType();
+		const int hashLength = 2 * CGitHash::HashLength(hashType);
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
-			if (line.GetLength() < 2 + 2 * GIT_HASH_SIZE)
+			if (line.GetLength() < 2 + hashLength)
 				return;
 			if (line[0] != '-')
 				return; // Don't skip (only skip commits starting with a '-')
-			auto itIx = revIxMap.find(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(2)));
+			auto itIx = revIxMap.find(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(2), hashType));
 			if (itIx == revIxMap.end())
 				return; // Not found?? Should not occur...
 

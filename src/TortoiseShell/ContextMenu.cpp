@@ -1,4 +1,4 @@
-﻿// TortoiseGit - a Windows shell extension for easy version control
+﻿  // TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
 // Copyright (C) 2008-2025 - TortoiseGit
@@ -538,11 +538,12 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 
 		if (path.HasAdminDir(&sProjectRoot) && !CGit::GetCurrentBranchFromFile(sProjectRoot, sBranchName))
 		{
-			if (sBranchName.GetLength() == 2 * GIT_HASH_SIZE)
+			const int hashLength = 2 * CGitHash::HashLength(g_Git.GetCurrentRepoHashType());
+			if (sBranchName.GetLength() == hashLength)
 			{
-				// if SHA1 only show 4 first bytes
+				// if OID only show 4 first bytes
 				BOOL bIsSha1 = TRUE;
-				for (int i = 0; i < 2 * GIT_HASH_SIZE; ++i)
+				for (int i = 0; i < hashLength; ++i)
 					if ( !iswxdigit(sBranchName[i]) )
 					{
 						bIsSha1 = FALSE;
@@ -586,7 +587,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 		if (!sPath.empty())
 		{
 			// add the path of the saved file
-			wchar_t compact[2 * GIT_HASH_SIZE] = { 0 };
+			wchar_t compact[2 * GIT_HASH_MAX_SIZE] = { 0 };
 			PathCompactPathEx(compact, sPath.c_str(), _countof(compact) - 1, 0);
 			MAKESTRING(IDS_MENUDIFFNOW);
 			CString sMenu;

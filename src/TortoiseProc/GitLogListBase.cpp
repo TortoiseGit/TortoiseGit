@@ -2997,7 +2997,7 @@ UINT CGitLogListBase::LogThread()
 				break;
 			}
 
-			CGitHash hash = CGitHash::FromRaw(commit.m_hash);
+			CGitHash hash = CGitHash::FromRaw(commit.m_oid.hash, commit.m_oid.algo);
 
 			GitRevLoglist* pRev = m_LogCache.GetCacheData(hash);
 			pRev->Parse(&commit, mailmap.get()); // better parse here than on GITLOG_END in LogDlg::OnLogListLoading for updating the DateSelectors
@@ -3005,7 +3005,7 @@ UINT CGitLogListBase::LogThread()
 			char* note = nullptr;
 			try
 			{
-				git_get_notes(commit.m_hash, &note);
+				git_get_notes(&commit.m_oid, &note);
 			}
 			catch (const char* msg)
 			{

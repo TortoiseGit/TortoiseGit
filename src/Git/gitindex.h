@@ -192,6 +192,7 @@ private:
 	__int64		m_LastFileSizeHead = -1;
 	__int64		m_LastFileSizePackRef = -1;
 
+	GIT_HASH_TYPE m_hashType = GIT_HASH_TYPE::GIT_HASH_SHA1;
 	CString		m_HeadRefFile;
 	CGitHash	m_Head;
 	CString		m_HeadFile;

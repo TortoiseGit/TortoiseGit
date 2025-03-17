@@ -803,7 +803,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 				diffWith = m_sMarkForDiffVersion.ToString();
 			else
 			{
-				PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
+				PathCompactPathEx(CStrBuf(diffWith, 40), m_sMarkForDiffFilename, 40, 0);
 				if (!m_sMarkForDiffVersion.IsEmpty() || PathIsRelative(m_sMarkForDiffFilename))
 					diffWith += L':' + m_sMarkForDiffVersion.ToString(g_Git.GetShortHASHLength());
 			}
@@ -858,7 +858,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_CompareWC:
 		{
 			CTGitPath file(selectedLeafs.at(0)->GetFullName());
-			CGitDiff::Diff(GetSafeHwnd(), &file, &file, GitRev::GetWorkingCopyRef(), m_sRevision);
+			CGitDiff::Diff(GetSafeHwnd(), &file, &file, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), m_sRevision);
 		}
 		break;
 	case eCmd_Revert:
