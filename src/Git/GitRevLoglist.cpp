@@ -102,14 +102,14 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 	}
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
-	GIT_HASH parent;
+	GIT_OBJECT_OID parent;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 	git->CheckAndInitDll();
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
+		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw(), m_CommitHash.HashType()))
 			return -1;
 	}
 	catch (const char*)
@@ -119,16 +119,16 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	git_get_commit_first_parent(&commit, &list);
 	bool isRoot = git_commit_is_root(&commit) == 0;
-	while (git_get_commit_next_parent(&list, parent) == 0 || isRoot)
+	while (git_get_commit_next_parent(&list, &parent) == 0 || isRoot)
 	{
 		GIT_FILE file = 0;
 		int count = 0;
 		try
 		{
 			if (isRoot)
-				git_root_diff(git->GetGitSimpleListDiff(), commit.m_hash, &file, &count, 0);
+				git_root_diff(git->GetGitSimpleListDiff(), &commit.m_oid, &file, &count, 0);
 			else
-				git_do_diff(git->GetGitSimpleListDiff(), parent, commit.m_hash, &file, &count, 0);
+				git_do_diff(git->GetGitSimpleListDiff(), &parent, &commit.m_oid, &file, &count, 0);
 		}
 		catch (const char*)
 		{
@@ -309,14 +309,14 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 	GIT_COMMIT commit = { 0 };
 	GIT_COMMIT_LIST list;
-	GIT_HASH parent;
+	GIT_OBJECT_OID parent;
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
 	git->CheckAndInitDll();
 
 	try
 	{
-		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
+		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw(), m_CommitHash.HashType()))
 		{
 			m_sErr = L"git_get_commit_from_hash failed for " + m_CommitHash.ToString();
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": " + m_sErr);
@@ -334,7 +334,7 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 	git_get_commit_first_parent(&commit, &list);
 	bool isRoot = (list == nullptr);
 
-	while (git_get_commit_next_parent(&list, parent) == 0 || isRoot)
+	while (git_get_commit_next_parent(&list, &parent) == 0 || isRoot)
 	{
 		GIT_FILE file = 0;
 		int count = 0;
@@ -342,9 +342,9 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		try
 		{
 			if (isRoot)
-				git_root_diff(git->GetGitDiff(), m_CommitHash.ToRaw(), &file, &count, 1);
+				git_root_diff(git->GetGitDiff(), &commit.m_oid, &file, &count, 1);
 			else
-				git_do_diff(git->GetGitDiff(), parent, commit.m_hash, &file, &count, 1);
+				git_do_diff(git->GetGitDiff(), &parent, &commit.m_oid, &file, &count, 1);
 		}
 		catch (const char* msg)
 		{
@@ -461,7 +461,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		{
 			auto vector = static_cast<std::vector<GitRevLoglist>*>(data);
 			GitRevLoglist rev;
-			rev.m_CommitHash = CGitHash::FromRaw(new_oid->hash);
+			rev.m_CommitHash = CGitHash::FromRaw(new_oid->hash, new_oid->algo);
 			rev.GetCommitterDate() = CTime(time);
 
 			CString one = CUnicodeUtils::GetUnicode(msg);
@@ -515,7 +515,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 			continue;
 
 		GitRevLoglist rev;
-		rev.m_CommitHash = CGitHash::FromHexStr(one.Left(refPos));
+		rev.m_CommitHash = CGitHash::FromHexStr(one.Left(refPos), g_Git.GetCurrentRepoHashType());
 		rev.m_Ref.Format(L"%s@{%d}", static_cast<LPCWSTR>(ref), i++);
 		int prefixPos = one.Find(prefix, refPos + 1);
 		if (prefixPos != refPos + 1)

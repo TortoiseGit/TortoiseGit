@@ -40,7 +40,7 @@ bool PrevDiffCommand::Execute()
 		CFileDiffDlg dlg;
 		theApp.m_pMainWnd = &dlg;
 		dlg.m_strRev1 = L"HEAD~1";
-		dlg.m_strRev2 = GitRev::GetWorkingCopyRef();
+		dlg.m_strRev2 = GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType());
 		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
 
 		dlg.DoModal();
@@ -58,5 +58,5 @@ bool PrevDiffCommand::Execute()
 		return false;
 	}
 
-	return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GitRev::GetWorkingCopyRef(), revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
+	return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
 }

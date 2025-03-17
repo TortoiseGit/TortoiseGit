@@ -84,7 +84,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepo)
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat.HeadHashReadable);
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 }
 
@@ -106,7 +106,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat.HeadHashReadable);
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
@@ -122,7 +122,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat2.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat2.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat2.HeadHashReadable);
 	EXPECT_STREQ("", GitStat2.HeadAuthor.c_str());
 }
 
@@ -153,7 +153,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat3.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat3.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat3.HeadHashReadable);
 	EXPECT_STREQ("", GitStat3.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat4;
@@ -169,7 +169,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat4.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat4.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat4.HeadHashReadable);
 	EXPECT_STREQ("", GitStat4.HeadAuthor.c_str());
 }
 
@@ -190,7 +190,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat.HeadHashReadable);
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
@@ -206,7 +206,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat2.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat2.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat2.HeadHashReadable);
 	EXPECT_STREQ("", GitStat2.HeadAuthor.c_str());
 }
 
@@ -229,7 +229,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat.HeadHashReadable);
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
@@ -245,7 +245,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat2.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat2.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat2.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat2.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat2.HeadHashReadable);
 	EXPECT_STREQ("", GitStat2.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat3;
@@ -261,7 +261,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat3.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat3.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat3.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat3.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat3.HeadHashReadable);
 	EXPECT_STREQ("", GitStat3.HeadAuthor.c_str());
 
 	CString folder2 = folder + L"2";
@@ -279,7 +279,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_FALSE(GitStat4.bHasSubmoduleNewCommits);
 	EXPECT_FALSE(GitStat4.bHasSubmoduleUnversioned);
 	EXPECT_FALSE(GitStat4.bIsTagged);
-	EXPECT_STREQ(GIT_REV_ZERO_C, GitStat4.HeadHashReadable);
+	EXPECT_STREQ(GIT_REV_SHA1_ZERO_C, GitStat4.HeadHashReadable);
 	EXPECT_STREQ("", GitStat4.HeadAuthor.c_str());
 }
 

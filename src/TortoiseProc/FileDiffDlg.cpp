@@ -131,7 +131,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		m_sFilter = path->GetGitPathString();
 	}
 
-	if (baseRev1 == GitRev::GetWorkingCopyRef())
+	if (baseRev1 == GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 	{
 		m_rev1.m_CommitHash.Empty();
 		m_rev1.GetSubject().LoadString(IDS_WORKING_TREE);
@@ -139,7 +139,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 	else
 		FillRevFromString(&m_rev1, baseRev1);
 
-	if (hash2 == GitRev::GetWorkingCopyRef())
+	if (hash2 == GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 	{
 		m_rev2.m_CommitHash.Empty();
 		m_rev2.GetSubject().LoadString(IDS_WORKING_TREE);
@@ -438,7 +438,7 @@ void CFileDiffDlg::DoDiff(int selIndex, bool blame)
 	auto fd1 = fd2;
 	if (m_rev2.m_CommitHash.IsEmpty() && g_Git.IsInitRepos())
 	{
-		CGitDiff::DiffNull(GetSafeHwnd(), fd2, GitRev::GetWorkingCopyRef(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+		CGitDiff::DiffNull(GetSafeHwnd(), fd2, GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		return;
 	}
 	if (fd1->m_Action & CTGitPath::LOGACTIONS_ADDED)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ struct GIT_COMMIT_AUTHOR
 };
 typedef struct GIT_COMMIT_DATA
 {
-	GIT_HASH m_hash;
+	struct GIT_OBJECT_OID m_oid;
 	struct GIT_COMMIT_AUTHOR m_Author;
 	struct GIT_COMMIT_AUTHOR m_Committer;
 	const char* m_Subject;
@@ -81,13 +81,20 @@ typedef struct GIT_COMMIT_DATA
 	const void* buffer;
 } GIT_COMMIT;
 
+// HACK to fix inconsistent declaration warning
+#ifdef GITDLL_EXPORTS
+typedef struct object_id GIT_OBJECT_OIDi;
+#else
+typedef struct GIT_OBJECT_OID GIT_OBJECT_OIDi;
+#endif
+
 /**
  *	Get hash value.
  *	@param	name	[IN] Reference name, such as HEAD, master, ...
- *	@param	sha1	[OUT] char[20] hash value. Caller prepare char[20] buffer.
+ *	@param	oid	[OUT] oid
  *	@return			0	success.
  */
-GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
+GITDLL_API int git_get_oid(const char* name, GIT_OBJECT_OIDi* oid);
 /**
  *	Init git dll
  *  @remark, this function must be call before other function.
@@ -117,17 +124,19 @@ GITDLL_API int git_close_log(GIT_LOG handle, int releaseRevsisions);
  *  @param	hash	[in] hash
  *	@return		0	success
  */
-GITDLL_API int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash);
+
+GITDLL_API int git_get_commit_from_hash(GIT_COMMIT* commit, const GIT_HASH hash, int algo);
+GITDLL_API int git_get_commit_from_oid(GIT_COMMIT* commit, const GIT_OBJECT_OIDi* oid);
 GITDLL_API int git_parse_commit(GIT_COMMIT *commit);
 GITDLL_API int git_commit_is_root(const GIT_COMMIT* commit);
 GITDLL_API int git_get_commit_first_parent(const GIT_COMMIT* commit, GIT_COMMIT_LIST* list);
-GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
+GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST* list, GIT_OBJECT_OIDi* hash);
 
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
 GITDLL_API int git_open_diff(GIT_DIFF* diff, const char* arg);
-GITDLL_API int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat);
-GITDLL_API int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat);
+GITDLL_API int git_do_diff(GIT_DIFF diff, const GIT_OBJECT_OIDi* oid1, const GIT_OBJECT_OIDi* oid2, GIT_FILE* file, int* count, int isstat);
+GITDLL_API int git_root_diff(GIT_DIFF diff, const GIT_OBJECT_OIDi* oid, GIT_FILE* file, int* count, int isstat);
 GITDLL_API int git_diff_flush(GIT_DIFF diff);
 GITDLL_API int git_close_diff(GIT_DIFF diff);
 
@@ -154,18 +163,12 @@ GITDLL_API int git_check_excluded_1(const char *pathname,
 GITDLL_API int git_free_exclude_list(EXCLUDE_LIST which);
 
 //caller need free p_note
-GITDLL_API int git_get_notes(const GIT_HASH hash, char** p_note);
+GITDLL_API int git_get_notes(const GIT_OBJECT_OIDi* oid, char** p_note);
 
 GITDLL_API int git_update_index(void);
 
 GITDLL_API void git_exit_cleanup(void);
 
-// HACK to fix inconsistent declaration warning
-#ifdef GITDLL_EXPORTS
-typedef struct object_id GIT_OBJECT_OIDi;
-#else
-typedef struct GIT_OBJECT_OID GIT_OBJECT_OIDi;
-#endif
 typedef int each_reflog_ent_fn(GIT_OBJECT_OIDi* old_oid, GIT_OBJECT_OIDi* new_oid, const char* committer, unsigned long long timestamp, int tz, const char* msg, void* cb_data);
 GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data);
 

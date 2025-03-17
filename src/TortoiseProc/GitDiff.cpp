@@ -52,7 +52,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 		if (!hash.IsEmpty()) // in ls-files the hash is in the second column; in ls-tree it's in the third one
 			start = output.Find(L' ', start + 1);
 		if(start>0)
-			newhash = CGitHash::FromHexStr(output.Mid(start + 1, GIT_HASH_SIZE * 2));
+			newhash = CGitHash::FromHexStr(output.Mid(start + 1, CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2), g_Git.GetCurrentRepoHashType());
 
 		CGit subgit;
 		subgit.m_IsUseGitDLL = false;
@@ -92,7 +92,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
 	CGitHash rev1Hash;
-	if (rev1 != GitRev::GetWorkingCopyRef())
+	if (rev1 != GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 	{
 		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // make sure we have a HASH here, otherwise filenames might be invalid, also add ^{} in order to dereference signed tags
 		{
@@ -211,7 +211,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		oldhash = CGitHash::FromHexStr(output.Mid(oldstart + static_cast<int>(wcslen(L"-Subproject commit")) + 1, GIT_HASH_SIZE * 2));
+		oldhash = CGitHash::FromHexStr(output.Mid(oldstart + static_cast<int>(wcslen(L"-Subproject commit")) + 1, CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2), g_Git.GetCurrentRepoHashType());
 		start = 0;
 		const int newstart = output.Find(L"+Subproject commit", start);
 		if (newstart < 0)
@@ -219,8 +219,8 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"Subproject Diff Format error", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		newhash = CGitHash::FromHexStr(output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + 1, GIT_HASH_SIZE * 2));
-		dirty = output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + GIT_HASH_SIZE * 2 + 1) == L"-dirty\n";
+		newhash = CGitHash::FromHexStr(output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + 1, CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2), g_Git.GetCurrentRepoHashType());
+		dirty = output.Mid(newstart + static_cast<int>(wcslen(L"+Subproject commit")) + CGitHash::HashLength(g_Git.GetCurrentRepoHashType()) * 2 + 1) == L"-dirty\n";
 	}
 	else
 	{
@@ -236,13 +236,14 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			return -1;
 		}
 
-		if (bytes.size() < strlen(":000000 000000 ") + 2 * GIT_HASH_SIZE + 1 + 2 * GIT_HASH_SIZE)
+		const auto hashLength = 2 * CGitHash::HashLength(g_Git.GetCurrentRepoHashType());
+		if (bytes.size() < strlen(":000000 000000 ") + static_cast<size_t>(hashLength) + 1 + static_cast<size_t>(hashLength))
 		{
 			CMessageBox::Show(hWnd, L"git diff-tree gives invalid output", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		oldhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ")], 2 * GIT_HASH_SIZE));
-		newhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ") + 2 * GIT_HASH_SIZE + 1], 2 * GIT_HASH_SIZE));
+		oldhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ")], hashLength), g_Git.GetCurrentRepoHashType());
+		newhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ") + hashLength + 1], hashLength), g_Git.GetCurrentRepoHashType());
 	}
 
 	CString oldsub;
@@ -344,7 +345,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	// make sure we have HASHes here, otherwise filenames might be invalid
 	CGitHash rev1Hash;
 	CGitHash rev2Hash;
-	if (rev1 != GitRev::GetWorkingCopyRef())
+	if (rev1 != GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 	{
 		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // add ^{} in order to dereference signed tags
 		{
@@ -352,7 +353,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 			return -1;
 		}
 	}
-	if (rev2 != GitRev::GetWorkingCopyRef())
+	if (rev2 != GitRev::GetWorkingCopyRef(g_Git.GetCurrentRepoHashType()))
 	{
 		if (g_Git.GetHash(rev2Hash, rev2 + L"^{}")) // add ^{} in order to dereference signed tags
 		{
