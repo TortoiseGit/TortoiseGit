@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -2287,6 +2287,8 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					}
 					std::wofstream outStream(fullTempFile);
 
+					CGitHash prevHash;
+					bool revfail = !m_CurrentVersion.IsEmpty() && g_Git.GetHash(prevHash, m_CurrentVersion.ToString() + L"~1") != 0;
 					POSITION pos = GetFirstSelectedItemPosition();
 					while (pos)
 					{
@@ -2307,7 +2309,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						{
 							if ((selectedFilepath->m_ParentNo & (PARENT_MASK | MERGE_MASK)) == 0)
 							{
-								if (g_Git.GetUnifiedDiff(*selectedFilepath, m_CurrentVersion.ToString() + L"~1", m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
+								if ((selectedFilepath->m_Action & CTGitPath::LOGACTIONS_ADDED) && revfail)
+								{
+									if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetWorkingCopy(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
+									{
+										::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
+										break;
+									}
+								}
+								else if (g_Git.GetUnifiedDiff(*selectedFilepath, prevHash.ToString(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
 								{
 									::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 									break;
