@@ -23,6 +23,7 @@
 #include "Tooltip.h"
 #include "UnicodeUtils.h"
 #include "TempFile.h"
+#include "GitRev.h"
 
 class CSettings;
 
@@ -141,7 +142,7 @@ protected:
 			{
 				CString tmpFile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 				CTGitPath path(L".tgitconfig");
-				if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
+				if (g_Git.GetOneFile(GitRev::GetHead(), path, tmpFile) == 0)
 				{
 					if (git_config_add_file_ondisk(config, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE)) // this needs to have the second highest priority
 						MessageBox(nullptr, g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);

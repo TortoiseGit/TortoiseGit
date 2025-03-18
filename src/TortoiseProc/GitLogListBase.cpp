@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -1732,7 +1732,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 	if (popup.CreatePopupMenu())
 	{
 		CGitHash headHash;
-		if (g_Git.GetHash(headHash, L"HEAD"))
+		if (g_Git.GetHash(headHash, GitRev::GetHead()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 			return;
@@ -2712,7 +2712,7 @@ int CGitLogListBase::BeginFetchLog()
 		range = m_sRange;
 	}
 	if (range.IsEmpty())
-		range = L"HEAD";
+		range = GitRev::GetHead();
 
 	// follow does not work for directories
 	if (!path || path->IsDirectory())

@@ -230,9 +230,9 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_hightlightRevision = hightlightRevision;
 
 	if (range == GIT_REV_ZERO)
-		range = L"HEAD";
+		range = GitRev::GetHead();
 
-	if (!(range.IsEmpty() || range == L"HEAD"))
+	if (!(range.IsEmpty() || range == GitRev::GetHead()))
 	{
 		m_bAllBranch = BST_UNCHECKED;
 		m_AllBranchType = AllBranchType::None;
@@ -446,7 +446,7 @@ BOOL CLogDlg::OnInitDialog()
 	// scroll to user selected or current revision
 	if (m_hightlightRevision.IsEmpty() || g_Git.GetHash(m_LogList.m_lastSelectedHash, m_hightlightRevision))
 	{
-		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, L"HEAD"))
+		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, GitRev::GetHead()))
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 	}
 
@@ -1079,7 +1079,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 	{
 		const int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 		CStringA outA;
-		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? CString("HEAD") : (pLogEntry->m_CommitHash.ToString() + L"~1");
+		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? GitRev::GetHeadString() : (pLogEntry->m_CommitHash.ToString() + L"~1");
 		CString rev2 = pLogEntry->m_CommitHash.ToString();
 		g_Git.GetUnifiedDiff(CTGitPath(), rev1, rev2, outA, false, false, diffContext);
 		out = CUnicodeUtils::GetUnicode(outA);
@@ -1348,7 +1348,7 @@ void CLogDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		int cnt = 0;
 		popup.AppendMenuIcon(++cnt, IDS_MENUREFBROWSE);
 		popup.SetDefaultItem(cnt);
-		CString head = L"HEAD";
+		CString head = GitRev::GetHead();
 		CString curBranch = g_Git.GetCurrentBranch();
 		if (!curBranch.IsEmpty())
 			head.AppendFormat(L" -> \"%s\"", static_cast<LPCWSTR>(curBranch));
@@ -3290,7 +3290,7 @@ void CLogDlg::ShowStartRef()
 	}
 
 	CString showStartRef = m_LogList.GetRange();
-	if (showStartRef.IsEmpty() || showStartRef == L"HEAD")
+	if (showStartRef.IsEmpty() || showStartRef == GitRev::GetHead())
 	{
 		showStartRef.Empty();
 		//Ref name is HEAD

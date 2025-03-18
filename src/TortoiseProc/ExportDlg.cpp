@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020, 2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ CExportDlg::CExportDlg(CWnd* pParent /*=nullptr*/)
 	: CHorizontalResizableStandAloneDialog(CExportDlg::IDD, pParent)
 	, CChooseVersion(this)
 	, m_bWholeProject(FALSE)
-	, m_Revision(L"HEAD")
+	, m_Revision(GitRev::GetHead())
 {
 }
 
@@ -67,7 +67,7 @@ BOOL CExportDlg::OnInitDialog()
 	}
 
 	InitChooseVersion();
-	if (m_initialRefName.IsEmpty() || m_initialRefName == L"HEAD")
+	if (m_initialRefName.IsEmpty() || m_initialRefName == GitRev::GetHead())
 		SetDefaultChoose(IDC_RADIO_HEAD);
 	else if (CStringUtils::StartsWith(m_initialRefName, L"refs/tags/"))
 		SetDefaultChoose(IDC_RADIO_TAGS);

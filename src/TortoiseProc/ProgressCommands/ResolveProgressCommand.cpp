@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016, 2019, 2023 - TortoiseGit
+// Copyright (C) 2009-2016, 2019, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -232,7 +232,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			subgit.m_IsUseGitDLL = false;
 			subgit.m_CurrentDir = fullPath.GetWinPath();
 			CGitHash submoduleHead;
-			if (subgit.GetHash(submoduleHead, L"HEAD"))
+			if (subgit.GetHash(submoduleHead, GitRev::GetHead()))
 			{
 				list->ReportError(subgit.GetGitLastErr(L"Could not get HEAD hash of submodule, this should not happen!"));
 				return false;

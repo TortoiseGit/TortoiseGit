@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	if ((!path || path->IsDirectory()) && (infomask & CGit::LOG_INFO_FOLLOW))
 		infomask = infomask ^ CGit::LOG_INFO_FOLLOW;
 
-	CString gitrange = L"HEAD";
+	CString gitrange = GitRev::GetHead();
 	if (range != nullptr)
 		gitrange = *range;
 	CFilterData filter;

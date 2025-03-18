@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,10 +83,10 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName)
 BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 {
 	if(Rev.IsEmpty())
-		Rev = L"HEAD";
+		Rev = GitRev::GetHead();
 
 	// enable blame for files which do not exist in current working tree
-	if (!PathFileExists(lpszPathName) && Rev != L"HEAD")
+	if (!PathFileExists(lpszPathName) && Rev != GitRev::GetHead())
 	{
 		if (!CDocument::OnOpenDocument(CTempFiles::Instance().GetTempFilePath(true).GetWinPathString()))
 			return FALSE;
@@ -267,7 +267,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 
 void CTortoiseGitBlameDoc::SetPathName(LPCWSTR lpszPathName, BOOL bAddToMRU)
 {
-	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == L"HEAD"));
+	CDocument::SetPathName(lpszPathName, bAddToMRU && (m_Rev == GitRev::GetHead()));
 
 	this->SetTitle(CString(lpszPathName) + L':' + m_Rev);
 }

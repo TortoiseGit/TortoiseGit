@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -386,7 +386,7 @@ void CGit::StringAppend(CString& str, const char* p, int code, int length)
 BOOL CGit::CanParseRev(CString ref)
 {
 	if (ref.IsEmpty())
-		ref = L"HEAD";
+		ref = GitRev::GetHead();
 
 	// --end-of-options does not work without --verify, but we cannot use --verify becasue we also want to check for valid ranges
 	CString cmdout;
@@ -402,7 +402,7 @@ BOOL CGit::CanParseRev(CString ref)
 BOOL CGit::IsInitRepos()
 {
 	CGitHash hash;
-	if (GetHash(hash, L"HEAD") != 0)
+	if (GetHash(hash, GitRev::GetHead()) != 0)
 		return FALSE;
 	return hash.IsEmpty() ? TRUE : FALSE;
 }
@@ -892,7 +892,7 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	if (!GitAdminDir::GetWorktreeAdminDirPath(sProjectRoot, sDotGitPath))
 		return -1;
 
-	CString sHeadFile = sDotGitPath + L"HEAD";
+	CString sHeadFile = sDotGitPath + GitRev::GetHead();
 
 	CAutoFILE pFile = _wfsopen(sHeadFile.GetString(), L"r", SH_DENYWR);
 	if (!pFile)
@@ -924,13 +924,13 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 			sBranchOut = unicodeHash;
 		else
 			//# Assume this is a detached head.
-			sBranchOut = L"HEAD";
+			sBranchOut = GitRev::GetHead();
 		return 1;
 	}
 	else
 	{
 		//# Assume this is a detached head.
-		sBranchOut = "HEAD";
+		sBranchOut = GitRev::GetHead();
 
 		return 1;
 	}
@@ -1223,7 +1223,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		hash = CGitHash::FromHexStrTry(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
-		else if (friendname == L"HEAD") // special check for unborn branch
+		else if (friendname == GitRev::GetHead()) // special check for unborn branch
 		{
 			CString currentbranch;
 			if (GetCurrentBranchFromFile(m_CurrentDir, currentbranch))
@@ -3231,9 +3231,9 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		count = filterlist->GetCount();
 	ATLASSERT(count > 0);
 
-	CString head = L"HEAD";
+	CString head = GitRev::GetHead();
 	if (amend)
-		head = L"HEAD~1";
+		head += L"~1";
 
 	CString gitStatusParams;
 	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 17, 0))

@@ -28,6 +28,7 @@
 #include "SmartHandle.h"
 #include "git2/sys/repository.h"
 #include <stdexcept>
+#include "GitRev.h"
 
 CGitAdminDirMap g_AdminDirMap;
 
@@ -472,7 +473,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 	m_Gitdir = g_AdminDirMap.GetWorktreeAdminDir(gitdir);
 
 	m_HeadFile = m_Gitdir;
-	m_HeadFile += L"HEAD";
+	m_HeadFile += GitRev::GetHead();
 
 	if (CGit::GetFileModifyTime(m_HeadFile, &m_LastModifyTimeHead, nullptr, &m_LastFileSizeHead))
 		return -1;

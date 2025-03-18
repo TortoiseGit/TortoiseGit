@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019, 2022-2023 - TortoiseGit
+// Copyright (C) 2012-2019, 2022-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -123,7 +123,7 @@ public:
 		if (g_Git.GetMapHashToFriendName(m_HashMap))
 			MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 		m_CurrentBranch=g_Git.GetCurrentBranch();
-		if (g_Git.GetHash(m_HeadHash, L"HEAD"))
+		if (g_Git.GetHash(m_HeadHash, GitRev::GetHead()))
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 	}
 

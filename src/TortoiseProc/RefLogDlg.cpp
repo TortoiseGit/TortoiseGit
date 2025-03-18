@@ -200,14 +200,14 @@ void CRefLogDlg::OnLvnItemchangedRefLoglist(NMHDR* pNMHDR, LRESULT* pResult)
 void CRefLogDlg::Refresh()
 {
 	STRING_VECTOR list;
-	list.push_back(L"HEAD");
+	list.push_back(GitRev::GetHead());
 	if (g_Git.GetRefList(list))
 		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 
 	m_ChooseRef.SetList(list);
 
 	if (m_CurrentBranch.IsEmpty())
-		m_CurrentBranch = L"HEAD";
+		m_CurrentBranch = GitRev::GetHead();
 
 	bool found = false;
 	for (int i = 0; i < static_cast<int>(list.size()); ++i)

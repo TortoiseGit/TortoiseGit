@@ -151,7 +151,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 	this->UpdateData();
 	UpdateCombox();
 
-	if (g_Git.GetHash(m_oldHash, L"HEAD"))
+	if (g_Git.GetHash(m_oldHash, GitRev::GetHead()))
 	{
 		MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return;
@@ -286,7 +286,7 @@ void CSyncDlg::OnBnClickedButtonPull()
 			CMessageBox::ShowCheck(GetSafeHwnd(), IDS_NEED_TO_RESOLVE_CONFLICTS_HINT, IDS_APPNAME, MB_ICONINFORMATION, L"MergeConflictsNeedsCommit", IDS_MSGBOX_DONOTSHOWAGAIN);
 		}
 		else
-			ShowInCommits(L"HEAD");
+			ShowInCommits(GitRev::GetHead());
 
 		return;
 	}
@@ -535,7 +535,7 @@ void CSyncDlg::PullComplete()
 
 	}
 	else
-		ShowInCommits(L"HEAD");
+		ShowInCommits(GitRev::GetHead());
 }
 
 void CSyncDlg::FetchComplete()
@@ -573,7 +573,7 @@ void CSyncDlg::FetchComplete()
 		FillNewRefMap();
 		FetchOutList(true);
 
-		ShowInCommits(L"HEAD");
+		ShowInCommits(GitRev::GetHead());
 
 		return;
 	}
@@ -586,7 +586,7 @@ void CSyncDlg::FetchComplete()
 		return;
 	}
 
-	if (g_Git.IsFastForward(L"HEAD", upstream))
+	if (g_Git.IsFastForward(GitRev::GetHead(), upstream))
 	{
 		const UINT ret = CMessageBox::ShowCheck(GetSafeHwnd(), IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
 		if (ret == 3)
@@ -613,7 +613,7 @@ void CSyncDlg::FetchComplete()
 			FillNewRefMap();
 			FetchOutList(true);
 
-			ShowInCommits(L"HEAD");
+			ShowInCommits(GitRev::GetHead());
 
 			return;
 		}
@@ -623,7 +623,7 @@ void CSyncDlg::FetchComplete()
 	FillNewRefMap();
 	FetchOutList(true);
 
-	ShowInCommits(L"HEAD");
+	ShowInCommits(GitRev::GetHead());
 }
 
 void CSyncDlg::StashComplete()
@@ -759,7 +759,7 @@ void CSyncDlg::OnBnClickedButtonPush()
 void CSyncDlg::OnBnClickedButtonApply()
 {
 	CGitHash oldhash;
-	if (g_Git.GetHash(oldhash, L"HEAD"))
+	if (g_Git.GetHash(oldhash, GitRev::GetHead()))
 	{
 		MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return;
@@ -789,7 +789,7 @@ void CSyncDlg::OnBnClickedButtonApply()
 		}
 
 		CGitHash newhash;
-		if (g_Git.GetHash(newhash, L"HEAD"))
+		if (g_Git.GetHash(newhash, GitRev::GetHead()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash after applying patches."), L"TortoiseGit", MB_ICONERROR);
 			return;

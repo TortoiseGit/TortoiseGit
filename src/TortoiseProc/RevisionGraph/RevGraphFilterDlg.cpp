@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "Git.h"
 #include "BrowseRefsDlg.h"
 #include "StringUtils.h"
+#include "GitRev.h"
 
 IMPLEMENT_DYNAMIC(CRevGraphFilterDlg, CStandAloneDialog)
 
@@ -67,8 +68,8 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 	if (g_Git.GetRefList(list))
 		MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
 
-	m_ctrlFromRev.AddSearchString(L"HEAD");
-	m_ctrlToRev.AddSearchString(L"HEAD");
+	m_ctrlFromRev.AddSearchString(GitRev::GetHead());
+	m_ctrlToRev.AddSearchString(GitRev::GetHead());
 
 	for (size_t i = 0; i < list.size(); ++i)
 	{

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -122,7 +122,7 @@ protected:
 		switch (radio)
 		{
 		case IDC_RADIO_HEAD:
-			this->m_VersionName = L"HEAD";
+			this->m_VersionName = GitRev::GetHead();
 			break;
 		case IDC_RADIO_BRANCH:
 			this->m_VersionName=m_ChooseVersioinBranch.GetString();

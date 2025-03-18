@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2009-2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -161,7 +161,7 @@ CBrowseRefsDlg::CBrowseRefsDlg(CString cmdPath, CWnd* pParent /*=nullptr*/)
 	m_cmdPath(cmdPath),
 	m_regCurrSortCol(L"Software\\TortoiseGit\\RefBrowserSortCol", 0),
 	m_regCurrSortDesc(L"Software\\TortoiseGit\\RefBrowserSortDesc", FALSE),
-	m_initialRef(L"HEAD"),
+	m_initialRef(GitRev::GetHead()),
 	m_SelectedFilters(LOGFILTER_ALL),
 	m_bIncludeNestedRefs(TRUE)
 {
@@ -430,7 +430,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 
 	if(!selectRef.IsEmpty())
 	{
-		if (selectRef == L"HEAD")
+		if (selectRef == GitRev::GetHead())
 		{
 			if (g_Git.GetCurrentBranchFromFile(g_Git.m_CurrentDir, selectRef))
 				selectRef = L"refs/heads";
@@ -670,7 +670,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 			csMessage.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCWSTR>(branchToDelete));
 
 			//Check if branch is fully merged in HEAD
-			if (!g_Git.IsFastForward(leafs[0]->GetRefName(), L"HEAD"))
+			if (!g_Git.IsFastForward(leafs[0]->GetRefName(), GitRev::GetHead()))
 			{
 				csMessage += L"\r\n\r\n";
 				csMessage += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGUNMERGED));
@@ -1474,7 +1474,7 @@ CString CBrowseRefsDlg::PickRef(bool /*returnAsHash*/, CString initialRef, int p
 	CBrowseRefsDlg dlg(CString(), nullptr);
 
 	if(initialRef.IsEmpty())
-		initialRef = L"HEAD";
+		initialRef = GitRev::GetHead();
 	dlg.m_bWantPick = true;
 	dlg.m_initialRef = initialRef;
 	dlg.m_pickRef_Kind = pickRef_Kind;

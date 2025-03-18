@@ -303,7 +303,7 @@ BOOL CRebaseDlg::OnInitDialog()
 		GetDlgItem(IDC_BUTTON_BROWSE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_REVERSE)->EnableWindow(FALSE);
 		GetDlgItem(IDC_BUTTON_ONTO)->EnableWindow(FALSE);
-		this->m_UpstreamCtrl.AddString(L"HEAD");
+		this->m_UpstreamCtrl.AddString(GitRev::GetHead());
 		this->m_UpstreamCtrl.EnableWindow(FALSE);
 		CAppUtils::SetWindowTitle(m_hWnd, g_Git.m_CurrentDir, CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CHERRYPICK)));
 		m_bAddCherryPickedFrom = CRegDWORD(L"Software\\TortoiseGit\\TortoiseProc\\CherrypickAddCherryPickedFrom", 0) != 0;
@@ -612,7 +612,7 @@ void CRebaseDlg::FetchLogList()
 	if (m_bPreserveMerges)
 	{
 		CGitHash head;
-		if (g_Git.GetHash(head, L"HEAD"))
+		if (g_Git.GetHash(head, GitRev::GetHead()))
 		{
 			AddLogString(CString(MAKEINTRESOURCE(IDS_PROC_NOHEAD)));
 			return;
@@ -1035,7 +1035,7 @@ int CRebaseDlg::StartRebase()
 	m_OrigHEADBranch = g_Git.GetCurrentBranch(true);
 
 	m_OrigHEADHash.Empty();
-	if (g_Git.GetHash(m_OrigHEADHash, L"HEAD"))
+	if (g_Git.GetHash(m_OrigHEADHash, GitRev::GetHead()))
 	{
 		AddLogString(CString(MAKEINTRESOURCE(IDS_PROC_NOHEAD)));
 		return -1;
@@ -1141,7 +1141,7 @@ int CRebaseDlg::FinishRebase()
 	RewriteNotes();
 
 	CGitHash head;
-	if (g_Git.GetHash(head, L"HEAD"))
+	if (g_Git.GetHash(head, GitRev::GetHead()))
 	{
 		MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
@@ -1534,7 +1534,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			{
 				m_SquashMessage.Empty();
 				CGitHash head;
-				if (g_Git.GetHash(head, L"HEAD"))
+				if (g_Git.GetHash(head, GitRev::GetHead()))
 				{
 					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 					return;
@@ -1588,7 +1588,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		m_RebaseStage = RebaseStage::Continue;
 		GitRevLoglist* curRev = m_CommitList.m_arShownList.SafeGetAt(m_CurrentRebaseIndex);
 		CGitHash head;
-		if (g_Git.GetHash(head, L"HEAD"))
+		if (g_Git.GetHash(head, GitRev::GetHead()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 			return;
@@ -1670,7 +1670,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		if (nextIsSquash) // remember commit msg after edit if next commit if squash; but don't do this if ...->squash(reset here)->pick->squash
 		{
 			GitRev latest;
-			if (latest.GetCommit(L"HEAD"))
+			if (latest.GetCommit(GitRev::GetHead()))
 			{
 				MessageBox(L"Could not get HEAD commit:" + latest.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 				return;
@@ -1683,7 +1683,7 @@ void CRebaseDlg::OnBnClickedContinue()
 		this->m_ctrlTabCtrl.SetActiveTab(REBASE_TAB_LOG);
 		m_RebaseStage = RebaseStage::Continue;
 		CGitHash head;
-		if (g_Git.GetHash(head, L"HEAD"))
+		if (g_Git.GetHash(head, GitRev::GetHead()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 			return;
@@ -2107,7 +2107,7 @@ int CRebaseDlg::DoRebase()
 		{
 			bool parentRewritten = false;
 			CGitHash currentHeadHash;
-			if (g_Git.GetHash(currentHeadHash, L"HEAD"))
+			if (g_Git.GetHash(currentHeadHash, GitRev::GetHead()))
 			{
 				m_RebaseStage = RebaseStage::Error;
 				MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
@@ -2202,7 +2202,7 @@ int CRebaseDlg::DoRebase()
 							return -1;
 						}
 						CGitHash newHeadHash;
-						if (g_Git.GetHash(newHeadHash, L"HEAD"))
+						if (g_Git.GetHash(newHeadHash, GitRev::GetHead()))
 						{
 							m_RebaseStage = RebaseStage::Error;
 							MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
@@ -2321,7 +2321,7 @@ int CRebaseDlg::DoRebase()
 			if (nocommit.IsEmpty())
 			{
 				CGitHash head;
-				if (g_Git.GetHash(head, L"HEAD"))
+				if (g_Git.GetHash(head, GitRev::GetHead()))
 				{
 					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 					m_RebaseStage = RebaseStage::Error;
@@ -2522,7 +2522,7 @@ LRESULT CRebaseDlg::OnRebaseUpdateUI(WPARAM,LPARAM)
 			// Since the new commit is done and the HEAD points to it,
 			// just using the new body modified by git self.
 			GitRev headRevision;
-			if (headRevision.GetCommit(L"HEAD"))
+			if (headRevision.GetCommit(GitRev::GetHead()))
 				MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 
 			m_LogMessageCtrl.SetText(headRevision.GetSubject() + L'\n' + headRevision.GetBody());
@@ -2587,7 +2587,7 @@ void CRebaseDlg::OnBnClickedAbort()
 	if (g_Git.m_IsUseLibGit2 && !m_IsCherryPick)
 	{
 		CGitHash head;
-		if (!g_Git.GetHash(head, L"HEAD"))
+		if (!g_Git.GetHash(head, GitRev::GetHead()))
 			WriteReflog(head, "rebase: begin aborting...");
 	}
 
