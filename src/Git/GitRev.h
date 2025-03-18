@@ -98,14 +98,6 @@ public:
 
 	virtual ~GitRev();
 
-	enum
-	{
-		REV_HEAD = -1,			///< head revision
-		REV_BASE = -2,			///< base revision
-		REV_WC = -3,			///< revision of the working copy
-		REV_UNSPECIFIED = -4,	///< unspecified revision
-	};
-
 	static CString GetHead() { return L"HEAD"; };
 	static CString GetWorkingCopy() { return GIT_REV_ZERO; };
 
