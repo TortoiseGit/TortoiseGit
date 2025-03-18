@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -497,7 +497,7 @@ protected:
 
 		m_CurrentBranch=g_Git.GetCurrentBranch();
 
-		if (g_Git.GetHash(m_HeadHash, L"HEAD"))
+		if (g_Git.GetHash(m_HeadHash, GitRev::GetHead()))
 		{
 			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash. Quitting..."), L"TortoiseGit", MB_ICONERROR);
 			ExitProcess(1);

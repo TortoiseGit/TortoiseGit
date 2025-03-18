@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2003-2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2003-2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@
 #include "TempFile.h"
 #include <WinInet.h>
 #include "git2/sys/errors.h"
+#include "GitRev.h"
 
 struct num_compare
 {
@@ -51,7 +52,7 @@ int ProjectProperties::ReadProps()
 	{
 		CString tmpFile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		CTGitPath path(L".tgitconfig");
-		if (g_Git.GetOneFile(L"HEAD", path, tmpFile) == 0)
+		if (g_Git.GetOneFile(GitRev::GetHead(), path, tmpFile) == 0)
 			git_config_add_file_ondisk(gitconfig, CGit::GetGitPathStringA(tmpFile), GIT_CONFIG_LEVEL_LOCAL, nullptr, FALSE); // this needs to have the second highest priority
 	}
 

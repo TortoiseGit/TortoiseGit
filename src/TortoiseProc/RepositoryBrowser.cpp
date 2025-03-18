@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2024 - TortoiseGit
+// Copyright (C) 2009-2025 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -468,7 +468,7 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 		return -1;
 	}
 
-	if (m_sRevision == L"HEAD")
+	if (m_sRevision == GitRev::GetHead())
 	{
 		int ret = git_repository_head_unborn(repository);
 		if (ret == 1)	// is orphan

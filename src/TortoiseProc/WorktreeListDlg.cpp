@@ -245,7 +245,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 		}
 
 		CString branch = CUnicodeUtils::GetUnicode(git_reference_shorthand(head));
-		if (branch == L"HEAD")
+		if (branch == GitRev::GetHead())
 		{
 			// `git worktree list` command says "detached HEAD", so we should say the same
 			branch = L"detached HEAD";

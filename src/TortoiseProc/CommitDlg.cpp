@@ -914,7 +914,7 @@ void CCommitDlg::OnOK()
 				ATL::CComBSTR logMessage(m_sLogMessage);
 
 				CGitHash hash;
-				if (g_Git.GetHash(hash, L"HEAD"))
+				if (g_Git.GetHash(hash, GitRev::GetHead()))
 					MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
 				LONG version = g_Git.Hash2int(hash);
 
@@ -1101,9 +1101,9 @@ void CCommitDlg::PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool
 			}
 
 			CGitHash revHash;
-			CString revRef = L"HEAD";
+			CString revRef = GitRev::GetHead();
 			if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-				revRef = L"HEAD~1";
+				revRef += L"~1";
 			if (CGit::GetHash(repository, revHash, revRef))
 			{
 				MessageBox(g_Git.GetLibGit2LastErr(L"Could not get HEAD hash after committing."), L"TortoiseGit", MB_ICONERROR);
@@ -1234,7 +1234,7 @@ void CCommitDlg::PrepareIndexForCommitWithoutStagingSupport(int nListItems, bool
 		CMassiveGitTask mgtRmFCache(L"rm -f --cache");
 		CString resetCmd = L"reset";
 		if (m_bCommitAmend && !m_bAmendDiffToLastCommit)
-			resetCmd += L" HEAD~1";
+			resetCmd.AppendFormat(L" %s~1", GitRev::GetHead());
 		CMassiveGitTask mgtReset(resetCmd, TRUE, true);
 		for (int j = 0; j < nListItems; ++j)
 		{
@@ -1472,7 +1472,7 @@ UINT CCommitDlg::StatusThread()
 				GetDlgItem(IDC_COMMIT_AMEND)->EnableWindow(!repoRoot.IsCherryPickActive());
 
 			CGitHash hash;
-			if (g_Git.GetHash(hash, L"HEAD"))
+			if (g_Git.GetHash(hash, GitRev::GetHead()))
 			{
 				MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 			}
@@ -1500,7 +1500,7 @@ UINT CCommitDlg::StatusThread()
 			if (m_bCommitAmend)
 			{
 				GitRev headRevision;
-				if (headRevision.GetCommit(L"HEAD"))
+				if (headRevision.GetCommit(GitRev::GetHead()))
 					MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 				else
 					m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(headRevision.GetAuthorName()), static_cast<LPCWSTR>(headRevision.GetAuthorEmail()));
@@ -2392,9 +2392,9 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 		POSITION pos=m_ListCtrl.GetFirstSelectedItemPosition();
 		CString cmd,out;
 
-		CString head = L"HEAD";
+		CString head = GitRev::GetHead();
 		if (m_bCommitAmend == TRUE && m_bAmendDiffToLastCommit == FALSE)
-			head = L"HEAD~1";
+			head += L"~1";
 		while(pos)
 		{
 			const int nSelect = m_ListCtrl.GetNextSelectedItem(pos);
@@ -2708,7 +2708,7 @@ void CCommitDlg::OnBnClickedCommitAmend()
 	if(this->m_bCommitAmend && this->m_AmendStr.IsEmpty())
 	{
 		GitRev rev;
-		if (rev.GetCommit(L"HEAD"))
+		if (rev.GetCommit(GitRev::GetHead()))
 			MessageBox(rev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 		m_AmendStr = rev.GetSubject() + L'\n' + rev.GetBody();
 	}
@@ -2951,7 +2951,7 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 		if (m_bCommitAmend)
 		{
 			GitRev headRevision;
-			if (headRevision.GetCommit(L"HEAD"))
+			if (headRevision.GetCommit(GitRev::GetHead()))
 				MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 			authordate = headRevision.GetAuthorDate();
 			m_AsCommitDateCtrl.EnableWindow(TRUE);
@@ -3046,7 +3046,7 @@ void CCommitDlg::OnBnClickedCommitSetauthor()
 	if (m_bCommitAmend)
 	{
 		GitRev headRevision;
-		if (headRevision.GetCommit(L"HEAD"))
+		if (headRevision.GetCommit(GitRev::GetHead()))
 			MessageBox(headRevision.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
 		else
 			m_sAuthor.Format(L"%s <%s>", static_cast<LPCWSTR>(headRevision.GetAuthorName()), static_cast<LPCWSTR>(headRevision.GetAuthorEmail()));

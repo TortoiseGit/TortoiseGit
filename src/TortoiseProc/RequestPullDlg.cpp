@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2014, 2016-2020, 2024 - TortoiseGit
+// Copyright (C) 2011-2014, 2016-2020, 2024-2025 - TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -97,7 +97,7 @@ BOOL CRequestPullDlg::OnInitDialog()
 		m_RepositoryURL = m_RegRepositoryURL;
 	m_cRepositoryURL.SetWindowTextW(m_RepositoryURL);
 
-	m_RegEndRevision = CRegString(L"Software\\TortoiseGit\\History\\RequestPull\\" + WorkingDir + L"\\endrevision", L"HEAD");
+	m_RegEndRevision = CRegString(L"Software\\TortoiseGit\\History\\RequestPull\\" + WorkingDir + L"\\endrevision", GitRev::GetHead());
 	if (m_EndRevision.IsEmpty())
 		m_EndRevision = m_RegEndRevision;
 	m_cEndRevision.SetWindowTextW(m_EndRevision);

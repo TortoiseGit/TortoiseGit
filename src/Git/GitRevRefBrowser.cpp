@@ -184,10 +184,10 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 	switch (mergefilter)
 	{
 	case 1:
-		args = L" --merged HEAD";
+		args.Format(L" --merged %s", GitRev::GetHead());
 		break;
 	case 2:
-		args = L" --no-merged HEAD";
+		args.Format(L" --no-merged %s", GitRev::GetHead());
 		break;
 	}
 

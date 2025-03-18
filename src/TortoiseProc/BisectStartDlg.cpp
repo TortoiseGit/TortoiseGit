@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2020, 2024 TortoiseGit
+// Copyright (C) 2014-2020, 2024-2025 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -110,7 +110,7 @@ BOOL CBisectStartDlg::OnInitDialog()
 	else if (current >= 0)
 		m_cFirstBadRevision.SetCurSel(current);
 	else
-		m_cFirstBadRevision.SetWindowTextW(L"HEAD");
+		m_cFirstBadRevision.SetWindowText(GitRev::GetHead());
 	this->UpdateData(FALSE);
 
 	// EnDisable OK Button

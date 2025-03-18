@@ -274,7 +274,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					}
 				}
 				else
-					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, L"HEAD", m_Path, GitRev::GetWorkingCopy(), bShiftPressed);
+					CAppUtils::StartShowUnifiedDiff(nullptr, m_Path, GitRev::GetHead(), m_Path, GitRev::GetWorkingCopy(), bShiftPressed);
 			}
 			break;
 
@@ -605,14 +605,14 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 			int headindex=GetHeadIndex();
 			if(headindex>=0) //incase show all branch, head is not the first commits.
 			{
-				head.Format(L"HEAD~%d", FirstSelect - headindex);
+				head.Format(L"%s~%d", GitRev::GetHead(), FirstSelect - headindex);
 				if (g_Git.GetHash(hashFirst, head))
 				{
 					MessageBox(g_Git.GetGitLastErr(L"Could not get hash of first selected revision."), L"TortoiseGit", MB_ICONERROR);
 					break;
 				}
 
-				head.Format(L"HEAD~%d", LastSelect - headindex);
+				head.Format(L"%s~%d", GitRev::GetHead(), LastSelect - headindex);
 				if (g_Git.GetHash(hashLast, head))
 				{
 					MessageBox(g_Git.GetGitLastErr(L"Could not get hash of last selected revision."), L"TortoiseGit", MB_ICONERROR);
@@ -635,7 +635,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				break;
 			}
 
-			if (g_Git.GetHash(headhash, L"HEAD"))
+			if (g_Git.GetHash(headhash, GitRev::GetHead()))
 			{
 				MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 				break;

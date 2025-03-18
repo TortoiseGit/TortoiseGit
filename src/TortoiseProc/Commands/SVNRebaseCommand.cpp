@@ -95,7 +95,7 @@ bool SVNRebaseCommand::Execute()
 		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get hash of SVN branch."), L"TortoiseGit", MB_ICONERROR);
 		return false;
 	}
-	if (g_Git.GetHash(HeadHash, L"HEAD"))
+	if (g_Git.GetHash(HeadHash, GitRev::GetHead()))
 	{
 		MessageBox(GetExplorerHWND(), g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return false;
@@ -127,7 +127,7 @@ bool SVNRebaseCommand::Execute()
 	}
 
 	//fast forward;
-	if (g_Git.IsFastForward(L"HEAD", out))
+	if (g_Git.IsFastForward(GitRev::GetHead(), out))
 	{
 		CProgressDlg progressReset;
 		CString cmd;

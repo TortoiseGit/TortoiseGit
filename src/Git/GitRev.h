@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,7 +98,8 @@ public:
 
 	virtual ~GitRev();
 
-	static CString GetHead() { return L"HEAD"; };
+	inline constexpr static LPCWSTR GetHead() { return L"HEAD"; }
+	inline static CString GetHeadString() { return GetHead(); }
 	static CString GetWorkingCopy() { return GIT_REV_ZERO; };
 
 	CGitHash m_CommitHash;

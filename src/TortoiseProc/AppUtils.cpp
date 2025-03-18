@@ -1256,7 +1256,7 @@ bool CAppUtils::CreateWorktree(HWND hWnd, const CString& target /* CString() */)
 		params += L" --detach";
 	else if (dlg.m_bBranch)
 		params += L" -b " + dlg.m_sNewBranch;
-	if (dlg.m_VersionName == L"HEAD")
+	if (dlg.m_VersionName == GitRev::GetHead())
 		dlg.m_VersionName.Empty();
 
 	CString cmd;
@@ -1730,7 +1730,7 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CGitHash
 		bool			guessRef;
 		UINT			theirstext;
 	} infotexts[] = { { L"MERGE_HEAD", true, IDS_CONFLICT_INFOTEXT }, { L"CHERRY_PICK_HEAD", false, IDS_CONFLICT_INFOTEXT }, { L"REVERT_HEAD", false, IDS_CONFLICT_REVERT } };
-	mineText = L"HEAD";
+	mineText = GitRev::GetHead();
 	theirsText.LoadString(IDS_CONFLICT_REFTOBEMERGED);
 	for (const auto& infotext : infotexts)
 	{
@@ -1782,7 +1782,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
 			subgit.m_CurrentDir = fullMergePath.GetWinPath();
-			subgit.GetHash(baseHash, L"HEAD");
+			subgit.GetHash(baseHash, GitRev::GetHead());
 		}
 
 		CGitDiff::ChangeType changeTypeMine = CGitDiff::ChangeType::Unknown;
@@ -2267,7 +2267,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		CAppUtils::LaunchPAgent(hWnd, nullptr, &url);
 
 	CGitHash hashOld;
-	if (g_Git.GetHash(hashOld, L"HEAD"))
+	if (g_Git.GetHash(hashOld, GitRev::GetHead()))
 	{
 		MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
 		return false;
@@ -2350,7 +2350,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 						remoteRef = L"remotes/" + pullRemote + L"/" + pullBranch;
 				}
 				CGitHash common;
-				g_Git.IsFastForward(L"HEAD", remoteRef, &common);
+				g_Git.IsFastForward(GitRev::GetHead(), remoteRef, &common);
 				if (common.IsEmpty())
 					postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoPull(hWnd, url, bAutoLoad, bFetchTags, bNoFF, bFFonly, bSquash, bNoCommit, nDepth, bPrune, remoteBranchName, showPush, showStashPop, true); });
 			}
@@ -2371,7 +2371,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		if (showStashPop)
 			postCmdList.emplace_back(IDI_UNSHELVE, IDS_MENUSTASHPOP, [&hWnd]{ CAppUtils::StashPop(hWnd); });
 
-		if (g_Git.GetHash(hashNew, L"HEAD"))
+		if (g_Git.GetHash(hashNew, GitRev::GetHead()))
 			MessageBox(hWnd, g_Git.GetGitLastErr(L"Could not get HEAD hash after pulling."), L"TortoiseGit", MB_ICONERROR);
 		else
 		{
@@ -2633,14 +2633,14 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 		if (runRebase == 1)
 		{
 			CGitHash headHash, commonAcestor;
-			if (!g_Git.GetHash(headHash, L"HEAD") && (remoteBranchHash == headHash || (g_Git.IsFastForward(upstream, L"HEAD", &commonAcestor) && commonAcestor == remoteBranchHash)) && CMessageBox::ShowCheck(hWnd, IDS_REBASE_CURRENTBRANCHUPTODATE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, L"OpenRebaseRemoteBranchEqualsHEAD", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
+			if (!g_Git.GetHash(headHash, GitRev::GetHead()) && (remoteBranchHash == headHash || (g_Git.IsFastForward(upstream, GitRev::GetHead(), &commonAcestor) && commonAcestor == remoteBranchHash)) && CMessageBox::ShowCheck(hWnd, IDS_REBASE_CURRENTBRANCHUPTODATE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, L"OpenRebaseRemoteBranchEqualsHEAD", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
 				return;
 
 			if (remoteBranchHash == oldUpstreamHash && remoteBranchHash == headHash && !oldUpstreamHash.IsEmpty() && CMessageBox::ShowCheck(hWnd, IDS_REBASE_BRANCH_UNCHANGED, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO | MB_DEFBUTTON2, L"OpenRebaseRemoteBranchUnchanged", IDS_MSGBOX_DONOTSHOWAGAIN) == IDNO)
 				return;
 		}
 
-		if (runRebase == 1 && g_Git.IsFastForward(L"HEAD", upstream))
+		if (runRebase == 1 && g_Git.IsFastForward(GitRev::GetHead(), upstream))
 		{
 			UINT ret = CMessageBox::ShowCheck(hWnd, IDS_REBASE_BRANCH_FF, IDS_APPNAME, 2, IDI_QUESTION, IDS_MERGEBUTTON, IDS_REBASEBUTTON, IDS_ABORTBUTTON, L"OpenRebaseRemoteBranchFastForwards", IDS_MSGBOX_DONOTSHOWAGAIN);
 			if (ret == 3)
@@ -3227,7 +3227,7 @@ static bool DoMerge(HWND hWnd, bool noFF, bool ffOnly, bool squash, bool noCommi
 			}
 
 			CGitHash common;
-			g_Git.IsFastForward(L"HEAD", mergeVersion, &common);
+			g_Git.IsFastForward(GitRev::GetHead(), mergeVersion, &common);
 			if (common.IsEmpty())
 				postCmdList.emplace_back(IDI_MERGE, IDS_MERGE_UNRELATED, [=, &hWnd] { DoMerge(hWnd, noFF, ffOnly, squash, noCommit, log, true, mergeStrategy, strategyOption, strategyParam, logMessage, version, isBranch, showStashPop); });
 
@@ -3303,7 +3303,7 @@ BOOL CAppUtils::MergeAbort(HWND hWnd)
 {
 	CMergeAbortDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
 	if (dlg.DoModal() == IDOK)
-		return Reset(hWnd, L"HEAD", (dlg.m_ResetType == 0) ? 3 : dlg.m_ResetType);
+		return Reset(hWnd, GitRev::GetHead(), (dlg.m_ResetType == 0) ? 3 : dlg.m_ResetType);
 
 	return FALSE;
 }
@@ -3766,7 +3766,7 @@ bool CAppUtils::DeleteRef(CWnd* parent, const CString& ref)
 	CString msg;
 	msg.Format(IDS_PROC_DELETEBRANCHTAG, static_cast<LPCWSTR>(ref));
 	// Check if branch is fully merged in HEAD
-	if (CGit::GetShortName(ref, shortname, L"refs/heads/") && !g_Git.IsFastForward(ref, L"HEAD"))
+	if (CGit::GetShortName(ref, shortname, L"refs/heads/") && !g_Git.IsFastForward(ref, GitRev::GetHead()))
 	{
 		msg += L"\n\n";
 		msg += CString(MAKEINTRESOURCE(IDS_PROC_BROWSEREFS_WARNINGUNMERGED));
