@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2023 - TortoiseGit
+// Copyright (C) 2015-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -193,6 +193,14 @@ TEST(CTGitPath, RemoveChildrenTest)
 	EXPECT_STREQ(L"c:\\parent", list[0].GetWinPathString());
 	EXPECT_STREQ(L"c:\\test", list[1].GetWinPathString());
 	EXPECT_STREQ(L"c:\\testfile", list[2].GetWinPathString());
+
+	list = {};
+	list.AddPath(CTGitPath(L"D:\\bar"));
+	list.AddPath(CTGitPath(L"D:\\bar.txt"));
+	list.AddPath(CTGitPath(L"D:\\bar\\blah"));
+	EXPECT_EQ(3, list.GetCount());
+	list.RemoveChildren();
+	EXPECT_EQ(2, list.GetCount());
 }
 
 TEST(CTGitPath, ContainingDirectoryTest)

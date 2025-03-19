@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
-// Copyright (C) 2003-2008 - TortoiseSVN
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2003-2008, 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1731,7 +1731,14 @@ void CTGitPathList::RemoveItem(const CTGitPath& path)
 }
 void CTGitPathList::RemoveChildren()
 {
-	SortByPathname();
+	// Sort paths using a custom comparator that sorts directories before files and parent directories before their children
+	std::sort(m_paths.begin(), m_paths.end(), [](const CTGitPath& left, const CTGitPath& right) {
+		CString leftPath = left.GetWinPathString();
+		CString rightPath = right.GetWinPathString();
+		leftPath.Replace(L"\\", L"\1");
+		rightPath.Replace(L"\\", L"\1");
+		return leftPath.CompareNoCase(rightPath) < 0;
+	});
 	m_paths.erase(std::unique(m_paths.begin(), m_paths.end(), &CTGitPath::CheckChild), m_paths.end());
 }
 
