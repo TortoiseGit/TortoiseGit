@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021-2022, 2024 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2022, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ public:
 
 		CString tmp;
 		tmp.Format(IDS_PROC_OLDMSYSGIT, L"2.24+");
-		int ret = CMessageBox::ShowCheck(hwnd, tmp, L"TortoiseGit", 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_PROC_GOTOMSYSGITWEBSITE)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), L"OldMsysgitVersionWarning", CString(MAKEINTRESOURCE(IDS_PROC_NOTSHOWAGAINIGNORE)));
+		const auto ret = CMessageBox::ShowCheck(hwnd, tmp, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, L"OldMsysgitVersionWarning", IDS_PROC_NOTSHOWAGAINIGNORE);
 		if (ret == 3)
 			return true;
 
@@ -176,7 +176,7 @@ protected:
 				tmp.AppendChar(L'\n');
 				tmp.AppendChar(L'\n');
 				tmp.Append(checkhelpHint);
-				if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				if (CMessageBox::Show(hwnd, tmp, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
@@ -187,7 +187,7 @@ protected:
 				tmp.AppendChar(L'\n');
 				tmp.AppendChar(L'\n');
 				tmp.Append(checkhelpHint);
-				if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+				if (CMessageBox::Show(hwnd, tmp, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 					callHelp(IDD_SETTINGSMAIN);
 				return false;
 			}
@@ -217,7 +217,7 @@ protected:
 			tmp.AppendChar(L'\n');
 			tmp.AppendChar(L'\n');
 			tmp.Append(checkhelpHint);
-			if (CMessageBox::Show(hwnd, tmp, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_OK)), CString(MAKEINTRESOURCE(IDS_MSGBOX_HELP))) == 2)
+			if (CMessageBox::Show(hwnd, tmp, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_OK, IDS_MSGBOX_HELP) == 2)
 				callHelp(IDD_SETTINGSMAIN);
 			return false;
 		}

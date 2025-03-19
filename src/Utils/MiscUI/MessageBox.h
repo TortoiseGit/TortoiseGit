@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2021-2023 - TortoiseGit
+// Copyright (C) 2013-2017, 2021-2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -287,6 +287,23 @@ public:
 	 * the last time. Use this to give the user the possibility to ignore specific message
 	 * boxes ("Do not show again"-checkbox).
 	 * \param hWnd handle to the parent window or nullptr
+	 * \param lpMessage the message string to show on the message box
+	 * \param nCaption resource ID of the title string
+	 * \param uType see class description for details
+	 * \param lpRegistry a value string to store the return value of this specific message box. Put nullptr or empty if you do not use registry.
+	 * Each one of your message boxes must have it's own value string! Examples for such values
+	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
+	 * \param nCheckMessage resource ID of the checkbox string
+	 * \param bChecked get and set checkbox check state. This is optional.
+	 * \return see class description for details
+	 */
+	static UINT ShowCheck(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, UINT uType, LPCWSTR lpRegistry, UINT nCheckMessage, BOOL* bChecked = nullptr);
+	/**
+	 * Shows a message box with a checkbox. If the user checks it then the next time
+	 * the message box isn't shown anymore - the method simply returns the same value as
+	 * the last time. Use this to give the user the possibility to ignore specific message
+	 * boxes ("Do not show again"-checkbox).
+	 * \param hWnd handle to the parent window or nullptr
 	 * \param nMessage resource ID of the message string
 	 * \param nCaption resource ID of the title string
 	 * \param uType see class description for details
@@ -313,6 +330,20 @@ public:
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT Show(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef, LPCWSTR icon, LPCWSTR lpButton1, LPCWSTR lpButton2 = nullptr, LPCWSTR lpButton3 = nullptr);
+	/**
+	 * Shows a message box with user defined button texts.
+	 * \param hWnd handle to the parent window or nullptr
+	 * \param lpMessage the message string
+	 * \param nCaption resource ID of the title string
+	 * \param nDef number of the default button (1,2 or 3)
+	 * \param icon an icon loaded with MAKEINTRESOURCE() or one of
+	 * the system default icons.
+	 * \param nButton1 resource ID of the text for the first button
+	 * \param nButton2 resource ID of the text for the second button
+	 * \param nButton3 resource ID of the text for the third button
+	 * \return the number of the button pressed (1,2 or 3)
+	 */
+	static UINT Show(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2 = NULL, UINT nButton3 = NULL);
 	/**
 	 * Shows a message box with user defined button texts.
 	 * \param hWnd handle to the parent window or nullptr
@@ -347,6 +378,26 @@ public:
 	 * \return the number of the button pressed (1,2 or 3)
 	 */
 	static UINT ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef, LPCWSTR icon, LPCWSTR lpButton1, LPCWSTR lpButton2, LPCWSTR lpButton3, LPCWSTR lpRegistry, LPCWSTR lpCheckMessage = nullptr, BOOL* bChecked = nullptr);
+	/**
+	 * Shows a message box with user defined button texts and a checkbox.
+	 * \param hWnd handle to the parent window or nullptr
+	 * \param lpMessage the message string
+	 * \param nCaption resource ID of the title string
+	 * \param nDef number of the default button (1,2 or 3)
+	 * \param icon an icon loaded with MAKEINTRESOURCE() or one
+	 * of the system default icons
+	 * \param nButton1 resource ID of string for the first button
+	 * \param nButton2 resource ID of string for the second button
+	 * \param nButton3 resource ID of string for the third button
+	 * \param lpRegistry  a value string to store the return value of this specific message box. Put nullptr or empty if you do not use registry.
+	 * Each one of your message boxes must have it's own value string! Examples for such values
+	 * might be "WarnOverwrite", "InformAboutMissingMailSubject", ...
+	 * \param nCheckMessage resource ID of the checkbox string
+	 * \param bChecked get and set checkbox check state. This is optional.
+	 * \return the number of the button pressed (1,2 or 3)
+	 */
+	static UINT ShowCheck(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCWSTR lpRegistry, UINT nCheckMessage = NULL, BOOL* bChecked = nullptr);
+
 	/**
 	 * Shows a message box with user defined button texts and a checkbox.
 	 * \param hWnd handle to the parent window or nullptr

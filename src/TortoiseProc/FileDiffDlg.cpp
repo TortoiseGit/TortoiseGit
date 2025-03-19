@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -785,7 +785,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							{
 								CString out;
 								out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, static_cast<LPCWSTR>(fd->GetGitPathString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()), static_cast<LPCWSTR>(filename));
-								if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+								if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), IDS_APPNAME, 2, IDI_WARNING, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)
 									return;
 							}
 						}
@@ -1364,7 +1364,7 @@ int CFileDiffDlg::RevertSelectedItemToVersion(const CGitHash& rev, bool isOldVer
 		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetSafeHwnd(), out, IDS_APPNAME, 2, IDI_WARNING, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)
 				break;
 		}
 		else

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -421,7 +421,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		if (!err.IsEmpty())
 		{
-			UINT choice = CMessageBox::Show(hWndExplorer, err, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_PROC_EDITLOCALGITCONFIG)), CString(MAKEINTRESOURCE(IDS_PROC_EDITGLOBALGITCONFIG)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+			const auto choice = CMessageBox::Show(hWndExplorer, err, IDS_APPNAME, 1, IDI_ERROR, IDS_PROC_EDITLOCALGITCONFIG, IDS_PROC_EDITGLOBALGITCONFIG, IDS_ABORTBUTTON);
 			if (choice == 1)
 			{
 				// open the config file with alternative editor

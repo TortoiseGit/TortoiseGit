@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2019, 2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ bool CreateRepositoryCommand::Execute()
 	{
 		CString message;
 		message.Format(IDS_WARN_GITINIT_SPECIALFOLDER, static_cast<LPCWSTR>(folder));
-		if (CMessageBox::Show(GetExplorerHWND(), message, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
+		if (CMessageBox::Show(GetExplorerHWND(), message, IDS_APPNAME, 1, IDI_ERROR, IDS_ABORTBUTTON, IDS_PROCEEDBUTTON) == 1)
 			return false;
 	}
 
@@ -64,7 +64,7 @@ bool CreateRepositoryCommand::Execute()
 	{
 		CString message;
 		message.Format(IDS_WARN_GITINIT_FOLDERNOTEMPTY, static_cast<LPCWSTR>(folder));
-		if (dlg.m_bBare && PathIsDirectory(folder) && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(GetExplorerHWND(), message, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)), CString(MAKEINTRESOURCE(IDS_PROCEEDBUTTON))) == 1)
+		if (dlg.m_bBare && PathIsDirectory(folder) && !PathIsDirectoryEmpty(folder) && CMessageBox::Show(GetExplorerHWND(), message, IDS_APPNAME, 1, IDI_ERROR, IDS_ABORTBUTTON, IDS_PROCEEDBUTTON) == 1)
 			return false;
 
 		git_repository_init_options options = GIT_REPOSITORY_INIT_OPTIONS_INIT;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -116,7 +116,7 @@ bool CSyncDlg::AskSetTrackedBranch()
 		CString temp;
 		temp.FormatMessage(IDS_NOTYET_SETTRACKEDBRANCH, static_cast<LPCWSTR>(m_strLocalBranch), static_cast<LPCWSTR>(remoteBranch));
 		BOOL dontShowAgain = FALSE;
-		auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, L"TortoiseGit", MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, CString(MAKEINTRESOURCE(IDS_MSGBOX_DONOTSHOW)), &dontShowAgain);
+		const auto ret = CMessageBox::ShowCheck(GetSafeHwnd(), temp, IDS_APPNAME, MB_ICONQUESTION | MB_YESNOCANCEL, nullptr, IDS_MSGBOX_DONOTSHOW, &dontShowAgain);
 		if (dontShowAgain)
 			CRegDWORD(L"Software\\TortoiseGit\\AskSetTrackedBranch") = FALSE;
 		if (ret == IDCANCEL)

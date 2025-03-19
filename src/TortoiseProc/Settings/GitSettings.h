@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2021, 2023 - TortoiseGit
+// Copyright (C) 2013-2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -177,7 +177,7 @@ protected:
 			dest.LoadString(storeTo);
 			CString msg;
 			msg.Format(IDS_WARNUSERSAFEDIFFERENT, static_cast<LPCWSTR>(dest));
-			if (CMessageBox::Show(GetDialogHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_SAVEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetDialogHwnd(), msg, IDS_APPNAME, 2, IDI_QUESTION, IDS_SAVEBUTTON, IDS_ABORTBUTTON) == 2)
 				return false;
 		}
 		return true;

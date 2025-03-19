@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 			str = g_Git.GetGitLastErr(str, CGit::GIT_CMD_REVERT);
 			if( GetSelectedCount() == 1)
 				CMessageBox::Show(GetParentHWND(), str, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			else if (CMessageBox::Show(GetParentHWND(), str, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_SKIPBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			else if (CMessageBox::Show(GetParentHWND(), str, IDS_APPNAME, 2, IDI_ERROR, IDS_SKIPBUTTON, IDS_ABORTBUTTON) == 2)
 				return ret;
 		}
 		else
@@ -821,7 +821,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				else
 					str.Format(IDS_PROC_DELETEREF, static_cast<LPCWSTR>(pSelLogEntry->m_Ref));
 
-				if (CMessageBox::Show(GetParentHWND(), str, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(GetParentHWND(), str, IDS_APPNAME, 1, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 2)
 					return;
 
 				std::vector<CString> refsToDelete;

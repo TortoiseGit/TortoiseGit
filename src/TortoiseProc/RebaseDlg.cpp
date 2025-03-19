@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -3019,7 +3019,7 @@ int	CRebaseDlg::RunGitCmdRetryOrAbort(const CString& cmd)
 			AddLogString(out);
 			CString msg;
 			msg.Format(L"\"%s\" failed.\n%s", static_cast<LPCWSTR>(cmd), static_cast<LPCWSTR>(out));
-			if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_RETRY)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) != 1)
+			if (CMessageBox::Show(GetSafeHwnd(), msg, IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_RETRY, IDS_MSGBOX_ABORT) != 1)
 				return -1;
 		}
 		else

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2019, 2022 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2019, 2022, 2025 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -127,7 +127,7 @@ bool RemoveCommand::Execute()
 		format.Format(keepLocal ? IDS_WARN_DELETE_MANY_FROM_INDEX : IDS_WARN_DELETE_MANY, pathList.GetCount());
 	else
 		format.Format(keepLocal ? IDS_WARN_DELETE_ONE_FROM_INDEX : IDS_WARN_REMOVE, static_cast<LPCWSTR>(pathList[0].GetGitPathString()));
-	if (CMessageBox::Show(GetExplorerHWND(), format, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_REMOVEBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
+	if (CMessageBox::Show(GetExplorerHWND(), format, IDS_APPNAME, 2, IDI_QUESTION, IDS_REMOVEBUTTON, IDS_MSGBOX_ABORT) == 2)
 		return false;
 
 	if (keepLocal)
@@ -143,7 +143,7 @@ bool RemoveCommand::Execute()
 		cmd.Format(format, static_cast<LPCWSTR>(pathList[nPath].GetGitPathString()));
 		if (g_Git.Run(cmd, &output, CP_UTF8))
 		{
-			if (CMessageBox::Show(GetExplorerHWND(), output, L"TortoiseGit", 2, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetExplorerHWND(), output, IDS_APPNAME, 2, IDI_ERROR, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)
 			{
 				bRet = FALSE;
 				break;

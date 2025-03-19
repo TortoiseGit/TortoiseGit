@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -720,7 +720,7 @@ void CCommitDlg::OnOK()
 		{
 			CString message;
 			message.Format(IDS_COMMITDLG_SUBMODULEDIRTY, static_cast<LPCWSTR>(entry->GetGitPathString()));
-			const int result = CMessageBox::Show(m_hWnd, message, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_PROGRS_CMD_COMMIT)), CString(MAKEINTRESOURCE(IDS_MSGBOX_IGNORE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_CANCEL)));
+			const auto result = CMessageBox::Show(m_hWnd, message, IDS_APPNAME, 1, IDI_QUESTION, IDS_PROGRS_CMD_COMMIT, IDS_MSGBOX_IGNORE, IDS_MSGBOX_CANCEL);
 			if (result == 1)
 			{
 				CString cmdCommit;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2011, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -422,7 +422,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 
 	CString str;
 	str.Format(IDS_MERGESUCCESSFUL, static_cast<LPCWSTR>(mergedfile.GetGitPathString()));
-	if ((blocktrust == 2 && exitCode == 0) || (blocktrust == 1 && CMessageBox::Show(GetExplorerHWND(), str, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_RESOLVEDBUTTON)), CString(MAKEINTRESOURCE(IDS_MSGBOX_NO))) == 1))
+	if ((blocktrust == 2 && exitCode == 0) || (blocktrust == 1 && CMessageBox::Show(GetExplorerHWND(), str, IDS_APPNAME, 2, IDI_QUESTION, IDS_RESOLVEDBUTTON, IDS_MSGBOX_NO) == 1))
 	{
 		CString cmd, out;
 		cmd.Format(L"git.exe add -f -- \"%s\"", static_cast<LPCWSTR>(mergedfile.GetGitPathString()));

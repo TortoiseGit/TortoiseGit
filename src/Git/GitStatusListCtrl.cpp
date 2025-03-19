@@ -4135,7 +4135,7 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list, bool getStagin
 			{
 				CString message;
 				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPath());
-				deleteFromIndex = CMessageBox::ShowCheck(GetSafeHwnd(), message, L"TortoiseGit", 1, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_RESTORE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_REMOVE_FROM_INDEX)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), nullptr, CString(MAKEINTRESOURCE(IDS_DO_SAME_FOR_REST)), &bDeleteChecked);
+				deleteFromIndex = CMessageBox::ShowCheck(GetSafeHwnd(), message, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_RESTORE_FROM_INDEX, IDS_REMOVE_FROM_INDEX, IDS_IGNOREBUTTON, nullptr, IDS_DO_SAME_FOR_REST, &bDeleteChecked);
 			}
 			if (deleteFromIndex == 1)
 			{
@@ -4505,7 +4505,7 @@ void CGitStatusListCtrl::FilesExport()
 			{
 				CString out;
 				out.FormatMessage(IDS_STATUSLIST_CHECKOUTFILEFAILED, static_cast<LPCWSTR>(fd->GetGitPathString()), static_cast<LPCWSTR>(m_CurrentVersion.ToString()), static_cast<LPCWSTR>(filename));
-				if (CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), L"TortoiseGit", 2, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+				if (CMessageBox::Show(GetParentHWND(), g_Git.GetGitLastErr(out, CGit::GIT_CMD_GETONEFILE), IDS_APPNAME, 2, IDI_WARNING, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)
 					return;
 			}
 		}
@@ -4609,7 +4609,7 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 			cmd.Format(L"git.exe rm --cached --ignore-unmatch -- \"%s\"", static_cast<LPCWSTR>(filename));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", 1, IDI_WARNING, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+			if (CMessageBox::Show(GetSafeHwnd(), out, IDS_APPNAME, 1, IDI_WARNING, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)
 				break;
 		}
 		else

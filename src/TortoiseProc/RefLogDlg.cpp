@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2009-2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -120,7 +120,7 @@ void CRefLogDlg::OnBnClickedClearStash()
 	size_t count = m_RefList.m_arShownList.size();
 	CString msg;
 	msg.Format(IDS_PROC_DELETEALLSTASH, count);
-	if (CMessageBox::Show(this->GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+	if (CMessageBox::Show(GetSafeHwnd(), msg, IDS_APPNAME, 2, IDI_QUESTION, IDS_DELETEBUTTON, IDS_ABORTBUTTON) == 1)
 	{
 		CString cmdOut;
 		if (g_Git.Run(L"git.exe stash clear", &cmdOut, CP_UTF8))

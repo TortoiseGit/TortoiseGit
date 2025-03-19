@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2016, 2018-2023 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2025 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,21 +45,26 @@ static HWND GetMainHWND(HWND hWnd)
 	return hWnd;
 }
 
-UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCWSTR lpRegistry, UINT nCheckMessage/* = nullptr*/, BOOL* bChecked)
+UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCWSTR lpRegistry, UINT nCheckMessage /* = nullptr*/, BOOL* bChecked)
 {
 	CString sButton1;
 	CString sButton2;
 	CString sButton3;
-	CString sMessage;
 	CString sCaption;
 	CString nCheckMsg;
 	sButton1.LoadString(nButton1);
 	sButton2.LoadString(nButton2);
 	sButton3.LoadString(nButton3);
-	sMessage.LoadString(nMessage);
 	sCaption.LoadString(nCaption);
 	nCheckMsg.LoadString(nCheckMessage);
-	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3, lpRegistry, nCheckMsg, bChecked);
+	return CMessageBox::ShowCheck(hWnd, lpMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3, lpRegistry, nCheckMsg, bChecked);
+}
+
+UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3, LPCWSTR lpRegistry, UINT nCheckMessage/* = nullptr*/, BOOL* bChecked)
+{
+	CString sMessage;
+	sMessage.LoadString(nMessage);
+	return CMessageBox::ShowCheck(hWnd, sMessage, nCaption, nDef, icon, nButton1, nButton2, nButton3, lpRegistry, nCheckMessage, bChecked);
 }
 
 UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef, LPCWSTR icon, LPCWSTR lpButton1, LPCWSTR lpButton2, LPCWSTR lpButton3, LPCWSTR lpRegistry, LPCWSTR lpCheckMessage/* = nullptr*/, BOOL* bChecked)
@@ -183,30 +188,40 @@ UINT CMessageBox::Show(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int nDef
 	return box.GoModal(CWnd::FromHandle(hWnd), lpCaption, lpMessage, nDef);
 }
 
-UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3)
+UINT CMessageBox::Show(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3)
 {
 	CString sButton1;
 	CString sButton2;
 	CString sButton3;
-	CString sMessage;
 	CString sCaption;
 	sButton1.LoadString(nButton1);
 	sButton2.LoadString(nButton2);
 	sButton3.LoadString(nButton3);
-	sMessage.LoadString(nMessage);
 	sCaption.LoadString(nCaption);
-	return CMessageBox::Show(hWnd, sMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3);
+	return CMessageBox::Show(hWnd, lpMessage, sCaption, nDef, icon, sButton1, sButton2, sButton3);
+}
+
+UINT CMessageBox::Show(HWND hWnd, UINT nMessage, UINT nCaption, int nDef, LPCWSTR icon, UINT nButton1, UINT nButton2, UINT nButton3)
+{
+	CString sMessage;
+	sMessage.LoadString(nMessage);
+	return CMessageBox::Show(hWnd, sMessage, nCaption, nDef, icon, nButton1, nButton2, nButton3);
 }
 
 UINT CMessageBox::ShowCheck(HWND hWnd, UINT nMessage, UINT nCaption, UINT uType, LPCWSTR lpRegistry, UINT nCheckMessage, BOOL* bChecked)
 {
 	CString sMessage;
+	sMessage.LoadString(nMessage);
+	return CMessageBox::ShowCheck(hWnd, sMessage, nCaption, uType, lpRegistry, nCheckMessage, bChecked);
+}
+
+UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, UINT nCaption, UINT uType, LPCWSTR lpRegistry, UINT nCheckMessage, BOOL* bChecked /* = nullptr*/)
+{
 	CString sCaption;
 	CString sCheckMsg;
-	sMessage.LoadString(nMessage);
 	sCaption.LoadString(nCaption);
 	sCheckMsg.LoadString(nCheckMessage);
-	return CMessageBox::ShowCheck(hWnd, sMessage, sCaption, uType, lpRegistry, sCheckMsg, bChecked);
+	return CMessageBox::ShowCheck(hWnd, lpMessage, sCaption, uType, lpRegistry, sCheckMsg, bChecked);
 }
 
 UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, UINT uType, LPCWSTR lpRegistry, LPCWSTR lpCheckMessage, BOOL* bChecked)

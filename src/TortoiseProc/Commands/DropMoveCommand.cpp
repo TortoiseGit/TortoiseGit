@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2019, 2021 - TortoiseGit
+// Copyright (C) 2009, 2011-2019, 2021, 2025 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ bool DropMoveCommand::Execute()
 		cmd.Format(L"git.exe mv -- \"%s\" \"%s\"", static_cast<LPCWSTR>(pathList[nPath].GetGitPathString()), static_cast<LPCWSTR>(destPath.GetGitPathString()));
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
-			if (CMessageBox::Show(GetExplorerHWND(), out, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 1)
+			if (CMessageBox::Show(GetExplorerHWND(), out, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 1)
 			{
 #if 0
 					if (!svn.Move(CTSVNPathList(pathList[nPath]), destPath, TRUE))

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2024 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -186,7 +186,7 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 			msg.LoadString(IDS_T_SAMEBRANCHNAMEEXISTS);
 		else
 			msg.LoadString(IDS_B_SAMETAGNAMEEXISTS);
-		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", 2, IDI_EXCLAMATION, CString(MAKEINTRESOURCE(IDS_CONTINUEBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
+		if (CMessageBox::Show(GetSafeHwnd(), msg, IDS_APPNAME, 2, IDI_EXCLAMATION, IDS_CONTINUEBUTTON, IDS_ABORTBUTTON) == 2)
 			return;
 	}
 	if (!m_bIsTag)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022-2024 - TortoiseGit
+// Copyright (C) 2022-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -410,7 +410,7 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 				CAutoWorktree worktree;
 				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf.m_WorktreeName)) < 0 || git_worktree_lock(worktree, nullptr) < 0)
 				{
-					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to lock worktree \"" + leaf.m_WorktreeName + L"\"."), L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_CONTINUE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
+					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to lock worktree \"" + leaf.m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
 						break;
 				}
 				else
@@ -434,7 +434,7 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 				CAutoWorktree worktree;
 				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf.m_WorktreeName)) < 0 || git_worktree_unlock(worktree) < 0)
 				{
-					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to unlock worktree \"" + leaf.m_WorktreeName + L"\"."), L"TortoiseGit", 1, IDI_ERROR, CString(MAKEINTRESOURCE(IDS_MSGBOX_CONTINUE)), CString(MAKEINTRESOURCE(IDS_MSGBOX_ABORT))) == 2)
+					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to unlock worktree \"" + leaf.m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
 						break;
 				}
 				else

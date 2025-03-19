@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011, 2013-2016, 2018-2019, 2023 - TortoiseGit
+// Copyright (C) 2011, 2013-2016, 2018-2019, 2023-2025 - TortoiseGit
 // Copyright (C) 2007-2008,2010,2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -120,7 +120,7 @@ bool DropCopyAddCommand::Execute()
 								msg.Format(IDS_PROC_COPY_SUBMODULE, static_cast<LPCWSTR>(lastRepo));
 							else
 								msg.Format(IDS_PROC_COPY_REPOSITORY, static_cast<LPCWSTR>(lastRepo));
-							const int ret = CMessageBox::Show(GetExplorerHWND(), msg, L"TortoiseGit", 1, IDI_QUESTION, CString(MAKEINTRESOURCE(IDS_DELETEBUTTON)), CString(MAKEINTRESOURCE(IDS_IGNOREBUTTON)), CString(MAKEINTRESOURCE(IDS_ABORTBUTTON)));
+							const auto ret = CMessageBox::Show(GetExplorerHWND(), msg, IDS_APPNAME, 1, IDI_QUESTION, IDS_DELETEBUTTON, IDS_IGNOREBUTTON, IDS_ABORTBUTTON);
 							if (ret == 3)
 								return FALSE;
 							if (ret == 1)
