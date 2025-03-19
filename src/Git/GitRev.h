@@ -100,7 +100,8 @@ public:
 
 	inline constexpr static LPCWSTR GetHead() { return L"HEAD"; }
 	inline static CString GetHeadString() { return GetHead(); }
-	static CString GetWorkingCopy() { return GIT_REV_ZERO; };
+	inline constexpr static LPCWSTR GetWorkingCopy() { return GIT_REV_ZERO; }
+	inline static CString GetWorkingCopyString() { return GetWorkingCopy(); }
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;

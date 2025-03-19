@@ -858,7 +858,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_CompareWC:
 		{
 			CTGitPath file(selectedLeafs.at(0)->GetFullName());
-			CGitDiff::Diff(GetSafeHwnd(), &file, &file, GIT_REV_ZERO, m_sRevision);
+			CGitDiff::Diff(GetSafeHwnd(), &file, &file, GitRev::GetWorkingCopy(), m_sRevision);
 		}
 		break;
 	case eCmd_Revert:

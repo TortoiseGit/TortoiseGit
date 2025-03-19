@@ -1280,9 +1280,9 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if (ignoreBlankLines)
 		ignore += L" --ignore-blank-lines";
 
-	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
+	if (rev1 == GitRev::GetWorkingCopy() || rev2 == GitRev::GetWorkingCopy())
 	{
-		if(rev1 == GIT_REV_ZERO)
+		if (rev1 == GitRev::GetWorkingCopy())
 			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
 		else
 			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));

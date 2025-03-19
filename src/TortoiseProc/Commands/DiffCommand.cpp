@@ -85,8 +85,8 @@ bool DiffCommand::Execute()
 								{
 									CTGitPath oldPath(changedFiles[i].GetGitOldPathString());
 									if (parser.HasKey(L"unified"))
-										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
-									return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &oldPath, GIT_REV_ZERO, GitRev::GetHead(), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+										return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GitRev::GetWorkingCopy(), bAlternativeTool);
+									return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &oldPath, GitRev::GetWorkingCopy(), GitRev::GetHead(), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 								}
 								break;
 							}
@@ -95,16 +95,16 @@ bool DiffCommand::Execute()
 					if (parser.HasKey(L"unified"))
 					{
 						cmdLinePath.m_Action = cmdLinePath.LOGACTIONS_ADDED;
-						return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
+						return !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GitRev::GetWorkingCopy(), bAlternativeTool);
 					}
 					else
-						return !!CGitDiff::DiffNull(GetExplorerHWND(), &cmdLinePath, GIT_REV_ZERO, true, parser.GetLongVal(L"line"), bAlternativeTool);
+						return !!CGitDiff::DiffNull(GetExplorerHWND(), &cmdLinePath, GitRev::GetWorkingCopy(), true, parser.GetLongVal(L"line"), bAlternativeTool);
 				}
 
 				if (parser.HasKey(L"unified"))
-					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GIT_REV_ZERO, bAlternativeTool);
+					bRet = !!CAppUtils::StartShowUnifiedDiff(nullptr, cmdLinePath, GitRev::GetHead(), cmdLinePath, GitRev::GetWorkingCopy(), bAlternativeTool);
 				else
-					bRet = !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GIT_REV_ZERO, GitRev::GetHead(), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
+					bRet = !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GitRev::GetWorkingCopy(), GitRev::GetHead(), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 			}
 		}
 	}

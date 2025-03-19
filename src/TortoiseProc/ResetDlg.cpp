@@ -125,7 +125,7 @@ void CResetDlg::OnBnClickedShowModifiedFiles()
 		CFileDiffDlg dlg;
 
 		dlg.m_strRev1 = GitRev::GetHead();
-		dlg.m_strRev2 = GIT_REV_ZERO;
+		dlg.m_strRev2 = GitRev::GetWorkingCopy();
 
 		dlg.DoModal();
 }
