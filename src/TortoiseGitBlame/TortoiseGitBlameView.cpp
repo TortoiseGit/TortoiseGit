@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -303,9 +303,10 @@ int CTortoiseGitBlameView::GetLineUnderCursor(CPoint point)
 	auto line = static_cast<int>(SendEditor(SCI_DOCLINEFROMVISIBLE, firstvisibleline));
 	auto linesonscreen = static_cast<int>(SendEditor(SCI_LINESONSCREEN)) + 1;
 	auto height = static_cast<int>(SendEditor(SCI_TEXTHEIGHT));
+	const auto linesTotal = static_cast<int>(SendEditor(SCI_GETLINECOUNT));
 
 	int i = 0, y = 0;
-	for (i = line; y <= point.y && i < (line + linesonscreen); ++i)
+	for (i = line; y <= point.y && i < (line + linesonscreen) && i < linesTotal; ++i)
 	{
 		auto wrapcount = static_cast<int>(SendEditor(SCI_WRAPCOUNT, i));
 		if (wrapcount > 1)
