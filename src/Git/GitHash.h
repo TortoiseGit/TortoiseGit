@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,12 +35,10 @@ struct std::hash<CGitHash>;
 class CGitHash
 {
 private:
-	unsigned char m_hash[GIT_HASH_SIZE];
+	unsigned char m_hash[GIT_HASH_SIZE]{};
+
 public:
-	CGitHash()
-	{
-		memset(m_hash,0, GIT_HASH_SIZE);
-	}
+	CGitHash() = default;
 	CGitHash(const git_oid* oid)
 	{
 		git_oid_cpy(reinterpret_cast<git_oid*>(m_hash), oid);
