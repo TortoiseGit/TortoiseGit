@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1080,7 +1080,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 		const int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 		CStringA outA;
 		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? CString("HEAD") : (pLogEntry->m_CommitHash.ToString() + L"~1");
-		CString rev2 = pLogEntry->m_CommitHash.IsEmpty() ? CString(GIT_REV_ZERO) : pLogEntry->m_CommitHash.ToString();
+		CString rev2 = pLogEntry->m_CommitHash.ToString();
 		g_Git.GetUnifiedDiff(CTGitPath(), rev1, rev2, outA, false, false, diffContext);
 		out = CUnicodeUtils::GetUnicode(outA);
 	}

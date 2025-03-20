@@ -771,7 +771,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 							continue;
 						CPathUtils::MakeSureDirectoryPathExists(m_strExportDir + L'\\' + fd->GetContainingDirectory().GetWinPathString());
 						CString filename = m_strExportDir + L'\\' + fd->GetWinPathString();
-						if (m_rev2.m_CommitHash.ToString() == GIT_REV_ZERO)
+						if (m_rev2.m_CommitHash.IsEmpty())
 						{
 							if(!CopyFile(g_Git.CombinePath(fd), filename, false))
 							{
