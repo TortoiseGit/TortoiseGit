@@ -97,9 +97,10 @@ public:
 		return hash;
 	}
 
-	static CGitHash FromHexStr(const char* str)
+	static CGitHash FromHexStr(const std::string_view& str)
 	{
 		CGitHash hash;
+		ASSERT(str.size() == 2 * GIT_HASH_SIZE);
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
 			unsigned char a;

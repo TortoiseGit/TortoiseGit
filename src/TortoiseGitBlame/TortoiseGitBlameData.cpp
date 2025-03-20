@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 					expectHash = false;
 					if (lineEnd - lineBegin > 2 * GIT_HASH_SIZE)
 					{
-						hash = CGitHash::FromHexStr(&data[lineBegin]);
+						hash = CGitHash::FromHexStr(std::string_view(&data[lineBegin], 2 * GIT_HASH_SIZE));
 
 						size_t hashEnd = lineBegin + 2 * GIT_HASH_SIZE;
 						size_t originalLineNumberBegin = hashEnd + 1;

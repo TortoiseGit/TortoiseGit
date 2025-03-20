@@ -627,7 +627,7 @@ void CRebaseDlg::FetchLogList()
 		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCWSTR>(head.ToString()), static_cast<LPCWSTR>(upstreamHash.ToString()));
 		g_Git.Run(mergecmd, [&](const CStringA& line)
 		{
-			CGitHash hash = CGitHash::FromHexStr(line);
+			CGitHash hash = CGitHash::FromHexStr(std::string_view(line, line.GetLength()));
 			if (hash.IsEmpty())
 				return;
 			m_rewrittenCommitsMap[hash] = upstreamHash;
@@ -659,13 +659,11 @@ void CRebaseDlg::FetchLogList()
 		cherryCmd.Format(L"git rev-list \"%s...%s\" --left-right --cherry-pick", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
-			if (line.GetLength() < 2)
+			if (line.GetLength() < 1 + 2 * GIT_HASH_SIZE)
 				return;
 			if (line[0] != '>')
 				return;
-			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
-			hash.Trim();
-			nonCherryPicked.emplace_back(CGitHash::FromHexStrTry(hash));
+			nonCherryPicked.push_back(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(1)));
 		});
 		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
@@ -723,13 +721,11 @@ void CRebaseDlg::FetchLogList()
 		cherryCmd.Format(L"git.exe cherry -- \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
-			if (line.GetLength() < 2)
+			if (line.GetLength() < 2 + 2 * GIT_HASH_SIZE)
 				return;
 			if (line[0] != '-')
 				return; // Don't skip (only skip commits starting with a '-')
-			CString hash = CUnicodeUtils::GetUnicode(line.Mid(1));
-			hash.Trim();
-			auto itIx = revIxMap.find(CGitHash::FromHexStrTry(hash));
+			auto itIx = revIxMap.find(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(2)));
 			if (itIx == revIxMap.end())
 				return; // Not found?? Should not occur...
 

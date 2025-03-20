@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1857,12 +1857,11 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 	cmd.Format(L"git.exe ls-remote%s -- \"%s\"", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(remote));
 	gitLastErr = cmd + L'\n';
 	if (Run(
-		cmd, [&](CStringA lineA) {
-			CGitHash hash = CGitHash::FromHexStr(lineA.Left(GIT_HASH_SIZE * 2));
-			lineA = lineA.Mid(GIT_HASH_SIZE * 2 + static_cast<int>(wcslen(L"\t"))); // sha1, tab
-			if (lineA.IsEmpty())
+		cmd, [&](const CStringA& origLineA) {
+			if (origLineA.GetLength() <= GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t")) || origLineA[GIT_HASH_SIZE * 2] != '\t') // OID, tab, refname
 				return;
-			CString ref = CUnicodeUtils::GetUnicode(lineA);
+			CGitHash hash = CGitHash::FromHexStr(std::string_view(origLineA, GIT_HASH_SIZE * 2));
+			CString ref = CUnicodeUtils::GetUnicode(origLineA.Mid(GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t"))));
 			CString shortname;
 			if (GetShortName(ref, shortname, L"refs/tags/"))
 			{
@@ -2040,7 +2039,7 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 		if (start <= 0)
 			return;
 
-		CGitHash hash = CGitHash::FromHexStr(lineA);
+		CGitHash hash = CGitHash::FromHexStr(std::string_view(lineA, start));
 		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
 	}, &gitLastErr);
 
@@ -3640,25 +3639,24 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != 52)
 			return -1;
 
-		CString hash;
-		CGit::StringAppend(hash, &out[hashStart], CP_UTF8, static_cast<int>(stageStart - 1 - hashStart));
+		std::string_view hash{ &out[hashStart], stageStart - 1 - hashStart };
 		long mode = strtol(&out[modeStart], nullptr, 10);
 		const int stage = strtol(&out[stageStart], nullptr, 10);
 		if (stage == 0)
 			return -1;
 		else if (stage == 1)
 		{
-			baseHash = CGitHash::FromHexStrTry(hash);
+			baseHash = CGitHash::FromHexStr(hash);
 			baseIsFile = mode != 160000;
 		}
 		else if (stage == 2)
 		{
-			mineHash = CGitHash::FromHexStrTry(hash);
+			mineHash = CGitHash::FromHexStr(hash);
 			mineIsFile = mode != 160000;
 		}
 		else if (stage == 3)
 		{
-			remoteHash = CGitHash::FromHexStrTry(hash);
+			remoteHash = CGitHash::FromHexStr(hash);
 			remoteIsFile = mode != 160000;
 		}
 

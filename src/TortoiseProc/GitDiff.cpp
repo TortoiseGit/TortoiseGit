@@ -241,12 +241,8 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 			CMessageBox::Show(hWnd, L"git diff-tree gives invalid output", L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
-		CString temp;
-		CGit::StringAppend(temp, &bytes[strlen(":000000 000000 ")], CP_UTF8, 2 * GIT_HASH_SIZE);
-		oldhash = CGitHash::FromHexStrTry(temp);
-		temp.Empty();
-		CGit::StringAppend(temp, &bytes[strlen(":000000 000000 ") + 2 * GIT_HASH_SIZE + 1], CP_UTF8, 2 * GIT_HASH_SIZE);
-		newhash = CGitHash::FromHexStrTry(temp);
+		oldhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ")], 2 * GIT_HASH_SIZE));
+		newhash = CGitHash::FromHexStr(std::string_view(&bytes[strlen(":000000 000000 ") + 2 * GIT_HASH_SIZE + 1], 2 * GIT_HASH_SIZE));
 	}
 
 	CString oldsub;

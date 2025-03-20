@@ -561,7 +561,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 		if (size != 2 * GIT_HASH_SIZE)
 			return -1;
 
-		m_Head = CGitHash::FromHexStr(reinterpret_cast<const char*>(buffer));
+		m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), size));
 
 		m_LastModifyTimeRef = time;
 
@@ -574,7 +574,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 	m_HeadRefFile.Empty();
 
-	m_Head = CGitHash::FromHexStr(reinterpret_cast<const char*>(buffer));
+	m_Head = CGitHash::FromHexStr(std::string_view(reinterpret_cast<const char*>(buffer), 2 * GIT_HASH_SIZE));
 
 	return 0;
 }
