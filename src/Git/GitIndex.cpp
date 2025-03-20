@@ -411,10 +411,10 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 	if (size != fileSize.LowPart)
 		return -1;
 
+	CStringA hash;
+	CStringA ref;
 	for (DWORD i = 0; i < fileSize.LowPart;)
 	{
-		CStringA hash;
-		CStringA ref;
 		if (buff[i] == '#' || buff[i] == '^')
 		{
 			while (buff[i] != '\n')
@@ -455,6 +455,8 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 			if (!refHash.IsEmpty())
 				m_PackRefMap[CUnicodeUtils::GetUnicode(ref)] = refHash;
 		}
+		hash.Empty();
+		ref.Empty();
 
 		while (buff[i] == '\n')
 		{
