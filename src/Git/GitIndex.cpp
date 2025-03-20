@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -413,8 +413,8 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 
 	for (DWORD i = 0; i < fileSize.LowPart;)
 	{
-		CString hash;
-		CString ref;
+		CStringA hash;
+		CStringA ref;
 		if (buff[i] == '#' || buff[i] == '^')
 		{
 			while (buff[i] != '\n')
@@ -449,8 +449,12 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				break;
 		}
 
-		if (!ref.IsEmpty())
-			m_PackRefMap[ref] = CGitHash::FromHexStrTry(hash);
+		if (!ref.IsEmpty() && hash.GetLength() == 2 * GIT_HASH_SIZE)
+		{
+			CGitHash refHash = CGitHash::FromHexStr(hash);
+			if (!refHash.IsEmpty())
+				m_PackRefMap[CUnicodeUtils::GetUnicode(ref)] = refHash;
+		}
 
 		while (buff[i] == '\n')
 		{
