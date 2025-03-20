@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2024 - TortoiseGit
+// Copyright (C) 2017-2025 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -268,7 +268,6 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 		return ERR_GIT_ERR;
 	else if (ret == 1)
 	{
-		memset(GitStat.HeadHash, 0, sizeof(GitStat.HeadHash));
 		memset(GitStat.HeadHashReadable, '0', sizeof(GitStat.HeadHashReadable));
 		GitStat.HeadHashReadable[sizeof(GitStat.HeadHashReadable) - 1] = '\0';
 		GitStat.bIsUnborn = TRUE;
@@ -296,7 +295,6 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 		return ERR_GIT_ERR;
 
 	const git_oid* oid = git_object_id(object);
-	git_oid_cpy(reinterpret_cast<git_oid*>(GitStat.HeadHash), oid);
 	git_oid_tostr(GitStat.HeadHashReadable, sizeof(GitStat.HeadHashReadable), oid);
 
 	CAutoCommit commit;
@@ -322,12 +320,12 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 		GitStat.HeadEmail = sig->email;
 	}
 
-	struct TagPayload { git_repository* repo; GitWCRev_t& GitStat; } tagpayload = { repo, GitStat };
+	struct TagPayload { git_repository* repo; GitWCRev_t& GitStat; const git_oid* headOid; } tagpayload = { repo, GitStat, oid };
 
 	if (git_tag_foreach(repo, [](const char*, git_oid* tagoid, void* payload)
 	{
 		auto pl = reinterpret_cast<struct TagPayload*>(payload);
-		if (git_oid_cmp(tagoid, reinterpret_cast<git_oid*>(pl->GitStat.HeadHash)) == 0)
+		if (git_oid_cmp(tagoid, pl->headOid) == 0)
 		{
 			pl->GitStat.bIsTagged = TRUE;
 			return 0;
@@ -339,7 +337,7 @@ int GetStatus(const wchar_t* path, GitWCRev_t& GitStat)
 		CAutoObject tagObject;
 		if (git_tag_peel(tagObject.GetPointer(), tag))
 			return -1;
-		if (git_oid_cmp(git_object_id(tagObject), reinterpret_cast<git_oid*>(pl->GitStat.HeadHash)) == 0)
+		if (git_oid_cmp(git_object_id(tagObject), pl->headOid) == 0)
 			pl->GitStat.bIsTagged = TRUE;
 
 		return 0;

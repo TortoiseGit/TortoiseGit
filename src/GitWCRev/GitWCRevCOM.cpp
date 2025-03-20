@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019, 2021-2023 - TortoiseGit
+// Copyright (C) 2017-2019, 2021-2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -161,7 +161,6 @@ HRESULT GitWCRev::GetWCInfoInternal(/*[in]*/ BSTR wcPath, /*[in]*/VARIANT_BOOL i
 	GitStat.bHasSubmoduleMods = FALSE;
 	GitStat.bHasSubmoduleNewCommits = FALSE;
 	GitStat.bHasSubmoduleUnversioned = FALSE;
-	GitStat.HeadHash[0] = '\0';
 	GitStat.HeadHashReadable[0] = '\0';
 	GitStat.HasMods = FALSE;
 	GitStat.HasUnversioned = FALSE;
