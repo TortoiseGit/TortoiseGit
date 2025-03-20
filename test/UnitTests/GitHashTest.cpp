@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2015-2016, 2018-2019, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,9 @@ TEST(CGitHash, Initial)
 	EXPECT_TRUE(hash2 == empty);
 	EXPECT_FALSE(hash2 != empty);
 	EXPECT_TRUE(hash2.IsEmpty());
+	hash2 = CGitHash::FromHexStr(L"8D1861316061748cfEE7e075dc138287978102ab");
+	EXPECT_TRUE(hash2 == hash);
+	EXPECT_STREQ(L"8d1861316061748cfee7e075dc138287978102ab", hash2.ToString());
 
 	unsigned char chararray[20] = { 0x8D, 0x18, 0x61, 0x31, 0x60, 0x61, 0x74, 0x8C, 0xFE, 0xE7, 0xE0, 0x75, 0xDC, 0x13, 0x82, 0x87, 0x97, 0x81, 0x02, 0xAB };
 	CGitHash hash3 = CGitHash::FromRaw(chararray);
@@ -77,6 +80,19 @@ TEST(CGitHash, Initial)
 
 	CGitHash hash8 = CGitHash::FromHexStrTry(L"01234567");
 	EXPECT_TRUE(hash8.IsEmpty());
+
+	CGitHash hash9 = CGitHash::FromHexStrTry(L"Xd1861316061748cfee7e075dc138287978102ab");
+	EXPECT_TRUE(hash9.IsEmpty());
+	CGitHash hash10 = CGitHash::FromHexStrTry(L"ad1861316061748cfee7e075dc138287978102aX");
+	EXPECT_TRUE(hash10.IsEmpty());
+	CGitHash hash11 = CGitHash::FromHexStrTry(L"ad1861316061748cfee7e075dc138287978102abX");
+	EXPECT_TRUE(hash11.IsEmpty());
+
+	// currently FromHexStr methods allow to pass longer strings
+	CGitHash hash12 = CGitHash::FromHexStr(L"8d1861316061748cfee7e075dc138287978102abXXX");
+	EXPECT_TRUE(hash12 == hash);
+	CGitHash hash13 = CGitHash::FromHexStr("8d1861316061748cfee7e075dc138287978102abXXX");
+	EXPECT_TRUE(hash13 == hash);
 }
 
 TEST(CGitHash, ToString)
