@@ -58,32 +58,46 @@ public:
 		return *this;
 	}
 
-	static CGitHash FromHexStrTry(const CString& str)
+#ifdef TGIT_TESTS_ONLY
+	static CGitHash FromHexStr(const wchar_t* str)
 	{
-		if (!IsValidSHA1(str))
-			return CGitHash();
-
-		return FromHexStr(str);
+		return FromHexStr(std::wstring_view(str));
 	}
+#endif
 
-	static CGitHash FromHexStr(const CString& str)
+	template <typename T>
+	static CGitHash FromHexStr(const T& str)
 	{
+		static_assert(std::is_assignable_v<T, const CString&> || std::is_assignable_v<T, const CStringA&> || std::is_assignable_v<T, const std::string_view&> || std::is_assignable_v<T, const std::wstring_view&>, "only applicable to 'const CString&', 'const CStringA&', 'std::string_view&' and 'std::string_view&'");
+		if constexpr (!(std::is_assignable_v<T, const std::string_view&> || std::is_assignable_v<T, const std::wstring_view&>))
+		{
+			if (str.GetLength() != 2 * GIT_HASH_SIZE)
+				return CGitHash();
+		}
+		else
+		{
+			if (str.size() != 2 * GIT_HASH_SIZE)
+				return CGitHash();
+		}
+
 		CGitHash hash;
 		for (int i = 0; i < GIT_HASH_SIZE; ++i)
 		{
-			unsigned char a;
-			a=0;
+			unsigned char a = 0;
 			for (int j = 2 * i; j <= 2 * i + 1; ++j)
 			{
-				a =a<<4;
+				a = a << 4;
 
-				wchar_t ch = str[j];
-				if (ch >= L'0' && ch <= L'9')
-					a |= (ch - L'0') & 0xF;
-				else if (ch >=L'A' && ch <= L'F')
-					a |= ((ch - L'A') & 0xF) + 10 ;
-				else if (ch >=L'a' && ch <= L'f')
-					a |= ((ch - L'a') & 0xF) + 10;
+				const auto ch = str[j];
+				static_assert('_' == L'_', "This method expects that char and wchar_t literals are comparable for ASCII characters");
+				if (ch >= '0' && ch <= '9')
+					a |= (ch - '0') & 0xF;
+				else if (ch >= 'A' && ch <= 'F')
+					a |= ((ch - 'A') & 0xF) + 10;
+				else if (ch >= 'a' && ch <= 'f')
+					a |= ((ch - 'a') & 0xF) + 10;
+				else
+					return CGitHash();
 			}
 			hash.m_hash[i] = a;
 		}
@@ -94,32 +108,6 @@ public:
 	{
 		CGitHash hash;
 		memcpy(hash.m_hash, raw, GIT_HASH_SIZE);
-		return hash;
-	}
-
-	static CGitHash FromHexStr(const std::string_view& str)
-	{
-		CGitHash hash;
-		ASSERT(str.size() == 2 * GIT_HASH_SIZE);
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-		{
-			unsigned char a;
-			a=0;
-			for (int j = 2 * i; j <= 2 * i + 1; ++j)
-			{
-				a =a<<4;
-
-				char ch = str[j];
-				if (ch >= '0' && ch <= '9')
-					a |= (ch - '0') & 0xF;
-				else if (ch >= 'A' && ch <= 'F')
-					a |= ((ch - 'A') & 0xF) + 10 ;
-				else if (ch >= 'a' && ch <= 'f')
-					a |= ((ch - 'a') & 0xF) + 10;
-
-			}
-			hash.m_hash[i] = a;
-		}
 		return hash;
 	}
 

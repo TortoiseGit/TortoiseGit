@@ -449,7 +449,7 @@ int CGitHeadFileList::GetPackRef(const CString &gitdir)
 				break;
 		}
 
-		if (!ref.IsEmpty() && hash.GetLength() == 2 * GIT_HASH_SIZE)
+		if (!ref.IsEmpty())
 		{
 			CGitHash refHash = CGitHash::FromHexStr(hash);
 			if (!refHash.IsEmpty())

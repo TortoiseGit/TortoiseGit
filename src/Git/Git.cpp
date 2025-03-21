@@ -1220,7 +1220,7 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		cmd.Format(L"git.exe rev-parse --verify --end-of-options %s", static_cast<LPCWSTR>(branch));
 		gitLastErr.Empty();
 		const int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
-		hash = CGitHash::FromHexStrTry(gitLastErr.Trim());
+		hash = CGitHash::FromHexStr(gitLastErr.Trim());
 		if (ret == 0)
 			gitLastErr.Empty();
 		else if (friendname == L"HEAD") // special check for unborn branch
@@ -2517,7 +2517,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
 		return false;
-	basehash = CGitHash::FromHexStrTry(base.Trim());
+	basehash = CGitHash::FromHexStr(base.Trim());
 
 	GetHash(hash, from);
 

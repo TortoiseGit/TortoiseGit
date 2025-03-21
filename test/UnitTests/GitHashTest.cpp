@@ -75,24 +75,22 @@ TEST(CGitHash, Initial)
 	hash6 = CGitHash::FromRaw(chararray);
 	EXPECT_TRUE(hash6 == hash);
 
-	CGitHash hash7 = CGitHash::FromHexStrTry(L"invalid");
+	CGitHash hash7 = CGitHash::FromHexStr(L"invalid");
 	EXPECT_TRUE(hash7.IsEmpty());
 
-	CGitHash hash8 = CGitHash::FromHexStrTry(L"01234567");
+	CGitHash hash8 = CGitHash::FromHexStr(L"01234567");
 	EXPECT_TRUE(hash8.IsEmpty());
 
-	CGitHash hash9 = CGitHash::FromHexStrTry(L"Xd1861316061748cfee7e075dc138287978102ab");
+	CGitHash hash9 = CGitHash::FromHexStr(L"Xd1861316061748cfee7e075dc138287978102ab");
 	EXPECT_TRUE(hash9.IsEmpty());
-	CGitHash hash10 = CGitHash::FromHexStrTry(L"ad1861316061748cfee7e075dc138287978102aX");
+	CGitHash hash10 = CGitHash::FromHexStr(L"ad1861316061748cfee7e075dc138287978102aX");
 	EXPECT_TRUE(hash10.IsEmpty());
-	CGitHash hash11 = CGitHash::FromHexStrTry(L"ad1861316061748cfee7e075dc138287978102abX");
+	CGitHash hash11 = CGitHash::FromHexStr(L"ad1861316061748cfee7e075dc138287978102abX");
 	EXPECT_TRUE(hash11.IsEmpty());
-
-	// currently FromHexStr methods allow to pass longer strings
-	CGitHash hash12 = CGitHash::FromHexStr(L"8d1861316061748cfee7e075dc138287978102abXXX");
+	CGitHash hash12 = CGitHash::FromHexStr(CStringA("8d1861316061748cfee7e075dc138287978102ab"));
 	EXPECT_TRUE(hash12 == hash);
 	CGitHash hash13 = CGitHash::FromHexStr(std::string_view("8d1861316061748cfee7e075dc138287978102abXXX"));
-	EXPECT_TRUE(hash13 == hash);
+	EXPECT_FALSE(hash13 == hash);
 }
 
 TEST(CGitHash, ToString)

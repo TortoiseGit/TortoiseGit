@@ -1708,7 +1708,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 	const int prefixLen = hash.GetLength();
 	while (hash.GetLength() < 2 * GIT_HASH_SIZE)
 		hash += L'0';
-	CGitHash prefixHash = CGitHash::FromHexStrTry(hash);
+	CGitHash prefixHash = CGitHash::FromHexStr(hash);
 	// start searching downwards, because it's unlikely that a hash is a forward reference
 	const int currentPos = m_LogList.GetSelectionMark();
 	const int cnt = static_cast<int>(m_LogList.m_arShownList.size());
