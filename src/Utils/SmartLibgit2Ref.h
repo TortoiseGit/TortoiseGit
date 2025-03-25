@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2023 - TortoiseGit
+// Copyright (C) 2014-2023, 2025 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -65,11 +65,10 @@ public:
 		Free();
 	}
 
-	void Swap(CSmartLibgit2Ref& tmp) noexcept
+	template <typename T, typename std::enable_if<std::is_base_of<CSmartLibgit2Ref<ReferenceType, FreeFunction>, T>::value, int>::type = 0>
+	void Swap(T& tmp) noexcept
 	{
-		ReferenceType* p;
-
-		p = m_Ref;
+		ReferenceType* p = m_Ref;
 		m_Ref = tmp.m_Ref;
 		tmp.m_Ref = p;
 	}
@@ -181,7 +180,6 @@ public:
 	CAutoRepository& operator=(const CAutoRepository&) = delete;
 
 	using CSmartLibgit2Ref<git_repository, git_repository_free>::GetPointer;
-	using CSmartLibgit2Ref<git_repository, git_repository_free>::Swap;
 	using CSmartLibgit2Ref<git_repository, git_repository_free>::Detach;
 	using CSmartLibgit2Ref<git_repository, git_repository_free>::Free;
 	using CSmartLibgit2Ref<git_repository, git_repository_free>::IsValid;
@@ -203,7 +201,6 @@ public:
 	CAutoCommit& operator=(const CAutoCommit&) = delete;
 
 	using CSmartLibgit2Ref<git_commit, git_commit_free>::GetPointer;
-	using CSmartLibgit2Ref<git_commit, git_commit_free>::Swap;
 	using CSmartLibgit2Ref<git_commit, git_commit_free>::Detach;
 	using CSmartLibgit2Ref<git_commit, git_commit_free>::Free;
 	using CSmartLibgit2Ref<git_commit, git_commit_free>::IsValid;
@@ -231,6 +228,7 @@ public:
 	using CSmartLibgit2Ref<git_reference, git_reference_free>::IsValid;
 	using CSmartLibgit2Ref<git_reference, git_reference_free>::operator git_reference*;
 	using CSmartLibgit2Ref<git_reference, git_reference_free>::operator bool;
+	friend CSmartLibgit2Ref<git_reference, git_reference_free>;
 };
 
 class CAutoTree : protected CSmartLibgit2Ref<git_tree, git_tree_free>
@@ -251,7 +249,6 @@ public:
 	CAutoTree& operator=(const CAutoTree&) = delete;
 
 	using CSmartLibgit2Ref<git_tree, git_tree_free>::GetPointer;
-	using CSmartLibgit2Ref<git_tree, git_tree_free>::Swap;
 	using CSmartLibgit2Ref<git_tree, git_tree_free>::Detach;
 	using CSmartLibgit2Ref<git_tree, git_tree_free>::Free;
 	using CSmartLibgit2Ref<git_tree, git_tree_free>::IsValid;
@@ -326,7 +323,6 @@ public:
 	CAutoConfig& operator=(const CAutoConfig&) = delete;
 
 	using CSmartLibgit2Ref<git_config, git_config_free>::GetPointer;
-	using CSmartLibgit2Ref<git_config, git_config_free>::Swap;
 	using CSmartLibgit2Ref<git_config, git_config_free>::Detach;
 	using CSmartLibgit2Ref<git_config, git_config_free>::Free;
 	using CSmartLibgit2Ref<git_config, git_config_free>::IsValid;

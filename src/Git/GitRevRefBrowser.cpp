@@ -40,6 +40,146 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 	MAP_STRING_STRING descriptions;
 	g_Git.GetBranchDescriptions(descriptions);
 
+	CGitMailmap mailmap;
+	if (g_Git.UsingLibGit2(CGit::GIT_CMD_FOREACHREF) && mergefilter <= 0) // libgit2 implementation is significantly slower because of "git_graph_descendant_of", hence, only use it when merge status is not a filter
+	{
+		CAutoRepository repo = g_Git.GetGitRepository();
+		if (!repo)
+		{
+			err = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		CAutoReference head;
+		if (mergefilter > 0)
+		{
+			if (const auto ret = git_repository_head(head.GetPointer(), repo); ret == GIT_EUNBORNBRANCH)
+				mergefilter = 0;
+			else if (ret < 0) {
+				err = g_Git.GetLibGit2LastErr();
+				return -1;
+			}
+		}
+
+		CAutoReferenceIterator iter;
+		if (git_reference_iterator_new(iter.GetPointer(), repo) < 0)
+		{
+			err = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		CAutoReference ref;
+		int error;
+		while (!(error = git_reference_next(ref.GetPointer(), iter)))
+		{
+			CString refName = CUnicodeUtils::GetUnicode(git_reference_name(ref));
+			if (filterCallback && !filterCallback(refName))
+				continue;
+
+			if (git_reference_type(ref) == GIT_REFERENCE_SYMBOLIC)
+			{
+				CAutoReference target;
+				if (git_reference_resolve(target.GetPointer(), ref))
+				{
+					err = g_Git.GetLibGit2LastErr();
+					return -1;
+				}
+				ref.Swap(target);
+			}
+
+			CAutoTag tag;
+			if (git_reference_is_tag(ref))
+				git_tag_lookup(tag.GetPointer(), repo, git_reference_target(ref));
+
+			if (mergefilter > 0)
+			{
+				const git_oid* oid = git_reference_target(ref);
+				if (tag)
+					oid = git_tag_target_id(tag);
+
+				const int ret = git_graph_descendant_of(repo, git_reference_target(head), oid);
+				if (ret < 0)
+				{
+					err = g_Git.GetLibGit2LastErr();
+					return -1;
+				}
+				if (mergefilter == 1 && ret == 0 && git_oid_cmp(oid, git_reference_target(head)) != 0)
+					continue;
+				if (mergefilter == 2 && (ret == 1 || git_oid_cmp(oid, git_reference_target(head)) == 0))
+					continue;
+			}
+
+			GitRevRefBrowser entry;
+			entry.m_CommitHash = git_reference_target(ref);
+			if (git_reference_is_tag(ref) && tag)
+			{
+				const char* msg = git_tag_message(tag);
+				if (const char* body = strchr(msg, '\n'); !body)
+					entry.m_Subject = CUnicodeUtils::GetUnicode(msg);
+				else
+					entry.m_Subject = CUnicodeUtils::GetUnicodeLengthSizeT(msg, body - msg);
+				auto tagger = git_tag_tagger(tag);
+				entry.m_CommitterName = CUnicodeUtils::GetUnicode(tagger->name);
+				entry.m_CommitterEmail = CUnicodeUtils::GetUnicode(tagger->email);
+				entry.m_CommitterDate = tagger->when.time;
+				if (mailmap)
+					entry.m_CommitterEmail = mailmap.TranslateAuthor(entry.m_CommitterEmail, entry.m_AuthorEmail);
+				entry.m_AuthorName = entry.m_CommitterName;
+				entry.m_AuthorEmail = entry.m_CommitterEmail;
+				entry.m_AuthorDate = entry.m_CommitterDate;
+
+				map.emplace(refName, entry);
+
+				continue;
+			}
+
+			CAutoCommit commit;
+			if (git_commit_lookup(commit.GetPointer(), repo, git_reference_target(ref)) < 0)
+			{
+				err = g_Git.GetLibGit2LastErr();
+				return -1;
+			}
+
+			auto author = git_commit_author(commit);
+			auto committer = git_commit_committer(commit);
+			entry.m_Subject = CUnicodeUtils::GetUnicode(git_commit_summary(commit));
+			entry.m_AuthorName = CUnicodeUtils::GetUnicode(author->name);
+			entry.m_AuthorEmail = CUnicodeUtils::GetUnicode(author->email);
+			entry.m_AuthorDate = author->when.time;
+			entry.m_CommitterName = CUnicodeUtils::GetUnicode(committer->name);
+			entry.m_CommitterEmail = CUnicodeUtils::GetUnicode(committer->email);
+			entry.m_CommitterDate = committer->when.time;
+			if (mailmap)
+			{
+				entry.m_AuthorName = mailmap.TranslateAuthor(entry.m_AuthorName, entry.m_AuthorEmail);
+				entry.m_CommitterName = mailmap.TranslateAuthor(entry.m_CommitterName, entry.m_CommitterEmail);
+			}
+
+			if (git_reference_is_branch(ref))
+			{
+				entry.m_Description = descriptions[refName.Mid(static_cast<int>(wcslen(L"refs/heads/")))];
+
+				CAutoBuf buf;
+				if (const auto ret = git_branch_upstream_name(buf, repo, git_reference_name(ref)); ret == 0)
+					entry.m_UpstreamRef = CUnicodeUtils::GetUnicodeLengthSizeT(buf->ptr, buf->size);
+				else if (ret != GIT_ENOTFOUND)
+				{
+					err = g_Git.GetLibGit2LastErr();
+					return -1;
+				}
+			}
+
+			map.emplace(refName, entry);
+		}
+		if (error != GIT_ITEROVER)
+		{
+			err = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		return 0;
+	}
+
 	CString args;
 	switch (mergefilter)
 	{
@@ -59,7 +199,6 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 
 	int linePos = 0;
 	CString singleRef;
-	CGitMailmap mailmap;
 	while (!(singleRef = allRefs.Tokenize(L"\03", linePos)).IsEmpty())
 	{
 		singleRef.TrimLeft(L"\r\n");

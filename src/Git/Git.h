@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@
 #define REG_SYSTEM_GITCONFIGPATH L"Software\\TortoiseGit\\SystemConfig"
 #define REG_MSYSGIT_EXTRA_PATH L"Software\\TortoiseGit\\MSysGitExtra"
 
-#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT) | (1 << CGit::GIT_CMD_GETCONFLICTINFO)
+#define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT) | (1 << CGit::GIT_CMD_GETCONFLICTINFO) | (1 << CGit::GIT_CMD_FOREACHREF)
 
 struct git_repository;
 
@@ -302,6 +302,7 @@ public:
 		GIT_CMD_LOGLISTDIFF,
 		GIT_CMD_BRANCH_CONTAINS,
 		GIT_CMD_GETCONFLICTINFO,
+		GIT_CMD_FOREACHREF,
 		LAST_VALUE,
 	};
 	static_assert(LIBGIT2_CMD::LAST_VALUE < sizeof(DWORD) * 8, "too many flags for storing them in a DWORD bitfield");
