@@ -115,14 +115,10 @@ public:
 	{
 		memset(m_hash,0, GIT_HASH_SIZE);
 	}
-	bool IsEmpty() const
+	inline bool IsEmpty() const
 	{
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-		{
-			if(m_hash[i] != 0)
-				return false;
-		}
-		return true;
+		static const unsigned char empty[GIT_HASH_SIZE]{};
+		return memcmp(m_hash, empty, GIT_HASH_SIZE) == 0;
 	}
 
 	CString ToString() const
