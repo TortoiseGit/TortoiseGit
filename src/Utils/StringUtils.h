@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010, 2020-2023 - TortoiseSVN
-// Copyright (C) 2015-2016, 2020, 2024 - TortoiseGit
+// Copyright (C) 2015-2016, 2020, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -202,5 +202,8 @@ public:
 	 */
 	static void PipesToNulls(wchar_t* buffer, size_t length);
 	static void PipesToNulls(wchar_t* buffer);
+
+	static bool TrimRight(std::string_view& view);
+	static bool TrimRight(std::wstring_view& view);
 };
 
