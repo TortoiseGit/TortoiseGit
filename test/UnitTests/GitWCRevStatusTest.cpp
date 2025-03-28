@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018, 2020 - TortoiseGit
+// Copyright (C) 2018, 2020, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,13 +41,13 @@ INSTANTIATE_TEST_SUITE_P(GitWCRevStatus, GitWCRevStatusCBasicGitWithTestBareRepo
 TEST(GitWCRevStatus, NotExists)
 {
 	GitWCRev_t GitStat;
-	EXPECT_EQ(ERR_NOWC, GetStatus(L"C:\\Windows\\does-not-exist", GitStat));
+	EXPECT_EQ(ERR_NOWC, GetStatusUnCleanPath(L"C:\\Windows\\does-not-exist", GitStat));
 }
 
 TEST(GitWCRevStatus, NoWorkingTree)
 {
 	GitWCRev_t GitStat;
-	EXPECT_EQ(ERR_NOWC, GetStatus(L"C:\\Windows", GitStat));
+	EXPECT_EQ(ERR_NOWC, GetStatusUnCleanPath(L"C:\\Windows", GitStat));
 }
 
 TEST(GitWCRevStatus, EmptyBareRepo)
@@ -60,19 +60,19 @@ TEST(GitWCRevStatus, EmptyBareRepo)
 	ASSERT_EQ(0, git_repository_init_ext(repo.GetPointer(), CUnicodeUtils::GetUTF8(tempdir.GetTempDir()), &options));
 
 	GitWCRev_t GitStat;
-	EXPECT_EQ(ERR_NOWC, GetStatus(tempdir.GetTempDir(), GitStat));
+	EXPECT_EQ(ERR_NOWC, GetStatusUnCleanPath(tempdir.GetTempDir(), GitStat));
 }
 
 TEST_P(GitWCRevStatusCBasicGitWithTestBareRepositoryFixture, BareRepo)
 {
 	GitWCRev_t GitStat;
-	EXPECT_EQ(ERR_NOWC, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(ERR_NOWC, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 }
 
 TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepo)
 {
 	GitWCRev_t GitStat;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_TRUE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -94,7 +94,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 
 	GitWCRev_t GitStat;
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(file, L"something\n"));
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_TRUE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -110,7 +110,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFile)
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
-	EXPECT_EQ(0, GetStatus(file, GitStat2));
+	EXPECT_EQ(0, GetStatusUnCleanPath(file, GitStat2));
 	EXPECT_FALSE(GitStat2.bIsGitItem);
 	EXPECT_TRUE(GitStat2.bIsUnborn);
 	EXPECT_STREQ("master", GitStat2.CurrentBranch.c_str());
@@ -141,7 +141,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 
 	GitWCRev_t GitStat3;
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(file, L"something\n"));
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat3));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat3));
 	EXPECT_TRUE(GitStat3.bIsGitItem);
 	EXPECT_TRUE(GitStat3.bIsUnborn);
 	EXPECT_STREQ("master", GitStat3.CurrentBranch.c_str());
@@ -157,7 +157,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoStagedFile)
 	EXPECT_STREQ("", GitStat3.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat4;
-	EXPECT_EQ(0, GetStatus(file, GitStat4));
+	EXPECT_EQ(0, GetStatusUnCleanPath(file, GitStat4));
 	EXPECT_FALSE(GitStat4.bIsGitItem);
 	EXPECT_TRUE(GitStat4.bIsUnborn);
 	EXPECT_STREQ("master", GitStat4.CurrentBranch.c_str());
@@ -178,7 +178,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	CString folder = m_Dir.GetTempDir() + L"\\folder";
 	GitWCRev_t GitStat;
 	ASSERT_TRUE(CreateDirectory(folder, nullptr));
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_TRUE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -194,7 +194,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolder)
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
-	EXPECT_EQ(0, GetStatus(folder, GitStat2));
+	EXPECT_EQ(0, GetStatusUnCleanPath(folder, GitStat2));
 	EXPECT_FALSE(GitStat2.bIsGitItem);
 	EXPECT_TRUE(GitStat2.bIsUnborn);
 	EXPECT_STREQ("master", GitStat2.CurrentBranch.c_str());
@@ -217,7 +217,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	GitWCRev_t GitStat;
 	ASSERT_TRUE(CreateDirectory(folder, nullptr));
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(folder + L"\\somefile.txt", L"something\n"));
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_TRUE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -233,7 +233,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_STREQ("", GitStat.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat2;
-	EXPECT_EQ(0, GetStatus(folder, GitStat2));
+	EXPECT_EQ(0, GetStatusUnCleanPath(folder, GitStat2));
 	EXPECT_FALSE(GitStat2.bIsGitItem);
 	EXPECT_TRUE(GitStat2.bIsUnborn);
 	EXPECT_STREQ("master", GitStat2.CurrentBranch.c_str());
@@ -249,7 +249,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	EXPECT_STREQ("", GitStat2.HeadAuthor.c_str());
 
 	GitWCRev_t GitStat3;
-	EXPECT_EQ(0, GetStatus(folder + L"\\somefile.txt", GitStat3));
+	EXPECT_EQ(0, GetStatusUnCleanPath(folder + L"\\somefile.txt", GitStat3));
 	EXPECT_FALSE(GitStat3.bIsGitItem);
 	EXPECT_TRUE(GitStat3.bIsUnborn);
 	EXPECT_STREQ("master", GitStat3.CurrentBranch.c_str());
@@ -267,7 +267,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 	CString folder2 = folder + L"2";
 	ASSERT_TRUE(CreateDirectory(folder2, nullptr));
 	GitWCRev_t GitStat4;
-	EXPECT_EQ(0, GetStatus(folder2, GitStat4));
+	EXPECT_EQ(0, GetStatusUnCleanPath(folder2, GitStat4));
 	EXPECT_FALSE(GitStat4.bIsGitItem);
 	EXPECT_TRUE(GitStat4.bIsUnborn);
 	EXPECT_STREQ("master", GitStat4.CurrentBranch.c_str());
@@ -286,7 +286,7 @@ TEST_P(GitWCRevStatusCBasicGitWithEmptyRepositoryFixture, EmptyRepoFolderFile)
 TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 {
 	GitWCRev_t GitStat;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_FALSE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -307,7 +307,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_STREQ(L"", output);
 
 	GitWCRev_t GitStat2;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat2));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat2));
 	EXPECT_TRUE(GitStat2.bIsGitItem);
 	EXPECT_FALSE(GitStat2.bIsUnborn);
 	EXPECT_STREQ("master2", GitStat2.CurrentBranch.c_str());
@@ -326,7 +326,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_TRUE(DeleteFile(m_Dir.GetTempDir() + L"\\utf8-bom.txt"));
 
 	GitWCRev_t GitStat3;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir() + L"\\ansi.txt", GitStat3));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir() + L"\\ansi.txt", GitStat3));
 	EXPECT_TRUE(GitStat3.bIsGitItem);
 	EXPECT_FALSE(GitStat3.bIsUnborn);
 	EXPECT_STREQ("master2", GitStat3.CurrentBranch.c_str());
@@ -343,7 +343,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 	EXPECT_STREQ("email@cs-ware.de", GitStat3.HeadEmail.c_str());
 
 	GitWCRev_t GitStat4;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat4));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat4));
 	EXPECT_TRUE(GitStat4.bIsGitItem);
 	EXPECT_FALSE(GitStat4.bIsUnborn);
 	EXPECT_STREQ("master2", GitStat4.CurrentBranch.c_str());
@@ -361,7 +361,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\copy\\ba.txt", L"something\n"));
 	GitWCRev_t GitStat5;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir() + L"\\copy", GitStat5));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir() + L"\\copy", GitStat5));
 	EXPECT_FALSE(GitStat5.bIsGitItem);
 	EXPECT_FALSE(GitStat5.bIsUnborn);
 	EXPECT_STREQ("master2", GitStat5.CurrentBranch.c_str());
@@ -379,7 +379,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, Basic)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\copy\\aaa.txt", L"something\n"));
 	GitWCRev_t GitStat6;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir() + L"\\copy", GitStat6));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir() + L"\\copy", GitStat6));
 	EXPECT_FALSE(GitStat6.bIsGitItem);
 	EXPECT_FALSE(GitStat6.bIsUnborn);
 	EXPECT_STREQ("master2", GitStat6.CurrentBranch.c_str());
@@ -405,7 +405,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\.GitWCRevignore", L"\n"));
 
 	GitWCRev_t GitStat;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat));
 	EXPECT_TRUE(GitStat.bIsGitItem);
 	EXPECT_FALSE(GitStat.bIsUnborn);
 	EXPECT_STREQ("master", GitStat.CurrentBranch.c_str());
@@ -423,7 +423,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\.GitWCRevignore", L".GitWCRevignore\n"));
 	GitWCRev_t GitStat2;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat2));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat2));
 	EXPECT_TRUE(GitStat2.bIsGitItem);
 	EXPECT_FALSE(GitStat2.bIsUnborn);
 	EXPECT_STREQ("master", GitStat2.CurrentBranch.c_str());
@@ -443,7 +443,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\.GitWCRevignore", L".GitWCRevignore\nutf8-bom.txt\n"));
 
 	GitWCRev_t GitStat3;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat3));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat3));
 	EXPECT_TRUE(GitStat3.bIsGitItem);
 	EXPECT_FALSE(GitStat3.bIsUnborn);
 	EXPECT_STREQ("master", GitStat3.CurrentBranch.c_str());
@@ -460,7 +460,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_STREQ("email@cs-ware.de", GitStat3.HeadEmail.c_str());
 
 	GitWCRev_t GitStat4;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir() + L"\\utf8-bom.txt", GitStat4));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir() + L"\\utf8-bom.txt", GitStat4));
 	EXPECT_TRUE(GitStat4.bIsGitItem);
 	EXPECT_FALSE(GitStat4.bIsUnborn);
 	EXPECT_STREQ("master", GitStat4.CurrentBranch.c_str());
@@ -477,7 +477,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 	EXPECT_STREQ("email@cs-ware.de", GitStat4.HeadEmail.c_str());
 
 	GitWCRev_t GitStat5;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat5));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat5));
 	EXPECT_TRUE(GitStat5.bIsGitItem);
 	EXPECT_FALSE(GitStat5.bIsUnborn);
 	EXPECT_STREQ("master", GitStat5.CurrentBranch.c_str());
@@ -495,7 +495,7 @@ TEST_P(GitWCRevStatusCBasicGitWithTestRepoFixture, GitWCRevignore)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(m_Dir.GetTempDir() + L"\\ansi.txt", L"modified!"));
 	GitWCRev_t GitStat6;
-	EXPECT_EQ(0, GetStatus(m_Dir.GetTempDir(), GitStat6));
+	EXPECT_EQ(0, GetStatusUnCleanPath(m_Dir.GetTempDir(), GitStat6));
 	EXPECT_TRUE(GitStat6.bIsGitItem);
 	EXPECT_FALSE(GitStat6.bIsUnborn);
 	EXPECT_STREQ("master", GitStat6.CurrentBranch.c_str());
