@@ -91,6 +91,31 @@ TEST(CGitHash, Initial)
 	EXPECT_TRUE(hash12 == hash);
 	CGitHash hash13 = CGitHash::FromHexStr(std::string_view("8d1861316061748cfee7e075dc138287978102abXXX"));
 	EXPECT_FALSE(hash13 == hash);
+
+	bool ok = true;
+	CGitHash hash14 = CGitHash::FromHexStr(L"", &ok);
+	EXPECT_FALSE(ok);
+	EXPECT_TRUE(hash14.IsEmpty());
+
+	ok = true;
+	CGitHash hash15 = CGitHash::FromHexStr(L"HEAD", &ok);
+	EXPECT_FALSE(ok);
+	EXPECT_TRUE(hash15.IsEmpty());
+
+	ok = false;
+	CGitHash hash16 = CGitHash::FromHexStr(L"8d1861316061748cfee7e075dc138287978102ab", &ok);
+	EXPECT_TRUE(ok);
+	EXPECT_FALSE(hash16.IsEmpty());
+
+	ok = false;
+	CGitHash hash17 = CGitHash::FromHexStr(L"8d1861316061748cfEE7e075dc138287978102ab", &ok);
+	EXPECT_TRUE(ok);
+	EXPECT_FALSE(hash17.IsEmpty());
+
+	ok = false;
+	CGitHash hash18 = CGitHash::FromHexStr(GIT_REV_ZERO, &ok);
+	EXPECT_TRUE(ok);
+	EXPECT_TRUE(hash18.IsEmpty());
 }
 
 TEST(CGitHash, ToString)
@@ -107,19 +132,6 @@ TEST(CGitHash, ToString)
 	EXPECT_STREQ(L"0123456789", hash.ToString(10));
 	EXPECT_STREQ(L"0123456789abcdef0123", hash.ToString(20));
 	EXPECT_STREQ(L"0123456789abcdef0123456789abcdef01234567", hash.ToString(40));
-}
-
-TEST(CGitHash, IsSHA1Valid)
-{
-	EXPECT_TRUE(CGitHash::IsValidSHA1(GIT_REV_ZERO));
-	EXPECT_TRUE(CGitHash::IsValidSHA1(L"8d1861316061748cfee7e075dc138287978102ab"));
-	EXPECT_TRUE(CGitHash::IsValidSHA1(L"8d1861316061748cfee7E075dc138287978102ab"));
-	EXPECT_TRUE(CGitHash::IsValidSHA1(L"8D1861316061748CFEE7E075DC138287978102AB"));
-	EXPECT_FALSE(CGitHash::IsValidSHA1(L""));
-	EXPECT_FALSE(CGitHash::IsValidSHA1(L"8d18613"));
-	EXPECT_FALSE(CGitHash::IsValidSHA1(L"master"));
-	EXPECT_FALSE(CGitHash::IsValidSHA1(L"refs/heads/master"));
-	EXPECT_FALSE(CGitHash::IsValidSHA1(L"8d1861316061748cfee7e075dc138287978102az"));
 }
 
 TEST(CGitHash, MatchesPrefix)

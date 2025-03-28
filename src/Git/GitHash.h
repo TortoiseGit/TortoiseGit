@@ -59,25 +59,33 @@ public:
 	}
 
 #ifdef TGIT_TESTS_ONLY
-	static CGitHash FromHexStr(const wchar_t* str)
+	static CGitHash FromHexStr(const wchar_t* str, bool* isHash = nullptr)
 	{
-		return FromHexStr(std::wstring_view(str));
+		return FromHexStr(std::wstring_view(str), isHash);
 	}
 #endif
 
 	template <typename T>
-	static CGitHash FromHexStr(const T& str)
+	static CGitHash FromHexStr(const T& str, bool* isHash = nullptr)
 	{
 		static_assert(std::is_assignable_v<T, const CString&> || std::is_assignable_v<T, const CStringA&> || std::is_assignable_v<T, const std::string_view&> || std::is_assignable_v<T, const std::wstring_view&>, "only applicable to 'const CString&', 'const CStringA&', 'std::string_view&' and 'std::string_view&'");
 		if constexpr (!(std::is_assignable_v<T, const std::string_view&> || std::is_assignable_v<T, const std::wstring_view&>))
 		{
 			if (str.GetLength() != 2 * GIT_HASH_SIZE)
+			{
+				if (isHash)
+					*isHash = false;
 				return CGitHash();
+			}
 		}
 		else
 		{
 			if (str.size() != 2 * GIT_HASH_SIZE)
+			{
+				if (isHash)
+					*isHash = false;
 				return CGitHash();
+			}
 		}
 
 		CGitHash hash;
@@ -97,10 +105,16 @@ public:
 				else if (ch >= 'a' && ch <= 'f')
 					a |= ((ch - 'a') & 0xF) + 10;
 				else
+				{
+					if (isHash)
+						*isHash = false;
 					return CGitHash();
+				}
 			}
 			hash.m_hash[i] = a;
 		}
+		if (isHash)
+			*isHash = true;
 		return hash;
 	}
 
@@ -173,18 +187,6 @@ public:
 		if (memcmp(m_hash, hash.m_hash, prefixLen >> 1))
 			return false;
 		return prefixLen == 2 * GIT_HASH_SIZE || wcsncmp(ToString(), hashString, prefixLen) == 0;
-	}
-
-	static bool IsValidSHA1(const CString &possibleSHA1)
-	{
-		if (possibleSHA1.GetLength() != 2 * GIT_HASH_SIZE)
-			return false;
-		for (int i = 0; i < possibleSHA1.GetLength(); ++i)
-		{
-			if (!((possibleSHA1[i] >= '0' && possibleSHA1[i] <= '9') || (possibleSHA1[i] >= 'a' && possibleSHA1[i] <= 'f') || (possibleSHA1[i] >= 'A' && possibleSHA1[i] <= 'F')))
-				return false;
-		}
-		return true;
 	}
 
 	friend struct std::hash<CGitHash>;

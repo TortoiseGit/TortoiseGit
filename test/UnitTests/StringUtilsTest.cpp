@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2021, 2023 - TortoiseGit
+// Copyright (C) 2015-2017, 2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -384,4 +384,56 @@ TEST(CStringUtils, EnsureCRLF)
 	EXPECT_STREQ(L"\r\nSome\r\n\r\nthing\r\n", CStringUtils::EnsureCRLF(L"\nSome\r\n\r\nthing\n"));
 	EXPECT_STREQ(L"\r\nSome\r\n\r\nthing\r\n", CStringUtils::EnsureCRLF(L"\nSome\r\n\rthing\r"));
 	EXPECT_STREQ(L"\r\nSome\r\n\r\n\r\nthing\r\n", CStringUtils::EnsureCRLF(L"\nSome\n\r\rthing\n"));
+}
+
+TEST(CStringUtils, TrimRightA)
+{
+	std::string_view sv1{};
+	CStringUtils::TrimRight(sv1);
+	EXPECT_EQ(0u, sv1.size());
+
+	std::string_view sv2{"Hallo "};
+	CStringUtils::TrimRight(sv2);
+	EXPECT_EQ(5u, sv2.size());
+	EXPECT_TRUE(sv2 == "Hallo");
+
+	std::string_view sv3{ " Hallo " };
+	CStringUtils::TrimRight(sv3);
+	EXPECT_EQ(6u, sv3.size());
+	EXPECT_TRUE(sv3 == " Hallo");
+
+	std::string_view sv4{ "Hallo \r\n " };
+	CStringUtils::TrimRight(sv4);
+	EXPECT_EQ(5u, sv4.size());
+	EXPECT_TRUE(sv4 == "Hallo");
+
+	std::string_view sv5{"   \n "};
+	CStringUtils::TrimRight(sv5);
+	EXPECT_EQ(0u, sv5.size());
+}
+
+TEST(CStringUtils, TrimRightW)
+{
+	std::wstring_view sv1{};
+	CStringUtils::TrimRight(sv1);
+	EXPECT_EQ(0u, sv1.size());
+
+	std::wstring_view sv2{ L"Hallo " };
+	CStringUtils::TrimRight(sv2);
+	EXPECT_EQ(5u, sv2.size());
+	EXPECT_TRUE(sv2 == L"Hallo");
+
+	std::wstring_view sv3{ L" Hallo " };
+	CStringUtils::TrimRight(sv3);
+	EXPECT_EQ(6u, sv3.size());
+	EXPECT_TRUE(sv3 == L" Hallo");
+
+	std::wstring_view sv4{ L"Hallo \r\n " };
+	CStringUtils::TrimRight(sv4);
+	EXPECT_EQ(5u, sv4.size());
+	EXPECT_TRUE(sv4 == L"Hallo");
+
+	std::wstring_view sv5{ L"   \n " };
+	CStringUtils::TrimRight(sv5);
+	EXPECT_EQ(0u, sv5.size());
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2019, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -118,10 +118,11 @@ int CLogCache::FetchCacheIndex(CString GitDir)
 			CStdioFile file(m_GitDir + L"\\shallow", CFile::typeText | CFile::modeRead | CFile::shareDenyWrite);
 			while (file.ReadString(strLine))
 			{
-				if (!CGitHash::IsValidSHA1(strLine))
+				CGitHash hash = CGitHash::FromHexStr(strLine);
+				if (hash.IsEmpty())
 					continue;
 
-				m_shallowAnchors.insert(CGitHash::FromHexStr(strLine));
+				m_shallowAnchors.insert(hash);
 			}
 		}
 		catch (CFileException* pE)

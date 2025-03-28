@@ -917,11 +917,12 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	}
 	else if (fallback)
 	{
-		CStringA utf8Hash(s);
-		CString unicodeHash = CUnicodeUtils::GetUnicode(utf8Hash);
-		unicodeHash.TrimRight(L" \r\n\t");
-		if (CGitHash::IsValidSHA1(unicodeHash))
-			sBranchOut = unicodeHash;
+		std::string_view utf8Hash{s};
+		CStringUtils::TrimRight(utf8Hash);
+		bool ok = false;
+		CGitHash hash = CGitHash::FromHexStr(utf8Hash, &ok);
+		if (ok)
+			sBranchOut = hash.ToString();
 		else
 			//# Assume this is a detached head.
 			sBranchOut = L"HEAD";
@@ -1160,11 +1161,13 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 {
 	ATLASSERT(repo);
 
-	// no need to parse a ref if it's already a 40-byte hash
-	if (!skipFastCheck && CGitHash::IsValidSHA1(friendname))
+	// no need to look up a ref if it's already an OID
+	if (!skipFastCheck)
 	{
-		hash = CGitHash::FromHexStr(friendname);
-		return 0;
+		bool isHash = false;
+		hash = CGitHash::FromHexStr(friendname, &isHash);
+		if (isHash)
+			return 0;
 	}
 
 	const int isHeadOrphan = git_repository_head_unborn(repo);
@@ -1191,12 +1194,11 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 
 int CGit::GetHash(CGitHash &hash, const CString& friendname)
 {
-	// no need to parse a ref if it's already a 40-byte hash
-	if (CGitHash::IsValidSHA1(friendname))
-	{
-		hash = CGitHash::FromHexStr(friendname);
+	// no need to look up a ref if it's already an OID
+	bool hashOk = false;
+	hash = CGitHash::FromHexStr(friendname, &hashOk);
+	if (hashOk)
 		return 0;
-	}
 
 	if (m_IsUseLibGit2)
 	{
