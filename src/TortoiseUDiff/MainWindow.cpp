@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021, 2023 - TortoiseGit
+// Copyright (C) 2012-2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -1077,7 +1077,7 @@ bool CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.lpstrFile = szFile;
 	ofn.nMaxFile = sizeof(szFile)/sizeof(wchar_t);
 	wchar_t filter[1024] = { 0 };
-	LoadString(::hResource, IDS_PATCHFILEFILTER, filter, sizeof(filter) / sizeof(wchar_t));
+	LoadString(::hResource, IDS_PATCHFILEFILTER, filter, _countof(filter));
 	CStringUtils::PipesToNulls(filter);
 	ofn.lpstrFilter = filter;
 	ofn.nFilterIndex = 1;
@@ -1086,7 +1086,7 @@ bool CMainWindow::loadOrSaveFile(bool doLoad, const std::wstring& filename /* = 
 	ofn.nMaxFileTitle = 0;
 	ofn.lpstrInitialDir = nullptr;
 	wchar_t fileTitle[1024] = { 0 };
-	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, sizeof(fileTitle) / sizeof(wchar_t));
+	LoadString(::hResource, doLoad ? IDS_OPENPATCH : IDS_SAVEPATCH, fileTitle, _countof(fileTitle));
 	ofn.lpstrTitle = fileTitle;
 	ofn.Flags = OFN_ENABLESIZING | OFN_EXPLORER;
 	if(doLoad)
