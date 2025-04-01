@@ -741,7 +741,7 @@ static int DescribeCommit(const CGitHash& hash, CString& result)
 	if (git_describe_format(describe_buf, describe, &format_options))
 		return -1;
 
-	result = CUnicodeUtils::GetUnicode(describe_buf->ptr);
+	result = CUnicodeUtils::GetUnicodeLengthSizeT(describe_buf->ptr, describe_buf->size);
 	return 0;
 }
 

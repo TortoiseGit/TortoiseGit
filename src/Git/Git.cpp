@@ -1515,7 +1515,7 @@ CString CGit::DerefFetchHead()
 		}
 	}
 
-	return CUnicodeUtils::GetUnicode(hashToReturn.c_str());
+	return CUnicodeUtils::GetUnicode(hashToReturn);
 }
 
 int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, bool skipCurrent /*false*/)

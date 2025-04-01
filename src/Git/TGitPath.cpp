@@ -1176,9 +1176,9 @@ int CTGitPathList::ParserFromLFSLocks(unsigned int action, const CString& output
 			if (r["id"].get<std::string>().empty())
 				continue;
 			CTGitPath gitPath;
-			gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>().c_str()));
+			gitPath.SetFromGit(CUnicodeUtils::GetUnicode(r["path"].get<std::string>()));
 			gitPath.m_Action = action;
-			gitPath.m_LFSLockOwner = CUnicodeUtils::GetUnicode(r["owner"]["name"].get<std::string>().c_str());
+			gitPath.m_LFSLockOwner = CUnicodeUtils::GetUnicode(r["owner"]["name"].get<std::string>());
 			AddPath(gitPath);
 		}
 	}

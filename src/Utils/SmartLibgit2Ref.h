@@ -291,7 +291,7 @@ public:
 			return ret;
 		}
 
-		value = CUnicodeUtils::GetUnicode(buf->ptr);
+		value = CUnicodeUtils::GetUnicodeLengthSizeT(buf->ptr, buf->size);
 
 		return 0;
 	}
