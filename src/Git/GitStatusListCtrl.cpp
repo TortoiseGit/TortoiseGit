@@ -2299,7 +2299,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							CString fromwhere;
 							if (m_amend)
 								fromwhere = L"~1";
-							if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetHead() + fromwhere, GitRev::GetWorkingCopy(), tempfile, false, false, diffContext, false))
+							if (g_Git.GetUnifiedDiff(*selectedFilepath, L"HEAD" + fromwhere, GitRev::GetWorkingCopy(), tempfile, false, false, diffContext, false))
 							{
 								::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 								break;
@@ -2342,7 +2342,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 					outStream.close();
 					SetFileAttributes(fullTempFile, FILE_ATTRIBUTE_READONLY);
 					if (m_CurrentVersion.IsEmpty())
-						CAppUtils::StartUnifiedDiffViewer(fullTempFile, GitRev::GetHead() + (m_amend ? L"~1" : L""), FALSE, bShift);
+						CAppUtils::StartUnifiedDiffViewer(fullTempFile, CString(L"HEAD") + (m_amend ? L"~1" : L""), FALSE, bShift);
 					else
 						CAppUtils::StartUnifiedDiffViewer(fullTempFile, m_CurrentVersion.ToString(), FALSE, bShift);
 				}
@@ -3038,11 +3038,11 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			m_CurrentVersion.ToString() + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_DELETED )
 			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
-			GitRev::GetHead() + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			L"HEAD" + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else
 			CGitDiff::Diff(GetParentHWND(), &file1,&file2,
 					CString(GIT_REV_ZERO),
-					GitRev::GetHead() + fromwhere, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+					L"HEAD" + fromwhere, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	}
 	else
 	{

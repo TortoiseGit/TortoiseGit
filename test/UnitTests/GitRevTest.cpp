@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2019-2020 - TortoiseGit
+// Copyright (C) 2015-2017, 2019-2020, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -190,6 +190,5 @@ TEST_P(GitRevCBasicGitWithTestRepoBareFixture, GitRevParsing)
 
 TEST(GitRev, Constants)
 {
-	EXPECT_STREQ(L"HEAD", GitRev::GetHead());
 	EXPECT_STREQ(L"0000000000000000000000000000000000000000", GitRev::GetWorkingCopy());
 }

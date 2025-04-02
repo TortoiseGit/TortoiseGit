@@ -1176,7 +1176,7 @@ int CGit::GetHash(git_repository * repo, CGitHash &hash, const CString& friendna
 		hash.Empty();
 		if (isHeadOrphan == 1)
 		{
-			if (friendname == GitRev::GetHead()) // special check for unborn branch: if not requesting HEAD, do normal commit lookup
+			if (friendname == L"HEAD") // special check for unborn branch: if not requesting HEAD, do normal commit lookup
 				return 0;
 		}
 		else
