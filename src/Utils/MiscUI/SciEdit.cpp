@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2024 - TortoiseGit
+// Copyright (C) 2009-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -221,7 +221,7 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_AUTOCSETIGNORECASE, 1);
 	Call(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(nullptr));
 	Call(SCI_SETCODEPAGE, SC_CP_UTF8);
-	Call(SCI_AUTOCSETFILLUPS, 0, reinterpret_cast<LPARAM>("\t(["));
+	Call(SCI_AUTOCSETFILLUPS, 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\ScintillaACFillups", L"\t")).c_str()));
 	Call(SCI_AUTOCSETMAXWIDTH, 0);
 	//Set the default windows colors for edit controls
 	SetColors(false);
