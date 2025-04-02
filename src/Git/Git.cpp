@@ -3258,12 +3258,10 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 
 		// also list staged files which will be in the commit
 		if (includedStaged || !filterlist)
-			Run(L"git.exe diff-index --cached --raw " + head + L" --numstat -C -M -z --", &cmdout);
+			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z --", static_cast<LPCWSTR>(head));
 		else
-		{
 			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
-			Run(cmd, &cmdout);
-		}
+		Run(cmd, &cmdout);
 
 		if (!filterlist)
 			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z --", static_cast<LPCWSTR>(head), ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
@@ -3287,7 +3285,8 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 	{
 		// This will show staged files regardless of any filterlist, so that it has the same behavior that the commit window has when staging support is disabled
 		BYTE_VECTOR cmdStagedUnfilteredOut, cmdUnstagedUnfilteredOut;
-		CString cmd = L"git.exe diff-index --cached --raw " + head + L" --numstat -C -M -z --";
+		CString cmd;
+		cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z --", static_cast<LPCWSTR>(head));
 		Run(cmd, &cmdStagedUnfilteredOut);
 
 		CTGitPathList stagedUnfiltered;
