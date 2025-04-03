@@ -92,7 +92,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 int CGitDiff::DiffNull(HWND hWnd, const CTGitPath* pPath, const CString& rev1, bool bIsAdd, int jumpToLine, bool bAlternative)
 {
 	CGitHash rev1Hash;
-	if (rev1 != GIT_REV_ZERO)
+	if (rev1 != GitRev::GetWorkingCopyRef())
 	{
 		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // make sure we have a HASH here, otherwise filenames might be invalid, also add ^{} in order to dereference signed tags
 		{
@@ -344,7 +344,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 	// make sure we have HASHes here, otherwise filenames might be invalid
 	CGitHash rev1Hash;
 	CGitHash rev2Hash;
-	if (rev1 != GIT_REV_ZERO)
+	if (rev1 != GitRev::GetWorkingCopyRef())
 	{
 		if (g_Git.GetHash(rev1Hash, rev1 + L"^{}")) // add ^{} in order to dereference signed tags
 		{
@@ -352,7 +352,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 			return -1;
 		}
 	}
-	if (rev2 != GIT_REV_ZERO)
+	if (rev2 != GitRev::GetWorkingCopyRef())
 	{
 		if (g_Git.GetHash(rev2Hash, rev2 + L"^{}")) // add ^{} in order to dereference signed tags
 		{

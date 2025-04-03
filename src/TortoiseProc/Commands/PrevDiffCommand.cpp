@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2011, 2016, 2018-2019, 2025 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ bool PrevDiffCommand::Execute()
 		CFileDiffDlg dlg;
 		theApp.m_pMainWnd = &dlg;
 		dlg.m_strRev1 = L"HEAD~1";
-		dlg.m_strRev2 = GIT_REV_ZERO;
+		dlg.m_strRev2 = GitRev::GetWorkingCopyRef();
 		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
 
 		dlg.DoModal();
@@ -58,5 +58,5 @@ bool PrevDiffCommand::Execute()
 		return false;
 	}
 
-	return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GIT_REV_ZERO, revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
+	return !!CGitDiff::Diff(GetExplorerHWND(), &cmdLinePath, &cmdLinePath, GitRev::GetWorkingCopyRef(), revs.GetGitRevAt(1).m_CommitHash.ToString(), false, bUnified, 0, bAlternativeTool);
 }
