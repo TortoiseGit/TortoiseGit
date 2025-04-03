@@ -1282,9 +1282,9 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if (ignoreBlankLines)
 		ignore += L" --ignore-blank-lines";
 
-	if(rev1 == GIT_REV_ZERO || rev2 == GIT_REV_ZERO)
+	if (rev1 == GitRev::GetWorkingCopyRef() || rev2 == GitRev::GetWorkingCopyRef())
 	{
-		if(rev1 == GIT_REV_ZERO)
+		if (rev1 == GitRev::GetWorkingCopyRef())
 			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
 		else
 			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));
@@ -2873,9 +2873,9 @@ void CGit::SetGit2CertificateCheckCertificate(void* callback)
 CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
 {
 	CString cmd;
-	if (rev2 == GitRev::GetWorkingCopy())
+	if (rev2 == GitRev::GetWorkingCopyRef())
 		cmd.Format(L"git.exe diff --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1));
-	else if (rev1 == GitRev::GetWorkingCopy())
+	else if (rev1 == GitRev::GetWorkingCopyRef())
 		cmd.Format(L"git.exe diff -R --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev2));
 	else
 	{
@@ -2979,15 +2979,15 @@ static int GetUnifiedDiffLibGit2(const CTGitPath& path, const CString& revOld, c
 	}
 	CAutoDiff diff;
 
-	if (revNew == GitRev::GetWorkingCopy() || revOld == GitRev::GetWorkingCopy())
+	if (revNew == GitRev::GetWorkingCopyRef() || revOld == GitRev::GetWorkingCopyRef())
 	{
 		CAutoTree t1;
 		CAutoDiff diff2;
 
-		if (revNew != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree1, t1.GetPointer()))
+		if (revNew != GitRev::GetWorkingCopyRef() && resolve_to_tree(repo, tree1, t1.GetPointer()))
 			return -1;
 
-		if (revOld != GitRev::GetWorkingCopy() && resolve_to_tree(repo, tree2, t1.GetPointer()))
+		if (revOld != GitRev::GetWorkingCopyRef() && resolve_to_tree(repo, tree2, t1.GetPointer()))
 			return -1;
 
 		if (git_diff_tree_to_index(diff.GetPointer(), repo, t1, nullptr, &opts))

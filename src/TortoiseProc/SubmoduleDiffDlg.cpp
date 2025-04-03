@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019, 2023-2024 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -254,7 +254,7 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 		sCmd.Format(L"/command:repostatus /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)));
 	else
 	{
-		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::ChangeType::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GIT_REV_ZERO : static_cast<LPCWSTR>(m_sToHash.ToString()));
+		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::ChangeType::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GitRev::GetWorkingCopyRef() : static_cast<LPCWSTR>(m_sToHash.ToString()));
 
 		if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 			sCmd += L" /alternative";

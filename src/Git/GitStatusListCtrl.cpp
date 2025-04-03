@@ -1898,7 +1898,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
-							if (m_sMarkForDiffVersion != GitRev::GetWorkingCopy() || PathIsRelative(m_sMarkForDiffFilename))
+							if (m_sMarkForDiffVersion != GitRev::GetWorkingCopyRef() || PathIsRelative(m_sMarkForDiffFilename))
 								diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;
@@ -2266,7 +2266,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CString sCmd;
 						if (m_CurrentVersion.IsEmpty())
-							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GIT_REV_ZERO : L"HEAD", reinterpret_cast<void*>(m_hWnd));
+							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", reinterpret_cast<void*>(m_hWnd));
 						else
 							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), reinterpret_cast<void*>(m_hWnd));
 						if (bShift)
@@ -2299,7 +2299,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							CString fromwhere;
 							if (m_amend)
 								fromwhere = L"~1";
-							if (g_Git.GetUnifiedDiff(*selectedFilepath, L"HEAD" + fromwhere, GitRev::GetWorkingCopy(), tempfile, false, false, diffContext, false))
+							if (g_Git.GetUnifiedDiff(*selectedFilepath, L"HEAD" + fromwhere, GitRev::GetWorkingCopyRef(), tempfile, false, false, diffContext, false))
 							{
 								::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 								break;
@@ -2311,7 +2311,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							{
 								if ((selectedFilepath->m_Action & CTGitPath::LOGACTIONS_ADDED) && revfail)
 								{
-									if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetWorkingCopy(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
+									if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetWorkingCopyRef(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
 									{
 										::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 										break;
@@ -3006,7 +3006,7 @@ void CGitStatusListCtrl::StartDiffWC(int fileindex, bool parent)
 	else
 		version = m_CurrentVersion.ToString();
 
-	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GIT_REV_ZERO, version, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+	CGitDiff::Diff(GetParentHWND(), &file1, &file1, GitRev::GetWorkingCopyRef(), version, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 }
 
 void CGitStatusListCtrl::StartDiff(int fileindex)
@@ -3032,7 +3032,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			fromwhere = L"~1";
 		if( g_Git.IsInitRepos())
 			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
-			GIT_REV_ZERO, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
+			GitRev::GetWorkingCopyRef(), true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else if( file1.m_Action&CTGitPath::LOGACTIONS_ADDED )
 			CGitDiff::DiffNull(GetParentHWND(), GetListEntry(fileindex),
 			m_CurrentVersion.ToString() + fromwhere, true, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
@@ -3041,7 +3041,7 @@ void CGitStatusListCtrl::StartDiff(int fileindex)
 			L"HEAD" + fromwhere, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 		else
 			CGitDiff::Diff(GetParentHWND(), &file1,&file2,
-					CString(GIT_REV_ZERO),
+					GitRev::GetWorkingCopyRef(),
 					L"HEAD" + fromwhere, false, false, 0, !!(GetAsyncKeyState(VK_SHIFT) & 0x8000));
 	}
 	else
@@ -3160,7 +3160,7 @@ void CGitStatusListCtrl::UpdateDiffWithFileFromReg()
 	{
 		lastDiffLaterFile = diffLaterFile;
 		m_sMarkForDiffFilename = diffLaterFile;
-		m_sMarkForDiffVersion = GitRev::GetWorkingCopy();
+		m_sMarkForDiffVersion = GitRev::GetWorkingCopyRef();
 	}
 }
 

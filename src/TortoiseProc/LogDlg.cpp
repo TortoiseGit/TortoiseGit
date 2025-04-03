@@ -229,7 +229,7 @@ void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString
 	m_path = path;
 	m_hightlightRevision = hightlightRevision;
 
-	if (range == GIT_REV_ZERO)
+	if (range == GitRev::GetWorkingCopyRef())
 		range = L"HEAD";
 
 	if (!(range.IsEmpty() || range == L"HEAD"))

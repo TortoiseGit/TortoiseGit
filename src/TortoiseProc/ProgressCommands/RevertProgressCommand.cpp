@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019, 2022-2024 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019, 2022-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -185,7 +185,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 						pathString = path.GetGitOldPathString();
 
 					CString sCmd;
-					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GIT_REV_ZERO, static_cast<LPCWSTR>(pathString));
+					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GitRev::GetWorkingCopyRef(), static_cast<LPCWSTR>(pathString));
 					CCommonAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			});
