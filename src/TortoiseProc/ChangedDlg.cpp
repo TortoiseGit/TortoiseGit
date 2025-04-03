@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -441,7 +441,7 @@ void CChangedDlg::OnBnClickedButtonUnifieddiff()
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /unified /path:\"%s\" /revision1:HEAD /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(commonDirectory)), static_cast<LPCWSTR>(GitRev::GetWorkingCopy()));
+	sCmd.Format(L"/command:showcompare /unified /path:\"%s\" /revision1:HEAD /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(commonDirectory)), static_cast<LPCWSTR>(GitRev::GetWorkingCopyRef()));
 	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 		sCmd += L" /alternative";
 	CAppUtils::RunTortoiseGitProc(sCmd);

@@ -1898,7 +1898,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						else
 						{
 							PathCompactPathEx(CStrBuf(diffWith, 2 * GIT_HASH_SIZE), m_sMarkForDiffFilename, 2 * GIT_HASH_SIZE, 0);
-							if (m_sMarkForDiffVersion != GitRev::GetWorkingCopy() || PathIsRelative(m_sMarkForDiffFilename))
+							if (m_sMarkForDiffVersion != GitRev::GetWorkingCopyRef() || PathIsRelative(m_sMarkForDiffFilename))
 								diffWith += L':' + m_sMarkForDiffVersion.Left(g_Git.GetShortHASHLength());
 						}
 						CString menuEntry;
@@ -2299,7 +2299,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							CString fromwhere;
 							if (m_amend)
 								fromwhere = L"~1";
-							if (g_Git.GetUnifiedDiff(*selectedFilepath, L"HEAD" + fromwhere, GitRev::GetWorkingCopy(), tempfile, false, false, diffContext, false))
+							if (g_Git.GetUnifiedDiff(*selectedFilepath, L"HEAD" + fromwhere, GitRev::GetWorkingCopyRef(), tempfile, false, false, diffContext, false))
 							{
 								::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 								break;
@@ -2311,7 +2311,7 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 							{
 								if ((selectedFilepath->m_Action & CTGitPath::LOGACTIONS_ADDED) && revfail)
 								{
-									if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetWorkingCopy(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
+									if (g_Git.GetUnifiedDiff(*selectedFilepath, GitRev::GetWorkingCopyRef(), m_CurrentVersion.ToString(), tempfile, false, false, diffContext, false))
 									{
 										::MessageBox(m_hWnd, g_Git.GetGitLastErr(L"Could not get unified diff.", CGit::GIT_CMD_DIFF), L"TortoiseGit", MB_OK);
 										break;
@@ -3160,7 +3160,7 @@ void CGitStatusListCtrl::UpdateDiffWithFileFromReg()
 	{
 		lastDiffLaterFile = diffLaterFile;
 		m_sMarkForDiffFilename = diffLaterFile;
-		m_sMarkForDiffVersion = GitRev::GetWorkingCopy();
+		m_sMarkForDiffVersion = GitRev::GetWorkingCopyRef();
 	}
 }
 

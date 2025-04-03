@@ -98,7 +98,7 @@ public:
 
 	virtual ~GitRev();
 
-	static CString GetWorkingCopy() { return GIT_REV_ZERO; };
+	static CString GetWorkingCopyRef() { return GIT_REV_ZERO; };
 
 	CGitHash m_CommitHash;
 	GIT_REV_LIST m_ParentHash;
