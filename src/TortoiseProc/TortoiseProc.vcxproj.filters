@@ -1783,9 +1783,6 @@
     <ClInclude Include="..\Git\GitRevRefBrowser.h">
       <Filter>Git</Filter>
     </ClInclude>
-    <ClInclude Include="..\Resources\LoglistCommonResource.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="FindBar.h">
       <Filter>Commands\Commit</Filter>
     </ClInclude>
@@ -1974,6 +1971,9 @@
     </ClInclude>
     <ClInclude Include="..\Resources\TGitHelpMapping.ini">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Resources\LoglistCommonResource.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
