@@ -1079,7 +1079,7 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 	{
 		const int diffContext = g_Git.GetConfigValueInt32(L"diff.context", -1);
 		CStringA outA;
-		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? CString("HEAD") : (pLogEntry->m_CommitHash.ToString() + L"~1");
+		CString rev1 = pLogEntry->m_CommitHash.IsEmpty() ? CString(L"HEAD") : (pLogEntry->m_CommitHash.ToString() + L"~1");
 		CString rev2 = pLogEntry->m_CommitHash.ToString();
 		g_Git.GetUnifiedDiff(CTGitPath(), rev1, rev2, outA, false, false, diffContext);
 		out = CUnicodeUtils::GetUnicode(outA);

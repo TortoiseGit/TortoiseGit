@@ -931,7 +931,7 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	else
 	{
 		//# Assume this is a detached head.
-		sBranchOut = "HEAD";
+		sBranchOut = L"HEAD";
 
 		return 1;
 	}

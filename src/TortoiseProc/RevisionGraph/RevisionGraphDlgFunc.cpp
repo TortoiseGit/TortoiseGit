@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2023 - TortoiseGit
+// Copyright (C) 2012-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -460,7 +460,7 @@ void CRevisionGraphWnd::UnifiedDiffRevs(bool bHead)
 
 	bool alternativeTool = !!(GetAsyncKeyState(VK_SHIFT) & 0x8000);
 	CAppUtils::StartShowUnifiedDiff(m_hWnd, CString(), GetFriendRefName(m_SelectedEntry1), CString(),
-		bHead ? CString("HEAD") : GetFriendRefName(m_SelectedEntry2),
+		bHead ? CString(L"HEAD") : GetFriendRefName(m_SelectedEntry2),
 		alternativeTool);
 }
 
