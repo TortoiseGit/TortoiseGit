@@ -4,7 +4,7 @@
   Copyright (c) 2003, Michael Carruth
   All rights reserved.
 
-  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020, 2023
+  Adjusted by Sven Strickroth <email@cs-ware.de>, 2011-2020, 2023, 2025
    * make it work with no attachments
    * added flag to show mail compose dialog
    * make it work with 32-64bit inconsistencies (http://msdn.microsoft.com/en-us/library/dd941355.aspx)
@@ -51,7 +51,6 @@
 
 #include "stdafx.h"
 #include "MailMsg.h"
-#include "UnicodeUtils.h"
 #include "StringUtils.h"
 #include <MAPI.h>
 #include "MapiUnicodeHelp.h"

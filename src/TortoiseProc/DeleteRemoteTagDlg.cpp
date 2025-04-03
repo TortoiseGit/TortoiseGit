@@ -18,13 +18,11 @@
 //
 
 #include "stdafx.h"
-
 #include "Git.h"
 #include "AppUtils.h"
 #include "TortoiseProc.h"
 #include "DeleteRemoteTagDlg.h"
 #include "MessageBox.h"
-#include "MassiveGitTask.h"
 #include "SysProgressDlg.h"
 
 IMPLEMENT_DYNAMIC(CDeleteRemoteTagDlg, CResizableStandAloneDialog)

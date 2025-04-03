@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017, 2022, 2024 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2022, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "PatchListCtrl.h"
-#include "SendMailPatch.h"
+#include "SendMail.h"
 
 // CSendMailDlg dialog
 

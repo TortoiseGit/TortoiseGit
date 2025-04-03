@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2020 - TortoiseSVN
-// Copyright (C) 2013-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,15 +17,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "HistoryCombo.h"
-#include "../registry.h"
+#include "registry.h"
 #include "DPIAware.h"
 #include "Theme.h"
 #include "ClipboardHelper.h"
 
 #ifdef HISTORYCOMBO_WITH_SYSIMAGELIST
-#include "../SysImageList.h"
+#include "SysImageList.h"
 #endif
 
 #define MAX_HISTORY_ITEMS 25

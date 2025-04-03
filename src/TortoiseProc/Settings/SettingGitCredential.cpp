@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2023 - TortoiseGit
+// Copyright (C) 2013-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,12 +22,10 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingGitCredential.h"
-#include "Settings.h"
 #include "GitAdminDir.h"
 #include "MessageBox.h"
 #include "AppUtils.h"
 #include "Git.h"
-#include "PathUtils.h"
 
 namespace SimpleCredentialType
 {

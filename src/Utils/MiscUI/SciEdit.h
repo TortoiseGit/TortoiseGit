@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2013, 2018, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include "../SmartHandle.h"
 #include "ILexer.h"
@@ -24,7 +25,6 @@
 #include "SciLexer.h"
 #include "ProjectProperties.h"
 #include "PersonalDictionary.h"
-#include <regex>
 #include "LruCache.h"
 #include <spellcheck.h>
 // the following should be last

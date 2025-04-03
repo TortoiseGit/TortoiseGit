@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2023 - TortoiseGit
+// Copyright (C) 2009-2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 #include "Git.h"
 #include "GitHash.h"
 #include "TGitPath.h"
-#include "GitLogListBase.h"
+#include "LogDlgHelper.h"
 #include "UnicodeUtils.h"
 
 void CLogDataVector::ClearAll()

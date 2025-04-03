@@ -19,7 +19,6 @@
 
 #include "stdafx.h"
 #include "GitHash.h"
-#include "GitStatus.h"
 
 TEST(CGitHash, Initial)
 {

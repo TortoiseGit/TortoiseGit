@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,12 +17,12 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "DirFileEnum.h"
 #include "SetOverlayIcons.h"
 #include "StringUtils.h"
-#include "PathUtils.h"
 #include "LoadIconEx.h"
 
 IMPLEMENT_DYNAMIC(CSetOverlayIcons, ISettingsPropPage)

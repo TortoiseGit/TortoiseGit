@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2016, 2018-2019, 2022 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2016, 2018-2019, 2022, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,17 +16,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "SubmoduleCommand.h"
-
 #include "MessageBox.h"
 #include "Git.h"
-#include "ShellUpdater.h"
 #include "SubmoduleAddDlg.h"
 #include "SubmoduleUpdateDlg.h"
 #include "ProgressDlg.h"
 #include "AppUtils.h"
-#include <MassiveGitTask.h>
+#include "MassiveGitTaskBase.h"
 
 bool SubmoduleAddCommand::Execute()
 {

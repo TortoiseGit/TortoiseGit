@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2011, 2013, 2015-2017, 2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2011, 2013, 2015-2017, 2019, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,9 +19,9 @@
 //
 
 #include "stdafx.h"
+#include "ShellUpdater.h"
 #include <ShlObj.h>
 #include "GitAdminDir.h"
-#include "GitStatusCache.h"
 
 CShellUpdater::CShellUpdater()
 {

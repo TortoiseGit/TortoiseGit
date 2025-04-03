@@ -41,10 +41,6 @@ Wins、网卡MAC地址等相关信息；还提供了SMTP协议解析类，该类
 #include <afxsock.h>
 
 #define SECURITY_WIN32
-#include <wincrypt.h>
-#include <wintrust.h>
-#include <schannel.h>
-#include <security.h>
 #include <sspi.h>
 #include "WindowsCredentialsStore.h"
 

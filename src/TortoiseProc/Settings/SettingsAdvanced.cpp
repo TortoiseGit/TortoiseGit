@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2024 - TortoiseGit
+// Copyright (C) 2012-2025 - TortoiseGit
 // Copyright (C) 2009-2011, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,9 +21,7 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "SettingsAdvanced.h"
-#include "registry.h"
 #include "Git.h"
-
 
 IMPLEMENT_DYNAMIC(CSettingsAdvanced, ISettingsPropPage)
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2020, 2023, 2025 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 #include "stdafx.h"
 #include "ColumnManager.h"
 #include "LoglistCommonResource.h"
-#include <iterator>
 #include "DPIAware.h"
 
 // registry version number of column-settings of both GitLogListBase and GitStatusListCtrl

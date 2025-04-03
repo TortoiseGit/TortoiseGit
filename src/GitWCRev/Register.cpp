@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017, 2019 - TortoiseGit
+// Copyright (C) 2017, 2019, 2025 - TortoiseGit
 // Copyright (C) 2005-2008, 2010-2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "stdafx.h"
-#include <objbase.h> // ATL base
 #include <atlbase.h>
 #include <assert.h>
 

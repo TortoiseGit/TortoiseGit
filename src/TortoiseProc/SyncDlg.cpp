@@ -27,11 +27,9 @@
 #include "ProgressDlg.h"
 #include "MessageBox.h"
 #include "ImportPatchDlg.h"
-#include "RebaseDlg.h"
 #include "Hooks.h"
 #include "SmartHandle.h"
 #include "ProgressCommands/FetchProgressCommand.h"
-#include "SyncTabCtrl.h"
 #include "SysProgressDlg.h"
 #include "ThemeMFCVisualManager.h"
 

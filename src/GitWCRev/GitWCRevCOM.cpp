@@ -23,12 +23,10 @@
 #include "GitWCRevCOM_i.c"
 #include "GitWCRevCOM.h"
 
-#include <comutil.h>
 #include <atlbase.h>
 #include <intsafe.h>
 
 #include "Register.h"
-#include "UnicodeUtils.h"
 #include "status.h"
 
 STDAPI DllRegisterServer();

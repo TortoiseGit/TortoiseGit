@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019-2020, 2024 - TortoiseGit
+// Copyright (C) 2012-2017, 2019-2020, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,12 +18,10 @@
 //
 
 #include "stdafx.h"
-
 #include "Git.h"
 #include "AppUtils.h"
 #include "TortoiseProc.h"
 #include "SelectRemoteRefDlg.h"
-#include "MessageBox.h"
 #include "SysProgressDlg.h"
 
 IMPLEMENT_DYNAMIC(CSelectRemoteRefDlg, CHorizontalResizableStandAloneDialog)

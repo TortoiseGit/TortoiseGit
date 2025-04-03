@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseUDiff.h"
 #include "MainWindow.h"
@@ -30,6 +31,9 @@
 #include "LoadIconEx.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "ILexer.h"
+#include "SciLexer.h"
+#include "Scintilla.h"
 #include "Lexilla.h"
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");

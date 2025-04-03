@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "PathUtils.h"
@@ -32,7 +33,6 @@
 #include "ExportDlg.h"
 #include "ProgressDlg.h"
 #include "GitAdminDir.h"
-#include "ProgressDlg.h"
 #include "BrowseFolder.h"
 #include "DirFileEnum.h"
 #include "CreateBranchTagDlg.h"
@@ -71,7 +71,6 @@
 #include "SubmoduleResolveConflictDlg.h"
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
-#include "DPIAware.h"
 #include "IconExtractor.h"
 #include "ClipboardHelper.h"
 #endif

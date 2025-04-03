@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2020, 2022-2024 - TortoiseGit
+// Copyright (C) 2020, 2022-2025 - TortoiseGit
 // Copyright (C) 2003-2015, 2017-2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,8 +17,10 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-#include "DiffData.h"
+#include "FileTextLines.h"
+#include "WorkingFile.h"
 #include "SVNLineDiff.h"
 #include "ScrollTool.h"
 #include "Undo.h"

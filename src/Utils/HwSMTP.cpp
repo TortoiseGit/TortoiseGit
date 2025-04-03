@@ -8,12 +8,14 @@
 #include "afxstr.h"
 #include "HwSMTP.h"
 #include "Windns.h"
-#include <Afxmt.h>
 #include "FormatMessageWrapper.h"
 #include <atlenc.h>
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
+
+#include <wincrypt.h>
+#include <schannel.h>
 
 #define IO_BUFFER_SIZE 0x10000
 

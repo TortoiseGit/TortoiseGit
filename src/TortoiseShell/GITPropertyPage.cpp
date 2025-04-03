@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,18 +17,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#include "stdafx.h"
 
+#include "stdafx.h"
 #include "ShellExt.h"
 #include "gitpropertypage.h"
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
-#include "UnicodeUtils.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 #include "StringUtils.h"
 #include "Git.h"
-#include "GitAdminDir.h"
 
 #define MAX_STRING_LENGTH	4096	//should be big enough
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011, 2014-2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2010-2011, 2014-2016, 2019-2020, 2025 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,21 +17,12 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "registry.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
-#include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
-
-#pragma warning(push)
-#include "svn_pools.h"
-#include "svn_io.h"
-#include "svn_path.h"
-#include "svn_diff.h"
-#include "svn_string.h"
-#include "svn_utf.h"
-#pragma warning(pop)
 #include "Git.h"
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"

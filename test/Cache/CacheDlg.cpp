@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014-2019, 2023 - TortoiseGit
+// Copyright (C) 2012, 2014-2019, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,6 @@
 #include "Cache.h"
 #include "DirFileEnum.h"
 #include "CacheInterface.h"
-#include <WinInet.h>
 #include "CacheDlg.h"
 #include <random>
 

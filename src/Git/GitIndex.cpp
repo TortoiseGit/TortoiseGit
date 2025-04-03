@@ -23,7 +23,6 @@
 #include "UnicodeUtils.h"
 #include "PathUtils.h"
 #include "gitindex.h"
-#include <sys/types.h>
 #include <sys/stat.h>
 #include "SmartHandle.h"
 #include "git2/sys/repository.h"

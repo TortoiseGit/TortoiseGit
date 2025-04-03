@@ -17,24 +17,18 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-// GitLogList.cpp : implementation file
-//
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "GitLogList.h"
 #include "GitRev.h"
 #include "IconMenu.h"
-#include "cursor.h"
-#include "GitProgressDlg.h"
-#include "ProgressDlg.h"
 #include "SysProgressDlg.h"
-#include "LogDlg.h"
 #include "MessageBox.h"
 #include "registry.h"
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
-#include "TempFile.h"
 #include "CommitDlg.h"
 #include "RebaseDlg.h"
 #include "CommitIsOnRefsDlg.h"

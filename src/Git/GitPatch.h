@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2012, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2012, 2019-2020, 2023, 2025 - TortoiseGit
 // Copyright (C) 2010-2012, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,12 +17,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-
-#include "TGitPath.h"
-#include "TempFile.h"
 #include "SysProgressDlg.h"
-
 #include "Patch.h"
 
 class GitPatch

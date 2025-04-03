@@ -18,7 +18,6 @@
 //
 
 #pragma once
-#include <wincrypt.h>
 #include <string>
 
 enum class HashType

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2025 - TortoiseGit
 // Copyright (C) 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,8 +23,6 @@
  */
 
 #include <Windows.h>
-#include <vector>
-#include <wrl.h>
 #include <windows.ui.viewmanagement.h>
 
 class Win10Colors

@@ -16,9 +16,8 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-#include <Shobjidl.h>
-#include <wrl/module.h>
 #include <wrl/implements.h>
 #include <wrl/client.h>
 #include <shobjidl_core.h>

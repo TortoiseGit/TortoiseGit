@@ -1,7 +1,7 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
 // Copyright (C) 2006-2016, 2018-2020 - TortoiseSVN
-// Copyright (C) 2016, 2018-2020, 2023 - TortoiseGit
+// Copyright (C) 2016, 2018-2020, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,11 +17,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include <shellapi.h>
 #include <CommCtrl.h>
 #include "PicWindow.h"
-#include <math.h>
 #include <memory>
 #include "../Utils/DPIAware.h"
 #include "../Utils/LoadIconEx.h"

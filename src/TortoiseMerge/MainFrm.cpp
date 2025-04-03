@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -18,6 +18,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseMerge.h"
 #include "resource.h"
@@ -32,8 +33,6 @@
 #include "RightView.h"
 #include "BottomView.h"
 #include "DiffColors.h"
-#include "SelectFileFilter.h"
-#include "FormatMessageWrapper.h"
 #include "TaskbarUUID.h"
 #include "RegexFiltersDlg.h"
 #include "DPIAware.h"
@@ -42,6 +41,7 @@
 #include "Windows10Colors.h"
 #include "DarkModeHelper.h"
 #include "ThemeMFCVisualManager.h"
+#include "TempFile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

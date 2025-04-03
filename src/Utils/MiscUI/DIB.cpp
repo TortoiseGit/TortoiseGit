@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2006, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "DIB.h"
-#include <atlbase.h>
 #include <d2d1.h>
 #include <d2d1_3.h>
 #pragma comment(lib, "d2d1.lib")

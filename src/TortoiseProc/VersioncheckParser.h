@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2018, 2020-2024 - TortoiseGit
+// Copyright (C) 2013-2018, 2020-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,8 +16,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
-#include "..\..\ext\simpleini\SimpleIni.h"
+#include "../../ext/simpleini/SimpleIni.h"
 
 class CVersioncheckParser
 {

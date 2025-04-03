@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015, 2017, 2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2015, 2017, 2020, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include "SettingsPropPage.h"
-#include "registry.h"
 
 // CSettingGitRemote dialog
 class CSettingGitRemote : public ISettingsPropPage

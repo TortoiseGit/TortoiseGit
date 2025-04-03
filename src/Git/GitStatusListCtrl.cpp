@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
+#include "LoglistCommonResource.h"
 #include "../TortoiseShell/resource.h"
 #include "GitStatusListCtrl.h"
 #include "MessageBox.h"
@@ -37,7 +38,6 @@
 #include "SysImageList.h"
 #include "TGitPath.h"
 #include "registry.h"
-#include "InputDlg.h"
 #include "GitAdminDir.h"
 #include "GitDataObject.h"
 #include "ProgressCommands/AddProgressCommand.h"
@@ -47,12 +47,8 @@
 #include "IconMenu.h"
 #include "FormatMessageWrapper.h"
 #include "BrowseFolder.h"
-#include "SysInfo.h"
-#include "SysProgressDlg.h"
 #include "CreateChangelistDlg.h"
-#include "GitAdminDir.h"
 #include "Theme.h"
-
 #include <fstream>
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED

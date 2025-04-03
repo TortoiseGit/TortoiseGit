@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "Command.h"
 #include "MessageBox.h"
@@ -24,15 +25,12 @@
 #include "AutoTextTestCommand.h"
 #include "CommitCommand.h"
 #include "LogCommand.h"
-
 #include "CreateRepositoryCommand.h"
 #include "CloneCommand.h"
 #include "PrevDiffCommand.h"
 #include "DiffCommand.h"
-
 #include "RenameCommand.h"
 #include "RepoStatusCommand.h"
-
 #include "RevertCommand.h"
 #include "RemoveCommand.h"
 #include "PullCommand.h"
@@ -56,7 +54,6 @@
 #include "ResolveCommand.h"
 #include "DropMoveCommand.h"
 #include "DropCopyAddCommand.h"
-#include "DropCopyCommand.h"
 #include "HelpCommand.h"
 #include "StashCommand.h"
 #include "SubmoduleCommand.h"
@@ -70,8 +67,6 @@
 #include "SyncCommand.h"
 #include "RequestPullCommand.h"
 #include "UpdateCheckCommand.h"
-#include "PasteCopyCommand.h"
-#include "PasteMoveCommand.h"
 #include "SVNIgnoreCommand.h"
 #include "BisectCommand.h"
 #include "RepositoryBrowserCommand.h"
@@ -81,11 +76,12 @@
 #include "CommitIsOnRefsCommand.h"
 #include "RTFMCommand.h"
 #include "LFSCommands.h"
-
 #if 0
 #include "CrashCommand.h"
 #include "RebuildIconCacheCommand.h"
-#include "RemoveCommand.h"
+#include "DropCopyCommand.h"
+#include "PasteCopyCommand.h"
+#include "PasteMoveCommand.h"
 #include "UnIgnoreCommand.h"
 #endif
 

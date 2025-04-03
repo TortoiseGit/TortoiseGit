@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,7 +26,6 @@
 #include "GitLogList.h"
 #include "MenuButton.h"
 #include "ProjectProperties.h"
-#include "AppUtils.h"
 
 // CRebaseDlg dialog
 #define IDC_REBASE_TAB 0x1000000

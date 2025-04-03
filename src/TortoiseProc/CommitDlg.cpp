@@ -17,6 +17,7 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "CommitDlg.h"
@@ -30,7 +31,6 @@
 #include "../TGitCache/CacheInterface.h"
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
-#include "Commands/PushCommand.h"
 #include "COMError.h"
 #include "Globals.h"
 #include "SysProgressDlg.h"

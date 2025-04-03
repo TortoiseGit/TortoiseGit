@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2023 - TortoiseGit
+// Copyright (C) 2016-2017, 2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2008, 2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,7 +19,6 @@
 
 #pragma once
 #include "TGitPath.h"
-#include "DragDropImpl.h"
 #include <vector>
 #include <Shldisp.h>
 

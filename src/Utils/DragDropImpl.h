@@ -10,7 +10,6 @@
 #define __DRAGDROPIMPL_H__
 //#include <ShlDisp.h>
 #include <shobjidl.h>
-#include <shlobj.h>
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 class CDragSourceNotify : IDropSourceNotify

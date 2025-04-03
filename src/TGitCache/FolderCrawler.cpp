@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008,2011,2014 - TortoiseSVN
-// Copyright (C) 2008-2014, 2016-2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2019, 2021, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,7 +23,6 @@
 #include "GitStatusCache.h"
 #include "registry.h"
 #include "TGitCache.h"
-#include <ShlObj.h>
 
 CFolderCrawler::CFolderCrawler()
 {

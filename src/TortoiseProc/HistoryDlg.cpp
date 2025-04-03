@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2021, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2008,2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "registry.h"
 #include "HistoryDlg.h"
 
 IMPLEMENT_DYNAMIC(CHistoryDlg, CResizableStandAloneDialog)

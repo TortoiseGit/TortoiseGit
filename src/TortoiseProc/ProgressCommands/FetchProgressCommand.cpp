@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "stdafx.h"
+#include "TortoiseProc.h"
 #include "FetchProgressCommand.h"
 #include "AppUtils.h"
 

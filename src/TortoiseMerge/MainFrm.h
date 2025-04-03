@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013, 2021-2024 - TortoiseGit
+// Copyright (C) 2013, 2021-2025 - TortoiseGit
 // Copyright (C) 2006-2015, 2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,18 +17,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-#pragma once
 
+#pragma once
 #include "DiffData.h"
 #include "LocatorBar.h"
 #include "LineDiffBar.h"
 #include "FilePatchesDlg.h"
-#include "TempFile.h"
 #include "XSplitter.h"
 #include "GitPatch.h"
 #include "../../ext/SimpleIni/SimpleIni.h"
 #include "CustomMFCRibbonStatusBar.h"
-#include <tuple>
 #include "NativeRibbonApp.h"
 
 class CLeftView;

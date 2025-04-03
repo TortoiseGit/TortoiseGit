@@ -18,7 +18,6 @@
 //
 
 #pragma once
-#include "Hash.h"
 #include <string>
 
 std::wstring GetMonitorSetupHash();

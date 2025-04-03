@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -17,17 +17,16 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-// GitLogList.cpp : implementation file
-//
+
 #include "stdafx.h"
 #include "GitLogListBase.h"
 #include "IconMenu.h"
-#include "GitProgressDlg.h"
-#include "ProgressDlg.h"
 #include "MessageBox.h"
 #include "LoglistUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
+#include "resource.h"
+#include "LoglistCommonResource.h"
 #include "../TortoiseShell/Resource.h"
 #include "CommonAppUtils.h"
 #include "DPIAware.h"

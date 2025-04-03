@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020, 2023 - TortoiseGit
+// Copyright (C) 2020, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2012-2015, 2017, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include <GdiPlus.h>
 #pragma warning(pop)
 #include "SmartHandle.h"
+#include <memory>
 #include <vector>
 
 using namespace Gdiplus;

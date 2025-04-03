@@ -17,15 +17,15 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "resource.h"
 #include "GitPatch.h"
-#include "UnicodeUtils.h"
 #include "SysProgressDlg.h"
 #include "DirFileEnum.h"
 #include "GitAdminDir.h"
-#include "StringUtils.h"
 #include "GitRev.h"
+#include "TempFile.h"
 #include "AppUtils.h"
 
 #define STRIP_LIMIT 10

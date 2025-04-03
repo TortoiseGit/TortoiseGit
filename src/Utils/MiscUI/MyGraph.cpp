@@ -52,10 +52,6 @@ static char THIS_FILE[] = __FILE__;
 #define LEGEND_DIVISOR							 8			// Scale font to graph height.
 #define Y_AXIS_LABEL_DIVISOR					 6			// Scale font to graph height.
 
-#ifndef M_PI
-const double M_PI = 3.1415926535897932384626433832795;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // MyGraphSeries
 

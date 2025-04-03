@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (c) 2003 by Andreas Kapust <info@akinstaller.de>; <http://www.codeproject.com/Articles/2607/AutoComplete-without-IAutoComplete>
-// Copyright (C) 2009, 2012-2013, 2015, 2018, 2023 - TortoiseGit
+// Copyright (C) 2009, 2012-2013, 2015, 2018, 2023, 2025 - TortoiseGit
 
 // Licensed under: The Code Project Open License (CPOL); <http://www.codeproject.com/info/cpol10.aspx>
 
@@ -23,7 +23,6 @@
 *
 *********************************************************************/
 
-#include <afxtempl.h>		// CArray
 #define ENAC_UPDATE        WM_USER + 1200
 /////////////////////////////////////////////////////////////////////////////
 // Fenster CACListWnd

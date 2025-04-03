@@ -1,6 +1,6 @@
-// TortoiseGitMerge - a Diff/Patch program
+﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2017 - TortoiseGit
+// Copyright (C) 2017, 2025 - TortoiseGit
 // Copyright (C) 2006-2007, 2011-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "WorkingFile.h"
-#include "AppUtils.h"
 #include "PathUtils.h"
 #include "resource.h"
 #include "SmartHandle.h"

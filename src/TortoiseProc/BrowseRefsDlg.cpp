@@ -32,7 +32,6 @@
 #include "IconMenu.h"
 #include "FileDiffDlg.h"
 #include "DeleteRemoteTagDlg.h"
-#include "UnicodeUtils.h"
 #include "InputDlg.h"
 #include "SysProgressDlg.h"
 #include "LoglistUtils.h"

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2023 - TortoiseGit
+// Copyright (C) 2012-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,31 +17,24 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "Revisiongraphwnd.h"
+#include "RevisionGraphWnd.h"
 #include "MessageBox.h"
 #include "Git.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "StringUtils.h"
-#include "TempFile.h"
-#include "UnicodeUtils.h"
-#include "TGitPath.h"
 #include "RevisionGraphDlg.h"
-#include "BrowseFolder.h"
-#include "GitProgressDlg.h"
-#include "ChangedDlg.h"
 #include "FormatMessageWrapper.h"
 #include "GitRevLoglist.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
-#include <ogdf/planarity/PlanarizationLayout.h>
-#include <ogdf/planarity/VariableEmbeddingInserter.h>
-#include <ogdf/planarity/planar_subgraph_fast/PlanarSubgraphPQTree.h>
-#include <ogdf/orthogonal/OrthoLayout.h>
-#include <ogdf/planarity/EmbedderMinDepthMaxFaceLayers.h>
+#include <ogdf/layered/OptimalRanking.h>
+#include <ogdf/layered/MedianHeuristic.h>
+#include <ogdf/layered/FastHierarchyLayout.h>
 #pragma warning(pop)
 
 #ifdef _DEBUG

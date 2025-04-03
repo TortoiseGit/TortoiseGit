@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2017-2019, 2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2017-2019, 2021, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,11 +20,8 @@
 #include "stdafx.h"
 #include "SmartHandle.h"
 #include "../Utils/CrashReport.h"
-
-#include <iostream>
 #include <io.h>
 #include <fcntl.h>
-
 #include "GitWCRev.h"
 #include "status.h"
 #include "UnicodeUtils.h"

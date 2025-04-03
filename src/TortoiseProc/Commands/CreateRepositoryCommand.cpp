@@ -16,14 +16,13 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "CreateRepositoryCommand.h"
 #include "ShellUpdater.h"
 #include "MessageBox.h"
 #include "UnicodeUtils.h"
-#include "IconExtractor.h"
 #include "CreateRepoDlg.h"
-#include "SmartHandle.h"
 #include "AppUtils.h"
 
 static bool CheckSpecialFolder(const CString& folder)

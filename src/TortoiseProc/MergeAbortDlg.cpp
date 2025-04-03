@@ -16,11 +16,12 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-// MergeAbort.cpp : implementation file
+// MergeAbortDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "TortoiseProc.h"
+#include "Git.h"
 #include "MergeAbortDlg.h"
 #include "FileDiffDlg.h"
 #include "AppUtils.h"

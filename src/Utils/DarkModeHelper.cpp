@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020, 2023 - TortoiseGit
+// Copyright (C) 2020, 2023, 2025 - TortoiseGit
 // Copyright (C) 2020-2021, 2024 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,13 +17,13 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "DarkModeHelper.h"
 #include "StringUtils.h"
 #include "PathUtils.h"
 #include <vector>
 #include <functional>
-#include <Shlobj.h>
 #include "scope_exit_noexcept.h"
 #include "../../ext/Detours/src/detours.h"
 

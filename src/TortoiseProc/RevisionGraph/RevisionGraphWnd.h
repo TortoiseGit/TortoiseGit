@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019, 2022-2023 - TortoiseGit
+// Copyright (C) 2012-2019, 2022-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,11 +17,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #pragma once
 #include "Future.h"
 #include "ProgressDlg.h"
 #include "Colors.h"
-#include "AppUtils.h"
 #include "SVG.h"
 #include "LogDlgHelper.h"
 #include "Graphviz.h"
@@ -29,10 +29,6 @@
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
 #include <ogdf/layered/SugiyamaLayout.h>
-#include <ogdf/layered/OptimalRanking.h>
-#include <ogdf/layered/MedianHeuristic.h>
-#include <ogdf/layered/OptimalHierarchyLayout.h>
-#include <ogdf/layered/FastHierarchyLayout.h>
 #pragma warning(pop)
 
 using namespace Gdiplus;

@@ -17,11 +17,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "PrevDiffCommand.h"
 #include "GitDiff.h"
 #include "MessageBox.h"
-#include "ChangedDlg.h"
 #include "LogDlgHelper.h"
 #include "FileDiffDlg.h"
 

@@ -19,6 +19,7 @@
 
 #include "stdafx.h"
 #include "Monitor.h"
+#include "Hash.h"
 #include <vector>
 #include <algorithm>
 

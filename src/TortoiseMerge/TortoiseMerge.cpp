@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2013-2017, 2019-2024 - TortoiseGit
+// Copyright (C) 2013-2017, 2019-2025 - TortoiseGit
 // Copyright (C) 2006-2014, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,8 +17,8 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
-#include <dlgs.h>
 #include "TortoiseMerge.h"
 #include "MainFrm.h"
 #include "AboutDlg.h"
@@ -28,7 +28,6 @@
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
-#include "DirFileEnum.h"
 #include "SelectFileFilter.h"
 #include "FileDlgEventHandler.h"
 #include "TempFile.h"

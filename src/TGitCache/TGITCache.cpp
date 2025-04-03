@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2022 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2022, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,18 +26,15 @@
 #include "Resource.h"
 #include "registry.h"
 #include "CrashReport.h"
-#include "GitAdminDir.h"
 #include <Dbt.h>
 #include <InitGuid.h>
 #include <Ioevent.h>
 #include <wrl/client.h>
-
 #include "../version.h"
 #include "SmartHandle.h"
 #include "CreateProcessHelper.h"
 #include "gitindex.h"
 #include "LoadIconEx.h"
-#include "../Git/Git.h"
 
 #ifndef GET_X_LPARAM
 #define GET_X_LPARAM(lp)                        static_cast<int>(static_cast<short>(LOWORD(lp)))

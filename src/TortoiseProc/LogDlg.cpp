@@ -25,7 +25,6 @@
 #include "AppUtils.h"
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
-#include "TempFile.h"
 #include "IconMenu.h"
 #include "BrowseRefsDlg.h"
 #include "SmartHandle.h"

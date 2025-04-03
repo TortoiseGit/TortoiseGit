@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2021-2023 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2021-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,7 +25,7 @@
 #include "IconMenu.h"
 #include "AppUtils.h"
 #include "Git.h"
-#include "AppUtils.h"
+
 // CPatchListCtrl
 
 IMPLEMENT_DYNAMIC(CPatchListCtrl, CListCtrl)

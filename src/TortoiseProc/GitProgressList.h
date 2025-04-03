@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,12 +20,9 @@
 #pragma once
 #include "TGitPath.h"
 #include "Colors.h"
-#include "UnicodeUtils.h"
-#include "resource.h"
-#include "../TortoiseShell/resource.h"
-#include "LoglistCommonResource.h"
 #include "IconMenu.h"
 #include "ProgressDlg.h"
+
 /**
  * \ingroup TortoiseProc
  * Options which can be used to configure the way the dialog box works

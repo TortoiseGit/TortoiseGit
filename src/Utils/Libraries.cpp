@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2015-2016, 2018-2024 - TortoiseGit
+// Copyright (C) 2012, 2015-2016, 2018-2025 - TortoiseGit
 // Copyright (C) 2010-2012, 2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,14 +17,12 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "Libraries.h"
 #include "PathUtils.h"
 #include "resource.h"
 #include <initguid.h>
-#include <propkeydef.h>
-#include "SmartHandle.h"
-#include "SysInfo.h"
 
 #ifdef _WIN64
 // {DC9E616B-7611-461c-9D37-730FDD4CE278}

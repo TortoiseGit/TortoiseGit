@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2020 - TortoiseGit
+// Copyright (C) 2020, 2025 - TortoiseGit
 // Copyright (C) 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "Hash.h"
+#include <wincrypt.h>
 #include <vector>
 #include <sstream>
 

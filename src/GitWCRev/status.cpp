@@ -24,9 +24,6 @@
 #include "StringUtils.h"
 #include "UnicodeUtils.h"
 #include <fstream>
-#include <ShlObj.h>
-#include "git2/sys/repository.h"
-#include <atlbase.h>
 
 void LoadIgnorePatterns(const char* wc, GitWCRev_t* GitStat)
 {

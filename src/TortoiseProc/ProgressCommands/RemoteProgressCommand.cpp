@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2022, 2024 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2022, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "stdafx.h"
+#include "resource.h"
 #include "RemoteProgressCommand.h"
 #include "../TortoiseShell/resource.h"
 #include "AppUtils.h"

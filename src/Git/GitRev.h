@@ -18,7 +18,6 @@
 //
 
 #pragma once
-#include "gittype.h"
 #include "AtlTime.h"
 #include "GitHash.h"
 #include "GitDll.h"

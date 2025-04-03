@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2019, 2021-2023 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,13 +17,13 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "CachedDirectory.h"
 #include "GitAdminDir.h"
 #include "GitStatusCache.h"
 #include "PathUtils.h"
 #include "GitStatus.h"
-#include <set>
 
 CCachedDirectory::CCachedDirectory()
 {

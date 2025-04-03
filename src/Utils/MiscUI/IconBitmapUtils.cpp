@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2020 - TortoiseGit
+// Copyright (C) 2016, 2019-2020, 2025 - TortoiseGit
 // Copyright (C) 2009-2012, 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,9 +17,9 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "IconBitmapUtils.h"
-#include "registry.h"
 #include "LoadIconEx.h"
 
 #pragma comment(lib, "UxTheme.lib")

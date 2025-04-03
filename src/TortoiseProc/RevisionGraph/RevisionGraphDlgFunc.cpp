@@ -17,16 +17,15 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
+
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include <gdiplus.h>
-#include "Revisiongraphdlg.h"
+#include "RevisionGraphWnd.h"
 #include "Git.h"
-#include "TempFile.h"
-#include "UnicodeUtils.h"
-#include "TGitPath.h"
 #include "DPIAware.h"
 #include <regex>
+#include "AppUtils.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

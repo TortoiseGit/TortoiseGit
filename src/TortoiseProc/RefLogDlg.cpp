@@ -25,7 +25,6 @@
 #include "Git.h"
 #include "AppUtils.h"
 #include "MessageBox.h"
-#include "UnicodeUtils.h"
 
 // CRefLogDlg dialog
 
