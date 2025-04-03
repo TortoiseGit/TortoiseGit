@@ -246,6 +246,15 @@
     <ClInclude Include="..\lexilla\lexlib\InList.h">
       <Filter>lexlib\lexlib</Filter>
     </ClInclude>
+    <ClInclude Include="..\scintilla\win32\ListBox.h">
+      <Filter>scintilla\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\SurfaceD2D.h">
+      <Filter>scintilla\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scintilla\win32\SurfaceGDI.h">
+      <Filter>scintilla\win32</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\scintilla\src\SciTE.properties">
@@ -771,6 +780,15 @@
     </ClCompile>
     <ClCompile Include="..\lexilla\lexers\LexNix.cxx">
       <Filter>lexlib\lexers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\win32\ListBox.cxx">
+      <Filter>scintilla\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\win32\SurfaceD2D.cxx">
+      <Filter>scintilla\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scintilla\win32\SurfaceGDI.cxx">
+      <Filter>scintilla\win32</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
