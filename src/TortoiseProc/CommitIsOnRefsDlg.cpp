@@ -361,7 +361,7 @@ void CCommitIsOnRefsDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 		case eCmd_DiffWC:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(selectedRefs[0]), static_cast<LPCWSTR>(GitRev::GetWorkingCopyRef()));
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(selectedRefs[0]), GitRev::GetWorkingCopyRef());
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 

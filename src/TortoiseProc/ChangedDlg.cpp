@@ -440,7 +440,7 @@ void CChangedDlg::OnBnClickedButtonUnifieddiff()
 	if (bSingleFile)
 		commonDirectory = m_pathList[0];
 	CString sCmd;
-	sCmd.Format(L"/command:showcompare /unified /path:\"%s\" /revision1:HEAD /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(commonDirectory)), static_cast<LPCWSTR>(GitRev::GetWorkingCopyRef()));
+	sCmd.Format(L"/command:showcompare /unified /path:\"%s\" /revision1:HEAD /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(commonDirectory)), GitRev::GetWorkingCopyRef());
 	if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 		sCmd += L" /alternative";
 	CAppUtils::RunTortoiseGitProc(sCmd);
