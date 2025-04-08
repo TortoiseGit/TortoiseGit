@@ -232,7 +232,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 			worktreeDetails.m_isBaseRepo = FALSE;
 			worktreeDetails.m_IsLocked = locked;
 			if (locked && reason)
-				worktreeDetails.m_LockedReason = CUnicodeUtils::GetUnicode(reason->ptr);
+				worktreeDetails.m_LockedReason = CUnicodeUtils::GetUnicodeLengthSizeT(reason->ptr, reason->size);
 			m_Worktrees.push_back(worktreeDetails);
 			continue;
 		}
@@ -255,7 +255,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 		worktreeDetails.m_isBaseRepo = FALSE;
 		worktreeDetails.m_IsLocked = locked;
 		if (locked && reason)
-			worktreeDetails.m_LockedReason = CStringW(reason->ptr, (int)reason->size);
+			worktreeDetails.m_LockedReason = CUnicodeUtils::GetUnicodeLengthSizeT(reason->ptr, reason->size);
 		m_Worktrees.push_back(worktreeDetails);
 	}
 

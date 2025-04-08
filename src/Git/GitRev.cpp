@@ -224,7 +224,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	}
 	catch (const char * msg)
 	{
-		m_sErr = L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CString(msg);
+		m_sErr = L"Could not get commit \"" + hash.ToString() + L"\".\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 		return -1;
 	}
 
