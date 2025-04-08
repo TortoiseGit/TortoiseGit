@@ -1063,7 +1063,7 @@ int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
 
 		++pos;
 		const size_t fileNameEnd = out.find(0, pos);
-		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != 52)
+		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != strlen("H 100644 ") + 2 * GIT_HASH_SIZE + strlen(" 0\t")) // <tag> <mode> <object> <stage>\t<file>
 			return -1;
 		pathstring.Empty();
 		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(fileNameEnd - pos));
