@@ -115,8 +115,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
 	long langId = loc;
 	CString langDll;
-	CStringA langpath = CStringA(CPathUtils::GetAppParentDirectory());
-	langpath += "Languages";
 	do
 	{
 		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
