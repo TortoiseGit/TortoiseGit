@@ -230,9 +230,8 @@ void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & Ha
 	m_Utf8Lines.clear();
 }
 
-int CTortoiseGitBlameData::UpdateEncoding(int encode)
+int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 {
-	int encoding = encode;
 	int bomoffset = 0;
 	if (encoding==0)
 	{
