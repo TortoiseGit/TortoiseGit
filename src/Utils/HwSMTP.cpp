@@ -1236,7 +1236,7 @@ BOOL CHwSMTP::SendOnAttach(LPCWSTR lpszFileName)
 		auto pBuf = std::make_unique<char[]>(static_cast<UINT>(file.GetLength()) + 1);
 		UINT nFileLen = file.Read(pBuf.get(), static_cast<UINT>(file.GetLength()));
 		CStringA filedata = EncodeBase64(pBuf.get(), nFileLen, false);
-		filedata += L"\r\n\r\n";
+		filedata += "\r\n\r\n";
 
 		if (!Send(csAttach))
 			return FALSE;

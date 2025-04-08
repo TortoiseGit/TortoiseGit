@@ -474,7 +474,7 @@ bool CWorktreeListDlg::RemoveWorktree(const CString& path, bool force)
 {
 	CString params;
 	if (force)
-		params += " --force";
+		params += L" --force";
 
 	CString cmd;
 	cmd.Format(L"git.exe worktree remove%s -- \"%s\"", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(path));

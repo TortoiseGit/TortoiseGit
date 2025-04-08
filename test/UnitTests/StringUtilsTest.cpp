@@ -303,7 +303,7 @@ TEST(CStringUtils, StartsWithA)
 	EXPECT_TRUE(CStringUtils::StartsWith("", ""));
 	EXPECT_FALSE(CStringUtils::StartsWith("", "sometest"));
 
-	CStringA heystack = L"sometest";
+	CStringA heystack = "sometest";
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometest"));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, ""));
 	EXPECT_TRUE(CStringUtils::StartsWith(heystack, "sometes"));

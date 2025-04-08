@@ -1382,7 +1382,7 @@ class CIgnoreFile : public CStdioFile
 {
 public:
 	STRING_VECTOR m_Items;
-	CString m_eol;
+	std::string m_eol{ "\n" };
 
 	BOOL ReadString(CString& rString) override
 	{
@@ -1403,7 +1403,7 @@ public:
 				continue;
 			if (c == '\n')
 			{
-				m_eol = lastChar == L'\r' ? L"\r\n" : L"\n";
+				m_eol = lastChar == L'\r' ? "\r\n" : "\n";
 				break;
 			}
 			strA.AppendChar(c);
@@ -1418,7 +1418,7 @@ public:
 	void ResetState()
 	{
 		m_Items.clear();
-		m_eol.Empty();
+		m_eol = { "\n" };
 	}
 };
 
@@ -1441,10 +1441,7 @@ bool CAppUtils::OpenIgnoreFile(HWND hWnd, CIgnoreFile &file, const CString& file
 		file.Read(lastchar, 1);
 		file.SeekToEnd();
 		if (lastchar[0] != '\n')
-		{
-			CStringA eol = CStringA(file.m_eol.IsEmpty() ? CString("\n") : file.m_eol);
-			file.Write(eol, eol.GetLength());
-		}
+			file.Write(file.m_eol.c_str(), static_cast<UINT>(file.m_eol.size()));
 	}
 	else
 		file.SeekToEnd();
@@ -1522,8 +1519,8 @@ bool CAppUtils::IgnoreFile(HWND hWnd, const CTGitPathList& path,bool IsMask)
 				if (!found)
 				{
 					file.m_Items.push_back(ignorePattern);
-					ignorePattern += file.m_eol.IsEmpty() ? CString("\n") : file.m_eol;
 					CStringA ignorePatternA = CUnicodeUtils::GetUTF8(ignorePattern);
+					ignorePatternA += file.m_eol.c_str();
 					file.Write(ignorePatternA, ignorePatternA.GetLength());
 				}
 

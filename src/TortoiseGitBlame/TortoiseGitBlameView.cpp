@@ -172,62 +172,62 @@ CTortoiseGitBlameView::~CTortoiseGitBlameView()
 struct EncodingUnit
 {
 	int id;
-	const char* name;
+	const wchar_t* name;
 };
 
 static EncodingUnit	encodings[]	= {
-		{1250,	"windows-1250"},																	//IDM_FORMAT_WIN_1250
-		{1251,	"windows-1251"},																	//IDM_FORMAT_WIN_1251
-		{1252,	"windows-1252"},																	//IDM_FORMAT_WIN_1252
-		{1253,	"windows-1253"},																	//IDM_FORMAT_WIN_1253
-		{1254,	"windows-1254"},																	//IDM_FORMAT_WIN_1254
-		{1255,	"windows-1255"},																	//IDM_FORMAT_WIN_1255
-		{1256,	"windows-1256"},																	//IDM_FORMAT_WIN_1256
-		{1257,	"windows-1257"},																	//IDM_FORMAT_WIN_1257
-		{1258,	"windows-1258"},																	//IDM_FORMAT_WIN_1258
-		{28591,	"latin1	ISO_8859-1 ISO-8859-1 CP819	IBM819 csISOLatin1 iso-ir-100 l1"},				//IDM_FORMAT_ISO_8859_1
-		{28592,	"latin2	ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},							//IDM_FORMAT_ISO_8859_2
-		{28593,	"latin3	ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},							//IDM_FORMAT_ISO_8859_3
-		{28594,	"latin4	ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},							//IDM_FORMAT_ISO_8859_4
-		{28595,	"cyrillic ISO_8859-5 ISO-8859-5	csISOLatinCyrillic iso-ir-144"},					//IDM_FORMAT_ISO_8859_5
-		{28596,	"arabic	ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},		//IDM_FORMAT_ISO_8859_6
-		{28597,	"greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8	iso-ir-126 ELOT_928	ECMA-118"},	//IDM_FORMAT_ISO_8859_7
-		{28598,	"hebrew	ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},						//IDM_FORMAT_ISO_8859_8
-		{28599,	"latin5	ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},							//IDM_FORMAT_ISO_8859_9
-		{28600,	"latin6	ISO_8859-10	ISO-8859-10	csISOLatin6	iso-ir-157 l6"},						//IDM_FORMAT_ISO_8859_10
-		{28601,	"ISO_8859-11 ISO-8859-11"},															//IDM_FORMAT_ISO_8859_11
-		{28603,	"ISO_8859-13 ISO-8859-13"},															//IDM_FORMAT_ISO_8859_13
-		{28604,	"iso-celtic	latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},							//IDM_FORMAT_ISO_8859_14
-		{28605,	"Latin-9 ISO_8859-15 ISO-8859-15"},													//IDM_FORMAT_ISO_8859_15
-		{28606,	"latin10 ISO_8859-16 ISO-8859-16 110 iso-ir-226"},									//IDM_FORMAT_ISO_8859_16
-		{437,	"IBM437	cp437 437 csPC8CodePage437"},												//IDM_FORMAT_DOS_437
-		{720,	"IBM720	cp720 oem720 720"},															//IDM_FORMAT_DOS_720
-		{737,	"IBM737	cp737 oem737 737"},															//IDM_FORMAT_DOS_737
-		{775,	"IBM775	cp775 oem775 775"},															//IDM_FORMAT_DOS_775
-		{850,	"IBM850	cp850 oem850 850"},															//IDM_FORMAT_DOS_850
-		{852,	"IBM852	cp852 oem852 852"},															//IDM_FORMAT_DOS_852
-		{855,	"IBM855	cp855 oem855 855 csIBM855"},												//IDM_FORMAT_DOS_855
-		{857,	"IBM857	cp857 oem857 857"},															//IDM_FORMAT_DOS_857
-		{858,	"IBM858	cp858 oem858 858"},															//IDM_FORMAT_DOS_858
-		{860,	"IBM860	cp860 oem860 860"},															//IDM_FORMAT_DOS_860
-		{861,	"IBM861	cp861 oem861 861"},															//IDM_FORMAT_DOS_861
-		{862,	"IBM862	cp862 oem862 862"},															//IDM_FORMAT_DOS_862
-		{863,	"IBM863	cp863 oem863 863"},															//IDM_FORMAT_DOS_863
-		{865,	"IBM865	cp865 oem865 865"},															//IDM_FORMAT_DOS_865
-		{866,	"IBM866	cp866 oem866 866"},															//IDM_FORMAT_DOS_866
-		{869,	"IBM869	cp869 oem869 869"},															//IDM_FORMAT_DOS_869
-		{950,	"big5 csBig5"},																		//IDM_FORMAT_BIG5
-		{936,	"gb2312	gbk	csGB2312"},																//IDM_FORMAT_GB2312
-		{932,	"Shift_JIS MS_Kanji	csShiftJIS csWindows31J"},										//IDM_FORMAT_SHIFT_JIS
-		{949,	"windows-949 korean"},																//IDM_FORMAT_KOREAN_WIN
-		{51949,	"euc-kr	csEUCKR"},																	//IDM_FORMAT_EUC_KR
-		{874,	"tis-620"},																			//IDM_FORMAT_TIS_620
-		{10007,	"x-mac-cyrillic	xmaccyrillic"},														//IDM_FORMAT_MAC_CYRILLIC
-		{21866,	"koi8_u"},																			//IDM_FORMAT_KOI8U_CYRILLIC
-		{20866,	"koi8_r	csKOI8R"},																	//IDM_FORMAT_KOI8R_CYRILLIC
-		{65001,	"UTF-8"},																			//IDM_FORMAT_UTF8
-		{1200,	"UTF-16 LE"},																		//IDM_FORMAT_UTF16LE
-		{1201,	"UTF-16 BE"},																		//IDM_FORMAT_UTF16BE
+		{1250,	L"windows-1250"},																		//IDM_FORMAT_WIN_1250
+		{1251,	L"windows-1251"},																		//IDM_FORMAT_WIN_1251
+		{1252,	L"windows-1252"},																		//IDM_FORMAT_WIN_1252
+		{1253,	L"windows-1253"},																		//IDM_FORMAT_WIN_1253
+		{1254,	L"windows-1254"},																		//IDM_FORMAT_WIN_1254
+		{1255,	L"windows-1255"},																		//IDM_FORMAT_WIN_1255
+		{1256,	L"windows-1256"},																		//IDM_FORMAT_WIN_1256
+		{1257,	L"windows-1257"},																		//IDM_FORMAT_WIN_1257
+		{1258,	L"windows-1258"},																		//IDM_FORMAT_WIN_1258
+		{28591,	L"latin1	ISO_8859-1 ISO-8859-1 CP819	IBM819 csISOLatin1 iso-ir-100 l1"},				//IDM_FORMAT_ISO_8859_1
+		{28592,	L"latin2	ISO_8859-2 ISO-8859-2 csISOLatin2 iso-ir-101 l2"},							//IDM_FORMAT_ISO_8859_2
+		{28593,	L"latin3	ISO_8859-3 ISO-8859-3 csISOLatin3 iso-ir-109 l3"},							//IDM_FORMAT_ISO_8859_3
+		{28594,	L"latin4	ISO_8859-4 ISO-8859-4 csISOLatin4 iso-ir-110 l4"},							//IDM_FORMAT_ISO_8859_4
+		{28595,	L"cyrillic ISO_8859-5 ISO-8859-5	csISOLatinCyrillic iso-ir-144"},					//IDM_FORMAT_ISO_8859_5
+		{28596,	L"arabic	ISO_8859-6 ISO-8859-6 csISOLatinArabic iso-ir-127 ASMO-708 ECMA-114"},		//IDM_FORMAT_ISO_8859_6
+		{28597,	L"greek ISO_8859-7 ISO-8859-7 csISOLatinGreek greek8	iso-ir-126 ELOT_928	ECMA-118"},	//IDM_FORMAT_ISO_8859_7
+		{28598,	L"hebrew	ISO_8859-8 ISO-8859-8 csISOLatinHebrew iso-ir-138"},						//IDM_FORMAT_ISO_8859_8
+		{28599,	L"latin5	ISO_8859-9 ISO-8859-9 csISOLatin5 iso-ir-148 l5"},							//IDM_FORMAT_ISO_8859_9
+		{28600,	L"latin6	ISO_8859-10	ISO-8859-10	csISOLatin6	iso-ir-157 l6"},						//IDM_FORMAT_ISO_8859_10
+		{28601,	L"ISO_8859-11 ISO-8859-11"},															//IDM_FORMAT_ISO_8859_11
+		{28603,	L"ISO_8859-13 ISO-8859-13"},															//IDM_FORMAT_ISO_8859_13
+		{28604,	L"iso-celtic	latin8 ISO_8859-14 ISO-8859-14 18 iso-ir-199"},							//IDM_FORMAT_ISO_8859_14
+		{28605,	L"Latin-9 ISO_8859-15 ISO-8859-15"},													//IDM_FORMAT_ISO_8859_15
+		{28606,	L"latin10 ISO_8859-16 ISO-8859-16 110 iso-ir-226"},										//IDM_FORMAT_ISO_8859_16
+		{437,	L"IBM437	cp437 437 csPC8CodePage437"},												//IDM_FORMAT_DOS_437
+		{720,	L"IBM720	cp720 oem720 720"},															//IDM_FORMAT_DOS_720
+		{737,	L"IBM737	cp737 oem737 737"},															//IDM_FORMAT_DOS_737
+		{775,	L"IBM775	cp775 oem775 775"},															//IDM_FORMAT_DOS_775
+		{850,	L"IBM850	cp850 oem850 850"},															//IDM_FORMAT_DOS_850
+		{852,	L"IBM852	cp852 oem852 852"},															//IDM_FORMAT_DOS_852
+		{855,	L"IBM855	cp855 oem855 855 csIBM855"},												//IDM_FORMAT_DOS_855
+		{857,	L"IBM857	cp857 oem857 857"},															//IDM_FORMAT_DOS_857
+		{858,	L"IBM858	cp858 oem858 858"},															//IDM_FORMAT_DOS_858
+		{860,	L"IBM860	cp860 oem860 860"},															//IDM_FORMAT_DOS_860
+		{861,	L"IBM861	cp861 oem861 861"},															//IDM_FORMAT_DOS_861
+		{862,	L"IBM862	cp862 oem862 862"},															//IDM_FORMAT_DOS_862
+		{863,	L"IBM863	cp863 oem863 863"},															//IDM_FORMAT_DOS_863
+		{865,	L"IBM865	cp865 oem865 865"},															//IDM_FORMAT_DOS_865
+		{866,	L"IBM866	cp866 oem866 866"},															//IDM_FORMAT_DOS_866
+		{869,	L"IBM869	cp869 oem869 869"},															//IDM_FORMAT_DOS_869
+		{950,	L"big5 csBig5"},																		//IDM_FORMAT_BIG5
+		{936,	L"gb2312	gbk	csGB2312"},																//IDM_FORMAT_GB2312
+		{932,	L"Shift_JIS MS_Kanji	csShiftJIS csWindows31J"},										//IDM_FORMAT_SHIFT_JIS
+		{949,	L"windows-949 korean"},																	//IDM_FORMAT_KOREAN_WIN
+		{51949,	L"euc-kr	csEUCKR"},																	//IDM_FORMAT_EUC_KR
+		{874,	L"tis-620"},																			//IDM_FORMAT_TIS_620
+		{10007,	L"x-mac-cyrillic	xmaccyrillic"},														//IDM_FORMAT_MAC_CYRILLIC
+		{21866,	L"koi8_u"},																				//IDM_FORMAT_KOI8U_CYRILLIC
+		{20866,	L"koi8_r	csKOI8R"},																	//IDM_FORMAT_KOI8R_CYRILLIC
+		{65001,	L"UTF-8"},																				//IDM_FORMAT_UTF8
+		{1200,	L"UTF-16 LE"},																			//IDM_FORMAT_UTF16LE
+		{1201,	L"UTF-16 BE"},																			//IDM_FORMAT_UTF16BE
 };
 void CTortoiseGitBlameView::OnChangeEncode(UINT nId)
 {
@@ -736,7 +736,7 @@ void CTortoiseGitBlameView::CopyToClipboard()
 		GetLogList()->CopySelectionToClipBoard();
 	else if (wnd)
 	{
-		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == L"CMFCPropertyGridCtrl")
+		if (strcmp(wnd->GetRuntimeClass()->m_lpszClassName, "CMFCPropertyGridCtrl") == 0)
 		{
 			auto grid = static_cast<CMFCPropertyGridCtrl*>(wnd);
 			if (grid->GetCurSel() && !grid->GetCurSel()->IsGroup())
@@ -769,7 +769,7 @@ LONG CTortoiseGitBlameView::GetBlameWidth()
 
 	if (!m_bShowLogID)
 	{
-		CString shortHash('f', g_Git.GetShortHASHLength());
+		CString shortHash(L'f', g_Git.GetShortHASHLength());
 		::GetTextExtentPoint32(hDC, shortHash, g_Git.GetShortHASHLength(), &width);
 		m_revwidth = width.cx + CDPIAware::Instance().ScaleX(GetSafeHwnd(), BLAMESPACE);
 		blamewidth += m_revwidth;
@@ -956,7 +956,7 @@ void CTortoiseGitBlameView::DrawBlame(HDC hDC)
 					CString str;
 					str.Format(m_sLogIDFormat, GetLogList()->GetItemCount() - m_lineToLogIndex[i]);
 					if (m_lineToLogIndex[i] < 0)
-						str = "0";
+						str = L"0";
 					::ExtTextOut(hDC, rc.left, rc.top, ETO_CLIPPED, &rc, str, str.GetLength(), 0);
 				}
 				rc.left += m_logidwidth;
@@ -2301,7 +2301,7 @@ void CTortoiseGitBlameView::OnUpdateViewCopyToClipboard(CCmdUI *pCmdUI)
 		pCmdUI->Enable(GetLogList()->GetSelectedCount() > 0);
 	else if (wnd)
 	{
-		if (CString(wnd->GetRuntimeClass()->m_lpszClassName) == L"CMFCPropertyGridCtrl")
+		if (strcmp(wnd->GetRuntimeClass()->m_lpszClassName, "CMFCPropertyGridCtrl") == 0)
 		{
 			auto grid = static_cast<CMFCPropertyGridCtrl*>(wnd);
 			pCmdUI->Enable(grid->GetCurSel() && !grid->GetCurSel()->IsGroup() && !CString(grid->GetCurSel()->GetValue()).IsEmpty());

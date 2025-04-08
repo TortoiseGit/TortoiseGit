@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2022, 2024 - TortoiseGit
+// Copyright (C) 2008-2022, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -347,9 +347,9 @@ void CPullFetchDlg::OnCbnSelchangeRemote()
 	CString key;
 	key.Format(L"remote.%s.tagopt", static_cast<LPCWSTR>(remote));
 	CString tagopt = g_Git.GetConfigValue(key);
-	if (tagopt == "--no-tags")
+	if (tagopt == L"--no-tags")
 		tagopt.LoadString(IDS_NONE);
-	else if (tagopt == "--tags")
+	else if (tagopt == L"--tags")
 		tagopt.LoadString(IDS_ALL);
 	else
 		tagopt.LoadString(IDS_FETCH_REACHABLE);

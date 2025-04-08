@@ -380,7 +380,7 @@ CString MyGraph::GetTipText() const
 {
 	VALIDATE;
 
-	CString sTip("");
+	CString sTip;
 
 	// Get the position of the mouse.
 	CPoint pt;
@@ -389,10 +389,10 @@ CString MyGraph::GetTipText() const
 
 	// Ask each part of the graph to check and see if the mouse is over it.
 	if (m_rcLegend.PtInRect(pt)) {
-		sTip = "Legend";
+		sTip = L"Legend";
 	}
 	else if (m_rcTitle.PtInRect(pt)) {
-		sTip = "Title";
+		sTip = L"Title";
 	}
 	else {
 		int maxXAxis = m_ptOrigin.x + (m_nXAxisWidth - m_rcLegend.Width() - (GAP_PIXELS * 2));

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2025 - TortoiseGit
 // Copyright (C) 2010-2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ void SVG::RoundedRectangle( int x, int y, int width, int height, Gdiplus::Color 
 			tmp.Format("V %d h %d z ", y+height, -width);
 			sObj += tmp;
 		}
-		sObj += L"\" ";
+		sObj += "\" ";
 		tmp.Format("style=\"stroke:#%06lx; stroke-width:%d; fill: #%06lx\"/>", GetColor(stroke), penWidth, GetColor(fill));
 		sObj += tmp;
 	}

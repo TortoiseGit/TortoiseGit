@@ -77,9 +77,9 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, int
 	HKEY hKey;
 	CString path;
 #ifdef XMESSAGEBOX_APPREGPATH
-	path = XMESSAGEBOX_APPREGPATH;
+	path = _T(XMESSAGEBOX_APPREGPATH);
 #else
-	path = "Software\\TortoiseGit\\";
+	path = L"Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
@@ -234,9 +234,9 @@ UINT CMessageBox::ShowCheck(HWND hWnd, LPCWSTR lpMessage, LPCWSTR lpCaption, UIN
 	HKEY hKey;
 	CString path;
 #ifdef XMESSAGEBOX_APPREGPATH
-	path = XMESSAGEBOX_APPREGPATH;
+	path = _T(XMESSAGEBOX_APPREGPATH);
 #else
-	path = "Software\\TortoiseGit\\";
+	path = L"Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (lpRegistry && *lpRegistry && RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_EXECUTE, &hKey)==ERROR_SUCCESS)
@@ -419,9 +419,9 @@ bool CMessageBox::RemoveRegistryKey(LPCWSTR lpRegistry)
 	HKEY hKey;
 	CString path;
 #ifdef XMESSAGEBOX_APPREGPATH
-	path = XMESSAGEBOX_APPREGPATH;
+	path = _T(XMESSAGEBOX_APPREGPATH);
 #else
-	path = "Software\\TortoiseGit\\";
+	path = L"Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
 	if (RegOpenKeyEx(HKEY_CURRENT_USER, path, 0, KEY_WRITE, &hKey) == ERROR_SUCCESS)
@@ -463,21 +463,21 @@ int CMessageBox::FillBoxStandard(UINT uType)
 	{
 	case MB_ABORTRETRYIGNORE:
 #ifndef IDS_MSGBOX_ABORT
-		m_sButton1 = "&Abort";
+		m_sButton1 = L"&Abort";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_ABORT);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDABORT;
 #ifndef IDS_MSGBOX_RETRY
-		m_sButton2 = "&Retry";
+		m_sButton2 = L"&Retry";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_RETRY);
 		m_sButton2 = m_i18l;
 #endif
 		m_uButton2Ret = IDRETRY;
 #ifndef IDS_MSGBOX_IGNORE
-		m_sButton3 = "&Ignore";
+		m_sButton3 = L"&Ignore";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_IGNORE);
 		m_sButton3 = m_i18l;
@@ -486,21 +486,21 @@ int CMessageBox::FillBoxStandard(UINT uType)
 		break;
 	case MB_CANCELTRYCONTINUE:
 #ifndef IDS_MSGBOX_CANCEL
-		m_sButton1 = "Cancel";
+		m_sButton1 = L"Cancel";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_CANCEL);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDCANCEL;
 #ifndef IDS_MSGBOX_TRYAGAIN
-		m_sButton2 = "&Try Again";
+		m_sButton2 = L"&Try Again";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_TRYAGAIN);
 		m_sButton2 = m_i18l;
 #endif
 		m_uButton2Ret = IDTRYAGAIN;
 #ifndef IDS_MSGBOX_CONTINUE
-		m_sButton3 = "&Continue";
+		m_sButton3 = L"&Continue";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_CONTINUE);
 		m_sButton3 = m_i18l;
@@ -509,14 +509,14 @@ int CMessageBox::FillBoxStandard(UINT uType)
 		break;
 	case MB_OKCANCEL:
 #ifndef IDS_MSGBOX_OK
-		m_sButton1 = "OK";
+		m_sButton1 = L"OK";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_OK);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDOK;
 #ifndef IDS_MSGBOX_CANCEL
-		m_sButton2 = "Cancel";
+		m_sButton2 = L"Cancel";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_CANCEL);
 		m_sButton2 = m_i18l;
@@ -525,14 +525,14 @@ int CMessageBox::FillBoxStandard(UINT uType)
 		break;
 	case MB_RETRYCANCEL:
 #ifndef IDS_MSGBOX_RETRY
-		m_sButton1 = "&Retry";
+		m_sButton1 = L"&Retry";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_RETRY);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDRETRY;
 #ifndef IDS_MSGBOX_CANCEL
-		m_sButton2 = "Cancel";
+		m_sButton2 = L"Cancel";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_CANCEL);
 		m_sButton2 = m_i18l;
@@ -541,14 +541,14 @@ int CMessageBox::FillBoxStandard(UINT uType)
 		break;
 	case MB_YESNO:
 #ifndef IDS_MSGBOX_YES
-		m_sButton1 = "&Yes";
+		m_sButton1 = L"&Yes";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_YES);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDYES;
 #ifndef IDS_MSGBOX_NO
-		m_sButton2 = "&No";
+		m_sButton2 = L"&No";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_NO);
 		m_sButton2 = m_i18l;
@@ -557,21 +557,21 @@ int CMessageBox::FillBoxStandard(UINT uType)
 		break;
 	case MB_YESNOCANCEL:
 #ifndef IDS_MSGBOX_YES
-		m_sButton1 = "&Yes";
+		m_sButton1 = L"&Yes";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_YES);
 		m_sButton1 = m_i18l;
 #endif
 		m_uButton1Ret = IDYES;
 #ifndef IDS_MSGBOX_NO
-		m_sButton2 = "&No";
+		m_sButton2 = L"&No";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_NO);
 		m_sButton2 = m_i18l;
 #endif
 		m_uButton2Ret = IDNO;
 #ifndef IDS_MSGBOX_CANCEL
-		m_sButton3 = "Cancel";
+		m_sButton3 = L"Cancel";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_CANCEL);
 		m_sButton3 = m_i18l;
@@ -581,7 +581,7 @@ int CMessageBox::FillBoxStandard(UINT uType)
 	case MB_OK:
 	default:
 #ifndef IDS_MSGBOX_OK
-		m_sButton1 = "OK";
+		m_sButton1 = L"OK";
 #else
 		m_i18l.LoadString(IDS_MSGBOX_OK);
 		m_sButton1 = m_i18l;
@@ -675,9 +675,9 @@ void CMessageBox::SetRegistryValue(const CString& sValue, DWORD value)
 
 	CString path;
 #ifdef XMESSAGEBOX_APPREGPATH
-	path = XMESSAGEBOX_APPREGPATH;
+	path = _T(XMESSAGEBOX_APPREGPATH);
 #else
-	path = "Software\\TortoiseGit\\";
+	path = L"Software\\TortoiseGit\\";
 	path += AfxGetApp()->m_pszProfileName;
 #endif
 	DWORD disp;

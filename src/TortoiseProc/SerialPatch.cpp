@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -68,9 +68,9 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 			m_Subject.TrimRight(L'\r');
 		}
 
-		if (start >= 1 && m_Body.Mid(start - 1, 2) == L"\n\n")
+		if (start >= 1 && m_Body.Mid(start - 1, static_cast<int>(strlen("\n\n"))) == "\n\n")
 			break;
-		if (start >= 4 && m_Body.Mid(start - 4, 4) == L"\r\n\r\n")
+		if (start >= 4 && m_Body.Mid(start - 4, static_cast<int>(strlen("\r\n\r\n"))) == "\r\n\r\n")
 		{
 			--start;
 			break;

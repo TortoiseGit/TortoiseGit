@@ -273,9 +273,9 @@ void CSettingGitRemote::OnLbnSelchangeListRemote()
 	cmd.Format(L"remote.%s.tagopt", static_cast<LPCWSTR>(m_strRemote));
 	CString tagopt = g_Git.GetConfigValue(cmd);
 	index = 0;
-	if (tagopt == "--no-tags")
+	if (tagopt == L"--no-tags")
 		index = 1;
-	else if (tagopt == "--tags")
+	else if (tagopt == L"--tags")
 		index = 2;
 	m_ctrlTagOpt.SetCurSel(index);
 
@@ -509,9 +509,9 @@ BOOL CSettingGitRemote::OnApply()
 		CString tagopt;
 		int index = m_ctrlTagOpt.GetCurSel();
 		if (index == 1)
-			tagopt = "--no-tags";
+			tagopt = L"--no-tags";
 		else if (index == 2)
-			tagopt = "--tags";
+			tagopt = L"--tags";
 		if (!Save(L"tagopt", tagopt))
 			return FALSE;
 	}

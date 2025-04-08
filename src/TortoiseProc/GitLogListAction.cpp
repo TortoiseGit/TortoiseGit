@@ -102,7 +102,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		else
 		{
 			if (!mergeMsg.IsEmpty())
-				mergeMsg += "\r\n";
+				mergeMsg += L"\r\n";
 			CGit::LoadTextFile(dotGitPath + L"MERGE_MSG", mergeMsg);
 			ret = 0;
 		}

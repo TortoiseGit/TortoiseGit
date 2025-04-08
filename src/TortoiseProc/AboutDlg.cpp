@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2009-2021, 2023-2024 - TortoiseGit
+// Copyright (C) 2009-2021, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -63,7 +63,7 @@ static CString Lf2Crlf(const CString& text)
 	for (int i = 0; i < text.GetLength(); i++)
 	{
 		if (text[i] == L'\n' && c != L'\r')
-			s += "\r\n";
+			s += L"\r\n";
 		else
 			s += text[i];
 		c = text[i];

@@ -1376,7 +1376,6 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 						refLabel.hasTracking = false;
 						refLabel.sameName = false;
 						refLabel.name = label;
-						refLabel.fullName = "";
 						refsToShow.push_back(refLabel);
 					};
 					fnAddSuperProjectHash(m_submoduleInfo.superProjectHash, L"super-project-pointer");

@@ -187,9 +187,8 @@ BOOL CSetDialogs3::SafeDataImpl(CAutoConfig& config)
 	else
 	{
 		CString value;
-		char numBuf[20] = { 0 };
-		sprintf_s(numBuf, "%lu", static_cast<DWORD>(m_langCombo.GetItemData(m_langCombo.GetCurSel())));
-		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, static_cast<CString>(numBuf)))
+		value.Format(L"%lu", static_cast<DWORD>(m_langCombo.GetItemData(m_langCombo.GetCurSel())));
+		if (!Save(config, PROJECTPROPNAME_PROJECTLANGUAGE, value))
 			return FALSE;
 	}
 

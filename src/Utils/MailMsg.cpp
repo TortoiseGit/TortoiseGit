@@ -144,7 +144,7 @@ BOOL CMailMsg::DetectMailClient(CString& sMailClientName)
 	}
 	else
 	{
-		sMailClientName = "Not Detected";
+		sMailClientName = L"Not Detected";
 	}
 
 	return FALSE;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2025 - TortoiseGit
 // Copyright (C) 2006-2017, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -98,7 +98,7 @@ bool CDiffData::HandleSvnError(svn_error_t * svnerr)
 	while (svnerr->child)
 	{
 		svnerr = svnerr->child;
-		sMsg += L'\n';
+		sMsg += '\n';
 		sMsg += CStringA(svnerr->message);
 	}
 	CString readableMsg = CUnicodeUtils::GetUnicode(sMsg);

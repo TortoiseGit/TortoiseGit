@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019, 2023 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023, 2025 - TortoiseGit
 // Copyright (C) 2007-2008, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -100,17 +100,17 @@ bool CHooks::Save()
 		if (it->second.bLocal)
 			continue;
 		strhooks += GetHookTypeString(it->first.htype);
-		strhooks += '\n';
+		strhooks += L'\n';
 		if (!it->second.bEnabled)
-			strhooks += '!';
+			strhooks += L'!';
 		strhooks += it->first.path.GetWinPathString();
-		strhooks += '\n';
+		strhooks += L'\n';
 		strhooks += it->second.commandline;
-		strhooks += '\n';
+		strhooks += L'\n';
 		strhooks += (it->second.bWait ? L"true" : L"false");
-		strhooks += '\n';
+		strhooks += L'\n';
 		strhooks += (it->second.bShow ? L"show" : L"hide");
-		strhooks += '\n';
+		strhooks += L'\n';
 	}
 	CRegString reghooks(L"Software\\TortoiseGit\\hooks");
 	reghooks = strhooks;

@@ -178,7 +178,7 @@ bool CloneCommand::Execute()
 			// After cloning, change current directory to the cloned directory
 			g_Git.m_CurrentDir = dlg.m_Directory;
 			if (dlg.m_bAutoloadPuttyKeyFile) // do this here, since it might be needed for actions performed in Log
-				StorePuttyKey(dlg.m_Directory, dlg.m_bOrigin && !dlg.m_strOrigin.IsEmpty() ? dlg.m_strOrigin : CString("origin"), dlg.m_strPuttyKeyFile);
+				StorePuttyKey(dlg.m_Directory, dlg.m_bOrigin && !dlg.m_strOrigin.IsEmpty() ? dlg.m_strOrigin : CString(L"origin"), dlg.m_strPuttyKeyFile);
 
 			postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, [&]
 			{

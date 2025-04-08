@@ -437,7 +437,7 @@ CTGitPath CTGitPath::GetContainingDirectory() const
 	if(sDirName.GetLength() == 2 && sDirName[1] == ':')
 	{
 		// This is a root directory, which needs a trailing slash
-		sDirName += '\\';
+		sDirName += L'\\';
 		if(sDirName == m_sBackslashPath)
 		{
 			// We were clearly provided with a root path to start with - we should return nothing now
@@ -1656,13 +1656,13 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 				::SetFileAttributes(it->GetWinPath(), FILE_ATTRIBUTE_NORMAL);
 
 			sPaths += it->GetWinPath();
-			sPaths += '\0';
+			sPaths += L'\0';
 		}
 	}
 	if (sPaths.IsEmpty())
 		return;
-	sPaths += '\0';
-	sPaths += '\0';
+	sPaths += L'\0';
+	sPaths += L'\0';
 	DeleteViaShell(static_cast<LPCWSTR>(sPaths), bTrash, bShowErrorUI);
 	Clear();
 }

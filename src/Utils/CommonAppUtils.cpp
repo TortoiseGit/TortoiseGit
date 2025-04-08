@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2010, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -407,7 +407,7 @@ const char* CCommonAppUtils::GetResourceData(const wchar_t* resName, int id, DWO
 
 bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html" */)
 {
-	ATLASSERT(page == "index.html" || id == 0);
+	ATLASSERT(page == L"index.html" || id == 0);
 
 #if !defined(IDR_HELPMAPPING) || !defined(IDS_APPNAME)
 	UNREFERENCED_PARAMETER(id);

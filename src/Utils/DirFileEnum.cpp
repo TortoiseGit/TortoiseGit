@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2021, 2023 - TortoiseGit
+// Copyright (C) 2015-2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2005-2006, 2009-2010, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ CSimpleFileFind::CSimpleFileFind(const CString& sPath, LPCWSTR pPattern)
 	{
 		wchar_t ch = sPath[len - 1];
 		if (ch != '\\' && (ch != ':' || len != 2))
-			m_sPathPrefix += "\\";
+			m_sPathPrefix += L'\\';
 	}
 	if (len >= 248 && (CStringUtils::StartsWith(m_sPathPrefix, L"\\\\?\\")))
 		m_hFindFile = ::FindFirstFileEx(static_cast<LPCWSTR>(L"\\\\?\\" + m_sPathPrefix + pPattern), FindExInfoBasic, &m_findFileData, FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);

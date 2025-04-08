@@ -140,7 +140,7 @@ CString CStringUtils::EnsureCRLF(const CString& text)
 	for (int i = 0; i < length; ++i)
 	{
 		if (text[i] == L'\r' && (i == length - 1 || text[i + 1] != L'\n'))
-			result += "\r\n";
+			result += L"\r\n";
 		else if (text[i] == L'\n' && (i == 0 || text[i - 1] != L'\r'))
 			result += L"\r\n";
 		else

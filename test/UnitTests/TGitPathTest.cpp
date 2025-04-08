@@ -2249,7 +2249,7 @@ TEST(CTGitPath, AreAllPathsDirectories)
 TEST(CTGitPath, IsAnyAncestorOf)
 {
 	CTGitPathList list;
-	CTGitPath file("a/file");
+	CTGitPath file(L"a/file");
 	EXPECT_FALSE(list.IsAnyAncestorOf(file));
 
 	list.AddPath(CTGitPath(L"something"));
@@ -2302,7 +2302,7 @@ TEST(CTGitPath, ParseFromLFSLocks)
 TEST(CTGitPath, ParseFromLFSLocks_BrokenEmptyId)
 {
 	// output from git lfs locks --json (crafted to match crash report)
-	CString output = "[{\"id\":\"3185\",\"path\":\"Something.xlsx\",\"owner\":{\"name\":\"Person1\"},\"locked_at\":\"2023-01-31T15:51:05+01:00\"},{\"id\":\"\",\"path\":\"\",\"locked_at\":\"0001-01-01T00:00:00Z\"},{\"id\":\"3849\",\"path\":\"something else.docx\",\"owner\":{\"name\":\"Person2\"},\"locked_at\":\"2023-10-12T18:15:28+02:00\"}]";
+	CString output = L"[{\"id\":\"3185\",\"path\":\"Something.xlsx\",\"owner\":{\"name\":\"Person1\"},\"locked_at\":\"2023-01-31T15:51:05+01:00\"},{\"id\":\"\",\"path\":\"\",\"locked_at\":\"0001-01-01T00:00:00Z\"},{\"id\":\"3849\",\"path\":\"something else.docx\",\"owner\":{\"name\":\"Person2\"},\"locked_at\":\"2023-10-12T18:15:28+02:00\"}]";
 	constexpr unsigned int dummy = 5;
 
 	CTGitPathList locks;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2003-2021 - TortoiseSVN
-// Copyright (C) 2011-2012, 2017-2024 TortoiseGit
+// Copyright (C) 2011-2012, 2017-2025 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -6342,7 +6342,7 @@ void CBaseView::AddIndentationForSelectedBlock()
 		// add tab to line start (alternatively m_nTabSize spaces can be used)
 		CString tabStr;
 		int indentChars = GetIndentCharsForLine(0, nViewLine);
-		tabStr = indentChars > 0 ? CString(L' ', indentChars) : CString("\t");
+		tabStr = indentChars > 0 ? CString(L' ', indentChars) : CString(L"\t");
 		SetViewLine(nViewLine, tabStr + sLine);
 		bModified = true;
 	}
@@ -6438,7 +6438,7 @@ void CBaseView::ConvertTabToSpaces()
 		{
 			CString sLineNew = sLine;
 			sLineNew.Delete(0, nPosIn);
-			sLineNew = CString(' ', nPosOut) + sLineNew;
+			sLineNew = CString(L' ', nPosOut) + sLineNew;
 			SetViewLine(nViewLine, sLineNew);
 			bModified = true;
 		}
@@ -6493,7 +6493,7 @@ void CBaseView::Tabularize()
 		{
 			CString sLineNew = sLine;
 			sLineNew.Delete(0, nDel);
-			sLineNew = CString('\t', nTabCount) + sLineNew;
+			sLineNew = CString(L'\t', nTabCount) + sLineNew;
 			if (sLine!=sLineNew)
 			{
 				SetViewLine(nViewLine, sLineNew);

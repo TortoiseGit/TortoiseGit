@@ -341,7 +341,7 @@ void CSciEdit::Init(const ProjectProperties& props)
 	Init(props.lProjectLanguage);
 	m_sCommand = CUnicodeUtils::GetUTF8(props.GetCheckRe());
 	m_sBugID = CUnicodeUtils::GetUTF8(props.GetBugIDRe());
-	m_sUrl = CUnicodeUtils::GetUTF8(props.sUrl);
+	m_sUrl = props.sUrl;
 
 	Call(SCI_SETMOUSEDWELLTIME, 333);
 

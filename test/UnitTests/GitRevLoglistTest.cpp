@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020 - TortoiseGit
+// Copyright (C) 2015-2020, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -513,7 +513,7 @@ TEST(GitRevLoglist, GetUnRevFiles)
 	GitRevLoglist rev;
 	EXPECT_EQ(0, rev.GetUnRevFiles().GetCount());
 	CTGitPathList& list = rev.GetUnRevFiles();
-	list.AddPath(CTGitPath("file.txt"));
+	list.AddPath(CTGitPath(L"file.txt"));
 	EXPECT_EQ(1, rev.GetUnRevFiles().GetCount());
 	rev.Clear();
 	EXPECT_EQ(0, list.GetCount());
