@@ -25,6 +25,7 @@
 #include "LoglistUtils.h"
 #include "FileTextLines.h"
 #include "UnicodeUtils.h"
+#include "StringUtils.h"
 
 constexpr wchar_t WideCharSwap2(wchar_t nValue) noexcept
 {
@@ -469,62 +470,10 @@ GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, cons
 	return &(it->second);
 }
 
-// similar code in CStringUtils::UnescapeGitQuotePath
 CString CTortoiseGitBlameData::UnquoteFilename(const CStringA& s)
 {
 	if (s[0] == '"')
-	{
-		CStringA ret;
-		int i_size = s.GetLength();
-		bool isEscaped = false;
-		for (int i = 1; i < i_size; ++i)
-		{
-			char c = s[i];
-			if (isEscaped)
-			{
-				if (c >= '0' && c <= '3')
-				{
-					if (i + 2 < i_size)
-					{
-						c = (((c - '0') & 03) << 6) | (((s[i + 1] - '0') & 07) << 3) | ((s[i + 2] - '0') & 07);
-						i += 2;
-						ret += c;
-					}
-				}
-				else
-				{
-					switch (c)
-					{
-					case 'a' : c = '\a'; break;
-					case 'b' : c = '\b'; break;
-					case 't' : c = '\t'; break;
-					case 'n' : c = '\n'; break;
-					case 'v' : c = '\v'; break;
-					case 'f' : c = '\f'; break;
-					case 'r' : c = '\r'; break;
-					}
-					ret += c;
-				}
-				isEscaped = false;
-			}
-			else
-			{
-				if (c == '\\')
-				{
-					isEscaped = true;
-				}
-				else if(c == '"')
-				{
-					break;
-				}
-				else
-				{
-					ret += c;
-				}
-			}
-		}
-		return CUnicodeUtils::GetUnicode(ret);
-	}
+		return CStringUtils::UnescapeGitQuotePathA(s.Mid(1));
 	else
 		return CUnicodeUtils::GetUnicode(s);
 }
