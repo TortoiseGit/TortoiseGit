@@ -993,7 +993,7 @@ CTGitPathList::CTGitPathList(const CTGitPath& firstEntry)
 	AddPath(firstEntry);
 }
 
-int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action, bool clear /*= true*/)
+int CTGitPathList::ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int action, bool clear /*= true*/)
 {
 	size_t pos = 0;
 	const size_t end = out.size();
@@ -1027,7 +1027,7 @@ int CTGitPathList::ParserFromLsFileSimple(BYTE_VECTOR& out, unsigned int action,
 }
 
 // similar code in CGit::ParseConflictHashesFromLsFile
-int CTGitPathList::ParserFromLsFile(BYTE_VECTOR& out)
+int CTGitPathList::ParserFromLsFile(const BYTE_VECTOR& out)
 {
 	size_t pos = 0;
 	const size_t end = out.size();
@@ -1237,7 +1237,7 @@ int CTGitPathList::FillBasedOnIndexFlags(unsigned short flag, unsigned short fla
 	RemoveDuplicates();
 	return 0;
 }
-int CTGitPathList::ParserFromLog(BYTE_VECTOR& log)
+int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 {
 	static bool mergeReplacedStatus = CRegDWORD(L"Software\\TortoiseGit\\MergeReplacedStatusKS", TRUE, false, HKEY_LOCAL_MACHINE) == TRUE; // TODO: remove kill-switch
 	this->Clear();
