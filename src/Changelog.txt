@@ -14,6 +14,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Update shipped PuTTY binaries to 0.83
  * Update Scintilla to 5.5.6 and Lexilla to 5.4.4
  * Update libgit2 to 1.9.0
+ * Update json library to 3.12
 
 == Bug Fixes ==
  * Fixed issue #4191: Fix \r handling in log output window to avoid accidentally overwriting remote messages
