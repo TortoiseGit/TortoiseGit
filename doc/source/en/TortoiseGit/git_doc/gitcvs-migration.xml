@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitcvs-migration(7)">
     <title>gitcvs-migration(7)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitcvs-migration(7)</primary>
 </indexterm>
@@ -157,7 +155,7 @@ repositories without the need for a central maintainer.</simpara>
 <xref linkend="gitcore-tutorial(7)" />,
 <xref linkend="gitglossary(7)" />,
 <xref linkend="giteveryday(7)" />,
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
+<link linkend="git_user-manual">The Git User's Manual</link></simpara>
 </simplesect>
 <simplesect id="gitcvs-migration(7)__git">
 <title>GIT</title>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-symbolic-ref(1)">
     <title>git-symbolic-ref(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-symbolic-ref(1)</primary>
 </indexterm>
@@ -119,6 +117,10 @@ default.</simpara>
 <simpara><emphasis>git symbolic-ref</emphasis> will exit with status 0 if the contents of the
 symbolic ref were printed correctly, with status 1 if the requested
 name is not a symbolic ref, or 128 if another error occurs.</simpara>
+</simplesect>
+<simplesect id="git-symbolic-ref(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-update-ref(1)" /></simpara>
 </simplesect>
 <simplesect id="git-symbolic-ref(1)__git">
 <title>GIT</title>

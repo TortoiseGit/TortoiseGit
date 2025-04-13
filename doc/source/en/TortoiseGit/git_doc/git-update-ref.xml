@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-update-ref(1)">
     <title>git-update-ref(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-update-ref(1)</primary>
 </indexterm>
@@ -31,29 +29,14 @@ updates the master branch head to &lt;new-oid&gt; only if its current
 value is &lt;old-oid&gt;.  You can specify 40 "0" or an empty string
 as &lt;old-oid&gt; to make sure that the ref you are creating does
 not exist.</simpara>
-<simpara>It also allows a "ref" file to be a symbolic pointer to another
-ref file by starting with the four-byte header sequence of
-"ref:".</simpara>
-<simpara>More importantly, it allows the update of a ref file to follow
-these symbolic pointers, whether they are symlinks or these
-"regular file symbolic refs".  It follows <emphasis role="strong">real</emphasis> symlinks only
-if they start with "refs/": otherwise it will just try to read
-them and update them as a regular file (i.e. it will allow the
-filesystem to follow them, but will overwrite such a symlink to
-somewhere else with a regular filename).</simpara>
+<simpara>The final arguments are object names; this command without any options
+does not support updating a symbolic ref to point to another ref (see
+<xref linkend="git-symbolic-ref(1)" />).  But <emphasis>git update-ref --stdin</emphasis> does have
+the <emphasis>symref-*</emphasis> commands so that regular refs and symbolic refs can be
+committed in the same transaction.</simpara>
 <simpara>If --no-deref is given, &lt;ref&gt; itself is overwritten, rather than
 the result of following the symbolic pointers.</simpara>
-<simpara>In general, using</simpara>
-<literallayout class="monospaced">git update-ref HEAD "$head"</literallayout>
-<simpara>should be a <emphasis>lot</emphasis> safer than doing</simpara>
-<literallayout class="monospaced">echo "$head" &gt; "$GIT_DIR/HEAD"</literallayout>
-<simpara>both from a symlink following standpoint <emphasis role="strong">and</emphasis> an error checking
-standpoint.  The "refs/" rule for symlinks means that symlinks
-that point to "outside" the tree are safe: they'll be followed
-for reading but not for writing (so we'll never write through a
-ref symlink to some other tree, if you have copied a whole
-archive by creating a symlink tree).</simpara>
-<simpara>With <emphasis>-d</emphasis> flag, it deletes the named &lt;ref&gt; after verifying it
+<simpara>With <emphasis>-d</emphasis>, it deletes the named &lt;ref&gt; after verifying that it
 still contains &lt;old-oid&gt;.</simpara>
 <simpara>With <emphasis>--stdin</emphasis>, update-ref reads instructions from standard input and
 performs all modifications together.  Specify commands of the form:</simpara>
@@ -61,6 +44,10 @@ performs all modifications together.  Specify commands of the form:</simpara>
 create SP &lt;ref&gt; SP &lt;new-oid&gt; LF
 delete SP &lt;ref&gt; [SP &lt;old-oid&gt;] LF
 verify SP &lt;ref&gt; [SP &lt;old-oid&gt;] LF
+symref-update SP &lt;ref&gt; SP &lt;new-target&gt; [SP (ref SP &lt;old-target&gt; | oid SP &lt;old-oid&gt;)] LF
+symref-create SP &lt;ref&gt; SP &lt;new-target&gt; LF
+symref-delete SP &lt;ref&gt; [SP &lt;old-target&gt;] LF
+symref-verify SP &lt;ref&gt; [SP &lt;old-target&gt;] LF
 option SP &lt;opt&gt; LF
 start LF
 prepare LF
@@ -78,6 +65,10 @@ quoting:</simpara>
 create SP &lt;ref&gt; NUL &lt;new-oid&gt; NUL
 delete SP &lt;ref&gt; NUL [&lt;old-oid&gt;] NUL
 verify SP &lt;ref&gt; NUL [&lt;old-oid&gt;] NUL
+symref-update SP &lt;ref&gt; NUL &lt;new-target&gt; [NUL (ref NUL &lt;old-target&gt; | oid NUL &lt;old-oid&gt;)] NUL
+symref-create SP &lt;ref&gt; NUL &lt;new-target&gt; NUL
+symref-delete SP &lt;ref&gt; [NUL &lt;old-target&gt;] NUL
+symref-verify SP &lt;ref&gt; [NUL &lt;old-target&gt;] NUL
 option SP &lt;opt&gt; NUL
 start NUL
 prepare NUL
@@ -108,7 +99,7 @@ create
 </term>
 <listitem>
 <simpara>
-        Create &lt;ref&gt; with &lt;new-oid&gt; after verifying it does not
+        Create &lt;ref&gt; with &lt;new-oid&gt; after verifying that it does not
         exist.  The given &lt;new-oid&gt; may not be zero.
 </simpara>
 </listitem>
@@ -119,8 +110,20 @@ delete
 </term>
 <listitem>
 <simpara>
-        Delete &lt;ref&gt; after verifying it exists with &lt;old-oid&gt;, if
+        Delete &lt;ref&gt; after verifying that it exists with &lt;old-oid&gt;, if
         given.  If given, &lt;old-oid&gt; may not be zero.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+symref-update
+</term>
+<listitem>
+<simpara>
+        Set &lt;ref&gt; to &lt;new-target&gt; after verifying &lt;old-target&gt; or &lt;old-oid&gt;,
+        if given. Specify a zero &lt;old-oid&gt; to ensure that the ref does not
+        exist before the update.
 </simpara>
 </listitem>
 </varlistentry>
@@ -132,6 +135,33 @@ verify
 <simpara>
         Verify &lt;ref&gt; against &lt;old-oid&gt; but do not change it.  If
         &lt;old-oid&gt; is zero or missing, the ref must not exist.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>symref-create:
+        Create symbolic ref &lt;ref&gt; with &lt;new-target&gt; after verifying that
+        it does not exist.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+symref-delete
+</term>
+<listitem>
+<simpara>
+        Delete &lt;ref&gt; after verifying that it exists with &lt;old-target&gt;, if given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+symref-verify
+</term>
+<listitem>
+<simpara>
+        Verify symbolic &lt;ref&gt; against &lt;old-target&gt; but do not change it.
+        If &lt;old-target&gt; is missing, the ref must not exist.  Can only be
+        used in <emphasis>no-deref</emphasis> mode.
 </simpara>
 </listitem>
 </varlistentry>
@@ -222,6 +252,19 @@ value supplied to the -m option.</simpara>
 <simpara>An update will fail (without changing &lt;ref&gt;) if the current user is
 unable to create a new log file, append to the existing log file
 or does not have committer information available.</simpara>
+</simplesect>
+<simplesect id="git-update-ref(1)__notes">
+<title>NOTES</title>
+<simpara>Symbolic refs were initially implemented using symbolic links.  This is
+now deprecated since not all filesystems support symbolic links.</simpara>
+<simpara>This command follows <emphasis role="strong">real</emphasis> symlinks only if they start with "refs/":
+otherwise it will just try to read them and update them as a regular
+file (i.e. it will allow the filesystem to follow them, but will
+overwrite such a symlink to somewhere else with a regular filename).</simpara>
+</simplesect>
+<simplesect id="git-update-ref(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-symbolic-ref(1)" /></simpara>
 </simplesect>
 <simplesect id="git-update-ref(1)__git">
 <title>GIT</title>

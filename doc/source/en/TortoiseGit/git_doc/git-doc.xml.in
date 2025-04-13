@@ -28,6 +28,7 @@
 		<xi:include href="./git-apply.xml"/>
 		<xi:include href="./git-archimport.xml"/>
 		<xi:include href="./git-archive.xml"/>
+		<xi:include href="./git-backfill.xml"/>
 		<xi:include href="./git-bisect.xml"/>
 		<xi:include href="./git-blame.xml"/>
 		<xi:include href="./git-branch.xml"/>
@@ -130,6 +131,7 @@
 		<xi:include href="./git-rebase.xml"/>
 		<xi:include href="./git-receive-pack.xml"/>
 		<xi:include href="./git-reflog.xml"/>
+		<xi:include href="./git-refs.xml"/>
 		<xi:include href="./git-remote-ext.xml"/>
 		<xi:include href="./git-remote-fd.xml"/>
 		<xi:include href="./git-remote.xml"/>
@@ -213,6 +215,7 @@
 		<xi:include href="./gitformat-index.xml"/>
 		<xi:include href="./gitformat-pack.xml"/>
 		<xi:include href="./gitformat-signature.xml"/>
+		<xi:include href="./gitpacking.xml"/>
 		<xi:include href="./gitprotocol-capabilities.xml"/>
 		<xi:include href="./gitprotocol-common.xml"/>
 		<xi:include href="./gitprotocol-http.xml"/>

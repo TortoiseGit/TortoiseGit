@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-cat-file(1)">
     <title>git-cat-file(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-cat-file(1)</primary>
 </indexterm>
@@ -437,9 +435,9 @@ will be returned.</simpara>
 <simplesect id="git-cat-file(1)__batch_output">
 <title>BATCH OUTPUT</title>
 <simpara>If <emphasis>--batch</emphasis> or <emphasis>--batch-check</emphasis> is given, <emphasis>cat-file</emphasis> will read objects
-from stdin, one per line, and print information about them. By default,
-the whole line is considered as an object, as if it were fed to
-<xref linkend="git-rev-parse(1)" />.</simpara>
+from stdin, one per line, and print information about them in the same
+order as they have been read. By default, the whole line is
+considered as an object, as if it were fed to <xref linkend="git-rev-parse(1)" />.</simpara>
 <simpara>When <emphasis>--batch-command</emphasis> is given, <emphasis>cat-file</emphasis> will read commands from stdin,
 one per line, and print information based on the command given. With
 <emphasis>--batch-command</emphasis>, the <emphasis>info</emphasis> command followed by an object will print

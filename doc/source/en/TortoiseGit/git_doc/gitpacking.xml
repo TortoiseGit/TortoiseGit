@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="gitpacking(7)">
+    <title>gitpacking(7)</title>
+<indexterm>
+<primary>gitpacking(7)</primary>
+</indexterm>
+<simplesect id="gitpacking(7)__name">
+<title>NAME</title>
+<simpara>gitpacking - Advanced concepts related to packing in Git</simpara>
+</simplesect>
+<simplesect id="gitpacking(7)__synopsis">
+<title>SYNOPSIS</title>
+<simpara>gitpacking</simpara>
+</simplesect>
+<simplesect id="gitpacking(7)__description">
+<title>DESCRIPTION</title>
+<simpara>This document aims to describe some advanced concepts related to packing
+in Git.</simpara>
+<simpara>Many concepts are currently described scattered between manual pages of
+various Git commands, including <xref linkend="git-pack-objects(1)" />,
+<xref linkend="git-repack(1)" />, and others, as well as <xref linkend="gitformat-pack(5)" />,
+and parts of the <emphasis>Documentation/technical</emphasis> tree.</simpara>
+<simpara>There are many aspects of packing in Git that are not covered in this
+document that instead live in the aforementioned areas. Over time, those
+scattered bits may coalesce into this document.</simpara>
+</simplesect>
+<simplesect id="gitpacking(7)__pseudo_merge_bitmaps">
+<title>Pseudo-merge bitmaps</title>
+<note><simpara>Pseudo-merge bitmaps are considered an experimental feature, so
+the configuration and many of the ideas are subject to change.</simpara></note>
+<section id="gitpacking(7)__background">
+<title>Background</title>
+<simpara>Reachability bitmaps are most efficient when we have on-disk stored
+bitmaps for one or more of the starting points of a traversal. For this
+reason, Git prefers storing bitmaps for commits at the tips of refs,
+because traversals tend to start with those points.</simpara>
+<simpara>But if you have a large number of refs, it's not feasible to store a
+bitmap for <emphasis>every</emphasis> ref tip. It takes up space, and just OR-ing all of
+those bitmaps together is expensive.</simpara>
+<simpara>One way we can deal with that is to create bitmaps that represent
+<emphasis>groups</emphasis> of refs. When a traversal asks about the entire group, then we
+can use this single bitmap instead of considering each ref individually.
+Because these bitmaps represent the set of objects which would be
+reachable in a hypothetical merge of all of the commits, we call them
+pseudo-merge bitmaps.</simpara>
+</section>
+<section id="gitpacking(7)__overview">
+<title>Overview</title>
+<simpara>A "pseudo-merge bitmap" is used to refer to a pair of bitmaps, as
+follows:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+Commit bitmap
+</term>
+<listitem>
+<simpara>
+  A bitmap whose set bits describe the set of commits included in the
+  pseudo-merge's "merge" bitmap (as below).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+Merge bitmap
+</term>
+<listitem>
+<simpara>
+  A bitmap whose set bits describe the reachability closure over the set
+  of commits in the pseudo-merge's "commits" bitmap (as above). An
+  identical bitmap would be generated for an octopus merge with the same
+  set of parents as described in the commits bitmap.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>Pseudo-merge bitmaps can accelerate bitmap traversals when all commits
+for a given pseudo-merge are listed on either side of the traversal,
+either directly (by explicitly asking for them as part of the <emphasis>HAVES</emphasis>
+or <emphasis>WANTS</emphasis>) or indirectly (by encountering them during a fill-in
+traversal).</simpara>
+</section>
+<section id="gitpacking(7)__use_cases">
+<title>Use-cases</title>
+<simpara>For example, suppose there exists a pseudo-merge bitmap with a large
+number of commits, all of which are listed in the <emphasis>WANTS</emphasis> section of
+some bitmap traversal query. When pseudo-merge bitmaps are enabled, the
+bitmap machinery can quickly determine there is a pseudo-merge which
+satisfies some subset of the wanted objects on either side of the query.
+Then, we can inflate the EWAH-compressed bitmap, and <emphasis>OR</emphasis> it in to the
+resulting bitmap. By contrast, without pseudo-merge bitmaps, we would
+have to repeat the decompression and <emphasis>OR</emphasis>-ing step over a potentially
+large number of individual bitmaps, which can take proportionally more
+time.</simpara>
+<simpara>Another benefit of pseudo-merges arises when there is some combination
+of (a) a large number of references, with (b) poor bitmap coverage, and
+(c) deep, nested trees, making fill-in traversal relatively expensive.
+For example, suppose that there are a large enough number of tags where
+bitmapping each of the tags individually is infeasible. Without
+pseudo-merge bitmaps, computing the result of, say, <emphasis>git rev-list
+--use-bitmap-index --count --objects --tags</emphasis> would likely require a
+large amount of fill-in traversal. But when a large quantity of those
+tags are stored together in a pseudo-merge bitmap, the bitmap machinery
+can take advantage of the fact that we only care about the union of
+objects reachable from all of those tags, and answer the query much
+faster.</simpara>
+</section>
+<section id="gitpacking(7)__configuration">
+<title>Configuration</title>
+<simpara>Reference tips are grouped into different pseudo-merge groups according
+to two criteria. A reference name matches one or more of the defined
+pseudo-merge patterns, and optionally one or more capture groups within
+that pattern which further partition the group.</simpara>
+<simpara>Within a group, commits may be considered "stable", or "unstable"
+depending on their age. These are adjusted by setting the
+<emphasis>bitmapPseudoMerge.&lt;name&gt;.stableThreshold</emphasis> and
+<emphasis>bitmapPseudoMerge.&lt;name&gt;.threshold</emphasis> configuration values, respectively.</simpara>
+<simpara>All stable commits are grouped into pseudo-merges of equal size
+(<emphasis>bitmapPseudoMerge.&lt;name&gt;.stableSize</emphasis>). If the <emphasis>stableSize</emphasis>
+configuration is set to, say, 100, then the first 100 commits (ordered
+by committer date) which are older than the <emphasis>stableThreshold</emphasis> value will
+form one group, the next 100 commits will form another group, and so on.</simpara>
+<simpara>Among unstable commits, the pseudo-merge machinery will attempt to
+combine older commits into large groups as opposed to newer commits
+which will appear in smaller groups. This is based on the heuristic that
+references whose tip commit is older are less likely to be modified to
+point at a different commit than a reference whose tip commit is newer.</simpara>
+<simpara>The size of groups is determined by a power-law decay function, and the
+decay parameter roughly corresponds to "k" in <emphasis>f(n) = C*n^(-k/100)</emphasis>,
+where <emphasis>f(n)</emphasis> describes the size of the <emphasis>n</emphasis>-th pseudo-merge group. The
+sample rate controls what percentage of eligible commits are considered
+as candidates. The threshold parameter indicates the minimum age (so as
+to avoid including too-recent commits in a pseudo-merge group, making it
+less likely to be valid). The "maxMerges" parameter sets an upper-bound
+on the number of pseudo-merge commits an individual group</simpara>
+<simpara>The "stable"-related parameters control "stable" pseudo-merge groups,
+comprised of a fixed number of commits which are older than the
+configured "stable threshold" value and may be grouped together in
+chunks of "stableSize" in order of age.</simpara>
+<simpara>The exact configuration for pseudo-merges is as follows:</simpara>
+<note><simpara>The configuration options in <emphasis>bitmapPseudoMerge.*</emphasis> are considered
+EXPERIMENTAL and may be subject to change or be removed entirely in the
+future. For more information about the pseudo-merge bitmap feature, see
+the "Pseudo-merge bitmaps" section of <xref linkend="gitpacking(7)" />.</simpara></note>
+<variablelist>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.pattern
+</term>
+<listitem>
+<simpara>
+        Regular expression used to match reference names. Commits
+        pointed to by references matching this pattern (and meeting
+        the below criteria, like <emphasis>bitmapPseudoMerge.&lt;name&gt;.sampleRate</emphasis>
+        and <emphasis>bitmapPseudoMerge.&lt;name&gt;.threshold</emphasis>) will be considered
+        for inclusion in a pseudo-merge bitmap.
+</simpara>
+<simpara>Commits are grouped into pseudo-merge groups based on whether or not
+any reference(s) that point at a given commit match the pattern, which
+is an extended regular expression.</simpara>
+<simpara>Within a pseudo-merge group, commits may be further grouped into
+sub-groups based on the capture groups in the pattern. These
+sub-groupings are formed from the regular expressions by concatenating
+any capture groups from the regular expression, with a <emphasis>-</emphasis> dash in
+between.</simpara>
+<simpara>For example, if the pattern is <emphasis>refs/tags/</emphasis>, then all tags (provided
+they meet the below criteria) will be considered candidates for the
+same pseudo-merge group. However, if the pattern is instead
+<emphasis>refs/remotes/([0-9])+/tags/</emphasis>, then tags from different remotes will
+be grouped into separate pseudo-merge groups, based on the remote
+number.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.decay
+</term>
+<listitem>
+<simpara>
+        Determines the rate at which consecutive pseudo-merge bitmap
+        groups decrease in size. Must be non-negative. This parameter
+        can be thought of as <emphasis>k</emphasis> in the function <emphasis>f(n) = C * n^-k</emphasis>,
+        where <emphasis>f(n)</emphasis> is the size of the `n`th group.
+</simpara>
+<simpara>Setting the decay rate equal to <emphasis>0</emphasis> will cause all groups to be the
+same size. Setting the decay rate equal to <emphasis>1</emphasis> will cause the <emphasis>n`th
+group to be `1/n</emphasis> the size of the initial group.  Higher values of the
+decay rate cause consecutive groups to shrink at an increasing rate.
+The default is <emphasis>1</emphasis>.</simpara>
+<simpara>If all groups are the same size, it is possible that groups containing
+newer commits will be able to be used less often than earlier groups,
+since it is more likely that the references pointing at newer commits
+will be updated more often than a reference pointing at an old commit.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.sampleRate
+</term>
+<listitem>
+<simpara>
+        Determines the proportion of non-bitmapped commits (among
+        reference tips) which are selected for inclusion in an
+        unstable pseudo-merge bitmap. Must be between <emphasis>0</emphasis> and <emphasis>1</emphasis>
+        (inclusive). The default is <emphasis>1</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.threshold
+</term>
+<listitem>
+<simpara>
+        Determines the minimum age of non-bitmapped commits (among
+        reference tips, as above) which are candidates for inclusion
+        in an unstable pseudo-merge bitmap. The default is
+        <emphasis>1.week.ago</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.maxMerges
+</term>
+<listitem>
+<simpara>
+        Determines the maximum number of pseudo-merge commits among
+        which commits may be distributed.
+</simpara>
+<simpara>For pseudo-merge groups whose pattern does not contain any capture
+groups, this setting is applied for all commits matching the regular
+expression. For patterns that have one or more capture groups, this
+setting is applied for each distinct capture group.</simpara>
+<simpara>For example, if your capture group is <emphasis>refs/tags/</emphasis>, then this setting
+will distribute all tags into a maximum of <emphasis>maxMerges</emphasis> pseudo-merge
+commits. However, if your capture group is, say,
+<emphasis>refs/remotes/([0-9]+)/tags/</emphasis>, then this setting will be applied to
+each remote's set of tags individually.</simpara>
+<simpara>Must be non-negative. The default value is 64.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.stableThreshold
+</term>
+<listitem>
+<simpara>
+        Determines the minimum age of commits (among reference tips,
+        as above, however stable commits are still considered
+        candidates even when they have been covered by a bitmap) which
+        are candidates for a stable a pseudo-merge bitmap. The default
+        is <emphasis>1.month.ago</emphasis>.
+</simpara>
+<simpara>Setting this threshold to a smaller value (e.g., 1.week.ago) will cause
+more stable groups to be generated (which impose a one-time generation
+cost) but those groups will likely become stale over time. Using a
+larger value incurs the opposite penalty (fewer stable groups which are
+more useful).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+bitmapPseudoMerge.&lt;name&gt;.stableSize
+</term>
+<listitem>
+<simpara>
+        Determines the size (in number of commits) of a stable
+        psuedo-merge bitmap. The default is <emphasis>512</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
+<section id="gitpacking(7)__examples">
+<title>Examples</title>
+<simpara>Suppose that you have a repository with a large number of references,
+and you want a bare-bones configuration of pseudo-merge bitmaps that
+will enhance bitmap coverage of the <emphasis>refs/</emphasis> namespace. You may start
+with a configuration like so:</simpara>
+<screen>[bitmapPseudoMerge "all"]
+        pattern = "refs/"
+        threshold = now
+        stableThreshold = never
+        sampleRate = 100
+        maxMerges = 64</screen>
+<simpara>This will create pseudo-merge bitmaps for all references, regardless of
+their age, and group them into 64 pseudo-merge commits.</simpara>
+<simpara>If you wanted to separate tags from branches when generating
+pseudo-merge commits, you would instead define the pattern with a
+capture group, like so:</simpara>
+<screen>[bitmapPseudoMerge "all"]
+        pattern = "refs/(heads/tags)/"</screen>
+<simpara>Suppose instead that you are working in a fork-network repository, with
+each fork specified by some numeric ID, and whose refs reside in
+<emphasis>refs/virtual/NNN/</emphasis> (where <emphasis>NNN</emphasis> is the numeric ID corresponding to some
+fork) in the network. In this instance, you may instead write something
+like:</simpara>
+<screen>[bitmapPseudoMerge "all"]
+        pattern = "refs/virtual/([0-9]+)/(heads|tags)/"
+        threshold = now
+        stableThreshold = never
+        sampleRate = 100
+        maxMerges = 64</screen>
+<simpara>Which would generate pseudo-merge group identifiers like "1234-heads",
+and "5678-tags" (for branches in fork "1234", and tags in remote "5678",
+respectively).</simpara>
+</section>
+</simplesect>
+<simplesect id="gitpacking(7)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-pack-objects(1)" />
+<xref linkend="git-repack(1)" /></simpara>
+</simplesect>
+<simplesect id="gitpacking(7)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-format-patch(1)">
     <title>git-format-patch(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-format-patch(1)</primary>
 </indexterm>
@@ -26,7 +24,7 @@
                    [--in-reply-to=&lt;message-id&gt;] [--suffix=.&lt;sfx&gt;]
                    [--ignore-if-in-upstream] [--always]
                    [--cover-from-description=&lt;mode&gt;]
-                   [--rfc] [--subject-prefix=&lt;subject-prefix&gt;]
+                   [--rfc[=&lt;rfc&gt;]] [--subject-prefix=&lt;subject-prefix&gt;]
                    [(--reroll-count|-v) &lt;n&gt;]
                    [--to=&lt;email&gt;] [--cc=&lt;email&gt;]
                    [--[no-]cover-letter] [--quiet]
@@ -136,21 +134,21 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--U&lt;n&gt;
+<emphasis>-U&lt;n&gt;</emphasis>
 </term>
 <term>
---unified=&lt;n&gt;
+<emphasis>--unified=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Generate diffs with &lt;n&gt; lines of context instead of
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context instead of
         the usual three.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---output=&lt;file&gt;
+<emphasis>--output=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -160,13 +158,13 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---output-indicator-new=&lt;char&gt;
+<emphasis>--output-indicator-new=&lt;char&gt;</emphasis>
 </term>
 <term>
---output-indicator-old=&lt;char&gt;
+<emphasis>--output-indicator-old=&lt;char&gt;</emphasis>
 </term>
 <term>
---output-indicator-context=&lt;char&gt;
+<emphasis>--output-indicator-context=&lt;char&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -178,7 +176,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---indent-heuristic
+<emphasis>--indent-heuristic</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -189,7 +187,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-indent-heuristic
+<emphasis>--no-indent-heuristic</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -199,7 +197,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---minimal
+<emphasis>--minimal</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -210,7 +208,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---patience
+<emphasis>--patience</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -220,7 +218,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---histogram
+<emphasis>--histogram</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -230,7 +228,7 @@ reference.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---anchored=&lt;text&gt;
+<emphasis>--anchored=&lt;text&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -238,14 +236,14 @@ reference.</simpara>
 </simpara>
 <simpara>This option may be specified more than once.</simpara>
 <simpara>If a line exists in both the source and destination, exists only once,
-and starts with this text, this algorithm attempts to prevent it from
+and starts with <emphasis>&lt;text&gt;</emphasis>, this algorithm attempts to prevent it from
 appearing as a deletion or addition in the output. It uses the "patience
 diff" algorithm internally.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---diff-algorithm={patience|minimal|histogram|myers}
+<emphasis>--diff-algorithm=(patience|minimal|histogram|myers)</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -254,7 +252,10 @@ diff" algorithm internally.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>default</emphasis>, <emphasis>myers</emphasis>
+<emphasis>default</emphasis>
+</term>
+<term>
+<emphasis>myers</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -302,7 +303,7 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stat[=&lt;width&gt;[,&lt;name-width&gt;[,&lt;count&gt;]]]
+<emphasis>--stat[=&lt;width&gt;[,&lt;name-width&gt;[,&lt;count&gt;]]]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -312,9 +313,9 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
         if not connected to a terminal, and can be overridden by
         <emphasis>&lt;width&gt;</emphasis>. The width of the filename part can be limited by
         giving another width <emphasis>&lt;name-width&gt;</emphasis> after a comma or by setting
-        <emphasis>diff.statNameWidth=&lt;width&gt;</emphasis>. The width of the graph part can be
-        limited by using <emphasis>--stat-graph-width=&lt;width&gt;</emphasis> or by setting
-        <emphasis>diff.statGraphWidth=&lt;width&gt;</emphasis>. Using <emphasis>--stat</emphasis> or
+        <emphasis>diff.statNameWidth=&lt;name-width&gt;</emphasis>. The width of the graph part can be
+        limited by using <emphasis>--stat-graph-width=&lt;graph-width&gt;</emphasis> or by setting
+        <emphasis>diff.statGraphWidth=&lt;graph-width&gt;</emphasis>. Using <emphasis>--stat</emphasis> or
         <emphasis>--stat-graph-width</emphasis> affects all commands generating a stat graph,
         while setting <emphasis>diff.statNameWidth</emphasis> or <emphasis>diff.statGraphWidth</emphasis>
         does not affect <emphasis>git format-patch</emphasis>.
@@ -327,13 +328,13 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---compact-summary
+<emphasis>--compact-summary</emphasis>
 </term>
 <listitem>
 <simpara>
         Output a condensed summary of extended header information such
-        as file creations or deletions ("new" or "gone", optionally "+l"
-        if it's a symlink) and mode changes ("+x" or "-x" for adding
+        as file creations or deletions ("new" or "gone", optionally <emphasis>+l</emphasis>
+        if it's a symlink) and mode changes (<emphasis>+x</emphasis> or <emphasis>-x</emphasis> for adding
         or removing executable bit respectively) in diffstat. The
         information is put between the filename part and the graph
         part. Implies <emphasis>--stat</emphasis>.
@@ -342,7 +343,7 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---numstat
+<emphasis>--numstat</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,7 +357,7 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---shortstat
+<emphasis>--shortstat</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -368,10 +369,10 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--X[&lt;param1,param2,&#8230;&gt;]
+<emphasis>-X [&lt;param&gt;,...]</emphasis>
 </term>
 <term>
---dirstat[=&lt;param1,param2,&#8230;&gt;]
+<emphasis>--dirstat[=&lt;param&gt;,...]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -441,7 +442,7 @@ have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;limit&gt;
+<emphasis>&lt;limit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -460,27 +461,27 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---cumulative
+<emphasis>--cumulative</emphasis>
 </term>
 <listitem>
 <simpara>
-        Synonym for --dirstat=cumulative
+        Synonym for <emphasis>--dirstat=cumulative</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---dirstat-by-file[=&lt;param1,param2&gt;&#8230;]
+<emphasis>--dirstat-by-file[=&lt;param&gt;,...]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Synonym for --dirstat=files,&lt;param1&gt;,&lt;param2&gt;&#8230;
+        Synonym for <emphasis>--dirstat=files,&lt;param&gt;,...</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---summary
+<emphasis>--summary</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -491,7 +492,7 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---no-renames
+<emphasis>--no-renames</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -502,7 +503,7 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---[no-]rename-empty
+<emphasis>--[no-]rename-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -512,7 +513,7 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---full-index
+<emphasis>--full-index</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -524,7 +525,7 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---binary
+<emphasis>--binary</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -535,7 +536,7 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
---abbrev[=&lt;n&gt;]
+<emphasis>--abbrev[=&lt;n&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -552,10 +553,10 @@ and accumulating child directory counts in the parent directories:
 </varlistentry>
 <varlistentry>
 <term>
--B[&lt;n&gt;][/&lt;m&gt;]
+<emphasis>-B[&lt;n&gt;][/&lt;m&gt;]</emphasis>
 </term>
 <term>
---break-rewrites[=[&lt;n&gt;][/&lt;m&gt;]]
+<emphasis>--break-rewrites[=[&lt;n&gt;][/&lt;m&gt;]]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -566,15 +567,15 @@ and accumulating child directory counts in the parent directories:
 not as a series of deletion and insertion mixed together with a very
 few lines that happen to match textually as the context, but as a
 single deletion of everything old followed by a single insertion of
-everything new, and the number <emphasis>m</emphasis> controls this aspect of the -B
+everything new, and the number <emphasis>&lt;m&gt;</emphasis> controls this aspect of the <emphasis>-B</emphasis>
 option (defaults to 60%). <emphasis>-B/70%</emphasis> specifies that less than 30% of the
 original should remain in the result for Git to consider it a total
 rewrite (i.e. otherwise the resulting patch will be a series of
 deletion and insertion mixed together with context lines).</simpara>
-<simpara>When used with -M, a totally-rewritten file is also considered as the
-source of a rename (usually -M only considers a file that disappeared
-as the source of a rename), and the number <emphasis>n</emphasis> controls this aspect of
-the -B option (defaults to 50%). <emphasis>-B20%</emphasis> specifies that a change with
+<simpara>When used with <emphasis>-M</emphasis>, a totally-rewritten file is also considered as the
+source of a rename (usually <emphasis>-M</emphasis> only considers a file that disappeared
+as the source of a rename), and the number <emphasis>&lt;n&gt;</emphasis> controls this aspect of
+the <emphasis>-B</emphasis> option (defaults to 50%). <emphasis>-B20%</emphasis> specifies that a change with
 addition and deletion compared to 20% or more of the file's size are
 eligible for being picked up as a possible source of a rename to
 another file.</simpara>
@@ -582,15 +583,15 @@ another file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--M[&lt;n&gt;]
+<emphasis>-M[&lt;n&gt;]</emphasis>
 </term>
 <term>
---find-renames[=&lt;n&gt;]
+<emphasis>--find-renames[=&lt;n&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Detect renames.
-        If <emphasis>n</emphasis> is specified, it is a threshold on the similarity
+        If <emphasis>&lt;n&gt;</emphasis> is specified, it is a threshold on the similarity
         index (i.e. amount of addition/deletions compared to the
         file's size). For example, <emphasis>-M90%</emphasis> means Git should consider a
         delete/add pair to be a rename if more than 90% of the file
@@ -604,21 +605,21 @@ another file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C[&lt;n&gt;]
+<emphasis>-C[&lt;n&gt;]</emphasis>
 </term>
 <term>
---find-copies[=&lt;n&gt;]
+<emphasis>--find-copies[=&lt;n&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Detect copies as well as renames.  See also <emphasis>--find-copies-harder</emphasis>.
-        If <emphasis>n</emphasis> is specified, it has the same meaning as for <emphasis>-M&lt;n&gt;</emphasis>.
+        If <emphasis>&lt;n&gt;</emphasis> is specified, it has the same meaning as for <emphasis>-M&lt;n&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---find-copies-harder
+<emphasis>--find-copies-harder</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -634,10 +635,10 @@ another file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--D
+<emphasis>-D</emphasis>
 </term>
 <term>
---irreversible-delete
+<emphasis>--irreversible-delete</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -655,7 +656,7 @@ of a delete/create pair.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--l&lt;num&gt;
+<emphasis>-l&lt;num&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -668,14 +669,14 @@ of a delete/create pair.</simpara>
         destinations, this exhaustive check is O(N^2).  This option
         prevents the exhaustive portion of rename/copy detection from
         running if the number of source/destination files involved
-        exceeds the specified number.  Defaults to diff.renameLimit.
+        exceeds the specified number.  Defaults to <emphasis>diff.renameLimit</emphasis>.
         Note that a value of 0 is treated as unlimited.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--O&lt;orderfile&gt;
+<emphasis>-O&lt;orderfile&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -685,7 +686,7 @@ of a delete/create pair.</simpara>
         use <emphasis>-O/dev/null</emphasis>.
 </simpara>
 <simpara>The output order is determined by the order of glob patterns in
-&lt;orderfile&gt;.
+<emphasis>&lt;orderfile&gt;</emphasis>.
 All files with pathnames that match the first pattern are output
 first, all files with pathnames that match the second pattern (but not
 the first) are output next, and so on.
@@ -695,7 +696,7 @@ file.
 If multiple pathnames have the same rank (they match the same pattern
 but no earlier patterns), their output order relative to each other is
 the normal order.</simpara>
-<simpara>&lt;orderfile&gt; is parsed as follows:</simpara>
+<simpara><emphasis>&lt;orderfile&gt;</emphasis> is parsed as follows:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
@@ -717,7 +718,7 @@ Each other line contains a single pattern.
 </listitem>
 </itemizedlist>
 <simpara>Patterns have the same syntax and semantics as patterns used for
-fnmatch(3) without the FNM_PATHNAME flag, except a pathname also
+<emphasis>fnmatch</emphasis>(3) without the <emphasis>FNM_PATHNAME</emphasis> flag, except a pathname also
 matches a pattern if removing any number of the final pathname
 components matches the pattern.  For example, the pattern "<emphasis>foo*bar</emphasis>"
 matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</emphasis>" but not "<emphasis>foobarx</emphasis>".</simpara>
@@ -725,14 +726,14 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---skip-to=&lt;file&gt;
+<emphasis>--skip-to=&lt;file&gt;</emphasis>
 </term>
 <term>
---rotate-to=&lt;file&gt;
+<emphasis>--rotate-to=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Discard the files before the named &lt;file&gt; from the output
+        Discard the files before the named <emphasis>&lt;file&gt;</emphasis> from the output
         (i.e. <emphasis>skip to</emphasis>), or move them to the end of the output
         (i.e. <emphasis>rotate to</emphasis>).  These options were invented primarily for the use
         of the <emphasis>git difftool</emphasis> command, and may not be very useful
@@ -742,10 +743,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---relative[=&lt;path&gt;]
+<emphasis>--relative[=&lt;path&gt;]</emphasis>
 </term>
 <term>
---no-relative
+<emphasis>--no-relative</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -754,7 +755,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
         pathnames relative to it with this option.  When you are
         not in a subdirectory (e.g. in a bare repository), you
         can name which subdirectory to make the output relative
-        to by giving a &lt;path&gt; as an argument.
+        to by giving a <emphasis>&lt;path&gt;</emphasis> as an argument.
         <emphasis>--no-relative</emphasis> can be used to countermand both <emphasis>diff.relative</emphasis> config
         option and previous <emphasis>--relative</emphasis>.
 </simpara>
@@ -762,10 +763,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---text
+<emphasis>--text</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -775,7 +776,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---ignore-cr-at-eol
+<emphasis>--ignore-cr-at-eol</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -785,7 +786,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---ignore-space-at-eol
+<emphasis>--ignore-space-at-eol</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -795,10 +796,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
--b
+<emphasis>-b</emphasis>
 </term>
 <term>
---ignore-space-change
+<emphasis>--ignore-space-change</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -810,10 +811,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
--w
+<emphasis>-w</emphasis>
 </term>
 <term>
---ignore-all-space
+<emphasis>--ignore-all-space</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -825,7 +826,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---ignore-blank-lines
+<emphasis>--ignore-blank-lines</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -835,25 +836,25 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
--I&lt;regex&gt;
+<emphasis>-I&lt;regex&gt;</emphasis>
 </term>
 <term>
---ignore-matching-lines=&lt;regex&gt;
+<emphasis>--ignore-matching-lines=&lt;regex&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Ignore changes whose all lines match &lt;regex&gt;.  This option may
+        Ignore changes whose all lines match <emphasis>&lt;regex&gt;</emphasis>.  This option may
         be specified more than once.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---inter-hunk-context=&lt;lines&gt;
+<emphasis>--inter-hunk-context=&lt;number&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show the context between diff hunks, up to the specified number
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
         of lines, thereby fusing hunks that are close to each other.
         Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
         is unset.
@@ -862,23 +863,23 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
--W
+<emphasis>-W</emphasis>
 </term>
 <term>
---function-context
+<emphasis>--function-context</emphasis>
 </term>
 <listitem>
 <simpara>
         Show whole function as context lines for each change.
         The function names are determined in the same way as
-        <emphasis>git diff</emphasis> works out patch hunk headers (see <emphasis>Defining a
-        custom hunk-header</emphasis> in <xref linkend="gitattributes(5)" />).
+        <emphasis>git diff</emphasis> works out patch hunk headers (see "Defining a
+        custom hunk-header" in <xref linkend="gitattributes(5)" />).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---ext-diff
+<emphasis>--ext-diff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -890,7 +891,7 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---no-ext-diff
+<emphasis>--no-ext-diff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -900,10 +901,10 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---textconv
+<emphasis>--textconv</emphasis>
 </term>
 <term>
---no-textconv
+<emphasis>--no-textconv</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -920,47 +921,46 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---ignore-submodules[=&lt;when&gt;]
+<emphasis>--ignore-submodules[=(none|untracked|dirty|all)]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Ignore changes to submodules in the diff generation. &lt;when&gt; can be
-        either "none", "untracked", "dirty" or "all", which is the default.
-        Using "none" will consider the submodule modified when it either contains
-        untracked or modified files or its HEAD differs from the commit recorded
+        Ignore changes to submodules in the diff generation. <emphasis>all</emphasis> is the default.
+        Using <emphasis>none</emphasis> will consider the submodule modified when it either contains
+        untracked or modified files or its <emphasis>HEAD</emphasis> differs from the commit recorded
         in the superproject and can be used to override any settings of the
         <emphasis>ignore</emphasis> option in <xref linkend="git-config(1)" /> or <xref linkend="gitmodules(5)" />. When
-        "untracked" is used submodules are not considered dirty when they only
+        <emphasis>untracked</emphasis> is used submodules are not considered dirty when they only
         contain untracked content (but they are still scanned for modified
-        content). Using "dirty" ignores all changes to the work tree of submodules,
+        content). Using <emphasis>dirty</emphasis> ignores all changes to the work tree of submodules,
         only changes to the commits stored in the superproject are shown (this was
-        the behavior until 1.7.0). Using "all" hides all changes to submodules.
+        the behavior until 1.7.0). Using <emphasis>all</emphasis> hides all changes to submodules.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---src-prefix=&lt;prefix&gt;
+<emphasis>--src-prefix=&lt;prefix&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show the given source prefix instead of "a/".
+        Show the given source <emphasis>&lt;prefix&gt;</emphasis> instead of "a/".
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---dst-prefix=&lt;prefix&gt;
+<emphasis>--dst-prefix=&lt;prefix&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show the given destination prefix instead of "b/".
+        Show the given destination <emphasis>&lt;prefix&gt;</emphasis> instead of "b/".
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-prefix
+<emphasis>--no-prefix</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -970,37 +970,37 @@ matches "<emphasis>fooasdfbar</emphasis>" and "<emphasis>foo/bar/baz/asdf</empha
 </varlistentry>
 <varlistentry>
 <term>
---default-prefix
+<emphasis>--default-prefix</emphasis>
 </term>
 <listitem>
 <simpara>
         Use the default source and destination prefixes ("a/" and "b/").
         This overrides configuration variables such as <emphasis>diff.noprefix</emphasis>,
         <emphasis>diff.srcPrefix</emphasis>, <emphasis>diff.dstPrefix</emphasis>, and <emphasis>diff.mnemonicPrefix</emphasis>
-        (see <emphasis>git-config</emphasis>(1)).
+        (see <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---line-prefix=&lt;prefix&gt;
+<emphasis>--line-prefix=&lt;prefix&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Prepend an additional prefix to every line of output.
+        Prepend an additional <emphasis>&lt;prefix&gt;</emphasis> to every line of output.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---ita-invisible-in-index
+<emphasis>--ita-invisible-in-index</emphasis>
 </term>
 <listitem>
 <simpara>
-        By default entries added by "git add -N" appear as an existing
-        empty file in "git diff" and a new file in "git diff --cached".
-        This option makes the entry appear as a new file in "git diff"
-        and non-existent in "git diff --cached". This option could be
+        By default entries added by <emphasis>git add -N</emphasis> appear as an existing
+        empty file in <emphasis>git diff</emphasis> and a new file in <emphasis>git diff --cached</emphasis>.
+        This option makes the entry appear as a new file in <emphasis>git diff</emphasis>
+        and non-existent in <emphasis>git diff --cached</emphasis>. This option could be
         reverted with <emphasis>--ita-visible-in-index</emphasis>. Both options are
         experimental and could be removed in future.
 </simpara>
@@ -1287,14 +1287,23 @@ the patches (with a value of e.g. "PATCH my-project").</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---rfc
+--rfc[=&lt;rfc&gt;]
 </term>
 <listitem>
 <simpara>
-        Prepends "RFC" to the subject prefix (producing "RFC PATCH" by
-        default). RFC means "Request For Comments"; use this when sending
-        an experimental patch for discussion rather than application.
+        Prepends the string <emphasis>&lt;rfc&gt;</emphasis> (defaults to "RFC") to
+        the subject prefix.  As the subject prefix defaults to
+        "PATCH", you'll get "RFC PATCH" by default.
 </simpara>
+<simpara>RFC means "Request For Comments"; use this when sending
+an experimental patch for discussion rather than application.
+"--rfc=WIP" may also be a useful way to indicate that a patch
+is not complete yet ("WIP" stands for "Work In Progress").</simpara>
+<simpara>If the convention of the receiving community for a particular extra
+string is to have it <emphasis>after</emphasis> the subject prefix, the string <emphasis>&lt;rfc&gt;</emphasis>
+can be prefixed with a dash ("<emphasis>-</emphasis>") to signal that the rest of
+the <emphasis>&lt;rfc&gt;</emphasis> string should be appended to the subject prefix instead,
+e.g., <emphasis>--rfc='-(WIP)'</emphasis> results in "PATCH (WIP)".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1480,6 +1489,10 @@ material (this may change in the future).</simpara>
         creation/deletion cost fudge factor. See <xref linkend="git-range-diff(1)" />)
         for details.
 </simpara>
+<simpara>Defaults to 999 (the <xref linkend="git-range-diff(1)" /> uses 60), as the use
+case is to show comparison with an older iteration of the same
+topic and the tool should find more correspondence between the two
+sets of patches.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

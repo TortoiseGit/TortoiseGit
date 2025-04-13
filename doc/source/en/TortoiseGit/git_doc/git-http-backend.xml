@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-http-backend(1)">
     <title>git-http-backend(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-http-backend(1)</primary>
 </indexterm>
@@ -80,6 +78,17 @@ http.receivepack
         default for users authenticated by the web server.  It can be
         disabled by setting this item to <emphasis>false</emphasis>, or enabled for all
         users, including anonymous users, by setting it to <emphasis>true</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.uploadarchive
+</term>
+<listitem>
+<simpara>
+        This serves <emphasis>git archive</emphasis> clients for remote archive over HTTP/HTTPS
+        protocols. It is disabled by default. It only works in protocol v2.
 </simpara>
 </listitem>
 </varlistentry>

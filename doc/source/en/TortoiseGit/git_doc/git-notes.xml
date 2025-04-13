@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-notes(1)">
     <title>git-notes(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-notes(1)</primary>
 </indexterm>
@@ -15,18 +13,18 @@
 <simplesect id="git-notes(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git notes</emphasis> [list [&lt;object&gt;]]
-<emphasis>git notes</emphasis> add [-f] [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
-<emphasis>git notes</emphasis> copy [-f] ( --stdin | &lt;from-object&gt; [&lt;to-object&gt;] )
-<emphasis>git notes</emphasis> append [--allow-empty] [--[no-]separator | --separator=&lt;paragraph-break&gt;] [--[no-]stripspace] [-F &lt;file&gt; | -m &lt;msg&gt; | (-c | -C) &lt;object&gt;] [&lt;object&gt;]
-<emphasis>git notes</emphasis> edit [--allow-empty] [&lt;object&gt;] [--[no-]stripspace]
-<emphasis>git notes</emphasis> show [&lt;object&gt;]
-<emphasis>git notes</emphasis> merge [-v | -q] [-s &lt;strategy&gt; ] &lt;notes-ref&gt;
-<emphasis>git notes</emphasis> merge --commit [-v | -q]
-<emphasis>git notes</emphasis> merge --abort [-v | -q]
-<emphasis>git notes</emphasis> remove [--ignore-missing] [--stdin] [&lt;object&gt;&#8230;]
-<emphasis>git notes</emphasis> prune [-n] [-v]
-<emphasis>git notes</emphasis> get-ref</literallayout>
+<literallayout><code>git</code> <code>notes</code> [<code>list</code> [<emphasis>&lt;object&gt;</emphasis>]]
+<code>git</code> <code>notes</code> <code>add</code> [<code>-f</code>] [<code>--allow-empty</code>] [<code>--</code>[<code>no-</code>]<code>separator</code> | <code>--separator=</code><emphasis>&lt;paragraph-break&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>stripspace</code>] [<code>-F</code> <emphasis>&lt;file&gt;</emphasis> | <code>-m</code> <emphasis>&lt;msg&gt;</emphasis> | (<code>-c</code> | <code>-C</code>) <emphasis>&lt;object&gt;</emphasis>] [<code>-e</code>] [<emphasis>&lt;object&gt;</emphasis>]
+<code>git</code> <code>notes</code> <code>copy</code> [<code>-f</code>] ( <code>--stdin</code> | <emphasis>&lt;from-object&gt;</emphasis> [<emphasis>&lt;to-object&gt;</emphasis>] )
+<code>git</code> <code>notes</code> <code>append</code> [<code>--allow-empty</code>] [<code>--</code>[<code>no-</code>]<code>separator</code> | <code>--separator=</code><emphasis>&lt;paragraph-break&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>stripspace</code>] [<code>-F</code> <emphasis>&lt;file&gt;</emphasis> | <code>-m</code> <emphasis>&lt;msg&gt;</emphasis> | (<code>-c</code> | <code>-C</code>) <emphasis>&lt;object&gt;</emphasis>] [<code>-e</code>] [<emphasis>&lt;object&gt;</emphasis>]
+<code>git</code> <code>notes</code> <code>edit</code> [<code>--allow-empty</code>] [<emphasis>&lt;object&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>stripspace</code>]
+<code>git</code> <code>notes</code> <code>show</code> [<emphasis>&lt;object&gt;</emphasis>]
+<code>git</code> <code>notes</code> <code>merge</code> [<code>-v</code> | <code>-q</code>] [<code>-s</code> <emphasis>&lt;strategy&gt;</emphasis> ] <emphasis>&lt;notes-ref&gt;</emphasis>
+<code>git</code> <code>notes</code> <code>merge</code> <code>--commit</code> [<code>-v</code> | <code>-q</code>]
+<code>git</code> <code>notes</code> <code>merge</code> <code>--abort</code> [<code>-v</code> | <code>-q</code>]
+<code>git</code> <code>notes</code> <code>remove</code> [<code>--ignore-missing</code>] [<code>--stdin</code>] [<emphasis>&lt;object&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>notes</code> <code>prune</code> [<code>-n</code>] [<code>-v</code>]
+<code>git</code> <code>notes</code> <code>get-ref</code></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-notes(1)__description">
@@ -41,14 +39,14 @@ quietly created when it is first needed to store a note.</simpara>
 changing the commit itself. Notes can be shown by <emphasis>git log</emphasis> along with
 the original commit message. To distinguish these notes from the
 message stored in the commit object, the notes are indented like the
-message, after an unindented line saying "Notes (&lt;refname&gt;):" (or
+message, after an unindented line saying "Notes (<emphasis>&lt;refname&gt;</emphasis>):" (or
 "Notes:" for <emphasis>refs/notes/commits</emphasis>).</simpara>
 <simpara>Notes can also be added to patches prepared with <emphasis>git format-patch</emphasis> by
 using the <emphasis>--notes</emphasis> option. Such notes are added as a patch commentary
 after a three dash separator line.</simpara>
 <simpara>To change which notes are shown by <emphasis>git log</emphasis>, see the
-"notes.displayRef" discussion in <xref linkend="git-notes(1)_CONFIGURATION"/>.</simpara>
-<simpara>See the "notes.rewrite.&lt;command&gt;" configuration for a way to carry
+<emphasis>notes.displayRef</emphasis> discussion in <link linkend="git-notes(1)_CONFIGURATION">CONFIGURATION</link>.</simpara>
+<simpara>See the <emphasis>notes.rewrite.&lt;command&gt;</emphasis> configuration for a way to carry
 notes across commands that rewrite commits.</simpara>
 </simplesect>
 <simplesect id="git-notes(1)__subcommands">
@@ -56,91 +54,95 @@ notes across commands that rewrite commits.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-list
+<emphasis>list</emphasis>
 </term>
 <listitem>
 <simpara>
         List the notes object for a given object. If no object is
         given, show a list of all note objects and the objects they
-        annotate (in the format "&lt;note-object&gt; &lt;annotated-object&gt;").
+        annotate (in the format "<emphasis>&lt;note-object&gt; &lt;annotated-object&gt;</emphasis>").
         This is the default subcommand if no subcommand is given.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-add
+<emphasis>add</emphasis>
 </term>
 <listitem>
 <simpara>
-        Add notes for a given object (defaults to HEAD). Abort if the
+        Add notes for a given object (defaults to <emphasis>HEAD</emphasis>). Abort if the
         object already has notes (use <emphasis>-f</emphasis> to overwrite existing notes).
         However, if you're using <emphasis>add</emphasis> interactively (using an editor
         to supply the notes contents), then - instead of aborting -
         the existing notes will be opened in the editor (like the <emphasis>edit</emphasis>
         subcommand). If you specify multiple <emphasis>-m</emphasis> and <emphasis>-F</emphasis>, a blank
         line will be inserted between the messages. Use the <emphasis>--separator</emphasis>
-        option to insert other delimiters.
+        option to insert other delimiters. You can use <emphasis>-e</emphasis> to edit and
+        fine-tune the message(s) supplied from <emphasis>-m</emphasis> and <emphasis>-F</emphasis> options
+        interactively (using an editor) before adding the note.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-copy
+<emphasis>copy</emphasis>
 </term>
 <listitem>
 <simpara>
         Copy the notes for the first object onto the second object (defaults to
-        HEAD). Abort if the second object already has notes, or if the first
-        object has none (use -f to overwrite existing notes to the
+        <emphasis>HEAD</emphasis>). Abort if the second object already has notes, or if the first
+        object has none (use <emphasis>-f</emphasis> to overwrite existing notes to the
         second object). This subcommand is equivalent to:
         <emphasis>git notes add [-f] -C $(git notes list &lt;from-object&gt;) &lt;to-object&gt;</emphasis>
 </simpara>
 <simpara>In <emphasis>--stdin</emphasis> mode, take lines in the format</simpara>
 <screen>&lt;from-object&gt; SP &lt;to-object&gt; [ SP &lt;rest&gt; ] LF</screen>
-<simpara>on standard input, and copy the notes from each &lt;from-object&gt; to its
-corresponding &lt;to-object&gt;.  (The optional <emphasis>&lt;rest&gt;</emphasis> is ignored so that
+<simpara>on standard input, and copy the notes from each <emphasis>&lt;from-object&gt;</emphasis> to its
+corresponding <emphasis>&lt;to-object&gt;</emphasis>.  (The optional <emphasis>&lt;rest&gt;</emphasis> is ignored so that
 the command can read the input given to the <emphasis>post-rewrite</emphasis> hook.)</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-append
+<emphasis>append</emphasis>
 </term>
 <listitem>
 <simpara>
         Append new message(s) given by <emphasis>-m</emphasis> or <emphasis>-F</emphasis> options to an
         existing note, or add them as a new note if one does not
-        exist, for the object (defaults to HEAD).  When appending to
+        exist, for the object (defaults to <emphasis>HEAD</emphasis>).  When appending to
         an existing note, a blank line is added before each new
         message as an inter-paragraph separator.  The separator can
         be customized with the <emphasis>--separator</emphasis> option.
+        Edit the notes to be appended given by <emphasis>-m</emphasis> and <emphasis>-F</emphasis> options with
+        <emphasis>-e</emphasis> interactively (using an editor) before appending the note.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-edit
+<emphasis>edit</emphasis>
 </term>
 <listitem>
 <simpara>
-        Edit the notes for a given object (defaults to HEAD).
+        Edit the notes for a given object (defaults to <emphasis>HEAD</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-show
+<emphasis>show</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show the notes for a given object (defaults to HEAD).
+        Show the notes for a given object (defaults to <emphasis>HEAD</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge
+<emphasis>merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -151,7 +153,7 @@ merge
 </simpara>
 <simpara>If conflicts arise and a strategy for automatically resolving
 conflicting notes (see the "NOTES MERGE STRATEGIES" section) is not given,
-the "manual" resolver is used. This resolver checks out the
+the <emphasis>manual</emphasis> resolver is used. This resolver checks out the
 conflicting notes in a special worktree (<emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>),
 and instructs the user to manually resolve the conflicts there.
 When done, the user can either finalize the merge with
@@ -161,11 +163,11 @@ When done, the user can either finalize the merge with
 </varlistentry>
 <varlistentry>
 <term>
-remove
+<emphasis>remove</emphasis>
 </term>
 <listitem>
 <simpara>
-        Remove the notes for given objects (defaults to HEAD). When
+        Remove the notes for given objects (defaults to <emphasis>HEAD</emphasis>). When
         giving zero or one object from the command line, this is
         equivalent to specifying an empty note message to
         the <emphasis>edit</emphasis> subcommand.
@@ -174,7 +176,7 @@ remove
 </varlistentry>
 <varlistentry>
 <term>
-prune
+<emphasis>prune</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -184,7 +186,7 @@ prune
 </varlistentry>
 <varlistentry>
 <term>
-get-ref
+<emphasis>get-ref</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -200,10 +202,10 @@ get-ref
 <variablelist>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -214,10 +216,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--m &lt;msg&gt;
+<emphasis>-m &lt;msg&gt;</emphasis>
 </term>
 <term>
---message=&lt;msg&gt;
+<emphasis>--message=&lt;msg&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -232,10 +234,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--F &lt;file&gt;
+<emphasis>-F &lt;file&gt;</emphasis>
 </term>
 <term>
---file=&lt;file&gt;
+<emphasis>--file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -249,10 +251,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--C &lt;object&gt;
+<emphasis>-C &lt;object&gt;</emphasis>
 </term>
 <term>
---reuse-message=&lt;object&gt;
+<emphasis>--reuse-message=&lt;object&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -261,16 +263,16 @@ get-ref
         copy notes between objects.).  By default, message will be
         copied verbatim, but if you wish to strip out the lines
         starting with <emphasis>#</emphasis> and empty lines other than a single line
-        between paragraphs, use with`--stripspace` option.
+        between paragraphs, use with <emphasis>--stripspace</emphasis> option.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--c &lt;object&gt;
+<emphasis>-c &lt;object&gt;</emphasis>
 </term>
 <term>
---reedit-message=&lt;object&gt;
+<emphasis>--reedit-message=&lt;object&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -281,7 +283,7 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---allow-empty
+<emphasis>--allow-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -292,7 +294,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---[no-]separator, --separator=&lt;paragraph-break&gt;
+<emphasis>--[no-]separator</emphasis>
+</term>
+<term>
+<emphasis>--separator=&lt;paragraph-break&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -305,7 +310,7 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---[no-]stripspace
+<emphasis>--[no-]stripspace</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -319,12 +324,12 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---ref &lt;ref&gt;
+<emphasis>--ref &lt;ref&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Manipulate the notes tree in &lt;ref&gt;.  This overrides
-        <emphasis>GIT_NOTES_REF</emphasis> and the "core.notesRef" configuration.  The ref
+        Manipulate the notes tree in <emphasis>&lt;ref&gt;</emphasis>.  This overrides
+        <emphasis>GIT_NOTES_REF</emphasis> and the <emphasis>core.notesRef</emphasis> configuration.  The ref
         specifies the full refname when it begins with <emphasis>refs/notes/</emphasis>; when it
         begins with <emphasis>notes/</emphasis>, <emphasis>refs/</emphasis> and otherwise <emphasis>refs/notes/</emphasis> is prefixed
         to form a full name of the ref.
@@ -333,7 +338,7 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---ignore-missing
+<emphasis>--ignore-missing</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -344,7 +349,7 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---stdin
+<emphasis>--stdin</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,10 +361,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -370,17 +375,17 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--s &lt;strategy&gt;
+<emphasis>-s &lt;strategy&gt;</emphasis>
 </term>
 <term>
---strategy=&lt;strategy&gt;
+<emphasis>--strategy=&lt;strategy&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         When merging notes, resolve notes conflicts using the given
-        strategy. The following strategies are recognized: "manual"
-        (default), "ours", "theirs", "union" and "cat_sort_uniq".
-        This option overrides the "notes.mergeStrategy" configuration setting.
+        strategy. The following strategies are recognized: <emphasis>manual</emphasis>
+        (default), <emphasis>ours</emphasis>, <emphasis>theirs</emphasis>, <emphasis>union</emphasis> and <emphasis>cat_sort_uniq</emphasis>.
+        This option overrides the <emphasis>notes.mergeStrategy</emphasis> configuration setting.
         See the "NOTES MERGE STRATEGIES" section below for more
         information on each notes merge strategy.
 </simpara>
@@ -388,23 +393,23 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
---commit
+<emphasis>--commit</emphasis>
 </term>
 <listitem>
 <simpara>
         Finalize an in-progress <emphasis>git notes merge</emphasis>. Use this option
         when you have resolved the conflicts that <emphasis>git notes merge</emphasis>
-        stored in .git/NOTES_MERGE_WORKTREE. This amends the partial
+        stored in <emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>. This amends the partial
         merge commit created by <emphasis>git notes merge</emphasis> (stored in
-        .git/NOTES_MERGE_PARTIAL) by adding the notes in
-        .git/NOTES_MERGE_WORKTREE. The notes ref stored in the
-        .git/NOTES_MERGE_REF symref is updated to the resulting commit.
+        <emphasis>.git/NOTES_MERGE_PARTIAL</emphasis>) by adding the notes in
+        <emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>. The notes ref stored in the
+        <emphasis>.git/NOTES_MERGE_REF</emphasis> symref is updated to the resulting commit.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---abort
+<emphasis>--abort</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -416,10 +421,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -429,10 +434,10 @@ get-ref
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -467,7 +472,7 @@ object, in which case the history of the notes can be read with
 </simplesect>
 <simplesect id="git-notes(1)__notes_merge_strategies">
 <title>NOTES MERGE STRATEGIES</title>
-<simpara>The default notes merge strategy is "manual", which checks out
+<simpara>The default notes merge strategy is <emphasis>manual</emphasis>, which checks out
 conflicting notes in a special work tree for resolving notes conflicts
 (<emphasis>.git/NOTES_MERGE_WORKTREE</emphasis>), and instructs the user to resolve the
 conflicts in that work tree.
@@ -475,15 +480,15 @@ When done, the user can either finalize the merge with
 <emphasis>git notes merge --commit</emphasis>, or abort the merge with
 <emphasis>git notes merge --abort</emphasis>.</simpara>
 <simpara>Users may select an automated merge strategy from among the following using
-either -s/--strategy option or configuring notes.mergeStrategy accordingly:</simpara>
-<simpara>"ours" automatically resolves conflicting notes in favor of the local
+either <emphasis>-s</emphasis>/<emphasis>--strategy</emphasis> option or configuring <emphasis>notes.mergeStrategy</emphasis> accordingly:</simpara>
+<simpara><emphasis>ours</emphasis> automatically resolves conflicting notes in favor of the local
 version (i.e. the current notes ref).</simpara>
-<simpara>"theirs" automatically resolves notes conflicts in favor of the remote
+<simpara><emphasis>theirs</emphasis> automatically resolves notes conflicts in favor of the remote
 version (i.e. the given notes ref being merged into the current notes
 ref).</simpara>
-<simpara>"union" automatically resolves notes conflicts by concatenating the
+<simpara><emphasis>union</emphasis> automatically resolves notes conflicts by concatenating the
 local and remote versions.</simpara>
-<simpara>"cat_sort_uniq" is similar to "union", but in addition to concatenating
+<simpara><emphasis>cat_sort_uniq</emphasis> is similar to <emphasis>union</emphasis>, but in addition to concatenating
 the local and remote versions, this strategy also sorts the resulting
 lines, and removes duplicate lines from the result. This is equivalent
 to applying the "cat | sort | uniq" shell pipeline to the local and
@@ -521,7 +526,7 @@ some special-purpose tools to do something useful with them.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-core.notesRef
+<emphasis>core.notesRef</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -539,7 +544,7 @@ same as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-notes.mergeStrategy
+<emphasis>notes.mergeStrategy</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -554,20 +559,20 @@ notes.mergeStrategy
 </varlistentry>
 <varlistentry>
 <term>
-notes.&lt;name&gt;.mergeStrategy
+<emphasis>notes.&lt;name&gt;.mergeStrategy</emphasis>
 </term>
 <listitem>
 <simpara>
         Which merge strategy to choose when doing a notes merge into
-        refs/notes/&lt;name&gt;.  This overrides the more general
-        "notes.mergeStrategy".  See the "NOTES MERGE STRATEGIES" section in
+        <emphasis>refs/notes/&lt;name&gt;</emphasis>.  This overrides the more general
+        <emphasis>notes.mergeStrategy</emphasis>.  See the "NOTES MERGE STRATEGIES" section in
         <xref linkend="git-notes(1)" /> for more information on the available strategies.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-notes.displayRef
+<emphasis>notes.displayRef</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -581,24 +586,24 @@ environment variable, which must be a colon separated list of refs or
 globs.</simpara>
 <simpara>A warning will be issued for refs that do not exist,
 but a glob that does not match any refs is silently ignored.</simpara>
-<simpara>This setting can be disabled by the <emphasis>--no-notes</emphasis> option to the <emphasis>git
-log</emphasis> family of commands, or by the <emphasis>--notes=&lt;ref&gt;</emphasis> option accepted by
+<simpara>This setting can be disabled by the <emphasis>--no-notes</emphasis> option to the <xref linkend="git-log(1)" />
+family of commands, or by the <emphasis>--notes=&lt;ref&gt;</emphasis> option accepted by
 those commands.</simpara>
-<simpara>The effective value of "core.notesRef" (possibly overridden by
-GIT_NOTES_REF) is also implicitly added to the list of refs to be
+<simpara>The effective value of <emphasis>core.notesRef</emphasis> (possibly overridden by
+<emphasis>GIT_NOTES_REF</emphasis>) is also implicitly added to the list of refs to be
 displayed.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-notes.rewrite.&lt;command&gt;
+<emphasis>notes.rewrite.&lt;command&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        When rewriting commits with &lt;command&gt; (currently <emphasis>amend</emphasis> or
+        When rewriting commits with <emphasis>&lt;command&gt;</emphasis> (currently <emphasis>amend</emphasis> or
         <emphasis>rebase</emphasis>), if this variable is <emphasis>false</emphasis>, git will not copy
         notes from the original to the rewritten commit.  Defaults to
-        <emphasis>true</emphasis>.  See also "<emphasis>notes.rewriteRef</emphasis>" below.
+        <emphasis>true</emphasis>.  See also <emphasis>notes.rewriteRef</emphasis> below.
 </simpara>
 <simpara>This setting can be overridden with the <emphasis>GIT_NOTES_REWRITE_REF</emphasis>
 environment variable, which must be a colon separated list of refs or
@@ -607,12 +612,12 @@ globs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-notes.rewriteMode
+<emphasis>notes.rewriteMode</emphasis>
 </term>
 <listitem>
 <simpara>
         When copying notes during a rewrite (see the
-        "notes.rewrite.&lt;command&gt;" option), determines what to do if
+        <emphasis>notes.rewrite.&lt;command&gt;</emphasis> option), determines what to do if
         the target commit already has a note.  Must be one of
         <emphasis>overwrite</emphasis>, <emphasis>concatenate</emphasis>, <emphasis>cat_sort_uniq</emphasis>, or <emphasis>ignore</emphasis>.
         Defaults to <emphasis>concatenate</emphasis>.
@@ -623,7 +628,7 @@ environment variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-notes.rewriteRef
+<emphasis>notes.rewriteRef</emphasis>
 </term>
 <listitem>
 <simpara>

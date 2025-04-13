@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-refs(1)">
+    <title>git-refs(1)</title>
+<indexterm>
+<primary>git-refs(1)</primary>
+</indexterm>
+<simplesect id="git-refs(1)__name">
+<title>NAME</title>
+<simpara>git-refs - Low-level access to refs</simpara>
+</simplesect>
+<simplesect id="git-refs(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><code>git</code> <code>refs</code> <code>migrate</code> <code>--ref-format=</code><emphasis>&lt;format&gt;</emphasis> [<code>--no-reflog</code>] [<code>--dry-run</code>]
+<code>git</code> <code>refs</code> <code>verify</code> [<code>--strict</code>] [<code>--verbose</code>]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-refs(1)__description">
+<title>DESCRIPTION</title>
+<simpara>This command provides low-level access to refs.</simpara>
+</simplesect>
+<simplesect id="git-refs(1)__commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+migrate
+</term>
+<listitem>
+<simpara>
+        Migrate ref store between different formats.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+verify
+</term>
+<listitem>
+<simpara>
+        Verify reference database consistency.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-refs(1)__options">
+<title>OPTIONS</title>
+<simpara>The following options are specific to <emphasis>git refs migrate</emphasis>:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--ref-format=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        The ref format to migrate the ref store to. Can be one of:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>files</emphasis> for loose files with packed-refs. This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>reftable</emphasis> for the reftable format. This format is experimental and its
+  internals are subject to change.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--dry-run
+</term>
+<listitem>
+<simpara>
+        Perform the migration, but do not modify the repository. The migrated
+        refs will be written into a separate directory that can be inspected
+        separately. The name of the directory will be reported on stdout. This
+        can be used to double check that the migration works as expected before
+        performing the actual migration.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--reflog
+</term>
+<term>
+--no-reflog
+</term>
+<listitem>
+<simpara>
+        Choose between migrating the reflog data to the new backend,
+        and discarding them.  The default is "--reflog", to migrate.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following options are specific to <emphasis>git refs verify</emphasis>:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--strict
+</term>
+<listitem>
+<simpara>
+        Enable stricter error checking. This will cause warnings to be
+        reported as errors. See <xref linkend="git-fsck(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--verbose
+</term>
+<listitem>
+<simpara>
+        When verifying the reference database consistency, be chatty.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-refs(1)__known_limitations">
+<title>KNOWN LIMITATIONS</title>
+<simpara>The ref format migration has several known limitations in its current form:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+It is not possible to migrate repositories that have worktrees.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+There is no way to block concurrent writes to the repository during an
+  ongoing migration. Concurrent writes can lead to an inconsistent migrated
+  state. Users are expected to block writes on a higher level. If your
+  repository is registered for scheduled maintenance, it is recommended to
+  unregister it first with git-maintenance(1).
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>These limitations may eventually be lifted.</simpara>
+</simplesect>
+<simplesect id="git-refs(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

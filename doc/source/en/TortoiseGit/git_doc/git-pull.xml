@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-pull(1)">
     <title>git-pull(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-pull(1)</primary>
 </indexterm>
@@ -252,10 +250,10 @@ actual commits being merged.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---signoff
+<emphasis>--signoff</emphasis>
 </term>
 <term>
---no-signoff
+<emphasis>--no-signoff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -270,7 +268,7 @@ actual commits being merged.</simpara>
         leadership of the project to which you're contributing to
         understand how the signoffs are used in that project.
 </simpara>
-<simpara>The --no-signoff option can be used to countermand an earlier --signoff
+<simpara>The <emphasis>--no-signoff</emphasis> option can be used to countermand an earlier <emphasis>--signoff</emphasis>
 option on the command line.</simpara>
 </listitem>
 </varlistentry>
@@ -476,8 +474,9 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </term>
 <listitem>
 <simpara>
-        Fetch all remotes. This overrides the configuration variable
-        <emphasis>fetch.all</emphasis>.
+        Fetch all remotes, except for the ones that has the
+        <emphasis>remote.&lt;name&gt;.skipFetchAll</emphasis> configuration variable set.
+        This overrides the configuration variable fetch.all`.
 </simpara>
 </listitem>
 </varlistentry>
@@ -546,7 +545,7 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---shallow-exclude=&lt;revision&gt;
+--shallow-exclude=&lt;ref&gt;
 </term>
 <listitem>
 <simpara>
@@ -832,6 +831,9 @@ default fetches are performed sequentially, not in parallel.</simpara>
         unknown ones, is server-specific.
         When multiple <emphasis>--server-option=&lt;option&gt;</emphasis> are given, they are all
         sent to the other side in the order listed on the command line.
+        When no <emphasis>--server-option=&lt;option&gt;</emphasis> is given from the command line,
+        the values of configuration variable <emphasis>remote.&lt;name&gt;.serverOption</emphasis>
+        are used instead.
 </simpara>
 </listitem>
 </varlistentry>
@@ -915,13 +917,14 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </simpara>
 <simpara>The format of a &lt;refspec&gt; parameter is an optional plus
 <emphasis>+</emphasis>, followed by the source &lt;src&gt;, followed
-by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
+by a colon <emphasis>:</emphasis>, followed by the destination &lt;dst&gt;.
 The colon can be omitted when &lt;dst&gt; is empty.  &lt;src&gt; is
-typically a ref, but it can also be a fully spelled hex object
+typically a ref, or a glob pattern with a single <emphasis>*</emphasis> that is used
+to match a set of refs, but it can also be a fully spelled hex object
 name.</simpara>
 <simpara>A &lt;refspec&gt; may contain a <emphasis>*</emphasis> in its &lt;src&gt; to indicate a simple pattern
 match. Such a refspec functions like a glob that matches any ref with the
-same prefix. A pattern &lt;refspec&gt; must have a <emphasis>*</emphasis> in both the &lt;src&gt; and
+pattern. A pattern &lt;refspec&gt; must have one and only one <emphasis>*</emphasis> in both the &lt;src&gt; and
 &lt;dst&gt;. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
 contents matched from the source.</simpara>
 <simpara>If a refspec is prefixed by <emphasis>^</emphasis>, it will be interpreted as a negative
@@ -1006,28 +1009,28 @@ absent.</simpara>
 <simpara>Git supports ssh, git, http, and https protocols (in addition, ftp
 and ftps can be used for fetching, but this is inefficient and
 deprecated; do not use them).</simpara>
-<simpara>The native transport (i.e. git:// URL) does no authentication and
+<simpara>The native transport (i.e. <emphasis>git://</emphasis> URL) does no authentication and
 should be used with caution on unsecured networks.</simpara>
 <simpara>The following syntaxes may be used with them:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>ssh://[&lt;user&gt;@]&lt;host&gt;[:&lt;port&gt;]/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;:<emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>git://&lt;host&gt;[:&lt;port&gt;]/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<literal>http</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>http[s]://&lt;host&gt;[:&lt;port&gt;]/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<literal>ftp</literal>&#91;<literal>s</literal>&#93;<literal>://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>ftp[s]://&lt;host&gt;[:&lt;port&gt;]/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1035,7 +1038,7 @@ should be used with caution on unsecured networks.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>[&lt;user&gt;@]&lt;host&gt;:/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1044,21 +1047,21 @@ first colon. This helps differentiate a local path that contains a
 colon. For example the local path <emphasis>foo:bar</emphasis> could be specified as an
 absolute path or <emphasis>./foo:bar</emphasis> to avoid being misinterpreted as an ssh
 url.</simpara>
-<simpara>The ssh and git protocols additionally support <literal>~</literal><emphasis>&lt;username&gt;</emphasis> expansion:</simpara>
+<simpara>The ssh and git protocols additionally support <emphasis>~&lt;username&gt;</emphasis> expansion:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<literal>ssh://</literal>&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>ssh://[&lt;user&gt;@]&lt;host&gt;[:&lt;port&gt;]/~&lt;user&gt;/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<literal>git://</literal><emphasis>&lt;host&gt;</emphasis>&#91;<literal>:</literal><emphasis>&lt;port&gt;</emphasis>&#93;<literal>/~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>git://&lt;host&gt;[:&lt;port&gt;]/~&lt;user&gt;/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-&#91;<emphasis>&lt;user&gt;</emphasis><literal>@</literal>&#93;<emphasis>&lt;host&gt;</emphasis><literal>:~</literal><emphasis>&lt;user&gt;</emphasis><literal>/</literal><emphasis>&lt;path-to-git-repo&gt;</emphasis>
+<emphasis>[&lt;user&gt;@]&lt;host&gt;:~&lt;user&gt;/&lt;path-to-git-repo&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1072,7 +1075,7 @@ syntaxes may be used:</simpara>
 </listitem>
 <listitem>
 <simpara>
-<literal>file:///path/to/repo.git/</literal>
+<emphasis>file:///path/to/repo.git/</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1082,13 +1085,13 @@ details.</simpara>
 <simpara><emphasis>git clone</emphasis>, <emphasis>git fetch</emphasis> and <emphasis>git pull</emphasis>, but not <emphasis>git push</emphasis>, will also
 accept a suitable bundle file. See <xref linkend="git-bundle(1)" />.</simpara>
 <simpara>When Git doesn't know how to handle a certain transport protocol, it
-attempts to use the <emphasis>remote-</emphasis><emphasis>&lt;transport&gt;</emphasis> remote helper, if one
+attempts to use the <emphasis>remote-&lt;transport&gt;</emphasis> remote helper, if one
 exists. To explicitly request a remote helper, the following syntax
 may be used:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>&lt;transport&gt;</emphasis>::<emphasis>&lt;address&gt;</emphasis>
+<emphasis>&lt;transport&gt;::&lt;address&gt;</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
@@ -1226,6 +1229,12 @@ ort
         was written as a replacement for the previous default
         algorithm, <emphasis>recursive</emphasis>.
 </simpara>
+<simpara>In the case where the path is a submodule, if the submodule commit used on
+one side of the merge is a descendant of the submodule commit used on the
+other side of the merge, Git attempts to fast-forward to the
+descendant. Otherwise, Git will treat this case as a conflict, suggesting
+as a resolution a submodule commit that is descendant of the conflicting
+ones, if one exists.</simpara>
 <simpara>The <emphasis>ort</emphasis> strategy can take the following options:</simpara>
 <variablelist>
 <varlistentry>
@@ -1304,7 +1313,7 @@ renormalize
 <listitem>
 <simpara>
         This runs a virtual check-out and check-in of all three stages
-        of a file when resolving a three-way merge.  This option is
+        of any file which needs a three-way merge.  This option is
         meant to be used when merging branches with different clean
         filters or end-of-line normalization rules.  See "Merging
         branches with differing checkin/checkout attributes" in
@@ -1382,6 +1391,8 @@ recursive
         the default strategy for resolving two heads from Git v0.99.9k
         until v2.33.0.
 </simpara>
+<simpara>For a path that is a submodule, the same caution as <emphasis>ort</emphasis> applies to this
+strategy.</simpara>
 <simpara>The <emphasis>recursive</emphasis> strategy takes the same options as <emphasis>ort</emphasis>.  However,
 there are three additional options that <emphasis>ort</emphasis> ignores (not documented
 above) that are potentially useful with the <emphasis>recursive</emphasis> strategy:</simpara>

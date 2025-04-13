@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-restore(1)">
     <title>git-restore(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-restore(1)</primary>
 </indexterm>
@@ -15,9 +13,9 @@
 <simplesect id="git-restore(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git restore</emphasis> [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] [--] &lt;pathspec&gt;&#8230;
-<emphasis>git restore</emphasis> [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
-<emphasis>git restore</emphasis> (-p|--patch) [&lt;options&gt;] [--source=&lt;tree&gt;] [--staged] [--worktree] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>restore</code> [<emphasis>&lt;options&gt;</emphasis>] [<code>--source=</code><emphasis>&lt;tree&gt;</emphasis>] [<code>--staged</code>] [<code>--worktree</code>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>restore</code> [<emphasis>&lt;options&gt;</emphasis>] [<code>--source=</code><emphasis>&lt;tree&gt;</emphasis>] [<code>--staged</code>] [<code>--worktree</code>] <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
+<code>git</code> <code>restore</code> (<code>-p</code>|<code>--patch</code>) [<emphasis>&lt;options&gt;</emphasis>] [<code>--source=</code><emphasis>&lt;tree&gt;</emphasis>] [<code>--staged</code>] [<code>--worktree</code>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-restore(1)__description">
@@ -39,10 +37,10 @@ between the three commands.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--s &lt;tree&gt;
+<emphasis>-s &lt;tree&gt;</emphasis>
 </term>
 <term>
---source=&lt;tree&gt;
+<emphasis>--source=&lt;tree&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -52,23 +50,23 @@ between the three commands.</simpara>
 </simpara>
 <simpara>If not specified, the contents are restored from <emphasis>HEAD</emphasis> if <emphasis>--staged</emphasis> is
 given, otherwise from the index.</simpara>
-<simpara>As a special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
-merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
-leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+<simpara>As a special case, you may use <emphasis>"&lt;rev-A&gt;...&lt;rev-B&gt;"</emphasis> as a shortcut for the
+merge base of <emphasis>&lt;rev-A&gt;</emphasis> and <emphasis>&lt;rev-B&gt;</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>&lt;rev-A&gt;_</emphasis> and <emphasis>&lt;rev-B&gt;</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---patch
+<emphasis>--patch</emphasis>
 </term>
 <listitem>
 <simpara>
         Interactively select hunks in the difference between the
-        restore source and the restore location. See the Interactive
-        Mode section of <xref linkend="git-add(1)" /> to learn how to operate
+        restore source and the restore location. See the "Interactive
+        Mode" section of <xref linkend="git-add(1)" /> to learn how to operate
         the <emphasis>--patch</emphasis> mode.
 </simpara>
 <simpara>Note that <emphasis>--patch</emphasis> can accept no pathspec and will prompt to restore
@@ -77,16 +75,16 @@ all modified paths.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--W
+<emphasis>-W</emphasis>
 </term>
 <term>
---worktree
+<emphasis>--worktree</emphasis>
 </term>
 <term>
--S
+<emphasis>-S</emphasis>
 </term>
 <term>
---staged
+<emphasis>--staged</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -98,10 +96,10 @@ all modified paths.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -111,10 +109,10 @@ all modified paths.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <term>
---no-progress
+<emphasis>--no-progress</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -127,10 +125,10 @@ all modified paths.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ours
+<emphasis>--ours</emphasis>
 </term>
 <term>
---theirs
+<emphasis>--theirs</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -146,10 +144,10 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--m
+<emphasis>-m</emphasis>
 </term>
 <term>
---merge
+<emphasis>--merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -162,20 +160,20 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---conflict=&lt;style&gt;
+<emphasis>--conflict=&lt;style&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The same as <emphasis>--merge</emphasis> option above, but changes the way the
         conflicting hunks are presented, overriding the
         <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values
-        are "merge" (default), "diff3", and "zdiff3".
+        are <emphasis>merge</emphasis> (default), <emphasis>diff3</emphasis>, and <emphasis>zdiff3</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-unmerged
+<emphasis>--ignore-unmerged</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -188,13 +186,13 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-skip-worktree-bits
+<emphasis>--ignore-skip-worktree-bits</emphasis>
 </term>
 <listitem>
 <simpara>
         In sparse checkout mode, the default is to only update entries
         matched by <emphasis>&lt;pathspec&gt;</emphasis> and sparse patterns in
-        $GIT_DIR/info/sparse-checkout. This option ignores the sparse
+        <emphasis>$GIT_DIR/info/sparse-checkout</emphasis>. This option ignores the sparse
         patterns and unconditionally restores any files in
         <emphasis>&lt;pathspec&gt;</emphasis>.
 </simpara>
@@ -202,10 +200,10 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules
+<emphasis>--recurse-submodules</emphasis>
 </term>
 <term>
---no-recurse-submodules
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -222,29 +220,29 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---overlay
+<emphasis>--overlay</emphasis>
 </term>
 <term>
---no-overlay
+<emphasis>--no-overlay</emphasis>
 </term>
 <listitem>
 <simpara>
-        In overlay mode, the command never removes files when
-        restoring. In no-overlay mode, tracked files that do not
-        appear in the <emphasis>--source</emphasis> tree are removed, to make them match
-        <emphasis>&lt;tree&gt;</emphasis> exactly. The default is no-overlay mode.
+        In overlay mode, never remove files when restoring. In no-overlay mode,
+        remove tracked files that do not appear in the <emphasis>&lt;tree&gt;</emphasis> of
+        <emphasis>--source=&lt;tree&gt;</emphasis>, to make them match <emphasis>&lt;tree&gt;</emphasis> exactly. The default
+        is no-overlay mode.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR</emphasis>/<emphasis>LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -253,19 +251,19 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -275,7 +273,7 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -289,7 +287,7 @@ in <xref linkend="git-checkout(1)" /> for details.</simpara>
 <simplesect id="git-restore(1)__examples">
 <title>EXAMPLES</title>
 <simpara>The following sequence switches to the <emphasis>master</emphasis> branch, reverts the
-<emphasis>Makefile</emphasis> to two revisions back, deletes hello.c by mistake, and gets
+<emphasis>Makefile</emphasis> to two revisions back, deletes <emphasis>hello.c</emphasis> by mistake, and gets
 it back from the index.</simpara>
 <screen>$ git switch master
 $ git restore --source master~2 Makefile  <co id="git-restore_CO1-1"/>
@@ -303,7 +301,7 @@ take a file out of another commit
 </callout>
 <callout arearefs="git-restore_CO1-2">
 <para>
-restore hello.c from the index
+restore <emphasis>hello.c</emphasis> from the index
 </para>
 </callout>
 </calloutlist>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-show-branch(1)">
     <title>git-show-branch(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show-branch(1)</primary>
 </indexterm>
@@ -28,7 +26,7 @@
 <simpara>Shows the commit ancestry graph starting from the commits named
 with &lt;rev&gt;s or &lt;glob&gt;s (or all refs under refs/heads
 and/or refs/tags) semi-visually.</simpara>
-<simpara>It cannot show more than 29 branches and commits at a time.</simpara>
+<simpara>It cannot show more than 26 branches and commits at a time.</simpara>
 <simpara>It uses <emphasis>showbranch.default</emphasis> multi-valued configuration items if
 no &lt;rev&gt; or &lt;glob&gt; is given on the command line.</simpara>
 </simplesect>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-range-diff(1)">
     <title>git-range-diff(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-range-diff(1)</primary>
 </indexterm>
@@ -17,7 +15,8 @@
 <blockquote>
 <literallayout><emphasis>git range-diff</emphasis> [--color=[&lt;when&gt;]] [--no-color] [&lt;diff-options&gt;]
         [--no-dual-color] [--creation-factor=&lt;factor&gt;]
-        [--left-only | --right-only]
+        [--left-only | --right-only] [--diff-merges=&lt;format&gt;]
+        [--remerge-diff]
         ( &lt;range1&gt; &lt;range2&gt; | &lt;rev1&gt;&#8230;&lt;rev2&gt; | &lt;base&gt; &lt;rev1&gt; &lt;rev2&gt; )
         [[--] &lt;path&gt;&#8230;]</literallayout>
 </blockquote>
@@ -119,6 +118,33 @@ to revert to color all lines according to the outer diff markers
 <simpara>
         Suppress commits that are missing from the second specified range
         (or the "right range" when using the <emphasis>&lt;rev1&gt;...&lt;rev2&gt;</emphasis> format).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--diff-merges=&lt;format&gt;
+</term>
+<listitem>
+<simpara>
+        Instead of ignoring merge commits, generate diffs for them using the
+        corresponding <emphasis>--diff-merges=&lt;format&gt;</emphasis> option of <xref linkend="git-log(1)" />,
+        and include them in the comparison.
+</simpara>
+<simpara>Note: In the common case, the <emphasis>remerge</emphasis> mode will be the most natural one
+to use, as it shows only the diff on top of what Git's merge machinery would
+have produced. In other words, if a merge commit is the result of a
+non-conflicting <emphasis>git merge</emphasis>, the <emphasis>remerge</emphasis> mode will represent it with an empty
+diff.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--remerge-diff
+</term>
+<listitem>
+<simpara>
+        Convenience option, equivalent to <emphasis>--diff-merges=remerge</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

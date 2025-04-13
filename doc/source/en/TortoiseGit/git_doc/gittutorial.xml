@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gittutorial(7)">
     <title>gittutorial(7)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gittutorial(7)</primary>
 </indexterm>
@@ -24,7 +22,7 @@
 changes to it, and share changes with other developers.</simpara>
 <simpara>If you are instead primarily interested in using Git to fetch a project,
 for example, to test the latest version, you may prefer to start with
-the first two chapters of <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink>.</simpara>
+the first two chapters of <link linkend="git_user-manual">The Git User's Manual</link>.</simpara>
 <simpara>First, note that you can get documentation for a command such as
 <emphasis>git log --graph</emphasis> with:</simpara>
 <screen>$ man git-log</screen>
@@ -212,7 +210,7 @@ She can use three-dot form instead of the two-dot form:</simpara>
 <screen>$ gitk HEAD...FETCH_HEAD</screen>
 <simpara>This means "show everything that is reachable from either one, but
 exclude anything that is reachable from both of them".</simpara>
-<simpara>Please note that these range notation can be used with both <emphasis>gitk</emphasis>
+<simpara>Please note that these range notations can be used with both <emphasis>gitk</emphasis>
 and <emphasis>git log</emphasis>.</simpara>
 <simpara>After inspecting what Bob did, if there is nothing urgent, Alice may
 decide to continue working without pulling from Bob.  If Bob's history
@@ -434,7 +432,7 @@ digressions that may be interesting at this point are:</simpara>
 <xref linkend="git-help(1)" />,
 <xref linkend="gitworkflows(7)" />,
 <xref linkend="giteveryday(7)" />,
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
+<link linkend="git_user-manual">The Git User's Manual</link></simpara>
 </simplesect>
 <simplesect id="gittutorial(7)__git">
 <title>GIT</title>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-maintenance(1)">
     <title>git-maintenance(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-maintenance(1)</primary>
 </indexterm>
@@ -176,6 +174,8 @@ with the prefetch task, the objects necessary to complete a later real fetch
 would already be obtained, making the real fetch faster.  In the ideal case,
 it will just become an update to a bunch of remote-tracking branches without
 any object transfer.</simpara>
+<simpara>The <emphasis>remote.&lt;name&gt;.skipFetchAll</emphasis> configuration can be used to
+exclude a particular remote from getting prefetched.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -352,7 +352,9 @@ on an hourly basis. Each run executes the "hourly" tasks. At midnight,
 that process also executes the "daily" tasks. At midnight on the first day
 of the week, that process also executes the "weekly" tasks. A single
 process iterates over each registered repository, performing the scheduled
-tasks for that frequency. Depending on the number of registered
+tasks for that frequency. The processes are scheduled to a random minute of
+the hour per client to spread out the load that multiple clients might
+generate (e.g. from prefetching). Depending on the number of registered
 repositories and their sizes, this process may take longer than an hour.
 In this case, multiple <emphasis>git maintenance run</emphasis> commands may run on the same
 repository at the same time, colliding on the object database lock. This
@@ -512,6 +514,23 @@ maintenance.auto
         <emphasis>git maintenance run --auto</emphasis> after doing their normal work. Defaults
         to true.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.autoDetach
+</term>
+<listitem>
+<simpara>
+        Many Git commands trigger automatic maintenance after they have
+        written data into the repository. This boolean config option
+        controls whether this automatic maintenance shall happen in the
+        foreground or whether the maintenance process shall detach and
+        continue to run in the background.
+</simpara>
+<simpara>If unset, the value of <emphasis>gc.autoDetach</emphasis> is used as a fallback. Defaults
+to true if both are unset, meaning that the maintenance process will
+detach.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

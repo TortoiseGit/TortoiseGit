@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-fsck(1)">
     <title>git-fsck(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-fsck(1)</primary>
 </indexterm>
@@ -434,6 +432,46 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 <listitem>
 <simpara>
         (ERROR) A commit object has a bad parent sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badRefContent</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A ref has bad content.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badRefFiletype</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A ref has a bad file type.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badRefName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A ref has an invalid format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badReferentName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The referent name of a symref is invalid.
 </simpara>
 </listitem>
 </varlistentry>
@@ -902,6 +940,63 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 <listitem>
 <simpara>
         (WARN) Tree contains entries pointing to a null sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>refMissingNewline</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) A loose ref that does not end with newline(LF). As
+        valid implementations of Git never created such a loose ref
+        file, it may become an error in the future. Report to the
+        <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink> mailing list if you see this error, as
+        we need to know what tools created such a file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>symlinkRef</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) A symbolic link is used as a symref. Report to the
+        <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink> mailing list if you see this error, as we
+        are assessing the feasibility of dropping the support to drop
+        creating symbolic links as symrefs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>symrefTargetIsNotARef</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) The target of a symbolic reference points neither to
+        a root reference nor to a reference starting with "refs/".
+        Although we allow create a symref pointing to the referent which
+        is outside the "ref" by using <emphasis>git symbolic-ref</emphasis>, we may tighten
+        the rule in the future. Report to the <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink>
+        mailing list if you see this error, as we need to know what tools
+        created such a file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>trailingRefContent</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) A loose ref has trailing content. As valid implementations
+        of Git never created such a loose ref file, it may become an
+        error in the future. Report to the <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink> mailing
+        list if you see this error, as we need to know what tools
+        created such a file.
 </simpara>
 </listitem>
 </varlistentry>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-rebase(1)">
     <title>git-rebase(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-rebase(1)</primary>
 </indexterm>
@@ -856,11 +854,11 @@ without an explicit <emphasis>--interactive</emphasis>.</simpara>
 <simpara>
         Automatically squash commits with specially formatted messages into
         previous commits being rebased.  If a commit message starts with
-        "squash! ", "fixup! " or "amend! ", the remainder of the subject line
+        "squash! ", "fixup! " or "amend! ", the remainder of the title
         is taken as a commit specifier, which matches a previous commit if it
-        matches the subject line or the hash of that commit.  If no commit
+        matches the title or the hash of that commit.  If no commit
         matches fully, matches of the specifier with the start of commit
-        subjects are considered.
+        titles are considered.
 </simpara>
 <simpara>In the rebase todo list, the actions of squash, fixup and amend commits are
 changed from <emphasis>pick</emphasis> to <emphasis>squash</emphasis>, <emphasis>fixup</emphasis> or <emphasis>fixup -C</emphasis>, respectively, and they
@@ -869,7 +867,7 @@ be used to review and edit the todo list before proceeding.</simpara>
 <simpara>The recommended way to create commits with squash markers is by using the
 <emphasis>--squash</emphasis>, <emphasis>--fixup</emphasis>, <emphasis>--fixup=amend:</emphasis> or <emphasis>--fixup=reword:</emphasis> options of
 <xref linkend="git-commit(1)" />, which take the target commit as an argument and
-automatically fill in the subject line of the new commit from that.</simpara>
+automatically fill in the title of the new commit from that.</simpara>
 <simpara>Setting configuration variable <emphasis>rebase.autoSquash</emphasis> to true enables
 auto-squashing by default for interactive rebase.  The <emphasis>--no-autosquash</emphasis>
 option can be used to override that setting.</simpara>
@@ -1081,7 +1079,7 @@ warnings in such cases.</simpara>
 <emphasis>format-patch</emphasis> internally), and then applying the patches in sequence
 (calling <emphasis>am</emphasis> internally).  Patches are composed of multiple hunks,
 each with line numbers, a context region, and the actual changes.  The
-line numbers have to be taken with some fuzz, since the other side
+line numbers have to be taken with some offset, since the other side
 will likely have inserted or deleted lines earlier in the file.  The
 context region is meant to help find how to adjust the line numbers in
 order to apply the changes to the right lines.  However, if multiple
@@ -1202,6 +1200,12 @@ ort
         was written as a replacement for the previous default
         algorithm, <emphasis>recursive</emphasis>.
 </simpara>
+<simpara>In the case where the path is a submodule, if the submodule commit used on
+one side of the merge is a descendant of the submodule commit used on the
+other side of the merge, Git attempts to fast-forward to the
+descendant. Otherwise, Git will treat this case as a conflict, suggesting
+as a resolution a submodule commit that is descendant of the conflicting
+ones, if one exists.</simpara>
 <simpara>The <emphasis>ort</emphasis> strategy can take the following options:</simpara>
 <variablelist>
 <varlistentry>
@@ -1280,7 +1284,7 @@ renormalize
 <listitem>
 <simpara>
         This runs a virtual check-out and check-in of all three stages
-        of a file when resolving a three-way merge.  This option is
+        of any file which needs a three-way merge.  This option is
         meant to be used when merging branches with different clean
         filters or end-of-line normalization rules.  See "Merging
         branches with differing checkin/checkout attributes" in
@@ -1358,6 +1362,8 @@ recursive
         the default strategy for resolving two heads from Git v0.99.9k
         until v2.33.0.
 </simpara>
+<simpara>For a path that is a submodule, the same caution as <emphasis>ort</emphasis> applies to this
+strategy.</simpara>
 <simpara>The <emphasis>recursive</emphasis> strategy takes the same options as <emphasis>ort</emphasis>.  However,
 there are three additional options that <emphasis>ort</emphasis> ignores (not documented
 above) that are potentially useful with the <emphasis>recursive</emphasis> strategy:</simpara>

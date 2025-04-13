@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-for-each-ref(1)">
     <title>git-for-each-ref(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-for-each-ref(1)</primary>
 </indexterm>
@@ -533,6 +531,45 @@ ahead-behind:&lt;committish&gt;
         commits ahead and behind, respectively, when comparing the output
         ref to the <emphasis>&lt;committish&gt;</emphasis> specified in the format.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+is-base:&lt;committish&gt;
+</term>
+<listitem>
+<simpara>
+        In at most one row, <emphasis>(&lt;committish&gt;)</emphasis> will appear to indicate the ref
+        that is most likely the ref used as a starting point for the branch
+        that produced <emphasis>&lt;committish&gt;</emphasis>. This choice is made using a heuristic:
+        choose the ref that minimizes the number of commits in the
+        first-parent history of <emphasis>&lt;committish&gt;</emphasis> and not in the first-parent
+        history of the ref.
+</simpara>
+<simpara>For example, consider the following figure of first-parent histories of
+several refs:</simpara>
+<screen>*--*--*--*--*--* refs/heads/A
+\
+ \
+  *--*--*--* refs/heads/B
+   \     \
+    \     \
+     *     * refs/heads/C
+      \
+       \
+        *--* refs/heads/D</screen>
+<simpara>Here, if <emphasis>A</emphasis>, <emphasis>B</emphasis>, and <emphasis>C</emphasis> are the filtered references, and the format
+string is <emphasis>%(refname):%(is-base:D)</emphasis>, then the output would be</simpara>
+<screen>refs/heads/A:
+refs/heads/B:(D)
+refs/heads/C:</screen>
+<simpara>This is because the first-parent history of <emphasis>D</emphasis> has its earliest
+intersection with the first-parent histories of the filtered refs at a
+common first-parent ancestor of <emphasis>B</emphasis> and <emphasis>C</emphasis> and ties are broken by the
+earliest ref in the sorted order.</simpara>
+<simpara>Note that this token will not appear if the first-parent history of
+<emphasis>&lt;committish&gt;</emphasis> does not intersect the first-parent histories of the
+filtered refs.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

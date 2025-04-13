@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-interpret-trailers(1)">
     <title>git-interpret-trailers(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-interpret-trailers(1)</primary>
 </indexterm>
@@ -254,6 +252,9 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
 </simplesect>
 <simplesect id="git-interpret-trailers(1)__configuration_variables">
 <title>CONFIGURATION VARIABLES</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>

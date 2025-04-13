@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-repack(1)">
     <title>git-repack(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-repack(1)</primary>
 </indexterm>
@@ -15,7 +13,9 @@
 <simplesect id="git-repack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m] [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;] [--write-midx]</literallayout>
+<literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m]
+        [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]
+        [--write-midx] [--name-hash-version=&lt;n&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-repack(1)__description">
@@ -439,6 +439,17 @@ pack as the preferred pack for object selection by the MIDX (see
 <simpara>
         Write a multi-pack index (see <xref linkend="git-multi-pack-index(1)" />)
         containing the non-redundant packs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--name-hash-version=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        Provide this argument to the underlying <emphasis>git pack-objects</emphasis> process.
+        See <xref linkend="git-pack-objects(1)" /> for full details.
 </simpara>
 </listitem>
 </varlistentry>

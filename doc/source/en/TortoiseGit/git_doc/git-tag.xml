@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-tag(1)">
     <title>git-tag(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-tag(1)</primary>
 </indexterm>
@@ -16,6 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;key-id&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;] [-e]
+        [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;]
         &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
 <emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
 <emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--no-contains &lt;commit&gt;]
@@ -34,8 +33,8 @@ to delete, list or verify tags.</simpara>
 creates a <emphasis>tag</emphasis> object, and requires a tag message.  Unless
 <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given, an editor is started for the user to type
 in the tag message.</simpara>
-<simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> is given and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;key-id&gt;</emphasis>
-are absent, <emphasis>-a</emphasis> is implied.</simpara>
+<simpara>If <emphasis>-m &lt;msg&gt;</emphasis> or <emphasis>-F &lt;file&gt;</emphasis> or <emphasis>--trailer &lt;token&gt;[=&lt;value&gt;]</emphasis> is given
+and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;key-id&gt;</emphasis> are absent, <emphasis>-a</emphasis> is implied.</simpara>
 <simpara>Otherwise, a tag reference that points directly at the given object
 (i.e., a lightweight tag) is created.</simpara>
 <simpara>A GnuPG signed tag object will be created when <emphasis>-s</emphasis> or <emphasis>-u
@@ -339,6 +338,24 @@ options for details.</simpara>
         read the message from the standard input.
         Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
         is given.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+</term>
+<listitem>
+<simpara>
+        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        trailer. (e.g. <emphasis>git tag --trailer "Custom-Key: value"</emphasis>
+        will add a "Custom-Key" trailer to the tag message.)
+        The <emphasis>trailer.*</emphasis> configuration variables
+        (<xref linkend="git-interpret-trailers(1)" />) can be used to define if
+        a duplicated trailer is omitted, where in the run of trailers
+        each trailer would appear, and other details.
+        The trailers can be extracted in <emphasis>git tag --list</emphasis>, using
+        <emphasis>--format="%(trailers)"</emphasis> placeholder.
 </simpara>
 </listitem>
 </varlistentry>

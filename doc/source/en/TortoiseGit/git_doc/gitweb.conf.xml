@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitweb.conf(5)">
     <title>gitweb.conf(5)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitweb.conf(5)</primary>
 </indexterm>

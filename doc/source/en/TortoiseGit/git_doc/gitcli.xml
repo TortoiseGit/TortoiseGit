@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitcli(7)">
     <title>gitcli(7)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitcli(7)</primary>
 </indexterm>
@@ -119,6 +117,18 @@ When a command-line option takes an argument, use the <emphasis>stuck</emphasis>
 </listitem>
 <listitem>
 <simpara>
+Despite the above suggestion, when Arg is a path relative to the
+   home directory of a user, e.g. <emphasis>~/directory/file</emphasis> or <emphasis>~u/d/f</emphasis>, you
+   may want to use the separate form, e.g. <emphasis>git foo --file ~/mine</emphasis>,
+   not <emphasis>git foo --file=~/mine</emphasis>.  The shell will expand <emphasis>~/</emphasis> in the
+   former to your home directory, but most shells keep the tilde in
+   the latter.  Some of our commands know how to tilde-expand the
+   option value even when given in the stuck form, but not all of
+   them do.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
 When you give a revision parameter to a command, make sure the parameter is
    not ambiguous with a name of a file in the work tree.  E.g. do not write
    <emphasis>git log -1 HEAD</emphasis> but write <emphasis>git log -1 HEAD --</emphasis>; the former will not work
@@ -192,6 +202,20 @@ consistently give the usage.</simpara>
 example, <emphasis>git branch</emphasis> has the option <emphasis>--track</emphasis> which is <emphasis>on</emphasis> by default. You
 can use <emphasis>--no-track</emphasis> to override that behaviour. The same goes for <emphasis>--color</emphasis>
 and <emphasis>--no-color</emphasis>.</simpara>
+</section>
+<section id="gitcli(7)__options_trump_configuration_and_environment">
+<title>Options trump configuration and environment</title>
+<simpara>When there is a configuration variable or an environment variable
+that tweak the behaviour of an aspect of a Git command, and also a
+command line option that tweaks the same, the command line option
+overrides what the configuration and/or environment variable say.</simpara>
+<simpara>For example, the <emphasis>user.name</emphasis> configuration variable is used to
+specify the human-readable name used by the <emphasis>git commit</emphasis> command to
+record the author and the committer name in a newly created commit.
+The <emphasis>GIT_AUTHOR_NAME</emphasis> environment variable, if set, takes precedence
+when deciding what author name to record.  The <emphasis>--author=&lt;author&gt;</emphasis>
+command line option of the <emphasis>git commit</emphasis> command, when given, takes
+precedence over these two sources of information.</simpara>
 </section>
 <section id="gitcli(7)__aggregating_short_options">
 <title>Aggregating short options</title>

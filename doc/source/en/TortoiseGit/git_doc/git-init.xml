@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-init(1)">
     <title>git-init(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-init(1)</primary>
 </indexterm>
@@ -15,11 +13,11 @@
 <simplesect id="git-init(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git init</emphasis> [<emphasis>-q</emphasis> | <emphasis>--quiet</emphasis>] [<emphasis>--bare</emphasis>] [<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>]
-          [<emphasis>--separate-git-dir</emphasis> <emphasis>&lt;git-dir&gt;</emphasis>] [<literal>--object-format=</literal><emphasis>&lt;format&gt;</emphasis>]
-          [<literal>--ref-format=</literal><emphasis>&lt;format&gt;</emphasis>]
-          [<emphasis>-b</emphasis> <emphasis>&lt;branch-name&gt;</emphasis> | <literal>--initial-branch=</literal><emphasis>&lt;branch-name&gt;</emphasis>]
-          [<literal>--shared</literal>[<literal>=</literal><emphasis>&lt;permissions&gt;</emphasis>]] [<emphasis>&lt;directory&gt;</emphasis>]</literallayout>
+<literallayout><code>git</code> <code>init</code> [<code>-q</code> | <code>--quiet</code>] [<code>--bare</code>] [<code>--template=</code><emphasis>&lt;template-directory&gt;</emphasis>]
+         [<code>--separate-git-dir</code> <emphasis>&lt;git-dir&gt;</emphasis>] [<code>--object-format=</code><emphasis>&lt;format&gt;</emphasis>]
+         [<code>--ref-format=</code><emphasis>&lt;format&gt;</emphasis>]
+         [<code>-b</code> <emphasis>&lt;branch-name&gt;</emphasis> | <code>--initial-branch=</code><emphasis>&lt;branch-name&gt;</emphasis>]
+         [<code>--shared</code>[<code>=</code><emphasis>&lt;permissions&gt;</emphasis>]] [<emphasis>&lt;directory&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-init(1)__description">
@@ -29,10 +27,10 @@ directory with subdirectories for <emphasis>objects</emphasis>, <emphasis>refs/h
 <emphasis>refs/tags</emphasis>, and template files.  An initial branch without any
 commits will be created (see the <emphasis>--initial-branch</emphasis> option below
 for its name).</simpara>
-<simpara>If the <emphasis>$GIT_DIR</emphasis> environment variable is set then it specifies a path
+<simpara>If the <emphasis>GIT_DIR</emphasis> environment variable is set then it specifies a path
 to use instead of <emphasis>./.git</emphasis> for the base of the repository.</simpara>
 <simpara>If the object storage directory is specified via the
-<emphasis>$GIT_OBJECT_DIRECTORY</emphasis> environment variable then the sha1 directories
+<emphasis>GIT_OBJECT_DIRECTORY</emphasis> environment variable then the sha1 directories
 are created underneath; otherwise, the default <emphasis>$GIT_DIR/objects</emphasis>
 directory is used.</simpara>
 <simpara>Running <emphasis>git init</emphasis> in an existing repository is safe. It will not
@@ -69,7 +67,7 @@ current working directory.
 </varlistentry>
 <varlistentry>
 <term>
-<literal>--object-format=</literal><emphasis>&lt;format&gt;</emphasis>
+<emphasis>--object-format=&lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -90,7 +88,7 @@ without data loss.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<literal>--ref-format=</literal><emphasis>&lt;format&gt;</emphasis>
+<emphasis>--ref-format=&lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -113,7 +111,7 @@ Specify the given ref storage <emphasis>&lt;format&gt;</emphasis> for the reposi
 </varlistentry>
 <varlistentry>
 <term>
-<literal>--template=</literal><emphasis>&lt;template-directory&gt;</emphasis>
+<emphasis>--template=&lt;template-directory&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -124,7 +122,7 @@ DIRECTORY" section below.)
 </varlistentry>
 <varlistentry>
 <term>
-<literal>--separate-git-dir=</literal><emphasis>&lt;git-dir&gt;</emphasis>
+<emphasis>--separate-git-dir=&lt;git-dir&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -138,10 +136,10 @@ repository.
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>-b</emphasis> <emphasis>&lt;branch-name&gt;</emphasis>
+<emphasis>-b &lt;branch-name&gt;</emphasis>
 </term>
 <term>
-<literal>--initial-branch=</literal><emphasis>&lt;branch-name&gt;</emphasis>
+<emphasis>--initial-branch=&lt;branch-name&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -154,7 +152,7 @@ customized via the <emphasis>init.defaultBranch</emphasis> configuration variabl
 </varlistentry>
 <varlistentry>
 <term>
-<literal>--shared</literal>[<literal>=</literal>(<emphasis>false</emphasis>|<emphasis>true</emphasis>|<emphasis>umask</emphasis>|<emphasis>group</emphasis>|<emphasis>all</emphasis>|<emphasis>world</emphasis>|<emphasis>everybody</emphasis>|<emphasis>&lt;perm&gt;</emphasis>)]
+<emphasis>--shared[=(false|true|umask|group|all|world|everybody|&lt;perm&gt;)]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -333,6 +331,32 @@ as what's found there:</simpara>
 <simpara>
         Allows overriding the default branch name e.g. when initializing
         a new repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>init.defaultObjectFormat</emphasis>
+</term>
+<listitem>
+<simpara>
+        Allows overriding the default object format for new repositories. See
+        <emphasis>--object-format=</emphasis> in <xref linkend="git-init(1)" />. Both the command line option
+        and the <emphasis>GIT_DEFAULT_HASH</emphasis> environment variable take precedence over
+        this config.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>init.defaultRefFormat</emphasis>
+</term>
+<listitem>
+<simpara>
+        Allows overriding the default ref storage format for new repositories.
+        See <emphasis>--ref-format=</emphasis> in <xref linkend="git-init(1)" />. Both the command line
+        option and the <emphasis>GIT_DEFAULT_REF_FORMAT</emphasis> environment variable take
+        precedence over this config.
 </simpara>
 </listitem>
 </varlistentry>
