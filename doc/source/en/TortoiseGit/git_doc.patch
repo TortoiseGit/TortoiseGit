@@ -15,6 +15,8 @@ Generating git docbook documentation:
     (\n-- )|( -- )|( --\n)=&#8201;&#8212;&#8201;
     (\w)--(\w)=\1&#8212;\2
     (\w)'(\w)=\1&#8217;\2
+- perl -0pi -e 's/link:user-manual.html#(\S+)\[(.+?)\]/xref:user-manual_\1\[\2]/gms' *.adoc
+- perl -pi -e 's/link:user-manual.html\[(.+?)\]/xref:git_user-manual[\1]/g' *.adoc
 - make xml
 - take *.xml files
 
@@ -54,7 +56,7 @@ index 671267a..8f8c706 100644
  technical/api-index.adoc: technical/api-index-skel.adoc \
  	technical/api-index.sh $(patsubst %,%.adoc,$(API_DOCS))
 diff --git a/Documentation/asciidoc.conf.in b/Documentation/asciidoc.conf.in
-index f2aef6c..7dd0d87 100644
+index f2aef6c..8049f08 100644
 --- a/Documentation/asciidoc.conf.in
 +++ b/Documentation/asciidoc.conf.in
 @@ -23,7 +23,6 @@ backtick=&#96;
@@ -65,7 +67,7 @@ index f2aef6c..7dd0d87 100644
  
  ifdef::doctype-book[]
  [titles]
-@@ -47,12 +46,131 @@ endif::doctype-book[]
+@@ -47,12 +46,174 @@ endif::doctype-book[]
  
  endif::backend-docbook[]
  
@@ -163,7 +165,7 @@ index f2aef6c..7dd0d87 100644
 +endif::no-inline-literal[]
 +
 +[preface]
-+<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<section{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
 +<title>{title}</title>
 +|
 +</section>
@@ -178,11 +180,54 @@ index f2aef6c..7dd0d87 100644
 +<sect2 lang="{lang=en}" id="git_user-manual">
 +template::[docinfo]
 +
++# [[id,text]]
++[anchor2-inlinemacro]
++<anchor id="{docname}_{1}" xreflabel="{2=[{1}]}"/>
++# [[[id]]]
++[anchor3-inlinemacro]
++<anchor id="{docname}_{1}" xreflabel="[{1}]"/>[{1}]
++# <<id,text>>
++[xref2-inlinemacro]
++<link linkend="{docname}_{1}">{2}</link>
++{2%}<xref linkend="{docname}_{1}"/>
++
 +[sect1]
-+<section{id? id="{doctitle}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<section{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
 +<title>{title}</title>
 +|
 +</section>
++
++[sect2]
++<section{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
++
++[sect3]
++<section{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
++
++[sect4]
++<section{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</section>
++
++[paragraph]
++<formalpara{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}><title>{title}</title><para>
++{title%}<simpara{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++|
++{title%}</simpara>
++{title#}</para></formalpara>
++{empty}
++
++[appendix]
++<sect3{id? id="{docname}_{id}"}{role? role="{role}"}{reftext? xreflabel="{reftext}"}>
++<title>{title}</title>
++|
++</sect3>
 +endif::[]
 +
 +endif::doctype-article[]
