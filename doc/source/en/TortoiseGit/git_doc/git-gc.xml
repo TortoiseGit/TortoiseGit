@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-gc(1)">
     <title>git-gc(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-gc(1)</primary>
 </indexterm>
@@ -15,7 +13,7 @@
 <simplesect id="git-gc(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git gc</emphasis> [--aggressive] [--auto] [--quiet] [--prune=&lt;date&gt; | --no-prune] [--force] [--keep-largest-pack]</literallayout>
+<literallayout><emphasis>git gc</emphasis> [--aggressive] [--auto] [--[no-]detach] [--quiet] [--prune=&lt;date&gt; | --no-prune] [--force] [--keep-largest-pack]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-gc(1)__description">
@@ -72,6 +70,17 @@ be performed as well.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]detach
+</term>
+<listitem>
+<simpara>
+        Run in the background if the system supports it. This option overrides
+        the <emphasis>gc.autoDetach</emphasis> config.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --[no-]cruft
 </term>
 <listitem>
@@ -93,6 +102,20 @@ be performed as well.</simpara>
         value specified via the <emphasis>gc.maxCruftSize</emphasis> configuration. See
         the <emphasis>--max-cruft-size</emphasis> option of <xref linkend="git-repack(1)" /> for
         more.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--expire-to=&lt;dir&gt;
+</term>
+<listitem>
+<simpara>
+        When packing unreachable objects into a cruft pack, write a cruft
+        pack containing pruned objects (if any) to the directory <emphasis>&lt;dir&gt;</emphasis>.
+        This option only has an effect when used together with <emphasis>--cruft</emphasis>.
+        See the <emphasis>--expire-to</emphasis> option of <xref linkend="git-repack(1)" /> for
+        more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -256,7 +279,8 @@ gc.autoDetach
 <listitem>
 <simpara>
         Make <emphasis>git gc --auto</emphasis> return immediately and run in the background
-        if the system supports it. Default is true.
+        if the system supports it. Default is true. This config variable acts
+        as a fallback in case <emphasis>maintenance.autoDetach</emphasis> is not set.
 </simpara>
 </listitem>
 </varlistentry>
@@ -469,7 +493,7 @@ gc.repackFilterTo
         containing the filtered out objects. <emphasis role="strong">WARNING:</emphasis> The
         specified location should be accessible, using for example the
         Git alternates mechanism, otherwise the repo could be
-        considered corrupt by Git as it migh not be able to access the
+        considered corrupt by Git as it might not be able to access the
         objects in that packfile. See the <emphasis>--filter-to=&lt;dir&gt;</emphasis> option
         of <xref linkend="git-repack(1)" /> and the <emphasis>objects/info/alternates</emphasis>
         section of <xref linkend="gitrepository-layout(5)" />.

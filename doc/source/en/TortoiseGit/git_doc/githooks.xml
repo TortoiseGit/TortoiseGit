@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="githooks(5)">
     <title>githooks(5)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>githooks(5)</primary>
 </indexterm>
@@ -355,12 +353,12 @@ atomic push is in use.</simpara>
 <title>post-receive</title>
 <simpara>This hook is invoked by <xref linkend="git-receive-pack(1)" /> when it reacts to
 <emphasis>git push</emphasis> and updates reference(s) in its repository.
-It executes on the remote repository once after all the refs have
-been updated.</simpara>
-<simpara>This hook executes once for the receive operation.  It takes no
-arguments, but gets the same information as the
-<link linkend="githooks(5)_pre-receive"><emphasis>pre-receive</emphasis></link>
-hook does on its standard input.</simpara>
+The hook executes on the remote repository once after all the proposed
+ref updates are processed and if at least one ref is updated as the
+result.</simpara>
+<simpara>The hook takes no arguments.  It receives one line on standard input for
+each ref that is successfully updated following the same format as the
+<link linkend="githooks(5)_pre-receive"><emphasis>pre-receive</emphasis></link> hook.</simpara>
 <simpara>This hook does not affect the outcome of <emphasis>git receive-pack</emphasis>, as it
 is called after the real work is done.</simpara>
 <simpara>This supersedes the <link linkend="githooks(5)_post-update"><emphasis>post-update</emphasis></link> hook in that it gets
@@ -381,6 +379,8 @@ If it is negotiated to not use the push options phase, the
 environment variables will not be set. If the client selects
 to use push options, but doesn't transmit any, the count variable
 will be set to zero, <emphasis>GIT_PUSH_OPTION_COUNT=0</emphasis>.</simpara>
+<simpara>See the "post-receive" section in <xref linkend="git-receive-pack(1)" /> for
+additional details.</simpara>
 </section>
 <section id="githooks(5)_post-update">
 <title>post-update</title>
@@ -412,7 +412,7 @@ for the user.</simpara>
 <simpara>This hook is invoked by any Git command that performs reference
 updates. It executes whenever a reference transaction is prepared,
 committed or aborted and may thus get called multiple times. The hook
-does not cover symbolic references (but that may change in the future).</simpara>
+also supports symbolic reference updates.</simpara>
 <simpara>The hook takes exactly one argument, which is the current state the
 given reference transaction is in:</simpara>
 <itemizedlist>
@@ -437,14 +437,17 @@ given reference transaction is in:</simpara>
 </itemizedlist>
 <simpara>For each reference update that was added to the transaction, the hook
 receives on standard input a line of the format:</simpara>
-<literallayout class="monospaced">&lt;old-oid&gt; SP &lt;new-oid&gt; SP &lt;ref-name&gt; LF</literallayout>
-<simpara>where <emphasis>&lt;old-oid&gt;</emphasis> is the old object name passed into the reference
-transaction, <emphasis>&lt;new-oid&gt;</emphasis> is the new object name to be stored in the
+<literallayout class="monospaced">&lt;old-value&gt; SP &lt;new-value&gt; SP &lt;ref-name&gt; LF</literallayout>
+<simpara>where <emphasis>&lt;old-value&gt;</emphasis> is the old object name passed into the reference
+transaction, <emphasis>&lt;new-value&gt;</emphasis> is the new object name to be stored in the
 ref and <emphasis>&lt;ref-name&gt;</emphasis> is the full name of the ref. When force updating
 the reference regardless of its current value or when the reference is
-to be created anew, <emphasis>&lt;old-oid&gt;</emphasis> is the all-zeroes object name. To
+to be created anew, <emphasis>&lt;old-value&gt;</emphasis> is the all-zeroes object name. To
 distinguish these cases, you can inspect the current value of
 <emphasis>&lt;ref-name&gt;</emphasis> via <emphasis>git rev-parse</emphasis>.</simpara>
+<simpara>For symbolic reference updates the <emphasis>&lt;old_value&gt;</emphasis> and <emphasis>&lt;new-value&gt;</emphasis>
+fields could denote references instead of objects. A reference will be
+denoted with a <emphasis>ref:</emphasis> prefix, like <emphasis>ref:&lt;ref-target&gt;</emphasis>.</simpara>
 <simpara>The exit status of the hook is ignored for any state except for the
 "prepared" state. In the "prepared" state, a non-zero exit status will
 cause the transaction to be aborted. The hook will not be called with

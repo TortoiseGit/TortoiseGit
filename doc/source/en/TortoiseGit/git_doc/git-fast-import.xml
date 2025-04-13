@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-fast-import(1)">
     <title>git-fast-import(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-fast-import(1)</primary>
 </indexterm>

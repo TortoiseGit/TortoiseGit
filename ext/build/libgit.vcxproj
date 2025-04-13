@@ -241,16 +241,14 @@
     <ClCompile Include="..\tgit\reftable\basics.c" />
     <ClCompile Include="..\tgit\reftable\block.c" />
     <ClCompile Include="..\tgit\reftable\blocksource.c" />
-    <ClCompile Include="..\tgit\reftable\dump.c" />
     <ClCompile Include="..\tgit\reftable\error.c" />
-    <ClCompile Include="..\tgit\reftable\generic.c" />
     <ClCompile Include="..\tgit\reftable\iter.c" />
     <ClCompile Include="..\tgit\reftable\merged.c" />
     <ClCompile Include="..\tgit\reftable\pq.c" />
-    <ClCompile Include="..\tgit\reftable\publicbasics.c" />
     <ClCompile Include="..\tgit\reftable\reader.c" />
     <ClCompile Include="..\tgit\reftable\record.c" />
     <ClCompile Include="..\tgit\reftable\stack.c" />
+    <ClCompile Include="..\tgit\reftable\system.c" />
     <ClCompile Include="..\tgit\reftable\tree.c">
       <ObjectFileName>$(IntDir)\reftable_%(Filename).obj</ObjectFileName>
     </ClCompile>
@@ -493,18 +491,14 @@
     <ClInclude Include="..\tgit\reftable\block.h" />
     <ClInclude Include="..\tgit\reftable\blocksource.h" />
     <ClInclude Include="..\tgit\reftable\constants.h" />
-    <ClInclude Include="..\tgit\reftable\generic.h" />
     <ClInclude Include="..\tgit\reftable\iter.h" />
     <ClInclude Include="..\tgit\reftable\merged.h" />
     <ClInclude Include="..\tgit\reftable\pq.h" />
     <ClInclude Include="..\tgit\reftable\reader.h" />
     <ClInclude Include="..\tgit\reftable\record.h" />
-    <ClInclude Include="..\tgit\reftable\refname.h" />
     <ClInclude Include="..\tgit\reftable\reftable-blocksource.h" />
     <ClInclude Include="..\tgit\reftable\reftable-error.h" />
-    <ClInclude Include="..\tgit\reftable\reftable-generic.h" />
     <ClInclude Include="..\tgit\reftable\reftable-iterator.h" />
-    <ClInclude Include="..\tgit\reftable\reftable-malloc.h" />
     <ClInclude Include="..\tgit\reftable\reftable-merged.h" />
     <ClInclude Include="..\tgit\reftable\reftable-reader.h" />
     <ClInclude Include="..\tgit\reftable\reftable-record.h" />
@@ -516,6 +510,7 @@
     <ClInclude Include="..\tgit\reftable\writer.h" />
     <ClInclude Include="..\tgit\remote.h" />
     <ClInclude Include="..\tgit\replace-object.h" />
+    <ClInclude Include="..\tgit\repo-settings.h" />
     <ClInclude Include="..\tgit\repository.h" />
     <ClInclude Include="..\tgit\rerere.h" />
     <ClInclude Include="..\tgit\reset.h" />

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-show-index(1)">
     <title>git-show-index(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-show-index(1)</primary>
 </indexterm>
@@ -15,7 +13,7 @@
 <simplesect id="git-show-index(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git show-index</emphasis> [--object-format=&lt;hash-algorithm&gt;]</literallayout>
+<literallayout><emphasis>git show-index</emphasis> [--object-format=&lt;hash-algorithm&gt;] &lt; &lt;pack-idx-file&gt;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-show-index(1)__description">

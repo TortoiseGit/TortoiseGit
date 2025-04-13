@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-read-tree(1)">
     <title>git-read-tree(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-read-tree(1)</primary>
 </indexterm>

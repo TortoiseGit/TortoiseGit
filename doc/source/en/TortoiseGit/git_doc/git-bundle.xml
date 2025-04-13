@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-bundle(1)">
     <title>git-bundle(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-bundle(1)</primary>
 </indexterm>
@@ -28,16 +26,16 @@
 the "offline" transfer of Git objects without an active "server"
 sitting on the other side of the network connection.</simpara>
 <simpara>They can be used to create both incremental and full backups of a
-repository, and to relay the state of the references in one repository
-to another.</simpara>
+repository (see the "full backup" example in "EXAMPLES"), and to relay
+the state of the references in one repository to another (see the second
+example).</simpara>
 <simpara>Git commands that fetch or otherwise "read" via protocols such as
 <emphasis>ssh://</emphasis> and <emphasis>https://</emphasis> can also operate on bundle files. It is
 possible <xref linkend="git-clone(1)" /> a new repository from a bundle, to use
 <xref linkend="git-fetch(1)" /> to fetch from one, and to list the references
 contained within it with <xref linkend="git-ls-remote(1)" />. There's no
-corresponding "write" support, i.e.a <emphasis>git push</emphasis> into a bundle is not
+corresponding "write" support, i.e. a <emphasis>git push</emphasis> into a bundle is not
 supported.</simpara>
-<simpara>See the "EXAMPLES" section below for examples of how to use bundles.</simpara>
 </simplesect>
 <simplesect id="git-bundle(1)__bundle_format">
 <title>BUNDLE FORMAT</title>
@@ -195,7 +193,7 @@ unbundle &lt;file&gt;
 <simplesect id="git-bundle(1)__specifying_references">
 <title>SPECIFYING REFERENCES</title>
 <simpara>Revisions must be accompanied by reference names to be packaged in a
-bundle.</simpara>
+bundle.  Alternatively <emphasis>--all</emphasis> can be used to package all refs.</simpara>
 <simpara>More than one reference may be packaged, and more than one set of prerequisite objects can
 be specified.  The objects packaged are those not contained in the
 union of the prerequisites.</simpara>
@@ -240,9 +238,7 @@ into anywhere, even into an empty repository, or be cloned from
 <simpara>It is okay to err on the side of caution, causing the bundle file
 to contain objects already in the destination, as these are ignored
 when unpacking at the destination.</simpara>
-<simpara>If you want to match <emphasis>git clone --mirror</emphasis>, which would include your
-refs such as <emphasis>refs/remotes/*</emphasis>, use <emphasis>--all</emphasis>.
-If you want to provide the same set of refs that a clone directly
+<simpara>If you want to provide the same set of refs that a clone directly
 from the source repository would get, use <emphasis>--branches --tags</emphasis> for
 the <emphasis>&lt;git-rev-list-args&gt;</emphasis>.</simpara>
 <simpara>The <emphasis>git bundle verify</emphasis> command can be used to check whether your
@@ -251,8 +247,33 @@ bundle.</simpara>
 </simplesect>
 <simplesect id="git-bundle(1)__examples">
 <title>EXAMPLES</title>
-<simpara>Assume you want to transfer the history from a repository R1 on machine A
-to another repository R2 on machine B.
+<simpara>We'll discuss two cases:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Taking a full backup of a repository
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Transferring the history of a repository to another machine when the
+   two machines have no direct connection
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>First let's consider a full backup of the repository.  The following
+command will take a full backup of the repository in the sense that all
+refs are included in the bundle:</simpara>
+<screen>$ git bundle create backup.bundle --all</screen>
+<simpara>But note again that this is only for the refs, i.e. you will only
+include refs and commits reachable from those refs.  You will not
+include other local state, such as the contents of the index, working
+tree, the stash, per-repository configuration, hooks, etc.</simpara>
+<simpara>You can later recover that repository by using for example
+<xref linkend="git-clone(1)" />:</simpara>
+<screen>$ git clone backup.bundle &lt;new directory&gt;</screen>
+<simpara>For the next example, assume you want to transfer the history from a
+repository R1 on machine A to another repository R2 on machine B.
 For whatever reason, direct connection between A and B is not allowed,
 but we can move data from A to B via some mechanism (CD, email, etc.).
 We want to update R2 with development made on the branch master in R1.</simpara>
@@ -308,6 +329,21 @@ references when fetching:</simpara>
 <screen>$ git fetch mybundle master:localRef</screen>
 <simpara>You can also see what references it offers:</simpara>
 <screen>$ git ls-remote mybundle</screen>
+</simplesect>
+<simplesect id="git-bundle(1)__discussion">
+<title>DISCUSSION</title>
+<simpara>A naive way to make a full backup of a repository is to use something to
+the effect of <emphasis>cp -r &lt;repo&gt; &lt;destination&gt;</emphasis>.  This is discouraged since
+the repository could be written to during the copy operation.  In turn
+some files at <emphasis>&lt;destination&gt;</emphasis> could be corrupted.</simpara>
+<simpara>This is why it is recommended to use Git tooling for making repository
+backups, either with this command or with e.g. <xref linkend="git-clone(1)" />.
+But keep in mind that these tools will not help you backup state other
+than refs and commits.  In other words they will not help you backup
+contents of the index, working tree, the stash, per-repository
+configuration, hooks, etc.</simpara>
+<simpara>See also <xref linkend="gitfaq(7)" />, section "TRANSFERS" for a discussion of the
+problems associated with file syncing across systems.</simpara>
 </simplesect>
 <simplesect id="git-bundle(1)__file_format">
 <title>FILE FORMAT</title>

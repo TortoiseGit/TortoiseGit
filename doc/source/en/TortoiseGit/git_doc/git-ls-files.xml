@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-ls-files(1)">
     <title>git-ls-files(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-ls-files(1)</primary>
 </indexterm>
@@ -514,9 +512,9 @@ followed by the  ("attr/&lt;eolattr&gt;").</simpara>
 <listitem>
 <simpara>
         A string that interpolates <emphasis>%(fieldname)</emphasis> from the result being shown.
-        It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xx</emphasis> where <emphasis>xx</emphasis> are hex digits
-        interpolates to character with hex code <emphasis>xx</emphasis>; for example <emphasis>%00</emphasis>
-        interpolates to <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB) and %0a to <emphasis>\n</emphasis> (LF).
+        It also interpolates <emphasis>%%</emphasis> to <emphasis>%</emphasis>, and <emphasis>%xXX</emphasis> where <emphasis>XX</emphasis> are hex digits
+        interpolates to character with hex code <emphasis>XX</emphasis>; for example <emphasis>%x00</emphasis>
+        interpolates to <emphasis>\0</emphasis> (NUL), <emphasis>%x09</emphasis> to <emphasis>\t</emphasis> (TAB) and %x0a to <emphasis>\n</emphasis> (LF).
         --format cannot be combined with <emphasis>-s</emphasis>, <emphasis>-o</emphasis>, <emphasis>-k</emphasis>, <emphasis>-t</emphasis>, <emphasis>--resolve-undo</emphasis>
         and <emphasis>--eol</emphasis>.
 </simpara>

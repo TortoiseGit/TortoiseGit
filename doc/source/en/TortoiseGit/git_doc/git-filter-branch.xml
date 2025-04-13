@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-filter-branch(1)">
     <title>git-filter-branch(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-filter-branch(1)</primary>
 </indexterm>

@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-shortlog(1)">
     <title>git-shortlog(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-shortlog(1)</primary>
 </indexterm>
@@ -955,7 +953,8 @@ Default mode
 <listitem>
 <simpara>
         When given a range of commits to display (e.g. <emphasis>commit1..commit2</emphasis>
-        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits in that range
+        or <emphasis>commit2 &#94;commit1</emphasis>), and a commit &lt;commit&gt; in that range,
+        only display commits in that range
         that are ancestors of &lt;commit&gt;, descendants of &lt;commit&gt;, or
         &lt;commit&gt; itself.  If no commit is specified, use <emphasis>commit1</emphasis> (the
         excluded part of the range) as &lt;commit&gt;.  Can be passed multiple

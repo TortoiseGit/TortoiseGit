@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitglossary(7)">
     <title>gitglossary(7)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitglossary(7)</primary>
 </indexterm>
@@ -977,21 +975,26 @@ exclude
 </term>
 <listitem>
 <simpara>
-        Pseudorefs are a class of files under <emphasis>$GIT_DIR</emphasis> which behave
-        like refs for the purposes of rev-parse, but which are treated
-        specially by git.  Pseudorefs both have names that are all-caps,
-        and always start with a line consisting of a
-        <link linkend="gitglossary(7)_def_SHA1">SHA-1</link> followed by whitespace.  So, HEAD is not a
-        pseudoref, because it is sometimes a symbolic ref.  They might
-        optionally contain some additional data.  <emphasis>MERGE_HEAD</emphasis> and
-        <emphasis>CHERRY_PICK_HEAD</emphasis> are examples.  Unlike
-        <link linkend="gitglossary(7)_def_per_worktree_ref">per-worktree refs</link>, these files cannot
-        be symbolic refs, and never have reflogs.  They also cannot be
-        updated through the normal ref update machinery.  Instead,
-        they are updated by directly writing to the files.  However,
-        they can be read as if they were refs, so <emphasis>git rev-parse
-        MERGE_HEAD</emphasis> will work.
+        A ref that has different semantics than normal refs. These refs can be
+        read via normal Git commands, but cannot be written to by commands like
+        <xref linkend="git-update-ref(1)" />.
 </simpara>
+<simpara>The following pseudorefs are known to Git:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>FETCH_HEAD</emphasis> is written by <xref linkend="git-fetch(1)" /> or <xref linkend="git-pull(1)" />. It
+   may refer to multiple object IDs. Each object ID is annotated with metadata
+   indicating where it was fetched from and its fetch status.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>MERGE_HEAD</emphasis> is written by <xref linkend="git-merge(1)" /> when resolving merge
+   conflicts. It contains all commit IDs which are being merged.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1074,19 +1077,59 @@ exclude
 </term>
 <listitem>
 <simpara>
-        A name that begins with <emphasis>refs/</emphasis> (e.g. <emphasis>refs/heads/master</emphasis>)
-        that points to an <link linkend="gitglossary(7)_def_object_name">object name</link> or another
-        ref (the latter is called a <link linkend="gitglossary(7)_def_symref">symbolic ref</link>).
+        A name that points to an <link linkend="gitglossary(7)_def_object_name">object name</link> or
+        another ref (the latter is called a <link linkend="gitglossary(7)_def_symref">symbolic ref</link>).
         For convenience, a ref can sometimes be abbreviated when used
         as an argument to a Git command; see <xref linkend="gitrevisions(7)" />
         for details.
         Refs are stored in the <link linkend="gitglossary(7)_def_repository">repository</link>.
 </simpara>
 <simpara>The ref namespace is hierarchical.
-Different subhierarchies are used for different purposes (e.g. the
-<emphasis>refs/heads/</emphasis> hierarchy is used to represent local branches).</simpara>
-<simpara>There are a few special-purpose refs that do not begin with <emphasis>refs/</emphasis>.
-The most notable example is <emphasis>HEAD</emphasis>.</simpara>
+Ref names must either start with <emphasis>refs/</emphasis> or be located in the root of
+the hierarchy. For the latter, their name must follow these rules:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The name consists of only upper-case characters or underscores.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The name ends with "<emphasis>_HEAD</emphasis>" or is equal to "<emphasis>HEAD</emphasis>".
+</simpara>
+<simpara>There are some irregular refs in the root of the hierarchy that do not
+match these rules. The following list is exhaustive and shall not be
+extended in the future:</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>AUTO_MERGE</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>BISECT_EXPECTED_REV</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>NOTES_MERGE_PARTIAL</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>NOTES_MERGE_REF</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>MERGE_AUTOSTASH</emphasis>
+</simpara>
+<simpara>Different subhierarchies are used for different purposes. For example,
+the <emphasis>refs/heads/</emphasis> hierarchy is used to represent local branches whereas
+the <emphasis>refs/tags/</emphasis> hierarchy is used to represent local tags..</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -1110,7 +1153,8 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 <simpara>
         A "refspec" is used by <link linkend="gitglossary(7)_def_fetch">fetch</link> and
         <link linkend="gitglossary(7)_def_push">push</link> to describe the mapping between remote
-        <link linkend="gitglossary(7)_def_ref">ref</link> and local ref.
+        <link linkend="gitglossary(7)_def_ref">ref</link> and local ref. See <xref linkend="git-fetch(1)" /> or
+        <xref linkend="git-push(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1252,34 +1296,6 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<anchor id="gitglossary(7)_def_special_ref" xreflabel="[def_special_ref]"/>special ref
-</term>
-<listitem>
-<simpara>
-        A ref that has different semantics than normal refs. These refs can be
-        accessed via normal Git commands but may not behave the same as a
-        normal ref in some cases.
-</simpara>
-<simpara>The following special refs are known to Git:</simpara>
-<itemizedlist>
-<listitem>
-<simpara>
-"<emphasis>FETCH_HEAD</emphasis>" is written by <xref linkend="git-fetch(1)" /> or <xref linkend="git-pull(1)" />. It
-   may refer to multiple object IDs. Each object ID is annotated with metadata
-   indicating where it was fetched from and its fetch status.
-</simpara>
-</listitem>
-<listitem>
-<simpara>
-"<emphasis>MERGE_HEAD</emphasis>" is written by <xref linkend="git-merge(1)" /> when resolving merge
-   conflicts. It contains all commit IDs which are being merged.
-</simpara>
-</listitem>
-</itemizedlist>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 <anchor id="gitglossary(7)_def_submodule" xreflabel="[def_submodule]"/>submodule
 </term>
 <listitem>
@@ -1358,6 +1374,18 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
         and inexpensive, it is often desirable to have several small branches
         that each contain very well defined concepts or small incremental yet
         related changes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<anchor id="gitglossary(7)_def_trailer" xreflabel="[def_trailer]"/>trailer
+</term>
+<listitem>
+<simpara>
+        Key-value metadata.  Trailers are optionally found at the end of
+        a commit message.  Might be called "footers" or "tags" in other
+        communities.  See <xref linkend="git-interpret-trailers(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1494,7 +1522,7 @@ The most notable example is <emphasis>HEAD</emphasis>.</simpara>
 <xref linkend="gittutorial-2(7)" />,
 <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="giteveryday(7)" />,
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
+<link linkend="git_user-manual">The Git User's Manual</link></simpara>
 </simplesect>
 <simplesect id="gitglossary(7)__git">
 <title>GIT</title>

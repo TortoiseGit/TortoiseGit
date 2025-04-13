@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-add(1)">
     <title>git-add(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-add(1)</primary>
 </indexterm>
@@ -15,11 +13,11 @@
 <simplesect id="git-add(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git add</emphasis> [--verbose | -v] [--dry-run | -n] [--force | -f] [--interactive | -i] [--patch | -p]
-          [--edit | -e] [--[no-]all | -A | --[no-]ignore-removal | [--update | -u]] [--sparse]
-          [--intent-to-add | -N] [--refresh] [--ignore-errors] [--ignore-missing] [--renormalize]
-          [--chmod=(+|-)x] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
-          [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>add</code> [<code>--verbose</code> | <code>-v</code>] [<code>--dry-run</code> | <code>-n</code>] [<code>--force</code> | <code>-f</code>] [<code>--interactive</code> | <code>-i</code>] [<code>--patch</code> | <code>-p</code>]
+        [<code>--edit</code> | <code>-e</code>] [<code>--</code>[<code>no-</code>]<code>all</code> | <code>-A</code> | <code>--</code>[<code>no-</code>]<code>ignore-removal</code> | [<code>--update</code> | <code>-u</code>]] [<code>--sparse</code>]
+        [<code>--intent-to-add</code> | <code>-N</code>] [<code>--refresh</code>] [<code>--ignore-errors</code>] [<code>--ignore-missing</code>] [<code>--renormalize</code>]
+        [<code>--chmod=</code>(<code>+</code>|<code>-</code>)<code>x</code>] [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]]
+        [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-add(1)__description">
@@ -55,7 +53,7 @@ commit.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -77,10 +75,10 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -91,10 +89,10 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -104,10 +102,10 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -117,7 +115,7 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---sparse
+<emphasis>--sparse</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -131,10 +129,10 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--i
+<emphasis>-i</emphasis>
 </term>
 <term>
---interactive
+<emphasis>--interactive</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -147,10 +145,10 @@ in <xref linkend="gitglossary(7)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---patch
+<emphasis>--patch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -166,10 +164,10 @@ See Interactive mode for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--e
+<emphasis>-e</emphasis>
 </term>
 <term>
---edit
+<emphasis>--edit</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -186,10 +184,10 @@ apply to the index. See EDITING PATCHES below.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--u
+<emphasis>-u</emphasis>
 </term>
 <term>
---update
+<emphasis>--update</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -205,13 +203,13 @@ subdirectories).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--A
+<emphasis>-A</emphasis>
 </term>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <term>
---no-ignore-removal
+<emphasis>--no-ignore-removal</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -228,10 +226,10 @@ subdirectories).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-all
+<emphasis>--no-all</emphasis>
 </term>
 <term>
---ignore-removal
+<emphasis>--ignore-removal</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -241,16 +239,16 @@ subdirectories).</simpara>
         option is a no-op when no <emphasis>&lt;pathspec&gt;</emphasis> is used.
 </simpara>
 <simpara>This option is primarily to help users who are used to older
-versions of Git, whose "git add <emphasis>&lt;pathspec&gt;</emphasis>&#8230;" was a synonym
-for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignored removed files.</simpara>
+versions of Git, whose <emphasis>git add &lt;pathspec&gt;...</emphasis> was a synonym
+for <emphasis>git add --no-all &lt;pathspec&gt;...</emphasis>, i.e. ignored removed files.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--N
+<emphasis>-N</emphasis>
 </term>
 <term>
---intent-to-add
+<emphasis>--intent-to-add</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -264,7 +262,7 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---refresh
+<emphasis>--refresh</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -275,7 +273,7 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---ignore-errors
+<emphasis>--ignore-errors</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -289,11 +287,11 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---ignore-missing
+<emphasis>--ignore-missing</emphasis>
 </term>
 <listitem>
 <simpara>
-        This option can only be used together with --dry-run. By using
+        This option can only be used together with <emphasis>--dry-run</emphasis>. By using
         this option the user can check if any of the given files would
         be ignored, no matter if they are already present in the work
         tree or not.
@@ -302,7 +300,7 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---no-warn-embedded-repo
+<emphasis>--no-warn-embedded-repo</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -316,23 +314,23 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---renormalize
+<emphasis>--renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
         Apply the "clean" process freshly to all tracked files to
         forcibly add them again to the index.  This is useful after
         changing <emphasis>core.autocrlf</emphasis> configuration or the <emphasis>text</emphasis> attribute
-        in order to correct files added with wrong CRLF/LF line endings.
+        in order to correct files added with wrong <emphasis>CRLF/LF</emphasis> line endings.
         This option implies <emphasis>-u</emphasis>. Lone CR characters are untouched, thus
-        while a CRLF cleans to LF, a CRCRLF sequence is only partially
-        cleaned to CRLF.
+        while a <emphasis>CRLF</emphasis> cleans to <emphasis>LF</emphasis>, a <emphasis>CRCRLF</emphasis> sequence is only partially
+        cleaned to <emphasis>CRLF</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---chmod=(+|-)x
+<emphasis>--chmod=(+|-)x</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -344,13 +342,13 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR/LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -359,19 +357,19 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -388,17 +386,17 @@ for "git add --no-all <emphasis>&lt;pathspec&gt;</emphasis>&#8230;", i.e. ignore
 <itemizedlist>
 <listitem>
 <simpara>
-Adds content from all <emphasis>*.txt</emphasis> files under <emphasis>Documentation</emphasis> directory
+Adds content from all <literal>*.txt</literal> files under <emphasis>Documentation</emphasis> directory
   and its subdirectories:
 </simpara>
 <screen>$ git add Documentation/\*.txt</screen>
-<simpara>Note that the asterisk <emphasis>*</emphasis> is quoted from the shell in this
+<simpara>Note that the asterisk <literal>*</literal> is quoted from the shell in this
 example; this lets the command include the files from
 subdirectories of <emphasis>Documentation/</emphasis> directory.</simpara>
 </listitem>
 <listitem>
 <simpara>
-Considers adding content from all git-*.sh scripts:
+Considers adding content from all <literal>git-*.sh</literal> scripts:
 </simpara>
 <screen>$ git add git-*.sh</screen>
 <simpara>Because this example lets the shell expand the asterisk (i.e. you are
@@ -430,7 +428,7 @@ status
 </term>
 <listitem>
 <simpara>
-   This shows the change between HEAD and index (i.e. what will be
+   This shows the change between <emphasis>HEAD</emphasis> and index (i.e. what will be
    committed if you say <emphasis>git commit</emphasis>), and between index and
    working tree files (i.e. what you could stage further before
    <emphasis>git commit</emphasis> using <emphasis>git add</emphasis>) for each path.  A sample output
@@ -439,12 +437,12 @@ status
 <screen>              staged     unstaged path
      1:       binary      nothing foo.png
      2:     +403/-35        +1/-1 add-interactive.c</screen>
-<simpara>It shows that foo.png has differences from HEAD (but that is
+<simpara>It shows that <emphasis>foo.png</emphasis> has differences from <emphasis>HEAD</emphasis> (but that is
 binary so line count cannot be shown) and there is no
 difference between indexed copy and the working tree
 version (if the working tree version were also different,
 <emphasis>binary</emphasis> would have been shown in place of <emphasis>nothing</emphasis>).  The
-other file, add-interactive.c, has 403 lines added
+other file, <emphasis>add-interactive.c</emphasis>, has 403 lines added
 and 35 lines deleted if you commit what is in the index, but
 working tree file has further modifications (one addition and
 one deletion).</simpara>
@@ -539,7 +537,7 @@ diff
 <listitem>
 <simpara>
   This lets you review what will be committed (i.e. between
-  HEAD and index).
+  <emphasis>HEAD</emphasis> and index).
 </simpara>
 </listitem>
 </varlistentry>
@@ -597,7 +595,7 @@ likely to introduce confusing changes to the index.
 that because the patch is applied only to the index and not the working
 tree, the working tree will appear to "undo" the change in the index.
 For example, introducing a new line into the index that is in neither
-the HEAD nor the working tree will stage the new line for commit, but
+the <emphasis>HEAD</emphasis> nor the working tree will stage the new line for commit, but
 the line will appear to be reverted in the working tree.</simpara>
 <simpara>Avoid using these constructs, or do so with extreme caution.</simpara>
 <variablelist>
@@ -669,31 +667,18 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-add.ignoreErrors
+<emphasis>add.ignoreErrors</emphasis>
 </term>
 <term>
-add.ignore-errors (deprecated)
+<emphasis>add.ignore-errors</emphasis> (deprecated)
 </term>
 <listitem>
 <simpara>
         Tells <emphasis>git add</emphasis> to continue adding files when some files cannot be
-        added due to indexing errors. Equivalent to the <emphasis>--ignore-errors</emphasis>
-        option of <xref linkend="git-add(1)" />.  <emphasis>add.ignore-errors</emphasis> is deprecated,
-        as it does not follow the usual naming convention for configuration
-        variables.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-add.interactive.useBuiltin
-</term>
-<listitem>
-<simpara>
-        Unused configuration variable. Used in Git versions v2.25.0 to
-        v2.36.0 to enable the built-in version of <xref linkend="git-add(1)" />'s
-        interactive mode, which then became the default in Git
-        versions v2.37.0 to v2.39.0.
+        added due to indexing errors.
+        Equivalent to the <emphasis>--ignore-errors</emphasis> option.
+        <emphasis>add.ignore-errors</emphasis> is deprecated, as it does not follow the usual
+        naming convention for configuration variables.
 </simpara>
 </listitem>
 </varlistentry>

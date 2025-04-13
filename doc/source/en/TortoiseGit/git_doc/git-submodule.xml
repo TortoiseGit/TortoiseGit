@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-submodule(1)">
     <title>git-submodule(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-submodule(1)</primary>
 </indexterm>
@@ -41,7 +39,7 @@ subcommands are available to perform operations on the submodules.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;] [--reference &lt;repository&gt;] [--depth &lt;depth&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
+add [-b &lt;branch&gt;] [-f|--force] [--name &lt;name&gt;] [--reference &lt;repository&gt;] [--ref-format &lt;format&gt;] [--depth &lt;depth&gt;] [--] &lt;repository&gt; [&lt;path&gt;]
 </term>
 <listitem>
 <simpara>
@@ -78,6 +76,8 @@ submodule repositories will be kept together in the same relative
 location, and only the superproject's URL needs to be provided.
 git-submodule will correctly locate the submodule using the relative
 URL in <emphasis>.gitmodules</emphasis>.</simpara>
+<simpara>If <emphasis>--ref-format &lt;format&gt;</emphasis>  is specified, the ref storage format of newly
+cloned submodules will be set accordingly.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -157,7 +157,7 @@ options.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-update [--init] [--remote] [-N|--no-fetch] [--[no-]recommend-shallow] [-f|--force] [--checkout|--rebase|--merge] [--reference &lt;repository&gt;] [--depth &lt;depth&gt;] [--recursive] [--jobs &lt;n&gt;] [--[no-]single-branch] [--filter &lt;filter-spec&gt;] [--] [&lt;path&gt;&#8230;]
+update [--init] [--remote] [-N|--no-fetch] [--[no-]recommend-shallow] [-f|--force] [--checkout|--rebase|--merge] [--reference &lt;repository&gt;] [--ref-format &lt;format&gt;] [--depth &lt;depth&gt;] [--recursive] [--jobs &lt;n&gt;] [--[no-]single-branch] [--filter &lt;filter-spec&gt;] [--] [&lt;path&gt;&#8230;]
 </term>
 <listitem>
 <simpara>Update the registered submodules to match what the superproject
@@ -245,6 +245,8 @@ setting as stored in <emphasis>.gitmodules</emphasis>, you can automatically ini
 submodule with the <emphasis>--init</emphasis> option.</simpara>
 <simpara>If <emphasis>--recursive</emphasis> is specified, this command will recurse into the
 registered submodules, and update any nested submodules within.</simpara>
+<simpara>If <emphasis>--ref-format &lt;format&gt;</emphasis>  is specified, the ref storage format of newly
+cloned submodules will be set accordingly.</simpara>
 <simpara>If <emphasis>--filter &lt;filter-spec&gt;</emphasis> is specified, the given partial clone filter will be
 applied to the submodule. See <xref linkend="git-rev-list(1)" /> for details on filter
 specifications.</simpara>

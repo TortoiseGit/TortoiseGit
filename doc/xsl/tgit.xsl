@@ -10,12 +10,6 @@
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="$gitdoc.external != '1'">
-        <xsl:variable name="cmd">
-          <xsl:choose>
-            <xsl:when test="@cmd ='user-manual' and @anchor">Git User Manual</xsl:when>
-            <xsl:otherwise><xsl:value-of select="@cmd"/></xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
         <xsl:variable name="anchor">
           <xsl:choose>
             <xsl:when test="@anchor">_<xsl:value-of select="@anchor"/></xsl:when>
@@ -23,7 +17,7 @@
         </xsl:variable>
         <xsl:variable name="temp">
           <xref>
-            <xsl:attribute name="linkend"><xsl:value-of select="$cmd"/><xsl:value-of select="$section"/><xsl:value-of select="$anchor"/></xsl:attribute>
+            <xsl:attribute name="linkend"><xsl:value-of select="@cmd"/><xsl:value-of select="$section"/><xsl:value-of select="$anchor"/></xsl:attribute>
           </xref>
           <xsl:copy-of select="/book"/>
         </xsl:variable>

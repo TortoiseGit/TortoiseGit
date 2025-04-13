@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-worktree(1)">
     <title>git-worktree(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-worktree(1)</primary>
 </indexterm>
@@ -190,7 +188,7 @@ unable to locate it. Running <emphasis>repair</emphasis> within the recently-mov
 will reestablish the connection. If multiple linked worktrees are moved,
 running <emphasis>repair</emphasis> from any worktree with each tree's new <emphasis>&lt;path&gt;</emphasis> as an
 argument, will reestablish the connection to all the specified paths.</simpara>
-<simpara>If both the main worktree and linked worktrees have been moved manually,
+<simpara>If both the main worktree and linked worktrees have been moved or copied manually,
 then running <emphasis>repair</emphasis> in the main worktree and specifying the new <emphasis>&lt;path&gt;</emphasis>
 of each linked worktree will reestablish all connections in both
 directions.</simpara>
@@ -294,6 +292,20 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </simpara>
 <simpara>This can also be set up as the default behaviour by using the
 <emphasis>worktree.guessRemote</emphasis> config option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]relative-paths
+</term>
+<listitem>
+<simpara>
+        Link worktrees using relative paths or absolute paths (default).
+        Overrides the <emphasis>worktree.useRelativePaths</emphasis> config option, see
+        <xref linkend="git-config(1)" />.
+</simpara>
+<simpara>With <emphasis>repair</emphasis>, the linking files will be updated if there's an absolute/relative
+mismatch, even if the links are correct.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

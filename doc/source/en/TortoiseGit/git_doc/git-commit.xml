@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-commit(1)">
     <title>git-commit(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-commit(1)</primary>
 </indexterm>
@@ -15,14 +13,14 @@
 <simplesect id="git-commit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git commit</emphasis> [-a | --interactive | --patch] [-s] [-v] [-u&lt;mode&gt;] [--amend]
-           [--dry-run] [(-c | -C | --squash) &lt;commit&gt; | --fixup [(amend|reword):]&lt;commit&gt;)]
-           [-F &lt;file&gt; | -m &lt;msg&gt;] [--reset-author] [--allow-empty]
-           [--allow-empty-message] [--no-verify] [-e] [--author=&lt;author&gt;]
-           [--date=&lt;date&gt;] [--cleanup=&lt;mode&gt;] [--[no-]status]
-           [-i | -o] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
-           [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;] [-S[&lt;keyid&gt;]]
-           [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>commit</code> [<code>-a</code> | <code>--interactive</code> | <code>--patch</code>] [<code>-s</code>] [<code>-v</code>] [<code>-u</code>[<emphasis>&lt;mode&gt;</emphasis>]] [<code>--amend</code>]
+           [<code>--dry-run</code>] [(<code>-c</code> | <code>-C</code> | <code>--squash</code>) <emphasis>&lt;commit&gt;</emphasis> | <code>--fixup</code> [(<code>amend</code>|<code>reword</code>)<code>:</code>]<emphasis>&lt;commit&gt;</emphasis>]
+           [<code>-F</code> <emphasis>&lt;file&gt;</emphasis> | <code>-m</code> <emphasis>&lt;msg&gt;</emphasis>] [<code>--reset-author</code>] [<code>--allow-empty</code>]
+           [<code>--allow-empty-message</code>] [<code>--no-verify</code>] [<code>-e</code>] [<code>--author=</code><emphasis>&lt;author&gt;</emphasis>]
+           [<code>--date=</code><emphasis>&lt;date&gt;</emphasis>] [<code>--cleanup=</code><emphasis>&lt;mode&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>status</code>]
+           [<code>-i</code> | <code>-o</code>] [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]]
+           [(<code>--trailer</code> <emphasis>&lt;token&gt;</emphasis>[(<code>=</code>|<code>:</code>)<emphasis>&lt;value&gt;</emphasis>])<code>&#8230;</code>] [<code>-S</code>[<emphasis>&lt;keyid&gt;</emphasis>]]
+           [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-commit(1)__description">
@@ -31,7 +29,7 @@
 the given log message describing the changes. The new commit is a
 direct child of HEAD, usually the tip of the current branch, and the
 branch is updated to point to it (unless no branch is associated with
-the working tree, in which case HEAD is "detached" as described in
+the working tree, in which case <emphasis>HEAD</emphasis> is "detached" as described in
 <xref linkend="git-checkout(1)" />).</simpara>
 <simpara>The content to be committed can be specified in several ways:</simpara>
 <orderedlist numeration="arabic">
@@ -51,7 +49,7 @@ by using <xref linkend="git-rm(1)" /> to remove files from the working tree
 <listitem>
 <simpara>
 by listing files as arguments to the <emphasis>commit</emphasis> command
-   (without --interactive or --patch switch), in which
+   (without <emphasis>--interactive</emphasis> or <emphasis>--patch</emphasis> switch), in which
    case the commit will ignore changes staged in the index, and instead
    record the current content of the listed files (which must already
    be known to Git);
@@ -59,7 +57,7 @@ by listing files as arguments to the <emphasis>commit</emphasis> command
 </listitem>
 <listitem>
 <simpara>
-by using the -a switch with the <emphasis>commit</emphasis> command to automatically
+by using the <emphasis>-a</emphasis> switch with the <emphasis>commit</emphasis> command to automatically
    "add" changes from all known files (i.e. all files that are already
    listed in the index) and to automatically "rm" files in the index
    that have been removed from the working tree, and then perform the
@@ -68,7 +66,7 @@ by using the -a switch with the <emphasis>commit</emphasis> command to automatic
 </listitem>
 <listitem>
 <simpara>
-by using the --interactive or --patch switches with the <emphasis>commit</emphasis> command
+by using the <emphasis>--interactive</emphasis> or <emphasis>--patch</emphasis> switches with the <emphasis>commit</emphasis> command
    to decide one by one which files or hunks should be part of the commit
    in addition to contents in the index,
    before finalizing the operation. See the Interactive Mode section of
@@ -87,14 +85,14 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <listitem>
 <simpara>
-        Tell the command to automatically stage files that have
+        Automatically stage files that have
         been modified and deleted, but new files you have not
         told Git about are not affected.
 </simpara>
@@ -102,10 +100,10 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---patch
+<emphasis>--patch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -117,14 +115,14 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C &lt;commit&gt;
+<emphasis>-C &lt;commit&gt;</emphasis>
 </term>
 <term>
---reuse-message=&lt;commit&gt;
+<emphasis>--reuse-message=&lt;commit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Take an existing commit object, and reuse the log message
+        Take an existing <emphasis>&lt;commit&gt;</emphasis> object, and reuse the log message
         and the authorship information (including the timestamp)
         when creating the commit.
 </simpara>
@@ -132,10 +130,10 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--c &lt;commit&gt;
+<emphasis>-c &lt;commit&gt;</emphasis>
 </term>
 <term>
---reedit-message=&lt;commit&gt;
+<emphasis>--reedit-message=&lt;commit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -146,7 +144,7 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---fixup=[(amend|reword):]&lt;commit&gt;
+<emphasis>--fixup=[(amend|reword):]&lt;commit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -160,16 +158,16 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
         replaces the log message of <emphasis>&lt;commit&gt;</emphasis> with its own log message
         but makes no changes to the content of <emphasis>&lt;commit&gt;</emphasis>.
 </simpara>
-<simpara>The commit created by plain <emphasis>--fixup=&lt;commit&gt;</emphasis> has a subject
-composed of "fixup!" followed by the subject line from &lt;commit&gt;,
+<simpara>The commit created by plain <emphasis>--fixup=&lt;commit&gt;</emphasis> has a title
+composed of "fixup!" followed by the title of <emphasis>&lt;commit&gt;</emphasis>,
 and is recognized specially by <emphasis>git rebase --autosquash</emphasis>. The <emphasis>-m</emphasis>
 option may be used to supplement the log message of the created
 commit, but the additional commentary will be thrown away once the
 "fixup!" commit is squashed into <emphasis>&lt;commit&gt;</emphasis> by
 <emphasis>git rebase --autosquash</emphasis>.</simpara>
 <simpara>The commit created by <emphasis>--fixup=amend:&lt;commit&gt;</emphasis> is similar but its
-subject is instead prefixed with "amend!". The log message of
-&lt;commit&gt; is copied into the log message of the "amend!" commit and
+title is instead prefixed with "amend!". The log message of
+<emphasis>&lt;commit&gt;</emphasis> is copied into the log message of the "amend!" commit and
 opened in an editor so it can be refined. When <emphasis>git rebase
 --autosquash</emphasis> squashes the "amend!" commit into <emphasis>&lt;commit&gt;</emphasis>, the
 log message of <emphasis>&lt;commit&gt;</emphasis> is replaced by the refined log message
@@ -177,7 +175,7 @@ from the "amend!" commit. It is an error for the "amend!" commit's
 log message to be empty unless <emphasis>--allow-empty-message</emphasis> is
 specified.</simpara>
 <simpara><emphasis>--fixup=reword:&lt;commit&gt;</emphasis> is shorthand for <emphasis>--fixup=amend:&lt;commit&gt;
---only</emphasis>. It creates an "amend!" commit with only a log message
+ --only</emphasis>. It creates an "amend!" commit with only a log message
 (ignoring any changes staged in the index). When squashed by <emphasis>git
 rebase --autosquash</emphasis>, it replaces the log message of <emphasis>&lt;commit&gt;</emphasis>
 without making any other changes.</simpara>
@@ -188,12 +186,12 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---squash=&lt;commit&gt;
+<emphasis>--squash=&lt;commit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Construct a commit message for use with <emphasis>rebase --autosquash</emphasis>.
-        The commit message subject line is taken from the specified
+        Construct a commit message for use with <emphasis>git rebase --autosquash</emphasis>.
+        The commit message title is taken from the specified
         commit with a prefix of "squash! ".  Can be used with additional
         commit message options (<emphasis>-m</emphasis>/<emphasis>-c</emphasis>/<emphasis>-C</emphasis>/<emphasis>-F</emphasis>). See
         <xref linkend="git-rebase(1)" /> for details.
@@ -202,11 +200,11 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---reset-author
+<emphasis>--reset-author</emphasis>
 </term>
 <listitem>
 <simpara>
-        When used with -C/-c/--amend options, or when committing after a
+        When used with <emphasis>-C</emphasis>/<emphasis>-c</emphasis>/<emphasis>--amend</emphasis> options, or when committing after a
         conflicting cherry-pick, declare that the authorship of the
         resulting commit now belongs to the committer. This also renews
         the author timestamp.
@@ -215,7 +213,7 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---short
+<emphasis>--short</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -226,7 +224,7 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---branch
+<emphasis>--branch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -236,7 +234,7 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -248,7 +246,7 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---long
+<emphasis>--long</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -259,15 +257,15 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--z
+<emphasis>-z</emphasis>
 </term>
 <term>
---null
+<emphasis>--null</emphasis>
 </term>
 <listitem>
 <simpara>
         When showing <emphasis>short</emphasis> or <emphasis>porcelain</emphasis> status output, print the
-        filename verbatim and terminate the entries with NUL, instead of LF.
+        filename verbatim and terminate the entries with <emphasis>NUL</emphasis>, instead of <emphasis>LF</emphasis>.
         If no format is given, implies the <emphasis>--porcelain</emphasis> output format.
         Without the <emphasis>-z</emphasis> option, filenames with "unusual" characters are
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
@@ -277,35 +275,35 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--F &lt;file&gt;
+<emphasis>-F &lt;file&gt;</emphasis>
 </term>
 <term>
---file=&lt;file&gt;
+<emphasis>--file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Take the commit message from the given file.  Use <emphasis>-</emphasis> to
+        Take the commit message from <emphasis>&lt;file&gt;</emphasis>.  Use <emphasis>-</emphasis> to
         read the message from the standard input.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---author=&lt;author&gt;
+<emphasis>--author=&lt;author&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Override the commit author. Specify an explicit author using the
-        standard <emphasis>A U Thor &lt;author@example.com&gt;</emphasis> format. Otherwise &lt;author&gt;
+        standard <emphasis>A U Thor &lt;author@example.com&gt;</emphasis> format. Otherwise <emphasis>&lt;author&gt;</emphasis>
         is assumed to be a pattern and is used to search for an existing
-        commit by that author (i.e. rev-list --all -i --author=&lt;author&gt;);
+        commit by that author (i.e. <emphasis>git rev-list --all -i --author=&lt;author&gt;</emphasis>);
         the commit author is then copied from the first such commit found.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---date=&lt;date&gt;
+<emphasis>--date=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -315,14 +313,14 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--m &lt;msg&gt;
+<emphasis>-m &lt;msg&gt;</emphasis>
 </term>
 <term>
---message=&lt;msg&gt;
+<emphasis>--message=&lt;msg&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use the given &lt;msg&gt; as the commit message.
+        Use <emphasis>&lt;msg&gt;</emphasis> as the commit message.
         If multiple <emphasis>-m</emphasis> options are given, their values are
         concatenated as separate paragraphs.
 </simpara>
@@ -331,15 +329,15 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t &lt;file&gt;
+<emphasis>-t &lt;file&gt;</emphasis>
 </term>
 <term>
---template=&lt;file&gt;
+<emphasis>--template=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         When editing the commit message, start the editor with the
-        contents in the given file.  The <emphasis>commit.template</emphasis> configuration
+        contents in <emphasis>&lt;file&gt;</emphasis>.  The <emphasis>commit.template</emphasis> configuration
         variable is often used to give this option implicitly to the
         command.  This mechanism can be used by projects that want to
         guide participants with some hints on what to write in the message
@@ -351,13 +349,13 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--s
+<emphasis>-s</emphasis>
 </term>
 <term>
---signoff
+<emphasis>--signoff</emphasis>
 </term>
 <term>
---no-signoff
+<emphasis>--no-signoff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -372,21 +370,21 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
         leadership of the project to which you're contributing to
         understand how the signoffs are used in that project.
 </simpara>
-<simpara>The --no-signoff option can be used to countermand an earlier --signoff
+<simpara>The <emphasis>--no-signoff</emphasis> option can be used to countermand an earlier <emphasis>--signoff</emphasis>
 option on the command line.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+<emphasis>--trailer &lt;token&gt;[(=|:)&lt;value&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        Specify a (<emphasis>&lt;token&gt;</emphasis>, <emphasis>&lt;value&gt;</emphasis>) pair that should be applied as a
         trailer. (e.g. <emphasis>git commit --trailer "Signed-off-by:C O Mitter \
         &lt;committer@example.com&gt;" --trailer "Helped-by:C O Mitter \
-        &lt;committer@example.com&gt;"</emphasis> will add the "Signed-off-by" trailer
-        and the "Helped-by" trailer to the commit message.)
+        &lt;committer@example.com&gt;"</emphasis> will add the <emphasis>Signed-off-by</emphasis> trailer
+        and the <emphasis>Helped-by</emphasis> trailer to the commit message.)
         The <emphasis>trailer.*</emphasis> configuration variables
         (<xref linkend="git-interpret-trailers(1)" />) can be used to define if
         a duplicated trailer is omitted, where in the run of trailers
@@ -396,22 +394,21 @@ option on the command line.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---[no-]verify
+<emphasis>--[no-]verify</emphasis>
 </term>
 <listitem>
 <simpara>
-        By default, the pre-commit and commit-msg hooks are run.
-        When any of <emphasis>--no-verify</emphasis> or <emphasis>-n</emphasis> is given, these are bypassed.
+        Bypass the <emphasis>pre-commit</emphasis> and <emphasis>commit-msg</emphasis> hooks.
         See also <xref linkend="githooks(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---allow-empty
+<emphasis>--allow-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -424,31 +421,30 @@ option on the command line.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---allow-empty-message
+<emphasis>--allow-empty-message</emphasis>
 </term>
 <listitem>
 <simpara>
-       Like --allow-empty this command is primarily for use by foreign
-       SCM interface scripts. It allows you to create a commit with an
-       empty commit message without using plumbing commands like
-       <xref linkend="git-commit-tree(1)" />.
+        Create a commit with an empty commit message without using plumbing
+        commands like <xref linkend="git-commit-tree(1)" />. Like <emphasis>--allow-empty</emphasis>, this
+        command is primarily for use by foreign SCM interface scripts.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---cleanup=&lt;mode&gt;
+<emphasis>--cleanup=&lt;mode&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        This option determines how the supplied commit message should be
+        Determine how the supplied commit message should be
         cleaned up before committing.  The <emphasis>&lt;mode&gt;</emphasis> can be <emphasis>strip</emphasis>,
         <emphasis>whitespace</emphasis>, <emphasis>verbatim</emphasis>, <emphasis>scissors</emphasis> or <emphasis>default</emphasis>.
 </simpara>
 <variablelist>
 <varlistentry>
 <term>
-strip
+<emphasis>strip</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -459,7 +455,7 @@ strip
 </varlistentry>
 <varlistentry>
 <term>
-whitespace
+<emphasis>whitespace</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -469,7 +465,7 @@ whitespace
 </varlistentry>
 <varlistentry>
 <term>
-verbatim
+<emphasis>verbatim</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -479,20 +475,20 @@ verbatim
 </varlistentry>
 <varlistentry>
 <term>
-scissors
+<emphasis>scissors</emphasis>
 </term>
 <listitem>
 <simpara>
         Same as <emphasis>whitespace</emphasis> except that everything from (and including)
         the line found below is truncated, if the message is to be edited.
-        "<emphasis>#</emphasis>" can be customized with core.commentChar.
+        "<emphasis>#</emphasis>" can be customized with <emphasis>core.commentChar</emphasis>.
 </simpara>
 <literallayout class="monospaced"># ------------------------ &gt;8 ------------------------</literallayout>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-default
+<emphasis>default</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -508,23 +504,22 @@ variable (see <xref linkend="git-config(1)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--e
+<emphasis>-e</emphasis>
 </term>
 <term>
---edit
+<emphasis>--edit</emphasis>
 </term>
 <listitem>
 <simpara>
-        The message taken from file with <emphasis>-F</emphasis>, command line with
-        <emphasis>-m</emphasis>, and from commit object with <emphasis>-C</emphasis> are usually used as
-        the commit log message unmodified. This option lets you
-        further edit the message taken from these sources.
+        Let the user further edit the message taken from <emphasis>&lt;file&gt;</emphasis>
+        with <emphasis>-F &lt;file&gt;</emphasis>, command line with <emphasis>-m &lt;message&gt;</emphasis>, and
+        from <emphasis>&lt;commit&gt;</emphasis> with <emphasis>-C &lt;commit&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-edit
+<emphasis>--no-edit</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -536,7 +531,7 @@ variable (see <xref linkend="git-config(1)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---amend
+<emphasis>--amend</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -562,20 +557,20 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-post-rewrite
+<emphasis>--no-post-rewrite</emphasis>
 </term>
 <listitem>
 <simpara>
-        Bypass the post-rewrite hook.
+        Bypass the <emphasis>post-rewrite</emphasis> hook.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--i
+<emphasis>-i</emphasis>
 </term>
 <term>
---include
+<emphasis>--include</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -588,10 +583,10 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--o
+<emphasis>-o</emphasis>
 </term>
 <term>
---only
+<emphasis>--only</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -611,13 +606,13 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        Pass pathspec in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR</emphasis>/<emphasis>LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -626,64 +621,79 @@ FROM UPSTREAM REBASE" section in <xref linkend="git-rebase(1)" />.)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--u[&lt;mode&gt;]
+<emphasis>-u[&lt;mode&gt;]</emphasis>
 </term>
 <term>
---untracked-files[=&lt;mode&gt;]
+<emphasis>--untracked-files[=&lt;mode&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Show untracked files.
 </simpara>
-<simpara>The mode parameter is optional (defaults to <emphasis>all</emphasis>), and is used to
-specify the handling of untracked files; when -u is not used, the
+<simpara>The <emphasis>&lt;mode&gt;</emphasis> parameter is optional (defaults to <emphasis>all</emphasis>), and is used to
+specify the handling of untracked files; when <emphasis>-u</emphasis> is not used, the
 default is <emphasis>normal</emphasis>, i.e. show untracked files and directories.</simpara>
 <simpara>The possible options are:</simpara>
-<itemizedlist>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>no</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>no</emphasis>     - Show no untracked files
+Show no untracked files
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>normal</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>normal</emphasis> - Shows untracked files and directories
+Shows untracked files and directories
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>all</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>all</emphasis>    - Also shows individual files in untracked directories.
+Also shows individual files in untracked directories.
 </simpara>
 </listitem>
-</itemizedlist>
+</varlistentry>
+</variablelist>
 <simpara>All usual spellings for Boolean value <emphasis>true</emphasis> are taken as <emphasis>normal</emphasis>
 and <emphasis>false</emphasis> as <emphasis>no</emphasis>.
-The default can be changed using the status.showUntrackedFiles
+The default can be changed using the <emphasis>status.showUntrackedFiles</emphasis>
 configuration variable documented in <xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show unified diff between the HEAD commit and what
+        Show unified diff between the <emphasis>HEAD</emphasis> commit and what
         would be committed at the bottom of the commit message
         template to help the user describe the commit by reminding
         what changes the commit has.
@@ -699,10 +709,10 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -712,7 +722,7 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -724,20 +734,20 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---status
+<emphasis>--status</emphasis>
 </term>
 <listitem>
 <simpara>
         Include the output of <xref linkend="git-status(1)" /> in the commit
         message template when using an editor to prepare the commit
         message.  Defaults to on, but can be used to override
-        configuration variable commit.status.
+        configuration variable <emphasis>commit.status</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-status
+<emphasis>--no-status</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -749,17 +759,17 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--S[&lt;keyid&gt;]
+<emphasis>-S[&lt;key-id&gt;]</emphasis>
 </term>
 <term>
---gpg-sign[=&lt;keyid&gt;]
+<emphasis>--gpg-sign[=&lt;key-id&gt;]</emphasis>
 </term>
 <term>
---no-gpg-sign
+<emphasis>--no-gpg-sign</emphasis>
 </term>
 <listitem>
 <simpara>
-        GPG-sign commits. The <emphasis>keyid</emphasis> argument is optional and
+        GPG-sign commits. The <emphasis>&lt;key-id&gt;</emphasis> is optional and
         defaults to the committer identity; if specified, it must be
         stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis> is useful to
         countermand both <emphasis>commit.gpgSign</emphasis> configuration variable, and
@@ -769,7 +779,7 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -779,11 +789,11 @@ changes to tracked files.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
-        When pathspec is given on the command line, commit the contents of
+        When <emphasis>&lt;pathspec&gt;</emphasis> is given on the command line, commit the contents of
         the files that match the pathspec without recording the changes
         already added to the index. The contents of these files are also
         staged for the next commit on top of what have been staged before.
@@ -820,7 +830,7 @@ example if there is no other change in your working tree:</simpara>
 $ rm goodbye.c
 $ git commit -a</screen>
 <simpara>The command <emphasis>git commit -a</emphasis> first looks at your working tree,
-notices that you have modified hello.c and removed goodbye.c,
+notices that you have modified <emphasis>hello.c</emphasis> and removed <emphasis>goodbye.c</emphasis>,
 and performs necessary <emphasis>git add</emphasis> and <emphasis>git rm</emphasis> for you.</simpara>
 <simpara>After staging changes to many files, you can alter the order the
 changes are recorded in, by giving pathnames to <emphasis>git commit</emphasis>.
@@ -864,12 +874,38 @@ refuses to run when given pathnames (but see <emphasis>-i</emphasis> option).</s
 <title>COMMIT INFORMATION</title>
 <simpara>Author and committer information is taken from the following environment
 variables, if set:</simpara>
-<literallayout class="monospaced">GIT_AUTHOR_NAME
-GIT_AUTHOR_EMAIL
-GIT_AUTHOR_DATE
-GIT_COMMITTER_NAME
-GIT_COMMITTER_EMAIL
-GIT_COMMITTER_DATE</literallayout>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>GIT_AUTHOR_NAME</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>GIT_AUTHOR_EMAIL</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>GIT_AUTHOR_DATE</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>GIT_COMMITTER_NAME</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>GIT_COMMITTER_EMAIL</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>GIT_COMMITTER_DATE</emphasis>
+</simpara>
+</listitem>
+</itemizedlist>
 <simpara>(nb "&lt;", "&gt;" and "\n"s are stripped)</simpara>
 <simpara>The author and committer names are by convention some form of a personal name
 (that is, the name by which other humans refer to you), although Git does not
@@ -878,7 +914,7 @@ to the constraints listed above. This name has no effect on authentication; for
 that, see the <emphasis>credential.username</emphasis> variable in <xref linkend="git-config(1)" />.</simpara>
 <simpara>In case (some of) these environment variables are not set, the information
 is taken from the configuration items <emphasis>user.name</emphasis> and <emphasis>user.email</emphasis>, or, if not
-present, the environment variable EMAIL, or, if that is not set,
+present, the environment variable <emphasis>EMAIL</emphasis>, or, if that is not set,
 system user name and the hostname used for outgoing mail (taken
 from <emphasis>/etc/mailname</emphasis> and falling back to the fully qualified hostname when
 that file does not exist).</simpara>
@@ -1029,7 +1065,7 @@ reversible operation.</simpara>
 <simplesect id="git-commit(1)__environment_and_configuration_variables">
 <title>ENVIRONMENT AND CONFIGURATION VARIABLES</title>
 <simpara>The editor used to edit the commit log message will be chosen from the
-<emphasis>GIT_EDITOR</emphasis> environment variable, the core.editor configuration variable, the
+<emphasis>GIT_EDITOR</emphasis> environment variable, the <emphasis>core.editor</emphasis> configuration variable, the
 <emphasis>VISUAL</emphasis> environment variable, or the <emphasis>EDITOR</emphasis> environment variable (in that
 order).  See <xref linkend="git-var(1)" /> for details.</simpara>
 <simpara>Everything above this line in this section isn't included from the
@@ -1038,13 +1074,13 @@ same as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-commit.cleanup
+<emphasis>commit.cleanup</emphasis>
 </term>
 <listitem>
 <simpara>
         This setting overrides the default of the <emphasis>--cleanup</emphasis> option in
-        <emphasis>git commit</emphasis>. See <xref linkend="git-commit(1)" /> for details. Changing the
-        default can be useful when you always want to keep lines that begin
+        <emphasis>git commit</emphasis>.  Changing the default can be useful
+        when you always want to keep lines that begin
         with the comment character <emphasis>#</emphasis> in your log message, in which case you
         would do <emphasis>git config commit.cleanup whitespace</emphasis> (note that you will
         have to remove the help lines that begin with <emphasis>#</emphasis> in the commit log
@@ -1054,7 +1090,7 @@ commit.cleanup
 </varlistentry>
 <varlistentry>
 <term>
-commit.gpgSign
+<emphasis>commit.gpgSign</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1068,19 +1104,19 @@ commit.gpgSign
 </varlistentry>
 <varlistentry>
 <term>
-commit.status
+<emphasis>commit.status</emphasis>
 </term>
 <listitem>
 <simpara>
         A boolean to enable/disable inclusion of status information in the
         commit message template when using an editor to prepare the commit
-        message.  Defaults to true.
+        message.  Defaults to <emphasis>true</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-commit.template
+<emphasis>commit.template</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1091,12 +1127,12 @@ commit.template
 </varlistentry>
 <varlistentry>
 <term>
-commit.verbose
+<emphasis>commit.verbose</emphasis>
 </term>
 <listitem>
 <simpara>
         A boolean or int to specify the level of verbosity with <emphasis>git commit</emphasis>.
-        See <xref linkend="git-commit(1)" />.
+        
 </simpara>
 </listitem>
 </varlistentry>

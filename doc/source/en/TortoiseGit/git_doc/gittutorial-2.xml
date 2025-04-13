@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gittutorial-2(7)">
     <title>gittutorial-2(7)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gittutorial-2(7)</primary>
 </indexterm>
@@ -330,7 +328,7 @@ pages for details.</simpara>
 pages for any of the git commands; one good place to start would be
 with the commands mentioned in <xref linkend="giteveryday(7)" />.  You
 should be able to find any unknown jargon in <xref linkend="gitglossary(7)" />.</simpara>
-<simpara>The <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>Git User's Manual</citetitle></ulink> provides a more
+<simpara>The <link linkend="git_user-manual">Git User's Manual</link> provides a more
 comprehensive introduction to Git.</simpara>
 <simpara><xref linkend="gitcvs-migration(7)" /> explains how to
 import a CVS repository into Git, and shows how to use Git in a
@@ -349,7 +347,7 @@ example, creating a new commit.</simpara>
 <xref linkend="gitglossary(7)" />,
 <xref linkend="git-help(1)" />,
 <xref linkend="giteveryday(7)" />,
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
+<link linkend="git_user-manual">The Git User's Manual</link></simpara>
 </simplesect>
 <simplesect id="gittutorial-2(7)__git">
 <title>GIT</title>

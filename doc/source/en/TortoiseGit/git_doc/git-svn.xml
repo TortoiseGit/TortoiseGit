@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-svn(1)">
     <title>git-svn(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-svn(1)</primary>
 </indexterm>
@@ -839,10 +837,10 @@ environment). This command has the same behaviour.</simpara></note>
 </term>
 <listitem>
 <simpara>
-        Recursively finds the svn:ignore property on directories and
-        creates matching .gitignore files. The resulting files are staged to
-        be committed, but are not committed. Use -r/--revision to refer to a
-        specific revision.
+        Recursively finds the svn:ignore and svn:global-ignores properties
+        on directories and creates matching .gitignore files. The resulting
+        files are staged to be committed, but are not committed. Use
+        -r/--revision to refer to a specific revision.
 </simpara>
 </listitem>
 </varlistentry>
@@ -852,8 +850,8 @@ environment). This command has the same behaviour.</simpara></note>
 </term>
 <listitem>
 <simpara>
-        Recursively finds and lists the svn:ignore property on
-        directories.  The output is suitable for appending to
+        Recursively finds and lists the svn:ignore and svn:global-ignores
+        properties on directories. The output is suitable for appending to
         the $GIT_DIR/info/exclude file.
 </simpara>
 </listitem>
@@ -1575,7 +1573,7 @@ for rewriteRoot and rewriteUUID which can be used together.</simpara>
 # Now commit your changes (that were committed previously using Git) to SVN,
 # as well as automatically updating your working HEAD:
         git svn dcommit
-# Append svn:ignore settings to the default Git exclude file:
+# Append svn:ignore and svn:global-ignores settings to the default Git exclude file:
         git svn show-ignore &gt;&gt; .git/info/exclude</screen>
 <simpara>Tracking and contributing to an entire Subversion-managed project
 (complete with a trunk, tags and branches):</simpara>

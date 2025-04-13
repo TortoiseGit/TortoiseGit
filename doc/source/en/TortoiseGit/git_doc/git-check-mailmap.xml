@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-check-mailmap(1)">
     <title>git-check-mailmap(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-check-mailmap(1)</primary>
 </indexterm>
@@ -20,10 +18,10 @@
 </simplesect>
 <simplesect id="git-check-mailmap(1)__description">
 <title>DESCRIPTION</title>
-<simpara>For each Name &lt;user@host&gt; or &lt;user@host&gt; from the command-line
-or standard input (when using <emphasis>--stdin</emphasis>), look up the person's canonical name
-and email address (see "Mapping Authors" below). If found, print them;
-otherwise print the input as-is.</simpara>
+<simpara>For each Name &lt;user@host&gt;, &lt;user@host&gt;, or user@host
+from the command-line or standard input (when using <emphasis>--stdin</emphasis>), look up the
+person's canonical name and email address (see "Mapping Authors" below). If
+found, print them; otherwise print the input as-is.</simpara>
 </simplesect>
 <simplesect id="git-check-mailmap(1)__options">
 <title>OPTIONS</title>
@@ -36,6 +34,31 @@ otherwise print the input as-is.</simpara>
 <simpara>
         Read contacts, one per line, from the standard input after exhausting
         contacts provided on the command-line.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mailmap-file=&lt;file&gt;
+</term>
+<listitem>
+<simpara>
+        In addition to any configured mailmap files, read the specified
+        mailmap file. Entries in this file take precedence over entries in
+        either the default mailmap file or any configured mailmap file.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--mailmap-blob=&lt;blob&gt;
+</term>
+<listitem>
+<simpara>
+        Like <emphasis>--mailmap-file</emphasis>, but consider the value as a reference to a
+        blob in the repository. If both <emphasis>--mailmap-file</emphasis> and
+        <emphasis>--mailmap-blob</emphasis> are specified, entries in <emphasis>--mailmap-file</emphasis> will
+        take precedence.
 </simpara>
 </listitem>
 </varlistentry>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-backfill(1)">
+    <title>git-backfill(1)</title>
+<indexterm>
+<primary>git-backfill(1)</primary>
+</indexterm>
+<simplesect id="git-backfill(1)__name">
+<title>NAME</title>
+<simpara>git-backfill - Download missing objects in a partial clone</simpara>
+</simplesect>
+<simplesect id="git-backfill(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><code>git</code> <code>backfill</code> [<code>--min-batch-size=</code><emphasis>&lt;n&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>sparse</code>]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-backfill(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Blobless partial clones are created using <emphasis>git clone --filter=blob:none</emphasis>
+and then configure the local repository such that the Git client avoids
+downloading blob objects unless they are required for a local operation.
+This initially means that the clone and later fetches download reachable
+commits and trees but no blobs. Later operations that change the <emphasis>HEAD</emphasis>
+pointer, such as <emphasis>git checkout</emphasis> or <emphasis>git merge</emphasis>, may need to download
+missing blobs in order to complete their operation.</simpara>
+<simpara>In the worst cases, commands that compute blob diffs, such as <emphasis>git blame</emphasis>,
+become very slow as they download the missing blobs in single-blob
+requests to satisfy the missing object as the Git command needs it. This
+leads to multiple download requests and no ability for the Git server to
+provide delta compression across those objects.</simpara>
+<simpara>The <emphasis>git backfill</emphasis> command provides a way for the user to request that
+Git downloads the missing blobs (with optional filters) such that the
+missing blobs representing historical versions of files can be downloaded
+in batches. The <emphasis>backfill</emphasis> command attempts to optimize the request by
+grouping blobs that appear at the same path, hopefully leading to good
+delta compression in the packfile sent by the server.</simpara>
+<simpara>In this way, <emphasis>git backfill</emphasis> provides a mechanism to break a large clone
+into smaller chunks. Starting with a blobless partial clone with <emphasis>git
+clone --filter=blob:none</emphasis> and then running <emphasis>git backfill</emphasis> in the local
+repository provides a way to download all reachable objects in several
+smaller network calls than downloading the entire repository at clone
+time.</simpara>
+<simpara>By default, <emphasis>git backfill</emphasis> downloads all blobs reachable from the <emphasis>HEAD</emphasis>
+commit. This set can be restricted or expanded using various options.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. ITS BEHAVIOR MAY CHANGE IN THE FUTURE.</simpara>
+</simplesect>
+<simplesect id="git-backfill(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>--min-batch-size=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Specify a minimum size for a batch of missing objects to request
+        from the server. This size may be exceeded by the last set of
+        blobs seen at a given path. The default minimum batch size is
+        50,000.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--[no-]sparse</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only download objects if they appear at a path that matches the
+        current sparse-checkout. If the sparse-checkout feature is enabled,
+        then <emphasis>--sparse</emphasis> is assumed and can be disabled with <emphasis>--no-sparse</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-backfill(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-clone(1)" />.</simpara>
+</simplesect>
+<simplesect id="git-backfill(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

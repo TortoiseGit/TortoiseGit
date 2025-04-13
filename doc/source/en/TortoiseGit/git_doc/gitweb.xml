@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitweb(1)">
     <title>gitweb(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitweb(1)</primary>
 </indexterm>
@@ -295,7 +293,7 @@ category (or <emphasis>gitweb.category</emphasis>)
 </term>
 <listitem>
 <simpara>
-        Singe line category of a project, used to group projects if
+        Single line category of a project, used to group projects if
         <emphasis>$projects_list_group_categories</emphasis> is enabled.  By default (file and
         configuration variable absent), uncategorized projects are put in the
         <emphasis>$project_list_default_category</emphasis> category.  You can use the

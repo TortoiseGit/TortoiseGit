@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-am(1)">
     <title>git-am(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-am(1)</primary>
 </indexterm>
@@ -24,7 +22,7 @@
          [--quoted-cr=&lt;action&gt;]
          [--empty=(stop|drop|keep)]
          [(&lt;mbox&gt; | &lt;Maildir&gt;)&#8230;]
-<emphasis>git am</emphasis> (--continue | --skip | --abort | --quit | --show-current-patch[=(diff|raw)] | --allow-empty)</literallayout>
+<emphasis>git am</emphasis> (--continue | --skip | --abort | --quit | --retry | --show-current-patch[=(diff|raw)] | --allow-empty)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-am(1)__description">
@@ -484,6 +482,19 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 <simpara>
         Abort the patching operation but keep HEAD and the index
         untouched.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--retry
+</term>
+<listitem>
+<simpara>
+        Try to apply the last conflicting patch again. This is generally
+        only useful for passing extra options to the retry attempt
+        (e.g., <emphasis>--3way</emphasis>), since otherwise you'll just see the same
+        failure again.
 </simpara>
 </listitem>
 </varlistentry>

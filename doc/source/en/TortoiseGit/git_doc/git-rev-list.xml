@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-rev-list(1)">
     <title>git-rev-list(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-rev-list(1)</primary>
 </indexterm>
@@ -856,7 +854,8 @@ Default mode
 <listitem>
 <simpara>
         When given a range of commits to display (e.g. <emphasis>commit1..commit2</emphasis>
-        or <emphasis>commit2 &#94;commit1</emphasis>), only display commits in that range
+        or <emphasis>commit2 &#94;commit1</emphasis>), and a commit &lt;commit&gt; in that range,
+        only display commits in that range
         that are ancestors of &lt;commit&gt;, descendants of &lt;commit&gt;, or
         &lt;commit&gt; itself.  If no commit is specified, use <emphasis>commit1</emphasis> (the
         excluded part of the range) as &lt;commit&gt;.  Can be passed multiple
@@ -1595,6 +1594,30 @@ allow object traversal to continue for EXPECTED promisor missing objects.
 Unexpected missing objects will raise an error.</simpara>
 <simpara>The form <emphasis>--missing=print</emphasis> is like <emphasis>allow-any</emphasis>, but will also print a
 list of the missing objects.  Object IDs are prefixed with a ? character.</simpara>
+<simpara>The form <emphasis>--missing=print-info</emphasis> is like <emphasis>print</emphasis>, but will also print additional
+information about the missing object inferred from its containing object. The
+information is all printed on the same line with the missing object ID in the
+form: <emphasis>?&lt;oid&gt; [&lt;token&gt;=&lt;value&gt;]...</emphasis>. The <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> pairs containing
+additional information are separated from each other by a SP. The value is
+encoded in a token specific fashion, but SP or LF contained in value are always
+expected to be represented in such a way that the resulting encoded value does
+not have either of these two problematic bytes. Each <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> may be
+one of the following:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+The <emphasis>path=&lt;path&gt;</emphasis> shows the path of the missing object inferred from a
+  containing object. A path containing SP or special characters is enclosed in
+  double-quotes in the C style as needed.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>type=&lt;type&gt;</emphasis> shows the type of the missing object inferred from a
+  containing object.
+</simpara>
+</listitem>
+</itemizedlist>
 <simpara>If some tips passed to the traversal are missing, they will be
 considered as missing too, and the traversal will ignore them. In case
 we cannot get their Object ID though, an error will be raised.</simpara>
@@ -3068,10 +3091,10 @@ insert an empty string unless we are traversing reflog entries (e.g., by
 <emphasis>git log -g</emphasis>). The <emphasis>%d</emphasis> and <emphasis>%D</emphasis> placeholders will use the "short"
 decoration format if <emphasis>--decorate</emphasis> was not already provided on the command
 line.</simpara></note>
-<simpara>The boolean options accept an optional value <emphasis>[=&lt;bool-value&gt;]</emphasis>. The values
-<emphasis>true</emphasis>, <emphasis>false</emphasis>, <emphasis>on</emphasis>, <emphasis>off</emphasis> etc. are all accepted. See the "boolean"
-sub-section in "EXAMPLES" in <xref linkend="git-config(1)" />. If a boolean
-option is given with no value, it's enabled.</simpara>
+<simpara>The boolean options accept an optional value <emphasis>[=&lt;bool-value&gt;]</emphasis>. The
+values taken by <emphasis>--type=bool</emphasis> git-config[1], like <emphasis>yes</emphasis> and <emphasis>off</emphasis>,
+are all accepted.  Giving a boolean option without <emphasis>=&lt;value&gt;</emphasis> is
+equivalent to giving it with <emphasis>=true</emphasis>.</simpara>
 <simpara>If you add a <emphasis>+</emphasis> (plus sign) after <emphasis>%</emphasis> of a placeholder, a line-feed
 is inserted immediately before the expansion if and only if the
 placeholder expands to a non-empty string.</simpara>

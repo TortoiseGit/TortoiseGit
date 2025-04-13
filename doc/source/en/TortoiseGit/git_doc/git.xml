@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git(1)">
     <title>git(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git(1)</primary>
 </indexterm>
@@ -17,9 +15,10 @@
 <blockquote>
 <literallayout><emphasis>git</emphasis> [-v | --version] [-h | --help] [-C &lt;path&gt;] [-c &lt;name&gt;=&lt;value&gt;]
     [--exec-path[=&lt;path&gt;]] [--html-path] [--man-path] [--info-path]
-    [-p|--paginate|-P|--no-pager] [--no-replace-objects] [--bare]
-    [--git-dir=&lt;path&gt;] [--work-tree=&lt;path&gt;] [--namespace=&lt;name&gt;]
-    [--config-env=&lt;name&gt;=&lt;envvar&gt;] &lt;command&gt; [&lt;args&gt;]</literallayout>
+    [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--no-lazy-fetch]
+    [--no-optional-locks] [--no-advice] [--bare] [--git-dir=&lt;path&gt;]
+    [--work-tree=&lt;path&gt;] [--namespace=&lt;name&gt;] [--config-env=&lt;name&gt;=&lt;envvar&gt;]
+    &lt;command&gt; [&lt;args&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git(1)__description">
@@ -29,7 +28,7 @@ unusually rich command set that provides both high-level operations
 and full access to internals.</simpara>
 <simpara>See <xref linkend="gittutorial(7)" /> to get started, then see
 <xref linkend="giteveryday(7)" /> for a useful minimum set of
-commands.  The <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>Git User's Manual</citetitle></ulink> has a more
+commands.  The <link linkend="git_user-manual">Git User's Manual</link> has a more
 in-depth introduction.</simpara>
 <simpara>After you mastered the basic concepts, you can come back to this
 page to learn what commands Git offers.  You can learn more about
@@ -310,6 +309,27 @@ environment variable)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--no-optional-locks
+</term>
+<listitem>
+<simpara>
+        Do not perform optional operations that require locks. This is
+        equivalent to setting the <emphasis>GIT_OPTIONAL_LOCKS</emphasis> to <emphasis>0</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-advice
+</term>
+<listitem>
+<simpara>
+        Disable all advice hints from being printed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --literal-pathspecs
 </term>
 <listitem>
@@ -354,17 +374,6 @@ environment variable)</simpara>
 <simpara>
         Add "icase" magic to all pathspec. This is equivalent to setting
         the <emphasis>GIT_ICASE_PATHSPECS</emphasis> environment variable to <emphasis>1</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---no-optional-locks
-</term>
-<listitem>
-<simpara>
-        Do not perform optional operations that require locks. This is
-        equivalent to setting the <emphasis>GIT_OPTIONAL_LOCKS</emphasis> to <emphasis>0</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -438,6 +447,16 @@ ancillary user utilities.</simpara>
 <listitem>
 <simpara>
         Create an archive of files from a named tree.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-backfill(1)" />
+</term>
+<listitem>
+<simpara>
+        Download missing objects in a partial clone.
 </simpara>
 </listitem>
 </varlistentry>
@@ -934,6 +953,16 @@ ancillary user utilities.</simpara>
 <listitem>
 <simpara>
         Manage reflog information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-refs(1)" />
+</term>
+<listitem>
+<simpara>
+        Low-level access to refs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2540,9 +2569,28 @@ HEAD
 <title>Environment Variables</title>
 <simpara>Various Git commands pay attention to environment variables and change
 their behavior.  The environment variables marked as "Boolean" take
-their values the same way as Boolean valued configuration variables, e.g.
-"true", "yes", "on" and positive numbers are taken as "yes".</simpara>
+their values the same way as Boolean valued configuration variables, i.e.,
+"true", "yes", "on" and positive numbers are taken as "yes", while "false",
+"no", "off", and "0" are taken as "no".</simpara>
 <simpara>Here are the variables:</simpara>
+<section id="git(1)__system">
+<title>System</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>HOME</emphasis>
+</term>
+<listitem>
+<simpara>
+        Specifies the path to the user's home directory. On Windows, if
+        unset, Git will set a process environment variable equal to:
+        <emphasis>$HOMEDRIVE$HOMEPATH</emphasis> if both <emphasis>$HOMEDRIVE</emphasis> and <emphasis>$HOMEPATH</emphasis> exist;
+        otherwise <emphasis>$USERPROFILE</emphasis> if <emphasis>$USERPROFILE</emphasis> exists.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
 <section id="git(1)__the_git_repository">
 <title>The Git Repository</title>
 <simpara>These environment variables apply to <emphasis>all</emphasis> core Git commands. Nb: it
@@ -2881,6 +2929,22 @@ temporary file -- it is removed when <emphasis>GIT_EXTERNAL_DIFF</emphasis> exit
 parameter, &lt;path&gt;.</simpara>
 <simpara>For each path <emphasis>GIT_EXTERNAL_DIFF</emphasis> is called, two environment variables,
 <emphasis>GIT_DIFF_PATH_COUNTER</emphasis> and <emphasis>GIT_DIFF_PATH_TOTAL</emphasis> are set.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_EXTERNAL_DIFF_TRUST_EXIT_CODE</emphasis>
+</term>
+<listitem>
+<simpara>
+        If this Boolean environment variable is set to true then the
+        <emphasis>GIT_EXTERNAL_DIFF</emphasis> command is expected to return exit code
+        0 if it considers the input files to be equal or 1 if it
+        considers them to be different, like <emphasis>diff(1)</emphasis>.
+        If it is set to false, which is the default, then the command
+        is expected to return exit code 0 regardless of equality.
+        Any other exit code causes Git to report a fatal error.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -3571,14 +3635,32 @@ standard output.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>GIT_ADVICE</emphasis>
+</term>
+<listitem>
+<simpara>
+        If set to <emphasis>0</emphasis>, then disable all advice messages. These messages are
+        intended to provide hints to human users that may help them get out of
+        problematic situations or take advantage of new features. Users can
+        disable individual messages using the <emphasis>advice.*</emphasis> config keys. These
+        messages may be disruptive to tools that execute Git processes, so this
+        variable is available to disable the messages. (The <emphasis>--no-advice</emphasis>
+        global option is also available, but old Git versions may fail when
+        this option is not understood. The environment variable will be ignored
+        by Git versions that do not understand it.)
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 </simplesect>
 <simplesect id="git(1)__discussion_anchor_id_git_1__discussion_xreflabel_discussion">
 <title>Discussion<anchor id="git(1)_Discussion" xreflabel="[Discussion]"/></title>
 <simpara>More detail on the following is available from the
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#git-concepts"><citetitle>Git concepts chapter of the
-user-manual</citetitle></ulink> and <xref linkend="gitcore-tutorial(7)" />.</simpara>
+<link linkend="user-manual_git-concepts">Git concepts chapter of the
+user-manual</link> and <xref linkend="gitcore-tutorial(7)" />.</simpara>
 <simpara>A Git project normally consists of a working directory with a ".git"
 subdirectory at the top level.  The .git directory contains, among other
 things, a compressed object database representing the complete history
@@ -3651,8 +3733,8 @@ section of <xref linkend="git-upload-pack(1)" />.</simpara>
 <simpara>See the references in the "description" section to get started
 using Git.  The following is probably more detail than necessary
 for a first-time user.</simpara>
-<simpara>The <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html#git-concepts"><citetitle>Git concepts chapter of the
-user-manual</citetitle></ulink> and <xref linkend="gitcore-tutorial(7)" /> both provide
+<simpara>The <link linkend="user-manual_git-concepts">Git concepts chapter of the
+user-manual</link> and <xref linkend="gitcore-tutorial(7)" /> both provide
 introductions to the underlying Git architecture.</simpara>
 <simpara>See <xref linkend="gitworkflows(7)" /> for an overview of recommended workflows.</simpara>
 <simpara>See also the <ulink url="https://www.kernel.org/pub/software/scm/git/docs/howto-index.html"><citetitle>howto</citetitle></ulink> documents for some useful
@@ -3687,7 +3769,7 @@ the Git Security mailing list &lt;<ulink url="mailto:git-security@googlegroups.c
 <simpara><xref linkend="gittutorial(7)" />, <xref linkend="gittutorial-2(7)" />,
 <xref linkend="giteveryday(7)" />, <xref linkend="gitcvs-migration(7)" />,
 <xref linkend="gitglossary(7)" />, <xref linkend="gitcore-tutorial(7)" />,
-<xref linkend="gitcli(7)" />, <ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink>,
+<xref linkend="gitcli(7)" />, <link linkend="git_user-manual">The Git User's Manual</link>,
 <xref linkend="gitworkflows(7)" /></simpara>
 </simplesect>
 <simplesect id="git(1)__git">

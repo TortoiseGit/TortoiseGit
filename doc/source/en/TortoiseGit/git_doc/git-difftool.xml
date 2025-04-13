@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-difftool(1)">
     <title>git-difftool(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-difftool(1)</primary>
 </indexterm>
@@ -240,6 +238,258 @@ diff.guitool
         and requires that a corresponding difftool.&lt;guitool&gt;.cmd variable
         is defined.
 </simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>araxis</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Araxis Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc3</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>bc4</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Beyond Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>codecompare</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Code Compare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>deltawalker</emphasis>
+</term>
+<listitem>
+<simpara>
+Use DeltaWalker (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use DiffMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diffuse</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Diffuse (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>ecmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use ECMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>emerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Emacs' Emerge
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>examdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use ExamDiff Pro (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>guiffy</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Guiffy's Diff Tool (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>gvimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use gVim (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>kdiff3</emphasis>
+</term>
+<listitem>
+<simpara>
+Use KDiff3 (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>kompare</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Kompare (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>meld</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Meld (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nvimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Neovim
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>opendiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use FileMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>p4merge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use HelixCore P4Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>smerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Sublime Merge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tkdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use TkDiff (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vimdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Vim
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>vscode</emphasis>
+</term>
+<listitem>
+<simpara>
+Use Visual Studio Code (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>winmerge</emphasis>
+</term>
+<listitem>
+<simpara>
+Use WinMerge (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>xxdiff</emphasis>
+</term>
+<listitem>
+<simpara>
+Use xxdiff (requires a graphical session)
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>

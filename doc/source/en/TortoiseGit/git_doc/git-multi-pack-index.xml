@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-multi-pack-index(1)">
     <title>git-multi-pack-index(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-multi-pack-index(1)</primary>
 </indexterm>
@@ -117,6 +115,19 @@ preferred if at least one instance of it begins with the special <emphasis>+</em
 marker).</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--incremental
+</term>
+<listitem>
+<simpara>
+                Write an incremental MIDX file containing only objects
+                and packs not present in an existing MIDX layer.
+                Migrates non-incremental MIDXs to incremental ones when
+                necessary. Incompatible with <emphasis>--bitmap</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </listitem>
 </varlistentry>
@@ -141,6 +152,7 @@ expire
         <emphasis>.keep</emphasis> packs and cruft packs). Rewrite the MIDX file afterward
         to remove all references to these pack-files.
 </simpara>
+<note><simpara>this mode is incompatible with incremental MIDX files.</simpara></note>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -168,6 +180,7 @@ repack
 </simpara>
 <simpara>If <emphasis>repack.packKeptObjects</emphasis> is <emphasis>false</emphasis>, then any pack-files with an
 associated <emphasis>.keep</emphasis> file will not be selected for the batch to repack.</simpara>
+<note><simpara>this mode is incompatible with incremental MIDX files.</simpara></note>
 </listitem>
 </varlistentry>
 </variablelist>

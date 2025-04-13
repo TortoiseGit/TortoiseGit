@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-index-pack(1)">
     <title>git-index-pack(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-index-pack(1)</primary>
 </indexterm>
@@ -261,6 +259,11 @@ without data loss.</simpara>
         written to the .promisor file for future reference. See
         <ulink url="https://www.kernel.org/pub/software/scm/git/docs/technical/partial-clone.html"><citetitle>partial clone</citetitle></ulink> for more information.
 </simpara>
+<simpara>Also, if there are objects in the given pack that references non-promisor
+objects (in the repo), repacks those non-promisor objects into a promisor
+pack. This avoids a situation in which a repo has non-promisor objects that are
+accessible through promisor objects.</simpara>
+<simpara>Requires &lt;pack-file&gt; to not be specified.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

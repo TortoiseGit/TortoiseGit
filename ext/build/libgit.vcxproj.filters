@@ -875,13 +875,7 @@
     <ClCompile Include="..\tgit\reftable\blocksource.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\reftable\dump.c">
-      <Filter>git\reftable</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\reftable\error.c">
-      <Filter>git\reftable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\reftable\generic.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\reftable\iter.c">
@@ -891,9 +885,6 @@
       <Filter>git\reftable</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\reftable\pq.c">
-      <Filter>git\reftable</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\reftable\publicbasics.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\reftable\reader.c">
@@ -909,6 +900,9 @@
       <Filter>git\reftable</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\reftable\writer.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\system.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1598,9 +1592,6 @@
     <ClInclude Include="..\tgit\reftable\constants.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\reftable\generic.h">
-      <Filter>Header Files\reftable</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\reftable\iter.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
@@ -1616,22 +1607,13 @@
     <ClInclude Include="..\tgit\reftable\record.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\reftable\refname.h">
-      <Filter>Header Files\reftable</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\reftable\reftable-blocksource.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\reftable\reftable-error.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\reftable\reftable-generic.h">
-      <Filter>Header Files\reftable</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\reftable\reftable-iterator.h">
-      <Filter>Header Files\reftable</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\reftable\reftable-malloc.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\reftable\reftable-merged.h">
@@ -1660,6 +1642,9 @@
     </ClInclude>
     <ClInclude Include="..\tgit\reftable\writer.h">
       <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\repo-settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

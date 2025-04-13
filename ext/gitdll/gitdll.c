@@ -20,6 +20,7 @@
 //
 
 #include "stdafx.h"
+#define USE_THE_REPOSITORY_VARIABLE
 #include "../build/libgit-defines.h"
 #pragma warning(push)
 #pragma warning(disable: 4100 4267)
@@ -58,7 +59,7 @@ extern int die_is_recursing_dll(void);
 
 extern void libgit_initialize(void);
 extern void cleanup_chdir_notify(void);
-extern void free_all_pack(void);
+extern void free_all_pack(struct repository* repo);
 extern void reset_git_env(const LPWSTR*);
 extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
@@ -73,6 +74,7 @@ extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, str
 extern void free_diffstat_info(struct diffstat_t* diffstat);
 static_assert(sizeof(unsigned long long) == sizeof(timestamp_t), "Required for each_reflog_ent_fn definition in gitdll.h");
 extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
+extern void reset_setup(void);
 
 void dll_entry(void)
 {
@@ -100,6 +102,7 @@ int git_init(const LPWSTR* env)
 
 	cleanup_chdir_notify();
 	fscache_flush();
+	reset_setup();
 	reset_git_env(env);
 	assert(getenv("HOME")); // make sure HOME is already set
 	drop_all_attr_stacks();
@@ -486,7 +489,7 @@ int git_close_log(GIT_LOG handle, int releaseRevsisions)
 		free(p_Rev->pPrivate);
 		free(handle);
 	}
-	free_all_pack();
+	free_all_pack(the_repository);
 
 	if (display_notes_trees)
 		free_notes(*display_notes_trees);
@@ -615,7 +618,7 @@ int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_F
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
 		}
 	}
-	free_all_pack();
+	free_all_pack(the_repository);
 	if(file)
 		*file = q;
 	if(count)
@@ -743,11 +746,11 @@ int git_update_index(void)
 	cleanup_chdir_notify();
 	drop_all_attr_stacks();
 
-	ret = cmd_update_index(argc, argv, NULL);
+	ret = cmd_update_index(argc, argv, NULL, the_repository);
 	free(argv);
 
 	discard_index(the_repository->index);
-	free_all_pack();
+	free_all_pack(the_repository);
 
 	return ret;
 }
@@ -798,7 +801,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 
 	if(!root)
 	{
-		free_all_pack();
+		free_all_pack(the_repository);
 		return -1;
 	}
 
@@ -812,7 +815,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 
 	if(ret)
 	{
-		free_all_pack();
+		free_all_pack(the_repository);
 		free(ce);
 		return ret;
 	}
@@ -824,7 +827,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	convert_attrs(state.istate, &ca, path);
 
 	ret = write_entry(ce, outputpath, &ca, &state, 0, NULL);
-	free_all_pack();
+	free_all_pack(the_repository);
 	free(ce);
 	return ret;
 }
@@ -900,8 +903,8 @@ int git_get_config(const char *key, char *buffer, int size)
 
 	if (have_git_dir())
 	{
-		opts.git_dir = get_git_dir();
-		char* local = git_pathdup("config");
+		opts.git_dir = repo_get_git_dir(the_repository);
+		char* local = repo_git_path(the_repository, "config");
 		config_source.file = local;
 		config_with_options(get_config, &buf, &config_source, the_repository, &opts);
 		free(local);
@@ -948,7 +951,7 @@ int git_get_config(const char *key, char *buffer, int size)
 
 const char* git_default_notes_ref(void)
 {
-	return default_notes_ref();
+	return default_notes_ref(the_repository);
 }
 
 int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
@@ -961,7 +964,7 @@ int git_set_config(const char* key, const char* value, CONFIG_TYPE type)
 	case CONFIG_LOCAL:
 		if (!the_repository || !the_repository->gitdir)
 			die("repository not correctly initialized.");
-		config_exclusive_filename  = git_pathdup("config");
+		config_exclusive_filename = repo_git_path(the_repository, "config");
 		break;
 	case CONFIG_GLOBAL:
 	case CONFIG_XDGGLOBAL:

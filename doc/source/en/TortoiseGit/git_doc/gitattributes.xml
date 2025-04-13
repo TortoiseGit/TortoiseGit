@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitattributes(5)">
     <title>gitattributes(5)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitattributes(5)</primary>
 </indexterm>
@@ -415,7 +413,7 @@ you want UTF-16 little endian with BOM).
 Please note, it is highly recommended to
 explicitly define the line endings with <emphasis>eol</emphasis> if the <emphasis>working-tree-encoding</emphasis>
 attribute is used to avoid ambiguity.</simpara>
-<screen>*.ps1           text working-tree-encoding=UTF-16LE eol=CRLF</screen>
+<screen>*.ps1           text working-tree-encoding=UTF-16LE eol=crlf</screen>
 <simpara>You can get a list of all available encodings on your platform with the
 following command:</simpara>
 <screen>iconv --list</screen>
@@ -515,7 +513,7 @@ content provided to them on standard input.</simpara>
 <emphasis>filter.&lt;driver&gt;.process</emphasis> then Git can process all blobs with a
 single filter invocation for the entire life of a single Git
 command. This is achieved by using the long-running process protocol
-(described in technical/long-running-process-protocol.txt).</simpara>
+(described in Documentation/technical/long-running-process-protocol.adoc).</simpara>
 <simpara>When Git encounters the first file that needs to be cleaned or smudged,
 it starts the filter and performs the handshake. In the handshake, the
 welcome message sent by Git is "git-filter-client", only version 2 is
@@ -663,8 +661,8 @@ clean/smudge filter or text/eol/ident attributes, merging anything
 where the attribute is not in place would normally cause merge
 conflicts.</simpara>
 <simpara>To prevent these unnecessary merge conflicts, Git can be told to run a
-virtual check-out and check-in of all three stages of a file when
-resolving a three-way merge by setting the <emphasis>merge.renormalize</emphasis>
+virtual check-out and check-in of all three stages of each file that
+needs a three-way content merge, by setting the <emphasis>merge.renormalize</emphasis>
 configuration variable.  This prevents changes caused by check-in
 conversion from causing spurious merge conflicts when a converted file
 is merged with an unconverted file.</simpara>
@@ -753,6 +751,10 @@ attribute set to <emphasis>jcdiff</emphasis>, it calls the command you specified
 with the above configuration, i.e. <emphasis>j-c-diff</emphasis>, with 7
 parameters, just like <emphasis>GIT_EXTERNAL_DIFF</emphasis> program is called.
 See <xref linkend="git(1)" /> for details.</simpara>
+<simpara>If the program is able to ignore certain changes (similar to
+<emphasis>git diff --ignore-space-change</emphasis>), then also set the option
+<emphasis>trustExitCode</emphasis> to true.  It is then expected to return exit code 1 if
+it finds significant changes and 0 if it doesn't.</simpara>
 </section>
 <section id="gitattributes(5)__setting_the_internal_diff_algorithm">
 <title>Setting the internal diff algorithm</title>
@@ -1202,7 +1204,7 @@ internal merge and the final merge.</simpara>
 <simpara>The merge driver can learn the pathname in which the merged result
 will be stored via placeholder <emphasis>%P</emphasis>. The conflict labels to be used
 for the common ancestor, local head and other head can be passed by
-using <emphasis>%S</emphasis>, <emphasis>%X</emphasis> and '%Y` respectively.</simpara>
+using <emphasis>%S</emphasis>, <emphasis>%X</emphasis> and <emphasis>%Y</emphasis> respectively.</simpara>
 </section>
 <section id="gitattributes(5)__emphasis_conflict_marker_size_emphasis">
 <title><emphasis>conflict-marker-size</emphasis></title>
@@ -1211,9 +1213,9 @@ the work tree file during a conflicted merge.  Only a positive
 integer has a meaningful effect.</simpara>
 <simpara>For example, this line in <emphasis>.gitattributes</emphasis> can be used to tell the merge
 machinery to leave much longer (instead of the usual 7-character-long)
-conflict markers when merging the file <emphasis>Documentation/git-merge.txt</emphasis>
+conflict markers when merging the file <emphasis>Documentation/git-merge.adoc</emphasis>
 results in a conflict.</simpara>
-<screen>Documentation/git-merge.txt     conflict-marker-size=32</screen>
+<screen>Documentation/git-merge.adoc    conflict-marker-size=32</screen>
 </section>
 </section>
 <section id="gitattributes(5)__checking_whitespace_errors">

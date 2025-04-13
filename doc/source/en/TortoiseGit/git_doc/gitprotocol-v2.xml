@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitprotocol-v2(5)">
     <title>gitprotocol-v2(5)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitprotocol-v2(5)</primary>
 </indexterm>
@@ -202,9 +200,13 @@ form <emphasis>agent=X</emphasis>) to notify the client that the server is runni
 the <emphasis>agent</emphasis> capability with a value <emphasis>Y</emphasis> (in the form <emphasis>agent=Y</emphasis>) in its
 request to the server (but it MUST NOT do so if the server did not
 advertise the agent capability). The <emphasis>X</emphasis> and <emphasis>Y</emphasis> strings may contain any
-printable ASCII characters except space (i.e., the byte range 32 &lt; x &lt;
-127), and are typically of the form "package/version" (e.g.,
-"git/1.8.3.1"). The agent strings are purely informative for statistics
+printable ASCII characters except space (i.e., the byte range 33 &#8656; x &#8656;
+126), and are typically of the form "package/version-os" (e.g.,
+"git/1.8.3.1-Linux") where <emphasis>os</emphasis> is the operating system name (e.g.,
+"Linux"). <emphasis>X</emphasis> and <emphasis>Y</emphasis> can be configured using the GIT_USER_AGENT
+environment variable and it takes priority. The <emphasis>os</emphasis> is
+retrieved using the <emphasis>sysname</emphasis> field of the <emphasis>uname(2)</emphasis> system call
+or its equivalent. The agent strings are purely informative for statistics
 and debugging purposes, and MUST NOT be used to programmatically assume
 the presence or absence of particular features.</simpara>
 </section>
@@ -559,7 +561,7 @@ a request.</simpara>
 <simpara>The provided options must not contain a NUL or LF character.</simpara>
 </section>
 <section id="gitprotocol-v2(5)__object_format">
-<title> object-format</title>
+<title>object-format</title>
 <simpara>The server can advertise the <emphasis>object-format</emphasis> capability with a value <emphasis>X</emphasis> (in the
 form <emphasis>object-format=X</emphasis>) to notify the client that the server is able to deal
 with objects using hash algorithm X.  If not specified, the server is assumed to
@@ -826,13 +828,55 @@ A "oid=&lt;OID&gt;" shortcut and "prerequisite=&lt;OID&gt;" shortcut. For
 <simpara>This would allow for optimizing the common case of servers who'd like
 to provide one "big bundle" containing only their "main" branch,
 and/or incremental updates thereof.</simpara>
-<simpara>A client receiving such a a response MAY assume that they can skip
+<simpara>A client receiving such a response MAY assume that they can skip
 retrieving the header from a bundle at the indicated URI, and thus
 save themselves and the server(s) the request(s) needed to inspect the
 headers of that bundle or bundles.</simpara>
 </listitem>
 </itemizedlist>
 </section>
+</section>
+<section id="gitprotocol-v2(5)__promisor_remote_lt_pr_infos_gt">
+<title>promisor-remote=&lt;pr-infos&gt;</title>
+<simpara>The server may advertise some promisor remotes it is using or knows
+about to a client which may want to use them as its promisor remotes,
+instead of this repository. In this case &lt;pr-infos&gt; should be of the
+form:</simpara>
+<literallayout class="monospaced">pr-infos = pr-info | pr-infos ";" pr-info</literallayout>
+<literallayout class="monospaced">pr-info = "name=" pr-name | "name=" pr-name "," "url=" pr-url</literallayout>
+<simpara>where <emphasis>pr-name</emphasis> is the urlencoded name of a promisor remote, and
+<emphasis>pr-url</emphasis> the urlencoded URL of that promisor remote.</simpara>
+<simpara>In this case, if the client decides to use one or more promisor
+remotes the server advertised, it can reply with
+"promisor-remote=&lt;pr-names&gt;" where &lt;pr-names&gt; should be of the form:</simpara>
+<literallayout class="monospaced">pr-names = pr-name | pr-names ";" pr-name</literallayout>
+<simpara>where <emphasis>pr-name</emphasis> is the urlencoded name of a promisor remote the server
+advertised and the client accepts.</simpara>
+<simpara>Note that, everywhere in this document, <emphasis>pr-name</emphasis> MUST be a valid
+remote name, and the <emphasis>;</emphasis> and <emphasis>,</emphasis> characters MUST be encoded if they
+appear in <emphasis>pr-name</emphasis> or <emphasis>pr-url</emphasis>.</simpara>
+<simpara>If the server doesn't know any promisor remote that could be good for
+a client to use, or prefers a client not to use any promisor remote it
+uses or knows about, it shouldn't advertise the "promisor-remote"
+capability at all.</simpara>
+<simpara>In this case, or if the client doesn't want to use any promisor remote
+the server advertised, the client shouldn't advertise the
+"promisor-remote" capability at all in its reply.</simpara>
+<simpara>The "promisor.advertise" and "promisor.acceptFromServer" configuration
+options can be used on the server and client side to control what they
+advertise or accept respectively. See the documentation of these
+configuration options for more information.</simpara>
+<simpara>Note that in the future it would be nice if the "promisor-remote"
+protocol capability could be used by the server, when responding to
+<emphasis>git fetch</emphasis> or <emphasis>git clone</emphasis>, to advertise better-connected remotes that
+the client can use as promisor remotes, instead of this repository, so
+that the client can lazily fetch objects from these other
+better-connected remotes. This would require the server to omit in its
+response the objects available on the better-connected remotes that
+the client has accepted. This hasn't been implemented yet though. So
+for now this "promisor-remote" capability is useful only when the
+server advertises some promisor remotes it already uses to borrow
+objects from.</simpara>
 </section>
 </simplesect>
 <simplesect id="gitprotocol-v2(5)__git">

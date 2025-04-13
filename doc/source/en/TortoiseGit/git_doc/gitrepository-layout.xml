@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="gitrepository-layout(5)">
     <title>gitrepository-layout(5)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>gitrepository-layout(5)</primary>
 </indexterm>
@@ -289,7 +287,7 @@ branches
 </term>
 <listitem>
 <simpara>
-        A slightly deprecated way to store shorthands to be used
+        A deprecated way to store shorthands to be used
         to specify a URL to <emphasis>git fetch</emphasis>, <emphasis>git pull</emphasis> and <emphasis>git push</emphasis>.
         A file can be stored as <emphasis>branches/&lt;name&gt;</emphasis> and then
         <emphasis>name</emphasis> can be given to these commands in place of
@@ -299,6 +297,7 @@ branches
         directory is ignored if $GIT_COMMON_DIR is set and
         "$GIT_COMMON_DIR/branches" will be used instead.
 </simpara>
+<simpara>Git will stop reading remotes from this directory in Git 3.0.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -450,6 +449,7 @@ remotes
         directory is ignored if $GIT_COMMON_DIR is set and
         "$GIT_COMMON_DIR/remotes" will be used instead.
 </simpara>
+<simpara>Git will stop reading remotes from this directory in Git 3.0.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -652,57 +652,22 @@ If a version-1 repository specifies any <emphasis>extensions.*</emphasis> keys t
 <emphasis>core.repositoryformatversion</emphasis> SHOULD be set to <emphasis>0</emphasis> (setting it to <emphasis>1</emphasis>
 provides no benefit, and makes the repository incompatible with older
 implementations of git).</simpara>
-<simpara>This document will serve as the master list for extensions. Any
-implementation wishing to define a new extension should make a note of
-it here, in order to claim the name.</simpara>
-<simpara>The defined extensions are:</simpara>
-<section id="gitrepository-layout(5)__emphasis_noop_emphasis">
-<title><emphasis>noop</emphasis></title>
-<simpara>This extension does not change git's behavior at all. It is useful only
-for testing format-1 compatibility.</simpara>
-</section>
-<section id="gitrepository-layout(5)__emphasis_preciousobjects_emphasis">
-<title><emphasis>preciousObjects</emphasis></title>
-<simpara>When the config key <emphasis>extensions.preciousObjects</emphasis> is set to <emphasis>true</emphasis>,
-objects in the repository MUST NOT be deleted (e.g., by <emphasis>git-prune</emphasis> or
-<emphasis>git repack -d</emphasis>).</simpara>
-</section>
-<section id="gitrepository-layout(5)__emphasis_partialclone_emphasis">
-<title><emphasis>partialClone</emphasis></title>
-<simpara>When the config key <emphasis>extensions.partialClone</emphasis> is set, it indicates
-that the repo was created with a partial clone (or later performed
-a partial fetch) and that the remote may have omitted sending
-certain unwanted objects.  Such a remote is called a "promisor remote"
-and it promises that all such omitted objects can be fetched from it
-in the future.</simpara>
-<simpara>The value of this key is the name of the promisor remote.</simpara>
-</section>
-<section id="gitrepository-layout(5)__emphasis_worktreeconfig_emphasis">
-<title><emphasis>worktreeConfig</emphasis></title>
-<simpara>If set, by default "git config" reads from both "config" and
-"config.worktree" files from GIT_DIR in that order. In
-multiple working directory mode, "config" file is shared while
-"config.worktree" is per-working directory (i.e., it's in
-GIT_COMMON_DIR/worktrees/&lt;id&gt;/config.worktree)</simpara>
-</section>
-<section id="gitrepository-layout(5)__emphasis_refstorage_emphasis">
-<title><emphasis>refStorage</emphasis></title>
-<simpara>Specifies the file format for the ref database. The valid values are
-<emphasis>files</emphasis> (loose references with a packed-refs file) and <emphasis>reftable</emphasis> (see
-Documentation/technical/reftable.txt).</simpara>
-</section>
+<simpara>The defined extensions are given in the <emphasis>extensions.*</emphasis> section of
+<xref linkend="git-config(1)" />. Any implementation wishing to define a new
+extension should make a note of it there, in order to claim the name.</simpara>
 </section>
 </simplesect>
 <simplesect id="gitrepository-layout(5)__see_also">
 <title>SEE ALSO</title>
 <simpara><xref linkend="git-init(1)" />,
 <xref linkend="git-clone(1)" />,
+<xref linkend="git-config(1)" />,
 <xref linkend="git-fetch(1)" />,
 <xref linkend="git-pack-refs(1)" />,
 <xref linkend="git-gc(1)" />,
 <xref linkend="git-checkout(1)" />,
 <xref linkend="gitglossary(7)" />,
-<ulink url="https://www.kernel.org/pub/software/scm/git/docs/user-manual.html"><citetitle>The Git User's Manual</citetitle></ulink></simpara>
+<link linkend="git_user-manual">The Git User's Manual</link></simpara>
 </simplesect>
 <simplesect id="gitrepository-layout(5)__git">
 <title>GIT</title>

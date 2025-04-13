@@ -3,8 +3,6 @@
 
 <sect2 lang="en" id="git-send-email(1)">
     <title>git-send-email(1)</title>
-    <date>2024-07-02</date>
-<revhistory><revision><date>2024-07-02</date></revision></revhistory>
 <indexterm>
 <primary>git-send-email(1)</primary>
 </indexterm>
@@ -17,7 +15,8 @@
 <blockquote>
 <literallayout><emphasis>git send-email</emphasis> [&lt;options&gt;] (&lt;file&gt;|&lt;directory&gt;)&#8230;
 <emphasis>git send-email</emphasis> [&lt;options&gt;] &lt;format-patch-options&gt;
-<emphasis>git send-email</emphasis> --dump-aliases</literallayout>
+<emphasis>git send-email</emphasis> --dump-aliases
+<emphasis>git send-email</emphasis> --translate-aliases</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-send-email(1)__description">
@@ -746,6 +745,20 @@ Failure to do so may not produce the expected result in the
 recipient's MUA.</simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--[no-]mailmap
+</term>
+<listitem>
+<simpara>
+        Use the mailmap file (see <xref linkend="gitmailmap(5)" />) to map all
+        addresses to their canonical real name and email address. Additional
+        mailmap data specific to git-send-email may be provided using the
+        <emphasis>sendemail.mailmap.file</emphasis> or <emphasis>sendemail.mailmap.blob</emphasis> configuration
+        values. Defaults to <emphasis>sendemail.mailmap</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git-send-email(1)__administering">
@@ -883,6 +896,20 @@ default to <emphasis>--validate</emphasis>.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--translate-aliases
+</term>
+<listitem>
+<simpara>
+        Instead of the normal operation, read from standard input and
+        interpret each line as an email alias. Translate it according to the
+        configured alias file(s). Output each translated name and email
+        address to standard output, one per line. See <emphasis>sendemail.aliasFile</emphasis>
+        for more information about aliases.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 </simplesect>
@@ -963,6 +990,42 @@ sendemail.confirm
         one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, <emphasis>cc</emphasis>, <emphasis>compose</emphasis>, or <emphasis>auto</emphasis>. See <emphasis>--confirm</emphasis>
         in the <xref linkend="git-send-email(1)" /> documentation for the meaning of these
         values.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.mailmap
+</term>
+<listitem>
+<simpara>
+        If true, makes <xref linkend="git-send-email(1)" /> assume <emphasis>--mailmap</emphasis>,
+        otherwise assume <emphasis>--no-mailmap</emphasis>. False by default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.mailmap.file
+</term>
+<listitem>
+<simpara>
+        The location of a <xref linkend="git-send-email(1)" /> specific augmenting
+        mailmap file. The default mailmap and <emphasis>mailmap.file</emphasis> are loaded
+        first. Thus, entries in this file take precedence over entries in
+        the default mailmap locations. See <xref linkend="gitmailmap(5)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+sendemail.mailmap.blob
+</term>
+<listitem>
+<simpara>
+        Like <emphasis>sendemail.mailmap.file</emphasis>, but consider the value as a reference
+        to a blob in the repository. Entries in <emphasis>sendemail.mailmap.file</emphasis>
+        take precedence over entries here. See <xref linkend="gitmailmap(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
