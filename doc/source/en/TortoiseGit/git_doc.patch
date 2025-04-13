@@ -54,10 +54,18 @@ index 671267a..8f8c706 100644
  technical/api-index.adoc: technical/api-index-skel.adoc \
  	technical/api-index.sh $(patsubst %,%.adoc,$(API_DOCS))
 diff --git a/Documentation/asciidoc.conf.in b/Documentation/asciidoc.conf.in
-index f2aef6c..d6d7455 100644
+index f2aef6c..7dd0d87 100644
 --- a/Documentation/asciidoc.conf.in
 +++ b/Documentation/asciidoc.conf.in
-@@ -47,12 +47,131 @@ endif::doctype-book[]
+@@ -23,7 +23,6 @@ backtick=&#96;
+ litdd=&#45;&#45;
+ manmanual=Git Manual
+ mansource=Git @GIT_VERSION@
+-revdate=@GIT_DATE@
+ 
+ ifdef::doctype-book[]
+ [titles]
+@@ -47,12 +46,131 @@ endif::doctype-book[]
  
  endif::backend-docbook[]
  
