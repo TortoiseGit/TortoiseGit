@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2009-2025 - TortoiseGit
-// Copyright (C) 2003-2008, 2012-2020 - TortoiseSVN
+// Copyright (C) 2003-2008, 2012-2020, 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -677,8 +677,9 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 	textrange.chrg.cpMin = static_cast<Sci_PositionCR>(startpos);
 	textrange.chrg.cpMax = textrange.chrg.cpMin;
 	auto lastpos = endpos;
+	auto docLength = Call(SCI_GETLENGTH);
 	if (lastpos < 0)
-		lastpos = static_cast<int>(Call(SCI_GETLENGTH)) - textrange.chrg.cpMin;
+		lastpos = docLength;
 	Call(SCI_SETINDICATORCURRENT, INDIC_MISSPELLED);
 	while (textrange.chrg.cpMax < lastpos)
 	{
@@ -698,18 +699,10 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 		ATLASSERT(textrange.chrg.cpMax >= textrange.chrg.cpMin);
 		auto textbuffer = std::make_unique<char[]>(textrange.chrg.cpMax - textrange.chrg.cpMin + 2);
 		textrange.lpstrText = textbuffer.get();
-		textrange.chrg.cpMax++;
+		if (textrange.chrg.cpMax > docLength)
+			textrange.chrg.cpMax = static_cast<Sci_PositionCR>(docLength);
 		Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
-		auto len = static_cast<int>(strlen(textrange.lpstrText));
-		if (len == 0)
-		{
-			textrange.chrg.cpMax--;
-			Call(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&textrange));
-			len = static_cast<int>(strlen(textrange.lpstrText));
-			textrange.chrg.cpMax++;
-			len++;
-		}
-		if (len && textrange.lpstrText[len - 1] == '.')
+		if (textrange.chrg.cpMax < docLength && Call(SCI_GETCHARAT, textrange.chrg.cpMax) == '.')
 		{
 			// Try to ignore file names from the auto list.
 			// Do do this, for each word ending with '.' we extract next word and check
@@ -730,9 +723,6 @@ void CSciEdit::CheckSpelling(Sci_Position startpos, Sci_Position endpos)
 				continue;
 			}
 		}
-		if (len)
-			textrange.lpstrText[len - 1] = '\0';
-		textrange.chrg.cpMax--;
 		if (textrange.lpstrText[0])
 		{
 			CString sWord = StringFromControl(textrange.lpstrText);
