@@ -16,6 +16,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Updated libgit to version 2.49.0 based on Git for Windows sources
  * Update libgit2 to 1.9.0
  * Update json library to 3.12
+ * Update pcre2 to 10.45
 
 == Bug Fixes ==
  * Fixed issue #4191: Fix \r handling in log output window to avoid accidentally overwriting remote messages

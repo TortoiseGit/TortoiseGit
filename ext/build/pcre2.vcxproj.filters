@@ -98,6 +98,9 @@
     <ClCompile Include="..\pcre2\src\pcre2_chkdint.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2_compile_class.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pcre2\config.h">
@@ -116,6 +119,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\pcre2\src\pcre2posix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pcre2\src\pcre2_compile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pcre2\src\pcre2_util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
