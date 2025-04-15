@@ -115,5 +115,7 @@ public:
 
 	static bool StartHtmlHelp(DWORD_PTR id, CString page = L"index.html");
 
+	static int ExploreTo(HWND hwnd, CString path);
+
 	CCommonAppUtils() = delete;
 };

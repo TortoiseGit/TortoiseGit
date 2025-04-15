@@ -2436,6 +2436,18 @@ void CBaseView::OnContextMenu(CPoint point, DiffState state)
 				if (cmd == 10)
 					m_pMainFrame->DiffRightToBase();
 			}
+			if (this == m_pwndBottom)
+			{
+				CIconMenu popup;
+				if (!popup.CreatePopupMenu())
+					return;
+
+				temp.LoadString(IDS_EXPLORETO);
+				popup.AppendMenuIcon(10, temp, IDI_EXPLORER);
+				int cmd = popup.TrackPopupMenu(TPM_RETURNCMD | TPM_LEFTALIGN | TPM_NONOTIFY | TPM_RIGHTBUTTON, point.x, point.y, this);
+				if (cmd == 10)
+					CAppUtils::ExploreTo(GetSafeHwnd(), m_sFullFilePath);
+			}
 		}
 		return;
 	}

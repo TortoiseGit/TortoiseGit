@@ -467,3 +467,28 @@ bool CCommonAppUtils::StartHtmlHelp(DWORD_PTR id, CString page /* = L"index.html
 	return reinterpret_cast<INT_PTR>(ShellExecute(nullptr, L"open", url, nullptr, nullptr, SW_SHOWNORMAL)) > 32;
 #endif
 }
+
+int CCommonAppUtils::ExploreTo(HWND hwnd, CString path)
+{
+	if (PathFileExists(path))
+	{
+		HRESULT ret = E_FAIL;
+		ITEMIDLIST __unaligned* pidl = ILCreateFromPath(path);
+		if (pidl)
+		{
+			ret = SHOpenFolderAndSelectItems(pidl, 0, 0, 0);
+			ILFree(pidl);
+		}
+		return SUCCEEDED(ret) ? 0 : -1;
+	}
+	// if filepath does not exist any more, navigate to closest matching folder
+	do
+	{
+		const int pos = path.ReverseFind(L'\\');
+		if (pos <= 3)
+			break;
+		path.Truncate(pos);
+	} while (!PathFileExists(path));
+	return reinterpret_cast<INT_PTR>(ShellExecute(hwnd, L"explore", path, nullptr, nullptr, SW_SHOW)) > 32 ? 0 : -1;
+}
+

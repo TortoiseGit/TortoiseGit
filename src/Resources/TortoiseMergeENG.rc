@@ -39,6 +39,7 @@ IDI_CONFLICTEDIGNOREDLINE ICON                    "lineconflictedignored.ico"
 IDI_LINEEDITED          ICON                    "lineedited.ico"
 IDI_MOVEDLINE           ICON                    "moved.ico"
 IDI_LINEMARKED          ICON                    "linemarked.ico"
+IDI_EXPLORER            ICON                    "explorer.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1042,6 +1043,7 @@ BEGIN
     IDS_EDIT_TAB2SPACE      "Convert tabs to spaces"
     IDS_EDIT_SPACE2TAB      "Convert spaces to tabs"
     IDS_EDIT_TRIM           "Trim right"
+    IDS_EXPLORETO           "Explore to"
 END
 
 STRINGTABLE

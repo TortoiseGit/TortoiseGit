@@ -422,6 +422,7 @@
     <ClInclude Include="..\Utils\MiscUI\WaterEffect.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\explorer.ico" />
     <None Include="..\Resources\ignorecomments.txt" />
     <None Include="..\Resources\lineadded.ico" />
     <None Include="..\Resources\lineconflicted.ico" />

@@ -634,6 +634,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Resources\explorer.ico">
+      <Filter>Resource Files</Filter>
+    </None>
     <None Include="..\Resources\lineadded.ico">
       <Filter>Resource Files</Filter>
     </None>

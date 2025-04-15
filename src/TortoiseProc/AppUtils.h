@@ -233,8 +233,6 @@ public:
 
 	static int Git2CertificateCheck(git_cert *cert, int valid, const char* host, void *payload);
 
-	static int ExploreTo(HWND hwnd, CString path);
-
 	static bool DeleteRef(CWnd* parent, const CString& ref);
 
 	static void SetupBareRepoIcon(const CString& path);

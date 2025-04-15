@@ -4261,7 +4261,7 @@ msgstr ""
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr ""
 
