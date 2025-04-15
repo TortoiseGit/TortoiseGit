@@ -629,7 +629,7 @@
     <ClInclude Include="..\Utils\Monitor.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\Resources\TGitMergeHelpMapping.h">
+    <ClInclude Include="..\Resources\TGitMergeHelpMapping.ini">
       <Filter>Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
