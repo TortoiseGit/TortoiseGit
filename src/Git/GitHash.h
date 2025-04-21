@@ -152,6 +152,8 @@ public:
 		return str;
 	}
 
+	operator bool() = delete;
+
 	operator const git_oid*() const
 	{
 		return reinterpret_cast<const git_oid*>(m_hash);
