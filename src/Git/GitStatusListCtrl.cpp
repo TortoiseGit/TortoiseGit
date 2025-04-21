@@ -4702,8 +4702,8 @@ void CGitStatusListCtrl::DeleteSelectedFiles()
 	}
 	filelist += L'|';
 	const int len = filelist.GetLength();
-	auto buf = std::make_unique<wchar_t[]>(len + sizeof(wchar_t));
-	wcscpy_s(buf.get(), len + sizeof(wchar_t), filelist);
+	auto buf = std::make_unique<wchar_t[]>(len + 1);
+	wcscpy_s(buf.get(), len + 1, filelist);
 	CStringUtils::PipesToNulls(buf.get(), len);
 	SHFILEOPSTRUCT fileop;
 	fileop.hwnd = this->m_hWnd;

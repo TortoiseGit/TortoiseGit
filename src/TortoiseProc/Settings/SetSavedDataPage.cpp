@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021, 2023 - TortoiseGit
+// Copyright (C) 2012-2021, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -337,8 +337,8 @@ void CSetSavedDataPage::DeleteViaShell(LPCWSTR path, UINT progressText)
 	CString p(path);
 	p += L"||";
 	int len = p.GetLength();
-	auto buf = std::make_unique<wchar_t[]>(len + sizeof(wchar_t));
-	wcscpy_s(buf.get(), len + sizeof(wchar_t), p);
+	auto buf = std::make_unique<wchar_t[]>(len + 1);
+	wcscpy_s(buf.get(), len + 1, p);
 	CStringUtils::PipesToNulls(buf.get(), len);
 
 	CString progText(MAKEINTRESOURCE(progressText));
