@@ -69,7 +69,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 private:
-	TOOLINFO ti;
-	bool m_bInitCalled;
-	bool m_bRightAligned;
+	TOOLINFO ti = {};
+	bool m_bInitCalled = false;
+	bool m_bRightAligned = false;
 };
