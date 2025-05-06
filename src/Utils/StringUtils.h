@@ -204,7 +204,7 @@ public:
 	static void PipesToNulls(wchar_t* buffer, size_t length);
 	static void PipesToNulls(wchar_t* buffer);
 
-	static bool TrimRight(std::string_view& view);
-	static bool TrimRight(std::wstring_view& view);
+	static void TrimRight(std::string_view& view);
+	static void TrimRight(std::wstring_view& view);
 };
 

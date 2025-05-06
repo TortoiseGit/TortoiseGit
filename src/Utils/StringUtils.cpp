@@ -789,16 +789,14 @@ void CStringUtils::PipesToNulls(wchar_t* buffer)
 	}
 }
 
-bool CStringUtils::TrimRight(std::string_view& view)
+void CStringUtils::TrimRight(std::string_view& view)
 {
 	while (!view.empty() && std::isspace(static_cast<unsigned char>(view.back())))
 		view.remove_suffix(1);
-	return true;
 }
 
-bool CStringUtils::TrimRight(std::wstring_view& view)
+void CStringUtils::TrimRight(std::wstring_view& view)
 {
 	while (!view.empty() && std::iswspace(static_cast<wchar_t>(view.back())))
 		view.remove_suffix(1);
-	return true;
 }
