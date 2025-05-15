@@ -124,7 +124,7 @@ protected:
 
 	virtual void LocalBranchChange(){};
 	virtual void RemoteBranchChange(){};
-	virtual void SetRemote(CString remote){};
+	virtual void SetRemote(CString /* remote */) {};
 
 	void AddBranchToolTips(CHistoryCombo& pBranch, CToolTips* tip)
 	{

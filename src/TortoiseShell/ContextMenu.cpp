@@ -1191,7 +1191,7 @@ STDMETHODIMP CShellExt::InvokeCommand(LPCMINVOKECOMMANDINFO lpcmi)
 	return hr;
 }
 
-void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site)
+void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring /* uuidSource */, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site)
 {
 	// TortoiseGitProc expects a command line of the form:
 	//"/command:<commandname> /pathfile:<path> [/deletepathfile] ...
