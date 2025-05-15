@@ -169,19 +169,19 @@ public:
 		return memcmp(m_hash,hash.m_hash,GIT_HASH_SIZE) == 0;
 	}
 
-	static friend bool operator<(const CGitHash& left, const CGitHash& right)
+	bool operator<(const CGitHash& other) const
 	{
-		return memcmp(left.m_hash,right.m_hash,GIT_HASH_SIZE) < 0;
+		return memcmp(m_hash, other.m_hash, GIT_HASH_SIZE) < 0;
 	}
 
-	static friend bool operator>(const CGitHash& left, const CGitHash& right)
+	bool operator>(const CGitHash& other) const
 	{
-		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) > 0;
+		return memcmp(m_hash, other.m_hash, GIT_HASH_SIZE) > 0;
 	}
 
-	static friend bool operator != (const CGitHash& left, const CGitHash& right)
+	bool operator!=(const CGitHash& other) const
 	{
-		return memcmp(left.m_hash, right.m_hash, GIT_HASH_SIZE) != 0;
+		return memcmp(m_hash, other.m_hash, GIT_HASH_SIZE) != 0;
 	}
 
 	bool MatchesPrefix(const CGitHash& hash, const CString& hashString, size_t prefixLen) const
