@@ -67,6 +67,7 @@
     <ClCompile Include="..\tgit\compat\msvc.c" />
     <ClCompile Include="..\tgit\compat\basename.c" />
     <ClCompile Include="..\tgit\compat\nonblock.c" />
+    <ClCompile Include="..\tgit\compat\open.c" />
     <ClCompile Include="..\tgit\compat\qsort_s.c" />
     <ClCompile Include="..\tgit\compat\terminal.c" />
     <ClCompile Include="..\tgit\compat\win32\dirent.c" />
@@ -111,6 +112,7 @@
     <ClCompile Include="..\tgit\compat\win32\trace2_win32_process_info.c" />
     <ClCompile Include="..\tgit\compat\win32\wsl.c" />
     <ClCompile Include="..\tgit\compat\winansi.c" />
+    <ClCompile Include="..\tgit\compiler-tricks\not-constant.c" />
     <ClCompile Include="..\tgit\config.c" />
     <ClCompile Include="..\tgit\connect.c" />
     <ClCompile Include="..\tgit\connected.c" />
@@ -155,6 +157,7 @@
     <ClCompile Include="..\tgit\graph.c" />
     <ClCompile Include="..\tgit\grep.c" />
     <ClCompile Include="..\tgit\hash-lookup.c" />
+    <ClCompile Include="..\tgit\hash.c" />
     <ClCompile Include="..\tgit\hashmap.c" />
     <ClCompile Include="..\tgit\help.c" />
     <ClCompile Include="..\tgit\hex-ll.c" />
@@ -180,7 +183,6 @@
     <ClCompile Include="..\tgit\merge-ll.c" />
     <ClCompile Include="..\tgit\merge-ort-wrappers.c" />
     <ClCompile Include="..\tgit\merge-ort.c" />
-    <ClCompile Include="..\tgit\merge-recursive.c" />
     <ClCompile Include="..\tgit\merge.c" />
     <ClCompile Include="..\tgit\midx.c" />
     <ClCompile Include="..\tgit\name-hash.c" />
@@ -194,6 +196,7 @@
     <ClCompile Include="..\tgit\object-file-convert.c" />
     <ClCompile Include="..\tgit\object-file.c" />
     <ClCompile Include="..\tgit\object-name.c" />
+    <ClCompile Include="..\tgit\object-store.c" />
     <ClCompile Include="..\tgit\object.c" />
     <ClCompile Include="..\tgit\oid-array.c" />
     <ClCompile Include="..\tgit\oidmap.c" />
@@ -245,10 +248,10 @@
     <ClCompile Include="..\tgit\reftable\iter.c" />
     <ClCompile Include="..\tgit\reftable\merged.c" />
     <ClCompile Include="..\tgit\reftable\pq.c" />
-    <ClCompile Include="..\tgit\reftable\reader.c" />
     <ClCompile Include="..\tgit\reftable\record.c" />
     <ClCompile Include="..\tgit\reftable\stack.c" />
     <ClCompile Include="..\tgit\reftable\system.c" />
+    <ClCompile Include="..\tgit\reftable\table.c" />
     <ClCompile Include="..\tgit\reftable\tree.c">
       <ObjectFileName>$(IntDir)\reftable_%(Filename).obj</ObjectFileName>
     </ClCompile>
@@ -435,7 +438,6 @@
     <ClInclude Include="..\tgit\merge-ll.h" />
     <ClInclude Include="..\tgit\merge-ort-wrappers.h" />
     <ClInclude Include="..\tgit\merge-ort.h" />
-    <ClInclude Include="..\tgit\merge-recursive.h" />
     <ClInclude Include="..\tgit\merge.h" />
     <ClInclude Include="..\tgit\mergesort.h" />
     <ClInclude Include="..\tgit\midx.h" />
@@ -449,7 +451,6 @@
     <ClInclude Include="..\tgit\object-file-convert.h" />
     <ClInclude Include="..\tgit\object-file.h" />
     <ClInclude Include="..\tgit\object-name.h" />
-    <ClInclude Include="..\tgit\object-store-ll.h" />
     <ClInclude Include="..\tgit\object-store.h" />
     <ClInclude Include="..\tgit\object.h" />
     <ClInclude Include="..\tgit\oid-array.h" />
@@ -494,18 +495,21 @@
     <ClInclude Include="..\tgit\reftable\iter.h" />
     <ClInclude Include="..\tgit\reftable\merged.h" />
     <ClInclude Include="..\tgit\reftable\pq.h" />
-    <ClInclude Include="..\tgit\reftable\reader.h" />
     <ClInclude Include="..\tgit\reftable\record.h" />
+    <ClInclude Include="..\tgit\reftable\reftable-block.h" />
     <ClInclude Include="..\tgit\reftable\reftable-blocksource.h" />
+    <ClInclude Include="..\tgit\reftable\reftable-constants.h" />
     <ClInclude Include="..\tgit\reftable\reftable-error.h" />
     <ClInclude Include="..\tgit\reftable\reftable-iterator.h" />
     <ClInclude Include="..\tgit\reftable\reftable-merged.h" />
     <ClInclude Include="..\tgit\reftable\reftable-reader.h" />
     <ClInclude Include="..\tgit\reftable\reftable-record.h" />
     <ClInclude Include="..\tgit\reftable\reftable-stack.h" />
+    <ClInclude Include="..\tgit\reftable\reftable-table.h" />
     <ClInclude Include="..\tgit\reftable\reftable-writer.h" />
     <ClInclude Include="..\tgit\reftable\stack.h" />
     <ClInclude Include="..\tgit\reftable\system.h" />
+    <ClInclude Include="..\tgit\reftable\table.h" />
     <ClInclude Include="..\tgit\reftable\tree.h" />
     <ClInclude Include="..\tgit\reftable\writer.h" />
     <ClInclude Include="..\tgit\remote.h" />

@@ -381,10 +381,10 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	struct setup_revision_opt opt;
 
 	/* clear flags */
-	unsigned int obj_size = get_max_object_index();
+	const unsigned int obj_size = get_max_object_index(the_repository);
 	for (unsigned int i = 0; i < obj_size; ++i)
 	{
-		struct object *ob= get_indexed_object(i);
+		struct object* ob = get_indexed_object(the_repository, i);
 		if(ob)
 		{
 			ob->flags=0;
