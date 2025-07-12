@@ -30,6 +30,8 @@
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.ApplicationModel.h>
 
+#pragma comment(lib, "windowsapp.lib")
+
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Management::Deployment;
 
