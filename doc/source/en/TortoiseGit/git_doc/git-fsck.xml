@@ -16,7 +16,7 @@
 <literallayout><emphasis>git fsck</emphasis> [--tags] [--root] [--unreachable] [--cache] [--no-reflogs]
          [--[no-]full] [--strict] [--verbose] [--lost-found]
          [--[no-]dangling] [--[no-]progress] [--connectivity-only]
-         [--[no-]name-objects] [&lt;object&gt;&#8230;]</literallayout>
+         [--[no-]name-objects] [--[no-]references] [&lt;object&gt;&#8230;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fsck(1)__description">
@@ -203,6 +203,18 @@ care about this output and want to speed it up further.</simpara>
         --no-progress or --verbose is specified. --progress forces
         progress status even if the standard error stream is not
         directed to a terminal.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]references
+</term>
+<listitem>
+<simpara>
+        Control whether to check the references database consistency
+        via <emphasis>git refs verify</emphasis>. See <xref linkend="git-refs(1)" /> for details.
+        The default is to check the references database.
 </simpara>
 </listitem>
 </varlistentry>
@@ -427,6 +439,27 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>badPackedRefEntry</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The "packed-refs" file contains an invalid entry.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badPackedRefHeader</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The "packed-refs" file contains an invalid
+        header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>badParentSha1</emphasis>
 </term>
 <listitem>
@@ -542,6 +575,19 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 <listitem>
 <simpara>
         (WARN) A path contains an empty name.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>emptyPackedRefsFile</emphasis>
+</term>
+<listitem>
+<simpara>
+        (INFO) "packed-refs" file is empty. Report to the
+        <ulink url="mailto:git@vger.kernel.org">git@vger.kernel.org</ulink> mailing list if you see this error. As only
+        very early versions of Git would create such an empty
+        "packed_refs" file, we might tighten this rule in the future.
 </simpara>
 </listitem>
 </varlistentry>
@@ -940,6 +986,27 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 <listitem>
 <simpara>
         (WARN) Tree contains entries pointing to a null sha1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>packedRefEntryNotTerminated</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The "packed-refs" file contains an entry that is
+        not terminated by a newline.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>packedRefUnsorted</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The "packed-refs" file is not sorted.
 </simpara>
 </listitem>
 </varlistentry>

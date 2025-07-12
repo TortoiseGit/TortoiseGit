@@ -101,6 +101,8 @@ notes across commands that rewrite commits.</simpara>
 <simpara>on standard input, and copy the notes from each <emphasis>&lt;from-object&gt;</emphasis> to its
 corresponding <emphasis>&lt;to-object&gt;</emphasis>.  (The optional <emphasis>&lt;rest&gt;</emphasis> is ignored so that
 the command can read the input given to the <emphasis>post-rewrite</emphasis> hook.)</simpara>
+<simpara><emphasis>--stdin</emphasis> cannot be combined with object names given on the command
+line.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -172,6 +174,9 @@ When done, the user can either finalize the merge with
         equivalent to specifying an empty note message to
         the <emphasis>edit</emphasis> subcommand.
 </simpara>
+<simpara>In <emphasis>--stdin</emphasis> mode, also remove the object names given on standard
+input. In other words, <emphasis>--stdin</emphasis> can be combined with object names from
+the command line.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -226,9 +231,6 @@ When done, the user can either finalize the merge with
         Use the given note message (instead of prompting).
         If multiple <emphasis>-m</emphasis> options are given, their values
         are concatenated as separate paragraphs.
-        Lines starting with <emphasis>#</emphasis> and empty lines other than a
-        single line between paragraphs will be stripped out.
-        If you wish to keep them verbatim, use <emphasis>--no-stripspace</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -243,9 +245,6 @@ When done, the user can either finalize the merge with
 <simpara>
         Take the note message from the given file.  Use <emphasis>-</emphasis> to
         read the note message from the standard input.
-        Lines starting with <emphasis>#</emphasis> and empty lines other than a
-        single line between paragraphs will be stripped out.
-        If you wish to keep them verbatim, use <emphasis>--no-stripspace</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -260,10 +259,8 @@ When done, the user can either finalize the merge with
 <simpara>
         Take the given blob object (for example, another note) as the
         note message. (Use <emphasis>git notes copy &lt;object&gt;</emphasis> instead to
-        copy notes between objects.).  By default, message will be
-        copied verbatim, but if you wish to strip out the lines
-        starting with <emphasis>#</emphasis> and empty lines other than a single line
-        between paragraphs, use with <emphasis>--stripspace</emphasis> option.
+        copy notes between objects.)  Implies <emphasis>--no-stripspace</emphasis> since
+        the default behavior is to copy the message verbatim.
 </simpara>
 </listitem>
 </varlistentry>
@@ -294,10 +291,13 @@ When done, the user can either finalize the merge with
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]separator</emphasis>
+<emphasis>--separator=&lt;paragraph-break&gt;</emphasis>
 </term>
 <term>
-<emphasis>--separator=&lt;paragraph-break&gt;</emphasis>
+<emphasis>--separator</emphasis>
+</term>
+<term>
+<emphasis>--no-separator</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -310,21 +310,49 @@ When done, the user can either finalize the merge with
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]stripspace</emphasis>
+<emphasis>--stripspace</emphasis>
+</term>
+<term>
+<emphasis>--no-stripspace</emphasis>
 </term>
 <listitem>
 <simpara>
-        Strip leading and trailing whitespace from the note message.
-        Also strip out empty lines other than a single line between
-        paragraphs. Lines starting with <emphasis>#</emphasis> will be stripped out
-        in non-editor cases like <emphasis>-m</emphasis>, <emphasis>-F</emphasis> and <emphasis>-C</emphasis>, but not in
-        editor case like <emphasis>git notes edit</emphasis>, <emphasis>-c</emphasis>, etc.
+        Clean up whitespace. Specifically (see
+        <xref linkend="git-stripspace(1)" />):
 </simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+remove trailing whitespace from all lines
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+collapse multiple consecutive empty lines into one empty line
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+remove empty lines from the beginning and end of the input
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+add a missing <emphasis>\n</emphasis> to the last line if necessary.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara><emphasis>--stripspace</emphasis> is the default except for
+<emphasis>-C</emphasis>/<emphasis>--reuse-message</emphasis>. However, keep in mind that this depends on the
+order of similar options. For example, for <emphasis>-C &lt;object&gt; -m&lt;message&gt;</emphasis>,
+<emphasis>--stripspace</emphasis> will be used because the default for <emphasis>-m</emphasis> overrides the
+previous <emphasis>-C</emphasis>. This is a known limitation that may be fixed in the
+future.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--ref &lt;ref&gt;</emphasis>
+<emphasis>--ref=&lt;ref&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -353,9 +381,7 @@ When done, the user can either finalize the merge with
 </term>
 <listitem>
 <simpara>
-        Also read the object names to remove notes from the standard
-        input (there is no reason you cannot combine this with object
-        names from the command line).
+        Only valid for <emphasis>remove</emphasis> and <emphasis>copy</emphasis>. See the respective subcommands.
 </simpara>
 </listitem>
 </varlistentry>

@@ -20,6 +20,7 @@
         [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
 <emphasis>git reflog delete</emphasis> [--rewrite] [--updateref]
         [--dry-run | -n] [--verbose] &lt;ref&gt;@{&lt;specifier&gt;}&#8230;
+<emphasis>git reflog drop</emphasis> [--all [--single-worktree] | &lt;refs&gt;&#8230;]
 <emphasis>git reflog exists</emphasis> &lt;ref&gt;</literallayout>
 </blockquote>
 </simplesect>
@@ -47,10 +48,13 @@ than <emphasis>expire</emphasis> time, or entries older than <emphasis>expire-un
 and not reachable from the current tip, are removed from the reflog.
 This is typically not used directly by end users -- instead, see
 <xref linkend="git-gc(1)" />.</simpara>
-<simpara>The "delete" subcommand deletes single entries from the reflog. Its
-argument must be an <emphasis>exact</emphasis> entry (e.g. "<emphasis>git reflog delete
-master@{2}</emphasis>"). This subcommand is also typically not used directly by
-end users.</simpara>
+<simpara>The "delete" subcommand deletes single entries from the reflog, but
+not the reflog itself. Its argument must be an <emphasis>exact</emphasis> entry (e.g. "<emphasis>git
+reflog delete master@{2}</emphasis>"). This subcommand is also typically not used
+directly by end users.</simpara>
+<simpara>The "drop" subcommand completely removes the reflog for the specified
+references. This is in contrast to "expire" and "delete", both of which
+can be used to delete reflog entries, but not the reflog itself.</simpara>
 <simpara>The "exists" subcommand checks whether a ref has a reflog.  It exits
 with zero status if the reflog exists, and non-zero status if it does
 not.</simpara>
@@ -190,6 +194,33 @@ which didn't protect objects referred to by reflogs.</simpara>
 <simpara><emphasis>git reflog delete</emphasis> accepts options <emphasis>--updateref</emphasis>, <emphasis>--rewrite</emphasis>, <emphasis>-n</emphasis>,
 <emphasis>--dry-run</emphasis>, and <emphasis>--verbose</emphasis>, with the same meanings as when they are
 used with <emphasis>expire</emphasis>.</simpara>
+</section>
+<section id="git-reflog(1)__options_for_emphasis_drop_emphasis">
+<title>Options for <emphasis>drop</emphasis></title>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        Drop the reflogs of all references from all worktrees.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--single-worktree
+</term>
+<listitem>
+<simpara>
+        By default when <emphasis>--all</emphasis> is specified, reflogs from all working
+        trees are dropped. This option limits the processing to reflogs
+        from the current working tree only.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </section>
 </simplesect>
 <simplesect id="git-reflog(1)__git">

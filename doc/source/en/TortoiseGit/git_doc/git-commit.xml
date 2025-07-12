@@ -1081,10 +1081,11 @@ same as what's found there:</simpara>
         This setting overrides the default of the <emphasis>--cleanup</emphasis> option in
         <emphasis>git commit</emphasis>.  Changing the default can be useful
         when you always want to keep lines that begin
-        with the comment character <emphasis>#</emphasis> in your log message, in which case you
+        with the comment character (<emphasis>core.commentChar</emphasis>, default <emphasis>#</emphasis>)
+        in your log message, in which case you
         would do <emphasis>git config commit.cleanup whitespace</emphasis> (note that you will
-        have to remove the help lines that begin with <emphasis>#</emphasis> in the commit log
-        template yourself, if you do this).
+        have to remove the help lines that begin with the comment character
+        in the commit log template yourself, if you do this).
 </simpara>
 </listitem>
 </varlistentry>

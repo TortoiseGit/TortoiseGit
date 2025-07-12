@@ -13,7 +13,7 @@
 <simplesect id="git-mergetool(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mergetool</emphasis> [--tool=&lt;tool&gt;] [-y | --[no-]prompt] [&lt;file&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>mergetool</code> [<code>--tool=</code><emphasis>&lt;tool&gt;</emphasis>] [<code>-y</code> | <code>--</code>[<code>no-</code>]<code>prompt</code>] [<emphasis>&lt;file&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mergetool(1)__description">
@@ -23,7 +23,7 @@ merge conflicts.  It is typically run after <emphasis>git merge</emphasis>.</sim
 <simpara>If one or more &lt;file&gt; parameters are given, the merge tool program will
 be run to resolve differences in each file (skipping those without
 conflicts).  Specifying a directory will include all unresolved files in
-that path.  If no &lt;file&gt; names are specified, <emphasis>git mergetool</emphasis> will run
+that path.  If no <emphasis>&lt;file&gt;</emphasis> names are specified, <emphasis>git mergetool</emphasis> will run
 the merge tool program on every file with merge conflicts.</simpara>
 </simplesect>
 <simplesect id="git-mergetool(1)__options">
@@ -31,17 +31,17 @@ the merge tool program on every file with merge conflicts.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--t &lt;tool&gt;
+<emphasis>-t &lt;tool&gt;</emphasis>
 </term>
 <term>
---tool=&lt;tool&gt;
+<emphasis>--tool=&lt;tool&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use the merge resolution program specified by &lt;tool&gt;.
-        Valid values include emerge, gvimdiff, kdiff3,
-        meld, vimdiff, and tortoisemerge. Run <emphasis>git mergetool --tool-help</emphasis>
-        for the list of valid &lt;tool&gt; settings.
+        Use the merge resolution program specified by <emphasis>&lt;tool&gt;</emphasis>.
+        Valid values include <emphasis>emerge</emphasis>, <emphasis>gvimdiff</emphasis>, <emphasis>kdiff3</emphasis>,
+        <emphasis>meld</emphasis>, <emphasis>vimdiff</emphasis>, and <emphasis>tortoisemerge</emphasis>. Run <emphasis>git mergetool --tool-help</emphasis>
+        for the list of valid <emphasis>&lt;tool&gt;</emphasis> settings.
 </simpara>
 <simpara>If a merge resolution program is not specified, <emphasis>git mergetool</emphasis>
 will use the configuration variable <emphasis>merge.tool</emphasis>.  If the
@@ -51,19 +51,19 @@ will pick a suitable default.</simpara>
 configuration variable <emphasis>mergetool.&lt;tool&gt;.path</emphasis>. For example, you
 can configure the absolute path to kdiff3 by setting
 <emphasis>mergetool.kdiff3.path</emphasis>. Otherwise, <emphasis>git mergetool</emphasis> assumes the
-tool is available in PATH.</simpara>
+tool is available in <emphasis>$PATH</emphasis>.</simpara>
 <simpara>Instead of running one of the known merge tool programs,
 <emphasis>git mergetool</emphasis> can be customized to run an alternative program
 by specifying the command line to invoke in a configuration
 variable <emphasis>mergetool.&lt;tool&gt;.cmd</emphasis>.</simpara>
 <simpara>When <emphasis>git mergetool</emphasis> is invoked with this tool (either through the
 <emphasis>-t</emphasis> or <emphasis>--tool</emphasis> option or the <emphasis>merge.tool</emphasis> configuration
-variable), the configured command line will be invoked with <emphasis>$BASE</emphasis>
+variable), the configured command line will be invoked with <emphasis>BASE</emphasis>
 set to the name of a temporary file containing the common base for
-the merge, if available; <emphasis>$LOCAL</emphasis> set to the name of a temporary
+the merge, if available; <emphasis>LOCAL</emphasis> set to the name of a temporary
 file containing the contents of the file on the current branch;
-<emphasis>$REMOTE</emphasis> set to the name of a temporary file containing the
-contents of the file to be merged, and <emphasis>$MERGED</emphasis> set to the name
+<emphasis>REMOTE</emphasis> set to the name of a temporary file containing the
+contents of the file to be merged, and <emphasis>MERGED</emphasis> set to the name
 of the file to which the merge tool should write the result of the
 merge resolution.</simpara>
 <simpara>If the custom merge tool correctly indicates the success of a
@@ -75,7 +75,7 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---tool-help
+<emphasis>--tool-help</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -85,10 +85,10 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--y
+<emphasis>-y</emphasis>
 </term>
 <term>
---no-prompt
+<emphasis>--no-prompt</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -102,7 +102,7 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---prompt
+<emphasis>--prompt</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -113,10 +113,10 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--g
+<emphasis>-g</emphasis>
 </term>
 <term>
---gui
+<emphasis>--gui</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -131,7 +131,7 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-gui
+<emphasis>--no-gui</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -143,12 +143,12 @@ success of the resolution after the custom tool has exited.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--O&lt;orderfile&gt;
+<emphasis>-O&lt;orderfile&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Process files in the order specified in the
-        &lt;orderfile&gt;, which has one shell glob pattern per line.
+        <emphasis>&lt;orderfile&gt;</emphasis>, which has one shell glob pattern per line.
         This overrides the <emphasis>diff.orderFile</emphasis> configuration variable
         (see <xref linkend="git-config(1)" />).  To cancel <emphasis>diff.orderFile</emphasis>,
         use <emphasis>-O/dev/null</emphasis>.
@@ -165,18 +165,18 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.path
+<emphasis>mergetool.&lt;tool&gt;.path</emphasis>
 </term>
 <listitem>
 <simpara>
         Override the path for the given tool.  This is useful in case
-        your tool is not in the PATH.
+        your tool is not in the <emphasis>$PATH</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.cmd
+<emphasis>mergetool.&lt;tool&gt;.cmd</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -194,7 +194,7 @@ mergetool.&lt;tool&gt;.cmd
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.hideResolved
+<emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -206,7 +206,7 @@ mergetool.&lt;tool&gt;.hideResolved
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.trustExitCode
+<emphasis>mergetool.&lt;tool&gt;.trustExitCode</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -221,7 +221,7 @@ mergetool.&lt;tool&gt;.trustExitCode
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.meld.hasOutput
+<emphasis>mergetool.meld.hasOutput</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -237,7 +237,7 @@ mergetool.meld.hasOutput
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.meld.useAutoMerge
+<emphasis>mergetool.meld.useAutoMerge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -254,7 +254,7 @@ mergetool.meld.useAutoMerge
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;vimdiff variant&gt;.layout
+<emphasis>mergetool.&lt;variant&gt;.layout</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -263,7 +263,7 @@ mergetool.&lt;vimdiff variant&gt;.layout
         Upon launching <emphasis>git mergetool</emphasis> with <emphasis>--tool=&lt;variant&gt;</emphasis> (or without <emphasis>--tool</emphasis>
         if <emphasis>merge.tool</emphasis> is configured as <emphasis>&lt;variant&gt;</emphasis>), Git will consult
         <emphasis>mergetool.&lt;variant&gt;.layout</emphasis> to determine the tool's layout. If the
-        variant-specific configuration is not available, <emphasis>vimdiff</emphasis>'s is used as
+        variant-specific configuration is not available, <emphasis>vimdiff</emphasis> ' s is used as
         fallback.  If that too is not available, a default layout with 4 windows
         will be used.  To configure the layout, see the <emphasis>BACKEND SPECIFIC HINTS</emphasis>
         section.
@@ -272,15 +272,15 @@ mergetool.&lt;vimdiff variant&gt;.layout
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.hideResolved
+<emphasis>mergetool.hideResolved</emphasis>
 </term>
 <listitem>
 <simpara>
         During a merge, Git will automatically resolve as many conflicts as
-        possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
-        any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
-        represent the versions of the file from before Git's conflict
-        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwritten so
+        possible and write the <emphasis>$MERGED</emphasis> file containing conflict markers around
+        any conflicts that it cannot resolve; <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> normally
+        are the versions of the file from before Git`s conflict
+        resolution. This flag causes <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> to be overwritten so
         that only the unresolved conflicts are presented to the merge tool. Can
         be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
         configuration variable. Defaults to <emphasis>false</emphasis>.
@@ -289,7 +289,7 @@ mergetool.hideResolved
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.keepBackup
+<emphasis>mergetool.keepBackup</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -302,7 +302,7 @@ mergetool.keepBackup
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.keepTemporaries
+<emphasis>mergetool.keepTemporaries</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -316,7 +316,7 @@ mergetool.keepTemporaries
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.writeToTemp
+<emphasis>mergetool.writeToTemp</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -329,7 +329,7 @@ mergetool.writeToTemp
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.prompt
+<emphasis>mergetool.prompt</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -339,7 +339,7 @@ mergetool.prompt
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.guiDefault
+<emphasis>mergetool.guiDefault</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -461,7 +461,7 @@ command.</simpara>
 <emphasis>layout = "@LOCAL,REMOTE"</emphasis>
 </simpara>
 <simpara>When <emphasis>MERGED</emphasis> is not present in the layout, you must "mark" one of the
-buffers with an asterisk. That will become the buffer you need to edit and
+buffers with an arobase (<emphasis>@</emphasis>). That will become the buffer you need to edit and
 save after resolving the conflicts.</simpara>
 <literallayout class="monospaced">------------------------------------------
 |                   |                    |
@@ -556,28 +556,28 @@ latter will be used as fallback if the variant-specific one is not set).</simpar
 <simpara>In addition, for backwards compatibility with previous Git versions, you can
 also append <emphasis>1</emphasis>, <emphasis>2</emphasis> or <emphasis>3</emphasis> to either <emphasis>vimdiff</emphasis> or any of the variants (ex:
 <emphasis>vimdiff3</emphasis>, <emphasis>nvimdiff1</emphasis>, etc&#8230;) to use a predefined layout.
-In other words, using <emphasis>--tool=[g,n,]vimdiffx</emphasis> is the same as using
-<emphasis>--tool=[g,n,]vimdiff</emphasis> and setting configuration variable
-<emphasis>mergetool.[g,n,]vimdiff.layout</emphasis> to&#8230;</simpara>
+In other words, using <emphasis>--tool=[g|n]vimdiff&lt;x&gt;</emphasis> is the same as using
+<emphasis>--tool=[g|n]vimdiff</emphasis> and setting configuration variable
+<emphasis>mergetool.[g|n]vimdiff.layout</emphasis> to&#8230;</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>x=1</emphasis>: <emphasis>"@LOCAL, REMOTE"</emphasis>
+<emphasis>&lt;x&gt;=1</emphasis>: <emphasis>"@LOCAL, REMOTE"</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>x=2</emphasis>: <emphasis>"LOCAL, MERGED, REMOTE"</emphasis>
+<emphasis>&lt;x&gt;=2</emphasis>: <emphasis>"LOCAL, MERGED, REMOTE"</emphasis>
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>x=3</emphasis>: <emphasis>"MERGED"</emphasis>
+<emphasis>&lt;x&gt;=3</emphasis>: <emphasis>"MERGED"</emphasis>
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>Example: using <emphasis>--tool=gvimdiff2</emphasis> will open <emphasis>gvim</emphasis> with three columns (LOCAL,
-MERGED and REMOTE).</simpara>
+<simpara>Example: using <emphasis>--tool=gvimdiff2</emphasis> will open <emphasis>gvim</emphasis> with three columns (<emphasis>LOCAL</emphasis>,
+<emphasis>MERGED</emphasis> and <emphasis>REMOTE</emphasis>).</simpara>
 </section>
 </section>
 </simplesect>

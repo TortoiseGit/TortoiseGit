@@ -481,10 +481,10 @@ which makes little sense.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---rerere-autoupdate
+<emphasis>--rerere-autoupdate</emphasis>
 </term>
 <term>
---no-rerere-autoupdate
+<emphasis>--no-rerere-autoupdate</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1181,7 +1181,7 @@ arguments to <emphasis>git merge</emphasis> and/or <emphasis>git pull</emphasis>
 <variablelist>
 <varlistentry>
 <term>
-ort
+<emphasis>ort</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1210,7 +1210,7 @@ ones, if one exists.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-ours
+<emphasis>ours</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1226,7 +1226,7 @@ the other tree did, declaring <emphasis>our</emphasis> history contains all that
 </varlistentry>
 <varlistentry>
 <term>
-theirs
+<emphasis>theirs</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1237,16 +1237,16 @@ theirs
 </varlistentry>
 <varlistentry>
 <term>
-ignore-space-change
+<emphasis>ignore-space-change</emphasis>
 </term>
 <term>
-ignore-all-space
+<emphasis>ignore-all-space</emphasis>
 </term>
 <term>
-ignore-space-at-eol
+<emphasis>ignore-space-at-eol</emphasis>
 </term>
 <term>
-ignore-cr-at-eol
+<emphasis>ignore-cr-at-eol</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1279,7 +1279,7 @@ Otherwise, the merge proceeds in the usual way.
 </varlistentry>
 <varlistentry>
 <term>
-renormalize
+<emphasis>renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1294,7 +1294,7 @@ renormalize
 </varlistentry>
 <varlistentry>
 <term>
-no-renormalize
+<emphasis>no-renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1305,7 +1305,7 @@ no-renormalize
 </varlistentry>
 <varlistentry>
 <term>
-find-renames[=&lt;n&gt;]
+<emphasis>find-renames[=&lt;n&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1318,7 +1318,7 @@ find-renames[=&lt;n&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-rename-threshold=&lt;n&gt;
+<emphasis>rename-threshold=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1328,7 +1328,54 @@ rename-threshold=&lt;n&gt;
 </varlistentry>
 <varlistentry>
 <term>
-subtree[=&lt;path&gt;]
+<emphasis>no-renames</emphasis>
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
+        configuration variable.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        Deprecated synonym for <emphasis>diff-algorithm=histogram</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Deprecated synonym for <emphasis>diff-algorithm=patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diff-algorithm=(histogram|minimal|myers|patience)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use a different diff algorithm while merging, which can help
+        avoid mismerges that occur due to unimportant matching lines
+        (such as braces from distinct functions).  See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.  Note that <emphasis>ort</emphasis>
+        defaults to <emphasis>diff-algorithm=histogram</emphasis>, while regular diffs
+        currently default to the <emphasis>diff.algorithm</emphasis> config setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>subtree[=&lt;path&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1345,72 +1392,21 @@ subtree[=&lt;path&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-recursive
+<emphasis>recursive</emphasis>
 </term>
 <listitem>
 <simpara>
-        This can only resolve two heads using a 3-way merge
-        algorithm.  When there is more than one common
-        ancestor that can be used for 3-way merge, it creates a
-        merged tree of the common ancestors and uses that as
-        the reference tree for the 3-way merge.  This has been
-        reported to result in fewer merge conflicts without
-        causing mismerges by tests done on actual merge commits
-        taken from Linux 2.6 kernel development history.
-        Additionally this can detect and handle merges involving
-        renames.  It does not make use of detected copies.  This was
-        the default strategy for resolving two heads from Git v0.99.9k
-        until v2.33.0.
-</simpara>
-<simpara>For a path that is a submodule, the same caution as <emphasis>ort</emphasis> applies to this
-strategy.</simpara>
-<simpara>The <emphasis>recursive</emphasis> strategy takes the same options as <emphasis>ort</emphasis>.  However,
-there are three additional options that <emphasis>ort</emphasis> ignores (not documented
-above) that are potentially useful with the <emphasis>recursive</emphasis> strategy:</simpara>
-<variablelist>
-<varlistentry>
-<term>
-patience
-</term>
-<listitem>
-<simpara>
-        Deprecated synonym for <emphasis>diff-algorithm=patience</emphasis>.
+        This is now a synonym for <emphasis>ort</emphasis>.  It was an alternative
+        implementation until v2.49.0, but was redirected to mean <emphasis>ort</emphasis>
+        in v2.50.0.  The previous recursive strategy was the default
+        strategy for resolving two heads from Git v0.99.9k until
+        v2.33.0.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-diff-algorithm=[patience|minimal|histogram|myers]
-</term>
-<listitem>
-<simpara>
-        Use a different diff algorithm while merging, which can help
-        avoid mismerges that occur due to unimportant matching lines
-        (such as braces from distinct functions).  See also
-        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.  Note that <emphasis>ort</emphasis>
-        specifically uses <emphasis>diff-algorithm=histogram</emphasis>, while <emphasis>recursive</emphasis>
-        defaults to the <emphasis>diff.algorithm</emphasis> config setting.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-no-renames
-</term>
-<listitem>
-<simpara>
-        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
-        configuration variable.
-        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-resolve
+<emphasis>resolve</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1423,7 +1419,7 @@ resolve
 </varlistentry>
 <varlistentry>
 <term>
-octopus
+<emphasis>octopus</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1437,7 +1433,7 @@ octopus
 </varlistentry>
 <varlistentry>
 <term>
-ours
+<emphasis>ours</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1445,14 +1441,14 @@ ours
         merge is always that of the current branch head, effectively
         ignoring all changes from all other branches.  It is meant to
         be used to supersede old development history of side
-        branches.  Note that this is different from the -Xours option to
-        the <emphasis>recursive</emphasis> merge strategy.
+        branches.  Note that this is different from the <emphasis>-Xours</emphasis> option to
+        the <emphasis>ort</emphasis> merge strategy.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-subtree
+<emphasis>subtree</emphasis>
 </term>
 <listitem>
 <simpara>

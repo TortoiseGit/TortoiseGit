@@ -13,19 +13,20 @@
 <simplesect id="git-verify-commit(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git verify-commit</emphasis> [-v | --verbose] [--raw] &lt;commit&gt;&#8230;</literallayout>
+<literallayout><code>git</code> <code>verify-commit</code> [<code>-v</code> | <code>--verbose</code>] [<code>--raw</code>] <emphasis>&lt;commit&gt;</emphasis><code>&#8230;</code></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-verify-commit(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Validates the GPG signature created by <emphasis>git commit -S</emphasis>.</simpara>
+<simpara>Validates the GPG signature created by <emphasis>git commit -S</emphasis>
+on the commit objects given on the command line.</simpara>
 </simplesect>
 <simplesect id="git-verify-commit(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
---raw
+<emphasis>--raw</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -36,24 +37,14 @@
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
         Print the contents of the commit object before validating it.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-&lt;commit&gt;&#8230;
-</term>
-<listitem>
-<simpara>
-        SHA-1 identifiers of Git commit objects.
 </simpara>
 </listitem>
 </varlistentry>

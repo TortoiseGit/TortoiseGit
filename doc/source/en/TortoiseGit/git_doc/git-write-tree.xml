@@ -13,7 +13,7 @@
 <simplesect id="git-write-tree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git write-tree</emphasis> [--missing-ok] [--prefix=&lt;prefix&gt;/]</literallayout>
+<literallayout><code>git</code> <code>write-tree</code> [<code>--missing-ok</code>] [<code>--prefix=</code><emphasis>&lt;prefix&gt;</emphasis><code>/</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-write-tree(1)__description">
@@ -32,7 +32,7 @@ now, you need to have done a <emphasis>git update-index</emphasis> phase before 
 <variablelist>
 <varlistentry>
 <term>
---missing-ok
+<emphasis>--missing-ok</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -44,7 +44,7 @@ now, you need to have done a <emphasis>git update-index</emphasis> phase before 
 </varlistentry>
 <varlistentry>
 <term>
---prefix=&lt;prefix&gt;/
+<emphasis>--prefix=&lt;prefix&gt;/</emphasis>
 </term>
 <listitem>
 <simpara>

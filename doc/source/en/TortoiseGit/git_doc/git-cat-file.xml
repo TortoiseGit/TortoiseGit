@@ -14,8 +14,7 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><emphasis>git cat-file</emphasis> &lt;type&gt; &lt;object&gt;
-<emphasis>git cat-file</emphasis> (-e | -p) &lt;object&gt;
-<emphasis>git cat-file</emphasis> (-t | -s) [--allow-unknown-type] &lt;object&gt;
+<emphasis>git cat-file</emphasis> (-e | -p | -t | -s) &lt;object&gt;
 <emphasis>git cat-file</emphasis> (--textconv | --filters)
              [&lt;rev&gt;:&lt;path|tree-ish&gt; | --path=&lt;path|tree-ish&gt; &lt;rev&gt;]
 <emphasis>git cat-file</emphasis> (--batch | --batch-check | --batch-command) [--batch-all-objects]
@@ -148,6 +147,31 @@ named on the command line.</simpara>
         end-of-line conversion, etc). In this case, <emphasis>&lt;object&gt;</emphasis> has to be of
         the form <emphasis>&lt;tree-ish&gt;:&lt;path&gt;</emphasis>, or <emphasis>:&lt;path&gt;</emphasis>.
 </simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--filter=&lt;filter-spec&gt;
+</term>
+<term>
+--no-filter
+</term>
+<listitem>
+<simpara>
+        Omit objects from the list of printed objects. This can only be used in
+        combination with one of the batched modes. Excluded objects that have
+        been explicitly requested via any of the batch modes that read objects
+        via standard input (<emphasis>--batch</emphasis>, <emphasis>--batch-check</emphasis>) will be reported as
+        "filtered". Excluded objects in <emphasis>--batch-all-objects</emphasis> mode will not be
+        printed at all. The <emphasis>&lt;filter-spec&gt;</emphasis> may be one of the following:
+</simpara>
+<simpara>The form <emphasis>--filter=blob:none</emphasis> omits all blobs.</simpara>
+<simpara>The form <emphasis>--filter=blob:limit=&lt;n&gt;[kmg]</emphasis> omits blobs of size at least n
+bytes or units.  n may be zero.  The suffixes k, m, and g can be used to name
+units in KiB, MiB, or GiB.  For example, <emphasis>blob:limit=1k</emphasis> is the same as
+<emphasis>blob:limit=1024</emphasis>.</simpara>
+<simpara>The form <emphasis>--filter=object:type=(tag|commit|tree|blob)</emphasis> omits all objects which
+are not of the requested type.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -346,16 +370,6 @@ flush
 </varlistentry>
 <varlistentry>
 <term>
---allow-unknown-type
-</term>
-<listitem>
-<simpara>
-        Allow <emphasis>-s</emphasis> or <emphasis>-t</emphasis> to query broken/corrupt objects of unknown type.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
 --follow-symlinks
 </term>
 <listitem>
@@ -532,6 +546,9 @@ of <emphasis>%(objectsize)</emphasis> bytes), followed by a newline.</simpara>
 <simpara>If a name is specified on stdin that cannot be resolved to an object in
 the repository, then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
 <screen>&lt;object&gt; SP missing LF</screen>
+<simpara>If a name is specified on stdin that is filtered out via <emphasis>--filter=</emphasis>,
+then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
+<screen>&lt;object&gt; SP excluded LF</screen>
 <simpara>If a name is specified that might refer to more than one object (an ambiguous short sha), then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
 <screen>&lt;object&gt; SP ambiguous LF</screen>
 <simpara>If <emphasis>--follow-symlinks</emphasis> is used, and a symlink in the repository points

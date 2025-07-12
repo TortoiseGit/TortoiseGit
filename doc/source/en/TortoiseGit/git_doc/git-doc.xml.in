@@ -64,6 +64,7 @@
 		<xi:include href="./git-diagnose.xml"/>
 		<xi:include href="./git-diff-files.xml"/>
 		<xi:include href="./git-diff-index.xml"/>
+		<xi:include href="./git-diff-pairs.xml"/>
 		<xi:include href="./git-diff-tree.xml"/>
 		<xi:include href="./git-diff.xml"/>
 		<xi:include href="./git-difftool.xml"/>

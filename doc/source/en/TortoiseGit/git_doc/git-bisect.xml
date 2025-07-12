@@ -378,11 +378,11 @@ Look for a fix instead of a regression in the code
 $ git bisect new HEAD    # current commit is marked as new
 $ git bisect old HEAD~10 # the tenth commit from now is marked as old</screen>
 <simpara>or:</simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git bisect start --term-old broken --term-new fixed
 $ git bisect fixed
 $ git bisect broken HEAD~10</screen>
+</listitem>
+</itemizedlist>
 <section id="git-bisect(1)__getting_help">
 <title>Getting help</title>
 <simpara>Use <emphasis>git bisect</emphasis> to get a short usage description, and <emphasis>git bisect

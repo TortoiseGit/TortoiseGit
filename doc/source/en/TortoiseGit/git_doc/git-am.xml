@@ -271,10 +271,10 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
 </varlistentry>
 <varlistentry>
 <term>
---rerere-autoupdate
+<emphasis>--rerere-autoupdate</emphasis>
 </term>
 <term>
---no-rerere-autoupdate
+<emphasis>--no-rerere-autoupdate</emphasis>
 </term>
 <listitem>
 <simpara>

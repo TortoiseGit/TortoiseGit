@@ -69,8 +69,6 @@ leave out at most one of <emphasis>&lt;rev-A&gt;_</emphasis> and <emphasis>&lt;r
         Mode" section of <xref linkend="git-add(1)" /> to learn how to operate
         the <emphasis>--patch</emphasis> mode.
 </simpara>
-<simpara>Note that <emphasis>--patch</emphasis> can accept no pathspec and will prompt to restore
-all modified paths.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

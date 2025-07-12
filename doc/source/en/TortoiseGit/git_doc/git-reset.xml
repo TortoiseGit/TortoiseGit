@@ -13,10 +13,10 @@
 <simplesect id="git-reset(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git reset</emphasis> [-q] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;&#8230;
-<emphasis>git reset</emphasis> [-q] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [&lt;tree-ish&gt;]
-<emphasis>git reset</emphasis> (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;&#8230;]
-<emphasis>git reset</emphasis> [--soft | --mixed [-N] | --hard | --merge | --keep] [-q] [&lt;commit&gt;]</literallayout>
+<literallayout><code>git</code> <code>reset</code> [<code>-q</code>] [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>reset</code> [<code>-q</code>] [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]] [<emphasis>&lt;tree-ish&gt;</emphasis>]
+<code>git</code> <code>reset</code> (<code>--patch</code> | <code>-p</code>) [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>reset</code> [<code>--soft</code> | <code>--mixed</code> [<code>-N</code>] | <code>--hard</code> | <code>--merge</code> | <code>--keep</code>] [<code>-q</code>] [<emphasis>&lt;commit&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-reset(1)__description">
@@ -28,10 +28,10 @@ The <emphasis>&lt;tree-ish&gt;</emphasis>/<emphasis>&lt;commit&gt;</emphasis> de
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> [-q] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;&#8230;
+<emphasis>git reset [-q] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;...</emphasis>
 </term>
 <term>
-<emphasis>git reset</emphasis> [-q] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [&lt;tree-ish&gt;]
+<emphasis>git reset [-q] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [&lt;tree-ish&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -52,7 +52,7 @@ working tree in one go.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;&#8230;]
+<emphasis>git reset (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;...]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -61,13 +61,13 @@ working tree in one go.</simpara>
         in reverse to the index.
 </simpara>
 <simpara>This means that <emphasis>git reset -p</emphasis> is the opposite of <emphasis>git add -p</emphasis>, i.e.
-you can use it to selectively reset hunks. See the Interactive Mode
+you can use it to selectively reset hunks. See the "Interactive Mode"
 section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git reset</emphasis> [&lt;mode&gt;] [&lt;commit&gt;]
+<emphasis>git reset [&lt;mode&gt;] [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -80,7 +80,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 <variablelist>
 <varlistentry>
 <term>
---soft
+<emphasis>--soft</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -93,7 +93,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---mixed
+<emphasis>--mixed</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -107,7 +107,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---hard
+<emphasis>--hard</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -119,7 +119,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---merge
+<emphasis>--merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -136,7 +136,7 @@ but carries forward unmerged index entries.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---keep
+<emphasis>--keep</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -149,14 +149,14 @@ but carries forward unmerged index entries.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]recurse-submodules
+<emphasis>--[no-]recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
-        When the working tree is updated, using --recurse-submodules will
+        When the working tree is updated, using --recurse-submodules` will
         also recursively reset the working tree of all active submodules
         according to the commit recorded in the superproject, also setting
-        the submodules' HEAD to be detached at that commit.
+        the submodules <emphasis>HEAD</emphasis> to be detached at that commit.
 </simpara>
 </listitem>
 </varlistentry>
@@ -172,10 +172,10 @@ between the three commands.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -185,10 +185,10 @@ between the three commands.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---refresh
+<emphasis>--refresh</emphasis>
 </term>
 <term>
---no-refresh
+<emphasis>--no-refresh</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -198,13 +198,13 @@ between the three commands.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR</emphasis>/<emphasis>LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -213,19 +213,19 @@ between the three commands.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -235,7 +235,7 @@ between the three commands.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -588,7 +588,7 @@ $ git commit ...                            <co id="git-reset_CO10-8"/></screen>
 <callout arearefs="git-reset_CO10-1">
 <para>
 First, reset the history back one commit so that we remove the original
-    commit, but leave the working tree with all the changes. The -N ensures
+    commit, but leave the working tree with all the changes. The <emphasis>-N</emphasis> ensures
     that any new files added with <emphasis>HEAD</emphasis> are still marked so that <emphasis>git add -p</emphasis>
     will find them.
 </para>
@@ -706,7 +706,7 @@ in state <emphasis>D</emphasis>).</simpara>
                           --hard   C       C     C
                           --merge  B       C     C
                           --keep   B       C     C</literallayout>
-<simpara><emphasis>reset --merge</emphasis> is meant to be used when resetting out of a conflicted
+<simpara><emphasis>git reset --merge</emphasis> is meant to be used when resetting out of a conflicted
 merge. Any mergy operation guarantees that the working tree file that is
 involved in the merge does not have a local change with respect to the index
 before it starts, and that it writes the result out to the working tree. So if
@@ -714,7 +714,7 @@ we see some difference between the index and the target and also
 between the index and the working tree, then it means that we are not
 resetting out from a state that a mergy operation left after failing
 with a conflict. That is why we disallow <emphasis>--merge</emphasis> option in this case.</simpara>
-<simpara><emphasis>reset --keep</emphasis> is meant to be used when removing some of the last
+<simpara><emphasis>git reset --keep</emphasis> is meant to be used when removing some of the last
 commits in the current branch while keeping changes in the working
 tree. If there could be conflicts between the changes in the commit we
 want to remove and the changes in the working tree we want to keep,

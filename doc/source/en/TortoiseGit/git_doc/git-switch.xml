@@ -13,10 +13,10 @@
 <simplesect id="git-switch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git switch</emphasis> [&lt;options&gt;] [--no-guess] &lt;branch&gt;
-<emphasis>git switch</emphasis> [&lt;options&gt;] --detach [&lt;start-point&gt;]
-<emphasis>git switch</emphasis> [&lt;options&gt;] (-c|-C) &lt;new-branch&gt; [&lt;start-point&gt;]
-<emphasis>git switch</emphasis> [&lt;options&gt;] --orphan &lt;new-branch&gt;</literallayout>
+<literallayout><code>git</code> <code>switch</code> [<emphasis>&lt;options&gt;</emphasis>] [<code>--no-guess</code>] <emphasis>&lt;branch&gt;</emphasis>
+<code>git</code> <code>switch</code> [<emphasis>&lt;options&gt;</emphasis>] <code>--detach</code> [<emphasis>&lt;start-point&gt;</emphasis>]
+<code>git</code> <code>switch</code> [<emphasis>&lt;options&gt;</emphasis>] (<code>-c</code>|<code>-C</code>) <emphasis>&lt;new-branch&gt;</emphasis> [<emphasis>&lt;start-point&gt;</emphasis>]
+<code>git</code> <code>switch</code> [<emphasis>&lt;options&gt;</emphasis>] <code>--orphan</code> <emphasis>&lt;new-branch&gt;</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-switch(1)__description">
@@ -39,7 +39,7 @@ otherwise with <emphasis>--discard-changes</emphasis> or <emphasis>--merge</emph
 <variablelist>
 <varlistentry>
 <term>
-&lt;branch&gt;
+<emphasis>&lt;branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -49,7 +49,7 @@ otherwise with <emphasis>--discard-changes</emphasis> or <emphasis>--merge</emph
 </varlistentry>
 <varlistentry>
 <term>
-&lt;new-branch&gt;
+<emphasis>&lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -59,32 +59,32 @@ otherwise with <emphasis>--discard-changes</emphasis> or <emphasis>--merge</emph
 </varlistentry>
 <varlistentry>
 <term>
-&lt;start-point&gt;
+<emphasis>&lt;start-point&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The starting point for the new branch. Specifying a
         <emphasis>&lt;start-point&gt;</emphasis> allows you to create a branch based on some
-        other point in history than where HEAD currently points. (Or,
+        other point in history than where <emphasis>HEAD</emphasis> currently points. (Or,
         in the case of <emphasis>--detach</emphasis>, allows you to inspect and detach
         from some other point.)
 </simpara>
-<simpara>You can use the <emphasis>@{-N}</emphasis> syntax to refer to the N-th last
-branch/commit switched to using "git switch" or "git checkout"
+<simpara>You can use the <emphasis>@{-&lt;N&gt;}</emphasis> syntax to refer to the <emphasis>&lt;N&gt;</emphasis>-th last
+branch/commit switched to using <emphasis>git switch</emphasis> or <emphasis>git checkout</emphasis>
 operation. You may also specify <emphasis>-</emphasis> which is synonymous to <emphasis>@{-1}</emphasis>.
 This is often used to switch quickly between two branches, or to undo
 a branch switch by mistake.</simpara>
-<simpara>As a special case, you may use <emphasis>A...B</emphasis> as a shortcut for the merge
-base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can leave
-out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+<simpara>As a special case, you may use <emphasis>&lt;rev-a&gt;...&lt;rev-b&gt;</emphasis> as a shortcut for the merge
+base of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis> if there is exactly one merge base. You can leave
+out at most one of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--c &lt;new-branch&gt;
+<emphasis>-c &lt;new-branch&gt;</emphasis>
 </term>
 <term>
---create &lt;new-branch&gt;
+<emphasis>--create &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -94,7 +94,7 @@ out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which c
 </simpara>
 <screen>$ git branch &lt;new-branch&gt;
 $ git switch &lt;new-branch&gt;</screen>
-<simpara>that is to say, the branch is not reset/created unless "git switch" is
+<simpara>that is to say, the branch is not reset/created unless <emphasis>git switch</emphasis> is
 successful (e.g., when the branch is in use in another worktree, not
 just the current branch stays the same, but the branch is not reset to
 the start-point, either).</simpara>
@@ -102,10 +102,10 @@ the start-point, either).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C &lt;new-branch&gt;
+<emphasis>-C &lt;new-branch&gt;</emphasis>
 </term>
 <term>
---force-create &lt;new-branch&gt;
+<emphasis>--force-create &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -113,16 +113,16 @@ the start-point, either).</simpara>
         exists, it will be reset to <emphasis>&lt;start-point&gt;</emphasis>. This is a
         convenient shortcut for:
 </simpara>
-<screen>$ git branch -f &lt;new-branch&gt;
-$ git switch &lt;new-branch&gt;</screen>
+<screen>$ git branch -f _&lt;new-branch&gt;_
+$ git switch _&lt;new-branch&gt;_</screen>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---detach
+<emphasis>--detach</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -134,10 +134,10 @@ $ git switch &lt;new-branch&gt;</screen>
 </varlistentry>
 <varlistentry>
 <term>
---guess
+<emphasis>--guess</emphasis>
 </term>
 <term>
---no-guess
+<emphasis>--no-guess</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -160,10 +160,10 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -173,7 +173,7 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---discard-changes
+<emphasis>--discard-changes</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -187,10 +187,10 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--m
+<emphasis>-m</emphasis>
 </term>
 <term>
---merge
+<emphasis>--merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -210,23 +210,23 @@ should result in deletion of the path).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---conflict=&lt;style&gt;
+<emphasis>--conflict=&lt;style&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The same as <emphasis>--merge</emphasis> option above, but changes the way the
         conflicting hunks are presented, overriding the
         <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values are
-        "merge" (default), "diff3", and "zdiff3".
+        <emphasis>merge</emphasis> (default), <emphasis>diff3</emphasis>, and <emphasis>zdiff3</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -236,10 +236,10 @@ should result in deletion of the path).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <term>
---no-progress
+<emphasis>--no-progress</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -252,10 +252,10 @@ should result in deletion of the path).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <term>
---track [direct|inherit]
+<emphasis>--track[ (direct|inherit)]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -276,7 +276,7 @@ name, the guessing is aborted.  You can explicitly give a name with
 </varlistentry>
 <varlistentry>
 <term>
---no-track
+<emphasis>--no-track</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -287,7 +287,7 @@ name, the guessing is aborted.  You can explicitly give a name with
 </varlistentry>
 <varlistentry>
 <term>
---orphan &lt;new-branch&gt;
+<emphasis>--orphan &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -298,7 +298,7 @@ name, the guessing is aborted.  You can explicitly give a name with
 </varlistentry>
 <varlistentry>
 <term>
---ignore-other-worktrees
+<emphasis>--ignore-other-worktrees</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -311,10 +311,10 @@ name, the guessing is aborted.  You can explicitly give a name with
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules
+<emphasis>--recurse-submodules</emphasis>
 </term>
 <term>
---no-recurse-submodules
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -352,14 +352,14 @@ changes you made since the tip of the new branch.</simpara>
 (i.e. "master" branch):</simpara>
 <screen>$ git switch -</screen>
 <simpara>You can grow a new branch from any commit. For example, switch to
-"HEAD~3" and create branch "fixup":</simpara>
+"<emphasis>HEAD~3</emphasis>" and create branch "<emphasis>fixup</emphasis>":</simpara>
 <screen>$ git switch -c fixup HEAD~3
 Switched to a new branch 'fixup'</screen>
 <simpara>If you want to start a new branch from a remote branch of the same
 name:</simpara>
 <screen>$ git switch new-topic
-Branch 'new-topic' set up to track remote branch 'new-topic' from 'origin'
-Switched to a new branch 'new-topic'</screen>
+Branch `new-topic` set up to track remote branch `new-topic` from `origin`
+Switched to a new branch `new-topic`</screen>
 <simpara>To check out commit <emphasis>HEAD~3</emphasis> for temporary inspection or experiment
 without creating a new branch:</simpara>
 <screen>$ git switch --detach HEAD~3
@@ -376,7 +376,7 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-checkout.defaultRemote
+<emphasis>checkout.defaultRemote</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -401,7 +401,7 @@ commands or functionality in the future.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.guess
+<emphasis>checkout.guess</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -413,7 +413,7 @@ checkout.guess
 </varlistentry>
 <varlistentry>
 <term>
-checkout.workers
+<emphasis>checkout.workers</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -424,16 +424,16 @@ checkout.workers
         all commands that perform checkout. E.g. checkout, clone, reset,
         sparse-checkout, etc.
 </simpara>
-<simpara>Note: Parallel checkout usually delivers better performance for repositories
+<note><simpara>Parallel checkout usually delivers better performance for repositories
 located on SSDs or over NFS. For repositories on spinning disks and/or machines
 with a small number of cores, the default sequential checkout often performs
 better. The size and compression level of a repository might also influence how
-well the parallel version performs.</simpara>
+well the parallel version performs.</simpara></note>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.thresholdForParallelism
+<emphasis>checkout.thresholdForParallelism</emphasis>
 </term>
 <listitem>
 <simpara>

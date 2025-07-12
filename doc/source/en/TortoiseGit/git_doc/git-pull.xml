@@ -115,35 +115,35 @@ pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---commit
+<emphasis>--commit</emphasis>
 </term>
 <term>
---no-commit
+<emphasis>--no-commit</emphasis>
 </term>
 <listitem>
 <simpara>
         Perform the merge and commit the result. This option can
-        be used to override --no-commit.
+        be used to override <emphasis>--no-commit</emphasis>.
         Only useful when merging.
 </simpara>
-<simpara>With --no-commit perform the merge and stop just before creating
+<simpara>With <emphasis>--no-commit</emphasis> perform the merge and stop just before creating
 a merge commit, to give the user a chance to inspect and further
 tweak the merge result before committing.</simpara>
 <simpara>Note that fast-forward updates do not create a merge commit and
-therefore there is no way to stop those merges with --no-commit.
+therefore there is no way to stop those merges with <emphasis>--no-commit</emphasis>.
 Thus, if you want to ensure your branch is not changed or updated
-by the merge command, use --no-ff with --no-commit.</simpara>
+by the merge command, use <emphasis>--no-ff</emphasis> with <emphasis>--no-commit</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---edit
+<emphasis>--edit</emphasis>
 </term>
 <term>
--e
+<emphasis>-e</emphasis>
 </term>
 <term>
---no-edit
+<emphasis>--no-edit</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -162,7 +162,7 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---cleanup=&lt;mode&gt;
+<emphasis>--cleanup=&lt;mode&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -176,7 +176,7 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ff-only
+<emphasis>--ff-only</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -188,10 +188,10 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ff
+<emphasis>--ff</emphasis>
 </term>
 <term>
---no-ff
+<emphasis>--no-ff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -212,17 +212,17 @@ could instead be resolved as a fast-forward.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--S[&lt;keyid&gt;]
+<emphasis>-S[&lt;key-id&gt;]</emphasis>
 </term>
 <term>
---gpg-sign[=&lt;keyid&gt;]
+<emphasis>--gpg-sign[=&lt;key-id&gt;]</emphasis>
 </term>
 <term>
---no-gpg-sign
+<emphasis>--no-gpg-sign</emphasis>
 </term>
 <listitem>
 <simpara>
-        GPG-sign the resulting merge commit. The <emphasis>keyid</emphasis> argument is
+        GPG-sign the resulting merge commit. The <emphasis>&lt;key-id&gt;</emphasis> argument is
         optional and defaults to the committer identity; if specified,
         it must be stuck to the option without a space. <emphasis>--no-gpg-sign</emphasis>
         is useful to countermand both <emphasis>commit.gpgSign</emphasis> configuration variable,
@@ -232,19 +232,19 @@ could instead be resolved as a fast-forward.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---log[=&lt;n&gt;]
+<emphasis>--log[=&lt;n&gt;]</emphasis>
 </term>
 <term>
---no-log
+<emphasis>--no-log</emphasis>
 </term>
 <listitem>
 <simpara>
         In addition to branch names, populate the log message with
-        one-line descriptions from at most &lt;n&gt; actual commits that are being
+        one-line descriptions from at most <emphasis>&lt;n&gt;</emphasis> actual commits that are being
         merged. See also <xref linkend="git-fmt-merge-msg(1)" />.
         Only useful when merging.
 </simpara>
-<simpara>With --no-log do not list one-line descriptions from the
+<simpara>With <emphasis>--no-log</emphasis> do not list one-line descriptions from the
 actual commits being merged.</simpara>
 </listitem>
 </varlistentry>
@@ -274,29 +274,29 @@ option on the command line.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stat
+<emphasis>--stat</emphasis>
 </term>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---no-stat
+<emphasis>--no-stat</emphasis>
 </term>
 <listitem>
 <simpara>
         Show a diffstat at the end of the merge. The diffstat is also
         controlled by the configuration option merge.stat.
 </simpara>
-<simpara>With -n or --no-stat do not show a diffstat at the end of the
+<simpara>With <emphasis>-n</emphasis> or <emphasis>--no-stat</emphasis> do not show a diffstat at the end of the
 merge.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---squash
+<emphasis>--squash</emphasis>
 </term>
 <term>
---no-squash
+<emphasis>--no-squash</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -308,15 +308,15 @@ merge.</simpara>
         the current branch whose effect is the same as merging another
         branch (or more in case of an octopus).
 </simpara>
-<simpara>With --no-squash perform the merge and commit the result. This
-option can be used to override --squash.</simpara>
-<simpara>With --squash, --commit is not allowed, and will fail.</simpara>
+<simpara>With <emphasis>--no-squash</emphasis> perform the merge and commit the result. This
+option can be used to override <emphasis>--squash</emphasis>.</simpara>
+<simpara>With <emphasis>--squash</emphasis>, <emphasis>--commit</emphasis> is not allowed, and will fail.</simpara>
 <simpara>Only useful when merging.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]verify
+<emphasis>--[no-]verify</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -329,10 +329,10 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--s &lt;strategy&gt;
+<emphasis>-s &lt;strategy&gt;</emphasis>
 </term>
 <term>
---strategy=&lt;strategy&gt;
+<emphasis>--strategy=&lt;strategy&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -346,10 +346,10 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--X &lt;option&gt;
+<emphasis>-X &lt;option&gt;</emphasis>
 </term>
 <term>
---strategy-option=&lt;option&gt;
+<emphasis>--strategy-option=&lt;option&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -360,10 +360,10 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---verify-signatures
+<emphasis>--verify-signatures</emphasis>
 </term>
 <term>
---no-verify-signatures
+<emphasis>--no-verify-signatures</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -378,24 +378,24 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---summary
+<emphasis>--summary</emphasis>
 </term>
 <term>
---no-summary
+<emphasis>--no-summary</emphasis>
 </term>
 <listitem>
 <simpara>
-        Synonyms to --stat and --no-stat; these are deprecated and will be
+        Synonyms to <emphasis>--stat</emphasis> and <emphasis>--no-stat</emphasis>; these are deprecated and will be
         removed in the future.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---autostash
+<emphasis>--autostash</emphasis>
 </term>
 <term>
---no-autostash
+<emphasis>--no-autostash</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -410,7 +410,7 @@ option can be used to override --squash.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---allow-unrelated-histories
+<emphasis>--allow-unrelated-histories</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -419,7 +419,7 @@ option can be used to override --squash.</simpara>
         used to override this safety when merging histories of two
         projects that started their lives independently. As that is
         a very rare occasion, no configuration variable to enable
-        this by default exists and will not be added.
+        this by default exists or will be added.
 </simpara>
 <simpara>Only useful when merging.</simpara>
 </listitem>
@@ -1210,7 +1210,7 @@ arguments to <emphasis>git merge</emphasis> and/or <emphasis>git pull</emphasis>
 <variablelist>
 <varlistentry>
 <term>
-ort
+<emphasis>ort</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1239,7 +1239,7 @@ ones, if one exists.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-ours
+<emphasis>ours</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1255,7 +1255,7 @@ the other tree did, declaring <emphasis>our</emphasis> history contains all that
 </varlistentry>
 <varlistentry>
 <term>
-theirs
+<emphasis>theirs</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1266,16 +1266,16 @@ theirs
 </varlistentry>
 <varlistentry>
 <term>
-ignore-space-change
+<emphasis>ignore-space-change</emphasis>
 </term>
 <term>
-ignore-all-space
+<emphasis>ignore-all-space</emphasis>
 </term>
 <term>
-ignore-space-at-eol
+<emphasis>ignore-space-at-eol</emphasis>
 </term>
 <term>
-ignore-cr-at-eol
+<emphasis>ignore-cr-at-eol</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1308,7 +1308,7 @@ Otherwise, the merge proceeds in the usual way.
 </varlistentry>
 <varlistentry>
 <term>
-renormalize
+<emphasis>renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1323,7 +1323,7 @@ renormalize
 </varlistentry>
 <varlistentry>
 <term>
-no-renormalize
+<emphasis>no-renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1334,7 +1334,7 @@ no-renormalize
 </varlistentry>
 <varlistentry>
 <term>
-find-renames[=&lt;n&gt;]
+<emphasis>find-renames[=&lt;n&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1347,7 +1347,7 @@ find-renames[=&lt;n&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-rename-threshold=&lt;n&gt;
+<emphasis>rename-threshold=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1357,7 +1357,54 @@ rename-threshold=&lt;n&gt;
 </varlistentry>
 <varlistentry>
 <term>
-subtree[=&lt;path&gt;]
+<emphasis>no-renames</emphasis>
+</term>
+<listitem>
+<simpara>
+        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
+        configuration variable.
+        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        Deprecated synonym for <emphasis>diff-algorithm=histogram</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Deprecated synonym for <emphasis>diff-algorithm=patience</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>diff-algorithm=(histogram|minimal|myers|patience)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use a different diff algorithm while merging, which can help
+        avoid mismerges that occur due to unimportant matching lines
+        (such as braces from distinct functions).  See also
+        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.  Note that <emphasis>ort</emphasis>
+        defaults to <emphasis>diff-algorithm=histogram</emphasis>, while regular diffs
+        currently default to the <emphasis>diff.algorithm</emphasis> config setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>subtree[=&lt;path&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1374,72 +1421,21 @@ subtree[=&lt;path&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-recursive
+<emphasis>recursive</emphasis>
 </term>
 <listitem>
 <simpara>
-        This can only resolve two heads using a 3-way merge
-        algorithm.  When there is more than one common
-        ancestor that can be used for 3-way merge, it creates a
-        merged tree of the common ancestors and uses that as
-        the reference tree for the 3-way merge.  This has been
-        reported to result in fewer merge conflicts without
-        causing mismerges by tests done on actual merge commits
-        taken from Linux 2.6 kernel development history.
-        Additionally this can detect and handle merges involving
-        renames.  It does not make use of detected copies.  This was
-        the default strategy for resolving two heads from Git v0.99.9k
-        until v2.33.0.
-</simpara>
-<simpara>For a path that is a submodule, the same caution as <emphasis>ort</emphasis> applies to this
-strategy.</simpara>
-<simpara>The <emphasis>recursive</emphasis> strategy takes the same options as <emphasis>ort</emphasis>.  However,
-there are three additional options that <emphasis>ort</emphasis> ignores (not documented
-above) that are potentially useful with the <emphasis>recursive</emphasis> strategy:</simpara>
-<variablelist>
-<varlistentry>
-<term>
-patience
-</term>
-<listitem>
-<simpara>
-        Deprecated synonym for <emphasis>diff-algorithm=patience</emphasis>.
+        This is now a synonym for <emphasis>ort</emphasis>.  It was an alternative
+        implementation until v2.49.0, but was redirected to mean <emphasis>ort</emphasis>
+        in v2.50.0.  The previous recursive strategy was the default
+        strategy for resolving two heads from Git v0.99.9k until
+        v2.33.0.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-diff-algorithm=[patience|minimal|histogram|myers]
-</term>
-<listitem>
-<simpara>
-        Use a different diff algorithm while merging, which can help
-        avoid mismerges that occur due to unimportant matching lines
-        (such as braces from distinct functions).  See also
-        <xref linkend="git-diff(1)" /> <emphasis>--diff-algorithm</emphasis>.  Note that <emphasis>ort</emphasis>
-        specifically uses <emphasis>diff-algorithm=histogram</emphasis>, while <emphasis>recursive</emphasis>
-        defaults to the <emphasis>diff.algorithm</emphasis> config setting.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-no-renames
-</term>
-<listitem>
-<simpara>
-        Turn off rename detection. This overrides the <emphasis>merge.renames</emphasis>
-        configuration variable.
-        See also <xref linkend="git-diff(1)" /> <emphasis>--no-renames</emphasis>.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-resolve
+<emphasis>resolve</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1452,7 +1448,7 @@ resolve
 </varlistentry>
 <varlistentry>
 <term>
-octopus
+<emphasis>octopus</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1466,7 +1462,7 @@ octopus
 </varlistentry>
 <varlistentry>
 <term>
-ours
+<emphasis>ours</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1474,14 +1470,14 @@ ours
         merge is always that of the current branch head, effectively
         ignoring all changes from all other branches.  It is meant to
         be used to supersede old development history of side
-        branches.  Note that this is different from the -Xours option to
-        the <emphasis>recursive</emphasis> merge strategy.
+        branches.  Note that this is different from the <emphasis>-Xours</emphasis> option to
+        the <emphasis>ort</emphasis> merge strategy.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-subtree
+<emphasis>subtree</emphasis>
 </term>
 <listitem>
 <simpara>

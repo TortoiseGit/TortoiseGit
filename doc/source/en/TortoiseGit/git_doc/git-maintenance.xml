@@ -205,14 +205,16 @@ loose-objects
         objects that already exist in a pack-file; concurrent Git processes
         will examine the pack-file for the object data instead of the loose
         object. Second, it creates a new pack-file (starting with "loose-")
-        containing a batch of loose objects. The batch size is limited to 50
-        thousand objects to prevent the job from taking too long on a
-        repository with many loose objects. The <emphasis>gc</emphasis> task writes unreachable
-        objects as loose objects to be cleaned up by a later step only if
-        they are not re-added to a pack-file; for this reason it is not
-        advisable to enable both the <emphasis>loose-objects</emphasis> and <emphasis>gc</emphasis> tasks at the
-        same time.
+        containing a batch of loose objects.
 </simpara>
+<simpara>The batch size defaults to fifty thousand objects to prevent the job from
+taking too long on a repository with many loose objects. Use the
+<emphasis>maintenance.loose-objects.batchSize</emphasis> config option to adjust this size,
+including a value of <emphasis>0</emphasis> to remove the limit.</simpara>
+<simpara>The <emphasis>gc</emphasis> task writes unreachable objects as loose objects to be cleaned up
+by a later step only if they are not re-added to a pack-file; for this
+reason it is not advisable to enable both the <emphasis>loose-objects</emphasis> and <emphasis>gc</emphasis>
+tasks at the same time.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -250,6 +252,39 @@ pack-refs
         collects them into a single file. This speeds up operations that
         need to iterate across many references. See <xref linkend="git-pack-refs(1)" />
         for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+reflog-expire
+</term>
+<listitem>
+<simpara>
+        The <emphasis>reflog-expire</emphasis> task deletes any entries in the reflog older than the
+        expiry threshold. See <xref linkend="git-reflog(1)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+rerere-gc
+</term>
+<listitem>
+<simpara>
+        The <emphasis>rerere-gc</emphasis> task invokes garbage collection for stale entries in
+        the rerere cache. See <xref linkend="git-rerere(1)" /> for more information.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+worktree-prune
+</term>
+<listitem>
+<simpara>
+        The <emphasis>worktree-prune</emphasis> task deletes stale or broken worktrees. See
+        <xref linkend="git-worktree(1)" /> for more information.
 </simpara>
 </listitem>
 </varlistentry>
@@ -626,6 +661,18 @@ maintenance.loose-objects.auto
 </varlistentry>
 <varlistentry>
 <term>
+maintenance.loose-objects.batchSize
+</term>
+<listitem>
+<simpara>
+        This integer config option controls the maximum number of loose objects
+        written into a packfile during the <emphasis>loose-objects</emphasis> task. The default is
+        fifty thousand. Use value <emphasis>0</emphasis> to indicate no limit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 maintenance.incremental-repack.auto
 </term>
 <listitem>
@@ -637,6 +684,53 @@ maintenance.incremental-repack.auto
         Otherwise, a positive value implies the command should run when the
         number of pack-files not in the multi-pack-index is at least the value
         of <emphasis>maintenance.incremental-repack.auto</emphasis>. The default value is 10.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.reflog-expire.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>reflog-expire</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>reflog-expire</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        expired reflog entries in the "HEAD" reflog is at least the value of
+        <emphasis>maintenance.loose-objects.auto</emphasis>. The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.rerere-gc.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>rerere-gc</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>rerere-gc</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A negative
+        value will force the task to run every time. Otherwise, any positive
+        value implies the command will run when the "rr-cache" directory exists
+        and has at least one entry, regardless of whether it is stale or not.
+        This heuristic may be refined in the future. The default value is 1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.worktree-prune.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>worktree-prune</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>worktree-prune</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        prunable worktrees exceeds the value. The default value is 1.
 </simpara>
 </listitem>
 </varlistentry>

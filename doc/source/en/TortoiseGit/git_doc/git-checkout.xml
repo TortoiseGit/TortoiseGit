@@ -13,15 +13,15 @@
 <simplesect id="git-checkout(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git checkout</emphasis> [-q] [-f] [-m] [&lt;branch&gt;]
-<emphasis>git checkout</emphasis> [-q] [-f] [-m] --detach [&lt;branch&gt;]
-<emphasis>git checkout</emphasis> [-q] [-f] [-m] [--detach] &lt;commit&gt;
-<emphasis>git checkout</emphasis> [-q] [-f] [-m] [[-b|-B|--orphan] &lt;new-branch&gt;] [&lt;start-point&gt;]
-<emphasis>git checkout</emphasis> [-f] &lt;tree-ish&gt; [--] &lt;pathspec&gt;&#8230;
-<emphasis>git checkout</emphasis> [-f] &lt;tree-ish&gt; --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
-<emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [--] &lt;pathspec&gt;&#8230;
-<emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
-<emphasis>git checkout</emphasis> (-p|--patch) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] [<emphasis>&lt;branch&gt;</emphasis>]
+<code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] <code>--detach</code> [<emphasis>&lt;branch&gt;</emphasis>]
+<code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] [<code>--detach</code>] <emphasis>&lt;commit&gt;</emphasis>
+<code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] [[<code>-b</code>|<code>-B</code>|<code>--orphan</code>] <emphasis>&lt;new-branch&gt;</emphasis>] [<emphasis>&lt;start-point&gt;</emphasis>]
+<code>git</code> <code>checkout</code> [<code>-f</code>] <emphasis>&lt;tree-ish&gt;</emphasis> [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>checkout</code> [<code>-f</code>] <emphasis>&lt;tree-ish&gt;</emphasis> <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
+<code>git</code> <code>checkout</code> [<code>-f</code>|<code>--ours</code>|<code>--theirs</code>|<code>-m</code>|<code>--conflict=</code><emphasis>&lt;style&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>checkout</code> [<code>-f</code>|<code>--ours</code>|<code>--theirs</code>|<code>-m</code>|<code>--conflict=</code><emphasis>&lt;style&gt;</emphasis>] <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
+<code>git</code> <code>checkout</code> (<code>-p</code>|<code>--patch</code>) [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-checkout(1)__description">
@@ -33,7 +33,7 @@ branch.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> [&lt;branch&gt;]
+<emphasis>git checkout [&lt;branch&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -55,7 +55,7 @@ if it exists, for the current branch.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> -b|-B &lt;new-branch&gt; [&lt;start-point&gt;]
+<emphasis>git checkout (-b|-B) &lt;new-branch&gt; [&lt;start-point&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -78,10 +78,10 @@ the start-point, either).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> --detach [&lt;branch&gt;]
+<emphasis>git checkout --detach [&lt;branch&gt;]</emphasis>
 </term>
 <term>
-<emphasis>git checkout</emphasis> [--detach] &lt;commit&gt;
+<emphasis>git checkout [--detach] &lt;commit&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -100,10 +100,10 @@ be used to detach <emphasis>HEAD</emphasis> at the tip of the branch (<emphasis>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;&#8230;
+<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;...</emphasis>
 </term>
 <term>
-<emphasis>git checkout</emphasis> [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]
+<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -124,7 +124,7 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout</emphasis> (-p|--patch) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;&#8230;]
+<emphasis>git checkout (-p|--patch) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;...]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -142,10 +142,10 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 <variablelist>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -155,10 +155,10 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <term>
---no-progress
+<emphasis>--no-progress</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -171,10 +171,10 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -189,10 +189,10 @@ entries; instead, unmerged entries are ignored.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ours
+<emphasis>--ours</emphasis>
 </term>
 <term>
---theirs
+<emphasis>--theirs</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -216,7 +216,7 @@ of it").</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;new-branch&gt;
+<emphasis>-b &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -228,29 +228,29 @@ of it").</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--B &lt;new-branch&gt;
+<emphasis>-B &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Creates the branch <emphasis>&lt;new-branch&gt;</emphasis>, start it at <emphasis>&lt;start-point&gt;</emphasis>;
         if it already exists, then reset it to <emphasis>&lt;start-point&gt;</emphasis>. And then
         check the resulting branch out.  This is equivalent to running
-        "git branch" with "-f" followed by "git checkout" of that branch;
+        <emphasis>git branch</emphasis> with <emphasis>-f</emphasis> followed by <emphasis>git checkout</emphasis> of that branch;
         see <xref linkend="git-branch(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <term>
---track[=(direct|inherit)]
+<emphasis>--track[=(direct|inherit)]</emphasis>
 </term>
 <listitem>
 <simpara>
         When creating a new branch, set up "upstream" configuration. See
-        "--track" in <xref linkend="git-branch(1)" /> for details.
+        <emphasis>--track</emphasis> in <xref linkend="git-branch(1)" /> for details.
 </simpara>
 <simpara>If no <emphasis>-b</emphasis> option is given, the name of the new branch will be
 derived from the remote-tracking branch, by looking at the local part of
@@ -265,7 +265,7 @@ explicitly give a name with <emphasis>-b</emphasis> in such a case.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-track
+<emphasis>--no-track</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -276,10 +276,10 @@ explicitly give a name with <emphasis>-b</emphasis> in such a case.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---guess
+<emphasis>--guess</emphasis>
 </term>
 <term>
---no-guess
+<emphasis>--no-guess</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -303,7 +303,7 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -314,10 +314,10 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---detach
+<emphasis>--detach</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -331,7 +331,7 @@ variable.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---orphan &lt;new-branch&gt;
+<emphasis>--orphan &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -360,23 +360,23 @@ working tree, by copying them from elsewhere, extracting a tarball, etc.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---ignore-skip-worktree-bits
+<emphasis>--ignore-skip-worktree-bits</emphasis>
 </term>
 <listitem>
 <simpara>
-        In sparse checkout mode, <emphasis>git checkout -- &lt;paths&gt;</emphasis> would
+        In sparse checkout mode, <emphasis>git checkout -- &lt;path&gt;...</emphasis> would
         update only entries matched by <emphasis>&lt;paths&gt;</emphasis> and sparse patterns
         in <emphasis>$GIT_DIR/info/sparse-checkout</emphasis>. This option ignores
-        the sparse patterns and adds back any files in <emphasis>&lt;paths&gt;</emphasis>.
+        the sparse patterns and adds back any files in <emphasis>&lt;path&gt;...</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--m
+<emphasis>-m</emphasis>
 </term>
 <term>
---merge
+<emphasis>--merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -401,23 +401,23 @@ used when checking out paths from a tree-ish.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---conflict=&lt;style&gt;
+<emphasis>--conflict=&lt;style&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The same as <emphasis>--merge</emphasis> option above, but changes the way the
         conflicting hunks are presented, overriding the
         <emphasis>merge.conflictStyle</emphasis> configuration variable.  Possible values are
-        "merge" (default), "diff3", and "zdiff3".
+        <emphasis>merge</emphasis> (default), <emphasis>diff3</emphasis>, and <emphasis>zdiff3</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---patch
+<emphasis>--patch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -427,7 +427,7 @@ used when checking out paths from a tree-ish.</simpara>
         working tree (and if a <emphasis>&lt;tree-ish&gt;</emphasis> was specified, the index).
 </simpara>
 <simpara>This means that you can use <emphasis>git checkout -p</emphasis> to selectively discard
-edits from your current working tree. See the Interactive Mode
+edits from your current working tree. See the "Interactive Mode"
 section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
 <simpara>Note that this option uses the no overlay mode by default (see also
 <emphasis>--overlay</emphasis>), and currently doesn't support overlay mode.</simpara>
@@ -435,7 +435,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---ignore-other-worktrees
+<emphasis>--ignore-other-worktrees</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -448,10 +448,10 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---overwrite-ignore
+<emphasis>--overwrite-ignore</emphasis>
 </term>
 <term>
---no-overwrite-ignore
+<emphasis>--no-overwrite-ignore</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -463,10 +463,10 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules
+<emphasis>--recurse-submodules</emphasis>
 </term>
 <term>
---no-recurse-submodules
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -482,10 +482,10 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---overlay
+<emphasis>--overlay</emphasis>
 </term>
 <term>
---no-overlay
+<emphasis>--no-overlay</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -499,13 +499,13 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR</emphasis>/<emphasis>LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -514,12 +514,12 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
@@ -539,14 +539,14 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 <simpara>You can use the <emphasis>@{-N}</emphasis> syntax to refer to the N-th last
 branch/commit checked out using "git checkout" operation. You may
 also specify <emphasis>-</emphasis> which is synonymous to <emphasis>@{-1}</emphasis>.</simpara>
-<simpara>As a special case, you may use <emphasis>A...B</emphasis> as a shortcut for the
-merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
-leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+<simpara>As a special case, you may use <emphasis>&lt;rev-a&gt;...&lt;rev-b&gt;</emphasis> as a shortcut for the
+merge base of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;new-branch&gt;
+<emphasis>&lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -556,35 +556,35 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
 </varlistentry>
 <varlistentry>
 <term>
-&lt;start-point&gt;
+<emphasis>&lt;start-point&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The name of a commit at which to start the new branch; see
         <xref linkend="git-branch(1)" /> for details. Defaults to <emphasis>HEAD</emphasis>.
 </simpara>
-<simpara>As a special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
-merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
-leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+<simpara>As a special case, you may use <emphasis>&lt;rev-a&gt;...&lt;rev-b&gt;</emphasis> as a shortcut for the
+merge base of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;tree-ish&gt;
+<emphasis>&lt;tree-ish&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Tree to checkout from (when paths are given). If not specified,
         the index will be used.
 </simpara>
-<simpara>As a special case, you may use <emphasis>"A...B"</emphasis> as a shortcut for the
-merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You can
-leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
+<simpara>As a special case, you may use <emphasis>&lt;rev-a&gt;...&lt;rev-b&gt;</emphasis> as a shortcut for the
+merge base of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis> if there is exactly one merge base. You can
+leave out at most one of <emphasis>&lt;rev-a&gt;</emphasis> and <emphasis>&lt;rev-b&gt;</emphasis>, in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -594,7 +594,7 @@ leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in w
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -813,7 +813,7 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-checkout.defaultRemote
+<emphasis>checkout.defaultRemote</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -838,7 +838,7 @@ commands or functionality in the future.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.guess
+<emphasis>checkout.guess</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -850,7 +850,7 @@ checkout.guess
 </varlistentry>
 <varlistentry>
 <term>
-checkout.workers
+<emphasis>checkout.workers</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -861,16 +861,16 @@ checkout.workers
         all commands that perform checkout. E.g. checkout, clone, reset,
         sparse-checkout, etc.
 </simpara>
-<simpara>Note: Parallel checkout usually delivers better performance for repositories
+<note><simpara>Parallel checkout usually delivers better performance for repositories
 located on SSDs or over NFS. For repositories on spinning disks and/or machines
 with a small number of cores, the default sequential checkout often performs
 better. The size and compression level of a repository might also influence how
-well the parallel version performs.</simpara>
+well the parallel version performs.</simpara></note>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.thresholdForParallelism
+<emphasis>checkout.thresholdForParallelism</emphasis>
 </term>
 <listitem>
 <simpara>

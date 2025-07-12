@@ -1294,7 +1294,7 @@ commits affected by that topic, we may only want to view the subset of
 <emphasis>--ancestry-path=H D..M</emphasis> for example would result in:</simpara>
 <screen>                E
                  \
-                  G---H---I---J
+              C---G---H---I---J
                                \
                                 L--M</screen>
 <simpara>Whereas <emphasis>--ancestry-path=K D..M</emphasis> would result in</simpara>

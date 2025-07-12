@@ -13,19 +13,20 @@
 <simplesect id="git-verify-tag(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git verify-tag</emphasis> [-v | --verbose] [--format=&lt;format&gt;] [--raw] &lt;tag&gt;&#8230;</literallayout>
+<literallayout><code>git</code> <code>verify-tag</code> [<code>-v</code> | <code>--verbose</code>] [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>] [<code>--raw</code>] <emphasis>&lt;tag&gt;</emphasis><code>&#8230;</code></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-verify-tag(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Validates the gpg signature created by <emphasis>git tag</emphasis>.</simpara>
+<simpara>Validates the gpg signature created by <emphasis>git tag</emphasis> in the tag
+objects listed on the command line.</simpara>
 </simplesect>
 <simplesect id="git-verify-tag(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
---raw
+<emphasis>--raw</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -36,24 +37,14 @@
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
         Print the contents of the tag object before validating it.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-&lt;tag&gt;&#8230;
-</term>
-<listitem>
-<simpara>
-        SHA-1 identifiers of Git tag objects.
 </simpara>
 </listitem>
 </varlistentry>

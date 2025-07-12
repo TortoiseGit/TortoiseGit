@@ -41,20 +41,40 @@ relied on by tools like <emphasis>git filter-repo</emphasis>).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---signed-tags=(verbatim|warn|warn-strip|strip|abort)
+--signed-tags=(verbatim|warn-verbatim|warn-strip|strip|abort)
 </term>
 <listitem>
 <simpara>
         Specify how to handle signed tags.  Since any transformation
-        after the export can change the tag names (which can also happen
-        when excluding revisions) the signatures will not match.
+        after the export (or during the export, such as excluding
+        revisions) can change the hashes being signed, the signatures
+        may become invalid.
 </simpara>
 <simpara>When asking to <emphasis>abort</emphasis> (which is the default), this program will die
 when encountering a signed tag.  With <emphasis>strip</emphasis>, the tags will silently
 be made unsigned, with <emphasis>warn-strip</emphasis> they will be made unsigned but a
 warning will be displayed, with <emphasis>verbatim</emphasis>, they will be silently
-exported and with <emphasis>warn</emphasis>, they will be exported, but you will see a
-warning.</simpara>
+exported and with <emphasis>warn-verbatim</emphasis> (or <emphasis>warn</emphasis>, a deprecated synonym),
+they will be exported, but you will see a warning.  <emphasis>verbatim</emphasis> and
+<emphasis>warn-verbatim</emphasis> should only be used if you know that no transformation
+affecting tags or any commit in their history will be performed by you
+or by fast-export or fast-import, or if you do not care that the
+resulting tag will have an invalid signature.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--signed-commits=(verbatim|warn-verbatim|warn-strip|strip|abort)
+</term>
+<listitem>
+<simpara>
+        Specify how to handle signed commits.  Behaves exactly as
+        <emphasis>--signed-tags</emphasis>, but for commits.  Default is <emphasis>strip</emphasis>, which
+        is the same as how earlier versions of this command without
+        this option behaved.
+</simpara>
+<note><simpara>This is highly experimental and the format of the data stream may
+change in the future without compatibility guarantees.</simpara></note>
 </listitem>
 </varlistentry>
 <varlistentry>

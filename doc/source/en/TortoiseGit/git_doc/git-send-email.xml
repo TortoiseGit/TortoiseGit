@@ -164,6 +164,24 @@ is not set, this will be prompted for.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+--[no-]outlook-id-fix
+</term>
+<listitem>
+<simpara>
+        Microsoft Outlook SMTP servers discard the Message-ID sent via email and
+        assign a new random Message-ID, thus breaking threads.
+</simpara>
+<simpara>With <emphasis>--outlook-id-fix</emphasis>, <emphasis>git send-email</emphasis> uses a mechanism specific to
+Outlook servers to learn the Message-ID the server assigned to fix the
+threading. Use it only when you know that the server reports the
+rewritten Message-ID the same way as Outlook servers do.</simpara>
+<simpara>Without this option specified, the fix is done by default when talking
+to <emphasis>smtp.office365.com</emphasis> or <emphasis>smtp-mail.outlook.com</emphasis>. Use
+<emphasis>--no-outlook-id-fix</emphasis> to disable even when talking to these two servers.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --subject=&lt;string&gt;
 </term>
 <listitem>
@@ -1216,12 +1234,12 @@ sendemail.forbidSendmailVariables
 </varlistentry>
 </variablelist>
 </simplesect>
-<simplesect id="git-send-email(1)__examples">
-<title>EXAMPLES</title>
+<simplesect id="git-send-email(1)__examples_of_smtp_servers">
+<title>EXAMPLES OF SMTP SERVERS</title>
 <section id="git-send-email(1)__use_gmail_as_the_smtp_server">
-<title>Use gmail as the smtp server</title>
-<simpara>To use <emphasis>git send-email</emphasis> to send your patches through the GMail SMTP server,
-edit ~/.gitconfig to specify your account settings:</simpara>
+<title>Use Gmail as the SMTP Server</title>
+<simpara>To use <emphasis>git send-email</emphasis> to send your patches through the Gmail SMTP server,
+edit <emphasis>~/.gitconfig</emphasis> to specify your account settings:</simpara>
 <screen>[sendemail]
         smtpEncryption = tls
         smtpServer = smtp.gmail.com
@@ -1230,21 +1248,70 @@ edit ~/.gitconfig to specify your account settings:</simpara>
 <simpara>If you have multi-factor authentication set up on your Gmail account, you can
 generate an app-specific password for use with <emphasis>git send-email</emphasis>. Visit
 <ulink url="https://security.google.com/settings/security/apppasswords">https://security.google.com/settings/security/apppasswords</ulink> to create it.</simpara>
+<simpara>You can also use OAuth2.0 authentication with Gmail. <emphasis>OAUTHBEARER</emphasis> and
+<emphasis>XOAUTH2</emphasis> are common methods used for this type of authentication. Gmail
+supports both of them. As an example, if you want to use <emphasis>OAUTHBEARER</emphasis>, edit
+your <emphasis>~/.gitconfig</emphasis> file and add <emphasis>smtpAuth = OAUTHBEARER</emphasis> to your account
+settings:</simpara>
+<screen>[sendemail]
+        smtpEncryption = tls
+        smtpServer = smtp.gmail.com
+        smtpUser = yourname@gmail.com
+        smtpServerPort = 587
+        smtpAuth = OAUTHBEARER</screen>
+</section>
+<section id="git-send-email(1)__use_microsoft_outlook_as_the_smtp_server">
+<title>Use Microsoft Outlook as the SMTP Server</title>
+<simpara>Unlike Gmail, Microsoft Outlook no longer supports app-specific passwords.
+Therefore, OAuth2.0 authentication must be used for Outlook. Also, it only
+supports <emphasis>XOAUTH2</emphasis> authentication method.</simpara>
+<simpara>Edit <emphasis>~/.gitconfig</emphasis> to specify your account settings for Outlook and use its
+SMTP server with <emphasis>git send-email</emphasis>:</simpara>
+<screen>[sendemail]
+        smtpEncryption = tls
+        smtpServer = smtp.office365.com
+        smtpUser = yourname@outlook.com
+        smtpServerPort = 587
+        smtpAuth = XOAUTH2</screen>
+</section>
+</simplesect>
+<simplesect id="git-send-email(1)__sending_patches">
+<title>SENDING PATCHES</title>
 <simpara>Once your commits are ready to be sent to the mailing list, run the
 following commands:</simpara>
 <literallayout class="monospaced">$ git format-patch --cover-letter -M origin/master -o outgoing/
 $ edit outgoing/0000-*
 $ git send-email outgoing/*</literallayout>
 <simpara>The first time you run it, you will be prompted for your credentials.  Enter the
-app-specific or your regular password as appropriate.  If you have credential
-helper configured (see <xref linkend="git-credential(1)" />), the password will be saved in
-the credential store so you won't have to type it the next time.</simpara>
+app-specific or your regular password as appropriate.</simpara>
+<simpara>If you have a credential helper configured (see <xref linkend="git-credential(1)" />), the
+password will be saved in the credential store so you won't have to type it the
+next time.</simpara>
+<simpara>If you are using OAuth2.0 authentication, you need to use an access token in
+place of a password when prompted. Various OAuth2.0 token generators are
+available online. Community maintained credential helpers for Gmail and Outlook
+are also available:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<ulink url="https://github.com/AdityaGarg8/git-credential-email">git-credential-gmail</ulink>
+          (cross platform, dedicated helper for authenticating Gmail accounts)
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<ulink url="https://github.com/AdityaGarg8/git-credential-email">git-credential-outlook</ulink>
+          (cross platform, dedicated helper for authenticating Microsoft Outlook accounts)
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>You can also see <xref linkend="gitcredentials(7)" /> for more OAuth based authentication
+helpers.</simpara>
 <simpara>Note: the following core Perl modules that may be installed with your
 distribution of Perl are required:
 MIME::Base64, MIME::QuotedPrint, Net::Domain and Net::SMTP.
 These additional Perl modules are also required:
 Authen::SASL and Mail::Address.</simpara>
-</section>
 </simplesect>
 <simplesect id="git-send-email(1)__see_also">
 <title>SEE ALSO</title>

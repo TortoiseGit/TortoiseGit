@@ -340,7 +340,8 @@ take effect.</simpara>
         another commit will be marked with a <emphasis>?</emphasis> in the blame output.  If the
         <emphasis>blame.markUnblamableLines</emphasis> config option is set, then those lines touched
         by an ignored commit that we could not attribute to another revision are
-        marked with a <emphasis>*</emphasis>.
+        marked with a <emphasis>*</emphasis>. In the porcelain modes, we print <emphasis>ignored</emphasis> and
+        <emphasis>unblamable</emphasis> on a newline respectively.
 </simpara>
 </listitem>
 </varlistentry>
@@ -578,10 +579,11 @@ header elements later.</simpara>
 <simpara>The porcelain format generally suppresses commit information that has
 already been seen. For example, two lines that are blamed to the same
 commit will both be shown, but the details for that commit will be shown
-only once. This is more efficient, but may require more state be kept by
-the reader. The <emphasis>--line-porcelain</emphasis> option can be used to output full
-commit information for each line, allowing simpler (but less efficient)
-usage like:</simpara>
+only once. Information which is specific to individual lines will not be
+grouped together, like revs to be marked <emphasis>ignored</emphasis> or <emphasis>unblamable</emphasis>. This
+is more efficient, but may require more state be kept by the reader. The
+<emphasis>--line-porcelain</emphasis> option can be used to output full commit information
+for each line, allowing simpler (but less efficient) usage like:</simpara>
 <literallayout class="monospaced"># count the number of lines attributed to each author
 git blame --line-porcelain file |
 sed -n 's/^author //p' |

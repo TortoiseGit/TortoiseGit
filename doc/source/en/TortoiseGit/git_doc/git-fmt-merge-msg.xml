@@ -110,7 +110,7 @@ automatically invoking <emphasis>git merge</emphasis>.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-merge.branchdesc
+<emphasis>merge.branchdesc</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -122,7 +122,7 @@ merge.branchdesc
 </varlistentry>
 <varlistentry>
 <term>
-merge.log
+<emphasis>merge.log</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -135,14 +135,14 @@ merge.log
 </varlistentry>
 <varlistentry>
 <term>
-merge.suppressDest
+<emphasis>merge.suppressDest</emphasis>
 </term>
 <listitem>
 <simpara>
         By adding a glob that matches the names of integration
         branches to this multi-valued configuration variable, the
         default merge message computed for merges into these
-        integration branches will omit "into &lt;branch name&gt;" from
+        integration branches will omit "into <emphasis>&lt;branch-name&gt;</emphasis>" from
         its title.
 </simpara>
 <simpara>An element with an empty value can be used to clear the list

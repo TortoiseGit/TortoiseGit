@@ -13,17 +13,16 @@
 <simplesect id="git-mv(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git mv</emphasis> [&lt;options&gt;] &lt;source&gt;&#8230; &lt;destination&gt;</literallayout>
+<literallayout><code>git</code> <code>mv</code> [<code>-v</code>] [<code>-f</code>] [<code>-n</code>] [<code>-k</code>] <emphasis>&lt;source&gt;</emphasis> <emphasis>&lt;destination&gt;</emphasis>
+<code>git</code> <code>mv</code> [<code>-v</code>] [<code>-f</code>] [<code>-n</code>] [<code>-k</code>] <emphasis>&lt;source&gt;</emphasis><code>&#8230;</code> <emphasis>&lt;destination-directory&gt;</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-mv(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Move or rename a file, directory, or symlink.</simpara>
-<literallayout class="monospaced">git mv [-v] [-f] [-n] [-k] &lt;source&gt; &lt;destination&gt;
-git mv [-v] [-f] [-n] [-k] &lt;source&gt; ... &lt;destination-directory&gt;</literallayout>
-<simpara>In the first form, it renames &lt;source&gt;, which must exist and be either
-a file, symlink or directory, to &lt;destination&gt;.
-In the second form, the last argument has to be an existing
+<simpara>In the first form, it renames <emphasis>&lt;source&gt;</emphasis>, which must exist and be either
+a file, symlink or directory, to <emphasis>&lt;destination&gt;</emphasis>.
+In the second form, <emphasis>&lt;destination-directory&gt;</emphasis> has to be an existing
 directory; the given sources will be moved into this directory.</simpara>
 <simpara>The index is updated after successful completion, but the change must still be
 committed.</simpara>
@@ -33,10 +32,10 @@ committed.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -46,7 +45,7 @@ committed.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--k
+<emphasis>-k</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -59,10 +58,10 @@ committed.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -72,10 +71,10 @@ committed.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -90,8 +89,8 @@ committed.</simpara>
 <simpara>Moving a submodule using a gitfile (which means they were cloned
 with a Git version 1.7.8 or newer) will update the gitfile and
 core.worktree setting to make the submodule work in the new location.
-It also will attempt to update the submodule.&lt;name&gt;.path setting in
-the <xref linkend="gitmodules(5)" /> file and stage that file (unless -n is used).</simpara>
+It also will attempt to update the <emphasis>submodule.&lt;name&gt;.path</emphasis> setting in
+the <xref linkend="gitmodules(5)" /> file and stage that file (unless <emphasis>-n</emphasis> is used).</simpara>
 </simplesect>
 <simplesect id="git-mv(1)__bugs">
 <title>BUGS</title>

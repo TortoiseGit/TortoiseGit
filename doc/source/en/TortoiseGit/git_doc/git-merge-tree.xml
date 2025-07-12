@@ -116,6 +116,19 @@ etc.
 </varlistentry>
 <varlistentry>
 <term>
+--quiet
+</term>
+<listitem>
+<simpara>
+        Disable all output from the program.  Useful when you are only
+        interested in the exit status.  Allows merge-tree to exit
+        early when it finds a conflict, and allows it to avoid writing
+        most objects created by merges.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --allow-unrelated-histories
 </term>
 <listitem>
