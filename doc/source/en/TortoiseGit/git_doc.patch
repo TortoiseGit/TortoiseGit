@@ -19,6 +19,7 @@ Generating git docbook documentation:
 - perl -pi -e 's/link:user-manual.html\[(.+?)\]/xref:git_user-manual[\1]/g' *.adoc
 - make xml
 - take *.xml files
+- Update git-doc-version.xml
 
 diff --git a/Documentation/Makefile b/Documentation/Makefile
 index b109d25..e93261d 100644
