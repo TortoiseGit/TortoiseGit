@@ -4507,6 +4507,10 @@ msgstr ""
 msgid "File list is empty"
 msgstr ""
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr ""

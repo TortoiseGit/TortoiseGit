@@ -4024,6 +4024,7 @@ BEGIN
     IDS_PROC_LOG_FETCHFILESERROR "Could not fetch commit or calculate diff."
     IDS_LASTCOMMITTER       "Last Committer"
     IDS_DATELASTAUTHOR      "Last Author Date"
+    IDS_STATUSLIST_EMPTYMSGFILTERED "File list is empty due to active filter"
 END
 
 STRINGTABLE

@@ -984,6 +984,8 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					const_cast<CTGitPath&>(files[i]).m_Action &= ~(CTGitPath::LOGACTIONS_HIDE | CTGitPath::LOGACTIONS_GRAY);
 			}
 
+			m_ChangedFileListCtrl.SetEmptyString(IDS_STATUSLIST_EMPTYMSG);
+
 			CString fileFilterText;
 			m_cFileFilter.GetWindowText(fileFilterText);
 			if (!fileFilterText.IsEmpty())
@@ -999,7 +1001,10 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 					}
 				}
 				if (somethingHidden)
+				{
+					m_ChangedFileListCtrl.SetEmptyString(IDS_STATUSLIST_EMPTYMSGFILTERED);
 					pLogEntry->GetAction(&m_LogList) |= CTGitPath::LOGACTIONS_HIDE;
+				}
 			}
 
 			m_ChangedFileListCtrl.UpdateWithGitPathList(const_cast<CTGitPathList&>(files.m_files));
