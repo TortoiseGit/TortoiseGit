@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE simplesect SYSTEM "../../../dtd/dblite.dtd">
+
+<simplesect>
+	<para>
+		This Git documentation is based on Git 2.50.1.
+		The up to date Git reference can be found on <ulink url="https://git-scm.com/docs/"><citetitle>https://git-scm.com/docs/</citetitle></ulink>
+	</para>
+</simplesect>

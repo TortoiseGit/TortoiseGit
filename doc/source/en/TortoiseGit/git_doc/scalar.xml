@@ -14,12 +14,12 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout>scalar clone [--single-branch] [--branch &lt;main-branch&gt;] [--full-clone]
-        [--[no-]src] &lt;url&gt; [&lt;enlistment&gt;]
+        [--[no-]src] [--[no-]tags] [--[no-]maintenance] &lt;url&gt; [&lt;enlistment&gt;]
 scalar list
-scalar register [&lt;enlistment&gt;]
+scalar register [--[no-]maintenance] [&lt;enlistment&gt;]
 scalar unregister [&lt;enlistment&gt;]
 scalar run ( all | config | commit-graph | fetch | loose-objects | pack-files ) [&lt;enlistment&gt;]
-scalar reconfigure [ --all | &lt;enlistment&gt; ]
+scalar reconfigure [--maintenance=(enable|disable|keep)] [ --all | &lt;enlistment&gt; ]
 scalar diagnose [&lt;enlistment&gt;]
 scalar delete &lt;enlistment&gt;</literallayout>
 </blockquote>
@@ -156,6 +156,18 @@ cloning. If the HEAD at the remote did not point at any branch when
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--[no-]maintenance
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>scalar clone</emphasis> configures the enlistment to use Git's
+        background maintenance feature. Use the <emphasis>--no-maintenance</emphasis> to skip
+        this configuration.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="scalar(1)__list">
@@ -191,6 +203,19 @@ register [&lt;enlistment&gt;]
 <simpara>Note: when this subcommand is called in a worktree that is called <emphasis>src/</emphasis>, its
 parent directory is considered to be the Scalar enlistment. If the worktree is
 <emphasis>not</emphasis> called <emphasis>src/</emphasis>, it itself will be considered to be the Scalar enlistment.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--[no-]maintenance
+</term>
+<listitem>
+<simpara>
+        By default, <emphasis>scalar register</emphasis> configures the enlistment to use Git's
+        background maintenance feature. Use the <emphasis>--no-maintenance</emphasis> to skip
+        this configuration. This does not disable any maintenance that may
+        already be enabled in other ways.
+</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -241,8 +266,35 @@ automatically, explicit invocations of this task are rarely needed.</simpara>
 <simpara>After a Scalar upgrade, or when the configuration of a Scalar enlistment
 was somehow corrupted or changed by mistake, this subcommand allows to
 reconfigure the enlistment.</simpara>
-<simpara>With the <emphasis>--all</emphasis> option, all enlistments currently registered with Scalar
-will be reconfigured. Use this option after each Scalar upgrade.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+        When <emphasis>--all</emphasis> is specified, reconfigure all enlistments currently
+        registered with Scalar by the <emphasis>scalar.repo</emphasis> config key. Use this
+        option after each upgrade to get the latest features.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--maintenance=(enable|disable|keep)
+</term>
+<listitem>
+<simpara>
+        By default, Scalar configures the enlistment to use Git's
+        background maintenance feature; this is the same as using the
+        enable` value for this option. Use the <emphasis>disable</emphasis> value to
+        remove each considered enlistment from background maintenance.
+        Use `keep to leave the background maintenance configuration
+        untouched for these repositories.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </section>
 <section id="scalar(1)__diagnose">
 <title>Diagnose</title>

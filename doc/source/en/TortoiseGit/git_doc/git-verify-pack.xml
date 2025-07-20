@@ -13,34 +13,23 @@
 <simplesect id="git-verify-pack(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git verify-pack</emphasis> [-v | --verbose] [-s | --stat-only] [--] &lt;pack&gt;.idx&#8230;</literallayout>
+<literallayout><code>git</code> <code>verify-pack</code> [<code>-v</code> | <code>--verbose</code>] [<code>-s</code> | <code>--stat-only</code>] [<code>--</code>] <emphasis>&lt;pack&gt;</emphasis><code>.idx</code>&#8230;</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-verify-pack(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Reads given idx file for packed Git archive created with the
-<emphasis>git pack-objects</emphasis> command and verifies the idx file and the
-corresponding pack file.</simpara>
+<simpara>Read each idx file for packed Git archive given on the command line,
+and verify the idx file and the corresponding pack file.</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
-&lt;pack&gt;.idx &#8230;
-</term>
-<listitem>
-<simpara>
-        The idx files to verify.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -51,10 +40,10 @@ corresponding pack file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--s
+<emphasis>-s</emphasis>
 </term>
 <term>
---stat-only
+<emphasis>--stat-only</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -65,7 +54,7 @@ corresponding pack file.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -77,10 +66,10 @@ corresponding pack file.</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__output_format">
 <title>OUTPUT FORMAT</title>
-<simpara>When specifying the -v option the format used is:</simpara>
-<literallayout class="monospaced">SHA-1 type size size-in-packfile offset-in-packfile</literallayout>
+<simpara>When specifying the <emphasis>-v</emphasis> option the format used is:</simpara>
+<literallayout class="monospaced">object-name type size size-in-packfile offset-in-packfile</literallayout>
 <simpara>for objects that are not deltified in the pack, and</simpara>
-<literallayout class="monospaced">SHA-1 type size size-in-packfile offset-in-packfile depth base-SHA-1</literallayout>
+<literallayout class="monospaced">object-name type size size-in-packfile offset-in-packfile depth base-object-name</literallayout>
 <simpara>for objects that are deltified.</simpara>
 </simplesect>
 <simplesect id="git-verify-pack(1)__git">

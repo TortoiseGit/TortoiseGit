@@ -60,6 +60,9 @@
     <Filter Include="Header Files\reftable">
       <UniqueIdentifier>{8bccf295-78f2-4d2c-9f62-4e6a31f020e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="compiler-tricks">
+      <UniqueIdentifier>{439fffaa-e0b5-41c2-b015-ddba8434db30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -276,9 +279,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\match-trees.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\merge-recursive.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\name-hash.c">
@@ -887,9 +887,6 @@
     <ClCompile Include="..\tgit\reftable\pq.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\reftable\reader.c">
-      <Filter>git\reftable</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\reftable\record.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
@@ -904,6 +901,21 @@
     </ClCompile>
     <ClCompile Include="..\tgit\reftable\system.c">
       <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\hash.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\object-store.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\table.c">
+      <Filter>git\reftable</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compat\open.c">
+      <Filter>compat</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\compiler-tricks\not-constant.c">
+      <Filter>compiler-tricks</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -998,9 +1010,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\mailmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\tgit\merge-recursive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\tgit\mergesort.h">
@@ -1520,9 +1529,6 @@
     <ClInclude Include="..\tgit\object-store.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\object-store-ll.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\pager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1601,9 +1607,6 @@
     <ClInclude Include="..\tgit\reftable\pq.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\reftable\reader.h">
-      <Filter>Header Files\reftable</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\reftable\record.h">
       <Filter>Header Files\reftable</Filter>
     </ClInclude>
@@ -1645,6 +1648,18 @@
     </ClInclude>
     <ClInclude Include="..\tgit\repo-settings.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-block.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-constants.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\reftable-table.h">
+      <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\reftable\table.h">
+      <Filter>Header Files\reftable</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

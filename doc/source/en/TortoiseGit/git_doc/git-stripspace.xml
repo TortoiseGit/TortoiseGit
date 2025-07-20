@@ -63,7 +63,8 @@ the repository.</simpara>
 </term>
 <listitem>
 <simpara>
-        Skip and remove all lines starting with a comment character (default <emphasis>#</emphasis>).
+        Skip and remove all lines starting with a comment character
+        (<emphasis>core.commentChar</emphasis>, default <emphasis>#</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>

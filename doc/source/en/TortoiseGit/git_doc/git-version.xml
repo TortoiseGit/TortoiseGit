@@ -34,6 +34,13 @@ former is internally converted into the latter.</simpara>
         Include additional information about how git was built for diagnostic
         purposes.
 </simpara>
+<simpara>The libraries used to implement the SHA-1 and SHA-256 algorithms are displayed
+in the form <emphasis>SHA-1: &lt;option&gt;</emphasis> and <emphasis>SHA-256: &lt;option&gt;</emphasis>. Note that the SHA-1
+options <emphasis>SHA1_APPLE</emphasis>, <emphasis>SHA1_OPENSSL</emphasis>, and <emphasis>SHA1_BLK</emphasis> do not use a collision
+detection algorithm and thus may be vulnerable to known SHA-1 collision
+attacks. When a faster SHA-1 implementation without collision detection is used
+for only non-cryptographic purposes, the algorithm is displayed in the form
+<emphasis>non-collision-detecting-SHA-1: &lt;option&gt;</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

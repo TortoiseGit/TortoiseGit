@@ -345,10 +345,10 @@ fail unless one of <emphasis>--empty=keep</emphasis> or <emphasis>--allow-empty<
 </varlistentry>
 <varlistentry>
 <term>
---rerere-autoupdate
+<emphasis>--rerere-autoupdate</emphasis>
 </term>
 <term>
---no-rerere-autoupdate
+<emphasis>--no-rerere-autoupdate</emphasis>
 </term>
 <listitem>
 <simpara>

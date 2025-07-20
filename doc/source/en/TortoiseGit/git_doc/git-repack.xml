@@ -117,15 +117,25 @@ to the new separate pack will be written.</simpara>
 </term>
 <listitem>
 <simpara>
-        Repack cruft objects into packs as large as <emphasis>&lt;n&gt;</emphasis> bytes before
-        creating new packs. As long as there are enough cruft packs
-        smaller than <emphasis>&lt;n&gt;</emphasis>, repacking will cause a new cruft pack to
-        be created containing objects from any combined cruft packs,
-        along with any new unreachable objects. Cruft packs larger than
-        <emphasis>&lt;n&gt;</emphasis> will not be modified. When the new cruft pack is larger
-        than <emphasis>&lt;n&gt;</emphasis> bytes, it will be split into multiple packs, all of
-        which are guaranteed to be at most <emphasis>&lt;n&gt;</emphasis> bytes in size. Only
-        useful with <emphasis>--cruft -d</emphasis>.
+        Overrides <emphasis>--max-pack-size</emphasis> for cruft packs. Inherits the value of
+        <emphasis>--max-pack-size</emphasis> (if any) by default. See the documentation for
+        <emphasis>--max-pack-size</emphasis> for more details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--combine-cruft-below-size=&lt;n&gt;
+</term>
+<listitem>
+<simpara>
+        When generating cruft packs without pruning, only repack
+        existing cruft packs whose size is strictly less than <emphasis>&lt;n&gt;</emphasis>,
+        where <emphasis>&lt;n&gt;</emphasis> represents a number of bytes, which can optionally
+        be suffixed with "k", "m", or "g". Cruft packs whose size is
+        greater than or equal to <emphasis>&lt;n&gt;</emphasis> are left as-is and not repacked.
+        Useful when you want to avoid repacking large cruft pack(s) in
+        repositories that have many and/or large unreachable objects.
 </simpara>
 </listitem>
 </varlistentry>

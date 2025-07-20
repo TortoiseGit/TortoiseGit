@@ -2334,7 +2334,7 @@ blame.markIgnoredLines
 </varlistentry>
 <varlistentry>
 <term>
-branch.autoSetupMerge
+<emphasis>branch.autoSetupMerge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -2342,48 +2342,132 @@ branch.autoSetupMerge
         so that <xref linkend="git-pull(1)" /> will appropriately merge from the
         starting point branch. Note that even if this option is not set,
         this behavior can be chosen per-branch using the <emphasis>--track</emphasis>
-        and <emphasis>--no-track</emphasis> options. The valid settings are: <emphasis>false</emphasis> -- no
-        automatic setup is done; <emphasis>true</emphasis> -- automatic setup is done when the
-        starting point is a remote-tracking branch; <emphasis>always</emphasis> --
-        automatic setup is done when the starting point is either a
-        local branch or remote-tracking branch; <emphasis>inherit</emphasis> -- if the starting point
-        has a tracking configuration, it is copied to the new
-        branch; <emphasis>simple</emphasis> -- automatic setup is done only when the starting point
-        is a remote-tracking branch and the new branch has the same name as the
-        remote branch. This option defaults to true.
+        and <emphasis>--no-track</emphasis> options.  This option defaults to <emphasis>true</emphasis>. The valid settings
+        are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<listitem>
+<simpara>
+no automatic setup is done
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.autoSetupRebase
+<emphasis>true</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done when the starting point is a remote-tracking branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done when the starting point is either a
+        local branch or remote-tracking branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>inherit</emphasis>
+</term>
+<listitem>
+<simpara>
+if the starting point has a tracking configuration, it is copied to the new
+        branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>simple</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done only when the starting point
+        is a remote-tracking branch and the new branch has the same name as the
+        remote branch.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>branch.autoSetupRebase</emphasis>
 </term>
 <listitem>
 <simpara>
         When a new branch is created with <emphasis>git branch</emphasis>, <emphasis>git switch</emphasis> or <emphasis>git checkout</emphasis>
         that tracks another branch, this variable tells Git to set
-        up pull to rebase instead of merge (see "branch.&lt;name&gt;.rebase").
-        When <emphasis>never</emphasis>, rebase is never automatically set to true.
-        When <emphasis>local</emphasis>, rebase is set to true for tracked branches of
-        other local branches.
-        When <emphasis>remote</emphasis>, rebase is set to true for tracked branches of
-        remote-tracking branches.
-        When <emphasis>always</emphasis>, rebase will be set to true for all tracking
-        branches.
-        See "branch.autoSetupMerge" for details on how to set up a
-        branch to track another branch.
-        This option defaults to never.
+        up pull to rebase instead of merge (see <emphasis>branch.&lt;name&gt;.rebase</emphasis>).
+        The valid settings are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>never</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is never automatically set to true.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.sort
+<emphasis>local</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is set to true for tracked branches of other local branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>remote</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is set to true for tracked branches of remote-tracking branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase will be set to true for all tracking branches.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>See <emphasis>branch.autoSetupMerge</emphasis> for details on how to set up a branch to track another branch.
+This option defaults to <emphasis>never</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>branch.sort</emphasis>
 </term>
 <listitem>
 <simpara>
         This variable controls the sort ordering of branches when displayed by
-        <xref linkend="git-branch(1)" />. Without the "--sort=&lt;value&gt;" option provided, the
+        <xref linkend="git-branch(1)" />. Without the <emphasis>--sort=&lt;value&gt;</emphasis> option provided, the
         value of this variable will be used as the default.
         See <xref linkend="git-for-each-ref(1)" /> field names for valid values.
 </simpara>
@@ -2391,11 +2475,11 @@ branch.sort
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.remote
+<emphasis>branch.&lt;name&gt;.remote</emphasis>
 </term>
 <listitem>
 <simpara>
-        When on branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
+        When on branch <emphasis>&lt;name&gt;</emphasis>, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
         which remote to fetch from or push to.  The remote to push to
         may be overridden with <emphasis>remote.pushDefault</emphasis> (for all branches).
         The remote to push to, for the current branch, may be further
@@ -2410,13 +2494,13 @@ branch.&lt;name&gt;.remote
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.pushRemote
+<emphasis>branch.&lt;name&gt;.pushRemote</emphasis>
 </term>
 <listitem>
 <simpara>
-        When on branch &lt;name&gt;, it overrides <emphasis>branch.&lt;name&gt;.remote</emphasis> for
+        When on branch <emphasis>&lt;name&gt;</emphasis>, it overrides <emphasis>branch.&lt;name&gt;.remote</emphasis> for
         pushing.  It also overrides <emphasis>remote.pushDefault</emphasis> for pushing
-        from branch &lt;name&gt;.  When you pull from one place (e.g. your
+        from branch <emphasis>&lt;name&gt;</emphasis>.  When you pull from one place (e.g. your
         upstream) and push to another place (e.g. your own publishing
         repository), you would want to set <emphasis>remote.pushDefault</emphasis> to
         specify the remote to push to for all branches, and use this
@@ -2426,18 +2510,18 @@ branch.&lt;name&gt;.pushRemote
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.merge
+<emphasis>branch.&lt;name&gt;.merge</emphasis>
 </term>
 <listitem>
 <simpara>
-        Defines, together with branch.&lt;name&gt;.remote, the upstream branch
+        Defines, together with <emphasis>branch.&lt;name&gt;.remote</emphasis>, the upstream branch
         for the given branch. It tells <emphasis>git fetch</emphasis>/<emphasis>git pull</emphasis>/<emphasis>git rebase</emphasis> which
-        branch to merge and can also affect <emphasis>git push</emphasis> (see push.default).
-        When in branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> the default
-        refspec to be marked for merging in FETCH_HEAD. The value is
+        branch to merge and can also affect <emphasis>git push</emphasis> (see <emphasis>push.default</emphasis>).
+        When in branch <emphasis>&lt;name&gt;</emphasis>, it tells <emphasis>git fetch</emphasis> the default
+        refspec to be marked for merging in <emphasis>FETCH_HEAD</emphasis>. The value is
         handled like the remote part of a refspec, and must match a
         ref which is fetched from the remote given by
-        "branch.&lt;name&gt;.remote".
+        <emphasis>branch.&lt;name&gt;.remote</emphasis>.
         The merge information is used by <emphasis>git pull</emphasis> (which first calls
         <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
         this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
@@ -2445,17 +2529,17 @@ branch.&lt;name&gt;.merge
         If you wish to setup <emphasis>git pull</emphasis> so that it merges into &lt;name&gt; from
         another branch in the local repository, you can point
         branch.&lt;name&gt;.merge to the desired branch, and use the relative path
-        setting <emphasis>.</emphasis> (a period) for branch.&lt;name&gt;.remote.
+        setting <emphasis>.</emphasis> (a period) for <emphasis>branch.&lt;name&gt;.remote</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.mergeOptions
+<emphasis>branch.&lt;name&gt;.mergeOptions</emphasis>
 </term>
 <listitem>
 <simpara>
-        Sets default options for merging into branch &lt;name&gt;. The syntax and
+        Sets default options for merging into branch <emphasis>&lt;name&gt;</emphasis>. The syntax and
         supported options are the same as those of <xref linkend="git-merge(1)" />, but
         option values containing whitespace characters are currently not
         supported.
@@ -2464,13 +2548,13 @@ branch.&lt;name&gt;.mergeOptions
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.rebase
+<emphasis>branch.&lt;name&gt;.rebase</emphasis>
 </term>
 <listitem>
 <simpara>
-        When true, rebase the branch &lt;name&gt; on top of the fetched branch,
+        When true, rebase the branch <emphasis>&lt;name&gt;</emphasis> on top of the fetched branch,
         instead of merging the default branch from the default remote when
-        "git pull" is run. See "pull.rebase" for doing this in a non
+        <emphasis>git pull</emphasis> is run. See <emphasis>pull.rebase</emphasis> for doing this in a non
         branch-specific manner.
 </simpara>
 <simpara>When <emphasis>merges</emphasis> (or just <emphasis>m</emphasis>), pass the <emphasis>--rebase-merges</emphasis> option to <emphasis>git rebase</emphasis>
@@ -2485,14 +2569,14 @@ for details).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.description
+<emphasis>branch.&lt;name&gt;.description</emphasis>
 </term>
 <listitem>
 <simpara>
         Branch description, can be edited with
         <emphasis>git branch --edit-description</emphasis>. Branch description is
-        automatically added to the format-patch cover letter or
-        request-pull summary.
+        automatically added to the <emphasis>format-patch</emphasis> cover letter or
+        <emphasis>request-pull</emphasis> summary.
 </simpara>
 </listitem>
 </varlistentry>
@@ -2596,7 +2680,7 @@ bundle.&lt;id&gt;.uri
 </varlistentry>
 <varlistentry>
 <term>
-checkout.defaultRemote
+<emphasis>checkout.defaultRemote</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -2621,7 +2705,7 @@ commands or functionality in the future.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.guess
+<emphasis>checkout.guess</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -2633,7 +2717,7 @@ checkout.guess
 </varlistentry>
 <varlistentry>
 <term>
-checkout.workers
+<emphasis>checkout.workers</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -2644,16 +2728,16 @@ checkout.workers
         all commands that perform checkout. E.g. checkout, clone, reset,
         sparse-checkout, etc.
 </simpara>
-<simpara>Note: Parallel checkout usually delivers better performance for repositories
+<note><simpara>Parallel checkout usually delivers better performance for repositories
 located on SSDs or over NFS. For repositories on spinning disks and/or machines
 with a small number of cores, the default sequential checkout often performs
 better. The size and compression level of a repository might also influence how
-well the parallel version performs.</simpara>
+well the parallel version performs.</simpara></note>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-checkout.thresholdForParallelism
+<emphasis>checkout.thresholdForParallelism</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -3323,10 +3407,11 @@ column.tag
         This setting overrides the default of the <emphasis>--cleanup</emphasis> option in
         <emphasis>git commit</emphasis>. See <xref linkend="git-commit(1)" /> for details. Changing the default can be useful
         when you always want to keep lines that begin
-        with the comment character <emphasis>#</emphasis> in your log message, in which case you
+        with the comment character (<emphasis>core.commentChar</emphasis>, default <emphasis>#</emphasis>)
+        in your log message, in which case you
         would do <emphasis>git config commit.cleanup whitespace</emphasis> (note that you will
-        have to remove the help lines that begin with <emphasis>#</emphasis> in the commit log
-        template yourself, if you do this).
+        have to remove the help lines that begin with the comment character
+        in the commit log template yourself, if you do this).
 </simpara>
 </listitem>
 </varlistentry>
@@ -4218,6 +4303,10 @@ centrally configure your Git hooks instead of configuring them on a
 per-repository basis, or as a more flexible and centralized
 alternative to having an <emphasis>init.templateDir</emphasis> where you've changed
 default hooks.</simpara>
+<simpara>You can also disable all hooks entirely by setting <emphasis>core.hooksPath</emphasis>
+to <emphasis>/dev/null</emphasis>. This is usually only advisable for expert users and
+on a per-command basis using configuration parameters of the form
+<emphasis>git -c core.hooksPath=/dev/null ...</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -7101,7 +7190,10 @@ gitcvs.dbDriver
 </varlistentry>
 <varlistentry>
 <term>
-gitcvs.dbUser, gitcvs.dbPass
+gitcvs.dbUser
+</term>
+<term>
+gitcvs.dbPass
 </term>
 <listitem>
 <simpara>
@@ -8350,7 +8442,10 @@ pushes.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-http.lowSpeedLimit, http.lowSpeedTime
+http.lowSpeedLimit
+</term>
+<term>
+http.lowSpeedTime
 </term>
 <listitem>
 <simpara>
@@ -8359,6 +8454,45 @@ http.lowSpeedLimit, http.lowSpeedTime
         the transfer is aborted.
         Can be overridden by the <emphasis>GIT_HTTP_LOW_SPEED_LIMIT</emphasis> and
         <emphasis>GIT_HTTP_LOW_SPEED_TIME</emphasis> environment variables.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.keepAliveIdle
+</term>
+<listitem>
+<simpara>
+        Specifies how long in seconds to wait on an idle connection
+        before sending TCP keepalive probes (if supported by the OS). If
+        unset, curl's default value is used. Can be overridden by the
+        <emphasis>GIT_HTTP_KEEPALIVE_IDLE</emphasis> environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.keepAliveInterval
+</term>
+<listitem>
+<simpara>
+        Specifies how long in seconds to wait between TCP keepalive
+        probes (if supported by the OS). If unset, curl's default value
+        is used. Can be overridden by the <emphasis>GIT_HTTP_KEEPALIVE_INTERVAL</emphasis>
+        environment variable.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.keepAliveCount
+</term>
+<listitem>
+<simpara>
+        Specifies how many TCP keepalive probes to send before giving up
+        and terminating the connection (if supported by the OS). If
+        unset, curl's default value is used. Can be overridden by the
+        <emphasis>GIT_HTTP_KEEPALIVE_COUNT</emphasis> environment variable.
 </simpara>
 </listitem>
 </varlistentry>
@@ -9169,6 +9303,18 @@ maintenance.loose-objects.auto
 </varlistentry>
 <varlistentry>
 <term>
+maintenance.loose-objects.batchSize
+</term>
+<listitem>
+<simpara>
+        This integer config option controls the maximum number of loose objects
+        written into a packfile during the <emphasis>loose-objects</emphasis> task. The default is
+        fifty thousand. Use value <emphasis>0</emphasis> to indicate no limit.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 maintenance.incremental-repack.auto
 </term>
 <listitem>
@@ -9180,6 +9326,53 @@ maintenance.incremental-repack.auto
         Otherwise, a positive value implies the command should run when the
         number of pack-files not in the multi-pack-index is at least the value
         of <emphasis>maintenance.incremental-repack.auto</emphasis>. The default value is 10.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.reflog-expire.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>reflog-expire</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>reflog-expire</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        expired reflog entries in the "HEAD" reflog is at least the value of
+        <emphasis>maintenance.loose-objects.auto</emphasis>. The default value is 100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.rerere-gc.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>rerere-gc</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>rerere-gc</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A negative
+        value will force the task to run every time. Otherwise, any positive
+        value implies the command will run when the "rr-cache" directory exists
+        and has at least one entry, regardless of whether it is stale or not.
+        This heuristic may be refined in the future. The default value is 1.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.worktree-prune.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>worktree-prune</emphasis> task
+        should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero, then
+        the <emphasis>worktree-prune</emphasis> task will not run with the <emphasis>--auto</emphasis> option. A
+        negative value will force the task to run every time. Otherwise, a
+        positive value implies the command should run when the number of
+        prunable worktrees exceeds the value. The default value is 1.
 </simpara>
 </listitem>
 </varlistentry>
@@ -9219,15 +9412,15 @@ man.&lt;tool&gt;.path
 </varlistentry>
 <varlistentry>
 <term>
-merge.conflictStyle
+<emphasis>merge.conflictStyle</emphasis>
 </term>
 <listitem>
 <simpara>
         Specify the style in which conflicted hunks are written out to
         working tree files upon merge.  The default is "merge", which
-        shows a <emphasis>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</emphasis> conflict marker, changes made by one side,
+        shows a <literal>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</literal> conflict marker, changes made by one side,
         a <emphasis>=======</emphasis> marker, changes made by the other side, and then
-        a <emphasis>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</emphasis> marker.  An alternate style, "diff3", adds a <emphasis>|||||||</emphasis>
+        a <literal>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</literal> marker.  An alternate style, "diff3", adds a <literal>|||||||</literal>
         marker and the original text before the <emphasis>=======</emphasis> marker.  The
         "merge" style tends to produce smaller conflict regions than diff3,
         both because of the exclusion of the original text, and because
@@ -9241,7 +9434,7 @@ merge.conflictStyle
 </varlistentry>
 <varlistentry>
 <term>
-merge.defaultToUpstream
+<emphasis>merge.defaultToUpstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9249,7 +9442,7 @@ merge.defaultToUpstream
         branches configured for the current branch by using their last
         observed values stored in their remote-tracking branches.
         The values of the <emphasis>branch.&lt;current branch&gt;.merge</emphasis> that name the
-        branches at the remote named by <emphasis>branch.&lt;current branch&gt;.remote</emphasis>
+        branches at the remote named by <emphasis>branch.&lt;current-branch&gt;.remote</emphasis>
         are consulted, and then they are mapped via <emphasis>remote.&lt;remote&gt;.fetch</emphasis>
         to their corresponding remote-tracking branches, and the tips of
         these tracking branches are merged. Defaults to true.
@@ -9258,7 +9451,7 @@ merge.defaultToUpstream
 </varlistentry>
 <varlistentry>
 <term>
-merge.ff
+<emphasis>merge.ff</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9275,18 +9468,18 @@ merge.ff
 </varlistentry>
 <varlistentry>
 <term>
-merge.verifySignatures
+<emphasis>merge.verifySignatures</emphasis>
 </term>
 <listitem>
 <simpara>
-        If true, this is equivalent to the --verify-signatures command
+        If true, this is equivalent to the <emphasis>--verify-signatures</emphasis> command
         line option. See <xref linkend="git-merge(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.branchdesc
+<emphasis>merge.branchdesc</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9298,7 +9491,7 @@ merge.branchdesc
 </varlistentry>
 <varlistentry>
 <term>
-merge.log
+<emphasis>merge.log</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9311,14 +9504,14 @@ merge.log
 </varlistentry>
 <varlistentry>
 <term>
-merge.suppressDest
+<emphasis>merge.suppressDest</emphasis>
 </term>
 <listitem>
 <simpara>
         By adding a glob that matches the names of integration
         branches to this multi-valued configuration variable, the
         default merge message computed for merges into these
-        integration branches will omit "into &lt;branch name&gt;" from
+        integration branches will omit "into <emphasis>&lt;branch-name&gt;</emphasis>" from
         its title.
 </simpara>
 <simpara>An element with an empty value can be used to clear the list
@@ -9329,14 +9522,14 @@ default value of <emphasis>master</emphasis> is used for backward compatibility.
 </varlistentry>
 <varlistentry>
 <term>
-merge.renameLimit
+<emphasis>merge.renameLimit</emphasis>
 </term>
 <listitem>
 <simpara>
         The number of files to consider in the exhaustive portion of
         rename detection during a merge.  If not specified, defaults
-        to the value of diff.renameLimit.  If neither
-        merge.renameLimit nor diff.renameLimit are specified,
+        to the value of <emphasis>diff.renameLimit</emphasis>.  If neither
+        <emphasis>merge.renameLimit</emphasis> nor <emphasis>diff.renameLimit</emphasis> are specified,
         currently defaults to 7000.  This setting has no effect if
         rename detection is turned off.
 </simpara>
@@ -9344,45 +9537,74 @@ merge.renameLimit
 </varlistentry>
 <varlistentry>
 <term>
-merge.renames
+<emphasis>merge.renames</emphasis>
 </term>
 <listitem>
 <simpara>
-        Whether Git detects renames.  If set to "false", rename detection
-        is disabled. If set to "true", basic rename detection is enabled.
+        Whether Git detects renames.  If set to <emphasis>false</emphasis>, rename detection
+        is disabled. If set to <emphasis>true</emphasis>, basic rename detection is enabled.
         Defaults to the value of diff.renames.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.directoryRenames
+<emphasis>merge.directoryRenames</emphasis>
 </term>
 <listitem>
 <simpara>
         Whether Git detects directory renames, affecting what happens at
         merge time to new files added to a directory on one side of
         history when that directory was renamed on the other side of
-        history.  If merge.directoryRenames is set to "false", directory
-        rename detection is disabled, meaning that such new files will be
-        left behind in the old directory.  If set to "true", directory
-        rename detection is enabled, meaning that such new files will be
-        moved into the new directory.  If set to "conflict", a conflict
-        will be reported for such paths.  If merge.renames is false,
-        merge.directoryRenames is ignored and treated as false.  Defaults
-        to "conflict".
+        history. Possible values are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<listitem>
+<simpara>
+Directory rename detection is disabled, meaning that such new files will be
+        left behind in the old directory.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.renormalize
+<emphasis>true</emphasis>
+</term>
+<listitem>
+<simpara>
+Directory rename detection is enabled, meaning that such new files will be
+        moved into the new directory.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>conflict</emphasis>
+</term>
+<listitem>
+<simpara>
+A conflict will be reported for such paths.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>If <emphasis>merge.renames</emphasis> is <emphasis>false</emphasis>, <emphasis>merge.directoryRenames</emphasis> is ignored and treated
+as <emphasis>false</emphasis>. Defaults to <emphasis>conflict</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>merge.renormalize</emphasis>
 </term>
 <listitem>
 <simpara>
         Tell Git that canonical representation of files in the
         repository has changed over time (e.g. earlier commits record
-        text files with CRLF line endings, but recent ones use LF line
+        text files with <emphasis>CRLF</emphasis> line endings, but recent ones use <emphasis>LF</emphasis> line
         endings).  In such a repository, for each file where a
         three-way content merge is needed, Git can convert the data
         recorded in commits to a canonical form before performing a
@@ -9394,55 +9616,55 @@ merge.renormalize
 </varlistentry>
 <varlistentry>
 <term>
-merge.stat
+<emphasis>merge.stat</emphasis>
 </term>
 <listitem>
 <simpara>
-        Whether to print the diffstat between ORIG_HEAD and the merge result
+        Whether to print the diffstat between <emphasis>ORIG_HEAD</emphasis> and the merge result
         at the end of the merge.  True by default.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.autoStash
+<emphasis>merge.autoStash</emphasis>
 </term>
 <listitem>
 <simpara>
-        When set to true, automatically create a temporary stash entry
+        When set to <emphasis>true</emphasis>, automatically create a temporary stash entry
         before the operation begins, and apply it after the operation
         ends.  This means that you can run merge on a dirty worktree.
         However, use with care: the final stash application after a
         successful merge might result in non-trivial conflicts.
         This option can be overridden by the <emphasis>--no-autostash</emphasis> and
         <emphasis>--autostash</emphasis> options of <xref linkend="git-merge(1)" />.
-        Defaults to false.
+        Defaults to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.tool
+<emphasis>merge.tool</emphasis>
 </term>
 <listitem>
 <simpara>
         Controls which merge tool is used by <xref linkend="git-mergetool(1)" />.
         The list below shows the valid built-in values.
         Any other value is treated as a custom merge tool and requires
-        that a corresponding mergetool.&lt;tool&gt;.cmd variable is defined.
+        that a corresponding <emphasis>mergetool.&lt;tool&gt;.cmd</emphasis> variable is defined.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-merge.guitool
+<emphasis>merge.guitool</emphasis>
 </term>
 <listitem>
 <simpara>
         Controls which merge tool is used by <xref linkend="git-mergetool(1)" /> when the
-        -g/--gui flag is specified. The list below shows the valid built-in values.
+        <emphasis>-g</emphasis>/<emphasis>--gui</emphasis> flag is specified. The list below shows the valid built-in values.
         Any other value is treated as a custom merge tool and requires that a
-        corresponding mergetool.&lt;guitool&gt;.cmd variable is defined.
+        corresponding <emphasis>mergetool.&lt;guitool&gt;.cmd</emphasis> variable is defined.
 </simpara>
 <variablelist>
 <varlistentry>
@@ -9790,7 +10012,7 @@ Use xxdiff (requires a graphical session)
 </varlistentry>
 <varlistentry>
 <term>
-merge.verbosity
+<emphasis>merge.verbosity</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9805,7 +10027,7 @@ merge.verbosity
 </varlistentry>
 <varlistentry>
 <term>
-merge.&lt;driver&gt;.name
+<emphasis>merge.&lt;driver&gt;.name</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9816,7 +10038,7 @@ merge.&lt;driver&gt;.name
 </varlistentry>
 <varlistentry>
 <term>
-merge.&lt;driver&gt;.driver
+<emphasis>merge.&lt;driver&gt;.driver</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9827,7 +10049,7 @@ merge.&lt;driver&gt;.driver
 </varlistentry>
 <varlistentry>
 <term>
-merge.&lt;driver&gt;.recursive
+<emphasis>merge.&lt;driver&gt;.recursive</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9839,18 +10061,18 @@ merge.&lt;driver&gt;.recursive
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.path
+<emphasis>mergetool.&lt;tool&gt;.path</emphasis>
 </term>
 <listitem>
 <simpara>
         Override the path for the given tool.  This is useful in case
-        your tool is not in the PATH.
+        your tool is not in the <emphasis>$PATH</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.cmd
+<emphasis>mergetool.&lt;tool&gt;.cmd</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9868,7 +10090,7 @@ mergetool.&lt;tool&gt;.cmd
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.hideResolved
+<emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9880,7 +10102,7 @@ mergetool.&lt;tool&gt;.hideResolved
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;tool&gt;.trustExitCode
+<emphasis>mergetool.&lt;tool&gt;.trustExitCode</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9895,7 +10117,7 @@ mergetool.&lt;tool&gt;.trustExitCode
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.meld.hasOutput
+<emphasis>mergetool.meld.hasOutput</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9911,7 +10133,7 @@ mergetool.meld.hasOutput
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.meld.useAutoMerge
+<emphasis>mergetool.meld.useAutoMerge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9928,7 +10150,7 @@ mergetool.meld.useAutoMerge
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.&lt;vimdiff variant&gt;.layout
+<emphasis>mergetool.&lt;variant&gt;.layout</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9937,7 +10159,7 @@ mergetool.&lt;vimdiff variant&gt;.layout
         Upon launching <emphasis>git mergetool</emphasis> with <emphasis>--tool=&lt;variant&gt;</emphasis> (or without <emphasis>--tool</emphasis>
         if <emphasis>merge.tool</emphasis> is configured as <emphasis>&lt;variant&gt;</emphasis>), Git will consult
         <emphasis>mergetool.&lt;variant&gt;.layout</emphasis> to determine the tool's layout. If the
-        variant-specific configuration is not available, <emphasis>vimdiff</emphasis>'s is used as
+        variant-specific configuration is not available, <emphasis>vimdiff</emphasis> ' s is used as
         fallback.  If that too is not available, a default layout with 4 windows
         will be used.  To configure the layout, see the <emphasis>BACKEND SPECIFIC HINTS</emphasis>
         section in <xref linkend="git-mergetool(1)" />.
@@ -9946,15 +10168,15 @@ mergetool.&lt;vimdiff variant&gt;.layout
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.hideResolved
+<emphasis>mergetool.hideResolved</emphasis>
 </term>
 <listitem>
 <simpara>
         During a merge, Git will automatically resolve as many conflicts as
-        possible and write the <emphasis>MERGED</emphasis> file containing conflict markers around
-        any conflicts that it cannot resolve; <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> normally
-        represent the versions of the file from before Git's conflict
-        resolution. This flag causes <emphasis>LOCAL</emphasis> and <emphasis>REMOTE</emphasis> to be overwritten so
+        possible and write the <emphasis>$MERGED</emphasis> file containing conflict markers around
+        any conflicts that it cannot resolve; <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> normally
+        are the versions of the file from before Git`s conflict
+        resolution. This flag causes <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> to be overwritten so
         that only the unresolved conflicts are presented to the merge tool. Can
         be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>
         configuration variable. Defaults to <emphasis>false</emphasis>.
@@ -9963,7 +10185,7 @@ mergetool.hideResolved
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.keepBackup
+<emphasis>mergetool.keepBackup</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9976,7 +10198,7 @@ mergetool.keepBackup
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.keepTemporaries
+<emphasis>mergetool.keepTemporaries</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -9990,7 +10212,7 @@ mergetool.keepTemporaries
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.writeToTemp
+<emphasis>mergetool.writeToTemp</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -10003,7 +10225,7 @@ mergetool.writeToTemp
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.prompt
+<emphasis>mergetool.prompt</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -10013,7 +10235,7 @@ mergetool.prompt
 </varlistentry>
 <varlistentry>
 <term>
-mergetool.guiDefault
+<emphasis>mergetool.guiDefault</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -10551,8 +10773,8 @@ promisor.acceptFromServer
         server will be accepted. By accepting a promisor remote, the
         client agrees that the server might omit objects that are
         lazily fetchable from this promisor remote from its responses
-        to "fetch" and "clone" requests from the client. See
-        <xref linkend="gitprotocol-v2(5)" />.
+        to "fetch" and "clone" requests from the client. Name and URL
+        comparisons are case sensitive. See <xref linkend="gitprotocol-v2(5)" />.
 </simpara>
 </listitem>
 </varlistentry>
@@ -11700,7 +11922,8 @@ remote.&lt;name&gt;.followRemoteHEAD
 </term>
 <listitem>
 <simpara>
-        How <xref linkend="git-fetch(1)" /> should handle updates to <emphasis>remotes/&lt;name&gt;/HEAD</emphasis>.
+        How <xref linkend="git-fetch(1)" /> should handle updates to <emphasis>remotes/&lt;name&gt;/HEAD</emphasis>
+        when fetching using the configured refspecs of a remote.
         The default value is "create", which will create <emphasis>remotes/&lt;name&gt;/HEAD</emphasis>
         if it exists on the remote, but not locally; this will not touch an
         already existing local reference. Setting it to "warn" will print

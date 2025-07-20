@@ -13,22 +13,22 @@
 <simplesect id="git-branch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git branch</emphasis> [--color[=&lt;when&gt;] | --no-color] [--show-current]
-        [-v [--abbrev=&lt;n&gt; | --no-abbrev]]
-        [--column[=&lt;options&gt;] | --no-column] [--sort=&lt;key&gt;]
-        [--merged [&lt;commit&gt;]] [--no-merged [&lt;commit&gt;]]
-        [--contains [&lt;commit&gt;]] [--no-contains [&lt;commit&gt;]]
-        [--points-at &lt;object&gt;] [--format=&lt;format&gt;]
-        [(-r | --remotes) | (-a | --all)]
-        [--list] [&lt;pattern&gt;&#8230;]
-<emphasis>git branch</emphasis> [--track[=(direct|inherit)] | --no-track] [-f]
-        [--recurse-submodules] &lt;branchname&gt; [&lt;start-point&gt;]
-<emphasis>git branch</emphasis> (--set-upstream-to=&lt;upstream&gt; | -u &lt;upstream&gt;) [&lt;branchname&gt;]
-<emphasis>git branch</emphasis> --unset-upstream [&lt;branchname&gt;]
-<emphasis>git branch</emphasis> (-m | -M) [&lt;oldbranch&gt;] &lt;newbranch&gt;
-<emphasis>git branch</emphasis> (-c | -C) [&lt;oldbranch&gt;] &lt;newbranch&gt;
-<emphasis>git branch</emphasis> (-d | -D) [-r] &lt;branchname&gt;&#8230;
-<emphasis>git branch</emphasis> --edit-description [&lt;branchname&gt;]</literallayout>
+<literallayout><code>git</code> <code>branch</code> [<code>--color</code>[<code>=</code><emphasis>&lt;when&gt;</emphasis>] | <code>--no-color</code>] [<code>--show-current</code>]
+           [<code>-v</code> [<code>--abbrev=</code><emphasis>&lt;n&gt;</emphasis> | <code>--no-abbrev</code>]]
+           [<code>--column</code>[<code>=</code><emphasis>&lt;options&gt;</emphasis>] | <code>--no-column</code>] [<code>--sort=</code><emphasis>&lt;key&gt;</emphasis>]
+           [<code>--merged</code> [<emphasis>&lt;commit&gt;</emphasis>]] [<code>--no-merged</code> [<emphasis>&lt;commit&gt;</emphasis>]]
+           [<code>--contains</code> [<emphasis>&lt;commit&gt;</emphasis>]] [<code>--no-contains</code> [<emphasis>&lt;commit&gt;</emphasis>]]
+           [<code>--points-at</code> <emphasis>&lt;object&gt;</emphasis>] [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>]
+           [(<code>-r</code>|<code>--remotes</code>) | (<code>-a</code>|<code>--all</code>)]
+           [<code>--list</code>] [<emphasis>&lt;pattern&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>branch</code> [<code>--track</code>[<code>=</code>(<code>direct</code>|<code>inherit</code>)] | <code>--no-track</code>] [<code>-f</code>]
+           [<code>--recurse-submodules</code>] <emphasis>&lt;branch-name&gt;</emphasis> [<emphasis>&lt;start-point&gt;</emphasis>]
+<code>git</code> <code>branch</code> (<code>--set-upstream-to=</code><emphasis>&lt;upstream&gt;</emphasis>|<code>-u</code> <emphasis>&lt;upstream&gt;</emphasis>) [<emphasis>&lt;branch-name&gt;</emphasis>]
+<code>git</code> <code>branch</code> <code>--unset-upstream</code> [<emphasis>&lt;branch-name&gt;</emphasis>]
+<code>git</code> <code>branch</code> (<code>-m</code>|<code>-M</code>) [<emphasis>&lt;old-branch&gt;</emphasis>] <emphasis>&lt;new-branch&gt;</emphasis>
+<code>git</code> <code>branch</code> (<code>-c</code>|<code>-C</code>) [<emphasis>&lt;old-branch&gt;</emphasis>] <emphasis>&lt;new-branch&gt;</emphasis>
+<code>git</code> <code>branch</code> (<code>-d</code>|<code>-D</code>) [<code>-r</code>] <emphasis>&lt;branch-name&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>branch</code> <code>--edit-description</code> [<emphasis>&lt;branch-name&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-branch(1)__description">
@@ -51,17 +51,17 @@ as branch creation.</simpara>
 named commit), <emphasis>--no-contains</emphasis> inverts it. With <emphasis>--merged</emphasis>, only branches
 merged into the named commit (i.e. the branches whose tip commits are
 reachable from the named commit) will be listed.  With <emphasis>--no-merged</emphasis> only
-branches not merged into the named commit will be listed.  If the &lt;commit&gt;
+branches not merged into the named commit will be listed.  If the <emphasis>&lt;commit&gt;</emphasis>
 argument is missing it defaults to <emphasis>HEAD</emphasis> (i.e. the tip of the current
 branch).</simpara>
-<simpara>The command's second form creates a new branch head named &lt;branchname&gt;
-which points to the current <emphasis>HEAD</emphasis>, or &lt;start-point&gt; if given. As a
-special case, for &lt;start-point&gt;, you may use <emphasis>"A...B"</emphasis> as a shortcut for
-the merge base of <emphasis>A</emphasis> and <emphasis>B</emphasis> if there is exactly one merge base. You
-can leave out at most one of <emphasis>A</emphasis> and <emphasis>B</emphasis>, in which case it defaults to
-<emphasis>HEAD</emphasis>.</simpara>
+<simpara>The command's second form creates a new branch head named <emphasis>&lt;branch-name&gt;</emphasis>
+which points to the current <emphasis>HEAD</emphasis>, or <emphasis>&lt;start-point&gt;</emphasis> if given. As a
+special case, for <emphasis>&lt;start-point&gt;</emphasis>, you may use <emphasis>&lt;rev-A&gt;...&lt;rev-B&gt;</emphasis> as a
+shortcut for the merge base of <emphasis>&lt;rev-A&gt;</emphasis> and <emphasis>&lt;rev-B&gt;</emphasis> if there is exactly
+one merge base. You can leave out at most one of <emphasis>&lt;rev-A&gt;</emphasis> and <emphasis>&lt;rev-B&gt;</emphasis>,
+in which case it defaults to <emphasis>HEAD</emphasis>.</simpara>
 <simpara>Note that this will create the new branch, but it will not switch the
-working tree to it; use "git switch &lt;newbranch&gt;" to switch to the
+working tree to it; use <emphasis>git switch &lt;new-branch&gt;</emphasis> to switch to the
 new branch.</simpara>
 <simpara>When a local branch is started off a remote-tracking branch, Git sets up the
 branch (specifically the <emphasis>branch.&lt;name&gt;.remote</emphasis> and <emphasis>branch.&lt;name&gt;.merge</emphasis>
@@ -70,15 +70,15 @@ the remote-tracking branch. This behavior may be changed via the global
 <emphasis>branch.autoSetupMerge</emphasis> configuration flag. That setting can be
 overridden by using the <emphasis>--track</emphasis> and <emphasis>--no-track</emphasis> options, and
 changed later using <emphasis>git branch --set-upstream-to</emphasis>.</simpara>
-<simpara>With a <emphasis>-m</emphasis> or <emphasis>-M</emphasis> option, &lt;oldbranch&gt; will be renamed to &lt;newbranch&gt;.
-If &lt;oldbranch&gt; had a corresponding reflog, it is renamed to match
-&lt;newbranch&gt;, and a reflog entry is created to remember the branch
-renaming. If &lt;newbranch&gt; exists, -M must be used to force the rename
+<simpara>With a <emphasis>-m</emphasis> or <emphasis>-M</emphasis> option, <emphasis>&lt;old-branch&gt;</emphasis> will be renamed to <emphasis>&lt;new-branch&gt;</emphasis>.
+If <emphasis>&lt;old-branch&gt;</emphasis> had a corresponding reflog, it is renamed to match
+<emphasis>&lt;new-branch&gt;</emphasis>, and a reflog entry is created to remember the branch
+renaming. If <emphasis>&lt;new-branch&gt;</emphasis> exists, <emphasis>-M</emphasis> must be used to force the rename
 to happen.</simpara>
 <simpara>The <emphasis>-c</emphasis> and <emphasis>-C</emphasis> options have the exact same semantics as <emphasis>-m</emphasis> and
 <emphasis>-M</emphasis>, except instead of the branch being renamed, it will be copied to a
 new name, along with its config and reflog.</simpara>
-<simpara>With a <emphasis>-d</emphasis> or <emphasis>-D</emphasis> option, <emphasis>&lt;branchname&gt;</emphasis> will be deleted.  You may
+<simpara>With a <emphasis>-d</emphasis> or <emphasis>-D</emphasis> option, <emphasis>&lt;branch-name&gt;</emphasis> will be deleted.  You may
 specify more than one branch for deletion.  If the branch currently
 has a reflog then the reflog will also be deleted.</simpara>
 <simpara>Use <emphasis>-r</emphasis> together with <emphasis>-d</emphasis> to delete remote-tracking branches. Note, that it
@@ -92,10 +92,10 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---delete
+<emphasis>--delete</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -107,7 +107,7 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--D
+<emphasis>-D</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -117,13 +117,13 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---create-reflog
+<emphasis>--create-reflog</emphasis>
 </term>
 <listitem>
 <simpara>
         Create the branch's reflog.  This activates recording of
         all changes made to the branch ref, enabling use of date
-        based sha1 expressions such as "&lt;branchname&gt;@{yesterday}".
+        based sha1 expressions such as <emphasis>&lt;branch-name&gt;@{yesterday}</emphasis>.
         Note that in non-bare repositories, reflogs are usually
         enabled by default by the <emphasis>core.logAllRefUpdates</emphasis> config option.
         The negated form <emphasis>--no-create-reflog</emphasis> only overrides an earlier
@@ -134,14 +134,14 @@ way to clean up all obsolete remote-tracking branches.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
-        Reset &lt;branchname&gt; to &lt;start-point&gt;, even if &lt;branchname&gt; exists
+        Reset <emphasis>&lt;branch-name&gt;</emphasis> to <emphasis>&lt;start-point&gt;</emphasis>, even if <emphasis>&lt;branch-name&gt;</emphasis> exists
         already. Without <emphasis>-f</emphasis>, <emphasis>git branch</emphasis> refuses to change an existing branch.
         In combination with <emphasis>-d</emphasis> (or <emphasis>--delete</emphasis>), allow deleting the
         branch irrespective of its merged status, or whether it even
@@ -149,17 +149,17 @@ way to clean up all obsolete remote-tracking branches.</simpara>
         <emphasis>-m</emphasis> (or <emphasis>--move</emphasis>), allow renaming the branch even if the new
         branch name already exists, the same applies for <emphasis>-c</emphasis> (or <emphasis>--copy</emphasis>).
 </simpara>
-<simpara>Note that <emphasis>git branch -f &lt;branchname&gt; [&lt;start-point&gt;]</emphasis>, even with <emphasis>-f</emphasis>,
-refuses to change an existing branch <emphasis>&lt;branchname&gt;</emphasis> that is checked out
+<simpara>Note that <emphasis>git branch -f &lt;branch-name&gt; [&lt;start-point&gt;]</emphasis>, even with <emphasis>-f</emphasis>,
+refuses to change an existing branch <emphasis>&lt;branch-name&gt;</emphasis> that is checked out
 in another worktree linked to the same repository.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--m
+<emphasis>-m</emphasis>
 </term>
 <term>
---move
+<emphasis>--move</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -169,7 +169,7 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--M
+<emphasis>-M</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -179,10 +179,10 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--c
+<emphasis>-c</emphasis>
 </term>
 <term>
---copy
+<emphasis>--copy</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -192,7 +192,7 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C
+<emphasis>-C</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -202,19 +202,19 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---color[=&lt;when&gt;]
+<emphasis>--color[=&lt;when&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Color branches to highlight current, local, and
         remote-tracking branches.
-        The value must be always (the default), never, or auto.
+        The value must be <emphasis>always</emphasis> (the default), <emphasis>never</emphasis>, or <emphasis>auto</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-color
+<emphasis>--no-color</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -226,10 +226,10 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--i
+<emphasis>-i</emphasis>
 </term>
 <term>
---ignore-case
+<emphasis>--ignore-case</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -239,7 +239,7 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---omit-empty
+<emphasis>--omit-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -250,10 +250,10 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---column[=&lt;options&gt;]
+<emphasis>--column[=&lt;options&gt;]</emphasis>
 </term>
 <term>
---no-column
+<emphasis>--no-column</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -266,24 +266,42 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--r
-</term>
-<term>
---remotes
+<emphasis>--sort=&lt;key&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        List or delete (if used with -d) the remote-tracking branches.
+        Sort based on <emphasis>&lt;key&gt;</emphasis>. Prefix <emphasis>-</emphasis> to sort in descending
+        order of the value. You may use the <emphasis>--sort=&lt;key&gt;</emphasis> option
+        multiple times, in which case the last key becomes the primary
+        key. The keys supported are the same as those in <xref linkend="git-for-each-ref(1)" />.
+        Sort order defaults to the value configured for the
+        <emphasis>branch.sort</emphasis> variable if it exists, or to sorting based on the
+        full refname (including <emphasis>refs/...</emphasis> prefix). This lists
+        detached <emphasis>HEAD</emphasis> (if present) first, then local branches and
+        finally remote-tracking branches. See <xref linkend="git-config(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-r</emphasis>
+</term>
+<term>
+<emphasis>--remotes</emphasis>
+</term>
+<listitem>
+<simpara>
+        List or delete (if used with <emphasis>-d</emphasis>) the remote-tracking branches.
         Combine with <emphasis>--list</emphasis> to match the optional pattern(s).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -294,10 +312,10 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <term>
---list
+<emphasis>--list</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -309,24 +327,24 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---show-current
+<emphasis>--show-current</emphasis>
 </term>
 <listitem>
 <simpara>
-        Print the name of the current branch. In detached HEAD state,
+        Print the name of the current branch. In detached <emphasis>HEAD</emphasis> state,
         nothing is printed.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
--vv
+<emphasis>-vv</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -335,17 +353,17 @@ in another worktree linked to the same repository.</simpara>
         relationship to upstream branch (if any). If given twice, print
         the path of the linked worktree (if any) and the name of the upstream
         branch, as well (see also <emphasis>git remote show &lt;remote&gt;</emphasis>).  Note that the
-        current worktree's HEAD will not have its path printed (it will always
+        current worktree's <emphasis>HEAD</emphasis> will not have its path printed (it will always
         be your current directory).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,7 +374,7 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---abbrev=&lt;n&gt;
+<emphasis>--abbrev=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -370,7 +388,7 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-abbrev
+<emphasis>--no-abbrev</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -380,10 +398,10 @@ in another worktree linked to the same repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <term>
---track[=(direct|inherit)]
+<emphasis>--track[=(direct|inherit)]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -399,7 +417,7 @@ in another worktree linked to the same repository.</simpara>
 <emphasis>-t</emphasis>, <emphasis>--track</emphasis>, or <emphasis>--track=direct</emphasis> means to use the start-point branch
 itself as the upstream; <emphasis>--track=inherit</emphasis> means to copy the upstream
 configuration of the start-point branch.</simpara>
-<simpara>The branch.autoSetupMerge configuration variable specifies how <emphasis>git switch</emphasis>,
+<simpara>The <emphasis>branch.autoSetupMerge</emphasis> configuration variable specifies how <emphasis>git switch</emphasis>,
 <emphasis>git checkout</emphasis> and <emphasis>git branch</emphasis> should behave when neither <emphasis>--track</emphasis> nor
 <emphasis>--no-track</emphasis> are specified:</simpara>
 <simpara>The default option, <emphasis>true</emphasis>, behaves as though <emphasis>--track=direct</emphasis>
@@ -407,7 +425,7 @@ were given whenever the start-point is a remote-tracking branch.
 <emphasis>false</emphasis> behaves as if <emphasis>--no-track</emphasis> were given. <emphasis>always</emphasis> behaves as though
 <emphasis>--track=direct</emphasis> were given. <emphasis>inherit</emphasis> behaves as though <emphasis>--track=inherit</emphasis>
 were given. <emphasis>simple</emphasis> behaves as though <emphasis>--track=direct</emphasis> were given only when
-the start-point is a remote-tracking branch and the new branch has the same
+the <emphasis>&lt;start-point&gt;</emphasis> is a remote-tracking branch and the new branch has the same
 name as the remote branch.</simpara>
 <simpara>See <xref linkend="git-pull(1)" /> and <xref linkend="git-config(1)" /> for additional discussion on
 how the <emphasis>branch.&lt;name&gt;.remote</emphasis> and <emphasis>branch.&lt;name&gt;.merge</emphasis> options are used.</simpara>
@@ -415,31 +433,31 @@ how the <emphasis>branch.&lt;name&gt;.remote</emphasis> and <emphasis>branch.&lt
 </varlistentry>
 <varlistentry>
 <term>
---no-track
+<emphasis>--no-track</emphasis>
 </term>
 <listitem>
 <simpara>
         Do not set up "upstream" configuration, even if the
-        branch.autoSetupMerge configuration variable is set.
+        <emphasis>branch.autoSetupMerge</emphasis> configuration variable is set.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules
+<emphasis>--recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
-        THIS OPTION IS EXPERIMENTAL! Causes the current command to
+        THIS OPTION IS EXPERIMENTAL! Cause the current command to
         recurse into submodules if <emphasis>submodule.propagateBranches</emphasis> is
         enabled. See <emphasis>submodule.propagateBranches</emphasis> in
         <xref linkend="git-config(1)" />. Currently, only branch creation is
         supported.
 </simpara>
-<simpara>When used in branch creation, a new branch &lt;branchname&gt; will be created
+<simpara>When used in branch creation, a new branch <emphasis>&lt;branch-name&gt;</emphasis> will be created
 in the superproject and all of the submodules in the superproject's
-&lt;start-point&gt;. In submodules, the branch will point to the submodule
-commit in the superproject's &lt;start-point&gt; but the branch's tracking
+<emphasis>&lt;start-point&gt;</emphasis>. In submodules, the branch will point to the submodule
+commit in the superproject's <emphasis>&lt;start-point&gt;</emphasis> but the branch's tracking
 information will be set up based on the submodule's branches and remotes
 e.g. <emphasis>git branch --recurse-submodules topic origin/main</emphasis> will create the
 submodule branch "topic" that points to the submodule commit in the
@@ -448,7 +466,7 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </varlistentry>
 <varlistentry>
 <term>
---set-upstream
+<emphasis>--set-upstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -459,33 +477,33 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </varlistentry>
 <varlistentry>
 <term>
--u &lt;upstream&gt;
+<emphasis>-u &lt;upstream&gt;</emphasis>
 </term>
 <term>
---set-upstream-to=&lt;upstream&gt;
+<emphasis>--set-upstream-to=&lt;upstream&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Set up &lt;branchname&gt;'s tracking information so &lt;upstream&gt; is
-        considered &lt;branchname&gt;'s upstream branch. If no &lt;branchname&gt;
+        Set up <emphasis>&lt;branch-name&gt;</emphasis>'s tracking information so <emphasis>&lt;upstream&gt;</emphasis> is
+        considered <emphasis>&lt;branch-name&gt;</emphasis>'s upstream branch. If no <emphasis>&lt;branch-name&gt;</emphasis>
         is specified, then it defaults to the current branch.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---unset-upstream
+<emphasis>--unset-upstream</emphasis>
 </term>
 <listitem>
 <simpara>
-        Remove the upstream information for &lt;branchname&gt;. If no branch
+        Remove the upstream information for <emphasis>&lt;branch-name&gt;</emphasis>. If no branch
         is specified it defaults to the current branch.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---edit-description
+<emphasis>--edit-description</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -498,51 +516,73 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </varlistentry>
 <varlistentry>
 <term>
---contains [&lt;commit&gt;]
+<emphasis>--contains [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list branches which contain the specified commit (HEAD
+        Only list branches which contain <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis>
         if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-contains [&lt;commit&gt;]
+<emphasis>--no-contains [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list branches which don't contain the specified commit
-        (HEAD if not specified). Implies <emphasis>--list</emphasis>.
+        Only list branches which don't contain <emphasis>&lt;commit&gt;</emphasis>
+        (<emphasis>HEAD</emphasis> if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---merged [&lt;commit&gt;]
+<emphasis>--merged [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list branches whose tips are reachable from the
-        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>.
+        Only list branches whose tips are reachable from
+        <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-merged [&lt;commit&gt;]
+<emphasis>--no-merged [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list branches whose tips are not reachable from the
-        specified commit (HEAD if not specified). Implies <emphasis>--list</emphasis>.
+        Only list branches whose tips are not reachable from
+        <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;branchname&gt;
+<emphasis>--points-at &lt;object&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list branches of <emphasis>&lt;object&gt;</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--format &lt;format&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from a branch ref being shown
+        and the object it points at.  <emphasis>&lt;format&gt;</emphasis> is the same as
+        that of <xref linkend="git-for-each-ref(1)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;branch-name&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -555,19 +595,19 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </varlistentry>
 <varlistentry>
 <term>
-&lt;start-point&gt;
+<emphasis>&lt;start-point&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The new branch head will point to this commit.  It may be
         given as a branch name, a commit-id, or a tag.  If this
-        option is omitted, the current HEAD will be used instead.
+        option is omitted, the current <emphasis>HEAD</emphasis> will be used instead.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;oldbranch&gt;
+<emphasis>&lt;old-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -578,52 +618,12 @@ superproject's "origin/main", but tracks the submodule's "origin/main".</simpara
 </varlistentry>
 <varlistentry>
 <term>
-&lt;newbranch&gt;
+<emphasis>&lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The new name for an existing branch. The same restrictions as for
-        &lt;branchname&gt; apply.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---sort=&lt;key&gt;
-</term>
-<listitem>
-<simpara>
-        Sort based on the key given. Prefix <emphasis>-</emphasis> to sort in descending
-        order of the value. You may use the --sort=&lt;key&gt; option
-        multiple times, in which case the last key becomes the primary
-        key. The keys supported are the same as those in <emphasis>git
-        for-each-ref</emphasis>. Sort order defaults to the value configured for the
-        <emphasis>branch.sort</emphasis> variable if it exists, or to sorting based on the
-        full refname (including <emphasis>refs/...</emphasis> prefix). This lists
-        detached HEAD (if present) first, then local branches and
-        finally remote-tracking branches. See <xref linkend="git-config(1)" />.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---points-at &lt;object&gt;
-</term>
-<listitem>
-<simpara>
-        Only list branches of the given object.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---format &lt;format&gt;
-</term>
-<listitem>
-<simpara>
-        A string that interpolates <emphasis>%(fieldname)</emphasis> from a branch ref being shown
-        and the object it points at.  The format is the same as
-        that of <xref linkend="git-for-each-ref(1)" />.
+        <emphasis>&lt;branch-name&gt;</emphasis> apply.
 </simpara>
 </listitem>
 </varlistentry>
@@ -640,7 +640,7 @@ same as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-branch.autoSetupMerge
+<emphasis>branch.autoSetupMerge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -648,48 +648,132 @@ branch.autoSetupMerge
         so that <xref linkend="git-pull(1)" /> will appropriately merge from the
         starting point branch. Note that even if this option is not set,
         this behavior can be chosen per-branch using the <emphasis>--track</emphasis>
-        and <emphasis>--no-track</emphasis> options. The valid settings are: <emphasis>false</emphasis> -- no
-        automatic setup is done; <emphasis>true</emphasis> -- automatic setup is done when the
-        starting point is a remote-tracking branch; <emphasis>always</emphasis> --
-        automatic setup is done when the starting point is either a
-        local branch or remote-tracking branch; <emphasis>inherit</emphasis> -- if the starting point
-        has a tracking configuration, it is copied to the new
-        branch; <emphasis>simple</emphasis> -- automatic setup is done only when the starting point
-        is a remote-tracking branch and the new branch has the same name as the
-        remote branch. This option defaults to true.
+        and <emphasis>--no-track</emphasis> options.  This option defaults to <emphasis>true</emphasis>. The valid settings
+        are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<listitem>
+<simpara>
+no automatic setup is done
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.autoSetupRebase
+<emphasis>true</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done when the starting point is a remote-tracking branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done when the starting point is either a
+        local branch or remote-tracking branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>inherit</emphasis>
+</term>
+<listitem>
+<simpara>
+if the starting point has a tracking configuration, it is copied to the new
+        branch
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>simple</emphasis>
+</term>
+<listitem>
+<simpara>
+automatic setup is done only when the starting point
+        is a remote-tracking branch and the new branch has the same name as the
+        remote branch.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>branch.autoSetupRebase</emphasis>
 </term>
 <listitem>
 <simpara>
         When a new branch is created with <emphasis>git branch</emphasis>, <emphasis>git switch</emphasis> or <emphasis>git checkout</emphasis>
         that tracks another branch, this variable tells Git to set
-        up pull to rebase instead of merge (see "branch.&lt;name&gt;.rebase").
-        When <emphasis>never</emphasis>, rebase is never automatically set to true.
-        When <emphasis>local</emphasis>, rebase is set to true for tracked branches of
-        other local branches.
-        When <emphasis>remote</emphasis>, rebase is set to true for tracked branches of
-        remote-tracking branches.
-        When <emphasis>always</emphasis>, rebase will be set to true for all tracking
-        branches.
-        See "branch.autoSetupMerge" for details on how to set up a
-        branch to track another branch.
-        This option defaults to never.
+        up pull to rebase instead of merge (see <emphasis>branch.&lt;name&gt;.rebase</emphasis>).
+        The valid settings are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>never</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is never automatically set to true.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.sort
+<emphasis>local</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is set to true for tracked branches of other local branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>remote</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase is set to true for tracked branches of remote-tracking branches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>always</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase will be set to true for all tracking branches.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>See <emphasis>branch.autoSetupMerge</emphasis> for details on how to set up a branch to track another branch.
+This option defaults to <emphasis>never</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>branch.sort</emphasis>
 </term>
 <listitem>
 <simpara>
         This variable controls the sort ordering of branches when displayed by
-        <xref linkend="git-branch(1)" />. Without the "--sort=&lt;value&gt;" option provided, the
+        <xref linkend="git-branch(1)" />. Without the <emphasis>--sort=&lt;value&gt;</emphasis> option provided, the
         value of this variable will be used as the default.
         See <xref linkend="git-for-each-ref(1)" /> field names for valid values.
 </simpara>
@@ -697,11 +781,11 @@ branch.sort
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.remote
+<emphasis>branch.&lt;name&gt;.remote</emphasis>
 </term>
 <listitem>
 <simpara>
-        When on branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
+        When on branch <emphasis>&lt;name&gt;</emphasis>, it tells <emphasis>git fetch</emphasis> and <emphasis>git push</emphasis>
         which remote to fetch from or push to.  The remote to push to
         may be overridden with <emphasis>remote.pushDefault</emphasis> (for all branches).
         The remote to push to, for the current branch, may be further
@@ -716,13 +800,13 @@ branch.&lt;name&gt;.remote
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.pushRemote
+<emphasis>branch.&lt;name&gt;.pushRemote</emphasis>
 </term>
 <listitem>
 <simpara>
-        When on branch &lt;name&gt;, it overrides <emphasis>branch.&lt;name&gt;.remote</emphasis> for
+        When on branch <emphasis>&lt;name&gt;</emphasis>, it overrides <emphasis>branch.&lt;name&gt;.remote</emphasis> for
         pushing.  It also overrides <emphasis>remote.pushDefault</emphasis> for pushing
-        from branch &lt;name&gt;.  When you pull from one place (e.g. your
+        from branch <emphasis>&lt;name&gt;</emphasis>.  When you pull from one place (e.g. your
         upstream) and push to another place (e.g. your own publishing
         repository), you would want to set <emphasis>remote.pushDefault</emphasis> to
         specify the remote to push to for all branches, and use this
@@ -732,18 +816,18 @@ branch.&lt;name&gt;.pushRemote
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.merge
+<emphasis>branch.&lt;name&gt;.merge</emphasis>
 </term>
 <listitem>
 <simpara>
-        Defines, together with branch.&lt;name&gt;.remote, the upstream branch
+        Defines, together with <emphasis>branch.&lt;name&gt;.remote</emphasis>, the upstream branch
         for the given branch. It tells <emphasis>git fetch</emphasis>/<emphasis>git pull</emphasis>/<emphasis>git rebase</emphasis> which
-        branch to merge and can also affect <emphasis>git push</emphasis> (see push.default).
-        When in branch &lt;name&gt;, it tells <emphasis>git fetch</emphasis> the default
-        refspec to be marked for merging in FETCH_HEAD. The value is
+        branch to merge and can also affect <emphasis>git push</emphasis> (see <emphasis>push.default</emphasis>).
+        When in branch <emphasis>&lt;name&gt;</emphasis>, it tells <emphasis>git fetch</emphasis> the default
+        refspec to be marked for merging in <emphasis>FETCH_HEAD</emphasis>. The value is
         handled like the remote part of a refspec, and must match a
         ref which is fetched from the remote given by
-        "branch.&lt;name&gt;.remote".
+        <emphasis>branch.&lt;name&gt;.remote</emphasis>.
         The merge information is used by <emphasis>git pull</emphasis> (which first calls
         <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
         this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
@@ -751,17 +835,17 @@ branch.&lt;name&gt;.merge
         If you wish to setup <emphasis>git pull</emphasis> so that it merges into &lt;name&gt; from
         another branch in the local repository, you can point
         branch.&lt;name&gt;.merge to the desired branch, and use the relative path
-        setting <emphasis>.</emphasis> (a period) for branch.&lt;name&gt;.remote.
+        setting <emphasis>.</emphasis> (a period) for <emphasis>branch.&lt;name&gt;.remote</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.mergeOptions
+<emphasis>branch.&lt;name&gt;.mergeOptions</emphasis>
 </term>
 <listitem>
 <simpara>
-        Sets default options for merging into branch &lt;name&gt;. The syntax and
+        Sets default options for merging into branch <emphasis>&lt;name&gt;</emphasis>. The syntax and
         supported options are the same as those of <xref linkend="git-merge(1)" />, but
         option values containing whitespace characters are currently not
         supported.
@@ -770,13 +854,13 @@ branch.&lt;name&gt;.mergeOptions
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.rebase
+<emphasis>branch.&lt;name&gt;.rebase</emphasis>
 </term>
 <listitem>
 <simpara>
-        When true, rebase the branch &lt;name&gt; on top of the fetched branch,
+        When true, rebase the branch <emphasis>&lt;name&gt;</emphasis> on top of the fetched branch,
         instead of merging the default branch from the default remote when
-        "git pull" is run. See "pull.rebase" for doing this in a non
+        <emphasis>git pull</emphasis> is run. See <emphasis>pull.rebase</emphasis> for doing this in a non
         branch-specific manner.
 </simpara>
 <simpara>When <emphasis>merges</emphasis> (or just <emphasis>m</emphasis>), pass the <emphasis>--rebase-merges</emphasis> option to <emphasis>git rebase</emphasis>
@@ -791,14 +875,14 @@ for details).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-branch.&lt;name&gt;.description
+<emphasis>branch.&lt;name&gt;.description</emphasis>
 </term>
 <listitem>
 <simpara>
         Branch description, can be edited with
         <emphasis>git branch --edit-description</emphasis>. Branch description is
-        automatically added to the format-patch cover letter or
-        request-pull summary.
+        automatically added to the <emphasis>format-patch</emphasis> cover letter or
+        <emphasis>request-pull</emphasis> summary.
 </simpara>
 </listitem>
 </varlistentry>
@@ -839,7 +923,7 @@ $ git branch -D test                                    <co id="git-branch_CO2-2
 <callout arearefs="git-branch_CO2-1">
 <para>
 Delete the remote-tracking branches "todo", "html" and "man". The next
-    <emphasis>fetch</emphasis> or <emphasis>pull</emphasis> will create them again unless you configure them not to.
+    <emphasis>git fetch</emphasis> or <emphasis>git pull</emphasis> will create them again unless you configure them not to.
     See <xref linkend="git-fetch(1)" />.
 </para>
 </callout>
@@ -862,8 +946,8 @@ $ git for-each-ref 'refs/remotes/&lt;remote&gt;/&lt;pattern&gt;'    <co id="git-
 <calloutlist>
 <callout arearefs="git-branch_CO3-1">
 <para>
-Using <emphasis>-a</emphasis> would conflate &lt;remote&gt; with any local branches you happen to
-    have been prefixed with the same &lt;remote&gt; pattern.
+Using <emphasis>-a</emphasis> would conflate <emphasis>&lt;remote&gt;</emphasis> with any local branches you happen to
+    have been prefixed with the same <emphasis>&lt;remote&gt;</emphasis> pattern.
 </para>
 </callout>
 <callout arearefs="git-branch_CO3-2">
@@ -880,7 +964,7 @@ Using <emphasis>-a</emphasis> would conflate &lt;remote&gt; with any local branc
 <simplesect id="git-branch(1)__notes">
 <title>NOTES</title>
 <simpara>If you are creating a branch that you want to switch to immediately,
-it is easier to use the "git switch" command with its <emphasis>-c</emphasis> option to
+it is easier to use the <emphasis>git switch</emphasis> command with its <emphasis>-c</emphasis> option to
 do the same thing with a single command.</simpara>
 <simpara>The options <emphasis>--contains</emphasis>, <emphasis>--no-contains</emphasis>, <emphasis>--merged</emphasis> and <emphasis>--no-merged</emphasis>
 serve four related but different purposes:</simpara>
@@ -888,26 +972,26 @@ serve four related but different purposes:</simpara>
 <listitem>
 <simpara>
 <emphasis>--contains &lt;commit&gt;</emphasis> is used to find all branches which will need
-  special attention if &lt;commit&gt; were to be rebased or amended, since those
-  branches contain the specified &lt;commit&gt;.
+  special attention if <emphasis>&lt;commit&gt;</emphasis> were to be rebased or amended, since those
+  branches contain the specified <emphasis>&lt;commit&gt;</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>--no-contains &lt;commit&gt;</emphasis> is the inverse of that, i.e. branches that don't
-  contain the specified &lt;commit&gt;.
+  contain the specified <emphasis>&lt;commit&gt;</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>--merged</emphasis> is used to find all branches which can be safely deleted,
-  since those branches are fully contained by HEAD.
+  since those branches are fully contained by <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
 <emphasis>--no-merged</emphasis> is used to find branches which are candidates for merging
-  into HEAD, since those branches are not fully contained by HEAD.
+  into <emphasis>HEAD</emphasis>, since those branches are not fully contained by <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </itemizedlist>
@@ -923,8 +1007,8 @@ commits and from none of the <emphasis>--no-merged</emphasis> commits are shown.
 <simpara><xref linkend="git-check-ref-format(1)" />,
 <xref linkend="git-fetch(1)" />,
 <xref linkend="git-remote(1)" />,
-<link linkend="user-manual_what-is-a-branch">Understanding history: What is
-a branch?</link> in the Git User's Manual.</simpara>
+<link linkend="user-manual_what-is-a-branch">"Understanding history: What is
+a branch?"</link> in the Git User's Manual.</simpara>
 </simplesect>
 <simplesect id="git-branch(1)__git">
 <title>GIT</title>

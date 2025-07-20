@@ -1577,6 +1577,16 @@ repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-diff-pairs(1)" />
+</term>
+<listitem>
+<simpara>
+        Compare the content and mode of provided blob pairs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-diff-tree(1)" />
 </term>
 <listitem>

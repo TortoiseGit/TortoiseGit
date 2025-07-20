@@ -13,7 +13,9 @@
 <simplesect id="git-update-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git update-ref</emphasis> [-m &lt;reason&gt;] [--no-deref] (-d &lt;ref&gt; [&lt;old-oid&gt;] | [--create-reflog] &lt;ref&gt; &lt;new-oid&gt; [&lt;old-oid&gt;] | --stdin [-z])</literallayout>
+<literallayout><code>git</code> <code>update-ref</code> [<code>-m</code> <emphasis>&lt;reason&gt;</emphasis>] [<code>--no-deref</code>] <code>-d</code> <emphasis>&lt;ref&gt;</emphasis> [<emphasis>&lt;old-oid&gt;</emphasis>]
+<code>git</code> <code>update-ref</code> [<code>-m</code> <emphasis>&lt;reason&gt;</emphasis>] [<code>--no-deref</code>] [<code>--create-reflog</code>] <emphasis>&lt;ref&gt;</emphasis> <emphasis>&lt;new-oid&gt;</emphasis> [<emphasis>&lt;old-oid&gt;</emphasis>]
+<code>git</code> <code>update-ref</code> [<code>-m</code> <emphasis>&lt;reason&gt;</emphasis>] [<code>--no-deref</code>] <code>--stdin</code> [<code>-z</code>] [<code>--batch-updates</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-update-ref(1)__description">
@@ -55,6 +57,12 @@ commit LF
 abort LF</literallayout>
 <simpara>With <emphasis>--create-reflog</emphasis>, update-ref will create a reflog for each ref
 even if one would not ordinarily be created.</simpara>
+<simpara>With <emphasis>--batch-updates</emphasis>, update-ref executes the updates in a batch but allows
+individual updates to fail due to invalid or incorrect user input, applying only
+the successful updates. However, system-related errors—such as I/O failures or
+memory issues—will result in a full failure of all batched updates. Any failed
+updates will be reported in the following format:</simpara>
+<literallayout class="monospaced">rejected SP (&lt;old-oid&gt; | &lt;old-target&gt;) SP (&lt;new-oid&gt; | &lt;new-target&gt;) SP &lt;rejection-reason&gt; LF</literallayout>
 <simpara>Quote fields containing whitespace as if they were strings in C source
 code; i.e., surrounded by double-quotes and with backslash escapes.
 Use 40 "0" characters or the empty string to specify a zero value.  To

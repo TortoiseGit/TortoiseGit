@@ -126,13 +126,13 @@ accumulate exclusion patterns. Use <emphasis>--no-exclude</emphasis> to clear an
 patterns. If a ref is already packed, including it with <emphasis>--exclude</emphasis> will not
 unpack it.
 </simpara>
-</listitem>
-</varlistentry>
-</variablelist>
 <simpara>When used with <emphasis>--all</emphasis>, pack only loose refs which do not match any of
 the provided <emphasis>--exclude</emphasis> patterns.</simpara>
 <simpara>When used with <emphasis>--include</emphasis>, refs provided to <emphasis>--include</emphasis>, minus refs that are
 provided to <emphasis>--exclude</emphasis> will be packed.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-pack-refs(1)__bugs">
 <title>BUGS</title>

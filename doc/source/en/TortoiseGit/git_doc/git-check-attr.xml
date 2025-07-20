@@ -164,50 +164,42 @@ README caveat=unspecified</screen>
 <simpara>
 Listing a single attribute:
 </simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git check-attr diff org/example/MyClass.java
 org/example/MyClass.java: diff: java</screen>
-<itemizedlist>
+</listitem>
 <listitem>
 <simpara>
 Listing multiple attributes for a file:
 </simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git check-attr crlf diff myAttr -- org/example/MyClass.java
 org/example/MyClass.java: crlf: unset
 org/example/MyClass.java: diff: java
 org/example/MyClass.java: myAttr: set</screen>
-<itemizedlist>
+</listitem>
 <listitem>
 <simpara>
 Listing all attributes for a file:
 </simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git check-attr --all -- org/example/MyClass.java
 org/example/MyClass.java: diff: java
 org/example/MyClass.java: myAttr: set</screen>
-<itemizedlist>
+</listitem>
 <listitem>
 <simpara>
 Listing an attribute for multiple files:
 </simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git check-attr myAttr -- org/example/MyClass.java org/example/NoMyAttr.java
 org/example/MyClass.java: myAttr: set
 org/example/NoMyAttr.java: myAttr: unspecified</screen>
-<itemizedlist>
+</listitem>
 <listitem>
 <simpara>
 Not all values are equally unambiguous:
 </simpara>
-</listitem>
-</itemizedlist>
 <screen>$ git check-attr caveat README
 README: caveat: unspecified</screen>
+</listitem>
+</itemizedlist>
 </simplesect>
 <simplesect id="git-check-attr(1)__see_also">
 <title>SEE ALSO</title>

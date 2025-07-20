@@ -13,20 +13,20 @@
 <simplesect id="git-daemon(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git daemon</emphasis> [--verbose] [--syslog] [--export-all]
-             [--timeout=&lt;n&gt;] [--init-timeout=&lt;n&gt;] [--max-connections=&lt;n&gt;]
-             [--strict-paths] [--base-path=&lt;path&gt;] [--base-path-relaxed]
-             [--user-path | --user-path=&lt;path&gt;]
-             [--interpolated-path=&lt;pathtemplate&gt;]
-             [--reuseaddr] [--detach] [--pid-file=&lt;file&gt;]
-             [--enable=&lt;service&gt;] [--disable=&lt;service&gt;]
-             [--allow-override=&lt;service&gt;] [--forbid-override=&lt;service&gt;]
-             [--access-hook=&lt;path&gt;] [--[no-]informative-errors]
-             [--inetd |
-              [--listen=&lt;host-or-ipaddr&gt;] [--port=&lt;n&gt;]
-              [--user=&lt;user&gt; [--group=&lt;group&gt;]]]
-             [--log-destination=(stderr|syslog|none)]
-             [&lt;directory&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>daemon</code> [<code>--verbose</code>] [<code>--syslog</code>] [<code>--export-all</code>]
+           [<code>--timeout=</code><emphasis>&lt;n&gt;</emphasis>] [<code>--init-timeout=</code><emphasis>&lt;n&gt;</emphasis>] [<code>--max-connections=</code><emphasis>&lt;n&gt;</emphasis>]
+           [<code>--strict-paths</code>] [<code>--base-path=</code><emphasis>&lt;path&gt;</emphasis>] [<code>--base-path-relaxed</code>]
+           [<code>--user-path</code> | <code>--user-path=</code><emphasis>&lt;path&gt;</emphasis>]
+           [<code>--interpolated-path=</code><emphasis>&lt;pathtemplate&gt;</emphasis>]
+           [<code>--reuseaddr</code>] [<code>--detach</code>] [<code>--pid-file=</code><emphasis>&lt;file&gt;</emphasis>]
+           [<code>--enable=</code><emphasis>&lt;service&gt;</emphasis>] [<code>--disable=</code><emphasis>&lt;service&gt;</emphasis>]
+           [<code>--allow-override=</code><emphasis>&lt;service&gt;</emphasis>] [<code>--forbid-override=</code><emphasis>&lt;service&gt;</emphasis>]
+           [<code>--access-hook=</code><emphasis>&lt;path&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>informative-errors</code>]
+           [<code>--inetd</code> |
+             [<code>--listen=</code><emphasis>&lt;host-or-ipaddr&gt;</emphasis>] [<code>--port=</code><emphasis>&lt;n&gt;</emphasis>]
+             [<code>--user=</code><emphasis>&lt;user&gt;</emphasis> [<code>--group=</code><emphasis>&lt;group&gt;</emphasis>]]]
+           [<code>--log-destination=</code>(<code>stderr</code>|<code>syslog</code>|<code>none</code>)]
+           [<emphasis>&lt;directory&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-daemon(1)__description">
@@ -51,7 +51,7 @@ Git repositories.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---strict-paths
+<emphasis>--strict-paths</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -64,43 +64,43 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---base-path=&lt;path&gt;
+<emphasis>--base-path=&lt;path&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Remap all the path requests as relative to the given path.
         This is sort of "Git root" - if you run <emphasis>git daemon</emphasis> with
-        <emphasis>--base-path=/srv/git</emphasis> on example.com, then if you later try to pull
-        <emphasis>git://example.com/hello.git</emphasis>, <emphasis>git daemon</emphasis> will interpret the path
-        as <emphasis>/srv/git/hello.git</emphasis>.
+        <emphasis>--base-path=/srv/git</emphasis> on <emphasis>example.com</emphasis>, then if you later try
+        to pull from <emphasis>git://example.com/hello.git</emphasis>, <emphasis>git daemon</emphasis> will
+        interpret the path as <emphasis>/srv/git/hello.git</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---base-path-relaxed
+<emphasis>--base-path-relaxed</emphasis>
 </term>
 <listitem>
 <simpara>
-        If --base-path is enabled and repo lookup fails, with this option
+        If <emphasis>--base-path</emphasis> is enabled and repo lookup fails, with this option
         <emphasis>git daemon</emphasis> will attempt to lookup without prefixing the base path.
-        This is useful for switching to --base-path usage, while still
+        This is useful for switching to <emphasis>--base-path</emphasis> usage, while still
         allowing the old paths.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---interpolated-path=&lt;pathtemplate&gt;
+<emphasis>--interpolated-path=&lt;pathtemplate&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         To support virtual hosting, an interpolated path template can be
         used to dynamically construct alternate paths.  The template
-        supports %H for the target hostname as supplied by the client but
-        converted to all lowercase, %CH for the canonical hostname,
-        %IP for the server's IP address, %P for the port number,
-        and %D for the absolute path of the named repository.
+        supports <emphasis>%H</emphasis> for the target hostname as supplied by the client but
+        converted to all lowercase, <emphasis>%CH</emphasis> for the canonical hostname,
+        <emphasis>%IP</emphasis> for the server's IP address, <emphasis>%P</emphasis> for the port number,
+        and <emphasis>%D</emphasis> for the absolute path of the named repository.
         After interpolation, the path is validated against the directory
         list.
 </simpara>
@@ -108,7 +108,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---export-all
+<emphasis>--export-all</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -120,27 +120,27 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---inetd
+<emphasis>--inetd</emphasis>
 </term>
 <listitem>
 <simpara>
-        Have the server run as an inetd service. Implies --syslog (may be
-        overridden with <emphasis>--log-destination=</emphasis>).
-        Incompatible with --detach, --port, --listen, --user and --group
-        options.
+        Have the server run as an inetd service. Implies <emphasis>--syslog</emphasis> (may
+        be overridden with <emphasis>--log-destination=</emphasis>).
+        Incompatible with <emphasis>--detach</emphasis>, <emphasis>--port</emphasis>, <emphasis>--listen</emphasis>, <emphasis>--user</emphasis> and
+        <emphasis>--group</emphasis> options.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---listen=&lt;host-or-ipaddr&gt;
+<emphasis>--listen=&lt;host-or-ipaddr&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Listen on a specific IP address or hostname.  IP addresses can
         be either an IPv4 address or an IPv6 address if supported.  If IPv6
-        is not supported, then --listen=&lt;hostname&gt; is also not supported and
-        --listen must be given an IPv4 address.
+        is not supported, then <emphasis>--listen=&lt;hostname&gt;</emphasis> is also not supported
+        and <emphasis>--listen</emphasis> must be given an IPv4 address.
         Can be given more than once.
         Incompatible with <emphasis>--inetd</emphasis> option.
 </simpara>
@@ -148,7 +148,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---port=&lt;n&gt;
+<emphasis>--port=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -158,7 +158,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---init-timeout=&lt;n&gt;
+<emphasis>--init-timeout=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -170,7 +170,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---timeout=&lt;n&gt;
+<emphasis>--timeout=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -182,7 +182,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---max-connections=&lt;n&gt;
+<emphasis>--max-connections=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -193,7 +193,7 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---syslog
+<emphasis>--syslog</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -203,19 +203,19 @@ Git repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---log-destination=&lt;destination&gt;
+<emphasis>--log-destination=&lt;destination&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Send log messages to the specified destination.
-        Note that this option does not imply --verbose,
+        Note that this option does not imply <emphasis>--verbose</emphasis>,
         thus by default only error conditions will be logged.
-        The &lt;destination&gt; must be one of:
+        The <emphasis>&lt;destination&gt;</emphasis> must be one of:
 </simpara>
 <variablelist>
 <varlistentry>
 <term>
-stderr
+<emphasis>stderr</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -228,7 +228,7 @@ stderr
 </varlistentry>
 <varlistentry>
 <term>
-syslog
+<emphasis>syslog</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -238,7 +238,7 @@ syslog
 </varlistentry>
 <varlistentry>
 <term>
-none
+<emphasis>none</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -253,10 +253,10 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---user-path
+<emphasis>--user-path</emphasis>
 </term>
 <term>
---user-path=&lt;path&gt;
+<emphasis>--user-path=&lt;path&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -272,7 +272,7 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -282,11 +282,11 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---reuseaddr
+<emphasis>--reuseaddr</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use SO_REUSEADDR when binding the listening socket.
+        Use <emphasis>SO_REUSEADDR</emphasis> when binding the listening socket.
         This allows the server to restart without waiting for
         old connections to time out.
 </simpara>
@@ -294,31 +294,31 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---detach
+<emphasis>--detach</emphasis>
 </term>
 <listitem>
 <simpara>
-        Detach from the shell. Implies --syslog.
+        Detach from the shell. Implies <emphasis>--syslog</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---pid-file=&lt;file&gt;
+<emphasis>--pid-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Save the process id in <emphasis>file</emphasis>.  Ignored when the daemon
+        Save the process id in <emphasis>&lt;file&gt;</emphasis>.  Ignored when the daemon
         is run under <emphasis>--inetd</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---user=&lt;user&gt;
+<emphasis>--user=&lt;user&gt;</emphasis>
 </term>
 <term>
---group=&lt;group&gt;
+<emphasis>--group=&lt;group&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -332,7 +332,7 @@ otherwise <emphasis>stderr</emphasis>.</simpara>
 the facility of inet daemon to achieve the same before spawning
 <emphasis>git daemon</emphasis> if needed.</simpara>
 <simpara>Like many programs that switch user id, the daemon does not reset
-environment variables such as <emphasis>$HOME</emphasis> when it runs git programs,
+environment variables such as <emphasis>HOME</emphasis> when it runs git programs,
 e.g. <emphasis>upload-pack</emphasis> and <emphasis>receive-pack</emphasis>. When using this option, you
 may also want to set and export <emphasis>HOME</emphasis> to point at the home
 directory of <emphasis>&lt;user&gt;</emphasis> before starting the daemon, and make sure any
@@ -341,10 +341,10 @@ Git configuration files in that directory are readable by <emphasis>&lt;user&gt;
 </varlistentry>
 <varlistentry>
 <term>
---enable=&lt;service&gt;
+<emphasis>--enable=&lt;service&gt;</emphasis>
 </term>
 <term>
---disable=&lt;service&gt;
+<emphasis>--disable=&lt;service&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -358,10 +358,10 @@ Git configuration files in that directory are readable by <emphasis>&lt;user&gt;
 </varlistentry>
 <varlistentry>
 <term>
---allow-override=&lt;service&gt;
+<emphasis>--allow-override=&lt;service&gt;</emphasis>
 </term>
 <term>
---forbid-override=&lt;service&gt;
+<emphasis>--forbid-override=&lt;service&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -373,7 +373,10 @@ Git configuration files in that directory are readable by <emphasis>&lt;user&gt;
 </varlistentry>
 <varlistentry>
 <term>
---[no-]informative-errors
+<emphasis>--informative-errors</emphasis>
+</term>
+<term>
+<emphasis>--no-informative-errors</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -383,20 +386,20 @@ Git configuration files in that directory are readable by <emphasis>&lt;user&gt;
         is more convenient for clients, but may leak information about
         the existence of unexported repositories.  When informative
         errors are not enabled, all errors report "access denied" to the
-        client. The default is --no-informative-errors.
+        client. The default is <emphasis>--no-informative-errors</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---access-hook=&lt;path&gt;
+<emphasis>--access-hook=&lt;path&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Every time a client connects, first run an external command
         specified by the &lt;path&gt; with service name (e.g. "upload-pack"),
-        path to the repository, hostname (%H), canonical hostname
-        (%CH), IP address (%IP), and TCP port (%P) as its command-line
+        path to the repository, hostname (<emphasis>%H</emphasis>), canonical hostname
+        (<emphasis>%CH</emphasis>), IP address (<emphasis>%IP</emphasis>), and TCP port (<emphasis>%P</emphasis>) as its command-line
         arguments. The external command can decide to decline the
         service by exiting with a non-zero status (or to allow it by
         exiting with a zero status).  It can also look at the $REMOTE_ADDR
@@ -410,7 +413,7 @@ it declines the service.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;directory&gt;
+<emphasis>&lt;directory&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -569,8 +572,8 @@ selectively enable/disable services per repository
 </simplesect>
 <simplesect id="git-daemon(1)__environment">
 <title>ENVIRONMENT</title>
-<simpara><emphasis>git daemon</emphasis> will set REMOTE_ADDR to the IP address of the client
-that connected to it, if the IP address is available. REMOTE_ADDR will
+<simpara><emphasis>git daemon</emphasis> will set <emphasis>REMOTE_ADDR</emphasis> to the IP address of the client
+that connected to it, if the IP address is available. <emphasis>REMOTE_ADDR</emphasis> will
 be available in the environment of hooks called when
 services are performed.</simpara>
 </simplesect>

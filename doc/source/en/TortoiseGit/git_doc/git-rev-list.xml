@@ -744,6 +744,29 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+-z
+</term>
+<listitem>
+<simpara>
+        Instead of being newline-delimited, each outputted object and its
+        accompanying metadata is delimited using NUL bytes. Output is printed
+        in the following form:
+</simpara>
+<screen>&lt;OID&gt; NUL [&lt;token&gt;=&lt;value&gt; NUL]...</screen>
+<simpara>Additional object metadata, such as object paths or boundary objects, is
+printed using the <emphasis>&lt;token&gt;=&lt;value&gt;</emphasis> form. Token values are printed as-is
+without any encoding/truncation. An OID entry never contains a <emphasis>=</emphasis> character
+and thus is used to signal the start of a new object record. Examples:</simpara>
+<screen>&lt;OID&gt; NUL
+&lt;OID&gt; NUL path=&lt;path&gt; NUL
+&lt;OID&gt; NUL boundary=yes NUL
+&lt;OID&gt; NUL missing=yes NUL [&lt;token&gt;=&lt;value&gt; NUL]...</screen>
+<simpara>This mode is only compatible with the <emphasis>--objects</emphasis>, <emphasis>--boundary</emphasis>, and
+<emphasis>--missing</emphasis> output options.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </section>
 <section id="git-rev-list(1)__history_simplification">
@@ -1135,7 +1158,7 @@ commits affected by that topic, we may only want to view the subset of
 <emphasis>--ancestry-path=H D..M</emphasis> for example would result in:</simpara>
 <screen>                E
                  \
-                  G---H---I---J
+              C---G---H---I---J
                                \
                                 L--M</screen>
 <simpara>Whereas <emphasis>--ancestry-path=K D..M</emphasis> would result in</simpara>

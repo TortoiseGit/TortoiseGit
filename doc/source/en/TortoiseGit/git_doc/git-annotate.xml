@@ -321,7 +321,8 @@ take effect.</simpara>
         another commit will be marked with a <emphasis>?</emphasis> in the blame output.  If the
         <emphasis>blame.markUnblamableLines</emphasis> config option is set, then those lines touched
         by an ignored commit that we could not attribute to another revision are
-        marked with a <emphasis>*</emphasis>.
+        marked with a <emphasis>*</emphasis>. In the porcelain modes, we print <emphasis>ignored</emphasis> and
+        <emphasis>unblamable</emphasis> on a newline respectively.
 </simpara>
 </listitem>
 </varlistentry>

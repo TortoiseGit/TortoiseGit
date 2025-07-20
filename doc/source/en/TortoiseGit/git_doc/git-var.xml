@@ -13,7 +13,7 @@
 <simplesect id="git-var(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git var</emphasis> (-l | &lt;variable&gt;)</literallayout>
+<literallayout><code>git</code> <code>var</code> (<code>-l</code> | <emphasis>&lt;variable&gt;</emphasis>)</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-var(1)__description">
@@ -26,7 +26,7 @@ no value.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -49,7 +49,7 @@ Eric W. Biederman &lt;ebiederm@lnxi.com&gt; 1121223278 -0600</literallayout>
 <variablelist>
 <varlistentry>
 <term>
-GIT_AUTHOR_IDENT
+<emphasis>GIT_AUTHOR_IDENT</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -59,7 +59,7 @@ GIT_AUTHOR_IDENT
 </varlistentry>
 <varlistentry>
 <term>
-GIT_COMMITTER_IDENT
+<emphasis>GIT_COMMITTER_IDENT</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -69,52 +69,50 @@ GIT_COMMITTER_IDENT
 </varlistentry>
 <varlistentry>
 <term>
-GIT_EDITOR
+<emphasis>GIT_EDITOR</emphasis>
 </term>
 <listitem>
 <simpara>
     Text editor for use by Git commands.  The value is meant to be
     interpreted by the shell when it is used.  Examples: <emphasis>~/bin/vi</emphasis>,
     <emphasis>$SOME_ENVIRONMENT_VARIABLE</emphasis>, <emphasis>"C:\Program Files\Vim\gvim.exe"
-    --nofork</emphasis>.  The order of preference is the <emphasis>$GIT_EDITOR</emphasis>
-    environment variable, then <emphasis>core.editor</emphasis> configuration, then
-    <emphasis>$VISUAL</emphasis>, then <emphasis>$EDITOR</emphasis>, and then the default chosen at compile
+    --nofork</emphasis>.  The order of preference is <emphasis>$GIT_EDITOR</emphasis>, then
+    <emphasis>core.editor</emphasis> configuration value, then <emphasis>$VISUAL</emphasis>, then
+    <emphasis>$EDITOR</emphasis>, and then the default chosen at compile
     time, which is usually <emphasis>vi</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-GIT_SEQUENCE_EDITOR
+<emphasis>GIT_SEQUENCE_EDITOR</emphasis>
 </term>
 <listitem>
 <simpara>
     Text editor used to edit the <emphasis>todo</emphasis> file while running <emphasis>git rebase
     -i</emphasis>. Like <emphasis>GIT_EDITOR</emphasis>, the value is meant to be interpreted by
-    the shell when it is used. The order of preference is the
-    <emphasis>$GIT_SEQUENCE_EDITOR</emphasis> environment variable, then
-    <emphasis>sequence.editor</emphasis> configuration, and then the value of <emphasis>git var
-    GIT_EDITOR</emphasis>.
+    the shell when it is used. The order of preference is
+    <emphasis>$GIT_SEQUENCE_EDITOR</emphasis>, then <emphasis>sequence.editor</emphasis> configuration value,
+    and then the value of <emphasis>git var GIT_EDITOR</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-GIT_PAGER
+<emphasis>GIT_PAGER</emphasis>
 </term>
 <listitem>
 <simpara>
     Text viewer for use by Git commands (e.g., <emphasis>less</emphasis>).  The value
     is meant to be interpreted by the shell.  The order of preference
-    is the <emphasis>$GIT_PAGER</emphasis> environment variable, then <emphasis>core.pager</emphasis>
-    configuration, then <emphasis>$PAGER</emphasis>, and then the default chosen at
-    compile time (usually <emphasis>less</emphasis>).
+    is <emphasis>$GIT_PAGER</emphasis>, then the value of <emphasis>core.pager</emphasis> configuration, then
+    <emphasis>$PAGER</emphasis>, and then the default chosen at compile time (usually <emphasis>less</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-GIT_DEFAULT_BRANCH
+<emphasis>GIT_DEFAULT_BRANCH</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -124,7 +122,7 @@ GIT_DEFAULT_BRANCH
 </varlistentry>
 <varlistentry>
 <term>
-GIT_SHELL_PATH
+<emphasis>GIT_SHELL_PATH</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -134,7 +132,7 @@ GIT_SHELL_PATH
 </varlistentry>
 <varlistentry>
 <term>
-GIT_ATTR_SYSTEM
+<emphasis>GIT_ATTR_SYSTEM</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -144,7 +142,7 @@ GIT_ATTR_SYSTEM
 </varlistentry>
 <varlistentry>
 <term>
-GIT_ATTR_GLOBAL
+<emphasis>GIT_ATTR_GLOBAL</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -154,7 +152,7 @@ GIT_ATTR_GLOBAL
 </varlistentry>
 <varlistentry>
 <term>
-GIT_CONFIG_SYSTEM
+<emphasis>GIT_CONFIG_SYSTEM</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -164,7 +162,7 @@ GIT_CONFIG_SYSTEM
 </varlistentry>
 <varlistentry>
 <term>
-GIT_CONFIG_GLOBAL
+<emphasis>GIT_CONFIG_GLOBAL</emphasis>
 </term>
 <listitem>
 <simpara>

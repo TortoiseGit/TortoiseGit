@@ -13,9 +13,9 @@
 <simplesect id="git-rm(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git rm</emphasis> [-f | --force] [-n] [-r] [--cached] [--ignore-unmatch]
-          [--quiet] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
-          [--] [&lt;pathspec&gt;&#8230;]</literallayout>
+<literallayout><code>git</code> <code>rm</code> [<code>-f</code> | <code>--force</code>] [<code>-n</code>] [<code>-r</code>] [<code>--cached</code>] [<code>--ignore-unmatch</code>]
+       [<code>--quiet</code>] [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]]
+       [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-rm(1)__description">
@@ -38,7 +38,7 @@ sparse-checkouts are in use (see <xref linkend="git-sparse-checkout(1)" />),
 <variablelist>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -52,15 +52,15 @@ sparse-checkouts are in use (see <xref linkend="git-sparse-checkout(1)" />),
 directories <emphasis>d</emphasis> and <emphasis>d2</emphasis>, there is a difference between using
 <emphasis>git rm 'd*'</emphasis> and <emphasis>git rm 'd/*'</emphasis>, as the former will also remove all
 of directory <emphasis>d2</emphasis>.</simpara>
-<simpara>For more details, see the <emphasis>pathspec</emphasis> entry in <xref linkend="gitglossary(7)" />.</simpara>
+<simpara>For more details, see the <emphasis>&lt;pathspec&gt;</emphasis> entry in <xref linkend="gitglossary(7)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -70,10 +70,10 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -85,7 +85,7 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--r
+<emphasis>-r</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -96,7 +96,7 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -108,7 +108,7 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---cached
+<emphasis>--cached</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -120,7 +120,7 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-unmatch
+<emphasis>--ignore-unmatch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -130,7 +130,7 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---sparse
+<emphasis>--sparse</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -143,10 +143,10 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -157,13 +157,13 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of commandline args. If
+        Pathspec is passed in <emphasis>&lt;file&gt;</emphasis> instead of  args. If
         <emphasis>&lt;file&gt;</emphasis> is exactly <emphasis>-</emphasis> then standard input is used. Pathspec
-        elements are separated by LF or CR/LF. Pathspec elements can be
+        elements are separated by <emphasis>LF</emphasis> or <emphasis>CR</emphasis>/<emphasis>LF</emphasis>. Pathspec elements can be
         quoted as explained for the configuration variable <emphasis>core.quotePath</emphasis>
         (see <xref linkend="git-config(1)" />). See also <emphasis>--pathspec-file-nul</emphasis> and
         global <emphasis>--literal-pathspecs</emphasis>.
@@ -172,12 +172,12 @@ of directory <emphasis>d2</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
-        separated with NUL character and all other characters are taken
+        separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
 </simpara>
 </listitem>
@@ -227,14 +227,14 @@ use the following command:</simpara>
 <title>SUBMODULES</title>
 <simpara>Only submodules using a gitfile (which means they were cloned
 with a Git version 1.7.8 or newer) will be removed from the work
-tree, as their repository lives inside the .git directory of the
+tree, as their repository lives inside the <emphasis>.git</emphasis> directory of the
 superproject. If a submodule (or one of those nested inside it)
-still uses a .git directory, <emphasis>git rm</emphasis> will move the submodules
+still uses a <emphasis>.git</emphasis> directory, <emphasis>git rm</emphasis> moves the submodules
 git directory into the superprojects git directory to protect
-the submodule's history. If it exists the submodule.&lt;name&gt; section
+the submodule's history. If it exists the <emphasis>submodule.&lt;name&gt;</emphasis> section
 in the <xref linkend="gitmodules(5)" /> file will also be removed and that file
-will be staged (unless --cached or -n are used).</simpara>
-<simpara>A submodule is considered up to date when the HEAD is the same as
+will be staged (unless <emphasis>--cached</emphasis> or <emphasis>-n</emphasis> are used).</simpara>
+<simpara>A submodule is considered up to date when the <emphasis>HEAD</emphasis> is the same as
 recorded in the index, no tracked files are modified and no untracked
 files that aren't ignored are present in the submodule's work tree.
 Ignored files are deemed expendable and won't stop a submodule's work

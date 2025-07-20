@@ -2,17 +2,16 @@
 <!DOCTYPE appendix SYSTEM "../../../dtd/dblite.dtd">
 <appendix>
 	<title>Git Official Documentation</title>
-	<simplesect>
-		<para>
-			The up to date Git reference can be found on <ulink url="https://git-scm.com/docs/"><citetitle>https://git-scm.com/docs/</citetitle></ulink>
-		</para>
-	</simplesect>
 	<sect1 id="user-manual" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git User Manual</title>
+		<xi:include href="./git-doc-version.xml"/>
+
 		<xi:include href="./user-manual.xml"/>
 	</sect1>
 	<sect1 id="Git-Tutorial"  xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git Tutorial</title>
+		<xi:include href="./git-doc-version.xml"/>
+
 		<xi:include href="./gittutorial.xml"/>
 		<xi:include href="./gittutorial-2.xml"/>
 		<xi:include href="./gitcore-tutorial.xml"/>
@@ -21,6 +20,8 @@
 	</sect1>
 	<sect1 id="git-command" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Git Command Reference</title>
+		<xi:include href="./git-doc-version.xml"/>
+
 		<xi:include href="./git.xml"/>
 		<xi:include href="./git-add.xml"/>
 		<xi:include href="./git-am.xml"/>
@@ -64,6 +65,7 @@
 		<xi:include href="./git-diagnose.xml"/>
 		<xi:include href="./git-diff-files.xml"/>
 		<xi:include href="./git-diff-index.xml"/>
+		<xi:include href="./git-diff-pairs.xml"/>
 		<xi:include href="./git-diff-tree.xml"/>
 		<xi:include href="./git-diff.xml"/>
 		<xi:include href="./git-difftool.xml"/>
@@ -187,6 +189,8 @@
 	</sect1>
 	<sect1 id="git-misc" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>Misc</title>
+		<xi:include href="./git-doc-version.xml"/>
+
 		<xi:include href="./gitcli.xml"/>
 		<xi:include href="./gitattributes.xml"/>
 		<xi:include href="./gitcredentials.xml"/>
@@ -209,6 +213,8 @@
 	</sect1>
 	<sect1 id="git-developerinfo" xmlns:xi="http://www.w3.org/2001/XInclude">
 		<title>File formats, protocols and other developer interfaces</title>
+		<xi:include href="./git-doc-version.xml"/>
+
 		<xi:include href="./gitformat-bundle.xml"/>
 		<xi:include href="./gitformat-chunk.xml"/>
 		<xi:include href="./gitformat-commit-graph.xml"/>
