@@ -995,6 +995,10 @@ msgstr ""
 msgid "&Pull..."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
 msgstr ""

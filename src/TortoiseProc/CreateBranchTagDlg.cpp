@@ -35,9 +35,11 @@ CCreateBranchTagDlg::CCreateBranchTagDlg(CWnd* pParent /*=nullptr*/)
 	, CChooseVersion(this)
 	, m_bIsTag(0)
 	, m_regNewBranch(L"Software\\TortoiseGit\\NewBranchSwitchTo", FALSE)
+	, m_regPushTag(L"Software\\TortoiseGit\\PushTag", FALSE)
 	, m_bSwitch(BST_UNCHECKED)	// default switch to checkbox not selected
 	, m_bTrack(BST_INDETERMINATE)
 	, m_bSign(BST_UNCHECKED)
+	, m_bPush(BST_UNCHECKED)
 {
 }
 
@@ -56,6 +58,7 @@ void CCreateBranchTagDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX,IDC_CHECK_TRACK,this->m_bTrack);
 	DDX_Check(pDX,IDC_CHECK_SWITCH,this->m_bSwitch);
 	DDX_Check(pDX,IDC_CHECK_SIGN,this->m_bSign);
+	DDX_Check(pDX, IDC_CHECK_PUSH, m_bPush);
 	DDX_Text(pDX, IDC_EDIT_MESSAGE,this->m_Message);
 }
 
@@ -86,12 +89,19 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATETAG));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_TAG)));
 		this->GetDlgItem(IDC_CHECK_SIGN)->EnableWindow(!g_Git.GetConfigValue(L"user.signingkey").IsEmpty());
+		this->GetDlgItem(IDC_CHECK_PUSH)->EnableWindow(true);
+		if (!!m_regPushTag)
+		{
+			m_bPush = BST_CHECKED;
+			UpdateData(FALSE);
+		}
 	}
 	else
 	{
 		sWindowTitle = CString(MAKEINTRESOURCE(IDS_PROGS_TITLE_CREATEBRANCH));
 		this->GetDlgItem(IDC_LABEL_BRANCH)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_BRANCH)));
 		GetDlgItem(IDC_CHECK_SIGN)->ShowWindow(SW_HIDE); // deactivated by default
+		GetDlgItem(IDC_CHECK_PUSH)->ShowWindow(SW_HIDE); // deactivated by default
 		GetDlgItem(IDC_GROUP_MESSAGE)->SetWindowText(CString(MAKEINTRESOURCE(IDS_DESCRIPTION)));
 		if (!!m_regNewBranch)
 		{
@@ -118,6 +128,7 @@ BOOL CCreateBranchTagDlg::OnInitDialog()
 	AdjustControlSize(IDC_CHECK_FORCE);
 	AdjustControlSize(IDC_CHECK_SWITCH);
 	AdjustControlSize(IDC_CHECK_SIGN);
+	AdjustControlSize(IDC_CHECK_PUSH);
 	AdjustControlSize(IDC_RADIO_HEAD);
 
 	CHOOSE_VERSION_ADDANCHOR;
@@ -191,6 +202,8 @@ void CCreateBranchTagDlg::OnBnClickedOk()
 	}
 	if (!m_bIsTag)
 		m_regNewBranch = (m_bSwitch == BST_CHECKED);
+	else
+		m_regPushTag = (m_bPush == BST_CHECKED);
 
 	this->UpdateRevsionName();
 	OnOK();
