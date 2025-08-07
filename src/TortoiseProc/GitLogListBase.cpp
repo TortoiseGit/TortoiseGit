@@ -2700,7 +2700,6 @@ int CGitLogListBase::BeginFetchLog()
 	if(m_bShowWC)
 	{
 		this->m_logEntries.insert(m_logEntries.cbegin(), m_wcRev.m_CommitHash);
-		ResetWcRev();
 		this->m_LogCache.m_HashMap[m_wcRev.m_CommitHash]=m_wcRev;
 	}
 
