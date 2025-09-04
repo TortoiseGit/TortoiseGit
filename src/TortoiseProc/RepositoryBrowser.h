@@ -23,7 +23,7 @@
 #include "GitHash.h"
 #include "GestureEnabledControl.h"
 #include "TGitPath.h"
-#include "ColumnManager.h"
+#include "ResizableColumnsListCtrl.h"
 
 #define REPOBROWSER_CTRL_MIN_WIDTH	20
 
@@ -123,12 +123,10 @@ private:
 
 	afx_msg void			OnOK() override;
 	afx_msg void			OnCancel() override;
-	afx_msg void			OnDestroy();
 	BOOL					OnInitDialog() override;
 
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RepoTree;
-	CGestureEnabledControlTmpl<CListCtrl>	m_RepoList;
-	ColumnManager			m_ColumnManager;
+	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>> m_RepoList;
 
 	afx_msg void			OnLvnColumnclickRepoList(NMHDR *pNMHDR, LRESULT *pResult);
 	int						m_currSortCol = 0;

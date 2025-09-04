@@ -22,7 +22,7 @@
 #include "gittype.h"
 #include "GitHash.h"
 #include "GestureEnabledControl.h"
-#include "ColumnManager.h"
+#include "ResizableColumnsListCtrl.h"
 
 class WorktreeDetails
 {
@@ -86,15 +86,13 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 	afx_msg void OnOK() override;
-	afx_msg void OnDestroy();
 	BOOL OnInitDialog() override;
 	BOOL PreTranslateMessage(MSG* pMsg) override;
 	afx_msg void OnNMDblclkWorktreeList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClickedButtonAdd();
 	afx_msg void OnBnClickedButtonPrune();
 
-	CGestureEnabledControlTmpl<CListCtrl> m_WorktreeList;
-	ColumnManager m_ColumnManager;
+	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>> m_WorktreeList;
 
 	std::vector<WorktreeDetails> m_Worktrees;
 

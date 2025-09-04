@@ -143,7 +143,6 @@ IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
 , m_sRevision(rev)
-, m_ColumnManager(&m_RepoList)
 {
 }
 
@@ -168,7 +167,6 @@ BEGIN_MESSAGE_MAP(CRepositoryBrowser, CResizableStandAloneDialog)
 	ON_NOTIFY(NM_DBLCLK, IDC_REPOLIST, &CRepositoryBrowser::OnNMDblclk_RepoList)
 	ON_BN_CLICKED(IDC_BUTTON_REVISION, &CRepositoryBrowser::OnBnClickedButtonRevision)
 	ON_WM_SETCURSOR()
-	ON_WM_DESTROY()
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -203,10 +201,10 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
-	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_RepoList.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", columnVersion, _countof(columnNames), columnWidths);
-	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_LOG_SIZE));
+	m_RepoList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", columnVersion, _countof(columnNames), columnWidths);
+	m_RepoList.m_ColumnManager.SetRightAlign(m_RepoList.m_ColumnManager.GetColumnByName(IDS_LOG_SIZE));
 
 	// set up the list control
 	// set the extended style of the list control
@@ -275,17 +273,6 @@ void CRepositoryBrowser::UpdateDiffWithFileFromReg()
 		m_sMarkForDiffFilename = diffLaterFile;
 		m_sMarkForDiffVersion.Empty();
 	}
-}
-
-void CRepositoryBrowser::OnDestroy()
-{
-	const int maxcol = m_ColumnManager.GetColumnCount();
-	for (int col = 0; col < maxcol; ++col)
-		if (m_ColumnManager.IsVisible(col))
-			m_ColumnManager.ColumnResized(col);
-	m_ColumnManager.WriteSettings();
-
-	CResizableStandAloneDialog::OnDestroy();
 }
 
 void CRepositoryBrowser::OnOK()

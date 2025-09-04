@@ -36,7 +36,6 @@ IMPLEMENT_DYNAMIC(CWorktreeListDlg, CResizableStandAloneDialog)
 
 CWorktreeListDlg::CWorktreeListDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CWorktreeListDlg::IDD, pParent)
-	, m_ColumnManager(&m_WorktreeList)
 {
 }
 
@@ -53,7 +52,6 @@ void CWorktreeListDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CWorktreeListDlg, CResizableStandAloneDialog)
 	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
-	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CWorktreeListDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_PRUNE, &CWorktreeListDlg::OnBnClickedButtonPrune)
 	ON_NOTIFY(NM_DBLCLK, IDC_WORKTREE_LIST, OnNMDblclkWorktreeList)
@@ -78,10 +76,10 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
 	DWORD dwDefaultColumns = (1 << eCol_Path) | (1 << eCol_Hash) | (1 << eCol_Branch) | (1 << eCol_Locked) | (1 << eCol_Reason);
-	m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_WorktreeList.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
 	constexpr int columnVersion = 0; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"WorktreeList", columnVersion, _countof(columnNames), columnWidths);
-	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_REASON));
+	m_WorktreeList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"WorktreeList", columnVersion, _countof(columnNames), columnWidths);
+	m_WorktreeList.m_ColumnManager.SetRightAlign(m_WorktreeList.m_ColumnManager.GetColumnByName(IDS_REASON));
 
 	// set up the list control
 	// set the extended style of the list control
@@ -103,17 +101,6 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	m_WorktreeList.SetFocus();
 
 	return FALSE;
-}
-
-void CWorktreeListDlg::OnDestroy()
-{
-	int maxcol = m_ColumnManager.GetColumnCount();
-	for (int col = 0; col < maxcol; ++col)
-		if (m_ColumnManager.IsVisible(col))
-			m_ColumnManager.ColumnResized(col);
-	m_ColumnManager.WriteSettings();
-
-	CResizableStandAloneDialog::OnDestroy();
 }
 
 void CWorktreeListDlg::OnOK()

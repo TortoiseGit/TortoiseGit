@@ -27,6 +27,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Fixed issue #4201: Commit message should not autocomplete when typing opening bracket
  * Fixed an off-by-one error in the spell checker
  * Fixed issue #4216: Crash - Log viewer - Click "refresh" repeated rapidly
+ * Fixed issue #4225: Worktree list - remember column widths
 
 = Release 2.17.0.2 =
 Released: 2024-11-01
