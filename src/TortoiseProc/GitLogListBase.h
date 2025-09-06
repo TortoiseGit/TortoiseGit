@@ -514,14 +514,13 @@ public:
 	{
 		if (m_LoadingThread && InterlockedExchange(&m_bExitThread, TRUE) == FALSE)
 		{
+			int i = 0;
 			DWORD ret = WAIT_TIMEOUT;
-			for (int i = 0; i < 200 && s_bThreadRunning; ++i)
-				ret =::WaitForSingleObject(m_LoadingThread->m_hThread, 100);
-			if (ret == WAIT_TIMEOUT && s_bThreadRunning)
+			while (ret == WAIT_TIMEOUT && s_bThreadRunning)
 			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": loading thread did not exit, going to call TerminateThread\n");
-				ASSERT(FALSE && "we should newer get here!");
-				::TerminateThread(m_LoadingThread, 0);
+				if (i++ >= 10)
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for loading thread to exit since %d seconds...\n", i);
+				ret = ::WaitForSingleObject(m_LoadingThread->m_hThread, 1000);
 			}
 			delete m_LoadingThread;
 			m_LoadingThread = nullptr;
