@@ -30,17 +30,10 @@ IconBitmapUtils::IconBitmapUtils()
 
 IconBitmapUtils::~IconBitmapUtils()
 {
-	for (const auto& bitmap : bitmaps)
-		::DeleteObject(bitmap.second);
-	bitmaps.clear();
 }
 
 HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 {
-	std::map<UINT, HBITMAP>::iterator bitmap_it = bitmaps.lower_bound(uIcon);
-	if (bitmap_it != bitmaps.end() && bitmap_it->first == uIcon)
-		return bitmap_it->second;
-
 	CAutoIcon hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), 12, 12);
 	if (!hIcon)
 		return nullptr;
@@ -88,26 +81,16 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 	// Restore settings
 	::SelectObject(dst_hdc, old_dst_bmp);
 
-	bitmaps.insert(bitmap_it, std::make_pair(uIcon, bmp));
 	return bmp;
 }
 
 HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon)
 {
-	std::map<UINT, HBITMAP>::iterator bitmap_it = bitmaps.lower_bound(uIcon);
-	if (bitmap_it != bitmaps.end() && bitmap_it->first == uIcon)
-		return bitmap_it->second;
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
 	CAutoIcon hIcon = LoadIconEx(hInst, MAKEINTRESOURCE(uIcon), iconWidth, iconHeight);
 
-	HBITMAP hBmp = IconToBitmapPARGB32(hIcon, iconWidth, iconHeight);
-
-
-	if(hBmp)
-		bitmaps.insert(bitmap_it, std::make_pair(uIcon, hBmp));
-
-	return hBmp;
+	return IconToBitmapPARGB32(hIcon, iconWidth, iconHeight);
 }
 
 HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
@@ -133,7 +116,10 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
 
 	auto hbmpOld = static_cast<HBITMAP>(SelectObject(hdcDest, hBmp));
 	if (!hbmpOld)
-		return hBmp;
+	{
+		::DeleteObject(hBmp);
+		return nullptr;
+	}
 
 	BLENDFUNCTION bfAlpha = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
 	BP_PAINTPARAMS paintParams = { 0 };
@@ -202,14 +188,16 @@ HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC h
 	if (HasAlpha(pargb, sizIcon, cxRow))
 		return S_OK;
 
-	ICONINFO info;
-	if (!GetIconInfo(hicon, &info))
-		return S_OK;
+	ICONINFO info{};
 	SCOPE_EXIT
 	{
-		DeleteObject(info.hbmColor);
-		DeleteObject(info.hbmMask);
+		if (info.hbmColor)
+			DeleteObject(info.hbmColor);
+		if (info.hbmMask)
+			DeleteObject(info.hbmMask);
 	};
+	if (!GetIconInfo(hicon, &info))
+		return S_OK;
 	if (info.hbmMask)
 		return ConvertToPARGB32(hdc, pargb, info.hbmMask, sizIcon, cxRow);
 

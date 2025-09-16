@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2023 - TortoiseGit
-// Copyright (C) 2009, 2011, 2014 - TortoiseSVN
+// Copyright (C) 2009, 2011, 2014, 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -46,8 +46,4 @@ public:
 	HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE& sizIcon);
 	bool HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, int cxRow) const;
 	HRESULT ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb, HBITMAP hbmp, const SIZE& sizImage, int cxRow) const;
-
-
-private:
-	std::map<UINT, HBITMAP>     bitmaps;
 };
