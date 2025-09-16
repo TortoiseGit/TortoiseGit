@@ -37,6 +37,7 @@
 #include "LoadIconEx.h"
 #include "ClipboardHelper.h"
 #include "scope_exit_noexcept.h"
+#include "IconBitmapUtils.h"
 
 #pragma comment(lib, "comsupp.lib")
 
@@ -603,7 +604,7 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	if (icon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
+		menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, icon);
 	}
 	menuiteminfo.wID = static_cast<UINT>(id);
 	if (menu)
@@ -1087,7 +1088,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	if (uIcon)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, uIcon);
+		menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, uIcon);
 	}
 	menuiteminfo.hSubMenu = subMenu;
 	menuiteminfo.wID = idCmd++;
@@ -1946,7 +1947,7 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING | MIIM_BITMAP;
 	menuiteminfo.fType = MFT_STRING;
-	menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, IDI_LFS);
+	menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, IDI_LFS);
 	menuiteminfo.hSubMenu = lfssubmenu;
 	menuiteminfo.wID = idCmd;
 
@@ -2203,7 +2204,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		if (icon)
 		{
 			menuiteminfo.fMask |= MIIM_BITMAP;
-			menuiteminfo.hbmpItem = m_iconBitmapUtils.IconToBitmapPARGB32(g_hResInst, icon);
+			menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, icon);
 		}
 		menuiteminfo.fType = MFT_STRING;
 		menuiteminfo.hSubMenu = ignoresubmenu;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
-// Copyright (C) 2009, 2011, 2014, 2025 - TortoiseSVN
+// Copyright (C) 2023, 2025 - TortoiseGit
+// Copyright (C) 2009, 2011, 2014-2015, 2021, 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -20,14 +20,13 @@
 #pragma once
 #include <Uxtheme.h>
 #pragma warning(push)
-#pragma warning(disable: 4458)
+#pragma warning(disable : 4458) // declaration of 'xxx' hides class member
 #include <GdiPlus.h>
 #pragma warning(pop)
 
-using FN_GetBufferedPaintBits = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, RGBQUAD** ppbBuffer, int* pcxRow);
-using FN_BeginBufferedPaint = HPAINTBUFFER(WINAPI*)(HDC hdcTarget, const RECT* prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS* pPaintParams, HDC* phdc);
-using FN_EndBufferedPaint = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
-
+using FnGetBufferedPaintBits = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, RGBQUAD** ppbBuffer, int* pcxRow);
+using FnBeginBufferedPaint = HPAINTBUFFER(WINAPI*)(HDC hdcTarget, const RECT* prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS* pPaintParams, HDC* phdc);
+using FnEndBufferedPaint = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
 
 /**
  * \ingroup utils
@@ -36,14 +35,13 @@ using FN_EndBufferedPaint = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, BOOL f
 class IconBitmapUtils
 {
 public:
-	IconBitmapUtils();
-	~IconBitmapUtils();
+	IconBitmapUtils() = delete;
 
-	HBITMAP IconToBitmap(HINSTANCE hInst, UINT uIcon);
-	HBITMAP IconToBitmapPARGB32(HICON hIcon, int width, int height);
-	HBITMAP IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon);
-	HRESULT Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp) const;
-	HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE& sizIcon);
-	bool HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, int cxRow) const;
-	HRESULT ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb, HBITMAP hbmp, const SIZE& sizImage, int cxRow) const;
+	static HBITMAP IconToBitmap(HINSTANCE hInst, UINT uIcon);
+	static HBITMAP IconToBitmapPARGB32(HICON hIcon, int width, int height);
+	static HBITMAP IconToBitmapPARGB32(HINSTANCE hInst, UINT uIcon);
+	static HRESULT Create32BitHBITMAP(HDC hdc, const SIZE* psize, __deref_opt_out void** ppvBits, __out HBITMAP* phBmp);
+	static HRESULT ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hIcon, const SIZE& sizIcon);
+	static bool HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, int cxRow);
+	static HRESULT ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb, HBITMAP hbmp, const SIZE& sizImage, int cxRow);
 };

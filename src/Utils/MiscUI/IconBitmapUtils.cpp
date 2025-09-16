@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2009-2012, 2014-2015, 2018, 2020-2021, 2025 - TortoiseSVN
 // Copyright (C) 2016, 2019-2020, 2025 - TortoiseGit
-// Copyright (C) 2009-2012, 2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,20 +17,11 @@
 // along with this program; if not, write to the Free Software Foundation,
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
-
 #include "stdafx.h"
 #include "IconBitmapUtils.h"
 #include "LoadIconEx.h"
 
 #pragma comment(lib, "UxTheme.lib")
-
-IconBitmapUtils::IconBitmapUtils()
-{
-}
-
-IconBitmapUtils::~IconBitmapUtils()
-{
-}
 
 HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 {
@@ -38,48 +29,46 @@ HBITMAP IconBitmapUtils::IconToBitmap(HINSTANCE hInst, UINT uIcon)
 	if (!hIcon)
 		return nullptr;
 
-	RECT rect;
+	RECT rect{};
 
 	rect.right = ::GetSystemMetrics(SM_CXMENUCHECK);
 	rect.bottom = ::GetSystemMetrics(SM_CYMENUCHECK);
-
-	rect.left = rect.top = 0;
 
 	HWND desktop = ::GetDesktopWindow();
 	if (!desktop)
 		return nullptr;
 
-	HDC screen_dev = ::GetDC(desktop);
-	if (!screen_dev)
+	HDC screenDev = ::GetDC(desktop);
+	if (!screenDev)
 		return nullptr;
-	SCOPE_EXIT { ::ReleaseDC(desktop, screen_dev); };
+	SCOPE_EXIT { ::ReleaseDC(desktop, screenDev); };
 
 	// Create a compatible DC
-	HDC dst_hdc = ::CreateCompatibleDC(screen_dev);
-	if (!dst_hdc)
+	HDC dstHdc = ::CreateCompatibleDC(screenDev);
+	if (!dstHdc)
 		return nullptr;
-	SCOPE_EXIT { ::DeleteDC(dst_hdc); };
+	SCOPE_EXIT { ::DeleteDC(dstHdc); };
 
 	// Create a new bitmap of icon size
-	HBITMAP bmp = ::CreateCompatibleBitmap(screen_dev, rect.right, rect.bottom);
+	HBITMAP bmp = ::CreateCompatibleBitmap(screenDev, rect.right, rect.bottom);
 	if (!bmp)
 		return nullptr;
 
 	// Select it into the compatible DC
-	auto old_dst_bmp = static_cast<HBITMAP>(::SelectObject(dst_hdc, bmp));
-	if (!old_dst_bmp)
+	auto oldDstBmp = static_cast<HBITMAP>(::SelectObject(dstHdc, bmp));
+	if (!oldDstBmp)
 		return nullptr;
 
 	// Fill the background of the compatible DC with the white color
 	// that is taken by menu routines as transparent
-	::SetBkColor(dst_hdc, RGB(255, 255, 255));
-	::ExtTextOut(dst_hdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
+	::SetBkColor(dstHdc, RGB(255, 255, 255));
+	::ExtTextOut(dstHdc, 0, 0, ETO_OPAQUE, &rect, nullptr, 0, nullptr);
 
 	// Draw the icon into the compatible DC
-	::DrawIconEx(dst_hdc, 0, 0, hIcon, rect.right, rect.bottom, 0, nullptr, DI_NORMAL);
+	::DrawIconEx(dstHdc, 0, 0, hIcon, rect.right, rect.bottom, 0, nullptr, DI_NORMAL);
 
 	// Restore settings
-	::SelectObject(dst_hdc, old_dst_bmp);
+	::SelectObject(dstHdc, oldDstBmp);
 
 	return bmp;
 }
@@ -114,8 +103,8 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
 	if (FAILED(Create32BitHBITMAP(hdcDest, &sizIcon, nullptr, &hBmp)))
 		return nullptr;
 
-	auto hbmpOld = static_cast<HBITMAP>(SelectObject(hdcDest, hBmp));
-	if (!hbmpOld)
+	auto hBmpOld = static_cast<HBITMAP>(SelectObject(hdcDest, hBmp));
+	if (!hBmpOld)
 	{
 		::DeleteObject(hBmp);
 		return nullptr;
@@ -141,11 +130,12 @@ HBITMAP IconBitmapUtils::IconToBitmapPARGB32(HICON hIcon, int width, int height)
 		EndBufferedPaint(hPaintBuffer, TRUE);
 	}
 
-	SelectObject(hdcDest, hbmpOld);
+	SelectObject(hdcDest, hBmpOld);
+
 	return hBmp;
 }
 
-HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_opt_out void **ppvBits, __out HBITMAP* phBmp) const
+HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE* psize, __deref_opt_out void** ppvBits, __out HBITMAP* phBmp)
 {
 	if (!psize)
 		return E_INVALIDARG;
@@ -169,23 +159,20 @@ HRESULT IconBitmapUtils::Create32BitHBITMAP(HDC hdc, const SIZE *psize, __deref_
 	{
 		*phBmp = CreateDIBSection(hdcUsed, &bmi, DIB_RGB_COLORS, ppvBits, nullptr, 0);
 		if (hdc != hdcUsed)
-		{
 			ReleaseDC(nullptr, hdcUsed);
-		}
 	}
-	return (nullptr == *phBmp) ? E_OUTOFMEMORY : S_OK;
+	return (!*phBmp) ? E_OUTOFMEMORY : S_OK;
 }
 
-HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hicon, SIZE& sizIcon)
+HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC hdc, HICON hIcon, const SIZE& sizIcon)
 {
-	RGBQUAD *prgbQuad;
+	RGBQUAD* prgbQuad = nullptr;
 	int cxRow;
-	HRESULT hr = GetBufferedPaintBits(hPaintBuffer, &prgbQuad, &cxRow);
-	if (FAILED(hr))
+	if (HRESULT hr = GetBufferedPaintBits(hPaintBuffer, &prgbQuad, &cxRow); FAILED(hr))
 		return hr;
 
-	Gdiplus::ARGB *pargb = reinterpret_cast<Gdiplus::ARGB *>(prgbQuad);
-	if (HasAlpha(pargb, sizIcon, cxRow))
+	auto pArgb = reinterpret_cast<Gdiplus::ARGB*>(prgbQuad);
+	if (HasAlpha(pArgb, sizIcon, cxRow))
 		return S_OK;
 
 	ICONINFO info{};
@@ -196,15 +183,15 @@ HRESULT IconBitmapUtils::ConvertBufferToPARGB32(HPAINTBUFFER hPaintBuffer, HDC h
 		if (info.hbmMask)
 			DeleteObject(info.hbmMask);
 	};
-	if (!GetIconInfo(hicon, &info))
+	if (!GetIconInfo(hIcon, &info))
 		return S_OK;
 	if (info.hbmMask)
-		return ConvertToPARGB32(hdc, pargb, info.hbmMask, sizIcon, cxRow);
+		return ConvertToPARGB32(hdc, pArgb, info.hbmMask, sizIcon, cxRow);
 
 	return S_OK;
 }
 
-bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, int cxRow) const
+bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, int cxRow)
 {
 	ULONG cxDelta = cxRow - sizImage.cx;
 	for (ULONG y = sizImage.cy; y; --y)
@@ -221,7 +208,7 @@ bool IconBitmapUtils::HasAlpha(__in Gdiplus::ARGB* pargb, const SIZE& sizImage, 
 	return false;
 }
 
-HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb, HBITMAP hbmp, const SIZE& sizImage, int cxRow) const
+HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb, HBITMAP hbmp, const SIZE& sizImage, int cxRow)
 {
 	BITMAPINFO bmi = { 0 };
 	bmi.bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
@@ -233,7 +220,7 @@ HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb,
 	bmi.bmiHeader.biBitCount = 32;
 
 	HANDLE hHeap = GetProcessHeap();
-	void *pvBits = HeapAlloc(hHeap, 0, bmi.bmiHeader.biWidth * 4 * bmi.bmiHeader.biHeight);
+	auto pvBits = HeapAlloc(hHeap, 0, bmi.bmiHeader.biWidth * 4 * bmi.bmiHeader.biHeight);
 	if (!pvBits)
 		return E_OUTOFMEMORY;
 	SCOPE_EXIT { HeapFree(hHeap, 0, pvBits); };
@@ -242,7 +229,7 @@ HRESULT IconBitmapUtils::ConvertToPARGB32(HDC hdc, __inout Gdiplus::ARGB* pargb,
 		return E_UNEXPECTED;
 
 	ULONG cxDelta = cxRow - bmi.bmiHeader.biWidth;
-	Gdiplus::ARGB *pargbMask = static_cast<Gdiplus::ARGB *>(pvBits);
+	auto pargbMask = static_cast<Gdiplus::ARGB *>(pvBits);
 
 	for (ULONG y = bmi.bmiHeader.biHeight; y; --y)
 	{

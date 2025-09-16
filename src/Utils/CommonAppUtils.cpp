@@ -222,12 +222,9 @@ bool CCommonAppUtils::SetListCtrlBackgroundImage(HWND hListCtrl, UINT nID, int w
 	if (!hIcon)
 		return false;
 
-    IconBitmapUtils iutils;
-	auto bmp = iutils.IconToBitmapPARGB32(hIcon, width, height);
-
 	LVBKIMAGE lv;
 	lv.ulFlags = LVBKIF_TYPE_WATERMARK | LVBKIF_FLAG_ALPHABLEND;
-	lv.hbm = bmp;
+	lv.hbm = IconBitmapUtils::IconToBitmapPARGB32(hIcon, width, height);
 	lv.xOffsetPercent = 100;
 	lv.yOffsetPercent = 100;
 	ListView_SetBkImage(hListCtrl, &lv);

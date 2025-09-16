@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018-2023 - TortoiseGit
+// Copyright (C) 2018-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2012, 2014, 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,7 +26,6 @@
 #include "RemoteCacheLink.h"
 #include "GitStatus.h"
 #include "GitFolderStatus.h"
-#include "IconBitmapUtils.h"
 #include "MenuInfo.h"
 #include "ExplorerCommand.h"
 
@@ -98,7 +97,6 @@ protected:
 
 	GitFolderStatus		m_CachedStatus;		// status cache
 	CRemoteCacheLink	m_remoteCacheLink;
-	IconBitmapUtils		m_iconBitmapUtils;
 	Microsoft::WRL::ComPtr<IUnknown> m_site;
 	std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>> m_explorerCommands;
 

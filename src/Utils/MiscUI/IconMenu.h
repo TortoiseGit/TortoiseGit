@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2013, 2023 - TortoiseGit
+// Copyright (C) 2010, 2013, 2023, 2025 - TortoiseGit
 // Copyright (C) 2008-2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,7 +18,6 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
-#include "IconBitmapUtils.h"
 
 
 /**
@@ -49,7 +48,6 @@ private:
 	BOOL SetMenuStyle();
 
 private:
-	IconBitmapUtils				bitmapUtils;
 	std::map<UINT_PTR, UINT>	icons;
 	std::map<UINT_PTR, HICON>	iconhandles;
 	bool						bShowIcons;

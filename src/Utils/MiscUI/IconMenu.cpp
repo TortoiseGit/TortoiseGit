@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2011, 2013, 2016, 2019 - TortoiseGit
+// Copyright (C) 2010-2011, 2013, 2016, 2019, 2025 - TortoiseGit
 // Copyright (C) 2008-2009, 2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 #include "IconMenu.h"
 #include "registry.h"
 #include "LoadIconEx.h"
+#include "IconBitmapUtils.h"
 
 CIconMenu::CIconMenu() : CMenu()
 {
@@ -87,7 +88,7 @@ BOOL CIconMenu::AppendMenuIcon(UINT_PTR nIDNewItem, LPCWSTR lpszNewItem, UINT uI
 	if ((uIcon != 0) && bShowIcons)
 	{
 		info.fMask |= MIIM_BITMAP;
-		info.hbmpItem = bitmapUtils.IconToBitmapPARGB32(AfxGetResourceHandle(), uIcon);
+		info.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(AfxGetResourceHandle(), uIcon);
 
 		icons[nIDNewItem] = uIcon;
 	}
