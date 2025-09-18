@@ -1,0 +1,160 @@
+From 0646a923032472ab40a44ccda6352d159092987e Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Wed, 17 Sep 2025 20:19:13 +0200
+Subject: [PATCH] Use explicit casts for implicit enum type conversions
+
+This fixes Visual Studio warning "C5287: operands are different enum
+types '<>' and '<>'; use an explicit cast to silence this warning".
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/libgit2/diff_generate.h |  4 +--
+ src/libgit2/submodule.c     | 50 ++++++++++++++++++-------------------
+ 2 files changed, 27 insertions(+), 27 deletions(-)
+
+diff --git a/src/libgit2/diff_generate.h b/src/libgit2/diff_generate.h
+index b782f29c6..c56c3a0f0 100644
+--- a/src/libgit2/diff_generate.h
++++ b/src/libgit2/diff_generate.h
+@@ -21,8 +21,8 @@ enum {
+ 	GIT_DIFFCAPS_USE_DEV          = (1 << 4)  /* use st_dev? */
+ };
+ 
+-#define DIFF_FLAGS_KNOWN_BINARY (GIT_DIFF_FLAG_BINARY|GIT_DIFF_FLAG_NOT_BINARY)
+-#define DIFF_FLAGS_NOT_BINARY   (GIT_DIFF_FLAG_NOT_BINARY|GIT_DIFF_FLAG__NO_DATA)
++#define DIFF_FLAGS_KNOWN_BINARY ((uint32_t)GIT_DIFF_FLAG_BINARY|(uint32_t)GIT_DIFF_FLAG_NOT_BINARY)
++#define DIFF_FLAGS_NOT_BINARY   ((uint32_t)GIT_DIFF_FLAG_NOT_BINARY|(uint32_t)GIT_DIFF_FLAG__NO_DATA)
+ 
+ enum {
+ 	GIT_DIFF_FLAG__FREE_PATH  = (1 << 7),  /* `path` is allocated memory */
+diff --git a/src/libgit2/submodule.c b/src/libgit2/submodule.c
+index 7444e8c67..f560a101b 100644
+--- a/src/libgit2/submodule.c
++++ b/src/libgit2/submodule.c
+@@ -1471,9 +1471,9 @@ int git_submodule_update(git_submodule *sm, int init, git_submodule_update_optio
+ 
+ 		/* Invalidate the wd flags as the workdir has been updated. */
+ 		sm->flags = sm->flags &
+-			~(GIT_SUBMODULE_STATUS_IN_WD |
+-		  	GIT_SUBMODULE_STATUS__WD_OID_VALID |
+-		  	GIT_SUBMODULE_STATUS__WD_SCANNED);
++			~((uint32_t)GIT_SUBMODULE_STATUS_IN_WD |
++			  (uint32_t)GIT_SUBMODULE_STATUS__WD_OID_VALID |
++			  (uint32_t)GIT_SUBMODULE_STATUS__WD_SCANNED);
+ 	}
+ 
+ done:
+@@ -1596,9 +1596,9 @@ static int git_submodule__open(
+ 		return -1;
+ 
+ 	sm->flags = sm->flags &
+-		~(GIT_SUBMODULE_STATUS_IN_WD |
+-		  GIT_SUBMODULE_STATUS__WD_OID_VALID |
+-		  GIT_SUBMODULE_STATUS__WD_SCANNED);
++		~((uint32_t)GIT_SUBMODULE_STATUS_IN_WD |
++		  (uint32_t)GIT_SUBMODULE_STATUS__WD_OID_VALID |
++		  (uint32_t)GIT_SUBMODULE_STATUS__WD_SCANNED);
+ 
+ 	if (bare)
+ 		flags |= GIT_REPOSITORY_OPEN_BARE;
+@@ -1607,21 +1607,21 @@ static int git_submodule__open(
+ 
+ 	/* if we opened the submodule successfully, grab HEAD OID, etc. */
+ 	if (!error) {
+-		sm->flags |= GIT_SUBMODULE_STATUS_IN_WD |
+-			GIT_SUBMODULE_STATUS__WD_SCANNED;
++		sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS_IN_WD |
++			(uint32_t)GIT_SUBMODULE_STATUS__WD_SCANNED;
+ 
+ 		if (!git_reference_name_to_id(&sm->wd_oid, *subrepo, GIT_HEAD_FILE))
+ 			sm->flags |= GIT_SUBMODULE_STATUS__WD_OID_VALID;
+ 		else
+ 			git_error_clear();
+ 	} else if (git_fs_path_exists(path.ptr)) {
+-		sm->flags |= GIT_SUBMODULE_STATUS__WD_SCANNED |
+-			GIT_SUBMODULE_STATUS_IN_WD;
++		sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS__WD_SCANNED |
++			(uint32_t)GIT_SUBMODULE_STATUS_IN_WD;
+ 	} else {
+ 		git_str_rtruncate_at_char(&path, '/'); /* remove "/.git" */
+ 
+ 		if (git_fs_path_isdir(path.ptr))
+-			sm->flags |= GIT_SUBMODULE_STATUS__WD_SCANNED;
++			sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS__WD_SCANNED;
+ 	}
+ 
+ 	git_str_dispose(&path);
+@@ -1642,19 +1642,19 @@ int git_submodule_open(git_repository **subrepo, git_submodule *sm)
+ static void submodule_update_from_index_entry(
+ 	git_submodule *sm, const git_index_entry *ie)
+ {
+-	bool already_found = (sm->flags & GIT_SUBMODULE_STATUS_IN_INDEX) != 0;
++	bool already_found = (sm->flags & (uint32_t)GIT_SUBMODULE_STATUS_IN_INDEX) != 0;
+ 
+ 	if (!S_ISGITLINK(ie->mode)) {
+ 		if (!already_found)
+-			sm->flags |= GIT_SUBMODULE_STATUS__INDEX_NOT_SUBMODULE;
++			sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS__INDEX_NOT_SUBMODULE;
+ 	} else {
+ 		if (already_found)
+-			sm->flags |= GIT_SUBMODULE_STATUS__INDEX_MULTIPLE_ENTRIES;
++			sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS__INDEX_MULTIPLE_ENTRIES;
+ 		else
+ 			git_oid_cpy(&sm->index_oid, &ie->id);
+ 
+-		sm->flags |= GIT_SUBMODULE_STATUS_IN_INDEX |
+-			GIT_SUBMODULE_STATUS__INDEX_OID_VALID;
++		sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS_IN_INDEX |
++			(uint32_t)GIT_SUBMODULE_STATUS__INDEX_OID_VALID;
+ 	}
+ }
+ 
+@@ -1667,8 +1667,8 @@ static int submodule_update_index(git_submodule *sm)
+ 		return -1;
+ 
+ 	sm->flags = sm->flags &
+-		~(GIT_SUBMODULE_STATUS_IN_INDEX |
+-		  GIT_SUBMODULE_STATUS__INDEX_OID_VALID);
++		~((uint32_t)GIT_SUBMODULE_STATUS_IN_INDEX |
++		  (uint32_t)GIT_SUBMODULE_STATUS__INDEX_OID_VALID);
+ 
+ 	if (!(ie = git_index_get_bypath(index, sm->path, 0)))
+ 		return 0;
+@@ -1686,8 +1686,8 @@ static void submodule_update_from_head_data(
+ 	else {
+ 		git_oid_cpy(&sm->head_oid, id);
+ 
+-		sm->flags |= GIT_SUBMODULE_STATUS_IN_HEAD |
+-			GIT_SUBMODULE_STATUS__HEAD_OID_VALID;
++		sm->flags |= (uint32_t)GIT_SUBMODULE_STATUS_IN_HEAD |
++			(uint32_t)GIT_SUBMODULE_STATUS__HEAD_OID_VALID;
+ 	}
+ }
+ 
+@@ -1697,8 +1697,8 @@ static int submodule_update_head(git_submodule *submodule)
+ 	git_tree_entry *te = NULL;
+ 
+ 	submodule->flags = submodule->flags &
+-		~(GIT_SUBMODULE_STATUS_IN_HEAD |
+-		  GIT_SUBMODULE_STATUS__HEAD_OID_VALID);
++		~((uint32_t)GIT_SUBMODULE_STATUS_IN_HEAD |
++		  (uint32_t)GIT_SUBMODULE_STATUS__HEAD_OID_VALID);
+ 
+ 	/* if we can't look up file in current head, then done */
+ 	if (git_repository_head_tree(&head, submodule->repo) < 0 ||
+@@ -1737,9 +1737,9 @@ int git_submodule_reload(git_submodule *sm, int force)
+ 
+ 	/* refresh wd data */
+ 	sm->flags &=
+-		~(GIT_SUBMODULE_STATUS_IN_WD |
+-		  GIT_SUBMODULE_STATUS__WD_OID_VALID |
+-		  GIT_SUBMODULE_STATUS__WD_FLAGS);
++		~((uint32_t)GIT_SUBMODULE_STATUS_IN_WD |
++		  (uint32_t)GIT_SUBMODULE_STATUS__WD_OID_VALID |
++		  (uint32_t)GIT_SUBMODULE_STATUS__WD_FLAGS);
+ 
+ 	if ((error = submodule_load_from_wd_lite(sm)) < 0 ||
+ 	    (error = submodule_update_index(sm)) < 0 ||
+-- 
+2.51.0.windows.1
+
