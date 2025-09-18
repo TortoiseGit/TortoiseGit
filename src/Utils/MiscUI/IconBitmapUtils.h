@@ -24,10 +24,6 @@
 #include <GdiPlus.h>
 #pragma warning(pop)
 
-using FnGetBufferedPaintBits = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, RGBQUAD** ppbBuffer, int* pcxRow);
-using FnBeginBufferedPaint = HPAINTBUFFER(WINAPI*)(HDC hdcTarget, const RECT* prcTarget, BP_BUFFERFORMAT dwFormat, BP_PAINTPARAMS* pPaintParams, HDC* phdc);
-using FnEndBufferedPaint = HRESULT(WINAPI*)(HPAINTBUFFER hBufferedPaint, BOOL fUpdateTarget);
-
 /**
  * \ingroup utils
  * provides helper functions for converting icons to bitmaps
