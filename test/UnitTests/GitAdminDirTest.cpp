@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2019 - TortoiseGit
+// Copyright (C) 2015-2017, 2019, 2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,8 +19,34 @@
 //
 
 #include "stdafx.h"
+#include "RepositoryFixtures.h"
 #include "GitAdminDir.h"
 #include "StringUtils.h"
+
+class CGitAdminDirWithTestRepoFixture : public CBasicGitWithTestRepoFixture
+{
+};
+
+class CGitAdminDirWithReftableTestRepoFixture : public CBasicGitWithTestRepoFixture
+{
+public:
+	CGitAdminDirWithReftableTestRepoFixture() : CBasicGitWithTestRepoFixture(L"git-repo1.reftable") {};
+};
+
+class CGitAdminDirWithTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+{
+};
+
+class CGitAdminDirWithReftableTestRepoBareFixture : public CBasicGitWithTestRepoBareFixture
+{
+public:
+	CGitAdminDirWithReftableTestRepoBareFixture() : CBasicGitWithTestRepoBareFixture(L"git-repo1.reftable") {};
+};
+
+INSTANTIATE_TEST_SUITE_P(CGitAdminDir, CGitAdminDirWithTestRepoFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(CGitAdminDir, CGitAdminDirWithReftableTestRepoFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(CGitAdminDir, CGitAdminDirWithTestRepoBareFixture, testing::Values(LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(CGitAdminDir, CGitAdminDirWithReftableTestRepoBareFixture, testing::Values(LIBGIT2));
 
 TEST(CGitAdminDir, IsBareRepo)
 {
@@ -408,4 +434,24 @@ TEST(CGitAdminDir, GetSuperProjectRoot)
 	gitmodules = tmpDir.GetTempDir() + L"\\subdir\\.gitmodules";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitmodules, L"something"));
 	EXPECT_STREQ(tmpDir.GetTempDir() + L"\\subdir", GitAdminDir::GetSuperProjectRoot(tmpDir.GetTempDir() + L"\\subdir"));
+}
+
+TEST_P(CGitAdminDirWithTestRepoFixture, HasAdminDir)
+{
+	EXPECT_TRUE(GitAdminDir::HasAdminDir(m_Dir.GetTempDir()));
+}
+
+TEST_P(CGitAdminDirWithReftableTestRepoFixture, HasAdminDir)
+{
+	EXPECT_FALSE(GitAdminDir::HasAdminDir(m_Dir.GetTempDir()));
+}
+
+TEST_P(CGitAdminDirWithTestRepoBareFixture, IsBareRepo)
+{
+	EXPECT_TRUE(GitAdminDir::IsBareRepo(m_Dir.GetTempDir()));
+}
+
+TEST_P(CGitAdminDirWithReftableTestRepoBareFixture, IsBareRepo)
+{
+	EXPECT_FALSE(GitAdminDir::IsBareRepo(m_Dir.GetTempDir()));
 }

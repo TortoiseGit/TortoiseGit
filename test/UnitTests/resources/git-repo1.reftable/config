@@ -1,0 +1,15 @@
+[core]
+	bare = false
+	repositoryformatversion = 1
+	filemode = false
+	symlinks = false
+	ignorecase = true
+	logallrefupdates = true
+[remote "origin"]
+	fetch = +refs/heads/*:refs/remotes/origin/*
+	url = https://example.com/git/testing
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+[extensions]
+	refstorage = reftable

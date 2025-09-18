@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019, 2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -116,7 +116,7 @@ bool GitAdminDir::HasAdminDir(const CString& path, bool bDir, CString* ProjectTo
 			if (!PathFileExists(adminDir + L"\\HEAD") || !PathFileExists(adminDir + L"\\config"))
 				return false;
 
-			if (!PathFileExists(adminDir + L"\\objects\\") || !PathFileExists(adminDir + L"\\refs\\"))
+			if (!PathFileExists(adminDir + L"\\objects\\") || !PathFileExists(adminDir + L"\\refs\\") || !PathIsDirectory(adminDir + L"\\refs\\heads")) // ".git/refs/heads" is a file when reftable-format is used
 				return false;
 #endif
 
@@ -275,7 +275,7 @@ bool GitAdminDir::IsBareRepo(const CString& path)
 	if (!PathFileExists(path + L"\\HEAD") || !PathFileExists(path + L"\\config"))
 		return false;
 
-	if (!PathFileExists(path + L"\\objects\\") || !PathFileExists(path + L"\\refs\\"))
+	if (!PathFileExists(path + L"\\objects\\") || !PathFileExists(path + L"\\refs\\") || !PathIsDirectory(path + L"\\refs\\heads")) // ".git/refs/heads" is a file when reftable-format is used
 		return false;
 
 	return true;
