@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2016, 2019-2020, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ public:
 		}
 	}
 
-	void OnHdnBegintrack(NMHDR* pNMHDR, LRESULT* pResult)
+	void OnHdnBegintrack(NMHDR* pNMHDR, LRESULT* pResult) const
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
@@ -127,7 +127,7 @@ public:
 		*pResult = 1;
 	}
 
-	int OnHdnItemchanging(NMHDR* pNMHDR, LRESULT* pResult)
+	int OnHdnItemchanging(NMHDR* pNMHDR, LRESULT* pResult) const
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
