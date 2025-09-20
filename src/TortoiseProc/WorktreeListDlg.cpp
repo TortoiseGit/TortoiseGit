@@ -83,11 +83,8 @@ BOOL CWorktreeListDlg::OnInitDialog()
 
 	// set up the list control
 	// set the extended style of the list control
-	CRegDWORD regFullRowSelect(L"Software\\TortoiseGit\\FullRowSelect", TRUE);
-	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES;
-	if (DWORD(regFullRowSelect))
-		exStyle |= LVS_EX_FULLROWSELECT;
-	m_WorktreeList.SetExtendedStyle(exStyle);
+	m_WorktreeList.Init();
+	m_WorktreeList.SetExtendedStyle(m_WorktreeList.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 	m_WorktreeList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 

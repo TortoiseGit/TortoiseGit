@@ -208,17 +208,13 @@ BOOL CRepositoryBrowser::OnInitDialog()
 
 	// set up the list control
 	// set the extended style of the list control
-	// the style LVS_EX_FULLROWSELECT interferes with the background watermark image but it's more important to be able to select in the whole row.
-	CRegDWORD regFullRowSelect(L"Software\\TortoiseGit\\FullRowSelect", TRUE);
-	DWORD exStyle = LVS_EX_HEADERDRAGDROP | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES;
-	if (DWORD(regFullRowSelect))
-		exStyle |= LVS_EX_FULLROWSELECT;
-	m_RepoList.SetExtendedStyle(exStyle);
+	m_RepoList.Init();
+	m_RepoList.SetExtendedStyle(m_RepoList.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES);
 	m_RepoList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 	CAppUtils::SetListCtrlBackgroundImage(m_RepoList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 
 	m_RepoTree.SetImageList(&SYS_IMAGE_LIST(), TVSIL_NORMAL);
-	exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
+	DWORD exStyle = TVS_EX_FADEINOUTEXPANDOS | TVS_EX_AUTOHSCROLL | TVS_EX_DOUBLEBUFFER;
 	m_RepoTree.SetExtendedStyle(exStyle, exStyle);
 
 	m_nExternalOvl = SYS_IMAGE_LIST().AddIcon(CCommonAppUtils::LoadIconEx(IDI_EXTERNALOVL, 0, 0));
