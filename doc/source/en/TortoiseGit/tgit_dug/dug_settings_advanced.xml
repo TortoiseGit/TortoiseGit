@@ -269,6 +269,24 @@
 			</listitem>
 		</varlistentry>
 		<varlistentry>
+			<term condition="pot">LogFontForFileListCtrl</term>
+			<listitem>
+				<para>
+					This options controls whether the <guilabel>font for log messages</guilabel> configured in <xref linkend="tgit-dug-settings-dialogs"/> is used in file list controls instead of the system default font.
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
+			<term condition="pot">LogFontForLogCtrl</term>
+			<listitem>
+				<para>
+					This options controls whether the <guilabel>font for log messages</guilabel> configured in <xref linkend="tgit-dug-settings-dialogs"/> is used in commit log list controls instead of the system default font.
+					The default is <literal>false</literal>.
+				</para>
+			</listitem>
+		</varlistentry>
+		<varlistentry>
 			<term condition="pot">LogIncludeWorkingTreeChanges</term>
 			<listitem>
 				<para>
