@@ -38,6 +38,9 @@
 			refers to the <option>/path:"some\path"</option> parameter.
 		</para>
 		<para>
+			There are two alternatives for passing command line parameters to TortoiseGit in addition to the <option>/option:argument</option> syntax. First, you can use the <option>/option argument</option> syntax, which may be useful in PowerShell, for example. Second, you can use the *nix style <option>-option argument</option> syntax, which is useful in MSYS environments.
+		</para>
+		<para>
 			Since some of the commands can take a list of target paths (e.g. committing
 			several specific files) the <option>/path</option> parameter can take
 			several paths, separated by a <literal>*</literal> character.
