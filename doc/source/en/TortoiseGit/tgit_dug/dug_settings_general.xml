@@ -652,7 +652,7 @@
 						is disabled. This feature is very useful for reminding you to
 						supply a proper descriptive message for every commit.
 						If this property is not set,
-						or the value is zero, empty log messages are allowed.
+						or the value is zero, empty log messages are still not allowed.
 					</para>
 				</listitem>
 			</varlistentry>
