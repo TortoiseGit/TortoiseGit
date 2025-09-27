@@ -145,6 +145,7 @@
     <ClCompile Include="Commands\CommitIsOnRefsCommand.cpp" />
     <ClCompile Include="Commands\DaemonCommand.cpp" />
     <ClCompile Include="Commands\LFSCommands.cpp" />
+    <ClCompile Include="Commands\RegisterWin11ContextMenu.cpp" />
     <ClCompile Include="CommitIsOnRefsDlg.cpp" />
     <ClCompile Include="CreateChangelistDlg.cpp" />
     <ClCompile Include="DiffLinesForStaging.cpp" />
@@ -457,6 +458,7 @@
     <ClInclude Include="Commands\DaemonCommand.h" />
     <ClInclude Include="Commands\HelpCommand.h" />
     <ClInclude Include="Commands\LFSCommands.h" />
+    <ClInclude Include="Commands\RegisterWin11ContextMenu.h" />
     <ClInclude Include="Commands\RTFMCommand.h" />
     <ClInclude Include="CommitIsOnRefsDlg.h" />
     <ClInclude Include="ConfigureGitExe.h" />

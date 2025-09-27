@@ -26,14 +26,7 @@
 #include "MenuInfo.h"
 #include "ShellCache.h"
 #include "PathUtils.h"
-#include <winrt/Windows.Management.Deployment.h>
-#include <winrt/Windows.Foundation.Collections.h>
-#include <winrt/Windows.ApplicationModel.h>
-
-#pragma comment(lib, "windowsapp.lib")
-
-using namespace winrt::Windows::Foundation;
-using namespace winrt::Windows::Management::Deployment;
+#include "Commands/RegisterWin11ContextMenu.h"
 
 extern MenuInfo menuInfo[];
 
@@ -532,68 +525,11 @@ void CSetWin11ContextMenu::OnChange()
 
 void CSetWin11ContextMenu::OnBnClickedRegister()
 {
-	CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-	SCOPE_EXIT
+	if (auto errorString = RegisterWin11ContextMenuCommand::ReRegisterPackage(); !errorString.empty())
 	{
-		CoUninitialize();
-	};
-	PackageManager manager;
-
-	// first unregister if already registered
-	Collections::IIterable<winrt::Windows::ApplicationModel::Package> packages;
-	try
-	{
-		packages = manager.FindPackagesForUser(L"");
-	}
-	catch (winrt::hresult_error const& ex)
-	{
-		std::wstring error = L"FindPackagesForUser failed (Errorcode: ";
-		error += std::to_wstring(ex.code().value);
-		error += L"):\n";
-		error += ex.message();
-		MessageBox(error.c_str(), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(errorString.c_str(), L"TortoiseGit", MB_ICONERROR);
 		return;
 	}
 
-	for (const auto& package : packages)
-	{
-		if (package.Id().Name() != L"0BF99681-825C-4B2A-A14F-2AC01DB9B70E")
-			continue;
-
-		winrt::hstring fullName = package.Id().FullName();
-		auto deploymentOperation = manager.RemovePackageAsync(fullName, RemovalOptions::None);
-		auto deployResult = deploymentOperation.get();
-		if (SUCCEEDED(deployResult.ExtendedErrorCode()))
-			break;
-
-		// Undeployment failed
-		std::wstring error = L"RemovePackageAsync failed (Errorcode: ";
-		error += std::to_wstring(deployResult.ExtendedErrorCode());
-		error += L"):\n";
-		error += deployResult.ErrorText();
-		MessageBox(error.c_str(), L"TortoiseGit", MB_ICONERROR);
-		return;
-	}
-
-	// now register the package
-	auto appDir = CPathUtils::GetAppParentDirectory();
-	Uri externalUri(static_cast<LPCWSTR>(appDir));
-	auto packagePath = appDir + L"bin\\package.msix";
-	Uri packageUri(static_cast<LPCWSTR>(packagePath));
-	AddPackageOptions options;
-	options.ExternalLocationUri(externalUri);
-	auto deploymentOperation = manager.AddPackageByUriAsync(packageUri, options);
-
-	auto deployResult = deploymentOperation.get();
-
-	if (!SUCCEEDED(deployResult.ExtendedErrorCode()))
-	{
-		std::wstring error = L"AddPackageByUriAsync failed (Errorcode: ";
-		error += std::to_wstring(deployResult.ExtendedErrorCode());
-		error += L"):\n";
-		error += deployResult.ErrorText();
-		MessageBox(error.c_str(), nullptr, MB_ICONERROR);
-		return;
-	}
 	MessageBox(CString(MAKEINTRESOURCE(IDS_PACKAGE_REGISTERED)), L"TortoiseGit", MB_OK);
 }

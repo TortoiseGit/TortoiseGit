@@ -145,6 +145,10 @@
 					<RegistryValue Root="HKCR" Key="*\shellex\ContextMenuHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="*\shellex\PropertySheetHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
 					<RegistryValue Root="HKCR" Key="Directory\shellex\CopyHookHandlers\TortoiseGit" Value="{$(var.GuidUncontrolled)}" Type="string" />
+					<!-- Register the win11 context menu for every user that logs on -->
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Active Setup\Installed Components\[UpgradeCode]" Name="Version" Value="$(var.MajorVersion).$(var.MinorVersion).$(var.BuildVersion)" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Active Setup\Installed Components\[UpgradeCode]" Name="Stubpath" Value="[INSTALLDIR]bin\TortoiseGitProc.exe /registerwin11contextmenu" Type="string" />
+					<RegistryValue Root="HKLM" Key="Software\Microsoft\Active Setup\Installed Components\[UpgradeCode]" Value="[ProductName]" Type="string" />
 					<?endif ?>
 				</Component>
 				<?if $(var.Platform) = "x64" ?>

@@ -180,6 +180,9 @@
     <Filter Include="Commands\LFS">
       <UniqueIdentifier>{fce39608-03c2-4646-9710-d244308dd3cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\RegisterMenu">
+      <UniqueIdentifier>{35038899-8008-4f29-8dab-7c18f5df7ca8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -1039,6 +1042,9 @@
     </ClCompile>
     <ClCompile Include="WorktreeListDlg.cpp">
       <Filter>Commands\worktree</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\RegisterWin11ContextMenu.cpp">
+      <Filter>Commands\RegisterMenu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1974,6 +1980,9 @@
     </ClInclude>
     <ClInclude Include="..\Resources\LoglistCommonResource.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\RegisterWin11ContextMenu.h">
+      <Filter>Commands\RegisterMenu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

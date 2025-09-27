@@ -76,6 +76,7 @@
 #include "CommitIsOnRefsCommand.h"
 #include "RTFMCommand.h"
 #include "LFSCommands.h"
+#include "RegisterWin11ContextMenu.h"
 #if 0
 #include "CrashCommand.h"
 #include "RebuildIconCacheCommand.h"
@@ -158,6 +159,7 @@ enum TGitCommand
 	cmdWorktreeCreate,
 	cmdWorktreeList,
 	cmdDropWorktreeCreate,
+	cmdRegisterWin11ContextMenu,
 };
 
 static const struct CommandInfo
@@ -237,6 +239,7 @@ static const struct CommandInfo
 	{	cmdWorktreeCreate,	L"newworktree"		},
 	{	cmdWorktreeList,	L"worktreelist"		},
 	{	cmdDropWorktreeCreate,	L"dropnewworktree"	},
+	{	cmdRegisterWin11ContextMenu,	L"registerwin11contextmenu"	},
 };
 
 
@@ -408,6 +411,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 			CMessageBox::Show(GetExplorerHWND(), L"This is the fingerprint of the TortoiseGit Release Signing Key.\nIt can be used to establish a trust path from this release to another one.\n\nTortoiseGit Release Signing Key, 4096-bit RSA:\n74A2 1AE3 01B3 CA5B D807  2F5E F7F1 7B3F 9DD9 539E", L"TortoiseGit", MB_OK);
 			return nullptr;
 		}
+	case cmdRegisterWin11ContextMenu:
+		return new RegisterWin11ContextMenuCommand();
 	default:
 		CMessageBox::Show(GetExplorerHWND(), L"Command not implemented", L"TortoiseGit", MB_ICONERROR);
 		return new AboutCommand;
