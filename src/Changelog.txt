@@ -17,6 +17,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Update libgit2 to 1.9.1
  * Update json library to 3.12
  * Update pcre2 to 10.46
+ * Update editorconfig to 0.12.10pre
  * Fixed issue #4200: Can't see, copy merged the file path or the full file name or "explore to" in TortoiseGitMerge
    Added "Explore to" to the context menu of the low panel
  * Fixed issue #4210: Add hint of active filter in file list
