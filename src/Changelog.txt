@@ -21,6 +21,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
    Added "Explore to" to the context menu of the low panel
  * Fixed issue #4210: Add hint of active filter in file list
  * Fixed issue #4185: TortoiseGit->Tag should open popup to Push Tags
+ * Automatically register Windows 11 context menu for all users
 
 == Bug Fixes ==
  * Fixed issue #4191: Fix \r handling in log output window to avoid accidentally overwriting remote messages
@@ -28,6 +29,8 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Fixed an off-by-one error in the spell checker
  * Fixed issue #4216: Crash - Log viewer - Click "refresh" repeated rapidly
  * Fixed issue #4225: Worktree list - remember column widths
+ * Fixed GDI handle leaks in TortoiseGitShell
+ * Fixed possible crashes in LogDlg caused by calls to TerminateThread
 
 = Release 2.17.0.2 =
 Released: 2024-11-01
