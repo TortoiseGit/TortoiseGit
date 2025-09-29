@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2013-2017, 2019, 2021, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -146,6 +146,7 @@ void CGravatar::GravatarThread()
 	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
 	if (!InternetCrackUrl(gravatarBaseUrl, gravatarBaseUrl.GetLength(), 0, &urlComponents))
 	{
+		CAutoLocker lock(m_gravatarLock);
 		m_filename.Empty();
 		return;
 	}
@@ -158,6 +159,7 @@ void CGravatar::GravatarThread()
 	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
 	if (!hConnectHandle)
 	{
+		CAutoLocker lock(m_gravatarLock);
 		m_filename.Empty();
 		return;
 	}
