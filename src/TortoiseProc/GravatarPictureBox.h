@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2019, 2023 - TortoiseGit
+// Copyright (C) 2013, 2016-2019, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -41,6 +41,7 @@ private:
 	HANDLE				m_gravatarEvent = INVALID_HANDLE_VALUE;
 	CWinThread*			m_gravatarThread = nullptr;
 	bool*				m_gravatarExit = nullptr;
+	volatile HINTERNET	m_hConnectHandle = nullptr;
 	CComAutoCriticalSection m_gravatarLock;
 
 	DECLARE_MESSAGE_MAP();

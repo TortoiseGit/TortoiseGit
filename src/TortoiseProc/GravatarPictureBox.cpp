@@ -156,14 +156,20 @@ void CGravatar::GravatarThread()
 	HINTERNET hOpenHandle = InternetOpen(L"TortoiseGit", INTERNET_OPEN_TYPE_PRECONFIG, nullptr, nullptr, 0);
 	SCOPE_EXIT { InternetCloseHandle(hOpenHandle); };
 	bool isHttps = urlComponents.nScheme == INTERNET_SCHEME_HTTPS;
-	HINTERNET hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
-	if (!hConnectHandle)
+	m_hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
+	if (!m_hConnectHandle)
 	{
 		CAutoLocker lock(m_gravatarLock);
 		m_filename.Empty();
 		return;
 	}
-	SCOPE_EXIT { InternetCloseHandle(hConnectHandle); };
+	SCOPE_EXIT
+	{
+		CAutoLocker lock(m_gravatarLock);
+		if (m_hConnectHandle)
+			InternetCloseHandle(m_hConnectHandle);
+		m_hConnectHandle = nullptr;
+	};
 
 	while (!*gravatarExit)
 	{
@@ -207,7 +213,7 @@ void CGravatar::GravatarThread()
 			}
 			else
 			{
-				BOOL ret = DownloadToFile(gravatarExit, hConnectHandle, isHttps, gravatarUrl, tempFile);
+				const int ret = DownloadToFile(gravatarExit, [&]() { CAutoLocker lock(m_gravatarLock); return m_hConnectHandle; }(), isHttps, gravatarUrl, tempFile);
 				if (ret)
 				{
 					DeleteFile(tempFile);
@@ -246,6 +252,9 @@ void CGravatar::GravatarThread()
 
 int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
 {
+	if (!hConnectHandle)
+		return ERROR_CANCELLED;
+
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
 		return -1;
@@ -326,8 +335,15 @@ void CGravatar::SafeTerminateGravatarThread()
 	if (m_gravatarThread)
 	{
 		::SetEvent(m_gravatarEvent);
-		if (::WaitForSingleObject(m_gravatarThread->m_hThread, 1000) == WAIT_TIMEOUT)
-			::TerminateThread(m_gravatarThread, 0);
+		if (::WaitForSingleObject(m_gravatarThread->m_hThread, 1500) == WAIT_TIMEOUT && m_hConnectHandle)
+		{
+			CAutoLocker lock(m_gravatarLock);
+			if (m_hConnectHandle)
+				::InternetCloseHandle(m_hConnectHandle);
+			m_hConnectHandle = nullptr;
+		}
+		while (::WaitForSingleObject(m_gravatarThread->m_hThread, 1000) == WAIT_TIMEOUT)
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Waiting for Gravatar download thread to exit...\n");
 		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
