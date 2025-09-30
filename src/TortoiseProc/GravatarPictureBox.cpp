@@ -293,7 +293,11 @@ resend:
 			return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 		if (downloaded == 0)
-			break;
+		{
+			if (downloadedSum == 0)
+				return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
+			return 0;
+		}
 
 		try
 		{
@@ -310,13 +314,9 @@ resend:
 
 		if (DWordAdd(downloadedSum, downloaded, &downloadedSum) != S_OK)
 			downloadedSum = DWORD_MAX;
-
 	}
-	destinationFile.Close();
-	if (downloadedSum == 0)
-		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
-	return 0;
+	return ERROR_CANCELLED;
 }
 
 void CGravatar::SafeTerminateGravatarThread()
