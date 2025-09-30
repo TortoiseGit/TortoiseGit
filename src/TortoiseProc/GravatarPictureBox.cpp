@@ -250,7 +250,7 @@ void CGravatar::GravatarThread()
 	}
 }
 
-int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest)
+int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const
 {
 	if (!hConnectHandle)
 		return ERROR_CANCELLED;
