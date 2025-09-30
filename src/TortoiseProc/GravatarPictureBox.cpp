@@ -146,6 +146,7 @@ void CGravatar::GravatarThread()
 	urlComponents.dwUrlPathLength = INTERNET_MAX_PATH_LENGTH;
 	if (!InternetCrackUrl(gravatarBaseUrl, gravatarBaseUrl.GetLength(), 0, &urlComponents))
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Gravatar URL seems to be invalid\n");
 		CAutoLocker lock(m_gravatarLock);
 		m_filename.Empty();
 		return;
@@ -159,6 +160,7 @@ void CGravatar::GravatarThread()
 	m_hConnectHandle = InternetConnect(hOpenHandle, hostname, urlComponents.nPort, nullptr, nullptr, isHttps ? INTERNET_SCHEME_HTTP : urlComponents.nScheme, 0, 0);
 	if (!m_hConnectHandle)
 	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": InternetConnect failed\n");
 		CAutoLocker lock(m_gravatarLock);
 		m_filename.Empty();
 		return;
@@ -216,6 +218,7 @@ void CGravatar::GravatarThread()
 				const int ret = DownloadToFile(gravatarExit, [&]() { CAutoLocker lock(m_gravatarLock); return m_hConnectHandle; }(), isHttps, gravatarUrl, tempFile);
 				if (ret)
 				{
+					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Gravatar download for \"%s\" failed: %d\n", static_cast<LPCWSTR>(gravatarUrl), ret);
 					DeleteFile(tempFile);
 					if (*gravatarExit)
 						break;
@@ -257,12 +260,12 @@ int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle
 
 	HINTERNET hResourceHandle = HttpOpenRequest(hConnectHandle, nullptr, urlpath, nullptr, nullptr, nullptr, INTERNET_FLAG_KEEP_CONNECTION | (isHttps ? INTERNET_FLAG_SECURE : 0), 0);
 	if (!hResourceHandle)
-		return -1;
+		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
 
 	SCOPE_EXIT { InternetCloseHandle(hResourceHandle); };
 resend:
 	if (*gravatarExit)
-		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
+		return ERROR_CANCELLED;
 
 	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
 
@@ -270,8 +273,10 @@ resend:
 
 	if (dwError == ERROR_INTERNET_FORCE_RETRY)
 		goto resend;
-	else if (!httpsendrequest || *gravatarExit)
+	else if (!httpsendrequest)
 		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
+	else if (*gravatarExit)
+		return ERROR_CANCELLED;
 
 	DWORD statusCode = 0;
 	DWORD length = sizeof(statusCode);
