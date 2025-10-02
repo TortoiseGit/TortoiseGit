@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,6 +39,14 @@ private:
 		return static_cast<CChooseVersion*>(pVoid)->LoadingThread();
 	};
 	volatile LONG m_bLoadingThreadRunning = FALSE;
+	std::atomic<bool> m_bExitLoadingThread;
+	struct GUI_UPDATE_DATA
+	{
+		STRING_VECTOR branches;
+		int current_branch_idx = -1;
+		STRING_VECTOR tags;
+	};
+	std::atomic<std::shared_ptr<GUI_UPDATE_DATA>> m_refData;
 
 protected:
 	CHistoryCombo	m_ChooseVersioinBranch;
@@ -49,13 +57,6 @@ protected:
 	CString			m_pendingRefName;
 	bool			m_bNotFullName = true;
 	bool			m_bSkipCurrentBranch = false;
-
-	struct GUI_UPDATE_DATA
-	{
-		STRING_VECTOR branches;
-		int current_branch_idx = -1;
-		STRING_VECTOR tags;
-	};
 
 	//Notification when version changed. Can be implemented in derived classes.
 	virtual void OnVersionChanged(){}
@@ -206,19 +207,27 @@ protected:
 
 	UINT LoadingThread()
 	{
-		GUI_UPDATE_DATA data;
+		SCOPE_EXIT{ InterlockedExchange(&m_bLoadingThreadRunning, FALSE); };
+
+		auto refData = std::make_shared<GUI_UPDATE_DATA>();
+		auto& data = *refData;
 		g_Git.GetBranchList(data.branches, &data.current_branch_idx, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL, m_bSkipCurrentBranch);
+
+		if (m_bExitLoadingThread)
+			return 0;
 
 		g_Git.GetTagList(data.tags);
 
-		m_pWin->SendMessage(WM_GUIUPDATES, reinterpret_cast<WPARAM>(&data));
+		m_refData = refData;
 
-		InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
+		m_pWin->PostMessage(WM_GUIUPDATES);
+
 		return 0;
 	}
-	void UpdateGUI(GUI_UPDATE_DATA* data = nullptr)
+
+	void UpdateGUI()
 	{
-		if (data)
+		if (auto data = m_refData.exchange(nullptr); data)
 		{
 			m_ChooseVersioinBranch.SetList(data->branches);
 			m_ChooseVersioinBranch.SetCurSel(data->current_branch_idx);
@@ -267,6 +276,7 @@ protected:
 		m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
 
 		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
+		m_bExitLoadingThread = false;
 		if ((m_pLoadingThread = AfxBeginThread(LoadingThreadEntry, this, 0, CREATE_SUSPENDED)) == nullptr)
 		{
 			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
@@ -281,11 +291,12 @@ protected:
 	{
 		if(m_bLoadingThreadRunning && m_pLoadingThread)
 		{
-			const DWORD ret = ::WaitForSingleObject(m_pLoadingThread->m_hThread, 20000);
-			if(ret == WAIT_TIMEOUT)
-				::TerminateThread(m_pLoadingThread,0);
+			m_bExitLoadingThread = true;
+			while (::WaitForSingleObject(m_pLoadingThread->m_hThread, 1000) == WAIT_TIMEOUT)
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Waiting for ref loading thread to exit...\n");
 		}
 		delete m_pLoadingThread;
+		m_pLoadingThread = nullptr;
 	}
 public:
 	CString m_VersionName;
@@ -294,6 +305,11 @@ public:
 	CChooseVersion(CWnd *win)
 		: m_pWin(win)
 	{
+	};
+
+	~CChooseVersion()
+	{
+		WaitForFinishLoading();
 	};
 };
 
@@ -326,7 +342,7 @@ public:
 	}
 
 #define CHOOSE_EVENT_RADIO() \
-	LRESULT OnUpdateGUIHost(WPARAM data, LPARAM) { UpdateGUI(reinterpret_cast<GUI_UPDATE_DATA*>(data)); return 0; } \
+	LRESULT OnUpdateGUIHost(WPARAM, LPARAM) { UpdateGUI(); return 0; } \
 	afx_msg void OnBnClickedChooseRadioHost(){OnBnClickedChooseRadio();}\
 	afx_msg void OnBnClickedShow(){OnBnClickedChooseVersion();}\
 	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}

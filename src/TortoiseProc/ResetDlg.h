@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2014, 2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2014, 2019, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,7 +40,7 @@ protected:
 	afx_msg void OnBnClickedChooseRadioHost();
 	afx_msg void OnBnClickedShow();
 	afx_msg void OnBnClickedButtonBrowseRefHost(){OnBnClickedButtonBrowseRef();}
-	LRESULT OnUpdateGUIHost(WPARAM data, LPARAM) { UpdateGUI(reinterpret_cast<GUI_UPDATE_DATA*>(data)); return 0; }
+	LRESULT OnUpdateGUIHost(WPARAM, LPARAM) { UpdateGUI(); return 0; }
 	void OnVersionChanged() override;
 	void OnOK() override;
 	afx_msg void OnBnClickedShowModifiedFiles();
