@@ -56,19 +56,6 @@ protected:
 
 	UINT PatchThread();
 
-	void SafeTerminateThread()
-	{
-		if (m_LoadingThread)
-		{
-			InterlockedExchange(&m_bExitThread,TRUE);
-			DWORD ret =::WaitForSingleObject(m_LoadingThread->m_hThread,20000);
-			if(ret == WAIT_TIMEOUT)
-				::TerminateThread(m_LoadingThread,0);
-			m_LoadingThread = nullptr;
-			InterlockedExchange(&m_bThreadRunning, FALSE);
-		}
-	};
-
 	void AddLogString(const CString& str);
 
 	void DoDataExchange(CDataExchange* pDX) override;    // DDX/DDV support
