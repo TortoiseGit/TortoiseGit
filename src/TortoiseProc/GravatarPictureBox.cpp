@@ -31,15 +31,12 @@ using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
 static UINT WM_GRAVATAR_REFRESH = RegisterWindowMessage(L"TORTOISEGIT_GRAVATAR_REFRESH");
 
-static CString CalcMD5(CString text)
+static CString CalcHash(HCRYPTPROV hProv, const CString& text)
 {
-	HCRYPTPROV hProv = 0;
-	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
-		return L"";
-	SCOPE_EXIT { CryptReleaseContext(hProv, 0); };
+	static bool useMD5 = CRegDWORD(L"Software\\TortoiseGit\\GravatarUseMD5", FALSE) != FALSE;
 
 	HCRYPTHASH hHash = 0;
-	if (!CryptCreateHash(hProv, CALG_MD5, 0, 0, &hHash))
+	if (!CryptCreateHash(hProv, useMD5 ? CALG_MD5 : CALG_SHA_256, 0, 0, &hHash))
 		return L"";
 	SCOPE_EXIT { CryptDestroyHash(hHash); };
 
@@ -47,19 +44,18 @@ static CString CalcMD5(CString text)
 	if (!CryptHashData(hHash, reinterpret_cast<const BYTE*>(static_cast<LPCSTR>(textA)), textA.GetLength(), 0))
 		return L"";
 
-	CString hash;
-	BYTE rgbHash[16];
-	DWORD cbHash = _countof(rgbHash);
-	if (!CryptGetHashParam(hHash, HP_HASHVAL, rgbHash, &cbHash, 0))
+	DWORD hashLen;
+	DWORD hashLenLen = sizeof(DWORD);
+	if (!CryptGetHashParam(hHash, HP_HASHSIZE, reinterpret_cast<BYTE*>(&hashLen), &hashLenLen, 0))
 		return L"";
 
-	for (DWORD i = 0; i < cbHash; i++)
-	{
-		BYTE hi = rgbHash[i] >> 4;
-		BYTE lo = rgbHash[i]  & 0xf;
-		hash.AppendChar(hi + (hi > 9 ? 87 : 48));
-		hash.AppendChar(lo + (lo > 9 ? 87 : 48));
-	}
+	CString hash;
+	auto pHash = std::make_unique<BYTE[]>(hashLen);
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0))
+		return L"";
+
+	for (const auto* it = pHash.get(); it < pHash.get() + hashLen; ++it)
+		hash.AppendFormat(L"%02x", *it);
 
 	return hash;
 }
@@ -139,6 +135,14 @@ void CGravatar::GravatarThread()
 	bool *gravatarExit = m_gravatarExit;
 	CString gravatarBaseUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"https://gravatar.com/avatar/%HASH%?d=identicon");
 
+	HCRYPTPROV hProv = 0;
+	if (!CryptAcquireContext(&hProv, nullptr, nullptr, PROV_RSA_AES, CRYPT_VERIFYCONTEXT))
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Failed to acquire crypto context\n");
+		return;
+	}
+	SCOPE_EXIT { CryptReleaseContext(hProv, 0); };
+
 	CString hostname;
 	CString baseUrlPath;
 	URL_COMPONENTS urlComponents = {0};
@@ -196,15 +200,15 @@ void CGravatar::GravatarThread()
 			if (diff)
 				continue;
 
-			CString md5 = CalcMD5(email);
-			if (md5.IsEmpty())
+			CString hash = CalcHash(hProv, email);
+			if (hash.IsEmpty())
 				continue;
 
 			CString gravatarUrl = baseUrlPath;
-			gravatarUrl.Replace(L"%HASH%", md5);
+			gravatarUrl.Replace(L"%HASH%", hash);
 			CString tempFile;
 			GetTempPath(tempFile);
-			tempFile += md5;
+			tempFile += hash;
 			if (PathFileExists(tempFile))
 			{
 				CAutoLocker lock(m_gravatarLock);

@@ -23,6 +23,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Fixed issue #4210: Add hint of active filter in file list
  * Fixed issue #4185: TortoiseGit->Tag should open popup to Push Tags
  * Automatically register Windows 11 context menu for all users
+ * Gravatar now uses SHA256 for hashing email addresses
 
 == Bug Fixes ==
  * Fixed issue #4191: Fix \r handling in log output window to avoid accidentally overwriting remote messages
