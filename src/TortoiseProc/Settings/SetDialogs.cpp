@@ -57,7 +57,7 @@ CSetDialogs::CSetDialogs()
 	m_regSymbolizeRefNames = CRegDWORD(L"Software\\TortoiseGit\\SymbolizeRefNames", FALSE);
 	m_regEnableLogCache = CRegDWORD(L"Software\\TortoiseGit\\EnableLogCache", TRUE);
 	m_regEnableGravatar = CRegDWORD(L"Software\\TortoiseGit\\EnableGravatar", FALSE);
-	m_regGravatarUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"http://www.gravatar.com/avatar/%HASH%?d=identicon");
+	m_regGravatarUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"https://gravatar.com/avatar/%HASH%?d=identicon");
 	m_regDrawBranchesTagsOnRightSide = CRegDWORD(L"Software\\TortoiseGit\\DrawTagsBranchesOnRightSide", FALSE);
 	m_regShowDescribe = CRegDWORD(L"Software\\TortoiseGit\\ShowDescribe", FALSE);
 	m_regShowBranchRevNo = CRegDWORD(L"Software\\TortoiseGit\\ShowBranchRevisionNumber", FALSE);
@@ -254,13 +254,13 @@ BOOL CSetDialogs::OnInitDialog()
 	m_cFontNames.SelectFont(m_sFontName);
 	m_cFontNames.SendMessage(CB_SETITEMHEIGHT, WPARAM(-1), m_cFontSizes.GetItemHeight(-1));
 
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=mm");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=identicon");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=monsterid");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=wavatar");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=retro");
-	m_cGravatarUrl.AddString(L"http://www.gravatar.com/avatar/%HASH%?d=blank");;
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=mm");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=identicon");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=monsterid");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=wavatar");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=retro");
+	m_cGravatarUrl.AddString(L"https://gravatar.com/avatar/%HASH%?d=blank");;
 
 	m_cDescribeStrategy.AddString(CString(MAKEINTRESOURCE(IDS_ANNOTATEDTAGS)));
 	m_cDescribeStrategy.AddString(CString(MAKEINTRESOURCE(IDS_ALLTAGS)));

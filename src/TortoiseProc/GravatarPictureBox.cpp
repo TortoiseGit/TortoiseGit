@@ -134,7 +134,7 @@ void CGravatar::LoadGravatar(CString email)
 void CGravatar::GravatarThread()
 {
 	bool *gravatarExit = m_gravatarExit;
-	CString gravatarBaseUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"http://www.gravatar.com/avatar/%HASH%?d=identicon");
+	CString gravatarBaseUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"https://gravatar.com/avatar/%HASH%?d=identicon");
 
 	CString hostname;
 	CString baseUrlPath;

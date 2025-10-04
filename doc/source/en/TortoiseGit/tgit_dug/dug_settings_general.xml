@@ -340,11 +340,11 @@
 						Shows the Gravatar image of the author of the commit in Log Dialog.
 						The URL is customizable so you may specify more options supported by the server,
 						or use your own avatar server.
-						The default URL is <literal>https://www.gravatar.com/avatar/%HASH%?d=identicon</literal>
+						The default URL is <literal>https://gravatar.com/avatar/%HASH%?d=identicon</literal>
 						Currently, the supported parameter is <literal>%HASH%</literal>, which is the MD5 email hash.
 						To specify a default image, add <literal>d=</literal> parameter,
-						e.g. <literal>https://www.gravatar.com/avatar/%HASH%?d=identicon</literal>
-						See <ulink url="https://en.gravatar.com/site/implement/images/">
+						e.g. <literal>https://gravatar.com/avatar/%HASH%?d=identicon</literal>
+						See <ulink url="https://docs.gravatar.com/general/images/">
 							<citetitle>Gravatar: Image Requests</citetitle>
 						</ulink> for a list of parameters.
 					</para>
