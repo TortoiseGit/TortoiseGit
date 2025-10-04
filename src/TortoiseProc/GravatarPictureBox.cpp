@@ -29,6 +29,8 @@
 
 using CAutoLocker = CComCritSecLock<CComCriticalSection>;
 
+static UINT WM_GRAVATAR_REFRESH = RegisterWindowMessage(L"TORTOISEGIT_GRAVATAR_REFRESH");
+
 static CString CalcMD5(CString text)
 {
 	HCRYPTPROV hProv = 0;
@@ -63,6 +65,7 @@ static CString CalcMD5(CString text)
 }
 
 BEGIN_MESSAGE_MAP(CGravatar, CStatic)
+	ON_REGISTERED_MESSAGE(WM_GRAVATAR_REFRESH, OnGravatarRefresh)
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
@@ -248,7 +251,7 @@ void CGravatar::GravatarThread()
 			}
 			if (*gravatarExit)
 				break;
-			Invalidate();
+			PostMessage(WM_GRAVATAR_REFRESH);
 		}
 	}
 }
@@ -354,6 +357,12 @@ void CGravatar::SafeTerminateGravatarThread()
 	}
 	delete m_gravatarExit;
 	m_gravatarExit = nullptr;
+}
+
+LRESULT CGravatar::OnGravatarRefresh(WPARAM, LPARAM)
+{
+	Invalidate();
+	return 0;
 }
 
 void CGravatar::OnPaint()

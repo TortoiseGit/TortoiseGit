@@ -33,6 +33,7 @@ private:
 	void	GravatarThread();
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
+	LRESULT	OnGravatarRefresh(WPARAM, LPARAM);
 	int		DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const;
 
 	bool				m_bEnableGravatar = false;
