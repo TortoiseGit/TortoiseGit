@@ -34,14 +34,14 @@ private:
 	void	SafeTerminateGravatarThread();
 	afx_msg void OnPaint();
 	LRESULT	OnGravatarRefresh(WPARAM, LPARAM);
-	int		DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const;
+	int		DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const;
 
 	bool				m_bEnableGravatar = false;
 	CString				m_filename;
 	CString				m_email;
 	HANDLE				m_gravatarEvent = INVALID_HANDLE_VALUE;
 	CWinThread*			m_gravatarThread = nullptr;
-	bool*				m_gravatarExit = nullptr;
+	std::atomic<bool>	m_gravatarExit;
 	volatile HINTERNET	m_hConnectHandle = nullptr;
 	CComAutoCriticalSection m_gravatarLock;
 

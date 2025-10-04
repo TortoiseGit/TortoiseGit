@@ -85,13 +85,11 @@ void CGravatar::Init()
 			m_gravatarEvent = ::CreateEvent(nullptr, FALSE, TRUE, nullptr);
 		if (m_gravatarThread == nullptr)
 		{
-			m_gravatarExit = new bool(false);
+			m_gravatarExit = false;
 			m_gravatarThread = AfxBeginThread([](LPVOID lpVoid) -> UINT { reinterpret_cast<CGravatar*>(lpVoid)->GravatarThread(); return 0; }, this, THREAD_PRIORITY_BELOW_NORMAL, 0, CREATE_SUSPENDED);
 			if (m_gravatarThread == nullptr)
 			{
 				CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
-				delete m_gravatarExit;
-				m_gravatarExit = nullptr;
 				return;
 			}
 			m_gravatarThread->m_bAutoDelete = FALSE;
@@ -132,7 +130,6 @@ void CGravatar::LoadGravatar(CString email)
 
 void CGravatar::GravatarThread()
 {
-	bool *gravatarExit = m_gravatarExit;
 	CString gravatarBaseUrl = CRegString(L"Software\\TortoiseGit\\GravatarUrl", L"https://gravatar.com/avatar/%HASH%?d=identicon");
 
 	HCRYPTPROV hProv = 0;
@@ -180,10 +177,10 @@ void CGravatar::GravatarThread()
 		m_hConnectHandle = nullptr;
 	};
 
-	while (!*gravatarExit)
+	while (!m_gravatarExit)
 	{
 		::WaitForSingleObject(m_gravatarEvent, INFINITE);
-		while (!*gravatarExit)
+		while (!m_gravatarExit)
 		{
 			m_gravatarLock.Lock();
 			CString email = m_email;
@@ -192,7 +189,7 @@ void CGravatar::GravatarThread()
 				break;
 
 			Sleep(500);
-			if (*gravatarExit)
+			if (m_gravatarExit)
 				break;
 			m_gravatarLock.Lock();
 			bool diff = email != m_email;
@@ -222,17 +219,17 @@ void CGravatar::GravatarThread()
 			}
 			else
 			{
-				const int ret = DownloadToFile(gravatarExit, [&]() { CAutoLocker lock(m_gravatarLock); return m_hConnectHandle; }(), isHttps, gravatarUrl, tempFile);
+				const int ret = DownloadToFile([&]() { CAutoLocker lock(m_gravatarLock); return m_hConnectHandle; }(), isHttps, gravatarUrl, tempFile);
 				if (ret)
 				{
 					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Gravatar download for \"%s\" failed: %d\n", static_cast<LPCWSTR>(gravatarUrl), ret);
 					DeleteFile(tempFile);
-					if (*gravatarExit)
+					if (m_gravatarExit)
 						break;
 					CAutoLocker lock(m_gravatarLock);
 					m_filename.Empty();
 				}
-				if (*gravatarExit)
+				if (m_gravatarExit)
 					break;
 				CAutoLocker lock(m_gravatarLock);
 				if (m_email == email && !ret)
@@ -253,14 +250,14 @@ void CGravatar::GravatarThread()
 				else
 					m_filename.Empty();
 			}
-			if (*gravatarExit)
+			if (m_gravatarExit)
 				break;
 			PostMessage(WM_GRAVATAR_REFRESH);
 		}
 	}
 }
 
-int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const
+int CGravatar::DownloadToFile(const HINTERNET hConnectHandle, bool isHttps, const CString& urlpath, const CString& dest) const
 {
 	if (!hConnectHandle)
 		return ERROR_CANCELLED;
@@ -271,7 +268,7 @@ int CGravatar::DownloadToFile(bool* gravatarExit, const HINTERNET hConnectHandle
 
 	SCOPE_EXIT { InternetCloseHandle(hResourceHandle); };
 resend:
-	if (*gravatarExit)
+	if (m_gravatarExit)
 		return ERROR_CANCELLED;
 
 	BOOL httpsendrequest = HttpSendRequest(hResourceHandle, nullptr, 0, nullptr, 0);
@@ -282,7 +279,7 @@ resend:
 		goto resend;
 	else if (!httpsendrequest)
 		return static_cast<int>(INET_E_DOWNLOAD_FAILURE);
-	else if (*gravatarExit)
+	else if (m_gravatarExit)
 		return ERROR_CANCELLED;
 
 	DWORD statusCode = 0;
@@ -303,7 +300,7 @@ resend:
 	DWORD downloadedSum = 0; // sum of bytes downloaded so far
 	constexpr DWORD BUFFER_SIZE = 65536;
 	auto buff = std::make_unique<wchar_t[]>(BUFFER_SIZE);
-	while (!*gravatarExit)
+	while (!m_gravatarExit)
 	{
 		DWORD size; // size of the data available
 		if (!InternetQueryDataAvailable(hResourceHandle, &size, 0, 0))
@@ -342,10 +339,9 @@ resend:
 
 void CGravatar::SafeTerminateGravatarThread()
 {
-	if (m_gravatarExit != nullptr)
-		*m_gravatarExit = true;
 	if (m_gravatarThread)
 	{
+		m_gravatarExit = true;
 		::SetEvent(m_gravatarEvent);
 		if (::WaitForSingleObject(m_gravatarThread->m_hThread, 1500) == WAIT_TIMEOUT && m_hConnectHandle)
 		{
@@ -359,8 +355,6 @@ void CGravatar::SafeTerminateGravatarThread()
 		delete m_gravatarThread;
 		m_gravatarThread = nullptr;
 	}
-	delete m_gravatarExit;
-	m_gravatarExit = nullptr;
 }
 
 LRESULT CGravatar::OnGravatarRefresh(WPARAM, LPARAM)
