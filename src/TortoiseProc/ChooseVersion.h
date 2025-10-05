@@ -38,7 +38,6 @@ private:
 	{
 		return static_cast<CChooseVersion*>(pVoid)->LoadingThread();
 	};
-	volatile LONG m_bLoadingThreadRunning = FALSE;
 	std::atomic<bool> m_bExitLoadingThread;
 	struct GUI_UPDATE_DATA
 	{
@@ -207,8 +206,6 @@ protected:
 
 	UINT LoadingThread()
 	{
-		SCOPE_EXIT{ InterlockedExchange(&m_bLoadingThreadRunning, FALSE); };
-
 		auto refData = std::make_shared<GUI_UPDATE_DATA>();
 		auto& data = *refData;
 		g_Git.GetBranchList(data.branches, &data.current_branch_idx, CRegDWORD(L"Software\\TortoiseGit\\BranchesIncludeFetchHead", TRUE) ? CGit::BRANCH_ALL_F : CGit::BRANCH_ALL, m_bSkipCurrentBranch);
@@ -275,11 +272,9 @@ protected:
 
 		m_pWin->GetDlgItem(IDOK)->EnableWindow(FALSE);
 
-		InterlockedExchange(&m_bLoadingThreadRunning, TRUE);
 		m_bExitLoadingThread = false;
 		if ((m_pLoadingThread = AfxBeginThread(LoadingThreadEntry, this, 0, CREATE_SUSPENDED)) == nullptr)
 		{
-			InterlockedExchange(&m_bLoadingThreadRunning, FALSE);
 			CMessageBox::Show(nullptr, IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
 			return;
 		}
@@ -289,7 +284,7 @@ protected:
 	}
 	void WaitForFinishLoading()
 	{
-		if(m_bLoadingThreadRunning && m_pLoadingThread)
+		if (m_pLoadingThread)
 		{
 			m_bExitLoadingThread = true;
 			while (::WaitForSingleObject(m_pLoadingThread->m_hThread, 1000) == WAIT_TIMEOUT)
