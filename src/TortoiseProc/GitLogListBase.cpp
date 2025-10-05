@@ -127,13 +127,16 @@ int CGitLogListBase::AsyncDiffThread()
 	{
 		::WaitForSingleObject(m_AsyncDiffEvent, INFINITE);
 
-		GitRevLoglist* pRev = nullptr;
-		while(!m_AsyncThreadExit && !m_AsynDiffList.empty())
+		while (!m_AsyncThreadExit)
 		{
-			m_AsynDiffListLock.Lock();
-			pRev = m_AsynDiffList.back();
-			m_AsynDiffList.pop_back();
-			m_AsynDiffListLock.Unlock();
+			GitRevLoglist* pRev;
+			{
+				Locker lock(m_AsynDiffListLock);
+				if (m_AsynDiffList.empty())
+					break;
+				pRev = m_AsynDiffList.back();
+				m_AsynDiffList.pop_back();
+			}
 
 			if( pRev->m_CommitHash.IsEmpty() )
 			{
