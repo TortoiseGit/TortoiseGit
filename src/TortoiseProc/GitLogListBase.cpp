@@ -2883,7 +2883,8 @@ UINT CGitLogListBase::LogThread()
 
 	// store commit number of the last selected commit/line before the refresh or -1
 	int lastSelectedHashNItem = -1;
-	if (m_lastSelectedHash.IsEmpty())
+	const auto lastSelectedHash = m_lastSelectedHash.load();
+	if (lastSelectedHash.IsEmpty())
 		lastSelectedHashNItem = 0;
 
 	int ret = 0;
@@ -3090,7 +3091,7 @@ UINT CGitLogListBase::LogThread()
 			if (!visible)
 				continue;
 
-			if (lastSelectedHashNItem == -1 && hash == m_lastSelectedHash)
+			if (lastSelectedHashNItem == -1 && hash == lastSelectedHash)
 				lastSelectedHashNItem = static_cast<int>(m_arShownList.size()) - 1;
 
 			t2 = GetTickCount64();

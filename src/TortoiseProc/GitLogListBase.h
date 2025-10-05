@@ -470,7 +470,7 @@ public:
 
 	CTGitPath			m_Path;
 	int					m_ShowMask = 0;
-	CGitHash			m_lastSelectedHash;
+	std::atomic<CGitHash>	m_lastSelectedHash;
 	SelectionHistory	m_selectionHistory;
 	CGitHash			m_highlight;
 	int					m_ShowRefMask = LOGLIST_SHOWALLREFS;

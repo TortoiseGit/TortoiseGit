@@ -443,11 +443,15 @@ BOOL CLogDlg::OnInitDialog()
 	//m_tFrom = static_cast<DWORD>(-1);
 
 	// scroll to user selected or current revision
-	if (m_hightlightRevision.IsEmpty() || g_Git.GetHash(m_LogList.m_lastSelectedHash, m_hightlightRevision))
-	{
-		if (g_Git.GetHash(m_LogList.m_lastSelectedHash, L"HEAD"))
-			MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
-	}
+	m_LogList.m_lastSelectedHash.store([&] {
+		CGitHash hashToSelect;
+		if (m_hightlightRevision.IsEmpty() || g_Git.GetHash(hashToSelect, m_hightlightRevision))
+		{
+			if (g_Git.GetHash(hashToSelect, L"HEAD"))
+				MessageBox(g_Git.GetGitLastErr(L"Could not get HEAD hash."), L"TortoiseGit", MB_ICONERROR);
+		}
+		return hashToSelect;
+	}());
 
 	if (g_Git.GetConfigValueBool(L"tgit.logshowpatch"))
 		TogglePatchView();
@@ -1884,7 +1888,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		{
 			if ((pNMLV->uNewState & LVIS_SELECTED) && !m_bNavigatingWithSelect)
 			{
-				m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash);
+				m_LogList.m_selectionHistory.Add(m_LogList.m_lastSelectedHash.load());
 				m_LogList.m_lastSelectedHash = pLogEntry->m_CommitHash;
 			}
 			FillLogMessageCtrl();
@@ -1893,7 +1897,7 @@ void CLogDlg::OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	}
 	else
 	{
-		m_LogList.m_lastSelectedHash.Empty();
+		m_LogList.m_lastSelectedHash.store(CGitHash());
 		FillLogMessageCtrl();
 		UpdateData(FALSE);
 	}
