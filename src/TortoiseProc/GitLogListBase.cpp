@@ -138,11 +138,11 @@ int CGitLogListBase::AsyncDiffThread()
 				m_AsynDiffList.pop_back();
 			}
 
+			if (pRev->m_IsDiffFiles)
+				continue;
+
 			if( pRev->m_CommitHash.IsEmpty() )
 			{
-				if(pRev->m_IsDiffFiles)
-					continue;
-
 				auto filesWrapper = pRev->GetFilesWriter();
 				auto& files = filesWrapper.m_files;
 				files.Clear();
