@@ -801,6 +801,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	if (!bShow)
 	{
 		// force a redraw
+		m_ChangedFileListCtrl.SetBusy(FALSE);
 		m_ChangedFileListCtrl.Invalidate();
 //		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
@@ -815,6 +816,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 	{
 		// if nothing is selected, we have nothing more to do
 //		InterlockedExchange(&m_bNoDispUpdates, FALSE);
+		m_ChangedFileListCtrl.SetBusy(FALSE);
 		m_ChangedFileListCtrl.SetRedraw(TRUE);
 		m_gravatar.LoadGravatar();
 		return;
@@ -829,6 +831,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 		if (selIndex >= m_LogList.m_arShownList.size())
 		{
 //			InterlockedExchange(&m_bNoDispUpdates, FALSE);
+			m_ChangedFileListCtrl.SetBusy(FALSE);
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
