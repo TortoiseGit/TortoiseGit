@@ -93,7 +93,7 @@ public:
 	{
 		lastselected.reserve(HISTORYLENGTH);
 	}
-	void Add(CGitHash &hash)
+	void Add(const CGitHash& hash)
 	{
 		if (hash.IsEmpty())
 			return;
