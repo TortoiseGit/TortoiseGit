@@ -2875,10 +2875,14 @@ void CRebaseDlg::FillLogMessageCtrl()
 		POSITION pos = m_CommitList.GetFirstSelectedItemPosition();
 		const int selIndex = m_CommitList.GetNextSelectedItem(pos);
 		GitRevLoglist* pLogEntry = m_CommitList.m_arShownList.SafeGetAt(selIndex);
+		m_CommitList.m_lastSelectedHash = pLogEntry->m_CommitHash;
+		m_CommitList.m_nCacheSelectedItem = selIndex;
 		OnRefreshFilelist();
 		m_LogMessageCtrl.SetText(pLogEntry->GetSubject() + L'\n' + pLogEntry->GetBody());
 		m_LogMessageCtrl.ClearUndoBuffer();
+		return;
 	}
+	m_CommitList.m_lastSelectedHash.store(CGitHash());
 }
 
 void CRebaseDlg::OnRefreshFilelist()

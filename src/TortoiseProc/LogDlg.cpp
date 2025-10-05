@@ -839,6 +839,7 @@ void CLogDlg::FillLogMessageCtrl(bool bShow /* = true*/)
 			m_ChangedFileListCtrl.SetRedraw(TRUE);
 			return;
 		}
+		m_LogList.m_nCacheSelectedItem = static_cast<int>(selIndex); // this cast is safe, because CListCtrl can only hold MAX_INT items
 		GitRevLoglist* pLogEntry = m_LogList.m_arShownList.SafeGetAt(selIndex);
 
 		{

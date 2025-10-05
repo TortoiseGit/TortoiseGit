@@ -674,15 +674,8 @@ public:
 		if (m_DiffingThread && InterlockedExchange(&m_AsyncThreadExit, TRUE) == FALSE)
 		{
 			::SetEvent(m_AsyncDiffEvent);
-			DWORD ret = WAIT_TIMEOUT;
-			// do not block here, but process messages and ask until the thread ends
-			while (ret == WAIT_TIMEOUT && m_AsyncThreadRunning)
-			{
-				MSG msg;
-				if (::PeekMessage(&msg, nullptr, 0,0, PM_NOREMOVE))
-					AfxGetThread()->PumpMessage(); // process messages, so that GetTopIndex and so on in the thread work
-				ret = ::WaitForSingleObject(m_DiffingThread->m_hThread, 100);
-			}
+			while (::WaitForSingleObject(m_DiffingThread->m_hThread, 1000) == WAIT_TIMEOUT)
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Waiting for async diff thread to exit...\n");
 			delete m_DiffingThread;
 			m_DiffingThread = nullptr;
 			InterlockedExchange(&m_AsyncThreadExit, FALSE);
@@ -739,7 +732,11 @@ protected:
 	afx_msg void OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult);
 	void				DrawDropInsertMarker(int nIndex);
 	void				DrawDropInsertMarkerLine(int nIndex);
+	std::atomic<int>	m_nCacheTopIndex;
+	std::atomic<int>	m_nCacheItemsPerPage;
+	afx_msg void		OnSize(UINT nType, int cx, int cy);
 
 public:
+	std::atomic<int>	m_nCacheSelectedItem;
 	void				EnableDragnDrop(bool enable) { m_bDragndropEnabled = enable; }
 };

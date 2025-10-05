@@ -157,7 +157,7 @@ int CGitLogListBase::AsyncDiffThread()
 
 				if (CString err; pRev->GetUnRevFiles().FillUnRev(CTGitPath::LOGACTIONS_UNVER, nullptr, &err))
 				{
-					MessageBox(L"Failed to get UnRev file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+					::MessageBox(nullptr, L"Failed to get UnRev file list\n" + err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 					InterlockedExchange(&m_AsyncThreadRunning, FALSE);
 					return -1;
 				}
@@ -173,32 +173,27 @@ int CGitLogListBase::AsyncDiffThread()
 			}
 
 			pRev->CheckAndDiff();
-			{	// fetch change file list
-				for (int i = GetTopIndex(); !m_AsyncThreadExit && i <= GetTopIndex() + GetCountPerPage(); ++i)
+			{
+				const int start = m_nCacheTopIndex;
+				const int end = start + m_nCacheItemsPerPage;
+				for (int i = start; !m_AsyncThreadExit && i <= end; ++i)
 				{
-					if (i < static_cast<int>(m_arShownList.size()))
+					const auto* data = m_arShownList.SafeGetAt(i);
+					if (!data)
+						break;
+					if (data->m_CommitHash == pRev->m_CommitHash)
 					{
-						GitRevLoglist* data = m_arShownList.SafeGetAt(i);
-						if(data->m_CommitHash == pRev->m_CommitHash)
-						{
-							::PostMessage(m_hWnd, MSG_LOADED, i, 0);
-							break;
-						}
+						::PostMessage(m_hWnd, MSG_LOADED, i, 0);
+						break;
 					}
 				}
 
-				if(!m_AsyncThreadExit && GetSelectedCount() == 1)
+				const auto selectedHash = m_lastSelectedHash.load();
+				if (!m_AsyncThreadExit && pRev->m_CommitHash == selectedHash)
 				{
-					POSITION pos = GetFirstSelectedItemPosition();
-					const int nItem = GetNextSelectedItem(pos);
-
-					if(nItem>=0)
-					{
-						GitRevLoglist* data = m_arShownList.SafeGetAt(nItem);
-						if(data)
-							if(data->m_CommitHash == pRev->m_CommitHash)
-								this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
-					}
+					const auto* data = m_arShownList.SafeGetAt(m_nCacheSelectedItem);
+					if (data && data->m_CommitHash == pRev->m_CommitHash)
+						this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 				}
 			}
 		}
@@ -248,6 +243,7 @@ BEGIN_MESSAGE_MAP(CGitLogListBase, CHintCtrl<CResizableColumnsListCtrl<CListCtrl
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONUP()
 	ON_NOTIFY_REFLECT(LVN_BEGINDRAG, OnBeginDrag)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 void CGitLogListBase::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
@@ -1412,6 +1408,8 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 
 			if (m_arShownList.size() <= pLVCD->nmcd.dwItemSpec)
 				return;
+
+			m_nCacheTopIndex = GetTopIndex();
 
 			int nIcons = 0;
 			const int iconwidth = ::GetSystemMetrics(SM_CXSMICON);
@@ -4311,4 +4309,11 @@ LRESULT CGitLogListBase::DrawListItemWithMatches(CFilterHelper* filter, CListCtr
 	DrawListItemWithMatchesRect(pLVCD, ranges, rect, text, colors, hTheme, txtState);
 
 	return CDRF_SKIPDEFAULT;
+}
+
+void CGitLogListBase::OnSize(UINT nType, int cx, int cy)
+{
+	__super::OnSize(nType,cx,cy);
+
+	m_nCacheItemsPerPage = GetCountPerPage();
 }
