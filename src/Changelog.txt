@@ -2,7 +2,7 @@
 
 This version drops support for all Windows versions < 10.
 
-TortoiseGit not longer ships Notepad2e any more, but now defaults to Windows Notepad that also supports LF EOL.
+TortoiseGit no longer ships Notepad2e any more, but now defaults to Windows Notepad that also supports LF EOL.
 If you want to use Notepad2e, you will need to set it up manually (<https://github.com/ProgerXP/Notepad2e>)
 and configure it in TortoiseGit settings as alternative editor.
 
