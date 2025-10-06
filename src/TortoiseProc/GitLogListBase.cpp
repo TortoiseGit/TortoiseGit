@@ -168,7 +168,8 @@ int CGitLogListBase::AsyncDiffThread()
 				body.AppendFormat(IDS_FILESCHANGES, files.GetCount());
 				pRev->GetBody() = body;
 				::PostMessage(m_hWnd, MSG_LOADED, 0, 0);
-				this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
+				if (const auto selectedHash = m_lastSelectedHash.load(); m_nCacheSelectedItem == 0 && selectedHash.IsEmpty())
+					this->GetParent()->PostMessage(WM_COMMAND, MSG_FETCHED_DIFF, 0);
 				continue;
 			}
 
