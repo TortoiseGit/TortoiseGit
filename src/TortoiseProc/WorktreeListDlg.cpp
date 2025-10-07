@@ -50,7 +50,6 @@ void CWorktreeListDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CWorktreeListDlg, CResizableStandAloneDialog)
-	ON_WM_CONTEXTMENU()
 	ON_WM_SETCURSOR()
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CWorktreeListDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_PRUNE, &CWorktreeListDlg::OnBnClickedButtonPrune)
@@ -86,6 +85,7 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	m_WorktreeList.Init();
 	m_WorktreeList.SetExtendedStyle(m_WorktreeList.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_SUBITEMIMAGES);
 	m_WorktreeList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
+	m_WorktreeList.SetListContextMenuHandler([&](CPoint point) { OnContextMenu_WorktreeList(point); });
 	m_nIconFolder = SYS_IMAGE_LIST().GetDirIconIndex();
 
 	CAppUtils::SetListCtrlBackgroundImage(m_WorktreeList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
@@ -267,17 +267,6 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 	}
 
 	return 0;
-}
-
-void CWorktreeListDlg::OnContextMenu(CWnd* pWndFrom, CPoint point)
-{
-	if (pWndFrom == &m_WorktreeList)
-	{
-		CRect headerPosition;
-		m_WorktreeList.GetHeaderCtrl()->GetWindowRect(headerPosition);
-		if (!headerPosition.PtInRect(point))
-			OnContextMenu_WorktreeList(point);
-	}
 }
 
 void CWorktreeListDlg::OnContextMenu_WorktreeList(CPoint point)

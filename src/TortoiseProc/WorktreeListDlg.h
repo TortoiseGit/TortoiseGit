@@ -98,7 +98,6 @@ private:
 
 	int m_nIconFolder = -1;
 
-	afx_msg void OnContextMenu(CWnd* pWndFrom, CPoint point);
 	void OnContextMenu_WorktreeList(CPoint point);
 	void ShowContextMenu(CPoint point, std::vector<int>& indexes);
 

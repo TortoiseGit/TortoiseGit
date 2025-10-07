@@ -211,6 +211,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	m_RepoList.Init();
 	m_RepoList.SetExtendedStyle(m_RepoList.GetExtendedStyle() | LVS_EX_DOUBLEBUFFER | LVS_EX_INFOTIP | LVS_EX_SUBITEMIMAGES);
 	m_RepoList.SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
+	m_RepoList.SetListContextMenuHandler([&](CPoint point) { OnContextMenu_RepoList(point); });
 	CAppUtils::SetListCtrlBackgroundImage(m_RepoList.GetSafeHwnd(), IDI_REPOBROWSER_BKG);
 
 	m_RepoTree.SetImageList(&SYS_IMAGE_LIST(), TVSIL_NORMAL);
@@ -657,14 +658,8 @@ void CRepositoryBrowser::OnLvnItemchangedRepolist(NMHDR * /* pNMHDR */, LRESULT 
 
 void CRepositoryBrowser::OnContextMenu(CWnd* pWndFrom, CPoint point)
 {
-	if (pWndFrom == &m_RepoList)
-	{
-		CRect headerPosition;
-		m_RepoList.GetHeaderCtrl()->GetWindowRect(headerPosition);
-		if (!headerPosition.PtInRect(point))
-			OnContextMenu_RepoList(point);
-	}
-	else if (pWndFrom == &m_RepoTree)
+	// contextmenu for m_RepoList is handled using SetListContextMenuHandler
+	if (pWndFrom == &m_RepoTree)
 		OnContextMenu_RepoTree(point);
 }
 
