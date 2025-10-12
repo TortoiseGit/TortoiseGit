@@ -1732,6 +1732,8 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 					if (branch[0] == L'(' && GetCurrentBranchFromFile(m_CurrentDir, currentHead) == 1)
 						return;
 				}
+				else if (lineA[0] == '+')
+					branch = branch.Mid(static_cast<int>(wcslen(L"+ ")));
 
 				if ((type & BRANCH_REMOTE) != 0 && (type & BRANCH_LOCAL) == 0)
 					branch = L"refs/remotes/" + branch;
