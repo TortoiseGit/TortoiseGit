@@ -1,5 +1,10 @@
 ﻿= Release 2.18.0 =
 
+TortoiseGit no longer ships the necessary "Microsoft Visual C++ Redistributable 2015–2022". Make sure you have the latest version installed before upgrading:
+ * x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
+ * ARM64: https://aka.ms/vs/17/release/vc_redist.arm64.exe
+ * x86: https://aka.ms/vs/17/release/vc_redist.x86.exe (also needed on x64 and ARM64 for context menu in x86 applications)
+
 This version drops support for all Windows versions < 10.
 
 TortoiseGit no longer ships Notepad2e any more, but now defaults to Windows Notepad that also supports LF EOL.

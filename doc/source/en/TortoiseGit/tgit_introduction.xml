@@ -252,6 +252,50 @@
 				Those can be found on the <ulink url="https://download.tortoisegit.org/">download server</ulink> (TortoiseGit 1.7 dropped support for Windows 2000; TortoiseGit 1.9 dropped support for Windows XP, TortoiseGit 2.5 dropped support for Windows Vista, TortoiseGit 2.18.0 dropped support for Windows 7, Windows 8, and Windows 8.1).
 			</para>
 			<para>
+				TortoiseGit requires the latest "Microsoft Visual C++ Redistributable 2015–2022" to be installed on your computer. See the following <xref linkend="tgit-vcredist-table"/> for download links.
+				<table id="tgit-vcredist-table">
+					<title>Download links for the latest "Microsoft Visual C++ Redistributable 2015–2022"</title>
+					<tgroup cols="3">
+						<colspec colnum="1" colwidth="2*"/>
+						<colspec colnum="2" colwidth="6*"/>
+						<colspec colnum="3" colwidth="2*"/>
+						<thead>
+							<row>
+								<entry>Architecture</entry>
+								<entry>Link</entry>
+								<entry>Notes</entry>
+							</row>
+						</thead>
+						<tbody>
+							<row>
+								<entry>x64</entry>
+								<entry><ulink url="https://aka.ms/vs/17/release/vc_redist.x64.exe">https://aka.ms/vs/17/release/vc_redist.x64.exe</ulink></entry>
+								<entry></entry>
+							</row>
+							<row>
+								<entry>ARM64</entry>
+								<entry><ulink url="https://aka.ms/vs/17/release/vc_redist.arm64.exe">https://aka.ms/vs/17/release/vc_redist.arm64.exe</ulink></entry>
+								<entry></entry>
+							</row>
+							<row>
+								<entry>x86</entry>
+								<entry><ulink url="https://aka.ms/vs/17/release/vc_redist.x86.exe">https://aka.ms/vs/17/release/vc_redist.x86.exe</ulink></entry>
+								<entry>also needed on x64 and ARM64 for context menu in x86 applications</entry>
+							</row>
+						</tbody>
+					</tgroup>
+				</table>
+			</para>
+			<para>
+				TortoiseGit requires a (command line) Git client which provides a <filename>git.exe</filename>.
+				<ulink url="https://gitforwindows.org/">Git for Windows</ulink> is recommended (Cygwin and MSYS2 Git also work, see <xref linkend="tgit-dug-settings-main"/> for configuration. Please note that Cygwin and MSYS2 Git are not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome).
+				Installation of Git for Windows can be done with preselected options, however, no need to install the "Windows Explorer integration".
+				If you know about CRLF and LF line endings and you have editors coping with that, you should select "Checkout as-is, commit as-is" in order to prevent automatic translations.
+			</para>
+			<para>
+				You need Administrator privileges to install TortoiseGit.
+			</para>
+			<para>
 				If you encounter any problems during or after installing
 				TortoiseGit please refer to
 				<xref linkend="tgit-faq"/>
@@ -264,15 +308,15 @@
 				<primary>install</primary>
 			</indexterm>
 			<para>
+				First, check the system prerequisites which are listed above (<xref linkend="tgit-intro-install"/>).
+			</para>
+			<para>
 				TortoiseGit comes with an easy to use installer. Double click on
 				the installer file and follow the instructions. The installer
 				will take care of the rest.
 			</para>
 			<para>
-				One prerequisite of TortoiseGit is that it requires an already installed (command line) Git client which provides a <filename>git.exe</filename>.
-				<ulink url="https://gitforwindows.org/">Git for Windows</ulink> is recommended (Cygwin and MSYS2 Git also work, see <xref linkend="tgit-dug-settings-main"/> for configuration. Please note that Cygwin and MSYS2 Git are not officially supported by TortoiseGit as the developers only use Git for Windows. Bug reports, however, are welcome).
-				Installation of Git for Windows can be done with preselected options, however, no need to install the "Windows Explorer integration".
-				If you know about CRLF and LF line endings and you have editors coping with that, you should select "Checkout as-is, commit as-is" in order to prevent automatic translations.
+				As a command-line Git client is required for using TortoiseGit, you have to install both. The recommended order is to install TortoiseGit first.
 			</para>
 			<important>
 				<para>
