@@ -50,6 +50,11 @@
 		</Property>
 		<Condition Message="[ProductName] requires Windows 10 or later."><![CDATA[(NOT WIN10FOUND="")]]></Condition>
 
+		<Property Id="VC_REDIST_INSTALLED">
+			<RegistrySearch Id="VCRedistInstalled" Root="HKLM" Key="SOFTWARE\Microsoft\VisualStudio\14.0\VC\Runtimes\$(var.PackagePlatforms)" Name="Installed" Type="raw" Win64="$(var.Win64YesNo)" />
+		</Property>
+		<Condition Message="The latest version of &quot;Microsoft Visual C++ 2015-2022 Redistributable&quot; is required. See https://tortoisegit.org/support/faq/#prerequisites">VC_REDIST_INSTALLED=&quot;#1&quot;</Condition>
+
 		<!-- Show/Don't-show changelog related properties and custom actions ..................................................... -->
 		<Property Id="TEXTEDITOR" Secure="yes">
 			<DirectorySearch Id="FileSearchTextEditorExe" Path="[WindowsFolder]">
