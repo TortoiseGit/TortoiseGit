@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2011, 2013, 2015-2020, 2023-2024 TortoiseGit
+// Copyright (C) 2009-2011, 2013, 2015-2020, 2023-2025 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ void CRefLogList::OnNMDblclkLoglist(NMHDR* /*pNMHDR*/, LRESULT* pResult)
 		return;
 
 	CString cmdline;
-	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
+	cmdline.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmdline);
 }
 

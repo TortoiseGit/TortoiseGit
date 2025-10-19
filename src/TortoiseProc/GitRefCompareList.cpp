@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2024 - TortoiseGit
+// Copyright (C) 2013-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -360,7 +360,8 @@ void CGitRefCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_NEWLOG:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), cmd == IDGITRCL_OLDLOG ? static_cast<LPCWSTR>(oldHash) : static_cast<LPCWSTR>(newHash));
+			auto revToShow = cmd == IDGITRCL_OLDLOG ? static_cast<LPCWSTR>(oldHash) : static_cast<LPCWSTR>(newHash);
+			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\" /rev:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), revToShow, revToShow);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}

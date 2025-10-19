@@ -1269,6 +1269,50 @@ int CGit::GetInitAddList(CTGitPathList& outputlist, bool getStagingStatus)
 	}
 	return 0;
 }
+
+int CGit::GetSubmoduleHash(const CString& pathOfSubmodule, const CGitHash& revision, CGitHash& submoduleRevision, CString& err)
+{
+	if (!m_IsUseLibGit2)
+		return 0;
+
+	CAutoRepository repository(g_Git.GetGitRepository());
+	if (!repository)
+	{
+		err = GetLibGit2LastErr(L"Could not open repository.");
+		return -1;
+	}
+
+	CAutoCommit commit;
+	if (git_commit_lookup(commit.GetPointer(), repository, revision))
+	{
+		err = GetLibGit2LastErr(L"Could not lookup commit.");
+		return -1;
+	}
+
+	CAutoTree tree;
+	if (git_commit_tree(tree.GetPointer(), commit))
+	{
+		err = GetLibGit2LastErr(L"Could not get tree of commit.");
+		return -1;
+	}
+
+	CAutoTreeEntry treeEntry;
+	if (git_tree_entry_bypath(treeEntry.GetPointer(), tree, CUnicodeUtils::GetUTF8(pathOfSubmodule)))
+	{
+		err = GetLibGit2LastErr(L"Could not lookup path.");
+		return -1;
+	}
+
+	if (git_tree_entry_type(treeEntry) != GIT_OBJECT_COMMIT)
+	{
+		err = L"No submodule found at \"" + pathOfSubmodule + L"\" in revision " + revision.ToString() + L".";
+		return -1;
+	}
+
+	submoduleRevision = git_tree_entry_id(treeEntry);
+	return 0;
+}
+
 int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outputlist, bool ignoreSpaceAtEol, bool ignoreSpaceChange, bool ignoreAllSpace , bool ignoreBlankLines)
 {
 	CString cmd;

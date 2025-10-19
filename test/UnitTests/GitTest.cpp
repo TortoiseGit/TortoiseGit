@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2021, 2023 - TortoiseGit
+// Copyright (C) 2015-2021, 2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -4548,5 +4548,48 @@ TEST(CGit, ParseConflictHashesFromLsFile_Invalid)
 		bool baseIsFile = true, localIsFile = true, remoteIsFile = true;
 		CGitHash baseHash, localHash, remoteHash;
 		EXPECT_EQ(-1, CGit::ParseConflictHashesFromLsFile(byteArray, baseHash, baseIsFile, localHash, localIsFile, remoteHash, remoteIsFile));
+	}
+}
+
+TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetSubmoduleHash)
+{
+	if (GetParam() == GIT_CLI)
+	{
+		CGitHash submoduleHash;
+		CString error;
+		EXPECT_EQ(0, g_Git.GetSubmoduleHash(L"something", CGitHash::FromHexStr(L"900539cd24776a94d1b642358ccfdb9d897c8254"), submoduleHash, error));
+		EXPECT_TRUE(submoduleHash.IsEmpty());
+		EXPECT_EQ(0, g_Git.GetSubmoduleHash(L"doesnotexist", CGitHash::FromHexStr(L"900539cd24776a94d1b642358ccfdb9d897c8254"), submoduleHash, error));
+		EXPECT_TRUE(submoduleHash.IsEmpty());
+	}
+	if (GetParam() != LIBGIT2)
+		return;
+
+	{
+		CGitHash submoduleHash;
+		CString error;
+		EXPECT_EQ(0, g_Git.GetSubmoduleHash(L"something", CGitHash::FromHexStr(L"900539cd24776a94d1b642358ccfdb9d897c8254"), submoduleHash, error));
+		EXPECT_STREQ(L"35c91b4ae2f77f4f21a7aba56d3c473c705d89e6", submoduleHash.ToString());
+	}
+
+	{
+		CGitHash submoduleHash;
+		CString error;
+		EXPECT_EQ(0, g_Git.GetSubmoduleHash(L"something", CGitHash::FromHexStr(L"c8d17f57c7b511aff4aa2fbfae158902281cad8e"), submoduleHash, error));
+		EXPECT_STREQ(L"8eabf9a475b4a15c0f4d2169e5947534dff38037", submoduleHash.ToString());
+	}
+
+	{
+		CGitHash submoduleHash;
+		CString error;
+		EXPECT_EQ(-1, g_Git.GetSubmoduleHash(L"some file.txt", CGitHash::FromHexStr(L"e8199180d4f1eda395cb47c6142f78b2c525bb70"), submoduleHash, error));
+		EXPECT_STREQ(L"No submodule found at \"some file.txt\" in revision e8199180d4f1eda395cb47c6142f78b2c525bb70.", error);
+	}
+
+	{
+		CGitHash submoduleHash;
+		CString error;
+		EXPECT_EQ(-1, g_Git.GetSubmoduleHash(L"doesnotexist", CGitHash::FromHexStr(L"b9ad06b41c00bd309f9639f92c96165813c6ebe3"), submoduleHash, error));
+		EXPECT_STRNE(L"", error);
 	}
 }

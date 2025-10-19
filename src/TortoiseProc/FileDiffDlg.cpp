@@ -699,9 +699,17 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					CString sCmd = L"/command:log";
 					if (cmd == ID_LOG && m_arFilteredList[index]->IsDirectory())
 						sCmd += L" /submodule";
+					else if (cmd == ID_LOGSUBMODULE && !m_rev2.m_CommitHash.IsEmpty() && (m_arFilteredList[index]->m_Action & CTGitPath::Actions::LOGACTIONS_DELETED) == 0 && CRegDWORD(L"Software\\TortoiseGit\\LogSubmoduleShowRevision", TRUE))
+					{
+						CGitHash submoduleHash;
+						if (CString error; g_Git.GetSubmoduleHash(m_arFilteredList[index]->GetGitPathString(), m_rev2.m_CommitHash, submoduleHash, error) == 0 && !submoduleHash.IsEmpty())
+							sCmd += L" /endrev:\"" + submoduleHash.ToString() + '"' + L" /rev:\"" + submoduleHash.ToString() + '"';
+						else
+							MessageBox(error, L"TortoiseGit", MB_ICONERROR);
+					}
 					sCmd += L" /path:\"" + g_Git.CombinePath(m_arFilteredList[index]->GetWinPathString()) + L"\" ";
 					if (cmd == ID_LOG)
-						sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString();
+						sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString() + L" /rev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			}

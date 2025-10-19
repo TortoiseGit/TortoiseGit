@@ -509,6 +509,8 @@ public:
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);
 
+	int GetSubmoduleHash(const CString& pathOfSubmodule, const CGitHash& revision, CGitHash& submoduleRevision, CString& err);
+
 	static void StringAppend(CString& str, const char* p, int code = CP_UTF8, int length = -1);
 
 	BOOL CanParseRev(CString ref);

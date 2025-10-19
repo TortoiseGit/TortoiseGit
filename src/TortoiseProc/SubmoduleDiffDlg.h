@@ -48,7 +48,7 @@ protected:
 	afx_msg void OnBnClickedLog2();
 	afx_msg void OnBnClickedShowDiff();
 	afx_msg void OnBnClickedButtonUpdate();
-	void ShowLog(CString hash);
+	void ShowLog(const CGitHash& hash);
 	CMenuButton	m_ctrlShowDiffBtn;
 
 	DECLARE_MESSAGE_MAP()

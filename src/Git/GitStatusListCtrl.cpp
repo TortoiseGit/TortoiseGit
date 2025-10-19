@@ -2408,7 +2408,15 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 						if (!m_sDisplayedBranch.IsEmpty())
 							sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
 						else
-							sCmd += L" /endrev:\"" + m_CurrentVersion.ToString() + '"';
+							sCmd += L" /endrev:\"" + m_CurrentVersion.ToString() + '"' + L" /rev:\"" + m_CurrentVersion.ToString() + '"';
+					}
+					if (cmd == IDGITLC_LOGSUBMODULE && !m_CurrentVersion.IsEmpty() && (filepath->m_Action & CTGitPath::Actions::LOGACTIONS_DELETED) == 0 && CRegDWORD(L"Software\\TortoiseGit\\LogSubmoduleShowRevision", TRUE))
+					{
+						CGitHash submoduleHash;
+						if (CString error; g_Git.GetSubmoduleHash(filepath->GetGitPathString(), m_CurrentVersion, submoduleHash, error) == 0 && !submoduleHash.IsEmpty())
+							sCmd += L" /endrev:\"" + submoduleHash.ToString() + '"' + L" /rev:\"" + submoduleHash.ToString() + '"';
+						else
+							MessageBox(error, L"TortoiseGit", MB_ICONERROR);
 					}
 					CAppUtils::RunTortoiseGitProc(sCmd, false, !(cmd == IDGITLC_LOGSUBMODULE));
 				}

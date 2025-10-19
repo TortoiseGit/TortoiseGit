@@ -197,7 +197,7 @@ LRESULT CCommitIsOnRefsDlg::OnClickedCancelFilter(WPARAM /*wParam*/, LPARAM /*lP
 void CCommitIsOnRefsDlg::OnBnClickedShowLog()
 {
 	CString cmd;
-	cmd.Format(L"/command:log /rev:%s", static_cast<LPCWSTR>(m_gitrev.m_CommitHash.ToString()));
+	cmd.Format(L"/command:log /endrev:%s /rev:%s", static_cast<LPCWSTR>(m_gitrev.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_gitrev.m_CommitHash.ToString()));
 	CAppUtils::RunTortoiseGitProc(cmd);
 }
 

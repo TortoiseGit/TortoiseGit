@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2020, 2024 - TortoiseGit
+// Copyright (C) 2009-2020, 2024-2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -131,7 +131,7 @@ void CDeleteConflictDlg::OnBnClickedModify()
 void CDeleteConflictDlg::ShowLog(CString hash)
 {
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_File)), static_cast<LPCWSTR>(hash));
+	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_File)), static_cast<LPCWSTR>(hash), static_cast<LPCWSTR>(hash));
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 

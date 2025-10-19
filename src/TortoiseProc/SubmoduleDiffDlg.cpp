@@ -230,21 +230,21 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHa
 	m_nChangeType = changeType;
 }
 
-void CSubmoduleDiffDlg::ShowLog(CString hash)
+void CSubmoduleDiffDlg::ShowLog(const CGitHash& hash)
 {
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(hash));
+	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(hash.ToString()), static_cast<LPCWSTR>(hash.ToString()));
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
 void CSubmoduleDiffDlg::OnBnClickedLog()
 {
-	ShowLog(m_sFromHash.ToString());
+	ShowLog(m_sFromHash);
 }
 
 void CSubmoduleDiffDlg::OnBnClickedLog2()
 {
-	ShowLog(m_sToHash.ToString());
+	ShowLog(m_sToHash);
 }
 
 void CSubmoduleDiffDlg::OnBnClickedShowDiff()

@@ -809,7 +809,7 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
 				sCmd += L" /submodule";
 			if (cmd == eCmd_ViewLog)
-				sCmd += L" /endrev:" + m_sRevision;
+				sCmd += L" /endrev:" + m_sRevision + L" /rev:" + m_sRevision;
 			else if (cmd == eCmd_ViewLogSubmodule)
 				sCmd += L" /rev:" + selectedLeafs.at(0)->m_hash.ToString() + L" /endrev:" + selectedLeafs.at(0)->m_hash.ToString();
 			CAppUtils::RunTortoiseGitProc(sCmd);

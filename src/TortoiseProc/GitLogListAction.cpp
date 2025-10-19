@@ -853,6 +853,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				sCmd += L" /path:\"" + g_Git.m_CurrentDir + L"\" ";
 				GitRev* r1 = m_arShownList.SafeGetAt(FirstSelect);
 				sCmd += L" /endrev:" + r1->m_CommitHash.ToString();
+				sCmd += L" /rev:" + r1->m_CommitHash.ToString();
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			}
 			break;
