@@ -121,7 +121,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
-			HINSTANCE hInst = LoadLibrary(langDll);
+			HINSTANCE hInst = ::LoadLibraryEx(langDll, nullptr, LOAD_LIBRARY_AS_DATAFILE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 			if (hInst)
 			{
 				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", static_cast<LPCWSTR>(langDll));

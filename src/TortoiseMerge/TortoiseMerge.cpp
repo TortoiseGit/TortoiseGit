@@ -117,7 +117,7 @@ BOOL CTortoiseMergeApp::InitInstance()
 	{
 		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
-		hInst = LoadLibrary(langDll);
+		hInst = ::LoadLibraryEx(langDll, nullptr, LOAD_LIBRARY_AS_DATAFILE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			FreeLibrary(hInst);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -102,7 +102,7 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 	{
 		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
 
-		hInst = LoadLibrary(langDll);
+		hInst = ::LoadLibraryEx(langDll, nullptr, LOAD_LIBRARY_AS_DATAFILE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
 		{
 			FreeLibrary(hInst);

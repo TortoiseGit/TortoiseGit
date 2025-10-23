@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021, 2025 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ HINSTANCE CLangDll::Init(LPCWSTR appname, unsigned long langID)
 	{
 		swprintf_s(langdllpath, L"%s%s%lu.dll", langpath, appname, langID);
 
-		m_hInstance = LoadLibrary(langdllpath);
+		m_hInstance = ::LoadLibraryEx(langdllpath, nullptr, LOAD_LIBRARY_AS_DATAFILE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 
 		if (!DoVersionStringsMatch(sVer, langdllpath))
 		{
