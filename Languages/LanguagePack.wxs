@@ -61,10 +61,6 @@
 							<File Id='BLAMDLL' Name='TortoiseGitBlame$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseGitBlame$(var.COUNTRYID).dll' Vital='yes'></File>
 							<File Id='IDIFDLL' Name='TortoiseIDiff$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseIDiff$(var.COUNTRYID).dll' Vital='yes'></File>
 							<File Id='UDIFDLL' Name='TortoiseGitUDiff$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath)\Languages\TortoiseGitUDiff$(var.COUNTRYID).dll' Vital='yes'></File>
-
-							<?if $(var.Platform) = "x64" ?>
-								<File Id='PROCDLL32' Name='TortoiseProc32$(var.COUNTRYID).dll' DiskId='1' Source='..\bin\$(var.ReleasePath32)\Languages\TortoiseProc$(var.COUNTRYID).dll' Vital='yes'></File>
-							<?endif ?>
 						</Component>
 					</Directory>
 				</Directory>

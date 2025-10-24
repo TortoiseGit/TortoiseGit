@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2023 - TortoiseGit
+// Copyright (C) 2011-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -77,17 +77,11 @@ void LoadLangDll()
 		if (dirpoint)
 			*dirpoint = L'\0';
 
-		BOOL bIsWow = FALSE;
-		IsWow64Process(GetCurrentProcess(), &bIsWow);
-
 		do
 		{
-			if (bIsWow)
-				swprintf_s(langDll, L"%s\\Languages\\TortoiseProc32%lu.dll", langdir, langId);
-			else
-				swprintf_s(langDll, L"%s\\Languages\\TortoiseProc%lu.dll", langdir, langId);
+			swprintf_s(langDll, L"%s\\Languages\\TortoiseProc%lu.dll", langdir, langId);
 			if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
-				hInst = LoadLibrary(langDll);
+				hInst = ::LoadLibraryEx(langDll, nullptr, LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 			if (hInst)
 			{
 				if (g_hResInst != g_hmodThisDll)
