@@ -803,8 +803,6 @@ int CGit::ApplyPatchToIndexReverse(const CString& patchPath, CString* out)
 CString CGit::GetCurrentBranch(bool fallback)
 {
 	CString output;
-	//Run(L"git.exe branch", &branch);
-
 	const int result = GetCurrentBranchFromFile(m_CurrentDir, output, fallback);
 	if (result != 0 && ((result == 1 && !fallback) || result != 1))
 		return L"(no branch)";
