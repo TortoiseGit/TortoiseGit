@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2025 - TortoiseGit
 // Copyright (C) 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,6 +19,7 @@
 //
 #pragma once
 #include "Command.h"
+#include <oobenotification.h>
 
 /**
  * \ingroup TortoiseProc
@@ -31,6 +33,19 @@ public:
 	 */
 	bool Execute() override
 	{
+		if (BOOL isOOBEComplete = false, ooBECompleteOk = OOBEComplete(&isOOBEComplete); !ooBECompleteOk || !isOOBEComplete)
+		{
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Skip registering: OOBEComplete: %d, isOOBEComplete: %d\n", ooBECompleteOk, isOOBEComplete);
+			if (!ooBECompleteOk)
+			{
+				CString error;
+				error.Format(L"Checking whether OOBE is complete failed: %s", static_cast<LPCWSTR>(CFormatMessageWrapper()));
+				::MessageBox(GetExplorerHWND(), error, L"TortoiseGit", MB_ICONERROR);
+				return false;
+			}
+			return true;
+		}
+
 		if (auto errorString = ReRegisterPackage(); !errorString.empty())
 			return true;
 		return false;

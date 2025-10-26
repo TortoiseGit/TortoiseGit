@@ -38,6 +38,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Fixed issue #4225: Worktree list - remember column widths
  * Fixed GDI handle leaks in TortoiseGitShell
  * Fixed possible crashes in LogDlg caused by calls to TerminateThread
+ * Fixed issue #4131: TortoseGit causing Windows 11 Sysprep to fail -> Do not register Win11 context menu when in OOBE environment
 
 = Release 2.17.0.2 =
 Released: 2024-11-01

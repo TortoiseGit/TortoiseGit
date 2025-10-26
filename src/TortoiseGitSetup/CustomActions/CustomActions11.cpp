@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2021 - TortoiseGit
+// Copyright (C) 2021, 2025 - TortoiseGit
 // Copyright (C) 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include <winrt/Windows.Management.Deployment.h>
 #include <winrt/Windows.Foundation.Collections.h>
 #include <winrt/Windows.ApplicationModel.h>
+#include <oobenotification.h>
 
 #pragma comment(lib, "windowsapp.lib")
 
@@ -36,6 +37,20 @@ BOOL APIENTRY DllMain(HANDLE /*hModule*/, DWORD /*ul_reason_for_call*/, LPVOID /
 
 UINT __stdcall RegisterSparsePackage(MSIHANDLE hModule)
 {
+	if (BOOL isOOBEComplete = false, ooBECompleteOk = OOBEComplete(&isOOBEComplete); !ooBECompleteOk || !isOOBEComplete)
+	{
+		PMSIHANDLE hRecord = MsiCreateRecord(0);
+		std::wstring error = L"Skipping RegisterSparsePackage (OOBEComplete: ";
+		error += std::to_wstring(ooBECompleteOk);
+		error += L", isOOBEComplete: ";
+		error += std::to_wstring(isOOBEComplete);
+		error += L"):\n";
+		MsiRecordSetStringW(hRecord, 0, error.c_str());
+		MsiProcessMessage(hModule, INSTALLMESSAGE_INFO, hRecord);
+		MsiCloseHandle(hRecord);
+		return ERROR_SUCCESS;
+	}
+
 	DWORD len = 0;
 	wchar_t emptyBuf[1]{};
 	MsiGetPropertyW(hModule, L"INSTALLDIR", emptyBuf, &len);
