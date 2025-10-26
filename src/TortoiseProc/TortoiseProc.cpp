@@ -205,6 +205,19 @@ BOOL CTortoiseProcApp::InitInstance()
 		return (wizard.DoModal() == ID_WIZFINISH);
 	}
 
+	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"registerwin11contextmenu") == 0)
+	{
+		CommandServer server;
+		if (Command* cmd = server.GetCommand(parser.GetVal(L"command")); cmd)
+		{
+			cmd->SetExplorerHwnd(hWndExplorer);
+			cmd->SetParser(parser);
+			retSuccess = cmd->Execute();
+			delete cmd;
+		}
+		return retSuccess;
+	}
+
 	if (!g_Git.CheckMsysGitDir())
 	{
 		UINT ret = CMessageBox::Show(hWndExplorer, IDS_PROC_NOMSYSGIT, IDS_APPNAME, 3, IDI_HAND, IDS_PROC_SETMSYSGITPATH, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON);
