@@ -280,7 +280,7 @@
 							<row>
 								<entry>x86</entry>
 								<entry><ulink url="https://aka.ms/vs/17/release/vc_redist.x86.exe">https://aka.ms/vs/17/release/vc_redist.x86.exe</ulink></entry>
-								<entry>also needed on x64 and ARM64 for context menu in x86 applications</entry>
+								<entry>also needed on x64 for context menu in x86 applications</entry>
 							</row>
 						</tbody>
 					</tgroup>
