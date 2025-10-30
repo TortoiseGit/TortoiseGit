@@ -692,24 +692,18 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	if(key.IsEmpty())
 		return false;
 
-	CString proc = L'"' + CPathUtils::GetAppDirectory();
-	proc += L"pageant.exe\" \"";
-	proc += key;
-	proc += L'"';
+	CString appDir = CPathUtils::GetAppDirectory();
+
+	CString proc;
+	proc.Format(L"\"%spageant.exe\" \"%s\"", static_cast<LPCWSTR>(appDir), static_cast<LPCWSTR>(key));
 
 	CString tempfile = GetTempFile();
 	if (tempfile.IsEmpty())
 		return false;
 	::DeleteFile(tempfile);
 
-	proc += L" -c \"";
-	proc += CPathUtils::GetAppDirectory();
-	proc += L"tgittouch.exe\"";
-	proc += L" \"";
-	proc += tempfile;
-	proc += L'"';
+	proc.AppendFormat(L" -c \"%stgittouch.exe\" \"%s\"", static_cast<LPCWSTR>(appDir), static_cast<LPCWSTR>(tempfile));
 
-	CString appDir = CPathUtils::GetAppDirectory();
 	if (bool b = LaunchApplication(proc, CAppUtils::LaunchApplicationFlags().WaitForStartup().UseSpecificErrorMessage(IDS_ERR_PAGEANT).UseCWD(appDir)); !b)
 		return b;
 
