@@ -71,7 +71,6 @@ CTortoiseGitBlameApp::~CTortoiseGitBlameApp()
 
 // The one and only CTortoiseGitBlameApp object
 CTortoiseGitBlameApp theApp;
-CString sOrigCWD;
 CString g_sGroupingUUID;
 CString g_sGroupingIcon;
 bool g_bGroupingRemoveIcon = false;
@@ -80,9 +79,6 @@ bool g_bGroupingRemoveIcon = false;
 
 BOOL CTortoiseGitBlameApp::InitInstance()
 {
-	if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
-		sOrigCWD = cwd;
-
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
 	long langId = loc;

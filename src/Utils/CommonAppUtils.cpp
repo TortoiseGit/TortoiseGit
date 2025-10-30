@@ -30,14 +30,13 @@
 #include "IconBitmapUtils.h"
 #include "CreateProcessHelper.h"
 
-extern CString sOrigCWD;
 extern CString g_sGroupingUUID;
 
 bool CCommonAppUtils::LaunchApplication(const CString& sCommandLine, const LaunchApplicationFlags& flags)
 {
-	CString theCWD = sOrigCWD;
+	LPCWSTR theCWD = nullptr;
 	if (flags.psCWD)
-		theCWD = *flags.psCWD;
+		theCWD = flags.psCWD;
 
 	if (flags.bUAC)
 	{

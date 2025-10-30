@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020, 2023-2025 - TortoiseGit
 // Copyright (C) 2003-2008,2010 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ private:
 		bool bWaitForExit = false;
 		HANDLE hWaitHandle = nullptr;
 		bool bUAC = false;
-		CString* psCWD = nullptr;
+		LPCWSTR psCWD = nullptr;
 		UINT uiIDErrMessageFormat = 0;
 		DWORD* pdwExitCode = nullptr;
 
@@ -64,7 +64,7 @@ public:
 			bUAC = b;
 			return *this;
 		}
-		LaunchApplicationFlags& UseCWD(CString* pCwd)
+		LaunchApplicationFlags& UseCWD(LPCWSTR pCwd)
 		{
 			psCWD = pCwd;
 			return *this;

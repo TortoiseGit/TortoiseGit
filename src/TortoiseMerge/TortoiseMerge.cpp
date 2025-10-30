@@ -79,7 +79,6 @@ CTortoiseMergeApp::~CTortoiseMergeApp()
 
 // The one and only CTortoiseMergeApp object
 CTortoiseMergeApp theApp;
-CString sOrigCWD;
 #if ENABLE_CRASHHANLDER && !_M_ARM64
 CCrashReportTGit g_crasher(L"TortoiseGitMerge " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif
@@ -94,9 +93,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 	SetDllDirectory(L"");
 	SetTaskIDPerUUID();
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
-
-	if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
-		sOrigCWD = cwd;
 
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);

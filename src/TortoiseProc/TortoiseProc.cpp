@@ -86,7 +86,6 @@ CTortoiseProcApp::~CTortoiseProcApp()
 
 // The one and only CTortoiseProcApp object
 CTortoiseProcApp theApp;
-CString sOrigCWD;
 CString g_sGroupingUUID;
 CString g_sGroupingIcon;
 bool g_bGroupingRemoveIcon = false;
@@ -189,9 +188,6 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
-		// CFirstStartWizard requires sOrigCWD to be set
-		if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
-			sOrigCWD = cwd;
 		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
 		theApp.m_pMainWnd = &wizard;
 		return (wizard.DoModal() == ID_WIZFINISH);
@@ -333,14 +329,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
 
-	// Set CWD to temporary dir, and restore it later
-	{
-		if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
-			sOrigCWD = cwd;
-		wchar_t pathbuf[MAX_PATH] = { 0 };
-		GetTortoiseGitTempPath(_countof(pathbuf), pathbuf);
-		SetCurrentDirectory(pathbuf);
-	}
 
 	CheckForNewerVersion();
 
@@ -355,10 +343,7 @@ BOOL CTortoiseProcApp::InitInstance()
 		g_Git.SetCurrentDir(pathList[0].GetWinPathString(), true);
 
 	if(!g_Git.m_CurrentDir.IsEmpty())
-	{
-		sOrigCWD = g_Git.m_CurrentDir;
 		SetCurrentDirectory(g_Git.m_CurrentDir);
-	}
 
 	if (g_sGroupingUUID.IsEmpty())
 	{

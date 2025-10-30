@@ -710,7 +710,7 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	proc += L'"';
 
 	CString appDir = CPathUtils::GetAppDirectory();
-	if(bool b = LaunchApplication(proc, CAppUtils::LaunchApplicationFlags().WaitForStartup().UseSpecificErrorMessage(IDS_ERR_PAGEANT).UseCWD(&appDir)); !b)
+	if (bool b = LaunchApplication(proc, CAppUtils::LaunchApplicationFlags().WaitForStartup().UseSpecificErrorMessage(IDS_ERR_PAGEANT).UseCWD(appDir)); !b)
 		return b;
 
 	int i=0;
