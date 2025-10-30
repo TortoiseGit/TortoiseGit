@@ -77,12 +77,12 @@ LRESULT CFirstStartWizardUser::OnWizardNext()
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 			return -1;
 		}
-		if (git_config_set_string(config, "user.name", CUnicodeUtils::GetUTF8(m_sUsername)))
+		if (git_config_set_string(config, "user.name", CUnicodeUtils::GetUTF8(m_sUsername.Trim())))
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 			return -1;
 		}
-		if (git_config_set_string(config, "user.email", CUnicodeUtils::GetUTF8(m_sUseremail)))
+		if (git_config_set_string(config, "user.email", CUnicodeUtils::GetUTF8(m_sUseremail.Trim())))
 		{
 			MessageBox(g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONEXCLAMATION);
 			return -1;
