@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,18 +80,8 @@ bool g_bGroupingRemoveIcon = false;
 
 BOOL CTortoiseGitBlameApp::InitInstance()
 {
-	{
-		DWORD len = GetCurrentDirectory(0, nullptr);
-		if (len)
-		{
-			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
-			{
-				sOrigCWD = originalCurrentDirectory.get();
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
-			}
-		}
-	}
+	if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
+		sOrigCWD = cwd;
 
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);

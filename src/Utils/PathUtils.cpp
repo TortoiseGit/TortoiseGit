@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2023 - TortoiseGit
+// Copyright (C) 2012-2023, 2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -509,5 +509,17 @@ bool CPathUtils::ArePathStringsEqualWithCase(const CString& sP1, const CString& 
 			return false;
 	}
 	return true;
+}
+
+CString CPathUtils::GetCWD()
+{
+	DWORD len = GetCurrentDirectory(0, nullptr);
+	if (!len)
+		return {};
+
+	if (auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len); GetCurrentDirectory(len, originalCurrentDirectory.get()))
+		return CPathUtils::GetLongPathname(originalCurrentDirectory.get());
+
+	return {};
 }
 #endif

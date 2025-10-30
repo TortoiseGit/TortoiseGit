@@ -190,16 +190,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
 		// CFirstStartWizard requires sOrigCWD to be set
-		DWORD len = GetCurrentDirectory(0, nullptr);
-		if (len)
-		{
-			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
-			{
-				sOrigCWD = originalCurrentDirectory.get();
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
-			}
-		}
+		if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
+			sOrigCWD = cwd;
 		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
 		theApp.m_pMainWnd = &wizard;
 		return (wizard.DoModal() == ID_WIZFINISH);
@@ -343,16 +335,8 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	// Set CWD to temporary dir, and restore it later
 	{
-		DWORD len = GetCurrentDirectory(0, nullptr);
-		if (len)
-		{
-			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
-			{
-				sOrigCWD = originalCurrentDirectory.get();
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
-			}
-		}
+		if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
+			sOrigCWD = cwd;
 		wchar_t pathbuf[MAX_PATH] = { 0 };
 		GetTortoiseGitTempPath(_countof(pathbuf), pathbuf);
 		SetCurrentDirectory(pathbuf);

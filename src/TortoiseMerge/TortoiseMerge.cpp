@@ -95,18 +95,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 	SetTaskIDPerUUID();
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 
-	{
-		DWORD len = GetCurrentDirectory(0, nullptr);
-		if (len)
-		{
-			auto originalCurrentDirectory = std::make_unique<wchar_t[]>(len);
-			if (GetCurrentDirectory(len, originalCurrentDirectory.get()))
-			{
-				sOrigCWD = originalCurrentDirectory.get();
-				sOrigCWD = CPathUtils::GetLongPathname(sOrigCWD);
-			}
-		}
-	}
+	if (CString cwd = CPathUtils::GetCWD(); !cwd.IsEmpty())
+		sOrigCWD = cwd;
 
 	//set the resource dll for the required language
 	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2022 - TortoiseGit
+// Copyright (C) 2016-2022, 2025 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -172,5 +172,7 @@ public:
 	 * Sets the last-write-time of the file to the current time
 	 */
 	static bool Touch(const CString& path);
+
+	static CString GetCWD();
 #endif
 };
