@@ -10213,6 +10213,10 @@ msgstr ""
 msgid "User&name:"
 msgstr ""
 
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535, IDS_AUTH_USERNAME)
 msgid "Username:"
 msgstr ""

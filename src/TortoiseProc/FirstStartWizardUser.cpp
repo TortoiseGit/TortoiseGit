@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ LRESULT CFirstStartWizardUser::OnWizardNext()
 	{
 		if (m_sUsername.Trim().IsEmpty() || m_sUseremail.Trim().IsEmpty())
 		{
-			MessageBox(L"Username and email must not be empty.", L"TortoiseGit", MB_ICONERROR);
+			CMessageBox::Show(GetSafeHwnd(), IDC_PROC_USERNAMEMAIL_EMPTY, IDS_APPNAME, MB_ICONERROR);
 			return -1;
 		}
 

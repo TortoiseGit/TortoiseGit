@@ -4026,6 +4026,7 @@ BEGIN
     IDS_LASTCOMMITTER       "Last Committer"
     IDS_DATELASTAUTHOR      "Last Author Date"
     IDS_STATUSLIST_EMPTYMSGFILTERED "File list is empty due to active filter"
+    IDC_PROC_USERNAMEMAIL_EMPTY "Username and email must not be empty."
 END
 
 STRINGTABLE
