@@ -1,11 +1,11 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2025 - TortoiseGit
 
 #define TGIT_VERMAJOR		2
-#define TGIT_VERMINOR		17
+#define TGIT_VERMINOR		18
 #define TGIT_VERMICRO		0
-#define TGIT_VERBUILD		1
+#define TGIT_VERBUILD		0
 #define TGIT_VERDATE		__DATE__
 
 #define FILEVER TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD

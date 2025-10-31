@@ -144,7 +144,7 @@ This will only build the english HTML help file for TortoiseGit
 		<if test="${not environment::variable-exists('MajorVersion')}">
 			<setenv>
 				<variable name="MajorVersion" value="2" />
-				<variable name="MinorVersion" value="17" />
+				<variable name="MinorVersion" value="18" />
 				<variable name="MicroVersion" value="0" />
 			</setenv>
 		</if>
