@@ -1,6 +1,7 @@
 ﻿= Release 2.18.0 =
+Released: 2025-10-31
 
-TortoiseGit no longer ships the necessary "Microsoft Visual C++ Redistributable 2015–2022". Make sure you have the latest version installed before upgrading:
+TortoiseGit no longer ships the necessary "Microsoft Visual C++ Redistributable 2015–2022" (cf. issue #4209). Make sure you have the latest version installed before upgrading:
  * x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
  * ARM64: https://aka.ms/vs/17/release/vc_redist.arm64.exe
  * x86: https://aka.ms/vs/17/release/vc_redist.x86.exe (also needed on x64 for context menu in x86 applications)
@@ -11,10 +12,10 @@ TortoiseGit no longer ships Notepad2e any more, but now defaults to Windows Note
 If you want to use Notepad2e, you will need to set it up manually (<https://github.com/ProgerXP/Notepad2e>)
 and configure it in TortoiseGit settings as alternative editor.
 
-Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGit will follow suit with one of the next releases.
+Git for Windows has stopped providing builds for 32-bit Windows, and TortoiseGit will follow suit with one of the next releases.
 
 == Features ==
- * Fixed issue #3826: Help links don't open in a sensible browser
+ * Fixed issue #3826: Help links don't open in a sensible browser, TortoiseGit now ships HTML files
  * Update TortoiseGitPlink to PuTTY Plink 0.83
  * Update shipped PuTTY binaries to 0.83
  * Update Scintilla to 5.5.7 and Lexilla to 5.4.5
@@ -27,7 +28,7 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
    Added "Explore to" to the context menu of the low panel
  * Fixed issue #4210: Add hint of active filter in file list
  * Fixed issue #4185: TortoiseGit->Tag should open popup to Push Tags
- * Automatically register Windows 11 context menu for all users
+ * Automatically register Windows 11 context menu for all users (on login)
  * Gravatar now uses SHA256 for hashing email addresses
 
 == Bug Fixes ==
@@ -39,6 +40,11 @@ Git for Windows is going to stop providing builds for 32-bit Windows, TortoiseGi
  * Fixed GDI handle leaks in TortoiseGitShell
  * Fixed possible crashes in LogDlg caused by calls to TerminateThread
  * Fixed issue #4131: TortoseGit causing Windows 11 Sysprep to fail -> Do not register Win11 context menu when in OOBE environment
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
+   This only applies to Windows 10, as Windows 11 Explorer does not have a title bar any more.
 
 = Release 2.17.0.2 =
 Released: 2024-11-01
