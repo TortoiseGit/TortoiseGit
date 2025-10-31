@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -22,7 +22,7 @@
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011,2014
 # Nick Vrvilo <nick@vrvilo.com>, 2011
 # Sven Strickroth <sstrickroth@googlemail.com>, 2013,2018,2021
-# Will保哥 <doggy.huang@gmail.com>, 2020
+# Will保哥（保哥） <doggy.huang@gmail.com>, 2020
 # Yue Lin Ho <yuelinho777@gmail.com>, 2014-2020
 # 乙酸鋰 <ch3cooli@gmail.com>, 2012,2017,2019
 # Yue Lin Ho <yuelinho777@gmail.com>, 2017
@@ -733,9 +733,10 @@ msgid "&Font:"
 msgstr "字型(&F)："
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "強制(&F)"
 
@@ -992,8 +993,8 @@ msgid "&None"
 msgstr "無(&N)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1425,10 +1426,6 @@ msgstr "是(&Y)"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "加入「cherry picked from」(&A)"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3381,6 +3378,10 @@ msgstr "因為目錄已滿, %1  無法建立."
 msgid "Could not determine the last committed revision!"
 msgstr "無法判斷最後提交的版本!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "無法找到上層專案"
@@ -3523,7 +3524,8 @@ msgstr "建立分支(&B)..."
 msgid "Create &Library"
 msgstr "建立媒體櫃(&L)"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "建立新分支(&N)"
 
@@ -4713,7 +4715,7 @@ msgstr "離開"
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "瀏覽至"
 
@@ -4970,6 +4972,10 @@ msgstr "檔案是空的。"
 msgid "File list is empty"
 msgstr "檔案列表是空的"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "檔案補綴"
@@ -5201,6 +5207,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "目前分支「%1!s!」沒有設定追蹤分支。\n你想要將「%2!s!」設為追踨分支嗎？\n設定之後，會在「推送」和「拉取」時自動將它選取為目標分支。"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5219,6 +5229,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "強制推送選取的遠端參照並且沒有任何安全檢查地覆蓋它。\n這會導致遠端版本庫丟失沒被注意到的提交，小心使用。\n這個選項對應到 git 選項 --force。"
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6458,9 +6472,17 @@ msgstr "最近 %s 年"
 msgid "Last Author"
 msgstr "上一個作者"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "上次提交"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9316,14 +9338,11 @@ msgstr "把所選本地分支的「pushbranch」設到這個遠端分支"
 msgid "Setting properties..."
 msgstr "正在設定性質．．．"
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "設定"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "設定 - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12234,10 +12253,6 @@ msgstr "檔案（非子模組）"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "「檔案／資料夾」名稱"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

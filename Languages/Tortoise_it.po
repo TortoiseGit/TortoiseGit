@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -737,9 +737,10 @@ msgid "&Font:"
 msgstr "&Font:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Forza"
 
@@ -996,8 +997,8 @@ msgid "&None"
 msgstr "&Nessuno"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1429,10 +1430,6 @@ msgstr "&Sì"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "&aggiungi \"cherry scelto da\""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3385,6 +3382,10 @@ msgstr "%1 non può essere creato: il disco è pieno."
 msgid "Could not determine the last committed revision!"
 msgstr "Impossibile ottenere l'ultima revisione inviata!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr ""
@@ -3527,7 +3528,8 @@ msgstr "Crea &Ramo"
 msgid "Create &Library"
 msgstr "Crea &libreria"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "Crea &Nuovo Ramo"
 
@@ -4717,7 +4719,7 @@ msgstr "Esci"
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Apri percorso file"
 
@@ -4974,6 +4976,10 @@ msgstr "Il file è vuoto"
 msgid "File list is empty"
 msgstr "Lìelenco dei file è vuota"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Patch"
@@ -5205,6 +5211,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5223,6 +5233,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "Forzare Push verso il riferimento remoto selezionato e sovrascriverlo senza alcun controllo di sicurezza.\nCiò può causare la perdita di commit invisibili nel repository remoto; usalo con cura.\nQuesta opzione corrisponde all'opzione --force git."
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6462,9 +6476,17 @@ msgstr "Ultimi %s anno(i)"
 msgid "Last Author"
 msgstr "Ultimo Autore"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "Ultimo invio"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9320,14 +9342,11 @@ msgstr ""
 msgid "Setting properties..."
 msgstr "Impostazione delle proprietà..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Impostazioni"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Impostazioni - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12238,10 +12257,6 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "Nomi di file/cartelle"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -18,7 +18,7 @@
 # Obareo, 2019,2021,2023
 # peu <peu@rekoba.de>, 2013
 # Stefan Kueng <tortoisesvn@gmail.com>, 2014
-# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2024
+# Sven Strickroth <sstrickroth@googlemail.com>, 2012-2025
 # Thilo Berger <thilob.tb34@gmail.com>, 2017
 # Torsten Widmann <goover0976@googlemail.com>, 2012
 msgid ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>, 2012-2024\n"
+"Last-Translator: Sven Strickroth <sstrickroth@googlemail.com>, 2012-2025\n"
 "Language-Team: German (http://app.transifex.com/lznuaa/tortoisegit/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -727,9 +727,10 @@ msgid "&Font:"
 msgstr "&Schriftart:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "Er&zwingen"
 
@@ -986,8 +987,8 @@ msgid "&None"
 msgstr "&Keine"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr "&Editor"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1419,10 +1420,6 @@ msgstr "&Ja"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "füge \"cherry picked from\" &hinzu"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr "&zwingen"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3375,6 +3372,10 @@ msgstr "Konnte %1 nicht erstellen, weil der Ordner voll ist."
 msgid "Could not determine the last committed revision!"
 msgstr "Konnte die letzte eingetragene Revision nicht ermitteln!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr "Konnte die Eintragung nicht abrufen oder die Unterschiede berechnen."
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "Konnte übergeordnetes Projekt nicht finden"
@@ -3517,7 +3518,8 @@ msgstr "Erzeuge &Zweig..."
 msgid "Create &Library"
 msgstr "&Bibliothek erstellen"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "Erzeuge &neuen Zweig"
 
@@ -4707,7 +4709,7 @@ msgstr "Beenden"
 msgid "Expand collapsed revisions"
 msgstr "Zusammengefasste Revisionen erweitern"
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Explorer öffnen"
 
@@ -4964,6 +4966,10 @@ msgstr "De Datei ist leer."
 msgid "File list is empty"
 msgstr "Leere Dateiliste"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr "Die Dateiliste ist wegen eines aktiven Filters leer."
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Datei Patches"
@@ -5195,6 +5201,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "Für den aktuellen Zweig \"%1!s!\" ist kein beobachteter entfernter Zweig konfiguriert.\nMöchten Sie den gewählten Zweig \"%2!s!\" als beobachteten entfernten Zweig setzen?\nDies sorgt dafür, dass dieser in Zukunft automatisch für Versenden und Anfordern ausgewählt wird."
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr "Erz&wingen \"with lease\""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5213,6 +5223,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "Erzwinge das Versenden zur entfernten Referenz und überschreibe diese ohne weitere Überprüfungen.\nDies kann dazu führen, dass im entfernten Repository ungesehene Eintragungen verloren gehen; benutzen Sie diese Option mit vorsicht.\nDiese Option entspricht der --force Git Option."
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr "Entfernen erzwingen"
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6452,9 +6466,17 @@ msgstr "Letzte(s) %s Jahr(e)"
 msgid "Last Author"
 msgstr "Letzter Autor"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr "Letzter Autorenzeitstempel"
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "Letzte Eintragung"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr "Letzer Eintrager"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9295,7 +9317,7 @@ msgstr "Setze Autor"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1557)
 msgid "Set author &date"
-msgstr "Setze Eintrage&datum"
+msgstr "Setze Autoren&zeitstempel"
 
 #. Resource IDs: (IDS_PUSHDLG_PUSHREMOTE_TT)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
@@ -9310,14 +9332,11 @@ msgstr "Speichert den entfernten Zweig als \"pushbranch\" für den ausgewählten
 msgid "Setting properties..."
 msgstr "Setze Eigenschaften..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Einstellungen"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Einstellungen - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12228,10 +12247,6 @@ msgstr "Datei, kein Submodul"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "Datei-/Verzeichnisnamen"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr "erz&wingen \"with lease\""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

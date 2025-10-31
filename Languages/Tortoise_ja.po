@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -747,9 +747,10 @@ msgid "&Font:"
 msgstr "フォント(&F):"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "強制(&F)"
 
@@ -1006,8 +1007,8 @@ msgid "&None"
 msgstr "無し(&N)"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1439,10 +1440,6 @@ msgstr "はい(&Y)"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "\"cherry picked from\" を追加(&A)"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr "強制(&F) (force)"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3395,6 +3392,10 @@ msgstr "ディレクトリがいっぱいなので %1 を作成できません�
 msgid "Could not determine the last committed revision!"
 msgstr "最後にコミットしたリビジョンを決定できませんでした。"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "親プロジェクトが見つかりません"
@@ -3537,7 +3538,8 @@ msgstr "ブランチを作成(&B)..."
 msgid "Create &Library"
 msgstr "ライブラリを作成(&L)"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "新しいブランチを作成(&N)"
 
@@ -4727,7 +4729,7 @@ msgstr "終了"
 msgid "Expand collapsed revisions"
 msgstr "リビジョンを展開"
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "エクスプローラーで開く"
 
@@ -4984,6 +4986,10 @@ msgstr "ファイルは空です。"
 msgid "File list is empty"
 msgstr "ファイルリストは空です"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "ファイルパッチ"
@@ -5215,6 +5221,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "現在のブランチ \"%1!s!\" について、追跡対象のブランチ (tracked branch) が設定されていません。\n選択されたブランチ \"%2!s!\" を追跡対象のブランチに設定しますか?\nこれにより、プッシュ/プルの対象として自動的に選択されるようになります。"
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5233,6 +5243,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "安全性のチェックなしに、選択されたリモートの参照へプッシュし、上書きします。\nこれによって、リモートリポジトリの、まだ把握していないコミットが失われるかもしれません。注意して使用してください。\nこのオプションは、git の --force に相当します。"
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6472,9 +6486,17 @@ msgstr "最後の %s 年間"
 msgid "Last Author"
 msgstr "最終更新者"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "最後のコミット"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9330,14 +9352,11 @@ msgstr "選択したローカルブランチでリモートブランチを「pus
 msgid "Setting properties..."
 msgstr "プロパティを設定..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "設定"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "設定 - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12248,10 +12267,6 @@ msgstr "サブモジュールでないファイル"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "ファイル/フォルダ名"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr "占有ブランチに強制(&W) (force-with-lease)"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

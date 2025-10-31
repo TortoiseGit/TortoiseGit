@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -10,15 +10,16 @@
 # jotpeg <janekpg@gazeta.pl>, 2013
 # kkotowicz <kkotowicz@gmail.com>, 2011
 # lukaszkoziara <koziara.lukasz@gmail.com>, 2017,2019
-# Kuba Niewiarowski <jakub@niewiarowski.it>, 2018,2020
+# Kuba Niewiarowski (marsjaninzmarsa) <jakub@niewiarowski.it>, 2018,2020
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011
 # Łukasz Fortuna <lfortuna@windowslive.com>, 2021
 # lukaszkoziara <koziara.lukasz@gmail.com>, 2017
-# Mariusz K, 2022
+# Mariusz Krzaczkowski, 2022
+# Mariusz Krzaczkowski, 2025
 # Michał Lipok <michal@lipok.pl>, 2015
 # MikDal002 <mikdal_opensource@outlook.com>, 2023
-# Mariusz K, 2022
+# Mariusz Krzaczkowski, 2022
 # mkrawiecki <michal.krawiecki@erlkoenig.pl>, 2011
 # Pablos <pawel.patyk@pabloart.pl>, 2012,2016
 # Pablos <pawel.patyk@pabloart.pl>, 2016
@@ -34,7 +35,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: MikDal002 <mikdal_opensource@outlook.com>, 2023\n"
+"Last-Translator: Mariusz Krzaczkowski, 2025\n"
 "Language-Team: Polish (http://app.transifex.com/lznuaa/tortoisegit/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -734,9 +735,10 @@ msgid "&Font:"
 msgstr "&Czcionka:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Wymuś"
 
@@ -993,8 +995,8 @@ msgid "&None"
 msgstr "&Nic"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1427,10 +1429,6 @@ msgstr "Tak"
 msgid "&add \"cherry picked from\""
 msgstr "dod&aj \"selekcyjnie zatwierdzono z\""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
 msgstr "&Ignoruj zmiany białych znaków"
@@ -1859,7 +1857,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
-msgstr ""
+msgstr "Wszystkie odniesienia"
 
 #. Resource IDs: (IDS_ALLTAGS)
 msgid "All tags"
@@ -2003,7 +2001,7 @@ msgstr "Zastosuj plik różnicowy w formacie Unified Diff"
 
 #. Resource IDs: (IDS_HOOKS_APPROVE_TASK2)
 msgid "Approve or reject client-side hook script"
-msgstr ""
+msgstr "Zatwierdź lub odrzuć skrypt haka po stronie klienta"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Arabic"
@@ -2048,7 +2046,7 @@ msgstr "Porządkowanie p&ionowe\tV"
 
 #. Resource IDs: (ID_VIEW_ARROW_POINT_TO_MERGES - Menu)
 msgid "Arrows point towards merges"
-msgstr ""
+msgstr "Strzałki wskazują na połączenia"
 
 #. Resource IDs: (IDS_SVNACTION_CHANGELISTSET)
 #, c-format
@@ -2312,7 +2310,7 @@ msgstr "Mieszanie alfa"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSMERGE: Control id 1852)
 msgid "Block TortoiseGit while executing the external merge tool"
-msgstr ""
+msgstr "Zablokuj TortoiseGit podczas wykonywania narzędzia do scalania zewnętrznego"
 
 #. Resource IDs: (cmdGroupBlocks_LabelTitle_RESID)
 msgid "Blocks"
@@ -2681,7 +2679,7 @@ msgstr "Lista zmian %s przeniesiona"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1242)
 msgid "Changes made (F5: refresh, double-click on file for diff):"
-msgstr ""
+msgstr "Wprowadzone zmiany (F5: odśwież, kliknij dwukrotnie plik, aby wyświetlić różnice):"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS3: Control id 65535)
 msgid "Char position where to show a border line in commit text boxes:"
@@ -2751,11 +2749,11 @@ msgstr "Przełączenie ze scaleniem"
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSIONS)
 msgid "Cherr&y Pick selected commits..."
-msgstr ""
+msgstr "Wybierz wybrane zatwierdzenia..."
 
 #. Resource IDs: (IDS_CHERRY_PICK_VERSION)
 msgid "Cherr&y Pick this commit..."
-msgstr ""
+msgstr "Wybierz dokładnie to zatwierdzenie..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CHERRYPICK)
 msgid "Cherry Pick"
@@ -2769,7 +2767,7 @@ msgstr "Nieudane selekcjonowanie"
 msgid ""
 "Cherry-pick failed (please see log in the cherry pick/rebase dialog for "
 "details)! Skip this commit?"
-msgstr ""
+msgstr "Cherry-pick nie powiódł się (szczegóły w logu w oknie dialogowym cherry-pick/rebase)! Pominąć to zatwierdzenie?"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Chinese"
@@ -2915,7 +2913,7 @@ msgstr "Klonuj jako gołe repozytorium"
 
 #. Resource IDs: (IDS_CLONE_BARE_REPO_TT)
 msgid "Clone into a git repository without the working tree."
-msgstr ""
+msgstr "Klonuj do repozytorium git bez drzewa roboczego."
 
 #. Resource IDs: (IDS_MENUCLONE)
 msgid "Clone..."
@@ -2989,7 +2987,7 @@ msgstr "Kolumna: %d"
 
 #. Resource IDs: (IDS_COMBINE_TO_ONE)
 msgid "Com&bine to one commit"
-msgstr ""
+msgstr "Połącz w jedno zatwierdzenie"
 
 #. Resource IDs: (Dialog IDD_SENDMAIL: Control id 1481)
 msgid "Combine One Mail"
@@ -3058,7 +3056,7 @@ msgstr "Nazwa zatwierdzenia"
 
 #. Resource IDs: (Dialog IDD_LOGORDERING: Control id 1750)
 msgid "Commit Ordering:"
-msgstr ""
+msgstr "Zamówienie zatwierdzenia:"
 
 #. Resource IDs: (IDS_PROC_COMMIT_SUPERPROJECT)
 msgid "Commit super project"
@@ -3124,7 +3122,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_COMPAREREFS)
 msgid "Compare selected refs"
-msgstr ""
+msgstr "Porównaj wybrane referencje"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
 msgid "Compare tags"
@@ -3229,7 +3227,7 @@ msgstr "Skonfiguruj program do przeglądania plików różnicowych GNU (plików 
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1768)
 msgid "Confirm to kill running git process"
-msgstr ""
+msgstr "Potwierdź zakończenie uruchomionego procesu git"
 
 #. Resource IDs: (Dialog IDD_RESOLVE_CONFLICT: Control id 4568,
 #. IDS_PATHACTIONS_CONFLICT)
@@ -3382,6 +3380,10 @@ msgstr "%1 nie może być utworzony. Katalog jest pełny."
 msgid "Could not determine the last committed revision!"
 msgstr "Nie można określić ostatniej zatwierdzonej wersji!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "Nie można znaleźć Super-projektu"
@@ -3524,7 +3526,8 @@ msgstr "Stwórz &gałąź..."
 msgid "Create &Library"
 msgstr "Utwórz &bibliotekę"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "Stwórz &nową gałąź"
 
@@ -4714,7 +4717,7 @@ msgstr "Wyjdź"
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Eksploruj do"
 
@@ -4971,6 +4974,10 @@ msgstr "Plik jest pusty."
 msgid "File list is empty"
 msgstr "Lista plików jest pusta"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Plik poprawek"
@@ -5202,6 +5209,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5219,6 +5230,10 @@ msgid ""
 "Force push to the selected remote reference and override it without any safety checks.\n"
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
+msgstr ""
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
@@ -6459,9 +6474,17 @@ msgstr ""
 msgid "Last Author"
 msgstr "Ostatni autor"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "Ostatnie zatwierdzenie"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9317,14 +9340,11 @@ msgstr ""
 msgid "Setting properties..."
 msgstr "Ustawianie atrybutów..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Ustawienia"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Ustawienia - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12235,10 +12255,6 @@ msgstr "plik, nie podmoduł"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "nazwy plików/folderów"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

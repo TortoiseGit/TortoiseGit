@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -11,6 +11,7 @@
 # அனிச் பிரபு தி, 2021-2022
 # அனிச் பிரபு தி, 2021
 # தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2023-2024
+# தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2025
 # தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2021
 # தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2021-2023
 msgid ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2023-2024\n"
+"Last-Translator: தமிழ்நேரம் ஐ <anishprabu.t@gmail.com>, 2025\n"
 "Language-Team: Tamil (India) (http://app.transifex.com/lznuaa/tortoisegit/language/ta_IN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -719,9 +720,10 @@ msgid "&Font:"
 msgstr "&எழுத்துரு:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&கட்டாயமாக"
 
@@ -978,8 +980,8 @@ msgid "&None"
 msgstr "&ஒன்றுமில்லை"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&நோட்பேட்2"
+msgid "&Notepad"
+msgstr "குறிப்பேடு"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1411,10 +1413,6 @@ msgstr "&ஆம்"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "&சேர் \"சிவந்த கனி தேர்ந்தெடுக்கப்பட்டது\""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr "&கட்டாயப்படுத்து"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3367,6 +3365,10 @@ msgstr "கோப்பகம் நிரம்பியிருப்பத�
 msgid "Could not determine the last committed revision!"
 msgstr "கடைசியாக செய்யப்பட்ட மீள்திருத்தத்தை தீர்மானிக்க முடியவில்லை!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr "உறுதிமொழியைப் பெறவோ அல்லது வேறுபாட்டைக் கணக்கிடவோ முடியவில்லை."
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "மேம்பட்ட-திட்டத்தை கண்டுபிடிக்க முடியவில்லை"
@@ -3509,7 +3511,8 @@ msgstr "&கிளையை உருவாக்கு..."
 msgid "Create &Library"
 msgstr "&நூலகத்தை உருவாக்கு"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "&புதிய கிளையை உருவாக்கு"
 
@@ -4699,7 +4702,7 @@ msgstr "வெளியேறு"
 msgid "Expand collapsed revisions"
 msgstr "சுருங்கிய மீள்திருத்தங்களை விரிவாக்கு"
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "இதற்கு ஏற்றுமதி"
 
@@ -4956,6 +4959,10 @@ msgstr "கோப்பு காலியாக உள்ளது."
 msgid "File list is empty"
 msgstr "கோப்பு பட்டியல் காலியாக உள்ளது"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr "செயலில் உள்ள வடிகட்டி காரணமாக கோப்பு பட்டியல் காலியாக உள்ளது."
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "கோப்பு ஒட்டுகள்"
@@ -5187,6 +5194,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "தற்போதைய கிளைக்கு \"%1!s!\" கண்காணிக்கப்பட்ட கிளை எதுவும் உள்ளமைக்கப்படவில்லை.\nதேர்ந்தெடுக்கப்பட்ட கிளை \"%2!s!\"ஐ கண்காணிக்கப்பட்ட கிளையாக அமைக்க விரும்புகிறீர்களா?\nஇது எதிர்காலத்தில் தள்ளுவதற்கும் இழுப்பதற்கும் தானாகவே அதைத் தேர்ந்தெடுக்கும்."
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr "குத்தகையுடன் கட்டாயப்படுத்துதல்"
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5205,6 +5216,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "தேர்ந்தெடுக்கப்பட்ட தொலைநிலைக் குறிப்பிற்கு கட்டாயமாக அழுத்தி, பாதுகாப்புச் சோதனைகள் எதுவுமின்றி மேலெழுதவும்.\nஇது தொலைநிலைக் களஞ்சியத்தை காணாத உறுதிமொழிகளை இழக்கச் செய்யலாம்; கவனமாகப் பயன்படுத்தவும்.\nஇந்த விருப்பம் --force கிட் விருப்பத்திற்கு ஒத்திருக்கிறது."
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr "கட்டாய நீக்கம்"
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6444,9 +6459,17 @@ msgstr "கடந்த %s ஆண்டு(கள்)"
 msgid "Last Author"
 msgstr "கடைசி ஆசிரியர்"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr "கடைசி ஆசிரியர் தேதி"
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "கடைசி உறுதிமொழி"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr "கடைசி உறுதிமொழியாளர்"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9302,14 +9325,11 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட உள்ள�
 msgid "Setting properties..."
 msgstr "பண்புகளை அமைத்தல்..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "அமைப்புகள்"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "அமைப்புகள் - ஆமைகிட்"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12220,10 +12240,6 @@ msgstr "கோப்பு, துணைதொகுதி அல்ல"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "கோப்பு/கோப்புறை பெயர்கள்"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr "குத்தகையுடன் கட்டாயப்படுத்தவும்"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -23,7 +23,7 @@
 # MDK3 <hanaure@gmail.com>, 2016
 # Mairieli Wessel <mairieliw@alunos.utfpr.edu.br>, 2016
 # Marcelo Moro Brondani <mbrondani@inf.ufsm.br>, 2016
-# Matheus Macabu <mkbu95@gmail.com>, 2013
+# e0468a3273212d32165a91bfa31ede41_72f4ea0 <bc0cf8dd1a62f7f5ee4a64d16d2178af_44233>, 2013
 # MDK3 <hanaure@gmail.com>, 2016
 # Michel K <michel.apt1@gmail.com>, 2015
 # Paulo Pires <paulo.albert.pires@gmail.com>, 2015
@@ -750,9 +750,10 @@ msgid "&Font:"
 msgstr "&Fonte:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Forçar"
 
@@ -1009,8 +1010,8 @@ msgid "&None"
 msgstr "&Nenhum"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1442,10 +1443,6 @@ msgstr "&Sim"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "&adicionar \"escolha seletiva a partir de\""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr "&forçar"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -3398,6 +3395,10 @@ msgstr "%1 não pôde ser criado porque o diretório está cheio."
 msgid "Could not determine the last committed revision!"
 msgstr "Não foi possível determinar a revisão mais recente submetida!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "Não foi possível encontrar o Super-projeto"
@@ -3540,7 +3541,8 @@ msgstr "Criar &Ramo..."
 msgid "Create &Library"
 msgstr "Criar &Bibilioteca"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "Criar &Novo Branch"
 
@@ -4730,7 +4732,7 @@ msgstr "Sair"
 msgid "Expand collapsed revisions"
 msgstr "Expandir revisões fechadas"
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Explorar"
 
@@ -4987,6 +4989,10 @@ msgstr "O arquivo está vazio."
 msgid "File list is empty"
 msgstr "Lista de arquivos vazia"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Correções de arquivo"
@@ -5218,6 +5224,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "Para o ramo atual \"%1!s!\" não há ramo rastreado configurado.\nVocê quer definir o ramo selecionado \"%2!s!\" como ramo rastreado?\nIsto irá selecioná-lo automaticamente para empurrar e puxar no futuro."
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5236,6 +5246,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "Força empurrar para a referência remota selecionada e a sobrescreve sem qualquer checagem de segurança.\nIsto pode fazer com que o repositório remoto perca submissões não vistas; use com cuidado.\nEsta opção corresponde a opção --force do git."
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -6475,9 +6489,17 @@ msgstr "Últimos %s anos"
 msgid "Last Author"
 msgstr "Último Autor"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "Última Submissão:"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -9333,14 +9355,11 @@ msgstr "Configura o ramo remoto como o \"pushbranch\" para o ramo local selecion
 msgid "Setting properties..."
 msgstr "Ajuste de propriedades..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Preferências"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Configurações - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12251,10 +12270,6 @@ msgstr "arquivo, não um submódulo"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "nomes de arquivos/pastas"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

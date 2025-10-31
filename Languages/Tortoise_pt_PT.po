@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -15,6 +15,7 @@
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011-2012
 # Lübbe Onken <luebbe.opensource@gmail.com>, 2011-2012
 # Luis Xavier Baena Mourão <luisxbm@gmail.com>, 2015
+# Manuela Silva <mmsrs@sky.com>, 2025
 # Michel K <michel.apt1@gmail.com>, 2015
 # Michel K <michel.apt1@gmail.com>, 2015
 # Paulo Borges <poolborges@hotmail.com>, 2023
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Paulo Borges <poolborges@hotmail.com>, 2023\n"
+"Last-Translator: Manuela Silva <mmsrs@sky.com>, 2025\n"
 "Language-Team: Portuguese (Portugal) (http://app.transifex.com/lznuaa/tortoisegit/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +56,7 @@ msgstr "! %d"
 
 #. Resource IDs: (Dialog IDD_STATGRAPH: Control id 1262)
 msgid "# authors shown individually:"
-msgstr "# autores indicados individualmente:"
+msgstr "# autores mostrados individualmente:"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALMBTRANSFERRED)
 #, c-format
@@ -70,12 +71,12 @@ msgstr "%1 continha um objecto inesperado."
 #. Resource IDs: (AFX_IDP_FILE_BAD_PATH)
 #, c-format
 msgid "%1 contains an incorrect path."
-msgstr "%1 contém um caminho incorrecto."
+msgstr "%1 contém um caminho incorreto."
 
 #. Resource IDs: (AFX_IDP_ARCH_BADSCHEMA)
 #, c-format
 msgid "%1 contains an incorrect schema."
-msgstr "%1 contém um esquema incorrecto."
+msgstr "%1 contém um esquema incorreto."
 
 #. Resource IDs: (AFX_IDP_ARCH_BADINDEX)
 #, c-format
@@ -90,82 +91,82 @@ msgstr "%1 não foi encontrado."
 #. Resource IDs: (IDS_DAY_AGO)
 #, c-format
 msgid "%1!d! Day ago"
-msgstr "%1!d! Dia atrás"
+msgstr "Há %1!d! dia"
 
 #. Resource IDs: (IDS_DAYS_AGO)
 #, c-format
 msgid "%1!d! Days ago"
-msgstr "%1!d! Dias atrás"
+msgstr "Há %1!d! dias"
 
 #. Resource IDs: (IDS_HOUR_AGO)
 #, c-format
 msgid "%1!d! Hour ago"
-msgstr "%1!d! Hora atrás"
+msgstr "Há %1!d! hora"
 
 #. Resource IDs: (IDS_HOURS_AGO)
 #, c-format
 msgid "%1!d! Hours ago"
-msgstr "%1!d! Horas atrás"
+msgstr "Há %1!d! horas"
 
 #. Resource IDs: (IDS_MINUTE_AGO)
 #, c-format
 msgid "%1!d! Minute ago"
-msgstr "%1!d! Minuto atrás"
+msgstr "Há %1!d! minuto"
 
 #. Resource IDs: (IDS_MONTH_AGO)
 #, c-format
 msgid "%1!d! Month ago"
-msgstr "%1!d! Mês atrás"
+msgstr "Há %1!d! mês"
 
 #. Resource IDs: (IDS_MONTHS_AGO)
 #, c-format
 msgid "%1!d! Months ago"
-msgstr "%1!d! Meses atrás"
+msgstr "Há %1!d! meses"
 
 #. Resource IDs: (IDS_SECOND_AGO)
 #, c-format
 msgid "%1!d! Second ago"
-msgstr "%1!d! Segundo atrás"
+msgstr "Há %1!d! segundo"
 
 #. Resource IDs: (IDS_SECONDS_AGO)
 #, c-format
 msgid "%1!d! Seconds ago"
-msgstr "%1!d! Segundos atrás"
+msgstr "Há %1!d! segundos"
 
 #. Resource IDs: (IDS_WEEK_AGO)
 #, c-format
 msgid "%1!d! Week ago"
-msgstr "%1!d! Semana atrás"
+msgstr "Há %1!d! semana"
 
 #. Resource IDs: (IDS_WEEKS_AGO)
 #, c-format
 msgid "%1!d! Weeks ago"
-msgstr "%1!d! Semanas atrás"
+msgstr "Há %1!d! semanas"
 
 #. Resource IDs: (IDS_YEAR_AGO)
 #, c-format
 msgid "%1!d! Year ago"
-msgstr "%1!d! Ano atrás"
+msgstr "Há %1!d! ano"
 
 #. Resource IDs: (IDS_YEARS_AGO)
 #, c-format
 msgid "%1!d! Years ago"
-msgstr "%1!d! Anos atrás"
+msgstr "Há %1!d! anos"
 
 #. Resource IDs: (IDS_PROC_SYNC_COMMITSAHEAD)
 #, c-format
 msgid "%1!d! commits ahead \"%2!s!\""
-msgstr ""
+msgstr "%1!d! submissões à frente de \"%2!s!\""
 
 #. Resource IDs: (IDS_STATUSLIST_FILESREVERTED)
 #, c-format
 msgid "%1!d! files reverted to %2!s!."
-msgstr ""
+msgstr "%1!d! ficheiros revertidos para %2!s!."
 
 #. Resource IDs: (IDS_COMMITDLG_STATISTICSFORMAT)
 #, c-format
 msgid "%1!d! files selected, %2!d! files total"
-msgstr "%1!d! arquivos selecionados, %2!d! total de arquivos"
+msgstr "%1!d! ficheiros selecionados, %2!d! total de ficheiros"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOMULTI)
 #, c-format
@@ -175,13 +176,13 @@ msgstr "%1!d! itens selecionados"
 #. Resource IDs: (IDS_MINUTES_AGO)
 #, c-format
 msgid "%1!d! minutes ago"
-msgstr "%1!d! minutos atrás"
+msgstr "Há %1!d! minutos"
 
 #. Resource IDs: (IDS_STATGRAPH_AUTHORSLIDER_TT)
 #, c-format
 msgid ""
 "%1!d! most active author(s) with at least %2!d! commits each (%3!d! %%)"
-msgstr "%1!d! autor(es) mais ativos com pelo menos %2!d! commits cada um (%3!d! %%)"
+msgstr "%1!d! autor(es) mais ativos com pelo menos %2!d! submissões cada um (%3!d! %%)"
 
 #. Resource IDs: (IDS_PROGRS_TIME)
 #, c-format
@@ -196,43 +197,43 @@ msgstr "%1!s! (%2!s!)"
 #. Resource IDs: (IDS_PROGRS_PATHATREV)
 #, c-format
 msgid "%1!s! - at revision: %2!d!"
-msgstr ""
+msgstr "%1!s! - na revisão: %2!d!"
 
 #. Resource IDs: (IDS_PROGRS_FINALINFO)
 #, c-format
 msgid "%1!s! in %2!s!"
-msgstr ""
+msgstr "%1!s! em %2!s!"
 
 #. Resource IDs: (IDS_GITVER_REQUIRED)
 #, c-format
 msgid "%1!s! requires Git >= %2!s!"
-msgstr ""
+msgstr "%1!s! requer Git >= %2!s!"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALANDSPEED)
 #, c-format
 msgid "%1!s!, at %2!s!"
-msgstr ""
+msgstr "%1!s!, em %2!s!"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFO)
 #, c-format
 msgid ""
 "%1!s!\n"
 "Showing %2!d! files, %3!d! submodules and %4!d! folders, %5!d! items in total"
-msgstr ""
+msgstr "%1!s!\nMostrando %2!d! ficheiros, %3!d! submódulos e %4!d! pastas, %5!d! itens no total"
 
 #. Resource IDs: (IDS_REPOBROWSE_INFOFILE)
 #, c-format
 msgid ""
 "%1!s!\n"
 "Size %2!s!"
-msgstr ""
+msgstr "%1!s!\nTamanho %2!s!"
 
 #. Resource IDs: (AFX_IDP_SCRIPT_ERROR)
 #, c-format
 msgid ""
 "%1: %2\n"
 "Continue running script?"
-msgstr "%1: %2\nContinuar a executar o script?"
+msgstr "%1: %2\nContinuar a executar o comando?"
 
 #. Resource IDs: (AFX_IDP_FAILED_INVALID_PATH)
 #, c-format
@@ -245,7 +246,7 @@ msgstr "%1\nO arquivo não foi encontrado.\nVerifique se o caminho e o nome do a
 #. Resource IDs: (IDS_CONFIG_GLOBAL_TT)
 #, c-format
 msgid "%HOME%/.gitconfig or %XDGHOME%/git/config"
-msgstr ""
+msgstr "%HOME%/.gitconfig ou %XDGHOME%/git/config"
 
 #. Resource IDs: (IDS_SVN_PROGRESS_TOTALBYTESTRANSFERRED)
 #, c-format
@@ -272,12 +273,12 @@ msgstr "%Ts\n%Ts"
 #. Resource IDs: (IDS_FILESCHANGES)
 #, c-format
 msgid "%d files changed"
-msgstr "%d arquivos alterados"
+msgstr "%d ficheiros alterados"
 
 #. Resource IDs: (IDS_PROC_FILESREMOVED)
 #, c-format
 msgid "%d files removed."
-msgstr "%d arquivos removidos."
+msgstr "%d ficheiros removidos."
 
 #. Resource IDs: (IDS_ALPHABUTTONTT)
 #, c-format
@@ -295,7 +296,7 @@ msgstr "%ld de %ld"
 #. Resource IDs: (IDS_DIFF_WCNAME)
 #, c-format
 msgid "%s: Working Tree"
-msgstr ""
+msgstr "%s: Árvore de Trabalho"
 
 #. Resource IDs: (IDS_PATCH_ITEMTT)
 #, c-format
@@ -399,7 +400,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 1015)
 msgid "&Backup original file"
-msgstr "Fazer &cópia de segurança do arquivo original"
+msgstr "Efetuar &cópia de segurança do ficheiro original"
 
 #. Resource IDs: (IDS_MENUBLAME)
 msgid "&Blame"
@@ -430,12 +431,12 @@ msgstr ""
 
 #. Resource IDs: (IDS_LOG_BROWSEREPO)
 msgid "&Browse repository"
-msgstr "&Navegar repositório"
+msgstr "&Explorar repositório"
 
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1382, Dialog IDD_OPENDLG:
 #. Control id 1001, Dialog IDD_OPENDLG: Control id 1009, IDS_PROC_CLONE_DIR)
 msgid "&Browse..."
-msgstr "&Navegar..."
+msgstr "&Explorar..."
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1051)
 msgid "&CD-ROM"
@@ -532,20 +533,20 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1269)
 msgid "&Default"
-msgstr "Por &omissão"
+msgstr "Pre&definição"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 1, IDS_DELETEBUTTON,
 #. IDS_DELETE_BRANCHTAG_SHORT, IDS_MENUREMOVE)
 msgid "&Delete"
-msgstr "&Remover"
+msgstr "&Eliminar"
 
 #. Resource IDs: (IDS_MENUREMOVEKEEP)
 msgid "&Delete (keep local)"
-msgstr "&Remover (manter local)"
+msgstr "&Eliminar (manter local)"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 1507)
 msgid "&Delete Filter"
-msgstr "&Apagar Filtro"
+msgstr "&Eliminar Filtro"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete branch on remote && local remote-tracking branch"
@@ -581,11 +582,11 @@ msgstr ""
 
 #. Resource IDs: (ID_VIEW_DETECT_MOVED_OR_COPIED_LINES_DISABLED - Menu)
 msgid "&Disabled"
-msgstr "&Desabilitar"
+msgstr "&Desativado"
 
 #. Resource IDs: (IDS_DISCARDBUTTON)
 msgid "&Discard"
-msgstr "&Descartar"
+msgstr "&Rejeitar"
 
 #. Resource IDs: (IDS_DO_SAME_FOR_REST)
 msgid "&Do the same for the rest"
@@ -599,12 +600,12 @@ msgstr ""
 
 #. Resource IDs: (IDS_MSGBOX_DONOTSHOWAGAIN)
 msgid "&Don't show this message again"
-msgstr "&Não voltar a mostrar isto novamente"
+msgstr "&Não voltar a mostrar esta mensagem"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_AUTHENTICATION: Control id 1839,
 #. Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 1839)
 msgid "&Don't store these settings now."
-msgstr "&Não guardar estas configurações agora."
+msgstr "&Não guardar estas definições agora."
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
 msgid "&Down"
@@ -613,7 +614,7 @@ msgstr "&Baixo"
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1710,
 #. IDS_PROC_DOWNLOAD)
 msgid "&Download"
-msgstr "&Descarregar"
+msgstr "&Transferir"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Edit"
@@ -625,7 +626,7 @@ msgstr "&Editar .git/config"
 
 #. Resource IDs: (IDS_PROC_REBASE_SELECTALL_EDIT)
 msgid "&Edit ALL"
-msgstr "&Editar tudo"
+msgstr "&Editar TUDO"
 
 #. Resource IDs: (Dialog IDD_REGEXFILTERS: Control id 1506)
 msgid "&Edit Filter"
@@ -650,20 +651,20 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_USER: Control id 65535, Dialog
 #. IDD_SETTINGIT_CONFIG: Control id 65535)
 msgid "&Email:"
-msgstr "&Email:"
+msgstr "&E-mail:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSBUGTRAQADV: Control id 1023, Dialog
 #. IDD_SETTINGSHOOKCONFIG: Control id 1023)
 msgid "&Enable"
-msgstr "&Activar"
+msgstr "&Ativar"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROXY: Control id 1023)
 msgid "&Enable Proxy Server"
-msgstr "&Activar Servidor Proxy"
+msgstr "&Ativar Servidor Proxy"
 
 #. Resource IDs: (ID_EDIT_ENABLE - Menu)
 msgid "&Enable edit"
-msgstr "Activar &editar"
+msgstr "Ativar &editar"
 
 #. Resource IDs: (ID_MENUEXIT - Menu)
 msgid "&Exit"
@@ -689,7 +690,7 @@ msgstr ""
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&File"
-msgstr "&Arquivo"
+msgstr "&Ficheiro"
 
 #. Resource IDs: (ID_VIEW_FILTER - Menu)
 msgid "&Filter"
@@ -697,11 +698,11 @@ msgstr "&Filtro"
 
 #. Resource IDs: (Dialog IDD_FIND: Control id 1)
 msgid "&Find"
-msgstr "&Localizar"
+msgstr "&Encontrar"
 
 #. Resource IDs: (32787 - Menu, ID_EDIT_FIND - Menu)
 msgid "&Find\tCtrl+F"
-msgstr "&Localizar\tCtrl+F"
+msgstr "&Encontrar\tCtrl+F"
 
 #. Resource IDs: (ID_VIEW_FITIMAGESINWINDOW - Menu)
 msgid "&Fit images in window\tF"
@@ -727,9 +728,10 @@ msgid "&Font:"
 msgstr "&Tipo de letra:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Forçar"
 
@@ -800,7 +802,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 1170)
 msgid "&Icon Set:"
-msgstr "&Conjunto de Ícones:"
+msgstr "&Conjunto de ícones:"
 
 #. Resource IDs: (IDS_IGNOREBUTTON, IDS_MSGBOX_IGNORE)
 msgid "&Ignore"
@@ -986,8 +988,8 @@ msgid "&None"
 msgstr "&Nenhum"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1420,10 +1422,6 @@ msgstr ""
 msgid "&add \"cherry picked from\""
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr ""
-
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
 msgstr ""
@@ -1583,7 +1581,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_CHECKNEWER_NEWERVERSIONAVAILABLE)
 msgid "A newer version is available. Please download the current version!"
-msgstr ""
+msgstr "Está disponível uma nova versão. Por favor, transfira a versão atual!"
 
 #. Resource IDs: (IDS_SETTINGS_INCLUDELIST_TT)
 msgid ""
@@ -3375,6 +3373,10 @@ msgstr "%1 não pôde ser criado porque o directório está cheio."
 msgid "Could not determine the last committed revision!"
 msgstr "Não foi possível determinar a revisão mais recente submetida!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr ""
@@ -3517,7 +3519,8 @@ msgstr ""
 msgid "Create &Library"
 msgstr "Criar &Biblioteca"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr ""
 
@@ -4315,11 +4318,11 @@ msgstr "Baixo"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
-msgstr ""
+msgstr "Transferir"
 
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_LANGUAGE: Control id 65535)
 msgid "Download language packs:"
-msgstr ""
+msgstr "Transferir pacotes de idiomas:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1073)
 msgid "Draw tag/branch labels on right side"
@@ -4707,7 +4710,7 @@ msgstr "Sair"
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Explorar para"
 
@@ -4964,6 +4967,10 @@ msgstr "O ficheiro está vazio."
 msgid "File list is empty"
 msgstr "A lista de ficheiros está vazia"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Correcções de ficheiros"
@@ -5195,6 +5202,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5212,6 +5223,10 @@ msgid ""
 "Force push to the selected remote reference and override it without any safety checks.\n"
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
+msgstr ""
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
@@ -6042,7 +6057,7 @@ msgid ""
 "If you want to use a translated version of TortoiseGit and your language is "
 "missing, <a id=\"download\">download</a> and install a matching language "
 "pack now and hit \"Refresh\" before continuing."
-msgstr ""
+msgstr "Se quiser utilizar uma versão traduzida do TortoiseGit e o seu idioma está em falta, <a id=\"download\">transfira</a> e instale agora um pacote de idiomas correspondente e clique em \"Atualizar\" antes de continuar."
 
 #. Resource IDs: (IDS_EXTRAPATH_TT)
 #, c-format
@@ -6452,8 +6467,16 @@ msgstr ""
 msgid "Last Author"
 msgstr ""
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
+msgstr ""
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
@@ -7214,7 +7237,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ERR_FAILEDUPDATEDOWNLOAD)
 msgid "Not all files could be downloaded and verified."
-msgstr ""
+msgstr "Não foi possível transferir e verificar todos os ficheiros."
 
 #. Resource IDs: (AFX_IDP_UNREG_FAILURE)
 msgid "Not all of the system registry entries (or INI file) were removed."
@@ -9310,14 +9333,11 @@ msgstr ""
 msgid "Setting properties..."
 msgstr "Atribuição de propriedades..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Preferências"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -12228,10 +12248,6 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "nomes de ficheiro/pasta"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

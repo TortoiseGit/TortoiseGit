@@ -1,10 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # Baquatelle <abel@abel.hu>, 2012
+# Anon, 2025
 # Árpád Krejczinger <krejczinger.arpad@gmail.com>, 2017
 # Balázs Meskó <meskobalazs@mailbox.org>, 2016
 # Baquatelle <abel@abel.hu>, 2012
@@ -24,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Marcus --, 2020\n"
+"Last-Translator: Anon, 2025\n"
 "Language-Team: Hungarian (http://app.transifex.com/lznuaa/tortoisegit/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -332,7 +333,7 @@ msgstr ""
 msgid ""
 "&Abort\n"
 "You can fix the reason the hook script failed first."
-msgstr ""
+msgstr "&Megszakítás\nMegjavíthatod a hibát ami miatt a hook script nem tudott lefutni."
 
 #. Resource IDs: (ID_APP_ABOUT - Menu)
 msgid "&About TortoiseGitBlame..."
@@ -724,9 +725,10 @@ msgid "&Font:"
 msgstr "&Betűtípus:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr ""
 
@@ -983,8 +985,8 @@ msgid "&None"
 msgstr "E&gyik sem"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1298,7 +1300,7 @@ msgstr "&Kiadások"
 
 #. Resource IDs: (Dialog IDD_DELETEREMOTETAG: Control id 65535)
 msgid "&Tags:"
-msgstr ""
+msgstr "&Címkék:"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS2: Control id 1222)
 msgid "&Timeout in seconds to stop the auto-completion parsing"
@@ -1415,10 +1417,6 @@ msgstr "&Igen"
 
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
@@ -1853,7 +1851,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_ALLTAGS)
 msgid "All tags"
-msgstr ""
+msgstr "Összes címke"
 
 #. Resource IDs: (IDS_FETCH_TAGS_ONLY)
 msgid "All tags only"
@@ -3118,7 +3116,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROC_SYNC_COMPARETAGS)
 msgid "Compare tags"
-msgstr ""
+msgstr "Címkék összehasonlítása"
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COMPARETWOFILES)
 msgid "Compare two files"
@@ -3372,6 +3370,10 @@ msgstr "%1 nem hozható létre, mert a mappa tele van."
 msgid "Could not determine the last committed revision!"
 msgstr "Nem sikerült meghatározni a legutóbb beküldött verziót!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr ""
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr ""
@@ -3514,7 +3516,8 @@ msgstr ""
 msgid "Create &Library"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr ""
 
@@ -3802,7 +3805,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_DELETEREMOTETAG)
 msgid "Delete remote tags..."
-msgstr ""
+msgstr "Távoli címkék törlése..."
 
 #. Resource IDs: (IDS_SUBMODULEDIFF_DELETESUBMODULE)
 msgid "Delete submodule"
@@ -4704,7 +4707,7 @@ msgstr "Kilépés"
 msgid "Expand collapsed revisions"
 msgstr ""
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Mappa megnyitása"
 
@@ -4961,6 +4964,10 @@ msgstr ""
 msgid "File list is empty"
 msgstr "A fájllista üres"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Fájl patch-ek"
@@ -5192,6 +5199,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5209,6 +5220,10 @@ msgid ""
 "Force push to the selected remote reference and override it without any safety checks.\n"
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
+msgstr ""
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
 msgstr ""
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
@@ -6449,8 +6464,16 @@ msgstr ""
 msgid "Last Author"
 msgstr ""
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr ""
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
+msgstr ""
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
 msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
@@ -9307,14 +9330,11 @@ msgstr ""
 msgid "Setting properties..."
 msgstr "Beállítások szerkesztése..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Beállítások"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Beállítások - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -10209,7 +10229,7 @@ msgstr "Címkék"
 
 #. Resource IDs: (Dialog IDD_SETTINREMOTE: Control id 65535)
 msgid "Tags:"
-msgstr ""
+msgstr "Címkék:"
 
 #. Resource IDs: (IDS_ERR_MUSTBESAMEWT)
 msgid "Target and source must be in the same working tree!"
@@ -10321,7 +10341,7 @@ msgstr "A diffelés leállt egy hiba miatt:\n%s"
 msgid ""
 "The entered source ref is ambiguous.\n"
 "You have to make it unique (e.g. by adding \"refs/heads/\" as a prefix for branches or \"refs/tags/\" for tags)!"
-msgstr ""
+msgstr "A megadott forrás hivatkozás nem egyértelmű.\nEgyedivé kell tenned (például úgy, hogy a branchek elé \"refs/heads/\", a tagek elé pedig \"refs/tags/\" előtagot raksz)!"
 
 #. Resource IDs: (IDS_REBASE_BRANCH_FF)
 msgid ""
@@ -10761,7 +10781,7 @@ msgid ""
 "To avoid fetching wrong tags, if this is not an official remote,\n"
 "you are advised to disable tag fetching for this remote.\n"
 "Disable tag fetching?"
-msgstr ""
+msgstr "Annak elkerülése végett, hogy a rossz tagek kerüljenek\nletöltésre, ha ez nem egy hivatalos remote, ajánlott letiltani az \nehhez a remote-hoz tartozó tagek letöltését.\nLetiltja a tag letöltést?"
 
 #. Resource IDs: (IDS_PROC_WARNCLEARTEMP)
 msgid ""
@@ -12225,10 +12245,6 @@ msgstr ""
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "fájl-/könyvtárnevek"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"

@@ -1,11 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2024 the TortoiseGit team
+# Copyright (C) 2008-2025 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # ad loud <fogy.ad@gmail.com>, 2017
-# Alexander Shchekaturov <shcham@gmail.com>, 2013-2016,2022
+# Alexander Shchekaturov <shcham@gmail.com>, 2013-2016,2022,2025
 # Andrei Stepanov, 2014-2017
 # Arioch <the_Arioch@nm.ru>, 2012-2013
 # Arkady Shapkin <arkadiy_s@inbox.ru>, 2011
@@ -30,7 +30,7 @@
 # 82f4f02557fd4886d250a2aa0aecb530_0f90749 <0cd40767d55b0248271195f29db18a8d_208365>, 2014
 # Sergey Kuznetsov <votkinsk@gmail.com>, 2021
 # Alexander Shchekaturov <shcham@gmail.com>, 2013
-# Stanislav Kroter <krotersv@gmail.com>, 2016-2024
+# Stanislav Kroter <krotersv@gmail.com>, 2016-2025
 # Sven Strickroth <sstrickroth@googlemail.com>, 2012-2013,2020-2021
 # Дмитрий Сытьков <sytkov@gmail.com>, 2011
 # Arioch <the_Arioch@nm.ru>, 2013
@@ -50,7 +50,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Stanislav Kroter <krotersv@gmail.com>, 2016-2024\n"
+"Last-Translator: Alexander Shchekaturov <shcham@gmail.com>, 2013-2016,2022,2025\n"
 "Language-Team: Russian (http://app.transifex.com/lznuaa/tortoisegit/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -470,7 +470,7 @@ msgstr "&Отменить"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1858)
 msgid "&Checkout"
-msgstr ""
+msgstr "&Извлечь"
 
 #. Resource IDs: (IDS_MENUCLEANUP)
 msgid "&Clean up..."
@@ -572,7 +572,7 @@ msgstr "&Удалить Фильтр"
 
 #. Resource IDs: (IDS_PROC_DELETEREMOTEBRANCH_LOCALREMOTE)
 msgid "&Delete branch on remote && local remote-tracking branch"
-msgstr ""
+msgstr "&Удалить ветвь на внешнем хранилище && локальную ветвь внешнего хранилища"
 
 #. Resource IDs: (IDS_DELETE_BRANCHTAG)
 msgid "&Delete branch/tag"
@@ -580,7 +580,7 @@ msgstr "Удалить ветвь/метку"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1857)
 msgid "&Detach"
-msgstr ""
+msgstr "&Отцепить"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Detect moved or copied lines"
@@ -750,9 +750,10 @@ msgid "&Font:"
 msgstr "&Шрифт:"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 1480, Dialog
-#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_SUBMODULE_ADD: Control id
-#. 1480, Dialog IDD_SUBMODULE_UPDATE: Control id 1480, Dialog IDD_SYNC:
-#. Control id 1521, Dialog IDD_WORKTREE_CREATE: Control id 1521)
+#. IDD_NEW_BRANCH_TAG: Control id 1521, Dialog IDD_PUSH: Control id 1480,
+#. Dialog IDD_SUBMODULE_ADD: Control id 1480, Dialog IDD_SUBMODULE_UPDATE:
+#. Control id 1480, Dialog IDD_SYNC: Control id 1521, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1521)
 msgid "&Force"
 msgstr "&Принудительно"
 
@@ -922,7 +923,7 @@ msgstr "&Локальный:"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 1515)
 msgid "&Location"
-msgstr ""
+msgstr "&Размещение"
 
 #. Resource IDs: (Dialog IDD_SETMAINPAGE: Control id 65535)
 msgid "&Max line length for inline diffs"
@@ -936,7 +937,7 @@ msgstr "С&лияние"
 #. Resource IDs: (IDS_LOG_POPUP_MERGEREV)
 #, c-format
 msgid "&Merge to \"%s\"..."
-msgstr "Слить с \"%s\"..."
+msgstr "&Слить с \"%s\"..."
 
 #. Resource IDs: (IDS_MERGE_UNRELATED)
 msgid "&Merge unrelated history"
@@ -1009,8 +1010,8 @@ msgid "&None"
 msgstr "&Ничего"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
-msgid "&Notepad2"
-msgstr "&Notepad2"
+msgid "&Notepad"
+msgstr "&Блокнот"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1096,7 +1097,7 @@ msgstr "&Обработать в любом случае\nИгнорироват
 
 #. Resource IDs: (Dialog IDD_WORKTREE_LIST: Control id 1383)
 msgid "&Prune"
-msgstr ""
+msgstr "&Упростить"
 
 #. Resource IDs: (IDS_PROC_SYNC_PULL)
 msgid "&Pull"
@@ -1442,10 +1443,6 @@ msgstr "&Да"
 #. Resource IDs: (Dialog IDD_REBASE: Control id 1682)
 msgid "&add \"cherry picked from\""
 msgstr "&добавить \"пересмотрено вручную из\""
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1480)
-msgid "&force"
-msgstr "&принудительно"
 
 #. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1657)
 msgid "&ignore space change"
@@ -1871,7 +1868,7 @@ msgstr "Все локальные ветви"
 msgid ""
 "All or some options are limited. In order to change all these settings, you "
 "need Administrator rights."
-msgstr "Все или некоторые настройки ограничены. Для того, чтобы изменить все эти настройки, вам нужны права администратора."
+msgstr "Все или некоторые настройки ограничены. Для того, чтобы изменить все эти настройки, вам нужны права Администратора."
 
 #. Resource IDs: (IDS_ALLREFS)
 msgid "All refs"
@@ -3398,6 +3395,10 @@ msgstr "Невозможно создать %1, поскольку папка п
 msgid "Could not determine the last committed revision!"
 msgstr "Не могу определить крайнюю зафиксированную ревизию!"
 
+#. Resource IDs: (IDS_PROC_LOG_FETCHFILESERROR)
+msgid "Could not fetch commit or calculate diff."
+msgstr "Не удалось извлечь коммит или подсчитать различия."
+
 #. Resource IDs: (IDS_ERR_NOTFOUND_SUPER_PRJECT)
 msgid "Could not find Super-project"
 msgstr "Не могу найти родительский модуль"
@@ -3540,7 +3541,8 @@ msgstr "Создать &ветвь..."
 msgid "Create &Library"
 msgstr "Создать &библиотеку"
 
-#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527)
+#. Resource IDs: (Dialog IDD_GITSWITCH: Control id 1527, Dialog
+#. IDD_WORKTREE_CREATE: Control id 1527)
 msgid "Create &New Branch"
 msgstr "Создать новую ветвь"
 
@@ -4730,7 +4732,7 @@ msgstr "Выход"
 msgid "Expand collapsed revisions"
 msgstr "Развернуть свернутые ревизии"
 
-#. Resource IDs: (IDS_STATUSLIST_CONTEXT_EXPLORE)
+#. Resource IDs: (IDS_EXPLORETO, IDS_STATUSLIST_CONTEXT_EXPLORE)
 msgid "Explore to"
 msgstr "Открыть в Проводнике"
 
@@ -4987,6 +4989,10 @@ msgstr "Файл пустой."
 msgid "File list is empty"
 msgstr "Список файлов пуст"
 
+#. Resource IDs: (IDS_STATUSLIST_EMPTYMSGFILTERED)
+msgid "File list is empty due to active filter"
+msgstr "Список файлов пуст из-за активного фильтра"
+
 #. Resource IDs: (Dialog IDD_FILEPATCHES: Control id 135, IDS_PATCH_TITLE)
 msgid "File patches"
 msgstr "Заплатки файла"
@@ -5218,6 +5224,10 @@ msgid ""
 "This will automatically select it for push and pull in the future."
 msgstr "Для текущей ветки \"%1!s!\" не настроена отслеживаемая ветка.\nВы хотите настроить выбранную ветвь \"%2!s!\" в качестве отслеживаемой ветки?\nЭто в будущем будет автоматически выбирать её для проталкивания и затягивания."
 
+#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
+msgid "Force &with lease"
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_NEWBRANCHTAG_FORCE_TT)
 msgid ""
 "Force creation of branch/tag - even if one with same name already exists."
@@ -5236,6 +5246,10 @@ msgid ""
 "This can cause the remote repository to lose unseen commits; use it with care.\n"
 "This option corresponds to the --force git option."
 msgstr "Принудительно отправить к выбранной внешней ссылке и перезаписать ее без каких-либо проверок безопасности.\nЭто может вызвать потерю не просмотренных фиксаций во внешнем хранилище; используйте с осторожностью.\nЭта опция соответствует опции git --force."
+
+#. Resource IDs: (IDS_REMOVEWITHFORCE)
+msgid "Force remove"
+msgstr "Принудительно удалить"
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -5899,7 +5913,7 @@ msgstr "ID:57643:V C +Z"
 
 #. Accelerator Entry for Menu ID:57644; ''
 msgid "ID:57644:V C +Y"
-msgstr ""
+msgstr "ID:57644:V C +Y"
 
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
 #. Accelerator Entry for Menu ID:57665; 'E&xit'
@@ -6475,9 +6489,17 @@ msgstr "Последние %s года(лет)"
 msgid "Last Author"
 msgstr "Последний автор"
 
+#. Resource IDs: (IDS_DATELASTAUTHOR)
+msgid "Last Author Date"
+msgstr "Дата последнего автора"
+
 #. Resource IDs: (IDS_LASTCOMMIT)
 msgid "Last Commit"
 msgstr "Крайняя фиксация"
+
+#. Resource IDs: (IDS_LASTCOMMITTER)
+msgid "Last Committer"
+msgstr "Последний коммитер"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLASTMODIFIED)
 msgid "Last Modified"
@@ -7006,7 +7028,7 @@ msgstr "Новая ветвь/метка"
 
 #. Resource IDs: (Dialog IDD_WORKTREE_CREATE: Control id 4603)
 msgid "New Worktree"
-msgstr ""
+msgstr "Новое рабочее дерево"
 
 #. Resource IDs: (IDS_NEWHASH)
 msgid "New hash"
@@ -9333,14 +9355,11 @@ msgstr "Установить внешнюю ветвь как \"ветвь дл�
 msgid "Setting properties..."
 msgstr "Установка свойств..."
 
-#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017, IDS_SETTINGSTITLE,
-#. ID_VIEW_OPTIONS - Menu, cmdSettings_LabelTitle_RESID)
+#. Resource IDs: (Dialog IDD_PROPPAGE: Control id 1017,
+#. IDS_PROC_SETTINGS_TITLE, IDS_SETTINGSTITLE, ID_VIEW_OPTIONS - Menu,
+#. cmdSettings_LabelTitle_RESID)
 msgid "Settings"
 msgstr "Настройки"
-
-#. Resource IDs: (IDS_PROC_SETTINGS_TITLE)
-msgid "Settings - TortoiseGit"
-msgstr "Настройки - TortoiseGit"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 1270,
 #. IDS_STATUSLIST_CONTEXT_SHELL)
@@ -9373,7 +9392,7 @@ msgstr "Показать"
 
 #. Resource IDs: (IDS_MENUREFLOG)
 msgid "Show &RefLog"
-msgstr ""
+msgstr "Показать &ЖурналСсылок"
 
 #. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1073,
 #. IDS_PROC_LOG_SHOWUNVERSIONED)
@@ -11681,7 +11700,7 @@ msgstr "Ожидаю ввода"
 
 #. Resource IDs: (Dialog IDD_LOGMESSAGE: Control id 1776)
 msgid "Walk Be&havior"
-msgstr ""
+msgstr "По&ведение"
 
 #. Resource IDs: (IDS_WARN_WARNING)
 msgid "Warning"
@@ -12251,10 +12270,6 @@ msgstr "файл, не подмодуль"
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFILENAMES)
 msgid "file/foldernames"
 msgstr "имена файлов/каталогов"
-
-#. Resource IDs: (Dialog IDD_PUSH: Control id 1498)
-msgid "force &with lease"
-msgstr ""
 
 #. Resource IDs: (IDS_STATUSLIST_CONTEXT_COPYFULLPATHS)
 msgid "full paths"
