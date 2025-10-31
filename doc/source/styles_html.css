@@ -338,3 +338,6 @@ div.navheader {
 	filter:none;
 }
 
+.table-contents table {
+	margin: 0 auto;
+}
