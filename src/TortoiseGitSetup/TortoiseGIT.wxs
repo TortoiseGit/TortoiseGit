@@ -43,7 +43,16 @@
 		<Condition Message="Please uninstall all 32-bit versions of TortoiseGit before installing [ProductName].">NOT WIN32TGITFOUND</Condition>
 		<?endif ?>
 
+		<!-- msiexec does not have a manifest, so it always reports the version of system DLLs as
+			for Win7 (6.3.x.x). So we check for 6.3 but use the build number to actually check the Windows version.
+			See https://github.com/wixtoolset/issues/issues/5824
+
+			TortoiseGit requires support for SetThreadDpiAwarenessContext() function that
+			was introduced in Windows 10 version 1607 with the build number 14393. So check
+			the build number of user32.dll that contains this function.
+		-->
 		<Property Id="WIN10_1607_FOUND">
+			<!-- Search in [SystemFolder] to support the 32-bit version of Windows 10. -->
 			<DirectorySearch Id="searchSystem10" Path="[SystemFolder]" AssignToProperty="yes">
 				<FileSearch Id="searchFile10" Name="shell32.dll" MinVersion="6.3.14392.0"/>
 			</DirectorySearch>
