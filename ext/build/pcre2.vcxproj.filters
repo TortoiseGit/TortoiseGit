@@ -41,9 +41,6 @@
     <ClCompile Include="..\pcre2\src\pcre2_find_bracket.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\pcre2\src\pcre2_jit_compile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\pcre2\src\pcre2_maketables.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -99,6 +96,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\pcre2\src\pcre2_compile_class.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2_compile_cgroup.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pcre2\src\pcre2_match_next.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,9 @@
 ﻿= Release 2.19.0 =
 Released: unreleased
 
+== Features ==
+ * Update pcre2 to version 10.47
+
 == Bug Fixes ==
  * Fixed issue #4232: Tag: Checkbox "Push" not working as expected; PushDlg is always opened
 

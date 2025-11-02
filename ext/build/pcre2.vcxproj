@@ -59,6 +59,7 @@
     <ClCompile Include="..\pcre2\src\pcre2_auto_possess.c" />
     <ClCompile Include="..\pcre2\src\pcre2_chkdint.c" />
     <ClCompile Include="..\pcre2\src\pcre2_compile.c" />
+    <ClCompile Include="..\pcre2\src\pcre2_compile_cgroup.c" />
     <ClCompile Include="..\pcre2\src\pcre2_compile_class.c" />
     <ClCompile Include="..\pcre2\src\pcre2_config.c" />
     <ClCompile Include="..\pcre2\src\pcre2_context.c" />
@@ -67,10 +68,10 @@
     <ClCompile Include="..\pcre2\src\pcre2_error.c" />
     <ClCompile Include="..\pcre2\src\pcre2_extuni.c" />
     <ClCompile Include="..\pcre2\src\pcre2_find_bracket.c" />
-    <ClCompile Include="..\pcre2\src\pcre2_jit_compile.c" />
     <ClCompile Include="..\pcre2\src\pcre2_maketables.c" />
     <ClCompile Include="..\pcre2\src\pcre2_match.c" />
     <ClCompile Include="..\pcre2\src\pcre2_match_data.c" />
+    <ClCompile Include="..\pcre2\src\pcre2_match_next.c" />
     <ClCompile Include="..\pcre2\src\pcre2_newline.c" />
     <ClCompile Include="..\pcre2\src\pcre2_ord2utf.c" />
     <ClCompile Include="..\pcre2\src\pcre2_pattern_info.c" />
