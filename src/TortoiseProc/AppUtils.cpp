@@ -1232,7 +1232,7 @@ bool CAppUtils::CreateBranchTag(HWND hWnd, bool isTag /*true*/, const CString* r
 		}
 		if (!isTag && !dlg.m_Message.IsEmpty())
 			UpdateBranchDescription(dlg.m_BranchTagName, dlg.m_Message);
-		if (isTag)
+		if (isTag && dlg.m_bPush == BST_CHECKED)
 			Push(hWnd, L"refs/tags/" + dlg.m_BranchTagName);
 
 		return TRUE;
