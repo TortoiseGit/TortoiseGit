@@ -642,7 +642,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -1629,8 +1628,8 @@ UINT CodePageFromCharSet(CharacterSet characterSet, UINT documentCodePage) noexc
 		return CpUtf8;
 	}
 	switch (characterSet) {
-	case CharacterSet::Ansi: return 1252;
-	case CharacterSet::Default: return documentCodePage ? documentCodePage : 1252;
+	case CharacterSet::Ansi: return codePageWindowsLatin;
+	case CharacterSet::Default: return documentCodePage ? documentCodePage : codePageWindowsLatin;
 	case CharacterSet::Baltic: return 1257;
 	case CharacterSet::ChineseBig5: return 950;
 	case CharacterSet::EastEurope: return 1250;
@@ -2787,13 +2786,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
-}
-
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {
