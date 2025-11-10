@@ -790,6 +790,9 @@
     <ClCompile Include="..\scintilla\win32\SurfaceGDI.cxx">
       <Filter>scintilla\win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\lexilla\lexers\LexSINEX.cxx">
+      <Filter>lexlib\lexers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\scintilla\win32\ScintRes.rc">
