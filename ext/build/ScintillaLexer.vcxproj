@@ -240,6 +240,7 @@
     <ClCompile Include="..\lexilla\lexers\LexRust.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexSAS.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexScriptol.cxx" />
+    <ClCompile Include="..\lexilla\lexers\LexSINEX.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexSmalltalk.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexSML.cxx" />
     <ClCompile Include="..\lexilla\lexers\LexSorcus.cxx" />
