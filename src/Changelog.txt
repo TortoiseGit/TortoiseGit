@@ -6,6 +6,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #4232: Tag: Checkbox "Push" not working as expected; PushDlg is always opened
+ * Fixed issue #4239: "Stash Apply" shows info dialog instead of warning for conflicts
 
 = Release 2.18.0 =
 Released: 2025-10-31

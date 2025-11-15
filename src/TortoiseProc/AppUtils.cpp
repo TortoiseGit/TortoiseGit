@@ -184,7 +184,7 @@ bool CAppUtils::StashApply(HWND hWnd, CString ref, bool showChanges /* true */)
 			message.LoadString(IDS_PROC_STASHAPPLYFAILEDCONFLICTS);
 		if (showChanges)
 		{
-			if (CMessageBox::Show(hWnd, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | MB_ICONINFORMATION) == IDYES)
+			if (CMessageBox::Show(hWnd, message + L'\n' + CString(MAKEINTRESOURCE(IDS_SEECHANGES)), L"TortoiseGit", MB_YESNO | (hasConflicts ? MB_ICONEXCLAMATION : MB_ICONINFORMATION)) == IDYES)
 			{
 				cmd.Format(L"/command:repostatus /path:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir));
 				CAppUtils::RunTortoiseGitProc(cmd);
