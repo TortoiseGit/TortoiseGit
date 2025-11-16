@@ -195,7 +195,7 @@ LPCWSTR CCmdLineParser::GetVal(LPCWSTR sKey) const
 {
 	CValsMap::const_iterator it = findKey(sKey);
 	if (it == m_valueMap.cend())
-		return 0;
+		return nullptr;
 	return it->second.c_str();
 }
 
