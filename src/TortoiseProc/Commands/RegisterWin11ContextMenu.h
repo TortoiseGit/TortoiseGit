@@ -20,6 +20,7 @@
 #pragma once
 #include "Command.h"
 #include <oobenotification.h>
+#include "SysInfo.h"
 
 /**
  * \ingroup TortoiseProc
@@ -33,6 +34,9 @@ public:
 	 */
 	bool Execute() override
 	{
+		if (!SysInfo::Instance().IsWin11OrLater())
+			return true;
+
 		if (BOOL isOOBEComplete = false, ooBECompleteOk = OOBEComplete(&isOOBEComplete); !ooBECompleteOk || !isOOBEComplete)
 		{
 			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Skip registering: OOBEComplete: %d, isOOBEComplete: %d\n", ooBECompleteOk, isOOBEComplete);
