@@ -93,6 +93,14 @@ std::wstring RegisterWin11ContextMenuCommand::ReRegisterPackage()
 				return error;
 			}
 		}
+		catch (const winrt::hresult_error& ex)
+		{
+			std::wstring error = L"Caught winrt::hresult_error (Errorcode: ";
+			error += std::to_wstring(ex.code().value);
+			error += L"):\n";
+			error += ex.message();
+			return error;
+		}
 		catch (const std::exception& ex)
 		{
 			return CUnicodeUtils::StdGetUnicode(ex.what());
