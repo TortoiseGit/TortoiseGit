@@ -8,6 +8,7 @@ Released: unreleased
  * Fixed issue #4232: Tag: Checkbox "Push" not working as expected; PushDlg is always opened
  * Fixed issue #4239: "Stash Apply" shows info dialog instead of warning for conflicts
  * Fixed issue #4241: TortoiseGit create a crash report after first logon
+ * Fixed issue #4242: TortoiseGit may crash on folder with multibyte path name (on Japanese locale)
 
 = Release 2.18.0 =
 Released: 2025-10-31

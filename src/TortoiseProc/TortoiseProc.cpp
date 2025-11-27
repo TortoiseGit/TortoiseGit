@@ -48,6 +48,7 @@
 #include "AnimationManager.h"
 #include "VersioncheckParser.h"
 #include "TempFile.h"
+#include "Hash.h"
 
 #define STRUCT_IOVEC_DEFINED
 
@@ -360,14 +361,9 @@ BOOL CTortoiseProcApp::InitInstance()
 				CString wcroot;
 				if (GitAdminDir::HasAdminDir(g_Git.m_CurrentDir, true, &wcroot))
 				{
-					git_oid oid;
-					CStringA wcRootA{ CUnicodeUtils::GetUTF8(wcroot + CPathUtils::GetAppDirectory()) };
-					if (!git_odb_hash(&oid, wcRootA.MakeLower(), wcRootA.GetLength(), GIT_OBJECT_BLOB))
-					{
-						CStringA hash;
-						git_oid_tostr(CStrBufA(hash, GIT_OID_SHA1_HEXSIZE, CStrBufA::SET_LENGTH), GIT_OID_SHA1_HEXSIZE + 1, &oid);
-						g_sGroupingUUID = hash;
-					}
+					CStringA wcRootA{ CUnicodeUtils::GetUTF8(wcroot.MakeLower()) };
+					g_sGroupingUUID = GetHashText(wcRootA.GetBuffer(), wcRootA.GetLength(), HashType::HashSha1).c_str();
+
 					ProjectProperties pp;
 					pp.ReadProps();
 					CString icon = pp.sIcon;
