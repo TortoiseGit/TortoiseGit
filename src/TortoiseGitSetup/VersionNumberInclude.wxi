@@ -3,5 +3,5 @@
 	<?define MajorVersion="2" ?>
 	<?define MinorVersion="18" ?>
 	<?define MicroVersion="0" ?>
-	<?define BuildVersion="0" ?>
+	<?define BuildVersion="1" ?>
 </Include>

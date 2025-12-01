@@ -1,14 +1,5 @@
-﻿= Release 2.19.0 =
-Released: unreleased
-
-== Bug Fixes ==
- * Fixed issue #4232: Tag: Checkbox "Push" not working as expected; PushDlg is always opened
- * Fixed issue #4239: "Stash Apply" shows info dialog instead of warning for conflicts
- * Fixed issue #4241: TortoiseGit create a crash report after first logon
- * Fixed issue #4242: TortoiseGit may crash on folder with multibyte path name (on Japanese locale)
-
-= Release 2.18.0 =
-Released: 2025-10-31
+﻿= Release 2.18.0.1 =
+Released: 2025-12-01
 
 TortoiseGit no longer ships the necessary "Microsoft Visual C++ Redistributable 2015–2022" (cf. issue #4209). Make sure you have the latest version installed before upgrading:
  * x64: https://aka.ms/vs/17/release/vc_redist.x64.exe
@@ -22,6 +13,20 @@ If you want to use Notepad2e, you will need to set it up manually (<https://gith
 and configure it in TortoiseGit settings as alternative editor.
 
 Git for Windows has stopped providing builds for 32-bit Windows, and TortoiseGit will follow suit with one of the next releases.
+
+== Bug Fixes ==
+ * Fixed issue #4232: Tag: Checkbox "Push" not working as expected; PushDlg is always opened
+ * Fixed issue #4239: "Stash Apply" shows info dialog instead of warning for conflicts
+ * Fixed issue #4241: TortoiseGit create a crash report after first logon
+ * Fixed issue #4242: TortoiseGit may crash on folder with multibyte path name
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
+   This only applies to Windows 10, as Windows 11 Explorer does not have a title bar any more.
+
+= Release 2.18.0 =
+Released: 2025-10-31
 
 == Features ==
  * Fixed issue #3826: Help links don't open in a sensible browser, TortoiseGit now ships HTML files
@@ -50,11 +55,6 @@ Git for Windows has stopped providing builds for 32-bit Windows, and TortoiseGit
  * Fixed possible crashes in LogDlg caused by calls to TerminateThread
  * Fixed issue #4131: TortoseGit causing Windows 11 Sysprep to fail -> Do not register Win11 context menu when in OOBE environment
 
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
-   This only applies to Windows 10, as Windows 11 Explorer does not have a title bar any more.
-
 = Release 2.17.0.2 =
 Released: 2024-11-01
 
@@ -65,10 +65,6 @@ The TortoiseGit 2.17.0.1 installer was missing statically linked x86 libraries f
 == Bug Fixes ==
  * Fixed issue #4177: TortoiseGit dialogs may not be visible (when a modal sub dialog is shown too early during dialog initialization)
    This reverts the fix for issue #4118: When dark mode is enabled, dialogs momentarily flicker with "light mode" UI elements on opening
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.17.0 =
 Released: 2024-10-30
