@@ -177,9 +177,9 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (!sVal.IsEmpty())
 		hWndExplorer = reinterpret_cast<HWND>(_wcstoui64(sVal, nullptr, 16));
 
-	while (GetParent(hWndExplorer))
+	while (hWndExplorer && GetParent(hWndExplorer));
 		hWndExplorer = GetParent(hWndExplorer);
-	if (!IsWindow(hWndExplorer))
+	if (hWndExplorer && !IsWindow(hWndExplorer))
 		hWndExplorer = nullptr;
 
 	// if HKCU\Software\TortoiseGit\Debug is not 0, show our command line
