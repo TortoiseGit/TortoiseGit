@@ -20,6 +20,8 @@
 
 #include "stdafx.h"
 #include "RegisterWin11ContextMenu.h"
+#include "SysInfo.h"
+#include <oobenotification.h>
 #include "PathUtils.h"
 #include "UnicodeUtils.h"
 #include <winrt/Windows.Management.Deployment.h>
@@ -31,6 +33,29 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::Management::Deployment;
 
 #pragma comment(lib, "windowsapp.lib")
+
+bool RegisterWin11ContextMenuCommand::Execute()
+{
+	if (!SysInfo::Instance().IsWin11OrLater())
+		return true;
+
+	if (BOOL isOOBEComplete = false, ooBECompleteOk = OOBEComplete(&isOOBEComplete); !ooBECompleteOk || !isOOBEComplete)
+	{
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Skip registering: OOBEComplete: %d, isOOBEComplete: %d\n", ooBECompleteOk, isOOBEComplete);
+		if (!ooBECompleteOk)
+		{
+			CString error;
+			error.Format(L"Checking whether OOBE is complete failed: %s", static_cast<LPCWSTR>(CFormatMessageWrapper()));
+			::MessageBox(GetExplorerHWND(), error, L"TortoiseGit", MB_ICONERROR);
+			return false;
+		}
+		return true;
+	}
+
+	if (auto errorString = ReRegisterPackage(); !errorString.empty())
+		return true;
+	return false;
+}
 
 std::wstring RegisterWin11ContextMenuCommand::ReRegisterPackage()
 {
