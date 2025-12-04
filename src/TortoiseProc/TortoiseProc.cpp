@@ -143,8 +143,6 @@ BOOL CTortoiseProcApp::InitInstance()
 		langStr.Format(L"%ld", langId);
 		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
 	}
-	free((void*)m_pszHelpFilePath);
-	m_pszHelpFilePath = _wcsdup(CPathUtils::GetAppDirectory() + L"TortoiseGit_en.chm");
 	setlocale(LC_ALL, "");
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Initializing UI components ...\n");

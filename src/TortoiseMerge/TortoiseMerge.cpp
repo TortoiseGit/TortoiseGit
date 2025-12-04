@@ -128,8 +128,6 @@ BOOL CTortoiseMergeApp::InitInstance()
 		langStr.Format(L"%ld", langId);
 		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
 	}
-	free((void*)m_pszHelpFilePath);
-	m_pszHelpFilePath = _wcsdup(CPathUtils::GetAppDirectory() + L"TortoiseMerge_en.chm");
 	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings
