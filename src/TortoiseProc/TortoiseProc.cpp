@@ -95,6 +95,14 @@ HWND GetExplorerHWND()
 	return theApp.GetExplorerHWND();
 }
 
+CWnd* GetParentCWnd(HWND hWnd)
+{
+	if (GetExplorerHWND() != hWnd && IsWindow(hWnd))
+		return CWnd::FromHandle(hWnd);
+
+	return nullptr;
+}
+
 #if ENABLE_CRASHHANLDER && !_M_ARM64
 CCrashReportTGit crasher(L"TortoiseGit " _T(APP_X64_STRING), TGIT_VERMAJOR, TGIT_VERMINOR, TGIT_VERMICRO, TGIT_VERBUILD, TGIT_VERDATE);
 #endif

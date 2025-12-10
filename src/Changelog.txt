@@ -5,6 +5,9 @@ Released: unreleased
  * Update pcre2 to version 10.47
  * Update SimpleIni to version 4.25
 
+== Bug Fixes ==
+* Fix possible crash when parent window is closed before push/pull
+
 = Release 2.18.0.1 =
 Released: 2025-12-01
 

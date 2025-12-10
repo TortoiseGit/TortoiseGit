@@ -70,7 +70,7 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 			dirty = !dirtyList.IsEmpty();
 		}
 
-		CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		CSubmoduleDiffDlg submoduleDiffDlg(GetParentCWnd(hWnd));
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
 			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, ChangeType::DeleteSubmodule);
 		else
@@ -257,7 +257,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 	if (CTGitPath(subgit.m_CurrentDir).HasAdminDir())
 		GetSubmoduleChangeType(subgit, oldhash, newhash, oldOK, newOK, changeType, oldsub, newsub);
 
-	CSubmoduleDiffDlg submoduleDiffDlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+	CSubmoduleDiffDlg submoduleDiffDlg(GetParentCWnd(hWnd));
 	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
 	if (submoduleDiffDlg.IsRefresh())
@@ -473,13 +473,13 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
-		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		CFileDiffDlg dlg(GetParentCWnd(hWnd));
 		dlg.SetDiff(nullptr, *r2, *r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
-		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		CFileDiffDlg dlg(GetParentCWnd(hWnd));
 		dlg.SetDiff(&path1, *r2, *r1);
 		dlg.DoModal();
 	}
@@ -497,13 +497,13 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 {
 	if (path1.GetWinPathString().IsEmpty())
 	{
-		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		CFileDiffDlg dlg(GetParentCWnd(hWnd));
 		dlg.SetDiff(nullptr, r2, r1);
 		dlg.DoModal();
 	}
 	else if (path1.IsDirectory())
 	{
-		CFileDiffDlg dlg(GetExplorerHWND() == hWnd ? nullptr : CWnd::FromHandle(hWnd));
+		CFileDiffDlg dlg(GetParentCWnd(hWnd));
 		dlg.SetDiff(&path1, r2, r1);
 		dlg.DoModal();
 	}
