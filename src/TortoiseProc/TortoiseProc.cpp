@@ -175,7 +175,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (!sVal.IsEmpty())
 		hWndExplorer = reinterpret_cast<HWND>(_wcstoui64(sVal, nullptr, 16));
 
-	while (hWndExplorer && GetParent(hWndExplorer));
+	while (hWndExplorer && GetParent(hWndExplorer))
 		hWndExplorer = GetParent(hWndExplorer);
 	if (hWndExplorer && !IsWindow(hWndExplorer))
 		hWndExplorer = nullptr;
