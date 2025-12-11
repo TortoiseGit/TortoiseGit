@@ -26,7 +26,6 @@
 #include "MainFrm.h"
 #include "../version.h"
 #include "../Utils/CrashReport.h"
-#include "I18NHelper.h"
 #include "TortoiseGitBlameDoc.h"
 #include "TortoiseGitBlameView.h"
 #include "CmdLineParser.h"
@@ -79,40 +78,8 @@ bool g_bGroupingRemoveIcon = false;
 
 BOOL CTortoiseGitBlameApp::InitInstance()
 {
-	//set the resource dll for the required language
-	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-	long langId = loc;
-	CString langDll;
-	HINSTANCE hInst = nullptr;
-	do
-	{
-		langDll.Format(L"%sLanguages\\TortoiseGitBlame%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
-
-		hInst = LoadLibrary(langDll);
-		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
-		{
-			FreeLibrary(hInst);
-			hInst = nullptr;
-		}
-		if (hInst)
-			AfxSetResourceHandle(hInst);
-		else
-		{
-			DWORD lid = SUBLANGID(langId);
-			lid--;
-			if (lid > 0)
-			{
-				langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-			}
-			else
-				langId = 0;
-		}
-	} while (!hInst && (langId != 0));
-	{
-		CString langStr;
-		langStr.Format(L"%ld", langId);
-		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
-	}
+	if (HINSTANCE hInst = m_langDll.Init(L"TortoiseGitBlame"); hInst)
+		AfxSetResourceHandle(hInst);
 	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings

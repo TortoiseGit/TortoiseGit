@@ -28,6 +28,7 @@
 
 #include "../TortoiseShell/resource.h"
 #include "LoglistCommonResource.h"
+#include "LangDll.h"
 
 /**
  * \ingroup TortoiseProc
@@ -66,6 +67,7 @@ private:
 	DECLARE_MESSAGE_MAP()
 	bool	retSuccess = false;
 	HWND	hWndExplorer = nullptr;
+	CLangDll m_langDll;
 };
 
 extern CTortoiseProcApp theApp;

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010, 2012, 2021-2023 - TortoiseSVN
-// Copyright (C) 2008-2012, 2014, 2016-2017 - TortoiseGit
+// Copyright (C) 2008-2012, 2014, 2016-2017, 2025 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,11 +22,13 @@
 #include "Guids.h"
 #include "ShellExtClassFactory.h"
 #include "ShellObjects.h"
+#include "LangDll.h"
 
 volatile LONG		g_cRefThisDll = 0;				///< reference count of this DLL.
 HINSTANCE			g_hmodThisDll = nullptr;		///< handle to this DLL itself.
 ShellCache			g_ShellCache;					///< caching of registry entries, ...
 DWORD				g_langid;
+CLangDll			g_langDll;
 ULONGLONG			g_langTimeout = 0;
 HINSTANCE			g_hResInst = nullptr;
 std::wstring		g_filepath;

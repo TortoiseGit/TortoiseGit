@@ -80,6 +80,7 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\Utils\Hash.cpp" />
+    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />

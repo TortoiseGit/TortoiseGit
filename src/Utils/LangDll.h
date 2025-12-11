@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2025 - TortoiseGit
 // Copyright (C) 2003-2007, 2014 - TortoiseSVN
@@ -34,6 +34,8 @@ public:
 	CLangDll& operator=(const CLangDll&) = delete;
 
 	HINSTANCE	Init(LPCWSTR appname);
+	HINSTANCE	Init(LPCWSTR appname, HMODULE hModule, DWORD langID);
+	DWORD		GetLoadedLangId() const { return m_langId; }
 
 	static constexpr DWORD s_defaultLang = 1033;
 
