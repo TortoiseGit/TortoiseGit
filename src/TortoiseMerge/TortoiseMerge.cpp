@@ -24,7 +24,6 @@
 #include "AboutDlg.h"
 #include "CmdLineParser.h"
 #include "version.h"
-#include "I18NHelper.h"
 #include "AppUtils.h"
 #include "PathUtils.h"
 #include "BrowseFolder.h"
@@ -94,40 +93,8 @@ BOOL CTortoiseMergeApp::InitInstance()
 	SetTaskIDPerUUID();
 	CCrashReport::Instance().AddUserInfoToReport(L"CommandLine", GetCommandLine());
 
-	//set the resource dll for the required language
-	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-	long langId = loc;
-	CString langDll;
-	HINSTANCE hInst = nullptr;
-	do
-	{
-		langDll.Format(L"%sLanguages\\TortoiseMerge%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
-
-		hInst = LoadLibrary(langDll);
-		if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
-		{
-			FreeLibrary(hInst);
-			hInst = nullptr;
-		}
-		if (hInst)
-			AfxSetResourceHandle(hInst);
-		else
-		{
-			DWORD lid = SUBLANGID(langId);
-			lid--;
-			if (lid > 0)
-			{
-				langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-			}
-			else
-				langId = 0;
-		}
-	} while ((!hInst) && (langId != 0));
-	{
-		CString langStr;
-		langStr.Format(L"%ld", langId);
-		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
-	}
+	if (HINSTANCE hInst = m_langDll.Init(L"TortoiseMerge"); hInst)
+		AfxSetResourceHandle(hInst);
 	setlocale(LC_ALL, "");
 	// We need to explicitly set the thread locale to the system default one to avoid possible problems with saving files in its original codepage
 	// The problems occures when the language of OS differs from the regional settings

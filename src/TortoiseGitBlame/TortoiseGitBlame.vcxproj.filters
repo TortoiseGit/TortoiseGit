@@ -210,6 +210,9 @@
     <ClCompile Include="..\Utils\DirFileEnum.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LangDll.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EditGotoDlg.h">
@@ -423,6 +426,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Utils\URLFinder.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LangDll.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>

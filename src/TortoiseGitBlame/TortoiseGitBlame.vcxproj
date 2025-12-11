@@ -80,6 +80,7 @@
     <ClCompile Include="..\Utils\DebugOutput.cpp" />
     <ClCompile Include="..\Utils\DirFileEnum.cpp" />
     <ClCompile Include="..\Utils\Hash.cpp" />
+    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\DockablePaneUnscaledStoredState.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
+    <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\LruCache.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />

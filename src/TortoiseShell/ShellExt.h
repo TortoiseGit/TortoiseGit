@@ -28,6 +28,7 @@
 #include "GitFolderStatus.h"
 #include "MenuInfo.h"
 #include "ExplorerCommand.h"
+#include "LangDll.h"
 
 class CExplorerCommand;
 extern	volatile LONG		g_cRefThisDll;			// Reference count of this DLL.
@@ -36,6 +37,7 @@ extern	ShellCache			g_ShellCache;			// caching of registry entries, ...
 extern	DWORD				g_langid;
 extern	ULONGLONG			g_langTimeout;
 extern	HINSTANCE			g_hResInst;
+extern	CLangDll			g_langDll;
 extern	std::wstring		g_filepath;
 extern	git_wc_status_kind	g_filestatus;			///< holds the corresponding status to the file/dir above
 extern	bool				g_readonlyoverlay;		///< whether to show the read only overlay or not

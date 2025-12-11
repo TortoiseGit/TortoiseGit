@@ -24,6 +24,7 @@
 #endif
 
 #include "resource.h"       // main symbols
+#include "LangDll.h"
 
 /**
  * \ingroup TortoiseMerge
@@ -50,6 +51,7 @@ private:
 	bool HasClipboardPatch();
 	static bool TrySavePatchFromClipboard(std::wstring& resultFile);
 	bool m_hasConflicts = false;
+	CLangDll m_langDll;
 };
 
 extern CTortoiseMergeApp theApp;

@@ -34,6 +34,8 @@ public:
 	CLangDll& operator=(const CLangDll&) = delete;
 
 	HINSTANCE	Init(LPCWSTR appname);
+	HINSTANCE	Init(LPCWSTR appname, HMODULE hModule, DWORD langID);
+	DWORD		GetLoadedLangId() const { return m_langId; }
 
 	static constexpr DWORD s_defaultLang = 1033;
 
