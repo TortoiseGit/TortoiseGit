@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021, 2025 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,72 +23,52 @@
 #include "../version.h"
 #include "I18NHelper.h"
 #include "PathUtils.h"
+#include "registry.h"
+#include <format>
 
-CLangDll::CLangDll()
-	: m_hInstance(nullptr)
+HINSTANCE CLangDll::Init(LPCWSTR appname)
 {
-}
+	assert(!m_hInstance);
 
-CLangDll::~CLangDll()
-{
-	Close();
-}
+	CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", m_langId);
+	DWORD langID = loc;
+	if (langID == s_defaultLang)
+		return nullptr;
 
-HINSTANCE CLangDll::Init(LPCWSTR appname, unsigned long langID)
-{
-	wchar_t langpath[MAX_PATH] = { 0 };
-	wchar_t langdllpath[MAX_PATH] = { 0 };
-	wchar_t sVer[MAX_PATH] = { 0 };
-	wcscpy_s(sVer, TEXT(STRPRODUCTVER));
+	wchar_t langpath[MAX_PATH]{};
+	const std::wstring sVer{ TEXT(STRPRODUCTVER) };
 	GetModuleFileName(nullptr, langpath, _countof(langpath));
 	wchar_t* pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
-		return m_hInstance;
+		return nullptr;
 
-	*pSlash = 0;
+	*pSlash = '\0';
 	pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
-		return m_hInstance;
+		return nullptr;
 
-	*pSlash = 0;
-	wcscat_s(langpath, L"\\Languages\\");
-	assert(m_hInstance == nullptr);
+	*++pSlash = '\0';
+
 	do
 	{
-		swprintf_s(langdllpath, L"%s%s%lu.dll", langpath, appname, langID);
-
-		m_hInstance = LoadLibrary(langdllpath);
-
-		if (!DoVersionStringsMatch(sVer, langdllpath))
+		const std::wstring langdllpath = std::format(L"{}Languages\\{}{}.dll", langpath, appname, langID);
+		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langdllpath.data()), sVer))
 		{
+			m_hInstance = ::LoadLibrary(langdllpath.data());
+
 			if (m_hInstance)
-				FreeLibrary(m_hInstance);
-			m_hInstance = nullptr;
+				break;
 		}
-		if (!m_hInstance)
-		{
-			DWORD lid = SUBLANGID(langID);
-			lid--;
-			if (lid > 0)
-				langID = MAKELANGID(PRIMARYLANGID(langID), lid);
-			else
-				langID = 0;
-		}
-	} while (!m_hInstance && (langID != 0));
+
+		DWORD lid = SUBLANGID(langID);
+		lid--;
+		if (lid > 0)
+			langID = MAKELANGID(PRIMARYLANGID(langID), lid);
+		else
+			langID = 0;
+	} while (langID != 0);
+
+	m_langId = langID;
 
 	return m_hInstance;
-}
-
-void CLangDll::Close()
-{
-	if (!m_hInstance)
-		return;
-
-	FreeLibrary(m_hInstance);
-	m_hInstance = nullptr;
-}
-
-bool CLangDll::DoVersionStringsMatch(LPCWSTR sVer, LPCWSTR langDll) const
-{
-	return CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), sVer);
 }
