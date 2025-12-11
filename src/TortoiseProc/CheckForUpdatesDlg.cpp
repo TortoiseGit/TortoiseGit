@@ -35,6 +35,7 @@
 #include <MsiDefs.h>
 #include <MsiQuery.h>
 #include "DPIAware.h"
+#include "LangDll.h"
 
 #pragma comment(lib, "msi.lib")
 
@@ -357,24 +358,8 @@ void CCheckForUpdatesDlg::FillDownloads(CVersioncheckParser& versioncheck)
 	std::vector<LangPack> availableLangs;
 	std::vector<DWORD> installedLangs;
 	{
-		// set up the language selecting combobox
-		CString path = CPathUtils::GetAppParentDirectory();
-		path = path + L"Languages\\";
-		CSimpleFileFind finder(path, L"*.dll");
-		while (finder.FindNextFileNoDirectories())
-		{
-			CString file = finder.GetFilePath();
-			CString filename = finder.GetFileName();
-			if (CStringUtils::StartsWithI(filename, L"TortoiseProc"))
-			{
-				CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
-				sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
-				if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
-					continue;
-				DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
-				installedLangs.push_back(loc);
-			}
-		}
+		auto installed = CLangDll::GetInstalledLanguages();
+		std::for_each(installed.cbegin(), installed.cend(), [&installedLangs](auto& item) { installedLangs.push_back(item.second); });
 	}
 
 	for (auto& languagepack : versioncheck.GetTortoiseGitLanguagePacks())

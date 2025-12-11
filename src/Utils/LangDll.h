@@ -38,6 +38,11 @@ public:
 	DWORD		GetLoadedLangId() const { return m_langId; }
 
 	static constexpr DWORD s_defaultLang = 1033;
+	static constexpr std::wstring_view s_languagesfolder = L"Languages\\";
+
+#if defined(TORTOISEGITPROC)
+	static std::vector<std::pair<CString, DWORD>> GetInstalledLanguages(bool includeNative = false, bool checkVersion = true);
+#endif
 
 private:
 	CAutoLibrary	m_hInstance;
