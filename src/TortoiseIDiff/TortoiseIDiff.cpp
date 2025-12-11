@@ -1,6 +1,6 @@
 ﻿// TortoiseIDiff - an image diff viewer in TortoiseSVN and TortoiseGit
 
-// Copyright (C) 2015-2016, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2015-2016, 2019-2020, 2023, 2025 - TortoiseGit
 // Copyright (C) 2006-2007, 2010-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -42,13 +42,11 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
     SetDllDirectory(L"");
     SetTaskIDPerUUID();
-    CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-    long langId = loc;
     CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
     SCOPE_EXIT { CoUninitialize(); };
 
     CLangDll langDLL;
-    hResource = langDLL.Init(L"TortoiseIDiff", langId);
+    hResource = langDLL.Init(L"TortoiseIDiff");
     if (!hResource)
         hResource = hInstance;
 
@@ -62,7 +60,6 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
         wchar_t buf[1024] = { 0 };
         LoadString(hResource, IDS_COMMANDLINEHELP, buf, _countof(buf));
         MessageBox(nullptr, buf, L"TortoiseIDiff", MB_ICONINFORMATION);
-        langDLL.Close();
         return 0;
     }
 
