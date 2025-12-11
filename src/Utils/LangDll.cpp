@@ -25,6 +25,10 @@
 #include "registry.h"
 #include "CrashReport.h"
 #include <format>
+#if defined(TORTOISEGITPROC)
+#include "StringUtils.h"
+#include "DirFileEnum.h"
+#endif
 
 HINSTANCE CLangDll::Init(LPCWSTR appname)
 {
@@ -55,7 +59,7 @@ HINSTANCE CLangDll::Init(LPCWSTR appname, HMODULE hModule, DWORD langID)
 
 	do
 	{
-		const std::wstring langdllpath = std::format(L"{}Languages\\{}{}.dll", langpath, appname, langID);
+		const std::wstring langdllpath = std::format(L"{}{}{}{}.dll", langpath, s_languagesfolder, appname, langID);
 		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langdllpath.data()), sVer))
 		{
 			if (hModule)
@@ -82,3 +86,48 @@ HINSTANCE CLangDll::Init(LPCWSTR appname, HMODULE hModule, DWORD langID)
 
 	return m_hInstance;
 }
+#if defined(TORTOISEGITPROC)
+std::vector<std::pair<CString, DWORD>> CLangDll::GetInstalledLanguages(bool includeNative /* false */, bool checkVersion /* true */)
+{
+	std::vector<std::pair<CString, DWORD>> langs;
+
+	wchar_t buf[MAX_PATH]{};
+	if (includeNative)
+	{
+		GetLocaleInfo(CLangDll::s_defaultLang, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		langs.emplace_back(std::make_pair<>(buf, CLangDll::s_defaultLang));
+	}
+	CString path = CPathUtils::GetAppParentDirectory();
+	const std::wstring sVer{ TEXT(STRPRODUCTVER) };
+	path += s_languagesfolder.data();
+	CSimpleFileFind finder(path, L"*.dll");
+	while (finder.FindNextFileNoDirectories())
+	{
+		CString filename = finder.GetFileName();
+		if (!CStringUtils::StartsWithI(filename, L"TortoiseProc"))
+			continue;
+
+		CString file = finder.GetFilePath();
+		if (checkVersion && !CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(file), sVer))
+			continue;
+		CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
+		sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
+		if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
+			continue;
+		const DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
+		if (!loc)
+			continue;
+		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		CString sLang = buf;
+		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
+		if (buf[0])
+		{
+			sLang += L" (";
+			sLang += buf;
+			sLang += L')';
+		}
+		langs.emplace_back(std::make_pair<>(sLang, loc));
+	}
+	return langs;
+}
+#endif

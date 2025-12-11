@@ -20,10 +20,6 @@
 #include "stdafx.h"
 #include "TortoiseProc.h"
 #include "FirstStartWizard.h"
-#include "PathUtils.h"
-#include "DirFileEnum.h"
-#include "../version.h"
-#include "I18NHelper.h"
 #include "FirstStartWizardLanguage.h"
 #include "Theme.h"
 
@@ -143,40 +139,11 @@ void CFirstStartWizardLanguage::OnBnClickedRefresh()
 	m_LanguageCombo.ResetContent();
 
 	// set up the language selecting combobox
-	wchar_t buf[MAX_PATH] = { 0 };
-	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-	m_LanguageCombo.AddString(buf);
-	m_LanguageCombo.SetItemData(0, 1033);
-	CString path = CPathUtils::GetAppParentDirectory();
-	path = path + L"Languages\\";
-	CSimpleFileFind finder(path, L"*.dll");
-	int langcount = 0;
-	while (finder.FindNextFileNoDirectories())
-	{
-		CString file = finder.GetFilePath();
-		CString filename = finder.GetFileName();
-		if (CStringUtils::StartsWithI(filename, L"TortoiseProc"))
-		{
-			if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(file), _T(STRPRODUCTVER)))
-				continue;
-			CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
-			sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
-			if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
-				continue;
-			DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
-			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-			CString sLang = buf;
-			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
-			if (buf[0])
-			{
-				sLang += L" (";
-				sLang += buf;
-				sLang += L')';
-			}
-			m_LanguageCombo.AddString(sLang);
-			m_LanguageCombo.SetItemData(++langcount, loc);
-		}
-	}
+	auto installed = CLangDll::GetInstalledLanguages();
+	std::for_each(installed.cbegin(), installed.cend(), [&](auto& item) {
+		const int pos = m_LanguageCombo.AddString(item.first);
+		m_LanguageCombo.SetItemData(pos, item.second);
+	});
 
 	m_regLanguage.read();
 	m_dwLanguage = m_regLanguage;
