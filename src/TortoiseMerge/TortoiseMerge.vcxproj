@@ -74,6 +74,7 @@
     <ClCompile Include="..\Utils\Hash.cpp">
       <ObjectFileName>$(IntDir)monHash.obj</ObjectFileName>
     </ClCompile>
+    <ClCompile Include="..\Utils\LangDll.cpp" />
     <ClCompile Include="..\Utils\LoadIconEx.cpp" />
     <ClCompile Include="..\Utils\MiscUI\EditWordBreak.cpp" />
     <ClCompile Include="..\Utils\MiscUI\FileDlgEventHandler.cpp" />
@@ -348,6 +349,7 @@
     <ClInclude Include="..\Utils\DPIAware.h" />
     <ClInclude Include="..\Utils\Hash.h" />
     <ClInclude Include="..\Utils\I18NHelper.h" />
+    <ClInclude Include="..\Utils\LangDll.h" />
     <ClInclude Include="..\Utils\LoadIconEx.h" />
     <ClInclude Include="..\Utils\MiscUI\CommonDialogFunctions.h" />
     <ClInclude Include="..\Utils\MiscUI\EditWordBreak.h" />

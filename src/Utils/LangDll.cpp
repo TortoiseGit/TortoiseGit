@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016-2017, 2019-2021 - TortoiseGit
+// Copyright (C) 2016-2017, 2019-2021, 2025 - TortoiseGit
 // Copyright (C) 2003-2006, 2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,77 +18,116 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include <assert.h>
 #include "LangDll.h"
 #include "../version.h"
 #include "I18NHelper.h"
 #include "PathUtils.h"
+#include "registry.h"
+#include "CrashReport.h"
+#include <format>
+#if defined(TORTOISEGITPROC)
+#include "StringUtils.h"
+#include "DirFileEnum.h"
+#endif
 
-CLangDll::CLangDll()
-	: m_hInstance(nullptr)
+HINSTANCE CLangDll::Init(LPCWSTR appname)
 {
+	CRegStdDWORD loc = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", m_langId);
+	return Init(appname, nullptr, loc);
 }
 
-CLangDll::~CLangDll()
+HINSTANCE CLangDll::Init(LPCWSTR appname, HMODULE hModule, DWORD langID)
 {
-	Close();
-}
+	m_hInstance.CloseHandle(); // close any existing handle
 
-HINSTANCE CLangDll::Init(LPCWSTR appname, unsigned long langID)
-{
-	wchar_t langpath[MAX_PATH] = { 0 };
-	wchar_t langdllpath[MAX_PATH] = { 0 };
-	wchar_t sVer[MAX_PATH] = { 0 };
-	wcscpy_s(sVer, TEXT(STRPRODUCTVER));
-	GetModuleFileName(nullptr, langpath, _countof(langpath));
+	if (langID == s_defaultLang)
+		return nullptr;
+
+	wchar_t langpath[MAX_PATH]{};
+	const std::wstring sVer{ TEXT(STRPRODUCTVER) };
+	GetModuleFileName(hModule, langpath, _countof(langpath));
 	wchar_t* pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
-		return m_hInstance;
+		return nullptr;
 
-	*pSlash = 0;
+	*pSlash = '\0';
 	pSlash = wcsrchr(langpath, L'\\');
 	if (!pSlash)
-		return m_hInstance;
+		return nullptr;
 
-	*pSlash = 0;
-	wcscat_s(langpath, L"\\Languages\\");
-	assert(m_hInstance == nullptr);
+	*++pSlash = '\0';
+
 	do
 	{
-		swprintf_s(langdllpath, L"%s%s%lu.dll", langpath, appname, langID);
-
-		m_hInstance = LoadLibrary(langdllpath);
-
-		if (!DoVersionStringsMatch(sVer, langdllpath))
+		const std::wstring langdllpath = std::format(L"{}{}{}{}.dll", langpath, s_languagesfolder, appname, langID);
+		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langdllpath.data()), sVer))
 		{
-			if (m_hInstance)
-				FreeLibrary(m_hInstance);
-			m_hInstance = nullptr;
-		}
-		if (!m_hInstance)
-		{
-			DWORD lid = SUBLANGID(langID);
-			lid--;
-			if (lid > 0)
-				langID = MAKELANGID(PRIMARYLANGID(langID), lid);
+			if (hModule)
+				m_hInstance = ::LoadLibraryEx(langdllpath.data(), nullptr, LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE | LOAD_LIBRARY_AS_IMAGE_RESOURCE);
 			else
-				langID = 0;
+				m_hInstance = ::LoadLibrary(langdllpath.data());
+
+			if (m_hInstance)
+				break;
 		}
-	} while (!m_hInstance && (langID != 0));
+
+		DWORD lid = SUBLANGID(langID);
+		lid--;
+		if (lid > 0)
+			langID = MAKELANGID(PRIMARYLANGID(langID), lid);
+		else
+			langID = 0;
+	} while (langID != 0);
+
+	m_langId = langID;
+#if ENABLE_CRASHHANLDER && !_M_ARM64 && !TORTOISESHELL
+	CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", std::to_wstring(langID).data());
+#endif
 
 	return m_hInstance;
 }
-
-void CLangDll::Close()
+#if defined(TORTOISEGITPROC)
+std::vector<std::pair<CString, DWORD>> CLangDll::GetInstalledLanguages(bool includeNative /* false */, bool checkVersion /* true */)
 {
-	if (!m_hInstance)
-		return;
+	std::vector<std::pair<CString, DWORD>> langs;
 
-	FreeLibrary(m_hInstance);
-	m_hInstance = nullptr;
-}
+	wchar_t buf[MAX_PATH]{};
+	if (includeNative)
+	{
+		GetLocaleInfo(CLangDll::s_defaultLang, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		langs.emplace_back(std::make_pair<>(buf, CLangDll::s_defaultLang));
+	}
+	CString path = CPathUtils::GetAppParentDirectory();
+	const std::wstring sVer{ TEXT(STRPRODUCTVER) };
+	path += s_languagesfolder.data();
+	CSimpleFileFind finder(path, L"*.dll");
+	while (finder.FindNextFileNoDirectories())
+	{
+		CString filename = finder.GetFileName();
+		if (!CStringUtils::StartsWithI(filename, L"TortoiseProc"))
+			continue;
 
-bool CLangDll::DoVersionStringsMatch(LPCWSTR sVer, LPCWSTR langDll) const
-{
-	return CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), sVer);
+		CString file = finder.GetFilePath();
+		if (checkVersion && !CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(file), sVer))
+			continue;
+		CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
+		sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
+		if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
+			continue;
+		const DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
+		if (!loc)
+			continue;
+		GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
+		CString sLang = buf;
+		GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
+		if (buf[0])
+		{
+			sLang += L" (";
+			sLang += buf;
+			sLang += L')';
+		}
+		langs.emplace_back(std::make_pair<>(sLang, loc));
+	}
+	return langs;
 }
+#endif

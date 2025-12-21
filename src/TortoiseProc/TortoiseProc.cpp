@@ -34,7 +34,6 @@
 #include "SmartHandle.h"
 #include "Commands\Command.h"
 #include "../version.h"
-#include "I18NHelper.h"
 #include "JumpListHelpers.h"
 #include "ConfigureGitExe.h"
 #include "Libraries.h"
@@ -119,38 +118,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
 	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, nullptr);
 
-	//set the resource dll for the required language
-	CRegDWORD loc = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
-	long langId = loc;
-	CString langDll;
-	do
-	{
-		langDll.Format(L"%sLanguages\\TortoiseProc%ld.dll", static_cast<LPCWSTR>(CPathUtils::GetAppParentDirectory()), langId);
-
-		if (CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(langDll), _T(STRPRODUCTVER)))
-		{
-			HINSTANCE hInst = LoadLibrary(langDll);
-			if (hInst)
-			{
-				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Load Language DLL %s\n", static_cast<LPCWSTR>(langDll));
-				AfxSetResourceHandle(hInst);
-				break;
-			}
-		}
-		{
-			DWORD lid = SUBLANGID(langId);
-			lid--;
-			if (lid > 0)
-				langId = MAKELANGID(PRIMARYLANGID(langId), lid);
-			else
-				langId = 0;
-		}
-	} while (langId != 0);
-	{
-		CString langStr;
-		langStr.Format(L"%ld", langId);
-		CCrashReport::Instance().AddUserInfoToReport(L"LanguageID", langStr);
-	}
+	if (HINSTANCE hInst = m_langDll.Init(L"TortoiseProc"); hInst)
+		AfxSetResourceHandle(hInst);
 	setlocale(LC_ALL, "");
 
 	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Initializing UI components ...\n");

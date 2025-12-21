@@ -1046,6 +1046,9 @@
     <ClCompile Include="Commands\RegisterWin11ContextMenu.cpp">
       <Filter>Commands\RegisterMenu</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\LangDll.cpp">
+      <Filter>Utils\General</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1983,6 +1986,9 @@
     </ClInclude>
     <ClInclude Include="Commands\RegisterWin11ContextMenu.h">
       <Filter>Commands\RegisterMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\LangDll.h">
+      <Filter>Utils\General</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -22,14 +22,11 @@
 #include "TortoiseProc.h"
 #include "SetMainPage.h"
 #include "AppUtils.h"
-#include "PathUtils.h"
-#include "DirFileEnum.h"
-#include "../version.h"
-#include "I18NHelper.h"
 #include "Git.h"
 #include "MessageBox.h"
 #include "Libraries.h"
 #include "../../TGitCache/CacheInterface.h"
+#include "LangDll.h"
 
 IMPLEMENT_DYNAMIC(CSetMainPage, ISettingsPropPage)
 CSetMainPage::CSetMainPage()
@@ -38,7 +35,7 @@ CSetMainPage::CSetMainPage()
 	, m_dwLanguage(0)
 	, m_dwMsysGitVersion(CRegDWORD(L"Software\\TortoiseGit\\git_cached_version", 0))
 {
-	m_regLanguage = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033);
+	m_regLanguage = CRegDWORD(L"Software\\TortoiseGit\\LanguageID", CLangDll::s_defaultLang);
 
 	m_regMsysGitPath = CRegString(REG_MSYSGIT_PATH);
 	m_regMsysGitExtranPath =CRegString(REG_MSYSGIT_EXTRA_PATH);
@@ -96,44 +93,11 @@ BOOL CSetMainPage::OnInitDialog()
 	SHAutoComplete(GetDlgItem(IDC_MSYSGIT_PATH)->m_hWnd, SHACF_FILESYSTEM);
 
 	// set up the language selecting combobox
-	wchar_t buf[MAX_PATH] = { 0 };
-	GetLocaleInfo(1033, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-	m_LanguageCombo.AddString(buf);
-	m_LanguageCombo.SetItemData(0, 1033);
-	CString path = CPathUtils::GetAppParentDirectory();
-	path = path + L"Languages\\";
-	CSimpleFileFind finder(path, L"*.dll");
-	int langcount = 1;
-	while (finder.FindNextFileNoDirectories())
-	{
-		CString file = finder.GetFilePath();
-		CString filename = finder.GetFileName();
-		if (CStringUtils::StartsWithI(filename, L"TortoiseProc"))
-		{
-			if (!CI18NHelper::DoVersionStringsMatch(CPathUtils::GetVersionFromFile(file), _T(STRPRODUCTVER)))
-				continue;
-			CString sLoc = filename.Mid(static_cast<int>(wcslen(L"TortoiseProc")));
-			sLoc = sLoc.Left(sLoc.GetLength() - static_cast<int>(wcslen(L".dll"))); // cut off ".dll"
-			if (CStringUtils::StartsWith(sLoc, L"32") && (sLoc.GetLength() > 5))
-				continue;
-			DWORD loc = _wtoi(filename.Mid(static_cast<int>(wcslen(L"TortoiseProc"))));
-			if (loc == 0)
-				continue;
-			buf[0] = 0;
-			GetLocaleInfo(loc, LOCALE_SNATIVELANGNAME, buf, _countof(buf));
-			CString sLang = buf;
-			buf[0] = 0;
-			GetLocaleInfo(loc, LOCALE_SNATIVECTRYNAME, buf, _countof(buf));
-			if (buf[0])
-			{
-				sLang += L" (";
-				sLang += buf;
-				sLang += L')';
-			}
-			m_LanguageCombo.AddString(sLang);
-			m_LanguageCombo.SetItemData(langcount++, loc);
-		}
-	}
+	auto installed = CLangDll::GetInstalledLanguages(true);
+	std::for_each(installed.cbegin(), installed.cend(), [&](auto& item) {
+		const int pos = m_LanguageCombo.AddString(item.first);
+		m_LanguageCombo.SetItemData(pos, item.second);
+	});
 
 	for (int i=0; i<m_LanguageCombo.GetCount(); i++)
 	{

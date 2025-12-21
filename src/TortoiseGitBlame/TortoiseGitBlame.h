@@ -27,7 +27,7 @@
 #endif
 
 #include "resource.h"       // main symbols
-
+#include "LangDll.h"
 
 // CTortoiseGitBlameApp:
 // See TortoiseGitBlame.cpp for the implementation of this class
@@ -55,6 +55,7 @@ public:
 	afx_msg void OnFileSettings();
 	DECLARE_MESSAGE_MAP()
 	int ExitInstance() override;
+	CLangDll m_langDll;
 };
 
 extern CTortoiseGitBlameApp theApp;

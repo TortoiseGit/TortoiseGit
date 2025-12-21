@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2024 - TortoiseGit
+// Copyright (C) 2012-2025 - TortoiseGit
 // Copyright (C) 2003-2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 #include "stdafx.h"
 #include "ShellCache.h"
 #include "GitAdminDir.h"
+#include "LangDll.h"
 
 ShellCache::ShellCache()
 {
@@ -57,7 +58,7 @@ ShellCache::ShellCache()
 	menumaskhigh_lm = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, FALSE, HKEY_LOCAL_MACHINE, KEY_WOW64_64KEY);
 	menumasklow_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskLow", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menumaskhigh_cu = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntriesMaskHigh", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", 1033, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	langid = CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", CLangDll::s_defaultLang, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	blockstatus = CRegStdDWORD(L"Software\\TortoiseGit\\BlockStatus", 0, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	std::fill_n(drivetypecache, 27, UINT(-1));
 	if (DWORD(drivefloppy) == 0)

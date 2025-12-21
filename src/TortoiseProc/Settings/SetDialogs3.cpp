@@ -22,6 +22,7 @@
 #include "ProjectProperties.h"
 #include "SetDialogs3.h"
 #include "AppUtils.h"
+#include "LangDll.h"
 
 static std::vector<DWORD> g_langs;
 
@@ -126,7 +127,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 			if (longValue == 0)
 			{
 				if (m_iConfigSource == CFG_SRC_EFFECTIVE)
-					SelectLanguage(m_langCombo, CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033));
+					SelectLanguage(m_langCombo, CRegDWORD(L"Software\\TortoiseGit\\LanguageID", CLangDll::s_defaultLang));
 				else
 					m_langCombo.SetCurSel(1);
 			}
@@ -134,7 +135,7 @@ void CSetDialogs3::LoadDataImpl(CAutoConfig& config)
 				SelectLanguage(m_langCombo, longValue);
 		}
 		else if (m_iConfigSource == CFG_SRC_EFFECTIVE)
-			SelectLanguage(m_langCombo, CRegDWORD(L"Software\\TortoiseGit\\LanguageID", 1033));
+			SelectLanguage(m_langCombo, CRegDWORD(L"Software\\TortoiseGit\\LanguageID", CLangDll::s_defaultLang));
 		else
 			m_langCombo.SetCurSel(1);
 	}

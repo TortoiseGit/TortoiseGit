@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2025 - TortoiseGit
 // Copyright (C) 2003-2007, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -17,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include "SmartHandle.h"
 
 /**
  * \ingroup Utils
@@ -25,12 +27,24 @@
 class CLangDll
 {
 public:
-	CLangDll();
-	~CLangDll();
+	CLangDll() = default;
+	~CLangDll() = default;
 
-	HINSTANCE	Init(LPCWSTR appname, unsigned long langID);
-	void		Close();
+	CLangDll(const CLangDll&) = delete;
+	CLangDll& operator=(const CLangDll&) = delete;
+
+	HINSTANCE	Init(LPCWSTR appname);
+	HINSTANCE	Init(LPCWSTR appname, HMODULE hModule, DWORD langID);
+	DWORD		GetLoadedLangId() const { return m_langId; }
+
+	static constexpr DWORD s_defaultLang = 1033;
+	static constexpr std::wstring_view s_languagesfolder = L"Languages\\";
+
+#if defined(TORTOISEGITPROC)
+	static std::vector<std::pair<CString, DWORD>> GetInstalledLanguages(bool includeNative = false, bool checkVersion = true);
+#endif
+
 private:
-	bool		DoVersionStringsMatch(LPCWSTR sVer, LPCWSTR langDll) const;
-	HINSTANCE	m_hInstance;
+	CAutoLibrary	m_hInstance;
+	DWORD			m_langId = s_defaultLang;
 };
