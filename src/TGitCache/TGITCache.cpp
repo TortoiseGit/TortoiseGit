@@ -178,15 +178,19 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 	MSG msg;
 	wchar_t szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
 
+	MONITORINFO mi = { sizeof(MONITORINFO) };
+	::GetMonitorInfo(::MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY), &mi);
+
 	// create a hidden window to receive window messages.
 	WNDCLASSEX wcex = { 0 };
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style			= CS_HREDRAW | CS_VREDRAW;
 	wcex.lpfnWndProc	= reinterpret_cast<WNDPROC>(WndProc);
 	wcex.hInstance		= hInstance;
+	wcex.hCursor		= LoadCursor(nullptr, IDC_ARROW);
 	wcex.lpszClassName	= szWindowClass;
 	RegisterClassEx(&wcex);
-	hWndHidden = CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, 0, 0, 800, 300, nullptr, 0, hInstance, 0);
+	hWndHidden = ::CreateWindow(TGIT_CACHE_WINDOW_NAME, TGIT_CACHE_WINDOW_NAME, WS_CAPTION, mi.rcWork.left, mi.rcWork.top, 800, 300, nullptr, 0, hInstance, 0);
 	hTrayWnd = hWndHidden;
 	if (!hWndHidden)
 		return 0;
@@ -251,7 +255,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			if (IsWindowVisible(hWnd))
 				ShowWindow(hWnd, SW_HIDE);
 			else
+			{
 				ShowWindow(hWnd, SW_RESTORE);
+				SetForegroundWindow(hWnd);
+			}
 			break;
 		case WM_MOUSEMOVE:
 			{
