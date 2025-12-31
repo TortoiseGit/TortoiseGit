@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008 - TortoiseSVN
-// Copyright (C) 2008-2019, 2021-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -338,7 +338,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 		}
 		if (!bRequestForSelf && path.IsDirectory() && !path.HasAdminDir(&sProjectRoot))
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": %s is not underversion control\n", path.GetWinPath());
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": %s is not under version control\n", path.GetWinPath());
 			return CStatusCacheEntry();
 		}
 
@@ -544,16 +544,19 @@ git_wc_status_kind CCachedDirectory::CalculateRecursiveStatus()
 void CCachedDirectory::UpdateCurrentStatus()
 {
 	git_wc_status_kind newStatus = CalculateRecursiveStatus();
-	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": UpdateCurrentStatus %s new:%d old: %d\n",
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Dir  %s, new: %d old: %d\n",
 		m_directoryPath.GetWinPath(),
 		newStatus, m_currentFullStatus);
 
 	if (newStatus != m_currentFullStatus && IsOwnStatusValid())
 	{
-		m_currentFullStatus = newStatus;
-
 		// Our status has changed - tell the shell
+
+		// Don't update m_currentFullStatus if we don't know our own folder status yet
+		// Updating m_currentFullStatus would cause an explorer refresh which would show the folder as unversioned (no icon, because GetOwnStatus() returns uninitialized m_ownstatus) and a later refresh of the folder wouldn't update the icon since m_currentFullStatus might not change.
+
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Dir %s, status change from %d to %d\n", m_directoryPath.GetWinPath(), m_currentFullStatus, newStatus);
+		m_currentFullStatus = newStatus;
 		CGitStatusCache::Instance().UpdateShell(m_directoryPath);
 	}
 	// And tell our parent, if we've got one...

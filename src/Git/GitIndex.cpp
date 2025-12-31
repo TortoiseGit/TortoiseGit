@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -848,7 +848,7 @@ bool CGitIgnoreList::CheckFileChanged(const CString &path)
 
 int CGitIgnoreList::FetchIgnoreFile(const CString &gitdir, const CString &gitignore, bool isGlobal)
 {
-	if (CGit::GitPathFileExists(gitignore)) //if .gitignore remove, we need remote cache
+	if (CGit::GitPathFileExists(gitignore)) // if .gitignore is removed, we need also to remove it from our cache
 	{
 		CAutoWriteLock lock(m_SharedMutex);
 		m_Map[gitignore].FetchIgnoreList(gitdir, gitignore, isGlobal, &m_IgnoreCase[g_AdminDirMap.GetAdminDir(gitdir)]);

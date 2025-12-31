@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -232,7 +232,7 @@ static int GetFileStatus_int(const CString& gitdir, CGitRepoLists& repolists, co
 		if (start == NPOS)
 		{
 			status.status = git_wc_status_added;
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s", static_cast<LPCWSTR>(path));
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": File miss in head tree %s\n", static_cast<LPCWSTR>(path));
 			return 0;
 		}
 
