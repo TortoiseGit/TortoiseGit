@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005-2008, 2011-2012 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019-2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025-2026- TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -459,7 +459,7 @@ void CDirectoryWatcher::WorkerThread()
 
 								CTGitPath path;
 								bool isIndex = false;
-								if ((pFound = wcsstr(buf, L".git")) != nullptr)
+								if ((pFound = wcsstr(buf, L"\\.git")) != nullptr && (pFound[wcslen(L"\\.git")] == L'\\' || pFound[wcslen(L"\\.git")] == L'\0')) // Is it (inside) the .git folder?
 								{
 									// omit repository data change except .git/index.lock- or .git/HEAD.lock-files
 									if (reinterpret_cast<ULONG_PTR>(pnotify) - reinterpret_cast<ULONG_PTR>(pdi->m_Buffer) > READ_DIR_CHANGE_BUFFER_SIZE)
