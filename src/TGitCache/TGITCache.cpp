@@ -79,7 +79,12 @@ public:
 	}
 } git2init;
 
+#ifdef _DEBUG
+// Make this program not exit due to the last thread exiting for easier debugging.
+volatile LONG		nThreadCount = 1;
+#else
 volatile LONG		nThreadCount = 0;
+#endif
 
 #define PACKVERSION(major,minor) MAKELONG(minor,major)
 
