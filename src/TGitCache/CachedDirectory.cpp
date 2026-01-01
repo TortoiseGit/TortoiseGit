@@ -298,7 +298,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 /// bFetch is true, fetch all status, call by crawl.
 /// bFetch is false, get cache status, return quickly.
 
-CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bRecursive,  bool bFetch /* = true */)
+CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bool bFetch /* = true */)
 {
 	bool bRequestForSelf = false;
 	if(path.IsEquivalentToWithoutCase(m_directoryPath))
@@ -346,7 +346,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	}
 	else
 	{
-		return GetStatusFromCache(path, bRecursive);
+		return GetStatusFromCache(path, true);
 	}
 }
 
@@ -642,7 +642,7 @@ void CCachedDirectory::RefreshStatus()
 	}
 
 	// Make sure that our own status is up-to-date
-	GetStatusForMember(m_directoryPath, true);
+	GetStatusForMember(m_directoryPath);
 
 	/*
 	 * TSVNCache here checks whether m_entryCache is still up2date with the filesystem and refreshes all child directories.

@@ -344,7 +344,7 @@ void CFolderCrawler::WorkerThread()
 						CCachedDirectory* cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath.GetDirectory());
 						if (cachedDir && workingPath.IsDirectory())
 							cachedDir->Invalidate();
-						if (cachedDir && cachedDir->GetStatusForMember(workingPath, true).GetEffectiveStatus() > git_wc_status_unversioned)
+						if (cachedDir && cachedDir->GetStatusForMember(workingPath).GetEffectiveStatus() > git_wc_status_unversioned)
 							CGitStatusCache::Instance().UpdateShell(workingPath);
 					}
 					AutoLocker lock(m_critSec);

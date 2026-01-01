@@ -512,7 +512,7 @@ CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD
 		if (cachedDir)
 		{
 			//CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": GetStatusForMember %d\n", bFetch);
-			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, bRecursive, false);
+			CStatusCacheEntry entry = cachedDir->GetStatusForMember(path, false);
 			{
 				AutoLocker lock(m_critSec);
 				m_mostRecentStatus = entry;

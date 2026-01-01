@@ -39,7 +39,7 @@ public:
 	CCachedDirectory();
 	CCachedDirectory(const CTGitPath& directoryPath);
 	~CCachedDirectory();
-	CStatusCacheEntry GetStatusForMember(const CTGitPath& path, bool bRecursive, bool bFetch = true);
+	CStatusCacheEntry GetStatusForMember(const CTGitPath& path, bool bFetch = true);
 	CString GetProjectRoot() const;
 
 private:
