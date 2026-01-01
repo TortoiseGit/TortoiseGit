@@ -176,7 +176,7 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 
 	DWORD nBytesRead;
 	TGITCacheRequest request;
-	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
+	request.flags = 0;
 	wcsncpy_s(request.path, Path.GetWinPath(), _countof(request.path) - 1);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;

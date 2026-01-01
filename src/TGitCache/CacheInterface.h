@@ -99,7 +99,5 @@ struct TGITCacheCommand
 #define TGITCACHE_FLAGS_FOLDERISKNOWN		0x01
 /// Set this flag if the item is a folder
 #define TGITCACHE_FLAGS_ISFOLDER			0x02
-/// Set this flag if notifications to the shell are not allowed
-#define TGITCACHE_FLAGS_NONOTIFICATIONS		0x08
 /// all of the above flags or-gated:
 #define TGITCACHE_FLAGS_MASK 0x0f
