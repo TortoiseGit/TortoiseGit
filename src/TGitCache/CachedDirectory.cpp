@@ -182,7 +182,7 @@ BOOL CCachedDirectory::LoadFromDisk(FILE * pFile)
 }
 
 
-CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bool bRecursive)
+CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path)
 {
 	if(path.IsDirectory())
 	{
@@ -192,7 +192,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 		if( dirEntry)
 		{
 			if (dirEntry->IsOwnStatusValid())
-				return dirEntry->GetOwnStatus(bRecursive);
+				return dirEntry->GetOwnStatus(true);
 			else
 			{
 				/* cache have outof date, need crawl again*/
@@ -208,7 +208,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromCache(const CTGitPath& path, bo
 				}
 
 				/*Return old status during crawling*/
-				return dirEntry->GetOwnStatus(bRecursive);
+				return dirEntry->GetOwnStatus(true);
 			}
 		}
 		else
@@ -346,7 +346,7 @@ CStatusCacheEntry CCachedDirectory::GetStatusForMember(const CTGitPath& path, bo
 	}
 	else
 	{
-		return GetStatusFromCache(path, true);
+		return GetStatusFromCache(path);
 	}
 }
 

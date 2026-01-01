@@ -61,7 +61,7 @@ public:
 	git_wc_status_kind GetCurrentFullStatus() const {return m_currentFullStatus;}
 private:
 
-	CStatusCacheEntry GetStatusFromCache(const CTGitPath &path, bool bRecursive);
+	CStatusCacheEntry GetStatusFromCache(const CTGitPath &path);
 	CStatusCacheEntry GetStatusFromGit(const CTGitPath &path, const CString& sProjectRoot, bool isSelf);
 
 	static BOOL GetStatusCallback(const CString& path, const git_wc_status2_t* status, bool isDir, __int64 lastwritetime, void* baton);
