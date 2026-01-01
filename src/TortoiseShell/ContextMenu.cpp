@@ -145,7 +145,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 								continue;
 							}
 							TGITCacheResponse itemStatus = { 0 };
-							if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus, true))
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus))
 							{
 								fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 								if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
@@ -260,7 +260,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 									continue;
 								}
 								TGITCacheResponse itemStatus = { 0 };
-								if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus, true))
+								if (m_remoteCacheLink.GetStatusFromRemoteCache(strpath, &itemStatus))
 								{
 									fetchedstatus = status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 									if (strpath.IsDirectory()) // if ((stat.status->entry)&&(stat.status->entry->kind == git_node_dir))
@@ -381,7 +381,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 						else
 						{
 							TGITCacheResponse itemStatus = { 0 };
-							if (m_remoteCacheLink.GetStatusFromRemoteCache(askedpath, &itemStatus, true))
+							if (m_remoteCacheLink.GetStatusFromRemoteCache(askedpath, &itemStatus))
 								status = static_cast<git_wc_status_kind>(itemStatus.m_status);
 						}
 					}

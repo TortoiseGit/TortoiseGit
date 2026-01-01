@@ -57,7 +57,7 @@ protected:
 	UINT TestThread();
 	void ClosePipe();
 	bool EnsurePipeOpen();
-	bool GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive);
+	bool GetStatusFromRemoteCache(const CTGitPath& Path);
 	void RemoveFromCache(const CString& path);
 
 	void TouchFile(const CString& path);

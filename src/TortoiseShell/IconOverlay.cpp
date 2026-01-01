@@ -171,7 +171,7 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					break;
 				}
 				TGITCacheResponse itemStatus = { 0 };
-				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus, true))
+				if (m_remoteCacheLink.GetStatusFromRemoteCache(tpath, &itemStatus))
 				{
 					if (itemStatus.m_bAssumeValid)
 						readonlyoverlay = true;

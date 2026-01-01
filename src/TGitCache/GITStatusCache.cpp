@@ -484,8 +484,6 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 
 CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags)
 {
-	const bool bRecursive = !!(flags & TGITCACHE_FLAGS_RECUSIVE_STATUS);
-
 	// Check a very short-lived 'mini-cache' of the last thing we were asked for.
 	LONGLONG now = static_cast<LONGLONG>(GetTickCount64());
 	if(now-m_mostRecentExpiresAt < 0)

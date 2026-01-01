@@ -35,7 +35,7 @@ public:
 	~CRemoteCacheLink();
 
 public:
-	bool GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus, bool bRecursive);
+	bool GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus);
 	bool ReleaseLockForPath(const CTGitPath& path);
 
 private:

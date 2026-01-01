@@ -139,7 +139,7 @@ UINT CCacheDlg::TestThread()
 			filepath2 = m_filelist.GetAt(dist(mt));
 		//}while(filepath.Find(L".git") >= 0);
 		GetDlgItem(IDC_FILEPATH)->SetWindowText(filepath2);
-		GetStatusFromRemoteCache(CTGitPath(filepath2), true);
+		GetStatusFromRemoteCache(CTGitPath(filepath2));
 		sNumber.Format(L"%d", i);
 		GetDlgItem(IDC_DONE)->SetWindowText(sNumber);
 		if ((GetTickCount64()%10)==1)
@@ -239,7 +239,7 @@ void CCacheDlg::ClosePipe()
 	}
 }
 
-bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
+bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path)
 {
 	if(!EnsurePipeOpen())
 	{
@@ -272,10 +272,6 @@ bool CCacheDlg::GetStatusFromRemoteCache(const CTGitPath& Path, bool bRecursive)
 	DWORD nBytesRead;
 	TGITCacheRequest request;
 	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
-	if(bRecursive)
-	{
-		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
-	}
 	wcsncpy_s(request.path, Path.GetWinPath(), MAX_PATH);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
@@ -416,7 +412,7 @@ UINT CCacheDlg::WatchTestThread()
 	std::mt19937 mt(rd());
 	std::uniform_int_distribution<INT_PTR> dist(0, max(INT_PTR(0), m_filelist.GetCount() - 1));
 	CString filepath = m_filelist.GetAt(dist(mt));
-	GetStatusFromRemoteCache(CTGitPath(m_sRootPath), false);
+	GetStatusFromRemoteCache(CTGitPath(m_sRootPath));
 	for (int i=0; i < 10000; ++i)
 	{
 		filepath = m_filelist.GetAt(dist(mt));

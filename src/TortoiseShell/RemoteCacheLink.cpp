@@ -138,7 +138,7 @@ void CRemoteCacheLink::CloseCommandPipe()
 	}
 }
 
-bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus, bool bRecursive)
+bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCacheResponse* pReturnedStatus)
 {
 	if(!EnsurePipeOpen())
 	{
@@ -177,8 +177,6 @@ bool CRemoteCacheLink::GetStatusFromRemoteCache(const CTGitPath& Path, TGITCache
 	DWORD nBytesRead;
 	TGITCacheRequest request;
 	request.flags = TGITCACHE_FLAGS_NONOTIFICATIONS;
-	if(bRecursive)
-		request.flags |= TGITCACHE_FLAGS_RECUSIVE_STATUS;
 	wcsncpy_s(request.path, Path.GetWinPath(), _countof(request.path) - 1);
 	SecureZeroMemory(&m_Overlapped, sizeof(OVERLAPPED));
 	m_Overlapped.hEvent = m_hEvent;
