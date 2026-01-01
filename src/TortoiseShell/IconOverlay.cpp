@@ -205,13 +205,8 @@ STDMETHODIMP CShellExt::IsMemberOf(LPCWSTR pwszPath, DWORD /*dwAttrib*/)
 					{
 						if (g_ShellCache.HasGITAdminDir(pPath, TRUE))
 						{
-							if ((!g_ShellCache.IsRecursive()) && (!g_ShellCache.IsFolderOverlay()))
-								status = git_wc_status_normal;
-							else
-							{
-								s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
-								status = s->status;
-							}
+							s = m_CachedStatus.GetFullStatus(CTGitPath(pPath), TRUE);
+							status = s->status;
 						}
 						else
 							status = git_wc_status_none;

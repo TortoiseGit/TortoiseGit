@@ -131,8 +131,6 @@ void CFolderCrawler::WorkerThread()
 
 	for(;;)
 	{
-		const bool bRecursive = !!static_cast<DWORD>(CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE));
-
 		SetThreadPriority(GetCurrentThread(), THREAD_MODE_BACKGROUND_END);
 
 		const DWORD waitResult = WaitForMultipleObjects(_countof(hWaitHandles), hWaitHandles, FALSE, INFINITE);
@@ -293,7 +291,7 @@ void CFolderCrawler::WorkerThread()
 							pCachedDir->Invalidate();
 							if (workingPath.Exists())
 							{
-								pCachedDir->RefreshStatus(bRecursive);
+								pCachedDir->RefreshStatus(true);
 								// if the previous status wasn't normal and now it is, then
 								// send a notification too.
 								// We do this here because GetCurrentFullStatus() doesn't send
@@ -346,7 +344,7 @@ void CFolderCrawler::WorkerThread()
 						CCachedDirectory* cachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(workingPath.GetDirectory());
 						if (cachedDir && workingPath.IsDirectory())
 							cachedDir->Invalidate();
-						if (cachedDir && cachedDir->GetStatusForMember(workingPath, bRecursive).GetEffectiveStatus() > git_wc_status_unversioned)
+						if (cachedDir && cachedDir->GetStatusForMember(workingPath, true).GetEffectiveStatus() > git_wc_status_unversioned)
 							CGitStatusCache::Instance().UpdateShell(workingPath);
 					}
 					AutoLocker lock(m_critSec);
@@ -421,7 +419,7 @@ void CFolderCrawler::WorkerThread()
 						}
 					}
 					if (cachedDir)
-						cachedDir->RefreshStatus(bRecursive);
+						cachedDir->RefreshStatus(true);
 				}
 
 				// While refreshing the status, we could get another crawl request for the same folder.

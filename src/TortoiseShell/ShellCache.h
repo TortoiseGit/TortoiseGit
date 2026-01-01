@@ -71,8 +71,6 @@ public:
 	bool IsProcessElevated();
 	BOOL IsOnlyNonElevated();
 
-	BOOL IsRecursive();
-	BOOL IsFolderOverlay();
 	BOOL IsSimpleContext();
 	BOOL HasShellMenuAccelerators();
 	BOOL IsUnversionedAsModified();
@@ -189,8 +187,6 @@ public:
 	CRegStdDWORD blockstatus;
 	CRegStdDWORD langid;
 	CRegStdDWORD onlynonelevated;
-	CRegStdDWORD showrecursive;
-	CRegStdDWORD folderoverlay;
 	CRegStdDWORD driveremote;
 	CRegStdDWORD drivefixed;
 	CRegStdDWORD drivecdrom;

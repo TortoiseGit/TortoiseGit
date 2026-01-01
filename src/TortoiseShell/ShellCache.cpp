@@ -26,8 +26,6 @@ ShellCache::ShellCache()
 {
 	cachetype = CRegStdDWORD(L"Software\\TortoiseGit\\CacheType", GetSystemMetrics(SM_REMOTESESSION) ? dll : exe, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	onlynonelevated = CRegStdDWORD(L"Software\\TortoiseGit\\ShowOverlaysOnlyNonElevated", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	showrecursive = CRegStdDWORD(L"Software\\TortoiseGit\\RecursiveOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
-	folderoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\FolderOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	driveremote = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskRemote", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	drivefixed = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskFixed", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	drivecdrom = CRegStdDWORD(L"Software\\TortoiseGit\\DriveMaskCDROM", FALSE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
@@ -124,8 +122,6 @@ bool ShellCache::RefreshIfNeeded()
 
 	cachetype.read();
 	onlynonelevated.read();
-	showrecursive.read();
-	folderoverlay.read();
 	driveremote.read();
 	drivefixed.read();
 	drivecdrom.read();
@@ -234,18 +230,6 @@ BOOL ShellCache::IsOnlyNonElevated()
 {
 	RefreshIfNeeded();
 	return (onlynonelevated);
-}
-
-BOOL ShellCache::IsRecursive()
-{
-	RefreshIfNeeded();
-	return (showrecursive);
-}
-
-BOOL ShellCache::IsFolderOverlay()
-{
-	RefreshIfNeeded();
-	return (folderoverlay);
 }
 
 BOOL ShellCache::IsSimpleContext()
