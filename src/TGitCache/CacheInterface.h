@@ -59,7 +59,6 @@ public:
  */
 struct TGITCacheRequest
 {
-	DWORD flags;
 	WCHAR path[MAX_PATH];
 };
 
@@ -94,10 +93,3 @@ struct TGITCacheCommand
 #define		TGITCACHECOMMAND_RELEASE	3		///< Releases all open handles for the specified path and all paths below
 #define		TGITCACHECOMMAND_BLOCK		4		///< Blocks a path from getting crawled for a specific amount of time or until the TGITCACHECOMMAND_UNBLOCK command is sent for that path
 #define		TGITCACHECOMMAND_UNBLOCK		5		///< Removes a path from the list of paths blocked from getting crawled
-
-/// Set this flag if you already know whether or not the item is a folder
-#define TGITCACHE_FLAGS_FOLDERISKNOWN		0x01
-/// Set this flag if the item is a folder
-#define TGITCACHE_FLAGS_ISFOLDER			0x02
-/// all of the above flags or-gated:
-#define TGITCACHE_FLAGS_MASK 0x0f

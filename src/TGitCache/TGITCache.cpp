@@ -442,10 +442,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 {
 	CTGitPath path;
 	*pResponseLength = 0;
-	if(pRequest->flags & TGITCACHE_FLAGS_FOLDERISKNOWN)
-		path.SetFromWin(pRequest->path, !!(pRequest->flags & TGITCACHE_FLAGS_ISFOLDER));
-	else
-		path.SetFromWin(pRequest->path);
+	path.SetFromWin(pRequest->path);
 
 	if (!bRun)
 	{
@@ -764,7 +761,6 @@ DWORD WINAPI InstanceThread(LPVOID lpvParam)
 
 		// sanitize request
 		request.path[_countof(request.path) - 1] = L'\0';
-		request.flags &= TGITCACHE_FLAGS_MASK;
 
 		DWORD responseLength;
 		GetAnswerToRequest(&request, &response, &responseLength);
