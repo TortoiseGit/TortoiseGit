@@ -634,7 +634,7 @@ CStatusCacheEntry CCachedDirectory::GetOwnStatus(bool bRecursive)
 	}
 }
 
-void CCachedDirectory::RefreshStatus(bool bRecursive)
+void CCachedDirectory::RefreshStatus()
 {
 	{
 		AutoLocker lock(m_critSec);
@@ -642,7 +642,7 @@ void CCachedDirectory::RefreshStatus(bool bRecursive)
 	}
 
 	// Make sure that our own status is up-to-date
-	GetStatusForMember(m_directoryPath,bRecursive);
+	GetStatusForMember(m_directoryPath, true);
 
 	/*
 	 * TSVNCache here checks whether m_entryCache is still up2date with the filesystem and refreshes all child directories.

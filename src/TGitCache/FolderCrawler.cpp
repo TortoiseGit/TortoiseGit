@@ -291,7 +291,7 @@ void CFolderCrawler::WorkerThread()
 							pCachedDir->Invalidate();
 							if (workingPath.Exists())
 							{
-								pCachedDir->RefreshStatus(true);
+								pCachedDir->RefreshStatus();
 								// if the previous status wasn't normal and now it is, then
 								// send a notification too.
 								// We do this here because GetCurrentFullStatus() doesn't send
@@ -419,7 +419,7 @@ void CFolderCrawler::WorkerThread()
 						}
 					}
 					if (cachedDir)
-						cachedDir->RefreshStatus(true);
+						cachedDir->RefreshStatus();
 				}
 
 				// While refreshing the status, we could get another crawl request for the same folder.

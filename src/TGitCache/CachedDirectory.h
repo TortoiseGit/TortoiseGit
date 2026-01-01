@@ -51,7 +51,7 @@ private:
 	bool IsOwnStatusValid() const;
 public:
 	void Invalidate();
-	void RefreshStatus(bool bRecursive);
+	void RefreshStatus();
 private:
 	void RefreshMostImportant(bool bUpdateShell = true);
 	BOOL SaveToDisk(FILE * pFile);
