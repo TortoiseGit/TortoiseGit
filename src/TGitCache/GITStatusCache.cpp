@@ -482,7 +482,7 @@ CCachedDirectory * CGitStatusCache::GetDirectoryCacheEntryNoCreate(const CTGitPa
 	return nullptr;
 }
 
-CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path, DWORD flags)
+CStatusCacheEntry CGitStatusCache::GetStatusForPath(const CTGitPath& path)
 {
 	// Check a very short-lived 'mini-cache' of the last thing we were asked for.
 	LONGLONG now = static_cast<LONGLONG>(GetTickCount64());

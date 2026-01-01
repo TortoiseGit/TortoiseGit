@@ -1,4 +1,4 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010, 2014 - TortoiseSVN
 // Copyright (C) 2008-2011, 2017-2018, 2023 - TortoiseGit
@@ -53,7 +53,7 @@ public:
 	void Refresh();
 
 	/// Get the status for a single path (main entry point, called from named-pipe code)
-	CStatusCacheEntry GetStatusForPath(const CTGitPath& path, DWORD flags);
+	CStatusCacheEntry GetStatusForPath(const CTGitPath& path);
 
 	/// Find a directory in the cache (a new entry will be created if there isn't an existing entry)
 	CCachedDirectory* GetDirectoryCacheEntry(const CTGitPath& path);

@@ -458,7 +458,7 @@ VOID GetAnswerToRequest(const TGITCacheRequest* pRequest, TGITCacheResponse* pRe
 	if (readLock.IsAcquired())
 	{
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": app asked for status of %s\n", pRequest->path);
-		CGitStatusCache::Instance().GetStatusForPath(path, pRequest->flags).BuildCacheResponse(*pReply, *pResponseLength);
+		CGitStatusCache::Instance().GetStatusForPath(path).BuildCacheResponse(*pReply, *pResponseLength);
 	}
 	else
 	{
