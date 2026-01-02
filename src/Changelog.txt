@@ -4,6 +4,7 @@ Released: unreleased
 == Features ==
  * Update pcre2 to version 10.47
  * Update SimpleIni to version 4.25
+ * Update OGDF to 2025.10 (Foxglove) plus some recent commits
 
 == Bug Fixes ==
 * Fix possible crash when parent window is closed before push/pull
