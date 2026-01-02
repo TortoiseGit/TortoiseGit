@@ -28,7 +28,7 @@ doc:
       - src/Resources/*HelpMapping.ini
 
 spellcheck-pot:
-  image: debian:bookworm
+  image: debian:trixie
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
@@ -57,7 +57,7 @@ spellcheck-pot:
       - doc/Aspell/*.pws
 
 commit-messages:
-  image: debian:bookworm
+  image: debian:trixie
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
