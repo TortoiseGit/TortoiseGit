@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2017, 2019, 2023 - TortoiseGit
+// Copyright (C) 2009-2017, 2019, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2014, 2017 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ bool CRemoteCacheLink::InternalEnsurePipeOpen(CAutoFile& hPipe, const CString& p
 			nullptr,  // don't set maximum bytes
 			nullptr)) // don't set maximum time
 		{
-			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+			CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed\n");
 			hPipe.CloseHandle();
 		}
 	}
@@ -97,7 +97,7 @@ bool CRemoteCacheLink::EnsurePipeOpen()
 		if (m_hEvent)
 			return true;
 
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CreateEvent failed");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": CreateEvent failed\n");
 		ClosePipe();
 	}
 

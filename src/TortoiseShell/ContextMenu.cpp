@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2014-2016, 2018 - TortoiseSVN
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -1201,7 +1201,7 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 	//
 	//* path is a path to a single file/directory for commands which only act on single items (log, sync, ...)
 	//* pathfile is a path to a temporary file which contains a list of file paths
-	CTraceToOutputDebugString::Instance()(__FUNCTION__);
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ "\n");
 	std::wstring gitCmd = L" /command:";
 	switch (cmd)
 	{

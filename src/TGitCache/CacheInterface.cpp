@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2007,2009-2012 - TortoiseSVN
-// Copyright (C) 2008-2013, 2016, 2019, 2023 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2019, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ bool SendCacheCommand(BYTE command, const WCHAR* path /* = nullptr */)
 	}
 	else
 	{
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed\n");
 		return false;
 	}
 

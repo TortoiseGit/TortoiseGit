@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2013, 2015-2016, 2019, 2025 - TortoiseGit
+// Copyright (C) 2012-2013, 2015-2016, 2019, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2008,2011,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ void CShellUpdater::UpdateShell()
 			nullptr,  // don't set maximum bytes
 			nullptr)) // don't set maximum time
 	{
-		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed");
+		CTraceToOutputDebugString::Instance()(__FUNCTION__ ": SetNamedPipeHandleState failed\n");
 		return;
 	}
 

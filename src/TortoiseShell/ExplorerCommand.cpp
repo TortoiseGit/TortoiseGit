@@ -155,7 +155,7 @@ HRESULT __stdcall CExplorerCommand::GetToolTip(IShellItemArray* /*psiItemArray*/
 
 HRESULT __stdcall CExplorerCommand::GetCanonicalName(GUID *pguidCommandName)
 {
-	CTraceToOutputDebugString::Instance()(__FUNCTION__);
+	CTraceToOutputDebugString::Instance()(__FUNCTION__ "\n");
 	*pguidCommandName = GUID_NULL;
 	return S_OK;
 }

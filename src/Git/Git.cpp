@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -118,7 +118,7 @@ static BOOL FindGitPath()
 		// check for (broken) scoop shim, cf. issue #4033
 		if (CString contents; CGit::LoadTextFile(CGit::ms_LastMsysGitDir + L"\\git.shim", contents))
 		{
-			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": found git.shim");
+			CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": found git.shim\n");
 			int start = 0 ;
 			while (start >= 0)
 			{
