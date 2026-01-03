@@ -24,6 +24,7 @@
 #include "GitStatusCache.h"
 #include "PathUtils.h"
 #include "GitStatus.h"
+#include "StringUtils.h"
 
 CCachedDirectory::CCachedDirectory()
 {
@@ -288,6 +289,11 @@ CStatusCacheEntry CCachedDirectory::GetStatusFromGit(const CTGitPath &path, cons
 		CGitStatusCache::Instance().m_folderCrawler.BlockPath(m_directoryPath, 20);
 		CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 		return CStatusCacheEntry();
+	}
+	if (!path.IsDirectory() && CStringUtils::EndsWith(path.GetWinPathString(), L".gitignore"))
+	{
+		// A change in .gitignore can affect the status of any file in this directory.
+		CGitStatusCache::Instance().AddFolderForCrawling(m_directoryPath);
 	}
 	UpdateCurrentStatus();
 	if (!path.IsDirectory())

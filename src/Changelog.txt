@@ -8,6 +8,7 @@ Released: unreleased
 
 == Bug Fixes ==
 * Fix possible crash when parent window is closed before push/pull
+* TGitCache: Improve handling of changes to .gitignore
 
 = Release 2.18.0.1 =
 Released: 2025-12-01
