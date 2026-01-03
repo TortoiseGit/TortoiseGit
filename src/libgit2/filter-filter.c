@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2016-2021, 2023 TortoiseGit
+// Copyright (C) 2014, 2016-2021, 2023, 2026 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -185,7 +185,7 @@ static int filter_apply(
 		// build params for sh.exe
 		git_str shParams = GIT_STR_INIT;
 		git_str_puts(&shParams, " -c \"");
-		git_str_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\");
+		git_str_puts_escaped(&shParams, cmd.ptr, "\"\\", "\\", NULL);
 		git_str_puts(&shParams, "\"");
 		if (git_str_oom(&shParams)) {
 			git_str_dispose(&cmd);
