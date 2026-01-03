@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // External Cache Copyright (C) 2005 - 2006,2010 - Will Dean, Stefan Kueng
-// Copyright (C) 2008-2014, 2016-2022, 2025 - TortoiseGit
+// Copyright (C) 2008-2014, 2016-2022, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -532,6 +532,9 @@ DWORD WINAPI ExplorerMonitorThread(LPVOID lpvParam)
 
 			CTGitPath path;
 			path.SetFromWin(szPath);
+
+			if (!path.IsDirectory()) // may happen if a .zip file is opened in Explorer (as a folder using the folder bar)
+				continue;
 
 			CAutoReadLock readLock(CGitStatusCache::Instance().GetGuard());
 			auto pCachedDir = CGitStatusCache::Instance().GetDirectoryCacheEntry(path);
