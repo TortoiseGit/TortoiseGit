@@ -30,7 +30,7 @@ if [[ $result -ne 0 ]]; then
 	err=1
 fi
 section_start "spellcheck_doc" "Spell checking the documentation"
-(set -x; python3 build.py --spellcheck true)
+(set -x; python3 build.py --target spellcheck)
 result=$?
 section_end "spellcheck_doc"
 if [[ $result -ne 0 ]]; then
