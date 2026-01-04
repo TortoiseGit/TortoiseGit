@@ -26,7 +26,6 @@ All user/site specific configuration is stored in doc.build.user.
 		depends="prepare" >
 
 		<foreach item="String" in="${applications}" delim="," property="app">
-			<property name="doc.source.file" value="source/en/${app}.xml"/>
 			<property name="doc.base.name" value="${app}_en"/>
 			<property name="doc.base.work" value="output/${doc.base.name}"/>
 
@@ -59,6 +58,20 @@ All user/site specific configuration is stored in doc.build.user.
 	<target name="clean" description="remove all generated files">
 		<if test="${cleanup == 'yes'}">
 			<delete dir="output" failonerror="false"/>
+			<delete file="Aspell/aspell.bat" failonerror="false"/>
+			<delete file="Aspell/Temp.pws" failonerror="false"/>
+			<delete dir="Aspell/TortoiseGit_en" failonerror="false"/>
+			<delete file="Aspell/TortoiseGit_en.log" failonerror="false"/>
+			<delete dir="Aspell/TortoiseMerge_en" failonerror="false"/>
+			<delete file="Aspell/TortoiseMerge_en.log" failonerror="false"/>
+			<delete file="source/en/version.xml" failonerror="false"/>
+			<delete file="source/en/TortoiseGit/git_doc/git-doc.xml" failonerror="false"/>
+			<delete>
+				<fileset>
+					<include name="${path.user.xsl}/db_*.xsl" />
+				</fileset>
+			</delete>
+			<delete file="${path.user.xsl}/en/userconfig.xml" failonerror="false"/>
 		</if>
 	</target>
 
