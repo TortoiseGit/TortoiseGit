@@ -22,7 +22,7 @@ pushd "$CI_PROJECT_DIR/doc" > /dev/null
 
 section_start "build_doc" "Building the documentation"
 (set -x; mv doc.build.user.linux.templ doc.build.user)
-(set -x; nant -D:spellcheck=true)
+(set -x; python3 build.py --target spellcheck)
 result=$?
 section_end "build_doc"
 if [[ $result -ne 0 ]]; then
