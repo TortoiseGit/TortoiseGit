@@ -22,11 +22,19 @@ pushd "$CI_PROJECT_DIR/doc" > /dev/null
 
 section_start "build_doc" "Building the documentation"
 (set -x; mv doc.build.user.linux.templ doc.build.user)
-(set -x; python3 build.py --target spellcheck)
+(set -x; python3 build.py)
 result=$?
 section_end "build_doc"
 if [[ $result -ne 0 ]]; then
 	echo -e "⚠️ \e[1;31mBuilding documentation failed, see above for details! ⚠️\e[0m"
+	err=1
+fi
+section_start "spellcheck_doc" "Spell checking the documentation"
+(set -x; python3 build.py --spellcheck true)
+result=$?
+section_end "spellcheck_doc"
+if [[ $result -ne 0 ]]; then
+	echo -e "⚠️ \e[1;31mSpellchecking the documentation failed, see above for details! ⚠️\e[0m"
 	err=1
 fi
 

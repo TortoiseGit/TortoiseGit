@@ -5,7 +5,7 @@ doc:
   before_script:
     - echo -e "section_start:`date +%s`:install_packages[collapsed=true]\r\e[0K\e[1;96mInstalling packages\e[0m"
     - apt-get update -qq
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl nant aspell aspell-en python3 git
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qq --no-install-recommends -y xsltproc docbook-xsl aspell aspell-en python3 git
     - echo -e "section_end:`date +%s`:install_packages\r\e[0K"
   script:
     - ./.gitlab-ci/check.sh
@@ -19,7 +19,6 @@ doc:
       - doc/images/en/**/*
       - doc/source/**/*
       - doc/xsl/**/*
-      - doc/doc.build*
       - doc/Aspell/*
       - doc/scripts/**
       - src/TortoiseMege/resource.h
