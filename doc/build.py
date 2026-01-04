@@ -196,7 +196,6 @@ class DocBuilder:
         self.root = root
         self.cfg = cfg
         self.cleanup = cleanup
-        self.fontpath = self._resolve_fontpath()
 
     def _resolve_fontpath(self) -> Path:
         if not is_windows():
@@ -419,7 +418,7 @@ class DocBuilder:
         userconfig = self.root / self.cfg.path_user_xsl / "en" / "userconfig.xml"
         if userconfig_template.exists():
             cfg_data = userconfig_template.read_text(encoding="utf-8")
-            cfg_data = replace_tokens(cfg_data, {"FONTSDIR": str(self.fontpath).replace("\\", "/")}, begintoken="%", endtoken="%")
+            cfg_data = replace_tokens(cfg_data, {"FONTSDIR": str(self._resolve_fontpath()).replace("\\", "/")}, begintoken="%", endtoken="%")
             userconfig.write_text(cfg_data, encoding="utf-8")
 
         # Run FOP

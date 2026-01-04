@@ -20,6 +20,7 @@ doc:
       - doc/source/**/*
       - doc/xsl/**/*
       - doc/Aspell/*
+      - doc/build.py
       - doc/scripts/**
       - src/TortoiseMege/resource.h
       - src/TortoiseProc/resource.h
