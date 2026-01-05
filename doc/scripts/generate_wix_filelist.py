@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (C) 2024 the TortoiseGit team
+# Copyright (C) 2024, 2026 the TortoiseGit team
 # This file is distributed under the same license as TortoiseGit
 #
 # Author: Sven Strickroth <email@cs-ware.de>, 2024
@@ -49,7 +49,13 @@ def generate_wix_directory(root_dir, directory_path, wix_dir, current_path=None,
 
 		# Add files to the current directory
 		for file in sorted(files):
+			if file.endswith(".pdf"):
+				continue
 			if file == "alias.h":
+				continue
+			if file == "TortoiseGit_en.fo" or file == "TortoiseGit_en.tmp":
+				continue
+			if file == "TortoiseMerge_en.fo" or file == "TortoiseMerge_en.tmp":
 				continue
 			file_path = os.path.join(root, file).replace('/', '\\')
 			file_id = f"F__htmlhelp_{rel_dir}_{os.path.splitext(file)[0]}".replace('-', '_').replace(' ', '_')
