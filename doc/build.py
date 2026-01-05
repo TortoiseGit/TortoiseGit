@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+#
+# Copyright (C) 2026 the TortoiseGit team
+# This file is distributed under the same license as TortoiseGit
+#
+# Author: Sven Strickroth <email@cs-ware.de>, 2026
+#
+
 from __future__ import annotations
 
 import argparse
