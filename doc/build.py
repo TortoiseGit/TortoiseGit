@@ -103,7 +103,6 @@ class Config:
     path_fop: str = str(Path("../Tools/fop").resolve())
     name_fop: str = "fop.bat"
     path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/")
-    path_gettext: str = str(Path("../Tools").resolve())
     name_python: str = "python3"
     path_spellcheck: str = r"C:\Progra~1\Aspell\bin\Aspell.exe"  # avoid spaces per template
 
@@ -157,7 +156,6 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         "path.fop": "path_fop",
         "name.fop": "name_fop",
         "path.xsl": "path_xsl",
-        "path.gettext": "path_gettext",
         "name.python": "name_python",
         "path.user.xsl": "path_user_xsl",
         "path.user.css": "path_user_css",
@@ -427,7 +425,7 @@ class DocBuilder:
             cmdline = ["-c", str(userconfig), *cmdline]
 
         run(
-            [self.cfg.name_fop, *cmdline],
+            [Path(self.cfg.path_fop) / self.cfg.name_fop, *cmdline],
             cwd=self.root,
             check=True,
             capture=False,
