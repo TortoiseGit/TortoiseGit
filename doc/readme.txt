@@ -51,19 +51,10 @@ Please see [Screenshots.txt](doc/Screenshots.txt) for notes on how to create scr
 Building the docs
 =================
 
-NAnt Build
-----------
-
     Open a command line
     cd TortoiseGit
     cd doc
-    ..\tools\nant\nant.exe
+    python3 build.py
 
-A NAnt build script has been provided to build the docs. When doc.build is run for
-the first time, the template doc.build.include.template is copied to doc.build.include.
-
-For local customisations, copy the doc.build.user.tmpl file to doc.build.user and
+TODO: For local customisations, copy the doc.build.user.tmpl file to doc.build.user and
 modify that copy to point to the location of the tools on your system.
-
-All other parameters are defined in doc.build.include. You can override all settings
-in doc.build.user or via the NAnt command line.
