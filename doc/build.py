@@ -96,6 +96,12 @@ def list_xml_files_for_spellcheck(root: Path, app: str) -> List[Path]:
     return sorted(set(files))
 
 
+def has_more_than_one_line(path: Path) -> bool:
+    with path.open("rb") as f:
+        next(f, None)  # first line
+        return next(f, None) is not None
+
+
 # -----------------------------
 # Config
 # -----------------------------
@@ -482,13 +488,9 @@ class DocBuilder:
                 )
 
             # Append file_log to overall app log
-            run(
-                [str(self.root / "Aspell" / f"append{script_ext}"), str(file_log), str(spellcheck_log)],
-                cwd=self.root,
-                check=True,
-                capture=False,
-                debug=self.cfg.debug,
-            )
+            if has_more_than_one_line(file_log):
+                with spellcheck_log.open("ab") as dst, file_log.open("rb") as src:
+                    shutil.copyfileobj(src, dst)
 
     def helpmapping(self, *, app: str, doc_target_work: Path) -> None:
         if app == "TortoiseGit":
