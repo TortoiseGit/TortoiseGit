@@ -457,10 +457,6 @@ class DocBuilder:
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
         temp_pws.write_text(data, encoding="utf-8")
 
-        if not is_windows():
-            # sed -i '1s/^\xEF\xBB\xBF//' ./Aspell/Temp.pws
-            run(["sed", "-i", r"1s/^\xEF\xBB\xBF//", str(temp_pws)], cwd=self.root, check=True)
-
         files = list_xml_files_for_spellcheck(self.root, app)
 
         for file_target in files:
@@ -482,12 +478,8 @@ class DocBuilder:
                 )
 
             # Append file_log to overall app log
-            run(
-                [str(self.root / "Aspell" / f"append{script_ext}"), str(file_log), str(spellcheck_log)],
-                cwd=self.root,
-                check=True,
-                capture=False,
-            )
+            with file_log.open("ab") as dst, spellcheck_log.open("rb") as src:
+                shutil.copyfileobj(src, dst)
 
     def helpmapping(self, *, app: str, doc_target_work: Path) -> None:
         if app == "TortoiseGit":
