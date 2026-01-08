@@ -30,8 +30,10 @@ if [[ $result -ne 0 ]]; then
 	err=1
 fi
 section_start "spellcheck_doc" "Spell checking the documentation"
-(set -x; python3 build.py --target spellcheck)
+pushd Aspell > /dev/null
+(set -x; python3 build.py)
 result=$?
+popd > /dev/null
 section_end "spellcheck_doc"
 if [[ $result -ne 0 ]]; then
 	echo -e "⚠️ \e[1;31mSpellchecking the documentation failed, see above for details! ⚠️\e[0m"

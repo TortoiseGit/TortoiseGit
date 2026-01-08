@@ -1,7 +1,6 @@
+Spell checking has only been tested on *nix-bases systems.
+
 Install Aspell and all the Aspell dictionaries you need.
-The Windows port is not currently maintained, but you can get
-the 0.5 version from http://aspell.net/win32/
-This has installers for the program and the dictionaries.
 
 TODO: Activate spellchecking by setting two properties in doc/doc.build.user.
 
