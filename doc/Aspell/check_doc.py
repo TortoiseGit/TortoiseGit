@@ -24,10 +24,6 @@ from typing import Dict, List, Optional
 # Utilities
 # -----------------------------
 
-def is_windows() -> bool:
-    return os.name == "nt"
-
-
 def run(
     args: List[str],
     cwd: Optional[Path] = None,
@@ -57,12 +53,6 @@ def replace_tokens(data: str, mapping: Dict[str, str], begintoken: str, endtoken
     for k, v in mapping.items():
         data = data.replace(f"{begintoken}{k}{endtoken}", v)
     return data
-
-
-def has_more_than_one_line(path: Path) -> bool:
-    with path.open("rb") as f:
-        next(f, None)  # first line
-        return next(f, None) is not None
 
 
 # -----------------------------
@@ -122,50 +112,55 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
     print("-" * 60)
     print(f"Spell checking: '{app} en' This may take a few minutes")
 
-    aspell_dir = root / f"{app}_en"
-    aspell_dir.mkdir(parents=True, exist_ok=True)
+    spellerror = False
 
-    script_ext = ".sh" if not is_windows() else ".bat"
+    with (root / f"{app}_en.log").open("w", encoding="utf-8") as dst:
+        # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
+        temp_pws = root / "Temp.pws"
+        data = (root / "TortoiseGit.tmpl.pws").read_text(encoding="utf-8")
+        data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
+        temp_pws.write_text(data, encoding="utf-8", newline='\n')
 
-    # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
-    temp_pws = root / "Temp.pws"
-    data = (root / "TortoiseGit.tmpl.pws").read_text(encoding="utf-8")
-    data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
-    temp_pws.write_text(data, encoding="utf-8", newline='\n')
+        # Collect all XML files
+        files: List[Path] = []
+        for xmlfile in (root.parent / "source" / "en" / app).rglob("*.xml"):
+            # exclude git_doc/*.xml when app is TortoiseGit
+            if app == "TortoiseGit" and xmlfile.relative_to(root.parent).as_posix().startswith("source/en/TortoiseGit/git_doc/"):
+                continue
+            files.append(xmlfile)
+        for extra in ["glossary.xml", "wishlist.xml"]:
+            files.append(root.parent / "source" / "en" / extra)
 
-    # Collect all XML files
-    files: List[Path] = []
-    for xmlfile in (root.parent / "source" / "en" / app).rglob("*.xml"):
-        # exclude git_doc/*.xml when app is TortoiseGit
-        if app == "TortoiseGit" and xmlfile.relative_to(root.parent).as_posix().startswith("source/en/TortoiseGit/git_doc/"):
-            continue
-        files.append(xmlfile)
-    for extra in ["glossary.xml", "wishlist.xml"]:
-        files.append(root.parent / "source" / "en" / extra)
+        # Spell check all files
+        for file_target in sorted(set(files)):
+            relpath = os.path.relpath(file_target, root.parent / "source" / "en")
+            print(f" * Checking: {relpath}")
 
-    # Spell check all files
-    for file_target in sorted(set(files)):
-        relpath = os.path.relpath(file_target, root.parent / "source" / "en")
-        print(f" * Checking: {relpath}")
+            xsltproc = run(
+                [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
+                cwd=root,
+                check=True,
+                capture=True,
+                debug=cfg.debug,
+            )
+            aspell = run(
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", "--add-extra-dicts=./Temp.pws", "--lang=en", "list", "check"],
+                cwd=root,
+                check=True,
+                capture=True,
+                input=xsltproc.stdout,
+                debug=cfg.debug,
+            )
 
-        file_log = root / f"{file_target.name}.log"
-
-        print(f" * Checking: {file_target.name}")
-        run(
-            [root / f"aspell{script_ext}", cfg.path_spellcheck, "en", str(file_target), str(file_log)],
-            cwd=root.parent,
-            check=False,
-            capture=False,
-            debug=cfg.debug,
-        )
-
-        # Append file_log to overall app log
-        if has_more_than_one_line(file_log):
-            with spellcheck_log.open("ab") as dst, file_log.open("rb") as src:
-                shutil.copyfileobj(src, dst)
+            # Append file_log to overall app log
+            if aspell.stdout:
+                spellerror = True
+                dst.write(f"---{relpath}\n")
+                dst.write(aspell.stdout)
 
     delete(temp_pws)
 
+    return spellerror
 
 # -----------------------------
 # CLI
@@ -201,17 +196,13 @@ def main(argv: List[str]) -> int:
     if args.debug:
         cfg.debug = args.debug
 
-    # tune path to xsltproc.exe in aspell.bat (Windows only)
-    if is_windows():
-        data = (root / "Aspell" / "aspell.bat.in").read_text(encoding="utf-8")
-        data = replace_tokens(data, {"XSLTProcPath": cfg.path_bin}, begintoken="$", endtoken="$")
-        (root / "Aspell" / "aspell.bat").write_text(data, encoding="utf-8")
+    spellerrors = False
 
     # Runs for all apps in config
     for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
-        spellcheck(root, app=app, cfg=cfg)
+        spellerrors |= spellcheck(root, app=app, cfg=cfg)
 
-    return 0
+    return 0 if not spellerrors else 2
 
 
 if __name__ == "__main__":
