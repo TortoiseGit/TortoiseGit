@@ -8,6 +8,7 @@ skip_commits:
     - '*.md'
     - src/*.txt
     - .gitlab-ci.yml
+    - .gitlab-ci/
     - .tgitconfig
     - .mailmap
     - '**/.editorconfig'
