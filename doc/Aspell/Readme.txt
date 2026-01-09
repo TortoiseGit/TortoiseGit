@@ -12,7 +12,7 @@ en.pws:
 To execute the spell checker on the documentation:
  * Install Python
  * Install Aspell and the English Aspell dictionary.
- * python3 check.py
+ * python3 check_doc.py
 
 Spell checking has only been tested on *nix-bases systems recently.
 

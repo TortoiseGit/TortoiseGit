@@ -49,27 +49,6 @@ def replace_tokens(data: str, mapping: Dict[str, str], begintoken: str, endtoken
     return data
 
 
-def list_xml_files_for_spellcheck(root: Path, app: str) -> List[Path]:
-    files: List[Path] = []
-    app_root = root / "source" / "en" / app
-    for xmlfile in app_root.rglob("*.xml"):
-        # exclude git_doc/*.xml when app is TortoiseGit
-        if app == "TortoiseGit":
-            try:
-                rel = xmlfile.relative_to(root)
-            except ValueError:
-                rel = xmlfile
-            if str(rel).replace("\\", "/").startswith("source/en/TortoiseGit/git_doc/"):
-                continue
-        files.append(xmlfile)
-
-    for extra in ["glossary.xml", "wishlist.xml"]:
-        files.append(root / "source" / "en" / extra)
-
-    # stable ordering
-    return sorted(set(files))
-
-
 # -----------------------------
 # Config
 # -----------------------------
@@ -124,6 +103,7 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
     return cfg
 
 def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
+    print("-" * 60)
     print(f"Spellchecking: '{app} en' This may take a few minutes")
 
     spellcheck_log = root / f"{app}_en.log"
@@ -138,9 +118,19 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
         temp_pws.write_text(data, encoding="utf-8")
 
-        files = list_xml_files_for_spellcheck(root.parent, app)
+        # Collect all XML files
+        files: List[Path] = []
+        app_root = root.parent / "source" / "en" / app
+        for xmlfile in app_root.rglob("*.xml"):
+            # exclude git_doc/*.xml when app is TortoiseGit
+            if app == "TortoiseGit" and str(xmlfile.relative_to(root)).replace("\\", "/").startswith("source/en/TortoiseGit/git_doc/"):
+                continue
+            files.append(xmlfile)
+        for extra in ["glossary.xml", "wishlist.xml"]:
+            files.append(root / "source" / "en" / extra)
 
-        for file_target in files:
+        # Spell check all files
+        for file_target in sorted(set(files)):
             relpath = os.path.relpath(file_target, root.parent / "source")
             print(f"Checking: {relpath}")
 
@@ -151,7 +141,6 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 capture=True,
                 debug=cfg.debug,
             )
-
             aspell = run(
                 [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", f"--add-extra-dicts={temp_pws}", "--lang=en", "list", "check"],
                 cwd=root,
@@ -178,11 +167,11 @@ def main(argv: List[str]) -> int:
         prog="doc_build.py",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent("""\
-            Documentation Builder.
+            Spell check documentation.
 
             Examples:
-              python3 doc_build.py
-              python3 doc_build.py --applications TortoiseGit
+              python3 check_doc.py
+              python3 check_doc.py --applications TortoiseGit
             """)
     )
     parser.add_argument("--applications", help="Comma-separated apps (e.g. TortoiseGit,TortoiseMerge)")
