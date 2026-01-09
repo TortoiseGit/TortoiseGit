@@ -145,7 +145,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             print(f"Checking: {file_target.name}")
 
             xsltproc = run(
-                [Path(cfg.path_bin) / "xsltpoc", "--nonet" , "removetags.xsl", file_target],
+                [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
                 cwd=root,
                 check=True,
                 capture=True,
@@ -210,7 +210,7 @@ def main(argv: List[str]) -> int:
     for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
         spellerrors |= spellcheck(root, app=app, cfg=cfg)
 
-    return 0 if not spellerrors else 1
+    return 0 if not spellerrors else 2
 
 
 if __name__ == "__main__":
