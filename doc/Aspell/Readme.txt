@@ -1,13 +1,10 @@
-This folder contains spellchecker dictionaries for Aspell.
-One for each language and a generic template file that is copied to each language.
+This folder contains spell checker script and dictionaries for Aspell.
 
 TortoiseGit.tmpl.pws:
   Generic dictionary of terms & Keywords used in the TortoiseGit manual. 
-  This file is language independent and is copied to each target language 
-  (named temp.pws), when the translation takes place.
 
 en.pws:
-  Dictionaries of English terms.
+  Additional dictionary of English terms.
 
 To execute the spell checker on the documentation:
  * Install Python

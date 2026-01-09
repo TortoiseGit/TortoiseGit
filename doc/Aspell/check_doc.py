@@ -104,7 +104,7 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
 
 def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
     print("-" * 60)
-    print(f"Spellchecking: '{app} en' This may take a few minutes")
+    print(f"Spell checking: '{app} en' This may take a few minutes")
 
     spellcheck_log = root / f"{app}_en.log"
 
