@@ -33,11 +33,13 @@ def run(
     args: List[str],
     cwd: Optional[Path] = None,
     *,
+    debug: bool = False
     check: bool = True,
     capture: bool = False,
     input: String = None,
 ) -> subprocess.CompletedProcess:
-    print(f"args: {args}, cwd: {cwd}\n")
+    if debug:
+        print(f"Executing: {args} in cwd {cwd}\n")
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, input=input, env=None)
 
 
@@ -79,12 +81,6 @@ def list_xml_files_for_spellcheck(root: Path, app: str) -> List[Path]:
     return sorted(set(files))
 
 
-def has_more_than_one_line(path: Path) -> bool:
-    with path.open("rb") as f:
-        next(f, None)  # first line
-        return next(f, None) is not None
-        
-
 # -----------------------------
 # Config
 # -----------------------------
@@ -92,6 +88,7 @@ def has_more_than_one_line(path: Path) -> bool:
 @dataclass
 class Config:
     # Can be overriden in doc.build.user
+    debug: bool = False
     applications: str = "TortoiseGit,TortoiseMerge"
 
     path_bin: str = "/usr/bin"
@@ -155,10 +152,11 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             print(f"Checking: {file_target.name}")
 
             xsltproc = run(
-                [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
+                [Path(cfg.path_bin) / "xsltpoc", "--nonet" , "removetags.xsl", file_target],
                 cwd=root,
                 check=True,
                 capture=True,
+                debug=cfg.debug,
             )
 
             aspell = run(
@@ -167,6 +165,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 check=True,
                 capture=True,
                 input=xsltproc.stdout,
+                debug=cfg.debug,
             )
 
             # Append file_log to overall app log
@@ -192,6 +191,7 @@ def main(argv: List[str]) -> int:
             """)
     )
     parser.add_argument("--applications", help="Comma-separated apps (e.g. TortoiseGit,TortoiseMerge)")
+    parser.add_argument("--debug", help="Show debug output")
     args = parser.parse_args(argv)
 
     root = Path(__file__).resolve().parent
@@ -199,18 +199,20 @@ def main(argv: List[str]) -> int:
     cfg = Config()
 
     # Load doc.build.user overrides (if present)
-    user_props = load_user_properties(root / "doc.build.user")
+    user_props = load_user_properties(root.parent / "doc.build.user")
     cfg = apply_overrides(cfg, user_props)
 
     # Apply CLI overrides
     if args.applications:
         cfg.applications = args.applications
 
+    spellerrors = False
+
     # Runs for all apps in config
     for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
-        spellcheck(root, app=app, cfg=cfg)
+        spellerrors |= spellcheck(root, app=app, cfg=cfg)
 
-    return 0
+    return spellerrors ? 1 : 0
 
 
 if __name__ == "__main__":
