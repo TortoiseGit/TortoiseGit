@@ -163,7 +163,6 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
 
 
 def prepare_version_info(cfg: Config) -> None:
-    # Mirrors PrepareVersionInfo target in doc.build.include:
     # If env vars are not set, set defaults.
     if "MajorVersion" not in os.environ:
         os.environ["MajorVersion"] = "2"
@@ -201,15 +200,13 @@ class DocBuilder:
         delete(self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml")
 
         user_xsl_dir = self.root / self.cfg.path_user_xsl
-        for file in user_xsl_dir.rglob("db_*.xsl"):
+        for file in user_xsl_dir.glob("db_*.xsl"):
             delete(file)
         delete(user_xsl_dir / "en" / "userconfig.xml")
 
     def prepare_custom(self) -> None:
         # write helper stylesheets that import docbook ones.
         xsl_dir = self.root / self.cfg.path_user_xsl
-        xsl_dir.mkdir(parents=True, exist_ok=True)
-
         (xsl_dir / "db_pdfdoc.xsl").write_text(
             "\n".join([
                 '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">',
@@ -233,9 +230,6 @@ class DocBuilder:
         (self.root / "output").mkdir(exist_ok=True)
 
         self.prepare_custom()
-
-        # ensure "Version" translation invariant
-        copy_file(self.root / "source" / "en" / "Version.in", self.root / "source" / "en" / "version.xml", overwrite=True)
 
     def update_version_info(self) -> None:
         mapping = {
