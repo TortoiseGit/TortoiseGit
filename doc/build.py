@@ -447,13 +447,12 @@ class DocBuilder:
             print("-" * 60)
             print(f"Creating '{doc_target_name}' documentation")
 
-            # Special handling for git_doc xml (NAnt deletes then optionally copies .in)
-            git_doc_xml = self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml"
-            git_doc_in = self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml.in"
+            # Special handling for git_doc.xml
             if app == "TortoiseGit":
+                git_doc_xml = self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml"
                 delete(git_doc_xml)
                 if self.cfg.external_gitdocs == "0":
-                    copy_file(git_doc_in, git_doc_xml, overwrite=True)
+                    copy_file(self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml.in", git_doc_xml, overwrite=True)
 
             # update version info in version.xml
             self.update_version_info()
