@@ -1,7 +1,3 @@
-Spell checking has only been tested on *nix-bases systems recently.
-
-Install Aspell and all the English Aspell dictionaries.
-
 This folder contains spellchecker dictionaries for Aspell.
 One for each language and a generic template file that is copied to each language.
 
@@ -13,4 +9,11 @@ TortoiseGit.tmpl.pws:
 en.pws:
   Dictionaries of English terms.
 
-The output of the spellchecking process is written to "spellcheck_<NN>.log".
+To execute the spell checker on the documentation:
+ * Install Python
+ * Install Aspell and the English Aspell dictionary.
+ * python3 check.py
+
+Spell checking has only been tested on *nix-bases systems recently.
+
+The output of the spellchecking process is written to "*.log".

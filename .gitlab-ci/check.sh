@@ -31,7 +31,7 @@ if [[ $result -ne 0 ]]; then
 fi
 section_start "spellcheck_doc" "Spell checking the documentation"
 pushd Aspell > /dev/null
-(set -x; python3 build.py)
+(set -x; python3 check.py)
 result=$?
 popd > /dev/null
 section_end "spellcheck_doc"
