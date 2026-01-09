@@ -11,6 +11,7 @@ skip_commits:
     - .gitlab-ci/
     - .tgitconfig
     - .mailmap
+    - .gitignore
     - '**/.editorconfig'
     - '**/.clang.format'
 image:
