@@ -154,7 +154,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             )
 
             aspell = run(
-                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", f"--add-extra-dicts=./en.pws", f"--add-extra-dicts={temp_pws}", "--lang=en", "list", "check"],
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", f"--add-extra-dicts={temp_pws}", "--lang=en", "list", "check"],
                 cwd=root,
                 check=True,
                 capture=True,
