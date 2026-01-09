@@ -33,15 +33,14 @@ section_start "spellcheck_doc" "Spell checking the documentation"
 pushd Aspell > /dev/null
 (set -x; python3 build.py)
 result=$?
-echo Exitcode: $result
 popd > /dev/null
 section_end "spellcheck_doc"
-if [[ $result -ne 0 ]]; then
+if [[ $result -ne 0 ]] && [[ $result -ne 2 ]]; then
 	echo -e "⚠️ \e[1;31mSpellchecking the documentation failed, see above for details! ⚠️\e[0m"
 	err=1
 fi
 
-if [[ $(ls -1 Aspell/*.log 2>/dev/null | wc -l) -ge 1 ]]; then
+if [[ $result -eq 2 ]]; then
 	echo -e "⚠️ \e[1;31mFound typos in documentation: ⚠️\e[0m";
 	err=1
 	cat Aspell/*.log;

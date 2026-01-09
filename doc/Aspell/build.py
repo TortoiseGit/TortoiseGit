@@ -142,7 +142,8 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
         files = list_xml_files_for_spellcheck(root.parent, app)
 
         for file_target in files:
-            print(f"Checking: {file_target.name}")
+            relpath = os.path.relpath(file_target, root.parent / "source")
+            print(f"Checking: {relpath}")
 
             xsltproc = run(
                 [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
@@ -164,7 +165,6 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             # Append file_log to overall app log
             if aspell.stdout:
                 spellerror = True
-                relpath = os.path.relpath(file_target, root.parent / "source")
                 dst.write(f"---{relpath}\n")
                 dst.write(aspell.stdout)
 
