@@ -35,8 +35,10 @@ def run(
     *,
     check: bool = True,
     capture: bool = False,
+    debug: bool = False,
 ) -> subprocess.CompletedProcess:
-    print(f"args: {args}, cwd: {cwd}\n")
+    if debug:
+        print(f"Executing: {args} in cwd {cwd}\n")
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, env=None)
 
 
@@ -84,6 +86,7 @@ class Config:
     docformats: str = "html"  # "pdf,html"
     help_mapping: str = "1"   # "1" or "0"
     external_gitdocs: str = "0"  # "1" to use external git docs
+    debug: bool = False
 
     path_bin: str = str(Path("../Tools").resolve())
     path_fop: str = str(Path("../Tools/fop").resolve())
@@ -133,6 +136,7 @@ def load_user_properties(doc_build_user: Path) -> Dict[str, str]:
 def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
     # Only apply keys we understand; ignore others.
     mapping = {
+        "debug": "debug",
         "applications": "applications",
         "docformats": "docformats",
         "help.mapping": "help_mapping",
@@ -488,6 +492,7 @@ def main(argv: List[str]) -> int:
     parser.add_argument("--docformats", help="Comma-separated formats (html,pdf)")
     parser.add_argument("--external-gitdocs", choices=["0", "1"], help="0=use local git docs, 1=use external git docs")
     parser.add_argument("--help-mapping", choices=["0", "1"], help="0=disable mapping/wix generation, 1=enable")
+    parser.add_argument("--debug", help="Show debug output")
     args = parser.parse_args(argv)
 
     root = Path(__file__).resolve().parent
@@ -507,6 +512,8 @@ def main(argv: List[str]) -> int:
         cfg.external_gitdocs = args.external_gitdocs
     if args.help_mapping is not None:
         cfg.help_mapping = args.help_mapping
+    if args.debug:
+        cfg.debug = args.debug
 
     # Prepare version info early so docverstring is always available
     prepare_version_info(cfg)

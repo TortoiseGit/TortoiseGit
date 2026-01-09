@@ -43,16 +43,6 @@ def run(
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, input=input, env=None)
 
 
-def delete(p: Path) -> None:
-    if p.is_dir():
-        shutil.rmtree(p, ignore_errors=True)
-    else:
-        try:
-            p.unlink()
-        except FileNotFoundError:
-            pass
-
-
 def replace_tokens(data: str, mapping: Dict[str, str], begintoken: str, endtoken: str) -> str:
     # NAnt replacetokens: tokens appear as begintoken + KEY + endtoken
     for k, v in mapping.items():
@@ -121,6 +111,7 @@ def load_user_properties(doc_build_user: Path) -> Dict[str, str]:
 def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
     # Only apply keys we understand; ignore others.
     mapping = {
+        "debug": "debug",
         "applications": "applications",
         "path.bin": "path_bin",
         "path.spellcheck": "path_spellcheck",
@@ -137,6 +128,8 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
     print(f"Spellchecking: '{app} en' This may take a few minutes")
 
     spellcheck_log = root / f"{app}_en.log"
+
+    spellerror = False
 
     with tempfile.TemporaryDirectory() as tmp, spellcheck_log.open("w", encoding="utf-8") as dst:
         # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
@@ -170,9 +163,12 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
 
             # Append file_log to overall app log
             if aspell.stdout:
+                spellerror = True
                 relpath = os.path.relpath(file_target, root.parent / "source")
                 dst.write(f"---{relpath}\n")
                 dst.write(aspell.stdout)
+
+    return spellerror
 
 # -----------------------------
 # CLI
@@ -205,6 +201,8 @@ def main(argv: List[str]) -> int:
     # Apply CLI overrides
     if args.applications:
         cfg.applications = args.applications
+    if args.debug:
+        cfg.debug = args.debug
 
     spellerrors = False
 
@@ -212,7 +210,7 @@ def main(argv: List[str]) -> int:
     for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
         spellerrors |= spellcheck(root, app=app, cfg=cfg)
 
-    return 0 if !spellerrors else 1
+    return 0 if not spellerrors else 1
 
 
 if __name__ == "__main__":
