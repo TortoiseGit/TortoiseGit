@@ -33,6 +33,7 @@ section_start "spellcheck_doc" "Spell checking the documentation"
 pushd Aspell > /dev/null
 (set -x; python3 build.py)
 result=$?
+echo Exitcode: $result
 popd > /dev/null
 section_end "spellcheck_doc"
 if [[ $result -ne 0 ]]; then
