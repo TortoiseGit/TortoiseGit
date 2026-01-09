@@ -123,11 +123,11 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
         app_root = root.parent / "source" / "en" / app
         for xmlfile in app_root.rglob("*.xml"):
             # exclude git_doc/*.xml when app is TortoiseGit
-            if app == "TortoiseGit" and str(xmlfile.relative_to(root)).replace("\\", "/").startswith("source/en/TortoiseGit/git_doc/"):
+            if app == "TortoiseGit" and str(xmlfile.relative_to(root.parent)).replace("\\", "/").startswith("source/en/TortoiseGit/git_doc/"):
                 continue
             files.append(xmlfile)
         for extra in ["glossary.xml", "wishlist.xml"]:
-            files.append(root / "source" / "en" / extra)
+            files.append(root.parent / "source" / "en" / extra)
 
         # Spell check all files
         for file_target in sorted(set(files)):
