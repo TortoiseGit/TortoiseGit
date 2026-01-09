@@ -212,7 +212,7 @@ def main(argv: List[str]) -> int:
     for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
         spellerrors |= spellcheck(root, app=app, cfg=cfg)
 
-    return spellerrors ? 1 : 0
+    return 0 if !spellerrors else 1
 
 
 if __name__ == "__main__":
