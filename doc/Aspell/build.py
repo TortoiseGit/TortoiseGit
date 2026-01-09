@@ -141,10 +141,10 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
 
     spellcheck_log = root / f"{app}_en.log"
 
-    with spellcheck_log.open("w", encoding="utf-8") as dst:
+    with tempfile.TemporaryDirectory() as tmp, spellcheck_log.open("w", encoding="utf-8") as dst:
         # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
         tmpl = root / "TortoiseGit.tmpl.pws"
-        temp_pws = root / "Temp.pws"
+        temp_pws = Path(tmp) / "Temp.pws"
         data = tmpl.read_text(encoding="utf-8")
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
         temp_pws.write_text(data, encoding="utf-8")
@@ -162,7 +162,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             )
 
             aspell = run(
-                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", f"--add-extra-dicts=./en.pws", f"--add-extra-dicts=./Temp.pws", "--lang=en", "list", "check"],
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", f"--add-extra-dicts=./en.pws", f"--add-extra-dicts={temp_pws}", "--lang=en", "list", "check"],
                 cwd=root,
                 check=True,
                 capture=True,
@@ -174,8 +174,6 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 relpath = os.path.relpath(file_target, root.parent / "source")
                 dst.write(f"---{relpath}\n")
                 dst.write(aspell.stdout)
-
-    delete(temp_pws)
 
 # -----------------------------
 # CLI
