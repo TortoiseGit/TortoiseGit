@@ -38,16 +38,6 @@ def run(
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, input=input, env=None)
 
 
-def delete(p: Path) -> None:
-    if p.is_dir():
-        shutil.rmtree(p, ignore_errors=True)
-    else:
-        try:
-            p.unlink()
-        except FileNotFoundError:
-            pass
-
-
 def replace_tokens(data: str, mapping: Dict[str, str], begintoken: str, endtoken: str) -> str:
     # NAnt replacetokens: tokens appear as begintoken + KEY + endtoken
     for k, v in mapping.items():
@@ -114,9 +104,9 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
 
     spellerror = False
 
-    with (root / f"{app}_en.log").open("w", encoding="utf-8") as dst:
+    with tempfile.TemporaryDirectory() as tmp, (root / f"{app}_en.log").open("w", encoding="utf-8") as dst:
         # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
-        temp_pws = root / "Temp.pws"
+        temp_pws = Path(tmp) / "Temp.pws"
         data = (root / "TortoiseGit.tmpl.pws").read_text(encoding="utf-8")
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
         temp_pws.write_text(data, encoding="utf-8", newline='\n')
@@ -144,7 +134,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 debug=cfg.debug,
             )
             aspell = run(
-                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", "--add-extra-dicts=./Temp.pws", "--lang=en", "list", "check"],
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", f"--add-extra-dicts=/{temp_pws.as_posix().lstrip('/')}", "--lang=en", "list", "check"],
                 cwd=root,
                 check=True,
                 capture=True,
@@ -157,8 +147,6 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 spellerror = True
                 dst.write(f"---{relpath}\n")
                 dst.write(aspell.stdout)
-
-    delete(temp_pws)
 
     return spellerror
 

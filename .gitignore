@@ -12,7 +12,6 @@
 *.suo
 *.user
 *.zip
-/doc/Aspell/Temp.pws
 /doc/IDD_Errors.txt
 /doc/images/8bit.tmp
 /doc/output
