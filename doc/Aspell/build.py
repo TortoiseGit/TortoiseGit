@@ -33,9 +33,9 @@ def run(
     args: List[str],
     cwd: Optional[Path] = None,
     *,
-    debug: bool = False
     check: bool = True,
     capture: bool = False,
+    debug: bool = False,
     input: String = None,
 ) -> subprocess.CompletedProcess:
     if debug:
