@@ -35,15 +35,13 @@ pushd Aspell > /dev/null
 result=$?
 popd > /dev/null
 section_end "spellcheck_doc"
-if [[ $result -ne 0 ]] && [[ $result -ne 2 ]]; then
-	echo -e "⚠️ \e[1;31mSpellchecking the documentation failed, see above for details! ⚠️\e[0m"
-	err=1
-fi
-
 if [[ $result -eq 2 ]]; then
 	echo -e "⚠️ \e[1;31mFound typos in documentation: ⚠️\e[0m";
 	err=1
 	cat Aspell/*.log;
+elif [[ $result -ne 0 ]]; then
+	echo -e "⚠️ \e[1;31mSpellchecking the documentation failed, see above for details! ⚠️\e[0m"
+	err=1
 else
 	echo -e "✔️ \e[32;1mNo spell errors detected in documentation. ✔️\e[0m"
 fi
