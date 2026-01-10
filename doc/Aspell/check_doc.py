@@ -177,7 +177,7 @@ def main(argv: List[str]) -> int:
             """)
     )
     parser.add_argument("--applications", help="Comma-separated apps (e.g. TortoiseGit,TortoiseMerge)")
-    parser.add_argument("--debug", help="Show debug output")
+    parser.add_argument("--debug", action="store_true", help="Show debug output")
     args = parser.parse_args(argv)
 
     root = Path(__file__).resolve().parent

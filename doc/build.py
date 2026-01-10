@@ -485,7 +485,7 @@ def main(argv: List[str]) -> int:
     parser.add_argument("--docformats", help="Comma-separated formats (html,pdf)")
     parser.add_argument("--external-gitdocs", choices=["0", "1"], help="0=use local git docs, 1=use external git docs")
     parser.add_argument("--help-mapping", choices=["0", "1"], help="0=disable mapping/wix generation, 1=enable")
-    parser.add_argument("--debug", help="Show debug output")
+    parser.add_argument("--debug", action="store_true", help="Show debug output")
     args = parser.parse_args(argv)
 
     root = Path(__file__).resolve().parent
