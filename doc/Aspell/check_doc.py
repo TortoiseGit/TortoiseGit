@@ -111,6 +111,9 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
         temp_pws.write_text(data, encoding="utf-8", newline='\n')
 
+        temp_en_pws = Path(tmp) / "TempEn.pws"
+        temp_en_pws.write_text((root / "en.pws").read_text(encoding="utf-8"), encoding="utf-8", newline='\n')
+
         # Collect all XML files
         files: List[Path] = []
         for xmlfile in (root.parent / "source" / "en" / app).rglob("*.xml"):
@@ -134,7 +137,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 debug=cfg.debug,
             )
             aspell = run(
-                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", f"--add-extra-dicts=/{temp_pws.as_posix().lstrip('/')}", "--lang=en", "list", "check"],
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", f"--add-extra-dicts=/{temp_en_pws.as_posix().lstrip('/').replace(':','')}", f"--add-extra-dicts=/{temp_pws.as_posix().lstrip('/').replace(':','')}", "--lang=en", "list", "check"],
                 cwd=root,
                 check=True,
                 capture=True,
