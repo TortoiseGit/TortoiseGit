@@ -112,11 +112,13 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
 
     with tempfile.TemporaryDirectory() as tmp, spellcheck_log.open("w", encoding="utf-8") as dst:
         # Copy TortoiseGit.tmpl.pws -> Temp.pws with $LANG$ set
-        tmpl = root / "TortoiseGit.tmpl.pws"
         temp_pws = Path(tmp) / "Temp.pws"
-        data = tmpl.read_text(encoding="utf-8")
+        data = (root / "TortoiseGit.tmpl.pws").read_text(encoding="utf-8")
         data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
-        temp_pws.write_text(data, encoding="utf-8")
+        temp_pws.write_text(data, encoding="utf-8", newline='\n')
+
+        temp_en_pws = Path(tmp) / "TempEn.pws"
+        temp_en_pws.write_text((root / "en.pws").read_text(encoding="utf-8"), encoding="utf-8", newline='\n')
 
         # Collect all XML files
         files: List[Path] = []
@@ -142,7 +144,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
                 debug=cfg.debug,
             )
             aspell = run(
-                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", "--add-extra-dicts=./en.pws", f"--add-extra-dicts={temp_pws}", "--lang=en", "list", "check"],
+                [cfg.path_spellcheck, "--mode=sgml", "--encoding=utf-8", f"--add-extra-dicts=/{temp_en_pws.as_posix().lstrip('/').replace(':','')}", f"--add-extra-dicts=/{temp_pws.as_posix().lstrip('/').replace(':','')}", "--lang=en", "list", "check"],
                 cwd=root,
                 check=True,
                 capture=True,
