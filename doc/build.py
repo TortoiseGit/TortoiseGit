@@ -88,10 +88,10 @@ class Config:
     external_gitdocs: str = "0"  # "1" to use external git docs
     debug: bool = False
 
-    path_bin: str = str(Path("../Tools").resolve())
-    path_fop: str = str(Path("../Tools/fop").resolve())
-    name_fop: str = "fop.bat"
-    path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/")
+    path_bin: str = str(Path("../Tools").resolve()) if is_windows() else "/usr/bin"
+    path_fop: str = str(Path("../Tools/fop").resolve()) if is_windows() else "/usr/bin"
+    name_fop: str = "fop.bat" if is_windows() else "fop"
+    path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/") if is_windows() else "/usr/share/xml/docbook/stylesheet/docbook-xsl/"
     name_python: str = "python3"
 
     path_user_xsl: str = "./xsl"
