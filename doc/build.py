@@ -110,12 +110,12 @@ class Config:
     debug: bool = False
     spellcheck: str = "false"
 
-    path_bin: str = str(Path("../Tools").resolve())
-    path_fop: str = str(Path("../Tools/fop").resolve())
-    name_fop: str = "fop.bat"
-    path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/")
+    path_bin: str = str(Path("../Tools").resolve()) if is_windows() else "/usr/bin"
+    path_fop: str = str(Path("../Tools/fop").resolve()) if is_windows() else "/usr/bin"
+    name_fop: str = "fop.bat" if is_windows() else "fop"
+    path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/") if is_windows() else "/usr/share/xml/docbook/stylesheet/docbook-xsl/"
     name_python: str = "python3"
-    path_spellcheck: str = r"C:\Progra~1\Aspell\bin\Aspell.exe"  # avoid spaces per template
+    path_spellcheck: str = "aspell"
 
     path_user_xsl: str = "./xsl"
     path_user_css: str = "./source"

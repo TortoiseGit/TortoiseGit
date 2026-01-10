@@ -21,7 +21,6 @@ err=0
 pushd "$CI_PROJECT_DIR/doc" > /dev/null
 
 section_start "build_doc" "Building the documentation"
-(set -x; mv doc.build.user.linux.templ doc.build.user)
 (set -x; python3 build.py)
 result=$?
 section_end "build_doc"
