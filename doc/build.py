@@ -196,10 +196,10 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         "name.python": "name_python",
         "path.user.xsl": "path_user_xsl",
         "path.user.css": "path_user_css",
-        "xsl.pdf.params": "xsl_pdf_params",
-        "xsl.pdf.file": "xsl_pdf_file",
         "xsl.htmlchunk.params": "xsl_htmlchunk_params",
         "xsl.htmlchunk.file": "xsl_htmlchunk_file",
+        "xsl.pdf.params": "xsl_pdf_params",
+        "xsl.pdf.file": "xsl_pdf_file",
     }
     for k, v in overrides.items():
         attr = mapping.get(k)
@@ -311,6 +311,7 @@ class DocBuilder:
         return file_uptodate(target, sources)
 
     def xsltproc(self, *, xslt_source: Path, xslt_file: str, xslt_params: str, xslt_target: Path) -> None:
+        print("* Processing XML Source")
         # Select language-specific stylesheet if present.
         lang_candidate = self.cfg.path_user_xsl / "en" / xslt_file
         if lang_candidate.exists():
@@ -320,6 +321,8 @@ class DocBuilder:
 
         # Run xsltproc
         params = self._expand_params(xslt_params)
+        print(f"  * Stylesheet: {stylesheet}")
+        print(f"  * Parameters: {params}")
         cmd = [
             Path(self.cfg.path_bin) / "xsltproc",
             *params.split(),
@@ -347,6 +350,8 @@ class DocBuilder:
             raise RuntimeError(f"xsltproc failed with exit code {proc.returncode}.")
 
     def copyimages(self, *, app: str, doc_target_work: Path, xslt_source: Path) -> None:
+        print("* Copy images")
+
         images_dir = doc_target_work / "images"
         delete(images_dir)
         images_dir.mkdir()
@@ -445,7 +450,7 @@ class DocBuilder:
             cwd=self.root,
             check=True,
             capture=False,
-            debug=self.cfg.debug
+            debug=self.cfg.debug,
         )
 
     def helpmapping(self, *, app: str, doc_target_work: Path) -> None:
