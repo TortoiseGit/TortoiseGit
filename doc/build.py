@@ -16,6 +16,7 @@ import subprocess
 import sys
 import tempfile
 import textwrap
+import threading
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
@@ -55,6 +56,17 @@ def run(
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, env=None)
 
 
+def _reader(stream, sink, collector):
+    print("in reader")
+    try:
+        for line in iter(stream.readline, ''):
+            collector.append(line)
+            print(f"  [exec] {line}", flush=True)
+            sink.write(line)
+            sink.flush()
+    finally:
+        stream.close()
+
 def run_tee(
     args: List[str],
     cwd: Optional[Path] = None,
@@ -69,25 +81,40 @@ def run_tee(
         args,
         cwd=str(cwd) if cwd else None, 
         stdout=subprocess.PIPE,
-        stderr=None,
+        stderr=subprocess.PIPE,
         text=True,
+        bufsize=1,
     )
 
-    out = []
-    for line in proc.stdout:
-        sys.stdout.write(line)
-        out.append(line)
+    print("h0")
 
-    proc.wait()
+    stdout_lines = []
+    stderr_lines = []
+
+    t_out = threading.Thread(target=_reader, args=(proc.stdout, sys.stdout, stdout_lines), daemon=True)
+    t_err = threading.Thread(target=_reader, args=(proc.stderr, sys.stderr, stderr_lines), daemon=True)
+
+    t_out.start()
+    t_err.start()
+
+    print("h1")
+
+    rc = proc.wait()
+    print("h2")
+    t_out.join()
+    t_err.join()
+
+    stdout = "".join(stdout_lines)
+    stderr = "".join(stderr_lines)
 
     if check and proc.returncode:
         raise CalledProcessError(
             proc.returncode, proc.args,
-            output="".join(out)
+            output=stdout
         )
 
     return subprocess.CompletedProcess(
-        proc.args, proc.returncode, "".join(out), ""
+        proc.args, proc.returncode, stdout, stderr
     )
 
 def delete(p: Path) -> None:
@@ -335,6 +362,9 @@ class DocBuilder:
         # capture stdout/stderr for checks
         proc = run_tee(cmd, cwd=self.root, check=False, debug=self.cfg.debug)
 
+        if proc.returncode != 0:
+            raise RuntimeError(f"xsltproc failed with exit code {proc.returncode}.")
+
         # Check for errors in XML files
         fatal_markers = [
             ": parser error :",
@@ -343,7 +373,7 @@ class DocBuilder:
             ", but no template matches.",
         ]
         for m in fatal_markers:
-            if m in out:
+            if m in proc.stderr:
                 raise RuntimeError(f'xsltproc output contains fatal marker "{m}".')
 
         if proc.returncode != 0:
