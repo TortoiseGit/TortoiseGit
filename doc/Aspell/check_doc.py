@@ -55,8 +55,8 @@ class Config:
     debug: bool = False
     applications: str = "TortoiseGit,TortoiseMerge"
 
-    path_bin: str = "/usr/bin"
-    path_spellcheck: str = "aspell"
+    path_bin: Path = Path("/usr/bin")
+    path_spellcheck: Path = Path("aspell")
 
 def load_user_properties(doc_build_user: Path) -> Dict[str, str]:
     """
@@ -95,7 +95,10 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         if attr is None:
             continue
         if hasattr(cfg, attr):
-            setattr(cfg, attr, v)
+            if "path" in attr:
+                setattr(cfg, attr, Path(v))
+            else:
+                setattr(cfg, attr, v)
     return cfg
 
 def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
@@ -130,7 +133,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
             print(f" * Checking: {relpath}")
 
             xsltproc = run(
-                [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
+                [cfg.path_bin / "xsltproc", "--nonet" , "removetags.xsl", file_target],
                 cwd=root,
                 check=True,
                 capture=True,
