@@ -110,14 +110,14 @@ class Config:
     path_user_xsl: Path = Path("./xsl")
     path_user_css: Path = Path("./source")
 
-    xsl_pdf_params: str = "--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"
-    xsl_pdf_file: str = "pdfdoc.xsl"
     xsl_htmlchunk_params: str = (
         "--nonet --xinclude --stringparam chunker.output.encoding UTF-8 "
         "--stringparam html.stylesheet styles_html.css --stringparam use.id.as.filename 1 "
         "--stringparam gitdoc.external ${external.gitdocs} --stringparam generate.help.mapping ${help.mapping}"
     )
     xsl_htmlchunk_file: str = "htmlchunk.xsl"
+    xsl_pdf_params: str = "--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"
+    xsl_pdf_file: str = "pdfdoc.xsl"
 
     # Derived at runtime:
     docverstring: str = ""  # Major.Minor.Micro
