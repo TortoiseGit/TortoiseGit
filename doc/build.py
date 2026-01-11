@@ -88,14 +88,14 @@ class Config:
     external_gitdocs: str = "0"  # "1" to use external git docs
     debug: bool = False
 
-    path_bin: str = str(Path("../Tools").resolve()) if is_windows() else "/usr/bin"
-    path_fop: str = str(Path("../Tools/fop").resolve()) if is_windows() else "/usr/bin"
+    path_bin: Path = Path("../Tools") if is_windows() else Path("/usr/bin")
+    path_fop: Path = Path("../Tools/fop") if is_windows() else Path("/usr/bin")
     name_fop: str = "fop.bat" if is_windows() else "fop"
-    path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/") if is_windows() else "/usr/share/xml/docbook/stylesheet/docbook-xsl/"
-    name_python: str = "python3"
+    path_docbookxsl: Path = Path("../Tools/xsl") if is_windows() else Path("/usr/share/xml/docbook/stylesheet/docbook-xsl/")
+    name_python: Path = Path("python3")
 
-    path_user_xsl: str = "./xsl"
-    path_user_css: str = "./source"
+    path_user_xsl: Path = Path("./xsl")
+    path_user_css: Path = Path("./source")
 
     xsl_pdf_params: str = "--nonet --xinclude --stringparam gitdoc.external ${external.gitdocs}"
     xsl_pdf_file: str = "pdfdoc.xsl"
@@ -144,7 +144,7 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         "path.bin": "path_bin",
         "path.fop": "path_fop",
         "name.fop": "name_fop",
-        "path.xsl": "path_xsl",
+        "path.xsl": "path_docbookxsl",
         "name.python": "name_python",
         "path.user.xsl": "path_user_xsl",
         "path.user.css": "path_user_css",
@@ -158,7 +158,10 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         if attr is None:
             continue
         if hasattr(cfg, attr):
-            setattr(cfg, attr, v)
+            if "path" in attr:
+                setattr(cfg, attr, Path(v))
+            else:
+                setattr(cfg, attr, v)
     return cfg
 
 
@@ -188,7 +191,7 @@ class DocBuilder:
             windir = os.environ.get("windir") or os.environ.get("WINDIR")
             if not windir:
                 raise RuntimeError("Cannot infer Windows font directory because %WINDIR% is not set.")
-            fp = Path(windir.replace("\\", "/")) / "Fonts"
+            fp = Path(windir) / "Fonts"
         if not fp.exists():
             raise RuntimeError(f"fontpath '{fp}' does not exist")
         return fp
@@ -199,26 +202,24 @@ class DocBuilder:
         delete(self.root / "source" / "en" / "version.xml")
         delete(self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml")
 
-        user_xsl_dir = self.root / self.cfg.path_user_xsl
-        for file in user_xsl_dir.glob("db_*.xsl"):
+        for file in self.cfg.path_user_xsl.glob("db_*.xsl"):
             delete(file)
-        delete(user_xsl_dir / "en" / "userconfig.xml")
+        delete(self.cfg.path_user_xsl / "en" / "userconfig.xml")
 
     def prepare_custom(self) -> None:
         # write helper stylesheets that import docbook ones.
-        xsl_dir = self.root / self.cfg.path_user_xsl
-        (xsl_dir / "db_pdfdoc.xsl").write_text(
+        (self.cfg.path_user_xsl / "db_htmlchunk.xsl").write_text(
             "\n".join([
                 '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">',
-                f'  <xsl:import href="{self.cfg.path_xsl}/fo/docbook.xsl"/>',
+                f'  <xsl:import href="{self.cfg, self.cfg.path_docbookxsl.absolute().as_posix()}/html/chunk.xsl"/>',
                 "</xsl:stylesheet>",
                 "",
             ])
         )
-        (xsl_dir / "db_htmlchunk.xsl").write_text(
+        (self.cfg.path_user_xsl / "db_pdfdoc.xsl").write_text(
             "\n".join([
                 '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">',
-                f'  <xsl:import href="{self.cfg.path_xsl}/html/chunk.xsl"/>',
+                f'  <xsl:import href="{self.cfg, self.cfg.path_docbookxsl.absolute().as_posix()}/fo/docbook.xsl"/>',
                 "</xsl:stylesheet>",
                 "",
             ])
@@ -261,12 +262,11 @@ class DocBuilder:
 
     def xsltproc(self, *, xslt_source: Path, xslt_file: str, xslt_params: str, xslt_target: Path) -> None:
         # Select language-specific stylesheet if present.
-        xsl_dir = self.root / self.cfg.path_user_xsl
-        lang_candidate = xsl_dir / "en" / xslt_file
+        lang_candidate = self.cfg.path_user_xsl / "en" / xslt_file
         if lang_candidate.exists():
             stylesheet = lang_candidate
         else:
-            stylesheet = xsl_dir / xslt_file
+            stylesheet = self.cfg.path_user_xsl / xslt_file
 
         # Run xsltproc
         params = self._expand_params(xslt_params)
@@ -306,7 +306,7 @@ class DocBuilder:
         # Run images/extract-images.xsl to get the file list.
         params = self._expand_params(self.cfg.xsl_pdf_params)
         cmd = [
-            Path(self.cfg.path_bin) / "xsltproc",
+            self.cfg.path_bin / "xsltproc",
             *params.split(),
             "images/extract-images.xsl",
             str(xslt_source),
@@ -332,7 +332,7 @@ class DocBuilder:
     def html(self, *, app: str, doc_target_name: str, doc_target_work: Path, xslt_source: Path) -> None:
         if not self.uptodate(doc_target_work / "index.html", app):
             # copy styles_html.css into output workdir
-            copy_file(self.root / self.cfg.path_user_css / "styles_html.css", doc_target_work / "styles_html.css", overwrite=True)
+            copy_file(self.cfg.path_user_css / "styles_html.css", doc_target_work / "styles_html.css", overwrite=True)
 
             self.xsltproc(
                 xslt_source=xslt_source,
@@ -380,11 +380,11 @@ class DocBuilder:
         fo_file.write_text(fo_data, encoding="utf-8")
 
         # Optional userconfig.xml generation with %FONTSDIR% token
-        userconfig_template = self.root / self.cfg.path_user_xsl / "en" / "userconfig.template.xml"
-        userconfig = self.root / self.cfg.path_user_xsl / "en" / "userconfig.xml"
+        userconfig_template = self.cfg.path_user_xsl / "en" / "userconfig.template.xml"
+        userconfig = self.cfg.path_user_xsl / "en" / "userconfig.xml"
         if userconfig_template.exists():
             cfg_data = userconfig_template.read_text(encoding="utf-8")
-            cfg_data = replace_tokens(cfg_data, {"FONTSDIR": str(self._resolve_fontpath()).replace("\\", "/")}, begintoken="%", endtoken="%")
+            cfg_data = replace_tokens(cfg_data, {"FONTSDIR": self._resolve_fontpath().as_posix()}, begintoken="%", endtoken="%")
             userconfig.write_text(cfg_data, encoding="utf-8")
 
         # Run FOP
@@ -393,7 +393,7 @@ class DocBuilder:
             cmdline = ["-c", str(userconfig), *cmdline]
 
         run(
-            [Path(self.cfg.path_fop) / self.cfg.name_fop, *cmdline],
+            [self.cfg.path_fop / self.cfg.name_fop, *cmdline],
             cwd=self.root,
             check=True,
             capture=False,
