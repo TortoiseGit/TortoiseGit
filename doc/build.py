@@ -29,6 +29,19 @@ def is_windows() -> bool:
     return os.name == "nt"
 
 
+# return True if we are using MSYS2 but are not within a MSYS2 environment
+def is_using_msys2(cfg: Config) -> bool:
+    return is_windows() and (cfg.path_bin / "../../msys2.ini").exists()
+
+
+def make_posix_path(cfg: Config, path: Path) -> bool:
+    new_path = "/" + path.absolute().as_posix().lstrip('/')
+    if is_using_msys2(cfg):
+        return new_path.replace(':', '')
+    else:
+        return path.absolute().as_posix()
+
+
 def run(
     args: List[str],
     cwd: Optional[Path] = None,
@@ -186,6 +199,8 @@ class DocBuilder:
 
     def _resolve_fontpath(self) -> Path:
         if not is_windows():
+            if Path("/c/Windows/Fonts/").exists():
+                return Path("/c/Windows/Fonts/")
             fp = Path("/usr/share/fonts/truetype/")
         else:
             windir = os.environ.get("windir") or os.environ.get("WINDIR")
@@ -211,7 +226,7 @@ class DocBuilder:
         (self.cfg.path_user_xsl / "db_htmlchunk.xsl").write_text(
             "\n".join([
                 '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">',
-                f'  <xsl:import href="{self.cfg, self.cfg.path_docbookxsl.absolute().as_posix()}/html/chunk.xsl"/>',
+                f'  <xsl:import href="{make_posix_path(self.cfg, self.cfg.path_docbookxsl)}/html/chunk.xsl"/>',
                 "</xsl:stylesheet>",
                 "",
             ])
@@ -219,7 +234,7 @@ class DocBuilder:
         (self.cfg.path_user_xsl / "db_pdfdoc.xsl").write_text(
             "\n".join([
                 '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">',
-                f'  <xsl:import href="{self.cfg, self.cfg.path_docbookxsl.absolute().as_posix()}/fo/docbook.xsl"/>',
+                f'  <xsl:import href="{make_posix_path(self.cfg, self.cfg.path_docbookxsl)}/fo/docbook.xsl"/>',
                 "</xsl:stylesheet>",
                 "",
             ])
