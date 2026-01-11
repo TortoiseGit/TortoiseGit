@@ -55,6 +55,41 @@ def run(
     return subprocess.run(args, cwd=str(cwd) if cwd else None, check=check, capture_output=capture, text=True, env=None)
 
 
+def run_tee(
+    args: List[str],
+    cwd: Optional[Path] = None,
+    *,
+    check: bool = True,
+    debug: bool = False,
+) -> subprocess.CompletedProcess:
+    if debug:
+        print(f"Executing: {args} in cwd {cwd}\n")
+
+    proc = subprocess.Popen(
+        args,
+        cwd=str(cwd) if cwd else None, 
+        stdout=subprocess.PIPE,
+        stderr=None,
+        text=True,
+    )
+
+    out = []
+    for line in proc.stdout:
+        sys.stdout.write(line)
+        out.append(line)
+
+    proc.wait()
+
+    if check and proc.returncode:
+        raise CalledProcessError(
+            proc.returncode, proc.args,
+            output="".join(out)
+        )
+
+    return subprocess.CompletedProcess(
+        proc.args, proc.returncode, "".join(out), ""
+    )
+
 def delete(p: Path) -> None:
     if p.is_dir():
         shutil.rmtree(p, ignore_errors=True)
@@ -295,9 +330,7 @@ class DocBuilder:
         ]
 
         # capture stdout/stderr for checks
-        proc = run(cmd, cwd=self.root, capture=True, check=False, debug=self.cfg.debug)
-        out = (proc.stdout or "") + "\n" + (proc.stderr or "")
-        print(out)
+        proc = run_tee(cmd, cwd=self.root, check=False, debug=self.cfg.debug)
 
         # Check for errors in XML files
         fatal_markers = [
