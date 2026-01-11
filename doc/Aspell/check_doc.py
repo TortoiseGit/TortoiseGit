@@ -134,7 +134,7 @@ def spellcheck(root: Path, *, cfg: Config, app: str) -> None:
         # Spell check all files
         for file_target in sorted(set(files)):
             relpath = os.path.relpath(file_target, root.parent / "source" / "en")
-            print(f"Checking: {relpath}")
+            print(f" * Checking: {relpath}")
 
             xsltproc = run(
                 [Path(cfg.path_bin) / "xsltproc", "--nonet" , "removetags.xsl", file_target],
