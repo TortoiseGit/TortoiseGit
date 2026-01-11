@@ -280,7 +280,7 @@ class DocBuilder:
         ]
 
         # capture stdout/stderr for checks
-        proc = run(cmd, cwd=self.root, capture=True, check=False)
+        proc = run(cmd, cwd=self.root, capture=True, check=False, debug=self.cfg.debug)
         out = (proc.stdout or "") + "\n" + (proc.stderr or "")
         print(out)
 
@@ -311,7 +311,7 @@ class DocBuilder:
             "images/extract-images.xsl",
             str(xslt_source),
         ]
-        proc = run(cmd, cwd=self.root, check=True, capture=True)
+        proc = run(cmd, cwd=self.root, check=True, capture=True, debug=self.cfg.debug)
         # xslt output is a list of filenames (one per line)
         lines = [ln.strip() for ln in proc.stdout.splitlines() if ln.strip()]
         for filename in lines:
@@ -346,11 +346,11 @@ class DocBuilder:
 
             help_wixfilelist = Path("../src/TortoiseGitSetup/HTMLHelpfiles.wxi")
             cmd = [self.cfg.name_python, "scripts/generate_wix_filelist.py"]
-            proc = run(cmd, cwd=self.root, capture=True, check=True)
+            proc = run(cmd, cwd=self.root, capture=True, check=True, debug=self.cfg.debug)
             (self.root / help_wixfilelist).write_text(proc.stdout or "", encoding="utf-8")
 
             if not is_windows():
-                run(["sed", "-i", r"s/$/\r/", str(self.root / help_wixfilelist)], cwd=self.root, check=True)
+                run(["sed", "-i", r"s/$/\r/", str(self.root / help_wixfilelist)], cwd=self.root, check=True, debug=self.cfg.debug)
 
             print(f"Updated help WiX filelist: '{self.root / help_wixfilelist}'")
 
@@ -397,6 +397,7 @@ class DocBuilder:
             cwd=self.root,
             check=True,
             capture=False,
+            debug=self.cfg.debug
         )
 
     def helpmapping(self, *, app: str, doc_target_work: Path) -> None:
@@ -417,11 +418,11 @@ class DocBuilder:
             str(help_resource),
             str(alias_h),
         ]
-        proc = run(cmd, cwd=self.root, capture=True, check=True)
+        proc = run(cmd, cwd=self.root, capture=True, check=True, debug=self.cfg.debug)
         help_mappingfile.write_text(proc.stdout or "", encoding="utf-8")
 
         if not is_windows():
-            run(["sed", "-i", r"s/$/\r/", str(help_mappingfile)], cwd=self.root, check=True)
+            run(["sed", "-i", r"s/$/\r/", str(help_mappingfile)], cwd=self.root, check=True, debug=self.cfg.debug)
 
         print(f"Updated help mapping: '{help_mappingfile}'")
 
