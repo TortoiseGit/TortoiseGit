@@ -50,7 +50,7 @@ Building the docs
     cd doc
     python3 build.py
 
-For local customisations, copy the doc.build.user.tmpl file to doc.build.user and
+TODO: For local customisations, copy the doc.build.user.tmpl file to doc.build.user and
 modify that copy to point to the location of the tools on your system.
 
 Spell check the docs
