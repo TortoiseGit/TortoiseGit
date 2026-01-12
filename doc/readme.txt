@@ -59,4 +59,5 @@ Spell check the docs
     Open a command line
     cd TortoiseGit
     cd doc
-    python3 build.py --target spellcheck
+    cd Aspell
+    python3 check_doc.py

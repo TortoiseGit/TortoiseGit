@@ -1,37 +1,32 @@
-Install Aspell and all the Aspell dictionaries you need.
-The Windows port is not currently maintained, but you can get
-the 0.5 version from http://aspell.net/win32/
-This has installers for the program and the dictionaries.
+This folder contains spell checker script and dictionaries for Aspell.
 
-Activate spellchecking by setting two properties in doc/doc.build.user.
-
-<property name="spellcheck" value="true"/> 
-<property name="path.spellcheck" value="C:\Path\to\your\Aspell.exe"/>
-
-You may have to use the DOS 8.3 version if the path includes spaces,
-as the Aspell.bat batch file doesn't handle them well.
-eg. for the default installation use:
-<property name="path.spellcheck" value="C:\Progra~1\Aspell\bin\aspell.exe"/>
-
-This folder contains spellchecker dictionaries for Aspell. 
-One for each language and a generic template file that is copied to each language.
+Structure
+---------
 
 TortoiseGit.tmpl.pws:
-  Generic dictionary of terms & Keywords used in the TortoiseGit manual. 
-  This file is language independent and is copied to each target language 
-  (named temp.pws), when the translation takes place.
+  Generic dictionary of terms & Keywords used in the TortoiseGit manual.
 
-de.pws, en.pws, ...:
-  Dictionaries of terms for each language.
+en.pws:
+  Additional dictionary of English terms.
 
-The process is still kludgy:
-- Aspell doesn't work for Asian languages (yet). No fix available.
-- It needs a batch file to run Aspell from nant due to IO 
-  redirection problems. No fix found for this.
-- It will fail if <NN>.pws doesn't exist yet. 
-  Create a text file <NN>.pws that just contains the line:
-  "personal_ws-1.1 <NN> 0" where <NN> is the country code.
-  Look in de.pws or en.pws for examples. 
-  Add your terms after this line.
+Tools needed
+------------
 
-The output of the spellchecking process is written to "spellcheck_<NN>.log".
+* Python3
+* xsltproc
+* Aspell and the English Aspell dictionary
+
+Note, spell checking has only been used on *nix-bases systems recently (in the CI pipeline),
+but can also be used with a MSYS2 environment (pacman -S libxslt aspell aspell-en).
+
+Paths can be configured using the two properties in doc/doc.build.user:
+
+<property name="path.bin" value="/usr/bin"/>
+<property name="path.spellcheck" value="aspell"/>
+
+How to run?
+-----------
+
+Execute: python3 check_doc.py
+
+The output of the spell checking process is written to "*.log".

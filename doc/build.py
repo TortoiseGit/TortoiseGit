@@ -75,33 +75,6 @@ def file_uptodate(target: Path, sources: Iterable[Path]) -> bool:
     return True
 
 
-def list_xml_files_for_spellcheck(root: Path, app: str) -> List[Path]:
-    files: List[Path] = []
-    app_root = root / "source" / "en" / app
-    for xmlfile in app_root.rglob("*.xml"):
-        # exclude git_doc/*.xml when app is TortoiseGit
-        if app == "TortoiseGit":
-            try:
-                rel = xmlfile.relative_to(root)
-            except ValueError:
-                rel = xmlfile
-            if str(rel).replace("\\", "/").startswith("source/en/TortoiseGit/git_doc/"):
-                continue
-        files.append(xmlfile)
-
-    for extra in ["glossary.xml", "wishlist.xml"]:
-        files.append(root / "source" / "en" / extra)
-
-    # stable ordering
-    return sorted(set(files))
-
-
-def has_more_than_one_line(path: Path) -> bool:
-    with path.open("rb") as f:
-        next(f, None)  # first line
-        return next(f, None) is not None
-
-
 # -----------------------------
 # Config
 # -----------------------------
@@ -114,14 +87,12 @@ class Config:
     help_mapping: str = "1"   # "1" or "0"
     external_gitdocs: str = "0"  # "1" to use external git docs
     debug: bool = False
-    spellcheck: str = "false"
 
     path_bin: str = str(Path("../Tools").resolve()) if is_windows() else "/usr/bin"
     path_fop: str = str(Path("../Tools/fop").resolve()) if is_windows() else "/usr/bin"
     name_fop: str = "fop.bat" if is_windows() else "fop"
     path_xsl: str = str(Path("../Tools/xsl").resolve()).replace("\\", "/") if is_windows() else "/usr/share/xml/docbook/stylesheet/docbook-xsl/"
     name_python: str = "python3"
-    path_spellcheck: str = "aspell"
 
     path_user_xsl: str = "./xsl"
     path_user_css: str = "./source"
@@ -181,8 +152,6 @@ def apply_overrides(cfg: Config, overrides: Dict[str, str]) -> Config:
         "xsl.htmlchunk.file": "xsl_htmlchunk_file",
         "xsl.pdf.params": "xsl_pdf_params",
         "xsl.pdf.file": "xsl_pdf_file",
-        "spellcheck": "spellcheck",
-        "path.spellcheck": "path_spellcheck",
     }
     for k, v in overrides.items():
         attr = mapping.get(k)
@@ -227,13 +196,6 @@ class DocBuilder:
     def clean(self) -> None:
         delete(self.root / "output")
 
-        delete(self.root / "Aspell" / "aspell.bat")
-        delete(self.root / "Aspell" / "Temp.pws")
-        delete(self.root / "Aspell" / "TortoiseGit_en")
-        delete(self.root / "Aspell" / "TortoiseGit_en.log")
-        delete(self.root / "Aspell" / "TortoiseMerge_en")
-        delete(self.root / "Aspell" / "TortoiseMerge_en.log")
-
         delete(self.root / "source" / "en" / "version.xml")
         delete(self.root / "source" / "en" / "TortoiseGit" / "git_doc" / "git-doc.xml")
 
@@ -268,12 +230,6 @@ class DocBuilder:
         (self.root / "output").mkdir(exist_ok=True)
 
         self.prepare_custom()
-
-        # tune path to xsltproc.exe in aspell.bat (Windows only)
-        if is_windows():
-            data = (self.root / "Aspell" / "aspell.bat.in").read_text(encoding="utf-8")
-            data = replace_tokens(data, {"XSLTProcPath": self.cfg.path_bin}, begintoken="$", endtoken="$")
-            (self.root / "Aspell" / "aspell.bat").write_text(data, encoding="utf-8")
 
     def update_version_info(self) -> None:
         mapping = {
@@ -449,49 +405,6 @@ class DocBuilder:
             debug=self.cfg.debug,
         )
 
-    def spellcheck(self, *, app: str) -> None:
-        print(f"Spell checking: '{app} en' This may take a few minutes")
-
-        aspell_dir = self.root / "Aspell" / f"{app}_en"
-        aspell_dir.mkdir(parents=True, exist_ok=True)
-
-        spellcheck_log = self.root / "Aspell" / f"{app}_en.log"
-        delete(spellcheck_log)
-
-        script_ext = ".sh" if not is_windows() else ".bat"
-
-        # Copy Aspell/TortoiseGit.tmpl.pws -> Aspell/Temp.pws with $LANG$
-        temp_pws = self.root / "Aspell" / "Temp.pws"
-        data = (self.root / "Aspell" / "TortoiseGit.tmpl.pws").read_text(encoding="utf-8")
-        data = replace_tokens(data, {"LANG": "en"}, begintoken="$", endtoken="$")
-        temp_pws.write_text(data, encoding="utf-8")
-
-        files = list_xml_files_for_spellcheck(self.root, app)
-
-        for file_target in files:
-            file_log = aspell_dir / f"{file_target.name}.log"
-
-            # uptodate check for spellcheck logs
-            sources = [
-                file_target,
-                self.root / "Aspell" / "en.pws",
-                self.root / "Aspell" / "TortoiseGit.tmpl.pws",
-            ]
-            if not file_uptodate(file_log, sources):
-                print(f"Checking: {file_target.name}")
-                run(
-                    [str(self.root / "Aspell" / f"aspell{script_ext}"), self.cfg.path_spellcheck, "en", str(file_target), str(file_log)],
-                    cwd=self.root,
-                    check=False,
-                    capture=False,
-                    debug=self.cfg.debug,
-                )
-
-            # Append file_log to overall app log
-            if has_more_than_one_line(file_log):
-                with spellcheck_log.open("ab") as dst, file_log.open("rb") as src:
-                    shutil.copyfileobj(src, dst)
-
     def helpmapping(self, *, app: str, doc_target_work: Path) -> None:
         if app == "TortoiseGit":
             help_resource = self.root / "../src/TortoiseProc/resource.h"
@@ -544,10 +457,6 @@ class DocBuilder:
             # update version info in version.xml
             self.update_version_info()
 
-            # spellcheck optional
-            if self.cfg.spellcheck.lower() == "true":
-                self.spellcheck(app=app)
-
             # Build each format
             for docformat in formats:
                 self.copyimages(app=app, doc_target_work=doc_target_work, xslt_source=xslt_source)
@@ -573,11 +482,10 @@ def main(argv: List[str]) -> int:
             Examples:
               python3 doc_build.py
               python3 doc_build.py --applications TortoiseGit --docformats html
-              python3 doc_build.py --target spellcheck
               python3 doc_build.py --target clean
             """)
     )
-    parser.add_argument("--target", default="all", help="Target to run (all, clean, spellcheck)")
+    parser.add_argument("--target", default="all", help="Target to run (all, clean)")
     parser.add_argument("--cleanup", choices=["yes", "no"], default="no", help="If 'yes', clean deletes output/")
     parser.add_argument("--applications", help="Comma-separated apps (e.g. TortoiseGit,TortoiseMerge)")
     parser.add_argument("--docformats", help="Comma-separated formats (html,pdf)")
@@ -616,10 +524,6 @@ def main(argv: List[str]) -> int:
         b.all()
     elif t == "clean":
         b.clean()
-    elif t == "spellcheck":
-        # Runs for all apps in config
-        for app in [a.strip() for a in cfg.applications.split(",") if a.strip()]:
-            b.spellcheck(app=app)
     else:
         raise SystemExit(f"Unknown target '{t}'")
 
