@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -166,7 +166,7 @@ typedef struct object_id GIT_OBJECT_OIDi;
 #else
 typedef struct GIT_OBJECT_OID GIT_OBJECT_OIDi;
 #endif
-typedef int each_reflog_ent_fn(GIT_OBJECT_OIDi* old_oid, GIT_OBJECT_OIDi* new_oid, const char* committer, unsigned long long timestamp, int tz, const char* msg, void* cb_data);
+typedef int each_reflog_ent_fn(const char* refname, GIT_OBJECT_OIDi* old_oid, GIT_OBJECT_OIDi* new_oid, const char* committer, unsigned long long timestamp, int tz, const char* msg, void* cb_data);
 GITDLL_API int git_for_each_reflog_ent(const char *ref, each_reflog_ent_fn fn, void *cb_data);
 
 GITDLL_API int git_checkout_file(const char* ref, const char* path, char* outputpath);

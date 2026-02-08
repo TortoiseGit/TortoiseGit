@@ -63,6 +63,9 @@
     <Filter Include="compiler-tricks">
       <UniqueIdentifier>{439fffaa-e0b5-41c2-b015-ddba8434db30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git\odb">
+      <UniqueIdentifier>{c20f11a5-6b6d-470a-99e8-e7efa49b2840}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tgit\compat\msvc.c">
@@ -78,9 +81,6 @@
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\memmem.c">
-      <Filter>compat</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\compat\mkdtemp.c">
       <Filter>compat</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\compat\obstack.c">
@@ -150,9 +150,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\branch.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\bulk-checkin.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\bundle.c">
@@ -384,9 +381,6 @@
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\strbuf.c">
-      <Filter>git</Filter>
-    </ClCompile>
-    <ClCompile Include="..\tgit\streaming.c">
       <Filter>git</Filter>
     </ClCompile>
     <ClCompile Include="..\tgit\string-list.c">
@@ -905,9 +899,6 @@
     <ClCompile Include="..\tgit\hash.c">
       <Filter>git</Filter>
     </ClCompile>
-    <ClCompile Include="..\tgit\object-store.c">
-      <Filter>git</Filter>
-    </ClCompile>
     <ClCompile Include="..\tgit\reftable\table.c">
       <Filter>git\reftable</Filter>
     </ClCompile>
@@ -916,6 +907,18 @@
     </ClCompile>
     <ClCompile Include="..\tgit\compiler-tricks\not-constant.c">
       <Filter>compiler-tricks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\odb.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\odb\streaming.c">
+      <Filter>git\odb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\pack-refs.c">
+      <Filter>git</Filter>
+    </ClCompile>
+    <ClCompile Include="..\tgit\reftable\fsck.c">
+      <Filter>git\reftable</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1526,9 +1529,6 @@
     <ClInclude Include="..\tgit\object-name.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\tgit\object-store.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\tgit\pager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1660,6 +1660,12 @@
     </ClInclude>
     <ClInclude Include="..\tgit\reftable\table.h">
       <Filter>Header Files\reftable</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\odb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\tgit\pack-refs.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
