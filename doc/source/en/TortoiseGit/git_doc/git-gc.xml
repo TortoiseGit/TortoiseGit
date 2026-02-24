@@ -70,7 +70,10 @@ be performed as well.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]detach
+--detach
+</term>
+<term>
+--no-detach
 </term>
 <listitem>
 <simpara>
@@ -81,7 +84,10 @@ be performed as well.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]cruft
+--cruft
+</term>
+<term>
+--no-cruft
 </term>
 <listitem>
 <simpara>

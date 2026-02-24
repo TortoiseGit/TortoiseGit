@@ -146,11 +146,17 @@ verify
 </simpara>
 </listitem>
 </varlistentry>
-</variablelist>
-<simpara>symref-create:
+<varlistentry>
+<term>
+symref-create
+</term>
+<listitem>
+<simpara>
         Create symbolic ref &lt;ref&gt; with &lt;new-target&gt; after verifying that
-        it does not exist.</simpara>
-<variablelist>
+        it does not exist.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 symref-delete

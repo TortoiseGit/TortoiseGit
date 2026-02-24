@@ -137,7 +137,10 @@ with custom merge tool commands and has the same value as <emphasis>$MERGED</emp
 </varlistentry>
 <varlistentry>
 <term>
---[no-]symlinks
+--symlinks
+</term>
+<term>
+--no-symlinks
 </term>
 <listitem>
 <simpara>
@@ -171,7 +174,10 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 -g
 </term>
 <term>
---[no-]gui
+--gui
+</term>
+<term>
+--no-gui
 </term>
 <listitem>
 <simpara>
@@ -188,7 +194,10 @@ instead.  <emphasis>--no-symlinks</emphasis> is the default on Windows.</simpara
 </varlistentry>
 <varlistentry>
 <term>
---[no-]trust-exit-code
+--trust-exit-code
+</term>
+<term>
+--no-trust-exit-code
 </term>
 <listitem>
 <simpara>

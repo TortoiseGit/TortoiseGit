@@ -110,10 +110,16 @@ named on the command line.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]mailmap
+--mailmap
 </term>
 <term>
---[no-]use-mailmap
+--no-mailmap
+</term>
+<term>
+--use-mailmap
+</term>
+<term>
+--no-use-mailmap
 </term>
 <listitem>
 <simpara>
@@ -485,6 +491,18 @@ newline. The available atoms are:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>objectmode</emphasis>
+</term>
+<listitem>
+<simpara>
+        If the specified object has mode information (such as a tree or
+        index entry), the mode expressed as an octal integer. Otherwise,
+        empty string.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>objectsize</emphasis>
 </term>
 <listitem>
@@ -551,6 +569,10 @@ then <emphasis>cat-file</emphasis> will ignore any custom format and print:</sim
 <screen>&lt;object&gt; SP excluded LF</screen>
 <simpara>If a name is specified that might refer to more than one object (an ambiguous short sha), then <emphasis>cat-file</emphasis> will ignore any custom format and print:</simpara>
 <screen>&lt;object&gt; SP ambiguous LF</screen>
+<simpara>If a name is specified that refers to a submodule entry in a tree and the
+target object does not exist in the repository, then <emphasis>cat-file</emphasis> will ignore
+any custom format and print (with the object ID of the submodule):</simpara>
+<screen>&lt;oid&gt; SP submodule LF</screen>
 <simpara>If <emphasis>--follow-symlinks</emphasis> is used, and a symlink in the repository points
 outside the repository, then <emphasis>cat-file</emphasis> will ignore any custom format
 and print:</simpara>

@@ -13,25 +13,23 @@
 <simplesect id="git-bisect(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git bisect</emphasis> &lt;subcommand&gt; &lt;options&gt;</literallayout>
+<literallayout><emphasis>git bisect</emphasis> start [--term-(bad|new)=&lt;term-new&gt; --term-(good|old)=&lt;term-old&gt;]
+                   [--no-checkout] [--first-parent] [&lt;bad&gt; [&lt;good&gt;&#8230;]] [--] [&lt;pathspec&gt;&#8230;]
+<emphasis>git bisect</emphasis> (bad|new|&lt;term-new&gt;) [&lt;rev&gt;]
+<emphasis>git bisect</emphasis> (good|old|&lt;term-old&gt;) [&lt;rev&gt;&#8230;]
+<emphasis>git bisect</emphasis> terms [--term-(good|old) | --term-(bad|new)]
+<emphasis>git bisect</emphasis> skip [(&lt;rev&gt;|&lt;range&gt;)&#8230;]
+<emphasis>git bisect</emphasis> next
+<emphasis>git bisect</emphasis> reset [&lt;commit&gt;]
+<emphasis>git bisect</emphasis> (visualize|view)
+<emphasis>git bisect</emphasis> replay &lt;logfile&gt;
+<emphasis>git bisect</emphasis> log
+<emphasis>git bisect</emphasis> run &lt;cmd&gt; [&lt;arg&gt;&#8230;]
+<emphasis>git bisect</emphasis> help</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-bisect(1)__description">
 <title>DESCRIPTION</title>
-<simpara>The command takes various subcommands, and different options depending
-on the subcommand:</simpara>
-<literallayout class="monospaced">git bisect start [--term-(bad|new)=&lt;term-new&gt; --term-(good|old)=&lt;term-old&gt;]
-                 [--no-checkout] [--first-parent] [&lt;bad&gt; [&lt;good&gt;...]] [--] [&lt;pathspec&gt;...]
-git bisect (bad|new|&lt;term-new&gt;) [&lt;rev&gt;]
-git bisect (good|old|&lt;term-old&gt;) [&lt;rev&gt;...]
-git bisect terms [--term-(good|old) | --term-(bad|new)]
-git bisect skip [(&lt;rev&gt;|&lt;range&gt;)...]
-git bisect reset [&lt;commit&gt;]
-git bisect (visualize|view)
-git bisect replay &lt;logfile&gt;
-git bisect log
-git bisect run &lt;cmd&gt; [&lt;arg&gt;...]
-git bisect help</literallayout>
 <simpara>This command uses a binary search algorithm to find which commit in
 your project's history introduced a bug. You use it by first telling
 it a "bad" commit that is known to contain the bug, and a "good"
@@ -193,6 +191,15 @@ would issue the command:</simpara>
 <screen>$ git bisect skip v2.5 v2.5..v2.6</screen>
 <simpara>This tells the bisect process that the commits between <emphasis>v2.5</emphasis> and
 <emphasis>v2.6</emphasis> (inclusive) should be skipped.</simpara>
+</section>
+<section id="git-bisect(1)__bisect_next">
+<title>Bisect next</title>
+<simpara>Normally, after marking a revision as good or bad, Git automatically
+computes and checks out the next revision to test. However, if you need to
+explicitly request the next bisection step, you can use:</simpara>
+<screen>$ git bisect next</screen>
+<simpara>You might use this to resume the bisection process after interrupting it
+by checking out a different revision.</simpara>
 </section>
 <section id="git-bisect(1)__cutting_down_bisection_by_giving_more_parameters_to_bisect_start">
 <title>Cutting down bisection by giving more parameters to bisect start</title>

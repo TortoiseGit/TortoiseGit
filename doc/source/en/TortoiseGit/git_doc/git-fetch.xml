@@ -13,10 +13,10 @@
 <simplesect id="git-fetch(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git fetch</emphasis> [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]
-<emphasis>git fetch</emphasis> [&lt;options&gt;] &lt;group&gt;
-<emphasis>git fetch</emphasis> --multiple [&lt;options&gt;] [(&lt;repository&gt; | &lt;group&gt;)&#8230;]
-<emphasis>git fetch</emphasis> --all [&lt;options&gt;]</literallayout>
+<literallayout><code>git</code> <code>fetch</code> [<emphasis>&lt;options&gt;</emphasis>] [<emphasis>&lt;repository&gt;</emphasis> [<emphasis>&lt;refspec&gt;</emphasis><code>&#8230;</code>]]
+<code>git</code> <code>fetch</code> [<emphasis>&lt;options&gt;</emphasis>] <emphasis>&lt;group&gt;</emphasis>
+<code>git</code> <code>fetch</code> <code>--multiple</code> [<emphasis>&lt;options&gt;</emphasis>] [(<emphasis>&lt;repository&gt;</emphasis>|<emphasis>&lt;group&gt;</emphasis>)<code>&#8230;</code>]
+<code>git</code> <code>fetch</code> <code>--all</code> [<emphasis>&lt;options&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-fetch(1)__description">
@@ -24,17 +24,17 @@
 <simpara>Fetch branches and/or tags (collectively, "refs") from one or more
 other repositories, along with the objects necessary to complete their
 histories.  Remote-tracking branches are updated (see the description
-of &lt;refspec&gt; below for ways to control this behavior).</simpara>
+of <emphasis>&lt;refspec&gt;</emphasis> below for ways to control this behavior).</simpara>
 <simpara>By default, any tag that points into the histories being fetched is
 also fetched; the effect is to fetch tags that
 point at branches that you are interested in.  This default behavior
-can be changed by using the --tags or --no-tags options or by
-configuring remote.&lt;name&gt;.tagOpt.  By using a refspec that fetches tags
+can be changed by using the <emphasis>--tags</emphasis> or <emphasis>--no-tags</emphasis> options or by
+configuring <emphasis>remote.&lt;name&gt;.tagOpt</emphasis>.  By using a refspec that fetches tags
 explicitly, you can fetch tags that do not point into branches you
 are interested in as well.</simpara>
 <simpara><emphasis>git fetch</emphasis> can fetch from either a single named repository or URL,
-or from several repositories at once if &lt;group&gt; is given and
-there is a remotes.&lt;group&gt; entry in the configuration file.
+or from several repositories at once if <emphasis>&lt;group&gt;</emphasis> is given and
+there is a <emphasis>remotes.&lt;group&gt;</emphasis> entry in the configuration file.
 (See <xref linkend="git-config(1)" />).</simpara>
 <simpara>When no remote is specified, by default the <emphasis>origin</emphasis> remote will be used,
 unless there's an upstream branch configured for the current branch.</simpara>
@@ -47,22 +47,25 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 <variablelist>
 <varlistentry>
 <term>
---[no-]all
+<emphasis>--all</emphasis>
+</term>
+<term>
+<emphasis>--no-all</emphasis>
 </term>
 <listitem>
 <simpara>
         Fetch all remotes, except for the ones that has the
         <emphasis>remote.&lt;name&gt;.skipFetchAll</emphasis> configuration variable set.
-        This overrides the configuration variable fetch.all`.
+        This overrides the configuration variable <emphasis>fetch.all</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---append
+<emphasis>--append</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -74,7 +77,7 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
---atomic
+<emphasis>--atomic</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -85,7 +88,7 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
---depth=&lt;depth&gt;
+<emphasis>--depth=&lt;depth&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -99,11 +102,11 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
---deepen=&lt;depth&gt;
+<emphasis>--deepen=&lt;depth&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Similar to --depth, except it specifies the number of commits
+        Similar to <emphasis>--depth</emphasis>, except it specifies the number of commits
         from the current shallow boundary instead of from the tip of
         each remote branch history.
 </simpara>
@@ -111,18 +114,18 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
---shallow-since=&lt;date&gt;
+<emphasis>--shallow-since=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Deepen or shorten the history of a shallow repository to
-        include all reachable commits after &lt;date&gt;.
+        include all reachable commits after <emphasis>&lt;date&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---shallow-exclude=&lt;ref&gt;
+<emphasis>--shallow-exclude=&lt;ref&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -134,7 +137,7 @@ may be used by scripts or other git commands, such as <xref linkend="git-pull(1)
 </varlistentry>
 <varlistentry>
 <term>
---unshallow
+<emphasis>--unshallow</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -148,20 +151,20 @@ the current repository has the same history as the source repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---update-shallow
+<emphasis>--update-shallow</emphasis>
 </term>
 <listitem>
 <simpara>
         By default when fetching from a shallow repository,
         <emphasis>git fetch</emphasis> refuses refs that require updating
-        .git/shallow. This option updates .git/shallow and accepts such
+        <emphasis>.git/shallow</emphasis>. This option updates <emphasis>.git/shallow</emphasis> and accepts such
         refs.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---negotiation-tip=&lt;commit|glob&gt;
+<emphasis>--negotiation-tip=(&lt;commit&gt;|&lt;glob&gt;)</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -185,22 +188,22 @@ configuration variables documented in <xref linkend="git-config(1)" />, and the
 </varlistentry>
 <varlistentry>
 <term>
---negotiate-only
+<emphasis>--negotiate-only</emphasis>
 </term>
 <listitem>
 <simpara>
         Do not fetch anything from the server, and instead print the
-        ancestors of the provided <emphasis>--negotiation-tip=*</emphasis> arguments,
+        ancestors of the provided <emphasis>--negotiation-tip=</emphasis> arguments,
         which we have in common with the server.
 </simpara>
-<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis>.
+<simpara>This is incompatible with <emphasis>--recurse-submodules=(yes|on-demand)</emphasis>.
 Internally this is used to implement the <emphasis>push.negotiate</emphasis> option, see
 <xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -210,20 +213,23 @@ Internally this is used to implement the <emphasis>push.negotiate</emphasis> opt
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
         Print the output to standard output in an easy-to-parse format for
         scripts. See section OUTPUT in <xref linkend="git-fetch(1)" /> for details.
 </simpara>
-<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis> and takes
+<simpara>This is incompatible with <emphasis>--recurse-submodules=(yes|on-demand)</emphasis> and takes
 precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]write-fetch-head
+<emphasis>--write-fetch-head</emphasis>
+</term>
+<term>
+<emphasis>--no-write-fetch-head</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -237,26 +243,25 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
-        When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec, it may
-        refuse to update the local branch as discussed
-        in the <emphasis>&lt;refspec&gt;</emphasis> part below.
-        This option overrides that check.
+When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec, it may
+refuse to update the local branch as discussed in the <emphasis>&lt;refspec&gt;</emphasis> part below.
+This option overrides that check.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--k
+<emphasis>-k</emphasis>
 </term>
 <term>
---keep
+<emphasis>--keep</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -266,33 +271,42 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---multiple
+<emphasis>--multiple</emphasis>
 </term>
 <listitem>
 <simpara>
-        Allow several &lt;repository&gt; and &lt;group&gt; arguments to be
-        specified. No &lt;refspec&gt;s may be specified.
+        Allow several <emphasis>&lt;repository&gt;</emphasis> and <emphasis>&lt;group&gt;</emphasis> arguments to be
+        specified. No <emphasis>&lt;refspec&gt;</emphasis>s may be specified.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]auto-maintenance
+<emphasis>--auto-maintenance</emphasis>
 </term>
 <term>
---[no-]auto-gc
+<emphasis>--no-auto-maintenance</emphasis>
+</term>
+<term>
+<emphasis>--auto-gc</emphasis>
+</term>
+<term>
+<emphasis>--no-auto-gc</emphasis>
 </term>
 <listitem>
 <simpara>
         Run <emphasis>git maintenance run --auto</emphasis> at the end to perform automatic
-        repository maintenance if needed. (<emphasis>--[no-]auto-gc</emphasis> is a synonym.)
+        repository maintenance if needed.
         This is enabled by default.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]write-commit-graph
+<emphasis>--write-commit-graph</emphasis>
+</term>
+<term>
+<emphasis>--no-write-commit-graph</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -303,7 +317,7 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---prefetch
+<emphasis>--prefetch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -315,20 +329,20 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---prune
+<emphasis>--prune</emphasis>
 </term>
 <listitem>
 <simpara>
         Before fetching, remove any remote-tracking references that no
         longer exist on the remote.  Tags are not subject to pruning
         if they are fetched only because of the default tag
-        auto-following or due to a --tags option.  However, if tags
+        auto-following or due to a <emphasis>--tags</emphasis> option.  However, if tags
         are fetched due to an explicit refspec (either on the command
         line or in the remote configuration, for example if the remote
-        was cloned with the --mirror option), then they are also
+        was cloned with the <emphasis>--mirror</emphasis> option), then they are also
         subject to pruning. Supplying <emphasis>--prune-tags</emphasis> is a shorthand for
         providing the tag refspec.
 </simpara>
@@ -337,10 +351,10 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--P
+<emphasis>-P</emphasis>
 </term>
 <term>
---prune-tags
+<emphasis>--prune-tags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,24 +370,24 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---no-tags
+<emphasis>--no-tags</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, tags that point at objects that are downloaded
         from the remote repository are fetched and stored locally.
         This option disables this automatic tag following. The default
-        behavior for a remote may be specified with the remote.&lt;name&gt;.tagOpt
+        behavior for a remote may be specified with the <emphasis>remote.&lt;name&gt;.tagOpt</emphasis>
         setting. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---refetch
+<emphasis>--refetch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -388,14 +402,14 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---refmap=&lt;refspec&gt;
+<emphasis>--refmap=&lt;refspec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         When fetching refs listed on the command line, use the
         specified refspec (can be given more than once) to map the
         refs to remote-tracking branches, instead of the values of
-        <emphasis>remote.*.fetch</emphasis> configuration variables for the remote
+        <emphasis>remote.&lt;name&gt;.fetch</emphasis> configuration variables for the remote
         repository.  Providing an empty <emphasis>&lt;refspec&gt;</emphasis> to the
         <emphasis>--refmap</emphasis> option causes Git to ignore the configured
         refspecs and rely entirely on the refspecs supplied as
@@ -406,17 +420,17 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <term>
---tags
+<emphasis>--tags</emphasis>
 </term>
 <listitem>
 <simpara>
         Fetch all tags from the remote (i.e., fetch remote tags
         <emphasis>refs/tags/*</emphasis> into local tags with the same name), in addition
         to whatever else would otherwise be fetched.  Using this
-        option alone does not subject tags to pruning, even if --prune
+        option alone does not subject tags to pruning, even if <emphasis>--prune</emphasis>
         is used (though tags may be pruned anyway if they are also the
         destination of an explicit refspec; see <emphasis>--prune</emphasis>).
 </simpara>
@@ -424,11 +438,11 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules[=(yes|on-demand|no)]
+<emphasis>--recurse-submodules[=(yes|on-demand|no)]</emphasis>
 </term>
 <listitem>
 <simpara>
-        This option controls if and under what conditions new commits of
+        Control if and under what conditions new commits of
         submodules should be fetched too. When recursing through submodules,
         <emphasis>git fetch</emphasis> always attempts to fetch "changed" submodules, that is, a
         submodule that has commits that are referenced by a newly fetched
@@ -449,14 +463,14 @@ When this option is used without any value, it defaults to <emphasis>yes</emphas
 </varlistentry>
 <varlistentry>
 <term>
--j
+<emphasis>-j &lt;n&gt;</emphasis>
 </term>
 <term>
---jobs=&lt;n&gt;
+<emphasis>--jobs=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Number of parallel children to be used for all forms of fetching.
+        Parallelize all forms of fetching up to <emphasis>&lt;n&gt;</emphasis> jobs at a time.
 </simpara>
 <simpara>If the <emphasis>--multiple</emphasis> option was specified, the different remotes will be fetched
 in parallel. If multiple submodules are fetched, they will be fetched in
@@ -468,7 +482,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-recurse-submodules
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -479,7 +493,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---set-upstream
+<emphasis>--set-upstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -493,11 +507,11 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---submodule-prefix=&lt;path&gt;
+<emphasis>--submodule-prefix=&lt;path&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Prepend &lt;path&gt; to paths printed in informative messages
+        Prepend <emphasis>&lt;path&gt;</emphasis> to paths printed in informative messages
         such as "Fetching submodule foo".  This option is used
         internally when recursing over submodules.
 </simpara>
@@ -505,25 +519,25 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---recurse-submodules-default=[yes|on-demand]
+<emphasis>--recurse-submodules-default=(yes|on-demand)</emphasis>
 </term>
 <listitem>
 <simpara>
         This option is used internally to temporarily provide a
-        non-negative default value for the --recurse-submodules
+        non-negative default value for the <emphasis>--recurse-submodules</emphasis>
         option.  All other methods of configuring fetch's submodule
         recursion (such as settings in <xref linkend="gitmodules(5)" /> and
         <xref linkend="git-config(1)" />) override this option, as does
-        specifying --[no-]recurse-submodules directly.
+        specifying <emphasis>--[no-]recurse-submodules</emphasis> directly.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--u
+<emphasis>-u</emphasis>
 </term>
 <term>
---update-head-ok
+<emphasis>--update-head-ok</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -538,7 +552,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---upload-pack &lt;upload-pack&gt;
+<emphasis>--upload-pack &lt;upload-pack&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -551,14 +565,14 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
-        Pass --quiet to git-fetch-pack and silence any other internally
+        Pass <emphasis>--quiet</emphasis> to <emphasis>git-fetch-pack</emphasis> and silence any other internally
         used git commands. Progress is not reported to the standard error
         stream.
 </simpara>
@@ -566,10 +580,10 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -579,12 +593,12 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <listitem>
 <simpara>
         Progress status is reported on the standard error stream
-        by default when it is attached to a terminal, unless -q
+        by default when it is attached to a terminal, unless <emphasis>-q</emphasis>
         is specified. This flag forces progress status even if the
         standard error stream is not directed to a terminal.
 </simpara>
@@ -592,15 +606,15 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--o &lt;option&gt;
+<emphasis>-o &lt;option&gt;</emphasis>
 </term>
 <term>
---server-option=&lt;option&gt;
+<emphasis>--server-option=&lt;option&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Transmit the given string to the server when communicating using
-        protocol version 2.  The given string must not contain a NUL or LF
+        protocol version 2.  The given string must not contain a <emphasis>NUL</emphasis> or <emphasis>LF</emphasis>
         character.  The server's handling of server options, including
         unknown ones, is server-specific.
         When multiple <emphasis>--server-option=&lt;option&gt;</emphasis> are given, they are all
@@ -613,37 +627,37 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---show-forced-updates
+<emphasis>--show-forced-updates</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, git checks if a branch is force-updated during
-        fetch. This can be disabled through fetch.showForcedUpdates, but
-        the --show-forced-updates option guarantees this check occurs.
+        fetch. This can be disabled through <emphasis>fetch.showForcedUpdates</emphasis>, but
+        the <emphasis>--show-forced-updates</emphasis> option guarantees this check occurs.
         See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-show-forced-updates
+<emphasis>--no-show-forced-updates</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, git checks if a branch is force-updated during
-        fetch. Pass --no-show-forced-updates or set fetch.showForcedUpdates
+        fetch. Pass <emphasis>--no-show-forced-updates</emphasis> or set <emphasis>fetch.showForcedUpdates</emphasis>
         to false to skip this check for performance reasons. If used during
-        <emphasis>git-pull</emphasis> the --ff-only option will still check for forced updates
+        <emphasis>git-pull</emphasis> the <emphasis>--ff-only</emphasis> option will still check for forced updates
         before attempting a fast-forward update. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--4
+<emphasis>-4</emphasis>
 </term>
 <term>
---ipv4
+<emphasis>--ipv4</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -653,10 +667,10 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--6
+<emphasis>-6</emphasis>
 </term>
 <term>
---ipv6
+<emphasis>--ipv6</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -666,7 +680,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;repository&gt;
+<emphasis>&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -679,38 +693,38 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;group&gt;
+<emphasis>&lt;group&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         A name referring to a list of repositories as the value
-        of remotes.&lt;group&gt; in the configuration file.
+        of <emphasis>remotes.&lt;group&gt;</emphasis> in the configuration file.
         (See <xref linkend="git-config(1)" />).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;refspec&gt;
+<emphasis>&lt;refspec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Specifies which refs to fetch and which local refs to update.
-        When no &lt;refspec&gt;s appear on the command line, the refs to fetch
+        When no <emphasis>&lt;refspec&gt;</emphasis>s appear on the command line, the refs to fetch
         are read from <emphasis>remote.&lt;repository&gt;.fetch</emphasis> variables instead
         (see <link linkend="git-fetch(1)_CRTB">CONFIGURED REMOTE-TRACKING BRANCHES</link> below).
 </simpara>
-<simpara>The format of a &lt;refspec&gt; parameter is an optional plus
-<emphasis>+</emphasis>, followed by the source &lt;src&gt;, followed
-by a colon <emphasis>:</emphasis>, followed by the destination &lt;dst&gt;.
-The colon can be omitted when &lt;dst&gt; is empty.  &lt;src&gt; is
+<simpara id="git-fetch(1)_fetch-refspec">The format of a <emphasis>&lt;refspec&gt;</emphasis> parameter is an optional plus
+<emphasis>+</emphasis>, followed by the source <emphasis>&lt;src&gt;</emphasis>, followed
+by a colon <emphasis>:</emphasis>, followed by the destination <emphasis>&lt;dst&gt;</emphasis>.
+The colon can be omitted when <emphasis>&lt;dst&gt;</emphasis> is empty.  <emphasis>&lt;src&gt;</emphasis> is
 typically a ref, or a glob pattern with a single <emphasis>*</emphasis> that is used
 to match a set of refs, but it can also be a fully spelled hex object
 name.</simpara>
-<simpara>A &lt;refspec&gt; may contain a <emphasis>*</emphasis> in its &lt;src&gt; to indicate a simple pattern
+<simpara>A <emphasis>&lt;refspec&gt;</emphasis> may contain a <emphasis>*</emphasis> in its <emphasis>&lt;src&gt;</emphasis> to indicate a simple pattern
 match. Such a refspec functions like a glob that matches any ref with the
-pattern. A pattern &lt;refspec&gt; must have one and only one <emphasis>*</emphasis> in both the &lt;src&gt; and
-&lt;dst&gt;. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
+pattern. A pattern <emphasis>&lt;refspec&gt;</emphasis> must have one and only one <emphasis>*</emphasis> in both the <emphasis>&lt;src&gt;</emphasis> and
+<emphasis>&lt;dst&gt;</emphasis>. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
 contents matched from the source.</simpara>
 <simpara>If a refspec is prefixed by <emphasis>^</emphasis>, it will be interpreted as a negative
 refspec. Rather than specifying which refs to fetch or which local refs to
@@ -719,12 +733,12 @@ considered to match if it matches at least one positive refspec, and does
 not match any negative refspec. Negative refspecs can be useful to restrict
 the scope of a pattern refspec so that it will not include specific refs.
 Negative refspecs can themselves be pattern refspecs. However, they may only
-contain a &lt;src&gt; and do not specify a &lt;dst&gt;. Fully spelled out hex object
+contain a <emphasis>&lt;src&gt;</emphasis> and do not specify a <emphasis>&lt;dst&gt;</emphasis>. Fully spelled out hex object
 names are also not supported.</simpara>
 <simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
 it requests fetching everything up to the given tag.</simpara>
-<simpara>The remote ref that matches &lt;src&gt;
-is fetched, and if &lt;dst&gt; is not an empty string, an attempt
+<simpara>The remote ref that matches <emphasis>&lt;src&gt;</emphasis>
+is fetched, and if <emphasis>&lt;dst&gt;</emphasis> is not an empty string, an attempt
 is made to update the local ref that matches it.</simpara>
 <simpara>Whether that update is allowed without <emphasis>--force</emphasis> depends on the ref
 namespace it's being fetched to, the type of object being fetched, and
@@ -767,12 +781,12 @@ must know this is the expected usage pattern for a branch.</simpara></note>
 </varlistentry>
 <varlistentry>
 <term>
---stdin
+<emphasis>--stdin</emphasis>
 </term>
 <listitem>
 <simpara>
         Read refspecs, one per line, from stdin in addition to those provided
-        as arguments. The "tag &lt;name&gt;" format is not supported.
+        as arguments. The "tag <emphasis>&lt;name&gt;</emphasis>" format is not supported.
 </simpara>
 </listitem>
 </varlistentry>
@@ -979,8 +993,70 @@ refspecs, if you don't provide one on the command line.
 <screen>        HEAD:refs/heads/&lt;head&gt;</screen>
 </section>
 </simplesect>
-<simplesect id="git-fetch(1)__configured_remote_tracking_branches_anchor_id_git_fetch_1__crtb_xreflabel_crtb">
-<title>CONFIGURED REMOTE-TRACKING BRANCHES<anchor id="git-fetch(1)_CRTB" xreflabel="[CRTB]"/></title>
+<simplesect id="git-fetch(1)_UPSTREAM-BRANCHES">
+<title>UPSTREAM BRANCHES</title>
+<simpara>Branches in Git can optionally have an upstream remote branch.
+Git defaults to using the upstream branch for remote operations, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+It's the default for <emphasis>git pull</emphasis> or <emphasis>git fetch</emphasis> with no arguments.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+It's the default for <emphasis>git push</emphasis> with no arguments, with some exceptions.
+  For example, you can use the <emphasis>branch.&lt;name&gt;.pushRemote</emphasis> option to push
+  to a different remote than you pull from, and by default with
+  <emphasis>push.default=simple</emphasis> the upstream branch you configure must have
+  the same name.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Various commands, including <emphasis>git checkout</emphasis> and <emphasis>git status</emphasis>, will
+  show you how many commits have been added to your current branch and
+  the upstream since you forked from it, for example "Your branch and
+  <emphasis>origin/main</emphasis> have diverged, and have 2 and 3 different commits each
+  respectively".
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The upstream is stored in <emphasis>.git/config</emphasis>, in the "<emphasis>remote</emphasis>" and "<emphasis>merge</emphasis>"
+fields. For example, if <emphasis>main</emphasis>'s upstream is <emphasis>origin/main</emphasis>:</simpara>
+<screen>[branch "main"]
+   remote = origin
+   merge = refs/heads/main</screen>
+<simpara>You can set an upstream branch explicitly with
+<emphasis>git push --set-upstream &lt;remote&gt; &lt;branch&gt;</emphasis>
+but Git will often automatically set the upstream for you, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When you clone a repository, Git will automatically set the upstream
+  for the default branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If you have the <emphasis>push.autoSetupRemote</emphasis> configuration option set,
+  <emphasis>git push</emphasis> will automatically set the upstream the first time you push
+  a branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Checking out a remote-tracking branch with <emphasis>git checkout &lt;branch&gt;</emphasis>
+  will automatically create a local branch with that name and set
+  the upstream to the remote branch.
+</simpara>
+</listitem>
+</itemizedlist>
+<note><simpara>Upstream branches are sometimes referred to as "tracking information",
+as in "set the branch's tracking information".</simpara></note>
+</simplesect>
+<simplesect id="git-fetch(1)_CRTB">
+<title>CONFIGURED REMOTE-TRACKING BRANCHES</title>
 <simpara>You often interact with the same remote repository by
 regularly and repeatedly fetching from it.  In order to keep track
 of the progress of such a remote repository, <emphasis>git fetch</emphasis> allows you
@@ -1007,7 +1083,7 @@ When <emphasis>git fetch</emphasis> is run without specifying what branches
 <simpara>
 When <emphasis>git fetch</emphasis> is run with explicit branches and/or tags
   to fetch on the command line, e.g. <emphasis>git fetch origin master</emphasis>, the
-  &lt;refspec&gt;s given on the command line determine what are to be
+  <emphasis>&lt;refspec&gt;s</emphasis> given on the command line determine what are to be
   fetched (e.g. <emphasis>master</emphasis> in the example,
   which is a short-hand for <emphasis>master:</emphasis>, which in turn means
   "fetch the <emphasis>master</emphasis> branch but I do not explicitly say what
@@ -1106,7 +1182,7 @@ machine-parseable. In contrast to the human-readable output formats it
 thus prints to standard output instead of standard error. Each line is
 of the form:</simpara>
 <screen>&lt;flag&gt; &lt;old-object-id&gt; &lt;new-object-id&gt; &lt;local-reference&gt;</screen>
-<simpara>The status of up-to-date refs is shown only if the --verbose option is
+<simpara>The status of up-to-date refs is shown only if the <emphasis>--verbose</emphasis> option is
 used.</simpara>
 <simpara>In compact output mode, specified with configuration variable
 fetch.output, if either entire <emphasis>&lt;from&gt;</emphasis> or <emphasis>&lt;to&gt;</emphasis> is found in the
@@ -1330,7 +1406,7 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-fetch.recurseSubmodules
+<emphasis>fetch.recurseSubmodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1349,20 +1425,20 @@ fetch.recurseSubmodules
 </varlistentry>
 <varlistentry>
 <term>
-fetch.fsckObjects
+<emphasis>fetch.fsckObjects</emphasis>
 </term>
 <listitem>
 <simpara>
         If it is set to true, git-fetch-pack will check all fetched
         objects. See <emphasis>transfer.fsckObjects</emphasis> for what's
-        checked. Defaults to false. If not set, the value of
+        checked. Defaults to <emphasis>false</emphasis>. If not set, the value of
         <emphasis>transfer.fsckObjects</emphasis> is used instead.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.fsck.&lt;msg-id&gt;
+<emphasis>fetch.fsck.&lt;msg-id&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1374,7 +1450,7 @@ fetch.fsck.&lt;msg-id&gt;
 </varlistentry>
 <varlistentry>
 <term>
-fetch.fsck.skipList
+<emphasis>fetch.fsck.skipList</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1386,7 +1462,7 @@ fetch.fsck.skipList
 </varlistentry>
 <varlistentry>
 <term>
-fetch.unpackLimit
+<emphasis>fetch.unpackLimit</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1404,7 +1480,7 @@ fetch.unpackLimit
 </varlistentry>
 <varlistentry>
 <term>
-fetch.prune
+<emphasis>fetch.prune</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1416,7 +1492,7 @@ fetch.prune
 </varlistentry>
 <varlistentry>
 <term>
-fetch.pruneTags
+<emphasis>fetch.pruneTags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1431,20 +1507,20 @@ fetch.pruneTags
 </varlistentry>
 <varlistentry>
 <term>
-fetch.all
+<emphasis>fetch.all</emphasis>
 </term>
 <listitem>
 <simpara>
         If true, fetch will attempt to update all available remotes.
         This behavior can be overridden by passing <emphasis>--no-all</emphasis> or by
         explicitly specifying one or more remote(s) to fetch from.
-        Defaults to false.
+        Defaults to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.output
+<emphasis>fetch.output</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1456,22 +1532,22 @@ fetch.output
 </varlistentry>
 <varlistentry>
 <term>
-fetch.negotiationAlgorithm
+<emphasis>fetch.negotiationAlgorithm</emphasis>
 </term>
 <listitem>
 <simpara>
         Control how information about the commits in the local repository
         is sent when negotiating the contents of the packfile to be sent by
-        the server.  Set to "consecutive" to use an algorithm that walks
-        over consecutive commits checking each one.  Set to "skipping" to
+        the server.  Set to <emphasis>consecutive</emphasis> to use an algorithm that walks
+        over consecutive commits checking each one.  Set to <emphasis>skipping</emphasis> to
         use an algorithm that skips commits in an effort to converge
         faster, but may result in a larger-than-necessary packfile; or set
-        to "noop" to not send any information at all, which will almost
+        to <emphasis>noop</emphasis> to not send any information at all, which will almost
         certainly result in a larger-than-necessary packfile, but will skip
-        the negotiation step.  Set to "default" to override settings made
+        the negotiation step.  Set to <emphasis>default</emphasis> to override settings made
         previously and use the default behaviour.  The default is normally
-        "consecutive", but if <emphasis>feature.experimental</emphasis> is true, then the
-        default is "skipping".  Unknown values will cause <emphasis>git fetch</emphasis> to
+        <emphasis>consecutive</emphasis>, but if <emphasis>feature.experimental</emphasis> is <emphasis>true</emphasis>, then the
+        default is <emphasis>skipping</emphasis>.  Unknown values will cause <emphasis>git fetch</emphasis> to
         error out.
 </simpara>
 <simpara>See also the <emphasis>--negotiate-only</emphasis> and <emphasis>--negotiation-tip</emphasis> options to
@@ -1480,19 +1556,19 @@ fetch.negotiationAlgorithm
 </varlistentry>
 <varlistentry>
 <term>
-fetch.showForcedUpdates
+<emphasis>fetch.showForcedUpdates</emphasis>
 </term>
 <listitem>
 <simpara>
-        Set to false to enable <emphasis>--no-show-forced-updates</emphasis> in
+        Set to <emphasis>false</emphasis> to enable <emphasis>--no-show-forced-updates</emphasis> in
         <xref linkend="git-fetch(1)" /> and <xref linkend="git-pull(1)" /> commands.
-        Defaults to true.
+        Defaults to <emphasis>true</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.parallel
+<emphasis>fetch.parallel</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1507,7 +1583,7 @@ config setting.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.writeCommitGraph
+<emphasis>fetch.writeCommitGraph</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1517,13 +1593,13 @@ fetch.writeCommitGraph
         the existing commit-graph file(s). Occasionally, these files will
         merge and the write may take longer. Having an updated commit-graph
         file helps performance of many Git commands, including <emphasis>git merge-base</emphasis>,
-        <emphasis>git push -f</emphasis>, and <emphasis>git log --graph</emphasis>. Defaults to false.
+        <emphasis>git push -f</emphasis>, and <emphasis>git log --graph</emphasis>. Defaults to <emphasis>false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.bundleURI
+<emphasis>fetch.bundleURI</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1541,12 +1617,12 @@ the new bundle URI.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-fetch.bundleCreationToken
+<emphasis>fetch.bundleCreationToken</emphasis>
 </term>
 <listitem>
 <simpara>
         When using <emphasis>fetch.bundleURI</emphasis> to fetch incrementally from a bundle
-        list that uses the "creationToken" heuristic, this config value
+        list that uses the "<emphasis>creationToken</emphasis>" heuristic, this config value
         stores the maximum <emphasis>creationToken</emphasis> value of the downloaded bundles.
         This value is used to prevent downloading bundles in the future
         if the advertised <emphasis>creationToken</emphasis> is not strictly larger than this
@@ -1561,7 +1637,7 @@ remove the value for the <emphasis>fetch.bundleCreationToken</emphasis> value be
 </simplesect>
 <simplesect id="git-fetch(1)__bugs">
 <title>BUGS</title>
-<simpara>Using --recurse-submodules can only fetch new commits in submodules that are
+<simpara>Using <emphasis>--recurse-submodules</emphasis> can only fetch new commits in submodules that are
 present locally e.g. in <emphasis>$GIT_DIR/modules/</emphasis>. If the upstream adds a new
 submodule, that submodule cannot be fetched until it is cloned e.g. by <emphasis>git
 submodule update</emphasis>. This is expected to be fixed in a future Git version.</simpara>

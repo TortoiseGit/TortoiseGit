@@ -31,7 +31,10 @@ repository.  For push operations, see <emphasis>git send-pack</emphasis>.</simpa
 <variablelist>
 <varlistentry>
 <term>
---[no-]strict
+--strict
+</term>
+<term>
+--no-strict
 </term>
 <listitem>
 <simpara>

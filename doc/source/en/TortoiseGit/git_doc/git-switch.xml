@@ -32,7 +32,6 @@ switching.</simpara>
 (i.e. no differences compared to <emphasis>HEAD</emphasis>). The operation is aborted
 however if the operation leads to loss of local changes, unless told
 otherwise with <emphasis>--discard-changes</emphasis> or <emphasis>--merge</emphasis>.</simpara>
-<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
 </simplesect>
 <simplesect id="git-switch(1)__options">
 <title>OPTIONS</title>

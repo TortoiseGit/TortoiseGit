@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-last-modified(1)">
+    <title>git-last-modified(1)</title>
+<indexterm>
+<primary>git-last-modified(1)</primary>
+</indexterm>
+<simplesect id="git-last-modified(1)__name">
+<title>NAME</title>
+<simpara>git-last-modified - EXPERIMENTAL: Show when files were last modified</simpara>
+</simplesect>
+<simplesect id="git-last-modified(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><code>git</code> <code>last-modified</code> [<code>--recursive</code>] [<code>--show-trees</code>] [<emphasis>&lt;revision-range&gt;</emphasis>] [[<code>--</code>] <emphasis>&lt;path&gt;</emphasis><code>&#8230;</code>]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-last-modified(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Shows which commit last modified each of the relevant files and subdirectories.
+A commit renaming a path, or changing it's mode is also taken into account.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
+</simplesect>
+<simplesect id="git-last-modified(1)__options">
+<title>OPTIONS</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>-r</emphasis>
+</term>
+<term>
+<emphasis>--recursive</emphasis>
+</term>
+<listitem>
+<simpara>
+        Instead of showing tree entries, step into subtrees and show all entries
+        inside them recursively.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-t</emphasis>
+</term>
+<term>
+<emphasis>--show-trees</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show tree entries even when recursing into them. It has no effect
+        without <emphasis>--recursive</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;revision-range&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only traverse commits in the specified revision range. When no
+        <emphasis>&lt;revision-range&gt;</emphasis> is specified, it defaults to <emphasis>HEAD</emphasis> (i.e. the whole
+        history leading to the current commit). For a complete list of ways to
+        spell <emphasis>&lt;revision-range&gt;</emphasis>, see the <emphasis>Specifying Ranges</emphasis> section of
+        <xref linkend="gitrevisions(7)" />.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>[--] &lt;path&gt;...</emphasis>
+</term>
+<listitem>
+<simpara>
+        For each <emphasis>&lt;path&gt;</emphasis> given, the commit which last modified it is returned.
+        Without an optional path parameter, all files and subdirectories
+        in path traversal the are included in the output.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-last-modified(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-blame(1)" />,
+<xref linkend="git-log(1)" />.</simpara>
+</simplesect>
+<simplesect id="git-last-modified(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>

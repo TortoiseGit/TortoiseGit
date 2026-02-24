@@ -39,7 +39,13 @@ commit-id
 </varlistentry>
 <varlistentry>
 <term>
--a, -c, -t
+-a
+</term>
+<term>
+-c
+</term>
+<term>
+-t
 </term>
 <listitem>
 <simpara>

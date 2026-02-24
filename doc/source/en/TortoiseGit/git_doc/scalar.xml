@@ -105,7 +105,10 @@ HEAD[:&lt;directory&gt;]</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]single-branch
+--single-branch
+</term>
+<term>
+--no-single-branch
 </term>
 <listitem>
 <simpara>
@@ -121,7 +124,10 @@ cloning. If the HEAD at the remote did not point at any branch when
 </varlistentry>
 <varlistentry>
 <term>
---[no-]src
+--src
+</term>
+<term>
+--no-src
 </term>
 <listitem>
 <simpara>
@@ -133,7 +139,10 @@ cloning. If the HEAD at the remote did not point at any branch when
 </varlistentry>
 <varlistentry>
 <term>
---[no-]tags
+--tags
+</term>
+<term>
+--no-tags
 </term>
 <listitem>
 <simpara>
@@ -147,7 +156,10 @@ cloning. If the HEAD at the remote did not point at any branch when
 </varlistentry>
 <varlistentry>
 <term>
---[no-]full-clone
+--full-clone
+</term>
+<term>
+--no-full-clone
 </term>
 <listitem>
 <simpara>
@@ -158,7 +170,10 @@ cloning. If the HEAD at the remote did not point at any branch when
 </varlistentry>
 <varlistentry>
 <term>
---[no-]maintenance
+--maintenance
+</term>
+<term>
+--no-maintenance
 </term>
 <listitem>
 <simpara>
@@ -207,7 +222,10 @@ parent directory is considered to be the Scalar enlistment. If the worktree is
 </varlistentry>
 <varlistentry>
 <term>
---[no-]maintenance
+--maintenance
+</term>
+<term>
+--no-maintenance
 </term>
 <listitem>
 <simpara>
@@ -331,6 +349,352 @@ delete &lt;enlistment&gt;
 </varlistentry>
 </variablelist>
 </section>
+</simplesect>
+<simplesect id="scalar(1)__recommended_config_values">
+<title>RECOMMENDED CONFIG VALUES</title>
+<simpara>As part of both <emphasis>scalar clone</emphasis> and <emphasis>scalar register</emphasis>, certain Git config
+values are set to optimize for large repositories or cross-platform support.
+These options are updated in new Git versions according to the best known
+advice for large repositories, and users can get the latest recommendations
+by running <emphasis>scalar reconfigure [--all]</emphasis>.</simpara>
+<simpara>This section lists justifications for the config values that are set in the
+latest version.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+am.keepCR=true
+</term>
+<listitem>
+<simpara>
+        This setting is important for cross-platform development across Windows
+        and non-Windows platforms and keeping carriage return (<emphasis>\r</emphasis>) characters
+        in certain workflows.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commitGraph.changedPaths=true
+</term>
+<listitem>
+<simpara>
+        This setting helps the background maintenance steps that compute the
+        serialized commit-graph to also store changed-path Bloom filters. This
+        accelerates file history commands and allows users to automatically
+        benefit without running a foreground command.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commitGraph.generationVersion=1
+</term>
+<listitem>
+<simpara>
+        While the preferred version is 2 for performance reasons, existing users
+        that had version 1 by default will need special care in upgrading to
+        version 2. This is likely to change in the future as the upgrade story
+        solidifies.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.autoCRLF=false
+</term>
+<listitem>
+<simpara>
+        This removes the transformation of worktree files to add CRLF line
+        endings when only LF line endings exist. This is removed for performance
+        reasons. Repositories that use tools that care about CRLF line endings
+        should commit the necessary files with those line endings instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.logAllRefUpdates=true
+</term>
+<listitem>
+<simpara>
+        This enables the reflog on all branches. While this is a performance
+        cost for large repositories, it is frequently an important data source
+        for users to get out of bad situations or to seek support from experts.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+core.safeCRLF=false
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>core.autoCRLF=false</emphasis>, this disables checks around whether
+        the CRLF conversion is reversible. This is a performance improvement,
+        but can be dangerous if <emphasis>core.autoCRLF</emphasis> is reenabled by the user.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+credential.https://dev.azure.com.useHttpPath=true
+</term>
+<listitem>
+<simpara>
+        This setting enables the <emphasis>credential.useHttpPath</emphasis> feature only for web
+        URLs for Azure DevOps. This is important for users interacting with that
+        service using multiple organizations and thus multiple credential
+        tokens.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+feature.experimental=false
+</term>
+<listitem>
+<simpara>
+        This disables the "experimental" optimizations grouped under this
+        feature config. The expectation is that all valuable optimizations are
+        also set explicitly by Scalar config, and any differences are
+        intentional. Notable differences include several bitmap-related config
+        options which are disabled for client-focused Scalar repos.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+feature.manyFiles=false
+</term>
+<listitem>
+<simpara>
+        This disables the "many files" optimizations grouped under this feature
+        config. The expectation is that all valuable optimizations are also set
+        explicitly by Scalar config, and any differences are intentional.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.showForcedUpdates=false
+</term>
+<listitem>
+<simpara>
+        This disables the check at the end of <emphasis>git fetch</emphasis> that notifies the user
+        if the ref update was a forced update (one where the previous position
+        is not reachable from the latest position). This check can be very
+        expensive in large repositories, so is disabled and replaced with an
+        advice message. Set <emphasis>advice.fetchShowForcedUpdates=false</emphasis> to disable
+        this advice message.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.unpackLimit=1
+</term>
+<listitem>
+<simpara>
+        This setting prevents Git from unpacking packfiles into loose objects
+        as they are downloaded from the server. The default limit of 100 was
+        intended as a way to prevent performance issues from too many packfiles,
+        but Scalar uses background maintenance to group packfiles and cover them
+        with a multi-pack-index, removing this issue.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+fetch.writeCommitGraph=false
+</term>
+<listitem>
+<simpara>
+        This config setting was created to help users automatically update their
+        commit-graph files as they perform fetches. However, this takes time
+        from foreground fetches and pulls and Scalar uses background maintenance
+        for this function instead.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gc.auto=0
+</term>
+<listitem>
+<simpara>
+        This disables automatic garbage collection, since Scalar uses background
+        maintenance to keep the repository data in good shape.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+gui.GCWarning=false
+</term>
+<listitem>
+<simpara>
+        Since Scalar disables garbage collection by setting <emphasis>gc.auto=0</emphasis>, the
+        <emphasis>git-gui</emphasis> tool may start to warn about this setting. Disable this
+        warning as Scalar's background maintenance configuration makes the
+        warning irrelevant.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+index.skipHash=true
+</term>
+<listitem>
+<simpara>
+        Disable computing the hash of the index contents as it is being written.
+        This assists with performance, especially for large index files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+index.threads=true
+</term>
+<listitem>
+<simpara>
+        This tells Git to automatically detect how many threads it should use
+        when reading the index due to the default value of <emphasis>core.preloadIndex</emphasis>,
+        which enables parallel index reads. This explicit setting also enables
+        <emphasis>index.recordOffsetTable=true</emphasis> to speed up parallel index reads.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+index.version=4
+</term>
+<listitem>
+<simpara>
+        This index version adds compression to the path names, reducing the size
+        of the index in a significant way for large repos. This is an important
+        performance boost.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+log.excludeDecoration=refs/prefetch/*
+</term>
+<listitem>
+<simpara>
+        Since Scalar enables background maintenance with the <emphasis>incremental</emphasis>
+        strategy, this setting avoids polluting <emphasis>git log</emphasis> output with refs
+        stored by the background prefetch operations.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.renames=true
+</term>
+<listitem>
+<simpara>
+        When computing merges in large repos, it is particularly important to
+        detect renames to maximize the potential for a result that will validate
+        correctly. Users performing merges locally are more likely to be doing
+        so because a server-side merge (via pull request or similar) resulted in
+        conflicts. While this is the default setting, it is set specifically to
+        override a potential change to <emphasis>diff.renames</emphasis> which a user may set for
+        performance reasons.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+merge.stat=false
+</term>
+<listitem>
+<simpara>
+        This disables a diff output after computing a merge. This improves
+        performance of <emphasis>git merge</emphasis> for large repos while reducing noisy output.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.useBitmaps=false
+</term>
+<listitem>
+<simpara>
+        This disables the use of <emphasis>.bitmap</emphasis> files attached to packfiles. Bitmap
+        files are optimized for server-side use, not client-side use. Scalar
+        disables this to avoid some performance issues that can occur if a user
+        accidentally creates <emphasis>.bitmap</emphasis> files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+pack.usePathWalk=true
+</term>
+<listitem>
+<simpara>
+        This enables the <emphasis>--path-walk</emphasis> option to <emphasis>git pack-objects</emphasis> by default.
+        This can accelerate the computation and compression of packfiles created
+        by <emphasis>git push</emphasis> and other repack operations.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+receive.autoGC=false
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>gc.auto</emphasis>, this setting is disabled in preference of
+        background maintenance.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+status.aheadBehind=false
+</term>
+<listitem>
+<simpara>
+        This disables the ahead/behind calculation that would normally happen
+        during a <emphasis>git status</emphasis> command. This information is frequently ignored by
+        users but can be expensive to calculate in large repos that receive
+        thousands of commits per day. The calculation is replaced with an advice
+        message that can be disabled by disabling the <emphasis>advice.statusAheadBehind</emphasis>
+        config.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following settings are different based on which platform is in use:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+core.untrackedCache=(true|false)
+</term>
+<listitem>
+<simpara>
+        The untracked cache feature is important for performance benefits on
+        large repositories, but has demonstrated some bugs on Windows
+        filesystems. Thus, this is set for other platforms but disabled on
+        Windows.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+http.sslBackend=schannel
+</term>
+<listitem>
+<simpara>
+        On Windows, the <emphasis>openssl</emphasis> backend has some issues with certain types of
+        remote providers and certificate types. Override the default setting to
+        avoid these common problems.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="scalar(1)__see_also">
 <title>SEE ALSO</title>

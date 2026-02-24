@@ -97,6 +97,7 @@
 		<xi:include href="./git-init.xml"/>
 		<xi:include href="./git-instaweb.xml"/>
 		<xi:include href="./git-interpret-trailers.xml"/>
+		<xi:include href="./git-last-modified.xml"/>
 		<xi:include href="./git-log.xml"/>
 		<xi:include href="./git-ls-files.xml"/>
 		<xi:include href="./git-ls-remote.xml"/>
@@ -140,6 +141,7 @@
 		<xi:include href="./git-repack.xml"/>
 		<xi:include href="./git-replace.xml"/>
 		<xi:include href="./git-replay.xml"/>
+		<xi:include href="./git-repo.xml"/>
 		<xi:include href="./git-request-pull.xml"/>
 		<xi:include href="./git-rerere.xml"/>
 		<xi:include href="./git-reset.xml"/>

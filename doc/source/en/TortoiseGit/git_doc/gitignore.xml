@@ -164,6 +164,14 @@ An asterisk "<emphasis>*</emphasis>" matches anything except a slash.
    FNM_PATHNAME flag for a more detailed description.
 </simpara>
 </listitem>
+<listitem>
+<simpara>
+A backslash ("<emphasis>\</emphasis>") can be used to escape any character. E.g., "<emphasis>\*</emphasis>"
+   matches a literal asterisk (and "<emphasis>\a</emphasis>" matches "<emphasis>a</emphasis>", even though
+   there is no need for escaping there). As with fnmatch(3), a backslash
+   at the end of a pattern is an invalid pattern that never matches.
+</simpara>
+</listitem>
 </itemizedlist>
 <simpara>Two consecutive asterisks ("<emphasis>**</emphasis>") in patterns matched against
 full pathname may have special meaning:</simpara>

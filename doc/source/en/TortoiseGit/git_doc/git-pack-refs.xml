@@ -86,7 +86,10 @@ future.
 <itemizedlist>
 <listitem>
 <simpara>
-"files": No special handling for <emphasis>--auto</emphasis> has been implemented.
+"files": Loose references are packed into the <emphasis>packed-refs</emphasis> file
+          based on the ratio of loose references to the size of the
+          <emphasis>packed-refs</emphasis> file. The bigger the <emphasis>packed-refs</emphasis> file, the more loose
+          references need to exist before we repack.
 </simpara>
 </listitem>
 <listitem>

@@ -13,7 +13,7 @@
 <simplesect id="git-merge(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><code>git</code> <code>merge</code> [<code>-n</code>] [<code>--stat</code>] [<code>--no-commit</code>] [<code>--squash</code>] [<code>--</code>[<code>no-</code>]<code>edit</code>]
+<literallayout><code>git</code> <code>merge</code> [<code>-n</code>] [<code>--stat</code>] [<code>--compact-summary</code>] [<code>--no-commit</code>] [<code>--squash</code>] [<code>--</code>[<code>no-</code>]<code>edit</code>]
         [<code>--no-verify</code>] [<code>-s</code> <emphasis>&lt;strategy&gt;</emphasis>] [<code>-X</code> <emphasis>&lt;strategy-option&gt;</emphasis>] [<code>-S</code>[<emphasis>&lt;keyid&gt;</emphasis>]]
         [<code>--</code>[<code>no-</code>]<code>allow-unrelated-histories</code>]
         [<code>--</code>[<code>no-</code>]<code>rerere-autoupdate</code>] [<code>-m</code> <emphasis>&lt;msg&gt;</emphasis>] [<code>-F</code> <emphasis>&lt;file&gt;</emphasis>]
@@ -38,7 +38,7 @@ from one branch into another.</simpara>
 its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis>, and record the result
 in a new commit along with the names of the two parent commits and
 a log message from the user describing the changes. Before the operation,
-<emphasis>ORIG_HEAD</emphasis> is set to the tip of the current branch (<emphasis>C</emphasis>).</simpara>
+<emphasis>ORIG_HEAD</emphasis> is set to the tip of the current branch (<emphasis>G</emphasis>).</simpara>
 <screen>          A---B---C topic
          /         \
     D---E---F---G---H master</screen>
@@ -208,6 +208,9 @@ actual commits being merged.</simpara>
 </simpara>
 <simpara>The <emphasis>--no-signoff</emphasis> option can be used to countermand an earlier <emphasis>--signoff</emphasis>
 option on the command line.</simpara>
+<simpara>Git does not (and will not) have a configuration variable to enable
+the <emphasis>--signoff</emphasis> command line option by default; see the
+<emphasis>commit.signoff</emphasis> entry in <xref linkend="gitfaq(7)" /> for more details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -227,6 +230,16 @@ option on the command line.</simpara>
 </simpara>
 <simpara>With <emphasis>-n</emphasis> or <emphasis>--no-stat</emphasis> do not show a diffstat at the end of the
 merge.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--compact-summary</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show a compact-summary at the end of the merge.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -253,7 +266,10 @@ option can be used to override <emphasis>--squash</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]verify</emphasis>
+<emphasis>--verify</emphasis>
+</term>
+<term>
+<emphasis>--no-verify</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1326,9 +1342,44 @@ as <emphasis>false</emphasis>. Defaults to <emphasis>conflict</emphasis>.</simpa
 </term>
 <listitem>
 <simpara>
-        Whether to print the diffstat between <emphasis>ORIG_HEAD</emphasis> and the merge result
-        at the end of the merge.  True by default.
+        What, if anything, to print between <emphasis>ORIG_HEAD</emphasis> and the merge result
+        at the end of the merge.  Possible values are:
 </simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<listitem>
+<simpara>
+Show nothing.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>true</emphasis>
+</term>
+<listitem>
+<simpara>
+Show <emphasis>git diff --diffstat --summary ORIG_HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>compact</emphasis>
+</term>
+<listitem>
+<simpara>
+Show <emphasis>git diff --compact-summary ORIG_HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>but any unrecognised value (e.g., a value added by a future version of
+Git) is taken as <emphasis>true</emphasis> instead of triggering an error.  Defaults to
+<emphasis>true</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

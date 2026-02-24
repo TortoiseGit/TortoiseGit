@@ -246,6 +246,15 @@ $ git foo -o Arg</screen>
 $ git describe --abbrev=10 HEAD  # correct
 $ git describe --abbrev 10 HEAD  # NOT WHAT YOU MEANT</screen>
 </section>
+<section id="gitcli(7)__magic_filename_options">
+<title>Magic filename options</title>
+<simpara>Options that take a filename allow a prefix <emphasis>:(optional)</emphasis>. For example:</simpara>
+<screen>git commit -F :(optional)COMMIT_EDITMSG
+# if COMMIT_EDITMSG does not exist, the above is equivalent to
+git commit</screen>
+<simpara>Like with configuration values, if the named file is missing Git behaves as if
+the option was not given at all. See "Values" in <xref linkend="git-config(1)" />.</simpara>
+</section>
 </simplesect>
 <simplesect id="gitcli(7)__notes_on_frequently_confused_options">
 <title>NOTES ON FREQUENTLY CONFUSED OPTIONS</title>

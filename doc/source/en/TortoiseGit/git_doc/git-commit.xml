@@ -115,6 +115,33 @@ that, you can recover from it with <emphasis>git reset</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>-U&lt;n&gt;</emphasis>
+</term>
+<term>
+<emphasis>--unified=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context. Defaults to <emphasis>diff.context</emphasis>
+        or 3 if the config option is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--inter-hunk-context=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
+        of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>-C &lt;commit&gt;</emphasis>
 </term>
 <term>
@@ -228,7 +255,8 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </term>
 <listitem>
 <simpara>
-        Show the branch and tracking info even in short-format.
+        Show the branch and tracking info even in short-format. See
+        <xref linkend="git-status(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
@@ -250,8 +278,9 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </term>
 <listitem>
 <simpara>
-        When doing a dry-run, give the output in the long-format.
-        Implies <emphasis>--dry-run</emphasis>.
+        When doing a dry-run, give the output in the long-format. This
+        is the default output of <xref linkend="git-status(1)" />. Implies
+        <emphasis>--dry-run</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -264,7 +293,7 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </term>
 <listitem>
 <simpara>
-        When showing <emphasis>short</emphasis> or <emphasis>porcelain</emphasis> status output, print the
+        When showing <emphasis>short</emphasis> or <emphasis>porcelain</emphasis> <xref linkend="git-status(1)" /> output, print the
         filename verbatim and terminate the entries with <emphasis>NUL</emphasis>, instead of <emphasis>LF</emphasis>.
         If no format is given, implies the <emphasis>--porcelain</emphasis> output format.
         Without the <emphasis>-z</emphasis> option, filenames with "unusual" characters are
@@ -372,6 +401,9 @@ See <xref linkend="git-rebase(1)" /> for details.</simpara>
 </simpara>
 <simpara>The <emphasis>--no-signoff</emphasis> option can be used to countermand an earlier <emphasis>--signoff</emphasis>
 option on the command line.</simpara>
+<simpara>Git does not (and will not) have a configuration variable to enable
+the <emphasis>--signoff</emphasis> command line option by default; see the
+<emphasis>commit.signoff</emphasis> entry in <xref linkend="gitfaq(7)" /> for more details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -397,7 +429,10 @@ option on the command line.</simpara>
 <emphasis>-n</emphasis>
 </term>
 <term>
-<emphasis>--[no-]verify</emphasis>
+<emphasis>--verify</emphasis>
+</term>
+<term>
+<emphasis>--no-verify</emphasis>
 </term>
 <listitem>
 <simpara>

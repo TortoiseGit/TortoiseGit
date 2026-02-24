@@ -441,6 +441,13 @@ embedded into the superprojects git directory.</simpara>
 <simpara>
         This option is only valid for add, deinit and update commands.
         When running add, allow adding an otherwise ignored submodule path.
+        This option is also used to bypass a check that the submodule's name
+        is not already in use. By default, <emphasis>git submodule add</emphasis> will fail if
+        the proposed name (which is derived from the path) is already registered
+        for another submodule in the repository. Using <emphasis>--force</emphasis> allows the command
+        to proceed by automatically generating a unique name by appending a number
+        to the conflicting name (e.g., if a submodule named <emphasis>child</emphasis> exists, it will
+        try <emphasis>child1</emphasis>, and so on).
         When running deinit the submodule working trees will be removed even
         if they contain local changes.
         When running update (only effective with the checkout procedure),
@@ -670,7 +677,10 @@ options carefully.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]recommend-shallow
+--recommend-shallow
+</term>
+<term>
+--no-recommend-shallow
 </term>
 <listitem>
 <simpara>
@@ -698,7 +708,10 @@ options carefully.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]single-branch
+--single-branch
+</term>
+<term>
+--no-single-branch
 </term>
 <listitem>
 <simpara>

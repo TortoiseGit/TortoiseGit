@@ -13,11 +13,11 @@
 <simplesect id="git-blame(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git blame</emphasis> [-c] [-b] [-l] [--root] [-t] [-f] [-n] [-s] [-e] [-p] [-w] [--incremental]
-            [-L &lt;range&gt;] [-S &lt;revs-file&gt;] [-M] [-C] [-C] [-C] [--since=&lt;date&gt;]
-            [--ignore-rev &lt;rev&gt;] [--ignore-revs-file &lt;file&gt;]
-            [--color-lines] [--color-by-age] [--progress] [--abbrev=&lt;n&gt;]
-            [ --contents &lt;file&gt; ] [&lt;rev&gt; | --reverse &lt;rev&gt;..&lt;rev&gt;] [--] &lt;file&gt;</literallayout>
+<literallayout><code>git</code> <code>blame</code> [<code>-c</code>] [<code>-b</code>] [<code>-l</code>] [<code>--root</code>] [<code>-t</code>] [<code>-f</code>] [<code>-n</code>] [<code>-s</code>] [<code>-e</code>] [<code>-p</code>] [<code>-w</code>] [<code>--incremental</code>]
+          [<code>-L</code> <emphasis>&lt;range&gt;</emphasis>] [<code>-S</code> <emphasis>&lt;revs-file&gt;</emphasis>] [<code>-M</code>] [<code>-C</code>] [<code>-C</code>] [<code>-C</code>] [<code>--since=</code><emphasis>&lt;date&gt;</emphasis>]
+          [<code>--ignore-rev</code> <emphasis>&lt;rev&gt;</emphasis>] [<code>--ignore-revs-file</code> <emphasis>&lt;file&gt;</emphasis>]
+          [<code>--color-lines</code>] [<code>--color-by-age</code>] [<code>--progress</code>] [<code>--abbrev=</code><emphasis>&lt;n&gt;</emphasis>]
+          [ <code>--contents</code> <emphasis>&lt;file&gt;</emphasis> ] [<emphasis>&lt;rev&gt;</emphasis> | <code>--reverse</code> <emphasis>&lt;rev&gt;</emphasis><code>..</code><emphasis>&lt;rev&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;file&gt;</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-blame(1)__description">
@@ -49,7 +49,7 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 <variablelist>
 <varlistentry>
 <term>
--b
+<emphasis>-b</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -60,7 +60,7 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 </varlistentry>
 <varlistentry>
 <term>
---root
+<emphasis>--root</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -71,7 +71,7 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 </varlistentry>
 <varlistentry>
 <term>
---show-stats
+<emphasis>--show-stats</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -81,10 +81,10 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 </varlistentry>
 <varlistentry>
 <term>
--L &lt;start&gt;,&lt;end&gt;
+<emphasis>-L &lt;start&gt;,&lt;end&gt;</emphasis>
 </term>
 <term>
--L :&lt;funcname&gt;
+<emphasis>-L :&lt;funcname&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -98,25 +98,25 @@ ea4c7f9bf69e781dd0cd88d2bccb2bf5cc15c9a7 git-blame: Make the output</screen>
 <itemizedlist>
 <listitem>
 <simpara>
-number
+<emphasis>&lt;number&gt;</emphasis>
 </simpara>
 <simpara>If <emphasis>&lt;start&gt;</emphasis> or <emphasis>&lt;end&gt;</emphasis> is a number, it specifies an
 absolute line number (lines count from 1).</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>/regex/</emphasis>
+<emphasis>/&lt;regex&gt;/</emphasis>
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
+POSIX <emphasis>&lt;regex&gt;</emphasis>. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
 the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
-If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/regex/</emphasis>, it will search from the start of file.
-If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search
-starting at the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
+If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/&lt;regex&gt;/</emphasis>, it will search from the start of file.
+If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search starting at the line given by
+<emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
-+offset or -offset
+<emphasis>+&lt;offset&gt;</emphasis> or <emphasis>-&lt;offset&gt;</emphasis>
 </simpara>
 <simpara>This is only valid for <emphasis>&lt;end&gt;</emphasis> and will specify a number
 of lines before or after the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
@@ -134,7 +134,7 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -144,7 +144,7 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -154,32 +154,33 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--S &lt;revs-file&gt;
+<emphasis>-S &lt;revs-file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use revisions from revs-file instead of calling <xref linkend="git-rev-list(1)" />.
+        Use revisions from <emphasis>&lt;revs-file&gt;</emphasis> instead of calling
+        <xref linkend="git-rev-list(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---reverse &lt;rev&gt;..&lt;rev&gt;
+<emphasis>--reverse &lt;start&gt;..&lt;end&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Walk history forward instead of backward. Instead of showing
         the revision in which a line appeared, this shows the last
         revision in which a line has existed. This requires a range of
-        revision like START..END where the path to blame exists in
-        START.  <emphasis>git blame --reverse START</emphasis> is taken as <emphasis>git blame
-        --reverse START..HEAD</emphasis> for convenience.
+        revision like <emphasis>&lt;start&gt;..&lt;end&gt;</emphasis> where the path to blame exists in
+        <emphasis>&lt;start&gt;</emphasis>.  <emphasis>git blame --reverse &lt;start&gt;</emphasis> is taken as <emphasis>git blame
+        --reverse &lt;start&gt;..HEAD</emphasis> for convenience.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---first-parent
+<emphasis>--first-parent</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -192,10 +193,10 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -205,19 +206,19 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---line-porcelain
+<emphasis>--line-porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
         Show the porcelain format, but output commit information for
         each line, not just the first time a commit is referenced.
-        Implies --porcelain.
+        Implies <emphasis>--porcelain</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---incremental
+<emphasis>--incremental</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -228,11 +229,11 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---encoding=&lt;encoding&gt;
+<emphasis>--encoding=&lt;encoding&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specifies the encoding used to output author names
+        Specify the encoding used to output author names
         and commit summaries. Setting it to <emphasis>none</emphasis> makes blame
         output unconverted data. For more information see the
         discussion about encoding in the <xref linkend="git-log(1)" />
@@ -242,61 +243,63 @@ in <xref linkend="gitattributes(5)" />).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---contents &lt;file&gt;
+<emphasis>--contents &lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Annotate using the contents from the named file, starting from &lt;rev&gt;
-        if it is specified, and HEAD otherwise. You may specify <emphasis>-</emphasis> to make
+        Annotate using the contents from <emphasis>&lt;file&gt;</emphasis>, starting from <emphasis>&lt;rev&gt;</emphasis>
+        if it is specified, and <emphasis>HEAD</emphasis> otherwise. You may specify <emphasis>-</emphasis> to make
         the command read from the standard input for the file contents.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---date &lt;format&gt;
+<emphasis>--date &lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specifies the format used to output dates. If --date is not
-        provided, the value of the blame.date config variable is
-        used. If the blame.date config variable is also not set, the
+        Specify the format used to output dates. If <emphasis>--date</emphasis> is not
+        provided, the value of the <emphasis>blame.date</emphasis> config variable is
+        used. If the <emphasis>blame.date</emphasis> config variable is also not set, the
         iso format is used. For supported values, see the discussion
-        of the --date option at <xref linkend="git-log(1)" />.
+        of the <emphasis>--date</emphasis> option at <xref linkend="git-log(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]progress
+<emphasis>--progress</emphasis>
+</term>
+<term>
+<emphasis>--no-progress</emphasis>
 </term>
 <listitem>
 <simpara>
-        Progress status is reported on the standard error stream
-        by default when it is attached to a terminal. This flag
-        enables progress reporting even if not attached to a
-        terminal. Can't use <emphasis>--progress</emphasis> together with <emphasis>--porcelain</emphasis>
-        or <emphasis>--incremental</emphasis>.
+        Enable progress reporting on the standard error stream even if
+        not attached to a terminal. By default, progress status is
+        reported only when it is attached. You can't use <emphasis>--progress</emphasis>
+        together with <emphasis>--porcelain</emphasis> or <emphasis>--incremental</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--M[&lt;num&gt;]
+<emphasis>-M[&lt;num&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Detect moved or copied lines within a file. When a commit
         moves or copies a block of lines (e.g. the original file
-        has A and then B, and the commit changes it to B and then
-        A), the traditional <emphasis>blame</emphasis> algorithm notices only half of
+        has <emphasis>A</emphasis> and then <emphasis>B</emphasis>, and the commit changes it to <emphasis>B</emphasis> and then
+        <emphasis>A</emphasis>), the traditional <emphasis>blame</emphasis> algorithm notices only half of
         the movement and typically blames the lines that were moved
-        up (i.e. B) to the parent and assigns blame to the lines that
-        were moved down (i.e. A) to the child commit.  With this
+        up (i.e. <emphasis>B</emphasis>) to the parent and assigns blame to the lines that
+        were moved down (i.e. <emphasis>A</emphasis>) to the child commit.  With this
         option, both groups of lines are blamed on the parent by
         running extra passes of inspection.
 </simpara>
-<simpara>&lt;num&gt; is optional but it is the lower bound on the number of
+<simpara><emphasis>&lt;num&gt;</emphasis> is optional, but it is the lower bound on the number of
 alphanumeric characters that Git must detect as moving/copying
 within a file for it to associate those lines with the parent
 commit. The default value is 20.</simpara>
@@ -304,7 +307,7 @@ commit. The default value is 20.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--C[&lt;num&gt;]
+<emphasis>-C[&lt;num&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -317,17 +320,17 @@ commit. The default value is 20.</simpara>
         option is given three times, the command additionally
         looks for copies from other files in any commit.
 </simpara>
-<simpara>&lt;num&gt; is optional but it is the lower bound on the number of
+<simpara><emphasis>&lt;num&gt;</emphasis> is optional, but it is the lower bound on the number of
 alphanumeric characters that Git must detect as moving/copying
 between files for it to associate those lines with the parent
 commit. And the default value is 40. If there are more than one
-<emphasis>-C</emphasis> options given, the &lt;num&gt; argument of the last <emphasis>-C</emphasis> will
+<emphasis>-C</emphasis> options given, the <emphasis>&lt;num&gt;</emphasis> argument of the last <emphasis>-C</emphasis> will
 take effect.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-rev &lt;rev&gt;
+<emphasis>--ignore-rev &lt;rev&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -347,11 +350,11 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-revs-file &lt;file&gt;
+<emphasis>--ignore-revs-file &lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Ignore revisions listed in <emphasis>file</emphasis>, which must be in the same format as an
+        Ignore revisions listed in <emphasis>&lt;file&gt;</emphasis>, which must be in the same format as an
         <emphasis>fsck.skipList</emphasis>.  This option may be repeated, and these files will be
         processed after any files specified with the <emphasis>blame.ignoreRevsFile</emphasis> config
         option.  An empty file name, <emphasis>""</emphasis>, will clear the list of revs from
@@ -361,7 +364,7 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---color-lines
+<emphasis>--color-lines</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -374,19 +377,19 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---color-by-age
+<emphasis>--color-by-age</emphasis>
 </term>
 <listitem>
 <simpara>
-        Color line annotations depending on the age of the line in the default format.
-        The <emphasis>color.blame.highlightRecent</emphasis> config option controls what color is used for
-        each range of age.
+        Color line annotations depending on the age of the line in
+        the default format.  The <emphasis>color.blame.highlightRecent</emphasis> config
+        option controls what color is used for each range of age.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--h
+<emphasis>-h</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -396,7 +399,7 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--c
+<emphasis>-c</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -406,7 +409,7 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---score-debug
+<emphasis>--score-debug</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -422,10 +425,10 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---show-name
+<emphasis>--show-name</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -437,10 +440,10 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---show-number
+<emphasis>--show-number</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -450,7 +453,7 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--s
+<emphasis>-s</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -460,10 +463,10 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--e
+<emphasis>-e</emphasis>
 </term>
 <term>
---show-email
+<emphasis>--show-email</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -475,7 +478,7 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--w
+<emphasis>-w</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -486,13 +489,73 @@ take effect.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---abbrev=&lt;n&gt;
+<emphasis>--diff-algorithm=(patience|minimal|histogram|myers)</emphasis>
 </term>
 <listitem>
 <simpara>
-        Instead of using the default 7+1 hexadecimal digits as the
-        abbreviated object name, use &lt;m&gt;+1 digits, where &lt;m&gt; is at
-        least &lt;n&gt; but ensures the commit object names are unique.
+        Choose a diff algorithm. The variants are as follows:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>default</emphasis>
+</term>
+<term>
+<emphasis>myers</emphasis>
+</term>
+<listitem>
+<simpara>
+        The basic greedy diff algorithm. Currently, this is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>minimal</emphasis>
+</term>
+<listitem>
+<simpara>
+        Spend extra time to make sure the smallest possible diff is
+        produced.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>patience</emphasis>
+</term>
+<listitem>
+<simpara>
+        Use "patience diff" algorithm when generating patches.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>histogram</emphasis>
+</term>
+<listitem>
+<simpara>
+        This algorithm extends the patience algorithm to "support
+        low-occurrence common elements".
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>For instance, if you configured the <emphasis>diff.algorithm</emphasis> variable to a
+non-default value and want to use the default one, then you
+have to use <emphasis>--diff-algorithm=default</emphasis> option.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--abbrev=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Instead of using the default <emphasis>7+1</emphasis> hexadecimal digits as the
+        abbreviated object name, use <emphasis>&lt;m&gt;+1</emphasis> digits, where <emphasis>&lt;m&gt;</emphasis> is at
+        least <emphasis>&lt;n&gt;</emphasis> but ensures the commit object names are unique.
         Note that 1 column
         is used for a caret to mark the boundary commit.
 </simpara>
@@ -557,8 +620,8 @@ at least once for each commit:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-the author name ("author"), email ("author-mail"), time
-  ("author-time"), and time zone ("author-tz"); similarly
+the author name (<emphasis>author</emphasis>), email (<emphasis>author-mail</emphasis>), time
+  (<emphasis>author-time</emphasis>), and time zone (<emphasis>author-tz</emphasis>); similarly
   for committer.
 </simpara>
 </listitem>
@@ -569,12 +632,12 @@ the filename in the commit that the line is attributed to.
 </listitem>
 <listitem>
 <simpara>
-the first line of the commit log message ("summary").
+the first line of the commit log message (<emphasis>summary</emphasis>).
 </simpara>
 </listitem>
 </itemizedlist>
 <simpara>The contents of the actual line are output after the above
-header, prefixed by a TAB. This is to allow adding more
+header, prefixed by a <emphasis>TAB</emphasis>. This is to allow adding more
 header elements later.</simpara>
 <simpara>The porcelain format generally suppresses commit information that has
 already been seen. For example, two lines that are blamed to the same
@@ -639,7 +702,9 @@ annotated.</simpara>
 <simpara>
 Each blame entry always starts with a line of:
 </simpara>
-<literallayout class="monospaced">&lt;40-byte-hex-sha1&gt; &lt;sourceline&gt; &lt;resultline&gt; &lt;num-lines&gt;</literallayout>
+<blockquote>
+<literallayout><emphasis>&lt;40-byte-hex-sha1&gt;</emphasis> <emphasis>&lt;sourceline&gt;</emphasis> <emphasis>&lt;resultline&gt;</emphasis> <emphasis>&lt;num-lines&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>Line numbers count from 1.</simpara>
 </listitem>
 <listitem>
@@ -655,12 +720,14 @@ The first time that a commit shows up in the stream, it has various
 Unlike the Porcelain format, the filename information is always
   given and terminates the entry:
 </simpara>
-<literallayout class="monospaced">"filename" &lt;whitespace-quoted-filename-goes-here&gt;</literallayout>
+<blockquote>
+<literallayout><code>filename</code> <emphasis>&lt;whitespace-quoted-filename-goes-here&gt;</emphasis></literallayout>
+</blockquote>
 <simpara>and thus it is really quite easy to parse for some line- and word-oriented
 parser (which should be quite natural for most scripting languages).</simpara>
 <note><simpara>For people who do parsing: to make it more robust, just ignore any
-lines between the first and last one ("&lt;sha1&gt;" and "filename" lines)
-where you do not recognize the tag words (or care about that particular
+lines between the first and last one (<emphasis>&lt;40-byte-hex-sha1&gt;</emphasis> and <emphasis>filename</emphasis>
+lines) where you do not recognize the tag words (or care about that particular
 one) at the beginning of the "extended information" lines. That way, if
 there is ever added information (like the commit encoding or extended
 commit commentary), a blame viewer will not care.</simpara></note>

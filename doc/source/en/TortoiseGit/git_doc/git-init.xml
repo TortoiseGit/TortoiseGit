@@ -144,9 +144,10 @@ repository.
 <listitem>
 <simpara>
 Use <emphasis>&lt;branch-name&gt;</emphasis> for the initial branch in the newly created
-repository.  If not specified, fall back to the default name (currently
-<emphasis>master</emphasis>, but this is subject to change in the future; the name can be
-customized via the <emphasis>init.defaultBranch</emphasis> configuration variable).
+repository.  If not specified, fall back to the default name
+(currently <emphasis>master</emphasis>, but this will change to <emphasis>main</emphasis> when Git 3.0 is released).
+The default name can be customized via the <emphasis>init.defaultBranch</emphasis> configuration
+variable.
 </simpara>
 </listitem>
 </varlistentry>

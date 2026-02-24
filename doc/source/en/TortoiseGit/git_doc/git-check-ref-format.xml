@@ -149,7 +149,10 @@ a branch.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---[no-]allow-onelevel
+--allow-onelevel
+</term>
+<term>
+--no-allow-onelevel
 </term>
 <listitem>
 <simpara>

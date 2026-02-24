@@ -38,6 +38,7 @@ them, to help you decide when it is a good time to repack.</simpara>
 <simpara>count: the number of loose objects</simpara>
 <simpara>size: disk space consumed by loose objects, in KiB (unless -H is specified)</simpara>
 <simpara>in-pack: the number of in-pack objects</simpara>
+<simpara>packs: the number of pack files</simpara>
 <simpara>size-pack: disk space consumed by the packs, in KiB (unless -H is specified)</simpara>
 <simpara>prune-packable: the number of loose objects that are also present in
 the packs. These objects could be pruned using <emphasis>git prune-packed</emphasis>.</simpara>

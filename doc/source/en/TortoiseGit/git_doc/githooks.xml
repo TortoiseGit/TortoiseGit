@@ -85,15 +85,13 @@ with the <emphasis>--no-verify</emphasis> option.  It takes no parameters, and i
 invoked before obtaining the proposed commit log message and
 making a commit.  Exiting with a non-zero status from this script
 causes the <emphasis>git commit</emphasis> command to abort before creating a commit.</simpara>
-<simpara>The default <emphasis>pre-commit</emphasis> hook, when enabled, catches introduction
-of lines with trailing whitespaces and aborts the commit when
-such a line is found.</simpara>
 <simpara>All the <emphasis>git commit</emphasis> hooks are invoked with the environment
 variable <emphasis>GIT_EDITOR=:</emphasis> if the command will not bring up an editor
 to modify the commit message.</simpara>
-<simpara>The default <emphasis>pre-commit</emphasis> hook, when enabled--and with the
-<emphasis>hooks.allownonascii</emphasis> config option unset or set to false--prevents
-the use of non-ASCII filenames.</simpara>
+<simpara>The default <emphasis>pre-commit</emphasis> hook, when enabled, prevents the introduction
+of non-ASCII filenames and lines with trailing whitespace. The non-ASCII
+check can be turned off by setting the <emphasis>hooks.allownonascii</emphasis> config
+option to <emphasis>true</emphasis>.</simpara>
 </section>
 <section id="githooks(5)__pre_merge_commit">
 <title>pre-merge-commit</title>

@@ -13,7 +13,7 @@
 <simplesect id="git-stage(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git stage</emphasis> &lt;arg&gt;&#8230;</literallayout>
+<literallayout><code>git</code> <code>stage</code> <emphasis>&lt;arg&gt;</emphasis><code>&#8230;</code></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-stage(1)__description">

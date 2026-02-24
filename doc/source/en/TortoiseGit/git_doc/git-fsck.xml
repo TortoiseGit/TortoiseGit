@@ -52,7 +52,10 @@ index file, all SHA-1 references in the <emphasis>refs</emphasis> namespace, and
 </varlistentry>
 <varlistentry>
 <term>
---[no-]dangling
+--dangling
+</term>
+<term>
+--no-dangling
 </term>
 <listitem>
 <simpara>
@@ -194,7 +197,10 @@ care about this output and want to speed it up further.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]progress
+--progress
+</term>
+<term>
+--no-progress
 </term>
 <listitem>
 <simpara>
@@ -208,7 +214,10 @@ care about this output and want to speed it up further.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]references
+--references
+</term>
+<term>
+--no-references
 </term>
 <listitem>
 <simpara>
@@ -419,6 +428,36 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>badGpgsig</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A tag contains a bad (truncated) signature (e.g., <emphasis>gpgsig</emphasis>) header.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badHeadTarget</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) The <emphasis>HEAD</emphasis> ref is a symref that does not refer to a branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badHeaderContinuation</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A continuation header (such as for <emphasis>gpgsig</emphasis>) is unexpectedly truncated.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>badName</emphasis>
 </term>
 <listitem>
@@ -500,11 +539,31 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>badRefOid</emphasis>
+</term>
+<listitem>
+<simpara>
+        (ERROR) A ref points to an invalid object ID.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>badReferentName</emphasis>
 </term>
 <listitem>
 <simpara>
         (ERROR) The referent name of a symref is invalid.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>badReftableTableName</emphasis>
+</term>
+<listitem>
+<simpara>
+        (WARN) A reftable table has an invalid name.
 </simpara>
 </listitem>
 </varlistentry>
@@ -721,10 +780,6 @@ by setting the corresponding <emphasis>fsck.&lt;msg-id&gt;</emphasis> configurat
 </simpara>
 </listitem>
 </varlistentry>
-</variablelist>
-<simpara><emphasis>gitmodulesLarge</emphasis>;
-        (ERROR) <emphasis>.gitmodules</emphasis> blob is too large to parse.</simpara>
-<variablelist>
 <varlistentry>
 <term>
 <emphasis>gitmodulesPath</emphasis>

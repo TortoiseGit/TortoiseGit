@@ -13,7 +13,8 @@
 <simplesect id="git-imap-send(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git imap-send</emphasis> [-v] [-q] [--[no-]curl]</literallayout>
+<literallayout><emphasis>git imap-send</emphasis> [-v] [-q] [--[no-]curl] [(--folder|-f) &lt;folder&gt;]
+<emphasis>git imap-send</emphasis> --list</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-imap-send(1)__description">
@@ -22,10 +23,10 @@
 into an IMAP drafts folder.  This allows patches to be sent as
 other email is when using mail clients that cannot read mailbox
 files directly. The command also works with any general mailbox
-in which emails have the fields "From", "Date", and "Subject" in
+in which emails have the fields <emphasis>From</emphasis>, <emphasis>Date</emphasis>, and <emphasis>Subject</emphasis> in
 that order.</simpara>
 <simpara>Typical usage is something like:</simpara>
-<simpara>git format-patch --signoff --stdout --attach origin | git imap-send</simpara>
+<screen>$ git format-patch --signoff --stdout --attach origin | git imap-send</screen>
 </simplesect>
 <simplesect id="git-imap-send(1)__options">
 <title>OPTIONS</title>
@@ -58,6 +59,20 @@ that order.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-f &lt;folder&gt;
+</term>
+<term>
+--folder=&lt;folder&gt;
+</term>
+<listitem>
+<simpara>
+        Specify the folder in which the emails have to saved.
+        For example: <emphasis>--folder=[Gmail]/Drafts</emphasis> or <emphasis>-f INBOX/Drafts</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 --curl
 </term>
 <listitem>
@@ -80,6 +95,16 @@ that order.</simpara>
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+--list
+</term>
+<listitem>
+<simpara>
+        Run the IMAP LIST command to output a list of all the folders present.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-imap-send(1)__configuration">
@@ -97,8 +122,10 @@ imap.folder
 <listitem>
 <simpara>
         The folder to drop the mails into, which is typically the Drafts
-        folder. For example: "INBOX.Drafts", "INBOX/Drafts" or
-        "[Gmail]/Drafts". Required.
+        folder. For example: <emphasis>INBOX.Drafts</emphasis>, <emphasis>INBOX/Drafts</emphasis> or
+        <emphasis>[Gmail]/Drafts</emphasis>. The IMAP folder to interact with MUST be specified;
+        the value of this configuration variable is used as the fallback
+        default value when the <emphasis>--folder</emphasis> option is not given.
 </simpara>
 </listitem>
 </varlistentry>
@@ -193,12 +220,35 @@ imap.authMethod
         Specify the authentication method for authenticating with the IMAP server.
         If Git was built with the NO_CURL option, or if your curl version is older
         than 7.34.0, or if you're running git-imap-send with the <emphasis>--no-curl</emphasis>
-        option, the only supported method is <emphasis>CRAM-MD5</emphasis>. If this is not set
-        then <emphasis>git imap-send</emphasis> uses the basic IMAP plaintext LOGIN command.
+        option, the only supported methods are <emphasis>PLAIN</emphasis>, <emphasis>CRAM-MD5</emphasis>, <emphasis>OAUTHBEARER</emphasis>
+        and <emphasis>XOAUTH2</emphasis>. If this is not set then <emphasis>git imap-send</emphasis> uses the basic IMAP
+        plaintext <emphasis>LOGIN</emphasis> command.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
+</simplesect>
+<simplesect id="git-imap-send(1)__getting_a_list_of_available_folders">
+<title>GETTING A LIST OF AVAILABLE FOLDERS</title>
+<simpara>In order to send an email to a specific folder, you need to know the correct name of
+intended folder in your mailbox. The names like "Junk", "Trash" etc. displayed by
+various email clients need not be the actual names of the folders stored in the mail
+server of your email provider.</simpara>
+<simpara>In order to get the correct folder name to be used with <emphasis>git imap-send</emphasis>, you can run
+<emphasis>git imap-send --list</emphasis>. This will display a list of valid folder names. An example
+of such an output when run on a Gmail account is:</simpara>
+<literallayout class="monospaced">* LIST (\HasNoChildren) "/" "INBOX"
+* LIST (\HasChildren \Noselect) "/" "[Gmail]"
+* LIST (\All \HasNoChildren) "/" "[Gmail]/All Mail"
+* LIST (\Drafts \HasNoChildren) "/" "[Gmail]/Drafts"
+* LIST (\HasNoChildren \Important) "/" "[Gmail]/Important"
+* LIST (\HasNoChildren \Sent) "/" "[Gmail]/Sent Mail"
+* LIST (\HasNoChildren \Junk) "/" "[Gmail]/Spam"
+* LIST (\Flagged \HasNoChildren) "/" "[Gmail]/Starred"
+* LIST (\HasNoChildren \Trash) "/" "[Gmail]/Trash"</literallayout>
+<simpara>Here, you can observe that the correct name for the "Junk" folder is <emphasis>[Gmail]/Spam</emphasis>
+and for the "Trash" folder is <emphasis>[Gmail]/Trash</emphasis>. Similar logic can be used to determine
+other folders as well.</simpara>
 </simplesect>
 <simplesect id="git-imap-send(1)__examples">
 <title>EXAMPLES</title>
@@ -227,19 +277,48 @@ the private server <emphasis>example.com</emphasis> you are trying to set up (or
 have set up) may not be verified correctly.</simpara></note>
 <simpara>Using Gmail's IMAP interface:</simpara>
 <screen>[imap]
-        folder = "[Gmail]/Drafts"
-        host = imaps://imap.gmail.com
-        user = user@gmail.com
-        port = 993</screen>
+    folder = "[Gmail]/Drafts"
+    host = imaps://imap.gmail.com
+    user = user@gmail.com
+    port = 993</screen>
+<simpara>Gmail does not allow using your regular password for <emphasis>git imap-send</emphasis>.
+If you have multi-factor authentication set up on your Gmail account, you
+can generate an app-specific password for use with <emphasis>git imap-send</emphasis>.
+Visit <ulink url="https://security.google.com/settings/security/apppasswords">https://security.google.com/settings/security/apppasswords</ulink> to create
+it. Alternatively, use OAuth2.0 authentication as described below.</simpara>
 <note><simpara>You might need to instead use: <emphasis>folder = "[Google Mail]/Drafts"</emphasis> if you get an error
-that the "Folder doesn't exist".</simpara></note>
+that the "Folder doesn't exist". You can also run <emphasis>git imap-send --list</emphasis> to get a
+list of available folders.</simpara></note>
 <note><simpara>If your Gmail account is set to another language than English, the name of the "Drafts"
 folder will be localized.</simpara></note>
+<simpara>If you want to use OAuth2.0 based authentication, you can specify
+<emphasis>OAUTHBEARER</emphasis> or <emphasis>XOAUTH2</emphasis> mechanism in your config. It is more secure
+than using app-specific passwords, and also does not enforce the need of
+having multi-factor authentication. You will have to use an OAuth2.0
+access token in place of your password when using this authentication.</simpara>
+<screen>[imap]
+    folder = "[Gmail]/Drafts"
+    host = imaps://imap.gmail.com
+    user = user@gmail.com
+    port = 993
+    authmethod = OAUTHBEARER</screen>
+<simpara>Using Outlook's IMAP interface:</simpara>
+<simpara>Unlike Gmail, Outlook only supports OAuth2.0 based authentication. Also, it
+supports only <emphasis>XOAUTH2</emphasis> as the mechanism.</simpara>
+<screen>[imap]
+    folder = "Drafts"
+    host = imaps://outlook.office365.com
+    user = user@outlook.com
+    port = 993
+    authmethod = XOAUTH2</screen>
 <simpara>Once the commits are ready to be sent, run the following command:</simpara>
 <literallayout class="monospaced">$ git format-patch --cover-letter -M --stdout origin/master | git imap-send</literallayout>
 <simpara>Just make sure to disable line wrapping in the email client (Gmail's web
 interface will wrap lines no matter what, so you need to use a real
 IMAP client).</simpara>
+<simpara>In case you are using OAuth2.0 authentication, it is easier to use credential
+helpers to generate tokens. Credential helpers suggested in
+<xref linkend="git-send-email(1)" /> can be used for <emphasis>git imap-send</emphasis> as well.</simpara>
 </simplesect>
 <simplesect id="git-imap-send(1)__caution">
 <title>CAUTION</title>

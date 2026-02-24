@@ -73,6 +73,18 @@ resulting tag will have an invalid signature.</simpara>
         is the same as how earlier versions of this command without
         this option behaved.
 </simpara>
+<simpara>When exported, a signature starts with:</simpara>
+<simpara>gpgsig &lt;git-hash-algo&gt; &lt;signature-format&gt;</simpara>
+<simpara>where &lt;git-hash-algo&gt; is the Git object hash so either "sha1" or
+"sha256", and &lt;signature-format&gt; is the signature type, so "openpgp",
+"x509", "ssh" or "unknown".</simpara>
+<simpara>For example, an OpenPGP signature on a SHA-1 commit starts with
+<emphasis>gpgsig sha1 openpgp</emphasis>, while an SSH signature on a SHA-256 commit
+starts with <emphasis>gpgsig sha256 ssh</emphasis>.</simpara>
+<simpara>While all the signatures of a commit are exported, an importer may
+choose to accept only some of them. For example
+<xref linkend="git-fast-import(1)" /> currently stores at most one signature per
+Git hash algorithm in each commit.</simpara>
 <note><simpara>This is highly experimental and the format of the data stream may
 change in the future without compatibility guarantees.</simpara></note>
 </listitem>

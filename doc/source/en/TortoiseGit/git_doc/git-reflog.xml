@@ -13,15 +13,16 @@
 <simplesect id="git-reflog(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git reflog</emphasis> [show] [&lt;log-options&gt;] [&lt;ref&gt;]
-<emphasis>git reflog list</emphasis>
-<emphasis>git reflog expire</emphasis> [--expire=&lt;time&gt;] [--expire-unreachable=&lt;time&gt;]
-        [--rewrite] [--updateref] [--stale-fix]
-        [--dry-run | -n] [--verbose] [--all [--single-worktree] | &lt;refs&gt;&#8230;]
-<emphasis>git reflog delete</emphasis> [--rewrite] [--updateref]
-        [--dry-run | -n] [--verbose] &lt;ref&gt;@{&lt;specifier&gt;}&#8230;
-<emphasis>git reflog drop</emphasis> [--all [--single-worktree] | &lt;refs&gt;&#8230;]
-<emphasis>git reflog exists</emphasis> &lt;ref&gt;</literallayout>
+<literallayout><code>git</code> <code>reflog</code> [<code>show</code>] [<emphasis>&lt;log-options&gt;</emphasis>] [<emphasis>&lt;ref&gt;</emphasis>]
+<code>git</code> <code>reflog</code> <code>list</code>
+<code>git</code> <code>reflog</code> <code>exists</code> <emphasis>&lt;ref&gt;</emphasis>
+<code>git</code> <code>reflog</code> <code>write</code> <emphasis>&lt;ref&gt;</emphasis> <emphasis>&lt;old-oid&gt;</emphasis> <emphasis>&lt;new-oid&gt;</emphasis> <emphasis>&lt;message&gt;</emphasis>
+<code>git</code> <code>reflog</code> <code>delete</code> [<code>--rewrite</code>] [<code>--updateref</code>]
+        [<code>--dry-run</code> | <code>-n</code>] [<code>--verbose</code>] <emphasis>&lt;ref&gt;</emphasis><code>@</code>{<emphasis>&lt;specifier&gt;</emphasis>}&#8230;
+<code>git</code> <code>reflog</code> <code>drop</code> [<code>--all</code> [<code>--single-worktree</code>] | <emphasis>&lt;refs&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>reflog</code> <code>expire</code> [<code>--expire=</code><emphasis>&lt;time&gt;</emphasis>] [<code>--expire-unreachable=</code><emphasis>&lt;time&gt;</emphasis>]
+        [<code>--rewrite</code>] [<code>--updateref</code>] [<code>--stale-fix</code>]
+        [<code>--dry-run</code> | <code>-n</code>] [<code>--verbose</code>] [<code>--all</code> [<code>--single-worktree</code>] | <emphasis>&lt;refs&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-reflog(1)__description">
@@ -43,11 +44,14 @@ actions, and in addition the <emphasis>HEAD</emphasis> reflog records branch swi
 <emphasis>git reflog show</emphasis> is an alias for <emphasis>git log -g --abbrev-commit
 --pretty=oneline</emphasis>; see <xref linkend="git-log(1)" /> for more information.</simpara>
 <simpara>The "list" subcommand lists all refs which have a corresponding reflog.</simpara>
-<simpara>The "expire" subcommand prunes older reflog entries. Entries older
-than <emphasis>expire</emphasis> time, or entries older than <emphasis>expire-unreachable</emphasis> time
-and not reachable from the current tip, are removed from the reflog.
-This is typically not used directly by end users -- instead, see
-<xref linkend="git-gc(1)" />.</simpara>
+<simpara>The "exists" subcommand checks whether a ref has a reflog.  It exits
+with zero status if the reflog exists, and non-zero status if it does
+not.</simpara>
+<simpara>The "write" subcommand writes a single entry to the reflog of a given
+reference. This new entry is appended to the reflog and will thus become
+the most recent entry. The reference name must be fully qualified. Both the old
+and new object IDs must not be abbreviated and must point to existing objects.
+The reflog message gets normalized.</simpara>
 <simpara>The "delete" subcommand deletes single entries from the reflog, but
 not the reflog itself. Its argument must be an <emphasis>exact</emphasis> entry (e.g. "<emphasis>git
 reflog delete master@{2}</emphasis>"). This subcommand is also typically not used
@@ -55,9 +59,11 @@ directly by end users.</simpara>
 <simpara>The "drop" subcommand completely removes the reflog for the specified
 references. This is in contrast to "expire" and "delete", both of which
 can be used to delete reflog entries, but not the reflog itself.</simpara>
-<simpara>The "exists" subcommand checks whether a ref has a reflog.  It exits
-with zero status if the reflog exists, and non-zero status if it does
-not.</simpara>
+<simpara>The "expire" subcommand prunes older reflog entries. Entries older
+than <emphasis>expire</emphasis> time, or entries older than <emphasis>expire-unreachable</emphasis> time
+and not reachable from the current tip, are removed from the reflog.
+This is typically not used directly by end users -- instead, see
+<xref linkend="git-gc(1)" />.</simpara>
 </simplesect>
 <simplesect id="git-reflog(1)__options">
 <title>OPTIONS</title>
@@ -65,12 +71,45 @@ not.</simpara>
 <title>Options for <emphasis>show</emphasis></title>
 <simpara><emphasis>git reflog show</emphasis> accepts any of the options accepted by <emphasis>git log</emphasis>.</simpara>
 </section>
+<section id="git-reflog(1)__options_for_emphasis_delete_emphasis">
+<title>Options for <emphasis>delete</emphasis></title>
+<simpara><emphasis>git reflog delete</emphasis> accepts options <emphasis>--updateref</emphasis>, <emphasis>--rewrite</emphasis>, <emphasis>-n</emphasis>,
+<emphasis>--dry-run</emphasis>, and <emphasis>--verbose</emphasis>, with the same meanings as when they are
+used with <emphasis>expire</emphasis>.</simpara>
+</section>
+<section id="git-reflog(1)__options_for_emphasis_drop_emphasis">
+<title>Options for <emphasis>drop</emphasis></title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>--all</emphasis>
+</term>
+<listitem>
+<simpara>
+        Drop the reflogs of all references from all worktrees.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--single-worktree</emphasis>
+</term>
+<listitem>
+<simpara>
+        By default when <emphasis>--all</emphasis> is specified, reflogs from all working
+        trees are dropped. This option limits the processing to reflogs
+        from the current working tree only.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</section>
 <section id="git-reflog(1)__options_for_emphasis_expire_emphasis">
 <title>Options for <emphasis>expire</emphasis></title>
 <variablelist>
 <varlistentry>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -80,7 +119,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---single-worktree
+<emphasis>--single-worktree</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -92,7 +131,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---expire=&lt;time&gt;
+<emphasis>--expire=&lt;time&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -107,7 +146,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---expire-unreachable=&lt;time&gt;
+<emphasis>--expire-unreachable=&lt;time&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -124,7 +163,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---updateref
+<emphasis>--updateref</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -136,7 +175,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---rewrite
+<emphasis>--rewrite</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -148,7 +187,7 @@ not.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stale-fix
+<emphasis>--stale-fix</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -165,10 +204,10 @@ which didn't protect objects referred to by reflogs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -179,44 +218,11 @@ which didn't protect objects referred to by reflogs.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
         Print extra information on screen.
-</simpara>
-</listitem>
-</varlistentry>
-</variablelist>
-</section>
-<section id="git-reflog(1)__options_for_emphasis_delete_emphasis">
-<title>Options for <emphasis>delete</emphasis></title>
-<simpara><emphasis>git reflog delete</emphasis> accepts options <emphasis>--updateref</emphasis>, <emphasis>--rewrite</emphasis>, <emphasis>-n</emphasis>,
-<emphasis>--dry-run</emphasis>, and <emphasis>--verbose</emphasis>, with the same meanings as when they are
-used with <emphasis>expire</emphasis>.</simpara>
-</section>
-<section id="git-reflog(1)__options_for_emphasis_drop_emphasis">
-<title>Options for <emphasis>drop</emphasis></title>
-<variablelist>
-<varlistentry>
-<term>
---all
-</term>
-<listitem>
-<simpara>
-        Drop the reflogs of all references from all worktrees.
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---single-worktree
-</term>
-<listitem>
-<simpara>
-        By default when <emphasis>--all</emphasis> is specified, reflogs from all working
-        trees are dropped. This option limits the processing to reflogs
-        from the current working tree only.
 </simpara>
 </listitem>
 </varlistentry>

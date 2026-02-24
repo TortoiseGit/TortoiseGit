@@ -832,9 +832,9 @@ This option defaults to <emphasis>never</emphasis>.</simpara>
         <emphasis>git fetch</emphasis>) to lookup the default branch for merging. Without
         this option, <emphasis>git pull</emphasis> defaults to merge the first refspec fetched.
         Specify multiple values to get an octopus merge.
-        If you wish to setup <emphasis>git pull</emphasis> so that it merges into &lt;name&gt; from
+        If you wish to setup <emphasis>git pull</emphasis> so that it merges into <emphasis>&lt;name&gt;</emphasis> from
         another branch in the local repository, you can point
-        branch.&lt;name&gt;.merge to the desired branch, and use the relative path
+        <emphasis>branch.&lt;name&gt;.merge</emphasis> to the desired branch, and use the relative path
         setting <emphasis>.</emphasis> (a period) for <emphasis>branch.&lt;name&gt;.remote</emphasis>.
 </simpara>
 </listitem>

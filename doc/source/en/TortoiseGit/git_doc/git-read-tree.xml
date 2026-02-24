@@ -190,7 +190,10 @@ when both sides add a path identically.  The resolution
 </varlistentry>
 <varlistentry>
 <term>
---[no-]recurse-submodules
+--recurse-submodules
+</term>
+<term>
+--no-recurse-submodules
 </term>
 <listitem>
 <simpara>

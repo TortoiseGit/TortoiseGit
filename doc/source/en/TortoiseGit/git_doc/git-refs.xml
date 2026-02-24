@@ -14,7 +14,16 @@
 <title>SYNOPSIS</title>
 <blockquote>
 <literallayout><code>git</code> <code>refs</code> <code>migrate</code> <code>--ref-format=</code><emphasis>&lt;format&gt;</emphasis> [<code>--no-reflog</code>] [<code>--dry-run</code>]
-<code>git</code> <code>refs</code> <code>verify</code> [<code>--strict</code>] [<code>--verbose</code>]</literallayout>
+<code>git</code> <code>refs</code> <code>verify</code> [<code>--strict</code>] [<code>--verbose</code>]
+<code>git</code> <code>refs</code> <code>list</code> [<code>--count=</code><emphasis>&lt;count&gt;</emphasis>] [<code>--shell</code>|<code>--perl</code>|<code>--python</code>|<code>--tcl</code>]
+                   [(<code>--sort=</code><emphasis>&lt;key&gt;</emphasis>)<code>&#8230;</code>] [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>]
+                   [<code>--include-root-refs</code>] [<code>--points-at=</code><emphasis>&lt;object&gt;</emphasis>]
+                   [<code>--merged</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]] [<code>--no-merged</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]]
+                   [<code>--contains</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]] [<code>--no-contains</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]]
+                   [(<code>--exclude=</code><emphasis>&lt;pattern&gt;</emphasis>)<code>&#8230;</code>] [<code>--start-after=</code><emphasis>&lt;marker&gt;</emphasis>]
+                   [ <code>--stdin</code> | (<emphasis>&lt;pattern&gt;</emphasis><code>&#8230;</code>)]
+<code>git</code> <code>refs</code> <code>exists</code> <emphasis>&lt;ref&gt;</emphasis>
+<code>git</code> <code>refs</code> <code>optimize</code> [<code>--all</code>] [<code>--no-prune</code>] [<code>--auto</code>] [<code>--include</code> <emphasis>&lt;pattern&gt;</emphasis>] [<code>--exclude</code> <emphasis>&lt;pattern&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-refs(1)__description">
@@ -26,7 +35,7 @@
 <variablelist>
 <varlistentry>
 <term>
-migrate
+<emphasis>migrate</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -36,11 +45,48 @@ migrate
 </varlistentry>
 <varlistentry>
 <term>
-verify
+<emphasis>verify</emphasis>
 </term>
 <listitem>
 <simpara>
         Verify reference database consistency.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+list
+</term>
+<listitem>
+<simpara>
+        List references in the repository with support for filtering,
+        formatting, and sorting. This subcommand is an alias for
+        <xref linkend="git-for-each-ref(1)" /> and offers identical functionality.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+exists
+</term>
+<listitem>
+<simpara>
+        Check whether the given reference exists. Returns an exit code of 0 if
+        it does, 2 if it is missing, and 1 in case looking up the reference
+        failed with an error other than the reference being missing. This does
+        not verify whether the reference resolves to an actual object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+optimize
+</term>
+<listitem>
+<simpara>
+        Optimizes references to improve repository performance and reduce disk
+        usage. This subcommand is an alias for <xref linkend="git-pack-refs(1)" /> and
+        offers identical functionality.
 </simpara>
 </listitem>
 </varlistentry>
@@ -52,7 +98,7 @@ verify
 <variablelist>
 <varlistentry>
 <term>
---ref-format=&lt;format&gt;
+<emphasis>--ref-format=&lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -75,7 +121,7 @@ verify
 </varlistentry>
 <varlistentry>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -89,10 +135,10 @@ verify
 </varlistentry>
 <varlistentry>
 <term>
---reflog
+<emphasis>--reflog</emphasis>
 </term>
 <term>
---no-reflog
+<emphasis>--no-reflog</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -106,7 +152,7 @@ verify
 <variablelist>
 <varlistentry>
 <term>
---strict
+<emphasis>--strict</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -117,12 +163,319 @@ verify
 </varlistentry>
 <varlistentry>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
         When verifying the reference database consistency, be chatty.
 </simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following options are specific to <emphasis>git refs list</emphasis>:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>&lt;pattern&gt;...</emphasis>
+</term>
+<listitem>
+<simpara>
+        If one or more <emphasis>&lt;pattern&gt;</emphasis> parameters are given, only refs are shown that
+        match against at least one pattern, either using <emphasis>fnmatch</emphasis>(3) or
+        literally, in the latter case matching completely or from the
+        beginning up to a slash.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--stdin</emphasis>
+</term>
+<listitem>
+<simpara>
+        The list of patterns is read from standard input instead of from
+        the argument list.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--count=&lt;count&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Stop after showing <emphasis>&lt;count&gt;</emphasis> refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--sort=&lt;key&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Sort on the field name <emphasis>&lt;key&gt;</emphasis>.  Prefix <emphasis>-</emphasis> to sort in
+        descending order of the value.  When unspecified,
+        <emphasis>refname</emphasis> is used.  You may use the <emphasis>--sort=&lt;key&gt;</emphasis> option
+        multiple times, in which case the last key becomes the primary
+        key.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--format[=&lt;format&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        A string that interpolates <emphasis>%(fieldname)</emphasis> from a ref being shown and
+        the object it points at. In addition, the string literal <emphasis>%%</emphasis>
+        renders as <emphasis>%</emphasis> and <emphasis>%xx</emphasis> - where <emphasis>xx</emphasis> are hex digits - renders as
+        the character with hex code <emphasis>xx</emphasis>. For example, <emphasis>%00</emphasis> interpolates to
+        <emphasis>\0</emphasis> (<emphasis>NUL</emphasis>), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (<emphasis>TAB</emphasis>), and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (<emphasis>LF</emphasis>).
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to <emphasis>%(objectname) SPC %(objecttype)
+TAB %(refname)</emphasis>.</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>--color[=&lt;when&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Respect any colors specified in the <emphasis>--format</emphasis> option. The
+        <emphasis>&lt;when_</emphasis> field must be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> (if
+        <emphasis>&lt;when&gt;</emphasis> is absent, behave as if <emphasis>always</emphasis> was given).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--shell</emphasis>
+</term>
+<term>
+<emphasis>--perl</emphasis>
+</term>
+<term>
+<emphasis>--python</emphasis>
+</term>
+<term>
+<emphasis>--tcl</emphasis>
+</term>
+<listitem>
+<simpara>
+        If given, strings that substitute <emphasis>%(fieldname)</emphasis>
+        placeholders are quoted as string literals suitable for
+        the specified host language.  This is meant to produce
+        a scriptlet that can directly be "eval"ed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--points-at=&lt;object&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs which points at the given object.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--merged[=&lt;object&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs whose tips are reachable from the
+        specified commit (<emphasis>HEAD</emphasis> if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--no-merged[=&lt;object&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs whose tips are not reachable from <emphasis>&lt;object&gt;</emphasis>(<emphasis>HEAD</emphasis> if not
+        specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--contains[=&lt;object&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs which contain <emphasis>&lt;object&gt;</emphasis>(<emphasis>HEAD</emphasis> if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--no-contains[=&lt;object&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs which don't contain <emphasis>&lt;object&gt;</emphasis> (<emphasis>HEAD</emphasis>
+        if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--ignore-case</emphasis>
+</term>
+<listitem>
+<simpara>
+        Sorting and filtering refs are case insensitive.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--omit-empty</emphasis>
+</term>
+<listitem>
+<simpara>
+        Do not print a newline after formatted refs where the format expands
+        to the empty string.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--exclude=&lt;excluded-pattern&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        If one or more <emphasis>--exclude</emphasis> options are given, only refs which do not
+        match any <emphasis>&lt;excluded-pattern&gt;</emphasis> parameters are shown. Matching is done
+        using the same rules as <emphasis>&lt;pattern&gt;</emphasis> above.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--include-root-refs</emphasis>
+</term>
+<listitem>
+<simpara>
+        List root refs (<emphasis>HEAD</emphasis> and pseudorefs) apart from regular refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--start-after=&lt;marker&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+    Allows paginating the output by skipping references up to and including the
+    specified marker. When paging, it should be noted that references may be
+    deleted, modified or added between invocations. Output will only yield those
+    references which follow the marker lexicographically. Output begins from the
+    first reference that would come after the marker alphabetically. Cannot be
+    used with <emphasis>--sort=&lt;key&gt;</emphasis> or <emphasis>--stdin</emphasis> options, or the <emphasis>&lt;pattern&gt;</emphasis> argument(s)
+    to limit the refs.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following options are specific to <emphasis>git refs optimize</emphasis>:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+--all
+</term>
+<listitem>
+<simpara>
+The command by default packs all tags and refs that are already
+packed, and leaves other refs
+alone.  This is because branches are expected to be actively
+developed and packing their tips does not help performance.
+This option causes all refs to be packed as well, with the exception
+of hidden refs, broken refs, and symbolic refs. Useful for a repository
+with many branches of historical interests.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--no-prune
+</term>
+<listitem>
+<simpara>
+The command usually removes loose refs under <emphasis>$GIT_DIR/refs</emphasis>
+hierarchy after packing them.  This option tells it not to.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--auto
+</term>
+<listitem>
+<simpara>
+Pack refs as needed depending on the current state of the ref database. The
+behavior depends on the ref format used by the repository and may change in the
+future.
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+"files": Loose references are packed into the <emphasis>packed-refs</emphasis> file
+          based on the ratio of loose references to the size of the
+          <emphasis>packed-refs</emphasis> file. The bigger the <emphasis>packed-refs</emphasis> file, the more loose
+          references need to exist before we repack.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+"reftable": Tables are compacted such that they form a geometric
+          sequence. For two tables N and N+1, where N+1 is newer, this
+          maintains the property that N is at least twice as big as N+1. Only
+          tables that violate this property are compacted.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--include &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+Pack refs based on a <emphasis>glob(7)</emphasis> pattern. Repetitions of this option
+accumulate inclusion patterns. If a ref is both included in <emphasis>--include</emphasis> and
+<emphasis>--exclude</emphasis>, <emphasis>--exclude</emphasis> takes precedence. Using <emphasis>--include</emphasis> will preclude all
+tags from being included by default. Symbolic refs and broken refs will never
+be packed. When used with <emphasis>--all</emphasis>, it will be a noop. Use <emphasis>--no-include</emphasis> to clear
+and reset the list of patterns.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--exclude &lt;pattern&gt;
+</term>
+<listitem>
+<simpara>
+Do not pack refs matching the given <emphasis>glob(7)</emphasis> pattern. Repetitions of this option
+accumulate exclusion patterns. Use <emphasis>--no-exclude</emphasis> to clear and reset the list of
+patterns. If a ref is already packed, including it with <emphasis>--exclude</emphasis> will not
+unpack it.
+</simpara>
+<simpara>When used with <emphasis>--all</emphasis>, pack only loose refs which do not match any of
+the provided <emphasis>--exclude</emphasis> patterns.</simpara>
+<simpara>When used with <emphasis>--include</emphasis>, refs provided to <emphasis>--include</emphasis>, minus refs that are
+provided to <emphasis>--exclude</emphasis> will be packed.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>

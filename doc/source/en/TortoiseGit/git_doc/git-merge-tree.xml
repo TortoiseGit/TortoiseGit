@@ -103,7 +103,10 @@ etc.
 </varlistentry>
 <varlistentry>
 <term>
---[no-]messages
+--messages
+</term>
+<term>
+--no-messages
 </term>
 <listitem>
 <simpara>
@@ -146,11 +149,16 @@ etc.
 <listitem>
 <simpara>
         Instead of finding the merge-bases for &lt;branch1&gt; and &lt;branch2&gt;,
-        specify a merge-base for the merge, and specifying multiple bases is
-        currently not supported. This option is incompatible with <emphasis>--stdin</emphasis>.
+        specify a merge-base for the merge.  This option is incompatible with
+        <emphasis>--stdin</emphasis>.
 </simpara>
-<simpara>As the merge-base is provided directly, &lt;branch1&gt; and &lt;branch2&gt; do not need
-to specify commits; trees are enough.</simpara>
+<simpara>Specifying multiple bases is currently not supported, which means that when
+merging two branches with more than one merge-base, using this option may
+cause merge results to differ from what <emphasis>git merge</emphasis> would compute.  This
+can include potentially losing some changes made on one side of the history
+in the resulting merge.</simpara>
+<simpara>With this option, since the merge-base is provided directly, &lt;branch1&gt; and
+&lt;branch2&gt; do not need to specify commits; trees are enough.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>

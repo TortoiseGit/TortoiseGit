@@ -13,15 +13,22 @@
 <simplesect id="git-whatchanged(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git whatchanged</emphasis> &lt;option&gt;&#8230;</literallayout>
+<literallayout><code>git</code> <code>whatchanged</code> <emphasis>&lt;option&gt;</emphasis><code>&#8230;</code></literallayout>
 </blockquote>
+</simplesect>
+<simplesect id="git-whatchanged(1)__warning">
+<title>WARNING</title>
+<simpara><emphasis>git whatchanged</emphasis> has been deprecated and is scheduled for removal in
+a future version of Git, as it is merely <emphasis>git log</emphasis> with different
+defaults.</simpara>
 </simplesect>
 <simplesect id="git-whatchanged(1)__description">
 <title>DESCRIPTION</title>
 <simpara>Shows commit logs and diff output each commit introduces.</simpara>
 <simpara>New users are encouraged to use <xref linkend="git-log(1)" /> instead.  The
 <emphasis>whatchanged</emphasis> command is essentially the same as <xref linkend="git-log(1)" />
-but defaults to showing the raw format diff output and skipping merges.</simpara>
+but defaults to showing the raw format diff output and skipping merges:</simpara>
+<screen>git log --raw --no-merges</screen>
 <simpara>The command is primarily kept for historical reasons; fingers of
 many people who learned Git long before <emphasis>git log</emphasis> was invented by
 reading the Linux kernel mailing list are trained to type it.</simpara>

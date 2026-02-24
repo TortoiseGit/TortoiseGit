@@ -27,7 +27,10 @@
 <variablelist>
 <varlistentry>
 <term>
--a, --all
+-a
+</term>
+<term>
+--all
 </term>
 <listitem>
 <simpara>

@@ -13,15 +13,15 @@
 <simplesect id="git-worktree(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git worktree add</emphasis> [-f] [--detach] [--checkout] [--lock [--reason &lt;string&gt;]]
-                   [--orphan] [(-b | -B) &lt;new-branch&gt;] &lt;path&gt; [&lt;commit-ish&gt;]
-<emphasis>git worktree list</emphasis> [-v | --porcelain [-z]]
-<emphasis>git worktree lock</emphasis> [--reason &lt;string&gt;] &lt;worktree&gt;
-<emphasis>git worktree move</emphasis> &lt;worktree&gt; &lt;new-path&gt;
-<emphasis>git worktree prune</emphasis> [-n] [-v] [--expire &lt;expire&gt;]
-<emphasis>git worktree remove</emphasis> [-f] &lt;worktree&gt;
-<emphasis>git worktree repair</emphasis> [&lt;path&gt;&#8230;]
-<emphasis>git worktree unlock</emphasis> &lt;worktree&gt;</literallayout>
+<literallayout><code>git</code> <code>worktree</code> <code>add</code> [<code>-f</code>] [<code>--detach</code>] [<code>--checkout</code>] [<code>--lock</code> [<code>--reason</code> <emphasis>&lt;string&gt;</emphasis>]]
+                 [<code>--orphan</code>] [(<code>-b</code> | <code>-B</code>) <emphasis>&lt;new-branch&gt;</emphasis>] <emphasis>&lt;path&gt;</emphasis> [<emphasis>&lt;commit-ish&gt;</emphasis>]
+<code>git</code> <code>worktree</code> <code>list</code> [<code>-v</code> | <code>--porcelain</code> [<code>-z</code>]]
+<code>git</code> <code>worktree</code> <code>lock</code> [<code>--reason</code> <emphasis>&lt;string&gt;</emphasis>] <emphasis>&lt;worktree&gt;</emphasis>
+<code>git</code> <code>worktree</code> <code>move</code> <emphasis>&lt;worktree&gt;</emphasis> <emphasis>&lt;new-path&gt;</emphasis>
+<code>git</code> <code>worktree</code> <code>prune</code> [<code>-n</code>] [<code>-v</code>] [<code>--expire</code> <emphasis>&lt;expire&gt;</emphasis>]
+<code>git</code> <code>worktree</code> <code>remove</code> [<code>-f</code>] <emphasis>&lt;worktree&gt;</emphasis>
+<code>git</code> <code>worktree</code> <code>repair</code> [<emphasis>&lt;path&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>worktree</code> <code>unlock</code> <emphasis>&lt;worktree&gt;</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-worktree(1)__description">
@@ -65,7 +65,7 @@ locked.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-add &lt;path&gt; [&lt;commit-ish&gt;]
+<emphasis>add &lt;path&gt; [&lt;commit-ish&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -102,12 +102,12 @@ associated with a new unborn branch named <emphasis>&lt;branch&gt;</emphasis> (a
 passed to the command. In the event the repository has a remote and
 <emphasis>--guess-remote</emphasis> is used, but no remote or local branches exist, then the
 command fails with a warning reminding the user to fetch from their remote
-first (or override by using <emphasis>-f/--force</emphasis>).</simpara>
+first (or override by using <emphasis>-f</emphasis>/<emphasis>--force</emphasis>).</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-list
+<emphasis>list</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -122,7 +122,7 @@ the worktree is locked, "prunable" if the worktree can be pruned by the
 </varlistentry>
 <varlistentry>
 <term>
-lock
+<emphasis>lock</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -135,7 +135,7 @@ Optionally, specify a reason for the lock with <emphasis>--reason</emphasis>.
 </varlistentry>
 <varlistentry>
 <term>
-move
+<emphasis>move</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -148,7 +148,7 @@ with linked worktrees if you move the main worktree manually.)
 </varlistentry>
 <varlistentry>
 <term>
-prune
+<emphasis>prune</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -158,7 +158,7 @@ Prune worktree information in <emphasis>$GIT_DIR/worktrees</emphasis>.
 </varlistentry>
 <varlistentry>
 <term>
-remove
+<emphasis>remove</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -171,7 +171,7 @@ removed.
 </varlistentry>
 <varlistentry>
 <term>
-repair [&lt;path&gt;&#8230;]
+<emphasis>repair [&lt;path&gt;...]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -196,7 +196,7 @@ directions.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-unlock
+<emphasis>unlock</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -211,10 +211,10 @@ Unlock a worktree, allowing it to be pruned, moved or deleted.
 <variablelist>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -235,10 +235,10 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--b &lt;new-branch&gt;
+<emphasis>-b &lt;new-branch&gt;</emphasis>
 </term>
 <term>
--B &lt;new-branch&gt;
+<emphasis>-B &lt;new-branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -253,10 +253,10 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---detach
+<emphasis>--detach</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -267,7 +267,10 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---[no-]checkout
+<emphasis>--checkout</emphasis>
+</term>
+<term>
+<emphasis>--no-checkout</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -280,7 +283,10 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---[no-]guess-remote
+<emphasis>--guess-remote</emphasis>
+</term>
+<term>
+<emphasis>--no-guess-remote</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -296,7 +302,10 @@ To remove a locked worktree, specify <emphasis>--force</emphasis> twice.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---[no-]relative-paths
+<emphasis>--relative-paths</emphasis>
+</term>
+<term>
+<emphasis>--no-relative-paths</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -310,7 +319,10 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]track
+<emphasis>--track</emphasis>
+</term>
+<term>
+<emphasis>--no-track</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -323,7 +335,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---lock
+<emphasis>--lock</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -335,10 +347,10 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -349,7 +361,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---orphan
+<emphasis>--orphan</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -360,7 +372,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -373,11 +385,11 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--z
+<emphasis>-z</emphasis>
 </term>
 <listitem>
 <simpara>
-        Terminate each line with a NUL rather than a newline when
+        Terminate each line with a <emphasis>NUL</emphasis> rather than a newline when
         <emphasis>--porcelain</emphasis> is specified with <emphasis>list</emphasis>. This makes it possible
         to parse the output when a worktree path contains a newline
         character.
@@ -386,10 +398,10 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -399,10 +411,10 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -413,7 +425,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---expire &lt;time&gt;
+<emphasis>--expire &lt;time&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -425,7 +437,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---reason &lt;string&gt;
+<emphasis>--reason &lt;string&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -436,7 +448,7 @@ mismatch, even if the links are correct.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;worktree&gt;
+<emphasis>&lt;worktree&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -663,6 +675,47 @@ $ pushd ../temp
 $ git commit -a -m 'emergency fix for boss'
 $ popd
 $ git worktree remove ../temp</screen>
+</simplesect>
+<simplesect id="git-worktree(1)__configuration">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>worktree.guessRemote</emphasis>
+</term>
+<listitem>
+<simpara>
+        If no branch is specified and neither <emphasis>-b</emphasis> nor <emphasis>-B</emphasis> nor
+        <emphasis>--detach</emphasis> is used, then <emphasis>git worktree add</emphasis> defaults to
+        creating a new branch from HEAD.  If <emphasis>worktree.guessRemote</emphasis> is
+        set to true, <emphasis>worktree add</emphasis> tries to find a remote-tracking
+        branch whose name uniquely matches the new branch name.  If
+        such a branch exists, it is checked out and set as "upstream"
+        for the new branch.  If no such match can be found, it falls
+        back to creating a new branch from the current <emphasis>HEAD</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>worktree.useRelativePaths</emphasis>
+</term>
+<listitem>
+<simpara>
+        Link worktrees using relative paths (when "<emphasis>true</emphasis>") or absolute
+        paths (when "<emphasis>false</emphasis>"). This is particularly useful for setups
+        where the repository and worktrees may be moved between
+        different locations or environments. Defaults to "<emphasis>false</emphasis>".
+</simpara>
+<simpara>Note that setting <emphasis>worktree.useRelativePaths</emphasis> to "<emphasis>true</emphasis>" implies enabling the
+<emphasis>extensions.relativeWorktrees</emphasis> config (see <xref linkend="git-config(1)" />),
+thus making it incompatible with older versions of Git.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 </simplesect>
 <simplesect id="git-worktree(1)__bugs">
 <title>BUGS</title>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect2 SYSTEM "../../../dtd/dblite.dtd">
+
+<sect2 lang="en" id="git-repo(1)">
+    <title>git-repo(1)</title>
+<indexterm>
+<primary>git-repo(1)</primary>
+</indexterm>
+<simplesect id="git-repo(1)__name">
+<title>NAME</title>
+<simpara>git-repo - Retrieve information about the repository</simpara>
+</simplesect>
+<simplesect id="git-repo(1)__synopsis">
+<title>SYNOPSIS</title>
+<blockquote>
+<literallayout><code>git</code> <code>repo</code> <code>info</code> [<code>--format=</code>(<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>] [<code>--all</code> | <emphasis>&lt;key&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>repo</code> <code>structure</code> [<code>--format=</code>(<code>table</code>|<code>keyvalue</code>|<code>nul</code>) | <code>-z</code>]</literallayout>
+</blockquote>
+</simplesect>
+<simplesect id="git-repo(1)__description">
+<title>DESCRIPTION</title>
+<simpara>Retrieve information about the repository.</simpara>
+<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
+</simplesect>
+<simplesect id="git-repo(1)__commands">
+<title>COMMANDS</title>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>info [--format=(keyvalue|nul) | -z] [--all | &lt;key&gt;...]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Retrieve metadata-related information about the current repository. Only
+        the requested data will be returned based on their keys (see "INFO KEYS"
+        section below).
+</simpara>
+<simpara>The values are returned in the same order in which their respective keys were
+requested. The <emphasis>--all</emphasis> flag requests the values for all the available keys.</simpara>
+<simpara>The output format can be chosen through the flag <emphasis>--format</emphasis>. Two formats are
+supported:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>keyvalue</emphasis>
+</term>
+<listitem>
+<simpara>
+        output key-value pairs one per line using the <emphasis>=</emphasis> character as
+        the delimiter between the key and the value. Values containing "unusual"
+        characters are quoted as explained for the configuration variable
+        <emphasis>core.quotePath</emphasis> (see <xref linkend="git-config(1)" />). This is the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nul</emphasis>
+</term>
+<listitem>
+<simpara>
+        similar to <emphasis>keyvalue</emphasis>, but using a newline character as the delimiter
+        between the key and the value and using a NUL character after each value.
+        This format is better suited for being parsed by another applications than
+        <emphasis>keyvalue</emphasis>. Unlike in the <emphasis>keyvalue</emphasis> format, the values are never quoted.
+</simpara>
+<simpara><emphasis>-z</emphasis> is an alias for <emphasis>--format=nul</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>structure [--format=(table|keyvalue|nul) | -z]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Retrieve statistics about the current repository structure. The
+        following kinds of information are reported:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+Reference counts categorized by type
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Reachable object counts categorized by type
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Total inflated size of reachable objects by type
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Total disk size of reachable objects by type
+</simpara>
+<simpara>The output format can be chosen through the flag <emphasis>--format</emphasis>. Three formats are
+supported:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>table</emphasis>
+</term>
+<listitem>
+<simpara>
+        Outputs repository stats in a human-friendly table. This format may
+        change and is not intended for machine parsing. This is the default
+        format.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>keyvalue</emphasis>
+</term>
+<listitem>
+<simpara>
+        Each line of output contains a key-value pair for a repository stat.
+        The <emphasis>=</emphasis> character is used to delimit between the key and the value.
+        Values containing "unusual" characters are quoted as explained for the
+        configuration variable <emphasis>core.quotePath</emphasis> (see <xref linkend="git-config(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>nul</emphasis>
+</term>
+<listitem>
+<simpara>
+        Similar to <emphasis>keyvalue</emphasis>, but uses a NUL character to delimit between
+        key-value pairs instead of a newline. Also uses a newline character as
+        the delimiter between the key and value instead of <emphasis>=</emphasis>. Unlike the
+        <emphasis>keyvalue</emphasis> format, values containing "unusual" characters are never
+        quoted.
+</simpara>
+<simpara><emphasis>-z</emphasis> is an alias for <emphasis>--format=nul</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-repo(1)__info_keys">
+<title>INFO KEYS</title>
+<simpara>In order to obtain a set of values from <emphasis>git repo info</emphasis>, you should provide
+the keys that identify them. Here's a list of the available keys and the
+values that they return:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>layout.bare</emphasis>
+</term>
+<listitem>
+<simpara>
+        <emphasis>true</emphasis> if this is a bare repository, otherwise <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>layout.shallow</emphasis>
+</term>
+<listitem>
+<simpara>
+        <emphasis>true</emphasis> if this is a shallow repository, otherwise <emphasis>false</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>object.format</emphasis>
+</term>
+<listitem>
+<simpara>
+        The object format (hash algorithm) used in the repository.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>references.format</emphasis>
+</term>
+<listitem>
+<simpara>
+        The reference storage format. The valid values are:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>files</emphasis> for loose files with packed-refs. This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>reftable</emphasis> for the reftable format. This format is experimental and its
+  internals are subject to change.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-repo(1)__examples">
+<title>EXAMPLES</title>
+<itemizedlist>
+<listitem>
+<simpara>
+Retrieves the reference format of the current repository:
+</simpara>
+<screen>git repo info references.format</screen>
+</listitem>
+<listitem>
+<simpara>
+Retrieves whether the current repository is bare and whether it is shallow
+using the <emphasis>nul</emphasis> format:
+</simpara>
+<screen>git repo info --format=nul layout.bare layout.shallow</screen>
+</listitem>
+</itemizedlist>
+</simplesect>
+<simplesect id="git-repo(1)__see_also">
+<title>SEE ALSO</title>
+<simpara><xref linkend="git-rev-parse(1)" /></simpara>
+</simplesect>
+<simplesect id="git-repo(1)__git">
+<title>GIT</title>
+<simpara>Part of the <xref linkend="git(1)" /> suite</simpara>
+</simplesect>
+</sect2>
