@@ -93,7 +93,7 @@ commands be executed.</simpara>
 <emphasis>version=2</emphasis> through the respective side-channel for the transport being
 used which inevitably sets <emphasis>GIT_PROTOCOL</emphasis>.  More information can be
 found in <xref linkend="gitprotocol-pack(5)" /> and <xref linkend="gitprotocol-http(5)" />, as well as the
-<emphasis>GIT_PROTOCOL</emphasis> definition in <emphasis>git.txt</emphasis>. In all cases the
+<emphasis>GIT_PROTOCOL</emphasis> definition in <xref linkend="git(1)" />. In all cases the
 response from the server is the capability advertisement.</simpara>
 <section id="gitprotocol-v2(5)__git_transport">
 <title>Git Transport</title>
@@ -127,7 +127,7 @@ S: &lt;capability-advertisement&gt;</literallayout>
 <simpara>Uses the <emphasis>--http-backend-info-refs</emphasis> option to
 <xref linkend="git-upload-pack(1)" />.</simpara>
 <simpara>The server may need to be configured to pass this header's contents via
-the <emphasis>GIT_PROTOCOL</emphasis> variable. See the discussion in <emphasis>git-http-backend.txt</emphasis>.</simpara>
+the <emphasis>GIT_PROTOCOL</emphasis> variable. See the discussion in <xref linkend="git-http-backend(1)" />.</simpara>
 </section>
 </simplesect>
 <simplesect id="gitprotocol-v2(5)__capability_advertisement">
@@ -836,25 +836,68 @@ headers of that bundle or bundles.</simpara>
 </itemizedlist>
 </section>
 </section>
-<section id="gitprotocol-v2(5)__promisor_remote_lt_pr_infos_gt">
-<title>promisor-remote=&lt;pr-infos&gt;</title>
+<section id="gitprotocol-v2(5)__promisor_remote_lt_pr_info_gt">
+<title>promisor-remote=&lt;pr-info&gt;</title>
 <simpara>The server may advertise some promisor remotes it is using or knows
 about to a client which may want to use them as its promisor remotes,
-instead of this repository. In this case &lt;pr-infos&gt; should be of the
+instead of this repository. In this case &lt;pr-info&gt; should be of the
 form:</simpara>
-<literallayout class="monospaced">pr-infos = pr-info | pr-infos ";" pr-info</literallayout>
-<literallayout class="monospaced">pr-info = "name=" pr-name | "name=" pr-name "," "url=" pr-url</literallayout>
-<simpara>where <emphasis>pr-name</emphasis> is the urlencoded name of a promisor remote, and
-<emphasis>pr-url</emphasis> the urlencoded URL of that promisor remote.</simpara>
-<simpara>In this case, if the client decides to use one or more promisor
-remotes the server advertised, it can reply with
-"promisor-remote=&lt;pr-names&gt;" where &lt;pr-names&gt; should be of the form:</simpara>
+<literallayout class="monospaced">pr-info = pr-fields | pr-info ";" pr-fields</literallayout>
+<literallayout class="monospaced">pr-fields = pr-field | pr-fields "," pr-field</literallayout>
+<literallayout class="monospaced">pr-field = field-name "=" field-value</literallayout>
+<simpara>where all the <emphasis>field-name</emphasis> and <emphasis>field-value</emphasis> in a given <emphasis>pr-fields</emphasis>
+are field names and values related to a single promisor remote. A
+given <emphasis>field-name</emphasis> MUST NOT appear more than once in given
+<emphasis>pr-fields</emphasis>.</simpara>
+<simpara>The server MUST advertise at least the "name" and "url" field names
+along with the associated field values, which are the name of a valid
+remote and its URL, in each <emphasis>pr-fields</emphasis>. The "name" and "url" fields
+MUST appear first in each pr-fields, in that order.</simpara>
+<simpara>After these mandatory fields, the server MAY advertise the following
+optional fields in any order:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>partialCloneFilter</emphasis>
+</term>
+<listitem>
+<simpara>
+The filter specification used by the remote.
+Clients can use this to determine if the remote's filtering strategy
+is compatible with their needs (e.g., checking if both use "blob:none").
+It corresponds to the "remote.&lt;name&gt;.partialCloneFilter" config setting.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>token</emphasis>
+</term>
+<listitem>
+<simpara>
+An authentication token that clients can use when
+connecting to the remote. It corresponds to the "remote.&lt;name&gt;.token"
+config setting.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>No other fields are defined by the protocol at this time. Field names
+are case-sensitive and MUST be transmitted exactly as specified
+above. Clients MUST ignore fields they don't recognize to allow for
+future protocol extensions.</simpara>
+<simpara>For now, the client can only use information transmitted through these
+fields to decide if it accepts the advertised promisor remote. In the
+future that information might be used for other purposes though.</simpara>
+<simpara>Field values MUST be urlencoded.</simpara>
+<simpara>If the client decides to use one or more promisor remotes the server
+advertised, it can reply with "promisor-remote=&lt;pr-names&gt;" where
+&lt;pr-names&gt; should be of the form:</simpara>
 <literallayout class="monospaced">pr-names = pr-name | pr-names ";" pr-name</literallayout>
 <simpara>where <emphasis>pr-name</emphasis> is the urlencoded name of a promisor remote the server
 advertised and the client accepts.</simpara>
-<simpara>Note that, everywhere in this document, <emphasis>pr-name</emphasis> MUST be a valid
-remote name, and the <emphasis>;</emphasis> and <emphasis>,</emphasis> characters MUST be encoded if they
-appear in <emphasis>pr-name</emphasis> or <emphasis>pr-url</emphasis>.</simpara>
+<simpara>Note that, everywhere in this document, the <emphasis>;</emphasis> and <emphasis>,</emphasis> characters
+MUST be encoded if they appear in <emphasis>pr-name</emphasis> or <emphasis>field-value</emphasis>.</simpara>
 <simpara>If the server doesn't know any promisor remote that could be good for
 a client to use, or prefers a client not to use any promisor remote it
 uses or knows about, it shouldn't advertise the "promisor-remote"
@@ -862,9 +905,10 @@ capability at all.</simpara>
 <simpara>In this case, or if the client doesn't want to use any promisor remote
 the server advertised, the client shouldn't advertise the
 "promisor-remote" capability at all in its reply.</simpara>
-<simpara>The "promisor.advertise" and "promisor.acceptFromServer" configuration
-options can be used on the server and client side to control what they
-advertise or accept respectively. See the documentation of these
+<simpara>On the server side, the "promisor.advertise" and "promisor.sendFields"
+configuration options can be used to control what it advertises. On
+the client side, the "promisor.acceptFromServer" configuration option
+can be used to control what it accepts. See the documentation of these
 configuration options for more information.</simpara>
 <simpara>Note that in the future it would be nice if the "promisor-remote"
 protocol capability could be used by the server, when responding to

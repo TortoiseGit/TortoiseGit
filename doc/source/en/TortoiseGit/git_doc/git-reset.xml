@@ -8,101 +8,74 @@
 </indexterm>
 <simplesect id="git-reset(1)__name">
 <title>NAME</title>
-<simpara>git-reset - Reset current HEAD to the specified state</simpara>
+<simpara>git-reset - Set <emphasis>HEAD</emphasis> or the index to a known state</simpara>
 </simplesect>
 <simplesect id="git-reset(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><code>git</code> <code>reset</code> [<code>-q</code>] [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<literallayout><code>git</code> <code>reset</code> [<code>--soft</code> | <code>--mixed</code> [<code>-N</code>] | <code>--hard</code> | <code>--merge</code> | <code>--keep</code>] [<code>-q</code>] [<emphasis>&lt;commit&gt;</emphasis>]
+<code>git</code> <code>reset</code> [<code>-q</code>] [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
 <code>git</code> <code>reset</code> [<code>-q</code>] [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]] [<emphasis>&lt;tree-ish&gt;</emphasis>]
-<code>git</code> <code>reset</code> (<code>--patch</code> | <code>-p</code>) [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]
-<code>git</code> <code>reset</code> [<code>--soft</code> | <code>--mixed</code> [<code>-N</code>] | <code>--hard</code> | <code>--merge</code> | <code>--keep</code>] [<code>-q</code>] [<emphasis>&lt;commit&gt;</emphasis>]</literallayout>
+<code>git</code> <code>reset</code> (<code>--patch</code> | <code>-p</code>) [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-reset(1)__description">
 <title>DESCRIPTION</title>
-<simpara>In the first three forms, copy entries from <emphasis>&lt;tree-ish&gt;</emphasis> to the index.
-In the last form, set the current branch head (<emphasis>HEAD</emphasis>) to <emphasis>&lt;commit&gt;</emphasis>,
-optionally modifying index and working tree to match.
-The <emphasis>&lt;tree-ish&gt;</emphasis>/<emphasis>&lt;commit&gt;</emphasis> defaults to <emphasis>HEAD</emphasis> in all forms.</simpara>
+<simpara><emphasis>git reset</emphasis> does either of the following:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+<emphasis>git reset [&lt;mode&gt;] &lt;commit&gt;</emphasis> changes which commit <emphasis>HEAD</emphasis> points to. This
+   makes it possible to undo various Git operations, for example commit, merge,
+   rebase, and pull.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+When you specify files or directories or pass <emphasis>--patch</emphasis>, <emphasis>git reset</emphasis> updates
+   the staged version of the specified files.
+</simpara>
 <variablelist>
-<varlistentry>
-<term>
-<emphasis>git reset [-q] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;...</emphasis>
-</term>
-<term>
-<emphasis>git reset [-q] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [&lt;tree-ish&gt;]</emphasis>
-</term>
-<listitem>
-<simpara>
-        These forms reset the index entries for all paths that match the
-        <emphasis>&lt;pathspec&gt;</emphasis> to their state at <emphasis>&lt;tree-ish&gt;</emphasis>.  (It does not affect
-        the working tree or the current branch.)
-</simpara>
-<simpara>This means that <emphasis>git reset &lt;pathspec&gt;</emphasis> is the opposite of <emphasis>git add
-&lt;pathspec&gt;</emphasis>. This command is equivalent to
-<emphasis>git restore [--source=&lt;tree-ish&gt;] --staged &lt;pathspec&gt;...</emphasis>.</simpara>
-<simpara>After running <emphasis>git reset &lt;pathspec&gt;</emphasis> to update the index entry, you can
-use <xref linkend="git-restore(1)" /> to check the contents out of the index to
-the working tree. Alternatively, using <xref linkend="git-restore(1)" />
-and specifying a commit with <emphasis>--source</emphasis>, you
-can copy the contents of a path out of a commit to the index and to the
-working tree in one go.</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
-<emphasis>git reset (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;...]</emphasis>
-</term>
-<listitem>
-<simpara>
-        Interactively select hunks in the difference between the index
-        and <emphasis>&lt;tree-ish&gt;</emphasis> (defaults to <emphasis>HEAD</emphasis>).  The chosen hunks are applied
-        in reverse to the index.
-</simpara>
-<simpara>This means that <emphasis>git reset -p</emphasis> is the opposite of <emphasis>git add -p</emphasis>, i.e.
-you can use it to selectively reset hunks. See the "Interactive Mode"
-section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 <emphasis>git reset [&lt;mode&gt;] [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        This form resets the current branch head to <emphasis>&lt;commit&gt;</emphasis> and
-        possibly updates the index (resetting it to the tree of <emphasis>&lt;commit&gt;</emphasis>) and
-        the working tree depending on <emphasis>&lt;mode&gt;</emphasis>. Before the operation, <emphasis>ORIG_HEAD</emphasis>
-        is set to the tip of the current branch. If <emphasis>&lt;mode&gt;</emphasis> is omitted,
-        defaults to <emphasis>--mixed</emphasis>. The <emphasis>&lt;mode&gt;</emphasis> must be one of the following:
+        Set the current branch head (<emphasis>HEAD</emphasis>) to point at <emphasis>&lt;commit&gt;</emphasis>.
+        Depending on <emphasis>&lt;mode&gt;</emphasis>, also update the working directory and/or index
+        to match the contents of <emphasis>&lt;commit&gt;</emphasis>.
+        <emphasis>&lt;commit&gt;</emphasis> defaults to <emphasis>HEAD</emphasis>.
+        Before the operation, <emphasis>ORIG_HEAD</emphasis> is set to the tip of the current branch.
 </simpara>
+<simpara>The <emphasis>&lt;mode&gt;</emphasis> must be one of the following (default <emphasis>--mixed</emphasis>):</simpara>
 <variablelist>
-<varlistentry>
-<term>
-<emphasis>--soft</emphasis>
-</term>
-<listitem>
-<simpara>
-        Does not touch the index file or the working tree at all (but
-        resets the head to <emphasis>&lt;commit&gt;</emphasis>, just like all modes do). This leaves
-        all your changed files "Changes to be committed", as <emphasis>git status</emphasis>
-        would put it.
-</simpara>
-</listitem>
-</varlistentry>
 <varlistentry>
 <term>
 <emphasis>--mixed</emphasis>
 </term>
 <listitem>
 <simpara>
-        Resets the index but not the working tree (i.e., the changed files
-        are preserved but not marked for commit) and reports what has not
-        been updated. This is the default action.
+        Leave your working directory unchanged.
+        Update the index to match the new <emphasis>HEAD</emphasis>, so nothing will be staged.
 </simpara>
-<simpara>If <emphasis>-N</emphasis> is specified, removed paths are marked as intent-to-add (see
+<simpara>If <emphasis>-N</emphasis> is specified, mark removed paths as intent-to-add (see
 <xref linkend="git-add(1)" />).</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--soft</emphasis>
+</term>
+<listitem>
+<simpara>
+        Leave your working tree files and the index unchanged.
+        For example, if you have no staged changes, you can use
+        <emphasis>git reset --soft HEAD~5; git commit</emphasis>
+        to combine the last 5 commits into 1 commit. This works even with
+        changes in the working tree, which are left untouched, but such usage
+        can lead to confusion.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -111,9 +84,10 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </term>
 <listitem>
 <simpara>
-        Resets the index and working tree. Any changes to tracked files in the
-        working tree since <emphasis>&lt;commit&gt;</emphasis> are discarded.  Any untracked files or
-        directories in the way of writing any tracked files are simply deleted.
+        Overwrite all files and directories with the version from <emphasis>&lt;commit&gt;</emphasis>,
+        and may overwrite untracked files. Tracked files not in <emphasis>&lt;commit&gt;</emphasis> are
+        removed so that the working tree matches <emphasis>&lt;commit&gt;</emphasis>.
+        Update the index to match the new <emphasis>HEAD</emphasis>, so nothing will be staged.
 </simpara>
 </listitem>
 </varlistentry>
@@ -123,15 +97,15 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </term>
 <listitem>
 <simpara>
-        Resets the index and updates the files in the working tree that are
-        different between <emphasis>&lt;commit&gt;</emphasis> and <emphasis>HEAD</emphasis>, but keeps those which are
+        Reset the index and update the files in the working tree that are
+        different between <emphasis>&lt;commit&gt;</emphasis> and <emphasis>HEAD</emphasis>, but keep those which are
         different between the index and working tree (i.e. which have changes
         which have not been added).
+        Mainly exists to reset unmerged index entries, like those left behind by
+        <emphasis>git am -3</emphasis> or <emphasis>git switch -m</emphasis> in certain situations.
         If a file that is different between <emphasis>&lt;commit&gt;</emphasis> and the index has
         unstaged changes, reset is aborted.
 </simpara>
-<simpara>In other words, <emphasis>--merge</emphasis> does something like a <emphasis>git read-tree -u -m &lt;commit&gt;</emphasis>,
-but carries forward unmerged index entries.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -149,7 +123,10 @@ but carries forward unmerged index entries.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]recurse-submodules</emphasis>
+<emphasis>--recurse-submodules</emphasis>
+</term>
+<term>
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -163,7 +140,44 @@ but carries forward unmerged index entries.</simpara>
 </variablelist>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>git reset [-q] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;...</emphasis>
+</term>
+<term>
+<emphasis>git reset [-q] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [&lt;tree-ish&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        For all specified files or directories, set the staged version to
+        the version from the given commit or tree (which defaults to <emphasis>HEAD</emphasis>).
+</simpara>
+<simpara>This means that <emphasis>git reset &lt;pathspec&gt;</emphasis> is the opposite of <emphasis>git add
+&lt;pathspec&gt;</emphasis>: it unstages all changes to the specified file(s) or
+directories. This is equivalent to <emphasis>git restore --staged &lt;pathspec&gt;...</emphasis>.</simpara>
+<simpara>In this mode, <emphasis>git reset</emphasis> updates only the index (without updating the <emphasis>HEAD</emphasis> or
+working tree files). If you want to update the files as well as the index
+entries, use <xref linkend="git-restore(1)" />.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git reset (--patch | -p) [&lt;tree-ish&gt;] [--] [&lt;pathspec&gt;...]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Interactively select changes from the difference between the index
+        and the specified commit or tree (which defaults to <emphasis>HEAD</emphasis>).
+        The index is modified using the chosen changes.
+</simpara>
+<simpara>This means that <emphasis>git reset -p</emphasis> is the opposite of <emphasis>git add -p</emphasis>, i.e.
+you can use it to selectively unstage changes. See the "Interactive Mode"
+section of <xref linkend="git-add(1)" /> to learn how to use the <emphasis>--patch</emphasis> option.</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
+</listitem>
+</orderedlist>
 <simpara>See "Reset, restore and revert" in <xref linkend="git(1)" /> for the differences
 between the three commands.</simpara>
 </simplesect>
@@ -220,6 +234,33 @@ between the three commands.</simpara>
         Only meaningful with <emphasis>--pathspec-from-file</emphasis>. Pathspec elements are
         separated with <emphasis>NUL</emphasis> character and all other characters are taken
         literally (including newlines and quotes).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-U&lt;n&gt;</emphasis>
+</term>
+<term>
+<emphasis>--unified=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context. Defaults to <emphasis>diff.context</emphasis>
+        or 3 if the config option is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--inter-hunk-context=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
+        of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
 </simpara>
 </listitem>
 </varlistentry>

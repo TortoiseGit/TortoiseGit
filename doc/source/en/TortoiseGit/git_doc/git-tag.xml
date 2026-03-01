@@ -8,25 +8,25 @@
 </indexterm>
 <simplesect id="git-tag(1)__name">
 <title>NAME</title>
-<simpara>git-tag - Create, list, delete or verify a tag object signed with GPG</simpara>
+<simpara>git-tag - Create, list, delete or verify tags</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git tag</emphasis> [-a | -s | -u &lt;key-id&gt;] [-f] [-m &lt;msg&gt; | -F &lt;file&gt;] [-e]
-        [(--trailer &lt;token&gt;[(=|:)&lt;value&gt;])&#8230;]
-        &lt;tagname&gt; [&lt;commit&gt; | &lt;object&gt;]
-<emphasis>git tag</emphasis> -d &lt;tagname&gt;&#8230;
-<emphasis>git tag</emphasis> [-n[&lt;num&gt;]] -l [--contains &lt;commit&gt;] [--no-contains &lt;commit&gt;]
-        [--points-at &lt;object&gt;] [--column[=&lt;options&gt;] | --no-column]
-        [--create-reflog] [--sort=&lt;key&gt;] [--format=&lt;format&gt;]
-        [--merged &lt;commit&gt;] [--no-merged &lt;commit&gt;] [&lt;pattern&gt;&#8230;]
-<emphasis>git tag</emphasis> -v [--format=&lt;format&gt;] &lt;tagname&gt;&#8230;</literallayout>
+<literallayout><code>git</code> <code>tag</code> [<code>-a</code> | <code>-s</code> | <code>-u</code> <emphasis>&lt;key-id&gt;</emphasis>] [<code>-f</code>] [<code>-m</code> <emphasis>&lt;msg&gt;</emphasis> | <code>-F</code> <emphasis>&lt;file&gt;</emphasis>] [<code>-e</code>]
+        [(<code>--trailer</code> <emphasis>&lt;token&gt;</emphasis>[(<code>=</code>|<code>:</code>)<emphasis>&lt;value&gt;</emphasis>])<code>&#8230;</code>]
+        <emphasis>&lt;tagname&gt;</emphasis> [<emphasis>&lt;commit&gt;</emphasis> | <emphasis>&lt;object&gt;</emphasis>]
+<code>git</code> <code>tag</code> <code>-d</code> <emphasis>&lt;tagname&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>tag</code> [<code>-n</code>[<emphasis>&lt;num&gt;</emphasis>]] <code>-l</code> [<code>--contains</code> <emphasis>&lt;commit&gt;</emphasis>] [<code>--no-contains</code> <emphasis>&lt;commit&gt;</emphasis>]
+        [<code>--points-at</code> <emphasis>&lt;object&gt;</emphasis>] [<code>--column</code>[<code>=</code><emphasis>&lt;options&gt;</emphasis>] | <code>--no-column</code>]
+        [<code>--create-reflog</code>] [<code>--sort=</code><emphasis>&lt;key&gt;</emphasis>] [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>]
+        [<code>--merged</code> <emphasis>&lt;commit&gt;</emphasis>] [<code>--no-merged</code> <emphasis>&lt;commit&gt;</emphasis>] [<emphasis>&lt;pattern&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>tag</code> <code>-v</code> [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>] <emphasis>&lt;tagname&gt;</emphasis><code>&#8230;</code></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-tag(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Add a tag reference in <emphasis>refs/tags/</emphasis>, unless <emphasis>-d/-l/-v</emphasis> is given
+<simpara>Add a tag reference in <emphasis>refs/tags/</emphasis>, unless <emphasis>-d</emphasis>/<emphasis>-l</emphasis>/<emphasis>-v</emphasis> is given
 to delete, list or verify tags.</simpara>
 <simpara>Unless <emphasis>-f</emphasis> is given, the named tag must not yet exist.</simpara>
 <simpara>If one of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis> is passed, the command
@@ -37,14 +37,16 @@ in the tag message.</simpara>
 and <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, and <emphasis>-u &lt;key-id&gt;</emphasis> are absent, <emphasis>-a</emphasis> is implied.</simpara>
 <simpara>Otherwise, a tag reference that points directly at the given object
 (i.e., a lightweight tag) is created.</simpara>
-<simpara>A GnuPG signed tag object will be created when <emphasis>-s</emphasis> or <emphasis>-u
-&lt;key-id&gt;</emphasis> is used.  When <emphasis>-u &lt;key-id&gt;</emphasis> is not used, the
-committer identity for the current user is used to find the
-GnuPG key for signing.  The configuration variable <emphasis>gpg.program</emphasis>
-is used to specify custom GnuPG binary.</simpara>
+<simpara>A cryptographically signed tag object will be created when <emphasis>-s</emphasis> or
+<emphasis>-u &lt;key-id&gt;</emphasis> is used. The signing backend (GPG, X.509, SSH, etc.) is
+controlled by the <emphasis>gpg.format</emphasis> configuration variable, defaulting to
+OpenPGP. When <emphasis>-u &lt;key-id&gt;</emphasis> is not used, the committer identity for
+the current user is used to find the key for signing. The
+configuration variable <emphasis>gpg.program</emphasis> is used to specify a custom
+signing binary.</simpara>
 <simpara>Tag objects (created with <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u</emphasis>) are called "annotated"
 tags; they contain a creation date, the tagger name and e-mail, a
-tagging message, and an optional GnuPG signature. Whereas a
+tagging message, and an optional cryptographic signature. Whereas a
 "lightweight" tag is simply a name for an object (usually a commit
 object).</simpara>
 <simpara>Annotated tags are meant for release while lightweight tags are meant
@@ -57,10 +59,10 @@ lightweight tags by default.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---annotate
+<emphasis>--annotate</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -70,23 +72,25 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--s
+<emphasis>-s</emphasis>
 </term>
 <term>
---sign
+<emphasis>--sign</emphasis>
 </term>
 <listitem>
 <simpara>
-        Make a GPG-signed tag, using the default e-mail address's key.
-        The default behavior of tag GPG-signing is controlled by <emphasis>tag.gpgSign</emphasis>
-        configuration variable if it exists, or disabled otherwise.
-        See <xref linkend="git-config(1)" />.
+        Make a cryptographically signed tag, using the default signing
+        key. The signing backend used depends on the <emphasis>gpg.format</emphasis>
+        configuration variable. The default key is determined by the
+        backend. For GPG, it's based on the committer's email address,
+        while for SSH it may be a specific key file or agent
+        identity. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-sign
+<emphasis>--no-sign</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -97,23 +101,26 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--u &lt;key-id&gt;
+<emphasis>-u &lt;key-id&gt;</emphasis>
 </term>
 <term>
---local-user=&lt;key-id&gt;
+<emphasis>--local-user=&lt;key-id&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Make a GPG-signed tag, using the given key.
+        Make a cryptographically signed tag using the given key. The
+        format of the &lt;key-id&gt; and the backend used depend on the
+        <emphasis>gpg.format</emphasis> configuration variable. See
+        <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -123,10 +130,10 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---delete
+<emphasis>--delete</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -136,25 +143,25 @@ lightweight tags by default.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verify
+<emphasis>--verify</emphasis>
 </term>
 <listitem>
 <simpara>
-        Verify the GPG signature of the given tag names.
+        Verify the cryptographic signature of the given tags.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--n&lt;num&gt;
+<emphasis>-n&lt;num&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        &lt;num&gt; specifies how many lines from the annotation, if any,
-        are printed when using -l. Implies <emphasis>--list</emphasis>.
+        <emphasis>&lt;num&gt;</emphasis> specifies how many lines from the annotation, if any,
+        are printed when using <emphasis>-l</emphasis>. Implies <emphasis>--list</emphasis>.
 </simpara>
 <simpara>The default is not to print any annotation lines.
 If no number is given to <emphasis>-n</emphasis>, only the first line is printed.
@@ -163,18 +170,18 @@ If the tag is not annotated, the commit message is displayed instead.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--l
+<emphasis>-l</emphasis>
 </term>
 <term>
---list
+<emphasis>--list</emphasis>
 </term>
 <listitem>
 <simpara>
         List tags. With optional <emphasis>&lt;pattern&gt;...</emphasis>, e.g. <emphasis>git tag --list
         'v-*'</emphasis>, list only the tags that match the pattern(s).
 </simpara>
-<simpara>Running "git tag" without arguments also lists all tags. The pattern
-is a shell wildcard (i.e., matched using fnmatch(3)). Multiple
+<simpara>Running <emphasis>git tag</emphasis> without arguments also lists all tags. The pattern
+is a shell wildcard (i.e., matched using <emphasis>fnmatch</emphasis>(3)). Multiple
 patterns may be given; if any of them matches, the tag is shown.</simpara>
 <simpara>This option is implicitly supplied if any other list-like option such
 as <emphasis>--contains</emphasis> is provided. See the documentation for each of those
@@ -183,16 +190,16 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---sort=&lt;key&gt;
+<emphasis>--sort=&lt;key&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Sort based on the key given.  Prefix <emphasis>-</emphasis> to sort in
-        descending order of the value. You may use the --sort=&lt;key&gt; option
-        multiple times, in which case the last key becomes the primary
-        key. Also supports "version:refname" or "v:refname" (tag
-        names are treated as versions). The "version:refname" sort
-        order can also be affected by the "versionsort.suffix"
+        descending order of the value. You may use the <emphasis>--sort=&lt;key&gt;</emphasis> option
+        multiple times, in which case the last <emphasis>&lt;key&gt;</emphasis> becomes the primary
+        key. Also supports "<emphasis>version:refname</emphasis>" or "<emphasis>v:refname</emphasis>" (tag
+        names are treated as versions). The "<emphasis>version:refname</emphasis>" sort
+        order can also be affected by the "<emphasis>versionsort.suffix</emphasis>"
         configuration variable.
         The keys supported are the same as those in <emphasis>git for-each-ref</emphasis>.
         Sort order defaults to the value configured for the <emphasis>tag.sort</emphasis>
@@ -203,7 +210,7 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---color[=&lt;when&gt;]
+<emphasis>--color[=&lt;when&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -215,10 +222,10 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--i
+<emphasis>-i</emphasis>
 </term>
 <term>
---ignore-case
+<emphasis>--ignore-case</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -228,7 +235,7 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---omit-empty
+<emphasis>--omit-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -239,10 +246,10 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---column[=&lt;options&gt;]
+<emphasis>--column[=&lt;options&gt;]</emphasis>
 </term>
 <term>
---no-column
+<emphasis>--no-column</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -255,69 +262,69 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---contains [&lt;commit&gt;]
+<emphasis>--contains [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list tags which contain the specified commit (HEAD if not
+        Only list tags which contain <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if not
         specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-contains [&lt;commit&gt;]
+<emphasis>--no-contains [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list tags which don't contain the specified commit (HEAD if
+        Only list tags which don't contain <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if
         not specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---merged [&lt;commit&gt;]
+<emphasis>--merged [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list tags whose commits are reachable from the specified
-        commit (<emphasis>HEAD</emphasis> if not specified).
+        Only list tags whose commits are reachable from
+        <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if not specified).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-merged [&lt;commit&gt;]
+<emphasis>--no-merged [&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list tags whose commits are not reachable from the specified
-        commit (<emphasis>HEAD</emphasis> if not specified).
+        Only list tags whose commits are not reachable from
+        <emphasis>&lt;commit&gt;</emphasis> (<emphasis>HEAD</emphasis> if not specified).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---points-at &lt;object&gt;
+<emphasis>--points-at [&lt;object&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list tags of the given object (HEAD if not
+        Only list tags of <emphasis>&lt;object&gt;</emphasis> (<emphasis>HEAD</emphasis> if not
         specified). Implies <emphasis>--list</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--m &lt;msg&gt;
+<emphasis>-m &lt;msg&gt;</emphasis>
 </term>
 <term>
---message=&lt;msg&gt;
+<emphasis>--message=&lt;msg&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use the given tag message (instead of prompting).
+        Use <emphasis>&lt;msg&gt;</emphasis> (instead of prompting).
         If multiple <emphasis>-m</emphasis> options are given, their values are
         concatenated as separate paragraphs.
         Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
@@ -327,14 +334,14 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--F &lt;file&gt;
+<emphasis>-F &lt;file&gt;</emphasis>
 </term>
 <term>
---file=&lt;file&gt;
+<emphasis>--file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Take the tag message from the given file.  Use <emphasis>-</emphasis> to
+        Take the tag message from <emphasis>&lt;file&gt;</emphasis>.  Use <emphasis>-</emphasis> to
         read the message from the standard input.
         Implies <emphasis>-a</emphasis> if none of <emphasis>-a</emphasis>, <emphasis>-s</emphasis>, or <emphasis>-u &lt;key-id&gt;</emphasis>
         is given.
@@ -343,11 +350,11 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---trailer &lt;token&gt;[(=|:)&lt;value&gt;]
+<emphasis>--trailer &lt;token&gt;[(=|:)&lt;value&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specify a (&lt;token&gt;, &lt;value&gt;) pair that should be applied as a
+        Specify a (<emphasis>&lt;token&gt;</emphasis>, <emphasis>&lt;value&gt;</emphasis>) pair that should be applied as a
         trailer. (e.g. <emphasis>git tag --trailer "Custom-Key: value"</emphasis>
         will add a "Custom-Key" trailer to the tag message.)
         The <emphasis>trailer.*</emphasis> configuration variables
@@ -361,26 +368,25 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--e
+<emphasis>-e</emphasis>
 </term>
 <term>
---edit
+<emphasis>--edit</emphasis>
 </term>
 <listitem>
 <simpara>
-        The message taken from file with <emphasis>-F</emphasis> and command line with
-        <emphasis>-m</emphasis> are usually used as the tag message unmodified.
-        This option lets you further edit the message taken from these sources.
+        Let further edit the message taken from file with <emphasis>-F</emphasis> and command line with
+        <emphasis>-m</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---cleanup=&lt;mode&gt;
+<emphasis>--cleanup=&lt;mode&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        This option sets how the tag message is cleaned up.
+        Set how the tag message is cleaned up.
         The  <emphasis>&lt;mode&gt;</emphasis> can be one of <emphasis>verbatim</emphasis>, <emphasis>whitespace</emphasis> and <emphasis>strip</emphasis>.  The
         <emphasis>strip</emphasis> mode is default. The <emphasis>verbatim</emphasis> mode does not change message at
         all, <emphasis>whitespace</emphasis> removes just leading/trailing whitespace lines and
@@ -390,7 +396,7 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---create-reflog
+<emphasis>--create-reflog</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -404,7 +410,7 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---format=&lt;format&gt;
+<emphasis>--format=&lt;format&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -417,7 +423,7 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;tagname&gt;
+<emphasis>&lt;tagname&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -430,15 +436,15 @@ options for details.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;commit&gt;
+<emphasis>&lt;commit&gt;</emphasis>
 </term>
 <term>
-&lt;object&gt;
+<emphasis>&lt;object&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         The object that the new tag will refer to, usually a commit.
-        Defaults to HEAD.
+        Defaults to <emphasis>HEAD</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -446,15 +452,23 @@ options for details.</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__configuration">
 <title>CONFIGURATION</title>
-<simpara>By default, <emphasis>git tag</emphasis> in sign-with-default mode (-s) will use your
+<simpara>By default, <emphasis>git tag</emphasis> in sign-with-default mode (<emphasis>-s</emphasis>) will use your
 committer identity (of the form <emphasis>Your Name &lt;your@email.address&gt;</emphasis>) to
 find a key.  If you want to use a different default key, you can specify
 it in the repository configuration as follows:</simpara>
 <screen>[user]
-    signingKey = &lt;gpg-key-id&gt;</screen>
+    signingKey = &lt;key-id&gt;</screen>
+<simpara>The signing backend can be chosen via the <emphasis>gpg.format</emphasis> configuration
+variable, which defaults to <emphasis>openpgp</emphasis>. See <xref linkend="git-config(1)" />
+for a list of other supported formats.</simpara>
+<simpara>The path to the program used for each signing backend can be specified
+with the <emphasis>gpg.&lt;format&gt;.program</emphasis> configuration variable. For the
+<emphasis>openpgp</emphasis> backend, <emphasis>gpg.program</emphasis> can be used as a synonym for
+<emphasis>gpg.openpgp.program</emphasis>. See <xref linkend="git-config(1)" /> for details.</simpara>
 <simpara><emphasis>pager.tag</emphasis> is only respected when listing tags, i.e., when <emphasis>-l</emphasis> is
-used or implied. The default is to use a pager.
-See <xref linkend="git-config(1)" />.</simpara>
+used or implied. The default is to use a pager.</simpara>
+<simpara>See <xref linkend="git-config(1)" /> for more details and other configuration
+variables.</simpara>
 </simplesect>
 <simplesect id="git-tag(1)__discussion">
 <title>DISCUSSION</title>
@@ -462,7 +476,7 @@ See <xref linkend="git-config(1)" />.</simpara>
 <title>On Re-tagging</title>
 <simpara>What should you do when you tag a wrong commit and you would
 want to re-tag?</simpara>
-<simpara>If you never pushed anything out, just re-tag it. Use "-f" to
+<simpara>If you never pushed anything out, just re-tag it. Use <emphasis>-f</emphasis> to
 replace the old one. And you're done.</simpara>
 <simpara>But if you have pushed things out (or others could just read
 your repository directly), then others will have already seen
@@ -642,6 +656,53 @@ ISO 8601
         annotated tag then the tag message that has been provided by the
         user in an editor session will be available in this file, but
         may be overwritten by the next invocation of <emphasis>git tag</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</simplesect>
+<simplesect id="git-tag(1)__configuration_2">
+<title>CONFIGURATION</title>
+<simpara>Everything below this line in this section is selectively included
+from the <xref linkend="git-config(1)" /> documentation. The content is the same
+as what's found there:</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>tag.forceSignAnnotated</emphasis>
+</term>
+<listitem>
+<simpara>
+        A boolean to specify whether annotated tags created should be GPG signed.
+        If <emphasis>--annotate</emphasis> is specified on the command line, it takes
+        precedence over this option.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tag.sort</emphasis>
+</term>
+<listitem>
+<simpara>
+This variable controls the sort ordering of tags when displayed by <emphasis>git-tag</emphasis>.
+Without the <emphasis>--sort=&lt;value&gt;</emphasis> option provided, the value of this variable will
+be used as the default.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tag.gpgSign</emphasis>
+</term>
+<listitem>
+<simpara>
+        A boolean to specify whether all tags should be GPG signed.
+        Use of this option when running in an automated script can
+        result in a large number of tags being signed. It is therefore
+        convenient to use an agent to avoid typing your GPG passphrase
+        several times. Note that this option doesn't affect tag signing
+        behavior enabled by <emphasis>-u &lt;keyid&gt;</emphasis> or <emphasis>--local-user=&lt;keyid&gt;</emphasis> options.
 </simpara>
 </listitem>
 </varlistentry>

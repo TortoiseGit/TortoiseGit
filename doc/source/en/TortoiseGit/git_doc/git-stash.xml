@@ -13,21 +13,23 @@
 <simplesect id="git-stash(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git stash</emphasis> list [&lt;log-options&gt;]
-<emphasis>git stash</emphasis> show [-u | --include-untracked | --only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> drop [-q | --quiet] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> pop [--index] [-q | --quiet] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> apply [--index] [-q | --quiet] [&lt;stash&gt;]
-<emphasis>git stash</emphasis> branch &lt;branchname&gt; [&lt;stash&gt;]
-<emphasis>git stash</emphasis> [push [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-q | --quiet]
-             [-u | --include-untracked] [-a | --all] [(-m | --message) &lt;message&gt;]
-             [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]]
-             [--] [&lt;pathspec&gt;&#8230;]]
-<emphasis>git stash</emphasis> save [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-q | --quiet]
-             [-u | --include-untracked] [-a | --all] [&lt;message&gt;]
-<emphasis>git stash</emphasis> clear
-<emphasis>git stash</emphasis> create [&lt;message&gt;]
-<emphasis>git stash</emphasis> store [(-m | --message) &lt;message&gt;] [-q | --quiet] &lt;commit&gt;</literallayout>
+<literallayout><code>git</code> <code>stash</code> <code>list</code> [<emphasis>&lt;log-options&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>show</code> [<code>-u</code> | <code>--include-untracked</code> | <code>--only-untracked</code>] [<emphasis>&lt;diff-options&gt;</emphasis>] [<emphasis>&lt;stash&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>drop</code> [<code>-q</code> | <code>--quiet</code>] [<emphasis>&lt;stash&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>pop</code> [<code>--index</code>] [<code>-q</code> | <code>--quiet</code>] [<emphasis>&lt;stash&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>apply</code> [<code>--index</code>] [<code>-q</code> | <code>--quiet</code>] [<emphasis>&lt;stash&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>branch</code> <emphasis>&lt;branchname&gt;</emphasis> [<emphasis>&lt;stash&gt;</emphasis>]
+<code>git</code> <code>stash</code> [<code>push</code> [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-q</code> | <code>--quiet</code>]
+             [<code>-u</code> | <code>--include-untracked</code>] [<code>-a</code> | <code>--all</code>] [(<code>-m</code> | <code>--message</code>) <emphasis>&lt;message&gt;</emphasis>]
+             [<code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]]
+             [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]]
+<code>git</code> <code>stash</code> <code>save</code> [<code>-p</code> | <code>--patch</code>] [<code>-S</code> | <code>--staged</code>] [<code>-k</code> | <code>--</code>[<code>no-</code>]<code>keep-index</code>] [<code>-q</code> | <code>--quiet</code>]
+           [<code>-u</code> | <code>--include-untracked</code>] [<code>-a</code> | <code>--all</code>] [<emphasis>&lt;message&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>clear</code>
+<code>git</code> <code>stash</code> <code>create</code> [<emphasis>&lt;message&gt;</emphasis>]
+<code>git</code> <code>stash</code> <code>store</code> [(<code>-m</code> | <code>--message</code>) <emphasis>&lt;message&gt;</emphasis>] [<code>-q</code> | <code>--quiet</code>] <emphasis>&lt;commit&gt;</emphasis>
+<code>git</code> <code>stash</code> <code>export</code> (<code>--print</code> | <code>--to-ref</code> <emphasis>&lt;ref&gt;</emphasis>) [<emphasis>&lt;stash&gt;</emphasis><code>&#8230;</code>]
+<code>git</code> <code>stash</code> <code>import</code> <emphasis>&lt;commit&gt;</emphasis></literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-stash(1)__description">
@@ -40,7 +42,7 @@ and reverts the working directory to match the <emphasis>HEAD</emphasis> commit.
 <emphasis>git stash list</emphasis>, inspected with <emphasis>git stash show</emphasis>, and restored
 (potentially on top of a different commit) with <emphasis>git stash apply</emphasis>.
 Calling <emphasis>git stash</emphasis> without any arguments is equivalent to <emphasis>git stash push</emphasis>.
-A stash is by default listed as "WIP on <emphasis>branchname</emphasis> &#8230;", but
+A stash is by default listed as "WIP on <emphasis>&lt;branchname&gt;</emphasis> &#8230;", but
 you can give a more descriptive message on the command line when
 you create one.</simpara>
 <simpara>The latest stash you created is stored in <emphasis>refs/stash</emphasis>; older
@@ -48,20 +50,20 @@ stashes are found in the reflog of this reference and can be named using
 the usual reflog syntax (e.g. <emphasis>stash@{0}</emphasis> is the most recently
 created stash, <emphasis>stash@{1}</emphasis> is the one before it, <emphasis>stash@{2.hours.ago}</emphasis>
 is also possible). Stashes may also be referenced by specifying just the
-stash index (e.g. the integer <emphasis>n</emphasis> is equivalent to <emphasis>stash@{n}</emphasis>).</simpara>
+stash index (e.g. the integer <emphasis>&lt;n&gt;</emphasis> is equivalent to <emphasis>stash@{&lt;n&gt;}</emphasis>).</simpara>
 </simplesect>
 <simplesect id="git-stash(1)__commands">
 <title>COMMANDS</title>
 <variablelist>
 <varlistentry>
 <term>
-push [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [(-m|--message) &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;&#8230;]
+<emphasis>push [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-u | --include-untracked] [ -a | --all] [-q | --quiet] [(-m|--message) &lt;message&gt;] [--pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]] [--] [&lt;pathspec&gt;...]</emphasis>
 </term>
 <listitem>
 <simpara>
         Save your local modifications to a new <emphasis>stash entry</emphasis> and roll them
-        back to HEAD (in the working tree and in the index).
-        The &lt;message&gt; part is optional and gives
+        back to <emphasis>HEAD</emphasis> (in the working tree and in the index).
+        The <emphasis>&lt;message&gt;</emphasis> part is optional and gives
         the description along with the stashed state.
 </simpara>
 <simpara>For quickly making a snapshot, you can omit "push".  In this mode,
@@ -73,7 +75,7 @@ which are allowed after a double hyphen <emphasis>--</emphasis> for disambiguati
 </varlistentry>
 <varlistentry>
 <term>
-save [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] [-a|--all] [-q|--quiet] [&lt;message&gt;]
+<emphasis>save [-p | --patch] [-S | --staged] [-k | --[no-]keep-index] [-u | --include-untracked] [-a | --all] [-q | --quiet] [&lt;message&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -86,7 +88,7 @@ save [-p|--patch] [-S|--staged] [-k|--[no-]keep-index] [-u|--include-untracked] 
 </varlistentry>
 <varlistentry>
 <term>
-list [&lt;log-options&gt;]
+<emphasis>list [&lt;log-options&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -104,7 +106,7 @@ command to control what is shown and how. See <xref linkend="git-log(1)" />.</si
 </varlistentry>
 <varlistentry>
 <term>
-show [-u|--include-untracked|--only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]
+<emphasis>show [-u | --include-untracked | --only-untracked] [&lt;diff-options&gt;] [&lt;stash&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -123,7 +125,7 @@ show [-u|--include-untracked|--only-untracked] [&lt;diff-options&gt;] [&lt;stash
 </varlistentry>
 <varlistentry>
 <term>
-pop [--index] [-q|--quiet] [&lt;stash&gt;]
+<emphasis>pop [--index] [-q | --quiet] [&lt;stash&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -139,7 +141,7 @@ and call <emphasis>git stash drop</emphasis> manually afterwards.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-apply [--index] [-q|--quiet] [&lt;stash&gt;]
+<emphasis>apply [--index] [-q | --quiet] [&lt;stash&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -151,7 +153,7 @@ apply [--index] [-q|--quiet] [&lt;stash&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-branch &lt;branchname&gt; [&lt;stash&gt;]
+<emphasis>branch &lt;branchname&gt; [&lt;stash&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -170,19 +172,19 @@ with no conflicts.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-clear
+<emphasis>clear</emphasis>
 </term>
 <listitem>
 <simpara>
         Remove all the stash entries. Note that those entries will then
         be subject to pruning, and may be impossible to recover (see
-        <emphasis>Examples</emphasis> below for a possible strategy).
+        <emphasis>EXAMPLES</emphasis> below for a possible strategy).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-drop [-q|--quiet] [&lt;stash&gt;]
+<emphasis>drop [-q | --quiet] [&lt;stash&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -192,7 +194,7 @@ drop [-q|--quiet] [&lt;stash&gt;]
 </varlistentry>
 <varlistentry>
 <term>
-create
+<emphasis>create</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -206,7 +208,7 @@ create
 </varlistentry>
 <varlistentry>
 <term>
-store
+<emphasis>store</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -217,6 +219,30 @@ store
 </simpara>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+<emphasis>export ( --print | --to-ref &lt;ref&gt; ) [&lt;stash&gt;...]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Export the specified stashes, or all of them if none are specified, to
+        a chain of commits which can be transferred using the normal fetch and
+        push mechanisms, then imported using the <emphasis>import</emphasis> subcommand.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>import &lt;commit&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Import the specified stashes from the specified commit, which must have been
+        created by <emphasis>export</emphasis>, and add them to the list of stashes.  To replace the
+        existing stashes, use <emphasis>clear</emphasis> first.
+</simpara>
+</listitem>
+</varlistentry>
 </variablelist>
 </simplesect>
 <simplesect id="git-stash(1)__options">
@@ -224,10 +250,10 @@ store
 <variablelist>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -239,13 +265,13 @@ up with <emphasis>git clean</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--u
+<emphasis>-u</emphasis>
 </term>
 <term>
---include-untracked
+<emphasis>--include-untracked</emphasis>
 </term>
 <term>
---no-include-untracked
+<emphasis>--no-include-untracked</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -259,7 +285,7 @@ entry as part of the diff.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---only-untracked
+<emphasis>--only-untracked</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -270,7 +296,7 @@ entry as part of the diff.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---index
+<emphasis>--index</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -284,13 +310,13 @@ apply the changes as they were originally).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--k
+<emphasis>-k</emphasis>
 </term>
 <term>
---keep-index
+<emphasis>--keep-index</emphasis>
 </term>
 <term>
---no-keep-index
+<emphasis>--no-keep-index</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -301,10 +327,10 @@ apply the changes as they were originally).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---patch
+<emphasis>--patch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -323,10 +349,37 @@ to learn how to operate the <emphasis>--patch</emphasis> mode.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--S
+<emphasis>-U&lt;n&gt;</emphasis>
 </term>
 <term>
---staged
+<emphasis>--unified=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context. Defaults to <emphasis>diff.context</emphasis>
+        or 3 if the config option is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--inter-hunk-context=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
+        of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-S</emphasis>
+</term>
+<term>
+<emphasis>--staged</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -340,7 +393,7 @@ of current branch.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-from-file=&lt;file&gt;
+<emphasis>--pathspec-from-file=&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,7 +409,7 @@ global <emphasis>--literal-pathspecs</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---pathspec-file-nul
+<emphasis>--pathspec-file-nul</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -369,10 +422,10 @@ literally (including newlines and quotes).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -384,7 +437,32 @@ literally (including newlines and quotes).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---
+<emphasis>--print</emphasis>
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the <emphasis>export</emphasis> command.
+</simpara>
+<simpara>Create the chain of commits representing the exported stashes without
+storing it anywhere in the ref namespace and print the object ID to
+standard output.  This is designed for scripts.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--to-ref</emphasis>
+</term>
+<listitem>
+<simpara>
+        This option is only valid for the <emphasis>export</emphasis> command.
+</simpara>
+<simpara>Create the chain of commits representing the exported stashes and store
+it to the specified ref.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -395,7 +473,7 @@ literally (including newlines and quotes).</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;pathspec&gt;&#8230;
+<emphasis>&lt;pathspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -410,12 +488,12 @@ too, leaving files that do not match the pathspec intact.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;stash&gt;
+<emphasis>&lt;stash&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         This option is only valid for <emphasis>apply</emphasis>, <emphasis>branch</emphasis>, <emphasis>drop</emphasis>, <emphasis>pop</emphasis>,
-        <emphasis>show</emphasis> commands.
+        <emphasis>show</emphasis>, and <emphasis>export</emphasis> commands.
 </simpara>
 <simpara>A reference of the form <emphasis>stash@{&lt;revision&gt;}</emphasis>. When no <emphasis>&lt;stash&gt;</emphasis> is
 given, the latest stash is assumed (that is, <emphasis>stash@{0}</emphasis>).</simpara>
@@ -560,37 +638,47 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-stash.showIncludeUntracked
+<emphasis>stash.index</emphasis>
 </term>
 <listitem>
 <simpara>
-        If this is set to true, the <emphasis>git stash show</emphasis> command will show
-        the untracked files of a stash entry.  Defaults to false. See
-        the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        If this is set to true, <emphasis>git stash apply</emphasis> and <emphasis>git stash pop</emphasis> will
+        behave as if <emphasis>--index</emphasis> was supplied. Defaults to false.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-stash.showPatch
+<emphasis>stash.showIncludeUntracked</emphasis>
+</term>
+<listitem>
+<simpara>
+        If this is set to true, the <emphasis>git stash show</emphasis> command will show
+        the untracked files of a stash entry. Defaults to false. 
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>stash.showPatch</emphasis>
 </term>
 <listitem>
 <simpara>
         If this is set to true, the <emphasis>git stash show</emphasis> command without an
         option will show the stash entry in patch form.  Defaults to false.
-        See the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-stash.showStat
+<emphasis>stash.showStat</emphasis>
 </term>
 <listitem>
 <simpara>
         If this is set to true, the <emphasis>git stash show</emphasis> command without an
         option will show a diffstat of the stash entry.  Defaults to true.
-        See the description of the <emphasis>show</emphasis> command in <xref linkend="git-stash(1)" />.
+        
 </simpara>
 </listitem>
 </varlistentry>

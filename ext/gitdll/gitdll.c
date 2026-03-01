@@ -59,7 +59,7 @@ extern int die_is_recursing_dll(void);
 
 extern void libgit_initialize(void);
 extern void cleanup_chdir_notify(void);
-extern void free_all_pack(struct repository* repo);
+extern void odb_close_tgit(struct object_database* o);
 extern void reset_git_env(const LPWSTR*);
 extern void drop_all_attr_stacks(void);
 extern void git_atexit_dispatch(void);
@@ -67,7 +67,6 @@ extern void git_atexit_clear(void);
 extern void ref_store_release_and_clear(struct repository* repo);
 extern void clear_ref_decorations(void);
 extern void cmd_log_init_tgit(int argc, const char** argv, const char* prefix, struct rev_info* rev, struct setup_revision_opt* opt);
-extern int estimate_commit_count(struct commit_list* list);
 extern int log_tree_commit(struct rev_info*, struct commit*);
 extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca, const struct checkout* state, int to_tempfile, int* nr_checkouts);
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
@@ -440,7 +439,17 @@ int git_get_log_estimate_commit_count(GIT_LOG handle)
 	struct rev_info *p_Rev;
 	p_Rev=(struct rev_info *)handle;
 
-	return estimate_commit_count(p_Rev->commits);
+	struct commit_list* list = p_Rev->commits;
+	int n = 0;
+	while (list)
+	{
+		struct commit* commit = list->item;
+		unsigned int flags = commit->object.flags;
+		list = list->next;
+		if (!(flags & (TREESAME | UNINTERESTING)))
+			++n;
+	}
+	return n;
 }
 
 int git_get_log_nextcommit(GIT_LOG handle, GIT_COMMIT *commit, int follow)
@@ -489,7 +498,7 @@ int git_close_log(GIT_LOG handle, int releaseRevsisions)
 		free(p_Rev->pPrivate);
 		free(handle);
 	}
-	free_all_pack(the_repository);
+	odb_close_tgit(the_repository->objects);
 
 	if (display_notes_trees)
 		free_notes(*display_notes_trees);
@@ -618,7 +627,7 @@ int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_F
 			diff_flush_stat(p, &p_Rev->diffopt, &p_Rev->diffstat);
 		}
 	}
-	free_all_pack(the_repository);
+	odb_close_tgit(the_repository->objects);
 	if(file)
 		*file = q;
 	if(count)
@@ -750,7 +759,7 @@ int git_update_index(void)
 	free(argv);
 
 	discard_index(the_repository->index);
-	free_all_pack(the_repository);
+	odb_close_tgit(the_repository->objects);
 
 	return ret;
 }
@@ -796,12 +805,12 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	if(ret)
 		return ret;
 
-	reprepare_packed_git(the_repository);
+	odb_reprepare(the_repository->objects);
 	root = parse_tree_indirect(&oid);
 
 	if(!root)
 	{
-		free_all_pack(the_repository);
+		odb_close_tgit(the_repository->objects);
 		return -1;
 	}
 
@@ -815,7 +824,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 
 	if(ret)
 	{
-		free_all_pack(the_repository);
+		odb_close_tgit(the_repository->objects);
 		free(ce);
 		return ret;
 	}
@@ -827,7 +836,7 @@ int git_checkout_file(const char* ref, const char* path, char* outputpath)
 	convert_attrs(state.istate, &ca, path);
 
 	ret = write_entry(ce, outputpath, &ca, &state, 0, NULL);
-	free_all_pack(the_repository);
+	odb_close_tgit(the_repository->objects);
 	free(ce);
 	return ret;
 }

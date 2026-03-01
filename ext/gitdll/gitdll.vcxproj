@@ -55,6 +55,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
+      <DisableSpecificWarnings>4200</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ntdll.lib;wininet.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>

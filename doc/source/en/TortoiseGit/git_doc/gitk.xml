@@ -166,10 +166,10 @@ command-line parser.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--L&lt;start&gt;,&lt;end&gt;:&lt;file&gt;
+<emphasis>-L&lt;start&gt;,&lt;end&gt;:&lt;file&gt;</emphasis>
 </term>
 <term>
--L:&lt;funcname&gt;:&lt;file&gt;
+<emphasis>-L:&lt;funcname&gt;:&lt;file&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -188,25 +188,25 @@ command-line parser.</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-number
+<emphasis>&lt;number&gt;</emphasis>
 </simpara>
 <simpara>If <emphasis>&lt;start&gt;</emphasis> or <emphasis>&lt;end&gt;</emphasis> is a number, it specifies an
 absolute line number (lines count from 1).</simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>/regex/</emphasis>
+<emphasis>/&lt;regex&gt;/</emphasis>
 </simpara>
 <simpara>This form will use the first line matching the given
-POSIX regex. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
+POSIX <emphasis>&lt;regex&gt;</emphasis>. If <emphasis>&lt;start&gt;</emphasis> is a regex, it will search from the end of
 the previous <emphasis>-L</emphasis> range, if any, otherwise from the start of file.
-If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/regex/</emphasis>, it will search from the start of file.
-If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search
-starting at the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
+If <emphasis>&lt;start&gt;</emphasis> is <emphasis>^/&lt;regex&gt;/</emphasis>, it will search from the start of file.
+If <emphasis>&lt;end&gt;</emphasis> is a regex, it will search starting at the line given by
+<emphasis>&lt;start&gt;</emphasis>.</simpara>
 </listitem>
 <listitem>
 <simpara>
-+offset or -offset
+<emphasis>+&lt;offset&gt;</emphasis> or <emphasis>-&lt;offset&gt;</emphasis>
 </simpara>
 <simpara>This is only valid for <emphasis>&lt;end&gt;</emphasis> and will specify a number
 of lines before or after the line given by <emphasis>&lt;start&gt;</emphasis>.</simpara>
@@ -343,13 +343,13 @@ used by default. If <emphasis>$XDG_CONFIG_HOME</emphasis> is not set it defaults
 </simplesect>
 <simplesect id="gitk(1)__history">
 <title>History</title>
-<simpara>Gitk was the first graphical repository browser. It's written in
-tcl/tk.</simpara>
+<simpara>Gitk was the first graphical repository browser, written by
+Paul Mackerras in Tcl/Tk.</simpara>
 <simpara><emphasis>gitk</emphasis> is actually maintained as an independent project, but stable
 versions are distributed as part of the Git suite for the convenience
 of end users.</simpara>
-<simpara>gitk-git/ comes from Paul Mackerras's gitk project:</simpara>
-<literallayout class="monospaced">git://ozlabs.org/~paulus/gitk</literallayout>
+<simpara><emphasis>gitk-git/</emphasis> comes from Johannes Sixt's gitk project:</simpara>
+<literallayout class="monospaced">https://github.com/j6t/gitk</literallayout>
 </simplesect>
 <simplesect id="gitk(1)__see_also">
 <title>SEE ALSO</title>

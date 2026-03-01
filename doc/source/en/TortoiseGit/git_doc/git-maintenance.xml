@@ -15,7 +15,8 @@
 <blockquote>
 <literallayout><emphasis>git maintenance</emphasis> run [&lt;options&gt;]
 <emphasis>git maintenance</emphasis> start [--scheduler=&lt;scheduler&gt;]
-<emphasis>git maintenance</emphasis> (stop|register|unregister) [&lt;options&gt;]</literallayout>
+<emphasis>git maintenance</emphasis> (stop|register|unregister) [&lt;options&gt;]
+<emphasis>git maintenance</emphasis> is-needed [&lt;options&gt;]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-maintenance(1)__description">
@@ -135,6 +136,22 @@ unregister
 <simpara>The <emphasis>unregister</emphasis> subcommand will report an error if the current repository
 is not already registered. Use the <emphasis>--force</emphasis> option to return success even
 when the current repository is not registered.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+is-needed
+</term>
+<listitem>
+<simpara>
+    Check whether maintenance needs to be run without actually running it.
+    Exits with a 0 status code if maintenance needs to be run, 1 otherwise.
+    Ideally used with the <emphasis>--auto</emphasis> flag.
+</simpara>
+<simpara>If one or more <emphasis>--task</emphasis> options are specified, then those tasks are checked
+in that order. Otherwise, the tasks are determined by which
+<emphasis>maintenance.&lt;task&gt;.enabled</emphasis> config options are true. By default, only
+<emphasis>maintenance.gc.enabled</emphasis> is true.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -305,6 +322,8 @@ worktree-prune
         in the <emphasis>gc.auto</emphasis> config setting, or when the number of pack-files
         exceeds the <emphasis>gc.autoPackLimit</emphasis> config setting. Not compatible with
         the <emphasis>--schedule</emphasis> option.
+        When combined with the <emphasis>is-needed</emphasis> subcommand, check if the required
+        thresholds are met without actually running maintenance.
 </simpara>
 </listitem>
 </varlistentry>
@@ -575,27 +594,45 @@ maintenance.strategy
 <listitem>
 <simpara>
         This string config option provides a way to specify one of a few
-        recommended schedules for background maintenance. This only affects
-        which tasks are run during <emphasis>git maintenance run --schedule=X</emphasis>
-        commands, provided no <emphasis>--task=&lt;task&gt;</emphasis> arguments are provided.
-        Further, if a <emphasis>maintenance.&lt;task&gt;.schedule</emphasis> config value is set,
-        then that value is used instead of the one provided by
-        <emphasis>maintenance.strategy</emphasis>. The possible strategy strings are:
+        recommended strategies for repository maintenance. This affects
+        which tasks are run during <emphasis>git maintenance run</emphasis>, provided no
+        <emphasis>--task=&lt;task&gt;</emphasis> arguments are provided. This setting impacts manual
+        maintenance, auto-maintenance as well as scheduled maintenance. The
+        tasks that run may be different depending on the maintenance type.
 </simpara>
+<simpara>The maintenance strategy can be further tweaked by setting
+<emphasis>maintenance.&lt;task&gt;.enabled</emphasis> and <emphasis>maintenance.&lt;task&gt;.schedule</emphasis>. If set, these
+values are used instead of the defaults provided by <emphasis>maintenance.strategy</emphasis>.</simpara>
+<simpara>The possible strategies are:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-<emphasis>none</emphasis>: This default setting implies no tasks are run at any schedule.
+<emphasis>none</emphasis>: This strategy implies no tasks are run at all. This is the default
+  strategy for scheduled maintenance.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>incremental</emphasis>: This setting optimizes for performing small maintenance
+<emphasis>gc</emphasis>: This strategy runs the <emphasis>gc</emphasis> task. This is the default strategy for
+  manual maintenance.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>geometric</emphasis>: This strategy performs geometric repacking of packfiles and
+  keeps auxiliary data structures up-to-date. The strategy expires data in the
+  reflog and removes worktrees that cannot be located anymore. When the
+  geometric repacking strategy would decide to do an all-into-one repack, then
+  the strategy generates a cruft pack for all unreachable objects. Objects that
+  are already part of a cruft pack will be expired.
+</simpara>
+<simpara>This repacking strategy is a full replacement for the <emphasis>gc</emphasis> strategy and is
+recommended for large repositories.
+* <emphasis>incremental</emphasis>: This setting optimizes for performing small maintenance
   activities that do not delete any data. This does not schedule the <emphasis>gc</emphasis>
   task, but runs the <emphasis>prefetch</emphasis> and <emphasis>commit-graph</emphasis> tasks hourly, the
   <emphasis>loose-objects</emphasis> and <emphasis>incremental-repack</emphasis> tasks daily, and the <emphasis>pack-refs</emphasis>
-  task weekly.
-</simpara>
+  task weekly. Manual repository maintenance uses the <emphasis>gc</emphasis> task.</simpara>
 </listitem>
 </itemizedlist>
 </listitem>
@@ -684,6 +721,36 @@ maintenance.incremental-repack.auto
         Otherwise, a positive value implies the command should run when the
         number of pack-files not in the multi-pack-index is at least the value
         of <emphasis>maintenance.incremental-repack.auto</emphasis>. The default value is 10.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.geometric-repack.auto
+</term>
+<listitem>
+<simpara>
+        This integer config option controls how often the <emphasis>geometric-repack</emphasis>
+        task should be run as part of <emphasis>git maintenance run --auto</emphasis>. If zero,
+        then the <emphasis>geometric-repack</emphasis> task will not run with the <emphasis>--auto</emphasis>
+        option. A negative value will force the task to run every time.
+        Otherwise, a positive value implies the command should run either when
+        there are packfiles that need to be merged together to retain the
+        geometric progression, or when there are at least this many loose
+        objects that would be written into a new packfile. The default value is
+        100.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+maintenance.geometric-repack.splitFactor
+</term>
+<listitem>
+<simpara>
+        This integer config option controls the factor used for the geometric
+        sequence. See the <emphasis>--geometric=</emphasis> option in <xref linkend="git-repack(1)" /> for
+        more details. Defaults to <emphasis>2</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

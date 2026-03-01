@@ -20,7 +20,7 @@
           [<code>--depth</code> <emphasis>&lt;depth&gt;</emphasis>] [<code>--</code>[<code>no-</code>]<code>single-branch</code>] [<code>--</code>[<code>no-</code>]<code>tags</code>]
           [<code>--recurse-submodules</code>[<code>=</code><emphasis>&lt;pathspec&gt;</emphasis>]] [<code>--</code>[<code>no-</code>]<code>shallow-submodules</code>]
           [<code>--</code>[<code>no-</code>]<code>remote-submodules</code>] [<code>--jobs</code> <emphasis>&lt;n&gt;</emphasis>] [<code>--sparse</code>] [<code>--</code>[<code>no-</code>]<code>reject-shallow</code>]
-          [<code>--filter=</code><emphasis>&lt;filter-spec&gt;</emphasis>] [<code>--also-filter-submodules</code>]] [<code>--</code>] <emphasis>&lt;repository&gt;</emphasis>
+          [<code>--filter=</code><emphasis>&lt;filter-spec&gt;</emphasis> [<code>--also-filter-submodules</code>]] [<code>--</code>] <emphasis>&lt;repository&gt;</emphasis>
           [<emphasis>&lt;directory&gt;</emphasis>]</literallayout>
 </blockquote>
 </simplesect>
@@ -460,7 +460,10 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]single-branch</emphasis>
+<emphasis>--single-branch</emphasis>
+</term>
+<term>
+<emphasis>--no-single-branch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -477,7 +480,10 @@ corresponding <emphasis>--mirror</emphasis> and <emphasis>--no-tags</emphasis> o
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]tags</emphasis>
+<emphasis>--tags</emphasis>
+</term>
+<term>
+<emphasis>--no-tags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -519,7 +525,10 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]shallow-submodules</emphasis>
+<emphasis>--shallow-submodules</emphasis>
+</term>
+<term>
+<emphasis>--no-shallow-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -529,7 +538,10 @@ or <emphasis>--mirror</emphasis> is given)</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]remote-submodules</emphasis>
+<emphasis>--remote-submodules</emphasis>
+</term>
+<term>
+<emphasis>--no-remote-submodules</emphasis>
 </term>
 <listitem>
 <simpara>

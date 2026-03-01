@@ -81,7 +81,7 @@ reference to the current repository.</simpara>
         by the <emphasis>--format</emphasis> option of <emphasis>git log</emphasis>, such as <emphasis>* [%h] %s</emphasis>.
         (See the "PRETTY FORMATS" section of <xref linkend="git-log(1)" />.)
 </simpara>
-<literallayout class="monospaced">Each pretty-printed commit will be rewrapped before it is shown.</literallayout>
+<simpara>Each pretty-printed commit will be rewrapped before it is shown.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -219,93 +219,93 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 <variablelist>
 <varlistentry>
 <term>
--&lt;number&gt;
+<emphasis>-&lt;number&gt;</emphasis>
 </term>
 <term>
--n &lt;number&gt;
+<emphasis>-n &lt;number&gt;</emphasis>
 </term>
 <term>
---max-count=&lt;number&gt;
+<emphasis>--max-count=&lt;number&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Limit the number of commits to output.
+        Limit the output to <emphasis>&lt;number&gt;</emphasis> commits.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---skip=&lt;number&gt;
+<emphasis>--skip=&lt;number&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Skip <emphasis>number</emphasis> commits before starting to show the commit output.
+        Skip <emphasis>&lt;number&gt;</emphasis> commits before starting to show the commit output.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---since=&lt;date&gt;
+<emphasis>--since=&lt;date&gt;</emphasis>
 </term>
 <term>
---after=&lt;date&gt;
+<emphasis>--after=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show commits more recent than a specific date.
+        Show commits more recent than <emphasis>&lt;date&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---since-as-filter=&lt;date&gt;
+<emphasis>--since-as-filter=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show all commits more recent than a specific date. This visits
+        Show all commits more recent than <emphasis>&lt;date&gt;</emphasis>. This visits
         all commits in the range, rather than stopping at the first commit which
-        is older than a specific date.
+        is older than <emphasis>&lt;date&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---until=&lt;date&gt;
+<emphasis>--until=&lt;date&gt;</emphasis>
 </term>
 <term>
---before=&lt;date&gt;
+<emphasis>--before=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show commits older than a specific date.
+        Show commits older than <emphasis>&lt;date&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---author=&lt;pattern&gt;
+<emphasis>--author=&lt;pattern&gt;</emphasis>
 </term>
 <term>
---committer=&lt;pattern&gt;
+<emphasis>--committer=&lt;pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Limit the commits output to ones with author/committer
-        header lines that match the specified pattern (regular
-        expression).  With more than one <emphasis>--author=&lt;pattern&gt;</emphasis>,
-        commits whose author matches any of the given patterns are
+        header lines that match the <emphasis>&lt;pattern&gt;</emphasis> regular
+        expression.  With more than one <emphasis>--author=&lt;pattern&gt;</emphasis>,
+        commits whose author matches any of the <emphasis>&lt;pattern&gt;</emphasis> are
         chosen (similarly for multiple <emphasis>--committer=&lt;pattern&gt;</emphasis>).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---grep-reflog=&lt;pattern&gt;
+<emphasis>--grep-reflog=&lt;pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Limit the commits output to ones with reflog entries that
-        match the specified pattern (regular expression). With
+        match the <emphasis>&lt;pattern&gt;</emphasis> regular expression. With
         more than one <emphasis>--grep-reflog</emphasis>, commits whose reflog message
         matches any of the given patterns are chosen.  It is an
         error to use this option unless <emphasis>--walk-reflogs</emphasis> is in use.
@@ -314,14 +314,14 @@ ordering and formatting options, such as <emphasis>--reverse</emphasis>.</simpar
 </varlistentry>
 <varlistentry>
 <term>
---grep=&lt;pattern&gt;
+<emphasis>--grep=&lt;pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Limit the commits output to ones with a log message that
-        matches the specified pattern (regular expression).  With
+        matches the <emphasis>&lt;pattern&gt;</emphasis> regular expression.  With
         more than one <emphasis>--grep=&lt;pattern&gt;</emphasis>, commits whose message
-        matches any of the given patterns are chosen (but see
+        matches any of the <emphasis>&lt;pattern&gt;</emphasis> are chosen (but see
         <emphasis>--all-match</emphasis>).
 </simpara>
 <simpara>When <emphasis>--notes</emphasis> is in effect, the message from the notes is
@@ -330,7 +330,7 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---all-match
+<emphasis>--all-match</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -341,21 +341,21 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---invert-grep
+<emphasis>--invert-grep</emphasis>
 </term>
 <listitem>
 <simpara>
         Limit the commits output to ones with a log message that do not
-        match the pattern specified with <emphasis>--grep=&lt;pattern&gt;</emphasis>.
+        match the <emphasis>&lt;pattern&gt;</emphasis> specified with <emphasis>--grep=&lt;pattern&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--i
+<emphasis>-i</emphasis>
 </term>
 <term>
---regexp-ignore-case
+<emphasis>--regexp-ignore-case</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -366,7 +366,7 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---basic-regexp
+<emphasis>--basic-regexp</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -377,10 +377,10 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--E
+<emphasis>-E</emphasis>
 </term>
 <term>
---extended-regexp
+<emphasis>--extended-regexp</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -391,10 +391,10 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--F
+<emphasis>-F</emphasis>
 </term>
 <term>
---fixed-strings
+<emphasis>--fixed-strings</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -405,10 +405,10 @@ matched as if it were part of the log message.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--P
+<emphasis>-P</emphasis>
 </term>
 <term>
---perl-regexp
+<emphasis>--perl-regexp</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -422,7 +422,7 @@ providing this option will cause it to die.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---remove-empty
+<emphasis>--remove-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -432,7 +432,7 @@ providing this option will cause it to die.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---merges
+<emphasis>--merges</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -442,7 +442,7 @@ providing this option will cause it to die.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-merges
+<emphasis>--no-merges</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -453,16 +453,16 @@ providing this option will cause it to die.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---min-parents=&lt;number&gt;
+<emphasis>--min-parents=&lt;number&gt;</emphasis>
 </term>
 <term>
---max-parents=&lt;number&gt;
+<emphasis>--max-parents=&lt;number&gt;</emphasis>
 </term>
 <term>
---no-min-parents
+<emphasis>--no-min-parents</emphasis>
 </term>
 <term>
---no-max-parents
+<emphasis>--no-max-parents</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -478,7 +478,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---first-parent
+<emphasis>--first-parent</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -495,7 +495,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---exclude-first-parent-only
+<emphasis>--exclude-first-parent-only</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -509,7 +509,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---not
+<emphasis>--not</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -524,7 +524,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -535,20 +535,20 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---branches[=&lt;pattern&gt;]
+<emphasis>--branches[=&lt;pattern&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Pretend as if all the refs in <emphasis>refs/heads</emphasis> are listed
         on the command line as <emphasis>&lt;commit&gt;</emphasis>. If <emphasis>&lt;pattern&gt;</emphasis> is given, limit
-        branches to ones matching given shell glob. If pattern lacks <emphasis>?</emphasis>,
+        branches to ones matching given shell glob. If <emphasis>&lt;pattern&gt;</emphasis> lacks <emphasis>?</emphasis>,
         <emphasis>&#42;</emphasis>, or <emphasis>[</emphasis>, <emphasis>/&#42;</emphasis> at the end is implied.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---tags[=&lt;pattern&gt;]
+<emphasis>--tags[=&lt;pattern&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -561,7 +561,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---remotes[=&lt;pattern&gt;]
+<emphasis>--remotes[=&lt;pattern&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -574,7 +574,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---glob=&lt;glob-pattern&gt;
+<emphasis>--glob=&lt;glob-pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -587,7 +587,7 @@ parents) and <emphasis>--max-parents=-1</emphasis> (negative numbers denote no u
 </varlistentry>
 <varlistentry>
 <term>
---exclude=&lt;glob-pattern&gt;
+<emphasis>--exclude=&lt;glob-pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -607,7 +607,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---exclude-hidden=[fetch|receive|uploadpack]
+<emphasis>--exclude-hidden=(fetch|receive|uploadpack)</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -622,7 +622,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---reflog
+<emphasis>--reflog</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -633,7 +633,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---alternate-refs
+<emphasis>--alternate-refs</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -648,7 +648,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---single-worktree
+<emphasis>--single-worktree</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -663,7 +663,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-missing
+<emphasis>--ignore-missing</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -674,7 +674,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---bisect
+<emphasis>--bisect</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -687,7 +687,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stdin
+<emphasis>--stdin</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -703,7 +703,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---cherry-mark
+<emphasis>--cherry-mark</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -714,7 +714,7 @@ explicitly.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---cherry-pick
+<emphasis>--cherry-pick</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -733,10 +733,10 @@ excluded from the output.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---left-only
+<emphasis>--left-only</emphasis>
 </term>
 <term>
---right-only
+<emphasis>--right-only</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -753,7 +753,7 @@ list.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---cherry
+<emphasis>--cherry</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -767,18 +767,18 @@ list.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--g
+<emphasis>-g</emphasis>
 </term>
 <term>
---walk-reflogs
+<emphasis>--walk-reflogs</emphasis>
 </term>
 <listitem>
 <simpara>
         Instead of walking the commit ancestry chain, walk
         reflog entries from the most recent one to older ones.
         When this option is used you cannot specify commits to
-        exclude (that is, <emphasis>&#94;commit</emphasis>, <emphasis>commit1..commit2</emphasis>,
-        and <emphasis>commit1...commit2</emphasis> notations cannot be used).
+        exclude (that is, <emphasis>^&lt;commit&gt;</emphasis>, <emphasis>&lt;commit1&gt;..&lt;commit2&gt;</emphasis>,
+        and <emphasis>&lt;commit1&gt;...&lt;commit2&gt;</emphasis> notations cannot be used).
 </simpara>
 <simpara>With <emphasis>--pretty</emphasis> format other than <emphasis>oneline</emphasis> and <emphasis>reference</emphasis> (for obvious reasons),
 this causes the output to have two extra lines of information
@@ -820,7 +820,7 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---merge
+<emphasis>--merge</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -834,7 +834,7 @@ See also <xref linkend="git-reflog(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---boundary
+<emphasis>--boundary</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -855,7 +855,7 @@ is how to do it, as there are various strategies to simplify the history.</simpa
 <variablelist>
 <varlistentry>
 <term>
-&lt;paths&gt;
+<emphasis>&lt;paths&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -865,7 +865,7 @@ is how to do it, as there are various strategies to simplify the history.</simpa
 </varlistentry>
 <varlistentry>
 <term>
---simplify-by-decoration
+<emphasis>--simplify-by-decoration</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -879,7 +879,7 @@ is how to do it, as there are various strategies to simplify the history.</simpa
 <variablelist>
 <varlistentry>
 <term>
-Default mode
+<emphasis>Default mode</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -892,7 +892,7 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---show-pulls
+<emphasis>--show-pulls</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -905,7 +905,7 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---full-history
+<emphasis>--full-history</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -915,7 +915,7 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---dense
+<emphasis>--dense</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -926,7 +926,7 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---sparse
+<emphasis>--sparse</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -936,7 +936,7 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---simplify-merges
+<emphasis>--simplify-merges</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -948,16 +948,16 @@ Default mode
 </varlistentry>
 <varlistentry>
 <term>
---ancestry-path[=&lt;commit&gt;]
+<emphasis>--ancestry-path[=&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        When given a range of commits to display (e.g. <emphasis>commit1..commit2</emphasis>
-        or <emphasis>commit2 &#94;commit1</emphasis>), and a commit &lt;commit&gt; in that range,
+        When given a range of commits to display (e.g. <emphasis>&lt;commit1&gt;..&lt;commit2&gt;</emphasis>
+        or <emphasis>&lt;commit2&gt; ^&lt;commit1&gt;</emphasis>), and a commit <emphasis>&lt;commit&gt;</emphasis> in that range,
         only display commits in that range
-        that are ancestors of &lt;commit&gt;, descendants of &lt;commit&gt;, or
-        &lt;commit&gt; itself.  If no commit is specified, use <emphasis>commit1</emphasis> (the
-        excluded part of the range) as &lt;commit&gt;.  Can be passed multiple
+        that are ancestors of <emphasis>&lt;commit&gt;</emphasis>, descendants of <emphasis>&lt;commit&gt;</emphasis>, or
+        <emphasis>&lt;commit&gt;</emphasis> itself.  If no commit is specified, use <emphasis>&lt;commit1&gt;</emphasis> (the
+        excluded part of the range) as <emphasis>&lt;commit&gt;</emphasis>.  Can be passed multiple
         times; if so, a commit is included if it is any of the commits
         given or if it is an ancestor or descendant of one of them.
 </simpara>
@@ -965,7 +965,7 @@ Default mode
 </varlistentry>
 </variablelist>
 <simpara>A more detailed explanation follows.</simpara>
-<simpara>Suppose you specified <emphasis>foo</emphasis> as the &lt;paths&gt;.  We shall call commits
+<simpara>Suppose you specified <emphasis>foo</emphasis> as the <emphasis>&lt;paths&gt;</emphasis>.  We shall call commits
 that modify <emphasis>foo</emphasis> !TREESAME, and the rest TREESAME.  (In a diff
 filtered for <emphasis>foo</emphasis>, they look different and equal, respectively.)</simpara>
 <simpara>In the following, we will always refer to the same example history to
@@ -982,13 +982,13 @@ each merge.  The commits are:</simpara>
 <listitem>
 <simpara>
 <emphasis>I</emphasis> is the initial commit, in which <emphasis>foo</emphasis> exists with contents
-  asdf, and a file <emphasis>quux</emphasis> exists with contents quux. Initial
+  <emphasis>asdf</emphasis>, and a file <emphasis>quux</emphasis> exists with contents <emphasis>quux</emphasis>. Initial
   commits are compared to an empty tree, so <emphasis>I</emphasis> is !TREESAME.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just foo.
+In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just <emphasis>foo</emphasis>.
 </simpara>
 </listitem>
 <listitem>
@@ -999,20 +999,20 @@ In <emphasis>A</emphasis>, <emphasis>foo</emphasis> contains just foo.
 </listitem>
 <listitem>
 <simpara>
-<emphasis>C</emphasis> does not change <emphasis>foo</emphasis>, but its merge <emphasis>N</emphasis> changes it to foobar,
+<emphasis>C</emphasis> does not change <emphasis>foo</emphasis>, but its merge <emphasis>N</emphasis> changes it to <emphasis>foobar</emphasis>,
   so it is not TREESAME to any parent.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>D</emphasis> sets <emphasis>foo</emphasis> to baz. Its merge <emphasis>O</emphasis> combines the strings from
-  <emphasis>N</emphasis> and <emphasis>D</emphasis> to foobarbaz; i.e., it is not TREESAME to any parent.
+<emphasis>D</emphasis> sets <emphasis>foo</emphasis> to <emphasis>baz</emphasis>. Its merge <emphasis>O</emphasis> combines the strings from
+  <emphasis>N</emphasis> and <emphasis>D</emphasis> to <emphasis>foobarbaz</emphasis>; i.e., it is not TREESAME to any parent.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-<emphasis>E</emphasis> changes <emphasis>quux</emphasis> to xyzzy, and its merge <emphasis>P</emphasis> combines the
-  strings to quux xyzzy. <emphasis>P</emphasis> is TREESAME to <emphasis>O</emphasis>, but not to <emphasis>E</emphasis>.
+<emphasis>E</emphasis> changes <emphasis>quux</emphasis> to <emphasis>xyzzy</emphasis>, and its merge <emphasis>P</emphasis> combines the
+  strings to <emphasis>quux xyzzy</emphasis>. <emphasis>P</emphasis> is TREESAME to <emphasis>O</emphasis>, but not to <emphasis>E</emphasis>.
 </simpara>
 </listitem>
 <listitem>
@@ -1056,7 +1056,7 @@ parent lines.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---full-history without parent rewriting
+<emphasis>--full-history</emphasis> without parent rewriting
 </term>
 <listitem>
 <simpara>
@@ -1077,7 +1077,7 @@ them disconnected.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---full-history with parent rewriting
+<emphasis>--full-history</emphasis> with parent rewriting
 </term>
 <listitem>
 <simpara>
@@ -1104,7 +1104,7 @@ affects inclusion:</simpara>
 <variablelist>
 <varlistentry>
 <term>
---dense
+<emphasis>--dense</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1115,7 +1115,7 @@ affects inclusion:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---sparse
+<emphasis>--sparse</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1128,7 +1128,7 @@ sides of the merge are never walked.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---simplify-merges
+<emphasis>--simplify-merges</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1195,12 +1195,12 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <variablelist>
 <varlistentry>
 <term>
---ancestry-path[=&lt;commit&gt;]
+<emphasis>--ancestry-path[=&lt;commit&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Limit the displayed commits to those which are an ancestor of
-        &lt;commit&gt;, or which are a descendant of &lt;commit&gt;, or are &lt;commit&gt;
+        <emphasis>&lt;commit&gt;</emphasis>, or which are a descendant of <emphasis>&lt;commit&gt;</emphasis>, or are <emphasis>&lt;commit&gt;</emphasis>
         itself.
 </simpara>
 <simpara>As an example use case, consider the following commit history:</simpara>
@@ -1212,7 +1212,7 @@ If after this parent rewriting, <emphasis>C'</emphasis> is a root or merge commi
 <simpara>A regular <emphasis>D..M</emphasis> computes the set of commits that are ancestors of <emphasis>M</emphasis>,
 but excludes the ones that are ancestors of <emphasis>D</emphasis>. This is useful to see
 what happened to the history leading to <emphasis>M</emphasis> since <emphasis>D</emphasis>, in the sense
-that what does <emphasis>M</emphasis> have that did not exist in <emphasis>D</emphasis>. The result in this
+that "what does <emphasis>M</emphasis> have that did not exist in <emphasis>D</emphasis>". The result in this
 example would be all the commits, except <emphasis>A</emphasis> and <emphasis>B</emphasis> (and <emphasis>D</emphasis> itself,
 of course).</simpara>
 <simpara>When we want to find out what commits in <emphasis>M</emphasis> are contaminated with the
@@ -1316,7 +1316,7 @@ commit message.</simpara>
 <variablelist>
 <varlistentry>
 <term>
---show-pulls
+<emphasis>--show-pulls</emphasis>
 </term>
 <listitem>
 <simpara>

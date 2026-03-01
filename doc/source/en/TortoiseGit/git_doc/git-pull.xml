@@ -13,65 +13,90 @@
 <simplesect id="git-pull(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git pull</emphasis> [&lt;options&gt;] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
+<literallayout><code>git</code> <code>pull</code> [<emphasis>&lt;options&gt;</emphasis>] [<emphasis>&lt;repository&gt;</emphasis> [<emphasis>&lt;refspec&gt;</emphasis><code>&#8230;</code>]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-pull(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Incorporates changes from a remote repository into the current branch.
-If the current branch is behind the remote, then by default it will
-fast-forward the current branch to match the remote.  If the current
-branch and the remote have diverged, the user needs to specify how to
-reconcile the divergent branches with <emphasis>--rebase</emphasis> or <emphasis>--no-rebase</emphasis> (or
-the corresponding configuration option in <emphasis>pull.rebase</emphasis>).</simpara>
-<simpara>More precisely, <emphasis>git pull</emphasis> runs <emphasis>git fetch</emphasis> with the given parameters
-and then depending on configuration options or command line flags,
-will call either <emphasis>git rebase</emphasis> or <emphasis>git merge</emphasis> to reconcile diverging
-branches.</simpara>
-<simpara>&lt;repository&gt; should be the name of a remote repository as
-passed to <xref linkend="git-fetch(1)" />.  &lt;refspec&gt; can name an
-arbitrary remote ref (for example, the name of a tag) or even
-a collection of refs with corresponding remote-tracking branches
-(e.g., refs/heads/&#42;:refs/remotes/origin/&#42;),
-but usually it is the name of a branch in the remote repository.</simpara>
-<simpara>Default values for &lt;repository&gt; and &lt;branch&gt; are read from the
-"remote" and "merge" configuration for the current branch
-as set by <xref linkend="git-branch(1)" /> <emphasis>--track</emphasis>.</simpara>
-<simpara>Assume the following history exists and the current branch is
-"<emphasis>master</emphasis>":</simpara>
-<screen>          A---B---C master on origin
-         /
-    D---E---F---G master
-        ^
-        origin/master in your repository</screen>
-<simpara>Then "<emphasis>git pull</emphasis>" will fetch and replay the changes from the remote
-<emphasis>master</emphasis> branch since it diverged from the local <emphasis>master</emphasis> (i.e., <emphasis>E</emphasis>)
-until its current commit (<emphasis>C</emphasis>) on top of <emphasis>master</emphasis> and record the
-result in a new commit along with the names of the two parent commits
-and a log message from the user describing the changes.</simpara>
-<screen>          A---B---C origin/master
-         /         \
-    D---E---F---G---H master</screen>
-<simpara>See <xref linkend="git-merge(1)" /> for details, including how conflicts
-are presented and handled.</simpara>
-<simpara>In Git 1.7.0 or later, to cancel a conflicting merge, use
-<emphasis>git reset --merge</emphasis>.  <emphasis role="strong">Warning</emphasis>: In older versions of Git, running <emphasis>git pull</emphasis>
-with uncommitted changes is discouraged: while possible, it leaves you
-in a state that may be hard to back out of in the case of a conflict.</simpara>
-<simpara>If any of the remote changes overlap with local uncommitted changes,
-the merge will be automatically canceled and the work tree untouched.
-It is generally best to get any local changes in working order before
-pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
+<simpara>Integrate changes from a remote repository into the current branch.</simpara>
+<simpara>First, <emphasis>git pull</emphasis> runs <emphasis>git fetch</emphasis> with the same arguments
+(excluding merge options) to fetch remote branch(es).
+Then it decides which remote branch to integrate: if you run <emphasis>git pull</emphasis>
+with no arguments this defaults to the <link linkend="git-pull(1)_UPSTREAM-BRANCHES">upstream</link>
+for the current branch.
+Then it integrates that branch into the current branch.</simpara>
+<simpara>There are 4 main options for integrating the remote branch:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+<emphasis>git pull --ff-only</emphasis> will only do "fast-forward" updates: it
+   fails if your local branch has diverged from the remote branch.
+   This is the default.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>git pull --rebase</emphasis> runs <emphasis>git rebase</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>git pull --no-rebase</emphasis> runs <emphasis>git merge</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>git pull --squash</emphasis> runs <emphasis>git merge --squash</emphasis>
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>You can also set the configuration options <emphasis>pull.rebase</emphasis>, <emphasis>pull.squash</emphasis>,
+or <emphasis>pull.ff</emphasis> with your preferred behaviour.</simpara>
+<simpara>If there's a merge conflict during the merge or rebase that you don't
+want to handle, you can safely abort it with <emphasis>git merge --abort</emphasis> or
+<emphasis>git rebase --abort</emphasis>.</simpara>
 </simplesect>
 <simplesect id="git-pull(1)__options">
 <title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
--q
+<emphasis>&lt;repository&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        The "remote" repository to pull from.  This can be either
+        a URL (see the section <link linkend="git-pull(1)_URLS">GIT URLS</link> below) or the name
+        of a remote (see the section <link linkend="git-pull(1)_REMOTES">REMOTES</link> below).
+</simpara>
+<simpara>Defaults to the configured upstream for the current branch, or <emphasis>origin</emphasis>.
+See <link linkend="git-pull(1)_UPSTREAM-BRANCHES">UPSTREAM BRANCHES</link> below for more on how to
+configure upstreams.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>&lt;refspec&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Which branch or other reference(s) to fetch and integrate into the
+        current branch, for example <emphasis>main</emphasis> in <emphasis>git pull origin main</emphasis>.
+        Defaults to the configured upstream for the current branch.
+</simpara>
+<simpara>This can be a branch, tag, or other collection of reference(s).
+See <link linkend="git-pull(1)_fetch-refspec"><emphasis>&lt;refspec&gt;</emphasis></link> below under "Options related to fetching"
+for the full syntax, and <link linkend="git-pull(1)_DEFAULT-BEHAVIOUR">DEFAULT BEHAVIOUR</link> below
+for how <emphasis>git pull</emphasis> uses this argument to determine which remote branch
+to integrate.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -83,20 +108,23 @@ pulling or stash them away with <xref linkend="git-stash(1)" />.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
-        Pass --verbose to git-fetch and git-merge.
+        Pass <emphasis>--verbose</emphasis> to git-fetch and git-merge.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]recurse-submodules[=(yes|on-demand|no)]
+<emphasis>--recurse-submodules[=(yes|on-demand|no)]</emphasis>
+</term>
+<term>
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -182,7 +210,7 @@ set to <emphasis>no</emphasis> at the beginning of them.</simpara>
 <simpara>
         Only update to the new history if there is no divergent local
         history.  This is the default when no method for reconciling
-        divergent histories is provided (via the --rebase=* flags).
+        divergent histories is provided (via the <emphasis>--rebase</emphasis> flags).
 </simpara>
 </listitem>
 </varlistentry>
@@ -270,6 +298,9 @@ actual commits being merged.</simpara>
 </simpara>
 <simpara>The <emphasis>--no-signoff</emphasis> option can be used to countermand an earlier <emphasis>--signoff</emphasis>
 option on the command line.</simpara>
+<simpara>Git does not (and will not) have a configuration variable to enable
+the <emphasis>--signoff</emphasis> command line option by default; see the
+<emphasis>commit.signoff</emphasis> entry in <xref linkend="gitfaq(7)" /> for more details.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -289,6 +320,16 @@ option on the command line.</simpara>
 </simpara>
 <simpara>With <emphasis>-n</emphasis> or <emphasis>--no-stat</emphasis> do not show a diffstat at the end of the
 merge.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--compact-summary</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show a compact-summary at the end of the merge.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -316,7 +357,10 @@ option can be used to override <emphasis>--squash</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]verify</emphasis>
+<emphasis>--verify</emphasis>
+</term>
+<term>
+<emphasis>--no-verify</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -426,24 +470,60 @@ option can be used to override <emphasis>--squash</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--r
+<emphasis>-r</emphasis>
 </term>
 <term>
---rebase[=(false|true|merges|interactive)]
+<emphasis>--rebase[=(true|merges|false|interactive)]</emphasis>
+</term>
+<listitem>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>true</emphasis>
 </term>
 <listitem>
 <simpara>
-        When true, rebase the current branch on top of the upstream
+rebase the current branch on top of the upstream
         branch after fetching. If there is a remote-tracking branch
         corresponding to the upstream branch and the upstream branch
         was rebased since last fetched, the rebase uses that information
-        to avoid rebasing non-local changes.
+        to avoid rebasing non-local changes. This is the default.
 </simpara>
-<simpara>When set to <emphasis>merges</emphasis>, rebase using <emphasis>git rebase --rebase-merges</emphasis> so that
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>merges</emphasis>
+</term>
+<listitem>
+<simpara>
+rebase using <emphasis>git rebase --rebase-merges</emphasis> so that
 the local merge commits are included in the rebase (see
-<xref linkend="git-rebase(1)" /> for details).</simpara>
-<simpara>When false, merge the upstream branch into the current branch.</simpara>
-<simpara>When <emphasis>interactive</emphasis>, enable the interactive mode of rebase.</simpara>
+<xref linkend="git-rebase(1)" /> for details).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<listitem>
+<simpara>
+merge the upstream branch into the current branch.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>interactive</emphasis>
+</term>
+<listitem>
+<simpara>
+enable the interactive mode of rebase.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
 <simpara>See <emphasis>pull.rebase</emphasis>, <emphasis>branch.&lt;name&gt;.rebase</emphasis> and <emphasis>branch.autoSetupRebase</emphasis> in
 <xref linkend="git-config(1)" /> if you want to make <emphasis>git pull</emphasis> always use
 <emphasis>--rebase</emphasis> instead of merging.</simpara>
@@ -455,11 +535,11 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---no-rebase
+<emphasis>--no-rebase</emphasis>
 </term>
 <listitem>
 <simpara>
-        This is shorthand for --rebase=false.
+        This is shorthand for <emphasis>--rebase=false</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -470,22 +550,25 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 <variablelist>
 <varlistentry>
 <term>
---[no-]all
+<emphasis>--all</emphasis>
+</term>
+<term>
+<emphasis>--no-all</emphasis>
 </term>
 <listitem>
 <simpara>
         Fetch all remotes, except for the ones that has the
         <emphasis>remote.&lt;name&gt;.skipFetchAll</emphasis> configuration variable set.
-        This overrides the configuration variable fetch.all`.
+        This overrides the configuration variable <emphasis>fetch.all</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--a
+<emphasis>-a</emphasis>
 </term>
 <term>
---append
+<emphasis>--append</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -497,7 +580,7 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---atomic
+<emphasis>--atomic</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -508,7 +591,7 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---depth=&lt;depth&gt;
+<emphasis>--depth=&lt;depth&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -522,11 +605,11 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---deepen=&lt;depth&gt;
+<emphasis>--deepen=&lt;depth&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Similar to --depth, except it specifies the number of commits
+        Similar to <emphasis>--depth</emphasis>, except it specifies the number of commits
         from the current shallow boundary instead of from the tip of
         each remote branch history.
 </simpara>
@@ -534,18 +617,18 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---shallow-since=&lt;date&gt;
+<emphasis>--shallow-since=&lt;date&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Deepen or shorten the history of a shallow repository to
-        include all reachable commits after &lt;date&gt;.
+        include all reachable commits after <emphasis>&lt;date&gt;</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---shallow-exclude=&lt;ref&gt;
+<emphasis>--shallow-exclude=&lt;ref&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -557,7 +640,7 @@ unless you have read <xref linkend="git-rebase(1)" /> carefully.</simpara></note
 </varlistentry>
 <varlistentry>
 <term>
---unshallow
+<emphasis>--unshallow</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -571,20 +654,20 @@ the current repository has the same history as the source repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---update-shallow
+<emphasis>--update-shallow</emphasis>
 </term>
 <listitem>
 <simpara>
         By default when fetching from a shallow repository,
         <emphasis>git fetch</emphasis> refuses refs that require updating
-        .git/shallow. This option updates .git/shallow and accepts such
+        <emphasis>.git/shallow</emphasis>. This option updates <emphasis>.git/shallow</emphasis> and accepts such
         refs.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---negotiation-tip=&lt;commit|glob&gt;
+<emphasis>--negotiation-tip=(&lt;commit&gt;|&lt;glob&gt;)</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -608,22 +691,22 @@ configuration variables documented in <xref linkend="git-config(1)" />, and the
 </varlistentry>
 <varlistentry>
 <term>
---negotiate-only
+<emphasis>--negotiate-only</emphasis>
 </term>
 <listitem>
 <simpara>
         Do not fetch anything from the server, and instead print the
-        ancestors of the provided <emphasis>--negotiation-tip=*</emphasis> arguments,
+        ancestors of the provided <emphasis>--negotiation-tip=</emphasis> arguments,
         which we have in common with the server.
 </simpara>
-<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis>.
+<simpara>This is incompatible with <emphasis>--recurse-submodules=(yes|on-demand)</emphasis>.
 Internally this is used to implement the <emphasis>push.negotiate</emphasis> option, see
 <xref linkend="git-config(1)" />.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -633,40 +716,40 @@ Internally this is used to implement the <emphasis>push.negotiate</emphasis> opt
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
         Print the output to standard output in an easy-to-parse format for
         scripts. See section OUTPUT in <xref linkend="git-fetch(1)" /> for details.
 </simpara>
-<simpara>This is incompatible with <emphasis>--recurse-submodules=[yes|on-demand]</emphasis> and takes
+<simpara>This is incompatible with <emphasis>--recurse-submodules=(yes|on-demand)</emphasis> and takes
 precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
-        When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec, it may
-        refuse to update the local branch as discussed
-        in the <emphasis>&lt;refspec&gt;</emphasis> part of the <xref linkend="git-fetch(1)" />
-        documentation.
-        This option overrides that check.
+When <emphasis>git fetch</emphasis> is used with <emphasis>&lt;src&gt;:&lt;dst&gt;</emphasis> refspec, it may
+refuse to update the local branch as discussed
+in the <emphasis>&lt;refspec&gt;</emphasis> part of the <xref linkend="git-fetch(1)" />
+documentation.
+This option overrides that check.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--k
+<emphasis>-k</emphasis>
 </term>
 <term>
---keep
+<emphasis>--keep</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -676,7 +759,7 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---prefetch
+<emphasis>--prefetch</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -688,20 +771,20 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--p
+<emphasis>-p</emphasis>
 </term>
 <term>
---prune
+<emphasis>--prune</emphasis>
 </term>
 <listitem>
 <simpara>
         Before fetching, remove any remote-tracking references that no
         longer exist on the remote.  Tags are not subject to pruning
         if they are fetched only because of the default tag
-        auto-following or due to a --tags option.  However, if tags
+        auto-following or due to a <emphasis>--tags</emphasis> option.  However, if tags
         are fetched due to an explicit refspec (either on the command
         line or in the remote configuration, for example if the remote
-        was cloned with the --mirror option), then they are also
+        was cloned with the <emphasis>--mirror</emphasis> option), then they are also
         subject to pruning. Supplying <emphasis>--prune-tags</emphasis> is a shorthand for
         providing the tag refspec.
 </simpara>
@@ -709,28 +792,28 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-tags
+<emphasis>--no-tags</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, tags that point at objects that are downloaded
         from the remote repository are fetched and stored locally.
         This option disables this automatic tag following. The default
-        behavior for a remote may be specified with the remote.&lt;name&gt;.tagOpt
+        behavior for a remote may be specified with the <emphasis>remote.&lt;name&gt;.tagOpt</emphasis>
         setting. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---refmap=&lt;refspec&gt;
+<emphasis>--refmap=&lt;refspec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         When fetching refs listed on the command line, use the
         specified refspec (can be given more than once) to map the
         refs to remote-tracking branches, instead of the values of
-        <emphasis>remote.*.fetch</emphasis> configuration variables for the remote
+        <emphasis>remote.&lt;name&gt;.fetch</emphasis> configuration variables for the remote
         repository.  Providing an empty <emphasis>&lt;refspec&gt;</emphasis> to the
         <emphasis>--refmap</emphasis> option causes Git to ignore the configured
         refspecs and rely entirely on the refspecs supplied as
@@ -741,17 +824,17 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--t
+<emphasis>-t</emphasis>
 </term>
 <term>
---tags
+<emphasis>--tags</emphasis>
 </term>
 <listitem>
 <simpara>
         Fetch all tags from the remote (i.e., fetch remote tags
         <emphasis>refs/tags/*</emphasis> into local tags with the same name), in addition
         to whatever else would otherwise be fetched.  Using this
-        option alone does not subject tags to pruning, even if --prune
+        option alone does not subject tags to pruning, even if <emphasis>--prune</emphasis>
         is used (though tags may be pruned anyway if they are also the
         destination of an explicit refspec; see <emphasis>--prune</emphasis>).
 </simpara>
@@ -759,14 +842,14 @@ precedence over the <emphasis>fetch.output</emphasis> config option.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--j
+<emphasis>-j &lt;n&gt;</emphasis>
 </term>
 <term>
---jobs=&lt;n&gt;
+<emphasis>--jobs=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Number of parallel children to be used for all forms of fetching.
+        Parallelize all forms of fetching up to <emphasis>&lt;n&gt;</emphasis> jobs at a time.
 </simpara>
 <simpara>If the <emphasis>--multiple</emphasis> option was specified, the different remotes will be fetched
 in parallel. If multiple submodules are fetched, they will be fetched in
@@ -778,7 +861,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---set-upstream
+<emphasis>--set-upstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -792,7 +875,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---upload-pack &lt;upload-pack&gt;
+<emphasis>--upload-pack &lt;upload-pack&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -805,12 +888,12 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <listitem>
 <simpara>
         Progress status is reported on the standard error stream
-        by default when it is attached to a terminal, unless -q
+        by default when it is attached to a terminal, unless <emphasis>-q</emphasis>
         is specified. This flag forces progress status even if the
         standard error stream is not directed to a terminal.
 </simpara>
@@ -818,15 +901,15 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--o &lt;option&gt;
+<emphasis>-o &lt;option&gt;</emphasis>
 </term>
 <term>
---server-option=&lt;option&gt;
+<emphasis>--server-option=&lt;option&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Transmit the given string to the server when communicating using
-        protocol version 2.  The given string must not contain a NUL or LF
+        protocol version 2.  The given string must not contain a <emphasis>NUL</emphasis> or <emphasis>LF</emphasis>
         character.  The server's handling of server options, including
         unknown ones, is server-specific.
         When multiple <emphasis>--server-option=&lt;option&gt;</emphasis> are given, they are all
@@ -839,37 +922,37 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---show-forced-updates
+<emphasis>--show-forced-updates</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, git checks if a branch is force-updated during
-        fetch. This can be disabled through fetch.showForcedUpdates, but
-        the --show-forced-updates option guarantees this check occurs.
+        fetch. This can be disabled through <emphasis>fetch.showForcedUpdates</emphasis>, but
+        the <emphasis>--show-forced-updates</emphasis> option guarantees this check occurs.
         See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-show-forced-updates
+<emphasis>--no-show-forced-updates</emphasis>
 </term>
 <listitem>
 <simpara>
         By default, git checks if a branch is force-updated during
-        fetch. Pass --no-show-forced-updates or set fetch.showForcedUpdates
+        fetch. Pass <emphasis>--no-show-forced-updates</emphasis> or set <emphasis>fetch.showForcedUpdates</emphasis>
         to false to skip this check for performance reasons. If used during
-        <emphasis>git-pull</emphasis> the --ff-only option will still check for forced updates
+        <emphasis>git-pull</emphasis> the <emphasis>--ff-only</emphasis> option will still check for forced updates
         before attempting a fast-forward update. See <xref linkend="git-config(1)" />.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--4
+<emphasis>-4</emphasis>
 </term>
 <term>
---ipv4
+<emphasis>--ipv4</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -879,10 +962,10 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--6
+<emphasis>-6</emphasis>
 </term>
 <term>
---ipv6
+<emphasis>--ipv6</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -892,7 +975,7 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;repository&gt;
+<emphasis>&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -905,27 +988,27 @@ default fetches are performed sequentially, not in parallel.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;refspec&gt;
+<emphasis>&lt;refspec&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Specifies which refs to fetch and which local refs to update.
-        When no &lt;refspec&gt;s appear on the command line, the refs to fetch
+        When no <emphasis>&lt;refspec&gt;</emphasis>s appear on the command line, the refs to fetch
         are read from <emphasis>remote.&lt;repository&gt;.fetch</emphasis> variables instead
         (see the section "CONFIGURED REMOTE-TRACKING BRANCHES"
         in <xref linkend="git-fetch(1)" />).
 </simpara>
-<simpara>The format of a &lt;refspec&gt; parameter is an optional plus
-<emphasis>+</emphasis>, followed by the source &lt;src&gt;, followed
-by a colon <emphasis>:</emphasis>, followed by the destination &lt;dst&gt;.
-The colon can be omitted when &lt;dst&gt; is empty.  &lt;src&gt; is
+<simpara id="git-pull(1)_fetch-refspec">The format of a <emphasis>&lt;refspec&gt;</emphasis> parameter is an optional plus
+<emphasis>+</emphasis>, followed by the source <emphasis>&lt;src&gt;</emphasis>, followed
+by a colon <emphasis>:</emphasis>, followed by the destination <emphasis>&lt;dst&gt;</emphasis>.
+The colon can be omitted when <emphasis>&lt;dst&gt;</emphasis> is empty.  <emphasis>&lt;src&gt;</emphasis> is
 typically a ref, or a glob pattern with a single <emphasis>*</emphasis> that is used
 to match a set of refs, but it can also be a fully spelled hex object
 name.</simpara>
-<simpara>A &lt;refspec&gt; may contain a <emphasis>*</emphasis> in its &lt;src&gt; to indicate a simple pattern
+<simpara>A <emphasis>&lt;refspec&gt;</emphasis> may contain a <emphasis>*</emphasis> in its <emphasis>&lt;src&gt;</emphasis> to indicate a simple pattern
 match. Such a refspec functions like a glob that matches any ref with the
-pattern. A pattern &lt;refspec&gt; must have one and only one <emphasis>*</emphasis> in both the &lt;src&gt; and
-&lt;dst&gt;. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
+pattern. A pattern <emphasis>&lt;refspec&gt;</emphasis> must have one and only one <emphasis>*</emphasis> in both the <emphasis>&lt;src&gt;</emphasis> and
+<emphasis>&lt;dst&gt;</emphasis>. It will map refs to the destination by replacing the <emphasis>*</emphasis> with the
 contents matched from the source.</simpara>
 <simpara>If a refspec is prefixed by <emphasis>^</emphasis>, it will be interpreted as a negative
 refspec. Rather than specifying which refs to fetch or which local refs to
@@ -934,12 +1017,12 @@ considered to match if it matches at least one positive refspec, and does
 not match any negative refspec. Negative refspecs can be useful to restrict
 the scope of a pattern refspec so that it will not include specific refs.
 Negative refspecs can themselves be pattern refspecs. However, they may only
-contain a &lt;src&gt; and do not specify a &lt;dst&gt;. Fully spelled out hex object
+contain a <emphasis>&lt;src&gt;</emphasis> and do not specify a <emphasis>&lt;dst&gt;</emphasis>. Fully spelled out hex object
 names are also not supported.</simpara>
 <simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>;
 it requests fetching everything up to the given tag.</simpara>
-<simpara>The remote ref that matches &lt;src&gt;
-is fetched, and if &lt;dst&gt; is not an empty string, an attempt
+<simpara>The remote ref that matches <emphasis>&lt;src&gt;</emphasis>
+is fetched, and if <emphasis>&lt;dst&gt;</emphasis> is not an empty string, an attempt
 is made to update the local ref that matches it.</simpara>
 <simpara>Whether that update is allowed without <emphasis>--force</emphasis> depends on the ref
 namespace it's being fetched to, the type of object being fetched, and
@@ -978,19 +1061,19 @@ will be needed for such branches.  There is no way to
 determine or declare that a branch will be made available
 in a repository with this behavior; the pulling user simply
 must know this is the expected usage pattern for a branch.</simpara></note>
-<note><simpara>There is a difference between listing multiple &lt;refspec&gt;
+<note><simpara>There is a difference between listing multiple <emphasis>&lt;refspec&gt;</emphasis>
 directly on <emphasis>git pull</emphasis> command line and having multiple
 <emphasis>remote.&lt;repository&gt;.fetch</emphasis> entries in your configuration
-for a &lt;repository&gt; and running a
-<emphasis>git pull</emphasis> command without any explicit &lt;refspec&gt; parameters.
-&lt;refspec&gt;s listed explicitly on the command line are always
+for a <emphasis>&lt;repository&gt;</emphasis> and running a
+<emphasis>git pull</emphasis> command without any explicit <emphasis>&lt;refspec&gt;</emphasis> parameters.
+<emphasis>&lt;refspec&gt;</emphasis>s listed explicitly on the command line are always
 merged into the current branch after fetching.  In other words,
 if you list more than one remote ref, <emphasis>git pull</emphasis> will create
 an Octopus merge.  On the other hand, if you do not list any
-explicit &lt;refspec&gt; parameter on the command line, <emphasis>git pull</emphasis>
-will fetch all the &lt;refspec&gt;s it finds in the
+explicit <emphasis>&lt;refspec&gt;</emphasis> parameter on the command line, <emphasis>git pull</emphasis>
+will fetch all the <emphasis>&lt;refspec&gt;</emphasis>s it finds in the
 <emphasis>remote.&lt;repository&gt;.fetch</emphasis> configuration and merge
-only the first &lt;refspec&gt; found into the current branch.
+only the first <emphasis>&lt;refspec&gt;</emphasis> found into the current branch.
 This is because making an
 Octopus from remote refs is rarely done, while keeping track
 of multiple remote heads in one-go by fetching more than one
@@ -1200,6 +1283,68 @@ refspecs, if you don't provide one on the command line.
 <simpara>git push uses:</simpara>
 <screen>        HEAD:refs/heads/&lt;head&gt;</screen>
 </section>
+</simplesect>
+<simplesect id="git-pull(1)_UPSTREAM-BRANCHES">
+<title>UPSTREAM BRANCHES</title>
+<simpara>Branches in Git can optionally have an upstream remote branch.
+Git defaults to using the upstream branch for remote operations, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+It's the default for <emphasis>git pull</emphasis> or <emphasis>git fetch</emphasis> with no arguments.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+It's the default for <emphasis>git push</emphasis> with no arguments, with some exceptions.
+  For example, you can use the <emphasis>branch.&lt;name&gt;.pushRemote</emphasis> option to push
+  to a different remote than you pull from, and by default with
+  <emphasis>push.default=simple</emphasis> the upstream branch you configure must have
+  the same name.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Various commands, including <emphasis>git checkout</emphasis> and <emphasis>git status</emphasis>, will
+  show you how many commits have been added to your current branch and
+  the upstream since you forked from it, for example "Your branch and
+  <emphasis>origin/main</emphasis> have diverged, and have 2 and 3 different commits each
+  respectively".
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The upstream is stored in <emphasis>.git/config</emphasis>, in the "<emphasis>remote</emphasis>" and "<emphasis>merge</emphasis>"
+fields. For example, if <emphasis>main</emphasis>'s upstream is <emphasis>origin/main</emphasis>:</simpara>
+<screen>[branch "main"]
+   remote = origin
+   merge = refs/heads/main</screen>
+<simpara>You can set an upstream branch explicitly with
+<emphasis>git push --set-upstream &lt;remote&gt; &lt;branch&gt;</emphasis>
+but Git will often automatically set the upstream for you, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When you clone a repository, Git will automatically set the upstream
+  for the default branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If you have the <emphasis>push.autoSetupRemote</emphasis> configuration option set,
+  <emphasis>git push</emphasis> will automatically set the upstream the first time you push
+  a branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Checking out a remote-tracking branch with <emphasis>git checkout &lt;branch&gt;</emphasis>
+  will automatically create a local branch with that name and set
+  the upstream to the remote branch.
+</simpara>
+</listitem>
+</itemizedlist>
+<note><simpara>Upstream branches are sometimes referred to as "tracking information",
+as in "set the branch's tracking information".</simpara></note>
 </simplesect>
 <simplesect id="git-pull(1)__merge_strategies">
 <title>MERGE STRATEGIES</title>
@@ -1498,7 +1643,7 @@ are considered when performing a merge, not the individual commits.  The merge
 algorithm therefore considers the reverted change as no change at all, and
 substitutes the changed version instead.</simpara>
 </simplesect>
-<simplesect id="git-pull(1)__default_behaviour">
+<simplesect id="git-pull(1)_DEFAULT-BEHAVIOUR">
 <title>DEFAULT BEHAVIOUR</title>
 <simpara>Often people use <emphasis>git pull</emphasis> without giving any parameter.
 Traditionally, this has been equivalent to saying <emphasis>git pull
@@ -1563,16 +1708,16 @@ Update the remote-tracking branches for the repository
 </simpara>
 <screen>$ git pull
 $ git pull origin</screen>
-<simpara>Normally the branch merged in is the HEAD of the remote repository,
-but the choice is determined by the branch.&lt;name&gt;.remote and
-branch.&lt;name&gt;.merge options; see <xref linkend="git-config(1)" /> for details.</simpara>
+<simpara>Normally the branch merged in is the <emphasis>HEAD</emphasis> of the remote repository,
+but the choice is determined by the <emphasis>branch.&lt;name&gt;.remote</emphasis> and
+<emphasis>branch.&lt;name&gt;.merge</emphasis> options; see <xref linkend="git-config(1)" /> for details.</simpara>
 </listitem>
 <listitem>
 <simpara>
 Merge into the current branch the remote branch <emphasis>next</emphasis>:
 </simpara>
 <screen>$ git pull origin next</screen>
-<simpara>This leaves a copy of <emphasis>next</emphasis> temporarily in FETCH_HEAD, and
+<simpara>This leaves a copy of <emphasis>next</emphasis> temporarily in <emphasis>FETCH_HEAD</emphasis>, and
 updates the remote-tracking branch <emphasis>origin/next</emphasis>.
 The same can be done by invoking fetch and merge:</simpara>
 <screen>$ git fetch origin
@@ -1622,7 +1767,7 @@ As in #1, the attacker chooses an object ID X to steal. The victim sends
 </simplesect>
 <simplesect id="git-pull(1)__bugs">
 <title>BUGS</title>
-<simpara>Using --recurse-submodules can only fetch new commits in already checked
+<simpara>Using <emphasis>--recurse-submodules</emphasis> can only fetch new commits in already checked
 out submodules right now. When e.g. upstream added a new submodule in the
 just fetched commits of the superproject the submodule itself cannot be
 fetched, making it impossible to check out that submodule later without

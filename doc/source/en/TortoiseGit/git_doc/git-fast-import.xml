@@ -89,10 +89,70 @@ the frontend program in use.</simpara>
         currently impacts only the <emphasis>export-marks</emphasis>, <emphasis>import-marks</emphasis>, and
         <emphasis>import-marks-if-exists</emphasis> feature commands.
 </simpara>
-<literallayout class="monospaced">Only enable this option if you trust the program generating the
+<simpara>Only enable this option if you trust the program generating the
 fast-import stream! This option is enabled automatically for
-remote-helpers that use the `import` capability, as they are
-already trusted to run their own code.</literallayout>
+remote-helpers that use the <emphasis>import</emphasis> capability, as they are
+already trusted to run their own code.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--signed-tags=(verbatim|warn-verbatim|warn-strip|strip|abort)</emphasis>
+</term>
+<listitem>
+<simpara>
+        Specify how to handle signed tags. Behaves in the same way as
+        the <emphasis>--signed-commits=&lt;mode&gt;</emphasis> below, except that the
+        <emphasis>strip-if-invalid</emphasis> mode is not yet supported. Like for signed
+        commits, the default mode is <emphasis>verbatim</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--signed-commits=&lt;mode&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Specify how to handle signed commits. The following &lt;mode&gt;s
+        are supported:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>verbatim</emphasis>, which is the default, will silently import commit
+  signatures.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>warn-verbatim</emphasis> will import them, but will display a warning.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>abort</emphasis> will make this program die when encountering a signed
+  commit.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>strip</emphasis> will silently make the commits unsigned.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>warn-strip</emphasis> will make them unsigned, but will display a warning.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>strip-if-invalid</emphasis> will check signatures and, if they are invalid,
+  will strip them and display a warning. The validation is performed
+  in the same way as <xref linkend="git-verify-commit(1)" /> does it.
+</simpara>
+</listitem>
+</itemizedlist>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -187,7 +247,10 @@ already trusted to run their own code.</literallayout>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]relative-marks
+--relative-marks
+</term>
+<term>
+--no-relative-marks
 </term>
 <listitem>
 <simpara>
@@ -318,7 +381,7 @@ amount of memory usage and processing time.  Assuming the frontend
 is able to keep up with fast-import and feed it a constant stream of data,
 import times for projects holding 10+ years of history and containing
 100,000+ individual commits are generally completed in just 1-2
-hours on quite modest (~$2,000 USD) hardware.</simpara>
+hours on quite modest hardware (~$2,000 USD in 2007).</simpara>
 <simpara>Most bottlenecks appear to be in foreign source data access (the
 source just cannot extract revisions fast enough) or disk IO (fast-import
 writes as fast as the disk will take the data).  Imports will run
@@ -673,7 +736,7 @@ change to the project.</simpara>
         original-oid?
         ('author' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF)?
         'committer' (SP &lt;name&gt;)? SP LT &lt;email&gt; GT SP &lt;when&gt; LF
-        ('gpgsig' SP &lt;alg&gt; LF data)?
+        ('gpgsig' SP &lt;algo&gt; SP &lt;format&gt; LF data)?
         ('encoding' SP &lt;encoding&gt; LF)?
         data
         ('from' SP &lt;commit-ish&gt; LF)?
@@ -736,11 +799,39 @@ their syntax.</simpara>
 <section id="git-fast-import(1)__emphasis_gpgsig_emphasis">
 <title><emphasis>gpgsig</emphasis></title>
 <simpara>The optional <emphasis>gpgsig</emphasis> command is used to include a PGP/GPG signature
-that signs the commit data.</simpara>
-<simpara>Here &lt;alg&gt; specifies which hashing algorithm is used for this
-signature, either <emphasis>sha1</emphasis> or <emphasis>sha256</emphasis>.</simpara>
-<note><simpara>This is highly experimental and the format of the data stream may
-change in the future without compatibility guarantees.</simpara></note>
+or other cryptographic signature that signs the commit data.</simpara>
+<literallayout class="monospaced">        'gpgsig' SP &lt;git-hash-algo&gt; SP &lt;signature-format&gt; LF data</literallayout>
+<simpara>The <emphasis>gpgsig</emphasis> command takes two arguments:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+<emphasis>&lt;git-hash-algo&gt;</emphasis> specifies which Git object format this signature
+  applies to, either <emphasis>sha1</emphasis> or <emphasis>sha256</emphasis>. This allows to know which
+  representation of the commit was signed (the SHA-1 or the SHA-256
+  version) which helps with both signature verification and
+  interoperability between repos with different hash functions.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>&lt;signature-format&gt;</emphasis> specifies the type of signature, such as
+  <emphasis>openpgp</emphasis>, <emphasis>x509</emphasis>, <emphasis>ssh</emphasis>, or <emphasis>unknown</emphasis>. This is a convenience for
+  tools that process the stream, so they don't have to parse the ASCII
+  armor to identify the signature type.
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>A commit may have at most one signature for the SHA-1 object format
+(stored in the "gpgsig" header) and one for the SHA-256 object format
+(stored in the "gpgsig-sha256" header).</simpara>
+<simpara>See below for a detailed description of the <emphasis>data</emphasis> command which
+contains the raw signature data.</simpara>
+<simpara>Signatures are not yet checked in the current implementation
+though. (Already setting the <emphasis>extensions.compatObjectFormat</emphasis>
+configuration option might help with verifying both SHA-1 and SHA-256
+object format signatures when it will be implemented.)</simpara>
+<note><simpara>This is highly experimental and the format of the <emphasis>gpgsig</emphasis>
+command may change in the future without compatibility guarantees.</simpara></note>
 </section>
 <section id="git-fast-import(1)__emphasis_encoding_emphasis">
 <title><emphasis>encoding</emphasis></title>
@@ -844,7 +935,7 @@ External data format
 <literallayout class="monospaced">        'M' SP &lt;mode&gt; SP &lt;dataref&gt; SP &lt;path&gt; LF</literallayout>
 <simpara>Here usually <emphasis>&lt;dataref&gt;</emphasis> must be either a mark reference (<emphasis>:&lt;idnum&gt;</emphasis>)
 set by a prior <emphasis>blob</emphasis> command, or a full 40-byte SHA-1 of an
-existing Git blob object.  If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>040000`</emphasis> then
+existing Git blob object.  If <emphasis>&lt;mode&gt;</emphasis> is <emphasis>040000</emphasis> then
 <emphasis>&lt;dataref&gt;</emphasis> must be the full 40-byte SHA-1 of an existing
 Git tree object or a mark reference set with <emphasis>--import-marks</emphasis>.</simpara>
 </listitem>

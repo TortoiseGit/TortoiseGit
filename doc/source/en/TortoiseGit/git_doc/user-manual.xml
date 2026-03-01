@@ -3241,7 +3241,7 @@ an entry in <emphasis>BUILTIN_OBJECTS</emphasis> in the <emphasis>Makefile</emph
 </listitem>
 </itemizedlist>
 <simpara>Sometimes, more than one builtin is contained in one source file.  For
-example, <emphasis>cmd_whatchanged()</emphasis> and <emphasis>cmd_log()</emphasis> both reside in <emphasis>builtin/log.c</emphasis>,
+example, <emphasis>cmd_show()</emphasis> and <emphasis>cmd_log()</emphasis> both reside in <emphasis>builtin/log.c</emphasis>,
 since they share quite a bit of code.  In that case, the commands which are
 <emphasis>not</emphasis> named like the <emphasis>.c</emphasis> file in which they live have to be listed in
 <emphasis>BUILT_INS</emphasis> in the <emphasis>Makefile</emphasis>.</simpara>
@@ -3271,7 +3271,7 @@ was around even in the initial commit (it literally went only through
 </itemizedlist>
 <simpara>So, look into <emphasis>builtin/cat-file.c</emphasis>, search for <emphasis>cmd_cat_file()</emphasis> and look what
 it does.</simpara>
-<screen>        git_config(git_default_config);
+<screen>        repo_config(the_repository, git_default_config);
         if (argc != 3)
                 usage("git cat-file [-t|-s|-e|-p|&lt;type&gt;] &lt;sha1&gt;");
         if (get_sha1(argv[2], sha1))
@@ -3303,9 +3303,9 @@ the variable <emphasis>sha1</emphasis> in the function signature of <emphasis>ge
 <simpara>You will see both of these things throughout the code.</simpara>
 <simpara>Now, for the meat:</simpara>
 <screen>        case 0:
-                buf = read_object_with_reference(sha1, argv[1], &amp;size, NULL);</screen>
+                buf = odb_read_object_peeled(r-&gt;objects, sha1, argv[1], &amp;size, NULL);</screen>
 <simpara>This is how you read a blob (actually, not only a blob, but any type of
-object).  To know how the function <emphasis>read_object_with_reference()</emphasis> actually
+object).  To know how the function <emphasis>odb_read_object_peeled()</emphasis> actually
 works, find the source code for it (something like <emphasis>git grep
 read_object_with | grep ":[a-z]"</emphasis> in the Git repository), and read
 the source.</simpara>
@@ -3908,11 +3908,11 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
-<anchor id="user-manual_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier (oid)
+<anchor id="user-manual_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier, object ID, oid
 </term>
 <listitem>
 <simpara>
-        Synonym for <link linkend="user-manual_def_object_name">object name</link>.
+        Synonyms for <link linkend="user-manual_def_object_name">object name</link>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -4127,9 +4127,8 @@ full pathname may have special meaning:</simpara>
 <simpara>
 A leading "<emphasis>**</emphasis>" followed by a slash means match in all
    directories. For example, "<emphasis>**/foo</emphasis>" matches file or directory
-   "<emphasis>foo</emphasis>" anywhere, the same as pattern "<emphasis>foo</emphasis>". "<emphasis>**/foo/bar</emphasis>"
-   matches file or directory "<emphasis>bar</emphasis>" anywhere that is directly
-   under directory "<emphasis>foo</emphasis>".
+   "<emphasis>foo</emphasis>" anywhere. "<emphasis>**/foo/bar</emphasis>" matches file or directory "<emphasis>bar</emphasis>"
+   anywhere that is directly under directory "<emphasis>foo</emphasis>".
 </simpara>
 </listitem>
 <listitem>

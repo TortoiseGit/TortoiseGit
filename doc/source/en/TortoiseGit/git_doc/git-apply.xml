@@ -131,16 +131,19 @@ and does not require them to be in a Git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+-N
+</term>
+<term>
 --intent-to-add
 </term>
 <listitem>
 <simpara>
         When applying the patch only to the working tree, mark new
         files to be added to the index later (see <emphasis>--intent-to-add</emphasis>
-        option in <xref linkend="git-add(1)" />). This option is ignored unless
-        running in a Git repository and <emphasis>--index</emphasis> is not specified.
-        Note that <emphasis>--index</emphasis> could be implied by other options such
-        as <emphasis>--cached</emphasis> or <emphasis>--3way</emphasis>.
+        option in <xref linkend="git-add(1)" />). This option is ignored if
+        <emphasis>--index</emphasis> or <emphasis>--cached</emphasis> are used, and has no effect outside a Git
+        repository. Note that <emphasis>--index</emphasis> could be implied by other options
+        such as <emphasis>--3way</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

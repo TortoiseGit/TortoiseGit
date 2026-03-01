@@ -17,8 +17,8 @@
 <code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] <code>--detach</code> [<emphasis>&lt;branch&gt;</emphasis>]
 <code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] [<code>--detach</code>] <emphasis>&lt;commit&gt;</emphasis>
 <code>git</code> <code>checkout</code> [<code>-q</code>] [<code>-f</code>] [<code>-m</code>] [[<code>-b</code>|<code>-B</code>|<code>--orphan</code>] <emphasis>&lt;new-branch&gt;</emphasis>] [<emphasis>&lt;start-point&gt;</emphasis>]
-<code>git</code> <code>checkout</code> [<code>-f</code>] <emphasis>&lt;tree-ish&gt;</emphasis> [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
-<code>git</code> <code>checkout</code> [<code>-f</code>] <emphasis>&lt;tree-ish&gt;</emphasis> <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
+<code>git</code> <code>checkout</code> <emphasis>&lt;tree-ish&gt;</emphasis> [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
+<code>git</code> <code>checkout</code> <emphasis>&lt;tree-ish&gt;</emphasis> <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
 <code>git</code> <code>checkout</code> [<code>-f</code>|<code>--ours</code>|<code>--theirs</code>|<code>-m</code>|<code>--conflict=</code><emphasis>&lt;style&gt;</emphasis>] [<code>--</code>] <emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>
 <code>git</code> <code>checkout</code> [<code>-f</code>|<code>--ours</code>|<code>--theirs</code>|<code>-m</code>|<code>--conflict=</code><emphasis>&lt;style&gt;</emphasis>] <code>--pathspec-from-file=</code><emphasis>&lt;file&gt;</emphasis> [<code>--pathspec-file-nul</code>]
 <code>git</code> <code>checkout</code> (<code>-p</code>|<code>--patch</code>) [<emphasis>&lt;tree-ish&gt;</emphasis>] [<code>--</code>] [<emphasis>&lt;pathspec&gt;</emphasis><code>&#8230;</code>]</literallayout>
@@ -26,10 +26,21 @@
 </simplesect>
 <simplesect id="git-checkout(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Updates files in the working tree to match the version in the index
-or the specified tree.  If no pathspec was given, <emphasis>git checkout</emphasis> will
-also update <emphasis>HEAD</emphasis> to set the specified branch as the current
-branch.</simpara>
+<simpara><emphasis>git checkout</emphasis> has two main modes:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+<emphasis role="strong">Switch branches</emphasis>, with <emphasis>git checkout &lt;branch&gt;</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis role="strong">Restore a different version of a file</emphasis>, for example with
+   <emphasis>git checkout &lt;commit&gt; &lt;filename&gt;</emphasis> or <emphasis>git checkout &lt;filename&gt;</emphasis>
+</simpara>
+</listitem>
+</orderedlist>
+<simpara>See ARGUMENT DISAMBIGUATION below for how Git decides which one to do.</simpara>
 <variablelist>
 <varlistentry>
 <term>
@@ -37,43 +48,45 @@ branch.</simpara>
 </term>
 <listitem>
 <simpara>
-        To prepare for working on <emphasis>&lt;branch&gt;</emphasis>, switch to it by updating
-        the index and the files in the working tree, and by pointing
-        <emphasis>HEAD</emphasis> at the branch. Local modifications to the files in the
-        working tree are kept, so that they can be committed to the
-        <emphasis>&lt;branch&gt;</emphasis>.
+        Switch to <emphasis>&lt;branch&gt;</emphasis>. This sets the current branch to <emphasis>&lt;branch&gt;</emphasis> and
+        updates the files in your working directory. The checkout will fail
+        if there are uncommitted changes to any files where <emphasis>&lt;branch&gt;</emphasis> and
+        your current commit have different content. Uncommitted changes will
+        otherwise be kept.
 </simpara>
 <simpara>If <emphasis>&lt;branch&gt;</emphasis> is not found but there does exist a tracking branch in
 exactly one remote (call it <emphasis>&lt;remote&gt;</emphasis>) with a matching name and
 <emphasis>--no-guess</emphasis> is not specified, treat as equivalent to</simpara>
 <screen>$ git checkout -b &lt;branch&gt; --track &lt;remote&gt;/&lt;branch&gt;</screen>
-<simpara>You could omit <emphasis>&lt;branch&gt;</emphasis>, in which case the command degenerates to
-"check out the current branch", which is a glorified no-op with
-rather expensive side-effects to show only the tracking information,
-if it exists, for the current branch.</simpara>
+<simpara>Running <emphasis>git checkout</emphasis> without specifying a branch has no effect except
+to print out the tracking information for the current branch.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout (-b|-B) &lt;new-branch&gt; [&lt;start-point&gt;]</emphasis>
+<emphasis>git checkout -b &lt;new-branch&gt; [&lt;start-point&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Specifying <emphasis>-b</emphasis> causes a new branch to be created as if
-        <xref linkend="git-branch(1)" /> were called and then checked out.  In
-        this case you can use the <emphasis>--track</emphasis> or <emphasis>--no-track</emphasis> options,
-        which will be passed to <emphasis>git branch</emphasis>.  As a convenience,
-        <emphasis>--track</emphasis> without <emphasis>-b</emphasis> implies branch creation; see the
-        description of <emphasis>--track</emphasis> below.
+        Create a new branch named <emphasis>&lt;new-branch&gt;</emphasis>, start it at <emphasis>&lt;start-point&gt;</emphasis>
+        (defaults to the current commit), and check out the new branch.
+        You can use the <emphasis>--track</emphasis> or <emphasis>--no-track</emphasis> options to set the branch's
+        upstream tracking information.
 </simpara>
-<simpara>If <emphasis>-B</emphasis> is given, <emphasis>&lt;new-branch&gt;</emphasis> is created if it doesn't exist; otherwise, it
-is reset. This is the transactional equivalent of</simpara>
-<screen>$ git branch -f &lt;branch&gt; [&lt;start-point&gt;]
-$ git checkout &lt;branch&gt;</screen>
-<simpara>that is to say, the branch is not reset/created unless "git checkout" is
-successful (e.g., when the branch is in use in another worktree, not
-just the current branch stays the same, but the branch is not reset to
-the start-point, either).</simpara>
+<simpara>This will fail if there's an error checking out <emphasis>&lt;new-branch&gt;</emphasis>, for
+example if checking out the <emphasis>&lt;start-point&gt;</emphasis> commit would overwrite your
+uncommitted changes.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git checkout -B &lt;branch&gt; [&lt;start-point&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        The same as <emphasis>-b</emphasis>, except that if the branch already exists it
+        resets <emphasis>&lt;branch&gt;</emphasis> to the start point instead of failing.
+</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -85,41 +98,51 @@ the start-point, either).</simpara>
 </term>
 <listitem>
 <simpara>
-        Prepare to work on top of <emphasis>&lt;commit&gt;</emphasis>, by detaching <emphasis>HEAD</emphasis> at it
-        (see "DETACHED HEAD" section), and updating the index and the
-        files in the working tree.  Local modifications to the files
-        in the working tree are kept, so that the resulting working
-        tree will be the state recorded in the commit plus the local
-        modifications.
+        The same as <emphasis>git checkout &lt;branch&gt;</emphasis>, except that instead of pointing
+        <emphasis>HEAD</emphasis> at the branch, it points <emphasis>HEAD</emphasis> at the commit ID.
+        See the "DETACHED HEAD" section below for more.
 </simpara>
-<simpara>When the <emphasis>&lt;commit&gt;</emphasis> argument is a branch name, the <emphasis>--detach</emphasis> option can
-be used to detach <emphasis>HEAD</emphasis> at the tip of the branch (<emphasis>git checkout
-&lt;branch&gt;</emphasis> would check out that branch without detaching <emphasis>HEAD</emphasis>).</simpara>
 <simpara>Omitting <emphasis>&lt;branch&gt;</emphasis> detaches <emphasis>HEAD</emphasis> at the tip of the current branch.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] [--] &lt;pathspec&gt;...</emphasis>
+<emphasis>git checkout &lt;tree-ish&gt; [--] &lt;pathspec&gt;...</emphasis>
 </term>
 <term>
-<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [&lt;tree-ish&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]</emphasis>
+<emphasis>git checkout &lt;tree-ish&gt; --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Overwrite the contents of the files that match the pathspec.
-        When the <emphasis>&lt;tree-ish&gt;</emphasis> (most often a commit) is not given,
-        overwrite working tree with the contents in the index.
-        When the <emphasis>&lt;tree-ish&gt;</emphasis> is given, overwrite both the index and
-        the working tree with the contents at the <emphasis>&lt;tree-ish&gt;</emphasis>.
+        Replace the specified files and/or directories with the version from
+        the given commit or tree and add them to the index
+        (also known as "staging area").
 </simpara>
-<simpara>The index may contain unmerged entries because of a previous failed merge.
-By default, if you try to check out such an entry from the index, the
-checkout operation will fail and nothing will be checked out.
-Using <emphasis>-f</emphasis> will ignore these unmerged entries.  The contents from a
-specific side of the merge can be checked out of the index by
-using <emphasis>--ours</emphasis> or <emphasis>--theirs</emphasis>.  With <emphasis>-m</emphasis>, changes made to the working tree
-file can be discarded to re-create the original conflicted merge result.</simpara>
+<simpara>For example, <emphasis>git checkout main file.txt</emphasis> will replace <emphasis>file.txt</emphasis>
+with the version from <emphasis>main</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] [--] &lt;pathspec&gt;...</emphasis>
+</term>
+<term>
+<emphasis>git checkout [-f|--ours|--theirs|-m|--conflict=&lt;style&gt;] --pathspec-from-file=&lt;file&gt; [--pathspec-file-nul]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Replace the specified files and/or directories with the version from
+        the index.
+</simpara>
+<simpara>For example, if you check out a commit, edit <emphasis>file.txt</emphasis>, and then
+decide those changes were a mistake, <emphasis>git checkout file.txt</emphasis> will
+discard any unstaged changes to <emphasis>file.txt</emphasis>.</simpara>
+<simpara>This will fail if the file has a merge conflict and you haven't yet run
+<emphasis>git add file.txt</emphasis> (or something equivalent) to mark it as resolved.
+You can use <emphasis>-f</emphasis> to ignore the unmerged files instead of failing, use
+<emphasis>--ours</emphasis> or <emphasis>--theirs</emphasis> to replace them with the version from a specific
+side of the merge, or use <emphasis>-m</emphasis> to replace them with the original
+conflicted merge result.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -128,7 +151,7 @@ file can be discarded to re-create the original conflicted merge result.</simpar
 </term>
 <listitem>
 <simpara>
-        This is similar to the previous mode, but lets you use the
+        This is similar to the previous two modes, but lets you use the
         interactive interface to show the "diff" output and choose which
         hunks to use in the result.  See below for the description of
         <emphasis>--patch</emphasis> option.
@@ -232,11 +255,8 @@ of it").</simpara>
 </term>
 <listitem>
 <simpara>
-        Creates the branch <emphasis>&lt;new-branch&gt;</emphasis>, start it at <emphasis>&lt;start-point&gt;</emphasis>;
-        if it already exists, then reset it to <emphasis>&lt;start-point&gt;</emphasis>. And then
-        check the resulting branch out.  This is equivalent to running
-        <emphasis>git branch</emphasis> with <emphasis>-f</emphasis> followed by <emphasis>git checkout</emphasis> of that branch;
-        see <xref linkend="git-branch(1)" /> for details.
+        The same as <emphasis>-b</emphasis>, except that if the branch already exists it
+        resets <emphasis>&lt;branch&gt;</emphasis> to the start point instead of failing.
 </simpara>
 </listitem>
 </varlistentry>
@@ -250,7 +270,8 @@ of it").</simpara>
 <listitem>
 <simpara>
         When creating a new branch, set up "upstream" configuration. See
-        <emphasis>--track</emphasis> in <xref linkend="git-branch(1)" /> for details.
+        <emphasis>--track</emphasis> in <xref linkend="git-branch(1)" /> for details. As a convenience,
+        --track without -b implies branch creation.
 </simpara>
 <simpara>If no <emphasis>-b</emphasis> option is given, the name of the new branch will be
 derived from the remote-tracking branch, by looking at the local part of
@@ -435,6 +456,33 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
+<emphasis>-U&lt;n&gt;</emphasis>
+</term>
+<term>
+<emphasis>--unified=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context. Defaults to <emphasis>diff.context</emphasis>
+        or 3 if the config option is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--inter-hunk-context=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
+        of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <emphasis>--ignore-other-worktrees</emphasis>
 </term>
 <listitem>
@@ -526,7 +574,7 @@ section of <xref linkend="git-add(1)" /> to learn how to operate the <emphasis>-
 </varlistentry>
 <varlistentry>
 <term>
-&lt;branch&gt;
+<emphasis>&lt;branch&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -722,14 +770,14 @@ $ git log -g -2 HEAD</screen>
 </simplesect>
 <simplesect id="git-checkout(1)__argument_disambiguation">
 <title>ARGUMENT DISAMBIGUATION</title>
-<simpara>When there is only one argument given and it is not <emphasis>--</emphasis> (e.g. <emphasis>git
-checkout abc</emphasis>), and when the argument is both a valid <emphasis>&lt;tree-ish&gt;</emphasis>
-(e.g. a branch <emphasis>abc</emphasis> exists) and a valid <emphasis>&lt;pathspec&gt;</emphasis> (e.g. a file
-or a directory whose name is "abc" exists), Git would usually ask
-you to disambiguate.  Because checking out a branch is so common an
-operation, however, <emphasis>git checkout abc</emphasis> takes "abc" as a <emphasis>&lt;tree-ish&gt;</emphasis>
-in such a situation.  Use <emphasis>git checkout -- &lt;pathspec&gt;</emphasis> if you want
-to checkout these paths out of the index.</simpara>
+<simpara>When you run <emphasis>git checkout &lt;something&gt;</emphasis>, Git tries to guess whether
+<emphasis>&lt;something&gt;</emphasis> is intended to be a branch, a commit, or a set of file(s),
+and then either switches to that branch or commit, or restores the
+specified files.</simpara>
+<simpara>If there's any ambiguity, Git will treat <emphasis>&lt;something&gt;</emphasis> as a branch or
+commit, but you can use the double dash <emphasis>--</emphasis> to force Git to treat the
+parameter as a list of files and/or directories, like this:</simpara>
+<screen>git checkout -- file.txt</screen>
 </simplesect>
 <simplesect id="git-checkout(1)__examples">
 <title>EXAMPLES</title>

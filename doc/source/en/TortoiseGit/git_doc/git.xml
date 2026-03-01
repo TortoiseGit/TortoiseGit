@@ -386,7 +386,8 @@ environment variable)</simpara>
         List commands by group. This is an internal/experimental
         option and may change or be removed in the future. Supported
         groups are: builtins, parseopt (builtin commands that use
-        parse-options), main (all commands in libexec directory),
+        parse-options), deprecated (deprecated builtins),
+        main (all commands in libexec directory),
         others (all other commands in <emphasis>$PATH</emphasis> that have git- prefix),
         list-&lt;category&gt; (see categories in command-list.txt),
         nohelpers (exclude helper commands), alias and config
@@ -726,7 +727,7 @@ ancillary user utilities.</simpara>
 </term>
 <listitem>
 <simpara>
-        Reset current HEAD to the specified state.
+        Set <emphasis>HEAD</emphasis> or the index to a known state.
 </simpara>
 </listitem>
 </varlistentry>
@@ -836,7 +837,7 @@ ancillary user utilities.</simpara>
 </term>
 <listitem>
 <simpara>
-        Create, list, delete or verify a tag object signed with GPG.
+        Create, list, delete or verify tags.
 </simpara>
 </listitem>
 </varlistentry>
@@ -1627,6 +1628,16 @@ repositories.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
+<xref linkend="git-last-modified(1)" />
+</term>
+<listitem>
+<simpara>
+        EXPERIMENTAL: Show when files were last modified.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
 <xref linkend="git-ls-files(1)" />
 </term>
 <listitem>
@@ -1682,6 +1693,16 @@ repositories.</simpara>
 <listitem>
 <simpara>
         Find redundant pack files.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<xref linkend="git-repo(1)" />
+</term>
+<listitem>
+<simpara>
+        Retrieve information about the repository.
 </simpara>
 </listitem>
 </varlistentry>
@@ -3014,7 +3035,7 @@ parameter, &lt;path&gt;.</simpara>
 <listitem>
 <simpara>
         A number controlling how many seconds to delay before showing
-        optional progress indicators. Defaults to 2.
+        optional progress indicators. Defaults to 1.
 </simpara>
 </listitem>
 </varlistentry>

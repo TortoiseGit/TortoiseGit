@@ -314,10 +314,10 @@ for another option.</simpara>
         Allow oids to be input from any object format that the current
         repository supports.
 </simpara>
-<literallayout class="monospaced">Specifying "sha1" translates if necessary and returns a sha1 oid.</literallayout>
-<literallayout class="monospaced">Specifying "sha256" translates if necessary and returns a sha256 oid.</literallayout>
-<literallayout class="monospaced">Specifying "storage" translates if necessary and returns an oid in
-encoded in the storage hash algorithm.</literallayout>
+<simpara>Specifying "sha1" translates if necessary and returns a sha1 oid.</simpara>
+<simpara>Specifying "sha256" translates if necessary and returns a sha256 oid.</simpara>
+<simpara>Specifying "storage" translates if necessary and returns an oid in
+encoded in the storage hash algorithm.</simpara>
 </listitem>
 </varlistentry>
 </variablelist>
@@ -624,14 +624,15 @@ print a message to stderr and exit with nonzero status.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---show-object-format[=(storage|input|output)]
+--show-object-format[=(storage|input|output|compat)]
 </term>
 <listitem>
 <simpara>
-        Show the object format (hash algorithm) used for the repository
-        for storage inside the <emphasis>.git</emphasis> directory, input, or output. For
-        input, multiple algorithms may be printed, space-separated.
-        If not specified, the default is "storage".
+        Show the object format (hash algorithm) used for the repository for storage
+        inside the <emphasis>.git</emphasis> directory, input, output, or compatibility. For input,
+        multiple algorithms may be printed, space-separated. If <emphasis>compat</emphasis> is
+        requested and no compatibility algorithm is enabled, prints an empty line. If
+        not specified, the default is "storage".
 </simpara>
 </listitem>
 </varlistentry>

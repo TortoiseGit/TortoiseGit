@@ -164,7 +164,10 @@ using the various options:</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]assume-unchanged
+--assume-unchanged
+</term>
+<term>
+--no-assume-unchanged
 </term>
 <listitem>
 <simpara>
@@ -199,7 +202,10 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]skip-worktree
+--skip-worktree
+</term>
+<term>
+--no-skip-worktree
 </term>
 <listitem>
 <simpara>
@@ -212,7 +218,10 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]ignore-skip-worktree-entries
+--ignore-skip-worktree-entries
+</term>
+<term>
+--no-ignore-skip-worktree-entries
 </term>
 <listitem>
 <simpara>
@@ -223,7 +232,10 @@ you will need to handle the situation manually.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]fsmonitor-valid
+--fsmonitor-valid
+</term>
+<term>
+--no-fsmonitor-valid
 </term>
 <listitem>
 <simpara>

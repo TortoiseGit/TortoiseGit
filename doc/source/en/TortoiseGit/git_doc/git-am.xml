@@ -88,7 +88,10 @@ history without merges.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]keep-cr
+--keep-cr
+</term>
+<term>
+--no-keep-cr
 </term>
 <listitem>
 <simpara>
@@ -380,6 +383,12 @@ default.   You can use <emphasis>--no-utf8</emphasis> to override this.</simpara
         user to lie about the committer date by using the same
         value as the author date.
 </simpara>
+<warning><simpara>The history walking machinery assumes that commits have
+non-decreasing commit timestamps. You should consider if you really need
+to use this option. Then you should only use this option to override the
+committer date when applying commits on top of a base which commit is
+older (in terms of the commit date) than the oldest patch you are
+applying.</simpara></warning>
 </listitem>
 </varlistentry>
 <varlistentry>

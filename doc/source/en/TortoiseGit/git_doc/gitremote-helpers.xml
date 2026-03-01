@@ -729,12 +729,18 @@ set by Git if the remote helper has the <emphasis>option</emphasis> capability.<
 </simpara>
 </listitem>
 </varlistentry>
-</variablelist>
-<simpara><emphasis>option dry-run</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}:
+<varlistentry>
+<term>
+<emphasis>option dry-run</emphasis> {<emphasis>true</emphasis>|<emphasis>false</emphasis>}
+</term>
+<listitem>
+<simpara>
         If true, pretend the operation completed successfully,
         but don't actually change any repository data.  For most
-        helpers this only applies to the <emphasis>push</emphasis>, if supported.</simpara>
-<variablelist>
+        helpers this only applies to the <emphasis>push</emphasis>, if supported.
+</simpara>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 <emphasis>option servpath &lt;c-style-quoted-path&gt;</emphasis>

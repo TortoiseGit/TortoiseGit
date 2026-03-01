@@ -139,7 +139,10 @@ be in a separate packet, and the list must end with a flush packet.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]signed
+--signed
+</term>
+<term>
+--no-signed
 </term>
 <term>
 --signed=(true|false|if-asked)

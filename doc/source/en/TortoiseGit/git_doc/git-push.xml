@@ -13,43 +13,60 @@
 <simplesect id="git-push(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git push</emphasis> [--all | --branches | --mirror | --tags] [--follow-tags] [--atomic] [-n | --dry-run] [--receive-pack=&lt;git-receive-pack&gt;]
-           [--repo=&lt;repository&gt;] [-f | --force] [-d | --delete] [--prune] [-q | --quiet] [-v | --verbose]
-           [-u | --set-upstream] [-o &lt;string&gt; | --push-option=&lt;string&gt;]
-           [--[no-]signed|--signed=(true|false|if-asked)]
-           [--force-with-lease[=&lt;refname&gt;[:&lt;expect&gt;]] [--force-if-includes]]
-           [--no-verify] [&lt;repository&gt; [&lt;refspec&gt;&#8230;]]</literallayout>
+<literallayout><code>git</code> <code>push</code> [<code>--all</code> | <code>--branches</code> | <code>--mirror</code> | <code>--tags</code>] [<code>--follow-tags</code>] [<code>--atomic</code>] [<code>-n</code> | <code>--dry-run</code>] [<code>--receive-pack=</code><emphasis>&lt;git-receive-pack&gt;</emphasis>]
+         [<code>--repo=</code><emphasis>&lt;repository&gt;</emphasis>] [<code>-f</code> | <code>--force</code>] [<code>-d</code> | <code>--delete</code>] [<code>--prune</code>] [<code>-q</code> | <code>--quiet</code>] [<code>-v</code> | <code>--verbose</code>]
+         [<code>-u</code> | <code>--set-upstream</code>] [<code>-o</code> <emphasis>&lt;string&gt;</emphasis> | <code>--push-option=</code><emphasis>&lt;string&gt;</emphasis>]
+         [<code>--</code>[<code>no-</code>]<code>signed</code> | <code>--signed=</code>(<code>true</code>|<code>false</code>|<code>if-asked</code>)]
+         [<code>--force-with-lease</code>[<code>=</code><emphasis>&lt;refname&gt;</emphasis>[<code>:</code><emphasis>&lt;expect&gt;</emphasis>]] [<code>--force-if-includes</code>]]
+         [<code>--no-verify</code>] [<emphasis>&lt;repository&gt;</emphasis> [<emphasis>&lt;refspec&gt;</emphasis><code>&#8230;</code>]]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-push(1)__description">
 <title>DESCRIPTION</title>
-<simpara>Updates remote refs using local refs, while sending objects
-necessary to complete the given refs.</simpara>
+<simpara>Updates one or more branches, tags, or other references in a remote
+repository from your local repository, and sends all necessary data
+that isn't already on the remote.</simpara>
+<simpara>The simplest way to push is <emphasis>git push &lt;remote&gt; &lt;branch&gt;</emphasis>.
+<emphasis>git push origin main</emphasis> will push the local <emphasis>main</emphasis> branch to the <emphasis>main</emphasis>
+branch on the remote named <emphasis>origin</emphasis>.</simpara>
+<simpara>The <emphasis>&lt;repository&gt;</emphasis> argument defaults to the upstream for the current branch,
+or <emphasis>origin</emphasis> if there's no configured upstream.</simpara>
+<simpara>To decide which branches, tags, or other refs to push, Git uses
+(in order of precedence):</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+The <emphasis>&lt;refspec&gt;</emphasis> argument(s) (for example <emphasis>main</emphasis> in <emphasis>git push origin main</emphasis>)
+   or the <emphasis>--all</emphasis>, <emphasis>--mirror</emphasis>, or <emphasis>--tags</emphasis> options
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>remote.&lt;name&gt;.push</emphasis> configuration for the repository being pushed to
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The <emphasis>push.default</emphasis> configuration. The default is <emphasis>push.default=simple</emphasis>,
+   which will push to a branch with the same name as the current branch.
+   See the <link linkend="git-push(1)_CONFIGURATION">CONFIGURATION</link> section below for more on <emphasis>push.default</emphasis>.
+</simpara>
+</listitem>
+</orderedlist>
+<simpara><emphasis>git push</emphasis> may fail if you haven't set an upstream for the current branch,
+depending on what <emphasis>push.default</emphasis> is set to.
+See the <link linkend="git-push(1)_UPSTREAM-BRANCHES">UPSTREAM BRANCHES</link> section below for more
+on how to set and use upstreams.</simpara>
 <simpara>You can make interesting things happen to a repository
 every time you push into it, by setting up <emphasis>hooks</emphasis> there.  See
 documentation for <xref linkend="git-receive-pack(1)" />.</simpara>
-<simpara>When the command line does not specify where to push with the
-<emphasis>&lt;repository&gt;</emphasis> argument, <emphasis>branch.*.remote</emphasis> configuration for the
-current branch is consulted to determine where to push.  If the
-configuration is missing, it defaults to <emphasis>origin</emphasis>.</simpara>
-<simpara>When the command line does not specify what to push with <emphasis>&lt;refspec&gt;...</emphasis>
-arguments or <emphasis>--all</emphasis>, <emphasis>--mirror</emphasis>, <emphasis>--tags</emphasis> options, the command finds
-the default <emphasis>&lt;refspec&gt;</emphasis> by consulting <emphasis>remote.*.push</emphasis> configuration,
-and if it is not found, honors <emphasis>push.default</emphasis> configuration to decide
-what to push (See <xref linkend="git-config(1)" /> for the meaning of <emphasis>push.default</emphasis>).</simpara>
-<simpara>When neither the command-line nor the configuration specifies what to
-push, the default behavior is used, which corresponds to the <emphasis>simple</emphasis>
-value for <emphasis>push.default</emphasis>: the current branch is pushed to the
-corresponding upstream branch, but as a safety measure, the push is
-aborted if the upstream branch does not have the same name as the
-local one.</simpara>
 </simplesect>
-<simplesect id="git-push(1)__options_anchor_id_git_push_1__options_xreflabel_options">
-<title>OPTIONS<anchor id="git-push(1)_OPTIONS" xreflabel="[OPTIONS]"/></title>
+<simplesect id="git-push(1)_OPTIONS">
+<title>OPTIONS</title>
 <variablelist>
 <varlistentry>
 <term>
-&lt;repository&gt;
+<emphasis>&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -62,105 +79,113 @@ local one.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-&lt;refspec&gt;&#8230;
+<emphasis>&lt;refspec&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
         Specify what destination ref to update with what source object.
-        The format of a &lt;refspec&gt; parameter is an optional plus
-        <emphasis>+</emphasis>, followed by the source object &lt;src&gt;, followed
-        by a colon <emphasis>:</emphasis>, followed by the destination ref &lt;dst&gt;.
 </simpara>
-<simpara>The &lt;src&gt; is often the name of the branch you would want to push, but
-it can be any arbitrary "SHA-1 expression", such as <emphasis>master~4</emphasis> or
-<emphasis>HEAD</emphasis> (see <xref linkend="gitrevisions(7)" />).</simpara>
-<simpara>The &lt;dst&gt; tells which ref on the remote side is updated with this
-push. Arbitrary expressions cannot be used here, an actual ref must
-be named.
-If <emphasis>git push [&lt;repository&gt;]</emphasis> without any <emphasis>&lt;refspec&gt;</emphasis> argument is set to
-update some ref at the destination with <emphasis>&lt;src&gt;</emphasis> with
-<emphasis>remote.&lt;repository&gt;.push</emphasis> configuration variable, <emphasis>:&lt;dst&gt;</emphasis> part can
-be omitted--such a push will update a ref that <emphasis>&lt;src&gt;</emphasis> normally updates
-without any <emphasis>&lt;refspec&gt;</emphasis> on the command line.  Otherwise, missing
-<emphasis>:&lt;dst&gt;</emphasis> means to update the same ref as the <emphasis>&lt;src&gt;</emphasis>.</simpara>
-<simpara>If &lt;dst&gt; doesn't start with <emphasis>refs/</emphasis> (e.g. <emphasis>refs/heads/master</emphasis>) we will
-try to infer where in <emphasis>refs/*</emphasis> on the destination &lt;repository&gt; it
-belongs based on the type of &lt;src&gt; being pushed and whether &lt;dst&gt;
-is ambiguous.</simpara>
+<simpara>The format for a refspec is <emphasis>[+]&lt;src&gt;[:&lt;dst&gt;]</emphasis>, for example <emphasis>main</emphasis>,
+<emphasis>main:other</emphasis>, or <emphasis>HEAD^:refs/heads/main</emphasis>.</simpara>
+<simpara>The <emphasis>&lt;src&gt;</emphasis> is often the name of the local branch to push, but it can be
+any arbitrary "SHA-1 expression" (see <xref linkend="gitrevisions(7)" />).</simpara>
+<simpara>The <emphasis>&lt;dst&gt;</emphasis> determines what ref to update on the remote side. It must be the
+name of a branch, tag, or other ref, not an arbitrary expression.</simpara>
+<simpara>The <emphasis>+</emphasis> is optional and does the same thing as <emphasis>--force</emphasis>.</simpara>
+<simpara>You can write a refspec using the fully expanded form (for
+example <emphasis>refs/heads/main:refs/heads/main</emphasis>) which specifies the exact source
+and destination, or with a shorter form (for example <emphasis>main</emphasis> or
+<emphasis>main:other</emphasis>). Here are the rules for how refspecs are expanded,
+as well as various other special refspec forms:</simpara>
 <itemizedlist>
 <listitem>
 <simpara>
-If &lt;dst&gt; unambiguously refers to a ref on the &lt;repository&gt; remote,
-  then push to that ref.
+<emphasis>&lt;src&gt;</emphasis> without a <emphasis>:&lt;dst&gt;</emphasis> means to update the same ref as the
+    <emphasis>&lt;src&gt;</emphasis>, unless the <emphasis>remote.&lt;repository&gt;.push</emphasis> configuration specifies a
+    different <emphasis>&lt;dst&gt;</emphasis>. For example, if <emphasis>main</emphasis> is a branch, then the refspec
+    <emphasis>main</emphasis> expands to <emphasis>main:refs/heads/main</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-If &lt;src&gt; resolves to a ref starting with refs/heads/ or refs/tags/,
-  then prepend that to &lt;dst&gt;.
+If <emphasis>&lt;dst&gt;</emphasis> unambiguously refers to a ref on the &lt;repository&gt; remote,
+    then expand it to that ref. For example, if <emphasis>v1.0</emphasis> is a tag on the
+    remote, then <emphasis>HEAD:v1.0</emphasis> expands to <emphasis>HEAD:refs/tags/v1.0</emphasis>.
 </simpara>
 </listitem>
 <listitem>
 <simpara>
-Other ambiguity resolutions might be added in the future, but for
-  now any other cases will error out with an error indicating what we
-  tried, and depending on the <emphasis>advice.pushUnqualifiedRefname</emphasis>
-  configuration (see <xref linkend="git-config(1)" />) suggest what refs/
-  namespace you may have wanted to push to.
+If <emphasis>&lt;src&gt;</emphasis> resolves to a ref starting with <emphasis>refs/heads/</emphasis> or <emphasis>refs/tags/</emphasis>,
+    then prepend that to &lt;dst&gt;. For example, if <emphasis>main</emphasis> is a branch, then
+    <emphasis>main:other</emphasis> expands to <emphasis>main:refs/heads/other</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+The special refspec <emphasis>:</emphasis> (or <emphasis>+:</emphasis> to allow non-fast-forward updates)
+    directs Git to push "matching" branches: for every branch that exists on
+    the local side, the remote side is updated if a branch of the same name
+    already exists on the remote side.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>&lt;src&gt;</emphasis> may contain a <emphasis>*</emphasis> to indicate a simple pattern match.
+    This works like a glob that matches any ref matching the pattern.
+    There must be only one <emphasis>*</emphasis> in both the <emphasis>&lt;src&gt;</emphasis> and <emphasis>&lt;dst&gt;</emphasis>.
+    It will map refs to the destination by replacing the * with the
+    contents matched from the source. For example, <emphasis>refs/heads/*:refs/heads/*</emphasis>
+    will push all branches.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+A refspec starting with <emphasis>^</emphasis> is a negative refspec.
+    This specifies refs to exclude. A ref will be considered to
+    match if it matches at least one positive refspec, and does not
+    match any negative refspec. Negative refspecs can be pattern refspecs.
+    They must only contain a <emphasis>&lt;src&gt;</emphasis>.
+    Fully spelled out hex object names are also not supported.
+    For example, <emphasis>git push origin 'refs/heads/*' '^refs/heads/dev-*'</emphasis>
+    will push all branches except for those starting with <emphasis>dev-</emphasis>
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If <emphasis>&lt;src&gt;</emphasis> is empty, it deletes the <emphasis>&lt;dst&gt;</emphasis> ref from the remote
+    repository. For example, <emphasis>git push origin :dev</emphasis> will
+    delete the <emphasis>dev</emphasis> branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+<emphasis>tag &lt;tag&gt;</emphasis> expands to <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>.
+        This is technically a special syntax for <emphasis>git push</emphasis> and not a refspec,
+        since in <emphasis>git push origin tag v1.0</emphasis> the arguments <emphasis>tag</emphasis> and <emphasis>v1.0</emphasis>
+        are separate.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If the refspec can't be expanded unambiguously, error out
+    with an error indicating what was tried, and depending
+    on the <emphasis>advice.pushUnqualifiedRefname</emphasis> configuration (see
+    <xref linkend="git-config(1)" />) suggest what refs/ namespace you may have
+    wanted to push to.
 </simpara>
 </listitem>
 </itemizedlist>
-<simpara>The object referenced by &lt;src&gt; is used to update the &lt;dst&gt; reference
-on the remote side. Whether this is allowed depends on where in
-<emphasis>refs/*</emphasis> the &lt;dst&gt; reference lives as described in detail below, in
-those sections "update" means any modifications except deletes, which
-as noted after the next few sections are treated differently.</simpara>
-<simpara>The <emphasis>refs/heads/*</emphasis> namespace will only accept commit objects, and
-updates only if they can be fast-forwarded.</simpara>
-<simpara>The <emphasis>refs/tags/*</emphasis> namespace will accept any kind of object (as
-commits, trees and blobs can be tagged), and any updates to them will
-be rejected.</simpara>
-<simpara>It's possible to push any type of object to any namespace outside of
-<emphasis>refs/{tags,heads}/*</emphasis>. In the case of tags and commits, these will be
-treated as if they were the commits inside <emphasis>refs/heads/*</emphasis> for the
-purposes of whether the update is allowed.</simpara>
-<simpara>I.e. a fast-forward of commits and tags outside <emphasis>refs/{tags,heads}/*</emphasis>
-is allowed, even in cases where what's being fast-forwarded is not a
-commit, but a tag object which happens to point to a new commit which
-is a fast-forward of the commit the last tag (or commit) it's
-replacing. Replacing a tag with an entirely different tag is also
-allowed, if it points to the same commit, as well as pushing a peeled
-tag, i.e. pushing the commit that existing tag object points to, or a
-new tag object which an existing commit points to.</simpara>
-<simpara>Tree and blob objects outside of <emphasis>refs/{tags,heads}/*</emphasis> will be treated
-the same way as if they were inside <emphasis>refs/tags/*</emphasis>, any update of them
-will be rejected.</simpara>
-<simpara>All of the rules described above about what's not allowed as an update
-can be overridden by adding an the optional leading <emphasis>+</emphasis> to a refspec
-(or using <emphasis>--force</emphasis> command line option). The only exception to this
-is that no amount of forcing will make the <emphasis>refs/heads/*</emphasis> namespace
-accept a non-commit object. Hooks and configuration can also override
-or amend these rules, see e.g. <emphasis>receive.denyNonFastForwards</emphasis> in
-<xref linkend="git-config(1)" /> and <emphasis>pre-receive</emphasis> and <emphasis>update</emphasis> in
-<xref linkend="githooks(5)" />.</simpara>
-<simpara>Pushing an empty &lt;src&gt; allows you to delete the &lt;dst&gt; ref from the
-remote repository. Deletions are always accepted without a leading <emphasis>+</emphasis>
-in the refspec (or <emphasis>--force</emphasis>), except when forbidden by configuration
-or hooks. See <emphasis>receive.denyDeletes</emphasis> in <xref linkend="git-config(1)" /> and
-<emphasis>pre-receive</emphasis> and <emphasis>update</emphasis> in <xref linkend="githooks(5)" />.</simpara>
-<simpara>The special refspec <emphasis>:</emphasis> (or <emphasis>+:</emphasis> to allow non-fast-forward updates)
-directs Git to push "matching" branches: for every branch that exists on
-the local side, the remote side is updated if a branch of the same name
-already exists on the remote side.</simpara>
-<simpara><emphasis>tag &lt;tag&gt;</emphasis> means the same as <emphasis>refs/tags/&lt;tag&gt;:refs/tags/&lt;tag&gt;</emphasis>.</simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>Not all updates are allowed: see PUSH RULES below for the details.</simpara>
+<variablelist>
 <varlistentry>
 <term>
---all
+<emphasis>--all</emphasis>
 </term>
 <term>
---branches
+<emphasis>--branches</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -171,7 +196,7 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---prune
+<emphasis>--prune</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -186,7 +211,7 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---mirror
+<emphasis>--mirror</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -204,10 +229,10 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n
+<emphasis>-n</emphasis>
 </term>
 <term>
---dry-run
+<emphasis>--dry-run</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -217,7 +242,7 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---porcelain
+<emphasis>--porcelain</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -229,10 +254,10 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--d
+<emphasis>-d</emphasis>
 </term>
 <term>
---delete
+<emphasis>--delete</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -243,7 +268,7 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---tags
+<emphasis>--tags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -255,7 +280,7 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---follow-tags
+<emphasis>--follow-tags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -270,27 +295,68 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]signed
+<emphasis>--signed</emphasis>
 </term>
 <term>
---signed=(true|false|if-asked)
+<emphasis>--no-signed</emphasis>
+</term>
+<term>
+<emphasis>--signed=(true|false|if-asked)</emphasis>
 </term>
 <listitem>
 <simpara>
         GPG-sign the push request to update refs on the receiving
         side, to allow it to be checked by the hooks and/or be
-        logged.  If <emphasis>false</emphasis> or <emphasis>--no-signed</emphasis>, no signing will be
-        attempted.  If <emphasis>true</emphasis> or <emphasis>--signed</emphasis>, the push will fail if the
-        server does not support signed pushes.  If set to <emphasis>if-asked</emphasis>,
-        sign if and only if the server supports signed pushes.  The push
-        will also fail if the actual call to <emphasis>gpg --sign</emphasis> fails.  See
-        <xref linkend="git-receive-pack(1)" /> for the details on the receiving end.
+        logged. Possible values are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>false</emphasis>
+</term>
+<term>
+<emphasis>--no-signed</emphasis>
+</term>
+<listitem>
+<simpara>
+no signing will be attempted.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]atomic
+<emphasis>true</emphasis>
+</term>
+<term>
+<emphasis>--signed</emphasis>
+</term>
+<listitem>
+<simpara>
+the push will fail if the server does not support signed pushes.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>if-asked</emphasis>
+</term>
+<listitem>
+<simpara>
+sign if and only if the server supports signed pushes.  The push
+will also fail if the actual call to <emphasis>gpg --sign</emphasis> fails.  See
+<xref linkend="git-receive-pack(1)" /> for the details on the receiving end.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--atomic</emphasis>
+</term>
+<term>
+<emphasis>--no-atomic</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -302,16 +368,16 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--o &lt;option&gt;
+<emphasis>-o &lt;option&gt;</emphasis>
 </term>
 <term>
---push-option=&lt;option&gt;
+<emphasis>--push-option=&lt;option&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Transmit the given string to the server, which passes them to
         the pre-receive as well as the post-receive hook. The given string
-        must not contain a NUL or LF character.
+        must not contain a <emphasis>NUL</emphasis> or <emphasis>LF</emphasis> character.
         When multiple <emphasis>--push-option=&lt;option&gt;</emphasis> are given, they are
         all sent to the other side in the order listed on the
         command line.
@@ -323,37 +389,40 @@ already exists on the remote side.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---receive-pack=&lt;git-receive-pack&gt;
+<emphasis>--receive-pack=&lt;git-receive-pack&gt;</emphasis>
 </term>
 <term>
---exec=&lt;git-receive-pack&gt;
+<emphasis>--exec=&lt;git-receive-pack&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
         Path to the <emphasis>git-receive-pack</emphasis> program on the remote
         end.  Sometimes useful when pushing to a remote
         repository over ssh, and you do not have the program in
-        a directory on the default $PATH.
+        a directory on the default <emphasis>$PATH</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]force-with-lease
+<emphasis>--force-with-lease</emphasis>
 </term>
 <term>
---force-with-lease=&lt;refname&gt;
+<emphasis>--no-force-with-lease</emphasis>
 </term>
 <term>
---force-with-lease=&lt;refname&gt;:&lt;expect&gt;
+<emphasis>--force-with-lease=&lt;refname&gt;</emphasis>
+</term>
+<term>
+<emphasis>--force-with-lease=&lt;refname&gt;:&lt;expect&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Usually, "git push" refuses to update a remote ref that is
+        Usually, <emphasis>git push</emphasis> refuses to update a remote ref that is
         not an ancestor of the local ref used to overwrite it.
 </simpara>
 <simpara>This option overrides this restriction if the current value of the
-remote ref is the expected value.  "git push" fails otherwise.</simpara>
+remote ref is the expected value.  <emphasis>git push</emphasis> fails otherwise.</simpara>
 <simpara>Imagine that you have to rebase what you have already published.
 You will have to bypass the "must fast-forward" rule in order to
 replace the history you originally published with the rebased history.
@@ -371,10 +440,10 @@ all remote refs that are going to be updated by requiring their
 current value to be the same as the remote-tracking branch we have
 for them.</simpara>
 <simpara><emphasis>--force-with-lease=&lt;refname&gt;</emphasis>, without specifying the expected value, will
-protect the named ref (alone), if it is going to be updated, by
+protect <emphasis>&lt;refname&gt;</emphasis> (alone), if it is going to be updated, by
 requiring its current value to be the same as the remote-tracking
 branch we have for it.</simpara>
-<simpara><emphasis>--force-with-lease=&lt;refname&gt;:&lt;expect&gt;</emphasis> will protect the named ref (alone),
+<simpara><emphasis>--force-with-lease=&lt;refname&gt;:&lt;expect&gt;</emphasis> will protect <emphasis>&lt;refname&gt;</emphasis> (alone),
 if it is going to be updated, by requiring its current value to be
 the same as the specified value <emphasis>&lt;expect&gt;</emphasis> (which is allowed to be
 different from the remote-tracking branch we have for the refname,
@@ -385,7 +454,7 @@ must not already exist.</simpara>
 that specifies the expected current value of the ref explicitly are
 still experimental and their semantics may change as we gain experience
 with this feature.</simpara>
-<simpara>"--no-force-with-lease" will cancel all the previous --force-with-lease on the
+<simpara><emphasis>--no-force-with-lease</emphasis> will cancel all the previous <emphasis>--force-with-lease</emphasis> on the
 command line.</simpara>
 <simpara>A general note on safety: supplying this option without an expected
 value, i.e. as <emphasis>--force-with-lease</emphasis> or <emphasis>--force-with-lease=&lt;refname&gt;</emphasis>
@@ -401,19 +470,19 @@ willing to clobber.</simpara>
 <simpara>If your editor or some other system is running <emphasis>git fetch</emphasis> in the
 background for you a way to mitigate this is to simply set up another
 remote:</simpara>
-<literallayout class="monospaced">git remote add origin-push $(git config remote.origin.url)
-git fetch origin-push</literallayout>
+<screen>git remote add origin-push $(git config remote.origin.url)
+git fetch origin-push</screen>
 <simpara>Now when the background process runs <emphasis>git fetch origin</emphasis> the references
 on <emphasis>origin-push</emphasis> won't be updated, and thus commands like:</simpara>
-<literallayout class="monospaced">git push --force-with-lease origin-push</literallayout>
+<screen>git push --force-with-lease origin-push</screen>
 <simpara>Will fail unless you manually run <emphasis>git fetch origin-push</emphasis>. This method
 is of course entirely defeated by something that runs <emphasis>git fetch
 --all</emphasis>, in that case you'd need to either disable it or do something
 more tedious like:</simpara>
-<literallayout class="monospaced">git fetch              # update 'master' from remote
+<screen>git fetch              # update 'master' from remote
 git tag base master    # mark our base point
 git rebase -i master   # rewrite some commits
-git push --force-with-lease=master:base master:master</literallayout>
+git push --force-with-lease=master:base master:master</screen>
 <simpara>I.e. create a <emphasis>base</emphasis> tag for versions of the upstream code that you've
 seen and are willing to overwrite, then rewrite history, and finally
 force push changes to <emphasis>master</emphasis> if the remote version is still at
@@ -430,24 +499,22 @@ allowing a forced update.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--f
+<emphasis>-f</emphasis>
 </term>
 <term>
---force
+<emphasis>--force</emphasis>
 </term>
 <listitem>
 <simpara>
-        Usually, the command refuses to update a remote ref that is
-        not an ancestor of the local ref used to overwrite it.
-        Also, when <emphasis>--force-with-lease</emphasis> option is used, the command refuses
-        to update a remote ref whose current value does not match
-        what is expected.
+        Usually, <emphasis>git push</emphasis> will refuse to update a branch that is not an
+        ancestor of the commit being pushed.
 </simpara>
-<simpara>This flag disables these checks, and can cause the remote repository
-to lose commits; use it with care.</simpara>
+<simpara>This flag disables that check, the other safety checks in PUSH RULES
+below, and the checks in <emphasis>--force-with-lease</emphasis>. It can cause the remote
+repository to lose commits; use it with care.</simpara>
 <simpara>Note that <emphasis>--force</emphasis> applies to all the refs that are pushed, hence
 using it with <emphasis>push.default</emphasis> set to <emphasis>matching</emphasis> or with multiple push
-destinations configured with <emphasis>remote.*.push</emphasis> may overwrite refs
+destinations configured with <emphasis>remote.&lt;name&gt;.push</emphasis> may overwrite refs
 other than the current branch (including local refs that are
 strictly behind their remote counterpart).  To force a push to only
 one branch, use a <emphasis>+</emphasis> in front of the refspec to push (e.g <emphasis>git push
@@ -457,7 +524,10 @@ origin +master</emphasis> to force a push to the <emphasis>master</emphasis> bra
 </varlistentry>
 <varlistentry>
 <term>
---[no-]force-if-includes
+<emphasis>--force-if-includes</emphasis>
+</term>
+<term>
+<emphasis>--no-force-if-includes</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -477,21 +547,21 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---repo=&lt;repository&gt;
+<emphasis>--repo=&lt;repository&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        This option is equivalent to the &lt;repository&gt; argument. If both
+        This option is equivalent to the <emphasis>&lt;repository&gt;</emphasis> argument. If both
         are specified, the command-line argument takes precedence.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--u
+<emphasis>-u</emphasis>
 </term>
 <term>
---set-upstream
+<emphasis>--set-upstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -504,7 +574,10 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]thin
+<emphasis>--thin</emphasis>
+</term>
+<term>
+<emphasis>--no-thin</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -517,10 +590,10 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--q
+<emphasis>-q</emphasis>
 </term>
 <term>
---quiet
+<emphasis>--quiet</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -532,10 +605,10 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v
+<emphasis>-v</emphasis>
 </term>
 <term>
---verbose
+<emphasis>--verbose</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -545,12 +618,12 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---progress
+<emphasis>--progress</emphasis>
 </term>
 <listitem>
 <simpara>
         Progress status is reported on the standard error stream
-        by default when it is attached to a terminal, unless -q
+        by default when it is attached to a terminal, unless <emphasis>-q</emphasis>
         is specified. This flag forces progress status even if the
         standard error stream is not directed to a terminal.
 </simpara>
@@ -558,50 +631,92 @@ a "no-op".</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---no-recurse-submodules
+<emphasis>--no-recurse-submodules</emphasis>
 </term>
 <term>
---recurse-submodules=check|on-demand|only|no
+<emphasis>--recurse-submodules=(check|on-demand|only|no)</emphasis>
 </term>
 <listitem>
 <simpara>
         May be used to make sure all submodule commits used by the
         revisions to be pushed are available on a remote-tracking branch.
-        If <emphasis>check</emphasis> is used Git will verify that all submodule commits that
+        Possible values are:
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>check</emphasis>
+</term>
+<listitem>
+<simpara>
+        Git will verify that all submodule commits that
         changed in the revisions to be pushed are available on at least one
         remote of the submodule. If any commits are missing the push will
-        be aborted and exit with non-zero status. If <emphasis>on-demand</emphasis> is used
-        all submodules that changed in the revisions to be pushed will be
-        pushed. If on-demand was not able to push all necessary revisions it will
-        also be aborted and exit with non-zero status. If <emphasis>only</emphasis> is used all
-        submodules will be pushed while the superproject is left
-        unpushed. A value of <emphasis>no</emphasis> or using <emphasis>--no-recurse-submodules</emphasis> can be used
-        to override the push.recurseSubmodules configuration variable when no
-        submodule recursion is required.
+        be aborted and exit with non-zero status.
 </simpara>
-<simpara>When using <emphasis>on-demand</emphasis> or <emphasis>only</emphasis>, if a submodule has a
-"push.recurseSubmodules={on-demand,only}" or "submodule.recurse" configuration,
-further recursion will occur. In this case, "only" is treated as "on-demand".</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]verify
+<emphasis>on-demand</emphasis>
+</term>
+<listitem>
+<simpara>
+        all submodules that changed in the revisions to be pushed will be
+        pushed. If <emphasis>on-demand</emphasis> was not able to push all necessary revisions it will
+        also be aborted and exit with non-zero status.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>only</emphasis>
+</term>
+<listitem>
+<simpara>
+        all submodules will be pushed while the superproject is left
+        unpushed.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>no</emphasis>
+</term>
+<listitem>
+<simpara>
+        override the <emphasis>push.recurseSubmodules</emphasis> configuration variable when no
+        submodule recursion is required. Similar to using <emphasis>--no-recurse-submodules</emphasis>.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>When using <emphasis>on-demand</emphasis> or <emphasis>only</emphasis>, if a submodule has a
+<emphasis>push.recurseSubmodules=(on-demand|only)</emphasis> or <emphasis>submodule.recurse</emphasis> configuration,
+further recursion will occur. In this case, <emphasis>only</emphasis> is treated as <emphasis>on-demand</emphasis>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--verify</emphasis>
+</term>
+<term>
+<emphasis>--no-verify</emphasis>
 </term>
 <listitem>
 <simpara>
         Toggle the pre-push hook (see <xref linkend="githooks(5)" />).  The
-        default is --verify, giving the hook a chance to prevent the
-        push.  With --no-verify, the hook is bypassed completely.
+        default is <emphasis>--verify</emphasis>, giving the hook a chance to prevent the
+        push.  With <emphasis>--no-verify</emphasis>, the hook is bypassed completely.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
--4
+<emphasis>-4</emphasis>
 </term>
 <term>
---ipv4
+<emphasis>--ipv4</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -611,10 +726,10 @@ further recursion will occur. In this case, "only" is treated as "on-demand".</s
 </varlistentry>
 <varlistentry>
 <term>
--6
+<emphasis>-6</emphasis>
 </term>
 <term>
---ipv6
+<emphasis>--ipv6</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -825,6 +940,68 @@ refspecs, if you don't provide one on the command line.
 <screen>        HEAD:refs/heads/&lt;head&gt;</screen>
 </section>
 </simplesect>
+<simplesect id="git-push(1)_UPSTREAM-BRANCHES">
+<title>UPSTREAM BRANCHES</title>
+<simpara>Branches in Git can optionally have an upstream remote branch.
+Git defaults to using the upstream branch for remote operations, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+It's the default for <emphasis>git pull</emphasis> or <emphasis>git fetch</emphasis> with no arguments.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+It's the default for <emphasis>git push</emphasis> with no arguments, with some exceptions.
+  For example, you can use the <emphasis>branch.&lt;name&gt;.pushRemote</emphasis> option to push
+  to a different remote than you pull from, and by default with
+  <emphasis>push.default=simple</emphasis> the upstream branch you configure must have
+  the same name.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Various commands, including <emphasis>git checkout</emphasis> and <emphasis>git status</emphasis>, will
+  show you how many commits have been added to your current branch and
+  the upstream since you forked from it, for example "Your branch and
+  <emphasis>origin/main</emphasis> have diverged, and have 2 and 3 different commits each
+  respectively".
+</simpara>
+</listitem>
+</itemizedlist>
+<simpara>The upstream is stored in <emphasis>.git/config</emphasis>, in the "<emphasis>remote</emphasis>" and "<emphasis>merge</emphasis>"
+fields. For example, if <emphasis>main</emphasis>'s upstream is <emphasis>origin/main</emphasis>:</simpara>
+<screen>[branch "main"]
+   remote = origin
+   merge = refs/heads/main</screen>
+<simpara>You can set an upstream branch explicitly with
+<emphasis>git push --set-upstream &lt;remote&gt; &lt;branch&gt;</emphasis>
+but Git will often automatically set the upstream for you, for example:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+When you clone a repository, Git will automatically set the upstream
+  for the default branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If you have the <emphasis>push.autoSetupRemote</emphasis> configuration option set,
+  <emphasis>git push</emphasis> will automatically set the upstream the first time you push
+  a branch.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Checking out a remote-tracking branch with <emphasis>git checkout &lt;branch&gt;</emphasis>
+  will automatically create a local branch with that name and set
+  the upstream to the remote branch.
+</simpara>
+</listitem>
+</itemizedlist>
+<note><simpara>Upstream branches are sometimes referred to as "tracking information",
+as in "set the branch's tracking information".</simpara></note>
+</simplesect>
 <simplesect id="git-push(1)__output">
 <title>OUTPUT</title>
 <simpara>The output of "git push" depends on the transport method used; this
@@ -833,14 +1010,14 @@ locally or via ssh).</simpara>
 <simpara>The status of the push is output in tabular form, with each line
 representing the status of a single ref. Each line is of the form:</simpara>
 <screen> &lt;flag&gt; &lt;summary&gt; &lt;from&gt; -&gt; &lt;to&gt; (&lt;reason&gt;)</screen>
-<simpara>If --porcelain is used, then each line of the output is of the form:</simpara>
+<simpara>If <emphasis>--porcelain</emphasis> is used, then each line of the output is of the form:</simpara>
 <screen> &lt;flag&gt; \t &lt;from&gt;:&lt;to&gt; \t &lt;summary&gt; (&lt;reason&gt;)</screen>
-<simpara>The status of up-to-date refs is shown only if --porcelain or --verbose
+<simpara>The status of up-to-date refs is shown only if <emphasis>--porcelain</emphasis> or <emphasis>--verbose</emphasis>
 option is used.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-flag
+<emphasis>&lt;flag&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -912,7 +1089,7 @@ for a ref that was up to date and did not need pushing.
 </varlistentry>
 <varlistentry>
 <term>
-summary
+<emphasis>&lt;summary&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1002,6 +1179,64 @@ reason
 </varlistentry>
 </variablelist>
 </simplesect>
+<simplesect id="git-push(1)__push_rules">
+<title>PUSH RULES</title>
+<simpara>As a safety feature, the <emphasis>git push</emphasis> command only allows certain kinds of
+updates to prevent you from accidentally losing data on the remote.</simpara>
+<simpara>Because branches and tags are intended to be used differently, the
+safety rules for pushing to a branch are different from the rules
+for pushing to a tag. In the following rules "update" means any
+modifications except deletions and creations. Deletions and creations
+are always allowed, except when forbidden by configuration or hooks.</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+If the push destination is a <emphasis role="strong">branch</emphasis> (<emphasis>refs/heads/*</emphasis>): only
+   fast-forward updates are allowed, which means the destination must be
+   an ancestor of the source commit. The source must be a commit.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If the push destination is a <emphasis role="strong">tag</emphasis> (<emphasis>refs/tags/*</emphasis>): all updates will
+   be rejected. The source can be any object.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If the push destination is not a branch or tag:
+</simpara>
+<itemizedlist>
+<listitem>
+<simpara>
+If the source is a tree or blob object, any updates will be rejected
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+If the source is a tag or commit object, any fast-forward update
+     is allowed, even in cases where what's being fast-forwarded is not a
+     commit, but a tag object which happens to point to a new commit which
+     is a fast-forward of the commit the last tag (or commit) it's
+     replacing. Replacing a tag with an entirely different tag is also
+     allowed, if it points to the same commit, as well as pushing a peeled
+     tag, i.e. pushing the commit that existing tag object points to, or a
+     new tag object which an existing commit points to.
+</simpara>
+</listitem>
+</itemizedlist>
+</listitem>
+</orderedlist>
+<simpara>You can override these rules by passing <emphasis>--force</emphasis> or by adding the
+optional leading <emphasis>+</emphasis> to a refspec. The only exceptions are that no
+amount of forcing will make a branch accept a non-commit object,
+and forcing won't make the remote repository accept a push that it's
+configured to deny.</simpara>
+<simpara>Hooks and configuration can also override or amend these rules,
+see e.g. <emphasis>receive.denyNonFastForwards</emphasis> and <emphasis>receive.denyDeletes</emphasis>
+in <xref linkend="git-config(1)" /> and <emphasis>pre-receive</emphasis> and <emphasis>update</emphasis> in
+<xref linkend="githooks(5)" />.</simpara>
+</simplesect>
 <simplesect id="git-push(1)__note_about_fast_forwards">
 <title>NOTE ABOUT FAST-FORWARDS</title>
 <simpara>When an update changes a branch (or more in general, a ref) that used to
@@ -1041,7 +1276,7 @@ and B.</simpara>
 <simpara>Updating A with the resulting merge commit will fast-forward and your
 push will be accepted.</simpara>
 <simpara>Alternatively, you can rebase your change between X and B on top of A,
-with "git pull --rebase", and push the result back.  The rebase will
+with <emphasis>git pull --rebase</emphasis>, and push the result back.  The rebase will
 create a new commit D that builds the change between X and B on top of
 A.</simpara>
 <screen>      B   D
@@ -1052,12 +1287,12 @@ accepted.</simpara>
 <simpara>There is another common situation where you may encounter non-fast-forward
 rejection when you try to push, and it is possible even when you are
 pushing into a repository nobody else pushes into. After you push commit
-A yourself (in the first picture in this section), replace it with "git
-commit --amend" to produce commit B, and you try to push it out, because
+A yourself (in the first picture in this section), replace it with <emphasis>git
+commit --amend</emphasis> to produce commit B, and you try to push it out, because
 forgot that you have pushed A out already. In such a case, and only if
 you are certain that nobody in the meantime fetched your earlier commit A
-(and started building on top of it), you can run "git push --force" to
-overwrite it. In other words, "git push --force" is a method reserved for
+(and started building on top of it), you can run <emphasis>git push --force</emphasis> to
+overwrite it. In other words, <emphasis>git push --force</emphasis> is a method reserved for
 a case where you do mean to lose history.</simpara>
 </simplesect>
 <simplesect id="git-push(1)__examples">
@@ -1086,11 +1321,11 @@ a case where you do mean to lose history.</simpara>
         variable) if it has the same name as the current branch, and
         errors out without pushing otherwise.
 </simpara>
-<simpara>The default behavior of this command when no &lt;refspec&gt; is given can be
+<simpara>The default behavior of this command when no <emphasis>&lt;refspec&gt;</emphasis> is given can be
 configured by setting the <emphasis>push</emphasis> option of the remote, or the <emphasis>push.default</emphasis>
 configuration variable.</simpara>
 <simpara>For example, to default to pushing only the current branch to <emphasis>origin</emphasis>
-use <emphasis>git config remote.origin.push HEAD</emphasis>.  Any valid &lt;refspec&gt; (like
+use <emphasis>git config remote.origin.push HEAD</emphasis>.  Any valid <emphasis>&lt;refspec&gt;</emphasis> (like
 the ones in the examples below) can be configured as the default for
 <emphasis>git push origin</emphasis>.</simpara>
 </listitem>
@@ -1102,7 +1337,7 @@ the ones in the examples below) can be configured as the default for
 <listitem>
 <simpara>
         Push "matching" branches to <emphasis>origin</emphasis>. See
-        &lt;refspec&gt; in the <link linkend="git-push(1)_OPTIONS">OPTIONS</link> section above for a
+        <emphasis>&lt;refspec&gt;</emphasis> in the <link linkend="git-push(1)_OPTIONS">OPTIONS</link> section above for a
         description of "matching" branches.
 </simpara>
 </listitem>
@@ -1257,7 +1492,7 @@ As in #1, the attacker chooses an object ID X to steal. The victim sends
 </listitem>
 </orderedlist>
 </simplesect>
-<simplesect id="git-push(1)__configuration">
+<simplesect id="git-push(1)_CONFIGURATION">
 <title>CONFIGURATION</title>
 <simpara>Everything below this line in this section is selectively included
 from the <xref linkend="git-config(1)" /> documentation. The content is the same
@@ -1265,13 +1500,13 @@ as what's found there:</simpara>
 <variablelist>
 <varlistentry>
 <term>
-push.autoSetupRemote
+<emphasis>push.autoSetupRemote</emphasis>
 </term>
 <listitem>
 <simpara>
-        If set to "true" assume <emphasis>--set-upstream</emphasis> on default push when no
+        If set to <emphasis>true</emphasis> assume <emphasis>--set-upstream</emphasis> on default push when no
         upstream tracking exists for the current branch; this option
-        takes effect with push.default options <emphasis>simple</emphasis>, <emphasis>upstream</emphasis>,
+        takes effect with <emphasis>push.default</emphasis> options <emphasis>simple</emphasis>, <emphasis>upstream</emphasis>,
         and <emphasis>current</emphasis>. It is useful if by default you want new branches
         to be pushed to the default remote (like the behavior of
         <emphasis>push.default=current</emphasis>) and you also want the upstream tracking
@@ -1283,7 +1518,7 @@ push.autoSetupRemote
 </varlistentry>
 <varlistentry>
 <term>
-push.default
+<emphasis>push.default</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1294,38 +1529,62 @@ push.default
         (i.e. the fetch source is equal to the push destination),
         <emphasis>upstream</emphasis> is probably what you want.  Possible values are:
 </simpara>
-<itemizedlist>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>nothing</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>nothing</emphasis> - do not push anything (error out) unless a refspec is
-  given. This is primarily meant for people who want to
-  avoid mistakes by always being explicit.
+do not push anything (error out) unless a refspec is
+given. This is primarily meant for people who want to
+avoid mistakes by always being explicit.
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>current</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>current</emphasis> - push the current branch to update a branch with the same
-  name on the receiving end.  Works in both central and non-central
-  workflows.
+push the current branch to update a branch with the same
+name on the receiving end.  Works in both central and non-central
+workflows.
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>upstream</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>upstream</emphasis> - push the current branch back to the branch whose
-  changes are usually integrated into the current branch (which is
-  called <emphasis>@{upstream}</emphasis>).  This mode only makes sense if you are
-  pushing to the same repository you would normally pull from
-  (i.e. central workflow).
+push the current branch back to the branch whose
+changes are usually integrated into the current branch (which is
+called <emphasis>@{upstream}</emphasis>).  This mode only makes sense if you are
+pushing to the same repository you would normally pull from
+(i.e. central workflow).
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>tracking</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>tracking</emphasis> - This is a deprecated synonym for <emphasis>upstream</emphasis>.
+this is a deprecated synonym for <emphasis>upstream</emphasis>.
 </simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>simple</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>simple</emphasis> - push the current branch with the same name on the remote.
+push the current branch with the same name on the remote.
 </simpara>
 <simpara>If you are working on a centralized workflow (pushing to the same repository you
 pull from, which is typically <emphasis>origin</emphasis>), then you need to configure an upstream
@@ -1333,14 +1592,19 @@ branch with the same name.</simpara>
 <simpara>This mode is the default since Git 2.0, and is the safest option suited for
 beginners.</simpara>
 </listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>matching</emphasis>
+</term>
 <listitem>
 <simpara>
-<emphasis>matching</emphasis> - push all branches having the same name on both ends.
-  This makes the repository you are pushing to remember the set of
-  branches that will be pushed out (e.g. if you always push <emphasis>maint</emphasis>
-  and <emphasis>master</emphasis> there and no other branches, the repository you push
-  to will have these two branches, and your local <emphasis>maint</emphasis> and
-  <emphasis>master</emphasis> will be pushed there).
+push all branches having the same name on both ends.
+This makes the repository you are pushing to remember the set of
+branches that will be pushed out (e.g. if you always push <emphasis>maint</emphasis>
+and <emphasis>master</emphasis> there and no other branches, the repository you push
+to will have these two branches, and your local <emphasis>maint</emphasis> and
+<emphasis>master</emphasis> will be pushed there).
 </simpara>
 <simpara>To use this mode effectively, you have to make sure <emphasis>all</emphasis> the
 branches you would push out are ready to be pushed out before
@@ -1354,12 +1618,13 @@ branches outside your control.</simpara>
 <simpara>This used to be the default, but not since Git 2.0 (<emphasis>simple</emphasis> is the
 new default).</simpara>
 </listitem>
-</itemizedlist>
+</varlistentry>
+</variablelist>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-push.followTags
+<emphasis>push.followTags</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1371,7 +1636,7 @@ push.followTags
 </varlistentry>
 <varlistentry>
 <term>
-push.gpgSign
+<emphasis>push.gpgSign</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -1387,13 +1652,13 @@ push.gpgSign
 </varlistentry>
 <varlistentry>
 <term>
-push.pushOption
+<emphasis>push.pushOption</emphasis>
 </term>
 <listitem>
 <simpara>
         When no <emphasis>--push-option=&lt;option&gt;</emphasis> argument is given from the
-        command line, <emphasis>git push</emphasis> behaves as if each &lt;value&gt; of
-        this variable is given as <emphasis>--push-option=&lt;value&gt;</emphasis>.
+        command line, <emphasis>git push</emphasis> behaves as if each <emphasis>&lt;option&gt;</emphasis> of
+        this variable is given as <emphasis>--push-option=&lt;option&gt;</emphasis>.
 </simpara>
 <simpara>This is a multi-valued variable, and an empty value can be used in a
 higher priority configuration file (e.g. <emphasis>.git/config</emphasis> in a
@@ -1417,12 +1682,12 @@ This will result in only b (a and c are cleared).</screen>
 </varlistentry>
 <varlistentry>
 <term>
-push.recurseSubmodules
+<emphasis>push.recurseSubmodules</emphasis>
 </term>
 <listitem>
 <simpara>
-        May be "check", "on-demand", "only", or "no", with the same behavior
-        as that of "push --recurse-submodules".
+        May be <emphasis>check</emphasis>, <emphasis>on-demand</emphasis>, <emphasis>only</emphasis>, or <emphasis>no</emphasis>, with the same behavior
+        as that of <emphasis>push --recurse-submodules</emphasis>.
         If not set, <emphasis>no</emphasis> is used by default, unless <emphasis>submodule.recurse</emphasis> is
         set (in which case a <emphasis>true</emphasis> value means <emphasis>on-demand</emphasis>).
 </simpara>
@@ -1430,11 +1695,11 @@ push.recurseSubmodules
 </varlistentry>
 <varlistentry>
 <term>
-push.useForceIfIncludes
+<emphasis>push.useForceIfIncludes</emphasis>
 </term>
 <listitem>
 <simpara>
-        If set to "true", it is equivalent to specifying
+        If set to <emphasis>true</emphasis>, it is equivalent to specifying
         <emphasis>--force-if-includes</emphasis> as an option to <xref linkend="git-push(1)" />
         in the command line. Adding <emphasis>--no-force-if-includes</emphasis> at the
         time of push overrides this configuration setting.
@@ -1443,13 +1708,13 @@ push.useForceIfIncludes
 </varlistentry>
 <varlistentry>
 <term>
-push.negotiate
+<emphasis>push.negotiate</emphasis>
 </term>
 <listitem>
 <simpara>
-        If set to "true", attempt to reduce the size of the packfile
+        If set to <emphasis>true</emphasis>, attempt to reduce the size of the packfile
         sent by rounds of negotiation in which the client and the
-        server attempt to find commits in common. If "false", Git will
+        server attempt to find commits in common. If <emphasis>false</emphasis>, Git will
         rely solely on the server's ref advertisement to find commits
         in common.
 </simpara>
@@ -1457,13 +1722,13 @@ push.negotiate
 </varlistentry>
 <varlistentry>
 <term>
-push.useBitmaps
+<emphasis>push.useBitmaps</emphasis>
 </term>
 <listitem>
 <simpara>
-        If set to "false", disable use of bitmaps for "git push" even if
-        <emphasis>pack.useBitmaps</emphasis> is "true", without preventing other git operations
-        from using bitmaps. Default is true.
+        If set to <emphasis>false</emphasis>, disable use of bitmaps for <emphasis>git push</emphasis> even if
+        <emphasis>pack.useBitmaps</emphasis> is <emphasis>true</emphasis>, without preventing other git operations
+        from using bitmaps. Default is <emphasis>true</emphasis>.
 </simpara>
 </listitem>
 </varlistentry>

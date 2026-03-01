@@ -174,7 +174,7 @@ $export_ok
         Show repository only if this file exists (in repository).  Only
         effective if this variable evaluates to true.  Can be set when
         building gitweb by setting <emphasis>GITWEB_EXPORT_OK</emphasis>.  This path is
-        relative to <emphasis>GIT_DIR</emphasis>.  git-daemon[1] uses <emphasis>git-daemon-export-ok</emphasis>,
+        relative to <emphasis>GIT_DIR</emphasis>.  <xref linkend="git-daemon(1)" /> uses <emphasis>git-daemon-export-ok</emphasis>,
         unless started with <emphasis>--export-all</emphasis>.  By default this variable is
         not set, which means that this feature is turned off.
 </simpara>

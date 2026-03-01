@@ -55,7 +55,10 @@ automatically invoking <emphasis>git merge</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]summary
+--summary
+</term>
+<term>
+--no-summary
 </term>
 <listitem>
 <simpara>

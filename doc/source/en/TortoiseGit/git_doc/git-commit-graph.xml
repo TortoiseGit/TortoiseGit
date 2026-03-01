@@ -46,7 +46,10 @@
 </varlistentry>
 <varlistentry>
 <term>
---[no-]progress
+--progress
+</term>
+<term>
+--no-progress
 </term>
 <listitem>
 <simpara>
@@ -90,7 +93,7 @@ take a while on large repositories. It provides significant performance gains
 for getting history of a directory or a file with <emphasis>git log -- &lt;path&gt;</emphasis>. If
 this option is given, future commit-graph writes will automatically assume
 that this option was intended. Use <emphasis>--no-changed-paths</emphasis> to stop storing this
-data.</simpara>
+data. <emphasis>--changed-paths</emphasis> is implied by config <emphasis>commitGraph.changedPaths=true</emphasis>.</simpara>
 <simpara>With the <emphasis>--max-new-filters=&lt;n&gt;</emphasis> option, generate at most <emphasis>n</emphasis> new Bloom
 filters (if <emphasis>--changed-paths</emphasis> is specified). If <emphasis>n</emphasis> is <emphasis>-1</emphasis>, no limit is
 enforced. Only commits present in the new layer count against this
@@ -209,6 +212,24 @@ commitGraph.maxNewFilters
 <simpara>
         Specifies the default value for the <emphasis>--max-new-filters</emphasis> option of <emphasis>git
         commit-graph write</emphasis> (c.f., <xref linkend="git-commit-graph(1)" />).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+commitGraph.changedPaths
+</term>
+<listitem>
+<simpara>
+        If true, then <emphasis>git commit-graph write</emphasis> will compute and write
+        changed-path Bloom filters by default, equivalent to passing
+        <emphasis>--changed-paths</emphasis>. If false or unset, changed-paths Bloom filters will
+        be written during <emphasis>git commit-graph write</emphasis> only if the filters already
+        exist in the current commit-graph file. This matches the default
+        behavior of <emphasis>git commit-graph write</emphasis> without any <emphasis>--[no-]changed-paths</emphasis>
+        option. To rewrite a commit-graph file without any filters, use the
+        <emphasis>--no-changed-paths</emphasis> option. Command-line option <emphasis>--[no-]changed-paths</emphasis>
+        always takes precedence over this configuration. Defaults to unset.
 </simpara>
 </listitem>
 </varlistentry>

@@ -15,7 +15,7 @@
 <blockquote>
 <literallayout><emphasis>git repack</emphasis> [-a] [-A] [-d] [-f] [-F] [-l] [-n] [-q] [-b] [-m]
         [--window=&lt;n&gt;] [--depth=&lt;n&gt;] [--threads=&lt;n&gt;] [--keep-pack=&lt;pack-name&gt;]
-        [--write-midx] [--name-hash-version=&lt;n&gt;]</literallayout>
+        [--write-midx] [--name-hash-version=&lt;n&gt;] [--path-walk]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-repack(1)__description">
@@ -117,7 +117,7 @@ to the new separate pack will be written.</simpara>
 </term>
 <listitem>
 <simpara>
-        Overrides <emphasis>--max-pack-size</emphasis> for cruft packs. Inherits the value of
+        Override <emphasis>--max-pack-size</emphasis> for cruft packs. Inherits the value of
         <emphasis>--max-pack-size</emphasis> (if any) by default. See the documentation for
         <emphasis>--max-pack-size</emphasis> for more details.
 </simpara>
@@ -130,8 +130,8 @@ to the new separate pack will be written.</simpara>
 <listitem>
 <simpara>
         When generating cruft packs without pruning, only repack
-        existing cruft packs whose size is strictly less than <emphasis>&lt;n&gt;</emphasis>,
-        where <emphasis>&lt;n&gt;</emphasis> represents a number of bytes, which can optionally
+        existing cruft packs whose size is strictly less than <emphasis>&lt;n&gt;</emphasis>
+        bytes, which can optionally
         be suffixed with "k", "m", or "g". Cruft packs whose size is
         greater than or equal to <emphasis>&lt;n&gt;</emphasis> are left as-is and not repacked.
         Useful when you want to avoid repacking large cruft pack(s) in
@@ -460,6 +460,17 @@ pack as the preferred pack for object selection by the MIDX (see
 <simpara>
         Provide this argument to the underlying <emphasis>git pack-objects</emphasis> process.
         See <xref linkend="git-pack-objects(1)" /> for full details.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+--path-walk
+</term>
+<listitem>
+<simpara>
+        Pass the <emphasis>--path-walk</emphasis> option to the underlying <emphasis>git pack-objects</emphasis>
+        process. See <xref linkend="git-pack-objects(1)" /> for full details.
 </simpara>
 </listitem>
 </varlistentry>

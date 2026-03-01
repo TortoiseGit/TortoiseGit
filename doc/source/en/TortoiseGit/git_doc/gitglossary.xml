@@ -590,11 +590,11 @@ This commit is referred to as a "merge commit", or sometimes just a
 </varlistentry>
 <varlistentry>
 <term>
-<anchor id="gitglossary(7)_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier (oid)
+<anchor id="gitglossary(7)_def_object_identifier" xreflabel="[def_object_identifier]"/>object identifier, object ID, oid
 </term>
 <listitem>
 <simpara>
-        Synonym for <link linkend="gitglossary(7)_def_object_name">object name</link>.
+        Synonyms for <link linkend="gitglossary(7)_def_object_name">object name</link>.
 </simpara>
 </listitem>
 </varlistentry>
@@ -809,9 +809,8 @@ full pathname may have special meaning:</simpara>
 <simpara>
 A leading "<emphasis>**</emphasis>" followed by a slash means match in all
    directories. For example, "<emphasis>**/foo</emphasis>" matches file or directory
-   "<emphasis>foo</emphasis>" anywhere, the same as pattern "<emphasis>foo</emphasis>". "<emphasis>**/foo/bar</emphasis>"
-   matches file or directory "<emphasis>bar</emphasis>" anywhere that is directly
-   under directory "<emphasis>foo</emphasis>".
+   "<emphasis>foo</emphasis>" anywhere. "<emphasis>**/foo/bar</emphasis>" matches file or directory "<emphasis>bar</emphasis>"
+   anywhere that is directly under directory "<emphasis>foo</emphasis>".
 </simpara>
 </listitem>
 <listitem>

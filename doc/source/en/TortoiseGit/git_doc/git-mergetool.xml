@@ -279,7 +279,7 @@ as what's found there:</simpara>
         During a merge, Git will automatically resolve as many conflicts as
         possible and write the <emphasis>$MERGED</emphasis> file containing conflict markers around
         any conflicts that it cannot resolve; <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> normally
-        are the versions of the file from before Git`s conflict
+        are the versions of the file from before Git's conflict
         resolution. This flag causes <emphasis>$LOCAL</emphasis> and <emphasis>$REMOTE</emphasis> to be overwritten so
         that only the unresolved conflicts are presented to the merge tool. Can
         be configured per-tool via the <emphasis>mergetool.&lt;tool&gt;.hideResolved</emphasis>

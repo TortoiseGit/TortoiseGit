@@ -56,7 +56,10 @@ the objects/pack/ directory of a Git repository.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]rev-index
+--rev-index
+</term>
+<term>
+--no-rev-index
 </term>
 <listitem>
 <simpara>

@@ -150,7 +150,10 @@ diff.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---[no-]notes[=&lt;ref&gt;]
+--notes[=&lt;ref&gt;]
+</term>
+<term>
+--no-notes
 </term>
 <listitem>
 <simpara>

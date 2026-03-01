@@ -22,67 +22,92 @@
 </simplesect>
 <simplesect id="git-rebase(1)__description">
 <title>DESCRIPTION</title>
-<simpara>If <emphasis>&lt;branch&gt;</emphasis> is specified, <emphasis>git rebase</emphasis> will perform an automatic
-<emphasis>git switch &lt;branch&gt;</emphasis> before doing anything else.  Otherwise
-it remains on the current branch.</simpara>
-<simpara>If <emphasis>&lt;upstream&gt;</emphasis> is not specified, the upstream configured in
+<simpara>Transplant a series of commits onto a different starting point.
+You can also use <emphasis>git rebase</emphasis> to reorder or combine commits: see INTERACTIVE
+MODE below for how to do that.</simpara>
+<simpara>For example, imagine that you have been working on the <emphasis>topic</emphasis> branch in this
+history, and you want to "catch up" to the work done on the <emphasis>master</emphasis> branch.</simpara>
+<screen>          A---B---C topic
+         /
+    D---E---F---G master</screen>
+<simpara>You want to transplant the commits you made on <emphasis>topic</emphasis> since it diverged from
+<emphasis>master</emphasis> (i.e. A, B, and C), on top of the current <emphasis>master</emphasis>.  You can do this
+by running <emphasis>git rebase master</emphasis> while the <emphasis>topic</emphasis> branch is checked out.  If you
+want to rebase <emphasis>topic</emphasis> while on another branch, <emphasis>git rebase master topic</emphasis> is a
+shortcut for <emphasis>git checkout topic &amp;&amp; git rebase master</emphasis>.</simpara>
+<screen>                  A'--B'--C' topic
+                 /
+    D---E---F---G master</screen>
+<simpara>If there is a merge conflict during this process, <emphasis>git rebase</emphasis> will stop at the
+first problematic commit and leave conflict markers. If this happens, you can do
+one of these things:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Resolve the conflict. You can use <emphasis>git diff</emphasis> to find the markers (&lt;&lt;&lt;&lt;&lt;&lt;)
+   and make edits to resolve the conflict. For each file you edit, you need to
+   tell Git that the conflict has been resolved. You can mark the conflict as
+   resolved with  <emphasis>git add &lt;filename&gt;</emphasis>. After resolving all of the conflicts,
+   you can continue the rebasing process with
+</simpara>
+<literallayout class="monospaced">git rebase --continue</literallayout>
+</listitem>
+<listitem>
+<simpara>
+Stop the <emphasis>git rebase</emphasis> and return your branch to its original state with
+</simpara>
+<literallayout class="monospaced">git rebase --abort</literallayout>
+</listitem>
+<listitem>
+<simpara>
+Skip the commit that caused the merge conflict with
+</simpara>
+<literallayout class="monospaced">git rebase --skip</literallayout>
+</listitem>
+</orderedlist>
+<simpara>If you don't specify an <emphasis>&lt;upstream&gt;</emphasis> to rebase onto, the upstream configured in
 <emphasis>branch.&lt;name&gt;.remote</emphasis> and <emphasis>branch.&lt;name&gt;.merge</emphasis> options will be used (see
 <xref linkend="git-config(1)" /> for details) and the <emphasis>--fork-point</emphasis> option is
 assumed.  If you are currently not on any branch or if the current
 branch does not have a configured upstream, the rebase will abort.</simpara>
-<simpara>All changes made by commits in the current branch but that are not
-in <emphasis>&lt;upstream&gt;</emphasis> are saved to a temporary area.  This is the same set
-of commits that would be shown by <emphasis>git log &lt;upstream&gt;..HEAD</emphasis>; or by
-<emphasis>git log 'fork_point'..HEAD</emphasis>, if <emphasis>--fork-point</emphasis> is active (see the
-description on <emphasis>--fork-point</emphasis> below); or by <emphasis>git log HEAD</emphasis>, if the
-<emphasis>--root</emphasis> option is specified.</simpara>
-<simpara>The current branch is reset to <emphasis>&lt;upstream&gt;</emphasis> or <emphasis>&lt;newbase&gt;</emphasis> if the
-<emphasis>--onto</emphasis> option was supplied.  This has the exact same effect as
-<emphasis>git reset --hard &lt;upstream&gt;</emphasis> (or <emphasis>&lt;newbase&gt;</emphasis>). <emphasis>ORIG_HEAD</emphasis> is set
-to point at the tip of the branch before the reset.</simpara>
-<note><simpara><emphasis>ORIG_HEAD</emphasis> is not guaranteed to still point to the previous branch tip
-at the end of the rebase if other commands that write that pseudo-ref
-(e.g. <emphasis>git reset</emphasis>) are used during the rebase. The previous branch tip,
-however, is accessible using the reflog of the current branch
-(i.e. <emphasis>@{1}</emphasis>, see <xref linkend="gitrevisions(7)" />).</simpara></note>
-<simpara>The commits that were previously saved into the temporary area are
-then reapplied to the current branch, one by one, in order. Note that
-any commits in <emphasis>HEAD</emphasis> which introduce the same textual changes as a commit
-in <emphasis>HEAD..&lt;upstream&gt;</emphasis> are omitted (i.e., a patch already accepted upstream
-with a different commit message or timestamp will be skipped).</simpara>
-<simpara>It is possible that a merge failure will prevent this process from being
-completely automatic.  You will have to resolve any such merge failure
-and run <emphasis>git rebase --continue</emphasis>.  Another option is to bypass the commit
-that caused the merge failure with <emphasis>git rebase --skip</emphasis>.  To check out the
-original <emphasis>&lt;branch&gt;</emphasis> and remove the <emphasis>.git/rebase-apply</emphasis> working files, use
-the command <emphasis>git rebase --abort</emphasis> instead.</simpara>
-<simpara>Assume the following history exists and the current branch is "topic":</simpara>
-<screen>          A---B---C topic
-         /
-    D---E---F---G master</screen>
-<simpara>From this point, the result of either of the following commands:</simpara>
-<literallayout class="monospaced">git rebase master
-git rebase master topic</literallayout>
-<simpara>would be:</simpara>
-<screen>                  A'--B'--C' topic
-                 /
-    D---E---F---G master</screen>
-<simpara><emphasis role="strong">NOTE:</emphasis> The latter form is just a short-hand of <emphasis>git checkout topic</emphasis>
-followed by <emphasis>git rebase master</emphasis>. When rebase exits <emphasis>topic</emphasis> will
-remain the checked-out branch.</simpara>
-<simpara>If the upstream branch already contains a change you have made (e.g.,
-because you mailed a patch which was applied upstream), then that commit
-will be skipped and warnings will be issued (if the <emphasis>merge</emphasis> backend is
-used).  For example, running <emphasis>git rebase master</emphasis> on the following
-history (in which <emphasis>A'</emphasis> and <emphasis>A</emphasis> introduce the same set of changes, but
-have different committer information):</simpara>
-<screen>          A---B---C topic
-         /
-    D---E---A'---F master</screen>
-<simpara>will result in:</simpara>
-<screen>                   B'---C' topic
-                  /
-    D---E---A'---F master</screen>
+<simpara>Here is a simplified description of what <emphasis>git rebase &lt;upstream&gt;</emphasis> does:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>
+Make a list of all commits on your current branch since it branched
+   off from <emphasis>&lt;upstream&gt;</emphasis> that do not have an equivalent commit in
+   <emphasis>&lt;upstream&gt;</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Check out <emphasis>&lt;upstream&gt;</emphasis> with the equivalent of
+   <emphasis>git checkout --detach &lt;upstream&gt;</emphasis>.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Replay the commits, one by one, in order. This is similar to running
+   <emphasis>git cherry-pick &lt;commit&gt;</emphasis> for each commit. See REBASING MERGES for how merges
+   are handled.
+</simpara>
+</listitem>
+<listitem>
+<simpara>
+Update your branch to point to the final commit with the equivalent
+   of <emphasis>git checkout -B &lt;branch&gt;</emphasis>.
+</simpara>
+</listitem>
+</orderedlist>
+<note><simpara>When starting the rebase, <emphasis>ORIG_HEAD</emphasis> is set to point to the commit at the tip
+of the to-be-rebased branch. However, <emphasis>ORIG_HEAD</emphasis> is not guaranteed to still
+point to that commit at the end of the rebase if other commands that change
+<emphasis>ORIG_HEAD</emphasis> (like <emphasis>git reset</emphasis>) are used during the rebase. The previous branch
+tip, however, is accessible using the reflog of the current branch (i.e. <emphasis>@{1}</emphasis>,
+see <xref linkend="gitrevisions(7)" />).</simpara></note>
+</simplesect>
+<simplesect id="git-rebase(1)__transplanting_a_topic_branch_with_onto">
+<title>TRANSPLANTING A TOPIC BRANCH WITH --ONTO</title>
 <simpara>Here is how you would transplant a topic branch based on one
 branch to another, to pretend that you forked the topic branch
 from the latter branch, using <emphasis>rebase --onto</emphasis>.</simpara>
@@ -130,17 +155,6 @@ the following situation:</simpara>
 <simpara>This is useful if F and G were flawed in some way, or should not be
 part of topicA.  Note that the argument to <emphasis>--onto</emphasis> and the <emphasis>&lt;upstream&gt;</emphasis>
 parameter can be any valid commit-ish.</simpara>
-<simpara>In case of conflict, <emphasis>git rebase</emphasis> will stop at the first problematic commit
-and leave conflict markers in the tree.  You can use <emphasis>git diff</emphasis> to locate
-the markers (&lt;&lt;&lt;&lt;&lt;&lt;) and make edits to resolve the conflict.  For each
-file you edit, you need to tell Git that the conflict has been resolved,
-typically this would be done with</simpara>
-<literallayout class="monospaced">git add &lt;filename&gt;</literallayout>
-<simpara>After resolving the conflict manually and updating the index with the
-desired resolution, you can continue the rebasing process with</simpara>
-<literallayout class="monospaced">git rebase --continue</literallayout>
-<simpara>Alternatively, you can undo the <emphasis>git rebase</emphasis> with</simpara>
-<literallayout class="monospaced">git rebase --abort</literallayout>
 </simplesect>
 <simplesect id="git-rebase(1)__mode_options">
 <title>MODE OPTIONS</title>
@@ -237,6 +251,9 @@ merge base of A and B if there is exactly one merge base. You can
 leave out at most one of A and B, in which case it defaults to HEAD.</simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>See TRANSPLANTING A TOPIC BRANCH WITH --ONTO above for examples.</simpara>
+<variablelist>
 <varlistentry>
 <term>
 --keep-base
@@ -717,6 +734,12 @@ merge backend
         the author date of the commit being rebased as the committer
         date. This option implies <emphasis>--force-rebase</emphasis>.
 </simpara>
+<warning><simpara>The history walking machinery assumes that commits have
+non-decreasing commit timestamps. You should consider if you really need
+to use this option. Then you should only use this option to override the
+committer date when rebasing commits on top of a base which commit is
+older (in terms of the commit date) than the oldest commit you are
+applying (in terms of the author date).</simpara></warning>
 </listitem>
 </varlistentry>
 <varlistentry>

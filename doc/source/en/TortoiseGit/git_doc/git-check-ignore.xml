@@ -31,7 +31,10 @@ subject to exclude rules; but see --no-index.</simpara>
 <variablelist>
 <varlistentry>
 <term>
--q, --quiet
+-q
+</term>
+<term>
+--quiet
 </term>
 <listitem>
 <simpara>
@@ -42,7 +45,10 @@ subject to exclude rules; but see --no-index.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--v, --verbose
+-v
+</term>
+<term>
+--verbose
 </term>
 <listitem>
 <simpara>
@@ -82,7 +88,10 @@ subject to exclude rules; but see --no-index.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
--n, --non-matching
+-n
+</term>
+<term>
+--non-matching
 </term>
 <listitem>
 <simpara>

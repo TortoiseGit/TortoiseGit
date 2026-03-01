@@ -30,7 +30,6 @@ source, it will be removed to match the source.</simpara>
 otherwise from the index. Use <emphasis>--source</emphasis> to restore from a different commit.</simpara>
 <simpara>See "Reset, restore and revert" in <xref linkend="git(1)" /> for the differences
 between the three commands.</simpara>
-<simpara>THIS COMMAND IS EXPERIMENTAL. THE BEHAVIOR MAY CHANGE.</simpara>
 </simplesect>
 <simplesect id="git-restore(1)__options">
 <title>OPTIONS</title>
@@ -68,6 +67,33 @@ leave out at most one of <emphasis>&lt;rev-A&gt;_</emphasis> and <emphasis>&lt;r
         restore source and the restore location. See the "Interactive
         Mode" section of <xref linkend="git-add(1)" /> to learn how to operate
         the <emphasis>--patch</emphasis> mode.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>-U&lt;n&gt;</emphasis>
+</term>
+<term>
+<emphasis>--unified=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Generate diffs with <emphasis>&lt;n&gt;</emphasis> lines of context. Defaults to <emphasis>diff.context</emphasis>
+        or 3 if the config option is unset.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--inter-hunk-context=&lt;n&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+        Show the context between diff hunks, up to the specified <emphasis>&lt;number&gt;</emphasis>
+        of lines, thereby fusing hunks that are close to each other.
+        Defaults to <emphasis>diff.interHunkContext</emphasis> or 0 if the config option
+        is unset.
 </simpara>
 </listitem>
 </varlistentry>

@@ -161,8 +161,8 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
         provided with <emphasis>--if-exists</emphasis> overrides the <emphasis>trailer.ifExists</emphasis> and any
         applicable <emphasis>trailer.&lt;keyAlias&gt;.ifExists</emphasis> configuration variables
         and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
-        <emphasis>--if-exists</emphasis> or <emphasis>--no-if-exists</emphasis>. Upon encountering '--no-if-exists, clear the
-        effect of any previous use of '--if-exists, such that the relevant configuration
+        <emphasis>--if-exists</emphasis> or <emphasis>--no-if-exists</emphasis>. Upon encountering <emphasis>--no-if-exists</emphasis>, clear the
+        effect of any previous use of <emphasis>--if-exists</emphasis>, such that the relevant configuration
         variables are no longer overridden. Possible actions are <emphasis>addIfDifferent</emphasis>,
         <emphasis>addIfDifferentNeighbor</emphasis>, <emphasis>add</emphasis>, <emphasis>replace</emphasis> and <emphasis>doNothing</emphasis>.
 </simpara>
@@ -182,8 +182,8 @@ rules for RFC 822 headers. For example they do not follow the encoding rule.</si
         provided with <emphasis>--if-missing</emphasis> overrides the <emphasis>trailer.ifMissing</emphasis> and any
         applicable <emphasis>trailer.&lt;keyAlias&gt;.ifMissing</emphasis> configuration variables
         and applies to all <emphasis>--trailer</emphasis> options until the next occurrence of
-        <emphasis>--if-missing</emphasis> or <emphasis>--no-if-missing</emphasis>. Upon encountering '--no-if-missing,
-        clear the effect of any previous use of '--if-missing, such that the relevant
+        <emphasis>--if-missing</emphasis> or <emphasis>--no-if-missing</emphasis>. Upon encountering <emphasis>--no-if-missing</emphasis>,
+        clear the effect of any previous use of <emphasis>--if-missing</emphasis>, such that the relevant
         configuration variables are no longer overridden. Possible actions are <emphasis>doNothing</emphasis>
         or <emphasis>add</emphasis>.
 </simpara>

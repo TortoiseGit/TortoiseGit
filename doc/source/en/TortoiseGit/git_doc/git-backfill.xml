@@ -64,7 +64,10 @@ commit. This set can be restricted or expanded using various options.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-<emphasis>--[no-]sparse</emphasis>
+<emphasis>--sparse</emphasis>
+</term>
+<term>
+<emphasis>--no-sparse</emphasis>
 </term>
 <listitem>
 <simpara>

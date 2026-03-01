@@ -13,13 +13,13 @@
 <simplesect id="git-for-each-ref(1)__synopsis">
 <title>SYNOPSIS</title>
 <blockquote>
-<literallayout><emphasis>git for-each-ref</emphasis> [--count=&lt;count&gt;] [--shell|--perl|--python|--tcl]
-                   [(--sort=&lt;key&gt;)&#8230;] [--format=&lt;format&gt;]
-                   [--include-root-refs] [ --stdin | &lt;pattern&gt;&#8230; ]
-                   [--points-at=&lt;object&gt;]
-                   [--merged[=&lt;object&gt;]] [--no-merged[=&lt;object&gt;]]
-                   [--contains[=&lt;object&gt;]] [--no-contains[=&lt;object&gt;]]
-                   [--exclude=&lt;pattern&gt; &#8230;]</literallayout>
+<literallayout><code>git</code> <code>for-each-ref</code> [<code>--count=</code><emphasis>&lt;count&gt;</emphasis>] [<code>--shell</code>|<code>--perl</code>|<code>--python</code>|<code>--tcl</code>]
+                   [(<code>--sort=</code><emphasis>&lt;key&gt;</emphasis>)<code>&#8230;</code>] [<code>--format=</code><emphasis>&lt;format&gt;</emphasis>]
+                   [<code>--include-root-refs</code>] [<code>--points-at=</code><emphasis>&lt;object&gt;</emphasis>]
+                   [<code>--merged</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]] [<code>--no-merged</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]]
+                   [<code>--contains</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]] [<code>--no-contains</code>[<code>=</code><emphasis>&lt;object&gt;</emphasis>]]
+                   [(<code>--exclude=</code><emphasis>&lt;pattern&gt;</emphasis>)<code>&#8230;</code>] [<code>--start-after=</code><emphasis>&lt;marker&gt;</emphasis>]
+                   [ <code>--stdin</code> | (<emphasis>&lt;pattern&gt;</emphasis><code>&#8230;</code>)]</literallayout>
 </blockquote>
 </simplesect>
 <simplesect id="git-for-each-ref(1)__description">
@@ -36,12 +36,12 @@ host language allowing their direct evaluation in that language.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-&lt;pattern&gt;&#8230;
+<emphasis>&lt;pattern&gt;...</emphasis>
 </term>
 <listitem>
 <simpara>
-        If one or more patterns are given, only refs are shown that
-        match against at least one pattern, either using fnmatch(3) or
+        If one or more <emphasis>&lt;pattern&gt;</emphasis> parameters are given, only refs are shown that
+        match against at least one pattern, either using <emphasis>fnmatch</emphasis>(3) or
         literally, in the latter case matching completely or from the
         beginning up to a slash.
 </simpara>
@@ -49,36 +49,34 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---stdin
+<emphasis>--stdin</emphasis>
 </term>
 <listitem>
 <simpara>
-        If <emphasis>--stdin</emphasis> is supplied, then the list of patterns is read from
-        standard input instead of from the argument list.
+        The list of patterns is read from standard input instead of from
+        the argument list.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---count=&lt;count&gt;
+<emphasis>--count=&lt;count&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        By default the command shows all refs that match
-        <emphasis>&lt;pattern&gt;</emphasis>.  This option makes it stop after showing
-        that many refs.
+        Stop after showing <emphasis>&lt;count&gt;</emphasis> refs.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---sort=&lt;key&gt;
+<emphasis>--sort=&lt;key&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        A field name to sort on.  Prefix <emphasis>-</emphasis> to sort in
+        Sort on the field name <emphasis>&lt;key&gt;</emphasis>.  Prefix <emphasis>-</emphasis> to sort in
         descending order of the value.  When unspecified,
-        <emphasis>refname</emphasis> is used.  You may use the --sort=&lt;key&gt; option
+        <emphasis>refname</emphasis> is used.  You may use the <emphasis>--sort=&lt;key&gt;</emphasis> option
         multiple times, in which case the last key becomes the primary
         key.
 </simpara>
@@ -86,7 +84,7 @@ host language allowing their direct evaluation in that language.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---format=&lt;format&gt;
+<emphasis>--format[=&lt;format&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -94,49 +92,51 @@ host language allowing their direct evaluation in that language.</simpara>
         the object it points at. In addition, the string literal <emphasis>%%</emphasis>
         renders as <emphasis>%</emphasis> and <emphasis>%xx</emphasis> - where <emphasis>xx</emphasis> are hex digits - renders as
         the character with hex code <emphasis>xx</emphasis>. For example, <emphasis>%00</emphasis> interpolates to
-        <emphasis>\0</emphasis> (NUL), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (TAB), and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (LF).
+        <emphasis>\0</emphasis> (<emphasis>NUL</emphasis>), <emphasis>%09</emphasis> to <emphasis>\t</emphasis> (<emphasis>TAB</emphasis>), and <emphasis>%0a</emphasis> to <emphasis>\n</emphasis> (<emphasis>LF</emphasis>).
 </simpara>
-<simpara>When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to <emphasis>%(objectname) SPC %(objecttype)
-TAB %(refname)</emphasis>.</simpara>
 </listitem>
 </varlistentry>
+</variablelist>
+<simpara>When unspecified, <emphasis>&lt;format&gt;</emphasis> defaults to <emphasis>%(objectname) SPC %(objecttype)
+TAB %(refname)</emphasis>.</simpara>
+<variablelist>
 <varlistentry>
 <term>
---color[=&lt;when&gt;]
+<emphasis>--color[=&lt;when&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Respect any colors specified in the <emphasis>--format</emphasis> option. The
-        <emphasis>&lt;when&gt;</emphasis> field must be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> (if
+        <emphasis>&lt;when_</emphasis> field must be one of <emphasis>always</emphasis>, <emphasis>never</emphasis>, or <emphasis>auto</emphasis> (if
         <emphasis>&lt;when&gt;</emphasis> is absent, behave as if <emphasis>always</emphasis> was given).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---shell
+<emphasis>--shell</emphasis>
 </term>
 <term>
---perl
+<emphasis>--perl</emphasis>
 </term>
 <term>
---python
+<emphasis>--python</emphasis>
 </term>
 <term>
---tcl
+<emphasis>--tcl</emphasis>
 </term>
 <listitem>
 <simpara>
         If given, strings that substitute <emphasis>%(fieldname)</emphasis>
         placeholders are quoted as string literals suitable for
         the specified host language.  This is meant to produce
-        a scriptlet that can directly be `eval`ed.
+        a scriptlet that can directly be "eval"ed.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---points-at=&lt;object&gt;
+<emphasis>--points-at=&lt;object&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -146,51 +146,50 @@ TAB %(refname)</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---merged[=&lt;object&gt;]
+<emphasis>--merged[=&lt;object&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
         Only list refs whose tips are reachable from the
-        specified commit (HEAD if not specified).
+        specified commit (<emphasis>HEAD</emphasis> if not specified).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-merged[=&lt;object&gt;]
+<emphasis>--no-merged[=&lt;object&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list refs whose tips are not reachable from the
-        specified commit (HEAD if not specified).
-</simpara>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>
---contains[=&lt;object&gt;]
-</term>
-<listitem>
-<simpara>
-        Only list refs which contain the specified commit (HEAD if not
+        Only list refs whose tips are not reachable from <emphasis>&lt;object&gt;</emphasis>(<emphasis>HEAD</emphasis> if not
         specified).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---no-contains[=&lt;object&gt;]
+<emphasis>--contains[=&lt;object&gt;]</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only list refs which don't contain the specified commit (HEAD
+        Only list refs which contain <emphasis>&lt;object&gt;</emphasis>(<emphasis>HEAD</emphasis> if not specified).
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--no-contains[=&lt;object&gt;]</emphasis>
+</term>
+<listitem>
+<simpara>
+        Only list refs which don't contain <emphasis>&lt;object&gt;</emphasis> (<emphasis>HEAD</emphasis>
         if not specified).
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---ignore-case
+<emphasis>--ignore-case</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -200,7 +199,7 @@ TAB %(refname)</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---omit-empty
+<emphasis>--omit-empty</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -211,23 +210,39 @@ TAB %(refname)</emphasis>.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
---exclude=&lt;pattern&gt;
+<emphasis>--exclude=&lt;excluded-pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        If one or more patterns are given, only refs which do not match
-        any excluded pattern(s) are shown. Matching is done using the
-        same rules as <emphasis>&lt;pattern&gt;</emphasis> above.
+        If one or more <emphasis>--exclude</emphasis> options are given, only refs which do not
+        match any <emphasis>&lt;excluded-pattern&gt;</emphasis> parameters are shown. Matching is done
+        using the same rules as <emphasis>&lt;pattern&gt;</emphasis> above.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
---include-root-refs
+<emphasis>--include-root-refs</emphasis>
 </term>
 <listitem>
 <simpara>
-        List root refs (HEAD and pseudorefs) apart from regular refs.
+        List root refs (<emphasis>HEAD</emphasis> and pseudorefs) apart from regular refs.
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>--start-after=&lt;marker&gt;</emphasis>
+</term>
+<listitem>
+<simpara>
+    Allows paginating the output by skipping references up to and including the
+    specified marker. When paging, it should be noted that references may be
+    deleted, modified or added between invocations. Output will only yield those
+    references which follow the marker lexicographically. Output begins from the
+    first reference that would come after the marker alphabetically. Cannot be
+    used with <emphasis>--sort=&lt;key&gt;</emphasis> or <emphasis>--stdin</emphasis> options, or the <emphasis>&lt;pattern&gt;</emphasis> argument(s)
+    to limit the refs.
 </simpara>
 </listitem>
 </varlistentry>
@@ -242,32 +257,32 @@ keys.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-refname
+<emphasis>refname</emphasis>
 </term>
 <listitem>
 <simpara>
-        The name of the ref (the part after $GIT_DIR/).
+        The name of the ref (the part after <emphasis>$GIT_DIR/</emphasis>).
         For a non-ambiguous short name of the ref append <emphasis>:short</emphasis>.
-        The option core.warnAmbiguousRefs is used to select the strict
-        abbreviation mode. If <emphasis>lstrip=&lt;N&gt;</emphasis> (<emphasis>rstrip=&lt;N&gt;</emphasis>) is appended, strips <emphasis>&lt;N&gt;</emphasis>
+        The option <emphasis>core.warnAmbiguousRefs</emphasis> is used to select the strict
+        abbreviation mode. If <emphasis>lstrip=&lt;n&gt;</emphasis> (<emphasis>rstrip=&lt;n&gt;</emphasis>) is appended, strip <emphasis>&lt;n&gt;</emphasis>
         slash-separated path components from the front (back) of the refname
         (e.g. <emphasis>%(refname:lstrip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>foo</emphasis> and
         <emphasis>%(refname:rstrip=2)</emphasis> turns <emphasis>refs/tags/foo</emphasis> into <emphasis>refs</emphasis>).
-        If <emphasis>&lt;N&gt;</emphasis> is a negative number, strip as many path components as
-        necessary from the specified end to leave <emphasis>-&lt;N&gt;</emphasis> path components
+        If <emphasis>&lt;n&gt;</emphasis> is a negative number, strip as many path components as
+        necessary from the specified end to leave <emphasis>-&lt;n&gt;</emphasis> path components
         (e.g. <emphasis>%(refname:lstrip=-2)</emphasis> turns
         <emphasis>refs/tags/foo</emphasis> into <emphasis>tags/foo</emphasis> and <emphasis>%(refname:rstrip=-1)</emphasis>
         turns <emphasis>refs/tags/foo</emphasis> into <emphasis>refs</emphasis>). When the ref does not have
         enough components, the result becomes an empty string if
-        stripping with positive &lt;N&gt;, or it becomes the full refname if
-        stripping with negative &lt;N&gt;.  Neither is an error.
+        stripping with positive <emphasis>&lt;n&gt;</emphasis>, or it becomes the full refname if
+        stripping with negative <emphasis>&lt;N&gt;</emphasis>.  Neither is an error.
 </simpara>
 <simpara><emphasis>strip</emphasis> can be used as a synonym to <emphasis>lstrip</emphasis>.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-objecttype
+<emphasis>objecttype</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -277,7 +292,7 @@ objecttype
 </varlistentry>
 <varlistentry>
 <term>
-objectsize
+<emphasis>objectsize</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -289,21 +304,21 @@ objectsize
 </varlistentry>
 <varlistentry>
 <term>
-objectname
+<emphasis>objectname</emphasis>
 </term>
 <listitem>
 <simpara>
         The object name (aka SHA-1).
         For a non-ambiguous abbreviation of the object name append <emphasis>:short</emphasis>.
         For an abbreviation of the object name with desired length append
-        <emphasis>:short=&lt;length&gt;</emphasis>, where the minimum length is MINIMUM_ABBREV. The
+        <emphasis>:short=&lt;length&gt;</emphasis>, where the minimum length is <emphasis>MINIMUM_ABBREV</emphasis>. The
         length may be exceeded to ensure unique object names.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-deltabase
+<emphasis>deltabase</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -315,7 +330,7 @@ deltabase
 </varlistentry>
 <varlistentry>
 <term>
-upstream
+<emphasis>upstream</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -342,7 +357,7 @@ but if used together the last option is selected.</simpara>
 </varlistentry>
 <varlistentry>
 <term>
-push
+<emphasis>push</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -356,18 +371,18 @@ push
 </varlistentry>
 <varlistentry>
 <term>
-HEAD
+<emphasis>HEAD</emphasis>
 </term>
 <listitem>
 <simpara>
-        <emphasis>*</emphasis> if HEAD matches current ref (the checked out branch), ' '
+        <emphasis>*</emphasis> if <emphasis>HEAD</emphasis> matches current ref (the checked out branch), ' '
         otherwise.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-color
+<emphasis>color</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -380,21 +395,21 @@ color
 </varlistentry>
 <varlistentry>
 <term>
-align
+<emphasis>align</emphasis>
 </term>
 <listitem>
 <simpara>
         Left-, middle-, or right-align the content between
-        %(align:&#8230;) and %(end). The "align:" is followed by
+        <emphasis>%(align:...)</emphasis> and <emphasis>%(end)</emphasis>. The "<emphasis>align:</emphasis>" is followed by
         <emphasis>width=&lt;width&gt;</emphasis> and <emphasis>position=&lt;position&gt;</emphasis> in any order
-        separated by a comma, where the <emphasis>&lt;position&gt;</emphasis> is either left,
-        right or middle, default being left and <emphasis>&lt;width&gt;</emphasis> is the total
+        separated by a comma, where the <emphasis>&lt;position&gt;</emphasis> is either <emphasis>left</emphasis>,
+        <emphasis>right</emphasis> or <emphasis>middle</emphasis>, default being <emphasis>left</emphasis> and <emphasis>&lt;width&gt;</emphasis> is the total
         length of the content with alignment. For brevity, the
         "width=" and/or "position=" prefixes may be omitted, and bare
-        &lt;width&gt; and &lt;position&gt; used instead.  For instance,
+        <emphasis>&lt;width&gt;</emphasis> and <emphasis>&lt;position&gt;</emphasis> used instead.  For instance,
         <emphasis>%(align:&lt;width&gt;,&lt;position&gt;)</emphasis>. If the contents length is more
         than the width then no alignment is performed. If used with
-        <emphasis>--quote</emphasis> everything in between %(align:&#8230;) and %(end) is
+        <emphasis>--quote</emphasis> everything in between <emphasis>%(align:...)</emphasis> and <emphasis>%(end)</emphasis> is
         quoted, but if nested then only the topmost level performs
         quoting.
 </simpara>
@@ -402,27 +417,27 @@ align
 </varlistentry>
 <varlistentry>
 <term>
-if
+<emphasis>if</emphasis>
 </term>
 <listitem>
 <simpara>
-        Used as %(if)&#8230;%(then)&#8230;%(end) or
-        %(if)&#8230;%(then)&#8230;%(else)&#8230;%(end).  If there is an atom with
-        value or string literal after the %(if) then everything after
-        the %(then) is printed, else if the %(else) atom is used, then
+        Used as <emphasis>%(if)...%(then)...%(end)</emphasis> or
+        <emphasis>%(if)...%(then)...%(else)...%(end)</emphasis>.  If there is an atom with
+        value or string literal after the <emphasis>%(if)</emphasis> then everything after
+        the <emphasis>%(then)</emphasis> is printed, else if the <emphasis>%(else)</emphasis> atom is used, then
         everything after %(else) is printed. We ignore space when
-        evaluating the string before %(then), this is useful when we
-        use the %(HEAD) atom which prints either "*" or " " and we
+        evaluating the string before <emphasis>%(then)</emphasis>, this is useful when we
+        use the <emphasis>%(HEAD)</emphasis> atom which prints either "<emphasis>*</emphasis>" or " " and we
         want to apply the <emphasis>if</emphasis> condition only on the <emphasis>HEAD</emphasis> ref.
-        Append ":equals=&lt;string&gt;" or ":notequals=&lt;string&gt;" to compare
-        the value between the %(if:&#8230;) and %(then) atoms with the
+        Append "<emphasis>:equals=&lt;string&gt;</emphasis>" or "<emphasis>:notequals=&lt;string&gt;</emphasis>" to compare
+        the value between the <emphasis>%(if:...)</emphasis> and <emphasis>%(then)</emphasis> atoms with the
         given string.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-symref
+<emphasis>symref</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -435,7 +450,7 @@ symref
 </varlistentry>
 <varlistentry>
 <term>
-signature
+<emphasis>signature</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -445,22 +460,99 @@ signature
 </varlistentry>
 <varlistentry>
 <term>
-signature:grade
+<emphasis>signature:grade</emphasis>
 </term>
 <listitem>
 <simpara>
-        Show "G" for a good (valid) signature, "B" for a bad
-        signature, "U" for a good signature with unknown validity, "X"
-        for a good signature that has expired, "Y" for a good
-        signature made by an expired key, "R" for a good signature
-        made by a revoked key, "E" if the signature cannot be
-        checked (e.g. missing key) and "N" for no signature.
+        Show
+</simpara>
+<variablelist>
+<varlistentry>
+<term>
+<emphasis>G</emphasis>
+</term>
+<listitem>
+<simpara>
+for a good (valid) signature
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-signature:signer
+<emphasis>B</emphasis>
+</term>
+<listitem>
+<simpara>
+for a bad signature
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>U</emphasis>
+</term>
+<listitem>
+<simpara>
+for a good signature with unknown validity
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>X</emphasis>
+</term>
+<listitem>
+<simpara>
+for a good signature that has expired
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>Y</emphasis>
+</term>
+<listitem>
+<simpara>
+for a good signature made by an expired key
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>R</emphasis>
+</term>
+<listitem>
+<simpara>
+for a good signature made by a revoked key
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>E</emphasis>
+</term>
+<listitem>
+<simpara>
+if the signature cannot be checked (e.g. missing key)
+</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>N</emphasis>
+</term>
+<listitem>
+<simpara>
+for no signature.
+</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<emphasis>signature:signer</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -470,7 +562,7 @@ signature:signer
 </varlistentry>
 <varlistentry>
 <term>
-signature:key
+<emphasis>signature:key</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -480,7 +572,7 @@ signature:key
 </varlistentry>
 <varlistentry>
 <term>
-signature:fingerprint
+<emphasis>signature:fingerprint</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -490,7 +582,7 @@ signature:fingerprint
 </varlistentry>
 <varlistentry>
 <term>
-signature:primarykeyfingerprint
+<emphasis>signature:primarykeyfingerprint</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -500,7 +592,7 @@ signature:primarykeyfingerprint
 </varlistentry>
 <varlistentry>
 <term>
-signature:trustlevel
+<emphasis>signature:trustlevel</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -511,7 +603,7 @@ signature:trustlevel
 </varlistentry>
 <varlistentry>
 <term>
-worktreepath
+<emphasis>worktreepath</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -523,7 +615,7 @@ worktreepath
 </varlistentry>
 <varlistentry>
 <term>
-ahead-behind:&lt;committish&gt;
+<emphasis>ahead-behind:&lt;commit-ish&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -535,15 +627,15 @@ ahead-behind:&lt;committish&gt;
 </varlistentry>
 <varlistentry>
 <term>
-is-base:&lt;committish&gt;
+<emphasis>is-base:&lt;commit-ish&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        In at most one row, <emphasis>(&lt;committish&gt;)</emphasis> will appear to indicate the ref
+        In at most one row, <emphasis>(&lt;commit-ish&gt;)</emphasis> will appear to indicate the ref
         that is most likely the ref used as a starting point for the branch
-        that produced <emphasis>&lt;committish&gt;</emphasis>. This choice is made using a heuristic:
+        that produced <emphasis>&lt;commit-ish&gt;</emphasis>. This choice is made using a heuristic:
         choose the ref that minimizes the number of commits in the
-        first-parent history of <emphasis>&lt;committish&gt;</emphasis> and not in the first-parent
+        first-parent history of <emphasis>&lt;commit-ish&gt;</emphasis> and not in the first-parent
         history of the ref.
 </simpara>
 <simpara>For example, consider the following figure of first-parent histories of
@@ -568,13 +660,13 @@ intersection with the first-parent histories of the filtered refs at a
 common first-parent ancestor of <emphasis>B</emphasis> and <emphasis>C</emphasis> and ties are broken by the
 earliest ref in the sorted order.</simpara>
 <simpara>Note that this token will not appear if the first-parent history of
-<emphasis>&lt;committish&gt;</emphasis> does not intersect the first-parent histories of the
+<emphasis>&lt;commit-ish&gt;</emphasis> does not intersect the first-parent histories of the
 filtered refs.</simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-describe[:options]
+<emphasis>describe[:&lt;option&gt;,...]</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -585,7 +677,7 @@ describe[:options]
 <variablelist>
 <varlistentry>
 <term>
-tags=&lt;bool-value&gt;
+<emphasis>tags=&lt;bool-value&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -597,35 +689,35 @@ tags=&lt;bool-value&gt;
 </varlistentry>
 <varlistentry>
 <term>
-abbrev=&lt;number&gt;
+<emphasis>abbrev=&lt;number&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Use at least &lt;number&gt; hexadecimal digits; see the corresponding
+        Use at least <emphasis>&lt;number&gt;</emphasis> hexadecimal digits; see the corresponding
         option in <xref linkend="git-describe(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-match=&lt;pattern&gt;
+<emphasis>match=&lt;pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Only consider tags matching the given <emphasis>glob(7)</emphasis> pattern,
-        excluding the "refs/tags/" prefix; see the corresponding option
+        Only consider tags matching the <emphasis>glob</emphasis>(7) <emphasis>&lt;pattern&gt;</emphasis>,
+        excluding the <emphasis>refs/tags/</emphasis> prefix; see the corresponding option
         in <xref linkend="git-describe(1)" /> for details.
 </simpara>
 </listitem>
 </varlistentry>
 <varlistentry>
 <term>
-exclude=&lt;pattern&gt;
+<emphasis>exclude=&lt;pattern&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        Do not consider tags matching the given <emphasis>glob(7)</emphasis> pattern,
-        excluding the "refs/tags/" prefix; see the corresponding option
+        Do not consider tags matching the <emphasis>glob</emphasis>(7) <emphasis>&lt;pattern&gt;</emphasis>,
+        excluding the <emphasis>refs/tags/</emphasis> prefix; see the corresponding option
         in <xref linkend="git-describe(1)" /> for details.
 </simpara>
 </listitem>
@@ -660,7 +752,7 @@ variable (see <xref linkend="gitmailmap(5)" />).</simpara>
 <variablelist>
 <varlistentry>
 <term>
-raw:size
+<emphasis>raw:size</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -677,7 +769,7 @@ variable type.</simpara>
 <variablelist>
 <varlistentry>
 <term>
-contents:size
+<emphasis>contents:size</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -687,7 +779,7 @@ contents:size
 </varlistentry>
 <varlistentry>
 <term>
-contents:subject
+<emphasis>contents:subject</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -702,7 +794,7 @@ contents:subject
 </varlistentry>
 <varlistentry>
 <term>
-contents:body
+<emphasis>contents:body</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -713,7 +805,7 @@ contents:body
 </varlistentry>
 <varlistentry>
 <term>
-contents:signature
+<emphasis>contents:signature</emphasis>
 </term>
 <listitem>
 <simpara>
@@ -723,18 +815,18 @@ contents:signature
 </varlistentry>
 <varlistentry>
 <term>
-contents:lines=N
+<emphasis>contents:lines=&lt;n&gt;</emphasis>
 </term>
 <listitem>
 <simpara>
-        The first <emphasis>N</emphasis> lines of the message.
+        The first <emphasis>&lt;n&gt;</emphasis> lines of the message.
 </simpara>
 </listitem>
 </varlistentry>
 </variablelist>
 <simpara>Additionally, the trailers as interpreted by <xref linkend="git-interpret-trailers(1)" />
-are obtained as <emphasis>trailers[:options]</emphasis> (or by using the historical alias
-<emphasis>contents:trailers[:options]</emphasis>). For valid [:option] values see <emphasis>trailers</emphasis>
+are obtained as <emphasis>trailers[:&lt;option&gt;,...]</emphasis> (or by using the historical alias
+<emphasis>contents:trailers[:&lt;option&gt;,...]</emphasis>). For valid <emphasis>&lt;option&gt;</emphasis> values see <emphasis>trailers</emphasis>
 section of <xref linkend="git-log(1)" />.</simpara>
 <simpara>For sorting purposes, fields with numeric values sort in numeric order
 (<emphasis>objectsize</emphasis>, <emphasis>authordate</emphasis>, <emphasis>committerdate</emphasis>, <emphasis>creatordate</emphasis>, <emphasis>taggerdate</emphasis>).
@@ -749,8 +841,8 @@ date by adding <emphasis>:</emphasis> followed by date format name (see the valu
 option to <xref linkend="git-rev-list(1)" /> takes). If this formatting is provided in
 a <emphasis>--sort</emphasis> key, references will be sorted according to the byte-value of the
 formatted string rather than the numeric value of the underlying timestamp.</simpara>
-<simpara>Some atoms like %(align) and %(if) always require a matching %(end).
-We call them "opening atoms" and sometimes denote them as %($open).</simpara>
+<simpara>Some atoms like <emphasis>%(align)</emphasis> and <emphasis>%(if)</emphasis> always require a matching <emphasis>%(end)</emphasis>.
+We call them "opening atoms" and sometimes denote them as <emphasis>%($open)</emphasis>.</simpara>
 <simpara>When a scripting language specific quoting is in effect, everything
 between a top-level opening atom and its matching %(end) is evaluated
 according to the semantics of the opening atom and only its result
@@ -763,7 +855,7 @@ from the top-level is quoted.</simpara>
 <screen>#!/bin/sh
 
 git for-each-ref --count=3 --sort='-*authordate' \
---format='From: %(*authorname) %(*authoremail)
+`--format='From: %(*authorname) %(*authoremail)
 Subject: %(*subject)
 Date: %(*authordate)
 Ref: %(*refname)
@@ -771,7 +863,7 @@ Ref: %(*refname)
 %(*body)
 ' 'refs/tags'</screen>
 <simpara>A simple example showing the use of shell eval on the output,
-demonstrating the use of --shell.  List the prefixes of all heads:</simpara>
+demonstrating the use of <emphasis>--shell</emphasis>.  List the prefixes of all heads:</simpara>
 <screen>#!/bin/sh
 
 git for-each-ref --shell --format="ref=%(refname)" refs/heads | \
@@ -829,10 +921,10 @@ eval=`git for-each-ref --shell --format="$fmt" \
         --sort=-taggerdate \
         refs/tags`
 eval "$eval"</screen>
-<simpara>An example to show the usage of %(if)&#8230;%(then)&#8230;%(else)&#8230;%(end).
+<simpara>An example to show the usage of <emphasis>%(if)...%(then)...%(else)...%(end)</emphasis>.
 This prefixes the current branch with a star.</simpara>
 <screen>git for-each-ref --format="%(if)%(HEAD)%(then)* %(else)  %(end)%(refname:short)" refs/heads/</screen>
-<simpara>An example to show the usage of %(if)&#8230;%(then)&#8230;%(end).
+<simpara>An example to show the usage of <emphasis>%(if)...%(then)...%(end)</emphasis>.
 This prints the authorname, if present.</simpara>
 <screen>git for-each-ref --format="%(refname)%(if)%(authorname)%(then) Authored by: %(authorname)%(end)"</screen>
 </simplesect>
