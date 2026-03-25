@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -486,6 +486,7 @@ protected:
 	void ReloadHashMap()
 	{
 		m_RefLabelPosMap.clear();
+		m_TrackingMap.clear();
 		auto newHashMap = std::make_shared<MAP_HASH_NAME>();
 		if (g_Git.GetMapHashToFriendName(*newHashMap.get()))
 			MessageBox(g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
@@ -503,7 +504,6 @@ protected:
 		m_wcRev.m_ParentHash.push_back(m_HeadHash);
 
 		FetchRemoteList();
-		FetchTrackingBranchList();
 
 		g_Git.GetSubmodulePointer(m_submoduleInfo);
 	}
@@ -589,7 +589,7 @@ protected:
 	bool IsStash(const GitRev * pSelLogEntry);
 	bool IsBisect(const GitRev * pSelLogEntry);
 	void FetchRemoteList();
-	void FetchTrackingBranchList();
+	const std::pair<CString, CString>& GetTrackingBranch(const CString& localBranch);
 
 	virtual afx_msg BOOL OnToolTipText(UINT id, NMHDR* pNMHDR, LRESULT* pResult);
 	INT_PTR OnToolHitTest(CPoint point, TOOLINFO* pTI) const override;

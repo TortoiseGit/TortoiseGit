@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -1250,7 +1250,7 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 							else
 								refLabel.color = CTheme::Instance().GetThemeColor(m_Colors.GetColor(CColors::LocalBranch), true);
 
-							std::pair<CString, CString> trackingEntry = m_TrackingMap[refLabel.name];
+							const auto& trackingEntry = GetTrackingBranch(refLabel.name);
 							CString pullRemote = trackingEntry.first;
 							CString pullBranch = trackingEntry.second;
 							if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
@@ -3155,24 +3155,17 @@ void CGitLogListBase::FetchRemoteList()
 		m_SingleRemote = remoteList[0];
 }
 
-void CGitLogListBase::FetchTrackingBranchList()
+const std::pair<CString, CString>& CGitLogListBase::GetTrackingBranch(const CString& localBranch)
 {
-	m_TrackingMap.clear();
-	auto hashMap{ m_HashMap.load() };
-	for (auto it = hashMap->cbegin(); it != hashMap->cend(); ++it)
-	{
-		for (const auto& ref : it->second)
-		{
-			CString branchName;
-			if (CGit::GetShortName(ref, branchName, L"refs/heads/"))
-			{
-				CString pullRemote, pullBranch;
-				g_Git.GetRemoteTrackedBranch(branchName, pullRemote, pullBranch);
-				if (!pullRemote.IsEmpty() && !pullBranch.IsEmpty())
-					m_TrackingMap[branchName] = std::make_pair(pullRemote, pullBranch);
-			}
-		}
-	}
+	auto it = m_TrackingMap.find(localBranch);
+	if (it != m_TrackingMap.cend())
+		return it->second;
+
+	CString pullRemote;
+	CString pullBranch;
+	g_Git.GetRemoteTrackedBranch(localBranch, pullRemote, pullBranch);
+
+	return m_TrackingMap.emplace(localBranch, std::make_pair(pullRemote, pullBranch)).first->second;
 }
 
 void CGitLogListBase::Refresh(BOOL IsCleanFilter)
