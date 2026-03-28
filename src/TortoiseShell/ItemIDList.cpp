@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2016, 2019, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2006, 2009, 2011-2013, 2015-2016 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,7 +20,6 @@
 
 #include "stdafx.h"
 #include "ItemIDList.h"
-#include "StringUtils.h"
 
 ItemIDList::ItemIDList(PCUITEMID_CHILD item, PCUIDLIST_RELATIVE parent)
 	: item_(item)
@@ -103,7 +102,7 @@ std::wstring ItemIDList::toString(bool resolveLibraries /*= true*/)
 	else
 		return ret;
 
-	if (!((resolveLibraries) && (CStringUtils::StartsWith(ret.c_str(), L"::{"))))
+	if (!(resolveLibraries && ret.starts_with(L"::{")))
 		return ret;
 
 	CComPtr<IShellLibrary> plib;
