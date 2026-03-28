@@ -291,9 +291,6 @@ std::string CUnicodeUtils::StdGetUTF8(const std::wstring& wide)
 
 	const int size = SafeIntMult(len, 3);
 	CBuffer<char> buffer(size);
-	if (!buffer)
-		throw std::bad_alloc();
-
 	const int ret = WideCharToMultiByte(CP_UTF8, 0, wide.c_str(), len, buffer, size, nullptr, nullptr);
 	return std::string(buffer, ret);
 }
@@ -306,9 +303,6 @@ std::wstring CUnicodeUtils::StdGetUnicode(const std::string& multibyte)
 
 	const int size = SafeIntMult(len, 2);
 	CBuffer<wchar_t> buffer(size);
-	if (!buffer)
-		throw std::bad_alloc();
-
 	const int ret = MultiByteToWideChar(CP_UTF8, 0, multibyte.c_str(), len, buffer, size);
 	return std::wstring(buffer, ret);
 }
@@ -321,9 +315,6 @@ std::string WideToMultibyte(const std::wstring& wide)
 
 	const int size = SafeIntMult(len, 3);
 	CBuffer<char> buffer(size);
-	if (!buffer)
-		throw std::bad_alloc();
-
 	BOOL defaultCharUsed;
 	const int ret = WideCharToMultiByte(CP_ACP, 0, wide.c_str(), len, buffer, size, ".", &defaultCharUsed);
 	return std::string(buffer, ret);
@@ -337,9 +328,6 @@ std::wstring MultibyteToWide(const std::string& multibyte)
 
 	const int size = SafeIntMult(len, 2);
 	CBuffer<wchar_t> buffer(size);
-	if (!buffer)
-		throw std::bad_alloc();
-
 	const int ret = MultiByteToWideChar(CP_ACP, 0, multibyte.c_str(), len, buffer, size);
 	return std::wstring(buffer, ret);
 }
