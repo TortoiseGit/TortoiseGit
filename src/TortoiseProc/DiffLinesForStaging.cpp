@@ -21,11 +21,20 @@
 #include "DiffLinesForStaging.h"
 #include <regex>
 
+enum class PatchState
+{
+	None,
+	InDiff,
+	InFileHeader,
+	InHunkHeader,
+	InHunk
+};
+
 CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int firstLineSelected, int lastLineSelected)
 {
 	const char* ptr = text;
 	size_t last_i = 0; // beginning of the last line processed
-	int state = 0;
+	PatchState state = PatchState::None;
 	int oldCount = 0, newCount = 0;
 	bool fileWasAdded = false, fileWasDeleted = false;
 	DiffLineTypes lastType = DiffLineTypes::DEFAULT; // type of the last line processed, necessary to handle "No newline at end of file" correctly
@@ -59,30 +68,30 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 			exitLoop = true;
 			switch (state)
 			{
-			case 0:
+			case PatchState::None:
 				if (line.starts_with("diff "))
 				{
 					type = DiffLineTypes::COMMAND;
-					state = 1;
+					state = PatchState::InDiff;
 				}
 				break;
-			case 1:
+			case PatchState::InDiff:
 				if (line.starts_with("--- "))
 				{
 					type = DiffLineTypes::HEADER;
-					state = 2;
+					state = PatchState::InFileHeader;
 				}
 				else
 					type = DiffLineTypes::COMMENT;
 				break;
-			case 2:
+			case PatchState::InFileHeader:
 				if (line.starts_with("+++ "))
 				{
 					type = DiffLineTypes::HEADER;
-					state = 3;
+					state = PatchState::InHunkHeader;
 				}
 				break;
-			case 3:
+			case PatchState::InHunkHeader:
 				if (line.starts_with("@@ "))
 				{
 					if (GetOldAndNewLinesCountFromHunk(line, &oldCount, &newCount, true))
@@ -90,11 +99,11 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 						type = DiffLineTypes::POSITION;
 						fileWasAdded = oldCount == 0;
 						fileWasDeleted = newCount == 0;
-						state = 4;
+						state = PatchState::InHunk;
 					}
 				}
 				break;
-			case 4:
+			case PatchState::InHunk:
 				if (line.starts_with('+'))
 				{
 					--newCount;
@@ -134,12 +143,12 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 				}
 				else if (line.starts_with("@@ "))
 				{
-					state = 3;
+					state = PatchState::InHunkHeader;
 					exitLoop = false;
 				}
 				else
 				{
-					state = 0;
+					state = PatchState::None;
 					exitLoop = false;
 				}
 			} // switch (state)
