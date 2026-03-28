@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2021 - TortoiseGit
+// Copyright (C) 2016, 2019-2021, 2026 - TortoiseGit
 // Copyright (C) 2007, 2009-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -60,14 +60,14 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 			switch (state)
 			{
 			case 0:
-				if (strncmp(line.data(), "diff ", 5) == 0)
+				if (line.starts_with("diff "))
 				{
 					type = DiffLineTypes::COMMAND;
 					state = 1;
 				}
 				break;
 			case 1:
-				if (strncmp(line.data(), "--- ", 4) == 0)
+				if (line.starts_with("--- "))
 				{
 					type = DiffLineTypes::HEADER;
 					state = 2;
@@ -76,14 +76,14 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 					type = DiffLineTypes::COMMENT;
 				break;
 			case 2:
-				if (strncmp(line.data(), "+++ ", 4) == 0)
+				if (line.starts_with("+++ "))
 				{
 					type = DiffLineTypes::HEADER;
 					state = 3;
 				}
 				break;
 			case 3:
-				if (strncmp(line.data(), "@@ ", 3) == 0)
+				if (line.starts_with("@@ "))
 				{
 					if (GetOldAndNewLinesCountFromHunk(line, &oldCount, &newCount, true))
 					{
@@ -95,24 +95,24 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 				}
 				break;
 			case 4:
-				if (strncmp(line.data(), "+", 1) == 0)
+				if (line.starts_with('+'))
 				{
 					--newCount;
 					type = DiffLineTypes::ADDED;
 				}
-				else if (strncmp(line.data(), "-", 1) == 0)
+				else if (line.starts_with('-'))
 				{
 					--oldCount;
 					type = DiffLineTypes::DELETED;
 				}
-				else if (strncmp(line.data(), " ", 1) == 0)
+				else if (line.starts_with(' '))
 				{
 					--oldCount;
 					--newCount;
 					type = DiffLineTypes::DEFAULT;
 				}
 				// Regardless of locales, a "\ No newline at end of file" will always begin with "\ " and 10 is a sane minimum length to look for
-				else if (linebuflen - 1 >= 10 && strncmp(line.data(), "\\ ", 2) == 0)
+				else if (linebuflen - 1 >= 10 && line.starts_with("\\ "))
 				{
 					if (fileWasAdded)
 						type = DiffLineTypes::NO_NEWLINE_NEWFILE;
@@ -132,7 +132,7 @@ CDiffLinesForStaging::CDiffLinesForStaging(const char* text, int numLines, int f
 							type = DiffLineTypes::NO_NEWLINE_BOTHFILES;
 					}
 				}
-				else if (strncmp(line.data(), "@@ ", 3) == 0)
+				else if (line.starts_with("@@ "))
 				{
 					state = 3;
 					exitLoop = false;
