@@ -271,7 +271,7 @@ public:
 			buffer = fixedBuffer;
 		else
 		{
-			dynamicBuffer = std::make_unique<T[]>(minCapacity);
+			dynamicBuffer = std::make_unique_for_overwrite<T[]>(minCapacity);
 			buffer = dynamicBuffer.get();
 		}
 	}
