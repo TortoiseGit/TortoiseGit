@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019-2021, 2023 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019-2021, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2006, 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,8 @@
 #include "stdafx.h"
 #include "UnicodeUtils.h"
 #include <memory>
+
+constexpr size_t FIXED_BUFFER_SIZE = 1024;
 
 #if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
 
@@ -209,14 +211,13 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 	return CP_UTF8;
 }
 
-#define BUFFSIZE 1024
 CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 {
 	const int len = string.GetLength();
 	const int size = SafeIntMult(len, 3);
-	if (size < BUFFSIZE)
+	if (size <= FIXED_BUFFER_SIZE)
 	{
-		char buf[BUFFSIZE];
+		char buf[FIXED_BUFFER_SIZE];
 		const int newlen = WideCharToMultiByte(acp, 0, string, len, buf, size, nullptr, nullptr);
 		return CStringA(buf, newlen);
 	}
@@ -231,9 +232,9 @@ CStringA CUnicodeUtils::GetMulti(const CStringW& string,int acp)
 CString CUnicodeUtils::GetUnicodeLength(const char* string, int len, int acp)
 {
 	const int size = SafeIntMult(len, 2);
-	if (size < BUFFSIZE)
+	if (size <= FIXED_BUFFER_SIZE)
 	{
-		wchar_t buf[BUFFSIZE];
+		wchar_t buf[FIXED_BUFFER_SIZE];
 		const int newlen = MultiByteToWideChar(acp, 0, string, len, buf, size);
 		return CString(buf, newlen);
 	}
@@ -256,11 +257,6 @@ namespace
 template <class T>
 class CBuffer {
 private:
-	enum
-	{
-		FIXED_BUFFER_SIZE = 1024
-	};
-
 	T fixedBuffer[FIXED_BUFFER_SIZE];
 	std::unique_ptr<T[]> dynamicBuffer;
 
