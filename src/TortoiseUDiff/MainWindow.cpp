@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2012-2021, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2014, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -647,8 +647,7 @@ bool CMainWindow::Initialize()
 
 void CMainWindow::SetTheme(bool bDark)
 {
-	auto fontNameW = CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas");
-	auto fontName = CUnicodeUtils::StdGetUTF8(fontNameW);
+	const auto fontName = CUnicodeUtils::StdGetUTF8(static_cast<const std::wstring&>(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")));
 
 	if (bDark)
 	{

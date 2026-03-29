@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2018-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2016, 2018-2021, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -121,7 +121,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 		m_Subject = CUnicodeUtils::GetUnicode(msg, encode);
 	else
 	{
-		m_Subject = CUnicodeUtils::GetUnicodeLengthSizeT(msg, body - msg, encode);
+		m_Subject = CUnicodeUtils::GetUnicode(std::string_view(msg, body - msg), encode);
 		m_Body = CUnicodeUtils::GetUnicode(body + 1, encode);
 	}
 

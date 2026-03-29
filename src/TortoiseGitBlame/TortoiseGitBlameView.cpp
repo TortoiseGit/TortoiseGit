@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // Copyright (C)2003 Don HO <donho@altern.org>
@@ -1541,7 +1541,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 	CreateFont();
 
 	// Set up the global default style. These attributes are used wherever no explicit choices are made.
-	std::string fontName = CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas"));
+	const auto fontName = CUnicodeUtils::StdGetUTF8(static_cast<const std::wstring&>(CRegStdString(L"Software\\TortoiseGit\\BlameFontName", L"Consolas")));
 	SendEditor(SCI_STYLESETSIZE, STYLE_DEFAULT, (DWORD)CRegStdDWORD(L"Software\\TortoiseGit\\BlameFontSize", 10));
 	SendEditor(SCI_STYLESETFONT, STYLE_DEFAULT, reinterpret_cast<LPARAM>(fontName.c_str()));
 	SendEditor(SCI_STYLECLEARALL);

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2025 - TortoiseGit
+// Copyright (C) 2009-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2012-2020, 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -221,7 +221,7 @@ void CSciEdit::Init(LONG lLanguage)
 	Call(SCI_AUTOCSETIGNORECASE, 1);
 	Call(SCI_SETILEXER, 0, reinterpret_cast<sptr_t>(nullptr));
 	Call(SCI_SETCODEPAGE, SC_CP_UTF8);
-	Call(SCI_AUTOCSETFILLUPS, 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\ScintillaACFillups", L"\t")).c_str()));
+	Call(SCI_AUTOCSETFILLUPS, 0, reinterpret_cast<LPARAM>(CUnicodeUtils::StdGetUTF8(static_cast<const std::wstring&>(CRegStdString(L"Software\\TortoiseGit\\ScintillaACFillups", L"\t"))).c_str()));
 	Call(SCI_AUTOCSETMAXWIDTH, 0);
 	//Set the default windows colors for edit controls
 	SetColors(false);
@@ -1698,6 +1698,9 @@ void CSciEdit::SetUDiffStyle()
 
 	Call(SCI_CLEARDOCUMENTSTYLE, 0, 0);
 
+	const auto fontName = CUnicodeUtils::StdGetUTF8(static_cast<const std::wstring&>(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")));
+	const DWORD fontSize = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10);
+
 	if (CTheme::Instance().IsDarkTheme())
 	{
 		Call(SCI_STYLESETFORE, STYLE_DEFAULT, UDiffTextColorDark);
@@ -1707,11 +1710,11 @@ void CSciEdit::SetUDiffStyle()
 		Call(SCI_SETCARETFORE, UDiffTextColorDark);
 		Call(SCI_SETWHITESPACEFORE, true, RGB(180, 180, 180));
 		SetAStyle(STYLE_DEFAULT, UDiffTextColorDark, UDiffBackColorDark,
-				  CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
-				  CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
+				  fontSize,
+				  fontName.c_str());
 		SetAStyle(SCE_DIFF_DEFAULT, UDiffTextColorDark, UDiffBackColorDark,
-				  CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
-				  CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
+				  fontSize,
+				  fontName.c_str());
 		Call(SCI_STYLECLEARALL);
 		SetAStyle(SCE_DIFF_COMMAND,
 				  CRegStdDWORD(L"Software\\TortoiseGit\\DarkUDiffForeCommandColor", UDIFF_COLORFORECOMMAND_DARK),
@@ -1747,11 +1750,11 @@ void CSciEdit::SetUDiffStyle()
 		Call(SCI_SETCARETFORE, ::GetSysColor(COLOR_WINDOWTEXT));
 		Call(SCI_SETWHITESPACEFORE, true, ::GetSysColor(COLOR_3DSHADOW));
 		SetAStyle(STYLE_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
-				  CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
-				  CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
+				  fontSize,
+				  fontName.c_str());
 		SetAStyle(SCE_DIFF_DEFAULT, ::GetSysColor(COLOR_WINDOWTEXT), ::GetSysColor(COLOR_WINDOW),
-				  CRegStdDWORD(L"Software\\TortoiseGit\\UDiffFontSize", 10),
-				  CUnicodeUtils::StdGetUTF8(CRegStdString(L"Software\\TortoiseGit\\UDiffFontName", L"Consolas")).c_str());
+				  fontSize,
+				  fontName.c_str());
 		Call(SCI_STYLECLEARALL);
 		SetAStyle(SCE_DIFF_COMMAND,
 				  CRegStdDWORD(L"Software\\TortoiseGit\\UDiffForeCommandColor", UDIFF_COLORFORECOMMAND),

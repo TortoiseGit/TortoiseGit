@@ -117,7 +117,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 				if (const char* body = strchr(msg, '\n'); !body)
 					entry.m_Subject = CUnicodeUtils::GetUnicode(msg);
 				else
-					entry.m_Subject = CUnicodeUtils::GetUnicodeLengthSizeT(msg, body - msg);
+					entry.m_Subject = CUnicodeUtils::GetUnicode(std::string_view(msg, body - msg));
 				auto tagger = git_tag_tagger(tag);
 				entry.m_CommitterName = CUnicodeUtils::GetUnicode(tagger->name);
 				entry.m_CommitterEmail = CUnicodeUtils::GetUnicode(tagger->email);
