@@ -55,8 +55,7 @@ public:
 	static CStringA GetMulti(const CStringW& string, int acp);
 	static inline CString GetUnicode(const CStringA& string, int acp = CP_UTF8) { return GetUnicodeLength(string, string.GetLength(), acp); };
 	static inline CString GetUnicode(const char* string, int acp = CP_UTF8) { return GetUnicode(std::string_view(string), acp); };
-	static inline CString GetUnicode(const std::string_view string, int acp = CP_UTF8) { return GetUnicodeLengthSizeT(string.data(), string.size(), acp); };
-	static inline CString GetUnicodeLengthSizeT(const char* string, size_t len, int acp = CP_UTF8) { return GetUnicodeLength(string, SafeSizeToInt(len), acp); };
+	static inline CString GetUnicode(const std::string_view string, int acp = CP_UTF8) { return GetUnicodeLength(string.data(), SafeSizeToInt(string.size()), acp); };
 	static CString GetUnicodeLength(const char* string, int len, int acp = CP_UTF8);
 	static int GetCPCode(const CString & codename);
 #endif

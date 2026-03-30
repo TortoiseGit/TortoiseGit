@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022-2025 - TortoiseGit
+// Copyright (C) 2022-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -216,7 +216,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 			worktreeDetails.m_isBaseRepo = FALSE;
 			worktreeDetails.m_IsLocked = locked;
 			if (locked && reason)
-				worktreeDetails.m_LockedReason = CUnicodeUtils::GetUnicodeLengthSizeT(reason->ptr, reason->size);
+				worktreeDetails.m_LockedReason = reason.ToString();
 			m_Worktrees.push_back(worktreeDetails);
 			continue;
 		}
@@ -239,7 +239,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 		worktreeDetails.m_isBaseRepo = FALSE;
 		worktreeDetails.m_IsLocked = locked;
 		if (locked && reason)
-			worktreeDetails.m_LockedReason = CUnicodeUtils::GetUnicodeLengthSizeT(reason->ptr, reason->size);
+			worktreeDetails.m_LockedReason = reason.ToString();
 		m_Worktrees.push_back(worktreeDetails);
 	}
 

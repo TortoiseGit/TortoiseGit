@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2023, 2025 - TortoiseGit
+// Copyright (C) 2014-2023, 2025-2026 - TortoiseGit
 // based on SmartHandle of TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -47,6 +47,20 @@ public:
 
 	CSmartBuffer(const CSmartBuffer&) = delete;
 	CSmartBuffer& operator=(const CSmartBuffer&) = delete;
+
+#if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
+	inline operator std::string_view() const
+		requires std::is_same_v<HandleType, git_buf>
+	{
+		return std::string_view(m_Ref.ptr, m_Ref.size);
+	}
+
+	inline CString ToString() const
+		requires std::is_same_v<HandleType, git_buf>
+	{
+		return CUnicodeUtils::GetUnicode(*this);
+	}
+#endif
 
 private:
 	HandleType m_Ref{};
@@ -291,7 +305,7 @@ public:
 			return ret;
 		}
 
-		value = CUnicodeUtils::GetUnicodeLengthSizeT(buf->ptr, buf->size);
+		value = buf.ToString();
 
 		return 0;
 	}

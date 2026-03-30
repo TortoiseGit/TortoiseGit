@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -553,11 +553,10 @@ void CGitPropertyPage::InitWorkfileView()
 			branch = CUnicodeUtils::GetUnicode(branchChar);
 
 			const char * branchFullChar = git_reference_name(head);
-			CAutoBuf upstreambranchname;
-			if (int ret = git_branch_upstream_name(upstreambranchname, repository, branchFullChar); ret == 0)
+			CAutoBuf upstreambranchnamebuf;
+			if (int ret = git_branch_upstream_name(upstreambranchnamebuf, repository, branchFullChar); ret == 0)
 			{
-				remotebranch = CUnicodeUtils::GetUnicodeLengthSizeT(upstreambranchname->ptr, upstreambranchname->size);
-				remotebranch = remotebranch.Mid(static_cast<int>(wcslen(L"refs/remotes/")));
+				remotebranch = CUnicodeUtils::GetUnicode(static_cast<std::string_view>(upstreambranchnamebuf).substr(wcslen(L"refs/remotes/")));
 				int pos = remotebranch.Find(L'/');
 				if (pos > 0)
 				{

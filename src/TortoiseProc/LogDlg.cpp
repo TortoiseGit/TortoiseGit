@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009, 2015 - TortoiseSVN
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -744,7 +744,7 @@ static int DescribeCommit(const CGitHash& hash, CString& result)
 	if (git_describe_format(describe_buf, describe, &format_options))
 		return -1;
 
-	result = CUnicodeUtils::GetUnicodeLengthSizeT(describe_buf->ptr, describe_buf->size);
+	result = describe_buf.ToString();
 	return 0;
 }
 
