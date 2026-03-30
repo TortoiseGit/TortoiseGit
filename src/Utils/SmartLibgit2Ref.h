@@ -19,6 +19,7 @@
 //
 #pragma once
 #include "UnicodeUtils.h"
+#include <vector>
 
 /**
 * \ingroup Utils
@@ -59,6 +60,15 @@ public:
 		requires std::is_same_v<HandleType, git_buf>
 	{
 		return CUnicodeUtils::GetUnicode(*this);
+	}
+
+	inline void AppendTo(std::vector<CString>& list) const
+		requires std::is_same_v<HandleType, git_strarray>
+	{
+		for (size_t i = 0; i < m_Ref.count; ++i)
+		{
+			list.push_back(CUnicodeUtils::GetUnicode(m_Ref.strings[i]));
+		}
 	}
 #endif
 

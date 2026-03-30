@@ -1355,10 +1355,7 @@ int CGit::GetTagList(STRING_VECTOR &list)
 		if (git_tag_list(tag_names, repo))
 			return -1;
 
-		for (size_t i = 0; i < tag_names->count; ++i)
-		{
-			list.push_back(CUnicodeUtils::GetUnicode(tag_names->strings[i]));
-		}
+		tag_names.AppendTo(list);
 
 		std::sort(list.begin() + prevCount, list.end(), g_bSortTagsReversed ? LogicalCompareReversedPredicate : LogicalComparePredicate);
 
@@ -1820,10 +1817,7 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 		if (git_remote_list(remotes, repo))
 			return -1;
 
-		for (size_t i = 0; i < remotes->count; ++i)
-		{
-			list.push_back(CUnicodeUtils::GetUnicode(remotes->strings[i]));
-		}
+		remotes.AppendTo(list);
 
 		std::sort(list.begin() + prevCount, list.end(), LogicalComparePredicate);
 

@@ -135,8 +135,7 @@ int CWorktreeListDlg::GetWorktreeNames(STRING_VECTOR& list, CString& error)
 		return -1;
 	}
 
-	for (size_t i = 0; i < worktrees->count; ++i)
-		list.push_back(CUnicodeUtils::GetUnicode(worktrees->strings[i]));
+	worktrees.AppendTo(list);
 
 	return 0;
 }
