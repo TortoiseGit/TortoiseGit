@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008,2011, 2014 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -98,7 +98,7 @@ const FileStatusCacheEntry * GitFolderStatus::BuildCache(const CTGitPath& filepa
 	m_TimeStamp = GetTickCount64();
 	FileStatusCacheEntry* ret = nullptr;
 
-	if (wcslen(filepath.GetWinPath()) == 3)
+	if (filepath.GetWinPathString().GetLength() == 3)
 		ret = &m_cache[static_cast<LPCWSTR>(filepath.GetWinPathString().Left(2))];
 	else
 		ret = &m_cache[filepath.GetWinPath()];
