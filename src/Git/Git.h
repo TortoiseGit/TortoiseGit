@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -355,8 +355,8 @@ public:
 			BYTE_VECTOR vectorErr;
 			CGitCallCb call(cmd, recv, &vectorErr);
 			const int ret = Run(call);
-			vectorErr.push_back(0);
-			StringAppend(*outputErr, vectorErr.data());
+			if (!vectorErr.empty())
+				StringAppend(*outputErr, std::string_view(vectorErr.data(), vectorErr.size()));
 			return ret;
 		}
 
@@ -511,7 +511,7 @@ public:
 
 	int GetSubmoduleHash(const CString& pathOfSubmodule, const CGitHash& revision, CGitHash& submoduleRevision, CString& err);
 
-	static void StringAppend(CString& str, const char* p, int code = CP_UTF8, int length = -1);
+	static void StringAppend(CString& str, const std::string_view, int code = CP_UTF8);
 
 	BOOL CanParseRev(CString ref);
 	/**

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -47,23 +47,24 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 	do
 	{
 		CStringA line = m_Body.Tokenize("\n", start);
+		std::string_view lineView = std::string_view(line, line.GetLength());
 		if (CStringUtils::StartsWith(line, FROMHEADER))
 		{
-			CGit::StringAppend(m_Author, static_cast<LPCSTR>(line) + static_cast<int>(strlen(FROMHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(FROMHEADER)));
+			m_Author = CUnicodeUtils::GetUnicode(lineView.substr(strlen(FROMHEADER)));
 			m_Author.TrimRight(L'\r');
 		}
 		else if (CStringUtils::StartsWith(line, DATEHEADER))
 		{
-			CGit::StringAppend(m_Date, static_cast<LPCSTR>(line) + static_cast<int>(strlen(DATEHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(DATEHEADER)));
+			m_Date = CUnicodeUtils::GetUnicode(lineView.substr(strlen(DATEHEADER)));
 			m_Date.TrimRight(L'\r');
 		}
 		else if (CStringUtils::StartsWith(line, SUBJECTHEADER))
 		{
-			CGit::StringAppend(m_Subject, static_cast<LPCSTR>(line) + static_cast<int>(strlen(SUBJECTHEADER)), CP_UTF8, line.GetLength() - static_cast<int>(strlen(SUBJECTHEADER)));
+			m_Subject = CUnicodeUtils::GetUnicode(lineView.substr(strlen(SUBJECTHEADER)));
 			while (m_Body.GetLength() > start && (m_Body.GetAt(start) == L' ' || m_Body.GetAt(start) == L'\t'))
 			{
 				line = m_Body.Tokenize("\n", start);
-				CGit::StringAppend(m_Subject, static_cast<LPCSTR>(line), CP_UTF8, line.GetLength());
+				CGit::StringAppend(m_Subject, std::string_view(line, line.GetLength()));
 			}
 			m_Subject.TrimRight(L'\r');
 		}
@@ -84,7 +85,7 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 		return -1;
 
 	if (start + 1 < m_Body.GetLength())
-		CGit::StringAppend(m_strBody, static_cast<LPCSTR>(m_Body) + start + 1, CP_UTF8, m_Body.GetLength() - start - 1);
+		m_strBody = CUnicodeUtils::GetUnicode(std::string_view(m_Body, m_Body.GetLength()).substr(start + 1));
 
 	return 0;
 }

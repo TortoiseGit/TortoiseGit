@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2015-2021, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -136,24 +136,28 @@ TEST(CGit, RunLogFile_Error)
 TEST(CGit, StringAppend)
 {
 	CString string = L"something";
-	CGit::StringAppend(string, nullptr, CP_UTF8, 0);
+	CGit::StringAppend(string, std::string_view());
+	EXPECT_STREQ(L"something", string);
+	CGit::StringAppend(string, std::string_view(nullptr, 0));
 	EXPECT_STREQ(L"something", string);
 	constexpr char somebytes[1] = { 0 };
-	CGit::StringAppend(string, somebytes, CP_UTF8, 0);
+	CGit::StringAppend(string, somebytes, 0);
 	EXPECT_STREQ(L"something", string);
 	CGit::StringAppend(string, somebytes);
 	EXPECT_STREQ(L"something", string);
 	constexpr char moreBytesUTFEight[] = { 0x68, 0x65, 0x6C, 0x6C, '\xC3', '\xB6', 0x0A, 0x00 };
-	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, 3);
+	CGit::StringAppend(string, std::string_view(moreBytesUTFEight, 3));
 	EXPECT_STREQ(L"somethinghel", string);
-	CGit::StringAppend(string, moreBytesUTFEight + 3, CP_ACP, 1);
+	CGit::StringAppend(string, std::string_view(moreBytesUTFEight + 3, 1), CP_ACP);
 	EXPECT_STREQ(L"somethinghell", string);
 	CGit::StringAppend(string, moreBytesUTFEight);
 	EXPECT_STREQ(L"somethinghellhellö\n", string);
-	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, sizeof(moreBytesUTFEight));
+	CGit::StringAppend(string, std::string_view(moreBytesUTFEight, sizeof(moreBytesUTFEight)));
 	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0", string);
-	CGit::StringAppend(string, moreBytesUTFEight, CP_UTF8, 3);
+	CGit::StringAppend(string, std::string_view(moreBytesUTFEight, 3));
 	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0hel", string);
+	CGit::StringAppend(string, "\xf0\xa0\x9c\x8e");
+	EXPECT_STREQ(L"somethinghellhellö\nhellö\n\0hel\U0002070e", string);
 }
 
 TEST(CGit, GetFileModifyTime)

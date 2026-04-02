@@ -509,7 +509,7 @@ int CGitHeadFileList::ReadHeadHash(const CString& gitdir)
 
 			if (!ReadFile(hfile, p.get(), fileSize.LowPart - static_cast<DWORD>(strlen("ref:")), &size, nullptr))
 				return -1;
-			CGit::StringAppend(m_HeadRefFile, p.get(), CP_UTF8, fileSize.LowPart - static_cast<int>(strlen("ref:")));
+			m_HeadRefFile = CUnicodeUtils::GetUnicode(std::string_view(p.get(), fileSize.LowPart - strlen("ref:")));
 		}
 		CString ref = m_HeadRefFile.Trim();
 		int start = 0;

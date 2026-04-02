@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022-2025 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -808,10 +808,10 @@ CString CCommitProgressDlg::Convert2UnionCode(const char* buff)
 			}
 		}
 
-		CGit::StringAppend(str, buff, g_Git.m_LogEncode, start);
+		CGit::StringAppend(str, std::string_view(buff, start), g_Git.m_LogEncode);
 	}
 
-	CGit::StringAppend(str, buff + start, CP_UTF8, size - start);
+	CGit::StringAppend(str, std::string_view(buff + start, size - start));
 
 	ClearESC(str);
 

@@ -431,8 +431,10 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	{
 		auto buf = std::make_unique<char[]>(static_cast<UINT>(file.GetLength()));
 		UINT read = file.Read(buf.get(), static_cast<UINT>(file.GetLength()));
-		bool skipBom = read >= 3 && buf[0] == 0xEF && buf[1] == 0xBB && buf[2] == 0xBF;
-		CGit::StringAppend(temp, buf.get() + (skipBom ? 3 : 0), CP_UTF8, read - (skipBom ? 3 : 0));
+		std::string_view sv = std::string_view(buf.get(), read);
+		if (sv.length() >= 3 && sv[0] == 0xEF && sv[1] == 0xBB && sv[2] == 0xBF) // skip BOM?
+			sv.remove_prefix(3);
+		temp = CUnicodeUtils::GetUnicode(sv);
 	}
 	else
 		temp = L"Could not open downloaded changelog file.";

@@ -364,21 +364,16 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HA
 }
 //Must use sperate function to convert ANSI str to union code string
 //Because A2W use stack as internal convert buffer.
-void CGit::StringAppend(CString& str, const char* p, int code, int length)
+void CGit::StringAppend(CString& str, const std::string_view append, int code)
 {
-	const int len = [length, p]() {
-		if (length < 0)
-			return SafeSizeToInt(strlen(p));
-		else
-			return length;
-	}();
-	if (len == 0)
+	if (append.length() == 0)
 		return;
 	const int currentContentLen = str.GetLength();
-	if (len >= INT_MAX / 2)
+	if (append.length() >= size_t(INT_MAX - currentContentLen) / 2)
 		throw std::overflow_error("CString would become too long");
-	auto* buf = str.GetBuffer(SafeSizeToInt(static_cast<size_t>(len) * 2 + currentContentLen)) + currentContentLen;
-	const int appendedLen = MultiByteToWideChar(code, 0, p, len, buf, len * 2);
+	const int len = static_cast<int>(append.length()); // len is guaranteed to fit into an int, as checked above
+	auto* buf = str.GetBuffer(len * 2 + currentContentLen) + currentContentLen; // maximum buffer size is less than INT_MAX as checked above
+	const int appendedLen = MultiByteToWideChar(code, 0, append.data(), len, buf, len * 2);
 	str.ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
 
@@ -553,15 +548,11 @@ int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
 	else
 		ret = Run(cmd, &vector);
 
-	vector.push_back(0);
-	if (output)
-		StringAppend(*output, vector.data(), code);
+	if (output && !vector.empty())
+		StringAppend(*output, std::string_view(vector.data(), vector.size()), code);
 
-	if (outputErr)
-	{
-		vectorErr.push_back(0);
-		StringAppend(*outputErr, vectorErr.data(), code);
-	}
+	if (outputErr && !vectorErr.empty())
+		StringAppend(*outputErr, std::string_view(vectorErr.data(), vectorErr.size()), code);
 
 	return ret;
 }
@@ -1133,9 +1124,8 @@ int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
 		m_AsyncReadStdErrThreadMap.erase(GetCurrentThreadId());
 	}
 
-	stderrVector.push_back(0);
-	if (stdErr)
-		StringAppend(*stdErr, stderrVector.data(), CP_UTF8);
+	if (stdErr && !stderrVector.empty())
+		StringAppend(*stdErr, std::string_view(stderrVector.data(), stderrVector.size()));
 
 	DWORD exitcode = 0;
 	if (!GetExitCodeProcess(pi.hProcess, &exitcode))
@@ -2516,7 +2506,7 @@ int CGit::HasWorkingTreeConflicts()
 
 	CString output;
 	gitLastErr.Empty();
-	if (Run(L"git.exe ls-files -u -t -z", &output, &gitLastErr, CP_UTF8))
+	if (Run(L"git.exe ls-files -u", &output, &gitLastErr, CP_UTF8))
 		return -1;
 
 	return output.IsEmpty() ? 0 : 1;

@@ -1026,7 +1026,7 @@ int CTGitPathList::ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int a
 			return -1;
 
 		pathstring.Empty();
-		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(endOfLine - pos));
+		CGit::StringAppend(pathstring, std::string_view(&out[pos], endOfLine - pos));
 		// SetFromGit resets the path
 		if (CStringUtils::EndsWith(pathstring, L'/'))
 		{
@@ -1084,7 +1084,7 @@ int CTGitPathList::ParserFromLsFile(const BYTE_VECTOR& out)
 		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != strlen("H 100644 ") + 2 * GIT_HASH_SIZE + strlen(" 0\t")) // <tag> <mode> <object> <stage>\t<file>
 			return -1;
 		pathstring.Empty();
-		CGit::StringAppend(pathstring, &out[pos], CP_UTF8, static_cast<int>(fileNameEnd - pos));
+		CGit::StringAppend(pathstring, std::string_view(&out[pos], fileNameEnd - pos));
 		// SetFromGit resets the path
 		path.SetFromGit(pathstring, (strtol(&out[modestart], nullptr, 8) & S_IFDIR) == S_IFDIR);
 		if (strtol(&out[stagestart], nullptr, 10) != 0)
@@ -1310,14 +1310,14 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 				if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 					return -1;
 				// old filename before rename
-				CGit::StringAppend(pathname2, &log[pos], CP_UTF8, static_cast<int>(filenameEnd - pos));
+				CGit::StringAppend(pathname2, std::string_view(&log[pos], filenameEnd - pos));
 				pos = filenameEnd + 1;
 			}
 			const size_t filenameEnd = log.find('\0', pos);
 			if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 				return -1;
 			pathname1.Empty();
-			CGit::StringAppend(pathname1, &log[pos], CP_UTF8, static_cast<int>(filenameEnd - pos));
+			CGit::StringAppend(pathname1, std::string_view(&log[pos], filenameEnd - pos));
 			pos = filenameEnd + 1;
 
 			if (const auto existing = duplicateMap.find(pathname1); existing != duplicateMap.end())
@@ -1365,7 +1365,7 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 				return -1;
 
 			StatAdd.Empty();
-			CGit::StringAppend(StatAdd, &log[pos], CP_UTF8, static_cast<int>(tabstart - pos));
+			CGit::StringAppend(StatAdd, std::string_view(&log[pos], tabstart - pos));
 			pos = tabstart + 1;
 
 			tabstart = log.find('\t', pos); // find end of second number (removed lines)
@@ -1373,7 +1373,7 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 				return -1;
 
 			StatDel.Empty();
-			CGit::StringAppend(StatDel, &log[pos], CP_UTF8, static_cast<int>(tabstart - pos));
+			CGit::StringAppend(StatDel, std::string_view(&log[pos], tabstart - pos));
 			pos = tabstart + 1;
 
 			if (pos >= logend)
@@ -1386,14 +1386,14 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 				const size_t endPathname = log.find('\0', pos);
 				if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 					return -1;
-				CGit::StringAppend(pathname2, &log[pos], CP_UTF8, static_cast<int>(endPathname - pos));
+				CGit::StringAppend(pathname2, std::string_view(&log[pos], endPathname - pos));
 				pos = endPathname + 1;
 			}
 			const size_t endPathname = log.find('\0', pos);
 			if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 				return -1;
 			pathname1.Empty();
-			CGit::StringAppend(pathname1, &log[pos], CP_UTF8, static_cast<int>(endPathname - pos));
+			CGit::StringAppend(pathname1, std::string_view(&log[pos], endPathname - pos));
 			pos = endPathname + 1;
 
 			// SetFromGit resets the path
