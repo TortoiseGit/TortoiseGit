@@ -1575,7 +1575,7 @@ void CTortoiseGitBlameView::UpdateInfo(int Encode)
 			text += m_data.GetUtf8Line(i);
 			text += '\n';
 		}
-		text.TrimRight("\r\n");
+		text.Truncate(text.GetLength() - 1);
 		SendEditor(SCI_REPLACESEL, 0, reinterpret_cast<LPARAM>(static_cast<LPCSTR>(text)));
 	}
 
