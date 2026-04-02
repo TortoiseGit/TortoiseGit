@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2020, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -230,8 +230,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		BYTE_VECTOR bytes, errBytes;
 		if(g_Git.Run(cmd, &bytes, &errBytes))
 		{
-			CString err;
-			CGit::StringAppend(err, errBytes.data(), CP_UTF8);
+			CString err = errBytes;
 			CMessageBox::Show(hWnd, err, L"TortoiseGit", MB_OK | MB_ICONERROR);
 			return -1;
 		}
