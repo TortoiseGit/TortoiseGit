@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2010, 2020-2023 - TortoiseSVN
-// Copyright (C) 2015-2016, 2020, 2024-2025 - TortoiseGit
+// Copyright (C) 2015-2016, 2020, 2024-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -195,7 +195,7 @@ public:
 	 * Writes the string \text to the file \path, either in utf16 or utf8 encoding,
 	 * depending on the \c bUTF8 param.
 	 */
-	static bool WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 = true);
+	static bool WriteStringToTextFile(const std::wstring& path, const std::wstring_view text, bool bUTF8 = true);
 
 	/**
 	 * Replace all pipe (|) character in the string with a nullptr character. Used

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019, 2023 - TortoiseGit
+// Copyright (C) 2019, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ public:
 					buff[cbRead] = '\0';
 					LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 					::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
-					std::wstring str = CUnicodeUtils::StdGetUnicode(std::string(buff.get()));
+					std::wstring str = CUnicodeUtils::StdGetUnicode(buff.get());
 					::SendMessage(m_hTargetWnd, EM_REPLACESEL, TRUE, reinterpret_cast<LPARAM>(str.c_str()));
 				}
 				else
@@ -56,7 +56,7 @@ public:
 						buff[cbRead] = '\0';
 						LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 						::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
-						std::wstring str = CUnicodeUtils::StdGetUnicode(std::string(buff.get()));
+						std::wstring str = CUnicodeUtils::StdGetUnicode(buff.get());
 						::SendMessage(m_hTargetWnd, EM_REPLACESEL, TRUE, reinterpret_cast<LPARAM>(str.c_str()));
 						cbRead=0;
 						hr = medium.pstm->Read(buff.get(), BUF_SIZE, &cbRead);
@@ -100,7 +100,7 @@ public:
 			{
 				LRESULT nLen = ::SendMessage(m_hTargetWnd, WM_GETTEXTLENGTH, 0, 0);
 				::SendMessage(m_hTargetWnd, EM_SETSEL, nLen, -1);
-				std::wstring str = CUnicodeUtils::StdGetUnicode(std::string(pStr));
+				std::wstring str = CUnicodeUtils::StdGetUnicode(pStr);
 				::SendMessage(m_hTargetWnd, EM_REPLACESEL, TRUE, reinterpret_cast<LPARAM>(str.c_str()));
 			}
 			GlobalUnlock(medium.hGlobal);

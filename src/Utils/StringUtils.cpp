@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019, 2021-2023, 2025 - TortoiseGit
+// Copyright (C) 2011-2019, 2021-2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2011, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -723,7 +723,7 @@ bool CStringUtils::StartsWithI(const wchar_t* heystack, const CString& needle)
 
 bool CStringUtils::WriteStringToTextFile(LPCWSTR path, LPCWSTR text, bool bUTF8 /* = true */)
 {
-	return WriteStringToTextFile(static_cast<const std::wstring&>(path), static_cast<const std::wstring&>(text), bUTF8);
+	return WriteStringToTextFile(static_cast<const std::wstring&>(path), std::wstring_view(text), bUTF8);
 }
 
 #endif // #if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
@@ -738,7 +738,7 @@ bool CStringUtils::StartsWith(const char* heystack, const char* needle)
 	return strncmp(heystack, needle, strlen(needle)) == 0;
 }
 
-bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring& text, bool bUTF8 /* = true */)
+bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::wstring_view text, bool bUTF8 /* = true */)
 {
 	DWORD dwWritten = 0;
 	CAutoFile hFile = CreateFile(path.c_str(), GENERIC_WRITE, FILE_SHARE_DELETE, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -755,7 +755,7 @@ bool CStringUtils::WriteStringToTextFile(const std::wstring& path, const std::ws
 	}
 	else
 	{
-		if (!WriteFile(hFile, text.c_str(), static_cast<DWORD>(text.length() * sizeof(wchar_t)), &dwWritten, nullptr))
+		if (!WriteFile(hFile, text.data(), static_cast<DWORD>(text.length() * sizeof(wchar_t)), &dwWritten, nullptr))
 		{
 			return false;
 		}
