@@ -245,79 +245,64 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 		encoding = GetEncode(all.data(), SafeSizeToInt(all.size()), &bomoffset);
 	}
 
-	if (encoding != m_encode)
+	if (encoding == m_encode)
+		return encoding;
+
+	m_encode = encoding;
+
+	m_Utf8Lines.resize(m_RawLines.size());
+	for (size_t i_Lines = 0; i_Lines < m_RawLines.size(); ++i_Lines)
 	{
-		m_encode = encoding;
+		const BYTE_VECTOR& rawLine = m_RawLines[i_Lines];
+		if (rawLine.empty())
+			continue;
 
-		m_Utf8Lines.resize(m_RawLines.size());
-		for (size_t i_Lines = 0; i_Lines < m_RawLines.size(); ++i_Lines)
+		if (encoding == 1201)
 		{
-			const BYTE_VECTOR& rawLine = m_RawLines[i_Lines];
+			const int linebomoffset = (i_Lines == 0) ? bomoffset : 0;
+			const int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
+			if (size == 0)
+				continue;
 
-			int linebomoffset = 0;
-			CStringA lineUtf8;
-			if (!rawLine.empty())
+			CString line;
+			wchar_t* buffer = line.GetBuffer(size);
+			memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
+			// swap the bytes to little-endian order to get proper strings in wchar_t format
+			wchar_t* pSwapBuf = buffer;
+			for (int i = 0; i < size; ++i)
 			{
-				if (encoding == 1201)
-				{
-					if (i_Lines == 0)
-						linebomoffset = bomoffset;
-					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
-					if (size == 0)
-						continue;
-
-					CString line;
-					wchar_t* buffer = line.GetBuffer(size);
-					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
-					// swap the bytes to little-endian order to get proper strings in wchar_t format
-					wchar_t * pSwapBuf = buffer;
-					for (int i = 0; i < size; ++i)
-					{
-						*pSwapBuf = WideCharSwap2(*pSwapBuf);
-						++pSwapBuf;
-					}
-					line.ReleaseBuffer();
-					line.TrimRight('\r');
-
-					lineUtf8 = CUnicodeUtils::GetUTF8(line);
-				}
-				else if (encoding == 1200)
-				{
-					CString line;
-					// the first linebomoffset depends whether there is a BOM, after that it's 1 (see issue #920)
-					if (i_Lines == 0)
-						linebomoffset = bomoffset;
-					else
-						linebomoffset = 1;
-					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
-					if (size == 0)
-						continue;
-
-					memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
-					line.TrimRight('\r');
-
-					lineUtf8 = CUnicodeUtils::GetUTF8(line);
-				}
-				else if (encoding == CP_UTF8)
-				{
-					if (i_Lines == 0)
-						linebomoffset = bomoffset;
-					const int len = SafeSizeToInt(rawLine.size() - linebomoffset);
-					if (len == 0)
-						continue;
-
-					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), len);
-				}
-				else
-				{
-					CString line = CUnicodeUtils::GetUnicodeLength(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), SafeSizeToInt(rawLine.size() - linebomoffset), encoding);
-					lineUtf8 = CUnicodeUtils::GetUTF8(line);
-				}
+				*pSwapBuf = WideCharSwap2(*pSwapBuf);
+				++pSwapBuf;
 			}
+			line.ReleaseBuffer();
+			line.TrimRight('\r');
 
-			m_Utf8Lines[i_Lines] = lineUtf8;
-			linebomoffset = 0;
+			m_Utf8Lines[i_Lines] = CUnicodeUtils::GetUTF8(line);
 		}
+		else if (encoding == 1200)
+		{
+			const int linebomoffset = (i_Lines == 0) ? bomoffset : 1; // the first linebomoffset depends whether there is a BOM, after that it's 1 (see issue #920)
+			const int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
+			if (size == 0)
+				continue;
+
+			CString line;
+			memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
+			line.TrimRight('\r');
+
+			m_Utf8Lines[i_Lines] = CUnicodeUtils::GetUTF8(line);
+		}
+		else if (encoding == CP_UTF8)
+		{
+			const int linebomoffset = (i_Lines == 0) ? bomoffset : 0;
+			const int len = SafeSizeToInt(rawLine.size() - linebomoffset);
+			if (len == 0)
+				continue;
+
+			m_Utf8Lines[i_Lines] = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), len);
+		}
+		else
+			m_Utf8Lines[i_Lines] = CUnicodeUtils::GetUTF8(CUnicodeUtils::GetUnicode(std::string_view(rawLine.data(), rawLine.size()), encoding));
 	}
 	return encoding;
 }
