@@ -277,6 +277,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 						++pSwapBuf;
 					}
 					line.ReleaseBuffer();
+					line.TrimRight('\r');
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
@@ -293,6 +294,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 						continue;
 
 					memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
+					line.TrimRight('\r');
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
