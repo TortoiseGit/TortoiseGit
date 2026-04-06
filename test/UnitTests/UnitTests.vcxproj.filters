@@ -33,6 +33,9 @@
     <Filter Include="Utils\UI">
       <UniqueIdentifier>{ffc0b3bc-ffde-42fd-a7a8-787badcb0b66}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TortoiseGitBlame">
+      <UniqueIdentifier>{71ee40bb-fa33-4bf3-bbae-e03d5f10917b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -198,6 +201,12 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\TortoiseProc\LogFile.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.h">
+      <Filter>TortoiseGitBlame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\LoglistUtils.h">
       <Filter>TortoiseProc</Filter>
     </ClInclude>
   </ItemGroup>
@@ -426,6 +435,15 @@
     </ClCompile>
     <ClCompile Include="..\..\src\TortoiseProc\LogFile.cpp">
       <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.cpp">
+      <Filter>TortoiseGitBlame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\LoglistUtils.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="TortoiseGitBlameDataTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

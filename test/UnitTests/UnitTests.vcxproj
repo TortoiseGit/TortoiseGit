@@ -66,7 +66,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\json\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\GitWCRev;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\json\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\GitWCRev;..\..\src\TortoiseGitBlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TGIT_TESTS_ONLY;GTEST_HAS_STD_TUPLE_;GTEST_HAS_TR1_TUPLE=0;TGIT_LFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>SyncCThrow</ExceptionHandling>
       <AdditionalOptions>/Zm110 %(AdditionalOptions)</AdditionalOptions>
@@ -90,6 +90,7 @@
     <ClInclude Include="..\..\src\Git\gittype.h" />
     <ClInclude Include="..\..\src\Git\MassiveGitTaskBase.h" />
     <ClInclude Include="..\..\src\Git\TGitPath.h" />
+    <ClInclude Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\FileTextLines.h" />
     <ClInclude Include="..\..\src\TortoiseMerge\Patch.h" />
     <ClInclude Include="..\..\src\TortoiseProc\AppUtils.h" />
@@ -98,6 +99,7 @@
     <ClInclude Include="..\..\src\TortoiseProc\lanes.h" />
     <ClInclude Include="..\..\src\TortoiseProc\LogDlgHelper.h" />
     <ClInclude Include="..\..\src\TortoiseProc\LogFile.h" />
+    <ClInclude Include="..\..\src\TortoiseProc\LoglistUtils.h" />
     <ClInclude Include="..\..\src\TortoiseProc\ProjectProperties.h" />
     <ClInclude Include="..\..\src\TortoiseProc\SerialPatch.h" />
     <ClInclude Include="..\..\src\TortoiseProc\StagingOperations.h" />
@@ -146,6 +148,7 @@
     <ClCompile Include="..\..\src\Git\GitStatus.cpp" />
     <ClCompile Include="..\..\src\Git\MassiveGitTaskBase.cpp" />
     <ClCompile Include="..\..\src\Git\TGitPath.cpp" />
+    <ClCompile Include="..\..\src\TortoiseGitBlame\TortoiseGitBlameData.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\FileTextLines.cpp" />
     <ClCompile Include="..\..\src\TortoiseMerge\Patch.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\AppUtils.cpp" />
@@ -154,6 +157,7 @@
     <ClCompile Include="..\..\src\TortoiseProc\lanes.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\LogDataVector.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\LogFile.cpp" />
+    <ClCompile Include="..\..\src\TortoiseProc\LoglistUtils.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\ProjectProperties.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\SerialPatch.cpp" />
     <ClCompile Include="..\..\src\TortoiseProc\StagingOperations.cpp" />
@@ -206,6 +210,7 @@
     <ClCompile Include="StringUtilsTest.cpp" />
     <ClCompile Include="TempFileTest.cpp" />
     <ClCompile Include="TGitPathTest.cpp" />
+    <ClCompile Include="TortoiseGitBlameDataTest.cpp" />
     <ClCompile Include="UnicodeUtilsTest.cpp" />
     <ClCompile Include="UniqueQueueTests.cpp" />
     <ClCompile Include="UnitTests.cpp" />
