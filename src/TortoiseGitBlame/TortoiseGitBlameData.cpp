@@ -1,6 +1,6 @@
 ﻿// TortoiseGitBlame - a Viewer for Git Blames
 
-// Copyright (C) 2008-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2021, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003 Don HO <donho@altern.org>
 
 // This program is free software; you can redistribute it and/or
@@ -260,8 +260,13 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 			{
 				if (encoding == 1201)
 				{
-					CString line;
+					if (i_Lines == 0)
+						linebomoffset = bomoffset;
 					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
+					if (size == 0)
+						continue;
+
+					CString line;
 					wchar_t* buffer = line.GetBuffer(size);
 					memcpy(buffer, &rawLine[linebomoffset], sizeof(wchar_t) * size);
 					// swap the bytes to little-endian order to get proper strings in wchar_t format
@@ -278,19 +283,29 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 				else if (encoding == 1200)
 				{
 					CString line;
-					// the first bomoffset is 2, after that it's 1 (see issue #920)
-					// also: don't set bomoffset if called from Encodings menu (i.e. start == 42 and bomoffset == 0); bomoffset gets only set if autodetected
-					if (linebomoffset == 0 && i_Lines != 0)
-					{
+					// the first linebomoffset depends whether there is a BOM, after that it's 1 (see issue #920)
+					if (i_Lines == 0)
+						linebomoffset = bomoffset;
+					else
 						linebomoffset = 1;
-					}
 					int size = SafeSizeToInt((rawLine.size() - linebomoffset) / 2);
+					if (size == 0)
+						continue;
+
 					memcpy(CStrBuf(line, size, 0), &rawLine[linebomoffset], sizeof(wchar_t) * size);
 
 					lineUtf8 = CUnicodeUtils::GetUTF8(line);
 				}
 				else if (encoding == CP_UTF8)
-					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), SafeSizeToInt(rawLine.size() - linebomoffset));
+				{
+					if (i_Lines == 0)
+						linebomoffset = bomoffset;
+					const int len = SafeSizeToInt(rawLine.size() - linebomoffset);
+					if (len == 0)
+						continue;
+
+					lineUtf8 = CStringA(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), len);
+				}
 				else
 				{
 					CString line = CUnicodeUtils::GetUnicodeLength(reinterpret_cast<LPCSTR>(&rawLine[linebomoffset]), SafeSizeToInt(rawLine.size() - linebomoffset), encoding);
