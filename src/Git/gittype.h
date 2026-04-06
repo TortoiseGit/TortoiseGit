@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2023 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,15 +90,12 @@ public:
 		memcpy(this->data() + oldsize, data, dataSize);
 	}
 
-	operator CString()
+	operator CString() const
 	{
 		if (empty())
 			return {};
 
-		if (at(size() - 1) != '\0')
-			push_back('\0');
-
-		return CUnicodeUtils::GetUnicode(data());
+		return CUnicodeUtils::GetUnicode(std::string_view(data(), strnlen_s(data(), size())));
 	}
 
 	static const size_t npos = static_cast<size_t>(-1); // bad/missing length/position
