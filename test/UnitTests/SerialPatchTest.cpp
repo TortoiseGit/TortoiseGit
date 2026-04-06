@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018, 2023 - TortoiseGit
+// Copyright (C) 2016, 2018, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -118,4 +118,15 @@ TEST(CSerialPatch, Parse)
 	ASSERT_STREQ(L"[PATCH 2/3] Remove dynamic linking using GetProcAddress()\tfor APIs", parser9.m_Subject);
 	ASSERT_STREQ(patch4, parser9.m_Body);
 	ASSERT_STREQ(CString(patch4body), parser9.m_strBody);
+
+	patch4header.Replace("\n", "\r\n");
+	patch4 = patch4header + patch4body;
+	ASSERT_TRUE(CStringUtils::WriteStringToTextFile(tmpfile, CString(patch4)));
+	CSerialPatch parser10;
+	ASSERT_EQ(0, parser10.Parse(tmpfile, true));
+	EXPECT_STREQ(L"Sven Strickroth <email@cs-ware.de>", parser10.m_Author);
+	EXPECT_STREQ(L"Sun, 27 Dec 2015 15:49:34 +0100", parser10.m_Date);
+	EXPECT_STREQ(L"[PATCH 2/3] Remove dynamic linking using GetProcAddress()\tfor APIs", parser10.m_Subject);
+	EXPECT_STREQ(patch4, parser10.m_Body);
+	EXPECT_STREQ(CString(patch4body), parser10.m_strBody);
 }

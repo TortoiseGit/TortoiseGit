@@ -61,12 +61,13 @@ int CSerialPatch::Parse(const CString& pathfile, bool parseBody)
 		else if (CStringUtils::StartsWith(line, SUBJECTHEADER))
 		{
 			m_Subject = CUnicodeUtils::GetUnicode(lineView.substr(strlen(SUBJECTHEADER)));
+			m_Subject.TrimRight(L'\r');
 			while (m_Body.GetLength() > start && (m_Body.GetAt(start) == L' ' || m_Body.GetAt(start) == L'\t'))
 			{
 				line = m_Body.Tokenize("\n", start);
 				CGit::StringAppend(m_Subject, std::string_view(line, line.GetLength()));
+				m_Subject.TrimRight(L'\r');
 			}
-			m_Subject.TrimRight(L'\r');
 		}
 
 		if (start >= 1 && m_Body.Mid(start - 1, static_cast<int>(strlen("\n\n"))) == "\n\n")
