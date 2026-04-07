@@ -532,7 +532,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 }
 
 //static function, Share with SyncDialog
-int CProgressDlg::ParsePercentage(CString& log, int s1)
+int CProgressDlg::ParsePercentage(const CString& log, int s1)
 {
 	int s2 = s1 - 1;
 	for (int i = s1 - 1; i >= 0; i--)
@@ -771,7 +771,7 @@ void CProgressDlg::KillProcessTree(DWORD dwProcessId, unsigned int depth)
 	}
 }
 
-void CProgressDlg::InsertColorText(CRichEditCtrl& edit, CString text, COLORREF rgb)
+void CProgressDlg::InsertColorText(CRichEditCtrl& edit, const CString& text, COLORREF rgb)
 {
 	CHARFORMAT old, cf;
 	edit.GetDefaultCharFormat(cf);

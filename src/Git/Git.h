@@ -72,11 +72,12 @@ class CGitCall
 {
 public:
 	CGitCall(){}
-	CGitCall(CString cmd):m_Cmd(cmd){}
+	CGitCall(const CString& cmd)
+		: m_Cmd(cmd)
+	{}
 	virtual ~CGitCall() {}
 
-	CString			GetCmd()const{return m_Cmd;}
-	void			SetCmd(CString cmd){m_Cmd=cmd;}
+	const CString GetCmd() const { return m_Cmd; }
 
 	//This function is called when command output data is available.
 	//When this function returns 'true' the git command should be aborted.
@@ -86,14 +87,14 @@ public:
 	virtual void	OnEnd(){}
 
 private:
-	CString m_Cmd;
+	const CString m_Cmd;
 };
 
 template <typename GitReceiverFunc>
 class CGitCallCb : public CGitCall
 {
 public:
-	CGitCallCb(CString cmd, const GitReceiverFunc recv, BYTE_VECTOR* pvectorErr = nullptr)
+	CGitCallCb(const CString& cmd, const GitReceiverFunc recv, BYTE_VECTOR* pvectorErr = nullptr)
 		: CGitCall(cmd)
 		, m_recv(recv)
 		, m_pvectorErr(pvectorErr)
@@ -343,12 +344,12 @@ public:
 	CGit();
 	~CGit();
 
-	int Run(CString cmd, CString* output, int code);
-	int Run(CString cmd, CString* output, CString* outputErr, int code);
-	int Run(CString cmd, BYTE_VECTOR* byte_array, BYTE_VECTOR* byte_arrayErr = nullptr);
+	int Run(const CString& cmd, CString* output, int code);
+	int Run(const CString& cmd, CString* output, CString* outputErr, int code);
+	int Run(const CString& cmd, BYTE_VECTOR* byte_array, BYTE_VECTOR* byte_arrayErr = nullptr);
 	int Run(CGitCall& pcall);
 	template<typename GitReceiverFunc>
-	int Run(CString cmd, GitReceiverFunc recv, CString* outputErr = nullptr)
+	int Run(const CString& cmd, GitReceiverFunc recv, CString* outputErr = nullptr)
 	{
 		if (outputErr)
 		{
@@ -380,7 +381,7 @@ public:
 	void KillRelatedThreads(CWinThread* thread);
 #endif
 	int RunAsync(CString cmd, PROCESS_INFORMATION& pi, HANDLE* hRead, HANDLE* hErrReadOut, const CString* StdioFile = nullptr);
-	int RunLogFile(CString cmd, const CString &filename, CString *stdErr);
+	int RunLogFile(const CString& cmd, const CString& filename, CString* stdErr);
 
 	bool IsFastForward(const CString& from, const CString& to, CGitHash* commonAncestor = nullptr);
 	CString GetConfigValue(const CString& name, const CString& def = CString(), bool wantBool = false);

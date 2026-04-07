@@ -47,7 +47,7 @@ namespace
 		return blameData;
 	}
 
-	CTortoiseGitBlameData ParseBlame(BYTE_VECTOR& blameData)
+	CTortoiseGitBlameData ParseBlame(const BYTE_VECTOR& blameData)
 	{
 		CGitHashMap hashMap;
 		CTortoiseGitBlameData data;
@@ -65,7 +65,7 @@ namespace
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFile)
 {
-	auto blameData = RunBlame(L"HEAD", L"empty.txt");
+	const auto blameData = RunBlame(L"HEAD", L"empty.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(0u, data.GetNumberOfLines());
@@ -74,7 +74,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFile)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf8Bom)
 {
-	auto blameData = RunBlame(L"HEAD", L"empty-utf8-bom.txt");
+	const auto blameData = RunBlame(L"HEAD", L"empty-utf8-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	ASSERT_EQ(1u, data.GetNumberOfLines());
@@ -84,7 +84,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf8Bom)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf16BeBom)
 {
-	auto blameData = RunBlame(L"HEAD", L"empty-utf16-be-bom.txt");
+	const auto blameData = RunBlame(L"HEAD", L"empty-utf16-be-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	ASSERT_EQ(1u, data.GetNumberOfLines());
@@ -94,7 +94,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf16BeBom)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf16LeBom)
 {
-	auto blameData = RunBlame(L"HEAD", L"empty-utf16-le-bom.txt");
+	const auto blameData = RunBlame(L"HEAD", L"empty-utf16-le-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	ASSERT_EQ(1u, data.GetNumberOfLines());
@@ -104,7 +104,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, EmptyFileUtf16LeBom)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf8FileTwoNewLinesAtEnd)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf8-no-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf8-no-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(CP_UTF8, data.UpdateEncoding());
@@ -113,7 +113,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf8FileTwoNewLinesAtEnd)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf8FileTwoNewLinesAtEndBom)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf8-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf8-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(CP_UTF8, data.UpdateEncoding());
@@ -122,7 +122,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf8FileTwoNewLinesAtEndBom)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16BeFileTwoNewLinesAtEnd)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf16-be-no-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf16-be-no-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(1201, data.UpdateEncoding());
@@ -131,7 +131,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16BeFileTwoNewLinesAtEnd)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16BeFileTwoNewLinesAtEndBom)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf16-be-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf16-be-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(1201, data.UpdateEncoding());
@@ -139,7 +139,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16BeFileTwoNewLinesAtEndBom)
 }
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16LeFileTwoNewLinesAtEnd)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf16-le-no-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf16-le-no-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(1200, data.UpdateEncoding());
@@ -148,7 +148,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16LeFileTwoNewLinesAtEnd)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16LeFileTwoNewLinesAtEndBom)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"utf16-le-bom.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"utf16-le-bom.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(1200, data.UpdateEncoding());
@@ -157,7 +157,7 @@ TEST_P(CTortoiseGitBlameDataRepositoryFixture, Utf16LeFileTwoNewLinesAtEndBom)
 
 TEST_P(CTortoiseGitBlameDataRepositoryFixture, OEM850FileTwoNewLinesAtEnd)
 {
-	auto blameData = RunBlame(TEST_COMMIT, L"oem850.txt");
+	const auto blameData = RunBlame(TEST_COMMIT, L"oem850.txt");
 	auto data = ParseBlame(blameData);
 
 	EXPECT_EQ(static_cast<int>(GetACP()), data.UpdateEncoding());

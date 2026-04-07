@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -156,7 +156,7 @@ private:
 	DECLARE_MESSAGE_MAP()
 
 	//Share with Sync Dailog
-	static int ParsePercentage(CString &log, int pos);
+	static int ParsePercentage(const CString& log, int pos);
 
 	static void	ClearESC(CString &str);
 
@@ -171,7 +171,7 @@ public:
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
-	static void InsertColorText(CRichEditCtrl &edit,CString text,COLORREF rgb);
+	static void InsertColorText(CRichEditCtrl& edit, const CString& text, COLORREF rgb);
 
 private:
 	afx_msg void OnBnClickedOk();

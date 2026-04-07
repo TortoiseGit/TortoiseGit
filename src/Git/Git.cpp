@@ -490,7 +490,11 @@ int CGit::Run(CGitCall& pcall)
 class CGitCall_ByteVector : public CGitCall
 {
 public:
-	CGitCall_ByteVector(CString cmd,BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr) : CGitCall(cmd),m_pvector(pvector), m_pvectorErr(pvectorErr) {}
+	CGitCall_ByteVector(const CString& cmd, BYTE_VECTOR* pvector, BYTE_VECTOR* pvectorErr = nullptr)
+		: CGitCall(cmd)
+		, m_pvector(pvector)
+		, m_pvectorErr(pvectorErr)
+	{}
 	bool OnOutputData(const char* data, size_t size) override
 	{
 		ASSERT(data);
@@ -520,12 +524,12 @@ public:
 	BYTE_VECTOR* m_pvector;
 	BYTE_VECTOR* m_pvectorErr;
 };
-int CGit::Run(CString cmd,BYTE_VECTOR *vector, BYTE_VECTOR *vectorErr)
+int CGit::Run(const CString& cmd, BYTE_VECTOR* vector, BYTE_VECTOR* vectorErr)
 {
 	CGitCall_ByteVector call(cmd, vector, vectorErr);
 	return Run(call);
 }
-int CGit::Run(CString cmd, CString* output, int code)
+int CGit::Run(const CString& cmd, CString* output, int code)
 {
 	CString err;
 	const int ret = Run(cmd, output, &err, code);
@@ -539,7 +543,7 @@ int CGit::Run(CString cmd, CString* output, int code)
 
 	return ret;
 }
-int CGit::Run(CString cmd, CString* output, CString* outputErr, int code)
+int CGit::Run(const CString& cmd, CString* output, CString* outputErr, int code)
 {
 	BYTE_VECTOR vector, vectorErr;
 	int ret;
@@ -1091,7 +1095,7 @@ DWORD GetTortoiseGitTempPath(DWORD nBufferLength, LPWSTR lpBuffer)
 	return result + 13;
 }
 
-int CGit::RunLogFile(CString cmd, const CString &filename, CString *stdErr)
+int CGit::RunLogFile(const CString& cmd, const CString& filename, CString* stdErr)
 {
 	PROCESS_INFORMATION pi;
 	CAutoGeneralHandle hReadErr;

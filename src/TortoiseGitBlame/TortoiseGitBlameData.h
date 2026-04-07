@@ -33,18 +33,18 @@ public:
 	~CTortoiseGitBlameData();
 
 public:
-	int GetEncode(const char* buffer, int size, int* bomoffset);
-	void ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes);
+	int GetEncode(const char* buffer, int size, int* bomoffset) const;
+	void ParseBlameOutput(const BYTE_VECTOR& data, CGitHashMap& HashToRev, DWORD dateFormat, bool bRelativeTimes);
 	// updates sourcecode lines to the given encoding, encode==0 detects the encoding, returns the used encoding
 	int UpdateEncoding(int encode = 0);
 
-	BOOL IsValidLine(int line)
+	BOOL IsValidLine(int line) const
 	{
 		return line >= 0 && line < static_cast<int>(m_Hash.size());
 	}
-	int FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown = false);
+	int FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown = false) const;
 	// find first line with the given hash starting with given "line"
-	int FindFirstLine(const CGitHash& commithash, int line)
+	int FindFirstLine(const CGitHash& commithash, int line) const
 	{
 		int numberOfLines = static_cast<int>(GetNumberOfLines());
 		for (int i = (line >= 0 ? line : 0); i < numberOfLines; ++i)
@@ -55,7 +55,7 @@ public:
 		return -1;
 	}
 	// find first line of the current block with the given hash starting with given "line"
-	int FindFirstLineInBlock(const CGitHash& commithash, int line)
+	int FindFirstLineInBlock(const CGitHash& commithash, int line) const
 	{
 		while (line >= 0)
 		{
@@ -66,14 +66,14 @@ public:
 		return line;
 	}
 	enum SearchDirection{ SearchNext = 0, SearchPrevious = 1 };
-	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound);
+	int FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound) const;
 
 	size_t GetNumberOfLines() const
 	{
 		return m_Hash.size();
 	}
 
-	CGitHash& GetHash(size_t line)
+	const CGitHash& GetHash(size_t line) const
 	{
 		return m_Hash[line];
 	}

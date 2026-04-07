@@ -1520,7 +1520,7 @@ void CTortoiseGitBlameView::MapLineToLogIndex()
 	const size_t logSize = this->GetLogData()->size();
 	for (size_t j = 0; j < numberOfLines; ++j)
 	{
-		CGitHash& hash = m_data.GetHash(j);
+		auto& hash = m_data.GetHash(j);
 
 		int index = -2;
 		for (size_t i = 0; i < logSize; ++i)

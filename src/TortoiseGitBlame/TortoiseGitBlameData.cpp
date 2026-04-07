@@ -42,7 +42,7 @@ CTortoiseGitBlameData::~CTortoiseGitBlameData()
 {
 }
 
-int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
+int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset) const
 {
 	ATLASSERT(bomoffset);
 
@@ -76,7 +76,7 @@ int CTortoiseGitBlameData::GetEncode(const char* buff, int size, int* bomoffset)
 	return GetACP();
 }
 
-void CTortoiseGitBlameData::ParseBlameOutput(BYTE_VECTOR &data, CGitHashMap & HashToRev, DWORD dateFormat, bool bRelativeTimes)
+void CTortoiseGitBlameData::ParseBlameOutput(const BYTE_VECTOR& data, CGitHashMap& HashToRev, DWORD dateFormat, bool bRelativeTimes)
 {
 	std::unordered_map<CGitHash, CString> hashToFilename;
 
@@ -307,7 +307,7 @@ int CTortoiseGitBlameData::UpdateEncoding(int encoding)
 	return encoding;
 }
 
-int CTortoiseGitBlameData::FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown)
+int CTortoiseGitBlameData::FindNextLine(const std::unordered_set<CGitHash>& commitHashes, int line, bool bUpOrDown) const
 {
 	int startline = line;
 	bool findNoMatch = false;
@@ -377,7 +377,7 @@ static int FindUtf8Lower(const CStringA& strA, bool allAscii, const CString &fin
 	return strW.MakeLower().Find(findW);
 }
 
-int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound)
+int CTortoiseGitBlameData::FindFirstLineWrapAround(SearchDirection direction, const CString& what, int line, bool bCaseSensitive, std::function<void()> wraparound) const
 {
 	bool allAscii = true;
 	for (int i = 0; i < what.GetLength(); ++i)
