@@ -354,8 +354,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		if (m_bBufferAll)
 		{
 			m_Databuf.m_critSec.Lock();
-			m_Databuf.push_back(0);
-			m_Log.SetWindowText(Convert2UnionCode(m_Databuf.data()));
+			m_Log.SetWindowText(Convert2UnionCode(std::string_view(m_Databuf.data(), m_Databuf.size())));
 			m_Databuf.m_critSec.Unlock();
 		}
 		m_BufStart = 0;
@@ -788,16 +787,14 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, const CString& text, COL
 	edit.SetDefaultCharFormat(old);
 }
 
-CString CCommitProgressDlg::Convert2UnionCode(const char* buff)
+CString CCommitProgressDlg::Convert2UnionCode(std::string_view buff)
 {
-	int start = 0;
-	const int size = SafeSizeToInt(strlen(buff));
-
 	CString str;
 	if (g_Git.m_LogEncode != CP_UTF8)
 	{
+		size_t start = 0;
 		// git.exe commit output begings with "[BRANCH] SUBJECT" whereas SUBJECT is encoded using m_LogEncode
-		for (int i = 0; i < size; ++i)
+		for (size_t i = 0; i < buff.length(); ++i)
 		{
 			if (buff[i] == ']')
 				start = i;
@@ -808,10 +805,11 @@ CString CCommitProgressDlg::Convert2UnionCode(const char* buff)
 			}
 		}
 
-		CGit::StringAppend(str, std::string_view(buff, start), g_Git.m_LogEncode);
+		CGit::StringAppend(str, buff.substr(0, start), g_Git.m_LogEncode);
+		buff.remove_prefix(start);
 	}
 
-	CGit::StringAppend(str, std::string_view(buff + start, size - start));
+	CGit::StringAppend(str, buff);
 
 	ClearESC(str);
 
