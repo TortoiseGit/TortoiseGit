@@ -119,14 +119,17 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 				else
 					entry.m_Subject = CUnicodeUtils::GetUnicode(std::string_view(msg, body - msg));
 				auto tagger = git_tag_tagger(tag);
-				entry.m_CommitterName = CUnicodeUtils::GetUnicode(tagger->name);
-				entry.m_CommitterEmail = CUnicodeUtils::GetUnicode(tagger->email);
-				entry.m_CommitterDate = tagger->when.time;
-				if (mailmap)
-					entry.m_CommitterEmail = mailmap.TranslateAuthor(entry.m_CommitterEmail, entry.m_AuthorEmail);
-				entry.m_AuthorName = entry.m_CommitterName;
-				entry.m_AuthorEmail = entry.m_CommitterEmail;
-				entry.m_AuthorDate = entry.m_CommitterDate;
+				if (tagger)
+				{
+					entry.m_CommitterName = CUnicodeUtils::GetUnicode(tagger->name);
+					entry.m_CommitterEmail = CUnicodeUtils::GetUnicode(tagger->email);
+					entry.m_CommitterDate = tagger->when.time;
+					if (mailmap)
+						entry.m_CommitterEmail = mailmap.TranslateAuthor(entry.m_CommitterEmail, entry.m_AuthorEmail);
+					entry.m_AuthorName = entry.m_CommitterName;
+					entry.m_AuthorEmail = entry.m_CommitterEmail;
+					entry.m_AuthorDate = entry.m_CommitterDate;
+				}
 
 				map.emplace(refName, entry);
 
