@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2015-2017, 2021, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -410,6 +410,26 @@ TEST(CStringUtils, TrimRightA)
 	std::string_view sv5{"   \n "};
 	CStringUtils::TrimRight(sv5);
 	EXPECT_EQ(0u, sv5.size());
+}
+
+TEST(CStringUtils, TrimRightA_Custom)
+{
+	std::string_view sv1{};
+	sv1 = CStringUtils::TrimRight(sv1, "\r\n");
+	EXPECT_EQ(0u, sv1.size());
+
+	std::string_view sv2{ "Hallo " };
+	sv2 = CStringUtils::TrimRight(sv2, "\r\n");
+	EXPECT_EQ(6u, sv2.size());
+	EXPECT_TRUE(sv2 == "Hallo ");
+	sv2 = CStringUtils::TrimRight(sv2, " \r\n");
+	EXPECT_EQ(5u, sv2.size());
+	EXPECT_TRUE(sv2 == "Hallo");
+
+	std::string_view sv4{ "\nHallo\r\n" };
+	sv4 = CStringUtils::TrimRight(sv4, "\r\n");
+	EXPECT_EQ(6u, sv4.size());
+	EXPECT_TRUE(sv4 == "\nHallo");
 }
 
 TEST(CStringUtils, TrimRightW)

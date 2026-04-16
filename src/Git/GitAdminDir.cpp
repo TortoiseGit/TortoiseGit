@@ -195,6 +195,8 @@ bool GitAdminDir::GetWorktreeAdminDirPath(const CString& projectTopDir, CString&
 	}
 }
 
+static constexpr std::string_view GITDIR_PREFIX = "gitdir: ";
+
 CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPath)
 {
 	CAutoFILE pFile = _wfsopen(dotGitPath, L"r", SH_DENYWR);
@@ -205,12 +207,10 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 	constexpr int size = 65536;
 	auto buffer = std::make_unique<char[]>(size);
 	const int length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile));
-	CStringA gitPathA(buffer.get(), length);
-	if (length < 8 || !CStringUtils::StartsWith(gitPathA, "gitdir: "))
+	std::string_view gitPathA(buffer.get(), length);
+	if (!gitPathA.starts_with(GITDIR_PREFIX))
 		return L"";
-	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
-	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-	gitPath = gitPath.TrimRight(L"\r\n").Mid(static_cast<int>(wcslen(L"gitdir: ")));
+	CString gitPath = CUnicodeUtils::GetUnicode(CStringUtils::TrimRight(gitPathA.substr(GITDIR_PREFIX.size()), "\r\n"));
 	if (gitPath.IsEmpty())
 		return gitPath;
 

@@ -800,3 +800,13 @@ void CStringUtils::TrimRight(std::wstring_view& view)
 	while (!view.empty() && std::iswspace(static_cast<wchar_t>(view.back())))
 		view.remove_suffix(1);
 }
+
+std::string_view CStringUtils::TrimRight(const std::string_view sv, const std::string_view chars)
+{
+	const auto pos = sv.find_last_not_of(chars);
+
+	if (pos == std::string_view::npos)
+		return {};
+
+	return sv.substr(0, pos + 1);
+}
