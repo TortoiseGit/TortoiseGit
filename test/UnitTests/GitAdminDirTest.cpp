@@ -412,6 +412,15 @@ TEST(CGitAdminDir, ReadGitLink)
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare"));
 	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare "));
+	EXPECT_STREQ(L"C:\\somerepo\\dontcare ", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: dontcare\r\n"));
+	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir:  dontcare"));
+	EXPECT_STREQ(L"C:\\somerepo\\ dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: ./dontcare"));
 	EXPECT_STREQ(L"C:\\somerepo\\dontcare", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 
@@ -432,6 +441,32 @@ TEST(CGitAdminDir, ReadGitLink)
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: \u6280\u672F\u6587\u6863\n")); // cf. issue #2453
 	EXPECT_STREQ(L"C:\\somerepo\\\u6280\u672F\u6587\u6863", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: d:/"));
+	EXPECT_STREQ(L"d:", GitAdminDir::ReadGitLink(L"D:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: d:"));
+	EXPECT_STREQ(L"d:", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: /"));
+	EXPECT_STREQ(L"F:", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: /otherrepo"));
+	EXPECT_STREQ(L"C:\\otherrepo", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+	EXPECT_STREQ(L"F:\\otherrepo", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: X:DEF")); // drive relative paths are unsupported (also unsupported in Git for Windows)
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"D:\\somerepo", gitFile));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"X:\\something", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: //"));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: ///"));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: //localhost/test/repository"));
+	EXPECT_STREQ(L"\\\\localhost\\test\\repository", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 }
 
 TEST(CGitAdminDir, GetSuperProjectRoot)

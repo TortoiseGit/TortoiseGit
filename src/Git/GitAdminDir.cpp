@@ -210,15 +210,26 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 		return L"";
 	CString gitPath = CUnicodeUtils::GetUnicode(gitPathA);
 	// trim after converting to UTF-16, because CStringA trim does not work when having UTF-8 chars
-	gitPath = gitPath.Trim().Mid(static_cast<int>(wcslen(L"gitdir: ")));
+	gitPath = gitPath.TrimRight(L"\r\n").Mid(static_cast<int>(wcslen(L"gitdir: ")));
 	if (gitPath.IsEmpty())
 		return gitPath;
 
 	gitPath.Replace('/', '\\');
-	if (gitPath[0] == L'\\' || gitPath.GetLength() >= 2 && gitPath[1] == L':')
+	if (gitPath.GetLength() >= 2 && (gitPath[1] == L':' || gitPath[0] == L'\\' && gitPath[1] == L'\\'))
 	{
+		if (gitPath.GetLength() > 2 && gitPath[1] == L':' && gitPath[2] != L'\\') // drive relative paths are unsupported in Git for Windows
+			return {};
 		CPathUtils::TrimTrailingPathDelimiter(gitPath);
+		if (gitPath.IsEmpty())
+			return {};
 		return gitPath;
+	}
+	if (gitPath[0] == L'\\')
+	{
+		if (topDir.GetLength() < 2 || topDir[1] != L':')
+			return {};
+		CPathUtils::TrimTrailingPathDelimiter(gitPath);
+		return topDir.Mid(0, 2) + gitPath;
 	}
 	gitPath = CPathUtils::BuildPathWithPathDelimiter(topDir) + gitPath;
 	CString adminDir;
