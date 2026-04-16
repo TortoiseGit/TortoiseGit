@@ -24,6 +24,10 @@
 #include "SmartHandle.h"
 #include "PathUtils.h"
 
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
+CAutoConfig GitAdminDir::config;
+#endif
+
 CString GitAdminDir::GetSuperProjectRoot(const CString& path)
 {
 	CString projectroot=path;
@@ -215,21 +219,80 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 		return gitPath;
 
 	gitPath.Replace('/', '\\');
-	if (gitPath.GetLength() >= 2 && (gitPath[1] == L':' || gitPath[0] == L'\\' && gitPath[1] == L'\\'))
+	// cf. <https://projectzero.google/2016/02/the-definitive-guide-on-win32-to-nt.html> for an overview of special prefixes that need to be handled
+	if (gitPath.GetLength() >= 2 && gitPath[1] == L':')
 	{
-		if (gitPath.GetLength() > 2 && gitPath[1] == L':' && gitPath[2] != L'\\') // drive relative paths are unsupported in Git for Windows
+		if (gitPath.GetLength() > 2 && gitPath[2] != L'\\') // drive relative paths are unsupported (also unsupported in Git for Windows)
 			return {};
 		CPathUtils::TrimTrailingPathDelimiter(gitPath);
-		if (gitPath.IsEmpty())
-			return {};
 		return gitPath;
 	}
+	// gate all paths starting with a backslash via safe.directories
 	if (gitPath[0] == L'\\')
 	{
-		if (topDir.GetLength() < 2 || topDir[1] != L':')
+		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Found path starting with backslash for worktree \"%s\" in .git-file: %s\n", static_cast<LPCWSTR>(topDir), static_cast<LPCWSTR>(gitPath));
+
+		if (gitPath.GetLength() > 1)
+			CPathUtils::TrimTrailingPathDelimiter(gitPath);
+		if (gitPath.IsEmpty()) // gitPath just contained (back)slashes
 			return {};
-		CPathUtils::TrimTrailingPathDelimiter(gitPath);
-		return topDir.Mid(0, 2) + gitPath;
+
+		// check whether the topDir (worktree) is listed in safe.directories
+		// NOTE: This is a simplified version without any owner check solely to prevent NTLM leaks; further checks are delegated to libgit and libgit2
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
+		if (!config)
+			config.New();
+#else
+		CAutoConfig config;
+		CString globalConfig = g_Git.GetGitGlobalConfig();
+		CString globalXDGConfig = g_Git.GetGitGlobalXDGConfig();
+		CString systemConfig(CRegString(REG_SYSTEM_GITCONFIGPATH, L"", FALSE));
+		CAutoConfig temp{ true };
+		git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(globalConfig), GIT_CONFIG_LEVEL_GLOBAL, nullptr, FALSE);
+		git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(globalXDGConfig), GIT_CONFIG_LEVEL_XDG, nullptr, FALSE);
+		if (!systemConfig.IsEmpty())
+			git_config_add_file_ondisk(temp, CGit::GetGitPathStringA(systemConfig), GIT_CONFIG_LEVEL_SYSTEM, nullptr, FALSE);
+		git_config_snapshot(config.GetPointer(), temp);
+#endif
+		struct validate_ownership_data
+		{
+			const CString topDir;
+			boolean is_safe = false;
+		} ownership_data = { topDir, false };
+		if (git_config_get_multivar_foreach(config, "safe.directory", nullptr, [](const git_config_entry* entry, void* payload) -> int
+		{
+			auto data = reinterpret_cast<struct validate_ownership_data*>(payload);
+			if (!entry->value || !entry->value[0]) // reset
+			{
+				data->is_safe = false;
+				return 0;
+			}
+			std::string_view value{ entry->value };
+			if (value == "*")
+			{
+				data->is_safe = true;
+				return 0;
+			}
+
+			CString valueW = CUnicodeUtils::GetUnicode(value);
+			if (CStringUtils::StartsWith(valueW, L"~/"))
+				valueW = g_Git.GetHomeDirectory() + valueW.Mid(static_cast<int>(wcslen(L"~")));
+			valueW.Replace(L'/', L'\\');
+			if (!valueW.IsEmpty() && valueW == data->topDir)
+				data->is_safe = true;
+			return 0;
+		}, &ownership_data) < 0 || !ownership_data.is_safe)
+			return {};
+
+		if (gitPath.GetLength() == 1 || gitPath.GetLength() >= 2 && gitPath[1] != L'\\') // rooted paths
+		{
+			if (topDir.GetLength() < 2 || topDir[1] != L':') // rooted paths are only supported on drives
+				return {};
+			CPathUtils::TrimTrailingPathDelimiter(gitPath);
+			return topDir.Mid(0, 2) + gitPath;
+		}
+
+		return gitPath;
 	}
 	gitPath = CPathUtils::BuildPathWithPathDelimiter(topDir) + gitPath;
 	CString adminDir;

@@ -19,6 +19,9 @@
 //
 
 #pragma once
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
+#include "SmartLibgit2Ref.h"
+#endif
 
 class GitAdminDir
 {
@@ -45,4 +48,8 @@ public:
 	static bool GetAdminDirPath(const CString& projectTopDir, CString& adminDir, bool* isWorktree = nullptr);
 	static bool GetWorktreeAdminDirPath(const CString& projectTopDir, CString& adminDir);
 	static CString ReadGitLink(const CString& topDir, const CString& dotGitPath);
+
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
+	static CAutoConfig config;
+#endif
 };
