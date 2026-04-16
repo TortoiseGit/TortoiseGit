@@ -544,7 +544,7 @@ msgstr ""
 msgid "&Don't store these settings now."
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr ""
 
@@ -1267,7 +1267,7 @@ msgstr ""
 msgid "&Unstaging"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr ""
 
@@ -3881,10 +3881,6 @@ msgstr ""
 
 #. Resource IDs: (IDS_DONE)
 msgid "Done"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
@@ -9957,10 +9953,6 @@ msgstr ""
 #. Resource IDs: (IDS_SVNPROGRESS_UNVERSION)
 #, c-format
 msgid "Unversioning %s"
-msgstr ""
-
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
