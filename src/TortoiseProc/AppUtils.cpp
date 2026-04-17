@@ -774,7 +774,7 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 {
 	CString viewer = L'"' + CPathUtils::GetAppDirectory();
 	viewer += L"TortoiseGitBlame.exe";
-	viewer += L"\" ";
+	viewer += L"\" /path:";
 	viewer += CCmdLineParser::EscapeValue(sBlameFile);
 	if (!Rev.IsEmpty() && Rev != GitRev::GetWorkingCopyRef())
 		viewer += L" /rev:" + CCmdLineParser::EscapeValue(Rev);

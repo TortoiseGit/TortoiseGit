@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -146,7 +146,14 @@ BOOL CTortoiseGitBlameApp::InitInstance()
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
-	ParseCommandLine(cmdInfo);
+	// add special support for filenames encoded by and for our CCmdLineParser
+	if (parser.HasKey(L"path"))
+	{
+		cmdInfo.m_strFileName = parser.GetVal(L"path");
+		cmdInfo.m_nShellCommand = CCommandLineInfo::FileOpen;
+	}
+	else
+		ParseCommandLine(cmdInfo);
 
 	// Dispatch commands specified on the command line.  Will return FALSE if
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
