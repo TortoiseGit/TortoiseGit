@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2004-2018, 2020 - TortoiseSVN
 // Copyright (C) 2012-2014 - Sven Strickroth <email@cs-ware.de>
 
@@ -42,6 +42,7 @@
 #include "DarkModeHelper.h"
 #include "ThemeMFCVisualManager.h"
 #include "TempFile.h"
+#include "CmdLineParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1298,15 +1299,14 @@ void CMainFrame::DiffTwo(const CWorkingFile& file1, const CWorkingFile& file2)
 	GetModuleFileName(nullptr, ownpath, MAX_PATH);
 	CString sCmd;
 	sCmd.Format(L"\"%s\"", ownpath);
-	sCmd += L" /base:\"";
-	sCmd += file1.GetFilename();
-	sCmd += L"\" /mine:\"";
-	sCmd += file2.GetFilename();
-	sCmd += L'"';
+	sCmd += L" /base:";
+	sCmd += CCmdLineParser::EscapeValue(file1.GetFilename());
+	sCmd += L" /mine:";
+	sCmd += CCmdLineParser::EscapeValue(file2.GetFilename());
 	if (!file1.GetWindowName().IsEmpty())
-		sCmd += L" /basename:\"" + file1.GetWindowName() + L"\"";
+		sCmd += L" /basename:" + CCmdLineParser::EscapeValue(file1.GetWindowName());
 	if (!file2.GetWindowName().IsEmpty())
-		sCmd += L" /yourname:\"" + file2.GetWindowName() + L"\"";
+		sCmd += L" /yourname:" + CCmdLineParser::EscapeValue(file2.GetWindowName());
 
 	CAppUtils::LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags());
 }
@@ -1646,8 +1646,8 @@ void CMainFrame::PatchSave()
 		if (bDoesNotExist && (DWORD(CRegDWORD(L"Software\\TortoiseGitMerge\\AutoAdd", TRUE))))
 		{
 			// call TortoiseProc to add the new file to version control
-			CString cmd = L"/command:add /noui /path:\"";
-			cmd += m_Data.m_mergedFile.GetFilename() + L'"';
+			CString cmd = L"/command:add /noui /path:";
+			cmd += CCmdLineParser::EscapeValue(m_Data.m_mergedFile.GetFilename());
 			CAppUtils::RunTortoiseGitProc(cmd);
 		}
 	}
@@ -1792,8 +1792,8 @@ bool CMainFrame::FileSave(bool bCheckResolved /*=true*/)
 	if (bDoesNotExist && (DWORD(CRegDWORD(L"Software\\TortoiseGitMerge\\AutoAdd", TRUE))))
 	{
 		// call TortoiseProc to add the new file to version control
-		CString cmd = L"/command:add /noui /path:\"";
-		cmd += m_Data.m_mergedFile.GetFilename() + L'"';
+		CString cmd = L"/command:add /noui /path:";
+		cmd += CCmdLineParser::EscapeValue(m_Data.m_mergedFile.GetFilename());
 		if(!CAppUtils::RunTortoiseGitProc(cmd))
 			return false;
 	}
@@ -2268,9 +2268,9 @@ BOOL CMainFrame::MarkAsResolved()
 	if (m_bMarkedAsResolvedWasDone)
 		return FALSE;
 
-	CString cmd = L"/command:resolve /path:\"";
-	cmd += m_Data.m_mergedFile.GetFilename();
-	cmd += L"\" /closeonend:1 /noquestion /skipcheck /silent";
+	CString cmd = L"/command:resolve /path:";
+	cmd += CCmdLineParser::EscapeValue(m_Data.m_mergedFile.GetFilename());
+	cmd += L" /closeonend:1 /noquestion /skipcheck /silent";
 	if (resolveMsgWnd)
 	{
 		CString s;

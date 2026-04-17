@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016 - TortoiseGit
+// Copyright (C) 2015-2016, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -626,6 +626,18 @@ TEST(CCmdLineParser, SingleArgPathQuoted)
 	}
 }
 
+TEST(CCmdLineParser, SingleArgPathQuotedBackslashAtEnd)
+{
+	CString args[] = { L"/path:\"C:\\test\\\"", L"/path \"C:\\test\\\"", L"-path \"C:\\test\\\"", L"-path \"C:\\test\\\"" };
+	for (const CString& arg : args)
+	{
+		CCmdLineParser parser(arg);
+		EXPECT_TRUE(parser.HasKey(L"path"));
+		EXPECT_TRUE(parser.HasVal(L"path"));
+		EXPECT_STREQ(L"C:\\test\\", parser.GetVal(L"path"));
+	}
+}
+
 TEST(CCmdLineParser, SingleArgUnixPath)
 {
 	CString args[] = { L"/path:C:/test", L"/path C:/test", L"-path C:/test", L"-path C:/test" };
@@ -652,5 +664,30 @@ TEST(CCmdLineParser, SingleArgUnixPathQuoted)
 		EXPECT_STREQ(L"C:/test", parser.GetVal(L"path"));
 		EXPECT_FALSE(parser.HasKey(L"C"));
 		EXPECT_FALSE(parser.HasKey(L"C:"));
+	}
+}
+
+static void CheckEscapeValue(const CString& escaped, LPCWSTR expected)
+{
+	CCmdLineParser parser(L"/path:" + escaped);
+	EXPECT_TRUE(parser.HasKey(L"path"));
+	if (expected && !*expected)
+	{
+		EXPECT_FALSE(parser.HasVal(L"path"));
+		return;
+	}
+	EXPECT_TRUE(parser.HasVal(L"path"));
+	EXPECT_STREQ(expected, parser.GetVal(L"path"));
+}
+
+TEST(CCmdLineParser, EscapeValue)
+{
+	EXPECT_STREQ(L"\"\"", CCmdLineParser::EscapeValue(""));
+
+	LPCWSTR args[] = { L"", L" ", L"\"", L"\"\"", L"\" \"", L"\"\"\\", L"ascii", L"something\\", L"C:\\Test", L"some\\\"thing", L"something\\\"", L"some\"thing", L"some\"\"thing", L"something\"\\\""};
+	for (auto arg : args)
+	{
+		CheckEscapeValue(CCmdLineParser::EscapeValue(CString(arg)), arg);
+		CheckEscapeValue(CCmdLineParser::EscapeValue(std::wstring_view(arg)).c_str(), arg);
 	}
 }

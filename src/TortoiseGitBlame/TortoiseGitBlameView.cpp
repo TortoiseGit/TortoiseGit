@@ -43,6 +43,7 @@
 #include "Theme.h"
 #include "DarkModeHelper.h"
 #include "Lexilla.h"
+#include "CmdLineParser.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -465,8 +466,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			CString endrev = parentHashWithFile[index].ToString();
 			int line = m_data.GetOriginalLineNumber(selectedLine);
 
-			CString procCmd = L"/path:\"" + path + L"\" ";
-			procCmd += L" /command:blame";
+			CString procCmd = L"/command:blame";
+			procCmd += L" /path:" + CCmdLineParser::EscapeValue(path);
 			procCmd += L" /endrev:" + endrev;
 			procCmd += L" /line:";
 			procCmd.AppendFormat(L"%d", line);
@@ -485,8 +486,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			CString startrev = parentHashWithFile[index].ToString();
 			CString endrev = pRev->m_CommitHash.ToString();
 
-			CString procCmd = L"/path:\"" + path + L"\" ";
-			procCmd += L" /command:diff";
+			CString procCmd = L"/command:diff";
+			procCmd += L" /path:" + CCmdLineParser::EscapeValue(path);
 			procCmd += L" /startrev:" + startrev;
 			procCmd += L" /endrev:" + endrev;
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
@@ -501,8 +502,8 @@ void CTortoiseGitBlameView::ContextMenuAction(int cmd, GitRev *pRev, GIT_REV_LIS
 			CString path = ResolveCommitFile(selectedLine);
 			CString rev = m_data.GetHash(selectedLine).ToString();
 
-			CString procCmd = L"/path:\"" + path + L"\" ";
-			procCmd += L" /command:log";
+			CString procCmd = L"/command:log";
+			procCmd += L" /path:" + CCmdLineParser::EscapeValue(path);
 			procCmd += L" /rev:" + rev;
 			procCmd += L" /endrev:" + rev;
 

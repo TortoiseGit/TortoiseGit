@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2025 - TortoiseGit
+// Copyright (C) 2009-2026 - TortoiseGit
 // Copyright (C) 2003-2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@
 #include "TempFile.h"
 #include "DPIAware.h"
 #include "MessageBox.h"
+#include "CmdLineParser.h"
 
 #define OVERLAY_EXTERNAL	1
 #define OVERLAY_EXECUTABLE	2
@@ -805,11 +806,11 @@ void CRepositoryBrowser::ShowContextMenu(CPoint point, TShadowFilesTreeList &sel
 	case eCmd_ViewLogSubmodule:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:log /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(selectedLeafs.at(0)->GetFullName())));
+			sCmd.Format(L"/command:log /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(selectedLeafs.at(0)->GetFullName()))));
 			if (cmd == eCmd_ViewLog && selectedLeafs.at(0)->m_bSubmodule)
 				sCmd += L" /submodule";
 			if (cmd == eCmd_ViewLog)
-				sCmd += L" /endrev:" + m_sRevision + L" /rev:" + m_sRevision;
+				sCmd += L" /endrev:" + CCmdLineParser::EscapeValue(m_sRevision) + L" /rev:" + CCmdLineParser::EscapeValue(m_sRevision);
 			else if (cmd == eCmd_ViewLogSubmodule)
 				sCmd += L" /rev:" + selectedLeafs.at(0)->m_hash.ToString() + L" /endrev:" + selectedLeafs.at(0)->m_hash.ToString();
 			CAppUtils::RunTortoiseGitProc(sCmd);
@@ -1263,13 +1264,13 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 					return;
 
 				CString sCmd;
-				sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(gitPath.GetGitPathString()));
+				sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(gitPath.GetGitPathString())));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 				return;
 			}
 
 			CString cmd;
-			cmd.Format(L"/command:repobrowser /path:\"%s\" /rev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(path)), static_cast<LPCWSTR>(itemHash.ToString()));
+			cmd.Format(L"/command:repobrowser /path:%s /rev:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(path))), static_cast<LPCWSTR>(itemHash.ToString()));
 			CAppUtils::RunTortoiseGitProc(cmd);
 			return;
 		}

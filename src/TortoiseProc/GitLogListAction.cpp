@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2005-2007 Marco Costalba
 
 // This program is free software; you can redistribute it and/or
@@ -34,6 +34,7 @@
 #include "CommitIsOnRefsDlg.h"
 #include "GitDiff.h"
 #include "../TGitCache/CacheInterface.h"
+#include "CmdLineParser.h"
 
 IMPLEMENT_DYNAMIC(CGitLogList, CHintCtrl<CListCtrl>)
 
@@ -461,9 +462,9 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 				CString cmdline;
 				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REVERSE)
-					cmdline.Format(L"/command:log /path:\"%s\" /range:\"%s%s%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(sep), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString()));
+					cmdline.Format(L"/command:log /path:%s /range:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString() + sep + pLastEntry->m_CommitHash.ToString()));
 				else
-					cmdline.Format(L"/command:log /path:\"%s\" /range:\"%s%s%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_Path)), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString()), static_cast<LPCWSTR>(sep), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString()));
+					cmdline.Format(L"/command:log /path:%s /range:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString() + sep + pSelLogEntry->m_CommitHash.ToString()));
 				CAppUtils::RunTortoiseGitProc(cmdline);
 			}
 			break;

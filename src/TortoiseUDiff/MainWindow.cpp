@@ -35,6 +35,7 @@
 #include "SciLexer.h"
 #include "Scintilla.h"
 #include "Lexilla.h"
+#include "CmdLineParser.h"
 
 const UINT TaskBarButtonCreated = RegisterWindowMessage(L"TaskbarButtonCreated");
 
@@ -304,9 +305,8 @@ LRESULT CMainWindow::DoCommand(int id)
 		break;
 	case ID_FILE_APPLYPATCH:
 		{
-			std::wstring command = L" /diff:\"";
-			command += m_filename;
-			command += L'"';
+			std::wstring command = L" /diff:";
+			command += CCmdLineParser::EscapeValue(m_filename);
 			std::wstring tortoiseMergePath = GetAppDirectory() + L"TortoiseGitMerge.exe";
 			CCreateProcessHelper::CreateProcessDetached(tortoiseMergePath.c_str(), command.c_str());
 		}

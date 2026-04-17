@@ -38,6 +38,7 @@
 #include "ClipboardHelper.h"
 #include "scope_exit_noexcept.h"
 #include "IconBitmapUtils.h"
+#include "CmdLineParser.h"
 
 #pragma comment(lib, "comsupp.lib")
 
@@ -1348,9 +1349,8 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 			else
 			{
 				AddPathCommand(gitCmd, L"diff", true, paths, folder);
-				gitCmd += L" /path2:\"";
-				gitCmd += std::wstring(regDiffLater);
-				gitCmd += L'"';
+				gitCmd += L" /path2:";
+				gitCmd += CCmdLineParser::EscapeValue(std::wstring(regDiffLater));
 				if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
 					gitCmd += L" /alternative";
 				regDiffLater.removeValue();

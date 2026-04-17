@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2023, 2025 - TortoiseGit
+// Copyright (C) 2012-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -26,6 +26,7 @@
 #include "DPIAware.h"
 #include <regex>
 #include "AppUtils.h"
+#include "CmdLineParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -441,10 +442,10 @@ void CRevisionGraphWnd::CompareRevs(const CString& revTo)
 
 	CString sCmd;
 
-	sCmd.Format(L"/command:showcompare %s /revision1:%s /revision2:%s",
-			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCWSTR>(L"/path:\"" + this->m_sPath + L'"'),
-			static_cast<LPCWSTR>(GetFriendRefName(m_SelectedEntry1)),
-			!revTo.IsEmpty() ? static_cast<LPCWSTR>(revTo) : static_cast<LPCWSTR>(GetFriendRefName(m_SelectedEntry2)));
+	sCmd.Format(L"/command:showcompare /path:%s /revision1:%s /revision2:%s",
+				static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sPath)),
+				static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(GetFriendRefName(m_SelectedEntry1))),
+				!revTo.IsEmpty() ? static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(revTo)) : static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(GetFriendRefName(m_SelectedEntry2))));
 
 	if (alternativeTool)
 		sCmd += L" /alternative";

@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2014 - TortoiseSVN
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -40,6 +40,7 @@
 #include "StringUtils.h"
 #include "FileTextLines.h"
 #include "DPIAware.h"
+#include "CmdLineParser.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -724,7 +725,7 @@ void CCommitDlg::OnOK()
 			if (result == 1)
 			{
 				CString cmdCommit;
-				cmdCommit.Format(L"/command:commit /path:\"%s\\%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), entry->GetWinPath());
+				cmdCommit.Format(L"/command:commit /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(entry))));
 				CAppUtils::RunTortoiseGitProc(cmdCommit);
 				return;
 			}

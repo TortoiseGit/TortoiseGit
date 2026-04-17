@@ -257,7 +257,7 @@ BOOL CTortoiseProcApp::InitInstance()
 			return FALSE;
 		}
 		CString newCmd;
-		newCmd.Format(L"/command:clone /url:\"%s\" /hasurlhandler", static_cast<LPCWSTR>(url));
+		newCmd.Format(L"/command:clone /url:%s /hasurlhandler", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(url)));
 		parser = CCmdLineParser(newCmd);
 	}
 

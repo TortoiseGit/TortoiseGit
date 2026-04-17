@@ -29,6 +29,7 @@
 #include "UnicodeUtils.h"
 #include "URLFinder.h"
 #include "git2/sys/errors.h"
+#include "CmdLineParser.h"
 #ifndef TGIT_TESTS_ONLY
 #include "ExportDlg.h"
 #include "ProgressDlg.h"
@@ -246,6 +247,14 @@ bool CAppUtils::StashPop(HWND hWnd, int showChanges /* = 1 */)
 	return false;
 }
 
+static CString EscapeAndQuoteParameters(CString parameter)
+{
+	// let's go the safe way as there is no standard on Windows (cf. https://www.daviddeley.com/autohotkey/parameters/parameters.htm#WINNOSTANDARD)
+	parameter.Replace(L"\"", L"%22");
+	parameter.TrimRight(L'\\'); // should never occurr
+	return L'"' + parameter + L'"';
+}
+
 BOOL CAppUtils::StartExtMerge(bool bAlternative,
 	const CTGitPath& basefile, const CTGitPath& theirfile, const CTGitPath& yourfile, const CTGitPath& mergedfile,
 	const CString& basename, const CString& theirname, const CString& yourname, const CString& mergedname, bool bReadOnly,
@@ -276,6 +285,7 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Empty();
 	}
 
+	std::function<CString(CString)> escaper = &EscapeAndQuoteParameters;
 	if (com.IsEmpty() || CStringUtils::StartsWith(com, L"#"))
 	{
 		// Maybe we should use TortoiseIDiff?
@@ -317,14 +327,15 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com += g_sGroupingUUID;
 			com += L'"';
 		}
+		escaper = [](const CString s) { return CCmdLineParser::EscapeValue(s); };
 	}
 	// check if the params are set. If not, just add the files to the command line
 	if ((com.Find(L"%merged") < 0) && (com.Find(L"%base") < 0) && (com.Find(L"%theirs") < 0) && (com.Find(L"%mine") < 0))
 	{
-		com += L" \"" + basefile.GetWinPathString() + L'"';
-		com += L" \"" + theirfile.GetWinPathString() + L'"';
-		com += L" \"" + yourfile.GetWinPathString() + L'"';
-		com += L" \"" + mergedfile.GetWinPathString() + L'"';
+		com += L' ' + EscapeAndQuoteParameters(basefile.GetWinPathString());
+		com += L' ' + EscapeAndQuoteParameters(theirfile.GetWinPathString());
+		com += L' ' + EscapeAndQuoteParameters(yourfile.GetWinPathString());
+		com += L' ' + EscapeAndQuoteParameters(mergedfile.GetWinPathString());
 	}
 	if (basefile.IsEmpty())
 	{
@@ -332,28 +343,28 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 		com.Replace(L"%base", L"");
 	}
 	else
-		com.Replace(L"%base", L'"' + basefile.GetWinPathString() + L'"');
+		com.Replace(L"%base", escaper(basefile.GetWinPathString()));
 	if (theirfile.IsEmpty())
 	{
 		com.Replace(L"/theirs:%theirs", L"");
 		com.Replace(L"%theirs", L"");
 	}
 	else
-		com.Replace(L"%theirs", L'"' + theirfile.GetWinPathString() + L'"');
+		com.Replace(L"%theirs", escaper(theirfile.GetWinPathString()));
 	if (yourfile.IsEmpty())
 	{
 		com.Replace(L"/mine:%mine", L"");
 		com.Replace(L"%mine", L"");
 	}
 	else
-		com.Replace(L"%mine", L'"' + yourfile.GetWinPathString() + L'"');
+		com.Replace(L"%mine", escaper(yourfile.GetWinPathString()));
 	if (mergedfile.IsEmpty())
 	{
 		com.Replace(L"/merged:%merged", L"");
 		com.Replace(L"%merged", L"");
 	}
 	else
-		com.Replace(L"%merged", L'"' + mergedfile.GetWinPathString() + L'"');
+		com.Replace(L"%merged", escaper(mergedfile.GetWinPathString()));
 	if (basename.IsEmpty())
 	{
 		if (basefile.IsEmpty())
@@ -362,10 +373,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(L"%bname", L"");
 		}
 		else
-			com.Replace(L"%bname", L'"' + basefile.GetUIFileOrDirectoryName() + L'"');
+			com.Replace(L"%bname", escaper(basefile.GetUIFileOrDirectoryName()));
 	}
 	else
-		com.Replace(L"%bname", L'"' + basename + L'"');
+		com.Replace(L"%bname", escaper(basename));
 	if (theirname.IsEmpty())
 	{
 		if (theirfile.IsEmpty())
@@ -374,10 +385,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(L"%tname", L"");
 		}
 		else
-			com.Replace(L"%tname", L'"' + theirfile.GetUIFileOrDirectoryName() + L'"');
+			com.Replace(L"%tname", escaper(theirfile.GetUIFileOrDirectoryName()));
 	}
 	else
-		com.Replace(L"%tname", L'"' + theirname + L'"');
+		com.Replace(L"%tname", escaper(theirname));
 	if (yourname.IsEmpty())
 	{
 		if (yourfile.IsEmpty())
@@ -386,10 +397,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(L"%yname", L"");
 		}
 		else
-			com.Replace(L"%yname", L'"' + yourfile.GetUIFileOrDirectoryName() + L'"');
+			com.Replace(L"%yname", escaper(yourfile.GetUIFileOrDirectoryName()));
 	}
 	else
-		com.Replace(L"%yname", L'"' + yourname + L'"');
+		com.Replace(L"%yname", escaper(yourname));
 	if (mergedname.IsEmpty())
 	{
 		if (mergedfile.IsEmpty())
@@ -398,10 +409,10 @@ BOOL CAppUtils::StartExtMerge(bool bAlternative,
 			com.Replace(L"%mname", L"");
 		}
 		else
-			com.Replace(L"%mname", L'"' + mergedfile.GetUIFileOrDirectoryName() + L'"');
+			com.Replace(L"%mname", escaper(mergedfile.GetUIFileOrDirectoryName()));
 	}
 	else
-		com.Replace(L"%mname", L'"' + mergedname + L'"');
+		com.Replace(L"%mname", escaper(mergedname));
 
 	com.Replace(L"%wtroot", L'"' + g_Git.m_CurrentDir + L'"');
 
@@ -451,14 +462,14 @@ BOOL CAppUtils::StartExtPatch(const CTGitPath& patchfile, const CTGitPath& dir, 
 	viewer += L"TortoiseGitMerge.exe";
 
 	viewer = L'"' + viewer + L'"';
-	viewer = viewer + L" /diff:\"" + patchfile.GetWinPathString() + L'"';
-	viewer = viewer + L" /patchpath:\"" + dir.GetWinPathString() + L'"';
+	viewer = viewer + L" /diff:" + CCmdLineParser::EscapeValue(patchfile.GetWinPathString());
+	viewer = viewer + L" /patchpath:" + CCmdLineParser::EscapeValue(dir.GetWinPathString());
 	if (bReversed)
 		viewer += L" /reversedpatch";
 	if (!sOriginalDescription.IsEmpty())
-		viewer = viewer + L" /patchoriginal:\"" + sOriginalDescription + L'"';
+		viewer = viewer + L" /patchoriginal:" + CCmdLineParser::EscapeValue(sOriginalDescription);
 	if (!sPatchedDescription.IsEmpty())
-		viewer = viewer + L" /patchpatched:\"" + sPatchedDescription + L'"';
+		viewer = viewer + L" /patchpatched:" + CCmdLineParser::EscapeValue(sPatchedDescription);
 	if (!g_sGroupingUUID.IsEmpty())
 	{
 		viewer += L" /groupuuid:\"";
@@ -531,6 +542,7 @@ bool CAppUtils::StartExtDiff(
 		viewer.Empty();
 
 	const bool bInternal = viewer.IsEmpty();
+	std::function<CString(CString)> escaper = &EscapeAndQuoteParameters;
 	if (bInternal)
 	{
 		viewer =
@@ -543,30 +555,31 @@ bool CAppUtils::StartExtDiff(
 			viewer += g_sGroupingUUID;
 			viewer += L'"';
 		}
+		escaper = [](const CString s) { return CCmdLineParser::EscapeValue(s); };
 	}
 	// check if the params are set. If not, just add the files to the command line
 	if ((viewer.Find(L"%base") < 0) && (viewer.Find(L"%mine") < 0))
 	{
-		viewer += L" \"" + file1 + L'"';
-		viewer += L" \"" + file2 + L'"';
+		viewer += L' ' + EscapeAndQuoteParameters(file1);
+		viewer += L' ' + EscapeAndQuoteParameters(file2);
 	}
 	if (viewer.Find(L"%base") >= 0)
-		viewer.Replace(L"%base", L'"' + file1 + L'"');
+		viewer.Replace(L"%base", escaper(file1));
 	if (viewer.Find(L"%mine") >= 0)
-		viewer.Replace(L"%mine", L'"' + file2 + L'"');
+		viewer.Replace(L"%mine", escaper(file2));
 
 	if (sName1.IsEmpty())
-		viewer.Replace(L"%bname", L'"' + file1 + L'"');
+		viewer.Replace(L"%bname", escaper(file1));
 	else
-		viewer.Replace(L"%bname", L'"' + sName1 + L'"');
+		viewer.Replace(L"%bname", escaper(sName1));
 
 	if (sName2.IsEmpty())
-		viewer.Replace(L"%yname", L'"' + file2 + L'"');
+		viewer.Replace(L"%yname", escaper(file2));
 	else
-		viewer.Replace(L"%yname", L'"' + sName2 + L'"');
+		viewer.Replace(L"%yname", escaper(sName2));
 
-	viewer.Replace(L"%bpath", L'"' + originalFile1 + L'"');
-	viewer.Replace(L"%ypath", L'"' + originalFile2 + L'"');
+	viewer.Replace(L"%bpath", escaper(originalFile1));
+	viewer.Replace(L"%ypath", escaper(originalFile2));
 
 	viewer.Replace(L"%brev", L'"' + hash1.ToString() + L'"');
 	viewer.Replace(L"%yrev", L'"' + hash2.ToString() + L'"');
@@ -601,6 +614,7 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 	else if (bCommentedOut)
 		viewer.Empty();
 
+	std::function<CString(CString)> escaper = &EscapeAndQuoteParameters;
 	if (viewer.IsEmpty())
 	{
 		// use TortoiseGitUDiff
@@ -616,22 +630,23 @@ BOOL CAppUtils::StartUnifiedDiffViewer(const CString& patchfile, const CString& 
 			viewer += g_sGroupingUUID;
 			viewer += L'"';
 		}
+		escaper = [](const CString s) { return CCmdLineParser::EscapeValue(s); };
 	}
 	if (viewer.Find(L"%1") >= 0)
 	{
 		if (viewer.Find(L"\"%1\"") >= 0)
-			viewer.Replace(L"%1", patchfile);
+			viewer.Replace(L"\"%1\"", escaper(patchfile));
 		else
-			viewer.Replace(L"%1", L'"' + patchfile + L'"');
+			viewer.Replace(L"%1", escaper(patchfile));
 	}
 	else
-		viewer += L" \"" + patchfile + L'"';
+		viewer += L' ' + escaper(patchfile);
 	if (viewer.Find(L"%title") >= 0)
 	{
 		if (viewer.Find(L"\"%title\"") >= 0)
-			viewer.Replace(L"%title", title);
+			viewer.Replace(L"\"%title\"", escaper(title));
 		else
-			viewer.Replace(L"%title", L'"' + title + L'"');
+			viewer.Replace(L"%title", escaper(title));
 	}
 
 	if (!LaunchApplication(viewer, CAppUtils::LaunchApplicationFlags().WaitForStartup(!!bWait).UseSpecificErrorMessage(IDS_ERR_DIFFVIEWSTART)))
@@ -759,11 +774,10 @@ bool CAppUtils::LaunchTortoiseBlame(const CString& sBlameFile, const CString& Re
 {
 	CString viewer = L'"' + CPathUtils::GetAppDirectory();
 	viewer += L"TortoiseGitBlame.exe";
-	viewer += L"\" \"" + sBlameFile + L'"';
-	//viewer += L" \"" + sLogFile + L'"';
-	//viewer += L" \"" + sOriginalFile + L'"';
+	viewer += L"\" ";
+	viewer += CCmdLineParser::EscapeValue(sBlameFile);
 	if (!Rev.IsEmpty() && Rev != GitRev::GetWorkingCopyRef())
-		viewer += L" /rev:" + Rev;
+		viewer += L" /rev:" + CCmdLineParser::EscapeValue(Rev);
 	if (!g_sGroupingUUID.IsEmpty())
 	{
 		viewer += L" /groupuuid:\"";
@@ -1270,7 +1284,7 @@ bool CAppUtils::CreateWorktree(HWND hWnd, const CString& target /* CString() */)
 		{
 			postCmdList.emplace_back(IDI_UPDATE, IDS_PROC_SUBMODULESUPDATE, [&] {
 				CString sCmd;
-				sCmd.Format(L"/command:subupdate /bkpath:\"%s\"", static_cast<LPCWSTR>(dlg.m_sWorktreePath));
+				sCmd.Format(L"/command:subupdate /bkpath:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(dlg.m_sWorktreePath)));
 				CAppUtils::RunTortoiseGitProc(sCmd);
 			});
 		}

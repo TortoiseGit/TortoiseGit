@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2021, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2021, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,7 @@
 #include "AppUtils.h"
 #include "Git.h"
 #include "HistoryCombo.h"
+#include "CmdLineParser.h"
 
 // CSettingGitRemote dialog
 
@@ -489,7 +490,7 @@ BOOL CSettingGitRemote::OnApply()
 		GetDlgItem(IDC_BUTTON_ADD)->EnableWindow(TRUE);
 		GetDlgItem(IDC_BUTTON_RENAME_REMOTE)->EnableWindow(TRUE);
 		if (!m_bNoFetch && CMessageBox::Show(GetSafeHwnd(), IDS_SETTINGS_FETCH_ADDEDREMOTE, IDS_APPNAME, MB_ICONQUESTION | MB_YESNO) == IDYES)
-			CCommonAppUtils::RunTortoiseGitProc(L"/command:fetch /path:\"" + g_Git.m_CurrentDir + L"\" /remote:\"" + m_strRemote + L'"');
+			CCommonAppUtils::RunTortoiseGitProc(L"/command:fetch /path:\"" + g_Git.m_CurrentDir + L"\" /remote:" + CCmdLineParser::EscapeValue(m_strRemote));
 	}
 	if(m_ChangedMask & REMOTE_URL)
 	{

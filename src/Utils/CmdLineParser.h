@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2021, 2023 - TortoiseGit
+// Copyright (C) 2016, 2021, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2007, 2009, 2013 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -127,6 +127,11 @@ public:
 	LONG GetLongVal(LPCWSTR sKey) const;
 
 	__int64 GetLongLongVal(LPCWSTR sKey) const;
+
+	[[nodiscard]] static std::wstring EscapeValue(const std::wstring_view input);
+#if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
+	[[nodiscard]] static CString EscapeValue(CString input);
+#endif
 
 private:
 	BOOL Parse(LPCWSTR sCmdLine);

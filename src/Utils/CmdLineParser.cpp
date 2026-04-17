@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016-2019, 2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2013, 2016-2019, 2021, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2006,2012 - Stefan Kueng
 
 // This program is free software; you can redistribute it and/or
@@ -239,3 +239,28 @@ BOOL CCmdLineParser::isLast(const ITERPOS& pos) const
 {
 	return (pos == m_valueMap.cend());
 }
+
+std::wstring CCmdLineParser::EscapeValue(const std::wstring_view input)
+{
+	std::wstring result;
+	result += L'"';
+
+	result.reserve(input.size());
+	for (const wchar_t c : input)
+	{
+		if (c == L'"')
+			result += L'"';
+
+		result += c;
+	}
+	result += L'"';
+
+	return result;
+}
+#if defined(CSTRING_AVAILABLE) || defined(_MFC_VER)
+CString CCmdLineParser::EscapeValue(CString input)
+{
+	input.Replace(L"\"", L"\"\"");
+	return L'"' + input + L'"';
+}
+#endif

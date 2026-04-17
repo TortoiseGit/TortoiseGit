@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2020, 2023, 2026 - TortoiseGit
 // Copyright (C) 2011-2013 Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -26,6 +26,7 @@
 #include "TortoiseGitBlameView.h"
 #include "MainFrm.h"
 #include "CommonAppUtils.h"
+#include "CmdLineParser.h"
 
 IMPLEMENT_DYNAMIC(CGitBlameLogList, CHintCtrl<CListCtrl>)
 
@@ -66,7 +67,7 @@ void RunTortoiseGitProcWithCurrentRev(const CString& command, const GitRev* pRev
 {
 	ASSERT(pRev);
 	CString  procCmd;
-	procCmd.Format(L"/command:%s /path:\"%s\" /rev:%s", static_cast<LPCWSTR>(command), static_cast<LPCWSTR>(path), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
+	procCmd.Format(L"/command:%s /path:%s /rev:%s", static_cast<LPCWSTR>(command), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(path)), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 	CCommonAppUtils::RunTortoiseGitProc(procCmd);
 }
 
@@ -93,8 +94,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				GetParentHash(pRev, index, parentHash, parentFilenames);
 				for (size_t i = 0; i < parentFilenames.size(); ++i)
 				{
-					CString procCmd = L"/path:\"" + pView->ResolveCommitFile(parentFilenames[i]) + L"\" ";
-					procCmd += L" /command:blame";
+					CString procCmd = L"/command:blame";
+					procCmd += L" /path:" + CCmdLineParser::EscapeValue(pView->ResolveCommitFile(parentFilenames[i]));
 					procCmd += L" /endrev:" + parentHash.ToString();
 
 					CCommonAppUtils::RunTortoiseGitProc(procCmd);
@@ -114,8 +115,8 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 				GetParentHash(pRev, index, parentHash, parentFilenames);
 				for (size_t i = 0; i < parentFilenames.size(); ++i)
 				{
-					CString procCmd = L"/path:\"" + pView->ResolveCommitFile(parentFilenames[i]) + L"\" ";
-					procCmd += L" /command:diff";
+					CString procCmd = L"/command:diff";
+					procCmd += L" /path:" + CCmdLineParser::EscapeValue(pView->ResolveCommitFile(parentFilenames[i]));
 					procCmd += L" /startrev:" + parentHash.ToString();
 					procCmd += L" /endrev:" + pRev->m_CommitHash.ToString();
 					if ((cmd & 0xFFFF) == ID_GNUDIFF1)
@@ -152,7 +153,7 @@ void CGitBlameLogList::ContextMenuAction(int cmd, int /*FirstSelect*/, int /*Las
 		case ID_LOG:
 			{
 				CString procCmd;
-				procCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName()), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
+				procCmd.Format(L"/command:log /path:%s /endrev:%s /rev:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(static_cast<CMainFrame*>(::AfxGetApp()->GetMainWnd())->GetActiveView()->GetDocument()->GetPathName())), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()), static_cast<LPCWSTR>(pRev->m_CommitHash.ToString()));
 				CCommonAppUtils::RunTortoiseGitProc(procCmd);
 			}
 			break;

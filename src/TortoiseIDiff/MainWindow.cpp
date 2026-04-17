@@ -1,6 +1,6 @@
 ﻿// TortoiseGitIDiff - an image diff viewer in TortoiseSVN
 
-// Copyright (C) 2015-2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2015-2019, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2006-2015, 2018, 2020-2021, 2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include "LoadIconEx.h"
 #include "Theme.h"
 #include "DarkModeHelper.h"
+#include "CmdLineParser.h"
 
 #pragma comment(lib, "comctl32.lib")
 
@@ -806,7 +807,7 @@ LRESULT CMainWindow::DoCommand(int id, LPARAM lParam)
                 break;
 
             CString cmd;
-            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:\"%s\" /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCWSTR>(CPathUtils::GetAppDirectory()), selectionResult.c_str());
+            cmd.Format(L"\"%sTortoiseGitProc.exe\" /command:resolve /path:%s /closeonend:1 /noquestion /skipcheck /silent", static_cast<LPCWSTR>(CPathUtils::GetAppDirectory()), CCmdLineParser::EscapeValue(selectionResult).c_str());
             if (resolveMsgWnd)
                 cmd.AppendFormat(L" /resolvemsghwnd:%I64d /resolvemsgwparam:%I64d /resolvemsglparam:%I64d", reinterpret_cast<__int64>(resolveMsgWnd), static_cast<__int64>(resolveMsgWParam), static_cast<__int64>(resolveMsgLParam));
 

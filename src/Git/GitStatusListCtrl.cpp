@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2013-2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -50,6 +50,7 @@
 #include "CreateChangelistDlg.h"
 #include "Theme.h"
 #include <fstream>
+#include "CmdLineParser.h"
 
 const UINT CGitStatusListCtrl::GITSLNM_ITEMCOUNTCHANGED
 					= ::RegisterWindowMessage(L"GITSLNM_ITEMCOUNTCHANGED");
@@ -2262,9 +2263,9 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 
 						CString sCmd;
 						if (m_CurrentVersion.IsEmpty())
-							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", secondfilepath->GetWinPath(), secondfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", reinterpret_cast<void*>(m_hWnd));
+							sCmd.Format(L"/command:diff /path:%s /startrev:%s /path2:%s /endrev:%s /hwnd:%p", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(firstfilepath->GetWinPathString())), firstfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(secondfilepath->GetWinPathString())), secondfilepath->Exists() ? GitRev::GetWorkingCopyRef() : L"HEAD", reinterpret_cast<void*>(m_hWnd));
 						else
-							sCmd.Format(L"/command:diff /path:\"%s\" /startrev:%s /path2:\"%s\" /endrev:%s /hwnd:%p", firstfilepath->GetWinPath(), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), secondfilepath->GetWinPath(), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), reinterpret_cast<void*>(m_hWnd));
+							sCmd.Format(L"/command:diff /path:%s /startrev:%s /path2:%s /endrev:%s /hwnd:%p", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(firstfilepath->GetWinPathString())), firstfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(secondfilepath->GetWinPathString())), secondfilepath->m_Action & CTGitPath::LOGACTIONS_DELETED ? static_cast<LPCWSTR>(m_CurrentVersion.ToString() + L"~1") : static_cast<LPCWSTR>(m_CurrentVersion.ToString()), reinterpret_cast<void*>(m_hWnd));
 						if (bShift)
 							sCmd += L" /alternative";
 						CAppUtils::RunTortoiseGitProc(sCmd);
@@ -2400,13 +2401,13 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 			case IDGITLC_LOGSUBMODULE:
 				{
 					CString sCmd;
-					sCmd.Format(L"/command:log /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(filepath)));
+					sCmd.Format(L"/command:log /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(filepath))));
 					if (cmd == IDGITLC_LOG)
 					{
 						if (filepath->IsDirectory())
 							sCmd += L" /submodule";
 						if (!m_sDisplayedBranch.IsEmpty())
-							sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
+							sCmd += L" /range:" + CCmdLineParser::EscapeValue(m_sDisplayedBranch);
 						else
 							sCmd += L" /endrev:\"" + m_CurrentVersion.ToString() + '"' + L" /rev:\"" + m_CurrentVersion.ToString() + '"';
 					}
@@ -2426,11 +2427,11 @@ void CGitStatusListCtrl::OnContextMenuList(CWnd * pWnd, CPoint point)
 				{
 					CTGitPath oldName(filepath->GetGitOldPathString());
 					CString sCmd;
-					sCmd.Format(L"/command:log /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(oldName)));
+					sCmd.Format(L"/command:log /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(oldName))));
 					if (filepath->IsDirectory())
 						sCmd += L" /submodule";
 					if (!m_sDisplayedBranch.IsEmpty())
-						sCmd += L" /range:\"" + m_sDisplayedBranch + L'"';
+						sCmd += L" /range:" + CCmdLineParser::EscapeValue(m_sDisplayedBranch);
 					CAppUtils::RunTortoiseGitProc(sCmd);
 				}
 				break;

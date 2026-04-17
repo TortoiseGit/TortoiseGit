@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2012, 2015 - TortoiseSVN
-// Copyright (C) 2012-2023, 2025 - TortoiseGit
+// Copyright (C) 2012-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@
 #include "RevisionGraphDlg.h"
 #include "FormatMessageWrapper.h"
 #include "GitRevLoglist.h"
+#include "CmdLineParser.h"
 
 #pragma warning(push)
 #pragma warning(disable: 4100) // unreferenced formal parameter
@@ -1067,13 +1068,13 @@ void CRevisionGraphWnd::DoShowLog()
 	CString sCmd;
 
 	if(m_SelectedEntry2)
-		sCmd.Format(L"/command:log %s /startrev:%s /endrev:%s",
-			this->m_sPath.IsEmpty() ? L"" : static_cast<LPCWSTR>(L"/path:\"" + this->m_sPath + L'"'),
+		sCmd.Format(L"/command:log /path:%s /startrev:%s /endrev:%s",
+			static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sPath)),
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()),
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry2->index()].ToString()));
 	else
-		sCmd.Format(L"/command:log %s /endrev:%s /rev:%s",
-			static_cast<LPCWSTR>(this->m_sPath.IsEmpty() ? CString() : (L"/path:\"" + this->m_sPath + L'"')),
+		sCmd.Format(L"/command:log /path:%s /endrev:%s /rev:%s",
+			static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sPath)),
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()),
 			static_cast<LPCWSTR>(this->m_logEntries[m_SelectedEntry1->index()].ToString()));
 
@@ -1091,9 +1092,9 @@ void CRevisionGraphWnd::DoBrowseRepo()
 		return;
 
 	CString sCmd;
-	sCmd.Format(L"/command:repobrowser %s /rev:%s",
-		this->m_sPath.IsEmpty() ? L"" : static_cast<LPCWSTR>(L"/path:\"" + this->m_sPath + L'"'),
-		static_cast<LPCWSTR>(GetFriendRefName(m_SelectedEntry1)));
+	sCmd.Format(L"/command:repobrowser /path:%s /rev:%s",
+		static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sPath)),
+		static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(GetFriendRefName(m_SelectedEntry1))));
 
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

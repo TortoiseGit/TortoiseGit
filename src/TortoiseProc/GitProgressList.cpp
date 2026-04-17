@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -29,6 +29,7 @@
 #include "Theme.h"
 #include "TempFile.h"
 #include "git2/sys/errors.h"
+#include "CmdLineParser.h"
 
 BOOL	CGitProgressList::m_bAscending = FALSE;
 int		CGitProgressList::m_nSortedColumn = -1;
@@ -1151,7 +1152,7 @@ void CGitProgressList::WC_File_NotificationData::GetContextMenu(CIconMenu& popup
 		{
 			CString cmd = L"/command:log";
 			CString sPath = g_Git.CombinePath(path);
-			cmd += L" /path:\"" + sPath + L'"';
+			cmd += L" /path:" + CCmdLineParser::EscapeValue(sPath);
 			CAppUtils::RunTortoiseGitProc(cmd);
 		});
 		popup.AppendMenuIcon(actions.size(), IDS_MENULOG, IDI_LOG);

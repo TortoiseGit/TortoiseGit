@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2025 - TortoiseGit
+// Copyright (C) 2015-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,6 +31,7 @@
 #include "LoglistCommonResource.h"
 #include "SysProgressDlg.h"
 #include "ProgressDlg.h"
+#include "CmdLineParser.h"
 
 IMPLEMENT_DYNAMIC(CGitTagCompareList, CHintCtrl<CListCtrl>)
 
@@ -414,15 +415,15 @@ void CGitTagCompareList::OnContextMenuList(CWnd * /*pWnd*/, CPoint point)
 		case IDGITRCL_THEIRLOG:
 		{
 			CString sCmd;
-			auto revToShow = cmd == IDGITRCL_MYLOG ? static_cast<LPCWSTR>(myHash) : static_cast<LPCWSTR>(theirHash);
-			sCmd.Format(L"/command:log /path:\"%s\" /endrev:\"%s\" /rev:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), revToShow, revToShow);
+			auto revToShow = cmd == IDGITRCL_MYLOG ? static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(myHash)) : static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(theirHash));
+			sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), revToShow, revToShow);
 			CAppUtils::RunTortoiseGitProc(sCmd);
 			break;
 		}
 		case IDGITRCL_COMPARE:
 		{
 			CString sCmd;
-			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:\"%s\" /revision2:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(myHash), static_cast<LPCWSTR>(theirHash));
+			sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(myHash)), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(theirHash)));
 			if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 				sCmd += L" /alternative";
 			CAppUtils::RunTortoiseGitProc(sCmd);

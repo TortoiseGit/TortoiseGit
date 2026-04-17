@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021-2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2026 - TortoiseGit
 // Copyright (C) 2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include "AppUtils.h"
 #include "UnicodeUtils.h"
 #include "ProgressCommands/CloneProgressCommand.h"
+#include "CmdLineParser.h"
 
 static CString GetExistingDirectoryForClone(CString path)
 {
@@ -174,7 +175,7 @@ bool CloneCommand::Execute()
 			postCmdList.emplace_back(IDI_LOG, IDS_MENULOG, [&]
 			{
 				CString cmd = L"/command:log";
-				cmd += L" /path:\"" + dlg.m_Directory + L'"';
+				cmd += L" /path:" + CCmdLineParser::EscapeValue(dlg.m_Directory);
 				CAppUtils::RunTortoiseGitProc(cmd);
 			});
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019, 2023-2025 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@
 #include "AppUtils.h"
 #include "SubmoduleDiffDlg.h"
 #include "LoglistCommonResource.h"
+#include "CmdLineParser.h"
 
 IMPLEMENT_DYNAMIC(CSubmoduleDiffDlg, CHorizontalResizableStandAloneDialog)
 CSubmoduleDiffDlg::CSubmoduleDiffDlg(CWnd* pParent /*=nullptr*/)
@@ -233,7 +234,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHa
 void CSubmoduleDiffDlg::ShowLog(const CGitHash& hash)
 {
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /endrev:%s /rev:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(hash.ToString()), static_cast<LPCWSTR>(hash.ToString()));
+	sCmd.Format(L"/command:log /path:%s /endrev:%s /rev:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_sPath))), static_cast<LPCWSTR>(hash.ToString()), static_cast<LPCWSTR>(hash.ToString()));
 	CAppUtils::RunTortoiseGitProc(sCmd, false, false);
 }
 
@@ -251,10 +252,10 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 {
 	CString sCmd;
 	if (m_nChangeType == CGitDiff::ChangeType::Identical)
-		sCmd.Format(L"/command:repostatus /path:\"%s\"", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)));
+		sCmd.Format(L"/command:repostatus /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_sPath))));
 	else
 	{
-		sCmd.Format(L"/command:showcompare /path:\"%s\" /revision1:%s /revision2:%s", static_cast<LPCWSTR>(g_Git.CombinePath(m_sPath)), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::ChangeType::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GitRev::GetWorkingCopyRef() : static_cast<LPCWSTR>(m_sToHash.ToString()));
+		sCmd.Format(L"/command:showcompare /path:%s /revision1:%s /revision2:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_sPath))), static_cast<LPCWSTR>(m_sFromHash.ToString()), ((m_bDirty && m_nChangeType == CGitDiff::ChangeType::Unknown) || m_ctrlShowDiffBtn.GetCurrentEntry() == 1) ? GitRev::GetWorkingCopyRef() : static_cast<LPCWSTR>(m_sToHash.ToString()));
 
 		if (!!(GetAsyncKeyState(VK_SHIFT) & 0x8000))
 			sCmd += L" /alternative";
@@ -266,6 +267,6 @@ void CSubmoduleDiffDlg::OnBnClickedShowDiff()
 void CSubmoduleDiffDlg::OnBnClickedButtonUpdate()
 {
 	CString sCmd;
-	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:\"%s\"", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(m_sPath));
+	sCmd.Format(L"/command:subupdate /bkpath:\"%s\" /selectedpath:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sPath)));
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }

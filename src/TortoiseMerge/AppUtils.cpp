@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2010-2011, 2014-2016, 2019-2020, 2025 - TortoiseGit
+// Copyright (C) 2010-2011, 2014-2016, 2019-2020, 2025-2026 - TortoiseGit
 // Copyright (C) 2006-2010, 2012-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include "CreateProcessHelper.h"
 #include "FormatMessageWrapper.h"
 #include "ClipboardHelper.h"
+#include "CmdLineParser.h"
 
 BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
 {
@@ -35,13 +36,13 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	{
 		// no path set, so use TortoiseGit as default
 		sSCMPath = CPathUtils::GetAppDirectory() + L"TortoiseGitProc.exe";
-		sSCMPath += L" /command:cat /path:\"%1\" /revision:%2 /savepath:\"%3\" /hwnd:%4";
+		sSCMPath += L" /command:cat /path:%1 /revision:%2 /savepath:%3 /hwnd:%4";
 	}
 	CString sTemp;
 	sTemp.Format(L"%p", static_cast<void*>(hWnd));
-	sSCMPath.Replace(L"%1", sPath);
-	sSCMPath.Replace(L"%2", sVersion);
-	sSCMPath.Replace(L"%3", sSavePath);
+	sSCMPath.Replace(L"%1", CCmdLineParser::EscapeValue(sPath));
+	sSCMPath.Replace(L"%2", CCmdLineParser::EscapeValue(sVersion));
+	sSCMPath.Replace(L"%3", CCmdLineParser::EscapeValue(sSavePath));
 	sSCMPath.Replace(L"%4", sTemp);
 	// start the external SCM program to fetch the specific version of the file
 	PROCESS_INFORMATION process;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016, 2019, 2022-2025 - TortoiseGit
+// Copyright (C) 2009-2014, 2016, 2019, 2022-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@
 #include "../TGitCache/CacheInterface.h"
 #include "MassiveGitTask.h"
 #include "GitRev.h"
+#include "CmdLineParser.h"
 
 using Git_WC_Notify_Action = CGitProgressList::WC_File_NotificationData::Git_WC_Notify_Action;
 
@@ -186,7 +187,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 						pathString = path.GetGitOldPathString();
 
 					CString sCmd;
-					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:\"%s\"", static_cast<LPCWSTR>(m_sRevertToRevision), GitRev::GetWorkingCopyRef(), static_cast<LPCWSTR>(pathString));
+					sCmd.Format(L"/command:diff /submodule /startrev:%s /endrev:%s /path:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(m_sRevertToRevision)), GitRev::GetWorkingCopyRef(), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(pathString)));
 					CCommonAppUtils::RunTortoiseGitProc(sCmd);
 				}
 			});

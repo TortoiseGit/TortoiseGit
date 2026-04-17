@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@
 #include "FormatMessageWrapper.h"
 #include "GitDataObject.h"
 #include "LogDlgFileFilter.h"
+#include "CmdLineParser.h"
 
 #define ID_COMPARE 1
 #define ID_BLAME 2
@@ -707,7 +708,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 						else
 							MessageBox(error, L"TortoiseGit", MB_ICONERROR);
 					}
-					sCmd += L" /path:\"" + g_Git.CombinePath(m_arFilteredList[index]->GetWinPathString()) + L"\" ";
+					sCmd += L" /path:" + CCmdLineParser::EscapeValue(g_Git.CombinePath(m_arFilteredList[index]->GetWinPathString()));
 					if (cmd == ID_LOG)
 						sCmd += L" /endrev:" + m_rev2.m_CommitHash.ToString() + L" /rev:" + m_rev2.m_CommitHash.ToString();
 					CAppUtils::RunTortoiseGitProc(sCmd);
