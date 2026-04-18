@@ -712,7 +712,7 @@ void CCommitDlg::OnOK()
 		else
 		{
 			CString cmd, cmdout;
-			cmd.Format(L"git.exe diff -- \"%s\"", entry->GetWinPath());
+			cmd.Format(L"git.exe diff -- \"%s\"", static_cast<LPCWSTR>(entry->GetGitPathString()));
 			g_Git.Run(cmd, &cmdout, CP_UTF8);
 			dirty = CStringUtils::EndsWith(cmdout, L"-dirty\n");
 		}

@@ -937,7 +937,7 @@ void CGitStatusListCtrl::RestoreScrollPos()
 void CGitStatusListCtrl::GitStageEntry(CTGitPath* entry)
 {
 	CString cmd, out;
-	cmd.Format(L"git.exe add -- \"%s\"", entry->GetWinPath());
+	cmd.Format(L"git.exe add -- \"%s\"", static_cast<LPCWSTR>(entry->GetGitPathString()));
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 		MessageBox(L"Error staging file", L"TortoiseGit", MB_OK | MB_ICONERROR);
 }
@@ -948,14 +948,14 @@ void CGitStatusListCtrl::GitUnstageEntry(CTGitPath* entry)
 	CString cmd1, cmd2, out;
 	// git restore --staged would avoid the whole mess below but requires at least git version 2.23
 	if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_ADDED)
-		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetWinPathString()));
+		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
 	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_DELETED)
-		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetWinPathString()));
+		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
 	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_MODIFIED)
-		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetWinPathString()));
+		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
 	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_REPLACED)
 	{
-		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetWinPathString()));
+		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
 		cmd2.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitOldPathString()));
 	}
 	else
@@ -4139,19 +4139,19 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list, bool getStagin
 			if (!bDeleteChecked)
 			{
 				CString message;
-				message.Format(IDS_ASK_REMOVE_FROM_INDEX, gitpatch->GetWinPath());
+				message.Format(IDS_ASK_REMOVE_FROM_INDEX, static_cast<LPCWSTR>(gitpatch->GetGitPathString()));
 				deleteFromIndex = CMessageBox::ShowCheck(GetSafeHwnd(), message, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_RESTORE_FROM_INDEX, IDS_REMOVE_FROM_INDEX, IDS_IGNOREBUTTON, nullptr, IDS_DO_SAME_FOR_REST, &bDeleteChecked);
 			}
 			if (deleteFromIndex == 1)
 			{
-				if (CString err; g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
+				if (CString err; g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetGitPathString() + L'"', &err, CP_UTF8))
 					MessageBox(L"Restoring from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				else
 					needsRefresh = true;
 			}
 			else if (deleteFromIndex == 2)
 			{
-				if (CString err; g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetWinPathString() + L'"', &err, CP_UTF8))
+				if (CString err; g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetGitPathString() + L'"', &err, CP_UTF8))
 					MessageBox(L"Removing from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
 				else
 					needsRefresh = true;

@@ -1145,7 +1145,7 @@ int CTGitPathList::FillUnRev(unsigned int action, const CTGitPathList* list, CSt
 			ATLASSERT(!(*list)[i].GetWinPathString().IsEmpty());
 			cmd.Format(L"git.exe ls-files --exclude-standard --full-name --others -z%s -- \"%s\"",
 					static_cast<LPCWSTR>(ignored),
-					(*list)[i].GetWinPath());
+					static_cast<LPCWSTR>((*list)[i].GetGitPathString()));
 		}
 
 		BYTE_VECTOR out, errb;
