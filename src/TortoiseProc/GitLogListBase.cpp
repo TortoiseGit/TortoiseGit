@@ -3337,39 +3337,9 @@ CString CGitLogListBase::GetTagInfo(const STRING_VECTOR& refs) const
 		if (!CStringUtils::EndsWith((*it), L"^{}"))
 			continue;
 
-		CString cmd;
-		cmd.Format(L"git.exe cat-file tag -- %s", static_cast<LPCWSTR>((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}")))));
 		CString output;
-		if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) != 0)
-			continue;
+		g_Git.GetTagInfo((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}"))), output, [&](const CTime& time) { return CLoglistUtils::FormatDateAndTime(time, m_DateFormat, true, m_bRelativeTimes); });
 
-		// parse tag date
-		do
-		{
-			// this assumes that in the header of the tag there is no ">" before the "tagger " header entry
-			int pos1 = output.Find(L'>');
-			if (pos1 < 0)
-				break;
-			++pos1;
-			if (output[pos1] == L' ')
-				++pos1;
-			int pos2 = output.Find(L'\n', pos1);
-			if (pos2 < 0)
-				break;
-
-			CString str = output.Mid(pos1, pos2 - pos1);
-			wchar_t* pEnd = nullptr;
-			errno = 0;
-			auto number = wcstoumax(str.GetBuffer(), &pEnd, 10);
-			if (str.GetBuffer() == pEnd)
-				break;
-			if (errno == ERANGE)
-				break;
-
-			output.Delete(pos1, pos2 - pos1);
-			output.Insert(pos1, static_cast<LPCWSTR>(CLoglistUtils::FormatDateAndTime(CTime(number), m_DateFormat, true, m_bRelativeTimes)));
-		} while (0);
-		output.Trim().AppendChar(L'\n');
 		tagInfo += output;
 	}
 	return tagInfo;

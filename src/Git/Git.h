@@ -617,6 +617,8 @@ public:
 	int GetGitNotes(const CGitHash& hash, CString& notes);
 	int SetGitNotes(const CGitHash& hash, const CString& notes);
 
+	int GetTagInfo(const CString& tagName, CString& info, const std::function<CString(const __time64_t)>& timeformatter);
+
 	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CString patchfile, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 	int GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CString& rev2, CStringA& buffer, bool bMerge, bool bCombine, int diffContext);
 

@@ -1292,6 +1292,16 @@ TEST_P(CBasicGitWithEmptyRepositoryFixture, CheckCleanWorkTree)
 	EXPECT_FALSE(m_Git.CheckCleanWorkTree(true));
 }
 
+TEST_P(CBasicGitWithTestRepoFixture, GetTagInfo)
+{
+	CString output;
+	EXPECT_EQ(0, m_Git.GetTagInfo(L"refs/tags/all-files-signed", output, [](const __time64_t time) { EXPECT_EQ(1425490937, time); return L"DATE"; }));
+	EXPECT_STREQ(L"tag all-files-signed\ntagger Sven Strickroth <email@cs-ware.de> DATE\n\nSigned tag\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1.4.13 (MingW32)\n\niEYEABECAAYFAlT3RAEACgkQFkZnpPWp1MQ8igCffp485VEKdcgWPR/2dhkkE7ub\nB50AoLmVj/oGcJYKnKag4WqHyi1zoaTU\n=0WTc\n-----END PGP SIGNATURE-----\n", output);
+
+	output.Empty();
+	EXPECT_EQ(-1, m_Git.GetTagInfo(L"refs/tags/normal-tag", output, [](const __time64_t time) { EXPECT_EQ(0, time); return L"DATE"; }));
+}
+
 TEST(CGit, CEnvironment)
 {
 	CEnvironment env;

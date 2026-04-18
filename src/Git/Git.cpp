@@ -3565,6 +3565,100 @@ int CGit::SetGitNotes(const CGitHash& hash, const CString& notes)
 	return 0;
 }
 
+int CGit::GetTagInfo(const CString& tagName, CString& output, const std::function<CString(const __time64_t)>& timeformatter)
+{
+	if (m_IsUseLibGit2)
+	{
+		CAutoRepository repo{ g_Git.GetGitRepository() };
+		if (!repo)
+			return -1;
+		CAutoReference ref;
+		if (git_reference_lookup(ref.GetPointer(), repo, CUnicodeUtils::GetUTF8(tagName)) < 0)
+		{
+			output = CGit::GetLibGit2LastErr();
+			return -1;
+		}
+		CAutoObject obj;
+		if (git_object_lookup(obj.GetPointer(), repo, git_reference_target(ref), GIT_OBJECT_TAG))
+		{
+			output = CGit::GetLibGit2LastErr();
+			return -1;
+		}
+		CAutoTag tag;
+		if (git_tag_lookup(tag.GetPointer(), repo, git_reference_target(ref)) < 0)
+		{
+			output = CGit::GetLibGit2LastErr();
+			return -1;
+		}
+		output = L"tag " + CUnicodeUtils::GetUnicode(git_tag_name(tag)) + L"\n";
+		auto tagger = git_tag_tagger(tag);
+		if (tagger)
+		{
+			output += "tagger ";
+			if (tagger->name)
+			{
+				output += CUnicodeUtils::GetUnicode(tagger->name);
+				output += L' ';
+			}
+			if (tagger->email)
+			{
+				output += L'<';
+				output += CUnicodeUtils::GetUnicode(tagger->email);
+				output += L'>';
+				output += L' ';
+			}
+			output += timeformatter(tagger->when.time);
+			output += L'\n';
+		}
+		output += L'\n';
+		output += CUnicodeUtils::GetUnicode(git_tag_message(tag));
+		output.TrimRight().AppendChar(L'\n');
+		return 0;
+	}
+
+	output.Empty();
+	CString cmd;
+	cmd.Format(L"git.exe cat-file tag -- \"%s\"", static_cast<LPCWSTR>(tagName));
+	if (g_Git.Run(cmd, &output, CP_UTF8) != 0)
+		return -1;
+
+	if (CStringUtils::StartsWith(output, L"object "))
+	{
+		if (const int pos = output.Find(L"\n"); pos > 0)
+		{
+			output.Delete(0, pos + 1);
+			if (CStringUtils::StartsWith(output, L"type commit\n"))
+				output.Delete(0, static_cast<int>(wcslen(L"type commit\n")));
+		}
+	}
+
+	// parse tag date
+	// this assumes that in the header of the tag there is no ">" before the "tagger " header entry
+	int pos1 = output.Find(L'>');
+	if (pos1 < 0)
+		return 0;
+	++pos1;
+	if (output[pos1] == L' ')
+		++pos1;
+	const int pos2 = output.Find(L'\n', pos1);
+	if (pos2 < 0)
+		return 0;
+
+	CString str = output.Mid(pos1, pos2 - pos1);
+	wchar_t* pEnd = nullptr;
+	errno = 0;
+	const auto number = wcstoumax(str.GetBuffer(), &pEnd, 10);
+	if (str.GetBuffer() == pEnd)
+		return 0;
+	if (errno == ERANGE)
+		return 0;
+	output.Delete(pos1, pos2 - pos1);
+	output.Insert(pos1, timeformatter(number));
+
+	output.Trim().AppendChar(L'\n');
+	return 0;
+}
+
 int CGit::GetSubmodulePointer(SubmoduleInfo& submoduleinfo) const
 {
 	submoduleinfo.Empty();
