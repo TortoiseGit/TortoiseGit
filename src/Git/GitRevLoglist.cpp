@@ -500,7 +500,7 @@ int GitRevLoglist::GetRefLog(const CString& ref, std::vector<GitRevLoglist>& ref
 		return 0;
 
 	CString cmd, out;
-	cmd.Format(L"git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw %s", static_cast<LPCWSTR>(ref));
+	cmd.Format(L"git.exe reflog show --pretty=\"%%H %%gD: %%gs\" --date=raw --end-of-options %s", static_cast<LPCWSTR>(ref));
 	if (g_Git.Run(cmd, &out, &error, CP_UTF8))
 		return -1;
 

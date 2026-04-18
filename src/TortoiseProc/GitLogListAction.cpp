@@ -837,9 +837,9 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					CString ref = *revIt;
 					CString sCmd, out;
 					if (CStringUtils::StartsWith(ref, L"stash"))
-						sCmd.Format(L"git.exe stash drop %s", static_cast<LPCWSTR>(ref));
+						sCmd.Format(L"git.exe stash drop -- %s", static_cast<LPCWSTR>(ref));
 					else
-						sCmd.Format(L"git.exe reflog delete %s", static_cast<LPCWSTR>(ref));
+						sCmd.Format(L"git.exe reflog delete -- %s", static_cast<LPCWSTR>(ref));
 
 					if (g_Git.Run(sCmd, &out, CP_UTF8))
 						MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);

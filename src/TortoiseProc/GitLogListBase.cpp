@@ -3338,7 +3338,7 @@ CString CGitLogListBase::GetTagInfo(const STRING_VECTOR& refs) const
 			continue;
 
 		CString cmd;
-		cmd.Format(L"git.exe cat-file tag %s", static_cast<LPCWSTR>((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}")))));
+		cmd.Format(L"git.exe cat-file tag -- %s", static_cast<LPCWSTR>((*it).Left((*it).GetLength() - static_cast<int>(wcslen(L"^{}")))));
 		CString output;
 		if (g_Git.Run(cmd, &output, nullptr, CP_UTF8) != 0)
 			continue;

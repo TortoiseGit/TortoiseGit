@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -212,7 +212,7 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 #ifdef USE_TEMPFILENAME
 		m_TempFileName = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
-		cmd.Format(L"git.exe cat-file blob %s:\"%s\"", static_cast<LPCWSTR>(Rev), static_cast<LPCWSTR>(path.GetGitPathString()));
+		cmd.Format(L"git.exe cat-file blob -- %s:\"%s\"", static_cast<LPCWSTR>(Rev), static_cast<LPCWSTR>(path.GetGitPathString()));
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{

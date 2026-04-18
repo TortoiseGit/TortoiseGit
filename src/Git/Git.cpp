@@ -383,9 +383,8 @@ BOOL CGit::CanParseRev(CString ref)
 	if (ref.IsEmpty())
 		ref = L"HEAD";
 
-	// --end-of-options does not work without --verify, but we cannot use --verify becasue we also want to check for valid ranges
 	CString cmdout;
-	if (Run(L"git.exe rev-parse --revs-only " + ref, &cmdout, CP_UTF8))
+	if (Run(L"git.exe rev-parse --revs-only --end-of-options " + ref, &cmdout, CP_UTF8))
 		return FALSE;
 	if(cmdout.IsEmpty())
 		return FALSE;
@@ -651,7 +650,7 @@ CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantB
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe config%s %s", wantBool ? L" --bool" : L"", static_cast<LPCWSTR>(name));
+		cmd.Format(L"git.exe config%s --end-of-options %s", wantBool ? L" --bool" : L"", static_cast<LPCWSTR>(name));
 		CString configValue;
 		if (Run(cmd, &configValue, nullptr, CP_UTF8))
 			return def;
@@ -725,7 +724,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		CString mangledValue = value;
 		mangledValue.Replace(L"\\\"", L"\\\\\"");
 		mangledValue.Replace(L"\"", L"\\\"");
-		cmd.Format(L"git.exe config %s %s \"%s\"", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(key), static_cast<LPCWSTR>(mangledValue));
+		cmd.Format(L"git.exe config %s --end-of-options %s \"%s\"", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(key), static_cast<LPCWSTR>(mangledValue));
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 			return -1;
@@ -773,7 +772,7 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 		default:
 			break;
 		}
-		cmd.Format(L"git.exe config %s --unset %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(key));
+		cmd.Format(L"git.exe config %s --unset --end-of-options %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(key));
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 			return -1;
@@ -1044,7 +1043,7 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	if (path)
 		file.Format(L" \"%s\"", static_cast<LPCWSTR>(path->GetGitPathString()));
 	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
-	cmd.Format(L"-z%s %s --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
+	cmd.Format(L"-z%s --end-of-options %s --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
 
 	return cmd;
 }
@@ -1953,7 +1952,7 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 	}
 	else
 	{
-		CMassiveGitTaskBase mgtPush(L"push " + sRemote, FALSE);
+		CMassiveGitTaskBase mgtPush(L"push -- " + sRemote, FALSE);
 		for (const auto& ref : list)
 			mgtPush.AddFile(L':' + ref);
 
@@ -2546,7 +2545,7 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd;
-	cmd.Format(L"git.exe merge-base %s %s", static_cast<LPCWSTR>(FixBranchName(to)), static_cast<LPCWSTR>(FixBranchName(from)));
+	cmd.Format(L"git.exe merge-base -- %s %s", static_cast<LPCWSTR>(FixBranchName(to)), static_cast<LPCWSTR>(FixBranchName(from)));
 
 	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
@@ -2677,7 +2676,7 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe cat-file -p %s:\"%s\"", static_cast<LPCWSTR>(Refname), static_cast<LPCWSTR>(path.GetGitPathString()));
+		cmd.Format(L"git.exe cat-file -p -- %s:\"%s\"", static_cast<LPCWSTR>(Refname), static_cast<LPCWSTR>(path.GetGitPathString()));
 		gitLastErr.Empty();
 		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}

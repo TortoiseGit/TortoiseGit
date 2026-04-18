@@ -1631,6 +1631,11 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_STREQ(L"default", m_Git.GetConfigValue(L"core.bare", L"default"));
 	EXPECT_STREQ(L"true", m_Git.GetConfigValue(L"core.ignorecase"));
 
+	EXPECT_EQ(0, m_Git.SetConfigValue(L"--some.bla", L"my value"));
+	EXPECT_STREQ(L"my value", m_Git.GetConfigValue(L"--some.bla"));
+	EXPECT_EQ(0, m_Git.UnsetConfigValue(L"--some.bla"));
+	EXPECT_STREQ(L"", m_Git.GetConfigValue(L"--some.bla"));
+
 	CString gitConfig = m_Git.m_CurrentDir + L"\\.git\\config";
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitConfig, L"[booltest]\nistrue"));
 	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"booltest.istrue"));
