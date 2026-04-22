@@ -316,6 +316,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 	if (wParam == MSG_PROGRESSDLG_START)
 	{
 		m_BufStart = 0;
+		m_iBufferAllImmediateLines = 0;
 		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 			m_Animate.Play(0, INT_MAX, INT_MAX);
 		DialogEnableWindow(IDCANCEL, TRUE);
