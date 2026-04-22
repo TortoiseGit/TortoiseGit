@@ -34,6 +34,7 @@
 #include "LogFile.h"
 #include "CmdLineParser.h"
 #include "StringUtils.h"
+#include <format>
 
 // CProgressDlg dialog
 
@@ -251,6 +252,9 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		DWORD readnumber;
 		char lastByte = '\0';
 		char buffer[1024];
+		constexpr size_t MAX_LINE_LENGTH = 8 * 1024; // 8 KiB
+		size_t currentLineLength = 0;
+		bool skippingTruncatedLine = false;
 		while (ReadFile(hRead, buffer, sizeof(buffer), &readnumber, nullptr))
 		{
 			bool foundNewLine = false;
@@ -262,13 +266,35 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				if (byte == '\0')
 					byte = '\n';
 
-				if (byte == '\n' && lastByte != '\r')
-					databuffer.push_back('\r');
-				databuffer.push_back(byte);
+				const bool isLineBreak = (byte == '\r' || byte == '\n');
+				if (isLineBreak)
+				{
+					if (byte == '\n' && lastByte != '\r')
+						databuffer.push_back('\r');
+					databuffer.push_back(byte);
+
+					foundNewLine = true;
+					currentLineLength = 0;
+					skippingTruncatedLine = false;
+					lastByte = byte;
+					continue;
+				}
+
+				if (skippingTruncatedLine)
+					continue;
+
 				lastByte = byte;
 
-				if (byte == '\r' || byte == '\n')
-					foundNewLine = true;
+				if (currentLineLength >= MAX_LINE_LENGTH)
+				{
+					databuffer.append(std::format("... [line truncated at {} KiB]", MAX_LINE_LENGTH / 1024));
+					skippingTruncatedLine = true;
+					continue;
+				}
+
+				databuffer.push_back(byte);
+				++currentLineLength;
+				continue;
 			}
 			databuffer.m_critSec.Unlock();
 

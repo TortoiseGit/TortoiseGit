@@ -150,6 +150,7 @@ public:
 	using CGitByteArray::resize;
 	using CGitByteArray::size;
 	using CGitByteArray::operator[];
+	using CGitByteArray::append;
 };
 
 struct TGitRef
