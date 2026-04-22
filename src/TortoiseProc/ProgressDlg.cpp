@@ -250,20 +250,29 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		CAutoGeneralHandle piThread(std::move(pi.hThread));
 		DWORD readnumber;
 		char lastByte = '\0';
-		char byte;
-		while (ReadFile(hRead, &byte, 1, &readnumber, nullptr))
+		char buffer[1024];
+		while (ReadFile(hRead, buffer, sizeof(buffer), &readnumber, nullptr))
 		{
-			if (byte == '\0')
-				byte = '\n';
+			bool foundNewLine = false;
 
 			databuffer.m_critSec.Lock();
-			if (byte == '\n' && lastByte != '\r')
-				databuffer.push_back('\r');
-			databuffer.push_back(byte);
-			lastByte = byte;
+			for (DWORD j = 0; j < readnumber; ++j)
+			{
+				char byte = buffer[j];
+				if (byte == '\0')
+					byte = '\n';
+
+				if (byte == '\n' && lastByte != '\r')
+					databuffer.push_back('\r');
+				databuffer.push_back(byte);
+				lastByte = byte;
+
+				if (byte == '\r' || byte == '\n')
+					foundNewLine = true;
+			}
 			databuffer.m_critSec.Unlock();
 
-			if (byte == '\r' || byte == '\n')
+			if (foundNewLine)
 				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 		EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
