@@ -11,14 +11,14 @@ Released: unreleased
  * Updated libgit to version 2.53.0 based on Git for Windows sources
 
 == Bug Fixes ==
-* Fix possible crash when parent window is closed before push/pull
-* TGitCache: Several performance improvements that reduce CPU usage and disk access
-* TGitCache: Improve handling of changes to .gitignore
-* TGitCache: Only crawl non-recursively when DirectoryWatcher detects changes to improve performance
-* TGitCache: Add shortcut for ignored folders
-* Fixed issue #4003: TortoiseGitCache slows down deleting folders with many subfolders
-* Fixed issue #4251: Installer complains to require Windows >= 10 on Windows 11 if AlwaysInstallElevated is set
-* Fixed issue #4262: LogDlg: Improve startup performance with many branches
+ * Fix possible crash when parent window is closed before push/pull
+ * TGitCache: Several performance improvements that reduce CPU usage and disk access
+ * TGitCache: Improve handling of changes to .gitignore
+ * TGitCache: Only crawl non-recursively when DirectoryWatcher detects changes to improve performance
+ * TGitCache: Add shortcut for ignored folders
+ * Fixed issue #4003: TortoiseGitCache slows down deleting folders with many subfolders
+ * Fixed issue #4251: Installer complains to require Windows >= 10 on Windows 11 if AlwaysInstallElevated is set
+ * Fixed issue #4262: LogDlg: Improve startup performance with many branches
 
 = Release 2.18.0.1 =
 Released: 2025-12-01
