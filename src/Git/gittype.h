@@ -20,6 +20,7 @@
 #pragma once
 #include "GitHash.h"
 #include <unordered_map>
+#include <span>
 
 enum
 {
@@ -81,13 +82,16 @@ public:
 		insert(this->end(), v.cbegin() + start, v.cbegin() + end);
 		return 0;
 	}
-	void append(const char* data, size_t dataSize)
+	inline void append(const char* data, size_t dataSize)
 	{
 		if (dataSize == 0)
 			return;
-		const size_t oldsize = size();
-		resize(oldsize + dataSize);
-		memcpy(this->data() + oldsize, data, dataSize);
+		append(std::span<const char>(data, dataSize));
+	}
+
+	void append(const std::span<const char> v)
+	{
+		insert(this->end(), v.begin(), v.end());
 	}
 
 	operator CString() const
@@ -126,6 +130,12 @@ public:
 	CGitGuardedByteArray() {}
 	~CGitGuardedByteArray() {}
 	CComAutoCriticalSection	m_critSec;
+
+	void guardedAppend(std::string_view v)
+	{
+		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
+		__super::append(v);
+	}
 
 	using CGitByteArray::begin;
 	using CGitByteArray::end;

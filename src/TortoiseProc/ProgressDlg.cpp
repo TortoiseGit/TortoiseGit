@@ -229,12 +229,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + cmdlist[i].Trim() + L"\r\n");
 			else
 				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n");
-			for (int j = 0; j < str.GetLength(); ++j)
-			{
-				databuffer.m_critSec.Lock();
-				databuffer.push_back(str[j]);
-				databuffer.m_critSec.Unlock();
-			}
+			databuffer.guardedAppend(std::string_view(str, str.GetLength()));
 			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 

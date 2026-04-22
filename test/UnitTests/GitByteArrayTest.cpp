@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018, 2023 - TortoiseGit
+// Copyright (C) 2015-2016, 2018, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,6 +35,21 @@ TEST(CGitByteArray, AppendByteArray)
 	EXPECT_EQ(sizeof(inputByteArray), byteArray.size());
 
 	byteArray.append(inputByteArray, sizeof(inputByteArray));
+	EXPECT_EQ(2 * sizeof(inputByteArray), byteArray.size());
+
+	byteArray.clear();
+	EXPECT_TRUE(byteArray.empty());
+	EXPECT_EQ(0U, byteArray.size());
+}
+
+TEST(CGitByteArray, AppendByteArrayStdStringView)
+{
+	constexpr char inputByteArray[] = { "12345789" };
+	CGitByteArray byteArray;
+	byteArray.append(std::string_view(inputByteArray, sizeof(inputByteArray)));
+	EXPECT_EQ(sizeof(inputByteArray), byteArray.size());
+
+	byteArray.append(std::string_view(inputByteArray, sizeof(inputByteArray)));
 	EXPECT_EQ(2 * sizeof(inputByteArray), byteArray.size());
 
 	byteArray.clear();
