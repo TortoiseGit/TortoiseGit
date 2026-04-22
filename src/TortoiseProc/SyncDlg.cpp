@@ -1424,6 +1424,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
 		}
+		return 0;
 	}
 
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
@@ -1480,6 +1481,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 
 		//if(wParam == MSG_PROGRESSDLG_END)
 		RunPostAction();
+		return 0;
 	}
 
 	if(lParam != 0)

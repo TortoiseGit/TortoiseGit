@@ -325,6 +325,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
 		}
+		return 0;
 	}
 	if (wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
@@ -473,6 +474,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			if (m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_OPTIONS && m_PostCmdList.empty() || m_AutoClose == GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS)
 				PostMessage(WM_COMMAND, 1, reinterpret_cast<LPARAM>(GetDlgItem(IDOK)->m_hWnd));
 		}
+		return 0;
 	}
 
 #define IMMEDIATELINES_LIMIT 10
