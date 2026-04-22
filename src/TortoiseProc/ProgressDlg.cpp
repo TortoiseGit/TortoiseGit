@@ -194,7 +194,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray* pdata, CGit* git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& databuffer, CGit* git)
 {
 	UINT ret = 0;
 
@@ -215,8 +215,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 
 	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_START, 0);
 
-	if (pdata)
-		pdata->clear();
+	databuffer.clear();
 
 	for (size_t i = 0; i < cmdlist.size(); ++i)
 	{
@@ -232,17 +231,11 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n");
 			for (int j = 0; j < str.GetLength(); ++j)
 			{
-				if (pdata)
-				{
-					pdata->m_critSec.Lock();
-					pdata->push_back(str[j]);
-					pdata->m_critSec.Unlock();
-				}
-				else
-					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, str[j]);
+				databuffer.m_critSec.Lock();
+				databuffer.push_back(str[j]);
+				databuffer.m_critSec.Unlock();
 			}
-			if (pdata)
-				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
+			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
 		PROCESS_INFORMATION pi;
@@ -266,32 +259,20 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		CString output;
 		while (ReadFile(hRead, &byte, 1, &readnumber, nullptr))
 		{
-			if (pdata)
-			{
-				if (byte == 0)
-					byte = '\n';
+			if (byte == '\0')
+				byte = '\n';
 
-				pdata->m_critSec.Lock();
-				if (byte == '\n' && lastByte != '\r')
-					pdata->push_back('\r');
-				pdata->push_back(byte);
-				lastByte = byte;
-				pdata->m_critSec.Unlock();
+			databuffer.m_critSec.Lock();
+			if (byte == '\n' && lastByte != '\r')
+				databuffer.push_back('\r');
+			databuffer.push_back(byte);
+			lastByte = byte;
+			databuffer.m_critSec.Unlock();
 
-				if (byte == '\r' || byte == '\n')
-					pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
-			}
-			else
-				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, byte);
+			if (byte == '\r' || byte == '\n')
+				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
-		if (pdata)
-		{
-			pdata->m_critSec.Lock();
-			const bool post = !pdata->empty();
-			pdata->m_critSec.Unlock();
-			if (post)
-				EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
-		}
+		EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCWSTR>(cmdlist[i]), *bAbort);
 
@@ -327,7 +308,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename = &m_LogFile;
 
 	m_startTick = GetTickCount64();
-	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, &this->m_Databuf, m_Git);
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, m_Databuf, m_Git);
 	return 0;
 }
 
