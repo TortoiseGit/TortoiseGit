@@ -1440,7 +1440,6 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		m_bDone = true;
 		m_ctrlAnimate.Stop();
 		m_ctrlProgress.SetPos(100);
-		//this->DialogEnableWindow(IDOK,TRUE);
 
 		{
 			CString text;
@@ -1479,33 +1478,26 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		}
 		m_GitCmdStatus = exitCode;
 
-		//if(wParam == MSG_PROGRESSDLG_END)
 		RunPostAction();
 		return 0;
 	}
 
-	if(lParam != 0)
-		ParserCmdOutput(static_cast<char>(lParam));
-	else
+	m_Databuf.m_critSec.Lock();
+	for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
 	{
-		m_Databuf.m_critSec.Lock();
-		for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
-		{
-			char c = m_Databuf[m_BufStart];
-			++m_BufStart;
-			m_Databuf.m_critSec.Unlock();
-			ParserCmdOutput(c);
-
-			m_Databuf.m_critSec.Lock();
-		}
-
-		if (m_BufStart > 1000)
-		{
-			m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
-			m_BufStart = 0;
-		}
+		const char c = m_Databuf[m_BufStart];
+		++m_BufStart;
 		m_Databuf.m_critSec.Unlock();
+		ParserCmdOutput(c);
+		m_Databuf.m_critSec.Lock();
 	}
+
+	if (m_BufStart > 1000)
+	{
+		m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
+		m_BufStart = 0;
+	}
+	m_Databuf.m_critSec.Unlock();
 
 	return 0;
 }

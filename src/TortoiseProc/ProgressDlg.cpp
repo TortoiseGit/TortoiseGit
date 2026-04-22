@@ -256,7 +256,6 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		DWORD readnumber;
 		char lastByte = '\0';
 		char byte;
-		CString output;
 		while (ReadFile(hRead, &byte, 1, &readnumber, nullptr))
 		{
 			if (byte == '\0')
@@ -480,35 +479,29 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 #define IMMEDIATELINES_LIMIT 10
 	if (!m_bBufferAll || m_iBufferAllImmediateLines < IMMEDIATELINES_LIMIT)
 	{
-		if (lParam == 0)
+		m_Databuf.m_critSec.Lock();
+		for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
 		{
-			m_Databuf.m_critSec.Lock();
-			for (size_t i = this->m_BufStart; i < this->m_Databuf.size(); ++i)
-			{
-				char c = this->m_Databuf[m_BufStart];
-				++m_BufStart;
-				m_Databuf.m_critSec.Unlock();
-				ParserCmdOutput(c);
-				if (m_bBufferAll && (c == '\r' || c == '\n'))
-				{
-					++m_iBufferAllImmediateLines;
-					if (m_iBufferAllImmediateLines >= IMMEDIATELINES_LIMIT)
-						return 0;
-				}
-
-				m_Databuf.m_critSec.Lock();
-			}
-
-			if(m_BufStart > 1000)
-			{
-				m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
-				m_BufStart =0;
-			}
+			const char c = this->m_Databuf[m_BufStart];
+			++m_BufStart;
 			m_Databuf.m_critSec.Unlock();
+			ParserCmdOutput(c);
+			if (m_bBufferAll && (c == '\r' || c == '\n'))
+			{
+				++m_iBufferAllImmediateLines;
+				if (m_iBufferAllImmediateLines >= IMMEDIATELINES_LIMIT)
+					return 0;
+			}
 
+			m_Databuf.m_critSec.Lock();
 		}
-		else
-			ParserCmdOutput(static_cast<char>(lParam));
+
+		if (m_BufStart > 1000)
+		{
+			m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
+			m_BufStart = 0;
+		}
+		m_Databuf.m_critSec.Unlock();
 	}
 	return 0;
 }
