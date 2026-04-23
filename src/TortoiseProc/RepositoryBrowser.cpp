@@ -1307,7 +1307,15 @@ bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
 		endOfOptions = L" --end-of-options";
 	CString cmd, out;
-	cmd.Format(L"git.exe checkout%s %s -- \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_sRevision), static_cast<LPCWSTR>(path));
+	try
+	{
+		cmd.Format(L"git.exe checkout%s %s -- %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 	{
 		if (MessageBox(out, L"TortoiseGit", MB_ICONEXCLAMATION | MB_OKCANCEL) == IDCANCEL)

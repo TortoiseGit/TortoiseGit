@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2025 - TortoiseGit
+// Copyright (C) 2008-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -716,7 +716,16 @@ void CRebaseDlg::FetchLogList()
 		if (!m_Onto.IsEmpty())
 			refFrom = g_Git.FixBranchName(m_Onto);
 		CString cherryCmd;
-		cherryCmd.Format(L"git.exe cherry -- \"%s\" \"%s\"", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
+		try
+		{
+			cherryCmd.Format(L"git.exe cherry -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(refFrom)), static_cast<LPCWSTR>(CGit::QuoteParameter(refTo)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
+			return;
+		}
 		g_Git.Run(cherryCmd, [&](const CStringA& line)
 		{
 			if (line.GetLength() < 2 + 2 * GIT_HASH_SIZE)
@@ -1146,7 +1155,15 @@ int CRebaseDlg::FinishRebase()
 	if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 	{
 		CString cmd;
-		cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(head.ToString()));
+		try
+		{
+			cmd.Format(L"git.exe checkout -f -B %s %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(m_BranchCtrl.GetString())), static_cast<LPCWSTR>(head.ToString()));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			AddLogString(e.cause());
+			return -1;
+		}
 		AddLogString(cmd);
 		if (RunGitCmdRetryOrAbort(cmd))
 			return -1;
@@ -1263,7 +1280,15 @@ void CRebaseDlg::OnBnClickedContinue()
 			CString endOfOptions;
 			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
 				endOfOptions = L" --end-of-options";
-			cmd.Format(L"git.exe checkout --no-track -f -B %s%s %s --", static_cast<LPCWSTR>(m_BranchCtrl.GetString()), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
+			try
+			{
+				cmd.Format(L"git.exe checkout --no-track -f -B %s%s %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(m_BranchCtrl.GetString())), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_UpstreamCtrl.GetString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				AddLogString(e.cause());
+				return;
+			}
 			AddLogString(cmd);
 			if (RunGitCmdRetryOrAbort(cmd))
 			{
@@ -1277,7 +1302,15 @@ void CRebaseDlg::OnBnClickedContinue()
 		CString endOfOptions;
 		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
 			endOfOptions = L" --end-of-options";
-		cmd.Format(L"git.exe reset --hard%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(g_Git.FixBranchName(this->m_UpstreamCtrl.GetString())));
+		try
+		{
+			cmd.Format(L"git.exe reset --hard%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(m_UpstreamCtrl.GetString()))));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			AddLogString(e.cause());
+			return;
+		}
 		CString log;
 		log.Format(IDS_PROC_REBASE_FFTO, static_cast<LPCWSTR>(m_UpstreamCtrl.GetString()));
 		this->AddLogString(log);
@@ -1480,7 +1513,7 @@ void CRebaseDlg::OnBnClickedContinue()
 			}
 
 			out.Empty();
-			cmd.Format(L"git.exe commit --amend -F \"%s\"", static_cast<LPCWSTR>(tempfile));
+			cmd.Format(L"git.exe commit --amend -F %s", static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
 			AddLogString(cmd);
 
 			if (g_Git.Run(cmd, &out, CP_UTF8))
@@ -1639,9 +1672,19 @@ void CRebaseDlg::OnBnClickedContinue()
 		}
 
 		if (m_RebaseStage == RebaseStage::Squash_Edit)
-			cmd.Format(L"git.exe commit %s%s-F \"%s\"", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2)), static_cast<LPCWSTR>(tempfile));
+		{
+			try
+			{
+				cmd.Format(L"git.exe commit %s%s-F %s", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(m_SquashFirstMetaData.GetAsParam(m_iSquashdate == 2)), static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
+		}
 		else
-			cmd.Format(L"git.exe commit --amend %s-F \"%s\"", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(tempfile));
+			cmd.Format(L"git.exe commit --amend %s-F %s", static_cast<LPCWSTR>(options), static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
 
 		if (!skipCurrent && g_Git.Run(cmd, &out, CP_UTF8))
 		{

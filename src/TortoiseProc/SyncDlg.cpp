@@ -178,7 +178,15 @@ void CSyncDlg::OnBnClickedButtonPull()
 			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
 				endOfOptions = L" --end-of-options";
 			CString cmd;
-			cmd.Format(L"git.exe checkout%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_strLocalBranch));
+			try
+			{
+				cmd.Format(L"git.exe checkout%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strLocalBranch)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
 
 			CProgressDlg progress(this);
 			progress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
@@ -377,10 +385,20 @@ void CSyncDlg::OnBnClickedButtonPull()
 				remotebranch.Empty();
 		}
 
-		cmd.Format(L"git.exe pull -v --progress%s -- \"%s\" %s",
-				static_cast<LPCWSTR>(force),
-				static_cast<LPCWSTR>(m_strURL),
-				static_cast<LPCWSTR>(remotebranch));
+		try
+		{
+			cmd.Format(L"git.exe pull -v --progress%s -- %s %s",
+					   static_cast<LPCWSTR>(force),
+					   static_cast<LPCWSTR>(CGit::QuoteParameter(m_strURL)),
+					   remotebranch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remotebranch)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			SwitchToInput();
+			EnableControlButton();
+			return;
+		}
 
 		m_CurrentCmd = GIT_COMMAND_PULL;
 		m_GitCmdList.push_back(cmd);
@@ -434,11 +452,21 @@ void CSyncDlg::OnBnClickedButtonPull()
 			CString args;
 			if (CRegDWORD(L"Software\\TortoiseGit\\FetchVerbose", TRUE) == TRUE)
 				args += L" -v";
-			cmd.Format(L"git.exe fetch --progress%s%s -- \"%s\" %s",
-					static_cast<LPCWSTR>(args),
-					static_cast<LPCWSTR>(force),
-					static_cast<LPCWSTR>(m_strURL),
-					static_cast<LPCWSTR>(remotebranch));
+			try
+			{
+				cmd.Format(L"git.exe fetch --progress%s%s -- %s %s",
+						   static_cast<LPCWSTR>(args),
+						   static_cast<LPCWSTR>(force),
+						   static_cast<LPCWSTR>(CGit::QuoteParameter(m_strURL)),
+						   remotebranch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remotebranch)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				SwitchToInput();
+				EnableControlButton();
+				return;
+			}
 
 			m_GitCmdList.push_back(cmd);
 
@@ -466,7 +494,18 @@ void CSyncDlg::OnBnClickedButtonPull()
 	if (CurrentEntry == 5)
 	{
 		m_CurrentCmd = GIT_COMMAND_REMOTE;
-		cmd.Format(L"git.exe remote prune -- \"%s\"", static_cast<LPCWSTR>(m_strURL));
+		try
+		{
+			cmd.Format(L"git.exe remote prune -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_strURL)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			SwitchToInput();
+			EnableControlButton();
+
+			return;
+		}
 		m_GitCmdList.push_back(cmd);
 
 		StartWorkerThread();
@@ -596,7 +635,15 @@ void CSyncDlg::FetchComplete()
 		if (ret == 1)
 		{
 			CProgressDlg mergeProgress;
-			mergeProgress.m_GitCmd = L"git.exe merge --ff-only -- " + upstream;
+			try
+			{
+				mergeProgress.m_GitCmd = L"git.exe merge --ff-only -- " + CGit::QuoteParameter(upstream);
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
 			mergeProgress.m_AutoClose = GitProgressAutoClose::AUTOCLOSE_IF_NO_ERRORS;
 			mergeProgress.m_PostCmdCallback = [](DWORD status, PostCmdList& postCmdList)
 			{
@@ -736,14 +783,22 @@ void CSyncDlg::OnBnClickedButtonPush()
 	if(this->m_bForce)
 		arg += L" --force";
 
-	cmd.Format(L"git.exe push -v --progress%s -- \"%s\" %s",
-				static_cast<LPCWSTR>(arg),
-				static_cast<LPCWSTR>(m_strURL),
-				static_cast<LPCWSTR>(refName));
-
 	if (!m_strRemoteBranch.IsEmpty() && m_ctrlPush.GetCurrentEntry() != 2)
+		refName += L':' + m_strRemoteBranch;
+
+	try
 	{
-		cmd += L':' + m_strRemoteBranch;
+		cmd.Format(L"git.exe push -v --progress%s -- %s %s",
+					static_cast<LPCWSTR>(arg),
+					static_cast<LPCWSTR>(CGit::QuoteParameter(m_strURL)),
+					refName.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(refName)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		SwitchToInput();
+		EnableControlButton();
+		return;
 	}
 
 	m_GitCmdList.push_back(cmd);
@@ -775,7 +830,15 @@ void CSyncDlg::OnBnClickedButtonApply()
 		int err=0;
 		for (int i = 0; i < dlg.m_PathList.GetCount(); ++i)
 		{
-			cmd.Format(L"git.exe am -- \"%s\"", static_cast<LPCWSTR>(dlg.m_PathList[i].GetGitPathString()));
+			try
+			{
+				cmd.Format(L"git.exe am -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_PathList[i].GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
 
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
@@ -843,9 +906,17 @@ void CSyncDlg::OnBnClickedButtonEmail()
 	m_strURL=m_strURL.Trim();
 	m_strRemoteBranch=m_strRemoteBranch.Trim();
 
-	cmd.Format(L"git.exe format-patch -o \"%s\" --end-of-options %s/%s..%s",
-					static_cast<LPCWSTR>(g_Git.m_CurrentDir),
-					static_cast<LPCWSTR>(m_strURL), static_cast<LPCWSTR>(m_strRemoteBranch), static_cast<LPCWSTR>(g_Git.FixBranchName(m_strLocalBranch)));
+	try
+	{
+		cmd.Format(L"git.exe format-patch -o %s --end-of-options %s/%s..%s",
+						static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.m_CurrentDir)),
+						static_cast<LPCWSTR>(CGit::QuoteParameter(m_strURL)), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strRemoteBranch)), static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(m_strLocalBranch))));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return;
+	}
 
 	if (g_Git.Run(cmd, &out, &err, CP_UTF8))
 	{

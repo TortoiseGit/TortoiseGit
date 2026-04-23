@@ -476,9 +476,16 @@ BOOL CSettingGitRemote::OnApply()
 		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 38, 0))
 			endOfOptions = L" --";
 
-		m_strUrl.Replace(L'\\', L'/');
 		CString cmd,out;
-		cmd.Format(L"git.exe remote add%s \"%s\" \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_strRemote), static_cast<LPCWSTR>(m_strUrl));
+		try
+		{
+			cmd.Format(L"git.exe remote add%s %s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strUrl)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(GetSafeHwnd(), out, L"TorotiseGit", MB_OK | MB_ICONERROR);
@@ -559,7 +566,15 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 				endOfOptions = L" --";
 
 			CString cmd,out;
-			cmd.Format(L"git.exe remote rm%s \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(str));
+			try
+			{
+				cmd.Format(L"git.exe remote rm%s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(str)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
 			if (g_Git.Run(cmd, &out, CP_UTF8))
 			{
 				CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);
@@ -587,7 +602,15 @@ void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 			endOfOptions = L" --";
 
 		CString cmd, out;
-		cmd.Format(L"git.exe remote rename%s \"%s\" \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(oldRemote), static_cast<LPCWSTR>(newRemote));
+		try
+		{
+			cmd.Format(L"git.exe remote rename%s %s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(oldRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(newRemote)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return;
+		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			CMessageBox::Show(GetSafeHwnd(), out, L"TortoiseGit", MB_OK | MB_ICONERROR);

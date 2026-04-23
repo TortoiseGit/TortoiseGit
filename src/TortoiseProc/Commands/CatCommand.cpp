@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2016, 2018-2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2009, 2011-2016, 2018-2019, 2021, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -92,7 +92,15 @@ bool CatCommand::Execute()
 	}
 
 	CString cmd, output, err;
-	cmd.Format(L"git.exe cat-file -t -- %s", static_cast<LPCWSTR>(revision));
+	try
+	{
+		cmd.Format(L"git.exe cat-file -t -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(revision)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
 
 	if (g_Git.Run(cmd, &output, &err, CP_UTF8))
 	{
@@ -101,10 +109,20 @@ bool CatCommand::Execute()
 		return false;
 	}
 
-	if (CStringUtils::StartsWith(output, L"blob"))
-		cmd.Format(L"git.exe cat-file -p -- %s", static_cast<LPCWSTR>(revision));
-	else
-		cmd.Format(L"git.exe show --end-of-options %s -- \"%s\"", static_cast<LPCWSTR>(revision), static_cast<LPCWSTR>(this->cmdLinePath.GetWinPathString()));
+	try
+	{
+		if (CStringUtils::StartsWith(output, L"blob"))
+			cmd.Format(L"git.exe cat-file -p -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(revision)));
+		else
+		{
+			cmd.Format(L"git.exe show --end-of-options %s -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(revision)), static_cast<LPCWSTR>(CGit::QuoteParameter(cmdLinePath.GetWinPathString())));
+		}
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
 
 	if (g_Git.RunLogFile(cmd, savepath, &err))
 	{

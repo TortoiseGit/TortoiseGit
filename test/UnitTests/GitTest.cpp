@@ -86,7 +86,7 @@ TEST_P(CBasicGitWithTestRepoBareFixture, RunGit_AbsolutePath)
 	CAutoTempDir tempdir;
 
 	CString output;
-	EXPECT_EQ(0, m_Git.Run(L"git archive -o " + tempdir.GetTempDir() + L"\\export.zip HEAD", &output, CP_UTF8));
+	EXPECT_EQ(0, m_Git.Run(L"git.exe archive -o " + CGit::QuoteParameter(tempdir.GetTempDir() + L"\\export.zip") + L" HEAD", &output, CP_UTF8));
 	EXPECT_STREQ(L"", output);
 
 	EXPECT_TRUE(PathFileExists(tempdir.GetTempDir() + L"\\export.zip"));
@@ -1598,6 +1598,8 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	CString values[] = { L"", L" ", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n", L"with ümlaut"};
 	for (int i = 0; i < _countof(values); ++i)
 	{
+		if (GetParam() != LIBGIT && values[i].FindOneOf(L"\\\"") != -1)
+			continue;
 		CString key;
 		key.Format(L"re-read.test%d", i);
 		EXPECT_EQ(0, m_Git.SetConfigValue(key, values[i]));
@@ -4611,4 +4613,53 @@ TEST_P(CBasicGitWithSubmoduleRepositoryFixture, GetSubmoduleHash)
 		EXPECT_EQ(-1, g_Git.GetSubmoduleHash(L"doesnotexist", CGitHash::FromHexStr(L"b9ad06b41c00bd309f9639f92c96165813c6ebe3"), submoduleHash, error));
 		EXPECT_STRNE(L"", error);
 	}
+}
+
+TEST(CGit, QuoteParameter)
+{
+	const auto oldCygwinGit = CGit::ms_bCygwinGit;
+	const auto oldMsys2Git = CGit::ms_bMsys2Git;
+	SCOPE_EXIT{ CGit::ms_bCygwinGit = oldCygwinGit; CGit::ms_bMsys2Git = oldMsys2Git; };
+	CGit::ms_bCygwinGit = CGit::ms_bMsys2Git = false;
+
+	EXPECT_STREQ(L"\"\"", CGit::QuoteParameter(L""));
+	EXPECT_STREQ(L"\"/\"", CGit::QuoteParameter(L"/"));
+	EXPECT_STREQ(L"\"src/Git.h\"", CGit::QuoteParameter(L"src/Git.h"));
+	EXPECT_STREQ(L"\"src/Git/\"", CGit::QuoteParameter(L"src/Git/"));
+	EXPECT_STREQ(L"\"src/Gi't/\"", CGit::QuoteParameter(L"src/Gi't/"));
+	EXPECT_STREQ(L"\"src/Gi%t/\"", CGit::QuoteParameter(L"src/Gi%t/"));
+	EXPECT_STREQ(L"\"src/Git/\"", CGit::QuoteParameter(L"src/Git/"));
+	EXPECT_STREQ(L"\"src Git/\"", CGit::QuoteParameter(L"src Git/"));
+	EXPECT_STREQ(L"\"HEAD~3\"", CGit::QuoteParameter(L"HEAD~3"));
+	EXPECT_STREQ(L"\"^HEAD\"", CGit::QuoteParameter(L"^HEAD"));
+	EXPECT_STREQ(L"\"ümlaut\"", CGit::QuoteParameter(L"ümlaut"));
+	EXPECT_STREQ(L"\"--safe\"", CGit::QuoteParameter(L"--safe"));
+
+	EXPECT_STREQ(L"\"src/Gi$t/\"", CGit::QuoteParameter(L"src/Gi$t/"));
+	EXPECT_STREQ(L"\"src/Gi`pwd`t/\"", CGit::QuoteParameter(L"src/Gi`pwd`t/"));
+
+	EXPECT_STREQ(L"\"/\"", CGit::QuoteParameter(L"\\"));
+	EXPECT_STREQ(L"\"src/Git.h\"", CGit::QuoteParameter(L"src\\Git.h"));
+	EXPECT_STREQ(L"\"C:/src/Git.h\"", CGit::QuoteParameter(L"C:\\src\\Git.h"));
+	EXPECT_STREQ(L"\"C:/\"", CGit::QuoteParameter(L"C:\\"));
+	EXPECT_STREQ(L"\"//localhost/some/path\"", CGit::QuoteParameter(L"\\\\localhost\\some\\path"));
+
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src\"/Git.h"), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"sr\"c/Git.h"), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"\"git\""), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"\""), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"\\\""), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"git\""), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi*t/"), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi?t/"), illegal_git_parameter);
+	// cf. TEST_P(CBasicGitWithTestRepoFixture, Config)
+
+	CGit::ms_bCygwinGit = true;
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi$t/"), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi`uid`t/"), illegal_git_parameter);
+
+	CGit::ms_bCygwinGit = false;
+	CGit::ms_bMsys2Git = true;
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi$t/"), illegal_git_parameter);
+	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi`pwd`t/"), illegal_git_parameter);
 }

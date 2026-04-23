@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019-2020, 2022-2024 - TortoiseGit
+// Copyright (C) 2011-2016, 2019-2020, 2022-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,7 +101,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 		}
 
 		CString pathSpecFileParam;
-		pathSpecFileParam.Format(L" --pathspec-from-file=\"%s\" --pathspec-file-nul", static_cast<LPCWSTR>(tempFilename));
+		pathSpecFileParam.Format(L" --pathspec-from-file=%s --pathspec-file-nul", static_cast<LPCWSTR>(CGit::QuoteParameter(tempFilename)));
 		CString params;
 		if (int endOfParamsPosition = m_sParams.Find(L" --end-of-options", 0); endOfParamsPosition == -1)
 			params = m_sParams + pathSpecFileParam;
@@ -142,11 +142,18 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 		if (maxLength + GetListItem(i).GetLength() > max_command_line_length || i == GetListCount() - 1 || cancel)
 		{
 			CString add;
-			for (int j = firstCombine; j <= i; ++j)
+			try
 			{
-				add += L" \"";
-				add += GetListItem(j);
-				add += L'"';
+				for (int j = firstCombine; j <= i; ++j)
+				{
+					add += L' ';
+					add += CGit::QuoteParameter(GetListItem(j));
+				}
+			}
+			catch (illegal_git_parameter& e)
+			{
+				ReportError(e.cause(), -1);
+				return false;
 			}
 
 			CString cmd, out;
@@ -222,6 +229,6 @@ void CMassiveGitTaskBase::ConvertToCmdList(CString params, const STRING_VECTOR& 
 		}
 
 		// update last commmand of list
-		cmdList.back().AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(filename));
+		cmdList.back().AppendFormat(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter(filename)));
 	}
 }

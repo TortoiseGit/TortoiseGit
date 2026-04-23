@@ -937,7 +937,14 @@ void CGitStatusListCtrl::RestoreScrollPos()
 void CGitStatusListCtrl::GitStageEntry(CTGitPath* entry)
 {
 	CString cmd, out;
-	cmd.Format(L"git.exe add -- \"%s\"", static_cast<LPCWSTR>(entry->GetGitPathString()));
+	try
+	{
+		cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+	}
 	if (g_Git.Run(cmd, &out, CP_UTF8))
 		MessageBox(L"Error staging file", L"TortoiseGit", MB_OK | MB_ICONERROR);
 }
@@ -946,20 +953,28 @@ void CGitStatusListCtrl::GitStageEntry(CTGitPath* entry)
 void CGitStatusListCtrl::GitUnstageEntry(CTGitPath* entry)
 {
 	CString cmd1, cmd2, out;
-	// git restore --staged would avoid the whole mess below but requires at least git version 2.23
-	if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_ADDED)
-		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
-	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_DELETED)
-		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
-	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_MODIFIED)
-		cmd1.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
-	else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_REPLACED)
+	try
 	{
-		cmd1.Format(L"git.exe rm -f --cached -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitPathString()));
-		cmd2.Format(L"git.exe reset -- \"%s\"", static_cast<LPCTSTR>(entry->GetGitOldPathString()));
+		// git restore --staged would avoid the whole mess below but requires at least git version 2.23
+		if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_ADDED)
+			cmd1.Format(L"git.exe rm -f --cached -- %s", static_cast<LPCTSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+		else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_DELETED)
+			cmd1.Format(L"git.exe reset -- %s", static_cast<LPCTSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+		else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_MODIFIED)
+			cmd1.Format(L"git.exe reset -- %s", static_cast<LPCTSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+		else if (entry->m_Action & CTGitPath::Actions::LOGACTIONS_REPLACED)
+		{
+			cmd1.Format(L"git.exe rm -f --cached -- %s", static_cast<LPCTSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+			cmd2.Format(L"git.exe reset -- %s", static_cast<LPCTSTR>(CGit::QuoteParameter(entry->GetGitOldPathString())));
+		}
+		else
+			return;
 	}
-	else
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return;
+	}
 
 	if (g_Git.Run(cmd1, &out, CP_UTF8))
 	{
@@ -4124,7 +4139,8 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list, bool getStagin
 	m_CurrentVersion.Empty();
 
 	ATLASSERT(!(m_amend && !m_bIncludedStaged)); // just a safeguard that we always show all files if we want to amend (amending should only be the used from commitdlg)
-	g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list, m_bIncludedStaged, getStagingStatus);
+	if (int ret = g_Git.GetWorkingTreeChanges(m_StatusFileList, m_amend, list, m_bIncludedStaged, getStagingStatus))
+		return ret;
 
 	BOOL bDeleteChecked = FALSE;
 	int deleteFromIndex = 0;
@@ -4144,17 +4160,33 @@ int CGitStatusListCtrl::UpdateFileList(const CTGitPathList* list, bool getStagin
 			}
 			if (deleteFromIndex == 1)
 			{
-				if (CString err; g_Git.Run(L"git.exe checkout -- \"" + gitpatch->GetGitPathString() + L'"', &err, CP_UTF8))
-					MessageBox(L"Restoring from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
-				else
-					needsRefresh = true;
+				try
+				{
+					if (CString err; g_Git.Run(L"git.exe checkout -- " + CGit::QuoteParameter(gitpatch->GetGitPathString()), &err, CP_UTF8))
+						MessageBox(L"Restoring from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
+					else
+						needsRefresh = true;
+				}
+				catch (illegal_git_parameter& e)
+				{
+					MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+					return -1;
+				}
 			}
 			else if (deleteFromIndex == 2)
 			{
-				if (CString err; g_Git.Run(L"git.exe rm -f --cache -- \"" + gitpatch->GetGitPathString() + L'"', &err, CP_UTF8))
-					MessageBox(L"Removing from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
-				else
-					needsRefresh = true;
+				try
+				{
+					if (CString err; g_Git.Run(L"git.exe rm -f --cache -- " + CGit::QuoteParameter(gitpatch->GetGitPathString()), &err, CP_UTF8))
+						MessageBox(L"Removing from index failed:\n" + err, L"TortoiseGit", MB_ICONERROR);
+					else
+						needsRefresh = true;
+				}
+				catch (illegal_git_parameter& e)
+				{
+					MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+					return -1;
+				}
 			}
 		}
 
@@ -4609,9 +4641,17 @@ int CGitStatusListCtrl::RevertSelectedItemToVersion(bool parent)
 		if (CTGitPath path = g_Git.CombinePath(filename); useRecycleBin && !isAdded && !path.IsDirectory())
 			path.Delete(useRecycleBin, true);
 		CString cmd, out;
-		cmd.Format(L"git.exe checkout %s -- \"%s\"", static_cast<LPCWSTR>(version), static_cast<LPCWSTR>(filename)); // remember to use --end-of-options as soon as version is not a hash any more
-		if (isAdded) // HACK for issue #4097
-			cmd.Format(L"git.exe rm --cached --ignore-unmatch -- \"%s\"", static_cast<LPCWSTR>(filename));
+		try
+		{
+			cmd.Format(L"git.exe checkout %s -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(version)), static_cast<LPCWSTR>(CGit::QuoteParameter(filename))); // remember to use --end-of-options as soon as version is not a hash any more
+			if (isAdded) // HACK for issue #4097
+				cmd.Format(L"git.exe rm --cached --ignore-unmatch -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(filename)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return -1;
+		}
 		if (g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			if (CMessageBox::Show(GetSafeHwnd(), out, IDS_APPNAME, 1, IDI_WARNING, IDS_IGNOREBUTTON, IDS_ABORTBUTTON) == 2)

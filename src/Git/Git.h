@@ -68,6 +68,18 @@ public:
 	__time64_t m_To;
 };
 
+class illegal_git_parameter
+{
+	const CString m_error;
+
+public:
+	illegal_git_parameter(const CString& error)
+		: m_error(error)
+	{}
+
+	const CString cause() const { return m_error; }
+};
+
 class CGitCall
 {
 public:
@@ -374,7 +386,6 @@ private:
 		HANDLE fileHandle;
 		CGitCall* pcall;
 	};
-	CString GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false);
 
 public:
 #ifdef _MFC_VER
@@ -514,7 +525,7 @@ public:
 
 	static void StringAppend(CString& str, const std::string_view, int code = CP_UTF8);
 
-	BOOL CanParseRev(CString ref);
+	BOOL CanParseRev(const CString& ref);
 	/**
 	Checks if HEAD points to an unborn branch
 	This method assumes, that we already know that we are in a working tree.
@@ -645,6 +656,8 @@ public:
 		ATLASSERT(path);
 		return CombinePath(path->GetWinPath());
 	}
+
+	[[nodiscard]] static CString QuoteParameter(CString value);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

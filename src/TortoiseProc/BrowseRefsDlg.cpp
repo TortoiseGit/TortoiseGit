@@ -1309,9 +1309,17 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 				return;
 			// Setting the config keys directly might result in an invalid situation if the remote is not set to
 			// fetch the desired upstream branch (in remote.x.fetch), cf. issue #3638
-			if (CString errorMsg; g_Git.Run(L"git.exe branch --set-upstream-to=\"" + remote + L'/' + branch + L"\" -- \"" + selectedLeafs[0]->GetRefsHeadsName() + L"\"", &errorMsg, CP_UTF8) != 0)
+			try
 			{
-				MessageBox(errorMsg + "\r\n\r\nThis is generally caused when remote." + remote + ".fetch does not include the desired branch.", L"TortoiseGit", MB_ICONERROR);
+				if (CString errorMsg; g_Git.Run(L"git.exe branch --set-upstream-to=" + CGit::QuoteParameter(remote + L'/' + branch) + L" -- " + CGit::QuoteParameter(selectedLeafs[0]->GetRefsHeadsName()), &errorMsg, CP_UTF8) != 0)
+				{
+					MessageBox(errorMsg + L"\n\nThis is usually caused when the setting \"remote." + remote + L".fetch\" does not include the desired branch.", L"TortoiseGit", MB_ICONERROR);
+					return;
+				}
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
 				return;
 			}
 			Refresh();
@@ -1562,9 +1570,17 @@ void CBrowseRefsDlg::OnLvnEndlabeleditListRefLeafs(NMHDR *pNMHDR, LRESULT *pResu
 
 	CString newNameTrunced = newName.Mid(static_cast<int>(wcslen(L"refs/heads/")));
 
-	if (CString errorMsg; g_Git.Run(L"git.exe branch -m \"" + origName + L"\" -- \"" + newNameTrunced + L'"', &errorMsg, CP_UTF8) != 0)
+	try
 	{
-		MessageBox(errorMsg, L"TortoiseGit", MB_OK | MB_ICONERROR);
+		if (CString errorMsg; g_Git.Run(L"git.exe branch -m " + CGit::QuoteParameter(origName) + L" -- " + CGit::QuoteParameter(newNameTrunced), &errorMsg, CP_UTF8) != 0)
+		{
+			MessageBox(errorMsg, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return;
+		}
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
 		return;
 	}
 	//Do as if it failed to rename. Let Refresh() do the job.

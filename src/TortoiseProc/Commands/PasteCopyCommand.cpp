@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2009, 2011-2013, 2015-2019, 2026 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -80,7 +80,15 @@ bool PasteCopyCommand::Execute()
 			// source file is unversioned: move the file to the target, then add it
 			CopyFile(sourcePath.GetWinPath(), fullDropPath.GetWinPath(), FALSE);
 			CString cmd,output;
-			cmd.Format(L"git.exe add -- \"%s\"", fullDropPath.GetWinPath());
+			try
+			{
+				cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(fullDropPath.GetWinPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
+			}
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				TRACE(L"%s\n", static_cast<LPCWSTR>(output));

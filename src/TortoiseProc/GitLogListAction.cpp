@@ -437,12 +437,12 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 					MessageBox(L"Could not create temp file.", L"TortoiseGit", MB_OK | MB_ICONERROR);
 					break;
 				}
-				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString() + L"", patch1, &err))
+				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pFirstEntry->m_CommitHash.ToString() + L"~1.." + pFirstEntry->m_CommitHash.ToString(), patch1, &err))
 				{
 					MessageBox(L"Could not generate patch for commit " + pFirstEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
 					break;
 				}
-				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pLastEntry->m_CommitHash.ToString() + L"~1.." + pLastEntry->m_CommitHash.ToString() + L"", patch2, &err))
+				if (CString err; g_Git.RunLogFile(L"git.exe format-patch --stdout " + pLastEntry->m_CommitHash.ToString() + L"~1.." + pLastEntry->m_CommitHash.ToString(), patch2, &err))
 				{
 					MessageBox(L"Could not generate patch for commit " + pLastEntry->m_CommitHash.ToString() + L".\n" + err, L"TortoiseGit", MB_ICONERROR);
 					break;
@@ -462,9 +462,13 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 
 				CString cmdline;
 				if ((cmd & 0xFFFF) == ID_LOG_VIEWRANGE_REVERSE)
-					cmdline.Format(L"/command:log /path:%s /range:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))), static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString() + sep + pLastEntry->m_CommitHash.ToString()));
+					cmdline.Format(L"/command:log /path:%s /range:%s",
+								   static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))),
+								   static_cast<LPCWSTR>(pSelLogEntry->m_CommitHash.ToString() + sep + pLastEntry->m_CommitHash.ToString()));
 				else
-					cmdline.Format(L"/command:log /path:%s /range:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))), static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString() + sep + pSelLogEntry->m_CommitHash.ToString()));
+					cmdline.Format(L"/command:log /path:%s /range:%s",
+								   static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_Path))),
+								   static_cast<LPCWSTR>(pLastEntry->m_CommitHash.ToString() + sep + pSelLogEntry->m_CommitHash.ToString()));
 				CAppUtils::RunTortoiseGitProc(cmdline);
 			}
 			break;
@@ -836,10 +840,19 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 				{
 					CString ref = *revIt;
 					CString sCmd, out;
-					if (CStringUtils::StartsWith(ref, L"stash"))
-						sCmd.Format(L"git.exe stash drop -- %s", static_cast<LPCWSTR>(ref));
-					else
-						sCmd.Format(L"git.exe reflog delete -- %s", static_cast<LPCWSTR>(ref));
+					try
+					{
+						if (CStringUtils::StartsWith(ref, L"stash"))
+							sCmd.Format(L"git.exe stash drop -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(ref)));
+						else
+							sCmd.Format(L"git.exe reflog delete -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(ref)));
+					}
+					catch (illegal_git_parameter& e)
+					{
+						MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+						::PostMessage(this->GetParent()->m_hWnd,MSG_REFLOG_CHANGED,0,0);
+						break;
+					}
 
 					if (g_Git.Run(sCmd, &out, CP_UTF8))
 						MessageBox(out, L"TortoiseGit", MB_OK | MB_ICONERROR);

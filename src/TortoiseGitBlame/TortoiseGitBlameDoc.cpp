@@ -177,7 +177,15 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 		if (onlyFirstParent)
 		{
 			CString tmpfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-			cmd.Format(L"git.exe rev-list --first-parent --end-of-options %s --", static_cast<LPCWSTR>(Rev));
+			try
+			{
+				cmd.Format(L"git.exe rev-list --first-parent --end-of-options %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(Rev)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + e.cause(), L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
+				return FALSE;
+			}
 			CString err;
 			CAutoFILE file = _wfsopen(tmpfile, L"wb", SH_DENYWR);
 			if (!file)
@@ -197,10 +205,18 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 				MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + err, L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
 				return FALSE;
 			}
-			option.AppendFormat(L" -S \"%s\"", static_cast<LPCWSTR>(tmpfile));
+			option.AppendFormat(L" -S %s", static_cast<LPCWSTR>(CGit::QuoteParameter(tmpfile)));
 		}
 
-		cmd.Format(L"git.exe blame -p %s %s -- \"%s\"", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(Rev), static_cast<LPCWSTR>(path.GetGitPathString()));
+		try
+		{
+			cmd.Format(L"git.exe blame -p %s %s -- %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(CGit::QuoteParameter(Rev)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + e.cause(), L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
 		m_BlameData.clear();
 		BYTE_VECTOR err;
 		if(g_Git.Run(cmd, &m_BlameData, &err))
@@ -212,7 +228,15 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 #ifdef USE_TEMPFILENAME
 		m_TempFileName = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 
-		cmd.Format(L"git.exe cat-file blob -- %s:\"%s\"", static_cast<LPCWSTR>(Rev), static_cast<LPCWSTR>(path.GetGitPathString()));
+		try
+		{
+			cmd.Format(L"git.exe cat-file blob -- %s:%s", static_cast<LPCWSTR>(CGit::QuoteParameter(Rev)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(nullptr, CString(MAKEINTRESOURCE(IDS_BLAMEERROR)) + L"\n\n" + e.cause(), L"TortoiseGitBlame", MB_OK | MB_ICONERROR);
+			return FALSE;
+		}
 
 		if(g_Git.RunLogFile(cmd, m_TempFileName))
 		{

@@ -1109,9 +1109,17 @@ void CLogDlg::FillPatchView(bool onlySetTimer)
 					cmd = L"git.exe diff HEAD --";
 				else
 					cmd.Format(L"git.exe diff --end-of-options %s^%d..%s --", static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()), p->m_ParentNo + 1, static_cast<LPCWSTR>(pLogEntry->m_CommitHash.ToString()));
-				if (!p->GetGitOldPathString().IsEmpty())
-					cmd.AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(p->GetGitOldPathString()));
-				cmd.AppendFormat(L" \"%s\"", static_cast<LPCWSTR>(p->GetGitPathString()));
+				try
+				{
+					if (!p->GetGitOldPathString().IsEmpty())
+						cmd.AppendFormat(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitOldPathString())));
+					cmd.AppendFormat(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitPathString())));
+				}
+				catch (illegal_git_parameter& e)
+				{
+					out += L"\n\nSkipped diff." + e.cause() + L"\n\n";
+					continue;
+				}
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
 		}

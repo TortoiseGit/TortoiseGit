@@ -24,6 +24,7 @@ Released: unreleased
    Worktree's on network network shares referenced using UNC paths now need to be explicitly allowed using safe.directory configuration.
  * Fixed issue #4269: Possible arbitrary file write in TortoiseGitBlame if "Blame previous version" is used on a file with a specially crafted filename in Git history due to argument injection (CVE-2026-11968, issue pointed out by Gabriele Paris of NATO Cyber Security Centre)
  * ProgressDlg: Limit line length to 8 KiB. This fixes a possible denial of service due to excessive memory usage when a remote server sends arbitrary lone lines (issue pointed out by Gabriele Paris of NATO Cyber Security Centre)
+ * Improved prevention of possible injections into git.exe parameters
 
 = Release 2.18.0.1 =
 Released: 2025-12-01

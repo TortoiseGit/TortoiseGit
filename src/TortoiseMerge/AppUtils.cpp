@@ -38,6 +38,9 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 		sSCMPath = L'\"' + CPathUtils::GetAppDirectory() + L"TortoiseGitProc.exe\"";
 		sSCMPath += L" /command:cat /path:%1 /revision:%2 /savepath:%3 /hwnd:%4";
 	}
+	else if (sPath.Find(L'"') != -1 || sVersion.Find(L'"') != -1)
+		return FALSE;
+
 	CString sTemp;
 	sTemp.Format(L"%p", static_cast<void*>(hWnd));
 	sSCMPath = CStringUtils::ExpandPlaceholdersForCmd(sSCMPath, {
@@ -76,8 +79,16 @@ bool CAppUtils::CreateUnifiedDiff(const CString& orig, const CString& modified, 
 	CString diffContext;
 	if (contextsize >= 0)
 		diffContext.Format(L"--unified=%d", contextsize);
+
 	CString cmd, err;
-	cmd.Format(L"git.exe diff --no-index %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(diffContext), static_cast<LPCWSTR>(orig), static_cast<LPCWSTR>(modified));
+	try {
+		cmd.Format(L"git.exe diff --no-index %s -- %s %s", static_cast<LPCWSTR>(diffContext), static_cast<LPCWSTR>(CGit::QuoteParameter(orig)), static_cast<LPCWSTR>(CGit::QuoteParameter(modified)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(nullptr, L"Failed to create patch.\n" + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
 
 	int result = g_Git.RunLogFile(cmd, output, &err);
 	if (result != 0 && result != 1 && bShowError)

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008, 2012-2013, 2015-2019 - TortoiseGit
+// Copyright (C) 2008, 2012-2013, 2015-2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -71,7 +71,15 @@ bool PasteMoveCommand::Execute()
 			// source file is unversioned: move the file to the target, then add it
 			MoveFile(orgPathList[nPath].GetWinPath(), destPath.GetWinPath());
 			CString cmd,output;
-			cmd.Format(L"git.exe add -- \"%s\"", destPath.GetWinPath());
+			try
+			{
+				cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(destPath.GetWinPath())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
+			}
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Add(CTGitorgPathList(destPath), &props, Git_depth_infinity, true, false, true))
 			{
@@ -84,7 +92,15 @@ bool PasteMoveCommand::Execute()
 		else
 		{
 			CString cmd,output;
-			cmd.Format(L"git.exe mv \"%s\" \"%s\"", static_cast<LPCWSTR>(orgPathList[nPath].GetGitPathString()), static_cast<LPCWSTR>(destPath.GetGitPathString()));
+			try
+			{
+				cmd.Format(L"git.exe mv %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(orgPathList[nPath].GetGitPathString())), static_cast<LPCWSTR>(CGit::QuoteParameter(destPath.GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
+			}
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			//if (!Git.Move(CTGitorgPathList(orgPathList[nPath]), destPath, FALSE))
 			{

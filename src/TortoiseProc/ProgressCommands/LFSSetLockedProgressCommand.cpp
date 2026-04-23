@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2019-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2019-2021, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -39,7 +39,7 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 	CString cmdBase = L"git.exe lfs ";
 	cmdBase += m_bIsLock ? L"lock " : L"unlock ";
 	cmdBase += m_bIsForce ? L"--force " : L"";
-	cmdBase += L"-- \"";
+	cmdBase += L"-- ";
 
 	bool hasError = false;
 
@@ -66,12 +66,20 @@ bool LFSSetLockedProgressCommand::Run(CGitProgressList* list, CString& sWindowTi
 
 	for (int i = 0; i < m_targetPathList.GetCount(); ++i)
 	{
-		CString out;
-		CString cmd = cmdBase + m_targetPathList[i].GetGitPathString() + L"\"";
+		CString cmd;
+		try
+		{
+			cmd = cmdBase + CGit::QuoteParameter(m_targetPathList[i].GetGitPathString());
+		}
+		catch (illegal_git_parameter& e)
+		{
+			list->ReportError(e.cause());
+			return false;
+		}
 
 		list->AddNotify(new CGitProgressList::WC_File_NotificationData(m_targetPathList[i], notifyAction));
 
-		if (g_Git.Run(cmd, &out, CP_UTF8))
+		if (CString out; g_Git.Run(cmd, &out, CP_UTF8))
 		{
 			hasError = true;
 			list->ReportError(out);

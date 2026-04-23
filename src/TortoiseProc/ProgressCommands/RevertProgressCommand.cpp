@@ -60,8 +60,18 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 	CMassiveGitTask unstageTask{ L"rm -f --cached" };
 	CString endOfOptions;
 	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-		endOfOptions = L" --end-of-options";
-	CMassiveGitTask checkoutTask{ L"checkout -f" + endOfOptions + " " + m_sRevertToRevision };
+		endOfOptions = L"--end-of-options ";
+	CString quotedRevisionToRevertTo;
+	try
+	{
+		quotedRevisionToRevertTo = CGit::QuoteParameter(m_sRevertToRevision);
+	}
+	catch (illegal_git_parameter& e)
+	{
+		list->ReportError(e.cause());
+		return false;
+	}
+	CMassiveGitTask checkoutTask{ L"checkout -f " + endOfOptions + quotedRevisionToRevertTo };
 	CMassiveGitTask addTask{ L"add -f" };
 	CMassiveGitTask deleteTask{ L"rm --ignore-unmatch" };
 	bool hasSubmodule = false;
@@ -147,14 +157,30 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		if (path.GetGitPathString().CompareNoCase(path.GetGitOldPathString()) == 0)
 			force = L"-f ";
 		CString cmd;
-		cmd.Format(L"git.exe mv %s-- \"%s\" \"%s\"", static_cast<LPCWSTR>(force), static_cast<LPCWSTR>(path.GetGitPathString()), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+		try
+		{
+			cmd.Format(L"git.exe mv %s-- %s %s", static_cast<LPCWSTR>(force), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitOldPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			list->ReportError(e.cause());
+			return false;
+		}
 		if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
 		{
 			list->ReportError(err);
 			return false;
 		}
 
-		cmd.Format(L"git.exe checkout -f%s %s -- \"%s\"", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(m_sRevertToRevision), static_cast<LPCWSTR>(path.GetGitOldPathString()));
+		try
+		{
+			cmd.Format(L"git.exe checkout -f %s%s -- %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevertToRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitOldPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			list->ReportError(e.cause());
+			return false;
+		}
 		if (CString err; g_Git.Run(cmd, &err, CP_UTF8))
 		{
 			list->ReportError(err);

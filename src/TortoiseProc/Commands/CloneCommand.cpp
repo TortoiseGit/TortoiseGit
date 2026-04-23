@@ -94,32 +94,32 @@ bool CloneCommand::Execute()
 
 	if(dlg.DoModal()==IDOK)
 	{
-		CString recursiveStr;
+		CString args;
 		if(dlg.m_bRecursive)
-			recursiveStr = L" --recursive";
+			args += L" --recursive";
 
-		CString bareStr;
 		if(dlg.m_bBare)
-			bareStr = L" --bare";
+			args += L" --bare";
 
-		CString nocheckoutStr;
 		if (dlg.m_bNoCheckout)
-			nocheckoutStr = L" --no-checkout";
+			args += L" --no-checkout";
 
-		CString branchStr;
-		if (dlg.m_bBranch)
-			branchStr = L" --branch " + dlg.m_strBranch;
+		try
+		{
+			if (dlg.m_bBranch)
+				args += L" --branch " + CGit::QuoteParameter(dlg.m_strBranch);
 
-		CString originStr;
-		if (dlg.m_bOrigin && !dlg.m_bSVN)
-			originStr = L" --origin " + dlg.m_strOrigin;
+			if (dlg.m_bOrigin && !dlg.m_bSVN)
+				args += L" --origin " + CGit::QuoteParameter(dlg.m_strOrigin);
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 
 		if(dlg.m_bAutoloadPuttyKeyFile)
 			CAppUtils::LaunchPAgent(GetExplorerHWND(), &dlg.m_strPuttyKeyFile);
-
-		CAppUtils::RemoveTrailSlash(dlg.m_Directory);
-		if (!dlg.m_bSVN)
-			CAppUtils::RemoveTrailSlash(dlg.m_URL);
 
 		CString dir=dlg.m_Directory;
 		CString url=dlg.m_URL;
@@ -140,20 +140,22 @@ bool CloneCommand::Execute()
 				url.Replace( L'\\', L'/');
 		}
 
-		CString depth;
 		if (dlg.m_bDepth)
-			depth.Format(L" --depth %d", dlg.m_nDepth);
+			args.AppendFormat(L" --depth %d", dlg.m_nDepth);
 
 		CString cmd;
-		cmd.Format(L"git.exe clone --progress%s%s%s%s%s -v%s -- \"%s\" \"%s\"",
-						static_cast<LPCWSTR>(nocheckoutStr),
-						static_cast<LPCWSTR>(recursiveStr),
-						static_cast<LPCWSTR>(bareStr),
-						static_cast<LPCWSTR>(branchStr),
-						static_cast<LPCWSTR>(originStr),
-						static_cast<LPCWSTR>(depth),
-						static_cast<LPCWSTR>(url),
-						static_cast<LPCWSTR>(dir));
+		try
+		{
+			cmd.Format(L"git.exe clone --progress%s -v -- %s %s",
+					   static_cast<LPCWSTR>(args),
+					   static_cast<LPCWSTR>(CGit::QuoteParameter(url)),
+					   static_cast<LPCWSTR>(CGit::QuoteParameter(dir)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 
 		bool retry = false;
 		auto postCmdCallback = [&](DWORD status, PostCmdList& postCmdList)
@@ -202,35 +204,41 @@ bool CloneCommand::Execute()
 
 			//g_Git.m_CurrentDir=dlg.m_Directory;
 			cmd = L"git.exe svn clone";
-			if (dlg.m_bOrigin)
+			try
 			{
-				CString str;
-				if (dlg.m_strOrigin.IsEmpty())
-					str = L" --prefix \"\"";
-				else
-					str.Format(L" --prefix \"%s/\"", static_cast<LPCWSTR>(dlg.m_strOrigin));
-				cmd += str;
+				if (dlg.m_bOrigin)
+				{
+					if (dlg.m_strOrigin.IsEmpty())
+						cmd += L" --prefix " + CGit::QuoteParameter(L"");
+					else
+						cmd.AppendFormat(L" --prefix %s", static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_strOrigin + L"/")));
+				}
+
+				if (dlg.m_bSVNTrunk)
+					cmd += L" -T " + CGit::QuoteParameter(dlg.m_strSVNTrunk);
+
+				if (dlg.m_bSVNBranch)
+					cmd += L" -b " + CGit::QuoteParameter(dlg.m_strSVNBranchs);
+
+				if (dlg.m_bSVNTags)
+					cmd += L" -t " + CGit::QuoteParameter(dlg.m_strSVNTags);
+
+				if (dlg.m_bSVNFrom)
+					cmd.AppendFormat(L" -r %d:HEAD", dlg.m_nSVNFrom);
+
+				if (dlg.m_bSVNUserName)
+				{
+					cmd += L" --username ";
+					cmd += CGit::QuoteParameter(dlg.m_strUserName);
+				}
+
+				cmd.AppendFormat(L" -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(url)), static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_Directory)));
 			}
-
-			if(dlg.m_bSVNTrunk)
-				cmd += L" -T " + dlg.m_strSVNTrunk;
-
-			if(dlg.m_bSVNBranch)
-				cmd += L" -b " + dlg.m_strSVNBranchs;
-
-			if(dlg.m_bSVNTags)
-				cmd += L" -t " + dlg.m_strSVNTags;
-
-			if(dlg.m_bSVNFrom)
-				cmd.AppendFormat(L" -r %d:HEAD", dlg.m_nSVNFrom);
-
-			if(dlg.m_bSVNUserName)
+			catch (illegal_git_parameter& e)
 			{
-				cmd += L" --username ";
-				cmd+=dlg.m_strUserName;
+				MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
 			}
-
-			cmd.AppendFormat(L" -- \"%s\" \"%s\"", static_cast<LPCWSTR>(url), static_cast<LPCWSTR>(dlg.m_Directory));
 		}
 		else
 		{

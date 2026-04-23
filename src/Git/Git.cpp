@@ -322,8 +322,6 @@ int CGit::RunAsync(CString cmd, PROCESS_INFORMATION& piOut, HANDLE* hReadOut, HA
 	bool startsWithGit = CStringUtils::StartsWith(cmd, L"git");
 	if ((ms_bMsys2Git || ms_bCygwinGit) && startsWithGit)
 	{
-		if (!CStringUtils::StartsWith(cmd, L"git.exe config "))
-			cmd.Replace(L'\\', L'/');
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": executing via bash: %s\n", static_cast<LPCWSTR>(cmd));
 		CString tmpFile = GetTempFile();
 		if (ms_bMsys2Git)
@@ -378,13 +376,48 @@ void CGit::StringAppend(CString& str, const std::string_view append, int code)
 }
 
 // This method was originally used to check for orphaned branches
-BOOL CGit::CanParseRev(CString ref)
+BOOL CGit::CanParseRev(const CString& ref)
 {
+	CString refString;
+
 	if (ref.IsEmpty())
-		ref = L"HEAD";
+		refString = L"HEAD";
+	else
+	{
+		try
+		{
+			const int len = ref.GetLength();
+			LPCWSTR data = ref;
+			int i = 0;
+			while (i < len)
+			{
+				// skip leading whitespace
+				while (i < len && iswspace(data[i]))
+					++i;
+
+				const int start = i;
+				// read ref
+				while (i < len && !iswspace(data[i]))
+					++i;
+				if (start < i)
+				{
+					CString word(data + start, i - start);
+					refString += L' ';
+					refString += CGit::QuoteParameter(word);
+				}
+			}
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
+			return FALSE;
+		}
+	}
+
+	gitLastErr.Empty();
 
 	CString cmdout;
-	if (Run(L"git.exe rev-parse --revs-only --end-of-options " + ref, &cmdout, CP_UTF8))
+	if (Run(L"git.exe rev-parse --revs-only --end-of-options " + refString, &cmdout, CP_UTF8))
 		return FALSE;
 	if(cmdout.IsEmpty())
 		return FALSE;
@@ -650,7 +683,15 @@ CString CGit::GetConfigValue(const CString& name, const CString& def, bool wantB
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe config%s --end-of-options %s", wantBool ? L" --bool" : L"", static_cast<LPCWSTR>(name));
+		try
+		{
+			cmd.Format(L"git.exe config%s --end-of-options %s", wantBool ? L" --bool" : L"", static_cast<LPCWSTR>(CGit::QuoteParameter(name)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			::MessageBox(nullptr, L"Could not get config.\n" + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return def;
+		}
 		CString configValue;
 		if (Run(cmd, &configValue, nullptr, CP_UTF8))
 			return def;
@@ -721,10 +762,15 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		default:
 			break;
 		}
-		CString mangledValue = value;
-		mangledValue.Replace(L"\\\"", L"\\\\\"");
-		mangledValue.Replace(L"\"", L"\\\"");
-		cmd.Format(L"git.exe config %s --end-of-options %s \"%s\"", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(key), static_cast<LPCWSTR>(mangledValue));
+		try
+		{
+			cmd.Format(L"git.exe config %s --end-of-options %s %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(CGit::QuoteParameter(key)), static_cast<LPCWSTR>(CGit::QuoteParameter(value)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			::MessageBox(nullptr, L"Could not get config.\n" + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return -1;
+		}
 		CString out;
 		if (Run(cmd, &out, nullptr, CP_UTF8))
 			return -1;
@@ -783,14 +829,30 @@ int CGit::UnsetConfigValue(const CString& key, CONFIG_TYPE type)
 int CGit::ApplyPatchToIndex(const CString& patchPath, CString* out)
 {
 	CString cmd;
-	cmd.Format(L"git.exe apply --cached -- \"%s\"", static_cast<LPCWSTR>(patchPath));
+	try
+	{
+		cmd.Format(L"git.exe apply --cached -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(patchPath)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		*out = e.cause();
+		return -1;
+	}
 	return Run(cmd, out, CP_UTF8);
 }
 
 int CGit::ApplyPatchToIndexReverse(const CString& patchPath, CString* out)
 {
 	CString cmd;
-	cmd.Format(L"git.exe apply --cached -R -- \"%s\"", static_cast<LPCWSTR>(patchPath));
+	try
+	{
+		cmd.Format(L"git.exe apply --cached -R -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(patchPath)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		*out = e.cause();
+		return -1;
+	}
 	return Run(cmd, out, CP_UTF8);
 }
 
@@ -858,7 +920,14 @@ CString CGit::GetFullRefName(const CString& shortRefName)
 {
 	CString refName;
 	CString cmd;
-	cmd.Format(L"git.exe rev-parse --symbolic-full-name --verify --end-of-options %s", static_cast<LPCWSTR>(shortRefName));
+	try
+	{
+		cmd.Format(L"git.exe rev-parse --symbolic-full-name --verify --end-of-options %s", static_cast<LPCWSTR>(CGit::QuoteParameter(shortRefName)));
+	}
+	catch (illegal_git_parameter&)
+	{
+		return {}; // Error
+	}
 	if (Run(cmd, &refName, nullptr, CP_UTF8) != 0)
 		return CString();//Error
 	return refName.TrimRight();
@@ -1041,7 +1110,26 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 	CString cmd;
 	CString file;
 	if (path)
-		file.Format(L" \"%s\"", static_cast<LPCWSTR>(path->GetGitPathString()));
+	{
+		try
+		{
+			file.Format(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path->GetGitPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			::MessageBox(nullptr, L"Filter could not be applied. " + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		}
+	}
+	try
+	{
+		if (!range.IsEmpty())
+			std::ignore = CGit::QuoteParameter(range);
+	}
+	catch (illegal_git_parameter& e)
+	{
+		range = L"HEAD";
+		::MessageBox(nullptr, L"Range filter could not be applied. " + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+	}
 	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
 	cmd.Format(L"-z%s --end-of-options %s --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
 
@@ -1210,7 +1298,15 @@ int CGit::GetHash(CGitHash &hash, const CString& friendname)
 		if (friendname == L"FETCH_HEAD" && branch.IsEmpty())
 			branch = friendname;
 		CString cmd;
-		cmd.Format(L"git.exe rev-parse --verify --end-of-options %s", static_cast<LPCWSTR>(branch));
+		try
+		{
+			cmd.Format(L"git.exe rev-parse --verify --end-of-options %s", static_cast<LPCWSTR>(CGit::QuoteParameter(branch)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
+			return -1;
+		}
 		gitLastErr.Empty();
 		const int ret = Run(cmd, &gitLastErr, nullptr, CP_UTF8);
 		hash = CGitHash::FromHexStr(gitLastErr.Trim());
@@ -1317,15 +1413,22 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	if (ignoreBlankLines)
 		ignore += L" --ignore-blank-lines";
 
-	if (rev1 == GitRev::GetWorkingCopyRef() || rev2 == GitRev::GetWorkingCopyRef())
+	try
 	{
-		if (rev1 == GitRev::GetWorkingCopyRef())
-			cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2));
+		if (rev1 == GitRev::GetWorkingCopyRef() || rev2 == GitRev::GetWorkingCopyRef())
+		{
+			if (rev1 == GitRev::GetWorkingCopyRef())
+				cmd.Format(L"git.exe diff -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(CGit::QuoteParameter(rev2)));
+			else
+				cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(CGit::QuoteParameter(rev1)));
+		}
 		else
-			cmd.Format(L"git.exe diff -r -R --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev1));
+			cmd.Format(L"git.exe diff-tree -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(CGit::QuoteParameter(rev2)), static_cast<LPCWSTR>(CGit::QuoteParameter(rev1)));
 	}
-	else
-		cmd.Format(L"git.exe diff-tree -r --raw -C%d%% -M%d%% --numstat -z %s --end-of-options %s %s --", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(ignore), static_cast<LPCWSTR>(rev2), static_cast<LPCWSTR>(rev1));
+	catch (illegal_git_parameter&)
+	{
+		return -1;
+	}
 
 	BYTE_VECTOR out;
 	if (Run(cmd, &out))
@@ -1453,7 +1556,14 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	}
 	// else
 	CString cmd;
-	cmd.Format(L"git.exe show-ref --tags --heads -- refs/heads/%s refs/tags/%s", static_cast<LPCWSTR>(name), static_cast<LPCWSTR>(name));
+	try
+	{
+		cmd.Format(L"git.exe show-ref --tags --heads -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(L"refs/heads/" + name)), static_cast<LPCWSTR>(CGit::QuoteParameter(L"refs/tags/" + name)));
+	}
+	catch (illegal_git_parameter&)
+	{
+		return false; // TODO: optimize error reporting
+	}
 
 	int refCnt = 0;
 	Run(cmd, [&](const CStringA& lineA)
@@ -1502,8 +1612,17 @@ bool CGit::BranchTagExists(const CString& name, bool isBranch /*= true*/)
 	else
 		cmd += L"--tags ";
 
-	cmd += L"-- refs/heads/" + name;
-	cmd += L" refs/tags/" + name;
+	cmd += L"-- ";
+	try
+	{
+		cmd += CGit::QuoteParameter(L"refs/heads/" + name);
+		cmd += L' ';
+		cmd += CGit::QuoteParameter(L"refs/tags/" + name);
+	}
+	catch (illegal_git_parameter&)
+	{
+		return false; // TODO: optimize error reporting
+	}
 
 	if (!Run(cmd, &output, nullptr, CP_UTF8))
 	{
@@ -1887,7 +2006,15 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 	}
 
 	CString cmd;
-	cmd.Format(L"git.exe ls-remote%s -- \"%s\"", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(remote));
+	try
+	{
+		cmd.Format(L"git.exe ls-remote%s -- %s", (includeTags && !includeBranches) ? L" -t" : L" --refs", static_cast<LPCWSTR>(CGit::QuoteParameter(remote)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		gitLastErr = e.cause();
+		return -1;
+	}
 	gitLastErr = cmd + L'\n';
 	if (Run(
 		cmd, [&](const CStringA& origLineA) {
@@ -1949,15 +2076,22 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 
 		if (git_remote_push(remote, &specs, &pushOpts) < 0)
 			return -1;
+		return 0;
 	}
-	else
+
+	try
 	{
-		CMassiveGitTaskBase mgtPush(L"push -- " + sRemote, FALSE);
+		CMassiveGitTaskBase mgtPush(L"push -- " + CGit::QuoteParameter(sRemote), FALSE);
 		for (const auto& ref : list)
 			mgtPush.AddFile(L':' + ref);
 
 		BOOL cancel = FALSE;
 		mgtPush.Execute(cancel);
+	}
+	catch (illegal_git_parameter& e)
+	{
+		gitLastErr = e.cause();
+		return -1;
 	}
 
 	return 0;
@@ -2545,7 +2679,15 @@ bool CGit::IsFastForward(const CString &from, const CString &to, CGitHash * comm
 	CString base;
 	CGitHash basehash,hash;
 	CString cmd;
-	cmd.Format(L"git.exe merge-base -- %s %s", static_cast<LPCWSTR>(FixBranchName(to)), static_cast<LPCWSTR>(FixBranchName(from)));
+	try
+	{
+		cmd.Format(L"git.exe merge-base -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(FixBranchName(to))), static_cast<LPCWSTR>(CGit::QuoteParameter(FixBranchName(from))));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		gitLastErr = e.cause();
+		return false; // TODO: Improve error reporting
+	}
 
 	gitLastErr.Empty();
 	if (Run(cmd, &base, &gitLastErr, CP_UTF8))
@@ -2676,7 +2818,15 @@ int CGit::GetOneFile(const CString &Refname, const CTGitPath &path, const CStrin
 	else
 	{
 		CString cmd;
-		cmd.Format(L"git.exe cat-file -p -- %s:\"%s\"", static_cast<LPCWSTR>(Refname), static_cast<LPCWSTR>(path.GetGitPathString()));
+		try
+		{
+			cmd.Format(L"git.exe cat-file -p -- %s:%s", static_cast<LPCWSTR>(CGit::QuoteParameter(Refname)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
+			return -1;
+		}
 		gitLastErr.Empty();
 		return RunLogFile(cmd, outputfile, &gitLastErr);
 	}
@@ -2901,13 +3051,13 @@ void CGit::SetGit2CertificateCheckCertificate(void* callback)
 	g_Git2CheckCertificateCallback = static_cast<git_transport_certificate_check_cb>(callback);
 }
 
-CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix)
+static CString GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, const CString& rev2, bool bMerge, bool bCombine, int diffContext, bool bNoPrefix = false)
 {
 	CString cmd;
 	if (rev2 == GitRev::GetWorkingCopyRef())
-		cmd.Format(L"git.exe diff --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1));
+		cmd.Format(L"git.exe diff --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(CGit::QuoteParameter(rev1)));
 	else if (rev1 == GitRev::GetWorkingCopyRef())
-		cmd.Format(L"git.exe diff -R --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev2));
+		cmd.Format(L"git.exe diff -R --stat%s -p --end-of-options %s --", bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(CGit::QuoteParameter(rev2)));
 	else
 	{
 		CString merge;
@@ -2920,14 +3070,13 @@ CString CGit::GetUnifiedDiffCmd(const CTGitPath& path, const CString& rev1, cons
 		CString unified;
 		if (diffContext >= 0)
 			unified.Format(L" --unified=%d", diffContext);
-		cmd.Format(L"git.exe diff-tree -r -p%s%s --stat%s --end-of-options %s %s --", static_cast<LPCWSTR>(merge), static_cast<LPCWSTR>(unified), bNoPrefix ? L" --no-prefix" : L"", static_cast<LPCWSTR>(rev1), static_cast<LPCWSTR>(rev2));
+		cmd.Format(L"git.exe diff-tree -r -p%s%s --stat%s --end-of-options %s %s --", static_cast<LPCWSTR>(merge), static_cast<LPCWSTR>(unified), bNoPrefix ? L" --no-prefix" : L"", rev1.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(rev1)), rev2.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(rev2)));
 	}
 
 	if (!path.IsEmpty())
 	{
-		cmd += L" \"";
-		cmd += path.GetGitPathString();
-		cmd += L'"';
+		cmd += L' ';
+		cmd += CGit::QuoteParameter(path.GetGitPathString());
 	}
 
 	return cmd;
@@ -3092,7 +3241,15 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 	else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext, bNoPrefix);
+		try
+		{
+			cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext, bNoPrefix);
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
+			return -1;
+		}
 		gitLastErr.Empty();
 		return RunLogFile(cmd, patchfile, &gitLastErr);
 	}
@@ -3123,7 +3280,15 @@ int CGit::GetUnifiedDiff(const CTGitPath& path, const CString& rev1, const CStri
 	else
 	{
 		CString cmd;
-		cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
+		try
+		{
+			cmd = GetUnifiedDiffCmd(path, rev1, rev2, bMerge, bCombine, diffContext);
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
+			return -1;
+		}
 		BYTE_VECTOR vector;
 		const int ret = Run(cmd, &vector);
 		if (!vector.empty())
@@ -3198,15 +3363,23 @@ int CGit::DeleteRef(const CString& reference)
 	else
 	{
 		CString cmd, shortname;
-		if (GetShortName(reference, shortname, L"refs/heads/"))
-			cmd.Format(L"git.exe branch -D -- %s", static_cast<LPCWSTR>(shortname));
-		else if (GetShortName(reference, shortname, L"refs/tags/"))
-			cmd.Format(L"git.exe tag -d -- %s", static_cast<LPCWSTR>(shortname));
-		else if (GetShortName(reference, shortname, L"refs/remotes/"))
-			cmd.Format(L"git.exe branch -r -D -- %s", static_cast<LPCWSTR>(shortname));
-		else
+		try
 		{
-			gitLastErr = L"unsupported reference type: " + reference;
+			if (GetShortName(reference, shortname, L"refs/heads/"))
+				cmd.Format(L"git.exe branch -D -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(shortname)));
+			else if (GetShortName(reference, shortname, L"refs/tags/"))
+				cmd.Format(L"git.exe tag -d -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(shortname)));
+			else if (GetShortName(reference, shortname, L"refs/remotes/"))
+				cmd.Format(L"git.exe branch -r -D -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(shortname)));
+			else
+			{
+				gitLastErr = L"unsupported reference type: " + reference;
+				return -1;
+			}
+		}
+		catch (illegal_git_parameter& e)
+		{
+			gitLastErr = e.cause();
 			return -1;
 		}
 
@@ -3273,13 +3446,24 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		ATLASSERT(!filterlist || !(*filterlist)[i].GetGitPathString().IsEmpty()); // pathspec must not be empty, be compatible with Git >= 2.16.0
 		BYTE_VECTOR cmdout;
 		CString cmd;
+		CString filenameAppendix;
+		if (filterlist)
+		{
+			try
+			{
+				filenameAppendix.Format(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter((*filterlist)[i].GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(nullptr, e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return -1;
+			}
+		}
+
 		if (ms_bCygwinGit || ms_bMsys2Git)
 		{
 			// Prevent showing all files as modified when using cygwin's git
-			if (!filterlist)
-				cmd.Format(L"git.exe status%s --", static_cast<LPCWSTR>(gitStatusParams));
-			else
-				cmd.Format(L"git.exe status%s -- \"%s\"", static_cast<LPCWSTR>(gitStatusParams), static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+			cmd.Format(L"git.exe status%s --%s", static_cast<LPCWSTR>(gitStatusParams), static_cast<LPCWSTR>(filenameAppendix));
 			Run(cmd, &cmdout);
 			cmdout.clear();
 		}
@@ -3288,13 +3472,10 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		if (includedStaged || !filterlist)
 			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z --", static_cast<LPCWSTR>(head));
 		else
-			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+			cmd.Format(L"git.exe diff-index --cached --raw %s --numstat -C -M -z --%s", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(filenameAppendix));
 		Run(cmd, &cmdout);
 
-		if (!filterlist)
-			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z --", static_cast<LPCWSTR>(head), ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
-		else
-			cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z -- \"%s\"", static_cast<LPCWSTR>(head), ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+		cmd.Format(L"git.exe diff-index --raw %s --numstat -C%d%% -M%d%% -z --%s", static_cast<LPCWSTR>(head), ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold, static_cast<LPCWSTR>(filenameAppendix));
 
 		BYTE_VECTOR cmdErr;
 		if (Run(cmd, &cmdout, &cmdErr))
@@ -3366,7 +3547,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		if (!filterlist)
 			cmd = L"git.exe ls-files -u -t -z";
 		else
-			cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+			cmd.Format(L"git.exe ls-files -u -t -z -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter((*filterlist)[i].GetGitPathString()))); // already checked above
 
 		Run(cmd, &cmdout);
 
@@ -3408,9 +3589,9 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 		else
 		{
 			if (!useOldLSFilesDBehaviorKS)
-				cmd.Format(L"git.exe diff --name-only --diff-filter=D -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+				cmd.Format(L"git.exe diff --name-only --diff-filter=D -z -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter((*filterlist)[i].GetGitPathString())));
 			else
-				cmd.Format(L"git.exe ls-files -d -z -- \"%s\"", static_cast<LPCWSTR>((*filterlist)[i].GetGitPathString()));
+				cmd.Format(L"git.exe ls-files -d -z -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter((*filterlist)[i].GetGitPathString())));
 		}
 
 		Run(cmd, &cmdout);
@@ -3618,7 +3799,15 @@ int CGit::GetTagInfo(const CString& tagName, CString& output, const std::functio
 
 	output.Empty();
 	CString cmd;
-	cmd.Format(L"git.exe cat-file tag -- \"%s\"", static_cast<LPCWSTR>(tagName));
+	try
+	{
+		cmd.Format(L"git.exe cat-file tag -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(tagName)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		output = e.cause();
+		return -1;
+	}
 	if (g_Git.Run(cmd, &output, CP_UTF8) != 0)
 		return -1;
 
@@ -3787,4 +3976,14 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 	}
 
 	return 0;
+}
+
+CString CGit::QuoteParameter(CString value)
+{
+	value.Replace(L'\\', L'/');
+
+	if (value.FindOneOf(L"\"?*") != -1 || ((ms_bMsys2Git || ms_bCygwinGit) && value.FindOneOf(L"`$") != -1))
+		throw illegal_git_parameter(L"The git.exe command could not be constructed. The following parameter contains a special character, such as a double quotation mark (\") or an asterisk (*), which is not supported by TortoiseGit (perhaps due to the default functionality being disabled):\n" + value);
+
+	return L'"' + value + L'"';
 }

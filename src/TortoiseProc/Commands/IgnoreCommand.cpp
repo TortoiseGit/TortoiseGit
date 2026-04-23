@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2013, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2016, 2018-2019, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -45,16 +45,24 @@ bool IgnoreCommand::Execute()
 	{
 		CString format;
 		if(CMessageBox::Show(GetExplorerHWND(), IDS_PROC_KEEPFILELOCAL, IDS_APPNAME, MB_ICONERROR|MB_YESNO) == IDYES)
-			format = L"git.exe rm --cache -r -f -- \"%s\"";
+			format = L"git.exe rm --cache -r -f -- %s";
 		else
-			format = L"git.exe rm -r -f -- \"%s\"";
+			format = L"git.exe rm -r -f -- %s";
 
 		CString output;
 		CString cmd;
 		int nPath;
 		for (nPath = 0; nPath < pathList.GetCount(); ++nPath)
 		{
-			cmd.Format(format, static_cast<LPCWSTR>(pathList[nPath].GetGitPathString()));
+			try
+			{
+				cmd.Format(format, static_cast<LPCWSTR>(CGit::QuoteParameter(pathList[nPath].GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return false;
+			}
 			if (g_Git.Run(cmd, &output, CP_UTF8))
 			{
 				if (MessageBox(GetExplorerHWND(), output, L"TortoiseGit", MB_ICONERROR | MB_OKCANCEL) == IDCANCEL)

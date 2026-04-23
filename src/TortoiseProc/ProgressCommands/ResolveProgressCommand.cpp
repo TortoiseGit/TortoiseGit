@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2016, 2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2009-2016, 2019, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -101,7 +101,15 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 		if (!gitIndex)
 		{
 			CString cmd;
-			cmd.Format(L"git.exe ls-files -u -t -z -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+			try
+			{
+				cmd.Format(L"git.exe ls-files -u -t -z -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				list->ReportError(e.cause());
+				return false;
+			}
 			BYTE_VECTOR vector;
 			if (g_Git.Run(cmd, &vector))
 			{
@@ -167,7 +175,15 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			}
 
 			CString gitcmd, output; // retest with registered submodule!
-			gitcmd.Format(L"git.exe rm -f -- \"%s\"", static_cast<LPCWSTR>(path.GetGitPathString()));
+			try
+			{
+				gitcmd.Format(L"git.exe rm -f -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				list->ReportError(e.cause());
+				return false;
+			}
 			if (g_Git.Run(gitcmd, &output, CP_UTF8))
 			{
 				// a .git folder in a submodule which is not in .gitmodules cannot be deleted using "git rm"
@@ -210,14 +226,30 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 				CString gitcmd, output;
 				if (!fullPath.IsDirectory())
 				{
-					gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- \"%s\"", destinationStage, static_cast<LPCWSTR>(path.GetGitPathString()));
+					try
+					{
+						gitcmd.Format(L"git.exe checkout-index -f --stage=%d -- %s", destinationStage, static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+					}
+					catch (illegal_git_parameter& e)
+					{
+						list->ReportError(e.cause());
+						return false;
+					}
 					if (g_Git.Run(gitcmd, &output, CP_UTF8))
 					{
 						list->ReportError(output);
 						return false;
 					}
 				}
-				gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,\"%s\"", static_cast<LPCWSTR>(destinationHash.ToString()), static_cast<LPCWSTR>(path.GetGitPathString()));
+				try
+				{
+					gitcmd.Format(L"git.exe update-index --replace --cacheinfo 0160000,%s,%s", static_cast<LPCWSTR>(destinationHash.ToString()), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitPathString())));
+				}
+				catch (illegal_git_parameter& e)
+				{
+					list->ReportError(e.cause());
+					return false;
+				}
 				if (g_Git.Run(gitcmd, &output, CP_UTF8))
 				{
 					list->ReportError(output);

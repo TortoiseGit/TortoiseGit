@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2019, 2025 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,13 +77,17 @@ bool DaemonCommand::Execute()
 	if (result)
 		FreeAddrInfoA(result);
 
-	CString basePath(g_Git.m_CurrentDir);
-	basePath.TrimRight(L'\\');
-	if (basePath.GetLength() == 2)
-		basePath += L"\\.";
-
 	CString cmd;
-	cmd.Format(L"git.exe daemon --verbose --export-all --base-path=\"%s\"", static_cast<LPCWSTR>(basePath));
+	try
+	{
+		cmd.Format(L"git.exe daemon --verbose --export-all --base-path=%s", static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.m_CurrentDir)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
+
 	CProgressDlg progDlg;
 	theApp.m_pMainWnd = &progDlg;
 	progDlg.m_GitCmd = cmd;

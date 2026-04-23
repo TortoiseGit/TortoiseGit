@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2015-2016, 2018-2019, 2023 - TortoiseGit
+// Copyright (C) 2009, 2015-2016, 2018-2019, 2023, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -57,24 +57,30 @@ bool FormatPatchCommand::Execute()
 		CString cmd;
 		CString range;
 
-		switch(dlg.m_Radio)
+		try
 		{
-		case IDC_RADIO_SINCE:
-			range = L"--end-of-options " + g_Git.FixBranchName(dlg.m_Since);
-			break;
-		case IDC_RADIO_NUM:
-			range.Format(L"-%d", dlg.m_Num);
-			break;
-		case IDC_RADIO_RANGE:
-			range.Format(L"--end-of-options %s..%s", static_cast<LPCWSTR>(dlg.m_From), static_cast<LPCWSTR>(dlg.m_To));
-			break;
+			switch (dlg.m_Radio)
+			{
+			case IDC_RADIO_SINCE:
+				range = L"--end-of-options " + CGit::QuoteParameter(g_Git.FixBranchName(dlg.m_Since));
+				break;
+			case IDC_RADIO_NUM:
+				range.Format(L"-%d", dlg.m_Num);
+				break;
+			case IDC_RADIO_RANGE:
+				range.Format(L"--end-of-options %s", static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_From + L".." + dlg.m_To)));
+				break;
+			}
+			cmd.Format(L"git.exe format-patch%s -o %s %s --",
+					   dlg.m_bNoPrefix ? L" --no-prefix" : L"",
+					   static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_Dir)),
+					   static_cast<LPCWSTR>(range));
 		}
-		dlg.m_Dir.Replace(L'\\', L'/');
-		cmd.Format(L"git.exe format-patch%s -o \"%s\" %s --",
-			dlg.m_bNoPrefix ? L" --no-prefix" : L"",
-			static_cast<LPCWSTR>(dlg.m_Dir),
-			static_cast<LPCWSTR>(range)
-			);
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;

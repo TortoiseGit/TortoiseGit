@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2019, 2021 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2019, 2021, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -109,14 +109,21 @@ bool DropCopyCommand::Execute()
 				g_Git.SetCurrentDir(ProjectTopDir);
 				SetCurrentDirectory(ProjectTopDir);
 				CString cmd;
-				cmd = L"git.exe add -- \"";
+				cmd = L"git.exe add -- ";
 
 				CString path;
 				path=fullDropPath.GetGitPathString().Mid(ProjectTopDir.GetLength());
 				if (!path.IsEmpty() && (path[0] == L'\\' || path[0] == L'/'))
 					path = path.Mid(1);
-				cmd += path;
-				cmd += L'"';
+				try
+				{
+					cmd += CGit::QuoteParameter(path);
+				}
+				catch (illegal_git_parameter& e)
+				{
+					MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+					continue;
+				}
 
 				CString output;
 				if (g_Git.Run(cmd, &output, CP_UTF8))

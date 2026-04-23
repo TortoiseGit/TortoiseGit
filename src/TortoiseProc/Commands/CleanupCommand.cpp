@@ -19,7 +19,6 @@
 //
 #include "stdafx.h"
 #include "CleanupCommand.h"
-
 #include "MessageBox.h"
 #include "ProgressDlg.h"
 #include "ShellUpdater.h"
@@ -99,7 +98,7 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 {
 	CString cmd(baseCmd);
 	if (!path.IsEmpty())
-		cmd += L" -- \"" + path + L'"';
+		cmd += L" -- " + CGit::QuoteParameter(path);
 
 	CString cmdout, cmdouterr;
 	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
@@ -204,7 +203,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 			}
 			else
 				progress.m_GitDirList.push_back(g_Git.m_CurrentDir);
-			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? CString() : (L" -- \"" + path + L'"')));
+			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? CString() : (L" -- " + CGit::QuoteParameter(path))));
 		}
 
 		for (CString dir : submoduleList)

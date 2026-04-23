@@ -68,8 +68,8 @@
     <ClCompile>
       <AdditionalIncludeDirectories>$(ProjectDir);..\..\src\Resources;..\..\src\Git;..\..\ext\hunspell;..\..\src\Utils;..\..\src\Utils\MiscUI;..\..\src\TortoiseShell;..\..\ext\gitdll;..\..\ext\libgit2\include;..\..\ext\googletest\googletest\include;..\..\ext\googletest\googlemock\include;..\..\ext\json\include;..\..\ext\ResizableLib;..\..\src\TortoiseProc;..\..\src\TortoiseMerge;..\..\src\GitWCRev;..\..\src\TortoiseGitBlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>TGIT_TESTS_ONLY;GTEST_HAS_STD_TUPLE_;GTEST_HAS_TR1_TUPLE=0;TGIT_LFS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ExceptionHandling>SyncCThrow</ExceptionHandling>
       <AdditionalOptions>/Zm110 %(AdditionalOptions)</AdditionalOptions>
+      <ExceptionHandling>SyncCThrow</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

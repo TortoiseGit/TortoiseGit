@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -168,10 +168,10 @@ protected:
 
 			CString date = time.Format(L"%Y-%m-%dT%H:%M:%S");
 			if (now)
-				date = L"\"now\"";
+				date = L"now";
 
 			CString temp;
-			temp.Format(L"--date=%s --author=\"%s\" ", static_cast<LPCWSTR>(date), static_cast<LPCWSTR>(GetAuthor()));
+			temp.Format(L"--date=%s --author=%s ", static_cast<LPCWSTR>(date), static_cast<LPCWSTR>(CGit::QuoteParameter(GetAuthor())));
 			return temp;
 		}
 	} m_SquashFirstMetaData;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2023-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -435,9 +435,16 @@ UINT CImportPatchDlg::PatchThread()
 
 			if(this->m_bKeepCR)
 				cmd += L"--keep-cr ";
-			cmd += L"-- \"";
-			cmd += m_cList.GetItemText(i,0);
-			cmd += L'"';
+			cmd += L"-- ";
+			try
+			{
+				cmd += CGit::QuoteParameter(m_cList.GetItemText(i, 0));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				AddLogString(e.cause());
+				break;
+			}
 
 			this->AddLogString(cmd);
 			CString output;

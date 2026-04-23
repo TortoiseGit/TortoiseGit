@@ -449,7 +449,16 @@ bool CWorktreeListDlg::RemoveWorktree(const CString& path, bool force)
 		params += L" --force";
 
 	CString cmd;
-	cmd.Format(L"git.exe worktree remove%s -- \"%s\"", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(path));
+	try
+	{
+		cmd.Format(L"git.exe worktree remove%s -- %s", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(CGit::QuoteParameter(path)));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return false;
+	}
+
 
 	CProgressDlg progress;
 	progress.m_GitCmd = cmd;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2016, 2018-2019, 2022, 2025 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2016, 2018-2019, 2022, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -48,20 +48,24 @@ bool SubmoduleAddCommand::Execute()
 		if (CStringUtils::StartsWith(dlg.m_strPath, g_Git.m_CurrentDir))
 			dlg.m_strPath = dlg.m_strPath.Right(dlg.m_strPath.GetLength()-g_Git.m_CurrentDir.GetLength()-1);
 
-		CString branch;
-		if(dlg.m_bBranch)
-			branch.Format(L" -b %s ", static_cast<LPCWSTR>(dlg.m_strBranch));
+		try
+		{
+			CString args;
+			if (dlg.m_bBranch)
+				args.Format(L" -b %s", static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_strBranch)));
 
-		CString force;
-		if (dlg.m_bForce)
-			force = L"--force";
+			if (dlg.m_bForce)
+				args = L" --force";
 
-		dlg.m_strPath.Replace(L'\\', L'/');
-		dlg.m_strRepos.Replace(L'\\', L'/');
-
-		cmd.Format(L"git.exe submodule add %s %s -- \"%s\" \"%s\"",
-						static_cast<LPCWSTR>(branch), static_cast<LPCWSTR>(force),
-						static_cast<LPCWSTR>(dlg.m_strRepos), static_cast<LPCWSTR>(dlg.m_strPath));
+			cmd.Format(L"git.exe submodule add%s -- %s %s",
+							static_cast<LPCWSTR>(args),
+							static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_strRepos)), static_cast<LPCWSTR>(CGit::QuoteParameter(dlg.m_strPath)));
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 
 		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
@@ -166,7 +170,15 @@ bool SubmoduleUpdateCommand::Execute()
 	{
 		// If not all submodules are selected, let CMassiveGitTaskBase create the list of commands.
 		// Otherwise, there is no need to specify any submodule.
-		CMassiveGitTaskBase::ConvertToCmdList(cmd, submoduleUpdateDlg.m_PathList, progress.m_GitCmdList);
+		try
+		{
+			CMassiveGitTaskBase::ConvertToCmdList(cmd, submoduleUpdateDlg.m_PathList, progress.m_GitCmdList);
+		}
+		catch (illegal_git_parameter& e)
+		{
+			MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+			return false;
+		}
 	}
 	else
 		progress.m_GitCmdList.push_back(L"git.exe " + cmd);
@@ -233,7 +245,17 @@ bool SubmoduleSyncCommand::Execute()
 			if (path.IsEmpty())
 				str = L"git.exe submodule sync";
 			else
-				str.Format(L"git.exe submodule sync -- \"%s\"", static_cast<LPCWSTR>(path));
+			{
+				try
+				{
+					str.Format(L"git.exe submodule sync -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path)));
+				}
+				catch (illegal_git_parameter& e)
+				{
+					MessageBox(GetExplorerHWND(), e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+					continue;
+				}
+			}
 			progress.m_GitCmdList.push_back(str);
 		}
 	}

@@ -712,7 +712,15 @@ void CCommitDlg::OnOK()
 		else
 		{
 			CString cmd, cmdout;
-			cmd.Format(L"git.exe diff -- \"%s\"", static_cast<LPCWSTR>(entry->GetGitPathString()));
+			try
+			{
+				cmd.Format(L"git.exe diff -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(entry->GetGitPathString())));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
 			g_Git.Run(cmd, &cmdout, CP_UTF8);
 			dirty = CStringUtils::EndsWith(cmdout, L"-dirty\n");
 		}
@@ -768,17 +776,25 @@ void CCommitDlg::OnOK()
 
 	if (bAddSuccess && m_bCreateNewBranch)
 	{
-		if (g_Git.Run(L"git.exe branch -- " + newBranch, &out, CP_UTF8))
+		try
 		{
-			MessageBox(L"Creating new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
-			bAddSuccess = false;
+			if (g_Git.Run(L"git.exe branch -- " + CGit::QuoteParameter(newBranch), &out, CP_UTF8))
+			{
+				MessageBox(L"Creating new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				bAddSuccess = false;
+			}
+			CString endOfOptions;
+			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
+				endOfOptions = L"--end-of-options ";
+			if (g_Git.Run(L"git.exe checkout " + endOfOptions + CGit::QuoteParameter(newBranch) + L" --", &out, CP_UTF8))
+			{
+				MessageBox(L"Switching to new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+				bAddSuccess = false;
+			}
 		}
-		CString endOfOptions;
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-			endOfOptions = L"--end-of-options ";
-		if (g_Git.Run(L"git.exe checkout " + endOfOptions + newBranch + L" --", &out, CP_UTF8))
+		catch (illegal_git_parameter& e)
 		{
-			MessageBox(L"Switching to new branch failed:\n" + out, L"TortoiseGit", MB_OK | MB_ICONERROR);
+			MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
 			bAddSuccess = false;
 		}
 	}
@@ -860,16 +876,26 @@ void CCommitDlg::OnOK()
 				return;
 			}
 			if (m_bCommitAmend && m_AsCommitDateCtrl.GetCheck())
-				dateTime = L"--date=\"now\"";
+				dateTime = L"--date=now";
 			else
 				dateTime.Format(L"--date=%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
 		}
 		CString author;
 		if (m_bSetAuthor)
-			author.Format(L"--author=\"%s\"", static_cast<LPCWSTR>(m_sAuthor));
+		{
+			try
+			{
+				author.Format(L"--author=%s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_sAuthor)));
+			}
+			catch (illegal_git_parameter& e)
+			{
+				MessageBox(L"Setting author failed.\n" + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+				return;
+			}
+		}
 		CString allowEmpty = m_bCommitMessageOnly ? L"--allow-empty" : L"";
 		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
-		cmd.Format(L"git.exe commit %s %s %s %s -F \"%s\"", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(tempfile));
+		cmd.Format(L"git.exe commit %s %s %s %s -F %s", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
 
 		CCommitProgressDlg progress;
 		progress.m_bBufferAll=true; // improve show speed when there are many file added.
@@ -1781,7 +1807,15 @@ LRESULT CCommitDlg::OnFileDropped(WPARAM, LPARAM lParam)
 	// if the item is versioned, the add will fail but nothing
 	// more will happen.
 	CString cmd;
-	cmd.Format(L"git.exe add -- \"%s\"", static_cast<LPCWSTR>(path.GetWinPathString()));
+	try
+	{
+		cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetWinPathString())));
+	}
+	catch (illegal_git_parameter& e)
+	{
+		MessageBox(e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
+		return 0;
+	}
 	g_Git.Run(cmd, nullptr, CP_UTF8);
 
 	if (!m_ListCtrl.HasPath(path))
@@ -2405,37 +2439,45 @@ void CCommitDlg::FillPatchView(bool onlySetTimer)
 			auto p = m_ListCtrl.GetListEntry(nSelect);
 			if(p && !(p->m_Action&CTGitPath::LOGACTIONS_UNVER) )
 			{
-				if (m_bStagingSupport)
+				try
 				{
-					// This will only work if called after ShowPartialStagingTextAndUpdateDisplayStatus (or Unstaging)
-
-					if (!(p->m_Action & CTGitPath::LOGACTIONS_ADDED) && !(p->m_Action & CTGitPath::LOGACTIONS_DELETED) && !(p->m_Action & CTGitPath::LOGACTIONS_MISSING) && !(p->m_Action & CTGitPath::LOGACTIONS_UNMERGED) && !(p->IsDirectory()))
+					if (m_bStagingSupport)
 					{
-						if (!(m_stagingDisplayState & SHOW_STAGING))        // link does not currently display show staging, then it's "hide staging", meaning the staging window is open
-							m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
-						else if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
-							m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
+						// This will only work if called after ShowPartialStagingTextAndUpdateDisplayStatus (or Unstaging)
+
+						if (!(p->m_Action & CTGitPath::LOGACTIONS_ADDED) && !(p->m_Action & CTGitPath::LOGACTIONS_DELETED) && !(p->m_Action & CTGitPath::LOGACTIONS_MISSING) && !(p->m_Action & CTGitPath::LOGACTIONS_UNMERGED) && !(p->IsDirectory()))
+						{
+							if (!(m_stagingDisplayState & SHOW_STAGING))        // link does not currently display show staging, then it's "hide staging", meaning the staging window is open
+								m_patchViewdlg.EnableStaging(EnableStagingTypes::Staging);
+							else if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
+								m_patchViewdlg.EnableStaging(EnableStagingTypes::Unstaging);
+						}
+						else
+							m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
+
+						bool useCachedParameter = false;
+						if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
+							useCachedParameter = true;
+						else
+							head.Empty();
+
+						if (!p->GetGitOldPathString().IsEmpty())
+							cmd.Format(L"git.exe diff %s%s -- %s %s", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitOldPathString())), static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitPathString())));
+						else
+							cmd.Format(L"git.exe diff %s%s -- %s", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitPathString())));
 					}
 					else
-						m_patchViewdlg.EnableStaging(EnableStagingTypes::None);
-
-					bool useCachedParameter = false;
-					if (!(m_stagingDisplayState & SHOW_UNSTAGING)) // link does not currently display show unstaging, then it's "hide unstaging", meaning the unstaging window is open
-						useCachedParameter = true;
-					else
-						head.Empty();
-
-					if (!p->GetGitOldPathString().IsEmpty())
-						cmd.Format(L"git.exe diff %s%s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
-					else
-						cmd.Format(L"git.exe diff %s%s -- \"%s\"", static_cast<LPCWSTR>(head), useCachedParameter ? L" --cached" : L"", static_cast<LPCWSTR>(p->GetGitPathString()));
+					{
+						if (!p->GetGitOldPathString().IsEmpty())
+							cmd.Format(L"git.exe diff %s -- %s %s", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitOldPathString())), static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitPathString())));
+						else
+							cmd.Format(L"git.exe diff %s -- %s", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(CGit::QuoteParameter(p->GetGitPathString())));
+					}
 				}
-				else
+				catch (illegal_git_parameter& e)
 				{
-					if (!p->GetGitOldPathString().IsEmpty())
-						cmd.Format(L"git.exe diff %s -- \"%s\" \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitOldPathString()), static_cast<LPCWSTR>(p->GetGitPathString()));
-					else
-						cmd.Format(L"git.exe diff %s -- \"%s\"", static_cast<LPCWSTR>(head), static_cast<LPCWSTR>(p->GetGitPathString()));
+					out += L"\n\nCannot show diff. " + e.cause() + L"\n\n";
+					continue;
 				}
 				g_Git.Run(cmd, &out, CP_UTF8);
 			}
