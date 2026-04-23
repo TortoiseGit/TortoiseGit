@@ -20,6 +20,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 #ifdef UNICODE
 #define wcswildcmp wcswildcmp
@@ -208,5 +209,13 @@ public:
 	static void TrimRight(std::wstring_view& view);
 
 	static std::string_view TrimRight(const std::string_view sv, const std::string_view chars);
+
+#if defined(_MFC_VER)
+	/**
+	 * Expands placeholders to corresponding values provided in the map replacements.
+	 * This method makes sure that values cannot contain other placeholders that may be replaced later on.
+	 */
+	[[nodiscard]] static CString ExpandPlaceholdersForCmd(const CString& input, const std::map<CString, CString>& replacements, CString (*escaper)(CString));
+#endif
 };
 

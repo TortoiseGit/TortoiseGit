@@ -20,6 +20,7 @@
 
 #include "stdafx.h"
 #include "StringUtils.h"
+#include "CmdLineParser.h"
 
 TEST(CStringUtils, WordWrap)
 {
@@ -456,4 +457,57 @@ TEST(CStringUtils, TrimRightW)
 	std::wstring_view sv5{ L"   \n " };
 	CStringUtils::TrimRight(sv5);
 	EXPECT_EQ(0u, sv5.size());
+}
+
+TEST(CStringUtils, ExpandPlaceholdersForCmd)
+{
+	EXPECT_STREQ(L"", CStringUtils::ExpandPlaceholdersForCmd(L"", {
+																	{ L"1", L"sth" },
+																	{ L"2", L"sth" },
+																	{ L"3", L"sth" },
+																	{ L"4", L"sth" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"%5", CStringUtils::ExpandPlaceholdersForCmd(L"%5", {
+																	{ L"1", L"sth" },
+																	{ L"2", L"sth" },
+																	{ L"3", L"sth" },
+																	{ L"4", L"sth" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"\"arg1\"", CStringUtils::ExpandPlaceholdersForCmd(L"%1", {
+																	{ L"1", L"arg1" },
+																	{ L"2", L"Arg2" },
+																	{ L"3", L"aRg3" },
+																	{ L"4", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"\"arg1\"", CStringUtils::ExpandPlaceholdersForCmd(L"\"%1\"", {
+																	{ L"1", L"arg1" },
+																	{ L"2", L"Arg2" },
+																	{ L"3", L"aRg3" },
+																	{ L"4", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"/to:\"arg1\" /from:\"Arg2\"", CStringUtils::ExpandPlaceholdersForCmd(L"/to:%1 /from:%2", {
+																	{ L"1", L"arg1" },
+																	{ L"2", L"Arg2" },
+																	{ L"3", L"aRg3" },
+																	{ L"4", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"/to:\"arg1\" /from:\"Arg2\"", CStringUtils::ExpandPlaceholdersForCmd(L"/to:\"%1\" /from:%2", {
+																	{ L"1", L"arg1" },
+																	{ L"2", L"Arg2" },
+																	{ L"3", L"aRg3" },
+																	{ L"4", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+	EXPECT_STREQ(L"/to:\"ar%2g1\" /from:\"Ar\"\"g2\"", CStringUtils::ExpandPlaceholdersForCmd(L"/to:\"%1\" /from:%2", {
+																	{ L"1", L"ar%2g1" },
+																	{ L"2", L"Ar\"g2" },
+																	{ L"3", L"aRg3" },
+																	{ L"4", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
+
+	EXPECT_STREQ(L"/to:\"Arg2\" /from:\"aRRRRRRg\" /empty:\"\" /random:\"aRRRRRRg\" bla", CStringUtils::ExpandPlaceholdersForCmd(L"/to:\"%to\" /from:%from /empty:%empty /random:%from bla", {
+																	{ L"to", L"Arg2" },
+																	{ L"from", L"aRRRRRRg" },
+																	{ L"empty", L""},
+																	{ L"something", L"arG4" },
+		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
 }

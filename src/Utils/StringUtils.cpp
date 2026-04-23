@@ -810,3 +810,50 @@ std::string_view CStringUtils::TrimRight(const std::string_view sv, const std::s
 
 	return sv.substr(0, pos + 1);
 }
+
+#if defined(_MFC_VER)
+CString CStringUtils::ExpandPlaceholdersForCmd(const CString& input, const std::map<CString, CString>& values, CString (*escaper)(CString))
+{
+	CString result;
+	const int len = input.GetLength();
+	for (int i = 0; i < len; ++i)
+	{
+		if (input[i] != L'%')
+		{
+			result += input[i];
+			continue;
+		}
+
+		const int start = i + 1;
+		int j = start;
+		while (j < len && std::iswalnum(input[j]))
+			++j;
+
+		if (j == start)
+		{
+			result += L'%';
+			continue;
+		}
+
+		CString key = input.Mid(start, j - start);
+		if (auto it = values.find(key); it != values.end())
+		{
+			if (i > 0 && input.GetAt(i - 1) == L'"' && j < len && input.GetAt(j) == L'"')
+			{
+				result.Truncate(result.GetLength() - 1);
+				++i;
+			}
+			result += escaper(it->second);
+			i += j - start;
+			continue;
+		}
+
+		result += L'%';
+		result += key;
+
+		i = j - 1;
+	}
+
+	return result;
+}
+#endif

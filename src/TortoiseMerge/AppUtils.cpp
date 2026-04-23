@@ -40,10 +40,12 @@ BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSaveP
 	}
 	CString sTemp;
 	sTemp.Format(L"%p", static_cast<void*>(hWnd));
-	sSCMPath.Replace(L"%1", CCmdLineParser::EscapeValue(sPath));
-	sSCMPath.Replace(L"%2", CCmdLineParser::EscapeValue(sVersion));
-	sSCMPath.Replace(L"%3", CCmdLineParser::EscapeValue(sSavePath));
-	sSCMPath.Replace(L"%4", sTemp);
+	sSCMPath = CStringUtils::ExpandPlaceholdersForCmd(sSCMPath, {
+																	{ L"1", sPath },
+																	{ L"2", sVersion },
+																	{ L"3", sSavePath },
+																	{ L"4", sTemp }
+																}, [](const CString s) { return CCmdLineParser::EscapeValue(s); });
 	// start the external SCM program to fetch the specific version of the file
 	PROCESS_INFORMATION process;
 	if (!CCreateProcessHelper::CreateProcess(nullptr, sSCMPath.GetBuffer(), &process))
