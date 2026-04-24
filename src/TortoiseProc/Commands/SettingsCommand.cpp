@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2016-2018, 2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2009, 2016-2018, 2020, 2023, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,10 +21,19 @@
 #include "SettingsCommand.h"
 #include "../Settings/Settings.h"
 #include "DPIAware.h"
+#include "SinglePropSheetDlg.h"
+#include "Settings/SettingGitCredential.h"
+#include "AppUtils.h"
 
 bool SettingsCommand::Execute()
 {
 	CString defaultpage = parser.GetVal(L"page");
+
+	if (defaultpage == L"gitcredential" && CAppUtils::IsAdminLogin())
+	{
+		CSinglePropSheetDlg(CString(MAKEINTRESOURCE(IDS_PROC_SETTINGS_TITLE)), new CSettingGitCredential(), nullptr).DoModal();
+		return true;
+	}
 
 	int dpiX = CDPIAware::Instance().GetDPI(nullptr);
 	CSettings dlg(IDS_PROC_SETTINGS_TITLE,&orgCmdLinePath);
