@@ -379,7 +379,7 @@ void CFolderCrawler::WorkerThread()
 					// create a new CTGitPath object to make sure the cached flags are requested again.
 					// without this, a missing file/folder is still treated as missing even if it is available
 					// now when crawling.
-					workingPath = CTGitPath(m_foldersToUpdate.Pop().GetWinPath());
+					workingPath = CTGitPath(m_foldersToUpdate.Pop().GetWinPathString());
 
 					if ((!m_blockedPath.IsEmpty())&&(m_blockedPath.IsAncestorOf(workingPath)))
 					{

@@ -417,7 +417,7 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (status == git_wc_status_deleted)
 						itemStatesFolder |= ITEMIS_DELETED;
 
-					if (GitAdminDir::IsBareRepo(askedpath.GetWinPath()))
+					if (GitAdminDir::IsBareRepo(askedpath.GetWinPathString()))
 						itemStatesFolder = ITEMIS_BAREREPO;
 				}
 				catch ( ... )

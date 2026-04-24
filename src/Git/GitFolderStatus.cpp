@@ -162,7 +162,7 @@ const FileStatusCacheEntry * GitFolderStatus::GetFullStatus(const CTGitPath& fil
 
 const FileStatusCacheEntry * GitFolderStatus::GetCachedItem(const CTGitPath& filepath)
 {
-	sCacheKey.assign(filepath.GetWinPath());
+	sCacheKey.assign(filepath.GetWinPath(), filepath.GetWinPathString().GetLength());
 	FileStatusMap::const_iterator iter;
 	const FileStatusCacheEntry* retVal = nullptr;
 

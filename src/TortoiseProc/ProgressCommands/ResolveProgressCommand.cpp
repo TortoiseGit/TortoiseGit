@@ -263,7 +263,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
-			subgit.m_CurrentDir = fullPath.GetWinPath();
+			subgit.m_CurrentDir = fullPath.GetWinPathString();
 			CGitHash submoduleHead;
 			if (subgit.GetHash(submoduleHead, L"HEAD"))
 			{
@@ -273,7 +273,7 @@ bool ResolveProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, 
 			if (submoduleHead != destinationHash)
 			{
 				CString origPath = g_Git.m_CurrentDir;
-				g_Git.m_CurrentDir = fullPath.GetWinPath();
+				g_Git.m_CurrentDir = fullPath.GetWinPathString();
 				SetCurrentDirectory(g_Git.m_CurrentDir);
 				if (!CAppUtils::GitReset(list->GetSafeHwnd(), destinationHash.ToString()))
 				{

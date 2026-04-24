@@ -80,9 +80,9 @@ int CGitDiff::SubmoduleDiffNull(HWND hWnd, const CTGitPath* pPath, const CGitHas
 
 		CSubmoduleDiffDlg submoduleDiffDlg(GetParentCWnd(hWnd));
 		if (pPath->m_Action & CTGitPath::LOGACTIONS_DELETED)
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, ChangeType::DeleteSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPathString(), false, newhash, newsub, toOK, CGitHash(), L"", false, dirty, ChangeType::DeleteSubmodule);
 		else
-			submoduleDiffDlg.SetDiff(pPath->GetWinPath(), false, CGitHash(), L"", true, newhash, newsub, toOK, dirty, ChangeType::NewSubmodule);
+			submoduleDiffDlg.SetDiff(pPath->GetWinPathString(), false, CGitHash(), L"", true, newhash, newsub, toOK, dirty, ChangeType::NewSubmodule);
 		submoduleDiffDlg.DoModal();
 		if (submoduleDiffDlg.IsRefresh())
 			return 1;
@@ -277,7 +277,7 @@ int CGitDiff::SubmoduleDiff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* 
 		GetSubmoduleChangeType(subgit, oldhash, newhash, oldOK, newOK, changeType, oldsub, newsub);
 
 	CSubmoduleDiffDlg submoduleDiffDlg(GetParentCWnd(hWnd));
-	submoduleDiffDlg.SetDiff(pPath->GetWinPath(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
+	submoduleDiffDlg.SetDiff(pPath->GetWinPathString(), isWorkingCopy, oldhash, oldsub, oldOK, newhash, newsub, newOK, dirty, changeType);
 	submoduleDiffDlg.DoModal();
 	if (submoduleDiffDlg.IsRefresh())
 		return 1;
@@ -422,7 +422,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 		}
 		else
 		{
-			file1 = pPath->GetWinPath();
+			file1 = pPath->GetWinPathString();
 			title1 = pPath->GetWinPathString();
 		}
 		if (!PathFileExists(file1))
@@ -466,7 +466,7 @@ int CGitDiff::Diff(HWND hWnd, const CTGitPath* pPath, const CTGitPath* pPath2, c
 		}
 		else
 		{
-			file2 = pPath2->GetWinPath();
+			file2 = pPath2->GetWinPathString();
 			title2 = pPath2->GetWinPathString();
 		}
 	}

@@ -136,9 +136,9 @@ bool DropCopyCommand::Execute()
 		{
 			CString str;
 			str += L"Copy from \"";
-			str+=sourcePath.GetWinPath();
+			str += sourcePath.GetWinPathString();
 			str += L"\" to \"";
-			str += fullDropPath.GetWinPath();
+			str += fullDropPath.GetWinPathString();
 			str += L"\" failed:\n";
 			str += static_cast<LPCWSTR>(CFormatMessageWrapper());
 

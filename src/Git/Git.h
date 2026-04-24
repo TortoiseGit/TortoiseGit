@@ -648,13 +648,13 @@ public:
 
 	CString CombinePath(const CTGitPath &path) const
 	{
-		return CombinePath(path.GetWinPath());
+		return CombinePath(path.GetWinPathString());
 	}
 
 	CString CombinePath(const CTGitPath *path) const
 	{
 		ATLASSERT(path);
-		return CombinePath(path->GetWinPath());
+		return CombinePath(path->GetWinPathString());
 	}
 
 	[[nodiscard]] static CString QuoteParameter(CString value);

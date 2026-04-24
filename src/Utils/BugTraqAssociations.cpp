@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2012-2016, 2019, 2023 - TortoiseGit
+// Copyright (C) 2009, 2012-2016, 2019, 2023, 2026 - TortoiseGit
 // Copyright (C) 2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -195,7 +195,7 @@ void CBugTraqAssociations::Save() const
 		if (RegCreateKeyEx(hk, szSubKey, 0, nullptr, 0, KEY_WRITE, nullptr, &hk2, nullptr) == ERROR_SUCCESS)
 		{
 			RegSetValueFromCString(hk2, L"Provider", (*it)->GetProviderClassAsString());
-			RegSetValueFromCString(hk2, L"WorkingCopy", (*it)->GetPath().GetWinPath());
+			RegSetValueFromCString(hk2, L"WorkingCopy", (*it)->GetPath().GetWinPathString());
 			RegSetValueFromCString(hk2, L"Parameters", (*it)->GetParameters());
 			DWORD enabled = (*it)->IsEnabled() ? 1 : 0;
 			RegSetValueEx(hk2, L"Enabled", 0, REG_DWORD, reinterpret_cast<BYTE*>(&enabled), sizeof(enabled));

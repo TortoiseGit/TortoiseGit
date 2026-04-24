@@ -312,7 +312,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(L"submodule") == TRUE))
 	{
 		for (int i = 0; i < pathList.GetCount(); ++i)
-			if(g_Git.SetCurrentDir(pathList[i].GetWinPath()))
+			if (g_Git.SetCurrentDir(pathList[i].GetWinPathString()))
 				break;
 	}
 	if (parser.HasKey(L"pathfile") && parser.HasKey(L"submodule"))

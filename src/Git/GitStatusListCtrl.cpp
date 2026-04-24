@@ -83,7 +83,7 @@ public:
 		// it might not work properly or even crash.
 		// to get the items sorted, we just add them to a set
 		for (int i = 0; i < pathlist.GetCount(); ++i)
-			sortedpaths.insert(static_cast<LPCWSTR>(g_Git.CombinePath(pathlist[i].GetWinPath())));
+			sortedpaths.insert(static_cast<LPCWSTR>(g_Git.CombinePath(pathlist[i].GetWinPathString())));
 	}
 
 	~CIShellFolderHook() { m_iSF->Release(); }
@@ -3244,7 +3244,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 	{
 		// not strict means that the selected folder has priority
 		if (!m_StatusFileList.GetCommonDirectory().IsEmpty())
-			return m_StatusFileList.GetCommonDirectory().GetWinPath();
+			return m_StatusFileList.GetCommonDirectory().GetWinPathString();
 	}
 
 	CTGitPathList list;
@@ -3256,7 +3256,7 @@ CString CGitStatusListCtrl::GetCommonDirectory(bool bStrict)
 			continue;
 		list.AddPath(*entry);
 	}
-	return list.GetCommonRoot().GetWinPath();
+	return list.GetCommonRoot().GetWinPathString();
 }
 
 void CGitStatusListCtrl::SelectAll(bool bSelect, bool /*bIncludeNoCommits*/)
@@ -4857,7 +4857,7 @@ BOOL CGitStatusListCtrl::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LR
 				auto filepath = std::make_unique<WCHAR[]>(bufsize);
 				for (int i = 0; i < targetList.GetCount(); ++i)
 				{
-					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPath());
+					CString fullPath = g_Git.CombinePath(targetList[i].GetWinPathString());
 					if (bufsize < static_cast<size_t>(fullPath.GetLength()))
 					{
 						bufsize = static_cast<size_t>(fullPath.GetLength()) + 3;

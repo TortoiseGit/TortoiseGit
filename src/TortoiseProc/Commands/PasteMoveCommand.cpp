@@ -73,7 +73,7 @@ bool PasteMoveCommand::Execute()
 			CString cmd,output;
 			try
 			{
-				cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(destPath.GetWinPath())));
+				cmd.Format(L"git.exe add -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(destPath.GetWinPathString())));
 			}
 			catch (illegal_git_parameter& e)
 			{

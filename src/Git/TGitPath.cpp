@@ -1682,7 +1682,7 @@ void CTGitPathList::DeleteAllFiles(bool bTrash, bool bFilesOnly, bool bShowError
 			if (!it->IsDirectory())
 				::SetFileAttributes(it->GetWinPath(), FILE_ATTRIBUTE_NORMAL);
 
-			sPaths += it->GetWinPath();
+			sPaths += it->GetWinPathString();
 			sPaths += L'\0';
 		}
 	}

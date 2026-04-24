@@ -1783,7 +1783,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		{
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
-			subgit.m_CurrentDir = fullMergePath.GetWinPath();
+			subgit.m_CurrentDir = fullMergePath.GetWinPathString();
 			subgit.GetHash(baseHash, L"HEAD");
 		}
 
@@ -1796,7 +1796,7 @@ bool CAppUtils::ConflictEdit(HWND hWnd, CTGitPath& path, bool bAlternativeTool /
 		{
 			CGit subgit;
 			subgit.m_IsUseGitDLL = false;
-			subgit.m_CurrentDir = fullMergePath.GetWinPath();
+			subgit.m_CurrentDir = fullMergePath.GetWinPathString();
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, localHash, baseOK, mineOK, changeTypeMine, baseSubject, mineSubject);
 			CGitDiff::GetSubmoduleChangeType(subgit, baseHash, remoteHash, baseOK, theirsOK, changeTypeTheirs, baseSubject, theirsSubject);
 		}

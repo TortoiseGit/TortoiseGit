@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2021, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ static bool CheckSpecialFolder(const CString& folder)
 
 bool CreateRepositoryCommand::Execute()
 {
-	CString folder = this->orgCmdLinePath.GetWinPath();
+	CString folder = orgCmdLinePath.GetWinPathString();
 	if (folder.IsEmpty())
 		folder = g_Git.m_CurrentDir;
 	if (folder.IsEmpty())
