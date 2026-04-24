@@ -1504,9 +1504,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
 		m_BufStart = 0;
-		m_Databuf.m_critSec.Lock();
-		m_Databuf.clear();
-		m_Databuf.m_critSec.Unlock();
+		m_Databuf.guardedClear();
 
 		m_bDone = true;
 		m_ctrlAnimate.Stop();

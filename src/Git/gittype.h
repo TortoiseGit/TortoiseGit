@@ -137,6 +137,12 @@ public:
 		__super::append(v);
 	}
 
+	void guardedClear()
+	{
+		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
+		__super::clear();
+	}
+
 	using CGitByteArray::begin;
 	using CGitByteArray::end;
 	using CGitByteArray::cbegin;

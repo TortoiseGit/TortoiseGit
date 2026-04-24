@@ -365,14 +365,11 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 
 		if (m_bBufferAll)
 		{
-			m_Databuf.m_critSec.Lock();
+			CAutoLocker lock{ m_Databuf.m_critSec };
 			m_Log.SetWindowText(Convert2UnionCode(std::string_view(m_Databuf.data(), m_Databuf.size())));
-			m_Databuf.m_critSec.Unlock();
 		}
 		m_BufStart = 0;
-		m_Databuf.m_critSec.Lock();
-		this->m_Databuf.clear();
-		m_Databuf.m_critSec.Unlock();
+		m_Databuf.guardedClear();
 
 		m_bDone = true;
 		m_Progress.SetPos(100);

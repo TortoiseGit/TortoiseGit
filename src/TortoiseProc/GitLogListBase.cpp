@@ -2750,21 +2750,16 @@ int CGitLogListBase::BeginFetchLog()
 		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 	}
 
-	g_Git.m_critGitDllSec.Lock();
+	CAutoLocker lock{ g_Git.m_critGitDllSec };
 	try {
 		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetUTF8(cmd)))
-		{
-			g_Git.m_critGitDllSec.Unlock();
 			return -1;
-		}
 	}
 	catch (const char* msg)
 	{
-		g_Git.m_critGitDllSec.Unlock();
 		::MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
-	g_Git.m_critGitDllSec.Unlock();
 
 	return 0;
 }

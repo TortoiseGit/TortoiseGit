@@ -2723,16 +2723,12 @@ int CGit::RefreshGitIndex()
 		{
 			g_Git.CheckAndInitDll();
 
-			int result = git_update_index();
-			git_exit_cleanup();
-			return result;
-
+			SCOPE_EXIT{ git_exit_cleanup(); };
+			return git_update_index();
 		}catch(...)
 		{
-			git_exit_cleanup();
-			return -1;
 		}
-
+		return -1;
 	}
 	else
 		return Run(L"git.exe update-index --refresh", nullptr, nullptr, CP_UTF8);
