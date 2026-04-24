@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2022-2024 - TortoiseGit
+// Copyright (C) 2008-2020, 2022-2024, 2026 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -107,7 +107,9 @@ public:
 	/**
 	* Launch alternative editor
 	*/
-	static bool LaunchAlternativeEditor(const CString& filename, bool uac = false);
+	static bool LaunchAlternativeEditor(const CString& filename);
+	static bool LaunchNotepad(const CString& filename, bool uac = false);
+	static bool IsAlternativeEditorConfigured(CString* editTool = nullptr);
 
 private:
 #endif

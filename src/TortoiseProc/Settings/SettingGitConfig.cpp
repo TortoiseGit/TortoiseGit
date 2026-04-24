@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2021, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2021, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -367,8 +367,7 @@ void CSettingGitConfig::OnBnClickedEditsystemgitconfig()
 		CMessageBox::Show(GetSafeHwnd(), IDS_PROC_GITCONFIG_NOMSYSGIT, IDS_APPNAME, MB_ICONERROR);
 		return;
 	}
-	// use alternative editor because of LineEndings
-	CAppUtils::LaunchAlternativeEditor(filename, true);
+	CAppUtils::LaunchNotepad(filename, true);
 }
 
 void CSettingGitConfig::OnBnClickedViewsystemgitconfig()

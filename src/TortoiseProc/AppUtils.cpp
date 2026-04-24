@@ -661,21 +661,36 @@ bool CAppUtils::LaunchPAgent(HWND hWnd, const CString* keyfile, const CString* p
 	return true;
 }
 
-bool CAppUtils::LaunchAlternativeEditor(const CString& filename, bool uac)
+bool CAppUtils::LaunchNotepad(const CString& filename, bool uac)
 {
-	CString editTool = CRegString(L"Software\\TortoiseGit\\AlternativeEditor");
-	if (editTool.IsEmpty() || CStringUtils::StartsWith(editTool, L"#"))
-	{
-		CComHeapPtr<WCHAR> pszPath;
-		if (SHGetKnownFolderPath(FOLDERID_System, KF_FLAG_DEFAULT, nullptr, &pszPath) != S_OK)
-			return false;
-		editTool = CString(pszPath) + L"\\notepad.exe";
-	}
+	CComHeapPtr<WCHAR> pszPath;
+	if (SHGetKnownFolderPath(FOLDERID_System, KF_FLAG_DEFAULT, nullptr, &pszPath) != S_OK)
+		return false;
+
+	CString sCmd;
+	sCmd.Format(L"\"%s\\notepad.exe\" \"%s\"", static_cast<LPCWSTR>(pszPath), static_cast<LPCWSTR>(filename));
+
+	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac).UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART));
+}
+
+bool CAppUtils::IsAlternativeEditorConfigured(CString* editTool /* = nullptr */)
+{
+	CString alternativeEditor = CRegString(L"Software\\TortoiseGit\\AlternativeEditor");
+	if (editTool)
+		*editTool = alternativeEditor;
+	return !alternativeEditor.IsEmpty() && !CStringUtils::StartsWith(alternativeEditor, L"#");
+}
+
+bool CAppUtils::LaunchAlternativeEditor(const CString& filename)
+{
+	CString editTool;
+	if (!IsAlternativeEditorConfigured(&editTool))
+		return LaunchNotepad(filename);
 
 	CString sCmd;
 	sCmd.Format(L"\"%s\" \"%s\"", static_cast<LPCWSTR>(editTool), static_cast<LPCWSTR>(filename));
 
-	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac).UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART));
+	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART));
 }
 
 bool CAppUtils::LaunchRemoteSetting()
