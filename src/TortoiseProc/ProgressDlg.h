@@ -146,6 +146,7 @@ private:
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 
 	CGitGuardedByteArray	m_Databuf;
+	static void				UpdateProgressFromLine(const CString& str, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel);
 	virtual CString Convert2UnionCode(std::string_view buff)
 	{
 		return CUnicodeUtils::GetUnicode(buff);

@@ -630,30 +630,34 @@ void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressct
 		}
 		log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 
-		const int s1 = str.ReverseFind(L':');
-		const int s2 = str.Find(L'%');
-		if (s1 > 0 && s2 > 0)
-		{
-			if (CurrentWork)
-				CurrentWork->SetWindowTextW(str.Left(s1));
-
-			const int pos = ParsePercentage(str, s2);
-			TRACE(L"Pos %d\r\n", pos);
-			if (pos > 0)
-			{
-				progressctrl.SetPos(pos);
-				if (m_pTaskbarList)
-				{
-					m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-					m_pTaskbarList->SetProgressValue(m_hWnd, pos, 100);
-				}
-			}
-		}
+		UpdateProgressFromLine(str, progressctrl, m_hWnd, m_pTaskbarList, CurrentWork);
 
 		oneline.Empty();
 	}
 	else
 		oneline += ch;
+}
+
+void CProgressDlg::UpdateProgressFromLine(const CString& str, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel)
+{
+	const int s1 = str.ReverseFind(L':');
+	const int s2 = str.Find(L'%');
+	if (s1 <= 0 || s2 <= 0)
+		return;
+
+	if (currentWorkLabel)
+		currentWorkLabel->SetWindowTextW(str.Left(s1));
+
+	const int pos = ParsePercentage(str, s2);
+	if (pos > 0)
+	{
+		progressctrl.SetPos(pos);
+		if (pTaskbarList)
+		{
+			pTaskbarList->SetProgressState(hWnd, TBPF_NORMAL);
+			pTaskbarList->SetProgressValue(hWnd, pos, 100);
+		}
+	}
 }
 // CProgressDlg message handlers
 
