@@ -209,6 +209,9 @@
     <ClInclude Include="..\..\src\TortoiseProc\LoglistUtils.h">
       <Filter>TortoiseProc</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\TortoiseProc\GitCliOutputParser.h">
+      <Filter>TortoiseProc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -443,6 +446,12 @@
       <Filter>TortoiseProc</Filter>
     </ClCompile>
     <ClCompile Include="TortoiseGitBlameDataTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\TortoiseProc\GitCliOutputParser.cpp">
+      <Filter>TortoiseProc</Filter>
+    </ClCompile>
+    <ClCompile Include="GitCliOutputParserTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

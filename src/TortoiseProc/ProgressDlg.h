@@ -22,6 +22,7 @@
 #include "Git.h"
 #include "MenuButton.h"
 #include "GestureEnabledControl.h"
+#include "GitCliOutputParser.h"
 
 #define MSG_PROGRESSDLG_UPDATE_UI	(WM_USER+121)
 
@@ -98,8 +99,6 @@ public:
 	CString					m_PreFailText;	// optional fail text to show in log window
 	bool					m_bShowCommand;	// whether to display the command in the log window (default true)
 	CString					m_LogFile;
-	bool					m_bBufferAll;	// Buffer All to improve speed when there are many file add at commit
-	int						m_iBufferAllImmediateLines; // When Buffer All is enabled, we might not get important oputput of git at the beginning, so, ignore buffer all for the first 10 lines...
 	GitProgressAutoClose	m_AutoClose;
 	CGit *					m_Git;
 
@@ -128,12 +127,8 @@ private:
 	static UINT				ProgressThreadEntry(LPVOID pVoid);
 	UINT					ProgressThread();
 
-	CStringA				m_LogTextA;
-
-	void					ParserCmdOutput(char ch);
-	static const int		s_iProgressLinesLimit;
-
 	LRESULT					OnProgressUpdateUI(WPARAM wParam,LPARAM lParam);
+	afx_msg void			OnTimer(UINT_PTR id);
 
 	afx_msg LRESULT			OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam);
 	CComPtr<ITaskbarList3>	m_pTaskbarList;
@@ -146,13 +141,9 @@ private:
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 
 	CGitGuardedByteArray	m_Databuf;
+	std::atomic<bool>		m_bDropMode = false;
+	CGitCliOutputParser		m_cliOutputParser;
 	static void				UpdateProgressFromLine(const CString& str, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel);
-	virtual CString Convert2UnionCode(std::string_view buff)
-	{
-		return CUnicodeUtils::GetUnicode(buff);
-	}
-
-		int						m_BufStart;
 
 	DECLARE_MESSAGE_MAP()
 
@@ -162,13 +153,13 @@ private:
 	static void	ClearESC(CString &str);
 
 public:
-	static void	ParserCmdOutput(CRichEditCtrl &log,CProgressCtrl &progressctrl,HWND m_hWnd,CComPtr<ITaskbarList3> m_pTaskbarList,
-									CStringA& oneline, char ch, CWnd* CurrentWork = nullptr);
+	static const int s_iSizeLimit;
+	static void UpdateCmdOutput(CGitGuardedByteArray& databuf, CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, std::atomic<bool>& dropMode, CWnd* currentWorkLabel = nullptr);
 
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
 	 */
-	static UINT RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& pdata, CGit* git = &g_Git);
+	static UINT RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& pdata, std::atomic<bool>& dropMode, CGit* git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 
@@ -188,14 +179,4 @@ private:
 	std::map<wchar_t, ACCELLERATOR>	m_accellerators;
 	HACCEL							m_hAccel;
 	LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
-};
-
-class CCommitProgressDlg:public CProgressDlg
-{
-public:
-	CCommitProgressDlg(CWnd* pParent = nullptr) : CProgressDlg(pParent)
-	{
-	}
-
-	CString Convert2UnionCode(std::string_view buff) override;
 };

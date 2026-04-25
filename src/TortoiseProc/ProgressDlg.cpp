@@ -36,11 +36,13 @@
 #include "StringUtils.h"
 #include <format>
 
+#define REFRESHTIMER 100
+
 // CProgressDlg dialog
 
 IMPLEMENT_DYNAMIC(CProgressDlg, CResizableStandAloneDialog)
 
-const int CProgressDlg::s_iProgressLinesLimit = max(50, static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\ProgressDlgLinesLimit", 50000)));
+const int CProgressDlg::s_iSizeLimit = max(16, std::min(static_cast<int>(CRegDWORD(L"Software\\TortoiseGit\\GitOutputLimitinKiB", 2 * 1024)), 100 * 1024)) * 1024;
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CResizableStandAloneDialog(CProgressDlg::IDD, pParent)
@@ -48,13 +50,11 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	, m_bAbort(false)
 	, m_bDone(false)
 	, m_startTick(GetTickCount64())
-	, m_BufStart(0)
 	, m_Git(&g_Git)
 	, m_hAccel(nullptr)
 	, m_pThread(nullptr)
-	, m_bBufferAll(false)
-	, m_iBufferAllImmediateLines(0)
 	, m_GitStatus(DWORD(-1))
+	, m_cliOutputParser(CProgressDlg::s_iSizeLimit)
 {
 	int autoClose = CRegDWORD(L"Software\\TortoiseGit\\AutoCloseGitProgress", 0);
 	CCmdLineParser parser(AfxGetApp()->m_lpCmdLine);
@@ -93,6 +93,7 @@ void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CProgressDlg, CResizableStandAloneDialog)
 	ON_WM_CLOSE()
+	ON_WM_TIMER()
 	ON_MESSAGE(MSG_PROGRESSDLG_UPDATE_UI, OnProgressUpdateUI)
 	ON_BN_CLICKED(IDOK, &CProgressDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_PROGRESS_BUTTON1, &CProgressDlg::OnBnClickedButton1)
@@ -195,7 +196,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& databuffer, CGit* git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& databuffer, std::atomic<bool>& dropMode, CGit* git)
 {
 	UINT ret = 0;
 
@@ -218,7 +219,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 
 	databuffer.clear();
 
-	for (size_t i = 0; i < cmdlist.size(); ++i)
+	for (size_t i = 0; i < cmdlist.size() && !*bAbort; ++i)
 	{
 		if (cmdlist[i].IsEmpty())
 			continue;
@@ -227,9 +228,9 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		{
 			CStringA str;
 			if (gitList.empty() || gitList.size() == 1 && gitList[0]->m_CurrentDir == git->m_CurrentDir)
-				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + cmdlist[i].Trim() + L"\r\n");
+				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\n" : L"") + cmdlist[i].Trim() + L"\n");
 			else
-				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\r\n" : L"") + gitList[i]->m_CurrentDir + L"\r\n" + cmdlist[i].Trim() + L"\r\n");
+				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\n" : L"") + gitList[i]->m_CurrentDir + L"\n" + cmdlist[i].Trim() + L"\n");
 			databuffer.guardedAppend(std::string_view(str, str.GetLength()));
 			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
@@ -250,40 +251,34 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		CAutoGeneralHandle piProcess(std::move(pi.hProcess));
 		CAutoGeneralHandle piThread(std::move(pi.hThread));
 		DWORD readnumber;
-		char lastByte = '\0';
 		char buffer[1024];
 		constexpr size_t MAX_LINE_LENGTH = 8 * 1024; // 8 KiB
 		size_t currentLineLength = 0;
 		bool skippingTruncatedLine = false;
+		constexpr size_t MAX_BUFFER_SIZE = 150 * 1024 * 1024; // 150 MiB
+		bool limit = false;
 		while (ReadFile(hRead, buffer, sizeof(buffer), &readnumber, nullptr))
 		{
-			bool foundNewLine = false;
+			if (dropMode || limit)
+				continue;
 
-			databuffer.m_critSec.Lock();
+			CAutoLocker lock{ databuffer.m_critSec };
 			for (DWORD j = 0; j < readnumber; ++j)
 			{
 				char byte = buffer[j];
 				if (byte == '\0')
 					byte = '\n';
 
-				const bool isLineBreak = (byte == '\r' || byte == '\n');
-				if (isLineBreak)
+				if (byte == '\r' || byte == '\n')
 				{
-					if (byte == '\n' && lastByte != '\r')
-						databuffer.push_back('\r');
 					databuffer.push_back(byte);
-
-					foundNewLine = true;
 					currentLineLength = 0;
 					skippingTruncatedLine = false;
-					lastByte = byte;
 					continue;
 				}
 
 				if (skippingTruncatedLine)
 					continue;
-
-				lastByte = byte;
 
 				if (currentLineLength >= MAX_LINE_LENGTH)
 				{
@@ -296,13 +291,13 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				++currentLineLength;
 				continue;
 			}
-			databuffer.m_critSec.Unlock();
 
-			if (foundNewLine)
-				pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
+			if (databuffer.size() >= MAX_BUFFER_SIZE) // just a safeguard with an arbitrary large limit, we should never get there as in another thread we're processing the buffer in short intervals
+			{
+				limit = true;
+				databuffer.append(std::format("\n\n[Buffer truncated at about {} MiB to prevent resource exhaustion]\n", MAX_BUFFER_SIZE / 1024 / 1024));
+			}
 		}
-		EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
-
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCWSTR>(cmdlist[i]), *bAbort);
 
 		WaitForSingleObject(pi.hProcess, INFINITE);
@@ -337,7 +332,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename = &m_LogFile;
 
 	m_startTick = GetTickCount64();
-	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, m_Databuf, m_Git);
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, m_Databuf, m_bDropMode, m_Git);
 	return 0;
 }
 
@@ -345,8 +340,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam == MSG_PROGRESSDLG_START)
 	{
-		m_BufStart = 0;
-		m_iBufferAllImmediateLines = 0;
+		m_bDropMode = false;
 		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 			m_Animate.Play(0, INT_MAX, INT_MAX);
 		DialogEnableWindow(IDCANCEL, TRUE);
@@ -355,20 +349,17 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
 		}
+		SetTimer(REFRESHTIMER, 125, nullptr);
 		return 0;
 	}
 	if (wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		KillTimer(REFRESHTIMER);
+		UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode, &m_CurrentWork);
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": got message: %d\n", wParam);
 		ULONGLONG tickSpent = GetTickCount64() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
-		if (m_bBufferAll)
-		{
-			CAutoLocker lock{ m_Databuf.m_critSec };
-			m_Log.SetWindowText(Convert2UnionCode(std::string_view(m_Databuf.data(), m_Databuf.size())));
-		}
-		m_BufStart = 0;
 		m_Databuf.guardedClear();
 
 		m_bDone = true;
@@ -504,34 +495,15 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 		return 0;
 	}
 
-#define IMMEDIATELINES_LIMIT 10
-	if (!m_bBufferAll || m_iBufferAllImmediateLines < IMMEDIATELINES_LIMIT)
-	{
-		m_Databuf.m_critSec.Lock();
-		for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
-		{
-			const char c = this->m_Databuf[m_BufStart];
-			++m_BufStart;
-			m_Databuf.m_critSec.Unlock();
-			ParserCmdOutput(c);
-			if (m_bBufferAll && (c == '\r' || c == '\n'))
-			{
-				++m_iBufferAllImmediateLines;
-				if (m_iBufferAllImmediateLines >= IMMEDIATELINES_LIMIT)
-					return 0;
-			}
-
-			m_Databuf.m_critSec.Lock();
-		}
-
-		if (m_BufStart > 1000)
-		{
-			m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
-			m_BufStart = 0;
-		}
-		m_Databuf.m_critSec.Unlock();
-	}
 	return 0;
+}
+
+void CProgressDlg::OnTimer(UINT_PTR id)
+{
+	if (id == REFRESHTIMER)
+		UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode, &m_CurrentWork);
+
+	__super::OnTimer(id);
 }
 
 //static function, Share with SyncDialog
@@ -548,10 +520,6 @@ int CProgressDlg::ParsePercentage(const CString& log, int s1)
 	return _wtol(log.Mid(s2, s1 - s2));
 }
 
-void CProgressDlg::ParserCmdOutput(char ch)
-{
-	ParserCmdOutput(this->m_Log, this->m_Progress, this->m_hWnd, this->m_pTaskbarList, this->m_LogTextA, ch, &this->m_CurrentWork);
-}
 void CProgressDlg::ClearESC(CString& str)
 {
 	// see http://ascii-table.com/ansi-escape-sequences.php and http://tldp.org/HOWTO/Bash-Prompt-HOWTO/c327.html
@@ -591,51 +559,81 @@ void CProgressDlg::ClearESC(CString& str)
 		break;
 	}
 }
-void CProgressDlg::ParserCmdOutput(CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND m_hWnd, CComPtr<ITaskbarList3> m_pTaskbarList, CStringA& oneline, char ch, CWnd* CurrentWork)
+
+void CProgressDlg::UpdateCmdOutput(CGitGuardedByteArray& databuf, CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, std::atomic<bool>& dropMode, CWnd* currentWorkLabel)
 {
-	//TRACE(L"%c",ch);
-	if (ch == ('\r') || ch == ('\n'))
+	if (dropMode)
+		return;
+
+	EmittedLines out;
 	{
-		CString str = CUnicodeUtils::GetUnicode(oneline);
+		CAutoLocker lock{ databuf.m_critSec };
+		out = cliOutputParser.Process({ databuf.data(), databuf.size() });
+		databuf.clear();
+	}
 
-		//		TRACE(L"End Char %s \r\n", ch == L'\r' ? L"lf" : L"");
-		//		TRACE(L"End Char %s \r\n", ch == L'\n' ? L"cr" : L"");
+	if (out.text.empty() && !out.erasePreviousLineWithLength)
+		return;
 
-		const int lines = log.GetLineCount();
-		//		TRACE(L"%s", str);
-
-		ClearESC(str);
-
-		if (ch == ('\r'))
+	const int currentLength = log.GetWindowTextLength();
+	if (currentLength > 0 && out.erasePreviousLineWithLength)
+	{
+		const int lineCount = log.GetLineCount();
+		if (lineCount > 0)
 		{
-			const int start = log.LineIndex(lines - 1);
-			log.SetSel(start, std::min(static_cast<int>(log.GetTextLength()), start + str.GetLength()));
-			log.ReplaceSel(str);
+			const int start = log.LineIndex(lineCount - 1);
+			log.SetSel(start, currentLength);
 		}
 		else
-		{
-			const int length = log.GetWindowTextLength();
-			log.SetSel(length, length);
-			if (length > 0)
-				log.ReplaceSel(L"\r\n" + str);
-			else
-				log.ReplaceSel(str);
-		}
-
-		if (lines > s_iProgressLinesLimit) //limited log length
-		{
-			const int end = log.LineIndex(1);
-			log.SetSel(0, end);
-			log.ReplaceSel(L"");
-		}
-		log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
-
-		UpdateProgressFromLine(str, progressctrl, m_hWnd, m_pTaskbarList, CurrentWork);
-
-		oneline.Empty();
+			log.SetSel(0, 0);
 	}
 	else
-		oneline += ch;
+		log.SetSel(currentLength, currentLength);
+
+	CString str = CUnicodeUtils::GetUnicode(out.text);
+	if (currentLength == 0 && g_Git.m_LogEncode != CP_UTF8 && !out.text.empty() && out.text[0] == '[')
+	{
+		size_t start = 0;
+		// git.exe commit output begins with "[BRANCH] SUBJECT" whereas SUBJECT is encoded using m_LogEncode
+		for (size_t i = 0; i < out.text.length(); ++i)
+		{
+			if (out.text[i] == ']')
+				start = i;
+			else if (start > 0 && out.text[i] == '\n')
+			{
+				start = i;
+				break;
+			}
+		}
+
+		std::string_view buff = out.text;
+		str = CUnicodeUtils::GetUnicode(buff.substr(0, start), g_Git.m_LogEncode);
+		buff.remove_prefix(start);
+		CGit::StringAppend(str, buff);
+	}
+	ClearESC(str);
+	log.ReplaceSel(str);
+	log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+	UpdateProgressFromLine(str, progressctrl, hWnd, pTaskbarList, currentWorkLabel);
+
+	if (out.limited || currentLength + str.GetLength() >= CProgressDlg::s_iSizeLimit)
+	{
+		dropMode = true;
+		databuf.guardedClear();
+
+		const int newLength = log.GetWindowTextLength();
+		str.Format(L"[Output truncated at about %d KiB]", newLength / 1024);
+		log.SetSel(newLength, newLength);
+		log.ReplaceSel(L"\n\n...\n" + str);
+
+		if (currentWorkLabel)
+			currentWorkLabel->SetWindowTextW(str);
+
+		log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
+
+		if (pTaskbarList)
+			pTaskbarList->SetProgressState(hWnd, TBPF_INDETERMINATE);
+	}
 }
 
 void CProgressDlg::UpdateProgressFromLine(const CString& str, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel)
@@ -793,35 +791,6 @@ void CProgressDlg::InsertColorText(CRichEditCtrl& edit, const CString& text, COL
 	edit.SetSelectionCharFormat(cf);
 	edit.SetSel(edit.GetTextLength(), edit.GetTextLength());
 	edit.SetDefaultCharFormat(old);
-}
-
-CString CCommitProgressDlg::Convert2UnionCode(std::string_view buff)
-{
-	CString str;
-	if (g_Git.m_LogEncode != CP_UTF8)
-	{
-		size_t start = 0;
-		// git.exe commit output begings with "[BRANCH] SUBJECT" whereas SUBJECT is encoded using m_LogEncode
-		for (size_t i = 0; i < buff.length(); ++i)
-		{
-			if (buff[i] == ']')
-				start = i;
-			else if (start > 0 && buff[i] == '\n')
-			{
-				start = i;
-				break;
-			}
-		}
-
-		CGit::StringAppend(str, buff.substr(0, start), g_Git.m_LogEncode);
-		buff.remove_prefix(start);
-	}
-
-	CGit::StringAppend(str, buff);
-
-	ClearESC(str);
-
-	return str;
 }
 
 LRESULT CProgressDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)

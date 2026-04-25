@@ -897,8 +897,7 @@ void CCommitDlg::OnOK()
 		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
 		cmd.Format(L"git.exe commit %s %s %s %s -F %s", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
 
-		CCommitProgressDlg progress;
-		progress.m_bBufferAll=true; // improve show speed when there are many file added.
+		CProgressDlg progress;
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window

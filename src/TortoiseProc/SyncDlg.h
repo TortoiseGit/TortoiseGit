@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2012-2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2009, 2012-2020, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -30,6 +30,7 @@
 #include "SyncTabCtrl.h"
 #include "GestureEnabledControl.h"
 #include "GitStatusListCtrl.h"
+#include "GitCliOutputParser.h"
 
 // CSyncDlg dialog
 #define IDC_SYNC_TAB 0x1000000
@@ -118,9 +119,8 @@ protected:
 
 	volatile LONG		m_bBlock = 0;
 	CGitGuardedByteArray	m_Databuf;
-	int					m_BufStart = 0;
-
-	void				ParserCmdOutput(char ch);
+	std::atomic<bool>	m_bDropMode = false;
+	CGitCliOutputParser	m_cliOutputParser;
 
 	virtual void LocalBranchChange() override { FetchOutList(); };
 	virtual void RemoteBranchChange() override {};

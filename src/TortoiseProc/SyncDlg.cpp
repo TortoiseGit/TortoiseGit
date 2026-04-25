@@ -37,12 +37,15 @@
 
 IMPLEMENT_DYNAMIC(CSyncDlg, CResizableStandAloneDialog)
 
+#define REFRESHTIMER 100
+
 CSyncDlg::CSyncDlg(CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CSyncDlg::IDD, pParent)
 , CBranchCombox(L"sync")
 , m_bAutoLoadPuttyKey(CAppUtils::IsSSHPutty())
 , m_bForce(BST_UNCHECKED)
 , m_startTick(GetTickCount64())
+, m_cliOutputParser(CProgressDlg::s_iSizeLimit)
 {
 	m_pTooltip = &m_tooltips;
 }
@@ -1479,7 +1482,7 @@ UINT CSyncDlg::ProgressThread()
 	m_startTick = GetTickCount64();
 	m_bDone = false;
 	STRING_VECTOR list;
-	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, &this->m_bAbort, m_Databuf);
+	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, &m_bAbort, m_Databuf, m_bDropMode);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
@@ -1490,7 +1493,7 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		return 0;
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
-		m_BufStart = 0;
+		m_bDropMode = false;
 		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 			m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 		this->m_ctrlProgress.SetPos(0);
@@ -1499,15 +1502,18 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 			m_pTaskbarList->SetProgressValue(m_hWnd, 0, 100);
 		}
+		SetTimer(REFRESHTIMER, 125, nullptr);
 		return 0;
 	}
 
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
+		KillTimer(REFRESHTIMER);
+		CProgressDlg::UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode);
+
 		ULONGLONG tickSpent = GetTickCount64() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
-		m_BufStart = 0;
 		m_Databuf.guardedClear();
 
 		m_bDone = true;
@@ -1554,24 +1560,6 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		RunPostAction();
 		return 0;
 	}
-
-	m_Databuf.m_critSec.Lock();
-	for (size_t i = m_BufStart; i < m_Databuf.size(); ++i)
-	{
-		const char c = m_Databuf[m_BufStart];
-		++m_BufStart;
-		m_Databuf.m_critSec.Unlock();
-		ParserCmdOutput(c);
-		m_Databuf.m_critSec.Lock();
-	}
-
-	if (m_BufStart > 1000)
-	{
-		m_Databuf.erase(m_Databuf.cbegin(), m_Databuf.cbegin() + m_BufStart);
-		m_BufStart = 0;
-	}
-	m_Databuf.m_critSec.Unlock();
-
 	return 0;
 }
 
@@ -1695,12 +1683,7 @@ void CSyncDlg::RunPostAction()
 		ShowTab(IDC_REFLIST);
 	}
 }
-void CSyncDlg::ParserCmdOutput(char ch)
-{
-	if (m_bAbort)
-		return;
-	CProgressDlg::ParserCmdOutput(m_ctrlCmdOut,m_ctrlProgress,m_hWnd,m_pTaskbarList,m_LogText,ch);
-}
+
 void CSyncDlg::OnBnClickedButtonCommit()
 {
 	CString cmd = L"/command:commit";
@@ -1868,6 +1851,9 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 		this->FetchOutList(true);
 		m_ctrlTabCtrl.ShowTab(IDC_TAGCOMPARELIST - 1, false);
 	}
+
+	if (nIDEvent == REFRESHTIMER)
+		CProgressDlg::UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode);
 }
 
 LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)

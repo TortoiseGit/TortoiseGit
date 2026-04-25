@@ -1049,6 +1049,9 @@
     <ClCompile Include="..\Utils\LangDll.cpp">
       <Filter>Utils\General</Filter>
     </ClCompile>
+    <ClCompile Include="GitCliOutputParser.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -1986,6 +1989,9 @@
     </ClInclude>
     <ClInclude Include="..\Utils\LangDll.h">
       <Filter>Utils\General</Filter>
+    </ClInclude>
+    <ClInclude Include="GitCliOutputParser.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

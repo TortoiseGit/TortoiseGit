@@ -1,0 +1,10 @@
+Cloning into 'veracrypt'...
+POST git-upload-pack (193 bytes)
+POST git-upload-pack (gzip 3020 to 1429 bytes)
+remote: Enumerating objects: 39510, done.        
+remote: Counting objects: 100% (231/231), done.        
+remote: Compressing objects: 100% (148/148), done.        
+remote: Total 39510 (delta 137), reused 91 (delta 82), pack-reused 39279 (from 3)        
+Receiving objects: 100% (39510/39510), 511.13 MiB | 31.33 MiB/s, done.
+Resolving deltas: 100% (31478/31478), done.
+Updating files: 100% (1687/1687), done.
