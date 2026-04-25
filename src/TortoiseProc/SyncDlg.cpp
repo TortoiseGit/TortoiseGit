@@ -765,7 +765,11 @@ void CSyncDlg::OnBnClickedButtonPush()
 			taskdlg.SetDefaultCommandControl(101);
 			taskdlg.SetMainIcon(TD_ERROR_ICON);
 			if (taskdlg.DoModal(GetSafeHwnd()) != 102)
+			{
+				SwitchToInput();
+				EnableControlButton();
 				return;
+			}
 		}
 	}
 
