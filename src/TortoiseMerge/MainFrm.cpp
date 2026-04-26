@@ -2913,7 +2913,7 @@ void CMainFrame::OnEditCreateunifieddifffile()
 		return;
 
 	CString outputFile;
-	if(!TryGetFileName(outputFile))
+	if (!CCommonAppUtils::FileOpenSave(outputFile, nullptr, IDS_SAVEASTITLE, IDS_PATCHFILEFILTER, false, m_hWnd, L"diff"))
 		return;
 
 	CRegStdDWORD regContextLines(L"Software\\TortoiseGitMerge\\ContextLines", static_cast<DWORD>(-1));
