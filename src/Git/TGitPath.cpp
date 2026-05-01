@@ -1016,7 +1016,6 @@ int CTGitPathList::ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int a
 	size_t pos = 0;
 	const size_t end = out.size();
 	CTGitPath path;
-	CString pathstring;
 	if (clear)
 		Clear();
 	while (pos < end)
@@ -1025,8 +1024,7 @@ int CTGitPathList::ParserFromLsFileSimple(const BYTE_VECTOR& out, unsigned int a
 		if (endOfLine == CGitByteArray::npos || endOfLine == pos || endOfLine - pos >= INT_MAX)
 			return -1;
 
-		pathstring.Empty();
-		CGit::StringAppend(pathstring, std::string_view(&out[pos], endOfLine - pos));
+		CString pathstring = CUnicodeUtils::GetUnicode(std::string_view(&out[pos], endOfLine - pos));
 		// SetFromGit resets the path
 		if (CStringUtils::EndsWith(pathstring, L'/'))
 		{
@@ -1050,7 +1048,6 @@ int CTGitPathList::ParserFromLsFile(const BYTE_VECTOR& out)
 	size_t pos = 0;
 	const size_t end = out.size();
 	CTGitPath path;
-	CString pathstring;
 	this->Clear();
 	while (pos < end)
 	{
@@ -1083,8 +1080,7 @@ int CTGitPathList::ParserFromLsFile(const BYTE_VECTOR& out)
 		const size_t fileNameEnd = out.find(0, pos);
 		if (fileNameEnd == CGitByteArray::npos || fileNameEnd == pos || pos - lineStart != strlen("H 100644 ") + 2 * GIT_HASH_SIZE + strlen(" 0\t")) // <tag> <mode> <object> <stage>\t<file>
 			return -1;
-		pathstring.Empty();
-		CGit::StringAppend(pathstring, std::string_view(&out[pos], fileNameEnd - pos));
+		CString pathstring = CUnicodeUtils::GetUnicode(std::string_view(&out[pos], fileNameEnd - pos));
 		// SetFromGit resets the path
 		path.SetFromGit(pathstring, (strtol(&out[modestart], nullptr, 8) & S_IFDIR) == S_IFDIR);
 		if (strtol(&out[stagestart], nullptr, 10) != 0)
@@ -1272,10 +1268,6 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 	size_t pos = 0;
 	CTGitPath path;
 	m_Action=0;
-	CString StatAdd;
-	CString StatDel;
-	CString pathname1;
-	CString pathname2;
 
 	const size_t logend = log.size();
 	while (pos < logend)
@@ -1312,21 +1304,20 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 				return -1;
 			++pos;
 
-			pathname2.Empty();
+			CString pathname2;
 			if (log[statusStart] == 'C' || log[statusStart] == 'R')
 			{
 				const size_t filenameEnd = log.find('\0', pos);
 				if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 					return -1;
 				// old filename before rename
-				CGit::StringAppend(pathname2, std::string_view(&log[pos], filenameEnd - pos));
+				pathname2 = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], filenameEnd - pos));
 				pos = filenameEnd + 1;
 			}
 			const size_t filenameEnd = log.find('\0', pos);
 			if (filenameEnd == BYTE_VECTOR::npos || pos == filenameEnd || filenameEnd - pos >= INT_MAX)
 				return -1;
-			pathname1.Empty();
-			CGit::StringAppend(pathname1, std::string_view(&log[pos], filenameEnd - pos));
+			CString pathname1 = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], filenameEnd - pos));
 			pos = filenameEnd + 1;
 
 			if (const auto existing = duplicateMap.find(pathname1); existing != duplicateMap.end())
@@ -1373,36 +1364,33 @@ int CTGitPathList::ParserFromLog(const BYTE_VECTOR& log)
 			if (tabstart == BYTE_VECTOR::npos || tabstart - pos >= INT_MAX)
 				return -1;
 
-			StatAdd.Empty();
-			CGit::StringAppend(StatAdd, std::string_view(&log[pos], tabstart - pos));
+			CString StatAdd = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], tabstart - pos));
 			pos = tabstart + 1;
 
 			tabstart = log.find('\t', pos); // find end of second number (removed lines)
 			if (tabstart == BYTE_VECTOR::npos || tabstart - pos >= INT_MAX)
 				return -1;
 
-			StatDel.Empty();
-			CGit::StringAppend(StatDel, std::string_view(&log[pos], tabstart - pos));
+			CString StatDel = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], tabstart - pos));
 			pos = tabstart + 1;
 
 			if (pos >= logend)
 				return -1;
 
-			pathname2.Empty();
+			CString pathname2;
 			if (log[pos] == '\0') // rename which holds an "old" pathname
 			{
 				++pos;
 				const size_t endPathname = log.find('\0', pos);
 				if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 					return -1;
-				CGit::StringAppend(pathname2, std::string_view(&log[pos], endPathname - pos));
+				pathname2 = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], endPathname - pos));
 				pos = endPathname + 1;
 			}
 			const size_t endPathname = log.find('\0', pos);
 			if (endPathname == BYTE_VECTOR::npos || pos == endPathname || endPathname - pos >= INT_MAX)
 				return -1;
-			pathname1.Empty();
-			CGit::StringAppend(pathname1, std::string_view(&log[pos], endPathname - pos));
+			CString pathname1 = CUnicodeUtils::GetUnicode(std::string_view(&log[pos], endPathname - pos));
 			pos = endPathname + 1;
 
 			// SetFromGit resets the path

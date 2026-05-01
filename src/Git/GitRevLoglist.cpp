@@ -356,28 +356,22 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 		isRoot = false;
 
 		CTGitPath path;
-		CString strnewname;
-		CString stroldname;
-
 		for (int j = 0; j < count; ++j)
 		{
 			char* newname;
 			char* oldname;
 
-			strnewname.Empty();
-			stroldname.Empty();
-
 			char status;
 			int isBin, inc, dec, isDir;
 			git_get_diff_file(git->GetGitDiff(), file, j, &newname, &oldname, &isDir, &status, &isBin, &inc, &dec);
 
-			CGit::StringAppend(strnewname, newname, CP_UTF8);
+			CString strnewname = CUnicodeUtils::GetUnicode(newname);
 			// SetFromGit resets the path
 			if (strcmp(newname, oldname) == 0)
 				path.SetFromGit(strnewname, isDir != FALSE);
 			else
 			{
-				CGit::StringAppend(stroldname, oldname, CP_UTF8);
+				CString stroldname = CUnicodeUtils::GetUnicode(oldname);
 				path.SetFromGit(strnewname, &stroldname, &isDir);
 			}
 			path.ParseAndUpdateStatus(status);
