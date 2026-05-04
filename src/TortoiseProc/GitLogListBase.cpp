@@ -2751,12 +2751,16 @@ int CGitLogListBase::BeginFetchLog()
 	}
 
 	CAutoLocker lock{ g_Git.m_critGitDllSec };
-	try {
+	try
+	{
+		m_DllGitLog = nullptr;
 		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetUTF8(cmd)))
 			return -1;
 	}
 	catch (const char* msg)
 	{
+		git_close_log(m_DllGitLog, 0);
+		m_DllGitLog = nullptr;
 		::MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}

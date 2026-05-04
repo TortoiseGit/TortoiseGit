@@ -412,6 +412,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	}
 
 	memset(p_Rev,0,sizeof(struct rev_info));
+	*handle = p_Rev; // set this before an exception may be thrown in gitdll so that we don't leak memory
 
 	ref_store_release_and_clear(the_repository);
 	clear_ref_decorations();
@@ -425,7 +426,6 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 	cmd_log_init_tgit(argc, argv, g_prefix, p_Rev, &opt);
 
 	p_Rev->pPrivate = argv;
-	*handle = p_Rev;
 	return 0;
 
 }
