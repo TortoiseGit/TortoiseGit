@@ -312,72 +312,12 @@ int git_free_commit(GIT_COMMIT *commit)
 	return 0;
 }
 
-static char** strtoargv(const char* arg, int* size)
-{
-	int count=0;
-	const char* parg = arg;
-	char **argv;
-	char* p;
-	int i=0;
-
-	assert(arg && parg);
-
-	while (*parg)
-	{
-		if (*parg == ' ')
-			++count;
-		assert(*parg != '\\' && "no backslashes allowed, use a Git path (with slashes) - no escaping of chars possible");
-		++parg;
-	}
-
-	argv = malloc(strlen(arg) + 2 + (count + 3) * sizeof(char*)); // 1 char* for every parameter + 1 for argv[0] + 1 NULL as end; and some space for the actual parameters: strlen() + 1 for \0, + 1 for \0 for argv[0]
-	if (!argv)
-		return NULL;
-	p = (char*)(argv + count + 3);
-
-	argv[i++] = p;
-	*p++ = '\0';
-
-	parg = arg;
-	while (*parg)
-	{
-		if (*parg != ' ')
-		{
-			char space=' ';
-			argv[i]=p;
-
-			while (*parg)
-			{
-				if (*parg == '"')
-				{
-					++parg;
-					if(space == ' ')
-						space = '"';
-					else
-						space = ' ';
-				}
-				if (*parg == space || !*parg)
-					break;
-
-				*p++ = *parg++;
-			}
-			++i;
-			*p++=0;
-		}
-		if (!*parg)
-			break;
-		++parg;
-	}
-	argv[i]=NULL;
-	*size = i;
-	return argv;
-}
-int git_open_log(GIT_LOG* handle, const char* arg)
+int git_open_log(GIT_LOG* handle, int argc, const char** argv)
 {
 	struct rev_info *p_Rev;
-	char ** argv=0;
-	int argc=0;
 	struct setup_revision_opt opt;
+
+	assert(argc && argv);
 
 	/* clear flags */
 	const unsigned int obj_size = get_max_object_index(the_repository);
@@ -400,16 +340,9 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 		}
 	}
 
-	argv = strtoargv(arg, &argc);
-	if (!argv)
-		return -1;
-
 	p_Rev = malloc(sizeof(struct rev_info));
-	if (p_Rev == NULL)
-	{
-		free(argv);
+	if (!p_Rev)
 		return -1;
-	}
 
 	memset(p_Rev,0,sizeof(struct rev_info));
 	*handle = p_Rev; // set this before an exception may be thrown in gitdll so that we don't leak memory
@@ -425,7 +358,7 @@ int git_open_log(GIT_LOG* handle, const char* arg)
 
 	cmd_log_init_tgit(argc, argv, g_prefix, p_Rev, &opt);
 
-	p_Rev->pPrivate = argv;
+	p_Rev->pPrivate = argv; // set last, so if an exception is thrown in gitdll it will not get freed twice
 	return 0;
 
 }
@@ -506,42 +439,31 @@ int git_close_log(GIT_LOG handle, int releaseRevsisions)
 	return 0;
 }
 
-int git_open_diff(GIT_DIFF* diff, const char* arg)
+int git_open_diff(GIT_DIFF* diff, int argc, const char** argv)
 {
 	struct rev_info *p_Rev;
-	char ** argv=0;
-	int argc=0;
 
-	argv = strtoargv(arg, &argc);
-	if (!argv)
-		return -1;
+	assert(argc && argv);
 
 	p_Rev = malloc(sizeof(struct rev_info));
 	if (!p_Rev)
 		return -1;
 	memset(p_Rev,0,sizeof(struct rev_info));
 
-	p_Rev->pPrivate = argv;
 	*diff = (GIT_DIFF)p_Rev;
 
 	repo_init_revisions(the_repository, p_Rev, g_prefix);
 	repo_config(the_repository, git_diff_basic_config, NULL); /* no "diff" UI options */
 	p_Rev->abbrev = 0;
 	p_Rev->diff = 1;
-	argc = setup_revisions(argc, argv, p_Rev, NULL);
+	setup_revisions(argc, argv, p_Rev, NULL);
 
 	return 0;
 }
 int git_close_diff(GIT_DIFF handle)
 {
 	git_diff_flush(handle);
-	if(handle)
-	{
-		struct rev_info *p_Rev;
-		p_Rev=(struct rev_info *)handle;
-		free(p_Rev->pPrivate);
-		free(handle);
-	}
+	free(handle);
 	return 0;
 }
 int git_diff_flush(GIT_DIFF diff)
@@ -744,19 +666,14 @@ int git_get_notes(const GIT_HASH hash, char** p_note)
 
 int git_update_index(void)
 {
-	char** argv = NULL;
-	int argc = 0;
+	const char* argv[] = { "", "-q", "--refresh" };
+	const int argc = sizeof(argv) / sizeof(*argv);
 	int ret;
-
-	argv = strtoargv("-q --refresh", &argc);
-	if (!argv)
-		return -1;
 
 	cleanup_chdir_notify();
 	drop_all_attr_stacks();
 
 	ret = cmd_update_index(argc, argv, NULL, the_repository);
-	free(argv);
 
 	discard_index(the_repository->index);
 	odb_close_tgit(the_repository->objects);

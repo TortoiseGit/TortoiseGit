@@ -2720,7 +2720,7 @@ int CGitLogListBase::BeginFetchLog()
 	if (mask & CGit::LOG_INFO_FOLLOW)
 		mask &= ~(CGit::LOG_INFO_ALL_BRANCH | CGit::LOG_INFO_BASIC_REFS | CGit::LOG_INFO_LOCAL_BRANCHES);
 
-	CString cmd = g_Git.GetLogCmd(range, path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
+	std::vector<std::string> cmd = g_Git.GetLogCmd(range, path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 
 	PostMessage(LVM_SETITEMCOUNT, m_logEntries.size(), LVSICF_NOINVALIDATEALL);
 
@@ -2753,9 +2753,11 @@ int CGitLogListBase::BeginFetchLog()
 	CAutoLocker lock{ g_Git.m_critGitDllSec };
 	try
 	{
+		auto argvData = CGit::VectorToARGV(cmd);
 		m_DllGitLog = nullptr;
-		if (git_open_log(&m_DllGitLog, CUnicodeUtils::GetUTF8(cmd)))
+		if (!argvData || git_open_log(&m_DllGitLog, argvData.argc, argvData.argv))
 			return -1;
+		argvData.argv = nullptr; // now we know it'll be freed by git_close_log()
 	}
 	catch (const char* msg)
 	{

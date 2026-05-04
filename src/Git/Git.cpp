@@ -1000,74 +1000,128 @@ int CGit::GetCurrentBranchFromFile(const CString &sProjectRoot, CString &sBranch
 	return 0;
 }
 
-CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterData* Filter, int logOrderBy)
+CGit::ArgvData CGit::VectorToARGV(const std::vector<std::string>& args)
 {
-	CString param;
+	if (args.size() >= INT_MAX - 1)
+		return {};
+
+	const int argc = static_cast<int>(args.size()) + 1; // +1 because argv[0] is also needed
+
+	size_t stringBytes = 1; // argv[0] empty string: '\0'
+	for (const auto& arg : args)
+	{
+		if (arg.size() >= INT_MAX)
+			return {};
+		if (SizeTAdd(stringBytes, arg.size() + 1, &stringBytes) != S_OK)
+			return {};
+	}
+
+	size_t pointerBytes;
+	if (SizeTMult(argc + 1, sizeof(char*), &pointerBytes) != S_OK) // +1 because argv is null-terminated
+		return {};
+
+	size_t sizeToAlloc;
+	if (SizeTAdd(pointerBytes, stringBytes, &sizeToAlloc) != S_OK)
+		return {};
+	const char** argv = static_cast<const char**>(std::malloc(sizeToAlloc));
+	if (!argv)
+		return {};
+
+	char* p = reinterpret_cast<char*>(argv + argc + 1);
+
+	int i = 0;
+	// argv[0] = empty string
+	argv[i++] = p;
+	*p++ = '\0';
+
+	for (const auto& arg : args)
+	{
+		argv[i++] = p;
+
+		std::memcpy(p, arg.c_str(), arg.size());
+		p += arg.size();
+
+		*p++ = '\0';
+	}
+
+	argv[i] = nullptr;
+
+	return { i, argv };
+}
+
+std::vector<std::string> CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterData* Filter, const int logOrderBy)
+{
+	std::vector<std::string> params;
+
+	params.push_back("-z");
 
 	if(mask& LOG_INFO_STAT )
-		param += L" --numstat";
+		params.push_back("--numstat");
 	if(mask& LOG_INFO_FILESTATE)
-		param += L" --raw";
+		params.push_back("--raw");
 
 	if(mask& LOG_INFO_BOUNDARY)
-		param += L" --left-right --boundary";
+	{
+		params.push_back("--left-right");
+		params.push_back("--boundary");
+	}
 
 	if(mask& CGit::LOG_INFO_ALL_BRANCH)
 	{
-		param += L" --all";
+		params.push_back("--all");
 		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) == 0)
 			range.Empty();
 	}
 
 	if (mask& CGit::LOG_INFO_BASIC_REFS)
 	{
-		param += L" --branches";
-		param += L" --tags";
-		param += L" --remotes";
-		param += L" --glob=stas[h]"; // require at least one glob operator
-		param += L" --glob=bisect";
+		params.push_back("--branches");
+		params.push_back("--tags");
+		params.push_back("--remotes");
+		params.push_back("--glob=stas[h]"); // require at least one glob operator
+		params.push_back("--glob=bisect");
 		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) == 0)
 			range.Empty();
 	}
 
 	if(mask & CGit::LOG_INFO_LOCAL_BRANCHES)
 	{
-		param += L" --branches";
+		params.push_back("--branches");
 		if ((mask & LOG_INFO_ALWAYS_APPLY_RANGE) == 0)
 			range.Empty();
 	}
 
 	if(mask& CGit::LOG_INFO_DETECT_COPYRENAME)
-		param.AppendFormat(L" -C%d%%", ms_iSimilarityIndexThreshold);
+		params.push_back(std::format("-C{}%", ms_iSimilarityIndexThreshold));
 
 	if(mask& CGit::LOG_INFO_DETECT_RENAME )
-		param.AppendFormat(L" -M%d%%", ms_iSimilarityIndexThreshold);
+		params.push_back(std::format("-M{}%", ms_iSimilarityIndexThreshold));
 
 	if(mask& CGit::LOG_INFO_FIRST_PARENT )
-		param += L" --first-parent";
+		params.push_back("--first-parent");
 
 	if(mask& CGit::LOG_INFO_NO_MERGE )
-		param += L" --no-merges";
+		params.push_back("--no-merges");
 
 	if (mask & CGit::LOG_INFO_FULL_HISTORY)
-		param += L" --full-history";
+		params.push_back("--full-history");
 	else
-		param += L" --parents"; // cf. issue #3728
+		params.push_back("--parents"); // cf. issue #3728
 
 	if(mask& CGit::LOG_INFO_FOLLOW)
-		param += L" --follow";
+		params.push_back("--follow");
 
 	if(mask& CGit::LOG_INFO_SHOW_MERGEDFILE)
-		param += L" -c";
+		params.push_back("-c");
 
 	if(mask& CGit::LOG_INFO_FULL_DIFF)
-		param += L" --full-diff";
+		params.push_back("--full-diff");
 
 	if(mask& CGit::LOG_INFO_SIMPILFY_BY_DECORATION)
-		param += L" --simplify-by-decoration";
+		params.push_back("--simplify-by-decoration");
 
 	if (mask & CGit::LOG_INFO_SPARSE)
-		param += L" --sparse";
+		params.push_back("--sparse");
 
 	if (Filter)
 	{
@@ -1092,48 +1146,49 @@ CString CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterD
 			Filter->m_From = static_cast<DWORD>(time.GetTime()) - (Filter->m_NumberOfLogs * substract);
 		}
 		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
-			param.AppendFormat(L" -n%ld", Filter->m_NumberOfLogs);
+			params.push_back(std::format("-n{}", Filter->m_NumberOfLogs));
 		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE  && Filter->m_From > 0)
-			param.AppendFormat(L" --max-age=%I64u", Filter->m_From);
+			params.push_back(std::format("--max-age={}", Filter->m_From));
 	}
 
 	if( Filter && (Filter->m_To != -1))
-		param.AppendFormat(L" --min-age=%I64u", Filter->m_To);
+		params.push_back(std::format("--min-age={}", Filter->m_To));
 
 	if (logOrderBy == LOG_ORDER_TOPOORDER || (mask & CGit::LOG_ORDER_TOPOORDER))
-		param += L" --topo-order";
+		params.push_back("--topo-order");
 	else if (logOrderBy == LOG_ORDER_DATEORDER)
-		param += L" --date-order";
+		params.push_back("--date-order");
 	else if (logOrderBy == LOG_ORDER_AUTHORDATEORDER)
-		param += L" --author-date-order";
+		params.push_back("--author-date-order");
 
-	CString cmd;
-	CString file;
+	params.push_back("--end-of-options");
+
+	if (!range.IsEmpty())
+	{
+		const int len = range.GetLength();
+		LPCWSTR data = range;
+		int i = 0;
+		while (i < len)
+		{
+			// skip leading whitespace
+			while (i < len && iswspace(data[i]))
+				++i;
+
+			const int start = i;
+			// read ref
+			while (i < len && !iswspace(data[i]))
+				++i;
+			if (start < i)
+				params.push_back(CUnicodeUtils::StdGetUTF8(std::wstring_view(data + start, i - start)));
+		}
+	}
+
+	params.push_back("--");
+
 	if (path)
-	{
-		try
-		{
-			file.Format(L" %s", static_cast<LPCWSTR>(CGit::QuoteParameter(path->GetGitPathString())));
-		}
-		catch (illegal_git_parameter& e)
-		{
-			::MessageBox(nullptr, L"Filter could not be applied. " + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
-		}
-	}
-	try
-	{
-		if (!range.IsEmpty())
-			std::ignore = CGit::QuoteParameter(range);
-	}
-	catch (illegal_git_parameter& e)
-	{
-		range = L"HEAD";
-		::MessageBox(nullptr, L"Range filter could not be applied. " + e.cause(), L"TortoiseGit", MB_OK | MB_ICONERROR);
-	}
-	// gitdll.dll:setup_revisions() only looks at args[1] and greater. To account for this, pass a dummy parameter in the 0th place
-	cmd.Format(L"-z%s --end-of-options %s --%s", static_cast<LPCWSTR>(param), static_cast<LPCWSTR>(range), static_cast<LPCWSTR>(file));
+		params.push_back(CUnicodeUtils::StdGetUTF8(std::wstring_view(path->GetGitPathString(), path->GetGitPathString().GetLength())));
 
-	return cmd;
+	return params;
 }
 #define BUFSIZE 512
 void GetTempPath(CString &path)

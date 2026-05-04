@@ -66,7 +66,7 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 		filter.m_NumberOfLogs = count;
 		filter.m_NumberOfLogsScale = CFilterData::SHOW_LAST_N_COMMITS;
 	}
-	CString cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter, m_logOrderBy);
+	std::vector<std::string> cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter, m_logOrderBy);
 
 	if (!g_Git.CanParseRev(gitrange))
 		return -1;
@@ -86,8 +86,10 @@ int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, 
 	try
 	{
 		CAutoLocker lock(g_Git.m_critGitDllSec);
-		if (git_open_log(&handle, CUnicodeUtils::GetUTF8(cmd)))
+		auto argvData = CGit::VectorToARGV(cmd);
+		if (!argvData || git_open_log(&handle, argvData.argc, argvData.argv))
 			return -1;
+		argvData.argv = nullptr; // now we know it'll be freed by git_close_log()
 	}
 	catch (const char* msg)
 	{

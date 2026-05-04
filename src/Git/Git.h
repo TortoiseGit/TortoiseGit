@@ -25,6 +25,7 @@
 #include <functional>
 #include "StringUtils.h"
 #include "PathUtils.h"
+#include <format>
 
 #define REG_MSYSGIT_PATH L"Software\\TortoiseGit\\MSysGit"
 #define REG_SYSTEM_GITCONFIGPATH L"Software\\TortoiseGit\\SystemConfig"
@@ -271,9 +272,11 @@ public:
 		else
 		{
 			// cf. GitRevLoglist::SafeFetchFullInfo
-			CStringA params;
-			params.Format("-C%d%% -M%d%% -r", ms_iSimilarityIndexThreshold, ms_iSimilarityIndexThreshold);
-			git_open_diff(&m_GitDiff, params);
+			static const std::string cParameter = std::format("-C{}%", ms_iSimilarityIndexThreshold);
+			static const std::string mParameter = std::format("-M{}%", ms_iSimilarityIndexThreshold);
+			static const char* argv[] = { "", cParameter.c_str(), mParameter.c_str(), "-r" };
+			const int argc = _countof(argv);
+			git_open_diff(&m_GitDiff, argc, argv);
 			return m_GitDiff;
 		}
 	}
@@ -287,7 +290,9 @@ public:
 			return m_GitSimpleListDiff;
 		else
 		{
-			git_open_diff(&m_GitSimpleListDiff, "-r");
+			const char* argv[] = { "", "-r" };
+			constexpr int argc = _countof(argv);
+			git_open_diff(&m_GitSimpleListDiff, argc, argv);
 			return m_GitSimpleListDiff;
 		}
 	}
@@ -516,7 +521,21 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	CString GetLogCmd(CString range, const CTGitPath* path, int InfoMask, CFilterData* filter, int logOrderBy);
+	static std::vector<std::string> GetLogCmd(CString range, const CTGitPath* path, int InfoMask, CFilterData* filter, const int logOrderBy);
+	struct ArgvData
+	{
+		int argc = 0;
+		const char** argv = nullptr;
+
+		ArgvData() = default;
+		ArgvData(int argc, const char** argv) : argc(argc), argv(argv) {}
+		~ArgvData() { std::free(argv); }
+		operator bool() const { return argv != nullptr; }
+
+		ArgvData(const ArgvData&) = delete;
+		ArgvData& operator=(const ArgvData&) = delete;
+	};
+	static ArgvData VectorToARGV(const std::vector<std::string>& args);
 
 	int GetHash(CGitHash &hash, const CString& friendname);
 	static int GetHash(git_repository * repo, CGitHash &hash, const CString& friendname, bool skipFastCheck = false);

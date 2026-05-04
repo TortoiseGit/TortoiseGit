@@ -95,7 +95,7 @@ GITDLL_API int git_get_sha1(const char *name, GIT_HASH sha1);
  */
 GITDLL_API int git_init(const LPWSTR* env);
 
-GITDLL_API int git_open_log(GIT_LOG* handle, const char* arg);
+GITDLL_API int git_open_log(GIT_LOG* handle, int argc, const char** argv);
 GITDLL_API int git_get_log_firstcommit(GIT_LOG handle);
 GITDLL_API int git_get_log_estimate_commit_count(GIT_LOG handle);
 
@@ -125,7 +125,7 @@ GITDLL_API int git_get_commit_next_parent(GIT_COMMIT_LIST *list, GIT_HASH hash);
 
 GITDLL_API int git_free_commit(GIT_COMMIT *commit);
 
-GITDLL_API int git_open_diff(GIT_DIFF* diff, const char* arg);
+GITDLL_API int git_open_diff(GIT_DIFF* diff, int argc, const char** argv);
 GITDLL_API int git_do_diff(GIT_DIFF diff, const GIT_HASH hash1, const GIT_HASH hash2, GIT_FILE* file, int* count, int isstat);
 GITDLL_API int git_root_diff(GIT_DIFF diff, const GIT_HASH hash, GIT_FILE* file, int* count, int isstat);
 GITDLL_API int git_diff_flush(GIT_DIFF diff);
