@@ -109,6 +109,9 @@ int GitRevLoglist::SafeGetSimpleList(CGit* git)
 
 	try
 	{
+		if (!git->GetGitSimpleListDiff())
+			return -1;
+
 		if (git_get_commit_from_hash(&commit, m_CommitHash.ToRaw()))
 			return -1;
 	}
@@ -341,6 +344,12 @@ int GitRevLoglist::SafeFetchFullInfo(CGit* git)
 
 		try
 		{
+			if (!git->GetGitDiff())
+			{
+				git_free_commit(&commit);
+				return -1;
+			}
+
 			if (isRoot)
 				git_root_diff(git->GetGitDiff(), m_CommitHash.ToRaw(), &file, &count, 1);
 			else
