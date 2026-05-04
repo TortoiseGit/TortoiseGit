@@ -72,7 +72,7 @@ extern int write_entry(struct cache_entry* ce, char* path, struct conv_attrs* ca
 extern void diff_flush_stat(struct diff_filepair* p, struct diff_options* o, struct diffstat_t* diffstat);
 extern void free_diffstat_info(struct diffstat_t* diffstat);
 static_assert(sizeof(unsigned long long) == sizeof(timestamp_t), "Required for each_reflog_ent_fn definition in gitdll.h");
-extern int for_each_reflog_ent(const char* refname, each_reflog_ent_fn fn, void* cb_data);
+extern int refs_for_each_reflog_ent(struct ref_store* refs, const char* refname, each_reflog_ent_fn fn, void* cb_data);
 extern void reset_setup(void);
 
 void dll_entry(void)
