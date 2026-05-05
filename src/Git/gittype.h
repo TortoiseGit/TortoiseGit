@@ -116,7 +116,6 @@ public:
 	using std::vector<char>::erase;
 	using std::vector<char>::pop_back;
 	using std::vector<char>::push_back;
-	using std::vector<char>::resize;
 	using std::vector<char>::size;
 	using std::vector<char>::operator[];
 };
@@ -153,7 +152,6 @@ public:
 	using CGitByteArray::erase;
 	using CGitByteArray::pop_back;
 	using CGitByteArray::push_back;
-	using CGitByteArray::resize;
 	using CGitByteArray::size;
 	using CGitByteArray::operator[];
 	using CGitByteArray::append;

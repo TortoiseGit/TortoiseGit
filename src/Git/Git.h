@@ -144,14 +144,9 @@ public:
 	bool OnOutputErrData(const char* data, size_t size) override
 	{
 		ASSERT(data);
-		if (!m_pvectorErr || size == 0 || size >= INT_MAX)
+		if (!m_pvectorErr)
 			return false;
-		const size_t oldsize = m_pvectorErr->size();
-		size_t newLength;
-		if (SizeTAdd(oldsize, size, &newLength) != S_OK)
-			return false;
-		m_pvectorErr->resize(newLength);
-		memcpy(&*(m_pvectorErr->begin() + oldsize), data, size);
+		m_pvectorErr->append(data, size);
 		return false;
 	}
 
