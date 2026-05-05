@@ -129,7 +129,7 @@ void CDeleteConflictDlg::OnBnClickedModify()
 	OnOK();
 }
 
-void CDeleteConflictDlg::ShowLog(CString hash)
+void CDeleteConflictDlg::ShowLog(const CString& hash) const
 {
 	CString sCmd;
 	sCmd.Format(L"/command:log /path:%s /endrev:%s /rev:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_File))), static_cast<LPCWSTR>(hash), static_cast<LPCWSTR>(hash));

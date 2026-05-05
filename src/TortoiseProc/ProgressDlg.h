@@ -55,14 +55,14 @@ public:
 	{
 	}
 
-	PostCmd(UINT icon, CString label, PostCmdAction action)
+	PostCmd(UINT icon, const CString& label, PostCmdAction action)
 	: icon(icon)
 	, action(action)
 	, label(label)
 	{
 	}
 
-	PostCmd(CString label, PostCmdAction action)
+	PostCmd(const CString& label, PostCmdAction action)
 	: PostCmd(0, label, action)
 	{
 	}

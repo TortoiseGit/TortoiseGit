@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018-2020, 2023 - TortoiseGit
+// Copyright (C) 2015-2016, 2018-2020, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -73,7 +73,7 @@ void CFindBar::OnCancel()
 	OnFindExit();
 }
 
-void CFindBar::SetFindText(CString findStr)
+void CFindBar::SetFindText(const CString& findStr)
 {
 	m_sFindStr = findStr;
 	UpdateData(FALSE);

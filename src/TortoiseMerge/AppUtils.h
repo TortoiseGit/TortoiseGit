@@ -1,5 +1,6 @@
 // TortoiseGitMerge - a Diff/Patch program
 
+// Copyright (C) 2011-2014, 2016, 2026 - TortoiseGit
 // Copyright (C) 2006-2010, 2013-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -40,7 +41,7 @@ public:
 	 * \param hWnd the window handle of the calling app
 	 * \return TRUE if successful
 	 */
-	static BOOL GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd = nullptr);
+	static BOOL GetVersionedFile(const CString& sPath, const CString& sVersion, const CString& sSavePath, CSysProgressDlg* progDlg, HWND hWnd = nullptr);
 
 	/**
 	 * Creates a unified diff from two files

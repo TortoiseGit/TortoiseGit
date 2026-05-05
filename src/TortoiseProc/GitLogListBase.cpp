@@ -2614,7 +2614,7 @@ void CGitLogListBase::OnLvnOdfinditemLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 	*pResult = -1;
 }
 
-int CGitLogListBase::FillGitLog(CTGitPath *path, CString *range, int info)
+int CGitLogListBase::FillGitLog(const CTGitPath* path, const CString* range, int info)
 {
 	ClearText();
 

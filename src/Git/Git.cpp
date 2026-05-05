@@ -1049,7 +1049,7 @@ CGit::ArgvData CGit::VectorToARGV(const std::vector<std::string>& args)
 	return { i, argv };
 }
 
-std::vector<std::string> CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, CFilterData* Filter, const int logOrderBy)
+std::vector<std::string> CGit::GetLogCmd(CString range, const CTGitPath* path, int mask, const CFilterData* Filter, const int logOrderBy)
 {
 	std::vector<std::string> params;
 
@@ -1125,6 +1125,7 @@ std::vector<std::string> CGit::GetLogCmd(CString range, const CTGitPath* path, i
 
 	if (Filter)
 	{
+		auto from = Filter->m_From;
 		if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_N_YEARS)
 		{
 			CTime now = CTime::GetCurrentTime();
@@ -1143,12 +1144,12 @@ std::vector<std::string> CGit::GetLogCmd(CString range, const CTGitPath* path, i
 				substract *= 7;
 				break;
 			}
-			Filter->m_From = static_cast<DWORD>(time.GetTime()) - (Filter->m_NumberOfLogs * substract);
+			from = static_cast<DWORD>(time.GetTime()) - (Filter->m_NumberOfLogs * substract);
 		}
 		if (Filter->m_NumberOfLogsScale == CFilterData::SHOW_LAST_N_COMMITS)
 			params.push_back(std::format("-n{}", Filter->m_NumberOfLogs));
-		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE  && Filter->m_From > 0)
-			params.push_back(std::format("--max-age={}", Filter->m_From));
+		else if (Filter->m_NumberOfLogsScale >= CFilterData::SHOW_LAST_SEL_DATE && from > 0)
+			params.push_back(std::format("--max-age={}", from));
 	}
 
 	if( Filter && (Filter->m_To != -1))

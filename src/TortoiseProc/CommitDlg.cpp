@@ -1855,7 +1855,7 @@ LRESULT CCommitDlg::OnAutoListReady(WPARAM, LPARAM lparam)
 // functions which run in the status thread
 //////////////////////////////////////////////////////////////////////////
 
-void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex)
+void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex) const
 {
 	CString strLine;
 	try
@@ -1888,7 +1888,7 @@ void CCommitDlg::ParseRegexFile(const CString& sFile, std::map<CString, CString>
 	}
 }
 
-void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet)
+void CCommitDlg::ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet) const
 {
 	CString strLine;
 	try

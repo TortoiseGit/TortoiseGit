@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2011-2021, 2023 - TortoiseGit
+// Copyright (C) 2009, 2011-2021, 2023, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ struct SubmodulePayload
 	STRING_VECTOR &list;
 	CString basePath;
 	STRING_VECTOR prefixList;
-	SubmodulePayload(STRING_VECTOR& alist, CString abasePath = L"", const STRING_VECTOR& aprefixList = STRING_VECTOR())
+	SubmodulePayload(STRING_VECTOR& alist, const CString& abasePath = L"", const STRING_VECTOR& aprefixList = STRING_VECTOR())
 		: list(alist)
 		, basePath(abasePath)
 		, prefixList(aprefixList)
@@ -206,7 +206,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 			progress.m_GitCmdList.push_back(cmd + (path.IsEmpty() ? CString() : (L" -- " + CGit::QuoteParameter(path))));
 		}
 
-		for (CString dir : submoduleList)
+		for (const auto& dir : submoduleList)
 		{
 			progress.m_GitDirList.push_back(CTGitPath(dir).GetWinPathString());
 			progress.m_GitCmdList.push_back(cmd);
@@ -269,7 +269,7 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 				return false;
 		}
 
-		for (CString dir : submoduleList)
+		for (const auto& dir : submoduleList)
 		{
 			CGit git;
 			git.m_CurrentDir = dir;

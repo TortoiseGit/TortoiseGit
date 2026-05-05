@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2006, 2008, 2010-2012, 2015, 2020 - TortoiseSVN
-// Copyright (C) 2012, 2016-2017, 2019-2020-2025 - TortoiseGit
+// Copyright (C) 2012, 2016-2017, 2019-2020-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ void CFilePatchesDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FILELIST, m_cFileList);
 }
 
-BOOL CFilePatchesDlg::SetFileStatusAsPatched(CString sPath)
+BOOL CFilePatchesDlg::SetFileStatusAsPatched(const CString& sPath)
 {
 	for (int i=0; i<m_arFileStates.GetCount(); i++)
 	{
@@ -90,7 +90,7 @@ BOOL CFilePatchesDlg::OnInitDialog()
 	return TRUE;
 }
 
-BOOL CFilePatchesDlg::Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent)
+BOOL CFilePatchesDlg::Init(GitPatch* pPatch, CPatchFilesDlgCallBack* pCallBack, const CString& sPath, CWnd* pParent)
 {
 	if (!pCallBack || !pPatch)
 	{

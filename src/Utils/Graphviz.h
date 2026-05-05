@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2023, 2025 - TortoiseGit
+// Copyright (C) 2013, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,15 +23,15 @@
 class Graphviz
 {
 public:
-	void DrawNode(CString id, CString text, CString fontName, int fontSize, Gdiplus::Color borderColor, Gdiplus::Color backColor, int height);
+	void DrawNode(const CString& id, const CString& text, const CString& fontName, int fontSize, Gdiplus::Color borderColor, Gdiplus::Color backColor, int height);
 
-	void BeginDrawTableNode(CString id, CString fontName, int fontSize, int height);
+	void BeginDrawTableNode(const CString& id, const CString& fontName, int fontSize, int height);
 
-	void DrawTableNode(CString text, Gdiplus::Color backColor);
+	void DrawTableNode(const CString& text, Gdiplus::Color backColor);
 
 	void EndDrawTableNode();
 
-	void DrawEdge(CString from, CString to);
+	void DrawEdge(const CString& from, const CString& to);
 
 	bool Save(const CString &path);
 

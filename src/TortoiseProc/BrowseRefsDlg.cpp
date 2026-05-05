@@ -231,7 +231,7 @@ void CBrowseRefsDlg::OnBnClickedOk()
 	CIconMenu popupMenu;
 	popupMenu.CreatePopupMenu();
 
-	std::vector<CShadowTree*> selectedLeafs;
+	VectorPShadowTree selectedLeafs;
 	GetSelectedLeaves(selectedLeafs);
 
 	popupMenu.AppendMenuIcon(1, GetSelectedRef(true, false), IDI_LOG);
@@ -362,7 +362,7 @@ CShadowTree* CShadowTree::GetNextSub(CString& nameLeft, bool bCreateIfNotExist)
 	return &nextNode;
 }
 
-CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
+ const CShadowTree* CShadowTree::FindLeaf(const CString& partialRefName) const
 {
 	if(IsLeaf())
 	{
@@ -379,7 +379,7 @@ CShadowTree* CShadowTree::FindLeaf(CString partialRefName)
 		//Not a leaf. Search all nodes.
 		for (auto itShadowTree = m_ShadowTree.begin(); itShadowTree != m_ShadowTree.end(); ++itShadowTree)
 		{
-			CShadowTree* pSubtree = itShadowTree->second.FindLeaf(partialRefName);
+			auto pSubtree = itShadowTree->second.FindLeaf(partialRefName);
 			if (pSubtree)
 				return pSubtree; //Found
 		}
@@ -604,7 +604,7 @@ void CBrowseRefsDlg::FillListCtrlForTreeNode(HTREEITEM treeNode)
 	UpdateInfoLabel();
 }
 
-void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter)
+void CBrowseRefsDlg::FillListCtrlForShadowTree(const CShadowTree* pTree, const CString& refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter)
 {
 	if(pTree->IsLeaf())
 	{
@@ -636,7 +636,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 			csThisName=refNamePrefix+pTree->m_csRefName+L"/";
 		else
 			m_pListCtrlRoot = pTree;
-		for(CShadowTree::TShadowTreeMap::iterator itSubTree=pTree->m_ShadowTree.begin(); itSubTree!=pTree->m_ShadowTree.end(); ++itSubTree)
+		for (auto itSubTree = pTree->m_ShadowTree.cbegin(); itSubTree != pTree->m_ShadowTree.cend(); ++itSubTree)
 		{
 			FillListCtrlForShadowTree(&itSubTree->second, csThisName, false, filter);
 		}
@@ -650,7 +650,7 @@ void CBrowseRefsDlg::FillListCtrlForShadowTree(CShadowTree* pTree, CString refNa
 	}
 }
 
-bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
+bool CBrowseRefsDlg::ConfirmDeleteRef(const VectorPShadowTree& leafs)
 {
 	ASSERT(!leafs.empty());
 
@@ -715,7 +715,7 @@ bool CBrowseRefsDlg::ConfirmDeleteRef(VectorPShadowTree& leafs)
 	return MessageBox(csMessage, L"TortoiseGit", MB_YESNO | mbIcon) == IDYES;
 }
 
-bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
+bool CBrowseRefsDlg::DoDeleteRefs(const VectorPShadowTree& leafs)
 {
 	bool allRemoteBranch = true;
 	std::map<CString, STRING_VECTOR> remoteBranches;
@@ -773,7 +773,7 @@ bool CBrowseRefsDlg::DoDeleteRefs(VectorPShadowTree& leafs)
 	return true;
 }
 
-bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
+bool CBrowseRefsDlg::DoDeleteRef(const CString& completeRefName)
 {
 	bool bIsRemoteBranch = false;
 	bool bIsBranch = false;
@@ -833,9 +833,9 @@ bool CBrowseRefsDlg::DoDeleteRef(CString completeRefName)
 	return true;
 }
 
-CString CBrowseRefsDlg::GetFullRefName(CString partialRefName)
+CString CBrowseRefsDlg::GetFullRefName(CString partialRefName) const
 {
-	CShadowTree* pLeaf = m_TreeRoot.FindLeaf(partialRefName);
+	auto pLeaf = m_TreeRoot.FindLeaf(partialRefName);
 	if (!pLeaf)
 		return CString();
 	return pLeaf->GetRefName();
@@ -873,12 +873,12 @@ void CBrowseRefsDlg::GetSelectedLeaves(VectorPShadowTree& selectedLeafs)
 
 void CBrowseRefsDlg::OnContextMenu_ListRefLeafs(CPoint point)
 {
-	std::vector<CShadowTree*> selectedLeafs;
+	VectorPShadowTree selectedLeafs;
 	GetSelectedLeaves(selectedLeafs);
 	ShowContextMenu(point,m_RefTreeCtrl.GetSelectedItem(),selectedLeafs);
 }
 
-CString CBrowseRefsDlg::GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator)
+CString CBrowseRefsDlg::GetTwoSelectedRefs(const VectorPShadowTree& selectedLeafs, const CString& lastSelected, const CString& separator)
 {
 	ASSERT(selectedLeafs.size() == 2);
 
@@ -1225,7 +1225,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		break;
 	case eCmd_CreateBranch:
 		{
-			CString* commitHash = nullptr;
+			const CString* commitHash = nullptr;
 			if (selectedLeafs.size() == 1)
 				commitHash = &(selectedLeafs[0]->m_csRefHash);
 			CAppUtils::CreateBranchTag(GetSafeHwnd(), false, commitHash);
@@ -1729,20 +1729,19 @@ void CBrowseRefsDlg::OnBnClickedIncludeNestedRefs()
 	Refresh();
 }
 
-CShadowTree* CBrowseRefsDlg::GetListEntry(int index)
+const CShadowTree* CBrowseRefsDlg::GetListEntry(int index) const
 {
 	auto entry = reinterpret_cast<CShadowTree*>(m_ListRefLeafs.GetItemData(index));
 	ASSERT(entry);
 	return entry;
 }
 
-CShadowTree* CBrowseRefsDlg::GetTreeEntry(HTREEITEM treeItem)
+const CShadowTree* CBrowseRefsDlg::GetTreeEntry(HTREEITEM treeItem) const
 {
 	auto entry = reinterpret_cast<CShadowTree*>(m_RefTreeCtrl.GetItemData(treeItem));
 	ASSERT(entry);
 	return entry;
 }
-
 
 void CBrowseRefsDlg::OnCbnSelchangeBrowseRefsBranchfilter()
 {

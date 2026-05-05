@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2013-2016, 2018-2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@
 #include "UnicodeUtils.h"
 #include "SmartHandle.h"
 
-void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize, Gdiplus::Color /*borderColor*/, Gdiplus::Color backColor, int /*height*/)
+void Graphviz::DrawNode(const CString& id, const CString& text, const CString& fontName, int fontSize, Gdiplus::Color /*borderColor*/, Gdiplus::Color backColor, int /*height*/)
 {
 	content.AppendChar(L'\t');
 	content.Append(id);
@@ -39,7 +39,7 @@ void Graphviz::DrawNode(CString id, CString text, CString fontName, int fontSize
 	content.Append(L"];\r\n");
 }
 
-void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, int /*height*/)
+void Graphviz::BeginDrawTableNode(const CString& id, const CString& fontName, int fontSize, int /*height*/)
 {
 	m_tableNodeNum = 0;
 	content.AppendChar(L'\t');
@@ -68,7 +68,7 @@ void Graphviz::BeginDrawTableNode(CString id, CString fontName, int fontSize, in
 	content.Append(L", label=<\r\n\t<table border=\"0\" cellborder=\"0\" cellpadding=\"5\">\r\n");
 }
 
-void Graphviz::DrawTableNode(CString text, Gdiplus::Color backColor)
+void Graphviz::DrawTableNode(const CString& text, Gdiplus::Color backColor)
 {
 	content.AppendFormat(L"\t<tr><td port=\"f%d\" bgcolor=\"#%06X\">%s</td></tr>\r\n", m_tableNodeNum++, backColor.GetValue() & 0xffffff, static_cast<LPCWSTR>(text));
 }
@@ -78,7 +78,7 @@ void Graphviz::EndDrawTableNode()
 	content.Append(L"\t</table>\r\n\t>];\r\n");
 }
 
-void Graphviz::DrawEdge(CString from, CString to)
+void Graphviz::DrawEdge(const CString& from, const CString& to)
 {
 	content.AppendChar(L'\t');
 	content.Append(from);

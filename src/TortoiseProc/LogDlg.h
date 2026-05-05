@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2009 - TortoiseSVN
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -64,7 +64,7 @@ class CLogDlg : public CResizableStandAloneDialog, IFilterEditValidator, IHasPat
 public:
 	CLogDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CLogDlg();
-	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale = -1);
+	void SetParams(const CTGitPath& orgPath, const CTGitPath& path, const CString& hightlightRevision, CString range, DWORD limit, int limitScale = -1);
 	void SetFilter(const CString& findstr, LONG findtype, bool findregex);
 	bool IsThreadRunning() const { return CGitLogListBase::s_bThreadRunning == TRUE; }
 	void SetSelect(bool bSelect) {m_bSelect = bSelect;}

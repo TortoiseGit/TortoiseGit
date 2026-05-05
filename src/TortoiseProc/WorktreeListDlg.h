@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022-2025 - TortoiseGit
+// Copyright (C) 2022-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
 class WorktreeDetails
 {
 public:
-	WorktreeDetails(CString worktreeName, CString path, CGitHash hash, CString branch)
+	WorktreeDetails(const CString& worktreeName, const CString& path, const CGitHash& hash, const CString& branch)
 		: m_WorktreeName(worktreeName)
 		, m_Path(path)
 		, m_Hash(hash)

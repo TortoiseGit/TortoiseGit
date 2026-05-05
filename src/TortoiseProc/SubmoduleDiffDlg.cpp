@@ -215,7 +215,7 @@ BOOL CSubmoduleDiffDlg::PreTranslateMessage(MSG* pMsg)
 	return CResizableStandAloneDialog::PreTranslateMessage(pMsg);
 }
 
-void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHash& fromHash, CString fromSubject, bool fromOK, const CGitHash& toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType)
+void CSubmoduleDiffDlg::SetDiff(const CString& path, bool toIsWorkingCopy, const CGitHash& fromHash, const CString& fromSubject, bool fromOK, const CGitHash& toHash, const CString& toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType)
 {
 	m_bToIsWorkingCopy = toIsWorkingCopy;
 
@@ -231,7 +231,7 @@ void CSubmoduleDiffDlg::SetDiff(CString path, bool toIsWorkingCopy, const CGitHa
 	m_nChangeType = changeType;
 }
 
-void CSubmoduleDiffDlg::ShowLog(const CGitHash& hash)
+void CSubmoduleDiffDlg::ShowLog(const CGitHash& hash) const
 {
 	CString sCmd;
 	sCmd.Format(L"/command:log /path:%s /endrev:%s /rev:%s", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.CombinePath(m_sPath))), static_cast<LPCWSTR>(hash.ToString()), static_cast<LPCWSTR>(hash.ToString()));

@@ -170,7 +170,7 @@ CString CBugTraqAssociations::LookupProviderName(const CLSID &provider_clsid)
 	return provider_name;
 }
 
-LSTATUS RegSetValueFromCString(HKEY hKey, LPCWSTR lpValueName, CString str)
+LSTATUS RegSetValueFromCString(HKEY hKey, LPCWSTR lpValueName, const CString& str)
 {
 	LPCWSTR lpsz = str;
 	DWORD cb = (str.GetLength() + 1) * sizeof(wchar_t);

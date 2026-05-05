@@ -135,7 +135,7 @@ protected:
 
 	bool IsURL();
 
-	virtual void SetRemote(CString remote) override
+	virtual void SetRemote(const CString& remote) override
 	{
 		if(!remote.IsEmpty())
 		{

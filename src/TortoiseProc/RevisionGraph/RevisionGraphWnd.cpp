@@ -1038,7 +1038,7 @@ void CRevisionGraphWnd::AppendMenu
 	popup.AppendMenu (MF_STRING | flags, command, titleString);
 }
 
-void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CString *extra, CMenu *submenu)
+void CRevisionGraphWnd::AppendMenu(CMenu& popup, CString title, UINT command, const CString* extra, CMenu* submenu)
 {
 	// separate different groups / section within the context menu
 	if (popup.GetMenuItemCount() > 0)
@@ -1060,7 +1060,7 @@ void CRevisionGraphWnd::AppendMenu(CMenu &popup, CString title, UINT command, CS
 	title.ReleaseBuffer();
 }
 
-void CRevisionGraphWnd::DoShowLog()
+void CRevisionGraphWnd::DoShowLog() const
 {
 	if (!m_SelectedEntry1)
 		return;
@@ -1081,12 +1081,12 @@ void CRevisionGraphWnd::DoShowLog()
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
-void CRevisionGraphWnd::DoSwitch(CString rev)
+void CRevisionGraphWnd::DoSwitch(const CString& rev) const
 {
 	CAppUtils::PerformSwitch(GetSafeHwnd(), rev);
 }
 
-void CRevisionGraphWnd::DoBrowseRepo()
+void CRevisionGraphWnd::DoBrowseRepo() const
 {
 	if (!m_SelectedEntry1)
 		return;
@@ -1099,7 +1099,7 @@ void CRevisionGraphWnd::DoBrowseRepo()
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 
-void CRevisionGraphWnd::DoCopyRefs()
+void CRevisionGraphWnd::DoCopyRefs() const
 {
 	if (!m_SelectedEntry1)
 		return;

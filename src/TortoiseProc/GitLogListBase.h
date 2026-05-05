@@ -425,7 +425,7 @@ protected:
 	int  BeginFetchLog();
 	HWND GetParentHWND();
 public:
-	int  FillGitLog(CTGitPath* path, CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
+	int FillGitLog(const CTGitPath* path, const CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);
 	int  FillGitLog(std::unordered_set<CGitHash>& hashes);
 protected:
 	CString MessageDisplayStr(GitRev* pLogEntry);

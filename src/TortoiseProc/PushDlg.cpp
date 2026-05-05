@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -286,7 +286,7 @@ void CPushDlg::Refresh()
 	m_bPushAllRemotes = FALSE; // reset to FALSE, so that a refresh does not reselect all even if it was already deselected by user; correct value will be set in OnBnClickedOk method
 }
 
-void CPushDlg::GetRemoteBranch(CString currentBranch)
+void CPushDlg::GetRemoteBranch(const CString& currentBranch)
 {
 	CString WorkingDir=g_Git.m_CurrentDir;
 	WorkingDir.Replace(L':', L'_');

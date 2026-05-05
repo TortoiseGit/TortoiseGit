@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2009-2019, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 class CBranchCombox
 {
 public:
-	CBranchCombox(CString dialogName)
+	CBranchCombox(const CString& dialogName)
 
 		: m_DialogName(dialogName)
 	{
@@ -124,9 +124,9 @@ protected:
 
 	virtual void LocalBranchChange(){};
 	virtual void RemoteBranchChange(){};
-	virtual void SetRemote(CString /* remote */) {};
+	virtual void SetRemote(const CString& /* remote */) {};
 
-	void AddBranchToolTips(CHistoryCombo& pBranch, CToolTips* tip)
+	void AddBranchToolTips(CHistoryCombo& pBranch, CToolTips* tip) const
 	{
 		pBranch.DisableTooltip();
 

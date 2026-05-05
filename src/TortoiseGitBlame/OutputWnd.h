@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2016, 2020, 2022, 2025 - TortoiseGit
+// Copyright (C) 2008-2012, 2016, 2020, 2022, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -61,7 +61,7 @@ public:
 public:
 	virtual ~COutputWnd();
 	afx_msg void OnLvnItemchangedLoglist(NMHDR *pNMHDR, LRESULT *pResult);
-	int	LoadHistory(CString filename, CString revision, bool follow);
+	int LoadHistory(const CString& filename, const CString& revision, bool follow);
 	int	LoadHistory(std::unordered_set<CGitHash>& hashes);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 

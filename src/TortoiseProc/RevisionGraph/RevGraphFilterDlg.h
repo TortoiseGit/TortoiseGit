@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012, 2014-2016, 2020, 2023 - TortoiseGit
+// Copyright (C) 2012, 2014-2016, 2020, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,8 +33,8 @@ public:
 	CRevGraphFilterDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRevGraphFilterDlg();
 
-	void	GetRevisionRange (CString& minrev, CString& maxrev);
-	void	SetRevisionRange (CString minrev, CString maxrev);
+	void	GetRevisionRange(CString& minrev, CString& maxrev) const;
+	void	SetRevisionRange(const CString& minrev, const CString& maxrev);
 
 // Dialog Data
 	enum { IDD = IDD_REVGRAPHFILTER };

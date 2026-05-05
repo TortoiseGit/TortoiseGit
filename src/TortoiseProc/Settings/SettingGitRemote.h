@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2015, 2017, 2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2015, 2017, 2020, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,11 +67,11 @@ protected:
 	BOOL OnInitDialog() override;
 	BOOL OnApply() override;
 
-	BOOL IsRemoteExist(const CString& remote);
-	bool IsRemoteCollideWithRefspec(CString remote);
+	BOOL IsRemoteExist(const CString& remote) const;
+	bool IsRemoteCollideWithRefspec(const CString& remote) const;
 
-	BOOL Save(CString key, CString value);
-	BOOL SaveGeneral(CString key, CString value);
+	BOOL Save(const CString& key, const CString& value);
+	BOOL SaveGeneral(const CString& key, const CString& value);
 
 	int			m_ChangedMask = 0;
 

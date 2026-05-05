@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016, 2018-2020, 2022-2023 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2018-2020, 2022-2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ void COutputWnd::OnSize(UINT nType, int cx, int cy)
 	m_LogList.SetWindowPos(nullptr, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-int COutputWnd::LoadHistory(CString filename, CString revision, bool follow)
+int COutputWnd::LoadHistory(const CString& filename, const CString& revision, bool follow)
 {
 	CTGitPath path;
 	path.SetFromGit(filename);

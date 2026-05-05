@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2024 - TortoiseGit
+// Copyright (C) 2009-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -78,7 +78,7 @@ public:
 		return GetRefName().Mid(static_cast<int>(wcslen(L"refs/heads/")));
 	}
 
-	CShadowTree*	FindLeaf(CString partialRefName);
+	const CShadowTree* FindLeaf(const CString& partialRefName) const;
 
 	CString			m_csRefName;
 	CString			m_csUpstream;
@@ -95,7 +95,7 @@ public:
 	TShadowTreeMap	m_ShadowTree;
 	CShadowTree*	m_pParent = nullptr;
 };
-using VectorPShadowTree = std::vector<CShadowTree*>;
+using VectorPShadowTree = std::vector<const CShadowTree*>;
 
 class CBrowseRefsDlg : public CResizableStandAloneDialog
 {
@@ -167,18 +167,18 @@ protected:
 
 	void			FillListCtrlForTreeNode(HTREEITEM treeNode);
 
-	void			FillListCtrlForShadowTree(CShadowTree* pTree, CString refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter);
+	void			FillListCtrlForShadowTree(const CShadowTree* pTree, const CString& refNamePrefix, bool isFirstLevel, const CBrowseRefsDlgFilter& filter);
 
 	bool			SelectRef(CString refName, bool bExactMatch);
 
-	bool			ConfirmDeleteRef(VectorPShadowTree& leafs);
-	bool			DoDeleteRefs(VectorPShadowTree& leafs);
-	bool			DoDeleteRef(CString completeRefName);
+	bool			ConfirmDeleteRef(const VectorPShadowTree& leafs);
+	bool			DoDeleteRefs(const VectorPShadowTree& leafs);
+	bool			DoDeleteRef(const CString& completeRefName);
 
-	CString			GetFullRefName(CString partialRefName);
+	CString			GetFullRefName(CString partialRefName) const;
 
-	CShadowTree*	GetListEntry(int index);
-	CShadowTree*	GetTreeEntry(HTREEITEM treeItem);
+	const CShadowTree* GetListEntry(int index) const;
+	const CShadowTree* GetTreeEntry(HTREEITEM treeItem) const;
 
 private:
 	bool			m_bHasWC = true;
@@ -188,7 +188,7 @@ private:
 	STRING_VECTOR	remotes;
 
 	CShadowTree		m_TreeRoot;
-	CShadowTree*	m_pListCtrlRoot = nullptr;
+	const CShadowTree* m_pListCtrlRoot = nullptr;
 	CGestureEnabledControlTmpl<CTreeCtrl>	m_RefTreeCtrl;
 	CGestureEnabledControlTmpl<CResizableColumnsListCtrl<CListCtrl>>	m_ListRefLeafs;
 
@@ -212,7 +212,7 @@ private:
 	void		GetSelectedLeaves(VectorPShadowTree& selectedLeafs);
 	void		OnContextMenu_ListRefLeafs(CPoint point);
 	void		OnContextMenu_RefTreeCtrl(CPoint point);
-	static CString GetTwoSelectedRefs(VectorPShadowTree& selectedLeafs, const CString &lastSelected, const CString &separator);
+	static CString GetTwoSelectedRefs(const VectorPShadowTree& selectedLeafs, const CString& lastSelected, const CString& separator);
 
 	bool		AreAllFrom(VectorPShadowTree& leafs, const wchar_t* from);
 	void		ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPShadowTree& selectedLeafs);

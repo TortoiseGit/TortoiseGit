@@ -29,7 +29,7 @@
 #include "ClipboardHelper.h"
 #include "CmdLineParser.h"
 
-BOOL CAppUtils::GetVersionedFile(CString sPath, CString sVersion, CString sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
+BOOL CAppUtils::GetVersionedFile(const CString& sPath, const CString& sVersion, const CString& sSavePath, CSysProgressDlg* progDlg, HWND hWnd /*=nullptr*/)
 {
 	CString sSCMPath = CRegString(L"Software\\TortoiseGitMerge\\SCMPath", L"");
 	if (sSCMPath.IsEmpty())

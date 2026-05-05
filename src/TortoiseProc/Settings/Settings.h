@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016, 2020, 2023-2024 - TortoiseGit
+// Copyright (C) 2008-2013, 2016, 2020, 2023-2024, 2026 - TortoiseGit
 // Copyright (C) 2003-2011 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ using namespace TreePropSheet;
 class CSettingsPage
 {
 public:
-	CSettingsPage(ISettingsPropPage* page, CString pageName)
+	CSettingsPage(ISettingsPropPage* page, const CString& pageName)
 		: pageName(pageName)
 		, page(page)
 	{
@@ -75,8 +75,8 @@ private:
 	 */
 	void RemovePropPages();
 
-	ISettingsPropPage* AddPropPage(ISettingsPropPage* page, CString pageName);
-	void AddPropPage(ISettingsPropPage* page, CString pageName, CPropertyPage* parentPage);
+	ISettingsPropPage* AddPropPage(ISettingsPropPage* page, const CString& pageName);
+	void AddPropPage(ISettingsPropPage* page, const CString& pageName, CPropertyPage* parentPage);
 
 private:
 	std::vector<CSettingsPage> m_pPages;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -83,7 +83,7 @@ GitRevLoglist* CLogCache::GetCacheData(const CGitHash& hash)
 	return &m_HashMap[hash];
 }
 
-ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
+ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData) const
 {
 	if (!pData)
 		pData = m_pCacheIndex;
@@ -102,7 +102,7 @@ ULONGLONG CLogCache::GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData)
 		return 0;
 }
 
-int CLogCache::FetchCacheIndex(CString GitDir)
+int CLogCache::FetchCacheIndex(const CString& GitDir)
 {
 	if (!m_bEnabled)
 		return 0;
@@ -294,7 +294,7 @@ int CLogCache::SaveOneItem(const GitRevLoglist& Rev, LARGE_INTEGER offset)
 	return 0;
 }
 
-int CLogCache::LoadOneItem(GitRevLoglist& Rev, ULONGLONG ullOffset)
+int CLogCache::LoadOneItem(GitRevLoglist& Rev, ULONGLONG ullOffset) const
 {
 	if (!m_pCacheData)
 		return -1;

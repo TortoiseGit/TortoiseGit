@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2007 - TortoiseSVN
-// Copyright (C) 2008-2024 - TortoiseGit
+// Copyright (C) 2008-2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -67,7 +67,7 @@ public:
 		return 	m_pLogCache->m_HashMap[(*this)[i]];
 	}
 	void ClearAll();
-	int  ParserFromLog(CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, CString* range = nullptr);
+	int ParserFromLog(const CTGitPath* path = nullptr, DWORD count = 0, DWORD infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE, const CString* range = nullptr);
 	int  Fill(const std::unordered_set<CGitHash>& hashes);
 
 	Lanes m_Lns;
@@ -77,7 +77,7 @@ public:
 	MAP_HASH_REV m_HashMap;
 	void updateLanes(GitRevLoglist& c, Lanes& lns, const CGitHash& sha, bool onlyFirstParent);
 	void setLane(const CGitHash& sha, bool onlyFirstParent);
-	void append(CGitHash& sha, bool storeInVector, bool onlyFirstParent);
+	void append(const CGitHash& sha, bool storeInVector, bool onlyFirstParent);
 
 	using std::vector<CGitHash>::at;
 	using std::vector<CGitHash>::begin;

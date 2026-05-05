@@ -33,7 +33,7 @@ enum
 class CGitByteArray : private std::vector<char>
 {
 public:
-	size_t find(char data, size_t start = 0) const
+	size_t find(const char data, const size_t start = 0) const
 	{
 		const size_t end = size();
 		for (size_t i = start; i < end; ++i)
@@ -41,7 +41,7 @@ public:
 				return i;
 		return npos;
 	}
-	size_t RevertFind(char data, size_t start = npos) const
+	size_t RevertFind(const char data, size_t start = npos) const
 	{
 		if (start == npos)
 		{
@@ -55,7 +55,7 @@ public:
 				return i;
 		return npos;
 	}
-	size_t findNextString(size_t start = 0) const
+	size_t findNextString(const size_t start = 0) const
 	{
 		size_t pos = start;
 		const size_t end = size();
@@ -89,7 +89,7 @@ public:
 		append(std::span<const char>(data, dataSize));
 	}
 
-	void append(const std::span<const char> v)
+	inline void append(const std::span<const char> v)
 	{
 		insert(this->end(), v.begin(), v.end());
 	}
@@ -131,7 +131,7 @@ public:
 	~CGitGuardedByteArray() {}
 	CComAutoCriticalSection	m_critSec;
 
-	void guardedAppend(std::string_view v)
+	void guardedAppend(const std::string_view v)
 	{
 		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
 		__super::append(v);

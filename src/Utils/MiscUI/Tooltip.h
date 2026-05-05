@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2026 - TortoiseGit
 // Copyright (C) 2008, 2010-2011, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
 	BOOL AddTool(CWnd* pWnd, UINT nIDText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	BOOL AddTool(CWnd* pWnd, LPCWSTR lpszText = LPSTR_TEXTCALLBACK, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
-	void AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
+	void AddTool(int nIdWnd, const CString& sBalloonTipText, LPCRECT lpRectTool = nullptr, UINT_PTR nIDTool = 0);
 	void DelTool(CWnd* pWnd, UINT_PTR nIDTool = 0);
 	void DelTool(int nIdWnd, UINT_PTR nIDTool = 0);
 

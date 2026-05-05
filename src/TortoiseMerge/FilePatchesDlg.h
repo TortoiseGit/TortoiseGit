@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2022-2023 - TortoiseGit
+// Copyright (C) 2022-2023, 2026 - TortoiseGit
 // Copyright (C) 2006, 2008, 2010-2011, 2013, 2015 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ public:
 	 * \param bAutoPatch
 	 * \return TRUE if patching was successful
 	 */
-	virtual BOOL PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, CString sVersion, BOOL bAutoPatch = FALSE) = 0;
+	virtual BOOL PatchFile(CString sFilePath, bool bContentMods, bool bPropMods, const CString& sVersion, BOOL bAutoPatch = FALSE) = 0;
 
 	/**
 	 * Callback function. Called when the user double clicks on a
@@ -53,7 +53,7 @@ public:
 	 * \param sRev1 the revision of the first file
 	 * \param sRev2 the revision of the second file
 	 */
-	virtual BOOL DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2) = 0;
+	virtual BOOL DiffFiles(const CString& sURL1, const CString& sRev1, const CString& sURL2, const CString& sRev2) = 0;
 };
 
 #define FPDLG_FILESTATE_GOOD		0
@@ -87,9 +87,9 @@ public:
 	 * \param pParent
 	 * \return TRUE if successful
 	 */
-	BOOL	Init(GitPatch * pPatch, CPatchFilesDlgCallBack * pCallBack, CString sPath, CWnd * pParent);
+	BOOL	Init(GitPatch* pPatch, CPatchFilesDlgCallBack* pCallBack, const CString& sPath, CWnd* pParent);
 
-	BOOL	SetFileStatusAsPatched(CString sPath);
+	BOOL	SetFileStatusAsPatched(const CString& sPath);
 	bool	HasFiles() const { return m_cFileList.GetItemCount() > 0; }
 	enum { IDD = IDD_FILEPATCHES };
 protected:

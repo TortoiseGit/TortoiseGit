@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2011 - TortoiseSVN
-// Copyright (C) 2012-2019, 2022-2023, 2025 - TortoiseGit
+// Copyright (C) 2012-2019, 2022-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -278,11 +278,11 @@ private:
 
 	bool			UpdateSelectedEntry (ogdf::node clickedentry);
 	void			AppendMenu (CMenu& popup, UINT title, UINT command, UINT flags = MF_ENABLED);
-	void			AppendMenu(CMenu& popup, CString title, UINT command, CString* extra = nullptr, CMenu* submenu = nullptr);
-	void			DoShowLog();
-	void			DoSwitch(CString rev);
-	void			DoBrowseRepo();
-	void			DoCopyRefs();
+	void			AppendMenu(CMenu& popup, CString title, UINT command, const CString* extra = nullptr, CMenu* submenu = nullptr);
+	void			DoShowLog() const;
+	void			DoSwitch(const CString& rev) const;
+	void			DoBrowseRepo() const;
+	void			DoCopyRefs() const;
 
 	void			SetScrollbar (int bar, int newPos, int clientMax, int graphMax);
 	void			SetScrollbars (int nVert = -1, int nHorz = -1);

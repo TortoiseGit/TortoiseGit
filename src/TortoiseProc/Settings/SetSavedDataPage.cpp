@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2012-2021, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2008,2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ BOOL CSetSavedDataPage::OnInitDialog()
 	}
 
 	std::set<CString> wcs;
-	for (CString key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
+	for (const CString& key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
 	{
 		RecursivelyCount(key, L"", wcs, nUrlHistItems);
 	}
@@ -199,7 +199,7 @@ END_MESSAGE_MAP()
 
 void CSetSavedDataPage::OnBnClickedUrlhistclear()
 {
-	for (CString key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
+	for (const CString& key : { L"repoURLS", L"FormatPatchURLS", L"PullURLS", L"PushURLS", L"SubModuleRepoURLS", L"SyncURL" })
 	{
 		CRegistryKey reg(L"Software\\TortoiseGit\\History\\" + key);
 		reg.removeKey();

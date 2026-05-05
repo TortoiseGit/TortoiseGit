@@ -183,7 +183,7 @@ void CSettingGitRemote::OnBnClickedButtonAdd()
 	this->OnApply();
 }
 
-BOOL CSettingGitRemote::IsRemoteExist(const CString& remote)
+BOOL CSettingGitRemote::IsRemoteExist(const CString& remote) const
 {
 	CString str;
 	for(int i=0;i<m_ctrlRemoteList.GetCount();i++)
@@ -220,7 +220,7 @@ static int CheckRemoteCollideWithRefspec(const git_config_entry *entry, void * p
 	return 0;
 }
 
-bool CSettingGitRemote::IsRemoteCollideWithRefspec(CString remote)
+bool CSettingGitRemote::IsRemoteCollideWithRefspec(const CString& remote) const
 {
 	CheckRefspecStruct crs = { CUnicodeUtils::GetUTF8(remote), false };
 	CAutoConfig config(true);
@@ -362,7 +362,7 @@ void CSettingGitRemote::OnBnClickedCheckpushdefault()
 	SetModified();
 }
 
-BOOL CSettingGitRemote::Save(CString key,CString value)
+BOOL CSettingGitRemote::Save(const CString& key, const CString& value)
 {
 	CString cmd,out;
 
@@ -391,7 +391,7 @@ BOOL CSettingGitRemote::Save(CString key,CString value)
 	return TRUE;
 }
 
-BOOL CSettingGitRemote::SaveGeneral(CString key, CString value)
+BOOL CSettingGitRemote::SaveGeneral(const CString& key, const CString& value)
 {
 	if (value.IsEmpty())
 	{

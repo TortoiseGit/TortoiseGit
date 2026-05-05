@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2008 - TortoiseSVN
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -105,7 +105,7 @@ public:
 		}
 		m_ctrlPartialUnstaging.Invalidate();
 	}
-	void SetAuthor(CString author)
+	void SetAuthor(const CString& author)
 	{
 		m_bSetAuthor = TRUE;
 		m_sAuthor = author;
@@ -168,8 +168,8 @@ protected:
 	void SetSplitterRange();
 	void SaveSplitterPos();
 	void UpdateCheckLinks();
-	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex);
-	void ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet);
+	void ParseRegexFile(const CString& sFile, std::map<CString, CString>& mapRegex) const;
+	void ParseSnippetFile(const CString& sFile, std::map<CString, CString>& mapSnippet) const;
 	bool RunStartCommitHook();
 	void CreatePatchViewDlg();
 	void DestroyPatchViewDlgIfOpen();

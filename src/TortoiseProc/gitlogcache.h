@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2017, 2023 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2017, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -77,7 +77,7 @@ struct SLogCacheDataFileHeader
 class CGitHashMap : private std::unordered_map<CGitHash, GitRevLoglist>
 {
 public:
-	bool IsExist(CGitHash &hash)
+	bool IsExist(const CGitHash& hash)
 	{
 		return find(hash) != end();
 	}
@@ -118,7 +118,7 @@ protected:
 	void CloseDataHandles();
 	void CloseIndexHandles();
 
-	BOOL CheckHeader(SLogCacheIndexHeader *header)
+	BOOL CheckHeader(const SLogCacheIndexHeader* header) const
 	{
 		if (header->m_Magic != LOG_INDEX_MAGIC)
 			return FALSE;
@@ -129,7 +129,7 @@ protected:
 		return TRUE;
 	}
 
-	BOOL CheckHeader(SLogCacheRevFileHeader *header)
+	BOOL CheckHeader(const SLogCacheRevFileHeader* header) const
 	{
 		if (header->m_Magic != LOG_DATA_FILE_MAGIC)
 			return FALSE;
@@ -137,7 +137,7 @@ protected:
 		return TRUE;
 	}
 
-	BOOL CheckHeader(SLogCacheRevItemHeader *header)
+	BOOL CheckHeader(const SLogCacheRevItemHeader* header) const
 	{
 		if (header->m_Magic != LOG_DATA_ITEM_MAGIC)
 			return FALSE;
@@ -145,7 +145,7 @@ protected:
 		return TRUE;
 	}
 
-	BOOL CheckHeader(SLogCacheDataFileHeader *header)
+	BOOL CheckHeader(const SLogCacheDataFileHeader* header) const
 	{
 		if (header->m_Magic != LOG_DATA_MAGIC)
 			return FALSE;
@@ -164,9 +164,9 @@ protected:
 public:
 	CLogCache();
 	~CLogCache();
-	int FetchCacheIndex(CString GitDir);
-	int LoadOneItem(GitRevLoglist& Rev, ULONGLONG offset);
-	ULONGLONG GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData = nullptr);
+	int FetchCacheIndex(const CString& gitDir);
+	int LoadOneItem(GitRevLoglist& Rev, ULONGLONG offset) const;
+	ULONGLONG GetOffset(const CGitHash& hash, SLogCacheIndexFile* pData = nullptr) const;
 
 	CGitHashMap m_HashMap;
 

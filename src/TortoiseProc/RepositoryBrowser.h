@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2014, 2016-2017, 2020-2023, 2025 - TortoiseGit
+// Copyright (C) 2009-2014, 2016-2017, 2020-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -69,7 +69,7 @@ class CRepositoryBrowser : public CResizableStandAloneDialog
 	DECLARE_DYNAMIC(CRepositoryBrowser)
 
 public:
-	CRepositoryBrowser(CString rev, CWnd* pParent = nullptr);	// standard constructor
+	CRepositoryBrowser(const CString& rev, CWnd* pParent = nullptr);	// standard constructor
 	virtual ~CRepositoryBrowser();
 
 	// Dialog Data

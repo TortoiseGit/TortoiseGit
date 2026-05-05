@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014-2020, 2024-2025 TortoiseGit
+// Copyright (C) 2014-2020, 2024-2026 TortoiseGit
 
 // with code of PullFetchDlg.cpp
 
@@ -59,10 +59,10 @@ END_MESSAGE_MAP()
 static void uniqueMergeLists(STRING_VECTOR& list, const STRING_VECTOR& listToMerge)
 {
 	std::map<CString, int> map;
-	for (CString entry : list)
+	for (const auto& entry : list)
 		map[entry] = 1;
 
-	for (CString entry : listToMerge)
+	for (const auto& entry : listToMerge)
 	{
 		if (map.find(entry) == map.end())
 			list.push_back(entry);

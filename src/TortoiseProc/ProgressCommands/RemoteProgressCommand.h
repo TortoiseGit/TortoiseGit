@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2013-2014, 2019-2020, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -42,7 +42,7 @@ protected:
 
 public:
 	void SetUrl(const CString& url) { m_url.SetFromUnknown(url); }
-	void SetRefSpec(CString spec){ m_RefSpec = spec; }
+	void SetRefSpec(const CString& spec){ m_RefSpec = spec; }
 	void SetRemote(const CString& remote) { m_remote = remote; }
 };
 

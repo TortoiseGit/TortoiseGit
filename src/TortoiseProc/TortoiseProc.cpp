@@ -413,7 +413,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	return FALSE;
 }
 
-void CTortoiseProcApp::CheckUpgrade()
+void CTortoiseProcApp::CheckUpgrade() const
 {
 	CRegString regVersion = CRegString(L"Software\\TortoiseGit\\CurrentVersion");
 	CString sVersion = regVersion;
@@ -612,7 +612,7 @@ void CTortoiseProcApp::InitializeJumpList(const CString& appid)
 	CoUninitialize();
 }
 
-void CTortoiseProcApp::DoInitializeJumpList(const CString& appid)
+void CTortoiseProcApp::DoInitializeJumpList(const CString& appid) const
 {
 	ATL::CComPtr<ICustomDestinationList> pcdl;
 	HRESULT hr = pcdl.CoCreateInstance(CLSID_DestinationList, nullptr, CLSCTX_INPROC_SERVER);
@@ -669,7 +669,7 @@ int CTortoiseProcApp::ExitInstance()
 	return -1;
 }
 
-void CTortoiseProcApp::CheckForNewerVersion()
+void CTortoiseProcApp::CheckForNewerVersion() const
 {
 	// check for newer versions
 	if (CRegDWORD(L"Software\\TortoiseGit\\VersionCheck", TRUE) != FALSE)

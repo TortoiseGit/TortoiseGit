@@ -47,7 +47,7 @@ void CLogDataVector::ClearAll()
 }
 
 //CLogDataVector Class
-int CLogDataVector::ParserFromLog(CTGitPath* path, DWORD count, DWORD infomask, CString* range)
+int CLogDataVector::ParserFromLog(const CTGitPath* path, DWORD count, DWORD infomask, const CString* range)
 {
 	ATLASSERT(m_pLogCache);
 	ATLASSERT(!(infomask & CGit::LOG_INFO_FULL_DIFF));
@@ -251,7 +251,7 @@ int CLogDataVector::Fill(const std::unordered_set<CGitHash>& hashes)
 	return 0;
 }
 
-void CLogDataVector::append(CGitHash& sha, bool storeInVector, bool onlyFirstParent)
+void CLogDataVector::append(const CGitHash& sha, bool storeInVector, bool onlyFirstParent)
 {
 	if (storeInVector)
 		this->push_back(sha);

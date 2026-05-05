@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2011, 2013-2014, 2016, 2020, 2023-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -243,7 +243,7 @@ void CSetOverlayIcons::ShowIconSet(bool bSmallIcons)
 	AddFileTypeGroup(L".png", bSmallIcons);
 	m_cIconList.SetRedraw(TRUE);
 }
-void CSetOverlayIcons::AddFileTypeGroup(CString sFileType, bool bSmallIcons)
+void CSetOverlayIcons::AddFileTypeGroup(const CString& sFileType, bool bSmallIcons)
 {
 	UINT flags = SHGFI_ICON | SHGFI_USEFILEATTRIBUTES;
 	if (bSmallIcons)

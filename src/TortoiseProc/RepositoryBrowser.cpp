@@ -141,7 +141,7 @@ bool CRepositoryBrowser::s_bSortLogical = true;
 
 IMPLEMENT_DYNAMIC(CRepositoryBrowser, CResizableStandAloneDialog)
 
-CRepositoryBrowser::CRepositoryBrowser(CString rev, CWnd* pParent /*=nullptr*/)
+CRepositoryBrowser::CRepositoryBrowser(const CString& rev, CWnd* pParent /*=nullptr*/)
 : CResizableStandAloneDialog(CRepositoryBrowser::IDD, pParent)
 , m_sRevision(rev)
 {

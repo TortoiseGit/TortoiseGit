@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2018, 2020-2021, 2024 - TortoiseGit
+// Copyright (C) 2008-2018, 2020-2021, 2024, 2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ void CSettings::SetTheme(bool bDark)
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);
 }
 
-ISettingsPropPage* CSettings::AddPropPage(ISettingsPropPage* page, CString pageName)
+ISettingsPropPage* CSettings::AddPropPage(ISettingsPropPage* page, const CString& pageName)
 {
 	ASSERT(std::none_of(m_pPages.cbegin(), m_pPages.cend(), [&pageName](auto& settingsPage) { return settingsPage.pageName == pageName; }) && "pageName must be unique");
 	AddPage(page);
@@ -91,7 +91,7 @@ ISettingsPropPage* CSettings::AddPropPage(ISettingsPropPage* page, CString pageN
 	return page;
 }
 
-void CSettings::AddPropPage(ISettingsPropPage* page, CString pageName, CPropertyPage* parentPage)
+void CSettings::AddPropPage(ISettingsPropPage* page, const CString& pageName, CPropertyPage* parentPage)
 {
 	AddPropPage(page, pageName);
 	SetParentPage(parentPage, page);

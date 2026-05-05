@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2023 - TortoiseGit
+// Copyright (C) 2013-2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -158,12 +158,12 @@ protected:
 	void EnableAdvancedOptions();
 	BOOL IsUrlExist(const CString& text);
 
-	void AddConfigType(int &index, CString text, bool add = true);
-	void AddSimpleCredential(int &index, CString text, bool add = true);
+	void AddConfigType(int& index, const CString& text, bool add = true);
+	void AddSimpleCredential(int& index, const CString& text, bool add = true);
 	void FillSimpleList(bool addNone, bool systemWincred, bool systemGCM, bool systemGCMCore);
 	void LoadList();
-	CString Load(CString key);
-	void Save(CString key, CString value);
+	CString Load(const CString& key);
+	void Save(const CString& key, const CString& value);
 	int DeleteOtherKeys(int type);
 	bool SaveSimpleCredential(int type);
 	bool SaveSettings();

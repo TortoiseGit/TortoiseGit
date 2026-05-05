@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2016, 2018, 2024 - TortoiseGit
+// Copyright (C) 2012, 2016, 2018, 2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -44,7 +44,7 @@ public:
 		bool m_languagepack;
 		int m_status;
 
-		Entry(CString filename, bool languagepack, int status)
+		Entry(const CString& filename, bool languagepack, int status)
 		: m_filename(filename)
 		, m_languagepack(languagepack)
 		, m_status(status)

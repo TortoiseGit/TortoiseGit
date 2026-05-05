@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2011, 2026 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2008-2012, 2014-2015, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -92,7 +92,7 @@ void CToolTips::AddTool(int nIdWnd, UINT nIdText, LPCRECT lpRectTool /* = nullpt
 	AddTool(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), nIdText, lpRectTool, nIDTool);
 }
 
-void CToolTips::AddTool(int nIdWnd, CString sBalloonTipText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
+void CToolTips::AddTool(int nIdWnd, const CString& sBalloonTipText, LPCRECT lpRectTool /* = nullptr */, UINT_PTR nIDTool /* = 0 */)
 {
 	AddTool(static_cast<CDialog*>(m_pParentWnd)->GetDlgItem(nIdWnd), sBalloonTipText, lpRectTool, nIDTool);
 }

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2014, 2017, 2019-2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2012, 2014, 2017, 2019-2020, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,7 +32,7 @@ public:
 
 	enum { IDD = IDD_DIFFSUBMODULE };
 
-	void SetDiff(CString path, bool toIsWorkingCopy, const CGitHash& fromHash, CString fromSubject, bool fromOK, const CGitHash& toHash, CString toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType);
+	void SetDiff(const CString& path, bool toIsWorkingCopy, const CGitHash& fromHash, const CString& fromSubject, bool fromOK, const CGitHash& toHash, const CString& toSubject, bool toOK, bool dirty, CGitDiff::ChangeType changeType);
 	bool IsRefresh() const { return m_bRefresh; }
 
 	static HBRUSH GetInvalidBrush(CDC* pDC);
@@ -48,7 +48,7 @@ protected:
 	afx_msg void OnBnClickedLog2();
 	afx_msg void OnBnClickedShowDiff();
 	afx_msg void OnBnClickedButtonUpdate();
-	void ShowLog(const CGitHash& hash);
+	void ShowLog(const CGitHash& hash) const;
 	CMenuButton	m_ctrlShowDiffBtn;
 
 	DECLARE_MESSAGE_MAP()

@@ -549,7 +549,7 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/, CCreateContext* pContex
 }
 
 // Callback function
-BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropMods, CString /* sVersion */, BOOL bAutoPatch)
+BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropMods, const CString& /* sVersion */, BOOL bAutoPatch)
 {
 	//"dry run" was successful, so save the patched file somewhere...
 	CString sTempFile = CTempFiles::Instance().GetTempFilePathString();
@@ -640,7 +640,7 @@ BOOL CMainFrame::PatchFile(CString sFilePath, bool /*bContentMods*/, bool bPropM
 }
 
 // Callback function
-BOOL CMainFrame::DiffFiles(CString sURL1, CString sRev1, CString sURL2, CString sRev2)
+BOOL CMainFrame::DiffFiles(const CString& sURL1, const CString& sRev1, const CString& sURL2, const CString& sRev2)
 {
 	CString tempfile1 = CTempFiles::Instance().GetTempFilePathString();
 	CString tempfile2 = CTempFiles::Instance().GetTempFilePathString();

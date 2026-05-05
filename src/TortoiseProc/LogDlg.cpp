@@ -222,7 +222,7 @@ LRESULT CLogDlg::OnGitStatusListCtrlNeedsRefresh(WPARAM, LPARAM)
 	return 0;
 }
 
-void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, CString hightlightRevision, CString range, DWORD limit, int limitScale/*=-1*/)
+void CLogDlg::SetParams(const CTGitPath& orgPath, const CTGitPath& path, const CString& hightlightRevision, CString range, DWORD limit, int limitScale/*=-1*/)
 {
 	m_orgPath = orgPath;
 	m_path = path;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2016, 2019-2020, 2023 - TortoiseGit
+// Copyright (C) 2008-2016, 2019-2020, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -90,6 +90,6 @@ protected:
 	afx_msg void OnBnClickedProcPushSetPushremote();
 	BOOL PreTranslateMessage(MSG* pMsg) override;
 	void Refresh();
-	void GetRemoteBranch(CString currentBranch);
+	void GetRemoteBranch(const CString& currentBranch);
 	void EnDisablePushRemoteArchiveBranch();
 };

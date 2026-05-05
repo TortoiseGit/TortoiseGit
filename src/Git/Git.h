@@ -521,7 +521,7 @@ public:
 	CString	FixBranchName_Mod(CString& branchName);
 	CString	FixBranchName(const CString& branchName);
 
-	static std::vector<std::string> GetLogCmd(CString range, const CTGitPath* path, int InfoMask, CFilterData* filter, const int logOrderBy);
+	static std::vector<std::string> GetLogCmd(CString range, const CTGitPath* path, int InfoMask, const CFilterData* filter, const int logOrderBy);
 	struct ArgvData
 	{
 		int argc = 0;

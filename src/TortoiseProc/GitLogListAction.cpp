@@ -115,7 +115,7 @@ int CGitLogList::RevertSelectedCommits(int parent)
 		CStringUtils::WriteStringToTextFile(dotGitPath + L"MERGE_MSG", mergeMsg);
 	return ret;
 }
-int CGitLogList::CherryPickFrom(CString from, CString to)
+int CGitLogList::CherryPickFrom(const CString& from, const CString& to)
 {
 	CLogDataVector logs(&m_LogCache);
 	CString range;

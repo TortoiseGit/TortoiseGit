@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2003-2006 - Stefan Kueng
-// Copyright (C) 2012-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2012-2016, 2018-2020, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -109,13 +109,13 @@ BOOL CRevGraphFilterDlg::OnInitDialog()
 }
 
 
-void CRevGraphFilterDlg::GetRevisionRange(CString& minrev, CString& maxrev)
+void CRevGraphFilterDlg::GetRevisionRange(CString& minrev, CString& maxrev) const
 {
 	minrev = m_sFromRev;
 	maxrev = m_sToRev;
 }
 
-void CRevGraphFilterDlg::SetRevisionRange (CString minrev, CString maxrev)
+void CRevGraphFilterDlg::SetRevisionRange(const CString& minrev, const CString& maxrev)
 {
 	m_sFromRev = minrev;
 	m_sToRev = maxrev;

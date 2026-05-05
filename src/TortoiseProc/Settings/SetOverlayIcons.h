@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2023, 2025 - TortoiseGit
+// Copyright (C) 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ protected:
 	afx_msg void	OnCbnSelchangeIconsetcombo();
 
 	void			ShowIconSet(bool bSmallIcons);
-	void			AddFileTypeGroup(CString sFileType, bool bSmallIcons);
+	void			AddFileTypeGroup(const CString& sFileType, bool bSmallIcons);
 	DECLARE_MESSAGE_MAP()
 
 	int				m_selIndex = CB_ERR;

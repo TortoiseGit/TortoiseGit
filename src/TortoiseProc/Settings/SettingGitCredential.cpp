@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2023, 2025 - TortoiseGit
+// Copyright (C) 2013-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -317,13 +317,13 @@ void CSettingGitCredential::OnBnClickedCheckUsehttppath()
 	SetModified();
 }
 
-void CSettingGitCredential::AddConfigType(int &index, CString text, bool add)
+void CSettingGitCredential::AddConfigType(int& index, const CString& text, bool add)
 {
 	if (add)
 		index = m_ctrlConfigType.AddString(text);
 }
 
-void CSettingGitCredential::AddSimpleCredential(int &index, CString text, bool add)
+void CSettingGitCredential::AddSimpleCredential(int& index, const CString& text, bool add)
 {
 	if (add)
 		index = m_ctrlSimpleCredential.AddString(text);
@@ -488,7 +488,7 @@ void CSettingGitCredential::LoadList()
 	m_ctrlSimpleCredential.SetCurSel(SimpleCredentialType::Advanced);
 }
 
-CString CSettingGitCredential::Load(CString key)
+CString CSettingGitCredential::Load(const CString& key)
 {
 	CString cmd;
 
@@ -520,7 +520,7 @@ CString CSettingGitCredential::Load(CString key)
 	return CUnicodeUtils::GetUnicode(valueA);
 }
 
-void CSettingGitCredential::Save(CString key, CString value)
+void CSettingGitCredential::Save(const CString& key, const CString& value)
 {
 	CString cmd, out;
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2018, 2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2018, 2020, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -53,10 +53,10 @@ public:
 	BOOL InitInstance() override;
 	int ExitInstance() override;
 
-	void CheckUpgrade();
-	void CheckForNewerVersion();
+	void CheckUpgrade() const;
+	void CheckForNewerVersion() const;
 	void InitializeJumpList(const CString& appid);
-	void DoInitializeJumpList(const CString& appid);
+	void DoInitializeJumpList(const CString& appid) const;
 
 	ULONG_PTR m_gdiplusToken = 0;
 
