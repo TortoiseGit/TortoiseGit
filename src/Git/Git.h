@@ -95,8 +95,8 @@ public:
 	//This function is called when command output data is available.
 	//When this function returns 'true' the git command should be aborted.
 	//This behavior is not implemented yet.
-	virtual bool	OnOutputData(const char* data, size_t size) = 0;
-	virtual bool	OnOutputErrData(const char* data, size_t size) = 0;
+	virtual bool	OnOutputData(std::string_view data) = 0;
+	virtual bool	OnOutputErrData(std::string_view data) = 0;
 	virtual void	OnEnd(){}
 
 private:
@@ -115,17 +115,16 @@ public:
 		static_assert(std::is_convertible_v<GitReceiverFunc, std::function<void(const CStringA&)>>, "Wrong signature for GitReceiverFunc!");
 	}
 
-	bool OnOutputData(const char* data, size_t size) override
+	bool OnOutputData(const std::string_view data) override
 	{
-		ASSERT(data);
-		// Add data
-		if (size == 0 || size >= INT_MAX)
+		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
+		if (data.empty())
 			return false;
 		const int oldEndPos = m_buffer.GetLength();
 		int newLength;
-		if (IntAdd(oldEndPos, static_cast<int>(size), &newLength) != S_OK)
+		if (IntAdd(oldEndPos, static_cast<int>(data.size()), &newLength) != S_OK)
 			return false;
-		memcpy(CStrBufA(m_buffer, newLength, 0) + oldEndPos, data, size);
+		memcpy(CStrBufA(m_buffer, newLength, 0) + oldEndPos, data.data(), data.size());
 
 		// Break into lines and feed to m_recv
 		int eolPos;
@@ -141,12 +140,11 @@ public:
 		return false;
 	}
 
-	bool OnOutputErrData(const char* data, size_t size) override
+	bool OnOutputErrData(const std::string_view data) override
 	{
-		ASSERT(data);
 		if (!m_pvectorErr)
 			return false;
-		m_pvectorErr->append(data, size);
+		m_pvectorErr->append(data);
 		return false;
 	}
 

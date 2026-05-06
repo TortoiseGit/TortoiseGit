@@ -442,7 +442,7 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 	char data[CALL_OUTPUT_READ_CHUNK_SIZE];
 	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
-		if (pDataArray->pcall->OnOutputErrData(data,readnumber))
+		if (pDataArray->pcall->OnOutputErrData(std::string_view(data, readnumber)))
 			break;
 	}
 
@@ -491,7 +491,7 @@ int CGit::Run(CGitCall& pcall)
 	{
 		// TODO: when OnOutputData() returns 'true', abort git-command. Send CTRL-C signal?
 		if(!bAborted)//For now, flush output when command aborted.
-			if(pcall.OnOutputData(data,readnumber))
+			if (pcall.OnOutputData(std::string_view(data, readnumber)))
 				bAborted=true;
 	}
 	if(!bAborted)
@@ -527,20 +527,20 @@ public:
 		, m_pvector(pvector)
 		, m_pvectorErr(pvectorErr)
 	{}
-	bool OnOutputData(const char* data, size_t size) override
+
+	bool OnOutputData(const std::string_view data) override
 	{
-		ASSERT(data);
 		if (!m_pvector)
 			return false;
-		m_pvector->append(data, size);
+		m_pvector->append(data);
 		return false;
 	}
-	bool OnOutputErrData(const char* data, size_t size) override
+
+	bool OnOutputErrData(const std::string_view data) override
 	{
-		ASSERT(data);
 		if (!m_pvectorErr)
 			return false;
-		m_pvectorErr->append(data, size);
+		m_pvectorErr->append(data);
 		return false;
 	}
 	BYTE_VECTOR* m_pvector;
