@@ -440,10 +440,11 @@ DWORD WINAPI CGit::AsyncReadStdErrThread(LPVOID lpParam)
 
 	DWORD readnumber;
 	char data[CALL_OUTPUT_READ_CHUNK_SIZE];
+	bool dropMode = false;
 	while (ReadFile(pDataArray->fileHandle, data, CALL_OUTPUT_READ_CHUNK_SIZE, &readnumber, nullptr))
 	{
-		if (pDataArray->pcall->OnOutputErrData(std::string_view(data, readnumber)))
-			break;
+		if (!dropMode && pDataArray->pcall->OnOutputErrData(std::string_view(data, readnumber)))
+			dropMode = true;
 	}
 
 	return 0;
@@ -531,7 +532,7 @@ public:
 	bool OnOutputData(const std::string_view data) override
 	{
 		if (!m_pvector)
-			return false;
+			return true;
 		m_pvector->append(data);
 		return false;
 	}
@@ -539,7 +540,7 @@ public:
 	bool OnOutputErrData(const std::string_view data) override
 	{
 		if (!m_pvectorErr)
-			return false;
+			return true;
 		m_pvectorErr->append(data);
 		return false;
 	}

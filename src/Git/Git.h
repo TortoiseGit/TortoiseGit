@@ -92,9 +92,8 @@ public:
 
 	const CString GetCmd() const { return m_Cmd; }
 
-	//This function is called when command output data is available.
-	//When this function returns 'true' the git command should be aborted.
-	//This behavior is not implemented yet.
+	// These functions are called when command output data is available.
+	// When this function returns 'true' further output is ignored.
 	virtual bool	OnOutputData(std::string_view data) = 0;
 	virtual bool	OnOutputErrData(std::string_view data) = 0;
 	virtual void	OnEnd(){}
@@ -123,7 +122,7 @@ public:
 		const int oldEndPos = m_buffer.GetLength();
 		int newLength;
 		if (IntAdd(oldEndPos, static_cast<int>(data.size()), &newLength) != S_OK)
-			return false;
+			return true;
 		memcpy(CStrBufA(m_buffer, newLength, 0) + oldEndPos, data.data(), data.size());
 
 		// Break into lines and feed to m_recv
@@ -143,7 +142,7 @@ public:
 	bool OnOutputErrData(const std::string_view data) override
 	{
 		if (!m_pvectorErr)
-			return false;
+			return true;
 		m_pvectorErr->append(data);
 		return false;
 	}
