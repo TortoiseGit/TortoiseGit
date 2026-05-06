@@ -207,6 +207,7 @@ public:
 
 	static void TrimRight(std::string_view& view);
 	static void TrimRight(std::wstring_view& view);
+	static void TrimLeft(std::string_view& view);
 
 	static std::string_view TrimRight(const std::string_view sv, const std::string_view chars);
 

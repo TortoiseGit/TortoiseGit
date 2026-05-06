@@ -789,6 +789,12 @@ void CStringUtils::PipesToNulls(wchar_t* buffer)
 	}
 }
 
+void CStringUtils::TrimLeft(std::string_view& view)
+{
+	while (!view.empty() && std::isspace(static_cast<unsigned char>(view.front())))
+		view.remove_prefix(1);
+}
+
 void CStringUtils::TrimRight(std::string_view& view)
 {
 	while (!view.empty() && std::isspace(static_cast<unsigned char>(view.back())))

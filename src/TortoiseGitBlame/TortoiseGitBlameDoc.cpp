@@ -194,10 +194,13 @@ BOOL CTortoiseGitBlameDoc::OnOpenDocument(LPCWSTR lpszPathName, CString Rev)
 				return FALSE;
 			}
 
-			CStringA lastline;
-			if (g_Git.Run(cmd, [&](const CStringA& line)
+			std::string lastline;
+			if (g_Git.Run(cmd, [&](const std::string_view line)
 			{
-				fwrite(lastline + ' ' + line + '\n', sizeof(char), lastline.GetLength() + 1 + line.GetLength() + 1, file);
+				fwrite(lastline.data(), sizeof(char), lastline.size(), file);
+				fwrite(" ", sizeof(char), 1, file);
+				fwrite(line.data(), sizeof(char), line.size(), file);
+				fwrite("\n", sizeof(char), 1, file);
 				lastline = line;
 			}
 			, &err))

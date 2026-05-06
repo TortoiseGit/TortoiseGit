@@ -623,7 +623,7 @@ void CRebaseDlg::FetchLogList()
 		}
 		CString mergecmd;
 		mergecmd.Format(L"git merge-base --all %s %s", static_cast<LPCWSTR>(head.ToString()), static_cast<LPCWSTR>(upstreamHash.ToString()));
-		g_Git.Run(mergecmd, [&](const CStringA& line)
+		g_Git.Run(mergecmd, [&](const std::string_view line)
 		{
 			CGitHash hash = CGitHash::FromHexStr(line);
 			if (hash.IsEmpty())
@@ -655,13 +655,13 @@ void CRebaseDlg::FetchLogList()
 		std::vector<CGitHash> nonCherryPicked;
 		CString cherryCmd;
 		cherryCmd.Format(L"git rev-list \"%s...%s\" --left-right --cherry-pick", static_cast<LPCWSTR>(refFrom), static_cast<LPCWSTR>(refTo));
-		g_Git.Run(cherryCmd, [&](const CStringA& line)
+		g_Git.Run(cherryCmd, [&](const std::string_view line)
 		{
-			if (line.GetLength() < 1 + 2 * GIT_HASH_SIZE)
+			if (line.size() < 1 + 2 * GIT_HASH_SIZE)
 				return;
 			if (line[0] != '>')
 				return;
-			nonCherryPicked.push_back(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(1)));
+			nonCherryPicked.push_back(CGitHash::FromHexStr(line.substr(1)));
 		});
 		for (size_t i = m_CommitList.m_arShownList.size(); i-- > 0;)
 		{
@@ -726,13 +726,13 @@ void CRebaseDlg::FetchLogList()
 			this->GetDlgItem(IDC_REBASE_CONTINUE)->EnableWindow(false);
 			return;
 		}
-		g_Git.Run(cherryCmd, [&](const CStringA& line)
+		g_Git.Run(cherryCmd, [&](const std::string_view line)
 		{
-			if (line.GetLength() < 2 + 2 * GIT_HASH_SIZE)
+			if (line.size() < 2 + 2 * GIT_HASH_SIZE)
 				return;
 			if (line[0] != '-')
 				return; // Don't skip (only skip commits starting with a '-')
-			auto itIx = revIxMap.find(CGitHash::FromHexStr(std::string_view(line, line.GetLength()).substr(2)));
+			auto itIx = revIxMap.find(CGitHash::FromHexStr(line.substr(2)));
 			if (itIx == revIxMap.end())
 				return; // Not found?? Should not occur...
 

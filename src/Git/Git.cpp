@@ -1507,9 +1507,9 @@ int CGit::GetTagList(STRING_VECTOR &list)
 	else
 	{
 		gitLastErr.Empty();
-		const int ret = Run(L"git.exe tag -l", [&](const CStringA& lineA)
+		const int ret = Run(L"git.exe tag -l", [&](const std::string_view lineA)
 		{
-			if (lineA.IsEmpty())
+			if (lineA.empty())
 				return;
 			list.push_back(CUnicodeUtils::GetUnicode(lineA));
 		}, &gitLastErr);
@@ -1613,9 +1613,9 @@ bool CGit::IsBranchTagNameUnique(const CString& name)
 	}
 
 	int refCnt = 0;
-	Run(cmd, [&](const CStringA& lineA)
+	Run(cmd, [&](const std::string_view lineA)
 	{
-		if (lineA.IsEmpty())
+		if (lineA.empty())
 			return;
 		++refCnt;
 	});
@@ -1776,12 +1776,12 @@ int CGit::GetBranchList(STRING_VECTOR &list, int *current, BRANCH_TYPE type, boo
 		else if (type & BRANCH_REMOTE)
 			cmd += L" -r";
 
-		ret = Run(cmd, [&](CStringA lineA)
+		ret = Run(cmd, [&](std::string_view lineA)
 		{
-			lineA.Trim(" \r\n\t");
-			if (lineA.IsEmpty())
+			CStringUtils::TrimLeft(lineA);
+			if (lineA.empty())
 				return;
-			if (lineA.Find(" -> ") >= 0)
+			if (lineA.find(" -> ") != std::string_view::npos)
 				return; // skip something like: refs/origin/HEAD -> refs/origin/master
 
 			CString branch = CUnicodeUtils::GetUnicode(lineA);
@@ -1914,13 +1914,13 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 				cmd += L" -r";
 			cmd += L" --contains " + hash.ToString();
 
-			if (Run(cmd, [&](CStringA lineA)
+			if (Run(cmd, [&](std::string_view lineA)
 			{
-				lineA.Trim(" \r\n\t");
-				if (lineA.IsEmpty())
+				CStringUtils::TrimLeft(lineA);
+				if (lineA.empty())
 					return;
-				if (lineA.Find(" -> ") >= 0) // normalize symbolic refs: "refs/origin/HEAD -> refs/origin/master" to "refs/origin/HEAD"
-					lineA.Truncate(lineA.Find(" -> "));
+				if (size_t pos = lineA.find(" -> "); pos != std::string_view::npos) // normalize symbolic refs: "refs/origin/HEAD -> refs/origin/master" to "refs/origin/HEAD"
+					lineA = lineA.substr(0, pos);
 
 				CString branch = CUnicodeUtils::GetUnicode(lineA);
 				if (lineA[0] == '*')
@@ -1947,9 +1947,9 @@ int CGit::GetRefsCommitIsOn(STRING_VECTOR& list, const CGitHash& hash, bool incl
 		if (includeTags)
 		{
 			CString cmd = L"git.exe tag --contains " + hash.ToString();
-			if (Run(cmd, [&list](CStringA lineA)
+			if (Run(cmd, [&list](const std::string_view lineA)
 			{
-				if (lineA.IsEmpty())
+				if (lineA.empty())
 					return;
 				list.push_back(L"refs/tags/" + CUnicodeUtils::GetUnicode(lineA));
 			}))
@@ -1984,9 +1984,9 @@ int CGit::GetRemoteList(STRING_VECTOR &list)
 	}
 
 	gitLastErr.Empty();
-	return Run(L"git.exe remote", [&](const CStringA& lineA)
+	return Run(L"git.exe remote", [&](const std::string_view lineA)
 	{
-		if (lineA.IsEmpty())
+		if (lineA.empty())
 			return;
 		list.push_back(CUnicodeUtils::GetUnicode(lineA));
 	}, &gitLastErr);
@@ -2064,11 +2064,11 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 	}
 	gitLastErr = cmd + L'\n';
 	if (Run(
-		cmd, [&](const CStringA& origLineA) {
-			if (origLineA.GetLength() <= GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t")) || origLineA[GIT_HASH_SIZE * 2] != '\t') // OID, tab, refname
+		cmd, [&](const std::string_view origLineA) {
+			if (origLineA.size() <= GIT_HASH_SIZE * 2 + strlen("\t") || origLineA[GIT_HASH_SIZE * 2] != '\t') // OID, tab, refname
 				return;
-			CGitHash hash = CGitHash::FromHexStr(std::string_view(origLineA, GIT_HASH_SIZE * 2));
-			CString ref = CUnicodeUtils::GetUnicode(origLineA.Mid(GIT_HASH_SIZE * 2 + static_cast<int>(strlen("\t"))));
+			CGitHash hash = CGitHash::FromHexStr(origLineA.substr(0, GIT_HASH_SIZE * 2));
+			CString ref = CUnicodeUtils::GetUnicode(origLineA.substr(GIT_HASH_SIZE * 2 + strlen("\t")));
 			CString shortname;
 			if (GetShortName(ref, shortname, L"refs/tags/"))
 			{
@@ -2170,14 +2170,14 @@ int CGit::GetRefList(STRING_VECTOR &list)
 	}
 
 	gitLastErr.Empty();
-	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
+	const int ret = Run(L"git.exe show-ref -d", [&](const std::string_view lineA)
 	{
-		const int start = lineA.Find(L' ');
+		const size_t start = lineA.find(' ');
 		ASSERT(start == 2 * GIT_HASH_SIZE);
-		if (start <= 0)
+		if (start != 2 * GIT_HASH_SIZE || start >= lineA.size())
 			return;
 
-		CString name = CUnicodeUtils::GetUnicode(lineA.Mid(start + 1));
+		CString name = CUnicodeUtils::GetUnicode(lineA.substr(start + 1));
 		if (list.empty() || name != *list.crbegin() + L"^{}")
 			list.push_back(name);
 	}, &gitLastErr);
@@ -2246,15 +2246,15 @@ int CGit::GetMapHashToFriendName(MAP_HASH_NAME &map)
 	}
 
 	gitLastErr.Empty();
-	const int ret = Run(L"git.exe show-ref -d", [&](const CStringA& lineA)
+	const int ret = Run(L"git.exe show-ref -d", [&](const std::string_view lineA)
 	{
-		const int start = lineA.Find(L' ');
+		const size_t start = lineA.find(' ');
 		ASSERT(start == 2 * GIT_HASH_SIZE);
-		if (start <= 0)
+		if (start != 2 * GIT_HASH_SIZE || start >= lineA.size())
 			return;
 
-		CGitHash hash = CGitHash::FromHexStr(std::string_view(lineA, start));
-		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.Mid(start + 1)));
+		CGitHash hash = CGitHash::FromHexStr(lineA.substr(0, start));
+		map[hash].push_back(CUnicodeUtils::GetUnicode(lineA.substr(start + 1)));
 	}, &gitLastErr);
 
 	if (ret == 1 && IsInitRepos())

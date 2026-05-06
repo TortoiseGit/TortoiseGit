@@ -459,6 +459,32 @@ TEST(CStringUtils, TrimRightW)
 	EXPECT_EQ(0u, sv5.size());
 }
 
+TEST(CStringUtils, TrimLeftA)
+{
+	std::string_view sv1{};
+	CStringUtils::TrimLeft(sv1);
+	EXPECT_EQ(0u, sv1.size());
+
+	std::string_view sv2{ " Hallo" };
+	CStringUtils::TrimLeft(sv2);
+	EXPECT_EQ(5u, sv2.size());
+	EXPECT_TRUE(sv2 == "Hallo");
+
+	std::string_view sv3{ " Hallo " };
+	CStringUtils::TrimLeft(sv3);
+	EXPECT_EQ(6u, sv3.size());
+	EXPECT_TRUE(sv3 == "Hallo ");
+
+	std::string_view sv4{ " \t Hallo" };
+	CStringUtils::TrimLeft(sv4);
+	EXPECT_EQ(5u, sv4.size());
+	EXPECT_TRUE(sv4 == "Hallo");
+
+	std::string_view sv5{ "   \n " };
+	CStringUtils::TrimLeft(sv5);
+	EXPECT_EQ(0u, sv5.size());
+}
+
 TEST(CStringUtils, ExpandPlaceholdersForCmd)
 {
 	EXPECT_STREQ(L"", CStringUtils::ExpandPlaceholdersForCmd(L"", {

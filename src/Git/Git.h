@@ -111,7 +111,7 @@ public:
 		, m_recv(recv)
 		, m_pvectorErr(pvectorErr)
 	{
-		static_assert(std::is_convertible_v<GitReceiverFunc, std::function<void(const CStringA&)>>, "Wrong signature for GitReceiverFunc!");
+		static_assert(std::is_convertible_v<GitReceiverFunc, std::function<void(std::string_view)>>, "Wrong signature for GitReceiverFunc!");
 	}
 
 	bool OnOutputData(const std::string_view data) override
@@ -119,22 +119,15 @@ public:
 		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
 		if (data.empty())
 			return false;
-		const int oldEndPos = m_buffer.GetLength();
-		int newLength;
-		if (IntAdd(oldEndPos, static_cast<int>(data.size()), &newLength) != S_OK)
-			return true;
-		memcpy(CStrBufA(m_buffer, newLength, 0) + oldEndPos, data.data(), data.size());
+
+		m_buffer.append(data);
 
 		// Break into lines and feed to m_recv
-		int eolPos;
-		CStringA line;
-		while ((eolPos = m_buffer.Find('\n')) >= 0)
+		size_t eolPos;
+		while ((eolPos = m_buffer.find('\n')) != BYTE_VECTOR::npos)
 		{
-			memcpy(CStrBufA(line, eolPos, 0), static_cast<const char*>(m_buffer), eolPos);
-			auto oldLen = m_buffer.GetLength();
-			memmove(m_buffer.GetBuffer(oldLen), static_cast<const char*>(m_buffer) + eolPos + 1, m_buffer.GetLength() - eolPos - 1);
-			m_buffer.ReleaseBuffer(oldLen - eolPos - 1);
-			m_recv(line);
+			m_recv(std::string_view(m_buffer.data(), eolPos));
+			m_buffer.erase(m_buffer.cbegin(), m_buffer.cbegin() + eolPos + 1);
 		}
 		return false;
 	}
@@ -149,14 +142,14 @@ public:
 
 	void OnEnd() override
 	{
-		if (!m_buffer.IsEmpty())
-			m_recv(m_buffer);
-		m_buffer.Empty(); // Just for sure
+		if (!m_buffer.empty())
+			m_recv(std::string_view(m_buffer.data(), m_buffer.size()));
+		m_buffer.clear(); // Just for sure
 	}
 
 private:
 	GitReceiverFunc m_recv;
-	CStringA m_buffer;
+	BYTE_VECTOR m_buffer;
 	BYTE_VECTOR* m_pvectorErr;
 };
 
