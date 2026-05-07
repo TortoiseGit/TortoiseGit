@@ -33,6 +33,9 @@
 
 #define DEFAULT_USE_LIBGIT2_MASK (1 << CGit::GIT_CMD_MERGE_BASE) | (1 << CGit::GIT_CMD_DELETETAGBRANCH) | (1 << CGit::GIT_CMD_GETONEFILE) | (1 << CGit::GIT_CMD_ADD) | (1 << CGit::GIT_CMD_CHECKCONFLICTS) | (1 << CGit::GIT_CMD_GET_COMMIT) | (1 << CGit::GIT_CMD_GETCONFLICTINFO) | (1 << CGit::GIT_CMD_FOREACHREF)
 
+constexpr size_t GIT_EXE_BUFFER_LIMIT = 50 * 1024 * 1024; // arbitrary chosen 50 MiB limit that should be large enough for all real life situations in remote situations
+constexpr size_t GIT_EXE_STDERR_BUFFER_LIMIT = 1024; // arbitrary chosen 1 KiB limit that should be large enough for all real life situations in remote situations
+
 struct git_repository;
 
 using CAutoLocker = CComCritSecLock<CComCriticalSection>;
@@ -92,6 +95,9 @@ public:
 
 	const CString GetCmd() const { return m_Cmd; }
 
+	void setLimit(bool enableLimit) { m_maxLength = enableLimit ? GIT_EXE_BUFFER_LIMIT : SIZE_T_MAX; }
+	virtual boolean wasLimited() const = 0;
+
 	// These functions are called when command output data is available.
 	// When this function returns 'true' further output is ignored.
 	virtual bool	OnOutputData(std::string_view data) = 0;
@@ -100,6 +106,9 @@ public:
 
 private:
 	const CString m_Cmd;
+
+protected:
+	size_t m_maxLength = SIZE_T_MAX;
 };
 
 template <typename GitReceiverFunc>
@@ -119,7 +128,8 @@ public:
 		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
 		if (data.empty())
 			return false;
-
+		if (m_received >= m_maxLength || SizeTAdd(m_received, data.size(), &m_received) != S_OK) // this simple check is fine as this is intended to be a rough length limit for remote connections as a safety measure
+			return true;
 		m_buffer.append(data);
 
 		// Break into lines and feed to m_recv
@@ -134,7 +144,10 @@ public:
 
 	bool OnOutputErrData(const std::string_view data) override
 	{
+		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
 		if (!m_pvectorErr)
+			return true;
+		if (m_maxLength != SIZE_T_MAX && m_pvectorErr->size() > GIT_EXE_STDERR_BUFFER_LIMIT) // arbitrary length limit for remote connections as a safety measure
 			return true;
 		m_pvectorErr->append(data);
 		return false;
@@ -142,12 +155,17 @@ public:
 
 	void OnEnd() override
 	{
-		if (!m_buffer.empty())
-			m_recv(std::string_view(m_buffer.data(), m_buffer.size()));
+		// do not send any incomplete lines
 		m_buffer.clear(); // Just for sure
 	}
 
+	boolean wasLimited() const override
+	{
+		return m_received >= m_maxLength;
+	}
+
 private:
+	size_t m_received = 0;
 	GitReceiverFunc m_recv;
 	BYTE_VECTOR m_buffer;
 	BYTE_VECTOR* m_pvectorErr;
@@ -357,15 +375,24 @@ public:
 		{
 			BYTE_VECTOR vectorErr;
 			CGitCallCb call(cmd, recv, &vectorErr);
+			call.setLimit(s_limitGitExeOutput);
 			const int ret = Run(call);
 			if (!vectorErr.empty())
+			{
 				StringAppend(*outputErr, std::string_view(vectorErr.data(), vectorErr.size()));
+				if (s_limitGitExeOutput && vectorErr.size() > GIT_EXE_STDERR_BUFFER_LIMIT)
+					StringAppend(*outputErr, std::format("\n\n[Git.exe error output truncated by TortoiseGit at about {} KiB]", GIT_EXE_STDERR_BUFFER_LIMIT / 1024));
+			}
+			if (s_limitGitExeOutput && call.wasLimited())
+				vectorErr.append(std::format("\n\n[Git.exe's output truncated by TortoiseGit at about {} MiB]", GIT_EXE_BUFFER_LIMIT / 1024 / 1024));
 			return ret;
 		}
 
 		CGitCallCb call(cmd, recv);
+		call.setLimit(s_limitGitExeOutput);
 		return Run(call);
 	}
+	static bool s_limitGitExeOutput; // this is a HACK to protect again excessive input from remote servers
 
 private:
 	CComAutoCriticalSection	m_critSecThreadMap;

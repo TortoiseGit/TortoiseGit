@@ -46,6 +46,7 @@ bool CGit::ms_bCygwinGit = (CRegDWORD(L"Software\\TortoiseGit\\CygwinHack", FALS
 bool CGit::ms_bMsys2Git = (CRegDWORD(L"Software\\TortoiseGit\\Msys2Hack", FALSE) == TRUE);
 int CGit::ms_iSimilarityIndexThreshold = CalculateDiffSimilarityIndexThreshold(CRegDWORD(L"Software\\TortoiseGit\\DiffSimilarityIndexThreshold", 50));
 int CGit::m_LogEncode=CP_UTF8;
+bool CGit::s_limitGitExeOutput = false;
 
 static LPCWSTR nextpath(const wchar_t* path, wchar_t* buf, size_t buflen)
 {
@@ -518,6 +519,9 @@ int CGit::Run(CGitCall& pcall)
 	else
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": process exited: %d\n", exitcode);
 
+	if (pcall.wasLimited())
+		return -1;
+
 	return exitcode;
 }
 class CGitCall_ByteVector : public CGitCall
@@ -531,7 +535,10 @@ public:
 
 	bool OnOutputData(const std::string_view data) override
 	{
+		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
 		if (!m_pvector)
+			return true;
+		if (m_pvector->size() >= m_maxLength) // this simple check is fine as it is intended to be a rough length limit for remote connections as a safety measure
 			return true;
 		m_pvector->append(data);
 		return false;
@@ -539,17 +546,35 @@ public:
 
 	bool OnOutputErrData(const std::string_view data) override
 	{
+		ATLASSERT(data.size() <= 1024); // data.size() cannot be larger than 1024, as RunAsync uses a buffer of that size
 		if (!m_pvectorErr)
+			return true;
+		if (m_maxLength != SIZE_T_MAX && m_pvectorErr->size() > GIT_EXE_STDERR_BUFFER_LIMIT) // arbitrary length limit for remote connections as a safety measure
 			return true;
 		m_pvectorErr->append(data);
 		return false;
 	}
 	BYTE_VECTOR* m_pvector;
 	BYTE_VECTOR* m_pvectorErr;
+
+	boolean wasLimited() const override
+	{
+		if (!m_pvector)
+			return false;
+		return m_pvector->size() >= m_maxLength;
+	}
 };
 int CGit::Run(const CString& cmd, BYTE_VECTOR* vector, BYTE_VECTOR* vectorErr)
 {
 	CGitCall_ByteVector call(cmd, vector, vectorErr);
+	call.setLimit(s_limitGitExeOutput);
+	if (s_limitGitExeOutput && vectorErr)
+	{
+		if (vectorErr->size() > GIT_EXE_STDERR_BUFFER_LIMIT)
+			vectorErr->append(std::format("\n\n[Git.exe error output truncated by TortoiseGit at about {} KiB]", GIT_EXE_STDERR_BUFFER_LIMIT / 1024));
+		if (call.wasLimited())
+			vectorErr->append(std::format("\n\n[Git.exe's output truncated by TortoiseGit at about {} MiB]", GIT_EXE_BUFFER_LIMIT / 1024 / 1024));
+	}
 	return Run(call);
 }
 int CGit::Run(const CString& cmd, CString* output, int code)
@@ -2063,6 +2088,8 @@ int CGit::GetRemoteRefs(const CString& remote, REF_VECTOR& list, bool includeTag
 		return -1;
 	}
 	gitLastErr = cmd + L'\n';
+	CGit::s_limitGitExeOutput = true;
+	SCOPE_EXIT{ CGit::s_limitGitExeOutput = false; };
 	if (Run(
 		cmd, [&](const std::string_view origLineA) {
 			if (origLineA.size() <= GIT_HASH_SIZE * 2 + strlen("\t") || origLineA[GIT_HASH_SIZE * 2] != '\t') // OID, tab, refname
@@ -2128,6 +2155,8 @@ int CGit::DeleteRemoteRefs(const CString& sRemote, const STRING_VECTOR& list)
 
 	try
 	{
+		CGit::s_limitGitExeOutput = true;
+		SCOPE_EXIT{ CGit::s_limitGitExeOutput = false; };
 		CMassiveGitTaskBase mgtPush(L"push -- " + CGit::QuoteParameter(sRemote), FALSE);
 		for (const auto& ref : list)
 			mgtPush.AddFile(L':' + ref);
