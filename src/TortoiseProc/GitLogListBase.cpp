@@ -2738,14 +2738,17 @@ int CGitLogListBase::BeginFetchLog()
 	if (!g_Git.CanParseRev(range))
 	{
 		if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
-			return 0;
+			return 1;
 
 		// if show all branches, pick any ref as dummy entry ref
 		STRING_VECTOR list;
 		if (g_Git.GetRefList(list))
+		{
 			::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
+			return -1;
+		}
 		if (list.empty())
-			return 0;
+			return 1;
 
 		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 	}
@@ -2859,13 +2862,17 @@ UINT CGitLogListBase::LogThread()
 
 	ULONGLONG  t1,t2;
 
-	if(BeginFetchLog())
+	bool shouldWalk = true;
+
+	if (const int ret = BeginFetchLog(); ret < 0)
 	{
 		InterlockedExchange(&s_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 		return 1;
 	}
+	else if (ret == 1)
+		shouldWalk = false;
 
 	// create a copy we can safely work on in this thread
 	auto shared_filter{ m_LogFilter.load() };
@@ -2891,27 +2898,6 @@ UINT CGitLogListBase::LogThread()
 		lastSelectedHashNItem = 0;
 
 	int ret = 0;
-
-	bool shouldWalk = true;
-	CString range;
-	{
-		Locker lock(m_critSec);
-		range = m_sRange;
-	}
-	if (!g_Git.CanParseRev(range))
-	{
-		// walk revisions if show all branches and there exists any ref
-		if (!(m_ShowMask & CGit::LOG_INFO_ALL_BRANCH) && !(m_ShowMask & CGit::LOG_INFO_BASIC_REFS) && !(m_ShowMask & CGit::LOG_INFO_LOCAL_BRANCHES))
-			shouldWalk = false;
-		else
-		{
-			STRING_VECTOR list;
-			if (g_Git.GetRefList(list))
-				::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
-			if (list.empty())
-				shouldWalk = false;
-		}
-	}
 
 	if (shouldWalk)
 	{
