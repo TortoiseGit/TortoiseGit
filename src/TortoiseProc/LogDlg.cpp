@@ -519,7 +519,7 @@ void CLogDlg::OnPaint()
 	dc.FillRect(rect, &m_Brush);
 }
 
-LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
+LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM lParam)
 {
 	const int cur = static_cast<int>(wParam);
 
@@ -583,6 +583,12 @@ LRESULT CLogDlg::OnLogListLoading(WPARAM wParam, LPARAM /*lParam*/)
 			end = m_LogList.m_Filter.m_To;
 		m_DateTo.SetTime(&end);
 		Invalidate();
+	}
+	else if (cur == GITLOG_FAILED)
+	{
+		if (m_pTaskbarList)
+			m_pTaskbarList->SetProgressState(m_hWnd, TBPF_ERROR);
+		m_LogList.ShowText(reinterpret_cast<LPCWSTR>(lParam), true);
 	}
 	else
 	{

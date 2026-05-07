@@ -2677,7 +2677,6 @@ int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 int CGitLogListBase::BeginFetchLog()
 {
 	ATLASSERT(IsInWorkingThread());
-	ClearText();
 
 	this->m_arShownList.SafeRemoveAll();
 
@@ -2731,18 +2730,14 @@ int CGitLogListBase::BeginFetchLog()
 	}
 	catch (const char* msg)
 	{
-		::MessageBox(nullptr, L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
-		return -1;
+		throw L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 	}
 
 	// if not all branches, all basic refs, all local refs etc. are selected, check whether the selected branch is unborn
 	if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
 	{
 		if (const int ret = g_Git.IsUnbornBranch(range); ret < 0)
-		{
-			::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn."), L"TortoiseGit", MB_ICONERROR);
-			return -1;
-		}
+			throw g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn.");
 		else if (ret == TRUE)
 			return 1;
 	}
@@ -2760,8 +2755,7 @@ int CGitLogListBase::BeginFetchLog()
 	{
 		git_close_log(m_DllGitLog, 0);
 		m_DllGitLog = nullptr;
-		::MessageBox(nullptr, L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg), L"TortoiseGit", MB_ICONERROR);
-		return -1;
+		throw L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
 	}
 
 	return 0;
@@ -2856,17 +2850,32 @@ UINT CGitLogListBase::LogThread()
 
 	ULONGLONG  t1,t2;
 
-	bool shouldWalk = true;
-
-	if (const int ret = BeginFetchLog(); ret < 0)
+	bool shouldWalk = false;
+	try
 	{
+		shouldWalk = (BeginFetchLog() == 0);
+	}
+	catch (CString& error)
+	{
+		PostMessage(LVM_SETITEMCOUNT, 0, LVSICF_NOINVALIDATEALL);
+
+		CString temp;
+		temp.LoadString(IDS_ERR_ERROR);
+		temp += L": " + error;
+		if (temp.GetLength() >= _countof(m_wszTip))
+		{
+			temp.Truncate(_countof(m_wszTip) - 1 - static_cast<int>(wcslen(L"...")));
+			temp += L"...";
+		}
+		wcsncpy_s(m_wszTip, temp, _TRUNCATE);
+
+		::PostMessage(this->GetParent()->m_hWnd, MSG_LOAD_PERCENTAGE, GITLOG_FAILED, reinterpret_cast<LPARAM>(m_wszTip));
+
 		InterlockedExchange(&s_bThreadRunning, FALSE);
 		InterlockedExchange(&m_bNoDispUpdates, FALSE);
 
 		return 1;
 	}
-	else if (ret == 1)
-		shouldWalk = false;
 
 	// create a copy we can safely work on in this thread
 	auto shared_filter{ m_LogFilter.load() };

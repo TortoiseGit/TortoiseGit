@@ -51,8 +51,8 @@ auto any_of(Cont& c, Pred&& p)
 #define ICONITEMBORDER 5
 
 #define GITLOG_START 0
-#define GITLOG_START_ALL 1
 #define GITLOG_END   100
+#define GITLOG_FAILED 101
 
 #define LOGFILTER_ALL			0xFFFF
 #define LOGFILTER_TOGGLE		0x8000
