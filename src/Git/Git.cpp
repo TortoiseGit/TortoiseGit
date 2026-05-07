@@ -3558,7 +3558,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 			MessageBox(nullptr, str, L"TortoiseGit", MB_OK | MB_ICONERROR);
 		}
 
-		out.append(cmdout, 0);
+		out.append(std::span<const char>(cmdout.cbegin(), cmdout.cend()));
 	}
 	result.ParserFromLog(out);
 

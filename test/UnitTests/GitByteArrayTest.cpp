@@ -87,33 +87,6 @@ TEST(CGitByteArray, AppendByteArrayWithNoNulls)
 	EXPECT_EQ(2 * sizeof(inputByteArray), byteArray.size());
 }
 
-TEST(CGitByteArray, AppendByteArrayRange)
-{
-	constexpr char inputByteArray[] = { "1234\0""5789\0" };
-	CGitByteArray byteArray1;
-	byteArray1.append(inputByteArray, sizeof(inputByteArray));
-	EXPECT_EQ(sizeof(inputByteArray), byteArray1.size());
-
-	CGitByteArray byteArray2;
-	EXPECT_EQ(0U, byteArray2.append(byteArray1, 0, 0));
-	EXPECT_EQ(0U, byteArray2.size());
-
-	EXPECT_EQ(0U, byteArray2.append(byteArray1, 0));
-	EXPECT_EQ(byteArray1.size(), byteArray2.size());
-
-	EXPECT_EQ(0U, byteArray2.append(byteArray1, 4, 3));
-	EXPECT_EQ(sizeof(inputByteArray), byteArray1.size());
-	EXPECT_EQ(byteArray1.size(), byteArray2.size());
-
-	EXPECT_EQ(0U, byteArray2.append(byteArray1, 4, 4));
-	EXPECT_EQ(sizeof(inputByteArray), byteArray1.size());
-	EXPECT_EQ(byteArray1.size(), byteArray2.size());
-
-	EXPECT_EQ(0U, byteArray2.append(byteArray1, 4, 7));
-	EXPECT_EQ(sizeof(inputByteArray), byteArray1.size());
-	EXPECT_EQ(byteArray1.size() + 3, byteArray2.size());
-}
-
 TEST(CGitByteArray, Find)
 {
 	constexpr char inputByteArray[] = { "1234\0""5789\0" };

@@ -72,22 +72,13 @@ public:
 
 		return pos;
 	}
-	size_t append(const CGitByteArray& v, size_t start = 0, size_t end = npos)
-	{
-		if (end == npos)
-			end = v.size();
 
-		if (end <= start)
-			return 0;
-		insert(this->end(), v.cbegin() + start, v.cbegin() + end);
-		return 0;
-	}
+#ifdef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 	inline void append(const char* data, size_t dataSize)
 	{
-		if (dataSize == 0)
-			return;
 		append(std::span<const char>(data, dataSize));
 	}
+#endif
 
 	inline void append(const std::span<const char> v)
 	{

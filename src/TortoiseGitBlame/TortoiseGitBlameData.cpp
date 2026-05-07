@@ -186,7 +186,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(const BYTE_VECTOR& data, CGitHashMa
 				// remove <TAB> at start
 				BYTE_VECTOR line;
 				if (lineEnd - 1 > lineBegin)
-					line.append(&data[lineBegin + 1], lineEnd-lineBegin - 1);
+					line.append(std::span<const char>(&data[lineBegin + 1], lineEnd - lineBegin - 1));
 
 				while (!line.empty() && line[line.size() - 1] == 13)
 					line.pop_back();
