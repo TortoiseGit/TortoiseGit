@@ -414,6 +414,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 			}
 			CString log;
 			log.Format(IDS_PROC_PROGRESS_GITUNCLEANEXIT, m_GitStatus);
+			m_CurrentWork.SetWindowText(log);
 			CString err;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
 				err.Format(L"\r\n\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCWSTR>(log), tickSpent, static_cast<LPCWSTR>(strEndTime));
@@ -429,6 +430,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 				m_pTaskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 			CString temp;
 			temp.LoadString(IDS_SUCCESS);
+			m_CurrentWork.SetWindowText(temp);
 			CString log;
 			if (CRegDWORD(L"Software\\TortoiseGit\\ShowGitexeTimings", TRUE))
 				log.Format(L"\r\n%s (%I64u ms @ %s)\r\n", static_cast<LPCWSTR>(temp), tickSpent, static_cast<LPCWSTR>(strEndTime));
