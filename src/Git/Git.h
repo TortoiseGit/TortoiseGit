@@ -556,7 +556,7 @@ public:
 
 	static void StringAppend(CString& str, const std::string_view, int code = CP_UTF8);
 
-	BOOL CanParseRev(const CString& ref);
+	int IsUnbornBranch(const CString& ref);
 	/**
 	Checks if HEAD points to an unborn branch
 	This method assumes, that we already know that we are in a working tree.

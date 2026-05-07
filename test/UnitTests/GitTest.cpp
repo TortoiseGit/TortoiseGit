@@ -701,44 +701,33 @@ TEST_P(CBasicGitWithTestRepoBareFixture, GetRemotePushBranch)
 	GetRemotePushBranch(m_Git);
 }
 
-static void CanParseRev(CGit& m_Git)
+static void IsUnbornBranch(CGit& m_Git)
 {
-	EXPECT_TRUE(m_Git.CanParseRev(L""));
-	EXPECT_TRUE(m_Git.CanParseRev(L"HEAD"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"master"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"heads/master"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"refs/heads/master"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"master~1"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"master forconflict"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"origin/master..master"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"origin/master...master"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"49ecdfff36bfe2b9b499b33e5034f427e2fa54dd"));
-	EXPECT_FALSE(m_Git.CanParseRev(L"non-existing"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"normal-tag"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"tags/normal-tag"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"refs/tags/normal-tag"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"all-files-signed"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"all-files-signed^{}"));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L""));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L"HEAD"));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L"master"));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L"refs/heads/master"));
 
-	EXPECT_FALSE(m_Git.CanParseRev(L"orphanic"));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L"non-existing"));
 }
 
-TEST_P(CBasicGitWithTestRepoFixture, CanParseRev)
+TEST_P(CBasicGitWithTestRepoFixture, IsUnbornBranch)
 {
-	CanParseRev(m_Git);
+	IsUnbornBranch(m_Git);
 
 	CString output;
 	EXPECT_EQ(0, m_Git.Run(L"git.exe checkout --orphan orphanic", &output, CP_UTF8));
 	EXPECT_STRNE(L"", output);
-	EXPECT_FALSE(m_Git.CanParseRev(L""));
-	EXPECT_FALSE(m_Git.CanParseRev(L"HEAD"));
-	EXPECT_FALSE(m_Git.CanParseRev(L"orphanic"));
-	EXPECT_TRUE(m_Git.CanParseRev(L"master"));
+	EXPECT_TRUE(m_Git.IsUnbornBranch(L""));
+	EXPECT_TRUE(m_Git.IsUnbornBranch(L"HEAD"));
+	EXPECT_TRUE(m_Git.IsUnbornBranch(L"orphanic"));
+	EXPECT_TRUE(m_Git.IsUnbornBranch(L"refs/heads/orphanic"));
+	EXPECT_FALSE(m_Git.IsUnbornBranch(L"master"));
 }
 
-TEST_P(CBasicGitWithTestRepoBareFixture, CanParseRev)
+TEST_P(CBasicGitWithTestRepoBareFixture, IsUnbornBranch)
 {
-	CanParseRev(m_Git);
+	IsUnbornBranch(m_Git);
 }
 
 static void FETCHHEAD(CGit& m_Git, bool isBare)

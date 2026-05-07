@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015, 2017-2020, 2023 - TortoiseGit
+// Copyright (C) 2015, 2017-2020, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -174,21 +174,9 @@ static void ParserFromLogTests()
 	EXPECT_STREQ(L"844309789a13614b52d5e7cbfe6350dd73d1dc72", logDataVector.GetGitRevAt(23).m_CommitHash.ToString());
 
 	logCache.m_HashMap.clear();
-	logDataVector.ClearAll();
-	CString range(L"does-not-exist");
-	EXPECT_EQ(-1, logDataVector.ParserFromLog(nullptr, 0, CGit::LOG_INFO_ALL_BRANCH, &range));
-	EXPECT_EQ(0U, logDataVector.size());
-	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0U, logCache.m_HashMap.size());
-
-	EXPECT_EQ(-1, logDataVector.ParserFromLog(nullptr, 0, 0, &range));
-	EXPECT_EQ(0U, logDataVector.size());
-	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
-	EXPECT_EQ(0U, logCache.m_HashMap.size());
-
 	logCache.m_HashMap.clear();
 	logDataVector.ClearAll();
-	range = L"master2..master";
+	CString range = L"master2..master";
 	EXPECT_EQ(0, logDataVector.ParserFromLog(nullptr, 0, 0, &range));
 	ASSERT_EQ(2U, logDataVector.size());
 	EXPECT_EQ(2U, logDataVector.m_HashMap.size());
@@ -293,7 +281,7 @@ static void ParserFromLogTests_EmptyRepo()
 	CLogDataVector logDataVector;
 	logDataVector.m_logOrderBy = CGit::LOG_ORDER_TOPOORDER;
 	logDataVector.SetLogCache(&logCache);
-	EXPECT_EQ(-1, logDataVector.ParserFromLog());
+	EXPECT_EQ(0, logDataVector.ParserFromLog());
 	EXPECT_EQ(0U, logDataVector.size());
 	EXPECT_EQ(0U, logDataVector.m_HashMap.size());
 	EXPECT_EQ(0U, logCache.m_HashMap.size());

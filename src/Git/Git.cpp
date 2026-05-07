@@ -376,54 +376,18 @@ void CGit::StringAppend(CString& str, const std::string_view append, int code)
 	str.ReleaseBuffer(currentContentLen + appendedLen); // no - 1 because MultiByteToWideChar is called with a fixed length (thus no nul char included)
 }
 
-// This method was originally used to check for orphaned branches
-BOOL CGit::CanParseRev(const CString& ref)
+// Checkes whether ref is an unborn branch
+int CGit::IsUnbornBranch(const CString& ref)
 {
-	CString refString;
-
-	if (ref.IsEmpty())
-		refString = L"HEAD";
-	else
-	{
-		try
-		{
-			const int len = ref.GetLength();
-			LPCWSTR data = ref;
-			int i = 0;
-			while (i < len)
-			{
-				// skip leading whitespace
-				while (i < len && iswspace(data[i]))
-					++i;
-
-				const int start = i;
-				// read ref
-				while (i < len && !iswspace(data[i]))
-					++i;
-				if (start < i)
-				{
-					CString word(data + start, i - start);
-					refString += L' ';
-					refString += CGit::QuoteParameter(word);
-				}
-			}
-		}
-		catch (illegal_git_parameter& e)
-		{
-			gitLastErr = e.cause();
-			return FALSE;
-		}
-	}
-
-	gitLastErr.Empty();
-
-	CString cmdout;
-	if (Run(L"git.exe rev-parse --revs-only --end-of-options " + refString, &cmdout, CP_UTF8))
-		return FALSE;
-	if(cmdout.IsEmpty())
-		return FALSE;
-
-	return TRUE;
+	if (ref.IsEmpty() || ref == L"HEAD")
+		return IsInitRepos();
+	CString currentBranch;
+	const int ret = GetCurrentBranchFromFile(g_Git.m_CurrentDir, currentBranch);
+	if (ret < 0)
+		return ret;
+	if (ref == currentBranch || currentBranch == StripRefName(ref))
+		return IsInitRepos();
+	return false;
 }
 
 // Checks if we have an orphaned HEAD

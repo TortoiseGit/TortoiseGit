@@ -232,6 +232,7 @@ bool CRevisionGraphWnd::FetchRevisionData
 		else // all branch
 			infomask |= CGit::LOG_INFO_ALWAYS_APPLY_RANGE | CGit::LOG_INFO_ALL_BRANCH;
 	}
+	range.Trim();
 
 	m_logEntries.ParserFromLog(nullptr, 0, infomask, &range);
 

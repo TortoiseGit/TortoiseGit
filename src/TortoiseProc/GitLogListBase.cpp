@@ -2735,22 +2735,16 @@ int CGitLogListBase::BeginFetchLog()
 		return -1;
 	}
 
-	if (!g_Git.CanParseRev(range))
+	// if not all branches, all basic refs, all local refs etc. are selected, check whether the selected branch is unborn
+	if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
 	{
-		if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
-			return 1;
-
-		// if show all branches, pick any ref as dummy entry ref
-		STRING_VECTOR list;
-		if (g_Git.GetRefList(list))
+		if (const int ret = g_Git.IsUnbornBranch(range); ret < 0)
 		{
-			::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not get all refs."), L"TortoiseGit", MB_ICONERROR);
+			::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
-		if (list.empty())
+		else if (ret == TRUE)
 			return 1;
-
-		cmd = g_Git.GetLogCmd(list[0], path, mask, &m_Filter, CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER));
 	}
 
 	CAutoLocker lock{ g_Git.m_critGitDllSec };

@@ -68,8 +68,17 @@ int CLogDataVector::ParserFromLog(const CTGitPath* path, DWORD count, DWORD info
 	}
 	std::vector<std::string> cmd = g_Git.GetLogCmd(gitrange, path, infomask, &filter, m_logOrderBy);
 
-	if (!g_Git.CanParseRev(gitrange))
-		return -1;
+	// if not all branches, all basic refs, all local refs etc. are selected, check whether the selected branch is unborn
+	if (!(infomask & CGit::LOG_INFO_ALL_BRANCH) && !(infomask & CGit::LOG_INFO_BASIC_REFS) && !(infomask & CGit::LOG_INFO_LOCAL_BRANCHES))
+	{
+		if (const int ret = g_Git.IsUnbornBranch(gitrange); ret < 0)
+		{
+			::MessageBox(nullptr, g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn."), L"TortoiseGit", MB_ICONERROR);
+			return -1;
+		}
+		else if (ret == TRUE)
+			return 0;
+	}
 
 	try
 	{
