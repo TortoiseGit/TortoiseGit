@@ -171,7 +171,7 @@ protected:
 				date = L"now";
 
 			CString temp;
-			temp.Format(L"--date=%s --author=%s ", static_cast<LPCWSTR>(date), static_cast<LPCWSTR>(CGit::QuoteParameter(GetAuthor())));
+			temp.Format(L"--date=%s --author=%s ", static_cast<LPCWSTR>(date), static_cast<LPCWSTR>(CGit::QuoteParameter(GetAuthor(), true)));
 			return temp;
 		}
 	} m_SquashFirstMetaData;

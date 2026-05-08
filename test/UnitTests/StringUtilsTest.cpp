@@ -537,3 +537,17 @@ TEST(CStringUtils, ExpandPlaceholdersForCmd)
 																	{ L"something", L"arG4" },
 		}, [](CString s) { return CCmdLineParser::EscapeValue(s); }));
 }
+
+TEST(CStringUtils, EscapeWindowsCliArguments)
+{
+	EXPECT_STREQ(L"\"\"", CStringUtils::EscapeWindowsCliArguments(L""));
+	EXPECT_STREQ(L"\" \"", CStringUtils::EscapeWindowsCliArguments(L" "));
+	EXPECT_STREQ(L"\"hello\"", CStringUtils::EscapeWindowsCliArguments(L"hello"));
+	EXPECT_STREQ(L"\"some\\path with\\spaces\"", CStringUtils::EscapeWindowsCliArguments(L"some\\path with\\spaces"));
+	EXPECT_STREQ(L"\"\\\\\"", CStringUtils::EscapeWindowsCliArguments(L"\\"));
+	EXPECT_STREQ(L"\"D:\\path\"", CStringUtils::EscapeWindowsCliArguments(L"D:\\path"));
+	EXPECT_STREQ(L"\"D:\\path\\\\\"", CStringUtils::EscapeWindowsCliArguments(L"D:\\path\\"));
+	EXPECT_STREQ(L"\"argument\\\"2\"", CStringUtils::EscapeWindowsCliArguments(L"argument\"2"));
+	EXPECT_STREQ(L"\"\\\\\\\"\"", CStringUtils::EscapeWindowsCliArguments(L"\\\""));
+	EXPECT_STREQ(L"\"\\\\\\\\\\\"\"", CStringUtils::EscapeWindowsCliArguments(L"\\\\\""));
+}

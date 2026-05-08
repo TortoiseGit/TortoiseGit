@@ -744,7 +744,7 @@ int CGit::SetConfigValue(const CString& key, const CString& value, CONFIG_TYPE t
 		}
 		try
 		{
-			cmd.Format(L"git.exe config %s --end-of-options %s %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(CGit::QuoteParameter(key)), static_cast<LPCWSTR>(CGit::QuoteParameter(value)));
+			cmd.Format(L"git.exe config %s --end-of-options %s %s", static_cast<LPCWSTR>(option), static_cast<LPCWSTR>(CGit::QuoteParameter(key)), static_cast<LPCWSTR>(CGit::QuoteParameter(value, true)));
 		}
 		catch (illegal_git_parameter& e)
 		{
@@ -4014,11 +4014,22 @@ int CGit::ParseConflictHashesFromLsFile(const BYTE_VECTOR& out, CGitHash& baseHa
 	return 0;
 }
 
-CString CGit::QuoteParameter(CString value)
+CString CGit::QuoteParameter(CString value, bool relaxed /* false */)
 {
+	if (ms_bMsys2Git || ms_bCygwinGit)
+	{
+		value.Replace(L'\\', L'/');
+		if (value.FindOneOf(L"\"?*`$") != -1)
+			throw illegal_git_parameter(L"The git.exe command could not be constructed. The following parameter contains a special character, such as a double quotation mark (\") or an asterisk (*), which is not supported by TortoiseGit due to the default functionality being disabled:\n" + value);
+		return L'"' + value + L'"';
+	}
+
+	if (relaxed)
+		return CStringUtils::EscapeWindowsCliArguments(value);
+
 	value.Replace(L'\\', L'/');
 
-	if (value.FindOneOf(L"\"?*") != -1 || ((ms_bMsys2Git || ms_bCygwinGit) && value.FindOneOf(L"`$") != -1))
+	if (value.FindOneOf(L"\"?*") != -1)
 		throw illegal_git_parameter(L"The git.exe command could not be constructed. The following parameter contains a special character, such as a double quotation mark (\") or an asterisk (*), which is not supported by TortoiseGit (perhaps due to the default functionality being disabled):\n" + value);
 
 	return L'"' + value + L'"';

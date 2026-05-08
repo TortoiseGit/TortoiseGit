@@ -126,7 +126,7 @@ bool CAppUtils::StashSave(HWND hWnd, const CString& msg, bool showPull, bool pul
 		{
 			try
 			{
-				cmd += L" -m " + CGit::QuoteParameter(dlg.m_sMessage);
+				cmd += L" -m " + CGit::QuoteParameter(dlg.m_sMessage, true);
 			}
 			catch (illegal_git_parameter& e)
 			{
@@ -2325,7 +2325,7 @@ bool DoPull(HWND hWnd, const CString& url, bool bAutoLoad, BOOL bFetchTags, bool
 		progress.m_GitCmd.Format(L"git.exe pull --progress -v --no-rebase%s -- %s %s",
 								 static_cast<LPCWSTR>(args),
 								 static_cast<LPCWSTR>(CGit::QuoteParameter(url)),
-								 remoteBranchName.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remoteBranchName)));
+								 remoteBranchName.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remoteBranchName, true)));
 	}
 	catch (illegal_git_parameter& e)
 	{
@@ -2606,7 +2606,7 @@ static bool DoFetch(HWND hWnd, const CString& url, const bool fetchAllRemotes, c
 			cmd.Format(L"git.exe fetch %s -- %s %s",
 					   static_cast<LPCWSTR>(arg),
 					   static_cast<LPCWSTR>(CGit::QuoteParameter(url)),
-					   remoteBranch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remoteBranch)));
+					   remoteBranch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(remoteBranch, true)));
 		}
 		catch (illegal_git_parameter& e)
 		{
@@ -2795,7 +2795,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 	{
 		try
 		{
-			arg += L"--push-option=" + CGit::QuoteParameter(pushOption);
+			arg += L"--push-option=" + CGit::QuoteParameter(pushOption, true);
 			arg += L' ';
 		}
 		catch (illegal_git_parameter& e)
@@ -2848,7 +2848,7 @@ bool CAppUtils::DoPush(HWND hWnd, bool autoloadKey, bool tags, bool allRemotes, 
 				cmd.Format(L"git.exe push %s -- %s %s",
 						   static_cast<LPCWSTR>(arg),
 						   static_cast<LPCWSTR>(CGit::QuoteParameter(remotesList[i])),
-						   branch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(branch)));
+						   branch.IsEmpty() ? L"" : static_cast<LPCWSTR>(CGit::QuoteParameter(branch, true)));
 			}
 		}
 		catch (illegal_git_parameter& e)

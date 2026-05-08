@@ -1584,10 +1584,10 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	EXPECT_EQ(false, m_Git.GetConfigValueBool(L"remote.origin.url"));
 	EXPECT_EQ(true, m_Git.GetConfigValueBool(L"core.ignorecase"));
 
-	CString values[] = { L"", L" ", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n", L"with ümlaut"};
+	CString values[] = { L"", L" ", L"\n", L"\n\n", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n", L"with ümlaut", L"*", L"`pwd`" };
 	for (int i = 0; i < _countof(values); ++i)
 	{
-		if (GetParam() != LIBGIT && values[i].FindOneOf(L"\\\"") != -1)
+		if (GetParam() != LIBGIT && values[i].FindOneOf(L"\\\"") != -1 && (CGit::ms_bMsys2Git || CGit::ms_bCygwinGit))
 			continue;
 		CString key;
 		key.Format(L"re-read.test%d", i);
@@ -4641,7 +4641,10 @@ TEST(CGit, QuoteParameter)
 	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"git\""), illegal_git_parameter);
 	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi*t/"), illegal_git_parameter);
 	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi?t/"), illegal_git_parameter);
-	// cf. TEST_P(CBasicGitWithTestRepoFixture, Config)
+
+	// Relaxed mode (e.g., for config)
+	EXPECT_STREQ(L"\"C:\\\\\"", CGit::QuoteParameter(L"C:\\", true));
+	EXPECT_STREQ(L"\"Hell*o \\\"Git\\\"\"", CGit::QuoteParameter(L"Hell*o \"Git\"", true));
 
 	CGit::ms_bCygwinGit = true;
 	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi$t/"), illegal_git_parameter);

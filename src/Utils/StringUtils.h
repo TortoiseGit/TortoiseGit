@@ -182,6 +182,8 @@ public:
 
 	static bool IsPlainReadableASCII(const CString& text);
 
+	static CString EscapeWindowsCliArguments(const CString& argument);
+
 	static bool StartsWith(const wchar_t* heystack, const CString& needle);
 	static bool StartsWithI(const wchar_t* heystack, const CString& needle);
 	static bool WriteStringToTextFile(LPCWSTR path, LPCWSTR text, bool bUTF8 = true);

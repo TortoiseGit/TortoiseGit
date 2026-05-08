@@ -688,7 +688,7 @@ public:
 		return CombinePath(path->GetWinPathString());
 	}
 
-	[[nodiscard]] static CString QuoteParameter(CString value);
+	[[nodiscard]] static CString QuoteParameter(CString value, bool relaxed = false);
 };
 extern void GetTempPath(CString &path);
 extern CString GetTempFile();

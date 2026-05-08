@@ -885,7 +885,7 @@ void CCommitDlg::OnOK()
 		{
 			try
 			{
-				author.Format(L"--author=%s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_sAuthor)));
+				author.Format(L"--author=%s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_sAuthor, true)));
 			}
 			catch (illegal_git_parameter& e)
 			{

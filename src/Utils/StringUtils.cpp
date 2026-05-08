@@ -863,3 +863,44 @@ CString CStringUtils::ExpandPlaceholdersForCmd(const CString& input, const std::
 	return result;
 }
 #endif
+
+#if defined(_MFC_VER) || defined(CSTRING_AVAILABLE)
+// algorithm based on https://learn.microsoft.com/en-gb/archive/blogs/twistylittlepassagesallalike/everyone-quotes-command-line-arguments-the-wrong-way
+// also cf. https://learn.microsoft.com/en-us/cpp/cpp/main-function-command-line-args
+CString CStringUtils::EscapeWindowsCliArguments(const CString& argument)
+{
+	CString result;
+	result += L'"';
+
+	const int length = argument.GetLength();
+
+	for (int i = 0;; ++i)
+	{
+		unsigned numberBackslashes = 0;
+
+		// Count consecutive backslashes
+		while (i < length && argument[i] == L'\\')
+		{
+			++i;
+			++numberBackslashes;
+		}
+
+		// End of string
+		if (i >= length)
+		{
+			// Escape all backslashes, but let the terminating double quotation mark we add below be interpreted as a metacharacter.
+			result += CString(L'\\', numberBackslashes * 2);
+			break;
+		}
+		else if (argument[i] == L'"') // Escape all backslashes and the following double quotation mark.
+			result += CString(L'\\', numberBackslashes * 2 + 1);
+		else // Backslashes aren't special here.
+			result += CString(L'\\', numberBackslashes);
+		result += argument[i];
+	}
+
+	result += L'"';
+
+	return result;
+}
+#endif
