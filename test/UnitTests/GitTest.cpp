@@ -1587,8 +1587,6 @@ TEST_P(CBasicGitWithTestRepoFixture, Config)
 	CString values[] = { L"", L" ", L"\n", L"\n\n", L"ending-with-space ", L" starting with-space", L"test1", L"some\\backslashes\\in\\it", L"with \" doublequote", L"with backslash before \\\" doublequote", L"with'quote", L"multi\nline", L"no-multi\\nline", L"new line at end\n", L"with ümlaut", L"*", L"`pwd`" };
 	for (int i = 0; i < _countof(values); ++i)
 	{
-		if (GetParam() != LIBGIT && values[i].FindOneOf(L"\\\"") != -1 && (CGit::ms_bMsys2Git || CGit::ms_bCygwinGit))
-			continue;
 		CString key;
 		key.Format(L"re-read.test%d", i);
 		EXPECT_EQ(0, m_Git.SetConfigValue(key, values[i]));
@@ -4645,13 +4643,65 @@ TEST(CGit, QuoteParameter)
 	// Relaxed mode (e.g., for config)
 	EXPECT_STREQ(L"\"C:\\\\\"", CGit::QuoteParameter(L"C:\\", true));
 	EXPECT_STREQ(L"\"Hell*o \\\"Git\\\"\"", CGit::QuoteParameter(L"Hell*o \"Git\"", true));
+}
 
-	CGit::ms_bCygwinGit = true;
-	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi$t/"), illegal_git_parameter);
-	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi`uid`t/"), illegal_git_parameter);
+static void QuoteParameter_Msys2Cygwin()
+{
+	EXPECT_STREQ(L"''", CGit::QuoteParameter(L""));
+	EXPECT_STREQ(L"'/'", CGit::QuoteParameter(L"/"));
+	EXPECT_STREQ(L"'src/Git.h'", CGit::QuoteParameter(L"src/Git.h"));
+	EXPECT_STREQ(L"'src/Git/'", CGit::QuoteParameter(L"src/Git/"));
+	EXPECT_STREQ(L"'src/Gi'\\''t/'", CGit::QuoteParameter(L"src/Gi't/"));
+	EXPECT_STREQ(L"'src/Gi%t/'", CGit::QuoteParameter(L"src/Gi%t/"));
+	EXPECT_STREQ(L"'src/Git/'", CGit::QuoteParameter(L"src/Git/"));
+	EXPECT_STREQ(L"'src Git/'", CGit::QuoteParameter(L"src Git/"));
+	EXPECT_STREQ(L"'HEAD~3'", CGit::QuoteParameter(L"HEAD~3"));
+	EXPECT_STREQ(L"'^HEAD'", CGit::QuoteParameter(L"^HEAD"));
+	EXPECT_STREQ(L"'ümlaut'", CGit::QuoteParameter(L"ümlaut"));
+	EXPECT_STREQ(L"'--safe'", CGit::QuoteParameter(L"--safe"));
 
-	CGit::ms_bCygwinGit = false;
+	EXPECT_STREQ(L"'src/Gi$t/'", CGit::QuoteParameter(L"src/Gi$t/"));
+	EXPECT_STREQ(L"'src/Gi`pwd`t/'", CGit::QuoteParameter(L"src/Gi`pwd`t/"));
+
+	EXPECT_STREQ(L"'/'", CGit::QuoteParameter(L"\\"));
+	EXPECT_STREQ(L"'src/Git.h'", CGit::QuoteParameter(L"src\\Git.h"));
+	EXPECT_STREQ(L"'C:/src/Git.h'", CGit::QuoteParameter(L"C:\\src\\Git.h"));
+	EXPECT_STREQ(L"'C:/'", CGit::QuoteParameter(L"C:\\"));
+	EXPECT_STREQ(L"'//localhost/some/path'", CGit::QuoteParameter(L"\\\\localhost\\some\\path"));
+
+	EXPECT_STREQ(L"'src\"/Git.h'", CGit::QuoteParameter(L"src\"/Git.h"));
+	EXPECT_STREQ(L"'sr\"c/Git.h'", CGit::QuoteParameter(L"sr\"c/Git.h"));
+	EXPECT_STREQ(L"'\"git\"'", CGit::QuoteParameter(L"\"git\""));
+	EXPECT_STREQ(L"'\"'", CGit::QuoteParameter(L"\""));
+	EXPECT_STREQ(L"'/\"'", CGit::QuoteParameter(L"\\\""));
+	EXPECT_STREQ(L"'git\"'", CGit::QuoteParameter(L"git\""));
+	EXPECT_STREQ(L"'src/Gi*t/'", CGit::QuoteParameter(L"src/Gi*t/"));
+	EXPECT_STREQ(L"'src/Gi?t/'", CGit::QuoteParameter(L"src/Gi?t/"));
+
+	// Relaxed mode (e.g., for config)
+	EXPECT_STREQ(L"'C:\\'", CGit::QuoteParameter(L"C:\\", true));
+	EXPECT_STREQ(L"'Hell*o \"Git\"'", CGit::QuoteParameter(L"Hell*o \"Git\"", true));
+	EXPECT_STREQ(L"'Hell*o'\\''s \"Git\"'", CGit::QuoteParameter(L"Hell*o's \"Git\"", true));
+}
+
+TEST(CGit, QuoteParameter_Msys2)
+{
+	const auto oldCygwinGit = CGit::ms_bCygwinGit;
+	const auto oldMsys2Git = CGit::ms_bMsys2Git;
+	SCOPE_EXIT{ CGit::ms_bCygwinGit = oldCygwinGit; CGit::ms_bMsys2Git = oldMsys2Git; };
+	CGit::ms_bCygwinGit = CGit::ms_bMsys2Git = false;
 	CGit::ms_bMsys2Git = true;
-	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi$t/"), illegal_git_parameter);
-	EXPECT_THROW(std::ignore = CGit::QuoteParameter(L"src/Gi`pwd`t/"), illegal_git_parameter);
+
+	QuoteParameter_Msys2Cygwin();
+}
+
+TEST(CGit, QuoteParameter_Cygwin)
+{
+	const auto oldCygwinGit = CGit::ms_bCygwinGit;
+	const auto oldMsys2Git = CGit::ms_bMsys2Git;
+	SCOPE_EXIT{ CGit::ms_bCygwinGit = oldCygwinGit; CGit::ms_bMsys2Git = oldMsys2Git; };
+	CGit::ms_bCygwinGit = CGit::ms_bMsys2Git = false;
+	CGit::ms_bCygwinGit = true;
+
+	QuoteParameter_Msys2Cygwin();
 }
