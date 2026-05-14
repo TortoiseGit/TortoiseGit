@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2012, 2019-2022 - TortoiseGit
+// Copyright (C) 2008-2012, 2019-2022, 2026 - TortoiseGit
 // Copyright (C) 2003-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -68,6 +68,7 @@
 #define MENUSTASHPOP		0x0002000000000000
 #define MENUDIFFTWO			0x0004000000000000
 #define MENUBISECT			0x0008000000000000
+#define MENUINACCESSIBLE	0x0010000000000000
 #define MENUSVNFETCH		0x0080000000000000
 #define MENUREVISIONGRAPH	0x0100000000000000
 #define MENUDAEMON			0x0200000000000000
@@ -124,3 +125,4 @@ enum FileState
 #define ITEMIS_SUBMODULE			0x01000000
 #define ITEMIS_MERGEACTIVE			0x02000000
 #define ITEMIS_HASDIFFLATER         0x04000000
+#define ITEMIS_INACCESSIBLE			0x08000000

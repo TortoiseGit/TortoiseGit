@@ -142,6 +142,8 @@
 #define IDS_MENUDIFFLATER               232
 #define IDS_MENUDESCDIFFLATER           233
 #define IDS_MENUDIFFNOW                 234
+#define IDS_MENUINACCESSIBLE            235
+#define IDS_MENUDESCINACCESSIBLE        236
 #define IDS_MENUUNIGNORE                237
 #define IDS_MENUDESCUNIGNORE            238
 #define IDS_DROPCOPYRENAMEMENU          250

@@ -417,8 +417,12 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					if (status == git_wc_status_deleted)
 						itemStatesFolder |= ITEMIS_DELETED;
 
-					if (GitAdminDir::IsBareRepo(askedpath.GetWinPathString()))
+					bool bareDetectionError = false;
+					if (GitAdminDir::IsBareRepo(askedpath.GetWinPathString(), &bareDetectionError))
 						itemStatesFolder = ITEMIS_BAREREPO;
+
+					if (!(itemStates & (ITEMIS_BAREREPO | ITEMIS_INVERSIONEDFOLDER)) && (PathFileExists(askedpath.GetWinPathString() + L"\\.git") || bareDetectionError))
+						itemStates |= ITEMIS_INACCESSIBLE;
 				}
 				catch ( ... )
 				{
@@ -490,6 +494,8 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 					itemStates |= ITEMIS_ADDED;
 				if (status == git_wc_status_deleted)
 					itemStates |= ITEMIS_DELETED;
+				if (bool formatError = false; !(itemStates & (ITEMIS_BAREREPO | ITEMIS_INVERSIONEDFOLDER)) && (PathFileExists(askedpath.GetWinPathString() + L"\\.git") || !GitAdminDir::IsBareRepo(folder_.c_str(), &formatError) && formatError))
+					itemStates |= ITEMIS_INACCESSIBLE;
 			}
 		}
 	}
@@ -865,7 +871,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 
 	if (((uFlags & CMF_EXTENDEDVERBS) == 0) && g_ShellCache.HideMenusForUnversionedItems())
 	{
-		if ((itemStates & (ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER | ITEMIS_FOLDERINGIT | ITEMIS_BAREREPO)) == 0)
+		if ((itemStates & (ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER | ITEMIS_FOLDERINGIT | ITEMIS_BAREREPO | ITEMIS_INACCESSIBLE)) == 0)
 			return S_OK;
 	}
 
@@ -957,7 +963,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		const bool bInsertMenu = ShouldInsertItem(menuItem);
 		if (menuItem.menuID & menuex)
 		{
-			if (!(itemStates & ITEMIS_EXTENDED))
+			if (!(itemStates & ITEMIS_EXTENDED) && menuItem.command != ShellMenuInaccessible)
 				continue;
 		}
 
@@ -980,7 +986,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 			idCmd++;
 		}
 
-		const bool isMenu11 = ((topMenu11 & menuItem.menuID) != 0);
+		bool isMenu11 = ((topMenu11 & menuItem.menuID) != 0);
 		// handle special cases (sub menus)
 		if ((menuItem.command == ShellMenuIgnoreSub) || (menuItem.command == ShellMenuUnIgnoreSub) || (menuItem.command == ShellMenuDeleteIgnoreSub))
 		{
@@ -998,6 +1004,13 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		else
 		{
 			bIsTop = ((topmenu & menuItem.menuID) != 0);
+
+			// the 'inaccessible repo' command always has to on the top menu
+			if (menuItem.command == ShellMenuInaccessible)
+			{
+				bIsTop = true;
+				isMenu11 = true;
+			}
 
 			if (hMenu || isMenu11)
 			{
@@ -1285,6 +1298,9 @@ void CShellExt::InvokeCommand(int cmd, const std::wstring& appDir, const std::ws
 		break;
 	case ShellMenuAbout:
 		gitCmd += L"about";
+		break;
+	case ShellMenuInaccessible:
+		AddPathCommand(gitCmd, L"inaccessible", false, paths, folder);
 		break;
 	case ShellMenuCreateRepos:
 		AddPathCommand(gitCmd, L"repocreate", false, paths, folder);

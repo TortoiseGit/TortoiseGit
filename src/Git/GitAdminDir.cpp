@@ -314,7 +314,7 @@ bool GitAdminDir::IsAdminDirPath(const WCHAR* path, const WCHAR** found)
 	return false;
 }
 
-bool GitAdminDir::IsBareRepo(const CString& path)
+bool GitAdminDir::IsBareRepo(const CString& path, bool* invalidFormat)
 {
 	if (path.IsEmpty())
 		return false;
@@ -332,8 +332,14 @@ bool GitAdminDir::IsBareRepo(const CString& path)
 	if (!PathFileExists(path + L"\\HEAD") || !PathFileExists(path + L"\\config"))
 		return false;
 
-	if (!PathFileExists(path + L"\\objects\\") || !PathFileExists(path + L"\\refs\\") || !PathIsDirectory(path + L"\\refs\\heads")) // ".git/refs/heads" is a file when reftable-format is used
+	if (!PathFileExists(path + L"\\objects\\") || !PathFileExists(path + L"\\refs\\"))
 		return false;
+	if (!PathIsDirectory(path + L"\\refs\\heads")) // ".git/refs/heads" is a file when reftable-format is used
+	{
+		if (invalidFormat)
+			*invalidFormat = true;
+		return false;
+	}
 
 	return true;
 }

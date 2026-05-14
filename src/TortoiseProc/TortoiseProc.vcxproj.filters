@@ -183,6 +183,9 @@
     <Filter Include="Commands\RegisterMenu">
       <UniqueIdentifier>{35038899-8008-4f29-8dab-7c18f5df7ca8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Commands\Inaccessible">
+      <UniqueIdentifier>{a1b4e1e4-3a07-45cb-a56e-e1f0bdb96428}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddRemoteDlg.cpp">
@@ -1051,6 +1054,9 @@
     </ClCompile>
     <ClCompile Include="GitCliOutputParser.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\InaccessibleCommand.cpp">
+      <Filter>Commands\Inaccessible</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1992,6 +1998,9 @@
     </ClInclude>
     <ClInclude Include="GitCliOutputParser.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\InaccessibleCommand.h">
+      <Filter>Commands\Inaccessible</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

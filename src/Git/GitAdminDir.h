@@ -35,7 +35,7 @@ public:
 	static bool IsWorkingTreeOrBareRepo(const CString& path);
 
 	/// Returns true if the path points is a bare repository
-	static bool IsBareRepo(const CString& path);
+	static bool IsBareRepo(const CString& path, bool* invalidFormat = nullptr);
 
 	/// Returns true if the path (file or folder) has an admin directory
 	/// associated, i.e. if the path is in a working copy.

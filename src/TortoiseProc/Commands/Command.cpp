@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2007-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -77,6 +77,7 @@
 #include "RTFMCommand.h"
 #include "LFSCommands.h"
 #include "RegisterWin11ContextMenu.h"
+#include "InaccessibleCommand.h"
 #if 0
 #include "CrashCommand.h"
 #include "RebuildIconCacheCommand.h"
@@ -160,6 +161,7 @@ enum TGitCommand
 	cmdWorktreeList,
 	cmdDropWorktreeCreate,
 	cmdRegisterWin11ContextMenu,
+	cmdInaccessible,
 };
 
 static const struct CommandInfo
@@ -240,6 +242,7 @@ static const struct CommandInfo
 	{	cmdWorktreeList,	L"worktreelist"		},
 	{	cmdDropWorktreeCreate,	L"dropnewworktree"	},
 	{	cmdRegisterWin11ContextMenu,	L"registerwin11contextmenu"	},
+	{	cmdInaccessible,	L"inaccessible"		},
 };
 
 
@@ -264,6 +267,8 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 	{
 	case cmdAbout:
 		return new AboutCommand;
+	case cmdInaccessible:
+		return new InaccessibleCommand;
 	case cmdAutoTextTest:
 		return new AutoTextTestCommand;
 	case cmdCommit:

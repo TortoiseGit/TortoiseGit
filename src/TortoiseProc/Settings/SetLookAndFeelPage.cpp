@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2019, 2021-2025 - TortoiseGit
+// Copyright (C) 2011-2016, 2019, 2021-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -43,6 +43,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 		   menuInfo[i].command != ShellSubMenuFolder &&
 		   menuInfo[i].command != ShellSubMenuLink &&
 		   menuInfo[i].command != ShellMenuMergeAbort &&
+		   menuInfo[i].command != ShellMenuInaccessible &&
 		   menuInfo[i].command != ShellSubMenuMultiple) &&
 		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{

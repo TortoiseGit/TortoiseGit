@@ -5240,6 +5240,12 @@ BEGIN
     IDS_VIEWPATCH           "View Patch"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_INACCESSIBLE        "The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n\nReasons may include:\n* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n* It uses an unsupported format.\n* It contains some kind of defect and needs to be checked/repaired.\n\nThe following libgit and libgit2 errors may provide further insight:\n%s"
+    IDS_PROC_ADDSAFEDIRECTORY "I trust the path ""%s"", add it as safe.directory"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010-2022 - TortoiseGit
+// Copyright (C) 2010-2022, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -110,6 +110,7 @@ enum GitCommands
 		ShellMenuLFSUnlock,
 		ShellMenuWorktree,
 		ShellMenuDropNewWorktree,
+		ShellMenuInaccessible,
 		ShellMenuLastEntry			// used to mark the menu array end
 };
 

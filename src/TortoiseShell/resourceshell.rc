@@ -445,6 +445,8 @@ BEGIN
     IDS_MENUDELETEIGNOREMULTIPLE2 "Delete and &ignore multiple items by name"
     IDS_MENUDELETEIGNOREMULTIPLEMASK2 
                             "Delete and ignore multiple items by &extension"
+    IDS_MENUINACCESSIBLE    "Inaccessible..."
+    IDS_MENUDESCINACCESSIBLE "The Git repository is inaccessible and further action is required."
 END
 
 #endif    // Englisch (USA) resources

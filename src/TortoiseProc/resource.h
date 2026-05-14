@@ -1498,7 +1498,9 @@
 #define IDC_LIST_DOWNLOADS              1711
 #define IDC_PROC_USERNAMEMAIL_EMPTY     1711
 #define IDC_STATIC_REVISION             1712
+#define IDS_INACCESSIBLE                1712
 #define IDC_STATIC_REVISION2            1713
+#define IDS_PROC_ADDSAFEDIRECTORY       1713
 #define IDC_STATIC_SUBJECT              1714
 #define IDC_STATIC_SUBJECT2             1715
 #define IDC_CHECK_NOCHECKOUT            1716

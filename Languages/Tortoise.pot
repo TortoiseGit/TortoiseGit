@@ -5115,6 +5115,11 @@ msgstr ""
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr ""
 
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
 msgstr ""
@@ -5577,6 +5582,10 @@ msgstr ""
 
 #. Resource IDs: (IDS_FIRSTSTART_LANGUAGEHINT2)
 msgid "In the following combobox you can find all installed language packs which can be used by this version of TortoiseGit."
+msgstr ""
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
@@ -9228,6 +9237,10 @@ msgstr ""
 msgid "Thai"
 msgstr ""
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid "The Remote Config was changed.\nDo you want to save now or discard changes?"
 msgstr ""
@@ -9442,6 +9455,11 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_REVERTMARKERS)
 msgid "The selected file appears to still have one or more conflict markers in it.\nAre you sure you want to mark the file resolved?"
+msgstr ""
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid "The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n\nReasons may include:\n* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n* It uses an unsupported format.\n* It contains some kind of defect and needs to be checked/repaired.\n\nThe following libgit and libgit2 errors may provide further insight:\n%s"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
