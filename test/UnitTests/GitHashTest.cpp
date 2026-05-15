@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2016, 2018-2019, 2025 - TortoiseGit
+// Copyright (C) 2015-2016, 2018-2019, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -167,6 +167,7 @@ TEST(CGitHash, MatchesPrefix)
 
 TEST(CGitHash, stdhash)
 {
+	// we don't actually care for the exact numbers, these are just checked here to make sure we get what we intended on x86 and x86_64
 	EXPECT_EQ(std::hash<CGitHash>()(CGitHash::FromHexStr(GIT_REV_ZERO)), size_t(0));
 	EXPECT_EQ(std::hash<CGitHash>()(CGitHash::FromHexStr(L"ffffffffffffffff000000000000000000000000")), SIZE_T_MAX);
 

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -199,9 +199,19 @@ namespace std
 	template <>
 	struct hash<CGitHash>
 	{
+		/*
+		 * Converts a cryptographic hash (such as SHA-1) into a hash value. Since cryptographic
+		 * hashes are designed to be uniformly distributed, this function simply copies the first bytes.
+		 * The resulting value depends on platform endianness, so it should not be stored
+		 * or transmitted across systems.
+		 */
 		std::size_t operator()(const CGitHash& k) const
 		{
-			return reinterpret_cast<const size_t&>(k.m_hash);
+			static_assert(sizeof(size_t) <= sizeof(k.m_hash));
+			size_t hash;
+			// this makes sure that all reads to the size_t value are aligned
+			memcpy(&hash, k.m_hash, sizeof(hash));
+			return hash;
 		}
 	};
 }
