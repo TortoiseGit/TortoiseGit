@@ -118,8 +118,6 @@ protected:
 	CWinThread*			m_pThread = nullptr;
 
 	volatile LONG		m_bBlock = 0;
-	CGitGuardedByteArray	m_Databuf;
-	std::atomic<bool>	m_bDropMode = false;
 	CGitCliOutputParser	m_cliOutputParser;
 
 	virtual void LocalBranchChange() override { FetchOutList(); };

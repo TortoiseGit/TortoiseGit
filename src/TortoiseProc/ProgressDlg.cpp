@@ -34,7 +34,6 @@
 #include "LogFile.h"
 #include "CmdLineParser.h"
 #include "StringUtils.h"
-#include <format>
 
 #define REFRESHTIMER 100
 
@@ -196,7 +195,7 @@ UINT CProgressDlg::ProgressThreadEntry(LPVOID pVoid)
 }
 
 //static function, Share with SyncDialog
-UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& databuffer, std::atomic<bool>& dropMode, CGit* git)
+UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, CGitCliOutputParser& cliparser, volatile bool* bAbort, CGit* git)
 {
 	UINT ret = 0;
 
@@ -217,7 +216,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 
 	EnsurePostMessage(pWnd, MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_START, 0);
 
-	databuffer.clear();
+	cliparser.Reset();
 
 	for (size_t i = 0; i < cmdlist.size() && !*bAbort; ++i)
 	{
@@ -231,7 +230,7 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\n" : L"") + cmdlist[i].Trim() + L"\n");
 			else
 				str = CUnicodeUtils::GetUTF8((i > 0 ? L"\n" : L"") + gitList[i]->m_CurrentDir + L"\n" + cmdlist[i].Trim() + L"\n");
-			databuffer.guardedAppend(std::string_view(str, str.GetLength()));
+			cliparser.AppendChunk(std::string_view(str, str.GetLength()));
 			pWnd->PostMessage(MSG_PROGRESSDLG_UPDATE_UI, MSG_PROGRESSDLG_RUN, 0);
 		}
 
@@ -252,51 +251,9 @@ UINT CProgressDlg::RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR&
 		CAutoGeneralHandle piThread(std::move(pi.hThread));
 		DWORD readnumber;
 		char buffer[1024];
-		constexpr size_t MAX_LINE_LENGTH = 8 * 1024; // 8 KiB
-		size_t currentLineLength = 0;
-		bool skippingTruncatedLine = false;
-		constexpr size_t MAX_BUFFER_SIZE = 150 * 1024 * 1024; // 150 MiB
-		bool limit = false;
 		while (ReadFile(hRead, buffer, sizeof(buffer), &readnumber, nullptr))
 		{
-			if (dropMode || limit)
-				continue;
-
-			CAutoLocker lock{ databuffer.m_critSec };
-			for (DWORD j = 0; j < readnumber; ++j)
-			{
-				char byte = buffer[j];
-				if (byte == '\0')
-					byte = '\n';
-
-				if (byte == '\r' || byte == '\n')
-				{
-					databuffer.push_back(byte);
-					currentLineLength = 0;
-					skippingTruncatedLine = false;
-					continue;
-				}
-
-				if (skippingTruncatedLine)
-					continue;
-
-				if (currentLineLength >= MAX_LINE_LENGTH)
-				{
-					databuffer.append(std::format("... [line truncated at {} KiB]", MAX_LINE_LENGTH / 1024));
-					skippingTruncatedLine = true;
-					continue;
-				}
-
-				databuffer.push_back(byte);
-				++currentLineLength;
-				continue;
-			}
-
-			if (databuffer.size() >= MAX_BUFFER_SIZE) // just a safeguard with an arbitrary large limit, we should never get there as in another thread we're processing the buffer in short intervals
-			{
-				limit = true;
-				databuffer.append(std::format("\n\n[Buffer truncated at about {} MiB to prevent resource exhaustion]\n", MAX_BUFFER_SIZE / 1024 / 1024));
-			}
+			cliparser.AppendChunk({ buffer, readnumber });
 		}
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": waiting for process to finish (%s), aborted: %d\n", static_cast<LPCWSTR>(cmdlist[i]), *bAbort);
 
@@ -332,7 +289,7 @@ UINT CProgressDlg::ProgressThread()
 		pfilename = &m_LogFile;
 
 	m_startTick = GetTickCount64();
-	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, &m_bAbort, m_Databuf, m_bDropMode, m_Git);
+	m_GitStatus = RunCmdList(this, m_GitCmdList, m_GitDirList, m_bShowCommand, pfilename, m_cliOutputParser, &m_bAbort, m_Git);
 	return 0;
 }
 
@@ -340,7 +297,6 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam == MSG_PROGRESSDLG_START)
 	{
-		m_bDropMode = false;
 		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 			m_Animate.Play(0, INT_MAX, INT_MAX);
 		DialogEnableWindow(IDCANCEL, TRUE);
@@ -355,12 +311,12 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 	if (wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
 		KillTimer(REFRESHTIMER);
-		UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode, &m_CurrentWork);
+		UpdateCmdOutput(m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, &m_CurrentWork);
 		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": got message: %d\n", wParam);
 		ULONGLONG tickSpent = GetTickCount64() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
-		m_Databuf.guardedClear();
+		m_cliOutputParser.Reset();
 
 		m_bDone = true;
 		m_Progress.SetPos(100);
@@ -503,7 +459,7 @@ LRESULT CProgressDlg::OnProgressUpdateUI(WPARAM wParam, LPARAM lParam)
 void CProgressDlg::OnTimer(UINT_PTR id)
 {
 	if (id == REFRESHTIMER)
-		UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode, &m_CurrentWork);
+		UpdateCmdOutput(m_cliOutputParser, m_Log, m_Progress, GetSafeHwnd(), m_pTaskbarList, &m_CurrentWork);
 
 	__super::OnTimer(id);
 }
@@ -562,18 +518,9 @@ void CProgressDlg::ClearESC(CString& str)
 	}
 }
 
-void CProgressDlg::UpdateCmdOutput(CGitGuardedByteArray& databuf, CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, std::atomic<bool>& dropMode, CWnd* currentWorkLabel)
+void CProgressDlg::UpdateCmdOutput(CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel)
 {
-	if (dropMode)
-		return;
-
-	EmittedLines out;
-	{
-		CAutoLocker lock{ databuf.m_critSec };
-		out = cliOutputParser.Process({ databuf.data(), databuf.size() });
-		databuf.clear();
-	}
-
+	EmittedLines out = cliOutputParser.ProcessPending();
 	if (out.text.empty() && !out.erasePreviousLineWithLength)
 		return;
 
@@ -620,8 +567,7 @@ void CProgressDlg::UpdateCmdOutput(CGitGuardedByteArray& databuf, CGitCliOutputP
 
 	if (out.limited || currentLength + str.GetLength() >= CProgressDlg::s_iSizeLimit)
 	{
-		dropMode = true;
-		databuf.guardedClear();
+		cliOutputParser.ActivateDropMode();
 
 		const int newLength = log.GetWindowTextLength();
 		str.Format(L"[Output truncated at about %d KiB]", newLength / 1024);

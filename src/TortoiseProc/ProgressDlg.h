@@ -140,8 +140,6 @@ private:
 	afx_msg void			OnEnscrollLog();
 	afx_msg void			OnEnLinkLog(NMHDR* pNMHDR, LRESULT* pResult);
 
-	CGitGuardedByteArray	m_Databuf;
-	std::atomic<bool>		m_bDropMode = false;
 	CGitCliOutputParser		m_cliOutputParser;
 	static void				UpdateProgressFromLine(const CString& str, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel);
 
@@ -154,12 +152,12 @@ private:
 
 public:
 	static const int s_iSizeLimit;
-	static void UpdateCmdOutput(CGitGuardedByteArray& databuf, CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, std::atomic<bool>& dropMode, CWnd* currentWorkLabel = nullptr);
+	static void UpdateCmdOutput(CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel = nullptr);
 
 	/**
 	 *@param dirlist if empty, the current directory of param git is used; otherwise each entry in param cmdlist uses the corresponding entry in param dirlist
 	 */
-	static UINT RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, volatile bool* bAbort, CGitGuardedByteArray& pdata, std::atomic<bool>& dropMode, CGit* git = &g_Git);
+	static UINT RunCmdList(CWnd* pWnd, STRING_VECTOR& cmdlist, STRING_VECTOR& dirlist, bool bShowCommand, const CString* pfilename, CGitCliOutputParser& cliOutputParser, volatile bool* bAbort, CGit* git = &g_Git);
 
 	static void KillProcessTree(DWORD dwProcessId, unsigned int depth = 0);
 

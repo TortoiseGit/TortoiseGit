@@ -273,6 +273,104 @@ TEST(CGitCliOutputParser, ComplexCloneOutputRandomChunks)
 	EXPECT_STREQ(loadGitOutput(L"clone2-final.txt"), ConstructOutputUsingSplittedInputs(loadGitOutput(L"clone2.txt"), [](void* payload) { auto [mt, chunkSize] = *static_cast<std::pair<std::mt19937, std::uniform_int_distribution<size_t>>*>(payload); return chunkSize(mt); }, &payload).c_str()) << "Seed: " << seed;
 }
 
+TEST(CGitCliOutputParser, VeryLongLines)
+{
+	std::string buffer =
+		"Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n";
+	buffer.append("remote: ");
+	buffer.append(10 * 1024, 'A');
+	buffer.push_back('\n');
+
+	CGitCliOutputParser cliparser;
+	cliparser.AppendChunk(buffer);
+	EmittedLines out = cliparser.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_EQ(8295u, out.text.size());
+	EXPECT_TRUE(out.text.starts_with("Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n"
+		"remote: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+	EXPECT_TRUE(out.text.ends_with("AAAAAAAAAAAAAA... [line truncated at 8 KiB]\n"));
+
+	cliparser.AppendChunk("Remote: more output\r");
+	out = cliparser.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_STREQ("Remote: more output", out.text.c_str());
+
+	buffer.append("Remote: more output\r");
+	CGitCliOutputParser cliparser2;
+	cliparser2.AppendChunk(buffer);
+	out = cliparser2.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_EQ(8314u, out.text.size());
+	EXPECT_TRUE(out.text.starts_with("Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n"
+		"remote: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+	EXPECT_TRUE(out.text.ends_with("AAAAAAAAAAAAAA... [line truncated at 8 KiB]\nRemote: more output"));
+}
+
+TEST(CGitCliOutputParser, VeryLongLinesErased)
+{
+	std::string buffer =
+		"Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n";
+	buffer.append("remote: ");
+	buffer.append(10 * 1024, 'A');
+	buffer.push_back('\r');
+
+	CGitCliOutputParser cliparser;
+	cliparser.AppendChunk(buffer);
+	EmittedLines out = cliparser.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_EQ(8294u, out.text.size());
+	EXPECT_FALSE(out.limited);
+	EXPECT_TRUE(out.text.starts_with("Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n"
+		"remote: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+	EXPECT_TRUE(out.text.ends_with("AAAAAAAAAAAAAA... [line truncated at 8 KiB]"));
+	EXPECT_FALSE(out.limited);
+
+	out = cliparser.Process("remote: more output\r");
+	EXPECT_EQ(8221u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_STREQ("remote: more output", out.text.c_str());
+
+	buffer.append("remote: more output\r");
+	CGitCliOutputParser cliparser2;
+	cliparser2.AppendChunk(buffer);
+	out = cliparser2.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_TRUE(out.text.starts_with("Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n"
+		"remote: more output"));
+
+	buffer.push_back('\n');
+	buffer.append(10 * 1024, 'A');
+	buffer.push_back('\r');
+	buffer.append("something else even more output\r");
+
+	CGitCliOutputParser cliparser3;
+	cliparser3.AppendChunk(buffer);
+	out = cliparser3.ProcessPending();
+	EXPECT_EQ(0u, out.erasePreviousLineWithLength);
+	EXPECT_FALSE(out.limited);
+	EXPECT_TRUE(out.text.starts_with("Cloning into 'poc'...\n"
+		"Looking up 127.0.0.1 ... done.\n"
+		"remote: def        \n"
+		"remote: more output\nsomething else even more outputAAAAAAAAAAAAA"));
+	EXPECT_TRUE(out.text.ends_with("AAAAAAAAAAAAAA... [line truncated at 8 KiB]"));
+}
+
 TEST(CGitCliOutputParser, ManyLines)
 {
 	std::string buffer =

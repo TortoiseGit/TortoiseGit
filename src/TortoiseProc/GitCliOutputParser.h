@@ -37,11 +37,24 @@ public:
 	CGitCliOutputParser(const CGitCliOutputParser&) = delete;
 	CGitCliOutputParser& operator=(const CGitCliOutputParser&) = delete;
 
-	EmittedLines Process(const std::string_view buffer);
+	void AppendChunk(const std::string_view chunk);
+
+	EmittedLines ProcessPending();
+	void ActivateDropMode();
 	void Reset();
 
+#ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 private:
+#endif
+	EmittedLines Process(const std::string_view buffer);
+
+private:
+	CComAutoCriticalSection m_critSec;
+	std::string m_inputBuffer;
+	bool m_inputBufferSkippingTruncatedLine = false;
+	size_t m_inputBufferCurrentLineLength = 0;
 	size_t m_limit = SIZE_T_MAX; // this is not intended as an exact limit, but a safeguard against memory exhaustion
+	std::atomic<bool> m_dropMode = false;
 
 	std::string m_currentLine;
 	std::string m_pendingCR;

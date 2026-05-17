@@ -1482,7 +1482,7 @@ UINT CSyncDlg::ProgressThread()
 	m_startTick = GetTickCount64();
 	m_bDone = false;
 	STRING_VECTOR list;
-	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, &m_bAbort, m_Databuf, m_bDropMode);
+	CProgressDlg::RunCmdList(this, m_GitCmdList, list, true, nullptr, m_cliOutputParser, &m_bAbort);
 	InterlockedExchange(&m_bBlock, FALSE);
 	return 0;
 }
@@ -1493,7 +1493,6 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 		return 0;
 	if(wParam == MSG_PROGRESSDLG_START)
 	{
-		m_bDropMode = false;
 		if (CRegDWORD(L"Software\\TortoiseGit\\DownloadAnimation", TRUE) == TRUE)
 			m_ctrlAnimate.Play(0, UINT_MAX, UINT_MAX);
 		this->m_ctrlProgress.SetPos(0);
@@ -1509,12 +1508,12 @@ LRESULT CSyncDlg::OnProgressUpdateUI(WPARAM wParam,LPARAM lParam)
 	if(wParam == MSG_PROGRESSDLG_END || wParam == MSG_PROGRESSDLG_FAILED)
 	{
 		KillTimer(REFRESHTIMER);
-		CProgressDlg::UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode);
+		CProgressDlg::UpdateCmdOutput(m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList);
 
 		ULONGLONG tickSpent = GetTickCount64() - m_startTick;
 		CString strEndTime = CLoglistUtils::FormatDateAndTime(CTime::GetCurrentTime(), DATE_SHORTDATE, true, false);
 
-		m_Databuf.guardedClear();
+		m_cliOutputParser.Reset();
 
 		m_bDone = true;
 		m_ctrlAnimate.Stop();
@@ -1853,7 +1852,7 @@ void CSyncDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	if (nIDEvent == REFRESHTIMER)
-		CProgressDlg::UpdateCmdOutput(m_Databuf, m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList, m_bDropMode);
+		CProgressDlg::UpdateCmdOutput(m_cliOutputParser, m_ctrlCmdOut, m_ctrlProgress, GetSafeHwnd(), m_pTaskbarList);
 }
 
 LRESULT CSyncDlg::OnTaskbarBtnCreated(WPARAM wParam, LPARAM lParam)

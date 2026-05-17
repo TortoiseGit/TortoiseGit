@@ -18,7 +18,10 @@
 //
 #include "stdafx.h"
 #include "GitCliOutputParser.h"
+#include <format>
 
+constexpr size_t MAX_LINE_LENGTH = 8 * 1024; // 8 KiB
+constexpr size_t MAX_BUFFER_SIZE = 150 * 1024 * 1024; // 150 MiB
 constexpr std::string_view GIT_REMOTE_PREFIX = "remote: ";
 
 static constexpr bool IsEmptyRemoteLine(const std::string& line)
@@ -29,6 +32,63 @@ static constexpr bool IsEmptyRemoteLine(const std::string& line)
 static constexpr bool IsRemoteLine(const std::string& line)
 {
 	return line.starts_with(GIT_REMOTE_PREFIX);
+}
+
+void CGitCliOutputParser::AppendChunk(const std::string_view chunk)
+{
+	if (m_dropMode)
+		return;
+
+	CComCritSecLock<CComCriticalSection> lock{ m_critSec };
+	for (char ch : chunk)
+	{
+		if (ch == '\0')
+			ch = '\n';
+
+		if (ch == '\r' || ch == '\n')
+		{
+			m_inputBuffer.push_back(ch);
+			m_inputBufferCurrentLineLength = 0;
+			m_inputBufferSkippingTruncatedLine = false;
+			continue;
+		}
+		if (m_inputBufferSkippingTruncatedLine)
+			continue;
+		if (m_inputBufferCurrentLineLength >= MAX_LINE_LENGTH)
+		{
+			m_inputBufferSkippingTruncatedLine = true;
+			m_inputBuffer.append(std::format("... [line truncated at {} KiB]", MAX_LINE_LENGTH / 1024));
+			continue;
+		}
+		++m_inputBufferCurrentLineLength;
+		m_inputBuffer.push_back(ch);
+	}
+
+	if (m_inputBuffer.size() > 150 * 1024 * 1024) // just a safeguard with an arbitrary large limit, we should never get there as in another thread we're processing the buffer in short intervals
+	{
+		m_inputBuffer.append(std::format("\n\n[Buffer truncated at about {} MiB to prevent resource exhaustion]\n", MAX_BUFFER_SIZE / 1024 / 1024));
+		m_dropMode = true;
+	}
+}
+
+void CGitCliOutputParser::ActivateDropMode()
+{
+	CComCritSecLock<CComCriticalSection> lock{ m_critSec };
+	m_dropMode = true;
+	m_inputBuffer.clear();
+}
+
+EmittedLines CGitCliOutputParser::ProcessPending()
+{
+	std::string buffer;
+	{
+		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
+		if (m_inputBuffer.empty())
+			return {};
+
+		buffer.swap(m_inputBuffer);
+	}
+	return Process(buffer);
 }
 
 EmittedLines CGitCliOutputParser::Process(const std::string_view buffer)
@@ -72,6 +132,10 @@ void CGitCliOutputParser::Reset()
 	m_pendingCR.clear();
 	m_pendingVisible = false;
 	m_skipNextEmptyRemoteLF = false;
+	m_inputBuffer.clear();
+	m_inputBufferSkippingTruncatedLine = false;
+	m_inputBufferCurrentLineLength = 0;
+	m_dropMode = false;
 }
 
 void CGitCliOutputParser::AppendLine(EmittedLines& out, const std::string& line) const

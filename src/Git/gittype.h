@@ -111,43 +111,6 @@ public:
 	using std::vector<char>::operator[];
 };
 
-class CGitGuardedByteArray : private CGitByteArray
-{
-private:
-	CGitGuardedByteArray(const CGitGuardedByteArray&) = delete;
-	CGitGuardedByteArray& operator=(const CGitGuardedByteArray&) = delete;
-public:
-	CGitGuardedByteArray() {}
-	~CGitGuardedByteArray() {}
-	CComAutoCriticalSection	m_critSec;
-
-	void guardedAppend(const std::string_view v)
-	{
-		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
-		__super::append(v);
-	}
-
-	void guardedClear()
-	{
-		CComCritSecLock<CComCriticalSection> lock{ m_critSec };
-		__super::clear();
-	}
-
-	using CGitByteArray::begin;
-	using CGitByteArray::end;
-	using CGitByteArray::cbegin;
-	using CGitByteArray::cend;
-	using CGitByteArray::clear;
-	using CGitByteArray::data;
-	using CGitByteArray::empty;
-	using CGitByteArray::erase;
-	using CGitByteArray::pop_back;
-	using CGitByteArray::push_back;
-	using CGitByteArray::size;
-	using CGitByteArray::operator[];
-	using CGitByteArray::append;
-};
-
 struct TGitRef
 {
 	CString name;
