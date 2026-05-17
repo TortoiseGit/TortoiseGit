@@ -668,7 +668,7 @@ bool CAppUtils::LaunchNotepad(const CString& filename, bool uac)
 		return false;
 
 	CString sCmd;
-	sCmd.Format(L"\"%s\\notepad.exe\" \"%s\"", static_cast<LPCWSTR>(pszPath), static_cast<LPCWSTR>(filename));
+	sCmd.Format(L"\"%s\\notepad.exe\" %s", static_cast<LPCWSTR>(pszPath), static_cast<LPCWSTR>(CStringUtils::EscapeWindowsCliArguments(filename)));
 
 	return LaunchApplication(sCmd, CAppUtils::LaunchApplicationFlags().UAC(uac).UseSpecificErrorMessage(IDS_ERR_TEXTVIEWSTART));
 }
