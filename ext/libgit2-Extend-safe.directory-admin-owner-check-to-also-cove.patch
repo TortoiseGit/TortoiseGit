@@ -1,0 +1,109 @@
+From 620bbaa864023ab9451bbca1706e76f0d107fad4 Mon Sep 17 00:00:00 2001
+From: Sven Strickroth <email@cs-ware.de>
+Date: Fri, 22 May 2026 12:10:00 +0200
+Subject: [PATCH] Extend safe.directory admin-owner check to also cover
+ non-elevated processes
+
+The current implementation which checks whether the current user is in the administrators group only works if the process runs elevated.
+
+Another check using a so-called "linked token" is necessary which exists when administrators run in non-elevated mode.
+
+Based on Git commit 03a4e46d122d5f24b6e1cd872eb996851c1563da.
+
+Signed-off-by: Sven Strickroth <email@cs-ware.de>
+---
+ src/util/fs_path.c | 40 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
+
+diff --git a/src/util/fs_path.c b/src/util/fs_path.c
+index 5b00b1b40..050d3ef0e 100644
+--- a/src/util/fs_path.c
++++ b/src/util/fs_path.c
+@@ -1853,9 +1853,10 @@ static PSID *sid_dup(PSID sid)
+ 	return dup;
+ }
+ 
+-static int current_user_sid(PSID *out)
++static int current_user_sid(PSID *out, HANDLE *out_linked_token)
+ {
+ 	TOKEN_USER *info = NULL;
++	TOKEN_ELEVATION_TYPE elevationType = 0;
+ 	HANDLE token = NULL;
+ 	DWORD len = 0;
+ 	int error = -1;
+@@ -1879,6 +1880,20 @@ static int current_user_sid(PSID *out)
+ 		goto done;
+ 	}
+ 
++	if (GetTokenInformation(
++	            token, TokenElevationType, &elevationType,
++	            sizeof(elevationType), &len) &&
++	    elevationType == TokenElevationTypeLimited) {
++		/*
++		 * The current process is run by a member of the Administrators
++		 * group, but the process is not running elevated.
++		 */
++		if (!GetTokenInformation(
++		            token, TokenLinkedToken, out_linked_token,
++		            sizeof(*out_linked_token), &len))
++			out_linked_token = NULL; /* there is no linked token */
++	}
++
+ 	if ((*out = sid_dup(info->User.Sid)))
+ 		error = 0;
+ 
+@@ -1926,6 +1941,7 @@ int git_fs_path_owner_is(
+ 	git_fs_path_owner_t owner_type)
+ {
+ 	PSID owner_sid = NULL, user_sid = NULL;
++	HANDLE linked_token = NULL;
+ 	BOOL is_admin, admin_owned;
+ 	int error;
+ 
+@@ -1937,14 +1953,13 @@ int git_fs_path_owner_is(
+ 	if ((error = file_owner_sid(&owner_sid, path)) < 0)
+ 		goto done;
+ 
+-	if ((owner_type & GIT_FS_PATH_OWNER_CURRENT_USER) != 0) {
+-		if ((error = current_user_sid(&user_sid)) < 0)
+-			goto done;
++	if (error = current_user_sid(&user_sid, &linked_token) < 0)
++		goto done;
+ 
+-		if (EqualSid(owner_sid, user_sid)) {
+-			*out = true;
+-			goto done;
+-		}
++	if ((owner_type & GIT_FS_PATH_OWNER_CURRENT_USER) != 0 &&
++	    EqualSid(owner_sid, user_sid)) {
++		*out = true;
++		goto done;
+ 	}
+ 
+ 	admin_owned =
+@@ -1959,8 +1974,10 @@ int git_fs_path_owner_is(
+ 
+ 	if (admin_owned &&
+ 	    (owner_type & GIT_FS_PATH_USER_IS_ADMINISTRATOR) != 0 &&
+-	    CheckTokenMembership(NULL, owner_sid, &is_admin) &&
+-	    is_admin) {
++	    (CheckTokenMembership(NULL, owner_sid, &is_admin) && is_admin ||
++	     linked_token &&
++	             CheckTokenMembership(linked_token, owner_sid, &is_admin) &&
++	             is_admin)) {
+ 		*out = true;
+ 		goto done;
+ 	}
+@@ -1968,6 +1985,9 @@ int git_fs_path_owner_is(
+ 	*out = false;
+ 
+ done:
++	if (linked_token)
++		CloseHandle(linked_token);
++
+ 	git__free(owner_sid);
+ 	git__free(user_sid);
+ 	return error;
+-- 
+2.53.0.windows.1
+
