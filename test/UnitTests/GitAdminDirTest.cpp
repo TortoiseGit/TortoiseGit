@@ -449,11 +449,11 @@ TEST(CGitAdminDir, ReadGitLink)
 	EXPECT_STREQ(L"d:", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: /"));
-	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
+	EXPECT_STREQ(L"F:", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: /otherrepo"));
-	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
-	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
+	EXPECT_STREQ(L"C:\\otherrepo", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+	EXPECT_STREQ(L"F:\\otherrepo", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
 
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: X:DEF")); // drive relative paths are unsupported (also unsupported in Git for Windows)
 	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"D:\\somerepo", gitFile));
