@@ -13,6 +13,7 @@ Released: unreleased
  * Updated libgit to version 2.53.0 based on Git for Windows sources
  * Update editorconfig to 0.12.11
  * Update TortoiseGitPlink to PuTTY Plink 0.84
+ * Update shipped PuTTY binaries to 0.84
  * Significantly improved performance of ProgressDlg for larger output
 
 == Bug Fixes ==
