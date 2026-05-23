@@ -777,6 +777,15 @@
     <ClCompile Include="..\..\..\crypto\kex-hybrid.c">
       <Filter>Source Files\crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\proxy\newmain.c">
+      <Filter>Source Files\proxy</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\utils\subprocess_waiter.c">
+      <Filter>Source Files\windows\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\utils\format_connection_setup_command.c">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\logindialog.h">

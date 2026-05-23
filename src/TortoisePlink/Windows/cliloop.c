@@ -1,5 +1,40 @@
 #include "putty.h"
 
+struct select_result_params {
+    /* Used to pass data to select_result_callback */
+    WPARAM wParam;
+    LPARAM lParam;
+};
+
+static void select_result_callback(void *vctx)
+{
+    struct select_result_params *params = (struct select_result_params *)vctx;
+    select_result(params->wParam, params->lParam);
+    sfree(params);
+}
+
+static bool callback_is_for_socket(
+    void *predicate_ctx, toplevel_callback_fn_t fn, void *callback_ctx)
+{
+    if (fn != select_result_callback)
+        return false;
+    struct select_result_params *params =
+        (struct select_result_params *)callback_ctx;
+    if (params->wParam != (WPARAM)(uintptr_t)predicate_ctx)
+        return false;
+
+    /* The 'struct select_result_params' would have been freed by the
+     * callback function select_result_callback(). Now that isn't going
+     * to run, so we must free it ourself. */
+    sfree(callback_ctx);
+    return true;
+}
+
+void done_with_socket(SOCKET skt)
+{
+    delete_callbacks(callback_is_for_socket, (void *)(uintptr_t)skt);
+}
+
 void cli_main_loop(cliloop_pre_t pre, cliloop_post_t post, void *ctx)
 {
     SOCKET *sklist = NULL;
@@ -82,9 +117,7 @@ void cli_main_loop(cliloop_pre_t pre, cliloop_post_t post, void *ctx)
 
             /* Now we're done enumerating; go through the list. */
             for (i = 0; i < skcount; i++) {
-                WPARAM wp;
                 socket = sklist[i];
-                wp = (WPARAM) socket;
                 if (!p_WSAEnumNetworkEvents(socket, NULL, &things)) {
                     static const struct { int bit, mask; } eventtypes[] = {
                         {FD_CONNECT_BIT, FD_CONNECT},
@@ -100,10 +133,14 @@ void cli_main_loop(cliloop_pre_t pre, cliloop_post_t post, void *ctx)
 
                     for (e = 0; e < lenof(eventtypes); e++)
                         if (things.lNetworkEvents & eventtypes[e].mask) {
-                            LPARAM lp;
                             int err = things.iErrorCode[eventtypes[e].bit];
-                            lp = WSAMAKESELECTREPLY(eventtypes[e].mask, err);
-                            select_result(wp, lp);
+                            struct select_result_params *params =
+                                snew(struct select_result_params);
+                            params->wParam = (WPARAM)socket;
+                            params->lParam = WSAMAKESELECTREPLY(
+                                eventtypes[e].mask, err);
+                            queue_toplevel_callback(
+                                select_result_callback, params);
                         }
                 }
             }

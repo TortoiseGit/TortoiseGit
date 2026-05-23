@@ -117,7 +117,7 @@ static const SeatVtable plink_seat_vt = {
     .prompt_descriptions = console_prompt_descriptions,
     .is_utf8 = nullseat_is_never_utf8,
     .echoedit_update = plink_echoedit_update,
-    .get_x_display = nullseat_get_x_display,
+    .get_display = nullseat_get_display,
     .get_windowid = nullseat_get_windowid,
     .get_window_pixel_size = nullseat_get_window_pixel_size,
     .stripctrl_new = console_stripctrl_new,
@@ -157,6 +157,8 @@ static void usage(void)
     j += sprintf(buf + j, "  -batch    disable all interactive prompts\n");
     j += sprintf(buf + j, "  -proxycmd command\n");
     j += sprintf(buf + j, "            use 'command' as local proxy\n");
+    j += sprintf(buf + j, "  -preconnectcommand command\n");
+    j += sprintf(buf + j, "            run 'command' before making network connection\n");
     j += sprintf(buf + j, "  -sercfg configuration-string (e.g. 19200,8,n,1,X)\n");
     j += sprintf(buf + j, "            Specify the serial configuration (serial only)\n");
     j += sprintf(buf + j, "The following options only apply to SSH connections:\n");
@@ -182,12 +184,12 @@ static void usage(void)
     j += sprintf(buf + j, "  -share    enable use of connection sharing\n");
     j += sprintf(buf + j, "  -hostkey keyid\n");
     j += sprintf(buf + j, "            manually specify a host key (may be repeated)\n");
-    j += sprintf(buf + j, "  -sanitise-stderr, -sanitise-stdout, ");
-    j += sprintf(buf + j, "-no-sanitise-stderr, -no-sanitise-stdout\n");
-    j += sprintf(buf + j, "            do/don't strip control chars from standard ");
-    j += sprintf(buf + j, "output/error\n");
-    j += sprintf(buf + j, "  -no-antispoof   omit anti-spoofing prompt after ");
-    j += sprintf(buf + j, "authentication\n");
+    j += sprintf(buf + j, "  -sanitise-stderr, -sanitise-stdout, "
+           "-no-sanitise-stderr, -no-sanitise-stdout\n");
+    j += sprintf(buf + j, "            do/don't strip control chars from standard "
+           "output/error\n");
+    j += sprintf(buf + j, "  -no-antispoof   omit anti-spoofing prompt after "
+           "authentication\n");
     j += sprintf(buf + j, "  -m file   read remote command(s) from file\n");
     j += sprintf(buf + j, "  -s        remote command is an SSH subsystem (SSH-2 only)\n");
     j += sprintf(buf + j, "  -N        don't start a shell/command (SSH-2 only)\n");

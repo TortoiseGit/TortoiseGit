@@ -73,6 +73,15 @@ struct term_utf8_decode {
 
 struct term_userpass_state;
 
+typedef enum {
+    OSCLIKE_OSC,
+    OSCLIKE_OSC_W,
+    OSCLIKE_APC,
+    OSCLIKE_DCS,
+    OSCLIKE_PM,
+    OSCLIKE_SOS,
+} OscType;
+
 struct terminal_tag {
 
     int compatibility_level;
@@ -86,8 +95,6 @@ struct terminal_tag {
                                           ("temporary scrollback") */
 
     termline **disptext;               /* buffer of text on real screen */
-    int dispcursx, dispcursy;          /* location of cursor on real screen */
-    int curstype;                      /* type of cursor on real screen */
 
 #define VBELL_TIMEOUT (TICKSPERSEC/10) /* visual bell lasts 1/10 sec */
 
@@ -183,10 +190,9 @@ struct terminal_tag {
 #define ANSI_QUE(x)     ANSI(x,1)
 
 #define OSC_STR_MAX 2048
-    bool osc_is_apc;
+    OscType osc_type;
     int osc_strlen;
     char osc_string[OSC_STR_MAX + 1];
-    bool osc_w;
 
     char id_string[1024];
 
@@ -436,6 +442,9 @@ struct terminal_tag {
      */
     struct term_userpass_state *userpass_state;
     bool userpass_utf8_override;
+
+    /* Input method state. */
+    termline *preedit_termline;
 };
 
 static inline bool in_utf(Terminal *term)

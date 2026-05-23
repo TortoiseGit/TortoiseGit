@@ -16,6 +16,13 @@
 #define IsProcessorFeaturePresent(...) false
 #endif
 
+/* This feature id is documented in IsProcessorFeaturePresent as of
+ * 2026-05-10, but is not in the version of MSVC I'm building with. I
+ * expect it will show up in a later version. */
+#ifndef PF_ARM_SHA3_INSTRUCTIONS_AVAILABLE
+#define PF_ARM_SHA3_INSTRUCTIONS_AVAILABLE 64
+#endif
+
 bool platform_aes_neon_available(void)
 {
     return IsProcessorFeaturePresent(PF_ARM_V8_CRYPTO_INSTRUCTIONS_AVAILABLE);
@@ -38,10 +45,13 @@ bool platform_sha1_neon_available(void)
 
 bool platform_sha512_neon_available(void)
 {
-    /* As of 2020-12-24, as far as I can tell from docs.microsoft.com,
-     * Windows on Arm does not yet provide a PF_ARM_V8_* flag for the
-     * SHA-512 architecture extension. */
-    return false;
+    /*
+     * Arm architecture extension nomenclature considers SHA-512 to be
+     * part of the same extension as SHA-3, even though it's part of
+     * the SHA-2 standard from NIST's point of view (and much more
+     * closely related to SHA-256 in design than it is to SHA-3).
+     */
+    return IsProcessorFeaturePresent(PF_ARM_SHA3_INSTRUCTIONS_AVAILABLE);
 }
 
 bool platform_dit_available(void)

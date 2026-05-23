@@ -12,6 +12,7 @@ Released: unreleased
  * Update Scintilla to 5.6.1 and Lexilla to 5.4.8
  * Updated libgit to version 2.53.0 based on Git for Windows sources
  * Update editorconfig to 0.12.11
+ * Update TortoiseGitPlink to PuTTY Plink 0.84
  * Significantly improved performance of ProgressDlg for larger output
 
 == Bug Fixes ==

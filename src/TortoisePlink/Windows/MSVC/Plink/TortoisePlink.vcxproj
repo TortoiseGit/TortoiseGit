@@ -150,6 +150,7 @@
     <ClCompile Include="..\..\..\proxy\http.c" />
     <ClCompile Include="..\..\..\proxy\interactor.c" />
     <ClCompile Include="..\..\..\proxy\local.c" />
+    <ClCompile Include="..\..\..\proxy\newmain.c" />
     <ClCompile Include="..\..\..\proxy\proxy.c" />
     <ClCompile Include="..\..\..\proxy\socks4.c" />
     <ClCompile Include="..\..\..\proxy\socks5.c" />
@@ -228,6 +229,7 @@
     <ClCompile Include="..\..\..\utils\encode_utf8.c" />
     <ClCompile Include="..\..\..\utils\encode_wide_string_as_utf8.c" />
     <ClCompile Include="..\..\..\utils\fgetline.c" />
+    <ClCompile Include="..\..\..\utils\format_connection_setup_command.c" />
     <ClCompile Include="..\..\..\utils\host_ca_new_free.c" />
     <ClCompile Include="..\..\..\utils\host_strchr.c" />
     <ClCompile Include="..\..\..\utils\host_strchr_internal.c" />
@@ -329,6 +331,7 @@
     <ClCompile Include="..\..\utils\request_file.c" />
     <ClCompile Include="..\..\utils\security.c" />
     <ClCompile Include="..\..\utils\split_into_argv_w.c" />
+    <ClCompile Include="..\..\utils\subprocess_waiter.c" />
     <ClCompile Include="..\..\utils\version.c">
       <ObjectFileName>$(IntDir)windows-%(Filename)</ObjectFileName>
     </ClCompile>
