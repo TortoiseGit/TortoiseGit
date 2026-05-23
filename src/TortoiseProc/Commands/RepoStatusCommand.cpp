@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012, 2015, 2018 - TortoiseGit
+// Copyright (C) 2012, 2015, 2018, 2026 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,6 +30,8 @@ bool RepoStatusCommand::Execute()
 		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
+	if (!CheckRepo())
+		return false;
 
 	CChangedDlg dlg;
 	theApp.m_pMainWnd = &dlg;

@@ -30,6 +30,8 @@ class RefBrowseCommand : public Command
 			CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
 			return false;
 		}
+		if (!CheckRepo())
+			return false;
 
 		CBrowseRefsDlg dlg(orgCmdLinePath.GetWinPathString());
 		theApp.m_pMainWnd = &dlg;

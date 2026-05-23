@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2020 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2020, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,6 +29,8 @@ bool FetchCommand::Execute()
 		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
+	if (!CheckRepo())
+		return false;
 
 	if (orgPathList.GetCount() > 1)
 	{

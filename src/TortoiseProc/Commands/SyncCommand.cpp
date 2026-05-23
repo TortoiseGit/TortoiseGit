@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008-2009 - TortoiseSVN
-// Copyright (C) 2008-2012, 2015-2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2008-2012, 2015-2016, 2018-2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -31,6 +31,8 @@ bool SyncCommand::Execute()
 		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
 		return false;
 	}
+	if (!CheckRepo())
+		return false;
 
 	bool bRet = false;
 	CSyncDlg dlg;

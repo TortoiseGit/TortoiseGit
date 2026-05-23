@@ -23,8 +23,6 @@
 #include "TGitPath.h"
 #include "Git.h"
 
-
-
 /**
  * \ingroup TortoiseProc
  * Interface for all command line commands TortoiseProc can execute.
@@ -79,6 +77,8 @@ protected:
 	CTGitPathList			orgPathList;
 	CTGitPath				cmdLinePath;
 	CTGitPath				orgCmdLinePath;
+
+	bool CheckRepo() const;
 
 private:
 	HWND					hwndExplorer = nullptr;
