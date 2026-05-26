@@ -164,7 +164,7 @@ enum TGitCommand
 	cmdInaccessible,
 };
 
-static const struct CommandInfo
+static constexpr struct CommandInfo
 {
 	TGitCommand command;
 	LPCWSTR pCommandName;
@@ -245,9 +245,33 @@ static const struct CommandInfo
 	{	cmdInaccessible,	L"inaccessible"		},
 };
 
+constexpr bool AllCommandNamesAreUnique()
+{
+	for (int i = 0; i < _countof(commandInfo); ++i)
+	{
+		for (int j = i + 1; j < _countof(commandInfo); ++j)
+		{
+			if (std::wstring_view(commandInfo[i].pCommandName) == std::wstring_view(commandInfo[j].pCommandName))
+				return false;
+		}
+	}
+	return true;
+}
+
+constexpr bool CommandNameAndIDsMatch()
+{
+	for (int i = 0; i < _countof(commandInfo); ++i)
+	{
+		if (static_cast<int>(commandInfo[i].command) != i)
+			return false;
+	}
+	return true;
+}
 
 Command * CommandServer::GetCommand(const CString& sCmd)
 {
+	static_assert(AllCommandNamesAreUnique());
+	static_assert(CommandNameAndIDsMatch());
 	// Look up the command
 	TGitCommand command = cmdAbout;		// Something harmless as a default
 	for (int nCommand = 0; nCommand < _countof(commandInfo); ++nCommand)
@@ -256,8 +280,6 @@ Command * CommandServer::GetCommand(const CString& sCmd)
 		{
 			// We've found the command
 			command = commandInfo[nCommand].command;
-			// If this fires, you've let the enum get out of sync with the commandInfo array
-			ASSERT(static_cast<int>(command) == nCommand);
 			break;
 		}
 	}
