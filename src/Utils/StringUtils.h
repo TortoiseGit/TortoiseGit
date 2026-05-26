@@ -165,8 +165,8 @@ public:
 	 * Unescapes Git quoted filenames
 	 * This is not a full implementation of the unescaper as we skip some conversions that will result in invalid filenames.
 	 */
-	static CString UnescapeGitQuotePath(const CString& s);
-	static CString UnescapeGitQuotePathA(const CStringA& s);
+	static CString UnescapeGitQuotePath(const std::wstring_view s);
+	static CString UnescapeGitQuotePathA(std::string_view s);
 	/**
 	 * Find and return the number n of starting characters equal between
 	 * \ref lhs and \ref rhs. (max n: lhs.Left(n) == rhs.Left(n))

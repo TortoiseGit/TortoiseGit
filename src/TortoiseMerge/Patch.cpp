@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2009-2013, 2015-2023, 2025 - TortoiseGit
+// Copyright (C) 2009-2013, 2015-2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2012-2013 - Sven Strickroth <email@cs-ware.de>
 // Copyright (C) 2004-2009,2011-2014 - TortoiseSVN
 
@@ -136,7 +136,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 					if (chunks->sFilePath.Find('\t')>=0)
 						chunks->sFilePath = chunks->sFilePath.Left(chunks->sFilePath.Find('\t'));
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"\"") && CStringUtils::EndsWith(chunks->sFilePath, L'"'))
-						chunks->sFilePath = CStringUtils::UnescapeGitQuotePath(chunks->sFilePath.Mid(1, chunks->sFilePath.GetLength() - 1));
+						chunks->sFilePath = CStringUtils::UnescapeGitQuotePath(std::wstring_view(chunks->sFilePath, chunks->sFilePath.GetLength()).substr(1));
 					if (CStringUtils::StartsWith(chunks->sFilePath, L"a/"))
 						chunks->sFilePath=chunks->sFilePath.Mid(static_cast<int>(wcslen(L"a/")));
 
@@ -192,7 +192,7 @@ BOOL CPatch::ParsePatchFile(CFileTextLines &PatchLines)
 				if (chunks->sFilePath2.Find('\t')>=0)
 					chunks->sFilePath2 = chunks->sFilePath2.Left(chunks->sFilePath2.Find('\t'));
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"\"") && chunks->sFilePath2.ReverseFind(L'"') == chunks->sFilePath2.GetLength() - 1)
-					chunks->sFilePath2 = CStringUtils::UnescapeGitQuotePath(chunks->sFilePath2.Mid(1, chunks->sFilePath2.GetLength() - 1));
+					chunks->sFilePath2 = CStringUtils::UnescapeGitQuotePath(std::wstring_view(chunks->sFilePath2, chunks->sFilePath2.GetLength()).substr(1));
 				if (CStringUtils::StartsWith(chunks->sFilePath2, L"a/"))
 					chunks->sFilePath2=chunks->sFilePath2.Mid(static_cast<int>(wcslen(L"a/")));
 

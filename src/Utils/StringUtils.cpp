@@ -516,14 +516,14 @@ static void cleanup_space(CString& string)
 	}
 }
 
-CString CStringUtils::UnescapeGitQuotePath(const CString& s)
+CString CStringUtils::UnescapeGitQuotePath(const std::wstring_view s)
 {
-	return UnescapeGitQuotePathA(CUnicodeUtils::GetUTF8(s));
+	return UnescapeGitQuotePathA(CUnicodeUtils::StdGetUTF8(s));
 }
 
-CString CStringUtils::UnescapeGitQuotePathA(const CStringA& s)
+CString CStringUtils::UnescapeGitQuotePathA(std::string_view s)
 {
-	const int i_size = s.GetLength();
+	const int i_size = SafeSizeToInt(s.size());
 	CStringA t;
 	t.Preallocate(i_size);
 	bool isEscaped = false;

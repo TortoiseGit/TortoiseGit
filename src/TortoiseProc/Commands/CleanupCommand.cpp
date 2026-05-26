@@ -123,7 +123,10 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 		{
 			CString tempPath = token.Mid(static_cast<int>(wcslen(L"Would remove "))).TrimRight();
 			if (quotepath)
-				tempPath = CStringUtils::UnescapeGitQuotePath(tempPath.Trim(L'"'));
+			{
+				tempPath.Trim(L'"');
+				tempPath = CStringUtils::UnescapeGitQuotePath(std::wstring_view(tempPath, tempPath.GetLength()));
+			}
 			delList.AddPath(pGit->CombinePath(tempPath));
 		}
 

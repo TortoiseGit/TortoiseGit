@@ -121,7 +121,7 @@ public:
 
 private:
 	static GitRevLoglist* GetRevForHash(CGitHashMap& HashToRev, const CGitHash& hash, const CGitMailmap* mailmap, CString* err = nullptr);
-	static CString UnquoteFilename(const CStringA& s);
+	static CString UnquoteFilename(const std::string_view s);
 
 	std::vector<CGitHash>		m_Hash;
 	std::vector<CString>		m_Dates;

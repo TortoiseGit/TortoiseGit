@@ -169,8 +169,7 @@ void CTortoiseGitBlameData::ParseBlameOutput(const BYTE_VECTOR& data, CGitHashMa
 						{
 							size_t filenameBegin = tokenEnd + 1;
 							size_t filenameEnd = lineEnd;
-							CStringA filenameA = CStringA(reinterpret_cast<LPCSTR>(&data[filenameBegin]), SafeSizeToInt(filenameEnd - filenameBegin));
-							filename = UnquoteFilename(filenameA);
+							filename = UnquoteFilename(std::string_view(&data[filenameBegin], filenameEnd - filenameBegin));
 							auto r = hashToFilename.emplace(hash, filename);
 							if (!r.second)
 							{
@@ -472,10 +471,10 @@ GitRevLoglist* CTortoiseGitBlameData::GetRevForHash(CGitHashMap& HashToRev, cons
 	return &(it->second);
 }
 
-CString CTortoiseGitBlameData::UnquoteFilename(const CStringA& s)
+CString CTortoiseGitBlameData::UnquoteFilename(const std::string_view s)
 {
 	if (s[0] == '"')
-		return CStringUtils::UnescapeGitQuotePathA(s.Mid(1));
+		return CStringUtils::UnescapeGitQuotePathA(s.substr(1));
 	else
 		return CUnicodeUtils::GetUnicode(s);
 }
