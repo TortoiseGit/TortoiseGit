@@ -100,37 +100,26 @@ static bool GetFilesToCleanUp(CTGitPathList& delList, const CString& baseCmd, CG
 	if (!path.IsEmpty())
 		cmd += L" -- " + CGit::QuoteParameter(path);
 
-	CString cmdout, cmdouterr;
-	if (pGit->Run(cmd, &cmdout, &cmdouterr, CP_UTF8))
+	CString cmdouterr;
+	if (pGit->Run(cmd, [&](std::string_view line)
+		{
+			if (!line.starts_with("Would remove "))
+				return;
+
+			line.remove_prefix(strlen("Would remove "));
+			if (line.empty())
+				return;
+
+			if (quotepath && line[0] == '"')
+				delList.AddPath(pGit->CombinePath(CStringUtils::UnescapeGitQuotePathA(line.substr(1))));
+			else
+				delList.AddPath(pGit->CombinePath(CUnicodeUtils::GetUnicode(line)));
+		}, &cmdouterr))
 	{
 		if (cmdouterr.IsEmpty())
-			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, static_cast<LPCWSTR>(cmdout));
+			cmdouterr.Format(IDS_GITEXEERROR_NOMESSAGE, static_cast<LPCWSTR>(cmd));
 		MessageBox(GetExplorerHWND(), cmdouterr, L"TortoiseGit", MB_ICONERROR);
 		return false;
-	}
-
-	if (sysProgressDlg.HasUserCancelled())
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_USERCANCELLED, IDS_APPNAME, MB_OK);
-		return false;
-	}
-
-	int pos = 0;
-	CString token = cmdout.Tokenize(L"\n", pos);
-	while (!token.IsEmpty())
-	{
-		if (CStringUtils::StartsWith(token, L"Would remove "))
-		{
-			CString tempPath = token.Mid(static_cast<int>(wcslen(L"Would remove "))).TrimRight();
-			if (quotepath)
-			{
-				tempPath.Trim(L'"');
-				tempPath = CStringUtils::UnescapeGitQuotePath(std::wstring_view(tempPath, tempPath.GetLength()));
-			}
-			delList.AddPath(pGit->CombinePath(tempPath));
-		}
-
-		token = cmdout.Tokenize(L"\n", pos);
 	}
 
 	if (sysProgressDlg.HasUserCancelled())
