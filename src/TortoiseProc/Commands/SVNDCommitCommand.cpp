@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009-2012, 2015, 2018-2019 - TortoiseGit
+// Copyright (C) 2009-2012, 2015, 2018-2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,16 +18,9 @@
 //
 #include "stdafx.h"
 #include "SVNDCommitCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool SVNDCommitCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	return !!CAppUtils::SVNDCommit(GetExplorerHWND());
 }

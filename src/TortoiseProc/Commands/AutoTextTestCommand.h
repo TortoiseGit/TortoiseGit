@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2018 - TortoiseGit
+// Copyright (C) 2018, 2026 - TortoiseGit
 // Copyright (C) 2008, 2011-2012 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -28,6 +28,13 @@
 class AutoTextTestCommand : public Command
 {
 public:
+	AutoTextTestCommand()
+	{
+		m_pathRequirement = PathRequirement::NoPathRequired;
+	}
+
+	bool RequiresGitExe() const override { return false; };
+
 	/**
 	 * Executes the command.
 	 */

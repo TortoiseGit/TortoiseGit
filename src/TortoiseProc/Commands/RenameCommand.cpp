@@ -27,12 +27,6 @@
 
 bool RenameCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	bool bRet = true;
 	CString filename = cmdLinePath.GetFileOrDirectoryName();
 	CString basePath = cmdLinePath.GetContainingDirectory().GetGitPathString();

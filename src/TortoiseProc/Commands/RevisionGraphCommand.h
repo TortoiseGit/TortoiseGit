@@ -1,7 +1,7 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2007, 2012 - TortoiseSVN
-// Copyright (C) 2012 - TortoiseGit
+// Copyright (C) 2012, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,6 +27,11 @@
 class RevisionGraphCommand : public Command
 {
 public:
+	RevisionGraphCommand()
+	{
+		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */

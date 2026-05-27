@@ -29,12 +29,6 @@
 
 bool SubmoduleAddCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	bool bRet = false;
 	CSubmoduleAddDlg dlg;
 	dlg.m_strPath = cmdLinePath.GetDirectory().GetWinPathString();
@@ -95,12 +89,6 @@ bool SubmoduleAddCommand::Execute()
 
 bool SubmoduleUpdateCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CString bkpath;
 	if (parser.HasKey(L"bkpath"))
 		bkpath = parser.GetVal(L"bkpath");
@@ -205,12 +193,6 @@ bool SubmoduleUpdateCommand::Execute()
 
 bool SubmoduleSyncCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CProgressDlg progress;
 	theApp.m_pMainWnd = &progress;
 

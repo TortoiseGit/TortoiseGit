@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2014, 2018-2019, 2024 - TortoiseGit
+// Copyright (C) 2014, 2018-2019, 2024, 2026 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -31,6 +31,13 @@
 class RTFMCommand : public Command
 {
 public:
+	RTFMCommand()
+	{
+		m_pathRequirement = PathRequirement::NoPathRequired;
+	}
+
+	bool RequiresGitExe() const override { return false; };
+
 	/**
 	 * Executes the command.
 	 */

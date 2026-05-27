@@ -19,20 +19,11 @@
 //
 #include "stdafx.h"
 #include "PushCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 #include "GitAdminDir.h"
 
 bool PushCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	CString branch;
 	if (parser.HasVal(L"branch"))
 		branch = parser.GetVal(L"branch");

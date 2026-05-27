@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008,2011,2013 - TortoiseGit
+// Copyright (C) 2008, 2011, 2013, 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,10 +27,13 @@
 class CloneCommand : public Command
 {
 public:
+	CloneCommand()
+	{
+		m_pathRequirement = PathRequirement::NoPathRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */
 	bool			Execute() override;
 };
-
-

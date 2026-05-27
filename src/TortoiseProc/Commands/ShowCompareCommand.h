@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,10 +28,13 @@
 class ShowCompareCommand : public Command
 {
 public:
+	ShowCompareCommand()
+	{
+		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */
 	bool			Execute() override;
 };
-
-

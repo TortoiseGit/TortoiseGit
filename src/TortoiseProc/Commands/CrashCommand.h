@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2007-2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -30,6 +31,13 @@ extern CCrashReport crasher;
 class CrashCommand : public Command
 {
 public:
+	CrashCommand()
+	{
+		m_pathRequirement = PathRequirement::NoPathRequired;
+	}
+
+	bool RequiresGitExe() const override { return false; };
+
 	/**
 	 * Executes the command.
 	 */
@@ -50,5 +58,3 @@ public:
 		*a = 7;
 	}
 };
-
-

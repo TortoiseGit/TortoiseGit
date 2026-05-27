@@ -19,7 +19,6 @@
 //
 #include "stdafx.h"
 #include "FormatPatchCommand.h"
-#include "MessageBox.h"
 #include "FormatPatchDlg.h"
 #include "Git.h"
 #include "ShellUpdater.h"
@@ -28,12 +27,6 @@
 
 bool FormatPatchCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CFormatPatchDlg dlg;
 	CString startval = parser.GetVal(L"startrev");
 	CString endval = parser.GetVal(L"endrev");

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2022 - TortoiseGit
+// Copyright (C) 2022, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,28 +19,15 @@
 #include "stdafx.h"
 #include "WorktreeCommand.h"
 #include "WorktreeListDlg.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool WorktreeCreateCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	return CAppUtils::CreateWorktree(GetExplorerHWND());
 }
 
 bool WorktreeListCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CWorktreeListDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	return dlg.DoModal() == IDOK;
@@ -48,12 +35,6 @@ bool WorktreeListCommand::Execute()
 
 bool DropWorktreeCreateCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CString target = parser.GetVal(L"droptarget");
 	CPathUtils::EnsureTrailingPathDelimiter(target);
 

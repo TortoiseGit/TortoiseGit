@@ -18,25 +18,21 @@
 //
 #pragma once
 #include "Command.h"
-#include "MessageBox.h"
 #include "BrowseRefsDlg.h"
 
 class RefBrowseCommand : public Command
 {
+public:
+	RefBrowseCommand()
+	{
+		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
+	}
+
 	virtual bool Execute() override
 	{
-		if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-		{
-			CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-			return false;
-		}
-		if (!CheckRepo())
-			return false;
-
 		CBrowseRefsDlg dlg(orgCmdLinePath.GetWinPathString());
 		theApp.m_pMainWnd = &dlg;
 		dlg.DoModal();
 		return true;
 	}
 };
-

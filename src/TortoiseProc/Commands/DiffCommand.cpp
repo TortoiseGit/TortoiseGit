@@ -35,11 +35,8 @@ bool DiffCommand::Execute()
 //	bool bBlame = !!parser.HasKey(L"blame");
 	if (path2.IsEmpty())
 	{
-		if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-		{
-			CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-			return false;
-		}
+		if (!CheckRepo(PathRequirement::WorkingTreeOrBareRepoRequired))
+			return FALSE;
 		if (this->orgCmdLinePath.IsDirectory() && !parser.HasKey(L"submodule"))
 		{
 			CChangedDlg dlg;
@@ -112,11 +109,8 @@ bool DiffCommand::Execute()
 	{
 		if (parser.HasKey(L"startrev") && parser.HasKey(L"endrev") && CStringUtils::StartsWith(path2, g_Git.m_CurrentDir + L"\\"))
 		{
-			if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-			{
-				CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-				return false;
-			}
+			if (!CheckRepo(PathRequirement::WorkingTreeOrBareRepoRequired))
+				return FALSE;
 			CTGitPath tgitPath2 = path2.Mid(g_Git.m_CurrentDir.GetLength() + 1);
 			bRet = !!CGitDiff::Diff(GetExplorerHWND(), &tgitPath2, &cmdLinePath, parser.GetVal(L"endrev"), parser.GetVal(L"startrev"), false, parser.HasKey(L"unified") == TRUE, parser.GetLongVal(L"line"), bAlternativeTool);
 		}

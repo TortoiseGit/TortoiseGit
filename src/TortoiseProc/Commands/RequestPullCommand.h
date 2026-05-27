@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2011 - Sven Strickroth <email@cs-ware.de>
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +28,11 @@
 class RequestPullCommand : public Command
 {
 public:
+	RequestPullCommand()
+	{
+		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */

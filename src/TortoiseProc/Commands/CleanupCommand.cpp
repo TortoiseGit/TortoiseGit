@@ -279,12 +279,6 @@ static bool DoCleanUp(const CTGitPathList& pathList, int cleanType, bool bDir, b
 
 bool CleanupCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	bool bRet = false;
 
 	CCleanTypeDlg dlg;

@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,10 +27,13 @@
 class FormatPatchCommand : public Command
 {
 public:
+	FormatPatchCommand()
+	{
+		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */
 	bool			Execute() override;
 };
-
-

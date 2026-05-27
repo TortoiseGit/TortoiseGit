@@ -1,5 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -26,6 +27,11 @@
 class DiffCommand : public Command
 {
 public:
+	DiffCommand()
+	{
+		m_pathRequirement = PathRequirement::PathRequired;
+	}
+
 	/**
 	 * Executes the command.
 	 */

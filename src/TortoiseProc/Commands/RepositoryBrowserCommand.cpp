@@ -18,20 +18,10 @@
 //
 #include "stdafx.h"
 #include "RepositoryBrowserCommand.h"
-#include "MessageBox.h"
 #include "RepositoryBrowser.h"
-#include "GitAdminDir.h"
 
 bool RepositoryBrowserCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	CString rev = L"HEAD";
 	CString val = parser.GetVal(L"rev");
 	if (!val.IsEmpty())

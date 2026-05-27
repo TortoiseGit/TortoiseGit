@@ -26,6 +26,13 @@
 class InaccessibleCommand : public Command
 {
 public:
+	InaccessibleCommand()
+	{
+		m_pathRequirement = PathRequirement::PathRequired;
+	}
+
+	bool RequiresGitExe() const override { return false; };
+
 	/**
 	 * Executes the command.
 	 */

@@ -21,19 +21,9 @@
 #include "LogCommand.h"
 #include "StringUtils.h"
 #include "LogDlg.h"
-#include "MessageBox.h"
-#include "GitAdminDir.h"
 
 bool LogCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	//the log command line looks like this:
 	//command:log path:<path_to_file_or_directory_to_show_the_log_messages> [startrev:<startrevision>] [endrev:<endrevision>]
 

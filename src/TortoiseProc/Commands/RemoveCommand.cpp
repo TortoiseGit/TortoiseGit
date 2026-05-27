@@ -26,12 +26,6 @@
 
 bool RemoveCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	bool bRet = false;
 	// removing items from a working copy is done item-by-item so we
 	// have a chance to show a progress bar

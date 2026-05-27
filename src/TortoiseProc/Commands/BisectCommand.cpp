@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2025 - TortoiseGit
+// Copyright (C) 2008-2013, 2015-2016, 2018-2019, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -19,18 +19,11 @@
 
 #include "stdafx.h"
 #include "BisectCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 #include "resource.h"
 
 bool BisectCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CTGitPath path = g_Git.m_CurrentDir;
 
 	if (parser.HasKey(L"start") && !path.IsBisectActive())

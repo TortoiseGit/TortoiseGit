@@ -47,14 +47,6 @@ bool CommitCommand::Execute()
 	CString sLogMsg = LoadLogMessage();
 	bool bSelectFilesForCommit = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\SelectFilesForCommit", TRUE));
 
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	return !!CAppUtils::Commit(GetExplorerHWND(),
 								parser.GetVal(L"bugid"),
 								parser.HasKey(L"wholeproject"),

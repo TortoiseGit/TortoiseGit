@@ -19,20 +19,10 @@
 //
 #include "stdafx.h"
 #include "RepoStatusCommand.h"
-#include "MessageBox.h"
 #include "ChangedDlg.h"
-#include "GitAdminDir.h"
 
 bool RepoStatusCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	CChangedDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	dlg.m_pathList = pathList;

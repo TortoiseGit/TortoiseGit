@@ -446,8 +446,27 @@ Command* CommandServer::CreateRawCommand(const CString& sCmd)
 	}
 }
 
-bool Command::CheckRepo() const
+bool Command::CheckRepo(PathRequirement requirement) const
 {
+	if (requirement >= PathRequirement::WorkingTreeRequired)
+	{
+		if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
+		{
+			CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
+			return false;
+		}
+	}
+	else if (requirement >= PathRequirement::WorkingTreeOrBareRepoRequired)
+	{
+		if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
+		{
+			CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
+			return false;
+		}
+	}
+	else
+		return true;
+
 	if (!g_Git.m_IsUseLibGit2 || g_Git.m_CurrentDir.IsEmpty())
 		return true;
 
@@ -464,4 +483,9 @@ bool Command::CheckRepo() const
 	else
 		::MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONERROR);
 	return false;
+}
+
+bool Command::CheckRepo() const
+{
+	return CheckRepo(m_pathRequirement);
 }

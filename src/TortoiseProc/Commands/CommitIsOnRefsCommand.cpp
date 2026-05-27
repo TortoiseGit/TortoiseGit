@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2018-2019 - TortoiseGit
+// Copyright (C) 2016, 2018-2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,18 +17,11 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #include "stdafx.h"
-#include "MessageBox.h"
 #include "CommitIsOnRefsCommand.h"
 #include "CommitIsOnRefsDlg.h"
 
 bool CommitIsOnRefsCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CCommitIsOnRefsDlg dlg;
 	theApp.m_pMainWnd = &dlg;
 	dlg.m_Rev = parser.GetVal(L"rev");

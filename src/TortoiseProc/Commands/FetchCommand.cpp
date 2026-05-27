@@ -19,19 +19,10 @@
 #include "stdafx.h"
 #include "FetchCommand.h"
 #include "AppUtils.h"
-#include "MessageBox.h"
 #include "GitAdminDir.h"
 
 bool FetchCommand::Execute()
 {
-	if (!GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOGITREPO, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	if (orgPathList.GetCount() > 1)
 	{
 		bool retVal = true;

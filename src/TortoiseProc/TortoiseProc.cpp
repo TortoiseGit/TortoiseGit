@@ -191,10 +191,45 @@ BOOL CTortoiseProcApp::InitInstance()
 		return (wizard.DoModal() == ID_WIZFINISH);
 	}
 
-	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"registerwin11contextmenu") == 0)
+	if (parser.HasKey(L"urlhandler"))
 	{
-		if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser); cmd)
-			retSuccess = cmd->Execute();
+		CString url = parser.GetVal(L"urlhandler");
+		if (CStringUtils::StartsWith(url, L"tgit://clone/"))
+			url = url.Mid(static_cast<int>(wcslen(L"tgit://clone/")));
+		else if (CStringUtils::StartsWith(url, L"github-windows://openRepo/"))
+		{
+			url = url.Mid(static_cast<int>(wcslen(L"github-windows://openRepo/")));
+			if (const int questioMark = url.Find('?'); questioMark > 0)
+				url = url.Left(questioMark);
+		}
+		else if (CStringUtils::StartsWith(url, L"x-github-client://openRepo/"))
+		{
+			url = url.Mid(static_cast<int>(wcslen(L"x-github-client://openRepo/")));
+			if (const int questioMark = url.Find('?'); questioMark > 0)
+				url = url.Left(questioMark);
+		}
+		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
+			url = url.Mid(static_cast<int>(wcslen(L"smartgit://cloneRepo/")));
+		else if (!CStringUtils::StartsWith(url, L"git://"))
+		{
+			CMessageBox::Show(GetExplorerHWND(), IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
+			return FALSE;
+		}
+		CString newCmd;
+		newCmd.Format(L"/command:clone /url:%s /hasurlhandler", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(url)));
+		parser = CCmdLineParser(newCmd);
+	}
+
+	auto cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser);
+	if (!cmd)
+	{
+		cmd->Execute();
+		return FALSE;
+	}
+	SCOPE_EXIT{ Animator::Instance().ShutDown(); };
+	if (!cmd->RequiresGitExe() && !cmd->MayTakePath())
+	{
+		retSuccess = cmd->Execute();
 		return FALSE;
 	}
 
@@ -226,36 +261,6 @@ BOOL CTortoiseProcApp::InitInstance()
 			CCrashReport::Instance().AddUserInfoToReport(L"CygwinHack", L"true");
 		if (CGit::ms_bMsys2Git)
 			CCrashReport::Instance().AddUserInfoToReport(L"Msys2Hack", L"true");
-	}
-
-	if (parser.HasKey(L"urlhandler"))
-	{
-		CString url = parser.GetVal(L"urlhandler");
-		if (CStringUtils::StartsWith(url, L"tgit://clone/"))
-			url = url.Mid(static_cast<int>(wcslen(L"tgit://clone/")));
-		else if (CStringUtils::StartsWith(url, L"github-windows://openRepo/"))
-		{
-			url = url.Mid(static_cast<int>(wcslen(L"github-windows://openRepo/")));
-			int questioMark = url.Find('?');
-			if (questioMark > 0)
-				url = url.Left(questioMark);
-		}
-		else if (CStringUtils::StartsWith(url, L"x-github-client://openRepo/")) {
-			url = url.Mid(static_cast<int>(wcslen(L"x-github-client://openRepo/")));
-			int questioMark = url.Find('?');
-			if (questioMark > 0)
-				url = url.Left(questioMark);
-		}
-		else if (CStringUtils::StartsWith(url, L"smartgit://cloneRepo/"))
-			url = url.Mid(static_cast<int>(wcslen(L"smartgit://cloneRepo/")));
-		else if (!CStringUtils::StartsWith(url, L"git://"))
-		{
-			CMessageBox::Show(nullptr, IDS_ERR_INVALIDPATH, IDS_APPNAME, MB_ICONERROR);
-			return FALSE;
-		}
-		CString newCmd;
-		newCmd.Format(L"/command:clone /url:%s /hasurlhandler", static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(url)));
-		parser = CCmdLineParser(newCmd);
 	}
 
 	if (parser.HasKey(L"path") && parser.HasKey(L"pathfile"))
@@ -314,6 +319,9 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if(!g_Git.m_CurrentDir.IsEmpty())
 		SetCurrentDirectory(g_Git.m_CurrentDir);
+
+	if (!cmd->CheckRepo())
+		return FALSE;
 
 	if (g_sGroupingUUID.IsEmpty())
 	{
@@ -382,19 +390,13 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	// execute the requested command
-	if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser); cmd)
-	{
-		cmd->SetPaths(pathList, cmdLinePath);
-
-		retSuccess = cmd->Execute();
-	}
+	cmd->SetPaths(pathList, cmdLinePath);
+	retSuccess = cmd->Execute();
 
 	// Look for temporary files left around by TortoiseGit and
 	// remove them. But only delete 'old' files because some
 	// apps might still be needing the recent ones.
 	CTempFiles::Instance().DeleteOldTempFiles();
-
-	Animator::Instance().ShutDown();
 
 	// Since the dialog has been closed, return FALSE so that we exit the
 	// application, rather than start the application's message pump.

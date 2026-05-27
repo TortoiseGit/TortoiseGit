@@ -19,21 +19,11 @@
 //
 #include "stdafx.h"
 #include "TortoiseProc.h"
-#include "MessageBox.h"
 #include "SyncDlg.h"
 #include "SyncCommand.h"
-#include "GitAdminDir.h"
 
 bool SyncCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	bool bRet = false;
 	CSyncDlg dlg;
 	theApp.m_pMainWnd = &dlg;

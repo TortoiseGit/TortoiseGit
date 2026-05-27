@@ -19,20 +19,11 @@
 //
 #include "stdafx.h"
 #include "PullCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 #include "GitAdminDir.h"
 
 bool PullCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
-
 	if (orgPathList.GetCount() > 1)
 	{
 		bool retVal = true;

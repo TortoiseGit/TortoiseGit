@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2025 - TortoiseGit
+// Copyright (C) 2025-2026 - TortoiseGit
 // Copyright (C) 2025 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,6 +27,13 @@
 class RegisterWin11ContextMenuCommand : public Command
 {
 public:
+	RegisterWin11ContextMenuCommand()
+	{
+		m_pathRequirement = PathRequirement::NoPathRequired;
+	}
+
+	bool RequiresGitExe() const override { return false; };
+
 	/**
 	 * Executes the command.
 	 */

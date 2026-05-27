@@ -19,18 +19,11 @@
 //
 #include "stdafx.h"
 #include "BlameCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 
 bool BlameCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CString params;
 	if (parser.HasVal(L"line"))
 		params.Format(L"/line:%ld", parser.GetLongVal(L"line"));

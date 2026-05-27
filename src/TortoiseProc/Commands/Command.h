@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2009, 2011, 2013-2014, 2016, 2018-2019, 2026 - TortoiseGit
+// Copyright (C) 2008-2009, 2011, 2013-2014, 2016, 2018-2019, 2025-2026 - TortoiseGit
 // Copyright (C) 2007 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -23,6 +23,15 @@
 #include "TGitPath.h"
 #include "Git.h"
 
+enum class PathRequirement
+{
+	NoPathRequired,
+	MayTakePath,
+	PathRequired, // TortoiseGit historically also accepts CWD instead of explicitly passed paths
+	WorkingTreeOrBareRepoRequired,
+	WorkingTreeRequired,
+};
+
 /**
  * \ingroup TortoiseProc
  * Interface for all command line commands TortoiseProc can execute.
@@ -34,6 +43,11 @@ public:
 	 * Executes the command.
 	 */
 	virtual bool			Execute() = 0;
+
+	virtual bool RequiresGitExe() const { return true; };
+	bool MayTakePath() const { return m_pathRequirement >= PathRequirement::MayTakePath; };
+	bool RequiresWorkingTreeOrBareRepo() const { return m_pathRequirement >= PathRequirement::WorkingTreeOrBareRepoRequired; };
+	bool RequiresWorkingTree() const { return m_pathRequirement >= PathRequirement::WorkingTreeRequired; };
 
 	// allow sub-classes to execute code during destruction
 	virtual ~Command() = default;
@@ -71,14 +85,17 @@ public:
 	void					SetExplorerHwnd(HWND hWnd) {hwndExplorer = hWnd;}
 	HWND					GetExplorerHWND() const { return ::IsWindow(hwndExplorer) ? hwndExplorer : nullptr; }
 
+	bool					CheckRepo() const;
+
 protected:
 	CCmdLineParser			parser;
 	CTGitPathList			pathList;
 	CTGitPathList			orgPathList;
 	CTGitPath				cmdLinePath;
 	CTGitPath				orgCmdLinePath;
+	PathRequirement			m_pathRequirement = PathRequirement::WorkingTreeRequired;
 
-	bool CheckRepo() const;
+	bool					CheckRepo(PathRequirement requirement) const;
 
 private:
 	HWND					hwndExplorer = nullptr;

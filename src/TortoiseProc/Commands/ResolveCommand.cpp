@@ -19,7 +19,6 @@
 //
 #include "stdafx.h"
 #include "ResolveCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 #include "ResolveDlg.h"
 #include "GitProgressDlg.h"
@@ -27,12 +26,6 @@
 
 bool ResolveCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	CResolveDlg dlg;
 	dlg.m_pathList = pathList;
 	INT_PTR ret = IDOK;

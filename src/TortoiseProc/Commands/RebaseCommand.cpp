@@ -19,20 +19,12 @@
 //
 #include "stdafx.h"
 #include "RebaseCommand.h"
-#include "MessageBox.h"
 #include "RebaseDlg.h"
 #include "Git.h"
 #include "AppUtils.h"
 
 bool RebaseCommand::Execute()
 {
-	if (!GitAdminDir::HasAdminDir(g_Git.m_CurrentDir))
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-	if (!CheckRepo())
-		return false;
 	CString upstream = parser.GetVal(L"upstream");
 	while(1)
 	{

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2009, 2015-2016, 2018-2019, 2021-2022 - TortoiseGit
+// Copyright (C) 2009, 2015-2016, 2018-2019, 2021-2022, 2026 - TortoiseGit
 // Copyright (C) 2008-2009 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -19,18 +19,11 @@
 //
 #include "stdafx.h"
 #include "ConflictEditorCommand.h"
-#include "MessageBox.h"
 #include "AppUtils.h"
 
 bool ConflictEditorCommand::Execute()
 {
 	CTGitPath repo{ g_Git.m_CurrentDir };
-	if (!repo.HasAdminDir())
-	{
-		CMessageBox::Show(GetExplorerHWND(), IDS_NOWORKINGCOPY, IDS_APPNAME, MB_ICONERROR);
-		return false;
-	}
-
 	bool bAlternativeTool = !!parser.HasKey(L"alternative");
 	return CAppUtils::ConflictEdit(GetExplorerHWND(), this->cmdLinePath, bAlternativeTool, repo.IsRebaseActive());
 }
