@@ -162,6 +162,26 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (CRegDWORD(L"Software\\TortoiseGit\\Debug", FALSE) == TRUE)
 		AfxMessageBox(AfxGetApp()->m_lpCmdLine, MB_OK | MB_ICONINFORMATION);
 
+#if PREVIEW
+	CCrashReport::Instance().AddUserInfoToReport(L"Preview", _T(PREVIEW_INFO));
+	CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Preview: %s\n", _T(PREVIEW_INFO));
+#else
+	if (CString hotfix = CPathUtils::GetAppDirectory() + L"hotfix.ini"; PathFileExists(hotfix))
+	{
+		CString err;
+		CVersioncheckParser versionparser;
+		if (versionparser.Load(hotfix, err))
+		{
+			auto version = versionparser.GetTortoiseGitVersion();
+			if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && (version.micro > TGIT_VERMICRO || version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD))
+			{
+				CCrashReport::Instance().AddUserInfoToReport(L"Hotfix", versionparser.GetTortoiseGitVersion().version);
+				CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Hotfix: %s\n", static_cast<LPCWSTR>(versionparser.GetTortoiseGitVersion().version));
+			}
+		}
+	}
+#endif
+
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
 		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
@@ -204,25 +224,6 @@ BOOL CTortoiseProcApp::InitInstance()
 			CCrashReport::Instance().AddUserInfoToReport(L"CygwinHack", L"true");
 		if (CGit::ms_bMsys2Git)
 			CCrashReport::Instance().AddUserInfoToReport(L"Msys2Hack", L"true");
-#if PREVIEW
-		CCrashReport::Instance().AddUserInfoToReport(L"Preview", _T(PREVIEW_INFO));
-		CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Preview: %s\n", _T(PREVIEW_INFO));
-#else
-		if (CString hotfix = CPathUtils::GetAppDirectory() + L"hotfix.ini"; PathFileExists(hotfix))
-		{
-			CString err;
-			CVersioncheckParser versionparser;
-			if (versionparser.Load(hotfix, err))
-			{
-				auto version = versionparser.GetTortoiseGitVersion();
-				if (version.major == TGIT_VERMAJOR && version.minor == TGIT_VERMINOR && (version.micro > TGIT_VERMICRO || version.micro == TGIT_VERMICRO && version.build > TGIT_VERBUILD))
-				{
-					CCrashReport::Instance().AddUserInfoToReport(L"Hotfix", versionparser.GetTortoiseGitVersion().version);
-					CTraceToOutputDebugString::Instance()(_T(__FUNCTION__) L": Hotfix: %s\n", static_cast<LPCWSTR>(versionparser.GetTortoiseGitVersion().version));
-				}
-			}
-		}
-#endif
 	}
 
 	if (parser.HasKey(L"urlhandler"))
