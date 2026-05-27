@@ -1058,6 +1058,9 @@
     <ClCompile Include="Commands\InaccessibleCommand.cpp">
       <Filter>Commands\Inaccessible</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\FirstStartWizardCommand.cpp">
+      <Filter>Commands\FirstStart</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AddRemoteDlg.h">
@@ -2001,6 +2004,9 @@
     </ClInclude>
     <ClInclude Include="Commands\InaccessibleCommand.h">
       <Filter>Commands\Inaccessible</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\FirstStartWizardCommand.h">
+      <Filter>Commands\FirstStart</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

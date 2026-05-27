@@ -77,6 +77,7 @@
 #include "RTFMCommand.h"
 #include "LFSCommands.h"
 #include "RegisterWin11ContextMenu.h"
+#include "FirstStartWizardCommand.h"
 #include "InaccessibleCommand.h"
 #if 0
 #include "CrashCommand.h"
@@ -162,6 +163,7 @@ enum TGitCommand
 	cmdDropWorktreeCreate,
 	cmdRegisterWin11ContextMenu,
 	cmdInaccessible,
+	cmdFirstStartWizard,
 };
 
 static constexpr struct CommandInfo
@@ -243,6 +245,7 @@ static constexpr struct CommandInfo
 	{	cmdDropWorktreeCreate,	L"dropnewworktree"	},
 	{	cmdRegisterWin11ContextMenu,	L"registerwin11contextmenu"	},
 	{	cmdInaccessible,	L"inaccessible"		},
+	{	cmdFirstStartWizard,L"firststart"		},
 };
 
 constexpr bool AllCommandNamesAreUnique()
@@ -425,6 +428,8 @@ Command* CommandServer::CreateRawCommand(const CString& sCmd)
 		return new DropWorktreeCreateCommand;
 	case cmdRTFM:
 		return new RTFMCommand;
+	case cmdFirstStartWizard:
+		return new FirstStartWizardCommand;
 #if 0
 	case cmdCrash:
 		return new CrashCommand;

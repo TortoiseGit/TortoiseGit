@@ -43,7 +43,6 @@
 #include <random>
 #include "SendMail.h"
 #include "WindowsCredentialsStore.h"
-#include "FirstStartWizard.h"
 #include "AnimationManager.h"
 #include "VersioncheckParser.h"
 #include "TempFile.h"
@@ -184,13 +183,6 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	CheckForNewerVersion();
 
-	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
-	{
-		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
-		theApp.m_pMainWnd = &wizard;
-		return (wizard.DoModal() == ID_WIZFINISH);
-	}
-
 	if (parser.HasKey(L"urlhandler"))
 	{
 		CString url = parser.GetVal(L"urlhandler");
@@ -240,9 +232,9 @@ BOOL CTortoiseProcApp::InitInstance()
 			ShellExecute(hWndExplorer, L"open", GIT_FOR_WINDOWS_URL, nullptr, nullptr, SW_SHOW);
 		else if (ret == 1)
 		{
-			CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), 2);
-			theApp.m_pMainWnd = &wizard;
-			wizard.DoModal();
+			parser = CCmdLineParser(L"/command:firststart /page:2");
+			cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser);
+			cmd->Execute();
 		}
 		return FALSE;
 	}
