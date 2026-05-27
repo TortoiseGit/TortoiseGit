@@ -268,7 +268,7 @@ constexpr bool CommandNameAndIDsMatch()
 	return true;
 }
 
-Command * CommandServer::GetCommand(const CString& sCmd)
+Command* CommandServer::CreateRawCommand(const CString& sCmd)
 {
 	static_assert(AllCommandNamesAreUnique());
 	static_assert(CommandNameAndIDsMatch());

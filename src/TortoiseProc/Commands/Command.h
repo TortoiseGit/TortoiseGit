@@ -36,7 +36,7 @@ public:
 	virtual bool			Execute() = 0;
 
 	// allow sub-classes to execute code during destruction
-	virtual ~Command() {};
+	virtual ~Command() = default;
 
 	void					SetParser(const CCmdLineParser& p) {parser = p;}
 	void					SetPaths(const CTGitPathList& plist, const CTGitPath &path)
@@ -92,7 +92,16 @@ private:
 class CommandServer
 {
 public:
+	static inline std::unique_ptr<Command> GetCommand(const CString& sCmd, HWND explorerhWnd, const CCmdLineParser& p)
+	{
+		auto cmd = std::unique_ptr<Command>(CreateRawCommand(sCmd));
+		cmd->SetExplorerHwnd(explorerhWnd);
+		cmd->SetParser(p);
+		return cmd;
+	}
+
+private:
 	CommandServer() = delete;
 
-	static Command* GetCommand(const CString& sCmd);
+	static Command* CreateRawCommand(const CString& sCmd);
 };

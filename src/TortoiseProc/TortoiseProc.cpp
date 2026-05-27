@@ -171,14 +171,9 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"registerwin11contextmenu") == 0)
 	{
-		if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command")); cmd)
-		{
-			cmd->SetExplorerHwnd(hWndExplorer);
-			cmd->SetParser(parser);
+		if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser); cmd)
 			retSuccess = cmd->Execute();
-			delete cmd;
-		}
-		return retSuccess;
+		return FALSE;
 	}
 
 	if (!g_Git.CheckMsysGitDir())
@@ -387,15 +382,11 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	// execute the requested command
-	if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command")); cmd)
+	if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command"), hWndExplorer, parser); cmd)
 	{
-		cmd->SetExplorerHwnd(hWndExplorer);
-
-		cmd->SetParser(parser);
 		cmd->SetPaths(pathList, cmdLinePath);
 
 		retSuccess = cmd->Execute();
-		delete cmd;
 	}
 
 	// Look for temporary files left around by TortoiseGit and
