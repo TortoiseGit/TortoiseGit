@@ -28,7 +28,7 @@ public:
 		m_pathRequirement = PathRequirement::WorkingTreeOrBareRepoRequired;
 	}
 
-	virtual bool Execute() override
+	bool Execute() override
 	{
 		CBrowseRefsDlg dlg(orgCmdLinePath.GetWinPathString());
 		theApp.m_pMainWnd = &dlg;
