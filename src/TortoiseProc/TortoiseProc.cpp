@@ -171,8 +171,7 @@ BOOL CTortoiseProcApp::InitInstance()
 
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"registerwin11contextmenu") == 0)
 	{
-		CommandServer server;
-		if (Command* cmd = server.GetCommand(parser.GetVal(L"command")); cmd)
+		if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command")); cmd)
 		{
 			cmd->SetExplorerHwnd(hWndExplorer);
 			cmd->SetParser(parser);
@@ -388,9 +387,7 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 
 	// execute the requested command
-	CommandServer server;
-	Command* cmd = server.GetCommand(parser.GetVal(L"command"));
-	if (cmd)
+	if (auto cmd = CommandServer::GetCommand(parser.GetVal(L"command")); cmd)
 	{
 		cmd->SetExplorerHwnd(hWndExplorer);
 

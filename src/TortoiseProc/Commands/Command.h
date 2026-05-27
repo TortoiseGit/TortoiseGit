@@ -92,6 +92,7 @@ private:
 class CommandServer
 {
 public:
+	CommandServer() = delete;
 
-	Command *				GetCommand(const CString& sCmd);
+	static Command* GetCommand(const CString& sCmd);
 };
