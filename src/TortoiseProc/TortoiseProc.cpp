@@ -182,6 +182,8 @@ BOOL CTortoiseProcApp::InitInstance()
 	}
 #endif
 
+	CheckForNewerVersion();
+
 	if (parser.HasKey(L"command") && wcscmp(parser.GetVal(L"command"), L"firststart") == 0)
 	{
 		CFirstStartWizard wizard(IDS_APPNAME, CWnd::FromHandle(hWndExplorer), parser.GetLongVal(L"page"));
@@ -299,9 +301,6 @@ BOOL CTortoiseProcApp::InitInstance()
 	if (pathList.IsEmpty()) {
 		pathList.AddPath(CTGitPath::CTGitPath(g_Git.m_CurrentDir));
 	}
-
-
-	CheckForNewerVersion();
 
 	CAutoGeneralHandle TGitMutex = ::CreateMutex(nullptr, FALSE, L"TortoiseGitProc.exe");
 	if (!g_Git.SetCurrentDir(cmdLinePath.GetWinPathString(), parser.HasKey(L"submodule") == TRUE))
