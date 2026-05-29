@@ -316,7 +316,7 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 		allowedColumns &= ~GITSLC_COLLFSLOCK;
 
 	static_assert(_countof(standardColumnNames) == GITSLC_NUMCOLUMNS);
-	m_ColumnManager.SetNames(standardColumnNames,GITSLC_NUMCOLUMNS);
+	m_ColumnManager.SetNames(standardColumnNames);
 	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, columnVersion, GITSLC_NUMCOLUMNS);
 	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLADD));

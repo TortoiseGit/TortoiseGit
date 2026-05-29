@@ -209,11 +209,10 @@ bool ColumnManager::IsRelevant(int column) const
 	return columns[index].relevant;
 }
 
-int ColumnManager::SetNames(UINT* buffer, int size)
+int ColumnManager::SetNames(std::span<const UINT> names)
 {
 	itemName.clear();
-	for (int i = 0; i < size; ++i)
-		itemName.push_back(*buffer++);
+	itemName.insert(itemName.end(), names.begin(), names.end());
 	return 0;
 }
 

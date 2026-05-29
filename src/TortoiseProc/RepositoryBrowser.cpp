@@ -202,7 +202,7 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
-	m_RepoList.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_RepoList.m_ColumnManager.SetNames(columnNames);
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
 	m_RepoList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", columnVersion, _countof(columnNames), columnWidths);
 	m_RepoList.m_ColumnManager.SetRightAlign(m_RepoList.m_ColumnManager.GetColumnByName(IDS_LOG_SIZE));

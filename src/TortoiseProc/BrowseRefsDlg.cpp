@@ -303,7 +303,7 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_AuthorDate) | (1 << eCol_Msg) | (1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ListRefLeafs.Init();
 	m_ListRefLeafs.SetListContextMenuHandler([&](CPoint point) {OnContextMenu_ListRefLeafs(point); });
-	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames, _countof(columnNames));
+	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames);
 	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ListRefLeafs.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"BrowseRefs", columnVersion, _countof(columnNames), columnWidths);
 	m_bPickedRefSet = false;

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2019-2020, 2023-2025 - TortoiseGit
+// Copyright (C) 2016, 2019-2020, 2023-2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <span>
 
 /**
 * \ingroup TortoiseProc
@@ -54,7 +55,7 @@ public:
 	bool IsRelevant(int column) const;
 	CString GetName(int column) const;
 	int GetColumnByName(int nameId) const;
-	int SetNames(UINT* buff, int size);
+	int SetNames(std::span<const UINT> names);
 	int GetWidth(int column, bool useDefaults = false) const;
 	int GetVisibleWidth(int column, bool useDefaults) const;
 	void SetRightAlign(int column) const;

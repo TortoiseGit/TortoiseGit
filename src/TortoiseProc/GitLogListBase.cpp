@@ -381,7 +381,7 @@ void CGitLogListBase::InsertGitColumn()
 		hideColumns |= GIT_LOGLIST_SVNREV;
 	SetRedraw(false);
 
-	m_ColumnManager.SetNames(normal, _countof(normal));
+	m_ColumnManager.SetNames(normal);
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), columnWidths);
 	m_ColumnManager.SetRightAlign(LOGLIST_ID);
