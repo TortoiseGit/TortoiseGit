@@ -54,7 +54,7 @@ struct loc_map {
 	const char * def_enc;
 };
 
-struct loc_map enc2locale[] = {
+constexpr struct loc_map enc2locale[] = {
 	{"28591","ISO8859-1"},
 	{"28592","ISO8859-2"},
 	{"28593","ISO8859-3"},

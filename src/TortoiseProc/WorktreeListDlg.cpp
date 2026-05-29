@@ -71,10 +71,10 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 
-	static UINT columnNames[] = { IDS_STATUSLIST_COLFILE, IDS_HASH, IDS_PROC_BRANCH, IDS_LOCKED, IDS_REASON };
-	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
+	constexpr UINT columnNames[] = { IDS_STATUSLIST_COLFILE, IDS_HASH, IDS_PROC_BRANCH, IDS_LOCKED, IDS_REASON };
+	const int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
-	DWORD dwDefaultColumns = (1 << eCol_Path) | (1 << eCol_Hash) | (1 << eCol_Branch) | (1 << eCol_Locked) | (1 << eCol_Reason);
+	constexpr DWORD dwDefaultColumns = (1 << eCol_Path) | (1 << eCol_Hash) | (1 << eCol_Branch) | (1 << eCol_Locked) | (1 << eCol_Reason);
 	m_WorktreeList.m_ColumnManager.SetNames(columnNames);
 	constexpr int columnVersion = 0; // adjust when changing number/names/etc. of columns
 	m_WorktreeList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"WorktreeList", columnVersion, _countof(columnNames), columnWidths);

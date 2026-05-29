@@ -314,7 +314,7 @@ void CGitLogListBase::InsertGitColumn()
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 		UpdateProjectProperties();
 
-	static UINT normal[] =
+	constexpr UINT normal[] =
 	{
 		IDS_LOG_GRAPH,
 		IDS_LOG_REBASE,
@@ -332,9 +332,9 @@ void CGitLogListBase::InsertGitColumn()
 		IDS_LOG_SVNREV,
 	};
 
-	auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
-	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	static int columnWidths[] =
+	const auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
+	const auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
+	const int columnWidths[] =
 	{
 		columnWidth,
 		columnWidth,

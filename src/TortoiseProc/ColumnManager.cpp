@@ -86,7 +86,7 @@ bool PropertyList::HasProperty(const CString& name) const
 #endif
 // registry access
 
-void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, int* widthlist)
+void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, const int* widthlist)
 {
 	// defaults
 	DWORD selectedStandardColumns = defaultColumns & ~hideColumns;

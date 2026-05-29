@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2023 - TortoiseGit
+// Copyright (C) 2023, 2026 - TortoiseGit
 // Copyright (C) 2013, 2020 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 #include "EncodingDlg.h"
 
 
-const CFileTextLines::UnicodeType uctArray[] =
+constexpr CFileTextLines::UnicodeType uctArray[] =
 {
 	CFileTextLines::UnicodeType::ASCII,
 	CFileTextLines::UnicodeType::UTF16_LE,
@@ -34,7 +34,7 @@ const CFileTextLines::UnicodeType uctArray[] =
 	CFileTextLines::UnicodeType::UTF8BOM
 };
 
-const EOL eolArray[] =
+constexpr EOL eolArray[] =
 {
 	EOL::AutoLine,
 	EOL::CRLF,

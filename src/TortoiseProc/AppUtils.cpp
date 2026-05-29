@@ -1390,7 +1390,7 @@ public:
 	{
 		if (GetPosition() == 0)
 		{
-			const unsigned char utf8bom[] = { 0xEF, 0xBB, 0xBF };
+			constexpr unsigned char utf8bom[] = { 0xEF, 0xBB, 0xBF };
 			char buf[3] = { 0, 0, 0 };
 			Read(buf, 3);
 			if (memcpy(buf, utf8bom, sizeof(utf8bom)))
@@ -1731,7 +1731,7 @@ void CAppUtils::GetConflictTitles(CString* baseText, CString& mineText, CGitHash
 		return;
 	}
 
-	static const struct {
+	constexpr struct {
 		const wchar_t*	headref;
 		bool			guessRef;
 		UINT			theirstext;

@@ -176,7 +176,7 @@ int __stdcall WinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/, LPSTR lp
 
 	DWORD dwThreadId;
 	MSG msg;
-	wchar_t szWindowClass[] = {TGIT_CACHE_WINDOW_NAME};
+	constexpr wchar_t szWindowClass[] = { TGIT_CACHE_WINDOW_NAME };
 
 	MONITORINFO mi = { sizeof(MONITORINFO) };
 	::GetMonitorInfo(::MonitorFromWindow(nullptr, MONITOR_DEFAULTTOPRIMARY), &mi);

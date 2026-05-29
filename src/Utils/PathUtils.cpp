@@ -287,9 +287,9 @@ int CPathUtils::ReadLink(LPCWSTR filename, CStringA* pTargetA)
 
 void CPathUtils::DropPathPrefixes(CString& path)
 {
-	static const wchar_t dosdevices_prefix[] = L"\\\?\?\\";
-	static const wchar_t nt_prefix[] = L"\\\\?\\";
-	static const wchar_t unc_prefix[] = L"UNC\\";
+	static constexpr wchar_t dosdevices_prefix[] = L"\\\?\?\\";
+	static constexpr wchar_t nt_prefix[] = L"\\\\?\\";
+	static constexpr wchar_t unc_prefix[] = L"UNC\\";
 
 	int skip = 0;
 	if (CStringUtils::StartsWith(path, dosdevices_prefix))

@@ -22,9 +22,9 @@
 #include "CmdLineParser.h"
 #include <algorithm>
 
-const wchar_t CCmdLineParser::m_sDelims[] = L"-/";
-const wchar_t CCmdLineParser::m_sQuotes[] = L"\"";
-const wchar_t CCmdLineParser::m_sValueSep[] = L" :"; // don't forget space!!
+constexpr wchar_t CCmdLineParser::m_sDelims[] = L"-/";
+constexpr wchar_t CCmdLineParser::m_sQuotes[] = L"\"";
+constexpr wchar_t CCmdLineParser::m_sValueSep[] = L" :"; // don't forget space!!
 
 
 CCmdLineParser::CCmdLineParser(LPCWSTR sCmdLine)

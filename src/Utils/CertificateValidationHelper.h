@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2017, 2019 - TortoiseGit
+// Copyright (C) 2013-2017, 2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,8 +25,8 @@ static DWORD VerifyServerCertificate(PCCERT_CONTEXT pServerCert, PTSTR pwszServe
 	if (pServerCert == nullptr || pwszServerName == nullptr)
 		return static_cast<DWORD>(SEC_E_WRONG_PRINCIPAL);
 
-	LPCSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
-	DWORD cUsages = sizeof(rgszUsages) / sizeof(LPSTR);
+	constexpr LPCSTR rgszUsages[] = { szOID_PKIX_KP_SERVER_AUTH, szOID_SERVER_GATED_CRYPTO, szOID_SGC_NETSCAPE };
+	constexpr DWORD cUsages = _countof(rgszUsages);
 
 	// Build certificate chain.
 	CERT_CHAIN_PARA ChainPara = { 0 };

@@ -222,8 +222,8 @@ CGitStatusCache::CGitStatusCache()
 {
 	#define forever DWORD(-1)
 	AutoLocker lock(m_NoWatchPathCritSec);
-	KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_SearchHistory }; //FOLDERID_RecycleBinFolder
-	for (KNOWNFOLDERID folderid : folderids)
+	const KNOWNFOLDERID folderids[] = { FOLDERID_Cookies, FOLDERID_History, FOLDERID_InternetCache, FOLDERID_Windows, FOLDERID_CDBurning, FOLDERID_Fonts, FOLDERID_SearchHistory }; //FOLDERID_RecycleBinFolder
+	for (auto& folderid : folderids)
 	{
 		CString path(GetSpecialFolder(folderid));
 		if (!path.IsEmpty())

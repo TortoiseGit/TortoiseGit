@@ -48,8 +48,8 @@ static CString FormatDateTime(COleDateTime& DateTime)
 	if (S_OK != VarUdateFromDate(DateTime.m_dt, 0, &ud))
 		return L"";
 
-	static const wchar_t* weeks[] = { L"Sun", L"Mon", L"Tue", L"Wen", L"Thu", L"Fri", L"Sat" };
-	static const wchar_t* month[] = { L"Jan", L"Feb", L"Mar", L"Apr", L"May", L"Jun", L"Jul", L"Aug", L"Sep", L"Oct", L"Nov", L"Dec" };
+	static constexpr const wchar_t* weeks[] = { L"Sun", L"Mon", L"Tue", L"Wen", L"Thu", L"Fri", L"Sat" };
+	static constexpr const wchar_t* month[] = { L"Jan", L"Feb", L"Mar", L"Apr", L"May", L"Jun", L"Jul", L"Aug", L"Sep", L"Oct", L"Nov", L"Dec" };
 
 	TIME_ZONE_INFORMATION stTimeZone;
 	GetTimeZoneInformation(&stTimeZone);

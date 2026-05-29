@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2014, 2016-2019, 2021 - TortoiseGit
+// Copyright (C) 2012-2014, 2016-2019, 2021, 2026 - TortoiseGit
 // Copyright (C) 2007, 2009, 2013-2014, 2018 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -33,9 +33,9 @@ static wchar_t DebugDllPath[MAX_PATH] = { 0 };
 
 static BOOL DebugActive()
 {
-	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
-	static const WCHAR DebugShellValue[] = L"DebugShell";
-	static const WCHAR DebugShellPathValue[] = L"DebugShellPath";
+	static constexpr WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
+	static constexpr WCHAR DebugShellValue[] = L"DebugShell";
+	static constexpr WCHAR DebugShellPathValue[] = L"DebugShellPath";
 
 	DWORD bDebug = 0;
 
@@ -93,10 +93,10 @@ static BOOL DebugActive()
  */
 static BOOL WantRealVersion()
 {
-	static const WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
-	static const WCHAR ExplorerOnlyValue[] = L"LoadDllOnlyInExplorer";
+	static constexpr WCHAR TGitRootKey[] = L"Software\\TortoiseGit";
+	static constexpr WCHAR ExplorerOnlyValue[] = L"LoadDllOnlyInExplorer";
 
-	static const WCHAR ExplorerEnvPath[] = L"%SystemRoot%\\explorer.exe";
+	static constexpr WCHAR ExplorerEnvPath[] = L"%SystemRoot%\\explorer.exe";
 
 
 	DWORD bExplorerOnly = 0;
@@ -149,8 +149,8 @@ static BOOL WantRealVersion()
 
 static void LoadRealLibrary()
 {
-	static const char GetClassObject[] = "DllGetClassObject";
-	static const char CanUnloadNow[] = "DllCanUnloadNow";
+	static constexpr char GetClassObject[] = "DllGetClassObject";
+	static constexpr char CanUnloadNow[] = "DllCanUnloadNow";
 
 	WCHAR ModuleName[MAX_PATH] = {0};
 	DWORD Len = 0;

@@ -1925,7 +1925,7 @@ bool CShellExt::IsIllegalFolder(const std::wstring& folder)
 
 bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT& indexMenu, int& indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags)
 {
-	static MenuInfo infos[] = {
+	static constexpr const MenuInfo infos[] = {
 		{ ShellMenuLFSLocks,	0,	IDI_REPOBROWSE,	IDS_MENULFSLOCKS,	IDS_MENUDESCLFSLOCKS,	{ ITEMIS_FOLDERINGIT | ITEMIS_ONLYONE, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
 		{ ShellMenuLFSLock,		0,	IDI_LFSLOCK,	IDS_MENULFSLOCK,	IDS_MENUDESCLFSLOCK,	{ ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER, ITEMIS_FOLDER }, { 0, 0 }, { 0, 0 }, { 0, 0 } },
 		{ ShellMenuLFSUnlock,	0,	IDI_LFSUNLOCK,	IDS_MENULFSUNLOCK,	IDS_MENUDESCLFSUNLOCK,	{ ITEMIS_INGIT | ITEMIS_INVERSIONEDFOLDER, ITEMIS_FOLDER }, { 0, 0 }, { 0, 0 }, { 0, 0 } },

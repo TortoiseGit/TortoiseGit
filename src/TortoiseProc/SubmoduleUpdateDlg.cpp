@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2012-2017, 2019, 2022, 2024-2025 - TortoiseGit
+// Copyright (C) 2012-2017, 2019, 2022, 2024-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -108,7 +108,7 @@ static void GetSubmodulePathList(STRING_VECTOR &list, STRING_VECTOR &prefixList)
 		return;
 	}
 
-	STRING_VECTOR *listParams[] = { &list, &prefixList };
+	const STRING_VECTOR* listParams[] = { &list, &prefixList };
 	if (git_submodule_foreach(repo, SubmoduleCallback, &listParams))
 	{
 		MessageBox(nullptr, CGit::GetLibGit2LastErr(L"Could not get submodule list."), L"TortoiseGit", MB_ICONERROR);

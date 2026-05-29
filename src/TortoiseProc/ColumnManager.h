@@ -44,7 +44,7 @@ public:
 
 	/// registry access
 
-	void ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, int* widthlist = nullptr);
+	void ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, const int* widthlist = nullptr);
 	void WriteSettings() const;
 
 	/// read column definitions

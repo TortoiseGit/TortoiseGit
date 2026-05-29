@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2020, 2025 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2020, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -54,7 +54,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(TaskBarButtonCreated, &CMainFrame::OnTaskbarButtonCreated)
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
+static constexpr UINT indicators[] =
 {
 	ID_SEPARATOR,           // status line indicator
 	ID_INDICATOR_ENCODING,

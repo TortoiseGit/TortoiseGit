@@ -193,7 +193,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_MESSAGE(WM_DPICHANGED, OnDPIChanged)
 END_MESSAGE_MAP()
 
-static UINT indicators[] =
+static constexpr UINT indicators[] =
 {
 	ID_SEPARATOR,           // status line indicator
 	ID_INDICATOR_LEFTVIEW,

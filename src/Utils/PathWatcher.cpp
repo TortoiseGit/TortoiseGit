@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013, 2016, 2018-2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2013, 2016, 2018-2019, 2023, 2025-2026 - TortoiseGit
 // External Cache Copyright (C) 2007-2012, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 CPathWatcher::CPathWatcher()
 {
 	// enable the required privileges for this process
-	LPCWSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
+	constexpr LPCWSTR arPrivelegeNames[] = {	SE_BACKUP_NAME,
 									SE_RESTORE_NAME,
 									SE_CHANGE_NOTIFY_NAME
 								 };

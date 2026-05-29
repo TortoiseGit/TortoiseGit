@@ -40,7 +40,7 @@ void CRefLogList::InsertRefLogColumn()
 	Init();
 	SetStyle();
 
-	static UINT normal[] =
+	constexpr UINT normal[] =
 	{
 		IDS_HASH,
 		IDS_REF,
@@ -49,8 +49,8 @@ void CRefLogList::InsertRefLogColumn()
 		IDS_STATUSLIST_COLDATE,
 	};
 
-	auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	static int columnWidths[] =
+	const auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
+	const int columnWidths[] =
 	{
 		columnWidth,
 		columnWidth,

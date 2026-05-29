@@ -297,10 +297,10 @@ BOOL CBrowseRefsDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 
 	m_ListRefLeafs.SetExtendedStyle(m_ListRefLeafs.GetExtendedStyle() | LVS_EX_INFOTIP | LVS_EX_DOUBLEBUFFER);
-	static UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTAUTHOR, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_DATELASTCOMMIT, IDS_LASTCOMMITTER, IDS_HASH, IDS_DESCRIPTION };
-	static int columnWidths[] = { 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 300), 0, 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80) };
+	constexpr UINT columnNames[] = { IDS_BRANCHNAME, IDS_TRACKEDBRANCH, IDS_DATELASTAUTHOR, IDS_LASTCOMMIT, IDS_LASTAUTHOR, IDS_DATELASTCOMMIT, IDS_LASTCOMMITTER, IDS_HASH, IDS_DESCRIPTION };
+	const int columnWidths[] = { 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 300), 0, 0, 0, 0, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 80) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
-	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_AuthorDate) | (1 << eCol_Msg) | (1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
+	constexpr DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Upstream ) | (1 << eCol_AuthorDate) | (1 << eCol_Msg) | (1 << eCol_LastAuthor) | (1 << eCol_Hash) | (1 << eCol_Description);
 	m_ListRefLeafs.Init();
 	m_ListRefLeafs.SetListContextMenuHandler([&](CPoint point) {OnContextMenu_ListRefLeafs(point); });
 	m_ListRefLeafs.m_ColumnManager.SetNames(columnNames);

@@ -198,10 +198,10 @@ BOOL CRepositoryBrowser::OnInitDialog()
 	if (CRepositoryBrowser::s_bSortLogical)
 		CRepositoryBrowser::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
-	static UINT columnNames[] = { IDS_STATUSLIST_COLFILENAME, IDS_STATUSLIST_COLEXT, IDS_LOG_SIZE };
-	static int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
+	constexpr UINT columnNames[] = { IDS_STATUSLIST_COLFILENAME, IDS_STATUSLIST_COLEXT, IDS_LOG_SIZE };
+	const int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
 	static_assert(_countof(columnNames) == _countof(columnWidths));
-	DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
+	constexpr DWORD dwDefaultColumns = (1 << eCol_Name) | (1 << eCol_Extension) | (1 << eCol_FileSize);
 	m_RepoList.m_ColumnManager.SetNames(columnNames);
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
 	m_RepoList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"RepoBrowser", columnVersion, _countof(columnNames), columnWidths);
