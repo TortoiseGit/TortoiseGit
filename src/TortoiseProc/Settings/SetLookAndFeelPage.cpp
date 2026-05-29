@@ -28,14 +28,12 @@
 #include "PathUtils.h"
 #include "Commands/RegisterWin11ContextMenu.h"
 
-extern MenuInfo menuInfo[];
-
 void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 {
-	int i=0;
 	int iconWidth = GetSystemMetrics(SM_CXSMICON);
 	int iconHeight = GetSystemMetrics(SM_CYSMICON);
-	while(menuInfo[i].command != ShellMenuLastEntry)
+	auto menuInfo = GetTGitMenuInfo();
+	for (int i = 0; i < static_cast<int>(menuInfo.size()); ++i)
 	{
 		if ((menuInfo[i].command != ShellSeparator &&
 		   menuInfo[i].command != ShellSubMenu &&
@@ -59,13 +57,13 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 			list->InsertItem(nIndex,temp,nImage);
 			list->SetItemData(nIndex,i);
 		}
-		i++;
 	}
 }
 
 static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* selectAll)
 {
 	bool allChecked = true;
+	auto menuInfo = GetTGitMenuInfo();
 	for(int i=0;i<list->GetItemCount();i++)
 	{
 		int data = static_cast<int>(list->GetItemData(i));
@@ -92,7 +90,7 @@ static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nu
 {
 	unsigned __int64 mask = 0;
 	bool allChecked = true;
-
+	auto menuInfo = GetTGitMenuInfo();
 	for(int i=0;i<list->GetItemCount();i++)
 	{
 		if(list->GetCheck(i))

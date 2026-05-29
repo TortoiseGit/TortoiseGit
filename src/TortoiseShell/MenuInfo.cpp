@@ -24,7 +24,7 @@
 
 // defaults are specified in ShellCache.h
 
-MenuInfo menuInfo[] =
+constinit const MenuInfo menuInfo[] =
 {
 	{ ShellMenuInaccessible,				MENUINACCESSIBLE,	IDI_CLEANUP,			IDS_MENUINACCESSIBLE,		IDS_MENUDESCINACCESSIBLE,
 		{ITEMIS_INACCESSIBLE, ITEMIS_INGIT|ITEMIS_FOLDERINGIT|ITEMIS_BAREREPO}, {0, 0}, {0, 0}, {0, 0} },
@@ -255,7 +255,10 @@ MenuInfo menuInfo[] =
 		{0, 0}, {0, 0}, {0, 0}, {0, 0} },
 	{ ShellSubMenuMultiple,					NULL,				IDI_MENUMULTIPLE,		IDS_MENUSUBMENU,			0,
 		{0, 0}, {0, 0}, {0, 0}, {0, 0} },
-	// mark the last entry to tell the loop where to stop iterating over this array
-	{ ShellMenuLastEntry,					0,					0,						0,							0,
-		{0, 0}, {0, 0}, {0, 0}, {0, 0} },
 };
+static_assert(std::span<const MenuInfo>(menuInfo).size() < INT_MAX, "must and will never happen, but we cast size() to int at some places");
+
+std::span<const MenuInfo> GetTGitMenuInfo() noexcept
+{
+	return menuInfo;
+}

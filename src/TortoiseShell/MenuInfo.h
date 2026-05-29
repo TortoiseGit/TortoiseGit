@@ -17,6 +17,7 @@
 // 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 //
 #pragma once
+#include <span>
 
 enum GitCommands
 {
@@ -111,7 +112,6 @@ enum GitCommands
 		ShellMenuWorktree,
 		ShellMenuDropNewWorktree,
 		ShellMenuInaccessible,
-		ShellMenuLastEntry			// used to mark the menu array end
 };
 
 	// helper struct for context menu entries
@@ -136,3 +136,4 @@ struct MenuInfo
 		YesNoPair			third;
 		YesNoPair			fourth;
 };
+std::span<const MenuInfo> GetTGitMenuInfo() noexcept;

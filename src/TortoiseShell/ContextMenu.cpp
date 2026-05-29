@@ -47,7 +47,6 @@
 
 int g_shellidlist=RegisterClipboardFormat(CFSTR_SHELLIDLIST);
 
-extern MenuInfo menuInfo[];
 static int g_syncSeq = 0;
 
 STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataObj, HKEY /* hRegKey */)
@@ -943,9 +942,8 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 	}
 	bool bShowIcons = !!DWORD(CRegStdDWORD(L"Software\\TortoiseGit\\ShowContextMenuIcons", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY));
 
-	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
+	for (auto& menuItem : GetTGitMenuInfo())
 	{
-		const auto& menuItem = menuInfo[menuIndex];
 		if (menuItem.command == ShellSeparator)
 		{
 			// we don't add a separator immediately. Because there might not be
@@ -1671,9 +1669,8 @@ STDMETHODIMP CShellExt::GetCommandString(UINT_PTR idCmd, UINT uFlags, UINT FAR *
 	HRESULT hr = E_INVALIDARG;
 
 	MAKESTRING(IDS_MENUDESCDEFAULT);
-	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
+	for (auto& menuItem : GetTGitMenuInfo())
 	{
-		const auto& menuItem = menuInfo[menuIndex];
 		if (menuItem.command == static_cast<GitCommands>(id_it->second))
 		{
 			MAKESTRING(menuItem.menuDescID);
@@ -1858,9 +1855,8 @@ LPCWSTR CShellExt::GetMenuTextFromResource(int id)
 	unsigned __int64 layout = g_ShellCache.GetMenuLayout();
 	space = 6;
 
-	for (int menuIndex = 0; menuInfo[menuIndex].command != ShellMenuLastEntry; menuIndex++)
+	for (auto& menuItem : GetTGitMenuInfo())
 	{
-		const auto& menuItem = menuInfo[menuIndex];
 		if (menuItem.command != id)
 			continue;
 

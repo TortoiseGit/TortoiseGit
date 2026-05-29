@@ -32,7 +32,7 @@ struct CodeMap
 };
 int CUnicodeUtils::GetCPCode(const CString &codename)
 {
-	static const CodeMap map[] =
+	static constexpr CodeMap map[] =
 	{
 		{ 37, L"IBM037"},// IBM EBCDIC US-Canada
 		{437, L"IBM437"},// OEM United States
@@ -190,22 +190,18 @@ int CUnicodeUtils::GetCPCode(const CString &codename)
 		{57011, L"x-iscii-pa"},// ISCII Punjabi
 		{65000, L"utf-7"},// Unicode (UTF-7)
 		{65001, L"utf-8"},// Unicode (UTF-8)
-		{0, nullptr}
-
 	};
-	static const CodeMap* p = map;
 	if (codename.IsEmpty())
 		return CP_UTF8;
 	CString code(codename);
 	code.MakeLower();
-	while (p->m_CodeName)
+	for (auto& p : map)
 	{
-		CString str = p->m_CodeName;
-		str=str.MakeLower();
+		CString str = p.m_CodeName;
+		str.MakeLower();
 
 		if (str == code)
-			return p->m_Code;
-		++p;
+			return p.m_Code;
 	}
 
 	return CP_UTF8;
