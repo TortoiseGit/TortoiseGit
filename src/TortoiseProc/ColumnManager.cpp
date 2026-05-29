@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2020, 2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2020, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -94,11 +94,13 @@ void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const 
 
 	m_dwVersion = version;
 
+	assert(maxsize > 0 && size_t(maxsize) == itemName.size());
+	assert(maxsize < 32 && "index is used for DWORD bit-field");
 	columns.resize(maxsize);
 	int power = 1;
 	for (int i = 0; i < maxsize; ++i)
 	{
-		columns[i].index = static_cast<int>(i);
+		columns[i].index = i;
 		if (!widthlist)
 			columns[i].width = 0;
 		else
