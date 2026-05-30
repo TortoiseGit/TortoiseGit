@@ -1,5 +1,6 @@
 ﻿// TortoiseGit- a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2021-2023 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -99,7 +100,7 @@ HRESULT __stdcall CExplorerCommandEnum::Clone(IEnumExplorerCommand **ppenum)
 }
 
 CExplorerCommand::CExplorerCommand(const std::wstring &title, UINT iconId,
-								   int                           cmd,
+								   TGitShellCommand              cmd,
 								   const std::wstring &          appDir,
 								   const std::wstring &          uuidSource,
 								   DWORD                         itemStates,

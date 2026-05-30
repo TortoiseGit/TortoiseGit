@@ -84,8 +84,8 @@ protected:
 	FileState m_State = FileStateInvalid;
 	volatile ULONG m_cRef = 0;
 	//std::map<int,std::string> verbMap;
-	std::map<UINT_PTR, UINT_PTR>	myIDMap;
-	std::map<UINT_PTR, UINT_PTR>	mySubMenuMap;
+	std::map<UINT_PTR, TGitShellCommand> myIDMap;
+	std::map<UINT_PTR, TGitShellCommand> mySubMenuMap;
 	std::map<std::wstring, UINT_PTR> myVerbsMap;
 	std::map<UINT_PTR, std::wstring> myVerbsIDMap;
 	std::wstring folder_;
@@ -106,12 +106,12 @@ protected:
 
 #define MAKESTRING(ID) LoadStringEx(g_hResInst, ID, stringtablebuffer, _countof(stringtablebuffer), static_cast<WORD>(CRegStdDWORD(L"Software\\TortoiseGit\\LanguageID", MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT))))
 private:
-	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, GitCommands com, UINT uFlags);
-	bool			InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT& indexMenu, int& indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
-	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, unsigned __int64 topmenu, bool bShowIcons, UINT uFlags);
+	void			InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, TGitShellCommand com, UINT uFlags);
+	bool			InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT& indexMenu, int& indexSubMenu, TGitContextMenuEntries topmenu, bool bShowIcons, UINT uFlags);
+	bool			InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, HMENU subMenu, UINT &indexMenu, int &indexSubMenu, TGitContextMenuEntries topmenu, bool bShowIcons, UINT uFlags);
 	static std::wstring WriteFileListToTempFile(bool bFoldersOnly, const std::vector<std::wstring>& files, const std::wstring folder);
 	static bool			WriteClipboardPathsToTempFile(std::wstring& tempfile);
-	LPCWSTR			GetMenuTextFromResource(int id);
+	LPCWSTR			GetMenuTextFromResource(TGitShellCommand id);
 	bool			ShouldInsertItem(const MenuInfo& pair) const;
 	bool			ShouldEnableMenu(const YesNoPair& pair) const;
 	void			TweakMenu(HMENU menu);
@@ -121,7 +121,7 @@ private:
 	STDMETHODIMP	QueryDropContext(UINT uFlags, UINT idCmdFirst, HMENU hMenu, UINT &indexMenu);
 	bool			IsIllegalFolder(const std::wstring& folder);
 	static void RunCommand(const std::wstring& path, const std::wstring& command, LPCWSTR errorMessage, Microsoft::WRL::ComPtr<IUnknown> site);
-	static void InvokeCommand(int cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site);
+	static void InvokeCommand(TGitShellCommand cmd, const std::wstring& appDir, const std::wstring uuidSource, HWND hParent, DWORD itemStates, DWORD itemStatesFolder, const std::vector<std::wstring>& paths, const std::wstring& folder, CRegStdString& regDiffLater, Microsoft::WRL::ComPtr<IUnknown> site);
 	static std::wstring ExplorerViewPath(const Microsoft::WRL::ComPtr<IUnknown>& site);
 public:
 	CShellExt(FileState state);

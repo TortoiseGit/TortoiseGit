@@ -1,5 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
+// Copyright (C) 2026 - TortoiseGit
 // Copyright (C) 2021-2022 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +22,7 @@
 #include <wrl/implements.h>
 #include <wrl/client.h>
 #include <shobjidl_core.h>
+#include "MenuInfo.h"
 
 class CExplorerCommand;
 
@@ -46,7 +48,7 @@ class CExplorerCommand : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::Run
 
 public:
 	explicit CExplorerCommand(const std::wstring& title, UINT iconId,
-								int cmd,
+								TGitShellCommand cmd,
 								const std::wstring& appDir,
 								const std::wstring& uuidSource,
 								DWORD itemStates,
@@ -74,7 +76,7 @@ public:
 private:
 	std::wstring					m_title;
 	UINT							m_iconId = 0;
-	int								m_cmd = 0;
+	TGitShellCommand				m_cmd = TGitShellCommand::Separator;
 	std::wstring					m_appDir;
 	std::wstring					m_uuidSource;
 	DWORD							m_itemStates = 0;

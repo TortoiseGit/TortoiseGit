@@ -43,13 +43,13 @@ ShellCache::ShellCache()
 	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", DEFAULTWIN11MENUTOPENTRIES, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", to_underlying(defaultWin11TopMenuEntries), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	unsigned __int64 entries = (DEFAULTMENUTOPENTRIES);
+	unsigned __int64 entries = to_underlying(defaultTopMenuEntries);
 	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	unsigned __int64 ext = (DEFAULTMENUEXTENTRIES);
+	unsigned __int64 ext = to_underlying(defaultExtMenuEntries);
 	menuextlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesLow", ext & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menuexthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesHigh", ext >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
@@ -182,31 +182,25 @@ DWORD ShellCache::BlockStatus()
 	return (blockstatus);
 }
 
-unsigned __int64 ShellCache::GetMenuLayout11()
+TGitContextMenuEntries ShellCache::GetMenuLayout11()
 {
 	RefreshIfNeeded();
-	return menuLayout11;
+	return from_underlying<TGitContextMenuEntries>(menuLayout11);
 }
 
-unsigned __int64 ShellCache::GetMenuLayout()
+TGitContextMenuEntries ShellCache::GetMenuLayout()
 {
 	RefreshIfNeeded();
-	ULARGE_INTEGER temp;
-	temp.HighPart = menulayouthigh;
-	temp.LowPart = menulayoutlow;
-	return temp.QuadPart;
+	return to_TGitContextMenuEntries(menulayouthigh, menulayoutlow);
 }
 
-unsigned __int64 ShellCache::GetMenuExt()
+TGitContextMenuEntries ShellCache::GetMenuExt()
 {
 	RefreshIfNeeded();
-	ULARGE_INTEGER temp;
-	temp.HighPart = menuexthigh;
-	temp.LowPart = menuextlow;
-	return temp.QuadPart;
+	return to_TGitContextMenuEntries(menuexthigh, menuextlow);
 }
 
-unsigned __int64 ShellCache::GetMenuMask()
+TGitContextMenuEntries ShellCache::GetMenuMask()
 {
 	auto ticks = GetTickCount64();
 	if ((ticks - menumaskticker) > ADMINDIRTIMEOUT)
@@ -216,10 +210,7 @@ unsigned __int64 ShellCache::GetMenuMask()
 		menumaskhigh_lm.read();
 	}
 
-	ULARGE_INTEGER temp;
-	temp.LowPart = menumasklow_lm | menumasklow_cu;
-	temp.HighPart = menumaskhigh_lm | menumaskhigh_cu;
-	return temp.QuadPart;
+	return to_TGitContextMenuEntries(menumaskhigh_lm | menumaskhigh_cu, menumasklow_lm | menumasklow_cu);
 }
 
 bool ShellCache::IsProcessElevated()

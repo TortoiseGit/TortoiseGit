@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2012, 2019, 2023 - TortoiseGit
+// Copyright (C) 2011-2012, 2019, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2011, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include "SettingsPropPage.h"
 #include "registry.h"
+#include "Globals.h"
 
 /**
  * \ingroup TortoiseProc
@@ -58,7 +59,7 @@ private:
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;
-	ULARGE_INTEGER		m_topmenu;
+	TGitContextMenuEntries m_topmenu;
 	bool				m_bBlock = false;
 	CRegDWORD			m_regHideMenus;
 	BOOL				m_bHideMenus;

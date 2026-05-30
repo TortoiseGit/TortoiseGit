@@ -24,9 +24,30 @@
 #define ADMINDIRTIMEOUT 10000
 #define DRIVETYPETIMEOUT 300000		// 5 min
 
-#define DEFAULTWIN11MENUTOPENTRIES MENUSYNC|MENUCOMMIT|MENUSWITCH|MENUREVERT|MENUCONFLICTEDITOR|MENUDIFF|MENUPULL|MENUPUSH|MENUREPOBROWSE|MENULOG|MENUBLAME|MENUCLONE|MENUMERGE|MENUSTASHSAVE|MENUSETTINGS
-#define DEFAULTMENUTOPENTRIES	MENUSYNC|MENUCREATEREPOS|MENUCLONE|MENUCOMMIT
-#define DEFAULTMENUEXTENTRIES	MENUSVNIGNORE|MENUSTASHAPPLY|MENUSUBSYNC
+constexpr TGitContextMenuEntries defaultWin11TopMenuEntries = TGitContextMenuEntries::Sync |
+															  TGitContextMenuEntries::Commit |
+															  TGitContextMenuEntries::Switch |
+															  TGitContextMenuEntries::Revert |
+															  TGitContextMenuEntries::Conflicteditor |
+															  TGitContextMenuEntries::Diff |
+															  TGitContextMenuEntries::Pull |
+															  TGitContextMenuEntries::Push |
+															  TGitContextMenuEntries::RepoBrowser |
+															  TGitContextMenuEntries::Log |
+															  TGitContextMenuEntries::Blame |
+															  TGitContextMenuEntries::Clone |
+															  TGitContextMenuEntries::Merge |
+															  TGitContextMenuEntries::StashSave |
+															  TGitContextMenuEntries::Settings;
+
+constexpr TGitContextMenuEntries defaultTopMenuEntries = TGitContextMenuEntries::Sync |
+														 TGitContextMenuEntries::CreateRepo |
+														 TGitContextMenuEntries::Clone |
+														 TGitContextMenuEntries::Commit;
+
+constexpr TGitContextMenuEntries defaultExtMenuEntries = TGitContextMenuEntries::SVNIgnore |
+														 TGitContextMenuEntries::StashApply |
+														 TGitContextMenuEntries::SubmoduleSync;
 
 using Locker = CComCritSecLock<CComCriticalSection>;
 
@@ -67,10 +88,10 @@ public:
 
 	CacheType GetCacheType();
 	DWORD BlockStatus();
-	unsigned __int64 GetMenuLayout();
-	unsigned __int64 GetMenuLayout11();
-	unsigned __int64 GetMenuExt();
-	unsigned __int64 GetMenuMask();
+	TGitContextMenuEntries GetMenuLayout();
+	TGitContextMenuEntries GetMenuLayout11();
+	TGitContextMenuEntries GetMenuExt();
+	TGitContextMenuEntries GetMenuMask();
 
 	bool IsProcessElevated();
 	BOOL IsOnlyNonElevated();

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2010, 2012, 2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2010, 2012, 2019, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2008 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
 
 #pragma once
 #include "resource.h"
+#include "Globals.h"
 
 class CSetExtMenu : public ISettingsPropPage
 {
@@ -50,7 +51,7 @@ private:
 	CRegStdDWORD			m_regExtmenu;
 	CRegStdDWORD			m_regExtmenuhigh;
 
-	ULARGE_INTEGER		m_extmenu;
+	TGitContextMenuEntries	m_extmenu;
 
 	CImageList			m_imgList;
 	CListCtrl			m_cMenuList;

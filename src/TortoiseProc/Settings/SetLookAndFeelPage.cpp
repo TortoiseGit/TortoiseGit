@@ -35,14 +35,14 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 	auto menuInfo = GetTGitMenuInfo();
 	for (int i = 0; i < static_cast<int>(menuInfo.size()); ++i)
 	{
-		if ((menuInfo[i].command != ShellSeparator &&
-		   menuInfo[i].command != ShellSubMenu &&
-		   menuInfo[i].command != ShellSubMenuFile &&
-		   menuInfo[i].command != ShellSubMenuFolder &&
-		   menuInfo[i].command != ShellSubMenuLink &&
-		   menuInfo[i].command != ShellMenuMergeAbort &&
-		   menuInfo[i].command != ShellMenuInaccessible &&
-		   menuInfo[i].command != ShellSubMenuMultiple) &&
+		if ((menuInfo[i].command != TGitShellCommand::Separator &&
+		   menuInfo[i].command != TGitShellCommand::SubMenu &&
+		   menuInfo[i].command != TGitShellCommand::SubMenuFile &&
+		   menuInfo[i].command != TGitShellCommand::SubMenuFolder &&
+		   menuInfo[i].command != TGitShellCommand::SubMenuLink &&
+		   menuInfo[i].command != TGitShellCommand::MergeAbort &&
+		   menuInfo[i].command != TGitShellCommand::Inaccessible &&
+		   menuInfo[i].command != TGitShellCommand::SubMenuMultiple) &&
 		   (i == 0 || menuInfo[i - 1].menuID != menuInfo[i].menuID))
 		{
 			auto hIcon = CAppUtils::LoadIconEx(menuInfo[i].iconID, iconWidth, iconHeight);
@@ -60,7 +60,7 @@ void InsertMenuItemToList(CListCtrl *list,CImageList *imagelist)
 	}
 }
 
-static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* selectAll)
+static void SetMenuItemCheck(CListCtrl* list, TGitContextMenuEntries mask, CButton* selectAll)
 {
 	bool allChecked = true;
 	auto menuInfo = GetTGitMenuInfo();
@@ -73,7 +73,7 @@ static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* se
 			allChecked = false;
 	}
 
-	if (!mask)
+	if (mask == TGitContextMenuEntries::None)
 		selectAll->SetCheck(BST_UNCHECKED);
 	else if (allChecked)
 		selectAll->SetCheck(BST_CHECKED);
@@ -81,14 +81,9 @@ static void SetMenuItemCheck(CListCtrl* list, unsigned __int64 mask, CButton* se
 		selectAll->SetCheck(BST_INDETERMINATE);
 }
 
-inline static void SetMenuItemCheck(CListCtrl* list, ULARGE_INTEGER mask, CButton* selectAll)
+static TGitContextMenuEntries GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
 {
-	SetMenuItemCheck(list, mask.QuadPart, selectAll);
-}
-
-static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nullptr)
-{
-	unsigned __int64 mask = 0;
+	auto mask = TGitContextMenuEntries::None;
 	bool allChecked = true;
 	auto menuInfo = GetTGitMenuInfo();
 	for(int i=0;i<list->GetItemCount();i++)
@@ -104,7 +99,7 @@ static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nu
 	if (!selectAll)
 		return mask;
 
-	if (!mask)
+	if (mask == TGitContextMenuEntries::None)
 		selectAll->SetCheck(BST_UNCHECKED);
 	else if (allChecked)
 		selectAll->SetCheck(BST_CHECKED);
@@ -114,7 +109,7 @@ static unsigned __int64 GetMenuListMask(CListCtrl* list, CButton* selectAll = nu
 }
 
 // Handles click on "select all" and returns the calculated mask
-static unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
+static TGitContextMenuEntries ClickedSelectAll(CListCtrl* list, CButton* selectAll)
 {
 	UINT state = (selectAll->GetState() & 0x0003);
 	if (state == BST_INDETERMINATE)
@@ -130,7 +125,7 @@ static unsigned __int64 ClickedSelectAll(CListCtrl *list, CButton *selectAll)
 	for (int i = 0; i < list->GetItemCount(); i++)
 		list->SetCheck(i, state == BST_CHECKED);
 
-	unsigned __int64 mask = GetMenuListMask(list);
+	TGitContextMenuEntries mask = GetMenuListMask(list);
 
 	theApp.DoWaitCursor(-1);
 
@@ -146,8 +141,7 @@ CSetLookAndFeelPage::CSetLookAndFeelPage()
 	m_regTopmenu = cache.menulayoutlow;
 	m_regTopmenuhigh = cache.menulayouthigh;
 
-	m_topmenu.HighPart = m_regTopmenuhigh;
-	m_topmenu.LowPart = m_regTopmenu;
+	m_topmenu = to_TGitContextMenuEntries(m_regTopmenuhigh, m_regTopmenu);
 
 	m_regHideMenus = CRegDWORD(L"Software\\TortoiseGit\\HideMenusForUnversionedItems", FALSE);
 	m_bHideMenus = m_regHideMenus;
@@ -232,8 +226,10 @@ BOOL CSetLookAndFeelPage::OnApply()
 {
 	UpdateData();
 
-	m_regTopmenu = m_topmenu.LowPart;
-	m_regTopmenuhigh = m_topmenu.HighPart;
+	LARGE_INTEGER tmp;
+	tmp.QuadPart = to_underlying(m_topmenu);
+	m_regTopmenu = tmp.LowPart;
+	m_regTopmenuhigh = tmp.HighPart;
 
 	m_regTopmenu.getErrorString();
 	m_sNoContextPaths.Remove('\r');
@@ -253,7 +249,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 void CSetLookAndFeelPage::OnBnClickedRestoreDefaults()
 {
 	SetModified(TRUE);
-	m_topmenu.QuadPart = DEFAULTMENUTOPENTRIES;
+	m_topmenu = defaultTopMenuEntries;
 	m_bBlock = true;
 	SetMenuItemCheck(&m_cMenuList, m_topmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
@@ -266,7 +262,7 @@ void CSetLookAndFeelPage::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_topmenu.QuadPart = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+	m_topmenu = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -276,7 +272,7 @@ void CSetLookAndFeelPage::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *
 		return;
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_topmenu.QuadPart = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+		m_topmenu = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	*pResult = 0;
 }
 
@@ -302,8 +298,7 @@ CSetExtMenu::CSetExtMenu()
 	m_regExtmenu = shell.menuextlow;
 	m_regExtmenuhigh = shell.menuexthigh;
 
-	m_extmenu.HighPart = m_regExtmenuhigh;
-	m_extmenu.LowPart = m_regExtmenu;
+	m_extmenu = to_TGitContextMenuEntries(m_regExtmenuhigh, m_regExtmenu);
 }
 
 CSetExtMenu::~CSetExtMenu()
@@ -366,8 +361,10 @@ BOOL CSetExtMenu::OnApply()
 {
 	UpdateData();
 
-	m_regExtmenu = m_extmenu.LowPart;
-	m_regExtmenuhigh = m_extmenu.HighPart;
+	LARGE_INTEGER tmp;
+	tmp.QuadPart = to_underlying(m_extmenu);
+	m_regExtmenu = tmp.LowPart;
+	m_regExtmenuhigh = tmp.HighPart;
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
@@ -376,7 +373,7 @@ BOOL CSetExtMenu::OnApply()
 void CSetExtMenu::OnBnClickedRestoreDefaults()
 {
 	SetModified(TRUE);
-	m_extmenu.QuadPart = DEFAULTMENUEXTENTRIES;
+	m_extmenu = defaultExtMenuEntries;
 	m_bBlock = true;
 	SetMenuItemCheck(&m_cMenuList, m_extmenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
@@ -389,7 +386,7 @@ void CSetExtMenu::OnBnClickedSelectall()
 
 	SetModified(TRUE);
 	m_bBlock = true;
-	m_extmenu.QuadPart = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+	m_extmenu = ClickedSelectAll(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
 }
 
@@ -400,7 +397,7 @@ void CSetExtMenu::OnLvnItemchangedMenulist(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 
 	SetModified(TRUE);
 	if (m_cMenuList.GetItemCount() > 0)
-		m_extmenu.QuadPart = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
+		m_extmenu = GetMenuListMask(&m_cMenuList, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	*pResult = 0;
 }
 
@@ -419,7 +416,7 @@ CSetWin11ContextMenu::CSetWin11ContextMenu()
 	ShellCache shell;
 
 	m_regtopMenu = shell.menuLayout11;
-	m_topMenu = m_regtopMenu;
+	m_topMenu = from_underlying<TGitContextMenuEntries>(m_regtopMenu);
 }
 
 CSetWin11ContextMenu::~CSetWin11ContextMenu()
@@ -480,7 +477,7 @@ BOOL CSetWin11ContextMenu::OnApply()
 {
 	UpdateData();
 
-	m_regtopMenu = m_topMenu;
+	m_regtopMenu = to_underlying(m_topMenu);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();
@@ -489,7 +486,7 @@ BOOL CSetWin11ContextMenu::OnApply()
 void CSetWin11ContextMenu::OnBnClickedRestoreDefaults()
 {
 	SetModified(TRUE);
-	m_topMenu = DEFAULTWIN11MENUTOPENTRIES;
+	m_topMenu = defaultWin11TopMenuEntries;
 	m_bBlock = true;
 	SetMenuItemCheck(&m_cMenuList, m_topMenu, static_cast<CButton*>(GetDlgItem(IDC_SELECTALL)));
 	m_bBlock = false;
