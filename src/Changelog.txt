@@ -15,6 +15,8 @@ Released: unreleased
  * Update TortoiseGitPlink to PuTTY Plink 0.84
  * Update shipped PuTTY binaries to 0.84
  * Significantly improved performance of ProgressDlg for larger output
+ * Fixed issue #4267: Migrate VBScript diff scripts to JavaScript
+   Microsoft deprecates VBScript (cf. <https://techcommunity.microsoft.com/blog/windows-itpro-blog/vbscript-deprecation-timelines-and-next-steps/4148301>)
 
 == Bug Fixes ==
  * Fix possible crash when parent window is closed before push/pull

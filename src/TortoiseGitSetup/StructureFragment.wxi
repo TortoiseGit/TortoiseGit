@@ -482,11 +482,10 @@
 						<File Id="F__diffppt" Name="diff-ppt.js" Source="..\..\contrib\diff-scripts\diff-ppt.js" DiskId="1" />
 						<File Id="F__diffdoc" Name="diff-doc.js" Source="..\..\contrib\diff-scripts\diff-doc.js" DiskId="1" />
 						<File Id="F__mergedoc" Name="merge-doc.js" Source="..\..\contrib\diff-scripts\merge-doc.js" DiskId="1" />
-						<File Id="F__diffsxw" Name="diff-sxw.vbs" Source="..\..\contrib\diff-scripts\diff-sxw.vbs" DiskId="1" />
-						<File Id="F__diffodt" Name="diff-odt.vbs" Source="..\..\contrib\diff-scripts\diff-odt.vbs" DiskId="1" />
-						<File Id="F__mergeods" Name="merge-ods.vbs" Source="..\..\contrib\diff-scripts\merge-ods.vbs" DiskId="1" />
-						<File Id="F__diffnb" Name="diff-nb.vbs" Source="..\..\contrib\diff-scripts\diff-nb.vbs" DiskId="1" />
-						<File Id="F__diffdll" Name="diff-dll.vbs" Source="..\..\contrib\diff-scripts\diff-dll.vbs" DiskId="1" />
+						<File Id="F__diffodt" Name="diff-odt.js" Source="..\..\contrib\diff-scripts\diff-odt.js" DiskId="1" />
+						<File Id="F__mergeods" Name="merge-odt.js" Source="..\..\contrib\diff-scripts\merge-odt.js" DiskId="1" />
+						<File Id="F__diffnb" Name="diff-nb.js" Source="..\..\contrib\diff-scripts\diff-nb.js" DiskId="1" />
+						<File Id="F__diffdll" Name="diff-dll.js" Source="..\..\contrib\diff-scripts\diff-dll.js" DiskId="1" />
 						<File Id="F__diffzip" Name="diff-zip.js" Source="..\..\contrib\diff-scripts\diff-zip.js" DiskId="1" />
 					</Component>
 				</Directory>

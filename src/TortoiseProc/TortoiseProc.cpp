@@ -450,6 +450,12 @@ void CTortoiseProcApp::CheckUpgrade() const
 	}
 
 	// version specific updates
+	if (lVersion <= ConvertVersionToInt(2, 19, 0, 0))
+	{
+		// upgrade to 2.19.0: force recreation of all diff scripts.
+		CAppUtils::SetupDiffScripts(true, CString());
+	}
+
 	if (lVersion <= ConvertVersionToInt(2, 9, 2))
 	{
 		if (auto inlineAdded = CRegDWORD(L"Software\\TortoiseGitMerge\\InlineAdded"); inlineAdded.exists())
