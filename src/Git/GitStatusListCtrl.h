@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2023 - TortoiseGit
+// Copyright (C) 2008-2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2008, 2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -27,19 +27,30 @@
 
 #define GIT_WC_ENTRY_WORKING_SIZE_UNKNOWN (-1)
 
+enum eCol
+{
+	eCol_Name,
+	eCol_Filename,
+	eCol_Extension,
+	eCol_Status,
+	eCol_Add,
+	eCol_Del,
+	eCol_LastModificationDate,
+	eCol_FileSize,
+	eCol_LFSLock,
+};
+
 // these defines must be in the order the columns are inserted!
-#define GITSLC_COLFILENAME			0x000000002
-#define GITSLC_COLEXT				0x000000004
-#define GITSLC_COLSTATUS			0x000000008
-//#define SVNSLC_COLAUTHOR			0x000000040
-//#define	SVNSLC_COLREVISION			0x000000080
-//#define	SVNSLC_COLDATE				0x000000100
-#define GITSLC_COLADD				0x000000010
-#define GITSLC_COLDEL				0x000000020
-#define GITSLC_COLMODIFICATIONDATE	0x000000040
-#define	GITSLC_COLSIZE				0x000000080
-#define GITSLC_COLLFSLOCK			0x000000100
+#define GITSLC_COLFILENAME			(1 << eCol_Filename)
+#define GITSLC_COLEXT				(1 << eCol_Extension)
+#define GITSLC_COLSTATUS			(1 << eCol_Status)
+#define GITSLC_COLADD				(1 << eCol_Add)
+#define GITSLC_COLDEL				(1 << eCol_Del)
+#define GITSLC_COLMODIFICATIONDATE	(1 << eCol_LastModificationDate)
+#define GITSLC_COLSIZE				(1 << eCol_FileSize)
+#define GITSLC_COLLFSLOCK			(1 << eCol_LFSLock)
 #define GITSLC_NUMCOLUMNS			9
+static_assert(eCol_LFSLock + 1 == GITSLC_NUMCOLUMNS && eCol_LFSLock < 32);
 
 //#define SVNSLC_COLURL				0x000000200
 //#define SVNSLC_COLCOPYFROM			0x000020000
@@ -815,7 +826,6 @@ private:
 	LONG						m_nShownFiles = 0;
 	LONG						m_nShownSubmodules = 0;
 
-	DWORD						m_dwDefaultColumns = 0;
 	DWORD						m_dwShow = 0;
 	bool						m_bShowFolders = false;
 	bool						m_bShowIgnores = false;

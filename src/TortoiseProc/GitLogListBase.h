@@ -300,8 +300,6 @@ public:
 		LOGLIST_COMMIT_DATE,
 		LOGLIST_BUG,
 		LOGLIST_SVNREV,
-		LOGLIST_MESSAGE_MAX=300,
-		LOGLIST_MESSAGE_MIN=200,
 
 		GIT_LOG_GRAPH	=		1<< LOGLIST_GRAPH,
 		GIT_LOG_REBASE	=		1<< LOGLIST_REBASE,
@@ -318,6 +316,8 @@ public:
 		GIT_LOGLIST_BUG		=	1<< LOGLIST_BUG,
 		GIT_LOGLIST_SVNREV	=	1<< LOGLIST_SVNREV,
 	};
+
+#define LOGLIST_MESSAGE_MIN_WIDTH 200
 
 	enum
 	{
@@ -716,7 +716,6 @@ protected:
 	bool				m_bSymbolizeRefNames = false;
 	bool				m_bIncludeBoundaryCommits = false;
 
-	DWORD				m_dwDefaultColumns = 0;
 	wchar_t				m_wszTip[8192];
 	char                m_szTip[8192];
 	std::map<CString, CRect> m_RefLabelPosMap; // ref name vs. label position

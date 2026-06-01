@@ -314,79 +314,34 @@ void CGitLogListBase::InsertGitColumn()
 	if (GitAdminDir::IsWorkingTreeOrBareRepo(g_Git.m_CurrentDir))
 		UpdateProjectProperties();
 
-	constexpr UINT normal[] =
-	{
-		IDS_LOG_GRAPH,
-		IDS_LOG_REBASE,
-		IDS_LOG_ID,
-		IDS_LOG_HASH,
-		IDS_LOG_ACTIONS,
-		IDS_LOG_MESSAGE,
-		IDS_LOG_AUTHOR,
-		IDS_LOG_DATE,
-		IDS_LOG_EMAIL,
-		IDS_LOG_COMMIT_NAME,
-		IDS_LOG_COMMIT_EMAIL,
-		IDS_LOG_COMMIT_DATE,
-		IDS_LOG_BUGIDS,
-		IDS_LOG_SVNREV,
-	};
-
 	const auto iconItemBorder = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER);
 	const auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	const int columnWidths[] =
-	{
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		2 * iconItemBorder + GetSystemMetrics(SM_CXSMICON) * 5,
-		CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN),
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		columnWidth,
+	const auto hasSVNDir = CTGitPath(g_Git.m_CurrentDir).HasGitSVNDir();
+
+	const ColumnDefinition columns[] = {
+		{ LOGLIST_GRAPH, IDS_LOG_GRAPH, true, !m_IsRebaseReplaceGraph, columnWidth },
+		{ LOGLIST_REBASE, IDS_LOG_REBASE, m_IsRebaseReplaceGraph != 0, m_IsRebaseReplaceGraph != 0, columnWidth },
+		{ LOGLIST_ID, IDS_LOG_ID, m_IsIDReplaceAction != 0, m_IsIDReplaceAction != 0, columnWidth },
+		{ LOGLIST_HASH, IDS_LOG_HASH, m_IsIDReplaceAction != 0, true, columnWidth },
+		{ LOGLIST_ACTION, IDS_LOG_ACTIONS, true, !m_IsIDReplaceAction, 2 * iconItemBorder + GetSystemMetrics(SM_CXSMICON) * 5 },
+		{ LOGLIST_MESSAGE, IDS_LOG_MESSAGE, true, true, CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN_WIDTH) },
+		{ LOGLIST_AUTHOR, IDS_LOG_AUTHOR, true, true, columnWidth },
+		{ LOGLIST_DATE, IDS_LOG_DATE, true, true, columnWidth },
+		{ LOGLIST_EMAIL, IDS_LOG_EMAIL, false, true, columnWidth },
+		{ LOGLIST_COMMIT_NAME, IDS_LOG_COMMIT_NAME, false, true, columnWidth },
+		{ LOGLIST_COMMIT_EMAIL, IDS_LOG_COMMIT_EMAIL, false, true, columnWidth },
+		{ LOGLIST_COMMIT_DATE, IDS_LOG_COMMIT_DATE, false, true, columnWidth },
+		{ LOGLIST_BUG, IDS_LOG_BUGIDS, m_bShowBugtraqColumn != 0, m_bShowBugtraqColumn != 0, columnWidth },
+		{ LOGLIST_SVNREV, IDS_LOG_SVNREV, hasSVNDir, hasSVNDir, columnWidth },
 	};
-	static_assert(_countof(normal) == _countof(columnWidths));
-	m_dwDefaultColumns = GIT_LOG_GRAPH|GIT_LOG_ACTIONS|GIT_LOG_MESSAGE|GIT_LOG_AUTHOR|GIT_LOG_DATE;
 
-	DWORD hideColumns = 0;
-	if(this->m_IsRebaseReplaceGraph)
-	{
-		hideColumns |= GIT_LOG_GRAPH;
-		m_dwDefaultColumns |= GIT_LOG_REBASE;
-	}
-	else
-		hideColumns |= GIT_LOG_REBASE;
-
-	if(this->m_IsIDReplaceAction)
-	{
-		hideColumns |= GIT_LOG_ACTIONS;
-		m_dwDefaultColumns |= GIT_LOG_ID;
-		m_dwDefaultColumns |= GIT_LOG_HASH;
-	}
-	else
-		hideColumns |= GIT_LOG_ID;
-	if(this->m_bShowBugtraqColumn)
-		m_dwDefaultColumns |= GIT_LOGLIST_BUG;
-	else
-		hideColumns |= GIT_LOGLIST_BUG;
-	if (CTGitPath(g_Git.m_CurrentDir).HasGitSVNDir())
-		m_dwDefaultColumns |= GIT_LOGLIST_SVNREV;
-	else
-		hideColumns |= GIT_LOGLIST_SVNREV;
 	SetRedraw(false);
 
-	m_ColumnManager.SetNames(normal);
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, hideColumns, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), columnWidths);
+	m_ColumnManager.ReadSettings(columns, m_ColumnRegKey + L"loglist", columnVersion);
 	m_ColumnManager.SetRightAlign(LOGLIST_ID);
 
-	if (!(hideColumns & GIT_LOG_ACTIONS))
+	if (columns[LOGLIST_ACTION].available)
 	{
 		// Configure fake a imagelist for LogList with 1px width and height = GetSystemMetrics(SM_CYSMICON)
 		// to set the minimum item height: we draw icons in the actions column, but on High-DPI the

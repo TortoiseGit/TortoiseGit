@@ -71,14 +71,17 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
 
-	constexpr UINT columnNames[] = { IDS_STATUSLIST_COLFILE, IDS_HASH, IDS_PROC_BRANCH, IDS_LOCKED, IDS_REASON };
-	const int columnWidths[] = { CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100), CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100) };
-	static_assert(_countof(columnNames) == _countof(columnWidths));
-	constexpr DWORD dwDefaultColumns = (1 << eCol_Path) | (1 << eCol_Hash) | (1 << eCol_Branch) | (1 << eCol_Locked) | (1 << eCol_Reason);
-	m_WorktreeList.m_ColumnManager.SetNames(columnNames);
+	const int columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100);
+	const ColumnDefinition columns[] = {
+		{ eCol_Path, IDS_STATUSLIST_COLFILE, true, true, CDPIAware::Instance().ScaleX(GetSafeHwnd(), 150) },
+		{ eCol_Hash, IDS_HASH, true, true, columnWidth },
+		{ eCol_Branch, IDS_PROC_BRANCH, true, true, columnWidth },
+		{ eCol_Locked, IDS_LOCKED, true, true, columnWidth },
+		{ eCol_Reason, IDS_REASON, true, true, columnWidth },
+	};
 	constexpr int columnVersion = 0; // adjust when changing number/names/etc. of columns
-	m_WorktreeList.m_ColumnManager.ReadSettings(dwDefaultColumns, 0, L"WorktreeList", columnVersion, _countof(columnNames), columnWidths);
-	m_WorktreeList.m_ColumnManager.SetRightAlign(m_WorktreeList.m_ColumnManager.GetColumnByName(IDS_REASON));
+	m_WorktreeList.m_ColumnManager.ReadSettings(columns, L"WorktreeList", columnVersion);
+	m_WorktreeList.m_ColumnManager.SetRightAlign(eCol_Reason);
 
 	// set up the list control
 	// set the extended style of the list control

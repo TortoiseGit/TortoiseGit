@@ -20,6 +20,15 @@
 #pragma once
 #include <span>
 
+struct ColumnDefinition
+{
+	int localId; // just for sanitycheck that the IDs used map to each other
+	unsigned int title;
+	bool visibleByDefault;
+	bool available;
+	int defaultWidth = 0;
+};
+
 /**
 * \ingroup TortoiseProc
 * Helper class for CGitStatusListCtrl that represents
@@ -44,7 +53,7 @@ public:
 
 	/// registry access
 
-	void ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, const int* widthlist = nullptr);
+	void ReadSettings(std::span<const ColumnDefinition> columns, const CString& containerName, DWORD version);
 	void WriteSettings() const;
 
 	/// read column definitions
@@ -54,8 +63,6 @@ public:
 	int GetInvisibleCount() const;
 	bool IsRelevant(int column) const;
 	CString GetName(int column) const;
-	int GetColumnByName(int nameId) const;
-	int SetNames(std::span<const UINT> names);
 	int GetWidth(int column, bool useDefaults = false) const;
 	int GetVisibleWidth(int column, bool useDefaults) const;
 	void SetRightAlign(int column) const;
@@ -78,7 +85,7 @@ public:
 	void RemoveUnusedProps();
 
 	/// bring everything back to its "natural" order
-	void ResetColumns(DWORD defaultColumns);
+	void ResetColumns();
 
 	void OnHeaderDblClick(NMHDR* pNMHDR, LRESULT* pResult)
 	{
@@ -120,7 +127,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(itemName.size()))
+		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(columns.size()))
 			return;
 
 		if (IsVisible(phdr->iItem))
@@ -132,7 +139,7 @@ public:
 	{
 		LPNMHEADER phdr = reinterpret_cast<LPNMHEADER>(pNMHDR);
 		*pResult = 0;
-		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(itemName.size()))
+		if (phdr->iItem < 0 || phdr->iItem >= static_cast<int>(columns.size()))
 			return 0;
 
 		// visible columns may be modified
@@ -158,7 +165,7 @@ private:
 		UINT uCheckedFlags = MF_STRING | MF_ENABLED | MF_CHECKED;
 		UINT uUnCheckedFlags = MF_STRING | MF_ENABLED;
 
-		for (int i = 1; i < static_cast<int>(itemName.size()); ++i)
+		for (int i = 1; i < static_cast<int>(columns.size()); ++i)
 		{
 			if (IsRelevant(i))
 				pop->AppendMenu(IsVisible(i)
@@ -202,6 +209,7 @@ private:
 		bool visible;
 		bool relevant;      ///< set to @a visible, if no *shown* item has that property
 		bool adjusted;
+		unsigned int name;
 	};
 
 	std::function<void(int, bool)> onVisibilityChanged;
@@ -213,6 +221,4 @@ private:
 
 	/// global column ordering including unused user props
 	std::vector<int> columnOrder;
-
-	std::vector<int> itemName;
 };

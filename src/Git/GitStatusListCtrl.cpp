@@ -274,7 +274,6 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 {
 	CAutoWriteLock locker(m_guard);
 
-	m_dwDefaultColumns = dwColumns | 1;
 	m_dwContextMenus = dwContextMenus;
 	m_bHasCheckboxes = bHasCheckboxes;
 	m_bHasWC = bHasWC;
@@ -300,28 +299,24 @@ void CGitStatusListCtrl::Init(DWORD dwColumns, const CString& sColumnInfoContain
 	SetImageList(&SYS_IMAGE_LIST(), LVSIL_SMALL);
 
 	// keep CSorter::operator() in sync!!
-	static UINT standardColumnNames[GITSLC_NUMCOLUMNS]
-			= { IDS_STATUSLIST_COLFILE
-			, IDS_STATUSLIST_COLFILENAME
-			, IDS_STATUSLIST_COLEXT
-			, IDS_STATUSLIST_COLSTATUS
-			, IDS_STATUSLIST_COLADD
-			, IDS_STATUSLIST_COLDEL
-			, IDS_STATUSLIST_COLLASTMODIFIED
-			, IDS_STATUSLIST_COLSIZE
-			, IDS_STATUSLIST_COLLFSLOCK
-			};
+	const ColumnDefinition columns[] = {
+		{ eCol_Name, IDS_STATUSLIST_COLFILE, true, true, 0 },
+		{ eCol_Filename, IDS_STATUSLIST_COLFILENAME, (dwColumns & GITSLC_COLFILENAME) != 0, (allowedColumns & GITSLC_COLFILENAME) != 0, 0 },
+		{ eCol_Extension, IDS_STATUSLIST_COLEXT, (dwColumns & GITSLC_COLEXT) != 0, (allowedColumns & GITSLC_COLEXT) != 0, 0 },
+		{ eCol_Status, IDS_STATUSLIST_COLSTATUS, (dwColumns & GITSLC_COLSTATUS) != 0, (allowedColumns & GITSLC_COLSTATUS) != 0, 0 },
+		{ eCol_Add, IDS_STATUSLIST_COLADD, (dwColumns & GITSLC_COLADD) != 0, (allowedColumns & GITSLC_COLADD) != 0, 0 },
+		{ eCol_Del, IDS_STATUSLIST_COLDEL, (dwColumns & GITSLC_COLDEL) != 0, (allowedColumns & GITSLC_COLDEL) != 0, 0 },
+		{ eCol_LastModificationDate, IDS_STATUSLIST_COLLASTMODIFIED, (dwColumns & GITSLC_COLMODIFICATIONDATE) != 0, (allowedColumns & GITSLC_COLMODIFICATIONDATE) != 0, 0 },
+		{ eCol_FileSize, IDS_STATUSLIST_COLSIZE, (dwColumns & GITSLC_COLSIZE) != 0, (allowedColumns & GITSLC_COLSIZE) != 0, 0 },
+		{ eCol_LFSLock, IDS_STATUSLIST_COLLFSLOCK, (dwColumns & GITSLC_COLLFSLOCK) != 0, (allowedColumns & GITSLC_COLLFSLOCK) != 0 && CTGitPath(g_Git.m_CurrentDir).HasLFS(), 0 },
+	};
+	static_assert(_countof(columns) == GITSLC_NUMCOLUMNS);
 
-	if (!CTGitPath(g_Git.m_CurrentDir).HasLFS())
-		allowedColumns &= ~GITSLC_COLLFSLOCK;
-
-	static_assert(_countof(standardColumnNames) == GITSLC_NUMCOLUMNS);
-	m_ColumnManager.SetNames(standardColumnNames);
 	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0xffffffff & ~(allowedColumns | m_dwDefaultColumns), sColumnInfoContainer, columnVersion, GITSLC_NUMCOLUMNS);
-	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLADD));
-	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLDEL));
-	m_ColumnManager.SetRightAlign(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLSIZE));
+	m_ColumnManager.ReadSettings(columns, sColumnInfoContainer, columnVersion);
+	m_ColumnManager.SetRightAlign(eCol_Add);
+	m_ColumnManager.SetRightAlign(eCol_Del);
+	m_ColumnManager.SetRightAlign(eCol_FileSize);
 
 	// enable file drops
 	if (!m_pDropTarget)
@@ -404,8 +399,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 
 	if (!bShowLFSLocks && hasLFS)
 	{
-		int id = m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK);
-		if (id >= 0 && m_ColumnManager.IsVisible(id))
+		if (m_ColumnManager.IsRelevant(eCol_LFSLock) && m_ColumnManager.IsVisible(eCol_LFSLock))
 			UpdateLFSLockedFileList(true);
 	}
 
@@ -1035,7 +1029,7 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 
 	switch (column)
 	{
-	case 0: // relative path
+	case eCol_Name: // relative path
 		// similar code in FileDiffDlg.cpp::GetFilename
 		if (!(entry->m_Action & (CTGitPath::LOGACTIONS_REPLACED | CTGitPath::LOGACTIONS_COPY) && !entry->GetGitOldPathString().IsEmpty()))
 			return entry->GetGitPathString();
@@ -1051,22 +1045,22 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 
 		return entry->GetAbbreviatedRename();
 
-	case 1: // GITSLC_COLFILENAME
+	case eCol_Filename: // GITSLC_COLFILENAME
 		return entry->GetFileOrDirectoryName();
 
-	case 2: // GITSLC_COLEXT
+	case eCol_Extension: // GITSLC_COLEXT
 		return entry->GetFileExtension();
 
-	case 3: // GITSLC_COLSTATUS
+	case eCol_Status: // GITSLC_COLSTATUS
 		return entry->GetActionName();
 
-	case 4: // GITSLC_COLADD
+	case eCol_Add: // GITSLC_COLADD
 		return entry->m_StatAdd;
 
-	case 5: // GITSLC_COLDEL
+	case eCol_Del: // GITSLC_COLDEL
 		return entry->m_StatDel;
 
-	case 6: // GITSLC_COLMODIFICATIONDATE
+	case eCol_LastModificationDate: // GITSLC_COLMODIFICATIONDATE
 		if (!(entry->m_Action & CTGitPath::LOGACTIONS_DELETED) && m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLMODIFICATIONDATE)))
 		{
 			__int64 filetime = entry->GetLastWriteTime();
@@ -1075,7 +1069,7 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 		}
 		return empty;
 
-	case 7: // GITSLC_COLSIZE
+	case eCol_FileSize: // GITSLC_COLSIZE
 		if (!(entry->IsDirectory() || !m_ColumnManager.IsRelevant(GetColumnIndex(GITSLC_COLSIZE))))
 		{
 			wchar_t buf[100] = { 0 };
@@ -1084,7 +1078,7 @@ CString CGitStatusListCtrl::GetCellText(int listIndex, int column)
 		}
 		return empty;
 
-	case 8: // GITSLC_COLLFSLOCK
+	case eCol_LFSLock: // GITSLC_COLLFSLOCK
 		return entry->m_LFSLockOwner;
 
 #if 0
@@ -2784,7 +2778,7 @@ void CGitStatusListCtrl::AppendLocksMenuItems(CIconMenu& popup)
 	if (!CTGitPath(g_Git.m_CurrentDir).HasLFS())
 		return;
 
-	if (!m_ColumnManager.IsVisible(m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK)))
+	if (!m_ColumnManager.IsVisible(eCol_LFSLock))
 	{
 		// User disabled IDS_STATUSLIST_COLLFSLOCK
 		// So we haven't asked lock list data from server in CGitStatusListCtrl::GetStatus
@@ -5129,7 +5123,7 @@ void CGitStatusListCtrl::PruneChangelists(const CTGitPathList* root)
 
 void CGitStatusListCtrl::OnColumnVisibilityChanged(int column, bool visible)
 {
-	if (visible && column == m_ColumnManager.GetColumnByName(IDS_STATUSLIST_COLLFSLOCK))
+	if (visible && column == eCol_LFSLock)
 		RefreshParent();
 }
 

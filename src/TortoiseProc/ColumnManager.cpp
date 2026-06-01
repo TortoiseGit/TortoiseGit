@@ -86,35 +86,36 @@ bool PropertyList::HasProperty(const CString& name) const
 #endif
 // registry access
 
-void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const CString& containerName, DWORD version, int maxsize, const int* widthlist)
+void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumns, const CString& containerName, DWORD version)
 {
-	// defaults
-	DWORD selectedStandardColumns = defaultColumns & ~hideColumns;
-	m_dwDefaultColumns = defaultColumns & ~hideColumns;
-
 	m_dwVersion = version;
 
-	assert(maxsize > 0 && size_t(maxsize) == itemName.size());
-	assert(maxsize < 32 && "index is used for DWORD bit-field");
-	columns.resize(maxsize);
-	int power = 1;
-	for (int i = 0; i < maxsize; ++i)
+	assert(definedColumns.size() < sizeof(DWORD) * 8 && "index is used for DWORD bit-field");
+	columns.resize(definedColumns.size());
+	DWORD hiddenColumns = 0;
+	m_dwDefaultColumns = 0;
+	for (int i = 0; i < static_cast<int>(definedColumns.size()); ++i)
 	{
+		assert(i == definedColumns[i].localId);
+		const DWORD bit = 1 << i;
 		columns[i].index = i;
-		if (!widthlist)
-			columns[i].width = 0;
-		else
-			columns[i].width = widthlist[i];
-		columns[i].visible = true;
-		columns[i].relevant = !(hideColumns & power);
+		columns[i].name = definedColumns[i].title;
+		columns[i].width = definedColumns[i].defaultWidth;
+		columns[i].visible = definedColumns[i].visibleByDefault;
+		columns[i].relevant = definedColumns[i].available;
+		if (!columns[i].relevant)
+			hiddenColumns |= bit;
+		else if (columns[i].visible)
+			m_dwDefaultColumns |= bit;
 		columns[i].adjusted = false;
-		power *= 2;
 	}
 
 	//	userProps.clear();
 
 	// where the settings are stored within the registry
 	registryPrefix = L"Software\\TortoiseGit\\StatusColumns\\" + containerName;
+
+	DWORD selectedStandardColumns = m_dwDefaultColumns;
 
 	// version check works two fold, generally for the generic format and specifically for the listctrl
 	// we accept settings of current version only
@@ -124,7 +125,7 @@ void ColumnManager::ReadSettings(DWORD defaultColumns, DWORD hideColumns, const 
 	if (valid)
 	{
 		// read (possibly different) column selection
-		selectedStandardColumns = CRegDWORD(registryPrefix, selectedStandardColumns) & ~hideColumns;
+		selectedStandardColumns = CRegDWORD(registryPrefix, m_dwDefaultColumns) & ~hiddenColumns;
 
 		// read column widths
 		CString colWidths = CRegString(registryPrefix + L"_Width");
@@ -209,13 +210,6 @@ bool ColumnManager::IsRelevant(int column) const
 	return columns[index].relevant;
 }
 
-int ColumnManager::SetNames(std::span<const UINT> names)
-{
-	itemName.clear();
-	itemName.insert(itemName.end(), names.begin(), names.end());
-	return 0;
-}
-
 void ColumnManager::SetRightAlign(int column) const
 {
 	assert(static_cast<size_t>(column) < columns.size());
@@ -232,10 +226,10 @@ CString ColumnManager::GetName(int column) const
 {
 	// standard columns
 	const size_t index = static_cast<size_t>(column);
-	if (index < itemName.size())
+	if (index < columns.size())
 	{
 		CString result;
-		result.LoadString(itemName[index]);
+		result.LoadString(columns[index].name);
 		return result;
 	}
 
@@ -246,16 +240,6 @@ CString ColumnManager::GetName(int column) const
 	// default: empty
 
 	return CString();
-}
-
-int ColumnManager::GetColumnByName(int nameId) const
-{
-	for (size_t item = 0; item < itemName.size(); ++item)
-	{
-		if (itemName[item] == nameId)
-			return (int)item;
-	}
-	return -1;
 }
 
 int ColumnManager::GetWidth(int column, bool useDefaults) const
@@ -413,7 +397,7 @@ void ColumnManager::RemoveUnusedProps()
 
 // bring everything back to its "natural" order
 
-void ColumnManager::ResetColumns(DWORD defaultColumns)
+void ColumnManager::ResetColumns()
 {
 	// update internal data
 	std::sort(columnOrder.begin(), columnOrder.end());
@@ -421,7 +405,7 @@ void ColumnManager::ResetColumns(DWORD defaultColumns)
 	for (size_t i = 0, count = columns.size(); i < count; ++i)
 	{
 		columns[i].width = 0;
-		columns[i].visible = (i < 32) && (((defaultColumns >> i) & 1) != 0);
+		columns[i].visible = (i < 32) && (((m_dwDefaultColumns >> i) & 1) != 0);
 		columns[i].adjusted = false;
 	}
 
@@ -440,7 +424,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 	for (int i = 0, count = widths.GetLength() / 8; i < count; ++i)
 	{
 		long width = wcstol(widths.Mid(i * 8, 8), nullptr, 16);
-		if (i < static_cast<int>(itemName.size()))
+		if (i < static_cast<int>(columns.size()))
 		{
 			// a standard column
 			if (width != MAXLONG)
@@ -459,7 +443,7 @@ void ColumnManager::ParseWidths(const CString& widths)
 
 void ColumnManager::SetStandardColumnVisibility(DWORD visibility)
 {
-	for (size_t i = 0; i < itemName.size(); ++i)
+	for (size_t i = 0; i < columns.size(); ++i)
 	{
 		columns[i].visible = (visibility & 1) > 0;
 		visibility /= 2;
@@ -476,7 +460,7 @@ void ColumnManager::ParseColumnOrder(const CString& widths)
 	for (int i = 0, count = widths.GetLength() / 2; i < count; ++i)
 	{
 		int index = wcstol(widths.Mid(i * 2, 2), nullptr, 16);
-		if ((index < static_cast<int>(itemName.size())))
+		if ((index < static_cast<int>(columns.size())))
 		{
 			alreadyPlaced.insert(index);
 			columnOrder.push_back(index);
@@ -484,7 +468,7 @@ void ColumnManager::ParseColumnOrder(const CString& widths)
 	}
 
 	// place the remaining colums behind it
-	for (int i = 0; i < static_cast<int>(itemName.size()); ++i)
+	for (int i = 0; i < static_cast<int>(columns.size()); ++i)
 		if (alreadyPlaced.find(i) == alreadyPlaced.end())
 			columnOrder.push_back(i);
 }
@@ -543,7 +527,7 @@ void ColumnManager::ApplyColumnOrder()
 DWORD ColumnManager::GetSelectedStandardColumns() const
 {
 	DWORD result = 0;
-	for (size_t i = itemName.size(); i > 0; --i)
+	for (size_t i = columns.size(); i > 0; --i)
 		result = result * 2 + (columns[i - 1].visible ? 1 : 0);
 
 	return result;
@@ -555,7 +539,7 @@ CString ColumnManager::GetWidthString() const
 
 	// regular columns
 	wchar_t buf[10] = { 0 };
-	for (size_t i = 0; i < itemName.size(); ++i)
+	for (size_t i = 0; i < columns.size(); ++i)
 	{
 		_stprintf_s(buf, L"%08X", columns[i].adjusted ? CDPIAware::Instance().UnscaleX(control->GetSafeHwnd(), columns[i].width) : MAXLONG);
 		result += buf;
@@ -614,7 +598,7 @@ void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundE
 		// find relevant ones and sort 'em
 
 		std::map<CString, int> sortedProps;
-		for (int i = static_cast<int>(itemName.size()); i < columnCount; ++i)
+		for (int i = static_cast<int>(columns.size()); i < columnCount; ++i)
 			if (IsRelevant(i))
 				sortedProps[GetName(i)] = i;
 
@@ -650,7 +634,7 @@ void ColumnManager::OnContextMenuHeader(CWnd* pWnd, CPoint point, bool isGroundE
 		{
 			temp.LoadString(IDS_CONFIRMRESETCOLUMNORDER);
 			if (MessageBox(pWnd->m_hWnd, temp, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
-				ResetColumns(m_dwDefaultColumns);
+				ResetColumns();
 		}
 	}
 }

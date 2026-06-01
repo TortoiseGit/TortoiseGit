@@ -40,32 +40,19 @@ void CRefLogList::InsertRefLogColumn()
 	Init();
 	SetStyle();
 
-	constexpr UINT normal[] =
-	{
-		IDS_HASH,
-		IDS_REF,
-		IDS_ACTION,
-		IDS_MESSAGE,
-		IDS_STATUSLIST_COLDATE,
-	};
-
 	const auto columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), ICONITEMBORDER + 16 * 4);
-	const int columnWidths[] =
-	{
-		columnWidth,
-		columnWidth,
-		columnWidth,
-		CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN),
-		columnWidth,
+	const ColumnDefinition columns[] = {
+		{ REFLOG_HASH, IDS_HASH, true, true, columnWidth },
+		{ REFLOG_REF, IDS_REF, true, true, columnWidth },
+		{ REFLOG_ACTION, IDS_ACTION, true, true, columnWidth },
+		{ REFLOG_MESSAGE, IDS_MESSAGE, true, true, CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN_WIDTH) },
+		{ REFLOG_DATE, IDS_STATUSLIST_COLDATE, true, true, columnWidth },
 	};
-	static_assert(_countof(normal) == _countof(columnWidths));
-	m_dwDefaultColumns = 0xFFFF;
 
 	SetRedraw(false);
 
-	m_ColumnManager.SetNames(normal);
 	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
-	m_ColumnManager.ReadSettings(m_dwDefaultColumns, 0, m_ColumnRegKey + L"loglist", columnVersion, _countof(normal), columnWidths);
+	m_ColumnManager.ReadSettings(columns, m_ColumnRegKey + L"loglist", columnVersion);
 
 	SetRedraw(true);
 }

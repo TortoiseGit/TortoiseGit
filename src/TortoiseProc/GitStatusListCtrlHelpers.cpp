@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2008, 2014 - TortoiseSVN
-// Copyright (C) 2008-2017, 2019 - TortoiseGit
+// Copyright (C) 2008-2017, 2019, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -43,13 +43,13 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 	int result = 0;
 	switch (sortedColumn)
 	{
-	case 8: // LFS Locks
+	case eCol_LFSLock: // LFS Locks
 		{
 			if (result == 0)
 				result = entry1->m_LFSLockOwner.CompareNoCase(entry2->m_LFSLockOwner);
 			break;
 		}
-	case 7: // File size
+	case eCol_FileSize: // File size
 		{
 			if (result == 0)
 			{
@@ -60,7 +60,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			}
 			break;
 		}
-	case 6: //Last Modification Date
+	case eCol_LastModificationDate: //Last Modification Date
 		{
 			if (result == 0)
 			{
@@ -71,26 +71,26 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			}
 			break;
 		}
-	case 5: //Del Number
+	case eCol_Del: //Del Number
 		{
 			if (result == 0)
 				result = SGN(A2L(entry1->m_StatDel) - A2L(entry2->m_StatDel));
 			break;
 		}
-	case 4: //Add Number
+	case eCol_Add: //Add Number
 		{
 			if (result == 0)
 				result = SGN(A2L(entry1->m_StatAdd) - A2L(entry2->m_StatAdd));
 			break;
 		}
 
-	case 3: // Status
+	case eCol_Status: // Status
 		{
 			if (result == 0)
 				result = entry1->GetActionName(entry1->m_Action).CompareNoCase(entry2->GetActionName(entry2->m_Action));
 			break;
 		}
-	case 2: //Ext file
+	case eCol_Extension: //Ext file
 		{
 			if (result == 0)
 			{
@@ -101,7 +101,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			}
 			break;
 		}
-	case 1: // File name
+	case eCol_Filename: // File name
 		{
 			if (result == 0)
 			{
@@ -112,7 +112,7 @@ bool CSorter::operator() (const CTGitPath* entry1 , const CTGitPath* entry2) con
 			}
 			break;
 		}
-	case 0: // Full path column
+	case eCol_Name: // Full path column
 		{
 			if (result == 0)
 			{
