@@ -311,8 +311,13 @@ CString GitAdminDir::ReadGitLink(const CString& topDir, const CString& dotGitPat
 			if (CStringUtils::StartsWith(valueW, L"~/"))
 				valueW = g_Git.GetHomeDirectory() + valueW.Mid(static_cast<int>(wcslen(L"~")));
 			valueW.Replace(L'/', L'\\');
-			if (!valueW.IsEmpty() && valueW == data->topDir)
-				data->is_safe = true;
+			if (CStringUtils::EndsWith(valueW, L"\\*"))
+			{
+				valueW.Truncate(valueW.GetLength() - 1);
+				data->is_safe = CStringUtils::StartsWith(data->topDir, valueW);
+			}
+			else
+				data->is_safe = (valueW == data->topDir);
 			return 0;
 		}, &ownership_data) < 0 || !ownership_data.is_safe)
 			return {};

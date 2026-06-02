@@ -1,0 +1,54 @@
+From 72d4157dff3e9dfa37fd00ab2e008fd598acbbb8 Mon Sep 17 00:00:00 2001
+From: Edward Thomson <ethomson@edwardthomson.com>
+Date: Mon, 1 Jun 2026 23:39:07 +0100
+Subject: [PATCH] repo: simplify safe.directory checks
+
+Use some standard libgit2 utility functions.
+---
+ src/libgit2/repository.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/src/libgit2/repository.c b/src/libgit2/repository.c
+index 88c32fd9adb..e45809263fa 100644
+--- a/src/libgit2/repository.c
++++ b/src/libgit2/repository.c
+@@ -582,7 +582,7 @@ static int validate_ownership_cb(const git_config_entry *entry, void *payload)
+ 	} else if (strcmp(entry->value, "*") == 0) {
+ 		*data->is_safe = true;
+ 	} else {
+-		bool is_prefix = false;
++		bool is_prefix = false, match;
+ 
+ 		if (git_str_sets(&data->tmp, entry->value) < 0)
+ 			return -1;
+@@ -591,11 +591,9 @@ static int validate_ownership_cb(const git_config_entry *entry, void *payload)
+ 		 * A value ending with slash* is treated as a prefix match.
+ 		 * Strip only the '*', leaving the trailing slash in place.
+ 		 */
+-		if (data->tmp.size >= 2 &&
+-		    data->tmp.ptr[data->tmp.size - 2] == '/' &&
+-		    data->tmp.ptr[data->tmp.size - 1] == '*') {
++		if (git__suffixcmp(data->tmp.ptr, "/*") == 0) {
+ 			is_prefix = true;
+-			git_str_truncate(&data->tmp, data->tmp.size - 1);
++			git_str_shorten(&data->tmp, 1);
+ 		}
+ 
+ 		if (!git_fs_path_is_root(data->tmp.ptr)) {
+@@ -636,12 +634,11 @@ static int validate_ownership_cb(const git_config_entry *entry, void *payload)
+ 		if (strncmp(test_path, "%(prefix)//", strlen("%(prefix)//")) == 0)
+ 			test_path += strlen("%(prefix)/");
+ 
+-		if (is_prefix) {
+-			size_t len = strlen(test_path);
++		match = is_prefix ?
++			(git__prefixcmp(data->repo_path, test_path) == 0) :
++			(strcmp(test_path, data->repo_path) == 0);
+ 
+-			if (strncmp(test_path, data->repo_path, len) == 0)
+-				*data->is_safe = true;
+-		} else if (strcmp(test_path, data->repo_path) == 0)
++		if (match)
+ 			*data->is_safe = true;
+ 	}
+ 

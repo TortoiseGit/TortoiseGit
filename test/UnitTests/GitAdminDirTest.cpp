@@ -503,10 +503,22 @@ TEST(CGitAdminDir, ReadGitLink)
 	EXPECT_STREQ(L"C:\\otherrepo", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 	EXPECT_STREQ(L"F:\\otherrepo", GitAdminDir::ReadGitLink(L"F:\\somerepo", gitFile));
 
+	EXPECT_EQ(0, git_config_set_string(config, "safe.directory", "/*"));
+	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: //localhost/something/repo"));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"//localhost/server/repo", gitFile)); // `/*` must not match `//`
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"/??/UNC/localhost/test/repository", gitFile)); // `/*` must not match `/??/`
+
 	EXPECT_EQ(0, git_config_set_string(config, "safe.directory", "C:/somerepo2"));
 	EXPECT_TRUE(CStringUtils::WriteStringToTextFile(gitFile, L"gitdir: //localhost/test/repository"));
 	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
 	EXPECT_STREQ(L"\\\\localhost\\test\\repository", GitAdminDir::ReadGitLink(L"C:\\somerepo2", gitFile));
+
+	EXPECT_EQ(0, git_config_set_string(config, "safe.directory", "C:/somepath/*"));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somerepo", gitFile));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somepath", gitFile));
+	EXPECT_STREQ(L"", GitAdminDir::ReadGitLink(L"C:\\somepathb", gitFile));
+	EXPECT_STREQ(L"\\\\localhost\\test\\repository", GitAdminDir::ReadGitLink(L"C:\\somepath\\arepo", gitFile));
+	EXPECT_STREQ(L"\\\\localhost\\test\\repository", GitAdminDir::ReadGitLink(L"C:\\somepath\\brepo", gitFile));
 }
 
 TEST(CGitAdminDir, GetSuperProjectRoot)

@@ -17,6 +17,7 @@ Released: unreleased
  * Significantly improved performance of ProgressDlg for larger output
  * Fixed issue #4267: Migrate VBScript diff scripts to JavaScript
    Microsoft deprecates VBScript (cf. <https://techcommunity.microsoft.com/blog/windows-itpro-blog/vbscript-deprecation-timelines-and-next-steps/4148301>)
+ * Fixed issue #4263: Add support for `/*` wildcard in safe.directory checks
 
 == Bug Fixes ==
  * Fix possible crash when parent window is closed before push/pull
