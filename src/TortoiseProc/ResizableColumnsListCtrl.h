@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2016, 2021, 2023, 2025 - TortoiseGit
+// Copyright (C) 2016, 2021, 2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -104,7 +104,7 @@ public:
 			return;
 		int maxcol = header->GetItemCount() - 1;
 		for (int col = 0; col <= maxcol; col++)
-			BaseType::SetColumnWidth(col, m_ColumnManager.GetWidth(col, true));
+			BaseType::SetColumnWidth(col, m_ColumnManager.IsRelevant(col) ? m_ColumnManager.GetWidth(col, true) : 0);
 	}
 	virtual void SaveColumnWidths()
 	{

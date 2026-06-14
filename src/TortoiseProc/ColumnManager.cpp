@@ -92,7 +92,6 @@ void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumn
 
 	assert(definedColumns.size() < sizeof(DWORD) * 8 && "index is used for DWORD bit-field");
 	columns.resize(definedColumns.size());
-	DWORD hiddenColumns = 0;
 	m_dwDefaultColumns = 0;
 	for (int i = 0; i < static_cast<int>(definedColumns.size()); ++i)
 	{
@@ -103,9 +102,7 @@ void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumn
 		columns[i].width = definedColumns[i].defaultWidth;
 		columns[i].visible = definedColumns[i].visibleByDefault;
 		columns[i].relevant = definedColumns[i].available;
-		if (!columns[i].relevant)
-			hiddenColumns |= bit;
-		else if (columns[i].visible)
+		if (columns[i].visible)
 			m_dwDefaultColumns |= bit;
 		columns[i].adjusted = false;
 	}
@@ -115,8 +112,6 @@ void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumn
 	// where the settings are stored within the registry
 	registryPrefix = L"Software\\TortoiseGit\\StatusColumns\\" + containerName;
 
-	DWORD selectedStandardColumns = m_dwDefaultColumns;
-
 	// version check works two fold, generally for the generic format and specifically for the listctrl
 	// we accept settings of current version only
 	bool valid = static_cast<DWORD>(CRegDWORD(L"Software\\TortoiseGit\\StatusColumns\\Version", GITSLC_COL_VERSION)) == GITSLC_COL_VERSION;
@@ -125,16 +120,16 @@ void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumn
 	if (valid)
 	{
 		// read (possibly different) column selection
-		selectedStandardColumns = CRegDWORD(registryPrefix, m_dwDefaultColumns) & ~hiddenColumns;
+		DWORD selectedStandardColumns = CRegDWORD(registryPrefix, m_dwDefaultColumns);
 
 		// read column widths
 		CString colWidths = CRegString(registryPrefix + L"_Width");
 
 		ParseWidths(colWidths);
-	}
 
-	// process old-style visibility setting
-	SetStandardColumnVisibility(selectedStandardColumns);
+		// process old-style visibility setting
+		SetStandardColumnVisibility(selectedStandardColumns);
+	}
 
 	// clear all previously set header columns
 	int c = control->GetHeaderCtrl()->GetItemCount() - 1;
@@ -143,7 +138,7 @@ void ColumnManager::ReadSettings(std::span<const ColumnDefinition> definedColumn
 
 	// create columns
 	for (int i = 0, count = GetColumnCount(); i < count; ++i)
-		control->InsertColumn(i, GetName(i), LVCFMT_LEFT, IsVisible(i) && IsRelevant(i) ? -1 : GetVisibleWidth(i, false));
+		control->InsertColumn(i, GetName(i), LVCFMT_LEFT, IsVisible(i) ? -1 : 0);
 
 	// restore column ordering
 	if (valid)
@@ -194,12 +189,12 @@ bool ColumnManager::IsVisible(int column) const
 	const size_t index = static_cast<size_t>(column);
 	assert(columns.size() > index);
 
-	return columns[index].visible;
+	return columns[index].visible && columns[index].relevant;
 }
 
 int ColumnManager::GetInvisibleCount() const
 {
-	return static_cast<int>(std::count_if(columns.cbegin(), columns.cend(), [](const auto& column) { return !column.visible; }));
+	return static_cast<int>(std::count_if(columns.cbegin(), columns.cend(), [](const auto& column) { return !column.visible || !column.relevant; }));
 }
 
 bool ColumnManager::IsRelevant(int column) const
@@ -279,11 +274,11 @@ void ColumnManager::SetVisible(int column, bool visible)
 {
 	const size_t index = static_cast<size_t>(column);
 	assert(index < columns.size());
+	assert(columns[index].relevant);
 
 	if (columns[index].visible != visible)
 	{
 		columns[index].visible = visible;
-		columns[index].relevant |= visible;
 		if (!visible)
 			columns[index].width = 0;
 
@@ -328,7 +323,7 @@ void ColumnManager::ColumnResized(int column, int manual)
 {
 	const size_t index = static_cast<size_t>(column);
 	assert(index < columns.size());
-	assert(columns[index].visible);
+	assert(columns[index].visible && columns[index].relevant);
 
 	const int width = control->GetColumnWidth(column);
 	if (manual != 0)
@@ -495,13 +490,14 @@ std::vector<int> ColumnManager::GetGridColumnOrder() const
 			for (size_t k = 0; k < colCount; ++k)
 			{
 				const ColumnInfo& column = columns[k];
-				if ((column.index == index) && (column.visible == visible))
+				if (column.index == index && (visible && (column.visible == visible && column.relevant == visible) || !visible && (column.visible == visible || column.relevant == visible)))
 					result.push_back(static_cast<int>(k));
 			}
 		}
 
 		visible = !visible;
 	} while (visible);
+	assert(columns.size() == result.size());
 
 	return result;
 }

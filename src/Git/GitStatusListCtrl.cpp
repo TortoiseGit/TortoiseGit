@@ -399,7 +399,7 @@ BOOL CGitStatusListCtrl::GetStatus ( const CTGitPathList* pathList
 
 	if (!bShowLFSLocks && hasLFS)
 	{
-		if (m_ColumnManager.IsRelevant(eCol_LFSLock) && m_ColumnManager.IsVisible(eCol_LFSLock))
+		if (m_ColumnManager.IsVisible(eCol_LFSLock))
 			UpdateLFSLockedFileList(true);
 	}
 
