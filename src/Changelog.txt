@@ -3,7 +3,7 @@ Released: unreleased
 
 == Features ==
  * Update pcre2 to version 10.47
- * Update SimpleIni to version 4.25
+ * Update SimpleIni to version 4.26
  * Update OGDF to 2025.10 (Foxglove) plus some recent commits
  * Fixed issue #4271: Add support for Relative Worktrees
    Update libgit2 to version 1.9.4
