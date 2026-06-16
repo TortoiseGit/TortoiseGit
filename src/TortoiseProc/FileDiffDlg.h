@@ -105,18 +105,7 @@ protected:
 
 	bool				CheckMultipleDiffs();
 
-	int					FillRevFromString(GitRev* rev, const CString& str)
-	{
-		GitRev gitrev;
-		if (gitrev.GetCommit(str))
-		{
-			MessageBox(gitrev.GetLastErr(), L"TortoiseGit", MB_ICONERROR);
-			return -1;
-		}
-		gitrev.ApplyMailmap();
-		*rev=gitrev;
-		return 0;
-	}
+	int FillRevFromString(GitRev* rev, const CString& str);
 
 private:
 	static UINT			WM_DISABLEBUTTONS;

@@ -217,43 +217,32 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	m_bIsBare = GitAdminDir::IsBareRepo(g_Git.m_CurrentDir);
 
+	bool gotError = false;
 	if(this->m_strRev1.IsEmpty())
 		this->m_ctrRev1Edit.SetWindowText(this->m_rev1.m_CommitHash.ToString());
 	else
-	{
-		if (m_rev1.GetCommit(m_strRev1))
-		{
-			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(m_strRev1));
-			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
-		}
-		m_rev1.ApplyMailmap();
-
 		this->m_ctrRev1Edit.SetWindowText(m_strRev1);
-	}
 
 	if(this->m_strRev2.IsEmpty())
 		this->m_ctrRev2Edit.SetWindowText(this->m_rev2.m_CommitHash.ToString());
 	else
-	{
-		if (m_rev2.GetCommit(m_strRev2))
-		{
-			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(m_strRev2));
-			m_cFileList.ShowText(msg + L'\n' + m_rev1.GetLastErr());
-		}
-		m_rev2.ApplyMailmap();
-
 		this->m_ctrRev2Edit.SetWindowText(m_strRev2);
-	}
+
+	if (!m_strRev1.IsEmpty() && FillRevFromString(&m_rev1, m_strRev1))
+		gotError = true;
+	if (!gotError && !m_strRev2.IsEmpty() && FillRevFromString(&m_rev2, m_strRev2))
+		gotError = true;
 
 	SetURLLabels();
 
-	InterlockedExchange(&m_bThreadRunning, TRUE);
-	if (!AfxBeginThread(DiffThreadEntry, this))
+	if (!gotError)
 	{
-		InterlockedExchange(&m_bThreadRunning, FALSE);
-		CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		InterlockedExchange(&m_bThreadRunning, TRUE);
+		if (!AfxBeginThread(DiffThreadEntry, this))
+		{
+			InterlockedExchange(&m_bThreadRunning, FALSE);
+			CMessageBox::Show(GetSafeHwnd(), IDS_ERR_THREADSTARTFAILED, IDS_APPNAME, MB_OK | MB_ICONERROR);
+		}
 	}
 
 	InterlockedExchange(&m_bLoadingRef, TRUE);
@@ -291,6 +280,22 @@ BOOL CFileDiffDlg::OnInitDialog()
 
 	KillTimer(IDT_INPUT);
 	return FALSE;
+}
+
+int CFileDiffDlg::FillRevFromString(GitRev* rev, const CString& str)
+{
+	GitRev gitrev;
+	if (gitrev.GetCommit(str))
+	{
+		CString msg;
+		msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
+		m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
+		m_cFileList.DeleteAllItems();
+		return -1;
+	}
+	gitrev.ApplyMailmap();
+	*rev = gitrev;
+	return 0;
 }
 
 UINT CFileDiffDlg::DiffThreadEntry(LPVOID pVoid)
@@ -1162,39 +1167,15 @@ void CFileDiffDlg::OnTimer(UINT_PTR nIDEvent)
 		KillTimer(IDT_INPUT);
 		TRACE(L"Input Timer\r\n");
 
-		GitRev gitrev;
 		CString str;
 		int mask = 0;
 		this->m_ctrRev1Edit.GetWindowText(str);
-		if (!gitrev.GetCommit(str))
-		{
-			gitrev.ApplyMailmap();
-			m_rev1 = gitrev;
+		if (!FillRevFromString(&m_rev1, str))
 			mask |= 0x1;
-		}
-		else
-		{
-			m_cFileList.DeleteAllItems();
-			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
-			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
-		}
 
 		this->m_ctrRev2Edit.GetWindowText(str);
-
-		if (!gitrev.GetCommit(str))
-		{
-			gitrev.ApplyMailmap();
-			m_rev2 = gitrev;
+		if (mask && !FillRevFromString(&m_rev2, str))
 			mask |= 0x2;
-		}
-		else
-		{
-			m_cFileList.DeleteAllItems();
-			CString msg;
-			msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
-			m_cFileList.ShowText(msg + L'\n' + gitrev.GetLastErr());
-		}
 
 		this->SetURLLabels(mask);
 
