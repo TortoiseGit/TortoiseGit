@@ -149,18 +149,6 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		FillRevFromString(&m_rev2, hash2);
 }
 
-void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev &baseRev1)
-{
-	if (path)
-	{
-		m_path = *path;
-		m_sFilter = path->GetGitPathString();
-	}
-	m_rev1 = baseRev1;
-	m_rev2.m_CommitHash.Empty();
-	m_rev2.GetSubject().LoadString(IDS_PROC_PREVIOUSVERSION);
-}
-
 BOOL CFileDiffDlg::OnInitDialog()
 {
 	CResizableStandAloneDialog::OnInitDialog();
