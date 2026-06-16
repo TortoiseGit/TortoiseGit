@@ -33,10 +33,7 @@ bool PrevDiffCommand::Execute()
 	{
 		CFileDiffDlg dlg;
 		theApp.m_pMainWnd = &dlg;
-		dlg.m_strRev1 = L"HEAD~1";
-		dlg.m_strRev2 = GitRev::GetWorkingCopyRef();
-		dlg.m_sFilter = this->cmdLinePath.GetGitPathString();
-
+		dlg.SetDiff(&cmdLinePath, L"HEAD~1", GitRev::GetWorkingCopyRef());
 		dlg.DoModal();
 		return true;
 	}

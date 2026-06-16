@@ -190,7 +190,6 @@ private:
 	afx_msg void OnMoving(UINT fwSide, LPRECT pRect);
 	afx_msg void OnSizing(UINT fwSide, LPRECT pRect);
 
-public:
 	CString				m_strRev1;
 	CString				m_strRev2;
 	CString				m_sFilter;

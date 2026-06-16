@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2013, 2016-2017, 2024-2025 - TortoiseGit
+// Copyright (C) 2008-2013, 2016-2017, 2024-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -80,10 +80,7 @@ void CMergeAbortDlg::OnOK()
 
 void CMergeAbortDlg::OnBnClickedShowModifiedFiles()
 {
-		CFileDiffDlg dlg;
-
-		dlg.m_strRev1 = L"HEAD";
-		dlg.m_strRev2 = GitRev::GetWorkingCopyRef();
-
-		dlg.DoModal();
+	CFileDiffDlg dlg;
+	dlg.SetDiff(nullptr, L"HEAD", GitRev::GetWorkingCopyRef());
+	dlg.DoModal();
 }

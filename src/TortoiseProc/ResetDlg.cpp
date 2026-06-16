@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2020, 2023-2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2020, 2023-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -122,12 +122,9 @@ void CResetDlg::OnOK()
 
 void CResetDlg::OnBnClickedShowModifiedFiles()
 {
-		CFileDiffDlg dlg;
-
-		dlg.m_strRev1 = L"HEAD";
-		dlg.m_strRev2 = GitRev::GetWorkingCopyRef();
-
-		dlg.DoModal();
+	CFileDiffDlg dlg;
+	dlg.SetDiff(nullptr, L"HEAD", GitRev::GetWorkingCopyRef());
+	dlg.DoModal();
 }
 
 void CResetDlg::OnDestroy()

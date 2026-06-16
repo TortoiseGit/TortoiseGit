@@ -132,21 +132,8 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const
 		m_sFilter = path->GetGitPathString();
 	}
 
-	if (baseRev1 == GitRev::GetWorkingCopyRef())
-	{
-		m_rev1.m_CommitHash.Empty();
-		m_rev1.GetSubject().LoadString(IDS_WORKING_TREE);
-	}
-	else
-		FillRevFromString(&m_rev1, baseRev1);
-
-	if (hash2 == GitRev::GetWorkingCopyRef())
-	{
-		m_rev2.m_CommitHash.Empty();
-		m_rev2.GetSubject().LoadString(IDS_WORKING_TREE);
-	}
-	else
-		FillRevFromString(&m_rev2, hash2);
+	m_strRev1 = baseRev1;
+	m_strRev2 = hash2;
 }
 
 BOOL CFileDiffDlg::OnInitDialog()
