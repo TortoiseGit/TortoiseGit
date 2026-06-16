@@ -146,7 +146,6 @@ private:
 	int					m_nIconFolder = 0;
 
 	bool				m_bIsBare = false;
-	CTGitPath			m_path;
 	GitRev				m_rev1;
 	GitRev				m_rev2;
 

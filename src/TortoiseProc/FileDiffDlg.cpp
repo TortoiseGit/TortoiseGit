@@ -116,10 +116,7 @@ END_MESSAGE_MAP()
 void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev& baseRev1, const GitRev& rev2)
 {
 	if (path)
-	{
-		m_path = *path;
 		m_sFilter = path->GetGitPathString();
-	}
 	m_rev1 = baseRev1;
 	m_rev2 = rev2;
 }
@@ -127,10 +124,7 @@ void CFileDiffDlg::SetDiff(const CTGitPath* path, const GitRev& baseRev1, const 
 void CFileDiffDlg::SetDiff(const CTGitPath* path, const CString &baseRev1, const CString& hash2)
 {
 	if (path)
-	{
-		m_path = *path;
 		m_sFilter = path->GetGitPathString();
-	}
 
 	m_strRev1 = baseRev1;
 	m_strRev2 = hash2;
@@ -141,10 +135,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 	CResizableStandAloneDialog::OnInitDialog();
 	CString temp;
 
-	CString pathText = g_Git.m_CurrentDir;
-	if (!m_path.IsEmpty())
-		pathText = g_Git.CombinePath(m_path);
-	CAppUtils::SetWindowTitle(*this, pathText);
+	CAppUtils::SetWindowTitle(*this, g_Git.m_CurrentDir);
 
 	this->m_ctrRev1Edit.Init();
 	this->m_ctrRev2Edit.Init();
@@ -461,7 +452,7 @@ void CFileDiffDlg::OnLvnGetInfoTipFilelist(NMHDR *pNMHDR, LRESULT *pResult)
 	if (pGetInfoTip->iItem >= static_cast<int>(m_arFilteredList.size()) || CRegDWORD(L"Software\\TortoiseGit\\ShowListFullPathTooltip", TRUE) != TRUE)
 		return;
 
-	CString path = m_path.GetGitPathString() + L'/' + m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
+	CString path = m_arFilteredList[pGetInfoTip->iItem]->GetGitPathString();
 	if (pGetInfoTip->cchTextMax > path.GetLength())
 			wcsncpy_s(pGetInfoTip->pszText, pGetInfoTip->cchTextMax, path, pGetInfoTip->cchTextMax - 1);
 }
@@ -710,10 +701,7 @@ void CFileDiffDlg::OnContextMenu(CWnd* pWnd, CPoint point)
 					{
 						CStdioFile file(savePath.GetWinPathString(), CFile::typeBinary | CFile::modeReadWrite | CFile::modeCreate);
 						CString temp;
-						if (m_path.IsEmpty())
-							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
-						else
-							temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTRO, static_cast<LPCWSTR>(m_path.GetGitPathString()), static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_path.GetGitPathString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
+						temp.FormatMessage(IDS_FILEDIFF_CHANGEDLISTINTROROOT, static_cast<LPCWSTR>(m_rev1.m_CommitHash.ToString()), static_cast<LPCWSTR>(m_rev2.m_CommitHash.ToString()));
 						file.WriteString(temp + L"\r\n");
 						POSITION pos = m_cFileList.GetFirstSelectedItemPosition();
 						while (pos)

@@ -4568,8 +4568,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_FILEDIFF_CHANGEDLISTINTRO 
-                            "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
     IDS_FILEDIFF_CHANGEDLISTINTROROOT "Changed files between %1!s! and %2!s!"
 END
 
