@@ -1,6 +1,6 @@
-// TortoiseGit - a Windows shell extension for easy version control
+﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2017, 2021, 2023 - TortoiseGit
+// Copyright (C) 2015-2017, 2021, 2023, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -32,6 +32,7 @@ public:
 
 	CString m_Description;
 	CString m_UpstreamRef;
+	using GitRev::m_objectType;
 
 	void Clear() override;
 	static int GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefilter, CString& err, std::function<bool(const CString& refName)> filterCallback = nullptr);

@@ -221,6 +221,11 @@ public:
 		m_Ref = h;
 	}
 
+	explicit CAutoCommit(CAutoObject&& h) noexcept
+	{
+		m_Ref = reinterpret_cast<git_commit*>(h.Detach());
+	}
+
 	CAutoCommit(const CAutoCommit&) = delete;
 	CAutoCommit& operator=(const CAutoCommit&) = delete;
 

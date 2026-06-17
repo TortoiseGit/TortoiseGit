@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2015-2020, 2024 - TortoiseGit
+// Copyright (C) 2015-2020, 2024, 2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -29,8 +29,8 @@ class GitRevRefBrowserCBasicGitWithTestRepoBareFixture : public CBasicGitWithTes
 {
 };
 
-INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoFixture, testing::Values(GIT_CLI));
-INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI));
+INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoFixture, testing::Values(GIT_CLI, LIBGIT2));
+INSTANTIATE_TEST_SUITE_P(GitRevRefBrowser, GitRevRefBrowserCBasicGitWithTestRepoBareFixture, testing::Values(GIT_CLI, LIBGIT2));
 
 static void GetGitRevRefMap()
 {
@@ -41,7 +41,7 @@ static void GetGitRevRefMap()
 	CString err;
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(12U, refMap.size());
+	EXPECT_EQ(13U, refMap.size());
 
 	GitRevRefBrowser rev = refMap[L"refs/heads/master"];
 	EXPECT_STREQ(L"7c3cbfe13a929d2291a574dca45e4fd2d2ac1aa6", rev.m_CommitHash.ToString());
@@ -52,6 +52,7 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"Changed ASCII file", rev.GetSubject());
 	EXPECT_STREQ(L"refs/remotes/origin/master", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"test", rev.m_Description);
+	EXPECT_TRUE(rev.IsCommit());
 
 	rev = refMap[L"refs/heads/signed-commit"];
 	EXPECT_STREQ(L"4c5c93d2a0b368bc4570d5ec02ab03b9c4334d44", rev.m_CommitHash.ToString());
@@ -62,6 +63,7 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"Several actions", rev.GetSubject());
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"", rev.m_Description);
+	EXPECT_TRUE(rev.IsCommit());
 
 	rev = refMap[L"refs/tags/also-signed"];
 	EXPECT_STREQ(L"e89cb722e0f9b2eb763bb059dc099ee6c502a6d8", rev.m_CommitHash.ToString());
@@ -83,10 +85,20 @@ static void GetGitRevRefMap()
 	EXPECT_STREQ(L"", rev.m_UpstreamRef);
 	EXPECT_STREQ(L"multi\nline", rev.m_Description);
 
+	rev = refMap[L"refs/heads/tree-ref"];
+	EXPECT_STREQ(L"f4c67ced4099e490f2bd728dbc78a82582aa5ec4", rev.m_CommitHash.ToString());
+	EXPECT_STREQ(L"", rev.GetAuthorName());
+	EXPECT_EQ(0, rev.GetAuthorDate().GetTime());
+	EXPECT_STREQ(L"", rev.GetCommitterName());
+	EXPECT_EQ(0, rev.GetCommitterDate().GetTime());
+	EXPECT_STREQ(L"", rev.GetSubject());
+	EXPECT_FALSE(rev.IsCommit());
+	EXPECT_STREQ(L"", rev.m_UpstreamRef);
+
 	refMap.clear();
 	EXPECT_EQ(0, GitRevRefBrowser::GetGitRevRefMap(refMap, 0, err, [](const CString& refName) { return CStringUtils::StartsWith(refName, L"refs/heads/"); }));
 	EXPECT_STREQ(L"", err);
-	EXPECT_EQ(6U, refMap.size());
+	EXPECT_EQ(7U, refMap.size());
 	EXPECT_TRUE(refMap.find(L"refs/heads/master") != refMap.end());
 	for (auto it = refMap.cbegin(); it != refMap.cend(); ++it)
 		EXPECT_TRUE(CStringUtils::StartsWith(it->first, L"refs/heads/"));

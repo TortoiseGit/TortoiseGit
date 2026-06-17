@@ -497,6 +497,7 @@ void CBrowseRefsDlg::Refresh(CString selectRef)
 		treeLeaf.m_csCommitter = ref.GetCommitterName();
 		treeLeaf.m_csCommitterDate = ref.GetCommitterDate();
 		treeLeaf.m_csDescription = ref.m_Description;
+		treeLeaf.m_objectType = ref.m_objectType;
 	}
 
 	// always expand the tree first
@@ -923,6 +924,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		bool bShowRenameOption				= false;
 		bool bShowCreateBranchOption		= false;
 		bool bShowEditBranchDescriptionOption = false;
+		bool bIsCommit = selectedLeafs[0]->m_objectType == GIT_OBJECT_COMMIT;
 
 		CString fetchFromCmd;
 
@@ -930,7 +932,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 		{
 			bShowReflogOption = true;
 			bShowRenameOption = true;
-			bShowEditBranchDescriptionOption = true;
+			bShowEditBranchDescriptionOption = bIsCommit;
 		}
 		else if(selectedLeafs[0]->IsFrom(L"refs/remotes/"))
 		{
@@ -950,13 +952,14 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			popupMenu.AppendMenuIcon(eCmd_Select, IDS_SELECT);
 			popupMenu.AppendMenu(MF_SEPARATOR);
 		}
-		popupMenu.AppendMenuIcon(eCmd_ViewLog, IDS_MENULOG, IDI_LOG);
-		popupMenu.SetDefaultItem(0, TRUE);
+		if (bIsCommit)
+			popupMenu.AppendMenuIcon(eCmd_ViewLog, IDS_MENULOG, IDI_LOG);
 		popupMenu.AppendMenuIcon(eCmd_RepoBrowser, IDS_LOG_BROWSEREPO, IDI_REPOBROWSE);
-		if(bShowReflogOption)
+		popupMenu.SetDefaultItem(0, TRUE);
+		if (bShowReflogOption)
 			popupMenu.AppendMenuIcon(eCmd_ShowReflog, IDS_MENUREFLOG, IDI_LOG);
 
-		if (m_bHasWC)
+		if (m_bHasWC && bIsCommit)
 		{
 			popupMenu.AppendMenu(MF_SEPARATOR);
 			popupMenu.AppendMenuIcon(eCmd_DiffWC, IDS_LOG_POPUP_COMPARE, IDI_DIFF);
@@ -975,7 +978,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			popupMenu.AppendMenu(MF_SEPARATOR);
 
 		bAddSeparator = false;
-		if (m_bHasWC)
+		if (m_bHasWC && bIsCommit)
 		{
 			CString str;
 			if (selectedLeafs[0]->GetRefName() != L"refs/heads/" + g_Git.GetCurrentBranch())
@@ -1004,7 +1007,7 @@ void CBrowseRefsDlg::ShowContextMenu(CPoint point, HTREEITEM hTreePos, VectorPSh
 			popupMenu.AppendMenuIcon(eCmd_Rename, IDS_PROC_BROWSEREFS_RENAME, IDI_RENAME);
 		}
 
-		if (m_bHasWC && selectedLeafs[0]->IsFrom(L"refs/heads/"))
+		if (m_bHasWC && bIsCommit && selectedLeafs[0]->IsFrom(L"refs/heads/"))
 		{
 			if (bAddSeparator)
 				popupMenu.AppendMenu(MF_SEPARATOR);
@@ -1479,8 +1482,14 @@ void CBrowseRefsDlg::OnNMDblclkListRefLeafs(NMHDR * /*pNMHDR*/, LRESULT *pResult
 		return;
 	}
 
+	VectorPShadowTree selectedLeafs;
+	GetSelectedLeaves(selectedLeafs);
+
 	CString sCmd;
-	sCmd.Format(L"/command:log /path:\"%s\" /range:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.FixBranchName(GetSelectedRef(true, false)))));
+	if (selectedLeafs[0]->m_objectType == GIT_OBJECT_TREE)
+		sCmd.Format(L"/command:repobrowser /path:\"%s\" /rev:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.FixBranchName(GetSelectedRef(true, false)))));
+	else
+		sCmd.Format(L"/command:log /path:\"%s\" /range:%s", static_cast<LPCWSTR>(g_Git.m_CurrentDir), static_cast<LPCWSTR>(CCmdLineParser::EscapeValue(g_Git.FixBranchName(GetSelectedRef(true, false)))));
 	CAppUtils::RunTortoiseGitProc(sCmd);
 }
 

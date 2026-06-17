@@ -113,6 +113,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 			entry.m_CommitHash = git_reference_target(ref);
 			if (git_reference_is_tag(ref) && tag)
 			{
+				entry.m_objectType = GIT_OBJECT_TAG;
 				const char* msg = git_tag_message(tag);
 				if (const char* body = strchr(msg, '\n'); !body)
 					entry.m_Subject = CUnicodeUtils::GetUnicode(msg);
@@ -136,13 +137,21 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 				continue;
 			}
 
-			CAutoCommit commit;
-			if (git_commit_lookup(commit.GetPointer(), repo, git_reference_target(ref)) < 0)
+			CAutoObject object;
+			if (git_object_lookup(object.GetPointer(), repo, git_reference_target(ref), GIT_OBJECT_ANY) < 0)
 			{
 				err = g_Git.GetLibGit2LastErr();
 				return -1;
 			}
 
+			entry.m_objectType = git_object_type(object);
+
+			if (git_object_type(object) != GIT_OBJECT_COMMIT)
+			{
+				map.emplace(refName, entry);
+				continue;
+			}
+			CAutoCommit commit { std::move(object) };
 			auto author = git_commit_author(commit);
 			auto committer = git_commit_committer(commit);
 			entry.m_Subject = CUnicodeUtils::GetUnicode(git_commit_summary(commit));
@@ -195,7 +204,7 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 	}
 
 	CString cmd;
-	cmd.Format(L"git.exe for-each-ref%s --format=\"%%(refname)%%04 %%(objectname)%%04 %%(upstream)%%04 %%(subject)%%04 %%(authorname)%%04 %%(authoremail)%%04 %%(authordate:raw)%%04 %%(committername)%%04 %%(committeremail)%%04 %%(committerdate:raw)%%04%%(creator)%%04 %%(creatordate:raw)%%03\"", static_cast<LPCWSTR>(args));
+	cmd.Format(L"git.exe for-each-ref%s --format=\"%%(refname)%%04 %%(objectname)%%04 %%(objecttype)%%04 %%(upstream)%%04 %%(subject)%%04 %%(authorname)%%04 %%(authoremail)%%04 %%(authordate:raw)%%04 %%(committername)%%04 %%(committeremail)%%04 %%(committerdate:raw)%%04%%(creator)%%04 %%(creatordate:raw)%%03\"", static_cast<LPCWSTR>(args));
 	CString allRefs;
 	if (g_Git.Run(cmd, &allRefs, &err, CP_UTF8))
 		return -1;
@@ -213,6 +222,13 @@ int GitRevRefBrowser::GetGitRevRefMap(MAP_REF_GITREVREFBROWSER& map, int mergefi
 
 		GitRevRefBrowser ref;
 		ref.m_CommitHash = CGitHash::FromHexStr(singleRef.Tokenize(L"\04", valuePos).Trim()); if (valuePos < 0) continue;
+		CString objectType = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
+		if (objectType == L"commit")
+			ref.m_objectType = GIT_OBJECT_COMMIT;
+		else if (objectType == L"tag")
+			ref.m_objectType = GIT_OBJECT_TAG;
+		else if (objectType == L"tree")
+			ref.m_objectType = GIT_OBJECT_TREE;
 		ref.m_UpstreamRef = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
 		ref.m_Subject = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;
 		ref.m_AuthorName = singleRef.Tokenize(L"\04", valuePos).Trim(); if (valuePos < 0) continue;

@@ -276,7 +276,7 @@ BOOL CFileDiffDlg::OnInitDialog()
 int CFileDiffDlg::FillRevFromString(GitRev* rev, const CString& str)
 {
 	GitRev gitrev;
-	if (gitrev.GetCommit(str))
+	if (gitrev.GetCommit(str, true))
 	{
 		CString msg;
 		msg.Format(IDS_PROC_REFINVALID, static_cast<LPCWSTR>(str));
@@ -301,7 +301,7 @@ UINT CFileDiffDlg::DiffThread()
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
-	if (m_bCommonAncestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()))
+	if (m_bCommonAncestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()) && m_rev1.IsCommit() && m_rev2.IsCommit())
 	{
 		CGitHash commonAncestor;
 		g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAncestor);
@@ -827,7 +827,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	if(mask &0x1)
 	{
 		SetDlgItemText(IDC_FIRSTURL, m_rev1.m_CommitHash.ToString(g_Git.GetShortHASHLength()) + L": " + m_rev1.GetSubject());
-		if (!m_rev1.m_CommitHash.IsEmpty())
+		if (!m_rev1.m_CommitHash.IsEmpty() && m_rev1.IsCommit())
 			m_tooltips.AddTool(IDC_FIRSTURL,
 				CLoglistUtils::FormatDateAndTime(m_rev1.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev1.GetAuthorName());
 	}
@@ -835,7 +835,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	if(mask &0x2)
 	{
 		SetDlgItemText(IDC_SECONDURL, m_rev2.m_CommitHash.ToString(g_Git.GetShortHASHLength()) + L": " + m_rev2.GetSubject());
-		if (!m_rev2.m_CommitHash.IsEmpty())
+		if (!m_rev2.m_CommitHash.IsEmpty() && m_rev2.IsCommit())
 			m_tooltips.AddTool(IDC_SECONDURL,
 				CLoglistUtils::FormatDateAndTime(m_rev2.GetAuthorDate(), DATE_SHORTDATE) + L"  " + m_rev2.GetAuthorName());
 	}
@@ -843,7 +843,7 @@ void CFileDiffDlg::SetURLLabels(int mask)
 	this->GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1BASE)));
 	this->GetDlgItem(IDC_REV2GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION2)));
 
-	if ((mask & 0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty())
+	if ((mask & 0x3) == 0x3 && !m_rev1.m_CommitHash.IsEmpty() && !m_rev2.m_CommitHash.IsEmpty() && m_rev1.IsCommit() && m_rev2.IsCommit())
 		if(m_rev1.GetCommitterDate() > m_rev2.GetCommitterDate())
 			GetDlgItem(IDC_REV1GROUP)->SetWindowText(CString(MAKEINTRESOURCE(IDS_PROC_FILEDIFF_VERSION1BASENEWER)));
 		else if (m_rev1.GetCommitterDate() < m_rev2.GetCommitterDate())

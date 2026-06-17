@@ -89,6 +89,7 @@ public:
 	CString			m_csAuthor;
 	CString			m_csSubject;
 	CString			m_csDescription;
+	git_object_t	m_objectType;
 
 	HTREEITEM		m_hTree = nullptr;
 

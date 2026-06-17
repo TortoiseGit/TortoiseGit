@@ -474,17 +474,28 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 		return -1;
 	}
 
-	CAutoCommit commit;
-	if (git_commit_lookup(commit.GetPointer(), repository, hash))
+	CAutoObject object;
+	if (git_object_lookup(object.GetPointer(), repository, hash, GIT_OBJECT_ANY) < 0)
 	{
-		MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup commit."), L"TortoiseGit", MB_ICONERROR);
+		MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup object."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
 	CAutoTree tree;
-	if (git_commit_tree(tree.GetPointer(), commit))
+	if (git_object_type(object) == GIT_OBJECT_COMMIT)
 	{
-		MessageBox(CGit::GetLibGit2LastErr(L"Could not get tree of commit."), L"TortoiseGit", MB_ICONERROR);
+		CAutoCommit commit{ std::move(object) };
+		if (git_commit_tree(tree.GetPointer(), commit))
+		{
+			MessageBox(CGit::GetLibGit2LastErr(L"Could not get tree of commit."), L"TortoiseGit", MB_ICONERROR);
+			return -1;
+		}
+	}
+	else if (git_object_type(object) == GIT_OBJECT_TREE)
+		tree.ConvertFrom(std::move(object));
+	else
+	{
+		MessageBox(CGit::GetLibGit2LastErr(L"Found unknown object type."), L"TortoiseGit", MB_ICONERROR);
 		return -1;
 	}
 
@@ -502,14 +513,14 @@ int CRepositoryBrowser::ReadTree(CShadowFilesTree* treeroot, const CString& root
 			return -1;
 		}
 
-		CAutoObject object;
-		if (git_tree_entry_to_object(object.GetPointer(), repository, treeEntry))
+		CAutoObject newTreeObj;
+		if (git_tree_entry_to_object(newTreeObj.GetPointer(), repository, treeEntry))
 		{
 			MessageBox(CGit::GetLibGit2LastErr(L"Could not lookup path."), L"TortoiseGit", MB_ICONERROR);
 			return -1;
 		}
 
-		tree.ConvertFrom(std::move(object));
+		tree.ConvertFrom(std::move(newTreeObj));
 	}
 
 	treeroot->m_hash = git_tree_id(tree);

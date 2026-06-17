@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2017, 2019-2023, 2025 - TortoiseGit
+// Copyright (C) 2008-2017, 2019-2023, 2025-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -50,6 +50,7 @@ protected:
 	CTime	m_CommitterDate;
 	CString	m_Subject;
 	CString	m_Body;
+	git_object_t m_objectType = GIT_OBJECT_INVALID;
 
 	CString m_sErr;
 
@@ -117,8 +118,9 @@ protected:
 public:
 	int GetParentFromHash(const CGitHash& hash);
 	int GetCommitFromHash(const CGitHash& hash);
-	int GetCommit(const CString& rev);
+	int GetCommit(const CString& rev, bool allowTree = false);
 
+	bool IsCommit() { return m_objectType == GIT_OBJECT_COMMIT; }
 	CString GetLastErr() const { return m_sErr; }
 
 	void ApplyMailmap(const CGitMailmap& mailmap = CGitMailmap());

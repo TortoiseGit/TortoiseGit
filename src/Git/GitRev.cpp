@@ -36,11 +36,14 @@ void GitRev::Clear()
 	this->m_ParentHash.clear();
 	m_AuthorName.Empty();
 	m_AuthorEmail.Empty();
+	m_AuthorDate = 0;
 	m_CommitterName.Empty();
 	m_CommitterEmail.Empty();
+	m_CommitterDate = 0;
 	m_Body.Empty();
 	m_Subject.Empty();
 	m_CommitHash.Empty();
+	m_objectType = GIT_OBJECT_INVALID;
 	m_sErr.Empty();
 }
 
@@ -96,6 +99,7 @@ int GitRev::ParserFromCommit(const git_commit* commit)
 {
 	ATLASSERT(commit);
 	Clear();
+	m_objectType = GIT_OBJECT_COMMIT;
 
 	int encode = CP_UTF8;
 
@@ -228,6 +232,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 		return -1;
 	}
 
+	m_objectType = GIT_OBJECT_COMMIT;
 	this->ParserFromCommit(&commit);
 	git_free_commit(&commit);
 
@@ -236,7 +241,7 @@ int GitRev::GetCommitFromHash_withoutLock(const CGitHash& hash)
 	return 0;
 }
 
-int GitRev::GetCommit(const CString& refname)
+int GitRev::GetCommit(const CString& refname, bool allowTree /* false */)
 {
 	if (g_Git.UsingLibGit2(CGit::GIT_CMD_GET_COMMIT))
 	{
@@ -246,7 +251,27 @@ int GitRev::GetCommit(const CString& refname)
 			m_sErr = g_Git.GetLibGit2LastErr();
 			return -1;
 		}
-		return GetCommit(repo, refname);
+		if (int ret = GetCommit(repo, refname); ret == 0 || ret < 0 && !allowTree)
+			return ret;
+
+		CGitHash hash;
+		if (g_Git.GetHash(repo, hash, refname))
+		{
+			m_sErr = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+		CAutoTree tree;
+		if (git_tree_lookup(tree.GetPointer(), repo, hash) < 0)
+		{
+			m_sErr = g_Git.GetLibGit2LastErr();
+			return -1;
+		}
+
+		Clear();
+		m_CommitHash = hash;
+		m_objectType = GIT_OBJECT_TREE;
+
+		return 0;
 	}
 
 	CAutoLocker lock(g_Git.m_critGitDllSec);
@@ -287,7 +312,29 @@ int GitRev::GetCommit(const CString& refname)
 	}
 
 	CGitHash hash = CGitHash::FromRaw(sha);
-	return GetCommitFromHash_withoutLock(hash);
+	if (int ret = GetCommitFromHash_withoutLock(hash); ret == 0 || ret < 0 && !allowTree)
+		return ret;
+
+	CStringA revTree = CUnicodeUtils::GetUTF8(g_Git.FixBranchName(refname + L"^{tree}"));
+	try
+	{
+		if (git_get_sha1(revTree, sha))
+		{
+			m_sErr = L"Ref \"" + g_Git.FixBranchName(refname) + L"\" is neither a commit nor a tree.";
+			return -1;
+		}
+	}
+	catch (const char* msg)
+	{
+		m_sErr = L"Could not parse ref.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+		return -1;
+	}
+
+	Clear();
+	m_CommitHash = hash;
+	m_objectType = GIT_OBJECT_TREE;
+
+	return 0;
 }
 
 void GitRev::ApplyMailmap(const CGitMailmap& mailmap)
