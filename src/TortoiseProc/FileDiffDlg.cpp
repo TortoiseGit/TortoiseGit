@@ -304,8 +304,10 @@ UINT CFileDiffDlg::DiffThread()
 	if (m_bCommonAncestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()) && m_rev1.IsCommit() && m_rev2.IsCommit())
 	{
 		CGitHash commonAncestor;
-		g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAncestor);
-		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAncestor.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+		if (g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAncestor))
+			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAncestor.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+		else
+			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	}
 	else
 		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
