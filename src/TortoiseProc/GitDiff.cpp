@@ -503,7 +503,7 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 		dlg.DoModal();
 	}
 	else
-		Diff(hWnd, &path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString(), false, false, 0, bAlternative);
+		return Diff(hWnd, &path1, &path2, r1->m_CommitHash.ToString(), r2->m_CommitHash.ToString(), false, false, 0, bAlternative);
 	return 0;
 }
 
@@ -527,6 +527,6 @@ int CGitDiff::DiffCommit(HWND hWnd, const CTGitPath& path1, const CTGitPath& pat
 		dlg.DoModal();
 	}
 	else
-		Diff(hWnd, &path1, &path2, r1, r2, false, false, 0, bAlternative);
+		return Diff(hWnd, &path1, &path2, r1, r2, false, false, 0, bAlternative);
 	return 0;
 }
