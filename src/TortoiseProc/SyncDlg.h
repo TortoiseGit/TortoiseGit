@@ -186,10 +186,14 @@ protected:
 	void AddDiffFileList(CGitStatusListCtrl *pCtrlList, CTGitPathList *pGitList,
 							const CGitHash& rev1, const CGitHash& rev2)
 	{
-		g_Git.GetCommitDiffList(rev1.ToString(), rev2.ToString(), *pGitList);
+		CString error;
+		if (g_Git.GetCommitDiffList(rev1.ToString(), rev2.ToString(), *pGitList, error))
+			MessageBox(error, L"TortoiseGit", 0);
 		pCtrlList->m_Rev1 = rev1;
 		pCtrlList->m_Rev2 = rev2;
 		pCtrlList->SetEmptyString(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
+		if (!error.IsEmpty())
+			pCtrlList->SetEmptyString(error);
 		pCtrlList->UpdateWithGitPathList(*pGitList);
 		pCtrlList->Show(GITSLC_SHOWALL);
 	}

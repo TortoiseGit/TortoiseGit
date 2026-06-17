@@ -1436,7 +1436,7 @@ int CGit::GetSubmoduleHash(const CString& pathOfSubmodule, const CGitHash& revis
 	return 0;
 }
 
-int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathList &outputlist, bool ignoreSpaceAtEol, bool ignoreSpaceChange, bool ignoreAllSpace , bool ignoreBlankLines)
+int CGit::GetCommitDiffList(const CString& rev1, const CString& rev2, CTGitPathList& outputlist, CString& error, bool ignoreSpaceAtEol, bool ignoreSpaceChange, bool ignoreAllSpace, bool ignoreBlankLines)
 {
 	CString cmd;
 	CString ignore;
@@ -1467,8 +1467,12 @@ int CGit::GetCommitDiffList(const CString &rev1, const CString &rev2, CTGitPathL
 	}
 
 	BYTE_VECTOR out;
-	if (Run(cmd, &out))
+	BYTE_VECTOR err;
+	if (Run(cmd, &out, &err))
+	{
+		error = err;
 		return -1;
+	}
 
 	return outputlist.ParserFromLog(out);
 }

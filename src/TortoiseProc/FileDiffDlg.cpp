@@ -301,19 +301,20 @@ UINT CFileDiffDlg::DiffThread()
 	if( m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty())
 		g_Git.RefreshGitIndex();
 
+	CString error;
 	if (m_bCommonAncestorDiff && !(m_rev1.m_CommitHash.IsEmpty() || m_rev2.m_CommitHash.IsEmpty()) && m_rev1.IsCommit() && m_rev2.IsCommit())
 	{
 		CGitHash commonAncestor;
 		if (g_Git.IsFastForward(m_rev1.m_CommitHash.ToString(), m_rev2.m_CommitHash.ToString(), &commonAncestor))
-			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAncestor.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), commonAncestor.ToString(), m_arFileList, error, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 		else
-			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+			g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, error, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	}
 	else
-		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
+		g_Git.GetCommitDiffList(m_rev2.m_CommitHash.ToString(), m_rev1.m_CommitHash.ToString(), m_arFileList, error, m_bIgnoreSpaceAtEol, m_bIgnoreSpaceChange, m_bIgnoreAllSpace, m_bIgnoreBlankLines);
 	Sort();
 
-	SendMessage(WM_DIFFFINISHED);
+	SendMessage(WM_DIFFFINISHED, reinterpret_cast<WPARAM>(&error));
 
 	InterlockedExchange(&m_bThreadRunning, FALSE);
 	return 0;
@@ -329,7 +330,7 @@ LRESULT CFileDiffDlg::OnDisableButtons(WPARAM, LPARAM)
 	return 0;
 }
 
-LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
+LRESULT CFileDiffDlg::OnDiffFinished(WPARAM pError, LPARAM)
 {
 	CString sFilterText;
 	m_cFilter.GetWindowText(sFilterText);
@@ -342,6 +343,8 @@ LRESULT CFileDiffDlg::OnDiffFinished(WPARAM, LPARAM)
 	m_cFileList.ClearText();
 	if (m_arFileList.IsEmpty())
 		m_cFileList.ShowText(CString(MAKEINTRESOURCE(IDS_COMPAREREV_NODIFF)));
+	if (auto error = reinterpret_cast<const CString*>(pError); error && !error->IsEmpty())
+		m_cFileList.ShowText(*error);
 	m_cFileList.SetRedraw(true);
 
 	InvalidateRect(nullptr);
