@@ -1,11 +1,11 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2025 the TortoiseGit team
+# Copyright (C) 2008-2026 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
 # Translators:
 # Adam Gregořica, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2022-2024
+# Aleš Fiala <ales.fiala.yakari1@seznam.cz>, 2022-2024
 # Jiří Engelthaler <engycz@gmail.com>, 2015-2016,2024
 # Jiri Sedlak <jiri_sedlak@users.sourceforge.net>, 2017
 # Lübbe  <luebbe.tortoisesvn@gmail.com>, 2011
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2022-2024\n"
+"Last-Translator: Aleš Fiala <ales.fiala.yakari1@seznam.cz>, 2022-2024\n"
 "Language-Team: Czech (http://app.transifex.com/lznuaa/tortoisegit/language/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -600,7 +600,8 @@ msgstr "&Tuto zprávu již nezobrazovat"
 msgid "&Don't store these settings now."
 msgstr "&Neukládat teď tato nastavení."
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog
+#. IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr "&Dolů"
 
@@ -1078,6 +1079,10 @@ msgstr "&Stáhnout"
 msgid "&Pull..."
 msgstr "&Stáhnout..."
 
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
 msgstr "&Odeslat všechny větve"
@@ -1360,7 +1365,8 @@ msgstr "&Odemknout"
 msgid "&Unstaging"
 msgstr "&Odinscenovat"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog
+#. IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr "&Nahoru"
 
@@ -2631,11 +2637,6 @@ msgstr "Změněné soubory"
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
 msgstr "Změněné soubory mezi %1!s! a %2!s!"
-
-#. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
-#, c-format
-msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr "Změněné soubory mezi %1!s!, %2!s! a %3!s!, %4!s!"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -4305,10 +4306,6 @@ msgstr "Tuto zprávu již nezobrazovat"
 msgid "Done"
 msgstr "Hotovo"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
-msgstr "Dolů"
-
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "Stáhnout"
@@ -5702,6 +5699,11 @@ msgstr ""
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "Nepoužívám Git pro Windows a potřebuji speciální řešení"
 
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
 msgstr "&Zahrnout cesty:"
@@ -6211,6 +6213,10 @@ msgstr ""
 msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
+msgstr ""
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
@@ -10255,6 +10261,10 @@ msgstr "Textové soubory (*.txt)|*.txt|Všechny soubory (*.*)|*.*||"
 msgid "Thai"
 msgstr "Thajština"
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid ""
 "The Remote Config was changed.\n"
@@ -10567,6 +10577,20 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "Vypadá to, že ve zvoleném souboru se stále vyskytují jeden nebo více značek konfliktů.\nOpravdu chcete tento soubor označit jako vyřešený?"
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid ""
+"The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n"
+"\n"
+"Reasons may include:\n"
+"* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n"
+"* It uses an unsupported format.\n"
+"* It contains some kind of defect and needs to be checked/repaired.\n"
+"\n"
+"The following libgit and libgit2 errors may provide further insight:\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
 #, c-format
@@ -11232,10 +11256,6 @@ msgstr "Soubory bez verze označují nadřazenou složku jako změněnou"
 msgid "Unversioning %s"
 msgstr "Odstraňování verze v %s"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
-msgstr "Nahoru"
-
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
 msgid "Update"
 msgstr "Aktualizace"
@@ -11519,6 +11539,10 @@ msgstr "Uživatelské jméno a email musí být před odevzdáním nastaveno.\nC
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
 msgstr "Uživatelské &jméno:"
+
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)

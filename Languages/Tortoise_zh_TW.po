@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2025 the TortoiseGit team
+# Copyright (C) 2008-2026 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -612,7 +612,8 @@ msgstr "不再顯示此訊息(&D)"
 msgid "&Don't store these settings now."
 msgstr "現在先不儲存這些設定值(&D)。"
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog
+#. IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr "向下(&D)"
 
@@ -1090,6 +1091,10 @@ msgstr "拉取(&P)"
 msgid "&Pull..."
 msgstr "拉取(&P)..."
 
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
 msgstr "推送所有分支(&P)"
@@ -1372,7 +1377,8 @@ msgstr ""
 msgid "&Unstaging"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog
+#. IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr "向上(&U)"
 
@@ -2643,11 +2649,6 @@ msgstr "已變動的檔案"
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
 msgstr "%1!s! 至 %2!s! 間變更的檔案"
-
-#. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
-#, c-format
-msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr "%1!s!, %2!s! 至 %3!s!, %4!s! 間變更的檔案"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -4317,10 +4318,6 @@ msgstr "不再顯示此訊息"
 msgid "Done"
 msgstr "完成"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
-msgstr "向下"
-
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "下載"
@@ -5714,6 +5711,11 @@ msgstr "掛鉤指令檔執行失敗"
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "我不使用 Git for Windows，我需要特定的應急方案："
 
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
 msgstr "包含路徑(&N)："
@@ -6224,6 +6226,10 @@ msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
 msgstr "在以下組合框你可找到所有已安裝及對應此版本的 TortoiseGit 語言包"
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -10267,6 +10273,10 @@ msgstr "文字檔案 (*.txt)|*.txt|所有檔案 (*.*)|*.*||"
 msgid "Thai"
 msgstr "泰文"
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid ""
 "The Remote Config was changed.\n"
@@ -10579,6 +10589,20 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "選擇的檔案尚有一個以上的衝突標記。\n你確定要將之視為已解決？"
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid ""
+"The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n"
+"\n"
+"Reasons may include:\n"
+"* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n"
+"* It uses an unsupported format.\n"
+"* It contains some kind of defect and needs to be checked/repaired.\n"
+"\n"
+"The following libgit and libgit2 errors may provide further insight:\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
 #, c-format
@@ -11244,10 +11268,6 @@ msgstr "含有尚未版本控制的檔案時，將上層資料夾標記為「已
 msgid "Unversioning %s"
 msgstr "正在清除 %s 的版本控制資訊"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
-msgstr "向上"
-
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
 msgid "Update"
 msgstr "更新"
@@ -11531,6 +11551,10 @@ msgstr "必須在提交前設定「使用者名稱」及「電郵」，要現在
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
 msgstr "帳號(&N)："
+
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)

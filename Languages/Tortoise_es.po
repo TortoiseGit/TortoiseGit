@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2025 the TortoiseGit team
+# Copyright (C) 2008-2026 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -615,7 +615,8 @@ msgstr "&No mostrar este mensaje de nuevo"
 msgid "&Don't store these settings now."
 msgstr "&No guardar estas configuraciones ahora."
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog
+#. IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr "&Abajo"
 
@@ -1093,6 +1094,10 @@ msgstr "&Incorporar (pull)"
 msgid "&Pull..."
 msgstr "&Incorporar (Pull)..."
 
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
 msgstr "&Impulsar (push) todos las ramales"
@@ -1375,7 +1380,8 @@ msgstr ""
 msgid "&Unstaging"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog
+#. IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr "&Arriba"
 
@@ -2645,11 +2651,6 @@ msgstr "Archivos modificados"
 #. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTROROOT)
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
-msgstr ""
-
-#. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
-#, c-format
-msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
 msgstr ""
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
@@ -4320,10 +4321,6 @@ msgstr "No mostrar este mensaje de nuevo"
 msgid "Done"
 msgstr "Hecho"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
-msgstr "Abajo"
-
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "Descarga"
@@ -5717,6 +5714,11 @@ msgstr ""
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "No uso Git para Windows y necesito trucos especiales"
 
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
 msgstr "Rutas I&ncluidas:"
@@ -6227,6 +6229,10 @@ msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
 msgstr "En la siguiente casilla combinada puede encontrar todos los paquetes de idioma instalados que se pueden usar por esta versión de TortoiseGit."
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -10270,6 +10276,10 @@ msgstr "Ficheros de texto (*.txt)|*.txt|Todos los ficheros (*.*)|*.*||"
 msgid "Thai"
 msgstr "Tailandés"
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid ""
 "The Remote Config was changed.\n"
@@ -10582,6 +10592,20 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "El archivo seleccionado parece tener aún uno o más confictos marcados en el.\n¿Seguro que quieres marcar el archivo como resuelto?"
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid ""
+"The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n"
+"\n"
+"Reasons may include:\n"
+"* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n"
+"* It uses an unsupported format.\n"
+"* It contains some kind of defect and needs to be checked/repaired.\n"
+"\n"
+"The following libgit and libgit2 errors may provide further insight:\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
 #, c-format
@@ -11247,10 +11271,6 @@ msgstr "Archivos de la carpeta antecesora marcados como no versionados"
 msgid "Unversioning %s"
 msgstr "Desversionando %s"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
-msgstr "Arriba"
-
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
 msgid "Update"
 msgstr "Actualización"
@@ -11534,6 +11554,10 @@ msgstr "El nombre de usuario y correo deben ponerse antes de consignar.\n¿Quier
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
 msgstr "NombreUser:"
+
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)

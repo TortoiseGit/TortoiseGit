@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2025 the TortoiseGit team
+# Copyright (C) 2008-2026 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -600,7 +600,8 @@ msgstr "&No mostrar més aquest missatge "
 msgid "&Don't store these settings now."
 msgstr "&No desis ara aquesta configuració."
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog
+#. IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr "&Avall"
 
@@ -1078,6 +1079,10 @@ msgstr "&Estira"
 msgid "&Pull..."
 msgstr "&Estira..."
 
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
 msgstr "Empeny totes les branques"
@@ -1360,7 +1365,8 @@ msgstr "Desbloqueja"
 msgid "&Unstaging"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog
+#. IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr "Amunt"
 
@@ -2631,11 +2637,6 @@ msgstr "Fitxers canviats"
 #, c-format
 msgid "Changed files between %1!s! and %2!s!"
 msgstr "Fitxers modificats entre %1!s! i %2!s!"
-
-#. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
-#, c-format
-msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr "Fitxers modificats entre %1!s!, %2!s! i %3!s!, %4!s!"
 
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
@@ -4305,10 +4306,6 @@ msgstr "No mostrar més aquest missatge "
 msgid "Done"
 msgstr "Fet"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
-msgstr "Avall"
-
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
 msgstr "Descarrega"
@@ -5702,6 +5699,11 @@ msgstr "Ha fallat l'script hook"
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "No utilitzo el Git per al Windows i em calen alternatives especials"
 
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
+
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
 msgstr "&Inclou els camins:"
@@ -6212,6 +6214,10 @@ msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
 msgstr "En el següent quadre combinat trobareu tots els paquets d'idioma instal·lats que pot utilitzar aquesta versió del TortoiseGit."
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
 msgid "Include &Tags"
@@ -10255,6 +10261,10 @@ msgstr "Fitxers text (*.txt)|*.txt|Tots els fitxers (*.*)|*.*||"
 msgid "Thai"
 msgstr "Thai"
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid ""
 "The Remote Config was changed.\n"
@@ -10567,6 +10577,20 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "El fitxer seleccionat sembla que té encara un o més marcadors de conflicte.\nEsteu segur que voleu marcar el fitxer coma resolt?"
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid ""
+"The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n"
+"\n"
+"Reasons may include:\n"
+"* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n"
+"* It uses an unsupported format.\n"
+"* It contains some kind of defect and needs to be checked/repaired.\n"
+"\n"
+"The following libgit and libgit2 errors may provide further insight:\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
 #, c-format
@@ -11232,10 +11256,6 @@ msgstr "Els fitxers sense versionar marquen la carpeta contenidora com a modific
 msgid "Unversioning %s"
 msgstr "Deixant de versionar %s"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
-msgstr "Amunt"
-
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
 msgid "Update"
 msgstr "Actualitza"
@@ -11519,6 +11539,10 @@ msgstr "El nom d'usuari i email s'han de configurar abans de crear una entrega.\
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
 msgstr "Nom d'usuari:"
+
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)

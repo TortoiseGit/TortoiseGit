@@ -1,5 +1,5 @@
 # Translation of TortoiseGit
-# Copyright (C) 2008-2025 the TortoiseGit team
+# Copyright (C) 2008-2026 the TortoiseGit team
 # 
 # This file is distributed under the same license as TortoiseGit
 # 
@@ -23,7 +23,7 @@
 # mkrawiecki <michal.krawiecki@erlkoenig.pl>, 2011
 # Pablos <pawel.patyk@pabloart.pl>, 2012,2016
 # Pablos <pawel.patyk@pabloart.pl>, 2016
-# Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015-2016,2021-2022
+# Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015-2016,2021-2022,2025
 # StasiekK <2stan2@gmail.com>, 2016
 # StasiekK <2stan2@gmail.com>, 2016
 # Sven Strickroth <sstrickroth@googlemail.com>, 2020-2021
@@ -35,7 +35,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://tortoisegit.org/issues\n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2011-11-27 06:19+0000\n"
-"Last-Translator: Mariusz Krzaczkowski, 2025\n"
+"Last-Translator: Sebastian Kaczorowski <gq9lbk@gmail.com>, 2015-2016,2021-2022,2025\n"
 "Language-Team: Polish (http://app.transifex.com/lznuaa/tortoisegit/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -614,7 +614,8 @@ msgstr "Nie pokazuj więcej tego komunikatu"
 msgid "&Don't store these settings now."
 msgstr "&Nie będzie na razie przechowywał tych ustawień."
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1384, Dialog
+#. IDD_REBASE: Control id 1384)
 msgid "&Down"
 msgstr "&W dół"
 
@@ -996,7 +997,7 @@ msgstr "&Nic"
 
 #. Resource IDs: (Dialog IDD_SETTINGSPROGSALTERNATIVEEDITOR: Control id 1661)
 msgid "&Notepad"
-msgstr ""
+msgstr "&Notatnik"
 
 #. Resource IDs: (Dialog IDD_REVGRAPHFILTER: Control id 1, IDS_OKBUTTON)
 msgid "&OK"
@@ -1091,6 +1092,10 @@ msgstr "&Pobierz"
 #. Resource IDs: (IDS_MENUPULL)
 msgid "&Pull..."
 msgstr "&Pobierz..."
+
+#. Resource IDs: (Dialog IDD_NEW_BRANCH_TAG: Control id 1524)
+msgid "&Push"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1481)
 msgid "&Push all branches"
@@ -1374,7 +1379,8 @@ msgstr "&Odblokuj"
 msgid "&Unstaging"
 msgstr ""
 
-#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386)
+#. Resource IDs: (Dialog IDD_APPLY_PATCH_LIST: Control id 1386, Dialog
+#. IDD_REBASE: Control id 1386)
 msgid "&Up"
 msgstr "&W górę"
 
@@ -2646,11 +2652,6 @@ msgstr "Zmienione pliki"
 msgid "Changed files between %1!s! and %2!s!"
 msgstr "Zmienione pliki między %1!s i %2!s!"
 
-#. Resource IDs: (IDS_FILEDIFF_CHANGEDLISTINTRO)
-#, c-format
-msgid "Changed files between %1!s!, %2!s! and %3!s!, %4!s!"
-msgstr "Zmienione pliki między %1!s!, %2!s! i %3!s!, %4!s!"
-
 #. Resource IDs: (IDS_CHECKUPDATE_SUMMARY)
 #, c-format
 msgid "Changed files: %d"
@@ -3549,7 +3550,7 @@ msgstr "Stwórz plik .gitignore"
 
 #. Resource IDs: (IDS_CREATE_BRANCH_AT_THIS)
 msgid "Create Br&anch at this version..."
-msgstr ""
+msgstr "Stwórz gałąź w tej wersji..."
 
 #. Resource IDs: (IDS_PROGS_TITLE_CREATEBRANCH)
 msgid "Create Branch"
@@ -3676,7 +3677,7 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_MERGE: Control id 65535, Dialog IDD_RESET:
 #. Control id 65535)
 msgid "Current branch:"
-msgstr ""
+msgstr "Bieżąca gałąź:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1113)
 msgid "Current version is:"
@@ -4084,7 +4085,7 @@ msgstr "Wyjątek podczas wysyłania: %1"
 
 #. Resource IDs: (Dialog IDD_SETTINGSDIALOGS: Control id 1910)
 msgid "Display branch revision number"
-msgstr ""
+msgstr "Wyświetl numer wersji gałęźi"
 
 #. Resource IDs: (57609)
 msgid ""
@@ -4282,7 +4283,7 @@ msgstr "Dokument:"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1032)
 msgid "Don't ask me &again"
-msgstr ""
+msgstr "Nie pytaj mnie o to ponownie"
 
 #. Resource IDs: (IDS_PROC_SYNC_PUSH_UNKNOWNBRANCH)
 #, c-format
@@ -4318,10 +4319,6 @@ msgstr "Nie pokazuj więcej tego komunikatu"
 #. Resource IDs: (IDS_DONE)
 msgid "Done"
 msgstr "Gotowe"
-
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1384)
-msgid "Down"
-msgstr "W dół"
 
 #. Resource IDs: (Dialog IDD_CHECKFORUPDATES: Control id 1698)
 msgid "Download"
@@ -4366,7 +4363,7 @@ msgstr "E"
 
 #. Resource IDs: (IDS_PROC_REBASE_UNSELECTED_EDIT)
 msgid "E&dit unselected"
-msgstr ""
+msgstr "Edytuj odznaczone"
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "E&xclude paths:"
@@ -4407,7 +4404,7 @@ msgstr "Edytuj"
 
 #. Resource IDs: (IDS_EDIT_NOTES)
 msgid "Edit &Notes"
-msgstr ""
+msgstr "Edytuj notatki"
 
 #. Resource IDs: (IDS_PROC_EDITGLOBALGITCONFIG)
 msgid "Edit &global .gitconfig"
@@ -4785,7 +4782,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_FAIL)
 msgid "Fail"
-msgstr ""
+msgstr "Nie udało się"
 
 #. Resource IDs: (IDS_SVNACTION_FAILEDREVERT)
 msgid "Failed revert"
@@ -5234,7 +5231,7 @@ msgstr ""
 
 #. Resource IDs: (IDS_REMOVEWITHFORCE)
 msgid "Force remove"
-msgstr ""
+msgstr "Wymuś usunięcie"
 
 #. Resource IDs: (IDS_REBASE_FORCE_TT)
 msgid ""
@@ -5688,7 +5685,7 @@ msgstr "Ukryj/pokaż listę plików poprawek\nUkrywa lub pokazuje listę plików
 
 #. Resource IDs: (IDS_HINT)
 msgid "Hint"
-msgstr ""
+msgstr "Podpowiedź"
 
 #. Resource IDs: (IDS_HINTLASTMESSAGES)
 msgid ""
@@ -5715,6 +5712,11 @@ msgstr ""
 #. Resource IDs: (Dialog IDD_FIRSTSTARTWIZARD_GIT: Control id 1841)
 msgid "I don't use Git for Windows and need special workarounds"
 msgstr "Nie używam oprogramowania Git for Windows i potrzebuję specjalnych kombinacji"
+
+#. Resource IDs: (IDS_PROC_ADDSAFEDIRECTORY)
+#, c-format
+msgid "I trust the path \"%s\", add it as safe.directory"
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSOVERLAY: Control id 65535)
 msgid "I&nclude paths:"
@@ -5976,7 +5978,7 @@ msgstr "Nakładki ikon"
 
 #. Resource IDs: (Dialog IDD_SETOVERLAYICONS: Control id 184)
 msgid "Icon Set"
-msgstr ""
+msgstr "Zestaw ikon"
 
 #. Resource IDs: (IDS_ICONFILEFILTER)
 msgid ""
@@ -6211,7 +6213,7 @@ msgstr "Importuję plik %s"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCHANGELIST)
 msgid "In Changelist"
-msgstr ""
+msgstr "W liście zmian"
 
 #. Resource IDs: (IDS_PROC_SYNC_INCOMMITS)
 msgid "In Commits"
@@ -6225,6 +6227,10 @@ msgstr ""
 msgid ""
 "In the following combobox you can find all installed language packs which "
 "can be used by this version of TortoiseGit."
+msgstr ""
+
+#. Resource IDs: (IDS_MENUINACCESSIBLE)
+msgid "Inaccessible..."
 msgstr ""
 
 #. Resource IDs: (Dialog IDD_PUSH: Control id 1499)
@@ -6325,7 +6331,7 @@ msgstr ""
 
 #. Resource IDs: (Dialog IDD_CERTCHECK: Control id 65535)
 msgid "Issuer:"
-msgstr ""
+msgstr "Wydawca:"
 
 #. Resource IDs: (IDS_PROC_BROWSEREFS_WARNINGNOMERGECHECK)
 msgid ""
@@ -6396,19 +6402,19 @@ msgstr ""
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_LOCK)
 msgid "LFS Lock"
-msgstr ""
+msgstr "Blokada LFS"
 
 #. Resource IDs: (IDS_STATUSLIST_COLLFSLOCK)
 msgid "LFS Lock Owner"
-msgstr ""
+msgstr "Właściciel blokady LFS"
 
 #. Resource IDs: (Dialog IDD_LFS_LOCKS: Control id 176)
 msgid "LFS Locks"
-msgstr ""
+msgstr "Blokada LFS"
 
 #. Resource IDs: (IDS_PROGRS_TITLE_LFS_UNLOCK)
 msgid "LFS Unlock"
-msgstr ""
+msgstr "Odblokowanie LFS"
 
 #. Resource IDs: (Dialog IDD_SETTINGSCOLORS_3: Control id 65535)
 msgid "LINE1"
@@ -10269,6 +10275,10 @@ msgstr "Pliki tekstowe (*.txt)|*.txt|Wszystkie pliki (*.*)|*.*||"
 msgid "Thai"
 msgstr "tajski"
 
+#. Resource IDs: (IDS_MENUDESCINACCESSIBLE)
+msgid "The Git repository is inaccessible and further action is required."
+msgstr ""
+
 #. Resource IDs: (IDS_PROC_GITCONFIG_SAVEREMOTE)
 msgid ""
 "The Remote Config was changed.\n"
@@ -10581,6 +10591,20 @@ msgid ""
 "The selected file appears to still have one or more conflict markers in it.\n"
 "Are you sure you want to mark the file resolved?"
 msgstr "Wybrany plik prawdopodobnie wciąż zawiera wewnątrz markery konfliktu.\nCzy na pewno chcesz oznaczyć ten plik jako plik z rozwiązanym konfliktem?"
+
+#. Resource IDs: (IDS_INACCESSIBLE)
+#, c-format
+msgid ""
+"The selected folder seems to be a Git working tree or repository, however, it cannot be accessed.\n"
+"\n"
+"Reasons may include:\n"
+"* Access is prevented due to security reasons and access needs to be granted using a safe.directory config entry.\n"
+"* It uses an unsupported format.\n"
+"* It contains some kind of defect and needs to be checked/repaired.\n"
+"\n"
+"The following libgit and libgit2 errors may provide further insight:\n"
+"%s"
+msgstr ""
 
 #. Resource IDs: (IDS_COMMITDLG_SUBMODULEDIRTY)
 #, c-format
@@ -11246,10 +11270,6 @@ msgstr "Niewersjonowane pliki skutkują oznaczeniem nadrzędnego folderu jako zm
 msgid "Unversioning %s"
 msgstr "Odwersjonowanie %s"
 
-#. Resource IDs: (Dialog IDD_REBASE: Control id 1386)
-msgid "Up"
-msgstr "Do góry"
-
 #. Resource IDs: (Dialog IDD_DIFFSUBMODULE: Control id 1710)
 msgid "Update"
 msgstr "Uaktualnij"
@@ -11533,6 +11553,10 @@ msgstr "Nazwa użytkownika i e-mail muszą być ustawione przed zatwierdzeniem.\
 #. Resource IDs: (Dialog IDD_CLONE: Control id 1650)
 msgid "User&name:"
 msgstr "Nazwa &użytkownika:"
+
+#. Resource IDs: (1711)
+msgid "Username and email must not be empty."
+msgstr ""
 
 #. Resource IDs: (Dialog IDD_SETTINGSCREDENTIAL: Control id 65535,
 #. IDS_AUTH_USERNAME)
