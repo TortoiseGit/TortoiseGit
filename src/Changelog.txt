@@ -1,5 +1,7 @@
 ﻿= Release 2.19.0 =
-Released: unreleased
+Released: 2026-06-20
+
+This release contains several security fixes as well as performance improvements.
 
 == Features ==
  * Update pcre2 to version 10.47
@@ -18,6 +20,7 @@ Released: unreleased
  * Fixed issue #4267: Migrate VBScript diff scripts to JavaScript
    Microsoft deprecates VBScript (cf. <https://techcommunity.microsoft.com/blog/windows-itpro-blog/vbscript-deprecation-timelines-and-next-steps/4148301>)
  * Fixed issue #4263: Add support for `/*` wildcard in safe.directory checks
+ * Various smaller code and performance improvements
 
 == Bug Fixes ==
  * Fix possible crash when parent window is closed before push/pull
@@ -34,6 +37,10 @@ Released: unreleased
  * ProgressDlg: Limit line length to 8 KiB. This fixes a possible denial of service due to excessive memory usage when a remote server sends arbitrary lone lines (issue pointed out by Gabriele Paris of NATO Cyber Security Centre)
  * Improved prevention of possible injections into git.exe parameters
  * Fixed issue #4270: Allow references to be trees instead of just commits
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.18.0.1 =
 Released: 2025-12-01
@@ -56,11 +63,6 @@ Git for Windows has stopped providing builds for 32-bit Windows, and TortoiseGit
  * Fixed issue #4239: "Stash Apply" shows info dialog instead of warning for conflicts
  * Fixed issue #4241: TortoiseGit create a crash report after first logon
  * Fixed issue #4242: TortoiseGit may crash on folder with multibyte path name
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
-   This only applies to Windows 10, as Windows 11 Explorer does not have a title bar any more.
 
 = Release 2.18.0 =
 Released: 2025-10-31
