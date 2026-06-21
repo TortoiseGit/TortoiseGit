@@ -64,7 +64,7 @@ void CGitCliOutputParser::AppendChunk(const std::string_view chunk)
 		m_inputBuffer.push_back(ch);
 	}
 
-	if (m_inputBuffer.size() > 150 * 1024 * 1024) // just a safeguard with an arbitrary large limit, we should never get there as in another thread we're processing the buffer in short intervals
+	if (m_inputBuffer.size() > MAX_BUFFER_SIZE) // just a safeguard with an arbitrary large limit, we should never get there as in another thread we're processing the buffer in short intervals
 	{
 		m_inputBuffer.append(std::format("\n\n[Buffer truncated at about {} MiB to prevent resource exhaustion]\n", MAX_BUFFER_SIZE / 1024 / 1024));
 		m_dropMode = true;
