@@ -58,9 +58,6 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 	CTGitPathList moveList;
 	CMassiveGitTask unstageTask{ L"rm -f --cached" };
-	CString endOfOptions;
-	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-		endOfOptions = L"--end-of-options ";
 	CString quotedRevisionToRevertTo;
 	try
 	{
@@ -71,7 +68,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 		list->ReportError(e.cause());
 		return false;
 	}
-	CMassiveGitTask checkoutTask{ L"checkout -f " + endOfOptions + quotedRevisionToRevertTo };
+	CMassiveGitTask checkoutTask{ L"checkout -f --end-of-options " + quotedRevisionToRevertTo };
 	CMassiveGitTask addTask{ L"add -f" };
 	CMassiveGitTask deleteTask{ L"rm --ignore-unmatch" };
 	bool hasSubmodule = false;
@@ -174,7 +171,7 @@ bool RevertProgressCommand::Run(CGitProgressList* list, CString& sWindowTitle, i
 
 		try
 		{
-			cmd.Format(L"git.exe checkout -f %s%s -- %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevertToRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitOldPathString())));
+			cmd.Format(L"git.exe checkout -f --end-of-options %s -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevertToRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path.GetGitOldPathString())));
 		}
 		catch (illegal_git_parameter& e)
 		{

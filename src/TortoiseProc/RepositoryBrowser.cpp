@@ -1316,13 +1316,10 @@ void CRepositoryBrowser::OpenFile(const CString path, eOpenType mode, bool isSub
 }
 bool CRepositoryBrowser::RevertItemToVersion(const CString &path)
 {
-	CString endOfOptions;
-	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-		endOfOptions = L" --end-of-options";
 	CString cmd, out;
 	try
 	{
-		cmd.Format(L"git.exe checkout%s %s -- %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path)));
+		cmd.Format(L"git.exe checkout --end-of-options %s -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_sRevision)), static_cast<LPCWSTR>(CGit::QuoteParameter(path)));
 	}
 	catch (illegal_git_parameter& e)
 	{

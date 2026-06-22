@@ -472,14 +472,10 @@ BOOL CSettingGitRemote::OnApply()
 			}
 		}
 
-		CString endOfOptions;
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 38, 0))
-			endOfOptions = L" --";
-
 		CString cmd,out;
 		try
 		{
-			cmd.Format(L"git.exe remote add%s %s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strUrl)));
+			cmd.Format(L"git.exe remote add -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(m_strRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strUrl)));
 		}
 		catch (illegal_git_parameter& e)
 		{
@@ -561,14 +557,10 @@ void CSettingGitRemote::OnBnClickedButtonRemove()
 		msg.Format(IDS_WARN_REMOVE, static_cast<LPCWSTR>(str));
 		if (CMessageBox::Show(GetSafeHwnd(), msg, L"TortoiseGit", MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
-			CString endOfOptions;
-			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 38, 0))
-				endOfOptions = L" --";
-
 			CString cmd,out;
 			try
 			{
-				cmd.Format(L"git.exe remote rm%s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(str)));
+				cmd.Format(L"git.exe remote rm -- %s", static_cast<LPCWSTR>(CGit::QuoteParameter(str)));
 			}
 			catch (illegal_git_parameter& e)
 			{
@@ -597,14 +589,10 @@ void CSettingGitRemote::OnBnClickedButtonRenameRemote()
 		m_ctrlRemoteList.GetText(sel, oldRemote);
 		GetDlgItem(IDC_EDIT_REMOTE)->GetWindowText(newRemote);
 
-		CString endOfOptions;
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 38, 0))
-			endOfOptions = L" --";
-
 		CString cmd, out;
 		try
 		{
-			cmd.Format(L"git.exe remote rename%s %s %s", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(oldRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(newRemote)));
+			cmd.Format(L"git.exe remote rename -- %s %s", static_cast<LPCWSTR>(CGit::QuoteParameter(oldRemote)), static_cast<LPCWSTR>(CGit::QuoteParameter(newRemote)));
 		}
 		catch (illegal_git_parameter& e)
 		{

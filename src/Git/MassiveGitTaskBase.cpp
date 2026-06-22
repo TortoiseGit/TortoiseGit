@@ -84,7 +84,7 @@ bool CMassiveGitTaskBase::ExecuteCommands(volatile BOOL& cancel)
 	if (IsListEmpty())
 		return true;
 
-	if (m_bIsPath && CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 26, 0) && startsWithOrIsParam(m_sParams, L"add", L"rm", L"reset", L"checkout", L"restore", L"stash"))
+	if (m_bIsPath && startsWithOrIsParam(m_sParams, L"add", L"rm", L"reset", L"checkout", L"restore", L"stash"))
 	{
 		CString tempFilename = GetTempFile();
 		if (tempFilename.IsEmpty())

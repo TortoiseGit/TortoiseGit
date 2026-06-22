@@ -1307,10 +1307,7 @@ bool CAppUtils::PerformSwitch(HWND hWnd, const CString& ref, bool bForce /* fals
 		if (bMerge)
 			params += L" --merge";
 
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-			params += L" --end-of-options";
-
-		progress.m_GitCmd.Format(L"git.exe checkout%s %s --", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(ref))));
+		progress.m_GitCmd.Format(L"git.exe checkout%s --end-of-options %s --", static_cast<LPCWSTR>(params), static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(ref))));
 	}
 	catch (illegal_git_parameter& e)
 	{
@@ -1590,14 +1587,10 @@ static bool Reset(HWND hWnd, const CString& resetTo, int resetType)
 		break;
 	}
 
-	CString endOfOptions;
-	if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-		endOfOptions = L" --end-of-options";
-
 	CProgressDlg progress(GetParentCWnd(hWnd));
 	try
 	{
-		progress.m_GitCmd.Format(L"git.exe reset %s%s %s --", static_cast<LPCWSTR>(type), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(resetTo)));
+		progress.m_GitCmd.Format(L"git.exe reset %s --end-of-options %s --", static_cast<LPCWSTR>(type), static_cast<LPCWSTR>(CGit::QuoteParameter(resetTo)));
 	}
 	catch (illegal_git_parameter& e)
 	{
@@ -2197,8 +2190,6 @@ bool CAppUtils::MessageContainsConflictHints(HWND hWnd, const CString& message)
 	CString commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
 	if (commentCharValue.IsEmpty())
 		commentCharValue = L"#";
-	else if (CGit::ms_LastMsysGitVersion < ConvertVersionToInt(2, 45, 0))
-		commentCharValue = commentCharValue.Left(1);
 
 	CString conflictsHint;
 	conflictsHint.Format(L"\n%s Conflicts:\n%s\t", static_cast<LPCWSTR>(commentCharValue), static_cast<LPCWSTR>(commentCharValue));
@@ -2230,8 +2221,6 @@ int CAppUtils::SaveCommitUnicodeFile(const CString& filename, CString &message)
 			commentCharValue = g_Git.GetConfigValue(L"core.commentchar");
 			if (commentCharValue.IsEmpty())
 				commentCharValue = L"#";
-			else if (CGit::ms_LastMsysGitVersion < ConvertVersionToInt(2, 45, 0))
-				commentCharValue = commentCharValue.Left(1);
 		}
 
 		bool sanitize = (CRegDWORD(L"Software\\TortoiseGit\\SanitizeCommitMsg", TRUE) == TRUE);

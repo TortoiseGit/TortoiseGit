@@ -581,9 +581,8 @@ CString CGit::GetUserName()
 	if (!envname.IsEmpty())
 		return envname;
 
-	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
-		if (auto authorname = GetConfigValue(L"author.name"); !authorname.IsEmpty())
-			return authorname;
+	if (auto authorname = GetConfigValue(L"author.name"); !authorname.IsEmpty())
+		return authorname;
 
 	return GetConfigValue(L"user.name");
 }
@@ -595,9 +594,8 @@ CString CGit::GetUserEmail()
 	if (!envmail.IsEmpty())
 		return envmail;
 
-	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
-		if (auto authormail = GetConfigValue(L"author.email"); !authormail.IsEmpty())
-			return authormail;
+	if (auto authormail = GetConfigValue(L"author.email"); !authormail.IsEmpty())
+		return authormail;
 
 	return GetConfigValue(L"user.email");
 }
@@ -610,9 +608,8 @@ CString CGit::GetCommitterName()
 	if (!envname.IsEmpty())
 		return envname;
 
-	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
-		if (auto committername = GetConfigValue(L"committer.name"); !committername.IsEmpty())
-			return committername;
+	if (auto committername = GetConfigValue(L"committer.name"); !committername.IsEmpty())
+		return committername;
 
 	return GetConfigValue(L"user.name");
 }
@@ -625,9 +622,8 @@ CString CGit::GetCommitterEmail()
 	if (!envmail.IsEmpty())
 		return envmail;
 
-	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 22, 0))
-		if (auto committermail = GetConfigValue(L"committer.email"); !committermail.IsEmpty())
-			return committermail;
+	if (auto committermail = GetConfigValue(L"committer.email"); !committermail.IsEmpty())
+		return committermail;
 
 	return GetConfigValue(L"user.email");
 }
@@ -2589,7 +2585,7 @@ CString CGit::GetGitGlobalXDGConfig(bool returnDirectory) const
 		return xdgPath;
 	}
 
-	if (CString appData = m_Environment.GetEnv(L"APPDATA"); !appData.IsEmpty() && !ms_bCygwinGit && !ms_bMsys2Git && ms_LastMsysGitVersion >= ConvertVersionToInt(2, 46, 0))
+	if (CString appData = m_Environment.GetEnv(L"APPDATA"); !appData.IsEmpty() && !ms_bCygwinGit && !ms_bMsys2Git)
 	{
 		appData += L"\\Git";
 		CString appDataConfigFile = appData + L"\\config";
@@ -3477,9 +3473,7 @@ int CGit::GetWorkingTreeChanges(CTGitPathList& result, bool amend, const CTGitPa
 	if (amend)
 		head = L"HEAD~1";
 
-	CString gitStatusParams;
-	if (ms_LastMsysGitVersion >= ConvertVersionToInt(2, 17, 0))
-		gitStatusParams = L" --no-ahead-behind";
+	CString gitStatusParams = L" --no-ahead-behind";
 
 	for (int i = 0; i < count; ++i)
 	{

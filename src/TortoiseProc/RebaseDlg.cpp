@@ -1277,12 +1277,9 @@ void CRebaseDlg::OnBnClickedContinue()
 
 		if (g_Git.IsLocalBranch(m_BranchCtrl.GetString()))
 		{
-			CString endOfOptions;
-			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-				endOfOptions = L" --end-of-options";
 			try
 			{
-				cmd.Format(L"git.exe checkout --no-track -f -B %s%s %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(m_BranchCtrl.GetString())), static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_UpstreamCtrl.GetString())));
+				cmd.Format(L"git.exe checkout --no-track -f -B %s --end-of-options %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(m_BranchCtrl.GetString())), static_cast<LPCWSTR>(CGit::QuoteParameter(m_UpstreamCtrl.GetString())));
 			}
 			catch (illegal_git_parameter& e)
 			{
@@ -1299,12 +1296,9 @@ void CRebaseDlg::OnBnClickedContinue()
 			out.Empty();
 		}
 
-		CString endOfOptions;
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-			endOfOptions = L" --end-of-options";
 		try
 		{
-			cmd.Format(L"git.exe reset --hard%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(m_UpstreamCtrl.GetString()))));
+			cmd.Format(L"git.exe reset --hard --end-of-options %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(g_Git.FixBranchName(m_UpstreamCtrl.GetString()))));
 		}
 		catch (illegal_git_parameter& e)
 		{

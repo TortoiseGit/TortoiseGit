@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2008-2019, 2021-2022, 2024-2025 - TortoiseGit
+// Copyright (C) 2008-2019, 2021-2022, 2024-2026 - TortoiseGit
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -36,11 +36,11 @@ public:
 
 	static bool CheckGitVersion(HWND hwnd)
 	{
-		if (CAppUtils::IsGitVersionNewerOrEqual(hwnd, 2, 24))
+		if (CAppUtils::IsGitVersionNewerOrEqual(hwnd, 2, 47))
 			return true;
 
 		CString tmp;
-		tmp.Format(IDS_PROC_OLDMSYSGIT, L"2.24+");
+		tmp.Format(IDS_PROC_OLDMSYSGIT, L"2.47+");
 		const auto ret = CMessageBox::ShowCheck(hwnd, tmp, IDS_APPNAME, 1, IDI_EXCLAMATION, IDS_PROC_GOTOMSYSGITWEBSITE, IDS_ABORTBUTTON, IDS_IGNOREBUTTON, L"OldMsysgitVersionWarning", IDS_PROC_NOTSHOWAGAINIGNORE);
 		if (ret == 3)
 			return true;

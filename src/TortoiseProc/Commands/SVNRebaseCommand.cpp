@@ -125,12 +125,9 @@ bool SVNRebaseCommand::Execute()
 	{
 		CProgressDlg progressReset;
 		CString cmd;
-		CString endOfOptions;
-		if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-			endOfOptions = L" --end-of-options";
 		try
 		{
-			cmd.Format(L"git.exe reset --hard%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(out)));
+			cmd.Format(L"git.exe reset --hard --end-of-options %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(out)));
 		}
 		catch (illegal_git_parameter& e)
 		{

@@ -177,13 +177,10 @@ void CSyncDlg::OnBnClickedButtonPull()
 			if (CMessageBox::Show(GetSafeHwnd(), CString(MAKEINTRESOURCE(IDS_PROC_SYNC_PULLWRONGBRANCH)), L"TortoiseGit", 2, IDI_QUESTION, tmp, CString(MAKEINTRESOURCE(IDS_ABORTBUTTON))) == 2)
 				return;
 
-			CString endOfOptions;
-			if (CGit::ms_LastMsysGitVersion >= ConvertVersionToInt(2, 43, 1))
-				endOfOptions = L" --end-of-options";
 			CString cmd;
 			try
 			{
-				cmd.Format(L"git.exe checkout%s %s --", static_cast<LPCWSTR>(endOfOptions), static_cast<LPCWSTR>(CGit::QuoteParameter(m_strLocalBranch)));
+				cmd.Format(L"git.exe checkout --end-of-options %s --", static_cast<LPCWSTR>(CGit::QuoteParameter(m_strLocalBranch)));
 			}
 			catch (illegal_git_parameter& e)
 			{
