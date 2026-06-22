@@ -227,7 +227,7 @@ BOOL CSetLookAndFeelPage::OnApply()
 	UpdateData();
 
 	LARGE_INTEGER tmp;
-	tmp.QuadPart = to_underlying(m_topmenu);
+	tmp.QuadPart = std::to_underlying(m_topmenu);
 	m_regTopmenu = tmp.LowPart;
 	m_regTopmenuhigh = tmp.HighPart;
 
@@ -362,7 +362,7 @@ BOOL CSetExtMenu::OnApply()
 	UpdateData();
 
 	LARGE_INTEGER tmp;
-	tmp.QuadPart = to_underlying(m_extmenu);
+	tmp.QuadPart = std::to_underlying(m_extmenu);
 	m_regExtmenu = tmp.LowPart;
 	m_regExtmenuhigh = tmp.HighPart;
 
@@ -477,7 +477,7 @@ BOOL CSetWin11ContextMenu::OnApply()
 {
 	UpdateData();
 
-	m_regtopMenu = to_underlying(m_topMenu);
+	m_regtopMenu = std::to_underlying(m_topMenu);
 
 	SetModified(FALSE);
 	return ISettingsPropPage::OnApply();

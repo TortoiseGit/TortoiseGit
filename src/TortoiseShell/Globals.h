@@ -97,13 +97,6 @@ constexpr inline TGitContextMenuEntries& operator|=(TGitContextMenuEntries& self
 }
 
 template <typename E>
-constexpr auto to_underlying(E e) noexcept
-{
-	static_assert(std::is_enum_v<E>);
-	return static_cast<std::underlying_type_t<E>>(e);
-}
-
-template <typename E>
 constexpr E from_underlying(std::underlying_type_t<E> value) noexcept
 {
 	static_assert(std::is_enum_v<E>);

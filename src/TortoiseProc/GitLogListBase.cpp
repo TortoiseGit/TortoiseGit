@@ -2629,7 +2629,7 @@ int CGitLogListBase::FillGitLog(std::unordered_set<CGitHash>& hashes)
 	return 0;
 }
 
-int CGitLogListBase::BeginFetchLog()
+std::expected<bool, CString> CGitLogListBase::BeginFetchLog()
 {
 	ATLASSERT(IsInWorkingThread());
 
@@ -2685,16 +2685,16 @@ int CGitLogListBase::BeginFetchLog()
 	}
 	catch (const char* msg)
 	{
-		throw L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+		return std::unexpected(L"Could not initialize libgit.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg));
 	}
 
 	// if not all branches, all basic refs, all local refs etc. are selected, check whether the selected branch is unborn
 	if (!(mask & CGit::LOG_INFO_ALL_BRANCH) && !(mask & CGit::LOG_INFO_BASIC_REFS) && !(mask & CGit::LOG_INFO_LOCAL_BRANCHES))
 	{
 		if (const int ret = g_Git.IsUnbornBranch(range); ret < 0)
-			throw g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn.");
+			return std::unexpected(g_Git.GetGitLastErr(L"Could not check whether the current branch is unborn."));
 		else if (ret == TRUE)
-			return 1;
+			return false;
 	}
 
 	CAutoLocker lock{ g_Git.m_critGitDllSec };
@@ -2703,17 +2703,17 @@ int CGitLogListBase::BeginFetchLog()
 		auto argvData = CGit::VectorToARGV(cmd);
 		m_DllGitLog = nullptr;
 		if (!argvData || git_open_log(&m_DllGitLog, argvData.argc, argvData.argv))
-			return -1;
+			return std::unexpected(L"Could not open log.");
 		argvData.argv = nullptr; // now we know it'll be freed by git_close_log()
 	}
 	catch (const char* msg)
 	{
 		git_close_log(m_DllGitLog, 0);
 		m_DllGitLog = nullptr;
-		throw L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg);
+		return std::unexpected(L"Could not open log.\nlibgit reports:\n" + CUnicodeUtils::GetUnicode(msg));
 	}
 
-	return 0;
+	return true;
 }
 
 BOOL CGitLogListBase::PreTranslateMessage(MSG* pMsg)
@@ -2806,17 +2806,15 @@ UINT CGitLogListBase::LogThread()
 	ULONGLONG  t1,t2;
 
 	bool shouldWalk = false;
-	try
-	{
-		shouldWalk = (BeginFetchLog() == 0);
-	}
-	catch (CString& error)
+	if (auto ret = BeginFetchLog(); ret)
+		shouldWalk = ret.value();
+	else
 	{
 		PostMessage(LVM_SETITEMCOUNT, 0, LVSICF_NOINVALIDATEALL);
 
 		CString temp;
 		temp.LoadString(IDS_ERR_ERROR);
-		temp += L": " + error;
+		temp += L": " + ret.error();
 		if (temp.GetLength() >= _countof(m_wszTip))
 		{
 			temp.Truncate(_countof(m_wszTip) - 1 - static_cast<int>(wcslen(L"...")));

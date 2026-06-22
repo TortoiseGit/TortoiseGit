@@ -32,6 +32,7 @@
 #include "FindDlg.h"
 #include <unordered_set>
 #include "LogDlgFilter.h"
+#include <expected>
 
 using Locker = CComCritSecLock<CComCriticalSection>;
 
@@ -422,7 +423,7 @@ public:
 	void DiffSelectedRevWithPrevious();
 	bool IsSelectionContinuous();
 protected:
-	int  BeginFetchLog();
+	std::expected<bool, CString> BeginFetchLog();
 	HWND GetParentHWND();
 public:
 	int FillGitLog(const CTGitPath* path, const CString* range = nullptr, int infomask = CGit::LOG_INFO_STAT | CGit::LOG_INFO_FILESTATE | CGit::LOG_INFO_SHOW_MERGEDFILE);

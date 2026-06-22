@@ -959,19 +959,19 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 
 		// check the conditions whether to show the menu entry or not
 		const bool bInsertMenu = ShouldInsertItem(menuItem);
-		if (to_underlying(menuItem.menuID & menuex))
+		if (std::to_underlying(menuItem.menuID & menuex))
 		{
 			if (!(itemStates & ITEMIS_EXTENDED) && menuItem.command != TGitShellCommand::Inaccessible)
 				continue;
 		}
 
-		if ((to_underlying(menuItem.menuID) & ~to_underlying(menumask)) == 0)
+		if ((std::to_underlying(menuItem.menuID) & ~std::to_underlying(menumask)) == 0)
 			continue;
 
 		if (!bInsertMenu)
 			continue;
 
-			bool bIsTop = (to_underlying(topmenu & menuItem.menuID) != 0);
+			bool bIsTop = (std::to_underlying(topmenu & menuItem.menuID) != 0);
 		// insert a separator
 		if (bMenuEntryAdded && bAddSeparator && !bIsTop)
 		{
@@ -984,7 +984,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 			idCmd++;
 		}
 
-		bool isMenu11 = (to_underlying(topMenu11 & menuItem.menuID) != 0);
+		bool isMenu11 = (std::to_underlying(topMenu11 & menuItem.menuID) != 0);
 		// handle special cases (sub menus)
 		if ((menuItem.command == TGitShellCommand::IgnoreSub) || (menuItem.command == TGitShellCommand::UnIgnoreSub) || (menuItem.command == TGitShellCommand::DeleteIgnoreSub))
 		{
@@ -1001,7 +1001,7 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		}
 		else
 		{
-			bIsTop = (to_underlying(topmenu & menuItem.menuID) != 0);
+			bIsTop = (std::to_underlying(topmenu & menuItem.menuID) != 0);
 
 			// the 'inaccessible repo' command always has to on the top menu
 			if (menuItem.command == TGitShellCommand::Inaccessible)
@@ -1872,8 +1872,8 @@ LPCWSTR CShellExt::GetMenuTextFromResource(TGitShellCommand id)
 			space = 0;
 			break;
 		default:
-			space = to_underlying(layout & menuItem.menuID) ? 0 : 6;
-			if (to_underlying(layout & menuItem.menuID))
+			space = std::to_underlying(layout & menuItem.menuID) ? 0 : 6;
+			if (std::to_underlying(layout & menuItem.menuID))
 			{
 				wcscpy_s(textbuf, L"Git ");
 				wcscat_s(textbuf, stringtablebuffer);
@@ -1969,7 +1969,7 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 	menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
 	if (hMenu)
-		InsertMenuItem((to_underlying(topmenu & TGitContextMenuEntries::LFS)) ? hMenu : subMenu, (to_underlying(topmenu & TGitContextMenuEntries::LFS)) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+		InsertMenuItem((std::to_underlying(topmenu & TGitContextMenuEntries::LFS)) ? hMenu : subMenu, (std::to_underlying(topmenu & TGitContextMenuEntries::LFS)) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 	myIDMap[idCmd - idCmdFirst] = TGitShellCommand::LFSMenu;
 	myIDMap[idCmd++] = TGitShellCommand::LFSMenu;
 
@@ -2232,7 +2232,7 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		menuiteminfo.cch = static_cast<UINT>(min(wcslen(menuiteminfo.dwTypeData), static_cast<size_t>(UINT_MAX)));
 
 		if (hMenu)
-			InsertMenuItem((to_underlying(topmenu & TGitContextMenuEntries::Ignore)) ? hMenu : subMenu, (to_underlying(topmenu & TGitContextMenuEntries::Ignore)) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
+			InsertMenuItem((std::to_underlying(topmenu & TGitContextMenuEntries::Ignore)) ? hMenu : subMenu, (std::to_underlying(topmenu & TGitContextMenuEntries::Ignore)) ? indexMenu++ : indexSubMenu++, TRUE, &menuiteminfo);
 		else
 		{
 			m_explorerCommands.push_back(Microsoft::WRL::Make<CExplorerCommand>(L"", 0, TGitShellCommand::Separator, static_cast<LPCWSTR>(CPathUtils::GetAppDirectory(g_hmodThisDll)), uuidSource, itemStates, itemStatesFolder, files_, std::vector<Microsoft::WRL::ComPtr<CExplorerCommand>>(), m_site));

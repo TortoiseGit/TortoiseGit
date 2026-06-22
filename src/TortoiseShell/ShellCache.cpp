@@ -43,13 +43,13 @@ ShellCache::ShellCache()
 	showignoredoverlay = CRegStdDWORD(L"Software\\TortoiseGit\\ShowIgnoredOverlay", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	excludedasnormal = CRegStdDWORD(L"Software\\TortoiseGit\\ShowExcludedAsNormal", TRUE, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", to_underlying(defaultWin11TopMenuEntries), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
+	menuLayout11 = CRegStdQWORD(L"Software\\TortoiseGit\\ContextMenu11Entries", std::to_underlying(defaultWin11TopMenuEntries), false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	unsigned __int64 entries = to_underlying(defaultTopMenuEntries);
+	constexpr auto entries = std::to_underlying(defaultTopMenuEntries);
 	menulayoutlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntries", entries & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menulayouthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuEntrieshigh", entries >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
-	unsigned __int64 ext = to_underlying(defaultExtMenuEntries);
+	constexpr auto ext = std::to_underlying(defaultExtMenuEntries);
 	menuextlow = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesLow", ext & 0xFFFFFFFF, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 	menuexthigh = CRegStdDWORD(L"Software\\TortoiseGit\\ContextMenuExtEntriesHigh", ext >> 32, false, HKEY_CURRENT_USER, KEY_WOW64_64KEY);
 
