@@ -35,7 +35,7 @@ bool InaccessibleCommand ::Execute()
 	{
 		errorParts = L"libgit reported: " + CUnicodeUtils::GetUnicode(msg) + L"\n";
 	}
-	if (!g_Git.GetGitRepository())
+	if (!(PathFileExists(orgCmdLinePath.GetWinPathString() + L"\\.git") && !PathIsDirectory(orgCmdLinePath.GetWinPathString() + L"\\.git")) && !g_Git.GetGitRepository())
 		errorParts += L"----------------------------\n" + g_Git.GetLibGit2LastErr();
 	if (errorParts.IsEmpty())
 		errorParts = L"no errors were reported";
