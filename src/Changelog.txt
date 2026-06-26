@@ -4,6 +4,9 @@ Released: unreleased
 == Changes ==
  * Git (for Windows) 2.47 or newer is now required
 
+== Bug Fixes ==
+ * Fixed #4272: Regression in commit efe2fb1e: %bpath/%ypath and %brev/%yrev values are swapped
+
 = Release 2.19.0 =
 Released: 2026-06-20
 
