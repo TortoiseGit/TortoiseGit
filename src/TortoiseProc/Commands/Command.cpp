@@ -478,15 +478,12 @@ bool Command::CheckRepo(PathRequirement requirement) const
 	CAutoRepository repo;
 	if (int err = repo.Open(CGit::GetGitPathStringA(g_Git.m_CurrentDir)); err == 0)
 		return true;
-	else if (err == GIT_EOWNER)
-	{
-		InaccessibleCommand iac;
-		iac.SetExplorerHwnd(GetExplorerHWND());
-		iac.orgCmdLinePath = g_Git.m_CurrentDir;
-		iac.Execute();
-	}
-	else
-		::MessageBox(GetExplorerHWND(), g_Git.GetLibGit2LastErr(), L"TortoiseGit", MB_ICONERROR);
+
+	InaccessibleCommand iac;
+	iac.SetExplorerHwnd(GetExplorerHWND());
+	iac.orgCmdLinePath = g_Git.m_CurrentDir;
+	iac.Execute();
+
 	return false;
 }
 
