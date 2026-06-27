@@ -4,8 +4,15 @@ Released: unreleased
 == Changes ==
  * Git (for Windows) 2.47 or newer is now required
 
+= Release 2.19.1 =
+Released: 2026-06-27
+
 == Bug Fixes ==
- * Fixed #4272: Regression in commit efe2fb1e: %bpath/%ypath and %brev/%yrev values are swapped
+ * Fixed issue #4272: Regression in commit efe2fb1e: %bpath/%ypath and %brev/%yrev values are swapped
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.19.0 =
 Released: 2026-06-20
@@ -46,10 +53,6 @@ This release contains several security fixes as well as performance improvements
  * ProgressDlg: Limit line length to 8 KiB. This fixes a possible denial of service due to excessive memory usage when a remote server sends arbitrary lone lines (issue pointed out by Gabriele Paris of NATO Cyber Security Centre)
  * Improved prevention of possible injections into git.exe parameters
  * Fixed issue #4270: Allow references to be trees instead of just commits
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.18.0.1 =
 Released: 2025-12-01
