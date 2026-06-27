@@ -1,5 +1,5 @@
 ﻿= Release 2.19.1 =
-Released: unreleased
+Released: 2026-06-27
 
 == Bug Fixes ==
  * Fixed issue #4272: Regression in commit efe2fb1e: %bpath/%ypath and %brev/%yrev values are swapped

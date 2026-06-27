@@ -377,6 +377,7 @@
 						<File Id="F__TGITAutolist" Name="autolist.txt" DiskId="1" Source="include\autolist.txt" />
 						<File Id="F__TGITSnippet" Name="snippet.txt" DiskId="1" Source="include\snippet.txt" />
 						<Environment Id="Environment" Name="PATH" Part="last" System="yes" Value="[INSTALLDIR]bin" Action="set" />
+						<File Id="F__TGITHotfix" Name="Hotfix.ini" DiskId="1" Source="Hotfix.ini" />
 						<RemoveFile Id="CleanupHotfixFile" Name="Hotfix.ini" On="both" />
 					</Component>
 
