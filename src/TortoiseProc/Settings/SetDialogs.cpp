@@ -125,7 +125,7 @@ BEGIN_MESSAGE_MAP(CSetDialogs, ISettingsPropPage)
 	ON_BN_CLICKED(IDC_ENABLEGRAVATAR, OnChange)
 	ON_EN_CHANGE(IDC_GRAVATARURL, OnChange)
 	ON_BN_CLICKED(IDC_RIGHTSIDEBRANCHESTAGS, OnChange)
-	ON_BN_CLICKED(IDC_SHOWDESCRIBE, OnChange)
+	ON_BN_CLICKED(IDC_SHOWDESCRIBE, OnBnClickedShowDescribe)
 	ON_BN_CLICKED(IDC_SHOWREVCOUNTER, OnChange)
 	ON_CBN_SELCHANGE(IDC_DESCRIBESTRATEGY, OnChange)
 	ON_EN_CHANGE(IDC_DESCRIBEABBREVIATEDSIZE, OnChange)
@@ -272,6 +272,19 @@ BOOL CSetDialogs::OnInitDialog()
 
 void CSetDialogs::OnChange()
 {
+	SetModified();
+}
+
+void CSetDialogs::OnBnClickedShowDescribe()
+{
+	UpdateData();
+	if (m_bShowDescribe)
+	{
+		MessageBox(
+			L"'Show Describe' can be very slow on large repositories.",
+			L"TortoiseGit",
+			MB_ICONWARNING | MB_OK);
+	}
 	SetModified();
 }
 

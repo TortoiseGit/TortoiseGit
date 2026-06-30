@@ -44,16 +44,16 @@ BOOL CLogOrdering::OnInitDialog()
 {
 	CStandAloneDialog::OnInitDialog();
 
-	int ind = m_cLogOrdering.AddString(CString(MAKEINTRESOURCE(IDS_LOG_CHRONOLOGICALREVERSEDORDER)));
+	int ind = m_cLogOrdering.AddString(CString(MAKEINTRESOURCE(IDS_LOG_CHRONOLOGICALREVERSEDORDER)) + L" " + CString(MAKEINTRESOURCE(IDS_TORTOISEGITDEFAULT)));
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_CHRONOLOGIALREVERSED);
-	ind = m_cLogOrdering.AddString(L"--topo-order " + CString(MAKEINTRESOURCE(IDS_TORTOISEGITDEFAULT)));
+	ind = m_cLogOrdering.AddString(L"--topo-order");
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_TOPOORDER);
 	ind = m_cLogOrdering.AddString(L"--date-order");
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_DATEORDER);
 	ind = m_cLogOrdering.AddString(L"--author-date-order");
 	m_cLogOrdering.SetItemData(ind, CGit::LOG_ORDER_AUTHORDATEORDER);
 
-	DWORD curOrder = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER);
+	DWORD curOrder = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_CHRONOLOGIALREVERSED);
 	for (int i = 0; i < m_cLogOrdering.GetCount(); ++i)
 		if (m_cLogOrdering.GetItemData(i) == curOrder)
 			m_cLogOrdering.SetCurSel(i);
