@@ -24,6 +24,183 @@ constexpr size_t MAX_LINE_LENGTH = 8 * 1024; // 8 KiB
 constexpr size_t MAX_BUFFER_SIZE = 150 * 1024 * 1024; // 150 MiB
 constexpr std::string_view GIT_REMOTE_PREFIX = "remote: ";
 
+static std::optional<COLORREF> GetAnsiColor(int index)
+{
+	static constexpr COLORREF colors[] = {
+		RGB(0, 0, 0), RGB(205, 49, 49), RGB(13, 188, 121), RGB(229, 229, 16),
+		RGB(36, 114, 200), RGB(188, 63, 188), RGB(17, 168, 205), RGB(229, 229, 229),
+		RGB(102, 102, 102), RGB(241, 76, 76), RGB(35, 209, 139), RGB(245, 245, 67),
+		RGB(59, 142, 234), RGB(214, 112, 214), RGB(41, 184, 219), RGB(255, 255, 255),
+	};
+	if (index < 0 || index > 255)
+		return {};
+	if (index < 16)
+		return colors[index];
+	if (index < 232)
+	{
+		index -= 16;
+		const auto component = [](int value) { return value == 0 ? 0 : 55 + value * 40; };
+		return RGB(component(index / 36), component(index / 6 % 6), component(index % 6));
+	}
+	const int gray = 8 + (index - 232) * 10;
+	return RGB(gray, gray, gray);
+}
+
+void CAnsiEscapeParser::AppendChar(std::vector<AnsiTextRun>& runs, wchar_t ch) const
+{
+	if (runs.empty() || runs.back().style != m_style)
+		runs.push_back({ {}, m_style });
+	runs.back().text.AppendChar(ch);
+}
+
+void CAnsiEscapeParser::ApplySgr(const CString& parameters)
+{
+	std::vector<int> codes;
+	int value = 0;
+	bool hasValue = false;
+	for (int i = 0; i < parameters.GetLength(); ++i)
+	{
+		const wchar_t ch = parameters[i];
+		if (ch >= L'0' && ch <= L'9')
+		{
+			value = std::min(value * 10 + ch - L'0', 256);
+			hasValue = true;
+			continue;
+		}
+		if (ch != L';')
+			return;
+		codes.push_back(hasValue ? value : 0);
+		value = 0;
+		hasValue = false;
+	}
+	codes.push_back(hasValue ? value : 0);
+
+	for (size_t i = 0; i < codes.size(); ++i)
+	{
+		const int code = codes[i];
+		if (code == 0)
+			m_style = {};
+		else if (code == 1)
+			m_style.bold = true;
+		else if (code == 3)
+			m_style.italic = true;
+		else if (code == 4 || code == 21)
+			m_style.underline = true;
+		else if (code == 7)
+			m_style.inverse = true;
+		else if (code == 9)
+			m_style.strikeout = true;
+		else if (code == 22)
+			m_style.bold = false;
+		else if (code == 23)
+			m_style.italic = false;
+		else if (code == 24)
+			m_style.underline = false;
+		else if (code == 27)
+			m_style.inverse = false;
+		else if (code == 29)
+			m_style.strikeout = false;
+		else if (code >= 30 && code <= 37)
+			m_style.foreground = GetAnsiColor(code - 30);
+		else if (code == 39)
+			m_style.foreground.reset();
+		else if (code >= 40 && code <= 47)
+			m_style.background = GetAnsiColor(code - 40);
+		else if (code == 49)
+			m_style.background.reset();
+		else if (code >= 90 && code <= 97)
+			m_style.foreground = GetAnsiColor(code - 90 + 8);
+		else if (code >= 100 && code <= 107)
+			m_style.background = GetAnsiColor(code - 100 + 8);
+		else if ((code == 38 || code == 48) && i + 2 < codes.size() && codes[i + 1] == 5)
+		{
+			if (auto color = GetAnsiColor(codes[i + 2]))
+				(code == 38 ? m_style.foreground : m_style.background) = color;
+			i += 2;
+		}
+		else if ((code == 38 || code == 48) && i + 4 < codes.size() && codes[i + 1] == 2)
+		{
+			const int red = codes[i + 2];
+			const int green = codes[i + 3];
+			const int blue = codes[i + 4];
+			if (red >= 0 && red <= 255 && green >= 0 && green <= 255 && blue >= 0 && blue <= 255)
+				(code == 38 ? m_style.foreground : m_style.background) = RGB(red, green, blue);
+			i += 4;
+		}
+	}
+}
+
+std::vector<AnsiTextRun> CAnsiEscapeParser::Parse(const CString& text)
+{
+	const CString input = m_pendingEscape + text;
+	m_pendingEscape.Empty();
+	std::vector<AnsiTextRun> runs;
+
+	for (int i = 0; i < input.GetLength();)
+	{
+		if (input[i] != L'\033')
+		{
+			AppendChar(runs, input[i++]);
+			continue;
+		}
+
+		if (i + 1 >= input.GetLength())
+		{
+			m_pendingEscape = input.Mid(i);
+			break;
+		}
+
+		if (input[i + 1] == L'[')
+		{
+			int end = i + 2;
+			while (end < input.GetLength() && input[end] >= 0x30 && input[end] <= 0x3f)
+				++end;
+			while (end < input.GetLength() && input[end] >= 0x20 && input[end] <= 0x2f)
+				++end;
+			if (end >= input.GetLength())
+			{
+				m_pendingEscape = input.Mid(i);
+				break;
+			}
+			if (input[end] == L'm')
+				ApplySgr(input.Mid(i + 2, end - i - 2));
+			i = input[end] >= 0x40 && input[end] <= 0x7e ? end + 1 : end;
+			continue;
+		}
+
+		if (input[i + 1] == L']')
+		{
+			int end = i + 2;
+			while (end < input.GetLength() && input[end] != L'\a' && !(input[end] == L'\033' && end + 1 < input.GetLength() && input[end + 1] == L'\\'))
+				++end;
+			if (end >= input.GetLength())
+			{
+				m_pendingEscape = input.Mid(i);
+				break;
+			}
+			i = end + (input[end] == L'\a' ? 1 : 2);
+			continue;
+		}
+
+		int end = i + 1;
+		while (end < input.GetLength() && input[end] >= 0x20 && input[end] <= 0x2f)
+			++end;
+		if (end >= input.GetLength())
+		{
+			m_pendingEscape = input.Mid(i);
+			break;
+		}
+		i = input[end] >= 0x30 && input[end] <= 0x7e ? end + 1 : end;
+	}
+	return runs;
+}
+
+void CAnsiEscapeParser::Reset()
+{
+	m_pendingEscape.Empty();
+	m_style = {};
+}
+
 static constexpr bool IsEmptyRemoteLine(const std::string& line)
 {
 	return line == GIT_REMOTE_PREFIX;
@@ -136,6 +313,7 @@ void CGitCliOutputParser::Reset()
 	m_inputBufferSkippingTruncatedLine = false;
 	m_inputBufferCurrentLineLength = 0;
 	m_dropMode = false;
+	m_ansiEscapeParser.Reset();
 }
 
 void CGitCliOutputParser::AppendLine(EmittedLines& out, const std::string& line) const
