@@ -8,6 +8,9 @@ Released: unreleased
  * Update shipped PuTTY binaries to 0.85
  * Update TortoiseGitPlink to PuTTY Plink 0.85
 
+== Bug Fixes ==
+ * Fixed issue #4278: Classic Explorer context menu leaks GDI bitmap handles and eventually terminates Explorer
+
 = Release 2.19.1 =
 Released: 2026-06-27
 

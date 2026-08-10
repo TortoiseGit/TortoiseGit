@@ -502,6 +502,14 @@ STDMETHODIMP CShellExt::Initialize(LPCITEMIDLIST pIDFolder, LPDATAOBJECT pDataOb
 	return S_OK;
 }
 
+HBITMAP CShellExt::CreateMenuBitmap(UINT icon)
+{
+	auto bitmap = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, icon);
+	if (bitmap)
+		m_menuBitmaps.push_back(bitmap);
+	return bitmap;
+}
+
 void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UINT stringid, UINT icon, UINT idCmdFirst, TGitShellCommand com, UINT /*uFlags*/)
 {
 	wchar_t menutextbuffer[512] = { 0 };
@@ -607,10 +615,10 @@ void CShellExt::InsertGitMenu(BOOL istop, HMENU menu, UINT pos, UINT_PTR id, UIN
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_STRING;
 	menuiteminfo.fType = MFT_STRING;
 	menuiteminfo.dwTypeData = menutextbuffer;
-	if (icon)
+	if (icon && menu)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, icon);
+		menuiteminfo.hbmpItem = CreateMenuBitmap(icon);
 	}
 	menuiteminfo.wID = static_cast<UINT>(id);
 	if (menu)
@@ -1097,10 +1105,10 @@ STDMETHODIMP CShellExt::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmd
 		myIDMap[idCmd] = TGitShellCommand::SubMenu;
 	}
 	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
-	if (uIcon)
+	if (uIcon && hMenu)
 	{
 		menuiteminfo.fMask |= MIIM_BITMAP;
-		menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, uIcon);
+		menuiteminfo.hbmpItem = CreateMenuBitmap(uIcon);
 	}
 	menuiteminfo.hSubMenu = subMenu;
 	menuiteminfo.wID = idCmd++;
@@ -1957,9 +1965,13 @@ bool CShellExt::InsertLFSSubmenu(UINT& idCmd, UINT idCmdFirst, HMENU hMenu, HMEN
 
 	MENUITEMINFO menuiteminfo = { 0 };
 	menuiteminfo.cbSize = sizeof(menuiteminfo);
-	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING | MIIM_BITMAP;
+	menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
 	menuiteminfo.fType = MFT_STRING;
-	menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, IDI_LFS);
+	if (bShowIcons && hMenu)
+	{
+		menuiteminfo.fMask |= MIIM_BITMAP;
+		menuiteminfo.hbmpItem = CreateMenuBitmap(IDI_LFS);
+	}
 	menuiteminfo.hSubMenu = lfssubmenu;
 	menuiteminfo.wID = idCmd;
 
@@ -2213,10 +2225,10 @@ bool CShellExt::InsertIgnoreSubmenus(UINT &idCmd, UINT idCmdFirst, HMENU hMenu, 
 		MENUITEMINFO menuiteminfo = { 0 };
 		menuiteminfo.cbSize = sizeof(menuiteminfo);
 		menuiteminfo.fMask = MIIM_FTYPE | MIIM_ID | MIIM_SUBMENU | MIIM_DATA | MIIM_STRING;
-		if (icon)
+		if (icon && hMenu)
 		{
 			menuiteminfo.fMask |= MIIM_BITMAP;
-			menuiteminfo.hbmpItem = IconBitmapUtils::IconToBitmapPARGB32(g_hResInst, icon);
+			menuiteminfo.hbmpItem = CreateMenuBitmap(icon);
 		}
 		menuiteminfo.fType = MFT_STRING;
 		menuiteminfo.hSubMenu = ignoresubmenu;
