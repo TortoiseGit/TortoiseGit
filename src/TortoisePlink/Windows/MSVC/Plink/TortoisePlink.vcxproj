@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\..\ssh\kex2-client.c" />
     <ClCompile Include="..\..\..\ssh\login1.c" />
     <ClCompile Include="..\..\..\ssh\mainchan.c" />
+    <ClCompile Include="..\..\..\ssh\nocompress.c" />
     <ClCompile Include="..\..\..\ssh\pgssapi.c" />
     <ClCompile Include="..\..\..\ssh\portfwd.c" />
     <ClCompile Include="..\..\..\ssh\sharing.c" />

@@ -786,6 +786,9 @@
     <ClCompile Include="..\..\..\utils\format_connection_setup_command.c">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\ssh\nocompress.c">
+      <Filter>Source Files\ssh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\logindialog.h">
