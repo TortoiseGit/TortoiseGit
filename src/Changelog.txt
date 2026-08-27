@@ -1,4 +1,10 @@
-﻿= Release 2.19.1 =
+﻿= Release 2.19.2 =
+Released: unreleased
+
+== Features ==
+ * Update shipped PuTTY binaries to 0.85
+
+= Release 2.19.1 =
 Released: 2026-06-27
 
 == Bug Fixes ==
