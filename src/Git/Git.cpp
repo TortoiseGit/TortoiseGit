@@ -1548,7 +1548,7 @@ CString CGit::GetLibGit2LastErr()
 		return L"libgit2 returned: " + lastError;
 	}
 	else
-		return L"An error occoured in libgit2, but no message is available.";
+		return L"An error occurred in libgit2, but no message is available.";
 }
 
 CString CGit::GetLibGit2LastErr(const CString& msg)
