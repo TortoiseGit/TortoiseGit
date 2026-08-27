@@ -108,7 +108,7 @@ bool detect_attack(struct crcda_ctx *ctx,
     register const uint8_t *c;
     const uint8_t *d;
 
-    assert(!(len > (SSH_MAXBLOCKS * SSH_BLOCKSIZE) ||
+    assert(!(len > (SSH_MAXBLOCKS * SSH_BLOCKSIZE + 8) ||
              len % SSH_BLOCKSIZE != 0));
     for (l = ctx->n; l < HASH_FACTOR(len / SSH_BLOCKSIZE); l = l << 2)
         ;

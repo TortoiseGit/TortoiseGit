@@ -180,7 +180,7 @@ SeatPromptResult console_confirm_weak_cached_hostkey(
     title = dupprintf(mbtitle, appname);
 
     mbret = MessageBoxA(GetParentHwnd(), buf->s, title, MB_ICONWARNING | MB_YESNOCANCEL | MB_DEFBUTTON3);
-    strbuf_to_str(buf);
+    strbuf_free(buf);
     sfree(title);
 
     if (mbret == IDYES) {
