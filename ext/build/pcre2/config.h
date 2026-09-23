@@ -119,6 +119,9 @@ surrounded by #ifndef/#endif lines so that the value can be overridden by -D. */
 /* Define to 1 if you have the `secure_getenv' function. */
 #undef HAVE_SECURE_GETENV
 
+/* Define to 1 if you have the `setrlimit' function. */
+#undef HAVE_SETRLIMIT
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
 
@@ -228,7 +231,7 @@ surrounded by #ifndef/#endif lines so that the value can be overridden by -D. */
 #define PACKAGE_NAME "PCRE2"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "PCRE2 10.47"
+#define PACKAGE_STRING "PCRE2 10.48"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "pcre2"
@@ -237,7 +240,7 @@ surrounded by #ifndef/#endif lines so that the value can be overridden by -D. */
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "10.47"
+#define PACKAGE_VERSION "10.48"
 
 /* The value of PARENS_NEST_LIMIT specifies the maximum depth of nested
    parentheses (of any kind) in a pattern. This limits the amount of system
