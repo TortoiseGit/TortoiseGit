@@ -1,7 +1,7 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
 // Copyright (C) 2016, 2019, 2021, 2023, 2025 - TortoiseGit
-// Copyright (C) 2007-2016, 2019 - TortoiseSVN
+// Copyright (C) 2007-2016, 2019, 2026 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -352,7 +352,7 @@ BOOL CFileTextLines::Load(const CString& sFilePath, int /*lengthHint*/ /* = 0*/)
 			{
 				// LFCR is very rare on Windows, so we have to double check
 				// that this is not just a LF followed by CRLF
-				if (((countEOLs[static_cast<int>(EOL::CRLF)] > 1) || (countEOLs[static_cast<int>(EOL::LF)] > 1) || (GetCount() < 2)) &&
+				if (((countEOLs[static_cast<int>(EOL::CRLF)] > 1) || (countEOLs[static_cast<int>(EOL::LF)] > 1) || (GetCount() < 3)) &&
 					((i > 2) && (*(pTextBuf+1) == '\n')))
 				{
 					// change the EOL back to a simple LF
