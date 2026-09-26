@@ -333,11 +333,12 @@ void CGitLogListBase::InsertGitColumn()
 		{ LOGLIST_COMMIT_DATE, IDS_LOG_COMMIT_DATE, false, true, columnWidth },
 		{ LOGLIST_BUG, IDS_LOG_BUGIDS, m_bShowBugtraqColumn != 0, m_bShowBugtraqColumn != 0, columnWidth },
 		{ LOGLIST_SVNREV, IDS_LOG_SVNREV, hasSVNDir, hasSVNDir, columnWidth },
+		{ LOGLIST_NOTES, IDS_NOTES, false, m_ColumnRegKey != L"Blame", CDPIAware::Instance().ScaleX(GetSafeHwnd(), LOGLIST_MESSAGE_MIN_WIDTH) },
 	};
 
 	SetRedraw(false);
 
-	constexpr int columnVersion = 6; // adjust when changing number/names/etc. of columns
+	constexpr int columnVersion = 7; // adjust when changing number/names/etc. of columns
 	m_ColumnManager.ReadSettings(columns, m_ColumnRegKey + L"loglist", columnVersion);
 	m_ColumnManager.SetRightAlign(LOGLIST_ID);
 
@@ -1445,6 +1446,11 @@ void CGitLogListBase::OnNMCustomdrawLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_BUGID, pLVCD, pResult))
 				return;
 			break;
+
+		case LOGLIST_NOTES:
+			if (DrawListItemWithMatchesIfEnabled(m_LogFilter, LOGFILTER_NOTES, pLVCD, pResult))
+				return;
+			break;
 		}
 	}
 	break;
@@ -1588,6 +1594,13 @@ void CGitLogListBase::OnLvnGetdispinfoLoglist(NMHDR *pNMHDR, LRESULT *pResult)
 		break;
 	case LOGLIST_SVNREV: //SVN revision
 		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(FindSVNRev(pLogEntry->GetSubjectBody())), pItem->cchTextMax - 1);
+		break;
+	case LOGLIST_NOTES:
+		temp = pLogEntry->m_Notes;
+		temp.Replace(L"\r\n", L" ");
+		temp.Replace(L'\r', L' ');
+		temp.Replace(L'\n', L' ');
+		lstrcpyn(pItem->pszText, static_cast<LPCWSTR>(temp), pItem->cchTextMax - 1);
 		break;
 
 	default:
@@ -2307,6 +2320,7 @@ void CGitLogListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDAUTHORSEMAIL, IDS_LOG_POPUP_CLIPBOARD_AUTHORSEMAIL, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDSUBJECTS, IDS_LOG_POPUP_CLIPBOARD_SUBJECTS, IDI_COPYCLIP);
 			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDMESSAGES, IDS_LOG_POPUP_CLIPBOARD_MSGS, IDI_COPYCLIP);
+			clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDNOTES, IDS_NOTES, IDI_COPYCLIP);
 			if (hashMap.find(pSelLogEntry->m_CommitHash) != hashMap.cend() && selectedCount == 1)
 			{
 				clipSubMenu.AppendMenuIcon(ID_COPYCLIPBOARDBRANCHTAG, IDS_LOG_POPUP_CLIPBOARD_TAGBRANCHES, IDI_COPYCLIP);
@@ -2477,6 +2491,20 @@ void CGitLogListBase::CopySelectionToClipBoard(int toCopy)
 				sClipdata += L"* ";
 				sClipdata += pLogEntry->GetSubject().Trim();
 				sClipdata += L"\r\n\r\n";
+			}
+			else if (toCopy == ID_COPYCLIPBOARDNOTES)
+			{
+				if (!pLogEntry->m_Notes.IsEmpty())
+				{
+					if (!sClipdata.IsEmpty())
+					{
+						if (!CStringUtils::EndsWith(sClipdata, L'\n'))
+							sClipdata += L"\r\n";
+						sClipdata += L"\r\n";
+					}
+
+					sClipdata += CStringUtils::EnsureCRLF(pLogEntry->m_Notes);
+				}
 			}
 			else
 			{
@@ -3744,6 +3772,13 @@ CString CGitLogListBase::GetToolTipText(int nItem, int nSubItem)
 			CString sTitle(MAKEINTRESOURCE(IDS_LOG_ACTIONS));
 			return sTitle + L":\r\n" + actionText;
 		}
+	}
+	else if (nSubItem == LOGLIST_NOTES)
+	{
+		GitRevLoglist* pLogEntry = m_arShownList.SafeGetAt(nItem);
+		if (pLogEntry == nullptr)
+			return CString();
+		return pLogEntry->m_Notes;
 	}
 	return CString();
 }
