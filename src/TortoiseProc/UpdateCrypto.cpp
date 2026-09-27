@@ -579,9 +579,22 @@ static int LoadSignature(const CString &signatureFilename, signature_packet_t *p
 	return 0;
 }
 
-static void CryptHashChar(HCRYPTHASH hHash, const int c)
+static bool CryptHashChar(HCRYPTHASH hHash, const int c)
 {
-	CryptHashData(hHash, reinterpret_cast<const BYTE*>(&c), 1, 0);
+	return CryptHashData(hHash, reinterpret_cast<const BYTE*>(&c), 1, 0);
+}
+
+static bool CryptHashSizeT(HCRYPTHASH hHash, const size_t number)
+{
+	if (!CryptHashChar(hHash, (number >> 24) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, (number >> 16) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, (number >> 8) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, number & 0xff))
+		return false;
+	return true;
 }
 
 /* final part of the hash */
@@ -589,23 +602,29 @@ static int hash_finish(HCRYPTHASH hHash, const signature_packet_t* p_sig)
 {
 	if (p_sig->version == 4)
 	{
-		CryptHashChar(hHash, p_sig->version);
-		CryptHashChar(hHash, p_sig->type);
-		CryptHashChar(hHash, p_sig->public_key_algo);
-		CryptHashChar(hHash, p_sig->digest_algo);
-		CryptHashData(hHash, p_sig->specific.v4.hashed_data_len, 2, 0);
+		if (!CryptHashChar(hHash, p_sig->version))
+			return -1;
+		if (!CryptHashChar(hHash, p_sig->type))
+			return -1;
+		if (!CryptHashChar(hHash, p_sig->public_key_algo))
+			return -1;
+		if (!CryptHashChar(hHash, p_sig->digest_algo))
+			return -1;
+		if (!CryptHashData(hHash, p_sig->specific.v4.hashed_data_len, 2, 0))
+			return -1;
 		unsigned int i_len = scalar_number(p_sig->specific.v4.hashed_data_len, 2);
-		CryptHashData(hHash, p_sig->specific.v4.hashed_data, i_len, 0);
+		if (!CryptHashData(hHash, p_sig->specific.v4.hashed_data, i_len, 0))
+			return -1;
 
-		CryptHashChar(hHash, 0x04);
-		CryptHashChar(hHash, 0xFF);
+		if (!CryptHashChar(hHash, 0x04))
+			return -1;
+		if (!CryptHashChar(hHash, 0xFF))
+			return -1;
 
 		i_len += 6; /* hashed data + 6 bytes header */
 
-		CryptHashChar(hHash, (i_len >> 24) & 0xff);
-		CryptHashChar(hHash, (i_len >> 16) & 0xff);
-		CryptHashChar(hHash, (i_len >> 8) & 0xff);
-		CryptHashChar(hHash, (i_len) & 0xff);
+		if (!CryptHashSizeT(hHash, i_len))
+			return -1;
 	}
 	else
 	{ /* RFC 4880 only tells about versions 3 and 4, and we only support version 4 */
@@ -645,35 +664,41 @@ static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
 	if (!p_pkey->psz_username)
 		return -1;
 
-	CryptHashChar(hHash, 0x99);
+	if (!CryptHashChar(hHash, 0x99))
+		return -1;
 
-	CryptHashChar(hHash, (i_size >> 8) & 0xff);
-	CryptHashChar(hHash, i_size & 0xff);
+	if (!CryptHashChar(hHash, (i_size >> 8) & 0xff))
+		return -1;
+	if (!CryptHashChar(hHash, i_size & 0xff))
+		return -1;
 
-	CryptHashChar(hHash, p_pkey->key.version);
-	CryptHashData(hHash, p_pkey->key.timestamp, 4, 0);
-	CryptHashChar(hHash, p_pkey->key.algo);
+	if (!CryptHashChar(hHash, p_pkey->key.version))
+		return -1;
+	if (!CryptHashData(hHash, p_pkey->key.timestamp, 4, 0))
+		return -1;
+	if (!CryptHashChar(hHash, p_pkey->key.algo))
+		return -1;
 
 	switch (p_pkey->key.algo)
 	{
 	case PUBLIC_KEY_ALGO_RSA:
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
+		if (!CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0))
+			return -1;
+		if (!CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0))
+			return -1;
 		break;
 	default:
 		return -1;
 	}
 
-	CryptHashChar(hHash, 0xb4);
+	if (!CryptHashChar(hHash, 0xb4))
+		return -1;
 
 	size_t i_len = strlen(reinterpret_cast<const char*>(p_pkey->psz_username));
-
-	CryptHashChar(hHash, (i_len >> 24) & 0xff);
-	CryptHashChar(hHash, (i_len >> 16) & 0xff);
-	CryptHashChar(hHash, (i_len >> 8) & 0xff);
-	CryptHashChar(hHash, (i_len) & 0xff);
-
-	CryptHashData(hHash, p_pkey->psz_username, static_cast<DWORD>(i_len), 0);
+	if (!CryptHashSizeT(hHash, i_len))
+		return -1;
+	if (!CryptHashData(hHash, p_pkey->psz_username, static_cast<DWORD>(i_len), 0))
+		return -1;
 
 	return hash_finish(hHash, &p_pkey->sig);
 }
@@ -692,13 +717,13 @@ static int hash_from_file(HCRYPTHASH hHash, const CString& filename, const signa
 		if (p_sig->type == TEXT_SIGNATURE)
 		{
 			buf[read] = '\0';
-			char * psz_string = buf;
+			char* psz_string = buf;
 			while (*psz_string)
 			{
 				if (nlHandling == 1 && (*psz_string == '\r' || *psz_string == '\n'))
 				{
-					CryptHashChar(hHash, '\r');
-					CryptHashChar(hHash, '\n');
+					if (!CryptHashChar(hHash, '\r') || !CryptHashChar(hHash, '\n'))
+						return -1;
 					nlHandling = 2;
 				}
 				if (nlHandling == 2 && *psz_string == '\r')
@@ -720,15 +745,16 @@ static int hash_from_file(HCRYPTHASH hHash, const CString& filename, const signa
 
 				if (i_len)
 				{
-					CryptHashData(hHash, reinterpret_cast<BYTE*>(psz_string), static_cast<DWORD>(i_len), 0);
+					if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(psz_string), static_cast<DWORD>(i_len), 0))
+						return -1;
 					psz_string += i_len;
 				}
 
 				nlHandling = 1;
 				if (*psz_string == '\r' || *psz_string == '\n')
 				{
-					CryptHashChar(hHash, '\r');
-					CryptHashChar(hHash, '\n');
+					if (!CryptHashChar(hHash, '\r') || !CryptHashChar(hHash, '\n'))
+						return -1;
 					nlHandling = 2;
 
 					if (*psz_string == '\r')
@@ -745,8 +771,8 @@ static int hash_from_file(HCRYPTHASH hHash, const CString& filename, const signa
 				}
 			}
 		}
-		else
-			CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0);
+		else if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0))
+			return -1;
 	}
 
 	return hash_finish(hHash, p_sig);
@@ -760,9 +786,10 @@ static int check_hash(HCRYPTHASH hHash, const signature_packet_t *p_sig)
 		return -1;
 
 	auto pHash = std::make_unique<BYTE[]>(hashLen);
-	CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0);
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0))
+		return -1;
 
-	if (pHash[0] != p_sig->hash_verification[0] || pHash[1] != p_sig->hash_verification[1])
+	if (hashLen < 2 || pHash[0] != p_sig->hash_verification[0] || pHash[1] != p_sig->hash_verification[1])
 		return -1;
 
 	return 0;
