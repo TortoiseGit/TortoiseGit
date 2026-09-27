@@ -442,15 +442,4 @@
       <Filter>Public Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="..\apr\include\apr.h.in">
-      <Filter>Public Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\apr\include\apr.hnw">
-      <Filter>Public Header Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\apr\include\apr.hw">
-      <Filter>Public Header Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
 </Project>
