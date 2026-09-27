@@ -12,6 +12,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #4278: Classic Explorer context menu leaks GDI bitmap handles and eventually terminates Explorer
+ * Fixed issue #4276: Use common ancestor diff option is broken since v.2.19
 
 = Release 2.19.1 =
 Released: 2026-06-27
