@@ -33,12 +33,6 @@
 constexpr auto packet_type(uint8_t c) { return (c & 0x3c) >> 2; } /* 0x3C = 00111100 */
 constexpr auto packet_header_len(uint8_t c) { return (c & 0x03) + 1; } /* number of bytes in a packet header */
 
-#ifdef TGIT_UPDATECRYPTO_DSA
-#ifndef TGIT_UPDATECRYPTO_SHA1
-#error TGIT_UPDATECRYPTO_SHA1 required for DSA
-#endif
-#endif
-
 static inline uint32_t scalar_number(const uint8_t* p, int header_len)
 {
 	ASSERT(header_len == 1 || header_len == 2 || header_len == 4);
@@ -122,10 +116,6 @@ static ALG_ID map_digestalgo(uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_SHA1
-	case DIGEST_ALGO_SHA1:
-		return CALG_SHA1;
-#endif
 	case DIGEST_ALGO_SHA256:
 		return CALG_SHA_256;
 	case DIGEST_ALGO_SHA384:
@@ -141,10 +131,6 @@ static DWORD map_algo(uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		return PROV_DSS;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		return PROV_RSA_AES; // needed for SHA2, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387447%28v=vs.85%29.aspx
 	default:
@@ -154,7 +140,7 @@ static DWORD map_algo(uint8_t digest_algo)
 
 /*
  * fill a signature_packet_v4_t from signature packet data
- * verify that it was used with a DSA or RSA public key
+ * verify that it was used with a RSA public key
  */
 static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t *p_buf, size_t i_sig_len)
 {
@@ -299,12 +285,6 @@ static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_bu
 
 	switch (p_sig->public_key_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		READ_MPI(p_sig->algo_specific.dsa.r, 160);
-		READ_MPI(p_sig->algo_specific.dsa.s, 160);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		READ_MPI(p_sig->algo_specific.rsa.s, 4096);
 		break;
@@ -393,7 +373,7 @@ static int pgp_unarmor(const char *p_ibuf, size_t i_ibuf_len, uint8_t *p_obuf, s
 
 /*
  * fill a public_key_packet_t structure from public key packet data
- * verify that it is a version 4 public key packet, using DSA or RSA
+ * verify that it is a version 4 public key packet, using RSA
  */
 static int parse_public_key_packet(public_key_packet_t *p_key, const uint8_t *p_buf, size_t i_packet_len)
 {
@@ -412,16 +392,6 @@ static int parse_public_key_packet(public_key_packet_t *p_key, const uint8_t *p_
 	p_key->algo = *p_buf++; i_read++;
 	switch (p_key->algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		if (i_packet_len > 418) // we only support 1024-bit DSA keys and SHA1 signatures, see verify_signature_dsa
-			return -1;
-		READ_MPI(p_key->sig.dsa.p, 1024);
-		READ_MPI(p_key->sig.dsa.q, 160);
-		READ_MPI(p_key->sig.dsa.g, 1024);
-		READ_MPI(p_key->sig.dsa.y, 1024);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		READ_MPI(p_key->sig.rsa.n, 4096);
 		READ_MPI(p_key->sig.rsa.e, 4096);
@@ -638,7 +608,7 @@ static int hash_finish(HCRYPTHASH hHash, const signature_packet_t* p_sig)
 		CryptHashChar(hHash, (i_len) & 0xff);
 	}
 	else
-	{  /* RFC 4880 only tells about versions 3 and 4 */
+	{ /* RFC 4880 only tells about versions 3 and 4, and we only support version 4 */
 		return -1;
 	}
 
@@ -658,23 +628,10 @@ static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
 		return -1;
 
 	DWORD i_size = 0;
-#ifdef TGIT_UPDATECRYPTO_DSA
-	unsigned int i_p_len = 0, i_g_len = 0, i_q_len = 0, i_y_len = 0;
-#endif
 	unsigned int i_n_len = 0, i_e_len = 0;
 
 	switch (p_pkey->key.algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		i_p_len = mpi_len(p_pkey->key.sig.dsa.p);
-		i_g_len = mpi_len(p_pkey->key.sig.dsa.g);
-		i_q_len = mpi_len(p_pkey->key.sig.dsa.q);
-		i_y_len = mpi_len(p_pkey->key.sig.dsa.y);
-
-		i_size = 6 + 2 * 4 + i_p_len + i_g_len + i_q_len + i_y_len;
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		i_n_len = mpi_len(p_pkey->key.sig.rsa.n);
 		i_e_len = mpi_len(p_pkey->key.sig.rsa.e);
@@ -699,18 +656,12 @@ static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
 
 	switch (p_pkey->key.algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.p), 2 + i_p_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.q), 2 + i_q_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.g), 2 + i_g_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.y), 2 + i_y_len, 0);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
 		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
 		break;
+	default:
+		return -1;
 	}
 
 	CryptHashChar(hHash, 0xb4);
@@ -858,61 +809,6 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 	return 0;
 }
 
-#ifdef TGIT_UPDATECRYPTO_DSA
-/*
-* Verify an OpenPGP signature made with some DSA public key
-*/
-static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
-{
-	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
-		return -1;
-
-	uint32_t i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.p)) - 2);
-	uint32_t i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.q)) - 2);
-	uint32_t i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.g)) - 2);
-	uint32_t i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.y)) - 2);
-	uint32_t i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.r)) - 2);
-	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.s)) - 2);
-
-	// CryptoAPI only supports 1024-bit DSA keys and SHA1 signatures
-	if (i_p_len > 128 || i_q_len > 20 && i_g_len > 128 || i_y_len > 128 || i_r_len > 20 || i_s_len > 20)
-		return -1;
-
-	HCRYPTKEY hPubKey;
-	// based on http://www.derkeiler.com/Newsgroups/microsoft.public.platformsdk.security/2004-10/0040.html
-	DSAKEY dsakey = { 0 };
-	dsakey.blobheader.bType = PUBLICKEYBLOB; // 0x06
-	dsakey.blobheader.bVersion = CUR_BLOB_VERSION + 1; // 0x03
-	dsakey.blobheader.reserved = 0;
-	dsakey.blobheader.aiKeyAlg = CALG_DSS_SIGN;
-	dsakey.dsspubkeyver3.magic = 0x33535344; // ASCII of "DSS3";
-	dsakey.dsspubkeyver3.bitlenP = i_p_len * 8; // # of bits in prime modulus
-	dsakey.dsspubkeyver3.bitlenQ = i_q_len * 8; // # of bits in prime q, 0 if not available
-	dsakey.dsspubkeyver3.bitlenJ = 0; // # of bits in (p-1)/q, 0 if not available
-	dsakey.dsspubkeyver3.DSSSeed.counter = 0xFFFFFFFF; // not available
-
-	memcpy(dsakey.p, p_pkey.key.sig.dsa.p + 2, i_p_len); std::reverse(dsakey.p, dsakey.p + i_p_len);
-	memcpy(dsakey.q, p_pkey.key.sig.dsa.q + 2, i_q_len); std::reverse(dsakey.q, dsakey.q + i_q_len);
-	memcpy(dsakey.g, p_pkey.key.sig.dsa.g + 2, i_g_len); std::reverse(dsakey.g, dsakey.g + i_g_len);
-	memcpy(dsakey.y, p_pkey.key.sig.dsa.y + 2, i_y_len); std::reverse(dsakey.y, dsakey.y + i_y_len);
-
-	if (CryptImportKey(hCryptProv, reinterpret_cast<BYTE*>(&dsakey), sizeof(dsakey), 0, 0, &hPubKey) == 0)
-		return -1;
-
-	SCOPE_EXIT { CryptDestroyKey(hPubKey); };
-
-	unsigned char signature[40] = { 0 };
-	memcpy(signature, p_sig.algo_specific.dsa.r + 2, i_r_len);
-	memcpy(signature + 20, p_sig.algo_specific.dsa.s + 2, i_s_len);
-	std::reverse(signature, signature + i_r_len);
-	std::reverse(signature + 20, signature + 20 + i_s_len);
-	if (!CryptVerifySignature(hHash, signature, sizeof(signature), hPubKey, nullptr, 0))
-		return -1;
-
-	return 0;
-}
-#endif
-
 /*
 * Verify an OpenPGP signature made with some public key
 */
@@ -923,10 +819,6 @@ int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t
 
 	switch (sign.public_key_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		return verify_signature_dsa(hCryptProv, hHash, p_key, sign);
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		return verify_signature_rsa(hCryptProv, hHash, p_key, sign);
 	default:
