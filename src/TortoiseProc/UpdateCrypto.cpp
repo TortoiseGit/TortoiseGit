@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2019, 2021-2023, 2025 TortoiseGit
+// Copyright (C) 2014-2019, 2021-2023, 2025-2026 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -918,6 +918,9 @@ static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 */
 int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_key, const signature_packet_t& sign)
 {
+	if (sign.public_key_algo != p_key.key.algo)
+		return -1;
+
 	switch (sign.public_key_algo)
 	{
 #ifdef TGIT_UPDATECRYPTO_DSA
