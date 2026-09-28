@@ -480,6 +480,7 @@ void CGitLogList::ContextMenuAction(int cmd, int FirstSelect, int LastSelect, CM
 		case ID_COPYCLIPBOARDAUTHORSEMAIL:
 		case ID_COPYCLIPBOARDSUBJECTS:
 		case ID_COPYCLIPBOARDMESSAGES:
+		case ID_COPYCLIPBOARDNOTES:
 			{
 				CopySelectionToClipBoard(cmd & 0xFFFF);
 			}
