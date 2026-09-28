@@ -802,6 +802,7 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 {
 	uint32_t i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), static_cast<uint32_t>(sizeof(p_pkey.key.sig.rsa.n)) - 2);
 	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.rsa.s)) - 2);
+	uint32_t i_e_len = mpi_len(p_pkey.key.sig.rsa.e);
 
 	if (i_s_len > i_n_len)
 		return -1;
@@ -813,7 +814,11 @@ static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const p
 	rsakey.blobheader.aiKeyAlg = CALG_RSA_KEYX;
 	rsakey.rsapubkey.magic = 0x31415352;// ASCII for RSA1
 	rsakey.rsapubkey.bitlen = i_n_len * 8;
+	if (i_e_len == 0 || i_e_len > sizeof(rsakey.rsapubkey.pubexp)) // generic check that e is not empty and fits into pubexp in principle
+		return -1;
 	rsakey.rsapubkey.pubexp = 65537; // gnupg only uses this
+	if (i_e_len != 3 || p_pkey.key.sig.rsa.e[2] != 1 || p_pkey.key.sig.rsa.e[3] != 0 || p_pkey.key.sig.rsa.e[4] != 1) // make sure e is actually 65537
+		return -1;
 
 	memcpy(rsakey.n, p_pkey.key.sig.rsa.n + 2, i_n_len); std::reverse(rsakey.n, rsakey.n + i_n_len);
 
