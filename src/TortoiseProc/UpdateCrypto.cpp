@@ -556,7 +556,7 @@ static std::vector<uint8_t> load_pgp_file(const CString& filename)
 	constexpr size_t kMaxSigSize = 65536;
 	auto buffer = std::vector<uint8_t>(kMaxSigSize);
 	const size_t length = fread(buffer.data(), sizeof(uint8_t), kMaxSigSize, pFile);
-	if (length < 8)
+	if (length < 8 || length == kMaxSigSize || ferror(pFile))
 		return {};
 	buffer.resize(length);
 
@@ -760,6 +760,8 @@ static std::optional<signature_packet_t> LoadSignature(const CString& signatureF
 		if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0))
 			return false;
 	}
+	if (ferror(pFile))
+		return false;
 
 	return hash_finish(hHash, sig);
 }
