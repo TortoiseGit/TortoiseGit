@@ -908,7 +908,7 @@ bool VerifyIntegrity(const CString& filename, const CString& signatureFilename, 
 			return false;
 
 		HCRYPTHASH hHash;
-		if (const auto algo = map_digestalgo(sig->digest_algo); !algo || !CryptCreateHash(hCryptProv, *algo, 0, 0, &hHash))
+		if (const auto algo = map_digestalgo(new_pkey->sig->digest_algo); !algo || !CryptCreateHash(hCryptProv, *algo, 0, 0, &hHash))
 			return false;
 		SCOPE_EXIT { CryptDestroyHash(hHash); };
 
