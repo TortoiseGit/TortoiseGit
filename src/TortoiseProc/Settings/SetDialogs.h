@@ -48,6 +48,7 @@ protected:
 	BOOL OnInitDialog() override;
 	BOOL OnApply() override;
 	afx_msg void OnChange();
+	afx_msg void OnBnClickedShowDescribe();
 	afx_msg void OnCbnSelchangeDefaultlogscale();
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 
