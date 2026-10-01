@@ -585,6 +585,9 @@ static std::optional<signature_packet_t> LoadSignature(const CString& signatureF
 	uint8_t tag_byte;
 	if (!r.read_byte(tag_byte))
 		return {};
+	if (!(tag_byte & 0x80) || (tag_byte & 0x40)) /* must be old-format packet */
+		return {};
+
 	if (packet_type(tag_byte) != SIGNATURE_PACKET)
 		return {};
 
