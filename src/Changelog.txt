@@ -6,6 +6,7 @@ Released: unreleased
  * Update TortoiseGitPlink to PuTTY Plink 0.85
  * Update libgit2 to version 1.9.7
  * Update pcre2 to version 10.48
+ * Update Hunspell to version 1.7.5
  * Improve support for Git for Windows >= 2.56
 
 == Bug Fixes ==
