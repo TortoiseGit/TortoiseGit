@@ -7,6 +7,7 @@ Released: unreleased
  * Update libgit2 to version 1.9.7
  * Update pcre2 to version 10.48
  * Update Hunspell to version 1.7.5
+ * Update zlib to version 1.4
  * Improve support for Git for Windows >= 2.56
 
 == Bug Fixes ==
