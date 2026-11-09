@@ -13,6 +13,7 @@ Released: unreleased
 == Bug Fixes ==
  * Fixed issue #4278: Classic Explorer context menu leaks GDI bitmap handles and eventually terminates Explorer
  * Fixed issue #4276: Use common ancestor diff option is broken since v.2.19
+ * Fixed issue #4285: Client-side hooks can fail before launch with ERROR_SHARING_VIOLATION while preparing stderr redirection
 
 = Release 2.19.1 =
 Released: 2026-06-27
