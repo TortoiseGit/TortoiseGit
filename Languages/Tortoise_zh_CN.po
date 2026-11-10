@@ -9346,6 +9346,10 @@ msgstr "设置作者(&T)"
 msgid "Set author &date"
 msgstr "设置作者日期(&D)"
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1862)
+msgid "Set commit dat&e"
+msgstr "设置提交日期(&E)"
+
 #. Resource IDs: (IDS_PUSHDLG_PUSHREMOTE_TT)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr "设置该远端为选定本地分支的“pushremote”。"
@@ -11498,8 +11502,8 @@ msgid "Use th&is text block"
 msgstr "使用此文本块(&I)"
 
 #. Resource IDs: (IDS_COMMIT_AS_COMMIT_DATE_TT)
-msgid "Use the current time by setting the author date to the commit date."
-msgstr "使用当前时间作为作者的提交日期。"
+msgid "Use the current time for the author date."
+msgstr "使用当前时间作为作者日期。"
 
 #. Resource IDs: (IDS_WARNBETTERPATCHPATHFOUND_TASK3)
 #, c-format
