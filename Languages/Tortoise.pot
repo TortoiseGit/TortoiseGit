@@ -8377,6 +8377,10 @@ msgstr ""
 msgid "Set author &date"
 msgstr ""
 
+#. Resource IDs: (Dialog IDD_COMMITDLG: Control id 1862)
+msgid "Set commit dat&e"
+msgstr ""
+
 #. Resource IDs: (IDS_PUSHDLG_PUSHREMOTE_TT)
 msgid "Sets the remote as the \"pushremote\" for the selected local branch."
 msgstr ""
@@ -10161,7 +10165,7 @@ msgid "Use th&is text block"
 msgstr ""
 
 #. Resource IDs: (IDS_COMMIT_AS_COMMIT_DATE_TT)
-msgid "Use the current time by setting the author date to the commit date."
+msgid "Use the current time for the author date."
 msgstr ""
 
 #. Resource IDs: (IDS_WARNBETTERPATCHPATHFOUND_TASK3)

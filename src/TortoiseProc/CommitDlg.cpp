@@ -42,6 +42,8 @@
 #include "DPIAware.h"
 #include "CmdLineParser.h"
 
+#include <memory>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -61,6 +63,7 @@ CCommitDlg::CCommitDlg(CWnd* pParent /*=nullptr*/)
 	, m_bWholeProject2(FALSE)
 	, m_bDoNotAutoselectSubmodules(FALSE)
 	, m_bSetCommitDateTime(FALSE)
+	, m_bSetCommitterDateTime(FALSE)
 	, m_bCreateNewBranch(FALSE)
 	, m_bCommitMessageOnly(FALSE)
 	, m_bSetAuthor(FALSE)
@@ -84,6 +87,7 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOGMESSAGE, m_cLogMessage);
 	DDX_Check(pDX, IDC_SHOWUNVERSIONED, m_bShowUnversioned);
 	DDX_Check(pDX, IDC_COMMIT_SETDATETIME, m_bSetCommitDateTime);
+	DDX_Check(pDX, IDC_COMMIT_SETCOMMITTERDATETIME, m_bSetCommitterDateTime);
 	DDX_Check(pDX, IDC_CHECK_NEWBRANCH, m_bCreateNewBranch);
 	DDX_Text(pDX, IDC_COMMIT_AUTHORDATA, m_sAuthor);
 	DDX_Check(pDX, IDC_WHOLE_PROJECT, m_bWholeProject);
@@ -99,6 +103,8 @@ void CCommitDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PARTIAL_UNSTAGING, m_ctrlPartialUnstaging);
 	DDX_Control(pDX, IDC_COMMIT_DATEPICKER, m_CommitDate);
 	DDX_Control(pDX, IDC_COMMIT_TIMEPICKER, m_CommitTime);
+	DDX_Control(pDX, IDC_COMMIT_COMMITTERDATEPICKER, m_CommitterDate);
+	DDX_Control(pDX, IDC_COMMIT_COMMITTERTIMEPICKER, m_CommitterTime);
 	DDX_Control(pDX, IDC_COMMIT_AS_COMMIT_DATE, m_AsCommitDateCtrl);
 	DDX_Control(pDX, IDC_CHECKALL, m_CheckAll);
 	DDX_Control(pDX, IDC_CHECKNONE, m_CheckNone);
@@ -147,6 +153,7 @@ BEGIN_MESSAGE_MAP(CCommitDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_COMMIT_AMENDDIFF, &CCommitDlg::OnBnClickedCommitAmenddiff)
 	ON_BN_CLICKED(IDC_NOAUTOSELECTSUBMODULES, &CCommitDlg::OnBnClickedNoautoselectsubmodules)
 	ON_BN_CLICKED(IDC_COMMIT_SETDATETIME, &CCommitDlg::OnBnClickedCommitSetDateTime)
+	ON_BN_CLICKED(IDC_COMMIT_SETCOMMITTERDATETIME, &CCommitDlg::OnBnClickedCommitSetCommitterDateTime)
 	ON_BN_CLICKED(IDC_COMMIT_AS_COMMIT_DATE, &CCommitDlg::OnBnClickedCommitAsCommitDate)
 	ON_BN_CLICKED(IDC_CHECK_NEWBRANCH, &CCommitDlg::OnBnClickedCheckNewBranch)
 	ON_BN_CLICKED(IDC_COMMIT_SETAUTHOR, &CCommitDlg::OnBnClickedCommitSetauthor)
@@ -238,6 +245,7 @@ BOOL CCommitDlg::OnInitDialog()
 	// git commit accepts only 1970-01-01 to 2099-12-31 regardless timezone
 	COleDateTime minDate(1970, 1, 1, 0, 0, 0), maxDate(2099, 12, 31, 0, 0, 0);
 	m_CommitDate.SetRange(&minDate, &maxDate);
+	m_CommitterDate.SetRange(&minDate, &maxDate);
 	if (m_bSetCommitDateTime)
 	{
 		m_CommitDate.SetTime(&m_wantCommitTime);
@@ -335,6 +343,7 @@ BOOL CCommitDlg::OnInitDialog()
 	AdjustControlSize(IDC_COMMIT_MESSAGEONLY);
 	AdjustControlSize(IDC_COMMIT_AMENDDIFF);
 	AdjustControlSize(IDC_COMMIT_SETDATETIME);
+	AdjustControlSize(IDC_COMMIT_SETCOMMITTERDATETIME);
 	AdjustControlSize(IDC_COMMIT_SETAUTHOR);
 	AdjustControlSize(IDC_NOAUTOSELECTSUBMODULES);
 	AdjustControlSize(IDC_COMMIT_AS_COMMIT_DATE);
@@ -390,6 +399,9 @@ BOOL CCommitDlg::OnInitDialog()
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETCOMMITTERDATETIME, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_COMMITTERDATEPICKER, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_COMMITTERTIMEPICKER, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AS_COMMIT_DATE, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
@@ -877,6 +889,21 @@ void CCommitDlg::OnOK()
 			else
 				dateTime.Format(L"--date=%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
 		}
+		CString committerDateTime;
+		if (m_bSetCommitterDateTime)
+		{
+			COleDateTime date, time;
+			m_CommitterDate.GetTime(date);
+			m_CommitterTime.GetTime(time);
+			COleDateTime dateWithTime(date.GetYear(), date.GetMonth(), date.GetDay(), time.GetHour(), time.GetMinute(), time.GetSecond());
+			if (dateWithTime < COleDateTime((time_t)0))
+			{
+				CMessageBox::Show(GetSafeHwnd(), L"Invalid time", L"TortoiseGit", MB_OK | MB_ICONERROR);
+				InterlockedExchange(&m_bBlock, FALSE);
+				return;
+			}
+			committerDateTime.Format(L"%sT%s", static_cast<LPCWSTR>(date.Format(L"%Y-%m-%d")), static_cast<LPCWSTR>(time.Format(L"%H:%M:%S")));
+		}
 		CString author;
 		if (m_bSetAuthor)
 		{
@@ -894,7 +921,19 @@ void CCommitDlg::OnOK()
 		// TODO: make sure notes.amend.rewrite does still work when switching to libgit2
 		cmd.Format(L"git.exe commit %s %s %s %s -F %s", static_cast<LPCWSTR>(author), static_cast<LPCWSTR>(dateTime), static_cast<LPCWSTR>(amend), static_cast<LPCWSTR>(allowEmpty), static_cast<LPCWSTR>(CGit::QuoteParameter(tempfile)));
 
+		std::unique_ptr<CGit> commitGit;
+		if (m_bSetCommitterDateTime)
+		{
+			// Keep the date override local to this commit, including its Git hooks.
+			commitGit = std::make_unique<CGit>();
+			commitGit->m_CurrentDir = g_Git.m_CurrentDir;
+			commitGit->m_Environment = g_Git.m_Environment;
+			commitGit->m_Environment.SetEnv(L"GIT_COMMITTER_DATE", committerDateTime);
+		}
+
 		CProgressDlg progress;
+		if (commitGit)
+			progress.m_Git = commitGit.get();
 		progress.m_GitCmd=cmd;
 		progress.m_bShowCommand = FALSE;	// don't show the commit command
 		progress.m_PreText = out;			// show any output already generated in log window
@@ -1042,6 +1081,9 @@ void CCommitDlg::OnOK()
 				GetDlgItem(IDC_COMMIT_AMENDDIFF)->ShowWindow(SW_HIDE);
 				DialogEnableWindow(IDC_COMMIT_AMENDDIFF, FALSE);
 				m_bSetCommitDateTime = FALSE;
+				m_bSetCommitterDateTime = FALSE;
+				GetDlgItem(IDC_COMMIT_COMMITTERDATEPICKER)->ShowWindow(SW_HIDE);
+				GetDlgItem(IDC_COMMIT_COMMITTERTIMEPICKER)->ShowWindow(SW_HIDE);
 				m_AsCommitDateCtrl.ShowWindow(SW_HIDE);
 				m_AsCommitDateCtrl.SetCheck(FALSE);
 				m_AsCommitDateCtrl.EnableWindow(FALSE);
@@ -2622,6 +2664,9 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_COMMIT_SETDATETIME);
 	RemoveAnchor(IDC_COMMIT_DATEPICKER);
 	RemoveAnchor(IDC_COMMIT_TIMEPICKER);
+	RemoveAnchor(IDC_COMMIT_SETCOMMITTERDATETIME);
+	RemoveAnchor(IDC_COMMIT_COMMITTERDATEPICKER);
+	RemoveAnchor(IDC_COMMIT_COMMITTERTIMEPICKER);
 	RemoveAnchor(IDC_COMMIT_AS_COMMIT_DATE);
 	RemoveAnchor(IDC_COMMIT_SETAUTHOR);
 	RemoveAnchor(IDC_COMMIT_AUTHORDATA);
@@ -2639,7 +2684,7 @@ void CCommitDlg::DoSize(int delta)
 	RemoveAnchor(IDC_CHECKFILES);
 	RemoveAnchor(IDC_CHECKSUBMODULES);
 
-	auto hdwp = BeginDeferWindowPos(24);
+	auto hdwp = BeginDeferWindowPos(27);
 	CSplitterControl::ChangeRect(hdwp, &m_cLogMessage, 0, 0, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_MESSAGEGROUP), 0, 0, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, &m_ListCtrl, 0, delta, 0, 0);
@@ -2650,6 +2695,9 @@ void CCommitDlg::DoSize(int delta)
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_SETDATETIME), 0, delta, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_DATEPICKER), 0, delta, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_TIMEPICKER), 0, delta, 0, delta);
+	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_SETCOMMITTERDATETIME), 0, delta, 0, delta);
+	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_COMMITTERDATEPICKER), 0, delta, 0, delta);
+	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_COMMITTERTIMEPICKER), 0, delta, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_AS_COMMIT_DATE), 0, delta, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_SETAUTHOR), 0, delta, 0, delta);
 	CSplitterControl::ChangeRect(hdwp, GetDlgItem(IDC_COMMIT_AUTHORDATA), 0, delta, 0, delta);
@@ -2677,6 +2725,9 @@ void CCommitDlg::DoSize(int delta)
 	AddAnchor(IDC_COMMIT_SETDATETIME,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_DATEPICKER,TOP_LEFT);
 	AddAnchor(IDC_COMMIT_TIMEPICKER,TOP_LEFT);
+	AddAnchor(IDC_COMMIT_SETCOMMITTERDATETIME, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_COMMITTERDATEPICKER, TOP_LEFT);
+	AddAnchor(IDC_COMMIT_COMMITTERTIMEPICKER, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AS_COMMIT_DATE, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_SETAUTHOR, TOP_LEFT);
 	AddAnchor(IDC_COMMIT_AUTHORDATA, TOP_LEFT, TOP_RIGHT);
@@ -3015,6 +3066,20 @@ void CCommitDlg::OnBnClickedCommitSetDateTime()
 		m_AsCommitDateCtrl.SetCheck(FALSE);
 		OnBnClickedCommitAsCommitDate();
 	}
+}
+
+void CCommitDlg::OnBnClickedCommitSetCommitterDateTime()
+{
+	UpdateData();
+	if (m_bSetCommitterDateTime)
+	{
+		CTime committerDate = CTime::GetCurrentTime();
+		m_CommitterDate.SetTime(&committerDate);
+		m_CommitterTime.SetTime(&committerDate);
+	}
+
+	GetDlgItem(IDC_COMMIT_COMMITTERDATEPICKER)->ShowWindow(m_bSetCommitterDateTime ? SW_SHOW : SW_HIDE);
+	GetDlgItem(IDC_COMMIT_COMMITTERTIMEPICKER)->ShowWindow(m_bSetCommitterDateTime ? SW_SHOW : SW_HIDE);
 }
 
 void CCommitDlg::OnBnClickedCommitAsCommitDate()
