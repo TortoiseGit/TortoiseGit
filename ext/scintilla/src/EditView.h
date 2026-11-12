@@ -77,6 +77,7 @@ public:
 	std::unique_ptr<Surface> pixmapLine;
 	std::unique_ptr<Surface> pixmapIndentGuide;
 	std::unique_ptr<Surface> pixmapIndentGuideHighlight;
+	void *editor;
 
 	enum class SinglesState { invalid, valid, impossible } singlesState = SinglesState::invalid;
 	SingleByteWidths singles{};
