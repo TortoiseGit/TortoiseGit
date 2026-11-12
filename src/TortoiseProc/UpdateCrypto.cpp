@@ -133,10 +133,7 @@ private:
 /* number of data bytes in a MPI */
 static constexpr std::optional<uint32_t> mpi_len(std::span<const uint8_t, 2> mpi)
 {
-	const auto number = scalar_number(mpi);
-	if (!number)
-		return {};
-	return (number.value() + 7) / 8;
+	return scalar_number(mpi).transform([](const uint32_t value) { return (value + 7) / 8;});
 }
 
 [[nodiscard]] static bool read_mpi(mpi_t& dst, SpanReader& r)
@@ -155,8 +152,7 @@ static constexpr std::optional<uint32_t> mpi_len(std::span<const uint8_t, 2> mpi
 	if (bytes.empty())
 		return false;
 
-	dst.number.clear();
-	dst.number.insert(dst.number.begin(), bytes.begin(), bytes.end());
+	dst.number.assign_range(bytes);
 
 	return true;
 }
@@ -242,8 +238,7 @@ static constexpr std::optional<DWORD> map_algo(const uint8_t digest_algo)
 	const auto hashed_data = r.read_bytes(scalar_number(sig.specific.v4.hashed_data_len));
 	if (hashed_data.empty())
 		return false;
-	sig.specific.v4.hashed_data.clear();
-	sig.specific.v4.hashed_data.insert(sig.specific.v4.hashed_data.begin(), hashed_data.begin(), hashed_data.end());
+	sig.specific.v4.hashed_data.assign_range(hashed_data);
 
 	/* Unhashed data length (2 bytes, big-endian) */
 	const auto unhashed_len_bytes = r.read_bytes(2);
@@ -532,7 +527,7 @@ static std::optional<public_key_t> parse_public_key(std::span<const uint8_t> key
 					break;
 				if (packet.empty())
 					return {};
-				public_key.psz_username = { packet.begin(), packet.end() };
+				public_key.psz_username = { packet.cbegin(), packet.cend() };
 				break;
 
 			default:
