@@ -618,13 +618,13 @@ class ScintillaWin :
 
 	std::string EncodeWString(std::wstring_view wsv);
 	sptr_t DefWndProc(Message iMessage, uptr_t wParam, sptr_t lParam) override;
-	void IdleWork() override;
-	void QueueIdleWork(WorkItems items, Sci::Position upTo) override;
-	bool SetIdle(bool on) override;
 	UINT_PTR timers[static_cast<int>(TickReason::dwell)+1] {};
 	bool FineTickerRunning(TickReason reason) override;
 	void FineTickerStart(TickReason reason, int millis, int tolerance) override;
 	void FineTickerCancel(TickReason reason) override;
+	bool SetIdle(bool on) override;
+	void IdleWork() override;
+	void QueueIdleWork(WorkItems items, Sci::Position upTo) override;
 	void SetMouseCapture(bool on) override;
 	bool HaveMouseCapture() override;
 	void SetTrackMouseLeaveEvent(bool on) noexcept;
@@ -644,7 +644,6 @@ class ScintillaWin :
 	void SetCtrlID(int identifier) override;
 	int GetCtrlID() override;
 	void NotifyParent(NotificationData scn) override;
-	virtual void NotifyParent(SCNotification *scn);
 	void NotifyDoubleClick(Point pt, KeyMod modifiers) override;
 	std::unique_ptr<CaseFolder> CaseFolderForEncoding() override;
 	std::string CaseMapString(const std::string &s, CaseMapping caseMapping) override;
@@ -2263,12 +2262,10 @@ sptr_t ScintillaWin::SciMessage(Message iMessage, uptr_t wParam, sptr_t lParam) 
 
 	case Message::SetBidirectional:
 		if (technology == Technology::Default) {
-			bidirectional = Bidirectional::Disabled;
+			SetAppearance(bidirectional, Bidirectional::Disabled);
 		} else if (static_cast<Bidirectional>(wParam) <= Bidirectional::R2L) {
-			bidirectional = static_cast<Bidirectional>(wParam);
+			SetAppearance(bidirectional, static_cast<Bidirectional>(wParam));
 		}
-		// Invalidate all cached information including layout.
-		InvalidateStyleRedraw();
 		break;
 
 	case Message::TargetAsUTF8:
@@ -2559,7 +2556,6 @@ void ScintillaWin::FineTickerCancel(TickReason reason) {
 	}
 }
 
-
 bool ScintillaWin::SetIdle(bool on) {
 	// On Win32 the Idler is implemented as a Timer on the Scintilla window.  This
 	// takes advantage of the fact that WM_TIMER messages are very low priority,
@@ -2799,13 +2795,6 @@ void ScintillaWin::NotifyParent(NotificationData scn) {
 	scn.nmhdr.idFrom = GetCtrlID();
 	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
 	              GetCtrlID(), reinterpret_cast<LPARAM>(&scn));
-}
-
-void ScintillaWin::NotifyParent(SCNotification *scn) {
-	scn->nmhdr.hwndFrom = MainHWND();
-	scn->nmhdr.idFrom = GetCtrlID();
-	::SendMessage(::GetParent(MainHWND()), WM_NOTIFY,
-		GetCtrlID(), reinterpret_cast<LPARAM>(scn));
 }
 
 void ScintillaWin::NotifyDoubleClick(Point pt, KeyMod modifiers) {

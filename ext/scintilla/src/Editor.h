@@ -7,7 +7,6 @@
 
 #ifndef EDITOR_H
 #define EDITOR_H
-#include "Scintilla.h"
 
 namespace Scintilla::Internal {
 
@@ -263,6 +262,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	Sci::Position lengthForEncode;
 
 	Scintilla::Update needUpdateUI;
+	Sci::Position updateTextStart = InvalidPosition;
 
 	enum class PaintState { notPainting, painting, abandoned } paintState;
 	bool paintAbandonedByStyling;
@@ -348,6 +348,7 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void RedrawSelMargin(Sci::Line line=-1, bool allAfter=false);
 	PRectangle RectangleFromRange(Range r, int overlap);
 	void InvalidateRange(Sci::Position start, Sci::Position end);
+	void InvalidateRange(ForwardRange range);
 
 	bool UserVirtualSpace() const noexcept {
 		return (FlagSet(virtualSpaceOptions, Scintilla::VirtualSpace::UserAccessible));
@@ -440,7 +441,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 	void ChangeSize();
 
 	void FilterSelections();
-	Sci::Position RealizeVirtualSpace(Sci::Position position, Sci::Position virtualSpace);
 	SelectionPosition RealizeVirtualSpace(const SelectionPosition &position);
 	void AddChar(char ch);
 	virtual void InsertCharacter(std::string_view sv, Scintilla::CharacterSource charSource);
@@ -572,6 +572,9 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	bool Idle();
 	enum class TickReason { caret, scroll, widen, dwell, platform };
+	static constexpr int tickerInterval = 100;	// Default background ticker period for caret blinking, auto-scroll, ...
+	static constexpr int tickerIntervalWiden = 50;	// Ticker period for reflecting measured width to widen scroll bar
+	static constexpr int tickerToleranceFraction = 10;	// Default tolerance is 1/10 of tick interval
 	virtual void TickFor(TickReason reason);
 	virtual bool FineTickerRunning(TickReason reason);
 	virtual void FineTickerStart(TickReason reason, int millis, int tolerance);
@@ -623,7 +626,8 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 
 	bool PositionIsHotspot(Sci::Position position) const noexcept;
 	bool PointIsHotspot(Point pt);
-	void SetHotSpotRange(const Point *pt);
+	void ClearHotSpotRange();
+	void SetHotSpotRange(Point pt);
 	void SetHoverIndicatorPosition(Sci::Position position);
 	void SetHoverIndicatorPoint(Point pt);
 
@@ -715,7 +719,6 @@ protected:	// ScintillaBase subclass needs access to much of Editor
 public:
 	~Editor() override;
 
-	virtual void NotifyParent(SCNotification *scn) = 0;
 	// Public so the COM thunks can access it.
 	bool IsUnicodeMode() const noexcept;
 	// Public so scintilla_send_message can use it.
