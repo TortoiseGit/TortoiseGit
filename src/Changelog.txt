@@ -10,6 +10,7 @@ Released: unreleased
  * Update zlib to version 1.4
  * Improve support for Git for Windows >= 2.56
  * Updated libgit to version 2.53.1 based on Git for Windows sources
+ * Update Scintilla to 5.6.9 and Lexilla to 5.5.5
 
 == Bug Fixes ==
  * Fixed issue #4278: Classic Explorer context menu leaks GDI bitmap handles and eventually terminates Explorer
