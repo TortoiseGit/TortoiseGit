@@ -184,11 +184,18 @@ public:
 		return memcmp(m_hash, other.m_hash, GIT_HASH_SIZE) != 0;
 	}
 
-	bool MatchesPrefix(const CGitHash& hash, const CString& hashString, size_t prefixLen) const
+	bool MatchesPrefix(const CGitHash& hash, const size_t prefixLen) const
 	{
-		if (memcmp(m_hash, hash.m_hash, prefixLen >> 1))
+		ASSERT(prefixLen <= GIT_HASH_SIZE * 2);
+		if (prefixLen > GIT_HASH_SIZE * 2) // just a safeguard, should never happen
 			return false;
-		return prefixLen == 2 * GIT_HASH_SIZE || wcsncmp(ToString(), hashString, prefixLen) == 0;
+
+		const size_t fullBytes = prefixLen / 2;
+
+		if (memcmp(m_hash, hash.m_hash, fullBytes) != 0)
+			return false;
+
+		return ((prefixLen & 1) == 0) || (m_hash[fullBytes] & 0xF0) == (hash.m_hash[fullBytes] & 0xF0);
 	}
 
 	friend struct std::hash<CGitHash>;
