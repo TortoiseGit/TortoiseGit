@@ -135,20 +135,23 @@ public:
 		return memcmp(m_hash, empty, GIT_HASH_SIZE) == 0;
 	}
 
-	CString ToString() const
-	{
-		CString str;
-		str.Preallocate(GIT_HASH_SIZE * 2);
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-			str.AppendFormat(L"%02x", m_hash[i]);
-		return str;
-	}
-
-	CString ToString(int len) const
+	CString ToString(const int len = GIT_HASH_SIZE * 2) const
 	{
 		ASSERT(len >= 0 && len <= GIT_HASH_SIZE * 2);
-		CString str { ToString() };
-		str.Truncate(len);
+		if (len > GIT_HASH_SIZE * 2) // just a safeguard, should never happen
+			return ToString();
+
+		static constexpr std::wstring_view hex = L"0123456789abcdef";
+
+		CString str;
+		wchar_t* p = str.GetBufferSetLength(len);
+		for (int i = 0; i < len; ++i)
+		{
+			const auto byte = m_hash[i / 2];
+			p[i] = hex[(i & 1) ? (byte & 0x0F) : (byte >> 4)];
+		}
+		str.ReleaseBufferSetLength(len);
+
 		return str;
 	}
 
