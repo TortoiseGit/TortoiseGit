@@ -118,8 +118,10 @@ public:
 		return hash;
 	}
 
-	static CGitHash FromRaw(const unsigned char* raw)
+	template<size_t Length>
+	static CGitHash FromRaw(const unsigned char(&raw)[Length])
 	{
+		static_assert(Length >= GIT_HASH_SIZE);
 		CGitHash hash;
 		memcpy(hash.m_hash, raw, GIT_HASH_SIZE);
 		return hash;
