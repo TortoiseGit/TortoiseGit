@@ -504,6 +504,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			di.fwType = 0;
 			if (::StartDoc(hdc, &di) < 0)
 			{
+				MessageBox(*this, CFormatMessageWrapper(), L"TortoiseGitUDiff", MB_ICONERROR);
 				return 0;
 			}
 
@@ -545,7 +546,12 @@ LRESULT CMainWindow::DoCommand(int id)
 			// Print each page
 			while (lengthPrinted < lengthDoc)
 			{
-				::StartPage(hdc);
+				if (!::StartPage(hdc))
+				{
+					MessageBox(*this, CFormatMessageWrapper(), L"TortoiseGitUDiff", MB_ICONERROR);
+					::AbortDoc(hdc);
+					break;
+				}
 
 				frPrint.chrg.cpMin = static_cast<long>(lengthPrinted);
 				frPrint.chrg.cpMax = static_cast<long>(lengthDoc);
