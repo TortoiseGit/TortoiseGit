@@ -255,11 +255,11 @@ LRESULT CMainWindow::DoCommand(int id)
 				rect.left, rect.bottom - int((SEARCHBARHEIGHT + 2) * CDPIAware::Instance().ScaleFactorY(*this)),
 				rect.right - rect.left, int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY(*this)),
 				SWP_SHOWWINDOW);
-			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend)
+			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend && selend - selstart < INT_MAX)
 			{
 				auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
-				Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
-				if (SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+				Sci_TextRangeFull range = { static_cast<Sci_Position>(selstart), static_cast<Sci_Position>(selend), linebuf.get() };
+				if (SendEditor(SCI_GETTEXTRANGEFULL, 0, reinterpret_cast<LPARAM>(&range)) > 0)
 					m_FindBar.SetSearchString(CUnicodeUtils::StdGetUnicode(linebuf.get()).c_str());
 			}
 			m_FindBar.SelectSearchString();
@@ -383,7 +383,7 @@ LRESULT CMainWindow::DoCommand(int id)
 				return 0;
 
 			// reset all indicators
-			auto endpos = static_cast<int>(SendEditor(SCI_GETLENGTH));
+			auto endpos = static_cast<Sci_Position>(SendEditor(SCI_GETLENGTH));
 			for (int i = INDIC_CONTAINER; i <= INDIC_MAX; ++i)
 			{
 				SendEditor(SCI_SETINDICATORCURRENT, i);
@@ -531,7 +531,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			}
 
 			// We must subtract the physical margins from the printable area
-			Sci_RangeToFormat frPrint;
+			Sci_RangeToFormatFull frPrint;
 			frPrint.hdc             = hdc;
 			frPrint.hdcTarget       = hdc;
 			frPrint.rc.left         = rectMargins.left - rectPhysMargins.left;
@@ -553,10 +553,10 @@ LRESULT CMainWindow::DoCommand(int id)
 					break;
 				}
 
-				frPrint.chrg.cpMin = static_cast<long>(lengthPrinted);
-				frPrint.chrg.cpMax = static_cast<long>(lengthDoc);
+				frPrint.chrg.cpMin = static_cast<Sci_Position>(lengthPrinted);
+				frPrint.chrg.cpMax = static_cast<Sci_Position>(lengthDoc);
 
-				lengthPrinted = SendEditor(SCI_FORMATRANGE, true, reinterpret_cast<LPARAM>(&frPrint));
+				lengthPrinted = SendEditor(SCI_FORMATRANGEFULL, true, reinterpret_cast<LPARAM>(&frPrint));
 
 				::EndPage(hdc);
 			}
