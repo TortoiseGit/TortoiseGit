@@ -282,7 +282,7 @@ BEGIN
         MENUITEM "Enable syntax highlighting",  ID_VIEW_ENABLELEXER
         MENUITEM "&Dark Mode",                  ID_VIEW_DARKMODE
         MENUITEM SEPARATOR
-        MENUITEM "Wrap long lines",             ID_VIEW_WRAPLONGLINES
+        MENUITEM "&Wrap long lines",            ID_VIEW_WRAPLONGLINES
     END
     POPUP "&Help"
     BEGIN

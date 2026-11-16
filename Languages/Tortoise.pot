@@ -1311,6 +1311,10 @@ msgstr ""
 msgid "&Within file"
 msgstr ""
 
+#. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu)
+msgid "&Wrap long lines"
+msgstr ""
+
 #. Resource IDs: (IDS_MSGBOX_YES)
 msgid "&Yes"
 msgstr ""
@@ -5240,7 +5244,7 @@ msgstr ""
 msgid "ID:32873:V C +E"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32881; 'Wrap long lines'
+#. Accelerator Entry for Menu ID:32881; '&Wrap long lines'
 msgid "ID:32881:V C +P"
 msgstr ""
 
@@ -10506,10 +10510,6 @@ msgstr ""
 
 #. Resource IDs: (cmdViewWrapLines_LabelTitle_RESID)
 msgid "Wrap Lines"
-msgstr ""
-
-#. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu)
-msgid "Wrap long lines"
 msgstr ""
 
 #. Resource IDs: (cmdViewWrapLines)

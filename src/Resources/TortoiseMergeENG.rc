@@ -564,7 +564,7 @@ BEGIN
         MENUITEM "Line diff bar",               ID_VIEW_LINEDIFFBAR, CHECKED
         MENUITEM "Locator Bar",                 ID_VIEW_LOCATORBAR
         MENUITEM SEPARATOR
-        MENUITEM "Wrap long lines",             ID_VIEW_WRAPLONGLINES
+        MENUITEM "&Wrap long lines",            ID_VIEW_WRAPLONGLINES
         MENUITEM "&Moved blocks",               ID_VIEW_MOVEDBLOCKS
         MENUITEM "Inline diff",                 ID_VIEW_INLINEDIFF
         MENUITEM "Inline diff word-wise",       ID_VIEW_INLINEDIFFWORD
