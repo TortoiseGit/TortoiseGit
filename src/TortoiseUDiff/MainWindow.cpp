@@ -368,6 +368,17 @@ LRESULT CMainWindow::DoCommand(int id)
 				pdlg.Flags |= PD_SELECTION;
 
 			HRESULT hResult = PrintDlgEx(&pdlg);
+			SCOPE_EXIT
+			{
+				if (pdlg.hDC)
+					::DeleteDC(pdlg.hDC);
+				if (pdlg.hDevMode)
+					GlobalFree(pdlg.hDevMode);
+				if (pdlg.hDevNames)
+					GlobalFree(pdlg.hDevNames);
+				if (pdlg.lpPageRanges)
+					GlobalFree(pdlg.lpPageRanges);
+			};
 			if ((hResult != S_OK) || (pdlg.dwResultAction != PD_RESULT_PRINT))
 				return 0;
 
@@ -380,10 +391,16 @@ LRESULT CMainWindow::DoCommand(int id)
 			}
 			// store and reset UI settings
 			auto viewws = static_cast<int>(SendEditor(SCI_GETVIEWWS));
-			SendEditor(SCI_SETVIEWWS, 0);
+			SendEditor(SCI_SETVIEWWS, SCWS_INVISIBLE);
 			auto edgemode = static_cast<int>(SendEditor(SCI_GETEDGEMODE));
 			SendEditor(SCI_SETEDGEMODE, EDGE_NONE);
 			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_END);
+			SCOPE_EXIT
+			{
+				SendEditor(SCI_SETVIEWWS, viewws);
+				SendEditor(SCI_SETEDGEMODE, edgemode);
+				SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_NONE);
+			};
 
 			HDC hdc = pdlg.hDC;
 
@@ -487,7 +504,6 @@ LRESULT CMainWindow::DoCommand(int id)
 			di.fwType = 0;
 			if (::StartDoc(hdc, &di) < 0)
 			{
-				::DeleteDC(hdc);
 				return 0;
 			}
 
@@ -542,19 +558,6 @@ LRESULT CMainWindow::DoCommand(int id)
 			SendEditor(SCI_FORMATRANGE, FALSE, 0);
 
 			::EndDoc(hdc);
-			::DeleteDC(hdc);
-
-			if (pdlg.hDevMode)
-				GlobalFree(pdlg.hDevMode);
-			if (pdlg.hDevNames)
-				GlobalFree(pdlg.hDevNames);
-			if (pdlg.lpPageRanges)
-				GlobalFree(pdlg.lpPageRanges);
-
-			// reset the UI
-			SendEditor(SCI_SETVIEWWS, viewws);
-			SendEditor(SCI_SETEDGEMODE, edgemode);
-			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_NONE);
 		}
 		break;
 	case ID_VIEW_DARKMODE:
