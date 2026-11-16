@@ -1311,7 +1311,7 @@ msgstr ""
 msgid "&Within file"
 msgstr ""
 
-#. Resource IDs: (ID_VIEW_WRAPLONGLINES - Menu)
+#. Resource IDs: (ID_FILE_LINEWRAP - Menu, ID_VIEW_WRAPLONGLINES - Menu)
 msgid "&Wrap long lines"
 msgstr ""
 

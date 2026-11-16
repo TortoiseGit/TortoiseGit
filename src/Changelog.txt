@@ -6,6 +6,7 @@ Released: unreleased
 
 == Features ==
  * Update SimpleIni to version 4.27
+ * Fixed issue #4293: TortoiseGitUDiff: add option to wrap long lines
 
 = Release 2.19.1 =
 Released: 2026-06-27

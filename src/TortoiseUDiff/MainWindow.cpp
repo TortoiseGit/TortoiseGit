@@ -297,6 +297,17 @@ LRESULT CMainWindow::DoCommand(int id)
 		else if (canCloseWhenModified())
 			PostQuitMessage(0);
 		break;
+	case ID_FILE_LINEWRAP:
+		{
+			m_bWrapLines = !m_bWrapLines;
+
+			CRegStdDWORD(L"Software\\TortoiseGit\\UDiffLineWrap", FALSE) = m_bWrapLines;
+
+			CheckMenuItem(GetMenu(*this), ID_FILE_LINEWRAP, MF_BYCOMMAND | (m_bWrapLines ? MF_CHECKED : MF_UNCHECKED));
+
+			SendEditor(SCI_SETWRAPMODE, m_bWrapLines ? SC_WRAP_WORD : SC_WRAP_NONE);
+		}
+		break;
 	case ID_FILE_SETTINGS:
 		{
 			std::wstring gitCmd = L" /command:settings /page:udiff";
@@ -639,6 +650,10 @@ bool CMainWindow::Initialize()
 	SendEditor(SCI_SETVIEWWS, 1);
 	SendEditor(SCI_SETWHITESPACESIZE, 2);
 	SendEditor(SCI_STYLESETVISIBLE, STYLE_CONTROLCHAR, TRUE);
+
+	m_bWrapLines = CRegStdDWORD(L"Software\\TortoiseGit\\UDiffLineWrap", FALSE) != FALSE;
+	SendEditor(SCI_SETWRAPMODE, m_bWrapLines ? SC_WRAP_WORD : SC_WRAP_NONE);
+	CheckMenuItem(GetMenu(*this), ID_FILE_LINEWRAP, MF_BYCOMMAND | (m_bWrapLines ? MF_CHECKED : MF_UNCHECKED));
 
 	SetTheme(CTheme::Instance().IsDarkTheme());
 
