@@ -1,6 +1,6 @@
 ﻿// TortoiseGitMerge - a Diff/Patch program
 
-// Copyright (C) 2003-2021 - TortoiseSVN
+// Copyright (C) 2003-2021, 2026 - TortoiseSVN
 // Copyright (C) 2011-2012, 2017-2025 TortoiseGit
 
 // This program is free software; you can redistribute it and/or
@@ -6181,7 +6181,7 @@ void CBaseView::UseViewBlock(CBaseView * pwndView, int nFirstViewLine, int nLast
 	{
 		if (!IsViewLineEmpty(nLine))
 		{
-			if (GetViewLineEnding(nLine) != EOL::NoEnding)
+			if (GetViewLineEnding(nLine) != EOL::NoEnding && nLine < GetViewCount() - 1)
 			{
 				// we added non last line into empty block on the end (or should we remove eol from this one ?)
 				// so next line is empty

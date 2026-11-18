@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2016, 2018-2019, 2023, 2025 - TortoiseGit
+// Copyright (C) 2011-2016, 2018-2019, 2023, 2025-2026 - TortoiseGit
 // Copyright (C) 2007-2008, 2021 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -597,7 +597,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 
 	// setup redirection handles
 	// output handle must be WRITE mode, share READ
-	// redirect handle must be READ mode, share WRITE
+	// redirect handle must be READ mode, share WRITE, added SHARE_READ due do issue #4285
 	hErr   = CreateFile(szErr, GENERIC_WRITE, FILE_SHARE_READ, &sa, CREATE_ALWAYS, FILE_ATTRIBUTE_TEMPORARY, nullptr);
 
 	if (!hErr)
@@ -606,7 +606,7 @@ DWORD CHooks::RunScript(CString cmd, LPCWSTR currentDir, CString& error, bool bW
 		return DWORD(-1);
 	}
 
-	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
+	hRedir = CreateFile(szErr, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
 
 	if (!hRedir)
 	{

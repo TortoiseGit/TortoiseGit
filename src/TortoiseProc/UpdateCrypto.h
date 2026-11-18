@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2013-2014, 2019 Sven Strickroth <email@cs-ware.de>
+// Copyright (C) 2013-2014, 2019, 2026 Sven Strickroth <email@cs-ware.de>
 // Copyright (C) VLC project (http://videolan.org)
 
 // This program is free software; you can redistribute it and/or
@@ -21,16 +21,17 @@
 #include <stdint.h>
 #include <WinCrypt.h>
 #include "UpdateDownloader.h"
+#include <optional>
+
+inline constexpr size_t MAX_MPI_BITS_RSA = 4096;
 
 enum    /* Public key algorithms */
 {
 	PUBLIC_KEY_ALGO_RSA = 0x01,
-	PUBLIC_KEY_ALGO_DSA = 0x11
 };
 
 enum    /* Digest algorithms */
 {
-	DIGEST_ALGO_SHA1    = 0x02,
 	DIGEST_ALGO_SHA256  = 0x08,
 	DIGEST_ALGO_SHA384  = 0x09,
 	DIGEST_ALGO_SHA512  = 0x0A,
@@ -60,24 +61,27 @@ enum    /* Signature subpacket types */
 	ISSUER_SUBPACKET    = 0x10
 };
 
+struct mpi_t
+{
+	uint8_t len[2]; /* scalar number */
+	std::vector<uint8_t> number;
+
+	[[nodiscard]] constexpr boolean empty() const { return number.empty(); }
+	[[nodiscard]] constexpr size_t size() const { return number.size(); }
+	[[nodiscard]] constexpr auto data() const { return number.data(); }
+};
+
 struct public_key_packet_t
 {
 	uint8_t version;      /* we use only version 4 */
 	uint8_t timestamp[4]; /* creation time of the key */
-	uint8_t algo;         /* we only use DSA or RSA */
+	uint8_t algo; /* we only use RSA */
 	/* the multi precision integers, with their 2 bytes length header */
-	union {
-#ifdef TGIT_UPDATECRYPTO_DSA
+	struct
+	{
 		struct {
-			uint8_t p[2 + 128];
-			uint8_t q[2 + 20];
-			uint8_t g[2 + 128];
-			uint8_t y[2 + 128];
-		} dsa;
-#endif
-		struct {
-			uint8_t n[2 + 4096 / 8];
-			uint8_t e[2 + 4096 / 8];
+			mpi_t n;
+			mpi_t e;
 		} rsa;
 	} sig;
 };
@@ -85,74 +89,51 @@ struct public_key_packet_t
 /* used for public key and file signatures */
 struct signature_packet_t
 {
-	uint8_t version; /* 3 or 4 */
+	uint8_t version; /* only 4 */
 
 	uint8_t type;
-	uint8_t public_key_algo;    /* DSA or RSA */
+	uint8_t public_key_algo; /* only RSA is supported */
 	uint8_t digest_algo;
 
 	uint8_t hash_verification[2];
 	uint8_t issuer_longid[8];
 
-	union   /* version specific data */
+	struct /* version specific data */
 	{
 		struct
 		{
 			uint8_t hashed_data_len[2];     /* scalar number */
-			uint8_t *hashed_data;           /* hashed_data_len bytes */
-			uint8_t unhashed_data_len[2];   /* scalar number */
-			uint8_t *unhashed_data;         /* unhashed_data_len bytes */
+			std::vector<uint8_t> hashed_data; /* hashed_data_len bytes */
 		} v4;
 	} specific;
 
 /* The part below is made of consecutive MPIs, their number and size being
  * public-key-algorithm dependent.
  */
-	union {
-#ifdef TGIT_UPDATECRYPTO_DSA
+	struct
+	{
 		struct {
-			uint8_t r[2 + 20];
-			uint8_t s[2 + 20];
-		} dsa;
-#endif
-		struct {
-			uint8_t s[2 + 4096 / 8];
+			mpi_t s;
 		} rsa;
 	} algo_specific;
 };
 
-typedef struct public_key_packet_t public_key_packet_t;
-typedef struct signature_packet_t signature_packet_t;
 
 struct public_key_t
 {
 	uint8_t longid[8];       /* Long id */
-	uint8_t *psz_username;    /* USER ID */
+	std::optional<std::vector<uint8_t>> psz_username; /* USER ID */
 
 	public_key_packet_t key;       /* Public key packet */
 
-	signature_packet_t sig;     /* Signature packet, by the embedded key */
+	std::optional<signature_packet_t> sig; /* Signature packet, by the embedded key */
 };
 
-typedef struct public_key_t public_key_t;
-
-#ifdef TGIT_UPDATECRYPTO_DSA
-typedef struct _DSAKEY
-{
-  BLOBHEADER blobheader;
-  DSSPUBKEY_VER3 dsspubkeyver3;
-  BYTE p[128]; // prime modulus
-  BYTE q[20]; // large factor of P-1
-  BYTE g[128]; // the generator parameter
-  BYTE y[128]; // (G^X) mod P
-} DSAKEY;
-#endif
-
-typedef struct _RSAKEY
+struct RSAKEY
 {
 	BLOBHEADER blobheader;
 	RSAPUBKEY rsapubkey;
-	BYTE n[4096 / 8];
-} RSAKEY;
+	BYTE n[MAX_MPI_BITS_RSA / 8];
+};
 
-int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader);
+[[nodiscard]] bool VerifyIntegrity(const CString& filename, const CString& signatureFilename, CUpdateDownloader* updateDownloader);

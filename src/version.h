@@ -55,7 +55,7 @@ static const uint8_t tortoisegit_public_key_longid[8] = {
 };
 
 /* gpg --export --armor "<id>"|sed -e s/^/\"/ -e s/\$/\\\\n\"/ */
-static const uint8_t tortoisegit_public_key[] = {
+static const char tortoisegit_public_key[] = {
 	"-----BEGIN PGP PUBLIC KEY BLOCK-----\n"
 	"\n"
 	"mQINBFQSJwIBEADehqoDNnjZwDQC/qGNBX6v165EMzq13fBdJw3pbh7c91/GhA9V\n"

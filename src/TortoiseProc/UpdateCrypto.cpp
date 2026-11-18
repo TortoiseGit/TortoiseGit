@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2013-2019 Sven Strickroth <email@cs-ware.de>
-// Copyright (C) 2014-2019, 2021-2023, 2025 TortoiseGit
+// Copyright (C) 2014-2019, 2021-2023, 2025-2026 TortoiseGit
 // Copyright (C) VLC project (http://videolan.org)
 // - pgp parsing code was copied from src/misc/update(_crypto)?.c
 // Copyright (C) The Internet Society (1998).  All Rights Reserved.
@@ -25,72 +25,149 @@
 #include "stdafx.h"
 #include "UpdateCrypto.h"
 #include <atlenc.h>
+#include <span>
+#include <optional>
 #define NEED_SIGNING_KEY
 #include "../version.h"
 #include "TempFile.h"
 #include "SmartHandle.h"
 
-constexpr auto packet_type(uint8_t c) { return (c & 0x3c) >> 2; } /* 0x3C = 00111100 */
-constexpr auto packet_header_len(uint8_t c) { return (c & 0x03) + 1; } /* number of bytes in a packet header */
-
-#ifdef TGIT_UPDATECRYPTO_DSA
-#ifndef TGIT_UPDATECRYPTO_SHA1
-#error TGIT_UPDATECRYPTO_SHA1 required for DSA
-#endif
-#endif
-
-static inline uint32_t scalar_number(const uint8_t* p, int header_len)
+[[nodiscard]] static bool checked_memcmp(const std::span<const uint8_t> dst, const std::span<const uint8_t> src)
 {
-	ASSERT(header_len == 1 || header_len == 2 || header_len == 4);
-
-	if (header_len == 1)
-		return p[0];
-	else if (header_len == 2)
-		return (p[0] << 8) + p[1];
-	else if (header_len == 4)
-		return (static_cast<uint32_t>(p[0]) << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
-	else
-		abort();
+	if (src.size() != dst.size())
+		return false;
+	return std::memcmp(src.data(), dst.data(), src.size()) == 0;
 }
+
+[[nodiscard]] static bool checked_memcpy(const std::span<uint8_t> dst, const std::span<const uint8_t> src, bool exactLengthMatch = true)
+{
+	if (exactLengthMatch && src.size() != dst.size())
+		return false;
+	else if (src.size() > dst.size())
+		return false;
+
+	std::memcpy(dst.data(), src.data(), src.size());
+	return true;
+}
+
+constexpr auto packet_type(uint8_t c) { return (c & 0x3c) >> 2; } /* 0x3C = 00111100 */
+
+/* number of bytes in a packet header */
+constexpr static std::optional<uint32_t> packet_header_len(const uint8_t c)
+{
+	switch (c & 0x03)
+	{
+	case 0: return 1;
+	case 1: return 2;
+	case 2: return 4;
+	case 3: return {}; // indeterminate length unsupported
+	}
+	return {};
+}
+
+constexpr static inline std::optional<uint32_t> scalar_number(const std::span<const uint8_t> p)
+{
+	if (p.size() == 1)
+		return p[0];
+	else if (p.size() == 2)
+		return (p[0] << 8) + p[1];
+	else if (p.size() == 4)
+		return (static_cast<uint32_t>(p[0]) << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+	return {};
+}
+
+/* Bounds-checked cursor over an immutable byte span.
+ * All reads return false or empty span on underflow. */
+class SpanReader
+{
+public:
+	explicit SpanReader(std::span<const uint8_t> data) : m_buf(data) {}
+	SpanReader(const SpanReader&) = delete;
+	SpanReader& operator=(const SpanReader&) = delete;
+
+	[[nodiscard]] bool empty() const { return m_buf.empty(); }
+
+	/* Consume and return one byte. Returns false on underflow. */
+	[[nodiscard]] bool read_byte(uint8_t& out)
+	{
+		if (m_buf.empty())
+			return false;
+		out = m_buf[0];
+		m_buf = m_buf.subspan(1);
+		return true;
+	}
+
+	/* Consume exactly n bytes and return them as a span. Returns empty span on underflow. */
+	[[nodiscard]] std::span<const uint8_t> read_bytes(const size_t n)
+	{
+		if (n > m_buf.size())
+			return {};
+		auto chunk = m_buf.first(n);
+		m_buf = m_buf.subspan(n);
+		return chunk;
+	}
+
+	/* Consume exactly n bytes and return them as a span. Returns empty span on underflow or when no length is available in the optional. */
+	[[nodiscard]] std::span<const uint8_t> read_bytes(const std::optional<uint32_t> n)
+	{
+		if (!n)
+			return {};
+		return read_bytes(*n);
+	}
+
+	/* Read exactly as many bytes as the destination can hold and copies the data. Returns false on underflow. */
+	[[nodiscard]] bool read_bytes(const std::span<uint8_t> dest)
+	{
+		ASSERT(!dest.empty());
+		auto chunk = read_bytes(dest.size());
+		if (chunk.empty())
+			return false;
+		std::memcpy(dest.data(), chunk.data(), dest.size());
+		return true;
+	}
+
+private:
+	std::span<const uint8_t> m_buf;
+};
 
 /* number of data bytes in a MPI */
-static uint32_t mpi_len(const uint8_t* mpi)
+static constexpr std::optional<uint32_t> mpi_len(std::span<const uint8_t, 2> mpi)
 {
-	return (scalar_number(mpi, 2) + 7) / 8;
+	const auto number = scalar_number(mpi);
+	if (!number)
+		return {};
+	return (number.value() + 7) / 8;
 }
 
-static size_t read_mpi(uint8_t* dst, const uint8_t* buf, size_t buflen, size_t bits)
+[[nodiscard]] static bool read_mpi(mpi_t& dst, SpanReader& r)
 {
-	if (buflen < 2)
-		return 0;
+	if (!r.read_bytes(dst.len))
+		return false;
 
-	size_t n = mpi_len(buf);
+	const auto n = mpi_len(dst.len);
+	if (!n)
+		return false;
 
-	if (n * 8 > bits)
-		return 0;
+	if (*n > MAX_MPI_BITS_RSA / 8)
+		return false;
 
-	n += 2;
+	const auto bytes = r.read_bytes(n);
+	if (bytes.empty())
+		return false;
 
-	if (buflen < n)
-		return 0;
+	dst.number.clear();
+	dst.number.insert(dst.number.begin(), bytes.begin(), bytes.end());
 
-	memcpy(dst, buf, n);
-	return n;
+	return true;
 }
-
-#define READ_MPI(d, bits) do \
-	{ \
-		size_t n = read_mpi(d, p_buf, i_packet_len - i_read, bits); \
-		if (!n) goto error; \
-		p_buf += n; \
-		i_read += n; \
-	} while(0)
 
 /* Base64 decoding */
-static size_t b64_decode_binary_to_buffer(uint8_t *p_dst, size_t i_dst, const char *p_src, size_t srcLen)
+[[nodiscard]] static size_t b64_decode_binary_to_buffer(std::span<uint8_t> dst, std::string_view src)
 {
-	int len = static_cast<int>(i_dst);
-	if (!Base64Decode(p_src, static_cast<int>(srcLen), p_dst, &len))
+	if (dst.size() >= INT_MAX || src.size() >= INT_MAX)
+		return 0;
+	int len = static_cast<int>(dst.size());
+	if (!Base64Decode(src.data(), static_cast<int>(src.size()), dst.data(), &len))
 		return 0;
 	return len;
 }
@@ -99,15 +176,15 @@ static size_t b64_decode_binary_to_buffer(uint8_t *p_dst, size_t i_dst, const ch
  * crc_octets() was lamely copied from rfc 2440
  * Copyright (C) The Internet Society (1998).  All Rights Reserved.
  */
-#define CRC24_INIT 0xB704CEL
-#define CRC24_POLY 0x1864CFBL
-
-static long crc_octets(const uint8_t* octets, size_t len)
+static constexpr long crc_octets(const std::span<const uint8_t> octets)
 {
+	constexpr long CRC24_INIT = 0xB704CEL;
+	constexpr long CRC24_POLY = 0x1864CFBL;
+
 	long crc = CRC24_INIT;
-	while (len--)
+	for (const auto byte : octets)
 	{
-		crc ^= (*octets++) << 16;
+		crc ^= byte << 16;
 		for (int i = 0; i < 8; ++i)
 		{
 			crc <<= 1;
@@ -118,14 +195,10 @@ static long crc_octets(const uint8_t* octets, size_t len)
 	return crc & 0xFFFFFFL;
 }
 
-static ALG_ID map_digestalgo(uint8_t digest_algo)
+static constexpr std::optional<ALG_ID> map_digestalgo(const uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_SHA1
-	case DIGEST_ALGO_SHA1:
-		return CALG_SHA1;
-#endif
 	case DIGEST_ALGO_SHA256:
 		return CALG_SHA_256;
 	case DIGEST_ALGO_SHA384:
@@ -133,155 +206,129 @@ static ALG_ID map_digestalgo(uint8_t digest_algo)
 	case DIGEST_ALGO_SHA512:
 		return CALG_SHA_512;
 	default:
-		return 0;
+		return {};
 	}
 }
 
-static DWORD map_algo(uint8_t digest_algo)
+static constexpr std::optional<DWORD> map_algo(const uint8_t digest_algo)
 {
 	switch (digest_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		return PROV_DSS;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
 		return PROV_RSA_AES; // needed for SHA2, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387447%28v=vs.85%29.aspx
 	default:
-		return 0;
+		return {};
 	}
 }
 
 /*
  * fill a signature_packet_v4_t from signature packet data
- * verify that it was used with a DSA or RSA public key
+ * verify that it was used with a RSA public key
  */
-static size_t parse_signature_v4_packet(signature_packet_t *p_sig, const uint8_t *p_buf, size_t i_sig_len)
+[[nodiscard]] static bool parse_signature_v4_packet(signature_packet_t& sig, SpanReader& r)
 {
-	size_t i_read = 1; /* we already read the version byte */
+	if (!r.read_byte(sig.type))
+		return false;
+	if (!r.read_byte(sig.public_key_algo))
+		return false;
+	if (!r.read_byte(sig.digest_algo))
+		return false;
+	if (!map_algo(sig.public_key_algo))
+		return false;
 
-	if (i_sig_len < 10) /* signature is at least 10 bytes + the 2 MPIs */
-		return 0;
+	/* Hashed data length (2 bytes, big-endian) */
+	if (!r.read_bytes(sig.specific.v4.hashed_data_len))
+		return false;
+	const auto hashed_data = r.read_bytes(scalar_number(sig.specific.v4.hashed_data_len));
+	if (hashed_data.empty())
+		return false;
+	sig.specific.v4.hashed_data.clear();
+	sig.specific.v4.hashed_data.insert(sig.specific.v4.hashed_data.begin(), hashed_data.begin(), hashed_data.end());
 
-	p_sig->type = *p_buf++; i_read++;
+	/* Unhashed data length (2 bytes, big-endian) */
+	const auto unhashed_len_bytes = r.read_bytes(2);
+	if (unhashed_len_bytes.empty())
+		return false;
+	const auto unhashed_data = r.read_bytes(scalar_number(unhashed_len_bytes));
+	if (unhashed_data.empty())
+		return false;
 
-	p_sig->public_key_algo = *p_buf++; i_read++;
+	/* Hash check (2 bytes) */
+	if (!r.read_bytes(sig.hash_verification))
+		return false;
 
-	p_sig->digest_algo = *p_buf++; i_read++;
-	if (!map_algo(p_sig->public_key_algo))
-		return 0;
-
-	memcpy(p_sig->specific.v4.hashed_data_len, p_buf, 2);
-	p_buf += 2; i_read += 2;
-
-	size_t i_hashed_data_len = scalar_number(p_sig->specific.v4.hashed_data_len, 2);
-	i_read += i_hashed_data_len;
-	if (i_read + 4 > i_sig_len || i_hashed_data_len > i_sig_len)
-		return 0;
-
-	p_sig->specific.v4.hashed_data = static_cast<uint8_t*>(malloc(i_hashed_data_len));
-	if (!p_sig->specific.v4.hashed_data)
-		return 0;
-	memcpy(p_sig->specific.v4.hashed_data, p_buf, i_hashed_data_len);
-	p_buf += i_hashed_data_len;
-
-	memcpy(p_sig->specific.v4.unhashed_data_len, p_buf, 2);
-	p_buf += 2; i_read += 2;
-
-	size_t i_unhashed_data_len = scalar_number(p_sig->specific.v4.unhashed_data_len, 2);
-	i_read += i_unhashed_data_len;
-	if (i_read + 2 > i_sig_len || i_unhashed_data_len > i_sig_len)
-		return 0;
-
-	p_sig->specific.v4.unhashed_data = static_cast<uint8_t*>(malloc(i_unhashed_data_len));
-	if (!p_sig->specific.v4.unhashed_data)
-		return 0;
-
-	memcpy(p_sig->specific.v4.unhashed_data, p_buf, i_unhashed_data_len);
-	p_buf += i_unhashed_data_len;
-
-	memcpy(p_sig->hash_verification, p_buf, 2);
-	p_buf += 2; i_read += 2;
-
-	uint8_t *p, *max_pos;
-	p = p_sig->specific.v4.unhashed_data;
-	max_pos = p + i_unhashed_data_len;
-
-	for (;;)
+	/* Walk unhashed subpackets to find the issuer key-id.
+	 * Use a fresh SpanReader over the already-copied unhashed block. */
+	SpanReader sp(unhashed_data);
+	while (!sp.empty())
 	{
-		if (p > max_pos)
-			return 0;
+		/* Decode subpacket length */
+		const auto subpacket_len = [&sp]() -> std::optional<uint32_t> {
+			uint8_t first;
+			if (!sp.read_byte(first))
+				return {};
 
-		size_t i_subpacket_len;
-		if (*p < 192)
+			if (first < 192)
+				return first;
+			else if (first < 224)
+			{
+				uint8_t second;
+				if (!sp.read_byte(second))
+					return {};
+				return (static_cast<uint32_t>(first - 192) << 8) + second + 192;
+			}
+			else if (first == 255) /* first == 0xFF: 4-byte length follows */
+			{
+				const auto len_bytes = sp.read_bytes(4);
+				if (len_bytes.empty())
+					return {};
+				return (static_cast<uint32_t>(len_bytes[0]) << 24) | (static_cast<uint32_t>(len_bytes[1]) << 16) | (static_cast<uint32_t>(len_bytes[2]) << 8) | static_cast<uint32_t>(len_bytes[3]);
+			}
+			else
+				return {}; // Partial Body Lengths are unsupported
+		}();
+		const auto subpacket = sp.read_bytes(subpacket_len);
+		if (subpacket.empty())
+			return false;
+
+		if (subpacket[0] == ISSUER_SUBPACKET)
 		{
-			if (p + 1 > max_pos)
-				return 0;
-			i_subpacket_len = *p++;
+			/* subpacket body = type byte (1) + 8-byte key-id */
+			if (subpacket.size() != 1 + sizeof(sig.issuer_longid))
+				return false;
+
+			return checked_memcpy(sig.issuer_longid, subpacket.subspan(1, sizeof(sig.issuer_longid)));
 		}
-		else if (*p < 255)
-		{
-			if (p + 2 > max_pos)
-				return 0;
-			i_subpacket_len = static_cast<size_t>(*p++ - 192) << 8;
-			i_subpacket_len += *p++ + 192;
-		}
-		else
-		{
-			if (++p + 4 > max_pos)
-				return 0;
-			i_subpacket_len = static_cast<size_t>(*++p) << 24;
-			i_subpacket_len += static_cast<size_t>(*++p) << 16;
-			i_subpacket_len += static_cast<size_t>(*++p) << 8;
-			i_subpacket_len += *++p;
-		}
-
-		if (*p == ISSUER_SUBPACKET)
-		{
-			if (p + 9 > max_pos)
-				return 0;
-
-			memcpy(&p_sig->issuer_longid, p + 1, 8);
-
-			return i_read;
-		}
-
-		if (i_subpacket_len > i_unhashed_data_len)
-			return 0;
-
-		p += i_subpacket_len;
 	}
+
+	return false; /* issuer subpacket not found */
 }
 
-static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_buf, size_t i_packet_len)
+static std::optional<signature_packet_t> parse_signature_packet(std::span<const uint8_t> packet)
 {
-	if (!i_packet_len) /* 1st sanity check, we need at least the version */
-		return -1;
+	SpanReader r(packet);
 
-	p_sig->version = *p_buf++;
+	signature_packet_t sig{};
+	if (!r.read_byte(sig.version))
+		return {};
 
-	size_t i_read;
-	switch (p_sig->version)
+	switch (sig.version)
 	{
 		case 4:
-			p_sig->specific.v4.hashed_data = nullptr;
-			p_sig->specific.v4.unhashed_data = nullptr;
-			i_read = parse_signature_v4_packet(p_sig, p_buf, i_packet_len);
+			if (!parse_signature_v4_packet(sig, r))
+				return {};
 			break;
 		default:
-			return -1;
+			return {};
 	}
 
-	if (i_read == 0) /* signature packet parsing has failed */
-		goto error;
+	if (!map_algo(sig.public_key_algo))
+		return {};
 
-	if (!map_algo(p_sig->public_key_algo))
-		goto error;
+	if (!map_digestalgo(sig.digest_algo))
+		return {};
 
-	if (!map_digestalgo(p_sig->digest_algo))
-		goto error;
-
-	switch (p_sig->type)
+	switch (sig.type)
 	{
 		case BINARY_SIGNATURE:
 		case TEXT_SIGNATURE:
@@ -291,643 +338,507 @@ static int parse_signature_packet(signature_packet_t *p_sig, const uint8_t *p_bu
 		case POSITIVE_KEY_SIGNATURE:
 			break;
 		default:
-			goto error;
+			return {};
 	}
 
-	p_buf--; /* rewind to the version byte */
-	p_buf += i_read;
-
-	switch (p_sig->public_key_algo)
+	/* Read the algorithm-specific MPI(s) from what remains */
+	switch (sig.public_key_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		READ_MPI(p_sig->algo_specific.dsa.r, 160);
-		READ_MPI(p_sig->algo_specific.dsa.s, 160);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
-		READ_MPI(p_sig->algo_specific.rsa.s, 4096);
+		if (!read_mpi(sig.algo_specific.rsa.s, r))
+			return {};
 		break;
 	default:
-		goto error;
+		return {};
 	}
 
-	if (i_read != i_packet_len)
-		goto error;
+	if (!r.empty()) /* all bytes must be consumed */
+		return {};
 
-	return 0;
-
-error:
-	if (p_sig->version == 4)
-	{
-		free(p_sig->specific.v4.hashed_data);
-		free(p_sig->specific.v4.unhashed_data);
-	}
-
-	return -1;
+	return sig;
 }
 
 /*
  * Transform an armored document in binary format
  * Used on public keys and signatures
  */
-static int pgp_unarmor(const char *p_ibuf, size_t i_ibuf_len, uint8_t *p_obuf, size_t i_obuf_len)
+static std::vector<uint8_t> pgp_unarmor(std::string_view input)
 {
-	const char *p_ipos = p_ibuf;
-	uint8_t *p_opos = p_obuf;
-	int i_end = 0;
-	int i_header_skipped = 0;
+	if (input.size() >= INT_MAX)
+		return {};
+	auto buffer = std::vector<uint8_t>(Base64DecodeGetRequiredLength(static_cast<int>(input.size())));
+	auto obuf = std::span<uint8_t>(buffer);
 
-	while (!i_end && p_ipos < p_ibuf + i_ibuf_len && *p_ipos != '=')
+	size_t o_written = 0;
+	bool header_skipped = false;
+	while (!input.empty() && input.front() != '=')
 	{
-		if (*p_ipos == '\r' || *p_ipos == '\n')
+		if (input.front() == '\r' || input.front() == '\n')
 		{
-			p_ipos++;
+			input.remove_prefix(1);
 			continue;
 		}
 
-		size_t i_line_len = strcspn(p_ipos, "\r\n");
-		if (i_line_len == 0)
-			continue;
+		const size_t len = input.find_first_of("\r\n");
+		if (len == std::string_view::npos)
+			return {};
+		const std::string_view line = input.substr(0, len);
 
-		if (!i_header_skipped)
+		if (!header_skipped)
 		{
-			if (!strncmp(p_ipos, "-----BEGIN PGP", 14))
-				i_header_skipped = 1;
+			if (line.starts_with("-----BEGIN PGP"))
+				header_skipped = true;
 
-			p_ipos += i_line_len + 1;
-			continue;
-		}
-
-		if (!strncmp(p_ipos, "Version:", 8))
-		{
-			p_ipos += i_line_len + 1;
+			input.remove_prefix(line.size());
 			continue;
 		}
 
-		if (p_ipos[i_line_len - 1] == '=')
+		if (line.starts_with("Version:"))
 		{
-			i_end = 1;
+			input.remove_prefix(line.size());
+			continue;
 		}
 
-		p_opos += b64_decode_binary_to_buffer(p_opos, p_obuf - p_opos + i_obuf_len, p_ipos, static_cast<int>(i_line_len));
-		p_ipos += i_line_len + 1;
+		{
+			const auto written = b64_decode_binary_to_buffer(obuf.subspan(o_written), line);
+			if (written == 0)
+				return {};
+			o_written += written;
+		}
+
+		input.remove_prefix(line.size());
+
+		if (line.back() == '=')
+			break;
 	}
+	buffer.resize(o_written);
 
-	if (p_ipos + 1 < p_ibuf + i_ibuf_len && (*p_ipos == '\r' || *p_ipos == '\n'))
-		p_ipos++;
+	// Skip CR/LF before CRC
+	while (!input.empty() && (input.front() == '\r' || input.front() == '\n'))
+		input.remove_prefix(1);
 
 	/* XXX: the CRC is OPTIONAL, really require it ? */
-	if (p_ipos + 5 > p_ibuf + i_ibuf_len || *p_ipos++ != '=')
-		return 0;
+	// CRC line must start with '='
+	if (input.empty() || input.front() != '=')
+		return {};
+	input.remove_prefix(1);
 
-	uint8_t p_crc[3];
-	if (b64_decode_binary_to_buffer(p_crc, sizeof(p_crc), p_ipos, 5) != 3)
-		return 0;
+	// CRC24 = 3 bytes = 4 base64 characters
+	if (input.size() < 4)
+		return {};
 
-	long l_crc = crc_octets(p_obuf, p_opos - p_obuf);
-	long l_crc2 = (0 << 24) + (p_crc[0] << 16) + (p_crc[1] << 8) + p_crc[2];
+	uint8_t crc[3];
+	if (b64_decode_binary_to_buffer(std::span<uint8_t>(crc), input.substr(0, 4)) != 3)
+		return {};
 
-	return static_cast<int>((l_crc2 == l_crc) ? p_opos - p_obuf : 0);
+	const long crc_actual = crc_octets(buffer);
+	const long crc_expected = (static_cast<long>(crc[0]) << 16) | (static_cast<long>(crc[1]) << 8) | static_cast<long>(crc[2]);
+	if (crc_expected != crc_actual)
+		return {};
+
+	return buffer;
 }
 
 /*
  * fill a public_key_packet_t structure from public key packet data
- * verify that it is a version 4 public key packet, using DSA or RSA
+ * verify that it is a version 4 public key packet, using RSA
  */
-static int parse_public_key_packet(public_key_packet_t *p_key, const uint8_t *p_buf, size_t i_packet_len)
+static std::optional<public_key_packet_t> parse_public_key_packet(std::span<const uint8_t> buf)
 {
-	if (i_packet_len < 6)
-		return -1;
-
-	size_t i_read = 0;
-
-	p_key->version = *p_buf++; i_read++;
-	if (p_key->version != 4)
-		return -1;
+	SpanReader r(buf);
+	public_key_packet_t key{};
+	if (!r.read_byte(key.version))
+		return {};
+	if (key.version != 4)
+		return {};
 
 	/* XXX: warn when timestamp is > date ? */
-	memcpy(p_key->timestamp, p_buf, 4); p_buf += 4; i_read += 4;
+	if (!r.read_bytes(key.timestamp))
+		return {};
 
-	p_key->algo = *p_buf++; i_read++;
-	switch (p_key->algo)
+	if (!r.read_byte(key.algo))
+		return {};
+
+	switch (key.algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		if (i_packet_len > 418) // we only support 1024-bit DSA keys and SHA1 signatures, see verify_signature_dsa
-			return -1;
-		READ_MPI(p_key->sig.dsa.p, 1024);
-		READ_MPI(p_key->sig.dsa.q, 160);
-		READ_MPI(p_key->sig.dsa.g, 1024);
-		READ_MPI(p_key->sig.dsa.y, 1024);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
-		READ_MPI(p_key->sig.rsa.n, 4096);
-		READ_MPI(p_key->sig.rsa.e, 4096);
+		if (!read_mpi(key.sig.rsa.n, r))
+			return {};
+		if (!read_mpi(key.sig.rsa.e, r))
+			return {};
 		break;
 	default:
-		return -1;
+		return {};
 	}
+	if (!r.empty()) /* all bytes must be consumed */
+		return {};
 
-	if (i_read == i_packet_len)
-		return 0;
-
-error:
-	return -1;
+	return key;
 }
 
 /*
  * fill a public_key_t with public key data, including:
  *   * public key packet
- *   * signature packet issued by key which long id is p_sig_issuer
+ *   * signature packet issued by key which long id is sig_issuer
  *   * user id packet
  */
-static int parse_public_key(const uint8_t *p_key_data, size_t i_key_len, public_key_t *p_key, const uint8_t *p_sig_issuer)
+static std::optional<public_key_t> parse_public_key(std::span<const uint8_t> key_data, const std::optional<const std::span<const uint8_t, 8>> sig_issuer)
 {
-	const uint8_t *pos = p_key_data;
-	const uint8_t *max_pos = pos + i_key_len;
-
-	int i_status = 0;
-#define PUBLIC_KEY_FOUND    0x01
-#define USER_ID_FOUND       0x02
-#define SIGNATURE_FOUND     0X04
-
-	uint8_t *p_key_unarmored = nullptr;
-
-	p_key->psz_username = nullptr;
-	p_key->sig.specific.v4.hashed_data = nullptr;
-	p_key->sig.specific.v4.unhashed_data = nullptr;
-
-	if (!(*pos & 0x80))
-	{   /* first byte is ASCII, unarmoring */
-		p_key_unarmored = static_cast<uint8_t*>(malloc(i_key_len));
-		if (!p_key_unarmored)
-			return -1;
-		int i_len = pgp_unarmor(reinterpret_cast<const char*>(p_key_data), i_key_len, p_key_unarmored, i_key_len);
-
-		if (i_len == 0)
-			goto error;
-
-		pos = p_key_unarmored;
-		max_pos = pos + i_len;
-	}
-
-	while (pos < max_pos)
+	public_key_t public_key{};
+	SpanReader r(key_data);
+	while (!r.empty())
 	{
-		if (!(*pos & 0x80) || *pos & 0x40)
-			goto error;
+		/* Each packet starts with a tag byte */
+		uint8_t tag_byte;
+		if (!r.read_byte(tag_byte))
+			return {};
+		if (!(tag_byte & 0x80) || (tag_byte & 0x40)) /* must be old-format packet */
+			return {};
 
-		int i_type = packet_type(*pos);
+		const int i_type = packet_type(tag_byte);
 
-		int i_header_len = packet_header_len(*pos++);
-		if (pos + i_header_len > max_pos || (i_header_len != 1 && i_header_len != 2 && i_header_len != 4))
-			goto error;
+		const auto header_bytes = r.read_bytes(packet_header_len(tag_byte));
+		if (header_bytes.empty())
+			return {};
 
-		size_t i_packet_len = scalar_number(pos, i_header_len);
-		pos += i_header_len;
-
-		if (pos + i_packet_len > max_pos || i_packet_len > i_key_len)
-			goto error;
+		const auto packet = r.read_bytes(scalar_number(header_bytes));
+		if (packet.empty())
+			return {};
 
 		switch (i_type)
 		{
 			case PUBLIC_KEY_PACKET:
-				i_status |= PUBLIC_KEY_FOUND;
-				if (parse_public_key_packet(&p_key->key, pos, i_packet_len) != 0)
-					goto error;
+			{
+				auto key = parse_public_key_packet(packet);
+				if (!key)
+					return {};
+				public_key.key = std::move(*key);
 				break;
+			}
 
 			case SIGNATURE_PACKET: /* we accept only v4 signatures here */
-				if (i_status & SIGNATURE_FOUND || !p_sig_issuer)
+				if (public_key.sig || !sig_issuer)
 					break;
-				if (parse_signature_packet(&p_key->sig, pos, i_packet_len) == 0)
+				if (auto sig = parse_signature_packet(packet); sig)
 				{
-					if (p_key->sig.version != 4)
+					if (!checked_memcmp(sig->issuer_longid, *sig_issuer))
 						break;
-					if (memcmp( p_key->sig.issuer_longid, p_sig_issuer, 8))
-					{
-						free(p_key->sig.specific.v4.hashed_data);
-						free(p_key->sig.specific.v4.unhashed_data);
-						p_key->sig.specific.v4.hashed_data = nullptr;
-						p_key->sig.specific.v4.unhashed_data = nullptr;
-						break;
-					}
-					i_status |= SIGNATURE_FOUND;
+					public_key.sig = std::move(*sig);
 				}
 				break;
 
 			case USER_ID_PACKET:
-				if (p_key->psz_username) /* save only the first User ID */
+				if (public_key.psz_username) /* save only the first User ID */
 					break;
-				i_status |= USER_ID_FOUND;
-				p_key->psz_username = static_cast<uint8_t*>(malloc(i_packet_len + 1));
-				if (!p_key->psz_username)
-					goto error;
-
-				memcpy(p_key->psz_username, pos, i_packet_len);
-				p_key->psz_username[i_packet_len] = '\0';
+				if (packet.empty())
+					return {};
+				public_key.psz_username = { packet.begin(), packet.end() };
 				break;
 
 			default:
 				break;
 		}
-		pos += i_packet_len;
 	}
-	free(p_key_unarmored);
 
-	if (!(i_status & (PUBLIC_KEY_FOUND | USER_ID_FOUND)))
-		return -1;
+	if (public_key.key.version == 0 || !public_key.psz_username)
+		return {};
 
-	if (p_sig_issuer && !(i_status & SIGNATURE_FOUND))
-		return -1;
+	if (sig_issuer && !public_key.sig)
+		return {};
 
-	return 0;
-
-error:
-	if (p_key->sig.version == 4)
-	{
-		free(p_key->sig.specific.v4.hashed_data);
-		free(p_key->sig.specific.v4.unhashed_data);
-	}
-	free(p_key->psz_username);
-	free(p_key_unarmored);
-	return -1;
+	return public_key;
 }
 
-static int LoadSignature(const CString &signatureFilename, signature_packet_t *p_sig)
+static std::vector<uint8_t> load_pgp_file(const CString& filename)
 {
-	FILE* pFile = _wfsopen(signatureFilename, L"rb", SH_DENYWR);
+	CAutoFILE pFile = _wfsopen(filename, L"rb", SH_DENYWR);
 	if (!pFile)
-		return -1;
+		return {};
 
-	int size = 65536;
-	auto buffer = std::make_unique<unsigned char[]>(size);
-	int length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile));
-	fclose(pFile);
-	if (length < 8)
-		return -1;
+	constexpr size_t kMaxSigSize = 65536;
+	auto buffer = std::vector<uint8_t>(kMaxSigSize);
+	const size_t length = fread(buffer.data(), sizeof(uint8_t), kMaxSigSize, pFile);
+	if (length < 8 || length == kMaxSigSize || ferror(pFile))
+		return {};
+	buffer.resize(length);
 
-	// is unpacking needed?
-	if (static_cast<uint8_t>(buffer[0]) < 0x80)
+	/* If the first byte is ASCII (< 0x80), the data is armored — unarmor it first */
+	if (!(buffer[0] & 0x80))
 	{
-		auto unpacked = std::make_unique<unsigned char[]>(size);
-		size = pgp_unarmor(reinterpret_cast<const char*>(buffer.get()), length, unpacked.get(), length);
-
-		if (size < 2)
-			return -1;
-
-		buffer.swap(unpacked);
-	}
-	else
-		size = length;
-
-	if (packet_type(buffer[0]) != SIGNATURE_PACKET)
-		return -1;
-
-	DWORD i_header_len = packet_header_len(buffer[0]);
-	if ((i_header_len != 1 && i_header_len != 2 && i_header_len != 4) || i_header_len + 1 > static_cast<DWORD>(size))
-		return -1;
-
-	DWORD i_len = scalar_number(static_cast<uint8_t*>(buffer.get() + 1), i_header_len);
-	if (i_len + i_header_len + 1 != static_cast<DWORD>(size))
-		return -1;
-
-	if (parse_signature_packet(p_sig, static_cast<uint8_t*>(buffer.get() + 1 + i_header_len), i_len))
-		return -1;
-
-	if (p_sig->type != BINARY_SIGNATURE && p_sig->type != TEXT_SIGNATURE)
-	{
-		if (p_sig->version == 4)
-		{
-			free(p_sig->specific.v4.hashed_data);
-			free(p_sig->specific.v4.unhashed_data);
-		}
-		return -1;
+		static_assert(sizeof(uint8_t) == sizeof(const char));
+		std::string_view armored{ reinterpret_cast<const char*>(buffer.data()), buffer.size() };
+		return pgp_unarmor(armored);
 	}
 
-	return 0;
+	return buffer;
 }
 
-static void CryptHashChar(HCRYPTHASH hHash, const int c)
+static std::optional<signature_packet_t> LoadSignature(const CString& signatureFilename)
 {
-	CryptHashData(hHash, reinterpret_cast<const BYTE*>(&c), 1, 0);
+	auto buffer = load_pgp_file(signatureFilename);
+	if (buffer.empty())
+		return {};
+
+	/* Parse outer packet envelope using SpanReader */
+	SpanReader r(buffer);
+
+	uint8_t tag_byte;
+	if (!r.read_byte(tag_byte))
+		return {};
+	if (!(tag_byte & 0x80) || (tag_byte & 0x40)) /* must be old-format packet */
+		return {};
+
+	if (packet_type(tag_byte) != SIGNATURE_PACKET)
+		return {};
+
+	const auto header_bytes = r.read_bytes(packet_header_len(tag_byte));
+	if (header_bytes.empty())
+		return {};
+
+	const auto packet = r.read_bytes(scalar_number(header_bytes));
+	if (packet.empty())
+		return {};
+
+	if (!r.empty()) /* all bytes must be consumed */
+		return {};
+
+	auto sig = parse_signature_packet(packet);
+	if (!sig)
+		return {};
+
+	if (sig->type != BINARY_SIGNATURE && sig->type != TEXT_SIGNATURE)
+		return {};
+
+	return sig;
+}
+
+[[nodiscard]] static bool CryptHashChar(HCRYPTHASH hHash, const int c)
+{
+	return CryptHashData(hHash, reinterpret_cast<const BYTE*>(&c), 1, 0);
+}
+
+[[nodiscard]] static bool CryptHashSizeT(HCRYPTHASH hHash, const size_t number)
+{
+	if (!CryptHashChar(hHash, (number >> 24) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, (number >> 16) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, (number >> 8) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, number & 0xff))
+		return false;
+	return true;
 }
 
 /* final part of the hash */
-static int hash_finish(HCRYPTHASH hHash, const signature_packet_t* p_sig)
+[[nodiscard]] static bool hash_finish(HCRYPTHASH hHash, const signature_packet_t& sig)
 {
-	if (p_sig->version == 4)
+	if (sig.version == 4)
 	{
-		CryptHashChar(hHash, p_sig->version);
-		CryptHashChar(hHash, p_sig->type);
-		CryptHashChar(hHash, p_sig->public_key_algo);
-		CryptHashChar(hHash, p_sig->digest_algo);
-		CryptHashData(hHash, p_sig->specific.v4.hashed_data_len, 2, 0);
-		unsigned int i_len = scalar_number(p_sig->specific.v4.hashed_data_len, 2);
-		CryptHashData(hHash, p_sig->specific.v4.hashed_data, i_len, 0);
+		if (!CryptHashChar(hHash, sig.version))
+			return false;
+		if (!CryptHashChar(hHash, sig.type))
+			return false;
+		if (!CryptHashChar(hHash, sig.public_key_algo))
+			return false;
+		if (!CryptHashChar(hHash, sig.digest_algo))
+			return false;
+		if (!CryptHashData(hHash, sig.specific.v4.hashed_data_len, sizeof(sig.specific.v4.hashed_data_len), 0))
+			return false;
+		if (sig.specific.v4.hashed_data.empty())
+			return false;
+		if (sig.specific.v4.hashed_data.size() > DWORD_MAX || !CryptHashData(hHash, sig.specific.v4.hashed_data.data(), static_cast<DWORD>(sig.specific.v4.hashed_data.size()), 0))
+			return false;
+		size_t i_len = sig.specific.v4.hashed_data.size();
 
-		CryptHashChar(hHash, 0x04);
-		CryptHashChar(hHash, 0xFF);
+		if (!CryptHashChar(hHash, 0x04))
+			return false;
+		if (!CryptHashChar(hHash, 0xFF))
+			return false;
 
-		i_len += 6; /* hashed data + 6 bytes header */
+		i_len += sizeof(sig.version) + sizeof(sig.type) + sizeof(sig.public_key_algo) + sizeof(sig.digest_algo) + sizeof(sig.specific.v4.hashed_data_len);
 
-		CryptHashChar(hHash, (i_len >> 24) & 0xff);
-		CryptHashChar(hHash, (i_len >> 16) & 0xff);
-		CryptHashChar(hHash, (i_len >> 8) & 0xff);
-		CryptHashChar(hHash, (i_len) & 0xff);
+		return CryptHashSizeT(hHash, i_len);
 	}
 	else
-	{  /* RFC 4880 only tells about versions 3 and 4 */
-		return -1;
+	{ /* RFC 4880 only tells about versions 3 and 4, and we only support version 4 */
+		return false;
 	}
-
-	return 0;
 }
 
 /*
  * Generate a hash on a public key, to verify a signature made on that hash
  * Note that we need the signature (v4) to compute the hash
  */
-static int hash_from_public_key(HCRYPTHASH hHash, const public_key_t* p_pkey)
+[[nodiscard]] static bool hash_from_public_key(HCRYPTHASH hHash, const public_key_t& pkey)
 {
-	if (p_pkey->sig.version != 4)
-		return -1;
+	if (!pkey.sig || pkey.sig->version != 4)
+		return false;
 
-	if (p_pkey->sig.type < GENERIC_KEY_SIGNATURE || p_pkey->sig.type > POSITIVE_KEY_SIGNATURE)
-		return -1;
+	if (pkey.sig->type < GENERIC_KEY_SIGNATURE || pkey.sig->type > POSITIVE_KEY_SIGNATURE)
+		return false;
 
 	DWORD i_size = 0;
-#ifdef TGIT_UPDATECRYPTO_DSA
-	unsigned int i_p_len = 0, i_g_len = 0, i_q_len = 0, i_y_len = 0;
-#endif
-	unsigned int i_n_len = 0, i_e_len = 0;
 
-	switch (p_pkey->key.algo)
+	switch (pkey.key.algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		i_p_len = mpi_len(p_pkey->key.sig.dsa.p);
-		i_g_len = mpi_len(p_pkey->key.sig.dsa.g);
-		i_q_len = mpi_len(p_pkey->key.sig.dsa.q);
-		i_y_len = mpi_len(p_pkey->key.sig.dsa.y);
-
-		i_size = 6 + 2 * 4 + i_p_len + i_g_len + i_q_len + i_y_len;
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
-		i_n_len = mpi_len(p_pkey->key.sig.rsa.n);
-		i_e_len = mpi_len(p_pkey->key.sig.rsa.e);
-
-		i_size = 6 + 2 * 2 + i_n_len + i_e_len;
+		i_size = sizeof(pkey.key.version) + sizeof(pkey.key.algo) + sizeof(pkey.key.timestamp) + 2 * sizeof(pkey.key.sig.rsa.n.len) + static_cast<DWORD>(pkey.key.sig.rsa.n.size()) + static_cast<DWORD>(pkey.key.sig.rsa.e.size());
 		break;
 	default:
-		return -1;
+		return false;
 	}
 
-	if (!p_pkey->psz_username)
-		return -1;
+	if (!CryptHashChar(hHash, 0x99))
+		return false;
 
-	CryptHashChar(hHash, 0x99);
+	if (!CryptHashChar(hHash, (i_size >> 8) & 0xff))
+		return false;
+	if (!CryptHashChar(hHash, i_size & 0xff))
+		return false;
 
-	CryptHashChar(hHash, (i_size >> 8) & 0xff);
-	CryptHashChar(hHash, i_size & 0xff);
+	if (!CryptHashChar(hHash, pkey.key.version))
+		return false;
+	if (!CryptHashData(hHash, pkey.key.timestamp, sizeof(pkey.key.timestamp), 0))
+		return false;
+	if (!CryptHashChar(hHash, pkey.key.algo))
+		return false;
 
-	CryptHashChar(hHash, p_pkey->key.version);
-	CryptHashData(hHash, p_pkey->key.timestamp, 4, 0);
-	CryptHashChar(hHash, p_pkey->key.algo);
-
-	switch (p_pkey->key.algo)
+	switch (pkey.key.algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.p), 2 + i_p_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.q), 2 + i_q_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.g), 2 + i_g_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.dsa.y), 2 + i_y_len, 0);
-		break;
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.n), 2 + i_n_len, 0);
-		CryptHashData(hHash, reinterpret_cast<const uint8_t*>(&p_pkey->key.sig.rsa.e), 2 + i_e_len, 0);
+		if (!CryptHashData(hHash, pkey.key.sig.rsa.n.len, sizeof(pkey.key.sig.rsa.n.len), 0))
+			return false;
+		if (pkey.key.sig.rsa.n.size() > MAX_MPI_BITS_RSA / 8 || !CryptHashData(hHash, pkey.key.sig.rsa.n.data(), static_cast<DWORD>(pkey.key.sig.rsa.n.size()), 0))
+			return false;
+		if (!CryptHashData(hHash, pkey.key.sig.rsa.e.len, sizeof(pkey.key.sig.rsa.e.len), 0))
+			return false;
+		if (pkey.key.sig.rsa.e.size() > MAX_MPI_BITS_RSA / 8 || !CryptHashData(hHash, pkey.key.sig.rsa.e.data(), static_cast<DWORD>(pkey.key.sig.rsa.e.size()), 0))
+			return false;
 		break;
+	default:
+		return false;
 	}
 
-	CryptHashChar(hHash, 0xb4);
+	if (!CryptHashChar(hHash, 0xb4))
+		return false;
 
-	size_t i_len = strlen(reinterpret_cast<const char*>(p_pkey->psz_username));
+	if (!pkey.psz_username)
+		return false;
+	if (!CryptHashSizeT(hHash, pkey.psz_username->size()))
+		return false;
+	if (pkey.psz_username->size() > DWORD_MAX || !CryptHashData(hHash, pkey.psz_username->data(), static_cast<DWORD>(pkey.psz_username->size()), 0))
+		return false;
 
-	CryptHashChar(hHash, (i_len >> 24) & 0xff);
-	CryptHashChar(hHash, (i_len >> 16) & 0xff);
-	CryptHashChar(hHash, (i_len >> 8) & 0xff);
-	CryptHashChar(hHash, (i_len) & 0xff);
-
-	CryptHashData(hHash, p_pkey->psz_username, static_cast<DWORD>(i_len), 0);
-
-	return hash_finish(hHash, &p_pkey->sig);
+	return hash_finish(hHash, *pkey.sig);
 }
 
-static int hash_from_file(HCRYPTHASH hHash, const CString& filename, const signature_packet_t* p_sig)
+[[nodiscard]] static bool hash_from_file(HCRYPTHASH hHash, const CString& filename, const signature_packet_t& sig)
 {
 	CAutoFILE pFile = _wfsopen(filename, L"rb", SH_DENYWR);
 	if (!pFile)
-		return -1;
+		return false;
 
-	char buf[4097] = { 0 };
+	char buf[4096];
 	int read = 0;
-	int nlHandling = 0;
-	while ((read = static_cast<int>(fread(buf, sizeof(char), sizeof(buf) - 1, pFile))) > 0)
+	bool last_was_cr = false;
+	while ((read = static_cast<int>(fread(buf, sizeof(char), sizeof(buf), pFile))) > 0)
 	{
-		if (p_sig->type == TEXT_SIGNATURE)
+		if (sig.type == TEXT_SIGNATURE)
 		{
-			buf[read] = '\0';
-			char * psz_string = buf;
-			while (*psz_string)
+			// just implement very simple approach
+			for (size_t i = 0; i < read; ++i)
 			{
-				if (nlHandling == 1 && (*psz_string == '\r' || *psz_string == '\n'))
-				{
-					CryptHashChar(hHash, '\r');
-					CryptHashChar(hHash, '\n');
-					nlHandling = 2;
-				}
-				if (nlHandling == 2 && *psz_string == '\r')
-				{
-					psz_string++;
-					nlHandling = 2;
-					if (!*psz_string)
-						break;
-				}
+				const auto c = buf[i];
 
-				if ((nlHandling == 2 || nlHandling == 3) && *psz_string == '\n')
-				{
-					psz_string++;
-					if (!*psz_string)
-						break;
-				}
+				if (c == '\n' && !last_was_cr && !CryptHashChar(hHash, '\r'))
+					return false;
 
-				size_t i_len = strcspn(psz_string, "\r\n");
+				if (!CryptHashChar(hHash, c))
+					return false;
 
-				if (i_len)
-				{
-					CryptHashData(hHash, reinterpret_cast<BYTE*>(psz_string), static_cast<DWORD>(i_len), 0);
-					psz_string += i_len;
-				}
-
-				nlHandling = 1;
-				if (*psz_string == '\r' || *psz_string == '\n')
-				{
-					CryptHashChar(hHash, '\r');
-					CryptHashChar(hHash, '\n');
-					nlHandling = 2;
-
-					if (*psz_string == '\r')
-					{
-						psz_string++;
-						nlHandling = 3;
-					}
-
-					if (*psz_string == '\n')
-					{
-						psz_string++;
-						nlHandling = 0;
-					}
-				}
+				last_was_cr = (c == '\r');
 			}
+			continue;
 		}
-		else
-			CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0);
-	}
 
-	return hash_finish(hHash, p_sig);
+		if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0))
+			return false;
+	}
+	if (ferror(pFile))
+		return false;
+
+	return hash_finish(hHash, sig);
 }
 
-static int check_hash(HCRYPTHASH hHash, const signature_packet_t *p_sig)
+[[nodiscard]] static bool check_hash(HCRYPTHASH hHash, const signature_packet_t& sig)
 {
 	DWORD hashLen;
 	DWORD hashLenLen = sizeof(DWORD);
 	if (!CryptGetHashParam(hHash, HP_HASHSIZE, reinterpret_cast<BYTE*>(&hashLen), &hashLenLen, 0))
-		return -1;
+		return false;
 
 	auto pHash = std::make_unique<BYTE[]>(hashLen);
-	CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0);
+	if (!CryptGetHashParam(hHash, HP_HASHVAL, pHash.get(), &hashLen, 0))
+		return false;
 
-	if (pHash[0] != p_sig->hash_verification[0] || pHash[1] != p_sig->hash_verification[1])
-		return -1;
-
-	return 0;
+	return hashLen >= 2 && pHash[0] == sig.hash_verification[0] && pHash[1] == sig.hash_verification[1];
 }
 
 /*
 * Verify an OpenPGP signature made with some RSA public key
 */
-static int verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
+[[nodiscard]] static bool verify_signature_rsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& pkey, const signature_packet_t& sig)
 {
-	uint32_t i_n_len = min(mpi_len(p_pkey.key.sig.rsa.n), static_cast<uint32_t>(sizeof(p_pkey.key.sig.rsa.n)) - 2);
-	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.rsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.rsa.s)) - 2);
+	if (sig.algo_specific.rsa.s.empty() || sig.algo_specific.rsa.s.size() > pkey.key.sig.rsa.n.size() || pkey.key.sig.rsa.n.size() > MAX_MPI_BITS_RSA / 8)
+		return false;
 
-	if (i_s_len > i_n_len)
-		return -1;
-
-	RSAKEY rsakey;
+	RSAKEY rsakey{};
 	rsakey.blobheader.bType = PUBLICKEYBLOB; // 0x06
 	rsakey.blobheader.bVersion = CUR_BLOB_VERSION; // 0x02
-	rsakey.blobheader.reserved = 0;
 	rsakey.blobheader.aiKeyAlg = CALG_RSA_KEYX;
 	rsakey.rsapubkey.magic = 0x31415352;// ASCII for RSA1
-	rsakey.rsapubkey.bitlen = i_n_len * 8;
+	rsakey.rsapubkey.bitlen = static_cast<DWORD>(pkey.key.sig.rsa.n.size()) * 8;
+	if (pkey.key.sig.rsa.e.empty() || pkey.key.sig.rsa.e.size() > sizeof(rsakey.rsapubkey.pubexp)) // generic check that e is not empty and fits into pubexp in principle
+		return false;
 	rsakey.rsapubkey.pubexp = 65537; // gnupg only uses this
+	if (pkey.key.sig.rsa.e.size() != 3 || pkey.key.sig.rsa.e.number[0] != 1 || pkey.key.sig.rsa.e.number[1] != 0 || pkey.key.sig.rsa.e.number[2] != 1) // make sure e is actually 65537
+		return false;
 
-	memcpy(rsakey.n, p_pkey.key.sig.rsa.n + 2, i_n_len); std::reverse(rsakey.n, rsakey.n + i_n_len);
+	if (!checked_memcpy(rsakey.n, pkey.key.sig.rsa.n.number, false))
+		return false;
+	std::reverse(rsakey.n, rsakey.n + pkey.key.sig.rsa.n.size());
 
 	HCRYPTKEY hPubKey;
-	if (CryptImportKey(hCryptProv, reinterpret_cast<BYTE*>(&rsakey), sizeof(BLOBHEADER) + sizeof(RSAPUBKEY) + i_n_len, 0, 0, &hPubKey) == 0)
-		return -1;
+	if (CryptImportKey(hCryptProv, reinterpret_cast<BYTE*>(&rsakey), sizeof(BLOBHEADER) + sizeof(RSAPUBKEY) + static_cast<DWORD>(pkey.key.sig.rsa.n.size()), 0, 0, &hPubKey) == 0)
+		return false;
 	SCOPE_EXIT{ CryptDestroyKey(hPubKey); };
 
-	/* i_s_len might be shorter than i_n_len,
+	/* sig.algo_specific.rsa.s.size() might be shorter than pkey.key.sig.rsa.n.size(),
 	 * but CrytoAPI requires that both have same length,
-	 * thus, use i_n_len as buffer length (pSig; it's safe as i_n_len cannot be longer than the buffer),
-	 * but do not copy/reverse NULs at the end of p_sig.algo_specific.rsa.s into pSig
+	 * thus, use pkey.key.sig.rsa.n.size() as buffer length (pSig; it's safe as pkey.key.sig.rsa.n.size() cannot be longer than the buffer),
+	 * but do not copy/reverse NULs at the end of sig.algo_specific.rsa.s into pSig
 	 */
-	auto pSig = std::make_unique<BYTE[]>(i_n_len);
-	memcpy(pSig.get(), p_sig.algo_specific.rsa.s + 2, i_s_len);
-	std::reverse(pSig.get(), pSig.get() + i_s_len);
-	if (!CryptVerifySignature(hHash, pSig.get(), i_n_len, hPubKey, nullptr, 0))
-		return -1;
-
-	return 0;
+	auto pSig = std::make_unique<BYTE[]>(pkey.key.sig.rsa.n.size());
+	memcpy(pSig.get(), sig.algo_specific.rsa.s.data(), sig.algo_specific.rsa.s.size());
+	std::reverse(pSig.get(), pSig.get() + sig.algo_specific.rsa.s.size());
+	return CryptVerifySignature(hHash, pSig.get(), static_cast<DWORD>(pkey.key.sig.rsa.n.size()), hPubKey, nullptr, 0);
 }
-
-#ifdef TGIT_UPDATECRYPTO_DSA
-/*
-* Verify an OpenPGP signature made with some DSA public key
-*/
-static int verify_signature_dsa(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_pkey, const signature_packet_t& p_sig)
-{
-	if (p_sig.digest_algo != DIGEST_ALGO_SHA1) // PROV_DSS only supports SHA1 signatures, see http://msdn.microsoft.com/en-us/library/windows/desktop/aa387434%28v=vs.85%29.aspx
-		return -1;
-
-	uint32_t i_p_len = min(mpi_len(p_pkey.key.sig.dsa.p), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.p)) - 2);
-	uint32_t i_q_len = min(mpi_len(p_pkey.key.sig.dsa.q), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.q)) - 2);
-	uint32_t i_g_len = min(mpi_len(p_pkey.key.sig.dsa.g), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.g)) - 2);
-	uint32_t i_y_len = min(mpi_len(p_pkey.key.sig.dsa.y), static_cast<uint32_t>(sizeof(p_pkey.key.sig.dsa.y)) - 2);
-	uint32_t i_r_len = min(mpi_len(p_sig.algo_specific.dsa.r), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.r)) - 2);
-	uint32_t i_s_len = min(mpi_len(p_sig.algo_specific.dsa.s), static_cast<uint32_t>(sizeof(p_sig.algo_specific.dsa.s)) - 2);
-
-	// CryptoAPI only supports 1024-bit DSA keys and SHA1 signatures
-	if (i_p_len > 128 || i_q_len > 20 && i_g_len > 128 || i_y_len > 128 || i_r_len > 20 || i_s_len > 20)
-		return -1;
-
-	HCRYPTKEY hPubKey;
-	// based on http://www.derkeiler.com/Newsgroups/microsoft.public.platformsdk.security/2004-10/0040.html
-	DSAKEY dsakey = { 0 };
-	dsakey.blobheader.bType = PUBLICKEYBLOB; // 0x06
-	dsakey.blobheader.bVersion = CUR_BLOB_VERSION + 1; // 0x03
-	dsakey.blobheader.reserved = 0;
-	dsakey.blobheader.aiKeyAlg = CALG_DSS_SIGN;
-	dsakey.dsspubkeyver3.magic = 0x33535344; // ASCII of "DSS3";
-	dsakey.dsspubkeyver3.bitlenP = i_p_len * 8; // # of bits in prime modulus
-	dsakey.dsspubkeyver3.bitlenQ = i_q_len * 8; // # of bits in prime q, 0 if not available
-	dsakey.dsspubkeyver3.bitlenJ = 0; // # of bits in (p-1)/q, 0 if not available
-	dsakey.dsspubkeyver3.DSSSeed.counter = 0xFFFFFFFF; // not available
-
-	memcpy(dsakey.p, p_pkey.key.sig.dsa.p + 2, i_p_len); std::reverse(dsakey.p, dsakey.p + i_p_len);
-	memcpy(dsakey.q, p_pkey.key.sig.dsa.q + 2, i_q_len); std::reverse(dsakey.q, dsakey.q + i_q_len);
-	memcpy(dsakey.g, p_pkey.key.sig.dsa.g + 2, i_g_len); std::reverse(dsakey.g, dsakey.g + i_g_len);
-	memcpy(dsakey.y, p_pkey.key.sig.dsa.y + 2, i_y_len); std::reverse(dsakey.y, dsakey.y + i_y_len);
-
-	if (CryptImportKey(hCryptProv, reinterpret_cast<BYTE*>(&dsakey), sizeof(dsakey), 0, 0, &hPubKey) == 0)
-		return -1;
-
-	SCOPE_EXIT { CryptDestroyKey(hPubKey); };
-
-	unsigned char signature[40] = { 0 };
-	memcpy(signature, p_sig.algo_specific.dsa.r + 2, i_r_len);
-	memcpy(signature + 20, p_sig.algo_specific.dsa.s + 2, i_s_len);
-	std::reverse(signature, signature + i_r_len);
-	std::reverse(signature + 20, signature + 20 + i_s_len);
-	if (!CryptVerifySignature(hHash, signature, sizeof(signature), hPubKey, nullptr, 0))
-		return -1;
-
-	return 0;
-}
-#endif
 
 /*
 * Verify an OpenPGP signature made with some public key
 */
-int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& p_key, const signature_packet_t& sign)
+[[nodiscard]] static bool verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t& key, const signature_packet_t& sign)
 {
+	if (sign.public_key_algo != key.key.algo)
+		return false;
+
 	switch (sign.public_key_algo)
 	{
-#ifdef TGIT_UPDATECRYPTO_DSA
-	case PUBLIC_KEY_ALGO_DSA:
-		return verify_signature_dsa(hCryptProv, hHash, p_key, sign);
-#endif
 	case PUBLIC_KEY_ALGO_RSA:
-		return verify_signature_rsa(hCryptProv, hHash, p_key, sign);
+		return verify_signature_rsa(hCryptProv, hHash, key, sign);
 	default:
-		return -1;
+		return false;
 	}
 }
 
@@ -935,132 +846,94 @@ int verify_signature(HCRYPTPROV hCryptProv, HCRYPTHASH hHash, const public_key_t
 /*
  * download a public key (the last one) from TortoiseGit server, and parse it
  */
-static public_key_t *download_key(const uint8_t *p_longid, const uint8_t *p_signature_issuer, CUpdateDownloader *updateDownloader)
+static std::optional<public_key_t> download_key(const std::span<const uint8_t, 8> longid, const std::span<const uint8_t, 8> signature_issuer, CUpdateDownloader* updateDownloader)
 {
 	ASSERT(updateDownloader);
 
 	CString url;
-	url.Format(L"http://download.tortoisegit.org/keys/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X.asc", p_longid[0], p_longid[1], p_longid[2], p_longid[3], p_longid[4], p_longid[5], p_longid[6], p_longid[7]);
+	url.Format(L"https://download.tortoisegit.org/keys/%.2X%.2X%.2X%.2X%.2X%.2X%.2X%.2X.asc", longid[0], longid[1], longid[2], longid[3], longid[4], longid[5], longid[6], longid[7]);
 
 	CString tempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 	if (updateDownloader->DownloadFile(url, tempfile, false))
-		return nullptr;
+		return {};
 
-	int size = 65536;
-	auto buffer = std::make_unique<char[]>(size);
-	FILE * pFile = _wfsopen(tempfile, L"rb", SH_DENYWR);
-	if (pFile)
-	{
-		SCOPE_EXIT{ fclose(pFile); };
-		int length = 0;
-		if ((length = static_cast<int>(fread(buffer.get(), sizeof(char), size, pFile))) >= 8)
-			size = length;
-		else
-			return nullptr;
-	}
-	else
-		return nullptr;
-
-	auto p_pkey = static_cast<public_key_t*>(malloc(sizeof(public_key_t)));
-	if (!p_pkey)
+	const auto buffer = load_pgp_file(tempfile);
+	if (buffer.size() < 8)
 	{
 		DeleteUrlCacheEntry(url);
-		return nullptr;
+		return {};
 	}
 
-	memcpy(p_pkey->longid, p_longid, 8);
+	auto pkey = parse_public_key(buffer, signature_issuer);
+	if (!pkey)
+		return {};
 
-	if (parse_public_key(reinterpret_cast<const uint8_t*>(buffer.get()), size, p_pkey, p_signature_issuer))
-	{
-		free(p_pkey);
-		return nullptr;
-	}
+	if (!checked_memcpy(pkey->longid, longid))
+		return {};
 
-	return p_pkey;
+	return pkey;
 }
 #endif
 
-int VerifyIntegrity(const CString &filename, const CString &signatureFilename, CUpdateDownloader *updateDownloader)
+bool VerifyIntegrity(const CString& filename, const CString& signatureFilename, CUpdateDownloader* updateDownloader)
 {
-	signature_packet_t p_sig = { 0 };
-	if (LoadSignature(signatureFilename, &p_sig))
-		return -1;
-	SCOPE_EXIT
-	{
-		if (p_sig.version == 4)
-		{
-			free(p_sig.specific.v4.hashed_data);
-			free(p_sig.specific.v4.unhashed_data);
-		}
-	};
+	auto sig = LoadSignature(signatureFilename);
+	if (!sig)
+		return false;
 
-	public_key_t p_pkey = { 0 };
-	if (parse_public_key(tortoisegit_public_key, sizeof(tortoisegit_public_key), &p_pkey, nullptr))
-		return -1;
-	SCOPE_EXIT { free(p_pkey.psz_username); };
-	memcpy(p_pkey.longid, tortoisegit_public_key_longid, 8);
+	const auto unpacked_tgit_key = pgp_unarmor(std::string_view(tortoisegit_public_key, sizeof(tortoisegit_public_key)));
+	if (unpacked_tgit_key.empty())
+		return false;
+	auto pkey = parse_public_key(unpacked_tgit_key, {});
+	if (!pkey)
+		return false;
+	if (!checked_memcpy(pkey->longid, tortoisegit_public_key_longid))
+		return false;
 
 	HCRYPTPROV hCryptProv;
-	if (!CryptAcquireContext(&hCryptProv, nullptr, nullptr, map_algo(p_pkey.key.algo), CRYPT_VERIFYCONTEXT))
-		return -1;
+	if (const auto algo = map_algo(pkey->key.algo); !algo || !CryptAcquireContext(&hCryptProv, nullptr, nullptr, *algo, CRYPT_VERIFYCONTEXT))
+		return false;
 	SCOPE_EXIT { CryptReleaseContext(hCryptProv, 0); };
 
-	if (memcmp(p_sig.issuer_longid, p_pkey.longid, 8) != 0)
+	if (!checked_memcmp(sig->issuer_longid, pkey->longid))
 	{
-		public_key_t *p_new_pkey = nullptr;
+		std::optional<public_key_t> new_pkey;
 #ifndef GOOGLETEST_INCLUDE_GTEST_GTEST_H_
 		if (updateDownloader)
-			p_new_pkey = download_key(p_sig.issuer_longid, tortoisegit_public_key_longid, updateDownloader);
+			new_pkey = download_key(sig->issuer_longid, tortoisegit_public_key_longid, updateDownloader);
 #else
 		UNREFERENCED_PARAMETER(updateDownloader);
 #endif
-		if (!p_new_pkey)
-			return -1;
-		SCOPE_EXIT
-		{
-			if (p_new_pkey->sig.version == 4)
-			{
-				p_new_pkey->sig.version = 0;
-				free(p_new_pkey->sig.specific.v4.hashed_data);
-				free(p_new_pkey->sig.specific.v4.unhashed_data);
-			}
-			if (p_new_pkey == &p_pkey)
-				return;
-			free(p_new_pkey->psz_username);
-			free(p_new_pkey);
-		};
+		if (!new_pkey || !new_pkey->sig)
+			return false;
 
 		HCRYPTHASH hHash;
-		if (!CryptCreateHash(hCryptProv, map_digestalgo(p_sig.digest_algo), 0, 0, &hHash))
-			return -1;
+		if (const auto algo = map_digestalgo(new_pkey->sig->digest_algo); !algo || !CryptCreateHash(hCryptProv, *algo, 0, 0, &hHash))
+			return false;
 		SCOPE_EXIT { CryptDestroyHash(hHash); };
 
-		if (hash_from_public_key(hHash, p_new_pkey))
-			return -1;
+		if (!hash_from_public_key(hHash, *new_pkey))
+			return false;
 
-		if (check_hash(hHash, &p_new_pkey->sig))
-			return -1;
+		if (!check_hash(hHash, *new_pkey->sig))
+			return false;
 
-		if (verify_signature(hCryptProv, hHash, p_pkey, p_new_pkey->sig))
-			return -1;
+		if (!verify_signature(hCryptProv, hHash, *pkey, *new_pkey->sig))
+			return false;
 
-		free(p_pkey.psz_username);
-		p_pkey = *p_new_pkey;
+		pkey = std::move(*new_pkey);
 	}
 
 	HCRYPTHASH hHash;
-	if (!CryptCreateHash(hCryptProv, map_digestalgo(p_sig.digest_algo), 0, 0, &hHash))
-		return -1;
+	if (const auto algo = map_digestalgo(sig->digest_algo); !algo || !CryptCreateHash(hCryptProv, *algo, 0, 0, &hHash))
+		return false;
 	SCOPE_EXIT{ CryptDestroyHash(hHash); };
 
-	if (hash_from_file(hHash, filename, &p_sig))
-		return -1;
+	if (!hash_from_file(hHash, filename, *sig))
+		return false;
 
-	if (check_hash(hHash, &p_sig))
-		return -1;
+	if (!check_hash(hHash, *sig))
+		return false;
 
-	if (verify_signature(hCryptProv, hHash, p_pkey, p_sig))
-		return -1;
-
-	return 0;
+	return verify_signature(hCryptProv, hHash, *pkey, *sig);
 }

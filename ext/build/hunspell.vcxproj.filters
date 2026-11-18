@@ -41,6 +41,9 @@
     <ClCompile Include="..\hunspell\src\hunspell\suggestmgr.cxx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\hunspell\src\hunspell\hunspelltrace.cxx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\hunspell\src\hunspell\affentry.hxx">
@@ -95,6 +98,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="hunspell\hunvisapi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\hunspell\src\hunspell\hunspelltrace.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

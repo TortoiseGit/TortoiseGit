@@ -143,6 +143,13 @@ static BOOL FindGitPath()
 			if (PathFileExists(installRoot))
 				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - static_cast<int>(wcslen(L"\\mingw64\\bin"))) + L"\\cmd";
 		}
+		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\ucrt64\\bin"))
+		{
+			// prefer cmd directory as early Git for Windows 2.x releases only had this, ucrt64 was introduced with Git for Windows 2.56
+			CString installRoot = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - static_cast<int>(wcslen(L"\\ucrt64\\bin"))) + L"\\cmd\\git.exe";
+			if (PathFileExists(installRoot))
+				CGit::ms_LastMsysGitDir = CGit::ms_LastMsysGitDir.Left(CGit::ms_LastMsysGitDir.GetLength() - static_cast<int>(wcslen(L"\\ucrt64\\bin"))) + L"\\cmd";
+		}
 		if (CStringUtils::EndsWith(CGit::ms_LastMsysGitDir, L"\\cmd"))
 		{
 			// often the msysgit\cmd folder is on the %PATH%, but
@@ -1548,7 +1555,7 @@ CString CGit::GetLibGit2LastErr()
 		return L"libgit2 returned: " + lastError;
 	}
 	else
-		return L"An error occoured in libgit2, but no message is available.";
+		return L"An error occurred in libgit2, but no message is available.";
 }
 
 CString CGit::GetLibGit2LastErr(const CString& msg)

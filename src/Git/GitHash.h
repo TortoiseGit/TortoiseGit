@@ -118,8 +118,10 @@ public:
 		return hash;
 	}
 
-	static CGitHash FromRaw(const unsigned char* raw)
+	template<size_t Length>
+	static CGitHash FromRaw(const unsigned char(&raw)[Length])
 	{
+		static_assert(Length >= GIT_HASH_SIZE);
 		CGitHash hash;
 		memcpy(hash.m_hash, raw, GIT_HASH_SIZE);
 		return hash;
@@ -135,20 +137,23 @@ public:
 		return memcmp(m_hash, empty, GIT_HASH_SIZE) == 0;
 	}
 
-	CString ToString() const
-	{
-		CString str;
-		str.Preallocate(GIT_HASH_SIZE * 2);
-		for (int i = 0; i < GIT_HASH_SIZE; ++i)
-			str.AppendFormat(L"%02x", m_hash[i]);
-		return str;
-	}
-
-	CString ToString(int len) const
+	CString ToString(const int len = GIT_HASH_SIZE * 2) const
 	{
 		ASSERT(len >= 0 && len <= GIT_HASH_SIZE * 2);
-		CString str { ToString() };
-		str.Truncate(len);
+		if (len > GIT_HASH_SIZE * 2) // just a safeguard, should never happen
+			return ToString();
+
+		static constexpr std::wstring_view hex = L"0123456789abcdef";
+
+		CString str;
+		wchar_t* p = str.GetBufferSetLength(len);
+		for (int i = 0; i < len; ++i)
+		{
+			const auto byte = m_hash[i / 2];
+			p[i] = hex[(i & 1) ? (byte & 0x0F) : (byte >> 4)];
+		}
+		str.ReleaseBufferSetLength(len);
+
 		return str;
 	}
 
@@ -184,11 +189,18 @@ public:
 		return memcmp(m_hash, other.m_hash, GIT_HASH_SIZE) != 0;
 	}
 
-	bool MatchesPrefix(const CGitHash& hash, const CString& hashString, size_t prefixLen) const
+	bool MatchesPrefix(const CGitHash& hash, const size_t prefixLen) const
 	{
-		if (memcmp(m_hash, hash.m_hash, prefixLen >> 1))
+		ASSERT(prefixLen <= GIT_HASH_SIZE * 2);
+		if (prefixLen > GIT_HASH_SIZE * 2) // just a safeguard, should never happen
 			return false;
-		return prefixLen == 2 * GIT_HASH_SIZE || wcsncmp(ToString(), hashString, prefixLen) == 0;
+
+		const size_t fullBytes = prefixLen / 2;
+
+		if (memcmp(m_hash, hash.m_hash, fullBytes) != 0)
+			return false;
+
+		return ((prefixLen & 1) == 0) || (m_hash[fullBytes] & 0xF0) == (hash.m_hash[fullBytes] & 0xF0);
 	}
 
 	friend struct std::hash<CGitHash>;

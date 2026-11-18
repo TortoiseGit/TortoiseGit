@@ -78,6 +78,9 @@ protected:
 		path.TrimRight(L'\\');
 
 		// prefer git.exe in cmd-directory for Git for Windows based on msys2
+		if (path.GetLength() > static_cast<int>(strlen("\\ucrt64\\bin")) && CStringUtils::EndsWith(path, L"\\ucrt64\\bin") && PathFileExists(path.Left(path.GetLength() - static_cast<int>(strlen("\\ucrt64\\bin"))) + L"\\cmd\\git.exe"))
+			path = path.Left(path.GetLength() - static_cast<int>(strlen("\\ucrt64\\bin"))) + L"\\cmd";
+
 		if (path.GetLength() > 12 && (CStringUtils::EndsWith(path, L"\\mingw32\\bin") || CStringUtils::EndsWith(path, L"\\mingw64\\bin")) && PathFileExists(path.Left(path.GetLength() - 12) + L"\\cmd\\git.exe"))
 			path = path.Left(path.GetLength() - 12) + L"\\cmd";
 

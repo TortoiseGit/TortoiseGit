@@ -228,7 +228,7 @@ UINT CCheckForUpdatesDlg::CheckThread()
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
 		ret = m_updateDownloader->DownloadFile(sCheckURL + SIGNATURE_FILE_ENDING, signatureTempfile, false);
-		if (ret || VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
+		if (ret || !VerifyIntegrity(tempfile, signatureTempfile, m_updateDownloader))
 		{
 			CString error = L"Could not verify digital signature.";
 			if (ret)
@@ -414,7 +414,7 @@ void CCheckForUpdatesDlg::FillChangelog(CVersioncheckParser& versioncheck, bool 
 	if (official)
 	{
 		CString signatureTempfile = CTempFiles::Instance().GetTempFilePath(true).GetWinPathString();
-		if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false); err != ERROR_SUCCESS || VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
+		if (DWORD err = m_updateDownloader->DownloadFile(sChangelogURL + SIGNATURE_FILE_ENDING, signatureTempfile, false); err != ERROR_SUCCESS || !VerifyIntegrity(tempchangelogfile, signatureTempfile, m_updateDownloader))
 		{
 			CString error = L"Could not verify digital signature.";
 			if (err)
@@ -537,7 +537,7 @@ UINT CCheckForUpdatesDlg::DownloadThreadEntry(LPVOID pVoid)
 
 bool CCheckForUpdatesDlg::VerifyUpdateFile(const CString& filename, const CString& filenameSignature, const CString& reportingFilename, const CString& versionnumber)
 {
-	if (VerifyIntegrity(filename, filenameSignature, m_updateDownloader) != 0)
+	if (!VerifyIntegrity(filename, filenameSignature, m_updateDownloader))
 	{
 		m_sErrors += reportingFilename + SIGNATURE_FILE_ENDING + L": Invalid digital signature.\r\n";
 		return false;

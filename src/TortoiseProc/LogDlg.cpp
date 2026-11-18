@@ -1750,7 +1750,7 @@ void CLogDlg::JumpToGitHash(CString hash)
 
 		GitRev* rev = m_LogList.m_arShownList.SafeGetAt(i);
 		if (!rev) continue;
-		if (!rev->m_CommitHash.MatchesPrefix(prefixHash, hash, prefixLen))
+		if (!rev->m_CommitHash.MatchesPrefix(prefixHash, prefixLen))
 			continue;
 
 		m_LogList.SetItemState(m_LogList.GetSelectionMark(), 0, LVIS_SELECTED | LVIS_FOCUSED);

@@ -53,6 +53,10 @@ CShellExt::CShellExt(FileState state)
 
 CShellExt::~CShellExt()
 {
+	// Destroying a menu does not release the bitmaps assigned to its items.
+	for (const auto bitmap : m_menuBitmaps)
+		::DeleteObject(bitmap);
+
 	AutoLocker lock(g_csGlobalCOMGuard);
 	InterlockedDecrement(&g_cRefThisDll);
 	g_shellObjects.Erase(this);

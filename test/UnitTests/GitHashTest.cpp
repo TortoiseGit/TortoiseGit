@@ -138,31 +138,31 @@ TEST(CGitHash, MatchesPrefix)
 	CString prefix = L"3012b757c23d16cc915acf60f5e3922d0409187a";
 	CGitHash hash = CGitHash::FromHexStr(prefix);
 	CGitHash prefixHash = CGitHash::FromHexStr(prefix);
-	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"";
 	prefixHash = CGitHash::FromHexStr(L"0000000000000000000000000000000000000000");
-	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"3012b757";
 	prefixHash = CGitHash::FromHexStr(L"3012b75700000000000000000000000000000000");
-	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"3012b758";
 	prefixHash = CGitHash::FromHexStr(L"3012b75800000000000000000000000000000000");
-	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"a0";
 	prefixHash = CGitHash::FromHexStr(L"a000000000000000000000000000000000000000");
-	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"3012b75";
 	prefixHash = CGitHash::FromHexStr(L"3012b75000000000000000000000000000000000");
-	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_TRUE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 
 	prefix = L"3012b76";
 	prefixHash = CGitHash::FromHexStr(L"3012b76000000000000000000000000000000000");
-	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix, prefix.GetLength()));
+	EXPECT_FALSE(hash.MatchesPrefix(prefixHash, prefix.GetLength()));
 }
 
 TEST(CGitHash, stdhash)

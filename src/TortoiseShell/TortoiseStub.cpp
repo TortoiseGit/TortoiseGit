@@ -1,7 +1,7 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
 // Copyright (C) 2012-2014, 2016-2019, 2021, 2026 - TortoiseGit
-// Copyright (C) 2007, 2009, 2013-2014, 2018 - TortoiseSVN
+// Copyright (C) 2007, 2009, 2013-2014, 2018, 2026 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -136,6 +136,9 @@ static BOOL WantRealVersion()
 				// first whether the shell is allowed to even use an extension.
 				Len = lstrlen(ModuleName);
 				if ((Len > wcslen(L"\\verclsid.exe")) && (lstrcmpi(&ModuleName[Len - wcslen(L"\\verclsid.exe")], L"\\verclsid.exe") == 0))
+					bWantReal = TRUE;
+				// also allow dllhost.exe, that's the process win11 uses to load the win11 context menu (out of process)
+				if (Len > wcslen(L"\\dllhost.exe") && lstrcmpi(&ModuleName[Len - wcslen(L"\\dllhost.exe")], L"\\dllhost.exe") == 0)
 					bWantReal = TRUE;
 			}
 		}

@@ -1,6 +1,6 @@
 ﻿// TortoiseGit - a Windows shell extension for easy version control
 
-// Copyright (C) 2011-2019, 2021, 2023 - TortoiseGit
+// Copyright (C) 2011-2019, 2021, 2023, 2026 - TortoiseGit
 // Copyright (C) 2003-2014 - TortoiseSVN
 
 // This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 #include "FormatMessageWrapper.h"
 
 #ifndef ASSERT
-#define ASSERT(x)
+#define ASSERT(x) _ASSERT(x)
 #endif
 
 #ifndef QWORD

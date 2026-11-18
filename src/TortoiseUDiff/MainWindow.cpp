@@ -255,11 +255,11 @@ LRESULT CMainWindow::DoCommand(int id)
 				rect.left, rect.bottom - int((SEARCHBARHEIGHT + 2) * CDPIAware::Instance().ScaleFactorY(*this)),
 				rect.right - rect.left, int(SEARCHBARHEIGHT * CDPIAware::Instance().ScaleFactorY(*this)),
 				SWP_SHOWWINDOW);
-			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend)
+			if (auto selstart = SendEditor(SCI_GETSELECTIONSTART), selend = SendEditor(SCI_GETSELECTIONEND); selstart != selend && selend - selstart < INT_MAX)
 			{
 				auto linebuf = std::make_unique<char[]>(selend - selstart + 1);
-				Sci_TextRange range = { static_cast<Sci_PositionCR>(selstart), static_cast<Sci_PositionCR>(selend), linebuf.get() };
-				if (SendEditor(SCI_GETTEXTRANGE, 0, reinterpret_cast<LPARAM>(&range)) > 0)
+				Sci_TextRangeFull range = { static_cast<Sci_Position>(selstart), static_cast<Sci_Position>(selend), linebuf.get() };
+				if (SendEditor(SCI_GETTEXTRANGEFULL, 0, reinterpret_cast<LPARAM>(&range)) > 0)
 					m_FindBar.SetSearchString(CUnicodeUtils::StdGetUnicode(linebuf.get()).c_str());
 			}
 			m_FindBar.SelectSearchString();
@@ -379,11 +379,22 @@ LRESULT CMainWindow::DoCommand(int id)
 				pdlg.Flags |= PD_SELECTION;
 
 			HRESULT hResult = PrintDlgEx(&pdlg);
+			SCOPE_EXIT
+			{
+				if (pdlg.hDC)
+					::DeleteDC(pdlg.hDC);
+				if (pdlg.hDevMode)
+					GlobalFree(pdlg.hDevMode);
+				if (pdlg.hDevNames)
+					GlobalFree(pdlg.hDevNames);
+				if (pdlg.lpPageRanges)
+					GlobalFree(pdlg.lpPageRanges);
+			};
 			if ((hResult != S_OK) || (pdlg.dwResultAction != PD_RESULT_PRINT))
 				return 0;
 
 			// reset all indicators
-			auto endpos = static_cast<int>(SendEditor(SCI_GETLENGTH));
+			auto endpos = static_cast<Sci_Position>(SendEditor(SCI_GETLENGTH));
 			for (int i = INDIC_CONTAINER; i <= INDIC_MAX; ++i)
 			{
 				SendEditor(SCI_SETINDICATORCURRENT, i);
@@ -391,10 +402,16 @@ LRESULT CMainWindow::DoCommand(int id)
 			}
 			// store and reset UI settings
 			auto viewws = static_cast<int>(SendEditor(SCI_GETVIEWWS));
-			SendEditor(SCI_SETVIEWWS, 0);
+			SendEditor(SCI_SETVIEWWS, SCWS_INVISIBLE);
 			auto edgemode = static_cast<int>(SendEditor(SCI_GETEDGEMODE));
 			SendEditor(SCI_SETEDGEMODE, EDGE_NONE);
 			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_END);
+			SCOPE_EXIT
+			{
+				SendEditor(SCI_SETVIEWWS, viewws);
+				SendEditor(SCI_SETEDGEMODE, edgemode);
+				SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_NONE);
+			};
 
 			HDC hdc = pdlg.hDC;
 
@@ -498,7 +515,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			di.fwType = 0;
 			if (::StartDoc(hdc, &di) < 0)
 			{
-				::DeleteDC(hdc);
+				MessageBox(*this, CFormatMessageWrapper(), L"TortoiseGitUDiff", MB_ICONERROR);
 				return 0;
 			}
 
@@ -525,7 +542,7 @@ LRESULT CMainWindow::DoCommand(int id)
 			}
 
 			// We must subtract the physical margins from the printable area
-			Sci_RangeToFormat frPrint;
+			Sci_RangeToFormatFull frPrint;
 			frPrint.hdc             = hdc;
 			frPrint.hdcTarget       = hdc;
 			frPrint.rc.left         = rectMargins.left - rectPhysMargins.left;
@@ -540,12 +557,17 @@ LRESULT CMainWindow::DoCommand(int id)
 			// Print each page
 			while (lengthPrinted < lengthDoc)
 			{
-				::StartPage(hdc);
+				if (!::StartPage(hdc))
+				{
+					MessageBox(*this, CFormatMessageWrapper(), L"TortoiseGitUDiff", MB_ICONERROR);
+					::AbortDoc(hdc);
+					break;
+				}
 
-				frPrint.chrg.cpMin = static_cast<long>(lengthPrinted);
-				frPrint.chrg.cpMax = static_cast<long>(lengthDoc);
+				frPrint.chrg.cpMin = static_cast<Sci_Position>(lengthPrinted);
+				frPrint.chrg.cpMax = static_cast<Sci_Position>(lengthDoc);
 
-				lengthPrinted = SendEditor(SCI_FORMATRANGE, true, reinterpret_cast<LPARAM>(&frPrint));
+				lengthPrinted = SendEditor(SCI_FORMATRANGEFULL, true, reinterpret_cast<LPARAM>(&frPrint));
 
 				::EndPage(hdc);
 			}
@@ -553,19 +575,6 @@ LRESULT CMainWindow::DoCommand(int id)
 			SendEditor(SCI_FORMATRANGE, FALSE, 0);
 
 			::EndDoc(hdc);
-			::DeleteDC(hdc);
-
-			if (pdlg.hDevMode)
-				GlobalFree(pdlg.hDevMode);
-			if (pdlg.hDevNames)
-				GlobalFree(pdlg.hDevNames);
-			if (pdlg.lpPageRanges)
-				GlobalFree(pdlg.lpPageRanges);
-
-			// reset the UI
-			SendEditor(SCI_SETVIEWWS, viewws);
-			SendEditor(SCI_SETEDGEMODE, edgemode);
-			SendEditor(SCI_SETWRAPVISUALFLAGS, SC_WRAPVISUALFLAG_NONE);
 		}
 		break;
 	case ID_VIEW_DARKMODE:
