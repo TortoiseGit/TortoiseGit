@@ -33,6 +33,8 @@
 #include "Theme.h"
 #include "DarkModeHelper.h"
 #include "ClipboardHelper.h"
+#include <string_view>
+#include <usp10.h>
 
 // Note about lines:
 // We use three different kind of lines here:
@@ -53,6 +55,9 @@
 #define HEADERHEIGHT (CDPIAware::Instance().ScaleY(GetSafeHwnd(), 10))
 
 #define IDT_SCROLLTIMER 101
+
+// Measure and draw long text in chunks to stay within GDI length limits.
+static constexpr int GDI_TEXT_CHUNK_SIZE = 4094;
 
 CBaseView* CBaseView::m_pwndLeft = nullptr;
 CBaseView* CBaseView::m_pwndRight = nullptr;
@@ -187,11 +192,12 @@ END_MESSAGE_MAP()
 
 void CBaseView::DocumentUpdated()
 {
+	m_nCachedWrapWidth = -1;
 	ReleaseBitmap();
 	m_nLineHeight = -1;
 	m_nCharWidth = -1;
 	m_nScreenChars = -1;
-	m_nLastScreenChars = -1;
+	m_nLastLayoutWidth = -1;
 	m_nMaxLineLength = -1;
 	m_nScreenLines = -1;
 	m_nTopLine = 0;
@@ -240,7 +246,7 @@ void CBaseView::DPIChanged()
 	m_nLineHeight = -1;
 	m_nCharWidth = -1;
 	m_nScreenChars = -1;
-	m_nLastScreenChars = -1;
+	m_nLastLayoutWidth = -1;
 	m_nMaxLineLength = -1;
 	m_nScreenLines = -1;
 	m_nDigits = 0;
@@ -504,6 +510,13 @@ int CBaseView::GetScreenChars()
 	return m_nScreenChars;
 }
 
+int CBaseView::GetWrapWidth()
+{
+	CRect rect;
+	GetClientRect(&rect);
+	return std::max<int>(1, rect.Width() - GetMarginWidth() - GetSystemMetrics(SM_CXVSCROLL) - GetCharWidth());
+}
+
 int CBaseView::GetAllMinScreenChars() const
 {
 	int nChars = INT_MAX;
@@ -661,19 +674,19 @@ CString CBaseView::GetLineChars(int index)
 	if (m_Screen2View.size() <= index)
 		return 0;
 	int viewLine = GetViewLineForScreen(index);
+	const CString& line = m_pViewData->GetLine(viewLine);
 	if (m_pMainFrame->m_bWrapLines)
 	{
 		int subLine = GetSubLineOffset(index);
-		if (subLine >= 0)
+		if (subLine >= CountMultiLines(viewLine))
+			return CString();
+		if (subLine >= 0 && !m_ScreenedViewLine[viewLine].WrapOffsets.empty())
 		{
-			if (subLine < CountMultiLines(viewLine))
-			{
-				return m_ScreenedViewLine[viewLine].SubLines[subLine];
-			}
-			return L"";
+			const int start = GetWrappedLineStart(viewLine, subLine);
+			return line.Mid(start, GetWrappedLineStart(viewLine, subLine + 1) - start);
 		}
 	}
-	return m_pViewData->GetLine(viewLine);
+	return line;
 }
 
 void CBaseView::CheckOtherView()
@@ -1862,13 +1875,7 @@ void CBaseView::DrawTextLine(
 
 	// @ this point we may cache data for next line which may be same in wrapped mode
 
-	int nTextOffset = 0;
-	int nSubline = GetSubLineOffset(nLineIndex);
-	for (int n=0; n<nSubline; n++)
-	{
-		CString sLine = m_ScreenedViewLine[nViewLine].SubLines[n];
-		nTextOffset += sLine.GetLength();
-	}
+	const int nTextOffset = GetWrappedLineStart(nViewLine, GetSubLineOffset(nLineIndex));
 
 	CString sLine = GetLineChars(nLineIndex);
 	int nLineLength = sLine.GetLength();
@@ -1934,7 +1941,7 @@ void CBaseView::DrawTextLine(
                 RECT drawRC = rc;
 				drawRC.left = leftcoord;
 				drawRC.top = coords.y;
-				pDC->DrawText(p_zBlockText + offset, min(nTextLength, 4094), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
+				pDC->DrawText(p_zBlockText + offset, min(nTextLength, GDI_TEXT_CHUNK_SIZE), &drawRC, DT_HIDEPREFIX | DT_NOPREFIX | DT_SINGLELINE);
 				if ((second.shot != second.background) && (itStart->first == nStart + nTextOffset))
 					pDC->FillSolidRect(nLeft - 1, rc.top, 1, rc.Height(), second.shot);
 			}
@@ -2141,7 +2148,7 @@ void CBaseView::ExpandChars(const CString &sLine, int nOffset, int nCount, CStri
 		nCurPos = nLength;
 	}
 	pszBuf[nCurPos] = 0;
-	line.ReleaseBuffer();
+	line.ReleaseBuffer(nCurPos);
 }
 
 CString CBaseView::ExpandChars(const CString &sLine, int nOffset)
@@ -2234,15 +2241,23 @@ void CBaseView::OnSize(UINT nType, int cx, int cy)
 	m_nScreenLines = -1;
 	m_nScreenChars = -1;
 	m_nCharWidth = -1;
-	if (m_nLastScreenChars != GetScreenChars())
+	const bool wrapLines = m_pMainFrame && m_pMainFrame->m_bWrapLines;
+	// Mixed-width text can wrap differently after a one-pixel width change.
+	const int layoutWidth = wrapLines ? GetWrapWidth() : GetScreenChars() * GetCharWidth();
+	if (m_nLastLayoutWidth != layoutWidth)
 	{
 		auto oldCaretLine = m_ptCaretViewPos.y;
-		m_nLastScreenChars = m_nScreenChars;
-		BuildAllScreen2ViewVector();
-		if (m_pMainFrame && m_pMainFrame->m_bWrapLines)
+		m_nLastLayoutWidth = layoutWidth;
+		if (wrapLines)
 		{
-			ScrollToLine(oldCaretLine, false);
-			EnsureCaretVisible();
+			// Reuse the cached rows while sizing the frame and wrap once at the final width.
+			if (!m_pMainFrame->DeferWrapLayout())
+			{
+				// Rebuild the shared index, then remeasure only panes whose width changed.
+				BuildAllScreen2ViewVector(false);
+				ScrollToLine(oldCaretLine, false);
+				EnsureCaretVisible();
+			}
 			// if we're in wrap mode, the line wrapping most likely changed
 			// and that means we have to redraw the whole window, not just the
 			// scrolled part.
@@ -2250,6 +2265,7 @@ void CBaseView::OnSize(UINT nType, int cx, int cy)
 		}
 		else
 		{
+			BuildAllScreen2ViewVector();
 			// make sure the view header is redrawn
 			CRect rcScroll;
 			GetClientRect(&rcScroll);
@@ -3319,7 +3335,8 @@ void CBaseView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	{
 		POINT ptCaretPos;
 		ptCaretPos.y = nClickedLine;
-		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, m_nOffsetChar + (point.x - GetMarginWidth()) / GetCharWidth(), false);
+		const int column = GetLineLength(nClickedLine) > 0 ? CalcColFromPoint(point.x, nClickedLine) : 0;
+		ptCaretPos.x = CalculateCharIndex(ptCaretPos.y, column, false);
 		SetCaretPosition(ptCaretPos);
 		ClearSelection();
 
@@ -3616,13 +3633,13 @@ void CBaseView::UpdateCaret()
 	ptCaretPos.x = std::max<int>(std::min<int>(ptCaretPos.x, GetLineLength(ptCaretPos.y)), 0);
 	SetCaretPosition(ptCaretPos);
 
-	int nCaretOffset = CalculateActualOffset(ptCaretPos);
+	const bool wrapLines = m_pMainFrame && m_pMainFrame->m_bWrapLines;
+	const int nCaretOffset = wrapLines ? 0 : CalculateActualOffset(ptCaretPos);
 
 	if (m_bFocused &&
 		ptCaretPos.y >= m_nTopLine &&
 		ptCaretPos.y < (m_nTopLine+GetScreenLines()) &&
-		nCaretOffset >= m_nOffsetChar &&
-		nCaretOffset < (m_nOffsetChar+GetScreenChars()))
+		(wrapLines || (nCaretOffset >= m_nOffsetChar && nCaretOffset < m_nOffsetChar + GetScreenChars())))
 	{
 		POINT pt1 = TextToClient(ptCaretPos);
 		if (m_bInsertMode)
@@ -3645,66 +3662,26 @@ void CBaseView::UpdateCaret()
 
 POINT CBaseView::ConvertScreenPosToView(const POINT& pt)
 {
-	POINT ptViewPos;
-	ptViewPos.x = pt.x;
-
-	int nSubLine = GetSubLineOffset(pt.y);
-	if (nSubLine > 0)
-	{
-		for (int nScreenLine = pt.y-1; nScreenLine >= pt.y-nSubLine; nScreenLine--)
-		{
-			ptViewPos.x += GetLineChars(nScreenLine).GetLength();
-		}
-	}
-
-	ptViewPos.y = GetViewLineForScreen(pt.y);
+	POINT ptViewPos = { pt.x, GetViewLineForScreen(pt.y) };
+	ptViewPos.x += GetWrappedLineStart(ptViewPos.y, GetSubLineOffset(pt.y));
 	return ptViewPos;
 }
 
 POINT CBaseView::ConvertViewPosToScreen(const POINT& pt)
 {
-	POINT ptPos;
-	int nViewLineLenLeft = GetViewLineLength(pt.y);
-	ptPos.x = min(static_cast<LONG>(nViewLineLenLeft), pt.x);
-	ptPos.y = FindScreenLineForViewLine(pt.y);
-	if (GetViewLineForScreen(ptPos.y) != pt.y )
-	{
+	POINT ptPos = { std::min<LONG>(GetViewLineLength(pt.y), pt.x), FindScreenLineForViewLine(pt.y) };
+	if (GetViewLineForScreen(ptPos.y) != pt.y)
 		ptPos.x = 0;
-	}
-	else if (GetSubLineOffset(ptPos.y) >= 0) // sublined
+	// A hidden or uninitialized pane can lack wrap data even when the shared map exists.
+	else if (m_pMainFrame && m_pMainFrame->m_bWrapLines && CountMultiLines(pt.y) > 1 && GetSubLineOffset(ptPos.y) >= 0)
 	{
-		int nSubLineLength = GetLineChars(ptPos.y).GetLength();
-		while (nSubLineLength < ptPos.x)
-		{
-			ptPos.x -= nSubLineLength;
-			nViewLineLenLeft -= nSubLineLength;
-			ptPos.y++;
-			nSubLineLength = GetLineChars(ptPos.y).GetLength();
-			// particular case when only first line exist. Without below statement we
-			// have infinite loop because nSublineLengh = 0 and ptPos.x = 1, 0 < 1
-			if (nSubLineLength == 0)
-			{
-				ptPos.y = 0;
-				ptPos.x = 0;
-			}
-		}
-		// last pos of non last sub-line go to start of next screen line
-		// Note: while this works correctly, it's not what a user might expect:
-		// cursor-right when the caret is before the last char of a wrapped line
-		// now moves the caret to the next line. But users expect the caret to
-		// move to the right of the last char instead, and with another cursor-right
-		// keystroke to move the caret to the next line.
-		// Basically, this would require to handle two caret positions for the same
-		// logical position in the line string (one on the last position of the first line,
-		// one on the first position of the new line. For non-wrapped lines this works
-		// because there's an 'invisible' newline char at the end of the first line.
-		if (nSubLineLength == ptPos.x && nViewLineLenLeft > nSubLineLength)
-		{
-			ptPos.x = 0;
-			ptPos.y++;
-		}
+		// At a wrap boundary, place the caret at the start of the continuation row.
+		const auto& offsets = m_ScreenedViewLine[pt.y].WrapOffsets;
+		const auto next = std::upper_bound(offsets.begin(), offsets.end(), ptPos.x);
+		ptPos.y += static_cast<LONG>(next - offsets.begin());
+		if (next != offsets.begin())
+			ptPos.x -= *(next - 1);
 	}
-
 	return ptPos;
 }
 
@@ -3712,7 +3689,6 @@ POINT CBaseView::ConvertViewPosToScreen(const POINT& pt)
 void CBaseView::EnsureCaretVisible()
 {
 	POINT ptCaretPos = GetCaretPosition();
-	int nCaretOffset = CalculateActualOffset(ptCaretPos);
 
 	if (ptCaretPos.y < m_nTopLine)
 		ScrollAllToLine(ptCaretPos.y);
@@ -3721,10 +3697,15 @@ void CBaseView::EnsureCaretVisible()
 	{
 		if (ptCaretPos.y >= (m_nTopLine+screnLines)-1)
 			ScrollAllToLine(ptCaretPos.y-screnLines+2);
-		if (nCaretOffset < m_nOffsetChar)
-			ScrollAllToChar(nCaretOffset);
-		if (nCaretOffset > (m_nOffsetChar+GetScreenChars()-1))
-			ScrollAllToChar(nCaretOffset-GetScreenChars()+1);
+		// Keep wrapped panes fixed horizontally because wrapping already uses the pixel width.
+		if (!m_pMainFrame || !m_pMainFrame->m_bWrapLines)
+		{
+			const int nCaretOffset = CalculateActualOffset(ptCaretPos);
+			if (nCaretOffset < m_nOffsetChar)
+				ScrollAllToChar(nCaretOffset);
+			if (nCaretOffset > (m_nOffsetChar+GetScreenChars()-1))
+				ScrollAllToChar(nCaretOffset-GetScreenChars()+1);
+		}
 	}
 }
 
@@ -4796,13 +4777,15 @@ CBaseView * CBaseView::GetFirstGoodView()
 	return nullptr;
 }
 
-void CBaseView::BuildAllScreen2ViewVector()
+void CBaseView::BuildAllScreen2ViewVector(bool resetCachedLines)
 {
-	CBaseView * p_pwndView = GetFirstGoodView();
-	if (p_pwndView)
-	{
-		m_Screen2View.ScheduleFullRebuild(p_pwndView->m_pViewData);
-	}
+	CBaseView* view = GetFirstGoodView();
+	if (!view)
+		return;
+	if (resetCachedLines)
+		m_Screen2View.ScheduleFullRebuild(view->m_pViewData);
+	else
+		m_Screen2View.ScheduleLayoutRebuild(view->m_pViewData);
 }
 
 void CBaseView::BuildAllScreen2ViewVector(int nViewLine)
@@ -4877,59 +4860,226 @@ int CBaseView::FindScreenLineForViewLine( int viewLine )
 	return m_Screen2View.FindScreenLineForViewLine(viewLine);
 }
 
-int CBaseView::CountMultiLines( int nViewLine )
+int CBaseView::CountMultiLines(int nViewLine) const
 {
-	if (m_ScreenedViewLine.empty())
-		return 0;   // in case the view is completely empty
+	if (nViewLine < 0 || nViewLine >= static_cast<int>(m_ScreenedViewLine.size()))
+		return 0;
+	return static_cast<int>(m_ScreenedViewLine[nViewLine].WrapOffsets.size()) + 1;
+}
 
-	ASSERT(nViewLine < static_cast<int>(m_ScreenedViewLine.size()));
+int CBaseView::GetWrappedLineStart(int viewLine, int subLine) const
+{
+	if (subLine <= 0 || CountMultiLines(viewLine) == 0)
+		return 0;
+	const auto& offsets = m_ScreenedViewLine[viewLine].WrapOffsets;
+	if (subLine <= static_cast<int>(offsets.size()))
+		return offsets[subLine - 1];
+	return GetViewLineLength(viewLine);
+}
 
-	if (m_ScreenedViewLine[nViewLine].bSublinesSet)
+static bool WrapLine(HDC dc, std::wstring_view text, int width, int maxColumns, int tabSize, int spaceWidth,
+	std::vector<int>& advances, std::vector<int>& offsets)
+{
+	const int length = static_cast<int>(text.size());
+	if (length == 0)
+		return true;
+
+	const bool hasTab = text.find(L'\t') != std::wstring_view::npos;
+	if (!hasTab && length <= std::min(width / spaceWidth, maxColumns))
 	{
-		return static_cast<int>(m_ScreenedViewLine[nViewLine].SubLines.size());
+		// Probe short lines with one total-width measurement before computing character extents.
+		SIZE size = {};
+		if (::GetTextExtentPoint32W(dc, text.data(), length, &size) && size.cx <= width)
+			return true;
+	}
+	std::wstring textWithSpaces;
+	std::wstring_view measured = text;
+	if (hasTab)
+	{
+		textWithSpaces.assign(text);
+		std::replace(textWithSpaces.begin(), textWithSpaces.end(), L'\t', L' ');
+		measured = textWithSpaces;
 	}
 
-	auto multiLines = CStringUtils::WordWrap(m_pViewData->GetLine(nViewLine), GetScreenChars() - 1, GetTabSize());
-
-	TScreenedViewLine oScreenedLine;
-	bool subLinesSet = true;
-	if (m_pMainFrame->m_bWrapLines)
+	// Convert measured prefix widths to advances so a fallback break can reuse them.
+	advances.resize(length);
+	bool measuredAll = true;
+	for (int start = 0; start < length;)
 	{
-		CDC* pDC = GetDC();
-		CFont* pOldFont = pDC->SelectObject(GetFont());
-
-		for (const auto& line : multiLines)
+		int count = std::min<int>(GDI_TEXT_CHUNK_SIZE, length - start);
+		if (start + count < length && IS_HIGH_SURROGATE(text[start + count - 1]) && IS_LOW_SURROGATE(text[start + count]))
+			--count;
+		int* widths = advances.data() + start;
+		SIZE size = {};
+		int fit = 0;
+		if (::GetTextExtentExPointW(dc, measured.data() + start, count, INT_MAX, &fit, widths, &size) && fit == count)
 		{
-			if (line.GetLength())
+			for (int i = count - 1; i > 0; --i)
+				widths[i] -= widths[i - 1];
+		}
+		else
+		{
+			std::fill_n(widths, count, spaceWidth);
+			measuredAll = false;
+		}
+		start += count;
+	}
+
+	std::wstring expanded;
+	for (int rowStart = 0; rowStart < length;)
+	{
+		int rowEnd = rowStart;
+		int wordBreak = rowStart;
+		int column = 0;
+		int rowWidth = 0;
+		while (rowEnd < length)
+		{
+			const bool tab = text[rowEnd] == L'\t';
+			const bool surrogatePair = IS_HIGH_SURROGATE(text[rowEnd]) && rowEnd + 1 < length && IS_LOW_SURROGATE(text[rowEnd + 1]);
+			const int units = surrogatePair ? 2 : 1;
+			// Match drawing by expanding tabs from column zero on each screen row.
+			const int columns = tab ? tabSize - column % tabSize : units;
+			const int advance = tab ? columns * spaceWidth : advances[rowEnd] + (surrogatePair ? advances[rowEnd + 1] : 0);
+			if (rowEnd > rowStart && (rowWidth + advance > width || column + columns > maxColumns))
+				break;
+			if (tab || text[rowEnd] == L' ')
+				wordBreak = rowEnd;
+			column += columns;
+			rowWidth += advance;
+			rowEnd += units;
+		}
+		if (rowEnd < length && wordBreak > rowStart)
+		{
+			// Prefer a closer Unicode break before falling back to earlier ASCII whitespace.
+			const bool nextIsPair = IS_HIGH_SURROGATE(text[rowEnd]) && rowEnd + 1 < length && IS_LOW_SURROGATE(text[rowEnd + 1]);
+			const int count = rowEnd - wordBreak + (nextIsPair ? 2 : 1);
+			const auto tail = text.substr(wordBreak, count);
+			if (std::any_of(tail.begin(), tail.end(), [](wchar_t ch) { return ch > 0x7f; }))
 			{
-				// we use the 'X' char to determine the char width,
-				// but e.g. chinese chars are much wider. To make sure
-				// that we wrap correctly, we calculate the average char width
-				// here by using the real line text
-				const CSize szCharExt = pDC->GetTextExtent(line);
-				if (szCharExt.cx / line.GetLength() > m_nCharWidth)
+				SCRIPT_STRING_ANALYSIS analysis = nullptr;
+				const HRESULT result = ::ScriptStringAnalyse(nullptr, tail.data(), count, count + count / 2 + 16,
+					-1, SSA_BREAK, 0, nullptr, nullptr, nullptr, nullptr, nullptr, &analysis);
+				const auto* attrs = SUCCEEDED(result) && analysis ? ::ScriptString_pLogAttr(analysis) : nullptr;
+				if (attrs)
 				{
-					m_nCharWidth = szCharExt.cx / line.GetLength();
-					subLinesSet = false;
+					for (int i = rowEnd - wordBreak; i > 0; --i)
+					{
+						if (attrs[i].fSoftBreak && attrs[i].fCharStop)
+						{
+							wordBreak += i;
+							break;
+						}
+					}
 				}
+				else
+				{
+					wchar_t error[192];
+					swprintf_s(error, _countof(error), L"Error: Uniscribe could not determine wrap points (HRESULT 0x%08lX, %d UTF-16 units, pane width %d).\n",
+						static_cast<unsigned long>(result), count, width);
+					::OutputDebugStringW(error);
+				}
+				if (analysis)
+					VERIFY(SUCCEEDED(::ScriptStringFree(&analysis)));
 			}
-			oScreenedLine.SubLines.push_back(line);
+			rowEnd = wordBreak;
 		}
-		pDC->SelectObject(pOldFont);
-		ReleaseDC(pDC);
-	}
-	else
-	{
-		for (const auto& line : multiLines)
+
+		// Measure the final fragment because shaping and kerning can change at the break.
+		const int firstEnd = rowStart + (rowStart + 1 < length && IS_HIGH_SURROGATE(text[rowStart]) && IS_LOW_SURROGATE(text[rowStart + 1]) ? 2 : 1);
+		while (rowEnd > firstEnd && (rowStart > 0 || rowEnd < length || hasTab || !measuredAll || length > GDI_TEXT_CHUNK_SIZE))
 		{
-			oScreenedLine.SubLines.push_back(line);
+			auto row = text.substr(rowStart, rowEnd - rowStart);
+			if (hasTab && row.find(L'\t') != std::wstring_view::npos)
+			{
+				expanded.clear();
+				for (const wchar_t ch : row)
+				{
+					if (ch == L'\t')
+						expanded.append(tabSize - expanded.size() % tabSize, L' ');
+					else
+						expanded.push_back(ch);
+				}
+				row = expanded;
+			}
+			SIZE size = {};
+			if (!::GetTextExtentPoint32W(dc, row.data(), static_cast<int>(row.size()), &size))
+			{
+				measuredAll = false;
+				break;
+			}
+			if (size.cx <= width)
+				break;
+			--rowEnd;
+			if (IS_LOW_SURROGATE(text[rowEnd]) && IS_HIGH_SURROGATE(text[rowEnd - 1]))
+				--rowEnd;
 		}
+		if (rowEnd < length)
+			offsets.push_back(rowEnd);
+		rowStart = rowEnd;
 	}
+	return measuredAll;
+}
 
-	oScreenedLine.bSublinesSet = subLinesSet;
-	m_ScreenedViewLine[nViewLine] = oScreenedLine;
-
-	return CountMultiLines(nViewLine);
+void CBaseView::WrapViewLines(CViewData* displayData, std::vector<int>& advances)
+{
+	const int lineCount = std::min<int>(displayData->GetCount(), GetViewCount());
+	if (lineCount <= 0)
+		return;
+	const int width = GetWrapWidth();
+	// Reuse wrap offsets across toggles, and invalidate them when the pane width changes.
+	if (m_nCachedWrapWidth != width)
+	{
+		for (auto& line : m_ScreenedViewLine)
+			line.Clear();
+		m_nCachedWrapWidth = width;
+	}
+	CClientDC dc(this);
+	CFont* oldFont = dc.SelectObject(GetFont());
+	SCOPE_EXIT { dc.SelectObject(oldFont); };
+	const int spaceWidth = std::max<int>(1, dc.GetTextExtent(L" ", 1).cx);
+	const int tabSize = GetTabSize();
+	const int rtlColumns = std::clamp(width / GetCharWidth(), 1, GDI_TEXT_CHUNK_SIZE);
+	std::vector<WORD> bidiTypes;
+	for (int i = 0; i < lineCount; ++i)
+	{
+		auto& line = m_ScreenedViewLine[i];
+		if (line.bSublinesSet || IsViewLineHidden(displayData, i))
+			continue;
+		const CString& text = m_pViewData->GetLine(i);
+		const std::wstring_view source(text.GetString(), text.GetLength());
+		int maxColumns = GDI_TEXT_CHUNK_SIZE;
+		const auto nonAscii = std::find_if(source.begin(), source.end(), [](wchar_t ch) { return ch > 0x7f; });
+		if (nonAscii != source.end())
+		{
+			const auto suffix = source.substr(nonAscii - source.begin());
+			bidiTypes.resize(suffix.size());
+			if (::GetStringTypeW(CT_CTYPE2, suffix.data(), static_cast<int>(suffix.size()), bidiTypes.data()))
+			{
+				// Shaping highlighted RTL runs separately can make the row wider than measured.
+				// Use the old column limit to wrap earlier and leave room for the extra width.
+				// This can leave unused space, but measuring inline diff runs during layout
+				// would slow file opening by computing diffs for lines outside the viewport.
+				// Keep the pixel limit for wide characters on mixed lines.
+				if (std::find(bidiTypes.begin(), bidiTypes.end(), C2_RIGHTTOLEFT) != bidiTypes.end())
+					maxColumns = rtlColumns;
+			}
+			else
+			{
+				CString error;
+				error.Format(L"Error: Could not classify text direction in '%s' (view line %d, Win32 error %lu).\n",
+					m_sFullFilePath.GetString(), i + 1, ::GetLastError());
+				::OutputDebugStringW(error);
+			}
+		}
+		if (!WrapLine(dc.GetSafeHdc(), source, width, maxColumns, tabSize, spaceWidth, advances, line.WrapOffsets))
+		{
+			CString error;
+			error.Format(L"Error: GDI failed to measure '%s' (view line %d, %d UTF-16 units, width %d).\n",
+				m_sFullFilePath.GetString(), i + 1, text.GetLength(), width);
+			::OutputDebugStringW(error);
+		}
+		line.bSublinesSet = true;
+	}
 }
 
 /// prepare inline diff cache
@@ -5270,6 +5420,18 @@ void CBaseView::Screen2View::RebuildIfNecessary()
 	m_RebuildRanges.clear();
 	m_bFull = false;
 
+	if (m_pMainFrame->m_bWrapLines)
+	{
+		// Measure each pane with one DC and reuse the scratch buffer across source lines.
+		std::vector<int> advances;
+		if (IsLeftViewGood())
+			m_pwndLeft->WrapViewLines(m_pViewData, advances);
+		if (IsRightViewGood())
+			m_pwndRight->WrapViewLines(m_pViewData, advances);
+		if (IsBottomViewGood())
+			m_pwndBottom->WrapViewLines(m_pViewData, advances);
+	}
+
 	size_t OldSize = m_Screen2View.size();
 	m_Screen2View.clear();
 	m_Screen2View.reserve(OldSize); // guess same size
@@ -5360,10 +5522,14 @@ int CBaseView::Screen2View::FindScreenLineForViewLine( int viewLine )
 	return nPos;
 }
 
+void CBaseView::Screen2View::ScheduleLayoutRebuild(CViewData* viewData)
+{
+	m_pViewData = viewData;
+}
+
 void CBaseView::Screen2View::ScheduleFullRebuild(CViewData * pViewData) {
 	m_bFull = true;
-
-	m_pViewData = pViewData;
+	ScheduleLayoutRebuild(pViewData);
 }
 
 void CBaseView::Screen2View::ScheduleRangeRebuild(CViewData * pViewData, int nFirstViewLine, int nLastViewLine)
@@ -5371,7 +5537,7 @@ void CBaseView::Screen2View::ScheduleRangeRebuild(CViewData * pViewData, int nFi
 	if (m_bFull)
 		return;
 
-	m_pViewData = pViewData;
+	ScheduleLayoutRebuild(pViewData);
 
 	TRebuildRange Range;
 	Range.FirstViewLine=nFirstViewLine;
@@ -5427,9 +5593,9 @@ bool CBaseView::Screen2View::ResetScreenedViewLineCache(CBaseView* pwndView, con
 
 void CBaseView::WrapChanged()
 {
+	// Update scrollbars after rebuilding the shared map to avoid scanning stale rows.
 	m_nMaxLineLength = -1;
 	m_nOffsetChar = 0;
-	RecalcHorzScrollBar();
 }
 
 void CBaseView::OnEditFind()

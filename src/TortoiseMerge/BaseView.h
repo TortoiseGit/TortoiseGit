@@ -115,7 +115,7 @@ public: // methods
 	POINT			ConvertViewPosToScreen(const POINT& pt);
 
 	void			RefreshViews();
-	static void		BuildAllScreen2ViewVector();								///< schedule full screen2view rebuild
+	static void		BuildAllScreen2ViewVector(bool resetCachedLines = true);								///< schedule full screen2view rebuild
 	static void		BuildAllScreen2ViewVector(int ViewLine);					///< schedule rebuild screen2view for single line
 	static void		BuildAllScreen2ViewVector(int FirstViewLine, int LastViewLine);	///< schedule rebuild screen2view for line range (first and last inclusive)
 	void			UpdateViewLineNumbers();
@@ -124,7 +124,7 @@ public: // methods
 	static int		GetViewLineForScreen(int screenLine) { return m_Screen2View.GetViewLineForScreen(screenLine); }
 	int				FindScreenLineForViewLine(int viewLine);
 	// TODO: find better consistent names for Multiline(line with sublines) and Subline, Count.. or Get..Count ?
-	int				CountMultiLines(int nViewLine);
+	int				CountMultiLines(int nViewLine) const;
 	int				GetSubLineOffset(int index);
 	LineColors &	GetLineColors(int nViewLine);
 	static void		UpdateLocator() { if (m_pwndLocator) m_pwndLocator->DocumentUpdated(); }
@@ -391,6 +391,9 @@ protected:  // methods
 	int				GetAllMinScreenLines() const;
 	CString			GetViewLineChars(int index) const;
 	CString			GetLineChars(int index);
+	int				GetWrapWidth();
+	int				GetWrappedLineStart(int viewLine, int subLine) const;
+	void			WrapViewLines(CViewData* displayData, std::vector<int>& advances);
 	int				GetLineNumber(int index) const;
 	CFont *			GetFont(BOOL bItalic = FALSE, BOOL bBold = FALSE);
 	int				GetLineFromPoint(CPoint point);
@@ -495,7 +498,8 @@ protected:  // variables
 	int				m_nMaxLineLength = -1;
 	int				m_nScreenLines = -1;
 	int				m_nScreenChars = -1;
-	int				m_nLastScreenChars = -1;
+	int				m_nLastLayoutWidth = -1;
+	int				m_nCachedWrapWidth = -1;
 	int				m_nOffsetChar = 0;
 	int				m_nTabSize = 4;
 	int				m_nDigits = 0;
@@ -593,13 +597,15 @@ protected:  // variables
 		void Clear()
 		{
 			bSublinesSet = false;
+			WrapOffsets.clear();
 			eIcon = ICN_UNKNOWN;
 			bLineColorsSet = false;
 			bLineColorsSetWhiteSpace = false;
 		}
 
 		bool bSublinesSet;
-		std::vector<CString> SubLines;
+		// Continuation row start offsets in the source UTF-16 text. The first row starts at zero.
+		std::vector<int> WrapOffsets;
 
 		enum EIcon
 		{
@@ -667,6 +673,7 @@ protected:  // variables
 		int				GetViewLineForScreen(int screenLine);
 		int				GetSubLineOffset(int screenLine);
 		int				FindScreenLineForViewLine(int viewLine);
+		void			ScheduleLayoutRebuild(CViewData* viewData);
 		void			ScheduleFullRebuild(CViewData * ViewData);
 		void			ScheduleRangeRebuild(CViewData * ViewData, int FirstViewLine, int LastViewLine);
 		int				size();
