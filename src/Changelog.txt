@@ -1,5 +1,7 @@
 ﻿= Release 2.19.2 =
-Released: unreleased
+Released: 2026-11-18
+
+This release contains several bug and security fixes, particularly in shipped libraries/tools.
 
 == Features ==
  * Update shipped PuTTY binaries to 0.85
@@ -17,16 +19,17 @@ Released: unreleased
  * Fixed issue #4276: Use common ancestor diff option is broken since v.2.19
  * Fixed issue #4285: Client-side hooks can fail before launch with ERROR_SHARING_VIOLATION while preparing stderr redirection
  * Fixed issue #4295: Windows 11 Context menu not shown in Explorer if "Show overlays and context menu only in explorer" is enabled
+ * Fixed issue #4280: Windows 11 install failing with Smart App Control enabled
+
+== Known issues ==
+ * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
+   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.19.1 =
 Released: 2026-06-27
 
 == Bug Fixes ==
  * Fixed issue #4272: Regression in commit efe2fb1e: %bpath/%ypath and %brev/%yrev values are swapped
-
-== Known issues ==
- * Issue #4013: Incorrect info displayed in title bar of Windows Explorer windows
-   At the moment the numbers are only updated when the index or the current branch change.
 
 = Release 2.19.0 =
 Released: 2026-06-20
