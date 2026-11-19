@@ -740,9 +740,9 @@ static std::optional<signature_packet_t> LoadSignature(const CString& signatureF
 		return false;
 
 	char buf[4096];
-	int read = 0;
+	size_t read = 0;
 	bool last_was_cr = false;
-	while ((read = static_cast<int>(fread(buf, sizeof(char), sizeof(buf), pFile))) > 0)
+	while ((read = fread(buf, sizeof(char), sizeof(buf), pFile)) > 0)
 	{
 		if (sig.type == TEXT_SIGNATURE)
 		{
@@ -762,7 +762,7 @@ static std::optional<signature_packet_t> LoadSignature(const CString& signatureF
 			continue;
 		}
 
-		if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), read, 0))
+		if (!CryptHashData(hHash, reinterpret_cast<BYTE*>(buf), static_cast<DWORD>(read), 0))
 			return false;
 	}
 	if (ferror(pFile))
