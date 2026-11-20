@@ -56,6 +56,8 @@ public:
 	CWorktreeListDlg(CWnd* pParent = nullptr); // standard constructor
 	virtual ~CWorktreeListDlg();
 
+	static bool s_bSortLogical;
+
 	// Dialog Data
 	enum
 	{
@@ -107,4 +109,8 @@ private:
 
 	bool RemoveWorktree(const CString& path, bool force);
 	bool PruneWorktrees();
+
+	afx_msg void OnLvnColumnclickWorktreeList(NMHDR* pNMHDR, LRESULT* pResult);
+	int m_currSortCol = 0;
+	bool m_currSortDesc = false;
 };

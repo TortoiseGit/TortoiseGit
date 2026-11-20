@@ -30,7 +30,105 @@
 #include "PathUtils.h"
 #include "MessageBox.h"
 
+static void SetSortArrow(CListCtrl* control, int nColumn, bool bAscending)
+{
+	if (!control)
+		return;
+
+	// set the sort arrow
+	auto pHeader = control->GetHeaderCtrl();
+	HDITEM HeaderItem{};
+	HeaderItem.mask = HDI_FORMAT;
+	for (int i = 0; i < pHeader->GetItemCount(); ++i)
+	{
+		pHeader->GetItem(i, &HeaderItem);
+		HeaderItem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
+		pHeader->SetItem(i, &HeaderItem);
+	}
+	if (nColumn >= 0)
+	{
+		pHeader->GetItem(nColumn, &HeaderItem);
+		HeaderItem.fmt |= (bAscending ? HDF_SORTUP : HDF_SORTDOWN);
+		pHeader->SetItem(nColumn, &HeaderItem);
+	}
+}
+
+class CWorktreeListCompareFunc
+{
+public:
+	CWorktreeListCompareFunc(CListCtrl* pList, int col, bool desc)
+		: m_col(col)
+		, m_desc(desc)
+		, m_pList(pList)
+	{}
+
+	static int CALLBACK StaticCompare(LPARAM lParam1, LPARAM lParam2, LPARAM lParamSort)
+	{
+		return reinterpret_cast<CWorktreeListCompareFunc*>(lParamSort)->Compare(lParam1, lParam2);
+	}
+
+	int Compare(LPARAM lParam1, LPARAM lParam2)
+	{
+		auto pLeft = reinterpret_cast<const WorktreeDetails*>(m_pList->GetItemData(static_cast<int>(lParam1)));
+		auto pRight = reinterpret_cast<const WorktreeDetails*>(m_pList->GetItemData(static_cast<int>(lParam2)));
+
+		int result = 0;
+		switch (m_col)
+		{
+		case CWorktreeListDlg::eCol_Path:
+			result = SortStrCmp(pLeft->m_Path, pRight->m_Path);
+			if (result != 0)
+				break;
+			[[fallthrough]];
+		case CWorktreeListDlg::eCol_Hash:
+		{
+			const auto cmp = pLeft->m_Hash <=> pRight->m_Hash;
+			result = std::is_gt(cmp) - std::is_lt(cmp);
+			if (result != 0)
+				break;
+			[[fallthrough]];
+		}
+		case CWorktreeListDlg::eCol_Branch:
+			result = SortStrCmp(pLeft->m_Branch, pRight->m_Branch);
+			if (result != 0)
+				break;
+			[[fallthrough]];
+		case CWorktreeListDlg::eCol_Locked:
+			result = (pLeft->m_IsLocked > pRight->m_IsLocked) - (pLeft->m_IsLocked < pRight->m_IsLocked);
+			if (result != 0)
+				break;
+			[[fallthrough]];
+		case CWorktreeListDlg::eCol_Reason:
+			result = SortStrCmp(pLeft->m_LockedReason, pRight->m_LockedReason);
+			if (result != 0)
+				break;
+
+			break;
+		default:
+			ASSERT(false);
+		}
+
+		if (m_desc)
+			result = -result;
+
+		return result;
+	}
+
+	int SortStrCmp(const CString& left, const CString& right)
+	{
+		if (CWorktreeListDlg::s_bSortLogical)
+			return StrCmpLogicalW(left, right);
+		return StrCmpI(left, right);
+	}
+
+	int m_col = CWorktreeListDlg::eCol_Path;
+	bool m_desc = false;
+	CListCtrl* m_pList = nullptr;
+};
+
 // CWorktreeListDlg dialog
+
+bool CWorktreeListDlg::s_bSortLogical = true;
 
 IMPLEMENT_DYNAMIC(CWorktreeListDlg, CResizableStandAloneDialog)
 
@@ -54,6 +152,7 @@ BEGIN_MESSAGE_MAP(CWorktreeListDlg, CResizableStandAloneDialog)
 	ON_BN_CLICKED(IDC_BUTTON_ADD, &CWorktreeListDlg::OnBnClickedButtonAdd)
 	ON_BN_CLICKED(IDC_BUTTON_PRUNE, &CWorktreeListDlg::OnBnClickedButtonPrune)
 	ON_NOTIFY(NM_DBLCLK, IDC_WORKTREE_LIST, OnNMDblclkWorktreeList)
+	ON_NOTIFY(LVN_COLUMNCLICK, IDC_WORKTREE_LIST, &OnLvnColumnclickWorktreeList)
 END_MESSAGE_MAP()
 
 // CWorktreeListDlg message handlers
@@ -70,6 +169,10 @@ BOOL CWorktreeListDlg::OnInitDialog()
 	AddAnchor(IDC_BUTTON_PRUNE, BOTTOM_LEFT);
 	AddAnchor(IDHELP, BOTTOM_RIGHT);
 	AddAnchor(IDOK, BOTTOM_RIGHT);
+
+	CWorktreeListDlg::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_CURRENT_USER);
+	if (CWorktreeListDlg::s_bSortLogical)
+		CWorktreeListDlg::s_bSortLogical = !CRegDWORD(L"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer\\NoStrCmpLogical", 0, false, HKEY_LOCAL_MACHINE);
 
 	const int columnWidth = CDPIAware::Instance().ScaleX(GetSafeHwnd(), 100);
 	const ColumnDefinition columns[] = {
@@ -116,6 +219,8 @@ void CWorktreeListDlg::Refresh()
 
 	if (CString git_err; FillListCtrlWithWorktreeList(git_err) < 0)
 		MessageBox(git_err, L"TortoiseGit", MB_OK | MB_ICONERROR);
+	m_currSortCol = -1;
+	SetSortArrow(&m_WorktreeList, m_currSortCol, true);
 	EndWaitCursor();
 }
 
@@ -248,6 +353,7 @@ int CWorktreeListDlg::FillListCtrlWithWorktreeList(CString& error)
 	for (const auto& zfb : m_Worktrees)
 	{
 		const int indexItem = m_WorktreeList.InsertItem(m_WorktreeList.GetItemCount(), zfb.m_Path, m_nIconFolder);
+		m_WorktreeList.SetItemData(indexItem, reinterpret_cast<DWORD_PTR>(&zfb));
 		if (zfb.m_Hash.IsEmpty())
 			m_WorktreeList.SetItemText(indexItem, eCol_Hash, L"");
 		else
@@ -295,7 +401,8 @@ void CWorktreeListDlg::OnNMDblclkWorktreeList(NMHDR* pNMHDR, LRESULT* pResult)
 	if (selIndex >= static_cast<int>(m_Worktrees.size()))
 		return;
 
-	CAppUtils::ExploreTo(GetSafeHwnd(), m_Worktrees[selIndex].m_Path);
+	auto worktreeItem = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(selIndex));
+	CAppUtils::ExploreTo(GetSafeHwnd(), worktreeItem->m_Path);
 }
 
 void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
@@ -312,13 +419,16 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 	// If there are multiple and some of them can't be operated on, just ignore those.
 	if (indexes.size() == 1)
 	{
-		auto& worktree = m_Worktrees[indexes[0]];
-		showUnlock = worktree.m_IsLocked;
+		auto worktree = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(indexes[0]));
+		showUnlock = worktree->m_IsLocked;
 		showLock = !showUnlock;
 
 		// Can't delete or lock the base repo, only worktrees
-		if (worktree.m_isBaseRepo)
+		if (worktree->m_isBaseRepo)
+		{
 			showRemove = false;
+			showLock = false;
+		}
 	}
 
 	CIconMenu popupMenu;
@@ -346,7 +456,8 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 		{
 			if (indexes.size() != 1)
 				return;
-			CAppUtils::ExploreTo(GetSafeHwnd(), m_Worktrees[indexes[0]].m_Path);
+			auto worktree = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(indexes[0]));
+			CAppUtils::ExploreTo(GetSafeHwnd(), worktree->m_Path);
 			break;
 		}
 		case eCmd_Remove:
@@ -356,16 +467,16 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 				return;
 			for (int index : indexes)
 			{
-				auto& zf = m_Worktrees[index];
+				auto worktree = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(index));
 
-				if (zf.m_isBaseRepo)
+				if (worktree->m_isBaseRepo)
 				{
 					// Silently skip it. It shouldn't be selectable by itself.
 					// If included in a multi-selection, just silently skip it.
 					continue;
 				}
 
-				if (!RemoveWorktree(zf.m_Path, cmd == eCmd_RemoveWithForce))
+				if (!RemoveWorktree(worktree->m_Path, cmd == eCmd_RemoveWithForce))
 					break; // Don't continue with other worktrees
 			}
 
@@ -378,14 +489,14 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 			int lockedSuccessfully = 0;
 			for (int index : indexes)
 			{
-				auto& leaf = m_Worktrees[index];
-				if (leaf.m_isBaseRepo)
+				auto leaf = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(index));
+				if (leaf->m_isBaseRepo)
 					continue;
 
 				CAutoWorktree worktree;
-				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf.m_WorktreeName)) < 0 || git_worktree_lock(worktree, nullptr) < 0)
+				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf->m_WorktreeName)) < 0 || git_worktree_lock(worktree, nullptr) < 0)
 				{
-					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to lock worktree \"" + leaf.m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
+					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to lock worktree \"" + leaf->m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
 						break;
 				}
 				else
@@ -402,14 +513,14 @@ void CWorktreeListDlg::ShowContextMenu(CPoint point, std::vector<int>& indexes)
 			int unlockedSuccessfully = 0;
 			for (int index : indexes)
 			{
-				auto& leaf = m_Worktrees[index];
-				if (leaf.m_isBaseRepo)
+				auto leaf = reinterpret_cast<const WorktreeDetails*>(m_WorktreeList.GetItemData(index));
+				if (leaf->m_isBaseRepo)
 					continue;
 
 				CAutoWorktree worktree;
-				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf.m_WorktreeName)) < 0 || git_worktree_unlock(worktree) < 0)
+				if (git_worktree_lookup(worktree.GetPointer(), g_Git.GetGitRepository(), CUnicodeUtils::GetUTF8(leaf->m_WorktreeName)) < 0 || git_worktree_unlock(worktree) < 0)
 				{
-					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to unlock worktree \"" + leaf.m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
+					if (CMessageBox::Show(GetSafeHwnd(), g_Git.GetLibGit2LastErr(L"Failed to unlock worktree \"" + leaf->m_WorktreeName + L"\"."), IDS_APPNAME, 1, IDI_ERROR, IDS_MSGBOX_CONTINUE, IDS_MSGBOX_ABORT) == 2)
 						break;
 				}
 				else
@@ -484,4 +595,24 @@ void CWorktreeListDlg::OnBnClickedButtonPrune()
 {
 	if (PruneWorktrees())
 		Refresh();
+}
+
+void CWorktreeListDlg::OnLvnColumnclickWorktreeList(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
+	if (pResult)
+		*pResult = 0;
+
+	if (m_currSortCol == pNMLV->iSubItem)
+		m_currSortDesc = !m_currSortDesc;
+	else
+	{
+		m_currSortCol = pNMLV->iSubItem;
+		m_currSortDesc = false;
+	}
+
+	CWorktreeListCompareFunc compareFunc(&m_WorktreeList, m_currSortCol, m_currSortDesc);
+	m_WorktreeList.SortItemsEx(&CWorktreeListCompareFunc::StaticCompare, reinterpret_cast<DWORD_PTR>(&compareFunc));
+
+	SetSortArrow(&m_WorktreeList, m_currSortCol, !m_currSortDesc);
 }
