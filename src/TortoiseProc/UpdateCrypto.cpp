@@ -270,22 +270,20 @@ static constexpr std::optional<DWORD> map_algo(const uint8_t digest_algo)
 
 			if (first < 192)
 				return first;
-			else if (first < 224)
+			else if (first < 255)
 			{
 				uint8_t second;
 				if (!sp.read_byte(second))
 					return {};
 				return (static_cast<uint32_t>(first - 192) << 8) + second + 192;
 			}
-			else if (first == 255) /* first == 0xFF: 4-byte length follows */
+			else /* first == 0xFF: 4-byte length follows */
 			{
 				const auto len_bytes = sp.read_bytes(4);
 				if (len_bytes.empty())
 					return {};
 				return (static_cast<uint32_t>(len_bytes[0]) << 24) | (static_cast<uint32_t>(len_bytes[1]) << 16) | (static_cast<uint32_t>(len_bytes[2]) << 8) | static_cast<uint32_t>(len_bytes[3]);
 			}
-			else
-				return {}; // Partial Body Lengths are unsupported
 		}();
 		const auto subpacket = sp.read_bytes(subpacket_len);
 		if (subpacket.empty())
