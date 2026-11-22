@@ -47,15 +47,15 @@ public:
 	{
 		m_pLogCache=pLogCache;
 		m_FirstFreeLane=0;
-		// Default to value set in Registry
-		m_logOrderBy = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER);
+		// Default to value set in Registry (CHRONOLOGIAL_REVERSED is much faster on huge repos)
+		m_logOrderBy = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_CHRONOLOGIALREVERSED);
 	}
 	CLogDataVector()
 	{
 		m_pLogCache = nullptr;
 		m_FirstFreeLane=0;
-		// Default to value set in Registry
-		m_logOrderBy = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_TOPOORDER);
+		// Default to value set in Registry (CHRONOLOGIAL_REVERSED is much faster on huge repos)
+		m_logOrderBy = CRegDWORD(L"Software\\TortoiseGit\\LogOrderBy", CGit::LOG_ORDER_CHRONOLOGIALREVERSED);
 	}
 	void SetLogCache(CLogCache *pLogCache)
 	{
