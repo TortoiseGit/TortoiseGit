@@ -2451,8 +2451,9 @@ BOOL CGit::CheckMsysGitDir(BOOL bFallback)
 
 	CString msysGitDir;
 	PathCanonicalize(CStrBuf(msysGitDir, MAX_PATH), CGit::ms_LastMsysGitDir + L"\\..\\");
-	static const CString prefixes[] = { L"mingw64\\etc", L"mingw32\\etc", L"etc" };
-	static const int prefixes_len[] = { 8, 8, 0 };
+	static const CString prefixes[] = { L"ucrt64\\etc", L"mingw64\\etc", L"mingw32\\etc", L"etc" };
+	static const int prefixes_len[] = { 7, 8, 8, 0 };
+	static_assert(_countof(prefixes) == _countof(prefixes_len));
 	for (int i = 0; i < _countof(prefixes); ++i)
 	{
 #ifndef _WIN64

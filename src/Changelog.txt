@@ -1,4 +1,10 @@
-﻿= Release 2.19.2 =
+﻿= Release 2.19.3 =
+Released: unreleased
+
+== Bug Fixes ==
+ * Fixed issue #4296: Wrong system config path and Git root path for Git for Windows >= 2.56
+
+= Release 2.19.2 =
 Released: 2026-11-18
 
 This release contains several bug and security fixes, particularly in shipped libraries/tools.
