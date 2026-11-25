@@ -694,8 +694,8 @@ void CGitStatusListCtrl::Show(unsigned int dwShow, unsigned int dwCheck /*=0*/, 
 					) && autoSelectSubmodules)
 				{
 					auto it = m_pathToChangelist.find(path);
-					if ((it != m_pathToChangelist.end()) && (it->second.Compare(GITSLC_IGNORECHANGELIST) == 0))
-						entry->m_Checked = false; // is in ignore-on-commit
+					if (it != m_pathToChangelist.end())
+						entry->m_Checked = false;
 					else 
 						entry->m_Checked = true;
 				}

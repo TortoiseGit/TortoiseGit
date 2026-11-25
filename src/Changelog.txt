@@ -3,6 +3,7 @@ Released: unreleased
 
 == Bug Fixes ==
  * Fixed issue #4296: Wrong system config path and Git root path for Git for Windows >= 2.56
+ * Fixed issue #4074: All changelists are automatically selected on commit
 
 = Release 2.19.2 =
 Released: 2026-11-18
