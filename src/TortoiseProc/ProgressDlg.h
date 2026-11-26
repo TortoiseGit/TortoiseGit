@@ -148,8 +148,6 @@ private:
 	//Share with Sync Dailog
 	static int ParsePercentage(const CString& log, int pos);
 
-	static void	ClearESC(CString &str);
-
 public:
 	static const int s_iSizeLimit;
 	static void UpdateCmdOutput(CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel = nullptr);

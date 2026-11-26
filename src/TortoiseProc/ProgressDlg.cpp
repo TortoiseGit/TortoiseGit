@@ -478,44 +478,51 @@ int CProgressDlg::ParsePercentage(const CString& log, int s1)
 	return _wtol(log.Mid(s2, s1 - s2));
 }
 
-void CProgressDlg::ClearESC(CString& str)
+static CString InsertAnsiText(CRichEditCtrl& edit, const std::vector<AnsiTextRun>& runs)
 {
-	// see http://ascii-table.com/ansi-escape-sequences.php and http://tldp.org/HOWTO/Bash-Prompt-HOWTO/c327.html
-	str.Replace(L"\033[K", L""); // erase until end of line; no need to care for this, because we always clear the whole line
-
-	// drop colors
-	while (true)
+	CString text;
+	if (runs.empty())
 	{
-		const int escapePosition = str.Find(L'\033');
-		if (escapePosition >= 0 && str.GetLength() >= escapePosition + 3)
-		{
-			if (str.Mid(escapePosition, 2) == L"\033[")
-			{
-				const int colorEnd = str.Find(L'm', escapePosition + 2);
-				if (colorEnd > 0)
-				{
-					bool found = true;
-					for (int i = escapePosition + 2; i < colorEnd; ++i)
-					{
-						if (str[i] != L';' && (str[i] < L'0' && str[i] > L'9'))
-						{
-							found = false;
-							break;
-						}
-					}
-					if (found)
-					{
-						if (escapePosition > 0)
-							str = str.Left(escapePosition) + str.Mid(colorEnd + 1);
-						else
-							str = str.Mid(colorEnd);
-						continue;
-					}
-				}
-			}
-		}
-		break;
+		edit.ReplaceSel(L"");
+		return text;
 	}
+
+	const COLORREF defaultTextColor = CTheme::Instance().IsDarkTheme() ? CTheme::darkTextColor : ::GetSysColor(COLOR_WINDOWTEXT);
+	const COLORREF defaultBackgroundColor = CTheme::Instance().IsDarkTheme() ? CTheme::darkBkColor : ::GetSysColor(COLOR_WINDOW);
+	for (const auto& run : runs)
+	{
+		long start = 0;
+		long end = 0;
+		edit.GetSel(start, end);
+		edit.ReplaceSel(run.text);
+		long ignored = 0;
+		edit.GetSel(ignored, end);
+
+		COLORREF foreground = run.style.foreground.value_or(defaultTextColor);
+		COLORREF background = run.style.background.value_or(defaultBackgroundColor);
+		if (run.style.inverse)
+			std::swap(foreground, background);
+
+		CHARFORMAT2 format = { 0 };
+		format.cbSize = sizeof(CHARFORMAT2);
+		format.dwMask = CFM_COLOR | CFM_BACKCOLOR | CFM_BOLD | CFM_ITALIC | CFM_UNDERLINE | CFM_STRIKEOUT;
+		format.crTextColor = foreground;
+		format.crBackColor = background;
+		if (run.style.bold)
+			format.dwEffects |= CFE_BOLD;
+		if (run.style.italic)
+			format.dwEffects |= CFE_ITALIC;
+		if (run.style.underline)
+			format.dwEffects |= CFE_UNDERLINE;
+		if (run.style.strikeout)
+			format.dwEffects |= CFE_STRIKEOUT;
+
+		edit.SetSel(start, end);
+		edit.SetSelectionCharFormat(format);
+		edit.SetSel(end, end);
+		text += run.text;
+	}
+	return text;
 }
 
 void CProgressDlg::UpdateCmdOutput(CGitCliOutputParser& cliOutputParser, CRichEditCtrl& log, CProgressCtrl& progressctrl, HWND hWnd, CComPtr<ITaskbarList3> pTaskbarList, CWnd* currentWorkLabel)
@@ -560,8 +567,7 @@ void CProgressDlg::UpdateCmdOutput(CGitCliOutputParser& cliOutputParser, CRichEd
 		buff.remove_prefix(start);
 		CGit::StringAppend(str, buff);
 	}
-	ClearESC(str);
-	log.ReplaceSel(str);
+	str = InsertAnsiText(log, cliOutputParser.ParseAnsi(str));
 	log.PostMessage(WM_VSCROLL, SB_BOTTOM, 0);
 	UpdateProgressFromLine(str, progressctrl, hWnd, pTaskbarList, currentWorkLabel);
 

@@ -23,6 +23,46 @@
 
 static std::random_device rd;
 
+TEST(CAnsiEscapeParser, BasicStyles)
+{
+	CAnsiEscapeParser parser;
+	const auto runs = parser.Parse(L"plain \033[1;31mred\033[22;39m plain");
+
+	ASSERT_EQ(3u, runs.size());
+	EXPECT_STREQ(L"plain ", runs[0].text);
+	EXPECT_FALSE(runs[0].style.foreground);
+	EXPECT_STREQ(L"red", runs[1].text);
+	ASSERT_TRUE(runs[1].style.foreground);
+	EXPECT_EQ(RGB(205, 49, 49), *runs[1].style.foreground);
+	EXPECT_TRUE(runs[1].style.bold);
+	EXPECT_STREQ(L" plain", runs[2].text);
+	EXPECT_FALSE(runs[2].style.foreground);
+	EXPECT_FALSE(runs[2].style.bold);
+}
+
+TEST(CAnsiEscapeParser, ExtendedColorsAndSplitSequences)
+{
+	CAnsiEscapeParser parser;
+	EXPECT_TRUE(parser.Parse(L"\033[38;2;1;2").empty());
+	const auto runs = parser.Parse(L";3;48;5;196mcolor");
+
+	ASSERT_EQ(1u, runs.size());
+	EXPECT_STREQ(L"color", runs[0].text);
+	ASSERT_TRUE(runs[0].style.foreground);
+	ASSERT_TRUE(runs[0].style.background);
+	EXPECT_EQ(RGB(1, 2, 3), *runs[0].style.foreground);
+	EXPECT_EQ(RGB(255, 0, 0), *runs[0].style.background);
+}
+
+TEST(CAnsiEscapeParser, StripsNonSgrSequences)
+{
+	CAnsiEscapeParser parser;
+	const auto runs = parser.Parse(L"before\033[Kafter\033]8;;https://example.com\a link\033]8;;\a");
+
+	ASSERT_EQ(1u, runs.size());
+	EXPECT_STREQ(L"beforeafter link", runs[0].text);
+}
+
 static CStringA loadGitOutput(const CString& filename)
 {
 	CStdioFile file;

@@ -19,6 +19,41 @@
 
 #pragma once
 
+#include <optional>
+
+struct AnsiTextStyle
+{
+	std::optional<COLORREF> foreground;
+	std::optional<COLORREF> background;
+	bool bold = false;
+	bool italic = false;
+	bool underline = false;
+	bool strikeout = false;
+	bool inverse = false;
+
+	bool operator==(const AnsiTextStyle&) const = default;
+};
+
+struct AnsiTextRun
+{
+	CString text;
+	AnsiTextStyle style;
+};
+
+class CAnsiEscapeParser
+{
+public:
+	std::vector<AnsiTextRun> Parse(const CString& text);
+	void Reset();
+
+private:
+	void ApplySgr(const CString& parameters);
+	void AppendChar(std::vector<AnsiTextRun>& runs, wchar_t ch) const;
+
+	CString m_pendingEscape;
+	AnsiTextStyle m_style;
+};
+
 struct EmittedLines
 {
 	std::string text;
@@ -40,6 +75,7 @@ public:
 	void AppendChunk(const std::string_view chunk);
 
 	EmittedLines ProcessPending();
+	std::vector<AnsiTextRun> ParseAnsi(const CString& text) { return m_ansiEscapeParser.Parse(text); }
 	void ActivateDropMode();
 	void Reset();
 
@@ -61,6 +97,7 @@ private:
 
 	bool m_pendingVisible = false;
 	bool m_skipNextEmptyRemoteLF = false;
+	CAnsiEscapeParser m_ansiEscapeParser;
 
 	void EraseVisiblePendingIfNeeded(EmittedLines& out);
 
