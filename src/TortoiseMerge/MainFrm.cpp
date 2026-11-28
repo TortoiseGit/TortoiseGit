@@ -65,6 +65,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
 	ON_COMMAND(ID_VIEW_WHITESPACES, OnViewWhitespaces)
 	ON_WM_SIZE()
+	ON_WM_ENTERSIZEMOVE()
+	ON_WM_EXITSIZEMOVE()
 	ON_COMMAND(ID_FILE_SAVE, OnFileSave)
 	ON_COMMAND(ID_FILE_SAVE_AS, OnFileSaveAs)
 	ON_UPDATE_COMMAND_UI(ID_FILE_SAVE, OnUpdateFileSave)
@@ -1193,6 +1195,30 @@ void CMainFrame::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
+void CMainFrame::OnEnterSizeMove()
+{
+	m_bInSizeMove = true;
+	CFrameWndEx::OnEnterSizeMove();
+}
+
+void CMainFrame::OnExitSizeMove()
+{
+	CFrameWndEx::OnExitSizeMove();
+	m_bInSizeMove = false;
+	const bool wrapLayoutPending = m_bWrapLayoutPending;
+	m_bWrapLayoutPending = false;
+	if (wrapLayoutPending && m_bWrapLines)
+		OnViewTextFoldUnfold(false);
+}
+
+bool CMainFrame::DeferWrapLayout()
+{
+	if (!m_bInSizeMove)
+		return false;
+	m_bWrapLayoutPending = true;
+	return true;
+}
+
 void CMainFrame::OnViewWhitespaces()
 {
 	CRegDWORD regViewWhitespaces = CRegDWORD(L"Software\\TortoiseGitMerge\\ViewWhitespaces", 1);
@@ -1247,12 +1273,14 @@ void CMainFrame::OnViewWraplonglines()
 	if (m_pwndLeftView)   m_pwndLeftView  ->WrapChanged();
 	if (m_pwndRightView)  m_pwndRightView ->WrapChanged();
 	if (m_pwndBottomView) m_pwndBottomView->WrapChanged();
-	OnViewTextFoldUnfold();
+	OnViewTextFoldUnfold(false);
 	m_wndLocatorBar.DocumentUpdated();
 }
 
-void CMainFrame::OnViewTextFoldUnfold()
+void CMainFrame::OnViewTextFoldUnfold(bool resetCachedLines)
 {
+	// The first caret update rebuilds the screen-line map shared by all panes.
+	CBaseView::BuildAllScreen2ViewVector(resetCachedLines);
 	OnViewTextFoldUnfold(m_pwndLeftView);
 	OnViewTextFoldUnfold(m_pwndRightView);
 	OnViewTextFoldUnfold(m_pwndBottomView);
@@ -1262,7 +1290,6 @@ void CMainFrame::OnViewTextFoldUnfold(CBaseView* view)
 {
 	if (view == 0)
 		return;
-	view->BuildAllScreen2ViewVector();
 	view->UpdateCaret();
 	view->Invalidate();
 	view->EnsureCaretVisible();
@@ -3672,6 +3699,7 @@ void CMainFrame::OnTabMode(CBaseView *view, int cmd)
 {
 	if (!view)
 		return;
+	const int previousTabSize = view->GetTabSize();
 	int nTabMode = view->GetTabMode();
 	if (cmd == TABMODE_NONE || cmd == TABMODE_USESPACES)
 		view->SetTabMode((nTabMode & (~TABMODE_USESPACES)) | (cmd & TABMODE_USESPACES));
@@ -3687,6 +3715,9 @@ void CMainFrame::OnTabMode(CBaseView *view, int cmd)
 		view->SetTabSize(8);
 	else if (cmd == ENABLEEDITORCONFIG)
 		view->SetEditorConfigEnabled(!view->GetEditorConfigEnabled());
+	// Changing tab expansion can invalidate the wrap offsets.
+	if (view->GetTabSize() != previousTabSize)
+		CBaseView::BuildAllScreen2ViewVector();
 	view->RefreshViews();
 }
 
@@ -3837,6 +3868,8 @@ LRESULT CMainFrame::OnDPIChanged(WPARAM, LPARAM lParam)
 		m_pwndRightView->DPIChanged();
 	if (m_pwndBottomView)
 		m_pwndBottomView->DPIChanged();
+	// Remeasure after a font change even if the pane has the same pixel width.
+	CBaseView::BuildAllScreen2ViewVector();
 	const RECT* rect = reinterpret_cast<RECT*>(lParam);
 	SetWindowPos(nullptr, rect->left, rect->top, rect->right - rect->left, rect->bottom - rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
 	::RedrawWindow(GetSafeHwnd(), nullptr, nullptr, RDW_FRAME | RDW_INVALIDATE | RDW_ERASE | RDW_INTERNALPAINT | RDW_ALLCHILDREN | RDW_UPDATENOW);

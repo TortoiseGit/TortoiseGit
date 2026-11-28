@@ -62,6 +62,7 @@ public:
 	void			ShowDiffBar(bool bShow);
 	void			DiffLeftToBase();
 	void			DiffRightToBase();
+	bool			DeferWrapLayout();
 	int				CheckResolved();
 
 #ifdef _DEBUG
@@ -99,6 +100,8 @@ protected:
 	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void	OnDestroy();
 	afx_msg void	OnSize(UINT nType, int cx, int cy);
+	afx_msg void	OnEnterSizeMove();
+	afx_msg void	OnExitSizeMove();
 	afx_msg void	OnUpdateFileSave(CCmdUI *pCmdUI);
 	afx_msg void	OnUpdateFileSaveAs(CCmdUI *pCmdUI);
 	afx_msg void	OnViewOnewaydiff();
@@ -245,12 +248,12 @@ protected:
 	void			DeleteBaseTheirsMineOnClose();
 	void			OnViewLineUpDown(int direction);
 	void			OnViewLineLeftRight(int direction);
-	static void		OnTabMode(CBaseView *view, int cmd);
+	void			OnTabMode(CBaseView *view, int cmd);
 	static void		OnUpdateTabMode(CBaseView *view, CCmdUI *pCmdUI, int startid);
 	bool			HasConflictsWontKeep();
 	bool			TryGetFileName(CString& result);
 	CBaseView*		GetActiveBaseView() const;
-	void			OnViewTextFoldUnfold();
+	void			OnViewTextFoldUnfold(bool resetCachedLines = true);
 	void			OnViewTextFoldUnfold(CBaseView* view);
 	bool			HasUnsavedEdits() const;
 	static bool		HasUnsavedEdits(const CBaseView* view);
@@ -278,6 +281,8 @@ protected:
 	GitPatch		m_Patch;
 	BOOL			m_bInitSplitter;
 	bool			m_bCheckReload = false;
+	bool			m_bInSizeMove = false;
+	bool			m_bWrapLayoutPending = false;
 
 	bool			m_bHasConflicts = false;
 	bool			m_bMarkedAsResolvedWasDone = false;
